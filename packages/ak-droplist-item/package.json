@@ -1,18 +1,18 @@
 {
   "name": "ak-droplist-item",
-  "version": "1.0.1",
+  "version": "3.1.1",
   "description": "ak-droplist-item Component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-droplist-item"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single ak-droplist-item; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
-    "ak-icon": "^11.0.1",
+    "ak-icon": "^12.0.1",
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",

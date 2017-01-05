@@ -1,5 +1,6 @@
 import schema from './schema';
-import { Node } from 'ak-editor-prosemirror';
+import { Node } from 'ak-editor-core';
+import arrayFrom from './util/array-from';
 
 /**
  * This function reads markup rendered by Bitbucket server and converts it into markup that
@@ -11,7 +12,7 @@ export default function(html: string): Node {
   el.innerHTML = html;
 
   // Remove zero-width-non-joiner
-  Array.from(el.querySelectorAll('p')).forEach((p: HTMLParagraphElement) => {
+  arrayFrom(el.querySelectorAll('p')).forEach((p: HTMLParagraphElement) => {
     const zwnj = /\u200c/g;
     if (p.textContent && zwnj.test(p.textContent)) {
       p.textContent = p.textContent.replace(zwnj, '');
@@ -19,7 +20,7 @@ export default function(html: string): Node {
   });
 
   // Convert "codehilite" containers to <pre>
-  Array.from(el.querySelectorAll('div.codehilite')).forEach((div: HTMLDivElement) => {
+  arrayFrom(el.querySelectorAll('div.codehilite')).forEach((div: HTMLDivElement) => {
     const parent = div.parentNode as HTMLElement;
     const pre = document.createElement('pre');
     pre.textContent = div.textContent;
@@ -29,7 +30,7 @@ export default function(html: string): Node {
 
   // Convert mention containers, i.e.:
   //   <a href="/abodera/" rel="nofollow" title="@abodera" class="mention mention-me">Artur Bodera</a>
-  Array.from(el.querySelectorAll('a.mention')).forEach((a: HTMLLinkElement) => {
+  arrayFrom(el.querySelectorAll('a.mention')).forEach((a: HTMLLinkElement) => {
     const span = document.createElement('span');
     span.setAttribute('class', 'editor-entity-mention');
     span.setAttribute('contenteditable', 'false');
@@ -50,7 +51,7 @@ export default function(html: string): Node {
   });
 
   // Simplify <table>s into paragraphs
-  Array.from(el.querySelectorAll('table')).forEach((table: HTMLTableElement) => {
+  arrayFrom(el.querySelectorAll('table')).forEach((table: HTMLTableElement) => {
     const thead = table.querySelector('thead');
     const tbody = table.querySelector('tbody');
 
@@ -59,7 +60,7 @@ export default function(html: string): Node {
       const p = document.createElement('p');
       const strong = document.createElement('strong');
 
-      strong.innerText = Array.from(thead.querySelectorAll('th'))
+      strong.innerText = arrayFrom(thead.querySelectorAll('th'))
         .map((th) => th.innerText)
         .filter((v) => (!!v))   // skip zombie cells
         .join(', ')
@@ -70,9 +71,9 @@ export default function(html: string): Node {
 
     // Convert <tr> into a paragraphs of comma-separated phrases.
     if (tbody) {
-      Array.from(tbody.querySelectorAll('tr')).forEach((tr: HTMLTableRowElement) => {
+      arrayFrom(tbody.querySelectorAll('tr')).forEach((tr: HTMLTableRowElement) => {
         const p = document.createElement('p');
-        p.innerText = Array.from(tr.querySelectorAll('td'))
+        p.innerText = arrayFrom(tr.querySelectorAll('td'))
           .map((td) => td.innerText)
           .filter((v) => (!!v))   // skip zombie cells
           .join(', ')
@@ -86,22 +87,20 @@ export default function(html: string): Node {
 
   // Parse emojis i.e.
   //     <img src="https://d301sr5gafysq2.cloudfront.net/207268dc597d/emoji/img/diamond_shape_with_a_dot_inside.svg" alt="diamond shape with a dot inside" title="diamond shape with a dot inside" class="emoji">
-  Array.from(el.querySelectorAll('img.emoji')).forEach((img: HTMLImageElement) => {
+  arrayFrom(el.querySelectorAll('img.emoji')).forEach((img: HTMLImageElement) => {
     const src = img.getAttribute('src');
     const idMatch = !src ? false : src.match(/([^\/]+)\.[^\/]+$/);
 
     if (idMatch) {
-      const span = document.createElement('span');
-      span.setAttribute('emoji-id', idMatch[1]);
-      span.setAttribute('contenteditable', 'false');
-      img.parentNode!.insertBefore(span, img);
+      const emoji = document.createTextNode(`:${decodeURIComponent(idMatch[1])}:`);
+      img.parentNode!.insertBefore(emoji, img);
     }
 
     img.parentNode!.removeChild(img);
   });
 
   // Convert all automatic links to plain text, because they will be re-created on render by the server
-  Array.from(el.querySelectorAll('a[rel="nofollow"]')).forEach((a: HTMLLinkElement) => {
+  arrayFrom(el.querySelectorAll('a[rel="nofollow"]')).forEach((a: HTMLLinkElement) => {
     const text = document.createTextNode(a.innerText);
     a.parentNode!.insertBefore(text, a);
     a.parentNode!.removeChild(a);

@@ -1,6 +1,7 @@
-import mocha from 'mocha';
+import * as mocha from 'mocha';
 import AtlassianIcon from '../glyph/atlassian';
-import React, { PureComponent } from 'react';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import { name } from '../package.json';
 
 describe(name, () => {
@@ -9,6 +10,6 @@ describe(name, () => {
    const icon: PureComponent<any, any> = new AtlassianIcon({ label: 'atlassian' });
 
    // Test JSX
-   <AtlassianIcon label='atlassian' />;
+   <AtlassianIcon label="atlassian" />;
  });
 });

@@ -1,7 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
-import React, { PureComponent } from 'react';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import reactify from 'akutil-react';
-import ReactDOM from 'react-dom';
 import AkTabs from 'ak-tabs';
 import { Tab as AkTab } from 'ak-tabs';
 import Editor from '../src';
@@ -15,7 +15,7 @@ storiesOf('ak-editor-cq', module)
   .add('Empty', () =>
     <div style={{ padding: 20 }}>
       <Editor
-        defaultExpanded
+        isExpandedByDefault
         onCancel={CancelAction}
         onSave={SaveAction}
       />
@@ -35,7 +35,7 @@ storiesOf('ak-editor-cq', module)
         return (
           <div ref="root">
             <Editor
-              defaultExpanded
+              isExpandedByDefault
               onCancel={CancelAction}
               onChange={this.handleChange}
               onSave={SaveAction}
@@ -65,15 +65,15 @@ storiesOf('ak-editor-cq', module)
             <Tabs>
               <Tab selected label="(default)">
                 <Editor
-                  defaultExpanded
+                  isExpandedByDefault
                   onCancel={CancelAction}
                   onSave={SaveAction}
                 />
               </Tab>
               <Tab selected label="comment">
                 <Editor
-                  context='comment'
-                  defaultExpanded
+                  context="comment"
+                  isExpandedByDefault
                   onCancel={CancelAction}
                   onSave={SaveAction}
                 />

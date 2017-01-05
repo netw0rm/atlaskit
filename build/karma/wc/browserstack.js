@@ -1,6 +1,4 @@
 const allConfig = require('./all');
-const enableCoverage = require('../enableCoverage');
-const moduleBabelQuery = require('../../webpack/babel.query.module');
 const stage1 = require('./browserstack.browsers.stage.1');
 const stage2 = require('./browserstack.browsers.stage.2');
 const stage3 = require('./browserstack.browsers.stage.3');
@@ -19,9 +17,6 @@ const browsers = Object.keys(launchers);
 browsers.forEach((key) => {
   launchers[key].base = 'BrowserStack';
 });
-
-// Only generate coverage report for first stage
-const isCoverage = currentStage === 1;
 
 module.exports = (config) => {
   allConfig(config);
@@ -44,7 +39,4 @@ module.exports = (config) => {
     customLaunchers: launchers,
     browsers,
   });
-  if (isCoverage) {
-    enableCoverage(config, 'wc', moduleBabelQuery);
-  }
 };

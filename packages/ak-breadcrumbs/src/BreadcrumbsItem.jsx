@@ -1,11 +1,12 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import Button from 'ak-button';
+import Tooltip from 'ak-tooltip'; // eslint-disable-line
 import classnames from 'classnames';
 import { locals } from './styles.less';
 import { itemTruncateWidth } from './internal/constants';
 
-const { item, itemButton, tooltip, tooltipTrigger, truncated } = locals;
+const { item, itemButton, truncated } = locals;
 
 /**
  * @description BreadcrumbsItem React component.
@@ -36,10 +37,13 @@ export default class BreadcrumbsItem extends PureComponent {
      * @type {element}
      */
     iconAfter: PropTypes.element,
-    children: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.arrayOf(PropTypes.node),
-    ]),
+    /**
+     * @description The text content of the item.
+     * @memberof BreadcrumbsItem
+     * @instance
+     * @type {string}
+     */
+    text: PropTypes.string,
   }
 
   static defaultProps = {
@@ -82,28 +86,39 @@ export default class BreadcrumbsItem extends PureComponent {
     return overflow;
   }
 
+  renderButton = () => (
+    <Button
+      className={itemButton}
+      appearance="link"
+      iconAfter={this.props.iconAfter}
+      iconBefore={this.props.iconBefore}
+      spacing="compact"
+      href={this.props.href}
+      ref={el => (this.button = el)}
+    >
+      {this.props.text}
+    </Button>
+  );
+
+  renderButtonWithTooltip = () => (
+    <Tooltip
+      description={this.props.text}
+      position="bottom"
+    >
+      {this.renderButton()}
+    </Tooltip>
+  );
+
   render() {
     const itemClasses = classnames(item, {
       [truncated]: this.state.hasOverflow,
     });
     return (
       <div className={itemClasses}>
-        <span className={tooltipTrigger}>
-          <div className={tooltip}>
-            {this.props.children}
-          </div>
-          <Button
-            className={itemButton}
-            appearance="link"
-            iconAfter={this.props.iconAfter}
-            iconBefore={this.props.iconBefore}
-            spacing="compact"
-            href={this.props.href}
-            ref={el => (this.button = el)}
-          >
-            {this.props.children}
-          </Button>
-        </span>
+        {this.state.hasOverflow
+          ? this.renderButtonWithTooltip()
+          : this.renderButton()
+        }
       </div>
     );
   }

@@ -33,7 +33,7 @@ export default class Icon extends PureComponent {
        * @type {size}
        * @default small
        */
-    size: PropTypes.oneOf(Object.values(size)),
+    size: PropTypes.oneOf(Object.keys(size).map(k => size[k])),
     /**
        * @description (Optional) A handler to execute when the icon is clicked.
        *
@@ -47,7 +47,6 @@ export default class Icon extends PureComponent {
   }
 
   static defaultProps = {
-    size: size.small,
     onClick() {},
   }
 
@@ -66,16 +65,12 @@ export default class Icon extends PureComponent {
 
   render() {
     const Glyph = this.getGlyphTemplate();
+    const iconBodyClasses = classnames([styles.iconBody, styles[this.props.size]]);
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div
-        className={classnames([styles.iconBody, styles[this.props.size]])}
-        onClick={this.props.onClick}
-      >
-        <span className={styles.iconContent}>
-          <Glyph role="img" label={this.props.label} />
-        </span>
-      </div>
+      <span className={iconBodyClasses} onClick={this.props.onClick}>
+        <Glyph className={styles.svg} label={this.props.label} role="img" />
+      </span>
     );
   }
 }

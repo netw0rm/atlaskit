@@ -29,6 +29,7 @@ pipelines:
           - ./build/bin/setup.sh
           - yarn install
           - npm run browserstack/tunnel/start
-          - run-p -ln "validate/package.json" "lint" "test/coverage" "test/base" "test/wc/browserstack/pr" "pr/artifacts"
+          - run-p -ln "validate/package.json" "lint" "test" "test/base" "test/wc/browserstack/pr"
+          - npm run pr/artifacts
           # AK-628 - npm run test/integration/pr
           - npm run browserstack/tunnel/stop

@@ -1,29 +1,44 @@
-import React, { PureComponent } from 'react';
-import { ProseMirror } from 'ak-editor-prosemirror';
-import BlockTypePlugin from 'ak-editor-plugin-block-type';
-import ListsPlugin from 'ak-editor-plugin-lists';
-import TextFormattingPlugin from 'ak-editor-plugin-text-formatting';
-import { Chrome } from 'ak-editor-ui';
-import schema from './schema';
+import * as React from 'react';
+import { PureComponent } from 'react';
+import {
+  ProseMirror,
+  Keymap,
+  BlockTypePlugin,
+  ListsPlugin,
+  TextFormattingPlugin,
+  HorizontalRulePlugin,
+  Chrome,
+  schema,
+  AnalyticsHandler,
+  service as analyticsService
+} from 'ak-editor-core';
 import { encode, parse } from './html';
-import { buildKeymap } from './keymap';
 
-interface Props {
+export interface Props {
   context?: 'default' | 'comment';
-  defaultExpanded?: boolean;
+  isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
+  analyticsHandler?: AnalyticsHandler;
 }
 
-interface State {
+export interface State {
   pm?: ProseMirror;
+  isExpanded?: boolean;
 }
 
 export default class Editor extends PureComponent<Props, State> {
-  state: State = {};
+  state: State;
+
+  constructor(props: Props) {
+    super(props);
+    this.state = { isExpanded: props.isExpandedByDefault };
+
+    analyticsService.handler = props.analyticsHandler || ((name) => {});
+  }
 
   /**
    * Focus the content region of the editor.
@@ -67,17 +82,18 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
-    const { pm } = this.state;
+    const { pm, isExpanded } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
 
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
-        defaultExpanded={this.props.defaultExpanded}
-        feedbackFormUrl='https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/'
+        isExpanded={isExpanded}
+        feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
         onCancel={handleCancel}
         onSave={handleSave}
+        onCollapsedChromeFocus={() => this.setState({ isExpanded: true })}
         placeholder={this.props.placeholder}
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
@@ -117,6 +133,7 @@ export default class Editor extends PureComponent<Props, State> {
           BlockTypePlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          HorizontalRulePlugin
         ],
       });
 
@@ -124,7 +141,10 @@ export default class Editor extends PureComponent<Props, State> {
         BlockTypePlugin.get(pm)!.changeContext(context);
       }
 
-      pm.addKeymap(buildKeymap(pm.schema));
+      pm.addKeymap(new Keymap({
+        'Mod-Enter': this.handleSave
+      }));
+
       pm.on.change.add(this.handleChange);
       pm.focus();
 

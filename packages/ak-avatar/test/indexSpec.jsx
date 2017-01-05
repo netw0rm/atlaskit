@@ -21,7 +21,7 @@ const oneByOnePixelBlack = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BA
 describe('ak-avatar', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Avatar />);
-    expect(wrapper).to.be.defined;
+    expect(wrapper).to.exist;
     expect(wrapper.find(Image)).to.have.lengthOf(1);
     expect(wrapper.find(Presence)).to.have.lengthOf(1);
   });
@@ -72,6 +72,15 @@ describe('ak-avatar', () => {
           expect(wrapper.find(Presence)).to.have.descendants('svg');
         });
       });
+    });
+  });
+
+  describe('presenceBorderColor property', () => {
+    it('should be relfected in the Presence component', () => {
+      const wrapper = shallow(<Avatar presence="online" presenceBorderColor="#ff0000" />);
+      const presence = wrapper.find(Presence);
+      expect(presence).to.exist;
+      expect(presence).to.have.prop('borderColor', '#ff0000');
     });
   });
 

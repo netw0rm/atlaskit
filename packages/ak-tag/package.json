@@ -1,12 +1,12 @@
 {
   "name": "ak-tag",
-  "version": "6.1.0",
+  "version": "6.1.3",
   "description": "This component displays as a tag with an optional link and/or button to remove the given tag.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-tag"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single ak-tag; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
     "dist"

@@ -9,25 +9,47 @@
 }
 
 .read-view-wrapper {
-
-  display: inline-flex;
+  max-width: 100%;
 
   &:hover .edit-button {
     opacity: 1;
   }
 }
 
+.hidden {
+  display: none !important;
+}
+
+.spinner-wrapper {
+  margin-left: unit(@grid, px);
+  // TODO: Remove this when updated to specs version 1.1
+  // field-base should stay the same width so we need to provide a
+  // min-width to cover action buttons width.
+  min-width: unit(@grid*3 + 32 + 32, px);
+}
+
 .read-view-content-wrapper {
   display: inline-flex;
-  width: 100%;
+  max-width: 100%;
 }
 
 .buttons-wrapper {
+  display: flex;
   margin-left: unit(@grid, px);
 
   button:last-child {
     margin-left: unit(@grid, px);
   }
+}
+
+.button-wrapper-hidden {
+  visibility: hidden;
+}
+
+.edit-button-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 // the vendor prefixes here are deliberate. 'appearance' does not seem to get picked up by postcss,
@@ -46,7 +68,6 @@
   opacity: 0;
   outline: 0;
   padding: 0 0 0 unit(@grid * 2, px);
-  width: 100%;
 
   &:focus {
     opacity: 1;

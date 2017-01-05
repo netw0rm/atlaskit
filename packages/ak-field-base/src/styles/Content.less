@@ -8,7 +8,7 @@
 @base-inner-height: @grid * 5;
 @base-line-height: @base-inner-height / @base-font-size;
 
-@base-border-radius: 3px;
+@base-border-radius: 5px;
 @base-border-width: 1;
 @base-border-width-focused: 2;
 @base-border-width-subtle: 0;
@@ -16,7 +16,6 @@
 @base-border-color-disabled: @ak-color-N20A;
 @base-border-color-focused: @ak-color-B100;
 @base-border-color-hover: @ak-color-N20;
-@base-border-color-invalid: @ak-color-B100;
 
 @base-background-color: @ak-color-N10A;
 @base-background-color-disabled: @ak-color-N20;
@@ -25,6 +24,7 @@
 @base-background-color-subtle: transparent;
 
 @base-color-disabled: @ak-color-N60;
+@base-color-invalid: @ak-color-R100;
 
 @base-transition-duration: 0.2s; // Transition speed
 
@@ -33,12 +33,18 @@
 .borders-and-padding (@border, @x-spacing, @height) {
   border-width: unit(@border, px);
   padding: unit((@height - (2 * @border) - @base-inner-height) / 2, px) unit((@x-spacing - @border), px);
+  &.paddingDisabled {
+    padding: 0;
+  }
 }
 
-.content {
+.content-container {
   .borders-and-padding(@base-border-width, @base-horizontal-padding, @base-height);
-  flex: 1 0 auto;
   box-sizing: border-box;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: space-between;
 
   border-style: solid;
   border-radius: @base-border-radius;
@@ -54,6 +60,12 @@
   max-width: 100%;
   word-wrap: break-word;
 
+  flex: 0 1 auto;
+
+  &.fit-container-width {
+    flex: 1 1 auto;
+  }
+
   &.compact {
     .borders-and-padding(@base-border-width, @base-horizontal-padding, @base-height-compact);
   }
@@ -63,36 +75,48 @@
     background-color: @base-background-color-subtle;
   }
 
-  &:hover:not(.read-only) {
-    background-color: @base-background-color-hover;
-    border-color: @base-border-color-hover;
+  &.none {
+    border: none;
+    background-color: transparent;
   }
 
-  &.disabled {
-    background-color: @base-background-color-disabled;
-    border-color: @base-border-color-disabled;
-    color: @base-color-disabled;
-    cursor: not-allowed;
-  }
-
-  // note: .focused not :focus as CSS wont know that slotted content is focused
-  &.focused:not(.read-only) {
-    .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
-    border-color: @base-border-color-focused;
-    background-color: @base-background-color-focused;
-
-    &.compact {
-      .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height-compact);
+  &:not(.none) {
+    &:hover:not(.read-only) {
+      background-color: @base-background-color-hover;
+      border-color: @base-border-color-hover;
     }
-  }
 
-  &.invalid {
-    // we run this mixin so that we get a border the same thickness as the focus style
-    .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
-    border-color: @ak-color-R300;
+    &.disabled {
+      background-color: @base-background-color-disabled;
+      border-color: @base-border-color-disabled;
+      color: @base-color-disabled;
+      cursor: not-allowed;
+    }
 
-    &.compact {
-      .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height-compact);
+    // note: .focused not :focus as CSS wont know that slotted content is focused
+    &.focused:not(.read-only) {
+      .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
+      border-color: @base-border-color-focused;
+      background-color: @base-background-color-focused;
+
+      &.compact {
+        .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height-compact);
+      }
+    }
+
+    &.invalid {
+      // we run this mixin so that we get a border the same thickness as the focus style
+      .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height);
+      border-color: @base-color-invalid;
+
+      &.compact {
+        .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height-compact);
+      }
+
+      &:hover {
+        border-color: @base-color-invalid;
+        background-color: @base-background-color-subtle;
+      }
     }
   }
 }
@@ -100,6 +124,14 @@
 .content-wrapper {
   display: flex;
   align-items: center;
+}
+
+.warning-icon-wrapper {
+  display: flex;
+  align-items: center;
+  padding-right: unit(@grid, px);
+  padding-left: unit(2 * @grid, px);
+  color: @base-color-invalid;
 }
 
 .right-gutter-wrapper {

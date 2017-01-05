@@ -6,7 +6,7 @@ import { shallow, mount } from 'enzyme';
 import keyCode from 'keycode';
 
 import { name } from '../package.json';
-import styles from '../src/styles.less';
+import { locals as styles } from '../src/styles.less';
 
 import Item from '../src';
 
@@ -17,78 +17,74 @@ const { expect } = chai;
 
 describe(name, () => {
   it('should be possible to create a component', () => {
-    expect(shallow(<Item />)).to.be.defined;
+    expect(shallow(<Item />)).to.exist;
   });
 
   it('should be "link" item by default', () => {
     expect(shallow(<Item />).instance().props.type).to.equal('link');
   });
 
-  describe('all about rendering', () => {
+  describe('rendering', () => {
     it('should render content that is passed to the item', () => {
       expect(mount(<Item>sample</Item>)).to.have.text('sample');
     });
 
-    it('should render elemBefore for the link item', () => {
+    it('should render elemBefore for all items', () => {
       const Icon = (<div id="icon">icon</div>);
       expect(mount(<Item elemBefore={Icon}>sample</Item>)).to.contain(Icon);
-    });
-
-    it('should NOT render elemBefore for anything other than the link item', () => {
-      const Icon = <div id="icon">icon</div>;
-      expect(mount(<Item type="checkbox" elemBefore={Icon}>sample</Item>)).to.not.contain(Icon);
-      expect(mount(<Item type="radio" elemBefore={Icon}>sample</Item>)).to.not.contain(Icon);
+      expect(mount(<Item elemBefore={Icon} type="checkbox">sample</Item>)).to.contain(Icon);
+      expect(mount(<Item elemBefore={Icon} type="radio">sample</Item>)).to.contain(Icon);
     });
 
     it('should render icon for the radio or checkbox element', () => {
-      expect(mount(<Item type="radio" />)).to.have.descendants(`.${styles.locals.checkradio}`);
-      expect(mount(<Item type="checkbox" />)).to.have.descendants(`.${styles.locals.checkradio}`);
+      expect(mount(<Item type="radio" />)).to.have.descendants(`.${styles.checkradio}`);
+      expect(mount(<Item type="checkbox" />)).to.have.descendants(`.${styles.checkradio}`);
     });
 
     it('should NOT render icon for the link element', () => {
-      expect(mount(<Item type="link" />)).to.not.have.descendants(`.${styles.locals.checkradio}`);
+      expect(mount(<Item type="link" />)).to.not.have.descendants(`.${styles.checkradio}`);
     });
   });
 
-  describe('all about classes', () => {
+  describe('classes', () => {
     it('should have "item" class by default', () => {
-      expect(mount(<Item type="link" />)).to.have.className(styles.locals.item);
-      expect(mount(<Item type="checkbox" />)).to.have.className(styles.locals.item);
-      expect(mount(<Item type="radio" />)).to.have.className(styles.locals.item);
+      expect(mount(<Item type="link" />).find(`.${styles.item}`)).to.exist;
+      expect(mount(<Item type="checkbox" />).find(`.${styles.item}`)).to.exist;
+      expect(mount(<Item type="radio" />).find(`.${styles.item}`)).to.exist;
     });
 
     it('should have "disabled" class when disabled', () => {
-      expect(mount(<Item type="link" isDisabled />)).to.have.className(styles.locals.disabled);
-      expect(mount(<Item type="radio" isDisabled />)).to.have.className(styles.locals.disabled);
-      expect(mount(<Item type="checkbox" isDisabled />)).to.have.className(styles.locals.disabled);
+      expect(mount(<Item type="link" isDisabled />).find(`.${styles.disabled}`)).to.exist;
+      expect(mount(<Item type="radio" isDisabled />).find(`.${styles.disabled}`)).to.exist;
+      expect(mount(<Item type="checkbox" isDisabled />).find(`.${styles.disabled}`)).to.exist;
     });
 
     it('should have "active" class when link item is active', () => {
-      expect(mount(<Item type="link" isActive />)).to.have.className(styles.locals.active);
+      expect(mount(<Item type="link" isActive />).find(`.${styles.active}`)).to.exist;
     });
 
     it('should NOT have "active" class for any other item types', () => {
-      expect(mount(<Item type="radio" isActive />)).to.not.have.className(styles.locals.active);
-      expect(mount(<Item type="checkbox" isActive />)).to.not.have.className(styles.locals.active);
+      expect(mount(<Item type="radio" isActive />).find(`.${styles.active}`)).to.not.exist;
+      expect(mount(<Item type="checkbox" isActive />).find(`.${styles.disabled}`)).to.not.exist;
     });
 
     it('should have "checked" class when checkbox or radio is checked', () => {
-      expect(mount(<Item type="checkbox" isChecked />)).to.have.className(styles.locals.checked);
-      expect(mount(<Item type="radio" isChecked />)).to.have.className(styles.locals.checked);
+      expect(mount(<Item type="checkbox" isChecked />).find(`.${styles.checked}`)).to.exist;
+      expect(mount(<Item type="radio" isChecked />).find(`.${styles.checked}`)).to.exist;
     });
 
     it('should NOT have "checked" class for any other items', () => {
-      expect(mount(<Item type="link" isChecked />)).to.not.have.className(styles.locals.checked);
+      expect(mount(<Item type="link" isChecked />).find(`.${styles.checked}`)).to.not.exist;
     });
 
     it('should have "hidden" class when item is hidden', () => {
-      expect(mount(<Item type="link" isHidden />)).to.have.className(styles.locals.hidden);
-      expect(mount(<Item type="checkbox" isHidden />)).to.have.className(styles.locals.hidden);
-      expect(mount(<Item type="radio" isHidden />)).to.have.className(styles.locals.hidden);
+      expect(mount(<Item type="link" isHidden />).find(`.${styles.hidden}`)).to.exist;
+      expect(mount(<Item type="checkbox" isHidden />).find(`.${styles.hidden}`)).to.exist;
+      expect(mount(<Item type="radio" isHidden />).find(`.${styles.hidden}`)).to.exist;
     });
   });
 
-  describe('all about events', () => {
+  describe('events', () => {
     let onActivate;
 
     beforeEach(() => {
@@ -102,7 +98,7 @@ describe(name, () => {
       let wrapper;
       beforeEach(() => {
         onActivate = sinon.spy();
-        wrapper = mount(<Item onActivate={onActivate} />);
+        wrapper = mount(<Item onActivate={onActivate} />).find(`.${styles.item}`);
       });
 
       it('should be activated when enter is pressed', () => {
@@ -119,24 +115,35 @@ describe(name, () => {
         wrapper.simulate('click');
         expect(onActivate.calledOnce).to.be.true;
       });
+
+      it('should not be activated when disabled', () => {
+        const disabledWrapper =
+          mount(<Item onActivate={onActivate} isDisabled />).find(`.${styles.item}`);
+        disabledWrapper.simulate('click');
+        disabledWrapper.simulate('keyDown', { keyCode: keyCode('enter') });
+        disabledWrapper.simulate('keyDown', { keyCode: keyCode('space') });
+        expect(onActivate.called).to.be.false;
+      });
     });
 
-    it('should call onFocusPrev when the up key is pressed', () => {
-      const wrapper = mount(<Item onFocusPrev={onActivate} />);
+    it('should call onKeyDown when a key other than space and enter is pressed', () => {
+      const wrapper = mount(<Item onKeyDown={onActivate} />).find(`.${styles.item}`);
       wrapper.simulate('keyDown', { keyCode: keyCode('up') });
-      expect(onActivate.calledOnce).to.be.true;
-    });
-
-    it('should call onFocusNext when the down key is pressed', () => {
-      const wrapper = mount(<Item onFocusNext={onActivate} />);
       wrapper.simulate('keyDown', { keyCode: keyCode('down') });
-      expect(onActivate.calledOnce).to.be.true;
+      wrapper.simulate('keyDown', { keyCode: keyCode('tab') });
+      expect(onActivate.calledThrice).to.be.true;
     });
 
-    it('should call onEscapeFrom when the tab key is pressed', () => {
-      const wrapper = mount(<Item onEscapeFrom={onActivate} />);
-      wrapper.simulate('keyDown', { keyCode: keyCode('tab') });
-      expect(onActivate.calledOnce).to.be.true;
+    it('should not call onKeyDown when space and enter is pressed', () => {
+      const wrapper = mount(<Item onKeyDown={onActivate} />).find(`.${styles.item}`);
+      wrapper.simulate('keyDown', { keyCode: keyCode('space') });
+      wrapper.simulate('keyDown', { keyCode: keyCode('enter') });
+      expect(onActivate.called).to.be.false;
     });
+  });
+
+  it('should focus itself when the isFocused property is set to true', () => {
+    const wrapper = mount(<Item isFocused />).find(`.${styles.item}`);
+    expect(wrapper.find(`.${styles.item}`).node).to.equal(document.activeElement);
   });
 });

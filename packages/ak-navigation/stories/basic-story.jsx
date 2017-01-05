@@ -1,8 +1,6 @@
 import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
-import AkAvatar from 'ak-avatar';
-import { HelpIcon } from 'ak-icon';
 import { AkContainerItem } from '../src/index';
 import Page from './components/Page';
 import BasicNavigation from './components/BasicNavigation';
@@ -53,11 +51,13 @@ storiesOf(name, module)
   .add('with many container items', () => (
     <Page>
       <BasicNavigation>
-        <AkContainerItem
-          icon={<img src={nucleus} alt="icon" />}
-          text="This one is selected"
-          isSelected
-        />
+        <a href="#1">
+          <AkContainerItem
+            icon={<img src={nucleus} alt="icon" />}
+            text="This one is selected"
+            isSelected
+          />
+        </a>
         {manyContainerItems()}
       </BasicNavigation>
       <div>
@@ -68,11 +68,13 @@ storiesOf(name, module)
   .add('with a selected item', () => (
     <Page>
       <BasicNavigation>
-        <AkContainerItem
-          icon={<img src={nucleus} alt="icon" />}
-          text="Nucleus"
-          isSelected
-        />
+        <a href="#1">
+          <AkContainerItem
+            icon={<img src={nucleus} alt="icon" />}
+            text="Nucleus"
+            isSelected
+          />
+        </a>
       </BasicNavigation>
       <div>
         <Lorem count="30" />
@@ -87,9 +89,17 @@ storiesOf(name, module)
       </div>
     </Page>
   ))
+  .add('with isCollapsible=false', () => (
+    <Page>
+      <BasicNavigation isCollapsible={false} />
+      <div>
+        <Lorem count="30" />
+      </div>
+    </Page>
+  ))
   .add('that starts closed', () => (
     <Page>
-      <BasicNavigation open={false}>
+      <BasicNavigation isOpen={false}>
         <AkContainerItem
           icon={<img src={nucleus} alt="icon" />}
           text="This one is selected"
@@ -110,16 +120,6 @@ storiesOf(name, module)
       <BasicNavigation
         onSearchDrawerActivated={action('search-activated')}
         onCreateDrawerActivated={action('create-activated')}
-      />
-    </Page>
-  ))
-  .add('with small avatar', () => (
-    <Page>
-      <BasicNavigation
-        globalHelpIcon={<HelpIcon />}
-        onHelpClicked={action('help-clicked')}
-        globalAccountIcon={<AkAvatar size="small" />}
-        onAccountClicked={action('account-clicked')}
       />
     </Page>
   ));

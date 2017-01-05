@@ -50,7 +50,7 @@ describe(name, () => {
 
     it('should be able to create a component', () => {
       const wrapper = shallow(<MyIcon label="My icon" />);
-      expect(wrapper).to.be.defined;
+      expect(wrapper).to.exist;
       expect(wrapper.instance()).to.be.instanceOf(PureComponent);
     });
 
@@ -85,7 +85,7 @@ describe(name, () => {
         const wrapper = shallow(<MyIcon label="My icon" onClick={handler} />);
         expect(wrapper.prop('onClick')).to.equal(handler);
 
-        wrapper.find('div').simulate('click');
+        wrapper.find(`.${styles.locals.iconBody}`).simulate('click');
         expect(handler).to.have.been.calledOnce;
       });
     });

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import { type as buttonTypes } from './internal/enumerated-properties';
 
-/* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
+/* eslint-disable react/no-unused-prop-types */
 export default class Button extends Component {
   static propTypes = {
     type: PropTypes.oneOf(buttonTypes.values),
@@ -10,11 +10,13 @@ export default class Button extends Component {
     className: PropTypes.string,
     form: PropTypes.string,
     onClick: PropTypes.func,
+    tabIndex: PropTypes.number,
   }
 
   static defaultProps = {
     isDisabled: false,
     type: buttonTypes.default,
+    onClick: () => {},
   }
 
   onMouseDown = (e) => {
@@ -32,6 +34,7 @@ export default class Button extends Component {
         form={props.form}
         onClick={props.onClick}
         onMouseDown={this.onMouseDown}
+        tabIndex={props.tabIndex}
       >
         {props.children}
       </button>

@@ -1,22 +1,24 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
 import styles from 'style!../less/GlobalNavigation.less';
 import { globalOpenWidth } from '../../shared-variables';
 import Spacer from './Spacer';
 
-export default class GlobalNavigation extends Component {
+export default class GlobalNavigation extends PureComponent {
   static propTypes = {
+    accountItem: PropTypes.node,
     children: PropTypes.node,
-    primaryIcon: PropTypes.node,
-    width: PropTypes.number,
+    helpItem: PropTypes.node,
+    primaryItem: PropTypes.node,
     shouldAnimate: PropTypes.bool,
-    helpIcon: PropTypes.node,
-    accountIcon: PropTypes.node,
+    width: PropTypes.number,
   };
   static defaultProps = {
-    width: globalOpenWidth,
+    accountItem: null,
+    helpItem: null,
+    primaryItem: null,
     shouldAnimate: false,
-    primaryIcon: null,
+    width: globalOpenWidth,
   };
   getTranslate() {
     return Math.min(0, this.props.width - globalOpenWidth);
@@ -39,14 +41,14 @@ export default class GlobalNavigation extends Component {
           }}
         >
           <div className={styles.primaryIcon}>
-            {this.props.primaryIcon}
+            {this.props.primaryItem}
           </div>
           <div className={styles.primaryContainer}>
             {this.props.children}
           </div>
           <div className={styles.secondaryContainer}>
-            {this.props.helpIcon}
-            {this.props.accountIcon}
+            {this.props.helpItem}
+            {this.props.accountItem}
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@ chai.use(chaiEnzyme());
 describe('ak-tooltip (smart)', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<AKTooltip><div>foo</div></AKTooltip>);
-    expect(wrapper).to.be.defined;
+    expect(wrapper).to.exist;
   });
 
   describe('visible state', () => {

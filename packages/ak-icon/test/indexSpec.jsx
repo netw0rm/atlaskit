@@ -79,6 +79,18 @@ describe(name, () => {
           'editor/underline',
           'editor/unlink',
 
+          'emoji/activity',
+          'emoji/atlassian',
+          'emoji/custom',
+          'emoji/flags',
+          'emoji/food',
+          'emoji/frequent',
+          'emoji/nature',
+          'emoji/objects',
+          'emoji/people',
+          'emoji/symbols',
+          'emoji/travel',
+
           'error',
           'expand',
           'feedback',
@@ -94,6 +106,7 @@ describe(name, () => {
           'settings',
           'success',
           'time',
+          'warning',
         ]);
         // If you find yourself here and wonder why this list is not auto-generated, then bear in
         // mind that tests are supposed to tell you when a piece of software breaks.
@@ -143,7 +156,7 @@ describe(name, () => {
     it('should be possible to create the components', () => {
       Object.values(components).forEach((Icon) => {
         const wrapper = shallow(<Icon label="My icon" />);
-        expect(wrapper).to.be.defined;
+        expect(wrapper).to.exist;
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
     });

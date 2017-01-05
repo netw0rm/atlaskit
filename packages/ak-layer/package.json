@@ -1,12 +1,12 @@
 {
   "name": "ak-layer",
-  "version": "62.1.0",
+  "version": "62.1.1",
   "description": "A React layer component responsible for the position of an element on a page",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-layer"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single ak-layer; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
     "dist"

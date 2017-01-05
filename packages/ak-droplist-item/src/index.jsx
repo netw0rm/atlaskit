@@ -46,6 +46,13 @@ export default class Item extends PureComponent {
      */
     isChecked: PropTypes.bool,
     /**
+     * @description When this property is set to true the item should apply focus to itself
+     * @memberof Item
+     * @default false
+     * @type {Boolean}
+     */
+    isFocused: PropTypes.bool,
+    /**
      * @description Link's 'href' attribute. Only applicable to the 'link' type of items.
      * @memberof Item
      * @type {String}
@@ -72,26 +79,12 @@ export default class Item extends PureComponent {
      */
     onActivate: PropTypes.func,
     /**
-     * @description Handler function to be called when the focus should be moved to the previous
-     * item. It happens when the 'up' key is pressed.
+     * @description Handler function to be called when any key except for 'space'/'enter'
+     * was pressed on an item.
      * @memberof Item
      * @type {function}
      */
-    onFocusPrev: PropTypes.func,
-    /**
-     * @description Handler function to be called when the focus should be moved to the previou item
-     * It happens when the 'down' key is pressed.
-     * @memberof Item
-     * @type {function}
-     */
-    onFocusNext: PropTypes.func,
-    /**
-     * @description Handler function to be called when the focus should be moved outside of the item
-     * It happens when the 'tab' key is pressed.
-     * @memberof Item
-     * @type {function}
-     */
-    onEscapeFrom: PropTypes.func,
+    onKeyDown: PropTypes.func,
     /**
      * @description HTML content to display before item's main content. Only applicable to the
      * 'link' item.
@@ -108,13 +101,12 @@ export default class Item extends PureComponent {
     isHidden: false,
     isActive: false,
     isChecked: false,
+    isFocused: false,
     href: null,
     target: null,
     type: baseTypes.default,
     onActivate: () => {},
-    onFocusPrev: () => {},
-    onFocusNext: () => {},
-    onEscapeFrom: () => {},
+    onKeyDown: () => {},
     elemBefore: null,
     children: null,
   }
@@ -131,64 +123,59 @@ export default class Item extends PureComponent {
   handleKeyDown = (event) => {
     const { props } = this;
     switch (event.keyCode) {
-      case keyCode('up'):
-        event.preventDefault();
-        props.onFocusPrev();
-        break;
-      case keyCode('down'):
-        event.preventDefault();
-        props.onFocusNext();
-        break;
-      case keyCode('tab'):
-        event.preventDefault();
-        props.onEscapeFrom();
-        break;
       case keyCode('space'):
       case keyCode('enter'):
-        props.onActivate();
+        if (!props.isDisabled) {
+          props.onActivate({ item: this, event });
+        }
         break;
       default:
+        props.onKeyDown({ item: this, event });
         break;
     }
   }
 
-  handleClick = () => {
+  handleClick = (event) => {
     // disabled item can't be activated
     if (!this.props.isDisabled) {
-      this.props.onActivate();
+      this.props.onActivate({ item: this, event });
     }
   }
 
   render = () => {
     const { props } = this;
-
     return (
-      <Element
-        isDisabled={props.isDisabled}
-        href={props.href}
-        target={props.target}
-        type={props.type}
-        handleClick={this.handleClick}
-        handleKeyDown={this.handleKeyDown}
-        className={this.getClasses(props)}
-      >
-        {
-          props.type === 'checkbox'
-          ? <div className={styles.checkradio}><Checkbox label=" " /></div>
-          : null
-        }
-        {
-          props.type === 'radio'
-          ? <div className={styles.checkradio}><Radio label=" " /></div>
-          : null
-        }
-        {
-          props.elemBefore && props.type === 'link'
-          ? <div className={styles.elemBefore}>{ props.elemBefore }</div>
-          : null
-        }
-        <div className={styles.content}>{ props.children }</div>
-      </Element>
+      <span role="presentation">
+        <Element
+          isDisabled={props.isDisabled}
+          isFocused={props.isFocused}
+          isChecked={props.isChecked}
+          isHidden={props.isHidden}
+          href={props.href}
+          target={props.target}
+          type={props.type}
+          handleClick={this.handleClick}
+          handleKeyDown={this.handleKeyDown}
+          className={this.getClasses(props)}
+        >
+          {
+            props.type === 'checkbox'
+            ? <span className={styles.checkradio}><Checkbox label=" " /></span>
+            : null
+          }
+          {
+            props.type === 'radio'
+            ? <span className={styles.checkradio}><Radio label=" " /></span>
+            : null
+          }
+          {
+            props.elemBefore
+            ? <span className={styles.elemBefore}>{ props.elemBefore }</span>
+            : null
+          }
+          <span className={styles.itemContent}>{ props.children }</span>
+        </Element>
+      </span>
     );
   }
 }

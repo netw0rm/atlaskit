@@ -151,4 +151,45 @@ describe('MentionPicker', () => {
         return waitUntil(chooseThirdItem).should.be.fulfilled;
       });
   });
+
+  it('should fire onOpen when first result shown', () => {
+    const onOpen = sinon.spy();
+    const onClose = sinon.spy();
+
+    const component = setupPicker({
+      onOpen,
+      onClose,
+    });
+    const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
+
+    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+      .then(() => {
+        expect(onOpen.callCount, 'opened').to.equal(1);
+        expect(onClose.callCount, 'closed').to.equal(0);
+      });
+  });
+
+  it('should fire onClose when no matches', () => {
+    const onOpen = sinon.spy();
+    const onClose = sinon.spy();
+
+    const component = setupPicker({
+      onOpen,
+      onClose,
+    });
+    const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
+    const noMentionItemsShown = () => component.find(MentionItem).length === 0;
+
+    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+      .then(() => {
+        expect(onOpen.callCount, 'opened 1').to.equal(1);
+        expect(onClose.callCount, 'closed 1').to.equal(0);
+        component.setProps({ query: 'nothing' });
+        return waitUntil(noMentionItemsShown).should.be.fulfilled;
+      })
+      .then(() => {
+        expect(onOpen.callCount, 'opened 2').to.equal(1);
+        expect(onClose.callCount, 'closed 2').to.equal(1);
+      });
+  });
 });

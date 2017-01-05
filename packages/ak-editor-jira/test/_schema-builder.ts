@@ -1,4 +1,4 @@
-import { nodeFactory, markFactory } from 'ak-editor-test';
+import { nodeFactory, markFactory } from 'ak-editor-core/test-helper';
 import schema from '../src/schema';
 
 // Nodes
@@ -12,7 +12,7 @@ export const h3 = nodeFactory(schema.nodes.heading, { level: 3 });
 export const h4 = nodeFactory(schema.nodes.heading, { level: 4 });
 export const h5 = nodeFactory(schema.nodes.heading, { level: 5 });
 export const h6 = nodeFactory(schema.nodes.heading, { level: 6 });
-export const hr = nodeFactory(schema.nodes.hr);
+export const hr = nodeFactory(schema.nodes.horizontal_rule);
 export const li = nodeFactory(schema.nodes.list_item);
 export const ol = nodeFactory(schema.nodes.ordered_list);
 

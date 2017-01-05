@@ -1,34 +1,44 @@
 import React, { PureComponent } from 'react';
-import Navigation from '../../../src/index';
+import { AtlassianIcon } from 'ak-icon';
+import { Link } from 'react-router';
+import Navigation, { AkGlobalItem } from '../../../src/index';
 import RouterHeader from './RouterHeader';
-import RouterLink from './RouterLink';
+import RouterLinkItem from './RouterLinkItem';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class PageNavigation extends PureComponent {
   render() {
     return (
       <Navigation
+        globalPrimaryItem={
+          <Link
+            to="/iframe.html"
+          >
+            <AkGlobalItem size="large">
+              <AtlassianIcon size="medium" />
+            </AkGlobalItem>
+          </Link>
+        }
         containerHeader={
           <RouterHeader
-            to={'/iframe.html'}
+            to="/iframe.html"
           />
         }
       >
-        <RouterLink
-          to={'/page1'}
-          text={'Page 1'}
+        <RouterLinkItem
+          to="/page1"
+          text="Page 1"
         />
-        <RouterLink
-          to={'/page2'}
-          text={'Page 2'}
+        <RouterLinkItem
+          to="/page2"
+          text="Page 2"
         />
-        <RouterLink
-          to={'/page3'}
-          text={'Page 3'}
+        <RouterLinkItem
+          to="/page3"
+          text="Page 3"
         />
-        <RouterLink
-          to={'/page4'}
-          text={'Page 4'}
+        <RouterLinkItem
+          to="/page4"
+          text="Page 4"
         />
       </Navigation>
     );

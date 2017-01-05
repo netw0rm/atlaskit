@@ -3,7 +3,7 @@ import {
   Fragment,
   Node as PMNode,
   TextNode
-} from 'ak-editor-prosemirror';
+} from 'ak-editor-core';
 
 import {
   BulletListNode,
@@ -22,7 +22,7 @@ import {
   isListItemNode,
   isOrderedListNode,
   isParagraphNode
-} from 'ak-editor-schema';
+} from 'ak-editor-core';
 
 
 export default function encode(node: DocNode) {
@@ -35,9 +35,12 @@ export default function encode(node: DocNode) {
     return '&nbsp;';
   }
 
+  // Normalise to XHTML style self closing tags.
   return html
-    .replace('<br></br>', '<br>')
-    .replace('<hr></hr>', '<hr>');
+    .replace('<br></br>', '<br />')
+    .replace('<br>', '<br />')
+    .replace('<hr></hr>', '<hr />')
+    .replace('<hr>', '<hr />');
 
   function encodeNode(node: PMNode) {
     if (isBulletListNode(node)) {
@@ -86,14 +89,14 @@ export default function encode(node: DocNode) {
     const elem = doc.createElement(`h${node.attrs.level}`);
     const anchor = doc.createElement('a');
     anchor.setAttribute('name', anchorNameEncode(node.textContent));
-    elem.appendChild(anchor)
+    elem.appendChild(anchor);
     elem.appendChild(encodeFragment(node.content));
     return elem;
   }
 
   function encodeParagraph(node: ParagraphNode) {
     const elem = doc.createElement('p');
-    elem.appendChild(encodeFragment(node.content))
+    elem.appendChild(encodeFragment(node.content));
     return elem;
   }
 

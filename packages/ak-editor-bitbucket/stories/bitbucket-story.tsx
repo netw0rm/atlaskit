@@ -1,10 +1,11 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import { base64fileconverter } from 'ak-editor-test';
-import { default as AkTabs, Tab as AkTab} from 'ak-tabs';
+import { base64fileconverter } from 'ak-editor-core/test-helper';
+import { default as AkTabs, Tab as AkTab } from 'ak-tabs';
 import Editor from '../src';
-import FacadeInput from '../src/hacks/facade-input';
+import exampleHTML from './exampleHTML';
 
 const Tabs = reactify(AkTabs);
 const Tab = reactify(AkTab);
@@ -14,7 +15,7 @@ const SaveAction = () => action('Save')();
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
-const imageUploader = (e: any, fn: any) => {
+const imageUploadHandler = (e: any, fn: any) => {
   if (e instanceof ClipboardEvent) {
     pasteHandler(converter, e, fn);
   } else if (e instanceof DragEvent) {
@@ -48,16 +49,31 @@ storiesOf('ak-editor-bitbucket', module)
       />
     </div>
   )
-  .add('with imageUploader', () =>
+  .add('with imageUploadHandler', () =>
     <div style={{ padding: 20 }}>
       <Editor
-        imageUploader={imageUploader}
+        isExpandedByDefault
+        imageUploadHandler={imageUploadHandler}
         onCancel={CancelAction}
         onChange={ChangeAction}
         onSave={SaveAction}
       />
     </div>
   )
+  .add('Analytics events', () => {
+    return (
+      <div style={{ padding: 20 }}>
+        <h5 style={{ marginBottom: 20 }}>Interact with the editor and observe analytics events in the Action Logger below</h5>
+        <Editor
+          placeholder="Click me to expand ..."
+          analyticsHandler={(actionName, props) => action(actionName)(props)}
+          onSave={() => {}}
+          onCancel={() => {}}
+          imageUploadHandler={() => {}}
+        />
+      </div>
+    );
+  })
   .add('Markdown preview', () => {
     type Props = {};
     type State = { markdown?: string };
@@ -101,7 +117,7 @@ storiesOf('ak-editor-bitbucket', module)
             <Tabs>
               <Tab selected label="(default)">
                 <Editor
-                  defaultExpanded
+                  isExpandedByDefault
                   onCancel={CancelAction}
                   onChange={ChangeAction}
                   onSave={SaveAction}
@@ -109,7 +125,7 @@ storiesOf('ak-editor-bitbucket', module)
               </Tab>
               <Tab selected label="comment">
                 <Editor
-                  defaultExpanded
+                  isExpandedByDefault
                   context="comment"
                   onCancel={CancelAction}
                   onChange={ChangeAction}
@@ -118,7 +134,7 @@ storiesOf('ak-editor-bitbucket', module)
               </Tab>
               <Tab selected label="pr">
                 <Editor
-                  defaultExpanded
+                  isExpandedByDefault
                   context="pr"
                   onCancel={CancelAction}
                   onChange={ChangeAction}
@@ -136,4 +152,88 @@ storiesOf('ak-editor-bitbucket', module)
         <Demo />
       </div>
     );
-  });
+  })
+  .add('Set from HTML', () => {
+    type Props = {};
+    type State = { hasError?: boolean };
+    class Demo extends PureComponent<Props, State> {
+      state: State = { hasError: false };
+      textarea?: HTMLTextAreaElement;
+      editor?: Editor;
+
+      setEditorContentFromHtml = () => {
+        const { textarea, editor } = this;
+
+        if (!textarea || !editor) {
+          return;
+        }
+
+        this.setState({ hasError: false });
+
+        try {
+          editor.setFromHtml(textarea.value);
+        } catch (e) {
+          this.setState({ hasError: true });
+          console.error('Error when setting from HTML', e);
+        }
+      }
+
+      handleTextareaRef = (ref: HTMLTextAreaElement | null) => {
+        if (!ref) {
+          this.textarea = undefined;
+          return;
+        }
+        this.textarea = ref;
+        ref.value = exampleHTML;
+        this.setEditorContentFromHtml();
+      }
+
+      handleEditorRef = (ref: Editor | null) => {
+        if (!ref) {
+          this.editor = undefined;
+          return;
+        }
+
+        this.editor = ref;
+
+        // TODO: we don't currently have a good method of knowing that the editor can receive content
+        setTimeout(() => {
+          this.setEditorContentFromHtml();
+        }, 500);
+      }
+
+      render() {
+        return (
+          <div ref="root" style={{ display: 'flex', alignItems: 'stretch', minHeight: '100%' }}>
+            <div style={{ flex: 3, display: 'flex', alignItems: 'stretch' }}>
+              <textarea
+                style={{
+                  flex: 1,
+                  fontFamily: 'monospace',
+                  fontSize: '90%',
+                  outline: 'none',
+                  border: '0 none',
+                  padding: '5px 10px',
+                  borderRight: '10px solid rgb(247, 247, 247)',
+                  background: this.state.hasError ? 'red' : 'white'
+                }}
+                ref={this.handleTextareaRef}
+                onKeyUp={this.setEditorContentFromHtml}
+              />
+            </div>
+            <div style={{ flex: 2, display: 'flex', flexDirection: 'column', alignItems: 'stretch', alignContent: 'stretch' }}>
+              <Editor
+                ref={this.handleEditorRef}
+                isExpandedByDefault
+              />
+            </div>
+          </div>
+        );
+      }
+    }
+
+    return (
+      <Demo />
+    );
+  })
+;

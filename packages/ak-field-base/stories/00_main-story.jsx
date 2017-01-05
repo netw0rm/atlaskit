@@ -1,13 +1,15 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import Button from 'ak-button';
+import Avatar from 'ak-avatar';
 import ErrorIcon from 'ak-icon/glyph/error';
 import HelpIcon from 'ak-icon/glyph/help';
+import ExpandIcon from 'ak-icon/glyph/expand';
 
 import { name } from '../package.json';
 import AkFieldBase from '../src';
 import { InputFieldBase, DivFieldBase } from './shared-components';
-import { compact, subtle } from '../src/internal/appearances';
+import { compact, none, subtle } from '../src/internal/appearances';
 
 const formStyle = {
   padding: '20px',
@@ -31,7 +33,47 @@ storiesOf(name, module)
       <InputFieldBase label="Disabled state" isDisabled />
       <DivFieldBase label="Read-only state" isReadOnly />
       <InputFieldBase label="Compact state" appearance={compact} />
+      <InputFieldBase label="None (no appearance modifiers) state" appearance={none} />
       <InputFieldBase label="Subtle state" appearance={subtle} />
+    </div>
+  ))
+  .add('with button + no padding', () => (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: 'white',
+        display: 'inline-block',
+      }}
+    >
+      <AkFieldBase
+        label="Label for FieldBase"
+        isContentPaddingDisabled
+      >
+        <Button
+          iconAfter={<ExpandIcon />}
+        >
+          Imagine a Dropdown
+        </Button>
+      </AkFieldBase>
+    </div>
+  ))
+  .add('with avatar + text', () => (
+    <div
+      style={{
+        padding: '20px',
+        backgroundColor: 'white',
+        display: 'inline-block',
+      }}
+    >
+      <AkFieldBase
+        label="Label for FieldBase"
+      >
+        <Avatar
+          src="https://cdn-img.fimfiction.net/user/xb2v-1431833233-195398-64"
+          size="small"
+        />
+        <span style={{ marginLeft: 8 }}>Jack Sparrow</span>
+      </AkFieldBase>
     </div>
   ))
   .add('with different content', () => {
@@ -76,8 +118,9 @@ storiesOf(name, module)
         label="Button on the right"
         rightGutter={<Button appearance="subtle">Cancel</Button>}
       />
-      <InputFieldBase
+      <DivFieldBase
         label="Button + icon on the right"
+        text="Banana Banana Banana Banana Banana Banana Banana Banana Banana Banana"
         rightGutter={<Button iconBefore={<HelpIcon />} />}
       />
       <InputFieldBase
@@ -88,5 +131,16 @@ storiesOf(name, module)
         label="Text on the right"
         rightGutter="important"
       />
+    </div>
+  ))
+  .add('with appearance="none"', () => (
+    <div style={formStyle}>
+      <p>Different form states combined with appearance=none</p>
+      <InputFieldBase appearance={none} label="A default field-base" />
+      <InputFieldBase appearance={none} label="Invalid state" isInvalid />
+      <InputFieldBase appearance={none} label="Focused state" isFocused />
+      <InputFieldBase appearance={none} label="Required state" isRequired />
+      <InputFieldBase appearance={none} label="Disabled state" isDisabled />
+      <DivFieldBase appearance={none} label="Read-only state" isReadOnly />
     </div>
   ));

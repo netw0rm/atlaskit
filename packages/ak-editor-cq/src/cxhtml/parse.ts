@@ -1,6 +1,7 @@
 import schema from '../schema';
 import parseHtml from './parse-xhtml';
-import { Fragment, MarkType, Mark, Node as PMNode, TextNode } from 'ak-editor-prosemirror';
+import WeakMap from './weak-map';
+import { Fragment, MarkType, Mark, Node as PMNode, TextNode } from 'ak-editor-core';
 
 const convertedNodes = new WeakMap();
 
@@ -10,7 +11,7 @@ export interface Converter {
 
 export default function(cxhtml: string) {
   const dom = parseHtml(cxhtml).querySelector('body')!;
-  const nodes = bfsOrder(dom)
+  const nodes = bfsOrder(dom);
 
   // Process through nodes in reverse (so deepest child elements are first).
   for (let i = nodes.length - 1; i >= 0; i--) {
@@ -39,25 +40,27 @@ export default function(cxhtml: string) {
  * Flattens DOM tree into single array
  */
 function bfsOrder(root: Node) {
-  const inqueue = [root]
-  const outqueue = [] as Node[]
+  const inqueue = [root];
+  const outqueue = [] as Node[];
 
   let elem;
   while (elem = inqueue.shift()) {
     outqueue.push(elem);
-    for (const child of elem.childNodes) {
+    let childIndex;
+    for (childIndex = 0; childIndex < elem.childNodes.length; childIndex++) {
+      const child = elem.childNodes[childIndex];
       switch (child.nodeType) {
         case Node.ELEMENT_NODE:
         case Node.TEXT_NODE:
-          inqueue.push(child)
+          inqueue.push(child);
           break;
         default:
           console.error(`Not pushing: ${child.nodeType} ${child.nodeName}`);
       }
     }
   }
-  outqueue.shift()
-  return outqueue
+  outqueue.shift();
+  return outqueue;
 }
 
 /*
@@ -65,7 +68,9 @@ function bfsOrder(root: Node) {
  */
 function getContent(node: Node): Fragment {
   let fragment = Fragment.fromArray([]);
-  for (const child of node.childNodes) {
+  let childIndex;
+  for (childIndex = 0; childIndex < node.childNodes.length; childIndex++) {
+    const child = node.childNodes[childIndex];
     const thing = convertedNodes.get(child);
     if (thing instanceof Fragment) {
       fragment = fragment.append(thing);
@@ -85,7 +90,7 @@ function addMarks(fragment: Fragment, marks: Mark[]): Fragment {
     const child = result.child(i);
     let newChild = child;
     for (const mark of marks) {
-      newChild = newChild.mark(mark.addToSet(newChild.marks))
+      newChild = newChild.mark(mark.addToSet(newChild.marks));
     }
     result = result.replaceChild(i, newChild);
   }
@@ -140,6 +145,11 @@ function marksFromStyle(style: CSSStyleDeclaration): Mark[] {
             continue styles;
         }
         break;
+      case 'font-family':
+        if (value === 'monospace') {
+          marks = schema.marks.mono.create().addToSet(marks);
+          continue styles;
+        }
     }
 
     throw new Error(`Unable to derive a mark for CSS ${name}: ${value}`);
@@ -170,7 +180,7 @@ const converters = <Converter[]> [
         case 'EM':
           return content ? addMarks(content, [schema.marks.em.create()]) : null;
         case 'CODE':
-          return content ? addMarks(content, [schema.marks.code.create()]) : null;
+          return content ? addMarks(content, [schema.marks.mono.create()]) : null;
         case 'SUB':
         case 'SUP':
           const type = tag === 'SUB' ? 'sub' : 'sup';
@@ -197,7 +207,7 @@ const converters = <Converter[]> [
         case 'BR':
           return schema.nodes.hard_break.createChecked();
         case 'HR':
-          return schema.nodes.hr.createChecked();
+          return schema.nodes.horizontal_rule.createChecked();
         case 'UL':
           return schema.nodes.bullet_list.createChecked({}, content);
         case 'OL':

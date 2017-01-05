@@ -1,5 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import Droplist from 'ak-droplist';
+import Item from 'ak-droplist-item';
+import Group from 'ak-droplist-group';
 import Button from 'ak-button';
 import ExpandIcon from 'ak-icon/glyph/expand';
 
@@ -30,6 +32,22 @@ export default class StatelessDropdownMenu extends PureComponent {
     triggerType: 'default',
   }
 
+  renderItems = items => items.map((item, itemIndex) =>
+    <Item
+      {...item}
+      key={itemIndex}
+      onActivate={() => {
+        this.props.onItemActivated({ item });
+      }}
+    >
+      {item.content}
+    </Item>
+  )
+
+  renderGroups = groups => groups.map((group, groupIndex) =>
+    <Group heading={group.heading} key={groupIndex}>{this.renderItems(group.items)}</Group>
+  )
+
   render = () => {
     const { props } = this;
     return (
@@ -37,17 +55,16 @@ export default class StatelessDropdownMenu extends PureComponent {
         position={props.position}
         appearance={props.appearance}
         isOpen={props.isOpen}
-        onItemActivated={props.onItemActivated}
         onOpenChange={props.onOpenChange}
         isTriggerNotTabbable={(props.triggerType === 'button') || props.isTriggerNotTabbable}
         listContext="menu"
-        items={props.items}
-      >
-        {props.triggerType === 'button' ?
+        trigger={props.triggerType === 'button' ?
           (<Button
             isSelected={props.isOpen}
             iconAfter={Icon}
-          >{props.children}</Button>) : props.children }
+          >{props.children}</Button>) : props.children}
+      >
+        {this.renderGroups(props.items)}
       </Droplist>
     );
   }

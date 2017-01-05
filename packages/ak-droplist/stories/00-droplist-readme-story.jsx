@@ -25,10 +25,8 @@ const droplistPropDescriptions = {
   Received an object with isOpen state`,
   listContext: `Context in which the droplist is used. This is a very important property from
   the accessibility point of view. Only 'menu' value is available at the moment.`,
-  children: 'Content that will be rendered inside the trigger element. Accepts any html.',
-  items: `List of items. Should be an array of groups (see the documentation for ak-droplist-group
-  for available props). Every group should contain array of items (see the documentation
-  for ak-droplist-item for available props).`,
+  children: 'Content of the droplist.',
+  trigger: 'Content that will be rendered inside the trigger element.',
 };
 
 const droplistPropTypes = {
@@ -40,7 +38,7 @@ const droplistPropTypes = {
   onOpenChange: 'func',
   listContext: 'oneOf([menu])',
   children: 'node',
-  items: 'array',
+  trigger: 'node',
 };
 
 storiesOf(name, module)

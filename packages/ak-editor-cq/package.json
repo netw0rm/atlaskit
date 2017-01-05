@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-cq",
-  "version": "2.14.3",
+  "version": "2.14.4",
   "description": "Atlassian Editor component for Confluence Questions",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",

@@ -15,7 +15,7 @@ import {
   Node
 } from '../../prosemirror';
 
-import { service as analyticsService, trackAndInvoke } from '../../analytics';
+import { analyticsService, trackAndInvoke } from '../../analytics';
 
 // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
 // input rule will allow for a list to start at any given number, which isn't allowed in

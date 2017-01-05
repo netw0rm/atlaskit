@@ -38,7 +38,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
 
   it('editor.start must not be called when unmounting component', () => {
     let handler = sinon.spy() as AnalyticsHandler;
-    service.handler = handler;
+    analyticsService.handler = handler;
 
     mount(<Editor analyticsHandler={handler} isExpandedByDefault />).unmount();
     expect(handler).to.have.been.calledOnce;

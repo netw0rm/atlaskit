@@ -38,7 +38,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
 
   it('atlassian.editor.start with two child editors sharing a handler', () => {
     let handler = sinon.spy() as AnalyticsHandler;
-    service.handler = handler;
+    analyticsService.handler = handler;
 
     class ContainerWithTwoEditors extends React.PureComponent<{}, {}> {
       render() {

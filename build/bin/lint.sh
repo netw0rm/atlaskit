@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-export PATH="`npm bin`:$PATH"
+export PATH="`yarn bin`:$PATH"
 NODE_MODULES=`npm root`
 BASEDIR=$(dirname $0)
 . $BASEDIR/_build_status.sh

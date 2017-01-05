@@ -2,7 +2,7 @@
 set -e
 
 BASEDIR=$(dirname $0)
-BIN_PATH=$(npm bin)
+BIN_PATH=$(yarn bin)
 LERNA_LOC="$BIN_PATH/lerna"
 CHALK="$BIN_PATH/chalk"
 VALIDATE_LOC="$BIN_PATH/validate-commit-msg"

@@ -15,7 +15,9 @@ export default class RouterLinkItem extends PureComponent {
     return (
       <AkContainerItem
         href={this.props.to}
-        linkComponent={({ children, href }) => <Link to={href}>{children}</Link>}
+        linkComponent={(
+          { children, href, ...props }) => <Link to={href} {...props}>{children}</Link>
+        }
         text={this.props.text}
         isSelected={this.context.router.isActive(this.props.to, true)}
       />

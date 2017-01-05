@@ -6,6 +6,7 @@ import {
   icon,
   isSelected,
   isCompact,
+  link,
   text,
   textAfter,
 } from 'style!../less/ContainerItem.less';
@@ -26,18 +27,27 @@ export default class ContainerItem extends PureComponent {
   static defaultProps = {
     isCompact: false,
     isSelected: false,
-    linkComponent: ({ href, children }) => <a href={href}>{children}</a>,
+    linkComponent: ({ href, children, ...props }) =>
+      (href ? <a href={href} {...props}>{children}</a> : children),
+  }
+
+  onMouseDown = (e) => {
+    e.preventDefault();
   }
 
   render() {
     const Link = this.props.linkComponent;
     return (
-      <Link href={this.props.href}>
-        <div
-          className={className(containerItemOuter, {
-            [isSelected]: this.props.isSelected,
-            [isCompact]: this.props.isCompact,
-          })}
+      <div
+        className={className(containerItemOuter, {
+          [isSelected]: this.props.isSelected,
+          [isCompact]: this.props.isCompact,
+        })}
+      >
+        <Link
+          className={link}
+          href={this.props.href}
+          onMouseDown={this.onMouseDown}
         >
           <div
             className={containerItemInner}
@@ -46,10 +56,10 @@ export default class ContainerItem extends PureComponent {
               <div className={icon}>{this.props.icon}</div> : null}
             <div className={text}>{this.props.text}</div>
             <div className={textAfter}>{this.props.textAfter}</div>
-            <div className={action}>{this.props.action}</div>
           </div>
-        </div>
-      </Link>
+        </Link>
+        <div className={action}>{this.props.action}</div>
+      </div>
     );
   }
 }

@@ -28,7 +28,9 @@
   "devDependencies": {
     "ak-avatar": "^5.0.5",
     "akutil-readme": "^1.2.0",
-    "ak-dropdown-menu": "*"
+    "ak-dropdown-menu": "*",
+    "ak-icon": "^12.1.3",
+    "ak-lozenge": "^5.0.4"
   },
   "peerDependencies": {
     "react": "^15.3.2",

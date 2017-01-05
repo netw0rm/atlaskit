@@ -86,13 +86,19 @@ export default class Item extends PureComponent {
      */
     onKeyDown: PropTypes.func,
     /**
-     * @description HTML content to display before item's main content. Only applicable to the
-     * 'link' item.
+     * @description HTML content to display before item's main content.
      * @memberof Item
      * @default false
      * @type {ReactElement}
      */
     elemBefore: PropTypes.node,
+    /**
+     * @description HTML content to display after item's main content.
+     * @memberof Item
+     * @default false
+     * @type {ReactElement}
+     */
+    elemAfter: PropTypes.node,
     children: PropTypes.node,
   }
 
@@ -174,6 +180,11 @@ export default class Item extends PureComponent {
             : null
           }
           <span className={styles.itemContent}>{ props.children }</span>
+          {
+            props.elemAfter
+              ? <span className={styles.elemAfter}>{ props.elemAfter }</span>
+              : null
+          }
         </Element>
       </span>
     );

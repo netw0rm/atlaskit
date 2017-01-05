@@ -26,7 +26,7 @@ export default class GlobalNavigation extends PureComponent {
   render() {
     return (
       <div
-        className={classNames({
+        className={classNames(styles.globalNavigationOuter, {
           [styles.shouldAnimate]: this.props.shouldAnimate,
         })}
       >

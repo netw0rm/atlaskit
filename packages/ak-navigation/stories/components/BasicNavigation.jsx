@@ -17,15 +17,15 @@ export default class BasicNavigation extends PureComponent {
   static defaultProps = {
     children: <div>
       <AkContainerItem
-        icon={<DashboardIcon />}
+        icon={<DashboardIcon label="Dashboard" />}
         text="Item A"
       />
       <AkContainerItem
-        icon={<SettingsIcon />}
+        icon={<SettingsIcon label="Settings" />}
         text="Item B"
       />
       <AkContainerItem
-        icon={<ProjectsIcon />}
+        icon={<ProjectsIcon label="Projects" />}
         text="Item C"
       />
     </div>,

@@ -18,6 +18,7 @@ function defaultPackageMains() {
 
 const css = {
   camelCase: true,
+  hashPrefix: `${pkg.name}${pkg.version}`,  // Avoid hash collisions
   importLoaders: 1,
   mergeRules: false,
   modules: true,

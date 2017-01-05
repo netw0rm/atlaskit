@@ -130,10 +130,10 @@ export class MentionsPluginState {
     return { start, end };
   }
 
-  insertMention(mentionData: Mention) {
+  insertMention(mentionData?: Mention) {
     const { mention } = this.pm.schema.nodes;
 
-    if (mention) {
+    if (mention && mentionData) {
       const { start, end } = this.findMentionQueryMark();
       const node = mention.create({ displayName: `@${mentionData.mentionName}`, id: mentionData.id });
       this.pm.tr.delete(start, end).insert(start, node).apply();

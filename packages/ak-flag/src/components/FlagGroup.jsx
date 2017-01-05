@@ -10,19 +10,7 @@ import styles from 'style!../less/FlagGroup.less';
 // eslint-disable-next-line react/prefer-stateless-function
 export default class FlagGroup extends PureComponent {
   static propTypes = {
-    /**
-     * @description The Flag components to display inside the FlagGroup.
-     * @memberof FlagGroup
-     * @instance
-     * @type {element}
-     */
     children: PropTypes.node,
-    /**
-     * @description Function to be called when the flag is dismissed by the user
-     * @memberof Flag
-     * @instance
-     * @type {function}
-     */
     onDismissed: PropTypes.func,
   };
 

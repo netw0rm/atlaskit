@@ -1,1 +1,0 @@
-import 'skatejs-web-components';

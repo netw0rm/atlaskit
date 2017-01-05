@@ -15,7 +15,7 @@ import stringRepeat from './util/string-repeat';
 function escapeMarkdown(str: string, startOfLine?: boolean): string {
   str = str.replace(/[`*\\~+\[\]_]/g, '\\$&');
   if (startOfLine) {
-    str = str.replace(/^[:#-*]/, '\\$&').replace(/^(\d+)\./, '$1\\.');
+    str = str.replace(/^[#-*]/, '\\$&').replace(/^(\d+)\./, '$1\\.');
   }
   return str;
 }

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Button from 'ak-button';
+import Group from 'ak-droplist-group';
+import Item from 'ak-droplist-item';
 
 import DropdownList from '../../src';
 
@@ -9,6 +11,7 @@ const simpleDropdownItems = [
     items: [
       { content: 'Sydney', href: 'http://atlassian.com', target: '_blank' },
       { content: 'Canberra' },
+      { content: 'Hidden item', isHidden: true },
       { content: 'Melbourne' },
       { content: 'Perth' },
     ],
@@ -32,15 +35,22 @@ const DroplistOverview = class extends Component {
       onOpenChange={(attrs) => {
         this.setState({ isDropdownOpen: attrs.isOpen });
       }}
-      onItemActivated={(attrs) => {
-        console.log(attrs.item);
-      }}
       isTriggerNotTabbable
       appearance="default"
       position="right top"
       listContext="menu"
+      trigger={<Button isSelected={this.state.isDropdownOpen}>...</Button>}
     >
-      <Button isSelected={this.state.isDropdownOpen}>...</Button>
+      <Group heading="Australia">
+        <Item href="http://atlassian.com" target="_blank">Sydney</Item>
+        <Item isHidden>Hidden item</Item>
+        <Item>Canberra</Item>
+        <Item
+          onActivated={(attrs) => {
+            console.log(attrs.item);
+          }}
+        >Melbourne</Item>
+      </Group>
     </DropdownList>);
   }
 };

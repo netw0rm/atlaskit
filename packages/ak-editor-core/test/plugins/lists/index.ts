@@ -299,6 +299,14 @@ describe('lists', () => {
         expect(pm.doc).to.deep.equal(doc(blockquote(ul(li(p('One')),li(p('Two')),li(p('Three'))))));
       });
 
+      it('should convert selection to list when there is an empty paragraph between non empty two', () => {
+        const expectedOutput = doc(ul(li(p('One')),li(p()),li(p('Three'))));
+        const { pm, plugin } = editor(doc(p('{<}One'),p(),p('Three{>}')));
+
+        plugin.toggleBulletList();
+        expect(pm.doc).to.deep.equal(expectedOutput);
+      });
+
       it('should convert selection to multiple lists when selection starts and ends at different ancestor blocks', () => {
         const { pm, plugin } = editor(doc(blockquote(p('{<}One'),p('Two'),p('Three')),p('Four'),p('Five'),blockquote(p('Six{>}'))));
 

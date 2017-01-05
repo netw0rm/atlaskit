@@ -4,7 +4,7 @@ import NumberListIcon from 'ak-icon/glyph/editor/list/number';
 import BulletListIcon from 'ak-icon/glyph/editor/list/bullet';
 import IconButton from '../ToolbarIconButton';
 import { ListsState } from '../../../src/plugins/lists';
-import { decorator as analytics } from '../../analytics';
+import { analyticsDecorator as analytics } from '../../analytics';
 
 export interface Props {
   pluginState: ListsState;

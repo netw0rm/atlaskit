@@ -1,4 +1,4 @@
-import service from './service';
+import analyticsService from './service';
 
 /**
  * Annotation for automatically tracking analytics event whenever a function is invoked.
@@ -60,7 +60,7 @@ export default function analytics(name: string) {
 function trackFunction(analyticsEventName: string, trackedFn: Function) {
   return (...args: any[]) => {
     try {
-      service.trackEvent(analyticsEventName);
+      analyticsService.trackEvent(analyticsEventName);
     } catch (e) {
       console.error('An exception has been thrown when trying to track analytics event:', e);
     }

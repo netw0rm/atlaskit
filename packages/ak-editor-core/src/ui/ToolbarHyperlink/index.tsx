@@ -5,7 +5,7 @@ import { HyperlinkState } from '../../../src/plugins/hyperlink';
 import Panel from '../Panel';
 import TextInput from '../PanelTextInput';
 import IconButton from '../ToolbarIconButton';
-import { decorator as analytics } from '../../analytics';
+import { analyticsDecorator as analytics } from '../../analytics';
 
 export interface Props {
   pluginState: HyperlinkState;

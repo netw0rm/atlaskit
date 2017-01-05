@@ -21,22 +21,21 @@ A comment can include many elements, including:
 
 ```
 <Comment
-  avatarSrc="/path/to/img"
-  avatarLabel="Ben Wong's avatar" // Could have a sensible default based on the `commenter` prop?
-  commenter="Ben Wong"
+  avatar={<Avatar src="/path/to/img" label="Ben Wong's avatar" size="medium" />}
+  commenter="Ben Wong" // Accepts a node or string
   role="author" // Renders a lozenge containing this text
-  datetime={new Date()}
-  dateformat="YYYY-MM-DD"
+  dateTime={new Date()}
+  dateFormat="YYYY-MM-DD"
   content={(
     <div>
       <p>Content goes here. This can include <a href="/link">links</a> and other content.</p>
       <img src="/my/image" alt="my image"/>
     </div>
   )}
-  actions={[
+  actions={[ // Array of objects or nodes
     { content: 'Reply', onClick: callbackFunc },
     { content: 'Edit', onClick: callbackFunc },
-    { content: 'Like', onClick: callbackFunc },
+    <span onClick={callbackFunc}>Like</span>,
   ]}
 />
 ```
@@ -58,7 +57,15 @@ For reference, the WC implementation for `ak-comment` had the following slots, w
 
 ### Comment threads
 
-Comments can be nested by providing additional `Comment` elements as children.
+Comments can be nested. This can be done either by providing additional `Comment` elements as children, or via a `nestedComments` property.
+
+The advantage of using a `content` property is that it allows the structure of the JSX to closely mirror the actual structure of the nested comments.
+
+The advantage of using a `nestedComments` property is that the content will be present 100% of the time, while there may not be a nested comment, so we won't be using components with no children.
+
+Which of these approaches should we choose? Currently we are using the `content` property. See below for examples.
+
+#### Using content property
 
 ```
 // Other Comment props left out for clarity
@@ -70,6 +77,27 @@ Comments can be nested by providing additional `Comment` elements as children.
   </Comment>
 </Comment>
 <Comment content="Sibling comment" />
+```
+
+#### Using nestedComments property
+
+```
+<Comment nestedComments={
+  <Comment nestedComments={
+    <Comment nestedComments={
+      <Comment>Reply to second nested comment</Comment>
+    }>
+      Second nested comment
+    </Comment>
+  }>
+    First nested comment
+  </Comment>
+}>
+  Root comment
+</Comment>
+<Comment>
+  Sibling comment
+</Comment>
 ```
 
 #### Notes/questions

@@ -29,20 +29,14 @@ export default function analytics(name: string) {
 
     if (!descriptor) {
       // We're decorating a property (i.e. a method bound with an arrow => )
-      let propertyValue: any;
-
       return {
         set(primitiveOrFn: any) {
-          if (typeof primitiveOrFn !== 'function') {
-            propertyValue = primitiveOrFn;
-            return;
+          if (typeof primitiveOrFn === 'function') {
+            Object.defineProperty(this, key, { value: trackFunction(name, primitiveOrFn) });
+          } else {
+            console.warn(`@analytics decorator expects "${key}" to be a function, not a ${typeof primitiveOrFn}.`);
+            Object.defineProperty(this, key, { value: primitiveOrFn });
           }
-
-          propertyValue = trackFunction(name, primitiveOrFn);
-        },
-
-        get: () => {
-          return propertyValue;
         }
       } as PropertyDescriptor;
     }

@@ -10,7 +10,7 @@ import { doc, strong, h1, p } from './_schema-builder';
 
 import Editor from '../src/index';
 import ImageIcon from 'ak-icon/glyph/editor/image';
-import { chaiPlugin, createEvent } from 'ak-editor-core/test-helper';
+import { chaiPlugin, createEvent, fixtures } from 'ak-editor-core/test-helper';
 
 chai.use(chaiPlugin);
 chai.use(((chaiEnzyme as any).default || chaiEnzyme)());
@@ -143,5 +143,47 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
     expect(spy).to.have.been.calledOnce;
     expect(spy).to.have.been.calledWith(event);
     expect(spy.getCall(0).args[1]).to.be.a('function');
+  });
+});
+
+describe('ak-editor-bitbucket/multiple editors as children', () => {
+  const fixture = fixtures();
+  type Props = {};
+  type State = {};
+  class ContainerWithTwoEditors extends React.PureComponent<Props, State> {
+    render() {
+     return (
+       <div>
+         <Editor isExpandedByDefault />
+         <Editor isExpandedByDefault />
+       </div>
+     );
+    }
+  }
+
+  let container: ReactWrapper<Props, State>;
+  let editor1: ReactWrapper<Props, State>;
+  let editor2: ReactWrapper<Props, State>;
+
+  beforeEach(() => {
+    container = mount(<ContainerWithTwoEditors />, { attachTo: fixture() });
+    editor1 = container.find(Editor).at(0);
+    editor2 = container.find(Editor).at(1);
+  });
+
+  it('should render two editors inside a common container', () => {
+    expect(container.find(Editor)).to.exist;
+    expect(editor1.is(Editor)).to.be.true;
+    expect(editor2.is(Editor)).to.be.true;
+  });
+
+  it('should render toolbar elements for both editors', () => {
+    expect(editor1.find('ChromeExpanded ToolbarBlockType')).to.exist;
+    expect(editor1.find('ChromeExpanded ToolbarTextFormatting')).to.exist;
+    expect(editor1.find('ChromeExpanded ToolbarLists')).to.exist;
+
+    expect(editor2.find('ChromeExpanded ToolbarBlockType')).to.exist;
+    expect(editor2.find('ChromeExpanded ToolbarTextFormatting')).to.exist;
+    expect(editor2.find('ChromeExpanded ToolbarLists')).to.exist;
   });
 });

@@ -39,7 +39,6 @@
   box-shadow: 0 (@ak-grid-size * 2.5) (@ak-grid-size * 4) (@ak-grid-size * -1) fade(@ak-color-N900, 24%),
               0 0 1px fade(@ak-color-N900, 3%);
   display: flex;
-  margin-bottom: @ak-grid-size * 2.5;
   padding: @ak-grid-size * 2;
   position: absolute;
   transition: transform @flag-animation-duration ease-in-out;
@@ -61,7 +60,8 @@
   }
 
   &:nth-child(n+2) {
-    transform: translate(0, calc(100% + (@ak-grid-size * 2)));
+    // need string around calc on next line because Less tries to calc it during build
+    transform: translate(0, ~"calc(100% + (2 * @{ak-grid-size}))");
   }
 
   // Layer the 'primary' flag above the 'secondary' flag

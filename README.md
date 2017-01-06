@@ -64,7 +64,7 @@ Will create a new templated component under `packages/my-component-name` with ev
         |-- shared-variables.less
     |-- stories/
        |-- example-story.js
-       |-- .eslintrc       
+       |-- .eslintrc
     |-- test/
        |-- index.js
        |-- .eslintrc
@@ -224,6 +224,17 @@ Releasing components is completely automated. The process of releasing will begi
 * Delete the current shrinkwrap file (due to a bug in how shirinkwrap handles dependencies on SHA hashes) `rm -f npm-shrinkwrap.json`
 * Run `npm shrinkwrap`
 * Create a PR
+
+## Generating docs and storybooks from a PR
+You can generate docs and storybooks from any commit by running the custom "build-artifacts" build it Bitbucket Pipelines.
+
+* Click the commit you wish to build from
+* Click the "Run pipeline" button on the top right
+* Select "custom: build-artifacts" and click run
+
+This will build a copy of the storybooks and readmes and publish them to the cdn.
+
+Links to those can then be found by clicking the build icons next to any commit.
 
 ## Make changes to the Pipelines build
 AtlasKit uses Bitbucket Pipelines for it's continuous integration. The build scripts are defined in `bitbucket-pipelines.yml`.

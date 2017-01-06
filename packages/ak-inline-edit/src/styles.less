@@ -5,20 +5,31 @@
 
 .root {
   margin-left: -@ak-grid-size;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
 }
 
-.readViewWrapper {
+.read-view-wrapper {
   max-width: 100%;
+  display: inline-flex;
+  flex: 0 1 auto;
 }
 
 .hidden {
   display: none !important;
 }
 
-.field-base-wrapper {
+.content-wrapper {
+  display: inline-flex;
+  align-items: center;
   max-width: 100%;
+}
+
+.field-base-wrapper {
+  display: block;
+  max-width: 100%;
+  flex-grow: 1;
+
   &:hover .edit-button {
     opacity: 1;
   }

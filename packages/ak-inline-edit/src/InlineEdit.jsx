@@ -8,7 +8,6 @@ import ConfirmIcon from 'ak-icon/glyph/confirm';
 import CancelIcon from 'ak-icon/glyph/cancel';
 import EditIcon from 'ak-icon/glyph/edit';
 import FieldBase, { Label } from 'ak-field-base'; // eslint-disable-line
-import uid from 'uid';
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
@@ -136,6 +135,7 @@ export default class InlineEdit extends PureComponent {
      * @type {Function}
      */
     onCancel: PropTypes.func.isRequired,
+    labelHtmlFor: PropTypes.string,
   }
 
   static defaultProps = {
@@ -255,36 +255,35 @@ export default class InlineEdit extends PureComponent {
     </div>
   )
 
-  render() {
-    const id = uid();
-    return (
-      <div className={this.getRootClasses()}>
+  render = () => (
+    <div className={this.getRootClasses()}>
+      <div style={{ position: (this.props.isLabelHidden ? 'absolute' : 'relative') }}>
         <Label
           label={this.props.label}
           isLabelHidden={this.props.isLabelHidden}
-          htmlFor={id}
+          htmlFor={this.props.labelHtmlFor}
         />
-        <div id={id} style={{ display: 'inline-flex', alignItems: 'center' }}>
-          <div
-            className={styles.fieldBaseWrapper}
-            onClick={this.onWrapperClick}
-            onBlur={this.onWrapperBlur}
-            onFocus={this.onWrapperFocus}
-          >
-            <FieldBase
-              isInvalid={this.props.isInvalid}
-              isFocused={this.isReadOnly() ? false : undefined}
-              isReadOnly={this.isReadOnly()}
-              isFitContainerWidthEnabled={this.props.isEditing}
-              appearance={this.props.isEditing ? 'standard' : 'subtle'}
-              isDisabled={this.shouldRenderSpinner()}
-            >
-              {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
-            </FieldBase>
-          </div>
-          {this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()}
-        </div>
       </div>
-    );
-  }
+      <div className={styles.contentWrapper}>
+        <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+          className={styles.fieldBaseWrapper}
+          onClick={this.onWrapperClick}
+          onBlur={this.onWrapperBlur}
+          onFocus={this.onWrapperFocus}
+        >
+          <FieldBase
+            isInvalid={this.props.isInvalid}
+            isFocused={this.isReadOnly() ? false : undefined}
+            isReadOnly={this.isReadOnly()}
+            isFitContainerWidthEnabled={this.props.isEditing}
+            appearance={this.props.isEditing ? 'standard' : 'subtle'}
+            isDisabled={this.shouldRenderSpinner()}
+          >
+            {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
+          </FieldBase>
+        </div>
+        {this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()}
+      </div>
+    </div>
+  )
 }

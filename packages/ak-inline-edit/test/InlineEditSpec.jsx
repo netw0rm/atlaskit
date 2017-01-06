@@ -5,7 +5,7 @@ import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import CancelIcon from 'ak-icon/glyph/cancel';
-import FieldBase from 'ak-field-base'; // eslint-disable-line
+import FieldBase, { Label } from 'ak-field-base'; // eslint-disable-line
 import Spinner from 'ak-spinner';
 import InlineEdit from '../src/InlineEdit';
 
@@ -148,13 +148,13 @@ describe('ak-inline-edit', () => {
 
   describe('label', () => {
     it('should set parameter into FieldBase', () => {
-      expect(shallow(<InlineEdit {...defaultProps} label="test" />).find(FieldBase))
+      expect(shallow(<InlineEdit {...defaultProps} label="test" />).find(Label))
         .to.have.prop('label', 'test');
     });
 
     it('should set both isLabelHidden and label parameter into FieldBase', () => {
       const wrapper = shallow(<InlineEdit {...defaultProps} label="test" isLabelHidden />);
-      const fieldBase = wrapper.find(FieldBase);
+      const fieldBase = wrapper.find(Label);
       expect(fieldBase).to.have.prop('label', 'test');
       expect(fieldBase).to.have.prop('isLabelHidden', true);
     });
@@ -163,8 +163,8 @@ describe('ak-inline-edit', () => {
   describe('isWaiting', () => {
     describe('when isEditing is false', () =>
       it('should not render Spinner', () => {
-        const fieldBase = mount(<InlineEdit {...defaultProps} isWaiting />).find(FieldBase);
-        expect(shallow(fieldBase.prop('rightGutter'))).to.not.contain(<Spinner />);
+        const wrapper = mount(<InlineEdit {...defaultProps} isWaiting />);
+        expect(wrapper).to.not.contain(<Spinner />);
       })
     );
 
@@ -176,7 +176,7 @@ describe('ak-inline-edit', () => {
       ));
 
       it('should render Spinner', () =>
-        expect(shallow(wrapper.find(FieldBase).prop('rightGutter'))).to.contain(<Spinner />)
+        expect(wrapper).to.contain(<Spinner />)
       );
 
       it('should disable field base', () =>

@@ -21,7 +21,7 @@ storiesOf(name, module)
   ))
   .add('with label hidden', () => (
     <div style={containerStyle}>
-      <TextInlineEdit isLabelHidden />
+      <TextInlineEdit isLabelHidden isConfirmOnBlurDisabled />
     </div>
   ))
   .add('with invalid input', () => (
@@ -42,6 +42,7 @@ storiesOf(name, module)
   .add('with confirmation cancellation', () => (
     <div style={containerStyle}>
       <TextInlineEdit
+        isConfirmOnBlurDisabled
         onConfirm={(cancelConfirmation) => {
           action('Cancelling confirmation')();
           cancelConfirmation();

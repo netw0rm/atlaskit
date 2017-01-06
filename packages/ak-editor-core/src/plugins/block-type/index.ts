@@ -8,7 +8,8 @@ import {
   UpdateScheduler,
   Keymap,
   browser,
-  Node
+  Node,
+  TextSelection,
 } from '../../prosemirror';
 import {
   BlockQuoteNodeType,
@@ -23,6 +24,11 @@ import {
 } from '../../schema';
 import { trackAndInvoke } from '../../analytics';
 import transformToCodeBlock from './transform-to-code-block';
+
+import {
+  getGroupsInRange,
+  liftSelection
+} from '../../utils';
 
 const withSpecialKey = (key: string) => `${browser.mac ? 'Cmd-Alt' : 'Ctrl'}-${key}`;
 
@@ -108,9 +114,25 @@ export class BlockTypeState {
 
   changeBlockType(name: BlockTypeName): void {
     const { pm } = this;
+    const groups = getGroupsInRange(pm, pm.selection.$from, pm.selection.$to );
+    let { $from } = groups[0];
+    let { $to } = groups[groups.length - 1];
+    pm.setSelection(new TextSelection($from, $to));
+
+    groups.reverse();
+    groups.forEach(group => {
+      this.changeBlockTypeAtSelection(name, group.$from, group.$to);
+    });
+  }
+
+  changeBlockTypeAtSelection(name: BlockTypeName, $from, $to): void {
+    const { pm } = this;
+    pm.setSelection(new TextSelection($from, $to));
 
     // clear blockquote
     commands.lift(pm);
+    // liftSelection(pm, $from, $to).applyAndScroll();
+
     const nodes = pm.schema.nodes;
 
     switch (name) {

@@ -24,7 +24,7 @@ describe('block-type paste listener', () => {
   }
 
   describe('non-empty code block', () => {
-    it.only('should preserve existing code block content when pasting', function () {
+    it('should preserve existing code block content when pasting', function () {
       const { pm } = editor('foo{<>}');
       maybeDispatchPasteEvent(pm, { plain: 'bar' }, this);
       const expected = doc(code_block()('foobar'));

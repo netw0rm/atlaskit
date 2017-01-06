@@ -26,7 +26,6 @@ export class CodeBlockState {
     ], () => this.update());
   }
 
-
   subscribe(cb: CodeBlockStateSubscriber) {
     this.changeHandlers.push(cb);
     cb(this);

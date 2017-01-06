@@ -145,3 +145,24 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 });
+
+describe('ak-editor-bitbucket/toolbar', () => {
+  let editor: ReactWrapper<any, any>;
+
+  beforeEach(() => {
+    editor = mount(<Editor isExpandedByDefault />);
+  });
+
+  it('should close blocktype dropdown after second click', () => {
+    const trigger = editor.find('ToolbarBlockType AkButton');
+
+    expect(trigger).to.exist;
+    expect(editor.find('ToolbarBlockType Panel')).to.not.exist;
+
+    trigger.simulate('click');
+    expect(editor.find('ToolbarBlockType Panel')).to.exist;
+
+    trigger.simulate('click');
+    expect(editor.find('ToolbarBlockType Panel')).to.not.exist;
+  });
+});

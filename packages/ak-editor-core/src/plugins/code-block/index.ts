@@ -70,10 +70,10 @@ export class CodeBlockState {
 
   private update() {
     let dirty = false;
-    const blockCode = this.activeBlockCode();
+    const codeBlock = this.activeBlockCode();
 
-    if(blockCode !== this.target) {
-      this.target = blockCode;
+    if(codeBlock !== this.target) {
+      this.target = codeBlock;
       dirty = true;
     }
 
@@ -84,19 +84,10 @@ export class CodeBlockState {
 
   private activeBlockCode(): Node | null {
     const { pm } = this;
-
-    // Before a document is loaded, there is no selection.
-    if (!pm.selection) {
-      return null;
-    }
-
     const { $from } = pm.selection;
-
-    for (let depth = 0; depth <= $from.depth; depth++) {
-      const node = $from.node(depth)!;
-      if(isCodeBlockNode(node)) {
-        return node;
-      }
+    const node = $from.parent;
+    if(isCodeBlockNode(node)) {
+      return node;
     }
 
     return null;

@@ -10,7 +10,7 @@ import { chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_bl
 chai.use(chaiPlugin);
 chai.use((sinonChai as any).default || sinonChai);
 
-describe.only('code-block', () => {
+describe('code-block', () => {
   const editor = (doc: any) => {
     const { pm, plugin } = makeEditor({ doc, plugin: CodeBlockPlugin });
     return { pm, plugin, sel: pm.doc.refs['<>'] };
@@ -87,6 +87,110 @@ describe.only('code-block', () => {
       pm.setTextSelection(cbPos);
 
       expect(spy).to.not.have.been.calledTwice;
+    });
+  });
+
+  describe('keymap', () => {
+    context('when hits enter', () => {
+      it('calls splitCodeBlock', () => {
+        const { pm, plugin } = editor(doc(code_block()('text')));
+        const splitCodeBlock = sinon.spy(plugin, 'splitCodeBlock');
+
+        pm.input.dispatchKey('Enter');
+
+        expect(splitCodeBlock).to.have.been.callCount(1);
+      });
+    });
+
+    context('when hits double enter', () => {
+      it('exits code block', ()=> {
+        const { pm, plugin } = editor(doc(code_block()('text{<>}')));
+
+        pm.input.dispatchKey('Enter');
+        pm.input.dispatchKey('Enter');
+
+        expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
+      });
+    });
+  });
+
+  describe('splitCodeBlock', () => {
+    context('when it is a code block', () => {
+      context('when last char is a new line', () => {
+        context('when cursor is at the end of code block', () => {
+          it('removes the last new line char in code block', () => {
+            const { pm, plugin } = editor(doc(code_block()('text\n{<>}')));
+
+            plugin.splitCodeBlock();
+
+            expect(pm.doc).to.deep.equal(doc(code_block()('text')));
+          });
+
+          it('returns false', () => {
+            const { pm, plugin } = editor(doc(code_block()('text\n{<>}')));
+
+            expect(plugin.splitCodeBlock()).to.be.false;
+          });
+        });
+
+        context('when cursor is in the middle of code block', () => {
+          it('inserts a new line', () => {
+            const { pm, plugin } = editor(doc(code_block()('te{<>}xt\n')));
+
+            plugin.splitCodeBlock();
+
+            expect(pm.doc).to.deep.equal(doc(code_block()('te\nxt\n')));
+          });
+
+          it('returns true', () => {
+            const { pm, plugin } = editor(doc(code_block()('te{<>}xt\n')));
+
+            expect(plugin.splitCodeBlock()).to.be.true;
+          });
+        });
+      });
+
+      context('when last char is not a new line', () => {
+        context('when cursor is at the end of code block', () => {
+          it('inserts a new line', () => {
+            const { pm, plugin } = editor(doc(code_block()('text{<>}')));
+
+            plugin.splitCodeBlock();
+
+            expect(pm.doc).to.deep.equal(doc(code_block()('text\n')));
+          });
+
+          it('returns true', () => {
+            const { pm, plugin } = editor(doc(code_block()('text{<>}')));
+
+            expect(plugin.splitCodeBlock()).to.be.true;
+          });
+        });
+
+        context('when cursor is in the middle of code block', () => {
+          it('inserts a new line', () => {
+            const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
+
+            plugin.splitCodeBlock();
+
+            expect(pm.doc).to.deep.equal(doc(code_block()('te\nxt')));
+          });
+
+          it('returns true', () => {
+            const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
+
+            expect(plugin.splitCodeBlock()).to.be.true;
+          });
+        });
+      });
+    });
+
+    context('when it is not a code block', () => {
+      it('returns false', () => {
+        const { pm, plugin } = editor(doc(p('text{<>}')));
+
+        expect(plugin.splitCodeBlock()).to.be.false;
+      });
     });
   });
 });

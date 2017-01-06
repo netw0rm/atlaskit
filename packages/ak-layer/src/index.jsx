@@ -219,7 +219,7 @@ export default class Layer extends PureComponent {
         </div>
         <div
           ref={ref => (this.contentRef = ref)}
-          style={{ top: 0, left: 0, position: cssPosition, transform }}
+          style={{ top: 0, left: 0, position: cssPosition, transform, zIndex: 400 }}
         >
           {this.props.content}
         </div>

@@ -1,5 +1,4 @@
 import React, { PropTypes, PureComponent } from 'react';
-import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import styles from 'style!../less/FlagGroup.less';
 
@@ -24,15 +23,6 @@ export default class FlagGroup extends PureComponent {
     this.state = {
       isAnimatingOut: false,
     };
-  }
-
-  componentDidUpdate() {
-    if (this.firstFlag) {
-      // eslint doesn't like using findDOMNode, but we need to use it here because the
-      // this.firstFlag ref is a React component instance not a DOM node.
-      // eslint-disable-next-line react/no-find-dom-node
-      ReactDOM.findDOMNode(this.firstFlag).focus();
-    }
   }
 
   onFlagDismissRequested = () => {
@@ -64,11 +54,6 @@ export default class FlagGroup extends PureComponent {
                 isEntering: flagIndex === 0,
                 isExiting: flagIndex === 0 && this.state.isAnimatingOut,
                 isMovingToPrimary: flagIndex === 1 && this.state.isAnimatingOut,
-                ref: (flagEl) => {
-                  if (flagIndex === 0) {
-                    this.firstFlag = flagEl;
-                  }
-                },
               })
             ))
           }

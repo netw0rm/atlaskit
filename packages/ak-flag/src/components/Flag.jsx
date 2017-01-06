@@ -36,16 +36,14 @@ export default class Flag extends PureComponent {
 
   constructor() {
     super();
-    this.state = {
-      hasAnimatedIn: false,
-    };
+    this.state = { hasAnimatedIn: false };
   }
 
   componentDidUpdate() {
-    // eslint-disable-next-line react/no-did-update-set-state
-    this.setState({
-      hasAnimatedIn: true,
-    });
+    if (this.state.hasAnimatedIn === false) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ hasAnimatedIn: true });
+    }
   }
 
   flagDismissed = () => {

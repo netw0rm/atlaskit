@@ -1,6 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import {
   action,
+  after,
   containerItemInner,
   containerItemOuter,
   icon,
@@ -37,6 +38,26 @@ export default class ContainerItem extends PureComponent {
 
   render() {
     const Link = this.props.linkComponent;
+    const Icon = () => (this.props.icon ? <div className={icon}>{this.props.icon}</div> : null);
+
+    const TextAfter = () => (this.props.textAfter ?
+      <div className={textAfter}>
+        {this.props.textAfter}
+      </div>
+    : null);
+
+    const Action = () => (this.props.action ?
+      <div className={action}>
+        {this.props.action}
+      </div>
+    : null);
+
+    const After = ({ children }) => (TextAfter || Action ?
+      <div className={after}>
+        {children}
+      </div>
+    : null);
+
     return (
       <div
         className={className(containerItemOuter, {
@@ -52,13 +73,16 @@ export default class ContainerItem extends PureComponent {
           <div
             className={containerItemInner}
           >
-            {this.props.icon ?
-              <div className={icon}>{this.props.icon}</div> : null}
-            <div className={text}>{this.props.text}</div>
-            <div className={textAfter}>{this.props.textAfter}</div>
+            <Icon />
+            <div className={text}>
+              {this.props.text}
+            </div>
+            <After>
+              <TextAfter />
+            </After>
           </div>
         </Link>
-        <div className={action}>{this.props.action}</div>
+        <Action />
       </div>
     );
   }

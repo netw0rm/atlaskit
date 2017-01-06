@@ -4,15 +4,15 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import { chaiPlugin, fixtures, makeEditor, dispatchPasteEvent, code_block, blockquote, p, doc } from '../../../test-helper';
 import { PasteContent } from '../../../test-helper/dispatch-paste-event';
-import BlockTypePlugin from '../../../src/plugins/block-type';
+import CodeBlockPlugin from '../../../src/plugins/code-block';
 
 chai.use(chaiPlugin);
 
-describe.skip('block-type paste listener', () => {
+describe('block-type paste listener', () => {
   const fixture = fixtures();
   const editor = (code: string = '') => makeEditor({
     doc: doc(code_block()(code)),
-    plugin: BlockTypePlugin,
+    plugin: CodeBlockPlugin,
     place: fixture(),
   });
 
@@ -24,7 +24,7 @@ describe.skip('block-type paste listener', () => {
   }
 
   describe('non-empty code block', () => {
-    it('should preserve existing code block content when pasting', function () {
+    it.only('should preserve existing code block content when pasting', function () {
       const { pm } = editor('foo{<>}');
       maybeDispatchPasteEvent(pm, { plain: 'bar' }, this);
       const expected = doc(code_block()('foobar'));
@@ -64,7 +64,7 @@ describe.skip('block-type paste listener', () => {
     it('should use our custom paste listener if the selected text block is inside of a blockquote', function () {
       const { pm } = makeEditor({
         doc: doc(blockquote(p('p'), code_block()('foo{<}bar{>}'))),
-        plugin: BlockTypePlugin,
+        plugin: CodeBlockPlugin,
         place: fixture(),
       });
 

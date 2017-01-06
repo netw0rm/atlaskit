@@ -34,9 +34,8 @@ export default class Flag extends PureComponent {
     isExiting: false,
   }
 
-  constructor() {
-    super();
-    this.state = { hasAnimatedIn: false };
+  state = {
+    hasAnimatedIn: false,
   }
 
   componentDidUpdate() {

@@ -17,11 +17,8 @@ export default class FlagGroup extends PureComponent {
     onDismissed: () => {},
   }
 
-  constructor() {
-    super();
-    this.state = {
-      isAnimatingOut: false,
-    };
+  state = {
+    isAnimatingOut: false,
   }
 
   onFlagDismissRequested = () => {

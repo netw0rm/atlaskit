@@ -49,6 +49,7 @@ export default class extends PureComponent {
       <div key={index} className={styles.actionsItem}>
         <Button
           appearance="link"
+          className={styles.actionButton}
           onClick={action.onClick}
           spacing="none"
         >

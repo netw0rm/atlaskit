@@ -1,0 +1,37 @@
+import React from 'react';
+import DropdownMenu from 'ak-dropdown-menu';
+import Arrow from 'ak-icon/glyph/arrowrightlong';
+import Lozenge from 'ak-lozenge';
+
+export default <DropdownMenu
+  defaultOpen
+  triggerType="button"
+  items={[
+    {
+      heading: '',
+      items: [
+        {
+          content: 'Status project',
+          elemAfter: <div style={{ display: 'flex', alignItems: 'center', width: '105px' }}>
+            <Arrow label="" size="small" /><Lozenge appearance="inprogress">in progress</Lozenge>
+          </div>,
+        },
+        {
+          content: 'Move to done',
+          elemAfter: <div style={{ display: 'flex', alignItems: 'center', width: '105px' }}>
+            <Arrow label="" size="small" /><Lozenge appearance="success">done</Lozenge>
+          </div>,
+        },
+        {
+          content: 'View workflow',
+        },
+      ],
+    },
+  ]}
+  onItemActivated={(item) => {
+    // you can do allthethings here!
+    console.log(item);
+  }}
+>
+  To do
+</DropdownMenu>;

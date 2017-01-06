@@ -202,7 +202,8 @@ export default class Editor extends PureComponent<Props, State> {
       }
 
       pm.addKeymap(new Keymap({
-        'Mod-Enter': this.handleSave
+        'Mod-Enter': this.handleSave,
+        'Esc'() {} // Disable Esc handler
       }));
 
       pm.on.domPaste.add(() => {

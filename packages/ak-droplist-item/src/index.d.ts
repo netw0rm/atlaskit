@@ -1,4 +1,6 @@
-import { Component, ReactElement } from 'react';
+import { Component, ReactNode, MouseEvent, KeyboardEvent } from 'react';
+
+type KeyboardOrMouseEvent = MouseEvent | KeyboardEvent;
 
 interface Props {
   isDisabled?: boolean;
@@ -9,10 +11,10 @@ interface Props {
   href?: string;
   target?: string;
   type?: 'link' | 'checkbox' | 'radio';
-  onActivated?: ({ item: Item, event: Event }) => void;
-  onKeyDown?: ({ item: Item, event: Event }) => void;
-  elemBefore?: Element;
-  elemAfter?: Element;
+  onActivated?: ({ item: Item, event: KeyboardOrMouseEvent }) => void;
+  onKeyDown?: ({ item: Item, event: KeyboardEvent }) => void;
+  elemBefore?: ReactNode;
+  elemAfter?: ReactNode;
 }
 
 interface State {}

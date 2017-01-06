@@ -1,4 +1,4 @@
-import { Component, ReactElement } from 'react';
+import { Component, ReactNode } from 'react';
 
 interface Props {
   appearance?: 'default' | 'tall';
@@ -7,7 +7,7 @@ interface Props {
   listContext?: 'menu';
   onOpenChange?: ({ isOpen: boolean }) => void;
   position?: string;
-  trigger?: JSX.Element | Element;
+  trigger?: ReactNode;
 }
 
 interface State {}

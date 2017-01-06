@@ -1,4 +1,4 @@
-import { Component, ReactElement } from 'react';
+import { Component } from 'react';
 
 interface Props {
   heading?: string;

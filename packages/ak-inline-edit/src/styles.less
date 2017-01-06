@@ -26,8 +26,8 @@
 }
 
 .field-base-wrapper {
-  max-width: 100%;
-  flex-grow: 1;
+  flex: 1 1 auto;
+  overflow: hidden;
 
   &:hover .edit-button {
     opacity: 1;
@@ -48,8 +48,8 @@
 }
 
 .buttons-wrapper {
-  display: flex;
   margin-left: unit(@grid, px);
+  flex-shrink: 0;
 
   button:last-child {
     margin-left: unit(@grid, px);

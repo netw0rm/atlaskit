@@ -21,7 +21,7 @@ storiesOf(name, module)
   ))
   .add('with label hidden', () => (
     <div style={containerStyle}>
-      <TextInlineEdit isLabelHidden isConfirmOnBlurDisabled />
+      <TextInlineEdit isLabelHidden />
     </div>
   ))
   .add('with invalid input', () => (

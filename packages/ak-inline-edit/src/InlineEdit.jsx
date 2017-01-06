@@ -262,14 +262,17 @@ export default class InlineEdit extends PureComponent {
           label={this.props.label}
           isLabelHidden={this.props.isLabelHidden}
           htmlFor={this.props.labelHtmlFor}
+          onClick={this.props.onEditRequested}
         />
       </div>
-      <div className={styles.contentWrapper}>
+      <div
+        className={styles.contentWrapper}
+        onBlur={this.onWrapperBlur}
+        onFocus={this.onWrapperFocus}
+      >
         <div // eslint-disable-line jsx-a11y/no-static-element-interactions
           className={styles.fieldBaseWrapper}
           onClick={this.onWrapperClick}
-          onBlur={this.onWrapperBlur}
-          onFocus={this.onWrapperFocus}
         >
           <FieldBase
             isInvalid={this.props.isInvalid}

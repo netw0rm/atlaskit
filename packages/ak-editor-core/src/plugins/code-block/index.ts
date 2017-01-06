@@ -15,7 +15,6 @@ export class CodeBlockState {
     // see https://discuss.prosemirror.net/t/handle-paste-inside-code-block/372/5?u=bradleyayers
     pm.root.addEventListener('paste', new CodeBlockPasteListener(pm), true);
 
-
     pm.addKeymap(new Keymap({
       'Enter': () => this.splitCodeBlock(),
     }));

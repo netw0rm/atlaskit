@@ -36,6 +36,27 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
   });
 
+  it('atlassian.editor.start with two child editors sharing a handler', () => {
+    let handler = sinon.spy() as AnalyticsHandler;
+    analyticsService.handler = handler;
+
+    class ContainerWithTwoEditors extends React.PureComponent<{}, {}> {
+      render() {
+        return (
+          <div>
+            <Editor isExpandedByDefault analyticsHandler={handler} />
+            <Editor isExpandedByDefault analyticsHandler={handler} />
+          </div>
+        );
+      }
+    }
+
+    expect(handler).to.not.have.been.called;
+    mount(<ContainerWithTwoEditors />);
+    expect(handler).to.have.been.calledWith('atlassian.editor.start');
+    expect(handler).to.have.been.calledTwice;
+  });
+
   it('editor.start must not be called when unmounting component', () => {
     let handler = sinon.spy() as AnalyticsHandler;
     analyticsService.handler = handler;

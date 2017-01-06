@@ -40,6 +40,7 @@ export default class FlagGroup extends PureComponent {
           },
         ])}
       >
+        <h1 className={styles.assistive}>Flag notifications</h1>
         <div className={styles.groupInner}>
           {
             this.props.children.map((childFlag, flagIndex) => (

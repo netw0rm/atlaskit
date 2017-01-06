@@ -1,5 +1,6 @@
-import { Schema, ProseMirror, Node, Plugin } from '../../prosemirror';
+import { Schema, ProseMirror, Node, Plugin, Keymap } from '../../prosemirror';
 import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
+import CodeBlockPasteListener from './code-block-paste-listener';
 
 export class CodeBlockState {
   target: Node | null = null;
@@ -9,6 +10,15 @@ export class CodeBlockState {
   constructor(pm: PM) {
     this.pm = pm;
     this.target = this.activeBlockCode();
+
+    // add paste listener to overwrite the prosemirror's
+    // see https://discuss.prosemirror.net/t/handle-paste-inside-code-block/372/5?u=bradleyayers
+    pm.root.addEventListener('paste', new CodeBlockPasteListener(pm), true);
+
+
+    pm.addKeymap(new Keymap({
+      'Enter': () => this.splitCodeBlock(),
+    }));
 
     pm.updateScheduler([
       pm.on.selectionChange,
@@ -24,6 +34,38 @@ export class CodeBlockState {
 
   unsubscribe(cb: CodeBlockStateSubscriber) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
+  }
+
+  splitCodeBlock(): boolean {
+    const { pm } = this;
+    const { $from } = pm.selection;
+    const node = $from.parent;
+
+    if (isCodeBlockNode(node)) {
+      if (!this.lastCharIsNewline(node) || !this.cursorIsAtTheEndOfLine()) {
+        pm.tr.typeText('\n').applyAndScroll();
+        return true;
+      } else {
+        this.deleteCharBefore();
+      }
+    }
+    return false;
+  }
+
+  // Replaced the one from prosemirror. Because it was not working with IOS.
+  private deleteCharBefore() {
+    const { pm } = this;
+    const { $from } = pm.selection;
+    pm.tr.delete($from.pos - 1, $from.pos).applyAndScroll();
+  }
+
+  private lastCharIsNewline(node: Node): boolean {
+    return node.textContent.slice(-1) === '\n';
+  }
+
+  private cursorIsAtTheEndOfLine() {
+    const { $from, empty } = this.pm.selection;
+    return empty && $from.end() === $from.pos;
   }
 
   private update() {

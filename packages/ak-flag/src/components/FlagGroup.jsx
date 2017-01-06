@@ -19,7 +19,6 @@ export default class FlagGroup extends PureComponent {
 
   constructor() {
     super();
-    this.childFlagHeights = {};
     this.state = {
       isAnimatingOut: false,
     };

@@ -19,10 +19,12 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-react": "*",
     "ak-button": "^5.1.2",
+    "ak-button-group": "*",
+    "ak-dropdown": "^10.0.0",
     "ak-icon": "^12.1.2",
-    "ak-dropdown": "^10.0.0"
+    "akutil-react": "*",
+    "akutil-readme": "^1.2.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

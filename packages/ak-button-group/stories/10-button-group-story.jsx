@@ -15,28 +15,28 @@ const imports = [
   ['ReactAkButton', 'ak-button'],
 ];
 storiesOf(name, module)
-  .addCodeExampleStory('plain ak-button-group of ak-buttons', () => (
+  .addCodeExampleStory('plain group', () => (
     <ReactAkButtonGroup>
       <ReactAkButton>One</ReactAkButton>
       <ReactAkButton>Two</ReactAkButton>
       <ReactAkButton>Three</ReactAkButton>
     </ReactAkButtonGroup>
   ), { imports })
-  .addCodeExampleStory('ak-button-group of ak-buttons with one disabled', () => (
+  .addCodeExampleStory('with one Button disabled', () => (
     <ReactAkButtonGroup>
       <ReactAkButton selected>One</ReactAkButton>
       <ReactAkButton>Two</ReactAkButton>
       <ReactAkButton disabled>Three</ReactAkButton>
     </ReactAkButtonGroup>
   ), { imports })
-  .addCodeExampleStory('ak-button-group of ak-buttons with one selected and all disabled', () => (
+  .addCodeExampleStory('with one button selected and all disabled', () => (
     <ReactAkButtonGroup>
       <ReactAkButton disabled selected>One</ReactAkButton>
       <ReactAkButton disabled>Two</ReactAkButton>
       <ReactAkButton disabled>Three</ReactAkButton>
     </ReactAkButtonGroup>
   ), { imports })
-  .addCodeExampleStory('ak-button-group of ak-buttons with an input before for focus testing', () => (
+  .addCodeExampleStory('with an input before for focus testing', () => (
     <div>
       <input type="text" placeholder="focus here first" />
       <ReactAkButtonGroup>
@@ -46,7 +46,7 @@ storiesOf(name, module)
       </ReactAkButtonGroup>
     </div>
   ), { imports })
-  .addCodeExampleStory('ak-button-group with ak-buttons and an unexpected paragraph inside', () => (
+  .addCodeExampleStory('with an unexpected paragraph inside', () => (
     <ReactAkButtonGroup>
       <ReactAkButton>One</ReactAkButton>
       <ReactAkButton>Two</ReactAkButton>
@@ -54,7 +54,7 @@ storiesOf(name, module)
       <p>Paragraph</p>
     </ReactAkButtonGroup>
   ), { imports })
-  .addCodeExampleStory('ak-button-group that overflows the parent div', () => (
+  .addCodeExampleStory('overflows the parent div', () => (
     <div style={{ border: '1px solid #AAA', width: 75 }}>
       <ReactAkButtonGroup>
         <ReactAkButton>One</ReactAkButton>
@@ -63,14 +63,14 @@ storiesOf(name, module)
       </ReactAkButtonGroup>
     </div>
   ), { imports })
-  .addCodeExampleStory('ak-button-group with CSS display: block', () => (
+  .addCodeExampleStory('with CSS display: block', () => (
     <ReactAkButtonGroup style={{ border: '1px solid #AAA', display: 'block' }}>
       <ReactAkButton>One</ReactAkButton>
       <ReactAkButton>Two</ReactAkButton>
       <ReactAkButton>Three</ReactAkButton>
     </ReactAkButtonGroup>
   ), { imports })
-  .addCodeExampleStory('ak-button-group with ak-button > ak-icon', () => (
+  .addCodeExampleStory('with ak-button > ak-icon', () => (
     <ReactAkButtonGroup style={{ border: '1px solid #AAA', display: 'block' }}>
       <ReactAkButton>Edit</ReactAkButton>
       <ReactAkButton>
@@ -78,7 +78,7 @@ storiesOf(name, module)
       </ReactAkButton>
     </ReactAkButtonGroup>
   ), { imports: [...imports, ['CharlieIcon', 'ak-icon/glyph/atlassian']] })
-  .addCodeExampleStory('ak-button-group with ak-dropdown > ak-button (split button)', () => (
+  .addCodeExampleStory('with ak-dropdown > ak-button (split button)', () => (
     <ReactAkButtonGroup style={{ border: '1px solid #AAA', display: 'block' }}>
       <ReactAkButton>Edit</ReactAkButton>
       <ReactDropdown>

@@ -16,7 +16,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "ak-editor-core": "^2.0.0",
+    "ak-editor-core": "^3.0.0",
     "tslib": "^1.2.0"
   },
   "peerDependencies": {

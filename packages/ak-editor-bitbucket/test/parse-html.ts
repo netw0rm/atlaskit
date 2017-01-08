@@ -389,7 +389,15 @@ describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
     });
 
     it('block with specified language should be parsed', () => {
-      // TODO: Implement this after FAB-1024 is done
+      const js = code_block({language: 'javascript'});
+
+      expect(parse(
+        '<p>foo</p>' +
+        '<div class="codehilite language-javascript"><pre><span></span>    bar\n       baz\n</pre></div>'
+      )).to.deep.equal(doc(
+        p('foo'),
+        js('    bar\n       baz\n')
+      ));
     });
   });
 

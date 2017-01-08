@@ -1,6 +1,6 @@
 {
   "name": "ak-toggle",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ak-toggle component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

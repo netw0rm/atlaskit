@@ -42,6 +42,7 @@ storiesOf(name, module)
   .add('with confirmation cancellation', () => (
     <div style={containerStyle}>
       <TextInlineEdit
+        isConfirmOnBlurDisabled
         onConfirm={(cancelConfirmation) => {
           action('Cancelling confirmation')();
           cancelConfirmation();

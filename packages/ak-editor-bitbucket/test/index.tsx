@@ -187,3 +187,24 @@ describe('ak-editor-bitbucket/multiple editors as children', () => {
     expect(editor2.find('ChromeExpanded ToolbarLists')).to.exist;
   });
 });
+
+describe('ak-editor-bitbucket/toolbar', () => {
+  let editor: ReactWrapper<any, any>;
+
+  beforeEach(() => {
+    editor = mount(<Editor isExpandedByDefault />);
+  });
+
+  it('should close blocktype dropdown after second click', () => {
+    const trigger = editor.find('ToolbarBlockType AkButton');
+
+    expect(trigger).to.exist;
+    expect(editor.find('ToolbarBlockType Panel')).to.not.exist;
+
+    trigger.simulate('click');
+    expect(editor.find('ToolbarBlockType Panel')).to.exist;
+
+    trigger.simulate('click');
+    expect(editor.find('ToolbarBlockType Panel')).to.not.exist;
+  });
+});

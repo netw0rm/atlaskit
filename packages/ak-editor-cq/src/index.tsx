@@ -11,7 +11,7 @@ import {
   DefaultInputRulesPlugin,
   Chrome,
   AnalyticsHandler,
-  service as analyticsService
+  analyticsService
 } from 'ak-editor-core';
 import schema from './schema';
 import { parse, encode } from './cxhtml';
@@ -149,8 +149,15 @@ export default class Editor extends PureComponent<Props, State> {
         'Mod-Enter': this.handleSave
       }));
 
+      pm.on.domPaste.add(() => {
+        analyticsService.trackEvent('atlassian.editor.paste');
+      });
+
+
       pm.on.change.add(this.handleChange);
       pm.focus();
+
+      analyticsService.trackEvent('atlassian.editor.start');
 
       this.setState({ pm });
     } else {

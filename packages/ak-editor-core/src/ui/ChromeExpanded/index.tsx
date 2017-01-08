@@ -20,7 +20,7 @@ import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarFeedback from '../ToolbarFeedback';
 import MentionPicker from '../MentionPicker';
-import { decorator as analytics } from '../../analytics';
+import { analyticsDecorator as analytics } from '../../analytics';
 
 export interface Props {
   feedbackFormUrl?: string;

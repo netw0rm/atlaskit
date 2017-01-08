@@ -1,21 +1,5 @@
-import {
-  akEditorCodeBackground,
-  akEditorCodeBlockPadding,
-  akEditorCodeFontFamily,
-  akEditorCodeInlinePadding,
-  akEditorSubtleAccent,
-} from 'ak-editor-shared-styles';
-
-import {
-  akBorderRadius,
-  akColorN100,
-  akColorN40,
-  akColorN50,
-  akColorN300,
-  akColorN400,
-  akGridSize,
-} from 'akutil-shared-styles';
-
+import { akEditorSubtleAccent } from 'ak-editor-shared-styles';
+import { akBorderRadius, akGridSize } from 'akutil-shared-styles';
 import { style } from 'typestyle';
 
 export const container = style({
@@ -38,37 +22,6 @@ export const content = style({
       outline: 'none',
       whiteSpace: 'pre-wrap',
       padding: '12px 20px',
-
-      $nest: {
-        // This needs to be removed once we update specs in ak-style-reset
-        '& blockquote': {
-          paddingLeft: '16px',
-          borderLeft: `4px solid ${akColorN40}`,
-          marginLeft: 0,
-          marginRight: 0,
-          color: akColorN300,
-
-          $nest: {
-            '&::before, &::after': {
-              content: '',
-            }
-          }
-        },
-
-        '& code': {
-          fontFamily: akEditorCodeFontFamily,
-          background: akEditorCodeBackground,
-          padding: akEditorCodeInlinePadding,
-          borderRadius: akBorderRadius,
-        },
-
-        '& pre': {
-          fontFamily: akEditorCodeFontFamily,
-          background: akEditorCodeBackground,
-          padding: akEditorCodeBlockPadding,
-          borderRadius: akBorderRadius,
-        }
-      }
     }
   }
 });

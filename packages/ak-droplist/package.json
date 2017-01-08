@@ -1,28 +1,30 @@
 {
   "name": "ak-droplist",
-  "version": "1.0.0",
+  "version": "4.1.0",
   "description": "ak-droplist React component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
+  "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single ak-droplist; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/index.d.ts"
   ],
   "dependencies": {
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "ak-layer": "^62.0.2",
-    "ak-droplist-group": "^1.0.0",
-    "ak-droplist-item": "^2.1.0",
     "ak-droplist-trigger": "^1.0.0",
     "keycode": "^2.1.2"
   },
   "devDependencies": {
     "ak-droplist": "*",
+    "ak-droplist-group": "^2.0.0",
+    "ak-droplist-item": "^3.0.0",
     "akutil-readme": "^1.1.0",
     "ak-button": "^5.0.2"
   },

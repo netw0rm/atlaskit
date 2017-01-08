@@ -6,29 +6,10 @@ A button group provides a visual grouping for related Button (`<ak-button>`) ele
 
 ## Try it out
 
-Interact with a [live demo of the ak-button-group with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/ak-button-group/@VERSION@/).
+Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/ak-button-group/@VERSION@/).
 
 ## Setup and install
 
 ```
 npm install ak-button-group
-```
-
-## Using the component
-
-### React
-
-Import the component in your React app as follows:
-
-```
-import ButtonGroup from 'ak-button-group';
-import Button from 'ak-button';
-
-ReactDOM.render((
-  <ButtonGroup>
-    <Button>One</Button>
-    <Button>Two</Button>
-    <Button>Three</Button>
-  </ButtonGroup>
-), container)
 ```

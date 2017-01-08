@@ -29,15 +29,18 @@ describe(name, () => {
       expect(mount(<Item>sample</Item>)).to.have.text('sample');
     });
 
-    it('should render elemBefore for the link item', () => {
+    it('should render elemBefore for all items', () => {
       const Icon = (<div id="icon">icon</div>);
       expect(mount(<Item elemBefore={Icon}>sample</Item>)).to.contain(Icon);
+      expect(mount(<Item elemBefore={Icon} type="checkbox">sample</Item>)).to.contain(Icon);
+      expect(mount(<Item elemBefore={Icon} type="radio">sample</Item>)).to.contain(Icon);
     });
 
-    it('should NOT render elemBefore for anything other than the link item', () => {
-      const Icon = <div id="icon">icon</div>;
-      expect(mount(<Item type="checkbox" elemBefore={Icon}>sample</Item>)).to.not.contain(Icon);
-      expect(mount(<Item type="radio" elemBefore={Icon}>sample</Item>)).to.not.contain(Icon);
+    it('should render elemAfter for all items', () => {
+      const Icon = (<div id="icon">icon</div>);
+      expect(mount(<Item elemAfter={Icon}>sample</Item>)).to.contain(Icon);
+      expect(mount(<Item elemAfter={Icon} type="checkbox">sample</Item>)).to.contain(Icon);
+      expect(mount(<Item elemAfter={Icon} type="radio">sample</Item>)).to.contain(Icon);
     });
 
     it('should render icon for the radio or checkbox element', () => {

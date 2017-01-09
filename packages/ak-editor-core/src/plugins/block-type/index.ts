@@ -44,6 +44,8 @@ const Other = makeBlockType('other', 'Other…');
 
 export type ContextName = 'default' | 'comment' | 'pr';
 
+export type GroupedBlockTypes = BlockType[][];
+
 export class BlockTypeState {
   private pm: PM;
   private changeHandlers: BlockTypeStateSubscriber[] = [];
@@ -51,7 +53,7 @@ export class BlockTypeState {
 
   // public state
   currentBlockType: BlockType = NormalText;
-  availableBlockTypes: BlockType[] = [];
+  availableBlockTypes: GroupedBlockTypes = [];
   context?: ContextName;
 
   constructor(pm: PM) {
@@ -68,9 +70,20 @@ export class BlockTypeState {
 
     this.addBasicKeymap();
 
-    this.addAvailableContext('pr', [NormalText, Heading1, Heading2, Heading3, BlockQuote, CodeBlock]);
-    this.addAvailableContext('comment', [NormalText, BlockQuote, CodeBlock]);
-    this.addAvailableContext('default', [NormalText, Heading1, Heading2, Heading3, Heading4, Heading5, BlockQuote, CodeBlock]);
+    this.addAvailableContext('pr', [
+      [NormalText],
+      [Heading1, Heading2, Heading3],
+      [BlockQuote, CodeBlock]
+    ]);
+    this.addAvailableContext('comment', [
+      [NormalText],
+      [BlockQuote, CodeBlock]
+    ]);
+    this.addAvailableContext('default', [
+      [NormalText],
+      [Heading1, Heading2, Heading3, Heading4, Heading5],
+      [BlockQuote, CodeBlock]
+    ]);
     this.changeContext('default');
 
     this.update();
@@ -92,7 +105,7 @@ export class BlockTypeState {
       this.updateBlockTypeKeymap(context);
 
       this.context = context.name;
-      this.availableBlockTypes = context.blockTypes;
+      this.availableBlockTypes = context.groupedBlockTypes;
 
       this.update(true);
     }
@@ -217,19 +230,19 @@ export class BlockTypeState {
     pm.addKeymap(context.keymap);
   }
 
-  private keymapForBlockTypes(blockTypes: BlockType[]) {
+  private keymapForBlockTypes(groupedBlockTypes: GroupedBlockTypes) {
     let bindings: { [key: string]: any } = {};
 
     const bind = (key: string, action: any): void => {
       bindings = { ...bindings, ...{ [key]: action } };
     };
 
-    blockTypes.forEach((blockType) => {
+    groupedBlockTypes.forEach(blockTypes => blockTypes.forEach((blockType) => {
       if (blockType.shortcut) {
         const eventName = this.analyticsEventName('keyboard', blockType.name);
         bind(blockType.shortcut, trackAndInvoke(eventName, () => this.toggleBlockType(blockType.name)));
       }
-    });
+    }));
 
     return new Keymap(bindings);
   }
@@ -328,13 +341,19 @@ export class BlockTypeState {
     return `atlassian.editor.format.${blockTypeName}.${eventSource}`;
   }
 
-  private addAvailableContext(name: ContextName, preferredBlockTypes: BlockType[]): void {
-    let context = this.makeContext(name, preferredBlockTypes.filter(this.isBlockTypeSchemaSupported));
+  private addAvailableContext(name: ContextName, groupedBlockTypes: GroupedBlockTypes): void {
+    let context = this.makeContext(
+      name,
+      groupedBlockTypes.map(
+        blockTypesInGroup => blockTypesInGroup.filter(this.isBlockTypeSchemaSupported)
+      )
+    );
+
     this.availableContexts.push(context);
   }
 
-  private makeContext(name: ContextName, blockTypes: BlockType[]): Context {
-    return { name: name, blockTypes: blockTypes, keymap: this.keymapForBlockTypes(blockTypes) };
+  private makeContext(name: ContextName, groupedBlockTypes: GroupedBlockTypes): Context {
+    return { name: name, groupedBlockTypes: groupedBlockTypes, keymap: this.keymapForBlockTypes(groupedBlockTypes) };
   }
 
   private findContext(name: ContextName): Context | undefined {
@@ -392,7 +411,7 @@ export interface BlockType {
 
 interface Context {
   name: ContextName;
-  blockTypes: BlockType[];
+  groupedBlockTypes: GroupedBlockTypes;
   keymap: Keymap;
 }
 

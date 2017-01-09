@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import AkButton from 'ak-button';
-import { BlockType, BlockTypeState } from '../../../src/plugins/block-type';
+import Group from 'ak-droplist-group';
+import Item from 'ak-droplist-item';
+import DropdownList from 'ak-droplist';
+
+import { BlockType, BlockTypeState, GroupedBlockTypes } from '../../../src/plugins/block-type';
 import Panel from '../Panel';
 import * as styles from './styles';
 import { analyticsService as analytics } from '../../analytics';
@@ -12,7 +16,7 @@ export interface Props {
 
 export interface State {
   active: boolean;
-  availableBlockTypes: BlockType[];
+  availableBlockTypes: GroupedBlockTypes;
   currentBlockType: BlockType;
 }
 
@@ -40,31 +44,43 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     const { active, currentBlockType, availableBlockTypes } = this.state;
 
     return (
-      <span onClick={this.handleToggleDropdown} className={styles.container}>
-        <AkButton
-          isSelected={active}
-          appearance="subtle"
-          spacing="compact"
-        >
-          <span className={styles.buttonContent}>{currentBlockType.title}</span>
-        </AkButton>
-        {!active ? null :
-        <Panel align="left" spacing="none" onOutsideClick={this.handleToggleDropdown}>
-          <ul className={styles.dropdown}>
-            {availableBlockTypes.map(blockType => (
-            <li key={blockType.name}>
-              <a
-                onClick={() => this.handleSelectBlockType(blockType)}
-                className={`${styles.blockType} ${this.blockTypeItemClass(blockType)} ${currentBlockType === blockType ? styles.active : ''}`}
-              >
-                <span>{blockType.title}</span>
-              </a>
-            </li>
-            ))}
-          </ul>
-        </Panel>
+      <DropdownList
+        isOpen={this.state.active}
+        onOpenChange={(attrs: any) => {
+          const { availableBlockTypes, currentBlockType } = this.state;
+          this.setState({
+            active: attrs.isOpen,
+            availableBlockTypes,
+            currentBlockType
+          });
+        }}
+        appearance="tall"
+        position="top left"
+        trigger={
+          <AkButton
+            isSelected={active}
+            appearance="subtle"
+            spacing="compact"
+          >
+            <span className={styles.buttonContent}>{currentBlockType.title}</span>
+          </AkButton>
         }
-      </span>
+      >
+      {availableBlockTypes.map(blockTypeGroup => (
+        <Group>
+        {blockTypeGroup.map(blockType =>(
+          <Item
+            isActive={currentBlockType === blockType}
+            onActivate={() => { this.handleSelectBlockType(blockType); }}
+          >
+            <span className={`${this.blockTypeItemClass(blockType)} ${currentBlockType === blockType ? styles.active : ''}`}>
+              {blockType.title}
+            </span>
+          </Item>
+        ))}
+        </Group>
+      ))}
+      </DropdownList>
     );
   }
 

@@ -5,60 +5,75 @@ import Flag, { FlagGroup } from '../../src';
 import ExampleNavigation from './ExampleNavigation';
 import GreenSuccessIcon from './GreenSuccessIcon';
 
+const descriptions = [
+  'Marzipan croissant pie. Jelly beans gingerbread caramels brownie icing.',
+  'Fruitcake topping wafer pie candy dragée sesame snaps cake. Cake cake cheesecake. Pie tiramisu carrot cake tart tart dessert cookie. Lemon drops cookie tootsie roll marzipan liquorice cotton candy brownie halvah.',
+];
+
 // eslint-disable-next-line react/prefer-stateless-function
 export default class AnimationDemo extends PureComponent {
   constructor() {
     super();
+    this.createdFlagCount = 0;
     this.state = {
-      flags: [],
+      flags: [
+        this.newFlag(),
+        this.newFlag(5),
+      ],
     };
   }
 
+  randomDescription = () => descriptions[Math.floor(Math.random() * descriptions.length)];
+
+  newFlag = (timeOffset = 0) => ({
+    title: 'Whoa a new flag',
+    description: this.randomDescription(),
+    created: Date.now() - (timeOffset * 1000),
+    key: this.createdFlagCount++,
+  })
+
   addFlag = () => {
     const flags = this.state.flags.slice();
-    flags.push({
-      id: Date.now(),
-      title: 'Whoa a new flag',
-      description: 'Check it out it is a flag that flies in from the left!',
-    });
+    flags.splice(0, 0, this.newFlag());
 
     this.setState({ flags });
   }
 
-  flagDismissed = (removedFlagId) => {
-    action(`Flag.onDismissed fired for Flag.id '${removedFlagId}'`)();
+  flagDismissed = (flagId) => {
+    action(`Flag.onDismissed fired for first Flag id "${flagId}"`)();
     this.setState({
-      flags: this.state.flags.filter(flag => flag.id !== removedFlagId),
+      flags: this.state.flags.slice(1),
     });
   }
 
   render() {
     return (
       <ExampleNavigation>
-        <FlagGroup>
+        <FlagGroup onDismissed={this.flagDismissed}>
           {
             this.state.flags.map(flag => (
               <Flag
-                id={flag.id}
-                key={flag.id}
+                id={flag.key}
+                key={flag.key}
                 icon={<GreenSuccessIcon />}
-                title={flag.title}
+                title={`${flag.key}: ${flag.title}`}
                 description={flag.description}
-                onDismissed={this.flagDismissed}
               />
             ))
           }
         </FlagGroup>
-        <p>
-          Click the <em>Add another flag</em> button, then click the dismiss icon on the
-          flag that appears.
-        </p>
-        <Button
-          appearance="primary"
-          onClick={this.addFlag}
-        >
-          Add another flag
-        </Button>
+        <div>
+          <p>Add some flags then try clicking the <em>Dismiss</em> icon.</p>
+          <p>When a flag is dismissed, an event should be shown in the action logger panel.</p>
+          <p>
+            <Button
+              appearance="primary"
+              onClick={this.addFlag}
+            >
+              Add another flag
+            </Button>
+          </p>
+        </div>
       </ExampleNavigation>
     );
   }

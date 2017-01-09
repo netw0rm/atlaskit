@@ -16,17 +16,13 @@ const flagPropDescriptions = {
   title: 'The bold text shown at the top of the flag',
   description: 'The secondary text shown below the flag title',
 
-  onDismissed: '(private)',
-  onAnimationFinished: '(private)',
-  isDismissAllowed: '(private)',
-  isEntering: '(private)',
-  isMovingToPrimary: '(private)',
-  isExiting: '(private)',
+  onDismissed: 'Private, do not use. Use the FlagGroup onDismissed handler.',
+  isDismissAllowed: 'Private, do not use.',
 };
 
 const flagGroupPropDescriptions = {
   children: 'Flag elements to be displayed',
-  onDismissed: 'Handler to be called once a Flag is dismissed and its animation has finished',
+  onDismissed: 'Handler to be called once a Flag is dismissed and its animation has finished. Receives the id of the dismissed Flag as a parameter.',
 };
 
 storiesOf(name, module)

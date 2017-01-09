@@ -1,27 +1,59 @@
 import React, { PropTypes, PureComponent } from 'react';
 import styles from 'style!../less/FlagGroup.less';
+import FlagAnimationWrapper from './FlagAnimationWrapper';
 
-/**
- * @description Return React FlagGroup component.
- * @class FlagGroup
- */
 // eslint-disable-next-line react/prefer-stateless-function
 export default class FlagGroup extends PureComponent {
   static propTypes = {
-    /**
-     * @description The Flag components to display inside the FlagGroup.
-     * @memberof FlagGroup
-     * @instance
-     * @type {element}
-     */
     children: PropTypes.node,
+    onDismissed: PropTypes.func,
   };
+
+  static defaultProps = {
+    onDismissed: () => {},
+  }
+
+  state = {
+    isAnimatingOut: false,
+  }
+
+  onFlagDismissRequested = () => {
+    this.setState({ isAnimatingOut: true });
+  }
+
+  onFlagDismissFinished = (dismissedFlagId) => {
+    this.setState({ isAnimatingOut: false });
+    this.props.onDismissed(dismissedFlagId);
+  }
 
   render() {
     return (
-      <div className={styles.root}>
-        {this.props.children}
-      </div>
+      <section
+        className={styles.root}
+      >
+        <h1 className={styles.assistive}>Flag notifications</h1>
+        <div className={styles.groupInner}>
+          {
+            this.props.children.map((childFlag, flagIndex) => (
+              <FlagAnimationWrapper
+                flagId={childFlag.props.id}
+                key={childFlag.props.id}
+                isEntering={flagIndex === 0}
+                isExiting={flagIndex === 0 && this.state.isAnimatingOut}
+                isMovingToPrimary={flagIndex === 1 && this.state.isAnimatingOut}
+                onAnimationFinished={this.onFlagDismissFinished}
+              >
+                {
+                  React.cloneElement(childFlag, {
+                    onDismissed: this.onFlagDismissRequested,
+                    isDismissAllowed: flagIndex === 0,
+                  })
+                }
+              </FlagAnimationWrapper>
+            ))
+          }
+        </div>
+      </section>
     );
   }
 }

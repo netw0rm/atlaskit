@@ -30,6 +30,7 @@ export default class Flag extends PureComponent {
       <div
         className={styles.root}
         role="alert"
+        tabIndex={0}
       >
         <div className={styles.primaryIcon}>
           {this.props.icon}

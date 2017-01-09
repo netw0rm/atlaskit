@@ -3,10 +3,9 @@ import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Avatar from 'ak-avatar';
-import Button from 'ak-button';
 import Lozenge from 'ak-lozenge';
 
-import Comment from '../src/';
+import Comment, { CommentAction } from '../src/';
 import styles from '../src/styles.less';
 import { name } from '../package.json';
 
@@ -32,34 +31,15 @@ describe(name, () => {
 
     describe('props', () => {
       describe('actions prop', () => {
-        const actions = [
-          { content: 'string content' },
-          { content: (<p>JSX content</p>) },
-          { content: 'string content with onClick', onClick: () => {} },
-          { content: (<p>JSX content with onClick</p>), onClick: () => {} },
-        ];
-        let wrapper;
-
-        beforeEach(() => {
-          wrapper = mount(<Comment actions={actions} />);
-        });
-
-        it('should render each action item in the correct container', () => {
+        it('should render action items in the correct container', () => {
+          const actions = [
+            <CommentAction />,
+            <CommentAction>action content</CommentAction>,
+            <CommentAction onClick={() => {}}>action content</CommentAction>,
+          ];
+          const wrapper = shallow(<Comment actions={actions} />);
           const container = wrapper.find(`.${styles.locals.actionsContainer}`);
-          expect(container).to.have.exactly(actions.length).descendants(Button);
-
-          const items = container.find(Button);
-          items.forEach((item, index) => {
-            if (typeof actions[index].content === 'string') {
-              expect(item).to.contain.text(actions[index].content);
-            } else {
-              expect(item).to.contain(actions[index].content);
-            }
-
-            if (actions[index].onClick) {
-              expect(item).to.have.prop('onClick', actions[index].onClick);
-            }
-          });
+          expect(container).to.have.exactly(actions.length).descendants(CommentAction);
         });
       });
 

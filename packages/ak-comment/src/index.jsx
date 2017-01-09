@@ -1,8 +1,10 @@
 import React, { PropTypes, PureComponent } from 'react';
-import Button from 'ak-button';
 import Lozenge from 'ak-lozenge';
 
 import styles from 'style!./styles.less';
+import CommentAction from './CommentAction';
+
+export { CommentAction };
 
 export default class extends PureComponent {
   static propTypes = {
@@ -45,20 +47,10 @@ export default class extends PureComponent {
   }
 
   renderActions = () => {
-    const items = this.props.actions.map((action, index) => (
-      <div key={index} className={styles.actionsItem}>
-        <Button
-          appearance="link"
-          className={styles.actionButton}
-          onClick={action.onClick}
-          spacing="none"
-        >
-          {action.content}
-        </Button>
-      </div>
-    ));
-
-    return (items && items.length)
+    const items = this.props.actions.map(
+      (item, index) => <div key={index} className={styles.actionsItem}>{item}</div>
+    );
+    return items
       ? <div className={styles.actionsContainer}>{items}</div>
       : null;
   }

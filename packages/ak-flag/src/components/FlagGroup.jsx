@@ -3,10 +3,6 @@ import classNames from 'classnames';
 import styles from 'style!../less/FlagGroup.less';
 import FlagAnimationWrapper from './FlagAnimationWrapper';
 
-/**
- * @description Return React FlagGroup component.
- * @class FlagGroup
- */
 // eslint-disable-next-line react/prefer-stateless-function
 export default class FlagGroup extends PureComponent {
   static propTypes = {

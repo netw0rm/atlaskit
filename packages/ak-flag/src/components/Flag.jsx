@@ -2,10 +2,6 @@ import React, { PropTypes, PureComponent } from 'react';
 import styles from 'style!../less/Flag.less';
 import CancelIcon from 'ak-icon/glyph/cancel';
 
-/**
- * @description Return React Flag component.
- * @class Flag
- */
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Flag extends PureComponent {
   static propTypes = {

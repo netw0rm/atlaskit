@@ -3,8 +3,9 @@ import Lozenge from 'ak-lozenge';
 
 import styles from 'style!./styles.less';
 import CommentAction from './CommentAction';
+import CommentAuthor from './CommentAuthor';
 
-export { CommentAction };
+export { CommentAction, CommentAuthor };
 
 export default class extends PureComponent {
   static propTypes = {

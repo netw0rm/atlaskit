@@ -2,7 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import Avatar from 'ak-avatar';
 
-import Comment, { CommentAction } from '../src';
+import Comment, { CommentAction, CommentAuthor } from '../src';
 import { name } from '../package.json';
 import { clickHandler, sampleText } from './_constants';
 import sampleAvatarImg from './sample-avatar.png';
@@ -12,8 +12,8 @@ const sampleAvatar = <Avatar src={sampleAvatarImg} label="User avatar" />;
 storiesOf(name, module)
   .add('simple ak-comment', () => (
     <Comment
+      author={<CommentAuthor>John Smith</CommentAuthor>}
       avatar={sampleAvatar}
-      author="John Smith"
       type="Author"
       datetime="30, August 2016"
       content={[<p>{sampleText}</p>, <p>{sampleText}</p>]}
@@ -33,8 +33,12 @@ storiesOf(name, module)
     const focusHandler = event => action(`${event.target.textContent} button got focus.`)();
     return (
       <Comment
+        author={
+          <CommentAuthor onClick={clickHandler} onMouseOver={mouseOverHandler}>
+            John Smith (click or hover)
+          </CommentAuthor>
+        }
         avatar={sampleAvatar}
-        author="John Smith"
         type="Author"
         datetime="30, August 2016"
         content={[<p>{sampleText}</p>, <p>{sampleText}</p>]}
@@ -49,8 +53,8 @@ storiesOf(name, module)
   .add('ak-comment with different avatar sizes', () => {
     const avatarWithSize = size => (
       <Comment
+        author={<CommentAuthor>John Smith</CommentAuthor>}
         avatar={<Avatar src={sampleAvatarImg} label="User avatar" size={size} />}
-        author="John Smith"
         type="Author"
         datetime="30, August 2016"
         content={<div>
@@ -73,6 +77,7 @@ storiesOf(name, module)
   })
   .add('ak-comment with img avatar', () => (
     <Comment
+      author={<CommentAuthor>John Smith</CommentAuthor>}
       avatar={<img src={sampleAvatarImg} alt="img avatar" height="40" width="40" />}
       content={(<p>{sampleText}</p>)}
     />

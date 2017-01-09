@@ -34,10 +34,18 @@
   color: @ak-color-N500;
   display: flex;
   flex-wrap: wrap;
-}
 
-.top-item {
-  white-space: nowrap;
+  .top-item {
+    white-space: nowrap;
+
+    .top-button:not(:hover):not(:active) {
+      color: @ak-color-N500;
+    }
+
+    .top-button:hover {
+      text-decoration: none;
+    }
+  }
 }
 
 .top-item + .top-item {
@@ -47,6 +55,10 @@
     padding-left: 0;
     padding-right: unit(@grid, px);
   }
+}
+
+.comment-author {
+  font-weight: 500;
 }
 
 .content-container {

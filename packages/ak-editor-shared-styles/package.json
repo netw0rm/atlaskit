@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-shared-styles",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "description": "Shared styles for Atlassian Editor components",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",

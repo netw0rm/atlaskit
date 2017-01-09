@@ -4,6 +4,7 @@ import DropdownMenu from 'ak-dropdown-menu';
 
 import { CodeBlockState } from '../../plugins/code-block';
 import { Node } from '../../prosemirror';
+import Panel from '../Panel';
 import languageList from './languageList';
 
 export interface Props {
@@ -12,6 +13,7 @@ export interface Props {
 
 export interface State {
   target?: Node | null;
+  element?: HTMLElement;
   language: string;
 }
 
@@ -23,7 +25,7 @@ const items = [{
 }];
 
 export default class LanguagePicker extends PureComponent<Props, State> {
-  state: State = { target: null, language: 'bash' };
+  state: State = { target: null, language: 'bash'};
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -34,15 +36,17 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { target, language } = this.state;
+    const { target, language, element } = this.state;
 
     if(target) {
       return (
-        <div>
-          <DropdownMenu triggerType="button" items={items} onItemActivated={this.handleLanguageChange}>
-            {language}
-          </DropdownMenu>
-        </div>
+        <Panel target={element} align="left" autoPosition>
+          <div>
+            <DropdownMenu triggerType="button" items={items} onItemActivated={this.handleLanguageChange}>
+              {language}
+            </DropdownMenu>
+          </div>
+        </Panel>
       );
     }
 
@@ -53,7 +57,8 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   private handlePluginStateChange = (pluginState: CodeBlockState) => {
     this.setState({
       target: pluginState.target,
-      language: this.state.language
+      language: this.state.language,
+      element: pluginState.element
     });
   }
 
@@ -63,10 +68,9 @@ export default class LanguagePicker extends PureComponent<Props, State> {
       target.attrs.language = activedItem.item.content;
       this.setState({
         target: this.state.target,
-        language: activedItem.item.content
+        language: activedItem.item.content,
+        element: this.state.element
       });
-
-      console.log(target.attrs.language);
     }
   }
 }

@@ -1,5 +1,4 @@
 import React, { PropTypes, PureComponent } from 'react';
-import classNames from 'classnames';
 import styles from 'style!../less/FlagGroup.less';
 import FlagAnimationWrapper from './FlagAnimationWrapper';
 
@@ -30,12 +29,7 @@ export default class FlagGroup extends PureComponent {
   render() {
     return (
       <section
-        className={classNames([
-          styles.root,
-          {
-            [styles.multipleFlags]: this.props.children.length > 1,
-          },
-        ])}
+        className={styles.root}
       >
         <h1 className={styles.assistive}>Flag notifications</h1>
         <div className={styles.groupInner}>

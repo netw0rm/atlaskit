@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-bitbucket",
-  "version": "6.0.1",
+  "version": "6.1.0",
   "description": "Editor web component",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",

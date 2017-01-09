@@ -6,11 +6,12 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as sinon from 'sinon';
 import { SinonSpy } from 'sinon';
 import * as React from 'react';
-import { doc, strong, h1, p } from './_schema-builder';
+import { doc, strong, h1, p, mention } from './_schema-builder';
 
 import Editor from '../src/index';
 import ImageIcon from 'ak-icon/glyph/editor/image';
-import { chaiPlugin, createEvent, fixtures } from 'ak-editor-core/test-helper';
+import { ProseMirror } from 'ak-editor-core';
+import { chaiPlugin, createEvent, fixtures, dispatchPasteEvent } from 'ak-editor-core/test-helper';
 
 chai.use(chaiPlugin);
 chai.use(((chaiEnzyme as any).default || chaiEnzyme)());
@@ -206,5 +207,40 @@ describe('ak-editor-bitbucket/toolbar', () => {
 
     trigger.simulate('click');
     expect(editor.find('ToolbarBlockType Panel')).to.not.exist;
+  });
+});
+
+describe('ak-editor-bitbucket/pasting', () => {
+  const fixture = fixtures();
+  let editor: Editor;
+  let pm: ProseMirror;
+
+  beforeEach(() => {
+    editor = mount(<Editor isExpandedByDefault />, { attachTo: fixture() }).get(0) as any;
+    pm = editor!.state!.pm as ProseMirror;
+  });
+
+  it('should transform pasted html with an emoji', function() {
+    const content = {
+      html: '<p>Nice! <img src="https://d301sr.cloudfront.net/69284d5bf158/emoji/img/%2B1.svg" class="emoji"></p>'
+    };
+
+    if(!dispatchPasteEvent(pm, content)) {
+      return this.skip('This environment does not support artificial paste events');
+    }
+
+    expect(editor.doc).to.deep.equal(doc(p('Nice! :+1:')));
+  });
+
+  it('should transform pasted html with a mention', function() {
+    const content = {
+      html: '<p><a href="/mention/" rel="nofollow" title="@mention" class="mention">Mention</a> some mention.</p>'
+    };
+
+    if(!dispatchPasteEvent(pm, content)) {
+      return this.skip('This environment does not support artificial paste events');
+    }
+
+    expect(editor.doc).to.deep.equal(doc(p(mention({ id: 'mention', displayName: 'Mention' }), ' some mention.')));
   });
 });

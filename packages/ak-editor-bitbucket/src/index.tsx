@@ -21,7 +21,7 @@ import {
 
 import schema from './schema';
 import markdownSerializer from './markdown-serializer';
-import parseHtml from './parse-html';
+import { parseHtml, transformHtml } from './parse-html';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
@@ -205,6 +205,10 @@ export default class Editor extends PureComponent<Props, State> {
         'Mod-Enter': this.handleSave,
         'Esc'() {} // Disable Esc handler
       }));
+
+      pm.on.transformPastedHTML.add((html: string) => {
+        return transformHtml(html).innerHTML;
+      });
 
       pm.on.domPaste.add(() => {
         analyticsService.trackEvent('atlassian.editor.paste');

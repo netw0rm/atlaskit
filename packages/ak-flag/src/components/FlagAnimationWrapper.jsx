@@ -37,7 +37,6 @@ export default class FlagAnimationWrapper extends PureComponent {
   render() {
     return (
       <div
-        role="alert"
         className={classNames({
           [styles.root]: true,
           [styles.entering]: (

@@ -7,6 +7,7 @@ import {
   Keymap,
   ListsPlugin,
   BlockTypePlugin,
+  DefaultInputRulesPlugin,
   MarkdownInputRulesPlugin,
   HyperlinkPlugin,
   TextFormattingPlugin,
@@ -15,8 +16,7 @@ import {
   ImageUploadPlugin,
   Chrome,
   AnalyticsHandler,
-  decorator as analytics,
-  service as analyticsService
+  analyticsService
 } from 'ak-editor-core';
 
 import schema from './schema';
@@ -174,7 +174,6 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
-  @analytics('atlassian.editor.start')
   private handleRef = (place: Element | null) => {
     if (place) {
       const { context, onChange } = this.props;
@@ -189,6 +188,7 @@ export default class Editor extends PureComponent<Props, State> {
           TextFormattingPlugin,
           HorizontalRulePlugin,
           MentionsPlugin,
+          DefaultInputRulesPlugin,
           ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )
         ],
       });
@@ -202,7 +202,8 @@ export default class Editor extends PureComponent<Props, State> {
       }
 
       pm.addKeymap(new Keymap({
-        'Mod-Enter': this.handleSave
+        'Mod-Enter': this.handleSave,
+        'Esc'() {} // Disable Esc handler
       }));
 
       pm.on.domPaste.add(() => {
@@ -211,6 +212,8 @@ export default class Editor extends PureComponent<Props, State> {
 
       pm.on.change.add(this.handleChange);
       pm.focus();
+
+      analyticsService.trackEvent('atlassian.editor.start');
 
       this.setState({ pm });
     } else {

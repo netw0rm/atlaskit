@@ -6,3 +6,4 @@ export const navigationOpenWidth = globalOpenWidth + containerOpenWidth;
 export const resizeClosedBreakpoint = globalOpenWidth + (containerOpenWidth / 2);
 export const resizeExpandedBreakpoint = navigationOpenWidth + 50;
 export const collapseBreakpoint = globalOpenWidth + containerClosedWidth;
+export const containerNavigationNestedPageSpacing = 8;

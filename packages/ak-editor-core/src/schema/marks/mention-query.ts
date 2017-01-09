@@ -1,4 +1,10 @@
+import { style } from 'typestyle';
+import { akColorB400 } from 'akutil-shared-styles';
 import { Mark, MarkType, Schema } from '../../prosemirror';
+
+const mentionQueryStyle = style({
+  color: akColorB400
+});
 
 export class MentionQueryMarkType extends MarkType {
   constructor(name: string, rank: number, schema: Schema) {
@@ -12,7 +18,7 @@ export class MentionQueryMarkType extends MarkType {
     return true;
   }
 
-  toDOM() { return ['span', { 'data-mention-query': true, 'class': 'editor-mention-query-mark' }]; }
+  toDOM() { return ['span', { 'data-mention-query': true, 'class': mentionQueryStyle }]; }
 }
 
 export interface MentionQueryMark extends Mark {

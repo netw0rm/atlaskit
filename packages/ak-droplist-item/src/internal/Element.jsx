@@ -54,6 +54,7 @@ export default class Element extends PureComponent {
           onClick={handleClick}
           onMouseDown={this.handleMouseDown}
           ref={ref => (this.ref = ref)}
+          data-role="droplistItem"
         >
           {props.children}
         </a>
@@ -72,6 +73,7 @@ export default class Element extends PureComponent {
         aria-disabled={isDisabled}
         aria-hidden={isHidden}
         aria-checked={isChecked}
+        data-role="droplistItem"
       >{props.children}</span>
     );
     /* eslint-enable jsx-a11y/no-static-element-interactions */

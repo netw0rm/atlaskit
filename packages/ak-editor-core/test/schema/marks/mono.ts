@@ -20,6 +20,20 @@ describe('ak-editor-core/schema mono mark', () => {
     }).to.throw(Error);
   });
 
+  it('does not throw an error if it is named "mono"', () => {
+    expect(() => {
+      new Schema({
+        nodes: {
+          doc: { type: DocNodeType, content: 'text*' },
+          text: { type: Text }
+        },
+        marks: {
+          mono: MonoMarkType
+        }
+      });
+    }).to.not.throw(Error);
+  });
+
   it('declares itself as code', () => {
     const schema = makeSchema();
     expect(schema.marks.mono).to.have.property('isCode', true);

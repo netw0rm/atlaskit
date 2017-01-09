@@ -179,7 +179,7 @@ const converters = <Converter[]> [
         case 'I':
         case 'EM':
           return content ? addMarks(content, [schema.marks.em.create()]) : null;
-        case 'MONO':
+        case 'CODE':
           return content ? addMarks(content, [schema.marks.mono.create()]) : null;
         case 'SUB':
         case 'SUP':

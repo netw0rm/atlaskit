@@ -21,11 +21,10 @@ export default function(html: string): Node {
 
   // Convert "codehilite" containers to <pre>
   arrayFrom(el.querySelectorAll('div.codehilite')).forEach((div: HTMLDivElement) => {
-    const parent = div.parentNode as HTMLElement;
     const pre = document.createElement('pre');
     pre.textContent = div.textContent;
-    parent.insertBefore(pre, div);
-    parent.removeChild(div);
+    div.innerHTML = '';
+    div.appendChild(pre);
   });
 
   // Convert mention containers, i.e.:
@@ -92,10 +91,8 @@ export default function(html: string): Node {
     const idMatch = !src ? false : src.match(/([^\/]+)\.[^\/]+$/);
 
     if (idMatch) {
-      const span = document.createElement('span');
-      span.setAttribute('emoji-id', idMatch[1]);
-      span.setAttribute('contenteditable', 'false');
-      img.parentNode!.insertBefore(span, img);
+      const emoji = document.createTextNode(`:${decodeURIComponent(idMatch[1])}:`);
+      img.parentNode!.insertBefore(emoji, img);
     }
 
     img.parentNode!.removeChild(img);

@@ -219,6 +219,9 @@ const converters = <Converter[]> [
       }
     }
   },
+
+  // This is a catch all converter that will throw an error to indicate the node cannot be converted
+  // to a prosemirror node
   function debugFallback(content, node) {
     let repr = node.toString();
 

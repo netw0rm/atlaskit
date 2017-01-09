@@ -12,12 +12,24 @@ describe('ak-editor-core/schema mention node', () => {
     expect(() => {
       new Schema({
         nodes: {
-          mention: { type: MentionNodeType, group: 'inline' },
+          doc: { type: DocNodeType, content: 'inline*' },
           foo: { type: MentionNodeType, group: 'inline' },
           text: { type: Text }
         }
       });
     }).to.throw(Error);
+  });
+
+  it('does not throw an error if it is named "mention"', () => {
+    expect(() => {
+      new Schema({
+        nodes: {
+          doc: { type: DocNodeType, content: 'inline*' },
+          mention: { type: MentionNodeType, group: 'inline' },
+          text: { type: Text }
+        }
+      });
+    }).to.not.throw(Error);
   });
 
   it('should have mention id and display name when serializing to DOM', () => {

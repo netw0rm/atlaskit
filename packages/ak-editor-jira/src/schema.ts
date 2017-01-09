@@ -1,6 +1,5 @@
 import {
   BulletListNodeType,
-  DelMarkType,
   DocNodeType,
   EmMarkType,
   HardBreakNodeType,

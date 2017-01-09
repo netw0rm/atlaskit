@@ -10,7 +10,7 @@ import {
   Chrome,
   schema,
   AnalyticsHandler,
-  service as analyticsService
+  analyticsService
 } from 'ak-editor-core';
 import { encode, parse } from './html';
 
@@ -145,8 +145,14 @@ export default class Editor extends PureComponent<Props, State> {
         'Mod-Enter': this.handleSave
       }));
 
+      pm.on.domPaste.add(() => {
+        analyticsService.trackEvent('atlassian.editor.paste');
+      });
+
       pm.on.change.add(this.handleChange);
       pm.focus();
+
+      analyticsService.trackEvent('atlassian.editor.start');
 
       this.setState({ pm });
     } else {

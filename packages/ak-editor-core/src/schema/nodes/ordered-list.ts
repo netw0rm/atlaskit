@@ -1,6 +1,13 @@
-import { OrderedList as OrderedListNodeType, Node } from '../../prosemirror';
+import { OrderedList, Node, Schema } from '../../prosemirror';
 
-export { OrderedListNodeType };
+export class OrderedListNodeType extends OrderedList {
+  constructor(name: string, schema: Schema) {
+    super(name, schema);
+    if (name !== 'ordered_list') {
+      throw new Error('OrderedListNodeType must be named "ordered_list".');
+    }
+  }
+}
 
 export interface OrderedListNode extends Node {
   type: OrderedListNodeType;

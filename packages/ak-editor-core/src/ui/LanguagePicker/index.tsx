@@ -12,20 +12,19 @@ export interface Props {
 }
 
 export interface State {
-  target?: Node | null;
+  target?: Node;
   element?: HTMLElement;
   language: string;
 }
 
 const items = [{
-  'heading': '',
   'items': languageList.map((language) => {
       return {content: language};
     })
 }];
 
 export default class LanguagePicker extends PureComponent<Props, State> {
-  state: State = { target: null, language: 'bash'};
+  state: State = { language: 'bash'};
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);

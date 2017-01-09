@@ -3,8 +3,8 @@ import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
 
 export class CodeBlockState {
-  target: Node | null = null;
-  element: HTMLElement | undefined = undefined;
+  target?: Node;
+  element?: HTMLElement;
   private pm: PM;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
 
@@ -93,7 +93,7 @@ export class CodeBlockState {
     return node.childNodes[offset];
   }
 
-  private activeBlockCodeNode(): Node | null {
+  private activeBlockCodeNode(): Node | undefined {
     const { pm } = this;
     const { $from } = pm.selection;
     const node = $from.parent;
@@ -101,7 +101,7 @@ export class CodeBlockState {
       return node;
     }
 
-    return null;
+    return undefined;
   }
 }
 

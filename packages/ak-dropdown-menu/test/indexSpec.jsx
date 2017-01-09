@@ -30,6 +30,15 @@ const itemsList = [
 ];
 
 describe(name, () => {
+  const animStub = window.cancelAnimationFrame;
+  beforeEach(() => {
+    window.cancelAnimationFrame = () => {};
+  });
+
+  afterEach(() => {
+    window.cancelAnimationFrame = animStub;
+  });
+
   it('should be possible to create a component', () => {
     expect(shallow(<Menu>test</Menu>)).to.exist;
   });

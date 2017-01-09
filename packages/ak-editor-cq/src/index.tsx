@@ -4,6 +4,7 @@ import {
   ProseMirror,
   Keymap,
   BlockTypePlugin,
+  CodeBlockPlugin,
   ListsPlugin,
   TextFormattingPlugin,
   HorizontalRulePlugin,
@@ -133,6 +134,7 @@ export default class Editor extends PureComponent<Props, State> {
         doc: parse(this.props.defaultValue || ''),
         plugins: [
           BlockTypePlugin,
+          CodeBlockPlugin,
           MarkdownInputRulesPlugin,
           ListsPlugin,
           TextFormattingPlugin,

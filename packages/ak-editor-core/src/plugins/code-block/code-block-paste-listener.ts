@@ -5,6 +5,9 @@ class CodeBlockPasteListener {
   constructor(pm: ProseMirror) {
     return (event: ClipboardEvent) => {
       const { $from, $to } = pm.selection;
+      if(!pm.hasFocus()) {
+        return;
+      }
 
       if (!isCodeBlockNode(pm.selection.$from.parent) ||
         !isCodeBlockNode(pm.selection.$to.parent)) {

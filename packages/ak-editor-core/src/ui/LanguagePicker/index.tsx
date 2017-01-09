@@ -12,6 +12,7 @@ export interface Props {
 
 export interface State {
   target?: Node | null;
+  language: string;
 }
 
 const items = [{
@@ -22,7 +23,7 @@ const items = [{
 }];
 
 export default class LanguagePicker extends PureComponent<Props, State> {
-  state: State = { target: null };
+  state: State = { target: null, language: 'bash' };
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -33,13 +34,13 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { target } = this.state;
+    const { target, language } = this.state;
 
     if(target) {
       return (
-        <div style={{'padding': '20px 0'}}>
-          <DropdownMenu triggerType="button" items={items}>
-            Bash
+        <div>
+          <DropdownMenu triggerType="button" items={items} onItemActivated={this.handleLanguageChange}>
+            {language}
           </DropdownMenu>
         </div>
       );
@@ -52,6 +53,20 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   private handlePluginStateChange = (pluginState: CodeBlockState) => {
     this.setState({
       target: pluginState.target,
+      language: this.state.language
     });
+  }
+
+  private handleLanguageChange = (activedItem: any) => {
+    const target = this.state.target;
+    if(target) {
+      target.attrs.language = activedItem.item.content;
+      this.setState({
+        target: this.state.target,
+        language: activedItem.item.content
+      });
+
+      console.log(target.attrs.language);
+    }
   }
 }

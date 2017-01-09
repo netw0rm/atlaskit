@@ -19,6 +19,7 @@
   "dependencies": {
     "ak-button": "^5.0.0",
     "ak-button-group": "^3.0.2",
+    "ak-dropdown-menu": "^2.1.0",
     "ak-editor-shared-styles": "^3.2.0",
     "ak-icon": "^12.0.0",
     "ak-mention": "^1.0.0",

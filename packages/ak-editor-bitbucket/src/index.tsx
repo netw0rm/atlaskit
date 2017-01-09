@@ -146,6 +146,7 @@ export default class Editor extends PureComponent<Props, State> {
         placeholder={this.props.placeholder}
         onCollapsedChromeFocus={this.expand}
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
+        pluginStateCodeBlock={pm && CodeBlockPlugin.get(pm)}
         pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}

@@ -1,8 +1,8 @@
-import { Component, ReactElement } from 'react';
+import { Component, ReactNode } from 'react';
 
 interface Props {
   appearance?: 'default' | 'tall';
-  children?: ReactElement<any>;
+  children?: ReactNode;
   defaultOpen?: boolean;
   isTriggerNotTabbable?: boolean;
   items: Array<Object>;

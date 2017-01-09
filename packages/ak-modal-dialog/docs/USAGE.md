@@ -6,7 +6,7 @@ This component presents content in a layer above all other page content. The res
 
 ##Try it out
 
-Interact with a [live demo of the ak-modal-dialog component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-modal-dialog/@VERSION@/).
+Interact with a [live demo of the ak-modal-dialog](https://aui-cdn.atlassian.com/atlaskit/stories/ak-modal-dialog/@VERSION@/).
 
 ## Installation
 

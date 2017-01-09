@@ -2,7 +2,7 @@
 
 This packages provides core components shared across all Atlassian Editor packages.
 
-It's the home for shared editor functionality and  and implements shared editor behaviours, and is the
+It's the home for shared editor functionality and implements shared editor behaviours, and is the
 preferred destination for editor functionality.
 
 ## Package organisation
@@ -13,7 +13,7 @@ preferred destination for editor functionality.
 **Import:** `import { … } from '@NAME@'`
 
 A set of tools for emitting analytics relating to user interaction with the product. These can be wired
-into product integrations. Transportion is left as the responsibility for the product.
+into product integrations. Transport is left as the responsibility for the product.
 
 ### Plugins
 
@@ -110,7 +110,7 @@ example:
   expand" behaviour.
 - `src/ui/Panel` -- A floating popup that can be used as the base for a floating toolbar (e.g.
   `HyperlinkEdit`).
-- `src/ui/Toolbar______` -- A collection of button-groups that are suitable for placing in the fixed
+- `src/ui/Toolbar*` -- A collection of button-groups that are suitable for placing in the fixed
   toolbar.
 
 A few notes on development:

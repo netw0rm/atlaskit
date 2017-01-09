@@ -16,6 +16,7 @@ describe(name, () => {
       Object.keys(other).should.be.deep.equal([
         'Emoji',
         'EmojiPicker',
+        'EmojiResource',
         'EmojiService',
       ]);
     });

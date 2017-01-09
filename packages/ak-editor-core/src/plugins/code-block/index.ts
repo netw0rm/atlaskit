@@ -1,15 +1,16 @@
-import { Schema, ProseMirror, Node, Plugin, Keymap } from '../../prosemirror';
+import { Schema, ProseMirror, Node, Plugin, Keymap, DOMFromPos } from '../../prosemirror';
 import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
 
 export class CodeBlockState {
   target: Node | null = null;
+  element: HTMLElement | undefined = undefined;
   private pm: PM;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
 
   constructor(pm: PM) {
     this.pm = pm;
-    this.target = this.activeBlockCode();
+    this.target = this.activeBlockCodeNode();
 
     // add paste listener to overwrite the prosemirror's
     // see https://discuss.prosemirror.net/t/handle-paste-inside-code-block/372/5?u=bradleyayers
@@ -68,10 +69,11 @@ export class CodeBlockState {
 
   private update() {
     let dirty = false;
-    const codeBlock = this.activeBlockCode();
+    const codeBlock = this.activeBlockCodeNode();
 
     if(codeBlock !== this.target) {
       this.target = codeBlock;
+      this.element = this.activeElement();
       dirty = true;
     }
 
@@ -80,7 +82,18 @@ export class CodeBlockState {
     }
   }
 
-  private activeBlockCode(): Node | null {
+  private activeElement(): HTMLElement {
+    const { $from } = this.pm.selection;
+    const { node, offset } = DOMFromPos(this.pm, $from.pos, true);
+
+    if (node.childNodes.length === 0) {
+      return node.parentNode;
+    }
+
+    return node.childNodes[offset];
+  }
+
+  private activeBlockCodeNode(): Node | null {
     const { pm } = this;
     const { $from } = pm.selection;
     const node = $from.parent;

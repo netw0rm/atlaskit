@@ -11,15 +11,15 @@ export default class FlagAnimationWrapper extends PureComponent {
       PropTypes.number,
     ]),
     isEntering: PropTypes.bool,
-    isMovingToPrimary: PropTypes.bool,
     isExiting: PropTypes.bool,
+    isMovingToPrimary: PropTypes.bool,
     onAnimationFinished: PropTypes.func,
   };
 
   static defaultProps = {
     isEntering: false,
-    isMovingToPrimary: false,
     isExiting: false,
+    isMovingToPrimary: false,
     onAnimationFinished: () => {},
   };
 

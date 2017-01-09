@@ -5,20 +5,20 @@ import CancelIcon from 'ak-icon/glyph/cancel';
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Flag extends PureComponent {
   static propTypes = {
+    description: PropTypes.string,
+    icon: PropTypes.element.isRequired,
     id: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
     ]),
-    icon: PropTypes.element.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string,
-    onDismissed: PropTypes.func,
     isDismissAllowed: PropTypes.bool,
+    onDismissed: PropTypes.func,
+    title: PropTypes.string.isRequired,
   };
 
   static defaultProps = {
-    onDismissed: () => {},
     isDismissAllowed: false,
+    onDismissed: () => {},
   }
 
   flagDismissed = () => {
@@ -30,7 +30,7 @@ export default class Flag extends PureComponent {
       <div
         className={styles.root}
         role="alert"
-        tabIndex={0}
+        tabIndex="0"
       >
         <div className={styles.primaryIcon}>
           {this.props.icon}

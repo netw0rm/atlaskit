@@ -3,26 +3,29 @@ import React from 'react';
 import Readme, { Code, Props } from 'akutil-readme';
 
 import FlagExample from './examples/FlagExample'; // eslint-disable-line import/no-duplicates
-
 import FlagExampleRaw from '!raw!./examples/FlagExample'; // eslint-disable-line import/first, import/no-duplicates
-import FlagGroupExampleRaw from '!raw!./examples/FlagGroupExample'; // eslint-disable-line import/first, import/no-duplicates
 
 import { name, description } from '../package.json';
-import Flag, { FlagGroup } from '../src';
+import Flag from '../src';
 
 const flagPropDescriptions = {
+  description: 'The secondary text shown below the flag title',
   id: 'A unique identifier used for rendering and onDismissed callbacks',
   icon: 'The icon displayed in the top-left of the flag. Should be an instance of `ak-icon`',
   title: 'The bold text shown at the top of the flag',
-  description: 'The secondary text shown below the flag title',
 
   onDismissed: 'Private, do not use. Use the FlagGroup onDismissed handler.',
   isDismissAllowed: 'Private, do not use.',
 };
 
-const flagGroupPropDescriptions = {
-  children: 'Flag elements to be displayed',
-  onDismissed: 'Handler to be called once a Flag is dismissed and its animation has finished. Receives the id of the dismissed Flag as a parameter.',
+const flagPropTypes = {
+  description: 'string',
+  id: 'oneOfType([string, number])',
+  icon: 'ak-icon',
+  title: 'string',
+
+  onDismissed: 'func',
+  isDismissAllowed: 'bool',
 };
 
 storiesOf(name, module)
@@ -37,14 +40,11 @@ storiesOf(name, module)
             {FlagExample}
           </div>
         </Code>
-        <Props component={Flag} descriptions={flagPropDescriptions} />
-      </Readme>
-      <Readme
-        component="FlagGroup"
-        description="A container for Flag elements, co-ordinates the Flag animations and notifies the app when a Flag is dismissed."
-      >
-        <Code code={FlagGroupExampleRaw} />
-        <Props component={FlagGroup} descriptions={flagGroupPropDescriptions} />
+        <Props
+          component={Flag}
+          descriptions={flagPropDescriptions}
+          types={flagPropTypes}
+        />
       </Readme>
     </div>
   ));

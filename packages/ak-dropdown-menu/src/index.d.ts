@@ -5,7 +5,7 @@ interface Props {
   children?: ReactElement<any>;
   defaultOpen?: boolean;
   isTriggerNotTabbable?: boolean;
-  items: Array;
+  items: Array<Object>;
   onItemActivated?: Function;
   onOpenChange?: Function;
   position?: string;

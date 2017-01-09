@@ -2,7 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import Avatar from 'ak-avatar';
 
-import Comment, { CommentAction, CommentAuthor } from '../src';
+import Comment, { CommentAction, CommentAuthor, CommentTime } from '../src';
 import { name } from '../package.json';
 import { clickHandler, sampleText } from './_constants';
 import sampleAvatarImg from './sample-avatar.png';
@@ -14,8 +14,8 @@ storiesOf(name, module)
     <Comment
       author={<CommentAuthor>John Smith</CommentAuthor>}
       avatar={sampleAvatar}
+      time={<CommentTime>30, August 2016</CommentTime>}
       type="Author"
-      datetime="30, August 2016"
       content={[<p>{sampleText}</p>, <p>{sampleText}</p>]}
       actions={[
         <CommentAction onClick={clickHandler}>Reply</CommentAction>,
@@ -39,8 +39,12 @@ storiesOf(name, module)
           </CommentAuthor>
         }
         avatar={sampleAvatar}
+        time={
+          <CommentTime onClick={clickHandler} onMouseOver={mouseOverHandler}>
+            30, August 2016 (click or hover)
+          </CommentTime>
+        }
         type="Author"
-        datetime="30, August 2016"
         content={[<p>{sampleText}</p>, <p>{sampleText}</p>]}
         actions={[
           <CommentAction onClick={clickHandler}>Click</CommentAction>,
@@ -56,7 +60,7 @@ storiesOf(name, module)
         author={<CommentAuthor>John Smith</CommentAuthor>}
         avatar={<Avatar src={sampleAvatarImg} label="User avatar" size={size} />}
         type="Author"
-        datetime="30, August 2016"
+        time={<CommentTime>30, August 2016</CommentTime>}
         content={<div>
           <p>{size} avatar</p>
           <p>{sampleText}</p>

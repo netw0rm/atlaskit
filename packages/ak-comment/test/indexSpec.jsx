@@ -1,11 +1,11 @@
 import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import Avatar from 'ak-avatar';
 import Lozenge from 'ak-lozenge';
 
-import Comment, { CommentAction } from '../src/';
+import Comment, { CommentAction, CommentAuthor, CommentTime } from '../src/';
 import styles from '../src/styles.less';
 import { name } from '../package.json';
 
@@ -40,30 +40,31 @@ describe(name, () => {
           const wrapper = shallow(<Comment actions={actions} />);
           const container = wrapper.find(`.${styles.locals.actionsContainer}`);
           expect(container).to.have.exactly(actions.length).descendants(CommentAction);
+          actions.forEach((action) => {
+            expect(container).to.contain(action);
+          });
         });
       });
 
       describe('author prop', () => {
         it('should render the author in the correct container', () => {
-          const author = 'Joshua Nelson';
-          const wrapper = mount(<Comment author={author} />);
-          expect(wrapper.find(`.${styles.locals.topContainer}`)
-            .containsMatchingElement(<div className={styles.locals.topItem}>{author}</div>)
-          ).to.equal(true);
+          const author = <CommentAuthor>Joshua Nelson</CommentAuthor>;
+          const wrapper = shallow(<Comment author={author} />);
+          expect(wrapper.find(`.${styles.locals.topContainer}`)).to.contain(author);
         });
       });
 
       describe('avatar prop', () => {
         it('should render the avatar in the correct location', () => {
           const avatar = <Avatar src="test/src" label="test label" />;
-          const wrapper = mount(<Comment avatar={avatar} />);
+          const wrapper = shallow(<Comment avatar={avatar} />);
           expect(wrapper).to.have.exactly(1).descendants(Avatar);
           expect(wrapper.find(`.${styles.locals.avatarContainer}`)).to.contain(avatar);
         });
 
         it('can render non-Avatar nodes as the comment avatar', () => {
           const avatar = <img src="test/src" alt="test alt" />;
-          const wrapper = mount(<Comment avatar={avatar} />);
+          const wrapper = shallow(<Comment avatar={avatar} />);
           expect(wrapper.find(`.${styles.locals.avatarContainer}`)).to.contain(avatar);
         });
       });
@@ -71,31 +72,29 @@ describe(name, () => {
       describe('content prop', () => {
         it('should render the provided content in the correct container', () => {
           const content = (<p>My sample content</p>);
-          const wrapper = mount(<Comment content={content} />);
+          const wrapper = shallow(<Comment content={content} />);
           expect(wrapper.find(`.${styles.locals.contentContainer}`)).to.contain(content);
         });
 
         it('can render string content', () => {
           const textContent = 'My sample content';
-          const wrapper = mount(<Comment content={textContent} />);
+          const wrapper = shallow(<Comment content={textContent} />);
           expect(wrapper.find(`.${styles.locals.contentContainer}`)).to.have.text(textContent);
         });
       });
 
-      describe('datetime prop', () => {
-        it('should render the datetime in the correct container', () => {
-          const datetime = '30 August, 2016';
-          const wrapper = mount(<Comment datetime={datetime} />);
-          expect(wrapper.find(`.${styles.locals.topContainer}`)
-            .containsMatchingElement(<div className={styles.locals.topItem}>{datetime}</div>)
-          ).to.equal(true);
+      describe('time prop', () => {
+        it('should render the time in the correct container', () => {
+          const time = <CommentTime>30 August, 2016</CommentTime>;
+          const wrapper = shallow(<Comment time={time} />);
+          expect(wrapper.find(`.${styles.locals.topContainer}`)).to.contain(time);
         });
       });
 
       describe('type prop', () => {
         it('should render a Lozenge with the type in the correct container', () => {
           const type = 'type';
-          const wrapper = mount(<Comment type={type} />);
+          const wrapper = shallow(<Comment type={type} />);
           expect(wrapper.find(`.${styles.locals.topContainer}`)
             .containsMatchingElement(
               <div className={styles.locals.topItem}>

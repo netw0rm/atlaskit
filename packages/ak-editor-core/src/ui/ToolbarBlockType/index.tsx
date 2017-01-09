@@ -66,10 +66,11 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
           </AkButton>
         }
       >
-      {availableBlockTypes.map(blockTypeGroup => (
-        <Group>
+      {availableBlockTypes.map((blockTypeGroup, groupNo) => (
+        <Group key={`blockTypeGroup${groupNo}`}>
         {blockTypeGroup.map(blockType =>(
           <Item
+            key={blockType.name}
             isActive={currentBlockType === blockType}
             onActivate={() => { this.handleSelectBlockType(blockType); }}
           >

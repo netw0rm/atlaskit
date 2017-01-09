@@ -1,5 +1,4 @@
 import React, { PropTypes, PureComponent } from 'react';
-import classNames from 'classnames';
 import styles from 'style!../less/Flag.less';
 import CancelIcon from 'ak-icon/glyph/cancel';
 
@@ -18,31 +17,12 @@ export default class Flag extends PureComponent {
     title: PropTypes.string.isRequired,
     description: PropTypes.string,
     onDismissed: PropTypes.func,
-    onAnimationFinished: PropTypes.func,
     isDismissAllowed: PropTypes.bool,
-    isEntering: PropTypes.bool,
-    isMovingToPrimary: PropTypes.bool,
-    isExiting: PropTypes.bool,
   };
 
   static defaultProps = {
     onDismissed: () => {},
-    onAnimationFinished: () => {},
     isDismissAllowed: false,
-    isEntering: false,
-    isMovingToPrimary: false,
-    isExiting: false,
-  }
-
-  state = {
-    hasAnimatedIn: false,
-  }
-
-  componentDidUpdate() {
-    if (this.state.hasAnimatedIn === false) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ hasAnimatedIn: true });
-    }
   }
 
   flagDismissed = () => {
@@ -52,22 +32,8 @@ export default class Flag extends PureComponent {
   render() {
     return (
       <div
+        className={styles.root}
         role="alert"
-        className={classNames({
-          [styles.root]: true,
-          [styles.entering]: (
-            !this.state.hasAnimatedIn &&
-            !this.props.isExiting &&
-            this.props.isEntering
-          ),
-          [styles.movingToPrimary]: this.props.isMovingToPrimary,
-          [styles.exiting]: this.props.isExiting,
-        })}
-        onAnimationEnd={() => {
-          if (this.props.isExiting) {
-            this.props.onAnimationFinished(this.props.id);
-          }
-        }}
       >
         <div className={styles.primaryIcon}>
           {this.props.icon}

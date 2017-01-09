@@ -1,6 +1,7 @@
 import React, { PropTypes, PureComponent } from 'react';
 import classNames from 'classnames';
 import styles from 'style!../less/FlagGroup.less';
+import FlagAnimationWrapper from './FlagAnimationWrapper';
 
 /**
  * @description Return React FlagGroup component.
@@ -44,14 +45,21 @@ export default class FlagGroup extends PureComponent {
         <div className={styles.groupInner}>
           {
             this.props.children.map((childFlag, flagIndex) => (
-              React.cloneElement(childFlag, {
-                onDismissed: this.onFlagDismissRequested,
-                onAnimationFinished: this.onFlagDismissFinished,
-                isDismissAllowed: flagIndex === 0,
-                isEntering: flagIndex === 0,
-                isExiting: flagIndex === 0 && this.state.isAnimatingOut,
-                isMovingToPrimary: flagIndex === 1 && this.state.isAnimatingOut,
-              })
+              <FlagAnimationWrapper
+                flagId={childFlag.props.id}
+                key={childFlag.props.id}
+                isEntering={flagIndex === 0}
+                isExiting={flagIndex === 0 && this.state.isAnimatingOut}
+                isMovingToPrimary={flagIndex === 1 && this.state.isAnimatingOut}
+                onAnimationFinished={this.onFlagDismissFinished}
+              >
+                {
+                  React.cloneElement(childFlag, {
+                    onDismissed: this.onFlagDismissRequested,
+                    isDismissAllowed: flagIndex === 0,
+                  })
+                }
+              </FlagAnimationWrapper>
             ))
           }
         </div>

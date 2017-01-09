@@ -10,11 +10,11 @@ export interface State {}
 
 export default class OutsideClickable extends PureComponent<Props, State> {
   componentDidMount() {
-    document.addEventListener('click', this.handleClickOutside, true);
+    document.addEventListener('click', this.handleClickOutside);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.handleClickOutside, true);
+    document.removeEventListener('click', this.handleClickOutside);
   }
 
   render() {

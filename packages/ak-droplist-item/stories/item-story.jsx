@@ -2,7 +2,9 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import styles from 'style!./story-styles.less';
 import Question from 'ak-icon/glyph/question';
+import Arrow from 'ak-icon/glyph/arrowrightlong';
 import Avatar from 'ak-avatar';
+import Lozenge from 'ak-lozenge';
 
 import Item from '../src';
 import { name } from '../package.json';
@@ -63,6 +65,27 @@ storiesOf(name, module)
       </div>
     </div>
   ), { imports: [...imports, ['Avatar', 'ak-avatar']] })
+  .addCodeExampleStory('simple item with additional space', () => (
+    <div className={styles.storiesContainer}>
+      <p>This is an example of droplist items with additional space to the right</p>
+      <div className={styles.itemsContainer}>
+        <Item
+          elemAfter={
+            <div style={{ display: 'flex', alignItems: 'center', width: '105px' }}>
+              <Arrow label="" /><Lozenge appearance="success">done</Lozenge>
+            </div>
+          }
+        >first item</Item>
+        <Item
+          elemAfter={
+            <div style={{ display: 'flex', alignItems: 'center', width: '105px' }}>
+              <Arrow label="" /><Lozenge appearance="inprogress">in progress</Lozenge>
+            </div>
+          }
+        >second item with very long text that is going to be cut off</Item>
+      </div>
+    </div>
+  ), { imports: [...imports, ['Lozenge', 'ak-lozenge'], ['t', 'ak-icon/glyph/arrowrightlong']] })
   .addCodeExampleStory('item with avatars and checkboxes', () => (
     <div className={styles.storiesContainer}>
       <p>This is an example of droplist items with avatars and checkboxes</p>

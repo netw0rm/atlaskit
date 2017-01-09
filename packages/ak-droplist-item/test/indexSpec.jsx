@@ -36,6 +36,13 @@ describe(name, () => {
       expect(mount(<Item elemBefore={Icon} type="radio">sample</Item>)).to.contain(Icon);
     });
 
+    it('should render elemAfter for all items', () => {
+      const Icon = (<div id="icon">icon</div>);
+      expect(mount(<Item elemAfter={Icon}>sample</Item>)).to.contain(Icon);
+      expect(mount(<Item elemAfter={Icon} type="checkbox">sample</Item>)).to.contain(Icon);
+      expect(mount(<Item elemAfter={Icon} type="radio">sample</Item>)).to.contain(Icon);
+    });
+
     it('should render icon for the radio or checkbox element', () => {
       expect(mount(<Item type="radio" />)).to.have.descendants(`.${styles.checkradio}`);
       expect(mount(<Item type="checkbox" />)).to.have.descendants(`.${styles.checkradio}`);

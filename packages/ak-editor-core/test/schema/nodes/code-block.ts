@@ -1,6 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { Schema, Text, DocNodeType, CodeBlockNodeType } from '../../../src';
+import { toHTML, fromHTML } from '../../../test-helper';
 
 describe('ak-editor-core/schema code_block node', () => {
   it('throws an error if it is not named "code_block"', () => {
@@ -25,5 +26,43 @@ describe('ak-editor-core/schema code_block node', () => {
         }
       });
     }).to.not.throw(Error);
+  });
+
+  describe('parse from html', () => {
+    const schema = new Schema({
+        nodes: {
+          doc: { type: DocNodeType, content: 'block+' },
+          code_block: { type: CodeBlockNodeType, content: 'text*', group: 'block' },
+          text: { type: Text, group: 'inline' }
+        }
+      });
+
+    context('when language is not set', () => {
+      it('converts to block code node', () => {
+        const doc = fromHTML('<div class="codehilite"><pre><span>window.alert("hello");<span></pre></div>', schema);
+
+        expect(doc.firstChild.type).to.be.an.instanceOf(CodeBlockNodeType);
+      });
+
+      it('has language attribute as null', () => {
+        const doc = fromHTML('<div class="codehilite"><pre><span>window.alert("hello");<span></pre></div>', schema);
+
+        expect(doc.firstChild.attrs.language).to.eq(null);
+      });
+    });
+
+    context('when language is set', () => {
+      it('converts to block code node', () => {
+        const doc = fromHTML('<div class="codehilite language-javascript"><pre><span>window.alert("hello");<span></pre></div>', schema);
+
+        expect(doc.firstChild.type).to.be.an.instanceOf(CodeBlockNodeType);
+      });
+
+      it('extracts language atrribute', () => {
+        const doc = fromHTML('<div class="codehilite language-javascript"><pre><span>window.alert("hello");<span></pre></div>', schema);
+
+        expect(doc.firstChild.attrs.language).to.eq('javascript');
+      });
+    });
   });
 });

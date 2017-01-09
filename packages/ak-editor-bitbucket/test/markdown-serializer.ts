@@ -88,7 +88,7 @@ describe('Bitbucket markdown serializer: ', () => {
     });
 
     it('with attributes uses backtick notation and preserves attributes', () => {
-      const js = code_block({ params: 'js' });
+      const js = code_block({ language: 'js' });
       expect(markdownSerializer.serialize(doc(
         js('foo'),
       ))).to.eq('```js\nfoo\n```');
@@ -119,7 +119,7 @@ describe('Bitbucket markdown serializer: ', () => {
     });
 
     it('via backticks that includes backticks is properly fenced', () => {
-      const css = code_block({ params: 'css' });
+      const css = code_block({ language: 'css' });
 
       expect(markdownSerializer.serialize(doc(
         css('```js\nfoo\n```')

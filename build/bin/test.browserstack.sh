@@ -4,7 +4,7 @@ set -e
 MAX_RETRIES=2
 GITHEAD_SHORT=$(git rev-parse --short HEAD)
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-CHALK="`npm bin`/chalk"
+CHALK="`yarn bin`/chalk"
 
 # Run the Browserstack tests
 for STAGE in 1 2 3

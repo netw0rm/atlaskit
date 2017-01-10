@@ -1,4 +1,4 @@
-declare module "browserkeymap" {
+declare module 'browserkeymap' {
     interface KeymapOptions {
         name?: string;
         call?: (key: string, context?: any) => any;

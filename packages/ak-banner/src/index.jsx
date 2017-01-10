@@ -18,11 +18,13 @@ export default class Banner extends PureComponent {
   render() {
     return (
       <div
+        aria-hidden={!this.props.isOpen}
         className={classNames({
           [styles.banner]: true,
           [styles[this.props.appearance]]: true,
           [styles.open]: this.props.isOpen,
         })}
+        role="alert"
       >
         <div className={styles.bannerContent}>
           <span className={styles.bannerIcon}>{this.props.icon}</span>

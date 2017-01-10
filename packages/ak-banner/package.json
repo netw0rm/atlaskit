@@ -23,7 +23,8 @@
   },
   "devDependencies": {
     "ak-button": "^5.0.3",
-    "ak-icon": "^12.2.0"
+    "ak-icon": "^12.2.0",
+    "akutil-readme": "^1.2.0"
   },
   "repository": {
     "type": "git",

@@ -27,7 +27,7 @@ pipelines:
           - export FORCE_COLOR=1
           - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
           - ./build/bin/setup.sh
-          - echo yarn --version
+          - yarn --version
           - yarn
           - yarn run browserstack/tunnel/start
           - run-p -ln "validate/package.json" "lint" "test" "test/base" "test/wc/browserstack/pr"

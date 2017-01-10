@@ -1,6 +1,6 @@
 # Trigger
 
-This is one of the building blocks of dropdowns and it gets activated by clicking or pressing it.
+This is one of the building blocks of dropdowns and it gets activated by pressing "space" or clicking "enter" on it.
 
 ![Example trigger](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-droplist-trigger/docs/trigger.gif)
 ## Try it out

@@ -14,6 +14,7 @@ export default class CommentAction extends PureComponent {
           appearance="link"
           className={styles.locals.actionButton}
           spacing="none"
+          type="button"
         >
           {this.props.children}
         </Button>

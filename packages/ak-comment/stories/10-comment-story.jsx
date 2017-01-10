@@ -33,17 +33,13 @@ storiesOf(name, module)
     const focusHandler = event => action(`${event.target.textContent} button got focus.`)();
     return (
       <Comment
-        author={
-          <CommentAuthor onClick={clickHandler} onMouseOver={mouseOverHandler}>
-            John Smith (click or hover)
-          </CommentAuthor>
-        }
+        author={<CommentAuthor href="#" onClick={clickHandler} onMouseOver={mouseOverHandler}>
+          John Smith (click or hover)
+        </CommentAuthor>}
         avatar={sampleAvatar}
-        time={
-          <CommentTime onClick={clickHandler} onMouseOver={mouseOverHandler}>
-            30, August 2016 (click or hover)
-          </CommentTime>
-        }
+        time={<CommentTime onClick={clickHandler} onMouseOver={mouseOverHandler}>
+          30, August 2016 (click or hover)
+        </CommentTime>}
         type="Author"
         content={[<p>{sampleText}</p>, <p>{sampleText}</p>]}
         actions={[

@@ -1,24 +1,22 @@
 import React, { PropTypes, PureComponent } from 'react';
-import Button from 'ak-button';
-import classNames from 'classnames';
 import styles from './styles.less';
+import CommentField from './internal/CommentField';
 
 export default class CommentAuthor extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
+    href: PropTypes.string,
   }
 
   render() {
     return (
-      <div {...this.props}>
-        <Button
-          appearance="link"
-          className={classNames(styles.locals.topButton, styles.locals.commentAuthor)}
-          spacing="none"
-        >
-          {this.props.children}
-        </Button>
-      </div>
+      <CommentField
+        href={this.props.href}
+        linkClasses={styles.locals.commentAuthor}
+        {...this.props}
+      >
+        {this.props.children}
+      </CommentField>
     );
   }
 }

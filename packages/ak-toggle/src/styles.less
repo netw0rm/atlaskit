@@ -2,7 +2,7 @@
 @import '~akutil-shared-styles/src/grid.less';
 
 @toggle-transition: 0.2s;
-@toggle-padding: unit(@ak-grid-size / 4, px);
+@toggle-padding: @ak-grid-size / 4;
 @border-width: 2px;
 
 @toggle-bg-checked: @ak-color-G300;
@@ -43,7 +43,7 @@
   }
 
   .icon-wrapper {
-    max-width: unit(@width / 2, px);
+    max-width: @width / 2;
   }
 
   .input ~ .toggle-slide {
@@ -168,8 +168,8 @@
 }
 
 .toggle.regular {
-  .size(unit(@ak-grid-size * 4, px); unit(@ak-grid-size * 2, px))
+  .size((@ak-grid-size * 4); (@ak-grid-size * 2))
 }
 .toggle.large {
-  .size(unit(@ak-grid-size * 5, px); unit(@ak-grid-size * 2 + @ak-grid-size / 2, px))
+  .size((@ak-grid-size * 5); (@ak-grid-size * 2 + @ak-grid-size / 2))
 }

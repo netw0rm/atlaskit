@@ -1,0 +1,83 @@
+import { storiesOf } from '@kadira/storybook';
+import React, { PropTypes } from 'react';
+import Avatar from 'ak-avatar';
+import Editor from 'ak-editor-bitbucket';
+
+import storyStyles from 'style!./stories.less';
+import { CommentLayout } from '../src';
+import { name } from '../package.json';
+import sampleAvatarImg from './sample-avatar.png';
+
+const sampleAvatar = <Avatar src={sampleAvatarImg} label="User avatar" />;
+
+const NestedCommentLayout = props =>
+  <CommentLayout
+    avatar={sampleAvatar}
+    className={storyStyles.commentLayoutBorder}
+    content={<div className={storyStyles.sampleContent}>Content</div>}
+  >
+    {props.children}
+  </CommentLayout>;
+
+NestedCommentLayout.propTypes = { children: PropTypes.node };
+
+const NestedCommentLayoutNoAvatar = props =>
+  <CommentLayout
+    className={storyStyles.commentLayoutBorder}
+    content={<div className={storyStyles.sampleContent}>Content with no avatar</div>}
+  >
+    {props.children}
+  </CommentLayout>;
+
+NestedCommentLayoutNoAvatar.propTypes = { children: PropTypes.node };
+
+const NestedCommentLayoutEditor = props =>
+  <CommentLayout
+    avatar={sampleAvatar}
+    className={storyStyles.commentLayoutBorder}
+    content={<Editor isExpandedByDefault defaultValue="Editor in content" />}
+  >
+    {props.children}
+  </CommentLayout>;
+
+NestedCommentLayoutEditor.propTypes = { children: PropTypes.node };
+
+storiesOf(name, module)
+  .add('nested comment layouts', () => (
+    <div>
+      <NestedCommentLayout>
+        <NestedCommentLayoutNoAvatar>
+          <NestedCommentLayout>
+            <NestedCommentLayoutNoAvatar>
+              <NestedCommentLayout>
+                <NestedCommentLayout>
+                  <NestedCommentLayoutNoAvatar>
+                    <NestedCommentLayout>
+                      <NestedCommentLayoutEditor />
+                    </NestedCommentLayout>
+                  </NestedCommentLayoutNoAvatar>
+                </NestedCommentLayout>
+              </NestedCommentLayout>
+              <NestedCommentLayoutEditor />
+            </NestedCommentLayoutNoAvatar>
+          </NestedCommentLayout>
+        </NestedCommentLayoutNoAvatar>
+      </NestedCommentLayout>
+      <NestedCommentLayout />
+      <NestedCommentLayout />
+      <NestedCommentLayoutNoAvatar />
+      <NestedCommentLayout />
+      <NestedCommentLayoutNoAvatar>
+        <NestedCommentLayoutEditor>
+          <NestedCommentLayout />
+        </NestedCommentLayoutEditor>
+        <NestedCommentLayout />
+      </NestedCommentLayoutNoAvatar>
+    </div>
+  ))
+  .add('comment layout with editor', () => (
+    <CommentLayout
+      avatar={sampleAvatar}
+      content={<Editor isExpandedByDefault />}
+    />
+  ));

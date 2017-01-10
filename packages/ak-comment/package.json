@@ -14,10 +14,12 @@
   "dependencies": {
     "ak-button": "^5.1.3",
     "ak-lozenge": "^5.0.4",
-    "akutil-shared-styles": "^37.0.0"
+    "akutil-shared-styles": "^37.0.0",
+    "classnames": "^2.2.5"
   },
   "devDependencies": {
-    "ak-avatar": "^5.1.1"
+    "ak-avatar": "^5.1.1",
+    "ak-editor-bitbucket": "^6.1.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

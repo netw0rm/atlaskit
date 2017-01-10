@@ -28,6 +28,21 @@ storiesOf(name, module)
   .add('ak-comment with no top and bottom bars', () => (
     <Comment avatar={sampleAvatar} content={<p>{sampleText}</p>} />
   ))
+  .add('ak-comment with links for author and time', () => (
+    <Comment
+      author={<CommentAuthor href="#">John Smith</CommentAuthor>}
+      avatar={sampleAvatar}
+      time={<CommentTime href="#">30, August 2016</CommentTime>}
+      type="Author"
+      content={[<p>{sampleText}</p>, <p>{sampleText}</p>]}
+      actions={[
+        <CommentAction onClick={clickHandler}>Reply</CommentAction>,
+        <CommentAction onClick={clickHandler}>Edit</CommentAction>,
+        <CommentAction onClick={clickHandler}>Delete</CommentAction>,
+        <CommentAction onClick={clickHandler}>Like</CommentAction>,
+      ]}
+    />
+  ))
   .add('ak-comment with different mouse event handlers', () => {
     const mouseOverHandler = event => action(`${event.target.textContent} button got mouseOver.`)();
     const focusHandler = event => action(`${event.target.textContent} button got focus.`)();

@@ -1,4 +1,15 @@
-import { Keymap, ProseMirror, Fragment, BlockTypePlugin, MentionsPlugin, MentionPicker, TextSelection, DocNode } from 'ak-editor-core';
+import {
+  Keymap,
+  ProseMirror,
+  Fragment,
+  BlockTypePlugin,
+  HyperlinkEdit,
+  HyperlinkPlugin,
+  MentionsPlugin,
+  MentionPicker,
+  TextSelection,
+  DocNode,
+} from 'ak-editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import schema from './schema';
@@ -12,14 +23,24 @@ const hipchatSerializer = (doc: any) => {
     return [];
   }
 
-  return root.content.map((node: any) => {
+  return root.content.map(node => {
     switch (node.type) {
       case 'mention':  // Hipchat expects a 'text'-field for mentions
         node.text = node.attrs.displayName;
         break;
 
-      case 'text':  // Hipchat expect empty marks for text
-        node.marks = node.marks || [];
+      case 'text':  // Hipchat expects text nodes to always have a marks array
+        node.marks = (node.marks || []).map(mark => {
+          if (mark._ === 'link') {
+            return {
+              type: mark._,
+              attrs: {
+                url: mark.href
+              }
+            };
+          }
+          return mark;
+        });
         break;
 
       case 'hard_break': // Hipchat expects hard breaks to be text
@@ -70,10 +91,14 @@ export default class Editor extends PureComponent<Props, State> {
     const { pm } = this.state;
 
     const pluginStateMentions = props.mentionResourceProvider && pm && MentionsPlugin.get(pm);
+    const pluginStateHyperlink = pm && HyperlinkPlugin.get(pm);
 
     return (
       <div className="ak-editor-hipchat" id={this.props.id}>
         <div ref={this.handleRef}>
+          {!pluginStateHyperlink ? null :
+            <HyperlinkEdit pluginState={pluginStateHyperlink} />
+          }
           {!pluginStateMentions ? null:
             <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reverseMentionPicker} />
           }
@@ -93,6 +118,7 @@ export default class Editor extends PureComponent<Props, State> {
       doc: schema.nodes.doc.createAndFill(),
       plugins: [
         BlockTypePlugin,
+        HyperlinkPlugin,
         ...(this.props.mentionResourceProvider ? [ MentionsPlugin ] : [] )
       ],
     });

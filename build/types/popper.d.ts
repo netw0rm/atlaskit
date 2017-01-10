@@ -1,1 +1,1 @@
-declare module "popper.js" {}
+declare module 'popper.js' {}

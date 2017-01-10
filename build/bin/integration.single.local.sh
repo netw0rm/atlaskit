@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-CHALK="`npm bin`/chalk"
+CHALK="`yarn bin`/chalk"
 
 PKG="$1"
 # shift removes first command line arg (the package name)

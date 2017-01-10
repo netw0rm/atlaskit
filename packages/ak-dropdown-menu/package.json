@@ -1,15 +1,17 @@
 {
   "name": "ak-dropdown-menu",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "ak-dropdown-menu React component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
+  "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single ak-dropdown-menu; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/index.d.ts"
   ],
   "dependencies": {
     "akutil-shared-styles": "^37.0.0",

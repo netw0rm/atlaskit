@@ -77,7 +77,7 @@ export default class EmojiPicker extends PureComponent {
   }
 
   onCategorySelected = (categoryId) => {
-    const emojisInCategory = this.props.emojiService.all().filter(
+    const emojisInCategory = this.props.emojiService.all().emojis.filter(
       emoji => emoji.category === categoryId
     );
 

@@ -1,7 +1,7 @@
 {
   "name": "ak-comment",
   "version": "4.0.0",
-  "description": "ak-comment component",
+  "description": "React component that enables discussions on an entity.",
   "main": "dist/bundle.jsx",
   "webpack": "dist/bundle-cjs.jsx",
   "ak:webpack:raw": "src/index.jsx",

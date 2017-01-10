@@ -6,7 +6,7 @@ Comments enable discussions on an entity such as a page, blog post, issue or pul
 
 ## Try it out
 
-Interact with a [live demo of the ak-comment component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-comment/@VERSION@/).
+Interact with a [live demo of the ak-comment](https://aui-cdn.atlassian.com/atlaskit/stories/ak-comment/@VERSION@/).
 
 ## Installation
 

@@ -3,13 +3,12 @@ import { URL } from './regex';
 
 const urlAtEndOfLine = new RegExp(`${URL.source}$`);
 
-export default new InputRule(urlAtEndOfLine, ' ', (
+export default new InputRule(urlAtEndOfLine, '', (
   pm: ProseMirror,
   match: string[],
-  pos: number
+  to: number
 ) : boolean => {
   const { schema } = pm;
-  const to: number = pos - 1; // removing the whitespace on the end
   const from: number = to - match[1].length;
   const url: string = match[3] ? match[1] : `http://${match[1]}`;
 

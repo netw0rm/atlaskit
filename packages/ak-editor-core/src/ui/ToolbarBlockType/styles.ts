@@ -43,13 +43,5 @@ export const blockTypeCode = style({
   fontFamily: 'Consolas, Menlo, "Liberation Mono", Courier, monospace',
 });
 
-export const blockTypeQuote = style({
-  // $nest: {
-  //   '& span': {
-  //     borderLeft: `1px solid ${akEditorActiveForeground}`,
-  //     paddingLeft: '10px',
-  //   }
-  // }
-});
-
+export const blockTypeQuote = style({});
 export const active = style({});

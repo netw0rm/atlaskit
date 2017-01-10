@@ -23,11 +23,14 @@
   display: inline-flex;
   align-items: center;
   max-width: 100%;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .field-base-wrapper {
   flex: 1 1 auto;
   overflow: hidden;
+  width: 100%;
 
   &:hover .edit-button {
     opacity: 1;
@@ -35,11 +38,13 @@
 }
 
 .spinner-wrapper {
-  margin-left: unit(@grid, px);
+  margin-top: unit(@grid, px);
+  display: inline-flex;
+  align-items: flex-end;
   // TODO: Remove this when updated to specs version 1.1
   // field-base should stay the same width so we need to provide a
   // min-width to cover action buttons width.
-  min-width: unit(@grid*3 + 32 + 32, px);
+  // min-width: unit(@grid*3 + 32 + 32, px);
 }
 
 .read-view-content-wrapper {
@@ -48,7 +53,7 @@
 }
 
 .buttons-wrapper {
-  margin-left: unit(@grid, px);
+  margin-top: unit(@grid, px);
   flex-shrink: 0;
 
   button:last-child {

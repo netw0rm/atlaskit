@@ -2,8 +2,8 @@
 set -e
 
 pushd ../.. > /dev/null
-JSDOC2MD_LOC="`npm bin`/jsdoc2md"
-CHALK="`npm bin`/chalk"
+JSDOC2MD_LOC="`yarn bin`/jsdoc2md"
+CHALK="`yarn bin`/chalk"
 popd > /dev/null
 
 NAME=$(node -e 'console.log(require("./package.json").name)')

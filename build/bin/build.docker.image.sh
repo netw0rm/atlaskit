@@ -14,6 +14,8 @@ printf "Node: "
 docker run "$TAG" node --version
 printf "npm: "
 docker run "$TAG" npm -v
+printf "yarn: "
+docker run "$TAG" yarn --version
 printf "Lerna: "
 docker run "$TAG" lerna --version
 docker run "$TAG" curl --version

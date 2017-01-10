@@ -6,9 +6,8 @@ import ResourcedEmojiControl from './demo-resource-control';
 import EmojiPickerTextInput from './demo-emoji-picker-text-input';
 import EmojiTypeAheadTextInput from './demo-emoji-typeahead-text-input';
 
-console.log('env: ', process.env.STORYBOOK_EMOJI_URL);
-
-const emojiUrls = process.env.STORYBOOK_EMOJI_URL.split(',');
+const emojiUrlConfig = process.env.STORYBOOK_EMOJI_URL || '';
+const emojiUrls = emojiUrlConfig.split(',');
 
 storiesOf('ak-emoji/external-emoji', module)
   .add('resourced picker', () => (

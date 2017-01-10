@@ -21,6 +21,7 @@ const mention = {
     name: highlightDetail,
     mentionName: highlightDetail,
   }),
+  lozenge: PropTypes.string,
 };
 
 export default {

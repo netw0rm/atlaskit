@@ -14,6 +14,7 @@ storiesOf(name, module)
       <BasicNavigation>
         <a href="#1">
           <AkContainerItem
+            isCompact
             icon={<SearchIcon label="Search" />}
             text="Search"
           />
@@ -30,18 +31,21 @@ storiesOf(name, module)
         >
           <a href="#1">
             <AkContainerItem
+              isCompact
               icon={<HelpIcon label="Help" />}
               text="Help"
             />
           </a>
           <a href="#2">
             <AkContainerItem
+              isCompact
               icon={<CreateIcon label="Create" />}
               text="Create"
             />
           </a>
           <a href="#3">
             <AkContainerItem
+              isCompact
               icon={<DashboardIcon label="Dashboard" />}
               text="Nucleus"
             />
@@ -50,12 +54,14 @@ storiesOf(name, module)
         <AkContainerItemGroup title="People">
           <a href="#4">
             <AkContainerItem
+              isCompact
               icon={<SettingsIcon label="Settings" />}
               text="Settings"
             />
           </a>
           <a href="#5">
             <AkContainerItem
+              isCompact
               icon={<ProjectsIcon label="Projects" />}
               text="Projects"
             />

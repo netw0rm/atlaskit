@@ -12,10 +12,11 @@ export default class BasicNavigation extends PureComponent {
     children: PropTypes.node,
     isOpen: PropTypes.bool,
     width: PropTypes.number,
+    containerHeader: PropTypes.node,
   }
 
   static defaultProps = {
-    children: <div>
+    children: (<div>
       <AkContainerItem
         icon={<DashboardIcon label="Dashboard" />}
         text="Item A"
@@ -28,7 +29,15 @@ export default class BasicNavigation extends PureComponent {
         icon={<ProjectsIcon label="Projects" />}
         text="Item C"
       />
-    </div>,
+    </div>),
+    containerHeader: (<a href="#foo">
+      <AkContainerHeader
+        text="AtlasCat"
+        icon={
+          <img alt="nucleus" src={nucleusLogo} />
+        }
+      />
+    </a>),
   }
 
   constructor(...args) {
@@ -56,16 +65,7 @@ export default class BasicNavigation extends PureComponent {
     return (
       <Navigation
         resizeHandler={action('resize')}
-        containerHeader={
-          <a href="#foo">
-            <AkContainerHeader
-              text="AtlasCat"
-              icon={
-                <img alt="nucleus" src={nucleusLogo} />
-              }
-            />
-          </a>
-        }
+        containerHeader={this.props.containerHeader}
         globalSearchIcon={<SearchIcon label="Search icon" />}
         globalCreateIcon={<CreateIcon label="Create icon" />}
         globalPrimaryItem={

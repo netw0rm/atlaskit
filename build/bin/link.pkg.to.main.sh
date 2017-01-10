@@ -7,7 +7,7 @@ popd > /dev/null
 
 PKG=$($BASEDIR/_get_package_name.sh)
 
-npm link
+yarn link
 pushd ../.. > /dev/null
-npm link $PKG
+yarn link $PKG
 popd > /dev/null

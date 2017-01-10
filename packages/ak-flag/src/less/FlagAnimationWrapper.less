@@ -33,6 +33,7 @@
   bottom: 0;
   position: absolute;
   transition: transform @flag-animation-duration ease-in-out;
+  width: @flag-width;
 
   &.entering:first-child {
     animation-name: enter;
@@ -50,8 +51,7 @@
   }
 
   &:nth-child(n+2) {
-    // need string around calc on next line because Less tries to calc it during build
-    transform: translate(0, ~"calc(100% + (2 * @{ak-grid-size}))");
+    transform: translateX(0) translateY(100%) translateY(2 * @ak-grid-size);
   }
 
   // Layer the 'primary' flag above the 'secondary' flag

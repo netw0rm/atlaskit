@@ -4,8 +4,8 @@ set -e
 function cdn_publish_folder() {
   local SOURCE_FOLDER="$1"
   local TARGET_PATH="$2"
-  local CHALK="`npm bin`/chalk"
-  
+  local CHALK="`yarn bin`/chalk"
+
   $CHALK --no-stdin -t "{blue Publishing folder '$SOURCE_FOLDER' to '$CDN_URL_SCOPE/$TARGET_PATH'}"
 
   TEMP_DIR=$(mktemp -d)

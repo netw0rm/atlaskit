@@ -44,7 +44,7 @@ class MentionResource extends AbstractMentionResource {
 
           let mentions = response.results.map((item: any, index: number) => {
             return {
-              'id': index.toString(),
+              'id': item.attributes.username,
               'name': item.attributes.display_name,
               'mentionName': item.attributes.username,
               'avatarUrl': item.attributes.avatar_url,

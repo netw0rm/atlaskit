@@ -23,8 +23,10 @@ const items = [{
     })
 }];
 
+const DEFAULT_LANGUAGE = 'bash';
+
 export default class LanguagePicker extends PureComponent<Props, State> {
-  state: State = { language: 'bash'};
+  state: State = { language: DEFAULT_LANGUAGE};
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -54,21 +56,28 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: CodeBlockState) => {
+    const {target, element} = pluginState;
+    let language;
+
+    if(target) {
+      language = target.attrs.language || DEFAULT_LANGUAGE;
+    }
+
     this.setState({
-      target: pluginState.target,
-      language: this.state.language,
-      element: pluginState.element
+      target: target,
+      language: language,
+      element: element
     });
   }
 
   private handleLanguageChange = (activedItem: any) => {
-    const target = this.state.target;
+    const {target} = this.state;
+
     if(target) {
       target.attrs.language = activedItem.item.content;
       this.setState({
-        target: this.state.target,
-        language: activedItem.item.content,
-        element: this.state.element
+        target: target,
+        language: activedItem.item.content
       });
     }
   }

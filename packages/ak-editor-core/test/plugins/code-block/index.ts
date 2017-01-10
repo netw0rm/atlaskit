@@ -193,4 +193,35 @@ describe('code-block', () => {
       });
     });
   });
+
+  describe('activeElement', () => {
+    context('cursor moves winthin the same code block', () => {
+      it('returns the same element', () => {
+        const { pm, plugin } = editor(doc(code_block()('code{<>}Block{cbPos}')));
+        const { cbPos } = pm.doc.refs;
+
+        const previous_element = plugin.element;
+        pm.setTextSelection(cbPos);
+
+        const current_element = plugin.element;
+
+        expect(previous_element).to.eq(current_element);
+      });
+    });
+
+    context('cursor moves onto different code block', () => {
+      it('returns different elements', () => {
+      const { pm, plugin } = editor(doc(code_block()('one{<>} codeBlock'), code_block()('another{cbPos} codeBlock')));
+      const { cbPos } = pm.doc.refs;
+
+      const previous_element = plugin.element;
+      pm.setTextSelection(cbPos);
+
+      const current_element = plugin.element;
+
+      expect(previous_element).not.to.eq(current_element);
+
+      });
+    });
+  });
 });

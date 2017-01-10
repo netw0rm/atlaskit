@@ -1,6 +1,6 @@
 # ModalDialog
 
-This component presents content in a layer above all other page content. The rest of the page cannot be interacted with until the modal dialog is closed.
+This component displays content in a layer that sits above the rest of the page content. Users won't be able to interact with the page until the dialog is closed.
 
 ![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-modal-dialog/docs/simple.png)
 

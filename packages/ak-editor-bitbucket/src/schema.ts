@@ -3,9 +3,8 @@ import {
   BlockQuoteNodeType,
   BulletListNodeType,
   CodeBlockNodeType,
-  CodeMarkType,
   DocNodeType,
-  DelMarkType,
+  StrikeMarkType,
   EmMarkType,
   HardBreakNodeType,
   HeadingNodeType,
@@ -17,10 +16,11 @@ import {
   ParagraphNodeType,
   Schema,
   StrongMarkType,
+  MonoMarkType,
   Text,
   MentionNodeType,
   EmojiNodeType
-} from 'ak-editor-schema';
+} from 'ak-editor-core';
 
 export default new Schema({
   nodes: {
@@ -49,8 +49,8 @@ export default new Schema({
     link: LinkMarkType,
     em: EmMarkType,
     strong: StrongMarkType,
-    code: CodeMarkType,
-    del: DelMarkType,
+    strike: StrikeMarkType,
+    mono: MonoMarkType
   },
 }) as BitbucketSchema;
 
@@ -74,13 +74,13 @@ export interface BitbucketSchema extends Schema {
     code_block: CodeBlockNodeType;
     mention: MentionNodeType;
     emoji: EmojiNodeType;
-  }
+  };
 
   marks: {
     link: LinkMarkType;
     em: EmMarkType;
     strong: StrongMarkType;
-    code: CodeMarkType;
-    del: DelMarkType;
-  }
+    mono: MonoMarkType;
+    strike: StrikeMarkType;
+  };
 }

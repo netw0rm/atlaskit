@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import AkInlineDialog from 'ak-inline-dialog';
 import AkAvatar from 'ak-avatar';
 import { MentionList } from 'ak-mention';
+import SingleLineTextInput from 'ak-input';
 import reactify from 'akutil-react';
 import AkInlineEdit from '../src';
 
@@ -27,15 +28,6 @@ const mentionWrapperStyle = {
 const mentionListWrapperStyle = {
   marginLeft: -8,
   marginTop: 4,
-};
-
-const inputStyle = {
-  border: 0,
-  background: 'transparent',
-  color: 'inherit',
-  fontSize: 14,
-  outline: 0,
-  width: '100%',
 };
 
 /* eslint-disable react/prop-types */
@@ -120,26 +112,29 @@ export default class extends PureComponent {
   isMentionsListVisible = () =>
     this.state.isFocused && this.state.query != null
 
+  renderInput = ({ isEditing }) => (
+    <SingleLineTextInput
+      value={isEditing ? this.getNameForEditView() : this.getNameForReadView()}
+      isInitiallySelected
+      isEditing={isEditing}
+      onChange={this.onInputChange}
+      onKeyDown={this.onKeyDown}
+      onFocus={this.focus}
+      onBlur={this.blur}
+    />
+  )
+
   renderReadView = () => (
     <div style={mentionWrapperStyle}>
       {this.state.confirmedMention && this.renderAvatar(this.state.confirmedMention)}
-      <span>{this.getNameForReadView()}</span>
+      {this.renderInput({ isEditing: false })}
     </div>
   )
 
   renderEditView = () => (
     <div style={mentionWrapperStyle}>
       {this.state.selectedMention && this.renderAvatar(this.state.selectedMention)}
-      <input
-        value={this.getNameForEditView()}
-        autoFocus
-        style={inputStyle}
-        onChange={this.onInputChange}
-        onKeyDown={this.onKeyDown}
-        onFocus={this.focus}
-        onBlur={this.blur}
-        ref={(textInput) => { this.textInput = textInput; }}
-      />
+      {this.renderInput({ isEditing: true })}
     </div>
   )
 

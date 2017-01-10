@@ -153,6 +153,23 @@ export default class Layer extends PureComponent {
     }
   }
 
+  extractStyles = (state) => {
+    if (state) {
+      const left = Math.round(state.offsets.popper.left);
+      const top = Math.round(state.offsets.popper.top);
+
+      this.setState({
+        // position: fixed or absolute
+        cssPosition: state.offsets.popper.position,
+        transform: `translate3d(${left}px, ${top}px, 0px)`,
+        // state.flipped is either true or undefined
+        flipped: !!state.flipped,
+        actualPosition: state.position,
+        originalPosition: state.originalPosition,
+      });
+    }
+  };
+
   applyPopper(props) {
     if (!this.targetRef || !this.contentRef) {
       return;
@@ -167,6 +184,8 @@ export default class Layer extends PureComponent {
     this.popper = new Popper(actualTarget, this.contentRef, {
       placement: positionPropToPopperPosition(props.position),
       boundariesElement: this.props.boundariesElement,
+      onCreate: this.extractStyles,
+      onUpdate: this.extractStyles,
       modifiers: {
         applyStyle: {
           enabled: false,
@@ -184,30 +203,10 @@ export default class Layer extends PureComponent {
         },
         preventOverflow: {
           enabled: this.props.autoPosition,
-          moveWithTarget: true,
+          escapeWithReference: true,
         },
       },
     });
-
-    const extractStyles = (state) => {
-      if (state) {
-        const left = Math.round(state.offsets.popper.left);
-        const top = Math.round(state.offsets.popper.top);
-
-        this.setState({
-          // position: fixed or absolute
-          cssPosition: state.offsets.popper.position,
-          transform: `translate3d(${left}px, ${top}px, 0px)`,
-          // state.flipped is either true or undefined
-          flipped: !!state.flipped,
-          actualPosition: state.position,
-          originalPosition: state.originalPosition,
-        });
-      }
-    };
-
-    this.popper.onCreate(extractStyles);
-    this.popper.onUpdate(extractStyles);
   }
 
   render() {
@@ -219,7 +218,7 @@ export default class Layer extends PureComponent {
         </div>
         <div
           ref={ref => (this.contentRef = ref)}
-          style={{ top: 0, left: 0, position: cssPosition, transform }}
+          style={{ top: 0, left: 0, position: cssPosition, transform, zIndex: 400 }}
         >
           {this.props.content}
         </div>

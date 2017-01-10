@@ -1,0 +1,155 @@
+@import '~akutil-shared-styles/src/colors.less';
+
+@toggle-width: 40px;
+@toggle-height: 20px;
+@toggle-transition: 0.2s;
+@toggle-padding: 2px;
+@icon-padding: @toggle-padding / 2;
+
+@border-width: 2px;
+
+@toggle-slide-size: @toggle-height - (@toggle-padding * 2);
+@toggle-slide-translate: @toggle-height;
+
+@toggle-bg-checked: @ak-color-G300;
+@toggle-bg-checked-hover: @ak-color-G500;
+@toggle-bg-checked-disabled: #35B885;
+@toggle-slide-checked-disabled: #A1DCC4;
+
+@toggle-bg-unchecked: @ak-color-N80;
+@toggle-bg-unchecked-hover: @ak-color-N200;
+@toggle-bg-unchecked-disabled: #f3f4f5;
+@toggle-slide-unchecked-disabled: #AFB6C2;
+
+@toggle-icon-color: @ak-color-N0;
+@toggle-icon-size: 10px;
+@toggle-icon-checkmark: "\f194";
+@toggle-icon-close: "\f11b";
+
+.toggle {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  padding: @border-width;
+}
+
+.input {
+  opacity: 0;
+  position: absolute;
+}
+.input:focus {
+  outline: none !important;
+}
+
+.input:focus + .toggle-slide {
+  border-color: @ak-color-B100;
+}
+
+// Toggle Slide
+.toggle-slide {
+  background-clip: content-box;
+  background-color: @toggle-bg-unchecked;
+  border: @border-width solid transparent;
+  border-radius: @toggle-height;
+  display: block;
+  height: @toggle-height;
+  padding: @border-width;
+  position: relative;
+  transition: @toggle-transition;
+  width: @toggle-width;
+}
+
+.toggle-slide:before {
+  background-color: white;
+  border-radius: 50%;
+  bottom: (2 * @toggle-padding);
+  content: "";
+  height: @toggle-slide-size;
+  left: (2 * @toggle-padding);
+  position: absolute;
+  transition: @toggle-transition;
+  width: @toggle-slide-size;
+}
+
+.input:checked + .toggle-slide {
+  background-color: @toggle-bg-checked;
+}
+
+.input:checked + .toggle-slide:before {
+  transform: translateX(@toggle-slide-translate);
+}
+
+// Icons
+.toggle-inner {
+  color: @toggle-icon-color;
+  display: inline-flex;
+  height: 100%;
+  transition: @toggle-transition;
+  width: 100%;
+}
+
+.icon-wrapper {
+  display: inline-block;
+  font-size: @toggle-icon-size;
+}
+
+.input ~ .toggle-slide {
+  .toggle-inner {
+    flex-direction: row-reverse;
+    .icon-wrapper {
+      padding-left: 0;
+      padding-right: @icon-padding;
+    }
+  }
+}
+
+.input:checked ~ .toggle-slide {
+  .toggle-inner {
+    flex-direction: row;
+
+    .icon-wrapper {
+      padding-left: @icon-padding;
+      padding-right: 0;
+    }
+  }
+}
+
+// Hover
+.toggle-slide:hover {
+  cursor: pointer;
+
+  .toggle-slide {
+    background-color: @toggle-bg-unchecked-hover;
+  }
+  .input:checked + .toggle-slide {
+    background-color: @toggle-bg-checked-hover;
+  }
+}
+
+// Disabled
+.toggle.disabled {
+  // Unchecked
+  .toggle-slide {
+    background-color: @toggle-bg-unchecked-disabled;
+    cursor: not-allowed;
+
+    .toggle-inner {
+      color: @toggle-slide-unchecked-disabled;
+    }
+  }
+  .input + .toggle-slide:before {
+    background-color: @toggle-slide-unchecked-disabled;
+  }
+
+  // Checked
+  .input:checked + .toggle-slide {
+    background-color: @toggle-bg-checked-disabled;
+
+    .toggle-inner {
+      color: @toggle-slide-checked-disabled;
+    }
+  }
+  .input:checked + .toggle-slide:before {
+    background-color: @toggle-slide-checked-disabled;
+  }
+}

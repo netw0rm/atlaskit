@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import styles from 'style!../less/ContainerNavigation.less';
 import {
   containerOpenWidth,
+  containerClosedWidth,
 } from '../../shared-variables';
 import Spacer from './Spacer';
 
@@ -10,13 +11,13 @@ export default class ContainerNavigation extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     header: PropTypes.node,
-    width: PropTypes.number,
     shouldAnimate: PropTypes.bool,
+    width: PropTypes.number,
   }
 
   static defaultProps = {
-    width: containerOpenWidth,
     shouldAnimate: false,
+    width: containerOpenWidth,
   }
 
   getOuterStyles() {
@@ -31,6 +32,7 @@ export default class ContainerNavigation extends PureComponent {
         className={classNames({
           [styles.shouldAnimate]: this.props.shouldAnimate,
         })}
+        data-__ak-navigation-container-closed={this.props.width <= containerClosedWidth}
       >
         <Spacer
           width={this.props.width}
@@ -41,7 +43,9 @@ export default class ContainerNavigation extends PureComponent {
           className={styles.containerNavigationOuter}
         >
           <div
-            className={styles.containerNavigationInner}
+            className={classNames(styles.containerNavigationInner, {
+              [styles.hasContainerHeader]: this.props.header !== null,
+            })}
           >
             <div>
               {this.props.header}

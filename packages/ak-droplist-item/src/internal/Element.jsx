@@ -12,12 +12,35 @@ export default class Element extends PureComponent {
     children: PropTypes.node,
     className: PropTypes.string,
     isDisabled: PropTypes.bool,
+    isFocused: PropTypes.bool,
+    isHidden: PropTypes.bool,
+    isChecked: PropTypes.bool,
+  }
+
+  componentDidMount = () => {
+    this.setFocus();
+  }
+
+  componentDidUpdate = () => {
+    this.setFocus();
+  }
+
+  setFocus = () => {
+    if (this.props.isFocused) {
+      this.ref.focus();
+    }
+  }
+
+  // this prevents the focus ring from appearing when the element is clicked.
+  // It doesn't interfere with the onClick handler
+  handleMouseDown = (e) => {
+    e.preventDefault();
   }
 
   render = () => {
     const { props } = this;
-    const { href, target, type, isDisabled, handleKeyDown, handleClick, className } = props;
-
+    const { href, target, type, isDisabled, isHidden, isChecked,
+      handleKeyDown, handleClick, className } = props;
     if (href && !isDisabled) {
       return (
         <a
@@ -25,8 +48,13 @@ export default class Element extends PureComponent {
           href={href}
           target={target}
           role={ariaRoles.link}
+          aria-disabled={isDisabled}
+          aria-hidden={isHidden}
           onKeyDown={handleKeyDown}
           onClick={handleClick}
+          onMouseDown={this.handleMouseDown}
+          ref={ref => (this.ref = ref)}
+          data-role="droplistItem"
         >
           {props.children}
         </a>
@@ -34,13 +62,19 @@ export default class Element extends PureComponent {
     }
     /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
-      <div
+      <span
         className={className}
         tabIndex="0"
-        role={ariaRoles[type]}
         onKeyDown={handleKeyDown}
         onClick={handleClick}
-      >{props.children}</div>
+        onMouseDown={this.handleMouseDown}
+        ref={ref => (this.ref = ref)}
+        role={ariaRoles[type]}
+        aria-disabled={isDisabled}
+        aria-hidden={isHidden}
+        aria-checked={isChecked}
+        data-role="droplistItem"
+      >{props.children}</span>
     );
     /* eslint-enable jsx-a11y/no-static-element-interactions */
   }

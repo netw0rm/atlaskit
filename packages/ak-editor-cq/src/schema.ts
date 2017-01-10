@@ -1,8 +1,7 @@
 import {
   BlockQuoteNodeType,
   BulletListNodeType,
-  CodeMarkType,
-  DelMarkType,
+  MonoMarkType,
   DocNodeType,
   EmMarkType,
   HardBreakNodeType,
@@ -17,7 +16,7 @@ import {
   SubSupMarkType,
   UnderlineMarkType,
   Text
-} from 'ak-editor-schema';
+} from 'ak-editor-core';
 
 export default new Schema({
   nodes: {
@@ -30,12 +29,12 @@ export default new Schema({
     list_item: { type: ListItemNodeType, content: 'block+' },
     text: { type: Text, group: 'inline' },
     hard_break: { type: HardBreakNodeType, group: 'inline' },
-    hr: { type: HorizontalRuleNodeType, group: 'block' },
+    horizontal_rule: { type: HorizontalRuleNodeType, group: 'block' }
   },
 
   // Note: Marks are applied in the order they are defined.
   marks: {
-    code: CodeMarkType,
+    mono: MonoMarkType,
     em: EmMarkType,
     strike: StrikeMarkType,
     strong: StrongMarkType,
@@ -55,15 +54,15 @@ export interface CQSchema extends Schema {
     list_item: ListItemNodeType;
     text: Text;
     hard_break: HardBreakNodeType;
-    hr: HorizontalRuleNodeType;
-  }
+    horizontal_rule: HorizontalRuleNodeType;
+  };
 
   marks: {
-    code: CodeMarkType;
+    mono: MonoMarkType;
     em: EmMarkType;
     strike: StrikeMarkType;
     strong: StrongMarkType;
     subsup: SubSupMarkType;
     u: UnderlineMarkType;
-  }
+  };
 }

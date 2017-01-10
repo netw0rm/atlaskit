@@ -1,14 +1,17 @@
 import React, { PropTypes, PureComponent } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import docco from 'react-syntax-highlighter/dist/styles/docco';
+import { akColorN0, akColorN20, akColorN30A } from 'akutil-shared-styles';
 
+const halfGrid = 4;
 const style = {
   code: {
-    backgroundColor: '#f5f6f6',
-    padding: 10,
+    backgroundColor: akColorN20,
+    boxShadow: `0 3px 4px 0 ${akColorN30A}`,
+    padding: 3 * halfGrid,
   },
   codeExample: {
-    borderTop: '1px solid #ddd',
+    backgroundColor: akColorN0,
   },
 };
 
@@ -29,6 +32,7 @@ function formatCode(code) {
 }
 
 export default class extends PureComponent {
+  static displayName = 'AkutilReadmeCode'
   static propTypes = {
     children: PropTypes.node.isRequired,
     code: PropTypes.string,
@@ -38,13 +42,13 @@ export default class extends PureComponent {
     const { children, code, language } = this.props;
     const { code: customStyle, codeExample } = style;
     return (
-      <div>
+      <div style={{ marginTop: 3 * halfGrid }}>
         <SyntaxHighlighter
           customStyle={customStyle}
           language={language || 'jsx'}
           style={docco}
         >{formatCode(code || children)}</SyntaxHighlighter>
-        {code ? <div style={{ ...codeExample, ...customStyle }}>{children}</div> : ''}
+        {code ? <div style={{ ...customStyle, ...codeExample }}><h6 style={{ marginBottom: halfGrid }}>Code example: result</h6>{children}</div> : ''}
       </div>
     );
   }

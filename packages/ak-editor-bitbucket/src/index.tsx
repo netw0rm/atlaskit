@@ -1,27 +1,41 @@
-import React, { PureComponent } from 'react';
-import { ProseMirror, Schema, Node } from 'ak-editor-prosemirror';
-import ListsPlugin from 'ak-editor-plugin-lists';
-import BlockTypePlugin from 'ak-editor-plugin-block-type';
-import MarkdownInputRulesPlugin from 'ak-editor-plugin-markdown-inputrules';
-import HyperlinkPlugin from 'ak-editor-plugin-hyperlink';
-import ImageUploadPlugin from 'ak-editor-plugin-image-upload';
-import TextFormattingPlugin from 'ak-editor-plugin-text-formatting';
-import MentionsPlugin from 'ak-editor-plugin-mentions';
-import { Chrome } from 'ak-editor-ui';
+import * as React from 'react';
+import { PureComponent } from 'react';
+import {
+  ProseMirror,
+  Schema,
+  Node,
+  Keymap,
+  ListsPlugin,
+  BlockTypePlugin,
+  CodeBlockPlugin,
+  DefaultInputRulesPlugin,
+  MarkdownInputRulesPlugin,
+  HyperlinkPlugin,
+  TextFormattingPlugin,
+  HorizontalRulePlugin,
+  MentionsPlugin,
+  ImageUploadPlugin,
+  Chrome,
+  AnalyticsHandler,
+  analyticsService
+} from 'ak-editor-core';
+
 import schema from './schema';
 import markdownSerializer from './markdown-serializer';
-import { blockTypes, blockTypeType, blockTypesType } from './block-types';
-import parseHtml from './parse-html';
+import { parseHtml, transformHtml } from './parse-html';
+
+export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
 export interface Props {
-  context?: 'comment' | 'pr',
-  isExpandedByDefault?: boolean,
-  defaultValue?: string,
+  context?: 'comment' | 'pr';
+  isExpandedByDefault?: boolean;
+  defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
-  imageUploader?: Function;
+  analyticsHandler?: AnalyticsHandler;
+  imageUploadHandler?: ImageUploadHandler;
 }
 
 export interface State {
@@ -35,6 +49,8 @@ export default class Editor extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
+
+    analyticsService.handler = props.analyticsHandler || ((name) => {});
   }
 
   /**
@@ -124,7 +140,7 @@ export default class Editor extends PureComponent<Props, State> {
       <Chrome
         children={<div ref={this.handleRef} />}
         isExpanded={isExpanded}
-        feedbackFormUrl='https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/'
+        feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
         onCancel={handleCancel}
         onSave={handleSave}
         placeholder={this.props.placeholder}
@@ -133,6 +149,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
+        pluginStateImageUpload={pm && ImageUploadPlugin.get(pm)}
       />
     );
   }
@@ -167,11 +184,14 @@ export default class Editor extends PureComponent<Props, State> {
         plugins: [
           MarkdownInputRulesPlugin,
           HyperlinkPlugin,
-          ImageUploadPlugin,
           BlockTypePlugin,
+          CodeBlockPlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          HorizontalRulePlugin,
           MentionsPlugin,
+          DefaultInputRulesPlugin,
+          ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )
         ],
       });
 
@@ -179,8 +199,27 @@ export default class Editor extends PureComponent<Props, State> {
         BlockTypePlugin.get(pm)!.changeContext(context);
       }
 
+      if (this.props.imageUploadHandler) {
+        ImageUploadPlugin.get(pm)!.uploadHandler = this.props.imageUploadHandler;
+      }
+
+      pm.addKeymap(new Keymap({
+        'Mod-Enter': this.handleSave,
+        'Esc'() {} // Disable Esc handler
+      }));
+
+      pm.on.transformPastedHTML.add((html: string) => {
+        return transformHtml(html).innerHTML;
+      });
+
+      pm.on.domPaste.add(() => {
+        analyticsService.trackEvent('atlassian.editor.paste');
+      });
+
       pm.on.change.add(this.handleChange);
       pm.focus();
+
+      analyticsService.trackEvent('atlassian.editor.start');
 
       this.setState({ pm });
     } else {

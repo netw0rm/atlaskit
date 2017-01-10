@@ -1,17 +1,16 @@
 {
   "compilerOptions": {
     "allowJs": false,
-    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "jsx": "preserve",
+    "jsx": "react",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "target": "es2015",
+    "target": "es5",
     "types": [
       "chai",
       "react",
@@ -21,6 +20,19 @@
       "enzyme"
     ]
   },
+  // Include source files for IDE and tslint detection.
+  // Package-specific build and webpack configs overrides these settings to
+  // more granular scoping.
+  "include": [
+    "packages/*/*.ts",
+    "packages/*/build/**/*.ts",
+    "packages/*/src/**/*.ts",
+    "packages/*/src/**/*.tsx",
+    "packages/*/test/**/*.ts",
+    "packages/*/test/**/*.tsx",
+    "packages/*/stories/**/*.ts",
+    "packages/*/stories/**/*.tsx"
+  ],
   "files": [
     "build/types/node.d.ts",
     "build/types/popper.d.ts",

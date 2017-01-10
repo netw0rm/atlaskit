@@ -5,12 +5,15 @@ import Heading from './heading';
 
 // eslint-disable-next-line react/no-multi-comp, react/prefer-stateless-function
 export default class extends PureComponent {
+  static displayName = 'AkutilReadmeProps'
   static propTypes = {
     component: PropTypes.func.isRequired,
     descriptions: PropTypes.objectOf(PropTypes.string),
+    types: PropTypes.objectOf(PropTypes.string),
   }
   static defaultProps = {
     descriptions: {},
+    types: {},
   }
   getPropNames() {
     return Object.keys(this.props.component.propTypes);
@@ -19,7 +22,8 @@ export default class extends PureComponent {
     const { component: { defaultProps = {}, propTypes } } = this.props;
     return this.getPropNames().map((name) => {
       const thisType = propTypes[name];
-      const type = Object.keys(PropTypes).filter(t => PropTypes[t] === thisType)[0];
+      const type = Object.keys(PropTypes).filter(t =>
+        PropTypes[t] === thisType)[0] || this.props.types[name];
       const isRequired = typeof thisType.isRequired === 'undefined';
       const defaultValue = JSON.stringify(defaultProps[name]) || `${defaultProps[name]}`;
       const description = this.props.descriptions[name];

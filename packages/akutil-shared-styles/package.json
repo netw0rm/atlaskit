@@ -1,16 +1,17 @@
 {
   "name": "akutil-shared-styles",
-  "version": "37.2.0",
+  "version": "37.3.2",
   "description": "Shared styles for AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single akutil-shared-styles"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single akutil-shared-styles; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "index.d.ts"
   ],
   "author": "Atlassian Pty Ltd",
   "license": "SEE LICENSE IN LICENSE",

@@ -83,4 +83,13 @@ describe('ak-button/default-behaviour', () => {
     wrapper.find('button').simulate('click');
     expect(spy).to.have.been.calledOnce;
   });
+
+  it('should render tabIndex attribute when the tabIndex property is set', () => {
+    let wrapper = mount(<Button tabIndex={0}>button</Button>);
+    expect(wrapper).to.have.attr('tabIndex', '0');
+    wrapper = mount(<Button href="#" tabIndex={0}>link</Button>);
+    expect(wrapper).to.have.attr('tabIndex', '0');
+    wrapper = mount(<Button tabIndex={0} isDisabled>span</Button>);
+    expect(wrapper).to.have.attr('tabIndex', '0');
+  });
 });

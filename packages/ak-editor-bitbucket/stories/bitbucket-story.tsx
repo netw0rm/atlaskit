@@ -1,8 +1,9 @@
-import React, { PureComponent } from 'react';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import reactify from 'akutil-react';
-import { base64fileconverter } from 'ak-editor-test';
-import { default as AkTabs, Tab as AkTab} from 'ak-tabs';
+import { base64fileconverter } from 'ak-editor-core/test-helper';
+import { default as AkTabs, Tab as AkTab } from 'ak-tabs';
 import Editor from '../src';
 import exampleHTML from './exampleHTML';
 
@@ -14,7 +15,7 @@ const SaveAction = () => action('Save')();
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
-const imageUploader = (e: any, fn: any) => {
+const imageUploadHandler = (e: any, fn: any) => {
   if (e instanceof ClipboardEvent) {
     pasteHandler(converter, e, fn);
   } else if (e instanceof DragEvent) {
@@ -48,16 +49,31 @@ storiesOf('ak-editor-bitbucket', module)
       />
     </div>
   )
-  .add('with imageUploader', () =>
+  .add('With imageUploadHandler', () =>
     <div style={{ padding: 20 }}>
       <Editor
-        imageUploader={imageUploader}
+        isExpandedByDefault
+        imageUploadHandler={imageUploadHandler}
         onCancel={CancelAction}
         onChange={ChangeAction}
         onSave={SaveAction}
       />
     </div>
   )
+  .add('Analytics events', () => {
+    return (
+      <div style={{ padding: 20 }}>
+        <h5 style={{ marginBottom: 20 }}>Interact with the editor and observe analytics events in the Action Logger below</h5>
+        <Editor
+          placeholder="Click me to expand ..."
+          analyticsHandler={(actionName, props) => action(actionName)(props)}
+          onSave={() => {}}
+          onCancel={() => {}}
+          imageUploadHandler={() => {}}
+        />
+      </div>
+    );
+  })
   .add('Markdown preview', () => {
     type Props = {};
     type State = { markdown?: string };
@@ -220,4 +236,128 @@ storiesOf('ak-editor-bitbucket', module)
       <Demo />
     );
   })
-;
+  .add('Styles inheritance', () =>
+    <div style={{ padding: 20 }} className="wiki-content">
+      <style>
+        {`
+          /**/
+          /* OVERRIDES FOR AK-CSS-RESET */
+          /* Since bitbucket doesn't use ak-css-reset need to override some rules in order to look more bitbucketish */
+          /**/
+
+          .wiki-content blockquote:before,
+          .wiki-content blockquote:after {
+              content: ""
+          }
+
+          .wiki-content blockquote > :last-child {
+              display: block;
+          }
+
+          /**/
+          /* STYLES FROM BITBUCKET */
+          /**/
+
+          /* Default margins */
+          .wiki-content blockquote,
+          .wiki-content pre {
+              margin: 10px 0 0 0;
+          }
+
+          .wiki-content blockquote:first-child,
+          .wiki-content pre:first-child {
+              margin-top: 0;
+          }
+
+          .wiki-content blockquote {
+              padding: 10px 30px;
+
+              color: #707070;
+              border-left: 1px solid #ccc;
+          }
+
+          .wiki-content blockquote > cite {
+              display: block;
+
+              margin-top: 10px;
+          }
+
+          .wiki-content code,
+          .wiki-content pre {
+              font-family: Consolas, Menlo, 'Liberation Mono', Courier, monospace;
+              font-size: 12px;
+              line-height: 1.4;
+          }
+
+          .wiki-content li,
+          .wiki-content p {
+              word-wrap: break-word;
+          }
+
+          .wiki-content li > p {
+              margin-bottom: 10px;
+          }
+
+          .wiki-content pre {
+              overflow-x: auto;
+
+              padding: 5px 10px;
+
+              word-wrap: normal;
+
+              border: 1px solid #ccc;
+              border-radius: 3px;
+              background: #f5f5f5;
+          }
+
+          .wiki-content pre > code {
+              margin: 0;
+              padding: 1px 3px;
+
+              border: none;
+          }
+
+          .wiki-content img {
+              max-width: 100%;
+          }
+
+          .wiki-content code {
+              display: inline-block;
+              overflow-x: auto;
+
+              box-sizing: border-box;
+              max-width: 100%;
+
+              vertical-align: bottom;
+              white-space: nowrap;
+          }
+
+          .wiki-content > ul {
+              list-style-type: disc;
+          }
+
+          .wiki-content > ul > li > ul {
+              list-style-type: circle;
+          }
+
+          .wiki-content > ul > li > ul > li > ul {
+              list-style-type: square;
+          }
+
+          .wiki-content ul > li > ul {
+              margin-top: 0;
+          }
+
+        `}
+      </style>
+      <p style={{ marginBottom: 10 }}>
+        Example of styles inheritance. Styles were copied as is from bitbucket.
+      </p>
+      <Editor
+        isExpandedByDefault
+        onCancel={CancelAction}
+        onChange={ChangeAction}
+        onSave={SaveAction}
+      />
+    </div>
+  );

@@ -1,8 +1,13 @@
 import React, { PureComponent, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
-import EditView from './Edit';
-import ReadView from './Read';
-import ReadOnlyView from './ReadOnly';
+import classNames from 'classnames';
+import Button from 'ak-button';
+import Spinner from 'ak-spinner';
+import ConfirmIcon from 'ak-icon/glyph/confirm';
+import CancelIcon from 'ak-icon/glyph/cancel';
+import EditIcon from 'ak-icon/glyph/edit';
+import FieldBase, { Label } from 'ak-field-base'; // eslint-disable-line
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
@@ -30,7 +35,7 @@ export default class InlineEdit extends PureComponent {
      *
      * This node should allow the user to edit the value of the field.
      *
-     * If this node is not supplied, the component will display in read-only mode.
+     * If this node is undefined/null/false, the component will display in read-only mode.
      *
      * @memberof InlineEdit
      * @type {ReactNode}
@@ -43,6 +48,17 @@ export default class InlineEdit extends PureComponent {
      * @type {boolean}
      */
     isEditing: PropTypes.bool.isRequired,
+    /**
+     * @description Whether or not inline edit is on waiting mode.
+     *
+     * Displays a spinner to the right of the field to indicate that the value
+     * is currently being saved/validated.
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     * @default false
+     */
+    isWaiting: PropTypes.bool,
     /**
      * @description Whether or not a validation error should be displayed.
      *
@@ -119,55 +135,158 @@ export default class InlineEdit extends PureComponent {
      * @type {Function}
      */
     onCancel: PropTypes.func.isRequired,
+    labelHtmlFor: PropTypes.string,
   }
 
   static defaultProps = {
     isInvalid: false,
+    isWaiting: false,
     isLabelHidden: false,
     areActionButtonsHidden: false,
     isConfirmOnBlurDisabled: false,
   }
 
+  state = {
+    wasFocusReceivedSinceLastBlur: false,
+  }
+
+  onWrapperClick = () => {
+    if (!this.isReadOnly() && !this.props.isEditing) {
+      this.props.onEditRequested();
+    }
+  }
+
+  onWrapperBlur = () => {
+    if (this.isReadOnly() || !this.props.isEditing || this.props.isConfirmOnBlurDisabled) {
+      return;
+    }
+    this.setState({ wasFocusReceivedSinceLastBlur: false });
+    setTimeout(this.confirmIfUnfocused, 10);
+  }
+
+  onWrapperFocus = () => {
+    this.setState({ wasFocusReceivedSinceLastBlur: true });
+  }
+
+  onConfirmClick = (event) => {
+    // eslint-disable-next-line react/no-find-dom-node
+    ReactDOM.findDOMNode(this.confirmButtonRef).focus();
+
+    event.preventDefault();
+    this.props.onConfirm();
+  }
+
+  onCancelClick = (event) => {
+    // eslint-disable-next-line react/no-find-dom-node
+    ReactDOM.findDOMNode(this.cancelButtonRef).focus();
+
+    event.preventDefault();
+    this.props.onCancel();
+  }
+
+  getRootClasses = () =>
+    classNames({
+      [styles.root]: true,
+      [styles.readViewWrapper]: !this.props.isEditing,
+    })
+
+  getActionButtonClasses = () =>
+    classNames({
+      [styles.buttonsWrapper]: true,
+      [styles.buttonWrapperHidden]: !this.props.isEditing || this.props.areActionButtonsHidden,
+    })
+
+  confirmIfUnfocused = () => {
+    if (!this.state.wasFocusReceivedSinceLastBlur) {
+      this.props.onConfirm();
+    }
+  }
+
+  isReadOnly = () =>
+    !this.props.editView
+
+  shouldShowEditView = () =>
+    this.props.isEditing && !this.isReadOnly()
+
+  shouldRenderEditIcon = () => !this.isReadOnly() && !this.props.isInvalid;
+
+  shouldRenderSpinner = () => this.props.isWaiting && this.props.isEditing;
+
+  renderActionButtons = () => (
+    <div className={this.getActionButtonClasses()}>
+      <Button
+        appearance="subtle"
+        iconBefore={<ConfirmIcon label="confirm" />}
+        onClick={this.onConfirmClick}
+        ref={(ref) => { this.confirmButtonRef = ref; }}
+      />
+      <Button
+        appearance="subtle"
+        iconBefore={<CancelIcon label="cancel" />}
+        onClick={this.onCancelClick}
+        ref={(ref) => { this.cancelButtonRef = ref; }}
+      />
+    </div>
+  )
+
+  renderEditIcon = () => (
+    <div
+      className={classNames({
+        [styles.editButtonWrapper]: true,
+        [styles.hidden]: !this.shouldRenderEditIcon(),
+      })}
+    >
+      <button className={styles.editButton}>
+        <EditIcon label="Edit" size="small" />
+      </button>
+    </div>
+  )
+
   renderReadView = () => (
-    <ReadView
-      label={this.props.label}
-      isInvalid={this.props.isInvalid}
-      isLabelHidden={this.props.isLabelHidden}
-      onEditRequested={this.props.onEditRequested}
-    >
+    <div className={styles.readViewContentWrapper}>
       {this.props.readView}
-    </ReadView>
+      {this.renderEditIcon()}
+    </div>
   )
 
-  renderEditView = () => (
-    <EditView
-      label={this.props.label}
-      isInvalid={this.props.isInvalid}
-      isLabelHidden={this.props.isLabelHidden}
-      areActionButtonsHidden={this.props.areActionButtonsHidden}
-      isConfirmOnBlurDisabled={this.props.isConfirmOnBlurDisabled}
-      onConfirm={this.props.onConfirm}
-      onCancel={this.props.onCancel}
-      content={this.props.editView}
-    />
-  )
-
-  renderEditableView = () => (
-    this.props.isEditing ? this.renderEditView() : this.renderReadView()
-  )
-
-  renderReadOnlyView = () => (
-    <ReadOnlyView
-      label={this.props.label}
-      isLabelHidden={this.props.isLabelHidden}
-    >
-      {this.props.readView}
-    </ReadOnlyView>
+  renderSpinner = () => (
+    <div className={styles.spinnerWrapper}>
+      <Spinner />
+    </div>
   )
 
   render = () => (
-    <div className={styles.root}>
-      {this.props.editView ? this.renderEditableView() : this.renderReadOnlyView()}
+    <div className={this.getRootClasses()}>
+      <div style={{ position: (this.props.isLabelHidden ? 'absolute' : 'relative') }}>
+        <Label
+          label={this.props.label}
+          isLabelHidden={this.props.isLabelHidden}
+          htmlFor={this.props.labelHtmlFor}
+          onClick={this.props.onEditRequested}
+        />
+      </div>
+      <div
+        className={styles.contentWrapper}
+        onBlur={this.onWrapperBlur}
+        onFocus={this.onWrapperFocus}
+      >
+        <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+          className={styles.fieldBaseWrapper}
+          onClick={this.onWrapperClick}
+        >
+          <FieldBase
+            isInvalid={this.props.isInvalid}
+            isFocused={this.isReadOnly() ? false : undefined}
+            isReadOnly={this.isReadOnly()}
+            isFitContainerWidthEnabled={this.props.isEditing}
+            appearance={this.props.isEditing ? 'standard' : 'subtle'}
+            isDisabled={this.shouldRenderSpinner()}
+          >
+            {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
+          </FieldBase>
+        </div>
+        {this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()}
+      </div>
     </div>
   )
 }

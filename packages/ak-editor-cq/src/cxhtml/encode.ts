@@ -3,7 +3,7 @@ import {
   Fragment,
   Node as PMNode,
   TextNode
-} from 'ak-editor-prosemirror';
+} from 'ak-editor-core';
 
 import {
   BlockQuoteNode,
@@ -24,7 +24,7 @@ import {
   isListItemNode,
   isOrderedListNode,
   isParagraphNode
-} from 'ak-editor-schema';
+} from 'ak-editor-core';
 
 
 export default function encode(node: DocNode) {
@@ -84,7 +84,7 @@ export default function encode(node: DocNode) {
 
   function encodeParagraph(node: ParagraphNode) {
     const elem = doc.createElement('p');
-    elem.appendChild(encodeFragment(node.content))
+    elem.appendChild(encodeFragment(node.content));
     return elem;
   }
 
@@ -104,7 +104,7 @@ export default function encode(node: DocNode) {
           case schema.marks.strike:
             elem = elem.appendChild(doc.createElement('s'));
             break;
-          case schema.marks.code:
+          case schema.marks.mono:
             elem = elem.appendChild(doc.createElement('code'));
             break;
           case schema.marks.u:

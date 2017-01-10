@@ -2,50 +2,54 @@ import React, { PropTypes, PureComponent } from 'react';
 import styles from 'style!../less/Flag.less';
 import CancelIcon from 'ak-icon/glyph/cancel';
 
-/**
- * @description Return React Flag component.
- * @class Flag
- */
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Flag extends PureComponent {
   static propTypes = {
-    /**
-     * @description The icon displayed in the top-left of the flag.
-     * @memberof Flag
-     * @instance
-     * @type {element}
-     */
-    icon: PropTypes.element,
-    /**
-     * @description The bold text shown at the top of the flag.
-     * @memberof Flag
-     * @instance
-     * @type {string}
-     */
-    title: PropTypes.string.isRequired,
-    /**
-     * @description The secondary text shown below the flag title.
-     * @memberof Flag
-     * @instance
-     * @type {string}
-     */
     description: PropTypes.string,
+    icon: PropTypes.element.isRequired,
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    isDismissAllowed: PropTypes.bool,
+    onDismissed: PropTypes.func,
+    title: PropTypes.string.isRequired,
   };
+
+  static defaultProps = {
+    isDismissAllowed: false,
+    onDismissed: () => {},
+  }
+
+  flagDismissed = () => {
+    this.props.onDismissed(this.props.id);
+  }
 
   render() {
     return (
-      <div className={styles.root}>
+      <div
+        className={styles.root}
+        role="alert"
+        tabIndex="0"
+      >
         <div className={styles.primaryIcon}>
           {this.props.icon}
         </div>
         <div className={styles.textContent}>
-          <div className={styles.titleAndCancel}>
+          <div className={styles.titleAndDismiss}>
             <span className={styles.title}>
               {this.props.title}
             </span>
-            <div className={styles.cancelIcon}>
-              <CancelIcon label="Close flag" />
-            </div>
+            {
+              this.props.isDismissAllowed ? (
+                <button
+                  className={styles.dismissIconButton}
+                  onClick={this.flagDismissed}
+                >
+                  <CancelIcon label="Dismiss flag" />
+                </button>
+              ) : null
+            }
           </div>
           {
             this.props.description ? (

@@ -1,7 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import AkButton from 'ak-button';
+import AkButtonGroup from 'ak-button-group';
 
 import styles from 'style!./styles.less';
 
@@ -25,19 +26,45 @@ const toggleableIcons = Object
   .filter(key => twoColorIcons.indexOf(key) !== -1)
   .map(key => [key, components[key]]);
 
-const AllIcons = props => (
-  // eslint-disable-next-line react/prop-types
-  <div {...props} className={classnames(styles.container, props.className)}>
-    {Object
-      .entries(components)
-      .map(([key, Icon]) =>
-        <Icon
-          label={`${key} icon`}
-          title={`${key}.svg`}
-          key={key}
-        />)}
-  </div>
-);
+class AllIcons extends PureComponent {
+  state = {}
+
+  setSize = s => this.setState({ size: s })
+
+  render() {
+    const { props } = this;
+    return (
+      <div>
+        <div>
+          {props.hasSizeSelect ?
+            (
+              <div>
+                <p>Select icon size:</p>
+                <AkButtonGroup>
+                  <AkButton appearance="subtle" onClick={() => this.setSize(null)}>default</AkButton>
+                  {Object.values(size).map(s => (
+                    <AkButton appearance="subtle" onClick={() => this.setSize(s)}>{s}</AkButton>
+                  ))}
+                </AkButtonGroup>
+              </div>
+            ) : null
+          }
+        </div>
+        <div {...props} className={classnames(styles.container, props.className)}>
+          {Object
+            .entries(components)
+            .map(([key, Icon]) =>
+              <Icon
+                label={`${key} icon`}
+                title={`${key}.svg`}
+                key={key}
+                size={this.state.size}
+              />)}
+        </div>
+      </div>
+    );
+  }
+}
 
 const AbsoluteAllIcons = props => (
   <AllIcons
@@ -75,7 +102,7 @@ storiesOf('ak-icon', module)
       size="medium"
     />
   ))
-  .add('All icons', () => <AllIcons />)
+  .add('All icons (with size selection)', () => <AllIcons hasSizeSelect />)
   .add('All icons (usage)', () => (
     <table>
       <thead>

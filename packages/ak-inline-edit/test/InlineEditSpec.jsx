@@ -1,49 +1,186 @@
 import chai, { expect } from 'chai';
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
-import { InlineEdit } from '../src';
-import EditView from '../src/Edit';
-import ReadView from '../src/Read';
-import ReadOnlyView from '../src/ReadOnly';
+import sinonChai from 'sinon-chai';
+import ConfirmIcon from 'ak-icon/glyph/confirm';
+import CancelIcon from 'ak-icon/glyph/cancel';
+import FieldBase, { Label } from 'ak-field-base'; // eslint-disable-line
+import Spinner from 'ak-spinner';
+import InlineEdit from '../src/InlineEdit';
 
 chai.use(chaiEnzyme());
+chai.use(sinonChai);
 
 const noop = () => {};
+const Input = props =>
+  <input
+    {...props}
+    onChange={noop}
+  />;
 
 const defaultProps = {
   label: 'test',
-  isLabelHidden: true,
+  isLabelHidden: false,
   isEditing: false,
+  isInvalid: false,
+  areActionButtonsHidden: false,
   isConfirmOnBlurDisabled: false,
-  onEditRequested: noop,
   onConfirm: noop,
   onCancel: noop,
-  readView: 'test',
-  editView: 'test',
+  onEditRequested: noop,
+  readView: 'readView',
+  editView: <Input value="test" />,
 };
 
 describe('ak-inline-edit', () => {
-  describe('properties', () => {
-    describe('isEditing', () => {
-      it('should render Edit view when set', () =>
-        expect(shallow(<InlineEdit {...defaultProps} isEditing />))
-          .to.have.descendants(EditView)
+  it('should render read view inside FieldBase when in read mode', () => {
+    const readView = <span>read</span>;
+    const wrapper = mount(<InlineEdit {...defaultProps} readView={readView} />);
+    expect(wrapper).to.have.exactly(1).descendants(FieldBase);
+    const fieldBase = wrapper.find(FieldBase);
+    expect(fieldBase).to.contain(readView);
+  });
+
+  it('should render edit view inside FieldBase when in editing mode', () => {
+    const editView = <span>edit</span>;
+    const wrapper = mount(<InlineEdit {...defaultProps} isEditing editView={editView} />);
+    expect(wrapper).to.have.exactly(1).descendants(FieldBase);
+    const fieldBase = wrapper.find(FieldBase);
+    expect(fieldBase).to.contain(editView);
+  });
+
+  describe('read-only mode', () => {
+    it('should render the read view when "false" is supplied as the edit view', () => {
+      const readView = <span>read</span>;
+      const wrapper = shallow(
+        <InlineEdit
+          {...defaultProps}
+          isEditing
+          readView={readView}
+          editView={false}
+        />
+      );
+      expect(wrapper).to.contain(readView);
+    });
+
+    it('should render the read view when "null" is supplied as the edit view', () => {
+      const readView = <span>read</span>;
+      const wrapper = shallow(
+        <InlineEdit
+          {...defaultProps}
+          isEditing
+          readView={readView}
+          editView={null}
+        />
+      );
+      expect(wrapper).to.contain(readView);
+    });
+
+    it('should render the read view when "undefined" is supplied as the edit view', () => {
+      const readView = <span>read</span>;
+      const wrapper = shallow(
+        <InlineEdit
+          {...defaultProps}
+          isEditing
+          readView={readView}
+          editView={undefined}
+        />
+      );
+      expect(wrapper).to.contain(readView);
+    });
+  });
+
+  describe('onEditRequested', () => {
+    it('should be called when the read view is clicked', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(
+        <InlineEdit
+          {...defaultProps}
+          onEditRequested={spy}
+        />
+      );
+      wrapper.find(FieldBase).simulate('click');
+      expect(spy).to.have.been.calledOnce;
+    });
+
+    it('should not be called when the edit view is clicked', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(
+        <InlineEdit
+          {...defaultProps}
+          isEditing
+          onEditRequested={spy}
+        />
+      );
+      wrapper.find(FieldBase).simulate('click');
+      expect(spy).to.have.been.notCalled;
+    });
+  });
+
+  describe('onConfirm', () =>
+    it('should be called when confirmation button is clicked', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(
+        <InlineEdit
+          {...defaultProps}
+          onConfirm={spy}
+        />
+      );
+      wrapper.find(ConfirmIcon).simulate('click');
+      expect(spy).to.have.been.calledOnce;
+    })
+  );
+
+  describe('onCancel', () =>
+    it('should be called when cancel button is clicked', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(
+        <InlineEdit
+          {...defaultProps}
+          onCancel={spy}
+        />
+      );
+      wrapper.find(CancelIcon).simulate('click');
+      expect(spy).to.have.been.calledOnce;
+    })
+  );
+
+  describe('label', () => {
+    it('should set parameter into FieldBase', () => {
+      expect(shallow(<InlineEdit {...defaultProps} label="test" />).find(Label))
+        .to.have.prop('label', 'test');
+    });
+
+    it('should set both isLabelHidden and label parameter into FieldBase', () => {
+      const wrapper = shallow(<InlineEdit {...defaultProps} label="test" isLabelHidden />);
+      const fieldBase = wrapper.find(Label);
+      expect(fieldBase).to.have.prop('label', 'test');
+      expect(fieldBase).to.have.prop('isLabelHidden', true);
+    });
+  });
+
+  describe('isWaiting', () => {
+    describe('when isEditing is false', () =>
+      it('should not render Spinner', () => {
+        const wrapper = mount(<InlineEdit {...defaultProps} isWaiting />);
+        expect(wrapper).to.not.contain(<Spinner />);
+      })
+    );
+
+    describe('when isEditing is true', () => {
+      let wrapper;
+
+      beforeEach(() => (
+        wrapper = shallow(<InlineEdit {...defaultProps} isWaiting isEditing />)
+      ));
+
+      it('should render Spinner', () =>
+        expect(wrapper).to.contain(<Spinner />)
       );
 
-      it('should render Read view when not set', () =>
-        expect(shallow(<InlineEdit {...defaultProps} />))
-          .to.have.descendants(ReadView)
-      );
-
-      it('should render ReadOnly view when no edit view is supplied', () =>
-        expect(shallow(<InlineEdit {...defaultProps} editView={null} />))
-          .to.have.descendants(ReadOnlyView)
-      );
-
-      it('should render ReadOnly view when no edit view is supplied when isEditing is set', () =>
-        expect(shallow(<InlineEdit {...defaultProps} editView={null} isEditing />))
-          .to.have.descendants(ReadOnlyView)
+      it('should disable field base', () =>
+        expect(wrapper.find(FieldBase)).to.have.prop('isDisabled', true)
       );
     });
   });

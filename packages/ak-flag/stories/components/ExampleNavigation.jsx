@@ -34,10 +34,10 @@ export default class Flag extends PureComponent {
             <AtlassianIcon size="medium" label="Atlassian" />
           }
         >
-          <a href="https://atlassian.com">
+          <a>
             <AkContainerItem text="Test page" />
           </a>
-          <a href="https://facebook.github.io/react/">
+          <a>
             <AkContainerItem text="Item with an icon" />
           </a>
         </Navigation>

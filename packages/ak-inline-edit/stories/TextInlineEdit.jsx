@@ -1,15 +1,8 @@
 import { action } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
+import SingleLineTextInput from 'ak-input';
+import uid from 'uid';
 import AkInlineEdit from '../src';
-
-const inputStyle = {
-  border: 0,
-  background: 'transparent',
-  color: 'inherit',
-  fontSize: 14,
-  outline: 0,
-  width: '100%',
-};
 
 /* eslint-disable react/prop-types */
 export default class extends PureComponent {
@@ -36,24 +29,28 @@ export default class extends PureComponent {
     this.setState(state => ({ editValue: state.readValue }));
   }
 
-  renderInput = () => (
-    <input
-      autoFocus
+  renderInput = ({ isEditing, id }) => (
+    <SingleLineTextInput
+      id={id}
+      isEditing={isEditing}
+      isInitiallySelected
       value={this.state.editValue}
-      style={inputStyle}
       onChange={this.onChange}
-      ref={(textInput) => { this.textInput = textInput; }}
     />
   )
 
-  render = () => (
-    <AkInlineEdit
-      label={this.props.label}
-      editView={this.renderInput()}
-      readView={this.state.readValue}
-      onConfirm={this.onConfirm}
-      onCancel={this.onCancel}
-      {...this.props}
-    />
-  )
+  render() {
+    const id = uid();
+    return (
+      <AkInlineEdit
+        label={this.props.label}
+        labelHtmlFor={id}
+        editView={this.renderInput({ isEditing: true, id })}
+        readView={this.renderInput({ isEditing: false, id })}
+        onConfirm={this.onConfirm}
+        onCancel={this.onCancel}
+        {...this.props}
+      />
+    );
+  }
 }

@@ -24,7 +24,7 @@
     "ak-mention": "^1.0.0",
     "akutil-shared-styles": "^37.0.2",
     "browserkeymap": "git://github.com/bradleyayers/browserkeymap#es6-modules-compat",
-    "popper.js": "git://github.com/lukebatchelor/popper.js#fixes-from-v1-dev",
+    "popper.js": "^1.0.1",
     "prosemirror": "0.10.1",
     "tslib": "^1.2.0",
     "typestyle": "^0.21.4"

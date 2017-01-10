@@ -15,6 +15,7 @@ const togglePropDescriptions = {
   onChange: 'Callback to be called when native \'change\' event happens internally. Example: when user clicks on the toggle or focus the toggle and press space bar',
   onFocus: 'Callback to be called when toggle is focused',
   onBlur: 'Callback to be called when toggle is unfocused',
+  size: 'Defines the size of the toggle. Possible values: \'regular\' or \'large\'',
 };
 
 const description = `Toggles are a quick way to view and switch between enabled or disabled states.

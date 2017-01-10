@@ -35,7 +35,7 @@ const leftClick = {
 
 const allEmojis = emojiService.all().emojis;
 
-describe('EmojiPicker', () => {
+describe('<EmojiPicker />', () => {
   it('should display first set of emoji in viewport by default', () => {
     const component = setupPicker();
     const list = component.find(EmojiPickerList);
@@ -83,7 +83,8 @@ describe('EmojiPicker', () => {
     const categorySelector = component.find(CategorySelector);
     const list = component.find(EmojiPickerList);
     const flagCategory1 = list.find(EmojiPickerListCategory).filterWhere(n => n.prop('title') === 'FLAGS');
-    // This will stop working if we stop using react-virtualized - will need to check scroll position instead
+    // This will stop working if we stop using react-virtualized - will need
+    // to check scroll position instead
     expect(flagCategory1.length, 'Flags category not yet displayed').to.equal(0);
     const flagCategoryButton = categorySelector.find('button').filterWhere(n => n.key() === 'Flags');
     expect(flagCategoryButton.length, 'Flag category button').to.equal(1);

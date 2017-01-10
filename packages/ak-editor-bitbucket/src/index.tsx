@@ -23,6 +23,7 @@ import {
 import schema from './schema';
 import markdownSerializer from './markdown-serializer';
 import { parseHtml, transformHtml } from './parse-html';
+import { MentionResource } from './mention-resource';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
@@ -36,6 +37,7 @@ export interface Props {
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
   imageUploadHandler?: ImageUploadHandler;
+  mentionSource?: any;
 }
 
 export interface State {
@@ -45,12 +47,20 @@ export interface State {
 
 export default class Editor extends PureComponent<Props, State> {
   state: State;
+  mentionsResourceProvider: MentionResource;
 
   constructor(props: Props) {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
 
     analyticsService.handler = props.analyticsHandler || ((name) => {});
+
+    if (props.mentionSource) {
+      this.mentionsResourceProvider = new MentionResource({
+        minWait: 10,
+        maxWait: 25,
+      }, props.mentionSource);
+    }
   }
 
   /**
@@ -150,6 +160,8 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
         pluginStateImageUpload={pm && ImageUploadPlugin.get(pm)}
+        pluginStateMentions={pm && this.mentionsResourceProvider && MentionsPlugin.get(pm)}
+        mentionsResourceProvider={this.mentionsResourceProvider}
       />
     );
   }
@@ -189,7 +201,7 @@ export default class Editor extends PureComponent<Props, State> {
           ListsPlugin,
           TextFormattingPlugin,
           HorizontalRulePlugin,
-          MentionsPlugin,
+          ...( this.mentionsResourceProvider ? [ MentionsPlugin ] : [] ),
           DefaultInputRulesPlugin,
           ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )
         ],

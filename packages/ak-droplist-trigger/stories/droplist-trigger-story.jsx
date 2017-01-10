@@ -113,5 +113,12 @@ storiesOf(name, module)
           >Simple button trigger</Trigger>
         </div>
       </div>
+      <p>Trigger can also occupy the whole available space</p>
+      <div className={styles.triggersContainer}>
+        <Trigger
+          style={{ border: '1px solid black' }}
+          isFitContainerWidthEnabled
+        >Simple wide trigger</Trigger>
+      </div>
     </div>
   ));

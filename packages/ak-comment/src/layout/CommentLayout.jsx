@@ -1,12 +1,10 @@
 import React, { PropTypes, PureComponent } from 'react';
-import classNames from 'classnames';
 import styles from '../styles.less';
 
 export default class CommentLayout extends PureComponent {
   static propTypes = {
     avatar: PropTypes.node,
     children: PropTypes.node,
-    className: PropTypes.string,
     content: PropTypes.node,
   }
 
@@ -18,14 +16,16 @@ export default class CommentLayout extends PureComponent {
         </div>
       </div>) : null);
 
+    const NestedComments = () => (this.props.children
+      ? <div className={styles.locals.nestedComments}>{this.props.children}</div>
+      : null);
+
     return (
-      <div className={classNames(styles.locals.container, this.props.className)}>
+      <div className={styles.locals.container}>
         <AvatarSection />
         <div className={styles.locals.mainSection}>
           {this.props.content}
-          <div className={styles.locals.nestedComments}>
-            {this.props.children}
-          </div>
+          <NestedComments />
         </div>
       </div>
     );

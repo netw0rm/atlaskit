@@ -46,33 +46,33 @@ storiesOf(name, module)
   .add('nested comment layouts', () => (
     <div>
       <NestedCommentLayout>
-        <NestedCommentLayoutNoAvatar>
+        <NestedCommentLayoutEditor>
           <NestedCommentLayout>
-            <NestedCommentLayoutNoAvatar>
+            <NestedCommentLayoutEditor>
               <NestedCommentLayout>
                 <NestedCommentLayout>
-                  <NestedCommentLayoutNoAvatar>
+                  <NestedCommentLayoutEditor>
                     <NestedCommentLayout>
                       <NestedCommentLayoutEditor />
                     </NestedCommentLayout>
-                  </NestedCommentLayoutNoAvatar>
+                  </NestedCommentLayoutEditor>
                 </NestedCommentLayout>
               </NestedCommentLayout>
               <NestedCommentLayoutEditor />
-            </NestedCommentLayoutNoAvatar>
+            </NestedCommentLayoutEditor>
           </NestedCommentLayout>
-        </NestedCommentLayoutNoAvatar>
+        </NestedCommentLayoutEditor>
       </NestedCommentLayout>
       <NestedCommentLayout />
       <NestedCommentLayout />
       <NestedCommentLayoutNoAvatar />
-      <NestedCommentLayout />
-      <NestedCommentLayoutNoAvatar>
+      <NestedCommentLayoutEditor />
+      <NestedCommentLayoutEditor>
         <NestedCommentLayoutEditor>
           <NestedCommentLayout />
         </NestedCommentLayoutEditor>
         <NestedCommentLayout />
-      </NestedCommentLayoutNoAvatar>
+      </NestedCommentLayoutEditor>
     </div>
   ))
   .add('comment layout with editor', () => (

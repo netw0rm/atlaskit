@@ -30,6 +30,15 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
     expect(mount(<Editor isExpandedByDefault />).find('ChromeExpanded')).to.exist;
   });
 
+  it('should expand after clicking', () => {
+    const editorWrapper = mount(<Editor />);
+
+    editorWrapper.find('ChromeCollapsed input').simulate('focus');
+
+    expect(editorWrapper.find('ChromeCollapsed')).not.to.exist;
+    expect(editorWrapper.find('ChromeExpanded')).to.exist;
+  });
+
   it('.expand() method should expand the editor chrome', () => {
     const editorWrapper = mount(<Editor />);
     const editor: Editor = editorWrapper.get(0) as any;
@@ -48,6 +57,24 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
 
     expect(editorWrapper.find('ChromeCollapsed')).to.exist;
     expect(editorWrapper.find('ChromeExpanded')).not.to.exist;
+  });
+
+  it('should call onExpanded after editor is expanded via click', () => {
+    const spy = sinon.spy();
+    const editorWrapper = mount(<Editor onExpanded={spy}/>);
+
+    editorWrapper.find('ChromeCollapsed input').simulate('focus');
+    expect(spy).to.have.been.calledOnce;
+  });
+
+  it('should call onExpanded after editor is expanded via .expand()', () => {
+    const spy = sinon.spy();
+    const editorWrapper = mount(<Editor onExpanded={spy}/>);
+    const editor: Editor = editorWrapper.get(0) as any;
+
+    editor.expand();
+
+    expect(spy).to.have.been.calledOnce;
   });
 });
 

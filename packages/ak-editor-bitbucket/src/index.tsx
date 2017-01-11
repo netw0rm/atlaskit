@@ -32,6 +32,7 @@ export interface Props {
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
+  onExpanded?: (editor?: Editor) => void;
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
   imageUploadHandler?: ImageUploadHandler;
@@ -66,7 +67,13 @@ export default class Editor extends PureComponent<Props, State> {
    * Expand the editor chrome
    */
   expand = () => {
+    const { onExpanded } = this.props;
+
     this.setState({ isExpanded: true });
+
+    if (onExpanded) {
+      onExpanded(this);
+    }
   }
 
   /**

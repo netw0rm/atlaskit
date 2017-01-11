@@ -26,7 +26,7 @@ const buildUrl = (baseUrl, path, data, secOptions) => {
     }
   }
   let seperator = '';
-  if (baseUrl.substr(-1) !== '/') {
+  if (path && baseUrl.substr(-1) !== '/') {
     seperator = '/';
   }
   return `${baseUrl}${seperator}${path}?${searchParam.toString()}`;
@@ -91,8 +91,36 @@ const emojiRequest = (provider) => {
   const { url, securityProvider, refreshedSecurityProvider } = provider;
   const secOptions = securityProvider && securityProvider();
   const emojiPromise = requestService(url, '', null, null, secOptions, refreshedSecurityProvider);
-  return nonRejectingPromise(emojiPromise, []);
+  return nonRejectingPromise(emojiPromise, { emojis: [] });
 };
+
+/**
+ * Denormalised an emoji response (emojis + sprite references) into an array of
+ * emoji will local sprite definitions.
+ */
+export const denormaliseEmojis = emojiData => (
+  emojiData.emojis.map((emoji) => {
+    const newEmoji = { ...emoji };
+    if (emoji.representation && emoji.representation.spriteRef) {
+      newEmoji.representation.sprite = emojiData.meta.spriteSheets[emoji.representation.spriteRef];
+    }
+
+    if (emoji.skinVariations) {
+      newEmoji.skinVariations = emoji.skinVariations.map((skinVariation) => {
+        if (skinVariation.spriteRef) {
+          return {
+            ...skinVariation,
+            sprite: emojiData.meta.spriteSheets[emoji.representation.spriteRef],
+          };
+        }
+
+        return skinVariation;
+      });
+    }
+
+    return newEmoji;
+  })
+);
 
 export default class EmojiResource {
 
@@ -149,7 +177,8 @@ export default class EmojiResource {
     debug('EmojiResource.loadAllEmoji waiting for', emojiPromises.length, 'promises');
     return Promise.all(emojiPromises).then((emojiSets) => {
       let allEmoji = [];
-      emojiSets.forEach((emojis) => {
+      emojiSets.forEach((emojiSet) => {
+        const emojis = denormaliseEmojis(emojiSet);
         allEmoji = allEmoji.concat(emojis);
       });
       return Promise.resolve(allEmoji);

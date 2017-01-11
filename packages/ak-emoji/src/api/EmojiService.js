@@ -23,6 +23,13 @@ export default class EmojiService {
   }
 
   /**
+   * Returns all available emoji.
+   */
+  all() {
+    return this.search();
+  }
+
+  /**
    * Text search of emoji shortcut and name field for suitable matches.
    *
    * Returns an array of all emoji is query is empty or null, otherwise an matching emoji.

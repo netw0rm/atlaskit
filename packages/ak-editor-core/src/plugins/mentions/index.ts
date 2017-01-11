@@ -84,7 +84,7 @@ export class MentionsPluginState {
     if (dirty) {
       if (this.queryActive) {
         if (!this.hasKeymap) {
-          this.pm.addKeymap(this.keymap);
+          this.pm.addKeymap(this.keymap, 100);
           this.hasKeymap = true;
         }
       } else {

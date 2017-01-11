@@ -196,7 +196,7 @@ describe('code-block', () => {
     });
   });
 
-  describe('activeElement', () => {
+  describe('activeCodeBlockElement', () => {
     context('when cursor moves winthin the same code block', () => {
       it('returns the same element', () => {
         const { pm, plugin } = editor(doc(code_block()('code{<>}Block{cbPos}')));
@@ -229,7 +229,7 @@ describe('code-block', () => {
     context('when cursor is within a code block', () => {
       context('when at the end of the code block', () => {
         it('returns code block element', () => {
-          const { pm, plugin } = editor(doc(code_block()('codeBlock{<>}')));
+          const { pm, plugin } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
 
           expect(plugin.targetElement).to.instanceOf(HTMLPreElement);
         });
@@ -237,7 +237,7 @@ describe('code-block', () => {
 
       context('when at the begining of the code block', () => {
         it('returns code block element', () => {
-          const { pm, plugin } = editor(doc(code_block()('{<>}codeBlock')));
+          const { pm, plugin } = editor(doc(p('paragraph'), code_block()('{<>}codeBlock')));
 
           expect(plugin.targetElement).to.instanceOf(HTMLPreElement);
         });
@@ -245,7 +245,7 @@ describe('code-block', () => {
 
       context('when at the middle of the code block', () => {
         it('returns code block element', () => {
-          const { pm, plugin } = editor(doc(code_block()('code{<>}Block')));
+          const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
 
           expect(plugin.targetElement).to.instanceOf(HTMLPreElement);
         });

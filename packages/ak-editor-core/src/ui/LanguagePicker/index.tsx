@@ -6,6 +6,7 @@ import { CodeBlockState } from '../../plugins/code-block';
 import { Node } from '../../prosemirror';
 import Panel from '../Panel';
 import languageList from './languageList';
+import * as styles from './styles';
 
 export interface Props {
   pluginState: CodeBlockState;
@@ -42,9 +43,11 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     if(targetNode) {
       return (
         <Panel target={targetElement} align="left" autoPosition>
-          <DropdownMenu triggerType="button" items={items} onItemActivated={this.handleLanguageChange}>
-            {language}
-          </DropdownMenu>
+          <div className={styles.container}>
+            <DropdownMenu triggerType="button" items={items} onItemActivated={this.handleLanguageChange}>
+              {language}
+            </DropdownMenu>
+          </div>
         </Panel>
       );
     }

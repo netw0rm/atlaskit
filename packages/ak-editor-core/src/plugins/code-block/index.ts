@@ -70,11 +70,11 @@ export class CodeBlockState {
 
   private update() {
     let dirty = false;
-    const codeBlock = this.activeBlockCodeNode();
+    const codeBlockNode = this.activeCodeBlockNode();
 
-    if(codeBlock !== this.targetNode) {
-      this.targetNode = codeBlock;
-      this.targetElement = this.getTargetElement();
+    if(codeBlockNode !== this.targetNode) {
+      this.targetNode = codeBlockNode;
+      this.targetElement = this.activeCodeBlockElement();
       dirty = true;
     }
 
@@ -83,12 +83,17 @@ export class CodeBlockState {
     }
   }
 
-  private getTargetElement(): HTMLElement {
-    const { node } = DOMFromPos(this.pm, this.pm.selection.$from.pos, true);
+  private activeCodeBlockElement(): HTMLElement {
+    const { pm } = this;
+    const { $from } = pm.selection;
+
+    const offset = $from.pos - $from.parentOffset;
+    const { node } = DOMFromPos(this.pm, offset, true);
+
     return node;
   }
 
-  private activeBlockCodeNode(): Node | undefined {
+  private activeCodeBlockNode(): Node | undefined {
     const { pm } = this;
     const { $from } = pm.selection;
     const node = $from.parent;

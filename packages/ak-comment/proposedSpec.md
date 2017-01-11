@@ -22,10 +22,9 @@ A comment can include many elements, including:
 ```
 <Comment
   avatar={<Avatar src="/path/to/img" label="Ben Wong's avatar" size="medium" />}
-  commenter="Ben Wong" // Accepts a node or string
-  role="author" // Renders a lozenge containing this text
-  dateTime={new Date()}
-  dateFormat="YYYY-MM-DD"
+  author={<CommentAuthor>Ben Wong</CommentAuthor>}
+  type="author" // Renders a lozenge containing this text
+  time={<CommentTime>30 August, 2016</CommentTime>}
   content={(
     <div>
       <p>Content goes here. This can include <a href="/link">links</a> and other content.</p>
@@ -33,9 +32,9 @@ A comment can include many elements, including:
     </div>
   )}
   actions={[ // Array of objects or nodes
-    { content: 'Reply', onClick: callbackFunc },
-    { content: 'Edit', onClick: callbackFunc },
-    <span onClick={callbackFunc}>Like</span>,
+    <CommentAction onClick={callbackFunc}>Reply</CommentAction>,
+    <CommentAction onClick={callbackFunc}>Edit</CommentAction>,
+    <CommentAction onClick={callbackFunc}>Like</CommentAction>,
   ]}
 />
 ```
@@ -48,12 +47,13 @@ For reference, the WC implementation for `ak-comment` had the following slots, w
 * Author => `author`
 * Avatar => `avatarSrc`, `avatarLabel`
 * Reply => `children` - see below
-* Time => `datetime`, `dateformat`
+* Time => `time`
 * Default (comment content): `content`
 
 #### Notes/questions
 
-* How should the date/time be specified? We could use a `Date` object or a string representation here.
+* For now, we simply expect the customer to provide the string representation of the time they want to display.
+* In future, we could use ask for a timestamp or `Date` object here.
 
 ### Comment threads
 
@@ -103,3 +103,16 @@ Which of these approaches should we choose? Currently we are using the `content`
 #### Notes/questions
 
 * Does it make sense to provide nested `Comment` elements as `children`, or does it make more sense to provide the content as `children` and expose a `replies`/`nested` property instead?
+
+### CommentLayout
+
+In order to allow consumers to plug another element (such as an editor) here, we expose the `CommentLayout` component. This is used internally to handle the layout of a `Comment`, so consumers can plug their own
+content into this layout component instead. For example, to display a comment editor as a nested element below a comment:
+
+```
+<Comment avatar={<MyUserAvatar />} content="Root level comment">
+  <CommentLayout avatar={<MyUserAvatar />} content={<MyCommentEditor />} />
+</Comment>
+```
+
+The `CommentLayout` handles the display of the avatar - if it is not provided, then it will not render the left-side column at all.

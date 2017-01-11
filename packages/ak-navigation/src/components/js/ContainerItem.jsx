@@ -13,6 +13,7 @@ import {
   textAfter,
 } from 'style!../less/ContainerItem.less';
 import className from 'classnames';
+import DefaultLinkComponent from './DefaultLinkComponent';
 
 export default class ContainerItem extends PureComponent {
   static propTypes = {
@@ -30,8 +31,7 @@ export default class ContainerItem extends PureComponent {
   static defaultProps = {
     isCompact: false,
     isSelected: false,
-    linkComponent: ({ href, children, ...props }) =>
-      (href ? <a href={href} {...props}>{children}</a> : children),
+    linkComponent: DefaultLinkComponent,
   }
 
   onMouseDown = (e) => {

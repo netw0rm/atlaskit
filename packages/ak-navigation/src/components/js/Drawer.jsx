@@ -7,7 +7,7 @@ export default class Drawer extends PureComponent {
     children: PropTypes.element,
     isOpen: PropTypes.bool,
     isWide: PropTypes.bool,
-    primaryItem: PropTypes.node,
+    primaryIcon: PropTypes.node,
   }
   static defaultProps = {
     isOpen: false,
@@ -24,7 +24,7 @@ export default class Drawer extends PureComponent {
         })}
       >
         <div className={classNames(styles.fixed)}>
-          {this.props.primaryItem}
+          {this.props.primaryIcon}
         </div>
         <div>foo</div>
         {this.props.children}

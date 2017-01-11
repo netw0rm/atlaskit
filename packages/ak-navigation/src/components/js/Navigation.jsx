@@ -4,6 +4,7 @@ import styles from 'style!../less/Navigation.less';
 import GlobalNavigation from './GlobalNavigation';
 import GlobalItem from './GlobalItem';
 import ContainerNavigation from './ContainerNavigation';
+import DefaultLinkComponent from './DefaultLinkComponent';
 import Drawer from './Drawer';
 import DrawerTrigger from './DrawerTrigger';
 import Resizer from './Resizer';
@@ -25,7 +26,8 @@ export default class Navigation extends PureComponent {
     globalAccountItem: PropTypes.node,
     globalCreateIcon: PropTypes.node,
     globalHelpItem: PropTypes.node,
-    globalPrimaryItem: PropTypes.node,
+    globalPrimaryIcon: PropTypes.node,
+    globalPrimaryItemHref: PropTypes.string,
     globalSearchIcon: PropTypes.node,
     hasBlanket: PropTypes.bool,
     isCollapsible: PropTypes.bool,
@@ -33,6 +35,7 @@ export default class Navigation extends PureComponent {
     isOpen: PropTypes.bool,
     isResizeable: PropTypes.bool,
     isSearchDrawerOpen: PropTypes.bool,
+    linkComponent: PropTypes.func,
     onBlanketClicked: PropTypes.func,
     onCreateDrawerActivated: PropTypes.func,
     onResize: PropTypes.func,
@@ -50,6 +53,7 @@ export default class Navigation extends PureComponent {
     isOpen: true,
     isResizeable: true,
     isSearchDrawerOpen: false,
+    linkComponent: DefaultLinkComponent,
     onBlanketClicked: () => {},
     onCreateDrawerActivated: () => {},
     onResize: () => {},
@@ -101,12 +105,14 @@ export default class Navigation extends PureComponent {
       globalAccountItem,
       globalCreateIcon,
       globalHelpItem,
-      globalPrimaryItem,
+      globalPrimaryIcon,
+      globalPrimaryItemHref,
       globalSearchIcon,
       hasBlanket,
       isCreateDrawerOpen,
       isResizeable,
       isSearchDrawerOpen,
+      linkComponent,
       onBlanketClicked,
       onCreateDrawerActivated,
       onSearchDrawerActivated,
@@ -131,11 +137,13 @@ export default class Navigation extends PureComponent {
         <div className={styles.navigationInner}>
           <div>
             <GlobalNavigation
+              accountItem={globalAccountItem}
+              helpItem={globalHelpItem}
+              linkComponent={linkComponent}
+              primaryIcon={globalPrimaryIcon}
+              primaryItemHref={globalPrimaryItemHref}
               shouldAnimate={shouldAnimate}
               width={getGlobalWidth(this.getRenderedWidth())}
-              primaryItem={globalPrimaryItem}
-              helpItem={globalHelpItem}
-              accountItem={globalAccountItem}
             >
               <DrawerTrigger onActivate={onSearchDrawerActivated}>
                 <GlobalItem isSelected={isSearchDrawerOpen} size="medium">
@@ -151,14 +159,14 @@ export default class Navigation extends PureComponent {
           </div>
           <div style={{ zIndex: 1 }}>
             <Drawer
-              primaryItem={globalPrimaryItem}
+              primaryIcon={globalPrimaryIcon}
               isOpen={isSearchDrawerOpen}
               isWide
             >
               {searchDrawerContent}
             </Drawer>
             <Drawer
-              primaryItem={globalPrimaryItem}
+              primaryIcon={globalPrimaryIcon}
               isOpen={isCreateDrawerOpen}
             >
               {createDrawerContent}

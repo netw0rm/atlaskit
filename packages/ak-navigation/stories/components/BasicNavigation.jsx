@@ -68,11 +68,8 @@ export default class BasicNavigation extends PureComponent {
         containerHeader={this.props.containerHeader}
         globalSearchIcon={<SearchIcon label="Search icon" />}
         globalCreateIcon={<CreateIcon label="Create icon" />}
-        globalPrimaryItem={
-          <AkGlobalItem size="large">
-            <AtlassianIcon label="Atlassian icon" size="medium" />
-          </AkGlobalItem>
-        }
+        globalPrimaryIcon={<AtlassianIcon label="Atlassian icon" size="medium" />}
+        globalPrimaryItemHref="http://www.atlassian.com"
         globalHelpItem={
           <AkDropdownMenu
             position="right bottom"

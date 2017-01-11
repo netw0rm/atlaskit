@@ -3,20 +3,25 @@ import classNames from 'classnames';
 import styles from 'style!../less/GlobalNavigation.less';
 import { globalOpenWidth } from '../../shared-variables';
 import Spacer from './Spacer';
+import GlobalItem from './GlobalItem';
+import DefaultLinkComponent from './DefaultLinkComponent';
 
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
     accountItem: PropTypes.node,
     children: PropTypes.node,
     helpItem: PropTypes.node,
-    primaryItem: PropTypes.node,
+    linkComponent: PropTypes.func,
+    primaryIcon: PropTypes.node,
+    primaryItemHref: PropTypes.string,
     shouldAnimate: PropTypes.bool,
     width: PropTypes.number,
   };
   static defaultProps = {
     accountItem: null,
     helpItem: null,
-    primaryItem: null,
+    linkComponent: DefaultLinkComponent,
+    primaryIcon: null,
     shouldAnimate: false,
     width: globalOpenWidth,
   };
@@ -24,15 +29,25 @@ export default class GlobalNavigation extends PureComponent {
     return Math.min(0, this.props.width - globalOpenWidth);
   }
   render() {
+    const {
+      accountItem,
+      children,
+      helpItem,
+      linkComponent,
+      primaryIcon,
+      primaryItemHref,
+      shouldAnimate,
+      width,
+    } = this.props;
     return (
       <div
         className={classNames({
-          [styles.shouldAnimate]: this.props.shouldAnimate,
+          [styles.shouldAnimate]: shouldAnimate,
         })}
       >
         <Spacer
-          width={this.props.width}
-          shouldAnimate={this.props.shouldAnimate}
+          width={width}
+          shouldAnimate={shouldAnimate}
         />
         <div
           className={styles.globalNavigation}
@@ -41,14 +56,20 @@ export default class GlobalNavigation extends PureComponent {
           }}
         >
           <div className={styles.primaryIcon}>
-            {this.props.primaryItem}
+            <GlobalItem
+              size="medium"
+              linkComponent={linkComponent}
+              href={primaryItemHref}
+            >
+              {primaryIcon}
+            </GlobalItem>
           </div>
           <div className={styles.primaryContainer}>
-            {this.props.children}
+            {children}
           </div>
           <div className={styles.secondaryContainer}>
-            {this.props.helpItem}
-            {this.props.accountItem}
+            {helpItem}
+            {accountItem}
           </div>
         </div>
       </div>

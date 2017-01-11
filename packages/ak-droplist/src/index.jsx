@@ -4,6 +4,7 @@ import styles from 'style!./styles.less';
 import Layer from 'ak-layer';
 import Trigger from 'ak-droplist-trigger';
 import keyCode from 'keycode';
+import classnames from 'classnames';
 
 const halfGrid = 4;
 const itemHeight = halfGrid * 7;
@@ -19,6 +20,7 @@ export default class DropdownList extends PureComponent {
     appearance: PropTypes.oneOf(['default', 'tall']),
     children: PropTypes.node,
     isOpen: PropTypes.bool,
+    isFitContainerWidthEnabled: PropTypes.bool,
     isTriggerNotTabbable: PropTypes.bool,
     listContext: PropTypes.oneOf(['menu']),
     onOpenChange: PropTypes.func,
@@ -30,6 +32,7 @@ export default class DropdownList extends PureComponent {
     appearance: 'default',
     position: 'bottom left',
     isOpen: false,
+    isFitContainerWidthEnabled: false,
     isTriggerNotTabbable: false,
     listContext: 'menu',
     onOpenChange: () => {},
@@ -41,6 +44,11 @@ export default class DropdownList extends PureComponent {
     if (this.domItemsList) {
       this.focusFirstItem();
     }
+
+    if (this.props.isFitContainerWidthEnabled && this.dropContentRef) {
+      this.dropContentRef.style.width = `${this.triggerRef.offsetWidth}px`;
+    }
+
     document.addEventListener('click', this.handleClickOutside);
     document.addEventListener('keydown', this.handleKeyDown);
   }
@@ -48,6 +56,10 @@ export default class DropdownList extends PureComponent {
   componentDidUpdate = () => {
     if (this.props.isOpen) {
       this.focusFirstItem();
+
+      if (this.props.isFitContainerWidthEnabled && this.dropContentRef) {
+        this.dropContentRef.style.width = `${this.triggerRef.offsetWidth}px`;
+      }
     }
   }
 
@@ -174,7 +186,11 @@ export default class DropdownList extends PureComponent {
   render = () => {
     const { props } = this;
     return (
-      <div className={styles.dropWrapper}>
+      <div
+        className={classnames([styles.dropWrapper, {
+          [styles.fitContainer]: props.isFitContainerWidthEnabled,
+        }])}
+      >
         <Layer
           position={props.position}
           offset="0 4"
@@ -183,6 +199,7 @@ export default class DropdownList extends PureComponent {
               className={styles.dropContent}
               ref={(ref) => {
                 if (ref) {
+                  this.dropContentRef = ref;
                   this.domItemsList = ref.querySelectorAll('[data-role="droplistItem"]');
                   this.setMaxHeight(ref);
                 }
@@ -194,11 +211,12 @@ export default class DropdownList extends PureComponent {
             null
           }
         >
-          <div className={styles.dropTrigger}>
+          <div className={styles.dropTrigger} ref={ref => (this.triggerRef = ref)}>
             <Trigger
               isNotTabbable={props.isTriggerNotTabbable}
               isOpened={props.isOpen}
               onActivate={this.handleTriggerActivation}
+              isFitContainerWidthEnabled={props.isFitContainerWidthEnabled}
             >{props.trigger}</Trigger>
           </div>
         </Layer>

@@ -45,31 +45,33 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
 
       return (
         <Panel target={target} align="left" autoPosition>
-          {!showOpenButton ? null :
-          <IconButton
-            href={href}
-            target="_blank"
-            theme="dark"
-            icon={<OpenIcon label="Open" />}
-          />
-          }
-          {!showUnlinkButton ? null :
-          <IconButton
-            theme="dark"
-            onClick={this.handleUnlink}
-            icon={<UnlinkIcon label="Unlink" />}
-          />
-          }
-          {!showSeparator ? null :
-          <span style={{ background: 'grey', width: 1, height: 20, display: 'inline-block', margin: '0 10px' }} />
-          }
-          <PanelTextInput
-            placeholder="Link address"
-            defaultValue={href}
-            onSubmit={this.updateHref}
-            onChange={this.updateHref}
-            ref="textInput"
-          />
+          <div style={{ display: 'flex', alignItems: 'center', padding: '5px 10px',}}>
+            {!showOpenButton ? null :
+            <IconButton
+              href={href}
+              target="_blank"
+              theme="dark"
+              icon={<OpenIcon label="Open" />}
+            />
+            }
+            {!showUnlinkButton ? null :
+            <IconButton
+              theme="dark"
+              onClick={this.handleUnlink}
+              icon={<UnlinkIcon label="Unlink" />}
+            />
+            }
+            {!showSeparator ? null :
+            <span style={{ background: 'grey', width: 1, height: 20, display: 'inline-block', margin: '0 10px' }} />
+            }
+            <PanelTextInput
+              placeholder="Link address"
+              defaultValue={href}
+              onSubmit={this.updateHref}
+              onChange={this.updateHref}
+              ref="textInput"
+            />
+          </div>
         </Panel>
       );
     } else {

@@ -42,11 +42,9 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     if(targetNode) {
       return (
         <Panel target={targetElement} align="left" autoPosition>
-          <div>
-            <DropdownMenu triggerType="button" items={items} onItemActivated={this.handleLanguageChange}>
-              {language}
-            </DropdownMenu>
-          </div>
+          <DropdownMenu triggerType="button" items={items} onItemActivated={this.handleLanguageChange}>
+            {language}
+          </DropdownMenu>
         </Panel>
       );
     }

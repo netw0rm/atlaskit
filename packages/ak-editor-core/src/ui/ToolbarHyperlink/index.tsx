@@ -41,12 +41,14 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
         />
         {!adding ? null :
         <Panel align="center" onOutsideClick={this.closeLinkPanel}>
-          <TextInput
-            autoFocus
-            placeholder="Paste link"
-            onSubmit={this.handleSubmit}
-            onCancel={this.closeLinkPanel}
-          />
+          <div style={{ display: 'flex', alignItems: 'center', padding: '5px 10px',}}>
+            <TextInput
+              autoFocus
+              placeholder="Paste link"
+              onSubmit={this.handleSubmit}
+              onCancel={this.closeLinkPanel}
+            />
+          </div>
         </Panel>
         }
       </span>

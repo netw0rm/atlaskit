@@ -1,5 +1,5 @@
 import * as chai from 'chai';
-import jsonSchema from '../../src/schema/json-schema';
+import { jsonSchema } from '../../docs-helper';
 import { Schema, Block, Text, Inline, Attribute, EmMarkType, StrongMarkType, MarkType } from '../../src';
 
 const { expect } = chai;

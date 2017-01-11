@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { schema } from '../../test-helper/schema';
-import jsonSchema from '../../src/schema/json-schema';
+import { jsonSchema } from '../../docs-helper';
 import * as ajvModule from 'ajv';
 
 const { expect } = chai;

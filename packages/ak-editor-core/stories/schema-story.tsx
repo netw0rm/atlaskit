@@ -1,5 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
-import makeJsonSchema from '../src/schema/json-schema';
+import { jsonSchema } from '../schema-helper';
 import { schema } from '../test-helper/schema';
 import * as React from 'react';
 import { OrderedMap } from '../src/prosemirror';

@@ -412,7 +412,7 @@ describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
       )).to.deep.equal(doc(
         p(
           'foo ',
-          mention({ displayName: 'Artur Bodera', id: 'abodera' }),
+          mention({ displayName: '@Artur Bodera', id: 'abodera' }),
           ' bar'
         )
       ));

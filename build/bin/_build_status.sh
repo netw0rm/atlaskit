@@ -14,7 +14,7 @@ function build_status() {
       URL_PARAM="--url $BUILD_URL"
     fi
 
-    CHALK="`npm bin`/chalk"
+    CHALK="`yarn bin`/chalk"
     $CHALK --no-stdin -t "{blue Post build in '$STATE' status}"
 
     bbuild \

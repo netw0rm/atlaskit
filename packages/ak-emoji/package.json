@@ -1,6 +1,6 @@
 {
   "name": "ak-emoji",
-  "version": "0.2.1",
+  "version": "0.6.0",
   "description": "ak-emoji webcomponent",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -19,9 +19,12 @@
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
+    "es6-promise": "^4.0.5",
     "js-search": "^1.3.3",
     "react-addons-shallow-compare": "^15.4.1",
-    "react-virtualized": "^8.7.1"
+    "react-virtualized": "^8.7.1",
+    "url-search-params": "^0.6.1",
+    "whatwg-fetch": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2",
@@ -30,7 +33,8 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "*"
+    "akutil-common-test": "*",
+    "fetch-mock": "^5.8.0"
   },
   "repository": {
     "type": "git",

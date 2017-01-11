@@ -135,11 +135,10 @@ export class HyperlinkState {
     }
   }
 
-  removeLink(forceTextSelection = false) {
+  getActiveMarkRange(): { markerFrom: number, markerTo: number } {
     const { pm } = this;
-    const activeLink = this.getActiveLink();
 
-    if (activeLink && pm.selection instanceof TextSelection) {
+    if (pm.selection instanceof TextSelection) {
       const { $head, empty } = pm.selection;
 
       // why - 1?
@@ -163,6 +162,25 @@ export class HyperlinkState {
       const markerFrom = currentNodeOffset;
       const markerTo = markerFrom + node.nodeSize;
 
+      return {
+        markerFrom,
+        markerTo
+      };
+    }
+
+    return {
+      markerFrom: 1,
+      markerTo: 1
+    };
+  }
+
+  removeLink(forceTextSelection = false) {
+    const { pm } = this;
+    const activeLink = this.getActiveLink();
+
+    if (activeLink && pm.selection instanceof TextSelection) {
+      const { markerFrom, markerTo } = this.getActiveMarkRange();
+
       pm.tr.removeMark(markerFrom, markerTo, activeLink).apply();
 
       if (forceTextSelection) {
@@ -177,12 +195,10 @@ export class HyperlinkState {
     if (activeLink) {
       const { pm } = this;
       if (pm.selection instanceof TextSelection) {
-        const { $head } = pm.selection;
-        const from = $head.start($head.depth);
-        const to = $head.end($head.depth);
+        const { markerFrom, markerTo } = this.getActiveMarkRange();
         pm.tr
-          .removeMark(from, to, activeLink)
-          .addMark(from, to, pm.schema.mark('link', { href: options.href }))
+          .removeMark(markerFrom, markerTo, activeLink)
+          .addMark(markerFrom, markerTo, pm.schema.mark('link', { href: options.href }))
           .apply();
       }
     }

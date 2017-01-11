@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-CHALK="`npm bin`/chalk"
+CHALK="`yarn bin`/chalk"
 BASEDIR=$(dirname $0)
 
 function fix () {

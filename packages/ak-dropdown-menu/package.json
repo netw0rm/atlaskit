@@ -1,15 +1,17 @@
 {
   "name": "ak-dropdown-menu",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "ak-dropdown-menu React component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
+  "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single ak-dropdown-menu; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/index.d.ts"
   ],
   "dependencies": {
     "akutil-shared-styles": "^37.0.0",
@@ -20,7 +22,7 @@
     "ak-droplist-group": "^2.0.2",
     "ak-droplist-item": "^3.1.1",
     "ak-button": "^5.1.1",
-    "ak-icon": "^11.2.0",
+    "ak-icon": "^12.2.0",
     "keycode": "^2.1.2"
   },
   "author": "Atlassian Pty Ltd",
@@ -28,7 +30,8 @@
   "devDependencies": {
     "ak-avatar": "^5.0.5",
     "akutil-readme": "^1.2.0",
-    "ak-dropdown-menu": "*"
+    "ak-dropdown-menu": "*",
+    "ak-lozenge": "^5.0.4"
   },
   "peerDependencies": {
     "react": "^15.3.2",

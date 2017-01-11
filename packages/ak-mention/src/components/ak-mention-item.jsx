@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import React, { PropTypes, PureComponent } from 'react';
 
 import Avatar from 'ak-avatar';
+import Lozenge from 'ak-lozenge';
 
 import MentionPropTypes from '../internal/ak-mention-prop-types';
 import { leftClick } from '../util/mouse';
@@ -60,6 +61,13 @@ function renderHighlight(className, value, highlights, prefix) {
   );
 }
 
+function renderLozenge(lozenge) {
+  if (lozenge) {
+    return <Lozenge>{lozenge}</Lozenge>;
+  }
+  return null;
+}
+
 function renderTime(time) {
   if (time) {
     return (
@@ -91,7 +99,7 @@ export default class MentionItem extends PureComponent {
   }
 
   render() {
-    const { selected, highlight, avatarUrl, status, time, name, mentionName } = this.props;
+    const { selected, highlight, avatarUrl, status, time, name, mentionName, lozenge } = this.props;
     const classes = classNames({
       'ak-mention-item': true,
       [styles.akMentionItem]: true,
@@ -115,7 +123,10 @@ export default class MentionItem extends PureComponent {
             {renderHighlight(styles.fullName, name, nameHighlights)}
             {renderHighlight(styles.mentionName, mentionName, mentionHighlights, '@')}
           </div>
-          {renderTime(time)}
+          <div className={styles.infoSection}>
+            {renderLozenge(lozenge)}
+            {renderTime(time)}
+          </div>
         </div>
       </div>
     );

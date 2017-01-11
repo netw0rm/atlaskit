@@ -3,11 +3,10 @@ import { Node } from 'ak-editor-core';
 import arrayFrom from './util/array-from';
 
 /**
- * This function reads markup rendered by Bitbucket server and converts it into markup that
- * can be consumed by Prosemirror HTML parser, conforming to our schema. Note that all
- * unsupported elements will be discarded after parsing.
+ * This function gets markup rendered by Bitbucket server and transforms it into markup that
+ * can be consumed by Prosemirror HTML parser, conforming to our schema.
  */
-export default function(html: string): Node {
+export function transformHtml(html: string): HTMLElement {
   const el = document.createElement('div');
   el.innerHTML = html;
 
@@ -21,11 +20,10 @@ export default function(html: string): Node {
 
   // Convert "codehilite" containers to <pre>
   arrayFrom(el.querySelectorAll('div.codehilite')).forEach((div: HTMLDivElement) => {
-    const parent = div.parentNode as HTMLElement;
     const pre = document.createElement('pre');
     pre.textContent = div.textContent;
-    parent.insertBefore(pre, div);
-    parent.removeChild(div);
+    div.innerHTML = '';
+    div.appendChild(pre);
   });
 
   // Convert mention containers, i.e.:
@@ -106,5 +104,13 @@ export default function(html: string): Node {
     a.parentNode!.removeChild(a);
   });
 
-  return schema.parseDOM(el);
+  return el;
 }
+
+/**
+ * This function gets html string and parses it into ProseMirror Node.
+ * Note that all unsupported elements will be discarded after parsing.
+ */
+export function parseHtml(html: string): Node {
+  return schema.parseDOM(transformHtml(html));
+};

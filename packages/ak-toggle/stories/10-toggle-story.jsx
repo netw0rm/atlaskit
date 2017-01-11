@@ -15,6 +15,11 @@ storiesOf(name, module)
       <AkToggle label="wifi enabled" />
     </div>
   )
+  .add('with large size', () =>
+    <div style={containerStyles}>
+      <AkToggle label="wifi enabled" size="large" />
+    </div>
+  )
   .add('with checked state by default', () =>
     <div style={containerStyles}>
       <AkToggle isDefaultChecked label="wifi enabled" />
@@ -23,7 +28,9 @@ storiesOf(name, module)
   .add('with disabled state', () =>
     <div style={containerStyles}>
       <AkToggle isDisabled />
+      <AkToggle size="large" isDisabled />
       <AkToggle isDefaultChecked isDisabled />
+      <AkToggle size="large" isDefaultChecked isDisabled />
     </div>
   )
   .add('within a form', () =>

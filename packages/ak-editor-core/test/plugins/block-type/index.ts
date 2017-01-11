@@ -365,28 +365,6 @@ describe('block-type', () => {
       });
     }
 
-    context('when hits enter', () => {
-      it('calls splitCodeBlock', () => {
-        const { pm, plugin } = editor(doc(code_block()('text')));
-        const splitCodeBlock = sinon.spy(plugin, 'splitCodeBlock');
-
-        pm.input.dispatchKey('Enter');
-
-        expect(splitCodeBlock).to.have.been.callCount(1);
-      });
-    });
-
-    context('when hits double enter', () => {
-      it('exits code block', ()=> {
-        const { pm, plugin } = editor(doc(code_block()('text{<>}')));
-
-        pm.input.dispatchKey('Enter');
-        pm.input.dispatchKey('Enter');
-
-        expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
-      });
-    });
-
     context('when hits shift-enter', () => {
       it('calls insertNewLine', () => {
         const { pm, plugin } = editor(doc(code_block()('text')));
@@ -395,86 +373,6 @@ describe('block-type', () => {
         pm.input.dispatchKey('Shift-Enter');
 
         expect(insertNewLine).to.have.been.callCount(1);
-      });
-    });
-  });
-
-  describe('splitCodeBlock', () => {
-    context('when it is a code block', () => {
-      context('when last char is a new line', () => {
-        context('when cursor is at the end of code block', () => {
-          it('removes the last new line char in code block', () => {
-            const { pm, plugin } = editor(doc(code_block()('text\n{<>}')));
-
-            plugin.splitCodeBlock();
-
-            expect(pm.doc).to.deep.equal(doc(code_block()('text')));
-          });
-
-          it('returns false', () => {
-            const { pm, plugin } = editor(doc(code_block()('text\n{<>}')));
-
-            expect(plugin.splitCodeBlock()).to.be.false;
-          });
-        });
-
-        context('when cursor is in the middle of code block', () => {
-          it('inserts a new line', () => {
-            const { pm, plugin } = editor(doc(code_block()('te{<>}xt\n')));
-
-            plugin.splitCodeBlock();
-
-            expect(pm.doc).to.deep.equal(doc(code_block()('te\nxt\n')));
-          });
-
-          it('returns true', () => {
-            const { pm, plugin } = editor(doc(code_block()('te{<>}xt\n')));
-
-            expect(plugin.splitCodeBlock()).to.be.true;
-          });
-        });
-      });
-
-      context('when last char is not a new line', () => {
-        context('when cursor is at the end of code block', () => {
-          it('inserts a new line', () => {
-            const { pm, plugin } = editor(doc(code_block()('text{<>}')));
-
-            plugin.splitCodeBlock();
-
-            expect(pm.doc).to.deep.equal(doc(code_block()('text\n')));
-          });
-
-          it('returns true', () => {
-            const { pm, plugin } = editor(doc(code_block()('text{<>}')));
-
-            expect(plugin.splitCodeBlock()).to.be.true;
-          });
-        });
-
-        context('when cursor is in the middle of code block', () => {
-          it('inserts a new line', () => {
-            const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
-
-            plugin.splitCodeBlock();
-
-            expect(pm.doc).to.deep.equal(doc(code_block()('te\nxt')));
-          });
-
-          it('returns true', () => {
-            const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
-
-            expect(plugin.splitCodeBlock()).to.be.true;
-          });
-        });
-      });
-    });
-
-    context('when it is not a code block', () => {
-      it('returns false', () => {
-        const { pm, plugin } = editor(doc(p('text{<>}')));
-
-        expect(plugin.splitCodeBlock()).to.be.false;
       });
     });
   });

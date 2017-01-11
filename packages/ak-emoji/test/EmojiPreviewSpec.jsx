@@ -55,7 +55,7 @@ const toneEmoji = {
   ],
 };
 
-describe('<ToneSelector />', () => {
+describe('<EmojiPreview />', () => {
   describe('preview', () => {
     it('should render an emoji preview if one is selected', () => {
       const wrapper = shallow(<EmojiPreview

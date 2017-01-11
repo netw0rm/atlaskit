@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-LERNA_LOC="`npm bin`/lerna"
-CHALK="`npm bin`/chalk"
+LERNA_LOC="`yarn bin`/lerna"
+CHALK="`yarn bin`/chalk"
 
 if [[ $# -eq 0 || "$1" == "" ]]
   then

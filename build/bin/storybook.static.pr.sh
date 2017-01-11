@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-CHALK="`npm bin`/chalk"
+CHALK="`yarn bin`/chalk"
 BASEDIR=$(dirname $0)
 BUILD_SPECIFIC_URL_PART="pr/$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME/storybook"
 OUTDIR=$(mktemp -d)
@@ -21,7 +21,7 @@ function build_storybook() {
   local TARGET_PATH="$1"
 
   $CHALK --no-stdin -t "{blue Building storybook (PR)}"
-  npm run storybook/static -- -o "$TARGET_PATH"
+  yarn run storybook/static -- -o "$TARGET_PATH"
 }
 
 storybook_build_status "INPROGRESS"

@@ -43,7 +43,9 @@ export default class ContainerNavigation extends PureComponent {
           className={styles.containerNavigationOuter}
         >
           <div
-            className={styles.containerNavigationInner}
+            className={classNames(styles.containerNavigationInner, {
+              [styles.hasContainerHeader]: this.props.header !== null,
+            })}
           >
             <div>
               {this.props.header}

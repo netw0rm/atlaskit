@@ -4,7 +4,7 @@ const spriteRepresentation = PropTypes.shape({
   xIndex: PropTypes.number,
   yIndex: PropTypes.number,
   sprite: PropTypes.shape({
-    imagePath: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
     row: PropTypes.number.isRequired,
     column: PropTypes.number.isRequired,
   }),
@@ -26,6 +26,7 @@ const emoji = {
 };
 
 const emojiService = {
+  all: PropTypes.func.isRequired,
   search: PropTypes.func.isRequired,
   findByShortcut: PropTypes.func.isRequired,
 };

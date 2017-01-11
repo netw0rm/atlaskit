@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-CHALK="`npm bin`/chalk"
+CHALK="`yarn bin`/chalk"
 CDN_PREFIX="registry"
 BASEDIR=$(dirname $0)
 OUTDIR=$(mktemp -d)
@@ -34,7 +34,7 @@ function install_registry_pkg() {
 
 function build_registry() {
   install_registry_pkg
-  
+
   local TARGET_PATH="$1"
   local REGISTRY_BIN=`npm bin`/ak-registry
   local REGISTRY_PATH=`npm root`/@atlassian/atlaskit-registry

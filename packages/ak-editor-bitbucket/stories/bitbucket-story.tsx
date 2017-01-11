@@ -6,6 +6,7 @@ import { base64fileconverter } from 'ak-editor-core/test-helper';
 import { default as AkTabs, Tab as AkTab } from 'ak-tabs';
 import Editor from '../src';
 import exampleHTML from './exampleHTML';
+import '!style!css!less!./bitbucket-styles.less';
 
 const Tabs = reactify(AkTabs);
 const Tab = reactify(AkTab);
@@ -49,7 +50,7 @@ storiesOf('ak-editor-bitbucket', module)
       />
     </div>
   )
-  .add('with imageUploadHandler', () =>
+  .add('With imageUploadHandler', () =>
     <div style={{ padding: 20 }}>
       <Editor
         isExpandedByDefault
@@ -235,5 +236,4 @@ storiesOf('ak-editor-bitbucket', module)
     return (
       <Demo />
     );
-  })
-;
+  });

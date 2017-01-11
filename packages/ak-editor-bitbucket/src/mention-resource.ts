@@ -67,7 +67,6 @@ class MentionResource extends AbstractMentionResource {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   recordMentionSelection(mention: any) {
   }
 }

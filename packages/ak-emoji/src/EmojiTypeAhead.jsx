@@ -21,7 +21,7 @@ export default class EmojiTypeAhead extends PureComponent {
 
   static propTypes = {
     // eslint-disable-next-line react/no-unused-prop-types
-    emojiService: EmojiPropTypes.emojiService,  // used in applyPropChanges
+    emojiService: EmojiPropTypes.emojiService.isRequired,  // used in applyPropChanges
     onSelection: PropTypes.func,
 
     // eslint-disable-next-line react/no-unused-prop-types

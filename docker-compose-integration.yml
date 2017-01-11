@@ -32,7 +32,7 @@ services:
       SCOPE:
     command: 'bash -c
             "
-              npm run storybook/single \"$SCOPE\"
+              yarn run storybook/single \"$SCOPE\"
             "'
   cucumber:
     build: .

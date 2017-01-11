@@ -22,58 +22,58 @@ describe('hyperlink', () => {
   });
 
   describe('input rules', () => {
-    it('should convert "www.atlassian.com " to hyperlink', () => {
+    it('should convert "www.atlassian.com" to hyperlink', () => {
       const { pm, sel } = editor(doc(linkable('{<>}')));
-      pm.input.insertText(sel, sel, 'www.atlassian.com ');
+      pm.input.insertText(sel, sel, 'www.atlassian.com');
 
       const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
-      expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
+      expect(pm.doc).to.deep.equal(doc(linkable(a)));
     });
 
-    it('should convert "www.atlassian.com/ " to hyperlink', () => {
+    it('should convert "www.atlassian.com/" to hyperlink', () => {
       const { pm, sel } = editor(doc(linkable('{<>}')));
-      pm.input.insertText(sel, sel, 'www.atlassian.com/ ');
+      pm.input.insertText(sel, sel, 'www.atlassian.com/');
 
       const a = link({ href: 'http://www.atlassian.com/' })('www.atlassian.com/');
-      expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
+      expect(pm.doc).to.deep.equal(doc(linkable(a)));
     });
 
-    it('should convert "http://www.atlassian.com/ " to hyperlink', () => {
+    it('should convert "http://www.atlassian.com/" to hyperlink', () => {
       const { pm, sel } = editor(doc(linkable('{<>}')));
-      pm.input.insertText(sel, sel, 'http://www.atlassian.com/ ');
+      pm.input.insertText(sel, sel, 'http://www.atlassian.com/');
 
       const a = link({ href: 'http://www.atlassian.com/' })('http://www.atlassian.com/');
-      expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
+      expect(pm.doc).to.deep.equal(doc(linkable(a)));
     });
 
-    it('should convert "http://www.atlassian.com " to hyperlink', () => {
+    it('should convert "http://www.atlassian.com" to hyperlink', () => {
       const { pm, sel } = editor(doc(linkable('{<>}')));
-      pm.input.insertText(sel, sel, 'http://www.atlassian.com ');
+      pm.input.insertText(sel, sel, 'http://www.atlassian.com');
 
       const a = link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com');
-      expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
+      expect(pm.doc).to.deep.equal(doc(linkable(a)));
     });
 
-    it('should convert "https://www.atlassian.com/ " to hyperlink', () => {
+    it('should convert "https://www.atlassian.com/" to hyperlink', () => {
       const { pm, sel } = editor(doc(linkable('{<>}')));
-      pm.input.insertText(sel, sel, 'https://www.atlassian.com/ ');
+      pm.input.insertText(sel, sel, 'https://www.atlassian.com/');
 
       const a = link({ href: 'https://www.atlassian.com/' })('https://www.atlassian.com/');
-      expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
+      expect(pm.doc).to.deep.equal(doc(linkable(a)));
     });
 
-    it('should convert "https://www.atlassian.com " to hyperlink', () => {
+    it('should convert "https://www.atlassian.com" to hyperlink', () => {
       const { pm, sel } = editor(doc(linkable('{<>}')));
-      pm.input.insertText(sel, sel, 'https://www.atlassian.com ');
+      pm.input.insertText(sel, sel, 'https://www.atlassian.com');
 
       const a = link({ href: 'https://www.atlassian.com' })('https://www.atlassian.com');
-      expect(pm.doc).to.deep.equal(doc(linkable(a, ' ')));
+      expect(pm.doc).to.deep.equal(doc(linkable(a)));
     });
 
-    it('should not convert "javascript://alert(1); " to hyperlink', () => {
+    it('should not convert "javascript://alert(1) " to hyperlink', () => {
       const { pm, sel } = editor(doc(linkable('{<>}')));
-      pm.input.insertText(sel, sel, 'javascript://alert(1); ');
-      expect(pm.doc).to.deep.equal(doc(linkable('javascript://alert(1); ')));
+      pm.input.insertText(sel, sel, 'javascript://alert(1);');
+      expect(pm.doc).to.deep.equal(doc(linkable('javascript://alert(1);')));
     });
   });
 

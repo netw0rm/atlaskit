@@ -13,14 +13,14 @@ export default class RouterLinkItem extends PureComponent {
 
   render() {
     return (
-      <Link
-        to={this.props.to}
-      >
-        <AkContainerItem
-          text={this.props.text}
-          isSelected={this.context.router.isActive(this.props.to, true)}
-        />
-      </Link>
+      <AkContainerItem
+        href={this.props.to}
+        linkComponent={(
+          { children, href, ...props }) => <Link to={href} {...props}>{children}</Link>
+        }
+        text={this.props.text}
+        isSelected={this.context.router.isActive(this.props.to, true)}
+      />
     );
   }
 }

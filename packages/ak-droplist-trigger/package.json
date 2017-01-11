@@ -1,7 +1,7 @@
 {
   "name": "ak-droplist-trigger",
-  "version": "1.2.2",
-  "description": "ak-droplist-trigger react component",
+  "version": "1.2.5",
+  "description": "React component that is enabled by pressing 'space' or 'enter', or by clicking on it.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",

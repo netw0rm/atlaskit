@@ -16,6 +16,15 @@ describe('ak-tooltip (smart)', () => {
   });
 
   describe('visible state', () => {
+    const animStub = window.cancelAnimationFrame;
+    beforeEach(() => {
+      window.cancelAnimationFrame = () => {};
+    });
+
+    afterEach(() => {
+      window.cancelAnimationFrame = animStub;
+    });
+
     it('should set visible state to true when mouse enters', () => {
       const wrapper = mount(<AKTooltip><div>foo</div></AKTooltip>);
 

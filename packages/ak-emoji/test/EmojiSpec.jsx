@@ -20,7 +20,7 @@ describe('<Emoji />', () => {
         shortcut=":grimacing:"
         representation={{
           sprite: {
-            imagePath: 'https://path-to-spritesheet.png',
+            url: 'https://path-to-spritesheet.png',
             row: 1,
             column: 1,
           },
@@ -36,7 +36,7 @@ describe('<Emoji />', () => {
         shortcut=":grimacing:"
         representation={{
           sprite: {
-            imagePath: 'https://path-to-spritesheet.png',
+            url: 'https://path-to-spritesheet.png',
             row: 6,
             column: 6,
           },
@@ -54,7 +54,7 @@ describe('<Emoji />', () => {
         shortcut=":grimacing:"
         representation={{
           sprite: {
-            imagePath: 'https://path-to-spritesheet.png',
+            url: 'https://path-to-spritesheet.png',
             row: 6,
             column: 6,
           },
@@ -72,7 +72,7 @@ describe('<Emoji />', () => {
         shortcut=":grimacing:"
         representation={{
           sprite: {
-            imagePath: 'https://path-to-spritesheet.png',
+            url: 'https://path-to-spritesheet.png',
             row: 6,
             column: 6,
           },

@@ -2,7 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
 import { name } from '../package.json';
-import EmojiTextInput from './demo-emoji-text-input';
+import EmojiTextInput from './demo-emoji-typeahead-text-input';
 import emojiService from './story-data';
 
 const bottomStyle = {

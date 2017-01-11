@@ -2,6 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import styles from 'style!./story-styles.less';
 import Avatar from 'ak-avatar';
+import { akColorN800 } from 'akutil-shared-styles';
 
 import Trigger from '../src';
 import { name } from '../package.json';
@@ -116,8 +117,8 @@ storiesOf(name, module)
       <p>Trigger can also occupy the whole available space</p>
       <div className={styles.triggersContainer}>
         <Trigger
-          style={{ border: '1px solid black' }}
-          isFitContainerWidthEnabled
+          style={{ border: `1px solid ${akColorN800}` }}
+          shouldFitContainer
         >Simple wide trigger</Trigger>
       </div>
     </div>

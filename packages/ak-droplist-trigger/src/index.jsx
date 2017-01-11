@@ -47,7 +47,12 @@ export default class Trigger extends PureComponent {
      * @type {function}
      */
     onActivate: PropTypes.func,
-    isFitContainerWidthEnabled: PropTypes.bool,
+    /**
+     * @description Whether trigger is taking all the available space of the parent container
+     * @memberof Trigger
+     * @type {Boolean}
+     */
+    shouldFitContainer: PropTypes.bool,
     /**
      * @description  When this property is set to true the trigger should focus itself
      * @memberof Trigger
@@ -126,7 +131,7 @@ export default class Trigger extends PureComponent {
         onKeyDown={this.handleKeyDown}
         onMouseDown={this.handleMouseDown}
         className={classNames(styles.triggerContainer, props.className, {
-          [styles.fitContainer]: props.isFitContainerWidthEnabled,
+          [styles.fitContainer]: props.shouldFitContainer,
         })}
         style={props.style}
         role="button"

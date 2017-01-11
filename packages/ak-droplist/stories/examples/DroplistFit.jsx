@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import Group from 'ak-droplist-group';
 import Item from 'ak-droplist-item';
+import { akColorN800 } from 'akutil-shared-styles';
 
 import DropdownList from '../../src';
 
 const DroplistOverview = class extends Component {
   render() {
     return (<DropdownList
-      isFitContainerWidthEnabled
+      shouldFitContainer
       isOpen
-      trigger={<div style={{ border: '1px solid black' }}>Click here!</div>}
+      trigger={<div style={{ border: `1px solid ${akColorN800}` }}>Click here!</div>}
     >
       <Group heading="Australia">
         <Item>Sydney</Item>

@@ -20,7 +20,7 @@ export default class DropdownList extends PureComponent {
     appearance: PropTypes.oneOf(['default', 'tall']),
     children: PropTypes.node,
     isOpen: PropTypes.bool,
-    isFitContainerWidthEnabled: PropTypes.bool,
+    shouldFitContainer: PropTypes.bool,
     isTriggerNotTabbable: PropTypes.bool,
     listContext: PropTypes.oneOf(['menu']),
     onOpenChange: PropTypes.func,
@@ -32,7 +32,7 @@ export default class DropdownList extends PureComponent {
     appearance: 'default',
     position: 'bottom left',
     isOpen: false,
-    isFitContainerWidthEnabled: false,
+    shouldFitContainer: false,
     isTriggerNotTabbable: false,
     listContext: 'menu',
     onOpenChange: () => {},
@@ -45,7 +45,7 @@ export default class DropdownList extends PureComponent {
       this.focusFirstItem();
     }
 
-    if (this.props.isFitContainerWidthEnabled && this.dropContentRef) {
+    if (this.props.shouldFitContainer && this.dropContentRef) {
       this.dropContentRef.style.width = `${this.triggerRef.offsetWidth}px`;
     }
 
@@ -57,7 +57,7 @@ export default class DropdownList extends PureComponent {
     if (this.props.isOpen) {
       this.focusFirstItem();
 
-      if (this.props.isFitContainerWidthEnabled && this.dropContentRef) {
+      if (this.props.shouldFitContainer && this.dropContentRef) {
         this.dropContentRef.style.width = `${this.triggerRef.offsetWidth}px`;
       }
     }
@@ -188,7 +188,7 @@ export default class DropdownList extends PureComponent {
     return (
       <div
         className={classnames([styles.dropWrapper, {
-          [styles.fitContainer]: props.isFitContainerWidthEnabled,
+          [styles.fitContainer]: props.shouldFitContainer,
         }])}
       >
         <Layer
@@ -216,7 +216,7 @@ export default class DropdownList extends PureComponent {
               isNotTabbable={props.isTriggerNotTabbable}
               isOpened={props.isOpen}
               onActivate={this.handleTriggerActivation}
-              isFitContainerWidthEnabled={props.isFitContainerWidthEnabled}
+              shouldFitContainer={props.shouldFitContainer}
             >{props.trigger}</Trigger>
           </div>
         </Layer>

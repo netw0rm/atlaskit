@@ -42,7 +42,12 @@ export function transformHtml(html: string): HTMLElement {
       }
     }
 
-    span.textContent = a.textContent;
+    const displayName = a.textContent || '';
+    if (displayName.substr(0,1) === '@') {
+      span.textContent = a.textContent;
+    } else {
+      span.textContent = `@${a.textContent}`;
+    }
 
     a.parentNode!.insertBefore(span, a);
     a.parentNode!.removeChild(a);

@@ -6,18 +6,27 @@ import React, { PropTypes, PureComponent } from 'react';
 import classNames from 'classnames';
 import { findDOMNode } from 'react-dom';
 
+const getDomNode = (refOrSelector) => {
+  if (typeof refOrSelector === 'string') {
+    return document.querySelector(refOrSelector);
+  }
+  // assume React ref
+  return findDOMNode(refOrSelector);
+};
+
 export default class Scrollable extends PureComponent {
   static propTypes = {
     children: PropTypes.oneOfType([
       PropTypes.node,
       PropTypes.arrayOf(PropTypes.node),
     ]),
+    maxHeight: PropTypes.string.isRequired,
   }
 
   // API
   reveal = (child) => {
     if (child && this.scrollableDiv) {
-      const childNode = findDOMNode(child);
+      const childNode = getDomNode(child);
       // Not using Element.scrollIntoView as it scrolls even to top/bottom of view even if
       // already visible
       const scrollableRect = this.scrollableDiv.getBoundingClientRect();
@@ -40,6 +49,7 @@ export default class Scrollable extends PureComponent {
       <div
         className={scrollableClasses}
         ref={(ref) => { this.scrollableDiv = ref; }}
+        style={{ maxHeight: this.props.maxHeight }}
       >
         {this.props.children}
       </div>

@@ -1,0 +1,193 @@
+import classNames from 'classnames';
+import React, { PureComponent, PropTypes } from 'react';
+import uid from 'uid';
+
+import styles from 'style!../../style.less';
+import EmojiPropTypes from '../ak-emoji-prop-types';
+import EmojiPickerListCategory from './EmojiPickerListCategory';
+import EmojiPickerListSearch from '../picker/EmojiPickerListSearch';
+import Scrollable from '../typeahead/Scrollable';
+import { emojiPickerListHeight } from '../../shared-variables';
+
+export default class EmojiPickerList extends PureComponent {
+  static propTypes = {
+    emojis: PropTypes.arrayOf(EmojiPropTypes.emoji).isRequired,
+    onEmojiSelected: PropTypes.func,
+    onEmojiActive: PropTypes.func,
+    onCategoryActivated: PropTypes.func,
+    selectedCategory: PropTypes.string,
+    selectedTone: PropTypes.string,
+    onSearch: PropTypes.func,
+  };
+
+  static defaultProps = {
+    onEmojiSelected: () => {},
+    onEmojiActive: () => {},
+    onCategoryActivated: () => {},
+    onSearch: () => {},
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.idSuffix = uid();
+    this.groups = this.buildList(props.emojis, props.selectedTone);
+
+    let selectedEmoji = props.emojis[0];
+    if (props.selectedCategory) {
+      const emojiInCategory = props.emojis
+        .filter(emoji => emoji.category === props.selectedCategory);
+      if (emojiInCategory) {
+        selectedEmoji = emojiInCategory[0];
+      }
+    }
+
+    this.state = {
+      selectedEmoji,
+      query: '',
+    };
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (this.props.emojis !== nextProps.emojis) {
+      this.setState({
+        selectedEmoji: nextProps.emojis[0],
+      });
+    }
+
+    if (nextProps.selectedCategory) {
+      for (this.initialListIndex = 0;
+           this.initialListIndex < this.groups.length;
+           this.initialListIndex++) {
+        if (nextProps.selectedCategory &&
+          this.groups[this.initialListIndex].category === nextProps.selectedCategory) {
+          this.setState({
+            initialListIndex: this.initialListIndex,
+          });
+
+          break;
+        }
+      }
+    }
+  };
+
+  componentWillUpdate = (nextProps) => {
+    if (this.props.emojis !== nextProps.emojis ||
+      this.props.selectedTone !== nextProps.selectedTone) {
+      this.groups = this.buildList(nextProps.emojis, nextProps.selectedTone);
+    }
+  };
+
+  onEmojiMouseEnter = (emoji) => {
+    if (!this.state.selectedEmoji || this.state.selectedEmoji.id !== emoji.id) {
+      this.setState({
+        selectedEmoji: emoji,
+      });
+      this.props.onEmojiActive(emoji);
+    }
+  };
+
+  // FIXME need to support onCategoryActivated for scroll / search updates
+  // onRowsRendered = ({ startIndex }) => {
+  //   const firstVisibleItem = this.groups[startIndex];
+  //   if (this.activeCategory !== firstVisibleItem.category) {
+  //     this.activeCategory = firstVisibleItem.category;
+  //     this.props.onCategoryActivated(this.activeCategory);
+  //   }
+  // };
+
+  onMouseLeave = () => {
+    this.setState({
+      selectedEmoji: null,
+    });
+  };
+
+  onSearch = (e) => {
+    this.setState({
+      query: e.target.value,
+    });
+
+    this.props.onSearch(e.target.value);
+  };
+
+  buildList = (emojis, selectedTone) => {
+    let currentGroup;
+    let currentCategory = null;
+
+    const list = [];
+    for (let i = 0; i < emojis.length; i++) {
+      let emoji = emojis[i];
+
+      if (emoji.skinVariations.length && selectedTone) {
+        emoji = {
+          ...emoji,
+          representation: emoji.skinVariations[selectedTone - 1],
+        };
+      }
+
+      if (currentCategory !== emoji.category) {
+        currentCategory = emoji.category;
+        currentGroup = {
+          emojis: [],
+          title: currentCategory,
+          category: currentCategory,
+        };
+
+        list.push(currentGroup);
+      }
+
+      currentGroup.emojis.push(emoji);
+    }
+
+    return list;
+  };
+
+  categoryId = category => `category_${category}_${this.idSuffix}`;
+
+  renderGroups = () => {
+    const selectedShortcut = this.state.selectedEmoji && this.state.selectedEmoji.shortcut;
+    const selectedCategory = this.state.selectedEmoji && this.state.selectedEmoji.category;
+
+    return this.groups.map((group) => {
+      // Optimisation - avoid re-rendering unaffected groups for the current selectedShortcut
+      // by not passing it to irrelevant groups
+      const groupShortcut = selectedCategory === group.category ? selectedShortcut : undefined;
+
+      return (
+        <EmojiPickerListCategory
+          title={group.title}
+          emojis={group.emojis}
+          key={group.category}
+          selectedEmojiShortcut={groupShortcut}
+          onEmojiMouseEnter={this.onEmojiMouseEnter}
+          onEmojiSelected={this.props.onEmojiSelected}
+          id={this.categoryId(group.category)}
+        />
+      );
+    });
+  }
+
+  render() {
+    const classes = [styles.emojiPickerList];
+
+    console.log('----------------\nRender EmojiPickerList (slow)');
+
+    return (
+      <div
+        className={classNames(classes)}
+        onMouseLeave={this.onMouseLeave}
+      >
+        <Scrollable
+          ref={(ref) => { this.scrollable = ref; }}
+          maxHeight={`${emojiPickerListHeight}px`}
+        >
+          <EmojiPickerListSearch
+            onChange={this.onSearch}
+            query={this.state.query}
+          />
+          {this.renderGroups()}
+        </Scrollable>
+      </div>
+    );
+  }
+}

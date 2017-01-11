@@ -1,14 +1,22 @@
+const path = require('path');
+
 const iconNameToComponentName = require('../bin/iconNameToComponentName');
+const { tmpFolderName } = require('./constants');
 
 module.exports = ({
   svgData,
   unprefixedIconName,
+  iconRelativePathToSrc,
 }) => {
   const componentName = iconNameToComponentName(unprefixedIconName);
 
+  const srcPath = path.join(__dirname, '..', 'src/tmp');
+  const currentJsPath = path.join(srcPath, tmpFolderName, path.dirname(iconRelativePathToSrc));
+  const relativePathToSrc = path.relative(currentJsPath, srcPath);
+
   /* eslint-disable max-len */
   return `import React from 'react';
-import Icon from 'ak-icon/lib/Icon';
+import Icon from '${relativePathToSrc}/lib/Icon';
 
 class ${componentName} extends Icon {
   getGlyphTemplate() {

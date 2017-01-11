@@ -25,7 +25,7 @@ minilog.enable();
 
 const rootFolder = path.join(__dirname, '..');
 const srcFolder = path.join(rootFolder, 'src', 'icons');
-const tmpFolder = path.join(rootFolder, 'src', tmpFolderName);
+const tmpFolder = path.join(rootFolder, tmpFolderName);
 const destFolder = path.join(rootFolder, glyphFolderName);
 
 async.waterfall([

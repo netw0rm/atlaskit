@@ -11,7 +11,8 @@
     "gen-js": "npm run generate-icon-exports && npm run generate-bundle-exports",
     "gen-icons-md": "node ./bin/generate-icons-md.js > ./docs/Icons.md",
     "gen-clean": "node ./bin/clean.js",
-    "prepublish": "CLI=1 npm run gen-js && npm run gen-icons-md && cd ../.. && npm run prepublish/single ak-icon",
+    "gen-run": "CLI=1 npm run gen-js && npm run gen-icons-md",
+    "prepublish": "npm run gen-run && cd ../.. && npm run prepublish/single ak-icon && cd packages/ak-icon && npm run gen-clean",
     "pretest": "npm run gen-js && npm run gen-clean"
   },
   "files": [

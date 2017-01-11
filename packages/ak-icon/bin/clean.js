@@ -8,7 +8,7 @@ const minilog = require('minilog');
 const { tmpFolderName } = require('./constants');
 
 const rootFolder = path.join(__dirname, '..');
-const tmpFolder = path.join(rootFolder, 'src', tmpFolderName);
+const tmpFolder = path.join(rootFolder, tmpFolderName);
 
 const log = minilog('ak-icon/gen-clean');
 

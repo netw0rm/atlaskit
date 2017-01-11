@@ -12,8 +12,8 @@ export interface Props {
 }
 
 export interface State {
-  target?: Node;
-  element?: HTMLElement;
+  targetNode?: Node;
+  targetElement?: HTMLElement;
   language: string;
 }
 
@@ -37,11 +37,11 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { target, language, element } = this.state;
+    const { targetNode, language, targetElement } = this.state;
 
-    if(target) {
+    if(targetNode) {
       return (
-        <Panel target={element} align="left" autoPosition>
+        <Panel target={targetElement} align="left" autoPosition>
           <div>
             <DropdownMenu triggerType="button" items={items} onItemActivated={this.handleLanguageChange}>
               {language}
@@ -56,27 +56,27 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: CodeBlockState) => {
-    const {target, element} = pluginState;
+    const {targetNode, targetElement} = pluginState;
     let language;
 
-    if(target) {
-      language = target.attrs.language || DEFAULT_LANGUAGE;
+    if(targetNode) {
+      language = targetNode.attrs.language || DEFAULT_LANGUAGE;
     }
 
     this.setState({
-      target: target,
+      targetNode: targetNode,
       language: language,
-      element: element
+      targetElement: targetElement
     });
   }
 
   private handleLanguageChange = (activedItem: any) => {
-    const {target} = this.state;
+    const {targetNode} = this.state;
 
-    if(target) {
-      target.attrs.language = activedItem.item.content;
+    if(targetNode) {
+      targetNode.attrs.language = activedItem.item.content;
       this.setState({
-        target: target,
+        targetNode: targetNode,
         language: activedItem.item.content
       });
     }

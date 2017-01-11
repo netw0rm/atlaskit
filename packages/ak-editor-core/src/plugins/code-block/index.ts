@@ -3,14 +3,13 @@ import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
 
 export class CodeBlockState {
-  target?: Node;
-  element?: HTMLElement;
+  targetNode?: Node;
+  targetElement?: HTMLElement;
   private pm: PM;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
 
   constructor(pm: PM) {
     this.pm = pm;
-    this.target = this.activeBlockCodeNode();
 
     // add paste listener to overwrite the prosemirror's
     // see https://discuss.prosemirror.net/t/handle-paste-inside-code-block/372/5?u=bradleyayers
@@ -24,6 +23,8 @@ export class CodeBlockState {
       pm.on.selectionChange,
       pm.on.change,
     ], () => this.update());
+
+    this.update();
   }
 
   subscribe(cb: CodeBlockStateSubscriber) {
@@ -71,9 +72,9 @@ export class CodeBlockState {
     let dirty = false;
     const codeBlock = this.activeBlockCodeNode();
 
-    if(codeBlock !== this.target) {
-      this.target = codeBlock;
-      this.element = this.activeElement();
+    if(codeBlock !== this.targetNode) {
+      this.targetNode = codeBlock;
+      this.targetElement = this.getTargetElement();
       dirty = true;
     }
 
@@ -82,15 +83,9 @@ export class CodeBlockState {
     }
   }
 
-  private activeElement(): HTMLElement {
-    const { $from } = this.pm.selection;
-    const { node, offset } = DOMFromPos(this.pm, $from.pos, true);
-
-    if (node.childNodes.length === 0) {
-      return node.parentNode;
-    }
-
-    return node.childNodes[offset];
+  private getTargetElement(): HTMLElement {
+    const { node } = DOMFromPos(this.pm, this.pm.selection.$from.pos, true);
+    return node;
   }
 
   private activeBlockCodeNode(): Node | undefined {

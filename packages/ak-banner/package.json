@@ -1,10 +1,10 @@
 {
   "name": "ak-banner",
   "version": "1.0.0",
-  "description": "ak-banner webcomponent",
+  "description": "React component that displays a prominent banner message and icon",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
+  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single ak-banner; } || ../../node_modules/.bin/not-in-publish"
   },
@@ -22,6 +22,7 @@
     "react": "^15.3.2"
   },
   "devDependencies": {
+    "ak-banner": "*",
     "ak-button": "^5.0.3",
     "ak-icon": "^12.2.0",
     "akutil-readme": "^1.2.0"

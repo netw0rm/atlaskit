@@ -24,7 +24,7 @@ const items = [{
     })
 }];
 
-const DEFAULT_LANGUAGE = 'bash';
+const DEFAULT_LANGUAGE = languageList[0];
 
 export default class LanguagePicker extends PureComponent<Props, State> {
   state: State = { language: DEFAULT_LANGUAGE};

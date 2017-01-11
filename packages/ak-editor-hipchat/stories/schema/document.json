@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Document schema for Atlassian Editor documents for HipChat.",
+  "$ref": "#/definitions/doc_node",
+  "definitions": {
+    "doc_node": {
+      "properties": {
+        "type": {
+          "enum": [
+            "doc"
+          ]
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/paragraph_node"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "type",
+        "content"
+      ],
+      "additionalProperties": false
+    },
+    "paragraph_node": {
+      "properties": {
+        "type": {
+          "enum": [
+            "paragraph"
+          ]
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/text_node"
+                  },
+                  {
+                    "$ref": "#/definitions/hard_break_node"
+                  },
+                  {
+                    "$ref": "#/definitions/mention_node"
+                  }
+                ]
+              },
+              {
+                "properties": {
+                  "marks": {
+                    "maxItems": 0
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "text_node": {
+      "properties": {
+        "text": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "text"
+          ]
+        },
+        "marks": {}
+      },
+      "required": [
+        "text",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "hard_break_node": {
+      "properties": {
+        "type": {
+          "enum": [
+            "hard_break"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "mention_node": {
+      "properties": {
+        "type": {
+          "enum": [
+            "mention"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "id": {},
+            "displayName": {}
+          }
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

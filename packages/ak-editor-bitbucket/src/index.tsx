@@ -23,7 +23,7 @@ import {
 import schema from './schema';
 import markdownSerializer from './markdown-serializer';
 import { parseHtml, transformHtml } from './parse-html';
-import { MentionResource } from './mention-resource';
+import { MentionResource, MentionSource } from './mention-resource';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
@@ -37,7 +37,7 @@ export interface Props {
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
   imageUploadHandler?: ImageUploadHandler;
-  mentionSource?: any;
+  mentionSource?: MentionSource;
 }
 
 export interface State {

@@ -1,24 +1,29 @@
 import { AbstractMentionResource } from 'ak-mention';
 import { Promise } from 'es6-promise';
 
-class MentionResource extends AbstractMentionResource {
-  _config: any;
-  _lastReturnedSearch: any;
-  _fetchCount = 0;
-  _mentionSource: any;
+export interface MentionSource {
+  query(query: string): void;
+  on(eventName: string, handler: (response: { query: string, results: Array<{ attributes: { username: string, display_name: string, avatar_url: string, is_teammate?: boolean } }>}) => void);
+}
 
-  constructor(config: any, mentionSource: any) {
+class MentionResource extends AbstractMentionResource {
+  private config: any;
+  private lastReturnedSearch: any;
+  private fetchCount = 0;
+  private mentionSource: MentionSource;
+
+  constructor(config: any, mentionSource: MentionSource) {
     super();
 
-    this._config = config;
-    this._lastReturnedSearch = 0;
-    this._mentionSource = mentionSource;
+    this.config = config;
+    this.lastReturnedSearch = 0;
+    this.mentionSource = mentionSource;
   }
 
   filter(query: string) {
     const searchTime = Date.now();
     const notify = (mentions: any) => {
-        this._lastReturnedSearch = searchTime;
+        this.lastReturnedSearch = searchTime;
         this._notifyListeners(mentions);
     };
 
@@ -32,17 +37,17 @@ class MentionResource extends AbstractMentionResource {
   }
 
   search(query: string): Promise<any> {
-    this._fetchCount++;
+    this.fetchCount++;
     return new Promise((resolve, reject) => {
 
-      if (this._mentionSource) {
-        this._mentionSource.on('respond', (response: any) => {
+      if (this.mentionSource) {
+        this.mentionSource.on('respond', (response) => {
           if (response.query !== query) {
             reject();
             return;
           }
 
-          let mentions = response.results.map((item: any, index: number) => {
+          let mentions = response.results.map((item, index) => {
             return {
               'id': item.attributes.username,
               'name': item.attributes.display_name,
@@ -55,7 +60,7 @@ class MentionResource extends AbstractMentionResource {
           resolve(mentions);
         });
 
-        this._mentionSource.query(query);
+        this.mentionSource.query(query);
       } else {
         reject(new Error('No mentions source provided'));
       }

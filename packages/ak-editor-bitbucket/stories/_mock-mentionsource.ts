@@ -1,4 +1,5 @@
 import { Search } from 'js-search';
+import { MentionSource } from '../src/mention-resource';
 import mentionData from './_mention-data';
 
 const search = new Search('id');
@@ -6,7 +7,7 @@ search.addIndex(['attributes', 'display_name']);
 search.addIndex(['attributes', 'username']);
 search.addDocuments(mentionData.results);
 
-export class MockMentionSource {
+export class MockMentionSource implements MentionSource {
   handlers = {};
 
   query(query: string) {

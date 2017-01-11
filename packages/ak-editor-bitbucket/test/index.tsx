@@ -6,11 +6,12 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as sinon from 'sinon';
 import { SinonSpy } from 'sinon';
 import * as React from 'react';
-import { doc, strong, h1, p } from './_schema-builder';
+import { doc, strong, h1, p, mention } from './_schema-builder';
 
 import Editor from '../src/index';
 import ImageIcon from 'ak-icon/glyph/editor/image';
-import { chaiPlugin, createEvent } from 'ak-editor-core/test-helper';
+import { ProseMirror } from 'ak-editor-core';
+import { chaiPlugin, createEvent, fixtures, dispatchPasteEvent } from 'ak-editor-core/test-helper';
 
 chai.use(chaiPlugin);
 chai.use(((chaiEnzyme as any).default || chaiEnzyme)());
@@ -143,5 +144,103 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
     expect(spy).to.have.been.calledOnce;
     expect(spy).to.have.been.calledWith(event);
     expect(spy.getCall(0).args[1]).to.be.a('function');
+  });
+});
+
+describe('ak-editor-bitbucket/multiple editors as children', () => {
+  const fixture = fixtures();
+  type Props = {};
+  type State = {};
+  class ContainerWithTwoEditors extends React.PureComponent<Props, State> {
+    render() {
+     return (
+       <div>
+         <Editor isExpandedByDefault />
+         <Editor isExpandedByDefault />
+       </div>
+     );
+    }
+  }
+
+  let container: ReactWrapper<Props, State>;
+  let editor1: ReactWrapper<Props, State>;
+  let editor2: ReactWrapper<Props, State>;
+
+  beforeEach(() => {
+    container = mount(<ContainerWithTwoEditors />, { attachTo: fixture() });
+    editor1 = container.find(Editor).at(0);
+    editor2 = container.find(Editor).at(1);
+  });
+
+  it('should render two editors inside a common container', () => {
+    expect(container.find(Editor)).to.exist;
+    expect(editor1.is(Editor)).to.be.true;
+    expect(editor2.is(Editor)).to.be.true;
+  });
+
+  it('should render toolbar elements for both editors', () => {
+    expect(editor1.find('ChromeExpanded ToolbarBlockType')).to.exist;
+    expect(editor1.find('ChromeExpanded ToolbarTextFormatting')).to.exist;
+    expect(editor1.find('ChromeExpanded ToolbarLists')).to.exist;
+
+    expect(editor2.find('ChromeExpanded ToolbarBlockType')).to.exist;
+    expect(editor2.find('ChromeExpanded ToolbarTextFormatting')).to.exist;
+    expect(editor2.find('ChromeExpanded ToolbarLists')).to.exist;
+  });
+});
+
+describe('ak-editor-bitbucket/toolbar', () => {
+  let editor: ReactWrapper<any, any>;
+
+  beforeEach(() => {
+    editor = mount(<Editor isExpandedByDefault />);
+  });
+
+  it('should close blocktype dropdown after second click', () => {
+    const trigger = editor.find('ToolbarBlockType AkButton');
+
+    expect(trigger).to.exist;
+    expect(editor.find('ToolbarBlockType Panel')).to.not.exist;
+
+    trigger.simulate('click');
+    expect(editor.find('ToolbarBlockType Panel')).to.exist;
+
+    trigger.simulate('click');
+    expect(editor.find('ToolbarBlockType Panel')).to.not.exist;
+  });
+});
+
+describe('ak-editor-bitbucket/pasting', () => {
+  const fixture = fixtures();
+  let editor: Editor;
+  let pm: ProseMirror;
+
+  beforeEach(() => {
+    editor = mount(<Editor isExpandedByDefault />, { attachTo: fixture() }).get(0) as any;
+    pm = editor!.state!.pm as ProseMirror;
+  });
+
+  it('should transform pasted html with an emoji', function() {
+    const content = {
+      html: '<p>Nice! <img src="https://d301sr.cloudfront.net/69284d5bf158/emoji/img/%2B1.svg" class="emoji"></p>'
+    };
+
+    if(!dispatchPasteEvent(pm, content)) {
+      return this.skip('This environment does not support artificial paste events');
+    }
+
+    expect(editor.doc).to.deep.equal(doc(p('Nice! :+1:')));
+  });
+
+  it('should transform pasted html with a mention', function() {
+    const content = {
+      html: '<p><a href="/mention/" rel="nofollow" title="@mention" class="mention">Mention</a> some mention.</p>'
+    };
+
+    if(!dispatchPasteEvent(pm, content)) {
+      return this.skip('This environment does not support artificial paste events');
+    }
+
+    expect(editor.doc).to.deep.equal(doc(p(mention({ id: 'mention', displayName: 'Mention' }), ' some mention.')));
   });
 });

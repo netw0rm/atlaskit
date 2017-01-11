@@ -6,7 +6,7 @@ export interface State {
       left: number;
       top: number;
     }
-  }
+  };
 }
 
 export interface IPopper {

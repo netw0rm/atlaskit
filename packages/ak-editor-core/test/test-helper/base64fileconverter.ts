@@ -13,7 +13,7 @@ describe('ak-editor-core/test-helper base64fileconverter', () => {
 
   afterEach(() => {
     (window as any).FileReader = savedFileReader;
-  })
+  });
 
   const mockFile = (args: { size?: number, type?: string } = {}): File => ({
     size: typeof args.size !== 'undefined' ? args.size : 1,

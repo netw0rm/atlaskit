@@ -37,6 +37,18 @@ export default class Panel extends PureComponent<Props, State> {
     this.applyPopper(nextProps);
   }
 
+  extractStyles = (state: any) => {
+    if (state) {
+      const left = Math.round(state.offsets.popper.left);
+      const top = Math.round(state.offsets.popper.top);
+
+      this.setState({
+        position: state.offsets.popper.position,
+        transform: `translate3d(${left}px, ${top}px, 0px)`,
+      });
+    }
+  }
+
   private applyPopper(props: Props): void {
     const { content } = this.refs;
     const target = props.target || ReactDOM.findDOMNode(this).parentElement!;
@@ -48,6 +60,8 @@ export default class Panel extends PureComponent<Props, State> {
       }
 
       this.popper = new Popper(target, content, {
+        onCreate: this.extractStyles,
+        onUpdate: this.extractStyles,
         placement: this.popperPlacement(),
         boundariesElement: boundary,
         modifiers: {
@@ -63,7 +77,7 @@ export default class Panel extends PureComponent<Props, State> {
           },
           flip: {
             enabled: this.props.autoPosition,
-            flipVariations: false
+            flipVariations: true,
           },
           preventOverflow: {
             enabled: this.props.autoPosition,
@@ -71,21 +85,6 @@ export default class Panel extends PureComponent<Props, State> {
           },
         },
       });
-
-      const extractStyles = (state: any) => {
-        if (state) {
-          const left = Math.round(state.offsets.popper.left);
-          const top = Math.round(state.offsets.popper.top);
-
-          this.setState({
-            position: state.offsets.popper.position,
-            transform: `translate3d(${left}px, ${top}px, 0px)`,
-          });
-        }
-      };
-
-      this.popper.onCreate(extractStyles);
-      this.popper.onUpdate(extractStyles);
     }
   }
 
@@ -98,7 +97,7 @@ export default class Panel extends PureComponent<Props, State> {
     return (
       <OutsideClickable onClick={this.props.onOutsideClick}>
         <div
-          ref='content'
+          ref="content"
           style={{ top: 0, left: 0, position, transform, padding }}
           className={styles.container}
         >

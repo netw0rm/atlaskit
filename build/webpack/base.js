@@ -18,6 +18,7 @@ function defaultPackageMains() {
 
 const css = {
   camelCase: true,
+  hashPrefix: `${pkg.name}${pkg.version}`,  // Avoid hash collisions
   importLoaders: 1,
   mergeRules: false,
   modules: true,
@@ -58,15 +59,6 @@ const standardConfig = {
         loader: 'json-loader',
       },
       [
-        {
-          test: /\.global\.less$/,
-          loader: loaderChain({
-            'style-loader': {},
-            'css-loader': css,
-            'postcss-loader': {},
-            'less-loader': {},
-          }),
-        },
         {
           test: /\.less$/,
           loader: loaderChain({

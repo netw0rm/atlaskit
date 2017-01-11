@@ -4,7 +4,7 @@ import NumberListIcon from 'ak-icon/glyph/editor/list/number';
 import BulletListIcon from 'ak-icon/glyph/editor/list/bullet';
 import IconButton from '../ToolbarIconButton';
 import { ListsState } from '../../../src/plugins/lists';
-import { decorator as analytics } from '../../analytics';
+import { analyticsDecorator as analytics } from '../../analytics';
 
 export interface Props {
   pluginState: ListsState;
@@ -45,7 +45,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
           onClick={this.handleBulletListClick}
           selected={this.state.bulletListActive}
           disabled={this.state.bulletListDisabled}
-          icon={<BulletListIcon label='Bullet list' />}
+          icon={<BulletListIcon label="Bullet list" />}
         />
         }
 
@@ -54,7 +54,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
           onClick={this.handleOrderedListClick}
           selected={this.state.orderedListActive}
           disabled={this.state.orderedListDisabled}
-          icon={<NumberListIcon label='Ordered list' />}
+          icon={<NumberListIcon label="Ordered list" />}
         />
         }
       </span>

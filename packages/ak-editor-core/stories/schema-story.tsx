@@ -2,8 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import makeJsonSchema from '../src/schema/json-schema';
 import { schema } from '../test-helper/schema';
 import * as React from 'react';
-import { PureComponent } from 'react';
-import { ProseMirror, OrderedMap } from '../src/prosemirror';
+import { OrderedMap } from '../src/prosemirror';
 import { highlightBlock } from 'highlight.js';
 import reactify from 'akutil-react';
 import Editor from './editor';
@@ -53,15 +52,15 @@ storiesOf('ak-editor-core', module)
 
       render() {
         return (
-          <div style={{ display: 'flex', flexDirection: 'column' }} ref='container'>
+          <div style={{ display: 'flex', flexDirection: 'column' }} ref="container">
             <Editor
               onChange={this.fetchEditorState}
-              ref='editor'
-              isExpandedByDefault />
-
+              ref="editor"
+              isExpandedByDefault
+            />
             <Tabs style={{ backgroundColor: 'white' }}>
               <Tab label="ProseMirror schema">
-                <pre><code className='json'>{jsonPretty({
+                <pre><code className="json">{jsonPretty({
                   nodes: toJS(schema.nodeSpec, val => ({
                     content: val.content,
                     type: val.type.name,
@@ -71,11 +70,11 @@ storiesOf('ak-editor-core', module)
                 })}</code></pre>
               </Tab>
               <Tab label="JSON Schema">
-                <pre><code className='json'>{jsonPretty(jsonSchema)}</code></pre>
+                <pre><code className="json">{jsonPretty(jsonSchema)}</code></pre>
               </Tab>
               <Tab label="JSON" selected>
                 {this.state.docJson === null ? null :
-                  <pre><code className='json'>{jsonPretty(this.state.docJson)}</code></pre>
+                  <pre><code className="json">{jsonPretty(this.state.docJson)}</code></pre>
                 }
                 {this.state.isValid ? null :
                   <fieldset>

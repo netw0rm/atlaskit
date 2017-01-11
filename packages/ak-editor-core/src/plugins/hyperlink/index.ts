@@ -1,5 +1,4 @@
 import {
-  allInputRules,
   commands,
   DOMFromPos,
   inputRules,
@@ -36,9 +35,7 @@ export class HyperlinkState {
 
     pm.on.transformPasted.add(pasteTransformer.bind(pasteTransformer, pm));
 
-    this.inputRules = [
-      hyperlinkRule,
-    ].concat(allInputRules);
+    this.inputRules = [hyperlinkRule];
 
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach(rule => rules.addRule(rule));
@@ -138,11 +135,10 @@ export class HyperlinkState {
     }
   }
 
-  removeLink(forceTextSelection = false) {
+  getActiveMarkRange(): { markerFrom: number, markerTo: number } {
     const { pm } = this;
-    const activeLink = this.getActiveLink();
 
-    if (activeLink && pm.selection instanceof TextSelection) {
+    if (pm.selection instanceof TextSelection) {
       const { $head, empty } = pm.selection;
 
       // why - 1?
@@ -166,6 +162,25 @@ export class HyperlinkState {
       const markerFrom = currentNodeOffset;
       const markerTo = markerFrom + node.nodeSize;
 
+      return {
+        markerFrom,
+        markerTo
+      };
+    }
+
+    return {
+      markerFrom: 1,
+      markerTo: 1
+    };
+  }
+
+  removeLink(forceTextSelection = false) {
+    const { pm } = this;
+    const activeLink = this.getActiveLink();
+
+    if (activeLink && pm.selection instanceof TextSelection) {
+      const { markerFrom, markerTo } = this.getActiveMarkRange();
+
       pm.tr.removeMark(markerFrom, markerTo, activeLink).apply();
 
       if (forceTextSelection) {
@@ -180,12 +195,10 @@ export class HyperlinkState {
     if (activeLink) {
       const { pm } = this;
       if (pm.selection instanceof TextSelection) {
-        const { $head } = pm.selection;
-        const from = $head.start($head.depth);
-        const to = $head.end($head.depth);
+        const { markerFrom, markerTo } = this.getActiveMarkRange();
         pm.tr
-          .removeMark(from, to, activeLink)
-          .addMark(from, to, pm.schema.mark('link', { href: options.href }))
+          .removeMark(markerFrom, markerTo, activeLink)
+          .addMark(markerFrom, markerTo, pm.schema.mark('link', { href: options.href }))
           .apply();
       }
     }
@@ -265,7 +278,7 @@ export default new Plugin(HyperlinkState);
 export interface S extends Schema {
   marks: {
     link?: LinkMarkType;
-  }
+  };
 }
 
 export interface PM extends ProseMirror {
@@ -283,6 +296,6 @@ export interface HyperlinkOptions {
 // returns the position to be used on 'getDomElement' to get the corrent DOM node
 function getBoundariesWithin(
   $head: ResolvedPos
-) : number {
+): number {
   return $head.parentOffset === 0 ? $head.pos : $head.pos -1;
 }

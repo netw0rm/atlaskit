@@ -4,13 +4,14 @@ import {
   ProseMirror,
   Keymap,
   BlockTypePlugin,
+  CodeBlockPlugin,
   ListsPlugin,
   TextFormattingPlugin,
   HorizontalRulePlugin,
   Chrome,
   schema,
   AnalyticsHandler,
-  service as analyticsService
+  analyticsService
 } from 'ak-editor-core';
 import { encode, parse } from './html';
 
@@ -90,7 +91,7 @@ export default class Editor extends PureComponent<Props, State> {
       <Chrome
         children={<div ref={this.handleRef} />}
         isExpanded={isExpanded}
-        feedbackFormUrl='https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/'
+        feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
         onCancel={handleCancel}
         onSave={handleSave}
         onCollapsedChromeFocus={() => this.setState({ isExpanded: true })}
@@ -131,6 +132,7 @@ export default class Editor extends PureComponent<Props, State> {
         doc: parse(this.props.defaultValue || ''),
         plugins: [
           BlockTypePlugin,
+          CodeBlockPlugin,
           ListsPlugin,
           TextFormattingPlugin,
           HorizontalRulePlugin
@@ -145,8 +147,14 @@ export default class Editor extends PureComponent<Props, State> {
         'Mod-Enter': this.handleSave
       }));
 
+      pm.on.domPaste.add(() => {
+        analyticsService.trackEvent('atlassian.editor.paste');
+      });
+
       pm.on.change.add(this.handleChange);
       pm.focus();
+
+      analyticsService.trackEvent('atlassian.editor.start');
 
       this.setState({ pm });
     } else {

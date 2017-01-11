@@ -2,7 +2,7 @@ import * as mocha from 'mocha';
 import markdownSerializer from '../src/markdown-serializer';
 import {
   code_block, doc, p, img, mono, strong, blockquote, hr,
-  h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, del, mention
+  h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, mention, strike
 } from './_schema-builder';
 import { expect } from 'chai';
 import stringRepeat from '../src/util/string-repeat';
@@ -88,7 +88,7 @@ describe('Bitbucket markdown serializer: ', () => {
     });
 
     it('with attributes uses backtick notation and preserves attributes', () => {
-      const js = code_block({ params: 'js' });
+      const js = code_block({ language: 'js' });
       expect(markdownSerializer.serialize(doc(
         js('foo'),
       ))).to.eq('```js\nfoo\n```');
@@ -119,7 +119,7 @@ describe('Bitbucket markdown serializer: ', () => {
     });
 
     it('via backticks that includes backticks is properly fenced', () => {
-      const css = code_block({ params: 'css' });
+      const css = code_block({ language: 'css' });
 
       expect(markdownSerializer.serialize(doc(
         css('```js\nfoo\n```')
@@ -510,10 +510,10 @@ describe('Bitbucket markdown serializer: ', () => {
       });
 
       it('should serialize strikethrough', () => {
-        expect(markdownSerializer.serialize(doc(p(del('foo'))))).to.eq('~~foo~~');
+        expect(markdownSerializer.serialize(doc(p(strike('foo'))))).to.eq('~~foo~~');
         expect(markdownSerializer.serialize(doc(p(
           'foo ',
-          del('bar bar'),
+          strike('bar bar'),
           ' baz',
         )))).to.eq('foo ~~bar bar~~ baz');
       });
@@ -711,15 +711,15 @@ describe('Bitbucket markdown serializer: ', () => {
           )))).to.eq('*hi*\\*\\*there\\*');
 
           expect(markdownSerializer.serialize(doc(p(
-            del(strong('foo bar baz'))
+            strike(strong('foo bar baz'))
           )))).to.eq('**~~foo bar baz~~**');
 
           expect(markdownSerializer.serialize(doc(p(
-            strong(del('foo bar'), ' baz'),
+            strong(strike('foo bar'), ' baz'),
           )))).to.eq('**~~foo bar~~ baz**');
 
           expect(markdownSerializer.serialize(doc(p(
-            em(del('foo bar'), ' baz'),
+            em(strike('foo bar'), ' baz'),
           )))).to.eq('*~~foo bar~~ baz*');
 
           expect(markdownSerializer.serialize(doc(p(

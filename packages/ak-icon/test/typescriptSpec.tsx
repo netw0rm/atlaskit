@@ -10,6 +10,6 @@ describe(name, () => {
    const icon: PureComponent<any, any> = new AtlassianIcon({ label: 'atlassian' });
 
    // Test JSX
-   <AtlassianIcon label='atlassian' />;
+   <AtlassianIcon label="atlassian" />;
  });
 });

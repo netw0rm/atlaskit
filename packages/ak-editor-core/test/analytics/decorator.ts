@@ -45,13 +45,13 @@ describe('analytics decorator', () => {
   it('tracks events after bound method (instance property) is called', () => {
     class AnnotatedTestClass2 {
       @analytics('test.event.foo')
-      foo = () => {}
+      foo = () => {};
 
       @analytics('test.event.bar')
-      bar = () => {}
+      bar = () => {};
     }
 
-    let instance = new AnnotatedTestClass2();
+    const instance = new AnnotatedTestClass2();
     expect(spy).to.have.not.been.called;
 
     instance.foo();
@@ -63,6 +63,36 @@ describe('analytics decorator', () => {
     expect(spy).to.have.been.calledWith('test.event.bar');
   });
 
+  it('returns unique decorated bound method (property) per instance', () => {
+    class AnnotatedTestClassWithBoundMethod {
+      @analytics('test.event.foo')
+      foo = () => {};
+    }
+
+    const instance1 = new AnnotatedTestClassWithBoundMethod();
+    const instance2 = new AnnotatedTestClassWithBoundMethod();
+
+    expect(instance1.foo).to.not.eq(instance2.foo);
+  });
+
+  it('returns property value if decorating a non-function property', () => {
+    sinon.stub(console, 'warn', () => {});
+
+    after(() => {
+      (console.warn as any).restore();
+    });
+
+    class AnnotatedTestClassWithPrimitiveValue {
+      @analytics('test.event.foo')
+      foo = 15.15;
+    }
+
+    const instance = new AnnotatedTestClassWithPrimitiveValue();
+
+    expect(console.warn).to.have.been.called;
+    expect(instance.foo).to.eq(15.15);
+  });
+
   it('can track private methods being called', () => {
     class AnnotatedTestClass3 {
       @analytics('test.event.foo')
@@ -71,7 +101,7 @@ describe('analytics decorator', () => {
       }
 
       @analytics('test.event.bar')
-      private bar = () => {}
+      private bar = () => {};
     }
 
     let instance = new AnnotatedTestClass3();

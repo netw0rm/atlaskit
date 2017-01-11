@@ -1,5 +1,3 @@
-export { CodeMark, CodeMarkType, isCodeMark } from './marks/code';
-export { DelMark, DelMarkType, isDelMark } from './marks/del';
 export { EmMark, EmMarkType, isEmMark } from './marks/em';
 export { LinkMark, LinkMarkType, isLinkMark } from './marks/link';
 export { MonoMark, MonoMarkType, isMonoMark } from './marks/mono';

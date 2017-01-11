@@ -1,0 +1,188 @@
+import chai from 'chai';
+import React from 'react';
+import chaiAsPromised from 'chai-as-promised';
+import chaiEnzyme from 'chai-enzyme';
+import { shallow, mount } from 'enzyme';
+import Group from 'ak-droplist-group';
+import Trigger from 'ak-droplist-trigger';
+import Item from 'ak-droplist-item';
+import Layer from 'ak-layer';
+
+import { name } from '../package.json';
+import { locals as styles } from '../src/styles.less';
+
+import Droplist from '../src';
+
+chai.use(chaiAsPromised);
+chai.use(chaiEnzyme());
+
+const { expect } = chai;
+
+const itemsList = (<Group heading="test1">
+  <Item>Some text</Item>
+</Group>);
+
+describe(name, () => {
+  it('should be possible to create a component', () => {
+    expect(shallow(<Droplist>test</Droplist>)).to.exist;
+  });
+
+  describe('render', () => {
+    let wrapper;
+
+    beforeEach(() => {
+      wrapper = mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>);
+    });
+
+    it('should render Layer component', () => {
+      expect(wrapper.find(`.${styles.dropWrapper}`)).to.exist;
+      const layer = wrapper.find(`.${styles.dropWrapper}`).children().first();
+      const layerNode = layer.node;
+      expect(layerNode instanceof Layer).to.be.true;
+      expect(layer).to.have.exactly(1).descendants(`.${styles.dropContent}`);
+      expect(layer).to.have.exactly(1).descendants(`.${styles.dropTrigger}`);
+    });
+
+    it('should pass required properties to Layer', () => {
+      const layer = wrapper.find(`.${styles.dropWrapper}`).children().first();
+      expect(layer).to.have.prop('offset', '0 4');
+      expect(layer).to.have.prop('position', 'bottom left');
+      expect(layer).to.have.prop('content');
+    });
+
+    it('should render droplist content', () => {
+      const content = wrapper.find(`.${styles.dropContent}`);
+      expect(content.children().nodes[0] instanceof Group).to.be.true;
+    });
+
+    it('should render trigger', () => {
+      const triggerWrapper = wrapper.find(`.${styles.dropTrigger}`);
+      const trigger = triggerWrapper.children().nodes[0];
+
+      expect(trigger instanceof Trigger).to.be.true;
+      expect(triggerWrapper).to.have.text('text');
+    });
+  });
+
+  describe('onOpenChange', () => {
+    it('should be open when the isOpen property set to true', () => {
+      expect(mount(<Droplist trigger="text">{itemsList}</Droplist>)).to.not.have.descendants(`.${styles.dropContent}`);
+      expect(mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>)).to.have.exactly(1).descendants(`.${styles.dropContent}`);
+    });
+
+    it('interacting with trigger should call onOpenChange callback', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(<Droplist trigger="text" onOpenChange={spy}>{itemsList}</Droplist>);
+      const trigger = wrapper.find(`.${styles.dropTrigger}`).children().first();
+      trigger.simulate('click');
+      expect(spy.called).to.equal(true);
+      expect(spy.callCount).to.equal(1);
+    });
+  });
+
+  describe('focus', () => {
+    describe('getPrevFocusable', () => {
+      it('should return previous item when passed an item', () => {
+        const Items = (<Group heading="group">
+          <Item>0</Item><Item>1</Item><Item>2</Item>
+        </Group>);
+
+        const wrapper = mount(<Droplist trigger="test" isOpen>{Items}</Droplist>);
+
+        expect(wrapper.instance().getPrevFocusable(1)).to.equal(0);
+      });
+
+      it('should skip hidden items', () => {
+        const Items = (<Group heading="group">
+          <Item>0</Item><Item>1</Item><Item isHidden>2</Item><Item isHidden>3</Item><Item>4</Item>
+        </Group>);
+
+        const wrapper = mount(<Droplist trigger="test" isOpen>{Items}</Droplist>);
+
+        expect(wrapper.instance().getPrevFocusable(4)).to.equal(1);
+      });
+
+      it('should return the first item if there is nothing before', () => {
+        const Items = (<Group heading="group">
+          <Item>0</Item><Item>1</Item><Item>2</Item>
+        </Group>);
+
+        const wrapper = mount(<Droplist trigger="test" isOpen>{Items}</Droplist>);
+
+        expect(wrapper.instance().getPrevFocusable(0)).to.equal(0);
+      });
+
+      it('should return the first non-hidden item if the first item is hidden', () => {
+        const Items = (<Group heading="group">
+          <Item isHidden>0</Item><Item isHidden>1</Item><Item>2</Item>
+        </Group>);
+
+        const wrapper = mount(<Droplist trigger="test" isOpen>{Items}</Droplist>);
+
+        expect(wrapper.instance().getPrevFocusable(2)).to.equal(2);
+      });
+    });
+
+    describe('getNextFocusable', () => {
+      it('should return the first item when called without an argument', () => {
+        const Items = (<Group heading="group">
+          <Item>0</Item><Item>1</Item>
+        </Group>);
+
+        const wrapper = mount(<Droplist trigger="test" isOpen>{Items}</Droplist>);
+
+        expect(wrapper.instance().getNextFocusable()).to.equal(0);
+      });
+
+      it('if the first item is hidden it should return next available item', () => {
+        const Items = (<Group heading="group">
+          <Item isHidden>0</Item><Item isHidden>1</Item><Item>2</Item>
+        </Group>);
+
+        const wrapper = mount(<Droplist trigger="test" isOpen>{Items}</Droplist>);
+
+        expect(wrapper.instance().getNextFocusable()).to.equal(2);
+      });
+
+      it('should return next item when passed an item', () => {
+        const Items = (<Group heading="group">
+          <Item>0</Item><Item>1</Item><Item>2</Item>
+        </Group>);
+
+        const wrapper = mount(<Droplist trigger="test" isOpen>{Items}</Droplist>);
+
+        expect(wrapper.instance().getNextFocusable(1)).to.equal(2);
+      });
+
+      it('should skip hidden items', () => {
+        const Items = (<Group heading="group">
+          <Item>0</Item><Item>1</Item><Item isHidden>2</Item><Item isHidden>3</Item><Item>4</Item>
+        </Group>);
+
+        const wrapper = mount(<Droplist trigger="test" isOpen>{Items}</Droplist>);
+
+        expect(wrapper.instance().getNextFocusable(1)).to.equal(4);
+      });
+
+      it('should return the latest item if there is nothing beyond', () => {
+        const Items = (<Group heading="group">
+          <Item>0</Item><Item>1</Item><Item>2</Item>
+        </Group>);
+
+        const wrapper = mount(<Droplist trigger="test" isOpen>{Items}</Droplist>);
+
+        expect(wrapper.instance().getNextFocusable(2)).to.equal(2);
+      });
+
+      it('should return the latest non-hidden item if the latest item is hidden', () => {
+        const Items = (<Group heading="group">
+          <Item>0</Item><Item>1</Item><Item>2</Item><Item isHidden>3</Item><Item isHidden>4</Item>
+        </Group>);
+
+        const wrapper = mount(<Droplist trigger="test" isOpen>{Items}</Droplist>);
+
+        expect(wrapper.instance().getNextFocusable(2)).to.equal(2);
+      });
+    });
+  });
+});

@@ -12,7 +12,7 @@ describe('markdown-inputrules', () => {
   const editor = (doc: any) => {
     const { pm, plugin } = makeEditor({ doc, plugin: MarkdownInputRulesPlugin });
     return { pm, plugin, sel: pm.doc.refs['<>'] };
-  }
+  };
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
     const Plugin = MarkdownInputRulesPlugin as any; // .State is not public API.

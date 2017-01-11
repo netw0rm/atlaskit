@@ -6,10 +6,10 @@ import * as chaiEnzyme from 'chai-enzyme';
 import { shallow, mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import { doc, strong, h1, p } from './_schema-builder';
-import stringRepeat from '../src/util/string-repeat'
+import stringRepeat from '../src/util/string-repeat';
 import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from 'ak-editor-core/test-helper';
 
-import { ProseMirror, browser, ToolbarTextFormatting, service, AnalyticsHandler, debugHandler } from 'ak-editor-core';
+import { ProseMirror, browser, ToolbarTextFormatting, analyticsService, AnalyticsHandler, debugHandler } from 'ak-editor-core';
 import BoldIcon from 'ak-icon/glyph/editor/bold';
 import ItalicIcon from 'ak-icon/glyph/editor/bold';
 import NumberListIcon from 'ak-icon/glyph/editor/list/number';
@@ -26,12 +26,42 @@ chai.use(sinonChai);
 describe('ak-editor-bitbucket/analytics/start-event', () => {
   it('atlassian.editor.start', () => {
     let handler = sinon.spy() as AnalyticsHandler;
-    service.handler = handler;
+    analyticsService.handler = handler;
 
     mount(<Editor analyticsHandler={handler} />);
     expect(handler).to.not.have.been.called;
 
     mount(<Editor analyticsHandler={handler} />).find('ChromeCollapsed').simulate('focus');
+    expect(handler).to.have.been.calledOnce;
+    expect(handler).to.have.been.calledWith('atlassian.editor.start');
+  });
+
+  it('atlassian.editor.start with two child editors sharing a handler', () => {
+    let handler = sinon.spy() as AnalyticsHandler;
+    analyticsService.handler = handler;
+
+    class ContainerWithTwoEditors extends React.PureComponent<{}, {}> {
+      render() {
+        return (
+          <div>
+            <Editor isExpandedByDefault analyticsHandler={handler} />
+            <Editor isExpandedByDefault analyticsHandler={handler} />
+          </div>
+        );
+      }
+    }
+
+    expect(handler).to.not.have.been.called;
+    mount(<ContainerWithTwoEditors />);
+    expect(handler).to.have.been.calledWith('atlassian.editor.start');
+    expect(handler).to.have.been.calledTwice;
+  });
+
+  it('editor.start must not be called when unmounting component', () => {
+    let handler = sinon.spy() as AnalyticsHandler;
+    analyticsService.handler = handler;
+
+    mount(<Editor analyticsHandler={handler} isExpandedByDefault />).unmount();
     expect(handler).to.have.been.calledOnce;
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
   });
@@ -247,7 +277,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.image.drop', () => {
-    const editorAPI:Editor = editor.get(0) as any;
+    const editorAPI: Editor = editor.get(0) as any;
     const { pm } = editorAPI.state;
 
     // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop'

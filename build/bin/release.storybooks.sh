@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-CHALK="`npm bin`/chalk"
+CHALK="`yarn bin`/chalk"
 CDN_PREFIX="stories"
 BASEDIR=$(dirname $0)
 . $BASEDIR/_build_status.sh
@@ -19,7 +19,7 @@ function storybooks_build_status() {
 
 function build_storybooks() {
   $CHALK --no-stdin -t "{blue Building storybooks}"
-  npm run storybook/static/registry
+  yarn run storybook/static/registry
 }
 
 storybooks_build_status "INPROGRESS"

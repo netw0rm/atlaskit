@@ -24,8 +24,8 @@ export default class ToolbarIconButton extends PureComponent<Props, {}> {
         <AkButton
           isDisabled={this.props.disabled}
           isSelected={this.props.selected}
-          spacing='none'
-          appearance='subtle'
+          spacing="none"
+          appearance="subtle"
           href={this.props.href}
           target={this.props.target}
           theme={this.props.theme}
@@ -33,7 +33,7 @@ export default class ToolbarIconButton extends PureComponent<Props, {}> {
           {this.props.icon}
         </AkButton>
       </span>
-    )
+    );
   }
 
   private handleClick = (e: MouseEvent<any>) => {

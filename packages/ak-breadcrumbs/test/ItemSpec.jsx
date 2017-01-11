@@ -74,10 +74,16 @@ describe(name, () => {
 
     describe('overflow calculation', () => {
       let item;
+      const animStub = window.cancelAnimationFrame;
 
       beforeEach(() => {
+        window.cancelAnimationFrame = () => {};
         const wrapper = mount(<Item>content</Item>);
         item = wrapper.instance();
+      });
+
+      afterEach(() => {
+        window.cancelAnimationFrame = animStub;
       });
 
       it('for an item which is truncated', () => {

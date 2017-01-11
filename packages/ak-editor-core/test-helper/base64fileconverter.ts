@@ -54,7 +54,7 @@ export function dropHandler(
   converter: Converter,
   e: DragEvent,
   fn: convertedHandlerCallback
-) : boolean {
+): boolean {
   if (
     !converter.HAS_BASE64_FILE_SUPPORT ||
     !(
@@ -77,7 +77,7 @@ export function pasteHandler(
   converter: Converter,
   e: ClipboardEvent,
   fn: convertedHandlerCallback
-) : boolean {
+): boolean {
   if (
     !converter.HAS_BASE64_FILE_SUPPORT ||
     !(

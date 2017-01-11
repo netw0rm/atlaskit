@@ -75,6 +75,7 @@ RUN echo "Installing AtlasKit tools" \
   lerna-semantic-release@8.0.2 \
   indexifier@2.0.0 \
   @atlassian/prebake-distributor-runner@1.0.2 \
+  yarn@0.18.1 \
 && npm cache clean -f
 #### </atlaskit-tools>
 

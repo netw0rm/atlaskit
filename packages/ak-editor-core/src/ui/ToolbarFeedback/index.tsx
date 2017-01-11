@@ -4,7 +4,7 @@ import FeedbackIcon from 'ak-icon/glyph/feedback';
 import Panel from '../Panel';
 import * as styles from './styles';
 import IconButton from '../ToolbarIconButton';
-import { decorator as analytics } from '../../analytics';
+import { analyticsDecorator as analytics } from '../../analytics';
 
 export interface Props {
   feedbackFormUrl: string;
@@ -23,16 +23,18 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
         <IconButton
           onClick={this.openFeedbackPanel}
           selected={this.state.active}
-          icon={<FeedbackIcon label='Feedback' />}
+          icon={<FeedbackIcon label="Feedback" />}
         />
         {!this.state.active ? null :
-        <Panel align='right' spacing='none' onOutsideClick={this.closeFeedbackPanel}>
+        <Panel align="right" spacing="none" onOutsideClick={this.closeFeedbackPanel}>
           <div className={styles.popup}>
             <button
               type="button"
               className={styles.close}
               onClick={this.closeFeedbackPanel}
-            >&#10005;</button>
+            >
+            &#10005;
+            </button>
             <iframe
               allowTransparency
               frameBorder="0"

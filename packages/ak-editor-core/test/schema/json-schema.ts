@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import jsonSchema from '../../src/schema/json-schema';
-import { Schema, Block, Text, Inline, Attribute, EmMarkType, MarkType } from '../../src';
+import { Schema, Block, Text, Inline, Attribute, EmMarkType, StrongMarkType, MarkType } from '../../src';
 
 const { expect } = chai;
 
@@ -9,9 +9,9 @@ describe('ak-editor-core: json-schema', () => {
     get attrs() {
       return {
         src: new Attribute,
-        alt: new Attribute({default: ""}),
-        title: new Attribute({default: ""})
-      }
+        alt: new Attribute({default: ''}),
+        title: new Attribute({default: ''})
+      };
     }
   }
 
@@ -406,8 +406,8 @@ describe('ak-editor-core: json-schema', () => {
     class Foo extends Inline {
       get attrs() {
         return {
-          foo: new Attribute({default: ""}),
-        }
+          foo: new Attribute({default: ''}),
+        };
       }
     }
     const schema = new Schema({
@@ -428,25 +428,25 @@ describe('ak-editor-core: json-schema', () => {
         text: { type: Text},
       },
       marks: {
-        a: EmMarkType,
-        b: EmMarkType,
+        em: EmMarkType,
+        strong: StrongMarkType,
       }
     });
-    const { a_mark, b_mark } = jsonSchema(schema)['definitions'];
+    const { em_mark, strong_mark } = jsonSchema(schema)['definitions'];
 
-    expect(a_mark).to.deep.equal({
+    expect(em_mark).to.deep.equal({
       type: 'object',
       properties: {
-        _: { enum: ['a'] },
+        _: { enum: ['em'] },
       },
       required: ['_'],
       additionalProperties: false,
     });
 
-    expect(b_mark).to.deep.equal({
+    expect(strong_mark).to.deep.equal({
       type: 'object',
       properties: {
-        _: { enum: ['b'] },
+        _: { enum: ['strong'] },
       },
       required: ['_'],
       additionalProperties: false,
@@ -458,8 +458,8 @@ describe('ak-editor-core: json-schema', () => {
       get attrs() {
         return {
           href: new Attribute,
-          title: new Attribute({default: ""})
-        }
+          title: new Attribute({default: ''})
+        };
       }
     }
     const schema = new Schema({
@@ -549,8 +549,8 @@ describe('ak-editor-core: json-schema', () => {
         text: { type: Text},
       },
       marks: {
-        a: EmMarkType,
-        b: EmMarkType,
+        em: EmMarkType,
+        strong: StrongMarkType,
       }
     });
     const { doc_node } = jsonSchema(schema).definitions;
@@ -564,8 +564,8 @@ describe('ak-editor-core: json-schema', () => {
                 type: 'array',
                 items: {
                   anyOf: [
-                    { $ref: '#/definitions/a_mark' },
-                    { $ref: '#/definitions/b_mark' },
+                    { $ref: '#/definitions/em_mark' },
+                    { $ref: '#/definitions/strong_mark' },
                   ]
                 }
               }
@@ -578,12 +578,12 @@ describe('ak-editor-core: json-schema', () => {
   it('supports a single mark on a node when multiple marks are defined', () => {
     const schema = new Schema({
       nodes: {
-        doc: { type: Block, content: 'text<a>' },
-        text: { type: Text},
+        doc: { type: Block, content: 'text<em>' },
+        text: { type: Text },
       },
       marks: {
-        a: EmMarkType,
-        b: EmMarkType,
+        em: EmMarkType,
+        strong: StrongMarkType,
       }
     });
     const { doc_node } = jsonSchema(schema)['definitions'];
@@ -597,7 +597,7 @@ describe('ak-editor-core: json-schema', () => {
               type: 'array',
               items: {
                 anyOf: [
-                  { $ref: '#/definitions/a_mark' },
+                  { $ref: '#/definitions/em_mark' },
                 ]
               }
             }

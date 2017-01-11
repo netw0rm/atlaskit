@@ -40,6 +40,6 @@ export interface PM extends ProseMirror {
 export interface S extends Schema {
   nodes: {
     horizontal_rule: HorizontalRuleNodeType
-  }
+  };
 }
 

@@ -5,6 +5,7 @@ import reactify from 'akutil-react';
 import AkTabs from 'ak-tabs';
 import { Tab as AkTab } from 'ak-tabs';
 import Editor from '../src';
+import '!style!css!less!./cq-styles.less';
 
 const Tabs = reactify(AkTabs);
 const Tab = reactify(AkTab);
@@ -72,7 +73,7 @@ storiesOf('ak-editor-cq', module)
               </Tab>
               <Tab selected label="comment">
                 <Editor
-                  context='comment'
+                  context="comment"
                   isExpandedByDefault
                   onCancel={CancelAction}
                   onSave={SaveAction}

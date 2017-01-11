@@ -84,7 +84,7 @@ export default function encode(node: DocNode) {
 
   function encodeParagraph(node: ParagraphNode) {
     const elem = doc.createElement('p');
-    elem.appendChild(encodeFragment(node.content))
+    elem.appendChild(encodeFragment(node.content));
     return elem;
   }
 
@@ -105,7 +105,7 @@ export default function encode(node: DocNode) {
             elem = elem.appendChild(doc.createElement('s'));
             break;
           case schema.marks.mono:
-            elem = elem.appendChild(doc.createElement('mono'));
+            elem = elem.appendChild(doc.createElement('code'));
             break;
           case schema.marks.u:
             elem = elem.appendChild(doc.createElement('u'));

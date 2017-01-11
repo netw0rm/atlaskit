@@ -13,7 +13,9 @@ describe('ak-editor-core/schema image node', () => {
         }
       });
     }).to.throw(Error);
+  });
 
+  it('does not throw an error if it is named "image"', () => {
     expect(() => {
       new Schema({
         nodes: {

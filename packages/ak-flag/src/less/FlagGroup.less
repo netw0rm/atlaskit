@@ -1,9 +1,17 @@
-@import 'shared-variables.less';
+@import '~akutil-shared-styles/src/grid.less';
+@import '~akutil-shared-styles/src/mixins/a11y.less';
 
 .root {
-  bottom: 0;
-  left: 80px;
+  bottom: @ak-grid-size * 6;
+  left: @ak-grid-size * 10;
   position: fixed;
-  width: @flag-width;
   z-index: 4;
+}
+
+.assistive {
+  .assistive();
+}
+
+.group-inner {
+  position: relative;
 }

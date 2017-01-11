@@ -1,6 +1,5 @@
 import chai from 'chai';
 import React from 'react';
-import chaiAsPromised from 'chai-as-promised';
 import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import AkFieldBase, { Label } from 'ak-field-base';
@@ -13,7 +12,6 @@ import { StatelessSelect } from '../src';
 
 import { name } from '../package.json';
 
-chai.use(chaiAsPromised);
 chai.use(chaiEnzyme());
 
 const { expect } = chai;

@@ -77,16 +77,18 @@ describe('code-block', () => {
       });
     });
 
-    context('when unsuscribe', () => {
-      const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
-      const spy = sinon.spy();
-      const { cbPos } = pm.doc.refs;
-      plugin.subscribe(spy);
+    context('when unsubscribe', () => {
+      it('does not notify the subscriber', () => {
+        const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
+        const spy = sinon.spy();
+        const { cbPos } = pm.doc.refs;
+        plugin.subscribe(spy);
 
-      plugin.unsubscribe(spy);
-      pm.setTextSelection(cbPos);
+        plugin.unsubscribe(spy);
+        pm.setTextSelection(cbPos);
 
-      expect(spy).to.not.have.been.calledTwice;
+        expect(spy).to.not.have.been.calledTwice;
+      });
     });
   });
 
@@ -103,7 +105,7 @@ describe('code-block', () => {
     });
 
     context('when hits double enter', () => {
-      it('exits code block', ()=> {
+      it('exits code block', () => {
         const { pm, plugin } = editor(doc(code_block()('text{<>}')));
 
         pm.input.dispatchKey('Enter');
@@ -195,32 +197,66 @@ describe('code-block', () => {
   });
 
   describe('activeElement', () => {
-    context('cursor moves winthin the same code block', () => {
+    context('when cursor moves winthin the same code block', () => {
       it('returns the same element', () => {
         const { pm, plugin } = editor(doc(code_block()('code{<>}Block{cbPos}')));
         const { cbPos } = pm.doc.refs;
 
-        const previous_element = plugin.element;
+        const previous_element = plugin.targetElement;
         pm.setTextSelection(cbPos);
 
-        const current_element = plugin.element;
+        const current_element = plugin.targetElement;
 
         expect(previous_element).to.eq(current_element);
       });
     });
 
-    context('cursor moves onto different code block', () => {
+    context('when cursor moves onto different code block', () => {
       it('returns different elements', () => {
-      const { pm, plugin } = editor(doc(code_block()('one{<>} codeBlock'), code_block()('another{cbPos} codeBlock')));
-      const { cbPos } = pm.doc.refs;
+        const { pm, plugin } = editor(doc(code_block()('one{<>} codeBlock'), code_block()('another{cbPos} codeBlock')));
+        const { cbPos } = pm.doc.refs;
 
-      const previous_element = plugin.element;
-      pm.setTextSelection(cbPos);
+        const previous_element = plugin.targetElement;
+        pm.setTextSelection(cbPos);
 
-      const current_element = plugin.element;
+        const current_element = plugin.targetElement;
 
-      expect(previous_element).not.to.eq(current_element);
+        expect(previous_element).not.to.eq(current_element);
 
+      });
+    });
+
+    context('when cursor is within a code block', () => {
+      context('when at the end of the code block', () => {
+        it('returns code block element', () => {
+          const { pm, plugin } = editor(doc(code_block()('codeBlock{<>}')));
+
+          expect(plugin.targetElement).to.instanceOf(HTMLPreElement);
+        });
+      });
+
+      context('when at the begining of the code block', () => {
+        it('returns code block element', () => {
+          const { pm, plugin } = editor(doc(code_block()('{<>}codeBlock')));
+
+          expect(plugin.targetElement).to.instanceOf(HTMLPreElement);
+        });
+      });
+
+      context('when at the middle of the code block', () => {
+        it('returns code block element', () => {
+          const { pm, plugin } = editor(doc(code_block()('code{<>}Block')));
+
+          expect(plugin.targetElement).to.instanceOf(HTMLPreElement);
+        });
+      });
+    });
+
+    context('when cursor is out of code block', () => {
+      it('returns undefined', () => {
+        const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock')));
+
+        expect(plugin.targetElement).to.be.undefined;
       });
     });
   });

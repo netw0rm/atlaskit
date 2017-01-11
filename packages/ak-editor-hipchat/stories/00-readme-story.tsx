@@ -16,7 +16,7 @@ storiesOf(name, module)
       <Readme
         component={name}
         description={description}
-        >
+      >
         <Code code={OverviewExampleRaw}>
           {OverviewExample}
         </Code>
@@ -71,9 +71,8 @@ storiesOf(name, module)
         </table>
         <Heading type="2">Document</Heading>
         <p>The editor produces a "document" that is a precise description of the content. This is
-        enforced internally using a combination of a <a
-            href="https://prosemirror.net/guide/schema.html">ProseMirror schema</a> and a filter pass
-        using encoding to strip unwanted content (e.g. a mention query).</p>
+        enforced internally using a combination of a <a href="https://prosemirror.net/guide/schema.html">ProseMirror schema</a>
+         and a filter pass using encoding to strip unwanted content (e.g. a mention query).</p>
         <Heading type="3">JSON Schema</Heading>
         <p>This schema describes the exposed document structure and is subject to change.</p>
         <p><strong>Expected changes:</strong></p>

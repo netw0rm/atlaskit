@@ -1,5 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
-import { jsonSchema } from '../schema-helper';
+import { jsonSchema } from '../docs-helper';
 import { schema } from '../test-helper/schema';
 import * as React from 'react';
 import { OrderedMap } from '../src/prosemirror';
@@ -14,10 +14,10 @@ import TabsComponent, { Tab as TabComponent } from 'ak-tabs';
 
 const Tabs = reactify(TabsComponent);
 const Tab = reactify(TabComponent);
-const jsonSchema = makeJsonSchema(schema);
+const coreJsonSchema = jsonSchema(schema);
 const Ajv = ((ajvModule as any).default || ajvModule);
 const ajv = new Ajv();
-const validate = ajv.compile(jsonSchema);
+const validate = ajv.compile(coreJsonSchema);
 
 function toJS(map: OrderedMap, transform: (value: any) => any) {
   const result: any = {};
@@ -70,7 +70,7 @@ storiesOf('ak-editor-core', module)
                 })}</code></pre>
               </Tab>
               <Tab label="JSON Schema">
-                <pre><code className="json">{jsonPretty(jsonSchema)}</code></pre>
+                <pre><code className="json">{jsonPretty(coreJsonSchema)}</code></pre>
               </Tab>
               <Tab label="JSON" selected>
                 {this.state.docJson === null ? null :

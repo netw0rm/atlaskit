@@ -10,7 +10,7 @@ module.exports = ({
 }) => {
   const componentName = iconNameToComponentName(unprefixedIconName);
 
-  const srcPath = path.join(__dirname, '..', 'src/tmp');
+  const srcPath = path.join(__dirname, '..', 'tmp');
   const currentJsPath = path.join(srcPath, tmpFolderName, path.dirname(iconRelativePathToSrc));
   const relativePathToSrc = path.relative(currentJsPath, srcPath);
 

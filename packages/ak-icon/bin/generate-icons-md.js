@@ -7,7 +7,7 @@ const getAllIconsPaths = require('./getAllIconsPaths');
 const pathToDashed = require('./pathToDashed');
 
 const bytebucketIconPath = 'https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-icon';
-const tmpFolder = `${path.join('..', 'src', tmpFolderName)}${path.sep}`;
+const tmpFolder = `${path.join('..', tmpFolderName)}${path.sep}`;
 const allIconPaths = getAllIconsPaths();
 
 const svgUrl = iconScope => `${bytebucketIconPath}/src/icons/${iconScope}.svg`;

@@ -18,6 +18,7 @@ import {
   StrongMarkType,
   MonoMarkType,
   Text,
+  MentionQueryMarkType,
   MentionNodeType,
   EmojiNodeType
 } from 'ak-editor-core';
@@ -50,7 +51,8 @@ export default new Schema({
     em: EmMarkType,
     strong: StrongMarkType,
     strike: StrikeMarkType,
-    mono: MonoMarkType
+    mono: MonoMarkType,
+    mention_query: MentionQueryMarkType,
   },
 }) as BitbucketSchema;
 
@@ -82,5 +84,6 @@ export interface BitbucketSchema extends Schema {
     strong: StrongMarkType;
     mono: MonoMarkType;
     strike: StrikeMarkType;
+    mention_query: MentionQueryMarkType;
   };
 }

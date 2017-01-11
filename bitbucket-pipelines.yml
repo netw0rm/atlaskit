@@ -14,7 +14,7 @@ pipelines:
             - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
-            - yarn run release
+            - npm run release
             - run-p -ln "release/registry" "release/storybooks"
             - yarn run release/announce
     invalidate-atlaskit-cache:

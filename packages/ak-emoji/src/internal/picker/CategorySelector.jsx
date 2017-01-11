@@ -80,12 +80,11 @@ export default class CategorySelector extends PureComponent {
         icon: EmojiCustomIcon,
       },
     ],
+    onCategorySelected: () => {},
   };
 
   onClick = (categoryId) => {
-    if (this.props.onCategorySelected) {
-      this.props.onCategorySelected(categoryId);
-    }
+    this.props.onCategorySelected(categoryId);
   };
 
   render() {

@@ -6,7 +6,7 @@ import Avatar from 'ak-avatar';
 import Button from 'ak-button';
 import Lozenge from 'ak-lozenge';
 
-import Comment from '../src/';
+import Comment, { CommentLayout } from '../src/';
 import styles from '../src/styles.less';
 import { name } from '../package.json';
 
@@ -74,17 +74,10 @@ describe(name, () => {
       });
 
       describe('avatar prop', () => {
-        it('should render the avatar in the correct location', () => {
+        it('should be reflected to the CommentLayout', () => {
           const avatar = <Avatar src="test/src" label="test label" />;
           const wrapper = mount(<Comment avatar={avatar} />);
-          expect(wrapper).to.have.exactly(1).descendants(Avatar);
-          expect(wrapper.find(`.${styles.locals.avatarContainer}`)).to.contain(avatar);
-        });
-
-        it('can render non-Avatar nodes as the comment avatar', () => {
-          const avatar = <img src="test/src" alt="test alt" />;
-          const wrapper = mount(<Comment avatar={avatar} />);
-          expect(wrapper.find(`.${styles.locals.avatarContainer}`)).to.contain(avatar);
+          expect(wrapper.find(CommentLayout)).to.have.prop('avatar', avatar);
         });
       });
 
@@ -127,22 +120,10 @@ describe(name, () => {
     });
 
     describe('nesting', () => {
-      it('should render a child comments in the correct container', () => {
+      it('should reflect children to the CommentLayout', () => {
         const childComment = <Comment content="child" />;
         const wrapper = shallow(<Comment content="parent'">{childComment}</Comment>);
-
-        const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
-        expect(commentsContainer).to.have.exactly(1).descendants(Comment);
-        expect(commentsContainer).to.contain(childComment);
-      });
-
-      it('should render multiple adjacent siblings', () => {
-        const childComments = [<Comment content="child1" />, <Comment content="child2" />];
-        const wrapper = shallow(<Comment content="parent'">{childComments}</Comment>);
-
-        const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
-        expect(commentsContainer).to.have.exactly(childComments.length).descendants(Comment);
-        childComments.forEach(childComment => expect(commentsContainer).to.contain(childComment));
+        expect(wrapper.find(CommentLayout)).to.have.prop('children', childComment);
       });
     });
   });

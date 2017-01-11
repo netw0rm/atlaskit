@@ -11,6 +11,7 @@ interface Props {
   isNotTabbable?: boolean;
   style?: object;
   className?: string;
+  shouldFitContainer?: boolean;
 }
 
 interface State {}

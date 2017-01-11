@@ -84,7 +84,7 @@ export class MentionsPluginState {
     if (dirty) {
       if (this.queryActive) {
         if (!this.hasKeymap) {
-          this.pm.addKeymap(this.keymap);
+          this.pm.addKeymap(this.keymap, 100);
           this.hasKeymap = true;
         }
       } else {
@@ -135,7 +135,7 @@ export class MentionsPluginState {
 
     if (mention && mentionData) {
       const { start, end } = this.findMentionQueryMark();
-      const node = mention.create({ displayName: `@${mentionData.mentionName}`, id: mentionData.id });
+      const node = mention.create({ displayName: `@${mentionData.name}`, id: mentionData.id });
       this.pm.tr.delete(start, end).insert(start, node).apply();
     } else {
       this.dismiss();

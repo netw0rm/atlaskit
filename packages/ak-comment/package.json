@@ -17,7 +17,8 @@
     "akutil-shared-styles": "^37.0.0"
   },
   "devDependencies": {
-    "ak-avatar": "^5.1.1"
+    "ak-avatar": "^5.1.1",
+    "ak-editor-bitbucket": "^6.1.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

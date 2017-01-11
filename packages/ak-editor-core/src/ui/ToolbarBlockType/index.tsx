@@ -5,7 +5,7 @@ import Group from 'ak-droplist-group';
 import Item from 'ak-droplist-item';
 import DropdownList from 'ak-droplist';
 
-import { BlockType, BlockTypeState, GroupedBlockTypes } from '../../../src/plugins/block-type';
+import { BlockType, BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
 import Panel from '../Panel';
 import * as styles from './styles';
 import { analyticsService as analytics } from '../../analytics';
@@ -62,7 +62,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
             appearance="subtle"
             spacing="compact"
           >
-            <span className={styles.buttonContent}>{currentBlockType.title}</span>
+            <div className={styles.buttonContent}>{currentBlockType.title}</div>
           </AkButton>
         }
       >

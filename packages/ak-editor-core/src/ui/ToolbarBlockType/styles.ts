@@ -44,4 +44,3 @@ export const blockTypeCode = style({
 });
 
 export const blockTypeQuote = style({});
-export const active = style({});

@@ -74,7 +74,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
             isActive={currentBlockType === blockType}
             onActivate={() => { this.handleSelectBlockType(blockType); }}
           >
-            <span className={`${this.blockTypeItemClass(blockType)} ${currentBlockType === blockType ? styles.active : ''}`}>
+            <span className={`${this.blockTypeItemClass(blockType)}`}>
               {blockType.title}
             </span>
           </Item>

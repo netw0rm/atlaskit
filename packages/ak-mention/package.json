@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "ak-avatar": "^5.1.1",
+    "ak-lozenge": "^5.0.4",
     "akutil-common": "^5.0.0",
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",

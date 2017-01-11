@@ -5,8 +5,9 @@ import styles from 'style!./styles.less';
 import CommentAction from './CommentAction';
 import CommentAuthor from './CommentAuthor';
 import CommentTime from './CommentTime';
+import CommentLayout from './layout/CommentLayout';
 
-export { CommentAction, CommentAuthor, CommentTime };
+export { CommentAction, CommentAuthor, CommentTime, CommentLayout };
 
 export default class extends PureComponent {
   static propTypes = {
@@ -56,21 +57,16 @@ export default class extends PureComponent {
 
   render() {
     return (
-      <div className={styles.container}>
-        <div className={styles.avatarSection}>
-          <div className={styles.avatarContainer}>
-            {this.props.avatar}
-          </div>
-        </div>
-        <div className={styles.mainSection}>
-          {this.renderTopItems()}
-          <div className={styles.contentContainer}>
-            {this.props.content}
-          </div>
-          {this.renderActions()}
-          {this.renderChildren()}
-        </div>
-      </div>
+      <CommentLayout
+        avatar={this.props.avatar}
+        content={[
+          this.renderTopItems(),
+          <div className={styles.contentContainer}>{this.props.content}</div>,
+          this.renderActions(),
+        ]}
+      >
+        {this.props.children}
+      </CommentLayout>
     );
   }
 }

@@ -1,11 +1,11 @@
 import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import Avatar from 'ak-avatar';
 import Lozenge from 'ak-lozenge';
 
-import Comment, { CommentAction, CommentAuthor, CommentTime } from '../src/';
+import Comment, { CommentAction, CommentAuthor, CommentTime, CommentLayout } from '../src/';
 import styles from '../src/styles.less';
 import { name } from '../package.json';
 
@@ -37,7 +37,7 @@ describe(name, () => {
             <CommentAction>action content</CommentAction>,
             <CommentAction onClick={() => {}}>action content</CommentAction>,
           ];
-          const wrapper = shallow(<Comment actions={actions} />);
+          const wrapper = mount(<Comment actions={actions} />);
           const container = wrapper.find(`.${styles.locals.actionsContainer}`);
           expect(container).to.have.exactly(actions.length).descendants(CommentAction);
           actions.forEach((action) => {
@@ -49,36 +49,29 @@ describe(name, () => {
       describe('author prop', () => {
         it('should render the author in the correct container', () => {
           const author = <CommentAuthor>Joshua Nelson</CommentAuthor>;
-          const wrapper = shallow(<Comment author={author} />);
+          const wrapper = mount(<Comment author={author} />);
           expect(wrapper.find(`.${styles.locals.mainSection}`)).to.contain(author);
         });
       });
 
       describe('avatar prop', () => {
-        it('should render the avatar in the correct location', () => {
+        it('should be reflected to the CommentLayout', () => {
           const avatar = <Avatar src="test/src" label="test label" />;
           const wrapper = shallow(<Comment avatar={avatar} />);
-          expect(wrapper).to.have.exactly(1).descendants(Avatar);
-          expect(wrapper.find(`.${styles.locals.avatarContainer}`)).to.contain(avatar);
-        });
-
-        it('can render non-Avatar nodes as the comment avatar', () => {
-          const avatar = <img src="test/src" alt="test alt" />;
-          const wrapper = shallow(<Comment avatar={avatar} />);
-          expect(wrapper.find(`.${styles.locals.avatarContainer}`)).to.contain(avatar);
+          expect(wrapper.find(CommentLayout)).to.have.prop('avatar', avatar);
         });
       });
 
       describe('content prop', () => {
         it('should render the provided content in the correct container', () => {
           const content = (<p>My sample content</p>);
-          const wrapper = shallow(<Comment content={content} />);
+          const wrapper = mount(<Comment content={content} />);
           expect(wrapper.find(`.${styles.locals.contentContainer}`)).to.contain(content);
         });
 
         it('can render string content', () => {
           const textContent = 'My sample content';
-          const wrapper = shallow(<Comment content={textContent} />);
+          const wrapper = mount(<Comment content={textContent} />);
           expect(wrapper.find(`.${styles.locals.contentContainer}`)).to.have.text(textContent);
         });
       });
@@ -86,7 +79,7 @@ describe(name, () => {
       describe('time prop', () => {
         it('should render the time in the correct container', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
-          const wrapper = shallow(<Comment time={time} />);
+          const wrapper = mount(<Comment time={time} />);
           expect(wrapper.find(`.${styles.locals.mainSection}`)).to.contain(time);
         });
       });
@@ -94,7 +87,7 @@ describe(name, () => {
       describe('type prop', () => {
         it('should render a Lozenge with the type in the correct container', () => {
           const type = 'type';
-          const wrapper = shallow(<Comment type={type} />);
+          const wrapper = mount(<Comment type={type} />);
           expect(wrapper.find(`.${styles.locals.mainSection}`)
             .containsMatchingElement(
               <div className={styles.locals.topItem}>
@@ -106,22 +99,10 @@ describe(name, () => {
     });
 
     describe('nesting', () => {
-      it('should render a child comments in the correct container', () => {
+      it('should reflect children to the CommentLayout', () => {
         const childComment = <Comment content="child" />;
         const wrapper = shallow(<Comment content="parent'">{childComment}</Comment>);
-
-        const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
-        expect(commentsContainer).to.have.exactly(1).descendants(Comment);
-        expect(commentsContainer).to.contain(childComment);
-      });
-
-      it('should render multiple adjacent siblings', () => {
-        const childComments = [<Comment content="child1" />, <Comment content="child2" />];
-        const wrapper = shallow(<Comment content="parent'">{childComments}</Comment>);
-
-        const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
-        expect(commentsContainer).to.have.exactly(childComments.length).descendants(Comment);
-        childComments.forEach(childComment => expect(commentsContainer).to.contain(childComment));
+        expect(wrapper.find(CommentLayout)).to.have.prop('children', childComment);
       });
     });
   });

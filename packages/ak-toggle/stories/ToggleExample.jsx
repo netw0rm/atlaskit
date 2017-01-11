@@ -24,5 +24,8 @@ class SmartToggle extends PureComponent {
 }
 
 export default (
-  <SmartToggle />
+  <div>
+    <SmartToggle />
+    <SmartToggle size="large" />
+  </div>
 );

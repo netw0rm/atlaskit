@@ -8,16 +8,17 @@
   display: flex;
 }
 
+
 .container + .container {
   padding-top: unit(@vertical-padding, px);
 }
 
 .avatar-section {
-  padding-right: unit(@grid * 2, px);
+  margin-right: unit(@grid * 2, px);
 
   [dir="rtl"] & {
-    padding-left: unit(@grid * 2, px);
-    padding-right: 0;
+    margin-left: unit(@grid * 2, px);
+    margin-right: 0;
   }
 }
 
@@ -35,11 +36,11 @@
 }
 
 .top-item + .top-item {
-  padding-left: unit(@grid, px);
+  margin-left: unit(@grid, px);
 
   [dir="rtl"] & {
-    padding-left: 0;
-    padding-right: unit(@grid, px);
+    margin-left: 0;
+    margin-right: unit(@grid, px);
   }
 }
 
@@ -82,5 +83,5 @@
 .nested-comments {
   display: flex;
   flex-direction: column;
-  padding-top: unit(@vertical-padding, px);
+  margin-top: unit(@vertical-padding, px);
 }

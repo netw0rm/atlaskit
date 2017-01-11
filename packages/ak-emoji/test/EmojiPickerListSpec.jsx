@@ -39,7 +39,7 @@ const emojis = [
   },
 ];
 
-describe('<EmojiList />', () => {
+describe('<EmojiPickerList />', () => {
   describe('list', () => {
     it('should contain search ', () => {
       const wrapper = mount(<EmojiList

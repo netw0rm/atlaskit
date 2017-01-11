@@ -7,13 +7,20 @@ pipelines:
             - export FORCE_COLOR=1
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
+            - echo "whoami 1" && npm whoami
             - yarn
+            - echo "whoami 2" && npm whoami
             - yarn run browserstack/tunnel/start
+            - echo "whoami 3" && npm whoami
             - run-p -ln "validate/package.json" "lint" "test" "test/base" "test/wc/browserstack"
+            - echo "whoami 4" && npm whoami
             # AK-628 - yarn run test/integration
             - yarn run browserstack/tunnel/stop
+            - echo "whoami 5" && npm whoami
             - yarn run release/check/is-workspace-clean --silent
+            - echo "whoami 6" && npm whoami
             - yarn run release/check/can-ff --silent || exit 0
+            - echo "whoami 7" && npm whoami
             - yarn run release
             - run-p -ln "release/registry" "release/storybooks"
             - yarn run release/announce

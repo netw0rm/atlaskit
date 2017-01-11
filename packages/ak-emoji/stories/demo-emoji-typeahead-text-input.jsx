@@ -7,7 +7,7 @@ import debug from '../src/internal/logger';
 import SearchTextInput from './demo-search-text-input';
 import { lorem } from './story-data';
 
-class EmojiTextInput extends Component {
+export default class EmojiTypeAheadTextInput extends Component {
   static propTypes = {
     label: PropTypes.string,
     onSelection: PropTypes.func.isRequired,
@@ -108,5 +108,3 @@ class EmojiTextInput extends Component {
     );
   }
 }
-
-export default EmojiTextInput;

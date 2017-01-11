@@ -36,13 +36,23 @@ const provider2 = {
   url: p2Url,
 };
 
-const providerData1 = ['a', 'b', 'c'];
-const providerData2 = [1, 2, 3];
+const providerData1 = [
+  { id: 'a' },
+  { id: 'b' },
+  { id: 'c' },
+];
+const providerData2 = [
+  { id: 1 },
+  { id: 2 },
+  { id: 3 },
+];
+
+const fetchResponse = data => ({ emojis: data });
 
 function checkOrder(expected, actual) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
   expected.forEach((emoji, idx) => {
-    expect(emoji, `emoji #${idx}`).to.equal(actual[idx]);
+    expect(emoji.id, `emoji #${idx}`).to.equal(actual[idx].id);
   });
 }
 
@@ -70,7 +80,7 @@ describe('EmojiResource', () => {
       };
       fetchMock.mock({
         matcher: `begin:${provider1.url}`,
-        response: providerData1,
+        response: fetchResponse(providerData1),
       });
 
       const resource = new EmojiResource(config);
@@ -86,10 +96,10 @@ describe('EmojiResource', () => {
       };
       fetchMock.mock({
         matcher: `begin:${provider1.url}`,
-        response: providerData1,
+        response: fetchResponse(providerData1),
       }).mock({
         matcher: `begin:${provider2.url}`,
-        response: providerData2,
+        response: fetchResponse(providerData2),
       });
 
       const resource = new EmojiResource(config);
@@ -106,11 +116,11 @@ describe('EmojiResource', () => {
       fetchMock.mock({
         matcher: `begin:${provider1.url}`,
         response: new Promise((resolve) => {
-          setTimeout(() => { resolve(providerData1); }, 5);
+          setTimeout(() => { resolve(fetchResponse(providerData1)); }, 5);
         }),
       }).mock({
         matcher: `begin:${provider2.url}`,
-        response: providerData2,
+        response: fetchResponse(providerData2),
       });
 
       const resource = new EmojiResource(config);
@@ -129,7 +139,7 @@ describe('EmojiResource', () => {
         response: 401,
       }).mock({
         matcher: `begin:${provider2.url}`,
-        response: providerData2,
+        response: fetchResponse(providerData2),
       });
 
       const resource = new EmojiResource(config);
@@ -163,11 +173,11 @@ describe('EmojiResource', () => {
         times: 1,
       }).mock({
         ...provider401Matcher,
-        response: providerData1,
+        response: fetchResponse(providerData1),
         times: 1,
       }).mock({
         matcher: `begin:${provider2.url}`,
-        response: providerData2,
+        response: fetchResponse(providerData2),
       });
 
       const resource = new EmojiResource(config);
@@ -206,7 +216,7 @@ describe('EmojiResource', () => {
         response: 401,
       }).mock({
         matcher: `begin:${provider2.url}`,
-        response: providerData2,
+        response: fetchResponse(providerData2),
       });
 
       const resource = new EmojiResource(config);

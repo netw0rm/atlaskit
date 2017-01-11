@@ -1,5 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
+import { Code, Description, Heading } from 'akutil-readme';
 
 /* eslint-disable import/no-duplicates, import/first */
 import CommentExample from './examples/CommentExample';
@@ -25,7 +26,7 @@ const commentPropDescriptions = {
   actions: 'An optional list of CommentAction items, which are rendered as a row of buttons below the comment content.',
   author: 'A CommentAuthor element containing the name of the comment author. Optionally, specify the href property to link to another page.',
   avatar: 'The element to display as the Comment avatar - generally an AtlasKit Avatar.',
-  children: 'Nested comments should be provided as children of the Comment. See the Comment (nested) readme story for more information.',
+  children: 'Nested comments should be provided as children of the Comment.',
   content: 'The main content of the Comment.',
   time: 'A CommentTime element containing the time to be displayed. Optionally, specify the href property to link to another page.',
   type: 'The type of the comment - will be rendered in a lozenge at the top of the Comment.',
@@ -79,16 +80,16 @@ storiesOf(name, module)
       exampleRaw={CommentExampleRaw}
       propDescriptions={commentPropDescriptions}
       propTypes={commentPropTypes}
-    />
-  ))
-  .add('Comment (nested) readme', () => (
-    <CommentReadme
-      component={Comment}
-      name="Comment (nested)"
-      description="This example demonstrates nested comments. Comments will simply render child comments as nested comments."
-      example={CommentNestingExample}
-      exampleRaw={CommentNestingExampleRaw}
-    />
+    >
+      <Heading type="3">Nested comments</Heading>
+      <Description>
+        You may also nest comments underneath other comments.
+        Comments will simply render child comments as nested comments.
+      </Description>
+      <Code code={CommentNestingExampleRaw}>
+        {CommentNestingExample}
+      </Code>
+    </CommentReadme>
   ))
   .add('CommentAction readme', () => (
     <CommentReadme

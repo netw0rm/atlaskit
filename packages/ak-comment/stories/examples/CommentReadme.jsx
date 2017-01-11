@@ -11,6 +11,7 @@ export default class CommentReadme extends PureComponent {
     component: PropTypes.node,
     propDescriptions: PropTypes.objectOf(PropTypes.string),
     propTypes: PropTypes.objectOf(PropTypes.string),
+    children: PropTypes.node,
   }
 
   render() {
@@ -25,6 +26,7 @@ export default class CommentReadme extends PureComponent {
           <Code code={this.props.exampleRaw}>
             {this.props.example}
           </Code>
+          {this.props.children}
           <Props
             component={this.props.component}
             descriptions={this.props.propDescriptions}

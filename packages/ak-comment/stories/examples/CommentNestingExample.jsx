@@ -3,10 +3,15 @@ import Comment, { CommentAuthor, CommentTime, CommentAction } from 'ak-comment';
 import Avatar from 'ak-avatar';
 
 const clickHandler = e => console.log(`${e.target.textContent} was clicked.`);
+const avatar = (<Avatar
+  src="https://design.atlassian.com/images/avatars/project-128.png"
+  label="AtlasKit avatar"
+  size="medium"
+/>);
 
 export default (
   <Comment
-    avatar={<Avatar src="https://design.atlassian.com/images/avatars/project-128.png" label="AtlasKit avatar" size="medium" />}
+    avatar={avatar}
     author={<CommentAuthor>John Smith</CommentAuthor>}
     type="author"
     time={<CommentTime>30 August, 2016</CommentTime>}
@@ -16,7 +21,7 @@ export default (
     ]}
   >
     <Comment
-      avatar={<Avatar src="https://design.atlassian.com/images/avatars/project-128.png" label="AtlasKit avatar" size="medium" />}
+      avatar={avatar}
       author={<CommentAuthor>Jane Doe</CommentAuthor>}
       time={<CommentTime>31 August, 2016</CommentTime>}
       content={<p>This is a reply to the comment above.</p>}
@@ -25,7 +30,7 @@ export default (
       ]}
     />
     <Comment
-      avatar={<Avatar src="https://design.atlassian.com/images/avatars/project-128.png" label="AtlasKit avatar" size="medium" />}
+      avatar={avatar}
       author={<CommentAuthor>John Smith</CommentAuthor>}
       type="author"
       time={<CommentTime>31 August, 2016</CommentTime>}

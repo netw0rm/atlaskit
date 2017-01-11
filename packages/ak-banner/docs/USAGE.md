@@ -1,25 +1,15 @@
 # Banner
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
+This is a React component that displays a prominent banner message. It is intended to be used at the top of the page.
 
-
-![Example ak-banner](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-banner/docs/screencast.gif)
+![Example ak-banner](https://i.imgur.com/5N9j2tp.png)
 
 ## Try it out
 
-Interact with a [live demo of the ak-banner component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-banner/@VERSION@/).
+Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/ak-banner/@VERSION@/).
 
 ## Installation
 
 ```sh
 npm install ak-banner
-```
-
-## Using the component
-
-Import the component in your React app as follows:
-
-```
-import Banner from 'ak-banner';
-ReactDOM.render(<Banner />, container);
 ```

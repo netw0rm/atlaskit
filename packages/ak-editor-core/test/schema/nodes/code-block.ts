@@ -58,10 +58,12 @@ describe('ak-editor-core/schema code_block node', () => {
         expect(doc.firstChild.type).to.be.an.instanceOf(CodeBlockNodeType);
       });
 
-      it('extracts language atrribute', () => {
-        const doc = fromHTML('<div class="codehilite language-javascript"><pre><span>window.alert("hello");<span></pre></div>', schema);
+      ['javascript', 'bash', 'c#', 'c++', 'asp.net'].forEach((language) => {
+        it(`extracts language atrribute from class "language-${language}"`, () => {
+          const doc = fromHTML(`<div class="codehilite language-${language}"><pre><span>window.alert("hello");<span></pre></div>`, schema);
 
-        expect(doc.firstChild.attrs.language).to.eq('javascript');
+          expect(doc.firstChild.attrs.language).to.eq(language);
+        });
       });
     });
   });

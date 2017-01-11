@@ -1,0 +1,112 @@
+import { storiesOf } from '@kadira/storybook';
+import React from 'react';
+
+/* eslint-disable import/no-duplicates, import/first */
+import CommentExample from './examples/CommentExample';
+import CommentActionExample from './examples/CommentActionExample';
+import CommentAuthorExample from './examples/CommentAuthorExample';
+import CommentTimeExample from './examples/CommentTimeExample';
+
+import CommentExampleRaw from '!raw!./examples/CommentExample';
+import CommentActionExampleRaw from '!raw!./examples/CommentActionExample';
+import CommentAuthorExampleRaw from '!raw!./examples/CommentAuthorExample';
+import CommentTimeExampleRaw from '!raw!./examples/CommentTimeExample';
+/* eslint-enable import/first, import/no-duplicates */
+
+import { name, description } from '../package.json';
+import Comment, { CommentAction, CommentAuthor, CommentTime } from '../src';
+import CommentReadme from './examples/CommentReadme';
+
+const commentPropDescriptions = {
+  actions: 'An optional list of CommentAction items, which are rendered as a row of buttons below the comment content.',
+  author: 'A CommentAuthor element containing the name of the comment author. Optionally, specify the href property to link to another page.',
+  avatar: 'The element to display as the Comment avatar - generally an AtlasKit Avatar.',
+  children: 'Nested comments should be provided as children of the Comment. See the Comment (nested) readme story for more information.',
+  content: 'The main content of the Comment.',
+  time: 'A CommentTime element containing the time to be displayed. Optionally, specify the href property to link to another page.',
+  type: 'The type of the comment - will be rendered in a lozenge at the top of the Comment.',
+};
+
+const commentPropTypes = {
+  actions: 'CommentAction[]',
+  author: 'CommentAuthor',
+  avatar: 'node',
+  children: 'node',
+  content: 'node',
+  time: 'CommentTime',
+  type: 'String',
+};
+
+const commentActionPropDescriptions = {
+  children: 'The content to render inside the action button',
+};
+
+const commentActionPropTypes = {
+  children: 'node',
+};
+
+const commentAuthorPropDescriptions = {
+  children: 'The name of the author',
+  href: 'The URL of the link. If not provided, the element will be rendered as text instead of a link.',
+};
+
+const commentAuthorPropTypes = {
+  children: 'node',
+  href: 'String',
+};
+
+const commentTimePropDescriptions = {
+  children: 'The time of the comment',
+  href: 'The URL of the link. If not provided, the element will be rendered as text instead of a link.',
+};
+
+const commentTimePropTypes = {
+  children: 'node',
+  href: 'String',
+};
+
+storiesOf(name, module)
+  .add('Comment readme', () => (
+    <CommentReadme
+      component={Comment}
+      name="Comment"
+      description={description}
+      example={CommentExample}
+      exampleRaw={CommentExampleRaw}
+      propDescriptions={commentPropDescriptions}
+      propTypes={commentPropTypes}
+    />
+  ))
+  .add('CommentAction readme', () => (
+    <CommentReadme
+      component={CommentAction}
+      name="CommentAction"
+      description="Displays an action item in a Comment. Provide this element to the actions property of a Comment. You may also attach event handlers to the component."
+      example={CommentActionExample}
+      exampleRaw={CommentActionExampleRaw}
+      propDescriptions={commentActionPropDescriptions}
+      propTypes={commentActionPropTypes}
+    />
+  ))
+  .add('CommentAuthor readme', () => (
+    <CommentReadme
+      component={CommentAuthor}
+      name="CommentAuthor"
+      description="Displays the author of a Comment. Provide this element to the author property of a Comment. You may also attach event handlers to the component."
+      example={CommentAuthorExample}
+      exampleRaw={CommentAuthorExampleRaw}
+      propDescriptions={commentAuthorPropDescriptions}
+      propTypes={commentAuthorPropTypes}
+    />
+  ))
+  .add('CommentTime readme', () => (
+    <CommentReadme
+      component={CommentTime}
+      name="CommentTime"
+      description="Displays the time of a Comment. Provide this element to the time property of a Comment. You may also attach event handlers to the component."
+      example={CommentTimeExample}
+      exampleRaw={CommentTimeExampleRaw}
+      propDescriptions={commentTimePropDescriptions}
+      propTypes={commentTimePropTypes}
+    />
+  ));

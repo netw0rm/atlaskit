@@ -3,18 +3,22 @@ import React from 'react';
 
 /* eslint-disable import/no-duplicates, import/first */
 import CommentExample from './examples/CommentExample';
+import CommentNestingExample from './examples/CommentNestingExample';
 import CommentActionExample from './examples/CommentActionExample';
 import CommentAuthorExample from './examples/CommentAuthorExample';
 import CommentTimeExample from './examples/CommentTimeExample';
+import CommentLayoutExample from './examples/CommentLayoutExample';
 
 import CommentExampleRaw from '!raw!./examples/CommentExample';
+import CommentNestingExampleRaw from '!raw!./examples/CommentNestingExample';
 import CommentActionExampleRaw from '!raw!./examples/CommentActionExample';
 import CommentAuthorExampleRaw from '!raw!./examples/CommentAuthorExample';
 import CommentTimeExampleRaw from '!raw!./examples/CommentTimeExample';
+import CommentLayoutExampleRaw from '!raw!./examples/CommentLayoutExample';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name, description } from '../package.json';
-import Comment, { CommentAction, CommentAuthor, CommentTime } from '../src';
+import Comment, { CommentAction, CommentAuthor, CommentTime, CommentLayout } from '../src';
 import CommentReadme from './examples/CommentReadme';
 
 const commentPropDescriptions = {
@@ -77,6 +81,15 @@ storiesOf(name, module)
       propTypes={commentPropTypes}
     />
   ))
+  .add('Comment (nested) readme', () => (
+    <CommentReadme
+      component={Comment}
+      name="Comment (nested)"
+      description="This example demonstrates nested comments. Comments will simply render child comments as nested comments."
+      example={CommentNestingExample}
+      exampleRaw={CommentNestingExampleRaw}
+    />
+  ))
   .add('CommentAction readme', () => (
     <CommentReadme
       component={CommentAction}
@@ -108,5 +121,16 @@ storiesOf(name, module)
       exampleRaw={CommentTimeExampleRaw}
       propDescriptions={commentTimePropDescriptions}
       propTypes={commentTimePropTypes}
+    />
+  ))
+  .add('CommentLayout readme', () => (
+    <CommentReadme
+      component={CommentLayout}
+      name="CommentLayout"
+      description=""
+      example={CommentLayoutExample}
+      exampleRaw={CommentLayoutExampleRaw}
+      propDescriptions={commentPropDescriptions}
+      propTypes={commentPropTypes}
     />
   ));

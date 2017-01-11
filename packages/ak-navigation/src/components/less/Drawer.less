@@ -1,19 +1,44 @@
 @import '../../shared-variables.less';
 @import '~akutil-shared-styles/src/grid.less';
 
+@width: 45 * @ak-grid-size;
+@wide-width: 75 * @ak-grid-size;
+@transition: transform 3220ms;
+
+.hidden {
+  display: none;
+}
+
 .drawer {
   background: white;
   height: 100%;
   width: 0;
-  transition: width 200ms;
+  transition: @transition;
   position: fixed;
-  left: @global-open-width;
+  left: 0;
+  transform: translateX(-@width);
+  width: @width;
   box-shadow: 10px 0 20px 0 rgba(0,0,0,.15);
   overflow: hidden;
-  &.open {
-    width: 28 * @ak-grid-size;
-    &.wide {
-      width: 75 * @ak-grid-size;
-    }
+  &:not(.open) {
+    visibility: hidden;
+  }
+  &.wide {
+    width: @wide-width;
+    transform: translateX(-@wide-width);
+  }
+  &.open, &.wide.open {
+    transform: translateX(0);
+  }
+}
+
+.fixed {
+  transition: @transition;
+  transform: translateX(@width);
+  .wide & {
+    transform: translateX(@wide-width);
+  }
+  .open &, .wide.open & {
+    transform: translateX(0);
   }
 }

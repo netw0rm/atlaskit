@@ -129,7 +129,7 @@ export default class Navigation extends PureComponent {
           width={renderedWidth}
         />
         <div className={styles.navigationInner}>
-          <div style={{ zIndex: 2 }}>
+          <div>
             <GlobalNavigation
               shouldAnimate={shouldAnimate}
               width={getGlobalWidth(this.getRenderedWidth())}
@@ -150,8 +150,19 @@ export default class Navigation extends PureComponent {
             </GlobalNavigation>
           </div>
           <div style={{ zIndex: 1 }}>
-            <Drawer isOpen={isSearchDrawerOpen} isWide>{searchDrawerContent}</Drawer>
-            <Drawer isOpen={isCreateDrawerOpen}>{createDrawerContent}</Drawer>
+            <Drawer
+              primaryItem={globalPrimaryItem}
+              isOpen={isSearchDrawerOpen}
+              isWide
+            >
+              {searchDrawerContent}
+            </Drawer>
+            <Drawer
+              primaryItem={globalPrimaryItem}
+              isOpen={isCreateDrawerOpen}
+            >
+              {createDrawerContent}
+            </Drawer>
           </div>
           <div>
             <ContainerNavigation

@@ -6,12 +6,20 @@ import BannerExample from './examples/BannerExample'; // eslint-disable-line imp
 import BannerExampleRaw from '!raw!./examples/BannerExample'; // eslint-disable-line import/first, import/no-duplicates
 
 import { name, description } from '../package.json';
-import { Banner } from '../src';
+import Banner from '../src';
 
-const flagGroupPropDescriptions = {
+const bannerPropDescriptions = {
+  appearance: 'Visual style to be used for the banner',
+  children: 'Content to be shown next to the icon. Typically text content but can contain links.',
+  icon: 'Icon to be shown left of the main content. Typically an AtlasKit icon (ak-icon)',
+  isOpen: 'Defines whether the banner is shown. An animation is used when the value is changed.',
 };
 
-const flagGroupPropTypes = {
+const bannerPropTypes = {
+  appearance: 'oneOf(["warning", "error"])',
+  children: 'node',
+  icon: 'node (ak-icon)',
+  isOpen: 'bool',
 };
 
 storiesOf(name, module)
@@ -26,8 +34,8 @@ storiesOf(name, module)
         </Code>
         <Props
           component={Banner}
-          descriptions={flagGroupPropDescriptions}
-          types={flagGroupPropTypes}
+          descriptions={bannerPropDescriptions}
+          types={bannerPropTypes}
         />
       </Readme>
     </div>

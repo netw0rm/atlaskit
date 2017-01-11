@@ -50,7 +50,7 @@ describe(name, () => {
         it('should render the author in the correct container', () => {
           const author = <CommentAuthor>Joshua Nelson</CommentAuthor>;
           const wrapper = shallow(<Comment author={author} />);
-          expect(wrapper.find(`.${styles.locals.topContainer}`)).to.contain(author);
+          expect(wrapper.find(`.${styles.locals.mainSection}`)).to.contain(author);
         });
       });
 
@@ -87,7 +87,7 @@ describe(name, () => {
         it('should render the time in the correct container', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
           const wrapper = shallow(<Comment time={time} />);
-          expect(wrapper.find(`.${styles.locals.topContainer}`)).to.contain(time);
+          expect(wrapper.find(`.${styles.locals.mainSection}`)).to.contain(time);
         });
       });
 
@@ -95,7 +95,7 @@ describe(name, () => {
         it('should render a Lozenge with the type in the correct container', () => {
           const type = 'type';
           const wrapper = shallow(<Comment type={type} />);
-          expect(wrapper.find(`.${styles.locals.topContainer}`)
+          expect(wrapper.find(`.${styles.locals.mainSection}`)
             .containsMatchingElement(
               <div className={styles.locals.topItem}>
                 <Lozenge>{type}</Lozenge>

@@ -6,7 +6,7 @@ export default class CommentField extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     href: PropTypes.string,
-    linkClasses: PropTypes.string,
+    extraClasses: PropTypes.string,
   }
 
   render() {
@@ -15,11 +15,11 @@ export default class CommentField extends PureComponent {
         {this.props.href ?
           <a
             href={this.props.href}
-            className={classNames(styles.locals.topButtonLink, this.props.linkClasses)}
+            className={classNames(styles.locals.topButtonLink, this.props.extraClasses)}
           >
             {this.props.children}
           </a> :
-          <span className={classNames(styles.locals.topButtonText, this.props.linkClasses)}>
+          <span className={classNames(styles.locals.topButtonText, this.props.extraClasses)}>
             {this.props.children}
           </span>}
       </span>

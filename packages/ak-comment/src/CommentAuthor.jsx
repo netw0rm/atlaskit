@@ -12,7 +12,7 @@ export default class CommentAuthor extends PureComponent {
     return (
       <CommentField
         href={this.props.href}
-        linkClasses={styles.locals.commentAuthor}
+        extraClasses={styles.locals.commentAuthor}
         {...this.props}
       >
         {this.props.children}

@@ -241,6 +241,6 @@ describe('ak-editor-bitbucket/pasting', () => {
       return this.skip('This environment does not support artificial paste events');
     }
 
-    expect(editor.doc).to.deep.equal(doc(p(mention({ id: 'mention', displayName: 'Mention' }), ' some mention.')));
+    expect(editor.doc).to.deep.equal(doc(p(mention({ id: 'mention', displayName: '@Mention' }), ' some mention.')));
   });
 });

@@ -61,7 +61,7 @@ async.waterfall([
   },
   workOnIcons(log, srcFolder, tmpFolder),
   function createTargetDir(iconPaths, cb) {
-    log.debug('creating target directorie');
+    log.debug('creating target directory');
     mkdirp(destFolder, () => cb(null, iconPaths));
   },
   function webpackify(iconPaths, cb) {
@@ -73,16 +73,8 @@ async.waterfall([
       return prev;
     }, {});
 
-    const options = {
-      presets: [
-        'es2015',
-        'react',
-        'stage-0',
-      ],
-    };
-
     const tasks = Object.keys(entry).map(name => _cb =>
-      babelCore.transformFile(`${entry[name]}.jsx`, options, (err, result) => {
+      babelCore.transformFile(`${entry[name]}.jsx`, {}, (err, result) => {
         if (err) {
           log.error(err);
         }

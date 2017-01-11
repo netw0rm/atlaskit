@@ -13,7 +13,7 @@ if (isDevelopment) {
 }
 
 module.exports = (tmpFolder, entry) => ({
-  entry: Object.assign({}, entry),
+  entry,
   output: {
     path: tmpFolder,
     filename: '[name].js',

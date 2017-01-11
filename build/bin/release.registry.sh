@@ -24,11 +24,11 @@ function install_registry_pkg() {
   # temporarily here.
   $CHALK --no-stdin -t "{blue Installing atlaskit-registry from Atlassian private npm}"
   mv .npmrc ._npmrc
-  yarn config set progress false
-  yarn config set loglevel warn
-  yarn config set @atlassian:registry https://npm-private-proxy.atlassian.io/
-  yarn config set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
-  yarn add @atlassian/atlaskit-registry@^3.0.1
+  npm config set progress false
+  npm set loglevel warn
+  npm set @atlassian:registry https://npm-private-proxy.atlassian.io/
+  npm set //npm-private-proxy.atlassian.io/:_authToken $NPM_TOKEN_ATLASSIAN_PRIVATE
+  npm install @atlassian/atlaskit-registry@^3.0.1
   mv ._npmrc .npmrc
 }
 
@@ -36,7 +36,7 @@ function build_registry() {
   install_registry_pkg
 
   local TARGET_PATH="$1"
-  local REGISTRY_BIN=`yarn bin`/ak-registry
+  local REGISTRY_BIN=`npm bin`/ak-registry
   local REGISTRY_PATH=`npm root`/@atlassian/atlaskit-registry
 
   $CHALK --no-stdin -t "{blue Building registry}"

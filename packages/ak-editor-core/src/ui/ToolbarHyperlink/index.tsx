@@ -6,6 +6,7 @@ import Panel from '../Panel';
 import TextInput from '../PanelTextInput';
 import IconButton from '../ToolbarIconButton';
 import { analyticsDecorator as analytics } from '../../analytics';
+import * as styles from './styles';
 
 export interface Props {
   pluginState: HyperlinkState;
@@ -32,7 +33,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
     const { active, adding, disabled } = this.state;
 
     return (
-      <span style={{ position: 'relative' }}>
+      <span className={styles.outerContainer}>
         <IconButton
           disabled={disabled || active}
           onClick={this.openLinkPanel}
@@ -41,7 +42,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
         />
         {!adding ? null :
         <Panel align="center" onOutsideClick={this.closeLinkPanel}>
-          <div style={{ display: 'flex', alignItems: 'center', padding: '5px 10px',}}>
+          <div className={styles.textInputContainer}>
             <TextInput
               autoFocus
               placeholder="Paste link"

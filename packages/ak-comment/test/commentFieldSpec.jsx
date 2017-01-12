@@ -49,7 +49,7 @@ describe(name, () => {
             onFocus: () => {},
             onMouseOver: () => {},
           };
-          const wrapper = shallow(<CommentField {...props} />);
+          const wrapper = shallow(<CommentField href="#" {...props} />);
           Object.keys(props).forEach((propName) => {
             expect(wrapper.find(`.${styles.locals.topButtonLink}`)).to.have.prop(propName, props[propName]);
           });
@@ -71,7 +71,7 @@ describe(name, () => {
           expect(wrapper.find(`.${styles.locals.topButtonText}`)).to.have.className(extraClass);
         });
 
-        it('should reflect onClick, onFocus, and onMouseOver to the link element', () => {
+        it('should reflect onClick, onFocus, and onMouseOver to the span', () => {
           const props = {
             onClick: () => {},
             onFocus: () => {},

@@ -6,6 +6,9 @@ export default class CommentAuthor extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     href: PropTypes.string,
+    onClick: PropTypes.func,
+    onFocus: PropTypes.func,
+    onMouseOver: PropTypes.func,
   }
 
   render() {
@@ -13,7 +16,9 @@ export default class CommentAuthor extends PureComponent {
       <CommentField
         href={this.props.href}
         extraClasses={styles.locals.commentAuthor}
-        {...this.props}
+        onClick={this.props.onClick}
+        onFocus={this.props.onFocus}
+        onMouseOver={this.props.onMouseOver}
       >
         {this.props.children}
       </CommentField>

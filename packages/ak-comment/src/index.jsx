@@ -9,7 +9,7 @@ import CommentLayout from './layout/CommentLayout';
 
 export { CommentAction, CommentAuthor, CommentTime, CommentLayout };
 
-export default class extends PureComponent {
+export default class Comment extends PureComponent {
   static propTypes = {
     actions: PropTypes.node,
     author: PropTypes.node,

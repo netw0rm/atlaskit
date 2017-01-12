@@ -227,13 +227,13 @@ describe('ak-editor-bitbucket/toolbar', () => {
     const trigger = editor.find('ToolbarBlockType AkButton');
 
     expect(trigger).to.exist;
-    expect(editor.find('ToolbarBlockType Panel')).to.not.exist;
+    expect(editor.find('ToolbarBlockType Group')).to.not.exist;
 
     trigger.simulate('click');
-    expect(editor.find('ToolbarBlockType Panel')).to.exist;
+    expect(editor.find('ToolbarBlockType Group')).to.exist;
 
     trigger.simulate('click');
-    expect(editor.find('ToolbarBlockType Panel')).to.not.exist;
+    expect(editor.find('ToolbarBlockType Group')).to.not.exist;
   });
 });
 

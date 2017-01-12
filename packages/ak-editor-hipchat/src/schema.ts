@@ -5,7 +5,8 @@ import {
   Schema,
   Text,
   MentionQueryMarkType,
-  MentionNodeType
+  MentionNodeType,
+  LinkMarkType,
 } from 'ak-editor-core';
 
 export default new Schema({
@@ -29,6 +30,9 @@ export default new Schema({
     mention: { type: MentionNodeType, group: 'inline' }
   },
   marks: {
+    // Represents a hyperlink to a URL.
+    link: LinkMarkType,
+
     // Represents a "mention query". A mention query is created by typing the @ symbol. The text
     // within a mention query is used to search for a mention.
     //
@@ -47,6 +51,7 @@ export interface HipChatSchema extends Schema {
     mention: MentionNodeType;
   };
   marks: {
+    link: LinkMarkType;
     mention_query: MentionQueryMarkType;
   };
 }

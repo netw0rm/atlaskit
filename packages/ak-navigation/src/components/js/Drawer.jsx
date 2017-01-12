@@ -10,6 +10,7 @@ export default class Drawer extends PureComponent {
     isOpen: PropTypes.bool,
     isWide: PropTypes.bool,
     primaryIcon: PropTypes.node,
+    header: PropTypes.node,
   }
   static defaultProps = {
     isOpen: false,
@@ -19,6 +20,7 @@ export default class Drawer extends PureComponent {
 
   render() {
     const {
+      header,
       isOpen,
     } = this.props;
     return (
@@ -38,8 +40,13 @@ export default class Drawer extends PureComponent {
             </GlobalItem>
           </DrawerTrigger>
         </div>
-        <div>
-          {this.props.children}
+        <div className={classNames(styles.main)}>
+          <div className={classNames(styles.fixed)}>
+            {header}
+          </div>
+          <div>
+            {this.props.children}
+          </div>
         </div>
       </div>
     );

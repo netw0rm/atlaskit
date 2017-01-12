@@ -159,15 +159,17 @@ export default class Navigation extends PureComponent {
           </div>
           <div style={{ zIndex: 1 }}>
             <Drawer
-              primaryIcon={globalPrimaryIcon}
+              header={containerHeader}
               isOpen={isSearchDrawerOpen}
               isWide
+              primaryIcon={globalPrimaryIcon}
             >
               {searchDrawerContent}
             </Drawer>
             <Drawer
-              primaryIcon={globalPrimaryIcon}
+              header={containerHeader}
               isOpen={isCreateDrawerOpen}
+              primaryIcon={globalPrimaryIcon}
             >
               {createDrawerContent}
             </Drawer>
@@ -175,9 +177,9 @@ export default class Navigation extends PureComponent {
           <div>
             <ContainerNavigation
               appearance={containerAppearance}
+              header={containerHeader}
               shouldAnimate={shouldAnimate}
               width={getContainerWidth(renderedWidth)}
-              header={containerHeader}
             >
               {children}
             </ContainerNavigation>

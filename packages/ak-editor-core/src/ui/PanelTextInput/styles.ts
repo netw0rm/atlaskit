@@ -13,6 +13,15 @@ export const input = style({
       fontSize: '13px',
       lineHeight: '20px',
       padding: 0,
+
+      // IE11 fixes
+      height: '20px',
+      minWidth: 145,
+    },
+
+    // Hides IE10+ built-in [x] clear input button
+    '&::-ms-clear': {
+      display: 'none'
     },
 
     '&:focus': {

@@ -14,6 +14,10 @@ const mentionStyle = style({
   userSelect: 'all',
 
   $nest:{
+    '&::before': {
+      content: '"@"'
+    },
+
     '&.ProseMirror-selectednode': {
       background: akColorN50,
       outline: 'none'

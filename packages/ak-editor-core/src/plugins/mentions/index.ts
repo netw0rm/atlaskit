@@ -135,7 +135,7 @@ export class MentionsPluginState {
 
     if (mention && mentionData) {
       const { start, end } = this.findMentionQueryMark();
-      const node = mention.create({ displayName: `@${mentionData.name}`, id: mentionData.id });
+      const node = mention.create({ displayName: mentionData.name, id: mentionData.id });
       this.pm.tr.delete(start, end).insert(start, node).apply();
     } else {
       this.dismiss();

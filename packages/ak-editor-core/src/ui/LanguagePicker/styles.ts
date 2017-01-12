@@ -10,6 +10,9 @@ export const container = style({
     },
     '& span[role="menuitem"]': {
       padding: '0 16px'
+    },
+    '& div[role="menu"]': {
+      'margin-top': '-4px'
     }
   }
 });

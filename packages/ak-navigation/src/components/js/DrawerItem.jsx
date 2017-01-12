@@ -1,19 +1,15 @@
 import React, { PureComponent, PropTypes } from 'react';
 import {
-  containerItem,
-  hasGlobalAppearance,
-  isSelected,
-} from 'style!../less/ContainerItem.less';
+  drawerItem,
+} from 'style!../less/DrawerItem.less';
 import className from 'classnames';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import NavigationItem from './NavigationItem';
 
-export default class ContainerItem extends PureComponent {
+export default class DrawerItem extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.string,
     icon: PropTypes.node,
     isCompact: PropTypes.bool,
-    isSelected: PropTypes.bool,
     text: PropTypes.node,
     textAfter: PropTypes.node,
     action: PropTypes.node,
@@ -30,17 +26,13 @@ export default class ContainerItem extends PureComponent {
   render() {
     return (
       <div
-        className={className(containerItem, {
-          [hasGlobalAppearance]: this.props.appearance === 'global',
-          [isSelected]: this.props.isSelected,
-        })}
+        className={className(drawerItem)}
       >
         <NavigationItem
           action={this.props.action}
           icon={this.props.icon}
           href={this.props.href}
           isCompact={this.props.isCompact}
-          isSelected={this.props.isSelected}
           linkComponent={this.props.linkComponent}
           text={this.props.text}
           textAfter={this.props.textAfter}

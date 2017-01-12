@@ -5,6 +5,7 @@ export default (classKeys, props) => {
     [classKeys.appearancePrimary]: props.appearance === 'primary' && !props.isSelected,
     [classKeys.appearanceSubtle]: props.appearance === 'subtle' && !props.isDisabled && !props.isSelected,
     [classKeys.appearanceLink]: props.appearance === 'link' && !props.isSelected,
+    [classKeys.appearanceSubtleLink]: props.appearance === 'subtle-link' && !props.isSelected,
     [classKeys.spacingCompact]: props.spacing === 'compact',
     [classKeys.spacingNone]: props.spacing === 'none',
     [classKeys.disabled]: props.isDisabled,

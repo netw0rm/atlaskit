@@ -8,6 +8,7 @@ interface Props {
   onOpenChange?: ({ isOpen: boolean }) => void;
   position?: string;
   trigger?: ReactNode;
+  shouldFitContainer?: boolean;
 }
 
 interface State {}

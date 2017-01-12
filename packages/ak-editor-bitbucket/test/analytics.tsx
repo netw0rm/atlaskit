@@ -314,9 +314,9 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     it(`atlassian.editor.format.${blockTypeName}.button`, () => {
       editor.find('ToolbarBlockType').find('AkButton').simulate('click');
       editor
-        .find('li')
+        .find('Item')
         .filterWhere(n => n.key() === blockTypeName)
-        .find('a')
+        .find('Element')
         .simulate('click')
       ;
 

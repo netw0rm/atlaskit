@@ -1,3 +1,4 @@
+@import '~akutil-shared-styles/src/colors.less';
 @import '~akutil-shared-styles/src/grid.less';
 
 @banner-padding: @ak-grid-size * 2;
@@ -46,8 +47,8 @@
     white-space: nowrap;
   }
 
-  .bannerVariant(warning, #FFC400, #172B4D);
-  .bannerVariant(error, #DE350B, #FFFFFF);
+  .bannerVariant(warning, @ak-color-Y300, @ak-color-N800);
+  .bannerVariant(error, @ak-color-R400, @ak-color-N0);
 }
 
 .open {

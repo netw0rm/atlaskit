@@ -36,6 +36,12 @@ export class CodeBlockState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
+  updateLanguage(language: string): void {
+    if(this.targetNode) {
+      this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.targetNode.type, {language: language}).apply();
+    }
+  }
+
   splitCodeBlock(): boolean {
     const { pm } = this;
     const { $from } = pm.selection;
@@ -84,13 +90,15 @@ export class CodeBlockState {
   }
 
   private activeCodeBlockElement(): HTMLElement {
-    const { pm } = this;
-    const { $from } = pm.selection;
-
-    const offset = $from.pos - $from.parentOffset;
+    const offset =  this.nodeStartPos();
     const { node } = DOMFromPos(this.pm, offset, true);
 
     return node;
+  }
+
+  private nodeStartPos(): number {
+    const { $from } = this.pm.selection;
+    return  $from.pos - $from.parentOffset;
   }
 
   private activeCodeBlockNode(): Node | undefined {

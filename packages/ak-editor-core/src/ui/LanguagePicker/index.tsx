@@ -72,14 +72,6 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   private handleLanguageChange = (activedItem: any) => {
-    const {targetNode} = this.state;
-
-    if(targetNode) {
-      targetNode.attrs.language = activedItem.item.content;
-      this.setState({
-        targetNode: targetNode,
-        language: activedItem.item.content
-      });
-    }
+    this.props.pluginState.updateLanguage(activedItem.item.content);
   }
 }

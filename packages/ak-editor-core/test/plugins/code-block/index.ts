@@ -260,4 +260,36 @@ describe('code-block', () => {
       });
     });
   });
+
+  context('updateLanguage', () => {
+    it('keeps the content', () => {
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+      const previousTargetNode = plugin.targetNode;
+
+      plugin.updateLanguage('php');
+
+      const currentTargetNode = plugin.targetNode;
+
+      expect(previousTargetNode.textContent).to.eq(currentTargetNode.textContent);
+    });
+
+    it('updates language', () => {
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+
+      plugin.updateLanguage('php');
+
+      expect(plugin.targetNode.attrs.language).to.eq('php');
+    });
+
+    it('updates the node', () => {
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+      const previousTargetNode = plugin.targetNode;
+
+      plugin.updateLanguage('php');
+
+      const currentTargetNode = plugin.targetNode;
+
+      expect(previousTargetNode).to.not.eq(currentTargetNode);
+    });
+  });
 });

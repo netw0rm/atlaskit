@@ -9,6 +9,7 @@ import { name, description } from '../package.json';
 import Flag from '../src';
 
 const flagPropDescriptions = {
+  actions: 'Optional array of clickable actions to be shown at the bottom of the flag',
   description: 'The secondary text shown below the flag title',
   id: 'A unique identifier used for rendering and onDismissed callbacks',
   icon: 'The icon displayed in the top-left of the flag. Should be an instance of `ak-icon`',
@@ -19,6 +20,7 @@ const flagPropDescriptions = {
 };
 
 const flagPropTypes = {
+  actions: 'arrayOf(shape({content, onClick})),',
   description: 'string',
   id: 'oneOfType([string, number])',
   icon: 'ak-icon',

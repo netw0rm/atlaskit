@@ -10,12 +10,12 @@ class ButtonActivatedDialog extends PureComponent {
   }
 
   state = {
-    open: false,
+    isOpen: false,
   };
 
   handleClick = () => {
     this.setState({
-      open: !this.state.open,
+      isOpen: !this.state.isOpen,
     });
   }
 
@@ -23,7 +23,7 @@ class ButtonActivatedDialog extends PureComponent {
     <AKInlineDialog
       content={this.props.content}
       position={this.props.position}
-      open={this.state.open}
+      isOpen={this.state.isOpen}
     >
       <AKButton
         onClick={this.handleClick}

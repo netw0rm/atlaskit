@@ -26,13 +26,13 @@ storiesOf(name, module)
       <div style={centeredContainerStyles}>
         <InlineDialog
           content={dialogContent}
-          open
+          isOpen
         >
           <div style={targetStyles}>I am the target</div>
         </InlineDialog>
       </div>);
   }, { overrides: codeExampleOverrrides })
-  .addCodeExampleStory('Basic dialog story2', () => {
+  .addCodeExampleStory('Dialog with flipping enabled', () => {
     const dialogContent = <div>This is some inline dialog content!</div>;
 
     return (
@@ -40,7 +40,8 @@ storiesOf(name, module)
         <InlineDialog
           content={dialogContent}
           position="left middle"
-          open
+          isOpen
+          shouldFlip
         >
           <div style={targetStyles}>I am the target</div>
         </InlineDialog>

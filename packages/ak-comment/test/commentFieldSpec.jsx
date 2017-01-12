@@ -42,6 +42,18 @@ describe(name, () => {
           const wrapper = shallow(<CommentField href="#" extraClasses={extraClass} />);
           expect(wrapper.find(`.${styles.locals.topButtonLink}`)).to.have.className(extraClass);
         });
+
+        it('should reflect onClick, onFocus, and onMouseOver to the link element', () => {
+          const props = {
+            onClick: () => {},
+            onFocus: () => {},
+            onMouseOver: () => {},
+          };
+          const wrapper = shallow(<CommentField {...props} />);
+          Object.keys(props).forEach((propName) => {
+            expect(wrapper.find(`.${styles.locals.topButtonLink}`)).to.have.prop(propName, props[propName]);
+          });
+        });
       });
 
       describe('if href not provided', () => {
@@ -58,16 +70,17 @@ describe(name, () => {
           const wrapper = shallow(<CommentField extraClasses={extraClass} />);
           expect(wrapper.find(`.${styles.locals.topButtonText}`)).to.have.className(extraClass);
         });
-      });
 
-      it('should apply props to wrapping element', () => {
-        const props = {
-          onClick: () => {},
-          className: 'test-class',
-        };
-        const wrapper = shallow(<CommentField {...props} />);
-        Object.keys(props).forEach((propName) => {
-          expect(wrapper).to.have.prop(propName, props[propName]);
+        it('should reflect onClick, onFocus, and onMouseOver to the link element', () => {
+          const props = {
+            onClick: () => {},
+            onFocus: () => {},
+            onMouseOver: () => {},
+          };
+          const wrapper = shallow(<CommentField {...props} />);
+          Object.keys(props).forEach((propName) => {
+            expect(wrapper.find(`.${styles.locals.topButtonText}`)).to.have.prop(propName, props[propName]);
+          });
         });
       });
     });

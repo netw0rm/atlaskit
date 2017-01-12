@@ -5,11 +5,19 @@ import styles from './styles.less';
 export default class CommentAction extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
+    onClick: PropTypes.func,
+    onFocus: PropTypes.func,
+    onMouseOver: PropTypes.func,
   }
 
   render() {
+    /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
-      <div {...this.props}>
+      <span
+        onClick={this.props.onClick}
+        onFocus={this.props.onFocus}
+        onMouseOver={this.props.onMouseOver}
+      >
         <Button
           appearance="link"
           className={styles.locals.actionButton}
@@ -18,7 +26,8 @@ export default class CommentAction extends PureComponent {
         >
           {this.props.children}
         </Button>
-      </div>
+      </span>
     );
+    /* eslint-enable jsx-a11y/no-static-element-interactions */
   }
 }

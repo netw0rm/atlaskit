@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-hipchat",
-  "version": "2.10.0",
+  "version": "2.11.1",
   "description": "Atlassian Editor component for HipChat",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
@@ -23,8 +23,10 @@
     "react": "^15.3.2"
   },
   "devDependencies": {
+    "ak-editor-hipchat": "^2.10.0",
     "ak-mention": "*",
     "akutil-react": "*",
+    "akutil-readme": "^1.2.0",
     "js-search": "^1.3.3"
   },
   "repository": {

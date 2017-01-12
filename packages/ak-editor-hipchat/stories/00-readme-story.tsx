@@ -7,6 +7,7 @@ import * as OverviewExampleRaw from '!raw!./examples/overview.tsx';
 import * as SchemaRaw from '!raw!../src/schema.ts';
 import * as documentJsonSchema from '!raw!./schema/document.json';
 import * as exampleMessageJson from '!raw!./examples/message.json';
+import * as exampleMediaServicesFileJson from '!raw!./examples/mediaservices-file.json';
 
 import { name, description } from '../package.json';
 import Editor from '../src';
@@ -76,6 +77,7 @@ storiesOf(name, module)
          and a filter pass using encoding to strip unwanted content (e.g. a mention query).</p>
         <Heading type="3">JSON Schema</Heading>
         <p>This schema describes the exposed document structure and is subject to change.</p>
+        <Code language="js">{documentJsonSchema}</Code>
         <p><strong>Expected changes:</strong></p>
         <ul>
           <li>
@@ -101,8 +103,12 @@ storiesOf(name, module)
           <li>
             <p>Extra node types like <code>block_quote</code> and <code>code_block</code> will be added when rendering support is available.</p>
           </li>
+          <li>
+            <p>Media items are currently not contributed to the document by the editor, but will be in the future.</p>
+            <p>However they <strong>are</strong> added as a post-processing step in HipChat itself. An example of such a node is as follows:</p>
+            <Code language="js">{exampleMediaServicesFileJson}</Code>
+          </li>
         </ul>
-        <Code language="js">{documentJsonSchema}</Code>
         <Heading type="3">Example message</Heading>
         <Code language="js">{exampleMessageJson}</Code>
         <Heading type="3">ProseMirror Schema (internal)</Heading>

@@ -1,6 +1,5 @@
 import chai from 'chai';
 import React from 'react';
-import chaiAsPromised from 'chai-as-promised';
 import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import Flag, { FlagGroup } from '../src';
@@ -8,7 +7,6 @@ import flagStyles from '../src/less/Flag.less';
 
 import { name } from '../package.json';
 
-chai.use(chaiAsPromised);
 chai.should();
 chai.use(chaiEnzyme());
 

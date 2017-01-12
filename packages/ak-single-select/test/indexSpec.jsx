@@ -2,13 +2,15 @@ import chai from 'chai';
 import React from 'react';
 import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
-import AkFieldBase, { Label } from 'ak-field-base';
+import { Label, FieldBase } from 'ak-field-base';
 import Droplist from 'ak-droplist';
 import Group from 'ak-droplist-group';
 import Item from 'ak-droplist-item';
+import ExpandIcon from 'ak-icon/glyph/expand';
 
 import styles from 'style!../src/styles.less';
 import { StatelessSelect } from '../src';
+import Trigger from '../src/internal/Trigger';
 
 import { name } from '../package.json';
 
@@ -36,8 +38,13 @@ describe(name, () => {
     });
 
     it('should render Fieldbase inside Droplist', () => {
-      expect(mount(<StatelessSelect />)).to.have.exactly(1).descendants(AkFieldBase);
-      expect(mount(<StatelessSelect />).find(Droplist)).to.have.exactly(1).descendants(AkFieldBase);
+      expect(mount(<StatelessSelect />)).to.have.exactly(1).descendants(FieldBase);
+      expect(mount(<StatelessSelect />).find(Droplist)).to.have.exactly(1).descendants(FieldBase);
+    });
+
+    it('should render Trigger inside Fieldbase', () => {
+      expect(mount(<StatelessSelect />)).to.have.exactly(1).descendants(Trigger);
+      expect(mount(<StatelessSelect />).find(FieldBase)).to.have.exactly(1).descendants(Trigger);
     });
 
     it('should render placeholder in trigger if there is no selected item', () => {
@@ -97,13 +104,18 @@ describe(name, () => {
       expect(droplistProps.position).to.equal('top right');
       expect(droplistProps.isOpen).to.equal(true);
       expect(droplistProps.onOpenChange).to.equal(func);
+      expect(droplistProps.isTriggerNotTabbable).to.equal(true);
+      expect(droplistProps.shouldFitContainer).to.equal(true);
     });
 
     it('should pass props to fieldBase', () => {
-      const select = mount(<StatelessSelect isDisabled isInvalid />);
-      const fieldbaseProps = select.find(AkFieldBase).props();
+      const select = mount(<StatelessSelect isDisabled isInvalid isOpen />);
+      const fieldbaseProps = select.find(FieldBase).props();
       expect(fieldbaseProps.isDisabled).to.equal(true);
       expect(fieldbaseProps.isInvalid).to.equal(true);
+      expect(fieldbaseProps.onFocus).to.equal(select.instance().onFocus);
+      expect(fieldbaseProps.isPaddingDisabled).to.equal(true);
+      expect(fieldbaseProps.isFitContainerWidthEnabled).to.equal(true);
     });
   });
 
@@ -122,6 +134,23 @@ describe(name, () => {
       const select = mount(<StatelessSelect items={selectItems} isOpen onSelected={spy} />);
       select.find(Item).first().props().onActivate();
       expect(spy.callCount).to.equal(1);
+    });
+  });
+
+  describe('trigger', () => {
+    it('should have correct classNames', () => {
+      expect(mount(<Trigger />).find(`.${styles.trigger}`).length).to.equal(1);
+      expect(mount(<Trigger />).find(`.${styles.isOpen}`).length).to.equal(0);
+      expect(mount(<Trigger isOpen />).find(`.${styles.trigger}`).length).to.equal(1);
+      expect(mount(<Trigger isOpen />).find(`.${styles.isOpen}`).length).to.equal(1);
+    });
+
+    it('should render content', () => {
+      expect(mount(<Trigger>test</Trigger>).find(`.${styles.content}`)).to.have.text('test');
+    });
+
+    it('should render icon', () => {
+      expect(mount(<Trigger />).find(`.${styles.expand}`)).to.contain(<ExpandIcon label="" />);
     });
   });
 });

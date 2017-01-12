@@ -6,6 +6,7 @@ import Checkbox from 'ak-icon/glyph/checkbox';
 import styles from 'style!./styles.less';
 
 import Element from './internal/Element';
+import SecondaryText from './internal/SecondaryText';
 import { baseTypes } from './internal/constants';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -188,3 +189,5 @@ export default class Item extends PureComponent {
     );
   }
 }
+
+export { SecondaryText };

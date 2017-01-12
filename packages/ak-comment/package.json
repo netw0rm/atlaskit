@@ -12,7 +12,7 @@
     "dist"
   ],
   "dependencies": {
-    "ak-button": "^5.1.3",
+    "ak-button": "^5.1.11",
     "ak-lozenge": "^5.0.4",
     "akutil-shared-styles": "^37.0.0",
     "classnames": "^2.2.5"

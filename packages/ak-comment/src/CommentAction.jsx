@@ -1,6 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
 import Button from 'ak-button';
-import styles from './styles.less';
 
 export default class CommentAction extends PureComponent {
   static propTypes = {
@@ -19,8 +18,7 @@ export default class CommentAction extends PureComponent {
         onMouseOver={this.props.onMouseOver}
       >
         <Button
-          appearance="link"
-          className={styles.locals.actionButton}
+          appearance="subtle-link"
           spacing="none"
           type="button"
         >

@@ -111,6 +111,7 @@ class ButtonBuilderExample extends React.PureComponent {
           {this.createRadioAttribute('appearance', 'primary')}
           {this.createRadioAttribute('appearance', 'subtle')}
           {this.createRadioAttribute('appearance', 'link')}
+          {this.createRadioAttribute('appearance', 'subtle-link')}
         </form>
         <br />
         <form>

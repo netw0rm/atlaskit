@@ -171,9 +171,11 @@ export default class EmojiResource {
    */
   loadAllEmoji() {
     const emojiPromises = [];
-    this.config.providers.forEach((provider) => {
-      emojiPromises.push(emojiRequest(provider));
-    });
+    if (this.config.providers) {
+      this.config.providers.forEach((provider) => {
+        emojiPromises.push(emojiRequest(provider));
+      });
+    }
     debug('EmojiResource.loadAllEmoji waiting for', emojiPromises.length, 'promises');
     return Promise.all(emojiPromises).then((emojiSets) => {
       let allEmoji = [];

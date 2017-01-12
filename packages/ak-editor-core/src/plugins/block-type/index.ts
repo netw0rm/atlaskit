@@ -8,7 +8,8 @@ import {
   UpdateScheduler,
   Keymap,
   browser,
-  Node
+  Node,
+  TextSelection,
 } from '../../prosemirror';
 import {
   BlockQuoteNodeType,
@@ -23,6 +24,11 @@ import {
 } from '../../schema';
 import { trackAndInvoke } from '../../analytics';
 import transformToCodeBlock from './transform-to-code-block';
+
+import {
+  getGroupsInRange,
+  liftSelection
+} from '../../utils';
 
 const withSpecialKey = (key: string) => `${browser.mac ? 'Cmd-Alt' : 'Ctrl'}-${key}`;
 
@@ -108,10 +114,41 @@ export class BlockTypeState {
 
   changeBlockType(name: BlockTypeName): void {
     const { pm } = this;
+    const { nodes } = pm.schema;
 
-    // clear blockquote
-    commands.lift(pm);
-    const nodes = pm.schema.nodes;
+    if (name === BlockQuote.name && nodes.blockquote) {
+      if (commands.wrapIn(nodes.blockquote)(pm, false)) {
+        return this.changeBlockTypeAtSelection(name, pm.selection.$from, pm.selection.$to, true);
+      }
+    }
+
+    const groups = getGroupsInRange(pm, pm.selection.$from, pm.selection.$to);
+    let { $from } = groups[0];
+    let { $to } = groups[groups.length - 1];
+    pm.setSelection(new TextSelection($from, $to));
+
+    groups.reverse();
+    groups.forEach(group => {
+      this.changeBlockTypeAtSelection(name, group.$from, group.$to);
+    });
+  }
+
+  changeBlockTypeAtSelection(name: BlockTypeName, $from, $to, forceApply: boolean = false): void {
+    const { pm } = this;
+    pm.setSelection(new TextSelection($from, $to));
+
+    while (pm.selection.$from.depth > 1) {
+      liftSelection(pm, pm.selection.$from, pm.selection.$to).applyAndScroll();
+    }
+
+    if (!forceApply) {
+      const groupsInRange = getGroupsInRange(pm, pm.selection.$from, pm.selection.$to);
+      if (groupsInRange.length > 1) {
+        return this.changeBlockType(name);
+      }
+    }
+
+    const { nodes } = pm.schema;
 
     switch (name) {
       case NormalText.name:

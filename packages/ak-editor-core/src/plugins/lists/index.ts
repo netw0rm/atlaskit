@@ -24,6 +24,16 @@ import {
   isOrderedListNode
 } from '../../schema';
 
+import {
+  canJoinDown,
+  canJoinUp,
+  getAncestorNodesBetween,
+  findAncestorPosition,
+  getGroupsInRange,
+  liftSelection,
+  isRangeOfType,
+} from '../../utils';
+
 import { trackAndInvoke } from '../../analytics';
 
 export type ListType = 'bullet_list' | 'ordered_list' | null;
@@ -111,14 +121,15 @@ export class ListsState {
    * if there's no list in the selection.
    */
   private toggleList(nodeType: BulletListNodeType | OrderedListNodeType): void {
-    const groups = this.getGroupsInRange(this.pm.selection.$from, this.pm.selection.$to);
+    const { pm } = this;
+    const groups = getGroupsInRange(pm, this.pm.selection.$from, this.pm.selection.$to, isListNode);
     let { $from } = groups[0];
     let { $to } = groups[groups.length - 1];
     this.pm.setSelection(new TextSelection($from, $to));
 
     const adjustedSelection = this.adjustSelection(this.pm.selection);
-    const shouldUntoggle = this.isRangeOfType(adjustedSelection.$from, adjustedSelection.$to, nodeType);
-    const rangeContainsList = this.rangeContainsList(adjustedSelection.$from, adjustedSelection.$to);
+    const shouldUntoggle = isRangeOfType(pm, adjustedSelection.$from, adjustedSelection.$to, nodeType);
+    const rangeContainsList = this.rangeContainsList(pm, adjustedSelection.$from, adjustedSelection.$to);
     const shouldConvertToType = !shouldUntoggle && (isListNode($from.node(1)!) || rangeContainsList);
 
     groups.reverse(); // Quick-fix to keep positions
@@ -149,18 +160,18 @@ export class ListsState {
         return;
       }
 
-      this.liftSelection(adjustedSelection.$from, adjustedSelection.$to).applyAndScroll();
+      liftSelection(pm, adjustedSelection.$from, adjustedSelection.$to).applyAndScroll();
       this.resetSelection();
     } else if (shouldConvertToType) {
-      const tr = this.liftSelection(adjustedSelection.$from, adjustedSelection.$to).applyAndScroll();
+      const tr = liftSelection(pm, adjustedSelection.$from, adjustedSelection.$to).applyAndScroll();
       pm.setSelection(tr.selection);
       commands.wrapInList(nodeType)(tr.pm);
 
-      if (this.shouldJoinUp(pm.selection, pm.doc, nodeType)) {
+      if (canJoinUp(pm, pm.selection, pm.doc, nodeType)) {
         commands.joinUp(pm, true);
       }
 
-      if (this.shouldJoinDown(pm.selection, pm.doc, nodeType)) {
+      if (canJoinDown(pm, pm.selection, pm.doc, nodeType)) {
         commands.joinDown(pm, true);
       }
 
@@ -169,16 +180,16 @@ export class ListsState {
       pm.setSelection(this.adjustSelection(pm.selection));
       commands.wrapInList(nodeType)(pm);
 
-      if (this.shouldJoinUp(pm.selection, pm.doc, nodeType)) {
+      if (canJoinUp(pm, pm.selection, pm.doc, nodeType)) {
         commands.joinUp(pm, true);
       }
 
-      if (this.shouldJoinDown(pm.selection, pm.doc, nodeType)) {
+      if (canJoinDown(pm, pm.selection, pm.doc, nodeType)) {
         /*
          * joinDown expects the selection to be from the end of our last node to
          * the beginning of the next. So we need to adjust our selection a bit.
          * */
-        pm.setSelection(new TextSelection(pm.selection.$to, pm.doc.resolve(pm.selection.$to.after(this.findAncestorPosition(pm.selection.$to).depth))));
+        pm.setSelection(new TextSelection(pm.selection.$to, pm.doc.resolve(pm.selection.$to.after(findAncestorPosition(pm, pm.selection.$to).depth))));
         commands.joinDown(pm, true);
       }
 
@@ -186,83 +197,10 @@ export class ListsState {
     }
   }
 
-  private findAncestorPosition(pos: ResolvedPos): ResolvedPos {
-    const nestableBlocks = ['blockquote', 'bullet_list', 'ordered_list'];
-
-    if (pos.depth === 1) {
-      return pos;
-    }
-
-    let node: Node | undefined = pos.node(pos.depth);
-    while(pos.depth >= 1) {
-      pos = this.pm.doc.resolve(pos.before(pos.depth));
-      node = pos.node(pos.depth);
-
-      if (node && nestableBlocks.indexOf(node.type.name) !== -1) {
-        break;
-      }
-    }
-
-    return pos;
-  }
-
-  private hasCommonAncestor($from: ResolvedPos, $to: ResolvedPos): boolean {
-    let current;
-    let target;
-
-    if ($from.depth > $to.depth) {
-      current = this.findAncestorPosition($from);
-      target = this.findAncestorPosition($to);
-    } else {
-      current = this.findAncestorPosition($to);
-      target = this.findAncestorPosition($from);
-    }
-
-    while (current.depth > target.depth && current.depth > 1) {
-      current = this.findAncestorPosition(current);
-    }
-
-    return current.node(current.depth) === target.node(target.depth);
-  }
-
-  private getGroupsInRange($from: ResolvedPos, $to: ResolvedPos): Array<{$from: ResolvedPos, $to: ResolvedPos}> {
-    const groups = Array<{$from: ResolvedPos, $to: ResolvedPos}>();
-    const hasCommonAncestor = this.hasCommonAncestor($from, $to);
-    const fromAncestor = this.findAncestorPosition($from);
-
-    if (hasCommonAncestor || (fromAncestor.depth === 1 && isListNode($from.node(1)!))) {
-      groups.push({ $from, $to });
-    } else {
-      let current = $from;
-
-      while(current.pos < $to.pos) {
-        let ancestorPos = this.findAncestorPosition(current);
-        while (ancestorPos.depth > 1) {
-          ancestorPos = this.findAncestorPosition(ancestorPos);
-        }
-
-        const endPos = this.pm.doc.resolve(Math.min(
-          // should not be smaller then start position in case of an empty paragpraph for example.
-          Math.max(ancestorPos.start(ancestorPos.depth), ancestorPos.end(ancestorPos.depth) - 1),
-          $to.pos
-        ));
-
-        groups.push({
-          $from: current,
-          $to: endPos
-        });
-
-        current = this.pm.doc.resolve(Math.min(endPos.after(1) + 1, this.pm.doc.nodeSize - 2));
-      }
-    }
-
-    return groups;
-  }
-
   private update() {
     const { pm } = this;
     const { bullet_list, ordered_list } = pm.schema.nodes;
-    const ancestorPosition = this.findAncestorPosition(pm.selection.$from);
+    const ancestorPosition = findAncestorPosition(pm, pm.selection.$from);
     const rootNode = pm.selection instanceof NodeSelection
       ? pm.selection.node
       : ancestorPosition.node(ancestorPosition.depth)!;
@@ -301,102 +239,11 @@ export class ListsState {
   }
 
   /**
-   * Returns all top-level ancestor-nodes between $from and $to
-   */
-  private ancestorNodesBetween($from: ResolvedPos, $to: ResolvedPos): Node[] {
-    let nodes = Array<Node>();
-    let maxDepth = this.findAncestorPosition($from).depth;
-    let current = this.pm.doc.resolve($from.start(maxDepth));
-
-    while (current.pos <= $to.start($to.depth)) {
-      let depth = Math.min(current.depth, maxDepth);
-      const node = current.node(depth);
-
-      if (node) {
-        nodes.push(node);
-      }
-
-      let next: ResolvedPos = this.pm.doc.resolve(current.after(depth));
-      if (next.start(depth) >= this.pm.doc.nodeSize - 2) {
-        break;
-      }
-
-      if (next.depth !== current.depth) {
-        next = this.pm.doc.resolve(next.pos + 2);
-      }
-
-      if (next.depth) {
-        current = this.pm.doc.resolve(next.start(next.depth));
-      } else {
-        current = this.pm.doc.resolve(next.end(next.depth));
-      }
-    }
-
-    return nodes;
-  }
-
-  /**
-   * Step through block-nodes between $from and $to and returns false if a node is
-   * found that isn't of the specified type
-   */
-  private isRangeOfType($from: ResolvedPos, $to: ResolvedPos, nodeType: NodeType): boolean {
-    return this.ancestorNodesBetween($from, $to).filter(node => node.type !== nodeType).length === 0;
-  }
-
-  /**
    * Step through block-nodes between $from and $to and return true if a node is a
    * bullet_list or ordered_list
    */
-  private rangeContainsList($from: ResolvedPos, $to: ResolvedPos): boolean {
-    return this.ancestorNodesBetween($from, $to).some(isListNode);
-  }
-
-  /**
-   * Takes a selection $from and $to and lift all text nodes from their parents to document-level
-   */
-  private liftSelection($from: ResolvedPos, $to: ResolvedPos): EditorTransform {
-    const tr = this.pm.tr;
-    let startPos = $from.start($from.depth);
-    let endPos = $to.end($to.depth);
-    let target = Math.max(0, this.findAncestorPosition($from).depth - 1);
-
-    tr.doc.nodesBetween(startPos, endPos, (node, pos) => {
-      if (
-        node.isText ||                          // Text node
-        (node.isTextblock && !node.textContent) // Empty paragraph
-      ) {
-        const res = tr.doc.resolve(tr.map(pos));
-        const sel = new NodeSelection(res);
-        const range = sel.$from.blockRange(sel.$to);
-        tr.lift(range, target);
-      }
-    });
-
-    startPos = tr.map(startPos);
-    endPos = tr.map(endPos);
-    endPos = tr.doc.resolve(endPos).end(tr.doc.resolve(endPos).depth); // We want to select the entire node
-
-    tr.setSelection(new TextSelection(tr.doc.resolve(startPos), tr.doc.resolve(endPos)));
-
-    return tr;
-  }
-
-  /**
-   * Determines if content inside a selection can be joined with the previous block.
-   * We need this check since the built-in method for "joinUp" will join a ordered_list with bullet_list.
-   */
-  private shouldJoinUp(selection: Selection, doc: any, nodeType: NodeType): boolean {
-    const res = doc.resolve(selection.$from.before(this.findAncestorPosition(selection.$from).depth));
-    return res.nodeBefore && res.nodeBefore.type === nodeType;
-  }
-
-  /**
-   * Determines if content inside a selection can be joined with the next block.
-   * We need this check since the built-in method for "joinDown" will join a ordered_list with bullet_list.
-   */
-  private shouldJoinDown(selection: Selection, doc: any, nodeType: NodeType): boolean {
-    const res = doc.resolve(selection.$to.after(this.findAncestorPosition(selection.$to).depth));
-    return res.nodeAfter && res.nodeAfter.type === nodeType;
+  private rangeContainsList(pm: ProseMirror, $from: ResolvedPos, $to: ResolvedPos): boolean {
+    return getAncestorNodesBetween(pm, $from, $to).some(isListNode);
   }
 
   /**

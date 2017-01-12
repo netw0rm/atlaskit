@@ -114,7 +114,15 @@ export class BlockTypeState {
 
   changeBlockType(name: BlockTypeName): void {
     const { pm } = this;
-    const groups = getGroupsInRange(pm, pm.selection.$from, pm.selection.$to );
+    const { nodes } = pm.schema;
+
+    if (name === BlockQuote.name && nodes.blockquote) {
+      if (commands.wrapIn(nodes.blockquote)(pm, false)) {
+        return this.changeBlockTypeAtSelection(name, pm.selection.$from, pm.selection.$to, true);
+      }
+    }
+
+    const groups = getGroupsInRange(pm, pm.selection.$from, pm.selection.$to);
     let { $from } = groups[0];
     let { $to } = groups[groups.length - 1];
     pm.setSelection(new TextSelection($from, $to));
@@ -125,15 +133,22 @@ export class BlockTypeState {
     });
   }
 
-  changeBlockTypeAtSelection(name: BlockTypeName, $from, $to): void {
+  changeBlockTypeAtSelection(name: BlockTypeName, $from, $to, forceApply: boolean = false): void {
     const { pm } = this;
     pm.setSelection(new TextSelection($from, $to));
 
-    // clear blockquote
-    commands.lift(pm);
-    // liftSelection(pm, $from, $to).applyAndScroll();
+    while (pm.selection.$from.depth > 1) {
+      liftSelection(pm, pm.selection.$from, pm.selection.$to).applyAndScroll();
+    }
 
-    const nodes = pm.schema.nodes;
+    if (!forceApply) {
+      const groupsInRange = getGroupsInRange(pm, pm.selection.$from, pm.selection.$to);
+      if (groupsInRange.length > 1) {
+        return this.changeBlockType(name);
+      }
+    }
+
+    const { nodes } = pm.schema;
 
     switch (name) {
       case NormalText.name:
@@ -286,7 +301,7 @@ export class BlockTypeState {
     const { $from } = pm.selection;
 
     for (let depth = 0; depth <= $from.depth; depth++) {
-      const node = $from.node(depth)!;
+      const node = $from.node(depth) !;
       let blocktype = this.nodeBlockType(node);
       if (blocktype !== Other) {
         return blocktype;

@@ -1,6 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
+import { name } from '../package.json';
 import { emojis } from './story-data';
 
 import CategorySelector from '../src/internal/picker/CategorySelector';
@@ -46,7 +47,7 @@ const borderedStyle = {
   width: emojiPickerWidth,
 };
 
-storiesOf('ak-emoji/Internal components', module)
+storiesOf(`${name}/Internal components`, module)
   .add('emoji preview with description', () => (
     <div style={borderedStyle} >
       <EmojiPreview emoji={emoji} />

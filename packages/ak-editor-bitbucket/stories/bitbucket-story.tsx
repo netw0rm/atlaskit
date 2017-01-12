@@ -6,6 +6,7 @@ import { base64fileconverter } from 'ak-editor-core/test-helper';
 import { default as AkTabs, Tab as AkTab } from 'ak-tabs';
 import Editor from '../src';
 import exampleHTML from './exampleHTML';
+import { MockMentionSource } from './_mock-mentionsource';
 import '!style!css!less!./bitbucket-styles.less';
 
 const Tabs = reactify(AkTabs);
@@ -30,6 +31,8 @@ const imageUploadHandler = (e: any, fn: any) => {
   }
 };
 
+const mentionSource = new MockMentionSource();
+
 storiesOf('ak-editor-bitbucket', module)
   .add('Empty', () => (
     <div style={{ padding: 20 }}>
@@ -47,6 +50,16 @@ storiesOf('ak-editor-bitbucket', module)
         onCancel={CancelAction}
         onChange={ChangeAction}
         onSave={SaveAction}
+      />
+    </div>
+  )
+  .add('With mentions', () =>
+    <div style={{ padding: 20 }}>
+      <Editor
+        onCancel={CancelAction}
+        onChange={ChangeAction}
+        onSave={SaveAction}
+        mentionSource={mentionSource}
       />
     </div>
   )

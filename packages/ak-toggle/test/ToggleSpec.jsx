@@ -6,6 +6,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import CloseIcon from 'ak-icon/glyph/cancel';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
+import styles from '../src/styles.less';
 
 import { Toggle } from '../src';
 
@@ -19,6 +20,7 @@ describe('ak-toggle', () => {
     const wrapper = shallow(<Toggle />);
     expect(wrapper).to.have.exactly(1).descendants('label');
     const label = wrapper.find('label');
+    expect(label).to.have.className(styles.locals.regular);
     expect(label).to.have.exactly(1).descendants('input');
     const iconWrapper = label.find('div').at(2);
     expect(iconWrapper).to.exist;
@@ -55,6 +57,9 @@ describe('ak-toggle', () => {
     );
     it('value', () =>
       expect(shallow(<Toggle value="test" />).find('input')).to.have.prop('value', 'test')
+    );
+    it('size', () =>
+      expect(shallow(<Toggle size="large" />).find('label')).to.have.className(styles.locals.large)
     );
 
     it('label', () => {

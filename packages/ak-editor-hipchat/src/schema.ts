@@ -5,7 +5,8 @@ import {
   Schema,
   Text,
   MentionQueryMarkType,
-  MentionNodeType
+  MentionNodeType,
+  LinkMarkType,
 } from 'ak-editor-core';
 
 export default new Schema({
@@ -17,6 +18,7 @@ export default new Schema({
     mention: { type: MentionNodeType, group: 'inline' }
   },
   marks: {
+    link: LinkMarkType,
     mention_query: MentionQueryMarkType
   },
 }) as HipChatSchema;
@@ -30,6 +32,7 @@ export interface HipChatSchema extends Schema {
     mention: MentionNodeType;
   };
   marks: {
+    link: LinkMarkType;
     mention_query: MentionQueryMarkType;
   };
 }

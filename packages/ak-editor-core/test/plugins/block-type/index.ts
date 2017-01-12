@@ -146,6 +146,13 @@ describe('block-type', () => {
     expect(pm.doc).to.deep.equal(doc(h1('line1'), h1('line2')));
   });
 
+  it('should be able to change multiple paragraphs into one blockquote', () => {
+    const { pm, plugin } = editor(doc(p('li{<}ne1'), p('li{>}ne2'), p('li{>}ne3')));
+
+    plugin.changeBlockType('blockquote');
+    expect(pm.doc).to.deep.equal(doc(blockquote(p('li{<}ne1'), p('li{>}ne2'), p('li{>}ne3'))));
+  });
+
   it('should change state when selecting different block types', () => {
     const { pm, plugin } = editor(doc(h1('te{h1Pos}xt'), p('te{pPos}xt')));
     const { h1Pos, pPos } = pm.doc.refs;

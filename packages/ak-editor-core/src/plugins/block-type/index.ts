@@ -301,7 +301,7 @@ export class BlockTypeState {
     const { $from } = pm.selection;
 
     for (let depth = 0; depth <= $from.depth; depth++) {
-      const node = $from.node(depth) !;
+      const node = $from.node(depth)!;
       let blocktype = this.nodeBlockType(node);
       if (blocktype !== Other) {
         return blocktype;

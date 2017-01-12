@@ -48,8 +48,10 @@ const nodes = {
       state.wrapBlock('    ', null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
     } else {
       const backticks = generateOuterBacktickChain(node.textContent, 3);
+      const language = `#!${node.attrs.language}`;
 
-      state.write(backticks + node.attrs.language + '\n');
+      state.write(backticks + '\n');
+      state.write(language + '\n');
       state.text(node.textContent ? node.textContent : '\u200c', false);
       state.ensureNewLine();
       state.write(backticks);

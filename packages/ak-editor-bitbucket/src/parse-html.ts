@@ -21,7 +21,8 @@ export function transformHtml(html: string): HTMLElement {
   // Convert "codehilite" containers to <pre>
   arrayFrom(el.querySelectorAll('div.codehilite')).forEach((div: HTMLDivElement) => {
     const pre = document.createElement('pre');
-    pre.textContent = div.textContent;
+    // It always has an extra new line when copy from html
+    pre.textContent = String(div.textContent).replace(/\n$/, '');
     div.innerHTML = '';
     div.appendChild(pre);
   });

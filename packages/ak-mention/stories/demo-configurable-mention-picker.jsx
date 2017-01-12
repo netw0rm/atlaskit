@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-import EmojiResource from '../src/api/EmojiResource';
-import EmojiService from '../src/api/EmojiService';
+import MentionResource from '../src/api/ak-mention-resource';
 
 // FIXME FAB-1732 - extract or replace with third-party implementation
 const toJavascriptString = (obj) => {
@@ -26,59 +25,55 @@ const toJavascriptString = (obj) => {
   return obj.toString();
 };
 
-export default class ResourcedEmojiControl extends Component {
+export default class ConfigurableMentionPicker extends Component {
   static propTypes = {
     children: PropTypes.oneOfType([
       PropTypes.node,
       PropTypes.arrayOf(PropTypes.node),
     ]),
     // eslint-disable-next-line react/forbid-prop-types
-    emojiConfig: PropTypes.object,
+    config: PropTypes.object,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      emojiService: new EmojiService([]),
+      resourceProvider: new MentionResource(props.config),
     };
-    this.refreshEmoji(this.props.emojiConfig);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.refreshEmoji(nextProps.emojiConfig);
+    this.refreshMentions(nextProps.config);
   }
 
-  refreshEmoji(emojiConfig) {
-    const resource = new EmojiResource(emojiConfig);
-    resource.loadAllEmoji().then((emojis) => {
-      this.setState({
-        emojiService: new EmojiService(emojis),
-      });
+  refreshMentions(config) {
+    this.setState({
+      resourceProvider: new MentionResource(config),
     });
   }
 
-  emojiConfigChange = (event) => {
+  mentionConfigChange = (event) => {
     // eslint-disable-next-line no-eval
     const config = eval(`( () => (${event.target.value}) )()`);
-    this.refreshEmoji(config);
+    this.refreshMentions(config);
   }
 
   render() {
-    const { emojiService } = this.state;
+    const { resourceProvider } = this.state;
 
     return (
       <div style={{ padding: '10px' }} >
-        {React.cloneElement(this.props.children, { emojiService })}
+        {React.cloneElement(this.props.children, { resourceProvider })}
         <p>
-          <label htmlFor="emoji-urls">EmojiResource config</label>
+          <label htmlFor="emoji-urls">MentionResource config</label>
         </p>
         <p>
           <textarea
             id="emoji-urls"
             rows="15"
             style={{ width: '400px' }}
-            onChange={this.emojiConfigChange}
-            defaultValue={toJavascriptString(this.props.emojiConfig)}
+            onChange={this.mentionConfigChange}
+            defaultValue={toJavascriptString(this.props.config)}
           />
         </p>
       </div>

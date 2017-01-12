@@ -1,12 +1,9 @@
 import {
   commands,
-  EditorTransform,
   Keymap,
-  liftTarget,
   Plugin,
   ProseMirror,
   Node,
-  NodeRange,
   NodeSelection,
   NodeType,
   ResolvedPos,

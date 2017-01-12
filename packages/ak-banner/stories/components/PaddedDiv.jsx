@@ -1,6 +1,8 @@
 import React, { PropTypes, PureComponent } from 'react';
 import { akGridSize } from 'akutil-shared-styles';
 
+const buttonPadding = parseInt(akGridSize, 10) * 2;
+
 // eslint-disable-next-line react/prefer-stateless-function
 export default class PaddedDiv extends PureComponent {
   static propTypes = {
@@ -8,7 +10,6 @@ export default class PaddedDiv extends PureComponent {
   };
 
   render() {
-    const buttonPadding = parseInt(akGridSize, 10) * 2;
     return (
       <div style={{ padding: buttonPadding }}>
         {this.props.children}

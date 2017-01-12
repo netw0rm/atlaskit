@@ -33,10 +33,11 @@ describe(name, () => {
         expect(wrapper.find(Button)).to.contain(children);
       });
 
-      it('should apply props to wrapping div', () => {
+      it('should reflect onClick, onFocus, and onMouseOver to a wrapping element', () => {
         const props = {
           onClick: () => {},
-          className: 'test-class',
+          onFocus: () => {},
+          onMouseOver: () => {},
         };
         const wrapper = shallow(<CommentAction {...props} />);
         Object.keys(props).forEach((propName) => {

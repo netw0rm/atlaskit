@@ -42,32 +42,56 @@ const commentPropTypes = {
   type: 'String',
 };
 
-const commentActionPropDescriptions = {
-  children: 'The content to render inside the action button',
+const commentFieldPropDescriptions = {
+  onClick: 'Handler called when the element is clicked',
+  onFocus: 'Handler called when the element is focused',
+  onMouseOver: 'Handler called when the element is moused over',
 };
 
-const commentActionPropTypes = {
-  children: 'node',
+const commentFieldPropTypes = {
+  onClick: 'Function',
+  onFocus: 'Function',
+  onMouseOver: 'Function',
 };
 
-const commentAuthorPropDescriptions = {
-  children: 'The name of the author',
-  href: 'The URL of the link. If not provided, the element will be rendered as text instead of a link.',
+const commentActionPropDescriptions = { ...commentFieldPropDescriptions,
+  ...{
+    children: 'The content to render inside the action button',
+  },
 };
 
-const commentAuthorPropTypes = {
-  children: 'node',
-  href: 'String',
+const commentActionPropTypes = { ...commentFieldPropTypes,
+  ...{
+    children: 'node',
+  },
 };
 
-const commentTimePropDescriptions = {
-  children: 'The time of the comment',
-  href: 'The URL of the link. If not provided, the element will be rendered as text instead of a link.',
+const commentAuthorPropDescriptions = { ...commentFieldPropDescriptions,
+  ...{
+    children: 'The name of the author',
+    href: 'The URL of the link. If not provided, the element will be rendered as text instead of a link.',
+  },
 };
 
-const commentTimePropTypes = {
-  children: 'node',
-  href: 'String',
+const commentAuthorPropTypes = { ...commentFieldPropTypes,
+  ...{
+    children: 'node',
+    href: 'String',
+  },
+};
+
+const commentTimePropDescriptions = { ...commentFieldPropDescriptions,
+  ...{
+    children: 'The time of the comment',
+    href: 'The URL of the link. If not provided, the element will be rendered as text instead of a link.',
+  },
+};
+
+const commentTimePropTypes = { ...commentFieldPropTypes,
+  ...{
+    children: 'node',
+    href: 'String',
+  },
 };
 
 storiesOf(name, module)
@@ -95,7 +119,7 @@ storiesOf(name, module)
     <CommentReadme
       component={CommentAction}
       name="CommentAction"
-      description="Displays an action item in a Comment. Provide this element to the actions property of a Comment. You may also attach event handlers to the component."
+      description="Displays an action item in a Comment. Provide this element to the actions property of a Comment."
       example={CommentActionExample}
       exampleRaw={CommentActionExampleRaw}
       propDescriptions={commentActionPropDescriptions}
@@ -106,7 +130,7 @@ storiesOf(name, module)
     <CommentReadme
       component={CommentAuthor}
       name="CommentAuthor"
-      description="Displays the author of a Comment. Provide this element to the author property of a Comment. You may also attach event handlers to the component."
+      description="Displays the author of a Comment. Provide this element to the author property of a Comment."
       example={CommentAuthorExample}
       exampleRaw={CommentAuthorExampleRaw}
       propDescriptions={commentAuthorPropDescriptions}
@@ -117,7 +141,7 @@ storiesOf(name, module)
     <CommentReadme
       component={CommentTime}
       name="CommentTime"
-      description="Displays the time of a Comment. Provide this element to the time property of a Comment. You may also attach event handlers to the component."
+      description="Displays the time of a Comment. Provide this element to the time property of a Comment."
       example={CommentTimeExample}
       exampleRaw={CommentTimeExampleRaw}
       propDescriptions={commentTimePropDescriptions}

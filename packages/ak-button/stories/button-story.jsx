@@ -40,7 +40,7 @@ const css = `
 
 /* eslint-disable react/prop-types,max-len */
 const buildBackgroundStory = () => {
-  const createSample = ({ backgroundColor, extraProps = { onClick: action('clicking the WebComponent') } }) => (
+  const createSample = ({ backgroundColor, extraProps = { onClick: action('clicking the Component') } }) => (
     <div style={{ marginBottom: '30px' }}>
       <style>{'.buttonContainer > * { margin: 5px }'}</style>
       <div className="sample" style={{ backgroundColor }}>
@@ -56,6 +56,9 @@ const buildBackgroundStory = () => {
           </AkButton>
           <AkButton {...extraProps} appearance="subtle" >
             Subtle
+          </AkButton>
+          <AkButton {...extraProps} appearance="subtle-link" >
+            Subtle link
           </AkButton>
           <AkButton {...extraProps} isSelected>
             Selected
@@ -77,6 +80,9 @@ const buildBackgroundStory = () => {
           <AkButton {...extraProps} appearance="subtle" iconAfter={<Expand />}>
             Subtle
           </AkButton>
+          <AkButton {...extraProps} appearance="subtle-link" iconAfter={<Unlink />}>
+            Subtle link
+          </AkButton>
           <AkButton {...extraProps} isSelected iconAfter={<Open />}>
             Selected
           </AkButton>
@@ -94,6 +100,9 @@ const buildBackgroundStory = () => {
           <AkButton {...extraProps} appearance="link" isDisabled>
             Link Disabled
           </AkButton>
+          <AkButton {...extraProps} appearance="subtle-link" isDisabled>
+            Subtle link Disabled
+          </AkButton>
         </div>
         <span> Disabled variations </span>
       </div>
@@ -108,6 +117,9 @@ const buildBackgroundStory = () => {
           <AkButton {...extraProps} appearance="link" isDisabled iconAfter={<Calendar />}>
             Link Disabled
           </AkButton>
+          <AkButton {...extraProps} appearance="subtle-link" isDisabled iconAfter={<Calendar />}>
+            Subtle link Disabled
+          </AkButton>
         </div>
         <span> Disabled variations + icons</span>
       </div>
@@ -118,11 +130,13 @@ const buildBackgroundStory = () => {
           <AkButton {...extraProps} spacing="none" appearance="primary" iconBefore={<Unlink />} />
           <AkButton {...extraProps} spacing="none" isDisabled iconBefore={<Unlink />} />
           <AkButton {...extraProps} appearance="subtle" spacing="none" iconBefore={<Unlink />} />
+          <AkButton {...extraProps} appearance="subtle-link" spacing="none" iconBefore={<Unlink />} />
           <AkButton {...extraProps} spacing="none" iconBefore={<Open />} />
           <AkButton {...extraProps} spacing="none" isSelected iconBefore={<Open />} />
           <AkButton {...extraProps} spacing="none" appearance="primary" iconBefore={<Open />} />
           <AkButton {...extraProps} spacing="none" isDisabled iconBefore={<Open />} />
           <AkButton {...extraProps} appearance="subtle" spacing="none" iconBefore={<Open />} />
+          <AkButton {...extraProps} appearance="subtle-link" spacing="none" iconBefore={<Open />} />
         </div>
         <span> No spacing buttons with only icons </span>
       </div>
@@ -146,7 +160,7 @@ const buildBackgroundStory = () => {
         {
           createSample({
             backgroundColor: akColorN700,
-            extraProps: { theme: 'dark', onClick: action('clicking the WebComponent') },
+            extraProps: { theme: 'dark', onClick: action('clicking the Component') },
           })
         }
       </div>
@@ -184,7 +198,7 @@ const buildStory = props => (
         <div className="sample">
           <span>
             text
-            <AkButton {...props} onClick={action('clicking the WebComponent')}>
+            <AkButton {...props} onClick={action('clicking the Component')}>
               Create Issue
             </AkButton>
             text
@@ -193,7 +207,7 @@ const buildStory = props => (
         </div>
 
         <div className="sample">
-          <AkButton {...props} isDisabled onClick={action('clicking the WebComponent')}>
+          <AkButton {...props} isDisabled onClick={action('clicking the Component')}>
             Disabled Option
           </AkButton>
           <span>disabled</span>
@@ -203,7 +217,7 @@ const buildStory = props => (
           <AkButton
             {...props}
             isDisabled
-            onClick={action('clicking the WebComponent')}
+            onClick={action('clicking the Component')}
             href="http://www.atlassian.com"
             target="_blank"
           >
@@ -325,7 +339,7 @@ const buildStory = props => (
         </div>
 
         <div className="sample">
-          <AkButton {...props} onClick={action('clicking the WebComponent')} spacing="compact" isDisabled>
+          <AkButton {...props} onClick={action('clicking the Component')} spacing="compact" isDisabled>
             Disabled Option
           </AkButton>
           <span>compact + disabled</span>
@@ -348,6 +362,7 @@ storiesOf(name, module)
     .add('primary ak-button states', buildStory({ appearance: 'primary' }))
     .add('subtle ak-button states', buildStory({ appearance: 'subtle' }))
     .add('link ak-button states', buildStory({ appearance: 'link' }))
+    .add('subtle-link ak-button states', buildStory({ appearance: 'subtle-link' }))
     .add('different backgrounds', buildBackgroundStory)
     .add('button builder example', () =>
       <ButtonBuilderExample icons={[() => null].concat([Page, Question, Calendar, Expand])} />

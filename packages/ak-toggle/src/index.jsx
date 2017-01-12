@@ -9,7 +9,7 @@ export default class extends PureComponent {
     isDefaultChecked: PropTypes.bool,
   }
 
-  static defaultPrpps = {
+  static defaultProps = {
     isDefaultChecked: false,
     onChange: () => {},
   }

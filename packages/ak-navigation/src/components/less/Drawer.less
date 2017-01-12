@@ -11,15 +11,15 @@
 
 .drawer {
   background: white;
-  height: 100%;
-  width: 0;
-  transition: @transition;
-  position: fixed;
-  left: 0;
-  transform: translateX(-@width);
-  width: @width;
   box-shadow: 10px 0 20px 0 rgba(0,0,0,.15);
+  display: flex;
+  height: 100%;
+  left: 0;
   overflow: hidden;
+  position: fixed;
+  transform: translateX(-@width);
+  transition: @transition;
+  width: @width;
   &:not(.open) {
     visibility: hidden;
   }
@@ -29,6 +29,22 @@
   }
   &.open, &.wide.open {
     transform: translateX(0);
+  }
+}
+
+.side {
+  width: @global-open-width;
+  padding: @global-vertical-padding 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .icon {
+    align-items: center;
+    display: flex;
+    height: @ak-grid-size * 5;
+    justify-content: center;
+    width: @ak-grid-size * 5;
   }
 }
 

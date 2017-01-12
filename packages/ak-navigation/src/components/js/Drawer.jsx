@@ -1,6 +1,8 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!../less/Drawer.less';
+import DrawerTrigger from './DrawerTrigger';
+import GlobalItem from './GlobalItem';
 
 export default class Drawer extends PureComponent {
   static propTypes = {
@@ -16,6 +18,9 @@ export default class Drawer extends PureComponent {
   }
 
   render() {
+    const {
+      isOpen,
+    } = this.props;
     return (
       <div
         className={classNames(styles.drawer, {
@@ -23,11 +28,19 @@ export default class Drawer extends PureComponent {
           [styles.wide]: this.props.isWide,
         })}
       >
-        <div className={classNames(styles.fixed)}>
-          {this.props.primaryIcon}
+        <div className={classNames(styles.fixed, styles.side)}>
+          <div className={classNames(styles.icon)}>
+            {this.props.primaryIcon}
+          </div>
+          <DrawerTrigger>
+            <GlobalItem isSelected={isOpen} size="medium">
+              B
+            </GlobalItem>
+          </DrawerTrigger>
         </div>
-        <div>foo</div>
-        {this.props.children}
+        <div>
+          {this.props.children}
+        </div>
       </div>
     );
   }

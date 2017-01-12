@@ -22,3 +22,4 @@ local.log
 browserstack-entry.js
 packages/**/**/README.md
 packages/**/**/CHANGELOG.md
+**/local-config.js

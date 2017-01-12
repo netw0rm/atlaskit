@@ -1,11 +1,12 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
+import { name } from '../package.json';
 import emojiService, { lorem } from './story-data';
 
 import EmojiPicker from '../src/EmojiPicker';
 
-storiesOf('ak-emoji/EmojiPicker', module)
+storiesOf(`${name}/EmojiPicker`, module)
   .add('picker popup', () => (
     <div style={{ padding: '10px' }} >
       <input

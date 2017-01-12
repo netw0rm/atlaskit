@@ -2,7 +2,7 @@ import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
 import { DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
-import { AkContainerItem, AkContainerLogo, AkDrawerItem } from '../src/index';
+import { AkContainerItem, AkContainerLogo } from '../src/index';
 import Page from './components/Page';
 import BasicNavigation from './components/BasicNavigation';
 import nucleus from './nucleus.png';
@@ -165,20 +165,6 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation
         openDrawer="create"
-        createDrawerContent={(
-          <div>
-            <AkDrawerItem
-              text="Test page"
-            />
-            <AkDrawerItem
-              icon={<img src={nucleus} alt="icon" />}
-              text="Item with an icon"
-            />
-            <AkDrawerItem
-              icon={<img src={nucleus} alt="icon" />}
-              text="A really, really, quite long, actually super long container name"
-            />
-          </div>)}
       />
       <div>
         <Lorem count="30" />

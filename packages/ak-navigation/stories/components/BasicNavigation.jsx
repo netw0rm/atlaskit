@@ -3,7 +3,7 @@ import { action } from '@kadira/storybook';
 import { AtlassianIcon, SearchIcon, HelpIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
 import AkDropdownMenu from 'ak-dropdown-menu';
 import AkAvatar from 'ak-avatar';
-import Navigation, { AkContainerHeader, AkContainerItem, AkGlobalItem } from '../../src/index';
+import Navigation, { AkContainerHeader, AkContainerItem, AkDrawerItem, AkGlobalItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
 
@@ -39,6 +39,17 @@ export default class BasicNavigation extends PureComponent {
         }
       />
     </a>),
+    createDrawerContent: (
+      <div>
+        <AkDrawerItem
+          icon={<img src={nucleusLogo} alt="icon" />}
+          text="Item with an icon"
+        />
+        <AkDrawerItem
+          icon={<img src={nucleusLogo} alt="icon" />}
+          text="A really, really, quite long, actually super long container name"
+        />
+      </div>),
     openDrawer: null,
   }
 

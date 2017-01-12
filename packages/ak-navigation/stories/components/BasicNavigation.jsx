@@ -13,6 +13,7 @@ export default class BasicNavigation extends PureComponent {
     isOpen: PropTypes.bool,
     width: PropTypes.number,
     containerHeader: PropTypes.node,
+    openDrawer: PropTypes.string,
   }
 
   static defaultProps = {
@@ -38,13 +39,14 @@ export default class BasicNavigation extends PureComponent {
         }
       />
     </a>),
+    openDrawer: null,
   }
 
   constructor(...args) {
     super(...args);
     this.state = {
-      openDrawer: null,
       isOpen: this.props.isOpen,
+      openDrawer: this.props.openDrawer,
       width: this.props.width,
     };
   }

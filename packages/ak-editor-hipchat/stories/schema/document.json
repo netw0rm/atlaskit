@@ -1,69 +1,18 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "description": "Document schema for Atlassian Editor documents for HipChat.",
-  "$ref": "#/definitions/doc_node",
+  "type": "array",
+  "items": {
+    "anyOf": [
+      {
+        "$ref": "#/definitions/text_node"
+      },
+      {
+        "$ref": "#/definitions/mention_node"
+      }
+    ]
+  },
   "definitions": {
-    "doc_node": {
-      "properties": {
-        "type": {
-          "enum": [
-            "doc"
-          ]
-        },
-        "content": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/paragraph_node"
-          },
-          "minItems": 1
-        }
-      },
-      "required": [
-        "type",
-        "content"
-      ],
-      "additionalProperties": false
-    },
-    "paragraph_node": {
-      "properties": {
-        "type": {
-          "enum": [
-            "paragraph"
-          ]
-        },
-        "content": {
-          "type": "array",
-          "items": {
-            "allOf": [
-              {
-                "anyOf": [
-                  {
-                    "$ref": "#/definitions/text_node"
-                  },
-                  {
-                    "$ref": "#/definitions/hard_break_node"
-                  },
-                  {
-                    "$ref": "#/definitions/mention_node"
-                  }
-                ]
-              },
-              {
-                "properties": {
-                  "marks": {
-                    "maxItems": 0
-                  }
-                }
-              }
-            ]
-          }
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false
-    },
     "text_node": {
       "properties": {
         "text": {
@@ -75,23 +24,17 @@
             "text"
           ]
         },
-        "marks": {}
-      },
-      "required": [
-        "text",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "hard_break_node": {
-      "properties": {
-        "type": {
-          "enum": [
-            "hard_break"
+        "marks": {
+          "type": "array",
+          "items": [
+            {
+              "$ref": "#/definitions/link_mark"
+            }
           ]
         }
       },
       "required": [
+        "text",
         "type"
       ],
       "additionalProperties": false
@@ -108,11 +51,48 @@
           "properties": {
             "id": {},
             "displayName": {}
-          }
+          },
+          "required": [
+            "id",
+            "displayName"
+          ]
+        },
+        "text": {
+          "type": "string"
         }
       },
       "required": [
-        "type"
+        "type",
+        "attrs",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "link_mark": {
+      "properties": {
+        "type": {
+          "enum": [
+            "link"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "url"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "attrs"
       ],
       "additionalProperties": false
     }

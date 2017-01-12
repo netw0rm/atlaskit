@@ -20,6 +20,9 @@ export default new Schema({
     text: { type: Text, group: 'inline' },
 
     // The equivalent of a <br> in HTML.
+    //
+    // This mark is used internally and is translated to a text node with content "\n" in documents
+    // exposed from getter APIs.
     hard_break: { type: HardBreakNodeType, group: 'inline' },
 
     // An @-mention.
@@ -29,7 +32,7 @@ export default new Schema({
     // Represents a "mention query". A mention query is created by typing the @ symbol. The text
     // within a mention query is used to search for a mention.
     //
-    // This mark is used internally, and is stripped from documents before they are exposed. through
+    // This mark is used internally, and is stripped from documents before they are exposed through
     // the editor getter APIs.
     mention_query: MentionQueryMarkType
   },

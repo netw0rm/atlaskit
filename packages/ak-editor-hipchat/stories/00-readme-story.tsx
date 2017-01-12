@@ -6,6 +6,7 @@ import OverviewExample from './examples/overview';
 import * as OverviewExampleRaw from '!raw!./examples/overview.tsx';
 import * as SchemaRaw from '!raw!../src/schema.ts';
 import * as documentJsonSchema from '!raw!./schema/document.json';
+import * as exampleMessageJson from '!raw!./examples/message.json';
 
 import { name, description } from '../package.json';
 import Editor from '../src';
@@ -78,17 +79,32 @@ storiesOf(name, module)
         <p><strong>Expected changes:</strong></p>
         <ul>
           <li>
-            Mark encoding will change from <code>{`{"_": "name", "attr1": "value"}`}</code> to
-            <code>{`{"type": "name", "attrs": {"attr1": "value"}}`}</code> as part of the upgrade to
-            the ProseMirror 0.12. At the moment some consumers are expecting the old format, and
-            others are expecting the new.
+            <p>The document content currently is an array of inline nodes. This will change to being a <code>doc</code> node with a child block (e.g. <code>paragraph</code>). See <a href="https://product-fabric.atlassian.net/wiki/pages/viewpage.action?pageId=50397266">{`https://product-fabric.atlassian.net/wiki/pages/viewpage.action?pageId=50397266`}</a> for details.</p>
           </li>
           <li>
-            <code>mention</code> node attributes are currently optional, but the semantics for nodes that have
-            attributes missing is not defined. This should be defined.
+            <p>Mark encoding will change from <code>{`{"_": "name", "attr1": "value"}`}</code> to <code>{`{"type": "name", "attrs": {"attr1": "value"}}`}</code> as part of the upgrade to the ProseMirror 0.12. At the moment some consumers are expecting the old format, and others are expecting the new.</p>
+          </li>
+          <li>
+            <p><code>mention</code> node attributes are currently optional, but the semantics for nodes that have attributes missing is not defined. This should be defined.</p>
+          </li>
+          <li>
+            <p><code>mention</code> node currently has a <code>text</code> property is a duplicate of the <code>displayName</code> attribute.</p>
+            <p><code>text</code> will be removed, and only the <code>displayName</code> attribute will remain.</p>
+            <p>The value of <code>displayName</code> will <strong>not</strong> include a leading @ character.</p>
+          </li>
+          <li>
+            <p><code>link</code> mark attribute <code>url</code> will be renamed to <code>href</code>.</p>
+          </li>
+          <li>
+            <p>Hard break are currently represented as a <code>text</code> node with <code>"\n"</code>. This will change to using a <code>hard_break</code> node.</p>
+          </li>
+          <li>
+            <p>Extra node types like <code>block_quote</code> and <code>code_block</code> will be added when rendering support is available.</p>
           </li>
         </ul>
         <Code language="js">{documentJsonSchema}</Code>
+        <Heading type="3">Example message</Heading>
+        <Code language="js">{exampleMessageJson}</Code>
         <Heading type="3">ProseMirror Schema (internal)</Heading>
         <p>This schema is used internally to constrain the content model during edits. In some cases
         it includes content that <strong>won't</strong> be present in an encoded documents (e.g.

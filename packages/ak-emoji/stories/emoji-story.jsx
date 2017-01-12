@@ -1,6 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
+import { name } from '../package.json';
 import Emoji from '../src/Emoji';
 
 const emoji = {
@@ -19,7 +20,7 @@ const emoji = {
   hasSkinVariations: false,
 };
 
-storiesOf('ak-emoji/Emoji', module)
+storiesOf(`${name}/Emoji`, module)
   .add('simple emoji', () => (
     <Emoji {...emoji} />
   )).add('simple emoji selected', () => {

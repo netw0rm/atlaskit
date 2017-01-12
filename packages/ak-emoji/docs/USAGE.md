@@ -25,7 +25,7 @@ ReactDOM.render(<EmojiPicker />, container);
 
 The storybook includes a set of stories for running against a live server. See ```ak-emoji/external-emoji```.
 
-You can specify the URL's manually in the textbook on the story (one url per line), or specify it when running story
-book (comma separated). For example:
+You can specify the URL's manually in the textarea on the story (as json configuration suitable for EmojiResource),
+or specify it when running story in the local-config.json in the root of this component.
 
-```export STORYBOOK_EMOJI_URL=https://demo/emoji/standard,https://demo/emoji/vendor npm run storybook/single ak-emoji```
+There is an example file local-config-example.json that can be copied.

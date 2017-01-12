@@ -3,7 +3,7 @@ import AkBadge from 'ak-badge';
 
 export default class RandomBadge extends PureComponent {
   static propTypes = {
-    theme: PropTypes.string,
+    theme: PropTypes.oneOf(['default', 'dark']),
   }
 
   static defaultProps = {

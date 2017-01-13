@@ -25,7 +25,7 @@ export default class DrawerBack extends PureComponent {
           [styles.isVisible]: isVisible,
         })}
       >
-        {children}
+        <div className={classNames(styles.icon)}>{children}</div>
       </div>
     );
   }

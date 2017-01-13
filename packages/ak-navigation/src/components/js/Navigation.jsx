@@ -23,7 +23,7 @@ export default class Navigation extends PureComponent {
     containerAppearance: PropTypes.string,
     containerHeader: PropTypes.node,
     createDrawerContent: PropTypes.node,
-    searchDrawerContent: PropTypes.node,
+    drawerBackIcon: PropTypes.node,
     globalAccountItem: PropTypes.node,
     globalCreateIcon: PropTypes.node,
     globalHelpItem: PropTypes.node,
@@ -43,6 +43,7 @@ export default class Navigation extends PureComponent {
     onResize: PropTypes.func,
     onSearchDrawerClose: PropTypes.func,
     onSearchDrawerOpen: PropTypes.func,
+    searchDrawerContent: PropTypes.node,
     width: PropTypes.number,
   };
 
@@ -106,6 +107,7 @@ export default class Navigation extends PureComponent {
       containerAppearance,
       containerHeader,
       createDrawerContent,
+      drawerBackIcon,
       globalAccountItem,
       globalCreateIcon,
       globalHelpItem,
@@ -169,19 +171,23 @@ export default class Navigation extends PureComponent {
           </div>
           <div style={{ zIndex: 1 }}>
             <Drawer
+              backIcon={drawerBackIcon}
+              backIconPosition="search"
               header={containerHeader}
               isOpen={isSearchDrawerOpen}
               isWide
-              primaryIcon={globalPrimaryIcon}
               onBackButton={onSearchDrawerClose}
+              primaryIcon={globalPrimaryIcon}
             >
               {searchDrawerContent}
             </Drawer>
             <Drawer
+              backIcon={drawerBackIcon}
+              backIconPosition="create"
               header={containerHeader}
               isOpen={isCreateDrawerOpen}
-              primaryIcon={globalPrimaryIcon}
               onBackButton={onCreateDrawerClose}
+              primaryIcon={globalPrimaryIcon}
             >
               {createDrawerContent}
             </Drawer>

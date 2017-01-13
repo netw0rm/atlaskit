@@ -6,6 +6,8 @@ import DrawerBackIcon from './DrawerBackIcon';
 
 export default class Drawer extends PureComponent {
   static propTypes = {
+    backIcon: PropTypes.node,
+    backIconPosition: PropTypes.oneOf(['search', 'create']),
     children: PropTypes.element,
     header: PropTypes.node,
     isOpen: PropTypes.bool,
@@ -22,23 +24,39 @@ export default class Drawer extends PureComponent {
 
   render() {
     const {
+      backIcon,
+      backIconPosition,
       header,
+      isOpen,
+      isWide,
       onBackButton,
     } = this.props;
     return (
       <div
         className={classNames(styles.drawer, {
-          [styles.open]: this.props.isOpen,
-          [styles.wide]: this.props.isWide,
+          [styles.open]: isOpen,
+          [styles.wide]: isWide,
         })}
       >
         <div className={classNames(styles.fixed, styles.side)}>
           <div className={classNames(styles.icon)}>
             {this.props.primaryIcon}
           </div>
-          <DrawerTrigger onActivate={onBackButton}>
-            <DrawerBackIcon>B</DrawerBackIcon>
-          </DrawerTrigger>
+          <div
+            className={classNames(styles.backIconOuter, {
+              [styles.isBackIconPositionCreate]: (backIconPosition === 'create'),
+            })}
+          >
+            <div className={classNames(styles.backIcon)}>
+              <DrawerTrigger onActivate={onBackButton}>
+                <DrawerBackIcon
+                  isVisible={isOpen}
+                >
+                  {backIcon}
+                </DrawerBackIcon>
+              </DrawerTrigger>
+            </div>
+          </div>
         </div>
         <div className={classNames(styles.main)}>
           <div className={classNames(styles.fixed)}>

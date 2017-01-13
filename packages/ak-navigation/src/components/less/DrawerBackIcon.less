@@ -1,12 +1,25 @@
+@import '../../shared-variables.less';
 @import '~akutil-shared-styles/src/colors.less';
 @import '~akutil-shared-styles/src/grid.less';
 
 .backIcon {
-  color: black;
-  transform: translatex(-@ak-grid-size * 3);
-  transition: transform 220ms;
+  background: @ak-color-N20;
+  border-radius: 50%;
+  color: @ak-color-N500;
+  cursor: pointer;
+  display: flex;
+  height: @drawer-back-icon-size;
+  justify-content: center;
+  width: @drawer-back-icon-size;
   
-  &.isVisible {
+  .icon {
+    align-items: center;
+    display: flex;
+    transform: translatex(-@ak-grid-size * 2);
+    transition: transform 220ms;
+  }
+  
+  &.isVisible .icon {
     transform: translateX(0);
   }
 }

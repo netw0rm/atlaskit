@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
 import AnimationDemo from './components/AnimationDemo';
@@ -23,6 +23,10 @@ storiesOf(name, module)
           icon={<GreenSuccessIcon />}
           title="Welcome to the jungle"
           description="We got fun an games. We got everything you want honey, we know the names."
+          actions={[
+            { content: 'Show me', onClick: action('Show me clicked') },
+            { content: 'No thanks', onClick: action('No thanks clicked') },
+          ]}
         />
       </p>
     </div>

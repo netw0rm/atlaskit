@@ -1,6 +1,5 @@
 import chai from 'chai';
 import React from 'react';
-import chaiAsPromised from 'chai-as-promised';
 import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import Flag, { FlagGroup } from '../src';
@@ -8,7 +7,6 @@ import flagStyles from '../src/less/Flag.less';
 
 import { name } from '../package.json';
 
-chai.use(chaiAsPromised);
 chai.should();
 chai.use(chaiEnzyme());
 
@@ -67,6 +65,36 @@ describe(name, () => {
             generateFlag({ description: 'Oh hi!' })
           ).find(`.${flagLocals.description}`).should.have.text('Oh hi!')
         );
+      });
+
+      describe('actions prop', () => {
+        it('actions should be rendered', () => {
+          const flag = mount(
+            generateFlag({
+              actions: [
+                { content: 'Hello!' },
+                { content: 'Goodbye!' },
+              ],
+            })
+          );
+          const renderedActionItems = flag.find(`.${flagLocals.actionsItem}`);
+          renderedActionItems.length.should.equal(2);
+          renderedActionItems.at(0).should.have.text('Hello!');
+          renderedActionItems.at(1).should.have.text('Goodbye!');
+        });
+
+        it('action onClick should be triggered on click', () => {
+          const spy = sinon.spy();
+          const flag = mount(
+            generateFlag({
+              actions: [
+                { content: 'Hello!', onClick: spy },
+              ],
+            })
+          );
+          flag.find(`.${flagLocals.actionsItem} button`).simulate('click');
+          expect(spy).to.have.been.calledOnce;
+        });
       });
 
       it('onDismissed should be called with flag id as param when dismiss icon clicked', () => {

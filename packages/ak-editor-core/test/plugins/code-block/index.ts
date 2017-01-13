@@ -202,10 +202,10 @@ describe('code-block', () => {
         const { pm, plugin } = editor(doc(code_block()('code{<>}Block{cbPos}')));
         const { cbPos } = pm.doc.refs;
 
-        const previous_element = plugin.targetElement;
+        const previous_element = plugin.element;
         pm.setTextSelection(cbPos);
 
-        const current_element = plugin.targetElement;
+        const current_element = plugin.element;
 
         expect(previous_element).to.eq(current_element);
       });
@@ -216,10 +216,10 @@ describe('code-block', () => {
         const { pm, plugin } = editor(doc(code_block()('one{<>} codeBlock'), code_block()('another{cbPos} codeBlock')));
         const { cbPos } = pm.doc.refs;
 
-        const previous_element = plugin.targetElement;
+        const previous_element = plugin.element;
         pm.setTextSelection(cbPos);
 
-        const current_element = plugin.targetElement;
+        const current_element = plugin.element;
 
         expect(previous_element).not.to.eq(current_element);
 
@@ -231,7 +231,7 @@ describe('code-block', () => {
         it('returns code block element', () => {
           const { pm, plugin } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
 
-          expect(plugin.targetElement).to.instanceOf(HTMLPreElement);
+          expect(plugin.element).to.instanceOf(HTMLPreElement);
         });
       });
 
@@ -239,7 +239,7 @@ describe('code-block', () => {
         it('returns code block element', () => {
           const { pm, plugin } = editor(doc(p('paragraph'), code_block()('{<>}codeBlock')));
 
-          expect(plugin.targetElement).to.instanceOf(HTMLPreElement);
+          expect(plugin.element).to.instanceOf(HTMLPreElement);
         });
       });
 
@@ -247,7 +247,7 @@ describe('code-block', () => {
         it('returns code block element', () => {
           const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
 
-          expect(plugin.targetElement).to.instanceOf(HTMLPreElement);
+          expect(plugin.element).to.instanceOf(HTMLPreElement);
         });
       });
     });
@@ -256,7 +256,7 @@ describe('code-block', () => {
       it('returns undefined', () => {
         const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock')));
 
-        expect(plugin.targetElement).to.be.undefined;
+        expect(plugin.element).to.be.undefined;
       });
     });
   });

@@ -14,7 +14,7 @@ export interface Props {
 
 export interface State {
   targetNode?: Node;
-  targetElement?: HTMLElement;
+  element?: HTMLElement;
   language: string;
 }
 
@@ -38,11 +38,11 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { targetNode, language, targetElement } = this.state;
+    const { targetNode, language, element } = this.state;
 
     if(targetNode) {
       return (
-        <Panel target={targetElement} align="left" autoPosition>
+        <Panel target={element} align="left" autoPosition>
           <div className={styles.container}>
             <DropdownMenu triggerType="button" items={items} onItemActivated={this.handleLanguageChange}>
               {capitalizeFirstLetter(language)}
@@ -57,7 +57,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: CodeBlockState) => {
-    const {targetNode, targetElement} = pluginState;
+    const {targetNode, element} = pluginState;
     let language;
 
     if(targetNode) {
@@ -67,7 +67,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     this.setState({
       targetNode: targetNode,
       language: language,
-      targetElement: targetElement
+      element: element
     });
   }
 

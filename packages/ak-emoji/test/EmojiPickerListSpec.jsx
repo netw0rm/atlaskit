@@ -24,6 +24,7 @@ function skinVariation(id) {
 const emojis = [
   {
     shortcut: ':raised_back_of_hand:',
+    category: 'CHEESE',
     representation: {
       imagePath: '',
       width: 24,

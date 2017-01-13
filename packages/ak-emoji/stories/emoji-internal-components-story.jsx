@@ -2,7 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
 import { name } from '../package.json';
-import { emojis } from './story-data';
+import { storyEmojis } from './story-data';
 
 import CategorySelector from '../src/internal/picker/CategorySelector';
 import EmojiPickerFooter from '../src/internal/picker/EmojiPickerFooter';
@@ -31,14 +31,14 @@ const emoji = {
   hasSkinVariations: false,
 };
 
-const tongueEmoji = filters.byShortcut(emojis, 'stuck_out_tongue_closed_eyes');
+const tongueEmoji = filters.byShortcut(storyEmojis, 'stuck_out_tongue_closed_eyes');
 const longTongueEmoji = {
   ...tongueEmoji,
   name: `${tongueEmoji.name} ${tongueEmoji.name} ${tongueEmoji.name}`,
   shortcut: `${tongueEmoji.shortcut}_${tongueEmoji.shortcut}_${tongueEmoji.shortcut}`,
 };
 
-const toneEmoji = filters.toneEmoji(emojis);
+const toneEmoji = filters.toneEmoji(storyEmojis);
 
 const borderedStyle = {
   margin: '20px',
@@ -83,8 +83,8 @@ storiesOf(`${name}/Internal components`, module)
     ))
   .add('picker footer', () => (
     <EmojiPickerFooter
-      selectedEmoji={emojis[0]}
-      emojis={emojis}
+      selectedEmoji={storyEmojis[0]}
+      emojis={storyEmojis}
     />
     ))
   .add('tone selector', () => (
@@ -96,7 +96,7 @@ storiesOf(`${name}/Internal components`, module)
   .add('emoji list', () => <RefreshableEmojiList />)
   .add('emoji list - everything', () => (
     <EmojiTypeAheadList
-      emojis={emojis}
+      emojis={storyEmojis}
       onSelection={action('onSelection')}
     />
   ));

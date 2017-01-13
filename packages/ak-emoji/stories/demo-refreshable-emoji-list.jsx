@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { action } from '@kadira/storybook';
 
 import EmojiTypeAheadList from '../src/internal/typeahead/EmojiTypeAheadList';
-import { emojis } from './story-data';
+import { storyEmojis } from './story-data';
 
 function randomEmojis() {
-  return emojis.filter(() => Math.random() < 0.02).slice(0, 50);
+  return storyEmojis.filter(() => Math.random() < 0.02).slice(0, 50);
 }
 
 export default class RefreshableEmojiList extends Component {

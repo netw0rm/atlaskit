@@ -4,7 +4,7 @@ import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { mount } from 'enzyme';
 
-import emojiService from '../stories/story-data';
+import { testingEmojiService } from '../stories/story-data';
 
 import CategorySelector from '../src/internal/picker/CategorySelector';
 import Emoji from '../src/Emoji';
@@ -21,7 +21,7 @@ chai.should();
 function setupPicker(props) {
   return mount(
     <EmojiPicker
-      emojiService={emojiService}
+      emojiService={testingEmojiService}
       query=""
       {...props}
     />
@@ -32,7 +32,7 @@ const leftClick = {
   button: 0,
 };
 
-const allEmojis = emojiService.all().emojis;
+const allEmojis = testingEmojiService.all().emojis;
 
 describe('<EmojiPicker />', () => {
   it('should display first set of emoji in viewport by default', () => {

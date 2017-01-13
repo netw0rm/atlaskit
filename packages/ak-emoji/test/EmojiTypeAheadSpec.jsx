@@ -5,7 +5,7 @@ import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { mount } from 'enzyme';
 
-import emojiService, { emojis } from '../stories/story-data';
+import { testingEmojiService, testingEmojis } from '../stories/story-data';
 import EmojiTypeAhead, { defaultListLimit } from '../src/EmojiTypeAhead';
 import EmojiTypeAheadItem from '../src/internal/typeahead/EmojiTypeAheadItem';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from './emoji-selectors';
@@ -17,7 +17,7 @@ chai.should();
 function setupPicker(props) {
   return mount(
     <EmojiTypeAhead
-      emojiService={emojiService}
+      emojiService={testingEmojiService}
       query=""
       {...props}
     />
@@ -54,7 +54,7 @@ describe('EmojiTypeAhead', () => {
   it('should change selection when navigating next', () => {
     const component = setupPicker();
     const defaultEmojiShown = () => component.find(EmojiTypeAheadItem).length === defaultListLimit;
-    const secondItemSelected = () => isEmojiTypeAheadItemSelected(component, emojis[1].id);
+    const secondItemSelected = () => isEmojiTypeAheadItemSelected(component, testingEmojis[1].id);
 
     return waitUntil(defaultEmojiShown).should.be.fulfilled
       .then(() => {
@@ -67,7 +67,7 @@ describe('EmojiTypeAhead', () => {
     const component = setupPicker();
     const defaultEmojiShown = () => component.find(EmojiTypeAheadItem).length === defaultListLimit;
     const lastItemSelected = () =>
-      isEmojiTypeAheadItemSelected(component, emojis[defaultListLimit - 1].id);
+      isEmojiTypeAheadItemSelected(component, testingEmojis[defaultListLimit - 1].id);
 
     return waitUntil(defaultEmojiShown).should.be.fulfilled
       .then(() => {
@@ -83,8 +83,8 @@ describe('EmojiTypeAhead', () => {
       onSelection: (emoji) => { choseEmoji = emoji; },
     });
     const defaultEmojiShown = () => component.find(EmojiTypeAheadItem).length === defaultListLimit;
-    const secondItemSelected = () => isEmojiTypeAheadItemSelected(component, emojis[1].id);
-    const chooseSecondItem = () => (choseEmoji && choseEmoji.id === emojis[1].id);
+    const secondItemSelected = () => isEmojiTypeAheadItemSelected(component, testingEmojis[1].id);
+    const chooseSecondItem = () => (choseEmoji && choseEmoji.id === testingEmojis[1].id);
 
     return waitUntil(defaultEmojiShown).should.be.fulfilled
       .then(() => {
@@ -104,11 +104,11 @@ describe('EmojiTypeAhead', () => {
       onSelection: (emoji) => { choseEmoji = emoji; },
     });
     const defaultEmojiShown = () => component.find(EmojiTypeAheadItem).length === defaultListLimit;
-    const chooseThirdItem = () => (choseEmoji && choseEmoji.id === emojis[2].id);
+    const chooseThirdItem = () => (choseEmoji && choseEmoji.id === testingEmojis[2].id);
 
     return waitUntil(defaultEmojiShown).should.be.fulfilled
       .then(() => {
-        const item = getEmojiTypeAheadItemById(component, emojis[2].id);
+        const item = getEmojiTypeAheadItemById(component, testingEmojis[2].id);
         item.simulate('mousedown', leftClick);
         return waitUntil(chooseThirdItem).should.be.fulfilled;
       });

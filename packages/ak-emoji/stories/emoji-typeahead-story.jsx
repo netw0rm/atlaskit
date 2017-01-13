@@ -3,7 +3,7 @@ import React from 'react';
 
 import { name } from '../package.json';
 import EmojiTextInput from './demo-emoji-typeahead-text-input';
-import emojiService from './story-data';
+import { storyEmojiService } from './story-data';
 
 const bottomStyle = {
   position: 'absolute',
@@ -24,7 +24,7 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
     <EmojiTextInput
       label="Emoji search"
       onSelection={action('emoji selected')}
-      emojiService={emojiService}
+      emojiService={storyEmojiService}
       position="bottom left"
       afterContent
     />
@@ -33,7 +33,7 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
     <EmojiTextInput
       label="Emoji search"
       onSelection={action('emoji selected')}
-      emojiService={emojiService}
+      emojiService={storyEmojiService}
       beforeContent
       afterContent
     />
@@ -43,7 +43,7 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
       <EmojiTextInput
         label="Emoji search"
         onSelection={action('emoji selected')}
-        emojiService={emojiService}
+        emojiService={storyEmojiService}
         position="top left"
         beforeContent
       />
@@ -55,7 +55,7 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
         <EmojiTextInput
           label="Emoji search"
           onSelection={action('emoji selected')}
-          emojiService={emojiService}
+          emojiService={storyEmojiService}
           position="top left"
           beforeContent
           afterContent

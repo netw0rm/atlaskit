@@ -2,7 +2,48 @@ import { denormaliseEmojis } from '../src/api/EmojiResource';
 import EmojiService from '../src/api/EmojiService';
 import emojiData from './story-data.json';
 
-export const emojis = denormaliseEmojis(emojiData);
+const testingImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQImWP4//8/AAX+Av5Y8msOAAAAAElFTkSuQmCC';
+
+const testify = (emojis) => {
+  const copy = JSON.parse(JSON.stringify(emojis));
+  return copy.map((emoji) => {
+    if (emoji.representation) {
+      if (emoji.representation.imagePath) {
+        emoji.representation.imagePath = testingImage;
+      }
+      if (emoji.representation.sprite) {
+        emoji.representation.sprite.url = testingImage;
+      }
+      if (emoji.representation.spriteRef) {
+        emoji.representation.spriteRef = testingImage;
+      }
+    }
+    if (emoji.skinVariations && emoji.skinVariations.length) {
+      emoji.skinVariations.forEach((variation) => {
+        if (variation.imagePath) {
+          variation.imagePath = testingImage;
+        }
+        if (variation.sprite) {
+          variation.sprite.url = testingImage;
+        }
+        if (variation.spriteRef) {
+          variation.spriteRef = testingImage;
+        }
+      });
+    }
+    return emoji;
+  });
+};
+
+export const storyEmojis = denormaliseEmojis(emojiData);
+export const testingEmojis = testify(denormaliseEmojis(emojiData));
+
+// Double check we've not missed any (e.g. data structure changes)
+JSON.stringify(testingEmojis, null, 2).split('\n').forEach((line) => {
+  if (line.indexOf('http') > -1) {
+    console.log('WARNING - still some urls in testingEmojis', line);
+  }
+});
 
 export const lorem = `
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tincidunt,
@@ -18,4 +59,5 @@ ullamcorper lectus mi, quis varius libero ultricies nec. Quisque tempus neque li
 a semper massa dignissim nec.
 `;
 
-export default new EmojiService(emojis);
+export const storyEmojiService = new EmojiService(storyEmojis);
+export const testingEmojiService = new EmojiService(testingEmojis);

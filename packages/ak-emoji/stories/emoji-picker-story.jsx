@@ -2,7 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
 import { name } from '../package.json';
-import emojiService, { lorem } from './story-data';
+import { storyEmojiService, lorem } from './story-data';
 
 import EmojiPicker from '../src/EmojiPicker';
 
@@ -18,7 +18,7 @@ storiesOf(`${name}/EmojiPicker`, module)
       />
       <p style={{ width: '400px' }}>{lorem}</p>
       <EmojiPicker
-        emojiService={emojiService}
+        emojiService={storyEmojiService}
         onSelection={action('emoji selected')}
         target="#picker-input"
         position="left bottom"
@@ -29,7 +29,7 @@ storiesOf(`${name}/EmojiPicker`, module)
     <div style={{ padding: '10px' }} >
       <p style={{ width: '400px' }}>{lorem}</p>
       <EmojiPicker
-        emojiService={emojiService}
+        emojiService={storyEmojiService}
         onSelection={action('emoji selected')}
       />
       <p style={{ width: '400px' }}>{lorem}</p>

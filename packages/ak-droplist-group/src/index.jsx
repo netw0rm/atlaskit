@@ -3,18 +3,8 @@ import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
 
 /* eslint-disable react/no-unused-prop-types */
-/**
- * @description Group related items together under one heading
- * @class Group
- */
 export default class Group extends PureComponent {
   static propTypes = {
-    /**
-     * @description (Optional) Heading of the group
-     * @memberof Group
-     * @instance
-     * @type {String}
-     */
     heading: PropTypes.string,
     elemAfter: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     children: PropTypes.node,
@@ -44,9 +34,13 @@ export default class Group extends PureComponent {
 
   getAriaLabel = () => {
     const { props } = this;
-    const elemAfter = props.elemAfter && (typeof props.elemAfter === 'string' ? props.elemAfter :
-        ReactDOM.findDOMNode(props.elemAfter).textContent); // eslint-disable-line react/no-find-dom-node, max-len
-    return `${props.heading} ${elemAfter}`;
+    // debugger;
+    const elemAfter = props.elemAfter &&
+      (typeof props.elemAfter === 'string' ?
+        props.elemAfter :
+        ReactDOM.findDOMNode(this).querySelector(`.${styles.elemAfter}`).textContent); // eslint-disable-line react/no-find-dom-node, max-len
+
+    return `${props.heading} ${elemAfter || ''}`;
   }
 
   render = () => {

@@ -48,7 +48,7 @@ storiesOf(name, module)
       </DropImitation>
     </GroupsWrapper>
   ))
-  .add('groups without right space', () => (
+  .add('groups with right space', () => (
     <GroupsWrapper>
       <DropImitation>
         <Group heading="Issue Actions" elemAfter={<div>123</div>}>

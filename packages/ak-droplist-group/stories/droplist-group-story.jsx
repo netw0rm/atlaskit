@@ -31,7 +31,7 @@ storiesOf(name, module)
       </DropImitation>
     </GroupsWrapper>
   ))
-  .add('simple groups without headings', () => (
+  .add('simple group without heading', () => (
     <GroupsWrapper>
       <DropImitation>
         <Group>
@@ -40,8 +40,6 @@ storiesOf(name, module)
           <Item>Perth</Item>
           <Item>Adelaide</Item>
           <Item>Canberra</Item>
-        </Group>
-        <Group>
           <Item>London</Item>
           <Item>Cardiff</Item>
           <Item>Edinburgh</Item>
@@ -49,4 +47,22 @@ storiesOf(name, module)
         </Group>
       </DropImitation>
     </GroupsWrapper>
+  ))
+  .add('groups without right space', () => (
+    <GroupsWrapper>
+      <DropImitation>
+        <Group heading="Issue Actions" elemAfter={<div>123</div>}>
+          <Item>Edit</Item>
+          <Item>Assign</Item>
+          <Item>Assign to me</Item>
+          <Item>Comment</Item>
+          <Item>Report as spam</Item>
+        </Group>
+        <Group heading="Workflow" elemAfter="AK-1405">
+          <Item>Resolve</Item>
+          <Item>Back in progress</Item>
+        </Group>
+      </DropImitation>
+    </GroupsWrapper>
   ));
+

@@ -1,0 +1,55 @@
+# Inline Dialog
+
+The Inline Dialog is a container for secondary content and controls that are displayed on user request.
+
+![Example inline dialog](https://i.imgur.com/y4YJ27Y.gif)
+
+## Try it out
+
+Interact with a [live demo of the ak-inline-dialog component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-inline-dialog/@VERSION@/).
+
+## Installation
+
+```sh
+npm install ak-inline-dialog
+```
+
+## Using the component
+
+`ak-inline-dialog` is a React component that can wrap content and then toggle the display of an aligned dialog box.
+
+Example usage:
+
+```js
+import React, { PropTypes, PureComponent } from 'react';
+import AKInlineDialog from 'ak-inline-dialog';
+
+class ButtonActivatedDialog extends PureComponent {
+  static propTypes = {
+    content: PropTypes.node,
+    position: PropTypes.string,
+  }
+
+  state = {
+    isOpen: false,
+  };
+
+  handleClick = () => {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
+  }
+
+  render = () => (
+    <AKInlineDialog
+      content={this.props.content}
+      position={this.props.position}
+      isOpen={this.state.isOpen}
+    >
+      <button onClick={this.handleClick} />
+    </AKInlineDialog>
+  )
+}
+```
+
+This would allow you to use the `ButtonActivatedDialog` class to render something similar to the example gif above.

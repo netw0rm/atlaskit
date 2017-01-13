@@ -139,11 +139,18 @@ describe('block-type', () => {
     expect(pm.doc).to.deep.equal(doc(p('text')));
   });
 
-  it('should not be able to change block types when selecting two nodes', () => {
+  it('should be able to change block types when selecting two nodes', () => {
     const { pm, plugin } = editor(doc(p('li{<}ne1'), p('li{>}ne2')));
 
     plugin.changeBlockType('heading1');
-    expect(pm.doc).to.deep.equal(doc(p('line1'), p('line2')));
+    expect(pm.doc).to.deep.equal(doc(h1('line1'), h1('line2')));
+  });
+
+  it('should be able to change multiple paragraphs into one blockquote', () => {
+    const { pm, plugin } = editor(doc(p('li{<}ne1'), p('li{>}ne2'), p('li{>}ne3')));
+
+    plugin.changeBlockType('blockquote');
+    expect(pm.doc).to.deep.equal(doc(blockquote(p('li{<}ne1'), p('li{>}ne2'), p('li{>}ne3'))));
   });
 
   it('should change state when selecting different block types', () => {
@@ -432,8 +439,7 @@ describe('block-type', () => {
           const lift = sinon.spy(commands, 'lift');
 
           plugin.toggleBlockType('heading1');
-
-          expect(lift).to.have.been.calledWith(pm);
+          expect(pm.doc).to.deep.equal(doc(h1('text')));
         });
       });
 

@@ -23,6 +23,7 @@ export default class Navigation extends PureComponent {
     containerAppearance: PropTypes.string,
     containerHeader: PropTypes.node,
     createDrawerContent: PropTypes.node,
+    searchDrawerContent: PropTypes.node,
     globalAccountItem: PropTypes.node,
     globalCreateIcon: PropTypes.node,
     globalHelpItem: PropTypes.node,
@@ -37,10 +38,11 @@ export default class Navigation extends PureComponent {
     isSearchDrawerOpen: PropTypes.bool,
     linkComponent: PropTypes.func,
     onBlanketClicked: PropTypes.func,
-    onCreateDrawerActivated: PropTypes.func,
+    onCreateDrawerClose: PropTypes.func,
+    onCreateDrawerOpen: PropTypes.func,
     onResize: PropTypes.func,
-    onSearchDrawerActivated: PropTypes.func,
-    searchDrawerContent: PropTypes.node,
+    onSearchDrawerClose: PropTypes.func,
+    onSearchDrawerOpen: PropTypes.func,
     width: PropTypes.number,
   };
 
@@ -55,9 +57,11 @@ export default class Navigation extends PureComponent {
     isSearchDrawerOpen: false,
     linkComponent: DefaultLinkComponent,
     onBlanketClicked: () => {},
-    onCreateDrawerActivated: () => {},
+    onCreateDrawerClose: () => {},
+    onCreateDrawerOpen: () => {},
     onResize: () => {},
-    onSearchDrawerActivated: () => {},
+    onSearchDrawerClose: () => {},
+    onSearchDrawerOpen: () => {},
     width: navigationOpenWidth,
   };
 
@@ -114,8 +118,10 @@ export default class Navigation extends PureComponent {
       isSearchDrawerOpen,
       linkComponent,
       onBlanketClicked,
-      onCreateDrawerActivated,
-      onSearchDrawerActivated,
+      onCreateDrawerClose,
+      onCreateDrawerOpen,
+      onSearchDrawerClose,
+      onSearchDrawerOpen,
       searchDrawerContent,
     } = this.props;
 
@@ -145,12 +151,16 @@ export default class Navigation extends PureComponent {
               shouldAnimate={shouldAnimate}
               width={getGlobalWidth(this.getRenderedWidth())}
             >
-              <DrawerTrigger onActivate={onSearchDrawerActivated}>
+              <DrawerTrigger
+                onActivate={isSearchDrawerOpen ? onSearchDrawerClose : onSearchDrawerOpen}
+              >
                 <GlobalItem isSelected={isSearchDrawerOpen} size="medium">
                   {globalSearchIcon}
                 </GlobalItem>
               </DrawerTrigger>
-              <DrawerTrigger onActivate={onCreateDrawerActivated}>
+              <DrawerTrigger
+                onActivate={isCreateDrawerOpen ? onCreateDrawerClose : onCreateDrawerOpen}
+              >
                 <GlobalItem isSelected={isCreateDrawerOpen} size="medium">
                   {globalCreateIcon}
                 </GlobalItem>
@@ -163,6 +173,7 @@ export default class Navigation extends PureComponent {
               isOpen={isSearchDrawerOpen}
               isWide
               primaryIcon={globalPrimaryIcon}
+              onBackButton={onSearchDrawerClose}
             >
               {searchDrawerContent}
             </Drawer>
@@ -170,6 +181,7 @@ export default class Navigation extends PureComponent {
               header={containerHeader}
               isOpen={isCreateDrawerOpen}
               primaryIcon={globalPrimaryIcon}
+              onBackButton={onCreateDrawerClose}
             >
               {createDrawerContent}
             </Drawer>

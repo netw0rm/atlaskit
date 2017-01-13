@@ -156,8 +156,10 @@ storiesOf(name, module)
   .add('with controllable drawers', () => (
     <Page>
       <BasicNavigation
-        onSearchDrawerActivated={action('search-activated')}
-        onCreateDrawerActivated={action('create-activated')}
+        onCreateDrawerClose={action('create-close')}
+        onCreateDrawerOpen={action('create-open')}
+        onSearchDrawerClose={action('search-close')}
+        onSearchDrawerOpen={action('search-open')}
       />
     </Page>
   ))

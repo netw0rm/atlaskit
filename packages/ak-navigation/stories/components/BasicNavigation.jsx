@@ -62,9 +62,14 @@ export default class BasicNavigation extends PureComponent {
     };
   }
 
-  activate = name =>
+  openDrawer = name =>
     () => this.setState({
-      openDrawer: this.state.openDrawer === name ? null : name,
+      openDrawer: name,
+    });
+
+  closeDrawer = () =>
+    () => this.setState({
+      openDrawer: null,
     });
 
   resize = (resizeState) => {
@@ -146,8 +151,10 @@ export default class BasicNavigation extends PureComponent {
             </AkGlobalItem>
           </AkDropdownMenu>
         }
-        onSearchDrawerActivated={this.activate('search')}
-        onCreateDrawerActivated={this.activate('create')}
+        onCreateDrawerClose={this.closeDrawer()}
+        onCreateDrawerOpen={this.openDrawer('create')}
+        onSearchDrawerClose={this.closeDrawer()}
+        onSearchDrawerOpen={this.openDrawer('search')}
         isCreateDrawerOpen={this.state.openDrawer === 'create'}
         isSearchDrawerOpen={this.state.openDrawer === 'search'}
         onBlanketClicked={action('blanket clicked')}

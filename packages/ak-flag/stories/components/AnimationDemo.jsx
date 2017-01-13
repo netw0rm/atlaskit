@@ -35,7 +35,6 @@ export default class AnimationDemo extends PureComponent {
   addFlag = () => {
     const flags = this.state.flags.slice();
     flags.splice(0, 0, this.newFlag());
-
     this.setState({ flags });
   }
 
@@ -58,6 +57,10 @@ export default class AnimationDemo extends PureComponent {
                 icon={<GreenSuccessIcon />}
                 title={`${flag.key}: ${flag.title}`}
                 description={flag.description}
+                actions={[
+                  { content: 'Nice one!', onClick: action('Nice one!') },
+                  { content: 'Not right now thanks', onClick: action('Not right now thanks') },
+                ]}
               />
             ))
           }

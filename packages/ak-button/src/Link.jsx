@@ -8,11 +8,13 @@ export default class Link extends PureComponent {
     isDisabled: PropTypes.bool,
     className: PropTypes.string,
     children: PropTypes.node,
+    onClick: PropTypes.func,
     tabIndex: PropTypes.number,
   }
 
   static defaultProps = {
     isDisabled: false,
+    onClick: () => {},
   }
 
   onMouseDown = (e) => {
@@ -28,6 +30,7 @@ export default class Link extends PureComponent {
         target={props.target}
         disabled={props.isDisabled}
         className={props.className}
+        onClick={props.onClick}
         onMouseDown={this.onMouseDown}
         tabIndex={props.tabIndex}
       >

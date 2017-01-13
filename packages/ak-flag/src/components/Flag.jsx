@@ -1,10 +1,15 @@
 import React, { PropTypes, PureComponent } from 'react';
+import Button from 'ak-button';
 import styles from 'style!../less/Flag.less';
 import CancelIcon from 'ak-icon/glyph/cancel';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Flag extends PureComponent {
   static propTypes = {
+    actions: PropTypes.arrayOf(PropTypes.shape({
+      content: PropTypes.node,
+      onClick: PropTypes.func,
+    })),
     description: PropTypes.string,
     icon: PropTypes.element.isRequired,
     id: PropTypes.oneOfType([
@@ -17,12 +22,32 @@ export default class Flag extends PureComponent {
   };
 
   static defaultProps = {
+    actions: [],
     isDismissAllowed: false,
     onDismissed: () => {},
   }
 
   flagDismissed = () => {
     this.props.onDismissed(this.props.id);
+  }
+
+  renderActions = () => {
+    if (!this.props.actions.length) return null;
+
+    const items = this.props.actions.map((action, index) => (
+      <div key={index} className={styles.actionsItem}>
+        <Button
+          appearance="link"
+          className={styles.actionButton}
+          onClick={action.onClick}
+          spacing="none"
+        >
+          {action.content}
+        </Button>
+      </div>
+    ));
+
+    return <div className={styles.actionsContainer}>{items}</div>;
   }
 
   render() {
@@ -58,6 +83,7 @@ export default class Flag extends PureComponent {
               </div>
             ) : null
           }
+          { this.renderActions() }
         </div>
       </div>
     );

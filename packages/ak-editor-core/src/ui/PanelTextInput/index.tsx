@@ -16,16 +16,13 @@ export interface State {
 }
 
 export default class PanelTextInput extends PureComponent<Props, State> {
-  state: State = {
-    value: ''
-  };
   private input?: HTMLInputElement;
 
   constructor(props) {
     super(props);
 
     this.state = {
-      value: props.defaultValue
+      value: props.defaultValue || ''
     };
   }
 

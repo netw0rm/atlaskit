@@ -19,7 +19,9 @@
   },
   "devDependencies": {
     "ak-avatar": "^5.1.1",
-    "ak-editor-bitbucket": "^6.1.0"
+    "ak-comment": "*",
+    "ak-editor-bitbucket": "^6.1.0",
+    "akutil-readme": "^1.1.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

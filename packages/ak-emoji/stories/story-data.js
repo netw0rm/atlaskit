@@ -6,7 +6,7 @@ const testingImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIA
 
 const testify = (emojis) => {
   const copy = JSON.parse(JSON.stringify(emojis));
-  return copy.map((emoji) => {
+  copy.forEach((emoji) => {
     if (emoji.representation) {
       if (emoji.representation.imagePath) {
         emoji.representation.imagePath = testingImage;
@@ -31,12 +31,12 @@ const testify = (emojis) => {
         }
       });
     }
-    return emoji;
   });
+  return copy;
 };
 
 export const storyEmojis = denormaliseEmojis(emojiData);
-export const testingEmojis = testify(denormaliseEmojis(emojiData));
+export const testingEmojis = testify(storyEmojis);
 
 // Double check we've not missed any (e.g. data structure changes)
 JSON.stringify(testingEmojis, null, 2).split('\n').forEach((line) => {

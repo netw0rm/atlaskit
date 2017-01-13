@@ -30,8 +30,6 @@ export default class EmojiPickerListCategory extends PureComponent {
   }
 
   render() {
-    console.log('EmojiPickerListCategory render', this.props.title, this.props.selectedEmojiShortcut);
-
     const { id, selectedEmojiShortcut, emojis, title } = this.props;
 
     return (

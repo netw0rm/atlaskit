@@ -150,7 +150,6 @@ export default class EmojiPickerList extends PureComponent {
 
   checkCategoryChange = (event, firstElement) => {
     const currentCategory = closestCategory(firstElement);
-    console.log('category', currentCategory);
     if (this.activeCategory !== currentCategory) {
       this.activeCategory = currentCategory;
       this.props.onCategoryActivated(currentCategory);
@@ -183,8 +182,6 @@ export default class EmojiPickerList extends PureComponent {
 
   render() {
     const classes = [styles.emojiPickerList];
-
-    console.log('----------------\nRender EmojiPickerList (slow)');
 
     return (
       <div

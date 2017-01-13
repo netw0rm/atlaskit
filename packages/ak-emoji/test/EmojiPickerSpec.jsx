@@ -12,7 +12,6 @@ import EmojiButton from '../src/internal/common/EmojiButton';
 import EmojiPicker from '../src/EmojiPicker';
 import EmojiPickerFooter from '../src/internal/picker/EmojiPickerFooter';
 import EmojiPickerList from '../src/internal/picker/EmojiPickerList';
-import EmojiPickerListCategory from '../src/internal/picker/EmojiPickerListCategory';
 import EmojiPickerListSearch from '../src/internal/picker/EmojiPickerListSearch';
 
 chai.use(chaiAsPromised);
@@ -72,7 +71,7 @@ describe('<EmojiPicker />', () => {
     const footer = component.find(EmojiPickerFooter);
     const list = component.find(EmojiPickerList);
     const hoverButton = list.find(EmojiButton).at(hoverOffset);
-    hoverButton.simulate('mouseover');
+    hoverButton.simulate('mouseenter');
     const previewEmoji = footer.find(Emoji);
     expect(previewEmoji.length, 'Emoji preview after hover').to.equal(1);
     expect(previewEmoji.prop('id'), 'First emoji displayed').to.equal(allEmojis[hoverOffset].id);
@@ -81,16 +80,15 @@ describe('<EmojiPicker />', () => {
   it('selecting category should show that category', () => {
     const component = setupPicker();
     const categorySelector = component.find(CategorySelector);
+
     const list = component.find(EmojiPickerList);
-    const flagCategory1 = list.find(EmojiPickerListCategory).filterWhere(n => n.prop('title') === 'FLAGS');
-    // This will stop working if we stop using react-virtualized - will need
-    // to check scroll position instead
-    expect(flagCategory1.length, 'Flags category not yet displayed').to.equal(0);
+    expect(list.prop('selectedCategory'), 'Flags category not yet selected').to.not.equal('FLAGS');
+
     const flagCategoryButton = categorySelector.find('button').filterWhere(n => n.key() === 'Flags');
     expect(flagCategoryButton.length, 'Flag category button').to.equal(1);
     flagCategoryButton.simulate('click', leftClick);
-    const flagCategory2 = list.find(EmojiPickerListCategory).filterWhere(n => n.prop('title') === 'FLAGS');
-    expect(flagCategory2.length, 'Flags category displayed').to.equal(1);
+
+    expect(list.prop('selectedCategory'), 'Flags category selected').to.equal('FLAGS');
   });
 
   it('selecting emoji should trigger onSelection', () => {

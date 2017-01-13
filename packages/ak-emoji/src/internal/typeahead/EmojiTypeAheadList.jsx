@@ -4,11 +4,12 @@ import classNames from 'classnames';
 import React, { PropTypes, PureComponent } from 'react';
 
 import EmojiItem from './EmojiTypeAheadItem';
-import Scrollable from './Scrollable';
+import Scrollable from '../common/Scrollable';
 
 import EmojiPropTypes from '../ak-emoji-prop-types';
 import debug from '../logger';
 import { mouseLocation, actualMouseMove } from '../mouse';
+import { emojiTypeAheadHeight } from '../../shared-variables';
 
 function wrapIndex(emojis, index) {
   const len = emojis.length;
@@ -182,6 +183,7 @@ export default class EmojiTypeAheadList extends PureComponent {
         <div className={classes}>
           <Scrollable
             ref={(ref) => { this.scrollable = ref; }}
+            maxHeight={`${emojiTypeAheadHeight}px`}
           >
             {this.renderItems(emojis)}
           </Scrollable>

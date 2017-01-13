@@ -1,14 +1,23 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
-import { List } from 'react-virtualized';
+import uid from 'uid';
+
 import styles from 'style!../../style.less';
 import EmojiPropTypes from '../ak-emoji-prop-types';
 import EmojiPickerListCategory from './EmojiPickerListCategory';
-import EmojiPickerListRow from './EmojiPickerListRow';
-import EmojiPickerListSearch from './EmojiPickerListSearch';
-import { emojiPickerListWidth, emojiPickerListHeight } from '../../shared-variables';
+import EmojiPickerListSearch from '../picker/EmojiPickerListSearch';
+import Scrollable from '../common/Scrollable';
+import { emojiPickerListHeight } from '../../shared-variables';
 
-const emojiPerRow = 8;
+const categoryClassname = 'emoji-category';
+
+const closestCategory = (element) => {
+  const categoryElement = element.closest(`.${categoryClassname}`);
+  if (categoryElement) {
+    return categoryElement.getAttribute('data-category-id');
+  }
+  return null;
+};
 
 export default class EmojiPickerList extends PureComponent {
   static propTypes = {
@@ -31,7 +40,9 @@ export default class EmojiPickerList extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.groupedItems = this.buildList(props.emojis, props.selectedTone);
+    this.idSuffix = uid();
+    this.groups = this.buildList(props.emojis, props.selectedTone);
+    this.activeCategory = null;
 
     let selectedEmoji = props.emojis[0];
     if (props.selectedCategory) {
@@ -56,40 +67,24 @@ export default class EmojiPickerList extends PureComponent {
     }
 
     if (nextProps.selectedCategory) {
-      for (this.initialListIndex = 0;
-           this.initialListIndex < this.groupedItems.length;
-           this.initialListIndex++) {
-        if (nextProps.selectedCategory &&
-          this.groupedItems[this.initialListIndex].category === nextProps.selectedCategory) {
-          this.setState({
-            initialListIndex: this.initialListIndex,
-          });
-
-          break;
-        }
-      }
+      this.reveal(nextProps.selectedCategory);
     }
   };
 
   componentWillUpdate = (nextProps) => {
     if (this.props.emojis !== nextProps.emojis ||
       this.props.selectedTone !== nextProps.selectedTone) {
-      this.groupedItems = this.buildList(nextProps.emojis, nextProps.selectedTone);
+      this.groups = this.buildList(nextProps.emojis, nextProps.selectedTone);
     }
   };
 
+  // Internal
   onEmojiMouseEnter = (emoji) => {
-    this.setState({
-      selectedEmoji: emoji,
-    });
-    this.props.onEmojiActive(emoji);
-  };
-
-  onRowsRendered = ({ startIndex }) => {
-    const firstVisibleItem = this.groupedItems[startIndex];
-    if (this.activeCategory !== firstVisibleItem.category) {
-      this.activeCategory = firstVisibleItem.category;
-      this.props.onCategoryActivated(this.activeCategory);
+    if (!this.state.selectedEmoji || this.state.selectedEmoji.id !== emoji.id) {
+      this.setState({
+        selectedEmoji: emoji,
+      });
+      this.props.onEmojiActive(emoji);
     }
   };
 
@@ -107,26 +102,20 @@ export default class EmojiPickerList extends PureComponent {
     this.props.onSearch(e.target.value);
   };
 
-  getItemSize = ({ index }) => {
-    const item = this.groupedItems[index];
-    if (item.type === 'emoji') {
-      return 40;
-    } else if (item.type === 'search') {
-      return 50;
-    } else if (item.type === 'category') {
-      return 25;
-    }
-
-    return 20;
-  };
+  /**
+   * Scrolls to a category in the list view
+   */
+  reveal(category) {
+    this.scrollable.reveal(`#${this.categoryId(category)}`, true);
+  }
 
   buildList = (emojis, selectedTone) => {
+    const existingCategories = new Map();
+
     let currentGroup;
     let currentCategory = null;
 
-    const list = [{
-      type: 'search',
-    }];
+    const list = [];
     for (let i = 0; i < emojis.length; i++) {
       let emoji = emojis[i];
 
@@ -138,82 +127,58 @@ export default class EmojiPickerList extends PureComponent {
       }
 
       if (currentCategory !== emoji.category) {
-        if (currentGroup) {
-          list.push(currentGroup);
-        }
-
-        currentGroup = {
-          type: 'emoji',
-          emojis: [],
-          category: currentCategory,
-        };
-
-        list.push({
-          type: 'category',
-          title: emoji.category,
-          category: emoji.category,
-        });
-
         currentCategory = emoji.category;
-      }
-
-      if (currentGroup.emojis.length === emojiPerRow) {
-        if (currentGroup) {
+        if (existingCategories.has(currentCategory)) {
+          currentGroup = existingCategories.get(currentCategory);
+        } else {
+          currentGroup = {
+            emojis: [],
+            title: currentCategory,
+            category: currentCategory,
+          };
+          existingCategories.set(currentCategory, currentGroup);
           list.push(currentGroup);
         }
-        currentGroup = {
-          type: 'emoji',
-          emojis: [],
-          category: currentCategory,
-        };
       }
-
-      if (i === emojis.length - 1 && currentGroup) {
-        list.push(currentGroup);
-      }
-
       currentGroup.emojis.push(emoji);
     }
 
     return list;
   };
 
-  renderItem = ({ index, key, style }) => {
-    const item = this.groupedItems[index];
+  categoryId = category => `category_${category}_${this.idSuffix}`;
 
-    if (item.type === 'emoji') {
-      const selectedShortcut = this.state.selectedEmoji && this.state.selectedEmoji.shortcut;
-      return (
-        <EmojiPickerListRow
-          key={key}
-          style={style}
-          emojis={item.emojis}
-          selectedEmojiShortcut={selectedShortcut}
-          onEmojiMouseEnter={emoji => this.onEmojiMouseEnter(emoji)}
-          onEmojiSelected={emoji => this.props.onEmojiSelected(emoji)}
-        />
-      );
-    } else if (item.type === 'category') {
+  checkCategoryChange = (event, firstElement) => {
+    const currentCategory = closestCategory(firstElement);
+    if (this.activeCategory !== currentCategory) {
+      this.activeCategory = currentCategory;
+      this.props.onCategoryActivated(currentCategory);
+    }
+  }
+
+  renderGroups = () => {
+    const selectedShortcut = this.state.selectedEmoji && this.state.selectedEmoji.shortcut;
+    const selectedCategory = this.state.selectedEmoji && this.state.selectedEmoji.category;
+
+    return this.groups.map((group) => {
+      // Optimisation - avoid re-rendering unaffected groups for the current selectedShortcut
+      // by not passing it to irrelevant groups
+      const groupShortcut = selectedCategory === group.category ? selectedShortcut : undefined;
+
       return (
         <EmojiPickerListCategory
-          key={key}
-          style={style}
-          title={item.title}
+          title={group.title}
+          emojis={group.emojis}
+          key={group.category}
+          selectedEmojiShortcut={groupShortcut}
+          onEmojiMouseEnter={this.onEmojiMouseEnter}
+          onEmojiSelected={this.props.onEmojiSelected}
+          id={this.categoryId(group.category)}
+          className={categoryClassname}
         />
       );
-    } else if (item.type === 'search') {
-      return (
-        <EmojiPickerListSearch
-          key={key}
-          style={style}
-          onChange={this.onSearch}
-          query={this.state.query}
-        />
-      );
-    }
-
-    return null;
-  };
+    });
+  }
 
   render() {
     const classes = [styles.emojiPickerList];
@@ -223,21 +188,17 @@ export default class EmojiPickerList extends PureComponent {
         className={classNames(classes)}
         onMouseLeave={this.onMouseLeave}
       >
-        <List
-          rowRenderer={this.renderItem}
-          rowCount={this.groupedItems.length}
-          rowHeight={this.getItemSize}
-          width={emojiPickerListWidth}
-          height={emojiPickerListHeight}
-          onRowsRendered={this.onRowsRendered}
-          scrollToIndex={this.state.initialListIndex}
-          scrollToAlignment="start"
-          style={{
-            willChange: 'auto', // https://github.com/bvaughn/react-virtualized/issues/453
-          }}
-          ref={(list) => { this.list = list; }}
-          selectedEmoji={this.state.selectedEmoji}
-        />
+        <Scrollable
+          ref={(ref) => { this.scrollable = ref; }}
+          maxHeight={`${emojiPickerListHeight}px`}
+          onScroll={this.checkCategoryChange}
+        >
+          <EmojiPickerListSearch
+            onChange={this.onSearch}
+            query={this.state.query}
+          />
+          {this.renderGroups()}
+        </Scrollable>
       </div>
     );
   }

@@ -6,8 +6,19 @@ import styles from 'style!../../style.less';
 import EmojiPropTypes from '../ak-emoji-prop-types';
 import EmojiPickerListCategory from './EmojiPickerListCategory';
 import EmojiPickerListSearch from '../picker/EmojiPickerListSearch';
-import Scrollable from '../typeahead/Scrollable';
+import Scrollable from '../common/Scrollable';
 import { emojiPickerListHeight } from '../../shared-variables';
+
+const categoryClassname = 'emoji-category';
+
+const closestCategory = (element) => {
+  const categoryElement = element.closest(`.${categoryClassname}`);
+  console.log('categoryElement', categoryElement);
+  if (categoryElement) {
+    return categoryElement.getAttribute('data-category-id');
+  }
+  return null;
+};
 
 export default class EmojiPickerList extends PureComponent {
   static propTypes = {
@@ -32,6 +43,7 @@ export default class EmojiPickerList extends PureComponent {
 
     this.idSuffix = uid();
     this.groups = this.buildList(props.emojis, props.selectedTone);
+    this.activeCategory = null;
 
     let selectedEmoji = props.emojis[0];
     if (props.selectedCategory) {
@@ -56,18 +68,19 @@ export default class EmojiPickerList extends PureComponent {
     }
 
     if (nextProps.selectedCategory) {
-      for (this.initialListIndex = 0;
-           this.initialListIndex < this.groups.length;
-           this.initialListIndex++) {
-        if (nextProps.selectedCategory &&
-          this.groups[this.initialListIndex].category === nextProps.selectedCategory) {
-          this.setState({
-            initialListIndex: this.initialListIndex,
-          });
+      // for (this.initialListIndex = 0;
+      //      this.initialListIndex < this.groups.length;
+      //      this.initialListIndex++) {
+      //   if (nextProps.selectedCategory &&
+      //     this.groups[this.initialListIndex].category === nextProps.selectedCategory) {
+      //     this.setState({
+      //       initialListIndex: this.initialListIndex,
+      //     });
 
-          break;
-        }
-      }
+      //     break;
+      //   }
+      // }
+      this.reveal(nextProps.selectedCategory);
     }
   };
 
@@ -78,6 +91,7 @@ export default class EmojiPickerList extends PureComponent {
     }
   };
 
+  // Internal
   onEmojiMouseEnter = (emoji) => {
     if (!this.state.selectedEmoji || this.state.selectedEmoji.id !== emoji.id) {
       this.setState({
@@ -110,7 +124,16 @@ export default class EmojiPickerList extends PureComponent {
     this.props.onSearch(e.target.value);
   };
 
+  /**
+   * Scrolls to a category in the list view
+   */
+  reveal(category) {
+    this.scrollable.reveal(`#${this.categoryId(category)}`, true);
+  }
+
   buildList = (emojis, selectedTone) => {
+    const existingCategories = new Map();
+
     let currentGroup;
     let currentCategory = null;
 
@@ -127,15 +150,18 @@ export default class EmojiPickerList extends PureComponent {
 
       if (currentCategory !== emoji.category) {
         currentCategory = emoji.category;
-        currentGroup = {
-          emojis: [],
-          title: currentCategory,
-          category: currentCategory,
-        };
-
-        list.push(currentGroup);
+        if (existingCategories.has(currentCategory)) {
+          currentGroup = existingCategories.get(currentCategory);
+        } else {
+          currentGroup = {
+            emojis: [],
+            title: currentCategory,
+            category: currentCategory,
+          };
+          existingCategories.set(currentCategory, currentGroup);
+          list.push(currentGroup);
+        }
       }
-
       currentGroup.emojis.push(emoji);
     }
 
@@ -143,6 +169,15 @@ export default class EmojiPickerList extends PureComponent {
   };
 
   categoryId = category => `category_${category}_${this.idSuffix}`;
+
+  checkCategoryChange = (event, firstElement) => {
+    const currentCategory = closestCategory(firstElement);
+    console.log('category', currentCategory);
+    if (this.activeCategory !== currentCategory) {
+      this.activeCategory = currentCategory;
+      this.props.onCategoryActivated(currentCategory);
+    }
+  }
 
   renderGroups = () => {
     const selectedShortcut = this.state.selectedEmoji && this.state.selectedEmoji.shortcut;
@@ -162,6 +197,7 @@ export default class EmojiPickerList extends PureComponent {
           onEmojiMouseEnter={this.onEmojiMouseEnter}
           onEmojiSelected={this.props.onEmojiSelected}
           id={this.categoryId(group.category)}
+          className={categoryClassname}
         />
       );
     });
@@ -180,6 +216,7 @@ export default class EmojiPickerList extends PureComponent {
         <Scrollable
           ref={(ref) => { this.scrollable = ref; }}
           maxHeight={`${emojiPickerListHeight}px`}
+          onScroll={this.checkCategoryChange}
         >
           <EmojiPickerListSearch
             onChange={this.onSearch}

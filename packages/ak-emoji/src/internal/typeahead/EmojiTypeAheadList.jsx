@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import React, { PropTypes, PureComponent } from 'react';
 
 import EmojiItem from './EmojiTypeAheadItem';
-import Scrollable from './Scrollable';
+import Scrollable from '../common/Scrollable';
 
 import EmojiPropTypes from '../ak-emoji-prop-types';
 import debug from '../logger';

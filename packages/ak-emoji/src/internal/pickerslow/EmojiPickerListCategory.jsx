@@ -12,6 +12,7 @@ export default class EmojiPickerListCategory extends PureComponent {
     selectedEmojiShortcut: PropTypes.string,
     onEmojiSelected: PropTypes.func,
     onEmojiMouseEnter: PropTypes.func,
+    className: PropTypes.string,
   };
 
   static defaultProps = {
@@ -34,7 +35,11 @@ export default class EmojiPickerListCategory extends PureComponent {
     const { id, selectedEmojiShortcut, emojis, title } = this.props;
 
     return (
-      <div id={id}>
+      <div
+        id={id}
+        data-category-id={title}
+        className={this.props.className}
+      >
         <div className={styles.categoryTitle} >
           {title}
         </div>

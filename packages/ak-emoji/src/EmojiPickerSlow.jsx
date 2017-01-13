@@ -87,6 +87,9 @@ export default class EmojiPicker extends PureComponent {
         selectedCategory: categoryId,
         selectedEmoji: emojisInCategory[0],
       });
+      // if (this.emojiPickerListRef) {
+      //   this.emojiPickerListRef.reveal(categoryId);
+      // }
     }
   }
 
@@ -119,6 +122,10 @@ export default class EmojiPicker extends PureComponent {
     });
   }
 
+  onEmojiPickerListRef = (ref) => {
+    this.emojiPickerListRef = ref;
+  }
+
   render() {
     const { emojiService, target, position, zIndex, offsetX, offsetY } = this.props;
     const classes = [styles.emojiPicker];
@@ -139,6 +146,7 @@ export default class EmojiPicker extends PureComponent {
           onSearch={this.onSearch}
           selectedTone={this.state.selectedTone}
           query={this.state.currentQuery}
+          ref={this.onEmojiPickerListRef}
         />
         <EmojiPickerFooter
           selectedEmoji={this.state.selectedEmoji}

@@ -21,20 +21,37 @@ export default class Scrollable extends PureComponent {
       PropTypes.arrayOf(PropTypes.node),
     ]),
     maxHeight: PropTypes.string.isRequired,
+    onScroll: PropTypes.func,
+  }
+
+  static defaultProps = {
+    onScroll: () => {},
+  }
+
+  onScroll = (event) => {
+    const sampleOffset = 5;
+    let firstElement;
+    if (this.scrollableDiv) {
+      const scrollableRect = this.scrollableDiv.getBoundingClientRect();
+      firstElement = document.elementFromPoint(scrollableRect.left + sampleOffset, scrollableRect.top + sampleOffset);
+    }
+    this.props.onScroll(event, firstElement);
   }
 
   // API
-  reveal = (child) => {
+  reveal = (child, forceToTop) => {
     if (child && this.scrollableDiv) {
       const childNode = getDomNode(child);
-      // Not using Element.scrollIntoView as it scrolls even to top/bottom of view even if
-      // already visible
-      const scrollableRect = this.scrollableDiv.getBoundingClientRect();
-      const elementRect = childNode.getBoundingClientRect();
-      if (elementRect.top < scrollableRect.top) {
-        this.scrollableDiv.scrollTop += (elementRect.top - scrollableRect.top);
-      } else if (elementRect.bottom > scrollableRect.bottom) {
-        this.scrollableDiv.scrollTop += (elementRect.bottom - scrollableRect.bottom);
+      if (childNode) {
+        // Not using Element.scrollIntoView as it scrolls even to top/bottom of view even if
+        // already visible
+        const scrollableRect = this.scrollableDiv.getBoundingClientRect();
+        const elementRect = childNode.getBoundingClientRect();
+        if (forceToTop || elementRect.top < scrollableRect.top) {
+          this.scrollableDiv.scrollTop += (elementRect.top - scrollableRect.top);
+        } else if (elementRect.bottom > scrollableRect.bottom) {
+          this.scrollableDiv.scrollTop += (elementRect.bottom - scrollableRect.bottom);
+        }
       }
     }
   }
@@ -50,6 +67,7 @@ export default class Scrollable extends PureComponent {
         className={scrollableClasses}
         ref={(ref) => { this.scrollableDiv = ref; }}
         style={{ maxHeight: this.props.maxHeight }}
+        onScroll={this.onScroll}
       >
         {this.props.children}
       </div>

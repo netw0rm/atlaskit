@@ -48,6 +48,7 @@ const nodes = {
       state.wrapBlock('    ', null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
     } else {
       const backticks = generateOuterBacktickChain(node.textContent, 3);
+      // We choose to use Shebang language style is to handle languages with special character, eg.: C#, Asp.net, etc. 
       const language = `#!${node.attrs.language}`;
 
       state.write(backticks + '\n');

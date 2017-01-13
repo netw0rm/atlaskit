@@ -3,7 +3,7 @@ import { action } from '@kadira/storybook';
 import { AtlassianIcon, SearchIcon, HelpIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon, ArrowleftIcon } from 'ak-icon';
 import AkDropdownMenu from 'ak-dropdown-menu';
 import AkAvatar from 'ak-avatar';
-import Navigation, { AkContainerHeader, AkContainerItem, AkDrawerItem, AkGlobalItem } from '../../src/index';
+import Navigation, { AkContainerHeader, AkContainerItemGroup, AkContainerItem, AkDrawerItem, AkGlobalItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
 
@@ -42,13 +42,20 @@ export default class BasicNavigation extends PureComponent {
     createDrawerContent: (
       <div>
         <AkDrawerItem
-          icon={<img src={nucleusLogo} alt="icon" />}
-          text="Item with an icon"
+          text="Item outside a group"
         />
-        <AkDrawerItem
-          icon={<img src={nucleusLogo} alt="icon" />}
-          text="A really, really, quite long, actually super long container name"
-        />
+        <AkContainerItemGroup
+          title="Create item group"
+        >
+          <AkDrawerItem
+            icon={<img src={nucleusLogo} alt="icon" />}
+            text="Item with an icon"
+          />
+          <AkDrawerItem
+            icon={<img src={nucleusLogo} alt="icon" />}
+            text="A really, really, quite long, actually super long container name"
+          />
+        </AkContainerItemGroup>
       </div>),
     openDrawer: null,
   }

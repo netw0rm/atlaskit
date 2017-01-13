@@ -68,6 +68,10 @@ export default class EmojiTypeAhead extends PureComponent {
     this.applyPropChanges(this.props, nextProps);
   }
 
+  onEmojiListRef = (ref) => {
+    this.emojiListRef = ref;
+  }
+
   selectNext = () => {
     if (this.emojiListRef) {
       this.emojiListRef.selectNext();
@@ -124,7 +128,7 @@ export default class EmojiTypeAhead extends PureComponent {
         <EmojiList
           emojis={emojis}
           onSelection={onSelection}
-          ref={(ref) => { this.emojiListRef = ref; }}
+          ref={this.onEmojiListRef}
         />
       </div>
     );

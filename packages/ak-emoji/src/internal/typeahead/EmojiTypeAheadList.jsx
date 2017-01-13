@@ -73,6 +73,16 @@ export default class EmojiTypeAheadList extends PureComponent {
     }
   }
 
+  onItemMouseMove = (event, emoji, idx) => {
+    this.selectIndexOnHover(event, idx);
+  };
+
+  onItemSelection = (emoji, idx) => {
+    this.selectIndex(idx, () => {
+      this.chooseCurrentSelection();
+    });
+  }
+
   // API
   selectNext = () => {
     const newIndex = wrapIndex(this.props.emojis, this.state.selectedIndex + 1);
@@ -142,14 +152,8 @@ export default class EmojiTypeAheadList extends PureComponent {
                 key={key}
                 idx={idx}
                 selected={selected}
-                onMouseMove={(mouseEvent) => {
-                  this.selectIndexOnHover(mouseEvent, idx);
-                }}
-                onSelection={() => {
-                  this.selectIndex(idx, () => {
-                    this.chooseCurrentSelection();
-                  });
-                }}
+                onMouseMove={this.onItemMouseMove}
+                onSelection={this.onItemSelection}
                 ref={(ref) => {
                   if (ref) {
                     this.items[key] = ref;

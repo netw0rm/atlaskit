@@ -13,20 +13,26 @@ export default class EmojiTypeAheadItem extends PureComponent {
     onSelection: PropTypes.func,
     selected: PropTypes.bool,
     emoji: EmojiPropTypes.emoji,
+    idx: PropTypes.number,
   };
+
+  static defaultProps = {
+    onMouseMove: () => {},
+    onSelection: () => {},
+  }
 
   // internal, used for callbacks
   onEmojiSelected = (event) => {
-    if (leftClick(event) && this.props.onSelection) {
+    const { emoji, idx } = this.props;
+    if (leftClick(event)) {
       event.preventDefault();
-      this.props.onSelection(this.props);
+      this.props.onSelection(emoji, idx);
     }
   }
 
   onEmojiMenuItemMouseMove = (event) => {
-    if (this.props.onMouseMove) {
-      this.props.onMouseMove(event);
-    }
+    const { emoji, idx } = this.props;
+    this.props.onMouseMove(event, emoji, idx);
   }
 
   render() {

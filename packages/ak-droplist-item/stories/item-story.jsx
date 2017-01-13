@@ -124,5 +124,31 @@ storiesOf(name, module)
         >second item</Item>
       </div>
     </div>
-  ), { imports });
+  ), { imports })
+  .addCodeExampleStory('items in different contexts (accessibility test)', () => (
+    <div className={styles.storiesContainer}>
+      <div className={styles.itemsContainer}>
+        <p>Should announce checkbox (menu)</p>
+        <div role="group">
+          <Item type="checkbox">Choose me</Item>
+          <Item type="checkbox" isChecked>Or me</Item>
+        </div>
+        <p>Should announce radio (menu)</p>
+        <div role="group">
+          <Item type="radio">Choose me</Item>
+          <Item type="radio" isChecked>Or me</Item>
+        </div>
+        <p>Should announce menu item (menu)</p>
+        <div role="group">
+          <Item>I`m an item</Item>
+          <Item isActive>Me too</Item>
+        </div>
+        <p>Should announce option (select/multiselect)</p>
+        <div role="listbox">
+          <Item type="option">I`m an option</Item>
+          <Item type="option" isSelected>Me too</Item>
+        </div>
+      </div>
+    </div>
+  ));
 

@@ -22,7 +22,7 @@ export default class DropdownList extends PureComponent {
     isOpen: PropTypes.bool,
     shouldFitContainer: PropTypes.bool,
     isTriggerNotTabbable: PropTypes.bool,
-    listContext: PropTypes.oneOf(['menu']),
+    listContext: PropTypes.oneOf(['menu', 'singleSelect', 'multiSelect']),
     onOpenChange: PropTypes.func,
     position: PropTypes.string,
     trigger: PropTypes.node,

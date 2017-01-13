@@ -70,6 +70,10 @@ describe(name, () => {
       expect(mount(<Item type="link" isActive />).find(`.${styles.active}`)).to.exist;
     });
 
+    it('should have "active" class when option item is selected', () => {
+      expect(mount(<Item type="option" isSelected />).find(`.${styles.active}`)).to.exist;
+    });
+
     it('should NOT have "active" class for any other item types', () => {
       expect(mount(<Item type="radio" isActive />).find(`.${styles.active}`)).to.not.exist;
       expect(mount(<Item type="checkbox" isActive />).find(`.${styles.disabled}`)).to.not.exist;

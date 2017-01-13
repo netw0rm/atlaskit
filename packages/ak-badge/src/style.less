@@ -15,6 +15,9 @@
 @ak-badge-removed-background-color: @ak-color-R50;
 @ak-badge-removed-text-color: @ak-color-R500;
 
+@ak-badge-theme-dark-background-color: @ak-color-N0;
+@ak-badge-theme-dark-text-color: @ak-color-B500;
+
 .container {
   display: inline-block;
 }
@@ -53,4 +56,15 @@
 .removed {
   background: @ak-badge-removed-background-color;
   color: @ak-badge-removed-text-color;
+}
+
+.default,
+.primary,
+.important,
+.added,
+.removed, {
+  &.isDarkTheme {
+    background: @ak-badge-theme-dark-background-color;
+    color: @ak-badge-theme-dark-text-color;
+  }
 }

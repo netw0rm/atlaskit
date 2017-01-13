@@ -19,7 +19,7 @@ export default class AkButton extends Component {
   static propTypes = {
     /**
      * @description Predefined appearances of an ak-button. One of:
-     * 'primary', 'default', 'subtle', 'compact'
+     * 'primary', 'default', 'subtle', 'compact', 'subtle-link'
      * @memberof Button
      * @default 'standard'
      * @type {string}

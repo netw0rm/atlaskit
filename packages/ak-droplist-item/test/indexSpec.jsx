@@ -8,7 +8,7 @@ import keyCode from 'keycode';
 import { name } from '../package.json';
 import { locals as styles } from '../src/styles.less';
 
-import Item from '../src';
+import Item, { SecondaryText } from '../src';
 
 chai.use(chaiAsPromised);
 chai.use(chaiEnzyme());
@@ -152,5 +152,16 @@ describe(name, () => {
   it('should focus itself when the isFocused property is set to true', () => {
     const wrapper = mount(<Item isFocused />).find(`.${styles.item}`);
     expect(wrapper.find(`.${styles.item}`).node).to.equal(document.activeElement);
+  });
+
+  describe('secondary text', () => {
+    it('should render content inside', () => {
+      expect(mount(<SecondaryText>text</SecondaryText>)).to.have.text('text');
+    });
+
+    it('should have className', () => {
+      expect(mount(<SecondaryText>text</SecondaryText>)
+        .find(`.${styles.secondaryText}`).length).to.equal(1);
+    });
   });
 });

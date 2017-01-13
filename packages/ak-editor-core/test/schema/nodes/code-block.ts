@@ -59,7 +59,7 @@ describe('ak-editor-core/schema code_block node', () => {
       });
 
       ['javascript', 'bash', 'c#', 'c++', 'asp.net'].forEach((language) => {
-        it(`extracts language atrribute from class "language-${language}"`, () => {
+        it(`extracts language attribute from class "language-${language}"`, () => {
           const doc = fromHTML(`<div class="codehilite language-${language}"><pre><span>window.alert("hello");<span></pre></div>`, schema);
 
           expect(doc.firstChild.attrs.language).to.eq(language);

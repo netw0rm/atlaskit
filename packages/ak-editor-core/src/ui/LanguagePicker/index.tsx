@@ -20,14 +20,12 @@ export interface State {
 
 const items = [{
   'items': languageList.map((language) => {
-      return {content: language};
-    })
+    return { content: language };
+  })
 }];
 
-const DEFAULT_LANGUAGE = languageList[0];
-
 export default class LanguagePicker extends PureComponent<Props, State> {
-  state: State = { language: DEFAULT_LANGUAGE};
+  state: State = { language: NO_LANGUAGE };
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -40,7 +38,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   render() {
     const { targetNode, language, element } = this.state;
 
-    if(targetNode) {
+    if (targetNode) {
       return (
         <Panel target={element} align="left" autoPosition>
           <div className={styles.container}>
@@ -60,8 +58,8 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     const {targetNode, element} = pluginState;
     let language;
 
-    if(targetNode) {
-      language = targetNode.attrs.language || DEFAULT_LANGUAGE;
+    if (targetNode) {
+      language = targetNode.attrs.language || NO_LANGUAGE;
     }
 
     this.setState({

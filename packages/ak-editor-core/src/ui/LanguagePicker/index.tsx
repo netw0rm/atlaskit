@@ -5,7 +5,7 @@ import DropdownMenu from 'ak-dropdown-menu';
 import { CodeBlockState } from '../../plugins/code-block';
 import { Node } from '../../prosemirror';
 import Panel from '../Panel';
-import languageList from './languageList';
+import languageList, { capitalizeFirstLetter } from './languageList';
 import * as styles from './styles';
 
 export interface Props {
@@ -45,7 +45,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
         <Panel target={targetElement} align="left" autoPosition>
           <div className={styles.container}>
             <DropdownMenu triggerType="button" items={items} onItemActivated={this.handleLanguageChange}>
-              {language}
+              {capitalizeFirstLetter(language)}
             </DropdownMenu>
           </div>
         </Panel>

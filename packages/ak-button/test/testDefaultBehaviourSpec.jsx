@@ -77,6 +77,13 @@ describe('ak-button/default-behaviour', () => {
     expect(wrapper).to.have.text('icon1buttonicon2');
   });
 
+  it('should call onClick handler when link is clicked', () => {
+    const spy = sinon.spy();
+    const wrapper = mount(<Button href="test" onClick={spy}>button</Button>);
+    wrapper.find('a').simulate('click');
+    expect(spy).to.have.been.calledOnce;
+  });
+
   it('should call onClick handler when button is clicked', () => {
     const spy = sinon.spy();
     const wrapper = mount(<Button onClick={spy}>button</Button>);

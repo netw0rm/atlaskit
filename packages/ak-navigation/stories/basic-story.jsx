@@ -1,11 +1,14 @@
 import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
-import { AkContainerItem } from '../src/index';
+import { DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
+import { AkContainerItem, AkContainerLogo } from '../src/index';
 import Page from './components/Page';
 import BasicNavigation from './components/BasicNavigation';
 import nucleus from './nucleus.png';
+import bitbucketLogo from './bitbucket-logo.svg';
 import { name } from '../package.json';
+import RandomBadge from './components/RandomBadge';
 
 const manyContainerItems = () => {
   const items = [];
@@ -75,6 +78,41 @@ storiesOf(name, module)
             isSelected
           />
         </a>
+      </BasicNavigation>
+      <div>
+        <Lorem count="30" />
+      </div>
+    </Page>
+  ))
+  .add('with a global appearance', () => (
+    <Page>
+      <BasicNavigation
+        containerAppearance="global"
+        containerHeader={
+          <AkContainerLogo>
+            <img src={bitbucketLogo} alt="Bitbucket logo" />
+          </AkContainerLogo>
+        }
+      >
+        <AkContainerItem
+          isSelected
+          appearance="global"
+          icon={<DashboardIcon label="Dashboard" />}
+          text="Selected"
+          textAfter={<RandomBadge theme="dark" />}
+        />
+        <AkContainerItem
+          appearance="global"
+          icon={<SettingsIcon label="Settings" />}
+          text="Item B"
+          textAfter={<RandomBadge theme="dark" />}
+        />
+        <AkContainerItem
+          appearance="global"
+          icon={<ProjectsIcon label="Projects" />}
+          text="Item C"
+          textAfter={<RandomBadge theme="dark" />}
+        />
       </BasicNavigation>
       <div>
         <Lorem count="30" />

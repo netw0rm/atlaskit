@@ -62,3 +62,25 @@
   color: @ak-color-N500;
   margin-top: @ak-grid-size;
 }
+
+// Lifted from ak-comment :)
+.actions-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: @ak-grid-size;
+
+  .actions-item {
+    .action-button:not(:hover):not(:active) {
+      color: @ak-color-N100;
+    }
+
+    & + .actions-item::before {
+      color: @ak-color-N500;
+      content: "\b7\a0"; // middot character
+      display: inline-block;
+      text-align: center;
+      vertical-align: middle;
+      width: @ak-grid-size * 2;
+    }
+  }
+}

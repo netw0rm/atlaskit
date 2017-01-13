@@ -4,6 +4,7 @@ import {
   after,
   containerItemInner,
   containerItemOuter,
+  hasGlobalAppearance,
   icon,
   isSelected,
   isCompact,
@@ -15,6 +16,7 @@ import className from 'classnames';
 
 export default class ContainerItem extends PureComponent {
   static propTypes = {
+    appearance: PropTypes.string,
     icon: PropTypes.node,
     isCompact: PropTypes.bool,
     isSelected: PropTypes.bool,
@@ -61,6 +63,7 @@ export default class ContainerItem extends PureComponent {
     return (
       <div
         className={className(containerItemOuter, {
+          [hasGlobalAppearance]: this.props.appearance === 'global',
           [isSelected]: this.props.isSelected,
           [isCompact]: this.props.isCompact,
         })}

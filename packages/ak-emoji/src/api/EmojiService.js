@@ -15,10 +15,14 @@ export default class EmojiService {
     this.fullSearch.addIndex('shortcut');
     this.fullSearch.addDocuments(emojis);
 
-    this.shortcutLookup = {};
+    this.shortcutLookup = new Map();
     emojis.forEach((emoji) => {
-      this.shortcutLookup[emoji.shortcut] = this.shortcutLookup[emoji.shortcut] || [];
-      this.shortcutLookup[emoji.shortcut].push(emoji);
+      const key = emoji.shortcut;
+      if (!this.shortcutLookup.has(key)) {
+        this.shortcutLookup.set(key, []);
+      }
+      const emojisForShortcut = this.shortcutLookup.get(key);
+      emojisForShortcut.push(emoji);
     });
   }
 
@@ -52,7 +56,7 @@ export default class EmojiService {
    * Returns the first matching emoji matching the shortcut, or null if none found.
    */
   findByShortcut(shortcut) {
-    const emojis = this.shortcutLookup[shortcut];
+    const emojis = this.shortcutLookup.get(shortcut);
     if (emojis && emojis.length) {
       return emojis[0];
     }

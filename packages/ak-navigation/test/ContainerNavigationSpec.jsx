@@ -3,6 +3,10 @@ import chaiAsPromised from 'chai-as-promised';
 import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
+import {
+  containerNavigationInner,
+  hasGlobalAppearance,
+} from 'style!../src/components/less/ContainerNavigation.less';
 import ContainerNavigation from '../src/components/js/ContainerNavigation';
 import Spacer from '../src/components/js/Spacer';
 import { containerClosedWidth } from '../src/shared-variables';
@@ -22,6 +26,9 @@ describe('<ContainerNavigation />', () => {
     it('width prop is reflected directly on <Spacer />', () => {
       expect(shallow(<ContainerNavigation width={500} />).find(Spacer).props().width).to.equal(500);
       expect(shallow(<ContainerNavigation width={200} />).find(Spacer).props().width).to.equal(200);
+    });
+    it('appearnace="global" should render with the global appearance class', () => {
+      expect(mount(<ContainerNavigation appearance="global" />).find(`.${containerNavigationInner}`)).to.have.className(hasGlobalAppearance);
     });
   });
   describe('behaviour', () => {

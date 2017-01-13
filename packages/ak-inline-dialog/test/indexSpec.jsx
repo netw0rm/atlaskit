@@ -5,9 +5,8 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Layer from 'ak-layer';
 
-import styles from '../src/styles.less';
-
 import InlineDialog from '../src';
+import styles from '../src/styles.less';
 
 const { expect } = chai;
 chai.use(chaiEnzyme());

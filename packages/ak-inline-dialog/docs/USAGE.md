@@ -2,7 +2,7 @@
 
 The Inline Dialog is a container for secondary content and controls that are displayed on user request.
 
-![Example tags](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-inline_dialog/docs/inline_dialog.gif)
+![Example inline dialog](http://i.imgur.com/y4YJ27Y.gif)
 
 ## Try it out
 
@@ -14,42 +14,42 @@ Interact with a [live demo of the ak-inline-dialog component](https://aui-cdn.at
 npm install ak-inline-dialog
 ```
 
-## Using the definition
+## Using the component
 
-### HTML
+`ak-inline-dialog` is a React component that can wrap content and then toggle the display of an aligned dialog box.
 
-The `ak-inline-dialog` package exports the InlineDialog [skate](https://github.com/skatejs/skatejs) component:
+Example usage:
 
-#### bundle.js
+```js
+import React, { PropTypes, PureComponent } from 'react';
+import AKInlineDialog from 'ak-inline-dialog';
 
-```javascript
-import InlineDialog from 'ak-inline-dialog';
+class ButtonActivatedDialog extends PureComponent {
+  static propTypes = {
+    content: PropTypes.node,
+    position: PropTypes.string,
+  }
 
-const myDialog = new InlineDialog();
+  state = {
+    isOpen: false,
+  };
+
+  handleClick = () => {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    });
+  }
+
+  render = () => (
+    <AKInlineDialog
+      content={this.props.content}
+      position={this.props.position}
+      isOpen={this.state.isOpen}
+    >
+      <button onClick={this.handleClick} />
+    </AKInlineDialog>
+  )
+}
 ```
-Now you can use the defined inline dialog in your HTML markup:
 
-#### index.html
-
-```html
-<html>
-<head>
-  <script src="bundle.js"></script>
-</head>
-<body>
-  <!-- ... -->
-  <ak-inline-dialog></ak-inline-dialog>
-</body>
-```
-### React
-
-This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
-
-```
-import AkInlineDialog from 'ak-inline-dialog';
-import reactify from 'skatejs-react-integration';
-
-const ReactComponent = reactify(AkInlineDialog, {});
-
-ReactDOM.render(<ReactComponent />, container);
-```
+This would allow you to use the `ButtonActivatedDialog` class to render something similar to the example gif above.

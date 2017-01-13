@@ -2,7 +2,7 @@
 
 The Inline Dialog is a container for secondary content and controls that are displayed on user request.
 
-![Example inline dialog](http://i.imgur.com/y4YJ27Y.gif)
+![Example inline dialog](https://i.imgur.com/y4YJ27Y.gif)
 
 ## Try it out
 

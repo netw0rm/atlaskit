@@ -14,7 +14,7 @@ chai.use(sinonChai);
 
 const containerClass = styles.locals.inlineDialogContainer;
 
-describe('ak-spinner', () => {
+describe('ak-inline-dialog', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<InlineDialog />);
     expect(wrapper).to.exist;

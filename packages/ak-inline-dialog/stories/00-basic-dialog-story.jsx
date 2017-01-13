@@ -1,5 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
+import { akColorG300 } from 'akutil-shared-styles';
 
 import InlineDialog from '../src';
 import { name } from '../package.json';
@@ -12,7 +13,7 @@ const centeredContainerStyles = {
 };
 
 const targetStyles = {
-  background: 'green',
+  background: akColorG300,
   padding: '10px',
 };
 

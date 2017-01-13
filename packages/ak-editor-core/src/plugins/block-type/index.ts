@@ -92,11 +92,11 @@ export class BlockTypeState {
   }
 
   changeContext(name: ContextName): void {
-    const context = this.findContext(name);
+    let context = this.findContext(name);
 
     if (!context) {
       console.warn(`Atlassian Editor: unknown editor context "${name}"`);
-      return this.availableContexts['default'];
+      context = this.availableContexts['default'];
     }
 
     if (name !== this.context && context) {

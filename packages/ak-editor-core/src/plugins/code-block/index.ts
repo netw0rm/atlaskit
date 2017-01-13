@@ -4,7 +4,7 @@ import CodeBlockPasteListener from './code-block-paste-listener';
 
 export class CodeBlockState {
   targetNode?: Node;
-  targetElement?: HTMLElement;
+  element?: HTMLElement;
   private pm: PM;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
 
@@ -80,7 +80,7 @@ export class CodeBlockState {
 
     if(codeBlockNode !== this.targetNode) {
       this.targetNode = codeBlockNode;
-      this.targetElement = this.activeCodeBlockElement();
+      this.element = this.activeCodeBlockElement();
       dirty = true;
     }
 

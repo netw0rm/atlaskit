@@ -36,7 +36,7 @@ export class CodeBlockState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  updateLanguage(language: string): void {
+  updateLanguage(language: string | null): void {
     if(this.targetNode) {
       this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.targetNode.type, {language: language}).apply();
     }

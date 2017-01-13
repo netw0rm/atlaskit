@@ -19,6 +19,7 @@ import { getGlobalWidth, getContainerWidth } from '../../utils/collapse';
 export default class Navigation extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
+    containerAppearance: PropTypes.string,
     containerHeader: PropTypes.node,
     createDrawerContent: PropTypes.node,
     globalAccountItem: PropTypes.node,
@@ -41,6 +42,7 @@ export default class Navigation extends PureComponent {
   };
 
   static defaultProps = {
+    containerAppearance: 'default',
     globalAccountDropdownComponent: ({ children }) => children,
     globalHelpDropdownComponent: ({ children }) => children,
     isCollapsible: true,
@@ -93,6 +95,7 @@ export default class Navigation extends PureComponent {
   render() {
     const {
       children,
+      containerAppearance,
       containerHeader,
       createDrawerContent,
       globalAccountItem,
@@ -152,6 +155,7 @@ export default class Navigation extends PureComponent {
           </div>
           <div>
             <ContainerNavigation
+              appearance={containerAppearance}
               shouldAnimate={shouldAnimate}
               width={getContainerWidth(renderedWidth)}
               header={containerHeader}

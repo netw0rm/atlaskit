@@ -1,5 +1,5 @@
 const languageList = [
-  'unspecified',
+  'language',
   'php',
   'java',
   'c#',
@@ -67,6 +67,12 @@ const languageList = [
   'vala',
   'abap',
   'livescript',
-  'xquery'];
+  'xquery'].map((language) => {
+    return capitalizeFirstLetter(language.slice(1));
+  });
+
+export const capitalizeFirstLetter = (word: string) => {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+};
 
 export default languageList;

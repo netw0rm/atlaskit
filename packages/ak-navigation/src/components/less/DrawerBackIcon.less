@@ -1,0 +1,12 @@
+@import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/grid.less';
+
+.backIcon {
+  color: black;
+  transform: translatex(-@ak-grid-size * 3);
+  transition: transform 220ms;
+  
+  &.isVisible {
+    transform: translateX(0);
+  }
+}

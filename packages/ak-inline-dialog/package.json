@@ -1,6 +1,6 @@
 {
   "name": "ak-inline-dialog",
-  "version": "74.0.0",
+  "version": "74.0.1",
   "description": "An inline dialog React component for secondary content and controls that are displayed on user request",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

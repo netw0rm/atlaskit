@@ -121,52 +121,6 @@ storiesOf('ak-editor-bitbucket', module)
       </div>
     );
   })
-  .add('Contexts', () => {
-    type Props = {};
-    type State = {};
-    class Demo extends PureComponent<Props, State> {
-      render() {
-        return (
-          <div>
-            <Tabs>
-              <Tab selected label="(default)">
-                <Editor
-                  isExpandedByDefault
-                  onCancel={CancelAction}
-                  onChange={ChangeAction}
-                  onSave={SaveAction}
-                />
-              </Tab>
-              <Tab selected label="comment">
-                <Editor
-                  isExpandedByDefault
-                  context="comment"
-                  onCancel={CancelAction}
-                  onChange={ChangeAction}
-                  onSave={SaveAction}
-                />
-              </Tab>
-              <Tab selected label="pr">
-                <Editor
-                  isExpandedByDefault
-                  context="pr"
-                  onCancel={CancelAction}
-                  onChange={ChangeAction}
-                  onSave={SaveAction}
-                />
-              </Tab>
-            </Tabs>
-          </div>
-        );
-      }
-    }
-
-    return (
-      <div style={{ padding: 20 }}>
-        <Demo />
-      </div>
-    );
-  })
   .add('Set from HTML', () => {
     type Props = {};
     type State = { hasError?: boolean };

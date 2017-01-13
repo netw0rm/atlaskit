@@ -269,7 +269,9 @@ describe('block-type', () => {
         });
 
         context('when context changed', () => {
-          it('does not dispatch keymap function that does not exist under new context', () => {
+          it('does not dispatch keymap function that does not exist under new context', function(){
+            this.skip('we do not support any contexts except for "default" at this time');
+
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
             plugin.changeContext('comment');
@@ -278,7 +280,9 @@ describe('block-type', () => {
             expect(toggleBlockType).to.not.have.been.called;
           });
 
-          it('dispatches keymap function that exists under new context', () => {
+          it('dispatches keymap function that exists under new context', function() {
+            this.skip('we do not support any contexts except for "default" at this time');
+
             const { pm, plugin } = editor(doc(p('text')));
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
             plugin.changeContext('pr');
@@ -453,6 +457,15 @@ describe('block-type', () => {
           expect(changeBlockType).to.have.been.calledWith('normal');
         });
       });
+    });
+  });
+
+  describe('changeContext', () => {
+    it('reverts to "default" in case the context is not defined', () => {
+      const { pm, plugin } = editor(doc(p('text')));
+      expect(plugin.context).to.eq('default');
+      plugin.changeContext('!!!%%%UNDEFINED CONTEXT%%%!!!');
+      expect(plugin.context).to.eq('default');
     });
   });
 });

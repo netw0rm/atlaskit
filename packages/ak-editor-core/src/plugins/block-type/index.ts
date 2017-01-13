@@ -47,7 +47,7 @@ const BlockQuote = makeBlockType('blockquote', 'Block quote', withSpecialKey('7'
 const CodeBlock = makeBlockType('codeblock', 'Code block', withSpecialKey('8'));
 const Other = makeBlockType('other', 'Other…');
 
-export type ContextName = 'default' | 'comment' | 'pr';
+export type ContextName = 'default';
 
 export type GroupedBlockTypes = BlockType[][];
 
@@ -71,20 +71,12 @@ export class BlockTypeState {
 
     this.addBasicKeymap();
 
-    this.addAvailableContext('pr', [
-      [NormalText],
-      [Heading1, Heading2, Heading3],
-      [BlockQuote, CodeBlock]
-    ]);
-    this.addAvailableContext('comment', [
-      [NormalText],
-      [BlockQuote, CodeBlock]
-    ]);
     this.addAvailableContext('default', [
       [NormalText],
       [Heading1, Heading2, Heading3, Heading4, Heading5],
       [BlockQuote, CodeBlock]
     ]);
+
     this.changeContext('default');
 
     this.update();
@@ -101,6 +93,11 @@ export class BlockTypeState {
 
   changeContext(name: ContextName): void {
     const context = this.findContext(name);
+
+    if (!context) {
+      console.warn(`Atlassian Editor: unknown editor context "${name}"`);
+      return this.availableContexts['default'];
+    }
 
     if (name !== this.context && context) {
       this.updateBlockTypeKeymap(context);

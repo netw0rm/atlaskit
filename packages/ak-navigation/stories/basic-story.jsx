@@ -84,7 +84,7 @@ storiesOf(name, module)
       </div>
     </Page>
   ))
-  .add('with a global appearance', () => (
+  .add('with global appearance', () => (
     <Page>
       <BasicNavigation
         containerAppearance="global"
@@ -159,15 +159,5 @@ storiesOf(name, module)
         onSearchDrawerActivated={action('search-activated')}
         onCreateDrawerActivated={action('create-activated')}
       />
-    </Page>
-  ))
-  .add('with create drawer open', () => (
-    <Page>
-      <BasicNavigation
-        openDrawer="create"
-      />
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ));

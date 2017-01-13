@@ -29,11 +29,14 @@ export default class Scrollable extends PureComponent {
   }
 
   onScroll = (event) => {
-    const sampleOffset = 5;
+    const sampleOffset = 10;
     let firstElement;
     if (this.scrollableDiv) {
       const scrollableRect = this.scrollableDiv.getBoundingClientRect();
-      firstElement = document.elementFromPoint(scrollableRect.left + sampleOffset, scrollableRect.top + sampleOffset);
+      firstElement = document.elementFromPoint(
+        scrollableRect.left + sampleOffset,
+        scrollableRect.top + sampleOffset
+      );
     }
     this.props.onScroll(event, firstElement);
   }

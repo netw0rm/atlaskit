@@ -264,13 +264,13 @@ describe('code-block', () => {
   context('updateLanguage', () => {
     it('keeps the content', () => {
       const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
-      const previousTargetNode = plugin.targetNode;
+      const previousActiveCodeBlock = plugin.activeCodeBlock;
 
       plugin.updateLanguage('php');
 
-      const currentTargetNode = plugin.targetNode;
+      const currentActiveCodeBlock = plugin.activeCodeBlock;
 
-      expect(previousTargetNode.textContent).to.eq(currentTargetNode.textContent);
+      expect(previousActiveCodeBlock.textContent).to.eq(currentActiveCodeBlock.textContent);
     });
 
     it('can update language to be undefined', () => {
@@ -278,7 +278,7 @@ describe('code-block', () => {
 
       plugin.updateLanguage(null);
 
-      expect(plugin.targetNode.attrs.language).to.be.null;
+      expect(plugin.activeCodeBlock.attrs.language).to.be.null;
     });
 
     it('updates language', () => {
@@ -286,18 +286,58 @@ describe('code-block', () => {
 
       plugin.updateLanguage('php');
 
-      expect(plugin.targetNode.attrs.language).to.eq('php');
+      expect(plugin.activeCodeBlock.attrs.language).to.eq('php');
     });
 
     it('updates the node', () => {
       const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
-      const previousTargetNode = plugin.targetNode;
+      const previousActiveCodeBlock = plugin.activeCodeBlock;
 
       plugin.updateLanguage('php');
 
-      const currentTargetNode = plugin.targetNode;
+      const currentActiveCodeBlock = plugin.activeCodeBlock;
 
-      expect(previousTargetNode).to.not.eq(currentTargetNode);
+      expect(previousActiveCodeBlock).to.not.eq(currentActiveCodeBlock);
+    });
+  });
+
+  describe('active', () => {
+    context('inside a code block', () => {
+      it('is active', () => {
+        const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
+
+        expect(plugin.active).to.be.true;
+      });
+    });
+
+    context('outside of a code block', () => {
+      it('is not active', () => {
+        const { pm, plugin } = editor(doc(p('te{<>}xt')));
+
+        expect(plugin.active).to.be.false;
+      });
+    });
+  });
+
+  describe('language', () => {
+    it('is the same as activeCodeBlock language', () => {
+      const { pm, plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
+
+      expect(plugin.language).to.eq('java');
+    });
+
+    it('updates if activeCodeBlock updates langugae', () => {
+      const { pm, plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
+
+      plugin.updateLanguage('php');
+
+      expect(plugin.language).to.eq('php');
+    });
+
+    it('sets language to null if no activeCodeBlock', () => {
+      const { pm, plugin } = editor(doc(p('te{<>}xt')));
+
+      expect(plugin.language).to.be.null;
     });
   });
 });

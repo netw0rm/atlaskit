@@ -74,8 +74,6 @@ const languageList = [
   'vala',
   'abap',
   'livescript',
-  'xquery'].map((language) => {
-    return capitalizeFirstLetter(language);
-  });
+  'xquery'];
 
   export default languageList;

@@ -3,8 +3,10 @@ import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
 
 export class CodeBlockState {
-  targetNode?: Node;
+  activeCodeBlock?: Node;
   element?: HTMLElement;
+  active: boolean;
+  language: string | null;
   private pm: PM;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
 
@@ -37,8 +39,8 @@ export class CodeBlockState {
   }
 
   updateLanguage(language: string | null): void {
-    if(this.targetNode) {
-      this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.targetNode.type, {language: language}).apply();
+    if(this.activeCodeBlock) {
+      this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.activeCodeBlock.type, {language: language}).apply();
     }
   }
 
@@ -78,8 +80,11 @@ export class CodeBlockState {
     let dirty = false;
     const codeBlockNode = this.activeCodeBlockNode();
 
-    if(codeBlockNode !== this.targetNode) {
-      this.targetNode = codeBlockNode;
+    this.active = !!codeBlockNode;
+    this.language = codeBlockNode ? codeBlockNode.attrs.language : null;
+
+    if(codeBlockNode !== this.activeCodeBlock) {
+      this.activeCodeBlock = codeBlockNode;
       this.element = this.activeCodeBlockElement();
       dirty = true;
     }

@@ -13,7 +13,7 @@ export interface Props {
 }
 
 export interface State {
-  targetNode?: Node;
+  active?: boolean;
   element?: HTMLElement;
   language: string;
 }
@@ -36,9 +36,9 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { targetNode, language, element } = this.state;
+    const { active, language, element } = this.state;
 
-    if (targetNode) {
+    if (active) {
       return (
         <Panel target={element} align="left" autoPosition>
           <div className={styles.container}>
@@ -55,16 +55,11 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: CodeBlockState) => {
-    const {targetNode, element} = pluginState;
-    let language;
-
-    if (targetNode) {
-      language = targetNode.attrs.language || NO_LANGUAGE;
-    }
+    const {active, element, language} = pluginState;
 
     this.setState({
-      targetNode: targetNode,
-      language: language,
+      active: active,
+      language: language || NO_LANGUAGE,
       element: element
     });
   }

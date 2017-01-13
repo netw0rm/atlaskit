@@ -1,5 +1,12 @@
+// This is the option when no language specified
+export const NO_LANGUAGE = 'language';
+
+export function capitalizeFirstLetter(word: string): string {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+};
+
 const languageList = [
-  'language',
+  NO_LANGUAGE,
   'php',
   'java',
   'c#',
@@ -68,11 +75,7 @@ const languageList = [
   'abap',
   'livescript',
   'xquery'].map((language) => {
-    return capitalizeFirstLetter(language.slice(1));
+    return capitalizeFirstLetter(language);
   });
 
-export const capitalizeFirstLetter = (word: string) => {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-};
-
-export default languageList;
+  export default languageList;

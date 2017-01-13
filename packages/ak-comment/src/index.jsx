@@ -1,29 +1,22 @@
 import React, { PropTypes, PureComponent } from 'react';
-import Button from 'ak-button';
 import Lozenge from 'ak-lozenge';
 
 import styles from 'style!./styles.less';
+import CommentAction from './CommentAction';
+import CommentAuthor from './CommentAuthor';
+import CommentTime from './CommentTime';
 import CommentLayout from './layout/CommentLayout';
 
-export { CommentLayout };
+export { CommentAction, CommentAuthor, CommentTime, CommentLayout };
 
-export default class extends PureComponent {
+export default class Comment extends PureComponent {
   static propTypes = {
-    actions: PropTypes.arrayOf(PropTypes.shape({
-      content: PropTypes.node,
-      onClick: PropTypes.func,
-    })),
-    author: PropTypes.string,
+    actions: PropTypes.node,
+    author: PropTypes.node,
     avatar: PropTypes.node.isRequired,
-    children: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.arrayOf(PropTypes.node),
-    ]),
-    content: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.arrayOf(PropTypes.node),
-    ]),
-    datetime: PropTypes.string,
+    children: PropTypes.node,
+    content: PropTypes.node,
+    time: PropTypes.node,
     type: PropTypes.string,
   }
 
@@ -36,7 +29,7 @@ export default class extends PureComponent {
       [
         this.props.author || null,
         this.props.type ? <Lozenge>{this.props.type}</Lozenge> : null,
-        this.props.datetime || null,
+        this.props.time || null,
       ]
       .filter(item => !!item)
       .map((item, index) => <div key={index} className={styles.topItem}>{item}</div>)
@@ -48,20 +41,10 @@ export default class extends PureComponent {
   }
 
   renderActions = () => {
-    const items = this.props.actions.map((action, index) => (
-      <div key={index} className={styles.actionsItem}>
-        <Button
-          appearance="link"
-          className={styles.actionButton}
-          onClick={action.onClick}
-          spacing="none"
-        >
-          {action.content}
-        </Button>
-      </div>
-    ));
-
-    return (items && items.length)
+    const items = this.props.actions.map(
+      (item, index) => <div key={index} className={styles.actionsItem}>{item}</div>
+    );
+    return items
       ? <div className={styles.actionsContainer}>{items}</div>
       : null;
   }

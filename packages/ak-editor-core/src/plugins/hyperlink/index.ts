@@ -266,7 +266,13 @@ export class HyperlinkState {
       marks = node.marks;
     }
 
-    return marks.find((mark: Mark) => mark.type.name === 'link');
+    for (let i = 0; i < marks.length; i++) {
+      if (marks[i].type.name === 'link') {
+        return marks[i];
+      }
+    }
+
+    return null;
   }
 }
 

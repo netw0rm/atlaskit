@@ -3,12 +3,12 @@ import React, { PropTypes } from 'react';
 import Lorem from 'react-lorem-component';
 import { EmojiCustomIcon, DashboardIcon, CancelIcon } from 'ak-icon';
 import AkAvatar from 'ak-avatar';
-import AkBadge from 'ak-badge';
 import AkButton from 'ak-button';
 import { name } from '../package.json';
 import Page from './components/Page';
 import BasicNavigation from './components/BasicNavigation';
 import { AkContainerItem, AkContainerItemGroup } from '../src/index';
+import RandomBadge from './components/RandomBadge';
 
 const RandomAvatar = props => <AkAvatar
   {...props}
@@ -16,21 +16,15 @@ const RandomAvatar = props => <AkAvatar
   src={`https://randomuser.me/api/portraits/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.round(Math.random() * 50)}.jpg`}
 />;
 
-const CompactItem = ({ children }) => {
-  const badgeNumber = Math.random() > 0.3 ? (Math.round(Math.random() * 200)) : 0;
-  return (<AkContainerItem
+const CompactItem = ({ children }) => (
+  <AkContainerItem
     isCompact
     icon={<RandomAvatar />}
     text={children}
-    textAfter={
-      badgeNumber > 0 ? <AkBadge
-        appearance={Math.random() > 0.5 ? 'primary' : null}
-        value={badgeNumber}
-      /> : null
-    }
+    textAfter={<RandomBadge />}
     action={<CancelIcon />}
-  />);
-};
+  />
+);
 
 CompactItem.propTypes = {
   children: PropTypes.node,

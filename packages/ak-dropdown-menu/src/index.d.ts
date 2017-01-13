@@ -14,4 +14,4 @@ interface Props {
 
 interface State {}
 
-export default class extends Component<Props, State> {};
+export default class extends Component<Props, State> {}

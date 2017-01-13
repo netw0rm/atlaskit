@@ -14,6 +14,7 @@ storiesOf(name, module)
       <Badge appearance="important" value="25" />
       <Badge appearance="added" value="3000" max="99" />
       <Badge appearance="removed" />
+      <Badge appearance="default" theme="dark" />
     </div>
   ), { imports })
   .addCodeExampleStory('with no value', () => (

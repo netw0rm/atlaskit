@@ -168,4 +168,30 @@ describe(name, () => {
         .find(`.${styles.secondaryText}`).length).to.equal(1);
     });
   });
+
+  describe('accessibility', () => {
+    it('disabled item', () => {
+      expect(mount(<Item />).find('[aria-disabled]').length).to.equal(0);
+      expect(mount(<Item isDisabled />).find('[aria-disabled]').length).to.equal(1);
+    });
+
+    it('hidden item', () => {
+      expect(mount(<Item />).find('[aria-hidden]').length).to.equal(0);
+      expect(mount(<Item isHidden />).find('[aria-hidden]').length).to.equal(1);
+    });
+
+    it('checked item', () => {
+      expect(mount(<Item />).find('[aria-checked]').length).to.equal(0);
+      expect(mount(<Item isChecked />).find('[aria-checked]').length).to.equal(1);
+    });
+
+    it('option item', () => {
+      expect(mount(<Item type="option" />).find('[aria-selected=false]').length).to.equal(1);
+      expect(mount(<Item type="option" isSelected />).find('[aria-selected=true]').length).to.equal(1);
+    });
+
+    it('data-role', () => {
+      expect(mount(<Item />).find('[data-role]').length).to.equal(1);
+    });
+  });
 });

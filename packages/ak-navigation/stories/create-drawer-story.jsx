@@ -1,6 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
+import { BitbucketBranchesIcon, ConfluencePageIcon, FeedbackIcon, ProjectsIcon, EmojiObjectsIcon, EmojiNatureIcon, EmojiTravelIcon, ExpandIcon } from 'ak-icon';
 import { AkDrawerItem, AkContainerItemGroup } from '../src/index';
 import Page from './components/Page';
 import BasicNavigation from './components/BasicNavigation';
@@ -26,6 +27,56 @@ storiesOf(name, module)
         openDrawer="create"
         createDrawerContent={(
           <div>
+            <AkContainerItemGroup>
+              <AkDrawerItem
+                icon={<EmojiObjectsIcon />}
+                text="Create item 1"
+              />
+              <AkDrawerItem
+                icon={<EmojiNatureIcon />}
+                text="Create item 2"
+              />
+              <AkDrawerItem
+                icon={<EmojiObjectsIcon />}
+                text="Create item 3"
+              />
+              <AkDrawerItem
+                icon={<EmojiTravelIcon />}
+                text="Create item 4"
+              />
+            </AkContainerItemGroup>
+            <AkContainerItemGroup>
+              <AkDrawerItem
+                icon={<ExpandIcon />}
+                text="See more"
+              />
+            </AkContainerItemGroup>
+            <AkContainerItemGroup
+              title="Group with title"
+            >
+              <AkDrawerItem
+                icon={<BitbucketBranchesIcon />}
+                text={<span>Create a <strong>Bitbucket branch</strong></span>}
+              />
+              <AkDrawerItem
+                icon={<ConfluencePageIcon />}
+                text={<span>Create a <strong>Confluence page</strong></span>}
+              />
+            </AkContainerItemGroup>
+          </div>
+        )}
+      />
+      <div>
+        <Lorem count="30" />
+      </div>
+    </Page>
+  ))
+  .add('with create drawer having many groups', () => (
+    <Page>
+      <BasicNavigation
+        openDrawer="create"
+        createDrawerContent={(
+          <div>
             <AkDrawerItem
               text="Item outside a group"
             />
@@ -38,7 +89,7 @@ storiesOf(name, module)
               />
               <AkDrawerItem
                 icon={<img src={nucleus} alt="icon" />}
-                text="A really, really, quite long, actually super long container name"
+                text="A really, really, quite long, actually super long item name"
               />
             </AkContainerItemGroup>
             <AkDrawerItem
@@ -47,8 +98,14 @@ storiesOf(name, module)
             />
             <AkContainerItemGroup>
               <AkDrawerItem
-                icon={<img src={nucleus} alt="icon" />}
+                icon={<FeedbackIcon />}
                 text="Inside a group with no title"
+              />
+            </AkContainerItemGroup>
+            <AkContainerItemGroup>
+              <AkDrawerItem
+                icon={<ProjectsIcon />}
+                text="Inside a different group with no title"
               />
             </AkContainerItemGroup>
             <AkContainerItemGroup

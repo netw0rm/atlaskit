@@ -2,8 +2,10 @@ import React, { PureComponent, PropTypes } from 'react';
 import {
   action,
   header,
+  noHeaderContent,
   title,
 } from 'style!../less/ContainerItemGroup.less';
+import className from 'classnames';
 
 export default class ContainerItemGroup extends PureComponent {
   static propTypes = {
@@ -12,17 +14,29 @@ export default class ContainerItemGroup extends PureComponent {
     title: PropTypes.string,
   }
 
+  hasEmptyHeader = () => (!(this.props.title || this.props.action));
+
   render() {
     return (
-      <div>
+      <div
+        className={className({
+          [noHeaderContent]: this.hasEmptyHeader(),
+        })}
+      >
+        {this.hasEmptyHeader() ? null :
         <div className={header}>
-          <div className={title}><span>{this.props.title}</span></div>
+          {this.props.title ?
+            <div className={title}><span>{this.props.title}</span></div>
+            : null}
           {this.props.action ?
-            <div className={action}>
+            <div
+              className={action}
+            >
               {this.props.action}
             </div>
           : null}
         </div>
+        }
         <div>
           {this.props.children}
         </div>

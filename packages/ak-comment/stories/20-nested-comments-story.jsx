@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React, { PropTypes, PureComponent } from 'react';
 import Avatar from 'ak-avatar';
 
-import Comment from '../src';
+import Comment, { CommentAction, CommentAuthor, CommentTime } from '../src';
 import { name } from '../package.json';
 import { clickHandler } from './_constants';
 import sampleAvatarImg from './sample-avatar.png';
@@ -18,16 +18,16 @@ class NestedComment extends PureComponent {
     const size = this.props.nestedLevel > 0 ? 'medium' : 'large';
     return (
       <Comment
+        author={<CommentAuthor>John Smith</CommentAuthor>}
         avatar={<Avatar src={sampleAvatarImg} label="User avatar" size={size} />}
-        author="John Smith"
-        datetime="30, August 2016"
+        time={<CommentTime>30, August 2016</CommentTime>}
         type="internal"
         content={this.props.content}
         actions={[
-          { content: 'Reply', onClick: clickHandler },
-          { content: 'Edit', onClick: clickHandler },
-          { content: 'Delete', onClick: clickHandler },
-          { content: 'Like', onClick: clickHandler },
+          <CommentAction onClick={clickHandler}>Reply</CommentAction>,
+          <CommentAction onClick={clickHandler}>Edit</CommentAction>,
+          <CommentAction onClick={clickHandler}>Delete</CommentAction>,
+          <CommentAction onClick={clickHandler}>Like</CommentAction>,
         ]}
       >
         {this.props.children}

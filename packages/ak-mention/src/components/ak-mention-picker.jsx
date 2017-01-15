@@ -99,7 +99,12 @@ export default class MentionPicker extends PureComponent {
 
   _subscribeResourceProvider(resourceProvider) {
     if (resourceProvider) {
-      resourceProvider.subscribe(this._subscriberKey, this._filterChange, this._filterError);
+      resourceProvider.subscribe(
+        this._subscriberKey,
+        this._filterChange,
+        this._filterError,
+        this._filterInfo
+      );
     }
   }
 
@@ -130,15 +135,23 @@ export default class MentionPicker extends PureComponent {
     debug('ak-mention-picker._filterError', error);
     this.setState({
       visible: true,
+      info: undefined,
     });
   }
+
+  _filterInfo = (info) => {
+    debug('ak-mention-picker._filterInfo', info);
+    this.setState({
+      info,
+    });
+  };
 
   render() {
     const { resourceProvider, presenceProvider, onSelection, query,
       target, position, zIndex, offsetX, offsetY } = this.props;
-    const { visible } = this.state;
+    const { visible, info } = this.state;
     const style = {
-      display: visible ? 'block' : 'none',
+      display: visible || info ? 'block' : 'none',
     };
 
     const classes = classNames([
@@ -156,6 +169,12 @@ export default class MentionPicker extends PureComponent {
       />
     );
 
+    const infoContent = info && !visible ? (
+      <div className={styles.akMentionPickerInfo}>
+        <p>{info}</p>
+      </div>
+     ) : null;
+
     let content;
 
     if (position) {
@@ -169,7 +188,10 @@ export default class MentionPicker extends PureComponent {
             offsetX={offsetX}
             offsetY={offsetY}
           >
-            {resourceMentionList}
+            <div>
+              {resourceMentionList}
+              {infoContent}
+            </div>
           </Popup>
         );
       } else {
@@ -180,6 +202,7 @@ export default class MentionPicker extends PureComponent {
       content = (
         <div className={styles.noDialogContainer}>
           {resourceMentionList}
+          {infoContent}
         </div>
       );
     }

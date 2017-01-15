@@ -13,7 +13,7 @@ import MentionIcon from 'ak-icon/glyph/editor/mention';
 import ImageIcon from 'ak-icon/glyph/editor/image';
 import * as styles from './styles';
 import HyperlinkEdit from '../HyperlinkEdit';
-import ToolbarIconButton from '../ToolbarIconButton';
+import ToolbarButton from '../ToolbarButton';
 import ToolbarBlockType from '../ToolbarBlockType';
 import ToolbarLists from '../ToolbarLists';
 import ToolbarHyperlink from '../ToolbarHyperlink';
@@ -75,16 +75,14 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
           </div>
           <div>
             {!props.onInsertMention ? null :
-            <ToolbarIconButton
-              onClick={this.handleInsertMention}
-              icon={<MentionIcon label="Mention" />}
-            />
+            <ToolbarButton onClick={this.handleInsertMention}>
+              <MentionIcon label="Mention" />
+            </ToolbarButton>
             }
             {!props.pluginStateImageUpload ? null :
-            <ToolbarIconButton
-              onClick={this.handleInsertImage}
-              icon={<ImageIcon label="Image" />}
-            />
+            <ToolbarButton onClick={this.handleInsertImage}>
+              <ImageIcon label="Image" />
+            </ToolbarButton>
             }
           </div>
         </div>

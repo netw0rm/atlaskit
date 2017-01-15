@@ -9,11 +9,11 @@ export interface Props {
   href?: string;
   target?: string;
   theme?: 'dark';
-  icon: ReactElement<any>;
+  spacing?: 'default' | 'compact' | 'none';
   onClick?: () => void;
 }
 
-export default class ToolbarIconButton extends PureComponent<Props, {}> {
+export default class ToolbarButton extends PureComponent<Props, {}> {
   render() {
     return (
       <span
@@ -24,13 +24,13 @@ export default class ToolbarIconButton extends PureComponent<Props, {}> {
         <AkButton
           isDisabled={this.props.disabled}
           isSelected={this.props.selected}
-          spacing="none"
+          spacing={this.props.spacing || 'none'}
           appearance="subtle"
           href={this.props.href}
           target={this.props.target}
           theme={this.props.theme}
         >
-          {this.props.icon}
+          {this.props.children}
         </AkButton>
       </span>
     );

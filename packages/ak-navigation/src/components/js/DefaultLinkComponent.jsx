@@ -5,6 +5,7 @@ export default class DefaultLinkComponent extends PureComponent {
     href: PropTypes.string,
     children: PropTypes.node,
     onMouseDown: PropTypes.func,
+    className: PropTypes.string,
   }
 
   render() {
@@ -12,7 +13,12 @@ export default class DefaultLinkComponent extends PureComponent {
       href,
       children,
       onMouseDown,
+      className,
     } = this.props;
-    return (href ? <a href={href} onMouseDown={onMouseDown}>{children}</a> : children);
+    return (href ? <a
+      href={href}
+      onMouseDown={onMouseDown}
+      className={className}
+    >{children}</a> : children);
   }
 }

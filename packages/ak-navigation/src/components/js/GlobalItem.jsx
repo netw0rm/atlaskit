@@ -17,7 +17,6 @@ export default class GlobalItem extends PureComponent {
   };
 
   render() {
-    if (this.props.children === null) return null;
     const Link = this.props.linkComponent;
     const {
       href,

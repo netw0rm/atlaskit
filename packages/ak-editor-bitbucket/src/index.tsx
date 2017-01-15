@@ -17,7 +17,8 @@ import {
   ImageUploadPlugin,
   Chrome,
   AnalyticsHandler,
-  analyticsService
+  analyticsService,
+  ContextName
 } from 'ak-editor-core';
 
 import schema from './schema';
@@ -28,7 +29,7 @@ import { MentionResource, MentionSource } from './mention-resource';
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
 export interface Props {
-  context?: 'comment' | 'pr';
+  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;

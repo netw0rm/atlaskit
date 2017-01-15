@@ -11,12 +11,13 @@ import {
   Chrome,
   schema,
   AnalyticsHandler,
-  analyticsService
+  analyticsService,
+  ContextName
 } from 'ak-editor-core';
 import { encode, parse } from './html';
 
 export interface Props {
-  context?: 'default' | 'comment';
+  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;

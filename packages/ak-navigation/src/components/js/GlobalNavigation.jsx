@@ -55,15 +55,17 @@ export default class GlobalNavigation extends PureComponent {
             transform: `translateX(${this.getTranslate()}px)`,
           }}
         >
-          <div className={styles.primaryIcon}>
-            <GlobalItem
-              size="medium"
-              linkComponent={linkComponent}
-              href={primaryItemHref}
-            >
-              {primaryIcon}
-            </GlobalItem>
-          </div>
+          {primaryIcon ?
+            <div className={styles.primaryIcon}>
+              <GlobalItem
+                size="medium"
+                linkComponent={linkComponent}
+                href={primaryItemHref}
+              >
+                {primaryIcon}
+              </GlobalItem>
+            </div>
+          : null}
           <div className={styles.primaryContainer}>
             {children}
           </div>

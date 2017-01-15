@@ -17,7 +17,7 @@ export default class Drawer extends PureComponent {
   }
   static defaultProps = {
     onBackButton: () => {},
-    primaryItem: null,
+    primaryIcon: null,
     isWide: false,
     isOpen: false,
   }
@@ -30,6 +30,7 @@ export default class Drawer extends PureComponent {
       isOpen,
       isWide,
       onBackButton,
+      primaryIcon,
     } = this.props;
     return (
       <div
@@ -40,7 +41,7 @@ export default class Drawer extends PureComponent {
       >
         <div className={classNames(styles.fixed, styles.side)}>
           <div className={classNames(styles.icon)}>
-            {this.props.primaryIcon}
+            {primaryIcon}
           </div>
           <div
             className={classNames(styles.backIconOuter, {

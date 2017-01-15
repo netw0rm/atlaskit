@@ -2,7 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
 import styles from 'style!../less/DrawerBackIcon.less';
 
-export default class DrawerBack extends PureComponent {
+export default class DrawerBackIcon extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     isVisible: PropTypes.bool,
@@ -18,7 +18,6 @@ export default class DrawerBack extends PureComponent {
       children,
       isVisible,
     } = this.props;
-    if (this.props.children === null) return null;
     return (
       <div
         className={classNames(styles.backIcon, {

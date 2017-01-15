@@ -2,8 +2,8 @@ import React, { PureComponent, PropTypes } from 'react';
 import {
   action,
   after,
-  containerItemInner,
-  containerItemOuter,
+  navigationItemInner,
+  navigationItemOuter,
   icon,
   isSelected,
   isCompact,
@@ -60,7 +60,7 @@ export default class NavigationItem extends PureComponent {
 
     return (
       <div
-        className={className(containerItemOuter, {
+        className={className(navigationItemOuter, {
           [isSelected]: this.props.isSelected,
           [isCompact]: this.props.isCompact,
         })}
@@ -71,7 +71,7 @@ export default class NavigationItem extends PureComponent {
           onMouseDown={this.onMouseDown}
         >
           <div
-            className={containerItemInner}
+            className={navigationItemInner}
           >
             <Icon />
             <div className={text}>

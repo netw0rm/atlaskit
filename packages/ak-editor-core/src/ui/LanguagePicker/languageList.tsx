@@ -7,7 +7,7 @@ export function capitalizeFirstLetter(word: string): string {
 
 const languageList = [
   NO_LANGUAGE,
-  'php',
+  'PHP',
   'java',
   'c#',
   'python',

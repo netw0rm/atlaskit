@@ -1,5 +1,5 @@
 // This is the option when no language specified
-export const NO_LANGUAGE = 'language';
+export const NO_LANGUAGE = 'Language';
 
 const languageList = [
   NO_LANGUAGE,

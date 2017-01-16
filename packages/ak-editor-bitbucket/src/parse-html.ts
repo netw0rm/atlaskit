@@ -22,7 +22,7 @@ export function transformHtml(html: string): HTMLElement {
   arrayFrom(el.querySelectorAll('div.codehilite')).forEach((div: HTMLDivElement) => {
     const pre = document.createElement('pre');
     // It always has an extra new line when copy from html
-    pre.textContent = String(div.textContent).replace(/\n$/, '');
+    pre.textContent = (div.textContent || '').replace(/\n$/, '');
     div.innerHTML = '';
     div.appendChild(pre);
   });

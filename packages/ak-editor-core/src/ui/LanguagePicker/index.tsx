@@ -51,7 +51,6 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     }
 
     return null;
-
   }
 
   private handlePluginStateChange = (pluginState: CodeBlockState) => {
@@ -64,8 +63,8 @@ export default class LanguagePicker extends PureComponent<Props, State> {
     });
   }
 
-  private handleLanguageChange = (activedItem: any) => {
-    const selectedLanguage = activedItem.item.content;
+  private handleLanguageChange = (activeItem: any) => {
+    const selectedLanguage = activeItem.item.content;
     const language = selectedLanguage.toLowerCase() === NO_LANGUAGE.toLowerCase() ? null : selectedLanguage;
     this.props.pluginState.updateLanguage(language);
   }

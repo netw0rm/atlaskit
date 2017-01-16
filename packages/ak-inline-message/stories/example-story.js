@@ -1,23 +1,40 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
-import Component from '../src';
 import { name } from '../package.json';
+import DualExample from './components/DualExample';
 
 storiesOf(name, module)
   .add('simple ak-inline-message', () => (
     <div style={{ padding: 32 }}>
-      <p>
-        <Component appearance="subtle" />
-      </p>
-      <p>
-        <Component appearance="subtle-link" />
-      </p>
-      <p>
-        <img
-          src="https://extranet.atlassian.com/download/attachments/3053046339/Inline%20-%20auth%20title.png?version=4&modificationDate=1480647793115&api=v2"
-          alt="Design spec"
-        />
-      </p>
+      <DualExample
+        type="connectivity"
+        title="JIRA Service Desk"
+        secondaryText="Authenticate to see more information"
+      />
+
+      <DualExample
+        type="confirmation"
+        title="JIRA Service Desk"
+        secondaryText="Authenticate to see more information"
+      />
+
+      <DualExample
+        type="info"
+        title="JIRA Service Desk"
+        secondaryText="Authenticate to see more information"
+      />
+
+      <DualExample
+        type="warning"
+        title="JIRA Service Desk"
+        secondaryText="Authenticate to see more information"
+      />
+
+      <DualExample
+        type="error"
+        title="JIRA Service Desk"
+        secondaryText="Authenticate to see more information"
+      />
     </div>
   ));

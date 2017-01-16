@@ -1,13 +1,22 @@
-import React, {
-  PureComponent,
-  // PropTypes,
-} from 'react';
-import WarningIcon from 'ak-icon/glyph/warning';
+import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!./styles.less';
 import Button from 'ak-button';
 import InlineDialog from 'ak-inline-dialog';
+import IconForType from './internal/IconForType';
+import { types, defaultType } from './internal/types';
 
 export default class InlineMessage extends PureComponent {
+  static propTypes = {
+    children: PropTypes.node,
+    title: PropTypes.string,
+    type: PropTypes.oneOf(types),
+    secondaryText: PropTypes.string.isRequired,
+  }
+
+  static defaultProps = {
+    type: defaultType,
+  }
+
   state = {
     isOpen: false,
   }
@@ -19,38 +28,29 @@ export default class InlineMessage extends PureComponent {
   render = () => (
     <div className={styles.root}>
       <InlineDialog
-        content={
-          <div>
-            <span style={{ display: 'block', fontWeight: 'bold', paddingBottom: 8 }}>Authenticate heading</span>
-            <span>Authenticate <a href="">here</a> to see more information</span>
-          </div>
-        }
-        position="bottom left"
+        content={this.props.children}
         isOpen={this.state.isOpen}
+        position="bottom left"
+        shouldFlip
       >
         <Button
-          appearance={this.props.appearance}
+          appearance="subtle-link"
           onClick={this.toggleDialog}
         >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}
-          >
-            <span
-              style={{
-                color: 'orange',
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <WarningIcon />
-            </span>
-            <span style={{ fontWeight: 500, padding: '0 4px' }}>JIRA Service Desk </span>
-            <span>Authenticate to see more information</span>
+          <div className={styles.buttonContents}>
+            <IconForType type={this.props.type} />
+            {
+              this.props.title ? (
+                <span className={styles.titleText}>
+                  {this.props.title}
+                </span>
+              ) : null
+            }
+            {
+              this.props.secondaryText ? (
+                <span className={styles.secondaryText}>{this.props.secondaryText}</span>
+              ) : null
+            }
           </div>
         </Button>
       </InlineDialog>

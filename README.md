@@ -247,4 +247,3 @@ yarn run build/docker/image -- --no-cache
 ```
 
 **Note:** Make sure you also update the `bitbucket-pipelines.yml` file with the name of your new image!
-docker run -it --volume=/Users/lbatchelor/atlaskit-checkout-1:/localDebugRepo --workdir="/localDebugRepo" --memory=4g --entrypoint=/bin/bash atlassianlabs/atlaskit:2017-01-10

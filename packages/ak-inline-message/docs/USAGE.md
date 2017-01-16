@@ -1,24 +1,15 @@
 # InlineMessage
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
+Use inline messages to alert users of a required action or important information.
 
-![Example ak-inline-message](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-inline-message/docs/screencast.gif)
+![Example ak-inline-message](https://i.imgur.com/oUjCo2Z.png)
 
 ## Try it out
 
-Interact with a [live demo of the ak-inline-message component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-inline-message/@VERSION@/).
+Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/ak-inline-message/@VERSION@/).
 
 ## Installation
 
 ```sh
 npm install ak-inline-message
-```
-
-## Using the component
-
-Use the component in your React app as follows:
-
-```
-import InlineMessage from 'ak-inline-message';
-ReactDOM.render(<InlineMessage />, container);
 ```

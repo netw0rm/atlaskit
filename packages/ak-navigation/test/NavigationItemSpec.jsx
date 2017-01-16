@@ -14,7 +14,7 @@ chai.use(chaiEnzyme());
 chai.should();
 const expect = chai.expect;
 
-describe.skip('<NavigationItem />', () => {
+describe('<NavigationItem />', () => {
   describe('props', () => {
     it('icon should render an image', () => {
       expect(mount(<NavigationItem icon={<img alt="foo" />} />)).to.have.exactly(1).descendants('img');

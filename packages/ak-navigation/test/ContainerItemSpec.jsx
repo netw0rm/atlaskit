@@ -14,7 +14,7 @@ chai.use(chaiEnzyme());
 chai.should();
 const expect = chai.expect;
 
-describe.skip('<ContainerItem />', () => {
+describe('<ContainerItem />', () => {
   describe('props', () => {
     function passesOnProp(prop, value) {
       return mount(<ContainerItem

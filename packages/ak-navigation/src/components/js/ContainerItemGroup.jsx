@@ -15,8 +15,6 @@ export default class ContainerItemGroup extends PureComponent {
       action,
     } = this.props;
 
-    const hasEmptyHeader = () => (!(title || action));
-
     const Title = () => (title ?
       <div className={style.title}><span>{title}</span></div>
     : null);
@@ -24,18 +22,18 @@ export default class ContainerItemGroup extends PureComponent {
     return (
       <div
         className={className({
-          [style.noHeaderContent]: hasEmptyHeader(),
+          [style.noHeaderContent]: !(title || action),
         })}
       >
-        {hasEmptyHeader() ? null :
-        <div className={style.header}>
-          <Title />
-          {this.props.action ?
-            <div className={action}>
-              {this.props.action}
-            </div>
-          : null}
-        </div>
+        {title || action ? (
+          <div className={style.header}>
+            <Title />
+            {this.props.action ?
+              <div className={action}>
+                {this.props.action}
+              </div>
+            : null}
+          </div>) : null
         }
         <div>
           {this.props.children}

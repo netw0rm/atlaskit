@@ -2,7 +2,8 @@ import * as mocha from 'mocha';
 import markdownSerializer from '../src/markdown-serializer';
 import {
   code_block, doc, p, img, mono, strong, blockquote, hr,
-  h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, mention, strike
+  h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, mention, strike,
+  mention_query
 } from './_schema-builder';
 import { expect } from 'chai';
 import stringRepeat from '../src/util/string-repeat';
@@ -491,6 +492,10 @@ describe('Bitbucket markdown serializer: ', () => {
   });
 
   describe('marks -', () => {
+      it('should ignore mention_query mark', () => {
+        expect(markdownSerializer.serialize(doc(p(mention_query('@oscar'))))).to.eq('@oscar');
+      });
+
       it('should serialize em', () => {
         expect(markdownSerializer.serialize(doc(p(em('foo'))))).to.eq('*foo*');
         expect(markdownSerializer.serialize(doc(p(

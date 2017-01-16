@@ -125,7 +125,8 @@ const marks = {
       return '](' + state.esc(mark.attrs.href) + (mark.attrs.title ? ` '${mark.attrs.title}'` : '') + ')';
     }
   },
-  code: { open: '`', close: '`' }
+  code: { open: '`', close: '`' },
+  mention_query: { open: '', close: '', mixable: false }
 };
 
 export class MarkdownSerializer extends PMMarkdownSerializer {

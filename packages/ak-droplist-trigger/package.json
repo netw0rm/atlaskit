@@ -1,6 +1,6 @@
 {
   "name": "ak-droplist-trigger",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "React component that is enabled by pressing 'space' or 'enter', or by clicking on it.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -17,12 +17,11 @@
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "keycode": "^2.1.7",
-    "ak-button": "^5.0.3",
-    "ak-icon": "^11.1.5"
+    "keycode": "^2.1.7"
   },
   "devDependencies": {
-    "ak-avatar": "^5.0.5"
+    "ak-avatar": "^5.0.5",
+    "ak-button": "^5.0.3"
   },
   "peerDependencies": {
     "react": "^15.3.2"

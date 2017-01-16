@@ -20,12 +20,8 @@ describe(name, () => {
     expect(shallow(<Trigger />)).to.exist;
   });
 
-  it('should have type "default" by default', () => {
-    expect(shallow(<Trigger>trigger</Trigger>).instance().props.type).to.equal('default');
-  });
-
   describe('render', () => {
-    it('should render default trigger', () => {
+    it('should render trigger', () => {
       const TriggerSample = <div id="#test">test</div>;
       const wrapper = shallow(<Trigger>{TriggerSample}</Trigger>);
       expect(wrapper).to.have.descendants(`.${styles.locals.triggerContainer}`);
@@ -33,41 +29,19 @@ describe(name, () => {
       expect(wrapper).to.contain(TriggerSample);
     });
 
-    it('should render button when type is set to "button"', () => {
-      const TriggerSample = <div id="#test">test</div>;
-      const wrapper = mount(<Trigger type="button" isOpened>{TriggerSample}</Trigger>);
-      expect(wrapper).to.have.descendants(`.${styles.locals.triggerContainer}`);
-      expect(wrapper).to.not.have.descendants(`.${styles.locals.trigger}`);
-      expect(wrapper).to.contain(TriggerSample);
-    });
-
     it('should render tabIndex attribute', () => {
       let wrapper = mount(<Trigger />);
-      expect(wrapper.children().first()).to.have.attr('tabIndex', '0');
-
-      wrapper = mount(<Trigger type="button" />);
-      expect(wrapper.children().first()).to.have.attr('tabIndex', '0');
+      expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
 
       wrapper = mount(<Trigger isDisabled />);
       expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
 
-      wrapper = mount(<Trigger type="button" isDisabled />);
-      expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
-
-      wrapper = mount(<Trigger isNotTabbable />);
-      expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
-
-      wrapper = mount(<Trigger type="button" isNotTabbable />);
-      expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
+      wrapper = mount(<Trigger isTabbable />);
+      expect(wrapper.children().first()).to.have.attr('tabIndex', '0');
     });
   });
 
   describe('props', () => {
-    it('if the trigger is disabled, the button also should be disabled', () => {
-      const wrapper = mount(<Trigger type="button" isDisabled>trigger</Trigger>);
-      expect(wrapper.find('button').props().disabled).to.be.true;
-    });
-
     it('should focus trigger when isFocused prop is set to true', () => {
       const wrapper = mount(<Trigger isFocused>trigger</Trigger>);
       expect(document.activeElement).to.equal(wrapper.children().first().node);
@@ -84,33 +58,31 @@ describe(name, () => {
       onActivate.reset();
     });
 
-    ['default', 'button'].forEach((type) => {
-      describe(`onActivate, type: ${type}`, () => {
-        let wrapper;
-        beforeEach(() => {
-          onActivate = sinon.spy();
-          wrapper = mount(<Trigger onActivate={onActivate} type={type} />);
-        });
+    describe('onActivate', () => {
+      let wrapper;
+      beforeEach(() => {
+        onActivate = sinon.spy();
+        wrapper = mount(<Trigger onActivate={onActivate} />);
+      });
 
-        it('should be activated when enter is pressed', () => {
-          wrapper.simulate('keyDown', { keyCode: keyCode('enter') });
-          expect(onActivate.calledOnce).to.be.true;
-        });
+      it('should be activated when enter is pressed', () => {
+        wrapper.simulate('keyDown', { keyCode: keyCode('enter') });
+        expect(onActivate.calledOnce).to.be.true;
+      });
 
-        it('should be activated when space is pressed', () => {
-          wrapper.simulate('keyDown', { keyCode: keyCode('space') });
-          expect(onActivate.calledOnce).to.be.true;
-        });
+      it('should be activated when space is pressed', () => {
+        wrapper.simulate('keyDown', { keyCode: keyCode('space') });
+        expect(onActivate.calledOnce).to.be.true;
+      });
 
-        it('should be activated when down is pressed', () => {
-          wrapper.simulate('keyDown', { keyCode: keyCode('down') });
-          expect(onActivate.calledOnce).to.be.true;
-        });
+      it('should be activated when down is pressed', () => {
+        wrapper.simulate('keyDown', { keyCode: keyCode('down') });
+        expect(onActivate.calledOnce).to.be.true;
+      });
 
-        it('should be activated when clicked', () => {
-          wrapper.simulate('click');
-          expect(onActivate.calledOnce).to.be.true;
-        });
+      it('should be activated when clicked', () => {
+        wrapper.simulate('click');
+        expect(onActivate.calledOnce).to.be.true;
       });
     });
   });

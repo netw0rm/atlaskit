@@ -1,6 +1,6 @@
 {
   "name": "ak-banner",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React component that displays a prominent banner message and icon",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

@@ -2,6 +2,7 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
 [![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
+[![yarn](https://img.shields.io/badge/yarn-0.18.1-brightgreen.svg)]()
 
 AtlasKit is the Design Platform's implementation of ADG3.
 It is a collection of reusable webcomponents that can be consumed independently (no more upgrade pains!).
@@ -31,7 +32,7 @@ If you want to redistribute this whole repository you will need to replace these
 #### Prerequisites
 * [node](https://nodejs.org/) version should be 6 or above (to check `node -v`)
 * [npm](https://www.npmjs.com/) version should be 3 or above (to check `npm --version`) or use [nvm](https://github.com/creationix/nvm)
-* [yarn](https://yarnpkg.com/) should be installed globally (`npm install -g yarn`)
+* [yarn](https://yarnpkg.com/) should be installed globally (`npm install -g yarn@0.18.1`)
 
 ```
 git clone git@bitbucket.org:atlassian/atlaskit.git

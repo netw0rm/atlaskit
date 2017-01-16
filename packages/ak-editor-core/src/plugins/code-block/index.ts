@@ -102,7 +102,7 @@ export class CodeBlockState {
 
   private nodeStartPos(): number {
     const { $from } = this.pm.selection;
-    return $from.pos - $from.parentOffset;
+    return $from.start($from.depth);
   }
 
   private activeCodeBlockNode(): Node | undefined {

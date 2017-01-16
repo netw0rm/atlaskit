@@ -1,4 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
+import classNames from 'classnames';
 import AkAvatar from 'ak-avatar';
 import AkButton from 'ak-button';
 
@@ -89,14 +90,19 @@ export default class Profilecard extends PureComponent {
       >{action.label}</AkButton>
     ));
 
+    const cardClasses = classNames([
+      styles.profilecard,
+      { [styles.noDetailsMeta]: !this.props.meta },
+    ]);
+
     return (
-      <div className={styles.profilecard}>
+      <div className={cardClasses}>
         <div className={styles.avatarWrapper}>
           <AkAvatar size="xlarge" src={this.props.avatarUrl} />
         </div>
         <div className={styles.detailsWrapper}>
           <span className={styles.detailsFullname}>{this.props.fullName}</span>
-          <span className={styles.detailsMeta}>{this.props.meta}</span>
+          { this.props.meta && (<span className={styles.detailsMeta}>{this.props.meta}</span>) }
           <IconLabel className={styles.presence} icon={this.props.presence}>
             {presences[this.props.presence]}
           </IconLabel>

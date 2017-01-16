@@ -11,6 +11,10 @@ export default class Button extends Component {
     form: PropTypes.string,
     onClick: PropTypes.func,
     tabIndex: PropTypes.number,
+    ariaHaspopup: PropTypes.bool,
+    ariaExpanded: PropTypes.bool,
+    ariaControls: PropTypes.string,
+    id: PropTypes.string,
   }
 
   static defaultProps = {
@@ -23,9 +27,30 @@ export default class Button extends Component {
     e.preventDefault();
   }
 
+  getAccessibilityAttrs = () => {
+    const accessibilityAttrs = {};
+
+    if (this.props.ariaHaspopup) {
+      accessibilityAttrs['aria-haspopup'] = 'true';
+    }
+
+    if (this.props.ariaExpanded) {
+      accessibilityAttrs['aria-expanded'] = 'true';
+    }
+
+    if (this.props.ariaControls) {
+      accessibilityAttrs['aria-controls'] = this.props.ariaControls;
+    }
+
+    if (this.props.id) {
+      accessibilityAttrs.id = this.props.id;
+    }
+
+    return accessibilityAttrs;
+  }
+
   render() {
     const { props } = this;
-
     return (
       <button
         type={props.type}
@@ -35,6 +60,7 @@ export default class Button extends Component {
         onClick={props.onClick}
         onMouseDown={this.onMouseDown}
         tabIndex={props.tabIndex}
+        {...this.getAccessibilityAttrs()}
       >
         {props.children}
       </button>

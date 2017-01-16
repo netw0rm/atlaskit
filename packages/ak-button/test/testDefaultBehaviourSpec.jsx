@@ -99,4 +99,15 @@ describe('ak-button/default-behaviour', () => {
     wrapper = mount(<Button tabIndex={0} isDisabled>span</Button>);
     expect(wrapper).to.have.attr('tabIndex', '0');
   });
+
+  it('should set accessibility attributes', () => {
+    expect(mount(<Button />).find('button[aria-haspopup]').length).to.equal(0);
+    expect(mount(<Button />).find('button[aria-expanded]').length).to.equal(0);
+    expect(mount(<Button />).find('button[aria-controls]').length).to.equal(0);
+    expect(mount(<Button />).find('button[id]').length).to.equal(0);
+    expect(mount(<Button ariaHaspopup />).find('button[aria-haspopup="true"]').length).to.equal(1);
+    expect(mount(<Button ariaExpanded />).find('button[aria-expanded="true"]').length).to.equal(1);
+    expect(mount(<Button ariaControls="test" />).find('button[aria-controls="test"]').length).to.equal(1);
+    expect(mount(<Button id="test" />).find('button[id="test"]').length).to.equal(1);
+  });
 });

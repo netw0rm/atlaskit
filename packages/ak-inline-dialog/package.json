@@ -1,7 +1,7 @@
 {
   "name": "ak-inline-dialog",
-  "version": "74.0.0",
-  "description": "An inline dialog UI component",
+  "version": "74.0.1",
+  "description": "An inline dialog React component for secondary content and controls that are displayed on user request",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
@@ -14,15 +14,13 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "ak-blanket": "^6.0.2",
-    "ak-icon": "^12.2.0",
     "ak-layer": "^62.1.2",
-    "akutil-common": "^5.0.0",
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6"
   },
   "devDependencies": {
     "ak-button": "^5.1.3",
+    "ak-icon": "^12.2.0",
     "ak-inline-dialog": "*"
   },
   "peerDependencies": {

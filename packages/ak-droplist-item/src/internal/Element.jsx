@@ -4,17 +4,18 @@ import { ariaRoles, baseTypes } from './constants';
 /* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
 export default class Element extends PureComponent {
   static propTypes = {
-    href: PropTypes.string,
-    target: PropTypes.string,
-    type: PropTypes.oneOf(baseTypes.values),
-    handleClick: PropTypes.func,
-    handleKeyDown: PropTypes.func,
     children: PropTypes.node,
     className: PropTypes.string,
     isDisabled: PropTypes.bool,
     isFocused: PropTypes.bool,
     isHidden: PropTypes.bool,
     isChecked: PropTypes.bool,
+    isSelected: PropTypes.bool,
+    handleClick: PropTypes.func,
+    handleKeyDown: PropTypes.func,
+    href: PropTypes.string,
+    target: PropTypes.string,
+    type: PropTypes.oneOf(baseTypes.values),
   }
 
   componentDidMount = () => {
@@ -39,22 +40,38 @@ export default class Element extends PureComponent {
 
   render = () => {
     const { props } = this;
-    const { href, target, type, isDisabled, isHidden, isChecked,
-      handleKeyDown, handleClick, className } = props;
+    const { href, target, type, isDisabled, handleKeyDown, handleClick, className } = props;
+    const ariaAttributes = {};
+    const commonAttributes = {
+      className,
+      role: ariaRoles[type],
+      onKeyDown: handleKeyDown,
+      onClick: handleClick,
+      onMouseDown: this.handleMouseDown,
+      ref: ref => (this.ref = ref),
+      'data-role': 'droplistItem',
+    };
+
+    if (props.isDisabled) {
+      ariaAttributes['aria-disabled'] = true;
+    }
+    if (props.isHidden) {
+      ariaAttributes['aria-hidden'] = true;
+    }
+    if (props.isChecked) {
+      ariaAttributes['aria-checked'] = true;
+    }
+    if (props.type === 'option') {
+      ariaAttributes['aria-selected'] = props.isSelected;
+    }
+
     if (href && !isDisabled) {
       return (
         <a
-          className={className}
           href={href}
           target={target}
-          role={ariaRoles.link}
-          aria-disabled={isDisabled}
-          aria-hidden={isHidden}
-          onKeyDown={handleKeyDown}
-          onClick={handleClick}
-          onMouseDown={this.handleMouseDown}
-          ref={ref => (this.ref = ref)}
-          data-role="droplistItem"
+          {...commonAttributes}
+          {...ariaAttributes}
         >
           {props.children}
         </a>
@@ -63,17 +80,9 @@ export default class Element extends PureComponent {
     /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
       <span
-        className={className}
         tabIndex="0"
-        onKeyDown={handleKeyDown}
-        onClick={handleClick}
-        onMouseDown={this.handleMouseDown}
-        ref={ref => (this.ref = ref)}
-        role={ariaRoles[type]}
-        aria-disabled={isDisabled}
-        aria-hidden={isHidden}
-        aria-checked={isChecked}
-        data-role="droplistItem"
+        {...commonAttributes}
+        {...ariaAttributes}
       >{props.children}</span>
     );
     /* eslint-enable jsx-a11y/no-static-element-interactions */

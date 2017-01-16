@@ -5,9 +5,8 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Layer from 'ak-layer';
 
-import styles from '../src/styles.less';
-
 import InlineDialog from '../src';
+import styles from '../src/styles.less';
 
 const { expect } = chai;
 chai.use(chaiEnzyme());
@@ -15,7 +14,7 @@ chai.use(sinonChai);
 
 const containerClass = styles.locals.inlineDialogContainer;
 
-describe('ak-spinner', () => {
+describe('ak-inline-dialog', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<InlineDialog />);
     expect(wrapper).to.exist;

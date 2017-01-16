@@ -48,7 +48,7 @@ describe('<Navigation />', () => {
       expect(shallow(<Navigation isCollapsible={false} />))
       .to.have.descendants('Resizer');
     });
-    it('can pass in an element for the container header', () => {
+    it('containerHeader - can pass in an element for the container header', () => {
       const header = <div>foo</div>;
       expect(shallow(<Navigation containerHeader={header} />)
         .find('ContainerNavigation').props().header).to.equal(header);
@@ -59,16 +59,16 @@ describe('<Navigation />', () => {
     it('globalCreateIcon should insert create icon into navigation', () => {
       expect(mount(<Navigation globalCreateIcon={<span className="CREATE_ICON" />} />)).to.have.exactly(1).descendants('.CREATE_ICON');
     });
-    it('when isSearchDrawerOpen=true should set open=true on the SearchDrawer', () => {
+    it('isSearchDrawerOpen=true should set open=true on the SearchDrawer', () => {
       expect(mount(<Navigation isSearchDrawerOpen />).find('Drawer').at(0).props().isOpen).to.equal(true);
     });
-    it('when isSearchDrawerOpen=false should set open=false on the SearchDrawer', () => {
+    it('isSearchDrawerOpen=false should set open=false on the SearchDrawer', () => {
       expect(mount(<Navigation isSearchDrawerOpen={false} />).find('Drawer').at(0).props().isOpen).to.equal(false);
     });
-    it('when isCreateDrawerOpen=true should set open=true on the CreateDrawer', () => {
+    it('isCreateDrawerOpen=true should set open=true on the CreateDrawer', () => {
       expect(mount(<Navigation isCreateDrawerOpen />).find('Drawer').at(1).props().isOpen).to.equal(true);
     });
-    it('when isCreateDrawerOpen=true should set open=true on the CreateDrawer', () => {
+    it('isCreateDrawerOpen=true should set open=true on the CreateDrawer', () => {
       expect(mount(<Navigation isCreateDrawerOpen={false} />).find('Drawer').at(1).props().isOpen).to.equal(false);
     });
     it('onResize is called after the resizeDelta has been reset to 0 (so that animations are enabled again)', (done) => {
@@ -84,11 +84,11 @@ describe('<Navigation />', () => {
       navigation.find('Resizer').simulate('resizeEnd');
     });
     it('globalPrimaryItem should map to global navigation\'s primaryItem', () => {
-      const primaryItem = <span className="PRIMARY_ITEM" />;
+      const primaryIcon = <span className="PRIMARY_ICON" />;
       expect(mount(
         <Navigation
-          globalPrimaryItem={primaryItem}
-        />).find('GlobalNavigation').props().primaryItem).to.equal(primaryItem);
+          globalPrimaryIcon={primaryIcon}
+        />).find('GlobalNavigation').props().primaryIcon).to.equal(primaryIcon);
     });
     it('globalHelpItem should map to global navigation\'s helpItem', () => {
       const helpItem = <span className="HELP_ITEM" />;
@@ -97,12 +97,19 @@ describe('<Navigation />', () => {
           globalHelpItem={helpItem}
         />).find('GlobalNavigation').props().helpItem).to.equal(helpItem);
     });
-    it('globalAccountItem should map to global navigation\'s accountItem', () => {
+    it('globalAccountItem should map to <GlobalNavigation/>', () => {
       const accountItem = <span className="ACCOUNT_ITEM" />;
       expect(mount(
         <Navigation
           globalAccountItem={accountItem}
         />).find('GlobalNavigation').props().accountItem).to.equal(accountItem);
+    });
+    it('linkComponent is passed on to <GlobalNavigation/>', () => {
+      const linkComponent = () => null;
+      expect(mount(
+        <Navigation
+          linkComponent={linkComponent}
+        />).find('GlobalNavigation').props().linkComponent).to.equal(linkComponent);
     });
   });
 

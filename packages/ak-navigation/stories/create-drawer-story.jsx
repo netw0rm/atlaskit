@@ -74,9 +74,7 @@ storiesOf(name, module)
         createDrawerContent={(
           <div>
             <AkDrawerItem text="Item outside a group" />
-            <AkContainerItemGroup
-              title="Create item group"
-            >
+            <AkContainerItemGroup title="Create item group">
               <AkDrawerItem
                 icon={<img src={nucleus} alt="icon" />}
                 text="Item with an icon"

@@ -9,7 +9,6 @@ export default class DrawerBackIcon extends PureComponent {
   };
 
   static defaultProps = {
-    children: null,
     isVisible: false,
   }
 

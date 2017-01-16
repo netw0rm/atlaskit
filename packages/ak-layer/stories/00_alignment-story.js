@@ -56,7 +56,7 @@ storiesOf(name, module)
         <AKLayer content={popperContent} position="right bottom">
           <div style={targetStyle}>Target</div>
         </AKLayer>
-        <div>Drag the left side bar over until the LayerContent reaches the</div>
+        <div>Drag the left side bar over until the LayerContent reaches the edge of the screen</div>
       </div>
     );
   })

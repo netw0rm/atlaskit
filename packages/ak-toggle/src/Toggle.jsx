@@ -15,11 +15,13 @@ export default class Toggle extends PureComponent {
     onBlur: PropTypes.func,
     value: PropTypes.string,
     label: PropTypes.string,
+    size: PropTypes.oneOf(['regular', 'large']),
   }
 
   static defaultProps = {
     isChecked: false,
     isDisabled: false,
+    size: 'regular',
   };
 
   componentDidUpdate() {
@@ -36,6 +38,8 @@ export default class Toggle extends PureComponent {
 
   getToggleClasses = () => classnames({
     [styles.toggle]: true,
+    [styles.large]: this.props.size === 'large',
+    [styles.regular]: this.props.size === 'regular',
     [styles.disabled]: this.props.isDisabled,
   });
 

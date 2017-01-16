@@ -101,7 +101,7 @@ export default class EmojiPreview extends PureComponent {
         <Emoji {...emoji} />
         <div className={previewTextClasses}>
           <div className={styles.name}>{emoji.name}</div>
-          <div className={styles.shortname}>{emoji.shortcut}</div>
+          <div className={styles.shortname}>:{emoji.shortcut}:</div>
         </div>
       </div>
     );

@@ -23,6 +23,7 @@ import {
 import schema from './schema';
 import markdownSerializer from './markdown-serializer';
 import { parseHtml, transformHtml } from './parse-html';
+import { MentionResource, MentionSource } from './mention-resource';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
@@ -33,9 +34,11 @@ export interface Props {
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
+  onExpanded?: (editor?: Editor) => void;
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
   imageUploadHandler?: ImageUploadHandler;
+  mentionSource?: MentionSource;
 }
 
 export interface State {
@@ -45,12 +48,20 @@ export interface State {
 
 export default class Editor extends PureComponent<Props, State> {
   state: State;
+  mentionsResourceProvider: MentionResource;
 
   constructor(props: Props) {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
 
     analyticsService.handler = props.analyticsHandler || ((name) => {});
+
+    if (props.mentionSource) {
+      this.mentionsResourceProvider = new MentionResource({
+        minWait: 10,
+        maxWait: 25,
+      }, props.mentionSource);
+    }
   }
 
   /**
@@ -67,7 +78,13 @@ export default class Editor extends PureComponent<Props, State> {
    * Expand the editor chrome
    */
   expand = () => {
+    const { onExpanded } = this.props;
+
     this.setState({ isExpanded: true });
+
+    if (onExpanded) {
+      onExpanded(this);
+    }
   }
 
   /**
@@ -146,10 +163,13 @@ export default class Editor extends PureComponent<Props, State> {
         placeholder={this.props.placeholder}
         onCollapsedChromeFocus={this.expand}
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
+        pluginStateCodeBlock={pm && CodeBlockPlugin.get(pm)}
         pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
         pluginStateImageUpload={pm && ImageUploadPlugin.get(pm)}
+        pluginStateMentions={pm && this.mentionsResourceProvider && MentionsPlugin.get(pm)}
+        mentionsResourceProvider={this.mentionsResourceProvider}
       />
     );
   }
@@ -189,7 +209,7 @@ export default class Editor extends PureComponent<Props, State> {
           ListsPlugin,
           TextFormattingPlugin,
           HorizontalRulePlugin,
-          MentionsPlugin,
+          ...( this.mentionsResourceProvider ? [ MentionsPlugin ] : [] ),
           DefaultInputRulesPlugin,
           ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )
         ],

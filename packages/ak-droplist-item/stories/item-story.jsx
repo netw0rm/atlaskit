@@ -6,7 +6,7 @@ import Arrow from 'ak-icon/glyph/arrowrightlong';
 import Avatar from 'ak-avatar';
 import Lozenge from 'ak-lozenge';
 
-import Item from '../src';
+import Item, { SecondaryText } from '../src';
 import { name } from '../package.json';
 
 /* eslint-disable react/prop-types */
@@ -21,6 +21,7 @@ storiesOf(name, module)
         <Item href="http://atlassian.com">This link will reload this window</Item>
         <Item isActive>This is just a highlighted item</Item>
         <Item href="http://atlassian.com" target="_blank">This link will open in another tab</Item>
+        <Item>This item has <SecondaryText>(secondary text)</SecondaryText></Item>
         <Item isFocused>Focused item</Item>
       </div>
     </div>
@@ -32,6 +33,7 @@ storiesOf(name, module)
         <Item type="checkbox" isFocused>Focused item</Item>
         <Item type="checkbox" isChecked>checked item</Item>
         <Item type="checkbox">third item</Item>
+        <Item type="checkbox">This item has <SecondaryText>(secondary text)</SecondaryText></Item>
       </div>
     </div>
   ), { imports })
@@ -42,6 +44,7 @@ storiesOf(name, module)
         <Item type="radio" isFocused>focused Item</Item>
         <Item type="radio" isChecked>checked item</Item>
         <Item type="radio">third item</Item>
+        <Item type="radio">This item has <SecondaryText>(secondary text)</SecondaryText></Item>
       </div>
     </div>
   ), { imports })
@@ -52,6 +55,7 @@ storiesOf(name, module)
         <Item elemBefore={<Icon />}>first item</Item>
         <Item elemBefore={<Icon />}>second item</Item>
         <Item elemBefore={<Icon />}>third item</Item>
+        <Item elemBefore={<Icon />}>Item with<SecondaryText>(secondary text)</SecondaryText></Item>
       </div>
     </div>
   ), { imports: [...imports, ['Icon', 'ak-icon/glyph/question']] })
@@ -124,5 +128,31 @@ storiesOf(name, module)
         >second item</Item>
       </div>
     </div>
-  ), { imports });
+  ), { imports })
+  .addCodeExampleStory('items in different contexts (accessibility test)', () => (
+    <div className={styles.storiesContainer}>
+      <div className={styles.itemsContainer}>
+        <p>Should announce checkbox (menu)</p>
+        <div role="group">
+          <Item type="checkbox">Choose me</Item>
+          <Item type="checkbox" isChecked>Or me</Item>
+        </div>
+        <p>Should announce radio (menu)</p>
+        <div role="group">
+          <Item type="radio">Choose me</Item>
+          <Item type="radio" isChecked>Or me</Item>
+        </div>
+        <p>Should announce menu item (menu)</p>
+        <div role="group">
+          <Item>I`m an item</Item>
+          <Item isActive>Me too</Item>
+        </div>
+        <p>Should announce option (select/multiselect)</p>
+        <div role="listbox">
+          <Item type="option">I`m an option</Item>
+          <Item type="option" isSelected>Me too</Item>
+        </div>
+      </div>
+    </div>
+  ));
 

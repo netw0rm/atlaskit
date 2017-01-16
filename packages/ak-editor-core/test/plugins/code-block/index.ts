@@ -77,16 +77,18 @@ describe('code-block', () => {
       });
     });
 
-    context('when unsuscribe', () => {
-      const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
-      const spy = sinon.spy();
-      const { cbPos } = pm.doc.refs;
-      plugin.subscribe(spy);
+    context('when unsubscribe', () => {
+      it('does not notify the subscriber', () => {
+        const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
+        const spy = sinon.spy();
+        const { cbPos } = pm.doc.refs;
+        plugin.subscribe(spy);
 
-      plugin.unsubscribe(spy);
-      pm.setTextSelection(cbPos);
+        plugin.unsubscribe(spy);
+        pm.setTextSelection(cbPos);
 
-      expect(spy).to.not.have.been.calledTwice;
+        expect(spy).to.not.have.been.calledTwice;
+      });
     });
   });
 
@@ -103,7 +105,7 @@ describe('code-block', () => {
     });
 
     context('when hits double enter', () => {
-      it('exits code block', ()=> {
+      it('exits code block', () => {
         const { pm, plugin } = editor(doc(code_block()('text{<>}')));
 
         pm.input.dispatchKey('Enter');
@@ -191,6 +193,151 @@ describe('code-block', () => {
 
         expect(plugin.splitCodeBlock()).to.be.false;
       });
+    });
+  });
+
+  describe('element', () => {
+    context('when cursor moves within the same code block', () => {
+      it('returns the same element', () => {
+        const { pm, plugin } = editor(doc(code_block()('code{<>}Block{cbPos}')));
+        const { cbPos } = pm.doc.refs;
+
+        const previous_element = plugin.element;
+        pm.setTextSelection(cbPos);
+
+        const current_element = plugin.element;
+
+        expect(previous_element).to.eq(current_element);
+      });
+    });
+
+    context('when cursor moves onto different code block', () => {
+      it('returns different elements', () => {
+        const { pm, plugin } = editor(doc(code_block()('one{<>} codeBlock'), code_block()('another{cbPos} codeBlock')));
+        const { cbPos } = pm.doc.refs;
+
+        const previous_element = plugin.element;
+        pm.setTextSelection(cbPos);
+
+        const current_element = plugin.element;
+
+        expect(previous_element).not.to.eq(current_element);
+
+      });
+    });
+
+    context('when cursor is within a code block', () => {
+      context('when at the end of the code block', () => {
+        it('returns code block element', () => {
+          const { pm, plugin } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
+
+          expect(plugin.element).to.instanceOf(HTMLPreElement);
+        });
+      });
+
+      context('when at the beginning of the code block', () => {
+        it('returns code block element', () => {
+          const { pm, plugin } = editor(doc(p('paragraph'), code_block()('{<>}codeBlock')));
+
+          expect(plugin.element).to.instanceOf(HTMLPreElement);
+        });
+      });
+
+      context('when at the middle of the code block', () => {
+        it('returns code block element', () => {
+          const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+
+          expect(plugin.element).to.instanceOf(HTMLPreElement);
+        });
+      });
+    });
+
+    context('when cursor is out of code block', () => {
+      it('returns undefined', () => {
+        const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock')));
+
+        expect(plugin.element).to.be.undefined;
+      });
+    });
+  });
+
+  context('updateLanguage', () => {
+    it('keeps the content', () => {
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+      const previousElement = plugin.element;
+
+      plugin.updateLanguage('php');
+
+      const currentElement = plugin.element;
+
+      expect(previousElement.textContent).to.eq(currentElement.textContent);
+    });
+
+    it('can update language to be null', () => {
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+
+      plugin.updateLanguage(null);
+
+      expect(plugin.language).to.be.null;
+    });
+
+    it('updates language', () => {
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+
+      plugin.updateLanguage('php');
+
+      expect(plugin.language).to.eq('php');
+    });
+
+    it('updates the node', () => {
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+      const previousActiveCodeBlock = plugin.activeCodeBlock;
+
+      plugin.updateLanguage('php');
+
+      const currentActiveCodeBlock = plugin.activeCodeBlock;
+
+      expect(previousActiveCodeBlock).to.not.eq(currentActiveCodeBlock);
+    });
+  });
+
+  describe('active', () => {
+    context('inside a code block', () => {
+      it('is active', () => {
+        const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
+
+        expect(plugin.active).to.be.true;
+      });
+    });
+
+    context('outside of a code block', () => {
+      it('is not active', () => {
+        const { pm, plugin } = editor(doc(p('te{<>}xt')));
+
+        expect(plugin.active).to.be.false;
+      });
+    });
+  });
+
+  describe('language', () => {
+    it('is the same as activeCodeBlock language', () => {
+      const { pm, plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
+
+      expect(plugin.language).to.eq('java');
+    });
+
+    it('updates if activeCodeBlock updates langugae', () => {
+      const { pm, plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
+
+      plugin.updateLanguage('php');
+
+      expect(plugin.language).to.eq('php');
+    });
+
+    it('sets language to null if no activeCodeBlock', () => {
+      const { pm, plugin } = editor(doc(p('te{<>}xt')));
+
+      expect(plugin.language).to.be.null;
     });
   });
 });

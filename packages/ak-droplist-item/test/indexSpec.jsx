@@ -8,7 +8,7 @@ import keyCode from 'keycode';
 import { name } from '../package.json';
 import { locals as styles } from '../src/styles.less';
 
-import Item from '../src';
+import Item, { SecondaryText } from '../src';
 
 chai.use(chaiAsPromised);
 chai.use(chaiEnzyme());
@@ -68,6 +68,10 @@ describe(name, () => {
 
     it('should have "active" class when link item is active', () => {
       expect(mount(<Item type="link" isActive />).find(`.${styles.active}`)).to.exist;
+    });
+
+    it('should have "active" class when option item is selected', () => {
+      expect(mount(<Item type="option" isSelected />).find(`.${styles.active}`)).to.exist;
     });
 
     it('should NOT have "active" class for any other item types', () => {
@@ -152,5 +156,42 @@ describe(name, () => {
   it('should focus itself when the isFocused property is set to true', () => {
     const wrapper = mount(<Item isFocused />).find(`.${styles.item}`);
     expect(wrapper.find(`.${styles.item}`).node).to.equal(document.activeElement);
+  });
+
+  describe('secondary text', () => {
+    it('should render content inside', () => {
+      expect(mount(<SecondaryText>text</SecondaryText>)).to.have.text('text');
+    });
+
+    it('should have className', () => {
+      expect(mount(<SecondaryText>text</SecondaryText>)
+        .find(`.${styles.secondaryText}`).length).to.equal(1);
+    });
+  });
+
+  describe('accessibility', () => {
+    it('disabled item', () => {
+      expect(mount(<Item />).find('[aria-disabled]').length).to.equal(0);
+      expect(mount(<Item isDisabled />).find('[aria-disabled]').length).to.equal(1);
+    });
+
+    it('hidden item', () => {
+      expect(mount(<Item />).find('[aria-hidden]').length).to.equal(0);
+      expect(mount(<Item isHidden />).find('[aria-hidden]').length).to.equal(1);
+    });
+
+    it('checked item', () => {
+      expect(mount(<Item />).find('[aria-checked]').length).to.equal(0);
+      expect(mount(<Item isChecked />).find('[aria-checked]').length).to.equal(1);
+    });
+
+    it('option item', () => {
+      expect(mount(<Item type="option" />).find('[aria-selected=false]').length).to.equal(1);
+      expect(mount(<Item type="option" isSelected />).find('[aria-selected=true]').length).to.equal(1);
+    });
+
+    it('data-role', () => {
+      expect(mount(<Item />).find('[data-role]').length).to.equal(1);
+    });
   });
 });

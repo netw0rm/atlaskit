@@ -4,6 +4,7 @@ export const appearance = {
     'default',
     'subtle',
     'link',
+    'subtle-link',
   ],
   default: 'default',
 };

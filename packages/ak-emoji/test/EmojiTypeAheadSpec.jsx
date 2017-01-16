@@ -7,8 +7,6 @@ import { mount } from 'enzyme';
 
 import emojiService, { emojis } from '../stories/story-data';
 import EmojiTypeAhead, { defaultListLimit } from '../src/EmojiTypeAhead';
-// import MentionList from '../../src/components/ak-mention-list';
-// import MentionListError from '../../src/components/ak-mention-list-error';
 import EmojiTypeAheadItem from '../src/internal/typeahead/EmojiTypeAheadItem';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from './emoji-selectors';
 

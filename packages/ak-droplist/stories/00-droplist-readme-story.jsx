@@ -2,11 +2,13 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import { Code, Props, Description, Chrome } from 'akutil-readme';
 
-import DroplistOverviewExample from './examples/DroplistOverview'; // eslint-disable-line import/no-duplicates
 import DropList from '../src';
 
 /* eslint-disable import/first, import/no-duplicates */
+import DroplistOverviewExample from './examples/DroplistOverview';
 import DroplistOverviewExampleRaw from '!raw!./examples/DroplistOverview';
+import DroplistFitExample from './examples/DroplistFit';
+import DroplistFitExampleRaw from '!raw!./examples/DroplistFit';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name } from '../package.json';
@@ -57,5 +59,16 @@ storiesOf(name, module)
         descriptions={droplistPropDescriptions}
         types={droplistPropTypes}
       />
+    </Chrome>
+  ))
+  .add('Droplist that fits container width', () => (
+    <Chrome title={name}>
+      <Description>
+        <p>Droplist that fits container width.</p>
+        {DroplistFitExample}
+      </Description>
+      <Code>
+        {DroplistFitExampleRaw}
+      </Code>
     </Chrome>
   ));

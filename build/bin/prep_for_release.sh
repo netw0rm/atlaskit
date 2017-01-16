@@ -17,4 +17,4 @@ $DEBUG git config --global push.default simple
 $DEBUG git fetch --tags
 $DEBUG git fsck --full
 
-$DEBUG yarn config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+$DEBUG npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN

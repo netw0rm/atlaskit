@@ -1,6 +1,11 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
+import styles from 'style!../src/styles/profilecard-resourced.less';
+
+import LoadingMessage from '../src/components/LoadingMessage';
+import ErrorMessage from '../src/components/ErrorMessage';
+
 import { name } from '../package.json';
 import { AkProfilecard } from '../src/';
 import interActiveCard from './profile-interactive';
@@ -36,18 +41,41 @@ const fakeData = data => ({
 const canvasStyle = { padding: '30px' };
 
 storiesOf(`${name}`, module)
+.add('loading state', () => (
+  <div style={canvasStyle}>
+    <div className={styles.profilecardResourced}>
+      <LoadingMessage />
+    </div>
+  </div>
+))
+.add('error state', () => (
+  <div style={canvasStyle}>
+    <div className={styles.profilecardResourced}>
+      <ErrorMessage />
+    </div>
+  </div>
+))
 .add('worst case card', () => {
   const data = fakeData({
     avatarUrl: null,
+    presence: null,
   });
 
   return (
     <div style={canvasStyle}>
       <AkProfilecard
         fullName={data.fullName}
-        presence={data.presence}
         actions={data.actions}
       />
+    </div>
+  );
+})
+.add('best case card', () => {
+  const data = fakeData({});
+
+  return (
+    <div style={canvasStyle}>
+      <AkProfilecard {...data} />
     </div>
   );
 })
@@ -59,25 +87,7 @@ storiesOf(`${name}`, module)
     </div>
   );
 })
-.add('w/o presence', () => {
-  const data = fakeData();
-  delete data.presence;
-
-  return (
-    <div style={canvasStyle}>
-      <AkProfilecard {...data} />
-    </div>
-  );
-})
-.add('w/o actions', () => {
-  const data = fakeData({ actions: null });
-  return (
-    <div style={canvasStyle}>
-      <AkProfilecard {...data} />
-    </div>
-  );
-})
-.add('custom actions', () => {
+.add('alternate actions', () => {
   const actions = [
     {
       label: 'Foo',

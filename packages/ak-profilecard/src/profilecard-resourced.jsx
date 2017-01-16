@@ -115,7 +115,11 @@ export default class ProfilecardResourced extends PureComponent {
 
   render() {
     if (this.state.hasError) {
-      return (<ErrorMessage />);
+      return (<ErrorMessage
+        reload={() => {
+          this.clientFetchProfile();
+        }}
+      />);
     }
 
     if (this.state.isLoading) {

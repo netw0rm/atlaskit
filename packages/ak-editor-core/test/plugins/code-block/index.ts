@@ -196,8 +196,8 @@ describe('code-block', () => {
     });
   });
 
-  describe('activeCodeBlockElement', () => {
-    context('when cursor moves winthin the same code block', () => {
+  describe('element', () => {
+    context('when cursor moves within the same code block', () => {
       it('returns the same element', () => {
         const { pm, plugin } = editor(doc(code_block()('code{<>}Block{cbPos}')));
         const { cbPos } = pm.doc.refs;
@@ -235,7 +235,7 @@ describe('code-block', () => {
         });
       });
 
-      context('when at the begining of the code block', () => {
+      context('when at the beginning of the code block', () => {
         it('returns code block element', () => {
           const { pm, plugin } = editor(doc(p('paragraph'), code_block()('{<>}codeBlock')));
 
@@ -264,21 +264,21 @@ describe('code-block', () => {
   context('updateLanguage', () => {
     it('keeps the content', () => {
       const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
-      const previousActiveCodeBlock = plugin.activeCodeBlock;
+      const previousElement = plugin.element;
 
       plugin.updateLanguage('php');
 
-      const currentActiveCodeBlock = plugin.activeCodeBlock;
+      const currentElement = plugin.element;
 
-      expect(previousActiveCodeBlock.textContent).to.eq(currentActiveCodeBlock.textContent);
+      expect(previousElement.textContent).to.eq(currentElement.textContent);
     });
 
-    it('can update language to be undefined', () => {
+    it('can update language to be null', () => {
       const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
 
       plugin.updateLanguage(null);
 
-      expect(plugin.activeCodeBlock.attrs.language).to.be.null;
+      expect(plugin.language).to.be.null;
     });
 
     it('updates language', () => {
@@ -286,7 +286,7 @@ describe('code-block', () => {
 
       plugin.updateLanguage('php');
 
-      expect(plugin.activeCodeBlock.attrs.language).to.eq('php');
+      expect(plugin.language).to.eq('php');
     });
 
     it('updates the node', () => {

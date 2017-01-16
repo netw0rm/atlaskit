@@ -3,12 +3,12 @@ import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
 
 export class CodeBlockState {
-  activeCodeBlock?: Node;
   element?: HTMLElement;
-  active: boolean;
-  language: string | null;
+  active: boolean = false;
+  language: string | null = null;
   private pm: PM;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
+  private activeCodeBlock?: Node;
 
   constructor(pm: PM) {
     this.pm = pm;
@@ -80,11 +80,10 @@ export class CodeBlockState {
     let dirty = false;
     const codeBlockNode = this.activeCodeBlockNode();
 
-    this.active = !!codeBlockNode;
-    this.language = codeBlockNode ? codeBlockNode.attrs.language : null;
-
     if(codeBlockNode !== this.activeCodeBlock) {
       this.activeCodeBlock = codeBlockNode;
+      this.active = !!codeBlockNode;
+      this.language = codeBlockNode ? codeBlockNode.attrs.language : null;
       this.element = this.activeCodeBlockElement();
       dirty = true;
     }

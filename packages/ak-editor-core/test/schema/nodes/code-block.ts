@@ -2,6 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import { Schema, Text, DocNodeType, CodeBlockNodeType } from '../../../src';
 import { toHTML, fromHTML } from '../../../test-helper';
+import { SUPPORTED_LANGUAGES } from '../../../src/ui/LanguagePicker/languageList';
 
 describe('ak-editor-core/schema code_block node', () => {
   it('throws an error if it is not named "code_block"', () => {
@@ -49,6 +50,14 @@ describe('ak-editor-core/schema code_block node', () => {
 
         expect(doc.firstChild.attrs.language).to.eq(null);
       });
+
+      context('when other class similar to languge is set', () => {
+        it('has language attribute as null', () => {
+          const doc = fromHTML('<div class="codehilite nolanguage-javascript"><pre><span>window.alert("hello");<span></pre></div>', schema);
+
+          expect(doc.firstChild.attrs.language).to.eq(null);
+        });
+      });
     });
 
     context('when language is set', () => {
@@ -58,7 +67,7 @@ describe('ak-editor-core/schema code_block node', () => {
         expect(doc.firstChild.type).to.be.an.instanceOf(CodeBlockNodeType);
       });
 
-      ['javascript', 'bash', 'c#', 'c++', 'asp.net'].forEach((language) => {
+      SUPPORTED_LANGUAGES.forEach((language) => {
         it(`extracts language attribute from class "language-${language}"`, () => {
           const doc = fromHTML(`<div class="codehilite language-${language}"><pre><span>window.alert("hello");<span></pre></div>`, schema);
 

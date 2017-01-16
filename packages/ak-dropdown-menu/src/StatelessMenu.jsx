@@ -4,6 +4,7 @@ import Item from 'ak-droplist-item';
 import Group from 'ak-droplist-group';
 import Button from 'ak-button';
 import ExpandIcon from 'ak-icon/glyph/expand';
+import uid from 'uid';
 
 const Icon = <ExpandIcon label="" />;
 
@@ -50,6 +51,8 @@ export default class StatelessDropdownMenu extends PureComponent {
 
   render = () => {
     const { props } = this;
+    const id = uid();
+
     return (
       <Droplist
         position={props.position}
@@ -57,14 +60,18 @@ export default class StatelessDropdownMenu extends PureComponent {
         isOpen={props.isOpen}
         onOpenChange={props.onOpenChange}
         isTriggerNotTabbable={(props.triggerType === 'button') || props.isTriggerNotTabbable}
-        listContext="menu"
         trigger={props.triggerType === 'button' ?
           (<Button
             isSelected={props.isOpen}
             iconAfter={Icon}
+            ariaHaspopup
+            ariaExpanded={props.isOpen}
+            ariaControls={id}
           >{props.children}</Button>) : props.children}
       >
-        {this.renderGroups(props.items)}
+        <div id={id} role="menu">
+          {this.renderGroups(props.items)}
+        </div>
       </Droplist>
     );
   }

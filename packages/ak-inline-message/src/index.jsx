@@ -10,7 +10,7 @@ export default class InlineMessage extends PureComponent {
     children: PropTypes.node,
     title: PropTypes.string,
     type: PropTypes.oneOf(types),
-    secondaryText: PropTypes.string.isRequired,
+    secondaryText: PropTypes.string,
   }
 
   static defaultProps = {

@@ -1,20 +1,16 @@
 import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!../styles.less';
-import typesMapping, { types, defaultType } from './types';
+import typesMapping, { types } from './types';
 
-export default class InlineMessage extends PureComponent {
+export default class SelectedIconForType extends PureComponent {
   static propTypes = {
-    type: PropTypes.oneOf(types),
-  }
-
-  static defaultProps = {
-    type: defaultType,
+    type: PropTypes.oneOf(types).isRequired,
   }
 
   render = () => {
     const {
       [this.props.type]: {
-        icon: IconForType,
+        icon: SelectedIcon,
         iconColor,
       },
     } = typesMapping;
@@ -24,7 +20,7 @@ export default class InlineMessage extends PureComponent {
         className={styles.iconWrapper}
         style={{ color: iconColor }}
       >
-        <IconForType label="Inline message icon" />
+        <SelectedIcon label="Inline message icon" />
       </span>
     );
   }

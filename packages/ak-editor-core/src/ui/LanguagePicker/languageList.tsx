@@ -1,8 +1,7 @@
 // This is the option when no language specified
 export const NO_LANGUAGE = 'Language';
 
-const languageList = [
-  NO_LANGUAGE,
+const languageList = [NO_LANGUAGE].concat([
   'PHP',
   'Java',
   'C#',
@@ -69,6 +68,6 @@ const languageList = [
   'Vala',
   'ABAP',
   'LiveScript',
-  'XQuery'];
+  'XQuery'].sort());
 
-  export default languageList;
+export default languageList;

@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { Schema, Text, DocNodeType, CodeBlockNodeType } from '../../../src';
+import { Schema, Text, DocNodeType, CodeBlockNode, CodeBlockNodeType } from '../../../src';
 import { toHTML, fromHTML } from '../../../test-helper';
 
 describe('ak-editor-core/schema code_block node', () => {
@@ -41,13 +41,14 @@ describe('ak-editor-core/schema code_block node', () => {
       it('converts to block code node', () => {
         const doc = fromHTML('<div class="codehilite"><pre><span>window.alert("hello");<span></pre></div>', schema);
 
-        expect(doc.firstChild.type).to.be.an.instanceOf(CodeBlockNodeType);
+        expect(doc.firstChild!.type).to.be.an.instanceOf(CodeBlockNodeType);
       });
 
       it('has language attribute as null', () => {
         const doc = fromHTML('<div class="codehilite"><pre><span>window.alert("hello");<span></pre></div>', schema);
+        const codeBlock = doc.firstChild! as CodeBlockNode;
 
-        expect(doc.firstChild.attrs.language).to.eq(null);
+        expect(codeBlock.attrs.language).to.eq(null);
       });
     });
 
@@ -55,13 +56,14 @@ describe('ak-editor-core/schema code_block node', () => {
       it('converts to block code node', () => {
         const doc = fromHTML('<div class="codehilite language-javascript"><pre><span>window.alert("hello");<span></pre></div>', schema);
 
-        expect(doc.firstChild.type).to.be.an.instanceOf(CodeBlockNodeType);
+        expect(doc.firstChild!.type).to.be.an.instanceOf(CodeBlockNodeType);
       });
 
       it('extracts language atrribute', () => {
         const doc = fromHTML('<div class="codehilite language-javascript"><pre><span>window.alert("hello");<span></pre></div>', schema);
+        const codeBlock = doc.firstChild! as CodeBlockNode;
 
-        expect(doc.firstChild.attrs.language).to.eq('javascript');
+        expect(codeBlock.attrs.language).to.eq('javascript');
       });
     });
   });

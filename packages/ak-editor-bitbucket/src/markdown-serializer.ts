@@ -41,15 +41,15 @@ const generateOuterBacktickChain: (text: string, minLength?: number) => string =
 
 const nodes = {
   blockquote(state: MarkdownSerializerState, node: Node) {
-    state.wrapBlock('> ', null, node, () => state.renderContent(node));
+    state.wrapBlock('> ', undefined, node, () => state.renderContent(node));
   },
   code_block(state: MarkdownSerializerState, node: Node) {
-    if (node.attrs.language === null) {
-      state.wrapBlock('    ', null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
+    if (node.attrs['language'] === null) {
+      state.wrapBlock('    ', undefined, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
     } else {
       const backticks = generateOuterBacktickChain(node.textContent, 3);
 
-      state.write(backticks + node.attrs.language + '\n');
+      state.write(backticks + node.attrs['language'] + '\n');
       state.text(node.textContent ? node.textContent : '\u200c', false);
       state.ensureNewLine();
       state.write(backticks);
@@ -57,21 +57,21 @@ const nodes = {
     }
   },
   heading(state: MarkdownSerializerState, node: Node) {
-    state.write(state.repeat('#', node.attrs.level) + ' ');
+    state.write(state.repeat('#', node.attrs['level']) + ' ');
     state.renderInline(node);
     state.closeBlock(node);
   },
   horizontal_rule(state: MarkdownSerializerState, node: Node) {
-    state.write(node.attrs.markup || '---');
+    state.write(node.attrs['markup'] || '---');
     state.closeBlock(node);
   },
   bullet_list(state: MarkdownSerializerState, node: Node) {
-    node.attrs.tight = true;
-    state.renderList(node, '  ', () => (node.attrs.bullet || '*') + ' ');
+    node.attrs['tight'] = true;
+    state.renderList(node, '  ', () => (node.attrs['bullet'] || '*') + ' ');
   },
   ordered_list(state: MarkdownSerializerState, node: Node) {
-    node.attrs.tight = true;
-    let start = node.attrs.order || 1;
+    node.attrs['tight'] = true;
+    let start = node.attrs['order'] || 1;
     let maxW = String(start + node.childCount - 1).length;
     let space = state.repeat(' ', maxW + 2);
     state.renderList(node, space, (i: number) => {
@@ -88,8 +88,8 @@ const nodes = {
   },
   image(state: MarkdownSerializerState, node: Node) {
     // Note: the 'title' is not escaped in this flavor of markdown.
-    state.write('![' + state.esc(node.attrs.alt || '') + '](' + state.esc(node.attrs.src) +
-                (node.attrs.title ? ` '${node.attrs.title}'` : '') + ')');
+    state.write('![' + state.esc(node.attrs['alt'] || '') + '](' + state.esc(node.attrs['src']) +
+                (node.attrs['title'] ? ` '${node.attrs['title']}'` : '') + ')');
   },
   hard_break(state: any) {
     state.write('  \n');
@@ -97,7 +97,7 @@ const nodes = {
   text(state: MarkdownSerializerState, node: any) {
     let lines = node.text.split('\n');
     for (let i = 0; i < lines.length; i++) {
-      const startOfLine = state.atBlank() || state.closed;
+      const startOfLine = state.atBlank() || !!state.closed;
       state.write();
       state.out += escapeMarkdown(lines[i], startOfLine);
       if (i !== lines.length - 1) {
@@ -110,7 +110,7 @@ const nodes = {
     state.closeBlock(node);
   },
   mention(state: MarkdownSerializerState, node: Node) {
-    state.write(`@${node.attrs.id}`);
+    state.write(`@${node.attrs['id']}`);
   }
 };
 
@@ -122,14 +122,14 @@ const marks = {
     open: '[',
     close(state: MarkdownSerializerState, mark: any) {
       // Note: the 'title' is not escaped in this flavor of markdown.
-      return '](' + state.esc(mark.attrs.href) + (mark.attrs.title ? ` '${mark.attrs.title}'` : '') + ')';
+      return '](' + state.esc(mark.attrs['href']) + (mark.attrs['title'] ? ` '${mark.attrs['title']}'` : '') + ')';
     }
   },
   code: { open: '`', close: '`' }
 };
 
 export class MarkdownSerializer extends PMMarkdownSerializer {
-  serialize(content: any, options?: Object): string{
+  serialize(content: Node, options?: { [key: string]: any }): string {
     let state = new MarkdownSerializerState(this.nodes, this.marks, options);
 
     state.renderContent(content);
@@ -203,7 +203,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
 
       // Close the marks that need to be closed
       while (keep < active.length) {
-        this.text(this.markString(active.pop(), false), false);
+        this.text(this.markString(active.pop()!, false), false);
       }
 
       // Open the marks that need to be opened

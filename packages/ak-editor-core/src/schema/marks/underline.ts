@@ -28,7 +28,7 @@ export class UnderlineMarkType extends MarkType {
     };
   }
 
-  toDOM() {
+  toDOM(): [string] {
     return ['u'];
   }
 }

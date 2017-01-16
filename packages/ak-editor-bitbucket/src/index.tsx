@@ -125,7 +125,7 @@ export default class Editor extends PureComponent<Props, State> {
       throw new Error('Unable to set from HTML before the editor is initialized');
     }
 
-    pm.setDoc(parseHtml(html.trim()), null);
+    pm.setDoc(parseHtml(html.trim()));
   }
 
   /**
@@ -167,7 +167,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
         pluginStateImageUpload={pm && ImageUploadPlugin.get(pm)}
-        pluginStateMentions={pm && this.mentionsResourceProvider && MentionsPlugin.get(pm)}
+        pluginStateMentions={pm && this.mentionsResourceProvider && MentionsPlugin.get(pm)!}
         mentionsResourceProvider={this.mentionsResourceProvider}
       />
     );

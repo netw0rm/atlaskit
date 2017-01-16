@@ -1,4 +1,5 @@
-import { Schema, ProseMirror, Node, Plugin, Keymap } from '../../prosemirror';
+import Keymap from 'browserkeymap';
+import { Schema, ProseMirror, Node, Plugin } from '../../prosemirror';
 import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
 

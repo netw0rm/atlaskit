@@ -47,7 +47,7 @@ function addLinkMarkerToNode(
 }
 
 export default function(pm: ProseMirror, slice: Slice): Slice {
-  const nodes = slice.content.content
-    .map((node: Node) => addLinkMarkerToNode(pm, node));
+  const nodes: Node[] = [];
+  slice.content.forEach(node => nodes.push(addLinkMarkerToNode(pm, node)));
   return new Slice(Fragment.fromArray(nodes), 0, 0);
 }

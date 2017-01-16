@@ -153,7 +153,7 @@ export default class Editor extends PureComponent<Props, State> {
     this.setState({ pm });
   }
 
-  private handleChange = (evt) => {
+  private handleChange = () => {
     const { onChange } = this.props;
     if (onChange) {
       if (debounced) {

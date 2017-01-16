@@ -1,5 +1,6 @@
+import Keymap from 'browserkeymap';
 import {
-  ProseMirror, Schema, Plugin, Keymap
+  ProseMirror, Schema, Plugin
 } from '../../prosemirror';
 
 import {

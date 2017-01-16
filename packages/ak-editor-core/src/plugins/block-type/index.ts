@@ -1,3 +1,4 @@
+import Keymap from 'browserkeymap';
 import {
   commands,
   Fragment,
@@ -6,7 +7,6 @@ import {
   Schema,
   Selection,
   UpdateScheduler,
-  Keymap,
   browser,
   Node,
   TextSelection,

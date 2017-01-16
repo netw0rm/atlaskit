@@ -9,10 +9,10 @@ export default new InputRule(urlAtEndOfLine, '', (
   to: number
 ) : boolean => {
   const { schema } = pm;
-  const from: number = to - match[1].length;
-  const url: string = match[3] ? match[1] : `http://${match[1]}`;
+  const from = to - match[1].length;
+  const url = match[3] ? match[1] : `http://${match[1]}`;
 
-  const markType: Mark = schema.mark(
+  const markType = schema.mark(
     'link',
     {
       href: url,
@@ -24,11 +24,11 @@ export default new InputRule(urlAtEndOfLine, '', (
     to,
     schema.text(
       match[1],
-      markType
+      [markType]
     )
   ).apply();
 
-  pm.removeActiveMark(markType);
+  pm.removeActiveMark(markType.type);
 
   return true;
 });

@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { Schema, Text } from '../../../src';
-import { DocNodeType, MentionNodeType } from '../../../src';
+import { DocNodeType, MentionNodeType, MentionNode } from '../../../src';
 import { toHTML, fromHTML as fromHTML_ } from '../../../test-helper';
 
 const schema = makeSchema();
@@ -42,7 +42,7 @@ describe('ak-editor-core/schema mention node', () => {
   it('should extract the correct values of mention id and display name', () => {
     const doc = fromHTML('<span mention-id=\'@user-1\'>foo bar</span>');
 
-    const mention = doc.firstChild;
+    const mention = doc.firstChild! as MentionNode;
     expect(mention.type.name).to.equal('mention');
     expect(mention.attrs.id).to.equal('@user-1');
     expect(mention.attrs.displayName).to.equal('foo bar');

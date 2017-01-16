@@ -1,6 +1,8 @@
+import Keymap from 'browserkeymap';
 import {
   commands,
-  Keymap,
+  EditorTransform,
+  liftTarget,
   Plugin,
   ProseMirror,
   Node,
@@ -162,7 +164,7 @@ export class ListsState {
     } else if (shouldConvertToType) {
       const tr = liftSelection(pm, adjustedSelection.$from, adjustedSelection.$to).applyAndScroll();
       pm.setSelection(tr.selection);
-      commands.wrapInList(nodeType)(tr.pm);
+      commands.wrapInList(nodeType)(pm);
 
       if (canJoinUp(pm, pm.selection, pm.doc, nodeType)) {
         commands.joinUp(pm, true);
@@ -269,14 +271,14 @@ export class ListsState {
     if ($from.nodeBefore) {
       if (!isSameLine) {  // Selection started at the very beginning of a line and therefor points to the previous line.
         startPos++;
-        let node: Node = this.pm.doc.nodeAt(startPos);
+        let node = this.pm.doc.nodeAt(startPos);
         while (!node || (node && !node.isText)) {
           startPos++;
           node = this.pm.doc.nodeAt(startPos);
         }
       } else if (!$from.nodeAfter) { // Selection started AND ended at the very end of a line.
         startPos--;
-        let node: Node = this.pm.doc.nodeAt(startPos);
+        let node = this.pm.doc.nodeAt(startPos);
         while (!node || (node && !node.isText)) {
           startPos--;
           node = this.pm.doc.nodeAt(startPos);
@@ -288,7 +290,7 @@ export class ListsState {
       endPos--;
     } else if ($to.nodeAfter && !($from.nodeAfter && isSameLine)) { // Selection ended at the very end of a line and therefor points to the next line.
       endPos--;
-      let node: Node = this.pm.doc.nodeAt(endPos);
+      let node = this.pm.doc.nodeAt(endPos);
       while (node && !node.isText) {
         endPos--;
         node = this.pm.doc.nodeAt(endPos);
@@ -296,10 +298,10 @@ export class ListsState {
     }
 
     if(!($from.parent && $from.parent.isTextblock && !$from.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
-      let node: Node = this.pm.doc.nodeAt(startPos);
+      let node = this.pm.doc.nodeAt(startPos);
       while(!node || (node && !node.isText)) {
         startPos++;
-        node = this.pm.doc.nodeAt(startPos);
+        node = this.pm.doc.nodeAt(startPos)!;
       }
     }
 

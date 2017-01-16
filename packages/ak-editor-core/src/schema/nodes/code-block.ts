@@ -1,9 +1,5 @@
 import { Attribute, Block, Node, Schema } from '../../prosemirror';
 
-export interface EntityAttributes {
-  language: Attribute;
-}
-
 export class CodeBlockNodeType extends Block {
   constructor(name: string, schema: Schema) {
     super(name, schema);
@@ -12,7 +8,7 @@ export class CodeBlockNodeType extends Block {
     }
   }
 
-  get attrs(): EntityAttributes {
+  get attrs() {
     return {
       language: new Attribute({ default: null })
     };
@@ -37,12 +33,12 @@ export class CodeBlockNodeType extends Block {
           {
             preserveWhitespace: true
           }
-        ];
+        ] as any;
       }
     };
   }
 
-  toDOM() {
+  toDOM(): [string, number] {
     return ['pre', 0];
   }
 }
@@ -59,6 +55,9 @@ const extractLanguageFromClass = (className: string) => {
 
 export interface CodeBlockNode extends Node {
   type: CodeBlockNodeType;
+  attrs: {
+    language: string;
+  };
 }
 
 export function isCodeBlockNode(node: Node): node is CodeBlockNode {

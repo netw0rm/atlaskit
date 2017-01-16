@@ -167,10 +167,10 @@ export class ImageUploadState {
     const { node, offset } = DOMFromPos(this.pm, $from.pos, true);
 
     if (node.childNodes.length === 0) {
-      return node.parentNode;
+      return node.parentElement!;
     }
 
-    return node.childNodes[offset];
+    return node.childNodes[offset] as HTMLElement;
   }
 
   private canInsertImage(): boolean {
@@ -178,7 +178,7 @@ export class ImageUploadState {
     const { image } = pm.schema.nodes;
     const { $from, $to, empty } = pm.selection;
 
-    return image
+    return !!image
       && empty
       && $from.parent.canReplaceWith($from.parentOffset, $to.parentOffset, image);
   }

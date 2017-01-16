@@ -101,8 +101,8 @@ export default class Profilecard extends PureComponent {
             {presences[this.props.presence]}
           </IconLabel>
           <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
-          <IconLabel icon="location">{this.props.location}</IconLabel>
           <IconLabel icon="time">{this.props.timestring}</IconLabel>
+          <IconLabel icon="location">{this.props.location}</IconLabel>
           <div className={styles.actionsFlexSpacer} />
           <div className={styles.actionsWrapper}>
             {actions}

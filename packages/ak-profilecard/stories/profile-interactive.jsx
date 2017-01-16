@@ -43,12 +43,8 @@ export default function interActiveCard(dependencies) {
 
     actions = [
       {
-        label: 'View',
-        callback: handleActionClick('View'),
-      },
-      {
-        label: 'Chat',
-        callback: handleActionClick('Chat'),
+        label: 'View profile',
+        callback: handleActionClick('View profile'),
       },
     ]
 

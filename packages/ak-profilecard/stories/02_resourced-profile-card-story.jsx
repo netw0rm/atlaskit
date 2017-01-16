@@ -13,12 +13,8 @@ const handleActionClick = title => action(`${title} button clicked`);
 
 const actions = [
   {
-    label: 'View',
-    callback: handleActionClick('View'),
-  },
-  {
-    label: 'Chat',
-    callback: handleActionClick('Chat'),
+    label: 'View profile',
+    callback: handleActionClick('View profile'),
   },
 ];
 

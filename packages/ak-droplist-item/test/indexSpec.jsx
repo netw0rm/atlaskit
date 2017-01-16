@@ -70,6 +70,10 @@ describe(name, () => {
       expect(mount(<Item type="link" isActive />).find(`.${styles.active}`)).to.exist;
     });
 
+    it('should have "active" class when option item is selected', () => {
+      expect(mount(<Item type="option" isSelected />).find(`.${styles.active}`)).to.exist;
+    });
+
     it('should NOT have "active" class for any other item types', () => {
       expect(mount(<Item type="radio" isActive />).find(`.${styles.active}`)).to.not.exist;
       expect(mount(<Item type="checkbox" isActive />).find(`.${styles.disabled}`)).to.not.exist;
@@ -162,6 +166,32 @@ describe(name, () => {
     it('should have className', () => {
       expect(mount(<SecondaryText>text</SecondaryText>)
         .find(`.${styles.secondaryText}`).length).to.equal(1);
+    });
+  });
+
+  describe('accessibility', () => {
+    it('disabled item', () => {
+      expect(mount(<Item />).find('[aria-disabled]').length).to.equal(0);
+      expect(mount(<Item isDisabled />).find('[aria-disabled]').length).to.equal(1);
+    });
+
+    it('hidden item', () => {
+      expect(mount(<Item />).find('[aria-hidden]').length).to.equal(0);
+      expect(mount(<Item isHidden />).find('[aria-hidden]').length).to.equal(1);
+    });
+
+    it('checked item', () => {
+      expect(mount(<Item />).find('[aria-checked]').length).to.equal(0);
+      expect(mount(<Item isChecked />).find('[aria-checked]').length).to.equal(1);
+    });
+
+    it('option item', () => {
+      expect(mount(<Item type="option" />).find('[aria-selected=false]').length).to.equal(1);
+      expect(mount(<Item type="option" isSelected />).find('[aria-selected=true]').length).to.equal(1);
+    });
+
+    it('data-role', () => {
+      expect(mount(<Item />).find('[data-role]').length).to.equal(1);
     });
   });
 });

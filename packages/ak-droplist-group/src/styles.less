@@ -14,11 +14,23 @@
 }
 
 .heading {
+  align-items: baseline;
   color: @ak-color-N300;
+  display: flex;
+  flex: 1 1 auto;
   font-weight: normal;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1;
   margin: 0;
   padding: @grid @grid * 3;
+}
+
+.elemAfter {
+  flex: 0 0 auto;
+}
+
+.content {
+  flex: 1 1 auto;
+  font-size: 12px;
   text-transform: uppercase;
 }

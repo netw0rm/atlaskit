@@ -3,6 +3,7 @@ import React from 'react';
 
 import styles from 'style!./styles.less';
 import { name } from '../package.json';
+import AKLayer from '../src';
 import ExampleAlignment from './ExampleAlignment';
 
 const AllAlignments = props => (<div className={styles.storyRoot}>
@@ -36,6 +37,29 @@ const AllAlignments = props => (<div className={styles.storyRoot}>
 </div>);
 
 storiesOf(name, module)
+  .add('Simple Layer story', () => {
+    const targetStyle = {
+      display: 'inline-block',
+      position: 'absolute',
+      top: '100px',
+      left: '150px',
+      background: 'red',
+      padding: '50px',
+    };
+    const layerStyles = {
+      background: 'green',
+      padding: '5px',
+    };
+    const popperContent = <div style={layerStyles}>LayerContent</div>;
+    return (
+      <div>
+        <AKLayer content={popperContent} position="right bottom">
+          <div style={targetStyle}>Target</div>
+        </AKLayer>
+        <div>Drag the left side bar over until the LayerContent reaches the</div>
+      </div>
+    );
+  })
   .add('Alignments', () => (
     <div style={{ height: '100%' }}>
       <AllAlignments />

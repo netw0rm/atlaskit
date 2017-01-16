@@ -21,7 +21,8 @@ export function transformHtml(html: string): HTMLElement {
   // Convert "codehilite" containers to <pre>
   arrayFrom(el.querySelectorAll('div.codehilite')).forEach((div: HTMLDivElement) => {
     const pre = document.createElement('pre');
-    pre.textContent = div.textContent;
+    // It always has an extra new line when copy from html
+    pre.textContent = div.textContent!.replace(/\n$/, '');
     div.innerHTML = '';
     div.appendChild(pre);
   });
@@ -42,7 +43,12 @@ export function transformHtml(html: string): HTMLElement {
       }
     }
 
-    span.textContent = a.textContent;
+    const displayName = a.textContent || '';
+    if (displayName.indexOf('@') === 0) {
+      span.textContent = a.textContent;
+    } else {
+      span.textContent = `@${a.textContent}`;
+    }
 
     a.parentNode!.insertBefore(span, a);
     a.parentNode!.removeChild(a);

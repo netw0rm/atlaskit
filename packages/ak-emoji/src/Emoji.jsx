@@ -18,7 +18,7 @@ export default class Emoji extends PureComponent {
     const xPositionInPercent = (100 / (sprite.column - 1)) * (this.props.representation.xIndex - 0);
     const yPositionInPercent = (100 / (sprite.row - 1)) * (this.props.representation.yIndex - 0);
     const style = {
-      backgroundImage: `url(${sprite.imagePath})`,
+      backgroundImage: `url(${sprite.url})`,
       backgroundPosition: `${xPositionInPercent}% ${yPositionInPercent}%`,
       backgroundSize: `${sprite.column * 100}% ${sprite.row * 100}%`,
     };

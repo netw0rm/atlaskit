@@ -3,6 +3,7 @@ lerna-debug.log
 node_modules
 npm-debug.log
 npm-debug.log.*
+yarn-error.log
 .jshintignore
 .jshintrc
 .released-packages
@@ -21,3 +22,4 @@ local.log
 browserstack-entry.js
 packages/**/**/README.md
 packages/**/**/CHANGELOG.md
+**/local-config.js

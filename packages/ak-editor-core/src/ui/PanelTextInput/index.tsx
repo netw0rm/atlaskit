@@ -11,21 +11,37 @@ export interface Props {
   placeholder?: string;
 }
 
-export interface State {}
+export interface State {
+  value?: string;
+}
 
 export default class PanelTextInput extends PureComponent<Props, State> {
-  state: State = {};
   private input?: HTMLInputElement;
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: props.defaultValue || ''
+    };
+  }
+
+  componentWillReceiveProps(props: Props) {
+    this.setState({
+      value: props.defaultValue
+    });
+  }
 
   render() {
     const { defaultValue, placeholder } = this.props;
+    const { value } = this.state;
     return (
       <input
         type="text"
         className={styles.input}
         placeholder={placeholder}
-        defaultValue={defaultValue}
-        onInput={this.handleInput}
+        value={value}
+        onChange={this.handleChange}
         onKeyUp={this.handleKeyup}
         ref={this.handleRef}
       />
@@ -39,8 +55,14 @@ export default class PanelTextInput extends PureComponent<Props, State> {
     }
   }
 
-  private handleInput = (e: FormEvent<any>) => {
+  private handleChange = () => {
     const { onChange } = this.props;
+    if (this.input) {
+      this.setState({
+        value: this.input.value
+      });
+    }
+
     if (onChange && this.input) {
       onChange(this.input.value);
     }

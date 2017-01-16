@@ -6,6 +6,7 @@ import React from 'react';
 import {
   isSelected,
   isCompact,
+  hasGlobalAppearance,
   containerItemOuter,
   link,
 } from 'style!../src/components/less/ContainerItem.less';
@@ -29,6 +30,9 @@ describe('<ContainerItem />', () => {
     });
     it('isCompact=true should render with the isCompact class', () => {
       expect(mount(<ContainerItem isCompact />).find(`.${containerItemOuter}`)).to.have.className(isCompact);
+    });
+    it('appearnace="global" should render with the global appearance class', () => {
+      expect(mount(<ContainerItem appearance="global" />).find(`.${containerItemOuter}`)).to.have.className(hasGlobalAppearance);
     });
     it('href should render onto the link', () => {
       expect(mount(<ContainerItem href="foo" />).find(`.${link}`).props().href).to.equal('foo');

@@ -9,6 +9,7 @@ import Spacer from './Spacer';
 
 export default class ContainerNavigation extends PureComponent {
   static propTypes = {
+    appearance: PropTypes.string,
     children: PropTypes.node,
     header: PropTypes.node,
     shouldAnimate: PropTypes.bool,
@@ -16,6 +17,7 @@ export default class ContainerNavigation extends PureComponent {
   }
 
   static defaultProps = {
+    appearance: 'default',
     shouldAnimate: false,
     width: containerOpenWidth,
   }
@@ -45,6 +47,7 @@ export default class ContainerNavigation extends PureComponent {
           <div
             className={classNames(styles.containerNavigationInner, {
               [styles.hasContainerHeader]: this.props.header !== null,
+              [styles.hasGlobalAppearance]: this.props.appearance === 'global',
             })}
           >
             <div>

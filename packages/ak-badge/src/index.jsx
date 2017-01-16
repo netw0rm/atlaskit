@@ -7,6 +7,11 @@ const APPEARANCE_ENUM = {
   defaultValue: 'default',
 };
 
+const THEME_ENUM = {
+  values: ['default', 'dark'],
+  defaultValue: 'default',
+};
+
 /**
  * @description Return React class reference for the Badge component.
  * @class AkBadge
@@ -48,6 +53,8 @@ class Badge extends PureComponent {
      * @type {function}
      */
     onValueUpdated: PropTypes.func,
+
+    theme: PropTypes.oneOf(THEME_ENUM.values),
   }
 
   static defaultProps = {
@@ -91,7 +98,10 @@ class Badge extends PureComponent {
       <span className={styles.root}>
         <span
           className={classNames(
-            [styles.value, styles[this.validAppearance()]]
+            [styles.value, styles[this.validAppearance()]],
+            {
+              [styles.isDarkTheme]: this.props.theme === 'dark',
+            }
           )}
         >{this.displayValue().toString()}</span>
       </span>

@@ -7,6 +7,7 @@ const classKeys = {
   appearancePrimary: 'appearancePrimary',
   appearanceSubtle: 'appearanceSubtle',
   appearanceLink: 'appearanceLink',
+  appearanceSubtleLink: 'appearanceSubtleLink',
   spacingCompact: 'spacingCompact',
   spacingNone: 'spacingNone',
   spacingDefault: 'spacingDefault',
@@ -17,7 +18,8 @@ const classKeys = {
   themeDark: 'themeDark',
 };
 
-const capitalize = s => s[0].toUpperCase() + s.slice(1);
+const hyphenLowerToUpper = s => s[1].toUpperCase(); // Replaces /-[a-z]/ with the uppercase char.
+const capitalize = s => (s[0].toUpperCase() + s.slice(1)).replace(/-[a-z]/g, hyphenLowerToUpper);
 
 const expectKeys = (classes, expectedCount, ...expectedClasses) => {
   const filteredClasses = Object.entries(classes).reduce((acum, [key, value]) => {
@@ -46,6 +48,7 @@ describe('ak-button/get-button-classes', () => {
       'primary',
       'subtle',
       'link',
+      'subtle-link',
     ].forEach((appearanceName) => {
       describe(appearanceName, () => {
         let classes;
@@ -154,6 +157,7 @@ classKeys[`appearance${capitalize(appearanceName)}`])
 
     [
       'link',
+      'subtle-link',
       'primary',
     ].forEach(a =>
       describe(`when attribute appearance ${a} is also set`, () => {

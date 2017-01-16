@@ -5,12 +5,12 @@ type sourceType = 'click' | 'keydown';
 interface Props {
   isDisabled?: boolean;
   isOpened?: boolean;
-  type?: 'default' | 'button';
   onActivate?: ({ source: sourceType }) => void;
   isFocused?: boolean;
-  isNotTabbable?: boolean;
+  isTabbable?: boolean;
   style?: object;
   className?: string;
+  shouldFitContainer?: boolean;
 }
 
 interface State {}

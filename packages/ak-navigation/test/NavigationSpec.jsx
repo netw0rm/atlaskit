@@ -41,6 +41,9 @@ describe('<Navigation />', () => {
       expect(shallow(<Navigation isResizeable={false} />))
       .to.not.have.descendants('Resizer');
     });
+    it('containerAppearance="global" is passed on to <ContainerNavigation/>', () => {
+      expect(shallow(<Navigation containerAppearance="global" />).find('ContainerNavigation')).to.have.prop('appearance', 'global');
+    });
     it('isCollapsible=false does render a <Resizer />', () => {
       expect(shallow(<Navigation isCollapsible={false} />))
       .to.have.descendants('Resizer');

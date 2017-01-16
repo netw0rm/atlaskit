@@ -2,6 +2,8 @@ import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import styles from 'style!./story-styles.less';
 import Avatar from 'ak-avatar';
+import { akColorN800 } from 'akutil-shared-styles';
+import Button from 'ak-button';
 
 import Trigger from '../src';
 import { name } from '../package.json';
@@ -12,13 +14,13 @@ storiesOf(name, module)
       <h2>Triggers for droplist</h2>
       <p>Can be activated via click or via pressing
         &quot;down &quot;, &quot;space &quot; and &quot;enter &quot;</p>
-      <p>Can be tabbed through</p>
       <div className={styles.triggersContainer}>
         <div>
           <Trigger
             onActivate={(e) => {
               action(`trigger was activated via ${e.source}`)();
             }}
+            isTabbable
             isFocused
           >Simple empty focused trigger</Trigger>
         </div>
@@ -34,8 +36,7 @@ storiesOf(name, module)
             onActivate={(e) => {
               action(`trigger was activated via ${e.source}`)();
             }}
-            type="button"
-          >Simple button trigger</Trigger>
+          ><Button>Simple trigger with a button</Button></Trigger>
         </div>
       </div>
       <p>Unless they are disabled</p>
@@ -63,8 +64,7 @@ storiesOf(name, module)
             onActivate={(e) => {
               action(`trigger was activated via ${e.source}`)();
             }}
-            type="button"
-          >Simple button trigger</Trigger>
+          ><Button>Simple trigger with a button</Button></Trigger>
         </div>
       </div>
       <p>You can style trigger if you want - with inline styles and/or classNames</p>
@@ -90,28 +90,27 @@ storiesOf(name, module)
             onActivate={(e) => {
               action(`trigger was activated via ${e.source}`)();
             }}
-            type="button"
-          >Simple button trigger</Trigger>
+          ><Button>Simple trigger with a button</Button></Trigger>
         </div>
       </div>
-      <p>You can also disable tabbable behavior</p>
+      <p>Trigger is not tabbable by default, you need to enable it
+        if you are not using interactive elements inside</p>
       <div className={styles.triggersContainer}>
         <div>
           <Trigger
-            isNotTabbable
+            isTabbable
           >Simple empty trigger</Trigger>
         </div>
         <div>
-          <Trigger
-            isNotTabbable
-          ><Avatar /></Trigger>
+          <Trigger isTabbable><Avatar /></Trigger>
         </div>
-        <div>
-          <Trigger
-            isNotTabbable
-            type="button"
-          >Simple button trigger</Trigger>
-        </div>
+      </div>
+      <p>Trigger can also occupy the whole available space</p>
+      <div className={styles.triggersContainer}>
+        <Trigger
+          style={{ border: `1px solid ${akColorN800}` }}
+          shouldFitContainer
+        >Simple wide trigger</Trigger>
       </div>
     </div>
   ));

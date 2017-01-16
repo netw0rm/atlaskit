@@ -89,4 +89,33 @@ storiesOf(`${name}/MentionItem`, module)
     return renderSingleMention(
       <MentionItem {...mention} onSelection={action('onSelection')} />
     );
-  });
+  })
+  .add('mention with lozenge', () => {
+    const mention = {
+      id: '666',
+      name: 'Oscar Wallhult',
+      mentionName: 'oscar',
+      selected: false,
+      lozenge: 'teammate',
+    };
+
+    return renderSingleMention(
+      <MentionItem {...mention} onSelection={action('onSelection')} />
+    );
+  })
+  .add('mention with lozenge and presence', () => {
+    const mention = {
+      id: '666',
+      name: 'Oscar Wallhult',
+      mentionName: 'oscar',
+      selected: false,
+      lozenge: 'teammate',
+      status: 'online',
+      time: '11:23am',
+    };
+
+    return renderSingleMention(
+      <MentionItem {...mention} onSelection={action('onSelection')} />
+    );
+  })
+;

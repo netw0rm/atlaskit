@@ -2,7 +2,7 @@
 set -e
 
 pushd ../.. > /dev/null
-CHALK="`npm bin`/chalk"
+CHALK="`yarn bin`/chalk"
 popd > /dev/null
 
 $CHALK --no-stdin -t "{blue Generating UMD bundle...}"

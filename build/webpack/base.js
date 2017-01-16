@@ -60,15 +60,6 @@ const standardConfig = {
       },
       [
         {
-          test: /\.global\.less$/,
-          loader: loaderChain({
-            'style-loader': {},
-            'css-loader': css,
-            'postcss-loader': {},
-            'less-loader': {},
-          }),
-        },
-        {
           test: /\.less$/,
           loader: loaderChain({
             'css-loader': css,
@@ -95,7 +86,7 @@ const standardConfig = {
         // Images (for storybook)
         //
         {
-          test: /\.png$/,
+          test: [/\.png$/, /\.svg$/],
           loader: 'url-loader',
         },
         //

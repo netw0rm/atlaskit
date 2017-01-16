@@ -3,10 +3,9 @@ import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Avatar from 'ak-avatar';
-import Button from 'ak-button';
 import Lozenge from 'ak-lozenge';
 
-import Comment from '../src/';
+import Comment, { CommentAction, CommentAuthor, CommentTime, CommentLayout } from '../src/';
 import styles from '../src/styles.less';
 import { name } from '../package.json';
 
@@ -32,59 +31,34 @@ describe(name, () => {
 
     describe('props', () => {
       describe('actions prop', () => {
-        const actions = [
-          { content: 'string content' },
-          { content: (<p>JSX content</p>) },
-          { content: 'string content with onClick', onClick: () => {} },
-          { content: (<p>JSX content with onClick</p>), onClick: () => {} },
-        ];
-        let wrapper;
-
-        beforeEach(() => {
-          wrapper = mount(<Comment actions={actions} />);
-        });
-
-        it('should render each action item in the correct container', () => {
+        it('should render action items in the correct container', () => {
+          const actions = [
+            <CommentAction />,
+            <CommentAction>action content</CommentAction>,
+            <CommentAction onClick={() => {}}>action content</CommentAction>,
+          ];
+          const wrapper = mount(<Comment actions={actions} />);
           const container = wrapper.find(`.${styles.locals.actionsContainer}`);
-          expect(container).to.have.exactly(actions.length).descendants(Button);
-
-          const items = container.find(Button);
-          items.forEach((item, index) => {
-            if (typeof actions[index].content === 'string') {
-              expect(item).to.contain.text(actions[index].content);
-            } else {
-              expect(item).to.contain(actions[index].content);
-            }
-
-            if (actions[index].onClick) {
-              expect(item).to.have.prop('onClick', actions[index].onClick);
-            }
+          expect(container).to.have.exactly(actions.length).descendants(CommentAction);
+          actions.forEach((action) => {
+            expect(container).to.contain(action);
           });
         });
       });
 
       describe('author prop', () => {
         it('should render the author in the correct container', () => {
-          const author = 'Joshua Nelson';
+          const author = <CommentAuthor>Joshua Nelson</CommentAuthor>;
           const wrapper = mount(<Comment author={author} />);
-          expect(wrapper.find(`.${styles.locals.topContainer}`)
-            .containsMatchingElement(<div className={styles.locals.topItem}>{author}</div>)
-          ).to.equal(true);
+          expect(wrapper.find(`.${styles.locals.mainSection}`)).to.contain(author);
         });
       });
 
       describe('avatar prop', () => {
-        it('should render the avatar in the correct location', () => {
+        it('should be reflected to the CommentLayout', () => {
           const avatar = <Avatar src="test/src" label="test label" />;
-          const wrapper = mount(<Comment avatar={avatar} />);
-          expect(wrapper).to.have.exactly(1).descendants(Avatar);
-          expect(wrapper.find(`.${styles.locals.avatarContainer}`)).to.contain(avatar);
-        });
-
-        it('can render non-Avatar nodes as the comment avatar', () => {
-          const avatar = <img src="test/src" alt="test alt" />;
-          const wrapper = mount(<Comment avatar={avatar} />);
-          expect(wrapper.find(`.${styles.locals.avatarContainer}`)).to.contain(avatar);
+          const wrapper = shallow(<Comment avatar={avatar} />);
+          expect(wrapper.find(CommentLayout)).to.have.prop('avatar', avatar);
         });
       });
 
@@ -102,13 +76,11 @@ describe(name, () => {
         });
       });
 
-      describe('datetime prop', () => {
-        it('should render the datetime in the correct container', () => {
-          const datetime = '30 August, 2016';
-          const wrapper = mount(<Comment datetime={datetime} />);
-          expect(wrapper.find(`.${styles.locals.topContainer}`)
-            .containsMatchingElement(<div className={styles.locals.topItem}>{datetime}</div>)
-          ).to.equal(true);
+      describe('time prop', () => {
+        it('should render the time in the correct container', () => {
+          const time = <CommentTime>30 August, 2016</CommentTime>;
+          const wrapper = mount(<Comment time={time} />);
+          expect(wrapper.find(`.${styles.locals.mainSection}`)).to.contain(time);
         });
       });
 
@@ -116,7 +88,7 @@ describe(name, () => {
         it('should render a Lozenge with the type in the correct container', () => {
           const type = 'type';
           const wrapper = mount(<Comment type={type} />);
-          expect(wrapper.find(`.${styles.locals.topContainer}`)
+          expect(wrapper.find(`.${styles.locals.mainSection}`)
             .containsMatchingElement(
               <div className={styles.locals.topItem}>
                 <Lozenge>{type}</Lozenge>
@@ -127,22 +99,10 @@ describe(name, () => {
     });
 
     describe('nesting', () => {
-      it('should render a child comments in the correct container', () => {
+      it('should reflect children to the CommentLayout', () => {
         const childComment = <Comment content="child" />;
         const wrapper = shallow(<Comment content="parent'">{childComment}</Comment>);
-
-        const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
-        expect(commentsContainer).to.have.exactly(1).descendants(Comment);
-        expect(commentsContainer).to.contain(childComment);
-      });
-
-      it('should render multiple adjacent siblings', () => {
-        const childComments = [<Comment content="child1" />, <Comment content="child2" />];
-        const wrapper = shallow(<Comment content="parent'">{childComments}</Comment>);
-
-        const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
-        expect(commentsContainer).to.have.exactly(childComments.length).descendants(Comment);
-        childComments.forEach(childComment => expect(commentsContainer).to.contain(childComment));
+        expect(wrapper.find(CommentLayout)).to.have.prop('children', childComment);
       });
     });
   });

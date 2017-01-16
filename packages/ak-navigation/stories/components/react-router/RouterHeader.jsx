@@ -13,7 +13,7 @@ export default class RouterHeader extends PureComponent {
       <AkContainerHeader
         href={this.props.to}
         linkComponent={RouterLinkComponent}
-        text={'AtlasCat'}
+        text="AtlasCat"
         icon={<img alt="nucleus" src={nucleusLogo} />}
       />
     );

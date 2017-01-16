@@ -1,11 +1,9 @@
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import GlobalNavigation from '../src/components/js/GlobalNavigation';
 
-chai.use(chaiAsPromised);
 chai.use(chaiEnzyme());
 chai.should();
 const expect = chai.expect;

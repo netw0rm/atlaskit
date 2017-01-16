@@ -12,9 +12,7 @@ const manyDrawerItems = () => {
   const items = [];
   for (let i = 0; i < 20; i++) {
     items.push(
-      <AkDrawerItem
-        text="Test create item"
-      />
+      <AkDrawerItem text="Test create item" />
     );
   }
   return items;
@@ -51,9 +49,7 @@ storiesOf(name, module)
                 text="See more"
               />
             </AkContainerItemGroup>
-            <AkContainerItemGroup
-              title="Group with title"
-            >
+            <AkContainerItemGroup title="Group with title">
               <AkDrawerItem
                 icon={<BitbucketBranchesIcon />}
                 text={<span>Create a <strong>Bitbucket branch</strong></span>}
@@ -77,9 +73,7 @@ storiesOf(name, module)
         openDrawer="create"
         createDrawerContent={(
           <div>
-            <AkDrawerItem
-              text="Item outside a group"
-            />
+            <AkDrawerItem text="Item outside a group" />
             <AkContainerItemGroup
               title="Create item group"
             >
@@ -108,16 +102,12 @@ storiesOf(name, module)
                 text="Inside a different group with no title"
               />
             </AkContainerItemGroup>
-            <AkContainerItemGroup
-              title="Items with highlighted nouns"
-            >
+            <AkContainerItemGroup title="Items with highlighted nouns">
               <AkDrawerItem
                 icon={<img src={nucleus} alt="icon" />}
                 text={(<span>Create a new <strong>item</strong></span>)}
               />
-              <AkDrawerItem
-                text={(<span>Make an <strong>item</strong> appear</span>)}
-              />
+              <AkDrawerItem text={(<span>Make an <strong>item</strong> appear</span>)} />
             </AkContainerItemGroup>
           </div>
       )}

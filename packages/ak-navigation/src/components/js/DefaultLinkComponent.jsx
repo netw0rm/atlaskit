@@ -15,10 +15,12 @@ export default class DefaultLinkComponent extends PureComponent {
       onMouseDown,
       className,
     } = this.props;
-    return (href ? <a
-      href={href}
-      onMouseDown={onMouseDown}
-      className={className}
-    >{children}</a> : children);
+    return (href ? (
+      <a
+        href={href}
+        onMouseDown={onMouseDown}
+        className={className}
+      >{children}</a>
+    ) : children);
   }
 }

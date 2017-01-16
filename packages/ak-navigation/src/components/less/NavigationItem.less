@@ -6,12 +6,12 @@
 @icon-size: @ak-grid-size * 2.5;
 @icon-offset-left: @ak-grid-size * 3.75;
 @icon-open-padding: 0 (@ak-grid-size * 3) 0 (@icon-offset-left - @ak-grid-size * 2);
-@icon-closed-horizontal-padding: (@container-closed-width - @ak-grid-size * 4 - @icon-size) / 2;
+@icon-closed-horizontal-padding: (@container-closed-width - (@ak-grid-size * 4) - @icon-size) / 2;
 @icon-closed-padding: 0 @icon-closed-horizontal-padding 0 @icon-closed-horizontal-padding;
 
 @border-radius: 3px;
 
-.hide-when-closed {
+.hide-when-closed() {
   [data-__ak-navigation-container-closed="true"] & {
     opacity: 0;
   }
@@ -29,7 +29,7 @@
   }
 
   &:hover {
-    padding: @ak-grid-size/4 0;
+    padding: (@ak-grid-size / 4) 0;
 
     &.isSelected {
       padding: 0;

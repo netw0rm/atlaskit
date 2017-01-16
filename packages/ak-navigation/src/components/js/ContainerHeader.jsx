@@ -18,8 +18,8 @@ export default class ContainerHeader extends PureComponent {
     const {
       href,
       text,
+      linkComponent: Link,
     } = this.props;
-    const Link = this.props.linkComponent;
 
     return (
       <div className={styles.containerHeaderWrapper}>
@@ -35,4 +35,3 @@ export default class ContainerHeader extends PureComponent {
     );
   }
 }
-

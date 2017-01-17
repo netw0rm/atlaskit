@@ -204,7 +204,6 @@ export default class DropdownList extends PureComponent {
                   this.setMaxHeight(ref);
                 }
               }}
-              role="menu"
             >
               {props.children}
             </div> :

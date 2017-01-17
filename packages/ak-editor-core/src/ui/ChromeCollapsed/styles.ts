@@ -29,8 +29,10 @@ export const input = style({
       borderColor: akColorN50,
       cursor: 'pointer',
 
-      '&::placeholder': {
-        color: akColorN400,
+      $nest: {
+        '&::placeholder': {
+          color: akColorN400,
+        }
       }
     }
   }

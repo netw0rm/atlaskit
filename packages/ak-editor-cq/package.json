@@ -26,7 +26,6 @@
     "react": "^15.3.2"
   },
   "devDependencies": {
-    "akutil-react": "*",
     "akutil-common-test": "*"
   },
   "repository": {

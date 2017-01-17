@@ -1,7 +1,7 @@
 import { Mark, Node } from '../';
 
 export class MarkdownSerializer {
-  constructor(nodes: { [key: string]: (_0: MarkdownSerializerState, _1: Node) => void }, marks: { [key: string]: any })
+  constructor(nodes: { [key: string]: (_0: MarkdownSerializerState, _1: Node) => void }, marks: { [key: string]: any });
 
   nodes: { [key: string]: (_0: MarkdownSerializerState, _1: Node) => void };
   marks: { [key: string]: any };
@@ -11,7 +11,7 @@ export class MarkdownSerializer {
 export const defaultMarkdownSerializer: MarkdownSerializer;
 
 export class MarkdownSerializerState {
-  constructor(nodes: { [key: string]: (MarkdownSerializerState, Node) => void }, marks: { [key: string]: any }, options?: { [key: string]: any })
+  constructor(nodes: { [key: string]: (MarkdownSerializerState, Node) => void }, marks: { [key: string]: any }, options?: { [key: string]: any });
 
   marks: { [key: string]: any }; // private
   out: string; // private

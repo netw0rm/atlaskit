@@ -6,3 +6,5 @@ export * from './schema';
 export { EmMark, LinkMark, StrongMark } from './schema';
 export * from './ui';
 export * from './analytics';
+
+export type ContextName = 'default';

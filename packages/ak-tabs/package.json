@@ -23,7 +23,8 @@
     "keycode": "^2.1.4"
   },
   "devDependencies": {
-    "ak-tabs": "*"
+    "ak-tabs": "*",
+    "react-lorem-component": "^0.11.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

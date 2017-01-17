@@ -1,11 +1,17 @@
 import React, { PropTypes, PureComponent } from 'react';
 
-import Tab from './Tab';
+import 'style!./styles.less';
+import Tab from './internal/Tab';
 import TabsNav from './internal/TabsNav';
 
 export default class Tabs extends PureComponent {
   static propTypes = {
-    tabs: PropTypes.arrayOf(PropTypes.instanceOf(Tab)),
+    tabs: PropTypes.arrayOf(PropTypes.shape({
+      content: PropTypes.node,
+      label: PropTypes.string.isRequired,
+      onSelect: PropTypes.func.isRequired,
+      isSelected: PropTypes.bool,
+    })),
   }
 
   static defaultProps = {
@@ -13,8 +19,15 @@ export default class Tabs extends PureComponent {
   }
 
   render() {
-    const selectedTabs = this.props.tabs.filter(tab => tab.props.selected);
-    const selectedTab = selectedTabs && selectedTabs[0];
+    const selectedTabs = this.props.tabs.filter(tab => tab.isSelected);
+    const selectedTab = selectedTabs.length ?
+      (<Tab
+        isSelected={selectedTabs[0].isSelected}
+        label={selectedTabs[0].label}
+      >
+        {selectedTabs[0].content}
+      </Tab>) : null;
+
     return (
       <div>
         <TabsNav tabs={this.props.tabs} />

@@ -1,11 +1,15 @@
 import React, { PropTypes, PureComponent } from 'react';
 import classNames from 'classnames';
 import styles from '../styles.less';
-import Tab from '../Tab';
 
 export default class TabsNav extends PureComponent {
   static propTypes = {
-    tabs: PropTypes.arrayOf(PropTypes.instanceOf(Tab)),
+    tabs: PropTypes.arrayOf(PropTypes.shape({
+      content: PropTypes.node,
+      label: PropTypes.string.isRequired,
+      onSelect: PropTypes.func.isRequired,
+      isSelected: PropTypes.bool,
+    })),
   }
 
   static defaultProps = {
@@ -13,7 +17,7 @@ export default class TabsNav extends PureComponent {
   }
 
   render() {
-    /* eslint-disable jsx-a11y/role-supports-aria-props */
+    /* eslint-disable jsx-a11y/role-supports-aria-props, jsx-a11y/no-static-element-interactions */
     return (
       <ul
         className={styles.locals.akTabLabels}
@@ -21,25 +25,26 @@ export default class TabsNav extends PureComponent {
       >
         {
           this.props.tabs.map((tab, index) =>
-            // TODO: Handlers for keydown, mousedown, onclick?
+            // TODO: Keyboard nav
              (
                <li
                  aria-posinset={index + 1}
-                 aria-selected={tab.props.selected}
+                 aria-selected={tab.isSelected}
                  aria-setsize={this.props.tabs.length}
                  className={classNames(styles.locals.akTabLabel, {
-                   [styles.locals.akTabLabelSelected]: tab.props.selected,
+                   [styles.locals.akTabLabelSelected]: tab.isSelected,
                  })}
                  key={index}
+                 onClick={tab.onSelect}
                  role="tab"
-                 tabIndex={tab.props.selected ? '0' : '-1'}
+                 tabIndex={tab.isSelected ? '0' : '-1'}
                >
-                 <span>{tab.props.label}</span>
+                 {tab.label}
                </li>
             ))
         }
       </ul>
     );
-    /* eslint-enable jsx-a11y/role-supports-aria-props */
+    /* eslint-enable jsx-a11y/role-supports-aria-props, jsx-a11y/no-static-element-interactions */
   }
 }

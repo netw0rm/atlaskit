@@ -1,13 +1,12 @@
 import React, { PropTypes, PureComponent } from 'react';
 import classNames from 'classnames';
-import styles from './styles.less';
+import styles from '../styles.less';
 
 export default class Tab extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
+    isSelected: PropTypes.bool,
     label: PropTypes.string.isRequired, // eslint-disable-line react/no-unused-prop-types
-    selected: PropTypes.bool,
-    onSelect: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
   }
 
   static defaultProps = {
@@ -16,10 +15,10 @@ export default class Tab extends PureComponent {
 
   render() {
     return (
-      <div aria-hidden={this.props.selected ? 'true' : 'false'}>
+      <div aria-hidden={this.props.isSelected ? 'true' : 'false'}>
         <div
           className={classNames(styles.locals.akTabPane, {
-            [styles.locals.selected]: this.props.selected,
+            [styles.locals.selected]: this.props.isSelected,
           })}
           role="tabpanel"
         >

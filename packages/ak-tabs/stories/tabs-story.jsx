@@ -41,8 +41,8 @@ storiesOf(name, module)
           label: 'Tab 1',
         },
         {
-          content: 'Tab 2 is selected',
-          label: 'Tab 2',
+          content: <span>Tab 2 is selected</span>,
+          label: <span>Tab 2</span>,
         },
         {
           content: 'Tab 3 is selected',

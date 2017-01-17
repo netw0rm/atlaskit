@@ -7,7 +7,7 @@ export default class Tabs extends PureComponent {
   static propTypes = {
     tabs: PropTypes.arrayOf(PropTypes.shape({
       content: PropTypes.node,
-      label: PropTypes.string.isRequired,
+      label: PropTypes.node.isRequired,
       defaultSelected: PropTypes.bool,
     })),
   }

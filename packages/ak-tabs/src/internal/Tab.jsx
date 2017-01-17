@@ -6,7 +6,6 @@ export default class Tab extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     isSelected: PropTypes.bool,
-    label: PropTypes.string.isRequired, // eslint-disable-line react/no-unused-prop-types
   }
 
   static defaultProps = {

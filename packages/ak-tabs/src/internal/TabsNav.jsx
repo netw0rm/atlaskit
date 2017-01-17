@@ -37,7 +37,7 @@ export default class TabsNav extends PureComponent {
                  key={index}
                  onClick={tab.onSelect}
                  role="tab"
-                 tabIndex={tab.isSelected ? '0' : '-1'}
+                 tabIndex={tab.isSelected ? 0 : -1}
                >
                  {tab.label}
                </li>

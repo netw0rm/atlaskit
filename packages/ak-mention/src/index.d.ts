@@ -41,6 +41,8 @@ declare class MentionPicker extends PureComponent<{
     onSelection?: Function;
     target?: Node
     position?: string;
+    onClose?: Function;
+    onOpen?: Function;
   }, {}> {
   selectNext(): void;
   selectPrevious(): void;
@@ -52,8 +54,9 @@ declare class AbstractResource {}
 declare class AbstractMentionResource extends AbstractResource {
   filter(query: string): void;
   recordMentionSelection(mention: Mention): void;
-  _notifyListeners(mentions: Mention[]): void;
+  _notifyListeners(mentions: { mentions: Mention[] }): void;
   _notifyErrorListeners(error: any): void;
+  _notifyInfoListeners(info: string): void;
 }
 
 declare class AbstractPresenceResource extends AbstractResource {

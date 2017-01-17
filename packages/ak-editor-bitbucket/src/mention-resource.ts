@@ -1,9 +1,8 @@
 import { AbstractMentionResource } from 'ak-mention';
-import { Promise } from 'es6-promise';
 
 export interface MentionSource {
   query(query: string): void;
-  on(eventName: string, handler: (response: { query: string, results: Array<{ attributes: { username: string, display_name: string, avatar_url: string, is_teammate?: boolean } }>}) => void);
+  on(eventName: string, handler: (response: { query: string, results: Array<{ attributes: { username: string, display_name: string, avatar_url: string, is_teammate?: boolean } }> }) => void);
 }
 
 class MentionResource extends AbstractMentionResource {
@@ -23,31 +22,32 @@ class MentionResource extends AbstractMentionResource {
   filter(query: string) {
     const searchTime = Date.now();
     const notify = (mentions: any) => {
-        this.lastReturnedSearch = searchTime;
-        this._notifyListeners(mentions);
+      this._notifyListeners(mentions);
+    };
+
+    const notifyInfo = (info: string) => {
+      this._notifyInfoListeners(info);
     };
 
     const notifyErrors = (error: any) => {
       this._notifyErrorListeners(error);
     };
 
-    this.search(query)
-      .then(mentions => notify({mentions}))
-      .catch(err => notifyErrors(err));
-  }
+    if (this.mentionSource) {
+      this.mentionSource.on('respond', (response) => {
+        if (response.query !== query) {
+          return;
+        }
 
-  search(query: string): Promise<any> {
-    this.fetchCount++;
-    return new Promise((resolve, reject) => {
-
-      if (this.mentionSource) {
-        this.mentionSource.on('respond', (response) => {
-          if (response.query !== query) {
-            reject();
-            return;
+        if (!response.results.length) {
+          if (query.length >= 3) {
+            notifyInfo(`Found no matches for ${query}`); // TODO: i18n
+          } else {
+            notifyInfo('Continue typing to search for a user'); // TODO: 18n
           }
-
-          let mentions = response.results.map((item, index) => {
+          notify({mentions: []});
+        } else {
+          let allMentions = response.results.map((item, index) => {
             return {
               'id': item.attributes.username,
               'name': item.attributes.display_name,
@@ -55,16 +55,26 @@ class MentionResource extends AbstractMentionResource {
               'avatarUrl': item.attributes.avatar_url,
               'lozenge': item.attributes.is_teammate ? 'teammate' : null
             };
-          });
+          }).sort((itemA, itemB) => itemA.name < itemB.name ? 0 : 1 ); // Sort by name
 
-          resolve(mentions);
-        });
+          // Display teammates first
+          const mentions = [
+            ...allMentions.filter(item => !!item.lozenge),
+            ...allMentions.filter(item => !item.lozenge)
+          ];
 
-        this.mentionSource.query(query);
-      } else {
-        reject(new Error('No mentions source provided'));
+          notify({ mentions });
+        }
+      });
+
+      if (query.length < 3) {
+        notifyInfo('Continue typing to search for a user'); // TODO: i18n
       }
-    });
+
+      this.mentionSource.query(query);
+    } else {
+      notifyErrors(new Error('No mentions source provided'));
+    }
   }
 
   recordMentionSelection(mention: any) {

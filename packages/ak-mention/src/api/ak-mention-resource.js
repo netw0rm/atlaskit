@@ -85,20 +85,25 @@ class AbstractResource {
   constructor() {
     this._changeListeners = new Map();
     this._errListeners = new Map();
+    this._infoListeners = new Map();
   }
 
-  subscribe(key, callback, errCallback) {
+  subscribe(key, callback, errCallback, infoCallback) {
     if (callback) {
       this._changeListeners.set(key, callback);
     }
     if (errCallback) {
       this._errListeners.set(key, errCallback);
     }
+    if (infoCallback) {
+      this._infoListeners.set(key, infoCallback);
+    }
   }
 
   unsubscribe(key) {
     this._changeListeners.delete(key);
     this._errListeners.delete(key);
+    this._infoListeners.delete(key);
   }
 }
 
@@ -153,6 +158,17 @@ class AbstractMentionResource extends AbstractResource {
         listener(error);
       } catch (e) {
         // ignore error from listener
+        debug(`error from listener '${key}', ignoring`, e);
+      }
+    });
+  }
+
+  _notifyInfoListeners(info) {
+    this._infoListeners.forEach((listener, key) => {
+      try {
+        listener(info);
+      } catch (e) {
+        // ignore error fromr listener
         debug(`error from listener '${key}', ignoring`, e);
       }
     });

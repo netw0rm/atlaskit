@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-bitbucket",
-  "version": "6.4.0",
+  "version": "6.7.0",
   "description": "Editor web component",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
@@ -16,11 +16,10 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "ak-editor-core": "^3.2.1",
+    "ak-editor-core": "^3.7.0",
     "ak-editor-shared-styles": "^3.0.0",
-    "ak-mention": "^1.8.0",
+    "ak-mention": "^1.9.0",
     "akutil-shared-styles": "^37.0.1",
-    "es6-promise": "^4.0.5",
     "tslib": "^1.2.0"
   },
   "peerDependencies": {

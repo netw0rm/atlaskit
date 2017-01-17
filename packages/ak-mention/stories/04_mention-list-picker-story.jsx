@@ -3,7 +3,7 @@ import React from 'react';
 
 import { name } from '../package.json';
 import MentionTextInput from './demo-mention-text-input';
-import { resourceProvider, slowResourceProvider, MockPresenceProvider } from './story-data';
+import { resourceProvider, resourceProviderWithInfoHints, slowResourceProvider, MockPresenceProvider } from './story-data';
 
 const bottomStyle = {
   position: 'absolute',
@@ -32,6 +32,13 @@ storiesOf(`${name}/MentionPicker`, module)
       label="User search"
       onSelection={action('mention selected')}
       resourceProvider={slowResourceProvider}
+    />
+  ))
+  .add('Input field mention list. Mock API with info-hints. Key binding', () => (
+    <MentionTextInput
+      label="User search"
+      onSelection={action('mention selected')}
+      resourceProvider={resourceProviderWithInfoHints}
     />
   ))
   .add('Input field at bottom mention list. Mock API. Key binding', () => (

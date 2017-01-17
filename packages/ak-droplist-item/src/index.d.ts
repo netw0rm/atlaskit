@@ -12,7 +12,6 @@ interface Props {
   target?: string;
   type?: 'link' | 'checkbox' | 'radio';
   onActivate?: ({ item: Item, event: KeyboardOrMouseEvent }) => void;
-  onKeyDown?: ({ item: Item, event: KeyboardEvent }) => void;
   elemBefore?: ReactNode;
   elemAfter?: ReactNode;
 }

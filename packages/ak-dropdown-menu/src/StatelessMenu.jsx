@@ -33,6 +33,10 @@ export default class StatelessDropdownMenu extends PureComponent {
     triggerType: 'default',
   }
 
+  state = {
+    id: uid(),
+  }
+
   renderItems = items => items.map((item, itemIndex) =>
     <Item
       {...item}
@@ -50,8 +54,7 @@ export default class StatelessDropdownMenu extends PureComponent {
   )
 
   render = () => {
-    const { props } = this;
-    const id = uid();
+    const { props, state } = this;
 
     return (
       <Droplist
@@ -66,10 +69,10 @@ export default class StatelessDropdownMenu extends PureComponent {
             iconAfter={Icon}
             ariaHaspopup
             ariaExpanded={props.isOpen}
-            ariaControls={id}
+            ariaControls={state.id}
           >{props.children}</Button>) : props.children}
       >
-        <div id={id} role="menu">
+        <div id={state.id} role="menu">
           {this.renderGroups(props.items)}
         </div>
       </Droplist>

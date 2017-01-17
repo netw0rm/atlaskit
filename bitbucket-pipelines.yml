@@ -29,7 +29,7 @@ pipelines:
           - ./build/bin/setup.sh
           - yarn
           - yarn run browserstack/tunnel/start
-          - run-p -ln "validate/package.json" "lint" "test" "test/base" "test/wc/browserstack/pr"
+          - run-p -ln "validate/package.json" "validate/typescript" lint" "test" "test/base" "test/wc/browserstack/pr"
           - yarn run pr/artifacts
           # AK-628 - yarn run test/integration/pr
           - yarn run browserstack/tunnel/stop

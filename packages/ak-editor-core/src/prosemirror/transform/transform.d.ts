@@ -1,7 +1,8 @@
-import { Fragment, Mark, MarkType, Node, NodeRange, NodeType, Slice, Step, StepResult, Transform, ProseMirrorError } from '../';
+import { Fragment, MapResult, Mark, MarkType, Node, NodeRange, NodeType, PosMap, Slice, Step, StepResult } from '../';
+import { ProseMirrorError } from '../util/error';
 
 export class Transform {
-  constructor(doc: Node) {}
+  constructor(doc: Node);
 
   doc: Node;
   steps: Step[];
@@ -23,7 +24,7 @@ export class Transform {
   removeMark(from: number, to: number, mark?: Mark | MarkType): this;
   clearMarkup(from: number, to: number): this;
   wrap(range: NodeRange, wrappers: { type: NodeType, attrs?: Object }[]): this;
-  setBlockType(from: number, to?: number, type: NodeType, attrs?: { [key: string]: any }): this;
+  setBlockType(from: number, to: number | null, type: NodeType, attrs?: { [key: string]: any }): this;
   setNodeType(pos: number, type?: NodeType, attrs?: { [key: string]: any }): this;
   split(pos: number, depth?: number, typeAfter?: NodeType, attrsAfter?: { [key: string]: any }): this;
   join(pos: number, depth?: number, silent?: boolean): this;

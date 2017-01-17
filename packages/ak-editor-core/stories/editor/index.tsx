@@ -14,7 +14,7 @@ import {
 import schema from './schema';
 
 export interface Props {
-  context?: 'comment' | 'pr';
+  context?: 'default';
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;

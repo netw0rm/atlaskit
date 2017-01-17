@@ -1,4 +1,4 @@
-import { Fragment, NodeType, Mark, MarkType, ResolvedPos, Slice } from '../';
+import { Fragment, NodeType, Mark, MarkType, ResolvedPos, Schema, Slice } from '../';
 import { DOMNode } from '../dom';
 import { ContentMatch } from './content';
 
@@ -28,11 +28,12 @@ export class Node {
   nodeAt(pos: number): Node | null;
   childAfter(pos: number): { node?: Node, index: number, offset: number };
   childBefore(pos: number): { node?: Node, index: number, offset: number };
-  nodesBetween(from?: number, to?: number, f: (node: Node, pos: number, parent: Node, index: number) => void): void;
+  nodesBetween(from: number | null, to: number | null, f: (node: Node, pos: number, parent: Node, index: number) => void): void;
   descendants(f: (node: Node, pos: number, parent: Node) => void): void;
   resolve(pos: number): ResolvedPos;
   marksAt(pos: number): Mark[];
-  rangeHasMark(from?: number, to?: number, type: MarkType): boolean;
+  rangeHasMark(from: number | null, to: number | null, type: MarkType): boolean;
+
   isBlock: boolean;
   isTextblock: boolean;
   isInline: boolean;

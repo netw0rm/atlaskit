@@ -2,7 +2,7 @@ export class Subscription<T> {
   add(f: T, priority?: number): void;
   addOnce(f: T, priority?: number): void;
   remove(f: T): void;
-  hasHandler(): bool
+  hasHandler(): boolean;
   dispatch(...args: any[]): void;
 }
 

@@ -21,7 +21,7 @@
     "ak-button": "^5.0.0",
     "ak-button-group": "^3.0.2",
     "ak-droplist": "^4.1.0",
-    "ak-droplist-item": "^3.3.1",
+    "ak-droplist-item": "^4.0.0",
     "ak-droplist-group": "^2.1.0",
     "ak-dropdown-menu": "^2.1.0",
     "ak-editor-shared-styles": "^3.2.0",
@@ -36,7 +36,6 @@
   },
   "devDependencies": {
     "ajv": "^4.7.2",
-    "ak-tabs": "4.0.6",
     "akutil-react": "^3.0.1",
     "highlight.js": "^9.6.0",
     "sinon": "^1.17.6",

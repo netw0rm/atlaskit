@@ -27,7 +27,6 @@
   },
   "devDependencies": {
     "ak-mention": "*",
-    "ak-tabs": "*",
     "ak-icon": "*",
     "akutil-react": "*",
     "akutil-common-test": "*",

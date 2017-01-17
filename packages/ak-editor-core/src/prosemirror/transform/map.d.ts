@@ -1,6 +1,6 @@
 export interface Mappable {
   map(pos: number, bias: number | null);
-  mapResult(pos: number, bias: number | null): MapResult
+  mapResult(pos: number, bias: number | null): MapResult;
 }
 
 export class MapResult {
@@ -9,7 +9,7 @@ export class MapResult {
 }
 
 export class PosMap {
-  constructor(ranges: number[]) {}
+  constructor(ranges: number[]);
 
   mapResult(pos: number, bias?: number): MapResult;
   map(pos: number, bias?: number): number;
@@ -18,7 +18,7 @@ export class PosMap {
 }
 
 export class Remapping {
-  constructor(head?: PosMap[], tail?: PosMap[]) {}
+  constructor(head?: PosMap[], tail?: PosMap[]);
 
   head: PosMap[];
   tail: PosMap[];

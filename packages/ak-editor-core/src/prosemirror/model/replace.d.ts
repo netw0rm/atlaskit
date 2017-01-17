@@ -4,7 +4,7 @@ import { ProseMirrorError } from '../util/error';
 export class ReplaceError extends ProseMirrorError {}
 
 export class Slice {
-  constructor(content: Fragment, openLeft: number, openRight: number, possibleParent?: Node) {}
+  constructor(content: Fragment, openLeft: number, openRight: number, possibleParent?: Node);
 
   content: Fragment;
   openLeft: number;

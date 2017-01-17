@@ -29,6 +29,28 @@ storiesOf(name, module)
       ]}
     />
   ))
+  .add('ak-tabs with no default selection', () => (
+    <Tabs
+      tabs={[
+        {
+          content: <Lorem count="1" />,
+          label: 'Details',
+        },
+        {
+          content: <Lorem count="1" />,
+          label: 'Diff',
+        },
+        {
+          content: <Lorem count="1" />,
+          label: 'Commits',
+        },
+        {
+          content: <Lorem count="1" />,
+          label: 'Pipeline',
+        },
+      ]}
+    />
+  ))
   .add('ak-tabs with no child tabs', () => (
     <Tabs />
   ))

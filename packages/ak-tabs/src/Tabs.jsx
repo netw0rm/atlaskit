@@ -23,7 +23,6 @@ export default class Tabs extends PureComponent {
     const selectedTab = selectedTabs.length ?
       (<Tab
         isSelected={selectedTabs[0].isSelected}
-        label={selectedTabs[0].label}
       >
         {selectedTabs[0].content}
       </Tab>) : null;

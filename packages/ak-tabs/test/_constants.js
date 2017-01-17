@@ -1,12 +1,10 @@
-// eslint-disable-next-line import/prefer-default-export
-export const sampleTabs = [
+const sampleTabsNoSelection = [
   {
     content: 'Tab 1 content',
     label: 'Tab 1 label',
   },
   {
     content: 'Tab 2 content',
-    isSelected: true,
     label: 'Tab 2 label',
   },
   {
@@ -14,3 +12,15 @@ export const sampleTabs = [
     label: 'Tab 3 label',
   },
 ];
+
+const sampleTabs = sampleTabsNoSelection.map(item => ({ ...item }));
+sampleTabs[1].isSelected = true;
+
+const sampleTabsDefaultSelected = sampleTabsNoSelection.map(item => ({ ...item }));
+sampleTabsDefaultSelected[1].defaultSelected = true;
+
+export {
+  sampleTabs,
+  sampleTabsNoSelection,
+  sampleTabsDefaultSelected,
+};

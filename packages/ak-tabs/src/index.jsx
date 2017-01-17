@@ -21,10 +21,12 @@ export default class Tabs extends PureComponent {
 
     // Set the selected tab to the first tab with defaultSelected provided
     let defaultSelectedIndex = null;
-    for (let i = 0; i < props.tabs.length; i++) {
-      if (props.tabs[i].defaultSelected) {
-        defaultSelectedIndex = i;
-        break;
+    if (props) {
+      for (let i = 0; i < props.tabs.length; i++) {
+        if (props.tabs[i].defaultSelected) {
+          defaultSelectedIndex = i;
+          break;
+        }
       }
     }
 

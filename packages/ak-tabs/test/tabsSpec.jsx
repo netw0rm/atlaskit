@@ -13,9 +13,9 @@ const { expect } = chai;
 chai.use(chaiEnzyme());
 
 describe(name, () => {
-  describe('Tabs', () => {
+  describe('StatelessTabs', () => {
     describe('exports', () => {
-      it('the Tabs component', () => {
+      it('the StatelessTabs component', () => {
         expect(Tabs).to.exist;
         expect(new Tabs()).to.be.instanceOf(Component);
       });

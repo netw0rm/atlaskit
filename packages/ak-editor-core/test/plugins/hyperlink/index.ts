@@ -150,7 +150,7 @@ describe('hyperlink', () => {
       expect(spy).to.have.been.callCount(1);
     });
 
-    it.only('does not emit `change` multiple times when the selection moves within a link', () => {
+    it('does not emit `change` multiple times when the selection moves within a link', () => {
       const { pm, plugin } = editor(doc(linkable('{<>}text', link({ href: 'http://www.atlassian.com' })('l{pos1}i{pos2}nk'))));
       const spy = sinon.spy();
       const { pos1, pos2 } = pm.doc.refs;

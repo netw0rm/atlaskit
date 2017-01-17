@@ -7,8 +7,10 @@
   "ak:webpack:raw": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { npm run build; } || ../../node_modules/.bin/not-in-publish",
-    "build": "../../node_modules/.bin/tsc -p build/es5 && ../../node_modules/.bin/babel --out-dir dist/es5 --source-root src --source-maps true --no-babelrc --plugins transform-runtime --presets es2015 src && ../../node_modules/.bin/tsc -p build/es2015 && ../../node_modules/.bin/babel --out-dir dist/es2015 --source-root src --source-maps true --no-babelrc src && cp -rf src/prosemirror ."
+    "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
+    "build": "npm run build/es5 && npm run build/es2015",
+    "build/es5": "../../node_modules/.bin/babel --out-dir dist/es5 --source-root src --source-maps true --no-babelrc --plugins transform-runtime --presets es2015 src && ../../node_modules/.bin/tsc -p build/es5",
+    "build/es2015": "../../node_modules/.bin/babel --out-dir dist/es2015 --source-root src --source-maps true --no-babelrc src && cp -rf src/prosemirror . && ../../node_modules/.bin/tsc -p build/es2015"
   },
   "files": [
     "dist",

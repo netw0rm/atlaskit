@@ -1,8 +1,7 @@
 import schema from '../schema';
 import {
   Fragment,
-  Node as PMNode,
-  TextNode
+  Node as PMNode
 } from 'ak-editor-core';
 
 import {
@@ -33,7 +32,9 @@ export default function encode(node: DocNode) {
   return doc.body.innerHTML;
 
   function encodeNode(node: PMNode) {
-    if (isBlockQuoteNode(node)) {
+    if (node.isText) {
+      return encodeText(node);
+    } else if (isBlockQuoteNode(node)) {
       return encodeBlockquote(node);
     } else if (isBulletListNode(node)) {
       return encodeBulletList(node);
@@ -49,10 +50,8 @@ export default function encode(node: DocNode) {
       return encodeParagraph(node);
     } else if (isHardBreakNode(node)) {
       return encodeHardBreak();
-    } else if (node.isText) {
-      return encodeText(node);
     } else {
-      throw new Error(`Unexpected node '${node.type.name}' for CXHTML encoding`);
+      throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
   }
 
@@ -88,7 +87,7 @@ export default function encode(node: DocNode) {
     return elem;
   }
 
-  function encodeText(node: TextNode) {
+  function encodeText(node: PMNode) {
     if (node.text) {
       const root = doc.createDocumentFragment();
       let elem = root as Node;
@@ -111,7 +110,7 @@ export default function encode(node: DocNode) {
             elem = elem.appendChild(doc.createElement('u'));
             break;
           case schema.marks.subsup:
-            elem = elem.appendChild(doc.createElement(mark.attrs.type));
+            elem = elem.appendChild(doc.createElement(mark.attrs['type']));
             break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);

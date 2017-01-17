@@ -1,7 +1,7 @@
 import schema from '../schema';
 import parseHtml from './parse-xhtml';
 import WeakMap from './weak-map';
-import { Fragment, MarkType, Mark, Node as PMNode, TextNode } from 'ak-editor-core';
+import { Fragment, MarkType, Mark, Node as PMNode } from 'ak-editor-core';
 
 const convertedNodes = new WeakMap();
 
@@ -72,10 +72,8 @@ function getContent(node: Node): Fragment {
   for (childIndex = 0; childIndex < node.childNodes.length; childIndex++) {
     const child = node.childNodes[childIndex];
     const thing = convertedNodes.get(child);
-    if (thing instanceof Fragment) {
-      fragment = fragment.append(thing);
-    } else if (thing instanceof PMNode) {
-      fragment = fragment.addToEnd(thing);
+    if (thing instanceof Fragment || thing instanceof PMNode) {
+      fragment = fragment.append(Fragment.from(thing));
     }
   }
   return fragment;

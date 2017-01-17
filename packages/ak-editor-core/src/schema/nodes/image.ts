@@ -21,18 +21,21 @@ export class ImageNodeType extends Inline {
   get matchDOMTag() {
     return {
       'img[src]': (elem: HTMLElement) => ({
-        src: elem.getAttribute('src')
+        src: elem.getAttribute('src')!
       })
     };
   }
 
-  toDOM(node: Node) {
+  toDOM(node: Node): [string, any] {
     return ['img', node.attrs];
   }
 }
 
 export interface ImageNode extends Node {
   type: ImageNodeType;
+  attrs: {
+    src: string
+  };
 }
 
 export function isImageNode(node: Node): node is ImageNode {

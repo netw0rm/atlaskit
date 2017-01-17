@@ -135,15 +135,17 @@ export default class DropdownList extends PureComponent {
     }
 
     if (this.props.isOpen && this.isTargetChildItem(e.target)) {
-      e.preventDefault();
       switch (e.keyCode) {
         case keyCode('up'):
+          e.preventDefault();
           this.focusPreviousItem();
           break;
         case keyCode('down'):
+          e.preventDefault();
           this.focusNextItem();
           break;
         case keyCode('tab'):
+          e.preventDefault();
           this.close();
           break;
         default:
@@ -204,7 +206,6 @@ export default class DropdownList extends PureComponent {
                   this.setMaxHeight(ref);
                 }
               }}
-              role="menu"
             >
               {props.children}
             </div> :

@@ -11,9 +11,11 @@ export class MockMentionSource implements MentionSource {
   handlers = {};
 
   query(query: string) {
-    const response = { query, results: search.search(query) } ;
-    if (this.handlers['respond']) {
-      this.handlers['respond'](response);
+    if (query && query.length >= 3) {
+      const response = { query, results: search.search(query) } ;
+      if (this.handlers['respond']) {
+        this.handlers['respond'](response);
+      }
     }
   }
 

@@ -14,7 +14,7 @@ export class BlockQuoteNodeType extends Block {
     };
   }
 
-  toDOM() {
+  toDOM(): [string, any] {
     return ['blockquote', 0];
   }
 }

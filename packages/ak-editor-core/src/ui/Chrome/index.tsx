@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import { ProseMirror } from '../../prosemirror';
 import { BlockTypeState } from '../../plugins/block-type';
+import { CodeBlockState } from '../../plugins/code-block';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ListsState } from '../../plugins/lists';
 import { TextFormattingState } from '../../plugins/text-formatting';
@@ -18,6 +19,7 @@ export interface Props {
   pm?: ProseMirror;
   feedbackFormUrl?: string;
   pluginStateBlockType?: BlockTypeState;
+  pluginStateCodeBlock?: CodeBlockState;
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
@@ -39,6 +41,7 @@ export default class Chrome extends PureComponent<Props, State> {
           onSave={props.onSave}
           feedbackFormUrl={props.feedbackFormUrl}
           pluginStateBlockType={props.pluginStateBlockType}
+          pluginStateCodeBlock={props.pluginStateCodeBlock}
           pluginStateHyperlink={props.pluginStateHyperlink}
           pluginStateLists={props.pluginStateLists}
           pluginStateTextFormatting={props.pluginStateTextFormatting}

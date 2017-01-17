@@ -267,26 +267,6 @@ describe('block-type', () => {
             expect(toggleBlockType).to.have.been.calledWith('codeblock');
           });
         });
-
-        context('when context changed', () => {
-          it('does not dispatch keymap function that does not exist under new context', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-            plugin.changeContext('comment');
-
-            pm.input.dispatchKey('Cmd-Alt-1');
-            expect(toggleBlockType).to.not.have.been.called;
-          });
-
-          it('dispatches keymap function that exists under new context', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
-            plugin.changeContext('pr');
-
-            pm.input.dispatchKey('Cmd-Alt-1');
-            expect(toggleBlockType).to.have.been.calledWith('heading1');
-          });
-        });
       });
     } else {
       context('when not on a Mac', () => {
@@ -453,6 +433,15 @@ describe('block-type', () => {
           expect(changeBlockType).to.have.been.calledWith('normal');
         });
       });
+    });
+  });
+
+  describe('changeContext', () => {
+    it('reverts to "default" in case the context is not defined', () => {
+      const { pm, plugin } = editor(doc(p('text')));
+      expect(plugin.context).to.eq('default');
+      plugin.changeContext('!!!%%%UNDEFINED CONTEXT%%%!!!');
+      expect(plugin.context).to.eq('default');
     });
   });
 });

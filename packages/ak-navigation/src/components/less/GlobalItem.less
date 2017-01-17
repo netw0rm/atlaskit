@@ -1,5 +1,7 @@
 @import '~akutil-shared-styles/src/colors.less';
 @import '~akutil-shared-styles/src/grid.less';
+@import '~akutil-shared-styles/src/grid.less';
+@import '../../shared-variables.less';
 
 .globalItem {
   align-items: center;
@@ -25,11 +27,24 @@
 }
 
 .mediumGlobalItem {
-  height: @ak-grid-size * 5;
-  width: @ak-grid-size * 5;
+  height: @global-item-medium-size;
+  width: @global-item-medium-size;
 }
 
 .largeGlobalItem {
   height: @ak-grid-size * 6;
   width: @ak-grid-size * 6;
+}
+
+.hasContainerAppearance {
+  color: @ak-color-N500;
+
+  &:hover {
+    background-color: @ak-color-N20A;
+  }
+
+  &:active {
+    color: @ak-color-B500;
+    background-color: @ak-color-B50;
+  }
 }

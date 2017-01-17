@@ -19,7 +19,7 @@ const Ajv = ((ajvModule as any).default || ajvModule);
 const ajv = new Ajv();
 const validate = ajv.compile(jsonSchema);
 
-function toJS(map: OrderedMap, transform: (value: any) => any) {
+function toJS(map: OrderedMap<any>, transform: (value: any) => any) {
   const result: any = {};
   map.forEach((key, value) => result[key] = transform(value));
   return result;

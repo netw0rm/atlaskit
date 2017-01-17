@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-core",
-  "version": "3.9.0",
+  "version": "3.9.1",
   "description": "A package contains Atlassian editor core functionality",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
@@ -8,11 +8,12 @@
   "types": "src/index.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { npm run build; } || ../../node_modules/.bin/not-in-publish",
-    "build": "../../node_modules/.bin/tsc -p build/es5 && ../../node_modules/.bin/tsc -p build/es2015"
+    "build": "../../node_modules/.bin/tsc -p build/es5 && ../../node_modules/.bin/babel --out-dir dist/es5 --source-root src --source-maps true --no-babelrc --plugins transform-runtime --presets es2015 src && ../../node_modules/.bin/tsc -p build/es2015 && ../../node_modules/.bin/babel --out-dir dist/es2015 --source-root src --source-maps true --no-babelrc src && cp -rf src/prosemirror ."
   },
   "files": [
     "dist",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "!src"
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",

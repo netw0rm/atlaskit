@@ -21,19 +21,6 @@ const mentionStyle = style({
   }
 });
 
-export interface MentionAttributes {
-  id: any;
-  displayName: any;
-}
-
-export interface ParseSpec {
-  [index: string]: (dom: Element) => MentionAttributes;
-}
-
-export interface DOMAttributes {
-  [propName: string]: string;
-}
-
 export class MentionNodeType extends Inline {
   constructor(name: string, schema: Schema) {
     super(name, schema);
@@ -42,31 +29,30 @@ export class MentionNodeType extends Inline {
     }
   }
 
-  get attrs(): MentionAttributes {
+  get attrs() {
     return {
       id: new Attribute({ default: '' }),
       displayName: new Attribute({ default: '' })
     };
   }
 
-  get matchDOMTag(): ParseSpec {
+  get matchDOMTag() {
     return {
-      'span[mention-id]': (dom: Element) => {
-        return {
-          id: dom.getAttribute('mention-id'),
-          displayName: dom.textContent
-        };
-      }
+      'span[mention-id]': (dom: Element) => ({
+        id: dom.getAttribute('mention-id')!,
+        displayName: dom.textContent!
+      })
     };
   }
 
-  toDOM(node: MentionNode): [string, DOMAttributes] {
-    let attrs: DOMAttributes = {
+  toDOM(node: Node): [string, any, string] {
+    const mentionNode = node as MentionNode;
+    let attrs = {
       'class': mentionStyle,
-      'mention-id': node.attrs.id,
+      'mention-id': mentionNode.attrs.id,
       'contenteditable': 'false',
     };
-    return ['span', attrs, node.attrs.displayName];
+    return ['span', attrs, mentionNode.attrs.displayName];
   }
 }
 
@@ -76,5 +62,4 @@ export interface MentionNode extends Node {
     id: string;
     displayName: string;
   };
-  text: string;
 }

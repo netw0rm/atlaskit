@@ -32,8 +32,8 @@ export default function(nodeType: CodeBlockNodeType, pm: ProseMirror) {
 
 // copied from prosemirror/src/transform/mark.js
 function clearMarkupFor(tr: EditorTransform, pos: number, newType: CodeBlockNodeType) {
-  const node = tr.doc.nodeAt(pos);
-  let match = newType.contentExpr.start();
+  const node = tr.doc.nodeAt(pos)!;
+  let match = (newType as any).contentExpr.start();
   const delSteps: Step[] = [];
   const newlinePos: number[] = [];
   for (let i = 0, cur = pos + 1; i < node.childCount; i++) {

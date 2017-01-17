@@ -112,20 +112,15 @@ storiesOf(name, module)
   ), { imports: [...imports, ['Icon', 'ak-icon/glyph/question']] })
   .addCodeExampleStory('items and handlers', () => (
     <div className={styles.storiesContainer}>
-      <p>Items have two handlers to help them communicate with the outside world.</p>
+      <p>Items have a handler to help them communicate with the outside world.</p>
       <p><b>onActivate</b> is called when the item is activated (clicked, pressed enter,
-        pressed space). On other key presses <b>onKeyDown</b> handler is called.</p>
+        pressed space).</p>
       <div className={styles.itemsContainer}>
         <Item
           onActivate={(attr) => {
             console.log('look ma, I was activated!', attr.item);
           }}
         >first item</Item>
-        <Item
-          onKeyDown={(attr) => {
-            console.log('look ma, someone pressed a button!', attr.event);
-          }}
-        >second item</Item>
       </div>
     </div>
   ), { imports })

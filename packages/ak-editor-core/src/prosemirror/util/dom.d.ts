@@ -1,0 +1,1 @@
+export function contains(parent: DOMNode, child: DOMNode): boolean;

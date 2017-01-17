@@ -21,7 +21,9 @@ export class StrikeMarkType extends MarkType {
     };
   }
 
-  toDOM() { return ['s']; }
+  toDOM(): [string] {
+    return ['s'];
+  }
 }
 
 export interface StrikeMark extends Mark {

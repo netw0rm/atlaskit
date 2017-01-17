@@ -12,7 +12,7 @@ export default class Element extends PureComponent {
     isChecked: PropTypes.bool,
     isSelected: PropTypes.bool,
     handleClick: PropTypes.func,
-    handleKeyDown: PropTypes.func,
+    handleKeyPress: PropTypes.func,
     href: PropTypes.string,
     target: PropTypes.string,
     type: PropTypes.oneOf(baseTypes.values),
@@ -40,12 +40,12 @@ export default class Element extends PureComponent {
 
   render = () => {
     const { props } = this;
-    const { href, target, type, isDisabled, handleKeyDown, handleClick, className } = props;
+    const { href, target, type, isDisabled, handleKeyPress, handleClick, className } = props;
     const ariaAttributes = {};
     const commonAttributes = {
       className,
       role: ariaRoles[type],
-      onKeyDown: handleKeyDown,
+      onKeyPress: handleKeyPress,
       onClick: handleClick,
       onMouseDown: this.handleMouseDown,
       ref: ref => (this.ref = ref),

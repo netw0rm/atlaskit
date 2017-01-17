@@ -24,7 +24,7 @@
   "devDependencies": {
     "ak-droplist": "*",
     "ak-droplist-group": "^2.0.0",
-    "ak-droplist-item": "^3.0.0",
+    "ak-droplist-item": "^4.0.0",
     "akutil-readme": "^1.1.0",
     "ak-button": "^5.0.2"
   },

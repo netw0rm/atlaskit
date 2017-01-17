@@ -78,20 +78,19 @@ describe(name, () => {
       expect(wrapper.state().isOpen).to.be.true;
     });
 
-    // TODO: AK-1299
-    // it('interacting with link item should close the dropdown', () => {
-    //   const items = [{
-    //     heading: 'group',
-    //     items: [
-    //       { content: 'item 1', href: '#' },
-    //     ],
-    //   }];
-    //   const wrapper = mount(<Menu items={items} defaultOpen>test</Menu>);
-    //   const item = wrapper.find('[role="menuitem"]');
-    //   expect(wrapper.state().isOpen).to.be.true;
-    //   item.simulate('click');
-    //   expect(wrapper.state().isOpen).to.be.false;
-    // });
+    it('interacting with link item should close the dropdown', () => {
+      const items = [{
+        heading: 'group',
+        items: [
+          { content: 'item 1', href: '#' },
+        ],
+      }];
+      const wrapper = mount(<Menu items={items} defaultOpen>test</Menu>);
+      const item = wrapper.find('[role="menuitem"]');
+      expect(wrapper.state().isOpen).to.be.true;
+      item.simulate('click');
+      expect(wrapper.state().isOpen).to.be.false;
+    });
 
     it('interacting with checkbox item should not close the menu', () => {
       const items = [{

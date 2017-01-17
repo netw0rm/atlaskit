@@ -57,8 +57,9 @@ describe('ak-editor-core/schema code_block node', () => {
       context('when other class similar to languge is set', () => {
         it('has language attribute as null', () => {
           const doc = fromHTML('<div class="codehilite nolanguage-javascript"><pre><span>window.alert("hello");<span></pre></div>', schema);
+          const codeBlock = doc.firstChild! as CodeBlockNode;
 
-          expect(doc.firstChild!.attrs.language).to.eq(null);
+          expect(codeBlock.attrs.language).to.eq(null);
         });
       });
     });
@@ -67,7 +68,7 @@ describe('ak-editor-core/schema code_block node', () => {
       it('converts to block code node', () => {
         const doc = fromHTML('<div class="codehilite language-javascript"><pre><span>window.alert("hello");<span></pre></div>', schema);
 
-        expect(doc.firstChild.type).to.be.an.instanceOf(CodeBlockNodeType);
+        expect(doc.firstChild!.type).to.be.an.instanceOf(CodeBlockNodeType);
       });
 
       SUPPORTED_LANGUAGES.forEach((language) => {

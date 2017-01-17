@@ -84,7 +84,7 @@ export class CodeBlockState {
     if(codeBlockNode !== this.activeCodeBlock) {
       this.activeCodeBlock = codeBlockNode;
       this.active = !!codeBlockNode;
-      this.language = codeBlockNode ? codeBlockNode.attrs.language : null;
+      this.language = codeBlockNode ? codeBlockNode.attrs['language'] : null;
       this.element = this.activeCodeBlockElement();
       dirty = true;
     }
@@ -98,7 +98,7 @@ export class CodeBlockState {
     const offset =  this.nodeStartPos();
     const { node } = DOMFromPos(this.pm, offset, true);
 
-    return node;
+    return node as HTMLElement;
   }
 
   private nodeStartPos(): number {

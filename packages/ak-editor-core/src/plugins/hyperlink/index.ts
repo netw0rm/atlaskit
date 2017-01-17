@@ -216,7 +216,7 @@ export class HyperlinkState {
       const { node, offset } = DOMFromPos(this.pm, pos, true);
 
       if (node.childNodes.length === 0) {
-        return node.parentElement!;
+        return node.parentNode as HTMLElement;
       }
 
       return node.childNodes[offset] as HTMLElement;

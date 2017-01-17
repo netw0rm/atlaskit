@@ -18,7 +18,12 @@ export class MentionQueryMarkType extends MarkType {
     return true;
   }
 
-  toDOM() { return ['span', { 'data-mention-query': true, 'class': mentionQueryStyle }]; }
+  toDOM(): [string, any] {
+    return ['span', {
+      'data-mention-query': true,
+      'class': mentionQueryStyle
+    }];
+  }
 }
 
 export interface MentionQueryMark extends Mark {

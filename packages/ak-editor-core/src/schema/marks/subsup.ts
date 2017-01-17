@@ -27,7 +27,7 @@ export class SubSupMarkType extends MarkType {
     };
   }
 
-  toDOM(mark: SubSupMark) {
+  toDOM(mark: SubSupMark): [string] {
     return [mark.attrs.type];
   }
 }

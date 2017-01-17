@@ -33,7 +33,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
     const { active, adding, disabled } = this.state;
 
     return (
-      <span style={{ position: 'relative' }}>
+      <span className={styles.outerContainer}>
         <ToolbarButton
           disabled={disabled || active}
           onClick={this.openLinkPanel}

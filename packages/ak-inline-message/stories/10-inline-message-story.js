@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import FieldText from 'ak-field-text';
+import AkFieldText from 'ak-field-text';
 import { akGridSize } from 'akutil-shared-styles';
 
 import InlineMessage from '../src';
@@ -54,7 +54,7 @@ storiesOf(name, module)
   .addCodeExampleStory('focus style', () => (
     <div style={{ margin }}>
       <p>
-        <FieldText placeholder="Click me, then tab" />
+        <AkFieldText placeholder="Click me, then tab" />
       </p>
       <p>
         <InlineMessage

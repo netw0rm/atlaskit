@@ -4,6 +4,7 @@ import AkButton from 'ak-button';
 import AkButtonGroup from 'ak-button-group';
 import { ProseMirror } from '../../prosemirror';
 import { BlockTypeState } from '../../plugins/block-type';
+import { CodeBlockState } from '../../plugins/code-block';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ListsState } from '../../plugins/lists';
 import { TextFormattingState } from '../../plugins/text-formatting';
@@ -20,6 +21,7 @@ import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarFeedback from '../ToolbarFeedback';
 import MentionPicker from '../MentionPicker';
+import LanguagePicker from '../LanguagePicker';
 import { analyticsDecorator as analytics } from '../../analytics';
 
 export interface Props {
@@ -29,6 +31,7 @@ export interface Props {
   onInsertImage?: () => void;
   onSave?: () => void;
   pluginStateBlockType?: BlockTypeState;
+  pluginStateCodeBlock?: CodeBlockState;
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
@@ -56,6 +59,7 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
         <div className={styles.content}>
           {props.children}
           {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} /> : null}
+          {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} /> : null}
           {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} /> : null}
         </div>
         <div className={styles.footer}>

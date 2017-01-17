@@ -1,4 +1,5 @@
 import chai from 'chai';
+import chaiEnzyme from 'chai-enzyme';
 import { shallow } from 'enzyme';
 import React from 'react';
 
@@ -6,6 +7,7 @@ import AkBadge from '../src';
 import styles from '../src/style.less';
 
 chai.should();
+chai.use(chaiEnzyme());
 
 describe('ak-badge', () => {
   function valueSpan(element) {
@@ -65,6 +67,14 @@ describe('ak-badge', () => {
       valueSpan(
         shallow(<AkBadge appearance="foo" />)
       ).hasClass(styles.locals.default).should.equal(true);
+    });
+  });
+  describe('theme property', () => {
+    it('should not have dark theme when not set', () => {
+      valueSpan(shallow(<AkBadge />)).hasClass(styles.locals.isDarkTheme).should.equal(false);
+    });
+    it('should apply the dark theme class when the theme is dark', () => {
+      valueSpan(shallow(<AkBadge theme="dark" />)).hasClass(styles.locals.isDarkTheme).should.equal(true);
     });
   });
 });

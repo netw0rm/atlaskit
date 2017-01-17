@@ -12,13 +12,14 @@ import {
   DefaultInputRulesPlugin,
   Chrome,
   AnalyticsHandler,
-  analyticsService
+  analyticsService,
+  ContextName
 } from 'ak-editor-core';
 import schema from './schema';
 import { parse, encode } from './cxhtml';
 
 export interface Props {
-  context?: 'default' | 'comment';
+  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;

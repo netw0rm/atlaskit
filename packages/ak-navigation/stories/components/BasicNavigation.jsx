@@ -1,9 +1,9 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { action } from '@kadira/storybook';
-import { AtlassianIcon, SearchIcon, HelpIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
+import { AtlassianIcon, SearchIcon, HelpIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon, ArrowleftIcon } from 'ak-icon';
 import AkDropdownMenu from 'ak-dropdown-menu';
 import AkAvatar from 'ak-avatar';
-import Navigation, { AkContainerHeader, AkContainerItem, AkGlobalItem } from '../../src/index';
+import Navigation, { AkContainerHeader, AkContainerItemGroup, AkContainerItem, AkDrawerItem, AkGlobalItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
 
@@ -13,6 +13,7 @@ export default class BasicNavigation extends PureComponent {
     isOpen: PropTypes.bool,
     width: PropTypes.number,
     containerHeader: PropTypes.node,
+    openDrawer: PropTypes.string,
   }
 
   static defaultProps = {
@@ -30,28 +31,52 @@ export default class BasicNavigation extends PureComponent {
         text="Item C"
       />
     </div>),
-    containerHeader: (<a href="#foo">
+    containerHeader: (
       <AkContainerHeader
-        text="AtlasCat"
+        href="#foo"
+        text="AtlasKit"
         icon={
           <img alt="nucleus" src={nucleusLogo} />
         }
-      />
-    </a>),
+      />),
+    createDrawerContent: (
+      <div>
+        <AkDrawerItem
+          text="Item outside a group"
+        />
+        <AkContainerItemGroup
+          title="Create item group"
+        >
+          <AkDrawerItem
+            icon={<img src={nucleusLogo} alt="icon" />}
+            text="Item with an icon"
+          />
+          <AkDrawerItem
+            icon={<img src={nucleusLogo} alt="icon" />}
+            text="A really, really, quite long, actually super long container name"
+          />
+        </AkContainerItemGroup>
+      </div>),
+    openDrawer: null,
   }
 
   constructor(...args) {
     super(...args);
     this.state = {
-      openDrawer: null,
       isOpen: this.props.isOpen,
+      openDrawer: this.props.openDrawer,
       width: this.props.width,
     };
   }
 
-  activate = name =>
+  openDrawer = name =>
     () => this.setState({
-      openDrawer: this.state.openDrawer === name ? null : name,
+      openDrawer: name,
+    });
+
+  closeDrawer = () =>
+    () => this.setState({
+      openDrawer: null,
     });
 
   resize = (resizeState) => {
@@ -64,15 +89,12 @@ export default class BasicNavigation extends PureComponent {
   render() {
     return (
       <Navigation
-        resizeHandler={action('resize')}
         containerHeader={this.props.containerHeader}
-        globalSearchIcon={<SearchIcon label="Search icon" />}
+        drawerBackIcon={<ArrowleftIcon label="Back icon" size="medium" />}
         globalCreateIcon={<CreateIcon label="Create icon" />}
-        globalPrimaryItem={
-          <AkGlobalItem size="large">
-            <AtlassianIcon label="Atlassian icon" size="medium" />
-          </AkGlobalItem>
-        }
+        globalPrimaryIcon={<AtlassianIcon label="Atlassian icon" size="medium" />}
+        globalPrimaryItemHref="http://www.atlassian.com"
+        globalSearchIcon={<SearchIcon label="Search icon" />}
         globalHelpItem={
           <AkDropdownMenu
             position="right bottom"
@@ -136,14 +158,17 @@ export default class BasicNavigation extends PureComponent {
             </AkGlobalItem>
           </AkDropdownMenu>
         }
-        onSearchDrawerActivated={this.activate('search')}
-        onCreateDrawerActivated={this.activate('create')}
+        hasBlanket
         isCreateDrawerOpen={this.state.openDrawer === 'create'}
+        isOpen={this.state.isOpen}
         isSearchDrawerOpen={this.state.openDrawer === 'search'}
         onBlanketClicked={action('blanket clicked')}
+        onCreateDrawerClose={this.closeDrawer()}
+        onCreateDrawerOpen={this.openDrawer('create')}
         onResize={this.resize}
-        hasBlanket
-        isOpen={this.state.isOpen}
+        onSearchDrawerClose={this.closeDrawer()}
+        onSearchDrawerOpen={this.openDrawer('search')}
+        resizeHandler={action('resize')}
         width={this.state.width}
         {...this.props}
       >

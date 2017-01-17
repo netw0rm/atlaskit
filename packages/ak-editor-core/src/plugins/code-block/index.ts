@@ -1,16 +1,18 @@
 import Keymap from 'browserkeymap';
-import { Schema, ProseMirror, Node, Plugin } from '../../prosemirror';
+import { Schema, ProseMirror, Node, Plugin, DOMFromPos } from '../../prosemirror';
 import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
 
 export class CodeBlockState {
-  target: Node | null = null;
+  element?: HTMLElement;
+  active: boolean = false;
+  language: string | null = null;
   private pm: PM;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
+  private activeCodeBlock?: Node;
 
   constructor(pm: PM) {
     this.pm = pm;
-    this.target = this.activeBlockCode();
 
     // add paste listener to overwrite the prosemirror's
     // see https://discuss.prosemirror.net/t/handle-paste-inside-code-block/372/5?u=bradleyayers
@@ -24,6 +26,8 @@ export class CodeBlockState {
       pm.on.selectionChange,
       pm.on.change,
     ], () => this.update());
+
+    this.update();
   }
 
   subscribe(cb: CodeBlockStateSubscriber) {
@@ -33,6 +37,12 @@ export class CodeBlockState {
 
   unsubscribe(cb: CodeBlockStateSubscriber) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
+  }
+
+  updateLanguage(language: string | null): void {
+    if(this.activeCodeBlock) {
+      this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.activeCodeBlock.type, {language: language}).apply();
+    }
   }
 
   splitCodeBlock(): boolean {
@@ -69,10 +79,13 @@ export class CodeBlockState {
 
   private update() {
     let dirty = false;
-    const codeBlock = this.activeBlockCode();
+    const codeBlockNode = this.activeCodeBlockNode();
 
-    if(codeBlock !== this.target) {
-      this.target = codeBlock;
+    if(codeBlockNode !== this.activeCodeBlock) {
+      this.activeCodeBlock = codeBlockNode;
+      this.active = !!codeBlockNode;
+      this.language = codeBlockNode ? codeBlockNode.attrs.language : null;
+      this.element = this.activeCodeBlockElement();
       dirty = true;
     }
 
@@ -81,7 +94,19 @@ export class CodeBlockState {
     }
   }
 
-  private activeBlockCode(): Node | null {
+  private activeCodeBlockElement(): HTMLElement {
+    const offset =  this.nodeStartPos();
+    const { node } = DOMFromPos(this.pm, offset, true);
+
+    return node;
+  }
+
+  private nodeStartPos(): number {
+    const { $from } = this.pm.selection;
+    return $from.start($from.depth);
+  }
+
+  private activeCodeBlockNode(): Node | undefined {
     const { pm } = this;
     const { $from } = pm.selection;
     const node = $from.parent;
@@ -89,7 +114,7 @@ export class CodeBlockState {
       return node;
     }
 
-    return null;
+    return undefined;
   }
 }
 

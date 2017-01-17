@@ -41,15 +41,18 @@ const generateOuterBacktickChain: (text: string, minLength?: number) => string =
 
 const nodes = {
   blockquote(state: MarkdownSerializerState, node: Node) {
-    state.wrapBlock('> ', undefined, node, () => state.renderContent(node));
+    state.wrapBlock('> ', null, node, () => state.renderContent(node));
   },
   code_block(state: MarkdownSerializerState, node: Node) {
     if (node.attrs['language'] === null) {
-      state.wrapBlock('    ', undefined, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
+      state.wrapBlock('    ', null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
     } else {
       const backticks = generateOuterBacktickChain(node.textContent, 3);
+      // We choose to use Shebang language style is to handle languages with special character, eg.: C#, Asp.net, etc.
+      const language = `#!${node.attrs['language']}`;
 
-      state.write(backticks + node.attrs['language'] + '\n');
+      state.write(backticks + '\n');
+      state.write(language + '\n');
       state.text(node.textContent ? node.textContent : '\u200c', false);
       state.ensureNewLine();
       state.write(backticks);
@@ -125,7 +128,8 @@ const marks = {
       return '](' + state.esc(mark.attrs['href']) + (mark.attrs['title'] ? ` '${mark.attrs['title']}'` : '') + ')';
     }
   },
-  code: { open: '`', close: '`' }
+  code: { open: '`', close: '`' },
+  mention_query: { open: '', close: '', mixable: false }
 };
 
 export class MarkdownSerializer extends PMMarkdownSerializer {

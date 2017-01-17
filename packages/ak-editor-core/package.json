@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-core",
-  "version": "3.7.0",
+  "version": "3.8.0",
   "description": "A package contains Atlassian editor core functionality",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
@@ -23,6 +23,7 @@
     "ak-droplist": "^4.1.0",
     "ak-droplist-item": "^3.3.1",
     "ak-droplist-group": "^2.1.0",
+    "ak-dropdown-menu": "^2.1.0",
     "ak-editor-shared-styles": "^3.2.0",
     "ak-icon": "^12.0.0",
     "ak-mention": "^1.9.0",

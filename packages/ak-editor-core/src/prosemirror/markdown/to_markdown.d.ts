@@ -19,7 +19,7 @@ export class MarkdownSerializerState {
   closed?: Node; // private
 
   options: { [key: string]: any };
-  wrapBlock(delim: string, firstDelim?: string, node: Node, f: () => void): void;
+  wrapBlock(delim: string, firstDelim?: string | null, node: Node, f: () => void): void;
   ensureNewLine(): void;
   write(content?: string): void;
   closeBlock(node: Node): void;

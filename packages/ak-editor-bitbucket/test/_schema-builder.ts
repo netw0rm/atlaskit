@@ -27,3 +27,4 @@ export const mono = markFactory(schema.marks.mono, {});
 export const em = markFactory(schema.marks.em, {});
 export const strong = markFactory(schema.marks.strong, {});
 export const strike = markFactory(schema.marks.strike, {});
+export const mention_query = markFactory(schema.marks.mention_query, {});

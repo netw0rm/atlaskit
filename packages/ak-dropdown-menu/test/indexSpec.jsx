@@ -4,6 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import Droplist from 'ak-droplist';
+import Button from 'ak-button';
 
 import { name } from '../package.json';
 
@@ -59,9 +60,17 @@ describe(name, () => {
       expect(droplist).to.have.prop('position', wrapper.props().position);
       expect(droplist).to.have.prop('appearance', wrapper.props().appearance);
       expect(droplist).to.have.prop('isTriggerNotTabbable', wrapper.props().isTriggerNotTabbable);
-      expect(droplist).to.have.prop('listContext', 'menu');
       expect(droplist).to.have.prop('isOpen', wrapper.state().isOpen);
       expect(droplist).to.have.prop('trigger', 'text');
+    });
+
+    it('should pass required properties to the button trigger', () => {
+      const menu = mount(<Menu items={itemsList} triggerType="button">text</Menu>);
+      const button = menu.find(Button);
+      expect(button).to.have.prop('isSelected', menu.props().isOpen);
+      expect(button).to.have.prop('ariaHaspopup', true);
+      expect(button).to.have.prop('ariaExpanded', menu.props().isOpen);
+      expect(button).to.have.prop('ariaControls');
     });
   });
 

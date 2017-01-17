@@ -2,7 +2,8 @@ import * as mocha from 'mocha';
 import markdownSerializer from '../src/markdown-serializer';
 import {
   code_block, doc, p, img, mono, strong, blockquote, hr,
-  h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, mention, strike
+  h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, mention, strike,
+  mention_query
 } from './_schema-builder';
 import { expect } from 'chai';
 import stringRepeat from '../src/util/string-repeat';
@@ -91,11 +92,11 @@ describe('Bitbucket markdown serializer: ', () => {
       const js = code_block({ language: 'js' });
       expect(markdownSerializer.serialize(doc(
         js('foo'),
-      ))).to.eq('```js\nfoo\n```');
+      ))).to.eq('```\n#!js\nfoo\n```');
 
       expect(markdownSerializer.serialize(doc(
         js('foo\nbar'),
-      ))).to.eq('```js\nfoo\nbar\n```');
+      ))).to.eq('```\n#!js\nfoo\nbar\n```');
     });
 
     it('with no text is preserved', () => {
@@ -123,19 +124,19 @@ describe('Bitbucket markdown serializer: ', () => {
 
       expect(markdownSerializer.serialize(doc(
         css('```js\nfoo\n```')
-      ))).to.eq('````css\n```js\nfoo\n```\n````', 'Balanced fencing');
+      ))).to.eq('````\n#!css\n```js\nfoo\n```\n````', 'Balanced fencing');
 
       expect(markdownSerializer.serialize(doc(
         css('````js\nfoo\n```')
-      ))).to.eq('`````css\n````js\nfoo\n```\n`````', 'Unbalanced fencing in the code block' );
+      ))).to.eq('`````\n#!css\n````js\nfoo\n```\n`````', 'Unbalanced fencing in the code block' );
 
       expect(markdownSerializer.serialize(doc(
         css('````')
-      ))).to.eq('`````css\n````\n`````', 'Unmatched backtick fence');
+      ))).to.eq('`````\n#!css\n````\n`````', 'Unmatched backtick fence');
 
       expect(markdownSerializer.serialize(doc(
         css('````js')
-      ))).to.eq('`````css\n````js\n`````', 'Unmatched backtick fence with language definition');
+      ))).to.eq('`````\n#!css\n````js\n`````', 'Unmatched backtick fence with language definition');
     });
   });
 
@@ -491,6 +492,10 @@ describe('Bitbucket markdown serializer: ', () => {
   });
 
   describe('marks -', () => {
+      it('should ignore mention_query mark', () => {
+        expect(markdownSerializer.serialize(doc(p(mention_query('@oscar'))))).to.eq('@oscar');
+      });
+
       it('should serialize em', () => {
         expect(markdownSerializer.serialize(doc(p(em('foo'))))).to.eq('*foo*');
         expect(markdownSerializer.serialize(doc(p(

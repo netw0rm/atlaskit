@@ -6,6 +6,7 @@ import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
 import IconButton from '../ToolbarIconButton';
 import Panel from '../Panel';
 import PanelTextInput from '../PanelTextInput';
+import * as styles from './styles';
 
 export interface Props {
   pluginState: HyperlinkState;
@@ -45,31 +46,33 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
 
       return (
         <Panel target={target} align="left" autoPosition>
-          {!showOpenButton ? null :
-          <IconButton
-            href={href}
-            target="_blank"
-            theme="dark"
-            icon={<OpenIcon label="Open" />}
-          />
-          }
-          {!showUnlinkButton ? null :
-          <IconButton
-            theme="dark"
-            onClick={this.handleUnlink}
-            icon={<UnlinkIcon label="Unlink" />}
-          />
-          }
-          {!showSeparator ? null :
-          <span style={{ background: 'grey', width: 1, height: 20, display: 'inline-block', margin: '0 10px' }} />
-          }
-          <PanelTextInput
-            placeholder="Link address"
-            defaultValue={href}
-            onSubmit={this.updateHref}
-            onChange={this.updateHref}
-            ref="textInput"
-          />
+          <div className={styles.container}>
+            {!showOpenButton ? null :
+            <IconButton
+              href={href}
+              target="_blank"
+              theme="dark"
+              icon={<OpenIcon label="Open" />}
+            />
+            }
+            {!showUnlinkButton ? null :
+            <IconButton
+              theme="dark"
+              onClick={this.handleUnlink}
+              icon={<UnlinkIcon label="Unlink" />}
+            />
+            }
+            {!showSeparator ? null :
+            <span className={styles.seperator} />
+            }
+            <PanelTextInput
+              placeholder="Link address"
+              defaultValue={href}
+              onSubmit={this.updateHref}
+              onChange={this.updateHref}
+              ref="textInput"
+            />
+          </div>
         </Panel>
       );
     } else {

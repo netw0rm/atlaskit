@@ -17,7 +17,8 @@ import {
   ImageUploadPlugin,
   Chrome,
   AnalyticsHandler,
-  analyticsService
+  analyticsService,
+  ContextName
 } from 'ak-editor-core';
 
 import schema from './schema';
@@ -28,7 +29,7 @@ import { MentionResource, MentionSource } from './mention-resource';
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
 export interface Props {
-  context?: 'comment' | 'pr';
+  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
@@ -163,6 +164,7 @@ export default class Editor extends PureComponent<Props, State> {
         placeholder={this.props.placeholder}
         onCollapsedChromeFocus={this.expand}
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
+        pluginStateCodeBlock={pm && CodeBlockPlugin.get(pm)}
         pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}

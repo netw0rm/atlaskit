@@ -213,7 +213,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
 
   it('atlassian.editor.feedback.button', () => {
     editor
-      .find('ToolbarFeedback > ToolbarIconButton')
+      .find('ToolbarFeedback > ToolbarButton')
       .simulate('click');
 
     expect(handler).to.have.been.calledWith('atlassian.editor.feedback.button');
@@ -248,7 +248,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
 
   it('atlassian.editor.image.button', () => {
     editor
-      .find('ToolbarIconButton')
+      .find('ToolbarButton')
       .find(ImageIcon)
       .parent()
       .simulate('click');

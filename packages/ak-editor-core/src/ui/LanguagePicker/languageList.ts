@@ -72,4 +72,20 @@ export const SUPPORTED_LANGUAGES = [
 
 const languageList = [NO_LANGUAGE].concat(SUPPORTED_LANGUAGES.sort());
 
+export function findMatchLangugae(languge: string | null ): string{
+  if(!languge) {
+    return NO_LANGUAGE;
+  }
+
+  const matches = SUPPORTED_LANGUAGES.filter((supported_language) => {
+    return supported_language.toLowerCase() === languge.toLowerCase();
+  });
+
+  if(matches.length > 0) {
+    return matches[0];
+  }
+
+  return NO_LANGUAGE;
+}
+
 export default languageList;

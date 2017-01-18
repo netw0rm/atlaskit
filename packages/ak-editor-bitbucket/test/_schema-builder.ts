@@ -1,9 +1,10 @@
-import { nodeFactory, markFactory } from 'ak-editor-core/test-helper';
+import { markFactory, nodeFactory } from 'ak-editor-core/test-helper';
 import schema from '../src/schema';
 
 // Nodes
 export const blockquote = nodeFactory(schema.nodes.blockquote);
 export const br = schema.nodes.hard_break.createChecked();
+// tslint:disable-next-line:variable-name
 export const code_block = (attrs: {} = {}) => nodeFactory(schema.nodes.code_block, attrs);
 export const doc = nodeFactory(schema.nodes.doc);
 export const emoji = (attrs: { id: string }) => schema.nodes.emoji.createChecked(attrs);
@@ -27,4 +28,5 @@ export const mono = markFactory(schema.marks.mono, {});
 export const em = markFactory(schema.marks.em, {});
 export const strong = markFactory(schema.marks.strong, {});
 export const strike = markFactory(schema.marks.strike, {});
+// tslint:disable-next-line:variable-name
 export const mention_query = markFactory(schema.marks.mention_query, {});

@@ -1,18 +1,17 @@
 import {
   commands,
   DOMFromPos,
-  inputRules,
   InputRule,
+  inputRules,
+  Node,
   NodeSelection,
   Plugin,
   ProseMirror,
   ResolvedPos,
-  Mark,
-  Node,
   Schema,
   TextSelection
 } from '../../prosemirror';
-import { LinkMarkType, LinkMark } from '../../schema';
+import { LinkMark, LinkMarkType } from '../../schema';
 import hyperlinkRule from './input-rule';
 import pasteTransformer from './paste-transformer';
 
@@ -47,23 +46,6 @@ export class HyperlinkState {
     ], () => this.update());
 
     this.update();
-  }
-
-  private updateElement() {
-    const activeLink = this.getActiveLink();
-    let dirty = false;
-
-    const newElement = activeLink
-      ? this.getDomElement()
-      : undefined;
-    if (newElement !== this.element) {
-      this.element = newElement;
-      dirty = true;
-    }
-
-    if (dirty) {
-      this.changeHandlers.forEach(cb => cb(this));
-    }
   }
 
   private update() {
@@ -139,7 +121,7 @@ export class HyperlinkState {
     const { pm } = this;
 
     if (pm.selection instanceof TextSelection) {
-      const { $head, empty } = pm.selection;
+      const { $head } = pm.selection;
 
       // why - 1?
       // because of `exclusiveRight`, we need to get the node "left to"
@@ -303,5 +285,5 @@ export interface HyperlinkOptions {
 function getBoundariesWithin(
   $head: ResolvedPos
 ): number {
-  return $head.parentOffset === 0 ? $head.pos : $head.pos -1;
+  return $head.parentOffset === 0 ? $head.pos : $head.pos - 1;
 }

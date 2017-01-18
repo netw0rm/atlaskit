@@ -1,5 +1,5 @@
-import schema from './schema';
 import { Node } from 'ak-editor-core';
+import schema from './schema';
 import arrayFrom from './util/array-from';
 
 /**

@@ -1,10 +1,10 @@
-import MentionsPlugin from '../../../src/plugins/mentions';
-import { MentionQueryMarkType, MentionNodeType, ProseMirror, Schema, ResolvedPos, schema as schemaBasic } from '../../../src';
-import { chaiPlugin, fixtures } from '../../../test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
+import { MentionNodeType, MentionQueryMarkType, ProseMirror, Schema, schema as schemaBasic } from '../../../src';
+import MentionsPlugin from '../../../src/plugins/mentions';
+import { chaiPlugin, fixtures } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 chai.use((sinonChai as any).default || sinonChai);
@@ -30,8 +30,8 @@ const container = fixtures();
 
 describe('mentions', () => {
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const Plugin = MentionsPlugin as any; // .State is not public API.
-    expect(Plugin.State.name).is.be.a('string');
+    const plugin = MentionsPlugin as any; // .State is not public API.
+    expect(plugin.State.name).is.be.a('string');
   });
 
   describe('keymap', () => {

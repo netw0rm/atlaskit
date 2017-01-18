@@ -22,7 +22,6 @@ export class CodeBlockNodeType extends Block {
     return {
       'pre': (dom: HTMLElement) => {
         const language = getLanguageFromEditorStyle(dom) || getLanguageFromBitbucketStyle(dom);
-
         return [
           {
             'language': language
@@ -36,7 +35,7 @@ export class CodeBlockNodeType extends Block {
   }
 
   toDOM(node: CodeBlockNode): [string, any, number] {
-    return ['pre', {'data-language': node.attrs.language}, 0];
+    return ['pre', { 'data-language': node.attrs.language }, 0];
   }
 }
 
@@ -45,7 +44,7 @@ export class CodeBlockNodeType extends Block {
 const getLanguageFromBitbucketStyle = (dom: HTMLElement): string | null => {
   const parent = dom.parentElement;
 
-  if(parent && parent.className.indexOf('codehilite') !== -1) {
+  if (parent && parent.className.indexOf('codehilite') !== -1) {
     removeLastNewLine(dom);
     return extractLanguageFromClass(parent.className);
   }
@@ -61,9 +60,9 @@ const getLanguageFromEditorStyle = (dom: HTMLElement): string | null => {
 };
 
 const extractLanguageFromClass = (className: string): string | null => {
-  const language_regex = /(?:^|\s)language-([^\s]+)/;
-  const result = language_regex.exec(className);
-  if(result && result[1]) {
+  const languageRegex = /(?:^|\s)language-([^\s]+)/;
+  const result = languageRegex.exec(className);
+  if (result && result[1]) {
     return result[1];
   }
 

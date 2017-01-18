@@ -1,7 +1,7 @@
 import {
+  EmMark as BaseEmMark,
   Mark,
-  Schema,
-  EmMark as BaseEmMark
+  Schema
 } from '../../prosemirror';
 
 export class EmMarkType extends BaseEmMark {

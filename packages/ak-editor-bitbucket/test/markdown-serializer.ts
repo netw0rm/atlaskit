@@ -1,12 +1,11 @@
-import * as mocha from 'mocha';
-import markdownSerializer from '../src/markdown-serializer';
-import {
-  code_block, doc, p, img, mono, strong, blockquote, hr,
-  h1, h2, h3, h4, h5, h6, ol, ul, li, br, a, em, mention, strike,
-  mention_query
-} from './_schema-builder';
 import { expect } from 'chai';
+import markdownSerializer from '../src/markdown-serializer';
 import stringRepeat from '../src/util/string-repeat';
+import {
+  a, blockquote, br, code_block, doc, em, h1, h2,
+  h3, h4, h5, h6, hr, img, li, mention, mention_query, mono, ol, p, strike, strong,
+  ul
+} from './_schema-builder';
 
 describe('Bitbucket markdown serializer: ', () => {
   const pre = code_block();
@@ -65,8 +64,8 @@ describe('Bitbucket markdown serializer: ', () => {
   });
 
   it('should serialize mentions', () => {
-    let baban = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
-    let test1 = markdownSerializer.serialize(baban);
+    const baban = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
+    const test1 = markdownSerializer.serialize(baban);
     expect(test1).to.eq('@oscar');
   });
 
@@ -221,7 +220,7 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '* foo 1\n' +
-        '  * bar 1\n'+
+        '  * bar 1\n' +
         '    * baz 1\n' +
         '    * baz 2\n' +
         '  * bar 2\n' +
@@ -302,7 +301,7 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '1. foo 1\n' +
-        '   1. bar 1\n'+
+        '   1. bar 1\n' +
         '      1. baz 1\n' +
         '      2. baz 2\n' +
         '   2. bar 2\n' +
@@ -339,7 +338,7 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '1. foo 1\n' +
-        '   * bar 1\n'+
+        '   * bar 1\n' +
         '     1. baz 1\n' +
         '     2. baz 2\n' +
         '        * banana\n' +
@@ -552,7 +551,7 @@ describe('Bitbucket markdown serializer: ', () => {
 
       xdescribe('links', () => {
         it('with no text to be ignored', () => {
-          let link = a({ href: 'http://example.com' });
+          const link = a({ href: 'http://example.com' });
 
           expect(markdownSerializer.serialize(doc(p(
             link(''),
@@ -560,7 +559,7 @@ describe('Bitbucket markdown serializer: ', () => {
         });
 
         it('with no title to serialize', () => {
-          let link = a({ href: 'http://example.com' });
+          const link = a({ href: 'http://example.com' });
 
           expect(markdownSerializer.serialize(doc(p(
             link('foo'),
@@ -568,7 +567,7 @@ describe('Bitbucket markdown serializer: ', () => {
         });
 
         it('with title to serialize', () => {
-          let link = a({
+          const link = a({
             href: 'http://example.com',
             title: 'title'
           });
@@ -579,7 +578,7 @@ describe('Bitbucket markdown serializer: ', () => {
         });
 
         it('with title containing double-quotes to serialize', () => {
-          let link = a({
+          const link = a({
             href: 'http://example.com',
             title: 'some " "title"'
           });
@@ -648,7 +647,7 @@ describe('Bitbucket markdown serializer: ', () => {
         });
 
         it('with space in url to serialize', () => {
-          let link = a({
+          const link = a({
             href: '/url with space',
           });
 
@@ -658,7 +657,7 @@ describe('Bitbucket markdown serializer: ', () => {
         });
 
         it('with space in url and title to serialize', () => {
-          let link = a({
+          const link = a({
             href: '/url with space',
             title: 'title'
           });

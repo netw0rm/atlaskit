@@ -1,18 +1,15 @@
+import { analyticsService } from '../../analytics';
 import {
+  DOMFromPos,
+  NodeSelection,
   Plugin,
   ProseMirror,
-  UpdateScheduler,
-  ResolvedPos,
-  DOMFromPos,
-  Node,
-  NodeSelection,
   Schema,
   TextSelection
 } from '../../prosemirror';
 import { ImageNodeType } from '../../schema';
-import PasteAdapter from './paste-adapter';
 import DropAdapter from './drop-adapter';
-import { analyticsService } from '../../analytics';
+import PasteAdapter from './paste-adapter';
 
 export interface ImageUploadPluginOptions {
   defaultHandlersEnabled?: boolean;
@@ -133,8 +130,6 @@ export class ImageUploadState {
   }
 
   private update(): void {
-    const { pm } = this;
-    const { $from, empty } = pm.selection;
     let dirty = false;
 
     const newActive = this.isImageSelected();

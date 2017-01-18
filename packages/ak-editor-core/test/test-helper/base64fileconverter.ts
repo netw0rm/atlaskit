@@ -1,8 +1,8 @@
+import { expect } from 'chai';
+import * as sinon from 'sinon';
 import {
   convertedHandlerCallback, Converter, dropHandler, pasteHandler
 } from '../../test-helper/base64fileconverter';
-import { expect } from 'chai';
-import * as sinon from 'sinon';
 
 describe('ak-editor-core/test-helper base64fileconverter', () => {
   let savedFileReader: any;
@@ -22,27 +22,27 @@ describe('ak-editor-core/test-helper base64fileconverter', () => {
 
   describe('pasteHandler', () => {
     it('Should not convert files when there is no clipboardData', () => {
-      let converterStub = {} as Converter;
-      let ClipboardEventStub = {} as ClipboardEvent;
+      const converterStub = {} as Converter;
+      const clipboardEventStub = {} as ClipboardEvent;
       const cb = sinon.spy();
 
-      const resp = pasteHandler(converterStub, ClipboardEventStub, cb);
+      const resp = pasteHandler(converterStub, clipboardEventStub, cb);
 
       expect(cb.callCount).to.equal(0);
       expect(resp).to.be.false;
     });
 
     it('Should not convert files when there is no dataTransfer', () => {
-      let converterStub = <Converter>{};
+      const converterStub = {} as Converter;
       converterStub.HAS_BASE64_FILE_SUPPORT = true;
       converterStub.convert = sinon.spy();
 
-      let dataTransferItem: DataTransferItem = {
+      const dataTransferItem: DataTransferItem = {
         kind: 'file',
         getAsFile: sinon.spy(),
       } as any;
 
-      let clipboardEvent: ClipboardEvent = {
+      const clipboardEvent: ClipboardEvent = {
         clipboardData: {
           items: [dataTransferItem],
         },
@@ -54,23 +54,23 @@ describe('ak-editor-core/test-helper base64fileconverter', () => {
 
   describe('dropHandler', () => {
     it('Should not convert files when there is no dataTransfer', () => {
-      let converterStub = {} as Converter;
-      let DragEventStub = {} as DragEvent;
+      const converterStub = {} as Converter;
+      const dragEventStub = {} as DragEvent;
 
       const cb = sinon.spy();
 
-      expect(dropHandler(converterStub, DragEventStub, cb)).to.be.false;
+      expect(dropHandler(converterStub, dragEventStub, cb)).to.be.false;
       expect(cb.callCount).to.equal(0);
     });
 
     it('Should convert files when there is dataTransfer', () => {
-      let converterStub = {} as Converter;
+      const converterStub = {} as Converter;
       converterStub.HAS_BASE64_FILE_SUPPORT = true;
 
       const convertStub = sinon.spy((files: FileList, cb: convertedHandlerCallback) => cb(`data:png;base64,AYAYSAASn`));
       converterStub.convert = convertStub;
 
-      let DragEventStub: DragEvent = {
+      const dragEventStub: DragEvent = {
         dataTransfer: {
           files: [mockFile()],
         },
@@ -78,7 +78,7 @@ describe('ak-editor-core/test-helper base64fileconverter', () => {
 
       const cb = sinon.spy();
 
-      expect(dropHandler(converterStub, DragEventStub, cb)).to.be.true;
+      expect(dropHandler(converterStub, dragEventStub, cb)).to.be.true;
       expect(cb.callCount).to.equal(1);
     });
   });
@@ -96,13 +96,13 @@ describe('ak-editor-core/test-helper base64fileconverter', () => {
       const cb = sinon.spy();
       const errCb = sinon.spy();
 
-      let FileReaderStub = <FileReader>() => {};
-      FileReaderStub.prototype.onload = sinon.spy();
-      FileReaderStub.prototype.readAsBinaryString = sinon.spy();
+      const fileReaderStub = () => {};
+      fileReaderStub.prototype.onload = sinon.spy();
+      fileReaderStub.prototype.readAsBinaryString = sinon.spy();
 
-      let file = mockFile({ size: 1001 });
+      const file = mockFile({ size: 1001 });
 
-      (window as any).FileReader = FileReaderStub;
+      (window as any).FileReader = fileReaderStub;
       converter.convert([file], cb, errCb);
 
       expect(errCb.firstCall.args[0]).to.equal(file);
@@ -114,13 +114,13 @@ describe('ak-editor-core/test-helper base64fileconverter', () => {
       const cb = sinon.spy();
       const errCb = sinon.spy();
 
-      let FileReaderStub = <FileReader>() => {};
-      FileReaderStub.prototype.onload = sinon.spy();
-      FileReaderStub.prototype.readAsBinaryString = sinon.spy();
+      const fileReaderStub = () => {};
+      fileReaderStub.prototype.onload = sinon.spy();
+      fileReaderStub.prototype.readAsBinaryString = sinon.spy();
 
-      let file = mockFile({ type: 'notsupported' });
+      const file = mockFile({ type: 'notsupported' });
 
-      (window as any).FileReader = FileReaderStub;
+      (window as any).FileReader = fileReaderStub;
       converter.convert([file], cb, errCb);
 
       expect(errCb.firstCall.args[0]).to.equal(file);
@@ -135,13 +135,13 @@ describe('ak-editor-core/test-helper base64fileconverter', () => {
       const cb = sinon.spy();
       const errCb = sinon.spy();
 
-      let FileReaderStub = <FileReader>() => {};
-      FileReaderStub.prototype.onload = sinon.spy();
-      FileReaderStub.prototype.readAsBinaryString = sinon.spy();
+      const fileReaderStub = () => {};
+      fileReaderStub.prototype.onload = sinon.spy();
+      fileReaderStub.prototype.readAsBinaryString = sinon.spy();
 
-      let file = mockFile({ size: 1, type: 'png' });
+      const file = mockFile({ size: 1, type: 'png' });
 
-      (window as any).FileReader = FileReaderStub;
+      (window as any).FileReader = fileReaderStub;
       converter.convert([file], cb, errCb);
 
       expect(errCb.callCount).to.equal(0);

@@ -1,26 +1,25 @@
 import {
-  Block,
   BlockQuoteNodeType,
   BulletListNodeType,
   CodeBlockNodeType,
   DocNodeType,
-  StrikeMarkType,
   EmMarkType,
+  EmojiNodeType,
   HardBreakNodeType,
   HeadingNodeType,
   HorizontalRuleNodeType,
   ImageNodeType,
   LinkMarkType,
   ListItemNodeType,
+  MentionNodeType,
+  MentionQueryMarkType,
+  MonoMarkType,
   OrderedListNodeType,
   ParagraphNodeType,
   Schema,
+  StrikeMarkType,
   StrongMarkType,
-  MonoMarkType,
-  Text,
-  MentionQueryMarkType,
-  MentionNodeType,
-  EmojiNodeType
+  Text
 } from 'ak-editor-core';
 
 export default new Schema({

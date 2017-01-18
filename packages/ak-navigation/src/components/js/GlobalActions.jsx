@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import styles from 'style!../less/GlobalActions.less';
 import GlobalItem from './GlobalItem';
 import DrawerTrigger from './DrawerTrigger';
+import DefaultLinkComponent from './DefaultLinkComponent';
 
 export default class GlobalActions extends PureComponent {
   static propTypes = {
@@ -19,6 +20,7 @@ export default class GlobalActions extends PureComponent {
 
   static defaultProps = {
     isVisible: true,
+    linkComponent: DefaultLinkComponent,
   }
 
   render() {

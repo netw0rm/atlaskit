@@ -2,17 +2,6 @@ import schema from './schema';
 import { Node } from 'ak-editor-core';
 import arrayFrom from './util/array-from';
 
-const extractLanguageFromClass = (className: string) => {
-  const language_regex = /(?:^|\s)language-([^\s]+)/;
-  const result = language_regex.exec(className);
-
-  if(result && result[1]) {
-    return result[1];
-  }
-
-  return '';
-};
-
 /**
  * This function gets markup rendered by Bitbucket server and transforms it into markup that
  * can be consumed by Prosemirror HTML parser, conforming to our schema.

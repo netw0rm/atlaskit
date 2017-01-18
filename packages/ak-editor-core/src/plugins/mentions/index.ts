@@ -1,4 +1,5 @@
-import { Plugin, ProseMirror, inputRules, TextSelection, Keymap, Schema } from '../../prosemirror';
+import Keymap from 'browserkeymap';
+import { Plugin, ProseMirror, inputRules, TextSelection, Schema } from '../../prosemirror';
 
 import {
   MentionNodeType,

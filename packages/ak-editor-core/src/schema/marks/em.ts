@@ -1,5 +1,8 @@
-import { EmMark as BaseEmMark } from 'prosemirror/dist/schema-basic';
-import { Mark, Schema } from '../../prosemirror';
+import {
+  Mark,
+  Schema,
+  EmMark as BaseEmMark
+} from '../../prosemirror';
 
 export class EmMarkType extends BaseEmMark {
   constructor(name: string, rank: number, schema: Schema) {

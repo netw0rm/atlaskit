@@ -8,11 +8,11 @@ interface Props {
   onActivate?: ({ source: sourceType }) => void;
   isFocused?: boolean;
   isTabbable?: boolean;
-  style?: object;
+  style?: any;
   className?: string;
   shouldFitContainer?: boolean;
 }
 
 interface State {}
 
-export default class Trigger extends Component<Props, State> {};
+export default class Trigger extends Component<Props, State> {}

@@ -1,5 +1,8 @@
-import { StrongMark as BaseStrongMark } from 'prosemirror/dist/schema-basic';
-import { Mark, Schema } from '../../prosemirror';
+import {
+  Mark,
+  Schema,
+  StrongMark as BaseStrongMark
+} from '../../prosemirror';
 
 export class StrongMarkType extends BaseStrongMark {
   constructor(name: string, rank: number, schema: Schema) {

@@ -13,8 +13,8 @@ import {
   StrikeMarkType,
   StrongMarkType,
   SubSupMarkType,
-  UnderlineMarkType,
-  Text
+  Text,
+  UnderlineMarkType
 } from 'ak-editor-core';
 
 export default new Schema({

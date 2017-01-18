@@ -23,7 +23,7 @@ export class CodeBlockNodeType extends Block {
       'pre': (dom: HTMLElement) => {
         let language: string | null = null;
         const parent = dom.parentElement;
-        if(parent) {
+        if (parent) {
           language = extractLanguageFromClass(parent.className);
         }
         return [
@@ -44,9 +44,9 @@ export class CodeBlockNodeType extends Block {
 }
 
 const extractLanguageFromClass = (className: string) => {
-  const language_regex = /(?:^|\s)language-([^\s]+)/;
-  const result = language_regex.exec(className);
-  if(result && result[1]) {
+  const languageRegex = /(?:^|\s)language-([^\s]+)/;
+  const result = languageRegex.exec(className);
+  if (result && result[1]) {
     return result[1];
   }
 

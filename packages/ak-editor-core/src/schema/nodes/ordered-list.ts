@@ -1,4 +1,4 @@
-import { OrderedList, Node, Schema } from '../../prosemirror';
+import { Node, OrderedList, Schema } from '../../prosemirror';
 
 export class OrderedListNodeType extends OrderedList {
   constructor(name: string, schema: Schema) {

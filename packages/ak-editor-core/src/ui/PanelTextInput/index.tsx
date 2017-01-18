@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormEvent, KeyboardEvent, PureComponent } from 'react';
+import { KeyboardEvent, PureComponent } from 'react';
 import * as styles from './styles';
 
 export interface Props {
@@ -33,7 +33,7 @@ export default class PanelTextInput extends PureComponent<Props, State> {
   }
 
   render() {
-    const { defaultValue, placeholder } = this.props;
+    const { placeholder } = this.props;
     const { value } = this.state;
     return (
       <input

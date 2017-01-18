@@ -1,9 +1,8 @@
-import * as mocha from 'mocha';
-import { MentionsPlugin, MentionQueryMarkType, MentionNodeType,
-          ProseMirror, Schema, ResolvedPos, schema as schemaBasic } from '../../../src';
-import { chaiPlugin } from '../../../test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import { MentionNodeType, MentionQueryMarkType, MentionsPlugin,
+          ProseMirror, Schema, schema as schemaBasic } from '../../../src';
+import { chaiPlugin } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 
@@ -24,7 +23,7 @@ const makeEditor = () => new ProseMirror({
 describe('mentions - input rules', () => {
   it('should replace a standalone "@" with mention-query-mark', () => {
     const pm = makeEditor();
-    pm.input.insertText(0, 0,'foo @');
+    pm.input.insertText(0, 0, 'foo @');
 
     const cursorFocus = pm.selection.$to;
     expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).not.to.be.undefined;

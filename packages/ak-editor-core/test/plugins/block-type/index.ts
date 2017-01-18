@@ -3,9 +3,8 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 
-import * as mocha from 'mocha';
-import { commands, browser } from '../../../src';
-import { chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_block, br } from '../../../test-helper';
+import { browser } from '../../../src';
+import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, makeEditor, p } from '../../../test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
 
@@ -19,8 +18,8 @@ describe('block-type', () => {
   };
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const Plugin = BlockTypePlugin as any; // .State is not public API.
-    expect(Plugin.State.name).is.be.a('string');
+    const plugin = BlockTypePlugin as any; // .State is not public API.
+    expect(plugin.State.name).is.be.a('string');
   });
 
   it('should be able to change to normal', () => {
@@ -87,32 +86,32 @@ describe('block-type', () => {
   });
 
   it('should be able to identify normal', () => {
-    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+    const { plugin } = editor(doc(p('te{<>}xt')));
     expect(plugin.currentBlockType.name).to.equal('normal');
   });
 
   it('should be able to identify heading1', () => {
-    const { pm, plugin } = editor(doc(h1('te{<>}xt')));
+    const { plugin } = editor(doc(h1('te{<>}xt')));
     expect(plugin.currentBlockType.name).to.equal('heading1');
   });
 
   it('should be able to identify heading2', () => {
-    const { pm, plugin } = editor(doc(h2('te{<>}xt')));
+    const { plugin } = editor(doc(h2('te{<>}xt')));
     expect(plugin.currentBlockType.name).to.equal('heading2');
   });
 
   it('should be able to identify heading3', () => {
-    const { pm, plugin } = editor(doc(h3('te{<>}xt')));
+    const { plugin } = editor(doc(h3('te{<>}xt')));
     expect(plugin.currentBlockType.name).to.equal('heading3');
   });
 
   it('should be able to identify block quote', () => {
-    const { pm, plugin } = editor(doc(blockquote(p('te{<>}xt'))));
+    const { plugin } = editor(doc(blockquote(p('te{<>}xt'))));
     expect(plugin.currentBlockType.name).to.equal('blockquote');
   });
 
   it('should be able to identify code block', () => {
-    const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
+    const { plugin } = editor(doc(code_block()('te{<>}xt')));
     expect(plugin.currentBlockType.name).to.equal('codeblock');
   });
 
@@ -165,7 +164,7 @@ describe('block-type', () => {
   });
 
   it('should get current state immediately once subscribed', () => {
-    const { pm, plugin } = editor(doc(p('text')));
+    const { plugin } = editor(doc(p('text')));
     const spy = sinon.spy();
 
     plugin.subscribe(spy);
@@ -175,7 +174,7 @@ describe('block-type', () => {
   });
 
   it('should be able to subscribe the changes', () => {
-    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+    const { plugin } = editor(doc(p('te{<>}xt')));
     const spy = sinon.spy();
 
     plugin.subscribe(spy);
@@ -186,7 +185,7 @@ describe('block-type', () => {
   });
 
   describe('keymap', () => {
-    if(browser.mac) {
+    if (browser.mac) {
       context('when on a Mac', () => {
         context('when hits Cmd-Alt-0', () => {
           it('toggles paragraph', () => {
@@ -375,7 +374,7 @@ describe('block-type', () => {
       });
 
       it('returns true', () => {
-        const { pm, plugin } = editor(doc(code_block()('text')));
+        const { plugin } = editor(doc(code_block()('text')));
 
         expect(plugin.insertNewLine()).to.be.true;
       });
@@ -392,7 +391,7 @@ describe('block-type', () => {
         });
 
         it('returns true', () => {
-          const { pm, plugin } = editor(doc(p('text')));
+          const { plugin } = editor(doc(p('text')));
 
           expect(plugin.insertNewLine()).to.be.true;
         });
@@ -403,7 +402,7 @@ describe('block-type', () => {
   describe('toggleBlockType', () => {
     context('when origin block type is different with target block type', () => {
       it('converts to target block type', () => {
-        const { pm, plugin } = editor(doc(p('text')));
+        const { plugin } = editor(doc(p('text')));
         const changeBlockType = sinon.spy(plugin, 'changeBlockType');
 
         plugin.toggleBlockType('heading1');
@@ -416,7 +415,6 @@ describe('block-type', () => {
       context('when it is a quote', () => {
         it('lifts content out of the quote', () => {
           const { pm, plugin } = editor(doc(blockquote(p('text'))));
-          const lift = sinon.spy(commands, 'lift');
 
           plugin.toggleBlockType('heading1');
           expect(pm.doc).to.deep.equal(doc(h1('text')));
@@ -425,7 +423,7 @@ describe('block-type', () => {
 
       context('when it is not a quote', () => {
         it('converts to a paragraph', () => {
-          const { pm, plugin } = editor(doc(h1('text')));
+          const { plugin } = editor(doc(h1('text')));
           const changeBlockType = sinon.spy(plugin, 'changeBlockType');
 
           plugin.toggleBlockType('heading1');
@@ -438,7 +436,7 @@ describe('block-type', () => {
 
   describe('changeContext', () => {
     it('reverts to "default" in case the context is not defined', () => {
-      const { pm, plugin } = editor(doc(p('text')));
+      const { plugin } = editor(doc(p('text')));
       expect(plugin.context).to.eq('default');
       plugin.changeContext('!!!%%%UNDEFINED CONTEXT%%%!!!');
       expect(plugin.context).to.eq('default');

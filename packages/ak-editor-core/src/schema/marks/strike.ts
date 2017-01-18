@@ -1,4 +1,4 @@
-import { MarkType, Mark, Schema } from '../../prosemirror';
+import { Mark, MarkType, Schema } from '../../prosemirror';
 
 export class StrikeMarkType extends MarkType {
   constructor(name: string, rank: number, schema: Schema) {

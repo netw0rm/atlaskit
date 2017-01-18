@@ -1,7 +1,7 @@
-import PasteAdapter from '../../../src/plugins/image-upload/paste-adapter';
 import { expect } from 'chai';
-import { ProseMirror } from '../../../src';
 import * as sinon from 'sinon';
+import { ProseMirror } from '../../../src';
+import PasteAdapter from '../../../src/plugins/image-upload/paste-adapter';
 
 describe('image-upload PasteAdapter', () => {
   const mockEditor = (): ProseMirror => {
@@ -73,13 +73,13 @@ describe('image-upload PasteAdapter', () => {
 
     const eventHandler = addEvent.firstCall.args[1];
 
-    let ClipboardEventStub = {
+    const clipboardEventStub = {
       clipboardData: {
         types: {}
       }
     } as ClipboardEvent;
 
-    eventHandler(ClipboardEventStub);
+    eventHandler(clipboardEventStub);
     expect(fn.callCount).to.equal(0);
   });
 });

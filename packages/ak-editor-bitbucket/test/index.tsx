@@ -1,17 +1,16 @@
 import * as chai from 'chai';
-import * as sinonChai from 'sinon-chai';
-import * as mocha from 'mocha';
 import * as chaiEnzyme from 'chai-enzyme';
 import { mount, ReactWrapper } from 'enzyme';
+import * as React from 'react';
 import * as sinon from 'sinon';
 import { SinonSpy } from 'sinon';
-import * as React from 'react';
-import { doc, strong, h1, p, mention } from './_schema-builder';
+import * as sinonChai from 'sinon-chai';
+import { doc, h1, mention, p, strong } from './_schema-builder';
 
-import Editor from '../src/index';
-import ImageIcon from 'ak-icon/glyph/editor/image';
 import { ProseMirror } from 'ak-editor-core';
-import { chaiPlugin, createEvent, fixtures, dispatchPasteEvent } from 'ak-editor-core/test-helper';
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from 'ak-editor-core/test-helper';
+import ImageIcon from 'ak-icon/glyph/editor/image';
+import Editor from '../src/index';
 
 chai.use(chaiPlugin);
 chai.use(((chaiEnzyme as any).default || chaiEnzyme)());
@@ -252,7 +251,7 @@ describe('ak-editor-bitbucket/pasting', () => {
       html: '<p>Nice! <img src="https://d301sr.cloudfront.net/69284d5bf158/emoji/img/%2B1.svg" class="emoji"></p>'
     };
 
-    if(!dispatchPasteEvent(pm, content)) {
+    if (!dispatchPasteEvent(pm, content)) {
       return this.skip('This environment does not support artificial paste events');
     }
 
@@ -264,7 +263,7 @@ describe('ak-editor-bitbucket/pasting', () => {
       html: '<p><a href="/mention/" rel="nofollow" title="@mention" class="mention">Mention</a> some mention.</p>'
     };
 
-    if(!dispatchPasteEvent(pm, content)) {
+    if (!dispatchPasteEvent(pm, content)) {
       return this.skip('This environment does not support artificial paste events');
     }
 

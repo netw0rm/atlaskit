@@ -1,5 +1,3 @@
-import * as mocha from 'mocha';
-
 /**
  * A helper for creating fixtures in tests.
  *

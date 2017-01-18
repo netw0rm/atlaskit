@@ -1,6 +1,6 @@
-import * as base64fileconverter from './base64fileconverter';
-import { offsetRefs, BuilderContent, coerce } from './schema-builder';
 import { ProseMirror } from '../';
+import * as base64fileconverter from './base64fileconverter';
+import { BuilderContent, coerce, offsetRefs } from './schema-builder';
 
 export { base64fileconverter };
 export { default as sendKeyToPm } from './send-key-to-pm';

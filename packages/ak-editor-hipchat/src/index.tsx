@@ -1,14 +1,13 @@
 import {
-  Keymap,
-  ProseMirror,
-  Fragment,
   BlockTypePlugin,
+  DocNode,
   HyperlinkEdit,
   HyperlinkPlugin,
-  MentionsPlugin,
+  Keymap,
   MentionPicker,
+  MentionsPlugin,
+  ProseMirror,
   TextSelection,
-  DocNode,
 } from 'ak-editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -99,7 +98,7 @@ export default class Editor extends PureComponent<Props, State> {
           {!pluginStateHyperlink ? null :
             <HyperlinkEdit pluginState={pluginStateHyperlink} />
           }
-          {!pluginStateMentions ? null:
+          {!pluginStateMentions ? null :
             <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reverseMentionPicker} />
           }
         </div>

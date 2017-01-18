@@ -1,18 +1,16 @@
 import {
-  Plugin,
-  ProseMirror,
-  Mark,
-  Schema,
+  blockQuoteRule,
+  bulletListRule,
+  codeBlockRule,
   InputRule,
   inputRules,
-  allInputRules,
-  textblockTypeInputRule,
-  bulletListRule,
-  blockQuoteRule,
-  codeBlockRule,
-  wrappingInputRule,
+  Node,
   NodeType,
-  Node
+  Plugin,
+  ProseMirror,
+  Schema,
+  textblockTypeInputRule,
+  wrappingInputRule
 } from '../../prosemirror';
 
 import { analyticsService, trackAndInvoke } from '../../analytics';

@@ -39,15 +39,39 @@ export default class Tabs extends PureComponent {
     ...tab,
     ...{
       isSelected: index === this.state.selectedTab,
+      onKeyboardNav: this.tabKeyboardNavHandler,
       onSelect: () => this.tabSelectHandler(index),
     },
   }));
 
   tabSelectHandler = index => this.setState({ selectedTab: index })
 
+  tabKeyboardNavHandler = (key) => {
+    // Handle left and right arrow key presses by selecting the previous or next tab
+    const selectedIndex = this.state.selectedTab;
+    if (selectedIndex !== null) {
+      let nextIndex = selectedIndex;
+
+      if (key === 'ArrowLeft') {
+        nextIndex = selectedIndex - 1 < 0 ? 0 : selectedIndex - 1;
+      } else if (key === 'ArrowRight') {
+        nextIndex = selectedIndex + 1 > this.props.tabs.length - 1
+          ? this.props.tabs.length - 1
+          : selectedIndex + 1;
+      }
+
+      if (nextIndex !== selectedIndex) {
+        this.setState({ selectedTab: nextIndex });
+      }
+    }
+  }
+
   render() {
     return (
-      <StatelessTabs tabs={this.getTabs()} />
+      <StatelessTabs
+        onKeyboardNav={this.tabKeyboardNavHandler}
+        tabs={this.getTabs()}
+      />
     );
   }
 }

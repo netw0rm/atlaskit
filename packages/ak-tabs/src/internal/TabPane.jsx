@@ -2,7 +2,7 @@ import React, { PropTypes, PureComponent } from 'react';
 import classNames from 'classnames';
 import styles from '../styles.less';
 
-export default class Tab extends PureComponent {
+export default class TabPane extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     isSelected: PropTypes.bool,

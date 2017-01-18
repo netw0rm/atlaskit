@@ -3,7 +3,7 @@ import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 
-import Tab from '../src/internal/Tab';
+import TabPane from '../src/internal/TabPane';
 import styles from '../src/styles.less';
 import { name } from '../package.json';
 
@@ -11,24 +11,24 @@ const { expect } = chai;
 chai.use(chaiEnzyme());
 
 describe(name, () => {
-  describe('Tab', () => {
+  describe('TabPane', () => {
     describe('exports', () => {
-      it('the Tab component', () => {
-        expect(Tab).to.exist;
-        expect(new Tab()).to.be.instanceOf(Component);
+      it('the TabPane component', () => {
+        expect(TabPane).to.exist;
+        expect(new TabPane()).to.be.instanceOf(Component);
       });
     });
 
     describe('construction', () => {
       it('should be able to create a component', () => {
-        const wrapper = shallow(<Tab />);
+        const wrapper = shallow(<TabPane />);
         expect(wrapper).to.exist;
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
       it('should render a container wrapping the content', () => {
         const content = <span>My content</span>;
-        const wrapper = shallow(<Tab>{content}</Tab>);
+        const wrapper = shallow(<TabPane>{content}</TabPane>);
         expect(wrapper).to.have.attr('aria-hidden', 'false');
 
         const container = wrapper.find(`.${styles.locals.akTabPane}`);
@@ -39,7 +39,7 @@ describe(name, () => {
     describe('props', () => {
       describe('isSelected prop', () => {
         it('should set aria attribute and styles', () => {
-          const wrapper = shallow(<Tab isSelected />);
+          const wrapper = shallow(<TabPane isSelected />);
           expect(wrapper).to.have.attr('aria-hidden', 'true');
           expect(wrapper.find(`.${styles.locals.akTabPane}`)).to.have.className(styles.locals.selected);
         });

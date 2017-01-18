@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 
 import Tabs from '../src/Tabs';
 import TabsNav from '../src/internal/TabsNav';
-import Tab from '../src/internal/Tab';
+import TabPane from '../src/internal/TabPane';
 import { sampleTabs, sampleTabsNoSelection } from './_constants';
 import { name } from '../package.json';
 
@@ -36,19 +36,19 @@ describe(name, () => {
         expect(tabsNav).to.have.prop('tabs', sampleTabs);
       });
 
-      it('should render the selected Tab item', () => {
+      it('should render the selected TabPane item', () => {
         const wrapper = shallow(<Tabs tabs={sampleTabs} />);
         const selectedTab = sampleTabs[1];
 
-        const tab = wrapper.find(Tab);
+        const tab = wrapper.find(TabPane);
         expect(tab).to.have.lengthOf(1);
         expect(tab).to.have.prop('isSelected', selectedTab.isSelected);
         expect(tab).to.contain(selectedTab.content);
       });
 
-      it('should not render a Tab item if there is no selected tab', () => {
+      it('should not render a TabPane item if there is no selected tab', () => {
         const wrapper = shallow(<Tabs tabs={sampleTabsNoSelection} />);
-        const tab = wrapper.find(Tab);
+        const tab = wrapper.find(TabPane);
         expect(tab).to.not.exist;
       });
     });

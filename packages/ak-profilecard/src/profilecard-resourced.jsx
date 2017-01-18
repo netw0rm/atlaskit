@@ -62,6 +62,8 @@ export default class ProfilecardResourced extends PureComponent {
       isLoading: false,
       hasError: false,
     };
+
+    this.clientFetchProfile = this.clientFetchProfile.bind(this);
   }
 
   componentDidMount() {
@@ -115,15 +117,11 @@ export default class ProfilecardResourced extends PureComponent {
 
   render() {
     if (this.state.hasError) {
-      return (<ErrorMessage
-        reload={() => {
-          this.clientFetchProfile();
-        }}
-      />);
+      return <ErrorMessage reload={this.clientFetchProfile} />;
     }
 
     if (this.state.isLoading) {
-      return (<LoadingMessage />);
+      return <LoadingMessage />;
     }
 
     return (

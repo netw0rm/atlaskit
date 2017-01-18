@@ -16,9 +16,9 @@ export default class ErrorMessage extends PureComponent {
         <div className={styles.errorMessage}>
           <ErrorIcon label="icon error" size="large" />
           <p>
-            Oops, looks like we&#39;re having issues
+            Oops, looks like we’re having issues
             <br />
-            <span>Try again and we&#39;ll give it another shot</span>
+            <span>Try again and we’ll give it another shot</span>
           </p>
           <AkButton
             appearance="link"

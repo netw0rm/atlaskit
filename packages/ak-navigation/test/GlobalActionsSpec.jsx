@@ -4,6 +4,7 @@ import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import sinonChai from 'sinon-chai';
+import style from 'style!../src/components/less/GlobalActions.less';
 import GlobalActions from '../src/components/js/GlobalActions';
 
 chai.use(chaiAsPromised);
@@ -46,8 +47,7 @@ describe('<GlobalActions />', () => {
       expect(mount(<GlobalActions onCreateActivate={handler} />).find('DrawerTrigger').at(1).props().onActivate).to.equal(handler);
     });
     it('isVisible applies the isVisible class', () => {
-      const handler = sinon.spy();
-      expect(mount(<GlobalActions onCreateActivate={handler} />).find('DrawerTrigger').at(1).props().onActivate).to.equal(handler);
+      expect(mount(<GlobalActions isVisible />).find(`.${style.isVisible}`).length).to.equal(1);
     });
   });
 });

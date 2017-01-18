@@ -4,14 +4,13 @@ import styles from '../styles.less';
 
 export default class TabsNav extends PureComponent {
   static propTypes = {
+    onKeyboardNav: PropTypes.func.isRequired,
     tabs: PropTypes.arrayOf(PropTypes.shape({
       content: PropTypes.node,
       label: PropTypes.string.isRequired,
-      onKeyboardNav: PropTypes.func.isRequired,
       onSelect: PropTypes.func.isRequired,
       isSelected: PropTypes.bool,
     })),
-    onKeyboardNav: PropTypes.func.isRequired,
   }
 
   static defaultProps = {

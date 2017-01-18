@@ -14,6 +14,8 @@ chai.use(chaiEnzyme());
 
 describe(name, () => {
   describe('StatelessTabs', () => {
+    const kbNav = () => {};
+
     describe('exports', () => {
       it('the StatelessTabs component', () => {
         expect(Tabs).to.exist;
@@ -23,13 +25,13 @@ describe(name, () => {
 
     describe('construction', () => {
       it('should be able to create a component', () => {
-        const wrapper = shallow(<Tabs />);
+        const wrapper = shallow(<Tabs onKeyboardNav={kbNav} />);
         expect(wrapper).to.exist;
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
-      it('should render the TabsNav navigation item', () => {
-        const wrapper = shallow(<Tabs tabs={sampleTabs} />);
+      it('should render the TabsNav element', () => {
+        const wrapper = shallow(<Tabs tabs={sampleTabs} onKeyboardNav={kbNav} />);
 
         const tabsNav = wrapper.find(TabsNav);
         expect(tabsNav).to.have.lengthOf(1);
@@ -37,7 +39,7 @@ describe(name, () => {
       });
 
       it('should render the selected TabPane item', () => {
-        const wrapper = shallow(<Tabs tabs={sampleTabs} />);
+        const wrapper = shallow(<Tabs tabs={sampleTabs} onKeyboardNav={kbNav} />);
         const selectedTab = sampleTabs[1];
 
         const tab = wrapper.find(TabPane);
@@ -47,9 +49,19 @@ describe(name, () => {
       });
 
       it('should not render a TabPane item if there is no selected tab', () => {
-        const wrapper = shallow(<Tabs tabs={sampleTabsNoSelection} />);
+        const wrapper = shallow(<Tabs tabs={sampleTabsNoSelection} onKeyboardNav={kbNav} />);
         const tab = wrapper.find(TabPane);
         expect(tab).to.not.exist;
+      });
+    });
+
+    describe('props', () => {
+      describe('onKeyboardNav prop', () => {
+        it('should be reflected to the TabsNav element', () => {
+          const keyboardNavHandler = () => {};
+          const wrapper = shallow(<Tabs onKeyboardNav={keyboardNavHandler} />);
+          expect(wrapper.find(TabsNav).prop('onKeyboardNav')).to.equal(keyboardNavHandler);
+        });
       });
     });
   });

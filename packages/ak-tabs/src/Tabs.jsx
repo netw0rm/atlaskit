@@ -10,7 +10,6 @@ export default class Tabs extends PureComponent {
     tabs: PropTypes.arrayOf(PropTypes.shape({
       content: PropTypes.node,
       label: PropTypes.node.isRequired,
-      onKeyboardNav: PropTypes.func.isRequired,
       onSelect: PropTypes.func.isRequired,
       isSelected: PropTypes.bool,
     })),

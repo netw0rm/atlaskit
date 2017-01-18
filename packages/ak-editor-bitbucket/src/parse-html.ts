@@ -29,20 +29,6 @@ export function transformHtml(html: string): HTMLElement {
     }
   });
 
-  // Convert "codehilite" containers to <pre>
-  arrayFrom(el.querySelectorAll('div.codehilite')).forEach((div: HTMLDivElement) => {
-    const parent = div.parentNode as HTMLElement;
-    const pre = document.createElement('pre');
-
-    // It always has an extra new line when copy from html
-    pre.textContent = div.textContent!.replace(/\n$/, '');
-    const language = extractLanguageFromClass(div.className);
-    pre.dataset['language'] = language;
-
-    parent.insertBefore(pre, div);
-    parent.removeChild(div);
-  });
-
   // Convert mention containers, i.e.:
   //   <a href="/abodera/" rel="nofollow" title="@abodera" class="mention mention-me">Artur Bodera</a>
   arrayFrom(el.querySelectorAll('a.mention')).forEach((a: HTMLLinkElement) => {

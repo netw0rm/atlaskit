@@ -25,7 +25,8 @@ export class CodeBlockNodeType extends Block {
   get matchDOMTag() {
     return {
       'pre': (dom: HTMLElement) => {
-        const language = dom.dataset['language'].length > 0 ? dom.dataset['language'] : null;
+        const language = getLanguageFromEditorStyle(dom) || getLanguageFromBitbucketStyle(dom);
+
         return [
           {
             'language': language
@@ -43,7 +44,27 @@ export class CodeBlockNodeType extends Block {
   }
 }
 
-const extractLanguageFromClass = (className: string) => {
+// example of BB style:
+// <div class="codehilite language-javascript"><pre><span>hello world</span><span>\n</span></pre></div>
+const getLanguageFromBitbucketStyle = (dom: HTMLElement): string | null => {
+  const parent = dom.parentElement;
+
+  if(parent && parent.className.indexOf('codehilite') !== -1) {
+    removeLastNewLine(dom);
+    return extractLanguageFromClass(parent.className);
+  }
+  return null;
+};
+
+const removeLastNewLine = (dom: HTMLElement): void => {
+  dom.textContent = dom.textContent!.replace(/\n$/, '');
+};
+
+const getLanguageFromEditorStyle = (dom: HTMLElement): string | null => {
+  return dom.dataset['language'] || null;
+};
+
+const extractLanguageFromClass = (className: string): string | null => {
   const language_regex = /(?:^|\s)language-([^\s]+)/;
   const result = language_regex.exec(className);
   if(result && result[1]) {

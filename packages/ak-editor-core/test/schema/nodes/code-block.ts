@@ -67,9 +67,15 @@ describe('ak-editor-core/schema code_block node', () => {
           });
         });
       });
+
+      it('preserves all newlines and whitespace', () => {
+        const doc = fromHTML('<pre><span></span>    bar\n       baz\n</pre>', schema);
+
+        expect(doc.firstChild.textContent).to.eq('    bar\n       baz\n');
+      });
     });
 
-    context.skip('parse from Bitbucket', () => {
+    context('parse from Bitbucket', () => {
       context('when language is not set', () => {
         it('converts to block code node', () => {
           const doc = fromHTML('<div class="codehilite"><pre><span>window.alert("hello");<span></pre></div>', schema);
@@ -107,6 +113,18 @@ describe('ak-editor-core/schema code_block node', () => {
           });
         });
       });
+
+      it('removes last new line', () => {
+        const doc = fromHTML('<div class="codehilite"><pre><span>hello world;<span><span>\n<\span></pre></div>', schema);
+
+        expect(doc.firstChild.textContent).to.eq('hello world;');
+      });
+
+      it('preserves newlines in the middle and whitespace', () => {
+        const doc = fromHTML('<div class="codehilite"><pre><span></span>    bar\n       baz</pre></div>', schema);
+
+        expect(doc.firstChild.textContent).to.eq('    bar\n       baz');
+      });
     });
   });
 
@@ -131,7 +149,21 @@ describe('ak-editor-core/schema code_block node', () => {
       });
     });
 
-    context('when languge is set', () => {
+    context('when languge is set to null', () => {
+      it('does not set data-language attributes', () => {
+        const codeBlock = schema.nodes.code_block.create({ language: null });
+        expect(toHTML(codeBlock)).to.not.have.string('data-language');
+      });
+    });
+
+    context('when languge is set to undefined', () => {
+      it('does not set data-language attributes', () => {
+        const codeBlock = schema.nodes.code_block.create({ language: undefined });
+        expect(toHTML(codeBlock)).to.not.have.string('data-language');
+      });
+    });
+
+    context('when languge is set to a value', () => {
       it('converts to pre tag', () => {
         const codeBlock = schema.nodes.code_block.create({ language: 'javascript' });
         expect(toHTML(codeBlock)).to.have.string('<pre');

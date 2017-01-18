@@ -4,7 +4,7 @@ import LinkIcon from 'ak-icon/glyph/editor/link';
 import { HyperlinkState } from '../../../src/plugins/hyperlink';
 import Panel from '../Panel';
 import TextInput from '../PanelTextInput';
-import IconButton from '../ToolbarIconButton';
+import ToolbarButton from '../ToolbarButton';
 import { analyticsDecorator as analytics } from '../../analytics';
 import * as styles from './styles';
 
@@ -34,12 +34,13 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
 
     return (
       <span className={styles.outerContainer}>
-        <IconButton
+        <ToolbarButton
           disabled={disabled || active}
           onClick={this.openLinkPanel}
           selected={adding}
-          icon={<LinkIcon label="Link" />}
-        />
+        >
+          <LinkIcon label="Link" />
+        </ToolbarButton>
         {!adding ? null :
         <Panel align="center" onOutsideClick={this.closeLinkPanel}>
           <div className={styles.textInputContainer}>

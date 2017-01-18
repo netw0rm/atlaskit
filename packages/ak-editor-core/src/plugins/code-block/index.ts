@@ -1,4 +1,5 @@
-import { Schema, ProseMirror, Node, Plugin, Keymap, DOMFromPos } from '../../prosemirror';
+import Keymap from 'browserkeymap';
+import { Schema, ProseMirror, Node, Plugin, DOMFromPos } from '../../prosemirror';
 import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
 
@@ -83,7 +84,7 @@ export class CodeBlockState {
     if(codeBlockNode !== this.activeCodeBlock) {
       this.activeCodeBlock = codeBlockNode;
       this.active = !!codeBlockNode;
-      this.language = codeBlockNode ? codeBlockNode.attrs.language : null;
+      this.language = codeBlockNode ? codeBlockNode.attrs['language'] : null;
       this.element = this.activeCodeBlockElement();
       dirty = true;
     }
@@ -97,7 +98,7 @@ export class CodeBlockState {
     const offset =  this.nodeStartPos();
     const { node } = DOMFromPos(this.pm, offset, true);
 
-    return node;
+    return node as HTMLElement;
   }
 
   private nodeStartPos(): number {

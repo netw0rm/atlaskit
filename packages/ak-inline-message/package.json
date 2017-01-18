@@ -1,0 +1,39 @@
+{
+  "name": "ak-inline-message",
+  "version": "1.0.0",
+  "description": "A React component for displaying a clickable message which triggers an inline dialog",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.jsx",
+  "scripts": {
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single ak-inline-message; } || ../../node_modules/.bin/not-in-publish"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "ak-button": "^5.1.11",
+    "ak-icon": "^12.2.0",
+    "ak-inline-dialog": "^74.0.0",
+    "akutil-shared-styles": "^37.0.0",
+    "babel-runtime": "^6.11.6",
+    "classnames": "^2.2.5"
+  },
+  "devDependencies": {
+    "ak-inline-message": "*",
+    "akutil-readme": "^1.2.1"
+  },
+  "peerDependencies": {
+    "react": "^15.3.2"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
+}

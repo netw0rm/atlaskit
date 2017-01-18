@@ -1,23 +1,17 @@
 import React, { PureComponent } from 'react';
 import { AtlassianIcon } from 'ak-icon';
-import { Link } from 'react-router';
-import Navigation, { AkGlobalItem } from '../../../src/index';
+import Navigation from '../../../src/index';
 import RouterHeader from './RouterHeader';
+import RouterLinkComponent from './RouterLinkComponent';
 import RouterLinkItem from './RouterLinkItem';
 
 export default class PageNavigation extends PureComponent {
   render() {
     return (
       <Navigation
-        globalPrimaryItem={
-          <Link
-            to="/iframe.html"
-          >
-            <AkGlobalItem size="large">
-              <AtlassianIcon size="medium" />
-            </AkGlobalItem>
-          </Link>
-        }
+        globalPrimaryIcon={<AtlassianIcon label="Home" size="medium" />}
+        globalPrimaryItemHref="/iframe.html"
+        linkComponent={RouterLinkComponent}
         containerHeader={
           <RouterHeader
             to="/iframe.html"

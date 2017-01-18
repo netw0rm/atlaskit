@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import FeedbackIcon from 'ak-icon/glyph/feedback';
 import Panel from '../Panel';
 import * as styles from './styles';
-import IconButton from '../ToolbarIconButton';
+import ToolbarButton from '../ToolbarButton';
 import { analyticsDecorator as analytics } from '../../analytics';
 
 export interface Props {
@@ -20,11 +20,9 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
   render() {
     return (
       <span style={{ position: 'relative' }}>
-        <IconButton
-          onClick={this.openFeedbackPanel}
-          selected={this.state.active}
-          icon={<FeedbackIcon label="Feedback" />}
-        />
+        <ToolbarButton onClick={this.openFeedbackPanel} selected={this.state.active} spacing="compact">
+          Feedback
+        </ToolbarButton>
         {!this.state.active ? null :
         <Panel align="right" spacing="none" onOutsideClick={this.closeFeedbackPanel}>
           <div className={styles.popup}>

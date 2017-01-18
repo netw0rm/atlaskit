@@ -17,7 +17,8 @@ import {
   ImageUploadPlugin,
   Chrome,
   AnalyticsHandler,
-  analyticsService
+  analyticsService,
+  ContextName
 } from 'ak-editor-core';
 
 import schema from './schema';
@@ -28,7 +29,7 @@ import { MentionResource, MentionSource } from './mention-resource';
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
 export interface Props {
-  context?: 'comment' | 'pr';
+  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
@@ -125,7 +126,7 @@ export default class Editor extends PureComponent<Props, State> {
       throw new Error('Unable to set from HTML before the editor is initialized');
     }
 
-    pm.setDoc(parseHtml(html.trim()), null);
+    pm.setDoc(parseHtml(html.trim()));
   }
 
   /**
@@ -168,7 +169,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
         pluginStateImageUpload={pm && ImageUploadPlugin.get(pm)}
-        pluginStateMentions={pm && this.mentionsResourceProvider && MentionsPlugin.get(pm)}
+        pluginStateMentions={pm && this.mentionsResourceProvider && MentionsPlugin.get(pm)!}
         mentionsResourceProvider={this.mentionsResourceProvider}
       />
     );

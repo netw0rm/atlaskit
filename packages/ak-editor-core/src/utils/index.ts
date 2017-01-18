@@ -76,7 +76,7 @@ export function getAncestorNodesBetween(pm: ProseMirror, $from: ResolvedPos, $to
 
 /**
  * Finds all "selection-groups" within a range. A selection group is based on ancestors.
- * 
+ *
  * Example:
  * Given the following document and selection ({<} = start of selection and {>} = end)
  *  doc
@@ -87,7 +87,7 @@ export function getAncestorNodesBetween(pm: ProseMirror, $from: ResolvedPos, $to
  *        li
  *     p
  *     p{>}
- * 
+ *
  * The output will be two selection-groups. One within the ul and one with the two paragraphs.
  */
 export function getGroupsInRange(pm: ProseMirror, $from: ResolvedPos, $to: ResolvedPos, isNodeValid: (node: Node) => boolean = validateNode): Array<{ $from: ResolvedPos, $to: ResolvedPos }> {
@@ -185,7 +185,7 @@ export function liftSelection(pm: ProseMirror, $from: ResolvedPos, $to: Resolved
     ) {
       const res = tr.doc.resolve(tr.map(pos));
       const sel = new NodeSelection(res);
-      const range = sel.$from.blockRange(sel.$to);
+      const range = sel.$from.blockRange(sel.$to)!;
       tr.lift(range, target);
     }
   });

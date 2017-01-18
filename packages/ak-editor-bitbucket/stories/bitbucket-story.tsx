@@ -1,16 +1,12 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import reactify from 'akutil-react';
 import { base64fileconverter } from 'ak-editor-core/test-helper';
-import { default as AkTabs, Tab as AkTab } from 'ak-tabs';
 import Editor from '../src';
 import exampleHTML from './exampleHTML';
 import { MockMentionSource } from './_mock-mentionsource';
 import '!style!css!less!./bitbucket-styles.less';
 
-const Tabs = reactify(AkTabs);
-const Tab = reactify(AkTab);
 const CancelAction = () => action('Cancel')();
 const ChangeAction = () => action('Change')();
 const SaveAction = () => action('Save')();
@@ -110,52 +106,6 @@ storiesOf('ak-editor-bitbucket', module)
               <legend>Markdown</legend>
               <pre>{this.state.markdown}</pre>
             </fieldset>
-          </div>
-        );
-      }
-    }
-
-    return (
-      <div style={{ padding: 20 }}>
-        <Demo />
-      </div>
-    );
-  })
-  .add('Contexts', () => {
-    type Props = {};
-    type State = {};
-    class Demo extends PureComponent<Props, State> {
-      render() {
-        return (
-          <div>
-            <Tabs>
-              <Tab selected label="(default)">
-                <Editor
-                  isExpandedByDefault
-                  onCancel={CancelAction}
-                  onChange={ChangeAction}
-                  onSave={SaveAction}
-                />
-              </Tab>
-              <Tab selected label="comment">
-                <Editor
-                  isExpandedByDefault
-                  context="comment"
-                  onCancel={CancelAction}
-                  onChange={ChangeAction}
-                  onSave={SaveAction}
-                />
-              </Tab>
-              <Tab selected label="pr">
-                <Editor
-                  isExpandedByDefault
-                  context="pr"
-                  onCancel={CancelAction}
-                  onChange={ChangeAction}
-                  onSave={SaveAction}
-                />
-              </Tab>
-            </Tabs>
           </div>
         );
       }

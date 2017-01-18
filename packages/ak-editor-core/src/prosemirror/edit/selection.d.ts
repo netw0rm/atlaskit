@@ -1,4 +1,4 @@
-import { Mappable, Node, ResolvedPos } from '../';
+import { Mappable, Node, ProseMirror, ResolvedPos } from '../';
 
 export class SelectionState {
   setAndSignal(range: Selection, clearLast: boolean): void;
@@ -18,7 +18,7 @@ export class Selection {
 }
 
 export class TextSelection extends Selection {
-  constructor($anchor: ResolvedPos, $head?: ResolvedPos) {}
+  constructor($anchor: ResolvedPos, $head?: ResolvedPos);
 
   anchor: number;
   head: number;
@@ -27,7 +27,7 @@ export class TextSelection extends Selection {
 }
 
 export class NodeSelection extends Selection {
-  constructor($from: ResolvedPos) {}
+  constructor($from: ResolvedPos);
 
   node: Node;
 }

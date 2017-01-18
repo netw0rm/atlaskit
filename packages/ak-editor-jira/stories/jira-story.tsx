@@ -1,13 +1,8 @@
 import { storiesOf, action } from '@kadira/storybook';
-import reactify from 'akutil-react';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import AkTabs from 'ak-tabs';
-import { Tab as AkTab} from 'ak-tabs';
 import Editor from '../src';
 
-const Tabs = reactify(AkTabs);
-const Tab = reactify(AkTab);
 const CancelAction = () => action('Cancel')();
 const SaveAction = () => action('Save')();
 
@@ -44,39 +39,6 @@ storiesOf('ak-editor-jira', module)
 
       updateHTML = (editor: Editor) => {
         this.setState({ html: editor.value });
-      }
-    }
-
-    return (
-      <div style={{ padding: 20 }}>
-        <Demo />
-      </div>
-    );
-  })
-  .add('Contexts', () => {
-    type Props = {};
-    type State = {};
-    class Demo extends PureComponent<Props, State> {
-      render() {
-        return (
-          <div ref="root">
-            <Tabs>
-              <Tab selected label="(default)">
-                <Editor
-                  onCancel={CancelAction}
-                  onSave={SaveAction}
-                />
-              </Tab>
-              <Tab selected label="comment">
-                <Editor
-                  context="comment"
-                  onCancel={CancelAction}
-                  onSave={SaveAction}
-                />
-              </Tab>
-            </Tabs>
-          </div>
-        );
       }
     }
 

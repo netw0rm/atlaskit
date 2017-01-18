@@ -1,11 +1,11 @@
-import { Fragment, Mark, MarkType, Node, Schema, Inline } from './';
+import { Fragment, Mark, Node } from './';
 import { OrderedMap } from '../util/orderedmap';
 import { DOMOutputSpec } from './to_dom';
 import { ParseSpec } from './from_dom';
 import { DOMNode } from '../dom';
 
 export class NodeType {
-  constructor(name: string, schema: Schema) {}
+  constructor(name: string, schema: Schema);
 
   name: string;
   schema: Schema;
@@ -36,11 +36,11 @@ export interface Attributes {
 }
 
 export class Attribute {
-  constructor(options?: { [key: string]: any }) {}
+  constructor(options?: { [key: string]: any });
 }
 
 export class MarkType {
-  constructor(name: string, rank: number, schema: Schema) {} // private
+  constructor(name: string, rank: number, schema: Schema); // private
   isCode?: boolean; // private
   name: string;
   schema: Schema;
@@ -54,13 +54,13 @@ export class MarkType {
 }
 
 export class Schema {
-  constructor(spec: SchemaSpec, data?: any) {}
+  constructor(spec: SchemaSpec, data?: any);
 
   nodeSpec: OrderedMap<NodeSpec>;
   markSpec: OrderedMap<{ new (...args: any[]): MarkType }>;
   data: any;
-  nodes: any; //{ [key: string]: NodeType };
-  marks: any; //{ [key: string]: MarkType };
+  nodes: any; // { [key: string]: NodeType };
+  marks: any; // { [key: string]: MarkType };
   cached: { [key: string]: any };
   node(type: string | NodeType, attrs?: { [key: string]: any }, content?: Fragment | Node | Node[], marks?: Mark[]): Node;
   text(text: string, marks?: Mark[]): Node;
@@ -73,7 +73,7 @@ export class Schema {
 
 export interface SchemaSpec {
   nodes: { [key: string]: NodeSpec } | OrderedMap<NodeSpec>;
-  marks?: { [key: string]: { new (...args: []): MarkType } } | OrderedMap<{ new (...args: []): MarkType }>;
+  marks?: { [key: string]: { new (...args: any[]): MarkType } } | OrderedMap<{ new (...args: any[]): MarkType }>;
 }
 
 export interface NodeSpec {

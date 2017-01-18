@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import {
   Chrome,
+  ContextName,
   ProseMirror,
   Schema,
   Node,
@@ -14,7 +15,7 @@ import {
 import schema from './schema';
 
 export interface Props {
-  context?: 'comment' | 'pr';
+  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;

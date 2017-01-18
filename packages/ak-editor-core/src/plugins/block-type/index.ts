@@ -24,7 +24,7 @@ import {
 } from '../../schema';
 import { trackAndInvoke } from '../../analytics';
 import transformToCodeBlock from './transform-to-code-block';
-
+import { ContextName } from '../../';
 import {
   getGroupsInRange,
   liftSelection
@@ -46,8 +46,6 @@ const Heading5 = makeBlockType('heading5', 'Heading 5', withSpecialKey('5'));
 const BlockQuote = makeBlockType('blockquote', 'Block quote', withSpecialKey('7'));
 const CodeBlock = makeBlockType('codeblock', 'Code block', withSpecialKey('8'));
 const Other = makeBlockType('other', 'Other…');
-
-export type ContextName = 'default';
 
 export type GroupedBlockTypes = BlockType[][];
 

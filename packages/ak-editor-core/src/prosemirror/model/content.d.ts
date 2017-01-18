@@ -1,8 +1,8 @@
-import { Fragment, MarkType, Node, NodeType } from '../';
+import { Fragment, Mark, MarkType, Node, NodeType } from '../';
 
 export class ContentMatch {
   matchNode(node: Node): ContentMatch | null;
-  matchType(type: NodeType, attrs?: { [key: string]: any }, marks: Mark[]): ContentMatch | null;
+  matchType(type: NodeType, attrs: { [key: string]: any } | null, marks: Mark[]): ContentMatch | null;
   matchFragment(fragment: Fragment, from?: number, to?: number): ContentMatch | boolean | null;
   matchToEnd(fragment: Fragment, start?: number, end?: number): boolean;
   validEnd(): boolean;

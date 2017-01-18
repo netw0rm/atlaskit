@@ -27,9 +27,7 @@
   },
   "devDependencies": {
     "ak-mention": "*",
-    "ak-tabs": "*",
     "ak-icon": "*",
-    "akutil-react": "*",
     "akutil-common-test": "*",
     "js-search": "^1.3.3"
   },

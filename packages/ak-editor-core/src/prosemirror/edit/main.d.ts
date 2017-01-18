@@ -6,7 +6,7 @@ import { EditorTransform } from './transform';
 import { Subscription, StoppableSubscription, PipelineSubscription } from '../subscription';
 
 export class ProseMirror {
-  constructor(opts: { [key: string]: any }) {}
+  constructor(opts: { [key: string]: any });
 
   input: Input; // private
 
@@ -73,4 +73,4 @@ export class ProseMirror {
   updateScheduler(subscriptions: Subscription<any>[], start: () => (() => void) | void): UpdateScheduler;
 }
 
-export interface Operation {};
+export interface Operation {}

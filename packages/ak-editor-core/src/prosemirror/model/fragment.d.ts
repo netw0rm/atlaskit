@@ -1,4 +1,4 @@
-import { Fragment, Node, Schema } from '../';
+import { Node, Schema } from '../';
 import { DOMFragment } from '../dom';
 
 export class Fragment {

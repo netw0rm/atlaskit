@@ -28,8 +28,9 @@ pipelines:
           - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
           - ./build/bin/setup.sh
           - yarn
-          - yarn run browserstack/tunnel/start
-          - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base" "test/wc/browserstack/pr"
-          - yarn run pr/artifacts
+          # yarn run browserstack/tunnel/start
+          # run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base" "test/wc/browserstack/pr"
+          #- yarn run pr/artifacts
+          - yarn run docs/all
           # AK-628 - yarn run test/integration/pr
-          - yarn run browserstack/tunnel/stop
+          # yarn run browserstack/tunnel/stop

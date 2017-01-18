@@ -9,6 +9,7 @@ import {
   ProseMirror,
   TextSelection,
 } from 'ak-editor-core';
+import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import schema from './schema';
@@ -71,6 +72,8 @@ export interface Props {
 
 export interface State {
   pm?: ProseMirror;
+  maxLengthReached?: boolean;
+  flashToggle?: boolean;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -91,9 +94,13 @@ export default class Editor extends PureComponent<Props, State> {
 
     const pluginStateMentions = props.mentionResourceProvider && pm && MentionsPlugin.get(pm);
     const pluginStateHyperlink = pm && HyperlinkPlugin.get(pm);
+    const classNames = cx('ak-editor-hipchat', {
+      'max-length-reached': this.state.maxLengthReached,
+      'flash-toggle': this.state.flashToggle
+    });
 
     return (
-      <div className="ak-editor-hipchat" id={this.props.id}>
+      <div className={classNames} id={this.props.id}>
         <div ref={this.handleRef}>
           {!pluginStateHyperlink ? null :
             <HyperlinkEdit pluginState={pluginStateHyperlink} />
@@ -118,7 +125,7 @@ export default class Editor extends PureComponent<Props, State> {
       plugins: [
         BlockTypePlugin,
         HyperlinkPlugin,
-        ...(this.props.mentionResourceProvider ? [ MentionsPlugin ] : [] )
+        ...(this.props.mentionResourceProvider ? [MentionsPlugin] : [])
       ],
     });
 
@@ -144,6 +151,15 @@ export default class Editor extends PureComponent<Props, State> {
         if (tr.doc.nodeSize > maxContentSize) {
           const doc = tr.docs[0] as DocNode;
           pm.setDoc(doc, new TextSelection(doc.resolve(doc.nodeSize - 3)));
+          this.setState({
+            maxLengthReached: true,
+            flashToggle: this.state.maxLengthReached && !this.state.flashToggle
+          });
+        } else if (this.state.maxLengthReached) {
+          this.setState({
+            maxLengthReached: false,
+            flashToggle: false
+          });
         }
       });
     }
@@ -160,7 +176,7 @@ export default class Editor extends PureComponent<Props, State> {
         clearTimeout(debounced);
       }
 
-      debounced = setTimeout(() => { onChange(); }, 200 );
+      debounced = setTimeout(() => { onChange(); }, 200);
     }
   }
 

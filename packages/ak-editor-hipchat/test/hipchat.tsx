@@ -74,6 +74,23 @@ describe('ak-editor-hipchat', () => {
       }]);
     });
 
+    it('should add css-classes for indicating that you have reached max content size', () => {
+      const editor = mount(<Editor maxContentSize={9} />);
+      const { pm } = (editor.get(0) as any).state;
+
+      pm!.tr.typeText('Hello').applyAndScroll();
+      pm!.tr.typeText('!').applyAndScroll();
+      pm!.flush();
+
+      expect(editor.find('.max-length-reached').length).to.eq(1);
+      expect(editor.find('.flash-toggle').length).to.eq(0);
+
+      pm!.tr.typeText('!').applyAndScroll();
+      pm!.flush();
+
+      expect(editor.find('.flash-toggle').length).to.eq(1);
+    });
+
   });
 
   describe('API', () => {

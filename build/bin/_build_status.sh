@@ -17,20 +17,20 @@ function build_status() {
     CHALK="`yarn bin`/chalk"
     $CHALK --no-stdin -t "{blue Post build in '$STATE' status}"
 
-    # bbuild \
-    # --commit "$BITBUCKET_COMMIT" \
-    # --repo "$BITBUCKET_REPO_SLUG" \
-    # --owner "$BITBUCKET_REPO_OWNER" \
-    # --username "$BITBUCKET_USER" \
-    # --password "$BITBUCKET_PASSWORD" \
-    # --key "$BUILD_KEY" \
-    # --name "$BUILD_NAME" \
-    # --description "$BUILD_DESCRIPTION" \
-    # $URL_PARAM \
-    # --state "$STATE" 1> /dev/null
+    bbuild \
+    --commit "$BITBUCKET_COMMIT" \
+    --repo "$BITBUCKET_REPO_SLUG" \
+    --owner "$BITBUCKET_REPO_OWNER" \
+    --username "$BITBUCKET_USER" \
+    --password "$BITBUCKET_PASSWORD" \
+    --key "$BUILD_KEY" \
+    --name "$BUILD_NAME" \
+    --description "$BUILD_DESCRIPTION" \
+    $URL_PARAM \
+    --state "$STATE" 1> /dev/null
 
-    # if [[ "$STATE" == "FAILED" ]]; then
-    #   exit 1
-    # fi
+    if [[ "$STATE" == "FAILED" ]]; then
+      exit 1
+    fi
   fi
 }

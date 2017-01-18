@@ -1,17 +1,17 @@
 import {
   commands,
   DOMFromPos,
-  inputRules,
   InputRule,
+  inputRules,
+  Node,
   NodeSelection,
   Plugin,
   ProseMirror,
   ResolvedPos,
-  Node,
   Schema,
   TextSelection
 } from '../../prosemirror';
-import { LinkMarkType, LinkMark } from '../../schema';
+import { LinkMark, LinkMarkType } from '../../schema';
 import hyperlinkRule from './input-rule';
 import pasteTransformer from './paste-transformer';
 

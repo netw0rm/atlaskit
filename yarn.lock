@@ -7545,9 +7545,9 @@ tslint-react@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/tslint-react/-/tslint-react-2.2.0.tgz#c2a080fafd4d61f0f78dd1d6c91206718157e038"
 
-tslint@^4.0.2:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/tslint/-/tslint-4.2.0.tgz#b9f5c5b871b784ab2f4809e704ade42d62f523ad"
+tslint@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-4.3.1.tgz#28f679c53ca4b273688bcb6fcf0dde7ff1bb2169"
   dependencies:
     babel-code-frame "^6.20.0"
     colors "^1.1.2"

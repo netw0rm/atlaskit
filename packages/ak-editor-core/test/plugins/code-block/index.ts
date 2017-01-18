@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 
 import CodeBlockPlugin from '../../../src/plugins/code-block';
-import { chaiPlugin, makeEditor, doc, p, code_block } from '../../../test-helper';
+import { chaiPlugin, code_block, doc, makeEditor, p } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 chai.use((sinonChai as any).default || sinonChai);
@@ -201,12 +201,12 @@ describe('code-block', () => {
         const { pm, plugin } = editor(doc(code_block()('code{<>}Block{cbPos}')));
         const { cbPos } = pm.doc.refs;
 
-        const previous_element = plugin.element;
+        const previousElement = plugin.element;
         pm.setTextSelection(cbPos);
 
-        const current_element = plugin.element;
+        const currentElement = plugin.element;
 
-        expect(previous_element).to.eq(current_element);
+        expect(previousElement).to.eq(currentElement);
       });
     });
 
@@ -215,12 +215,12 @@ describe('code-block', () => {
         const { pm, plugin } = editor(doc(code_block()('one{<>} codeBlock'), code_block()('another{cbPos} codeBlock')));
         const { cbPos } = pm.doc.refs;
 
-        const previous_element = plugin.element;
+        const previousElement = plugin.element;
         pm.setTextSelection(cbPos);
 
-        const current_element = plugin.element;
+        const currentElement = plugin.element;
 
-        expect(previous_element).not.to.eq(current_element);
+        expect(previousElement).not.to.eq(currentElement);
 
       });
     });

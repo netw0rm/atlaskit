@@ -44,8 +44,8 @@ export class CodeBlockNodeType extends Block {
 }
 
 const extractLanguageFromClass = (className: string) => {
-  const language_regex = /(?:^|\s)language-([^\s]+)/;
-  const result = language_regex.exec(className);
+  const languageRegex = /(?:^|\s)language-([^\s]+)/;
+  const result = languageRegex.exec(className);
   if(result && result[1]) {
     return result[1];
   }

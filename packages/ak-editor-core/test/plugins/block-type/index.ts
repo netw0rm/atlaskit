@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 
 import { browser } from '../../../src';
-import { chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_block, br } from '../../../test-helper';
+import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, makeEditor, p } from '../../../test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
 
@@ -18,8 +18,8 @@ describe('block-type', () => {
   };
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const Plugin = BlockTypePlugin as any; // .State is not public API.
-    expect(Plugin.State.name).is.be.a('string');
+    const plugin = BlockTypePlugin as any; // .State is not public API.
+    expect(plugin.State.name).is.be.a('string');
   });
 
   it('should be able to change to normal', () => {

@@ -1,16 +1,17 @@
 import { storiesOf } from '@kadira/storybook';
+import * as ajvModule from 'ajv';
+import { highlightBlock } from 'highlight.js';
+import * as React from 'react';
+import Thenable from 'thenable';
+import { OrderedMap } from '../src/prosemirror';
 import makeJsonSchema from '../src/schema/json-schema';
 import { schema } from '../test-helper/schema';
-import * as React from 'react';
-import { OrderedMap } from '../src/prosemirror';
-import { highlightBlock } from 'highlight.js';
 import Editor from './editor';
-import * as ajvModule from 'ajv';
-import Thenable from 'thenable';
 
 // import 'style!css!highlight.js/styles/tomorrow.css';
 
 const jsonSchema = makeJsonSchema(schema);
+// tslint:disable-next-line:variable-name
 const Ajv = ((ajvModule as any).default || ajvModule);
 const ajv = new Ajv();
 const validate = ajv.compile(jsonSchema);

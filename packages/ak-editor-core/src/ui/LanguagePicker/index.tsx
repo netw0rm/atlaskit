@@ -1,6 +1,6 @@
+import DropdownMenu from 'ak-dropdown-menu';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import DropdownMenu from 'ak-dropdown-menu';
 
 import { CodeBlockState } from '../../plugins/code-block';
 import Panel from '../Panel';

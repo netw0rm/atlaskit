@@ -1,13 +1,13 @@
 import {
-  Keymap,
-  ProseMirror,
   BlockTypePlugin,
+  DocNode,
   HyperlinkEdit,
   HyperlinkPlugin,
-  MentionsPlugin,
+  Keymap,
   MentionPicker,
+  MentionsPlugin,
+  ProseMirror,
   TextSelection,
-  DocNode,
 } from 'ak-editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Schema, Text, DocNodeType, ImageNodeType } from '../../../src';
+import { DocNodeType, ImageNodeType, Schema, Text } from '../../../src';
 
 describe('ak-editor-core/schema image node', () => {
   it('throws an error if it is not named "image"', () => {

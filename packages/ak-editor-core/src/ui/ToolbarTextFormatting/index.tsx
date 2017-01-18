@@ -1,11 +1,11 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
 import BoldIcon from 'ak-icon/glyph/editor/bold';
 import ItalicIcon from 'ak-icon/glyph/editor/italic';
 import UnderlineIcon from 'ak-icon/glyph/editor/underline';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import { TextFormattingState } from '../../../src/plugins/text-formatting';
-import ToolbarButton from '../ToolbarButton';
 import { analyticsDecorator as analytics } from '../../analytics';
+import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
   pluginState: TextFormattingState;

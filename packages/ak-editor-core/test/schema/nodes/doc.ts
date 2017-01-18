@@ -1,6 +1,6 @@
-import { Schema, Text } from '../../../src';
 import { expect } from 'chai';
-import { DocNodeType, CodeBlockNodeType } from '../../../src';
+import { Schema, Text } from '../../../src';
+import { CodeBlockNodeType, DocNodeType } from '../../../src';
 
 describe('ak-editor-core/schema doc node', () => {
   it('throws an error if it is not named "doc"', () => {

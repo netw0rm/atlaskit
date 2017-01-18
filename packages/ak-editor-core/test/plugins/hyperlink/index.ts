@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
-import { chaiPlugin, makeEditor, insert } from '../../../test-helper';
+import { chaiPlugin, insert, makeEditor } from '../../../test-helper';
 import { doc, link, linkable, schema, unlinkable } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
@@ -16,8 +16,8 @@ describe('hyperlink', () => {
   };
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const Plugin = HyperlinkPlugin as any; // .State is not public API.
-    expect(Plugin.State.name).is.be.a('string');
+    const plugin = HyperlinkPlugin as any; // .State is not public API.
+    expect(plugin.State.name).is.be.a('string');
   });
 
   describe('input rules', () => {

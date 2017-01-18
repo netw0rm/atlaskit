@@ -1,10 +1,10 @@
 import Keymap from 'browserkeymap';
 import {
   commands,
-  Plugin,
-  ProseMirror,
   Node,
   NodeSelection,
+  Plugin,
+  ProseMirror,
   ResolvedPos,
   Schema,
   Selection,
@@ -13,20 +13,20 @@ import {
 
 import {
   BulletListNodeType,
-  ListItemNodeType,
-  OrderedListNodeType,
   isBulletListNode,
-  isOrderedListNode
+  isOrderedListNode,
+  ListItemNodeType,
+  OrderedListNodeType
 } from '../../schema';
 
 import {
   canJoinDown,
   canJoinUp,
-  getAncestorNodesBetween,
   findAncestorPosition,
+  getAncestorNodesBetween,
   getGroupsInRange,
-  liftSelection,
   isRangeOfType,
+  liftSelection,
 } from '../../utils';
 
 import { trackAndInvoke } from '../../analytics';
@@ -118,8 +118,8 @@ export class ListsState {
   private toggleList(nodeType: BulletListNodeType | OrderedListNodeType): void {
     const { pm } = this;
     const groups = getGroupsInRange(pm, this.pm.selection.$from, this.pm.selection.$to, isListNode);
-    let { $from } = groups[0];
-    let { $to } = groups[groups.length - 1];
+    const { $from } = groups[0];
+    const { $to } = groups[groups.length - 1];
     this.pm.setSelection(new TextSelection($from, $to));
 
     const adjustedSelection = this.adjustSelection(this.pm.selection);

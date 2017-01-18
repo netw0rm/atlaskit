@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import Panel from '../Panel';
-import * as styles from './styles';
-import ToolbarButton from '../ToolbarButton';
 import { analyticsDecorator as analytics } from '../../analytics';
+import Panel from '../Panel';
+import ToolbarButton from '../ToolbarButton';
+import * as styles from './styles';
 
 export interface Props {
   feedbackFormUrl: string;

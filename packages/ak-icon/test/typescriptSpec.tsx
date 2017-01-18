@@ -1,6 +1,6 @@
-import AtlassianIcon from '../glyph/atlassian';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import AtlassianIcon from '../glyph/atlassian';
 import { name } from '../package.json';
 
 describe(name, () => {

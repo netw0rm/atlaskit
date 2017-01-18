@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { Schema, Text, DocNodeType, CodeBlockNode, CodeBlockNodeType } from '../../../src';
-import { fromHTML } from '../../../test-helper';
+import { CodeBlockNode, CodeBlockNodeType, DocNodeType, Schema, Text } from '../../../src';
 import { SUPPORTED_LANGUAGES } from '../../../src/ui/LanguagePicker/languageList';
+import { fromHTML } from '../../../test-helper';
 
 describe('ak-editor-core/schema code_block node', () => {
   it('throws an error if it is not named "code_block"', () => {

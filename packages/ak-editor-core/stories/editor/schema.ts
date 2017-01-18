@@ -4,21 +4,21 @@ import {
   CodeBlockNodeType,
   DocNodeType,
   EmMarkType,
-  MonoMarkType,
-  StrikeMarkType,
+  EmojiNodeType,
   HardBreakNodeType,
   HeadingNodeType,
   HorizontalRuleNodeType,
   ImageNodeType,
   LinkMarkType,
   ListItemNodeType,
+  MentionNodeType,
+  MonoMarkType,
   OrderedListNodeType,
   ParagraphNodeType,
   Schema,
+  StrikeMarkType,
   StrongMarkType,
-  Text,
-  MentionNodeType,
-  EmojiNodeType
+  Text
 } from '../../';
 
 export default new Schema({

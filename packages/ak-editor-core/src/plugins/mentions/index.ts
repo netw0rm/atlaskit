@@ -1,5 +1,5 @@
 import Keymap from 'browserkeymap';
-import { Plugin, ProseMirror, inputRules, Schema } from '../../prosemirror';
+import { inputRules, Plugin, ProseMirror, Schema } from '../../prosemirror';
 
 import {
   MentionNodeType,
@@ -54,7 +54,7 @@ export class MentionsPluginState {
   private update(): void {
     let dirty = false;
 
-    let marks = this.pm.activeMarks();
+    const marks = this.pm.activeMarks();
     if (this.pm.schema.marks.mention_query.isInSet(marks)) {
       if (!this.queryActive) {
         dirty = true;

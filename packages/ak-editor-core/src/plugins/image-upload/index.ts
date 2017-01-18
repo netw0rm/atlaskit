@@ -1,15 +1,15 @@
+import { analyticsService } from '../../analytics';
 import {
-  Plugin,
-  ProseMirror,
   DOMFromPos,
   NodeSelection,
+  Plugin,
+  ProseMirror,
   Schema,
   TextSelection
 } from '../../prosemirror';
 import { ImageNodeType } from '../../schema';
-import PasteAdapter from './paste-adapter';
 import DropAdapter from './drop-adapter';
-import { analyticsService } from '../../analytics';
+import PasteAdapter from './paste-adapter';
 
 export interface ImageUploadPluginOptions {
   defaultHandlersEnabled?: boolean;

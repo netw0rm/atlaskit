@@ -5,9 +5,7 @@ export interface Props {
   onClick?: () => void;
 }
 
-export interface State {}
-
-export default class OutsideClickable extends PureComponent<Props, State> {
+export default class OutsideClickable extends PureComponent<Props, {}> {
   componentDidMount() {
     document.addEventListener('click', this.handleClickOutside);
   }

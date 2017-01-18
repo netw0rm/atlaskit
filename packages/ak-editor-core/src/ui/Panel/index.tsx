@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import * as ReactDOM from 'react-dom';
-import * as styles from './styles';
 import OutsideClickable from '../OutsideClickable';
 import Popper, { IPopper } from './popper';
+import * as styles from './styles';
 
 export interface Props {
   autoPosition?: boolean;

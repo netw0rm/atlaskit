@@ -1,28 +1,28 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
 import {
-  ProseMirror,
-  Node,
-  Keymap,
-  ListsPlugin,
-  BlockTypePlugin,
-  CodeBlockPlugin,
-  DefaultInputRulesPlugin,
-  MarkdownInputRulesPlugin,
-  HyperlinkPlugin,
-  TextFormattingPlugin,
-  HorizontalRulePlugin,
-  MentionsPlugin,
-  ImageUploadPlugin,
-  Chrome,
   AnalyticsHandler,
   analyticsService,
-  ContextName
+  BlockTypePlugin,
+  Chrome,
+  CodeBlockPlugin,
+  ContextName,
+  DefaultInputRulesPlugin,
+  HorizontalRulePlugin,
+  HyperlinkPlugin,
+  ImageUploadPlugin,
+  Keymap,
+  ListsPlugin,
+  MarkdownInputRulesPlugin,
+  MentionsPlugin,
+  Node,
+  ProseMirror,
+  TextFormattingPlugin
 } from 'ak-editor-core';
+import * as React from 'react';
+import { PureComponent } from 'react';
 
 import markdownSerializer from './markdown-serializer';
-import { parseHtml, transformHtml } from './parse-html';
 import { MentionResource, MentionSource } from './mention-resource';
+import { parseHtml, transformHtml } from './parse-html';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 

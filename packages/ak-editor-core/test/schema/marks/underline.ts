@@ -1,7 +1,7 @@
-import { Schema, Text, DocNodeType, UnderlineMarkType } from '../../../src';
-import { fromHTML, toHTML, chaiPlugin } from '../../../test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import { DocNodeType, Schema, Text, UnderlineMarkType } from '../../../src';
+import { chaiPlugin, fromHTML, toHTML } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 

@@ -19,7 +19,4 @@ export interface IPopperConstructor {
   new (reference: HTMLElement, popper: HTMLElement, options: any): IPopper;
 }
 
-const Popper: IPopperConstructor = module as any;
-export default Popper;
-
-
+export default module as IPopperConstructor;

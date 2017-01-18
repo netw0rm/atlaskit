@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { ProseMirror } from '../../prosemirror';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
 import { HyperlinkState } from '../../plugins/hyperlink';
-import { ListsState } from '../../plugins/lists';
-import { TextFormattingState } from '../../plugins/text-formatting';
-import { MentionsPluginState } from '../../plugins/mentions';
 import { ImageUploadState } from '../../plugins/image-upload';
+import { ListsState } from '../../plugins/lists';
+import { MentionsPluginState } from '../../plugins/mentions';
+import { TextFormattingState } from '../../plugins/text-formatting';
+import { ProseMirror } from '../../prosemirror';
 import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
@@ -29,9 +29,7 @@ export interface Props {
   onCollapsedChromeFocus: () => void;
 }
 
-export interface State {}
-
-export default class Chrome extends PureComponent<Props, State> {
+export default class Chrome extends PureComponent<Props, {}> {
   render() {
     const { props } = this;
 

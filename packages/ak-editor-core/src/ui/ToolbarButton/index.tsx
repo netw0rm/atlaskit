@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { PureComponent, MouseEvent } from 'react';
 import AkButton from 'ak-button';
+import * as React from 'react';
+import { MouseEvent, PureComponent } from 'react';
 import * as styles from './styles';
 
 export interface Props {

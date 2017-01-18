@@ -1,5 +1,5 @@
-import { Schema, Text } from '../../../src';
 import { expect } from 'chai';
+import { Schema, Text } from '../../../src';
 import { DocNodeType, OrderedListNodeType } from '../../../src';
 
 describe('ak-editor-core/schema ordered_list node', () => {

@@ -1,9 +1,9 @@
 import { Node, Schema } from '../';
 
-export const fromHTML = (html: string, schema_: Schema): Node => {
+export const fromHTML = (html: string, schema: Schema): Node => {
   const el = document.createElement('div');
   el.innerHTML = html;
-  return schema_.parseDOM(el);
+  return schema.parseDOM(el);
 };
 
 export const toHTML = (node: Node): string => {

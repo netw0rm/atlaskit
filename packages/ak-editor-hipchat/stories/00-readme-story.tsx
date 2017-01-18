@@ -1,15 +1,15 @@
 import { storiesOf } from '@kadira/storybook';
-import * as React from 'react';
 import Readme, { Code, Heading } from 'akutil-readme';
+import * as React from 'react';
 
-import OverviewExample from './examples/overview';
-import * as OverviewExampleRaw from '!raw!./examples/overview.tsx';
 import * as SchemaRaw from '!raw!../src/schema.ts';
-import * as documentJsonSchema from '!raw!./schema/document.json';
-import * as exampleMessageJson from '!raw!./examples/message.json';
 import * as exampleMediaServicesFileJson from '!raw!./examples/mediaservices-file.json';
+import * as exampleMessageJson from '!raw!./examples/message.json';
+import * as OverviewExampleRaw from '!raw!./examples/overview.tsx';
+import * as documentJsonSchema from '!raw!./schema/document.json';
+import OverviewExample from './examples/overview';
 
-import { name, description } from '../package.json';
+import { description, name } from '../package.json';
 
 storiesOf(name, module)
   .add('Readme', () => (
@@ -116,12 +116,12 @@ storiesOf(name, module)
         <code>mention_query</code>) but these should be documented as such.</p>
         <p>Node and mark attributes are described here, and require manual investigation of the
         source code in ak-editor-core.</p>
-        <SchemaDoc schemaSourceFile={SchemaRaw} />
+        <schemaDoc schemaSourceFile={SchemaRaw} />
       </Readme>
     </div>
   ));
 
-const SchemaDoc = (props: { schemaSourceFile: string }) => {
+const schemaDoc = (props: { schemaSourceFile: string }) => {
   const regexp = new RegExp('new Schema\\(([^]+)\\) as \\w+Schema;', 'gm');
   const match = regexp.exec(props.schemaSourceFile);
   const schema = match && match[1];

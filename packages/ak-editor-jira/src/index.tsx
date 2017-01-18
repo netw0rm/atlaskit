@@ -1,18 +1,18 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
 import {
-  ProseMirror,
-  Keymap,
-  BlockTypePlugin,
-  CodeBlockPlugin,
-  ListsPlugin,
-  TextFormattingPlugin,
-  HorizontalRulePlugin,
-  Chrome,
   AnalyticsHandler,
   analyticsService,
-  ContextName
+  BlockTypePlugin,
+  Chrome,
+  CodeBlockPlugin,
+  ContextName,
+  HorizontalRulePlugin,
+  Keymap,
+  ListsPlugin,
+  ProseMirror,
+  TextFormattingPlugin
 } from 'ak-editor-core';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import { encode, parse } from './html';
 
 export interface Props {

@@ -1,7 +1,7 @@
+import { Fragment, Mark, Node as PMNode } from 'ak-editor-core';
 import schema from '../schema';
 import parseHtml from './parse-xhtml';
 import WeakMap from './weak-map';
-import { Fragment, Mark, Node as PMNode } from 'ak-editor-core';
 
 const convertedNodes = new WeakMap();
 
@@ -156,7 +156,7 @@ function marksFromStyle(style: CSSStyleDeclaration): Mark[] {
   return marks;
 }
 
-const converters = <Converter[]> [
+const converters = [
   function text(content, node) {
     if (node.nodeType === Node.TEXT_NODE) {
       const text = node.textContent;
@@ -230,4 +230,4 @@ const converters = <Converter[]> [
 
     throw new Error(`Unable to handle node ${repr}`);
   }
-];
+] as Converter[];

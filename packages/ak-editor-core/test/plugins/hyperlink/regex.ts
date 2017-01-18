@@ -1,5 +1,5 @@
-import { URL } from '../../../src/plugins/hyperlink/regex';
 import { expect } from 'chai';
+import { URL } from '../../../src/plugins/hyperlink/regex';
 
 describe('hyperlink regex', () => {
   it('should match web URLs', () => {

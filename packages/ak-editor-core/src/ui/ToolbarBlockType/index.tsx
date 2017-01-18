@@ -1,13 +1,13 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
 import AkButton from 'ak-button';
+import DropdownList from 'ak-droplist';
 import Group from 'ak-droplist-group';
 import Item from 'ak-droplist-item';
-import DropdownList from 'ak-droplist';
+import * as React from 'react';
+import { PureComponent } from 'react';
 
+import { analyticsService as analytics } from '../../analytics';
 import { BlockType, BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
 import * as styles from './styles';
-import { analyticsService as analytics } from '../../analytics';
 
 export interface Props {
   pluginState: BlockTypeState;

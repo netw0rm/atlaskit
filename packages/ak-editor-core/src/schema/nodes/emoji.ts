@@ -1,4 +1,4 @@
-import { Inline, Attribute, Node, Schema } from '../../prosemirror';
+import { Attribute, Inline, Node, Schema } from '../../prosemirror';
 
 export class EmojiNodeType extends Inline {
   constructor(name: string, schema: Schema) {

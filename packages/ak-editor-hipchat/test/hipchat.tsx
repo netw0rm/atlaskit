@@ -1,11 +1,11 @@
-import * as React from 'react';
 import * as chai from 'chai';
 import * as chaiEnzyme from 'chai-enzyme';
+import * as React from 'react';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 
-import { mount } from 'enzyme';
 import { chaiPlugin } from 'ak-editor-core/test-helper';
+import { mount } from 'enzyme';
 import Editor from '../src';
 
 chai.use(chaiPlugin);

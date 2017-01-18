@@ -1,11 +1,11 @@
 import { expect } from 'chai';
-import service from '../../src/analytics/service';
 import {
   AnalyticsHandler,
   AnalyticsProperties,
   detectHandler,
   hermentHandler
 } from '../../src/analytics/handler';
+import service from '../../src/analytics/service';
 
 describe('analytics service', () => {
   it('auto-detects Herment', () => {
@@ -26,10 +26,10 @@ describe('analytics service', () => {
 
   it('allows removing the handler', () => {
     let called = false;
-    const Handler: AnalyticsHandler = (name: string, props: AnalyticsProperties) => {
+    const handler: AnalyticsHandler = (name: string, props: AnalyticsProperties) => {
       called = true;
     };
-    service.handler = Handler;
+    service.handler = handler;
     service.handler = null;
     service.trackEvent('test.event');
     expect(called).to.be.false;

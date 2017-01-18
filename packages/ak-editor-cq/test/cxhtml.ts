@@ -1,12 +1,12 @@
-import { parse, encode } from '../src/cxhtml';
 import { DocNode } from 'ak-editor-core';
 import { chaiPlugin } from 'ak-editor-core/test-helper';
-import {
-  blockquote, br, mono, doc, em, h1, h2, h3, h4, h5, h6, hr,
-  li, ol, p, strike, strong, sub, sup, u, ul
-} from './_schema-builder';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import { encode, parse } from '../src/cxhtml';
+import {
+  blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
+  mono, ol, p, strike, strong, sub, sup, u, ul
+} from './_schema-builder';
 
 chai.use(chaiPlugin);
 

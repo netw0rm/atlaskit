@@ -1,6 +1,6 @@
-import { Schema, Text } from '../../../src';
 import { expect } from 'chai';
-import { DocNodeType, BulletListNodeType } from '../../../src';
+import { Schema, Text } from '../../../src';
+import { BulletListNodeType, DocNodeType } from '../../../src';
 
 describe('ak-editor-core/schema bullet_list node', () => {
   it('throws an error if it is not named "bullet_list"', () => {

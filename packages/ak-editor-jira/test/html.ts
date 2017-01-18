@@ -1,12 +1,12 @@
-import { parse, encode } from '../src/html';
 import { Node } from 'ak-editor-core';
 import { chaiPlugin } from 'ak-editor-core/test-helper';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import { encode, parse } from '../src/html';
 import {
   br, doc, em, h1, h2, h3, h4, h5, h6, hr,
   li, mono, ol, p, strike, strong, sub, sup, u, ul
 } from './_schema-builder';
-import * as chai from 'chai';
-import { expect } from 'chai';
 
 chai.use(chaiPlugin);
 

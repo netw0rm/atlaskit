@@ -1,7 +1,7 @@
+import { MentionPicker as AkMentionPicker } from 'ak-mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionsPluginState } from '../../../src/plugins/mentions';
-import { MentionPicker as AkMentionPicker } from 'ak-mention';
 
 export interface Props {
   pluginState: MentionsPluginState;

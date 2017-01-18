@@ -1,19 +1,19 @@
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from 'ak-editor-core/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 import * as chaiEnzyme from 'chai-enzyme';
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
+import * as sinon from 'sinon';
+import * as sinonChai from 'sinon-chai';
 import stringRepeat from '../src/util/string-repeat';
-import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from 'ak-editor-core/test-helper';
 
-import { ProseMirror, browser, analyticsService, AnalyticsHandler } from 'ak-editor-core';
+import { AnalyticsHandler, analyticsService, browser, ProseMirror } from 'ak-editor-core';
 import BoldIcon from 'ak-icon/glyph/editor/bold';
-import NumberListIcon from 'ak-icon/glyph/editor/list/number';
-import BulletListIcon from 'ak-icon/glyph/editor/list/bullet';
 import ImageIcon from 'ak-icon/glyph/editor/image';
 import LinkIcon from 'ak-icon/glyph/editor/link';
+import BulletListIcon from 'ak-icon/glyph/editor/list/bullet';
+import NumberListIcon from 'ak-icon/glyph/editor/list/number';
 
 import Editor from '../src/index';
 
@@ -23,7 +23,7 @@ chai.use(sinonChai);
 
 describe('ak-editor-bitbucket/analytics/start-event', () => {
   it('atlassian.editor.start', () => {
-    let handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy() as AnalyticsHandler;
     analyticsService.handler = handler;
 
     mount(<Editor analyticsHandler={handler} />);
@@ -35,7 +35,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
   });
 
   it('atlassian.editor.start with two child editors sharing a handler', () => {
-    let handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy() as AnalyticsHandler;
     analyticsService.handler = handler;
 
     class ContainerWithTwoEditors extends React.PureComponent<{}, {}> {
@@ -56,7 +56,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
   });
 
   it('editor.start must not be called when unmounting component', () => {
-    let handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy() as AnalyticsHandler;
     analyticsService.handler = handler;
 
     mount(<Editor analyticsHandler={handler} isExpandedByDefault />).unmount();
@@ -67,7 +67,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
 
 describe('ak-editor-bitbucket/analytics/analyticsHandler', () => {
   it('updates analytics handler when provided via property', () => {
-    let handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy() as AnalyticsHandler;
     mount(<Editor analyticsHandler={handler} />);
     expect(handler).to.not.have.been.called;
 
@@ -85,7 +85,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   let pm: ProseMirror;
 
   beforeEach(() => {
-    let noop = () => {};
+    const noop = () => {};
     handler = sinon.spy() as AnalyticsHandler;
 
     editor = mount(
@@ -101,7 +101,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.format.hyperlink.button', () => {
-    let toolbar = editor.find('ToolbarHyperlink');
+    const toolbar = editor.find('ToolbarHyperlink');
 
     toolbar
       .find(LinkIcon)
@@ -110,7 +110,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
 
     // enzyme currently requires setting value manually and simulating "change" event
     // https://github.com/airbnb/enzyme/issues/76
-    let input = toolbar.find('Panel PanelTextInput input');
+    const input = toolbar.find('Panel PanelTextInput input');
     (input.get(0) as any).value = 'http://atlassian.com';
     input.simulate('change');
     input.simulate('keyup', { which: 'enter', keyCode: 13 });

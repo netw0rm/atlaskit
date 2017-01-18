@@ -1,8 +1,8 @@
-import HyperlinkPlugin from '../../../src/plugins/hyperlink';
-import { Slice, ProseMirror } from '../../../src';
-import { chaiPlugin, makeEditor, a, mono, doc, p, slice } from '../../../test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import { ProseMirror, Slice } from '../../../src';
+import HyperlinkPlugin from '../../../src/plugins/hyperlink';
+import { a, chaiPlugin, doc, makeEditor, mono, p, slice } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 

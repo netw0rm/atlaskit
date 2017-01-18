@@ -1,19 +1,19 @@
-import { storiesOf, action } from '@kadira/storybook';
+import '!style!css!less!./cq-styles.less';
+import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import Editor from '../src';
-import '!style!css!less!./cq-styles.less';
 
-const CancelAction = () => action('Cancel')();
-const SaveAction = () => action('Save')();
+const CANCEL_ACTION = () => action('Cancel')();
+const SAVE_ACTION = () => action('Save')();
 
 storiesOf('ak-editor-cq', module)
   .add('Empty', () =>
     <div style={{ padding: 20 }}>
       <Editor
         isExpandedByDefault
-        onCancel={CancelAction}
-        onSave={SaveAction}
+        onCancel={CANCEL_ACTION}
+        onSave={SAVE_ACTION}
       />
     </div>
   )
@@ -32,9 +32,9 @@ storiesOf('ak-editor-cq', module)
           <div ref="root">
             <Editor
               isExpandedByDefault
-              onCancel={CancelAction}
+              onCancel={CANCEL_ACTION}
               onChange={this.handleChange}
-              onSave={SaveAction}
+              onSave={SAVE_ACTION}
             />
             <fieldset style={{ marginTop: 20 }}>
               <legend>CXHTML</legend>

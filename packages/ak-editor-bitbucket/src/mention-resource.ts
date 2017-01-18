@@ -45,7 +45,7 @@ class MentionResource extends AbstractMentionResource {
           }
           notify({mentions: []});
         } else {
-          let allMentions = response.results.map((item, index) => {
+          const allMentions = response.results.map((item, index) => {
             return {
               'id': item.attributes.username,
               'name': item.attributes.display_name,

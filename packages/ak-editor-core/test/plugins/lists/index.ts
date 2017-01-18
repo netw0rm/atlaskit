@@ -1,11 +1,11 @@
-import { commands, browser } from '../../../src';
-import { chaiPlugin, makeEditor } from '../../../test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
+import { browser, commands } from '../../../src';
 import ListsPlugin from '../../../src/plugins/lists';
-import { doc, h1, li, ol, p, ul, blockquote, schema } from '../../_schema-builder';
+import { chaiPlugin, makeEditor } from '../../../test-helper';
+import { blockquote, doc, h1, li, ol, p, schema, ul } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
 chai.use((sinonChai as any).default || sinonChai);
@@ -14,8 +14,8 @@ describe('lists', () => {
   const editor = (doc: any) => makeEditor({ doc: doc, plugin: ListsPlugin, schema });
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const Plugin = ListsPlugin as any; // .State is not public API.
-    expect(Plugin.State.name).is.be.a('string');
+    const plugin = ListsPlugin as any; // .State is not public API.
+    expect(plugin.State.name).is.be.a('string');
   });
 
   describe('keymap', () => {

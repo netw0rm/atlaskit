@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import {
+  BlockTypePlugin,
   Chrome,
   ContextName,
-  ProseMirror,
-  Node,
-  ListsPlugin,
-  BlockTypePlugin,
   HyperlinkPlugin,
-  TextFormattingPlugin,
-  MentionsPlugin
+  ListsPlugin,
+  MentionsPlugin,
+  Node,
+  ProseMirror,
+  TextFormattingPlugin
 } from '../../';
 import schema from './schema';
 

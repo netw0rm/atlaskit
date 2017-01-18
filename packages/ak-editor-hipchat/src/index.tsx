@@ -9,9 +9,9 @@ import {
   ProseMirror,
   TextSelection,
 } from 'ak-editor-core';
+import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import * as cx from 'classnames';
 import schema from './schema';
 
 let debounced: number | null = null;
@@ -32,10 +32,6 @@ const hipchatSerializer = (doc: any) => {
       case 'text':  // Hipchat expects text nodes to always have a marks array
         node.marks = (node.marks || []).map(mark => {
           if (mark._ === 'link') {
-            if (mark.href.indexOf('javascript:') !== -1) {
-              return mark;
-            }
-
             return {
               type: mark._,
               attrs: {

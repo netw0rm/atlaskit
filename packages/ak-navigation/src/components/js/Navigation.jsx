@@ -129,6 +129,7 @@ export default class Navigation extends PureComponent {
 
     const shouldAnimate = this.state.resizeDelta === 0;
     const renderedWidth = this.getRenderedWidth();
+    const isPartiallyCollapsed = renderedWidth < globalOpenWidth + containerClosedWidth;
     const onSearchDrawerTrigger = isSearchDrawerOpen ? onSearchDrawerClose : onSearchDrawerOpen;
     const onCreateDrawerTrigger = isCreateDrawerOpen ? onCreateDrawerClose : onCreateDrawerOpen;
     return (
@@ -145,7 +146,7 @@ export default class Navigation extends PureComponent {
           width={renderedWidth}
         />
         <div className={styles.navigationInner}>
-          <div>
+          <div style={{ zIndex: isPartiallyCollapsed ? false : 1 }}>
             <GlobalNavigation
               accountItem={globalAccountItem}
               helpItem={globalHelpItem}
@@ -159,7 +160,7 @@ export default class Navigation extends PureComponent {
               shouldAnimate={shouldAnimate}
             />
           </div>
-          <div style={{ zIndex: 1 }}>
+          <div style={{ zIndex: 2 }}>
             <Drawer
               backIcon={drawerBackIcon}
               backIconPosition="search"

@@ -377,7 +377,9 @@ describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
         p('foo ', mono('bar '), 'baz')
       ));
     });
+  });
 
+  describe('code block', () => {
     it('removes last new line', () => {
       expect(parse(
         '<div class="codehilite"><pre><span>hello world</span><span>\n<\span></div>'

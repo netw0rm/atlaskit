@@ -2,6 +2,17 @@ import schema from './schema';
 import { Node } from 'ak-editor-core';
 import arrayFrom from './util/array-from';
 
+const extractLanguageFromClass = (className: string) => {
+  const language_regex = /(?:^|\s)language-([^\s]+)/;
+  const result = language_regex.exec(className);
+
+  if(result && result[1]) {
+    return result[1];
+  }
+
+  return '';
+};
+
 /**
  * This function gets markup rendered by Bitbucket server and transforms it into markup that
  * can be consumed by Prosemirror HTML parser, conforming to our schema.
@@ -20,11 +31,16 @@ export function transformHtml(html: string): HTMLElement {
 
   // Convert "codehilite" containers to <pre>
   arrayFrom(el.querySelectorAll('div.codehilite')).forEach((div: HTMLDivElement) => {
+    const parent = div.parentNode as HTMLElement;
     const pre = document.createElement('pre');
+
     // It always has an extra new line when copy from html
     pre.textContent = div.textContent!.replace(/\n$/, '');
-    div.innerHTML = '';
-    div.appendChild(pre);
+    const language = extractLanguageFromClass(div.className);
+    pre.dataset['language'] = language;
+
+    parent.insertBefore(pre, div);
+    parent.removeChild(div);
   });
 
   // Convert mention containers, i.e.:

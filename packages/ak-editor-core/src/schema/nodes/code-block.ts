@@ -25,11 +25,7 @@ export class CodeBlockNodeType extends Block {
   get matchDOMTag() {
     return {
       'pre': (dom: HTMLElement) => {
-        let language: string | null = null;
-        const parent = dom.parentElement;
-        if(parent) {
-          language = extractLanguageFromClass(parent.className);
-        }
+        const language = dom.dataset['language'].length > 0 ? dom.dataset['language'] : null;
         return [
           {
             'language': language
@@ -42,8 +38,8 @@ export class CodeBlockNodeType extends Block {
     };
   }
 
-  toDOM() {
-    return ['pre', 0];
+  toDOM(node: CodeBlockNode) {
+    return ['pre', {'data-language': node.attrs.language}, 0];
   }
 }
 

@@ -38,7 +38,38 @@ describe('ak-editor-core/schema code_block node', () => {
       }
     });
 
-    context('parse from Bitbucket', () => {
+    context('parse from editor', () => {
+      context('when language is not set', () => {
+        it('converts to block code node', () => {
+          const doc = fromHTML('<pre><span>window.alert("hello");<span></pre>', schema);
+
+          expect(doc.firstChild.type).to.be.an.instanceOf(CodeBlockNodeType);
+        });
+
+        it('has language attribute as null', () => {
+          const doc = fromHTML('<pre><span>window.alert("hello");<span></pre>', schema);
+
+          expect(doc.firstChild.attrs.language).to.eq(null);
+        });
+      });
+
+      context('when language is set', () => {
+        it('converts to block code node', () => {
+          const doc = fromHTML('<pre data-language="javascript"><span>window.alert("hello");<span></pre>', schema);
+
+          expect(doc.firstChild.type).to.be.an.instanceOf(CodeBlockNodeType);
+        });
+        SUPPORTED_LANGUAGES.forEach((language) => {
+          it(`extracts language "${language}" from data-language attribute`, () => {
+            const doc = fromHTML(`<pre data-language='${language}'><span>window.alert("hello");<span></pre>`, schema);
+
+            expect(doc.firstChild.attrs.language).to.eq(language);
+          });
+        });
+      });
+    });
+
+    context.skip('parse from Bitbucket', () => {
       context('when language is not set', () => {
         it('converts to block code node', () => {
           const doc = fromHTML('<div class="codehilite"><pre><span>window.alert("hello");<span></pre></div>', schema);
@@ -75,6 +106,40 @@ describe('ak-editor-core/schema code_block node', () => {
             expect(doc.firstChild.attrs.language).to.eq(language);
           });
         });
+      });
+    });
+  });
+
+  describe('convert to HTML', () => {
+    const schema = new Schema({
+      nodes: {
+        doc: { type: DocNodeType, content: 'block+' },
+        code_block: { type: CodeBlockNodeType, content: 'text*', group: 'block' },
+        text: { type: Text, group: 'inline' }
+      }
+    });
+
+    context('when languge is not set', () => {
+      it('converts to pre tag', () => {
+        const codeBlock = schema.nodes.code_block.create();
+        expect(toHTML(codeBlock)).to.have.string('<pre');
+      });
+
+      it('does not set data-language attributes', () => {
+        const codeBlock = schema.nodes.code_block.create();
+        expect(toHTML(codeBlock)).to.not.have.string('data-language');
+      });
+    });
+
+    context('when languge is set', () => {
+      it('converts to pre tag', () => {
+        const codeBlock = schema.nodes.code_block.create({ language: 'javascript' });
+        expect(toHTML(codeBlock)).to.have.string('<pre');
+      });
+
+      it('sets data-language attributes', () => {
+        const codeBlock = schema.nodes.code_block.create({ language: 'javascript' });
+        expect(toHTML(codeBlock)).to.have.string('data-language="javascript"');
       });
     });
   });

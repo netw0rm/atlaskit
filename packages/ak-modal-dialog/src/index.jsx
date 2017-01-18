@@ -75,7 +75,9 @@ export default class ModalDialog extends PureComponent {
   }
 
   handleKeyDown = (e) => {
-    this.props.onDialogDismissed(e);
+    if (e.key === 'Escape') {
+      this.props.onDialogDismissed(e);
+    }
   }
 
   render() {

@@ -2,20 +2,19 @@ import classNames from 'classnames';
 import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
 
-// This is hard codes to 20 pixels for now but if we end up doing t-shirt sizing AK-1153
-const SPINNER_SIZE = 20;
-
 export default class Spinner extends PureComponent {
   static displayName = 'AkSpinner';
 
   static propTypes = {
     onComplete: PropTypes.func,
     isCompleting: PropTypes.bool,
+    spinnerSize: PropTypes.number,
   }
 
   static defaultProps = {
     onComplete: () => {},
     isCompleting: false,
+    spinnerSize: 20,
   }
 
   handleTransitionEnd = (e) => {
@@ -33,8 +32,8 @@ export default class Spinner extends PureComponent {
       [styles.spinner]: true,
       [styles.active]: !this.props.isCompleting,
     };
-    const strokeWidth = Math.round(SPINNER_SIZE / 10);
-    const strokeRadius = (SPINNER_SIZE / 2) - (strokeWidth / 2);
+    const strokeWidth = Math.round(this.props.spinnerSize / 10);
+    const strokeRadius = (this.props.spinnerSize / 2) - (strokeWidth / 2);
     const circumference = Math.PI * strokeRadius * 2;
     const dashStyles = {
       strokeDashoffset: this.props.isCompleting ? circumference : 0.8 * circumference,
@@ -46,24 +45,24 @@ export default class Spinner extends PureComponent {
           className={classNames(spinnerStyles)}
           onTransitionEnd={this.handleTransitionEnd}
           style={{
-            height: `${SPINNER_SIZE}px`,
-            width: `${SPINNER_SIZE}px`,
+            height: `${this.props.spinnerSize}px`,
+            width: `${this.props.spinnerSize}px`,
           }}
         >
           <div className={styles.spinnerWrapper}>
             <svg
-              height={SPINNER_SIZE}
-              width={SPINNER_SIZE}
+              height={this.props.spinnerSize}
+              width={this.props.spinnerSize}
               xmlns="http://www.w3.org/2000/svg"
-              viewBox={`0 0 ${SPINNER_SIZE} ${SPINNER_SIZE}`}
+              viewBox={`0 0 ${this.props.spinnerSize} ${this.props.spinnerSize}`}
             >
               <circle
                 className={styles.circle}
                 fill="none"
                 strokeWidth={strokeWidth}
                 strokeLinecap="round"
-                cx={SPINNER_SIZE / 2}
-                cy={SPINNER_SIZE / 2}
+                cx={this.props.spinnerSize / 2}
+                cy={this.props.spinnerSize / 2}
                 r={strokeRadius}
                 style={dashStyles}
               />

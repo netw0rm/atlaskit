@@ -13,7 +13,7 @@ describe('text-formatting', () => {
   const editor = (doc: any) => makeEditor({ doc, plugin: TextFormattingPlugin, schema });
 
   describe('keymap', () => {
-    if(browser.mac) {
+    if (browser.mac) {
       context('when on a mac', () => {
         context('when hits Cmd-B', () => {
           it('toggles bold mark', () => {

@@ -53,7 +53,7 @@
       "single",
       "jsx-double"
     ],
-    "whitespace": []
+    "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-module", "check-separator", "check-type", "check-typecast"]
   },
   "jsRules": {
     // We use eslint for .js and .jsx, so all the TSLint rules can be disabled.

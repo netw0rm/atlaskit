@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
 import {
   a, blockquote, chaiPlugin, code_block, doc, em, h1, h2,
-  h3,hr, img, li, makeEditor, mono, ol, p, strong, ul
+  h3, hr, img, li, makeEditor, mono, ol, p, strong, ul
 } from '../../../test-helper';
 
 chai.use(chaiPlugin);

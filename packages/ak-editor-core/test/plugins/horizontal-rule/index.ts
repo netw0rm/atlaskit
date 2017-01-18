@@ -16,7 +16,7 @@ describe('horizontal_rule', () => {
   };
 
   describe('keymap', () => {
-    if(browser.mac) {
+    if (browser.mac) {
       context('when hits Shift-Cmd--', () => {
         it('calls splitCodeBlock', () => {
           const { pm } = editor(doc(p('text{<>}')));

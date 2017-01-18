@@ -23,7 +23,7 @@ const makeEditor = () => new ProseMirror({
 describe('mentions - input rules', () => {
   it('should replace a standalone "@" with mention-query-mark', () => {
     const pm = makeEditor();
-    pm.input.insertText(0, 0,'foo @');
+    pm.input.insertText(0, 0, 'foo @');
 
     const cursorFocus = pm.selection.$to;
     expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).not.to.be.undefined;

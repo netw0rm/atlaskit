@@ -251,7 +251,7 @@ describe('ak-editor-bitbucket/pasting', () => {
       html: '<p>Nice! <img src="https://d301sr.cloudfront.net/69284d5bf158/emoji/img/%2B1.svg" class="emoji"></p>'
     };
 
-    if(!dispatchPasteEvent(pm, content)) {
+    if (!dispatchPasteEvent(pm, content)) {
       return this.skip('This environment does not support artificial paste events');
     }
 
@@ -263,7 +263,7 @@ describe('ak-editor-bitbucket/pasting', () => {
       html: '<p><a href="/mention/" rel="nofollow" title="@mention" class="mention">Mention</a> some mention.</p>'
     };
 
-    if(!dispatchPasteEvent(pm, content)) {
+    if (!dispatchPasteEvent(pm, content)) {
       return this.skip('This environment does not support artificial paste events');
     }
 

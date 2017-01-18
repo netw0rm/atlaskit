@@ -24,7 +24,7 @@ export class HorizontalRuleState {
 
   addKeymap(pm) {
     const {horizontal_rule} = pm.schema.nodes;
-    if(horizontal_rule) {
+    if (horizontal_rule) {
       pm.addKeymap(new Keymap({
         'Mod-Shift--': trackAndInvoke('atlassian.editor.format.horizontalrule.keyboard', () => pm.tr.replaceSelection(horizontal_rule.create()).applyAndScroll())
       }));

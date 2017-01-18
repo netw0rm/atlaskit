@@ -116,12 +116,12 @@ storiesOf(name, module)
         <code>mention_query</code>) but these should be documented as such.</p>
         <p>Node and mark attributes are described here, and require manual investigation of the
         source code in ak-editor-core.</p>
-        <schemaDoc schemaSourceFile={SchemaRaw} />
+        <SchemaDoc schemaSourceFile={SchemaRaw} />
       </Readme>
     </div>
   ));
 
-const schemaDoc = (props: { schemaSourceFile: string }) => {
+function SchemaDoc(props: { schemaSourceFile: string }) {
   const regexp = new RegExp('new Schema\\(([^]+)\\) as \\w+Schema;', 'gm');
   const match = regexp.exec(props.schemaSourceFile);
   const schema = match && match[1];

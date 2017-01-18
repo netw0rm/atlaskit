@@ -98,7 +98,7 @@ export default class Editor extends PureComponent<Props, State> {
           {!pluginStateHyperlink ? null :
             <HyperlinkEdit pluginState={pluginStateHyperlink} />
           }
-          {!pluginStateMentions ? null:
+          {!pluginStateMentions ? null :
             <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reverseMentionPicker} />
           }
         </div>

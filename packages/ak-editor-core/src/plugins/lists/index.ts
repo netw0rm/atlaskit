@@ -104,7 +104,7 @@ export class ListsState {
     pm.addKeymap(new Keymap({
       'Enter': () => commands.splitListItem(list_item)(pm),
       'Mod-Shift-L': trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', () => this.toggleOrderedList()),
-      'Mod-Shift-B': trackAndInvoke('atlassian.editor.format.list.bullet.keyboard',() => this.toggleBulletList())
+      'Mod-Shift-B': trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', () => this.toggleBulletList())
     }));
   }
 
@@ -288,17 +288,17 @@ export class ListsState {
       }
     }
 
-    if(!($from.parent && $from.parent.isTextblock && !$from.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
+    if (!($from.parent && $from.parent.isTextblock && !$from.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
       let node = this.pm.doc.nodeAt(startPos);
-      while(!node || (node && !node.isText)) {
+      while (!node || (node && !node.isText)) {
         startPos++;
         node = this.pm.doc.nodeAt(startPos)!;
       }
     }
 
-    if(!($to.parent && $to.parent.isTextblock && !$to.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
+    if (!($to.parent && $to.parent.isTextblock && !$to.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
       let node = this.pm.doc.nodeAt(endPos);
-      while(!node || (node && !node.isText)) {
+      while (!node || (node && !node.isText)) {
         endPos--;
         node = this.pm.doc.nodeAt(endPos);
       }

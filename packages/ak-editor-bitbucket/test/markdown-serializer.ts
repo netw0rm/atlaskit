@@ -220,7 +220,7 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '* foo 1\n' +
-        '  * bar 1\n'+
+        '  * bar 1\n' +
         '    * baz 1\n' +
         '    * baz 2\n' +
         '  * bar 2\n' +
@@ -301,7 +301,7 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '1. foo 1\n' +
-        '   1. bar 1\n'+
+        '   1. bar 1\n' +
         '      1. baz 1\n' +
         '      2. baz 2\n' +
         '   2. bar 2\n' +
@@ -338,7 +338,7 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '1. foo 1\n' +
-        '   * bar 1\n'+
+        '   * bar 1\n' +
         '     1. baz 1\n' +
         '     2. baz 2\n' +
         '        * banana\n' +

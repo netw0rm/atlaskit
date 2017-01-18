@@ -285,5 +285,5 @@ export interface HyperlinkOptions {
 function getBoundariesWithin(
   $head: ResolvedPos
 ): number {
-  return $head.parentOffset === 0 ? $head.pos : $head.pos -1;
+  return $head.parentOffset === 0 ? $head.pos : $head.pos - 1;
 }

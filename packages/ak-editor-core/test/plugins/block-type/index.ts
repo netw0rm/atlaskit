@@ -185,7 +185,7 @@ describe('block-type', () => {
   });
 
   describe('keymap', () => {
-    if(browser.mac) {
+    if (browser.mac) {
       context('when on a Mac', () => {
         context('when hits Cmd-Alt-0', () => {
           it('toggles paragraph', () => {

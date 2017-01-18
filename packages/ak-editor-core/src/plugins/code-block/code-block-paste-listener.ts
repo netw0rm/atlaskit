@@ -4,7 +4,7 @@ import { isCodeBlockNode } from '../../schema';
 class CodeBlockPasteListener {
   constructor(pm: ProseMirror) {
     return (event: ClipboardEvent) => {
-      if(!pm.hasFocus()) {
+      if (!pm.hasFocus()) {
         return;
       }
 

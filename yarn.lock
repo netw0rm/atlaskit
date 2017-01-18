@@ -7596,7 +7596,7 @@ typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@next:
+typescript@2.2.0-dev.20170117:
   version "2.2.0-dev.20170117"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.2.0-dev.20170117.tgz#6e8f0a306c3b6d26901321333ba9a7a301150379"
 

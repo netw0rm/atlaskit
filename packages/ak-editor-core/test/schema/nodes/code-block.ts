@@ -43,13 +43,13 @@ describe('ak-editor-core/schema code_block node', () => {
         it('converts to block code node', () => {
           const doc = fromHTML('<pre><span>window.alert("hello");<span></pre>', schema);
 
-          expect(doc.firstChild.type).to.be.an.instanceOf(CodeBlockNodeType);
+          expect(doc.firstChild!.type).to.be.an.instanceOf(CodeBlockNodeType);
         });
 
         it('has language attribute as null', () => {
           const doc = fromHTML('<pre><span>window.alert("hello");<span></pre>', schema);
 
-          expect(doc.firstChild.attrs.language).to.eq(null);
+          expect(doc.firstChild!.attrs['language']).to.eq(null);
         });
       });
 
@@ -57,13 +57,13 @@ describe('ak-editor-core/schema code_block node', () => {
         it('converts to block code node', () => {
           const doc = fromHTML('<pre data-language="javascript"><span>window.alert("hello");<span></pre>', schema);
 
-          expect(doc.firstChild.type).to.be.an.instanceOf(CodeBlockNodeType);
+          expect(doc.firstChild!.type).to.be.an.instanceOf(CodeBlockNodeType);
         });
         SUPPORTED_LANGUAGES.forEach((language) => {
           it(`extracts language "${language}" from data-language attribute`, () => {
             const doc = fromHTML(`<pre data-language='${language}'><span>window.alert("hello");<span></pre>`, schema);
 
-            expect(doc.firstChild.attrs.language).to.eq(language);
+            expect(doc.firstChild!.attrs['language']).to.eq(language);
           });
         });
       });
@@ -71,7 +71,7 @@ describe('ak-editor-core/schema code_block node', () => {
       it('preserves all newlines and whitespace', () => {
         const doc = fromHTML('<pre><span></span>    bar\n       baz\n</pre>', schema);
 
-        expect(doc.firstChild.textContent).to.eq('    bar\n       baz\n');
+        expect(doc.firstChild!.textContent).to.eq('    bar\n       baz\n');
       });
     });
 
@@ -120,13 +120,13 @@ describe('ak-editor-core/schema code_block node', () => {
       it('removes last new line', () => {
         const doc = fromHTML('<div class="codehilite"><pre><span>hello world;<span><span>\n<\span></pre></div>', schema);
 
-        expect(doc.firstChild.textContent).to.eq('hello world;');
+        expect(doc.firstChild!.textContent).to.eq('hello world;');
       });
 
       it('preserves newlines in the middle and whitespace', () => {
         const doc = fromHTML('<div class="codehilite"><pre><span></span>    bar\n       baz</pre></div>', schema);
 
-        expect(doc.firstChild.textContent).to.eq('    bar\n       baz');
+        expect(doc.firstChild!.textContent).to.eq('    bar\n       baz');
       });
     });
   });

@@ -9,7 +9,6 @@ import {
   TextFormattingPlugin,
   HorizontalRulePlugin,
   Chrome,
-  schema,
   AnalyticsHandler,
   analyticsService,
   ContextName
@@ -127,7 +126,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { context, onChange } = this.props;
+      const { context } = this.props;
       const pm = new ProseMirror({
         place,
         doc: parse(this.props.defaultValue || ''),

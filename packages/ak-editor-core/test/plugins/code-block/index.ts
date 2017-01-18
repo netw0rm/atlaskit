@@ -2,10 +2,9 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
-import * as mocha from 'mocha';
 
 import CodeBlockPlugin from '../../../src/plugins/code-block';
-import { chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_block, br } from '../../../test-helper';
+import { chaiPlugin, makeEditor, doc, p, code_block } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 chai.use((sinonChai as any).default || sinonChai);
@@ -18,7 +17,7 @@ describe('code-block', () => {
 
   describe('subscribe', () => {
     it('calls subscriber with plugin', () => {
-      const { pm, plugin } = editor(doc(p('paragraph')));
+      const { plugin } = editor(doc(p('paragraph')));
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
@@ -106,7 +105,7 @@ describe('code-block', () => {
 
     context('when hits double enter', () => {
       it('exits code block', () => {
-        const { pm, plugin } = editor(doc(code_block()('text{<>}')));
+        const { pm } = editor(doc(code_block()('text{<>}')));
 
         pm.input.dispatchKey('Enter');
         pm.input.dispatchKey('Enter');
@@ -129,7 +128,7 @@ describe('code-block', () => {
           });
 
           it('returns false', () => {
-            const { pm, plugin } = editor(doc(code_block()('text\n{<>}')));
+            const { plugin } = editor(doc(code_block()('text\n{<>}')));
 
             expect(plugin.splitCodeBlock()).to.be.false;
           });
@@ -145,7 +144,7 @@ describe('code-block', () => {
           });
 
           it('returns true', () => {
-            const { pm, plugin } = editor(doc(code_block()('te{<>}xt\n')));
+            const { plugin } = editor(doc(code_block()('te{<>}xt\n')));
 
             expect(plugin.splitCodeBlock()).to.be.true;
           });
@@ -163,7 +162,7 @@ describe('code-block', () => {
           });
 
           it('returns true', () => {
-            const { pm, plugin } = editor(doc(code_block()('text{<>}')));
+            const { plugin } = editor(doc(code_block()('text{<>}')));
 
             expect(plugin.splitCodeBlock()).to.be.true;
           });
@@ -179,7 +178,7 @@ describe('code-block', () => {
           });
 
           it('returns true', () => {
-            const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
+            const { plugin } = editor(doc(code_block()('te{<>}xt')));
 
             expect(plugin.splitCodeBlock()).to.be.true;
           });
@@ -189,7 +188,7 @@ describe('code-block', () => {
 
     context('when it is not a code block', () => {
       it('returns false', () => {
-        const { pm, plugin } = editor(doc(p('text{<>}')));
+        const { plugin } = editor(doc(p('text{<>}')));
 
         expect(plugin.splitCodeBlock()).to.be.false;
       });
@@ -229,7 +228,7 @@ describe('code-block', () => {
     context('when cursor is within a code block', () => {
       context('when at the end of the code block', () => {
         it('returns code block element', () => {
-          const { pm, plugin } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
+          const { plugin } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
 
           expect(plugin.element).to.instanceOf(HTMLPreElement);
         });
@@ -237,7 +236,7 @@ describe('code-block', () => {
 
       context('when at the beginning of the code block', () => {
         it('returns code block element', () => {
-          const { pm, plugin } = editor(doc(p('paragraph'), code_block()('{<>}codeBlock')));
+          const { plugin } = editor(doc(p('paragraph'), code_block()('{<>}codeBlock')));
 
           expect(plugin.element).to.instanceOf(HTMLPreElement);
         });
@@ -245,7 +244,7 @@ describe('code-block', () => {
 
       context('when at the middle of the code block', () => {
         it('returns code block element', () => {
-          const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+          const { plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
 
           expect(plugin.element).to.instanceOf(HTMLPreElement);
         });
@@ -254,7 +253,7 @@ describe('code-block', () => {
 
     context('when cursor is out of code block', () => {
       it('returns undefined', () => {
-        const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock')));
+        const { plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock')));
 
         expect(plugin.element).to.be.undefined;
       });
@@ -263,7 +262,7 @@ describe('code-block', () => {
 
   context('updateLanguage', () => {
     it('keeps the content', () => {
-      const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+      const { plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
       const previousElement = plugin.element;
 
       plugin.updateLanguage('php');
@@ -274,7 +273,7 @@ describe('code-block', () => {
     });
 
     it('can update language to be null', () => {
-      const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+      const { plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
 
       plugin.updateLanguage(null);
 
@@ -282,7 +281,7 @@ describe('code-block', () => {
     });
 
     it('updates language', () => {
-      const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+      const { plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
 
       plugin.updateLanguage('php');
 
@@ -290,7 +289,7 @@ describe('code-block', () => {
     });
 
     it('updates the node', () => {
-      const { pm, plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+      const { plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
       const previousActiveCodeBlock = plugin.activeCodeBlock;
 
       plugin.updateLanguage('php');
@@ -304,7 +303,7 @@ describe('code-block', () => {
   describe('active', () => {
     context('inside a code block', () => {
       it('is active', () => {
-        const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
+        const { plugin } = editor(doc(code_block()('te{<>}xt')));
 
         expect(plugin.active).to.be.true;
       });
@@ -312,7 +311,7 @@ describe('code-block', () => {
 
     context('outside of a code block', () => {
       it('is not active', () => {
-        const { pm, plugin } = editor(doc(p('te{<>}xt')));
+        const { plugin } = editor(doc(p('te{<>}xt')));
 
         expect(plugin.active).to.be.false;
       });
@@ -321,13 +320,13 @@ describe('code-block', () => {
 
   describe('language', () => {
     it('is the same as activeCodeBlock language', () => {
-      const { pm, plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
+      const { plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
 
       expect(plugin.language).to.eq('java');
     });
 
     it('updates if activeCodeBlock updates langugae', () => {
-      const { pm, plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
+      const { plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
 
       plugin.updateLanguage('php');
 
@@ -335,7 +334,7 @@ describe('code-block', () => {
     });
 
     it('sets language to null if no activeCodeBlock', () => {
-      const { pm, plugin } = editor(doc(p('te{<>}xt')));
+      const { plugin } = editor(doc(p('te{<>}xt')));
 
       expect(plugin.language).to.be.null;
     });

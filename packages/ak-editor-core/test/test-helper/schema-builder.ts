@@ -1,4 +1,3 @@
-import * as mocha from 'mocha';
 import { p, text, nodeFactory, markFactory, sequence, RefsTracker } from '../../test-helper/schema-builder';
 import { schema } from '../../test-helper/schema';
 import { expect } from 'chai';

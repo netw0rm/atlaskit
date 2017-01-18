@@ -1,5 +1,4 @@
 import { Schema, Text } from '../../../src';
-import * as chai from 'chai';
 import { expect } from 'chai';
 import { DocNodeType, CodeBlockNodeType } from '../../../src';
 

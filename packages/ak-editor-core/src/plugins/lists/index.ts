@@ -1,18 +1,14 @@
 import Keymap from 'browserkeymap';
 import {
   commands,
-  EditorTransform,
-  liftTarget,
   Plugin,
   ProseMirror,
   Node,
   NodeSelection,
-  NodeType,
   ResolvedPos,
   Schema,
   Selection,
   TextSelection,
-  UpdateScheduler
 } from '../../prosemirror';
 
 import {
@@ -143,10 +139,6 @@ export class ListsState {
 
     const adjustedSelection = this.adjustSelection(pm.selection);
 
-    const wrapInList = nodeType === pm.schema.nodes.bullet_list
-      ? this.wrapInBulletList
-      : this.wrapInOrderedList;
-
     if ($from === $to) {
       pm.setSelection(adjustedSelection);
       $from = pm.selection.$from;
@@ -198,7 +190,6 @@ export class ListsState {
 
   private update() {
     const { pm } = this;
-    const { bullet_list, ordered_list } = pm.schema.nodes;
     const ancestorPosition = findAncestorPosition(pm, pm.selection.$from);
     const rootNode = pm.selection instanceof NodeSelection
       ? pm.selection.node

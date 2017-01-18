@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 
-import { fixtures, chaiPlugin } from '../../test-helper';
+import { chaiPlugin } from '../../test-helper';
 import analytics from '../../src/analytics/decorator';
 import service from '../../src/analytics/service';
 import { AnalyticsHandler } from '../../src/analytics/handler';

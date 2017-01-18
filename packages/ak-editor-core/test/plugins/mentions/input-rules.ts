@@ -1,6 +1,5 @@
-import * as mocha from 'mocha';
 import { MentionsPlugin, MentionQueryMarkType, MentionNodeType,
-          ProseMirror, Schema, ResolvedPos, schema as schemaBasic } from '../../../src';
+          ProseMirror, Schema, schema as schemaBasic } from '../../../src';
 import { chaiPlugin } from '../../../test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';

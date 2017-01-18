@@ -1,4 +1,3 @@
-import * as mocha from 'mocha';
 import markdownSerializer from '../src/markdown-serializer';
 import {
   code_block, doc, p, img, mono, strong, blockquote, hr,

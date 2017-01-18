@@ -1,9 +1,7 @@
-import * as mocha from 'mocha';
 import { parseHtml as parse } from '../src/parse-html';
-import { Schema } from 'ak-editor-core';
 import { chaiPlugin } from 'ak-editor-core/test-helper';
 import {
-  a, blockquote, mono, code_block, doc, strong, strike,
+  a, blockquote, mono, code_block, doc, strong,
   h1, h2, h3, h4, h5, h6, hr, img, ul, ol, li, p, mention
 } from './_schema-builder';
 import * as chai from 'chai';

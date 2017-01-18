@@ -3,15 +3,13 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 import * as chaiEnzyme from 'chai-enzyme';
-import { shallow, mount, ReactWrapper } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
-import { doc, strong, h1, p } from './_schema-builder';
 import stringRepeat from '../src/util/string-repeat';
 import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from 'ak-editor-core/test-helper';
 
-import { ProseMirror, browser, ToolbarTextFormatting, analyticsService, AnalyticsHandler, debugHandler } from 'ak-editor-core';
+import { ProseMirror, browser, analyticsService, AnalyticsHandler } from 'ak-editor-core';
 import BoldIcon from 'ak-icon/glyph/editor/bold';
-import ItalicIcon from 'ak-icon/glyph/editor/bold';
 import NumberListIcon from 'ak-icon/glyph/editor/list/number';
 import BulletListIcon from 'ak-icon/glyph/editor/list/bullet';
 import ImageIcon from 'ak-icon/glyph/editor/image';
@@ -87,7 +85,6 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   let pm: ProseMirror;
 
   beforeEach(() => {
-    let container = fixture();
     let noop = () => {};
     handler = sinon.spy() as AnalyticsHandler;
 
@@ -277,9 +274,6 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.image.drop', () => {
-    const editorAPI: Editor = editor.get(0) as any;
-    const { pm } = editorAPI.state;
-
     // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop'
     //       so we must dispatch the event directly on the event which has listener attached.
     const dropElement: HTMLElement = (editor.get(0) as any).state.pm.content.parentNode;

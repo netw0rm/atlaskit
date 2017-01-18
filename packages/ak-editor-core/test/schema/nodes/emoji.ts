@@ -1,7 +1,5 @@
 import { Schema, Text } from '../../../src';
-import * as chai from 'chai';
 import { expect } from 'chai';
-import { toHTML, fromHTML } from '../../../test-helper';
 import { DocNodeType, EmojiNodeType } from '../../../src';
 
 describe('ak-editor-core/schema emoji node', () => {

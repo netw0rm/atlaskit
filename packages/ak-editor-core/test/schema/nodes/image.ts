@@ -1,4 +1,3 @@
-import * as chai from 'chai';
 import { expect } from 'chai';
 import { Schema, Text, DocNodeType, ImageNodeType } from '../../../src';
 

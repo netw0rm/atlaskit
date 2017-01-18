@@ -8,7 +8,6 @@ export interface MentionSource {
 class MentionResource extends AbstractMentionResource {
   private config: any;
   private lastReturnedSearch: any;
-  private fetchCount = 0;
   private mentionSource: MentionSource;
 
   constructor(config: any, mentionSource: MentionSource) {
@@ -20,7 +19,6 @@ class MentionResource extends AbstractMentionResource {
   }
 
   filter(query: string) {
-    const searchTime = Date.now();
     const notify = (mentions: any) => {
       this._notifyListeners(mentions);
     };

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import {
   ProseMirror,
-  Schema,
   Node,
   Keymap,
   ListsPlugin,
@@ -21,7 +20,6 @@ import {
   ContextName
 } from 'ak-editor-core';
 
-import schema from './schema';
 import markdownSerializer from './markdown-serializer';
 import { parseHtml, transformHtml } from './parse-html';
 import { MentionResource, MentionSource } from './mention-resource';
@@ -198,7 +196,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { context, onChange } = this.props;
+      const { context } = this.props;
       const pm = new ProseMirror({
         place,
         doc: parseHtml(this.props.defaultValue || ''),

@@ -183,7 +183,7 @@ describe('lists', () => {
     });
 
     it('should make sure that it is enabled when selecting ordered list', () => {
-      const { pm, plugin } = editor(doc(ol(li(p('te{<>}xt')))));
+      const { plugin } = editor(doc(ol(li(p('te{<>}xt')))));
 
       expect(plugin).to.have.property('orderedListActive', true);
       expect(plugin).to.have.property('orderedListDisabled', false);
@@ -194,7 +194,7 @@ describe('lists', () => {
     });
 
     it('should be disabled when selecting h1', () => {
-      const { pm, plugin } = editor(doc(h1('te{<>}xt')));
+      const { plugin } = editor(doc(h1('te{<>}xt')));
 
       expect(plugin).to.have.property('orderedListActive', false);
       expect(plugin).to.have.property('orderedListDisabled', true);

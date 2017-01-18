@@ -1,10 +1,7 @@
 import {
   Plugin,
   ProseMirror,
-  UpdateScheduler,
-  ResolvedPos,
   DOMFromPos,
-  Node,
   NodeSelection,
   Schema,
   TextSelection
@@ -133,8 +130,6 @@ export class ImageUploadState {
   }
 
   private update(): void {
-    const { pm } = this;
-    const { $from, empty } = pm.selection;
     let dirty = false;
 
     const newActive = this.isImageSelected();

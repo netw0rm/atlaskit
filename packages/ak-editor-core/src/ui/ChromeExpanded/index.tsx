@@ -2,7 +2,6 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import AkButton from 'ak-button';
 import AkButtonGroup from 'ak-button-group';
-import { ProseMirror } from '../../prosemirror';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
 import { HyperlinkState } from '../../plugins/hyperlink';

@@ -3,7 +3,6 @@ import { PureComponent } from 'react';
 import DropdownMenu from 'ak-dropdown-menu';
 
 import { CodeBlockState } from '../../plugins/code-block';
-import { Node } from '../../prosemirror';
 import Panel from '../Panel';
 import languageList, { NO_LANGUAGE } from './languageList';
 import * as styles from './styles';

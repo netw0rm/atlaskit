@@ -96,7 +96,7 @@ describe('ak-editor-core/test-helper base64fileconverter', () => {
       const cb = sinon.spy();
       const errCb = sinon.spy();
 
-      let FileReaderStub = <FileReader>() => {};
+      let FileReaderStub = () => {};
       FileReaderStub.prototype.onload = sinon.spy();
       FileReaderStub.prototype.readAsBinaryString = sinon.spy();
 
@@ -114,7 +114,7 @@ describe('ak-editor-core/test-helper base64fileconverter', () => {
       const cb = sinon.spy();
       const errCb = sinon.spy();
 
-      let FileReaderStub = <FileReader>() => {};
+      let FileReaderStub = () => {};
       FileReaderStub.prototype.onload = sinon.spy();
       FileReaderStub.prototype.readAsBinaryString = sinon.spy();
 
@@ -135,7 +135,7 @@ describe('ak-editor-core/test-helper base64fileconverter', () => {
       const cb = sinon.spy();
       const errCb = sinon.spy();
 
-      let FileReaderStub = <FileReader>() => {};
+      let FileReaderStub = () => {};
       FileReaderStub.prototype.onload = sinon.spy();
       FileReaderStub.prototype.readAsBinaryString = sinon.spy();
 

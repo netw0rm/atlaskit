@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import Readme, { Code, Heading, Props } from 'akutil-readme';
+import Readme, { Code, Heading } from 'akutil-readme';
 
 import OverviewExample from './examples/overview';
 import * as OverviewExampleRaw from '!raw!./examples/overview.tsx';
@@ -10,7 +10,6 @@ import * as exampleMessageJson from '!raw!./examples/message.json';
 import * as exampleMediaServicesFileJson from '!raw!./examples/mediaservices-file.json';
 
 import { name, description } from '../package.json';
-import Editor from '../src';
 
 storiesOf(name, module)
   .add('Readme', () => (

@@ -2,7 +2,7 @@
 // THIS FILE IS DEPRECATED AND WILL BE REMOVED IN THE FUTURE.
 //
 import {
-  Block, Text, Schema, NodeType, MarkType,
+  Text, Schema, NodeType, MarkType,
   BlockQuoteNodeType,
   BulletListNodeType,
   CodeBlockNodeType,

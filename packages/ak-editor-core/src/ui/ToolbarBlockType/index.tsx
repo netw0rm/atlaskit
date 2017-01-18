@@ -6,7 +6,6 @@ import Item from 'ak-droplist-item';
 import DropdownList from 'ak-droplist';
 
 import { BlockType, BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
-import Panel from '../Panel';
 import * as styles from './styles';
 import { analyticsService as analytics } from '../../analytics';
 
@@ -103,15 +102,6 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     });
 
     analytics.trackEvent(`atlassian.editor.format.${blockType.name}.button`);
-  }
-
-  private handleToggleDropdown = () => {
-    const { availableBlockTypes, currentBlockType } = this.state;
-    this.setState({
-      active: !this.state.active,
-      availableBlockTypes,
-      currentBlockType
-    });
   }
 
   private blockTypeItemClass(blockType: BlockType): string | undefined {

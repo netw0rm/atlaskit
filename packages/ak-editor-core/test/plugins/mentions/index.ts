@@ -1,5 +1,5 @@
 import MentionsPlugin from '../../../src/plugins/mentions';
-import { MentionQueryMarkType, MentionNodeType, ProseMirror, Schema, ResolvedPos, schema as schemaBasic } from '../../../src';
+import { MentionQueryMarkType, MentionNodeType, ProseMirror, Schema, schema as schemaBasic } from '../../../src';
 import { chaiPlugin, fixtures } from '../../../test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';

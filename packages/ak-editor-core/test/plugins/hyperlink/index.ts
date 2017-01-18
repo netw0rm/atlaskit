@@ -1,4 +1,3 @@
-import * as mocha from 'mocha';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
@@ -85,7 +84,7 @@ describe('hyperlink', () => {
     });
 
     it('should get current state immediately once subscribed', () => {
-      const { pm, plugin } = editor(doc(linkable('{<}text{>}')));
+      const { plugin } = editor(doc(linkable('{<}text{>}')));
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
@@ -103,7 +102,7 @@ describe('hyperlink', () => {
     });
 
     it('sets canAddLink to false when in a context where links are not supported by the schema', () => {
-      const { pm, plugin } = editor(doc(unlinkable('{<}text{>}')));
+      const { plugin } = editor(doc(unlinkable('{<}text{>}')));
 
       expect(plugin.canAddLink).to.be.false;
     });
@@ -242,7 +241,7 @@ describe('hyperlink', () => {
     });
 
     it('should allow links to be added when the selection is empty', () => {
-      const { pm, plugin } = editor(doc(linkable('{<>}text')));
+      const { plugin } = editor(doc(linkable('{<>}text')));
 
       expect(plugin.canAddLink).to.be.true;
     });

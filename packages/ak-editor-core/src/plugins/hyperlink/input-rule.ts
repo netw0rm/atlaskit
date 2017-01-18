@@ -1,4 +1,4 @@
-import { ProseMirror, Mark, InputRule } from '../../prosemirror';
+import { ProseMirror, InputRule } from '../../prosemirror';
 import { URL } from './regex';
 
 const urlAtEndOfLine = new RegExp(`${URL.source}$`);

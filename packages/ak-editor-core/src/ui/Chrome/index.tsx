@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent, ReactElement } from 'react';
+import { PureComponent } from 'react';
 import { ProseMirror } from '../../prosemirror';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';

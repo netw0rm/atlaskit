@@ -1,5 +1,5 @@
 import Keymap from 'browserkeymap';
-import { Plugin, ProseMirror, inputRules, TextSelection, Schema } from '../../prosemirror';
+import { Plugin, ProseMirror, inputRules, Schema } from '../../prosemirror';
 
 import {
   MentionNodeType,
@@ -99,7 +99,6 @@ export class MentionsPluginState {
   }
 
   dismiss() {
-    let sel = this.pm.selection;
     this.queryActive = false;
     this.query = undefined;
 

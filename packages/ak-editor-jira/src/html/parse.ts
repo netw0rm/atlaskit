@@ -1,6 +1,6 @@
 import schema from '../schema';
 import parseHtml from './parse-html';
-import { Fragment, MarkType, Mark, Node as PMNode } from 'ak-editor-core';
+import { Fragment, Mark, Node as PMNode } from 'ak-editor-core';
 import WeakMap from './weak-map';
 
 const convertedNodes = new WeakMap();
@@ -126,35 +126,35 @@ function ensureBlocks(fragment: Fragment): Fragment {
   return Fragment.fromArray(blockNodes);
 }
 
-/**
- * Deduce a set of marks from a style declaration.
- */
-function marksFromStyle(style: CSSStyleDeclaration): Mark[] {
-  let marks: Mark[] = [];
+// /**
+//  * Deduce a set of marks from a style declaration.
+//  */
+// function marksFromStyle(style: CSSStyleDeclaration): Mark[] {
+//   let marks: Mark[] = [];
 
-  styles: for (let i = 0; i < style.length; i++) {
-    const name = style.item(i);
-    const value = style.getPropertyValue(name);
+//   styles: for (let i = 0; i < style.length; i++) {
+//     const name = style.item(i);
+//     const value = style.getPropertyValue(name);
 
-    switch (name) {
-      case 'text-decoration-color':
-      case 'text-decoration-style':
-        continue styles;
-      case 'text-decoration-line':
-      case 'text-decoration':
-        switch (value) {
-          case 'line-through':
-            marks = schema.marks.strike.create().addToSet(marks);
-            continue styles;
-        }
-        break;
-    }
+//     switch (name) {
+//       case 'text-decoration-color':
+//       case 'text-decoration-style':
+//         continue styles;
+//       case 'text-decoration-line':
+//       case 'text-decoration':
+//         switch (value) {
+//           case 'line-through':
+//             marks = schema.marks.strike.create().addToSet(marks);
+//             continue styles;
+//         }
+//         break;
+//     }
 
-    throw new Error(`Unable to derive a mark for CSS ${name}: ${value}`);
-  }
+//     throw new Error(`Unable to derive a mark for CSS ${name}: ${value}`);
+//   }
 
-  return marks;
-}
+//   return marks;
+// }
 
 const converters = <Converter[]> [
   function text(content, node) {

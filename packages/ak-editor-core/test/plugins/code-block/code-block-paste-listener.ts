@@ -1,4 +1,3 @@
-import * as mocha from 'mocha';
 import { ProseMirror } from '../../../src';
 import * as chai from 'chai';
 import { expect } from 'chai';

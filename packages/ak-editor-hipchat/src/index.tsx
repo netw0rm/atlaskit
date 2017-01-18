@@ -1,7 +1,6 @@
 import {
   Keymap,
   ProseMirror,
-  Fragment,
   BlockTypePlugin,
   HyperlinkEdit,
   HyperlinkPlugin,

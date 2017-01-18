@@ -1,10 +1,8 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
-import * as mocha from 'mocha';
 
-import { commands, browser, schema as schemaBasic, Schema } from '../../../src';
+import { browser } from '../../../src';
 import { chaiPlugin, makeEditor, doc, p, hr } from '../../../test-helper';
 import HorizontalRulePlugin from '../../../src/plugins/horizontal-rule';
 
@@ -21,7 +19,7 @@ describe('horizontal_rule', () => {
     if(browser.mac) {
       context('when hits Shift-Cmd--', () => {
         it('calls splitCodeBlock', () => {
-          const { pm, plugin } = editor(doc(p('text{<>}')));
+          const { pm } = editor(doc(p('text{<>}')));
 
           pm.input.dispatchKey('Shift-Cmd--');
 
@@ -31,7 +29,7 @@ describe('horizontal_rule', () => {
     } else {
       context('when hits Shift-Ctrl--', () => {
         it('calls splitCodeBlock', () => {
-          const { pm, plugin } = editor(doc(p('text{<>}')));
+          const { pm } = editor(doc(p('text{<>}')));
 
           pm.input.dispatchKey('Shift-Ctrl--');
 

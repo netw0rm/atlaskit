@@ -1,5 +1,5 @@
 /// <reference path="./chai.d.ts"/>
-import { Fragment, Node, Mark, Text, Slice, NodeType } from '../';
+import { Fragment, Node, Mark, Slice, NodeType } from '../';
 
 function isNodeOrFragment(thing: any): thing is Node | Fragment {
   // Using a simple `instanceof` check is intentionally avoided here to make

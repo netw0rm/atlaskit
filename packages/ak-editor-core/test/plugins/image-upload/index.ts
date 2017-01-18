@@ -37,7 +37,7 @@ describe('image-upload', () => {
   });
 
   it('should get current state immediately once subscribed', () => {
-    const { pm, plugin, sel } = editor(doc(images('{<>}', testImg())));
+    const { plugin } = editor(doc(images('{<>}', testImg())));
     const spy = sinon.spy();
     plugin.subscribe(spy);
 
@@ -71,7 +71,7 @@ describe('image-upload', () => {
   });
 
   it('does not emit multiple changes when an image is selected multiple times', () => {
-    const { pm, plugin, sel } = editor(doc(images('{<>}', testImg())));
+    const { plugin } = editor(doc(images('{<>}', testImg())));
     const spy = sinon.spy();
 
     plugin.subscribe(spy);

@@ -26,8 +26,6 @@ class MentionResource extends AbstractMentionResource {
       if (searchTime >= this._lastReturnedSearch) {
         this._lastReturnedSearch = searchTime;
         this._notifyListeners(mentions);
-      } else {
-        const date = new Date(searchTime).toISOString().substr(17, 6);
       }
     };
 

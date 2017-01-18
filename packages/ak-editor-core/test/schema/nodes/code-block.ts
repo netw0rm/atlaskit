@@ -1,7 +1,6 @@
-import * as chai from 'chai';
 import { expect } from 'chai';
 import { Schema, Text, DocNodeType, CodeBlockNode, CodeBlockNodeType } from '../../../src';
-import { toHTML, fromHTML } from '../../../test-helper';
+import { fromHTML } from '../../../test-helper';
 import { SUPPORTED_LANGUAGES } from '../../../src/ui/LanguagePicker/languageList';
 
 describe('ak-editor-core/schema code_block node', () => {

@@ -5,8 +5,6 @@ import {
   Plugin,
   ProseMirror,
   Schema,
-  Selection,
-  UpdateScheduler,
   browser,
   Node,
   TextSelection,
@@ -272,8 +270,6 @@ export class BlockTypeState {
   }
 
   private update(dirty = false) {
-    const { pm } = this;
-
     const newBlockType = this.detectBlockType();
     if (newBlockType !== this.currentBlockType) {
       this.currentBlockType = newBlockType;

@@ -1,11 +1,9 @@
 import {
   Plugin,
   ProseMirror,
-  Mark,
   Schema,
   InputRule,
   inputRules,
-  allInputRules,
   textblockTypeInputRule,
   bulletListRule,
   blockQuoteRule,

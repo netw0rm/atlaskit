@@ -1,5 +1,4 @@
 import { ProseMirror, browser } from '../src/prosemirror';
-import createEvent from './create-event';
 
 /**
  * Sends a key to ProseMirror content area, simulating user key press.

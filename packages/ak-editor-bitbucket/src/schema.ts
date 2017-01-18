@@ -1,5 +1,4 @@
 import {
-  Block,
   BlockQuoteNodeType,
   BulletListNodeType,
   CodeBlockNodeType,

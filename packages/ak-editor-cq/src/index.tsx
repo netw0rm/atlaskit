@@ -15,7 +15,6 @@ import {
   analyticsService,
   ContextName
 } from 'ak-editor-core';
-import schema from './schema';
 import { parse, encode } from './cxhtml';
 
 export interface Props {
@@ -129,7 +128,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { context, onChange } = this.props;
+      const { context } = this.props;
       const pm = new ProseMirror({
         place,
         doc: parse(this.props.defaultValue || ''),

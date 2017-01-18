@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormEvent, PureComponent } from 'react';
+import { PureComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import * as styles from './styles';
 import OutsideClickable from '../OutsideClickable';

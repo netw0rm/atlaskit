@@ -1,10 +1,9 @@
-import { ProseMirror, TextSelection } from '../../prosemirror';
+import { ProseMirror } from '../../prosemirror';
 import { isCodeBlockNode } from '../../schema';
 
 class CodeBlockPasteListener {
   constructor(pm: ProseMirror) {
     return (event: ClipboardEvent) => {
-      const { $from, $to } = pm.selection;
       if(!pm.hasFocus()) {
         return;
       }

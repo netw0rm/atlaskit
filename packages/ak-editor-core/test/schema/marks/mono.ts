@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { Node, Schema, DocNodeType, MonoMarkType, Text } from '../../../src';
+import { Schema, DocNodeType, MonoMarkType, Text } from '../../../src';
 import { fromHTML, toHTML, chaiPlugin } from '../../../test-helper';
 
 chai.use(chaiPlugin);

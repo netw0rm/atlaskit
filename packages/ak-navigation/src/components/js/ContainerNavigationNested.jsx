@@ -1,64 +1,50 @@
 import React, { PureComponent, PropTypes } from 'react';
+import classNames from 'classnames';
 import styles from 'style!../less/ContainerNavigationNested.less';
 import { containerNavigationNestedPageSpacing } from '../../shared-variables';
 
-function wrapPages(pages, selectedIndex, selectedPageRef) {
-  return pages.map((page, i) => {
-    const isSelected = selectedIndex === i;
-    return (<div
-      key={i}
-      aria-hidden={!isSelected}
-      className={styles.pageWrapper}
-    >
-      <div
-        ref={isSelected ? selectedPageRef : null}
-      >
-        {page}
-      </div>
-    </div>);
-  });
-}
-
 export default class ContainerNavigationNested extends PureComponent {
   static propTypes = {
-    pages: PropTypes.arrayOf(PropTypes.node),
-    selectedIndex: PropTypes.number,
+    children: PropTypes.node,
+    animateDirection: PropTypes.string,
   }
-
-  static defaultProps = {
-    selectedIndex: 0,
-    pages: [],
-  }
-
   constructor(props) {
     super(props);
-    this.state = {
-      height: 'auto',
-    };
+    this.state = {};
   }
-
-  selectedPageRef = (ref) => {
-    if (!ref) {
-      return;
+  componentWillUpdate(nextProps) {
+    if (nextProps.children != this.props.children) {
+        this.setState({prevChildren: this.props.children});
+    }   
+  }
+  componentDidMount() {
+      this.animateContainer.addEventListener("animationend",(e) => {
+        if (this.props.animateDirection === 'left') {
+          this.animateContainer.classList.remove(styles.containerNavigationNestedLeftAnimate);    
+          this.animateContainer.classList.add(styles.containerNavigationNestedLeftAnimateEnd)
+        } else {
+          this.animateContainer.classList.remove(styles.containerNavigationNestedRightAnimate);    
+          this.animateContainer.classList.add(styles.containerNavigationNestedRightAnimateEnd)
+        }        
+      });
+  }
+  componentDidUpdate() {
+    this.animateContainer.className = styles.containerNavigationNested;
+    // handle left animation  
+    if (this.props.animateDirection === 'left') {
+        this.animateContainer.classList.add(styles.containerNavigationNestedLeftAnimate);
     }
-    this.setState({
-      height: ref.offsetHeight,
-    });
+    // handle right animation
+    if (this.props.animateDirection === 'right') {
+        this.animateContainer.classList.add(styles.containerNavigationNestedRightAnimate);
+    }
   }
-
   render() {
-    const { pages } = this.props;
-    const selectedIndex = Math.min(pages.length - 1, Math.max(0, this.props.selectedIndex));
-    return (
-      <div
-        style={{
-          transform: `translateX(calc(${-selectedIndex * 100}% + ${-selectedIndex * containerNavigationNestedPageSpacing}px))`,
-          height: this.state.height,
-        }}
-        className={styles.containerNavigationNested}
-      >
-        {wrapPages(pages, selectedIndex, this.selectedPageRef)}
-      </div>
-    );
+    const { pages, children } = this.props;
+    const { prevChildren } = this.state;
+    const activePane = <div key='active-pane' className={styles.pageWrapper}>{children}</div>
+    const prevPane = <div key='prev-pane' className={styles.pageWrapper}>{prevChildren}</div>
+    const content = this.props.animateDirection === 'left' ? [prevPane, activePane] : [activePane, prevPane];
+    return <div className={styles.containerNavigationNested} ref={(el) => {this.animateContainer = el}}>{content}</div>
   }
 }

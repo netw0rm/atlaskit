@@ -6,4 +6,4 @@ interface Props {
 
 interface State {}
 
-export default class Group extends Component<Props, State> {};
+export default class Group extends Component<Props, State> {}

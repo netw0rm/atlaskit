@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import { HyperlinkState } from '../../../src/plugins/hyperlink';
 import OpenIcon from 'ak-icon/glyph/editor/open';
 import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
-import IconButton from '../ToolbarIconButton';
+import ToolbarButton from '../ToolbarButton';
 import Panel from '../Panel';
 import PanelTextInput from '../PanelTextInput';
 import * as styles from './styles';
@@ -48,19 +48,21 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
         <Panel target={target} align="left" autoPosition>
           <div className={styles.container}>
             {!showOpenButton ? null :
-            <IconButton
+            <ToolbarButton
               href={href}
               target="_blank"
               theme="dark"
-              icon={<OpenIcon label="Open" />}
-            />
+            >
+              <OpenIcon label="Open" />
+            </ToolbarButton>
             }
             {!showUnlinkButton ? null :
-            <IconButton
+            <ToolbarButton
               theme="dark"
               onClick={this.handleUnlink}
-              icon={<UnlinkIcon label="Unlink" />}
-            />
+            >
+              <UnlinkIcon label="Unlink" />
+            </ToolbarButton>
             }
             {!showSeparator ? null :
             <span className={styles.seperator} />

@@ -160,7 +160,7 @@ export function coerce(content: BuilderContent[], schema: Schema) {
     .map(item => typeof item === 'string'
       ? text(item, schema)
       : item) as (RefsContentItem | RefsContentItem[])[];
-  return sequence(...flatten(refsContent));
+  return sequence(...flatten<RefsContentItem>(refsContent));
 }
 
 /**
@@ -219,4 +219,4 @@ export const mono = markFactory(schema.marks.mono, {});
 export const strike = markFactory(schema.marks.strike, {});
 export const a = (attrs: { href: string, title?: string }) => markFactory(schema.marks.link, attrs);
 export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
-export const slice = (...content: BuilderContent[]) => new Slice(new Fragment(flatten<BuilderContent>(content)), 0, 0);
+export const slice = (...content: BuilderContent[]) => new Slice(Fragment.from(coerce(content, schema).nodes), 0, 0);

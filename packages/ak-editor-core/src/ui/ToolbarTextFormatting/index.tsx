@@ -5,7 +5,7 @@ import ItalicIcon from 'ak-icon/glyph/editor/italic';
 import UnderlineIcon from 'ak-icon/glyph/editor/underline';
 import CodeIcon from 'ak-icon/glyph/editor/code';
 import { TextFormattingState } from '../../../src/plugins/text-formatting';
-import IconButton from '../ToolbarIconButton';
+import ToolbarButton from '../ToolbarButton';
 import { analyticsDecorator as analytics } from '../../analytics';
 
 export interface Props {
@@ -39,30 +39,33 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
     return (
       <span>
         {this.state.boldHidden ? null :
-        <IconButton
+        <ToolbarButton
           onClick={this.handleBoldClick}
           selected={this.state.boldActive}
           disabled={this.state.boldDisabled}
-          icon={<BoldIcon label="Bold" />}
-        />
+        >
+          <BoldIcon label="Bold" />
+        </ToolbarButton>
         }
 
         {this.state.italicHidden ? null :
-        <IconButton
+        <ToolbarButton
           onClick={this.handleItalicClick}
           selected={this.state.italicActive}
           disabled={this.state.italicDisabled}
-          icon={<ItalicIcon label="Italic" />}
-        />
+        >
+          <ItalicIcon label="Italic" />
+        </ToolbarButton>
         }
 
         {this.state.underlineHidden ? null :
-        <IconButton
+        <ToolbarButton
           onClick={this.handleUnderlineClick}
           selected={this.state.underlineActive}
           disabled={this.state.underlineDisabled}
-          icon={<UnderlineIcon label="Underline" />}
-        />
+        >
+          <UnderlineIcon label="Underline" />
+        </ToolbarButton>
         }
       </span>
     );

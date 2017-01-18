@@ -3,7 +3,6 @@ import React from 'react';
 import chaiAsPromised from 'chai-as-promised';
 import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
-import keyCode from 'keycode';
 
 import { name } from '../package.json';
 import { locals as styles } from '../src/styles.less';
@@ -113,12 +112,12 @@ describe(name, () => {
       });
 
       it('should be activated when enter is pressed', () => {
-        wrapper.simulate('keyDown', { keyCode: keyCode('enter') });
+        wrapper.simulate('keyPress', { key: 'Enter' });
         expect(onActivate.calledOnce).to.be.true;
       });
 
       it('should be activated when space is pressed', () => {
-        wrapper.simulate('keyDown', { keyCode: keyCode('space') });
+        wrapper.simulate('keyPress', { key: ' ' });
         expect(onActivate.calledOnce).to.be.true;
       });
 
@@ -131,25 +130,10 @@ describe(name, () => {
         const disabledWrapper =
           mount(<Item onActivate={onActivate} isDisabled />).find(`.${styles.item}`);
         disabledWrapper.simulate('click');
-        disabledWrapper.simulate('keyDown', { keyCode: keyCode('enter') });
-        disabledWrapper.simulate('keyDown', { keyCode: keyCode('space') });
+        disabledWrapper.simulate('keyPress', { key: 'Enter' });
+        disabledWrapper.simulate('keyPress', { key: ' ' });
         expect(onActivate.called).to.be.false;
       });
-    });
-
-    it('should call onKeyDown when a key other than space and enter is pressed', () => {
-      const wrapper = mount(<Item onKeyDown={onActivate} />).find(`.${styles.item}`);
-      wrapper.simulate('keyDown', { keyCode: keyCode('up') });
-      wrapper.simulate('keyDown', { keyCode: keyCode('down') });
-      wrapper.simulate('keyDown', { keyCode: keyCode('tab') });
-      expect(onActivate.calledThrice).to.be.true;
-    });
-
-    it('should not call onKeyDown when space and enter is pressed', () => {
-      const wrapper = mount(<Item onKeyDown={onActivate} />).find(`.${styles.item}`);
-      wrapper.simulate('keyDown', { keyCode: keyCode('space') });
-      wrapper.simulate('keyDown', { keyCode: keyCode('enter') });
-      expect(onActivate.called).to.be.false;
     });
   });
 

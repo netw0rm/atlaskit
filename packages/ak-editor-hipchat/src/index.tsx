@@ -139,9 +139,10 @@ export default class Editor extends PureComponent<Props, State> {
       }
     }), -10);
 
-    if (props.maxContentSize) {
+    const { maxContentSize } = props;
+    if (maxContentSize) {
       pm.on.transform.add((tr) => {
-        if (tr.doc.nodeSize > props.maxContentSize) {
+        if (tr.doc.nodeSize > maxContentSize) {
           const doc = tr.docs[0] as DocNode;
           pm.setDoc(doc, new TextSelection(doc.resolve(doc.nodeSize - 3)));
         }
@@ -153,7 +154,7 @@ export default class Editor extends PureComponent<Props, State> {
     this.setState({ pm });
   }
 
-  private handleChange = (evt) => {
+  private handleChange = () => {
     const { onChange } = this.props;
     if (onChange) {
       if (debounced) {

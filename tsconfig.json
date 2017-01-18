@@ -7,7 +7,6 @@
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,
-    "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "es5",
@@ -36,7 +35,6 @@
   "files": [
     "build/types/node.d.ts",
     "build/types/popper.d.ts",
-    "build/types/raw-loader.d.ts",
-    "build/types/shadow-dom.d.ts"
+    "build/types/raw-loader.d.ts"
   ]
 }

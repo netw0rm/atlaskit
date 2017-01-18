@@ -29,6 +29,7 @@
     "akutil-polyfills": "^5.0.1",
     "akutil-shared-styles": "^37.0.0",
     "autoprefixer": "^6.5.0",
+    "babel-cli": "^6.18.0",
     "babel-core": "^6.17.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-incremental-dom": "^3.4.0",
@@ -100,7 +101,7 @@
     "ts-loader": "^1.2.2",
     "tslint": "^4.0.2",
     "tslint-react": "^2.2.0",
-    "typescript": "^2.1.4",
+    "typescript": "2.2.0-dev.20170117",
     "url-loader": "^0.5.7",
     "validate-commit-message": "^3.0.1",
     "wait-on": "^2.0.0",
@@ -182,7 +183,8 @@
     "validate": "npm ls >/dev/null && ./node_modules/.bin/lerna exec -- npm ls >/dev/null",
     "validate/lint-changed": "./build/bin/lint-changed.sh",
     "validate/lint-changed/fix": "./build/bin/lint-changed-fix.sh",
-    "validate/package.json": "pjv -q && ./node_modules/.bin/lerna exec -- pjv -q"
+    "validate/package.json": "pjv -q && ./node_modules/.bin/lerna exec -- pjv -q",
+    "validate/typescript": "tsc -p . --noEmit"
   },
   "devDependencies": {}
 }

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
 import {
   a, blockquote, chaiPlugin, code_block, doc, em, h1, h2,
-  h3, hr, img, li, makeEditor, mono, ol, p, strong, ul
+  h3, hr, img, li, makeEditor, mono, ol, p, strike, strong, ul
 } from '../../../test-helper';
 
 chai.use(chaiPlugin);
@@ -63,6 +63,15 @@ describe('markdown-inputrules', () => {
 
       pm.input.insertText(sel, sel, '*italic*');
       expect(pm.doc).to.deep.equal(doc(p(strong('This is bold '), em(strong('italic')))));
+    });
+  });
+
+  describe('stike rule', () => {
+    it('should convert "~~text~~" to strike', () => {
+      const { pm, sel } = editor(doc(p('{<>}')));
+
+      pm.input.insertText(sel, sel, '~~text~~');
+      expect(pm.doc).to.deep.equal(doc(p(strike('text'))));
     });
   });
 
@@ -205,7 +214,7 @@ describe('markdown-inputrules', () => {
   });
 
   describe('ordered list rule', () => {
-    it('should convert "[number]. " to a ordered list item' , () => {
+    it('should convert "[number]. " to a ordered list item', () => {
       const { pm, sel } = editor(doc(p('{<>}')));
 
       pm.input.insertText(sel, sel, '1. ');

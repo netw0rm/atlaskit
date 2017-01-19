@@ -158,6 +158,31 @@ describe('ak-inline-edit', () => {
       expect(fieldBase).to.have.prop('label', 'test');
       expect(fieldBase).to.have.prop('isLabelHidden', true);
     });
+
+    it('it should not call onClick if is read only', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(
+        <InlineEdit
+          {...defaultProps}
+          label="test"
+          onEditRequested={spy}
+          editView={undefined}
+        />
+      );
+      const label = wrapper.find(Label);
+      /**
+       * We cannot use simulate here since the node that has the event handler is inside Label.
+       *
+       * Otherwise we will be exposing implementation details from FieldBase and also
+       * we would be coupling this test to the current structure of FieldBase.
+       *
+       * So instead, we find the first node inside Label that has `onClick` and that it's not
+       * the Label itself, and then we simulate the event on that node.
+       **/
+      const onClickNode = label.findWhere(n => n.prop('onClick') && n.find(Label).isEmpty()).at(0);
+      onClickNode.simulate('click');
+      expect(spy).to.not.have.been.called;
+    });
   });
 
   describe('isWaiting', () => {

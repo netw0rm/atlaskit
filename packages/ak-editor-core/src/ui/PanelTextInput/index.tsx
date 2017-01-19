@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormEvent, KeyboardEvent, PureComponent } from 'react';
+import { KeyboardEvent, PureComponent } from 'react';
 import * as styles from './styles';
 
 export interface Props {
@@ -33,7 +33,7 @@ export default class PanelTextInput extends PureComponent<Props, State> {
   }
 
   render() {
-    const { defaultValue, placeholder } = this.props;
+    const { placeholder } = this.props;
     const { value } = this.state;
     return (
       <input
@@ -42,7 +42,7 @@ export default class PanelTextInput extends PureComponent<Props, State> {
         placeholder={placeholder}
         value={value}
         onChange={this.handleChange}
-        onKeyUp={this.handleKeyup}
+        onKeyDown={this.handleKeydown}
         ref={this.handleRef}
       />
     );
@@ -68,8 +68,9 @@ export default class PanelTextInput extends PureComponent<Props, State> {
     }
   }
 
-  private handleKeyup = (e: KeyboardEvent<any>) => {
+  private handleKeydown = (e: KeyboardEvent<any>) => {
     if (e.keyCode === 13 && this.props.onSubmit) {
+      e.preventDefault(); // Prevent from submiting if an editor is inside a form.
       this.props.onSubmit(this.input!.value);
     } else if (e.keyCode === 27 && this.props.onCancel) {
       this.props.onCancel();

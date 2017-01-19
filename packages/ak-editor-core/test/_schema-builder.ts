@@ -1,24 +1,24 @@
-import { nodeFactory, markFactory } from '../test-helper';
 import {
-  DocNodeType,
   BlockQuoteNodeType,
-  ImageNodeType,
-  ParagraphNodeType,
-  Text,
-  LinkMarkType,
   BulletListNodeType,
-  HeadingNodeType,
-  ListItemNodeType,
-  OrderedListNodeType,
-  HorizontalRuleNodeType,
+  DocNodeType,
   EmMarkType,
+  HeadingNodeType,
+  HorizontalRuleNodeType,
+  ImageNodeType,
+  LinkMarkType,
+  ListItemNodeType,
   MonoMarkType,
+  OrderedListNodeType,
+  ParagraphNodeType,
+  Schema,
   StrikeMarkType,
   StrongMarkType,
   SubSupMarkType,
-  UnderlineMarkType,
-  Schema
+  Text,
+  UnderlineMarkType
 } from '../src';
+import { markFactory, nodeFactory } from '../test-helper';
 
 export const schema = new Schema({
   nodes: {
@@ -66,6 +66,7 @@ export const p = nodeFactory(schema.nodes.paragraph);
 export const ul = nodeFactory(schema.nodes.bullet_list);
 export const blockquote = nodeFactory(schema.nodes.blockquote);
 
+// tslint:disable-next-line:variable-name
 export const horizontal_rule = nodeFactory(schema.nodes.horizontal_rule);
 
 export const plain = nodeFactory(schema.nodes.plain);

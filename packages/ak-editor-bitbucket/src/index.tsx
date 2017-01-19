@@ -1,34 +1,33 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
 import {
-  ProseMirror,
-  Schema,
-  Node,
+  AnalyticsHandler,
+  analyticsService,
+  BlockTypePlugin,
+  Chrome,
+  CodeBlockPlugin,
+  ContextName,
+  DefaultInputRulesPlugin,
+  HorizontalRulePlugin,
+  HyperlinkPlugin,
+  ImageUploadPlugin,
   Keymap,
   ListsPlugin,
-  BlockTypePlugin,
-  CodeBlockPlugin,
-  DefaultInputRulesPlugin,
   MarkdownInputRulesPlugin,
-  HyperlinkPlugin,
-  TextFormattingPlugin,
-  HorizontalRulePlugin,
   MentionsPlugin,
-  ImageUploadPlugin,
-  Chrome,
-  AnalyticsHandler,
-  analyticsService
+  Node,
+  ProseMirror,
+  TextFormattingPlugin
 } from 'ak-editor-core';
+import * as React from 'react';
+import { PureComponent } from 'react';
 
-import schema from './schema';
 import markdownSerializer from './markdown-serializer';
-import { parseHtml, transformHtml } from './parse-html';
 import { MentionResource, MentionSource } from './mention-resource';
+import { parseHtml, transformHtml } from './parse-html';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
 export interface Props {
-  context?: 'comment' | 'pr';
+  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
@@ -125,7 +124,7 @@ export default class Editor extends PureComponent<Props, State> {
       throw new Error('Unable to set from HTML before the editor is initialized');
     }
 
-    pm.setDoc(parseHtml(html.trim()), null);
+    pm.setDoc(parseHtml(html.trim()));
   }
 
   /**
@@ -168,7 +167,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
         pluginStateImageUpload={pm && ImageUploadPlugin.get(pm)}
-        pluginStateMentions={pm && this.mentionsResourceProvider && MentionsPlugin.get(pm)}
+        pluginStateMentions={pm && this.mentionsResourceProvider && MentionsPlugin.get(pm)!}
         mentionsResourceProvider={this.mentionsResourceProvider}
       />
     );
@@ -197,7 +196,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { context, onChange } = this.props;
+      const { context } = this.props;
       const pm = new ProseMirror({
         place,
         doc: parseHtml(this.props.defaultValue || ''),

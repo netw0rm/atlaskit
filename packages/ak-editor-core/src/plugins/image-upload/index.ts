@@ -1,18 +1,15 @@
+import { analyticsService } from '../../analytics';
 import {
+  DOMFromPos,
+  NodeSelection,
   Plugin,
   ProseMirror,
-  UpdateScheduler,
-  ResolvedPos,
-  DOMFromPos,
-  Node,
-  NodeSelection,
   Schema,
   TextSelection
 } from '../../prosemirror';
 import { ImageNodeType } from '../../schema';
-import PasteAdapter from './paste-adapter';
 import DropAdapter from './drop-adapter';
-import { analyticsService } from '../../analytics';
+import PasteAdapter from './paste-adapter';
 
 export interface ImageUploadPluginOptions {
   defaultHandlersEnabled?: boolean;
@@ -133,8 +130,6 @@ export class ImageUploadState {
   }
 
   private update(): void {
-    const { pm } = this;
-    const { $from, empty } = pm.selection;
     let dirty = false;
 
     const newActive = this.isImageSelected();
@@ -167,10 +162,10 @@ export class ImageUploadState {
     const { node, offset } = DOMFromPos(this.pm, $from.pos, true);
 
     if (node.childNodes.length === 0) {
-      return node.parentNode;
+      return node.parentElement!;
     }
 
-    return node.childNodes[offset];
+    return node.childNodes[offset] as HTMLElement;
   }
 
   private canInsertImage(): boolean {
@@ -178,7 +173,7 @@ export class ImageUploadState {
     const { image } = pm.schema.nodes;
     const { $from, $to, empty } = pm.selection;
 
-    return image
+    return !!image
       && empty
       && $from.parent.canReplaceWith($from.parentOffset, $to.parentOffset, image);
   }

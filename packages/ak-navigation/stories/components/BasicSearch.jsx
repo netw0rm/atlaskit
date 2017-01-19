@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { AkSearch } from '../../src/index';
+import { AtlassianIcon, DashboardIcon } from 'ak-icon';
+import { AkSearch, AkContainerItem } from '../../src/index';
 
 const data = [
   {
@@ -65,6 +66,11 @@ const data = [
   },
 ];
 
+const icons = {
+  'CSI actors': (<AtlassianIcon label="CSI" />),
+  'Fictional swords': (<DashboardIcon label="CSI" />),
+};
+
 function contains(string, query) {
   return string.toLowerCase().indexOf(query.toLowerCase()) > -1;
 }
@@ -79,7 +85,9 @@ function search(query) {
       }))
     )
   ).reduce((a, b) => a.concat(b));
-  return results.map(({ item, group }) => `${item} – ${group}`).join(',');
+  return results.map(({ item, group }) => (
+    <AkContainerItem isCompact href="#foo" text={`${item} – ${group}`} icon={icons[group]} />
+  ));
 }
 
 export default class DemoSearch extends PureComponent {

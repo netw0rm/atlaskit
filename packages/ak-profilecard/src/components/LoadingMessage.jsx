@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import AKSpinner from 'ak-spinner';
+import AkSpinner from 'ak-spinner';
 
 import styles from 'style!../styles/profilecard-resourced.less';
 
@@ -11,7 +11,7 @@ export default class LoadingMessage extends PureComponent {
     return (
       <div className={styles.profilecardResourced}>
         <div className={styles.spinnerContainer}>
-          <AKSpinner />
+          <AkSpinner />
         </div>
       </div>
     );

@@ -44,10 +44,10 @@ export default class GlobalActions extends PureComponent {
         {primaryIcon ?
           <div className={styles.primaryItem}>
             <GlobalItem
-              size="medium"
               appearance={appearance}
-              linkComponent={linkComponent}
               href={primaryItemHref}
+              linkComponent={linkComponent}
+              size="medium"
             >
               {primaryIcon}
             </GlobalItem>

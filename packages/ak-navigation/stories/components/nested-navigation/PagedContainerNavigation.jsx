@@ -84,16 +84,16 @@ export default class PagedContainerNavigation extends PureComponent {
           selectedIndex={this.state.selectedIndex}
         />
         <a
-          style={!this.isPrevEnabled() ? disabledLinkStyles : enabledLinkStyles}
           href="#prev"
           onClick={this.goToPrev}
+          style={!this.isPrevEnabled() ? disabledLinkStyles : enabledLinkStyles}
         >
           <AkContainerItem icon={<ArrowleftIcon label="Previous" />} text="Previous" />
         </a>
         <a
-          style={!this.isNextEnabled() ? disabledLinkStyles : enabledLinkStyles}
           href="#next"
           onClick={this.goToNext}
+          style={!this.isNextEnabled() ? disabledLinkStyles : enabledLinkStyles}
         >
           <AkContainerItem icon={<ArrowrightIcon label="Next" />} text="Next" />
         </a>

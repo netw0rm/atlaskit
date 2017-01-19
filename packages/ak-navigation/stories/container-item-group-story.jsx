@@ -13,53 +13,53 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation>
         <AkContainerItem
-          isCompact
-          icon={<SearchIcon label="Search" />}
-          text="Search"
           href="#1"
+          icon={<SearchIcon label="Search" />}
+          isCompact
+          text="Search"
         />
         <AkContainerItemGroup
-          title="Rooms"
           action={
             <AkButton
-              spacing="none"
-              iconBefore={<EmojiCustomIcon size="small" />}
               appearance="subtle"
+              iconBefore={<EmojiCustomIcon size="small" />}
+              spacing="none"
             />
           }
+          title="Rooms"
         >
           <AkContainerItem
-            isCompact
-            icon={<HelpIcon label="Help" />}
-            text="Help"
             href="#1"
+            icon={<HelpIcon label="Help" />}
+            isCompact
+            text="Help"
           />
 
           <AkContainerItem
-            isCompact
-            icon={<CreateIcon label="Create" />}
-            text="Create"
             href="#2"
+            icon={<CreateIcon label="Create" />}
+            isCompact
+            text="Create"
           />
           <AkContainerItem
-            isCompact
-            icon={<DashboardIcon label="Dashboard" />}
-            text="Nucleus"
             href="#3"
+            icon={<DashboardIcon label="Dashboard" />}
+            isCompact
+            text="Nucleus"
           />
         </AkContainerItemGroup>
         <AkContainerItemGroup title="People">
           <AkContainerItem
-            isCompact
-            icon={<SettingsIcon label="Settings" />}
-            text="Settings"
             href="#4"
+            icon={<SettingsIcon label="Settings" />}
+            isCompact
+            text="Settings"
           />
           <AkContainerItem
-            isCompact
-            icon={<ProjectsIcon label="Projects" />}
-            text="Projects"
             href="#5"
+            icon={<ProjectsIcon label="Projects" />}
+            isCompact
+            text="Projects"
           />
         </AkContainerItemGroup>
       </BasicNavigation>

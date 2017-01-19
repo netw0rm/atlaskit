@@ -49,17 +49,17 @@ export default class ContainerNavigation extends PureComponent {
       appearance,
       areGlobalActionsVisible,
       children,
+      globalCreateIcon,
       globalPrimaryIcon,
       globalPrimaryItemHref,
+      globalSearchIcon,
       header,
       linkComponent,
       offsetX,
-      shouldAnimate,
-      width,
       onGlobalCreateActivate,
       onGlobalSearchActivate,
-      globalSearchIcon,
-      globalCreateIcon,
+      shouldAnimate,
+      width,
     } = this.props;
 
     const isWidthCollapsed = width <= containerClosedWidth;
@@ -71,12 +71,12 @@ export default class ContainerNavigation extends PureComponent {
         data-__ak-navigation-container-closed={isWidthCollapsed}
       >
         <Spacer
-          width={width + offsetX}
           shouldAnimate={shouldAnimate}
+          width={width + offsetX}
         />
         <div
-          style={this.getOuterStyles()}
           className={styles.containerNavigationOuter}
+          style={this.getOuterStyles()}
         >
           <div
             className={classNames(styles.containerNavigationInner, {
@@ -86,14 +86,14 @@ export default class ContainerNavigation extends PureComponent {
           >
             <GlobalActions
               appearance={appearance === 'global' ? 'global' : 'container'}
-              primaryIcon={globalPrimaryIcon}
-              primaryItemHref={globalPrimaryItemHref}
+              createIcon={globalCreateIcon}
+              isVisible={areGlobalActionsVisible}
               linkComponent={linkComponent}
               onCreateActivate={onGlobalCreateActivate}
               onSearchActivate={onGlobalSearchActivate}
+              primaryIcon={globalPrimaryIcon}
+              primaryItemHref={globalPrimaryItemHref}
               searchIcon={globalSearchIcon}
-              createIcon={globalCreateIcon}
-              isVisible={areGlobalActionsVisible}
             />
             <div>
               {header}

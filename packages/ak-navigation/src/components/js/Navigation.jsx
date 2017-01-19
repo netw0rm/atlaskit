@@ -149,14 +149,14 @@ export default class Navigation extends PureComponent {
           <div style={{ zIndex: isPartiallyCollapsed ? false : 1 }}>
             <GlobalNavigation
               accountItem={globalAccountItem}
+              createIcon={globalCreateIcon}
               helpItem={globalHelpItem}
               linkComponent={linkComponent}
+              onCreateActivate={onCreateDrawerTrigger}
+              onSearchActivate={onSearchDrawerTrigger}
               primaryIcon={globalPrimaryIcon}
               primaryItemHref={globalPrimaryItemHref}
               searchIcon={globalSearchIcon}
-              onSearchActivate={onSearchDrawerTrigger}
-              onCreateActivate={onCreateDrawerTrigger}
-              createIcon={globalCreateIcon}
               shouldAnimate={shouldAnimate}
             />
           </div>
@@ -186,17 +186,17 @@ export default class Navigation extends PureComponent {
             <ContainerNavigation
               appearance={containerAppearance}
               areGlobalActionsVisible={!isOpen && (this.state.resizeDelta <= 0)}
+              globalCreateIcon={globalCreateIcon}
               globalPrimaryIcon={globalPrimaryIcon}
+              globalPrimaryItemHref={globalPrimaryItemHref}
+              globalSearchIcon={globalSearchIcon}
               header={containerHeader}
               linkComponent={linkComponent}
               offsetX={Math.min(renderedWidth - (globalOpenWidth + containerClosedWidth), 0)}
-              shouldAnimate={shouldAnimate}
-              width={getContainerWidth(renderedWidth)}
-              globalPrimaryItemHref={globalPrimaryItemHref}
-              globalCreateIcon={globalCreateIcon}
-              globalSearchIcon={globalSearchIcon}
               onGlobalCreateActivate={onCreateDrawerTrigger}
               onGlobalSearchActivate={onSearchDrawerTrigger}
+              shouldAnimate={shouldAnimate}
+              width={getContainerWidth(renderedWidth)}
             >
               {children}
             </ContainerNavigation>

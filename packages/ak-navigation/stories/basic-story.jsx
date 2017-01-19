@@ -15,8 +15,8 @@ const manyContainerItems = () => {
   for (let i = 0; i < 20; i++) {
     items.push(
       <AkContainerItem
-        text="Test page"
         href="#1"
+        text="Test page"
       />
     );
   }
@@ -67,10 +67,10 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation>
         <AkContainerItem
-          icon={<img src={nucleus} alt="icon" />}
-          text="Nucleus"
           href="#1"
+          icon={<img alt="icon" src={nucleus} />}
           isSelected
+          text="Nucleus"
         />
       </BasicNavigation>
       <div>
@@ -84,14 +84,14 @@ storiesOf(name, module)
         containerAppearance="global"
         containerHeader={
           <AkContainerLogo>
-            <img src={bitbucketLogo} alt="Bitbucket logo" />
+            <img alt="Bitbucket logo" src={bitbucketLogo} />
           </AkContainerLogo>
         }
       >
         <AkContainerItem
-          isSelected
           appearance="global"
           icon={<DashboardIcon label="Dashboard" />}
+          isSelected
           text="Selected"
           textAfter={<RandomBadge theme="dark" />}
         />
@@ -133,12 +133,12 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation isOpen={false}>
         <AkContainerItem
-          icon={<img src={nucleus} alt="icon" />}
-          text="This one is selected"
+          icon={<img alt="icon" src={nucleus} />}
           isSelected
+          text="This one is selected"
         />
         <AkContainerItem
-          icon={<img src={nucleus} alt="icon" />}
+          icon={<img alt="icon" src={nucleus} />}
           text="This one is not selected"
         />
       </BasicNavigation>

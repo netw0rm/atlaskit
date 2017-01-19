@@ -59,7 +59,7 @@ describe('ak-tooltip', () => {
       const wrapper = shallow(<Tooltip onMouseOver={spy} />);
 
       wrapper.simulate('mouseOver');
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     });
   });
 
@@ -69,7 +69,7 @@ describe('ak-tooltip', () => {
       const wrapper = shallow(<Tooltip onMouseOut={spy} />);
 
       wrapper.simulate('mouseOut');
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     });
   });
 });

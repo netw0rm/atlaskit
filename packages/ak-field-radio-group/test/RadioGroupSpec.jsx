@@ -90,7 +90,7 @@ describe(name, () => {
           const spy = sinon.spy();
           const wrapper = mount(<AkFieldRadioGroup onRadioChange={spy} items={sampleItems} />);
           wrapper.find(Radio).first().find('input').simulate('change');
-          expect(spy).to.have.been.calledOnce;
+          expect(spy.callCount).to.equal(1);
         });
       });
     });

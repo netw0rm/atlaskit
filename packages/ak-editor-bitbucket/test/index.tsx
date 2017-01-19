@@ -64,7 +64,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
     const editorWrapper = mount(<Editor onExpanded={spy}/>);
 
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.callCount).to.equal(1);
   });
 
   it('should call onExpanded after editor is expanded via .expand()', () => {
@@ -74,7 +74,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
 
     editor.expand();
 
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.callCount).to.equal(1);
   });
 });
 
@@ -118,7 +118,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
       .parent()
       .simulate('click');
 
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.callCount).to.equal(1);
     expect(spy).to.have.been.calledWith(undefined);
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
@@ -141,7 +141,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
 
     contentArea.dispatchEvent(event);
 
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.callCount).to.equal(1);
     expect(spy).to.have.been.calledWith(event);
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
@@ -167,7 +167,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
 
     dropElement.dispatchEvent(event);
 
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.callCount).to.equal(1);
     expect(spy).to.have.been.calledWith(event);
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });

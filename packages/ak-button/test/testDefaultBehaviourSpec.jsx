@@ -81,14 +81,14 @@ describe('ak-button/default-behaviour', () => {
     const spy = sinon.spy();
     const wrapper = mount(<Button href="test" onClick={spy}>button</Button>);
     wrapper.find('a').simulate('click');
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.callCount).to.equal(1);
   });
 
   it('should call onClick handler when button is clicked', () => {
     const spy = sinon.spy();
     const wrapper = mount(<Button onClick={spy}>button</Button>);
     wrapper.find('button').simulate('click');
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.callCount).to.equal(1);
   });
 
   it('should render tabIndex attribute when the tabIndex property is set', () => {

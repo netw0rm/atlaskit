@@ -30,7 +30,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
     expect(handler).to.not.have.been.called;
 
     mount(<Editor analyticsHandler={handler} />).find('ChromeCollapsed').simulate('focus');
-    expect(handler).to.have.been.calledOnce;
+    expect(handler.callCount).to.equal(1);
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
   });
 
@@ -60,7 +60,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
     analyticsService.handler = handler;
 
     mount(<Editor analyticsHandler={handler} isExpandedByDefault />).unmount();
-    expect(handler).to.have.been.calledOnce;
+    expect(handler.callCount).to.equal(1);
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
   });
 });
@@ -72,7 +72,7 @@ describe('ak-editor-bitbucket/analytics/analyticsHandler', () => {
     expect(handler).to.not.have.been.called;
 
     mount(<Editor analyticsHandler={handler} />).find('ChromeCollapsed').simulate('focus');
-    expect(handler).to.have.been.calledOnce;
+    expect(handler.callCount).to.equal(1);
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
   });
 });

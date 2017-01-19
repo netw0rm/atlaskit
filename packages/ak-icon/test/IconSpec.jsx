@@ -86,7 +86,7 @@ describe(name, () => {
         expect(wrapper.prop('onClick')).to.equal(handler);
 
         wrapper.find(`.${styles.locals.iconBody}`).simulate('click');
-        expect(handler).to.have.been.calledOnce;
+        expect(handler.callCount).to.equal(1);
       });
     });
   });

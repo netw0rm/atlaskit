@@ -49,7 +49,7 @@ describe('ak-spinner', () => {
       wrapper.find(`.${spinnerClass}`)
         .simulate('transitionEnd', { propertyName: 'stroke-dashoffset' });
 
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should not be called if isCompleting is not set', () => {

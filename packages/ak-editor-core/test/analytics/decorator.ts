@@ -35,7 +35,7 @@ describe('analytics decorator', () => {
 
     instance.foo();
     expect(spy).to.have.been.calledWith('test.event');
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.callCount).to.equal(1);
 
     instance.foo();
     expect(spy).to.have.been.calledTwice;
@@ -56,7 +56,7 @@ describe('analytics decorator', () => {
 
     instance.foo();
     expect(spy).to.have.been.calledWith('test.event.foo');
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.callCount).to.equal(1);
 
     instance.bar();
     expect(spy).to.have.been.calledTwice;

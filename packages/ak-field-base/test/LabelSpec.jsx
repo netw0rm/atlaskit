@@ -57,7 +57,7 @@ describe('ak-field-base', () =>
         const handler = sinon.spy();
         const wrapper = shallow(<Label {...defaultProps} onClick={handler} />);
         wrapper.find('span').simulate('click');
-        expect(handler).to.have.been.calledOnce;
+        expect(handler.callCount).to.equal(1);
       })
     );
 

@@ -61,14 +61,14 @@ describe.skip('ak-tag', () => {
       it('when the mouse is over', () => {
         const mouseoverEvent = new CustomEvent('mouseover');
         rootNode.dispatchEvent(mouseoverEvent);
-        expect(hoverSpy).to.have.been.calledOnce;
+        expect(hoverSpy.callCount).to.equal(1);
         expect(hoverSpy).to.have.been.calledWith(true);
       });
 
       it('when the mouse leaves', () => {
         const mouseoverEvent = new CustomEvent('mouseout');
         rootNode.dispatchEvent(mouseoverEvent);
-        expect(hoverSpy).to.have.been.calledOnce;
+        expect(hoverSpy.callCount).to.equal(1);
         expect(hoverSpy).to.have.been.calledWith(false);
       });
     });
@@ -79,7 +79,7 @@ describe.skip('ak-tag', () => {
         const preventDefaultSpy = sinon.spy(clickEvent, 'preventDefault');
         const stopPropagationSpy = sinon.spy(clickEvent, 'stopPropagation');
         rootNode.dispatchEvent(clickEvent);
-        expect(activationSpy).to.have.been.calledOnce;
+        expect(activationSpy.callCount).to.equal(1);
         expect(preventDefaultSpy).to.have.been.called;
         expect(stopPropagationSpy).to.have.been.called;
       });

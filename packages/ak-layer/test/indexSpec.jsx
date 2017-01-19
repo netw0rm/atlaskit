@@ -64,7 +64,7 @@ describe('ak-layer', () => {
       expect(wrapper.state('flipped')).to.be.false;
       wrapper.setState(state);
 
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
       expect(spy).to.have.been.calledWith(state);
     });
   });

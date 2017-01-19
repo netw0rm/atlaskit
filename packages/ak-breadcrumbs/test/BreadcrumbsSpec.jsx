@@ -87,7 +87,7 @@ describe(name, () => {
           it('calls the onExpand handler when the ellipsis is clicked', () => {
             const ellipsisItem = wrapper.find(EllipsisItem);
             ellipsisItem.simulate('click');
-            expect(expandSpy).to.have.been.calledOnce;
+            expect(expandSpy.callCount).to.equal(1);
           });
         });
 

@@ -101,7 +101,7 @@ describe('ak-inline-edit', () => {
         />
       );
       wrapper.find(FieldBase).simulate('click');
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should not be called when the edit view is clicked', () => {
@@ -128,7 +128,7 @@ describe('ak-inline-edit', () => {
         />
       );
       wrapper.find(ConfirmIcon).simulate('click');
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     })
   );
 
@@ -142,7 +142,7 @@ describe('ak-inline-edit', () => {
         />
       );
       wrapper.find(CancelIcon).simulate('click');
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     })
   );
 

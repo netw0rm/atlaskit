@@ -45,6 +45,7 @@ const getLanguageFromBitbucketStyle = (dom: HTMLElement): string | undefined => 
   const parent = dom.parentElement;
 
   if (parent && parent.classList.contains('codehilite')) {
+    // code block html from Bitbucket always contains an extra new line
     removeLastNewLine(dom);
     return extractLanguageFromClass(parent.className);
   }

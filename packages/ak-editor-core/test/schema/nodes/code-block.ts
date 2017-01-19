@@ -28,7 +28,7 @@ describe('ak-editor-core/schema code_block node', () => {
     }).to.not.throw(Error);
   });
 
-  describe('parse from editor encoded HTML', () => {
+  describe('parse from html', () => {
     const schema = new Schema({
       nodes: {
         doc: { type: DocNodeType, content: 'block+' },
@@ -37,7 +37,7 @@ describe('ak-editor-core/schema code_block node', () => {
       }
     });
 
-    context('parse from editor', () => {
+    context('parse from editor encoded HTML', () => {
       context('when language is not set', () => {
         it('converts to block code node', () => {
           const doc = fromHTML('<pre><span>window.alert("hello");<span></pre>', schema);

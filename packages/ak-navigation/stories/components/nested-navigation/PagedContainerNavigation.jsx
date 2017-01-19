@@ -32,7 +32,7 @@ export default class PagedContainerNavigation extends PureComponent {
         <Lorem count={1} />
       </div>,
       <div style={pageStyle}>
-        <h4>Page 4</h4>
+        <h4>Page 44</h4>
         <Lorem count={1} />
       </div>,
     ],
@@ -56,7 +56,7 @@ export default class PagedContainerNavigation extends PureComponent {
     const selectedIndex = Math.min(this.state.selectedIndex + 1, this.props.children.length - 1);
     this.setState({
       animationDirection: 'right',
-      selectedIndex
+      selectedIndex,
     });
   }
 
@@ -67,7 +67,7 @@ export default class PagedContainerNavigation extends PureComponent {
     const selectedIndex = Math.max(this.state.selectedIndex - 1, 0);
     this.setState({
       animationDirection: 'left',
-      selectedIndex
+      selectedIndex,
     });
   }
 

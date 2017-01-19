@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 
 import { browser } from '../../../src';
-import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, makeEditor, p } from '../../../test-helper';
+import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, makeEditor, mention, p } from '../../../test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
 
@@ -71,18 +71,27 @@ describe('block-type', () => {
     expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 
-  it('should be able to change to code block', () => {
-    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+  describe('code block', () => {
+    it('should be able to change to code block', () => {
+      const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
-    plugin.changeBlockType('codeblock');
-    expect(pm.doc).to.deep.equal(doc(code_block()('text')));
-  });
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('text')));
+    });
 
-  it('should be able to change to code block with multilines', () => {
-    const { pm, plugin } = editor(doc(p('line1{<>}', br, 'line2')));
+    it('should be able to change to code block with multilines', () => {
+      const { pm, plugin } = editor(doc(p('line1{<>}', br, 'line2')));
 
-    plugin.changeBlockType('codeblock');
-    expect(pm.doc).to.deep.equal(doc(code_block()('line1\nline2')));
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('line1\nline2')));
+    });
+
+    it('should be able to preserve mention text', () => {
+      const { pm, plugin } = editor(doc(p('hello ', mention({ id: '@bar', displayName: 'foo bar' }))));
+
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('hello foo bar')));
+    });
   });
 
   it('should be able to identify normal', () => {

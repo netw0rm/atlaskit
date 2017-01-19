@@ -1,6 +1,5 @@
-import { Schema, Text } from '../../../src';
-import * as chai from 'chai';
 import { expect } from 'chai';
+import { Schema, Text } from '../../../src';
 import { DocNodeType, HardBreakNodeType } from '../../../src';
 
 describe('ak-editor-core/schema hard_break node', () => {

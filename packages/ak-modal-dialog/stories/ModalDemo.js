@@ -4,8 +4,8 @@ import Lorem from 'react-lorem-component';
 import { action } from '@kadira/storybook';
 import ModalDialog from '../src';
 
-function doSomethingOnClick() {
-  action('the "onBlanketClicked" handler is fired')();
+function doSomethingOnDismiss() {
+  action('the "onDialogDismissed" handler is fired')();
 }
 
 export default class ModalDemo extends React.PureComponent {
@@ -27,7 +27,7 @@ export default class ModalDemo extends React.PureComponent {
         footer={
           footer || <Button appearance="primary">Create issue</Button>
         }
-        onBlanketClicked={doSomethingOnClick}
+        onDialogDismissed={doSomethingOnDismiss}
         {...this.props}
       >
         {children || <Lorem count="1" />}

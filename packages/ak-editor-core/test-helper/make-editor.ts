@@ -1,7 +1,7 @@
 import { Plugin, ProseMirror, Schema } from '../';
-import SyncPlugin from './sync-plugin';
-import { RefsNode } from './schema-builder';
 import { schema } from './schema';
+import { RefsNode } from './schema-builder';
+import SyncPlugin from './sync-plugin';
 
 export interface Options {
   doc: RefsNode;

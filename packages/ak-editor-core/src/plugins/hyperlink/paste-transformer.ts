@@ -1,4 +1,4 @@
-import { ProseMirror, Node, Mark, Slice, Fragment, Transform, isCodeBlockNode } from '../../';
+import { Fragment, isCodeBlockNode, Mark, Node, ProseMirror, Slice, Transform } from '../../';
 import { URL } from './regex';
 
 function applyLinkMarkerToNode(

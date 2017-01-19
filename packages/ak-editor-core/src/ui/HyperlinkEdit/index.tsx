@@ -1,11 +1,11 @@
+import OpenIcon from 'ak-icon/glyph/editor/open';
+import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { HyperlinkState } from '../../../src/plugins/hyperlink';
-import OpenIcon from 'ak-icon/glyph/editor/open';
-import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
-import ToolbarButton from '../ToolbarButton';
 import Panel from '../Panel';
 import PanelTextInput from '../PanelTextInput';
+import ToolbarButton from '../ToolbarButton';
 import * as styles from './styles';
 
 export interface Props {

@@ -1,13 +1,12 @@
-import { parse, encode } from '../src/html';
 import { Node } from 'ak-editor-core';
 import { chaiPlugin } from 'ak-editor-core/test-helper';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import { encode, parse } from '../src/html';
 import {
   br, doc, em, h1, h2, h3, h4, h5, h6, hr,
   li, mono, ol, p, strike, strong, sub, sup, u, ul
 } from './_schema-builder';
-import * as chai from 'chai';
-import { expect } from 'chai';
-import schema from '../src/schema';
 
 chai.use(chaiPlugin);
 
@@ -46,9 +45,6 @@ const checkBuilder = (fn: any, description: string, html: string, node: Node) =>
 
 const check = (description: string, html: string, node: Node) =>
   checkBuilder(it, description, html, node);
-
-const checkOnly = (description: string, html: string, node: Node) =>
-  checkBuilder(it.only, description, html, node);
 
 describe('ak-editor-jira html:', () => {
   describe('basic formatting:', () => {

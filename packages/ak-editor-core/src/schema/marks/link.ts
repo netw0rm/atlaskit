@@ -1,7 +1,7 @@
 import {
+  LinkMark as BaseLinkMark,
   Mark,
   Schema,
-  LinkMark as BaseLinkMark,
 } from '../../prosemirror';
 
 export class LinkMarkType extends BaseLinkMark {

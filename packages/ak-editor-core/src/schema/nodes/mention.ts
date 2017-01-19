@@ -1,10 +1,10 @@
-import { style } from 'typestyle';
 import {
   akColorB400,
   akColorN30,
   akColorN50,
 } from 'akutil-shared-styles';
-import { Inline, Attribute, Node, Schema } from '../../prosemirror';
+import { style } from 'typestyle';
+import { Attribute, Inline, Node, Schema } from '../../prosemirror';
 
 const mentionStyle = style({
   background: akColorN30,
@@ -13,7 +13,7 @@ const mentionStyle = style({
   padding: '0 4px',
   userSelect: 'all',
 
-  $nest:{
+  $nest: {
     '&.ProseMirror-selectednode': {
       background: akColorN50,
       outline: 'none'
@@ -47,7 +47,7 @@ export class MentionNodeType extends Inline {
 
   toDOM(node: Node): [string, any, string] {
     const mentionNode = node as MentionNode;
-    let attrs = {
+    const attrs = {
       'class': mentionStyle,
       'mention-id': mentionNode.attrs.id,
       'contenteditable': 'false',

@@ -1,16 +1,15 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import {
+  BlockTypePlugin,
   Chrome,
   ContextName,
-  ProseMirror,
-  Schema,
-  Node,
-  ListsPlugin,
-  BlockTypePlugin,
   HyperlinkPlugin,
-  TextFormattingPlugin,
-  MentionsPlugin
+  ListsPlugin,
+  MentionsPlugin,
+  Node,
+  ProseMirror,
+  TextFormattingPlugin
 } from '../../';
 import schema from './schema';
 
@@ -73,7 +72,6 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   get value(): string | undefined {
-    const { pm } = this.state;
     return this.props.defaultValue;
   }
 
@@ -129,7 +127,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { context, onChange } = this.props;
+      const { context } = this.props;
       const pm = new ProseMirror({
         place,
         doc: schema.nodes.doc.createAndFill(),

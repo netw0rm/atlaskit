@@ -1,17 +1,17 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import Editor from '../src';
 
-const CancelAction = () => action('Cancel')();
-const SaveAction = () => action('Save')();
+const CANCEL_ACTION = () => action('Cancel')();
+const SAVE_ACTION = () => action('Save')();
 
 storiesOf('ak-editor-jira', module)
   .add('Empty', () =>
     <div style={{ padding: 20 }}>
       <Editor
-        onCancel={CancelAction}
-        onSave={SaveAction}
+        onCancel={CANCEL_ACTION}
+        onSave={SAVE_ACTION}
       />
     </div>
   )
@@ -25,9 +25,9 @@ storiesOf('ak-editor-jira', module)
         return (
           <div>
             <Editor
-              onCancel={CancelAction}
+              onCancel={CANCEL_ACTION}
               onChange={this.updateHTML}
-              onSave={SaveAction}
+              onSave={SAVE_ACTION}
             />
             <fieldset style={{ marginTop: 20 }}>
               <legend>HTML</legend>

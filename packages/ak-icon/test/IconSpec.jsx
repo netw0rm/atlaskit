@@ -22,9 +22,9 @@ describe(name, () => {
 
     describe('exports', () => {
       it('exports the React component, NotImplementedError, and size', () => {
-        expect(Icon).to.not.be.undefined;
-        expect(NotImplementedError).to.not.be.undefined;
-        expect(size).to.not.be.undefined;
+        expect(Icon).to.not.equal(undefined);
+        expect(NotImplementedError).to.not.equal(undefined);
+        expect(size).to.not.equal(undefined);
 
         expect(new Icon({ label: 'My icon' })).to.be.instanceOf(PureComponent);
         expect(NotImplementedError).to.be.an.error;
@@ -39,7 +39,7 @@ describe(name, () => {
       } catch (e) {
         error = e;
       }
-      expect(error).to.not.be.undefined;
+      expect(error).to.not.equal(undefined);
       expect(error).to.be.instanceof(NotImplementedError);
     });
 

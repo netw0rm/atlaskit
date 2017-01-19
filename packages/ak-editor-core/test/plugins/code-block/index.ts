@@ -255,7 +255,7 @@ describe('code-block', () => {
       it('returns undefined', () => {
         const { plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock')));
 
-        expect(plugin.element).to.be.undefined;
+        expect(plugin.element).to.equal(undefined);
       });
     });
   });

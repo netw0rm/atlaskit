@@ -246,7 +246,7 @@ describe(name, () => {
         const stateItems = wrapper.state('items');
         handler({ item: item1 });
         expect(stateItems[0].items[0].isChecked).to.be.true;
-        expect(stateItems[0].items[1].isChecked).to.be.undefined;
+        expect(stateItems[0].items[1].isChecked).to.equal(undefined);
         handler({ item: item2 });
         expect(stateItems[0].items[0].isChecked).to.be.true;
         expect(stateItems[0].items[1].isChecked).to.be.true;

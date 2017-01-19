@@ -30,37 +30,37 @@ describe('<ContainerNavigationNested />', () => {
   });
 
   describe('render', () => {
-    it('should have new pane first if animationDir is right', () => {
+    it('should have new pane first if animationDirection is right', () => {
       const initPane = <h1>Previous Pane</h1>;
       const component = mount(<ContainerNavigationNested>{initPane}</ContainerNavigationNested>);
       const newPane = <h1>New Pane</h1>;
-      component.setProps({ children: newPane, animateDirection: 'right' });
+      component.setProps({ children: newPane, animationDirection: 'right' });
       expect(component.children().at(0).contains(newPane)).to.equal(true);
       expect(component.children().at(1).contains(initPane)).to.equal(true);
     });
 
-    it('should have init pane first if animationDir is left', () => {
+    it('should have init pane first if animationDirection is left', () => {
       const initPane = <h1>Previous Pane</h1>;
       const component = mount(<ContainerNavigationNested>{initPane}</ContainerNavigationNested>);
       const newPane = <h1>New Pane</h1>;
-      component.setProps({ children: newPane, animateDirection: 'left' });
+      component.setProps({ children: newPane, animationDirection: 'left' });
       expect(component.children().at(0).contains(initPane)).to.equal(true);
       expect(component.children().at(1).contains(newPane)).to.equal(true);
     });
 
-    it('should have left animation class if animationDir is left', () => {
+    it('should have left animation class if animationDirection is left', () => {
       const initPane = <h1>Previous Pane</h1>;
       const component = mount(<ContainerNavigationNested>{initPane}</ContainerNavigationNested>);
       const newPane = <h1>New Pane</h1>;
-      component.setProps({ children: newPane, animateDirection: 'left' });
+      component.setProps({ children: newPane, animationDirection: 'left' });
       expect(component.find('div').first().hasClass(styles.containerNavigationNestedLeftAnimate)).to.equal(true);
     });
 
-    it('should have left animation class if animationDir is right', () => {
+    it('should have left animation class if animationDirection is right', () => {
       const initPane = <h1>Previous Pane</h1>;
       const component = mount(<ContainerNavigationNested>{initPane}</ContainerNavigationNested>);
       const newPane = <h1>New Pane</h1>;
-      component.setProps({ children: newPane, animateDirection: 'right' });
+      component.setProps({ children: newPane, animationDirection: 'right' });
       expect(component.find('div').first().hasClass(styles.containerNavigationNestedRightAnimate)).to.equal(true);
     });
   });

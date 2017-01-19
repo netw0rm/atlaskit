@@ -4,7 +4,7 @@ import styles from 'style!../less/ContainerNavigationNested.less';
 export default class ContainerNavigationNested extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    animateDirection: PropTypes.string,
+    animationDirection: PropTypes.oneOf(['left', 'right']),
   }
   constructor(props) {
     super(props);
@@ -12,7 +12,7 @@ export default class ContainerNavigationNested extends PureComponent {
   }
   componentDidMount() {
     this.animateContainer.addEventListener('animationend', () => {
-      if (this.props.animateDirection === 'left') {
+      if (this.props.animationDirection === 'left') {
         this.animateContainer.classList.remove(styles.containerNavigationNestedLeftAnimate);
         this.animateContainer.classList.add(styles.containerNavigationNestedLeftAnimateEnd);
       } else {
@@ -29,11 +29,11 @@ export default class ContainerNavigationNested extends PureComponent {
   componentDidUpdate() {
     this.animateContainer.className = styles.containerNavigationNested;
     // handle left animation
-    if (this.props.animateDirection === 'left') {
+    if (this.props.animationDirection === 'left') {
       this.animateContainer.classList.add(styles.containerNavigationNestedLeftAnimate);
     }
     // handle right animation
-    if (this.props.animateDirection === 'right') {
+    if (this.props.animationDirection === 'right') {
       this.animateContainer.classList.add(styles.containerNavigationNestedRightAnimate);
     }
   }
@@ -42,7 +42,7 @@ export default class ContainerNavigationNested extends PureComponent {
     const { prevChildren } = this.state;
     const activePane = <div key="active-pane" className={styles.pageWrapper}>{children}</div>;
     const prevPane = <div key="prev-pane" className={styles.pageWrapper}>{prevChildren}</div>;
-    const content = this.props.animateDirection === 'left' ? [prevPane, activePane] : [activePane, prevPane];
+    const content = this.props.animationDirection === 'left' ? [prevPane, activePane] : [activePane, prevPane];
     return (<div
       className={styles.containerNavigationNested}
       ref={(el) => { this.animateContainer = el; }}

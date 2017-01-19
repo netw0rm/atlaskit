@@ -14,11 +14,10 @@ const manyContainerItems = () => {
   const items = [];
   for (let i = 0; i < 20; i++) {
     items.push(
-      <a href="#1" key={i}>
-        <AkContainerItem
-          text="Test page"
-        />
-      </a>
+      <AkContainerItem
+        text="Test page"
+        href="#1"
+      />
     );
   }
   return items;
@@ -28,23 +27,20 @@ storiesOf(name, module)
   .add('with a few container items', () => (
     <Page>
       <BasicNavigation>
-        <a href="#1">
-          <AkContainerItem
-            text="Test page"
-          />
-        </a>
-        <a href="#2">
-          <AkContainerItem
-            icon={<img src={nucleus} alt="icon" />}
-            text="Item with an icon"
-          />
-        </a>
-        <a href="#3">
-          <AkContainerItem
-            icon={<img src={nucleus} alt="icon" />}
-            text="A really, really, quite long, actually super long container name"
-          />
-        </a>
+        <AkContainerItem
+          text="Test page"
+          href="#1"
+        />
+        <AkContainerItem
+          icon={<img src={nucleus} alt="icon" />}
+          text="Item with an icon"
+          href="#2"
+        />
+        <AkContainerItem
+          icon={<img src={nucleus} alt="icon" />}
+          text="A really, really, quite long, actually super long container name"
+          href="#3"
+        />
       </BasicNavigation>
       <div>
         <Lorem count="30" />
@@ -54,13 +50,12 @@ storiesOf(name, module)
   .add('with many container items', () => (
     <Page>
       <BasicNavigation>
-        <a href="#1">
-          <AkContainerItem
-            icon={<img src={nucleus} alt="icon" />}
-            text="This one is selected"
-            isSelected
-          />
-        </a>
+        <AkContainerItem
+          icon={<img src={nucleus} alt="icon" />}
+          text="This one is selected"
+          href="#1"
+          isSelected
+        />
         {manyContainerItems()}
       </BasicNavigation>
       <div>
@@ -71,13 +66,12 @@ storiesOf(name, module)
   .add('with a selected item', () => (
     <Page>
       <BasicNavigation>
-        <a href="#1">
-          <AkContainerItem
-            icon={<img src={nucleus} alt="icon" />}
-            text="Nucleus"
-            isSelected
-          />
-        </a>
+        <AkContainerItem
+          icon={<img src={nucleus} alt="icon" />}
+          text="Nucleus"
+          href="#1"
+          isSelected
+        />
       </BasicNavigation>
       <div>
         <Lorem count="30" />

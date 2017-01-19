@@ -10,6 +10,13 @@ const pageStyle = {
 const disabledLinkStyles = {
   color: 'grey',
   cursor: 'default',
+  textDecoration: 'none',
+};
+
+const enabledLinkStyles = {
+  color: 'inherit',
+  cursor: 'default',
+  textDecoration: 'none',
 };
 
 export default class PagedContainerNavigation extends PureComponent {
@@ -77,14 +84,14 @@ export default class PagedContainerNavigation extends PureComponent {
           selectedIndex={this.state.selectedIndex}
         />
         <a
-          style={!this.isPrevEnabled() ? disabledLinkStyles : {}}
+          style={!this.isPrevEnabled() ? disabledLinkStyles : enabledLinkStyles}
           href="#prev"
           onClick={this.goToPrev}
         >
           <AkContainerItem icon={<ArrowleftIcon label="Previous" />} text="Previous" />
         </a>
         <a
-          style={!this.isNextEnabled() ? disabledLinkStyles : {}}
+          style={!this.isNextEnabled() ? disabledLinkStyles : enabledLinkStyles}
           href="#next"
           onClick={this.goToNext}
         >

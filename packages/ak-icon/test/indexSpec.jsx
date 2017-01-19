@@ -141,7 +141,7 @@ describe(name, () => {
               .map(x => iconNameToComponentName(x)));
 
         bundleKeys.forEach((key) => {
-          expect(bundle[key]).to.be.a.function;
+          expect(typeof bundle[key]).to.equal('function');
         });
       });
     });

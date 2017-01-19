@@ -43,7 +43,7 @@ describe(name, () => {
       });
 
       it('should set up the onRadioChange prop for the AkFieldRadioGroup', () => {
-        expect(wrapper.find(AkFieldRadioGroup)).prop('onRadioChange').to.be.a.function;
+        expect(typeof wrapper.find(AkFieldRadioGroup)).prop('onRadioChange').to.equal('function');
       });
 
       it('should set up the initial state', () => {

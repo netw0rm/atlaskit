@@ -113,7 +113,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
   it('should invoke upload handler after clicking image icon', () => {
     editor
       .find('ChromeExpanded')
-      .find('ImageIcon')
+      .find('EditorImageIcon')
       .parent()
       .simulate('click');
 

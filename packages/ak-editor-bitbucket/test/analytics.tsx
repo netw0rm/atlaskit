@@ -99,7 +99,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     const toolbar = editor.find('ToolbarHyperlink');
 
     toolbar
-      .find('LinkIcon')
+      .find('EditorLinkIcon')
       .parent()
       .simulate('click');
 
@@ -116,7 +116,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.strong.button', () => {
     editor
       .find('ToolbarTextFormatting')
-      .find('BoldIcon')
+      .find('EditorBoldIcon')
       .parent()
       .simulate('click');
 
@@ -136,7 +136,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.em.button', () => {
     editor
       .find('ToolbarTextFormatting')
-      .find('BoldIcon')
+      .find('EditorBoldIcon')
       .parent()
       .simulate('click');
 
@@ -166,7 +166,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.list.numbered.button', () => {
     editor
       .find('ToolbarLists')
-      .find('NumberListIcon')
+      .find('EditorListNumberIcon')
       .parent()
       .simulate('click');
 
@@ -186,7 +186,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.list.bullet.button', () => {
     editor
       .find('ToolbarLists')
-      .find('BulletListIcon')
+      .find('EditorListBulletIcon')
       .parent()
       .simulate('click');
 
@@ -241,7 +241,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.image.button', () => {
     editor
       .find('ToolbarButton')
-      .find('ImageIcon')
+      .find('EditorImageIcon')
       .parent()
       .simulate('click');
 

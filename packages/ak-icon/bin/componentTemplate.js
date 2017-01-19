@@ -18,7 +18,8 @@ module.exports = ({
   return `import React from 'react';
 import Icon from '${relativePathToSrc}/Icon';
 
-class ${componentName} extends Icon {
+export default class extends Icon {
+  static displayName = ${JSON.stringify(componentName)};
   getGlyphTemplate() {
     return (props) => {
       const { label: title } = props;
@@ -30,8 +31,6 @@ class ${componentName} extends Icon {
     };
   }
 }
-
-export default ${componentName};
 `;
 /* eslint-enable max-len */
 };

@@ -11,7 +11,7 @@ export default class ContainerNavigationNested extends PureComponent {
     this.state = {};
   }
   componentDidMount() {
-    this.animateContainer.addEventListener('animationend', () => {
+    this.animationEndHandler = () => {
       if (this.props.animationDirection === 'left') {
         this.animateContainer.classList.remove(styles.containerNavigationNestedLeftAnimate);
         this.animateContainer.classList.add(styles.containerNavigationNestedLeftAnimateEnd);
@@ -19,7 +19,8 @@ export default class ContainerNavigationNested extends PureComponent {
         this.animateContainer.classList.remove(styles.containerNavigationNestedRightAnimate);
         this.animateContainer.classList.add(styles.containerNavigationNestedRightAnimateEnd);
       }
-    });
+    };
+    this.animateContainer.addEventListener('animationend', this.animationEndHandler);
   }
   componentWillUpdate(nextProps) {
     if (nextProps.children !== this.props.children) {
@@ -36,6 +37,9 @@ export default class ContainerNavigationNested extends PureComponent {
     if (this.props.animationDirection === 'right') {
       this.animateContainer.classList.add(styles.containerNavigationNestedRightAnimate);
     }
+  }
+  componentWillUnmount() {
+    this.animateContainer.removeEventListener('animationend', this.animationEndHandler);
   }
   render() {
     const { children } = this.props;

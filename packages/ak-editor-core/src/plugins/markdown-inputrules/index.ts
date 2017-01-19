@@ -189,7 +189,7 @@ const emRule2 = new InputRule(/(?:[^_]+)(_([^_]+?)_)$|^(_([^_]+)_)$/, '_', (
   pos: number
 ) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em'));
 
-// ~~string~~ should bold the text
+// ~~string~~ should strikethrough the text
 const strikeRule = new InputRule(/(\~\~([^\*]+)\~\~)$/, '~', (
   pm: ProseMirror,
   match: Array<string>,

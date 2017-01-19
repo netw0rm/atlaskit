@@ -113,17 +113,17 @@ describe(name, () => {
 
       it('should be activated when enter is pressed', () => {
         wrapper.simulate('keyPress', { key: 'Enter' });
-        expect(onActivate.calledOnce).to.be.true;
+        expect(onActivate.calledOnce).to.equal(true);
       });
 
       it('should be activated when space is pressed', () => {
         wrapper.simulate('keyPress', { key: ' ' });
-        expect(onActivate.calledOnce).to.be.true;
+        expect(onActivate.calledOnce).to.equal(true);
       });
 
       it('should be activated when clicked', () => {
         wrapper.simulate('click');
-        expect(onActivate.calledOnce).to.be.true;
+        expect(onActivate.calledOnce).to.equal(true);
       });
 
       it('should not be activated when disabled', () => {
@@ -132,7 +132,7 @@ describe(name, () => {
         disabledWrapper.simulate('click');
         disabledWrapper.simulate('keyPress', { key: 'Enter' });
         disabledWrapper.simulate('keyPress', { key: ' ' });
-        expect(onActivate.called).to.be.false;
+        expect(onActivate.called).to.equal(false);
       });
     });
   });

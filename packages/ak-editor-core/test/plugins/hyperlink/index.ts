@@ -104,7 +104,7 @@ describe('hyperlink', () => {
     it('sets canAddLink to false when in a context where links are not supported by the schema', () => {
       const { plugin } = editor(doc(unlinkable('{<}text{>}')));
 
-      expect(plugin.canAddLink).to.be.false;
+      expect(plugin.canAddLink).to.equal(false);
     });
 
     it('should treat it as a link when selecting the whole link', () => {
@@ -243,7 +243,7 @@ describe('hyperlink', () => {
     it('should allow links to be added when the selection is empty', () => {
       const { plugin } = editor(doc(linkable('{<>}text')));
 
-      expect(plugin.canAddLink).to.be.true;
+      expect(plugin.canAddLink).to.equal(true);
     });
 
     it('should not be able to unlink a node that has no link', () => {

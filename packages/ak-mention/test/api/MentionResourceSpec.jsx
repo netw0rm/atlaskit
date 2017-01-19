@@ -256,7 +256,7 @@ describe('MentionResource', () => {
       resource.recordMentionSelection({
         id: 666,
       }).then(() => {
-        expect(fetchMock.called('record')).to.be.true;
+        expect(fetchMock.called('record')).to.equal(true);
         done();
       });
     });

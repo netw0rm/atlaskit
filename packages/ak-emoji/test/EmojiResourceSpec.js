@@ -245,7 +245,7 @@ describe('EmojiResource', () => {
       });
 
       return resource.recordEmojiSelection(':bacon:').then(() => {
-        expect(fetchMock.called('record')).to.be.true;
+        expect(fetchMock.called('record')).to.equal(true);
       });
     });
   });

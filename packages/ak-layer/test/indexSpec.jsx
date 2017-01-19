@@ -61,7 +61,7 @@ describe('ak-layer', () => {
       const wrapper = mount(<Layer onFlippedChange={spy} content={content}><div>Foo</div></Layer>);
       const state = { flipped: true, actualPosition: 'top left', originalPosition: 'bottom left' };
 
-      expect(wrapper.state('flipped')).to.be.false;
+      expect(wrapper.state('flipped')).to.equal(false);
       wrapper.setState(state);
 
       expect(spy.callCount).to.equal(1);

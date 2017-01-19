@@ -130,7 +130,7 @@ describe('code-block', () => {
           it('returns false', () => {
             const { plugin } = editor(doc(code_block()('text\n{<>}')));
 
-            expect(plugin.splitCodeBlock()).to.be.false;
+            expect(plugin.splitCodeBlock()).to.equal(false);
           });
         });
 
@@ -146,7 +146,7 @@ describe('code-block', () => {
           it('returns true', () => {
             const { plugin } = editor(doc(code_block()('te{<>}xt\n')));
 
-            expect(plugin.splitCodeBlock()).to.be.true;
+            expect(plugin.splitCodeBlock()).to.equal(true);
           });
         });
       });
@@ -164,7 +164,7 @@ describe('code-block', () => {
           it('returns true', () => {
             const { plugin } = editor(doc(code_block()('text{<>}')));
 
-            expect(plugin.splitCodeBlock()).to.be.true;
+            expect(plugin.splitCodeBlock()).to.equal(true);
           });
         });
 
@@ -180,7 +180,7 @@ describe('code-block', () => {
           it('returns true', () => {
             const { plugin } = editor(doc(code_block()('te{<>}xt')));
 
-            expect(plugin.splitCodeBlock()).to.be.true;
+            expect(plugin.splitCodeBlock()).to.equal(true);
           });
         });
       });
@@ -190,7 +190,7 @@ describe('code-block', () => {
       it('returns false', () => {
         const { plugin } = editor(doc(p('text{<>}')));
 
-        expect(plugin.splitCodeBlock()).to.be.false;
+        expect(plugin.splitCodeBlock()).to.equal(false);
       });
     });
   });
@@ -305,7 +305,7 @@ describe('code-block', () => {
       it('is active', () => {
         const { plugin } = editor(doc(code_block()('te{<>}xt')));
 
-        expect(plugin.active).to.be.true;
+        expect(plugin.active).to.equal(true);
       });
     });
 
@@ -313,7 +313,7 @@ describe('code-block', () => {
       it('is not active', () => {
         const { plugin } = editor(doc(p('te{<>}xt')));
 
-        expect(plugin.active).to.be.false;
+        expect(plugin.active).to.equal(false);
       });
     });
   });

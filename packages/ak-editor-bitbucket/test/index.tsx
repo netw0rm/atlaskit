@@ -200,8 +200,8 @@ describe('ak-editor-bitbucket/multiple editors as children', () => {
 
   it('should render two editors inside a common container', () => {
     expect(container.find(Editor)).not.to.equal(undefined);
-    expect(editor1.is(Editor)).to.be.true;
-    expect(editor2.is(Editor)).to.be.true;
+    expect(editor1.is(Editor)).to.equal(true);
+    expect(editor2.is(Editor)).to.equal(true);
   });
 
   it('should render toolbar elements for both editors', () => {

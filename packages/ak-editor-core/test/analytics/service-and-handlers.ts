@@ -32,6 +32,6 @@ describe('analytics service', () => {
     service.handler = handler;
     service.handler = null;
     service.trackEvent('test.event');
-    expect(called).to.be.false;
+    expect(called).to.equal(false);
   });
 });

@@ -2,5 +2,6 @@ node_modules
 dist
 /stories
 /build/typings
+/build/tslint-rules
 packages/ak-icon/glyph
 packages/ak-icon/src/tmp

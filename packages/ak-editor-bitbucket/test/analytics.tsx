@@ -113,7 +113,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     const input = toolbar.find('Panel PanelTextInput input');
     (input.get(0) as any).value = 'http://atlassian.com';
     input.simulate('change');
-    input.simulate('keyup', { which: 'enter', keyCode: 13 });
+    input.simulate('keydown', { which: 'enter', keyCode: 13 });
 
     expect(handler).to.have.been.calledWith('atlassian.editor.format.hyperlink.button');
   });

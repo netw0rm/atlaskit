@@ -42,7 +42,7 @@ export default class PanelTextInput extends PureComponent<Props, State> {
         placeholder={placeholder}
         value={value}
         onChange={this.handleChange}
-        onKeyUp={this.handleKeyup}
+        onKeyDown={this.handleKeydown}
         ref={this.handleRef}
       />
     );
@@ -68,8 +68,9 @@ export default class PanelTextInput extends PureComponent<Props, State> {
     }
   }
 
-  private handleKeyup = (e: KeyboardEvent<any>) => {
+  private handleKeydown = (e: KeyboardEvent<any>) => {
     if (e.keyCode === 13 && this.props.onSubmit) {
+      e.preventDefault(); // Prevent from submiting if an editor is inside a form.
       this.props.onSubmit(this.input!.value);
     } else if (e.keyCode === 27 && this.props.onCancel) {
       this.props.onCancel();

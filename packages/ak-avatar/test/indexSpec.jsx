@@ -79,7 +79,7 @@ describe('ak-avatar', () => {
     it('should be relfected in the Presence component', () => {
       const wrapper = shallow(<Avatar presence="online" presenceBorderColor="#ff0000" />);
       const presence = wrapper.find(Presence);
-      expect(presence.length.length).not.to.equal(0);
+      expect(presence.length).not.to.equal(0);
       expect(presence).to.have.prop('borderColor', '#ff0000');
     });
   });

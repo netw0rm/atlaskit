@@ -45,10 +45,10 @@ describe('<NavigationItem />', () => {
       expect(customLink.props().href).to.equal('#custom-href');
     });
     it('textAfter should render in the navigation item', () => {
-      expect(mount(<NavigationItem action={<span className="ACTION" />} />).find('.ACTION').length.length).not.to.equal(0);
+      expect(mount(<NavigationItem action={<span className="ACTION" />} />).find('.ACTION').length).not.to.equal(0);
     });
     it('action should render in the navigation item', () => {
-      expect(mount(<NavigationItem textAfter={<span className="TEXTAFTER" />} />).find('.TEXTAFTER').length.length).not.to.equal(0);
+      expect(mount(<NavigationItem textAfter={<span className="TEXTAFTER" />} />).find('.TEXTAFTER').length).not.to.equal(0);
     });
     it('textAfter and action should both be renderable at the same time', () => {
       const both = mount(
@@ -57,8 +57,8 @@ describe('<NavigationItem />', () => {
           action={<span className="ACTION" />}
         />
       );
-      expect(both.find('.ACTION').length.length).not.to.equal(0);
-      expect(both.find('.TEXTAFTER').length.length).not.to.equal(0);
+      expect(both.find('.ACTION').length).not.to.equal(0);
+      expect(both.find('.TEXTAFTER').length).not.to.equal(0);
     });
   });
   describe('behaviour', () => {

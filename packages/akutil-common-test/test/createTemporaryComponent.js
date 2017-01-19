@@ -36,8 +36,8 @@ describe('createTemporaryComponent', () => {
     .then((newComponent) => {
       component = newComponent;
       expect(component.tagName).to.match(new RegExp('^x-', 'i'));
-      expect(getShadowRoot(component).length.length).not.to.equal(0);
-      expect(getRootNode(component).length.length).not.to.equal(0);
+      expect(getShadowRoot(component).length).not.to.equal(0);
+      expect(getRootNode(component).length).not.to.equal(0);
     })
   );
 

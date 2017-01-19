@@ -28,7 +28,7 @@ describe('ak-tooltip', () => {
       const wrapper = shallow(<Tooltip description="Some words!" visible><div>Foo</div></Tooltip>);
 
       const layer = wrapper.find('Layer');
-      expect(layer.length.length).not.to.equal(0);
+      expect(layer.length).not.to.equal(0);
 
       // have to wrap the prop in shallow so that we can run assertions against it.
       const layerContentProp = shallow(layer.prop('content'));
@@ -40,7 +40,7 @@ describe('ak-tooltip', () => {
       const wrapper = shallow(<Tooltip description="Some words!"><div>Foo</div></Tooltip>);
 
       const layer = wrapper.find('Layer');
-      expect(layer.length.length).not.to.equal(0);
+      expect(layer.length).not.to.equal(0);
       expect(layer).to.have.prop('content', null);
     });
   });

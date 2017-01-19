@@ -79,7 +79,7 @@ describe('ak-spinner', () => {
     });
 
     it('should render the spinner with a custom size', () => {
-      const custom = mount(<Spinner size={ 72 } />);
+      const custom = mount(<Spinner size={72} />);
 
       expect(custom.find(`.${spinnerClass}`).prop('style').height).to.equal('72px');
       expect(custom.find(`.${spinnerClass}`).prop('style').width).to.equal('72px');

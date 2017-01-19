@@ -37,7 +37,7 @@ storiesOf(name, module)
       </div>
       <div>
         <h3>small</h3>
-      <Spinner size="small" />
+        <Spinner size="small" />
       </div>
       <div>
         <h3>medium</h3>
@@ -49,7 +49,7 @@ storiesOf(name, module)
       </div>
       <div>
         <h3>custom</h3>
-        <Spinner size={ 35 } />
+        <Spinner size={35} />
       </div>
     </div>
   ), defaultImports)

@@ -2,10 +2,11 @@ import classNames from 'classnames';
 import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
 
+const SPINNER_SIZE = 20;
 const SIZES = Object.freeze({
   small: 20,
   medium: 32,
-  large: 45
+  large: 45,
 });
 
 /**
@@ -47,13 +48,13 @@ export default class Spinner extends PureComponent {
     size: React.PropTypes.oneOfType([
       React.PropTypes.number,
       React.PropTypes.oneOf(['small', 'medium', 'large']),
-    ])
+    ]),
   }
 
   static defaultProps = {
     onComplete: () => {},
     isCompleting: false,
-    size: 20,
+    size: SPINNER_SIZE,
   }
 
   handleTransitionEnd = (e) => {
@@ -67,9 +68,11 @@ export default class Spinner extends PureComponent {
   }
 
   render() {
-    const spinnerSize = SIZES[this.props.size] || this.props.size;
+    let spinnerSize = SIZES[this.props.size] || this.props.size;
 
-    if (typeof spinnerSize !== 'number') return null;
+    if (typeof spinnerSize !== 'number') {
+      spinnerSize = SPINNER_SIZE;
+    }
 
     const spinnerStyles = {
       [styles.spinner]: true,

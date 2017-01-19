@@ -6,9 +6,9 @@ function wrapPages(pages, selectedIndex, selectedPageRef) {
   return pages.map((page, i) => {
     const isSelected = selectedIndex === i;
     return (<div
-      key={i}
       aria-hidden={!isSelected}
       className={styles.pageWrapper}
+      key={i}
     >
       <div
         ref={isSelected ? selectedPageRef : null}
@@ -51,11 +51,11 @@ export default class ContainerNavigationNested extends PureComponent {
     const selectedIndex = Math.min(pages.length - 1, Math.max(0, this.props.selectedIndex));
     return (
       <div
+        className={styles.containerNavigationNested}
         style={{
           transform: `translateX(calc(${-selectedIndex * 100}% + ${-selectedIndex * containerNavigationNestedPageSpacing}px))`,
           height: this.state.height,
         }}
-        className={styles.containerNavigationNested}
       >
         {wrapPages(pages, selectedIndex, this.selectedPageRef)}
       </div>

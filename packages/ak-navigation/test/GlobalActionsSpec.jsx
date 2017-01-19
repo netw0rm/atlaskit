@@ -29,8 +29,9 @@ describe('<GlobalActions />', () => {
     });
     it('linkComponent is passed onto the first <GlobalItem />', () => {
       const linkComponent = () => null;
-      expect(shallow(<GlobalActions primaryIcon={<img alt="foo" />} linkComponent={linkComponent} />).find('GlobalItem').at(0).props().linkComponent).to.equal(linkComponent);
+      expect(shallow(<GlobalActions linkComponent={linkComponent} primaryIcon={<img alt="foo" />} />).find('GlobalItem').at(0).props().linkComponent).to.equal(linkComponent);
     });
+
     it('primaryIcon is passed onto the first <GlobalItem />', () => {
       const primaryIcon = <img alt="foo" />;
       expect(shallow(<GlobalActions primaryIcon={primaryIcon} />).find('GlobalItem').at(0).props().children).to.equal(primaryIcon);

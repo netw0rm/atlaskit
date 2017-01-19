@@ -22,7 +22,6 @@ storiesOf(name, module)
   .add('with create drawer open', () => (
     <Page>
       <BasicNavigation
-        openDrawer="create"
         createDrawerContent={(
           <div>
             <AkContainerItemGroup>
@@ -61,6 +60,7 @@ storiesOf(name, module)
             </AkContainerItemGroup>
           </div>
         )}
+        openDrawer="create"
       />
       <div>
         <Lorem count="30" />
@@ -70,22 +70,21 @@ storiesOf(name, module)
   .add('with create drawer having many groups', () => (
     <Page>
       <BasicNavigation
-        openDrawer="create"
         createDrawerContent={(
           <div>
             <AkDrawerItem text="Item outside a group" />
             <AkContainerItemGroup title="Create item group">
               <AkDrawerItem
-                icon={<img src={nucleus} alt="icon" />}
+                icon={<img alt="icon" src={nucleus} />}
                 text="Item with an icon"
               />
               <AkDrawerItem
-                icon={<img src={nucleus} alt="icon" />}
+                icon={<img alt="icon" src={nucleus} />}
                 text="A really, really, quite long, actually super long item name"
               />
             </AkContainerItemGroup>
             <AkDrawerItem
-              icon={<img src={nucleus} alt="icon" />}
+              icon={<img alt="icon" src={nucleus} />}
               text="Item underneath group"
             />
             <AkContainerItemGroup>
@@ -102,13 +101,14 @@ storiesOf(name, module)
             </AkContainerItemGroup>
             <AkContainerItemGroup title="Items with highlighted nouns">
               <AkDrawerItem
-                icon={<img src={nucleus} alt="icon" />}
+                icon={<img alt="icon" src={nucleus} />}
                 text={(<span>Create a new <strong>item</strong></span>)}
               />
               <AkDrawerItem text={(<span>Make an <strong>item</strong> appear</span>)} />
             </AkContainerItemGroup>
           </div>
-      )}
+        )}
+        openDrawer="create"
       />
       <div>
         <Lorem count="30" />
@@ -118,10 +118,10 @@ storiesOf(name, module)
   .add('with create having many items', () => (
     <Page>
       <BasicNavigation
-        openDrawer="create"
         createDrawerContent={(
           <div>{manyDrawerItems()}</div>
         )}
+        openDrawer="create"
       />
       <div>
         <Lorem count="30" />

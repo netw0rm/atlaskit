@@ -46,8 +46,8 @@ export default class GlobalNavigation extends PureComponent {
         })}
       >
         <Spacer
-          width={globalOpenWidth}
           shouldAnimate={shouldAnimate}
+          width={globalOpenWidth}
         />
         <div
           className={styles.globalNavigation}

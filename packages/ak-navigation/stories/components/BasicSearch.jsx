@@ -68,7 +68,7 @@ const data = [
 
 const icons = {
   'CSI actors': (<AtlassianIcon label="CSI" />),
-  'Fictional swords': (<DashboardIcon label="CSI" />),
+  'Fictional swords': (<DashboardIcon label="Fictional swords" />),
 };
 
 function contains(string, query) {
@@ -86,7 +86,7 @@ function search(query) {
     )
   ).reduce((a, b) => a.concat(b));
   return results.map(({ item, group }) => (
-    <AkContainerItem isCompact href="#foo" text={`${item} – ${group}`} icon={icons[group]} />
+    <AkContainerItem href="#foo" text={`${item} – ${group}`} icon={icons[group]} />
   ));
 }
 

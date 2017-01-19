@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "ak-mention": "*",
-    "ak-icon": "*",
+    "ak-icon": "^12.0.0",
     "akutil-common-test": "*",
     "js-search": "^1.3.3"
   },

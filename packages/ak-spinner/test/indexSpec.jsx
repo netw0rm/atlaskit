@@ -67,15 +67,19 @@ describe('ak-spinner', () => {
       const small = mount(<Spinner size="small" />);
       const medium = mount(<Spinner size="medium" />);
       const large = mount(<Spinner size="large" />);
+      const xlarge = mount(<Spinner size="xlarge" />);
 
       expect(small.find(`.${spinnerClass}`).prop('style').height).to.equal('20px');
       expect(small.find(`.${spinnerClass}`).prop('style').width).to.equal('20px');
 
-      expect(medium.find(`.${spinnerClass}`).prop('style').height).to.equal('32px');
-      expect(medium.find(`.${spinnerClass}`).prop('style').width).to.equal('32px');
+      expect(medium.find(`.${spinnerClass}`).prop('style').height).to.equal('30px');
+      expect(medium.find(`.${spinnerClass}`).prop('style').width).to.equal('30px');
 
-      expect(large.find(`.${spinnerClass}`).prop('style').height).to.equal('45px');
-      expect(large.find(`.${spinnerClass}`).prop('style').width).to.equal('45px');
+      expect(large.find(`.${spinnerClass}`).prop('style').height).to.equal('50px');
+      expect(large.find(`.${spinnerClass}`).prop('style').height).to.equal('50px');
+
+      expect(xlarge.find(`.${spinnerClass}`).prop('style').width).to.equal('100px');
+      expect(xlarge.find(`.${spinnerClass}`).prop('style').width).to.equal('100px');
     });
 
     it('should render the spinner with a custom size', () => {

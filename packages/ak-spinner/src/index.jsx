@@ -5,49 +5,20 @@ import React, { PureComponent, PropTypes } from 'react';
 const SPINNER_SIZE = 20;
 const SIZES = Object.freeze({
   small: 20,
-  medium: 32,
-  large: 45,
+  medium: 30,
+  large: 50,
+  xlarge: 100,
 });
 
-/**
- * @description An spinning loading/waiting indicator
- * @class Spinner
- * @example @js import Spinner from 'ak-spinner';
- * ReactDOM.render(<Spinner />, container);
- */
 export default class Spinner extends PureComponent {
   static displayName = 'AkSpinner';
 
   static propTypes = {
-    /**
-     * @description Callback function executed on completion
-     * @memberof Spinner
-     * @instance
-     * @type {function}
-     * @default noop
-     */
     onComplete: PropTypes.func,
-
-    /**
-     * @description Flag indicating that the spinner should dismiss
-     * @memberof Spinner
-     * @instance
-     * @type {Boolean}
-     * @default false
-     */
     isCompleting: PropTypes.bool,
-
-    /**
-     * @description Size of the spinner
-     * Allowed values are: 'small' (20px), 'medium' (32px), 'large' (45px), or any number.
-     * @memberof Spinner
-     * @instance
-     * @type {(string|number)}
-     * @default 20
-     */
     size: React.PropTypes.oneOfType([
       React.PropTypes.number,
-      React.PropTypes.oneOf(['small', 'medium', 'large']),
+      React.PropTypes.oneOf(['small', 'medium', 'large', 'xlarge']),
     ]),
   }
 

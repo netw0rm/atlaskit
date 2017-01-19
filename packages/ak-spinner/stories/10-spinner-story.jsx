@@ -48,6 +48,10 @@ storiesOf(name, module)
         <Spinner size="large" />
       </div>
       <div>
+        <h3>xlarge</h3>
+        <Spinner size="xlarge" />
+      </div>
+      <div>
         <h3>custom</h3>
         <Spinner size={35} />
       </div>

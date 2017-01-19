@@ -164,7 +164,6 @@ export default class Navigation extends PureComponent {
             <Drawer
               backIcon={drawerBackIcon}
               backIconPosition="search"
-              header={containerHeader}
               isOpen={isSearchDrawerOpen}
               isWide
               onBackButton={onSearchDrawerClose}

@@ -64,7 +64,7 @@ export default class Drawer extends PureComponent {
             {header}
           </div>
           <div>
-            {this.props.children}
+            {isOpen ? this.props.children : null}
           </div>
         </div>
       </div>

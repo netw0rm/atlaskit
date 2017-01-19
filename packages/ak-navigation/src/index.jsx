@@ -8,3 +8,4 @@ export { default as AkContainerNavigationNested } from './components/js/Containe
 export { default as AkDrawerItem } from './components/js/DrawerItem';
 export { default as AkGlobalNavigation } from './components/js/GlobalNavigation';
 export { default as AkGlobalItem } from './components/js/GlobalItem';
+export { default as AkSearch } from './components/js/Search';

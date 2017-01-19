@@ -86,7 +86,7 @@ describe('ak-spinner', () => {
     });
 
     it('should render the spinner with the default size if an unsupported value is provided', () => {
-      const custom = mount(<Spinner size={{something: 'weird'}} />);
+      const custom = mount(<Spinner size={{ something: 'weird' }} />);
 
       expect(custom.find(`.${spinnerClass}`).prop('style').height).to.equal('20px');
       expect(custom.find(`.${spinnerClass}`).prop('style').width).to.equal('20px');

@@ -33,7 +33,7 @@ storiesOf(name, module)
     <div>
       <div>
         <h3>default</h3>
-        <Spinner size="small" />
+        <Spinner />
       </div>
       <div>
         <h3>small</h3>

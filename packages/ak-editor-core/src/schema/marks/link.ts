@@ -1,5 +1,8 @@
-import { LinkMark as BaseLinkMark } from 'prosemirror/dist/schema-basic';
-import { Mark, Schema } from '../../prosemirror';
+import {
+  LinkMark as BaseLinkMark,
+  Mark,
+  Schema,
+} from '../../prosemirror';
 
 export class LinkMarkType extends BaseLinkMark {
   constructor(name: string, rank: number, schema: Schema) {
@@ -15,6 +18,10 @@ export class LinkMarkType extends BaseLinkMark {
 
 export interface LinkMark extends Mark {
   type: LinkMarkType;
+  attrs: {
+    href: string;
+    title?: string;
+  };
 }
 
 export function isLinkMark(mark: Mark): mark is LinkMark {

@@ -3,10 +3,10 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 
-import { fixtures, chaiPlugin } from '../../test-helper';
 import analytics from '../../src/analytics/decorator';
-import service from '../../src/analytics/service';
 import { AnalyticsHandler } from '../../src/analytics/handler';
+import service from '../../src/analytics/service';
+import { chaiPlugin } from '../../test-helper';
 
 chai.use(chaiPlugin);
 chai.use((sinonChai as any).default || sinonChai);
@@ -30,7 +30,7 @@ describe('analytics decorator', () => {
       foo() {}
     }
 
-    let instance = new AnnotatedTestClass();
+    const instance = new AnnotatedTestClass();
     expect(spy).to.have.not.been.called;
 
     instance.foo();
@@ -104,7 +104,7 @@ describe('analytics decorator', () => {
       private bar = () => {};
     }
 
-    let instance = new AnnotatedTestClass3();
+    const instance = new AnnotatedTestClass3();
     expect(spy).to.have.not.been.called;
 
     instance.foo();

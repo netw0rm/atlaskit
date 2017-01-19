@@ -1,3 +1,4 @@
+import Keymap from 'browserkeymap';
 import {
   commands,
   Mark,
@@ -5,8 +6,6 @@ import {
   Plugin,
   ProseMirror,
   Schema,
-  UpdateScheduler,
-  Keymap
 } from '../../prosemirror';
 import {
   EmMarkType,

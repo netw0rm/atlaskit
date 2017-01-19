@@ -1,28 +1,27 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
 import AkButton from 'ak-button';
 import AkButtonGroup from 'ak-button-group';
-import { ProseMirror } from '../../prosemirror';
+import ImageIcon from 'ak-icon/glyph/editor/image';
+import MentionIcon from 'ak-icon/glyph/editor/mention';
+import { PureComponent } from 'react';
+import * as React from 'react';
+import { analyticsDecorator as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
 import { HyperlinkState } from '../../plugins/hyperlink';
-import { ListsState } from '../../plugins/lists';
-import { TextFormattingState } from '../../plugins/text-formatting';
 import { ImageUploadState } from '../../plugins/image-upload';
+import { ListsState } from '../../plugins/lists';
 import { MentionsPluginState } from '../../plugins/mentions';
-import MentionIcon from 'ak-icon/glyph/editor/mention';
-import ImageIcon from 'ak-icon/glyph/editor/image';
-import * as styles from './styles';
+import { TextFormattingState } from '../../plugins/text-formatting';
 import HyperlinkEdit from '../HyperlinkEdit';
-import ToolbarIconButton from '../ToolbarIconButton';
-import ToolbarBlockType from '../ToolbarBlockType';
-import ToolbarLists from '../ToolbarLists';
-import ToolbarHyperlink from '../ToolbarHyperlink';
-import ToolbarTextFormatting from '../ToolbarTextFormatting';
-import ToolbarFeedback from '../ToolbarFeedback';
-import MentionPicker from '../MentionPicker';
 import LanguagePicker from '../LanguagePicker';
-import { analyticsDecorator as analytics } from '../../analytics';
+import MentionPicker from '../MentionPicker';
+import ToolbarBlockType from '../ToolbarBlockType';
+import ToolbarButton from '../ToolbarButton';
+import ToolbarFeedback from '../ToolbarFeedback';
+import ToolbarHyperlink from '../ToolbarHyperlink';
+import ToolbarLists from '../ToolbarLists';
+import ToolbarTextFormatting from '../ToolbarTextFormatting';
+import * as styles from './styles';
 
 export interface Props {
   feedbackFormUrl?: string;
@@ -40,9 +39,7 @@ export interface Props {
   mentionsResourceProvider?: any; // AbstractMentionResource
 }
 
-export interface State {}
-
-export default class ChromeExpanded extends PureComponent<Props, State> {
+export default class ChromeExpanded extends PureComponent<Props, {}> {
   render() {
     const { props } = this;
 
@@ -79,16 +76,14 @@ export default class ChromeExpanded extends PureComponent<Props, State> {
           </div>
           <div>
             {!props.onInsertMention ? null :
-            <ToolbarIconButton
-              onClick={this.handleInsertMention}
-              icon={<MentionIcon label="Mention" />}
-            />
+            <ToolbarButton onClick={this.handleInsertMention}>
+              <MentionIcon label="Mention" />
+            </ToolbarButton>
             }
             {!props.pluginStateImageUpload ? null :
-            <ToolbarIconButton
-              onClick={this.handleInsertImage}
-              icon={<ImageIcon label="Image" />}
-            />
+            <ToolbarButton onClick={this.handleInsertImage}>
+              <ImageIcon label="Image" />
+            </ToolbarButton>
             }
           </div>
         </div>

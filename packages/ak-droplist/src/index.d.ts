@@ -13,4 +13,4 @@ interface Props {
 
 interface State {}
 
-export default class DropdownList extends Component<Props, State> {};
+export default class DropdownList extends Component<Props, State> {}

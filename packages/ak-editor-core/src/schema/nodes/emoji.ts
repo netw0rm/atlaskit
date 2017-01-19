@@ -1,16 +1,4 @@
-import { Inline, Attribute, Node, Schema } from '../../prosemirror';
-
-export interface EmojiAttributes {
-  id: any;
-}
-
-export interface ParseSpec {
-  [index: string]: (dom: Element) => EmojiAttributes;
-}
-
-export interface DOMAttributes {
-  [propName: string]: string;
-}
+import { Attribute, Inline, Node, Schema } from '../../prosemirror';
 
 export class EmojiNodeType extends Inline {
   constructor(name: string, schema: Schema) {
@@ -20,19 +8,17 @@ export class EmojiNodeType extends Inline {
     }
   }
 
-  get attrs(): EmojiAttributes {
+  get attrs() {
     return {
       id: new Attribute({ default: '' }),
     };
   }
 
-  get matchDOMTag(): ParseSpec {
+  get matchDOMTag() {
     return {
-      'span[emoji-id]': (dom: Element) => {
-        return {
-          id: dom.getAttribute('emoji-id')
-        };
-      }
+      'span[emoji-id]': (dom: Element) => ({
+        id: dom.getAttribute('emoji-id')!
+      })
     };
   }
 }

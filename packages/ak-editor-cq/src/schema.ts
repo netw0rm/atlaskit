@@ -1,21 +1,21 @@
 import {
   BlockQuoteNodeType,
   BulletListNodeType,
-  MonoMarkType,
   DocNodeType,
   EmMarkType,
   HardBreakNodeType,
   HeadingNodeType,
   HorizontalRuleNodeType,
   ListItemNodeType,
+  MonoMarkType,
   OrderedListNodeType,
   ParagraphNodeType,
   Schema,
   StrikeMarkType,
   StrongMarkType,
   SubSupMarkType,
-  UnderlineMarkType,
-  Text
+  Text,
+  UnderlineMarkType
 } from 'ak-editor-core';
 
 export default new Schema({

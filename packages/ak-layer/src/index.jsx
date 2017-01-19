@@ -183,7 +183,6 @@ export default class Layer extends PureComponent {
 
     this.popper = new Popper(actualTarget, this.contentRef, {
       placement: positionPropToPopperPosition(props.position),
-      boundariesElement: this.props.boundariesElement,
       onCreate: this.extractStyles,
       onUpdate: this.extractStyles,
       modifiers: {
@@ -200,6 +199,8 @@ export default class Layer extends PureComponent {
         flip: {
           enabled: this.props.autoPosition,
           flipVariations: true,
+          boundariesElement: this.props.boundariesElement,
+          padding: 0, // leave 0 pixels between popper and the boundariesElement
         },
         preventOverflow: {
           enabled: this.props.autoPosition,

@@ -2,25 +2,25 @@
 // THIS FILE IS DEPRECATED AND WILL BE REMOVED IN THE FUTURE.
 //
 import {
-  Block, Text, Schema, NodeType, MarkType,
-  BlockQuoteNodeType,
-  BulletListNodeType,
-  CodeBlockNodeType,
-  DocNodeType,
+  BlockQuoteNodeType, BulletListNodeType, CodeBlockNodeType, DocNodeType,
+  EmMarkType,
+  EmojiNodeType,
   HardBreakNodeType,
   HeadingNodeType,
   HorizontalRuleNodeType,
   ImageNodeType,
+  LinkMarkType,
   ListItemNodeType,
+  MarkType,
+  MentionNodeType,
+  MonoMarkType,
+  NodeType,
   OrderedListNodeType,
   ParagraphNodeType,
-  MentionNodeType,
-  EmojiNodeType,
-  MonoMarkType,
+  Schema,
   StrikeMarkType,
-  EmMarkType,
-  LinkMarkType,
-  StrongMarkType
+  StrongMarkType,
+  Text
 } from '../';
 
 export interface AtlassianEditorSchema extends Schema {

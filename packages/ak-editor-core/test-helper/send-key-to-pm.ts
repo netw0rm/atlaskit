@@ -1,19 +1,18 @@
-import { ProseMirror, browser } from '../src/prosemirror';
-import createEvent from './create-event';
+import { browser, ProseMirror } from '../src/prosemirror';
 
 /**
  * Sends a key to ProseMirror content area, simulating user key press.
  * Accepts key descriptions similar to Keymap, i.e. 'Shift-Ctrl-L'
  */
 export default function sendKeyToPm(pm: ProseMirror, keys: string) {
-  let parts = keys.split(/-(?!'?$)/);
-  let modKey = parts.indexOf('Mod') !== -1;
-  let cmdKey = parts.indexOf('Cmd') !== -1;
-  let ctrlKey = parts.indexOf('Ctrl') !== -1;
-  let shiftKey = parts.indexOf('Shift') !== -1;
-  let altKey = parts.indexOf('Alt') !== -1;
-  let key = parts[parts.length - 1];
-  let code = dictionary[key] ? dictionary[key] : key.charCodeAt(0);
+  const parts = keys.split(/-(?!'?$)/);
+  const modKey = parts.indexOf('Mod') !== -1;
+  const cmdKey = parts.indexOf('Cmd') !== -1;
+  const ctrlKey = parts.indexOf('Ctrl') !== -1;
+  const shiftKey = parts.indexOf('Shift') !== -1;
+  const altKey = parts.indexOf('Alt') !== -1;
+  const key = parts[parts.length - 1];
+  const code = dictionary[key] ? dictionary[key] : key.charCodeAt(0);
 
   const event = new CustomEvent('keydown', {
     bubbles: true,

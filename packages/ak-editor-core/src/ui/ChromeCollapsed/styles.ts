@@ -4,8 +4,8 @@ import {
 import {
   akBorderRadius,
   akColorN100,
-  akColorN50,
-  akColorN400
+  akColorN400,
+  akColorN50
 } from 'akutil-shared-styles';
 import { style } from 'typestyle';
 
@@ -29,8 +29,10 @@ export const input = style({
       borderColor: akColorN50,
       cursor: 'pointer',
 
-      '&::placeholder': {
-        color: akColorN400,
+      $nest: {
+        '&::placeholder': {
+          color: akColorN400,
+        }
       }
     }
   }

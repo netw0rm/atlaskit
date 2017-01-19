@@ -10,7 +10,7 @@ export class CodeBlockNodeType extends Block {
 
   get attrs() {
     return {
-      language: new Attribute({ default: null })
+      language: new Attribute({default: null})
     };
   }
 
@@ -41,32 +41,29 @@ export class CodeBlockNodeType extends Block {
 
 // example of BB style:
 // <div class="codehilite language-javascript"><pre><span>hello world</span><span>\n</span></pre></div>
-const getLanguageFromBitbucketStyle = (dom: HTMLElement): string | null => {
+const getLanguageFromBitbucketStyle = (dom: HTMLElement): string | undefined => {
   const parent = dom.parentElement;
 
   if (parent && parent.className.indexOf('codehilite') !== -1) {
     removeLastNewLine(dom);
     return extractLanguageFromClass(parent.className);
   }
-  return null;
 };
 
 const removeLastNewLine = (dom: HTMLElement): void => {
   dom.textContent = dom.textContent!.replace(/\n$/, '');
 };
 
-const getLanguageFromEditorStyle = (dom: HTMLElement): string | null => {
-  return dom.dataset['language'] || null;
+const getLanguageFromEditorStyle = (dom: HTMLElement): string => {
+  return dom.dataset['language'];
 };
 
-const extractLanguageFromClass = (className: string): string | null => {
+const extractLanguageFromClass = (className: string): string | undefined => {
   const languageRegex = /(?:^|\s)language-([^\s]+)/;
   const result = languageRegex.exec(className);
   if (result && result[1]) {
     return result[1];
   }
-
-  return null;
 };
 
 export interface CodeBlockNode extends Node {

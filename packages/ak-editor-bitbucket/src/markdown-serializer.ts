@@ -44,7 +44,7 @@ const nodes = {
     state.wrapBlock('> ', null, node, () => state.renderContent(node));
   },
   code_block(state: MarkdownSerializerState, node: Node) {
-    if (node.attrs['language'] === null) {
+    if (!node.attrs['language']) {
       state.wrapBlock('    ', null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
     } else {
       const backticks = generateOuterBacktickChain(node.textContent, 3);

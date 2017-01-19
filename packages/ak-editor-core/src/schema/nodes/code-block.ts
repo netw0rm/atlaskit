@@ -44,7 +44,7 @@ export class CodeBlockNodeType extends Block {
 const getLanguageFromBitbucketStyle = (dom: HTMLElement): string | undefined => {
   const parent = dom.parentElement;
 
-  if (parent && parent.className.indexOf('codehilite') !== -1) {
+  if (parent && parent.classList.contains('codehilite')) {
     removeLastNewLine(dom);
     return extractLanguageFromClass(parent.className);
   }

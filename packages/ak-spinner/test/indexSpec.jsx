@@ -58,7 +58,7 @@ describe('ak-spinner', () => {
       wrapper.find(`.${spinnerClass}`)
         .simulate('transitionEnd', { propertyName: 'stroke-dashoffset' });
 
-      expect(spy).to.not.have.been.calledOnce;
+      expect(spy.callCount).to.not.equal(1);
     });
   });
 });

@@ -41,14 +41,14 @@ describe('<NavigationItem />', () => {
           linkComponent={({ children, href }) => <a className="custom" href={href}>{children}</a>}
         />
       ).find('.custom');
-      expect(customLink).to.exist;
+      expect(customLink).not.to.equal(undefined);
       expect(customLink.props().href).to.equal('#custom-href');
     });
     it('textAfter should render in the navigation item', () => {
-      expect(mount(<NavigationItem action={<span className="ACTION" />} />).find('.ACTION')).to.exist;
+      expect(mount(<NavigationItem action={<span className="ACTION" />} />).find('.ACTION')).not.to.equal(undefined);
     });
     it('action should render in the navigation item', () => {
-      expect(mount(<NavigationItem textAfter={<span className="TEXTAFTER" />} />).find('.TEXTAFTER')).to.exist;
+      expect(mount(<NavigationItem textAfter={<span className="TEXTAFTER" />} />).find('.TEXTAFTER')).not.to.equal(undefined);
     });
     it('textAfter and action should both be renderable at the same time', () => {
       const both = mount(
@@ -57,8 +57,8 @@ describe('<NavigationItem />', () => {
           action={<span className="ACTION" />}
         />
       );
-      expect(both.find('.ACTION')).to.exist;
-      expect(both.find('.TEXTAFTER')).to.exist;
+      expect(both.find('.ACTION')).not.to.equal(undefined);
+      expect(both.find('.TEXTAFTER')).not.to.equal(undefined);
     });
   });
   describe('behaviour', () => {

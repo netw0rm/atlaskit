@@ -20,14 +20,14 @@ const expect = chai.expect;
 
 describe('ak-editor-bitbucket/expand and collapse', () => {
   it('should not render expanded chrome when collapsed by default', () => {
-    expect(mount(<Editor />).find('ChromeCollapsed')).to.exist;
-    expect(mount(<Editor />).find('input[placeholder]')).to.exist;
+    expect(mount(<Editor />).find('ChromeCollapsed')).not.to.equal(undefined);
+    expect(mount(<Editor />).find('input[placeholder]')).not.to.equal(undefined);
     expect(mount(<Editor />).find('ChromeExpanded')).not.to.exist;
   });
 
   it('should respect defaultExpanded property', () => {
     expect(mount(<Editor isExpandedByDefault />).find('ChromeCollapsed')).not.to.exist;
-    expect(mount(<Editor isExpandedByDefault />).find('ChromeExpanded')).to.exist;
+    expect(mount(<Editor isExpandedByDefault />).find('ChromeExpanded')).not.to.equal(undefined);
   });
 
   it('should expand after clicking', () => {
@@ -36,7 +36,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
 
     expect(editorWrapper.find('ChromeCollapsed')).not.to.exist;
-    expect(editorWrapper.find('ChromeExpanded')).to.exist;
+    expect(editorWrapper.find('ChromeExpanded')).not.to.equal(undefined);
   });
 
   it('.expand() method should expand the editor chrome', () => {
@@ -46,7 +46,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
     editor.expand();
 
     expect(editorWrapper.find('ChromeCollapsed')).not.to.exist;
-    expect(editorWrapper.find('ChromeExpanded')).to.exist;
+    expect(editorWrapper.find('ChromeExpanded')).not.to.equal(undefined);
   });
 
   it('.collapse() method should collapse the editor chrome', () => {
@@ -55,7 +55,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
 
     editor.collapse();
 
-    expect(editorWrapper.find('ChromeCollapsed')).to.exist;
+    expect(editorWrapper.find('ChromeCollapsed')).not.to.equal(undefined);
     expect(editorWrapper.find('ChromeExpanded')).not.to.exist;
   });
 
@@ -199,19 +199,19 @@ describe('ak-editor-bitbucket/multiple editors as children', () => {
   });
 
   it('should render two editors inside a common container', () => {
-    expect(container.find(Editor)).to.exist;
+    expect(container.find(Editor)).not.to.equal(undefined);
     expect(editor1.is(Editor)).to.be.true;
     expect(editor2.is(Editor)).to.be.true;
   });
 
   it('should render toolbar elements for both editors', () => {
-    expect(editor1.find('ChromeExpanded ToolbarBlockType')).to.exist;
-    expect(editor1.find('ChromeExpanded ToolbarTextFormatting')).to.exist;
-    expect(editor1.find('ChromeExpanded ToolbarLists')).to.exist;
+    expect(editor1.find('ChromeExpanded ToolbarBlockType')).not.to.equal(undefined);
+    expect(editor1.find('ChromeExpanded ToolbarTextFormatting')).not.to.equal(undefined);
+    expect(editor1.find('ChromeExpanded ToolbarLists')).not.to.equal(undefined);
 
-    expect(editor2.find('ChromeExpanded ToolbarBlockType')).to.exist;
-    expect(editor2.find('ChromeExpanded ToolbarTextFormatting')).to.exist;
-    expect(editor2.find('ChromeExpanded ToolbarLists')).to.exist;
+    expect(editor2.find('ChromeExpanded ToolbarBlockType')).not.to.equal(undefined);
+    expect(editor2.find('ChromeExpanded ToolbarTextFormatting')).not.to.equal(undefined);
+    expect(editor2.find('ChromeExpanded ToolbarLists')).not.to.equal(undefined);
   });
 });
 
@@ -225,11 +225,11 @@ describe('ak-editor-bitbucket/toolbar', () => {
   it('should close blocktype dropdown after second click', () => {
     const trigger = editor.find('ToolbarBlockType AkButton');
 
-    expect(trigger).to.exist;
+    expect(trigger).not.to.equal(undefined);
     expect(editor.find('ToolbarBlockType Group')).to.not.exist;
 
     trigger.simulate('click');
-    expect(editor.find('ToolbarBlockType Group')).to.exist;
+    expect(editor.find('ToolbarBlockType Group')).not.to.equal(undefined);
 
     trigger.simulate('click');
     expect(editor.find('ToolbarBlockType Group')).to.not.exist;

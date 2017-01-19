@@ -18,29 +18,29 @@ describe('ak-button/default-behaviour', () => {
   );
 
   it('should render button if there is no href property', () => {
-    expect(mount(<Button />).find('button')).to.exist;
+    expect(mount(<Button />).find('button')).not.to.equal(undefined);
     expect(mount(<Button />).find('a')).not.to.exist;
   });
 
   it('should render link if href property is set', () => {
-    expect(mount(<Button href="test" />).find('a')).to.exist;
+    expect(mount(<Button href="test" />).find('a')).not.to.equal(undefined);
     expect(mount(<Button href="test" />).find('button')).not.to.exist;
   });
 
   it('should not render link without href prop, even if the target prop is set', () => {
     expect(mount(<Button target="something" />).find('a')).not.to.exist;
-    expect(mount(<Button target="something" />).find('button')).to.exist;
+    expect(mount(<Button target="something" />).find('button')).not.to.equal(undefined);
   });
 
   it('should render span when the button is disabled and has href property', () => {
-    expect(mount(<Button isDisabled href="test" />).find(`span > span.${styles.locals.buttonWrapper}`)).to.exist;
+    expect(mount(<Button isDisabled href="test" />).find(`span > span.${styles.locals.buttonWrapper}`)).not.to.equal(undefined);
     expect(mount(<Button isDisabled href="test" />).find('button')).not.to.exist;
     expect(mount(<Button isDisabled href="test" />).find('a')).not.to.exist;
   });
 
   it('should not render span when the button is disabled, but doesn\'t have href', () => {
     expect(mount(<Button isDisabled />).find(`span > ${styles.locals.buttonWrapper}`)).not.to.exist;
-    expect(mount(<Button isDisabled />).find('button')).to.exist;
+    expect(mount(<Button isDisabled />).find('button')).not.to.equal(undefined);
     expect(mount(<Button isDisabled />).find('a')).not.to.exist;
   });
 

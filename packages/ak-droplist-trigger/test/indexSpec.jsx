@@ -17,7 +17,7 @@ const { expect } = chai;
 
 describe(name, () => {
   it('should be possible to create a component', () => {
-    expect(shallow(<Trigger />)).to.exist;
+    expect(shallow(<Trigger />)).not.to.equal(undefined);
   });
 
   describe('render', () => {

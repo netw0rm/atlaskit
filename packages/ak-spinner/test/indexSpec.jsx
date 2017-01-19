@@ -19,17 +19,17 @@ const {
 describe('ak-spinner', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Spinner />);
-    expect(wrapper).to.exist;
+    expect(wrapper).not.to.equal(undefined);
   });
 
   it('should render a spinner element', () => {
     const wrapper = shallow(<Spinner />);
-    expect(wrapper.find(`.${spinnerClass}`)).to.exist;
+    expect(wrapper.find(`.${spinnerClass}`)).not.to.equal(undefined);
   });
 
   it('should apply active class by default', () => {
     const wrapper = shallow(<Spinner />);
-    expect(wrapper.find(`.${activeClass}`)).to.exist;
+    expect(wrapper.find(`.${activeClass}`)).not.to.equal(undefined);
   });
 
   describe('isCompleting prop', () => {

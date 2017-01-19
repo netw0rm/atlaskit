@@ -23,7 +23,7 @@ describe('ak-toggle', () => {
     expect(label).to.have.className(styles.locals.regular);
     expect(label).to.have.exactly(1).descendants('input');
     const iconWrapper = label.find('div').at(2);
-    expect(iconWrapper).to.exist;
+    expect(iconWrapper).not.to.equal(undefined);
     expect(iconWrapper)
       .to.have.exactly(1).descendants(CloseIcon);
   });

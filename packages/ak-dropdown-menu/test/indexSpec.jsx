@@ -41,7 +41,7 @@ describe(name, () => {
   });
 
   it('should be possible to create a component', () => {
-    expect(shallow(<Menu>test</Menu>)).to.exist;
+    expect(shallow(<Menu>test</Menu>)).not.to.equal(undefined);
   });
 
   describe('render', () => {
@@ -158,8 +158,8 @@ describe(name, () => {
         test</Menu>);
       const item = wrapper.find('[role="menuitemcheckbox"]');
       item.simulate('click');
-      expect(attrs).to.exist;
-      expect(attrs.item).to.exist;
+      expect(attrs).not.to.equal(undefined);
+      expect(attrs.item).not.to.equal(undefined);
       expect(attrs.item).to.equal(items[0].items[0]);
       expect(attrs.item).to.deep.equal({ content: 'item 1', type: 'checkbox', isChecked: true });
     });

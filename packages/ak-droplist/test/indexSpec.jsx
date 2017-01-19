@@ -24,7 +24,7 @@ const itemsList = (<Group heading="test1">
 
 describe(name, () => {
   it('should be possible to create a component', () => {
-    expect(shallow(<Droplist>test</Droplist>)).to.exist;
+    expect(shallow(<Droplist>test</Droplist>)).not.to.equal(undefined);
   });
 
   describe('render', () => {
@@ -35,7 +35,7 @@ describe(name, () => {
     });
 
     it('should render Layer component', () => {
-      expect(wrapper.find(`.${styles.dropWrapper}`)).to.exist;
+      expect(wrapper.find(`.${styles.dropWrapper}`)).not.to.equal(undefined);
       const layer = wrapper.find(`.${styles.dropWrapper}`).children().first();
       const layerNode = layer.node;
       expect(layerNode instanceof Layer).to.be.true;

@@ -47,7 +47,7 @@ describe(name, () => {
       });
 
       it('should set up the initial state', () => {
-        expect(wrapper.state('selectedValue')).to.not.exist;
+        expect(wrapper.state('selectedValue')).to.equal(undefined);
       });
     });
 
@@ -95,7 +95,7 @@ describe(name, () => {
       describe('behaviour', () => {
         it('updates the value state when a radio is changed', () => {
           const wrapper = mount(<FieldRadioGroup items={sampleItems} />);
-          expect(wrapper.state('selectedValue')).to.not.exist;
+          expect(wrapper.state('selectedValue')).to.equal(undefined);
           wrapper.find(AkRadio).first().find('input').simulate('change');
           expect(wrapper.state('selectedValue')).to.equal(sampleItems[0].value);
         });

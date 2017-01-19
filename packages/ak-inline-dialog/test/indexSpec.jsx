@@ -52,7 +52,7 @@ describe('ak-inline-dialog', () => {
 
     it('should not render the content container if isOpen is not set', () => {
       const wrapper = mount(<InlineDialog />);
-      expect(wrapper.find(`.${containerClass}`)).to.not.exist;
+      expect(wrapper.find(`.${containerClass}`)).to.equal(undefined);
     });
   });
 
@@ -66,7 +66,7 @@ describe('ak-inline-dialog', () => {
 
     it('should not render content if isOpen is not set', () => {
       const wrapper = mount(<InlineDialog content={content} />);
-      expect(wrapper.find('#content')).to.not.exist;
+      expect(wrapper.find('#content')).to.equal(undefined);
     });
 
     it('should reflect content prop onto Layer if isOpen is set', () => {

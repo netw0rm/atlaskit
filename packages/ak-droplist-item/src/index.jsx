@@ -26,7 +26,7 @@ export default class Item extends PureComponent {
     isFocused: PropTypes.bool,
     onActivate: PropTypes.func,
     target: PropTypes.string,
-    type: PropTypes.oneOf('link', 'radio', 'checkbox', 'option'),
+    type: PropTypes.oneOf(['link', 'radio', 'checkbox', 'option']),
   }
 
   static defaultProps = {

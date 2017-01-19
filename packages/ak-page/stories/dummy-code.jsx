@@ -6,6 +6,7 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   border: 1px solid #97A0AF;
   border-radius: 3px;
+  margin-top: 20px;
 `;
 
 const Actions = styled.div`

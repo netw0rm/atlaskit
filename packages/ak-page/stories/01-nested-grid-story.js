@@ -4,7 +4,6 @@ import React from 'react';
 import { Page, Grid, GridColumn } from '../src';
 import { name } from '../package.json';
 
-
 const dummyStyles = {
   background: '#fea',
 };
@@ -12,7 +11,7 @@ const dummyStyles = {
 storiesOf(name, module)
   .add('nested grids', () => (
     <Page>
-      <Grid>
+      <Grid spacing={'cosy'}>
         <GridColumn medium={8}>
           <div style={dummyStyles}>
             8 col

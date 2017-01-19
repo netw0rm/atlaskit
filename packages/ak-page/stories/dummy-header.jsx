@@ -1,22 +1,37 @@
 import React, { PureComponent } from 'react';
 import Button from 'ak-button';
 import ButtonGroup from 'ak-button-group';
+import styled from 'styled-components';
 
 import { Grid, GridColumn } from '../src';
 
+const CommentHeader = styled.div`
+  padding: 20px 0;
+`;
+const RightButtons = styled.div`
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+  width: 100%;
+`;
 
 export default class Dummy extends PureComponent {
   render = () => (
-    <Grid spacing="cosy">
+    <Grid spacing="comfortable">
       <GridColumn>
-        <h1>Commit</h1>
+        <CommentHeader>
+          <h1>Commit</h1>
+        </CommentHeader>
       </GridColumn>
       <GridColumn>
-        <ButtonGroup>
-          <Button>Approve</Button>
-          <Button>Decline</Button>
-          <Button>Edit</Button>
-        </ButtonGroup>
+        <RightButtons>
+          <ButtonGroup>
+            <Button>Approve</Button>
+            <Button>Decline</Button>
+            <Button>Edit</Button>
+          </ButtonGroup>
+        </RightButtons>
       </GridColumn>
     </Grid>
   );

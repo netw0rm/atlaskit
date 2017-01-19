@@ -68,7 +68,7 @@ describe('ak-field-base', () =>
             <div className="foo">Here is some child content!</div>
           </Label>
         );
-        expect(wrapper.find('div.foo')).to.be.present;
+        expect(wrapper.find('div.foo')).to.not.equal(undefined);
       })
     );
   })

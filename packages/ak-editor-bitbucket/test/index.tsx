@@ -22,11 +22,11 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
   it('should not render expanded chrome when collapsed by default', () => {
     expect(mount(<Editor />).find('ChromeCollapsed')).not.to.equal(undefined);
     expect(mount(<Editor />).find('input[placeholder]')).not.to.equal(undefined);
-    expect(mount(<Editor />).find('ChromeExpanded')).not.to.exist;
+    expect(mount(<Editor />).find('ChromeExpanded')).to.equal(undefined);
   });
 
   it('should respect defaultExpanded property', () => {
-    expect(mount(<Editor isExpandedByDefault />).find('ChromeCollapsed')).not.to.exist;
+    expect(mount(<Editor isExpandedByDefault />).find('ChromeCollapsed')).to.equal(undefined);
     expect(mount(<Editor isExpandedByDefault />).find('ChromeExpanded')).not.to.equal(undefined);
   });
 
@@ -35,7 +35,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
 
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
 
-    expect(editorWrapper.find('ChromeCollapsed')).not.to.exist;
+    expect(editorWrapper.find('ChromeCollapsed')).to.equal(undefined);
     expect(editorWrapper.find('ChromeExpanded')).not.to.equal(undefined);
   });
 
@@ -45,7 +45,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
 
     editor.expand();
 
-    expect(editorWrapper.find('ChromeCollapsed')).not.to.exist;
+    expect(editorWrapper.find('ChromeCollapsed')).to.equal(undefined);
     expect(editorWrapper.find('ChromeExpanded')).not.to.equal(undefined);
   });
 
@@ -56,7 +56,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
     editor.collapse();
 
     expect(editorWrapper.find('ChromeCollapsed')).not.to.equal(undefined);
-    expect(editorWrapper.find('ChromeExpanded')).not.to.exist;
+    expect(editorWrapper.find('ChromeExpanded')).to.equal(undefined);
   });
 
   it('should call onExpanded after editor is expanded via click', () => {

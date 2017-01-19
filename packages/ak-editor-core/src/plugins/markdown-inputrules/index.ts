@@ -189,6 +189,13 @@ const emRule2 = new InputRule(/(?:[^_]+)(_([^_]+?)_)$|^(_([^_]+)_)$/, '_', (
   pos: number
 ) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em'));
 
+// ~~string~~ should bold the text
+const strikeRule = new InputRule(/(\~\~([^\*]+)\~\~)$/, '~', (
+  pm: ProseMirror,
+  match: Array<string>,
+  pos: number
+) => replaceWithMark(pm, match, pos, 'strike'));
+
 // `string` should change the current text to monospace
 const monoRule = new InputRule(/(`([^`]+)`)$/, '`', (
   pm: ProseMirror,
@@ -220,6 +227,7 @@ export class MarkdownInputRulesPlugin {
       strongRule2,
       emRule1,
       emRule2,
+      strikeRule,
       monoRule,
       imgRule,
       linkRule,

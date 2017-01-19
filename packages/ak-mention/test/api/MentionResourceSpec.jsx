@@ -112,7 +112,7 @@ describe('MentionResource', () => {
       resource.filter('craig');
       // Not desirable...
       setTimeout(() => {
-        expect(listener).to.not.be.called;
+        expect(listener.called).to.equal(false);
         done();
       }, 50);
     });

@@ -67,7 +67,7 @@ describe('<NavigationItem />', () => {
       mount(<NavigationItem href="foo" />).find(`.${link}`).simulate('mouseDown', {
         preventDefault: spy,
       });
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
   });
 });

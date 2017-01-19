@@ -76,7 +76,7 @@ describe('ak-toggle', () => {
           const props = { [`on${capitalize(eventName)}`]: spy };
           const wrapper = shallow(<Toggle {...props} />);
           wrapper.find('input').simulate(eventName);
-          expect(spy).to.have.been.called;
+          expect(spy.called).to.equal(true);
         })
       )
     );

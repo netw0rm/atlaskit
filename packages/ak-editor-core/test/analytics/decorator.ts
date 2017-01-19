@@ -89,7 +89,7 @@ describe('analytics decorator', () => {
 
     const instance = new AnnotatedTestClassWithPrimitiveValue();
 
-    expect(console.warn).to.have.been.called;
+    expect(console.warn.called).to.equal(true);
     expect(instance.foo).to.eq(15.15);
   });
 

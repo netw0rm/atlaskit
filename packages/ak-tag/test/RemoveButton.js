@@ -54,7 +54,7 @@ describe.skip('ak-tag', () => {
       const mousedownEvent = new CustomEvent('mousedown', {});
       const spy = sinon.spy(mousedownEvent, 'preventDefault');
       rootNode.dispatchEvent(mousedownEvent);
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
 
     describe('should react to hovering', () => {
@@ -80,8 +80,8 @@ describe.skip('ak-tag', () => {
         const stopPropagationSpy = sinon.spy(clickEvent, 'stopPropagation');
         rootNode.dispatchEvent(clickEvent);
         expect(activationSpy.callCount).to.equal(1);
-        expect(preventDefaultSpy).to.have.been.called;
-        expect(stopPropagationSpy).to.have.been.called;
+        expect(preventDefaultSpy.called).to.equal(true);
+        expect(stopPropagationSpy.called).to.equal(true);
       });
 
       ['SPACE', 'ENTER'].forEach(keyName =>
@@ -91,9 +91,9 @@ describe.skip('ak-tag', () => {
           const preventDefaultSpy = sinon.spy(keyPressEvent, 'preventDefault');
           const stopPropagationSpy = sinon.spy(keyPressEvent, 'stopPropagation');
           rootNode.dispatchEvent(keyPressEvent);
-          expect(activationSpy).to.have.been.called;
-          expect(preventDefaultSpy).to.have.been.called;
-          expect(stopPropagationSpy).to.have.been.called;
+          expect(activationSpy.called).to.equal(true);
+          expect(preventDefaultSpy.called).to.equal(true);
+          expect(stopPropagationSpy.called).to.equal(true);
         }));
     });
   });

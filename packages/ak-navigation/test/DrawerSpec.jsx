@@ -45,7 +45,7 @@ describe('<Drawer />', () => {
     it('onBackButton is triggered on activate of <DrawerTrigger />', () => {
       const spy = sinon.spy();
       mount(<Drawer onBackButton={spy} />).find('DrawerTrigger').simulate('click');
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
   });
   describe('renders', () => {

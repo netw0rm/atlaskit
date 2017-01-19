@@ -4,7 +4,7 @@ import { PureComponent } from 'react';
 
 import { CodeBlockState } from '../../plugins/code-block';
 import Panel from '../Panel';
-import languageList, { NO_LANGUAGE } from './languageList';
+import languageList, { findMatchedLanguage, NO_LANGUAGE } from './languageList';
 import * as styles from './styles';
 
 export interface Props {
@@ -57,7 +57,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
 
     this.setState({
       active: active,
-      language: language || NO_LANGUAGE,
+      language: findMatchedLanguage(language),
       element: element
     });
   }

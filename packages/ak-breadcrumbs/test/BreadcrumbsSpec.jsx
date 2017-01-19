@@ -54,7 +54,7 @@ describe(name, () => {
           </Breadcrumbs>
         );
         const containerDiv = wrapper.find(`.${locals.container}`);
-        expect(containerDiv).not.to.equal(undefined);
+        expect(containerDiv.length.length).not.to.equal(0);
         expect(containerDiv).to.have.exactly(3).descendants(Item);
       });
 

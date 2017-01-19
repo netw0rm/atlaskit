@@ -35,7 +35,7 @@ describe(name, () => {
     });
 
     it('should render Layer component', () => {
-      expect(wrapper.find(`.${styles.dropWrapper}`)).not.to.equal(undefined);
+      expect(wrapper.find(`.${styles.dropWrapper}`).length.length).not.to.equal(0);
       const layer = wrapper.find(`.${styles.dropWrapper}`).children().first();
       const layerNode = layer.node;
       expect(layerNode instanceof Layer).to.equal(true);

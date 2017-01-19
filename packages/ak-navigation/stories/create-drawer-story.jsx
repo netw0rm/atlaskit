@@ -26,24 +26,24 @@ storiesOf(name, module)
           <div>
             <AkContainerItemGroup>
               <AkDrawerItem
+                href="#1"
                 icon={<EmojiObjectsIcon />}
                 text="Create item 1"
-                href="#1"
               />
               <AkDrawerItem
+                href="#2"
                 icon={<EmojiNatureIcon />}
                 text="Create item 2"
-                href="#2"
               />
               <AkDrawerItem
+                href="#3"
                 icon={<EmojiObjectsIcon />}
                 text="Create item 3"
-                href="#3"
               />
               <AkDrawerItem
+                href="#4"
                 icon={<EmojiTravelIcon />}
                 text="Create item 4"
-                href="#4"
               />
             </AkContainerItemGroup>
             <AkContainerItemGroup>

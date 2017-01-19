@@ -114,7 +114,7 @@ describe('ak-inline-edit', () => {
         />
       );
       wrapper.find(FieldBase).simulate('click');
-      expect(spy).to.have.been.notCalled;
+      expect(spy.called).to.equal(false);
     });
   });
 
@@ -181,7 +181,7 @@ describe('ak-inline-edit', () => {
        **/
       const onClickNode = label.findWhere(n => n.prop('onClick') && n.find(Label).isEmpty()).at(0);
       onClickNode.simulate('click');
-      expect(spy).to.not.have.been.called;
+      expect(spy.called).to.equal(false);
     });
   });
 

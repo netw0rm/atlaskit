@@ -27,7 +27,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
     analyticsService.handler = handler;
 
     mount(<Editor analyticsHandler={handler} />);
-    expect(handler).to.not.have.been.called;
+    expect(handler.called).to.equal(false);
 
     mount(<Editor analyticsHandler={handler} />).find('ChromeCollapsed').simulate('focus');
     expect(handler.callCount).to.equal(1);
@@ -49,7 +49,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
       }
     }
 
-    expect(handler).to.not.have.been.called;
+    expect(handler.called).to.equal(false);
     mount(<ContainerWithTwoEditors />);
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
     expect(handler).to.have.been.calledTwice;
@@ -69,7 +69,7 @@ describe('ak-editor-bitbucket/analytics/analyticsHandler', () => {
   it('updates analytics handler when provided via property', () => {
     const handler = sinon.spy() as AnalyticsHandler;
     mount(<Editor analyticsHandler={handler} />);
-    expect(handler).to.not.have.been.called;
+    expect(handler.called).to.equal(false);
 
     mount(<Editor analyticsHandler={handler} />).find('ChromeCollapsed').simulate('focus');
     expect(handler.callCount).to.equal(1);

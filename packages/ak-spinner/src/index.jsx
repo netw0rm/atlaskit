@@ -2,19 +2,58 @@ import classNames from 'classnames';
 import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
 
+const SIZES = Object.freeze({
+  small: 20,
+  medium: 32,
+  large: 45
+});
+
+/**
+ * @description An spinning loading/waiting indicator
+ * @class Spinner
+ * @example @js import Spinner from 'ak-spinner';
+ * ReactDOM.render(<Spinner />, container);
+ */
 export default class Spinner extends PureComponent {
   static displayName = 'AkSpinner';
 
   static propTypes = {
+    /**
+     * @description Callback function executed on completion
+     * @memberof Spinner
+     * @instance
+     * @type {function}
+     * @default noop
+     */
     onComplete: PropTypes.func,
+
+    /**
+     * @description Flag indicating that the spinner should dismiss
+     * @memberof Spinner
+     * @instance
+     * @type {Boolean}
+     * @default false
+     */
     isCompleting: PropTypes.bool,
-    spinnerSize: PropTypes.number,
+
+    /**
+     * @description Size of the spinner
+     * Allowed values are: 'small' (20px), 'medium' (32px), 'large' (45px), or any number.
+     * @memberof Spinner
+     * @instance
+     * @type {(string|number)}
+     * @default 20
+     */
+    size: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.oneOf(['small', 'medium', 'large']),
+    ])
   }
 
   static defaultProps = {
     onComplete: () => {},
     isCompleting: false,
-    spinnerSize: 20,
+    size: 20,
   }
 
   handleTransitionEnd = (e) => {
@@ -28,12 +67,16 @@ export default class Spinner extends PureComponent {
   }
 
   render() {
+    const spinnerSize = SIZES[this.props.size] || this.props.size;
+
+    if (typeof spinnerSize !== 'number') return null;
+
     const spinnerStyles = {
       [styles.spinner]: true,
       [styles.active]: !this.props.isCompleting,
     };
-    const strokeWidth = Math.round(this.props.spinnerSize / 10);
-    const strokeRadius = (this.props.spinnerSize / 2) - (strokeWidth / 2);
+    const strokeWidth = Math.round(spinnerSize / 10);
+    const strokeRadius = (spinnerSize / 2) - (strokeWidth / 2);
     const circumference = Math.PI * strokeRadius * 2;
     const dashStyles = {
       strokeDashoffset: this.props.isCompleting ? circumference : 0.8 * circumference,
@@ -45,24 +88,24 @@ export default class Spinner extends PureComponent {
           className={classNames(spinnerStyles)}
           onTransitionEnd={this.handleTransitionEnd}
           style={{
-            height: `${this.props.spinnerSize}px`,
-            width: `${this.props.spinnerSize}px`,
+            height: `${spinnerSize}px`,
+            width: `${spinnerSize}px`,
           }}
         >
           <div className={styles.spinnerWrapper}>
             <svg
-              height={this.props.spinnerSize}
-              width={this.props.spinnerSize}
+              height={spinnerSize}
+              width={spinnerSize}
               xmlns="http://www.w3.org/2000/svg"
-              viewBox={`0 0 ${this.props.spinnerSize} ${this.props.spinnerSize}`}
+              viewBox={`0 0 ${spinnerSize} ${spinnerSize}`}
             >
               <circle
                 className={styles.circle}
                 fill="none"
                 strokeWidth={strokeWidth}
                 strokeLinecap="round"
-                cx={this.props.spinnerSize / 2}
-                cy={this.props.spinnerSize / 2}
+                cx={spinnerSize / 2}
+                cy={spinnerSize / 2}
                 r={strokeRadius}
                 style={dashStyles}
               />

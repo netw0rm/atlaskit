@@ -18,6 +18,7 @@ const description = [`Spinners are used for showing a system process of unknown 
 const propDescriptions = {
   isCompleting: 'a flag to signal that a loader should start playing it&#39;s fade out animation',
   onComplete: 'a callback function called after the fade out animation has finished',
+  size: 'a number indicating the width of the spinner, or one of "small" (20px), "medium" (32px), or "large" (45px).',
 };
 
 storiesOf(name, module)

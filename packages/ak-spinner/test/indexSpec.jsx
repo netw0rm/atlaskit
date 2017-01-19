@@ -84,5 +84,12 @@ describe('ak-spinner', () => {
       expect(custom.find(`.${spinnerClass}`).prop('style').height).to.equal('72px');
       expect(custom.find(`.${spinnerClass}`).prop('style').width).to.equal('72px');
     });
+
+    it('should render the spinner with the default size if an unsupported value is provided', () => {
+      const custom = mount(<Spinner size={{something: 'weird'}} />);
+
+      expect(custom.find(`.${spinnerClass}`).prop('style').height).to.equal('20px');
+      expect(custom.find(`.${spinnerClass}`).prop('style').width).to.equal('20px');
+    });
   });
 });

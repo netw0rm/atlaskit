@@ -27,7 +27,7 @@ describe(name, () => {
         expect(size).to.not.equal(undefined);
 
         expect(new Icon({ label: 'My icon' })).to.be.instanceOf(PureComponent);
-        expect(NotImplementedError).to.be.an.error;
+        expect(NotImplementedError).to.throw(Error);
         expect(Object.values(size)).to.deep.equal(['small', 'medium', 'large', 'xlarge']);
       });
     });

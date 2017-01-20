@@ -16,8 +16,8 @@ export default class RandomBadge extends PureComponent {
     return badgeNumber > 0 ?
       (<AkBadge
         appearance={Math.random() > 0.5 ? 'primary' : null}
-        value={badgeNumber}
         theme={this.props.theme}
+        value={badgeNumber}
       />) : null;
   }
 }

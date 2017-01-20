@@ -3,19 +3,21 @@ import classNames from 'classnames';
 import styles from 'style!../less/GlobalNavigation.less';
 import { globalOpenWidth } from '../../shared-variables';
 import Spacer from './Spacer';
-import GlobalItem from './GlobalItem';
+import GlobalActions from './GlobalActions';
 import DefaultLinkComponent from './DefaultLinkComponent';
 
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
     accountItem: PropTypes.node,
-    children: PropTypes.node,
     helpItem: PropTypes.node,
     linkComponent: PropTypes.func,
     primaryIcon: PropTypes.node,
     primaryItemHref: PropTypes.string,
     shouldAnimate: PropTypes.bool,
-    width: PropTypes.number,
+    searchIcon: PropTypes.node,
+    onSearchActivate: PropTypes.func,
+    onCreateActivate: PropTypes.func,
+    createIcon: PropTypes.node,
   };
   static defaultProps = {
     accountItem: null,
@@ -23,21 +25,19 @@ export default class GlobalNavigation extends PureComponent {
     linkComponent: DefaultLinkComponent,
     primaryIcon: null,
     shouldAnimate: false,
-    width: globalOpenWidth,
   };
-  getTranslate() {
-    return Math.min(0, this.props.width - globalOpenWidth);
-  }
   render() {
     const {
       accountItem,
-      children,
+      createIcon,
       helpItem,
       linkComponent,
+      onCreateActivate,
+      onSearchActivate,
       primaryIcon,
       primaryItemHref,
+      searchIcon,
       shouldAnimate,
-      width,
     } = this.props;
     return (
       <div
@@ -46,28 +46,22 @@ export default class GlobalNavigation extends PureComponent {
         })}
       >
         <Spacer
-          width={width}
           shouldAnimate={shouldAnimate}
+          width={globalOpenWidth}
         />
         <div
           className={styles.globalNavigation}
-          style={{
-            transform: `translateX(${this.getTranslate()}px)`,
-          }}
         >
-          {primaryIcon ?
-            <div className={styles.primaryIcon}>
-              <GlobalItem
-                size="medium"
-                linkComponent={linkComponent}
-                href={primaryItemHref}
-              >
-                {primaryIcon}
-              </GlobalItem>
-            </div>
-          : null}
           <div className={styles.primaryContainer}>
-            {children}
+            <GlobalActions
+              createIcon={createIcon}
+              linkComponent={linkComponent}
+              onCreateActivate={onCreateActivate}
+              onSearchActivate={onSearchActivate}
+              primaryIcon={primaryIcon}
+              primaryItemHref={primaryItemHref}
+              searchIcon={searchIcon}
+            />
           </div>
           <div className={styles.secondaryContainer}>
             {helpItem}

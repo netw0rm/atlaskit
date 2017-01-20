@@ -15,7 +15,7 @@ function lint () {
     # Run eslint and tslint in parallel for speed!
 
     if [ ! "" == "$jsdiff" ]; then
-      eslint --format 'node_modules/eslint-friendly-formatter' --no-ignore $jsdiff &
+      eslint --format 'node_modules/eslint-friendly-formatter' $jsdiff &
       eslint_pid=$!
     fi
 

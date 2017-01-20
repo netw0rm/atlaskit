@@ -39,8 +39,8 @@ export default class Resizer extends PureComponent {
   render() {
     return (
       <div
-        onMouseDown={this.mouseDownHandler}
         className={styles.resizer}
+        onMouseDown={this.mouseDownHandler}
       />
     );
   }

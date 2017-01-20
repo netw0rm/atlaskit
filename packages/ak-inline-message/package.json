@@ -1,6 +1,6 @@
 {
   "name": "ak-inline-message",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A React component for displaying a clickable message which triggers an inline dialog",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

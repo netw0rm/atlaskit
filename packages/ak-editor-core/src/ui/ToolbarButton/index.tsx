@@ -1,6 +1,6 @@
 import AkButton from 'ak-button';
 import * as React from 'react';
-import { MouseEvent, PureComponent } from 'react';
+import { MouseEvent, PureComponent, ReactElement } from 'react';
 import * as styles from './styles';
 
 export interface Props {
@@ -9,6 +9,7 @@ export interface Props {
   href?: string;
   target?: string;
   theme?: 'dark';
+  iconBefore?: ReactElement<any>;
   spacing?: 'default' | 'compact' | 'none';
   onClick?: () => void;
 }
@@ -29,6 +30,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
           href={this.props.href}
           target={this.props.target}
           theme={this.props.theme}
+          iconBefore={this.props.iconBefore}
         >
           {this.props.children}
         </AkButton>

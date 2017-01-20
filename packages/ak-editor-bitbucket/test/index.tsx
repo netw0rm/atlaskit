@@ -21,11 +21,11 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
   it('should not render expanded chrome when collapsed by default', () => {
     expect(mount(<Editor />).find('ChromeCollapsed')).to.have.length.above(0);
     expect(mount(<Editor />).find('input[placeholder]')).to.have.length.above(0);
-    expect(mount(<Editor />).find('ChromeExpanded')).to.equal(undefined);
+    expect(mount(<Editor />).find('ChromeExpanded').length).to.equal(0);
   });
 
   it('should respect defaultExpanded property', () => {
-    expect(mount(<Editor isExpandedByDefault />).find('ChromeCollapsed')).to.equal(undefined);
+    expect(mount(<Editor isExpandedByDefault />).find('ChromeCollapsed').length).to.equal(0);
     expect(mount(<Editor isExpandedByDefault />).find('ChromeExpanded')).to.have.length.above(0);
   });
 
@@ -34,7 +34,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
 
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
 
-    expect(editorWrapper.find('ChromeCollapsed')).to.equal(undefined);
+    expect(editorWrapper.find('ChromeCollapsed').length).to.equal(0);
     expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
   });
 
@@ -44,7 +44,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
 
     editor.expand();
 
-    expect(editorWrapper.find('ChromeCollapsed')).to.equal(undefined);
+    expect(editorWrapper.find('ChromeCollapsed').length).to.equal(0);
     expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
   });
 
@@ -55,7 +55,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
     editor.collapse();
 
     expect(editorWrapper.find('ChromeCollapsed')).to.have.length.above(0);
-    expect(editorWrapper.find('ChromeExpanded')).to.equal(undefined);
+    expect(editorWrapper.find('ChromeExpanded').length).to.equal(0);
   });
 
   it('should call onExpanded after editor is expanded via click', () => {
@@ -225,13 +225,13 @@ describe('ak-editor-bitbucket/toolbar', () => {
     const trigger = editor.find('ToolbarBlockType AkButton');
 
     expect(trigger).to.have.length.above(0);
-    expect(editor.find('ToolbarBlockType Group')).to.equal(undefined);
+    expect(editor.find('ToolbarBlockType Group').length).to.equal(0);
 
     trigger.simulate('click');
     expect(editor.find('ToolbarBlockType Group')).to.have.length.above(0);
 
     trigger.simulate('click');
-    expect(editor.find('ToolbarBlockType Group')).to.equal(undefined);
+    expect(editor.find('ToolbarBlockType Group').length).to.equal(0);
   });
 });
 

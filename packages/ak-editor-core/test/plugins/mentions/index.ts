@@ -96,7 +96,7 @@ describe('mentions', () => {
       (keyDownEvent as any).keyCode = 38;
 
       pm.input.dispatchKey('Up', keyDownEvent);
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
 
     it('should trigger "onSelectNext" when "Down"-key is pressed', () => {
@@ -111,7 +111,7 @@ describe('mentions', () => {
       (keyDownEvent as any).keyCode = 40;
 
       pm.input.dispatchKey('Down', keyDownEvent);
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
 
     it('should trigger "onSelectCurrent" when "Enter"-key is pressed', () => {
@@ -126,7 +126,7 @@ describe('mentions', () => {
       (keyDownEvent as any).keyCode = 13;
 
       pm.input.dispatchKey('Enter', keyDownEvent);
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
 
     it('should trigger "dismiss" when "Esc"-key is pressed', () => {
@@ -140,7 +140,7 @@ describe('mentions', () => {
       (keyDownEvent as any).keyCode = 27;
 
       pm.input.dispatchKey('Esc', keyDownEvent);
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
 
   });

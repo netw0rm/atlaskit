@@ -88,7 +88,7 @@ describe('lists', () => {
 
       plugin.subscribe(spy);
 
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should emit a change when the selected node becomes an ordered list', () => {

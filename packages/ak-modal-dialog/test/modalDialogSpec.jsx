@@ -93,7 +93,7 @@ describe('ak-modal-dialog', () => {
         const spy = sinon.spy();
         const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
         wrapper.find(`.${styles.locals.modalWrapper}`).children().first().simulate('click');
-        expect(spy).to.have.been.calledOnce;
+        expect(spy.callCount).to.equal(1);
       });
     });
   });

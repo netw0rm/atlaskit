@@ -15,7 +15,7 @@ describe(name, () => {
   describe('CommentLayout', () => {
     describe('exports', () => {
       it('the CommentLayout component', () => {
-        expect(CommentLayout).to.exist;
+        expect(CommentLayout).not.to.equal(undefined);
         expect(new CommentLayout()).to.be.instanceOf(Component);
       });
     });
@@ -23,7 +23,7 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<CommentLayout />);
-        expect(wrapper).to.exist;
+        expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
     });

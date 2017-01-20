@@ -17,7 +17,7 @@ const { expect } = chai;
 
 describe(name, () => {
   it('should be possible to create a component', () => {
-    expect(shallow(<Trigger />)).to.exist;
+    expect(shallow(<Trigger />)).not.to.equal(undefined);
   });
 
   describe('render', () => {
@@ -67,22 +67,22 @@ describe(name, () => {
 
       it('should be activated when enter is pressed', () => {
         wrapper.simulate('keyDown', { keyCode: keyCode('enter') });
-        expect(onActivate.calledOnce).to.be.true;
+        expect(onActivate.calledOnce).to.equal(true);
       });
 
       it('should be activated when space is pressed', () => {
         wrapper.simulate('keyDown', { keyCode: keyCode('space') });
-        expect(onActivate.calledOnce).to.be.true;
+        expect(onActivate.calledOnce).to.equal(true);
       });
 
       it('should be activated when down is pressed', () => {
         wrapper.simulate('keyDown', { keyCode: keyCode('down') });
-        expect(onActivate.calledOnce).to.be.true;
+        expect(onActivate.calledOnce).to.equal(true);
       });
 
       it('should be activated when clicked', () => {
         wrapper.simulate('click');
-        expect(onActivate.calledOnce).to.be.true;
+        expect(onActivate.calledOnce).to.equal(true);
       });
     });
   });

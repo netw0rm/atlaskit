@@ -24,7 +24,7 @@ describe('<DefaultLinkComponent />', () => {
       const mouseDown = sinon.spy();
       shallow(<DefaultLinkComponent href="foo" onMouseDown={mouseDown} />)
         .find('a').simulate('mouseDown');
-      expect(mouseDown).to.have.been.called;
+      expect(mouseDown.called).to.equal(true);
     });
     it('renders children directly when no href is given', () => {
       expect(shallow(<DefaultLinkComponent><span>foo</span></DefaultLinkComponent>)

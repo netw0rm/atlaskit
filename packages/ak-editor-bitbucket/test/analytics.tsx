@@ -18,19 +18,19 @@ chai.use(sinonChai);
 
 describe('ak-editor-bitbucket/analytics/start-event', () => {
   it('atlassian.editor.start', () => {
-    const handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy();
     analyticsService.handler = handler;
 
     mount(<Editor analyticsHandler={handler} />);
-    expect(handler).to.not.have.been.called;
+    expect(handler.called).to.equal(false);
 
     mount(<Editor analyticsHandler={handler} />).find('ChromeCollapsed').simulate('focus');
-    expect(handler).to.have.been.calledOnce;
+    expect(handler.callCount).to.equal(1);
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
   });
 
   it('atlassian.editor.start with two child editors sharing a handler', () => {
-    const handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy();
     analyticsService.handler = handler;
 
     class ContainerWithTwoEditors extends React.PureComponent<{}, {}> {
@@ -44,30 +44,30 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
       }
     }
 
-    expect(handler).to.not.have.been.called;
+    expect(handler.called).to.equal(false);
     mount(<ContainerWithTwoEditors />);
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
     expect(handler).to.have.been.calledTwice;
   });
 
   it('editor.start must not be called when unmounting component', () => {
-    const handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy();
     analyticsService.handler = handler;
 
     mount(<Editor analyticsHandler={handler} isExpandedByDefault />).unmount();
-    expect(handler).to.have.been.calledOnce;
+    expect(handler.callCount).to.equal(1);
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
   });
 });
 
 describe('ak-editor-bitbucket/analytics/analyticsHandler', () => {
   it('updates analytics handler when provided via property', () => {
-    const handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy();
     mount(<Editor analyticsHandler={handler} />);
-    expect(handler).to.not.have.been.called;
+    expect(handler.called).to.equal(false);
 
     mount(<Editor analyticsHandler={handler} />).find('ChromeCollapsed').simulate('focus');
-    expect(handler).to.have.been.calledOnce;
+    expect(handler.callCount).to.equal(1);
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
   });
 });
@@ -81,7 +81,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
 
   beforeEach(() => {
     const noop = () => {};
-    handler = sinon.spy() as AnalyticsHandler;
+    handler = sinon.spy();
 
     editor = mount(
       <Editor isExpandedByDefault onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,

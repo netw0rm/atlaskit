@@ -412,7 +412,7 @@ describe('block-type', () => {
       it('returns true', () => {
         const { plugin } = editor(doc(code_block()('text')));
 
-        expect(plugin.insertNewLine()).to.be.true;
+        expect(plugin.insertNewLine()).to.equal(true);
       });
     });
 
@@ -429,7 +429,7 @@ describe('block-type', () => {
         it('returns true', () => {
           const { plugin } = editor(doc(p('text')));
 
-          expect(plugin.insertNewLine()).to.be.true;
+          expect(plugin.insertNewLine()).to.equal(true);
         });
       });
     });

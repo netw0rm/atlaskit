@@ -41,7 +41,7 @@ describe(name, () => {
   });
 
   it('should be possible to create a component', () => {
-    expect(shallow(<Menu>test</Menu>)).to.exist;
+    expect(shallow(<Menu>test</Menu>)).not.to.equal(undefined);
   });
 
   describe('render', () => {
@@ -76,15 +76,15 @@ describe(name, () => {
 
   describe('show/hide logic', () => {
     it('should be open when the defaultOpen property set to true', () => {
-      expect(shallow(<Menu defaultOpen>text</Menu>).state().isOpen).to.be.true;
+      expect(shallow(<Menu defaultOpen>text</Menu>).state().isOpen).to.equal(true);
     });
 
     it('interacting with trigger should open the dropdown', () => {
       const wrapper = mount(<Menu items={itemsList}><div id="trigger">test</div></Menu>);
       const trigger = wrapper.find('#trigger');
-      expect(wrapper.state().isOpen).to.be.false;
+      expect(wrapper.state().isOpen).to.equal(false);
       trigger.simulate('click');
-      expect(wrapper.state().isOpen).to.be.true;
+      expect(wrapper.state().isOpen).to.equal(true);
     });
 
     it('interacting with link item should close the dropdown', () => {
@@ -96,9 +96,9 @@ describe(name, () => {
       }];
       const wrapper = mount(<Menu items={items} defaultOpen>test</Menu>);
       const item = wrapper.find('[role="menuitem"]');
-      expect(wrapper.state().isOpen).to.be.true;
+      expect(wrapper.state().isOpen).to.equal(true);
       item.simulate('click');
-      expect(wrapper.state().isOpen).to.be.false;
+      expect(wrapper.state().isOpen).to.equal(false);
     });
 
     it('interacting with checkbox item should not close the menu', () => {
@@ -110,9 +110,9 @@ describe(name, () => {
       }];
       const wrapper = mount(<Menu items={items} defaultOpen>test</Menu>);
       const item = wrapper.find('[role="menuitemcheckbox"]');
-      expect(wrapper.state().isOpen).to.be.true;
+      expect(wrapper.state().isOpen).to.equal(true);
       item.simulate('click');
-      expect(wrapper.state().isOpen).to.be.true;
+      expect(wrapper.state().isOpen).to.equal(true);
     });
 
     it('interacting with radio item should not close the menu', () => {
@@ -124,9 +124,9 @@ describe(name, () => {
       }];
       const wrapper = mount(<Menu items={items} defaultOpen>test</Menu>);
       const item = wrapper.find('[role="menuitemradio"]');
-      expect(wrapper.state().isOpen).to.be.true;
+      expect(wrapper.state().isOpen).to.equal(true);
       item.simulate('click');
-      expect(wrapper.state().isOpen).to.be.true;
+      expect(wrapper.state().isOpen).to.equal(true);
     });
   });
 
@@ -158,8 +158,8 @@ describe(name, () => {
         test</Menu>);
       const item = wrapper.find('[role="menuitemcheckbox"]');
       item.simulate('click');
-      expect(attrs).to.exist;
-      expect(attrs.item).to.exist;
+      expect(attrs).not.to.equal(undefined);
+      expect(attrs.item).not.to.equal(undefined);
       expect(attrs.item).to.equal(items[0].items[0]);
       expect(attrs.item).to.deep.equal({ content: 'item 1', type: 'checkbox', isChecked: true });
     });
@@ -185,24 +185,24 @@ describe(name, () => {
       it('should set `checked` to true when the radio item is activated', () => {
         handler({ item: item1 });
         const stateItems = wrapper.state('items');
-        expect(stateItems[0].items[0].isChecked).to.be.true;
+        expect(stateItems[0].items[0].isChecked).to.equal(true);
       });
 
       it('should stay `checked` if the item is activated more then once', () => {
         handler({ item: item1 });
         handler({ item: item1 });
         const stateItems = wrapper.state('items');
-        expect(stateItems[0].items[0].isChecked).to.be.true;
+        expect(stateItems[0].items[0].isChecked).to.equal(true);
       });
 
       it('should switch `checked` item to the new one, only one item can be checked', () => {
         handler({ item: item1 });
         const stateItems = wrapper.state('items');
-        expect(stateItems[0].items[0].isChecked).to.be.true;
-        expect(stateItems[0].items[1].isChecked).to.be.false;
+        expect(stateItems[0].items[0].isChecked).to.equal(true);
+        expect(stateItems[0].items[1].isChecked).to.equal(false);
         handler({ item: item2 });
-        expect(stateItems[0].items[0].isChecked).to.be.false;
-        expect(stateItems[0].items[1].isChecked).to.be.true;
+        expect(stateItems[0].items[0].isChecked).to.equal(false);
+        expect(stateItems[0].items[1].isChecked).to.equal(true);
       });
     });
 
@@ -232,24 +232,24 @@ describe(name, () => {
       it('should set `checked` to true when the checkbox item is activated', () => {
         handler({ item: item1 });
         const stateItems = wrapper.state('items');
-        expect(stateItems[0].items[0].isChecked).to.be.true;
+        expect(stateItems[0].items[0].isChecked).to.equal(true);
       });
 
       it('should toggle `checked` if the item is activated more then once', () => {
         const stateItems = wrapper.state('items');
         handler({ item: item1 });
         handler({ item: item1 });
-        expect(stateItems[0].items[0].isChecked).to.be.false;
+        expect(stateItems[0].items[0].isChecked).to.equal(false);
       });
 
       it('should not affect neighbours', () => {
         const stateItems = wrapper.state('items');
         handler({ item: item1 });
-        expect(stateItems[0].items[0].isChecked).to.be.true;
-        expect(stateItems[0].items[1].isChecked).to.be.undefined;
+        expect(stateItems[0].items[0].isChecked).to.equal(true);
+        expect(stateItems[0].items[1].isChecked).to.equal(undefined);
         handler({ item: item2 });
-        expect(stateItems[0].items[0].isChecked).to.be.true;
-        expect(stateItems[0].items[1].isChecked).to.be.true;
+        expect(stateItems[0].items[0].isChecked).to.equal(true);
+        expect(stateItems[0].items[1].isChecked).to.equal(true);
       });
     });
   });

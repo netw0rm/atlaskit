@@ -39,7 +39,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
           onClick={this.openLinkPanel}
           selected={adding}
           iconBefore={<LinkIcon label="Link" />}
-        ></ToolbarButton>
+        />
         {!adding ? null :
         <Panel align="center" onOutsideClick={this.closeLinkPanel}>
           <div className={styles.textInputContainer}>

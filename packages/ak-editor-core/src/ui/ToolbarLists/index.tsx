@@ -46,7 +46,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
           selected={this.state.bulletListActive}
           disabled={this.state.bulletListDisabled}
           iconBefore={<BulletListIcon label="Bullet list" />}
-        ></ToolbarButton>
+        />
         }
 
         {this.state.orderedListHidden ? null :
@@ -55,7 +55,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
           selected={this.state.orderedListActive}
           disabled={this.state.orderedListDisabled}
           iconBefore={<NumberListIcon label="Ordered list" />}
-        ></ToolbarButton>
+        />
         }
       </span>
     );

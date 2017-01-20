@@ -43,7 +43,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
           selected={this.state.boldActive}
           disabled={this.state.boldDisabled}
           iconBefore={<BoldIcon label="Bold" />}
-        ></ToolbarButton>
+        />
         }
 
         {this.state.italicHidden ? null :
@@ -52,7 +52,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
           selected={this.state.italicActive}
           disabled={this.state.italicDisabled}
           iconBefore={<ItalicIcon label="Italic" />}
-        ></ToolbarButton>
+        />
         }
 
         {this.state.underlineHidden ? null :
@@ -61,7 +61,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
           selected={this.state.underlineActive}
           disabled={this.state.underlineDisabled}
           iconBefore={<UnderlineIcon label="Underline" />}
-        ></ToolbarButton>
+        />
         }
       </span>
     );

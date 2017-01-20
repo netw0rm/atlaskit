@@ -19,23 +19,23 @@ const {
 describe('ak-spinner', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Spinner />);
-    expect(wrapper).to.exist;
+    expect(wrapper).not.to.equal(undefined);
   });
 
   it('should render a spinner element', () => {
     const wrapper = shallow(<Spinner />);
-    expect(wrapper.find(`.${spinnerClass}`)).to.exist;
+    expect(wrapper.find(`.${spinnerClass}`)).to.have.length.above(0);
   });
 
   it('should apply active class by default', () => {
     const wrapper = shallow(<Spinner />);
-    expect(wrapper.find(`.${activeClass}`)).to.exist;
+    expect(wrapper.find(`.${activeClass}`)).to.have.length.above(0);
   });
 
   describe('isCompleting prop', () => {
     it('should remove the .active class when set to true', () => {
       const wrapper = shallow(<Spinner isCompleting />);
-      expect(wrapper.find(`.${activeClass}`)).to.not.exist;
+      expect(wrapper.find(`.${activeClass}`).length).to.equal(0);
     });
   });
 
@@ -49,7 +49,7 @@ describe('ak-spinner', () => {
       wrapper.find(`.${spinnerClass}`)
         .simulate('transitionEnd', { propertyName: 'stroke-dashoffset' });
 
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should not be called if isCompleting is not set', () => {
@@ -58,7 +58,7 @@ describe('ak-spinner', () => {
       wrapper.find(`.${spinnerClass}`)
         .simulate('transitionEnd', { propertyName: 'stroke-dashoffset' });
 
-      expect(spy).to.not.have.been.calledOnce;
+      expect(spy.callCount).to.not.equal(1);
     });
   });
 

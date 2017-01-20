@@ -31,7 +31,7 @@ describe('waitUntil', () => {
     setTimeout(() => (val += 1), 10);
     // now wait until val = 1;
     waitUntil(spy).then(() => {
-      spy.should.have.been.called;
+      expect(spy.called).to.equal(true);
       done();
     });
   });

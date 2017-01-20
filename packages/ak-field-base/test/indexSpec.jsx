@@ -94,14 +94,14 @@ describe('ak-field-base', () => {
       const spy = sinon.spy();
       wrapper = mount(<FieldBase {...defaultProps} onFocus={spy} />);
       wrapper.find(`.${contentClass}`).simulate('focus');
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should call onBlur', () => {
       const spy = sinon.spy();
       wrapper = mount(<FieldBase {...defaultProps} onBlur={spy} />);
       wrapper.find(`.${contentClass}`).simulate('blur');
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     });
   });
 });

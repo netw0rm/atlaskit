@@ -17,7 +17,7 @@ describe(name, () => {
   describe('BreadcrumbsItem', () => {
     describe('exports', () => {
       it('the BreadcrumbsItem component', () => {
-        expect(Item).to.exist;
+        expect(Item).not.to.equal(undefined);
         expect(new Item()).to.be.instanceOf(Component);
       });
     });
@@ -25,7 +25,7 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<Item />);
-        expect(wrapper).to.exist;
+        expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 

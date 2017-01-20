@@ -16,7 +16,7 @@ describe(name, () => {
   describe('Comment', () => {
     describe('exports', () => {
       it('the Comment component', () => {
-        expect(Comment).to.exist;
+        expect(Comment).not.to.equal(undefined);
         expect(new Comment()).to.be.instanceOf(Component);
       });
     });
@@ -24,7 +24,7 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<Comment />);
-        expect(wrapper).to.exist;
+        expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
     });

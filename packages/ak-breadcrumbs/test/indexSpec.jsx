@@ -17,9 +17,9 @@ describe(name, () => {
   describe('Breadcrumbs', () => {
     describe('exports', () => {
       it('the smart React component, Breadcrumbs component, and the Item component', () => {
-        expect(Breadcrumbs).to.exist;
-        expect(AkBreadcrumbs).to.exist;
-        expect(Item).to.exist;
+        expect(Breadcrumbs).not.to.equal(undefined);
+        expect(AkBreadcrumbs).not.to.equal(undefined);
+        expect(Item).not.to.equal(undefined);
         expect(new Breadcrumbs()).to.be.instanceOf(Component);
         expect(new AkBreadcrumbs()).to.be.instanceOf(Component);
         expect(new Item()).to.be.instanceOf(Component);

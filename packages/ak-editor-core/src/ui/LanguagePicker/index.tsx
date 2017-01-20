@@ -1,11 +1,10 @@
+import DropdownMenu from 'ak-dropdown-menu';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import DropdownMenu from 'ak-dropdown-menu';
 
 import { CodeBlockState } from '../../plugins/code-block';
-import { Node } from '../../prosemirror';
 import Panel from '../Panel';
-import languageList, { NO_LANGUAGE } from './languageList';
+import languageList, { findMatchedLanguage, NO_LANGUAGE } from './languageList';
 import * as styles from './styles';
 
 export interface Props {
@@ -58,7 +57,7 @@ export default class LanguagePicker extends PureComponent<Props, State> {
 
     this.setState({
       active: active,
-      language: language || NO_LANGUAGE,
+      language: findMatchedLanguage(language),
       element: element
     });
   }

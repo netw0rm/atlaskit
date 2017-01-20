@@ -57,23 +57,37 @@ export default class ModalDialog extends PureComponent {
      * @instance
      * @type {function}
      */
-    onBlanketClicked: PropTypes.func,
+    onDialogDismissed: PropTypes.func,
   };
 
   static defaultProps = {
     isOpen: false,
-    onBlanketClicked: () => {},
+    onDialogDismissed: () => {},
     width: WIDTH_ENUM.defaultValue,
   };
+
+  componentDidMount = () => {
+    document.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  componentWillUnmount = () => {
+    document.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      this.props.onDialogDismissed(e);
+    }
+  }
 
   render() {
     // don't render anything if open = false
     if (!this.props.isOpen) return null;
 
-    const { onBlanketClicked, header, children, footer, width } = this.props;
+    const { onDialogDismissed, header, children, footer, width } = this.props;
     return (
       <div className={styles.modalWrapper}>
-        <Blanket isTinted onBlanketClicked={onBlanketClicked} />
+        <Blanket isTinted onBlanketClicked={onDialogDismissed} />
         <div
           className={classNames([
             styles.modalPositioner,

@@ -6,7 +6,6 @@ import {
   Plugin,
   ProseMirror,
   Schema,
-  UpdateScheduler,
 } from '../../prosemirror';
 import {
   EmMarkType,

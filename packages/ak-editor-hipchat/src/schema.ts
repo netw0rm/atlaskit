@@ -1,12 +1,12 @@
 import {
   DocNodeType,
   HardBreakNodeType,
+  LinkMarkType,
+  MentionNodeType,
+  MentionQueryMarkType,
   ParagraphNodeType,
   Schema,
   Text,
-  MentionQueryMarkType,
-  MentionNodeType,
-  LinkMarkType,
 } from 'ak-editor-core';
 
 export default new Schema({

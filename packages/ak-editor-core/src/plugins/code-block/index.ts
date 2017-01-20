@@ -1,5 +1,5 @@
 import Keymap from 'browserkeymap';
-import { Schema, ProseMirror, Node, Plugin, DOMFromPos } from '../../prosemirror';
+import { DOMFromPos, Node, Plugin, ProseMirror, Schema } from '../../prosemirror';
 import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
 
@@ -40,7 +40,7 @@ export class CodeBlockState {
   }
 
   updateLanguage(language: string | null): void {
-    if(this.activeCodeBlock) {
+    if (this.activeCodeBlock) {
       this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.activeCodeBlock.type, {language: language}).apply();
     }
   }
@@ -81,7 +81,7 @@ export class CodeBlockState {
     let dirty = false;
     const codeBlockNode = this.activeCodeBlockNode();
 
-    if(codeBlockNode !== this.activeCodeBlock) {
+    if (codeBlockNode !== this.activeCodeBlock) {
       this.activeCodeBlock = codeBlockNode;
       this.active = !!codeBlockNode;
       this.language = codeBlockNode ? codeBlockNode.attrs['language'] : null;
@@ -89,7 +89,7 @@ export class CodeBlockState {
       dirty = true;
     }
 
-    if(dirty) {
+    if (dirty) {
       this.changeHandlers.forEach(changeHandler => changeHandler(this));
     }
   }
@@ -110,7 +110,7 @@ export class CodeBlockState {
     const { pm } = this;
     const { $from } = pm.selection;
     const node = $from.parent;
-    if(isCodeBlockNode(node)) {
+    if (isCodeBlockNode(node)) {
       return node;
     }
 

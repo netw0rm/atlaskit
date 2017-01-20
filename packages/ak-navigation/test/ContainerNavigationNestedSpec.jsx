@@ -13,40 +13,55 @@ const expect = chai.expect;
 
 describe('<ContainerNavigationNested />', () => {
   describe('rendering', () => {
-    it('should render the right number of pages', () => {
-      expect(mount(
-        <ContainerNavigationNested
-          pages={[
-            <div className="page">A</div>,
-            <div className="page">B</div>,
-            <div className="page">C</div>,
-          ]}
-        />).find('.page')).to.have.length(3);
+    it('should render children', () => {
+      expect(mount(<ContainerNavigationNested><h1>Content</h1></ContainerNavigationNested>).find('h1').text()).to.equal('Content');
     });
   });
 
-  describe('props', () => {
-    it('by default the selectedIndex is 0', () => {
-      expect(mount(<ContainerNavigationNested />).props().selectedIndex).to.equal(0);
+  describe('state', () => {
+    it('should store previous children in state', () => {
+      const previousPane = <h1>Previous Pane</h1>;
+      const component = mount(
+        <ContainerNavigationNested>{previousPane}</ContainerNavigationNested>
+      );
+      component.setProps({ children: <h1>New Pane</h1> });
+      expect(component.state().prevChildren).to.equal(previousPane);
     });
   });
 
-  describe('styles', () => {
-    describe('transform', () => {
-      function getTransformForSelectedIndex(selectedIndex) {
-        return mount(
-          <ContainerNavigationNested pages={['A', 'B', 'C']} selectedIndex={selectedIndex} />
-        ).find(`.${styles.containerNavigationNested}`).props().style.transform;
-      }
-      it('the selectedIndex updates the translateX of the wrapper', () => {
-        expect(getTransformForSelectedIndex(1)).to.not.equal(getTransformForSelectedIndex(0));
-      });
-      it('when selectedIndex is < 0, the translateX is bound by 0', () => {
-        expect(getTransformForSelectedIndex(-1)).to.equal(getTransformForSelectedIndex(0));
-      });
-      it('when selectedIndex is > pages.length, the translateX is bound by pages.length', () => {
-        expect(getTransformForSelectedIndex(3)).to.equal(getTransformForSelectedIndex(2));
-      });
+  describe('render', () => {
+    it('should have new pane first if animationDirection is right', () => {
+      const initPane = <h1>Previous Pane</h1>;
+      const component = mount(<ContainerNavigationNested>{initPane}</ContainerNavigationNested>);
+      const newPane = <h1>New Pane</h1>;
+      component.setProps({ children: newPane, animationDirection: 'right' });
+      expect(component.children().at(0).contains(newPane)).to.equal(true);
+      expect(component.children().at(1).contains(initPane)).to.equal(true);
+    });
+
+    it('should have init pane first if animationDirection is left', () => {
+      const initPane = <h1>Previous Pane</h1>;
+      const component = mount(<ContainerNavigationNested>{initPane}</ContainerNavigationNested>);
+      const newPane = <h1>New Pane</h1>;
+      component.setProps({ children: newPane, animationDirection: 'left' });
+      expect(component.children().at(0).contains(initPane)).to.equal(true);
+      expect(component.children().at(1).contains(newPane)).to.equal(true);
+    });
+
+    it('should have left animation class if animationDirection is left', () => {
+      const initPane = <h1>Previous Pane</h1>;
+      const component = mount(<ContainerNavigationNested>{initPane}</ContainerNavigationNested>);
+      const newPane = <h1>New Pane</h1>;
+      component.setProps({ children: newPane, animationDirection: 'left' });
+      expect(component.find('div').first().hasClass(styles.containerNavigationNestedLeftAnimate)).to.equal(true);
+    });
+
+    it('should have left animation class if animationDirection is right', () => {
+      const initPane = <h1>Previous Pane</h1>;
+      const component = mount(<ContainerNavigationNested>{initPane}</ContainerNavigationNested>);
+      const newPane = <h1>New Pane</h1>;
+      component.setProps({ children: newPane, animationDirection: 'right' });
+      expect(component.find('div').first().hasClass(styles.containerNavigationNestedRightAnimate)).to.equal(true);
     });
   });
 });

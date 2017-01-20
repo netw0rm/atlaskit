@@ -35,13 +35,13 @@ storiesOf(name, module)
         </a>
         <a href="#2">
           <AkContainerItem
-            icon={<img src={nucleus} alt="icon" />}
+            icon={<img alt="icon" src={nucleus} />}
             text="Item with an icon"
           />
         </a>
         <a href="#3">
           <AkContainerItem
-            icon={<img src={nucleus} alt="icon" />}
+            icon={<img alt="icon" src={nucleus} />}
             text="A really, really, quite long, actually super long container name"
           />
         </a>
@@ -56,9 +56,9 @@ storiesOf(name, module)
       <BasicNavigation>
         <a href="#1">
           <AkContainerItem
-            icon={<img src={nucleus} alt="icon" />}
-            text="This one is selected"
+            icon={<img alt="icon" src={nucleus} />}
             isSelected
+            text="This one is selected"
           />
         </a>
         {manyContainerItems()}
@@ -73,9 +73,9 @@ storiesOf(name, module)
       <BasicNavigation>
         <a href="#1">
           <AkContainerItem
-            icon={<img src={nucleus} alt="icon" />}
-            text="Nucleus"
+            icon={<img alt="icon" src={nucleus} />}
             isSelected
+            text="Nucleus"
           />
         </a>
       </BasicNavigation>
@@ -90,14 +90,14 @@ storiesOf(name, module)
         containerAppearance="global"
         containerHeader={
           <AkContainerLogo>
-            <img src={bitbucketLogo} alt="Bitbucket logo" />
+            <img alt="Bitbucket logo" src={bitbucketLogo} />
           </AkContainerLogo>
         }
       >
         <AkContainerItem
-          isSelected
           appearance="global"
           icon={<DashboardIcon label="Dashboard" />}
+          isSelected
           text="Selected"
           textAfter={<RandomBadge theme="dark" />}
         />
@@ -139,12 +139,12 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation isOpen={false}>
         <AkContainerItem
-          icon={<img src={nucleus} alt="icon" />}
-          text="This one is selected"
+          icon={<img alt="icon" src={nucleus} />}
           isSelected
+          text="This one is selected"
         />
         <AkContainerItem
-          icon={<img src={nucleus} alt="icon" />}
+          icon={<img alt="icon" src={nucleus} />}
           text="This one is not selected"
         />
       </BasicNavigation>

@@ -166,7 +166,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.list.numbered.button', () => {
     editor
       .find('ToolbarLists')
-      .find('EditorListNumberIcon')
+      .find('EditorNumberListIcon')
       .parent()
       .simulate('click');
 
@@ -186,7 +186,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.list.bullet.button', () => {
     editor
       .find('ToolbarLists')
-      .find('EditorListBulletIcon')
+      .find('EditorBulletListIcon')
       .parent()
       .simulate('click');
 

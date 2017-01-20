@@ -36,7 +36,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
 
   render() {
     return (
-      <span style={{ lineHeight: 0 }}>
+      <span>
         {this.state.boldHidden ? null :
         <ToolbarButton
           onClick={this.handleBoldClick}

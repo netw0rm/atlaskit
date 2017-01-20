@@ -9,39 +9,33 @@ chai.should();
 const expect = chai.expect;
 
 describe('<GlobalNavigation />', () => {
-  describe('children', () => {
+  describe('renders', () => {
     it('should render a <Spacer />', () => {
-      expect(shallow(<GlobalNavigation />).find('Spacer')).to.have.length(1);
+      expect(mount(<GlobalNavigation />).find('Spacer')).to.have.length(1);
     });
-    it('should render a <GlobalItem /> with medium size', () => {
-      const icon = <img alt="foo" />;
-      expect(shallow(<GlobalNavigation primaryIcon={icon} />)
-        .find('GlobalItem').props().size).to.equal('medium');
+    it('should render <GlobalActions />', () => {
+      expect(mount(<GlobalNavigation />).find('GlobalActions')).to.have.length(1);
     });
   });
   describe('props', () => {
-    it('width prop is reflected directly on <Spacer />', () => {
-      expect(shallow(<GlobalNavigation width={500} />).find('Spacer').props().width).to.equal(500);
-      expect(shallow(<GlobalNavigation width={200} />).find('Spacer').props().width).to.equal(200);
-    });
-    it('primaryIcon prop is passed to <GlobalItem />', () => {
+    it('primaryIcon prop is passed to <GlobalActions />', () => {
       const icon = <img alt="foo" />;
       expect(shallow(<GlobalNavigation primaryIcon={icon} />)
-        .find('GlobalItem').props().children).to.equal(icon);
+        .find('GlobalActions').props().primaryIcon).to.equal(icon);
     });
-    it('primaryItemHref prop is passed to <GlobalItem />', () => {
+    it('primaryItemHref prop is passed to <GlobalActions />', () => {
       const icon = <img alt="foo" />;
       expect(shallow(<GlobalNavigation primaryIcon={icon} primaryItemHref="http://google.com" />)
-        .find('GlobalItem').props().href).to.equal('http://google.com');
+        .find('GlobalActions').props().primaryItemHref).to.equal('http://google.com');
     });
     it('primaryIcon=null means no <GlobalItem /> is rendered', () => {
       expect(shallow(<GlobalNavigation />)
         .find('GlobalItem').length).to.equal(0);
     });
-    it('linkComponent is passed on to the primary <GlobalItem/>', () => {
+    it('linkComponent is passed on to the primary <GlobalActions/>', () => {
       const linkComponent = () => null;
       expect(shallow(<GlobalNavigation primaryIcon="foo" linkComponent={linkComponent} />)
-        .find('GlobalItem').props().linkComponent).to.equal(linkComponent);
+        .find('GlobalActions').props().linkComponent).to.equal(linkComponent);
     });
     it('helpItem should render in the global navigation', () => {
       const helpItem = <span className="HELP_ITEM" />;

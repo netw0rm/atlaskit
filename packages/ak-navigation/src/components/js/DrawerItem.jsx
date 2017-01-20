@@ -30,8 +30,8 @@ export default class DrawerItem extends PureComponent {
       >
         <NavigationItem
           action={this.props.action}
-          icon={this.props.icon}
           href={this.props.href}
+          icon={this.props.icon}
           isCompact={this.props.isCompact}
           linkComponent={this.props.linkComponent}
           text={this.props.text}

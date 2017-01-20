@@ -2,20 +2,19 @@ import React, { PureComponent, PropTypes } from 'react';
 import AkBlanket from 'ak-blanket';
 import styles from 'style!../less/Navigation.less';
 import GlobalNavigation from './GlobalNavigation';
-import GlobalItem from './GlobalItem';
 import ContainerNavigation from './ContainerNavigation';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import Drawer from './Drawer';
-import DrawerTrigger from './DrawerTrigger';
 import Resizer from './Resizer';
 import Spacer from './Spacer';
 import {
-  navigationOpenWidth,
   containerClosedWidth,
-  resizeExpandedBreakpoint,
+  globalOpenWidth,
+  navigationOpenWidth,
   resizeClosedBreakpoint,
+  resizeExpandedBreakpoint,
 } from '../../shared-variables';
-import { getGlobalWidth, getContainerWidth } from '../../utils/collapse';
+import getContainerWidth from '../../utils/collapse';
 
 export default class Navigation extends PureComponent {
   static propTypes = {
@@ -116,6 +115,7 @@ export default class Navigation extends PureComponent {
       globalSearchIcon,
       hasBlanket,
       isCreateDrawerOpen,
+      isOpen,
       isResizeable,
       isSearchDrawerOpen,
       linkComponent,
@@ -129,6 +129,9 @@ export default class Navigation extends PureComponent {
 
     const shouldAnimate = this.state.resizeDelta === 0;
     const renderedWidth = this.getRenderedWidth();
+    const isPartiallyCollapsed = renderedWidth < globalOpenWidth + containerClosedWidth;
+    const onSearchDrawerTrigger = isSearchDrawerOpen ? onSearchDrawerClose : onSearchDrawerOpen;
+    const onCreateDrawerTrigger = isCreateDrawerOpen ? onCreateDrawerClose : onCreateDrawerOpen;
     return (
       <div className={styles.navigation}>
         {
@@ -143,33 +146,21 @@ export default class Navigation extends PureComponent {
           width={renderedWidth}
         />
         <div className={styles.navigationInner}>
-          <div>
+          <div style={{ zIndex: isPartiallyCollapsed ? false : 1 }}>
             <GlobalNavigation
               accountItem={globalAccountItem}
+              createIcon={globalCreateIcon}
               helpItem={globalHelpItem}
               linkComponent={linkComponent}
+              onCreateActivate={onCreateDrawerTrigger}
+              onSearchActivate={onSearchDrawerTrigger}
               primaryIcon={globalPrimaryIcon}
               primaryItemHref={globalPrimaryItemHref}
+              searchIcon={globalSearchIcon}
               shouldAnimate={shouldAnimate}
-              width={getGlobalWidth(this.getRenderedWidth())}
-            >
-              <DrawerTrigger
-                onActivate={isSearchDrawerOpen ? onSearchDrawerClose : onSearchDrawerOpen}
-              >
-                <GlobalItem isSelected={isSearchDrawerOpen} size="medium">
-                  {globalSearchIcon}
-                </GlobalItem>
-              </DrawerTrigger>
-              <DrawerTrigger
-                onActivate={isCreateDrawerOpen ? onCreateDrawerClose : onCreateDrawerOpen}
-              >
-                <GlobalItem isSelected={isCreateDrawerOpen} size="medium">
-                  {globalCreateIcon}
-                </GlobalItem>
-              </DrawerTrigger>
-            </GlobalNavigation>
+            />
           </div>
-          <div style={{ zIndex: 1 }}>
+          <div style={{ zIndex: 2 }}>
             <Drawer
               backIcon={drawerBackIcon}
               backIconPosition="search"
@@ -195,7 +186,16 @@ export default class Navigation extends PureComponent {
           <div>
             <ContainerNavigation
               appearance={containerAppearance}
+              areGlobalActionsVisible={!isOpen && (this.state.resizeDelta <= 0)}
+              globalCreateIcon={globalCreateIcon}
+              globalPrimaryIcon={globalPrimaryIcon}
+              globalPrimaryItemHref={globalPrimaryItemHref}
+              globalSearchIcon={globalSearchIcon}
               header={containerHeader}
+              linkComponent={linkComponent}
+              offsetX={Math.min(renderedWidth - (globalOpenWidth + containerClosedWidth), 0)}
+              onGlobalCreateActivate={onCreateDrawerTrigger}
+              onGlobalSearchActivate={onSearchDrawerTrigger}
               shouldAnimate={shouldAnimate}
               width={getContainerWidth(renderedWidth)}
             >

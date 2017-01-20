@@ -30,6 +30,9 @@ describe('<GlobalItem />', () => {
     it('isSelected renders with the isSelected class', () => {
       expect(shallow(<GlobalItem isSelected />).find(`.${styles.globalItem}`)).to.have.className(styles.isSelected);
     });
+    it('appearance="container" renders with the hasContainerAppearance class', () => {
+      expect(shallow(<GlobalItem appearance="container" />).find(`.${styles.globalItem}`)).to.have.className(styles.hasContainerAppearance);
+    });
     it('linkComponent can be used to render an arbitrary link', () => {
       const item = mount(<GlobalItem
         href="http://google.com"

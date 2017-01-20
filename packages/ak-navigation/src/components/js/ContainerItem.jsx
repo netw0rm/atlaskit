@@ -37,8 +37,8 @@ export default class ContainerItem extends PureComponent {
       >
         <NavigationItem
           action={this.props.action}
-          icon={this.props.icon}
           href={this.props.href}
+          icon={this.props.icon}
           isCompact={this.props.isCompact}
           isSelected={this.props.isSelected}
           linkComponent={this.props.linkComponent}

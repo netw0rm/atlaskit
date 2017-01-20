@@ -35,7 +35,7 @@ describe('ak-spinner', () => {
   describe('isCompleting prop', () => {
     it('should remove the .active class when set to true', () => {
       const wrapper = shallow(<Spinner isCompleting />);
-      expect(wrapper.find(`.${activeClass}`)).to.equal(undefined);
+      expect(wrapper.find(`.${activeClass}`).length).to.equal(0);
     });
   });
 

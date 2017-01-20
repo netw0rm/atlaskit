@@ -74,8 +74,8 @@ describe(name, () => {
     });
 
     it('should NOT have "active" class for any other item types', () => {
-      expect(mount(<Item type="radio" isActive />).find(`.${styles.active}`)).to.equal(undefined);
-      expect(mount(<Item type="checkbox" isActive />).find(`.${styles.disabled}`)).to.equal(undefined);
+      expect(mount(<Item type="radio" isActive />).find(`.${styles.active}`).length).to.equal(0);
+      expect(mount(<Item type="checkbox" isActive />).find(`.${styles.active}`).length).to.equal(0);
     });
 
     it('should have "checked" class when checkbox or radio is checked', () => {
@@ -84,7 +84,7 @@ describe(name, () => {
     });
 
     it('should NOT have "checked" class for any other items', () => {
-      expect(mount(<Item type="link" isChecked />).find(`.${styles.checked}`)).to.equal(undefined);
+      expect(mount(<Item type="link" isChecked />).find(`.${styles.checked}`).length).to.equal(0);
     });
 
     it('should have "hidden" class when item is hidden', () => {

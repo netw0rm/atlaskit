@@ -80,17 +80,33 @@ describe('block-type', () => {
     });
 
     it('should be able to change to code block with multilines', () => {
-      const { pm, plugin } = editor(doc(p('line1{<>}', img({ src: 'url', alt: 'text', title: 'text' }), br, 'line2', br)));
+      const { pm, plugin } = editor(
+        doc(p(
+          'line1{<>}',
+          img({ src: 'url', alt: 'text', title: 'text' }),
+          ' ',
+          br,
+          'line2 ',
+          br)));
 
       plugin.changeBlockType('codeblock');
-      expect(pm.doc).to.deep.equal(doc(code_block()('line1\nline2\n')));
+      expect(pm.doc).to.deep.equal(doc(code_block()('line1 \nline2 \n')));
     });
 
-    it.skip('should be able to preserve mention text', () => {
-      const { pm, plugin } = editor(doc(p('hello ', mention({ id: '@bar', displayName: 'foo bar' }))));
+    it('should be able to preserve mention text', () => {
+      const { pm, plugin } = editor(
+        doc(p(
+          'hello ',
+          mention({ id: 'foo1', displayName: '@bar1' }),
+          img({ src: 'url', alt: 'text', title: 'text' }),
+          ' & ',
+          mention({ id: 'foo2', displayName: '@bar2' }),
+          ' & ',
+          mention({ id: 'foo3', displayName: '@bar3' }),
+        )));
 
       plugin.changeBlockType('codeblock');
-      expect(pm.doc).to.deep.equal(doc(code_block()('hello foo bar')));
+      expect(pm.doc).to.deep.equal(doc(code_block()('hello @bar1 & @bar2 & @bar3')));
     });
   });
 

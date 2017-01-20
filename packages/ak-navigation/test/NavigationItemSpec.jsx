@@ -32,7 +32,7 @@ describe('<NavigationItem />', () => {
       expect(mount(<NavigationItem href="foo" />).find(`.${link}`).props().href).to.equal('foo');
     });
     it('with no href should not render a link', () => {
-      expect(mount(<NavigationItem />).find('a')).to.equal(undefined);
+      expect(mount(<NavigationItem />).find('a').length).to.equal(0);
     });
     it('linkComponent should render a custom link component', () => {
       const customLink = mount(

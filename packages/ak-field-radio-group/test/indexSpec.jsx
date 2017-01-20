@@ -43,11 +43,11 @@ describe(name, () => {
       });
 
       it('should set up the onRadioChange prop for the AkFieldRadioGroup', () => {
-        expect(typeof wrapper.find(AkFieldRadioGroup)).prop('onRadioChange').to.equal('function');
+        expect(typeof wrapper.find(AkFieldRadioGroup).prop('onRadioChange')).to.equal('function');
       });
 
       it('should set up the initial state', () => {
-        expect(wrapper.state('selectedValue')).to.equal(undefined);
+        expect(wrapper.state('selectedValue')).to.equal(null);
       });
     });
 
@@ -95,7 +95,7 @@ describe(name, () => {
       describe('behaviour', () => {
         it('updates the value state when a radio is changed', () => {
           const wrapper = mount(<FieldRadioGroup items={sampleItems} />);
-          expect(wrapper.state('selectedValue')).to.equal(undefined);
+          expect(wrapper.state('selectedValue')).to.equal(null);
           wrapper.find(AkRadio).first().find('input').simulate('change');
           expect(wrapper.state('selectedValue')).to.equal(sampleItems[0].value);
         });

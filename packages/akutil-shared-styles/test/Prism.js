@@ -15,9 +15,9 @@ chai.should();
 describe('Prism', () => {
   describe('isColor', () => {
     it('should be possible to test whether a variable is actually a color', () => {
-      Prism.isColor('akColorSecondary1').should.be.true;
-      Prism.isColor('someBla').should.be.false;
-      Prism.isColor('akColor').should.be.false;
+      Prism.isColor('akColorSecondary1').should.be.equal(true);
+      Prism.isColor('someBla').should.be.equal(false);
+      Prism.isColor('akColor').should.be.equal(false);
     });
   });
 
@@ -97,9 +97,9 @@ describe('Prism', () => {
 
   describe('isTint', () => {
     it('should be possible to detect tints', () => {
-      Prism.isTint('akColorR75').should.be.false;
-      Prism.isTint('akColorN100').should.be.false;
-      Prism.isTint('akColorN100A').should.be.true;
+      Prism.isTint('akColorR75').should.be.equal(false);
+      Prism.isTint('akColorN100').should.be.equal(false);
+      Prism.isTint('akColorN100A').should.be.equal(false);
     });
   });
 });

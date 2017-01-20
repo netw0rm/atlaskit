@@ -14,7 +14,7 @@ describe.skip('afterMutations', () => {
       spy,
       spy,
       () => {
-        spy.should.have.been.calledThrice;
+        expect(spy.callCount).to.equal(3);
         done();
       });
   });

@@ -21,7 +21,7 @@
   "devDependencies": {
     "ak-button": "^5.1.2",
     "ak-button-group": "*",
-    "ak-dropdown": "^10.0.0",
+    "ak-dropdown-menu": "^2.2.0",
     "ak-icon": "^12.1.2",
     "akutil-react": "*",
     "akutil-readme": "^1.2.0"

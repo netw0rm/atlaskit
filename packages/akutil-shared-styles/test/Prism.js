@@ -99,7 +99,7 @@ describe('Prism', () => {
     it('should be possible to detect tints', () => {
       Prism.isTint('akColorR75').should.be.equal(false);
       Prism.isTint('akColorN100').should.be.equal(false);
-      Prism.isTint('akColorN100A').should.be.equal(false);
+      Prism.isTint('akColorN100A').should.be.equal(true);
     });
   });
 });

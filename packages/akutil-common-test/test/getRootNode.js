@@ -26,7 +26,7 @@ describe('getRootNode', () => {
       .then((newComponent) => {
         component = newComponent;
         rootNode = getRootNode(component);
-        expect(rootNode).to.have.length.above(0);
+        expect(rootNode).to.not.equal(undefined);
         expect(rootNode.tagName).to.equal('DIV');
       })
   );

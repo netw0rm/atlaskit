@@ -1,11 +1,12 @@
+import LinkIcon from 'ak-icon/glyph/editor/link';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import LinkIcon from 'ak-icon/glyph/editor/link';
 import { HyperlinkState } from '../../../src/plugins/hyperlink';
+import { analyticsDecorator as analytics } from '../../analytics';
 import Panel from '../Panel';
 import TextInput from '../PanelTextInput';
-import IconButton from '../ToolbarIconButton';
-import { analyticsDecorator as analytics } from '../../analytics';
+import ToolbarButton from '../ToolbarButton';
+import * as styles from './styles';
 
 export interface Props {
   pluginState: HyperlinkState;
@@ -32,21 +33,24 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
     const { active, adding, disabled } = this.state;
 
     return (
-      <span style={{ position: 'relative' }}>
-        <IconButton
+      <span className={styles.outerContainer}>
+        <ToolbarButton
           disabled={disabled || active}
           onClick={this.openLinkPanel}
           selected={adding}
-          icon={<LinkIcon label="Link" />}
-        />
+        >
+          <LinkIcon label="Link" />
+        </ToolbarButton>
         {!adding ? null :
         <Panel align="center" onOutsideClick={this.closeLinkPanel}>
-          <TextInput
-            autoFocus
-            placeholder="Paste link"
-            onSubmit={this.handleSubmit}
-            onCancel={this.closeLinkPanel}
-          />
+          <div className={styles.textInputContainer}>
+            <TextInput
+              autoFocus
+              placeholder="Paste link"
+              onSubmit={this.handleSubmit}
+              onCancel={this.closeLinkPanel}
+            />
+          </div>
         </Panel>
         }
       </span>

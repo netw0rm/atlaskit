@@ -1,10 +1,10 @@
-import { ProseMirror, ReplaceStep, Slice, Step, RemoveMarkStep, EditorTransform, NodeSelection } from '../../prosemirror';
+import { EditorTransform, NodeSelection, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
 import { CodeBlockNodeType } from '../../schema';
 
 // copied from prosemirror/src/commands/index.js
 export default function(nodeType: CodeBlockNodeType, pm: ProseMirror) {
-  let node = pm.selection instanceof NodeSelection ? pm.selection.node : null;
-  let { $from, $to } = pm.selection;
+  const node = pm.selection instanceof NodeSelection ? pm.selection.node : null;
+  const { $from, $to } = pm.selection;
   let depth;
   if (node) {
     depth = $from.depth;
@@ -32,8 +32,8 @@ export default function(nodeType: CodeBlockNodeType, pm: ProseMirror) {
 
 // copied from prosemirror/src/transform/mark.js
 function clearMarkupFor(tr: EditorTransform, pos: number, newType: CodeBlockNodeType) {
-  const node = tr.doc.nodeAt(pos);
-  let match = newType.contentExpr.start();
+  const node = tr.doc.nodeAt(pos)!;
+  let match = (newType as any).contentExpr.start();
   const delSteps: Step[] = [];
   const newlinePos: number[] = [];
   for (let i = 0, cur = pos + 1; i < node.childCount; i++) {

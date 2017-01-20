@@ -1,6 +1,6 @@
 import * as chai from 'chai';
+import { Attribute, Block, EmMarkType, Inline, MarkType, Schema, StrongMarkType, Text } from '../../src';
 import jsonSchema from '../../src/schema/json-schema';
-import { Schema, Block, Text, Inline, Attribute, EmMarkType, StrongMarkType, MarkType } from '../../src';
 
 const { expect } = chai;
 
@@ -8,7 +8,7 @@ describe('ak-editor-core: json-schema', () => {
   class Image extends Inline {
     get attrs() {
       return {
-        src: new Attribute,
+        src: new Attribute(),
         alt: new Attribute({default: ''}),
         title: new Attribute({default: ''})
       };
@@ -80,9 +80,9 @@ describe('ak-editor-core: json-schema', () => {
         text: { type: Text },
       },
     });
-    const doc_node = jsonSchema(schema)['definitions']['doc_node'];
+    const docNode = jsonSchema(schema)['definitions']['doc_node'];
 
-    expect(doc_node)
+    expect(docNode)
       .property('properties')
       .property('content')
       .property('type', 'array');
@@ -108,9 +108,9 @@ describe('ak-editor-core: json-schema', () => {
         text: { type: Text },
       },
     });
-    const doc_node = jsonSchema(schema)['definitions']['doc_node'];
+    const docNode = jsonSchema(schema)['definitions']['doc_node'];
 
-    expect(doc_node)
+    expect(docNode)
       .property('additionalProperties', false);
   });
 
@@ -123,9 +123,9 @@ describe('ak-editor-core: json-schema', () => {
         text: { type: Text, group: 'inline' },
       },
     });
-    const doc_node = jsonSchema(schema)['definitions']['doc_node'];
+    const docNode = jsonSchema(schema)['definitions']['doc_node'];
 
-    expect(doc_node.properties.content.items)
+    expect(docNode.properties.content.items)
       .to.deep.equal([{ '$ref': '#/definitions/p_node' }]);
   });
 
@@ -136,9 +136,9 @@ describe('ak-editor-core: json-schema', () => {
         text: { type: Text },
       },
     });
-    const doc_node = jsonSchema(schema)['definitions']['doc_node'];
+    const docNode = jsonSchema(schema)['definitions']['doc_node'];
 
-    expect(doc_node)
+    expect(docNode)
       .property('properties')
       .property('content')
       .property('minItems', 1);
@@ -153,9 +153,9 @@ describe('ak-editor-core: json-schema', () => {
         text: { type: Text, group: 'inline' },
       },
     });
-    const doc_node = jsonSchema(schema)['definitions']['doc_node'];
+    const docNode = jsonSchema(schema)['definitions']['doc_node'];
 
-    expect(doc_node)
+    expect(docNode)
       .property('properties')
       .property('content')
       .property('additionalItems')
@@ -174,15 +174,15 @@ describe('ak-editor-core: json-schema', () => {
         text: { type: Text },
       },
     });
-    const doc_node = jsonSchema(schema)['definitions']['doc_node'];
+    const docNode = jsonSchema(schema)['definitions']['doc_node'];
 
-    expect(doc_node)
+    expect(docNode)
       .property('properties')
       .property('type')
       .property('enum')
       .deep.equal(['doc']);
 
-    expect(doc_node)
+    expect(docNode)
       .property('required')
       .to.include('type');
   });
@@ -194,9 +194,9 @@ describe('ak-editor-core: json-schema', () => {
         text: { type: Text },
       },
     });
-    const doc_node = jsonSchema(schema)['definitions']['doc_node'];
+    const docNode = jsonSchema(schema)['definitions']['doc_node'];
 
-    expect(doc_node)
+    expect(docNode)
       .property('required')
       .to.include('content');
   });
@@ -457,7 +457,7 @@ describe('ak-editor-core: json-schema', () => {
     class LinkMark extends MarkType {
       get attrs() {
         return {
-          href: new Attribute,
+          href: new Attribute(),
           title: new Attribute({default: ''})
         };
       }

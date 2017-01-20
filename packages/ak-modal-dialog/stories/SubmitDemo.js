@@ -1,10 +1,7 @@
 import React from 'react';
-import reactify from 'akutil-react';
 import Button from 'ak-button';
 import AkFieldText from 'ak-field-text';
 import ModalDialog from '../src';
-
-const ReactFieldText = reactify(AkFieldText);
 
 const testFormId = 'test-form';
 
@@ -31,12 +28,12 @@ export default function () {
           method="post"
         >
           <p>Enter some text and then try submitting with enter + click.</p>
-          <ReactFieldText
+          <AkFieldText
             name="my-name"
             label="Name"
             placeholder="Your name"
           />
-          <ReactFieldText
+          <AkFieldText
             name="my-email"
             label="Email"
             placeholder="gbelson@hooli.com"

@@ -112,6 +112,10 @@ export default class AkButton extends Component {
      * @type {number}
      */
     tabIndex: PropTypes.number,
+    ariaHaspopup: PropTypes.bool,
+    ariaExpanded: PropTypes.bool,
+    ariaControls: PropTypes.string,
+    id: PropTypes.string,
   }
 
   static defaultProps = {

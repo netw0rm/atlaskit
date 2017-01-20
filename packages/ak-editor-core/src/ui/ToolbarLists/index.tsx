@@ -1,10 +1,10 @@
+import BulletListIcon from 'ak-icon/glyph/editor/list/bullet';
+import NumberListIcon from 'ak-icon/glyph/editor/list/number';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import NumberListIcon from 'ak-icon/glyph/editor/list/number';
-import BulletListIcon from 'ak-icon/glyph/editor/list/bullet';
-import IconButton from '../ToolbarIconButton';
 import { ListsState } from '../../../src/plugins/lists';
 import { analyticsDecorator as analytics } from '../../analytics';
+import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
   pluginState: ListsState;
@@ -41,21 +41,23 @@ export default class ToolbarLists extends PureComponent<Props, State> {
     return (
       <span>
         {this.state.bulletListHidden ? null :
-        <IconButton
+        <ToolbarButton
           onClick={this.handleBulletListClick}
           selected={this.state.bulletListActive}
           disabled={this.state.bulletListDisabled}
-          icon={<BulletListIcon label="Bullet list" />}
-        />
+        >
+          <BulletListIcon label="Bullet list" />
+        </ToolbarButton>
         }
 
         {this.state.orderedListHidden ? null :
-        <IconButton
+        <ToolbarButton
           onClick={this.handleOrderedListClick}
           selected={this.state.orderedListActive}
           disabled={this.state.orderedListDisabled}
-          icon={<NumberListIcon label="Ordered list" />}
-        />
+        >
+          <NumberListIcon label="Ordered list" />
+        </ToolbarButton>
         }
       </span>
     );

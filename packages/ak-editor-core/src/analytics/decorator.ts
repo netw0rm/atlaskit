@@ -18,7 +18,7 @@ import analyticsService from './service';
  */
 // PropertyDecorator | MethodDecorator
 export default function analytics(name: string) {
-  return function (
+  return function(
     target: any,
     key: string,
     descriptor?: TypedPropertyDescriptor<any>

@@ -1,8 +1,3 @@
-import {
-  akEditorPopupText,
-  akEditorActiveForeground,
-  akEditorDropdownActiveBackground,
- } from 'ak-editor-shared-styles';
 import { style } from 'typestyle';
 
 export const buttonContent = style({

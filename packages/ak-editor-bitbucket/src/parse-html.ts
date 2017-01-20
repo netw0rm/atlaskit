@@ -1,5 +1,5 @@
-import schema from './schema';
 import { Node } from 'ak-editor-core';
+import schema from './schema';
 import arrayFrom from './util/array-from';
 
 /**
@@ -16,14 +16,6 @@ export function transformHtml(html: string): HTMLElement {
     if (p.textContent && zwnj.test(p.textContent)) {
       p.textContent = p.textContent.replace(zwnj, '');
     }
-  });
-
-  // Convert "codehilite" containers to <pre>
-  arrayFrom(el.querySelectorAll('div.codehilite')).forEach((div: HTMLDivElement) => {
-    const pre = document.createElement('pre');
-    pre.textContent = div.textContent;
-    div.innerHTML = '';
-    div.appendChild(pre);
   });
 
   // Convert mention containers, i.e.:

@@ -7,9 +7,7 @@ export interface Props {
   onFocus?: () => void;
 }
 
-export interface State {}
-
-export default class ChromeCollapsed extends PureComponent<Props, State> {
+export default class ChromeCollapsed extends PureComponent<Props, {}> {
   render() {
     const placeholder = this.props.text || 'Type something…';
 

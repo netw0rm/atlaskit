@@ -1,8 +1,8 @@
-import { EditorTransform, NodeSelection, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
+import { Fragment, NodeSelection, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
 import { CodeBlockNodeType } from '../../schema';
 
 // copied from prosemirror/src/commands/index.js
-export default function(nodeType: CodeBlockNodeType, pm: ProseMirror) {
+export default function transform(nodeType: CodeBlockNodeType, pm: ProseMirror) {
   const node = pm.selection instanceof NodeSelection ? pm.selection.node : null;
   const { $from, $to } = pm.selection;
   let depth;
@@ -19,34 +19,34 @@ export default function(nodeType: CodeBlockNodeType, pm: ProseMirror) {
     return false;
   }
   const index = $from.index(depth);
-  if (!$from.node(depth)!.canReplaceWith(index, index + 1, nodeType)) {
+  if (!$from.node(depth) !.canReplaceWith(index, index + 1, nodeType)) {
     return false;
   }
 
   const where = $from.before(depth + 1);
-  clearMarkupFor(pm.tr, where, nodeType)
+  clearMarkupFor(pm, where, nodeType)
     .setNodeType(where, nodeType, {})
     .applyAndScroll();
   return true;
 }
 
 // copied from prosemirror/src/transform/mark.js
-function clearMarkupFor(tr: EditorTransform, pos: number, newType: CodeBlockNodeType) {
-  const node = tr.doc.nodeAt(pos)!;
+function clearMarkupFor(pm: ProseMirror, pos: number, newType: CodeBlockNodeType) {
+  const tr = pm.tr;
+  const node = tr.doc.nodeAt(pos) !;
   let match = (newType as any).contentExpr.start();
   const delSteps: Step[] = [];
-  const newlinePos: number[] = [];
   for (let i = 0, cur = pos + 1; i < node.childCount; i++) {
     const child = node.child(i);
     const end = cur + child.nodeSize;
 
-    if (child.type.name === 'hard_break') {
-      newlinePos.push(cur);
-    }
-
     const allowed = match.matchType(child.type, child.attrs);
     if (!allowed) {
-      delSteps.push(new ReplaceStep(cur, end, Slice.empty));
+      if (child.type.name === 'hard_break') {
+        delSteps.push(new ReplaceStep(cur, end, new Slice(new Fragment([pm.schema.nodes.text.create(null, '\n')], 1), 0, 0)));
+      } else {
+        delSteps.push(new ReplaceStep(cur, end, Slice.empty));
+      }
     } else {
       match = allowed;
       for (let j = 0; j < child.marks.length; j++) {
@@ -57,13 +57,10 @@ function clearMarkupFor(tr: EditorTransform, pos: number, newType: CodeBlockNode
     }
     cur = end;
   }
+
   for (let i = delSteps.length - 1; i >= 0; i--) {
     tr.step(delSteps[i]);
   }
-
-  newlinePos.forEach((pos) => {
-    tr.insertText(pos, '\n');
-  });
 
   return tr;
 }

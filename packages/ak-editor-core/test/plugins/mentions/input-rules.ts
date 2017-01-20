@@ -34,7 +34,7 @@ describe('mentions - input rules', () => {
     pm.input.insertText(0, 0, 'foo@');
 
     const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.not.equal(undefined);
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.equal(undefined);
   });
 
   it('should replace "@" at the start of the content', () => {

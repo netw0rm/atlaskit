@@ -14,20 +14,20 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "ak-dropdown-menu": "^2.2.1",
+    "ak-dropdown-menu": "^2.2.3",
     "ak-icon": "^12.2.0",
     "akutil-shared-styles": "^37.3.2",
     "classnames": "^2.2.5",
     "css-element-queries": "^0.3.2",
-    "debounce": "^1.0.0",
-    "keycode": "^2.1.4"
+    "debounce": "^1.0.0"
   },
   "devDependencies": {
     "ak-tabs": "*",
     "react-lorem-component": "^0.11.0"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
   },
   "repository": {
     "type": "git",

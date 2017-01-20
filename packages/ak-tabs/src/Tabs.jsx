@@ -2,7 +2,7 @@ import React, { PropTypes, PureComponent } from 'react';
 
 import 'style!./styles.less';
 import TabPane from './internal/TabPane';
-import TabsNav from './internal/TabsNav';
+import ResponsiveTabsNav from './internal/ResponsiveTabsNav';
 
 export default class Tabs extends PureComponent {
   static propTypes = {
@@ -29,7 +29,7 @@ export default class Tabs extends PureComponent {
 
     return (
       <div>
-        <TabsNav
+        <ResponsiveTabsNav
           onKeyboardNav={this.props.onKeyboardNav}
           tabs={this.props.tabs}
         />

@@ -1,4 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react';
+import { StatelessDropdownMenu } from 'ak-dropdown-menu';
+import ExpandIcon from 'ak-icon/glyph/expand';
 import classNames from 'classnames';
 import styles from '../styles.less';
 
@@ -11,13 +13,19 @@ export default class TabsNav extends PureComponent {
       onSelect: PropTypes.func.isRequired,
       isSelected: PropTypes.bool,
     })),
+    secondaryTabs: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.node.isRequired,
+      onSelect: PropTypes.func.isRequired,
+    })),
   }
 
   static defaultProps = {
     tabs: [],
+    secondaryTabs: [],
   }
 
   state = {
+    isDropdownOpen: false,
     wasKeyboardNav: false,
   }
 
@@ -52,6 +60,26 @@ export default class TabsNav extends PureComponent {
   tabMouseDownHandler = e => e.preventDefault()
 
   render() {
+    const SecondaryTabs = () => (this.props.secondaryTabs.length ? (
+      <StatelessDropdownMenu
+        isOpen={this.state.isDropdownOpen}
+        items={[{
+          items: this.props.secondaryTabs.map(tab => ({
+            content: tab.label,
+            onSelect: tab.onSelect,
+          })),
+        }]}
+        onItemActivated={(item) => {
+          this.setState({ isDropdownOpen: false });
+          item.item.onSelect();
+        }}
+        onOpenChange={attrs => this.setState({ isDropdownOpen: attrs.isOpen })}
+      >
+        <li className={styles.locals.akTabsButtonContainer}>
+          <span className={styles.locals.akTabsButton}>More <ExpandIcon label="" size="small" /></span>
+        </li>
+      </StatelessDropdownMenu>
+    ) : null);
     this.tabs = [];
     /* eslint-disable jsx-a11y/role-supports-aria-props, jsx-a11y/no-static-element-interactions */
     return (
@@ -83,6 +111,7 @@ export default class TabsNav extends PureComponent {
             {tab.label}
           </li>
         ))}
+        <SecondaryTabs />
       </ul>
     );
     /* eslint-enable jsx-a11y/role-supports-aria-props, jsx-a11y/no-static-element-interactions */

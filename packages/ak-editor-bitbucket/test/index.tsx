@@ -9,7 +9,6 @@ import { doc, h1, mention, p, strong } from './_schema-builder';
 
 import { ProseMirror } from 'ak-editor-core';
 import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from 'ak-editor-core/test-helper';
-import ImageIcon from 'ak-icon/glyph/editor/image';
 import Editor from '../src/index';
 
 chai.use(chaiPlugin);
@@ -114,7 +113,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
   it('should invoke upload handler after clicking image icon', () => {
     editor
       .find('ChromeExpanded')
-      .find(ImageIcon)
+      .find('EditorImageIcon')
       .parent()
       .simulate('click');
 

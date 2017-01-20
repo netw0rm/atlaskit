@@ -1,4 +1,5 @@
 {
+  "rulesDirectory": ["build/tslint-rules"],
   "extends": ["tslint:latest", "tslint-react"],
   "rules": {
     "array-type": [],
@@ -53,7 +54,10 @@
       "single",
       "jsx-double"
     ],
-    "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-module", "check-separator", "check-type", "check-typecast"]
+    "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-module", "check-separator", "check-type", "check-typecast"],
+
+    // Custom Rules
+    "no-only-tests": true // Prohibits commiting test with "only", e.g.: describe.only, it.only
   },
   "jsRules": {
     // We use eslint for .js and .jsx, so all the TSLint rules can be disabled.

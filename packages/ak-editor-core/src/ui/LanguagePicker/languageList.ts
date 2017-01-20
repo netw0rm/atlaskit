@@ -70,6 +70,22 @@ export const SUPPORTED_LANGUAGES = [
   'LiveScript',
   'XQuery'];
 
-const languageList = [NO_LANGUAGE].concat(SUPPORTED_LANGUAGES.sort());
+const languageList = [NO_LANGUAGE, ...(SUPPORTED_LANGUAGES.sort())];
+
+export function findMatchedLanguage(languge: string | null): string {
+  if (!languge) {
+    return NO_LANGUAGE;
+  }
+
+  const matches = SUPPORTED_LANGUAGES.filter((supportedLanguage) => {
+    return supportedLanguage.toLowerCase() === languge.toLowerCase();
+  });
+
+  if (matches.length > 0) {
+    return matches[0];
+  }
+
+  return NO_LANGUAGE;
+}
 
 export default languageList;

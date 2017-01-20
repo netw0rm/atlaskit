@@ -61,4 +61,39 @@ describe('ak-spinner', () => {
       expect(spy.callCount).to.not.equal(1);
     });
   });
+
+  describe('size prop', () => {
+    it('should render the tee-shirt sizes with the proper widths', () => {
+      const small = mount(<Spinner size="small" />);
+      const medium = mount(<Spinner size="medium" />);
+      const large = mount(<Spinner size="large" />);
+      const xlarge = mount(<Spinner size="xlarge" />);
+
+      expect(small.find(`.${spinnerClass}`).prop('style').height).to.equal('20px');
+      expect(small.find(`.${spinnerClass}`).prop('style').width).to.equal('20px');
+
+      expect(medium.find(`.${spinnerClass}`).prop('style').height).to.equal('30px');
+      expect(medium.find(`.${spinnerClass}`).prop('style').width).to.equal('30px');
+
+      expect(large.find(`.${spinnerClass}`).prop('style').height).to.equal('50px');
+      expect(large.find(`.${spinnerClass}`).prop('style').height).to.equal('50px');
+
+      expect(xlarge.find(`.${spinnerClass}`).prop('style').width).to.equal('100px');
+      expect(xlarge.find(`.${spinnerClass}`).prop('style').width).to.equal('100px');
+    });
+
+    it('should render the spinner with a custom size', () => {
+      const custom = mount(<Spinner size={72} />);
+
+      expect(custom.find(`.${spinnerClass}`).prop('style').height).to.equal('72px');
+      expect(custom.find(`.${spinnerClass}`).prop('style').width).to.equal('72px');
+    });
+
+    it('should render the spinner with the default size if an unsupported value is provided', () => {
+      const custom = mount(<Spinner size={{ something: 'weird' }} />);
+
+      expect(custom.find(`.${spinnerClass}`).prop('style').height).to.equal('20px');
+      expect(custom.find(`.${spinnerClass}`).prop('style').width).to.equal('20px');
+    });
+  });
 });

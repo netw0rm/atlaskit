@@ -1,8 +1,8 @@
-import { Fragment, NodeSelection, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
+import { EditorTransform, Fragment, NodeSelection, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
 import { CodeBlockNodeType, HardBreakNodeType, MentionNodeType } from '../../schema';
 
 // copied from prosemirror/src/commands/index.js
-export default function transform(nodeType: CodeBlockNodeType, pm: ProseMirror) {
+export default function transform(nodeType: CodeBlockNodeType, pm: ProseMirror, markdownDecorator?: string) {
   const node = pm.selection instanceof NodeSelection ? pm.selection.node : null;
   const { $from, $to } = pm.selection;
   let depth;
@@ -24,10 +24,18 @@ export default function transform(nodeType: CodeBlockNodeType, pm: ProseMirror) 
   }
 
   const where = $from.before(depth + 1);
-  clearMarkupFor(pm, where, nodeType)
-    .setNodeType(where, nodeType, {})
-    .applyAndScroll();
+  const tr = clearMarkupFor(pm, where, nodeType)
+    .setNodeType(where, nodeType, {});
+
+  removeDecorator(tr, where, markdownDecorator);
+  tr.applyAndScroll();
   return true;
+}
+
+function removeDecorator(tr: EditorTransform, pos: number, markdownDecorator: string | undefined) {
+  if (markdownDecorator) {
+    tr.delete(pos + 1, pos + markdownDecorator.length + 1);
+  }
 }
 
 // copied from prosemirror/src/transform/mark.js

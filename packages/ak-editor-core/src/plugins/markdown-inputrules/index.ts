@@ -1,7 +1,6 @@
 import {
   blockQuoteRule,
   bulletListRule,
-  codeBlockRule,
   InputRule,
   inputRules,
   Node,
@@ -14,6 +13,7 @@ import {
 } from '../../prosemirror';
 
 import { analyticsService, trackAndInvoke } from '../../analytics';
+import transformToCodeBlock from '../block-type/transform-to-code-block';
 
 // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
 // input rule will allow for a list to start at any given number, which isn't allowed in
@@ -48,7 +48,7 @@ const headingRule = (nodeType: NodeType, maxLevel: Number) => {
 
 const buildBlockRules = (schema: Schema): Array<InputRule> => {
   const rules = Array<InputRule>();
-  const { heading, bullet_list, ordered_list, blockquote, code_block } = schema.nodes;
+  const { heading, bullet_list, ordered_list, blockquote } = schema.nodes;
 
   if (heading) {
     rules.push(headingRule(heading, 6));
@@ -64,10 +64,6 @@ const buildBlockRules = (schema: Schema): Array<InputRule> => {
 
   if (blockquote) {
     rules.push(createTrackedInputRule('atlassian.editor.format.blockquote.autoformatting', blockQuoteRule(blockquote)));
-  }
-
-  if (code_block) {
-    rules.push(createTrackedInputRule('atlassian.editor.format.codeblock.autoformatting', codeBlockRule(code_block)));
   }
 
   return rules;
@@ -162,6 +158,16 @@ const imgRule = new InputRule(/!\[(\S+)\]\((\S+)\)$/, ')', (
   return replaceWithNode(pm, match, pos, node);
 });
 
+const codeBlockRule = new InputRule(/^```$/, '`', (
+  pm: ProseMirror,
+  match: Array<string>,
+  pos: number
+) => {
+  analyticsService.trackEvent(`atlassian.editor.format.codeblock.autoformatting`);
+  transformToCodeBlock(pm.schema.nodes.code_block, pm, match[0]);
+  return true;
+});
+
 // **string** should bold the text
 const strongRule1 = new InputRule(/(\*\*([^\*]+)\*\*)$/, '*', (
   pm: ProseMirror,
@@ -233,6 +239,7 @@ export class MarkdownInputRulesPlugin {
       linkRule,
       hrRule1,
       hrRule2,
+      codeBlockRule,
       ...blockRules
     ];
 

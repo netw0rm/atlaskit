@@ -1,4 +1,4 @@
-import { Fragment, NodeSelection, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
+import { EditorTransform, NodeSelection, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
 import { CodeBlockNodeType, HardBreakNodeType, MentionNodeType } from '../../schema';
 
 // copied from prosemirror/src/commands/index.js
@@ -24,35 +24,35 @@ export default function transform(nodeType: CodeBlockNodeType, pm: ProseMirror) 
   }
 
   const where = $from.before(depth + 1);
-  clearMarkupFor(pm, where, nodeType)
+  clearMarkupFor(pm.tr, where, nodeType)
     .setNodeType(where, nodeType, {})
     .applyAndScroll();
   return true;
 }
 
 // copied from prosemirror/src/transform/mark.js
-function clearMarkupFor(pm: ProseMirror, pos: number, newType: CodeBlockNodeType) {
-  const tr = pm.tr;
+function clearMarkupFor(tr: EditorTransform, pos: number, newType: CodeBlockNodeType) {
   const node = tr.doc.nodeAt(pos) !;
   let match = (newType as any).contentExpr.start();
   const delSteps: Step[] = [];
   const inserts: {pos: number, content: string, deleted: number}[] = [];
-  let deleted = 0;
+  let deletedContentSize = 0;
+
   for (let i = 0, cur = pos + 1; i < node.childCount; i++) {
     const child = node.child(i);
     const end = cur + child.nodeSize;
 
     const allowed = match.matchType(child.type, child.attrs);
     if (!allowed) {
-      if (child.type instanceof HardBreakNodeType) {
-        delSteps.push(new ReplaceStep(cur, end, new Slice(new Fragment([pm.schema.nodes.text.create(null, '\n')], 1), 0, 0)));
-      } else {
-        if (child.type instanceof MentionNodeType) {
-          inserts.push({pos: cur, content: child.attrs['displayName'], deleted: deleted});
-        }
-        deleted = deleted + 1;
-        delSteps.push(new ReplaceStep(cur, end, Slice.empty));
+      // The reason that inserts are put into seperate steps is because
+      // insert contents are varied and it may affect the position of next insertion.
+      if (child.type instanceof MentionNodeType) {
+        inserts.push({pos: cur, content: child.attrs['displayName'], deleted: deletedContentSize});
+      } else if (child.type instanceof HardBreakNodeType) {
+        inserts.push({pos: cur, content: '\n', deleted: deletedContentSize});
       }
+      deletedContentSize = deletedContentSize + child.nodeSize;
+      delSteps.push(new ReplaceStep(cur, end, Slice.empty));
     } else {
       match = allowed;
       for (let j = 0; j < child.marks.length; j++) {

@@ -7,6 +7,16 @@
   margin-bottom: @ak-grid-size;
   margin-left: @ak-grid-size;
   margin-top: @ak-grid-size * 2;
+
+  [data-__ak-navigation-container-closed="true"] & {
+    margin-left: 0.5 * @ak-grid-size;
+    margin-right: 0.5 * @ak-grid-size;
+    border-top: 1px solid @ak-color-N40A;
+
+    .title, .action {
+      visibility: hidden;
+    }
+  }
 }
 
 .noHeaderContent {

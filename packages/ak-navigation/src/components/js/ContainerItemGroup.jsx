@@ -29,7 +29,7 @@ export default class ContainerItemGroup extends PureComponent {
           <div className={style.header}>
             <Title />
             {this.props.action ?
-              <div className={action}>
+              <div className={style.action}>
                 {this.props.action}
               </div>
             : null}

@@ -18,7 +18,7 @@ chai.use(sinonChai);
 
 describe('ak-editor-bitbucket/analytics/start-event', () => {
   it('atlassian.editor.start', () => {
-    const handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy();
     analyticsService.handler = handler;
 
     mount(<Editor analyticsHandler={handler} />);
@@ -30,7 +30,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
   });
 
   it('atlassian.editor.start with two child editors sharing a handler', () => {
-    const handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy();
     analyticsService.handler = handler;
 
     class ContainerWithTwoEditors extends React.PureComponent<{}, {}> {
@@ -51,7 +51,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
   });
 
   it('editor.start must not be called when unmounting component', () => {
-    const handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy();
     analyticsService.handler = handler;
 
     mount(<Editor analyticsHandler={handler} isExpandedByDefault />).unmount();
@@ -62,7 +62,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
 
 describe('ak-editor-bitbucket/analytics/analyticsHandler', () => {
   it('updates analytics handler when provided via property', () => {
-    const handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy();
     mount(<Editor analyticsHandler={handler} />);
     expect(handler.called).to.equal(false);
 
@@ -81,7 +81,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
 
   beforeEach(() => {
     const noop = () => {};
-    handler = sinon.spy() as AnalyticsHandler;
+    handler = sinon.spy();
 
     editor = mount(
       <Editor isExpandedByDefault onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,

@@ -1,5 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
+import { SinonSpy } from 'sinon';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 
@@ -89,7 +90,7 @@ describe('analytics decorator', () => {
 
     const instance = new AnnotatedTestClassWithPrimitiveValue();
 
-    expect(console.warn.called).to.equal(true);
+    expect((console.warn as SinonSpy).called).to.equal(true);
     expect(instance.foo).to.eq(15.15);
   });
 

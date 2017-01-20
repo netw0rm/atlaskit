@@ -108,6 +108,17 @@ describe('block-type', () => {
       plugin.changeBlockType('codeblock');
       expect(pm.doc).to.deep.equal(doc(code_block()('hello @bar1 & @bar2 & @bar3')));
     });
+
+    it('should collaps nested block and convert to code block', () => {
+      const {pm, plugin} = editor (
+        doc(blockquote(
+          h1('h1')
+        ))
+      );
+
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('h1')));
+    });
   });
 
   it('should be able to identify normal', () => {

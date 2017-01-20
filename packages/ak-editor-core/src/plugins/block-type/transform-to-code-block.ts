@@ -1,4 +1,4 @@
-import { EditorTransform, NodeSelection, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
+import { Fragment, NodeSelection, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
 import { CodeBlockNodeType, HardBreakNodeType, MentionNodeType } from '../../schema';
 
 // copied from prosemirror/src/commands/index.js
@@ -24,19 +24,18 @@ export default function transform(nodeType: CodeBlockNodeType, pm: ProseMirror) 
   }
 
   const where = $from.before(depth + 1);
-  clearMarkupFor(pm.tr, where, nodeType)
+  clearMarkupFor(pm, where, nodeType)
     .setNodeType(where, nodeType, {})
     .applyAndScroll();
   return true;
 }
 
 // copied from prosemirror/src/transform/mark.js
-function clearMarkupFor(tr: EditorTransform, pos: number, newType: CodeBlockNodeType) {
+function clearMarkupFor(pm: ProseMirror, pos: number, newType: CodeBlockNodeType) {
+  const tr = pm.tr;
   const node = tr.doc.nodeAt(pos) !;
   let match = (newType as any).contentExpr.start();
   const delSteps: Step[] = [];
-  const inserts: {pos: number, content: string, deleted: number}[] = [];
-  let deletedContentSize = 0;
 
   for (let i = 0, cur = pos + 1; i < node.childCount; i++) {
     const child = node.child(i);
@@ -44,15 +43,15 @@ function clearMarkupFor(tr: EditorTransform, pos: number, newType: CodeBlockNode
 
     const allowed = match.matchType(child.type, child.attrs);
     if (!allowed) {
-      // The reason that inserts are put into seperate steps is because
-      // insert contents are varied and it may affect the position of next insertion.
       if (child.type instanceof MentionNodeType) {
-        inserts.push({pos: cur, content: child.attrs['displayName'], deleted: deletedContentSize});
+        const content = child.attrs['displayName'];
+        delSteps.push(new ReplaceStep(cur, end, new Slice(Fragment.from(pm.schema.nodes.text.create(null, content)), 0, 0)));
       } else if (child.type instanceof HardBreakNodeType) {
-        inserts.push({pos: cur, content: '\n', deleted: deletedContentSize});
+        const content = '\n';
+        delSteps.push(new ReplaceStep(cur, end, new Slice(Fragment.from(pm.schema.nodes.text.create(null, content)), 0, 0)));
+      } else {
+        delSteps.push(new ReplaceStep(cur, end, Slice.empty));
       }
-      deletedContentSize = deletedContentSize + child.nodeSize;
-      delSteps.push(new ReplaceStep(cur, end, Slice.empty));
     } else {
       match = allowed;
       for (let j = 0; j < child.marks.length; j++) {
@@ -67,14 +66,6 @@ function clearMarkupFor(tr: EditorTransform, pos: number, newType: CodeBlockNode
   for (let i = delSteps.length - 1; i >= 0; i--) {
     tr.step(delSteps[i]);
   }
-
-  let previousInsertLength = 0;
-
-  inserts.forEach((insert) => {
-    const {pos, content, deleted} = insert;
-    tr.insertText(pos + previousInsertLength - deleted, content);
-    previousInsertLength = previousInsertLength + content.length ;
-  });
 
   return tr;
 }

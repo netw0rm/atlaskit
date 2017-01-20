@@ -8,7 +8,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noImplicitAny": false,
-    "sourceMap": true,
+    "inlineSourceMap": true,
     "strictNullChecks": true,
     "target": "es5",
     "types": [

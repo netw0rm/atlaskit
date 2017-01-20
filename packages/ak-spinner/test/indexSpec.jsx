@@ -24,12 +24,12 @@ describe('ak-spinner', () => {
 
   it('should render a spinner element', () => {
     const wrapper = shallow(<Spinner />);
-    expect(wrapper.find(`.${spinnerClass}`).length).not.to.equal(0);
+    expect(wrapper.find(`.${spinnerClass}`)).to.have.length.above(0);
   });
 
   it('should apply active class by default', () => {
     const wrapper = shallow(<Spinner />);
-    expect(wrapper.find(`.${activeClass}`).length).not.to.equal(0);
+    expect(wrapper.find(`.${activeClass}`)).to.have.length.above(0);
   });
 
   describe('isCompleting prop', () => {

@@ -19,14 +19,14 @@ const expect = chai.expect;
 
 describe('ak-editor-bitbucket/expand and collapse', () => {
   it('should not render expanded chrome when collapsed by default', () => {
-    expect(mount(<Editor />).find('ChromeCollapsed').length).not.to.equal(0);
-    expect(mount(<Editor />).find('input[placeholder]').length).not.to.equal(0);
+    expect(mount(<Editor />).find('ChromeCollapsed')).to.have.length.above(0);
+    expect(mount(<Editor />).find('input[placeholder]')).to.have.length.above(0);
     expect(mount(<Editor />).find('ChromeExpanded')).to.equal(undefined);
   });
 
   it('should respect defaultExpanded property', () => {
     expect(mount(<Editor isExpandedByDefault />).find('ChromeCollapsed')).to.equal(undefined);
-    expect(mount(<Editor isExpandedByDefault />).find('ChromeExpanded').length).not.to.equal(0);
+    expect(mount(<Editor isExpandedByDefault />).find('ChromeExpanded')).to.have.length.above(0);
   });
 
   it('should expand after clicking', () => {
@@ -35,7 +35,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
 
     expect(editorWrapper.find('ChromeCollapsed')).to.equal(undefined);
-    expect(editorWrapper.find('ChromeExpanded').length).not.to.equal(0);
+    expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
   });
 
   it('.expand() method should expand the editor chrome', () => {
@@ -45,7 +45,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
     editor.expand();
 
     expect(editorWrapper.find('ChromeCollapsed')).to.equal(undefined);
-    expect(editorWrapper.find('ChromeExpanded').length).not.to.equal(0);
+    expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
   });
 
   it('.collapse() method should collapse the editor chrome', () => {
@@ -54,7 +54,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
 
     editor.collapse();
 
-    expect(editorWrapper.find('ChromeCollapsed').length).not.to.equal(0);
+    expect(editorWrapper.find('ChromeCollapsed')).to.have.length.above(0);
     expect(editorWrapper.find('ChromeExpanded')).to.equal(undefined);
   });
 
@@ -198,19 +198,19 @@ describe('ak-editor-bitbucket/multiple editors as children', () => {
   });
 
   it('should render two editors inside a common container', () => {
-    expect(container.find(Editor).length).not.to.equal(0);
+    expect(container.find(Editor)).to.have.length.above(0);
     expect(editor1.is(Editor)).to.equal(true);
     expect(editor2.is(Editor)).to.equal(true);
   });
 
   it('should render toolbar elements for both editors', () => {
-    expect(editor1.find('ChromeExpanded ToolbarBlockType').length).not.to.equal(0);
-    expect(editor1.find('ChromeExpanded ToolbarTextFormatting').length).not.to.equal(0);
-    expect(editor1.find('ChromeExpanded ToolbarLists').length).not.to.equal(0);
+    expect(editor1.find('ChromeExpanded ToolbarBlockType')).to.have.length.above(0);
+    expect(editor1.find('ChromeExpanded ToolbarTextFormatting')).to.have.length.above(0);
+    expect(editor1.find('ChromeExpanded ToolbarLists')).to.have.length.above(0);
 
-    expect(editor2.find('ChromeExpanded ToolbarBlockType').length).not.to.equal(0);
-    expect(editor2.find('ChromeExpanded ToolbarTextFormatting').length).not.to.equal(0);
-    expect(editor2.find('ChromeExpanded ToolbarLists').length).not.to.equal(0);
+    expect(editor2.find('ChromeExpanded ToolbarBlockType')).to.have.length.above(0);
+    expect(editor2.find('ChromeExpanded ToolbarTextFormatting')).to.have.length.above(0);
+    expect(editor2.find('ChromeExpanded ToolbarLists')).to.have.length.above(0);
   });
 });
 
@@ -224,11 +224,11 @@ describe('ak-editor-bitbucket/toolbar', () => {
   it('should close blocktype dropdown after second click', () => {
     const trigger = editor.find('ToolbarBlockType AkButton');
 
-    expect(trigger.length).not.to.equal(0);
+    expect(trigger).to.have.length.above(0);
     expect(editor.find('ToolbarBlockType Group')).to.equal(undefined);
 
     trigger.simulate('click');
-    expect(editor.find('ToolbarBlockType Group').length).not.to.equal(0);
+    expect(editor.find('ToolbarBlockType Group')).to.have.length.above(0);
 
     trigger.simulate('click');
     expect(editor.find('ToolbarBlockType Group')).to.equal(undefined);

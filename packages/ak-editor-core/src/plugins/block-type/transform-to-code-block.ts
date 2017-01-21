@@ -1,41 +1,43 @@
-import { EditorTransform, Fragment, NodeSelection, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
-import { CodeBlockNodeType, HardBreakNodeType, MentionNodeType } from '../../schema';
+import { EditorTransform, Fragment, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
+import { CodeBlockNodeType, HardBreakNodeType, isCodeBlockNode, MentionNodeType } from '../../schema';
 
-// copied from prosemirror/src/commands/index.js
-export default function transform(nodeType: CodeBlockNodeType, pm: ProseMirror, markdownDecorator?: string) {
-  const node = pm.selection instanceof NodeSelection ? pm.selection.node : null;
-  const { $from, $to } = pm.selection;
-  let depth;
-  if (node) {
-    depth = $from.depth;
-  } else {
-    if (!$from.depth || $to.pos > $from.end()) {
-      return false;
-    }
-    depth = $from.depth - 1;
-  }
-  const target = node || $from.parent;
-  if (!target.isTextblock || target.hasMarkup(nodeType)) {
-    return false;
-  }
-  const index = $from.index(depth);
-  if (!$from.node(depth) !.canReplaceWith(index, index + 1, nodeType)) {
-    return false;
+export default function transformToCodeBlock(pm: ProseMirror): void {
+  if (!isConvertableToCodeBlock(pm)) {
+    return;
   }
 
-  const where = $from.before(depth + 1);
-  const tr = clearMarkupFor(pm, where, nodeType)
-    .setNodeType(where, nodeType, {});
-
-  removeDecorator(tr, where, markdownDecorator);
-  tr.applyAndScroll();
-  return true;
+  transformToCodeBlockAction(pm).applyAndScroll();
 }
 
-function removeDecorator(tr: EditorTransform, pos: number, markdownDecorator: string | undefined) {
-  if (markdownDecorator) {
-    tr.delete(pos + 1, pos + markdownDecorator.length + 1);
+export function transformToCodeBlockAction(pm: ProseMirror): EditorTransform {
+  const { $from } = pm.selection;
+  const codeBlock = pm.schema.nodes.code_block;
+
+  const where = $from.before($from.depth);
+  const tr = clearMarkupFor(pm, where, codeBlock)
+    .setNodeType(where, codeBlock, {});
+
+  return tr;
+}
+
+export function isConvertableToCodeBlock(pm: ProseMirror): boolean {
+  // Before a document is loaded, there is no selection.
+  if (!pm.selection) {
+    return false;
   }
+
+  const { $from } = pm.selection;
+  const node = $from.parent;
+
+  if (!node.isTextblock || isCodeBlockNode(node)) {
+    return false;
+  }
+
+  const parentDepth = $from.depth - 1;
+  const parentNode = $from.node(parentDepth);
+  const index = $from.index(parentDepth);
+
+  return parentNode.canReplaceWith(index, index + 1, pm.schema.nodes.code_block);
 }
 
 // copied from prosemirror/src/transform/mark.js

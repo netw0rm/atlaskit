@@ -13,7 +13,7 @@ import {
 } from '../../prosemirror';
 
 import { analyticsService, trackAndInvoke } from '../../analytics';
-import transformToCodeBlock from '../block-type/transform-to-code-block';
+import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 
 // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
 // input rule will allow for a list to start at any given number, which isn't allowed in
@@ -163,9 +163,15 @@ const codeBlockRule = new InputRule(/^```$/, '`', (
   match: Array<string>,
   pos: number
 ) => {
-  analyticsService.trackEvent(`atlassian.editor.format.codeblock.autoformatting`);
-  transformToCodeBlock(pm.schema.nodes.code_block, pm, match[0]);
-  return true;
+  if (isConvertableToCodeBlock(pm)) {
+    analyticsService.trackEvent(`atlassian.editor.format.codeblock.autoformatting`);
+    const start = pos - match[0].length;
+    return transformToCodeBlockAction(pm)
+      // remove markdown decorator ```
+      .delete(start, pos)
+      .applyAndScroll();
+  }
+  return false;
 });
 
 // **string** should bold the text

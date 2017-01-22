@@ -1,6 +1,6 @@
 {
-  "name": "ak-field-radio-group",
-  "version": "1.0.3",
+  "name": "@atlaskit/field-radio-group",
+  "version": "1.0.0",
   "description": "ak-field-radio-group component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

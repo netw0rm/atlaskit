@@ -1,6 +1,6 @@
 {
-  "name": "akutil-react",
-  "version": "3.0.3",
+  "name": "@atlaskit/util-react",
+  "version": "1.0.0",
   "description": "Toolbox for transforming a SkateJS-based WebComponent into a React component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

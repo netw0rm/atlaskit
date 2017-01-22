@@ -1,6 +1,6 @@
 {
-  "name": "ak-lozenge",
-  "version": "5.0.4",
+  "name": "@atlaskit/lozenge",
+  "version": "1.0.0",
   "description": "A React component that highlights status for quick recognition ",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

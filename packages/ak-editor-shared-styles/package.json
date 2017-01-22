@@ -14,8 +14,7 @@
   },
   "files": [
     "dist",
-    "**/*.d.ts",
-    "**/*.less"
+    "src/**"
   ],
   "author": "Atlassian Pty Ltd",
   "license": "SEE LICENSE IN LICENSE",

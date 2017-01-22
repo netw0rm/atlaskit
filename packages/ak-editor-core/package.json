@@ -14,8 +14,13 @@
   },
   "files": [
     "dist",
-    "**/*.d.ts",
-    "!src"
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "!build",
+    "!stories",
+    "!test",
+    "!test-helper"
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",

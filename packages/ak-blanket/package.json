@@ -1,6 +1,6 @@
 {
-  "name": "ak-blanket",
-  "version": "6.0.2",
+  "name": "@atlaskit/blanket",
+  "version": "1.0.0",
   "description": "A React component that covers the underlying UI for a layered component.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

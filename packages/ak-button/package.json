@@ -1,6 +1,6 @@
 {
-  "name": "ak-button",
-  "version": "5.4.2",
+  "name": "@atlaskit/button",
+  "version": "1.0.0",
   "description": "A React component that is used to trigger events.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

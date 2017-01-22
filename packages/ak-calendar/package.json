@@ -1,6 +1,6 @@
 {
-  "name": "ak-calendar",
-  "version": "2.0.7",
+  "name": "@atlaskit/calendar",
+  "version": "1.0.0",
   "description": "A React component that is a generic calendar",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

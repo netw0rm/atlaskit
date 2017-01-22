@@ -7,7 +7,7 @@
   "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single ak-droplist-group; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/droplist-group; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
     "dist",

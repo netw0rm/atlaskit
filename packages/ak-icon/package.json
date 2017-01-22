@@ -10,7 +10,7 @@
     "generate-icon-exports": "node ./bin/generate-icon-exports.js",
     "gen-js": "npm run generate-icon-exports && npm run generate-bundle-exports",
     "gen-icons-md": "node ./bin/generate-icons-md.js > ./docs/Icons.md",
-    "prepublish": "CLI=1 npm run gen-js && npm run gen-icons-md && cd ../.. && npm run prepublish/single ak-icon",
+    "prepublish": "CLI=1 npm run gen-js && npm run gen-icons-md && cd ../.. && npm run prepublish/single @atlaskit/icon",
     "pretest": "npm run gen-js"
   },
   "files": [

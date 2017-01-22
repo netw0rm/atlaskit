@@ -86,7 +86,7 @@ function search(query) {
     )
   ).reduce((a, b) => a.concat(b));
   return results.map(({ item, group }) => (
-    <AkContainerItem href="#foo" text={`${item} – ${group}`} icon={icons[group]} />
+    <AkContainerItem href="#foo" icon={icons[group]} subText={group} text={item} />
   ));
 }
 
@@ -100,12 +100,11 @@ export default class DemoSearch extends PureComponent {
   render() {
     return (
       <AkSearch
-        value={this.state.query}
         onChange={({ target }) => { this.setState({ query: target.value }); }}
+        value={this.state.query}
       >
         {search(this.state.query)}
       </AkSearch>
     );
   }
 }
-

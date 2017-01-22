@@ -38,8 +38,14 @@ storiesOf(name, module)
         />
         <AkContainerItem
           icon={<img src={nucleus} alt="icon" />}
-          text="A really, really, quite long, actually super long container name"
+          text="Item with two lines"
+          subText="Another line of text, which could possibly be long"
           href="#3"
+        />
+        <AkContainerItem
+          icon={<img src={nucleus} alt="icon" />}
+          text="A really, really, quite long, actually super long container name"
+          href="#4"
         />
       </BasicNavigation>
       <div>

@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { PureComponent, ReactElement } from 'react';
-import { ProseMirror } from '../../prosemirror';
+import { PureComponent } from 'react';
 import { BlockTypeState } from '../../plugins/block-type';
+import { CodeBlockState } from '../../plugins/code-block';
 import { HyperlinkState } from '../../plugins/hyperlink';
-import { ListsState } from '../../plugins/lists';
-import { TextFormattingState } from '../../plugins/text-formatting';
-import { MentionsPluginState } from '../../plugins/mentions';
 import { ImageUploadState } from '../../plugins/image-upload';
+import { ListsState } from '../../plugins/lists';
+import { MentionsPluginState } from '../../plugins/mentions';
+import { TextFormattingState } from '../../plugins/text-formatting';
+import { ProseMirror } from '../../prosemirror';
 import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
@@ -18,6 +19,7 @@ export interface Props {
   pm?: ProseMirror;
   feedbackFormUrl?: string;
   pluginStateBlockType?: BlockTypeState;
+  pluginStateCodeBlock?: CodeBlockState;
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
@@ -27,9 +29,7 @@ export interface Props {
   onCollapsedChromeFocus: () => void;
 }
 
-export interface State {}
-
-export default class Chrome extends PureComponent<Props, State> {
+export default class Chrome extends PureComponent<Props, {}> {
   render() {
     const { props } = this;
 
@@ -39,6 +39,7 @@ export default class Chrome extends PureComponent<Props, State> {
           onSave={props.onSave}
           feedbackFormUrl={props.feedbackFormUrl}
           pluginStateBlockType={props.pluginStateBlockType}
+          pluginStateCodeBlock={props.pluginStateCodeBlock}
           pluginStateHyperlink={props.pluginStateHyperlink}
           pluginStateLists={props.pluginStateLists}
           pluginStateTextFormatting={props.pluginStateTextFormatting}

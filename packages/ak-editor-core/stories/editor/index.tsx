@@ -1,20 +1,20 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import {
-  Chrome,
-  ProseMirror,
-  Schema,
-  Node,
-  ListsPlugin,
   BlockTypePlugin,
+  Chrome,
+  ContextName,
   HyperlinkPlugin,
-  TextFormattingPlugin,
-  MentionsPlugin
+  ListsPlugin,
+  MentionsPlugin,
+  Node,
+  ProseMirror,
+  TextFormattingPlugin
 } from '../../';
 import schema from './schema';
 
 export interface Props {
-  context?: 'comment' | 'pr';
+  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
@@ -72,7 +72,6 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   get value(): string | undefined {
-    const { pm } = this.state;
     return this.props.defaultValue;
   }
 
@@ -128,7 +127,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { context, onChange } = this.props;
+      const { context } = this.props;
       const pm = new ProseMirror({
         place,
         doc: schema.nodes.doc.createAndFill(),

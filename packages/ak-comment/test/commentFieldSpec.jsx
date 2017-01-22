@@ -14,7 +14,7 @@ describe(name, () => {
   describe('CommentField', () => {
     describe('exports', () => {
       it('the CommentField component', () => {
-        expect(CommentField).to.exist;
+        expect(CommentField).not.to.equal(undefined);
         expect(new CommentField()).to.be.instanceOf(Component);
       });
     });
@@ -22,7 +22,7 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<CommentField />);
-        expect(wrapper).to.exist;
+        expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 

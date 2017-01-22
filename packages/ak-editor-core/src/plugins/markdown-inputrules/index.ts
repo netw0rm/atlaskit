@@ -1,18 +1,16 @@
 import {
-  Plugin,
-  ProseMirror,
-  Mark,
-  Schema,
+  blockQuoteRule,
+  bulletListRule,
+  codeBlockRule,
   InputRule,
   inputRules,
-  allInputRules,
-  textblockTypeInputRule,
-  bulletListRule,
-  blockQuoteRule,
-  codeBlockRule,
-  wrappingInputRule,
+  Node,
   NodeType,
-  Node
+  Plugin,
+  ProseMirror,
+  Schema,
+  textblockTypeInputRule,
+  wrappingInputRule
 } from '../../prosemirror';
 
 import { analyticsService, trackAndInvoke } from '../../analytics';
@@ -23,7 +21,7 @@ import { analyticsService, trackAndInvoke } from '../../analytics';
 // version of that input rule.
 const orderedListRule = (nodeType: NodeType): InputRule => {
   return wrappingInputRule(/^(\d+)\. $/, ' ', nodeType, (match: RegExpMatchArray) => ({}),
-    (match: RegExpMatchArray, node: Node) => node.childCount);
+    (match, node) => node.childCount > 0);
 };
 
 const createTrackedInputRule = (analyticsEventName: string, rule: InputRule): InputRule => {
@@ -50,25 +48,26 @@ const headingRule = (nodeType: NodeType, maxLevel: Number) => {
 
 const buildBlockRules = (schema: Schema): Array<InputRule> => {
   const rules = Array<InputRule>();
+  const { heading, bullet_list, ordered_list, blockquote, code_block } = schema.nodes;
 
-  if (schema.nodes.heading) {
-    rules.push(headingRule(schema.nodes.heading, 6));
+  if (heading) {
+    rules.push(headingRule(heading, 6));
   }
 
-  if (schema.nodes.bullet_list) {
-    rules.push(createTrackedInputRule('atlassian.editor.format.list.bullet.autoformatting', bulletListRule(schema.nodes.bullet_list)));
+  if (bullet_list) {
+    rules.push(createTrackedInputRule('atlassian.editor.format.list.bullet.autoformatting', bulletListRule(bullet_list)));
   }
 
-  if (schema.nodes.ordered_list) {
-    rules.push(createTrackedInputRule('atlassian.editor.format.list.numbered.autoformatting', orderedListRule(schema.nodes.ordered_list)));
+  if (ordered_list) {
+    rules.push(createTrackedInputRule('atlassian.editor.format.list.numbered.autoformatting', orderedListRule(ordered_list)));
   }
 
-  if (schema.nodes.blockquote) {
-    rules.push(createTrackedInputRule('atlassian.editor.format.blockquote.autoformatting', blockQuoteRule(schema.nodes.blockquote)));
+  if (blockquote) {
+    rules.push(createTrackedInputRule('atlassian.editor.format.blockquote.autoformatting', blockQuoteRule(blockquote)));
   }
 
-  if (schema.nodes.code_block) {
-    rules.push(createTrackedInputRule('atlassian.editor.format.codeblock.autoformatting', codeBlockRule(schema.nodes.code_block)));
+  if (code_block) {
+    rules.push(createTrackedInputRule('atlassian.editor.format.codeblock.autoformatting', codeBlockRule(code_block)));
   }
 
   return rules;
@@ -94,11 +93,11 @@ function replaceWithMark(
   pos: number,
   mark: string
 ): boolean {
-  const schema: Schema = pm.schema;
+  const schema = pm.schema;
   const to = pos;
   const from = pos - match[1].length;
-  const markType: Mark = schema.mark(mark);
-  const marks: Mark[] = [...pm.tr.doc.marksAt(pos), markType];
+  const markType = schema.mark(mark);
+  const marks = [...pm.tr.doc.marksAt(pos), markType];
 
   pm.tr.replaceWith(
     from,
@@ -111,7 +110,7 @@ function replaceWithMark(
 
   analyticsService.trackEvent(`atlassian.editor.format.${mark}.autoformatting`);
 
-  pm.removeActiveMark(markType);
+  pm.removeActiveMark(markType.type);
 
   return true;
 }
@@ -137,11 +136,11 @@ const linkRule = new InputRule(/\[(\S+)\]\((\S+)\)$/, ')', (
     to,
     schema.text(
       match[1],
-      markType
+      [markType]
     )
   ).apply();
 
-  pm.removeActiveMark(markType);
+  pm.removeActiveMark(markType.type);
 
   return true;
 });
@@ -159,7 +158,7 @@ const imgRule = new InputRule(/!\[(\S+)\]\((\S+)\)$/, ')', (
     title: match[1],
   };
 
-  const node = pm.schema.nodes.image.create(attrs);
+  const node = pm.schema.nodes['image'].create(attrs);
   return replaceWithNode(pm, match, pos, node);
 });
 
@@ -190,6 +189,13 @@ const emRule2 = new InputRule(/(?:[^_]+)(_([^_]+?)_)$|^(_([^_]+)_)$/, '_', (
   pos: number
 ) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em'));
 
+// ~~string~~ should strikethrough the text
+const strikeRule = new InputRule(/(\~\~([^\*]+)\~\~)$/, '~', (
+  pm: ProseMirror,
+  match: Array<string>,
+  pos: number
+) => replaceWithMark(pm, match, pos, 'strike'));
+
 // `string` should change the current text to monospace
 const monoRule = new InputRule(/(`([^`]+)`)$/, '`', (
   pm: ProseMirror,
@@ -202,13 +208,13 @@ const hrRule1 = new InputRule(/^\*\*\*$/, '*', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
-) => replaceWithNode(pm, match, pos, pm.schema.nodes.horizontal_rule.create()));
+) => replaceWithNode(pm, match, pos, pm.schema.nodes['horizontal_rule'].create()));
 
 const hrRule2 = new InputRule(/^\-\-\-$/, '-', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
-) => replaceWithNode(pm, match, pos, pm.schema.nodes.horizontal_rule.create()));
+) => replaceWithNode(pm, match, pos, pm.schema.nodes['horizontal_rule'].create()));
 
 export class MarkdownInputRulesPlugin {
   inputRules: InputRule[];
@@ -221,6 +227,7 @@ export class MarkdownInputRulesPlugin {
       strongRule2,
       emRule1,
       emRule2,
+      strikeRule,
       monoRule,
       imgRule,
       linkRule,

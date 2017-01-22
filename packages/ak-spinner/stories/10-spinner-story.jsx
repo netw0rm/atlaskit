@@ -29,6 +29,34 @@ storiesOf(name, module)
       </div>
     </div>
   ), defaultImports)
+  .addCodeExampleStory('Spinner sizes', () => (
+    <div>
+      <div>
+        <h3>default</h3>
+        <Spinner />
+      </div>
+      <div>
+        <h3>small</h3>
+        <Spinner size="small" />
+      </div>
+      <div>
+        <h3>medium</h3>
+        <Spinner size="medium" />
+      </div>
+      <div>
+        <h3>large</h3>
+        <Spinner size="large" />
+      </div>
+      <div>
+        <h3>xlarge</h3>
+        <Spinner size="xlarge" />
+      </div>
+      <div>
+        <h3>custom</h3>
+        <Spinner size={35} />
+      </div>
+    </div>
+  ), defaultImports)
   .addCodeExampleStory('Stateful spinner', () => (
     <div style={{ padding: '10px' }}>
       <StatefulSpinner />

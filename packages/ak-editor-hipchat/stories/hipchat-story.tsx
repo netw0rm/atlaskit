@@ -1,4 +1,4 @@
-import { storiesOf, action } from '@kadira/storybook';
+import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import Editor from '../src';
 import { resourceProvider } from './story-data';

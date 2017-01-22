@@ -93,7 +93,7 @@ describe(name, () => {
             })
           );
           flag.find(`.${flagLocals.actionsItem} button`).simulate('click');
-          expect(spy).to.have.been.calledOnce;
+          expect(spy.callCount).to.equal(1);
         });
       });
 
@@ -107,7 +107,7 @@ describe(name, () => {
           })
         );
         wrapper.find(`.${flagLocals.dismissIconButton}`).simulate('click');
-        expect(spy).to.have.been.calledOnce;
+        expect(spy.callCount).to.equal(1);
         expect(spy).to.have.been.calledWith('a');
       });
 
@@ -152,7 +152,7 @@ describe(name, () => {
       );
       wrapper.find(`.${flagLocals.dismissIconButton}`).simulate('click');
       wrapper.find(`.${flagLocals.root}`).first().simulate('animationEnd');
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
       expect(spy).to.have.been.calledWith('a');
     });
   });

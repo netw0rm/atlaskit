@@ -58,7 +58,7 @@ describe('ak-field-text', () => {
       const spy = sinon.spy();
       const wrapper = mount(<FieldText onChange={spy} />);
       wrapper.find('input').simulate('change');
-      expect(spy).to.be.calledOnce;
+      expect(spy.callCount).to.equal(1);
     });
   });
 });

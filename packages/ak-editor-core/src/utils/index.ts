@@ -5,8 +5,8 @@ import {
   NodeType,
   ProseMirror,
   ResolvedPos,
-  TextSelection,
-  Selection
+  Selection,
+  TextSelection
 } from '../prosemirror';
 
 function validateNode(node: Node): boolean {
@@ -43,12 +43,12 @@ export function canJoinUp(pm: ProseMirror, selection: Selection, doc: any, nodeT
  * Returns all top-level ancestor-nodes between $from and $to
  */
 export function getAncestorNodesBetween(pm: ProseMirror, $from: ResolvedPos, $to: ResolvedPos): Node[] {
-  let nodes = Array<Node>();
-  let maxDepth = findAncestorPosition(pm, $from).depth;
+  const nodes = Array<Node>();
+  const maxDepth = findAncestorPosition(pm, $from).depth;
   let current = pm.doc.resolve($from.start(maxDepth));
 
   while (current.pos <= $to.start($to.depth)) {
-    let depth = Math.min(current.depth, maxDepth);
+    const depth = Math.min(current.depth, maxDepth);
     const node = current.node(depth);
 
     if (node) {
@@ -76,7 +76,7 @@ export function getAncestorNodesBetween(pm: ProseMirror, $from: ResolvedPos, $to
 
 /**
  * Finds all "selection-groups" within a range. A selection group is based on ancestors.
- * 
+ *
  * Example:
  * Given the following document and selection ({<} = start of selection and {>} = end)
  *  doc
@@ -87,7 +87,7 @@ export function getAncestorNodesBetween(pm: ProseMirror, $from: ResolvedPos, $to
  *        li
  *     p
  *     p{>}
- * 
+ *
  * The output will be two selection-groups. One within the ul and one with the two paragraphs.
  */
 export function getGroupsInRange(pm: ProseMirror, $from: ResolvedPos, $to: ResolvedPos, isNodeValid: (node: Node) => boolean = validateNode): Array<{ $from: ResolvedPos, $to: ResolvedPos }> {
@@ -176,7 +176,7 @@ export function liftSelection(pm: ProseMirror, $from: ResolvedPos, $to: Resolved
   const { tr } = pm;
   let startPos = $from.start($from.depth);
   let endPos = $to.end($to.depth);
-  let target = Math.max(0, findAncestorPosition(pm, $from).depth - 1);
+  const target = Math.max(0, findAncestorPosition(pm, $from).depth - 1);
 
   tr.doc.nodesBetween(startPos, endPos, (node, pos) => {
     if (
@@ -185,7 +185,7 @@ export function liftSelection(pm: ProseMirror, $from: ResolvedPos, $to: Resolved
     ) {
       const res = tr.doc.resolve(tr.map(pos));
       const sel = new NodeSelection(res);
-      const range = sel.$from.blockRange(sel.$to);
+      const range = sel.$from.blockRange(sel.$to)!;
       tr.lift(range, target);
     }
   });

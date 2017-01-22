@@ -5,15 +5,14 @@ type sourceType = 'click' | 'keydown';
 interface Props {
   isDisabled?: boolean;
   isOpened?: boolean;
-  type?: 'default' | 'button';
   onActivate?: ({ source: sourceType }) => void;
   isFocused?: boolean;
-  isNotTabbable?: boolean;
-  style?: object;
+  isTabbable?: boolean;
+  style?: any;
   className?: string;
   shouldFitContainer?: boolean;
 }
 
 interface State {}
 
-export default class Trigger extends Component<Props, State> {};
+export default class Trigger extends Component<Props, State> {}

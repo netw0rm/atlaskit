@@ -33,7 +33,7 @@ describe('<EmojiButton />', () => {
       />);
 
       wrapper.find(`.${styles.emojiButton}`).simulate('mousedown', { button: 0 });
-      expect(onClickSpy).to.have.been.called;
+      expect(onClickSpy.called).to.equal(true);
     });
   });
 
@@ -51,7 +51,7 @@ describe('<EmojiButton />', () => {
       />);
 
       wrapper.mount(`.${styles.emojiButton}`).simulate('mousedown', { button: 0 });
-      expect(onClickSpy).to.have.been.called;
+      expect(onClickSpy.called).to.equal(true);
     });
   });
 });

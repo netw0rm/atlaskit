@@ -1,9 +1,9 @@
-import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
 import {
-  chaiPlugin, makeEditor, doc, a, p, em, strong, mono,
-  hr,img, h1, h2, h3, ul, ol, li, blockquote, code_block
+  a, blockquote, chaiPlugin, code_block, doc, em, h1, h2,
+  h3, hr, img, li, makeEditor, mono, ol, p, strike, strong, ul
 } from '../../../test-helper';
 
 chai.use(chaiPlugin);
@@ -15,8 +15,8 @@ describe('markdown-inputrules', () => {
   };
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const Plugin = MarkdownInputRulesPlugin as any; // .State is not public API.
-    expect(Plugin.State.name).is.be.a('string');
+    const plugin = MarkdownInputRulesPlugin as any; // .State is not public API.
+    expect(plugin.State.name).is.be.a('string');
   });
 
   describe('strong rule', () => {
@@ -63,6 +63,15 @@ describe('markdown-inputrules', () => {
 
       pm.input.insertText(sel, sel, '*italic*');
       expect(pm.doc).to.deep.equal(doc(p(strong('This is bold '), em(strong('italic')))));
+    });
+  });
+
+  describe('stike rule', () => {
+    it('should convert "~~text~~" to strike', () => {
+      const { pm, sel } = editor(doc(p('{<>}')));
+
+      pm.input.insertText(sel, sel, '~~text~~');
+      expect(pm.doc).to.deep.equal(doc(p(strike('text'))));
     });
   });
 
@@ -205,7 +214,7 @@ describe('markdown-inputrules', () => {
   });
 
   describe('ordered list rule', () => {
-    it('should convert "[number]. " to a ordered list item' , () => {
+    it('should convert "[number]. " to a ordered list item', () => {
       const { pm, sel } = editor(doc(p('{<>}')));
 
       pm.input.insertText(sel, sel, '1. ');

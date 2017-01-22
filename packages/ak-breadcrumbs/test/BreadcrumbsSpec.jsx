@@ -20,8 +20,8 @@ describe(name, () => {
   describe('AkBreadcrumbs', () => {
     describe('exports', () => {
       it('the React component, and the Item component', () => {
-        expect(Breadcrumbs).to.exist;
-        expect(Item).to.exist;
+        expect(Breadcrumbs).not.to.equal(undefined);
+        expect(Item).not.to.equal(undefined);
         expect(new Breadcrumbs()).to.be.instanceOf(Component);
         expect(new Item()).to.be.instanceOf(Component);
       });
@@ -30,7 +30,7 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<Breadcrumbs />);
-        expect(wrapper).to.exist;
+        expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
@@ -54,7 +54,7 @@ describe(name, () => {
           </Breadcrumbs>
         );
         const containerDiv = wrapper.find(`.${locals.container}`);
-        expect(containerDiv).to.exist;
+        expect(containerDiv).to.have.length.above(0);
         expect(containerDiv).to.have.exactly(3).descendants(Item);
       });
 
@@ -87,7 +87,7 @@ describe(name, () => {
           it('calls the onExpand handler when the ellipsis is clicked', () => {
             const ellipsisItem = wrapper.find(EllipsisItem);
             ellipsisItem.simulate('click');
-            expect(expandSpy).to.have.been.calledOnce;
+            expect(expandSpy.callCount).to.equal(1);
           });
         });
 

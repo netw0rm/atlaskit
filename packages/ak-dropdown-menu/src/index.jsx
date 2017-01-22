@@ -65,9 +65,7 @@ export default class DropdownMenu extends PureComponent {
       case 'link':
       default:
         this.props.onItemActivated({ item: activatedItem });
-        if (!activatedItem.href) { // TODO: AK-1299
-          this.close();
-        }
+        this.close();
         break;
     }
   }

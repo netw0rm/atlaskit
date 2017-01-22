@@ -1,4 +1,4 @@
-import { ProseMirror, Node, Mark, Slice, Fragment, Transform, isCodeBlockNode } from '../../';
+import { Fragment, isCodeBlockNode, Mark, Node, ProseMirror, Slice, Transform } from '../../';
 import { URL } from './regex';
 
 function applyLinkMarkerToNode(
@@ -47,7 +47,7 @@ function addLinkMarkerToNode(
 }
 
 export default function(pm: ProseMirror, slice: Slice): Slice {
-  const nodes = slice.content.content
-    .map((node: Node) => addLinkMarkerToNode(pm, node));
+  const nodes: Node[] = [];
+  slice.content.forEach(node => nodes.push(addLinkMarkerToNode(pm, node)));
   return new Slice(Fragment.fromArray(nodes), 0, 0);
 }

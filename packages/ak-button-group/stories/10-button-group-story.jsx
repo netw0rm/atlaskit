@@ -1,19 +1,32 @@
 import { storiesOf } from '@kadira/storybook';
-import reactify from 'akutil-react';
 import ReactAkButton from 'ak-button';
-import Dropdown from 'ak-dropdown';
+import Dropdown from 'ak-dropdown-menu';
 import CharlieIcon from 'ak-icon/glyph/atlassian';
 import React from 'react';
 
 import ReactAkButtonGroup from '../src';
 import { name } from '../package.json';
 
-const ReactDropdown = reactify(Dropdown);
+const items = [
+  {
+    heading: 'dropdown heading',
+    items: [
+      {
+        content: 'foo',
+      },
+      {
+        content: 'bar',
+      },
+    ],
+  },
+];
+
 const imports = [
   ['React', 'react'],
   ['ReactAkButtonGroup', 'ak-button-group'],
   ['ReactAkButton', 'ak-button'],
 ];
+
 storiesOf(name, module)
   .addCodeExampleStory('plain group', () => (
     <ReactAkButtonGroup>
@@ -71,23 +84,23 @@ storiesOf(name, module)
     </ReactAkButtonGroup>
   ), { imports })
   .addCodeExampleStory('with ak-button > ak-icon', () => (
-    <ReactAkButtonGroup style={{ border: '1px solid #AAA', display: 'block' }}>
-      <ReactAkButton>Edit</ReactAkButton>
-      <ReactAkButton>
-        <CharlieIcon label="button with icon" />
-      </ReactAkButton>
-    </ReactAkButtonGroup>
+    <div style={{ border: '1px solid #AAA', display: 'block' }}>
+      <ReactAkButtonGroup>
+        <ReactAkButton>Edit</ReactAkButton>
+        <ReactAkButton iconBefore={<CharlieIcon label="button with icon" />} />
+      </ReactAkButtonGroup>
+    </div>
   ), { imports: [...imports, ['CharlieIcon', 'ak-icon/glyph/atlassian']] })
   .addCodeExampleStory('with ak-dropdown > ak-button (split button)', () => (
-    <ReactAkButtonGroup style={{ border: '1px solid #AAA', display: 'block' }}>
-      <ReactAkButton>Edit</ReactAkButton>
-      <ReactDropdown>
-        <ak-dropdown-trigger-arrow slot="trigger" />
-        <ak-dropdown-item>Foo</ak-dropdown-item>
-        <ak-dropdown-item>Bar</ak-dropdown-item>
-        <ak-dropdown-item>Baz</ak-dropdown-item>
-      </ReactDropdown>
-    </ReactAkButtonGroup>
+    <div style={{ display: 'block' }}>
+      <ReactAkButtonGroup>
+        <ReactAkButton appearance="subtle" iconBefore={<CharlieIcon />} />
+        <ReactAkButton appearance="subtle" iconBefore={<CharlieIcon />} />
+        <Dropdown items={items}>
+          <ReactAkButton appearance="subtle" iconBefore={<CharlieIcon />} />
+        </Dropdown>
+      </ReactAkButtonGroup>
+    </div>
   ), {
     imports: [...imports, ['AkDropdown', 'ak-dropdown'], ['reactify', 'akutil-react']],
     scripts: ['const ReactDropdown = reactify(AkDropdown)'],

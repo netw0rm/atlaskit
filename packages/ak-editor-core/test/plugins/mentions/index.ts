@@ -1,10 +1,10 @@
-import MentionsPlugin from '../../../src/plugins/mentions';
-import { MentionQueryMarkType, MentionNodeType, ProseMirror, Schema, ResolvedPos, schema as schemaBasic } from '../../../src';
-import { chaiPlugin, fixtures } from '../../../test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
+import { MentionNodeType, MentionQueryMarkType, ProseMirror, Schema, schema as schemaBasic } from '../../../src';
+import MentionsPlugin from '../../../src/plugins/mentions';
+import { chaiPlugin, fixtures } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 chai.use((sinonChai as any).default || sinonChai);
@@ -30,8 +30,8 @@ const container = fixtures();
 
 describe('mentions', () => {
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const Plugin = MentionsPlugin as any; // .State is not public API.
-    expect(Plugin.State.name).is.be.a('string');
+    const plugin = MentionsPlugin as any; // .State is not public API.
+    expect(plugin.State.name).is.be.a('string');
   });
 
   describe('keymap', () => {
@@ -96,7 +96,7 @@ describe('mentions', () => {
       (keyDownEvent as any).keyCode = 38;
 
       pm.input.dispatchKey('Up', keyDownEvent);
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
 
     it('should trigger "onSelectNext" when "Down"-key is pressed', () => {
@@ -111,7 +111,7 @@ describe('mentions', () => {
       (keyDownEvent as any).keyCode = 40;
 
       pm.input.dispatchKey('Down', keyDownEvent);
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
 
     it('should trigger "onSelectCurrent" when "Enter"-key is pressed', () => {
@@ -126,7 +126,7 @@ describe('mentions', () => {
       (keyDownEvent as any).keyCode = 13;
 
       pm.input.dispatchKey('Enter', keyDownEvent);
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
 
     it('should trigger "dismiss" when "Esc"-key is pressed', () => {
@@ -140,7 +140,7 @@ describe('mentions', () => {
       (keyDownEvent as any).keyCode = 27;
 
       pm.input.dispatchKey('Esc', keyDownEvent);
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
 
   });

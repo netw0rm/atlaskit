@@ -3,10 +3,10 @@
  *
  * In IE, doing `new Event()` would throw an error.
  */
-const supportsEvent = ((TheEvent) => {
-  if (TheEvent) {
+const supportsEvent = ((event) => {
+  if (event) {
     try {
-      new TheEvent('emit-init');
+      new event('emit-init');
     } catch (e) {
       return false;
     }

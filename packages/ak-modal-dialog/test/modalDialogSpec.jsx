@@ -88,12 +88,12 @@ describe('ak-modal-dialog', () => {
       });
     });
 
-    describe('onBlanketClicked', () => {
+    describe('onDialogDismissed', () => {
       it('should trigger when blanket clicked', () => {
         const spy = sinon.spy();
-        const wrapper = mount(<ModalDialog isOpen onBlanketClicked={spy} />);
+        const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
         wrapper.find(`.${styles.locals.modalWrapper}`).children().first().simulate('click');
-        expect(spy).to.have.been.calledOnce;
+        expect(spy.callCount).to.equal(1);
       });
     });
   });

@@ -18,11 +18,11 @@ const RandomAvatar = props => <AkAvatar
 
 const CompactItem = ({ children }) => (
   <AkContainerItem
-    isCompact
+    action={<CancelIcon />}
     icon={<RandomAvatar />}
+    isCompact
     text={children}
     textAfter={<RandomBadge />}
-    action={<CancelIcon />}
   />
 );
 
@@ -36,27 +36,27 @@ storiesOf(name, module)
       <BasicNavigation containerHeader={null}>
         <a href="#1">
           <AkContainerItem
-            isCompact
             icon={<RandomAvatar presence="online" />}
+            isCompact
             text="Available"
           />
         </a>
         <a href="#1">
           <AkContainerItem
-            isCompact
             icon={<DashboardIcon label="Lobby" />}
+            isCompact
             text="Lobby"
           />
         </a>
         <AkContainerItemGroup
-          title="Rooms"
           action={
             <AkButton
-              spacing="none"
-              iconBefore={<EmojiCustomIcon size="small" />}
               appearance="subtle"
+              iconBefore={<EmojiCustomIcon size="small" />}
+              spacing="none"
             />
           }
+          title="Rooms"
         >
           <a href="#1">
             <CompactItem>Front deskers</CompactItem>

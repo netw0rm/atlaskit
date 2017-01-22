@@ -1,6 +1,6 @@
 {
-  "name": "eslint-config-ak-cucumber",
-  "version": "4.0.0",
+  "name": "@atlaskit/eslint-config-ak-cucumber",
+  "version": "1.0.0",
   "author": "Atlassian Pty Ltd",
   "description": "The cucumber test eslint configuration for AtlasKit components",
   "license": "Apache-2.0",

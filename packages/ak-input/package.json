@@ -6,7 +6,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "prepublish": "cd ../.. && npm run prepublish/single ak-input"
+    "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
   },
   "files": [
     "dist"

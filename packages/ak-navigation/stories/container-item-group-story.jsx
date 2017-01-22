@@ -14,39 +14,39 @@ storiesOf(name, module)
       <BasicNavigation>
         <a href="#1">
           <AkContainerItem
-            isCompact
             icon={<SearchIcon label="Search" />}
+            isCompact
             text="Search"
           />
         </a>
         <AkContainerItemGroup
-          title="Rooms"
           action={
             <AkButton
-              spacing="none"
-              iconBefore={<EmojiCustomIcon size="small" />}
               appearance="subtle"
+              iconBefore={<EmojiCustomIcon size="small" />}
+              spacing="none"
             />
           }
+          title="Rooms"
         >
           <a href="#1">
             <AkContainerItem
-              isCompact
               icon={<HelpIcon label="Help" />}
+              isCompact
               text="Help"
             />
           </a>
           <a href="#2">
             <AkContainerItem
-              isCompact
               icon={<CreateIcon label="Create" />}
+              isCompact
               text="Create"
             />
           </a>
           <a href="#3">
             <AkContainerItem
-              isCompact
               icon={<DashboardIcon label="Dashboard" />}
+              isCompact
               text="Nucleus"
             />
           </a>
@@ -54,15 +54,15 @@ storiesOf(name, module)
         <AkContainerItemGroup title="People">
           <a href="#4">
             <AkContainerItem
-              isCompact
               icon={<SettingsIcon label="Settings" />}
+              isCompact
               text="Settings"
             />
           </a>
           <a href="#5">
             <AkContainerItem
-              isCompact
               icon={<ProjectsIcon label="Projects" />}
+              isCompact
               text="Projects"
             />
           </a>

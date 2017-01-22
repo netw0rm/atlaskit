@@ -43,7 +43,7 @@ describe.skip('ak-tag', () => {
         const mousedownEvent = new CustomEvent('mousedown', {});
         const spy = sinon.spy(mousedownEvent, 'preventDefault');
         rootNode.dispatchEvent(mousedownEvent);
-        expect(spy).to.have.been.called;
+        expect(spy.called).to.equal(true);
       });
 
       it('should pass the children through', () => {
@@ -80,7 +80,7 @@ describe.skip('ak-tag', () => {
           const keyPressEvent = new CustomEvent('keydown');
           keyPressEvent.keyCode = keyCode(keyName);
           rootNode.dispatchEvent(keyPressEvent);
-          expect(clickSpy).to.have.been.called;
+          expect(clickSpy.called).to.equal(true);
         }));
     });
   });

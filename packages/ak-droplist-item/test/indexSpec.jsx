@@ -3,7 +3,6 @@ import React from 'react';
 import chaiAsPromised from 'chai-as-promised';
 import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
-import keyCode from 'keycode';
 
 import { name } from '../package.json';
 import { locals as styles } from '../src/styles.less';
@@ -17,7 +16,7 @@ const { expect } = chai;
 
 describe(name, () => {
   it('should be possible to create a component', () => {
-    expect(shallow(<Item />)).to.exist;
+    expect(shallow(<Item />)).not.to.equal(undefined);
   });
 
   it('should be "link" item by default', () => {
@@ -55,39 +54,43 @@ describe(name, () => {
 
   describe('classes', () => {
     it('should have "item" class by default', () => {
-      expect(mount(<Item type="link" />).find(`.${styles.item}`)).to.exist;
-      expect(mount(<Item type="checkbox" />).find(`.${styles.item}`)).to.exist;
-      expect(mount(<Item type="radio" />).find(`.${styles.item}`)).to.exist;
+      expect(mount(<Item type="link" />).find(`.${styles.item}`)).to.have.length.above(0);
+      expect(mount(<Item type="checkbox" />).find(`.${styles.item}`)).to.have.length.above(0);
+      expect(mount(<Item type="radio" />).find(`.${styles.item}`)).to.have.length.above(0);
     });
 
     it('should have "disabled" class when disabled', () => {
-      expect(mount(<Item type="link" isDisabled />).find(`.${styles.disabled}`)).to.exist;
-      expect(mount(<Item type="radio" isDisabled />).find(`.${styles.disabled}`)).to.exist;
-      expect(mount(<Item type="checkbox" isDisabled />).find(`.${styles.disabled}`)).to.exist;
+      expect(mount(<Item type="link" isDisabled />).find(`.${styles.disabled}`)).to.have.length.above(0);
+      expect(mount(<Item type="radio" isDisabled />).find(`.${styles.disabled}`)).to.have.length.above(0);
+      expect(mount(<Item type="checkbox" isDisabled />).find(`.${styles.disabled}`)).to.have.length.above(0);
     });
 
     it('should have "active" class when link item is active', () => {
-      expect(mount(<Item type="link" isActive />).find(`.${styles.active}`)).to.exist;
+      expect(mount(<Item type="link" isActive />).find(`.${styles.active}`)).to.have.length.above(0);
+    });
+
+    it('should have "active" class when option item is selected', () => {
+      expect(mount(<Item type="option" isSelected />).find(`.${styles.active}`)).to.have.length.above(0);
     });
 
     it('should NOT have "active" class for any other item types', () => {
-      expect(mount(<Item type="radio" isActive />).find(`.${styles.active}`)).to.not.exist;
-      expect(mount(<Item type="checkbox" isActive />).find(`.${styles.disabled}`)).to.not.exist;
+      expect(mount(<Item type="radio" isActive />).find(`.${styles.active}`).length).to.equal(0);
+      expect(mount(<Item type="checkbox" isActive />).find(`.${styles.active}`).length).to.equal(0);
     });
 
     it('should have "checked" class when checkbox or radio is checked', () => {
-      expect(mount(<Item type="checkbox" isChecked />).find(`.${styles.checked}`)).to.exist;
-      expect(mount(<Item type="radio" isChecked />).find(`.${styles.checked}`)).to.exist;
+      expect(mount(<Item type="checkbox" isChecked />).find(`.${styles.checked}`)).to.have.length.above(0);
+      expect(mount(<Item type="radio" isChecked />).find(`.${styles.checked}`)).to.have.length.above(0);
     });
 
     it('should NOT have "checked" class for any other items', () => {
-      expect(mount(<Item type="link" isChecked />).find(`.${styles.checked}`)).to.not.exist;
+      expect(mount(<Item type="link" isChecked />).find(`.${styles.checked}`).length).to.equal(0);
     });
 
     it('should have "hidden" class when item is hidden', () => {
-      expect(mount(<Item type="link" isHidden />).find(`.${styles.hidden}`)).to.exist;
-      expect(mount(<Item type="checkbox" isHidden />).find(`.${styles.hidden}`)).to.exist;
-      expect(mount(<Item type="radio" isHidden />).find(`.${styles.hidden}`)).to.exist;
+      expect(mount(<Item type="link" isHidden />).find(`.${styles.hidden}`)).to.have.length.above(0);
+      expect(mount(<Item type="checkbox" isHidden />).find(`.${styles.hidden}`)).to.have.length.above(0);
+      expect(mount(<Item type="radio" isHidden />).find(`.${styles.hidden}`)).to.have.length.above(0);
     });
   });
 
@@ -109,43 +112,28 @@ describe(name, () => {
       });
 
       it('should be activated when enter is pressed', () => {
-        wrapper.simulate('keyDown', { keyCode: keyCode('enter') });
-        expect(onActivate.calledOnce).to.be.true;
+        wrapper.simulate('keyPress', { key: 'Enter' });
+        expect(onActivate.calledOnce).to.equal(true);
       });
 
       it('should be activated when space is pressed', () => {
-        wrapper.simulate('keyDown', { keyCode: keyCode('space') });
-        expect(onActivate.calledOnce).to.be.true;
+        wrapper.simulate('keyPress', { key: ' ' });
+        expect(onActivate.calledOnce).to.equal(true);
       });
 
       it('should be activated when clicked', () => {
         wrapper.simulate('click');
-        expect(onActivate.calledOnce).to.be.true;
+        expect(onActivate.calledOnce).to.equal(true);
       });
 
       it('should not be activated when disabled', () => {
         const disabledWrapper =
           mount(<Item onActivate={onActivate} isDisabled />).find(`.${styles.item}`);
         disabledWrapper.simulate('click');
-        disabledWrapper.simulate('keyDown', { keyCode: keyCode('enter') });
-        disabledWrapper.simulate('keyDown', { keyCode: keyCode('space') });
-        expect(onActivate.called).to.be.false;
+        disabledWrapper.simulate('keyPress', { key: 'Enter' });
+        disabledWrapper.simulate('keyPress', { key: ' ' });
+        expect(onActivate.called).to.equal(false);
       });
-    });
-
-    it('should call onKeyDown when a key other than space and enter is pressed', () => {
-      const wrapper = mount(<Item onKeyDown={onActivate} />).find(`.${styles.item}`);
-      wrapper.simulate('keyDown', { keyCode: keyCode('up') });
-      wrapper.simulate('keyDown', { keyCode: keyCode('down') });
-      wrapper.simulate('keyDown', { keyCode: keyCode('tab') });
-      expect(onActivate.calledThrice).to.be.true;
-    });
-
-    it('should not call onKeyDown when space and enter is pressed', () => {
-      const wrapper = mount(<Item onKeyDown={onActivate} />).find(`.${styles.item}`);
-      wrapper.simulate('keyDown', { keyCode: keyCode('space') });
-      wrapper.simulate('keyDown', { keyCode: keyCode('enter') });
-      expect(onActivate.called).to.be.false;
     });
   });
 
@@ -162,6 +150,32 @@ describe(name, () => {
     it('should have className', () => {
       expect(mount(<SecondaryText>text</SecondaryText>)
         .find(`.${styles.secondaryText}`).length).to.equal(1);
+    });
+  });
+
+  describe('accessibility', () => {
+    it('disabled item', () => {
+      expect(mount(<Item />).find('[aria-disabled]').length).to.equal(0);
+      expect(mount(<Item isDisabled />).find('[aria-disabled]').length).to.equal(1);
+    });
+
+    it('hidden item', () => {
+      expect(mount(<Item />).find('[aria-hidden]').length).to.equal(0);
+      expect(mount(<Item isHidden />).find('[aria-hidden]').length).to.equal(1);
+    });
+
+    it('checked item', () => {
+      expect(mount(<Item />).find('[aria-checked]').length).to.equal(0);
+      expect(mount(<Item isChecked />).find('[aria-checked]').length).to.equal(1);
+    });
+
+    it('option item', () => {
+      expect(mount(<Item type="option" />).find('[aria-selected=false]').length).to.equal(1);
+      expect(mount(<Item type="option" isSelected />).find('[aria-selected=true]').length).to.equal(1);
+    });
+
+    it('data-role', () => {
+      expect(mount(<Item />).find('[data-role]').length).to.equal(1);
     });
   });
 });

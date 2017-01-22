@@ -1,6 +1,6 @@
-import * as React from 'react';
 import { action } from '@kadira/storybook';
 import Editor from 'ak-editor-hipchat';
+import * as React from 'react';
 
 export default (
   <Editor

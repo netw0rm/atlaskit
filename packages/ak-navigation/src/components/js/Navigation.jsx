@@ -2,19 +2,19 @@ import React, { PureComponent, PropTypes } from 'react';
 import AkBlanket from 'ak-blanket';
 import styles from 'style!../less/Navigation.less';
 import GlobalNavigation from './GlobalNavigation';
-import GlobalItem from './GlobalItem';
 import ContainerNavigation from './ContainerNavigation';
+import DefaultLinkComponent from './DefaultLinkComponent';
 import Drawer from './Drawer';
-import DrawerTrigger from './DrawerTrigger';
 import Resizer from './Resizer';
 import Spacer from './Spacer';
 import {
-  navigationOpenWidth,
   containerClosedWidth,
-  resizeExpandedBreakpoint,
+  globalOpenWidth,
+  navigationOpenWidth,
   resizeClosedBreakpoint,
+  resizeExpandedBreakpoint,
 } from '../../shared-variables';
-import { getGlobalWidth, getContainerWidth } from '../../utils/collapse';
+import getContainerWidth from '../../utils/collapse';
 
 export default class Navigation extends PureComponent {
   static propTypes = {
@@ -22,10 +22,12 @@ export default class Navigation extends PureComponent {
     containerAppearance: PropTypes.string,
     containerHeader: PropTypes.node,
     createDrawerContent: PropTypes.node,
+    drawerBackIcon: PropTypes.node,
     globalAccountItem: PropTypes.node,
     globalCreateIcon: PropTypes.node,
     globalHelpItem: PropTypes.node,
-    globalPrimaryItem: PropTypes.node,
+    globalPrimaryIcon: PropTypes.node,
+    globalPrimaryItemHref: PropTypes.string,
     globalSearchIcon: PropTypes.node,
     hasBlanket: PropTypes.bool,
     isCollapsible: PropTypes.bool,
@@ -33,10 +35,13 @@ export default class Navigation extends PureComponent {
     isOpen: PropTypes.bool,
     isResizeable: PropTypes.bool,
     isSearchDrawerOpen: PropTypes.bool,
+    linkComponent: PropTypes.func,
     onBlanketClicked: PropTypes.func,
-    onCreateDrawerActivated: PropTypes.func,
+    onCreateDrawerClose: PropTypes.func,
+    onCreateDrawerOpen: PropTypes.func,
     onResize: PropTypes.func,
-    onSearchDrawerActivated: PropTypes.func,
+    onSearchDrawerClose: PropTypes.func,
+    onSearchDrawerOpen: PropTypes.func,
     searchDrawerContent: PropTypes.node,
     width: PropTypes.number,
   };
@@ -50,10 +55,13 @@ export default class Navigation extends PureComponent {
     isOpen: true,
     isResizeable: true,
     isSearchDrawerOpen: false,
+    linkComponent: DefaultLinkComponent,
     onBlanketClicked: () => {},
-    onCreateDrawerActivated: () => {},
+    onCreateDrawerClose: () => {},
+    onCreateDrawerOpen: () => {},
     onResize: () => {},
-    onSearchDrawerActivated: () => {},
+    onSearchDrawerClose: () => {},
+    onSearchDrawerOpen: () => {},
     width: navigationOpenWidth,
   };
 
@@ -98,23 +106,32 @@ export default class Navigation extends PureComponent {
       containerAppearance,
       containerHeader,
       createDrawerContent,
+      drawerBackIcon,
       globalAccountItem,
       globalCreateIcon,
       globalHelpItem,
-      globalPrimaryItem,
+      globalPrimaryIcon,
+      globalPrimaryItemHref,
       globalSearchIcon,
       hasBlanket,
       isCreateDrawerOpen,
+      isOpen,
       isResizeable,
       isSearchDrawerOpen,
+      linkComponent,
       onBlanketClicked,
-      onCreateDrawerActivated,
-      onSearchDrawerActivated,
+      onCreateDrawerClose,
+      onCreateDrawerOpen,
+      onSearchDrawerClose,
+      onSearchDrawerOpen,
       searchDrawerContent,
     } = this.props;
 
     const shouldAnimate = this.state.resizeDelta === 0;
     const renderedWidth = this.getRenderedWidth();
+    const isPartiallyCollapsed = renderedWidth < globalOpenWidth + containerClosedWidth;
+    const onSearchDrawerTrigger = isSearchDrawerOpen ? onSearchDrawerClose : onSearchDrawerOpen;
+    const onCreateDrawerTrigger = isCreateDrawerOpen ? onCreateDrawerClose : onCreateDrawerOpen;
     return (
       <div className={styles.navigation}>
         {
@@ -129,36 +146,58 @@ export default class Navigation extends PureComponent {
           width={renderedWidth}
         />
         <div className={styles.navigationInner}>
-          <div style={{ zIndex: 2 }}>
+          <div style={{ zIndex: isPartiallyCollapsed ? false : 1 }}>
             <GlobalNavigation
-              shouldAnimate={shouldAnimate}
-              width={getGlobalWidth(this.getRenderedWidth())}
-              primaryItem={globalPrimaryItem}
-              helpItem={globalHelpItem}
               accountItem={globalAccountItem}
-            >
-              <DrawerTrigger onActivate={onSearchDrawerActivated}>
-                <GlobalItem isSelected={isSearchDrawerOpen} size="medium">
-                  {globalSearchIcon}
-                </GlobalItem>
-              </DrawerTrigger>
-              <DrawerTrigger onActivate={onCreateDrawerActivated}>
-                <GlobalItem isSelected={isCreateDrawerOpen} size="medium">
-                  {globalCreateIcon}
-                </GlobalItem>
-              </DrawerTrigger>
-            </GlobalNavigation>
+              createIcon={globalCreateIcon}
+              helpItem={globalHelpItem}
+              linkComponent={linkComponent}
+              onCreateActivate={onCreateDrawerTrigger}
+              onSearchActivate={onSearchDrawerTrigger}
+              primaryIcon={globalPrimaryIcon}
+              primaryItemHref={globalPrimaryItemHref}
+              searchIcon={globalSearchIcon}
+              shouldAnimate={shouldAnimate}
+            />
           </div>
-          <div style={{ zIndex: 1 }}>
-            <Drawer isOpen={isSearchDrawerOpen} isWide>{searchDrawerContent}</Drawer>
-            <Drawer isOpen={isCreateDrawerOpen}>{createDrawerContent}</Drawer>
+          <div style={{ zIndex: 2 }}>
+            <Drawer
+              backIcon={drawerBackIcon}
+              backIconPosition="search"
+              header={containerHeader}
+              isOpen={isSearchDrawerOpen}
+              isWide
+              onBackButton={onSearchDrawerClose}
+              primaryIcon={globalPrimaryIcon}
+            >
+              {searchDrawerContent}
+            </Drawer>
+            <Drawer
+              backIcon={drawerBackIcon}
+              backIconPosition="create"
+              header={containerHeader}
+              isOpen={isCreateDrawerOpen}
+              onBackButton={onCreateDrawerClose}
+              primaryIcon={globalPrimaryIcon}
+            >
+              {createDrawerContent}
+            </Drawer>
           </div>
           <div>
             <ContainerNavigation
               appearance={containerAppearance}
+              areGlobalActionsVisible={!isOpen && (this.state.resizeDelta <= 0)}
+              globalCreateIcon={globalCreateIcon}
+              globalPrimaryIcon={globalPrimaryIcon}
+              globalPrimaryItemHref={globalPrimaryItemHref}
+              globalSearchIcon={globalSearchIcon}
+              header={containerHeader}
+              linkComponent={linkComponent}
+              offsetX={Math.min(renderedWidth - (globalOpenWidth + containerClosedWidth), 0)}
+              onGlobalCreateActivate={onCreateDrawerTrigger}
+              onGlobalSearchActivate={onSearchDrawerTrigger}
               shouldAnimate={shouldAnimate}
               width={getContainerWidth(renderedWidth)}
-              header={containerHeader}
             >
               {children}
             </ContainerNavigation>

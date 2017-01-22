@@ -1,21 +1,14 @@
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from 'ak-editor-core/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import * as chaiEnzyme from 'chai-enzyme';
+import { mount, ReactWrapper } from 'enzyme';
+import * as React from 'react';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
-import * as chaiEnzyme from 'chai-enzyme';
-import { shallow, mount, ReactWrapper } from 'enzyme';
-import * as React from 'react';
-import { doc, strong, h1, p } from './_schema-builder';
 import stringRepeat from '../src/util/string-repeat';
-import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from 'ak-editor-core/test-helper';
 
-import { ProseMirror, browser, ToolbarTextFormatting, analyticsService, AnalyticsHandler, debugHandler } from 'ak-editor-core';
-import BoldIcon from 'ak-icon/glyph/editor/bold';
-import ItalicIcon from 'ak-icon/glyph/editor/bold';
-import NumberListIcon from 'ak-icon/glyph/editor/list/number';
-import BulletListIcon from 'ak-icon/glyph/editor/list/bullet';
-import ImageIcon from 'ak-icon/glyph/editor/image';
-import LinkIcon from 'ak-icon/glyph/editor/link';
+import { AnalyticsHandler, analyticsService, browser, ProseMirror } from 'ak-editor-core';
 
 import Editor from '../src/index';
 
@@ -25,19 +18,19 @@ chai.use(sinonChai);
 
 describe('ak-editor-bitbucket/analytics/start-event', () => {
   it('atlassian.editor.start', () => {
-    let handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy();
     analyticsService.handler = handler;
 
     mount(<Editor analyticsHandler={handler} />);
-    expect(handler).to.not.have.been.called;
+    expect(handler.called).to.equal(false);
 
     mount(<Editor analyticsHandler={handler} />).find('ChromeCollapsed').simulate('focus');
-    expect(handler).to.have.been.calledOnce;
+    expect(handler.callCount).to.equal(1);
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
   });
 
   it('atlassian.editor.start with two child editors sharing a handler', () => {
-    let handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy();
     analyticsService.handler = handler;
 
     class ContainerWithTwoEditors extends React.PureComponent<{}, {}> {
@@ -51,30 +44,30 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
       }
     }
 
-    expect(handler).to.not.have.been.called;
+    expect(handler.called).to.equal(false);
     mount(<ContainerWithTwoEditors />);
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
     expect(handler).to.have.been.calledTwice;
   });
 
   it('editor.start must not be called when unmounting component', () => {
-    let handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy();
     analyticsService.handler = handler;
 
     mount(<Editor analyticsHandler={handler} isExpandedByDefault />).unmount();
-    expect(handler).to.have.been.calledOnce;
+    expect(handler.callCount).to.equal(1);
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
   });
 });
 
 describe('ak-editor-bitbucket/analytics/analyticsHandler', () => {
   it('updates analytics handler when provided via property', () => {
-    let handler = sinon.spy() as AnalyticsHandler;
+    const handler = sinon.spy();
     mount(<Editor analyticsHandler={handler} />);
-    expect(handler).to.not.have.been.called;
+    expect(handler.called).to.equal(false);
 
     mount(<Editor analyticsHandler={handler} />).find('ChromeCollapsed').simulate('focus');
-    expect(handler).to.have.been.calledOnce;
+    expect(handler.callCount).to.equal(1);
     expect(handler).to.have.been.calledWith('atlassian.editor.start');
   });
 });
@@ -87,9 +80,8 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   let pm: ProseMirror;
 
   beforeEach(() => {
-    let container = fixture();
-    let noop = () => {};
-    handler = sinon.spy() as AnalyticsHandler;
+    const noop = () => {};
+    handler = sinon.spy();
 
     editor = mount(
       <Editor isExpandedByDefault onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,
@@ -104,19 +96,19 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.format.hyperlink.button', () => {
-    let toolbar = editor.find('ToolbarHyperlink');
+    const toolbar = editor.find('ToolbarHyperlink');
 
     toolbar
-      .find(LinkIcon)
+      .find('EditorLinkIcon')
       .parent()
       .simulate('click');
 
     // enzyme currently requires setting value manually and simulating "change" event
     // https://github.com/airbnb/enzyme/issues/76
-    let input = toolbar.find('Panel PanelTextInput input');
+    const input = toolbar.find('Panel PanelTextInput input');
     (input.get(0) as any).value = 'http://atlassian.com';
     input.simulate('change');
-    input.simulate('keyup', { which: 'enter', keyCode: 13 });
+    input.simulate('keydown', { which: 'enter', keyCode: 13 });
 
     expect(handler).to.have.been.calledWith('atlassian.editor.format.hyperlink.button');
   });
@@ -124,7 +116,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.strong.button', () => {
     editor
       .find('ToolbarTextFormatting')
-      .find(BoldIcon)
+      .find('EditorBoldIcon')
       .parent()
       .simulate('click');
 
@@ -144,7 +136,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.em.button', () => {
     editor
       .find('ToolbarTextFormatting')
-      .find(BoldIcon)
+      .find('EditorBoldIcon')
       .parent()
       .simulate('click');
 
@@ -174,7 +166,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.list.numbered.button', () => {
     editor
       .find('ToolbarLists')
-      .find(NumberListIcon)
+      .find('EditorNumberListIcon')
       .parent()
       .simulate('click');
 
@@ -194,7 +186,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.list.bullet.button', () => {
     editor
       .find('ToolbarLists')
-      .find(BulletListIcon)
+      .find('EditorBulletListIcon')
       .parent()
       .simulate('click');
 
@@ -213,7 +205,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
 
   it('atlassian.editor.feedback.button', () => {
     editor
-      .find('ToolbarFeedback > ToolbarIconButton')
+      .find('ToolbarFeedback > ToolbarButton')
       .simulate('click');
 
     expect(handler).to.have.been.calledWith('atlassian.editor.feedback.button');
@@ -248,8 +240,8 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
 
   it('atlassian.editor.image.button', () => {
     editor
-      .find('ToolbarIconButton')
-      .find(ImageIcon)
+      .find('ToolbarButton')
+      .find('EditorImageIcon')
       .parent()
       .simulate('click');
 
@@ -277,9 +269,6 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.image.drop', () => {
-    const editorAPI: Editor = editor.get(0) as any;
-    const { pm } = editorAPI.state;
-
     // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop'
     //       so we must dispatch the event directly on the event which has listener attached.
     const dropElement: HTMLElement = (editor.get(0) as any).state.pm.content.parentNode;

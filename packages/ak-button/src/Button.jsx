@@ -11,6 +11,10 @@ export default class Button extends Component {
     form: PropTypes.string,
     onClick: PropTypes.func,
     tabIndex: PropTypes.number,
+    ariaHaspopup: PropTypes.bool,
+    ariaExpanded: PropTypes.bool,
+    ariaControls: PropTypes.string,
+    id: PropTypes.string,
   }
 
   static defaultProps = {
@@ -25,7 +29,6 @@ export default class Button extends Component {
 
   render() {
     const { props } = this;
-
     return (
       <button
         type={props.type}
@@ -35,6 +38,10 @@ export default class Button extends Component {
         onClick={props.onClick}
         onMouseDown={this.onMouseDown}
         tabIndex={props.tabIndex}
+        aria-haspopup={props.ariaHaspopup}
+        aria-expanded={props.ariaExpanded}
+        aria-controls={props.ariaControls}
+        id={props.id}
       >
         {props.children}
       </button>

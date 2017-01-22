@@ -112,21 +112,42 @@ storiesOf(name, module)
   ), { imports: [...imports, ['Icon', 'ak-icon/glyph/question']] })
   .addCodeExampleStory('items and handlers', () => (
     <div className={styles.storiesContainer}>
-      <p>Items have two handlers to help them communicate with the outside world.</p>
+      <p>Items have a handler to help them communicate with the outside world.</p>
       <p><b>onActivate</b> is called when the item is activated (clicked, pressed enter,
-        pressed space). On other key presses <b>onKeyDown</b> handler is called.</p>
+        pressed space).</p>
       <div className={styles.itemsContainer}>
         <Item
           onActivate={(attr) => {
             console.log('look ma, I was activated!', attr.item);
           }}
         >first item</Item>
-        <Item
-          onKeyDown={(attr) => {
-            console.log('look ma, someone pressed a button!', attr.event);
-          }}
-        >second item</Item>
       </div>
     </div>
-  ), { imports });
+  ), { imports })
+  .addCodeExampleStory('items in different contexts (accessibility test)', () => (
+    <div className={styles.storiesContainer}>
+      <div className={styles.itemsContainer}>
+        <p>Should announce checkbox (menu)</p>
+        <div role="group">
+          <Item type="checkbox">Choose me</Item>
+          <Item type="checkbox" isChecked>Or me</Item>
+        </div>
+        <p>Should announce radio (menu)</p>
+        <div role="group">
+          <Item type="radio">Choose me</Item>
+          <Item type="radio" isChecked>Or me</Item>
+        </div>
+        <p>Should announce menu item (menu)</p>
+        <div role="group">
+          <Item>I`m an item</Item>
+          <Item isActive>Me too</Item>
+        </div>
+        <p>Should announce option (select/multiselect)</p>
+        <div role="listbox">
+          <Item type="option">I`m an option</Item>
+          <Item type="option" isSelected>Me too</Item>
+        </div>
+      </div>
+    </div>
+  ));
 

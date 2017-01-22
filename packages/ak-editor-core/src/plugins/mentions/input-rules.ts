@@ -1,4 +1,4 @@
-import { ProseMirror, InputRule, Schema, Mark } from '../../prosemirror';
+import { InputRule, Mark, ProseMirror, Schema } from '../../prosemirror';
 
 function replaceWithMark(
   pm: ProseMirror,

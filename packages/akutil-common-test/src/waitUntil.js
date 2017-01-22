@@ -13,18 +13,18 @@
  *  const elemRenderedImgTag = () => (elem.shadowRoot.querySelector('img') !== null);
  *
  *  // check that no image is rendered before we start
- *  expect(elemRenderedImgTag()).to.be.false;
+ *  expect(elemRenderedImgTag()).to.equal(false);
  *
  *  // set a property to make the image be rendered
  *  elem.showImage = true;
  *
  *  // now wait until we can see the image rendered
- *  waitUntil(elemRenderedImgTag).then(() => (expect(elemRenderedImgTag()).to.be.true));
+ *  waitUntil(elemRenderedImgTag).then(() => (expect(elemRenderedImgTag()).to.equal(true)));
  *
  *  // alternatively, we might want to do more things in the .then call, even chain more waitUntils
  *
  *  waitUntil(elemRenderedImgTag).then(() => {
- *    expect(elemRenderedImgTag()).to.be.true;
+ *    expect(elemRenderedImgTag()).to.equal(true);
  *    doSomeMoreStuff(elem);
  *    return waitUntil(someOtherConditionIsTrue());
  *  }).then(() => {
@@ -32,7 +32,8 @@
     });
  *
  *  // You can also set a maximum amount of time to wait (and how long to wait in between attempts)
- *  waitUntil(elemRenderedImgTag, 1000, 10).then(() => (expect(elemRenderedImgTag()).to.be.true));
+ *  waitUntil(elemRenderedImgTag, 1000, 10).then(() =>
+ *  (expect(elemRenderedImgTag()).to.equal(true)));
  *  // this will check if the img was rendered every 10ms for up to a total of ~1 second.
  */
 function waitUntil(fn, timeout = 2000, step = 1) {

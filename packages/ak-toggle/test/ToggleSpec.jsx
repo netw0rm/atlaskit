@@ -23,7 +23,7 @@ describe('ak-toggle', () => {
     expect(label).to.have.className(styles.locals.regular);
     expect(label).to.have.exactly(1).descendants('input');
     const iconWrapper = label.find('div').at(2);
-    expect(iconWrapper).to.exist;
+    expect(iconWrapper).to.have.length.above(0);
     expect(iconWrapper)
       .to.have.exactly(1).descendants(CloseIcon);
   });
@@ -76,7 +76,7 @@ describe('ak-toggle', () => {
           const props = { [`on${capitalize(eventName)}`]: spy };
           const wrapper = shallow(<Toggle {...props} />);
           wrapper.find('input').simulate(eventName);
-          expect(spy).to.have.been.called;
+          expect(spy.called).to.equal(true);
         })
       )
     );

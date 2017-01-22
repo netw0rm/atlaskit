@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import * as ReactDOM from 'react-dom';
 
@@ -6,9 +5,7 @@ export interface Props {
   onClick?: () => void;
 }
 
-export interface State {}
-
-export default class OutsideClickable extends PureComponent<Props, State> {
+export default class OutsideClickable extends PureComponent<Props, {}> {
   componentDidMount() {
     document.addEventListener('click', this.handleClickOutside);
   }

@@ -1,19 +1,15 @@
+import '!style!css!less!./bitbucket-styles.less';
+import { action, storiesOf } from '@kadira/storybook';
+import { base64fileconverter } from 'ak-editor-core/test-helper';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { storiesOf, action } from '@kadira/storybook';
-import reactify from 'akutil-react';
-import { base64fileconverter } from 'ak-editor-core/test-helper';
-import { default as AkTabs, Tab as AkTab } from 'ak-tabs';
 import Editor from '../src';
-import exampleHTML from './exampleHTML';
 import { MockMentionSource } from './_mock-mentionsource';
-import '!style!css!less!./bitbucket-styles.less';
+import exampleHTML from './exampleHTML';
 
-const Tabs = reactify(AkTabs);
-const Tab = reactify(AkTab);
-const CancelAction = () => action('Cancel')();
-const ChangeAction = () => action('Change')();
-const SaveAction = () => action('Save')();
+const CANCEL_ACTION = () => action('Cancel')();
+const CHANGE_ACTION = () => action('Change')();
+const SAVE_ACTION = () => action('Save')();
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
@@ -37,9 +33,9 @@ storiesOf('ak-editor-bitbucket', module)
   .add('Empty', () => (
     <div style={{ padding: 20 }}>
       <Editor
-        onCancel={CancelAction}
-        onChange={ChangeAction}
-        onSave={SaveAction}
+        onCancel={CANCEL_ACTION}
+        onChange={CHANGE_ACTION}
+        onSave={SAVE_ACTION}
       />
     </div>
   ))
@@ -47,18 +43,18 @@ storiesOf('ak-editor-bitbucket', module)
     <div style={{ padding: 20 }}>
       <Editor
         placeholder="What do you want to say?"
-        onCancel={CancelAction}
-        onChange={ChangeAction}
-        onSave={SaveAction}
+        onCancel={CANCEL_ACTION}
+        onChange={CHANGE_ACTION}
+        onSave={SAVE_ACTION}
       />
     </div>
   )
   .add('With mentions', () =>
     <div style={{ padding: 20 }}>
       <Editor
-        onCancel={CancelAction}
-        onChange={ChangeAction}
-        onSave={SaveAction}
+        onCancel={CANCEL_ACTION}
+        onChange={CHANGE_ACTION}
+        onSave={SAVE_ACTION}
         mentionSource={mentionSource}
       />
     </div>
@@ -68,9 +64,9 @@ storiesOf('ak-editor-bitbucket', module)
       <Editor
         isExpandedByDefault
         imageUploadHandler={imageUploadHandler}
-        onCancel={CancelAction}
-        onChange={ChangeAction}
-        onSave={SaveAction}
+        onCancel={CANCEL_ACTION}
+        onChange={CHANGE_ACTION}
+        onSave={SAVE_ACTION}
       />
     </div>
   )
@@ -102,60 +98,14 @@ storiesOf('ak-editor-bitbucket', module)
         return (
           <div ref="root">
             <Editor
-              onCancel={CancelAction}
+              onCancel={CANCEL_ACTION}
               onChange={this.handleChange}
-              onSave={SaveAction}
+              onSave={SAVE_ACTION}
             />
             <fieldset style={{ marginTop: 20 }}>
               <legend>Markdown</legend>
               <pre>{this.state.markdown}</pre>
             </fieldset>
-          </div>
-        );
-      }
-    }
-
-    return (
-      <div style={{ padding: 20 }}>
-        <Demo />
-      </div>
-    );
-  })
-  .add('Contexts', () => {
-    type Props = {};
-    type State = {};
-    class Demo extends PureComponent<Props, State> {
-      render() {
-        return (
-          <div>
-            <Tabs>
-              <Tab selected label="(default)">
-                <Editor
-                  isExpandedByDefault
-                  onCancel={CancelAction}
-                  onChange={ChangeAction}
-                  onSave={SaveAction}
-                />
-              </Tab>
-              <Tab selected label="comment">
-                <Editor
-                  isExpandedByDefault
-                  context="comment"
-                  onCancel={CancelAction}
-                  onChange={ChangeAction}
-                  onSave={SaveAction}
-                />
-              </Tab>
-              <Tab selected label="pr">
-                <Editor
-                  isExpandedByDefault
-                  context="pr"
-                  onCancel={CancelAction}
-                  onChange={ChangeAction}
-                  onSave={SaveAction}
-                />
-              </Tab>
-            </Tabs>
           </div>
         );
       }

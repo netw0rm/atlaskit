@@ -6,6 +6,10 @@ interface Props {
   href?: string;
   target?: string;
   isDisabled?: boolean;
+  ariaHaspopup?: boolean;
+  ariaExpanded?: boolean;
+  ariaControls?: string;
+  id?: string;
   spacing?: 'default' | 'compact' | 'none';
   isSelected?: boolean;
   theme?: 'default' | 'dark';
@@ -15,4 +19,4 @@ interface Props {
 
 interface State {}
 
-export default class extends Component<Props, State> {};
+export default class extends Component<Props, State> {}

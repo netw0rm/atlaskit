@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import { Link } from 'react-router';
+import RouterLinkComponent from './RouterLinkComponent';
 import { AkContainerItem } from '../../../src/index';
 
 export default class RouterLinkItem extends PureComponent {
@@ -15,11 +15,9 @@ export default class RouterLinkItem extends PureComponent {
     return (
       <AkContainerItem
         href={this.props.to}
-        linkComponent={(
-          { children, href, ...props }) => <Link to={href} {...props}>{children}</Link>
-        }
-        text={this.props.text}
         isSelected={this.context.router.isActive(this.props.to, true)}
+        linkComponent={RouterLinkComponent}
+        text={this.props.text}
       />
     );
   }

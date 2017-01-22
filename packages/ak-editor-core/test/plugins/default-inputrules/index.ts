@@ -1,7 +1,7 @@
-import DefaultInputRulesPlugin from '../../../src/plugins/default-inputrules';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { chaiPlugin, makeEditor, doc, p } from '../../../test-helper';
+import DefaultInputRulesPlugin from '../../../src/plugins/default-inputrules';
+import { chaiPlugin, doc, makeEditor, p } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 
@@ -12,8 +12,8 @@ describe('default-inputrules', () => {
   };
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const Plugin = DefaultInputRulesPlugin as any; // .State is not public API.
-    expect(Plugin.State.name).is.be.a('string');
+    const plugin = DefaultInputRulesPlugin as any; // .State is not public API.
+    expect(plugin.State.name).is.be.a('string');
   });
 
   it('should convert "-- " to emdash', () => {

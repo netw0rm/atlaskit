@@ -6,13 +6,14 @@
     "jsx": "react",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
     "noImplicitAny": false,
-    "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "es5",
     "types": [
       "chai",
+      "mocha",
       "react",
       "sinon",
       "sinon-chai",
@@ -36,7 +37,6 @@
   "files": [
     "build/types/node.d.ts",
     "build/types/popper.d.ts",
-    "build/types/raw-loader.d.ts",
-    "build/types/shadow-dom.d.ts"
+    "build/types/raw-loader.d.ts"
   ]
 }

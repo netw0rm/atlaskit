@@ -66,8 +66,8 @@ storiesOf(`${name}`, module)
     return (
       <div style={canvasStyle}>
         <AkProfilecard
-          fullName={data.fullName}
           actions={data.actions}
+          fullName={data.fullName}
         />
       </div>
     );

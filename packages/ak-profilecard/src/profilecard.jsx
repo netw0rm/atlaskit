@@ -83,9 +83,9 @@ export default class Profilecard extends PureComponent {
   render() {
     const actions = (this.props.actions || []).map(action => (
       <AkButton
-        key={action.label}
         appearance="link"
         compact
+        key={action.label}
         onClick={action.callback}
       >{action.label}</AkButton>
     ));

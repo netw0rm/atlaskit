@@ -68,7 +68,18 @@ function getHoverColor({ previouslySelected, selected }) {
   return akColorN0;
 }
 
-export const Div = styled.div`
+export const AnnouncerDiv = styled.div`
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+`;
+
+export const DateDiv = styled.div`
   background-color: ${getBackgroundColor};
   border: 2px solid ${getBorderColor};
   border-radius: 4px;
@@ -99,7 +110,7 @@ export const Div = styled.div`
   }
 `;
 
-export const Td = styled.td`
+export const DateTd = styled.td`
   border: 0;
   padding: 0;
 `;

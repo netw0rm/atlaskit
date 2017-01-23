@@ -6,7 +6,7 @@
 .profilecard-resourced {
   .font-smoothing;
   font-family: @ak-font-family;
-  width: 360px;
+  width: @ak-grid-size * 45;
   background: @card-bg;
   box-shadow: @card-shadow;
   border-radius: @ak-border-radius;
@@ -15,7 +15,7 @@
 
 .spinnerContainer {
   position: relative;
-  min-height: 96px;
+  height: @ak-grid-size * 12;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,7 +23,7 @@
 
 .errorMessage {
   text-align: center;
-  padding: 24px;
+  padding: @ak-grid-size * 3;
 
   svg {
     color: @error-sub-color;
@@ -31,8 +31,8 @@
 
   p {
     color: @error-color;
-    line-height: 24px;
-    margin: 8px 0;
+    line-height: @ak-grid-size * 3;
+    margin: @ak-grid-size 0;
 
     span {
       color: @error-sub-color;

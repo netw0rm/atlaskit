@@ -6,7 +6,6 @@ import {
   Node,
   Plugin,
   ProseMirror,
-  ResolvedPos,
   Schema,
   TextSelection
 } from '../../prosemirror';
@@ -27,7 +26,9 @@ export class HyperlinkState {
   private changeHandlers: StateChangeHandler[] = [];
   private inputRules: InputRule[] = [];
   private pm: PM;
-  private activeLink?: Node;
+  private activeLinkNode?: Node;
+  private activeLinkMark?: LinkMark;
+  private activeLinkStartPos?: number;
 
   constructor(pm: PM) {
     this.pm = pm;
@@ -49,26 +50,21 @@ export class HyperlinkState {
   }
 
   private update() {
-    const activeLink = this.activeLinkNode();
+    const nodeInfo = this.getActiveLinkNodeInfo();
     let dirty = false;
 
-    if (activeLink !== this.activeLink) {
-      this.activeLink = activeLink;
-      this.href = activeLink && this.activeLinkNodeHref();
-      this.text = activeLink && activeLink.textContent;
-      this.active = !!activeLink;
+    if ((nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
+      this.activeLinkNode = nodeInfo && nodeInfo.node;
+      this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
+      this.text = nodeInfo && nodeInfo.node.textContent;
+      this.activeLinkMark = nodeInfo && this.getActiveLinkMark(nodeInfo.node);
+      this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
+      this.element = this.getDomElement();
+      this.active = !!nodeInfo;
       dirty = true;
     }
 
-    const newElement = activeLink
-      ? this.getDomElement()
-      : undefined;
-    if (newElement !== this.element) {
-      this.element = newElement;
-      dirty = true;
-    }
-
-    const newCanAddLink = !activeLink && this.isActiveNodeLinkable();
+    const newCanAddLink = !this.activeLinkNode && this.isActiveNodeLinkable();
     if (newCanAddLink !== this.canAddLink) {
       this.canAddLink = newCanAddLink;
       dirty = true;
@@ -79,7 +75,15 @@ export class HyperlinkState {
     }
   }
 
-  private activeLinkNode(): Node | undefined {
+  private getActiveLinkMark(activeLinkNode: Node): LinkMark | undefined {
+    const linkMarks = activeLinkNode.marks.filter((mark) => {
+      return mark.type instanceof LinkMarkType;
+    });
+
+    return (linkMarks as LinkMark[])[0];
+  }
+
+  private getActiveLinkNodeInfo(): { node: Node, startPos: number } | undefined {
     const {pm} = this;
     const {link} = pm.schema.marks;
     const {$from, empty} = pm.selection as TextSelection;
@@ -94,19 +98,8 @@ export class HyperlinkState {
       }
 
       if (node && node.isText && link.isInSet(node.marks)) {
-        return node;
+        return { node: node, startPos: offset + 1 };
       }
-    }
-  }
-
-  private activeLinkNodeHref(): any | undefined {
-    const { activeLink } = this;
-    if (activeLink) {
-      activeLink.marks.forEach((mark) => {
-        if (mark.type instanceof LinkMarkType) {
-          return mark.attrs['href'];
-        }
-      });
     }
   }
 
@@ -208,10 +201,8 @@ export class HyperlinkState {
   }
 
   private getDomElement(): HTMLElement | undefined {
-    if (this.pm.selection instanceof TextSelection) {
-      const { $head } = this.pm.selection;
-      const pos = getBoundariesWithin($head);
-      const { node, offset } = DOMFromPos(this.pm, pos, true);
+    if (this.activeLinkStartPos) {
+      const { node, offset } = DOMFromPos(this.pm, this.activeLinkStartPos, true);
 
       if (node.childNodes.length === 0) {
         return node.parentNode as HTMLElement;
@@ -279,15 +270,4 @@ export interface PM extends ProseMirror {
 
 export interface HyperlinkOptions {
   href: string;
-}
-
-// We want to get the postion of the DOM element,
-// when we are at the end of the Node we are no longer on the DOM element boundaries
-// so we need to subtract 1
-// when the parentOffset is 0 we dont need to subtract 1 since we are on the first element
-// returns the position to be used on 'getDomElement' to get the corrent DOM node
-function getBoundariesWithin(
-  $head: ResolvedPos
-): number {
-  return $head.parentOffset === 0 ? $head.pos : $head.pos - 1;
 }

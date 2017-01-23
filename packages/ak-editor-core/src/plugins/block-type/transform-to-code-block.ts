@@ -40,10 +40,9 @@ export function isConvertableToCodeBlock(pm: ProseMirror): boolean {
   return parentNode.canReplaceWith(index, index + 1, pm.schema.nodes.code_block);
 }
 
-// copied from prosemirror/src/transform/mark.js
 function clearMarkupFor(pm: ProseMirror, pos: number, newType: CodeBlockNodeType) {
   const tr = pm.tr;
-  const node = tr.doc.nodeAt(pos) !;
+  const node = tr.doc.nodeAt(pos)!;
   let match = (newType as any).contentExpr.start();
   const delSteps: Step[] = [];
 

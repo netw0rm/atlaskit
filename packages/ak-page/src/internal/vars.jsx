@@ -1,11 +1,13 @@
-export const gridSize = 8;
+export const defaultGridSize = 8;
 
-export const defaultColumns = 12;
+export const defaultGridColumns = 12;
+
+export const defaultGridColumnWidth = defaultGridSize * 10;
 
 export const spacing = {
-  comfortable: (gridSize * 5),
-  cosy: (gridSize * 2),
-  compact: (gridSize * 0.5),
+  comfortable: (defaultGridSize * 5),
+  cosy: (defaultGridSize * 2),
+  compact: (defaultGridSize * 0.5),
 };
 
 export const layout = ['fixed', 'fluid'];

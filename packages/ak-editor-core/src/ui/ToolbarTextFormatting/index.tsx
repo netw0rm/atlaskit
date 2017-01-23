@@ -3,8 +3,8 @@ import ItalicIcon from 'ak-icon/glyph/editor/italic';
 import UnderlineIcon from 'ak-icon/glyph/editor/underline';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { TextFormattingState } from '../../../src/plugins/text-formatting';
 import { analyticsDecorator as analytics } from '../../analytics';
+import { TextFormattingState } from '../../plugins/text-formatting';
 import ToolbarButton from '../ToolbarButton';
 
 export interface Props {

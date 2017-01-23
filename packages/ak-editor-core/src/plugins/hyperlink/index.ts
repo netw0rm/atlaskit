@@ -56,50 +56,17 @@ export class HyperlinkState {
     if ((nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
       this.activeLinkNode = nodeInfo && nodeInfo.node;
       this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
-      this.text = nodeInfo && nodeInfo.node.textContent;
       this.activeLinkMark = nodeInfo && this.getActiveLinkMark(nodeInfo.node);
+      this.text = nodeInfo && nodeInfo.node.textContent;
       this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
       this.element = this.getDomElement();
       this.active = !!nodeInfo;
-      dirty = true;
-    }
-
-    const newCanAddLink = !this.activeLinkNode && this.isActiveNodeLinkable();
-    if (newCanAddLink !== this.canAddLink) {
-      this.canAddLink = newCanAddLink;
+      this.canAddLink = !this.active && this.isActiveNodeLinkable();
       dirty = true;
     }
 
     if (dirty) {
       this.changeHandlers.forEach(cb => cb(this));
-    }
-  }
-
-  private getActiveLinkMark(activeLinkNode: Node): LinkMark | undefined {
-    const linkMarks = activeLinkNode.marks.filter((mark) => {
-      return mark.type instanceof LinkMarkType;
-    });
-
-    return (linkMarks as LinkMark[])[0];
-  }
-
-  private getActiveLinkNodeInfo(): { node: Node, startPos: number } | undefined {
-    const {pm} = this;
-    const {link} = pm.schema.marks;
-    const {$from, empty} = pm.selection as TextSelection;
-
-    if (link && $from) {
-      const {node, offset} = $from.parent.childAfter($from.parentOffset);
-
-      // offset is the end postion of previous node
-      // This is to check whether the cursor is at the beginning of current node
-      if (empty && offset + 1 === $from.pos) {
-        return;
-      }
-
-      if (node && node.isText && link.isInSet(node.marks)) {
-        return { node: node, startPos: offset + 1 };
-      }
     }
   }
 
@@ -131,7 +98,7 @@ export class HyperlinkState {
       const { pm } = this;
       const from = this.activeLinkStartPos;
       const to = this.activeLinkStartPos + this.text!.length;
-      pm.tr.removeMark(from, this.activeLinkStartPos + to, this.activeLinkMark).apply();
+      pm.tr.removeMark(from, to, this.activeLinkMark).apply();
 
       if (forceTextSelection) {
         pm.setTextSelection(from, to);
@@ -166,6 +133,34 @@ export class HyperlinkState {
       }
 
       return node.childNodes[offset] as HTMLElement;
+    }
+  }
+
+  private getActiveLinkMark(activeLinkNode: Node): LinkMark | undefined {
+    const linkMarks = activeLinkNode.marks.filter((mark) => {
+      return mark.type instanceof LinkMarkType;
+    });
+
+    return (linkMarks as LinkMark[])[0];
+  }
+
+  private getActiveLinkNodeInfo(): { node: Node, startPos: number } | undefined {
+    const {pm} = this;
+    const {link} = pm.schema.marks;
+    const {$from, empty} = pm.selection as TextSelection;
+
+    if (link && $from) {
+      const {node, offset} = $from.parent.childAfter($from.parentOffset);
+
+      // offset is the end postion of previous node
+      // This is to check whether the cursor is at the beginning of current node
+      if (empty && offset + 1 === $from.pos) {
+        return;
+      }
+
+      if (node && node.isText && link.isInSet(node.marks)) {
+        return { node: node, startPos: offset + 1 };
+      }
     }
   }
 

@@ -41,7 +41,7 @@ describe('ak-blanket', () => {
         const spy = sinon.spy();
         const wrapper = mount(<Blanket onBlanketClicked={spy} />);
         wrapper.find(`.${styles.locals.blanket}`).simulate('click');
-        expect(spy).to.have.been.calledOnce;
+        expect(spy.callCount).to.equal(1);
       });
     });
   });

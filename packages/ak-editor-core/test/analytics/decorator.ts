@@ -1,5 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
+import { SinonSpy } from 'sinon';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 
@@ -35,7 +36,7 @@ describe('analytics decorator', () => {
 
     instance.foo();
     expect(spy).to.have.been.calledWith('test.event');
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.callCount).to.equal(1);
 
     instance.foo();
     expect(spy).to.have.been.calledTwice;
@@ -56,7 +57,7 @@ describe('analytics decorator', () => {
 
     instance.foo();
     expect(spy).to.have.been.calledWith('test.event.foo');
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.callCount).to.equal(1);
 
     instance.bar();
     expect(spy).to.have.been.calledTwice;
@@ -89,7 +90,7 @@ describe('analytics decorator', () => {
 
     const instance = new AnnotatedTestClassWithPrimitiveValue();
 
-    expect(console.warn).to.have.been.called;
+    expect((console.warn as SinonSpy).called).to.equal(true);
     expect(instance.foo).to.eq(15.15);
   });
 

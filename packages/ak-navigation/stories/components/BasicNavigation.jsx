@@ -34,10 +34,10 @@ export default class BasicNavigation extends PureComponent {
     containerHeader: (
       <AkContainerHeader
         href="#foo"
-        text="AtlasKit"
         icon={
           <img alt="nucleus" src={nucleusLogo} />
         }
+        text="AtlasKit"
       />),
     createDrawerContent: (
       <div>
@@ -48,11 +48,11 @@ export default class BasicNavigation extends PureComponent {
           title="Create item group"
         >
           <AkDrawerItem
-            icon={<img src={nucleusLogo} alt="icon" />}
+            icon={<img alt="icon" src={nucleusLogo} />}
             text="Item with an icon"
           />
           <AkDrawerItem
-            icon={<img src={nucleusLogo} alt="icon" />}
+            icon={<img alt="icon" src={nucleusLogo} />}
             text="A really, really, quite long, actually super long container name"
           />
         </AkContainerItemGroup>
@@ -91,13 +91,32 @@ export default class BasicNavigation extends PureComponent {
       <Navigation
         containerHeader={this.props.containerHeader}
         drawerBackIcon={<ArrowleftIcon label="Back icon" size="medium" />}
+        globalAccountItem={
+          <AkDropdownMenu
+            appearance="tall"
+
+            items={[
+              {
+                heading: 'Joshua Nelson',
+                items: [
+                  { content: 'View profile' },
+                  { content: 'Manage Atlassian account' },
+                  { content: 'Bitbucket settings' },
+                  { content: 'Integrations' },
+                  { content: 'Bitbucket labs' },
+                  { content: 'Log out' },
+                ],
+              },
+            ]}
+          >
+            <AkGlobalItem>
+              <AkAvatar size="small" src={emmaAvatar} />
+            </AkGlobalItem>
+          </AkDropdownMenu>
+        }
         globalCreateIcon={<CreateIcon label="Create icon" />}
-        globalPrimaryIcon={<AtlassianIcon label="Atlassian icon" size="medium" />}
-        globalPrimaryItemHref="http://www.atlassian.com"
-        globalSearchIcon={<SearchIcon label="Search icon" />}
         globalHelpItem={
           <AkDropdownMenu
-            position="right bottom"
             appearance="tall"
             items={[
               {
@@ -129,35 +148,16 @@ export default class BasicNavigation extends PureComponent {
                 ],
               },
             ]}
+            position="right bottom"
           >
             <AkGlobalItem>
               <HelpIcon label="Help icon" />
             </AkGlobalItem>
           </AkDropdownMenu>
         }
-        globalAccountItem={
-          <AkDropdownMenu
-            position="right bottom"
-            appearance="tall"
-            items={[
-              {
-                heading: 'Joshua Nelson',
-                items: [
-                  { content: 'View profile' },
-                  { content: 'Manage Atlassian account' },
-                  { content: 'Bitbucket settings' },
-                  { content: 'Integrations' },
-                  { content: 'Bitbucket labs' },
-                  { content: 'Log out' },
-                ],
-              },
-            ]}
-          >
-            <AkGlobalItem>
-              <AkAvatar src={emmaAvatar} size="small" />
-            </AkGlobalItem>
-          </AkDropdownMenu>
-        }
+        globalPrimaryIcon={<AtlassianIcon label="Atlassian icon" size="medium" />}
+        globalPrimaryItemHref="http://www.atlassian.com"
+        globalSearchIcon={<SearchIcon label="Search icon" />}
         hasBlanket
         isCreateDrawerOpen={this.state.openDrawer === 'create'}
         isOpen={this.state.isOpen}
@@ -168,6 +168,7 @@ export default class BasicNavigation extends PureComponent {
         onResize={this.resize}
         onSearchDrawerClose={this.closeDrawer()}
         onSearchDrawerOpen={this.openDrawer('search')}
+        position="right bottom"
         resizeHandler={action('resize')}
         width={this.state.width}
         {...this.props}

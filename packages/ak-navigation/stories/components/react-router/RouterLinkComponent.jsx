@@ -17,9 +17,9 @@ export default class RouterLinkComponent extends PureComponent {
       className,
     } = this.props;
     return (href ? <Link
-      to={href}
-      onMouseDown={onMouseDown}
       className={className}
+      onMouseDown={onMouseDown}
+      to={href}
     >{children}</Link> : children);
   }
 }

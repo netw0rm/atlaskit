@@ -15,6 +15,7 @@ export interface State {
   active?: boolean;
   element?: HTMLElement;
   language: string;
+  content?: string;
 }
 
 const items = [{
@@ -53,18 +54,19 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: CodeBlockState) => {
-    const {active, element, language} = pluginState;
+    const {active, element, language, content} = pluginState;
 
     this.setState({
       active: active,
       language: findMatchedLanguage(language),
-      element: element
+      element: element,
+      content: content
     });
   }
 
   private handleLanguageChange = (activeItem: any) => {
     const selectedLanguage = activeItem.item.content;
-    const language = selectedLanguage.toLowerCase() === NO_LANGUAGE.toLowerCase() ? null : selectedLanguage;
+    const language = selectedLanguage.toLowerCase() === NO_LANGUAGE.toLowerCase() ? undefined : selectedLanguage;
     this.props.pluginState.updateLanguage(language);
   }
 }

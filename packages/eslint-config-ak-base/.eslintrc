@@ -45,6 +45,10 @@
     // Allowing jsx in files with any file extension (old components have jsx but not the extension)
     "react/jsx-filename-extension": "off",
 
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-sort-props.md
+    // JSX props must be in alphabetical order
+    "react/jsx-sort-props": "warn",
+
     // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-unknown-property.md
     // This was turned off for wc - but should be re-enabled eventually
     "react/no-unknown-property": ["off"],

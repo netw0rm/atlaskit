@@ -20,7 +20,7 @@ chai.use(sinonChai);
 describe('ak-layer', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Layer />);
-    expect(wrapper).to.exist;
+    expect(wrapper).not.to.equal(undefined);
   });
 
   describe('children', () => {
@@ -61,10 +61,10 @@ describe('ak-layer', () => {
       const wrapper = mount(<Layer onFlippedChange={spy} content={content}><div>Foo</div></Layer>);
       const state = { flipped: true, actualPosition: 'top left', originalPosition: 'bottom left' };
 
-      expect(wrapper.state('flipped')).to.be.false;
+      expect(wrapper.state('flipped')).to.equal(false);
       wrapper.setState(state);
 
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
       expect(spy).to.have.been.calledWith(state);
     });
   });

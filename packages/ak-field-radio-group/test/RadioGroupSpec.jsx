@@ -23,7 +23,7 @@ describe(name, () => {
 
     describe('exports', () => {
       it('the AkFieldRadioGroup component', () => {
-        expect(AkFieldRadioGroup).to.exist;
+        expect(AkFieldRadioGroup).not.to.equal(undefined);
         expect(new AkFieldRadioGroup()).to.be.instanceOf(Component);
       });
     });
@@ -31,7 +31,7 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<AkFieldRadioGroup />);
-        expect(wrapper).to.exist;
+        expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
@@ -90,7 +90,7 @@ describe(name, () => {
           const spy = sinon.spy();
           const wrapper = mount(<AkFieldRadioGroup onRadioChange={spy} items={sampleItems} />);
           wrapper.find(Radio).first().find('input').simulate('change');
-          expect(spy).to.have.been.calledOnce;
+          expect(spy.callCount).to.equal(1);
         });
       });
     });

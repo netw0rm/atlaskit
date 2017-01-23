@@ -24,7 +24,7 @@ describe('findMatchedLanguage', () => {
 
   context('when language is null', () => {
     it('returns default language', () => {
-      expect(findMatchedLanguage(null)).to.eq(NO_LANGUAGE);
+      expect(findMatchedLanguage()).to.eq(NO_LANGUAGE);
     });
   });
 });

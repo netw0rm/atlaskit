@@ -175,7 +175,7 @@ describe(name, () => {
               .map(x => iconNameToComponentName(x)));
 
         bundleKeys.forEach((key) => {
-          expect(bundle[key]).to.be.a.function;
+          expect(typeof bundle[key]).to.equal('function');
         });
       });
     });
@@ -191,7 +191,7 @@ describe(name, () => {
     it('should be possible to create the components', () => {
       Object.values(components).forEach((Icon) => {
         const wrapper = shallow(<Icon label="My icon" />);
-        expect(wrapper).to.exist;
+        expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
     });

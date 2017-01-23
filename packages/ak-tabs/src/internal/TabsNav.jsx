@@ -60,26 +60,31 @@ export default class TabsNav extends PureComponent {
   tabMouseDownHandler = e => e.preventDefault()
 
   render() {
-    const SecondaryTabs = () => (this.props.secondaryTabs.length ? (
-      <StatelessDropdownMenu
-        isOpen={this.state.isDropdownOpen}
-        items={[{
-          items: this.props.secondaryTabs.map(tab => ({
-            content: tab.label,
-            onSelect: tab.onSelect,
-          })),
-        }]}
-        onItemActivated={(item) => {
-          this.setState({ isDropdownOpen: false });
-          item.item.onSelect();
-        }}
-        onOpenChange={attrs => this.setState({ isDropdownOpen: attrs.isOpen })}
+    const SecondaryTabs = () => (
+      <li
+        className={classNames(styles.locals.akTabsButtonContainer, {
+          [styles.locals.akTabLabelHidden]: !this.props.secondaryTabs.length,
+        })}
       >
-        <li className={styles.locals.akTabsButtonContainer}>
+        <StatelessDropdownMenu
+          isOpen={this.state.isDropdownOpen}
+          items={[{
+            items: this.props.secondaryTabs.map(tab => ({
+              content: tab.label,
+              onSelect: tab.onSelect,
+            })),
+          }]}
+          onItemActivated={(item) => {
+            this.setState({ isDropdownOpen: false });
+            item.item.onSelect();
+          }}
+          onOpenChange={attrs => this.setState({ isDropdownOpen: attrs.isOpen })}
+        >
           <span className={styles.locals.akTabsButton}>More <ExpandIcon label="" size="small" /></span>
-        </li>
-      </StatelessDropdownMenu>
-    ) : null);
+        </StatelessDropdownMenu>
+      </li>
+
+    );
     this.tabs = [];
     /* eslint-disable jsx-a11y/role-supports-aria-props, jsx-a11y/no-static-element-interactions */
     return (
@@ -100,10 +105,12 @@ export default class TabsNav extends PureComponent {
             onKeyDown={this.tabKeyDownHandler}
             onMouseDown={this.tabMouseDownHandler}
             ref={(ref) => {
-              this.tabs.push({
-                el: ref,
-                isSelected: tab.isSelected,
-              });
+              if (ref) {
+                this.tabs.push({
+                  el: ref,
+                  isSelected: tab.isSelected,
+                });
+              }
             }}
             role="tab"
             tabIndex={tab.isSelected ? 0 : -1}

@@ -11,4 +11,5 @@
 // run the TypeScript compiler over `src/` and output declarations to this directory, which
 // will overwrite this file.
 //
+export { default } from '../../src';
 export * from '../../src';

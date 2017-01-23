@@ -1,21 +1,22 @@
 {
   "name": "ak-editor-core",
-  "version": "3.10.3",
+  "version": "3.10.7",
   "description": "A package contains Atlassian editor core functionality",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "ak:webpack:raw": "src/index.ts",
-  "types": "src/index.ts",
+  "types": "dist/types/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
-    "build": "npm run build/es5 && npm run build/es2015",
+    "build": "npm run build/es5 && npm run build/es2015 && npm run build/prosemirror",
     "build/es5": "../../node_modules/.bin/babel --out-dir dist/es5 --source-root src --source-maps true --no-babelrc --plugins transform-runtime --presets es2015 src && ../../node_modules/.bin/tsc -p build/es5",
-    "build/es2015": "../../node_modules/.bin/babel --out-dir dist/es2015 --source-root src --source-maps true --no-babelrc src && cp -rf src/prosemirror . && ../../node_modules/.bin/tsc -p build/es2015"
+    "build/es2015": "../../node_modules/.bin/babel --out-dir dist/es2015 --source-root src --source-maps true --no-babelrc src && ../../node_modules/.bin/tsc -p build/es2015",
+    "build/prosemirror": "cp -rf src/prosemirror dist/types && find dist/types/prosemirror -name '*.js' -exec rm {} \\;"
   },
   "files": [
     "dist",
-    "**/*.d.ts",
-    "!src"
+    "src",
+    "test-helper"
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",

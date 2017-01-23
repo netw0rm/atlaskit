@@ -126,72 +126,29 @@ export class HyperlinkState {
     }
   }
 
-  getActiveMarkRange(): { markerFrom: number, markerTo: number } {
-    const { pm } = this;
-
-    if (pm.selection instanceof TextSelection) {
-      const { $head } = pm.selection;
-
-      // why - 1?
-      // because of `exclusiveRight`, we need to get the node "left to"
-      // the current cursor
-      const node = pm.doc.nodeAt($head.pos - 1) !;
-
-      // start captures the start of the node position based on depth
-      // why - 1 ?
-      // we want to capture the start of the node instead of the inside of the node
-      const path = (pm.doc.resolve($head.pos - 1) as any).path as number[];
-
-      // why + 1 ? (https://prosemirror.net/ref.html#ResolvedPos.depth)
-      // depth positions are based on the parent not the node itself so we
-      // need to go inside one level deeper
-      const depth = ($head as any).resolveDepth($head.depth + 1) as number;
-
-      // See `ResolvedPos.prototype.start` method prosemirror/src/model/resolvedpos
-      const currentNodeOffset = depth === 0 ? 0 : path[depth * 3 - 1];
-
-      const markerFrom = currentNodeOffset;
-      const markerTo = markerFrom + node.nodeSize;
-
-      return {
-        markerFrom,
-        markerTo
-      };
-    }
-
-    return {
-      markerFrom: 1,
-      markerTo: 1
-    };
-  }
-
   removeLink(forceTextSelection = false) {
-    const { pm } = this;
-    const activeLink = this.getActiveLink();
-
-    if (activeLink && pm.selection instanceof TextSelection) {
-      const { markerFrom, markerTo } = this.getActiveMarkRange();
-
-      pm.tr.removeMark(markerFrom, markerTo, activeLink).apply();
+    if (this.activeLinkStartPos) {
+      const { pm } = this;
+      const from = this.activeLinkStartPos;
+      const to = this.activeLinkStartPos + this.text!.length;
+      pm.tr.removeMark(from, this.activeLinkStartPos + to, this.activeLinkMark).apply();
 
       if (forceTextSelection) {
-        pm.setTextSelection(markerFrom, markerTo);
+        pm.setTextSelection(from, to);
         pm.focus();
       }
     }
   }
 
   updateLink(options: HyperlinkOptions) {
-    const activeLink = this.getActiveLink();
-    if (activeLink) {
+    if (this.activeLinkStartPos) {
       const { pm } = this;
-      if (pm.selection instanceof TextSelection) {
-        const { markerFrom, markerTo } = this.getActiveMarkRange();
-        pm.tr
-          .removeMark(markerFrom, markerTo, activeLink)
-          .addMark(markerFrom, markerTo, pm.schema.mark('link', { href: options.href }))
-          .apply();
-      }
+      const from = this.activeLinkStartPos;
+      const to = this.activeLinkStartPos + this.text!.length;
+      pm.tr
+        .removeMark(from, to, this.activeLinkMark)
+        .addMark(from, to, pm.schema.mark('link', { href: options.href }))
+        .apply();
     }
   }
 
@@ -215,41 +172,6 @@ export class HyperlinkState {
   private isActiveNodeLinkable(): boolean {
     const { link } = this.pm.schema.marks;
     return !!link && commands.toggleMark(link)(this.pm, false);
-  }
-
-  private getActiveLink(): LinkMark | null {
-    const { pm } = this;
-
-    if (!(pm.selection instanceof TextSelection)) {
-      return null;
-    }
-
-    const { $head, empty } = pm.selection;
-    const pos = $head.pos;
-
-    let marks;
-    if (!empty) {
-      // because of `exclusiveRight`, we need to get the node "left to"
-      // the current cursor
-      marks = pm.doc.nodeAt(pos - 1) !.marks;
-    } else {
-      const node = pm.doc.nodeAt(pos) !;
-      const previousNode = pm.doc.nodeAt(pos - 1);
-
-      if (node !== previousNode) {
-        return null;
-      }
-
-      marks = node.marks;
-    }
-
-    for (let i = 0; i < marks.length; i++) {
-      if (marks[i].type.name === 'link') {
-        return marks[i];
-      }
-    }
-
-    return null;
   }
 }
 

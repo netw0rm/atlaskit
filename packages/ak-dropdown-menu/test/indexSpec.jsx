@@ -60,6 +60,7 @@ describe(name, () => {
       expect(droplist).to.have.prop('position', wrapper.props().position);
       expect(droplist).to.have.prop('appearance', wrapper.props().appearance);
       expect(droplist).to.have.prop('isTriggerNotTabbable', wrapper.props().isTriggerNotTabbable);
+      expect(droplist).to.have.prop('shouldFlip', wrapper.props().shouldFlip);
       expect(droplist).to.have.prop('isOpen', wrapper.state().isOpen);
       expect(droplist).to.have.prop('trigger', 'text');
     });

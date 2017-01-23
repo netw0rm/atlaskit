@@ -18,7 +18,6 @@
     "akutil-shared-styles": "^37.0.3",
     "babel-runtime": "^6.11.6",
     "calendar-base": "^0.3.0",
-    "glamor": "^2.17.14",
     "keycode": "^2.1.7"
   },
   "devDependencies": {

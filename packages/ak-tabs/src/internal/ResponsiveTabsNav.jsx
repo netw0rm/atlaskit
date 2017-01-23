@@ -28,7 +28,10 @@ export default class ResponsiveTabsNav extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ tabs: nextProps.tabs });
+    this.setState({
+      tabs: nextProps.tabs,
+      secondaryTabs: [],
+    });
   }
 
   shouldComponentUpdate(nextProps, nextState) {

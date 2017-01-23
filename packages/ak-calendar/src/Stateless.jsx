@@ -13,10 +13,18 @@ import {
 import AnnouncerFn from './Announcer';
 import Btn from './Btn';
 import DateFn from './Date';
-import styles from './style';
+
+import {
+  CalendarTable,
+  CalendarTbody,
+  CalendarTh,
+  CalendarThead,
+  Heading,
+  MonthAndYear,
+  Wrapper,
+} from './styled';
 
 const arrowKeys = [keycode('down'), keycode('left'), keycode('right'), keycode('up')];
-const css = styles();
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
@@ -265,8 +273,8 @@ export default class StatelessCalendar extends PureComponent {
         <DateFn
           disabled={isDisabled}
           focused={isFocused}
-          key={dateAsString}
           isToday={isToday}
+          key={dateAsString}
           month={date.month + 1}
           onClick={this.handleClickDay}
           previouslySelected={isPreviouslySelected}
@@ -287,44 +295,39 @@ export default class StatelessCalendar extends PureComponent {
         onKeyDown={this.handleKeyDown}
       >
         <AnnouncerFn>{new Date(year, month, focused).toString()}</AnnouncerFn>
-        <div
+        <Wrapper
           aria-label="calendar"
           role="grid"
           tabIndex={0}
-          {...css.wrapper}
         >
-          <div {...css.heading}>
-            <div onClick={this.handleClickPrev} aria-hidden="true">
+          <Heading>
+            <div aria-hidden="true" onClick={this.handleClickPrev}>
               <Btn>
                 <ArrowleftIcon label="Last month" />
               </Btn>
             </div>
-            <div {...css.monthAndYear}>
+            <MonthAndYear>
               {`${getMonthName(month)} ${year}`}
-            </div>
-            <div onClick={this.handleClickNext} aria-hidden="true">
+            </MonthAndYear>
+            <div aria-hidden="true" onClick={this.handleClickNext}>
               <Btn>
                 <ArrowrightIcon label="Next month" />
               </Btn>
             </div>
-          </div>
-          <table {...css.calendar} role="presentation">
-            <thead style={{ border: 0 }}>
+          </Heading>
+          <CalendarTable role="presentation">
+            <CalendarThead>
               <tr>
                 {makeArrayFromNumber(daysPerWeek).map(i =>
-                  <th
-                    {...css.dayOfWeek}
-                    key={i}
-                    style={{ border: 0, padding: '2px 5px' }}
-                  >{getDayName(i)}</th>
+                  <CalendarTh key={i}>{getDayName(i)}</CalendarTh>
                 )}
               </tr>
-            </thead>
-            <tbody style={{ border: 0 }}>
+            </CalendarThead>
+            <CalendarTbody style={{ border: 0 }}>
               {weeks.map((week, i) => <tr key={i}>{week}</tr>)}
-            </tbody>
-          </table>
-        </div>
+            </CalendarTbody>
+          </CalendarTable>
+        </Wrapper>
       </div>
     );
   }

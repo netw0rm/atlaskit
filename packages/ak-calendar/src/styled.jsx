@@ -79,6 +79,28 @@ export const AnnouncerDiv = styled.div`
   width: 1px;
 `;
 
+export const CalendarTable = styled.table`
+  display: inline-block;
+  margin: 0;
+  text-align: center;
+`;
+
+export const CalendarTbody = styled.tbody`
+  border: 0;
+`;
+
+export const CalendarTh = styled.td`
+  border: 0;
+  color: ${akColorN80};
+  font-size: 8px;
+  padding: 2px 5px;
+  text-transform: uppercase;
+`;
+
+export const CalendarThead = styled.thead`
+  border: 0;
+`;
+
 export const DateDiv = styled.div`
   background-color: ${getBackgroundColor};
   border: 2px solid ${getBorderColor};
@@ -113,4 +135,24 @@ export const DateDiv = styled.div`
 export const DateTd = styled.td`
   border: 0;
   padding: 0;
+`;
+
+export const Heading = styled.div`
+  align-items: baseline;
+  display: flex;
+  padding: 4px 0 8px 0;
+`;
+
+export const MonthAndYear = styled.div`
+  color: ${akColorN0};
+  flex-basis: 100%;
+  text-align: center;
+`;
+
+export const Wrapper = styled.div`
+  background-color: ${akColorN700};
+  color: ${akColorN0};
+  display: inline-block;
+  padding: 10px;
+  user-select: none;
 `;

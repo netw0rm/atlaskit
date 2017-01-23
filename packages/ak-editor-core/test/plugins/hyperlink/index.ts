@@ -76,6 +76,87 @@ describe('hyperlink', () => {
     });
   });
 
+  describe('active', () => {
+    context('when select the whole hyperlink text from start to end', () => {
+      it('is active', () => {
+        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'))));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos1, pos2);
+
+        expect(plugin.active).to.be.true;
+      });
+    });
+
+    context.skip('when select the whole hyperlink text from end to start', () => {
+      it('is active', () => {
+        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'))));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos2, pos1);
+
+        expect(plugin.active).to.be.true;
+      });
+    });
+
+    context('when select part of the hyperlink text from the end', () => {
+      it('is active', () => {
+        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'))));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos2, pos1);
+
+        expect(plugin.active).to.be.true;
+      });
+    });
+
+    context('when select part of the hyperlink text from the start', () => {
+      it('is active', () => {
+        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{pos1}t{pos2}ext'))));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos1, pos2);
+
+        expect(plugin.active).to.be.true;
+      });
+    });
+
+    context('when select part of the hyperlink text in the middle', () => {
+      it('is active', () => {
+        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('t{pos1}ex{pos2}t'))));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos1, pos2);
+
+        expect(plugin.active).to.be.true;
+      });
+    });
+
+    context('when cursor is winthin hyperlink text', () => {
+      it('is not active', () => {
+        const { plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('tex{<>}t'))));
+
+        expect(plugin.active).to.be.true;
+      });
+    });
+
+    context('when cursor at the beginning of hyperlink text', () => {
+      it('is not active', () => {
+        const { plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<>}text'))));
+
+        expect(plugin.active).to.be.false;
+      });
+    });
+
+    context('when cursor at the beginning of hyperlink text', () => {
+      it('is not active', () => {
+        const { plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('text{<>}'))));
+
+        expect(plugin.active).to.be.false;
+      });
+    });
+  });
+
   describe('API', () => {
     it('should allow a change handler to be registered', () => {
       const { plugin } = editor(doc(linkable('')));
@@ -105,48 +186,6 @@ describe('hyperlink', () => {
       const { plugin } = editor(doc(unlinkable('{<}text{>}')));
 
       expect(plugin.canAddLink).to.equal(false);
-    });
-
-    it('should treat it as a link when selecting the whole link', () => {
-      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'))));
-      const spy = sinon.spy();
-      const { pos1, pos2 } = pm.doc.refs;
-      plugin.subscribe(spy);
-
-      pm.setTextSelection(pos1, pos2);
-
-      expect(spy).to.have.been.callCount(2);
-    });
-
-    it('should treat it as a link when selecting part of the link', () => {
-      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'))));
-      const spy = sinon.spy();
-      const { pos1, pos2 } = pm.doc.refs;
-      plugin.subscribe(spy);
-
-      pm.setTextSelection(pos1, pos2);
-
-      expect(spy).to.have.been.callCount(2);
-    });
-
-    it('should not treat it as a link when cursor is at the beginning of the link', () => {
-      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{start}text'))));
-      const spy = sinon.spy();
-      plugin.subscribe(spy);
-
-      pm.setTextSelection(pm.doc.refs['start']);
-
-      expect(spy).to.have.been.callCount(1);
-    });
-
-    it('should not treat it as a link when cursor is at the end of the link', () => {
-      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('text{end}'))));
-      const spy = sinon.spy();
-      plugin.subscribe(spy);
-
-      pm.setTextSelection(pm.doc.refs['end']);
-
-      expect(spy).to.have.been.callCount(1);
     });
 
     it('does not emit `change` multiple times when the selection moves within a link', () => {

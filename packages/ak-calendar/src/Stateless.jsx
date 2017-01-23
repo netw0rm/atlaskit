@@ -10,11 +10,11 @@ import {
   getMonthName,
   makeArrayFromNumber,
 } from './util';
-import AnnouncerFn from './Announcer';
 import Btn from './Btn';
 import DateFn from './Date';
 
 import {
+  Announcer,
   CalendarTable,
   CalendarTbody,
   CalendarTh,
@@ -294,7 +294,9 @@ export default class StatelessCalendar extends PureComponent {
         onBlur={this.props.onBlur}
         onKeyDown={this.handleKeyDown}
       >
-        <AnnouncerFn>{new Date(year, month, focused).toString()}</AnnouncerFn>
+        <Announcer aria-live="assertive" aria-relevant="text">
+          {new Date(year, month, focused).toString()}
+        </Announcer>
         <Wrapper
           aria-label="calendar"
           role="grid"

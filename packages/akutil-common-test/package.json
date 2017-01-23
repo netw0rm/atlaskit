@@ -6,7 +6,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single akutil-common-test; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/util-common-test; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
     "dist",

@@ -1,5 +1,5 @@
 import { EditorTransform, Fragment, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
-import { CodeBlockNodeType, HardBreakNodeType, isCodeBlockNode, MentionNodeType } from '../../schema';
+import { isCodeBlockNode, isHardBreakNode, isMentionNode } from '../../schema';
 
 export default function transformToCodeBlock(pm: ProseMirror): void {
   if (!isConvertableToCodeBlock(pm)) {
@@ -14,7 +14,7 @@ export function transformToCodeBlockAction(pm: ProseMirror): EditorTransform {
   const codeBlock = pm.schema.nodes.code_block;
 
   const where = $from.before($from.depth);
-  const tr = clearMarkupFor(pm, where, codeBlock)
+  const tr = clearMarkupFor(pm, where)
     .setNodeType(where, codeBlock, {});
 
   return tr;
@@ -40,10 +40,14 @@ export function isConvertableToCodeBlock(pm: ProseMirror): boolean {
   return parentNode.canReplaceWith(index, index + 1, pm.schema.nodes.code_block);
 }
 
-function clearMarkupFor(pm: ProseMirror, pos: number, newType: CodeBlockNodeType) {
+function createSliceWithContent(content: string, pm: ProseMirror) {
+ return new Slice(Fragment.from(pm.schema.nodes.text.create(null, content)), 0, 0);
+}
+
+function clearMarkupFor(pm: ProseMirror, pos: number) {
   const tr = pm.tr;
   const node = tr.doc.nodeAt(pos)!;
-  let match = (newType as any).contentExpr.start();
+  let match = pm.schema.nodes.code_block.contentExpr.start();
   const delSteps: Step[] = [];
 
   for (let i = 0, cur = pos + 1; i < node.childCount; i++) {
@@ -52,12 +56,12 @@ function clearMarkupFor(pm: ProseMirror, pos: number, newType: CodeBlockNodeType
 
     const allowed = match.matchType(child.type, child.attrs);
     if (!allowed) {
-      if (child.type instanceof MentionNodeType) {
+      if (isMentionNode(child)) {
         const content = child.attrs['displayName'];
-        delSteps.push(new ReplaceStep(cur, end, new Slice(Fragment.from(pm.schema.nodes.text.create(null, content)), 0, 0)));
-      } else if (child.type instanceof HardBreakNodeType) {
+        delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, pm)));
+      } else if (isHardBreakNode(child)) {
         const content = '\n';
-        delSteps.push(new ReplaceStep(cur, end, new Slice(Fragment.from(pm.schema.nodes.text.create(null, content)), 0, 0)));
+        delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, pm)));
       } else {
         delSteps.push(new ReplaceStep(cur, end, Slice.empty));
       }

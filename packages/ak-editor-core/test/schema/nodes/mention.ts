@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { Schema, Text } from '../../../src';
-import { DocNodeType, MentionNode, MentionNodeType } from '../../../src';
+import { DocNodeType, isMentionNode, MentionNode, MentionNodeType,  } from '../../../src';
 import { fromHTML as fromHTML_, toHTML } from '../../../test-helper';
 
 const schema = makeSchema();
@@ -45,6 +45,16 @@ describe('ak-editor-core/schema mention node', () => {
     expect(mention.type.name).to.equal('mention');
     expect(mention.attrs.id).to.equal('@user-1');
     expect(mention.attrs.displayName).to.equal('foo bar');
+  });
+
+  describe('isMentionNode', () => {
+    context('when it is a mention node', () => {
+      it('returns true', () => {
+        const node = schema.nodes.mention.create({ id: '@bar', displayName: 'foo bar' });
+
+        expect(isMentionNode(node)).to.be.true;
+      });
+    });
   });
 });
 

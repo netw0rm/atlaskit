@@ -2,7 +2,7 @@
 
 This is a basic building block of a dropdown's list. Use it if you want to build your own version of a droppable component with list of items.
 
-![Example item](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-droplist-item/docs/item.png)
+![Example item](https://i.imgur.com/NGqx2yS.png)
 
 ## Try it out
 

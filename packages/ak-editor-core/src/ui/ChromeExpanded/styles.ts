@@ -16,7 +16,7 @@ export const content = style({
   position: 'relative',
 
   $nest: {
-    '& .ProseMirror-content': {
+    '& .ProseMirror': {
       outline: 'none',
       whiteSpace: 'pre-wrap',
       padding: '12px 20px',

@@ -1,15 +1,13 @@
 import Keymap from 'browserkeymap';
 import {
-  commands,
   Node,
   NodeSelection,
   Plugin,
-  ProseMirror,
   ResolvedPos,
   Schema,
   Selection,
   TextSelection,
-} from '../../prosemirror';
+} from '../../prosemirror/future';
 
 import {
   BulletListNodeType,
@@ -322,17 +320,15 @@ Object.defineProperty(ListsState, 'name', { value: 'ListsState' });
 
 export default new Plugin(ListsState);
 
-export interface S extends Schema {
-  nodes: {
-    bullet_list?: BulletListNodeType,
-    list_item: ListItemNodeType,
-    ordered_list?: OrderedListNodeType
-  };
-}
+// const nodes = { bullet_list, list_item, ordered_list }
 
-export interface PM extends ProseMirror {
-  schema: S;
-}
+// export interface S extends Schema<nodes, {}> {
+//   nodes: {
+//     bullet_list?: BulletListNodeType,
+//     list_item: ListItemNodeType,
+//     ordered_list?: OrderedListNodeType
+//   };
+// }
 
 function isListNode(node: Node) {
   return isBulletListNode(node) || isOrderedListNode(node);

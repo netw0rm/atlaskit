@@ -1,16 +1,22 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import {
-  BlockTypePlugin,
+  // BlockTypePlugin,
   Chrome,
   ContextName,
-  HyperlinkPlugin,
-  ListsPlugin,
-  MentionsPlugin,
-  Node,
-  ProseMirror,
-  TextFormattingPlugin
+  // HyperlinkPlugin,
+  // ListsPlugin,
+  // MentionsPlugin,
+  // Node,
+  // ProseMirror,
+  // TextFormattingPlugin
 } from '../../';
+import {
+  EditorState,
+  EditorView,
+  Node,
+  TextSelection
+} from '../../src/prosemirror/future';
 import schema from './schema';
 
 export interface Props {
@@ -25,7 +31,8 @@ export interface Props {
 }
 
 export interface State {
-  pm?: ProseMirror;
+  editorView?: EditorView;
+  listsPlugin?: ListsPlugin;
   isExpanded?: boolean;
 }
 
@@ -41,9 +48,9 @@ export default class Editor extends PureComponent<Props, State> {
    * Focus the content region of the editor.
    */
   focus(): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.focus();
+    const { editorView } = this.state;
+    if (editorView) {
+      editorView.focus();
     }
   }
 
@@ -58,16 +65,21 @@ export default class Editor extends PureComponent<Props, State> {
 
 
   clear(): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.tr.delete(0, pm.doc.nodeSize - 2).apply();
+    const { editorView } = this.state;
+    if (editorView) {
+      const { state } = editorView;
+      const tr = state.tr
+        .setSelection(TextSelection.create(state.doc, 0, state.doc.nodeSize - 2))
+        .deleteSelection();
+      editorView.dispatch(tr);
+        // .apply();
     }
   }
 
   isEmpty(): boolean {
-    const { pm } = this.state;
-    return pm && pm.doc
-      ? !!pm.doc.textContent
+    const { editorView } = this.state;
+    return editorView && editorView.state.doc
+      ? !!editorView.state.doc.textContent
       : false;
   }
 
@@ -76,16 +88,16 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   get doc(): Node | undefined {
-    const { pm } = this.state;
-    return pm
-      ? pm.doc
+    const { editorView } = this.state;
+    return editorView
+      ? editorView.state.doc
       : undefined;
   }
 
   render() {
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
-    const { pm, isExpanded } = this.state;
+    const { isExpanded, listsPlugin } = this.state;
 
     return (
       <Chrome
@@ -96,12 +108,14 @@ export default class Editor extends PureComponent<Props, State> {
         onSave={handleSave}
         placeholder={this.props.placeholder}
         onCollapsedChromeFocus={this.expand}
-        pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
-        pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
-        pluginStateLists={pm && ListsPlugin.get(pm)}
-        pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
+
+        pluginStateLists={listsPlugin}
       />
     );
+    // pluginStateBlockType={editorView && BlockTypePlugin.get(editorView)}
+    //     pluginStateHyperlink={editorView && HyperlinkPlugin.get(editorView)}
+    //
+    //     pluginStateTextFormatting={editorView && TextFormattingPlugin.get(editorView)}
   }
 
   private handleCancel = () => {
@@ -128,29 +142,42 @@ export default class Editor extends PureComponent<Props, State> {
   private handleRef = (place: Element | null) => {
     if (place) {
       const { context } = this.props;
-      const pm = new ProseMirror({
-        place,
-        doc: schema.nodes.doc.createAndFill(),
-        // doc: schema.nodes.doc.create({}, schema.nodes.paragraph.create({}, schema.text(''))),
+      const listsPlugin = ListsPlugin();
+      const editorState = EditorState.create({
+        schema,
         plugins: [
-          HyperlinkPlugin,
-          BlockTypePlugin,
-          ListsPlugin,
-          TextFormattingPlugin,
-          MentionsPlugin,
-        ],
+          listsPlugin
+        ]
       });
+      const editorView = new EditorView(place, {
+        state: editorState,
+        dispatchTransaction: (tr) => {
+          const newState = editorView.state.apply(tr);
+          editorView.updateState(newState);
+          this.handleChange();
+        }
+      });
+        // place,
+        // doc: schema.nodes.doc.createAndFill(),
+        // doc: schema.nodes.doc.create({}, schema.nodes.paragraph.create({}, schema.text(''))),
+        // plugins: [
+          // HyperlinkPlugin,
+          // BlockTypePlugin,
+          // ListsPlugin,
+          // TextFormattingPlugin,
+          // MentionsPlugin,
+        // ],
+      // });
 
       if (context) {
-        BlockTypePlugin.get(pm)!.changeContext(context);
+        // BlockTypePlugin.get(editorView)!.changeContext(context);
       }
 
-      pm.on.change.add(this.handleChange);
-      pm.focus();
+      editorView.focus();
 
-      this.setState({ pm });
+      this.setState({ editorView });
     } else {
-      this.setState({ pm: undefined });
+      this.setState({ editorView: undefined });
     }
   }
 }

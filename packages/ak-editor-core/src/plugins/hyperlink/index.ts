@@ -4,7 +4,6 @@ import {
   InputRule,
   inputRules,
   Node,
-  NodeSelection,
   Plugin,
   ProseMirror,
   ResolvedPos,
@@ -28,6 +27,7 @@ export class HyperlinkState {
   active = false;
   canAddLink = false;
   element?: HTMLElement;
+  activeLink?: Node;
 
   constructor(pm: PM) {
     this.pm = pm;
@@ -49,23 +49,14 @@ export class HyperlinkState {
   }
 
   private update() {
-    const activeNode = this.getActiveNode();
-    const activeLink = this.getActiveLink();
+    const activeLink = this.activeLinkNode();
     let dirty = false;
 
-    const newHref = activeLink
-      ? activeLink.attrs.href
-      : undefined;
-    if (newHref !== this.href) {
-      this.href = newHref;
-      dirty = true;
-    }
-
-    const newText = activeLink
-      ? activeNode.textContent
-      : undefined;
-    if (newText !== this.text) {
-      this.text = newText;
+    if (activeLink !== this.activeLink) {
+      this.activeLink = activeLink;
+      this.href = activeLink && this.activeLinkNodeHref();
+      this.text = activeLink && activeLink.textContent;
+      this.active = !!activeLink;
       dirty = true;
     }
 
@@ -77,12 +68,6 @@ export class HyperlinkState {
       dirty = true;
     }
 
-    const newActive = !!activeLink;
-    if (newActive !== this.active) {
-      this.active = newActive;
-      dirty = true;
-    }
-
     const newCanAddLink = !activeLink && this.isActiveNodeLinkable();
     if (newCanAddLink !== this.canAddLink) {
       this.canAddLink = newCanAddLink;
@@ -91,6 +76,38 @@ export class HyperlinkState {
 
     if (dirty) {
       this.changeHandlers.forEach(cb => cb(this));
+    }
+  }
+
+  private activeLinkNode(): Node | undefined {
+    const {pm} = this;
+    const {link} = pm.schema.marks;
+    const {$from, $head, empty} = pm.selection as TextSelection;
+
+    if (link && $from) {
+      const nodeEndPos = pm.selection.$from.end() - 1;
+      const node = pm.doc.nodeAt(nodeEndPos);
+
+      // cursor at the beginning of the hyperlink text cannot be counted as part of hyperlink
+      // cursor at the end of the hyperlink text cannot be counted as part of hyperlink
+      if (empty && ($head.pos === $from.end() || $head.pos === $from.start())) {
+        return;
+      }
+
+      if (node && node.isText && link.isInSet(node.marks)) {
+        return node;
+      }
+    }
+  }
+
+  private activeLinkNodeHref(): any | undefined {
+    const { activeLink } = this;
+    if (activeLink) {
+      activeLink.marks.forEach((mark) => {
+        if (mark.type instanceof LinkMarkType) {
+          return mark.attrs['href'];
+        }
+      });
     }
   }
 
@@ -126,7 +143,7 @@ export class HyperlinkState {
       // why - 1?
       // because of `exclusiveRight`, we need to get the node "left to"
       // the current cursor
-      const node = pm.doc.nodeAt($head.pos - 1)!;
+      const node = pm.doc.nodeAt($head.pos - 1) !;
 
       // start captures the start of the node position based on depth
       // why - 1 ?
@@ -210,18 +227,6 @@ export class HyperlinkState {
     return !!link && commands.toggleMark(link)(this.pm, false);
   }
 
-  private getActiveNode(): Node {
-    const { pm } = this;
-    if (pm.selection instanceof NodeSelection) {
-      return pm.selection.node;
-    } else {
-      // why - 1?
-      // because of `exclusiveRight`, we need to get the node "left to"
-      // the current cursor
-      return pm.doc.nodeAt((pm.selection as TextSelection).$head.pos - 1)!;
-    }
-  }
-
   private getActiveLink(): LinkMark | null {
     const { pm } = this;
 
@@ -236,9 +241,9 @@ export class HyperlinkState {
     if (!empty) {
       // because of `exclusiveRight`, we need to get the node "left to"
       // the current cursor
-      marks = pm.doc.nodeAt(pos - 1)!.marks;
+      marks = pm.doc.nodeAt(pos - 1) !.marks;
     } else {
-      const node = pm.doc.nodeAt(pos)!;
+      const node = pm.doc.nodeAt(pos) !;
       const previousNode = pm.doc.nodeAt(pos - 1);
 
       if (node !== previousNode) {

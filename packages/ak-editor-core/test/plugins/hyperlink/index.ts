@@ -88,7 +88,7 @@ describe('hyperlink', () => {
       });
     });
 
-    context.skip('when select the whole hyperlink text from end to start', () => {
+    context('when select the whole hyperlink text from end to start', () => {
       it('is active', () => {
         const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'))));
         const { pos1, pos2 } = pm.doc.refs;
@@ -148,7 +148,7 @@ describe('hyperlink', () => {
       });
     });
 
-    context('when cursor at the beginning of hyperlink text', () => {
+    context('when cursor at the end of hyperlink text', () => {
       it('is not active', () => {
         const { plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('text{<>}'))));
 

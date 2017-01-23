@@ -21,7 +21,7 @@ import {
 } from './readme/readme-constants';
 
 storiesOf(name, module)
-  .add('FieldRadioGroup readme (smart)', () => (
+  .add('📖 FieldRadioGroup readme (smart)', () => (
     <div>
       <Readme
         component={name}
@@ -46,7 +46,7 @@ storiesOf(name, module)
       </Readme>
     </div>
   ))
-  .add('FieldRadioGroup readme (dumb)', () => (
+  .add('📖 FieldRadioGroup readme (dumb)', () => (
     <div>
       <Readme
         component={name}

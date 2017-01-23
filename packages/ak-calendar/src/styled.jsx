@@ -80,9 +80,9 @@ export const Div = styled.div`
   position: relative;
   text-align: center;
 
-  ${({ isToday }) => isToday ? `
+  ${({ isToday, selected }) => isToday ? `
     &:after {
-      background-color: ${({ selected }) => selected ? akColorN700 : akColorB75};
+      background-color: ${selected ? akColorN700 : akColorB75};
       bottom: 1px;
       content: "";
       display: block;

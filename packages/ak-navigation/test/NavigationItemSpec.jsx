@@ -3,6 +3,7 @@ import chaiEnzyme from 'chai-enzyme';
 import { mount } from 'enzyme';
 import React from 'react';
 import {
+  action,
   isSelected,
   isCompact,
   navigationItemOuter,
@@ -50,15 +51,27 @@ describe('<NavigationItem />', () => {
     it('action should render in the navigation item', () => {
       expect(mount(<NavigationItem textAfter={<span className="TEXTAFTER" />} />).find('.TEXTAFTER')).to.exist;
     });
+    it('textAfter should not render if the prop is not set', () => {
+      expect(mount(<NavigationItem />).find('TextAfter')).to.not.be.present();
+    });
+    it('action should not render if the prop is not set', () => {
+      expect(mount(<NavigationItem />).find(`.${action}`).length).to.equal(0);
+    });
     it('textAfter and action should both be renderable at the same time', () => {
       const both = mount(
         <NavigationItem
-          textAfter={<span className="TEXTAFTER" />}
           action={<span className="ACTION" />}
+          textAfter={<span className="TEXTAFTER" />}
         />
       );
       expect(both.find('.ACTION')).to.exist;
       expect(both.find('.TEXTAFTER')).to.exist;
+    });
+    it('subText should render in the navigation item', () => {
+      expect(mount(<NavigationItem subText="SUBTEXT" />).html()).to.contain('SUBTEXT');
+    });
+    it('subText should not render in the navigation item when it is compact', () => {
+      expect(mount(<NavigationItem isCompact subText="SUBTEXT" />).html()).to.not.contain('SUBTEXT');
     });
   });
   describe('behaviour', () => {

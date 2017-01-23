@@ -5,7 +5,7 @@ import { CancelIcon, DashboardIcon, EmojiTravelIcon, EmojiNatureIcon } from 'ak-
 import { name } from '../package.json';
 import Page from './components/Page';
 import BasicNavigation from './components/BasicNavigation';
-import { AkContainerItem, AkContainerItemGroup } from '../src/index';
+import { AkContainerItem, AkContainerItemGroup, AkDrawerItem } from '../src/index';
 import RandomBadge from './components/RandomBadge';
 
 storiesOf(name, module)
@@ -14,13 +14,13 @@ storiesOf(name, module)
       <BasicNavigation
         createDrawerContent={(
           <AkContainerItemGroup>
-            <AkContainerItem
+            <AkDrawerItem
               href="#1"
               icon={<EmojiTravelIcon label="Travel" />}
               subText="With a second line of text"
               text="Create item 1"
             />
-            <AkContainerItem
+            <AkDrawerItem
               href="#2"
               icon={<DashboardIcon label="Dashboard" />}
               subText="Also with more text"

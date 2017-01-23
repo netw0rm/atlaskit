@@ -31,7 +31,7 @@ describe.skip('ak-tag', () => {
     it('should be possible to create a Root', () => {
       rootNode.tagName.should.equal('DIV');
       const styleTag = rootNode.querySelector('style');
-      styleTag.should.not.be.undefined;
+      styleTag.should.not.be.equal(undefined);
       styleTag.innerHTML.should.match(/animation/);
     });
   });

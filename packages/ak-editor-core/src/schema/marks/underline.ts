@@ -1,4 +1,4 @@
-import { MarkType, Mark, Schema } from '../../prosemirror';
+import { Mark, MarkType, Schema } from '../../prosemirror';
 
 export class UnderlineMarkType extends MarkType {
   constructor(name: string, rank: number, schema: Schema) {
@@ -28,7 +28,7 @@ export class UnderlineMarkType extends MarkType {
     };
   }
 
-  toDOM() {
+  toDOM(): [string] {
     return ['u'];
   }
 }

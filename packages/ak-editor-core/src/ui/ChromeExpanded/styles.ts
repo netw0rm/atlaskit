@@ -13,9 +13,7 @@ export const container = style({
 });
 
 export const content = style({
-  // Place the editor content beneath the toolbar.
   position: 'relative',
-  zIndex: 1,
 
   $nest: {
     '& .ProseMirror-content': {
@@ -58,7 +56,7 @@ export const toolbar = style({
   paddingRight: akGridSize,
   // Place toolbar content above the content.
   position: 'relative',
-  zIndex: 2,
+  zIndex: 1,
 
   $nest: {
     '& > *': {

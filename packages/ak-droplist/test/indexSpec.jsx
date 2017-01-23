@@ -24,7 +24,7 @@ const itemsList = (<Group heading="test1">
 
 describe(name, () => {
   it('should be possible to create a component', () => {
-    expect(shallow(<Droplist>test</Droplist>)).to.exist;
+    expect(shallow(<Droplist>test</Droplist>)).not.to.equal(undefined);
   });
 
   describe('render', () => {
@@ -35,10 +35,10 @@ describe(name, () => {
     });
 
     it('should render Layer component', () => {
-      expect(wrapper.find(`.${styles.dropWrapper}`)).to.exist;
+      expect(wrapper.find(`.${styles.dropWrapper}`)).to.have.length.above(0);
       const layer = wrapper.find(`.${styles.dropWrapper}`).children().first();
       const layerNode = layer.node;
-      expect(layerNode instanceof Layer).to.be.true;
+      expect(layerNode instanceof Layer).to.equal(true);
       expect(layer).to.have.exactly(1).descendants(`.${styles.dropContent}`);
       expect(layer).to.have.exactly(1).descendants(`.${styles.dropTrigger}`);
     });
@@ -52,14 +52,14 @@ describe(name, () => {
 
     it('should render droplist content', () => {
       const content = wrapper.find(`.${styles.dropContent}`);
-      expect(content.children().nodes[0] instanceof Group).to.be.true;
+      expect(content.children().nodes[0] instanceof Group).to.equal(true);
     });
 
     it('should render trigger', () => {
       const triggerWrapper = wrapper.find(`.${styles.dropTrigger}`);
       const trigger = triggerWrapper.children().nodes[0];
 
-      expect(trigger instanceof Trigger).to.be.true;
+      expect(trigger instanceof Trigger).to.equal(true);
       expect(triggerWrapper).to.have.text('text');
     });
   });

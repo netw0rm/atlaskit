@@ -1,9 +1,9 @@
 import {
+  isCodeBlockNode,
+  Mark,
   MarkdownSerializer as PMMarkdownSerializer,
   MarkdownSerializerState as PMMarkdownSerializerState,
-  Node,
-  isCodeBlockNode,
-  Mark
+  Node
 } from 'ak-editor-core';
 import stringRepeat from './util/string-repeat';
 
@@ -33,7 +33,7 @@ const generateOuterBacktickChain: (text: string, minLength?: number) => string =
     ;
   }
 
-  return function (text: string, minLength = 1): string {
+  return function(text: string, minLength = 1): string {
     const length = Math.max(minLength, getMaxLength(text) + 1);
     return stringRepeat('`', length);
   };
@@ -44,12 +44,12 @@ const nodes = {
     state.wrapBlock('> ', null, node, () => state.renderContent(node));
   },
   code_block(state: MarkdownSerializerState, node: Node) {
-    if (node.attrs.language === null) {
+    if (!node.attrs['language']) {
       state.wrapBlock('    ', null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
     } else {
       const backticks = generateOuterBacktickChain(node.textContent, 3);
-      // We choose to use Shebang language style is to handle languages with special character, eg.: C#, Asp.net, etc. 
-      const language = `#!${node.attrs.language}`;
+      // We choose to use Shebang language style is to handle languages with special character, eg.: C#, Asp.net, etc.
+      const language = `#!${node.attrs['language']}`;
 
       state.write(backticks + '\n');
       state.write(language + '\n');
@@ -60,25 +60,25 @@ const nodes = {
     }
   },
   heading(state: MarkdownSerializerState, node: Node) {
-    state.write(state.repeat('#', node.attrs.level) + ' ');
+    state.write(state.repeat('#', node.attrs['level']) + ' ');
     state.renderInline(node);
     state.closeBlock(node);
   },
   horizontal_rule(state: MarkdownSerializerState, node: Node) {
-    state.write(node.attrs.markup || '---');
+    state.write(node.attrs['markup'] || '---');
     state.closeBlock(node);
   },
   bullet_list(state: MarkdownSerializerState, node: Node) {
-    node.attrs.tight = true;
-    state.renderList(node, '  ', () => (node.attrs.bullet || '*') + ' ');
+    node.attrs['tight'] = true;
+    state.renderList(node, '  ', () => (node.attrs['bullet'] || '*') + ' ');
   },
   ordered_list(state: MarkdownSerializerState, node: Node) {
-    node.attrs.tight = true;
-    let start = node.attrs.order || 1;
-    let maxW = String(start + node.childCount - 1).length;
-    let space = state.repeat(' ', maxW + 2);
+    node.attrs['tight'] = true;
+    const start = node.attrs['order'] || 1;
+    const maxW = String(start + node.childCount - 1).length;
+    const space = state.repeat(' ', maxW + 2);
     state.renderList(node, space, (i: number) => {
-      let nStr = String(start + i);
+      const nStr = String(start + i);
       return state.repeat(' ', maxW - nStr.length) + nStr + '. ';
     });
   },
@@ -91,16 +91,16 @@ const nodes = {
   },
   image(state: MarkdownSerializerState, node: Node) {
     // Note: the 'title' is not escaped in this flavor of markdown.
-    state.write('![' + state.esc(node.attrs.alt || '') + '](' + state.esc(node.attrs.src) +
-                (node.attrs.title ? ` '${node.attrs.title}'` : '') + ')');
+    state.write('![' + state.esc(node.attrs['alt'] || '') + '](' + state.esc(node.attrs['src']) +
+                (node.attrs['title'] ? ` '${node.attrs['title']}'` : '') + ')');
   },
   hard_break(state: any) {
     state.write('  \n');
   },
   text(state: MarkdownSerializerState, node: any) {
-    let lines = node.text.split('\n');
+    const lines = node.text.split('\n');
     for (let i = 0; i < lines.length; i++) {
-      const startOfLine = state.atBlank() || state.closed;
+      const startOfLine = state.atBlank() || !!state.closed;
       state.write();
       state.out += escapeMarkdown(lines[i], startOfLine);
       if (i !== lines.length - 1) {
@@ -113,7 +113,7 @@ const nodes = {
     state.closeBlock(node);
   },
   mention(state: MarkdownSerializerState, node: Node) {
-    state.write(`@${node.attrs.id}`);
+    state.write(`@${node.attrs['id']}`);
   }
 };
 
@@ -125,15 +125,16 @@ const marks = {
     open: '[',
     close(state: MarkdownSerializerState, mark: any) {
       // Note: the 'title' is not escaped in this flavor of markdown.
-      return '](' + state.esc(mark.attrs.href) + (mark.attrs.title ? ` '${mark.attrs.title}'` : '') + ')';
+      return '](' + state.esc(mark.attrs['href']) + (mark.attrs['title'] ? ` '${mark.attrs['title']}'` : '') + ')';
     }
   },
-  code: { open: '`', close: '`' }
+  code: { open: '`', close: '`' },
+  mention_query: { open: '', close: '', mixable: false }
 };
 
 export class MarkdownSerializer extends PMMarkdownSerializer {
-  serialize(content: any, options?: Object): string{
-    let state = new MarkdownSerializerState(this.nodes, this.marks, options);
+  serialize(content: Node, options?: { [key: string]: any }): string {
+    const state = new MarkdownSerializerState(this.nodes, this.marks, options);
 
     state.renderContent(content);
     return state.out === '\u200c' ? '' : state.out; // Return empty string if editor only contains a zero-non-width character
@@ -166,24 +167,24 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
    * @see MarkdownSerializerState.renderInline()
    */
   renderInline(parent: Node): void {
-    let active: Mark[] = [];
+    const active: Mark[] = [];
 
-    let progress = (node: Node | null) => {
+    const progress = (node: Node | null) => {
       let marks = node ? node.marks : [];
-      let code = marks.length && marks[marks.length - 1].type.isCode && marks[marks.length - 1];
-      let len = marks.length - (code ? 1 : 0);
+      const code = marks.length && marks[marks.length - 1].type.isCode && marks[marks.length - 1];
+      const len = marks.length - (code ? 1 : 0);
 
       // Try to reorder 'mixable' marks, such as em and strong, which
       // in Markdown may be opened and closed in different order, so
       // that order of the marks for the token matches the order in
       // active.
       outer: for (let i = 0; i < len; i++) {
-        let mark: Mark = marks[i];
+        const mark: Mark = marks[i];
         if (!this.marks[mark.type.name].mixable) {
           break;
         }
         for (let j = 0; j < active.length; j++) {
-          let other = active[j];
+          const other = active[j];
           if (!this.marks[other.type.name].mixable) {
             break;
           }
@@ -206,12 +207,12 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
 
       // Close the marks that need to be closed
       while (keep < active.length) {
-        this.text(this.markString(active.pop(), false), false);
+        this.text(this.markString(active.pop()!, false), false);
       }
 
       // Open the marks that need to be opened
       while (active.length < len) {
-        let add = marks[active.length];
+        const add = marks[active.length];
         active.push(add);
         this.text(this.markString(add, true), false);
       }

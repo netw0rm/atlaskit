@@ -11,11 +11,11 @@ function makePage(title) {
 storiesOf(name, module)
   .add('with react-router', () => (
     <Router history={browserHistory}>
-      <Route path="/iframe.html" component={makePage('Container home')} />
-      <Route path="/page1" component={makePage('Page 1')} />
-      <Route path="/page2" component={makePage('Page 2')} />
-      <Route path="/page3" component={makePage('Page 3')} />
-      <Route path="/page4" component={makePage('Page 4')} />
+      <Route component={makePage('Container home')} path="/iframe.html" />
+      <Route component={makePage('Page 1')} path="/page1" />
+      <Route component={makePage('Page 2')} path="/page2" />
+      <Route component={makePage('Page 3')} path="/page3" />
+      <Route component={makePage('Page 4')} path="/page4" />
     </Router>
   )
 );

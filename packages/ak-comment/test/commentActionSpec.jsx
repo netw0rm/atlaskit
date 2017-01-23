@@ -14,7 +14,7 @@ describe(name, () => {
   describe('CommentAction', () => {
     describe('exports', () => {
       it('the CommentAction component', () => {
-        expect(CommentAction).to.exist;
+        expect(CommentAction).not.to.equal(undefined);
         expect(new CommentAction()).to.be.instanceOf(Component);
       });
     });
@@ -22,7 +22,7 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<CommentAction />);
-        expect(wrapper).to.exist;
+        expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 

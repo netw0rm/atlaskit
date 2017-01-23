@@ -12,7 +12,7 @@ chai.use(chaiEnzyme());
 describe('ak-tooltip', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Tooltip />);
-    expect(wrapper).to.exist;
+    expect(wrapper).not.to.equal(undefined);
   });
 
   describe('position prop', () => {
@@ -28,11 +28,11 @@ describe('ak-tooltip', () => {
       const wrapper = shallow(<Tooltip description="Some words!" visible><div>Foo</div></Tooltip>);
 
       const layer = wrapper.find('Layer');
-      expect(layer).to.exist;
+      expect(layer).to.have.length.above(0);
 
       // have to wrap the prop in shallow so that we can run assertions against it.
       const layerContentProp = shallow(layer.prop('content'));
-      expect(layerContentProp).to.exist;
+      expect(layerContentProp).not.to.equal(undefined);
       expect(layerContentProp).to.have.text('Some words!');
     });
 
@@ -40,7 +40,7 @@ describe('ak-tooltip', () => {
       const wrapper = shallow(<Tooltip description="Some words!"><div>Foo</div></Tooltip>);
 
       const layer = wrapper.find('Layer');
-      expect(layer).to.exist;
+      expect(layer).to.have.length.above(0);
       expect(layer).to.have.prop('content', null);
     });
   });
@@ -59,7 +59,7 @@ describe('ak-tooltip', () => {
       const wrapper = shallow(<Tooltip onMouseOver={spy} />);
 
       wrapper.simulate('mouseOver');
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     });
   });
 
@@ -69,7 +69,7 @@ describe('ak-tooltip', () => {
       const wrapper = shallow(<Tooltip onMouseOut={spy} />);
 
       wrapper.simulate('mouseOut');
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     });
   });
 });

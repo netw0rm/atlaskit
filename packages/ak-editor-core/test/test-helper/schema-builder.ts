@@ -1,7 +1,6 @@
-import * as mocha from 'mocha';
-import { p, text, nodeFactory, markFactory, sequence, RefsTracker } from '../../test-helper/schema-builder';
-import { schema } from '../../test-helper/schema';
 import { expect } from 'chai';
+import { schema } from '../../test-helper/schema';
+import { markFactory, nodeFactory, p, RefsTracker, sequence, text } from '../../test-helper/schema-builder';
 
 describe('ak-editore-core/test-helper/schema-builder', () => {
   const clone = (object = {}) => ({...object});

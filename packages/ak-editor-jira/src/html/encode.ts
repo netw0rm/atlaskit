@@ -1,27 +1,23 @@
-import schema from '../schema';
 import {
   Fragment,
-  Node as PMNode,
-  TextNode
+  Node as PMNode
 } from 'ak-editor-core';
+import schema from '../schema';
 
 import {
   BulletListNode,
   DocNode,
-  HardBreakNode,
   HeadingNode,
-  HorizontalRuleNode,
-  ListItemNode,
-  OrderedListNode,
-  ParagraphNode,
   isBulletListNode,
-  isDocNode,
   isHardBreakNode,
   isHeadingNode,
   isHorizontalRuleNode,
   isListItemNode,
   isOrderedListNode,
-  isParagraphNode
+  isParagraphNode,
+  ListItemNode,
+  OrderedListNode,
+  ParagraphNode
 } from 'ak-editor-core';
 
 
@@ -43,7 +39,9 @@ export default function encode(node: DocNode) {
     .replace('<hr>', '<hr />');
 
   function encodeNode(node: PMNode) {
-    if (isBulletListNode(node)) {
+    if (node.isText) {
+      return encodeText(node);
+    } else if (isBulletListNode(node)) {
       return encodeBulletList(node);
     } else if (isHeadingNode(node)) {
       return encodeHeading(node);
@@ -57,10 +55,8 @@ export default function encode(node: DocNode) {
       return encodeParagraph(node);
     } else if (isHardBreakNode(node)) {
       return encodeHardBreak();
-    } else if (node.isText) {
-      return encodeText(node);
     } else {
-      throw new Error(`Unexpected node '${node.type.name}' for HTML encoding`);
+      throw new Error(`Unexpected node '${(node as any).type.name}' for HTML encoding`);
     }
   }
 
@@ -100,7 +96,7 @@ export default function encode(node: DocNode) {
     return elem;
   }
 
-  function encodeText(node: TextNode) {
+  function encodeText(node: PMNode) {
     if (node.text) {
       const root = doc.createDocumentFragment();
       let elem = root as Node;
@@ -122,7 +118,7 @@ export default function encode(node: DocNode) {
             elem = elem.appendChild(doc.createElement('ins'));
             break;
           case schema.marks.subsup:
-            elem = elem.appendChild(doc.createElement(mark.attrs.type));
+            elem = elem.appendChild(doc.createElement(mark.attrs['type']));
             break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);

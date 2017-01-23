@@ -1,18 +1,21 @@
 {
   "name": "ak-editor-core",
-  "version": "3.8.0",
+  "version": "3.10.3",
   "description": "A package contains Atlassian editor core functionality",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "ak:webpack:raw": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { npm run build; } || ../../node_modules/.bin/not-in-publish",
-    "build": "../../node_modules/.bin/tsc -p build/es5 && ../../node_modules/.bin/tsc -p build/es2015"
+    "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
+    "build": "npm run build/es5 && npm run build/es2015",
+    "build/es5": "../../node_modules/.bin/babel --out-dir dist/es5 --source-root src --source-maps true --no-babelrc --plugins transform-runtime --presets es2015 src && ../../node_modules/.bin/tsc -p build/es5",
+    "build/es2015": "../../node_modules/.bin/babel --out-dir dist/es2015 --source-root src --source-maps true --no-babelrc src && cp -rf src/prosemirror . && ../../node_modules/.bin/tsc -p build/es2015"
   },
   "files": [
     "dist",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "!src"
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
@@ -20,11 +23,11 @@
     "ak-button": "^5.0.0",
     "ak-button-group": "^3.0.2",
     "ak-droplist": "^4.1.0",
-    "ak-droplist-item": "^3.3.1",
+    "ak-droplist-item": "^4.0.0",
     "ak-droplist-group": "^2.1.0",
     "ak-dropdown-menu": "^2.1.0",
     "ak-editor-shared-styles": "^3.2.0",
-    "ak-icon": "^12.0.0",
+    "ak-icon": "^14.0.0",
     "ak-mention": "^1.9.0",
     "akutil-shared-styles": "^37.0.2",
     "browserkeymap": "git://github.com/bradleyayers/browserkeymap#es6-modules-compat-with-types",
@@ -33,10 +36,12 @@
     "tslib": "^1.2.0",
     "typestyle": "^0.21.4"
   },
+  "peerDependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  },
   "devDependencies": {
     "ajv": "^4.7.2",
-    "ak-tabs": "4.0.6",
-    "akutil-react": "^3.0.1",
     "highlight.js": "^9.6.0",
     "sinon": "^1.17.6",
     "string.prototype.repeat": "^0.2.0",

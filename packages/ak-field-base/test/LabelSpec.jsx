@@ -57,7 +57,7 @@ describe('ak-field-base', () =>
         const handler = sinon.spy();
         const wrapper = shallow(<Label {...defaultProps} onClick={handler} />);
         wrapper.find('span').simulate('click');
-        expect(handler).to.have.been.calledOnce;
+        expect(handler.callCount).to.equal(1);
       })
     );
 
@@ -68,7 +68,7 @@ describe('ak-field-base', () =>
             <div className="foo">Here is some child content!</div>
           </Label>
         );
-        expect(wrapper.find('div.foo')).to.be.present;
+        expect(wrapper.find('div.foo')).to.not.equal(undefined);
       })
     );
   })

@@ -1,10 +1,9 @@
-import * as mocha from 'mocha';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
-import { chaiPlugin, makeEditor, insert } from '../../../test-helper';
+import { chaiPlugin, insert, makeEditor } from '../../../test-helper';
 import { doc, link, linkable, schema, unlinkable } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
@@ -17,8 +16,8 @@ describe('hyperlink', () => {
   };
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const Plugin = HyperlinkPlugin as any; // .State is not public API.
-    expect(Plugin.State.name).is.be.a('string');
+    const plugin = HyperlinkPlugin as any; // .State is not public API.
+    expect(plugin.State.name).is.be.a('string');
   });
 
   describe('input rules', () => {
@@ -85,7 +84,7 @@ describe('hyperlink', () => {
     });
 
     it('should get current state immediately once subscribed', () => {
-      const { pm, plugin } = editor(doc(linkable('{<}text{>}')));
+      const { plugin } = editor(doc(linkable('{<}text{>}')));
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
@@ -103,9 +102,9 @@ describe('hyperlink', () => {
     });
 
     it('sets canAddLink to false when in a context where links are not supported by the schema', () => {
-      const { pm, plugin } = editor(doc(unlinkable('{<}text{>}')));
+      const { plugin } = editor(doc(unlinkable('{<}text{>}')));
 
-      expect(plugin.canAddLink).to.be.false;
+      expect(plugin.canAddLink).to.equal(false);
     });
 
     it('should treat it as a link when selecting the whole link', () => {
@@ -242,9 +241,9 @@ describe('hyperlink', () => {
     });
 
     it('should allow links to be added when the selection is empty', () => {
-      const { pm, plugin } = editor(doc(linkable('{<>}text')));
+      const { plugin } = editor(doc(linkable('{<>}text')));
 
-      expect(plugin.canAddLink).to.be.true;
+      expect(plugin.canAddLink).to.equal(true);
     });
 
     it('should not be able to unlink a node that has no link', () => {

@@ -1,6 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
-import keyCode from 'keycode';
 import Radio from 'ak-icon/glyph/radio';
 import Checkbox from 'ak-icon/glyph/checkbox';
 import styles from 'style!./styles.less';
@@ -26,9 +25,8 @@ export default class Item extends PureComponent {
     isChecked: PropTypes.bool,
     isFocused: PropTypes.bool,
     onActivate: PropTypes.func,
-    onKeyDown: PropTypes.func,
     target: PropTypes.string,
-    type: PropTypes.oneOf('link', 'radio', 'checkbox', 'option'),
+    type: PropTypes.oneOf(['link', 'radio', 'checkbox', 'option']),
   }
 
   static defaultProps = {
@@ -44,7 +42,6 @@ export default class Item extends PureComponent {
     isChecked: false,
     isFocused: false,
     onActivate: () => {},
-    onKeyDown: () => {},
     target: null,
     type: 'link',
   }
@@ -58,17 +55,16 @@ export default class Item extends PureComponent {
     }]
   )
 
-  handleKeyDown = (event) => {
+  handleKeyPress = (event) => {
     const { props } = this;
-    switch (event.keyCode) {
-      case keyCode('space'):
-      case keyCode('enter'):
+    switch (event.key) {
+      case 'Enter':
+      case ' ':
         if (!props.isDisabled) {
           props.onActivate({ item: this, event });
         }
         break;
       default:
-        props.onKeyDown({ item: this, event });
         break;
     }
   }
@@ -87,7 +83,7 @@ export default class Item extends PureComponent {
         <Element
           className={this.getClasses(props)}
           handleClick={this.handleClick}
-          handleKeyDown={this.handleKeyDown}
+          handleKeyPress={this.handleKeyPress}
           href={props.href}
           isDisabled={props.isDisabled}
           isChecked={props.isChecked}

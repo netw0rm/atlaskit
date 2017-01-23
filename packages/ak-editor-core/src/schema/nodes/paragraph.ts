@@ -1,4 +1,4 @@
-import { Paragraph as ParagraphNodeType, Node } from '../../prosemirror';
+import { Node, Paragraph as ParagraphNodeType } from '../../prosemirror';
 
 export { ParagraphNodeType };
 

@@ -21,7 +21,9 @@
   },
   "devDependencies": {
     "ak-avatar": "^5.0.4",
-    "ak-lozenge": "^5.0.4"
+    "ak-lozenge": "^5.0.4",
+    "jest": "^18.1.0",
+    "jest-enzyme": "^2.1.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"
@@ -35,5 +37,17 @@
   "keywords": [
     "atlaskit",
     "ui"
-  ]
+  ],
+  "jest": {
+    "setupTestFrameworkScriptFile": "./node_modules/jest-enzyme/lib/index.js",
+    "unmockedModulePathPatterns": [
+      "react",
+      "react-dom",
+      "enzyme"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
+      "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
+    }
+  }
 }

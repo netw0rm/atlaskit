@@ -17,17 +17,17 @@ import pasteTransformer from './paste-transformer';
 export type StateChangeHandler = (state: HyperlinkState) => void;
 
 export class HyperlinkState {
-  private changeHandlers: StateChangeHandler[] = [];
-  private inputRules: InputRule[] = [];
-  private pm: PM;
-
   // public state
   href?: string;
   text?: string;
   active = false;
   canAddLink = false;
   element?: HTMLElement;
-  activeLink?: Node;
+
+  private changeHandlers: StateChangeHandler[] = [];
+  private inputRules: InputRule[] = [];
+  private pm: PM;
+  private activeLink?: Node;
 
   constructor(pm: PM) {
     this.pm = pm;

@@ -16,7 +16,7 @@
   "files": [
     "dist",
     "**/*.d.ts",
-    "src",
+    "!src",
     "test-helper"
   ],
   "license": "Apache-2.0",

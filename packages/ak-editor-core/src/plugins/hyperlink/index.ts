@@ -82,15 +82,14 @@ export class HyperlinkState {
   private activeLinkNode(): Node | undefined {
     const {pm} = this;
     const {link} = pm.schema.marks;
-    const {$from, $head, empty} = pm.selection as TextSelection;
+    const {$from, empty} = pm.selection as TextSelection;
 
     if (link && $from) {
-      const nodeEndPos = pm.selection.$from.end() - 1;
-      const node = pm.doc.nodeAt(nodeEndPos);
+      const {node, offset} = $from.parent.childAfter($from.parentOffset);
 
-      // cursor at the beginning of the hyperlink text cannot be counted as part of hyperlink
-      // cursor at the end of the hyperlink text cannot be counted as part of hyperlink
-      if (empty && ($head.pos === $from.end() || $head.pos === $from.start())) {
+      // offset is the end postion of previous node
+      // This is to check whether the cursor is at the beginning of current node
+      if (empty && offset + 1 === $from.pos) {
         return;
       }
 

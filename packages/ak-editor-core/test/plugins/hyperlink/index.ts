@@ -79,7 +79,7 @@ describe('hyperlink', () => {
   describe('active', () => {
     context('when select the whole hyperlink text from start to end', () => {
       it('is active', () => {
-        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'))));
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
         const { pos1, pos2 } = pm.doc.refs;
 
         pm.setTextSelection(pos1, pos2);
@@ -90,7 +90,7 @@ describe('hyperlink', () => {
 
     context('when select the whole hyperlink text from end to start', () => {
       it('is active', () => {
-        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'))));
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
         const { pos1, pos2 } = pm.doc.refs;
 
         pm.setTextSelection(pos2, pos1);
@@ -101,7 +101,7 @@ describe('hyperlink', () => {
 
     context('when select part of the hyperlink text from the end', () => {
       it('is active', () => {
-        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'))));
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'), 'after')));
         const { pos1, pos2 } = pm.doc.refs;
 
         pm.setTextSelection(pos2, pos1);
@@ -112,7 +112,7 @@ describe('hyperlink', () => {
 
     context('when select part of the hyperlink text from the start', () => {
       it('is active', () => {
-        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{pos1}t{pos2}ext'))));
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}t{pos2}ext'), 'after')));
         const { pos1, pos2 } = pm.doc.refs;
 
         pm.setTextSelection(pos1, pos2);
@@ -123,7 +123,7 @@ describe('hyperlink', () => {
 
     context('when select part of the hyperlink text in the middle', () => {
       it('is active', () => {
-        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('t{pos1}ex{pos2}t'))));
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ex{pos2}t'), 'after')));
         const { pos1, pos2 } = pm.doc.refs;
 
         pm.setTextSelection(pos1, pos2);
@@ -134,7 +134,7 @@ describe('hyperlink', () => {
 
     context('when cursor is winthin hyperlink text', () => {
       it('is not active', () => {
-        const { plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('tex{<>}t'))));
+        const { plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('tex{<>}t'), 'after')));
 
         expect(plugin.active).to.be.true;
       });
@@ -142,7 +142,7 @@ describe('hyperlink', () => {
 
     context('when cursor at the beginning of hyperlink text', () => {
       it('is not active', () => {
-        const { plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<>}text'))));
+        const { plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{<>}text'), 'after')));
 
         expect(plugin.active).to.be.false;
       });
@@ -150,7 +150,7 @@ describe('hyperlink', () => {
 
     context('when cursor at the end of hyperlink text', () => {
       it('is not active', () => {
-        const { plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('text{<>}'))));
+        const { plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('text{<>}'), 'after')));
 
         expect(plugin.active).to.be.false;
       });

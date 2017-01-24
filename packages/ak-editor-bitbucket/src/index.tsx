@@ -98,7 +98,8 @@ export default class Editor extends PureComponent<Props, State> {
    */
   clear(): void {
     const { pm } = this.state;
-    if (pm) {
+    // Need to check that editor isn't detached from DOM.
+    if (pm && document.body.contains(pm.content)) {
       pm.tr.delete(0, pm.doc.nodeSize - 2).apply();
     }
   }

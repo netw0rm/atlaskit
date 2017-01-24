@@ -24,7 +24,10 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "ak-button": ">=4.x",
+    "ak-dropdown-menu": "^2.3.0",
     "ak-field-text": ">=6.x",
+    "ak-layer": "^62.2.1",
+    "ak-navigation": "^19.0.1",
     "react-lorem-component": "*"
   },
   "repository": {

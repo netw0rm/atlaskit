@@ -18,5 +18,5 @@ export { ImageNode, ImageNodeType, isImageNode } from './nodes/image';
 export { ListItemNode, ListItemNodeType, isListItemNode } from './nodes/list-item';
 export { OrderedListNode, OrderedListNodeType, isOrderedListNode } from './nodes/ordered-list';
 export { ParagraphNode, ParagraphNodeType, isParagraphNode } from './nodes/paragraph';
-export { MentionNode, MentionNodeType } from './nodes/mention';
+export { MentionNode, MentionNodeType, isMentionNode } from './nodes/mention';
 export { EmojiNode, EmojiNodeType } from './nodes/emoji';

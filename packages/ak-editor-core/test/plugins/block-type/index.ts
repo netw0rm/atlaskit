@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
 
 import { browser } from '../../../src';
-import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, makeEditor, p } from '../../../test-helper';
+import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, img, makeEditor, mention, p } from '../../../test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
 
@@ -71,18 +71,54 @@ describe('block-type', () => {
     expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 
-  it('should be able to change to code block', () => {
-    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+  describe('code block', () => {
+    it('should be able to change to code block', () => {
+      const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
-    plugin.changeBlockType('codeblock');
-    expect(pm.doc).to.deep.equal(doc(code_block()('text')));
-  });
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('text')));
+    });
 
-  it('should be able to change to code block with multilines', () => {
-    const { pm, plugin } = editor(doc(p('line1{<>}', br, 'line2')));
+    it('should be able to change to code block with multilines', () => {
+      const { pm, plugin } = editor(
+        doc(p(
+          'line1{<>}',
+          img({ src: 'url', alt: 'text', title: 'text' }),
+          ' ',
+          br,
+          'line2 ',
+          br)));
 
-    plugin.changeBlockType('codeblock');
-    expect(pm.doc).to.deep.equal(doc(code_block()('line1\nline2')));
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('line1 \nline2 \n')));
+    });
+
+    it('should be able to preserve mention text', () => {
+      const { pm, plugin } = editor(
+        doc(p(
+          'hello ',
+          mention({ id: 'foo1', displayName: '@bar1' }),
+          img({ src: 'url', alt: 'text', title: 'text' }),
+          ' & ',
+          mention({ id: 'foo2', displayName: '@bar2' }),
+          ' & ',
+          mention({ id: 'foo3', displayName: '@bar3' }),
+        )));
+
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('hello @bar1 & @bar2 & @bar3')));
+    });
+
+    it('should collaps nested block and convert to code block', () => {
+      const {pm, plugin} = editor (
+        doc(blockquote(
+          h1('h1')
+        ))
+      );
+
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('h1')));
+    });
   });
 
   it('should be able to identify normal', () => {

@@ -63,3 +63,7 @@ export interface MentionNode extends Node {
     displayName: string;
   };
 }
+
+export function isMentionNode(node: Node): node is MentionNode {
+  return node.type instanceof MentionNodeType;
+}

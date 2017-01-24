@@ -42,7 +42,7 @@ export function tooltip(keymap: Keymap | undefined): string | undefined {
 
 export function findKeymapByDescription(description: string): Keymap | undefined {
   const matches = ALL.filter((keymap) => {
-    return keymap.description === description;
+    return keymap.description.toUpperCase() === description.toUpperCase();
   });
 
   return matches[0];

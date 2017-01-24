@@ -8,7 +8,6 @@
     }
   },
   "dependencies": {
-    "@atlassian/gremlins.js": "^0.1.0",
     "@kadira/react-split-pane": "^1.4.7",
     "@kadira/storybook": "^2.24.0",
     "@types/ajv": "0.0.5",

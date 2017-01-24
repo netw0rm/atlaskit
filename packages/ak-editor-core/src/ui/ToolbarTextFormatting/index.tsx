@@ -44,7 +44,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
               onClick={this.handleBoldClick}
               selected={this.state.boldActive}
               disabled={this.state.boldDisabled}
-              iconBefore={<BoldIcon label="Bold" />}
+              iconBefore={<BoldIcon label="" />}
             />
           </span>
         }
@@ -55,7 +55,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
               onClick={this.handleItalicClick}
               selected={this.state.italicActive}
               disabled={this.state.italicDisabled}
-              iconBefore={<ItalicIcon label="Italic" />}
+              iconBefore={<ItalicIcon label="" />}
             />
           </span>
         }
@@ -66,7 +66,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
               onClick={this.handleUnderlineClick}
               selected={this.state.underlineActive}
               disabled={this.state.underlineDisabled}
-              iconBefore={<UnderlineIcon label="Underline" />}
+              iconBefore={<UnderlineIcon label="" />}
             />
           </span>
         }

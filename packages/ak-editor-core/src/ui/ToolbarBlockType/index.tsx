@@ -6,6 +6,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 
 import { analyticsService as analytics } from '../../analytics';
+import { findKeymapByDescription, tooltip } from '../../keymaps';
 import { BlockType, BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
 import * as styles from './styles';
 
@@ -73,7 +74,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
             isActive={currentBlockType === blockType}
             onActivate={() => { this.handleSelectBlockType(blockType); }}
           >
-            <span className={`${this.blockTypeItemClass(blockType)}`} title="hello">
+            <span className={`${this.blockTypeItemClass(blockType)}`} title={tooltip(findKeymapByDescription(blockType.title))}>
               {blockType.title}
             </span>
           </Item>

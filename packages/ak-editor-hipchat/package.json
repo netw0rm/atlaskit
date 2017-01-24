@@ -19,7 +19,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "ak-editor-core": "^3.9.2",
+    "ak-editor-core": "^3.10.8",
     "classnames": "^2.2.5",
     "tslib": "^1.2.0"
   },

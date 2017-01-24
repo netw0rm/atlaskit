@@ -23,6 +23,7 @@
     "ak-avatar": "^5.0.4",
     "ak-lozenge": "^5.0.4",
     "jest": "^18.1.0",
+    "jest-css-modules": "^1.1.0",
     "jest-enzyme": "^2.1.0"
   },
   "peerDependencies": {

@@ -2,6 +2,11 @@ import { browser } from '../../src/prosemirror';
 
 export const toggleOrderedList = makeKeyMapWithCommon('Toggle ordered list', 'Mod-Shift-L');
 export const toggleBulletList = makeKeyMapWithCommon('Toggle bullet list', 'Mod-Shift-B');
+export const toggleBold = makeKeyMapWithCommon('Toggle bold', 'Mod-B');
+export const toggleItalic = makeKeyMapWithCommon('Toggle italic', 'Mod-I');
+export const toggleUnderline = makeKeyMapWithCommon('Toggle underline', 'Mod-U');
+export const toggleStrikethrough = makeKeyMapWithCommon('Toggle strikethrough', 'Mod-Shift-S');
+export const toggleMonospace = makeKeyMapWithCommon('Toggle monospace', 'Mod-Shift-M');
 
 
 // function makeKeyMap(description: string, windows: string, mac: string, common?: string): Keymap {

@@ -6,8 +6,7 @@ export const container = style({
     '& button > span > span:first-child': {
       color: akEditorPopupText,
       minWidth: '80px',
-      textAlign: 'left',
-      zIndex: 1
+      textAlign: 'left'
     },
     '& span[role="menuitem"]': {
       padding: '0 16px'

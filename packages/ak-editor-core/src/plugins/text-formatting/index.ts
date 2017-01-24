@@ -67,6 +67,7 @@ export class TextFormattingState {
     ], () => this.update());
 
     this.addKeymap();
+    this.update();
   }
 
   toggleEm() {

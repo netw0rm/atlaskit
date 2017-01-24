@@ -11,7 +11,7 @@ import 'whatwg-fetch';
  */
 export const modifyResponse = (response) => {
   const presence = response.Presence && response.Presence.state;
-  const data = { ...response.User, ...presence };
+  const data = { ...response.User, presence };
 
   const localWeekdayIndex = new Date().getDay().toString();
 

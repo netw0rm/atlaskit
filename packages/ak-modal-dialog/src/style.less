@@ -1,5 +1,6 @@
 @import '~akutil-shared-styles/src/grid.less';
 @import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/z-indexes.less';
 @grid: @ak-grid-size / 2; // evaluates to 4px
 
 @width-small: 400px;
@@ -33,6 +34,7 @@
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: @ak-z-index-blanket;
 }
 
 .modal-positioner {
@@ -43,6 +45,7 @@
   height: ~"calc(100% - (2 * @{viewportMargin}))"; // can't use max-height here because of IE11 bug
   padding-top: @viewportMargin;
   position: relative;
+  z-index: @ak-z-index-blanket + 10;
 
   .widthTier(small);
   .widthTier(medium);

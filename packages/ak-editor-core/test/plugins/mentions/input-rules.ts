@@ -26,7 +26,7 @@ describe('mentions - input rules', () => {
     pm.input.insertText(0, 0, 'foo @');
 
     const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).not.to.be.undefined;
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.not.equal(undefined);
   });
 
   it('should not replace a "@" thats part of a word', () => {
@@ -34,7 +34,7 @@ describe('mentions - input rules', () => {
     pm.input.insertText(0, 0, 'foo@');
 
     const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.be.undefined;
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.equal(undefined);
   });
 
   it('should replace "@" at the start of the content', () => {
@@ -42,7 +42,7 @@ describe('mentions - input rules', () => {
     pm.input.insertText(0, 0, '@');
 
     const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).not.to.be.undefined;
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.not.equal(undefined);
   });
 
   it('should replace "@" if there are multiple spaces infront of it', () => {
@@ -50,6 +50,6 @@ describe('mentions - input rules', () => {
     pm.input.insertText(0, 0, '  @');
 
     const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).not.to.be.undefined;
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.not.equal(undefined);
   });
 });

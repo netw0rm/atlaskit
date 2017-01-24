@@ -25,7 +25,7 @@ describe(name, () => {
   it('basic sanity check', () =>
     expect(shallow(
       <InlineMessage />
-    )).to.exist
+    )).not.to.equal(undefined)
   );
 
   describe('isOpen state', () => {

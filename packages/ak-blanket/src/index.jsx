@@ -39,10 +39,10 @@ export default class Blanket extends PureComponent {
     // TODO make sure that the div onClick is accessible
     return (
       <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-        onClick={onBlanketClicked}
         className={classNames(
           [styles.blanket, { [`${styles.tinted}`]: isTinted }]
         )}
+        onClick={onBlanketClicked}
       />
     );
   }

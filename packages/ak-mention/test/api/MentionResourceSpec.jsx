@@ -112,7 +112,7 @@ describe('MentionResource', () => {
       resource.filter('craig');
       // Not desirable...
       setTimeout(() => {
-        expect(listener).to.not.be.called;
+        expect(listener.called).to.equal(false);
         done();
       }, 50);
     });
@@ -256,7 +256,7 @@ describe('MentionResource', () => {
       resource.recordMentionSelection({
         id: 666,
       }).then(() => {
-        expect(fetchMock.called('record')).to.be.true;
+        expect(fetchMock.called('record')).to.equal(true);
         done();
       });
     });

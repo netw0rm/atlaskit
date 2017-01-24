@@ -29,7 +29,7 @@ describe('ak-editor-core/test-helper base64fileconverter', () => {
       const resp = pasteHandler(converterStub, clipboardEventStub, cb);
 
       expect(cb.callCount).to.equal(0);
-      expect(resp).to.be.false;
+      expect(resp).to.equal(false);
     });
 
     it('Should not convert files when there is no dataTransfer', () => {
@@ -48,7 +48,7 @@ describe('ak-editor-core/test-helper base64fileconverter', () => {
         },
       } as any;
 
-      expect(pasteHandler(converterStub, clipboardEvent, sinon.spy())).to.be.true;
+      expect(pasteHandler(converterStub, clipboardEvent, sinon.spy())).to.equal(true);
     });
   });
 
@@ -59,7 +59,7 @@ describe('ak-editor-core/test-helper base64fileconverter', () => {
 
       const cb = sinon.spy();
 
-      expect(dropHandler(converterStub, dragEventStub, cb)).to.be.false;
+      expect(dropHandler(converterStub, dragEventStub, cb)).to.equal(false);
       expect(cb.callCount).to.equal(0);
     });
 
@@ -78,7 +78,7 @@ describe('ak-editor-core/test-helper base64fileconverter', () => {
 
       const cb = sinon.spy();
 
-      expect(dropHandler(converterStub, dragEventStub, cb)).to.be.true;
+      expect(dropHandler(converterStub, dragEventStub, cb)).to.equal(true);
       expect(cb.callCount).to.equal(1);
     });
   });

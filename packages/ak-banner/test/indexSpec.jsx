@@ -14,7 +14,7 @@ const { expect } = chai;
 
 describe(name, () => {
   it('basic sanity check', () =>
-    expect(shallow(<Banner />)).to.exist
+    expect(shallow(<Banner />)).not.to.equal(undefined)
   );
   describe('props', () => {
     describe('appearance prop', () => {

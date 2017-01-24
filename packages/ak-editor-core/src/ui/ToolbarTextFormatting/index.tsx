@@ -3,8 +3,8 @@ import ItalicIcon from 'ak-icon/glyph/editor/italic';
 import UnderlineIcon from 'ak-icon/glyph/editor/underline';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { TextFormattingState } from '../../../src/plugins/text-formatting';
 import { analyticsDecorator as analytics } from '../../analytics';
+import { TextFormattingState } from '../../plugins/text-formatting';
 import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
@@ -42,9 +42,8 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
           onClick={this.handleBoldClick}
           selected={this.state.boldActive}
           disabled={this.state.boldDisabled}
-        >
-          <BoldIcon label="Bold" />
-        </ToolbarButton>
+          iconBefore={<BoldIcon label="Bold" />}
+        />
         }
 
         {this.state.italicHidden ? null :
@@ -52,9 +51,8 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
           onClick={this.handleItalicClick}
           selected={this.state.italicActive}
           disabled={this.state.italicDisabled}
-        >
-          <ItalicIcon label="Italic" />
-        </ToolbarButton>
+          iconBefore={<ItalicIcon label="Italic" />}
+        />
         }
 
         {this.state.underlineHidden ? null :
@@ -62,9 +60,8 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
           onClick={this.handleUnderlineClick}
           selected={this.state.underlineActive}
           disabled={this.state.underlineDisabled}
-        >
-          <UnderlineIcon label="Underline" />
-        </ToolbarButton>
+          iconBefore={<UnderlineIcon label="Underline" />}
+        />
         }
       </span>
     );

@@ -86,7 +86,7 @@ describe('ak-profilecard', () => {
         }] });
         const actionsWrapper = card.find(`.${styles.locals.actionsWrapper}`);
         actionsWrapper.find('AkButton').first().simulate('click');
-        expect(spy).to.have.been.calledOnce;
+        expect(spy.callCount).to.equal(1);
       });
 
       it('should not render any action buttons if actions property is not set', () => {

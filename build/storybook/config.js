@@ -8,7 +8,6 @@ import 'style-loader!css-loader!highlight.js/styles/github.css';
 import 'style!./styles.less';
 
 import MonitoredStory from './MonitoredStory';
-import MonkeyTestStory from './MonkeyTestStory';
 import BaselineAlignmentStory from './BaselineAlignmentStory';
 import CodeExampleStory from './CodeExampleStory';
 
@@ -28,14 +27,6 @@ setAddon({
       <MonitoredStory rafFn={rafFn}>
         {storyFn(context)}
       </MonitoredStory>
-    ));
-  },
-
-  addMonkeyTest(storyName, storyFn) {
-    this.add(storyName, context => (
-      <MonkeyTestStory>
-        {storyFn(context)}
-      </MonkeyTestStory>
     ));
   },
 

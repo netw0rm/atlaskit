@@ -2,7 +2,7 @@
   "extends": "../../../../tsconfig",
   "compilerOptions": {
     "declaration": true,
-    "declarationDir": "../..",
+    "declarationDir": "../../dist/types",
     "outDir": "../../dist/es2015",
     "target": "es2015"
   },

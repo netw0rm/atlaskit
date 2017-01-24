@@ -1,6 +1,11 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
+import styles from 'style!../src/styles/profilecard-resourced.less';
+
+import LoadingMessage from '../src/components/LoadingMessage';
+import ErrorMessage from '../src/components/ErrorMessage';
+
 import { name } from '../package.json';
 import { AkProfilecard } from '../src/';
 import interActiveCard from './profile-interactive';
@@ -21,12 +26,8 @@ const fakeProfileData = {
   presence: 'available',
   actions: [
     {
-      label: 'View',
-      callback: handleActionClick('View'),
-    },
-    {
-      label: 'Chat',
-      callback: handleActionClick('Chat'),
+      label: 'View profile',
+      callback: handleActionClick('View profile'),
     },
   ],
 };
@@ -40,67 +41,74 @@ const fakeData = data => ({
 const canvasStyle = { padding: '30px' };
 
 storiesOf(`${name}`, module)
-.add('worst case card', () => {
-  const data = fakeData({
-    avatarUrl: null,
-  });
+  .add('loading state', () => (
+    <div style={canvasStyle}>
+      <div className={styles.profilecardResourced}>
+        <LoadingMessage />
+      </div>
+    </div>
+  ))
+  .add('error state', () => (
+    <div style={canvasStyle}>
+      <div className={styles.profilecardResourced}>
+        <ErrorMessage
+          reload={handleActionClick('Retry')}
+        />
+      </div>
+    </div>
+  ))
+  .add('worst case card', () => {
+    const data = fakeData({
+      avatarUrl: null,
+      presence: null,
+    });
 
-  return (
-    <div style={canvasStyle}>
-      <AkProfilecard
-        fullName={data.fullName}
-        presence={data.presence}
-        actions={data.actions}
-      />
-    </div>
-  );
-})
-.add('w/ avatar img error', () => {
-  const data = fakeData({ avatarUrl: 'http://localhost:404/no-avatar' });
-  return (
-    <div style={canvasStyle}>
-      <AkProfilecard {...data} />
-    </div>
-  );
-})
-.add('w/o presence', () => {
-  const data = fakeData();
-  delete data.presence;
+    return (
+      <div style={canvasStyle}>
+        <AkProfilecard
+          actions={data.actions}
+          fullName={data.fullName}
+        />
+      </div>
+    );
+  })
+  .add('best case card', () => {
+    const data = fakeData({});
 
-  return (
+    return (
+      <div style={canvasStyle}>
+        <AkProfilecard {...data} />
+      </div>
+    );
+  })
+  .add('w/ avatar img error', () => {
+    const data = fakeData({ avatarUrl: 'http://localhost:404/no-avatar' });
+    return (
+      <div style={canvasStyle}>
+        <AkProfilecard {...data} />
+      </div>
+    );
+  })
+  .add('alternate actions', () => {
+    const actions = [
+      {
+        label: 'Foo',
+        callback: handleActionClick('Foo'),
+      },
+      {
+        label: 'Bar',
+        callback: handleActionClick('Bar'),
+      },
+    ];
+    const data = fakeData({ actions });
+    return (
+      <div style={canvasStyle}>
+        <AkProfilecard {...data} />
+      </div>
+    );
+  })
+  .add('interactive playground', () => (
     <div style={canvasStyle}>
-      <AkProfilecard {...data} />
+      <InteractiveCard />
     </div>
-  );
-})
-.add('w/o actions', () => {
-  const data = fakeData({ actions: null });
-  return (
-    <div style={canvasStyle}>
-      <AkProfilecard {...data} />
-    </div>
-  );
-})
-.add('custom actions', () => {
-  const actions = [
-    {
-      label: 'Foo',
-      callback: handleActionClick('Foo'),
-    },
-    {
-      label: 'Bar',
-      callback: handleActionClick('Bar'),
-    },
-  ];
-  const data = fakeData({ actions });
-  return (
-    <div style={canvasStyle}>
-      <AkProfilecard {...data} />
-    </div>
-  );
-})
-.add('interactive playground', () => (
-  <div style={canvasStyle}>
-    <InteractiveCard />
-  </div>
-));
+  ));

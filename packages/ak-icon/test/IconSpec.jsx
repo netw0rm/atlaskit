@@ -22,12 +22,12 @@ describe(name, () => {
 
     describe('exports', () => {
       it('exports the React component, NotImplementedError, and size', () => {
-        expect(Icon).to.not.be.undefined;
-        expect(NotImplementedError).to.not.be.undefined;
-        expect(size).to.not.be.undefined;
+        expect(Icon).to.not.equal(undefined);
+        expect(NotImplementedError).to.not.equal(undefined);
+        expect(size).to.not.equal(undefined);
 
         expect(new Icon({ label: 'My icon' })).to.be.instanceOf(PureComponent);
-        expect(NotImplementedError).to.be.an.error;
+        expect(NotImplementedError).to.throw(Error);
         expect(Object.values(size)).to.deep.equal(['small', 'medium', 'large', 'xlarge']);
       });
     });
@@ -39,7 +39,7 @@ describe(name, () => {
       } catch (e) {
         error = e;
       }
-      expect(error).to.not.be.undefined;
+      expect(error).to.not.equal(undefined);
       expect(error).to.be.instanceof(NotImplementedError);
     });
 
@@ -50,7 +50,7 @@ describe(name, () => {
 
     it('should be able to create a component', () => {
       const wrapper = shallow(<MyIcon label="My icon" />);
-      expect(wrapper).to.exist;
+      expect(wrapper).not.to.equal(undefined);
       expect(wrapper.instance()).to.be.instanceOf(PureComponent);
     });
 
@@ -86,7 +86,7 @@ describe(name, () => {
         expect(wrapper.prop('onClick')).to.equal(handler);
 
         wrapper.find(`.${styles.locals.iconBody}`).simulate('click');
-        expect(handler).to.have.been.calledOnce;
+        expect(handler.callCount).to.equal(1);
       });
     });
   });

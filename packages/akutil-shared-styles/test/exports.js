@@ -117,6 +117,7 @@ describe('exports', () => {
       'akFontFamily',
       'akFontSizeDefault',
       'akGridSize',
+      'akGridSizeInt',
       'akZIndexBlanket',
       'akZIndexLayer',
       'default',

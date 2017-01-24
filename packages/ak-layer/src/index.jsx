@@ -1,5 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import Popper from 'popper.js';
+import { akZIndexLayer } from 'akutil-shared-styles';
 
 import { POSITION_ATTRIBUTE_ENUM, positionPropToPopperPosition } from './internal/helpers';
 
@@ -219,7 +220,7 @@ export default class Layer extends PureComponent {
         </div>
         <div
           ref={ref => (this.contentRef = ref)}
-          style={{ top: 0, left: 0, position: cssPosition, transform, zIndex: 400 }}
+          style={{ top: 0, left: 0, position: cssPosition, transform, zIndex: akZIndexLayer }}
         >
           {this.props.content}
         </div>

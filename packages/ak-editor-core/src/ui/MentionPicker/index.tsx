@@ -48,7 +48,8 @@ export default class MentionPicker extends PureComponent<Props, State> {
         position: 'absolute',
         left: (rect.left - parentRect.left),
         top: !this.props.reversePosition ? (rect.top - parentRect.top) + rect.height : null,
-        bottom: this.props.reversePosition ? (window.innerHeight - parentRect.bottom) + 20 : null
+        bottom: this.props.reversePosition ? (window.innerHeight - parentRect.bottom) + 20 : null,
+        zIndex: 1
       };
     }
 

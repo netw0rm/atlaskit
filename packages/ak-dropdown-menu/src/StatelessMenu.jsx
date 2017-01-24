@@ -20,6 +20,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     onOpenChange: PropTypes.func,
     position: PropTypes.string,
     triggerType: PropTypes.oneOf(['default', 'button']),
+    shouldFlip: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -31,6 +32,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     onOpenChange: () => {},
     position: 'bottom left',
     triggerType: 'default',
+    shouldFlip: true,
   }
 
   state = {
@@ -63,6 +65,7 @@ export default class StatelessDropdownMenu extends PureComponent {
         isOpen={props.isOpen}
         onOpenChange={props.onOpenChange}
         isTriggerNotTabbable={(props.triggerType === 'button') || props.isTriggerNotTabbable}
+        shouldFlip={props.shouldFlip}
         trigger={props.triggerType === 'button' ?
           (<Button
             isSelected={props.isOpen}

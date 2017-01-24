@@ -61,6 +61,7 @@ class Badge extends PureComponent {
     value: 0,
     max: 99,
     appearance: APPEARANCE_ENUM.defaultValue,
+    theme: THEME_ENUM.defaultValue,
   }
 
   // triggered on prop/state change, but not on first render

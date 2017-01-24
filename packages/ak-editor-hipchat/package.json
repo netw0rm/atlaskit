@@ -5,12 +5,13 @@
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "ak:webpack:raw": "src/index.tsx",
-  "types": "dist/types/index.d.ts",
+  "types": "src/index.tsx",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
-    "build": "npm run build/es5 && npm run build/es2015",
+    "build": "npm run build/es5 && npm run build/es2015 && npm run build/package.json",
     "build/es5": "../../node_modules/.bin/tsc -p build/es5",
-    "build/es2015": "../../node_modules/.bin/tsc -p build/es2015"
+    "build/es2015": "../../node_modules/.bin/tsc -p build/es2015",
+    "build/package.json": "../../build/bin/overlay-package-json.js package.publish.json package.json"
   },
   "files": [
     "dist",

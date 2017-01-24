@@ -44,21 +44,14 @@ export default class FlagGroup extends PureComponent {
     </FlagAnimationWrapper>
   )
 
-  renderFlags = () => {
-    const { children } = this.props;
-    if (!children) return null;
-
-    return 'map' in children ? (
-      children.map(this.renderFlag)
-    ) : this.renderFlag(children, 0);
-  }
-
   render() {
     return (
       <section className={styles.root}>
         <h1 className={styles.assistive}>Flag notifications</h1>
         <div className={styles.groupInner}>
-          { this.renderFlags() }
+          {
+            React.Children.map(this.props.children, this.renderFlag)
+          }
         </div>
       </section>
     );

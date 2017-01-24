@@ -46,7 +46,7 @@ export class HyperlinkState {
       pm.on.activeMarkChange,
     ], () => this.update());
 
-    this.update();
+    this.setup(this.getActiveLinkNodeInfo());
   }
 
   private update() {
@@ -54,20 +54,24 @@ export class HyperlinkState {
     let dirty = false;
 
     if ((nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
-      this.activeLinkNode = nodeInfo && nodeInfo.node;
-      this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
-      this.activeLinkMark = nodeInfo && this.getActiveLinkMark(nodeInfo.node);
-      this.text = nodeInfo && nodeInfo.node.textContent;
-      this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
-      this.element = this.getDomElement();
-      this.active = !!nodeInfo;
-      this.canAddLink = !this.active && this.isActiveNodeLinkable();
+      this.setup(nodeInfo);
       dirty = true;
     }
 
     if (dirty) {
       this.changeHandlers.forEach(cb => cb(this));
     }
+  }
+
+  private setup(nodeInfo: NodeInfo | undefined): void {
+    this.activeLinkNode = nodeInfo && nodeInfo.node;
+    this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
+    this.activeLinkMark = nodeInfo && this.getActiveLinkMark(nodeInfo.node);
+    this.text = nodeInfo && nodeInfo.node.textContent;
+    this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
+    this.element = this.getDomElement();
+    this.active = !!nodeInfo;
+    this.canAddLink = !this.active && this.isActiveNodeLinkable();
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -144,7 +148,7 @@ export class HyperlinkState {
     return (linkMarks as LinkMark[])[0];
   }
 
-  private getActiveLinkNodeInfo(): { node: Node, startPos: number } | undefined {
+  private getActiveLinkNodeInfo(): NodeInfo| undefined {
     const {pm} = this;
     const {link} = pm.schema.marks;
     const {$from, empty} = pm.selection as TextSelection;
@@ -187,4 +191,9 @@ export interface PM extends ProseMirror {
 
 export interface HyperlinkOptions {
   href: string;
+}
+
+interface NodeInfo {
+  node: Node;
+  startPos: number;
 }

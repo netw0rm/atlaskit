@@ -269,6 +269,12 @@ describe('hyperlink', () => {
       expect(plugin.canAddLink).to.equal(false);
     });
 
+    it('sets canAddLink to false when link is already in place', () => {
+      const { plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
+
+      expect(plugin.canAddLink).to.equal(false);
+    });
+
     it('does not emit `change` multiple times when the selection moves within a link', () => {
       const { pm, plugin } = editor(doc(linkable('{<>}text', link({ href: 'http://www.atlassian.com' })('l{pos1}i{pos2}nk'))));
       const spy = sinon.spy();

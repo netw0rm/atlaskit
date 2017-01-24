@@ -1,3 +1,6 @@
 {
-  "extends": "ak-tests"
+  "extends": "ak-tests",
+  "globals": {
+    "jest": true
+  }
 }

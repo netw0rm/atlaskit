@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import { name } from '../package.json';
-import styles from '../__mocks__/styleMock';
+import styles from '../__mocks__/stylesMock';
 import Item, { SecondaryText } from '../src';
 import Element from '../src/internal/Element';
 
@@ -102,15 +102,11 @@ describe(name, () => {
   //     onActivate.reset();
   //   });
 
-    describe.only('onActivate', () => {
+    describe('onActivate', () => {
       let wrapper;
       let onActivate;
       beforeEach(() => {
         onActivate = jest.fn();
-
-// myMock('1');
-// myMock('a', 'b');
-// console.log(myMock.mock.calls);
         wrapper = mount(<Item onActivate={onActivate} />).find(`.${styles.item}`);
       });
 
@@ -119,66 +115,66 @@ describe(name, () => {
         expect(onActivate.mock.calls.length).toBe(1);
       });
 
-      // it('should be activated when space is pressed', () => {
-      //   wrapper.simulate('keyPress', { key: ' ' });
-      //   expect(onActivate.calledOnce).to.be.true;
-      // });
+      it('should be activated when space is pressed', () => {
+        wrapper.simulate('keyPress', { key: ' ' });
+        expect(onActivate.mock.calls.length).toBe(1);
+      });
 
-      // it('should be activated when clicked', () => {
-      //   wrapper.simulate('click');
-      //   expect(onActivate.calledOnce).to.be.true;
-      // });
+      it('should be activated when clicked', () => {
+        wrapper.simulate('click');
+        expect(onActivate.mock.calls.length).toBe(1);
+      });
 
-      // it('should not be activated when disabled', () => {
-      //   const disabledWrapper =
-      //     mount(<Item onActivate={onActivate} isDisabled />).find(`.${styles.item}`);
-      //   disabledWrapper.simulate('click');
-      //   disabledWrapper.simulate('keyPress', { key: 'Enter' });
-      //   disabledWrapper.simulate('keyPress', { key: ' ' });
-      //   expect(onActivate.called).to.be.false;
-      // });
+      it('should not be activated when disabled', () => {
+        const disabledWrapper =
+          shallow(<Item onActivate={onActivate} isDisabled />).find(Element);
+        disabledWrapper.simulate('click');
+        disabledWrapper.simulate('keyPress', { key: 'Enter' });
+        disabledWrapper.simulate('keyPress', { key: ' ' });
+        expect(onActivate.mock.calls.length).toBe(0);
+      });
+    });
+
+    it('should focus itself when the isFocused property is set to true', () => {
+      const wrapper = mount(<Item isFocused />).find(Element);
+      expect(wrapper.find(`.${styles.item}`).node).toBe(document.activeElement);
     });
   });
 
-  // it('should focus itself when the isFocused property is set to true', () => {
-  //   const wrapper = mount(<Item isFocused />).find(`.${styles.item}`);
-  //   expect(wrapper.find(`.${styles.item}`).node).to.equal(document.activeElement);
-  // });
+  describe.skip('secondary text', () => {
+    it('should render content inside', () => {
+      expect(shallow(<SecondaryText>text</SecondaryText>).text()).toBe('text');
+    });
 
-  // describe('secondary text', () => {
-  //   it('should render content inside', () => {
-  //     expect(mount(<SecondaryText>text</SecondaryText>)).to.have.text('text');
-  //   });
+    it('should have className', () => {
+      expect(shallow(<SecondaryText>text</SecondaryText>)
+        .find(`.${styles.secondaryText}`).isEmpty()).toBeFalsy();
+    });
+  });
 
-  //   it('should have className', () => {
-  //     expect(mount(<SecondaryText>text</SecondaryText>)
-  //       .find(`.${styles.secondaryText}`).length).to.equal(1);
-  //   });
-  // });
+  describe('accessibility', () => {
+    it('disabled item', () => {
+      expect(mount(<Item />).find('[aria-disabled]').length).toBe(0);
+      expect(mount(<Item isDisabled />).find('[aria-disabled]').length).toBe(1);
+    });
 
-  // describe('accessibility', () => {
-  //   it('disabled item', () => {
-  //     expect(mount(<Item />).find('[aria-disabled]').length).to.equal(0);
-  //     expect(mount(<Item isDisabled />).find('[aria-disabled]').length).to.equal(1);
-  //   });
+    it('hidden item', () => {
+      expect(mount(<Item />).find('[aria-hidden]').length).toBe(0);
+      expect(mount(<Item isHidden />).find('[aria-hidden]').length).toBe(1);
+    });
 
-  //   it('hidden item', () => {
-  //     expect(mount(<Item />).find('[aria-hidden]').length).to.equal(0);
-  //     expect(mount(<Item isHidden />).find('[aria-hidden]').length).to.equal(1);
-  //   });
+    it('checked item', () => {
+      expect(mount(<Item />).find('[aria-checked]').length).toBe(0);
+      expect(mount(<Item isChecked />).find('[aria-checked]').length).toBe(1);
+    });
 
-  //   it('checked item', () => {
-  //     expect(mount(<Item />).find('[aria-checked]').length).to.equal(0);
-  //     expect(mount(<Item isChecked />).find('[aria-checked]').length).to.equal(1);
-  //   });
+    it('option item', () => {
+      expect(mount(<Item type="option" />).find('[aria-selected=false]').length).toBe(1);
+      expect(mount(<Item type="option" isSelected />).find('[aria-selected=true]').length).toBe(1);
+    });
 
-  //   it('option item', () => {
-  //     expect(mount(<Item type="option" />).find('[aria-selected=false]').length).to.equal(1);
-  //     expect(mount(<Item type="option" isSelected />).find('[aria-selected=true]').length).to.equal(1);
-  //   });
-
-  //   it('data-role', () => {
-  //     expect(mount(<Item />).find('[data-role]').length).to.equal(1);
-  //   });
-  // });
+    it('data-role', () => {
+      expect(mount(<Item />).find('[data-role]').length).toBe(1);
+    });
+  });
 });

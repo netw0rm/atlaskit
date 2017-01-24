@@ -8,4 +8,5 @@ module.exports = {
   elemBefore: 'elemBefore',
   itemContent: 'itemContent',
   elemAfter: 'elemAfter',
+  secondaryText: 'secondaryText',
 };

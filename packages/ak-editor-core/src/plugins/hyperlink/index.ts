@@ -105,14 +105,9 @@ export class HyperlinkState {
 
   private update() {
     const nodeInfo = this.getActiveLinkNodeInfo();
-    let dirty = false;
 
     if ((nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
       this.setup(nodeInfo);
-      dirty = true;
-    }
-
-    if (dirty) {
       this.changeHandlers.forEach(cb => cb(this));
     }
   }

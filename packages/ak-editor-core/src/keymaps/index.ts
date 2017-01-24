@@ -1,4 +1,4 @@
-import { browser } from '../../src/prosemirror';
+import { browser } from '../prosemirror';
 
 export const toggleOrderedList = makeKeyMapWithCommon('Toggle ordered list', 'Mod-Shift-L');
 export const toggleBulletList = makeKeyMapWithCommon('Toggle bullet list', 'Mod-Shift-B');
@@ -74,7 +74,7 @@ function makeKeyMapWithCommon(description: string, common: string): Keymap {
   return makeKeyMap(description, windows, mac, common);
 }
 
-interface Keymap {
+export interface Keymap {
   description: string;
   windows: string;
   mac: string;

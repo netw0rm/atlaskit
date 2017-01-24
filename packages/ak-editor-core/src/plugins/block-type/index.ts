@@ -1,7 +1,7 @@
 import Keymap from 'browserkeymap';
 import { ContextName } from '../../';
 import { trackAndInvoke } from '../../analytics';
-import { findShorcutByDescription } from '../../keymaps';
+import * as keymaps from '../../keymaps';
 import {
   commands,
   Fragment,
@@ -238,7 +238,7 @@ export class BlockTypeState {
     };
 
     groupedBlockTypes.forEach(blockTypes => blockTypes.forEach((blockType) => {
-      const shortcut = findShorcutByDescription(blockType.title);
+      const shortcut = keymaps.findShorcutByDescription(blockType.title);
       if (shortcut) {
         const eventName = this.analyticsEventName('keyboard', blockType.name);
         bind(shortcut, trackAndInvoke(eventName, () => this.toggleBlockType(blockType.name)));
@@ -250,7 +250,7 @@ export class BlockTypeState {
 
   private addBasicKeymap(): void {
     this.pm.addKeymap(new Keymap({
-      'Shift-Enter': trackAndInvoke('atlassian.editor.newline.keyboard', () => this.insertNewLine())
+      [keymaps.insertNewLine.common!]: trackAndInvoke('atlassian.editor.newline.keyboard', () => this.insertNewLine())
     }));
   }
 

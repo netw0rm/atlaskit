@@ -104,7 +104,7 @@ export class ListsState {
     const { list_item } = pm.schema.nodes;
 
     pm.addKeymap(new Keymap({
-      'Enter': () => commands.splitListItem(list_item)(pm),
+      [keymaps.splitListItem.common!]: () => commands.splitListItem(list_item)(pm),
       [keymaps.toggleOrderedList.common!]: trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', () => this.toggleOrderedList()),
       [keymaps.toggleBulletList.common!]: trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', () => this.toggleBulletList())
     }));

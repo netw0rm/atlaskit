@@ -44,6 +44,7 @@ export default class Navigation extends PureComponent {
     onSearchDrawerClose: PropTypes.func,
     onSearchDrawerOpen: PropTypes.func,
     searchDrawerContent: PropTypes.node,
+    drawerContent: PropTypes.node,
     width: PropTypes.number,
   };
 
@@ -125,6 +126,7 @@ export default class Navigation extends PureComponent {
       onSearchDrawerClose,
       onSearchDrawerOpen,
       searchDrawerContent,
+      drawerContent,
     } = this.props;
 
     const shouldAnimate = this.state.resizeDelta === 0;
@@ -171,6 +173,7 @@ export default class Navigation extends PureComponent {
           </div>
           <div style={{ zIndex: 1 }}>
             <Drawer
+              key="search"
               backIcon={drawerBackIcon}
               backIconPosition="search"
               header={containerHeader}
@@ -182,6 +185,7 @@ export default class Navigation extends PureComponent {
               {searchDrawerContent}
             </Drawer>
             <Drawer
+              key="create"
               backIcon={drawerBackIcon}
               backIconPosition="create"
               header={containerHeader}
@@ -191,6 +195,7 @@ export default class Navigation extends PureComponent {
             >
               {createDrawerContent}
             </Drawer>
+            {drawerContent}
           </div>
           <div>
             <ContainerNavigation

@@ -14,6 +14,7 @@ export default class BasicNavigation extends PureComponent {
     width: PropTypes.number,
     containerHeader: PropTypes.node,
     openDrawer: PropTypes.string,
+    drawerContent: PropTypes.node,
   }
 
   static defaultProps = {
@@ -170,6 +171,7 @@ export default class BasicNavigation extends PureComponent {
         onSearchDrawerOpen={this.openDrawer('search')}
         resizeHandler={action('resize')}
         width={this.state.width}
+        drawerContent={this.props.drawerContent}
         {...this.props}
       >
         {this.props.children}

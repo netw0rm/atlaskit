@@ -1,7 +1,24 @@
-
-<svg width="18px" height="18px" viewBox="32 12 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41 (35326) - http://www.bohemiancoding.com/sketch -->
+    <title>jira/sidebar/dashboard</title>
     <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <path d="M48,12 L33.99,12 C32.88,12 32.01,12.89 32.01,14 L32,28 C32,29.1 32.88,30 33.99,30 L48,30 C49.1,30 50,29.1 50,28 L50,14 C50,12.89 49.1,12 48,12 L48,12 Z M44,24 C44,26 42.99,27 40.995,27 C39,27 38,26 38,24 L33.99,24 L33.99,14 L48,14 L48,24 L44,24 L44,24 Z M36,20 L46,20 L46,22 L36,22 L36,20 L36,20 Z M36,16 L46,16 L46,18 L36,18 L36,16 L36,16 Z" id="Clip-291" stroke="none" fill="currentColor" fill-rule="evenodd"></path>
+    <defs>
+        <rect id="path-1" x="2" y="4" width="20" height="16" rx="2"></rect>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="20" height="16" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+    </defs>
+    <g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="jira/sidebar/dashboard">
+            <g id="jira_dashboard_icon_24x24">
+                <g id="icon_container_transparent">
+                    <rect x="0" y="0" width="24" height="24"></rect>
+                </g>
+                <use id="Rectangle-22" stroke="#243759" mask="url(#mask-2)" stroke-width="4" xlink:href="#path-1"></use>
+                <path d="M8,6 L8,18" id="Line" stroke="#253858" stroke-width="2" stroke-linecap="square"></path>
+                <path d="M8,10 L20,10" id="Line-Copy" stroke="#243759" stroke-width="2" stroke-linecap="square"></path>
+            </g>
+        </g>
+    </g>
 </svg>

@@ -46,6 +46,7 @@ export default class Navigation extends PureComponent {
     searchDrawerContent: PropTypes.node,
     drawerContent: PropTypes.node,
     displayBlanket: PropTypes.bool,
+    onNavOpenClose: PropTypes.func,
     width: PropTypes.number,
   };
 
@@ -100,6 +101,7 @@ export default class Navigation extends PureComponent {
       resizeDelta: 0,
     }, function callOnResizeAfterSetState() {
       this.props.onResize(resizeState);
+      this.props.onNavOpenClose();
     });
   }
 

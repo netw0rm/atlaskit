@@ -14,15 +14,20 @@ export default class DrawerNavigation extends PureComponent {
     super(...args);
     this.state = {
       openDrawer: null,
+      isNavOpen: false,
     };
   }
 
   toggleDrawer(drawerId) {
     if (this.state.openDrawer) {
       this.setState({ openDrawer: null });
-    } else {
+    } else if (!this.state.isNavOpen) {
       this.setState({ openDrawer: drawerId });
     }
+  }
+
+  toggleNav() {
+    this.setState({ isNavOpen: !this.state.isNavOpen });
   }
 
   render() {
@@ -102,6 +107,8 @@ export default class DrawerNavigation extends PureComponent {
       <BasicNavigation
         drawerContent={[queuesDrawer, reportsDrawer]}
         isAnyDrawerOpen={this.state.openDrawer !== null}
+        onNavOpenClose={() => this.toggleNav()}
+        isOpen={this.state.isNavOpen}
       >
         <div>
           <DrawerTrigger onActivate={() => this.toggleDrawer('queues')}>

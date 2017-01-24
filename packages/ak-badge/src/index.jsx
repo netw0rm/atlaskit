@@ -12,46 +12,11 @@ const THEME_ENUM = {
   defaultValue: 'default',
 };
 
-/**
- * @description Return React class reference for the Badge component.
- * @class AkBadge
- * @example @js import AkBadge from 'ak-badge';
- * ReactDOM.render(<AkBadge />, container);
- */
 class Badge extends PureComponent {
   static propTypes = {
-    /**
-     * @description The value displayed within the badge.
-     * @memberof AkBadge
-     * @instance
-     * @type {number}
-     * @default 0
-     */
     value: PropTypes.number,
-    /**
-     * @description The max value to display.
-     * If value is 100, and max is 50, "50+" will be displayed
-     * @memberof AkBadge
-     * @instance
-     * @type {number}
-     * @default 99
-     */
     max: PropTypes.number,
-    /**
-     * @description Affects the visual style of the badge.
-     * Allowed values are: 'default', 'primary', 'important', 'added', 'removed'.
-     * @memberof AkBadge
-     * @instance
-     * @type {string}
-     * @default default
-     */
     appearance: PropTypes.oneOf(APPEARANCE_ENUM.values),
-    /**
-     * @description Handler function to be called when the 'updated' prop is changed.
-     * @memberof AkBadge
-     * @instance
-     * @type {function}
-     */
     onValueUpdated: PropTypes.func,
 
     theme: PropTypes.oneOf(THEME_ENUM.values),

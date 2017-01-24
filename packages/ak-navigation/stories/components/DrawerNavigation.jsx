@@ -14,14 +14,14 @@ export default class DrawerNavigation extends PureComponent {
     super(...args);
     this.state = {
       openDrawer: null,
-      isNavOpen: false,
+      isNavOpen: true,
     };
   }
 
   toggleDrawer(drawerId) {
     if (this.state.openDrawer) {
       this.setState({ openDrawer: null });
-    } else if (!this.state.isNavOpen) {
+    } else {
       this.setState({ openDrawer: drawerId });
     }
   }
@@ -103,6 +103,9 @@ export default class DrawerNavigation extends PureComponent {
         </div>
       </Drawer>);
 
+    const queuesItem = (<AkContainerItem icon={<DashboardIcon label="Queues" />} text="Queues" />);
+    const reportsItem = (<AkContainerItem icon={<ProjectsIcon label="Reports" />} text="Reports" />);
+
     return (
       <BasicNavigation
         drawerContent={[queuesDrawer, reportsDrawer]}
@@ -111,13 +114,16 @@ export default class DrawerNavigation extends PureComponent {
         isOpen={this.state.isNavOpen}
       >
         <div>
+          {this.state.isNavOpen ? queuesItem :
           <DrawerTrigger onActivate={() => this.toggleDrawer('queues')}>
-            <AkContainerItem icon={<DashboardIcon label="Queues" />} text="Queues" />
-          </DrawerTrigger>
+            {queuesItem}
+          </DrawerTrigger>}
           <AkContainerItem icon={<EmojiPeopleIcon label="Customers" />} text="Customers" />
+          {this.state.isNavOpen ? reportsItem :
           <DrawerTrigger onActivate={() => this.toggleDrawer('reports')}>
-            <AkContainerItem icon={<ProjectsIcon label="Reports" />} text="Reports" />
+            {reportsItem}
           </DrawerTrigger>
+          }
         </div>
       </BasicNavigation>
     );

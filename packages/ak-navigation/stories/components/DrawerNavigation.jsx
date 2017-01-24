@@ -101,6 +101,7 @@ export default class DrawerNavigation extends PureComponent {
     return (
       <BasicNavigation
         drawerContent={[queuesDrawer, reportsDrawer]}
+        isAnyDrawerOpen={this.state.openDrawer !== null}
       >
         <div>
           <DrawerTrigger onActivate={() => this.toggleDrawer('queues')}>

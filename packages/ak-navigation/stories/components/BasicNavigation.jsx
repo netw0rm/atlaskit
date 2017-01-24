@@ -15,6 +15,7 @@ export default class BasicNavigation extends PureComponent {
     containerHeader: PropTypes.node,
     openDrawer: PropTypes.string,
     drawerContent: PropTypes.node,
+    isAnyDrawerOpen: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -172,6 +173,7 @@ export default class BasicNavigation extends PureComponent {
         resizeHandler={action('resize')}
         width={this.state.width}
         drawerContent={this.props.drawerContent}
+        displayBlanket={this.props.isAnyDrawerOpen || this.state.openDrawer !== null}
         {...this.props}
       >
         {this.props.children}

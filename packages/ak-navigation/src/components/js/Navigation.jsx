@@ -45,6 +45,7 @@ export default class Navigation extends PureComponent {
     onSearchDrawerOpen: PropTypes.func,
     searchDrawerContent: PropTypes.node,
     drawerContent: PropTypes.node,
+    displayBlanket: PropTypes.bool,
     width: PropTypes.number,
   };
 
@@ -127,6 +128,7 @@ export default class Navigation extends PureComponent {
       onSearchDrawerOpen,
       searchDrawerContent,
       drawerContent,
+      displayBlanket,
     } = this.props;
 
     const shouldAnimate = this.state.resizeDelta === 0;
@@ -134,7 +136,7 @@ export default class Navigation extends PureComponent {
     return (
       <div className={styles.navigation}>
         {
-          hasBlanket && (isSearchDrawerOpen || isCreateDrawerOpen) ?
+          hasBlanket && displayBlanket ?
           (
             <AkBlanket isTinted onBlanketClicked={onBlanketClicked} />
           )

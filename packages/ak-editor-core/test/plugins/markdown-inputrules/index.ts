@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
 import {
-  a, blockquote, chaiPlugin, code_block, doc, em, h1, h2,
+  a, blockquote, br, chaiPlugin, code_block, doc, em, h1, h2,
   h3, hr, img, li, makeEditor, mono, ol, p, strike, strong, ul
 } from '../../../test-helper';
 
@@ -268,10 +268,10 @@ describe('markdown-inputrules', () => {
 
   describe('codeblock rule', () => {
     it('should convert "```" to a code block', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
+      const { pm, sel } = editor(doc(p('{<>}hello', br, 'world')));
 
       pm.input.insertText(sel, sel, '```');
-      expect(pm.doc).to.deep.equal(doc(code_block()()));
+      expect(pm.doc).to.deep.equal(doc(code_block()('hello\nworld')));
     });
 
     it('should not convert "```" to a code block when inside a list', () => {

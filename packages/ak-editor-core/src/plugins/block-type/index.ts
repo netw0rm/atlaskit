@@ -182,7 +182,7 @@ export class BlockTypeState {
         break;
       case CODE_BLOCK.name:
         if (nodes.code_block) {
-          transformToCodeBlock(nodes.code_block, pm);
+          transformToCodeBlock(pm);
         }
         break;
     }

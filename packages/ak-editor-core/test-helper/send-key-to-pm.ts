@@ -1,4 +1,4 @@
-import { browser, ProseMirror } from '../src/prosemirror';
+import { browser, ProseMirror } from '../';
 
 /**
  * Sends a key to ProseMirror content area, simulating user key press.

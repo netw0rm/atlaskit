@@ -1,5 +1,5 @@
 {
   "ak:webpack:raw": null,
   "scripts": null,
-  "types": "dist/types/index.d.ts"
+  "types": "src/index.d.ts"
 }

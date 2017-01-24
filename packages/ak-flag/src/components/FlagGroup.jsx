@@ -26,32 +26,39 @@ export default class FlagGroup extends PureComponent {
     this.props.onDismissed(dismissedFlagId);
   }
 
+  renderFlag = (childFlag, flagIndex) => (
+    <FlagAnimationWrapper
+      flagId={childFlag.props.id}
+      isEntering={flagIndex === 0}
+      isExiting={flagIndex === 0 && this.state.isAnimatingOut}
+      isMovingToPrimary={flagIndex === 1 && this.state.isAnimatingOut}
+      key={childFlag.props.id}
+      onAnimationFinished={this.onFlagDismissFinished}
+    >
+      {
+        React.cloneElement(childFlag, {
+          onDismissed: this.onFlagDismissRequested,
+          isDismissAllowed: flagIndex === 0,
+        })
+      }
+    </FlagAnimationWrapper>
+  )
+
+  renderFlags = () => {
+    const { children } = this.props;
+    if (!children) return null;
+
+    return 'map' in children ? (
+      children.map(this.renderFlag)
+    ) : this.renderFlag(children, 0);
+  }
+
   render() {
     return (
-      <section
-        className={styles.root}
-      >
+      <section className={styles.root}>
         <h1 className={styles.assistive}>Flag notifications</h1>
         <div className={styles.groupInner}>
-          {
-            this.props.children.map((childFlag, flagIndex) => (
-              <FlagAnimationWrapper
-                flagId={childFlag.props.id}
-                key={childFlag.props.id}
-                isEntering={flagIndex === 0}
-                isExiting={flagIndex === 0 && this.state.isAnimatingOut}
-                isMovingToPrimary={flagIndex === 1 && this.state.isAnimatingOut}
-                onAnimationFinished={this.onFlagDismissFinished}
-              >
-                {
-                  React.cloneElement(childFlag, {
-                    onDismissed: this.onFlagDismissRequested,
-                    isDismissAllowed: flagIndex === 0,
-                  })
-                }
-              </FlagAnimationWrapper>
-            ))
-          }
+          { this.renderFlags() }
         </div>
       </section>
     );

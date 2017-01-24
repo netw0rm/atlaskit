@@ -31,7 +31,7 @@ export default class Flag extends PureComponent {
             </a>
           }
           globalPrimaryIcon={
-            <AtlassianIcon size="medium" label="Atlassian" />
+            <AtlassianIcon label="Atlassian" size="medium" />
           }
         >
           <a>

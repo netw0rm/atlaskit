@@ -1,19 +1,60 @@
 @import '../../shared-variables.less';
 @import '~akutil-shared-styles/src/colors.less';
 @import '~akutil-shared-styles/src/grid.less';
+@import '~akutil-shared-styles/src/mixins/focus-ring.less';
+
 
 .search {
   margin-top: @ak-grid-size * 6.5;
   padding-left: @ak-grid-size * 3;
 }
 
+.searchBox {
+  display: flex;
+  color: @ak-color-N800;
+}
+
 .input {
   border: 0;
-  color: @ak-color-N900;
+  color: inherit;
+  flex-grow: 1;
   font-size: 2em;
   outline: 0;
-  width: 100%;
 }
+
+.clearButtonOuter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: @ak-grid-size * 2;
+}
+
+.clearButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+  width: @ak-grid-size * 4;
+  height: @ak-grid-size * 4;
+  outline: none;
+  color: inherit;
+
+  .focus-ring();
+
+  &:hover {
+    background: @ak-color-N20A;
+  }
+
+  &:active {
+    background: @ak-color-B50;
+    color: @ak-color-B400;
+  }
+}
+
 
 .results {
   margin-top: @ak-grid-size * 3;

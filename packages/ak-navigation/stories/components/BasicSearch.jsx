@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { AtlassianIcon, DashboardIcon } from 'ak-icon';
+import { AtlassianIcon, CancelIcon, DashboardIcon } from 'ak-icon';
 import { AkSearch, AkContainerItem } from '../../src/index';
 
 const data = [
@@ -100,7 +100,9 @@ export default class DemoSearch extends PureComponent {
   render() {
     return (
       <AkSearch
+        clearIcon={<CancelIcon size="medium" />}
         onChange={({ target }) => { this.setState({ query: target.value }); }}
+        onSearchClear={() => { this.setState({ query: '' }); }}
         value={this.state.query}
       >
         {search(this.state.query)}

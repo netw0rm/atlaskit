@@ -80,7 +80,6 @@ export class CodeBlockState {
   }
 
   private update() {
-    let dirty = false;
     const codeBlockNode = this.activeCodeBlockNode();
 
     if (codeBlockNode !== this.activeCodeBlock) {
@@ -89,10 +88,6 @@ export class CodeBlockState {
       this.language = codeBlockNode && codeBlockNode.attrs['language'];
       this.content = codeBlockNode && codeBlockNode.textContent;
       this.element = this.activeCodeBlockElement();
-      dirty = true;
-    }
-
-    if (dirty) {
       this.changeHandlers.forEach(changeHandler => changeHandler(this));
     }
   }

@@ -6,7 +6,10 @@ import Tooltip from './Tooltip';
    at import time */
 export default class AKTooltip extends PureComponent {
   static propTypes = {
-    description: PropTypes.string,
+    description: React.PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.node,
+    ]),
     position: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
     children: PropTypes.node,
   }

@@ -27,10 +27,13 @@ export default class StatelessTooltip extends PureComponent {
      * @description The text to display in the tooltip when a user hovers over the element.
      * @memberof Tooltip
      * @instance
-     * @type {string}
+     * @type {(string|ReactElement)}
      * @default ''
     */
-    description: PropTypes.string,
+    description: React.PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.node,
+    ]),
     /**
      * @description Whether or not the tooltip is open and visible on the page.
      * @memberof Tooltip

@@ -114,7 +114,7 @@ export const DateDiv = styled.div`
   text-align: center;
 
   ${({ isToday, selected }) => isToday ? `
-    &:after {
+    &::after {
       background-color: ${selected ? akColorN700 : akColorB75};
       bottom: 1px;
       content: "";

@@ -78,7 +78,7 @@ describe('<EmojiPreview />', () => {
       />);
 
       wrapper.find('#toneSelectorButton').first().simulate('click');
-      expect(wrapper).to.have.state('selectingTone', true);
+      expect((wrapper).state('selectingTone')).to.equal(true);
       expect(wrapper.find(ToneSelector), 'ToneSelector in preview').to.have.length(1);
     });
 
@@ -121,7 +121,7 @@ describe('<EmojiPreview />', () => {
 
       wrapper.instance().onToneButtonClick();
       wrapper.instance().onToneSelected();
-      expect(wrapper).to.have.state('selectingTone', false);
+      expect((wrapper).state('selectingTone')).to.equal(false);
     });
 
     it('should pass onToneSelected to tone selector', () => {
@@ -144,7 +144,7 @@ describe('<EmojiPreview />', () => {
       wrapper.instance().onToneButtonClick();
 
       wrapper.simulate('mouseLeave');
-      expect(wrapper).to.have.state('selectingTone', false);
+      expect((wrapper).state('selectingTone')).to.equal(false);
     });
   });
 });

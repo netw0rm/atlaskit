@@ -27,12 +27,12 @@ describe(name, () => {
 
   describe('isOpen state', () => {
     it('should default to false', () => {
-      expect(shallow(<InlineMessage />)).to.have.state('isOpen', false);
+      expect((shallow(<InlineMessage />)).state('isOpen')).to.equal(false);
     });
     it('should toggle when the button is clicked', () => {
       const wrapper = shallow(<InlineMessage />);
       wrapper.find(Button).simulate('click');
-      expect(wrapper).to.have.state('isOpen', true);
+      expect((wrapper).state('isOpen')).to.equal(true);
     });
   });
 

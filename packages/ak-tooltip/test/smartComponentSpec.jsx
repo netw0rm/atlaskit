@@ -25,9 +25,9 @@ describe('ak-tooltip (smart)', () => {
     it('should set visible state to true when mouse enters', () => {
       const wrapper = mount(<AKTooltip><div>foo</div></AKTooltip>);
 
-      expect(wrapper).to.have.state('visible', false);
+      expect((wrapper).state('visible')).to.equal(false);
       wrapper.simulate('mouseOver');
-      expect(wrapper).to.have.state('visible', true);
+      expect((wrapper).state('visible')).to.equal(true);
     });
 
     it('should set visible state to false when mouse leaves', () => {
@@ -35,10 +35,10 @@ describe('ak-tooltip (smart)', () => {
 
       // set up the negative case first
       wrapper.simulate('mouseOver');
-      expect(wrapper).to.have.state('visible', true);
+      expect((wrapper).state('visible')).to.equal(true);
 
       wrapper.simulate('mouseOut');
-      expect(wrapper).to.have.state('visible', false);
+      expect((wrapper).state('visible')).to.equal(false);
     });
   });
 });

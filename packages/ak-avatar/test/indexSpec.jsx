@@ -95,26 +95,26 @@ describe('ak-avatar', () => {
 
     it('should set isLoading=false when a same src is provided', () => {
       wrapper.setProps({ src: oneByOnePixel });
-      expect(wrapper).to.have.state('isLoading', false);
-      expect(wrapper).to.have.state('hasError', false);
+      expect((wrapper).state('isLoading')).to.equal(false);
+      expect((wrapper).state('hasError')).to.equal(false);
     });
 
     it('should set isLoading=true when a new src is provided', () => {
       wrapper.setProps({ src: oneByOnePixelBlack });
-      expect(wrapper).to.have.state('isLoading', true);
-      expect(wrapper).to.have.state('hasError', false);
+      expect((wrapper).state('isLoading')).to.equal(true);
+      expect((wrapper).state('hasError')).to.equal(false);
     });
 
     it('should set isLoading=false & hasError=false when src is loaded without errors', () => {
       wrapper.find(Image).find('img').simulate('load');
-      expect(wrapper).to.have.state('isLoading', false);
-      expect(wrapper).to.have.state('hasError', false);
+      expect((wrapper).state('isLoading')).to.equal(false);
+      expect((wrapper).state('hasError')).to.equal(false);
     });
 
     it('should set isLoading=false & hasError=true when a new invalid src is provided', () => {
       wrapper.find(Image).find('img').simulate('error');
-      expect(wrapper).to.have.state('isLoading', false);
-      expect(wrapper).to.have.state('hasError', true);
+      expect((wrapper).state('isLoading')).to.equal(false);
+      expect((wrapper).state('hasError')).to.equal(true);
     });
 
     it('should not render an img tag when src is not set', () => {

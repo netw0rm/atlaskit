@@ -68,7 +68,7 @@ storiesOf(name, module)
         <GridColumn medium={5}><div style={dummyStyles}>5 col</div></GridColumn>
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>
       </Grid>
-      <Grid spacing="compact" layout="fluid">
+      <Grid layout="fluid" spacing="compact">
         <GridColumn medium={5}><div style={dummyStyles}>5 col</div></GridColumn>
         <GridColumn medium={5}><div style={dummyStyles}>5 col</div></GridColumn>
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>
@@ -101,7 +101,7 @@ storiesOf(name, module)
         <GridColumn medium={5}><div style={dummyStyles}>5 col</div></GridColumn>
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>
       </Grid>
-      <Grid spacing="comfortable" layout="fluid">
+      <Grid layout="fluid" spacing="comfortable">
         <GridColumn medium={5}><div style={dummyStyles}>5 col</div></GridColumn>
         <GridColumn medium={5}><div style={dummyStyles}>5 col</div></GridColumn>
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>

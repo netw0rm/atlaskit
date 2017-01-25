@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
 
-import Badge from '../src';
+import Badge from 'ak-badge';
 
 export default class OnValueUpdatedDemo extends PureComponent {
   constructor() {
@@ -13,11 +13,11 @@ export default class OnValueUpdatedDemo extends PureComponent {
     return (
       <div>
         <Badge
-          value={this.state.value}
           onValueUpdated={(detail) => {
             action(`onValueUpdated called with oldValue ${detail.oldValue}, newValue ${detail.newValue}`)();
             console.log('onValueUpdated called with:', detail);
           }}
+          value={this.state.value}
         />
         <button
           onClick={() => this.setState({ value: this.state.value + 1 })}

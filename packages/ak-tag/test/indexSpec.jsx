@@ -5,7 +5,8 @@ import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { mount } from 'enzyme';
 
-import Tag from '../src/index';
+import Tag from '../src';
+import Content from '../src/Content';
 import RemoveButton from '../src/RemoveButton';
 import Chrome from '../src/Chrome';
 import AnimationWrapper from '../src/AnimationWrapper';
@@ -52,8 +53,8 @@ describe('<Tag/> component tests', () => {
     const wrapper = mount(
       <Tag
         {...testProps}
-        onBeforeRemoveAction={() => false}
         onAfterRemoveAction={onAfterRemoveAction}
+        onBeforeRemoveAction={() => false}
       />
     );
     wrapper.find(RemoveButton).find('button').simulate('click');
@@ -78,7 +79,7 @@ describe('<Tag/> component tests', () => {
   });*/
 
   it('Tag allows us to set props', () => {
-    const wrapper = mount(<Tag text={atlassianlinkText} href={atlassianUrl} />);
+    const wrapper = mount(<Tag href={atlassianUrl} text={atlassianlinkText} />);
     expect(wrapper.props().href).to.equal(atlassianUrl);
 
     expect(wrapper.find('a').text()).to.equal(atlassianlinkText);
@@ -89,7 +90,7 @@ describe('<Tag/> component tests', () => {
   });
 
   it('Tag full rendering - with link', () => {
-    const wrapper = mount(<div><Tag text={atlassianlinkText} href={atlassianUrl} /></div>);
+    const wrapper = mount(<div><Tag href={atlassianUrl} text={atlassianlinkText} /></div>);
     const renderedHtml =
     `<div class="${styles.rootWrapper}">` +
       `<div class="${styles.animationWrapper}">` +
@@ -116,18 +117,8 @@ describe('<Tag/> component tests', () => {
     expect(wrapper.find('Tag').html()).to.equal(renderedHtml);
   });
 
-  /*
-  1. <Tag text="hello"/>
-    validate structure - dom and attributes
-    validate events
-  2. <Tag text="hello" href="a link"/>
-    validate structure - dom and attributes
-    validate events
-  3. <Tag text="hello" href="a link" removeButtonText="Remove Me"/>
-    validate structure - dom and attributes
-    validate events
-  4. Test all 3 apis
-  5. Test hover styles
-  6. Test keyboard enter and space events
-  */
+  it('should accept children', () => {
+    expect(mount(<Tag>test</Tag>).find(Content).text()).to.equal('test');
+    expect(mount(<Tag><span>test</span></Tag>).find(Content).children().html()).to.equal('<span>test</span>');
+  });
 });

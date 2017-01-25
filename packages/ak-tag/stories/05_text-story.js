@@ -36,8 +36,8 @@ storiesOf(name, module)
           <th className={styles.headers}>Linked</th>
           <td>
             <MyTag
-              text={cupcakeipsum}
               href="http://www.cupcakeipsum.com/"
+              text={cupcakeipsum}
             />
           </td>
         </tr>
@@ -45,8 +45,8 @@ storiesOf(name, module)
           <th className={styles.headers}>Removable</th>
           <td>
             <MyTag
-              text={cupcakeipsum}
               removeButtonText="No sweets for you!"
+              text={cupcakeipsum}
             />
           </td>
         </tr>
@@ -54,9 +54,9 @@ storiesOf(name, module)
           <th className={styles.headers}>Removable & linked</th>
           <td>
             <MyTag
-              text={cupcakeipsum}
-              removeButtonText="No sweets for you!"
               href="http://www.cupcakeipsum.com/"
+              removeButtonText="No sweets for you!"
+              text={cupcakeipsum}
             />
           </td>
         </tr>
@@ -65,8 +65,20 @@ storiesOf(name, module)
   ), { imports })
   .addBaselineAligned('baseline alignment', () => (
     <MyTag
-      text={cupcakeipsum}
-      removeButtonText="No sweets for you!"
       href="http://www.cupcakeipsum.com/"
+      removeButtonText="No sweets for you!"
+      text={cupcakeipsum}
     />
-  ), { imports });
+  ), { imports })
+  .addCodeExampleStory('children', () => (
+    <MyTag>
+      <img
+        alt="random avatar"
+        height="40"
+        src="https://api.adorable.io/avatars/face/eyes4/nose3/mouth7/8e8895"
+        style={{ borderRadius: '50%' }}
+        width="40"
+      />
+      some children
+    </MyTag>
+  ));

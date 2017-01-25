@@ -23,20 +23,9 @@ import Button from './RemoveButton';
 export default class Tag extends PureComponent {
   static propTypes = {
     /**
-     * @description (Required) The tag text content.
-     *              This is a required attribute.
-     *              Omitting it will stop the tag from being rendered.
-     *              The text passed will be sanitized, e.g. passed HTML will be represented
-     *              as plain text.
-     *
-     * @memberof Tag
-     * @instance
-     * @type {string}
-     * @example @js
-     * ReactDOM.render(<Tag text="Cupcake" />, container);
-     * // Shows a tag with the text 'Cupcake'
+     * @description The content to display in the tag. Overrides text.
      */
-    text: PropTypes.string.isRequired,
+    children: PropTypes.node,
     /**
      * @description (Optional) A target href for the tag text to link to.
      *              If this attribute is non-empty, the tag will contain a link to the given URL.
@@ -53,19 +42,22 @@ export default class Tag extends PureComponent {
      */
     href: PropTypes.string,
     /**
-     * @description (Optional) The text for the remove button tooltip.
-     *              Implicitly defines that there will be a remove button.
-     *              This attribute implicitly controls {@link Tag#isRemovable}.
-     *
+     * @description This handler is called after a Tag has been removed
+     *              (e.g. after the remove animation finishes).
+     *              It is not cancelable.
      * @memberof Tag
      * @instance
-     * @name removeButtonText
-     * @type {string}
-     * @example @js import Tag from 'ak-tag';
-     * ReactDOM.render(<Tag text='Cupcake' href='http://www.cupcakeipsum.com/' removeButtonText = 'OMG, I am so full!'/>, container);
-     * Shows a tag with the text 'Cupcake' with the link and a remove button
+     * @name onAfterRemoveAction
+     * @type {function}
+     * @example @js
+     * ReactDOM.render(
+     *   <Tag
+     *     text="Cupcake"
+     *     onAfterRemoveAction={(e) => { console.log('Tag removed!'); }}
+     *   />,
+     * container);
      */
-    removeButtonText: PropTypes.string,
+    onAfterRemoveAction: PropTypes.func,
     /**
      * @description This handler is called before a Tag gets removed
      *              (e.g. before the remove animation starts).
@@ -85,22 +77,34 @@ export default class Tag extends PureComponent {
      */
     onBeforeRemoveAction: PropTypes.func,
     /**
-     * @description This handler is called after a Tag has been removed
-     *              (e.g. after the remove animation finishes).
-     *              It is not cancelable.
+     * @description (Optional) The text for the remove button tooltip.
+     *              Implicitly defines that there will be a remove button.
+     *              This attribute implicitly controls {@link Tag#isRemovable}.
+     *
      * @memberof Tag
      * @instance
-     * @name onAfterRemoveAction
-     * @type {function}
-     * @example @js
-     * ReactDOM.render(
-     *   <Tag
-     *     text="Cupcake"
-     *     onAfterRemoveAction={(e) => { console.log('Tag removed!'); }}
-     *   />,
-     * container);
+     * @name removeButtonText
+     * @type {string}
+     * @example @js import Tag from 'ak-tag';
+     * ReactDOM.render(<Tag text='Cupcake' href='http://www.cupcakeipsum.com/' removeButtonText = 'OMG, I am so full!'/>, container);
+     * Shows a tag with the text 'Cupcake' with the link and a remove button
      */
-    onAfterRemoveAction: PropTypes.func,
+    removeButtonText: PropTypes.string,
+    /**
+     * @description (Required) The tag text content.
+     *              This is a required attribute.
+     *              Omitting it will stop the tag from being rendered.
+     *              The text passed will be sanitized, e.g. passed HTML will be represented
+     *              as plain text.
+     *
+     * @memberof Tag
+     * @instance
+     * @type {string}
+     * @example @js
+     * ReactDOM.render(<Tag text="Cupcake" />, container);
+     * // Shows a tag with the text 'Cupcake'
+     */
+    text: PropTypes.string,
   }
 
   static defaultProps = {
@@ -135,26 +139,26 @@ export default class Tag extends PureComponent {
   render() {
     const newButton = this.props.removeButtonText ? (
       <Button
-        removeText={this.props.removeButtonText}
         onHoverChange={this.handleHoverChange}
         onRemoveAction={this.handleRemoveAction}
+        removeText={this.props.removeButtonText}
       />
     ) : null;
 
     return (
       <Root>
         <AnimationWrapper
-          isRemoving={this.state.isRemoving}
           isRemoved={this.state.isRemoved}
+          isRemoving={this.state.isRemoving}
           onRemovalCompletion={this.handleRemovalCompletion}
         >
           <Chrome
             isLink={!!this.props.href}
-            markedForRemoval={this.state.markedForRemoval}
             isRemovable={!!this.props.removeButtonText}
+            markedForRemoval={this.state.markedForRemoval}
           >
             <Content href={this.props.href}>
-              {this.props.text}
+              {this.props.children || this.props.text}
             </Content>
             {newButton}
           </Chrome>

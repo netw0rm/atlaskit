@@ -5,9 +5,8 @@ import Readme, { Code, Props, Description } from 'akutil-readme';
 import Badge from '../src';
 import { name } from '../package.json';
 
-import BasicUsageExample from './examples/basic-usage'; // eslint-disable-line import/no-duplicates
-
 /* eslint-disable import/first, import/no-duplicates */
+import BasicUsageExample from './examples/basic-usage';
 import BasicUsageExampleRaw from '!raw!./examples/basic-usage';
 /* eslint-enable import/first, import/no-duplicates */
 

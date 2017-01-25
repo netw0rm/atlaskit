@@ -1,6 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
 import styles from 'style!../less/ContainerNavigation.less';
+import ContainerHeader from './ContainerHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalActions from './GlobalActions';
 import {
@@ -14,7 +15,7 @@ export default class ContainerNavigation extends PureComponent {
     appearance: PropTypes.string,
     areGlobalActionsVisible: PropTypes.bool,
     children: PropTypes.node,
-    header: PropTypes.node,
+    headerComponent: PropTypes.func,
     shouldAnimate: PropTypes.bool,
     width: PropTypes.number,
     offsetX: PropTypes.number,
@@ -51,7 +52,7 @@ export default class ContainerNavigation extends PureComponent {
       children,
       globalPrimaryIcon,
       globalPrimaryItemHref,
-      header,
+      headerComponent,
       linkComponent,
       offsetX,
       shouldAnimate,
@@ -63,6 +64,14 @@ export default class ContainerNavigation extends PureComponent {
     } = this.props;
 
     const isWidthCollapsed = width <= containerClosedWidth;
+
+    const Header = () => (
+      this.props.headerComponent ? (
+        <ContainerHeader>
+          {this.props.headerComponent({ isCollapsed: isWidthCollapsed })}
+        </ContainerHeader>) : null
+    );
+
     return (
       <div
         className={classNames({
@@ -80,7 +89,7 @@ export default class ContainerNavigation extends PureComponent {
         >
           <div
             className={classNames(styles.containerNavigationInner, {
-              [styles.hasContainerHeader]: header !== null,
+              [styles.hasContainerHeader]: headerComponent !== null,
               [styles.hasGlobalAppearance]: appearance === 'global',
             })}
           >
@@ -96,7 +105,7 @@ export default class ContainerNavigation extends PureComponent {
               isVisible={areGlobalActionsVisible}
             />
             <div>
-              {header}
+              <Header />
             </div>
             <div>
               {children}

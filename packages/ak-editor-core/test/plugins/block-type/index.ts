@@ -399,7 +399,11 @@ describe('block-type', () => {
     });
 
     context('Shift-Backspace', () => {
-      it('should call delete last character', () => {
+      it('should call delete last character', function() {
+        if (browser.ios) {
+          this.skip(`Shift-Backspace doesn't work on Safari 9.`);
+        }
+
         const { pm } = editor(doc(p('Hello World!{<>}')));
 
         pm.input.dispatchKey('Shift-Backspace');

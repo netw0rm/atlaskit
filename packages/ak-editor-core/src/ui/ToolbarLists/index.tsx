@@ -42,25 +42,23 @@ export default class ToolbarLists extends PureComponent<Props, State> {
     return (
       <span>
         {this.state.bulletListHidden ? null :
-          <span title={tooltip(toggleBulletList)}>
-            <ToolbarButton
-              onClick={this.handleBulletListClick}
-              selected={this.state.bulletListActive}
-              disabled={this.state.bulletListDisabled}
-              iconBefore={<BulletListIcon label="" />}
-            />
-          </span>
+          <ToolbarButton
+            onClick={this.handleBulletListClick}
+            selected={this.state.bulletListActive}
+            disabled={this.state.bulletListDisabled}
+            title={tooltip(toggleBulletList)}
+            iconBefore={<BulletListIcon label="" />}
+          />
         }
 
         {this.state.orderedListHidden ? null :
-          <span title={tooltip(toggleOrderedList)}>
-            <ToolbarButton
-              onClick={this.handleOrderedListClick}
-              selected={this.state.orderedListActive}
-              disabled={this.state.orderedListDisabled}
-              iconBefore={<NumberListIcon label="" />}
-            />
-          </span>
+          <ToolbarButton
+            onClick={this.handleOrderedListClick}
+            selected={this.state.orderedListActive}
+            disabled={this.state.orderedListDisabled}
+            title={tooltip(toggleOrderedList)}
+            iconBefore={<NumberListIcon label="" />}
+          />
         }
       </span>
     );

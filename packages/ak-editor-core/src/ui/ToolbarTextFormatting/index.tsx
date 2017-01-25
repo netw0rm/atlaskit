@@ -39,36 +39,33 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
     return (
       <span>
         {this.state.boldHidden ? null :
-          <span title={tooltip(toggleBold)}>
-            <ToolbarButton
-              onClick={this.handleBoldClick}
-              selected={this.state.boldActive}
-              disabled={this.state.boldDisabled}
-              iconBefore={<BoldIcon label="" />}
-            />
-          </span>
+          <ToolbarButton
+            onClick={this.handleBoldClick}
+            selected={this.state.boldActive}
+            disabled={this.state.boldDisabled}
+            title={tooltip(toggleBold)}
+            iconBefore={<BoldIcon label="" />}
+          />
         }
 
         {this.state.italicHidden ? null :
-          <span title={tooltip(toggleItalic)}>
-            <ToolbarButton
-              onClick={this.handleItalicClick}
-              selected={this.state.italicActive}
-              disabled={this.state.italicDisabled}
-              iconBefore={<ItalicIcon label="" />}
-            />
-          </span>
+          <ToolbarButton
+            onClick={this.handleItalicClick}
+            selected={this.state.italicActive}
+            disabled={this.state.italicDisabled}
+            title={tooltip(toggleItalic)}
+            iconBefore={<ItalicIcon label="" />}
+          />
         }
 
         {this.state.underlineHidden ? null :
-          <span title={tooltip(toggleUnderline)}>
-            <ToolbarButton
-              onClick={this.handleUnderlineClick}
-              selected={this.state.underlineActive}
-              disabled={this.state.underlineDisabled}
-              iconBefore={<UnderlineIcon label="" />}
-            />
-          </span>
+          <ToolbarButton
+            onClick={this.handleUnderlineClick}
+            selected={this.state.underlineActive}
+            disabled={this.state.underlineDisabled}
+            title={tooltip(toggleUnderline)}
+            iconBefore={<UnderlineIcon label="" />}
+          />
         }
       </span>
     );

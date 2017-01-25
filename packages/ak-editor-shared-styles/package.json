@@ -1,6 +1,6 @@
 {
   "name": "ak-editor-shared-styles",
-  "version": "3.2.3",
+  "version": "3.2.5",
   "description": "Shared styles for Atlassian Editor components",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
@@ -8,14 +8,14 @@
   "types": "src/index.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
-    "build": "npm run build/es5 && npm run build/es2015",
+    "build": "npm run build/es5 && npm run build/es2015 && npm run build/package.json",
     "build/es5": "../../node_modules/.bin/tsc -p build/es5",
-    "build/es2015": "../../node_modules/.bin/tsc -p build/es2015"
+    "build/es2015": "../../node_modules/.bin/tsc -p build/es2015",
+    "build/package.json": "../../build/bin/overlay-package-json.js package.publish.json package.json"
   },
   "files": [
     "dist",
-    "**/*.d.ts",
-    "**/*.less"
+    "src"
   ],
   "author": "Atlassian Pty Ltd",
   "license": "SEE LICENSE IN LICENSE",

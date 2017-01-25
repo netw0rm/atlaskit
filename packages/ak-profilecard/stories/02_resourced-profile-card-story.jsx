@@ -13,12 +13,8 @@ const handleActionClick = title => action(`${title} button clicked`);
 
 const actions = [
   {
-    label: 'View',
-    callback: handleActionClick('View'),
-  },
-  {
-    label: 'Chat',
-    callback: handleActionClick('Chat'),
+    label: 'View profile',
+    callback: handleActionClick('View profile'),
   },
 ];
 
@@ -42,10 +38,10 @@ class AkProfileCardRandomById extends PureComponent {
     return (
       <div>
         <AkProfileCardResourced
-          userId={this.state.userId}
+          actions={actions}
           cloudId="bogus-because-required"
           resourceClient={mockClient}
-          actions={actions}
+          userId={this.state.userId}
         />
         <br /><br />
         <button onClick={this.reloadCardData}>Load random card data</button>
@@ -70,9 +66,9 @@ storiesOf(`${name} resourced`, module)
   .add('mock api w/ error response', () => (
     <div style={canvasStyle}>
       <AkProfileCardResourced
-        userId="404"
         cloudId="bogus-cloud-id"
         resourceClient={mockClient}
+        userId="404"
       />
     </div>
   ));

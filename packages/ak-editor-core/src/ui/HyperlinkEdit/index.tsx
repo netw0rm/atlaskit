@@ -2,7 +2,7 @@ import OpenIcon from 'ak-icon/glyph/editor/open';
 import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { HyperlinkState } from '../../../src/plugins/hyperlink';
+import { HyperlinkState } from '../../plugins/hyperlink';
 import Panel from '../Panel';
 import PanelTextInput from '../PanelTextInput';
 import ToolbarButton from '../ToolbarButton';

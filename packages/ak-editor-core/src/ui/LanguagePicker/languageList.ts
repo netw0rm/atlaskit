@@ -4,7 +4,7 @@ export const NO_LANGUAGE = 'Language';
 export const SUPPORTED_LANGUAGES = [
   'PHP',
   'Java',
-  'C#',
+  'CSharp',
   'Python',
   'JavaScript',
   'Html',
@@ -18,7 +18,7 @@ export const SUPPORTED_LANGUAGES = [
   'Scala',
   'Go',
   'ActionScript',
-  'VB.NET',
+  'VbNet',
   'MATLAB',
   'Groovy',
   'SQL',
@@ -72,7 +72,7 @@ export const SUPPORTED_LANGUAGES = [
 
 const languageList = [NO_LANGUAGE, ...(SUPPORTED_LANGUAGES.sort())];
 
-export function findMatchedLanguage(languge: string | null): string {
+export function findMatchedLanguage(languge?: string): string {
   if (!languge) {
     return NO_LANGUAGE;
   }

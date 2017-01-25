@@ -1,6 +1,6 @@
 {
   "name": "ak-droplist",
-  "version": "4.2.3",
+  "version": "4.3.0",
   "description": "ak-droplist React component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

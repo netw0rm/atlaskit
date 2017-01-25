@@ -29,6 +29,8 @@ import {
   liftSelection,
 } from '../../utils';
 
+import * as keymaps from '../../keymaps';
+
 import { trackAndInvoke } from '../../analytics';
 
 export type ListType = 'bullet_list' | 'ordered_list' | null;
@@ -102,9 +104,9 @@ export class ListsState {
     const { list_item } = pm.schema.nodes;
 
     pm.addKeymap(new Keymap({
-      'Enter': () => commands.splitListItem(list_item)(pm),
-      'Mod-Shift-L': trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', () => this.toggleOrderedList()),
-      'Mod-Shift-B': trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', () => this.toggleBulletList())
+      [keymaps.splitListItem.common!]: () => commands.splitListItem(list_item)(pm),
+      [keymaps.toggleOrderedList.common!]: trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', () => this.toggleOrderedList()),
+      [keymaps.toggleBulletList.common!]: trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', () => this.toggleBulletList())
     }));
   }
 

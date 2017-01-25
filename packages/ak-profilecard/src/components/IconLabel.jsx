@@ -1,17 +1,17 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
-import { LocationIcon, TimeIcon, EditorMentionIcon } from 'ak-icon';
+import { EditorLocationIcon, EditorRecentIcon, EditorMentionIcon } from 'ak-icon';
+import { Presence } from 'ak-avatar';
 
 import styles from 'style!../styles/profilecard.less';
-import { available, unavailable, busy } from '../internal/presence_icons';
 
 const icons = {
-  location: LocationIcon,
-  time: TimeIcon,
+  location: EditorLocationIcon,
+  time: EditorRecentIcon,
   mention: EditorMentionIcon,
-  available,
-  unavailable,
-  busy,
+  available: () => <Presence presence="online" />,
+  unavailable: () => <Presence presence="offline" />,
+  busy: () => <Presence presence="busy" />,
 };
 
 export default class IconLabel extends PureComponent {

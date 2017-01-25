@@ -29,15 +29,13 @@ const blanketPropDescriptions = {
 
 storiesOf(name, module)
   .add('Blanket Readme', () => (
-    <div>
-      <Readme
-        component={name}
-        description={BlanketDescription}
-      >
-        <Code code={BasicUsageExampleRaw}>
-          <div>To see a live example of this, use the storybooks on the left</div>
-        </Code>
-        <Props component={Blanket} descriptions={blanketPropDescriptions} />
-      </Readme>
-    </div>
+    <Readme
+      component={name}
+      description={BlanketDescription}
+    >
+      <Code code={BasicUsageExampleRaw}>
+        <div>To see a live example of this, use the storybooks on the left</div>
+      </Code>
+      <Props component={Blanket} descriptions={blanketPropDescriptions} />
+    </Readme>
   ));

@@ -3,7 +3,6 @@ import React from 'react';
 
 import Badge from '../src';
 import { name } from '../package.json';
-import OnValueUpdatedDemo from './examples/on-value-updated';
 
 const imports = [['React', 'react'], ['Badge', 'ak-badge']];
 storiesOf(name, module)
@@ -31,7 +30,4 @@ storiesOf(name, module)
   ), { imports })
   .addCodeExampleStory('with value === max value', () => (
     <Badge max="99" value="99" />
-  ), { imports })
-  .addCodeExampleStory('onValueUpdated handler prop', () => (
-    <OnValueUpdatedDemo />
   ), { imports });

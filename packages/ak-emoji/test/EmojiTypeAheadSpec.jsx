@@ -1,7 +1,6 @@
 import { waitUntil } from 'akutil-common-test';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -11,7 +10,6 @@ import EmojiTypeAheadItem from '../src/internal/typeahead/EmojiTypeAheadItem';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from './emoji-selectors';
 
 chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
 chai.should();
 
 function setupPicker(props) {

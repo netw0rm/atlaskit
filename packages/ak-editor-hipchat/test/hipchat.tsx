@@ -1,5 +1,4 @@
 import * as chai from 'chai';
-import * as chaiEnzyme from 'chai-enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';

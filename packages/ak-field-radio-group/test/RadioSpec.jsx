@@ -1,5 +1,4 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
@@ -7,8 +6,6 @@ import Radio from '../src/Radio';
 import { name } from '../package.json';
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
-
 describe(name, () => {
   describe('Radio', () => {
     describe('exports', () => {

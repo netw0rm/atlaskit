@@ -1,6 +1,5 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import { mount } from 'enzyme';
 import React from 'react';
@@ -8,7 +7,6 @@ import styles from 'style!../src/style.less';
 import EmojiList from '../src/internal/picker/EmojiPickerList';
 
 chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
 chai.use(sinonChai);
 chai.should();
 const expect = chai.expect;

@@ -1,6 +1,5 @@
 import chai from 'chai';
 import React from 'react';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import Button from 'ak-button';
 import WarningIcon from 'ak-icon/glyph/warning';
@@ -19,8 +18,6 @@ import IconForType from '../src/internal/IconForType';
 import { name } from '../package.json';
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
-
 describe(name, () => {
   it('basic sanity check', () =>
     expect(shallow(

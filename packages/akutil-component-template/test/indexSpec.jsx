@@ -1,13 +1,11 @@
 import chai from 'chai';
 import React from 'react';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow } from 'enzyme';
 import styles from 'style!../src/styles.less';
 import Component from '../src';
 
 import { name } from '../package.json';
 
-chai.use(chaiEnzyme());
 chai.should();
 
 describe(name, () => {

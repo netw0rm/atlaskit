@@ -1,5 +1,4 @@
 import chai, { expect } from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
@@ -7,7 +6,6 @@ import Base from 'ak-field-base';
 
 import { FieldText } from '../src';
 
-chai.use(chaiEnzyme());
 chai.use(sinonChai);
 
 describe('ak-field-text', () => {

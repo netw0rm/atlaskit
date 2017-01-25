@@ -1,5 +1,4 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { shallow } from 'enzyme';
 import Tag from 'ak-tag';
@@ -7,8 +6,6 @@ import TagGroup from '../src';
 import styles from '../src/styles.less';
 
 chai.should();
-chai.use(chaiEnzyme());
-
 describe('ak-tag-group', () => {
   it('should export a base component', () => {
     shallow(<TagGroup><Tag text="test" /></TagGroup>).should.be.an.instanceof(Object);

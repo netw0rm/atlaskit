@@ -1,5 +1,4 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
@@ -9,7 +8,6 @@ import InlineDialog from '../src';
 import styles from '../src/styles.less';
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
 chai.use(sinonChai);
 
 const containerClass = styles.locals.inlineDialogContainer;

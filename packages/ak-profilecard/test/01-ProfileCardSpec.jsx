@@ -1,6 +1,5 @@
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
-import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import styles from '../src/styles/profilecard.less';
@@ -9,7 +8,6 @@ import { AkProfilecard } from '../src';
 import presences from '../src/internal/presences';
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
 chai.use(sinonChai);
 
 describe('ak-profilecard', () => {

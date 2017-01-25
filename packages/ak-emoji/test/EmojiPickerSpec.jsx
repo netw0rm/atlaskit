@@ -1,6 +1,5 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -16,7 +15,6 @@ import EmojiPickerListCategory from '../src/internal/picker/EmojiPickerListCateg
 import EmojiPickerListSearch from '../src/internal/picker/EmojiPickerListSearch';
 
 chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
 chai.should();
 
 function setupPicker(props) {

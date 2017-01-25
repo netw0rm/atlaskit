@@ -1,12 +1,10 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow } from 'enzyme';
 import React from 'react';
 import Resizer from '../src/components/js/Resizer';
 
 chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
 chai.should();
 const expect = chai.expect;
 

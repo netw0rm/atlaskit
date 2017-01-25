@@ -1,7 +1,6 @@
 import 'akutil-polyfills';
-import chai, { expect } from 'chai';
+import { expect } from 'chai';
 import React from 'react';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow } from 'enzyme';
 import { getMonthName } from '../src/util';
 
@@ -9,8 +8,6 @@ import { name } from '../package.json';
 import { AkCalendar } from '../src';
 import Announcer from '../src/Announcer';
 import DateComponent from '../src/Date';
-
-chai.use(chaiEnzyme());
 
 const now = new Date();
 const nowMonth = now.getMonth() + 1;

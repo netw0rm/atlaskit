@@ -1,7 +1,6 @@
 import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
-import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { shallow } from 'enzyme';
 import CloseIcon from 'ak-icon/glyph/cancel';
@@ -10,7 +9,6 @@ import styles from '../src/styles.less';
 
 import { Toggle } from '../src';
 
-chai.use(chaiEnzyme());
 chai.use(sinonChai);
 
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);

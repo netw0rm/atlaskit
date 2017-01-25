@@ -1,5 +1,4 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import { mount } from 'enzyme';
 import React from 'react';
 import {
@@ -10,7 +9,6 @@ import {
 } from 'style!../src/components/less/NavigationItem.less';
 import NavigationItem from '../src/components/js/NavigationItem';
 
-chai.use(chaiEnzyme());
 chai.should();
 const expect = chai.expect;
 

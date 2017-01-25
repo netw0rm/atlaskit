@@ -1,5 +1,4 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { shallow } from 'enzyme';
 
@@ -7,8 +6,6 @@ import { shallow } from 'enzyme';
 import { Tooltip } from '../src';
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
-
 describe('ak-tooltip', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Tooltip />);

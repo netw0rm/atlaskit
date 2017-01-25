@@ -1,12 +1,10 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow } from 'enzyme';
 import React from 'react';
 import sinonChai from 'sinon-chai';
 import styles from 'style!../src/components/less/DrawerBackIcon.less';
 import DrawerBackIcon from '../src/components/js/DrawerBackIcon';
 
-chai.use(chaiEnzyme());
 chai.use(sinonChai);
 chai.should();
 const expect = chai.expect;

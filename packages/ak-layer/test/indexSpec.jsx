@@ -1,5 +1,4 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import sinonChai from 'sinon-chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
@@ -7,7 +6,6 @@ import { shallow, mount } from 'enzyme';
 import Layer from '../src';
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
 chai.use(sinonChai);
 
 /* There is a lot in Layer that can not be tested easily in JSDom. Most of it should already be

@@ -1,7 +1,6 @@
 import chai from 'chai';
 import React from 'react';
 import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import Group from 'ak-droplist-group';
 import Trigger from 'ak-droplist-trigger';
@@ -14,8 +13,6 @@ import { locals as styles } from '../src/styles.less';
 import Droplist from '../src';
 
 chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
-
 const { expect } = chai;
 
 const itemsList = (<Group heading="test1">

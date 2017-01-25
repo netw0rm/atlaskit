@@ -1,6 +1,5 @@
 import React from 'react';
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 
 import Blanket from '../src';
@@ -8,8 +7,6 @@ import styles from '../src/style.less';
 
 chai.should();
 const expect = chai.expect;
-chai.use(chaiEnzyme());
-
 describe('ak-blanket', () => {
   describe('exports', () => {
     it('should export a base component', () => {

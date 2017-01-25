@@ -1,12 +1,9 @@
-import chai, { expect } from 'chai';
-import chaiEnzyme from 'chai-enzyme';
+import { expect } from 'chai';
 import React from 'react';
 import { shallow } from 'enzyme';
 
 import DefaultAvatar from '../src/internal/default-avatar';
 import Image from '../src/Image';
-
-chai.use(chaiEnzyme());
 
 const src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 

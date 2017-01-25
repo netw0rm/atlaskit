@@ -1,11 +1,9 @@
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
-import chaiEnzyme from 'chai-enzyme';
 
 import { modifyResponse } from '../src/api/profile-client';
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
 chai.use(sinonChai);
 
 describe('ak-profilecard', () => {

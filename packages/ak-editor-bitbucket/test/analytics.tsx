@@ -1,7 +1,6 @@
 import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from 'ak-editor-core/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import * as chaiEnzyme from 'chai-enzyme';
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
@@ -13,7 +12,6 @@ import { AnalyticsHandler, analyticsService, browser, ProseMirror } from 'ak-edi
 import Editor from '../src/index';
 
 chai.use(chaiPlugin);
-chai.use(chaiEnzyme());
 chai.use(sinonChai);
 
 describe('ak-editor-bitbucket/analytics/start-event', () => {

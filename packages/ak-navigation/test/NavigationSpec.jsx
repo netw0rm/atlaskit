@@ -1,5 +1,4 @@
-import chai, { expect } from 'chai';
-import chaiEnzyme from 'chai-enzyme';
+import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import Navigation from '../src/components/js/Navigation';
@@ -7,8 +6,6 @@ import {
   containerClosedWidth,
   navigationOpenWidth,
 } from '../src/shared-variables';
-
-chai.use(chaiEnzyme());
 
 describe('<Navigation />', () => {
   describe('renders', () => {

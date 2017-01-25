@@ -1,7 +1,6 @@
 import chai from 'chai';
 import React from 'react';
 import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import Droplist from 'ak-droplist';
 import Button from 'ak-button';
@@ -11,8 +10,6 @@ import { name } from '../package.json';
 import Menu from '../src';
 
 chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
-
 const { expect } = chai;
 
 const itemsList = [

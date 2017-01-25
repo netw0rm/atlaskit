@@ -1,7 +1,6 @@
 import sinon from 'sinon';
 import styles from 'style!../src/styles.less';
-import chai, { expect } from 'chai';
-import chaiEnzyme from 'chai-enzyme';
+import { expect } from 'chai';
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -9,8 +8,6 @@ import Tag from '../src/index';
 import RemoveButton from '../src/RemoveButton';
 import Chrome from '../src/Chrome';
 import AnimationWrapper from '../src/AnimationWrapper';
-
-chai.use(chaiEnzyme());
 
 describe('<Tag/> component tests', () => {
   const atlassianUrl = 'https://www.atlassian.com/';

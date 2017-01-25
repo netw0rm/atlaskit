@@ -1,5 +1,4 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
@@ -9,8 +8,6 @@ import icons from '../src/internal/icons';
 import presences from '../src/internal/presences';
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
-
 describe('ak-avatar', () => {
   describe('Presence', () => {
     presences.forEach(presence =>

@@ -1,7 +1,6 @@
 import chai from 'chai';
 import React from 'react';
 import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import keyCode from 'keycode';
 
@@ -11,8 +10,6 @@ import styles from '../src/styles.less';
 import Trigger from '../src';
 
 chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
-
 const { expect } = chai;
 
 describe(name, () => {

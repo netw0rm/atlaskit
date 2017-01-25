@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import { mount, shallow } from 'enzyme';
 
 import iconNameToComponentName from '../bin/iconNameToComponentName';
@@ -11,7 +10,6 @@ import { size } from '../src/Icon';
 import { getGlyphs } from './_helpers';
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
 chai.should();
 
 const components = getGlyphs();

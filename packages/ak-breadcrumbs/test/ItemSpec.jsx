@@ -1,5 +1,4 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Button from 'ak-button';
@@ -11,8 +10,6 @@ import { name } from '../package.json';
 import { setItemWidth } from './_helpers';
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
-
 describe(name, () => {
   describe('BreadcrumbsItem', () => {
     describe('exports', () => {

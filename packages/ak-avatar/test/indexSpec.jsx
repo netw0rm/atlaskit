@@ -1,5 +1,4 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import styles from '../src/styles.less';
@@ -13,8 +12,6 @@ import presences from '../src/internal/presences';
 const [none, online, offline, busy] = presences;
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
-
 const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 const oneByOnePixelBlack = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 

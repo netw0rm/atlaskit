@@ -1,13 +1,10 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow } from 'enzyme';
 import React from 'react';
 
 import { name } from '../package.json';
 import ButtonGroup from '../src';
 import styles from '../src/styles.less';
-
-chai.use(chaiEnzyme());
 
 const expect = chai.expect;
 

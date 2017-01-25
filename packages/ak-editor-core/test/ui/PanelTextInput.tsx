@@ -1,6 +1,5 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import * as chaiEnzyme from 'chai-enzyme';
 import { mount } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
@@ -8,7 +7,6 @@ import * as sinonChai from 'sinon-chai';
 
 import PanelTextInput from '../../src/ui/PanelTextInput';
 
-chai.use(chaiEnzyme());
 chai.use(sinonChai);
 
 describe('ak-editor-core/ui/PanelTextInput', () => {

@@ -1,13 +1,11 @@
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 
 import Button from '../src/index';
 import styles from '../src/less/styles.less';
 
-chai.use(chaiEnzyme());
 chai.use(sinonChai);
 
 const expect = chai.expect;

@@ -1,5 +1,4 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Avatar from 'ak-avatar';
@@ -10,8 +9,6 @@ import styles from '../src/styles.less';
 import { name } from '../package.json';
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
-
 describe(name, () => {
   describe('Comment', () => {
     describe('exports', () => {

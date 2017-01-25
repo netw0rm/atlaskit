@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import { mount, shallow } from 'enzyme';
 
 import { name } from '../package.json';
@@ -8,8 +7,6 @@ import Icon, { size, NotImplementedError } from '../src/Icon';
 import styles from '../src/styles.less';
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
-
 describe(name, () => {
   describe('Icon', () => {
     const secretContent = 'secret content';

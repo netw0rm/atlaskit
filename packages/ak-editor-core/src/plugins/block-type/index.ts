@@ -249,8 +249,10 @@ export class BlockTypeState {
   }
 
   private addBasicKeymap(): void {
+    const baseKeymap = this.pm.input.keymaps.filter(k => (k as any).priority === -100)[0];
     this.pm.addKeymap(new Keymap({
-      [keymaps.insertNewLine.common!]: trackAndInvoke('atlassian.editor.newline.keyboard', () => this.insertNewLine())
+      [keymaps.insertNewLine.common!]: trackAndInvoke('atlassian.editor.newline.keyboard', () => this.insertNewLine()),
+      [keymaps.shiftBackspace.common!]: (baseKeymap as any).map.lookup('Backspace')
     }));
   }
 

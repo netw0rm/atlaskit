@@ -397,6 +397,15 @@ describe('block-type', () => {
         expect(insertNewLine).to.have.been.callCount(1);
       });
     });
+
+    context('Shift-Backspace', () => {
+      it('should call delete last character', () => {
+        const { pm } = editor(doc(p('Hello World!{<>}')));
+
+        pm.input.dispatchKey('Shift-Backspace');
+        expect(pm.doc).to.deep.equal(doc(p('Hello World')));
+      });
+    });
   });
 
   describe('insertNewLine', () => {

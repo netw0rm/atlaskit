@@ -16,6 +16,7 @@ export const setHeading5 = makeKeyMap('Heading 5', 'Ctrl-5', 'Cmd-Alt-5');
 export const setBlockQuote = makeKeyMap('Block quote', 'Ctrl-7', 'Cmd-Alt-7');
 export const setCodeBlock = makeKeyMap('Code block', 'Ctrl-8', 'Cmd-Alt-8');
 export const insertNewLine = makeKeyMapWithCommon('Insert new line', 'Shift-Enter');
+export const shiftBackspace = makeKeyMapWithCommon('Shift Backspace', 'Shift-Backspace');
 export const splitCodeBlock = makeKeyMapWithCommon('Split code block', 'Enter');
 export const splitListItem = makeKeyMapWithCommon('Split list item', 'Enter');
 export const insertHorizontalRule = makeKeyMapWithCommon('Insert horizontal rule', 'Mod-Shift--');

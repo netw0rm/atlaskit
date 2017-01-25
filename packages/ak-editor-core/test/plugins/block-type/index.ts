@@ -397,6 +397,19 @@ describe('block-type', () => {
         expect(insertNewLine).to.have.been.callCount(1);
       });
     });
+
+    context('Shift-Backspace', () => {
+      it('should call delete last character', function() {
+        if (browser.ios) {
+          this.skip(`Shift-Backspace doesn't work on Safari 9.`);
+        }
+
+        const { pm } = editor(doc(p('Hello World!{<>}')));
+
+        pm.input.dispatchKey('Shift-Backspace');
+        expect(pm.doc).to.deep.equal(doc(p('Hello World')));
+      });
+    });
   });
 
   describe('insertNewLine', () => {

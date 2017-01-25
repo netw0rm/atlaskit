@@ -2,15 +2,15 @@ import Keymap from 'browserkeymap';
 import { inputRules, Plugin, ProseMirror, Schema } from '../../prosemirror';
 
 import {
-  MentionNodeType,
-  MentionQueryMarkType
+  EmojiNodeType,
+  EmojiQueryMarkType
 } from '../../schema';
 
-import { mentionQueryRule } from './input-rules';
+import { emojiQueryRule } from './input-rules';
 
-export type StateChangeHandler = (state: MentionsPluginState) => any;
+export type StateChangeHandler = (state: EmojisPluginState) => any;
 
-export class MentionsPluginState {
+export class EmojisPluginState {
   private pm: PM;
   private hasKeymap = false;
   private changeHandlers: StateChangeHandler[] = [];
@@ -32,15 +32,15 @@ export class MentionsPluginState {
       Enter: () => this.onSelectCurrent(),
       Esc: () => this.dismiss(),
     }, {
-      name: 'mentions-plugin-keymap'
+      name: 'emojis-plugin-keymap'
     });
 
-    // add the input rules to insert mentions and emoticons
-    if (pm.schema.nodes.mention) {
-      inputRules.ensure(pm).addRule(mentionQueryRule);
+    // add the input rules to insert emojis
+    if (pm.schema.nodes.emoji) {
+      inputRules.ensure(pm).addRule(emojiQueryRule);
     }
 
-    if (pm.schema.marks.mention_query) {
+    if (pm.schema.marks.emoji_query) {
       pm.updateScheduler([
         pm.on.selectionChange,
         pm.on.change,
@@ -53,7 +53,7 @@ export class MentionsPluginState {
     let dirty = false;
 
     const marks = this.pm.activeMarks();
-    if (this.pm.schema.marks.mention_query.isInSet(marks)) {
+    if (this.pm.schema.marks.emoji_query.isInSet(marks)) {
       if (!this.queryActive) {
         dirty = true;
         this.queryActive = true;
@@ -62,7 +62,7 @@ export class MentionsPluginState {
       const nodeBefore = this.pm.selection.$from.nodeBefore;
       const nodeAfter = this.pm.selection.$from.nodeAfter;
 
-      const newQuery = (nodeBefore ? nodeBefore.textContent : '' ).substr(1) + (nodeAfter && this.pm.schema.marks.mention_query.isInSet(nodeAfter.marks) ? nodeAfter.textContent : '');
+      const newQuery = (nodeBefore ? nodeBefore.textContent : '' ).substr(1) + (nodeAfter && this.pm.schema.marks.emoji_query.isInSet(nodeAfter.marks) ? nodeAfter.textContent : '');
       if (this.query !== newQuery) {
         dirty = true;
         this.query = newQuery;
@@ -74,7 +74,7 @@ export class MentionsPluginState {
       return;
     }
 
-    const newAnchorElement = this.pm.wrapper.querySelector('[data-mention-query]') as HTMLElement;
+    const newAnchorElement = this.pm.wrapper.querySelector('[data-emoji-query]') as HTMLElement;
     if (newAnchorElement !== this.anchorElement) {
       dirty = true;
       this.anchorElement = newAnchorElement;
@@ -100,7 +100,7 @@ export class MentionsPluginState {
     this.queryActive = false;
     this.query = undefined;
 
-    this.pm.tr.removeMark(0, this.pm.doc.nodeSize - 2, this.pm.schema.marks.mention_query).applyAndScroll();
+    this.pm.tr.removeMark(0, this.pm.doc.nodeSize - 2, this.pm.schema.marks.emoji_query).applyAndScroll();
 
     if (this.hasKeymap) {
       this.pm.removeKeymap(this.keymap);
@@ -109,18 +109,18 @@ export class MentionsPluginState {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
-  findMentionQueryMark() {
+  private findEmojiQueryMark() {
     let start = this.pm.selection.from;
     let node = this.pm.doc.nodeAt(start);
 
-    while (start > 0 && (!node || !this.pm.schema.marks.mention_query.isInSet(node.marks))) {
+    while (start > 0 && (!node || !this.pm.schema.marks.emoji_query.isInSet(node.marks))) {
       start--;
       node = this.pm.doc.nodeAt(start);
     }
 
     let end = start;
 
-    if (node && this.pm.schema.marks.mention_query.isInSet(node.marks)) {
+    if (node && this.pm.schema.marks.emoji_query.isInSet(node.marks)) {
       start = this.pm.doc.resolve(start).start(2) - 1;
       end = start + node.nodeSize;
     }
@@ -128,12 +128,12 @@ export class MentionsPluginState {
     return { start, end };
   }
 
-  insertMention(mentionData?: Mention) {
-    const { mention } = this.pm.schema.nodes;
+  insertEmoji(emojiData?: Emoji) {
+    const { emoji } = this.pm.schema.nodes;
 
-    if (mention && mentionData) {
-      const { start, end } = this.findMentionQueryMark();
-      const node = mention.create({ displayName: `@${mentionData.name}`, id: mentionData.id });
+    if (emoji && emojiData) {
+      const { start, end } = this.findEmojiQueryMark();
+      const node = emoji.create(emojiData);
       this.pm.tr.delete(start, end).insert(start, node).apply();
     } else {
       this.dismiss();
@@ -151,23 +151,23 @@ export class MentionsPluginState {
 }
 
 // IE11 + multiple prosemirror fix.
-Object.defineProperty(MentionsPluginState, 'name', { value: 'MentionsPluginState' });
+Object.defineProperty(EmojisPluginState, 'name', { value: 'EmojisPluginState' });
 
-export default new Plugin(MentionsPluginState);
+export default new Plugin(EmojisPluginState);
 
-export interface Mention {
-  name: string;
-  mentionName: string;
+export interface Emoji {
   id: string;
+  name?: string;
+  shortcut: string;
 }
 
 export interface S extends Schema {
   nodes: {
-    mention?: MentionNodeType
+    emoji?: EmojiNodeType
   };
 
   marks: {
-    mention_query: MentionQueryMarkType;
+    emoji_query: EmojiQueryMarkType;
   };
 }
 

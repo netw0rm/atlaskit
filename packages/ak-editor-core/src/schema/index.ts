@@ -6,6 +6,7 @@ export { StrongMark, StrongMarkType, isStrongMark } from './marks/strong';
 export { SubSupMark, SubSupMarkType, isSubSupMark } from './marks/subsup';
 export { UnderlineMark, UnderlineMarkType, isUnderlineMark } from './marks/underline';
 export { MentionQueryMark, MentionQueryMarkType } from './marks/mention-query';
+export { EmojiQueryMark, EmojiQueryMarkType } from './marks/emoji-query';
 
 export { BlockQuoteNode, BlockQuoteNodeType, isBlockQuoteNode } from './nodes/blockquote';
 export { BulletListNode, BulletListNodeType, isBulletListNode } from './nodes/bullet-list';

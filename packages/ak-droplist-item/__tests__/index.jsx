@@ -93,15 +93,6 @@ describe(name, () => {
   });
 
   describe('events', () => {
-  //   let onActivate;
-
-  //   beforeEach(() => {
-  //     onActivate = sinon.spy();
-  //   });
-  //   afterEach(() => {
-  //     onActivate.reset();
-  //   });
-
     describe('onActivate', () => {
       let wrapper;
       let onActivate;
@@ -141,15 +132,15 @@ describe(name, () => {
     });
   });
 
-  describe.skip('secondary text', () => {
-    it('should render content inside', () => {
-      expect(shallow(<SecondaryText>text</SecondaryText>).text()).toBe('text');
-    });
+  describe('secondary text', () => {
+    it('should render content inside', () =>
+      expect(mount(<SecondaryText>text</SecondaryText>).text()).toBe('text')
+    );
 
-    it('should have className', () => {
+    it.skip('should have className', () =>
       expect(shallow(<SecondaryText>text</SecondaryText>)
-        .find(`.${styles.secondaryText}`).isEmpty()).toBeFalsy();
-    });
+        .find(`.${styles.secondaryText}`).isEmpty()).toBeFalsy()
+    );
   });
 
   describe('accessibility', () => {

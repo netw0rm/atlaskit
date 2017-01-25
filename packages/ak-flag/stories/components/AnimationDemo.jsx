@@ -16,10 +16,7 @@ export default class AnimationDemo extends PureComponent {
     super();
     this.createdFlagCount = 0;
     this.state = {
-      flags: [
-        this.newFlag(),
-        this.newFlag(5),
-      ],
+      flags: [this.newFlag()],
     };
   }
 
@@ -52,15 +49,15 @@ export default class AnimationDemo extends PureComponent {
           {
             this.state.flags.map(flag => (
               <Flag
-                id={flag.key}
-                key={flag.key}
-                icon={<GreenSuccessIcon />}
-                title={`${flag.key}: ${flag.title}`}
-                description={flag.description}
                 actions={[
                   { content: 'Nice one!', onClick: action('Nice one!') },
                   { content: 'Not right now thanks', onClick: action('Not right now thanks') },
                 ]}
+                description={flag.description}
+                icon={<GreenSuccessIcon />}
+                id={flag.key}
+                key={flag.key}
+                title={`${flag.key}: ${flag.title}`}
               />
             ))
           }

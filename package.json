@@ -8,7 +8,6 @@
     }
   },
   "dependencies": {
-    "@atlassian/gremlins.js": "^0.1.0",
     "@kadira/react-split-pane": "^1.4.7",
     "@kadira/storybook": "^2.24.0",
     "@types/ajv": "0.0.5",
@@ -138,7 +137,7 @@
     "build/docker/image": "build/bin/build.docker.image.sh",
     "browserstack/tunnel/start": "./build/bin/browserstack.tunnel.start.sh",
     "browserstack/tunnel/stop": "./build/bin/browserstack.tunnel.stop.sh",
-    "clean": "./node_modules/.bin/lerna exec -- rm -rf node_modules dist && rm -rf node_modules",
+    "clean": "./node_modules/.bin/lerna exec -- git clean -Xdf . && rm -rf node_modules",
     "commit": "./build/bin/commit.sh",
     "create": "./build/bin/create.new.component.sh",
     "lint": "./build/bin/lint.sh",

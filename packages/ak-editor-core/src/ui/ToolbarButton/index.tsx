@@ -7,6 +7,7 @@ export interface Props {
   selected?: boolean;
   disabled?: boolean;
   href?: string;
+  title?: string;
   target?: string;
   theme?: 'dark';
   iconBefore?: ReactElement<any>;
@@ -21,6 +22,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
         className={styles.button}
         onClick={this.handleClick}
         onMouseDown={this.handleMouseDown}
+        title={this.props.title}
       >
         <AkButton
           isDisabled={this.props.disabled}

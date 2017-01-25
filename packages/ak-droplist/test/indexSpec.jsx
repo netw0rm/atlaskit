@@ -47,6 +47,7 @@ describe(name, () => {
       const layer = wrapper.find(`.${styles.dropWrapper}`).children().first();
       expect(layer).to.have.prop('offset', '0 4');
       expect(layer).to.have.prop('position', 'bottom left');
+      expect(layer).to.have.prop('autoPosition', wrapper.props().shouldFlip);
       expect(layer).to.have.prop('content');
     });
 

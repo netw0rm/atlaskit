@@ -1,4 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
+import classNames from 'classnames';
 import AkAvatar from 'ak-avatar';
 import AkButton from 'ak-button';
 
@@ -82,27 +83,32 @@ export default class Profilecard extends PureComponent {
   render() {
     const actions = (this.props.actions || []).map(action => (
       <AkButton
-        key={action.label}
         appearance="link"
         compact
+        key={action.label}
         onClick={action.callback}
       >{action.label}</AkButton>
     ));
 
+    const cardClasses = classNames([
+      styles.profilecard,
+      { [styles.noDetailsMeta]: !this.props.meta },
+    ]);
+
     return (
-      <div className={styles.profilecard}>
+      <div className={cardClasses}>
         <div className={styles.avatarWrapper}>
           <AkAvatar size="xlarge" src={this.props.avatarUrl} />
         </div>
         <div className={styles.detailsWrapper}>
           <span className={styles.detailsFullname}>{this.props.fullName}</span>
-          <span className={styles.detailsMeta}>{this.props.meta}</span>
+          { this.props.meta && (<span className={styles.detailsMeta}>{this.props.meta}</span>) }
           <IconLabel className={styles.presence} icon={this.props.presence}>
             {presences[this.props.presence]}
           </IconLabel>
           <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
-          <IconLabel icon="location">{this.props.location}</IconLabel>
           <IconLabel icon="time">{this.props.timestring}</IconLabel>
+          <IconLabel icon="location">{this.props.location}</IconLabel>
           <div className={styles.actionsFlexSpacer} />
           <div className={styles.actionsWrapper}>
             {actions}

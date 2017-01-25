@@ -35,7 +35,7 @@ export default class Flag extends PureComponent {
     if (!this.props.actions.length) return null;
 
     const items = this.props.actions.map((action, index) => (
-      <div key={index} className={styles.actionsItem}>
+      <div className={styles.actionsItem} key={index}>
         <Button
           appearance="link"
           className={styles.actionButton}

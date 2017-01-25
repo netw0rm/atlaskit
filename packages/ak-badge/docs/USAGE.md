@@ -7,27 +7,9 @@ They must be used singly after a single item name, and have only numbers.
 * Use labels to call out tags and high-visibility attributes.
 * Use a tooltip if you want to indicate units.
 
-![Example badge](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-badge/docs/badge.png)
+![Example badge](http://i.imgur.com/ZQHLeGg.png)
 
 ## Try it out
 
 Interact with a [live demo of the ak-badge component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/ak-badge/@VERSION@/).
 
-## Installation
-
-```sh
-npm install ak-badge
-```
-
-## Using the component
-
-### HTML
-
-The `ak-badge` package exports the Badge React component.
-
-Import the component in your React app as follows:
-
-```javascript
-import Badge from 'ak-badge';
-ReactDOM.render(<Badge />, container);
-```

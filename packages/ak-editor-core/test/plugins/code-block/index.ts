@@ -336,7 +336,29 @@ describe('code-block', () => {
     it('sets language to null if no activeCodeBlock', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.language).to.be.null;
+      expect(plugin.language).to.be.undefined;
+    });
+  });
+
+  describe('content', () => {
+    it('is the same as activeCodeBlock text content', () => {
+      const { plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
+
+      expect(plugin.content).to.eq('text');
+    });
+
+    it('updates if activeCodeBlock updates content', () => {
+      const { pm, plugin, sel } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
+
+      pm.input.insertText(sel, sel, 'bar');
+
+      expect(plugin.content).to.eq('tebarxt');
+    });
+
+    it('sets content to undefined if no activeCodeBlock', () => {
+      const { plugin } = editor(doc(p('te{<>}xt')));
+
+      expect(plugin.content).to.be.undefined;
     });
   });
 });

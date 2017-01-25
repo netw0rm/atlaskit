@@ -1,12 +1,14 @@
 import Keymap from 'browserkeymap';
+import * as keymaps from '../../keymaps';
 import { DOMFromPos, Node, Plugin, ProseMirror, Schema } from '../../prosemirror';
 import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
 
 export class CodeBlockState {
-  element?: HTMLElement;
   active: boolean = false;
-  language: string | null = null;
+  content?: string;
+  element?: HTMLElement;
+  language?: string;
   private pm: PM;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
   private activeCodeBlock?: Node;
@@ -19,7 +21,7 @@ export class CodeBlockState {
     pm.root.addEventListener('paste', new CodeBlockPasteListener(pm), true);
 
     pm.addKeymap(new Keymap({
-      'Enter': () => this.splitCodeBlock(),
+      [keymaps.splitCodeBlock.common!]: () => this.splitCodeBlock(),
     }));
 
     pm.updateScheduler([
@@ -39,7 +41,7 @@ export class CodeBlockState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  updateLanguage(language: string | null): void {
+  updateLanguage(language: string): void {
     if (this.activeCodeBlock) {
       this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.activeCodeBlock.type, {language: language}).apply();
     }
@@ -84,7 +86,8 @@ export class CodeBlockState {
     if (codeBlockNode !== this.activeCodeBlock) {
       this.activeCodeBlock = codeBlockNode;
       this.active = !!codeBlockNode;
-      this.language = codeBlockNode ? codeBlockNode.attrs['language'] : null;
+      this.language = codeBlockNode && codeBlockNode.attrs['language'];
+      this.content = codeBlockNode && codeBlockNode.textContent;
       this.element = this.activeCodeBlockElement();
       dirty = true;
     }

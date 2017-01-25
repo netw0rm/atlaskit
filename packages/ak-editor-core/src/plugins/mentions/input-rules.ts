@@ -1,4 +1,4 @@
-import { ProseMirror, InputRule, Schema, Mark } from '../../prosemirror';
+import { InputRule, Mark, ProseMirror, Schema } from '../../prosemirror';
 
 function replaceWithMark(
   pm: ProseMirror,
@@ -26,7 +26,7 @@ function replaceWithMark(
   return true;
 }
 
-export const mentionQueryRule = new InputRule(/(^|\s)@$/, '@', (
+export const mentionQueryRule = new InputRule(/(^|[^\w])@$/, '@', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number

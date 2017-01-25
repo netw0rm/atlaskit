@@ -67,18 +67,54 @@ describe(name, () => {
           'dashboard',
           'edit',
 
+          'editor/add',
+          'editor/addon',
           'editor/advanced',
+          'editor/align-center',
+          'editor/align-left',
+          'editor/align-right',
+          'editor/attachment',
           'editor/bold',
+          'editor/bullet-list',
+          'editor/check',
+          'editor/close',
           'editor/code',
+          'editor/date',
+          'editor/decision',
+          'editor/emoji',
+          'editor/error',
+          'editor/expand',
+          'editor/feedback',
+          'editor/file',
+          'editor/help',
+          'editor/hint',
+          'editor/image-border',
+          'editor/image-resize',
           'editor/image',
+          'editor/indent',
+          'editor/info',
           'editor/italic',
           'editor/link',
-          'editor/list/bullet',
-          'editor/list/number',
+          'editor/location',
           'editor/mention',
+          'editor/more',
+          'editor/note',
+          'editor/number-list',
           'editor/open',
+          'editor/outdent',
+          'editor/panel',
+          'editor/photo',
+          'editor/recent',
+          'editor/redo',
+          'editor/remove',
+          'editor/search',
+          'editor/table',
+          'editor/task',
+          'editor/text-color',
           'editor/underline',
+          'editor/undo',
           'editor/unlink',
+          'editor/warning',
 
           'emoji/activity',
           'emoji/atlassian',
@@ -98,7 +134,6 @@ describe(name, () => {
           'help',
           'home',
           'jira/logo',
-          'location',
           'moreoptions',
           'projects',
           'question',
@@ -106,7 +141,6 @@ describe(name, () => {
           'search',
           'settings',
           'success',
-          'time',
           'warning',
         ]);
         // If you find yourself here and wonder why this list is not auto-generated, then bear in
@@ -141,7 +175,7 @@ describe(name, () => {
               .map(x => iconNameToComponentName(x)));
 
         bundleKeys.forEach((key) => {
-          expect(bundle[key]).to.be.a.function;
+          expect(typeof bundle[key]).to.equal('function');
         });
       });
     });
@@ -157,7 +191,7 @@ describe(name, () => {
     it('should be possible to create the components', () => {
       Object.values(components).forEach((Icon) => {
         const wrapper = shallow(<Icon label="My icon" />);
-        expect(wrapper).to.exist;
+        expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
     });

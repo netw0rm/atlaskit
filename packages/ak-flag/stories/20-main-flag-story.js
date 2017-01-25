@@ -18,15 +18,15 @@ storiesOf(name, module)
       </p>
       <p>
         <Flag
-          id="1"
-          key="1"
-          icon={<GreenSuccessIcon />}
-          title="Welcome to the jungle"
-          description="We got fun an games. We got everything you want honey, we know the names."
           actions={[
             { content: 'Show me', onClick: action('Show me clicked') },
             { content: 'No thanks', onClick: action('No thanks clicked') },
           ]}
+          description="We got fun an games. We got everything you want honey, we know the names."
+          icon={<GreenSuccessIcon />}
+          id="1"
+          key="1"
+          title="Welcome to the jungle"
         />
       </p>
     </div>

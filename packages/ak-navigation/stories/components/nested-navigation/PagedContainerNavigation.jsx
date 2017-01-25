@@ -60,10 +60,10 @@ export default class PagedContainerNavigation extends PureComponent {
     if (!this.isNextEnabled()) {
       return;
     }
+    const selectedIndex = Math.min(this.state.selectedIndex + 1, this.props.children.length - 1);
     this.setState({
-      selectedIndex: Math.min(
-        this.state.selectedIndex + 1,
-        this.props.children.length - 1),
+      animationDirection: 'left',
+      selectedIndex,
     });
   }
 
@@ -71,18 +71,19 @@ export default class PagedContainerNavigation extends PureComponent {
     if (!this.isPrevEnabled()) {
       return;
     }
+    const selectedIndex = Math.max(this.state.selectedIndex - 1, 0);
     this.setState({
-      selectedIndex: Math.max(this.state.selectedIndex - 1, 0),
+      animationDirection: 'right',
+      selectedIndex,
     });
   }
 
   render() {
     return (
       <div>
-        <AkContainerNavigationNested
-          pages={this.props.children}
-          selectedIndex={this.state.selectedIndex}
-        />
+        <AkContainerNavigationNested animationDirection={this.state.animationDirection}>
+          {this.props.children[this.state.selectedIndex]}
+        </AkContainerNavigationNested>
         <a
           href="#prev"
           onClick={this.goToPrev}

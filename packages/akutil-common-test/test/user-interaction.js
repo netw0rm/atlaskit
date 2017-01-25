@@ -24,7 +24,7 @@ describe('Keyboard interaction', () => {
 
       it(`can fire ${type} events`, () => {
         key('[');
-        spy.should.have.been.calledOnce;
+        expect(spy.callCount).to.equal(1);
       });
       it('meta keys can be specified', () => {
         key('[', {

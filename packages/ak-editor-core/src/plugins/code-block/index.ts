@@ -1,11 +1,14 @@
-import { Schema, ProseMirror, Node, Plugin, Keymap, DOMFromPos } from '../../prosemirror';
+import Keymap from 'browserkeymap';
+import * as keymaps from '../../keymaps';
+import { DOMFromPos, Node, Plugin, ProseMirror, Schema } from '../../prosemirror';
 import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
 
 export class CodeBlockState {
-  element?: HTMLElement;
   active: boolean = false;
-  language: string | null = null;
+  content?: string;
+  element?: HTMLElement;
+  language?: string;
   private pm: PM;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
   private activeCodeBlock?: Node;
@@ -18,7 +21,7 @@ export class CodeBlockState {
     pm.root.addEventListener('paste', new CodeBlockPasteListener(pm), true);
 
     pm.addKeymap(new Keymap({
-      'Enter': () => this.splitCodeBlock(),
+      [keymaps.splitCodeBlock.common!]: () => this.splitCodeBlock(),
     }));
 
     pm.updateScheduler([
@@ -38,8 +41,8 @@ export class CodeBlockState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  updateLanguage(language: string | null): void {
-    if(this.activeCodeBlock) {
+  updateLanguage(language: string): void {
+    if (this.activeCodeBlock) {
       this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.activeCodeBlock.type, {language: language}).apply();
     }
   }
@@ -80,15 +83,16 @@ export class CodeBlockState {
     let dirty = false;
     const codeBlockNode = this.activeCodeBlockNode();
 
-    if(codeBlockNode !== this.activeCodeBlock) {
+    if (codeBlockNode !== this.activeCodeBlock) {
       this.activeCodeBlock = codeBlockNode;
       this.active = !!codeBlockNode;
-      this.language = codeBlockNode ? codeBlockNode.attrs.language : null;
+      this.language = codeBlockNode && codeBlockNode.attrs['language'];
+      this.content = codeBlockNode && codeBlockNode.textContent;
       this.element = this.activeCodeBlockElement();
       dirty = true;
     }
 
-    if(dirty) {
+    if (dirty) {
       this.changeHandlers.forEach(changeHandler => changeHandler(this));
     }
   }
@@ -97,7 +101,7 @@ export class CodeBlockState {
     const offset =  this.nodeStartPos();
     const { node } = DOMFromPos(this.pm, offset, true);
 
-    return node;
+    return node as HTMLElement;
   }
 
   private nodeStartPos(): number {
@@ -109,7 +113,7 @@ export class CodeBlockState {
     const { pm } = this;
     const { $from } = pm.selection;
     const node = $from.parent;
-    if(isCodeBlockNode(node)) {
+    if (isCodeBlockNode(node)) {
       return node;
     }
 

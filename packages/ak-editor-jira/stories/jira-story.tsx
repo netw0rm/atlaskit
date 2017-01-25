@@ -1,22 +1,17 @@
-import { storiesOf, action } from '@kadira/storybook';
-import reactify from 'akutil-react';
+import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import AkTabs from 'ak-tabs';
-import { Tab as AkTab} from 'ak-tabs';
 import Editor from '../src';
 
-const Tabs = reactify(AkTabs);
-const Tab = reactify(AkTab);
-const CancelAction = () => action('Cancel')();
-const SaveAction = () => action('Save')();
+const CANCEL_ACTION = () => action('Cancel')();
+const SAVE_ACTION = () => action('Save')();
 
 storiesOf('ak-editor-jira', module)
   .add('Empty', () =>
     <div style={{ padding: 20 }}>
       <Editor
-        onCancel={CancelAction}
-        onSave={SaveAction}
+        onCancel={CANCEL_ACTION}
+        onSave={SAVE_ACTION}
       />
     </div>
   )
@@ -30,9 +25,9 @@ storiesOf('ak-editor-jira', module)
         return (
           <div>
             <Editor
-              onCancel={CancelAction}
+              onCancel={CANCEL_ACTION}
               onChange={this.updateHTML}
-              onSave={SaveAction}
+              onSave={SAVE_ACTION}
             />
             <fieldset style={{ marginTop: 20 }}>
               <legend>HTML</legend>
@@ -44,39 +39,6 @@ storiesOf('ak-editor-jira', module)
 
       updateHTML = (editor: Editor) => {
         this.setState({ html: editor.value });
-      }
-    }
-
-    return (
-      <div style={{ padding: 20 }}>
-        <Demo />
-      </div>
-    );
-  })
-  .add('Contexts', () => {
-    type Props = {};
-    type State = {};
-    class Demo extends PureComponent<Props, State> {
-      render() {
-        return (
-          <div ref="root">
-            <Tabs>
-              <Tab selected label="(default)">
-                <Editor
-                  onCancel={CancelAction}
-                  onSave={SaveAction}
-                />
-              </Tab>
-              <Tab selected label="comment">
-                <Editor
-                  context="comment"
-                  onCancel={CancelAction}
-                  onSave={SaveAction}
-                />
-              </Tab>
-            </Tabs>
-          </div>
-        );
       }
     }
 

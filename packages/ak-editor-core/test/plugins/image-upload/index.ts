@@ -1,10 +1,10 @@
-import ImageUploadPlugin from '../../../src/plugins/image-upload';
-import { chaiPlugin, makeEditor } from '../../../test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as sinonChai from 'sinon-chai';
-import { doc, noimages, images, image, schema } from '../../_schema-builder';
+import ImageUploadPlugin from '../../../src/plugins/image-upload';
+import { chaiPlugin, makeEditor } from '../../../test-helper';
+import { doc, image, images, noimages, schema } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
 chai.use((sinonChai as any).default || sinonChai);
@@ -18,8 +18,8 @@ describe('image-upload', () => {
   };
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const Plugin = ImageUploadPlugin as any; // .State is not public API.
-    expect(Plugin.State.name).is.be.a('string');
+    const plugin = ImageUploadPlugin as any; // .State is not public API.
+    expect(plugin.State.name).is.be.a('string');
   });
 
   it('allows change handler to be registered', () => {
@@ -37,7 +37,7 @@ describe('image-upload', () => {
   });
 
   it('should get current state immediately once subscribed', () => {
-    const { pm, plugin, sel } = editor(doc(images('{<>}', testImg())));
+    const { plugin } = editor(doc(images('{<>}', testImg())));
     const spy = sinon.spy();
     plugin.subscribe(spy);
 
@@ -71,7 +71,7 @@ describe('image-upload', () => {
   });
 
   it('does not emit multiple changes when an image is selected multiple times', () => {
-    const { pm, plugin, sel } = editor(doc(images('{<>}', testImg())));
+    const { plugin } = editor(doc(images('{<>}', testImg())));
     const spy = sinon.spy();
 
     plugin.subscribe(spy);

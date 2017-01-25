@@ -18,7 +18,7 @@ const flagGroupPropTypes = {
 };
 
 storiesOf(name, module)
-  .add('Flag Group readme', () => (
+  .add('📖 Flag Group readme', () => (
     <div>
       <Readme
         component={name}

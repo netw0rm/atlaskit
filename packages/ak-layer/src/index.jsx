@@ -1,5 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import Popper from 'popper.js';
+import { akZIndexLayer } from 'akutil-shared-styles';
 
 import { POSITION_ATTRIBUTE_ENUM, positionPropToPopperPosition } from './internal/helpers';
 
@@ -183,7 +184,6 @@ export default class Layer extends PureComponent {
 
     this.popper = new Popper(actualTarget, this.contentRef, {
       placement: positionPropToPopperPosition(props.position),
-      boundariesElement: this.props.boundariesElement,
       onCreate: this.extractStyles,
       onUpdate: this.extractStyles,
       modifiers: {
@@ -200,6 +200,8 @@ export default class Layer extends PureComponent {
         flip: {
           enabled: this.props.autoPosition,
           flipVariations: true,
+          boundariesElement: this.props.boundariesElement,
+          padding: 0, // leave 0 pixels between popper and the boundariesElement
         },
         preventOverflow: {
           enabled: this.props.autoPosition,
@@ -218,7 +220,7 @@ export default class Layer extends PureComponent {
         </div>
         <div
           ref={ref => (this.contentRef = ref)}
-          style={{ top: 0, left: 0, position: cssPosition, transform, zIndex: 400 }}
+          style={{ top: 0, left: 0, position: cssPosition, transform, zIndex: akZIndexLayer }}
         >
           {this.props.content}
         </div>

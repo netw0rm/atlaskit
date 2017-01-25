@@ -1,19 +1,18 @@
 import { storiesOf } from '@kadira/storybook';
+import Readme, { Code, Heading } from 'akutil-readme';
 import * as React from 'react';
-import Readme, { Code, Heading, Props } from 'akutil-readme';
 
-import OverviewExample from './examples/overview';
-import * as OverviewExampleRaw from '!raw!./examples/overview.tsx';
 import * as SchemaRaw from '!raw!../src/schema.ts';
-import * as documentJsonSchema from '!raw!./schema/document.json';
-import * as exampleMessageJson from '!raw!./examples/message.json';
 import * as exampleMediaServicesFileJson from '!raw!./examples/mediaservices-file.json';
+import * as exampleMessageJson from '!raw!./examples/message.json';
+import * as OverviewExampleRaw from '!raw!./examples/overview.tsx';
+import * as documentJsonSchema from '!raw!./schema/document.json';
+import OverviewExample from './examples/overview';
 
-import { name, description } from '../package.json';
-import Editor from '../src';
+import { description, name } from '../package.json';
 
 storiesOf(name, module)
-  .add('Readme', () => (
+  .add('📖 EditorHipchat Readme', () => (
     <div>
       <Readme
         component={name}
@@ -122,7 +121,7 @@ storiesOf(name, module)
     </div>
   ));
 
-const SchemaDoc = (props: { schemaSourceFile: string }) => {
+function SchemaDoc(props: { schemaSourceFile: string }) {
   const regexp = new RegExp('new Schema\\(([^]+)\\) as \\w+Schema;', 'gm');
   const match = regexp.exec(props.schemaSourceFile);
   const schema = match && match[1];

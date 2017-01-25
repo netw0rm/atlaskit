@@ -1,3 +1,5 @@
+import Keymap from 'browserkeymap';
+import * as keymaps from '../../keymaps';
 import {
   commands,
   Mark,
@@ -5,8 +7,6 @@ import {
   Plugin,
   ProseMirror,
   Schema,
-  UpdateScheduler,
-  Keymap
 } from '../../prosemirror';
 import {
   EmMarkType,
@@ -249,11 +249,11 @@ export class TextFormattingState {
 
   private addKeymap(): void {
     this.pm.addKeymap(new Keymap({
-      'Mod-B': trackAndInvoke('atlassian.editor.format.strong.keyboard', () => this.toggleStrong()),
-      'Mod-I': trackAndInvoke('atlassian.editor.format.em.keyboard', () => this.toggleEm()),
-      'Mod-U': trackAndInvoke('atlassian.editor.format.u.keyboard', () => this.toggleUnderline()),
-      'Mod-Shift-S': trackAndInvoke('atlassian.editor.format.strike.keyboard', () => this.toggleStrike()),
-      'Mod-Shift-M': trackAndInvoke('atlassian.editor.format.mono.keyboard', () => this.toggleMono()),
+      [keymaps.toggleBold.common!]: trackAndInvoke('atlassian.editor.format.strong.keyboard', () => this.toggleStrong()),
+      [keymaps.toggleItalic.common!]: trackAndInvoke('atlassian.editor.format.em.keyboard', () => this.toggleEm()),
+      [keymaps.toggleUnderline.common!]: trackAndInvoke('atlassian.editor.format.u.keyboard', () => this.toggleUnderline()),
+      [keymaps.toggleStrikethrough.common!]: trackAndInvoke('atlassian.editor.format.strike.keyboard', () => this.toggleStrike()),
+      [keymaps.toggleMonospace.common!]: trackAndInvoke('atlassian.editor.format.mono.keyboard', () => this.toggleMono()),
     }));
   }
 

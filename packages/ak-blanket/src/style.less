@@ -1,9 +1,5 @@
-// These styles will be inserted into a style tag inside
-// the shadow dom of each instance of the component
-
-// Only do class selectors in here, anything else leaks to the rest of the page in
-// browsers that do not support shadow DOM
-@import 'shared-variables.less';
+@import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/z-indexes.less';
 
 .blanket {
   bottom: 0;
@@ -11,9 +7,10 @@
   position: fixed;
   right: 0;
   top: 0;
+  z-index: @ak-z-index-blanket;
 }
 
 .tinted {
   background: @ak-color-N900;
-  opacity: 0.5
+  opacity: 0.5;
 }

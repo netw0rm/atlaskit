@@ -1,7 +1,7 @@
-import DropAdapter from '../../../src/plugins/image-upload/drop-adapter';
-import { ProseMirror } from '../../../src';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import { ProseMirror } from '../../../src';
+import DropAdapter from '../../../src/plugins/image-upload/drop-adapter';
 
 describe('image-upload DropAdapter', () => {
   const mockEditor = (): ProseMirror => {
@@ -74,13 +74,13 @@ describe('image-upload DropAdapter', () => {
     dropAdapter.add(fn);
 
     const eventHandler = addEvent.firstCall.args[1];
-    const DragEventStub = {
+    const dragEventStub = {
       dataTransfer: {
         types: {}
       }
     } as DragEvent;
 
-    eventHandler(DragEventStub);
+    eventHandler(dragEventStub);
     expect(fn.callCount).to.equal(0);
   });
 });

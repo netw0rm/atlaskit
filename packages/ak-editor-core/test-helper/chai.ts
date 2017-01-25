@@ -1,5 +1,5 @@
-/// <reference path="./chai.d.ts"/>
-import { Fragment, Node, Mark, Text, Slice, NodeType } from '../';
+/// <reference path="./types/chai.d.ts"/>
+import { Fragment, Mark, Node, NodeType, Slice } from '../';
 
 function isNodeOrFragment(thing: any): thing is Node | Fragment {
   // Using a simple `instanceof` check is intentionally avoided here to make
@@ -17,8 +17,8 @@ export default (chai: any) => {
   const { Assertion, util } = chai;
 
   // Node and Fragment
-  Assertion.overwriteMethod('equal', (_super: Function) => {
-    return function (right: any) {
+  Assertion.overwriteMethod('equal', (equalSuper: Function) => {
+    return function(right: any) {
       const left: any = this._obj;
       const deep = util.flag(this, 'deep');
       if (deep && isNodeOrFragment(left) && isNodeOrFragment(right)) {
@@ -28,14 +28,14 @@ export default (chai: any) => {
           left.toString(),
           right.toString());
       } else {
-        _super.apply(this, arguments);
+        equalSuper.apply(this, arguments);
       }
     };
   });
 
   // Slice
-  Assertion.overwriteMethod('equal', (_super: Function) => {
-    return function (right: any) {
+  Assertion.overwriteMethod('equal', (equalSuper: Function) => {
+    return function(right: any) {
       const left: any = this._obj;
       const deep = util.flag(this, 'deep');
       if (deep && isSlice(left) && isSlice(right)) {
@@ -55,7 +55,7 @@ export default (chai: any) => {
           left.openRight,
           right.openRight);
       } else {
-        _super.apply(this, arguments);
+        equalSuper.apply(this, arguments);
       }
     };
   });

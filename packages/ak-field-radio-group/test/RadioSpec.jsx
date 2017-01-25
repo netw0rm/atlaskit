@@ -13,7 +13,7 @@ describe(name, () => {
   describe('Radio', () => {
     describe('exports', () => {
       it('the Radio component', () => {
-        expect(Radio).to.exist;
+        expect(Radio).not.to.equal(undefined);
         expect(new Radio()).to.be.instanceOf(Component);
       });
     });
@@ -21,7 +21,7 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<Radio />);
-        expect(wrapper).to.exist;
+        expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 

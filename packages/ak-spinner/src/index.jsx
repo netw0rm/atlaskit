@@ -2,8 +2,13 @@ import classNames from 'classnames';
 import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
 
-// This is hard codes to 20 pixels for now but if we end up doing t-shirt sizing AK-1153
 const SPINNER_SIZE = 20;
+const SIZES = Object.freeze({
+  small: 20,
+  medium: 30,
+  large: 50,
+  xlarge: 100,
+});
 
 export default class Spinner extends PureComponent {
   static displayName = 'AkSpinner';
@@ -11,11 +16,16 @@ export default class Spinner extends PureComponent {
   static propTypes = {
     onComplete: PropTypes.func,
     isCompleting: PropTypes.bool,
+    size: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.oneOf(['small', 'medium', 'large', 'xlarge']),
+    ]),
   }
 
   static defaultProps = {
     onComplete: () => {},
     isCompleting: false,
+    size: SPINNER_SIZE,
   }
 
   handleTransitionEnd = (e) => {
@@ -29,12 +39,18 @@ export default class Spinner extends PureComponent {
   }
 
   render() {
+    let spinnerSize = SIZES[this.props.size] || this.props.size;
+
+    if (typeof spinnerSize !== 'number') {
+      spinnerSize = SPINNER_SIZE;
+    }
+
     const spinnerStyles = {
       [styles.spinner]: true,
       [styles.active]: !this.props.isCompleting,
     };
-    const strokeWidth = Math.round(SPINNER_SIZE / 10);
-    const strokeRadius = (SPINNER_SIZE / 2) - (strokeWidth / 2);
+    const strokeWidth = Math.round(spinnerSize / 10);
+    const strokeRadius = (spinnerSize / 2) - (strokeWidth / 2);
     const circumference = Math.PI * strokeRadius * 2;
     const dashStyles = {
       strokeDashoffset: this.props.isCompleting ? circumference : 0.8 * circumference,
@@ -46,24 +62,24 @@ export default class Spinner extends PureComponent {
           className={classNames(spinnerStyles)}
           onTransitionEnd={this.handleTransitionEnd}
           style={{
-            height: `${SPINNER_SIZE}px`,
-            width: `${SPINNER_SIZE}px`,
+            height: `${spinnerSize}px`,
+            width: `${spinnerSize}px`,
           }}
         >
           <div className={styles.spinnerWrapper}>
             <svg
-              height={SPINNER_SIZE}
-              width={SPINNER_SIZE}
+              height={spinnerSize}
+              width={spinnerSize}
               xmlns="http://www.w3.org/2000/svg"
-              viewBox={`0 0 ${SPINNER_SIZE} ${SPINNER_SIZE}`}
+              viewBox={`0 0 ${spinnerSize} ${spinnerSize}`}
             >
               <circle
                 className={styles.circle}
                 fill="none"
                 strokeWidth={strokeWidth}
                 strokeLinecap="round"
-                cx={SPINNER_SIZE / 2}
-                cy={SPINNER_SIZE / 2}
+                cx={spinnerSize / 2}
+                cy={spinnerSize / 2}
                 r={strokeRadius}
                 style={dashStyles}
               />

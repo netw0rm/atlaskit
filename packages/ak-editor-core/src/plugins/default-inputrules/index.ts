@@ -1,13 +1,14 @@
-import { Plugin, ProseMirror } from '../../prosemirror';
 import {
+  closeDoubleQuote,
+  closeSingleQuote,
+  ellipsis,
   InputRule,
   inputRules,
-  ellipsis,
   openDoubleQuote,
-  closeDoubleQuote,
   openSingleQuote,
-  closeSingleQuote
-} from 'prosemirror/dist/inputrules';
+  Plugin,
+  ProseMirror,
+} from '../../prosemirror';
 
 /**
  * :: InputRule Converts double dashes to an emdash.

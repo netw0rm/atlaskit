@@ -4,6 +4,7 @@ import Item from 'ak-droplist-item';
 import Group from 'ak-droplist-group';
 import Button from 'ak-button';
 import ExpandIcon from 'ak-icon/glyph/expand';
+import uid from 'uid';
 
 const Icon = <ExpandIcon label="" />;
 
@@ -19,6 +20,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     onOpenChange: PropTypes.func,
     position: PropTypes.string,
     triggerType: PropTypes.oneOf(['default', 'button']),
+    shouldFlip: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -30,6 +32,11 @@ export default class StatelessDropdownMenu extends PureComponent {
     onOpenChange: () => {},
     position: 'bottom left',
     triggerType: 'default',
+    shouldFlip: true,
+  }
+
+  state = {
+    id: uid(),
   }
 
   renderItems = items => items.map((item, itemIndex) =>
@@ -49,7 +56,8 @@ export default class StatelessDropdownMenu extends PureComponent {
   )
 
   render = () => {
-    const { props } = this;
+    const { props, state } = this;
+
     return (
       <Droplist
         position={props.position}
@@ -57,14 +65,19 @@ export default class StatelessDropdownMenu extends PureComponent {
         isOpen={props.isOpen}
         onOpenChange={props.onOpenChange}
         isTriggerNotTabbable={(props.triggerType === 'button') || props.isTriggerNotTabbable}
-        listContext="menu"
+        shouldFlip={props.shouldFlip}
         trigger={props.triggerType === 'button' ?
           (<Button
             isSelected={props.isOpen}
             iconAfter={Icon}
+            ariaHaspopup
+            ariaExpanded={props.isOpen}
+            ariaControls={state.id}
           >{props.children}</Button>) : props.children}
       >
-        {this.renderGroups(props.items)}
+        <div id={state.id} role="menu">
+          {this.renderGroups(props.items)}
+        </div>
       </Droplist>
     );
   }

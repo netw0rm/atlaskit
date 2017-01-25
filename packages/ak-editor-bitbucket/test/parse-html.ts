@@ -1,14 +1,12 @@
-import * as mocha from 'mocha';
-import { parseHtml as parse } from '../src/parse-html';
-import { Schema } from 'ak-editor-core';
 import { chaiPlugin } from 'ak-editor-core/test-helper';
-import {
-  a, blockquote, mono, code_block, doc, strong, strike,
-  h1, h2, h3, h4, h5, h6, hr, img, ul, ol, li, p, mention
-} from './_schema-builder';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import { parseHtml as parse } from '../src/parse-html';
 import schema from '../src/schema';
+import {
+  a, blockquote, code_block, doc, h1, h2,
+  h3, h4, h5, h6, hr, img, li, mention, mono, ol, p, strong, ul
+} from './_schema-builder';
 
 chai.use(chaiPlugin);
 
@@ -377,24 +375,10 @@ describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
         p('foo ', mono('bar '), 'baz')
       ));
     });
+  });
 
-    it('removes last new line', () => {
-      expect(parse(
-        '<div class="codehilite"><pre><span>hello world</span><span>\n<\span></div>'
-      )).to.deep.equal(doc(pre('hello world')));
-    });
-
-    it('blocks should be parsed preserving newlines in the middle and whitespace', () => {
-      expect(parse(
-        '<p>foo</p>' +
-        '<div class="codehilite"><pre><span></span>    bar\n       baz</pre></div>'
-      )).to.deep.equal(doc(
-        p('foo'),
-        pre('    bar\n       baz')
-      ));
-    });
-
-    it('block with specified language should be parsed', () => {
+  describe('code block', () => {
+    it('parses block with specified language', () => {
       const js = code_block({language: 'javascript'});
 
       expect(parse(

@@ -33,7 +33,7 @@ describe('<NavigationItem />', () => {
       expect(mount(<NavigationItem href="foo" />).find(`.${link}`).props().href).to.equal('foo');
     });
     it('with no href should not render a link', () => {
-      expect(mount(<NavigationItem />).find('a')).to.not.exist;
+      expect(mount(<NavigationItem />).find('a').length).to.equal(0);
     });
     it('linkComponent should render a custom link component', () => {
       const customLink = mount(
@@ -42,14 +42,14 @@ describe('<NavigationItem />', () => {
           linkComponent={({ children, href }) => <a className="custom" href={href}>{children}</a>}
         />
       ).find('.custom');
-      expect(customLink).to.exist;
+      expect(customLink).not.to.equal(undefined);
       expect(customLink.props().href).to.equal('#custom-href');
     });
     it('textAfter should render in the navigation item', () => {
-      expect(mount(<NavigationItem action={<span className="ACTION" />} />).find('.ACTION')).to.exist;
+      expect(mount(<NavigationItem action={<span className="ACTION" />} />).find('.ACTION')).to.have.length.above(0);
     });
     it('action should render in the navigation item', () => {
-      expect(mount(<NavigationItem textAfter={<span className="TEXTAFTER" />} />).find('.TEXTAFTER')).to.exist;
+      expect(mount(<NavigationItem textAfter={<span className="TEXTAFTER" />} />).find('.TEXTAFTER')).to.have.length.above(0);
     });
     it('textAfter should not render if the prop is not set', () => {
       expect(mount(<NavigationItem />).find('TextAfter')).to.not.be.present();
@@ -64,8 +64,8 @@ describe('<NavigationItem />', () => {
           textAfter={<span className="TEXTAFTER" />}
         />
       );
-      expect(both.find('.ACTION')).to.exist;
-      expect(both.find('.TEXTAFTER')).to.exist;
+      expect(both.find('.ACTION')).to.have.length.above(0);
+      expect(both.find('.TEXTAFTER')).to.have.length.above(0);
     });
     it('subText should render in the navigation item', () => {
       expect(mount(<NavigationItem subText="SUBTEXT" />).html()).to.contain('SUBTEXT');
@@ -80,7 +80,7 @@ describe('<NavigationItem />', () => {
       mount(<NavigationItem href="foo" />).find(`.${link}`).simulate('mouseDown', {
         preventDefault: spy,
       });
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
   });
 });

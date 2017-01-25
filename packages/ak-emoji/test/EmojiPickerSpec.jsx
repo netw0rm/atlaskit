@@ -102,7 +102,7 @@ describe('<EmojiPicker />', () => {
     const list = component.find(EmojiPickerList);
     const hoverButton = list.find(EmojiButton).at(clickOffset);
     hoverButton.simulate('mousedown', leftClick);
-    expect(selection, 'Selected emoji defined').to.not.be.undefined;
+    expect(selection, 'Selected emoji defined').to.not.equal(undefined);
     expect(selection.id, 'Selected emoji id').to.equal(allEmojis[clickOffset].id);
   });
 

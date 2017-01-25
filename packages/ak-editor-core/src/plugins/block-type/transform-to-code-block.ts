@@ -1,52 +1,70 @@
-import { ProseMirror, ReplaceStep, Slice, Step, RemoveMarkStep, EditorTransform, NodeSelection } from '../../prosemirror';
-import { CodeBlockNodeType } from '../../schema';
+import { EditorTransform, Fragment, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
+import { isCodeBlockNode, isHardBreakNode, isMentionNode } from '../../schema';
 
-// copied from prosemirror/src/commands/index.js
-export default function(nodeType: CodeBlockNodeType, pm: ProseMirror) {
-  let node = pm.selection instanceof NodeSelection ? pm.selection.node : null;
-  let { $from, $to } = pm.selection;
-  let depth;
-  if (node) {
-    depth = $from.depth;
-  } else {
-    if (!$from.depth || $to.pos > $from.end()) {
-      return false;
-    }
-    depth = $from.depth - 1;
-  }
-  const target = node || $from.parent;
-  if (!target.isTextblock || target.hasMarkup(nodeType)) {
-    return false;
-  }
-  const index = $from.index(depth);
-  if (!$from.node(depth)!.canReplaceWith(index, index + 1, nodeType)) {
-    return false;
+export default function transformToCodeBlock(pm: ProseMirror): void {
+  if (!isConvertableToCodeBlock(pm)) {
+    return;
   }
 
-  const where = $from.before(depth + 1);
-  clearMarkupFor(pm.tr, where, nodeType)
-    .setNodeType(where, nodeType, {})
-    .applyAndScroll();
-  return true;
+  transformToCodeBlockAction(pm).applyAndScroll();
 }
 
-// copied from prosemirror/src/transform/mark.js
-function clearMarkupFor(tr: EditorTransform, pos: number, newType: CodeBlockNodeType) {
-  const node = tr.doc.nodeAt(pos);
-  let match = newType.contentExpr.start();
+export function transformToCodeBlockAction(pm: ProseMirror): EditorTransform {
+  const { $from } = pm.selection;
+  const codeBlock = pm.schema.nodes.code_block;
+
+  const where = $from.before($from.depth);
+  const tr = clearMarkupFor(pm, where)
+    .setNodeType(where, codeBlock, {});
+
+  return tr;
+}
+
+export function isConvertableToCodeBlock(pm: ProseMirror): boolean {
+  // Before a document is loaded, there is no selection.
+  if (!pm.selection) {
+    return false;
+  }
+
+  const { $from } = pm.selection;
+  const node = $from.parent;
+
+  if (!node.isTextblock || isCodeBlockNode(node)) {
+    return false;
+  }
+
+  const parentDepth = $from.depth - 1;
+  const parentNode = $from.node(parentDepth);
+  const index = $from.index(parentDepth);
+
+  return parentNode.canReplaceWith(index, index + 1, pm.schema.nodes.code_block);
+}
+
+function createSliceWithContent(content: string, pm: ProseMirror) {
+ return new Slice(Fragment.from(pm.schema.nodes.text.create(null, content)), 0, 0);
+}
+
+function clearMarkupFor(pm: ProseMirror, pos: number) {
+  const tr = pm.tr;
+  const node = tr.doc.nodeAt(pos)!;
+  let match = pm.schema.nodes.code_block.contentExpr.start();
   const delSteps: Step[] = [];
-  const newlinePos: number[] = [];
+
   for (let i = 0, cur = pos + 1; i < node.childCount; i++) {
     const child = node.child(i);
     const end = cur + child.nodeSize;
 
-    if (child.type.name === 'hard_break') {
-      newlinePos.push(cur);
-    }
-
     const allowed = match.matchType(child.type, child.attrs);
     if (!allowed) {
-      delSteps.push(new ReplaceStep(cur, end, Slice.empty));
+      if (isMentionNode(child)) {
+        const content = child.attrs['displayName'];
+        delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, pm)));
+      } else if (isHardBreakNode(child)) {
+        const content = '\n';
+        delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, pm)));
+      } else {
+        delSteps.push(new ReplaceStep(cur, end, Slice.empty));
+      }
     } else {
       match = allowed;
       for (let j = 0; j < child.marks.length; j++) {
@@ -57,13 +75,10 @@ function clearMarkupFor(tr: EditorTransform, pos: number, newType: CodeBlockNode
     }
     cur = end;
   }
+
   for (let i = delSteps.length - 1; i >= 0; i--) {
     tr.step(delSteps[i]);
   }
-
-  newlinePos.forEach((pos) => {
-    tr.insertText(pos, '\n');
-  });
 
   return tr;
 }

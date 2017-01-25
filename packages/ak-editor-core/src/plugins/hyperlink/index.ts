@@ -1,18 +1,17 @@
 import {
   commands,
   DOMFromPos,
-  inputRules,
   InputRule,
+  inputRules,
+  Node,
   NodeSelection,
   Plugin,
   ProseMirror,
   ResolvedPos,
-  Mark,
-  Node,
   Schema,
   TextSelection
 } from '../../prosemirror';
-import { LinkMarkType } from '../../schema';
+import { LinkMark, LinkMarkType } from '../../schema';
 import hyperlinkRule from './input-rule';
 import pasteTransformer from './paste-transformer';
 
@@ -47,23 +46,6 @@ export class HyperlinkState {
     ], () => this.update());
 
     this.update();
-  }
-
-  private updateElement() {
-    const activeLink = this.getActiveLink();
-    let dirty = false;
-
-    const newElement = activeLink
-      ? this.getDomElement()
-      : undefined;
-    if (newElement !== this.element) {
-      this.element = newElement;
-      dirty = true;
-    }
-
-    if (dirty) {
-      this.changeHandlers.forEach(cb => cb(this));
-    }
   }
 
   private update() {
@@ -128,7 +110,7 @@ export class HyperlinkState {
       const { empty, $from, $to } = pm.selection;
       const mark = pm.schema.mark('link', { href });
       const tr = empty
-        ? pm.tr.replaceWith($from.pos, $to.pos, pm.schema.text(href, mark))
+        ? pm.tr.replaceWith($from.pos, $to.pos, pm.schema.text(href, [mark]))
         : pm.tr.addMark($from.pos, $to.pos, mark);
 
       tr.apply();
@@ -139,22 +121,22 @@ export class HyperlinkState {
     const { pm } = this;
 
     if (pm.selection instanceof TextSelection) {
-      const { $head, empty } = pm.selection;
+      const { $head } = pm.selection;
 
       // why - 1?
       // because of `exclusiveRight`, we need to get the node "left to"
       // the current cursor
-      const node = pm.doc.nodeAt($head.pos - 1);
+      const node = pm.doc.nodeAt($head.pos - 1)!;
 
       // start captures the start of the node position based on depth
       // why - 1 ?
       // we want to capture the start of the node instead of the inside of the node
-      const path = pm.doc.resolve($head.pos - 1).path;
+      const path = (pm.doc.resolve($head.pos - 1) as any).path as number[];
 
       // why + 1 ? (https://prosemirror.net/ref.html#ResolvedPos.depth)
       // depth positions are based on the parent not the node itself so we
       // need to go inside one level deeper
-      const depth = $head.resolveDepth($head.depth + 1);
+      const depth = ($head as any).resolveDepth($head.depth + 1) as number;
 
       // See `ResolvedPos.prototype.start` method prosemirror/src/model/resolvedpos
       const currentNodeOffset = depth === 0 ? 0 : path[depth * 3 - 1];
@@ -216,10 +198,10 @@ export class HyperlinkState {
       const { node, offset } = DOMFromPos(this.pm, pos, true);
 
       if (node.childNodes.length === 0) {
-        return node.parentNode;
+        return node.parentNode as HTMLElement;
       }
 
-      return node.childNodes[offset];
+      return node.childNodes[offset] as HTMLElement;
     }
   }
 
@@ -236,11 +218,11 @@ export class HyperlinkState {
       // why - 1?
       // because of `exclusiveRight`, we need to get the node "left to"
       // the current cursor
-      return pm.doc.nodeAt(pm.selection.$head.pos - 1);
+      return pm.doc.nodeAt((pm.selection as TextSelection).$head.pos - 1)!;
     }
   }
 
-  private getActiveLink(): Mark | null {
+  private getActiveLink(): LinkMark | null {
     const { pm } = this;
 
     if (!(pm.selection instanceof TextSelection)) {
@@ -254,9 +236,9 @@ export class HyperlinkState {
     if (!empty) {
       // because of `exclusiveRight`, we need to get the node "left to"
       // the current cursor
-      marks = pm.doc.nodeAt(pos - 1).marks;
+      marks = pm.doc.nodeAt(pos - 1)!.marks;
     } else {
-      const node = pm.doc.nodeAt(pos);
+      const node = pm.doc.nodeAt(pos)!;
       const previousNode = pm.doc.nodeAt(pos - 1);
 
       if (node !== previousNode) {
@@ -303,5 +285,5 @@ export interface HyperlinkOptions {
 function getBoundariesWithin(
   $head: ResolvedPos
 ): number {
-  return $head.parentOffset === 0 ? $head.pos : $head.pos -1;
+  return $head.parentOffset === 0 ? $head.pos : $head.pos - 1;
 }

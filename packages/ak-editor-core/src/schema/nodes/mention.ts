@@ -1,10 +1,10 @@
-import { style } from 'typestyle';
 import {
   akColorB400,
   akColorN30,
   akColorN50,
 } from 'akutil-shared-styles';
-import { Inline, Attribute, Node, Schema } from '../../prosemirror';
+import { style } from 'typestyle';
+import { Attribute, Inline, Node, Schema } from '../../prosemirror';
 
 const mentionStyle = style({
   background: akColorN30,
@@ -13,26 +13,13 @@ const mentionStyle = style({
   padding: '0 4px',
   userSelect: 'all',
 
-  $nest:{
+  $nest: {
     '&.ProseMirror-selectednode': {
       background: akColorN50,
       outline: 'none'
     }
   }
 });
-
-export interface MentionAttributes {
-  id: any;
-  displayName: any;
-}
-
-export interface ParseSpec {
-  [index: string]: (dom: Element) => MentionAttributes;
-}
-
-export interface DOMAttributes {
-  [propName: string]: string;
-}
 
 export class MentionNodeType extends Inline {
   constructor(name: string, schema: Schema) {
@@ -42,31 +29,30 @@ export class MentionNodeType extends Inline {
     }
   }
 
-  get attrs(): MentionAttributes {
+  get attrs() {
     return {
       id: new Attribute({ default: '' }),
       displayName: new Attribute({ default: '' })
     };
   }
 
-  get matchDOMTag(): ParseSpec {
+  get matchDOMTag() {
     return {
-      'span[mention-id]': (dom: Element) => {
-        return {
-          id: dom.getAttribute('mention-id'),
-          displayName: dom.textContent
-        };
-      }
+      'span[mention-id]': (dom: Element) => ({
+        id: dom.getAttribute('mention-id')!,
+        displayName: dom.textContent!
+      })
     };
   }
 
-  toDOM(node: MentionNode): [string, DOMAttributes] {
-    let attrs: DOMAttributes = {
+  toDOM(node: Node): [string, any, string] {
+    const mentionNode = node as MentionNode;
+    const attrs = {
       'class': mentionStyle,
-      'mention-id': node.attrs.id,
+      'mention-id': mentionNode.attrs.id,
       'contenteditable': 'false',
     };
-    return ['span', attrs, node.attrs.displayName];
+    return ['span', attrs, mentionNode.attrs.displayName];
   }
 }
 
@@ -76,5 +62,8 @@ export interface MentionNode extends Node {
     id: string;
     displayName: string;
   };
-  text: string;
+}
+
+export function isMentionNode(node: Node): node is MentionNode {
+  return node.type instanceof MentionNodeType;
 }

@@ -9,7 +9,7 @@ chai.should();
 describe(name, () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      Picker.should.be.not.be.null;
+      expect(Picker).to.not.equal(null);
     });
 
     it('should export all the right subcomponents', () => {

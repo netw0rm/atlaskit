@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
 import Layer from 'ak-layer';
 import Trigger from 'ak-droplist-trigger';
-import keyCode from 'keycode';
 import classnames from 'classnames';
 
 const halfGrid = 4;
@@ -26,6 +25,7 @@ export default class DropdownList extends PureComponent {
     onOpenChange: PropTypes.func,
     position: PropTypes.string,
     trigger: PropTypes.node,
+    shouldFlip: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -38,6 +38,7 @@ export default class DropdownList extends PureComponent {
     onOpenChange: () => {},
     children: null,
     trigger: null,
+    shouldFlip: true,
   }
 
   componentDidMount = () => {
@@ -50,7 +51,6 @@ export default class DropdownList extends PureComponent {
     }
 
     document.addEventListener('click', this.handleClickOutside);
-    document.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentDidUpdate = () => {
@@ -65,7 +65,6 @@ export default class DropdownList extends PureComponent {
 
   componentWillUnmount = () => {
     document.removeEventListener('click', this.handleClickOutside);
-    document.removeEventListener('keydown', this.handleKeyDown);
   }
 
   setMaxHeight = (dropDomRef) => {
@@ -130,24 +129,33 @@ export default class DropdownList extends PureComponent {
     ReactDOM.findDOMNode(this).contains(target) // eslint-disable-line react/no-find-dom-node
 
   handleKeyDown = (e) => {
-    if (e.keyCode === keyCode('escape')) {
+    if (e.key === 'Escape') {
       this.close();
     }
 
-    if (this.props.isOpen && this.isTargetChildItem(e.target)) {
-      e.preventDefault();
-      switch (e.keyCode) {
-        case keyCode('up'):
-          this.focusPreviousItem();
-          break;
-        case keyCode('down'):
-          this.focusNextItem();
-          break;
-        case keyCode('tab'):
-          this.close();
-          break;
-        default:
-          break;
+    if (this.props.isOpen) {
+      if (this.isTargetChildItem(e.target)) {
+        switch (e.key) {
+          case 'ArrowUp':
+            e.preventDefault();
+            this.focusPreviousItem();
+            break;
+          case 'ArrowDown':
+            e.preventDefault();
+            this.focusNextItem();
+            break;
+          case 'Tab':
+            e.preventDefault();
+            this.close();
+            break;
+          default:
+            break;
+        }
+      } else if (e.key === 'ArrowDown') {
+        this.sourceOfIsOpen = 'keydown';
+        this.focusFirstItem();
+      } else if (e.key === 'Tab') {
+        this.close();
       }
     }
   }
@@ -185,15 +193,19 @@ export default class DropdownList extends PureComponent {
 
   render = () => {
     const { props } = this;
+
+    // items' event delegation
     return (
-      <div
+      <div // eslint-disable-line jsx-a11y/no-static-element-interactions
         className={classnames([styles.dropWrapper, {
           [styles.fitContainer]: props.shouldFitContainer,
         }])}
+        onKeyDown={this.handleKeyDown}
       >
         <Layer
           position={props.position}
           offset="0 4"
+          autoPosition={props.shouldFlip}
           content={props.isOpen ?
             <div
               className={styles.dropContent}
@@ -204,7 +216,6 @@ export default class DropdownList extends PureComponent {
                   this.setMaxHeight(ref);
                 }
               }}
-              role="menu"
             >
               {props.children}
             </div> :

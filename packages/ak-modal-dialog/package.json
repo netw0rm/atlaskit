@@ -1,6 +1,6 @@
 {
   "name": "ak-modal-dialog",
-  "version": "1.2.3",
+  "version": "2.0.1",
   "description": "A React component that displays content in a layer blocking the interaction with the page.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
@@ -24,8 +24,10 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "ak-button": ">=4.x",
-    "ak-field-text": "<=5.x",
-    "akutil-react": "*",
+    "ak-dropdown-menu": "^2.3.0",
+    "ak-field-text": ">=6.x",
+    "ak-layer": "^62.2.1",
+    "ak-navigation": "^19.0.1",
     "react-lorem-component": "*"
   },
   "repository": {

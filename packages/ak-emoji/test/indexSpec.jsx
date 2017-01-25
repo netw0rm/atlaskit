@@ -9,13 +9,14 @@ chai.should();
 describe(name, () => {
   describe('exports', () => {
     it('should not export a base component', () => {
-      expect(Nothing).to.be.undefined;
+      expect(Nothing).to.equal(undefined);
     });
 
     it('should export all the right subcomponents', () => {
       Object.keys(other).should.be.deep.equal([
         'Emoji',
         'EmojiPicker',
+        'EmojiTypeAhead',
         'EmojiResource',
         'EmojiService',
       ]);

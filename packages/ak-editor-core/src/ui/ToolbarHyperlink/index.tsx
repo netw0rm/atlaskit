@@ -1,11 +1,11 @@
+import LinkIcon from 'ak-icon/glyph/editor/link';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import LinkIcon from 'ak-icon/glyph/editor/link';
-import { HyperlinkState } from '../../../src/plugins/hyperlink';
+import { analyticsDecorator as analytics } from '../../analytics';
+import { HyperlinkState } from '../../plugins/hyperlink';
 import Panel from '../Panel';
 import TextInput from '../PanelTextInput';
-import IconButton from '../ToolbarIconButton';
-import { analyticsDecorator as analytics } from '../../analytics';
+import ToolbarButton from '../ToolbarButton';
 import * as styles from './styles';
 
 export interface Props {
@@ -34,11 +34,11 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
 
     return (
       <span className={styles.outerContainer}>
-        <IconButton
+        <ToolbarButton
           disabled={disabled || active}
           onClick={this.openLinkPanel}
           selected={adding}
-          icon={<LinkIcon label="Link" />}
+          iconBefore={<LinkIcon label="Link" />}
         />
         {!adding ? null :
         <Panel align="center" onOutsideClick={this.closeLinkPanel}>

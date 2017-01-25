@@ -1,24 +1,24 @@
+import {
+  AnalyticsHandler,
+  analyticsService,
+  BlockTypePlugin,
+  Chrome,
+  CodeBlockPlugin,
+  ContextName,
+  DefaultInputRulesPlugin,
+  HorizontalRulePlugin,
+  Keymap,
+  ListsPlugin,
+  MarkdownInputRulesPlugin,
+  ProseMirror,
+  TextFormattingPlugin
+} from 'ak-editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import {
-  ProseMirror,
-  Keymap,
-  BlockTypePlugin,
-  CodeBlockPlugin,
-  ListsPlugin,
-  TextFormattingPlugin,
-  HorizontalRulePlugin,
-  MarkdownInputRulesPlugin,
-  DefaultInputRulesPlugin,
-  Chrome,
-  AnalyticsHandler,
-  analyticsService
-} from 'ak-editor-core';
-import schema from './schema';
-import { parse, encode } from './cxhtml';
+import { encode, parse } from './cxhtml';
 
 export interface Props {
-  context?: 'default' | 'comment';
+  context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
   onCancel?: (editor?: Editor) => void;
@@ -128,7 +128,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { context, onChange } = this.props;
+      const { context } = this.props;
       const pm = new ProseMirror({
         place,
         doc: parse(this.props.defaultValue || ''),

@@ -43,12 +43,8 @@ export default function interActiveCard(dependencies) {
 
     actions = [
       {
-        label: 'View',
-        callback: handleActionClick('View'),
-      },
-      {
-        label: 'Chat',
-        callback: handleActionClick('Chat'),
+        label: 'View profile',
+        callback: handleActionClick('View profile'),
       },
     ]
 
@@ -57,10 +53,10 @@ export default function interActiveCard(dependencies) {
       return (
         <label htmlFor={id}>
           <input
-            id={id}
-            type="checkbox"
-            onChange={() => this.setState({ [attribute]: !this.state[attribute] })}
             checked={this.state[attribute]}
+            id={id}
+            onChange={() => this.setState({ [attribute]: !this.state[attribute] })}
+            type="checkbox"
           />
           {attribute}
         </label>
@@ -72,10 +68,10 @@ export default function interActiveCard(dependencies) {
       return (
         <label htmlFor={id}>
           <input
-            id={id}
-            type="radio"
-            onChange={() => this.setState({ presence: attribute })}
             checked={this.state.presence === attribute}
+            id={id}
+            onChange={() => this.setState({ presence: attribute })}
+            type="radio"
           />
           {attribute}
         </label>
@@ -101,16 +97,16 @@ export default function interActiveCard(dependencies) {
           <style>{'label {margin-right: 10px; -webkit-user-select: none;} legend {margin: 5px 0;}'}</style>
 
           <AkProfilecard
+            actions={actions}
             avatarUrl={this.state.hasAvatar ? this.state.avatarUrl : ''}
+            companyName={this.state.company}
             email={this.state.email}
             fullName={this.state.hasLongName ? `${this.state.fullName} Hathaway ${this.state.fullName}` : this.state.fullName}
-            nickname={this.state.nickname}
-            companyName={this.state.company}
-            meta={this.state.hasMeta ? meta : ''}
-            timestring={this.state.hasTime ? getTimeString(this.state.hasWeekday) : ''}
             location={this.state.hasLocation ? this.state.location : ''}
+            meta={this.state.hasMeta ? meta : ''}
+            nickname={this.state.nickname}
             presence={this.state.presence}
-            actions={actions}
+            timestring={this.state.hasTime ? getTimeString(this.state.hasWeekday) : ''}
           />
 
           <div>

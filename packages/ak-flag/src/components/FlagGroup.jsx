@@ -47,8 +47,8 @@ export default class FlagGroup extends PureComponent {
 
   render() {
     const RootSection = styled.section`
-      bottom: ${akGridSizeInt * 6};
-      left: ${akGridSizeInt * 10};
+      bottom: ${akGridSizeInt * 6}px;
+      left: ${akGridSizeInt * 10}px;
       position: fixed;
       z-index: 4;
     `;

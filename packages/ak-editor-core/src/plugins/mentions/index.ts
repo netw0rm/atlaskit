@@ -124,7 +124,7 @@ export class MentionsPluginState {
 
     if (node && this.pm.schema.marks.mention_query.isInSet(node.marks)) {
       start = this.pm.doc.resolve(start).start(2) - 1;
-      end = this.pm.doc.resolve(start).end(1);
+      end = start + node.nodeSize;
     }
 
     return { start, end };

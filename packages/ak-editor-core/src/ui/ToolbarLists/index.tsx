@@ -2,8 +2,9 @@ import BulletListIcon from 'ak-icon/glyph/editor/bullet-list';
 import NumberListIcon from 'ak-icon/glyph/editor/number-list';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { ListsState } from '../../../src/plugins/lists';
 import { analyticsDecorator as analytics } from '../../analytics';
+import { toggleBulletList, toggleOrderedList, tooltip } from '../../keymaps';
+import { ListsState } from '../../plugins/lists';
 import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
@@ -41,21 +42,23 @@ export default class ToolbarLists extends PureComponent<Props, State> {
     return (
       <span>
         {this.state.bulletListHidden ? null :
-        <ToolbarButton
-          onClick={this.handleBulletListClick}
-          selected={this.state.bulletListActive}
-          disabled={this.state.bulletListDisabled}
-          iconBefore={<BulletListIcon label="Bullet list" />}
-        />
+          <ToolbarButton
+            onClick={this.handleBulletListClick}
+            selected={this.state.bulletListActive}
+            disabled={this.state.bulletListDisabled}
+            title={tooltip(toggleBulletList)}
+            iconBefore={<BulletListIcon label="" />}
+          />
         }
 
         {this.state.orderedListHidden ? null :
-        <ToolbarButton
-          onClick={this.handleOrderedListClick}
-          selected={this.state.orderedListActive}
-          disabled={this.state.orderedListDisabled}
-          iconBefore={<NumberListIcon label="Ordered list" />}
-        />
+          <ToolbarButton
+            onClick={this.handleOrderedListClick}
+            selected={this.state.orderedListActive}
+            disabled={this.state.orderedListDisabled}
+            title={tooltip(toggleOrderedList)}
+            iconBefore={<NumberListIcon label="" />}
+          />
         }
       </span>
     );

@@ -3,7 +3,6 @@ import React from 'react';
 
 import Badge from '../src';
 import { name } from '../package.json';
-import OnValueUpdatedDemo from './on-value-updated-demo';
 
 const imports = [['React', 'react'], ['Badge', 'ak-badge']];
 storiesOf(name, module)
@@ -12,7 +11,7 @@ storiesOf(name, module)
       <Badge value="5" />
       <Badge appearance="primary" value={-5} />
       <Badge appearance="important" value="25" />
-      <Badge appearance="added" value="3000" max="99" />
+      <Badge appearance="added" max="99" value="3000" />
       <Badge appearance="removed" />
       <Badge appearance="default" theme="dark" />
     </div>
@@ -24,14 +23,11 @@ storiesOf(name, module)
     <Badge value={-5} />
   ), { imports })
   .addCodeExampleStory('with a max value', () => (
-    <Badge value="500" max="99" />
+    <Badge max="99" value="500" />
   ), { imports })
   .addCodeExampleStory('with value <= max value', () => (
-    <Badge value="50" max="99" />
+    <Badge max="99" value="50" />
   ), { imports })
   .addCodeExampleStory('with value === max value', () => (
-    <Badge value="99" max="99" />
-  ), { imports })
-  .add('onValueUpdated handler prop', () => (
-    <OnValueUpdatedDemo />
-  ));
+    <Badge max="99" value="99" />
+  ), { imports });

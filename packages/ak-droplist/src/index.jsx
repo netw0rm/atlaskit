@@ -25,6 +25,7 @@ export default class DropdownList extends PureComponent {
     onOpenChange: PropTypes.func,
     position: PropTypes.string,
     trigger: PropTypes.node,
+    shouldFlip: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -37,6 +38,7 @@ export default class DropdownList extends PureComponent {
     onOpenChange: () => {},
     children: null,
     trigger: null,
+    shouldFlip: true,
   }
 
   componentDidMount = () => {
@@ -203,6 +205,7 @@ export default class DropdownList extends PureComponent {
         <Layer
           position={props.position}
           offset="0 4"
+          autoPosition={props.shouldFlip}
           content={props.isOpen ?
             <div
               className={styles.dropContent}

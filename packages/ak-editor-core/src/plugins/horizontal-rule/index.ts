@@ -1,4 +1,5 @@
 import Keymap from 'browserkeymap';
+import * as keymaps from '../../keymaps';
 import {
   Plugin, ProseMirror, Schema
 } from '../../prosemirror';
@@ -26,7 +27,7 @@ export class HorizontalRuleState {
     const {horizontal_rule} = pm.schema.nodes;
     if (horizontal_rule) {
       pm.addKeymap(new Keymap({
-        'Mod-Shift--': trackAndInvoke('atlassian.editor.format.horizontalrule.keyboard', () => pm.tr.replaceSelection(horizontal_rule.create()).applyAndScroll())
+        [keymaps.insertHorizontalRule.common!]: trackAndInvoke('atlassian.editor.format.horizontalrule.keyboard', () => pm.tr.replaceSelection(horizontal_rule.create()).applyAndScroll())
       }));
     }
   }

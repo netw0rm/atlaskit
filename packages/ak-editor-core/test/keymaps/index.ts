@@ -5,9 +5,9 @@ import * as keymaps from '../../src/keymaps';
 describe('keymaps', () => {
   const keymap = {
     description: 'A keymap',
-    windows: 'ctrl-shift-alt-k',
-    mac: 'cmd-shift-alt-k',
-    common: 'mod-shift-alt-k'
+    windows: 'Ctrl-Shift-Alt-K',
+    mac: 'Cmd-Shift-Alt-K',
+    common: 'Mod-Shift-Alt-K'
   };
 
   if (browser.mac) {
@@ -50,7 +50,7 @@ describe('keymaps', () => {
     context('when not on a mac', () => {
       describe('tooltip', () => {
         it('returns tooltip', () => {
-          expect(keymaps.tooltip(keymap)).to.eq('A keymap (^-⇧-⌥-K)');
+          expect(keymaps.tooltip(keymap)).to.eq('A keymap (Ctrl-Shift-Alt-K)');
         });
       });
 

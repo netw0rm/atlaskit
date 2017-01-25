@@ -28,11 +28,9 @@ export function tooltip(keymap: Keymap | undefined): string | undefined {
         .replace(/Cmd/i, '⌘')
         .replace(/Shift/i, '⇧')
         .replace(/Ctrl/i, '^')
-        .replace(/Alt/i, '⌥')
-        .toUpperCase();
+        .replace(/Alt/i, '⌥');
     } else {
-      shortcut = keymap.windows
-        .toUpperCase();
+      shortcut = keymap.windows;
     }
     return `${keymap.description} (${shortcut})`;
   }

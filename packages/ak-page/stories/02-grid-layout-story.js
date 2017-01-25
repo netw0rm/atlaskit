@@ -4,7 +4,6 @@ import React from 'react';
 import Page, { Grid, GridColumn } from '../src';
 import { name } from '../package.json';
 
-
 const dummyStyles = {
   background: '#fea',
 };

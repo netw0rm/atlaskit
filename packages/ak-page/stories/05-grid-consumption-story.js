@@ -9,7 +9,6 @@ import DummyHeader from './dummy-header';
 import DummyComment from './dummy-comment';
 import DummyCode from './dummy-code';
 
-
 storiesOf(name, module)
   .add('using grid within components', () => (
     <Page>

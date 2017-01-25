@@ -26,7 +26,7 @@ describe('<ContainerNavigation />', () => {
       expect(shallow(<ContainerNavigation width={200} />).find(Spacer).props().width).to.equal(200);
     });
     it('appearnace="global" should render with the global appearance class', () => {
-      expect(mount(<ContainerNavigation appearance="global" />).find(`.${containerNavigationInner}`)).to.have.className(hasGlobalAppearance);
+      expect((mount(<ContainerNavigation appearance="global" />).find(`.${containerNavigationInner}`)).hasClass((hasGlobalAppearance))).to.equal(true);
     });
   });
   describe('behaviour', () => {

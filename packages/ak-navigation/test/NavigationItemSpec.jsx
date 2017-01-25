@@ -18,13 +18,13 @@ describe('<NavigationItem />', () => {
       expect(mount(<NavigationItem icon={<img alt="foo" />} />)).to.have.exactly(1).descendants('img');
     });
     it('isSelected=true should render with the isSelected class', () => {
-      expect(mount(<NavigationItem isSelected />).find(`.${navigationItemOuter}`)).to.have.className(isSelected);
+      expect((mount(<NavigationItem isSelected />).find(`.${navigationItemOuter}`)).hasClass((isSelected))).to.equal(true);
     });
     it('isSelected=false should not render with the isSelected class', () => {
       expect(mount(<NavigationItem />).find(`.${navigationItemOuter}`)).to.not.have.className(isSelected);
     });
     it('isCompact=true should render with the isCompact class', () => {
-      expect(mount(<NavigationItem isCompact />).find(`.${navigationItemOuter}`)).to.have.className(isCompact);
+      expect((mount(<NavigationItem isCompact />).find(`.${navigationItemOuter}`)).hasClass((isCompact))).to.equal(true);
     });
     it('href should render onto the link', () => {
       expect(mount(<NavigationItem href="foo" />).find(`.${link}`).props().href).to.equal('foo');

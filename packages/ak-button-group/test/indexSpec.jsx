@@ -20,7 +20,7 @@ describe(name, () => {
 
     it(`should have className ${styles.locals.wrapper}`, () => {
       const group = shallow(<ButtonGroup />);
-      expect(group).to.have.className(styles.locals.wrapper);
+      expect((group).hasClass((styles.locals.wrapper))).to.equal(true);
     });
   });
 });

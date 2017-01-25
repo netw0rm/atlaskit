@@ -27,7 +27,7 @@ describe('<Tag/> component tests', () => {
     expect(wrapper.find('a').text()).to.equal(atlassianlinkText);
     wrapper.setProps({ href: bitbucketLinkText });
     expect(wrapper.props().href).to.equal(bitbucketLinkText);
-    expect(wrapper.find(Chrome)).to.have.className(styles.isRemovable);
+    expect((wrapper.find(Chrome)).hasClass((styles.isRemovable))).to.equal(true);
   });
 
   it('Test onBeforeRemoveAction callback contract', () => {
@@ -60,7 +60,7 @@ describe('<Tag/> component tests', () => {
   it('Test mouse over and out over remove button', () => {
     const wrapper = mount(<Tag {...testProps} />);
     wrapper.find(RemoveButton).find('button').simulate('mouseover');
-    expect(wrapper.find(Chrome)).to.have.className(styles.markedForRemoval);
+    expect((wrapper.find(Chrome)).hasClass((styles.markedForRemoval))).to.equal(true);
     wrapper.find(RemoveButton).find('button').simulate('mouseout');
     expect(wrapper.find(Chrome)).to.not.have.className(styles.markedForRemoval);
   });
@@ -71,7 +71,7 @@ describe('<Tag/> component tests', () => {
     const wrapper = mount(<Tag {...testProps}/>);
     wrapper.find(RemoveButton).find('button').simulate('keyPress', {keyCode: 13});
     wrapper.find(RemoveButton).find('button').simulate('keyPress', {keyCode: 32});
-    expect(wrapper.find(Chrome)).to.have.className(styles.isRemoving);
+    expect((wrapper.find(Chrome)).hasClass((styles.isRemoving))).to.equal(true);
   });*/
 
   it('Tag allows us to set props', () => {
@@ -79,7 +79,7 @@ describe('<Tag/> component tests', () => {
     expect(wrapper.props().href).to.equal(atlassianUrl);
 
     expect(wrapper.find('a').text()).to.equal(atlassianlinkText);
-    expect(wrapper.find('a')).to.have.className(styles.href);
+    expect((wrapper.find('a')).hasClass((styles.href))).to.equal(true);
 
     wrapper.setProps({ href: bitbucketUrl });
     expect(wrapper.props().href).to.equal(bitbucketUrl);

@@ -80,7 +80,7 @@ describe('<Emoji />', () => {
         selected
       />);
 
-      expect(wrapper.find(`.${styles.emojiContainer}`)).to.have.className(styles.selected);
+      expect((wrapper.find(`.${styles.emojiContainer}`)).hasClass((styles.selected))).to.equal(true);
     });
   });
 
@@ -111,7 +111,7 @@ describe('<Emoji />', () => {
       />);
 
       const sprite = wrapper.find(`.${styles.emoji}`);
-      expect(sprite).to.have.className(styles.selected);
+      expect((sprite).hasClass((styles.selected))).to.equal(true);
     });
   });
 });

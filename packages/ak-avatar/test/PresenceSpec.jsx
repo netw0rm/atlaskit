@@ -26,7 +26,7 @@ describe('ak-avatar', () => {
       );
       expect(wrapper).to.not.have.descendants(Presence);
       expect(wrapper).to.have.exactly(1).descendants('span');
-      expect(wrapper.find('span')).to.have.className('child');
+      expect((wrapper.find('span')).hasClass(('child'))).to.equal(true);
     });
 
     describe('borderColor prop', () => {

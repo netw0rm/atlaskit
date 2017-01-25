@@ -37,7 +37,7 @@ describe(name, () => {
         it('should render link with extraClasses', () => {
           const extraClass = 'extra-class';
           const wrapper = shallow(<CommentField href="#" extraClasses={extraClass} />);
-          expect(wrapper.find(`.${styles.locals.topButtonLink}`)).to.have.className(extraClass);
+          expect((wrapper.find(`.${styles.locals.topButtonLink}`)).hasClass((extraClass))).to.equal(true);
         });
 
         it('should reflect onClick, onFocus, and onMouseOver to the link element', () => {
@@ -65,7 +65,7 @@ describe(name, () => {
         it('should render span with extraClasses', () => {
           const extraClass = 'extra-class';
           const wrapper = shallow(<CommentField extraClasses={extraClass} />);
-          expect(wrapper.find(`.${styles.locals.topButtonText}`)).to.have.className(extraClass);
+          expect((wrapper.find(`.${styles.locals.topButtonText}`)).hasClass((extraClass))).to.equal(true);
         });
 
         it('should reflect onClick, onFocus, and onMouseOver to the span', () => {

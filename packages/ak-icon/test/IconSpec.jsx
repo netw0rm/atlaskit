@@ -70,7 +70,7 @@ describe(name, () => {
       Object.values(size).forEach((s) => {
         it(`with value ${s}`, () => {
           const wrapper = shallow(<MyIcon label="My icon" size={s} />);
-          expect(wrapper).to.have.className(styles.locals[s]);
+          expect((wrapper).hasClass((styles.locals[s]))).to.equal(true);
         });
       });
     });

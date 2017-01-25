@@ -18,7 +18,7 @@ describe('ak-toggle', () => {
     const wrapper = shallow(<Toggle />);
     expect(wrapper).to.have.exactly(1).descendants('label');
     const label = wrapper.find('label');
-    expect(label).to.have.className(styles.locals.regular);
+    expect((label).hasClass((styles.locals.regular))).to.equal(true);
     expect(label).to.have.exactly(1).descendants('input');
     const iconWrapper = label.find('div').at(2);
     expect(iconWrapper).to.have.length.above(0);

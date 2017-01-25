@@ -34,7 +34,7 @@ describe('<ContainerItem />', () => {
     });
 
     it('appearnace="global" should render with the global appearance class', () => {
-      expect(mount(<ContainerItem appearance="global" />).find(`.${containerItem}`)).to.have.className(hasGlobalAppearance);
+      expect((mount(<ContainerItem appearance="global" />).find(`.${containerItem}`)).hasClass((hasGlobalAppearance))).to.equal(true);
     });
   });
 });

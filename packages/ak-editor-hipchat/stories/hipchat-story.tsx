@@ -1,7 +1,7 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import Editor from '../src';
-import { resourceProvider } from './story-data';
+import { emojiService, resourceProvider } from './story-data';
 
 storiesOf('ak-editor-hipchat', module)
   .add('Simple', () => <Editor onSubmit={action('submit')}/>)
@@ -10,6 +10,7 @@ storiesOf('ak-editor-hipchat', module)
       <Editor
         onSubmit={action('submit')}
         mentionResourceProvider={resourceProvider}
+        emojiService={emojiService}
         reverseMentionPicker={false}
       />
     );

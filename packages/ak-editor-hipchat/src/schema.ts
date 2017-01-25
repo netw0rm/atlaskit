@@ -1,5 +1,7 @@
 import {
   DocNodeType,
+  EmojiNodeType,
+  EmojiQueryMarkType,
   HardBreakNodeType,
   LinkMarkType,
   MentionNodeType,
@@ -27,7 +29,10 @@ export default new Schema({
     hard_break: { type: HardBreakNodeType, group: 'inline' },
 
     // An @-mention.
-    mention: { type: MentionNodeType, group: 'inline' }
+    mention: { type: MentionNodeType, group: 'inline' },
+
+    // An emoji.
+    emoji: { type: EmojiNodeType, group: 'inline' }
   },
   marks: {
     // Represents a hyperlink to a URL.
@@ -38,7 +43,14 @@ export default new Schema({
     //
     // This mark is used internally, and is stripped from documents before they are exposed through
     // the editor getter APIs.
-    mention_query: MentionQueryMarkType
+    mention_query: MentionQueryMarkType,
+
+    // Represents an "emoji query". An emoji query is created by typing the : symbol. The text
+    // within an emoji query is used to search for an emoji.
+    //
+    // This mark is used internally, and is stripped from documents before they are exposed through
+    // the editor getter APIs.
+    emoji_query: EmojiQueryMarkType
   },
 }) as HipChatSchema;
 
@@ -49,9 +61,11 @@ export interface HipChatSchema extends Schema {
     text: Text;
     hard_break: HardBreakNodeType;
     mention: MentionNodeType;
+    emoji: EmojiNodeType;
   };
   marks: {
     link: LinkMarkType;
     mention_query: MentionQueryMarkType;
+    emoji_query: EmojiQueryMarkType;
   };
 }

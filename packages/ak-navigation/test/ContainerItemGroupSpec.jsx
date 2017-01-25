@@ -18,7 +18,7 @@ describe('<ContainerItemGroup />', () => {
       expect(mount(<ContainerItemGroup title="foo" />).find(`.${title}`)).to.have.text('foo');
     });
     it('action should render in the container item group', () => {
-      expect(mount(<ContainerItemGroup action={<div className="create">Create button</div>} />).find('.create')).to.be.present();
+      expect(mount(<ContainerItemGroup action={<div className="create">Create button</div>} />).find('.create').length).to.be.above(0);
     });
     it('with no action specified, no action should be rendered', () => {
       expect(mount(<ContainerItemGroup />).find(`.${action}`)).to.not.be.present();

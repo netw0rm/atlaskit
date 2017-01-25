@@ -16,7 +16,7 @@ describe('ak-modal-dialog', () => {
   describe('props', () => {
     describe('isOpen', () => {
       it('should be hidden by default', () => {
-        shallow(<ModalDialog />).should.have.text('');
+        shallow(<ModalDialog />).text().should.be.equal('');
       });
       it('should be visible when open = true', () => {
         shallow(<ModalDialog isOpen />).should.not.have.text('');
@@ -24,7 +24,7 @@ describe('ak-modal-dialog', () => {
       it('should become hidden when open changed from true -> false', () => {
         const wrapper = shallow(<ModalDialog isOpen />);
         wrapper.setProps({ isOpen: false });
-        wrapper.should.have.text('');
+        wrapper.text().should.be.equal('');
       });
     });
 

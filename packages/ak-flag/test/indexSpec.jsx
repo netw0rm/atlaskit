@@ -76,8 +76,8 @@ describe(name, () => {
           );
           const renderedActionItems = flag.find(`.${flagLocals.actionsItem}`);
           renderedActionItems.length.should.equal(2);
-          renderedActionItems.at(0).should.have.text('Hello!');
-          renderedActionItems.at(1).should.have.text('Goodbye!');
+          renderedActionItems.at(0).text().should.be.equal('Hello!');
+          renderedActionItems.at(1).text().should.be.equal('Goodbye!');
         });
 
         it('action onClick should be triggered on click', () => {

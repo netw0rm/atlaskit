@@ -14,7 +14,7 @@ describe('ak-profilecard', () => {
   describe('AkProfilecard', () => {
     it('should be possible to create a component', () => {
       const card = shallow(<AkProfilecard />);
-      expect(card).to.be.present();
+      expect(card.length).to.be.above(0);
     });
 
     describe('fullName property', () => {
@@ -41,7 +41,7 @@ describe('ak-profilecard', () => {
           it(`should render label with content ${presence}`, () => {
             const card = mount(<AkProfilecard presence={presence} />);
             const el = card.find(`.${styles.locals.presence}`);
-            expect(el).to.be.present();
+            expect(el.length).to.be.above(0);
             expect(el).to.have.text(presences[presence]);
           });
         });

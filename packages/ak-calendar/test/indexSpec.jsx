@@ -16,9 +16,9 @@ const nowYear = now.getFullYear();
 describe(name, () => {
   it('should render the component', () => {
     const wrapper = shallow(<AkCalendar />);
-    expect(wrapper).to.be.present();
+    expect(wrapper.length).to.be.above(0);
     expect(wrapper.find(Announcer)).to.have.lengthOf(1);
-    expect(wrapper.find(DateComponent)).to.be.present();
+    expect(wrapper.find(DateComponent).length).to.be.above(0);
   });
 
   it('should highlight current date', () => {

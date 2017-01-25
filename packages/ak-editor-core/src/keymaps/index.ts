@@ -27,13 +27,11 @@ export function tooltip(keymap: Keymap | undefined): string | undefined {
       shortcut = keymap.mac
         .replace(/Cmd/i, '⌘')
         .replace(/Shift/i, '⇧')
+        .replace(/Ctrl/i, '^')
         .replace(/Alt/i, '⌥')
         .toUpperCase();
     } else {
       shortcut = keymap.windows
-        .replace(/Ctrl/i, '^')
-        .replace(/Shift/i, '⇧')
-        .replace(/Alt/i, '⌥')
         .toUpperCase();
     }
     return `${keymap.description} (${shortcut})`;

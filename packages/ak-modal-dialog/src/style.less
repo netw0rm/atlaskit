@@ -2,6 +2,7 @@
 @import '~akutil-shared-styles/src/colors.less';
 @import '~akutil-shared-styles/src/z-indexes.less';
 @grid: @ak-grid-size / 2; // evaluates to 4px
+@ak-z-index-modal: @ak-z-index-blanket + 10;
 
 @width-small: 400px;
 @width-medium: 600px;
@@ -45,7 +46,7 @@
   height: ~"calc(100% - (2 * @{viewportMargin}))"; // can't use max-height here because of IE11 bug
   padding-top: @viewportMargin;
   position: relative;
-  z-index: @ak-z-index-blanket + 10;
+  z-index: @ak-z-index-modal;
 
   .widthTier(small);
   .widthTier(medium);
@@ -70,6 +71,7 @@
     flex: 0 1 auto;
     .panel-background();
     overflow: auto;
+    z-index: @ak-z-index-modal + 1;
   }
 
   // Background and corners for footer
@@ -77,5 +79,6 @@
     flex: 0 0 auto;
     .panel-background(0, @grid);
     border-top: 1px solid #DDD; // AK-704: animated keylines
+    z-index: @ak-z-index-modal + 2;
   }
 }

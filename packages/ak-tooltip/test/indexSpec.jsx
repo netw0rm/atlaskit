@@ -16,7 +16,7 @@ describe('ak-tooltip', () => {
     it('should be reflected into Layers position prop when Tooltip is visible', () => {
       const wrapper = shallow(<Tooltip position="bottom" visible><div>Foo</div></Tooltip>);
 
-      expect(wrapper.find('Layer')).to.have.prop('position', 'bottom center');
+      expect(wrapper.find('Layer').prop('position')).to.equal('bottom center');
     });
   });
 
@@ -38,7 +38,7 @@ describe('ak-tooltip', () => {
 
       const layer = wrapper.find('Layer');
       expect(layer).to.have.length.above(0);
-      expect(layer).to.have.prop('content', null);
+      expect(layer.prop('content')).to.equal(null);
     });
   });
 

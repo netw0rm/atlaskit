@@ -42,7 +42,7 @@ describe(name, () => {
         it('should be reflected to the input', () => {
           const props = { [prop]: val };
           const wrapper = mount(<Radio {...props} />);
-          expect(wrapper.find('input')).to.have.prop(inputProp, val);
+          expect(wrapper.find('input').prop(inputProp)).to.equal(val);
         });
       }
 

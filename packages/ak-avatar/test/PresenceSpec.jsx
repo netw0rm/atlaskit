@@ -32,7 +32,7 @@ describe('ak-avatar', () => {
     describe('borderColor prop', () => {
       it('should be white by default', () => {
         const wrapper = mount(<Presence presence="online" />);
-        expect(wrapper).to.have.prop('borderColor', '#FFFFFF');
+        expect(wrapper.prop('borderColor')).to.equal('#FFFFFF');
       });
 
       it('should reflect the prop as a CSS style property', () => {

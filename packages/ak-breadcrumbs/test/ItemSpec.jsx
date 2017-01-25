@@ -50,20 +50,20 @@ describe(name, () => {
         it('should be reflected to the Button', () => {
           const href = '/my/href/';
           const wrapper = mount(<Item href={href} />);
-          expect(wrapper.find(Button)).to.have.prop('href', href);
+          expect(wrapper.find(Button).prop('href')).to.equal(href);
         });
         describe('iconAfter prop', () => {
           it('should be reflected to the Button', () => {
             const icon = <AtlassianIcon label="icon" />;
             const wrapper = shallow(<Item iconAfter={icon} />);
-            expect(wrapper.find(Button)).to.have.prop('iconAfter', icon);
+            expect(wrapper.find(Button).prop('iconAfter')).to.equal(icon);
           });
         });
         describe('iconBefore prop', () => {
           it('should be reflected to the Button', () => {
             const icon = <AtlassianIcon label="icon" />;
             const wrapper = shallow(<Item iconBefore={icon} />);
-            expect(wrapper.find(Button)).to.have.prop('iconBefore', icon);
+            expect(wrapper.find(Button).prop('iconBefore')).to.equal(icon);
           });
         });
       });

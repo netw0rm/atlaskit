@@ -55,7 +55,7 @@ describe(name, () => {
         it('should be reflected to the CommentLayout', () => {
           const avatar = <Avatar src="test/src" label="test label" />;
           const wrapper = shallow(<Comment avatar={avatar} />);
-          expect(wrapper.find(CommentLayout)).to.have.prop('avatar', avatar);
+          expect(wrapper.find(CommentLayout).prop('avatar')).to.equal(avatar);
         });
       });
 
@@ -99,7 +99,7 @@ describe(name, () => {
       it('should reflect children to the CommentLayout', () => {
         const childComment = <Comment content="child" />;
         const wrapper = shallow(<Comment content="parent'">{childComment}</Comment>);
-        expect(wrapper.find(CommentLayout)).to.have.prop('children', childComment);
+        expect(wrapper.find(CommentLayout).prop('children')).to.equal(childComment);
       });
     });
   });

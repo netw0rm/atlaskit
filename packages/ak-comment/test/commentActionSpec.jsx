@@ -38,7 +38,7 @@ describe(name, () => {
         };
         const wrapper = shallow(<CommentAction {...props} />);
         Object.keys(props).forEach((propName) => {
-          expect(wrapper).to.have.prop(propName, props[propName]);
+          expect(wrapper.prop(propName)).to.equal(props[propName]);
         });
       });
     });

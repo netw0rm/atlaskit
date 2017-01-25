@@ -153,8 +153,8 @@ describe('ak-inline-edit', () => {
     it('should set both isLabelHidden and label parameter into FieldBase', () => {
       const wrapper = shallow(<InlineEdit {...defaultProps} label="test" isLabelHidden />);
       const fieldBase = wrapper.find(Label);
-      expect(fieldBase).to.have.prop('label', 'test');
-      expect(fieldBase).to.have.prop('isLabelHidden', true);
+      expect(fieldBase.prop('label')).to.equal('test');
+      expect(fieldBase.prop('isLabelHidden')).to.equal(true);
     });
 
     it('it should not call onClick if is read only', () => {

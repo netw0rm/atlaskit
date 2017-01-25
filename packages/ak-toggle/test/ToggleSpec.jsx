@@ -29,25 +29,25 @@ describe('ak-toggle', () => {
   describe('properties', () => {
     it('isChecked=true', () => {
       const wrapper = shallow(<Toggle isChecked />);
-      expect(wrapper.find('input')).to.have.prop('checked', true);
+      expect(wrapper.find('input').prop('checked')).to.equal(true);
       const iconWrapper = wrapper.find('div').at(2);
       expect(iconWrapper).to.have.descendants(ConfirmIcon);
       expect(iconWrapper).to.not.have.descendants(CloseIcon);
     });
     it('isChecked=false', () => {
       const wrapper = shallow(<Toggle />);
-      expect(wrapper.find('input')).to.have.prop('checked', false);
+      expect(wrapper.find('input').prop('checked')).to.equal(false);
       const iconWrapper = wrapper.find('div').at(2);
       expect(iconWrapper).to.have.descendants(CloseIcon);
       expect(iconWrapper).to.not.have.descendants(ConfirmIcon);
     });
     it('isDisabled=true', () => {
       const wrapper = shallow(<Toggle isDisabled />);
-      expect(wrapper.find('input')).to.have.prop('disabled', true);
+      expect(wrapper.find('input').prop('disabled')).to.equal(true);
     });
     it('isDisabled=false', () => {
       const wrapper = shallow(<Toggle />);
-      expect(wrapper.find('input')).to.have.prop('disabled', false);
+      expect(wrapper.find('input').prop('disabled')).to.equal(false);
     });
 
     it('name', () =>

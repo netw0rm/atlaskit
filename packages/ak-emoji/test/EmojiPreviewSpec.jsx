@@ -132,7 +132,7 @@ describe('<EmojiPreview />', () => {
 
       wrapper.instance().onToneButtonClick();
 
-      expect(wrapper.find(ToneSelector)).to.have.prop('onToneSelected', wrapper.instance().onToneSelected);
+      expect(wrapper.find(ToneSelector).prop('onToneSelected')).to.equal(wrapper.instance().onToneSelected);
     });
 
     it('should stop selecting tone on mouse leave', () => {

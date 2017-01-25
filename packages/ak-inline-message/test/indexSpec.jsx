@@ -53,11 +53,11 @@ describe(name, () => {
     });
     describe('type', () => {
       it('should default to "connectivity"', () => {
-        expect(mount(<InlineMessage />)).to.have.prop('type', 'connectivity');
+        expect(mount(<InlineMessage />).prop('type')).to.equal('connectivity');
       });
       it('should be passed to IconForType component', () => {
         const wrapper = mount(<InlineMessage type="error" />);
-        expect(wrapper.find(IconForType)).to.have.prop('type', 'error');
+        expect(wrapper.find(IconForType).prop('type')).to.equal('error');
       });
     });
   });

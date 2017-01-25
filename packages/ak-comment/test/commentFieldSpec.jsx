@@ -31,7 +31,7 @@ describe(name, () => {
 
           expect(wrapper).to.have.exactly(1).descendants(`.${styles.locals.topButtonLink}`);
           expect(wrapper.find(`.${styles.locals.topButtonLink}`)).to.contain(children);
-          expect(wrapper.find(`.${styles.locals.topButtonLink}`)).to.have.prop('href', href);
+          expect(wrapper.find(`.${styles.locals.topButtonLink}`).prop('href')).to.equal(href);
         });
 
         it('should render link with extraClasses', () => {
@@ -48,7 +48,7 @@ describe(name, () => {
           };
           const wrapper = shallow(<CommentField href="#" {...props} />);
           Object.keys(props).forEach((propName) => {
-            expect(wrapper.find(`.${styles.locals.topButtonLink}`)).to.have.prop(propName, props[propName]);
+            expect(wrapper.find(`.${styles.locals.topButtonLink}`).prop(propName)).to.equal(props[propName]);
           });
         });
       });
@@ -76,7 +76,7 @@ describe(name, () => {
           };
           const wrapper = shallow(<CommentField {...props} />);
           Object.keys(props).forEach((propName) => {
-            expect(wrapper.find(`.${styles.locals.topButtonText}`)).to.have.prop(propName, props[propName]);
+            expect(wrapper.find(`.${styles.locals.topButtonText}`).prop(propName)).to.equal(props[propName]);
           });
         });
       });

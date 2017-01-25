@@ -13,6 +13,5 @@ const GridColumn = styled.div`
   word-wrap: break-word;
 `;
 
-
 export default GridColumn;
 export { getColumnWidth };

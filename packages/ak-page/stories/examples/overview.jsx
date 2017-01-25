@@ -1,7 +1,6 @@
 import React from 'react';
 import Page, { Grid, GridColumn } from 'ak-page';
 
-
 export default (
   <Page>
     <Grid>

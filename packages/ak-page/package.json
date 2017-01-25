@@ -1,7 +1,7 @@
 {
   "name": "ak-page",
   "version": "8.0.0",
-  "description": "ak-page React component",
+  "description": "A component for building page layouts. Also includes the Grid and GridColumn components.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
@@ -35,6 +35,8 @@
     "ak-button": "^5.4.0",
     "ak-button-group": "^3.0.10",
     "ak-comment": "^5.0.1",
+    "ak-page": "*",
+    "akutil-readme": "^1.2.1",
     "react-syntax-highlighter": "^4.0.1"
   }
 }

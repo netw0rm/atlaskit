@@ -13,6 +13,7 @@ const PageContent = styled.div`
 `;
 
 export default class Page extends PureComponent {
+  static displayName = 'AkPage';
 
   static propTypes = {
     children: PropTypes.node,

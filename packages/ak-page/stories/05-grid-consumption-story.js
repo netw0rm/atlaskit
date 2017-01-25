@@ -2,7 +2,8 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
 import { name } from '../package.json';
-import { Page, Grid, GridColumn } from '../src';
+import Page, { Grid, GridColumn } from '../src';
+
 import DummyBreadcrumbs from './dummy-breadcrumbs';
 import DummyHeader from './dummy-header';
 import DummyComment from './dummy-comment';

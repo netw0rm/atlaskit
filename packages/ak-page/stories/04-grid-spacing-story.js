@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
-import { Page, Grid, GridColumn } from '../src';
+import Page, { Grid, GridColumn } from '../src';
 import { name } from '../package.json';
 
 
@@ -10,9 +10,8 @@ const dummyStyles = {
 };
 
 storiesOf(name, module)
-  .add('grid spacing', () => (
+  .add('grid spacing="cosy" (default)', () => (
     <Page>
-      <h1>spacing=cosy (default)</h1>
       <Grid>
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>
@@ -42,7 +41,10 @@ storiesOf(name, module)
         <GridColumn medium={5}><div style={dummyStyles}>5 col</div></GridColumn>
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>
       </Grid>
-      <h1>spacing=compact</h1>
+    </Page>
+  ))
+  .add('grid spacing="compact"', () => (
+    <Page>
       <Grid spacing="compact">
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>
@@ -72,7 +74,10 @@ storiesOf(name, module)
         <GridColumn medium={5}><div style={dummyStyles}>5 col</div></GridColumn>
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>
       </Grid>
-      <h1>spacing=comfortable</h1>
+    </Page>
+  ))
+  .add('grid spacing="comfortable"', () => (
+    <Page>
       <Grid spacing="comfortable">
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>

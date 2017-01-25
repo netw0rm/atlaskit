@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
-import { Page, Grid, GridColumn } from '../src';
+import Page, { Grid, GridColumn } from '../src';
 import { name } from '../package.json';
 
 const dummyStyles = {
@@ -25,7 +25,7 @@ storiesOf(name, module)
       </Grid>
     </Page>
   ))
-  .add('nested grid with oversized column', () => (
+  .add('nested grids with oversized column', () => (
     <Page>
       <Grid>
         <GridColumn medium={8}>

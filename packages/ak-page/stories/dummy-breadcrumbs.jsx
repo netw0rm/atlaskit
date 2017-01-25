@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import Breadcrumbs, { AkBreadcrumbsItem } from 'ak-breadcrumbs';
 
-
 export default class DummyCode extends PureComponent {
   render() {
     return (

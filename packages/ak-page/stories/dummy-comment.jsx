@@ -4,7 +4,6 @@ import Comment, { CommentAction, CommentAuthor, CommentTime } from 'ak-comment';
 
 import sampleAvatarImg from './sample-avatar.png';
 
-
 export default class DummyComment extends PureComponent {
   render() {
     return (

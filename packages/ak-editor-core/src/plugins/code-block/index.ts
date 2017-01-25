@@ -1,4 +1,5 @@
 import Keymap from 'browserkeymap';
+import * as keymaps from '../../keymaps';
 import { DOMFromPos, Node, Plugin, ProseMirror, Schema } from '../../prosemirror';
 import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
@@ -20,7 +21,7 @@ export class CodeBlockState {
     pm.root.addEventListener('paste', new CodeBlockPasteListener(pm), true);
 
     pm.addKeymap(new Keymap({
-      'Enter': () => this.splitCodeBlock(),
+      [keymaps.splitCodeBlock.common!]: () => this.splitCodeBlock(),
     }));
 
     pm.updateScheduler([
@@ -79,7 +80,6 @@ export class CodeBlockState {
   }
 
   private update() {
-    let dirty = false;
     const codeBlockNode = this.activeCodeBlockNode();
 
     if (codeBlockNode !== this.activeCodeBlock) {
@@ -88,10 +88,6 @@ export class CodeBlockState {
       this.language = codeBlockNode && codeBlockNode.attrs['language'];
       this.content = codeBlockNode && codeBlockNode.textContent;
       this.element = this.activeCodeBlockElement();
-      dirty = true;
-    }
-
-    if (dirty) {
       this.changeHandlers.forEach(changeHandler => changeHandler(this));
     }
   }

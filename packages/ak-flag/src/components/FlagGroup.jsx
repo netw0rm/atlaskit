@@ -1,5 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react';
-import styles from 'style!../less/FlagGroup.less';
+import { akGridSizeInt } from 'akutil-shared-styles';
+import styled from 'styled-components';
 import FlagAnimationWrapper from './FlagAnimationWrapper';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -45,15 +46,36 @@ export default class FlagGroup extends PureComponent {
   )
 
   render() {
+    const RootSection = styled.section`
+      bottom: ${akGridSizeInt * 6};
+      left: ${akGridSizeInt * 10};
+      position: fixed;
+      z-index: 4;
+    `;
+
+    // this is an assistive h1. styles taken from `akutil-shared-styles/a11y.less`
+    const SectionHeading = styled.h1`
+      border: 0 !important;
+      clip: rect(1px, 1px, 1px, 1px) !important;
+      height: 1px !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+      position: absolute !important;
+      width: 1px !important;
+      white-space: nowrap !important;
+    `;
+
+    const FlagsWrapper = styled.div`
+      position: relative;
+    `;
+
     return (
-      <section className={styles.root}>
-        <h1 className={styles.assistive}>Flag notifications</h1>
-        <div className={styles.groupInner}>
-          {
-            React.Children.map(this.props.children, this.renderFlag)
-          }
-        </div>
-      </section>
+      <RootSection>
+        <SectionHeading>Flag notifications</SectionHeading>
+        <FlagsWrapper>{
+          React.Children.map(this.props.children, this.renderFlag)
+        }</FlagsWrapper>
+      </RootSection>
     );
   }
 }

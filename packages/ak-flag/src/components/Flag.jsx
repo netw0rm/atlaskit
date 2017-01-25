@@ -1,19 +1,17 @@
 import React, { PropTypes, PureComponent } from 'react';
-import Button from 'ak-button';
 import {
   akColorB100,
-  akColorB400,
   akColorN0,
   akColorN20A,
   akColorN30,
   akColorN50A,
-  akColorN100,
   akColorN500,
   akColorN900,
   akGridSizeInt,
 } from 'akutil-shared-styles';
 import styled from 'styled-components';
 import CancelIcon from 'ak-icon/glyph/cancel';
+import ActionItems from './internal/ActionItems';
 
 const flagWidth = akGridSizeInt * 50;
 
@@ -43,47 +41,6 @@ export default class Flag extends PureComponent {
 
   flagDismissed = () => {
     this.props.onDismissed(this.props.id);
-  }
-
-  renderActions = () => {
-    if (!this.props.actions.length) return null;
-
-    const ActionsContainer = styled.div`
-      display: flex;
-      flex-wrap: wrap;
-      padding-top: ${akGridSizeInt}px;
-    `;
-
-    const ActionButton = styled(Button)`
-      span {
-        color: ${akColorN100};
-      }
-
-      &:not(:first-child)::before {
-        color: ${akColorN500};
-        content: "\\b7\\a0"; // middot character
-        display: inline-block;
-        text-align: center;
-        vertical-align: middle;
-        width: ${akGridSizeInt * 2};
-      }
-
-      &:hover span {
-        color: ${akColorB400};
-      }
-    `;
-
-    const items = this.props.actions.map(action => (
-      <ActionButton
-        appearance="link"
-        onClick={action.onClick}
-        spacing="none"
-      >
-        <span>{action.content}</span>
-      </ActionButton>
-    ));
-
-    return <ActionsContainer>{items}</ActionsContainer>;
   }
 
   render() {
@@ -173,7 +130,7 @@ export default class Flag extends PureComponent {
               <Description>{this.props.description}</Description>
             ) : null
           }
-          { this.renderActions() }
+          <ActionItems actions={this.props.actions} />
         </TextContent>
       </Root>
     );

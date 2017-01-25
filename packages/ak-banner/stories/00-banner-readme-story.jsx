@@ -2,8 +2,10 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Readme, { Code, Props } from 'akutil-readme';
 
-import BannerExample from './examples/BannerExample'; // eslint-disable-line import/first, import/no-duplicates
-import BannerExampleRaw from '!raw!./examples/BannerExample'; // eslint-disable-line import/first, import/no-duplicates
+/* eslint-disable import/first, import/no-duplicates */
+import BannerExample from './examples/basic-usage';
+import BannerExampleRaw from '!raw!./examples/basic-usage';
+/* eslint-enable import/first, import/no-duplicates */
 
 import { name, description } from '../package.json';
 import Banner from '../src';

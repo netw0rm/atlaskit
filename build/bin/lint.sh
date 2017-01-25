@@ -22,10 +22,10 @@ set +e
 
 # Run eslint and tslint in parallel for speed!
 
-eslint --color --format "$NODE_MODULES/eslint-friendly-formatter" . --ext .js &
+eslint --color --quiet --format  "$NODE_MODULES/eslint-friendly-formatter" . --ext .js &
 eslint_js_pid=$!
 
-eslint --color --format "$NODE_MODULES/eslint-friendly-formatter" . --ext .jsx &
+eslint --color --quiet --format  "$NODE_MODULES/eslint-friendly-formatter" . --ext .jsx &
 eslint_jsx_pid=$!
 
 tslint --project tsconfig.json --format stylish &

@@ -109,7 +109,7 @@ export class EmojisPluginState {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
-  findEmojiQueryMark() {
+  private findEmojiQueryMark() {
     let start = this.pm.selection.from;
     let node = this.pm.doc.nodeAt(start);
 
@@ -159,7 +159,6 @@ export interface Emoji {
   id: string;
   name?: string;
   shortcut: string;
-  represenation?: any;
 }
 
 export interface S extends Schema {

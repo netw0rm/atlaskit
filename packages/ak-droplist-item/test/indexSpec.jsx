@@ -22,7 +22,7 @@ describe(name, () => {
 
   describe('rendering', () => {
     it('should render content that is passed to the item', () => {
-      expect(mount(<Item>sample</Item>)).to.have.text('sample');
+      expect(mount(<Item>sample</Item>).text()).to.equal('sample');
     });
 
     it('should render elemBefore for all items', () => {
@@ -141,7 +141,7 @@ describe(name, () => {
 
   describe('secondary text', () => {
     it('should render content inside', () => {
-      expect(mount(<SecondaryText>text</SecondaryText>)).to.have.text('text');
+      expect(mount(<SecondaryText>text</SecondaryText>).text()).to.equal('text');
     });
 
     it('should have className', () => {

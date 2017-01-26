@@ -20,14 +20,14 @@ describe(name, () => {
     const wrapper = shallow(<Group heading="test" />);
     expect(wrapper).to.have.descendants(`.${styles.heading}`);
     expect(wrapper.find(`.${styles.heading}`)).to.have.descendants(`.${styles.content}`);
-    expect(wrapper.find(`.${styles.content}`)).to.have.text('test');
+    expect(wrapper.find(`.${styles.content}`).text()).to.equal('test');
     expect(wrapper).to.not.have.descendants(`.${styles.elemAfter}`);
   });
 
   it('should render elemAfter', () => {
     const wrapper = mount(<Group heading="test" elemAfter="elem" />);
     expect(wrapper).to.have.descendants(`.${styles.elemAfter}`);
-    expect(wrapper.find(`.${styles.elemAfter}`)).to.have.text('elem');
+    expect(wrapper.find(`.${styles.elemAfter}`).text()).to.equal('elem');
   });
 
   it('should generate corrent ariaLabel from heading and elemAfter', () => {

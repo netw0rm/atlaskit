@@ -23,7 +23,7 @@ describe('ak-profilecard', () => {
 
       it('should show the full name on the card if property is set', () => {
         const el = card.find(`.${styles.locals.detailsFullname}`);
-        expect(el).to.have.text(fullName);
+        expect(el.text()).to.equal(fullName);
       });
 
       it('should render empty element for full name if not set', () => {
@@ -42,7 +42,7 @@ describe('ak-profilecard', () => {
             const card = mount(<AkProfilecard presence={presence} />);
             const el = card.find(`.${styles.locals.presence}`);
             expect(el.length).to.be.above(0);
-            expect(el).to.have.text(presences[presence]);
+            expect(el.text()).to.equal(presences[presence]);
           });
         });
       });

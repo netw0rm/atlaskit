@@ -51,7 +51,7 @@ describe('ak-button/default-behaviour', () => {
   it('should render iconBefore before children', () => {
     const Icon = <div id="icon">icon</div>;
     const wrapper = mount(<Button href="test" iconBefore={Icon}>button</Button>);
-    expect(wrapper).to.have.text('iconbutton');
+    expect(wrapper.text()).to.equal('iconbutton');
   });
 
   it('should render icon if the prop iconAfter is set', () => {
@@ -63,7 +63,7 @@ describe('ak-button/default-behaviour', () => {
   it('should render iconAfter after children', () => {
     const Icon = <div id="icon">icon</div>;
     const wrapper = mount(<Button href="test" iconAfter={Icon}>button</Button>);
-    expect(wrapper).to.have.text('buttonicon');
+    expect(wrapper.text()).to.equal('buttonicon');
   });
 
   it('should be able to render both of the icons', () => {
@@ -72,7 +72,7 @@ describe('ak-button/default-behaviour', () => {
     const wrapper = mount(<Button href="test" iconBefore={Icon1} iconAfter={Icon2}>button</Button>);
     expect(wrapper).to.contain(Icon1);
     expect(wrapper).to.contain(Icon2);
-    expect(wrapper).to.have.text('icon1buttonicon2');
+    expect(wrapper.text()).to.equal('icon1buttonicon2');
   });
 
   it('should call onClick handler when link is clicked', () => {

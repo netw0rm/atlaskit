@@ -26,7 +26,7 @@ describe(name, () => {
         const content = 'content';
         const wrapper = mount(<Radio>{content}</Radio>);
         expect(wrapper).to.have.exactly(1).descendants('input');
-        expect(wrapper).to.have.text(content);
+        expect(wrapper.text()).to.equal(content);
       });
 
       it('should render content with markup correctly', () => {

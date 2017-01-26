@@ -17,14 +17,14 @@ describe(name, () => {
 
   describe('audienceName prop', () => {
     it('should default to "world"', () =>
-      shallow(
+      expect(shallow(
         <Component />
-      ).find(`.${styles.root}`).should.have.text('Hello world!')
+      ).find(`.${styles.root}`).text()).to.equal('Hello world!')
     );
     it('should render supplied prop when provided', () =>
-      shallow(
+      expect(shallow(
         <Component audienceName="Sideshow Bob" />
-      ).find(`.${styles.root}`).should.have.text('Hello Sideshow Bob!')
+      ).find(`.${styles.root}`).text()).to.equal('Hello Sideshow Bob!')
     );
   });
 });

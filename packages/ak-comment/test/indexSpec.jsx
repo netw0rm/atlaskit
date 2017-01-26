@@ -69,7 +69,7 @@ describe(name, () => {
         it('can render string content', () => {
           const textContent = 'My sample content';
           const wrapper = mount(<Comment content={textContent} />);
-          expect(wrapper.find(`.${styles.locals.contentContainer}`)).to.have.text(textContent);
+          expect(wrapper.find(`.${styles.locals.contentContainer}`).text()).to.equal(textContent);
         });
       });
 

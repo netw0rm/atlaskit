@@ -30,7 +30,7 @@ describe('ak-tooltip', () => {
       // have to wrap the prop in shallow so that we can run assertions against it.
       const layerContentProp = shallow(layer.prop('content'));
       expect(layerContentProp).not.to.equal(undefined);
-      expect(layerContentProp).to.have.text('Some words!');
+      expect(layerContentProp.text()).to.equal('Some words!');
     });
 
     it('should not be reflected in the Layer content prop when Tooltip is not visible', () => {

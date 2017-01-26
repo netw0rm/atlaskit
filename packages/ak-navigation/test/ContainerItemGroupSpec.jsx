@@ -15,7 +15,7 @@ const expect = chai.expect;
 describe('<ContainerItemGroup />', () => {
   describe('props', () => {
     it('title should render a title', () => {
-      expect(mount(<ContainerItemGroup title="foo" />).find(`.${title}`)).to.have.text('foo');
+      expect(mount(<ContainerItemGroup title="foo" />).find(`.${title}`).text()).to.equal('foo');
     });
     it('action should render in the container item group', () => {
       expect(mount(<ContainerItemGroup action={<div className="create">Create button</div>} />).find('.create').length).to.be.above(0);

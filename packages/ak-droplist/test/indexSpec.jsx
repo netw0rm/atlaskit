@@ -58,7 +58,7 @@ describe(name, () => {
       const trigger = triggerWrapper.children().nodes[0];
 
       expect(trigger instanceof Trigger).to.equal(true);
-      expect(triggerWrapper).to.have.text('text');
+      expect(triggerWrapper.text()).to.equal('text');
     });
   });
 

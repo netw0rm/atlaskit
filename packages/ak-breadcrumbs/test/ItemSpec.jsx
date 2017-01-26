@@ -34,7 +34,7 @@ describe(name, () => {
       it('should render a link Button containing the content', () => {
         const text = 'text';
         const wrapper = mount(<Item text={text} />);
-        expect(wrapper.find(Button)).to.have.text(text);
+        expect(wrapper.find(Button).text()).to.equal(text);
       });
     });
 
@@ -43,7 +43,7 @@ describe(name, () => {
         it('should be reflected to the Button content', () => {
           const text = 'text';
           const wrapper = mount(<Item text={text} />);
-          expect(wrapper.find(Button)).to.have.text(text);
+          expect(wrapper.find(Button).text()).to.equal(text);
         });
       });
       describe('href prop', () => {

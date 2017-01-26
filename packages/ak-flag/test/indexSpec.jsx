@@ -39,9 +39,9 @@ describe(name, () => {
       );
 
       it('title prop text should be rendered to correct location', () =>
-        shallow(
+        expect(shallow(
           generateFlag({ title: 'Oh hi!' })
-        ).find(`.${flagLocals.title}`).should.have.text('Oh hi!')
+        ).find(`.${flagLocals.title}`).text()).to.equal('Oh hi!')
       );
 
       describe('description prop', () => {
@@ -58,9 +58,9 @@ describe(name, () => {
         );
 
         it('description prop text should be rendered to correct location', () =>
-          shallow(
+          expect(shallow(
             generateFlag({ description: 'Oh hi!' })
-          ).find(`.${flagLocals.description}`).should.have.text('Oh hi!')
+          ).find(`.${flagLocals.description}`).text()).to.equal('Oh hi!')
         );
       });
 

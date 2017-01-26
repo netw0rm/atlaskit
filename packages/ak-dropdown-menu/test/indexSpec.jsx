@@ -63,12 +63,17 @@ describe(name, () => {
     });
 
     it('should pass required properties to the button trigger', () => {
-      const menu = mount(<Menu items={itemsList} triggerType="button">text</Menu>);
-      const button = menu.find(Button);
-      expect(button.prop('isSelected')).to.equal(menu.props().isOpen);
-      expect(button.prop('ariaHaspopup')).to.equal(true);
-      expect(button.prop('ariaExpanded')).to.equal(menu.props().isOpen);
-      expect(button.prop('ariaControls')).to.not.equal(undefined);
+      [
+        <Menu items={itemsList} triggerType="button">text</Menu>,
+        <Menu items={itemsList} triggerType="button" defaultOpen>text</Menu>,
+      ].forEach((val) => {
+        const menu = mount(val);
+        const button = menu.find(Button);
+        expect(button.prop('isSelected')).to.equal(menu.props().defaultOpen);
+        expect(button.prop('ariaHaspopup')).to.equal(true);
+        expect(button.prop('ariaExpanded')).to.equal(menu.props().defaultOpen);
+        expect(button.prop('ariaControls')).to.not.equal(undefined);
+      });
     });
   });
 

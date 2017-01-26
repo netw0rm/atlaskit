@@ -91,11 +91,11 @@ describe('<EmojiPreview />', () => {
 
       expect(wrapper.find(Emoji), 'Emoji in preview').to.have.length(2);
       const first = wrapper.find(Emoji).first();
-      expect(first, 'Emoji shortcut'.prop('shortcut').to.equal(emoji.shortcut)).to.not.equal(undefined);
-      expect(first, 'Emoji skin variation'.prop('representation').to.have.all.keys(skinVariation(1))).to.not.equal(undefined);
+      expect(first.prop('shortcut'), 'Emoji shortcut').to.equal(emoji.shortcut);
+      expect(first.prop('representation'), 'Emoji skin variation').to.have.all.keys(skinVariation(1));
       const second = wrapper.find(Emoji).at(1);
-      expect(second, 'Tone shortcut'.prop('shortcut').to.equal(toneEmoji.shortcut)).to.not.equal(undefined);
-      expect(second, 'Tone skin variation'.prop('representation').to.have.all.keys(skinVariation(1))).to.not.equal(undefined);
+      expect(second.prop('shortcut'), 'Tone shortcut').to.equal(toneEmoji.shortcut);
+      expect(second.prop('representation'), 'Tone skin variation').to.have.all.keys(skinVariation(1));
     });
 
     it('button should show default tone if selected tone is not specified', () => {
@@ -106,11 +106,11 @@ describe('<EmojiPreview />', () => {
 
       expect(wrapper.find(Emoji), 'Emoji in preview').to.have.length(2);
       const first = wrapper.find(Emoji).first();
-      expect(first, 'Emoji shortcut'.prop('shortcut').to.equal(emoji.shortcut)).to.not.equal(undefined);
-      expect(first, 'Emoji skin variation'.prop('representation').to.have.all.keys(emoji.representation)).to.not.equal(undefined);
+      expect(first.prop('shortcut'), 'Emoji shortcut').to.equal(emoji.shortcut);
+      expect(first.prop('representation'), 'Emoji skin variation').to.have.all.keys(emoji.representation);
       const second = wrapper.find(Emoji).at(1);
-      expect(second, 'Tone shortcut'.prop('shortcut').to.equal(toneEmoji.shortcut)).to.not.equal(undefined);
-      expect(second, 'Tone skin variation'.prop('representation').to.have.all.keys(toneEmoji.representation)).to.not.equal(undefined);
+      expect(second.prop('shortcut'), 'Tone shortcut').to.equal(toneEmoji.shortcut);
+      expect(second.prop('representation'), 'Tone skin variation').to.have.all.keys(toneEmoji.representation);
     });
 
     it('should stop selecting tone when tone selected', () => {
@@ -121,7 +121,7 @@ describe('<EmojiPreview />', () => {
 
       wrapper.instance().onToneButtonClick();
       wrapper.instance().onToneSelected();
-      expect((wrapper).state('selectingTone')).to.equal(false);
+      expect(wrapper.state('selectingTone')).to.equal(false);
     });
 
     it('should pass onToneSelected to tone selector', () => {
@@ -144,7 +144,7 @@ describe('<EmojiPreview />', () => {
       wrapper.instance().onToneButtonClick();
 
       wrapper.simulate('mouseLeave');
-      expect((wrapper).state('selectingTone')).to.equal(false);
+      expect(wrapper.state('selectingTone')).to.equal(false);
     });
   });
 });

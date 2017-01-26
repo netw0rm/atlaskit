@@ -29,7 +29,7 @@ describe('ak-profilecard', () => {
       it('should render empty element for full name if not set', () => {
         card.setProps({ fullName: undefined });
         const el = card.find(`.${styles.locals.detailsFullname}`);
-        expect(el).to.be.blank();
+        expect(el.length).to.equal(0);
       });
     });
 

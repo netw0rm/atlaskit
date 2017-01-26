@@ -13,7 +13,7 @@ describe('ak-profilecard', () => {
   describe('IconLabel', () => {
     it('should render no label when not children are present', () => {
       const wrapper = shallow(<IconLabel />);
-      expect(wrapper).to.be.blank();
+      expect(wrapper.length).to.equal(0);
     });
 
     it('should render LabelIcon without icon when icon property is not set', () => {
@@ -22,7 +22,7 @@ describe('ak-profilecard', () => {
       expect(wrapper.find('span').text()).to.equal('Labeltext');
 
       const icon = wrapper.find(`.${styles.locals.detailsLabelIcon}`);
-      expect(icon).to.be.blank();
+      expect(icon.length).to.equal(0);
     });
 
     it('should render LabelIcon without icon when icon property is an available icon', () => {
@@ -31,7 +31,7 @@ describe('ak-profilecard', () => {
       expect(wrapper.find('span').text()).to.equal('Labeltext');
 
       const icon = wrapper.find(`.${styles.locals['pf-icon']}`);
-      expect(icon).to.be.blank();
+      expect(icon.length).to.equal(0);
     });
 
     it('should render LabelIcon with icon', () => {
@@ -40,7 +40,7 @@ describe('ak-profilecard', () => {
       expect(wrapper.find('span').text()).to.equal('Labeltext');
 
       const icon = wrapper.find(`.${styles.locals.detailsLabelIcon}`);
-      expect(icon).to.not.be.blank();
+      expect(icon.length).to.be.above(0);
     });
   });
 });

@@ -51,10 +51,10 @@ describe('ak-toggle', () => {
     });
 
     it('name', () =>
-      expect(shallow(<Toggle name="test" />).find('input')).to.have.prop('name', 'test')
+      expect(shallow(<Toggle name="test" />).find('input').prop('name', 'test')).to.not.equal(undefined)
     );
     it('value', () =>
-      expect(shallow(<Toggle value="test" />).find('input')).to.have.prop('value', 'test')
+      expect(shallow(<Toggle value="test" />).find('input').prop('value', 'test')).to.not.equal(undefined)
     );
     it('size', () =>
       expect(shallow(<Toggle size="large" />).find('label')).to.have.className(styles.locals.large)

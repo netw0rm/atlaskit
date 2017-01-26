@@ -68,7 +68,7 @@ describe(name, () => {
       expect(button.prop('isSelected')).to.equal(menu.props().isOpen);
       expect(button.prop('ariaHaspopup')).to.equal(true);
       expect(button.prop('ariaExpanded')).to.equal(menu.props().isOpen);
-      expect(button).to.have.prop('ariaControls');
+      expect(button.prop('ariaControls')).to.not.equal(undefined);
     });
   });
 

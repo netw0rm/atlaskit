@@ -77,7 +77,7 @@ describe(name, () => {
           const isRequired = true;
           const wrapper = shallow(<AkFieldRadioGroup isRequired={isRequired} />);
           wrapper.find(Radio).forEach(radio =>
-            expect(radio).to.have.prop('isRequired', isRequired)
+            expect(radio.prop('isRequired', isRequired)).to.not.equal(undefined)
           );
         });
       });

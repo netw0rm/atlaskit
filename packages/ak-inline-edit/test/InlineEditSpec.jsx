@@ -203,7 +203,7 @@ describe('ak-inline-edit', () => {
       );
 
       it('should disable field base', () =>
-        expect(wrapper.find(FieldBase)).to.have.prop('isDisabled', true)
+        expect(wrapper.find(FieldBase).prop('isDisabled', true)).to.not.equal(undefined)
       );
     });
   });

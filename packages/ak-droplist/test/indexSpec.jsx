@@ -45,7 +45,7 @@ describe(name, () => {
       expect(layer.prop('offset')).to.equal('0 4');
       expect(layer.prop('position')).to.equal('bottom left');
       expect(layer.prop('autoPosition')).to.equal(wrapper.props().shouldFlip);
-      expect(layer).to.have.prop('content');
+      expect(layer.prop('content')).to.not.equal(undefined);
     });
 
     it('should render droplist content', () => {

@@ -64,7 +64,7 @@ describe('ak-field-base', () => {
       it('should render with the isFocused styles and not the isInvalid styles', () => {
         const wrapper = shallow(<FieldBase {...defaultProps} isFocused isInvalid />);
         expect(wrapper.find(`.${isFocusedClass}`).length).to.be.above(0);
-        expect(wrapper).to.not.have.descendants(`.${isInvalidClass}`);
+        expect(wrapper.find(`.${isInvalidClass}`).length).to.equal(0);
       })
     );
 

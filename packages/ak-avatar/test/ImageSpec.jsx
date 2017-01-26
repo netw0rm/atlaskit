@@ -14,7 +14,7 @@ describe('ak-avatar', () =>
       expect(wrapper.find('img').length).to.equal(1);
     });
     it('should not render an img when the src is not set"', () =>
-      expect(shallow(<Image />)).to.not.have.descendants('img')
+      expect(shallow(<Image />).find('img').length).to.equal(0)
     );
 
     describe('default avatar', () => {
@@ -34,11 +34,11 @@ describe('ak-avatar', () =>
 
       describe('should not render default avatar', () => {
         it('when loading=true and no src', () =>
-          expect(shallow(<Image isLoading />)).to.not.have.descendants(DefaultAvatar)
+          expect(shallow(<Image isLoading />).find(DefaultAvatar).length).to.equal(0)
         );
 
         it('when src is set', () =>
-          expect(shallow(<Image src={src} />)).to.not.have.descendants(DefaultAvatar)
+          expect(shallow(<Image src={src} />).find(DefaultAvatar).length).to.equal(0)
         );
       });
     });

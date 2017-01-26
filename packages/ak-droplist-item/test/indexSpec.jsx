@@ -45,7 +45,7 @@ describe(name, () => {
     });
 
     it('should NOT render icon for the link element', () => {
-      expect(mount(<Item type="link" />)).to.not.have.descendants(`.${styles.checkradio}`);
+      expect(mount(<Item type="link" />).find(`.${styles.checkradio}`).length).to.equal(0);
     });
   });
 

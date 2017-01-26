@@ -41,8 +41,7 @@ describe('<Navigation />', () => {
         .find('Spacer').props().width).to.equal(containerClosedWidth);
     });
     it('isResizeable=false does not render a <Resizer />', () => {
-      expect(shallow(<Navigation isResizeable={false} />))
-      .to.not.have.descendants('Resizer');
+      expect(shallow(<Navigation isResizeable={false} />).find('Resizer').length).to.equal(0);
     });
     it('containerAppearance="global" is passed on to <ContainerNavigation/>', () => {
       expect(shallow(<Navigation containerAppearance="global" />).find('ContainerNavigation').prop('appearance')).to.equal('global');

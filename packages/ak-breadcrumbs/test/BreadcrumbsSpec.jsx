@@ -103,7 +103,7 @@ describe(name, () => {
           it('renders all the items', () => {
             expect(wrapper.props().isExpanded).to.equal(true);
             expect(wrapper.find(Item).length).to.equal(4);
-            expect(wrapper).to.not.have.descendants(EllipsisItem);
+            expect(wrapper.find(EllipsisItem).length).to.equal(0);
           });
         });
       });

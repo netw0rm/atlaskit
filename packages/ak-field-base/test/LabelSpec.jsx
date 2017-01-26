@@ -44,7 +44,7 @@ describe('ak-field-base', () =>
       );
 
       it('should not append an asterisk to the content if required is not set', () => {
-        expect(shallow(<Label {...defaultProps} />)).to.not.have.descendants(`.${styles.locals.required}`);
+        expect(shallow(<Label {...defaultProps} />).find(`.${styles.locals.required}`).length).to.equal(0);
         expect(shallow(<Label {...defaultProps} />)).to.not.have.text('*');
       });
     });

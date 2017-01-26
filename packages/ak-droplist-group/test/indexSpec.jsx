@@ -21,7 +21,7 @@ describe(name, () => {
     expect(wrapper.find(`.${styles.heading}`).length).to.be.above(0);
     expect(wrapper.find(`.${styles.heading}`).find(`.${styles.content}`).length).to.be.above(0);
     expect(wrapper.find(`.${styles.content}`).text()).to.equal('test');
-    expect(wrapper).to.not.have.descendants(`.${styles.elemAfter}`);
+    expect(wrapper.find(`.${styles.elemAfter}`).length).to.equal(0);
   });
 
   it('should render elemAfter', () => {

@@ -64,7 +64,7 @@ describe(name, () => {
 
   describe('onOpenChange', () => {
     it('should be open when the isOpen property set to true', () => {
-      expect(mount(<Droplist trigger="text">{itemsList}</Droplist>)).to.not.have.descendants(`.${styles.dropContent}`);
+      expect(mount(<Droplist trigger="text">{itemsList}</Droplist>).find(`.${styles.dropContent}`).length).to.equal(0);
       expect(mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>).find(`.${styles.dropContent}`).length).to.equal(1);
     });
 

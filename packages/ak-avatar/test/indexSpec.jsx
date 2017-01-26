@@ -55,7 +55,7 @@ describe('ak-avatar', () => {
       const wrapper = mount(<Avatar presence={none} />);
       expect(wrapper.find(`.${styles.locals.presenceWrapper}`))
         .to.have.className(styles.locals.hidden);
-      expect(wrapper.find(Presence)).to.not.have.descendants('svg');
+      expect(wrapper.find(Presence).find('svg').length).to.equal(0);
     });
 
     [online, busy, offline].forEach((presence) => {
@@ -119,7 +119,7 @@ describe('ak-avatar', () => {
 
     it('should not render an img tag when src is not set', () => {
       wrapper = mount(<Avatar />);
-      expect(wrapper.find(Image)).to.not.have.descendants('img');
+      expect(wrapper.find(Image).find('img').length).to.equal(0);
     });
   });
 

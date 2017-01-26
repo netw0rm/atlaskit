@@ -31,14 +31,14 @@ describe('ak-toggle', () => {
       expect(wrapper.find('input').prop('checked')).to.equal(true);
       const iconWrapper = wrapper.find('div').at(2);
       expect(iconWrapper.find(ConfirmIcon).length).to.be.above(0);
-      expect(iconWrapper).to.not.have.descendants(CloseIcon);
+      expect(iconWrapper.find(CloseIcon).length).to.equal(0);
     });
     it('isChecked=false', () => {
       const wrapper = shallow(<Toggle />);
       expect(wrapper.find('input').prop('checked')).to.equal(false);
       const iconWrapper = wrapper.find('div').at(2);
       expect(iconWrapper.find(CloseIcon).length).to.be.above(0);
-      expect(iconWrapper).to.not.have.descendants(ConfirmIcon);
+      expect(iconWrapper.find(ConfirmIcon).length).to.equal(0);
     });
     it('isDisabled=true', () => {
       const wrapper = shallow(<Toggle isDisabled />);

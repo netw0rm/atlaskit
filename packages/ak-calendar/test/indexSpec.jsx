@@ -23,8 +23,8 @@ describe(name, () => {
 
   it('should highlight current date', () => {
     const wrapper = shallow(<AkCalendar />);
-    expect(wrapper.find('div[aria-label="calendar"]').at(0))
-      .to.include.text(`${getMonthName(nowMonth)} ${nowYear}`);
+    expect(wrapper.find('div[aria-label="calendar"]').at(0).text().includes(`${getMonthName(nowMonth)} ${nowYear}`))
+      .to.equal(true);
   });
 
   it('should call onSelect', (done) => {

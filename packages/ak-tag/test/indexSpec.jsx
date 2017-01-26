@@ -6,7 +6,6 @@ import { mount } from 'enzyme';
 
 import Tag from '../src/index';
 import RemoveButton from '../src/RemoveButton';
-import Chrome from '../src/Chrome';
 import AnimationWrapper from '../src/AnimationWrapper';
 
 describe('<Tag/> component tests', () => {
@@ -27,7 +26,7 @@ describe('<Tag/> component tests', () => {
     expect(wrapper.find('a').text()).to.equal(atlassianlinkText);
     wrapper.setProps({ href: bitbucketLinkText });
     expect(wrapper.props().href).to.equal(bitbucketLinkText);
-    expect((wrapper.find(Chrome)).hasClass((styles.isRemovable))).to.equal(true);
+    expect(wrapper.find(`.${styles.chrome}`).hasClass(styles.isRemovable)).to.equal(true);
   });
 
   it('Test onBeforeRemoveAction callback contract', () => {
@@ -60,9 +59,9 @@ describe('<Tag/> component tests', () => {
   it('Test mouse over and out over remove button', () => {
     const wrapper = mount(<Tag {...testProps} />);
     wrapper.find(RemoveButton).find('button').simulate('mouseover');
-    expect((wrapper.find(Chrome)).hasClass((styles.markedForRemoval))).to.equal(true);
+    expect(wrapper.find(`.${styles.chrome}`).hasClass(styles.markedForRemoval)).to.equal(true);
     wrapper.find(RemoveButton).find('button').simulate('mouseout');
-    expect(wrapper.find(Chrome).hasClass(styles.markedForRemoval)).to.equal(false);
+    expect(wrapper.find(`.${styles.chrome}`).hasClass(styles.markedForRemoval)).to.equal(false);
   });
 
   /* TODO: figure out why this is not working

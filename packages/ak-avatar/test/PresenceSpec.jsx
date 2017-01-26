@@ -37,7 +37,7 @@ describe('ak-avatar', () => {
 
       it('should reflect the prop as a CSS style property', () => {
         const wrapper = mount(<Presence presence="online" borderColor="#ff0000" />);
-        expect(wrapper).to.have.style('border-color', '#ff0000');
+        expect(wrapper.prop('style').borderColor).to.equal('#ff0000');
       });
     });
   });

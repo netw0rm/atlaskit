@@ -70,27 +70,27 @@ describe(name, () => {
         it('connectivity type produces connectivity icon', () => {
           const wrapper = shallow(<IconForType type="connectivity" />);
           expect(wrapper.find(WarningIcon).length).to.be.above(0);
-          expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorB400);
+          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorB400);
         });
         it('confirmation type produces confirmation icon', () => {
           const wrapper = shallow(<IconForType type="confirmation" />);
           expect(wrapper.find(SuccessIcon).length).to.be.above(0);
-          expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorG300);
+          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorG300);
         });
         it('info type produces info icon', () => {
           const wrapper = shallow(<IconForType type="info" />);
           expect(wrapper.find(WarningIcon).length).to.be.above(0);
-          expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorP300);
+          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorP300);
         });
         it('warning type produces warning icon', () => {
           const wrapper = shallow(<IconForType type="warning" />);
           expect(wrapper.find(WarningIcon).length).to.be.above(0);
-          expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorY300);
+          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorY300);
         });
         it('error type produces error icon', () => {
           const wrapper = shallow(<IconForType type="error" />);
           expect(wrapper.find(WarningIcon).length).to.be.above(0);
-          expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorR300);
+          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorR300);
         });
       });
     });

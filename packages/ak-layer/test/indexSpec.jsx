@@ -50,8 +50,8 @@ describe('ak-layer', () => {
 
       const contentParent = wrapper.find('#content').parent();
 
-      expect(contentParent).to.have.style('position', 'fixed');
-      expect(contentParent).to.have.style('transform', 'translate3d(13px, 13px, 0px)');
+      expect(contentParent.prop('style').position).to.equal('fixed');
+      expect(contentParent.prop('style').transform).to.equal('translate3d(13px, 13px, 0px)');
     });
 
     it('flipped should cause onFlippedChange callback to be called', () => {

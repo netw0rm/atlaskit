@@ -5,11 +5,16 @@ const pkg = require(path.join(process.cwd(), 'package.json'));
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
 
-const { JsonFieldResolverPlugin } = require('./JsonFieldResolverPlugin');
 const moduleBabelQuery = require('./babel.query.module');
 const loaderChain = require('./loader-chain').encode;
 
 const isDevelopment = process.env.NODE_ENV === 'development';
+
+function defaultPackageMains() {
+  const options = new webpack.WebpackOptionsDefaulter();
+  options.process({});
+  return options.defaults.resolve.packageMains;
+}
 
 const css = {
   camelCase: true,
@@ -38,6 +43,7 @@ const standardConfig = {
   },
   resolve: {
     extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.jsx'],
+    packageMains: ['ak:webpack:raw', ...defaultPackageMains()],
     alias: {
       sinon: 'sinon/pkg/sinon',
     },
@@ -129,15 +135,7 @@ const standardConfig = {
       browsers: 'last 1 version, ie 11, Android > 4, not Opera < 1000',
     }),
   ],
-  plugins: [
-    new webpack.ResolverPlugin([
-      new JsonFieldResolverPlugin({
-        filename: 'package.json',
-        fields: ['ak:webpack:raw'],
-        exclude: /\/node_modules\//,
-      }),
-    ]),
-  ],
+  plugins: [],
 };
 
 module.exports = standardConfig;

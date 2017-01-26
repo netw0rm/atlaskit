@@ -42,8 +42,8 @@ describe(name, () => {
 
         it('does not render the avatar container if no avatar is provided', () => {
           const wrapper = shallow(<CommentLayout />);
-          expect(wrapper).to.not.contain(`.${styles.locals.avatarSection}`);
-          expect(wrapper).to.not.contain(`.${styles.locals.avatarContainer}`);
+          expect(wrapper.find(`.${styles.locals.avatarSection}`).length).to.equal(0);
+          expect(wrapper.find(`.${styles.locals.avatarContainer}`).length).to.equal(0);
         });
       });
 
@@ -71,12 +71,12 @@ describe(name, () => {
 
         const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
         childComments.forEach(childComment =>
-          expect(commentsContainer.contains(childComment))).to.equal(true);
+          expect(commentsContainer.contains(childComment)).to.equal(true));
       });
 
       it('should not render the container if no nested comments are provided', () => {
         const wrapper = mount(<CommentLayout />);
-        expect(wrapper).to.not.contain(`.${styles.locals.nestedComments}`);
+        expect(wrapper.contains(`.${styles.locals.nestedComments}`)).to.equal(false);
       });
     });
   });

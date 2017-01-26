@@ -26,7 +26,7 @@ describe(name, () => {
       it('should render a Button containing the children', () => {
         const children = <span>children</span>;
         const wrapper = shallow(<CommentAction>{children}</CommentAction>);
-        expect(wrapper).to.contain.exactly(1).descendants(Button);
+        expect(wrapper.find(Button).length).to.be.above(0);
         expect(wrapper.find(Button).contains(children)).to.equal(true);
       });
 

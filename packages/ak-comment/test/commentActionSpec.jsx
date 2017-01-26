@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 import Button from 'ak-button';
@@ -6,7 +5,6 @@ import Button from 'ak-button';
 import { CommentAction } from '../src/';
 import { name } from '../package.json';
 
-const { expect } = chai;
 describe(name, () => {
   describe('CommentAction', () => {
     describe('exports', () => {

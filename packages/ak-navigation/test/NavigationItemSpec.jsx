@@ -1,4 +1,3 @@
-import chai from 'chai';
 import { mount } from 'enzyme';
 import React from 'react';
 import {
@@ -8,9 +7,6 @@ import {
   link,
 } from 'style!../src/components/less/NavigationItem.less';
 import NavigationItem from '../src/components/js/NavigationItem';
-
-chai.should();
-const expect = chai.expect;
 
 describe('<NavigationItem />', () => {
   describe('props', () => {

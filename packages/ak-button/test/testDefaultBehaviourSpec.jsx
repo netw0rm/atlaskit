@@ -1,12 +1,8 @@
-import chai from 'chai';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 
 import Button from '../src/index';
 import styles from '../src/less/styles.less';
-
-
-const expect = chai.expect;
 
 describe('ak-button/default-behaviour', () => {
   it('button should have type="button" by default', () =>

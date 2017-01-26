@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -6,8 +5,6 @@ import emojiService, { emojis } from '../stories/story-data';
 import EmojiTypeAhead, { defaultListLimit } from '../src/EmojiTypeAhead';
 import EmojiTypeAheadItem from '../src/internal/typeahead/EmojiTypeAheadItem';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from './emoji-selectors';
-
-chai.should();
 
 function setupPicker(props) {
   return mount(

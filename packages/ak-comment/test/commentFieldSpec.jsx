@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 
@@ -6,7 +5,6 @@ import CommentField from '../src/internal/CommentField';
 import styles from '../src/styles.less';
 import { name } from '../package.json';
 
-const { expect } = chai;
 describe(name, () => {
   describe('CommentField', () => {
     describe('exports', () => {

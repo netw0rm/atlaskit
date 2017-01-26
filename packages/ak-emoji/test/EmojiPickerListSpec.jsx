@@ -1,11 +1,7 @@
-import chai from 'chai';
 import { mount } from 'enzyme';
 import React from 'react';
 import styles from 'style!../src/style.less';
 import EmojiList from '../src/internal/picker/EmojiPickerList';
-
-chai.should();
-const expect = chai.expect;
 
 function skinVariation(id) {
   return {

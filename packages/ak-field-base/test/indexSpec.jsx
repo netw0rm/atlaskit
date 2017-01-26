@@ -1,4 +1,3 @@
-import chai, { expect } from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import WarningIcon from 'ak-icon/glyph/warning';

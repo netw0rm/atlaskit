@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow } from 'enzyme';
 import WarningIcon from 'ak-icon/glyph/warning';
@@ -6,8 +5,6 @@ import Banner from '../src';
 import styles from '../src/style.less';
 
 import { name } from '../package.json';
-
-const { expect } = chai;
 
 describe(name, () => {
   it('basic sanity check', () =>

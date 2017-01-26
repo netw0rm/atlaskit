@@ -1,8 +1,5 @@
-import chai from 'chai';
 
 import { hasClass } from '../src';
-
-chai.should();
 
 describe.skip('hasClass', () => {
   let component;

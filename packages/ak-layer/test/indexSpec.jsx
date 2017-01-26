@@ -1,10 +1,7 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import Layer from '../src';
-
-const { expect } = chai;
 
 /* There is a lot in Layer that can not be tested easily in JSDom. Most of it should already be
    tested in Popper itself, but we should really have some sort of sanity checks for things like

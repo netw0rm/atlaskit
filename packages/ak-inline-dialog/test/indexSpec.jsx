@@ -1,12 +1,9 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Layer from 'ak-layer';
 
 import InlineDialog from '../src';
 import styles from '../src/styles.less';
-
-const { expect } = chai;
 
 const containerClass = styles.locals.inlineDialogContainer;
 

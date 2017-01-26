@@ -1,11 +1,9 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow } from 'enzyme';
 
 // Testing the dumb component
 import { Tooltip } from '../src';
 
-const { expect } = chai;
 describe('ak-tooltip', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Tooltip />);

@@ -1,11 +1,9 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import ModalDialog from '../src';
 import styles from '../src/style.less';
 
-chai.should();
 describe('ak-modal-dialog', () => {
   describe('exports', () => {
     it('should export a base component', () => {

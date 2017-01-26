@@ -1,11 +1,9 @@
-import chai from 'chai';
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
 // Testing the smart component
 import AKTooltip from '../src';
 
-const { expect } = chai;
 describe('ak-tooltip (smart)', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<AKTooltip><div>foo</div></AKTooltip>);

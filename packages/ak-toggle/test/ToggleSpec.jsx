@@ -1,5 +1,4 @@
 import sinon from 'sinon';
-import chai, { expect } from 'chai';
 import React from 'react';
 import { shallow } from 'enzyme';
 import CloseIcon from 'ak-icon/glyph/cancel';
@@ -7,7 +6,6 @@ import ConfirmIcon from 'ak-icon/glyph/confirm';
 import styles from '../src/styles.less';
 
 import { Toggle } from '../src';
-
 
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 

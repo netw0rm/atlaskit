@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Button from 'ak-button';
@@ -17,7 +16,6 @@ import IconForType from '../src/internal/IconForType';
 
 import { name } from '../package.json';
 
-const { expect } = chai;
 describe(name, () => {
   it('basic sanity check', () =>
     expect(shallow(

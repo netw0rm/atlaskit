@@ -1,4 +1,3 @@
-import chai, { expect } from 'chai';
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
@@ -6,7 +5,6 @@ import CancelIcon from 'ak-icon/glyph/cancel';
 import FieldBase, { Label } from 'ak-field-base'; // eslint-disable-line
 import Spinner from 'ak-spinner';
 import InlineEdit from '../src/InlineEdit';
-
 
 const noop = () => {};
 const Input = props =>

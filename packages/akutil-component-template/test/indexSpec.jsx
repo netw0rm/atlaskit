@@ -1,12 +1,9 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow } from 'enzyme';
 import styles from 'style!../src/styles.less';
 import Component from '../src';
 
 import { name } from '../package.json';
-
-chai.should();
 
 describe(name, () => {
   it('should render with correct CSS class name', () =>

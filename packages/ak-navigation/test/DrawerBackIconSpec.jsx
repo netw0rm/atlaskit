@@ -1,11 +1,7 @@
-import chai from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 import styles from 'style!../src/components/less/DrawerBackIcon.less';
 import DrawerBackIcon from '../src/components/js/DrawerBackIcon';
-
-chai.should();
-const expect = chai.expect;
 
 describe('<DrawerBackIcon />', () => {
   describe('props', () => {

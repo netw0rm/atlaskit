@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import chai from 'chai';
 import { mount, shallow } from 'enzyme';
 
 import iconNameToComponentName from '../bin/iconNameToComponentName';
@@ -8,9 +7,6 @@ import pathToDashed from '../bin/pathToDashed';
 import * as bundle from '../src';
 import { size } from '../src/Icon';
 import { getGlyphs } from './_helpers';
-
-const { expect } = chai;
-chai.should();
 
 const components = getGlyphs();
 

@@ -1,12 +1,9 @@
-import chai from 'chai';
 import Prism, {
   SWATCH_TEAL,
   SWATCH_PURPLE,
   InvalidSwatchError,
   InvalidColorError,
 } from './_Prism';
-
-chai.should();
 
 describe('Prism', () => {
   describe('isColor', () => {

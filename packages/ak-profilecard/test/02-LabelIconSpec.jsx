@@ -1,11 +1,8 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow } from 'enzyme';
 import styles from '../src/styles/profilecard.less';
 
 import IconLabel from '../src/components/IconLabel';
-
-const { expect } = chai;
 
 describe('ak-profilecard', () => {
   describe('IconLabel', () => {

@@ -8,7 +8,6 @@ import Editor from '../src';
 
 chai.use(chaiPlugin);
 
-const { expect } = chai;
 
 const defaultValue = [
   {

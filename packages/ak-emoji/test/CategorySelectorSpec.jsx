@@ -1,11 +1,7 @@
-import chai from 'chai';
 import { mount } from 'enzyme';
 import React from 'react';
 import styles from 'style!../src/style.less';
 import CategorySelector from '../src/internal/picker/CategorySelector';
-
-chai.should();
-const expect = chai.expect;
 
 const toAvailableCategories = categories => (
   categories.reduce((availableCategories, category) => {

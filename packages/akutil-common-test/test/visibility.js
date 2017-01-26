@@ -1,8 +1,5 @@
-import chai from 'chai';
 
 import { checkVisibility, checkInvisibility } from '../src';
-
-chai.should();
 
 describe('visible elements', () => {
   let div;

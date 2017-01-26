@@ -1,10 +1,6 @@
-import chai from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 import Resizer from '../src/components/js/Resizer';
-
-chai.should();
-const expect = chai.expect;
 
 describe('<Resizer />', () => {
   describe('interacting', () => {

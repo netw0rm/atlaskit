@@ -1,11 +1,9 @@
-import chai from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 
 import AkBadge from '../src';
 import styles from '../src/style.less';
 
-chai.should();
 describe('ak-badge', () => {
   function valueSpan(element) {
     return element.find(`.${styles.locals.value}`);

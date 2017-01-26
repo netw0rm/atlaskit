@@ -1,10 +1,8 @@
-import chai, { expect } from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Base from 'ak-field-base';
 
 import { FieldText } from '../src';
-
 
 describe('ak-field-text', () => {
   it('defaults', () => {

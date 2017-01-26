@@ -1,8 +1,7 @@
 const chai = require('chai');
 
-const constructStorybookUrl = require('./constructStorybookUrl.js');
-
 const expect = chai.expect;
+const constructStorybookUrl = require('./constructStorybookUrl.js');
 
 module.exports = function steps() {
   this.Given(

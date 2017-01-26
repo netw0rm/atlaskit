@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Base from 'ak-field-base';
@@ -7,7 +6,6 @@ import Radio from '../src/Radio';
 import AkFieldRadioGroup from '../src/RadioGroup';
 import { name } from '../package.json';
 
-const { expect } = chai;
 describe(name, () => {
   describe('AkFieldRadioGroup', () => {
     const sampleItems = [

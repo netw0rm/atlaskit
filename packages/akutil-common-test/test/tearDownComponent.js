@@ -1,12 +1,8 @@
 /** @jsx vdom */
 
 import { vdom, define } from 'skatejs';
-import chai from 'chai';
 
 import { createTemporaryComponent, tearDownComponent } from '../src';
-
-chai.should();
-const { expect } = chai;
 
 describe('getRootNode', () => {
   let component;

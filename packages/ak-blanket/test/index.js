@@ -1,11 +1,7 @@
 import { Component } from 'skatejs';
-import chai from 'chai';
 
 import AkBlanket, { events } from '../src';
 import { name } from '../package.json';
-
-chai.should();
-const expect = chai.expect;
 
 describe.skip('ak-blanket', () => {
   describe('exports', () => {

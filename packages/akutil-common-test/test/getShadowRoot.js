@@ -1,9 +1,6 @@
 import Button from 'ak-button';
-import chai from 'chai';
 
 import { getShadowRoot, waitUntil } from '../src';
-
-chai.should();
 
 describe.skip('getShadowRoot', () => {
   let component;

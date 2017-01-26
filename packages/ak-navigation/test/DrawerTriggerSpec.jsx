@@ -1,10 +1,6 @@
-import chai from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 import DrawerTrigger from '../src/components/js/DrawerTrigger';
-
-chai.should();
-const expect = chai.expect;
 
 describe('<DrawerTrigger />', () => {
   describe('interacting', () => {

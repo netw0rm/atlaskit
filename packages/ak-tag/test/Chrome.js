@@ -2,14 +2,10 @@
 
 import 'custom-event-polyfill';
 import { vdom } from 'skatejs';
-import chai from 'chai';
 import keyCode from 'keycode';
 
 import { createTemporary, removeTemporary, getRootNode } from './_helpers';
 import Chrome from '../src/Chrome';
-
-chai.should();
-const expect = chai.expect;
 
 describe.skip('ak-tag', () => {
   describe('Chrome', () => {

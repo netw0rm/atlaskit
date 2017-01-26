@@ -1,11 +1,7 @@
-import chai from 'chai';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import style from 'style!../src/components/less/GlobalActions.less';
 import GlobalActions from '../src/components/js/GlobalActions';
-
-chai.should();
-const expect = chai.expect;
 
 describe('<GlobalActions />', () => {
   describe('renders', () => {

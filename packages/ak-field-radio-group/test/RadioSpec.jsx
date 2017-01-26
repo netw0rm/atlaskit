@@ -1,11 +1,9 @@
-import chai from 'chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
 import Radio from '../src/Radio';
 import { name } from '../package.json';
 
-const { expect } = chai;
 describe(name, () => {
   describe('Radio', () => {
     describe('exports', () => {

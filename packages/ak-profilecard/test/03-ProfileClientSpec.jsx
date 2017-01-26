@@ -1,8 +1,5 @@
-import chai from 'chai';
 
 import { modifyResponse } from '../src/api/profile-client';
-
-const { expect } = chai;
 
 describe('ak-profilecard', () => {
   describe('profile-client', () => {

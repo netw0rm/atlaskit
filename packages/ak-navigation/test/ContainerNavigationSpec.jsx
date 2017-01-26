@@ -1,4 +1,3 @@
-import chai from 'chai';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import {
@@ -8,9 +7,6 @@ import {
 import ContainerNavigation from '../src/components/js/ContainerNavigation';
 import Spacer from '../src/components/js/Spacer';
 import { containerClosedWidth } from '../src/shared-variables';
-
-chai.should();
-const expect = chai.expect;
 
 describe('<ContainerNavigation />', () => {
   describe('children', () => {

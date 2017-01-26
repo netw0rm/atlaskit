@@ -1,6 +1,5 @@
 import sinon from 'sinon';
 import styles from 'style!../src/styles.less';
-import { expect } from 'chai';
 import React from 'react';
 import { mount } from 'enzyme';
 

@@ -1,8 +1,5 @@
-import chai from 'chai';
 
 import { afterMutations } from '../src';
-
-chai.should();
 
 describe.skip('afterMutations', () => {
   it('should respond to prop changes', (done) => {

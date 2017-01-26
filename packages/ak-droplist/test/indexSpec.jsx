@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Group from 'ak-droplist-group';
@@ -10,8 +9,6 @@ import { name } from '../package.json';
 import { locals as styles } from '../src/styles.less';
 
 import Droplist from '../src';
-
-const { expect } = chai;
 
 const itemsList = (<Group heading="test1">
   <Item>Some text</Item>

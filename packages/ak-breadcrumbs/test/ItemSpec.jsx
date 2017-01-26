@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Button from 'ak-button';
@@ -9,7 +8,6 @@ import { itemTruncateWidth } from '../src/internal/constants';
 import { name } from '../package.json';
 import { setItemWidth } from './_helpers';
 
-const { expect } = chai;
 describe(name, () => {
   describe('BreadcrumbsItem', () => {
     describe('exports', () => {

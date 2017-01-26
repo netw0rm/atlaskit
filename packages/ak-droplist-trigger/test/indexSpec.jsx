@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import keyCode from 'keycode';
@@ -7,8 +6,6 @@ import { name } from '../package.json';
 import styles from '../src/styles.less';
 
 import Trigger from '../src';
-
-const { expect } = chai;
 
 describe(name, () => {
   it('should be possible to create a component', () => {

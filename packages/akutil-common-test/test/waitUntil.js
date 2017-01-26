@@ -1,8 +1,5 @@
-import chai from 'chai';
 
 import { waitUntil } from '../src';
-
-chai.should();
 
 describe('waitUntil', () => {
   it('should call .then after condition is met', (done) => {

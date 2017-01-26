@@ -1,9 +1,6 @@
-import chai from 'chai';
 import keyCode from 'keycode';
 
 import { keydown, keyup, keypress } from '../src';
-
-chai.should();
 
 describe('Keyboard interaction', () => {
   const utils = { keydown, keyup, keypress };

@@ -1,5 +1,3 @@
-import { waitUntil } from 'akutil-common-test';
-import chai from 'chai';
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -10,8 +8,6 @@ import MentionList from '../../src/components/ak-mention-list';
 import MentionListError from '../../src/components/ak-mention-list-error';
 import MentionItem from '../../src/components/ak-mention-item';
 import { isMentionItemSelected, getMentionItemById } from '../_ak-selectors';
-
-chai.should();
 
 const mentions = mentionData.mentions;
 

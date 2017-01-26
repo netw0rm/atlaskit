@@ -1,12 +1,8 @@
-import chai from 'chai';
 import sinon from 'sinon';
 import { mount } from 'enzyme';
 import React from 'react';
 import styles from 'style!../src/style.less';
 import EmojiButton from '../src/internal/common/EmojiButton';
-
-chai.should();
-const expect = chai.expect;
 
 describe('<EmojiButton />', () => {
   describe('as sprite', () => {

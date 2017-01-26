@@ -1,12 +1,9 @@
-import chai from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 
 import { name } from '../package.json';
 import ButtonGroup from '../src';
 import styles from '../src/styles.less';
-
-const expect = chai.expect;
 
 describe(name, () => {
   describe('basic behavior', () => {

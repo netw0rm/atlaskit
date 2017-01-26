@@ -1,10 +1,7 @@
 import { define } from 'skatejs';
-import chai from 'chai';
 
 import locateWebComponent from '../src/index.locateWebComponent';
 import { getShadowRoot, waitUntil } from '../src';
-
-chai.should();
 
 const componentPrefix = 'x-foo';
 

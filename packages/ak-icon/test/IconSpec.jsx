@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react';
-import chai from 'chai';
 import { mount, shallow } from 'enzyme';
 
 import { name } from '../package.json';
 import Icon, { size, NotImplementedError } from '../src/Icon';
 import styles from '../src/styles.less';
 
-const { expect } = chai;
 describe(name, () => {
   describe('Icon', () => {
     const secretContent = 'secret content';

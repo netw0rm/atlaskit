@@ -1,12 +1,8 @@
-import chai from 'chai';
 import sinon from 'sinon';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import ToneSelector from '../src/internal/common/ToneSelector';
 import EmojiButton from '../src/internal/common/EmojiButton';
-
-chai.should();
-const expect = chai.expect;
 
 function skinVariation(id) {
   return {

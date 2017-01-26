@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import Navigation from '../src/components/js/Navigation';

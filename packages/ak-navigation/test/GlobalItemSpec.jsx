@@ -1,11 +1,7 @@
-import chai from 'chai';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import styles from 'style-loader!../src/components/less/GlobalItem.less';
 import GlobalItem from '../src/components/js/GlobalItem';
-
-chai.should();
-const expect = chai.expect;
 
 describe('<GlobalItem />', () => {
   describe('props', () => {

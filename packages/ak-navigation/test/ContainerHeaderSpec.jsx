@@ -1,10 +1,6 @@
-import chai from 'chai';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import ContainerHeader from '../src/components/js/ContainerHeader';
-
-chai.should();
-const expect = chai.expect;
 
 describe('<ContainerHeader />', () => {
   describe('props', () => {

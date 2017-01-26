@@ -1,11 +1,7 @@
-import chai from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 import styles from 'style!../src/style.less';
 import Emoji from '../src/Emoji';
-
-chai.should();
-const expect = chai.expect;
 
 describe('<Emoji />', () => {
   describe('as sprite', () => {

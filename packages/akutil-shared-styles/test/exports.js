@@ -1,10 +1,7 @@
-import chai from 'chai';
 import rgba from 'rgba-convert';
 
 import * as lessVars from '../src';
 import Prism from './_Prism';
-
-chai.should();
 
 const tintBase = 'akColorN900';
 

@@ -1,10 +1,6 @@
-import chai from 'chai';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import GlobalNavigation from '../src/components/js/GlobalNavigation';
-
-chai.should();
-const expect = chai.expect;
 
 describe('<GlobalNavigation />', () => {
   describe('renders', () => {

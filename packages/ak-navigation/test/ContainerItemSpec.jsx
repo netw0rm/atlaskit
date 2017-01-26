@@ -1,4 +1,3 @@
-import chai from 'chai';
 import { mount } from 'enzyme';
 import React from 'react';
 import {
@@ -6,9 +5,6 @@ import {
   hasGlobalAppearance,
 } from 'style!../src/components/less/ContainerItem.less';
 import ContainerItem from '../src/components/js/ContainerItem';
-
-chai.should();
-const expect = chai.expect;
 
 describe('<ContainerItem />', () => {
   describe('props', () => {

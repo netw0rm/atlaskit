@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Avatar from 'ak-avatar';
@@ -7,7 +6,6 @@ import { CommentLayout } from '../src/';
 import styles from '../src/styles.less';
 import { name } from '../package.json';
 
-const { expect } = chai;
 describe(name, () => {
   describe('CommentLayout', () => {
     describe('exports', () => {

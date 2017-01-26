@@ -1,11 +1,9 @@
-import chai from 'chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
 import FieldRadioGroup, { AkFieldRadioGroup, AkRadio } from '../src';
 import { name } from '../package.json';
 
-const { expect } = chai;
 describe(name, () => {
   describe('FieldRadioGroup', () => {
     const sampleItems = [

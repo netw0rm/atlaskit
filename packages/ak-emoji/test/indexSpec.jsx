@@ -1,8 +1,5 @@
-import chai from 'chai';
 import Nothing, * as other from '../src';
 import { name } from '../package.json';
-
-chai.should();
 
 describe(name, () => {
   describe('exports', () => {

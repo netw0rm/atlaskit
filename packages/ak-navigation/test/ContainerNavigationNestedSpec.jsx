@@ -1,11 +1,7 @@
-import chai from 'chai';
 import { mount } from 'enzyme';
 import React from 'react';
 import styles from 'style!../src/components/less/ContainerNavigationNested.less';
 import ContainerNavigationNested from '../src/components/js/ContainerNavigationNested';
-
-chai.should();
-const expect = chai.expect;
 
 describe('<ContainerNavigationNested />', () => {
   describe('rendering', () => {

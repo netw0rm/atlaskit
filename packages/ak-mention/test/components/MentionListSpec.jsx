@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -6,8 +5,6 @@ import mentionData, { mentionDataSize } from '../_mention-data';
 import MentionList from '../../src/components/ak-mention-list';
 import MentionItem from '../../src/components/ak-mention-item';
 import { isMentionItemSelected } from '../_ak-selectors';
-
-chai.should();
 
 const mentions = mentionData.mentions;
 

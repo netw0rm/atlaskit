@@ -1,11 +1,8 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import styles from '../src/styles.less';
 
 import Spinner from '../src';
-
-const { expect } = chai;
 
 const {
   spinner: spinnerClass,

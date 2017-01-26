@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Flag, { FlagGroup } from '../src';
@@ -6,7 +5,6 @@ import flagStyles from '../src/less/Flag.less';
 
 import { name } from '../package.json';
 
-chai.should();
 const { locals: flagLocals } = flagStyles;
 
 describe(name, () => {

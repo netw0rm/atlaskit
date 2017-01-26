@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
@@ -8,7 +7,6 @@ import icons from '../src/internal/icons';
 import presences from '../src/internal/presences';
 import { locals as styles } from '../src/styles.less';
 
-const { expect } = chai;
 describe('ak-avatar', () => {
   describe('Presence', () => {
     presences.forEach(presence =>

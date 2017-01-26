@@ -1,12 +1,9 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import styles from '../src/styles/profilecard.less';
 
 import { AkProfilecard } from '../src';
 import presences from '../src/internal/presences';
-
-const { expect } = chai;
 
 describe('ak-profilecard', () => {
   describe('AkProfilecard', () => {

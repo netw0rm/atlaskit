@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
@@ -10,7 +9,6 @@ import { locals } from '../src/styles.less';
 import EllipsisItem from '../src/internal/EllipsisItem';
 import { name } from '../package.json';
 
-const { expect } = chai;
 describe(name, () => {
   describe('AkBreadcrumbs', () => {
     describe('exports', () => {

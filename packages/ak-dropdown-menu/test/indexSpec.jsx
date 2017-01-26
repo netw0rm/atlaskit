@@ -1,4 +1,3 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Droplist from 'ak-droplist';
@@ -7,8 +6,6 @@ import Button from 'ak-button';
 import { name } from '../package.json';
 
 import Menu from '../src';
-
-const { expect } = chai;
 
 const itemsList = [
   {

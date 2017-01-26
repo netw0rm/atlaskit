@@ -1,12 +1,9 @@
 /** @jsx vdom */
 
 import { vdom } from 'skatejs';
-import chai from 'chai';
 
 import { createTemporary, removeTemporary, getRootNode } from './_helpers';
 import Root from '../src/Root';
-
-chai.should();
 
 describe.skip('ak-tag', () => {
   describe('Root', () => {

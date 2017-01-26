@@ -30,7 +30,7 @@ describe('analytics decorator', () => {
     }
 
     const instance = new AnnotatedTestClass();
-    expect(spy.called).to.equal(true);
+    expect(spy.called).to.equal(false);
 
     instance.foo();
     expect(spy.calledWith('test.event')).to.equal(true);

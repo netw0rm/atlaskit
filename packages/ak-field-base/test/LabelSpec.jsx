@@ -33,8 +33,7 @@ describe('ak-field-base', () =>
       it('should be reflected in the label element', () => {
         const label = 'This is a label';
         const wrapper = shallow(<Label label={label} isLabelHidden />);
-        expect(wrapper.find(`.${styles.locals.labelText}`))
-          .to.have.className(styles.locals.hidden);
+        expect(wrapper.find(`.${styles.locals.labelText}`).hasClass(styles.locals.hidden)).to.equal(true);
       });
     });
 

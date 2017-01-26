@@ -23,7 +23,7 @@ describe('ak-field-text', () => {
     ].forEach(prop =>
       describe(JSON.stringify(prop), () =>
         it('FieldBase should have attribute defined', () =>
-          expect(shallow(<FieldText {...prop} />).find(Base)).to.have.props(prop)
+          expect(shallow(<FieldText {...prop} />).find(Base).props()).to.deep.equal(prop)
         )
       )
     );
@@ -42,7 +42,7 @@ describe('ak-field-text', () => {
     ].forEach(prop =>
       describe(JSON.stringify(prop), () =>
         it('Input should have attribute defined', () =>
-          expect(shallow(<FieldText {...prop} />).find('input')).to.have.props(prop)
+          expect(shallow(<FieldText {...prop} />).find('input').props()).to.deep.equal(prop)
         )
       )
     );

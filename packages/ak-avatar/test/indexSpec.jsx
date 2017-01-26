@@ -53,8 +53,7 @@ describe('ak-avatar', () => {
   describe('presence property', () => {
     it('should not be visible when set to "none"', () => {
       const wrapper = mount(<Avatar presence={none} />);
-      expect(wrapper.find(`.${styles.locals.presenceWrapper}`))
-        .to.have.className(styles.locals.hidden);
+      expect(wrapper.find(`.${styles.locals.presenceWrapper}`).hasClass(styles.locals.hidden)).to.equal(true);
       expect(wrapper.find(Presence).find('svg').length).to.equal(0);
     });
 
@@ -134,8 +133,7 @@ describe('ak-avatar', () => {
     it('should apply the .loaded class when not loading', () => {
       const wrapper = mount(<Avatar />);
       wrapper.setState({ isLoading: false });
-      expect(wrapper.find(`.${styles.locals.imgWrapper}`))
-        .to.have.className(styles.locals.loaded);
+      expect(wrapper.find(`.${styles.locals.imgWrapper}`).hasClass(styles.locals.loaded)).to.equal(true);
     });
   });
 });

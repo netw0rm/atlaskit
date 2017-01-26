@@ -1,6 +1,6 @@
 import chai from 'chai';
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import Tag from 'ak-tag';
 import TagGroup from '../src';
 import styles from '../src/styles.less';
@@ -14,7 +14,7 @@ describe('ak-tag-group', () => {
   it('should render supplied tags', () => {
     const tags = ['Candy canes', 'Tiramisu', 'Gummi bears'];
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <TagGroup>
         {
           tags.map(tagName => <Tag key={tagName} text={tagName} />)
@@ -22,9 +22,7 @@ describe('ak-tag-group', () => {
       </TagGroup>
     );
 
-    tags.forEach((tagName) => {
-      wrapper.html().contains(tagName).should.be.equal(true);
-    });
+    wrapper.text().should.be.equal(tags.join(''));
   });
 
   it('should apply the .endAligned class when aligment prop is set to end', () => {

@@ -26,10 +26,10 @@ describe('ak-profilecard', () => {
         expect(el.text()).to.equal(fullName);
       });
 
-      it('should render empty element for full name if not set', () => {
+      it('should render empty element for full name is not set', () => {
         card.setProps({ fullName: undefined });
         const el = card.find(`.${styles.locals.detailsFullname}`);
-        expect(el.length).to.equal(0);
+        expect(el.text()).to.equal('');
       });
     });
 

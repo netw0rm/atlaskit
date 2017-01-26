@@ -203,7 +203,7 @@ describe('block-type', () => {
 
     plugin.subscribe(spy);
 
-    expect(spy).to.have.been.callCount(1);
+    expect(spy.callCount).to.equal(1);
     expect(spy.calledWith(plugin)).to.equal(true);
   });
 
@@ -214,7 +214,7 @@ describe('block-type', () => {
     plugin.subscribe(spy);
     plugin.changeBlockType('heading1');
 
-    expect(spy).to.have.been.callCount(2);
+    expect(spy.callCount).to.equal(2);
     expect(spy.calledWith(plugin)).to.equal(true);
   });
 
@@ -392,7 +392,7 @@ describe('block-type', () => {
 
         pm.input.dispatchKey('Shift-Enter');
 
-        expect(insertNewLine).to.have.been.callCount(1);
+        expect(insertNewLine.callCount).to.equal(1);
       });
     });
 

@@ -3,6 +3,7 @@ import * as chai from 'chai';
 import jsonSchema from '../../src/schema/json-schema';
 import { schema } from '../../test-helper/schema';
 
+const { expect } = chai;
 // tslint:disable-next-line:variable-name
 const Ajv = ((ajvModule as any).default || ajvModule);
 const ajv = new Ajv();

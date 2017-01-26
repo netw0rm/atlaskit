@@ -20,7 +20,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Cmd-B');
 
-            expect(toggleStrong).to.have.been.callCount(1);
+            expect(toggleStrong.callCount).to.equal(1);
           });
         });
 
@@ -31,7 +31,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Cmd-I');
 
-            expect(toggleEm).to.have.been.callCount(1);
+            expect(toggleEm.callCount).to.equal(1);
           });
         });
 
@@ -42,7 +42,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Cmd-U');
 
-            expect(toggleUnderline).to.have.been.callCount(1);
+            expect(toggleUnderline.callCount).to.equal(1);
           });
         });
 
@@ -57,7 +57,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Shift-Cmd-S');
 
-            expect(toggleStrike).to.have.been.callCount(1);
+            expect(toggleStrike.callCount).to.equal(1);
           });
         });
 
@@ -68,7 +68,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Shift-Cmd-M');
 
-            expect(toggleMono).to.have.been.callCount(1);
+            expect(toggleMono.callCount).to.equal(1);
           });
         });
       });
@@ -81,7 +81,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Ctrl-B');
 
-            expect(toggleStrong).to.have.been.callCount(1);
+            expect(toggleStrong.callCount).to.equal(1);
           });
         });
 
@@ -92,7 +92,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Ctrl-I');
 
-            expect(toggleEm).to.have.been.callCount(1);
+            expect(toggleEm.callCount).to.equal(1);
           });
         });
 
@@ -103,7 +103,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Ctrl-U');
 
-            expect(toggleUnderline).to.have.been.callCount(1);
+            expect(toggleUnderline.callCount).to.equal(1);
           });
         });
 
@@ -118,7 +118,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Shift-Ctrl-S');
 
-            expect(toggleStrike).to.have.been.callCount(1);
+            expect(toggleStrike.callCount).to.equal(1);
           });
         });
 
@@ -129,7 +129,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Shift-Ctrl-M');
 
-            expect(toggleMono).to.have.been.callCount(1);
+            expect(toggleMono.callCount).to.equal(1);
           });
         });
       });
@@ -147,7 +147,7 @@ describe('text-formatting', () => {
     const spy = sinon.spy();
     plugin.subscribe(spy);
 
-    expect(spy).to.have.been.callCount(1);
+    expect(spy.callCount).to.equal(1);
     expect(spy.calledWith(plugin)).to.equal(true);
   });
 
@@ -158,7 +158,7 @@ describe('text-formatting', () => {
 
     plugin.toggleEm();
 
-    expect(spy).to.have.been.callCount(2);
+    expect(spy.callCount).to.equal(2);
     expect(spy.calledWith(plugin)).to.equal(true);
   });
 

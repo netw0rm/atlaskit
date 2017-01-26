@@ -6,7 +6,7 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import stringRepeat from '../src/util/string-repeat';
 
-import { AnalyticsHandler, analyticsService, browser, ProseMirror } from 'ak-editor-core';
+import { analyticsService, browser, ProseMirror } from 'ak-editor-core';
 
 import Editor from '../src/index';
 
@@ -43,7 +43,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
     expect(handler.called).to.equal(false);
     mount(<ContainerWithTwoEditors />);
     expect(handler.calledWith('atlassian.editor.start')).to.equal(true);
-    expect(handler).to.have.been.calledTwice;
+    expect(handler.callCount).to.equal(2);
   });
 
   it('editor.start must not be called when unmounting component', () => {
@@ -70,7 +70,7 @@ describe('ak-editor-bitbucket/analytics/analyticsHandler', () => {
 
 describe('ak-editor-bitbucket/analytics/formatting', () => {
   const fixture = fixtures();
-  let handler: AnalyticsHandler | null;
+  let handler;
   let editor: ReactWrapper<any, any>;
   let editorAPI: Editor | null;
   let pm: ProseMirror;

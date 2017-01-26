@@ -24,7 +24,7 @@ describe('lists', () => {
 
         pm.input.dispatchKey('Enter');
 
-        expect(splitListItem).to.have.been.callCount(1);
+        expect(splitListItem.callCount).to.equal(1);
       });
     });
 
@@ -37,7 +37,7 @@ describe('lists', () => {
 
             pm.input.dispatchKey('Shift-Cmd-L');
 
-            expect(toggleOrderedList).to.have.been.callCount(1);
+            expect(toggleOrderedList.callCount).to.equal(1);
           });
         });
 
@@ -48,7 +48,7 @@ describe('lists', () => {
 
             pm.input.dispatchKey('Shift-Cmd-B');
 
-            expect(toggleBulletList).to.have.been.callCount(1);
+            expect(toggleBulletList.callCount).to.equal(1);
           });
         });
       });
@@ -61,7 +61,7 @@ describe('lists', () => {
 
             pm.input.dispatchKey('Shift-Ctrl-L');
 
-            expect(toggleOrderedList).to.have.been.callCount(1);
+            expect(toggleOrderedList.callCount).to.equal(1);
           });
         });
 
@@ -72,7 +72,7 @@ describe('lists', () => {
 
             pm.input.dispatchKey('Shift-Ctrl-B');
 
-            expect(toggleBulletList).to.have.been.callCount(1);
+            expect(toggleBulletList.callCount).to.equal(1);
           });
         });
       });
@@ -96,7 +96,7 @@ describe('lists', () => {
 
       plugin.toggleOrderedList();
 
-      expect(spy).to.have.been.callCount(2);
+      expect(spy.callCount).to.equal(2);
       expect(plugin).to.have.property('orderedListActive', true);
       expect(plugin).to.have.property('orderedListDisabled', false);
       expect(plugin).to.have.property('orderedListHidden', false);
@@ -113,7 +113,7 @@ describe('lists', () => {
 
       pm.setTextSelection(end);
 
-      expect(spy).to.have.been.callCount(1);
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should not emit extra change events when moving within an ordered list to the last character', () => {
@@ -124,7 +124,7 @@ describe('lists', () => {
 
       pm.setTextSelection(end);
 
-      expect(spy).to.have.been.callCount(1);
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should emit change events when the state has changed', () => {
@@ -137,7 +137,7 @@ describe('lists', () => {
       plugin.toggleBulletList();
       plugin.toggleBulletList();
 
-      expect(spy).to.have.been.callCount(5);
+      expect(spy.callCount).to.equal(5);
     });
 
     it('should emit change events when the state has changed with entire word selected', () => {
@@ -150,7 +150,7 @@ describe('lists', () => {
       plugin.toggleBulletList();
       plugin.toggleBulletList();
 
-      expect(spy).to.have.been.callCount(5);
+      expect(spy.callCount).to.equal(5);
     });
 
     it('should allow toggling between normal text and ordered list', () => {

@@ -30,14 +30,14 @@ describe('analytics decorator', () => {
     }
 
     const instance = new AnnotatedTestClass();
-    expect(spy).to.have.not.been.called;
+    expect(spy.called).to.equal(true);
 
     instance.foo();
     expect(spy.calledWith('test.event')).to.equal(true);
     expect(spy.callCount).to.equal(1);
 
     instance.foo();
-    expect(spy).to.have.been.calledTwice;
+    expect(spy.callCount).to.equal(2);
     expect(spy.calledWith('test.event')).to.equal(true);
   });
 
@@ -51,14 +51,14 @@ describe('analytics decorator', () => {
     }
 
     const instance = new AnnotatedTestClass2();
-    expect(spy).to.have.not.been.called;
+    expect(spy.called).to.equal(false);
 
     instance.foo();
     expect(spy.calledWith('test.event.foo')).to.equal(true);
     expect(spy.callCount).to.equal(1);
 
     instance.bar();
-    expect(spy).to.have.been.calledTwice;
+    expect(spy.callCount).to.equal(2);
     expect(spy.calledWith('test.event.bar')).to.equal(true);
   });
 
@@ -104,10 +104,10 @@ describe('analytics decorator', () => {
     }
 
     const instance = new AnnotatedTestClass3();
-    expect(spy).to.have.not.been.called;
+    expect(spy.called).to.equal(false);
 
     instance.foo();
-    expect(spy).to.have.been.calledTwice;
+    expect(spy.callCount).to.equal(2);
     expect(spy.calledWith('test.event.foo')).to.equal(true);
     expect(spy.calledWith('test.event.bar')).to.equal(true);
   });

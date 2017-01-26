@@ -27,7 +27,7 @@ describe('ak-editor-core/ui/PanelTextInput', () => {
     const input = panel.find('input');
     input.simulate('keydown', { which: 'enter', keyCode: 13, preventDefault });
 
-    expect(preventDefault, 'component didn`t call preventDefault').to.be.calledOnce;
+    expect(preventDefault.callCount, 'component didn`t call preventDefault').to.equal(1);
   });
 
   it('should not prevent KeyDown event if any other key is pressed', () => {
@@ -37,7 +37,7 @@ describe('ak-editor-core/ui/PanelTextInput', () => {
     const input = panel.find('input');
     input.simulate('keydown', { which: 'a', keyCode: 65, preventDefault });
 
-    expect(preventDefault).to.be.not.called;
+    expect(preventDefault.called).to.equal(false);
   });
 
   it('should call onCancel when ESC key is pressed', () => {
@@ -47,6 +47,6 @@ describe('ak-editor-core/ui/PanelTextInput', () => {
     const input = panel.find('input');
     input.simulate('keydown', { which: 'esc', keyCode: 27 });
 
-    expect(onCancelHandler).to.have.been.called;
+    expect(onCancelHandler.called).to.equal(true);
   });
 });

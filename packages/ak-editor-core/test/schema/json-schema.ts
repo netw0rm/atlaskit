@@ -2,6 +2,7 @@ import * as chai from 'chai';
 import { Attribute, Block, EmMarkType, Inline, MarkType, Schema, StrongMarkType, Text } from '../../src';
 import jsonSchema from '../../src/schema/json-schema';
 
+const { expect } = chai;
 
 describe('ak-editor-core: json-schema', () => {
   class Image extends Inline {

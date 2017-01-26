@@ -31,7 +31,7 @@ describe('code-block', () => {
         plugin.subscribe(spy);
         pm.setTextSelection(pPos);
 
-        expect(spy).to.have.been.calledTwice;
+        expect(spy.callCount).to.equal(2);
       });
     });
 
@@ -44,7 +44,7 @@ describe('code-block', () => {
         plugin.subscribe(spy);
         pm.setTextSelection(cbPos);
 
-        expect(spy).to.have.been.calledTwice;
+        expect(spy.callCount).to.equal(2);
       });
     });
 
@@ -57,7 +57,7 @@ describe('code-block', () => {
         plugin.subscribe(spy);
         pm.setTextSelection(cbPos);
 
-        expect(spy).to.have.been.calledTwice;
+        expect(spy.callCount).to.equal(2);
       });
     });
 
@@ -70,7 +70,7 @@ describe('code-block', () => {
         plugin.subscribe(spy);
         pm.setTextSelection(cbPos);
 
-        expect(spy).to.not.have.been.calledTwice;
+        expect(spy.callCount).to.not.equal(2);
       });
     });
 
@@ -84,7 +84,7 @@ describe('code-block', () => {
         plugin.unsubscribe(spy);
         pm.setTextSelection(cbPos);
 
-        expect(spy).to.not.have.been.calledTwice;
+        expect(spy.callCount).to.not.equal(2);
       });
     });
   });
@@ -97,7 +97,7 @@ describe('code-block', () => {
 
         pm.input.dispatchKey('Enter');
 
-        expect(splitCodeBlock).to.have.been.callCount(1);
+        expect(splitCodeBlock.callCount).to.equal(1);
       });
     });
 

@@ -18,36 +18,36 @@ describe(name, () => {
       it('should default to warning appearance', () =>
         expect(shallow(
           <Banner />
-        )).to.have.descendants(`.${styles.locals.warning}`)
+        ).find(`.${styles.locals.warning}`).isEmpty()).to.equal(false)
       );
       it('should apply error appearance class when error appearance supplied', () =>
         expect(shallow(
           <Banner appearance="error" />
-        )).to.have.descendants(`.${styles.locals.error}`)
+        ).find(`.${styles.locals.error}`).isEmpty()).to.equal(false)
       );
     });
     it('should render children prop', () =>
       expect(shallow(
         <Banner>Testing yeah!</Banner>
-      ).find(`.${styles.locals.bannerText}`)).to.have.text('Testing yeah!')
+      ).find(`.${styles.locals.bannerText}`).text()).to.equal('Testing yeah!')
     );
     it('should render icon prop', () =>
       expect(shallow(
         <Banner
           icon={<WarningIcon label="Warning" />}
         />
-      )).to.have.descendants(WarningIcon)
+      ).find(WarningIcon).isEmpty()).to.equal(false)
     );
     describe('isOpen prop', () => {
       it('should default to not being open', () =>
         expect(shallow(
           <Banner />
-        )).to.not.have.descendants(`.${styles.locals.open}`)
+        ).find(`.${styles.locals.open}`).isEmpty()).to.equal(true)
       );
       it('should apply open class when isOpen', () =>
         expect(shallow(
           <Banner isOpen />
-        )).to.have.descendants(`.${styles.locals.open}`)
+        ).find(`.${styles.locals.open}`).isEmpty()).to.equal(false)
       );
     });
   });

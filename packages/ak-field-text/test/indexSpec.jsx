@@ -21,11 +21,11 @@ describe('ak-field-text', () => {
       { required: true },
       { label: 'test' },
     ].forEach(prop =>
-      describe(JSON.stringify(prop), () =>
-        it('FieldBase should have attribute defined', () =>
-          expect(shallow(<FieldText {...prop} />).find(Base).props()).to.deep.equal(prop)
-        )
-      )
+      it('FieldBase should have attribute defined', () => {
+        const key = Object.keys(prop)[0];
+        const value = prop[key];
+        expect(shallow(<FieldText {...prop} />).find(Base).prop(key)).to.equal(value);
+      })
     );
 
     it('FieldBase should have appearance="compact"', () =>
@@ -41,9 +41,11 @@ describe('ak-field-text', () => {
       { required: true },
     ].forEach(prop =>
       describe(JSON.stringify(prop), () =>
-        it('Input should have attribute defined', () =>
-          expect(shallow(<FieldText {...prop} />).find('input').props()).to.deep.equal(prop)
-        )
+        it('Input should have attribute defined', () => {
+          const key = Object.keys(prop)[0];
+          const value = prop[key];
+          expect(shallow(<FieldText {...prop} />).find('input').prop(key)).to.equal(value);
+        })
       )
     );
 

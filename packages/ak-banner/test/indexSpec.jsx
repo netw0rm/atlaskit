@@ -55,17 +55,17 @@ describe(name, () => {
     it('should have role=alert', () =>
       expect(shallow(
         <Banner />
-      ).find(`.${styles.locals.banner}`)).to.have.attr('role', 'alert')
+      ).find(`.${styles.locals.banner}`).is('[role="alert"]')).to.equal(true)
     );
     it('should be aria-hidden=false when isOpen is true', () =>
       expect(shallow(
         <Banner isOpen />
-      ).find(`.${styles.locals.banner}`)).to.have.attr('aria-hidden', 'false')
+      ).find(`.${styles.locals.banner}`).is('[aria-hidden=false]')).to.equal(true)
     );
     it('should be aria-hidden=true when isOpen is false', () =>
       expect(shallow(
         <Banner />
-      ).find(`.${styles.locals.banner}`)).to.have.attr('aria-hidden', 'true')
+      ).find(`.${styles.locals.banner}`).is('[aria-hidden=true]')).to.equal(true)
     );
   });
 });

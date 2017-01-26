@@ -183,7 +183,7 @@ describe(name, () => {
     it('should have role="img"', () => {
       const { AtlassianIcon } = bundle;
       const wrapper = mount(<AtlassianIcon label="My label" />);
-      expect(wrapper.find('svg')).to.have.attr('role', 'img');
+      expect(wrapper.find('svg').is('[role="img"]')).to.equal(true);
     });
 
     it('should be possible to create the components', () => {
@@ -203,7 +203,7 @@ describe(name, () => {
         const wrapper = mount(<AtlassianIcon label={label} />);
         const svgWrapper = wrapper.find('svg').first();
 
-        expect(svgWrapper).to.have.attr('aria-labelledby');
+        expect(svgWrapper.is('[aria-labelledby]')).to.equal(true);
 
         const svg = svgWrapper.get(0);
         const labelledBy = svg.getAttribute('aria-labelledby');

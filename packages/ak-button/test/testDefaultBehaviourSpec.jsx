@@ -91,11 +91,11 @@ describe('ak-button/default-behaviour', () => {
 
   it('should render tabIndex attribute when the tabIndex property is set', () => {
     let wrapper = mount(<Button tabIndex={0}>button</Button>);
-    expect(wrapper).to.have.attr('tabIndex', '0');
+    expect(wrapper.is('[tabIndex="0"]')).to.equal(true);
     wrapper = mount(<Button href="#" tabIndex={0}>link</Button>);
-    expect(wrapper).to.have.attr('tabIndex', '0');
+    expect(wrapper.is('[tabIndex="0"]')).to.equal(true);
     wrapper = mount(<Button tabIndex={0} isDisabled>span</Button>);
-    expect(wrapper).to.have.attr('tabIndex', '0');
+    expect(wrapper.is('[tabIndex="0"]')).to.equal(true);
   });
 
   it('should set accessibility attributes', () => {

@@ -26,7 +26,7 @@ describe(name, () => {
 
   describe('Flag', () => {
     it('should instantiate', () =>
-      shallow(generateFlag()).should.have.className(flagLocals.root)
+      shallow(generateFlag()).hasClass(flagLocals.root).should.equal(true)
     );
 
     describe('props', () => {
@@ -48,13 +48,13 @@ describe(name, () => {
         it('description element should not be rendered if description prop is empty', () =>
           shallow(
             generateFlag({ description: '' })
-          ).find(`.${flagLocals.description}`).should.not.exist
+          ).find(`.${flagLocals.description}`).isEmpty().should.equal(true)
         );
 
         it('description element should not be rendered if description prop not passed', () =>
           shallow(
             generateFlag()
-          ).find(`.${flagLocals.description}`).should.not.exist
+          ).find(`.${flagLocals.description}`).isEmpty().should.equal(true)
         );
 
         it('description prop text should be rendered to correct location', () =>
@@ -116,7 +116,7 @@ describe(name, () => {
             onDismissed: spy,
           })
         );
-        wrapper.should.not.have.descendants(`.${flagLocals.dismissIconButton}`);
+        wrapper.find(`.${flagLocals.dismissIconButton}`).length.should.equal(0);
         expect(spy.callCount).to.equal(0);
       });
     });
@@ -130,7 +130,7 @@ describe(name, () => {
           { generateFlag() }
           { generateFlag() }
         </FlagGroup>
-      ).should.have.exactly(3).descendants(`.${flagLocals.root}`)
+      ).find(`.${flagLocals.root}`).length.should.equal(3)
     );
 
     it('onDismissed should be called when child Flag is dismissed', () => {

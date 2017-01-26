@@ -78,6 +78,7 @@ const standardConfig = {
           loader: loaderChain({
             'ts-loader': {
               configFileName: 'tsconfig.webpack.json',
+              logLevel: 'warn',
             },
           }),
           exclude: /node_modules/,

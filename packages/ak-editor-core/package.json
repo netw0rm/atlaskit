@@ -4,14 +4,12 @@
   "description": "A package contains Atlassian editor core functionality",
   "main": "src/index.js",
   "jsnext:main": "dist/es2015/index.js",
-  "ak:webpack:raw": "src/index.ts",
-  "types": "src/index.ts",
+  "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
-    "build": "npm run build/es2015 && npm run build/es5 && npm run build/package.json",
+    "build": "npm run build/es2015 && npm run build/es5",
     "build/es2015": "../../node_modules/.bin/babel --out-dir dist/es2015 --source-root src --no-babelrc src && ../../node_modules/.bin/tsc -p build/es2015",
-    "build/es5": "../../node_modules/.bin/babel --out-dir src --source-root src --no-babelrc --plugins transform-runtime --presets es2015 src && ../../node_modules/.bin/tsc -p build/es5",
-    "build/package.json": "../../build/bin/overlay-package-json.js package.publish.json package.json"
+    "build/es5": "../../node_modules/.bin/babel --out-dir src --source-root src --no-babelrc --plugins transform-runtime --presets es2015 src && ../../node_modules/.bin/tsc -p build/es5"
   },
   "files": [
     "dist",
@@ -28,6 +26,7 @@
     "ak-droplist-group": "^2.1.0",
     "ak-dropdown-menu": "^2.1.0",
     "ak-editor-shared-styles": "^3.2.0",
+    "ak-emoji": "^0.7.0",
     "ak-icon": "^14.0.0",
     "ak-mention": "^1.9.0",
     "akutil-shared-styles": "^37.0.2",

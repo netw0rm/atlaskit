@@ -76,6 +76,168 @@ describe('hyperlink', () => {
     });
   });
 
+  describe('active', () => {
+    context('when select the whole hyperlink text from start to end', () => {
+      it('is active', () => {
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos1, pos2);
+
+        expect(plugin.active).to.be.true;
+      });
+    });
+
+    context('when select the whole hyperlink text from end to start', () => {
+      it('is active', () => {
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos2, pos1);
+
+        expect(plugin.active).to.be.true;
+      });
+    });
+
+    context('when select part of the hyperlink text from the end', () => {
+      it('is active', () => {
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'), 'after')));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos2, pos1);
+
+        expect(plugin.active).to.be.true;
+      });
+    });
+
+    context('when select part of the hyperlink text from the start', () => {
+      it('is active', () => {
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}t{pos2}ext'), 'after')));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos1, pos2);
+
+        expect(plugin.active).to.be.true;
+      });
+    });
+
+    context('when select part of the hyperlink text in the middle', () => {
+      it('is active', () => {
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ex{pos2}t'), 'after')));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos1, pos2);
+
+        expect(plugin.active).to.be.true;
+      });
+    });
+
+    context('when cursor is winthin hyperlink text', () => {
+      it('is active', () => {
+        const { plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('tex{<>}t'), 'after')));
+
+        expect(plugin.active).to.be.true;
+      });
+    });
+
+    context('when cursor at the beginning of hyperlink text', () => {
+      it('returns undefined', () => {
+        const { plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{<>}text'), 'after')));
+
+        expect(plugin.active).to.be.false;
+      });
+    });
+
+    context('when cursor at the end of hyperlink text', () => {
+      it('returns undefined', () => {
+        const { plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('text{<>}'), 'after')));
+
+        expect(plugin.active).to.be.false;
+      });
+    });
+  });
+
+  describe('element', () => {
+    context('when select the whole hyperlink text from start to end', () => {
+      it('returns link element', () => {
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos1, pos2);
+
+        expect(plugin.element.tagName).to.eq('A');
+      });
+    });
+
+    context('when select the whole hyperlink text from end to start', () => {
+      it('returns link element', () => {
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos2, pos1);
+
+        expect(plugin.element.tagName).to.eq('A');
+      });
+    });
+
+    context('when select part of the hyperlink text from the end', () => {
+      it('returns link element', () => {
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'), 'after')));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos2, pos1);
+
+        expect(plugin.element.tagName).to.eq('A');
+      });
+    });
+
+    context('when select part of the hyperlink text from the start', () => {
+      it('returns link element', () => {
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}t{pos2}ext'), 'after')));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos1, pos2);
+
+        expect(plugin.element.tagName).to.eq('A');
+      });
+    });
+
+    context('when select part of the hyperlink text in the middle', () => {
+      it('returns link element', () => {
+        const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ex{pos2}t'), 'after')));
+        const { pos1, pos2 } = pm.doc.refs;
+
+        pm.setTextSelection(pos1, pos2);
+
+        expect(plugin.element.tagName).to.eq('A');
+      });
+    });
+
+    context('when cursor is winthin hyperlink text', () => {
+      it('returns undefined', () => {
+        const { plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('tex{<>}t'), 'after')));
+
+        expect(plugin.element.tagName).to.eq('A');
+      });
+    });
+
+    context('when cursor at the beginning of hyperlink text', () => {
+      it('returns undefined', () => {
+        const { plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{<>}text'), 'after')));
+
+        expect(plugin.element).to.be.undefined;
+      });
+    });
+
+    context('when cursor at the end of hyperlink text', () => {
+      it('returns undefined', () => {
+        const { plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('text{<>}'), 'after')));
+
+        expect(plugin.element).to.be.undefined;
+      });
+    });
+  });
+
   describe('API', () => {
     it('should allow a change handler to be registered', () => {
       const { plugin } = editor(doc(linkable('')));
@@ -107,46 +269,10 @@ describe('hyperlink', () => {
       expect(plugin.canAddLink).to.equal(false);
     });
 
-    it('should treat it as a link when selecting the whole link', () => {
-      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'))));
-      const spy = sinon.spy();
-      const { pos1, pos2 } = pm.doc.refs;
-      plugin.subscribe(spy);
+    it('sets canAddLink to false when link is already in place', () => {
+      const { plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
 
-      pm.setTextSelection(pos1, pos2);
-
-      expect(spy).to.have.been.callCount(2);
-    });
-
-    it('should treat it as a link when selecting part of the link', () => {
-      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'))));
-      const spy = sinon.spy();
-      const { pos1, pos2 } = pm.doc.refs;
-      plugin.subscribe(spy);
-
-      pm.setTextSelection(pos1, pos2);
-
-      expect(spy).to.have.been.callCount(2);
-    });
-
-    it('should not treat it as a link when cursor is at the beginning of the link', () => {
-      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{start}text'))));
-      const spy = sinon.spy();
-      plugin.subscribe(spy);
-
-      pm.setTextSelection(pm.doc.refs['start']);
-
-      expect(spy).to.have.been.callCount(1);
-    });
-
-    it('should not treat it as a link when cursor is at the end of the link', () => {
-      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('text{end}'))));
-      const spy = sinon.spy();
-      plugin.subscribe(spy);
-
-      pm.setTextSelection(pm.doc.refs['end']);
-
-      expect(spy).to.have.been.callCount(1);
+      expect(plugin.canAddLink).to.equal(false);
     });
 
     it('does not emit `change` multiple times when the selection moves within a link', () => {

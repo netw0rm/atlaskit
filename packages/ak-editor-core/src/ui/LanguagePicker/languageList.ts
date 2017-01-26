@@ -4,7 +4,7 @@ export const NO_LANGUAGE = 'Language';
 export const SUPPORTED_LANGUAGES = [
   'PHP',
   'Java',
-  'C#',
+  'CSharp',
   'Python',
   'JavaScript',
   'Html',
@@ -18,7 +18,7 @@ export const SUPPORTED_LANGUAGES = [
   'Scala',
   'Go',
   'ActionScript',
-  'VB.NET',
+  'VbNet',
   'MATLAB',
   'Groovy',
   'SQL',

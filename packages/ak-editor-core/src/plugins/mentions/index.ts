@@ -15,8 +15,6 @@ export class MentionsPluginState {
   private hasKeymap = false;
   private changeHandlers: StateChangeHandler[] = [];
 
-  renderHandler: (el: HTMLElement, pm: ProseMirror) => void;
-  autocompleteHandler: (el: HTMLElement, pm: ProseMirror) => void;
   query?: string;
   queryActive = false;
   anchorElement?: HTMLElement;

@@ -28,13 +28,13 @@ describe(name, () => {
 
     it('should render tabIndex attribute', () => {
       let wrapper = mount(<Trigger />);
-      expect(wrapper.children().first().is('[tabIndex="-1"]')).to.equal(true);
+      expect(wrapper.find(`.${styles.locals.trigger}`).is('[tabIndex=-1]')).to.equal(true);
 
       wrapper = mount(<Trigger isDisabled />);
-      expect(wrapper.children().first().is('[tabIndex="-1"]')).to.equal(true);
+      expect(wrapper.find(`.${styles.locals.trigger}`).is('[tabIndex=-1]')).to.equal(true);
 
       wrapper = mount(<Trigger isTabbable />);
-      expect(wrapper.children().first().is('[tabIndex="0"]')).to.equal(true);
+      expect(wrapper.find(`.${styles.locals.trigger}`).is('[tabIndex=0]')).to.equal(true);
     });
   });
 

@@ -1,5 +1,4 @@
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import { mount } from 'enzyme';
 import React from 'react';
 import {
@@ -8,7 +7,6 @@ import {
 } from 'style!../src/components/less/ContainerItemGroup.less';
 import ContainerItemGroup from '../src/components/js/ContainerItemGroup';
 
-chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 

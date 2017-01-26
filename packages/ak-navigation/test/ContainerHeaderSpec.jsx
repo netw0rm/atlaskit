@@ -1,10 +1,8 @@
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import ContainerHeader from '../src/components/js/ContainerHeader';
 
-chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 

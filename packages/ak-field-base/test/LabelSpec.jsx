@@ -1,13 +1,9 @@
 import chai, { expect } from 'chai';
 import React from 'react';
-import chaiAsPromised from 'chai-as-promised';
-import sinonChai from 'sinon-chai';
 import { shallow } from 'enzyme';
 import Label from '../src/Label';
 import styles from '../src/styles.less';
 
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
 const defaultProps = {
   label: 'test',
   isLabelHidden: true,

@@ -1,10 +1,8 @@
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import { shallow } from 'enzyme';
 import React from 'react';
 import Spacer from '../src/components/js/Spacer';
 
-chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 

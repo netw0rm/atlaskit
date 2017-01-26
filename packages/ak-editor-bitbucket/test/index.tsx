@@ -3,7 +3,6 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { SinonSpy } from 'sinon';
-import * as sinonChai from 'sinon-chai';
 import { doc, h1, mention, p, strong } from './_schema-builder';
 
 import { ProseMirror } from 'ak-editor-core';
@@ -11,8 +10,6 @@ import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from 'ak-editor
 import Editor from '../src/index';
 
 chai.use(chaiPlugin);
-chai.use(((chaiEnzyme as any).default || chaiEnzyme)());
-chai.use((sinonChai as any).default || sinonChai);
 
 const expect = chai.expect;
 
@@ -117,7 +114,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
       .simulate('click');
 
     expect(spy.callCount).to.equal(1);
-    expect(spy).to.have.been.calledWith(undefined);
+    expect(spy.calledWith(undefined)).to.equal(true);
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 
@@ -140,7 +137,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
     contentArea.dispatchEvent(event);
 
     expect(spy.callCount).to.equal(1);
-    expect(spy).to.have.been.calledWith(event);
+    expect(spy.calledWith(event)).to.equal(true);
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 
@@ -166,7 +163,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
     dropElement.dispatchEvent(event);
 
     expect(spy.callCount).to.equal(1);
-    expect(spy).to.have.been.calledWith(event);
+    expect(spy.calledWith(event)).to.equal(true);
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 });

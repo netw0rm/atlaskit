@@ -1,12 +1,10 @@
 import chai from 'chai';
-import sinonChai from 'sinon-chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import Layer from '../src';
 
 const { expect } = chai;
-chai.use(sinonChai);
 
 /* There is a lot in Layer that can not be tested easily in JSDom. Most of it should already be
    tested in Popper itself, but we should really have some sort of sanity checks for things like
@@ -63,7 +61,7 @@ describe('ak-layer', () => {
       wrapper.setState(state);
 
       expect(spy.callCount).to.equal(1);
-      expect(spy).to.have.been.calledWith(state);
+      expect(spy.calledWith(state)).to.equal(true);
     });
   });
 });

@@ -1,11 +1,9 @@
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import { mount } from 'enzyme';
 import React from 'react';
 import styles from 'style!../src/components/less/ContainerNavigationNested.less';
 import ContainerNavigationNested from '../src/components/js/ContainerNavigationNested';
 
-chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 

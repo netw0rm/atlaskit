@@ -1,13 +1,11 @@
 import { expect } from 'chai';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 import { browser, TextFormattingPlugin } from '../../../src';
 import { chaiPlugin, makeEditor } from '../../../test-helper';
 import { doc, em, mono, p, plain, schema, strike, strong, sub, sup, u } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
-chai.use((sinonChai as any).default || sinonChai);
 
 describe('text-formatting', () => {
   const editor = (doc: any) => makeEditor({ doc, plugin: TextFormattingPlugin, schema });
@@ -150,7 +148,7 @@ describe('text-formatting', () => {
     plugin.subscribe(spy);
 
     expect(spy).to.have.been.callCount(1);
-    expect(spy).to.have.been.calledWith(plugin);
+    expect(spy.calledWith(plugin)).to.equal(true);
   });
 
   it('should call change handlers when em is toggled', () => {
@@ -161,7 +159,7 @@ describe('text-formatting', () => {
     plugin.toggleEm();
 
     expect(spy).to.have.been.callCount(2);
-    expect(spy).to.have.been.calledWith(plugin);
+    expect(spy.calledWith(plugin)).to.equal(true);
   });
 
   describe('em', () => {

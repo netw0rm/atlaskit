@@ -2,14 +2,10 @@
 
 import { vdom, define, Component } from 'skatejs';
 import chai from 'chai';
-import sinonChai from 'sinon-chai';
-import chaiAsPromised from 'chai-as-promised';
 
 import { createTemporaryComponent, tearDownComponent, getShadowRoot, getRootNode } from '../src';
 
 chai.should();
-chai.use(sinonChai);
-chai.use(chaiAsPromised);
 const { expect } = chai;
 
 describe('createTemporaryComponent', () => {

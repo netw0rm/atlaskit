@@ -1,12 +1,8 @@
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import { shallow } from 'enzyme';
 import React from 'react';
-import sinonChai from 'sinon-chai';
 import DrawerTrigger from '../src/components/js/DrawerTrigger';
 
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
 chai.should();
 const expect = chai.expect;
 

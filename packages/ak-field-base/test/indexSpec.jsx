@@ -1,15 +1,11 @@
 import chai, { expect } from 'chai';
 import React from 'react';
-import chaiAsPromised from 'chai-as-promised';
-import sinonChai from 'sinon-chai';
 import { shallow, mount } from 'enzyme';
 import WarningIcon from 'ak-icon/glyph/warning';
 import { FieldBase } from '../src';
 import { compact, none, subtle } from '../src/internal/appearances';
 import { locals } from '../src/styles.less';
 
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
 const {
   contentContainer: contentClass,
   invalid: isInvalidClass,

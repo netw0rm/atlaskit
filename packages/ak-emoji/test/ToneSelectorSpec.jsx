@@ -1,14 +1,10 @@
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import ToneSelector from '../src/internal/common/ToneSelector';
 import EmojiButton from '../src/internal/common/EmojiButton';
 
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
 chai.should();
 const expect = chai.expect;
 
@@ -55,6 +51,6 @@ describe('<ToneSelector />', () => {
     />);
 
     wrapper.find(EmojiButton).first().simulate('mousedown', { button: 0 });
-    expect(onToneSelectedSpy).to.have.been.calledWith(0);
+    expect(onToneSelectedSpy.calledWith(0)).to.equal(true);
   });
 });

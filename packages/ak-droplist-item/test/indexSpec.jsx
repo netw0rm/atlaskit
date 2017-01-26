@@ -1,6 +1,5 @@
 import chai from 'chai';
 import React from 'react';
-import chaiAsPromised from 'chai-as-promised';
 import { shallow, mount } from 'enzyme';
 
 import { name } from '../package.json';
@@ -8,7 +7,6 @@ import { locals as styles } from '../src/styles.less';
 
 import Item, { SecondaryText } from '../src';
 
-chai.use(chaiAsPromised);
 const { expect } = chai;
 
 describe(name, () => {

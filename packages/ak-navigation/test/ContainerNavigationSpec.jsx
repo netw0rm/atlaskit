@@ -1,5 +1,4 @@
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import {
@@ -10,7 +9,6 @@ import ContainerNavigation from '../src/components/js/ContainerNavigation';
 import Spacer from '../src/components/js/Spacer';
 import { containerClosedWidth } from '../src/shared-variables';
 
-chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 

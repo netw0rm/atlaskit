@@ -1,10 +1,8 @@
 import chai from 'chai';
-import sinonChai from 'sinon-chai';
 
 import { hasClass } from '../src';
 
 chai.should();
-chai.use(sinonChai);
 
 describe.skip('hasClass', () => {
   let component;

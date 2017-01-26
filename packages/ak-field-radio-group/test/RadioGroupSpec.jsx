@@ -1,5 +1,4 @@
 import chai from 'chai';
-import sinonChai from 'sinon-chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Base from 'ak-field-base';
@@ -9,7 +8,6 @@ import AkFieldRadioGroup from '../src/RadioGroup';
 import { name } from '../package.json';
 
 const { expect } = chai;
-chai.use(sinonChai);
 describe(name, () => {
   describe('AkFieldRadioGroup', () => {
     const sampleItems = [

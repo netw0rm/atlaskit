@@ -1,9 +1,7 @@
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import Picker, * as other from '../src';
 import { name } from '../package.json';
 
-chai.use(chaiAsPromised);
 chai.should();
 
 describe(name, () => {

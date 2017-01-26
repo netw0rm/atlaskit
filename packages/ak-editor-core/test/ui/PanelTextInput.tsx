@@ -3,11 +3,9 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 
 import PanelTextInput from '../../src/ui/PanelTextInput';
 
-chai.use(sinonChai);
 
 describe('ak-editor-core/ui/PanelTextInput', () => {
   it('should call onSubmit when ENTER key is pressed', () => {
@@ -18,7 +16,7 @@ describe('ak-editor-core/ui/PanelTextInput', () => {
     (input.get(0) as any).value = 'http://atlassian.com';
     input.simulate('keydown', { which: 'enter', keyCode: 13 });
 
-    expect(onSubmitHandler).to.have.been.calledWith('http://atlassian.com');
+    expect(onSubmitHandler.calledWith('http://atlassian.com')).to.equal(true);
   });
 
   it('should prevent KeyDown event if ENTER key is pressed', () => {

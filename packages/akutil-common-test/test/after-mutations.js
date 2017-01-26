@@ -1,10 +1,8 @@
 import chai from 'chai';
-import sinonChai from 'sinon-chai';
 
 import { afterMutations } from '../src';
 
 chai.should();
-chai.use(sinonChai);
 
 describe.skip('afterMutations', () => {
   it('should respond to prop changes', (done) => {

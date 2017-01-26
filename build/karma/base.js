@@ -6,7 +6,7 @@ module.exports = (config) => {
     // setting to process.cwd will make all paths start in current component directory
     basePath: process.cwd(),
 
-    frameworks: ['mocha', 'chai', 'sinon-chai'],
+    frameworks: ['mocha', 'chai', 'sinon'],
 
     webpack: webpackConfig,
 

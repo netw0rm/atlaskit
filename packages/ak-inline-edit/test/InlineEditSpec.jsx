@@ -1,14 +1,12 @@
 import chai, { expect } from 'chai';
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import sinonChai from 'sinon-chai';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import CancelIcon from 'ak-icon/glyph/cancel';
 import FieldBase, { Label } from 'ak-field-base'; // eslint-disable-line
 import Spinner from 'ak-spinner';
 import InlineEdit from '../src/InlineEdit';
 
-chai.use(sinonChai);
 
 const noop = () => {};
 const Input = props =>

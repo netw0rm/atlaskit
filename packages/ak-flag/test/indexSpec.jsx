@@ -105,7 +105,7 @@ describe(name, () => {
         );
         wrapper.find(`.${flagLocals.dismissIconButton}`).simulate('click');
         expect(spy.callCount).to.equal(1);
-        expect(spy).to.have.been.calledWith('a');
+        expect(spy.calledWith('a')).to.equal(true);
       });
 
       it('Dismiss button should not be rendered is isDismissAllowed is omitted', () => {
@@ -150,7 +150,7 @@ describe(name, () => {
       wrapper.find(`.${flagLocals.dismissIconButton}`).simulate('click');
       wrapper.find(`.${flagLocals.root}`).first().simulate('animationEnd');
       expect(spy.callCount).to.equal(1);
-      expect(spy).to.have.been.calledWith('a');
+      expect(spy.calledWith('a')).to.equal(true);
     });
   });
 });

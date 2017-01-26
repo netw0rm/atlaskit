@@ -1,10 +1,8 @@
 import chai from 'chai';
-import sinonChai from 'sinon-chai';
 
 import { modifyResponse } from '../src/api/profile-client';
 
 const { expect } = chai;
-chai.use(sinonChai);
 
 describe('ak-profilecard', () => {
   describe('profile-client', () => {

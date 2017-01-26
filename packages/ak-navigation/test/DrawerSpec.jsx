@@ -1,13 +1,9 @@
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import { mount } from 'enzyme';
 import React from 'react';
-import sinonChai from 'sinon-chai';
 import styles from 'style!../src/components/less/Drawer.less';
 import Drawer from '../src/components/js/Drawer';
 
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
 chai.should();
 const expect = chai.expect;
 

@@ -1,12 +1,10 @@
 import { define } from 'skatejs';
 import chai from 'chai';
-import sinonChai from 'sinon-chai';
 
 import locateWebComponent from '../src/index.locateWebComponent';
 import { getShadowRoot, waitUntil } from '../src';
 
 chai.should();
-chai.use(sinonChai);
 
 const componentPrefix = 'x-foo';
 

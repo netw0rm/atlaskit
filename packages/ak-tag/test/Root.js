@@ -2,12 +2,10 @@
 
 import { vdom } from 'skatejs';
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 
 import { createTemporary, removeTemporary, getRootNode } from './_helpers';
 import Root from '../src/Root';
 
-chai.use(chaiAsPromised);
 chai.should();
 
 describe.skip('ak-tag', () => {

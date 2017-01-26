@@ -1,13 +1,11 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 
 import CodeBlockPlugin from '../../../src/plugins/code-block';
 import { chaiPlugin, code_block, doc, makeEditor, p } from '../../../test-helper';
 
 chai.use(chaiPlugin);
-chai.use((sinonChai as any).default || sinonChai);
 
 describe('code-block', () => {
   const editor = (doc: any) => {
@@ -21,7 +19,7 @@ describe('code-block', () => {
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
-      expect(spy).to.have.been.calledWith(plugin);
+      expect(spy.calledWith(plugin)).to.equal(true);
     });
 
     context('when leaving code block', () => {

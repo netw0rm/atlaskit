@@ -1,5 +1,4 @@
 import chai from 'chai';
-import sinonChai from 'sinon-chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
@@ -12,7 +11,6 @@ import EllipsisItem from '../src/internal/EllipsisItem';
 import { name } from '../package.json';
 
 const { expect } = chai;
-chai.use(sinonChai);
 describe(name, () => {
   describe('AkBreadcrumbs', () => {
     describe('exports', () => {

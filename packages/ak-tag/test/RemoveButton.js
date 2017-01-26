@@ -3,15 +3,11 @@
 import 'custom-event-polyfill';
 import { vdom } from 'skatejs';
 import chai from 'chai';
-import sinonChai from 'sinon-chai';
-import chaiAsPromised from 'chai-as-promised';
 import keyCode from 'keycode';
 
 import { createTemporary, removeTemporary, getRootNode } from './_helpers';
 import RemoveButton from '../src/RemoveButton';
 
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
 chai.should();
 const expect = chai.expect;
 
@@ -62,14 +58,14 @@ describe.skip('ak-tag', () => {
         const mouseoverEvent = new CustomEvent('mouseover');
         rootNode.dispatchEvent(mouseoverEvent);
         expect(hoverSpy.callCount).to.equal(1);
-        expect(hoverSpy).to.have.been.calledWith(true);
+        expect(hoverSpy.calledWith(true)).to.equal(true);
       });
 
       it('when the mouse leaves', () => {
         const mouseoverEvent = new CustomEvent('mouseout');
         rootNode.dispatchEvent(mouseoverEvent);
         expect(hoverSpy.callCount).to.equal(1);
-        expect(hoverSpy).to.have.been.calledWith(false);
+        expect(hoverSpy.calledWith(false)).to.equal(true);
       });
     });
 

@@ -41,14 +41,14 @@ describe(name, () => {
       it('supplied title should be rendered', () => {
         expect(shallow(
           <InlineMessage title="Title goes here" />
-        ).find(`.${styles.titleText}`)).to.have.text('Title goes here');
+        ).find(`.${styles.titleText}`).text()).to.equal('Title goes here');
       });
     });
     describe('secondaryText', () => {
       it('supplied secondary text should be rendered', () => {
         expect(shallow(
           <InlineMessage secondaryText="Secondary goes here" />
-        ).find(`.${styles.secondaryText}`)).to.have.text('Secondary goes here');
+        ).find(`.${styles.secondaryText}`).text()).to.equal('Secondary goes here');
       });
     });
     describe('type', () => {

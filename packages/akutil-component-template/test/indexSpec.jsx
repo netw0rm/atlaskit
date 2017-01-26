@@ -12,7 +12,7 @@ describe(name, () => {
   it('should render with correct CSS class name', () =>
     shallow(
       <Component />
-    ).should.have.exactly(1).descendants(`.${styles.root}`)
+    ).find(`.${styles.root}`).length.should.equal(1)
   );
 
   describe('audienceName prop', () => {

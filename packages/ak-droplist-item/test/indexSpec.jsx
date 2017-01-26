@@ -40,8 +40,8 @@ describe(name, () => {
     });
 
     it('should render icon for the radio or checkbox element', () => {
-      expect(mount(<Item type="radio" />)).to.have.descendants(`.${styles.checkradio}`);
-      expect(mount(<Item type="checkbox" />)).to.have.descendants(`.${styles.checkradio}`);
+      expect(mount(<Item type="radio" />).find(`.${styles.checkradio}`).length).to.be.above(0);
+      expect(mount(<Item type="checkbox" />).find(`.${styles.checkradio}`).length).to.be.above(0);
     });
 
     it('should NOT render icon for the link element', () => {

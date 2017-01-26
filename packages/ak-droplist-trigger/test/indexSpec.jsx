@@ -21,8 +21,8 @@ describe(name, () => {
     it('should render trigger', () => {
       const TriggerSample = <div id="#test">test</div>;
       const wrapper = shallow(<Trigger>{TriggerSample}</Trigger>);
-      expect(wrapper).to.have.descendants(`.${styles.locals.triggerContainer}`);
-      expect(wrapper).to.have.descendants(`.${styles.locals.trigger}`);
+      expect(wrapper.find(`.${styles.locals.triggerContainer}`).length).to.be.above(0);
+      expect(wrapper.find(`.${styles.locals.trigger}`).length).to.be.above(0);
       expect(wrapper).to.contain(TriggerSample);
     });
 

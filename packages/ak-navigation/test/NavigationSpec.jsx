@@ -48,8 +48,7 @@ describe('<Navigation />', () => {
       expect(shallow(<Navigation containerAppearance="global" />).find('ContainerNavigation').prop('appearance')).to.equal('global');
     });
     it('isCollapsible=false does render a <Resizer />', () => {
-      expect(shallow(<Navigation isCollapsible={false} />))
-      .to.have.descendants('Resizer');
+      expect(shallow(<Navigation isCollapsible={false} />).find('Resizer').length).to.be.above(0);
     });
     it('containerHeader - can pass in an element for the container header', () => {
       const header = <div>foo</div>;

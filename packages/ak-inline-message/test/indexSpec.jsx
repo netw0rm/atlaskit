@@ -69,27 +69,27 @@ describe(name, () => {
       describe('type', () => {
         it('connectivity type produces connectivity icon', () => {
           const wrapper = shallow(<IconForType type="connectivity" />);
-          expect(wrapper).to.have.descendants(WarningIcon);
+          expect(wrapper.find(WarningIcon).length).to.be.above(0);
           expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorB400);
         });
         it('confirmation type produces confirmation icon', () => {
           const wrapper = shallow(<IconForType type="confirmation" />);
-          expect(wrapper).to.have.descendants(SuccessIcon);
+          expect(wrapper.find(SuccessIcon).length).to.be.above(0);
           expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorG300);
         });
         it('info type produces info icon', () => {
           const wrapper = shallow(<IconForType type="info" />);
-          expect(wrapper).to.have.descendants(WarningIcon);
+          expect(wrapper.find(WarningIcon).length).to.be.above(0);
           expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorP300);
         });
         it('warning type produces warning icon', () => {
           const wrapper = shallow(<IconForType type="warning" />);
-          expect(wrapper).to.have.descendants(WarningIcon);
+          expect(wrapper.find(WarningIcon).length).to.be.above(0);
           expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorY300);
         });
         it('error type produces error icon', () => {
           const wrapper = shallow(<IconForType type="error" />);
-          expect(wrapper).to.have.descendants(WarningIcon);
+          expect(wrapper.find(WarningIcon).length).to.be.above(0);
           expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorR300);
         });
       });

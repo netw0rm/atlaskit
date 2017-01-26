@@ -18,15 +18,15 @@ describe(name, () => {
 
   it('should render heading', () => {
     const wrapper = shallow(<Group heading="test" />);
-    expect(wrapper).to.have.descendants(`.${styles.heading}`);
-    expect(wrapper.find(`.${styles.heading}`)).to.have.descendants(`.${styles.content}`);
+    expect(wrapper.find(`.${styles.heading}`).length).to.be.above(0);
+    expect(wrapper.find(`.${styles.heading}`).find(`.${styles.content}`).length).to.be.above(0);
     expect(wrapper.find(`.${styles.content}`).text()).to.equal('test');
     expect(wrapper).to.not.have.descendants(`.${styles.elemAfter}`);
   });
 
   it('should render elemAfter', () => {
     const wrapper = mount(<Group heading="test" elemAfter="elem" />);
-    expect(wrapper).to.have.descendants(`.${styles.elemAfter}`);
+    expect(wrapper.find(`.${styles.elemAfter}`).length).to.be.above(0);
     expect(wrapper.find(`.${styles.elemAfter}`).text()).to.equal('elem');
   });
 

@@ -66,7 +66,7 @@ describe('ak-avatar', () => {
         it('should be visible', () => {
           expect(wrapper.find(`.${styles.locals.presenceWrapper}`))
             .to.not.have.className(styles.locals.hidden);
-          expect(wrapper.find(Presence)).to.have.descendants('svg');
+          expect(wrapper.find(Presence).find('svg').length).to.be.above(0);
         });
       });
     });
@@ -90,7 +90,7 @@ describe('ak-avatar', () => {
     );
 
     it('should render an img tag when src is set', () =>
-      expect(wrapper.find(Image)).to.have.descendants('img')
+      expect(wrapper.find(Image).find('img').length).to.be.above(0)
     );
 
     it('should set isLoading=false when a same src is provided', () => {

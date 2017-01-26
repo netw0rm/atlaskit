@@ -17,7 +17,7 @@ describe('ak-field-base', () =>
   describe('Label', () => {
     describe('by default', () =>
       it('should render a label element', () =>
-        expect(shallow(<Label {...defaultProps} />)).to.have.descendants('label')
+        expect(shallow(<Label {...defaultProps} />).find('label').length).to.be.above(0)
       )
     );
 

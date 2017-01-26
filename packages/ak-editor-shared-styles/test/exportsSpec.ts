@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import * as lessVars from '../src';
+import * as lessVars from '../';
 
 
 describe('LESS module exports', () => {

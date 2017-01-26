@@ -19,7 +19,7 @@ describe('ak-modal-dialog', () => {
         shallow(<ModalDialog />).text().should.be.equal('');
       });
       it('should be visible when open = true', () => {
-        shallow(<ModalDialog isOpen />).should.not.have.text('');
+        shallow(<ModalDialog isOpen />).text().should.not.equal('');
       });
       it('should become hidden when open changed from true -> false', () => {
         const wrapper = shallow(<ModalDialog isOpen />);

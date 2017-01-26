@@ -40,13 +40,14 @@ describe('ak-avatar', () => {
     beforeEach(() => (wrapper = mount(<Avatar label={label} />)));
 
     it('should set an aria-label on the imgWrapper', () => {
-      expect(wrapper.find(`.${styles.locals.imgWrapper}`).is(`[aria-label=${label}]`))
+      expect(wrapper.find(`.${styles.locals.imgWrapper}`).is(`[aria-label="${label}"]`))
         .to.equal(true);
     });
 
     it('should set the alt of the internal img', () => {
       wrapper.setProps({ src: oneByOnePixel });
-      expect(wrapper.find(Image).is(`[alt=${label}]`)).to.equal(true);
+      expect(wrapper.find(Image).prop('alt')).to.equal(label);
+      expect(wrapper.find(Image).find('img').is(`[alt="${label}"]`)).to.equal(true);
     });
   });
 
@@ -84,9 +85,10 @@ describe('ak-avatar', () => {
     let wrapper;
     beforeEach(() => (wrapper = mount(<Avatar src={oneByOnePixel} />)));
 
-    it('should set the src property on the internal img', () =>
-      expect(wrapper.find(Image).is(`[src=${oneByOnePixel}]`)).to.equal(true)
-    );
+    it('should set the src property on the internal img', () => {
+      expect(wrapper.find(Image).prop('src')).to.equal(oneByOnePixel);
+      expect(wrapper.find(Image).find('img').is(`[src="${oneByOnePixel}"]`)).to.equal(true);
+    });
 
     it('should render an img tag when src is set', () =>
       expect(wrapper.find(Image).find('img').length).to.be.above(0)

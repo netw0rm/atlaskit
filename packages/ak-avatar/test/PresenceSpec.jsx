@@ -6,6 +6,7 @@ import { shallow, mount } from 'enzyme';
 import { Presence } from '../src/index';
 import icons from '../src/internal/icons';
 import presences from '../src/internal/presences';
+import { locals as styles } from '../src/styles.less';
 
 const { expect } = chai;
 describe('ak-avatar', () => {
@@ -32,12 +33,12 @@ describe('ak-avatar', () => {
     describe('borderColor prop', () => {
       it('should be white by default', () => {
         const wrapper = mount(<Presence presence="online" />);
-        expect(wrapper.prop('borderColor')).to.equal('#FFFFFF');
+        expect(wrapper.find(`.${styles.presence}`).node.style.borderColor).to.equal('#ffffff');
       });
 
       it('should reflect the prop as a CSS style property', () => {
         const wrapper = mount(<Presence presence="online" borderColor="#ff0000" />);
-        expect(wrapper.prop('style').borderColor).to.equal('#ff0000');
+        expect(wrapper.find(`.${styles.presence}`).node.style.borderColor).to.equal('#ff0000');
       });
     });
   });

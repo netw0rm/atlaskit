@@ -33,7 +33,7 @@ describe(name, () => {
         const content = (<div>content</div>);
         const wrapper = mount(<Radio>{content}</Radio>);
         expect(wrapper.find('input').length).to.equal(1);
-        expect(wrapper).to.contain(content);
+        expect(wrapper.contains(content)).to.equal(true);
       });
     });
 

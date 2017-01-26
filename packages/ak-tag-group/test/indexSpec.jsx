@@ -23,7 +23,7 @@ describe('ak-tag-group', () => {
     );
 
     tags.forEach((tagName) => {
-      wrapper.html().should.contain(tagName);
+      wrapper.html().contains(tagName).should.be.equal(true);
     });
   });
 

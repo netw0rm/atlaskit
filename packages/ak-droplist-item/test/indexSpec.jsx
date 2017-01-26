@@ -27,16 +27,16 @@ describe(name, () => {
 
     it('should render elemBefore for all items', () => {
       const Icon = (<div id="icon">icon</div>);
-      expect(mount(<Item elemBefore={Icon}>sample</Item>)).to.contain(Icon);
-      expect(mount(<Item elemBefore={Icon} type="checkbox">sample</Item>)).to.contain(Icon);
-      expect(mount(<Item elemBefore={Icon} type="radio">sample</Item>)).to.contain(Icon);
+      expect(mount(<Item elemBefore={Icon}>sample</Item>).contains(Icon)).to.equal(true);
+      expect(mount(<Item elemBefore={Icon} type="checkbox">sample</Item>).contains(Icon)).to.equal(true);
+      expect(mount(<Item elemBefore={Icon} type="radio">sample</Item>).contains(Icon)).to.equal(true);
     });
 
     it('should render elemAfter for all items', () => {
       const Icon = (<div id="icon">icon</div>);
-      expect(mount(<Item elemAfter={Icon}>sample</Item>)).to.contain(Icon);
-      expect(mount(<Item elemAfter={Icon} type="checkbox">sample</Item>)).to.contain(Icon);
-      expect(mount(<Item elemAfter={Icon} type="radio">sample</Item>)).to.contain(Icon);
+      expect(mount(<Item elemAfter={Icon}>sample</Item>).contains(Icon)).to.equal(true);
+      expect(mount(<Item elemAfter={Icon} type="checkbox">sample</Item>).contains(Icon)).to.equal(true);
+      expect(mount(<Item elemAfter={Icon} type="radio">sample</Item>).contains(Icon)).to.equal(true);
     });
 
     it('should render icon for the radio or checkbox element', () => {

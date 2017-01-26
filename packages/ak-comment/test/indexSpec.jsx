@@ -38,7 +38,7 @@ describe(name, () => {
           const container = wrapper.find(`.${styles.locals.actionsContainer}`);
           expect(container.find(CommentAction).length).to.equal(actions.length);
           actions.forEach((action) => {
-            expect(container).to.contain(action);
+            expect(container.contains(action)).to.equal(true);
           });
         });
       });
@@ -47,7 +47,7 @@ describe(name, () => {
         it('should render the author in the correct container', () => {
           const author = <CommentAuthor>Joshua Nelson</CommentAuthor>;
           const wrapper = mount(<Comment author={author} />);
-          expect(wrapper.find(`.${styles.locals.mainSection}`)).to.contain(author);
+          expect(wrapper.find(`.${styles.locals.mainSection}`).contains(author)).to.equal(true);
         });
       });
 
@@ -63,7 +63,7 @@ describe(name, () => {
         it('should render the provided content in the correct container', () => {
           const content = (<p>My sample content</p>);
           const wrapper = mount(<Comment content={content} />);
-          expect(wrapper.find(`.${styles.locals.contentContainer}`)).to.contain(content);
+          expect(wrapper.find(`.${styles.locals.contentContainer}`).contains(content)).to.equal(true);
         });
 
         it('can render string content', () => {
@@ -77,7 +77,7 @@ describe(name, () => {
         it('should render the time in the correct container', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
           const wrapper = mount(<Comment time={time} />);
-          expect(wrapper.find(`.${styles.locals.mainSection}`)).to.contain(time);
+          expect(wrapper.find(`.${styles.locals.mainSection}`).contains(time)).to.equal(true);
         });
       });
 

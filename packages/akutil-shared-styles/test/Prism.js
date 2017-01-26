@@ -68,7 +68,7 @@ describe('Prism', () => {
         akColorY: 3,
       });
       Object.entries(prism.getColors()).forEach(([name, value]) => {
-        prism.getColorNames(value).should.contain(name);
+        prism.getColorNames(value).contains(name).should.be.equal(true);
       });
     });
   });

@@ -58,7 +58,7 @@ describe('ak-modal-dialog', () => {
               <span>My header</span>
             }
           />
-        ).should.contain(<span>My header</span>);
+        ).contains(<span>My header</span>).should.be.equal(true);
       });
     });
 
@@ -71,7 +71,7 @@ describe('ak-modal-dialog', () => {
               <span>My footer</span>
             }
           />
-        ).should.contain(<span>My footer</span>);
+        ).contains(<span>My footer</span>).should.be.equal(true);
       });
     });
 
@@ -81,7 +81,7 @@ describe('ak-modal-dialog', () => {
           <ModalDialog isOpen>
             <form>This is <strong>my</strong> form</form>
           </ModalDialog>
-        ).should.contain(<form>This is <strong>my</strong> form</form>);
+        ).contains(<form>This is <strong>my</strong> form</form>).should.be.equal(true);
       });
     });
 

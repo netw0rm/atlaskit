@@ -35,7 +35,7 @@ describe(name, () => {
           generateFlag({
             icon: <span className="test-icon" />,
           })
-        ).find(`.${flagLocals.primaryIcon}`).should.contain(<span className="test-icon" />)
+        ).find(`.${flagLocals.primaryIcon}`).contains(<span className="test-icon" />).should.be.equal(true)
       );
 
       it('title prop text should be rendered to correct location', () =>

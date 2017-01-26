@@ -27,7 +27,7 @@ describe(name, () => {
         const children = <span>children</span>;
         const wrapper = shallow(<CommentAction>{children}</CommentAction>);
         expect(wrapper).to.contain.exactly(1).descendants(Button);
-        expect(wrapper.find(Button)).to.contain(children);
+        expect(wrapper.find(Button).contains(children)).to.equal(true);
       });
 
       it('should reflect onClick, onFocus, and onMouseOver to a wrapping element', () => {

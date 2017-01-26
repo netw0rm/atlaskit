@@ -37,7 +37,7 @@ describe('ak-inline-edit', () => {
     const wrapper = mount(<InlineEdit {...defaultProps} readView={readView} />);
     expect(wrapper.find(FieldBase).length).to.equal(1);
     const fieldBase = wrapper.find(FieldBase);
-    expect(fieldBase).to.contain(readView);
+    expect(fieldBase.contains(readView)).to.equal(true);
   });
 
   it('should render edit view inside FieldBase when in editing mode', () => {
@@ -45,7 +45,7 @@ describe('ak-inline-edit', () => {
     const wrapper = mount(<InlineEdit {...defaultProps} isEditing editView={editView} />);
     expect(wrapper.find(FieldBase).length).to.equal(1);
     const fieldBase = wrapper.find(FieldBase);
-    expect(fieldBase).to.contain(editView);
+    expect(fieldBase.contains(editView)).to.equal(true);
   });
 
   describe('read-only mode', () => {
@@ -59,7 +59,7 @@ describe('ak-inline-edit', () => {
           editView={false}
         />
       );
-      expect(wrapper).to.contain(readView);
+      expect(wrapper.contains(readView)).to.equal(true);
     });
 
     it('should render the read view when "null" is supplied as the edit view', () => {
@@ -72,7 +72,7 @@ describe('ak-inline-edit', () => {
           editView={null}
         />
       );
-      expect(wrapper).to.contain(readView);
+      expect(wrapper.contains(readView)).to.equal(true);
     });
 
     it('should render the read view when "undefined" is supplied as the edit view', () => {
@@ -85,7 +85,7 @@ describe('ak-inline-edit', () => {
           editView={undefined}
         />
       );
-      expect(wrapper).to.contain(readView);
+      expect(wrapper.contains(readView)).to.equal(true);
     });
   });
 
@@ -199,7 +199,7 @@ describe('ak-inline-edit', () => {
       ));
 
       it('should render Spinner', () =>
-        expect(wrapper).to.contain(<Spinner />)
+        expect(wrapper.contains(<Spinner />)).to.equal(true)
       );
 
       it('should disable field base', () =>

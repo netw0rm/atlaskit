@@ -23,7 +23,7 @@ describe(name, () => {
       const wrapper = shallow(<Trigger>{TriggerSample}</Trigger>);
       expect(wrapper.find(`.${styles.locals.triggerContainer}`).length).to.be.above(0);
       expect(wrapper.find(`.${styles.locals.trigger}`).length).to.be.above(0);
-      expect(wrapper).to.contain(TriggerSample);
+      expect(wrapper.contains(TriggerSample)).to.equal(true);
     });
 
     it('should render tabIndex attribute', () => {

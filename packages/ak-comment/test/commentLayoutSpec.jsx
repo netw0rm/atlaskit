@@ -31,13 +31,13 @@ describe(name, () => {
           const avatar = <Avatar src="test/src" label="test label" />;
           const wrapper = mount(<CommentLayout avatar={avatar} />);
           expect(wrapper.find(Avatar).length).to.equal(1);
-          expect(wrapper.find(`.${styles.locals.avatarContainer}`)).to.contain(avatar);
+          expect(wrapper.find(`.${styles.locals.avatarContainer}`).contains(avatar)).to.equal(true);
         });
 
         it('can render non-Avatar nodes as the comment avatar', () => {
           const avatar = <img src="test/src" alt="test alt" />;
           const wrapper = mount(<CommentLayout avatar={avatar} />);
-          expect(wrapper.find(`.${styles.locals.avatarContainer}`)).to.contain(avatar);
+          expect(wrapper.find(`.${styles.locals.avatarContainer}`).contains(avatar)).to.equal(true);
         });
 
         it('does not render the avatar container if no avatar is provided', () => {
@@ -51,7 +51,7 @@ describe(name, () => {
         it('should render the provided content in the correct container', () => {
           const content = (<p>My sample content</p>);
           const wrapper = mount(<CommentLayout content={content} />);
-          expect(wrapper.find(`.${styles.locals.mainSection}`)).to.contain(content);
+          expect(wrapper.find(`.${styles.locals.mainSection}`).contains(content)).to.equal(true);
         });
       });
     });
@@ -62,7 +62,7 @@ describe(name, () => {
         const wrapper = mount(<CommentLayout content="parent'">{childComment}</CommentLayout>);
 
         const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
-        expect(commentsContainer).to.contain(childComment);
+        expect(commentsContainer.contains(childComment)).to.equal(true);
       });
 
       it('should render multiple adjacent siblings', () => {
@@ -70,7 +70,8 @@ describe(name, () => {
         const wrapper = mount(<CommentLayout content="parent'">{childComments}</CommentLayout>);
 
         const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
-        childComments.forEach(childComment => expect(commentsContainer).to.contain(childComment));
+        childComments.forEach(childComment =>
+          expect(commentsContainer.contains(childComment))).to.equal(true);
       });
 
       it('should not render the container if no nested comments are provided', () => {

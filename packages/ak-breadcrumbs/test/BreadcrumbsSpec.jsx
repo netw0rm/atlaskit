@@ -76,8 +76,8 @@ describe(name, () => {
 
           it('renders only the first and last items, and an ellipsis item', () => {
             expect(wrapper.find(Item).length).to.equal(2);
-            expect(wrapper).to.contain(firstItem);
-            expect(wrapper).to.contain(lastItem);
+            expect(wrapper.contains(firstItem)).to.equal(true);
+            expect(wrapper.contains(lastItem)).to.equal(true);
             expect(wrapper.find(EllipsisItem).length).to.equal(1);
           });
 

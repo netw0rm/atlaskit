@@ -61,10 +61,10 @@ describe('ak-toggle', () => {
     );
 
     it('label', () => {
-      expect(shallow(<Toggle isChecked label="test" />).find(ConfirmIcon))
-        .to.have.prop('label', 'test');
-      expect(shallow(<Toggle label="test" />).find(CloseIcon))
-        .to.have.prop('label', 'test');
+      expect(shallow(<Toggle isChecked label="test" />).find(ConfirmIcon).prop('label'))
+        .to.equal('test');
+      expect(shallow(<Toggle label="test" />).find(CloseIcon).prop('label'))
+        .to.equal('test');
     });
 
     describe('input events handlers', () =>

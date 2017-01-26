@@ -29,8 +29,8 @@ describe('ak-field-text', () => {
     );
 
     it('FieldBase should have appearance="compact"', () =>
-      expect(shallow(<FieldText compact />).find(Base))
-        .to.have.prop('appearance', 'compact')
+      expect(shallow(<FieldText compact />).find(Base).prop('appearance'))
+        .to.equal('compact')
     );
 
     [
@@ -48,8 +48,8 @@ describe('ak-field-text', () => {
     );
 
     it('Input should have value="something"', () =>
-      expect(shallow(<FieldText value="something" />).find('input'))
-        .to.have.prop('value', 'something')
+      expect(shallow(<FieldText value="something" />).find('input').prop('value'))
+        .to.equal('something')
     );
 
     it('onChange should be called when input value changes', () => {

@@ -146,8 +146,8 @@ describe('ak-inline-edit', () => {
 
   describe('label', () => {
     it('should set parameter into FieldBase', () => {
-      expect(shallow(<InlineEdit {...defaultProps} label="test" />).find(Label))
-        .to.have.prop('label', 'test');
+      expect(shallow(<InlineEdit {...defaultProps} label="test" />).find(Label).prop('label'))
+        .to.equal('test');
     });
 
     it('should set both isLabelHidden and label parameter into FieldBase', () => {

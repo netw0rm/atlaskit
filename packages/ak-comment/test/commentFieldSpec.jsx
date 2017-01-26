@@ -29,7 +29,7 @@ describe(name, () => {
           const href = '/test-href';
           const wrapper = shallow(<CommentField href={href}>{children}</CommentField>);
 
-          expect(wrapper).to.have.exactly(1).descendants(`.${styles.locals.topButtonLink}`);
+          expect(wrapper.find(`.${styles.locals.topButtonLink}`).length).to.equal(1);
           expect(wrapper.find(`.${styles.locals.topButtonLink}`)).to.contain(children);
           expect(wrapper.find(`.${styles.locals.topButtonLink}`).prop('href')).to.equal(href);
         });
@@ -58,7 +58,7 @@ describe(name, () => {
           const children = <span>children</span>;
           const wrapper = shallow(<CommentField>{children}</CommentField>);
 
-          expect(wrapper).to.have.exactly(1).descendants(`.${styles.locals.topButtonText}`);
+          expect(wrapper.find(`.${styles.locals.topButtonText}`).length).to.equal(1);
           expect(wrapper.find(`.${styles.locals.topButtonText}`)).to.contain(children);
         });
 

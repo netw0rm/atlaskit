@@ -36,8 +36,8 @@ describe(name, () => {
       const layer = wrapper.find(`.${styles.dropWrapper}`).children().first();
       const layerNode = layer.node;
       expect(layerNode instanceof Layer).to.equal(true);
-      expect(layer).to.have.exactly(1).descendants(`.${styles.dropContent}`);
-      expect(layer).to.have.exactly(1).descendants(`.${styles.dropTrigger}`);
+      expect(layer.find(`.${styles.dropContent}`).length).to.equal(1);
+      expect(layer.find(`.${styles.dropTrigger}`).length).to.equal(1);
     });
 
     it('should pass required properties to Layer', () => {
@@ -65,7 +65,7 @@ describe(name, () => {
   describe('onOpenChange', () => {
     it('should be open when the isOpen property set to true', () => {
       expect(mount(<Droplist trigger="text">{itemsList}</Droplist>)).to.not.have.descendants(`.${styles.dropContent}`);
-      expect(mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>)).to.have.exactly(1).descendants(`.${styles.dropContent}`);
+      expect(mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>).find(`.${styles.dropContent}`).length).to.equal(1);
     });
 
     it('interacting with trigger should call onOpenChange callback', () => {

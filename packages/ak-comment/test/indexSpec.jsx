@@ -36,7 +36,7 @@ describe(name, () => {
           ];
           const wrapper = mount(<Comment actions={actions} />);
           const container = wrapper.find(`.${styles.locals.actionsContainer}`);
-          expect(container).to.have.exactly(actions.length).descendants(CommentAction);
+          expect(container.find(CommentAction).length).to.equal(actions.length);
           actions.forEach((action) => {
             expect(container).to.contain(action);
           });

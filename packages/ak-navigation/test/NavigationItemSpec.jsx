@@ -15,7 +15,7 @@ const expect = chai.expect;
 describe('<NavigationItem />', () => {
   describe('props', () => {
     it('icon should render an image', () => {
-      expect(mount(<NavigationItem icon={<img alt="foo" />} />)).to.have.exactly(1).descendants('img');
+      expect(mount(<NavigationItem icon={<img alt="foo" />} />).find('img').length).to.equal(1);
     });
     it('isSelected=true should render with the isSelected class', () => {
       expect((mount(<NavigationItem isSelected />).find(`.${navigationItemOuter}`)).hasClass((isSelected))).to.equal(true);

@@ -11,8 +11,8 @@ chai.use(sinonChai);
 describe('ak-field-text', () => {
   it('defaults', () => {
     const wrapper = shallow(<FieldText />);
-    expect(wrapper).to.have.exactly(1).descendants(Base);
-    expect(wrapper).to.have.exactly(1).descendants('input');
+    expect(wrapper.find(Base).length).to.equal(1);
+    expect(wrapper.find('input').length).to.equal(1);
   });
 
   describe('properties', () => {

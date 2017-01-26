@@ -25,7 +25,7 @@ describe('ak-avatar', () => {
         </Presence>
       );
       expect(wrapper).to.not.have.descendants(Presence);
-      expect(wrapper).to.have.exactly(1).descendants('span');
+      expect(wrapper.find('span').length).to.equal(1);
       expect((wrapper.find('span')).hasClass(('child'))).to.equal(true);
     });
 

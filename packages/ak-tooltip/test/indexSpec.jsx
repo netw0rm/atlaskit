@@ -46,7 +46,7 @@ describe('ak-tooltip', () => {
     const wrapper = shallow(<Tooltip><div id="shouldBeRendered">Target</div></Tooltip>);
 
     it('should be rendered by Tooltip', () => {
-      expect(wrapper).to.have.exactly(1).descendants('#shouldBeRendered');
+      expect(wrapper.find('#shouldBeRendered').length).to.equal(1);
     });
   });
 

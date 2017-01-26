@@ -31,8 +31,8 @@ describe('<ContainerNavigation />', () => {
   });
   describe('behaviour', () => {
     it('renders [data-__ak-navigation-container-closed="true"] if and only if it is closed', () => {
-      expect(mount(<ContainerNavigation width={containerClosedWidth} />)).to.have.exactly(1).descendants('[data-__ak-navigation-container-closed]');
-      expect(mount(<ContainerNavigation width={200} />)).to.have.exactly(0).descendants('[data-__ak-navigation-container-closed]');
+      expect(mount(<ContainerNavigation width={containerClosedWidth} />).find('[data-__ak-navigation-container-closed]').length).to.equal(1);
+      expect(mount(<ContainerNavigation width={200} />).find('[data-__ak-navigation-container-closed]').length).to.equal(0);
     });
   });
 });

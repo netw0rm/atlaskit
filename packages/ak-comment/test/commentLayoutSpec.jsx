@@ -30,7 +30,7 @@ describe(name, () => {
         it('should render the avatar in the correct location', () => {
           const avatar = <Avatar src="test/src" label="test label" />;
           const wrapper = mount(<CommentLayout avatar={avatar} />);
-          expect(wrapper).to.have.exactly(1).descendants(Avatar);
+          expect(wrapper.find(Avatar).length).to.equal(1);
           expect(wrapper.find(`.${styles.locals.avatarContainer}`)).to.contain(avatar);
         });
 

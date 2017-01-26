@@ -16,14 +16,13 @@ const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 describe('ak-toggle', () => {
   it('defaults', () => {
     const wrapper = shallow(<Toggle />);
-    expect(wrapper).to.have.exactly(1).descendants('label');
+    expect(wrapper.find('label').length).to.equal(1);
     const label = wrapper.find('label');
     expect((label).hasClass((styles.locals.regular))).to.equal(true);
-    expect(label).to.have.exactly(1).descendants('input');
+    expect(label.find('input').length).to.equal(1);
     const iconWrapper = label.find('div').at(2);
     expect(iconWrapper).to.have.length.above(0);
-    expect(iconWrapper)
-      .to.have.exactly(1).descendants(CloseIcon);
+    expect(iconWrapper.find(CloseIcon).length).to.equal(1);
   });
 
   describe('properties', () => {

@@ -49,7 +49,7 @@ describe(name, () => {
     });
 
     it('should render Droplist component', () => {
-      expect(wrapper).to.have.exactly(1).descendants(Droplist);
+      expect(wrapper.find(Droplist).length).to.equal(1);
     });
 
     it('should pass required properties to Droplist', () => {

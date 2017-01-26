@@ -36,7 +36,7 @@ describe(name, () => {
       });
 
       it('should render a FieldRadioGroup component', () => {
-        expect(wrapper).to.have.exactly(1).descendants(AkFieldRadioGroup);
+        expect(wrapper.find(AkFieldRadioGroup).length).to.equal(1);
       });
 
       it('should set up the onRadioChange prop for the AkFieldRadioGroup', () => {
@@ -52,7 +52,7 @@ describe(name, () => {
       describe('defaultValue prop', () => {
         it('renders an AkRadio with correct props for each item in the array', () => {
           const wrapper = mount(<FieldRadioGroup items={sampleItems} />);
-          expect(wrapper).to.have.exactly(sampleItems.length).descendants(AkRadio);
+          expect(wrapper.find(AkRadio).length).to.equal(sampleItems.length);
 
           const radios = wrapper.find(AkRadio);
           for (let i = 0; i < sampleItems.length; i++) {

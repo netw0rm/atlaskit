@@ -11,7 +11,7 @@ describe('ak-avatar', () =>
   describe('Image', () => {
     it('should render an img when the src is set"', () => {
       const wrapper = shallow(<Image src={src} />);
-      expect(wrapper).to.have.exactly(1).descendants('img');
+      expect(wrapper.find('img').length).to.equal(1);
     });
     it('should not render an img when the src is not set"', () =>
       expect(shallow(<Image />)).to.not.have.descendants('img')
@@ -20,17 +20,15 @@ describe('ak-avatar', () =>
     describe('default avatar', () => {
       describe('should render default avatar', () => {
         it('when no properties are provided', () =>
-          expect(shallow(<Image />)).to.have.exactly(1).descendants(DefaultAvatar)
+          expect(shallow(<Image />).find(DefaultAvatar).length).to.equal(1)
         );
 
         it('when there is an error', () =>
-          expect(shallow(<Image hasError />))
-            .to.have.exactly(1).descendants(DefaultAvatar)
+          expect(shallow(<Image hasError />).find(DefaultAvatar).length).to.equal(1)
         );
 
         it('when src is set and there is an error', () =>
-          expect(shallow(<Image src={src} hasError />))
-            .to.have.exactly(1).descendants(DefaultAvatar)
+          expect(shallow(<Image src={src} hasError />).find(DefaultAvatar).length).to.equal(1)
         );
       });
 

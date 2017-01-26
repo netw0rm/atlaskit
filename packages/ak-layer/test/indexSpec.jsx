@@ -25,7 +25,7 @@ describe('ak-layer', () => {
     const wrapper = shallow(<Layer><div id="target">Target</div></Layer>);
 
     it('should be rendered by Layer', () => {
-      expect(wrapper).to.have.exactly(1).descendants('#target');
+      expect(wrapper.find('#target').length).to.equal(1);
     });
   });
 
@@ -34,7 +34,7 @@ describe('ak-layer', () => {
 
     it('should be rendered by Layer', () => {
       const wrapper = shallow(<Layer content={content} />);
-      expect(wrapper).to.have.exactly(1).descendants('#content');
+      expect(wrapper.find('#content').length).to.equal(1);
     });
   });
 

@@ -35,7 +35,7 @@ describe('ak-inline-edit', () => {
   it('should render read view inside FieldBase when in read mode', () => {
     const readView = <span>read</span>;
     const wrapper = mount(<InlineEdit {...defaultProps} readView={readView} />);
-    expect(wrapper).to.have.exactly(1).descendants(FieldBase);
+    expect(wrapper.find(FieldBase).length).to.equal(1);
     const fieldBase = wrapper.find(FieldBase);
     expect(fieldBase).to.contain(readView);
   });
@@ -43,7 +43,7 @@ describe('ak-inline-edit', () => {
   it('should render edit view inside FieldBase when in editing mode', () => {
     const editView = <span>edit</span>;
     const wrapper = mount(<InlineEdit {...defaultProps} isEditing editView={editView} />);
-    expect(wrapper).to.have.exactly(1).descendants(FieldBase);
+    expect(wrapper.find(FieldBase).length).to.equal(1);
     const fieldBase = wrapper.find(FieldBase);
     expect(fieldBase).to.contain(editView);
   });

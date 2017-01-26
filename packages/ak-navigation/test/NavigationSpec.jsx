@@ -10,22 +10,22 @@ import {
 describe('<Navigation />', () => {
   describe('renders', () => {
     it('should render a <ContainerNavigation />', () => {
-      expect(shallow(<Navigation />)).to.have.exactly(1).descendants('ContainerNavigation');
+      expect(shallow(<Navigation />).find('ContainerNavigation').length).to.equal(1);
     });
     it('should render a <GlobalNavigation />', () => {
-      expect(shallow(<Navigation />)).to.have.exactly(1).descendants('GlobalNavigation');
+      expect(shallow(<Navigation />).find('GlobalNavigation').length).to.equal(1);
     });
     it('should render a <GlobalActions /> in GlobalNavigation', () => {
-      expect(mount(<Navigation />).find('GlobalNavigation')).to.have.exactly(1).descendants('GlobalActions');
+      expect(mount(<Navigation />).find('GlobalNavigation').find('GlobalActions').length).to.equal(1);
     });
     it('should render a <GlobalActions /> in ContainerNavigation', () => {
-      expect(mount(<Navigation />).find('ContainerNavigation')).to.have.exactly(1).descendants('GlobalActions');
+      expect(mount(<Navigation />).find('ContainerNavigation').find('GlobalActions').length).to.equal(1);
     });
     it('should render a <Resizer />', () => {
-      expect(shallow(<Navigation />)).to.have.exactly(1).descendants('Resizer');
+      expect(shallow(<Navigation />).find('Resizer').length).to.equal(1);
     });
     it('should render two <Drawer />', () => {
-      expect(shallow(<Navigation />)).to.have.exactly(2).descendants('Drawer');
+      expect(shallow(<Navigation />).find('Drawer').length).to.equal(2);
     });
   });
 

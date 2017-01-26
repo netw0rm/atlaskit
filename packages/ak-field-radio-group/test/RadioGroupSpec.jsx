@@ -34,8 +34,8 @@ describe(name, () => {
 
       it('should render a FieldBase containing a Radio for each item', () => {
         const wrapper = mount(<AkFieldRadioGroup items={sampleItems} />);
-        expect(wrapper).to.have.exactly(1).descendants(Base);
-        expect(wrapper.find(Base)).to.have.exactly(3).descendants(Radio);
+        expect(wrapper.find(Base).length).to.equal(1);
+        expect(wrapper.find(Base).find(Radio).length).to.equal(3);
       });
     });
 
@@ -43,7 +43,7 @@ describe(name, () => {
       describe('items prop', () => {
         it('renders a Radio with correct props for each item in the array', () => {
           const wrapper = shallow(<AkFieldRadioGroup items={sampleItems} />);
-          expect(wrapper).to.have.exactly(sampleItems.length).descendants(Radio);
+          expect(wrapper.find(Radio).length).to.equal(sampleItems.length);
 
           const radios = wrapper.find(Radio);
           for (let i = 0; i < sampleItems.length; i++) {

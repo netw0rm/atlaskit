@@ -62,7 +62,7 @@ describe('<Tag/> component tests', () => {
     wrapper.find(RemoveButton).find('button').simulate('mouseover');
     expect((wrapper.find(Chrome)).hasClass((styles.markedForRemoval))).to.equal(true);
     wrapper.find(RemoveButton).find('button').simulate('mouseout');
-    expect(wrapper.find(Chrome)).to.not.have.className(styles.markedForRemoval);
+    expect(wrapper.find(Chrome).hasClass(styles.markedForRemoval)).to.equal(false);
   });
 
   /* TODO: figure out why this is not working

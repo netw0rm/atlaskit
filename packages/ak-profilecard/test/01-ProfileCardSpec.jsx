@@ -50,7 +50,7 @@ describe('ak-profilecard', () => {
       it('should not render a presence label if property is not set', () => {
         const card = mount(<AkProfilecard />);
         const el = card.find(`.${styles.locals.presence}`);
-        expect(el).to.not.be.present();
+        expect(el.isEmpty()).to.equal(true);
       });
     });
 

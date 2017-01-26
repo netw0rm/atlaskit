@@ -63,8 +63,8 @@ describe('ak-avatar', () => {
         beforeEach(() => (wrapper = mount(<Avatar presence={presence} />)));
 
         it('should be visible', () => {
-          expect(wrapper.find(`.${styles.locals.presenceWrapper}`))
-            .to.not.have.className(styles.locals.hidden);
+          expect(wrapper.find(`.${styles.locals.presenceWrapper}`).hasClass(styles.locals.hidden))
+            .to.equal(false);
           expect(wrapper.find(Presence).find('svg').length).to.be.above(0);
         });
       });
@@ -126,8 +126,8 @@ describe('ak-avatar', () => {
     it('should not apply the .loaded class when loading', () => {
       const wrapper = mount(<Avatar />);
       wrapper.setState({ isLoading: true });
-      expect(wrapper.find(`.${styles.locals.imgWrapper}`))
-        .to.not.have.className(styles.locals.loaded);
+      expect(wrapper.find(`.${styles.locals.imgWrapper}`).hasClass(styles.locals.loaded))
+        .to.equal(false);
     });
 
     it('should apply the .loaded class when not loading', () => {

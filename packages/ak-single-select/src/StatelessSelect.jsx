@@ -24,7 +24,7 @@ export default class StatelessSelect extends PureComponent {
     isOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
     isInvalid: PropTypes.bool,
-    items: React.PropTypes.arrayOf(itemShape),
+    items: React.PropTypes.array, // eslint-disable-line
     label: PropTypes.string,
     onSelected: PropTypes.func,
     onOpenChange: PropTypes.func,

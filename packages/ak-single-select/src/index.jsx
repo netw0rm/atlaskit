@@ -9,12 +9,13 @@ export default class AkSelect extends PureComponent {
     isDefaultOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
     isInvalid: PropTypes.bool,
-    items: React.PropTypes.arrayOf(itemShape),
+    items: React.PropTypes.array, // eslint-disable-line
     label: PropTypes.string,
     onSelected: PropTypes.func,
     onOpenChange: PropTypes.func,
     placeholder: PropTypes.string,
     position: PropTypes.string,
+    shouldFitContainer: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -24,13 +25,14 @@ export default class AkSelect extends PureComponent {
     label: '',
     onItemActivated: () => {},
     onOpenChange: () => {},
+    onSelected: () => {},
     placeholder: '',
     position: 'bottom left',
   }
 
   state = {
     isOpen: this.props.isDefaultOpen,
-    selected: this.props.defaultSelected,
+    selectedItem: this.props.defaultSelected,
   }
 
   selectItem = (item) => {
@@ -47,16 +49,17 @@ export default class AkSelect extends PureComponent {
     <StatelessSelect
       id={this.props.id}
       isDisabled={this.props.isDisabled}
-      isRequired={this.props.isRequired}
       isInvalid={this.props.isInvalid}
       isOpen={this.state.isOpen}
+      isRequired={this.props.isRequired}
       items={this.props.items}
       label={this.props.label}
-      onSelected={this.selectItem}
       onOpenChange={this.handleOpenChange}
+      onSelected={this.selectItem}
       placeholder={this.props.placeholder}
       position={this.props.position}
       selectedItem={this.state.selectedItem}
+      shouldFitContainer={this.props.shouldFitContainer}
     />
   );
 }

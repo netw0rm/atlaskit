@@ -18,6 +18,7 @@ storiesOf(name, module)
         <GridColumn medium={1}><div style={dummyStyles}>1 col</div></GridColumn>
         <GridColumn><div style={dummyStyles}>Unspecified</div></GridColumn>
       </Grid>
+      <p>The above grid should have a max width of around 12 x 80px.</p>
     </Page>
   ))
   .add('grid layout="fluid"', () => (
@@ -29,5 +30,6 @@ storiesOf(name, module)
         <GridColumn medium={1}><div style={dummyStyles}>1 col</div></GridColumn>
         <GridColumn><div style={dummyStyles}>Unspecified</div></GridColumn>
       </Grid>
+      <p>The above grid should have no max width.</p>
     </Page>
   ));

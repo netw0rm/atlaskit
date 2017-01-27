@@ -23,6 +23,7 @@ storiesOf(name, module)
       <Grid><GridColumn medium={10}><div style={dummyStyles}>10 col</div></GridColumn></Grid>
       <Grid><GridColumn medium={11}><div style={dummyStyles}>11 col</div></GridColumn></Grid>
       <Grid><GridColumn medium={12}><div style={dummyStyles}>12 col</div></GridColumn></Grid>
+      <p>This story is used to verify the widths and margins of the 12 different columns</p>
     </Page>
   ))
   .add('column sizes combined', () => (
@@ -95,6 +96,7 @@ storiesOf(name, module)
       <Grid>
         <GridColumn><div style={dummyStyles}>unspecified col</div></GridColumn>
       </Grid>
+      <p>This story is used to verify that rows full of columns that add up to 12 all sit on the same line without wrappping.</p>
     </Page>
   ))
   .add('column "elasticity"', () => (
@@ -104,6 +106,7 @@ storiesOf(name, module)
         <GridColumn><div style={dummyStyles}>unspecified</div></GridColumn>
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>
       </Grid>
+      <p>This story is used to verify that columns without specified columns "stretch" to fill available space on a row.</p>
     </Page>
   ))
   .add('column wrapping', () => (
@@ -113,6 +116,7 @@ storiesOf(name, module)
         <GridColumn medium={8}><div style={dummyStyles}>8 col</div></GridColumn>
         <GridColumn><div style={dummyStyles}>unspecified</div></GridColumn>
       </Grid>
+      <p>This story is used to verify that 2 columns adding up to greater than 12 don't overflow the grid.</p>
     </Page>
   ))
   .add('multiple unspecified columns', () => (
@@ -148,5 +152,6 @@ storiesOf(name, module)
         <GridColumn><div style={dummyStyles}>1</div></GridColumn>
         <GridColumn><div style={dummyStyles}>1</div></GridColumn>
       </Grid>
+      <p>This story is used to verify that columns without a specified column prop (eg medium="4") behave like normal flexbox items.</p>
     </Page>
   ));

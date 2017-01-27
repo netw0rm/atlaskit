@@ -40,6 +40,7 @@ storiesOf(name, module)
         <GridColumn medium={5}><div style={dummyStyles}>5 col</div></GridColumn>
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>
       </Grid>
+      <p>This story is used to verify the spacing values for "cosy" (the default) grids.</p>
     </Page>
   ))
   .add('grid spacing="compact"', () => (
@@ -73,6 +74,7 @@ storiesOf(name, module)
         <GridColumn medium={5}><div style={dummyStyles}>5 col</div></GridColumn>
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>
       </Grid>
+      <p>This story is used to verify the spacing values for "compact" grids.</p>
     </Page>
   ))
   .add('grid spacing="comfortable"', () => (
@@ -106,5 +108,6 @@ storiesOf(name, module)
         <GridColumn medium={5}><div style={dummyStyles}>5 col</div></GridColumn>
         <GridColumn medium={2}><div style={dummyStyles}>2 col</div></GridColumn>
       </Grid>
+      <p>This story is used to verify the spacing values for "comfortable" grids.</p>
     </Page>
   ));

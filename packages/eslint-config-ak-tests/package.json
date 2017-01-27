@@ -1,5 +1,5 @@
 {
-  "name": "@atlaskit/eslint-config-ak-tests",
+  "name": "@atlaskit/eslint-config-tests",
   "version": "1.0.0",
   "author": "Atlassian Pty Ltd",
   "description": "The test file eslint configuration for AtlasKit components",

@@ -1,5 +1,5 @@
 {
-  "name": "@atlaskit/eslint-config-ak-stories",
+  "name": "@atlaskit/eslint-config-stories",
   "version": "1.0.0",
   "author": "Atlassian Pty Ltd",
   "description": "The react-storybook story eslint configuration for AtlasKit components",

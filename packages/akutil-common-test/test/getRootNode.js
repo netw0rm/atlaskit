@@ -1,13 +1,8 @@
 /** @jsx vdom */
 
 import { vdom, define } from 'skatejs';
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
 
 import { createTemporaryComponent, tearDownComponent, getRootNode } from '../src';
-
-chai.should();
-chai.use(sinonChai);
 
 describe('getRootNode', () => {
   let component;

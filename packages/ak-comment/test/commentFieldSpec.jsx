@@ -1,14 +1,9 @@
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 
 import CommentField from '../src/internal/CommentField';
 import styles from '../src/styles.less';
 import { name } from '../package.json';
-
-const { expect } = chai;
-chai.use(chaiEnzyme());
 
 describe(name, () => {
   describe('CommentField', () => {
@@ -32,15 +27,15 @@ describe(name, () => {
           const href = '/test-href';
           const wrapper = shallow(<CommentField href={href}>{children}</CommentField>);
 
-          expect(wrapper).to.have.exactly(1).descendants(`.${styles.locals.topButtonLink}`);
-          expect(wrapper.find(`.${styles.locals.topButtonLink}`)).to.contain(children);
-          expect(wrapper.find(`.${styles.locals.topButtonLink}`)).to.have.prop('href', href);
+          expect(wrapper.find(`.${styles.locals.topButtonLink}`).length).to.equal(1);
+          expect(wrapper.find(`.${styles.locals.topButtonLink}`).contains(children)).to.equal(true);
+          expect(wrapper.find(`.${styles.locals.topButtonLink}`).prop('href')).to.equal(href);
         });
 
         it('should render link with extraClasses', () => {
           const extraClass = 'extra-class';
           const wrapper = shallow(<CommentField href="#" extraClasses={extraClass} />);
-          expect(wrapper.find(`.${styles.locals.topButtonLink}`)).to.have.className(extraClass);
+          expect((wrapper.find(`.${styles.locals.topButtonLink}`)).hasClass((extraClass))).to.equal(true);
         });
 
         it('should reflect onClick, onFocus, and onMouseOver to the link element', () => {
@@ -51,7 +46,7 @@ describe(name, () => {
           };
           const wrapper = shallow(<CommentField href="#" {...props} />);
           Object.keys(props).forEach((propName) => {
-            expect(wrapper.find(`.${styles.locals.topButtonLink}`)).to.have.prop(propName, props[propName]);
+            expect(wrapper.find(`.${styles.locals.topButtonLink}`).prop(propName)).to.equal(props[propName]);
           });
         });
       });
@@ -61,14 +56,14 @@ describe(name, () => {
           const children = <span>children</span>;
           const wrapper = shallow(<CommentField>{children}</CommentField>);
 
-          expect(wrapper).to.have.exactly(1).descendants(`.${styles.locals.topButtonText}`);
-          expect(wrapper.find(`.${styles.locals.topButtonText}`)).to.contain(children);
+          expect(wrapper.find(`.${styles.locals.topButtonText}`).length).to.equal(1);
+          expect(wrapper.find(`.${styles.locals.topButtonText}`).contains(children)).to.equal(true);
         });
 
         it('should render span with extraClasses', () => {
           const extraClass = 'extra-class';
           const wrapper = shallow(<CommentField extraClasses={extraClass} />);
-          expect(wrapper.find(`.${styles.locals.topButtonText}`)).to.have.className(extraClass);
+          expect((wrapper.find(`.${styles.locals.topButtonText}`)).hasClass((extraClass))).to.equal(true);
         });
 
         it('should reflect onClick, onFocus, and onMouseOver to the span', () => {
@@ -79,7 +74,7 @@ describe(name, () => {
           };
           const wrapper = shallow(<CommentField {...props} />);
           Object.keys(props).forEach((propName) => {
-            expect(wrapper.find(`.${styles.locals.topButtonText}`)).to.have.prop(propName, props[propName]);
+            expect(wrapper.find(`.${styles.locals.topButtonText}`).prop(propName)).to.equal(props[propName]);
           });
         });
       });

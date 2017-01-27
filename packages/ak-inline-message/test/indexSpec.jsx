@@ -1,6 +1,4 @@
-import chai from 'chai';
 import React from 'react';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import Button from 'ak-button';
 import WarningIcon from 'ak-icon/glyph/warning';
@@ -18,9 +16,6 @@ import IconForType from '../src/internal/IconForType';
 
 import { name } from '../package.json';
 
-const { expect } = chai;
-chai.use(chaiEnzyme());
-
 describe(name, () => {
   it('basic sanity check', () =>
     expect(shallow(
@@ -30,12 +25,12 @@ describe(name, () => {
 
   describe('isOpen state', () => {
     it('should default to false', () => {
-      expect(shallow(<InlineMessage />)).to.have.state('isOpen', false);
+      expect((shallow(<InlineMessage />)).state('isOpen')).to.equal(false);
     });
     it('should toggle when the button is clicked', () => {
       const wrapper = shallow(<InlineMessage />);
       wrapper.find(Button).simulate('click');
-      expect(wrapper).to.have.state('isOpen', true);
+      expect((wrapper).state('isOpen')).to.equal(true);
     });
   });
 
@@ -44,23 +39,23 @@ describe(name, () => {
       it('supplied title should be rendered', () => {
         expect(shallow(
           <InlineMessage title="Title goes here" />
-        ).find(`.${styles.titleText}`)).to.have.text('Title goes here');
+        ).find(`.${styles.titleText}`).text()).to.equal('Title goes here');
       });
     });
     describe('secondaryText', () => {
       it('supplied secondary text should be rendered', () => {
         expect(shallow(
           <InlineMessage secondaryText="Secondary goes here" />
-        ).find(`.${styles.secondaryText}`)).to.have.text('Secondary goes here');
+        ).find(`.${styles.secondaryText}`).text()).to.equal('Secondary goes here');
       });
     });
     describe('type', () => {
       it('should default to "connectivity"', () => {
-        expect(mount(<InlineMessage />)).to.have.prop('type', 'connectivity');
+        expect(mount(<InlineMessage />).prop('type')).to.equal('connectivity');
       });
       it('should be passed to IconForType component', () => {
         const wrapper = mount(<InlineMessage type="error" />);
-        expect(wrapper.find(IconForType)).to.have.prop('type', 'error');
+        expect(wrapper.find(IconForType).prop('type')).to.equal('error');
       });
     });
   });
@@ -72,28 +67,28 @@ describe(name, () => {
       describe('type', () => {
         it('connectivity type produces connectivity icon', () => {
           const wrapper = shallow(<IconForType type="connectivity" />);
-          expect(wrapper).to.have.descendants(WarningIcon);
-          expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorB400);
+          expect(wrapper.find(WarningIcon).length).to.be.above(0);
+          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorB400);
         });
         it('confirmation type produces confirmation icon', () => {
           const wrapper = shallow(<IconForType type="confirmation" />);
-          expect(wrapper).to.have.descendants(SuccessIcon);
-          expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorG300);
+          expect(wrapper.find(SuccessIcon).length).to.be.above(0);
+          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorG300);
         });
         it('info type produces info icon', () => {
           const wrapper = shallow(<IconForType type="info" />);
-          expect(wrapper).to.have.descendants(WarningIcon);
-          expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorP300);
+          expect(wrapper.find(WarningIcon).length).to.be.above(0);
+          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorP300);
         });
         it('warning type produces warning icon', () => {
           const wrapper = shallow(<IconForType type="warning" />);
-          expect(wrapper).to.have.descendants(WarningIcon);
-          expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorY300);
+          expect(wrapper.find(WarningIcon).length).to.be.above(0);
+          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorY300);
         });
         it('error type produces error icon', () => {
           const wrapper = shallow(<IconForType type="error" />);
-          expect(wrapper).to.have.descendants(WarningIcon);
-          expect(wrapper.find(`.${styles.iconWrapper}`)).to.have.style('color', akColorR300);
+          expect(wrapper.find(WarningIcon).length).to.be.above(0);
+          expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorR300);
         });
       });
     });

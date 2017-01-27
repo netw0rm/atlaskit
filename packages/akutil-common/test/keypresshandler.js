@@ -61,7 +61,7 @@ describe(name, () => {
       afterMutations(
         () => {
           expect(keyPressCallback.called).to.equal(true);
-          expect(keyPressCallback).to.have.been.calledWith(keyPressEvent);
+          expect(keyPressCallback.calledWith(keyPressEvent)).to.equal(true);
         },
         done
       );

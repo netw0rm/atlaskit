@@ -1,14 +1,12 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 import { MentionNodeType, MentionQueryMarkType, ProseMirror, Schema, schema as schemaBasic } from '../../../src';
 import BlockTypePlugin from '../../../src/plugins/block-type';
 import MentionsPlugin from '../../../src/plugins/mentions';
 import { chaiPlugin, fixtures } from '../../../test-helper';
 
 chai.use(chaiPlugin);
-chai.use((sinonChai as any).default || sinonChai);
 
 const schema: Schema = new Schema({
   nodes: schemaBasic.nodeSpec.append({

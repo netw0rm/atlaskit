@@ -1,13 +1,11 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
 import { chaiPlugin, insert, makeEditor } from '../../../test-helper';
 import { doc, link, linkable, schema, unlinkable } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
-chai.use((sinonChai as any).default || sinonChai);
 
 describe('hyperlink', () => {
   const editor = (doc: any) => {
@@ -250,7 +248,7 @@ describe('hyperlink', () => {
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
-      expect(spy).to.have.been.callCount(1);
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should be able to register handlers for state change events', () => {
@@ -260,7 +258,7 @@ describe('hyperlink', () => {
 
       pm.setTextSelection(pm.doc.refs['pos']);
 
-      expect(spy).to.have.been.callCount(2);
+      expect(spy.callCount).to.equal(2);
     });
 
     it('sets canAddLink to false when in a context where links are not supported by the schema', () => {
@@ -284,7 +282,7 @@ describe('hyperlink', () => {
       pm.setTextSelection(pos1);
       pm.setTextSelection(pos2);
 
-      expect(spy).to.have.been.callCount(2);
+      expect(spy.callCount).to.equal(2);
     });
 
     it('emits change when the selection leaves a link', () => {
@@ -297,7 +295,7 @@ describe('hyperlink', () => {
       plugin.subscribe(spy);
       pm.setTextSelection(textPos);
 
-      expect(spy).to.have.been.callCount(2);
+      expect(spy.callCount).to.equal(2);
     });
 
     it('permits adding a link to an empty selection using the href', () => {

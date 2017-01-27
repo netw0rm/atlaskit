@@ -1,15 +1,8 @@
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
-import sinonChai from 'sinon-chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
 import FieldRadioGroup, { AkFieldRadioGroup, AkRadio } from '../src';
 import { name } from '../package.json';
-
-const { expect } = chai;
-chai.use(sinonChai);
-chai.use(chaiEnzyme());
 
 describe(name, () => {
   describe('FieldRadioGroup', () => {
@@ -39,7 +32,7 @@ describe(name, () => {
       });
 
       it('should render a FieldRadioGroup component', () => {
-        expect(wrapper).to.have.exactly(1).descendants(AkFieldRadioGroup);
+        expect(wrapper.find(AkFieldRadioGroup).length).to.equal(1);
       });
 
       it('should set up the onRadioChange prop for the AkFieldRadioGroup', () => {
@@ -55,17 +48,17 @@ describe(name, () => {
       describe('defaultValue prop', () => {
         it('renders an AkRadio with correct props for each item in the array', () => {
           const wrapper = mount(<FieldRadioGroup items={sampleItems} />);
-          expect(wrapper).to.have.exactly(sampleItems.length).descendants(AkRadio);
+          expect(wrapper.find(AkRadio).length).to.equal(sampleItems.length);
 
           const radios = wrapper.find(AkRadio);
           for (let i = 0; i < sampleItems.length; i++) {
             const radio = radios.at(i);
             const item = sampleItems[i];
-            expect(radio).to.have.prop('name', item.name);
-            expect(radio).to.have.prop('value', item.value);
-            expect(radio).to.have.prop('children', item.label);
-            expect(radio).to.have.prop('isDisabled', item.isDisabled);
-            expect(radio).to.have.prop('isSelected', false);
+            expect(radio.prop('name')).to.equal(item.name);
+            expect(radio.prop('value')).to.equal(item.value);
+            expect(radio.prop('children')).to.equal(item.label);
+            expect(radio.prop('isDisabled')).to.equal(!!item.isDisabled);
+            expect(radio.prop('isSelected')).to.equal(false);
           }
         });
       });
@@ -76,7 +69,7 @@ describe(name, () => {
 
         it('selects the item by default', () => {
           const wrapper = mount(<FieldRadioGroup items={sampleItemsWithDefault} />);
-          expect(wrapper.find(AkRadio).at(2)).prop('isSelected').to.equal(true);
+          expect(wrapper.find(AkRadio).at(2).prop('isSelected')).to.equal(true);
         });
 
         it('is overridden when an item is selected', () => {
@@ -86,9 +79,9 @@ describe(name, () => {
           radios.at(0).find('input').simulate('change');
 
           expect(wrapper.state('selectedValue')).to.equal(sampleItemsWithDefault[0].value);
-          expect(radios.at(0)).prop('isSelected').to.equal(true);
-          expect(radios.at(1)).prop('isSelected').to.equal(false);
-          expect(radios.at(2)).prop('isSelected').to.equal(false);
+          expect(radios.at(0).prop('isSelected')).to.equal(true);
+          expect(radios.at(1).prop('isSelected')).to.equal(false);
+          expect(radios.at(2).prop('isSelected')).to.equal(false);
         });
       });
 

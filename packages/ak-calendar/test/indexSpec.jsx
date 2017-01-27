@@ -1,7 +1,5 @@
 import 'akutil-polyfills';
-import chai, { expect } from 'chai';
 import React from 'react';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow } from 'enzyme';
 import { getMonthName } from '../src/util';
 
@@ -10,8 +8,6 @@ import { AkCalendar } from '../src';
 import Announcer from '../src/Announcer';
 import DateComponent from '../src/Date';
 
-chai.use(chaiEnzyme());
-
 const now = new Date();
 const nowMonth = now.getMonth() + 1;
 const nowYear = now.getFullYear();
@@ -19,15 +15,15 @@ const nowYear = now.getFullYear();
 describe(name, () => {
   it('should render the component', () => {
     const wrapper = shallow(<AkCalendar />);
-    expect(wrapper).to.be.present();
+    expect(wrapper.length).to.be.above(0);
     expect(wrapper.find(Announcer)).to.have.lengthOf(1);
-    expect(wrapper.find(DateComponent)).to.be.present();
+    expect(wrapper.find(DateComponent).length).to.be.above(0);
   });
 
   it('should highlight current date', () => {
     const wrapper = shallow(<AkCalendar />);
-    expect(wrapper.find('div[aria-label="calendar"]').at(0))
-      .to.include.text(`${getMonthName(nowMonth)} ${nowYear}`);
+    expect(wrapper.find('div[aria-label="calendar"]').at(0).text().includes(`${getMonthName(nowMonth)} ${nowYear}`))
+      .to.equal(true);
   });
 
   it('should call onSelect', (done) => {

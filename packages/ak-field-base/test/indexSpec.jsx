@@ -1,17 +1,9 @@
-import chai, { expect } from 'chai';
 import React from 'react';
-import chaiAsPromised from 'chai-as-promised';
-import sinonChai from 'sinon-chai';
 import { shallow, mount } from 'enzyme';
-import chaiEnzyme from 'chai-enzyme';
 import WarningIcon from 'ak-icon/glyph/warning';
 import { FieldBase } from '../src';
 import { compact, none, subtle } from '../src/internal/appearances';
 import { locals } from '../src/styles.less';
-
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
-chai.use(chaiEnzyme());
 
 const {
   contentContainer: contentClass,
@@ -30,43 +22,44 @@ describe('ak-field-base', () => {
   describe('properties', () => {
     describe('by default', () =>
       it('should render a content', () =>
-        expect(shallow(<FieldBase {...defaultProps} />)).to.have.descendants(`.${contentClass}`)
+        expect(shallow(<FieldBase {...defaultProps} />).find(`.${contentClass}`).length).to.be.above(0)
       )
     );
 
     describe('isReadOnly prop = true', () =>
       it('should render with the .isReadOnly class', () =>
-        expect(shallow(<FieldBase {...defaultProps} isReadOnly />)).to.have.descendants(`.${isReadOnlyClass}`)
+        expect(shallow(<FieldBase {...defaultProps} isReadOnly />).find(`.${isReadOnlyClass}`).length).to.be.above(0)
       )
     );
 
     describe('isFocused prop = true', () => {
       it('should render the content with the .isFocused class', () =>
-        expect(shallow(<FieldBase {...defaultProps} isFocused />)).to.have.descendants(`.${isFocusedClass}`)
+        expect(shallow(<FieldBase {...defaultProps} isFocused />).find(`.${isFocusedClass}`).length).to.be.above(0)
       );
     });
 
     describe('isPaddingDisabled prop = true', () => {
       it('should render the content with the .paddingDisabled class', () =>
-        expect(shallow(<FieldBase {...defaultProps} isPaddingDisabled />)).to.have.descendants(`.${isPaddingDisabled}`)
+        expect(shallow(<FieldBase {...defaultProps} isPaddingDisabled />).find(`.${isPaddingDisabled}`).length).to.be.above(0)
       );
     });
 
     describe('isInvalid prop = true', () => {
       it('should render with the isFocused styles and not the isInvalid styles', () =>
-        expect(shallow(<FieldBase {...defaultProps} isInvalid />)).to.have.descendants(`.${isInvalidClass}`)
+        expect(shallow(<FieldBase {...defaultProps} isInvalid />).find(`.${isInvalidClass}`).length).to.be.above(0)
       );
 
       it('should render the warning icon', () =>
-        expect(shallow(<FieldBase {...defaultProps} isInvalid />)).to.have.descendants(WarningIcon)
+        expect(shallow(<FieldBase {...defaultProps} isInvalid />)
+          .find(WarningIcon).length).to.be.above(0)
       );
     });
 
     describe('isFocused prop = true AND isInvalid prop = true', () =>
       it('should render with the isFocused styles and not the isInvalid styles', () => {
         const wrapper = shallow(<FieldBase {...defaultProps} isFocused isInvalid />);
-        expect(wrapper).to.have.descendants(`.${isFocusedClass}`);
-        expect(wrapper).to.not.have.descendants(`.${isInvalidClass}`);
+        expect(wrapper.find(`.${isFocusedClass}`).length).to.be.above(0);
+        expect(wrapper.find(`.${isInvalidClass}`).length).to.equal(0);
       })
     );
 
@@ -74,8 +67,7 @@ describe('ak-field-base', () => {
       [compact, none, subtle].forEach(appearance =>
         describe(appearance, () =>
           it(`should render the content with the .${appearance} class`, () =>
-            expect(shallow(<FieldBase {...defaultProps} appearance={appearance} />))
-              .to.have.descendants(`.${locals[appearance]}`)
+            expect(shallow(<FieldBase {...defaultProps} appearance={appearance} />).find(`.${locals[appearance]}`).length).to.be.above(0)
           )
         )
       );

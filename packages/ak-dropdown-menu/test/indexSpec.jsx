@@ -1,7 +1,4 @@
-import chai from 'chai';
 import React from 'react';
-import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import Droplist from 'ak-droplist';
 import Button from 'ak-button';
@@ -9,11 +6,6 @@ import Button from 'ak-button';
 import { name } from '../package.json';
 
 import Menu from '../src';
-
-chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
-
-const { expect } = chai;
 
 const itemsList = [
   {
@@ -52,26 +44,31 @@ describe(name, () => {
     });
 
     it('should render Droplist component', () => {
-      expect(wrapper).to.have.exactly(1).descendants(Droplist);
+      expect(wrapper.find(Droplist).length).to.equal(1);
     });
 
     it('should pass required properties to Droplist', () => {
       const droplist = wrapper.find(Droplist);
-      expect(droplist).to.have.prop('position', wrapper.props().position);
-      expect(droplist).to.have.prop('appearance', wrapper.props().appearance);
-      expect(droplist).to.have.prop('isTriggerNotTabbable', wrapper.props().isTriggerNotTabbable);
-      expect(droplist).to.have.prop('shouldFlip', wrapper.props().shouldFlip);
-      expect(droplist).to.have.prop('isOpen', wrapper.state().isOpen);
-      expect(droplist).to.have.prop('trigger', 'text');
+      expect(droplist.prop('position')).to.equal(wrapper.props().position);
+      expect(droplist.prop('appearance')).to.equal(wrapper.props().appearance);
+      expect(droplist.prop('isTriggerNotTabbable')).to.equal(wrapper.props().isTriggerNotTabbable);
+      expect(droplist.prop('shouldFlip')).to.equal(wrapper.props().shouldFlip);
+      expect(droplist.prop('isOpen')).to.equal(wrapper.state().isOpen);
+      expect(droplist.prop('trigger')).to.equal('text');
     });
 
     it('should pass required properties to the button trigger', () => {
-      const menu = mount(<Menu items={itemsList} triggerType="button">text</Menu>);
-      const button = menu.find(Button);
-      expect(button).to.have.prop('isSelected', menu.props().isOpen);
-      expect(button).to.have.prop('ariaHaspopup', true);
-      expect(button).to.have.prop('ariaExpanded', menu.props().isOpen);
-      expect(button).to.have.prop('ariaControls');
+      [
+        <Menu items={itemsList} triggerType="button">text</Menu>,
+        <Menu items={itemsList} triggerType="button" defaultOpen>text</Menu>,
+      ].forEach((val) => {
+        const menu = mount(val);
+        const button = menu.find(Button);
+        expect(button.prop('isSelected')).to.equal(menu.props().defaultOpen);
+        expect(button.prop('ariaHaspopup')).to.equal(true);
+        expect(button.prop('ariaExpanded')).to.equal(menu.props().defaultOpen);
+        expect(button.prop('ariaControls')).to.not.equal(undefined);
+      });
     });
   });
 

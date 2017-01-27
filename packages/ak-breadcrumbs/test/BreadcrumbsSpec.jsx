@@ -1,6 +1,3 @@
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
-import sinonChai from 'sinon-chai';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
@@ -11,10 +8,6 @@ import {
 import { locals } from '../src/styles.less';
 import EllipsisItem from '../src/internal/EllipsisItem';
 import { name } from '../package.json';
-
-const { expect } = chai;
-chai.use(sinonChai);
-chai.use(chaiEnzyme());
 
 describe(name, () => {
   describe('AkBreadcrumbs', () => {
@@ -55,7 +48,7 @@ describe(name, () => {
         );
         const containerDiv = wrapper.find(`.${locals.container}`);
         expect(containerDiv).to.have.length.above(0);
-        expect(containerDiv).to.have.exactly(3).descendants(Item);
+        expect(containerDiv.find(Item).length).to.equal(3);
       });
 
       describe('with enough items to collapse', () => {
@@ -78,10 +71,10 @@ describe(name, () => {
           });
 
           it('renders only the first and last items, and an ellipsis item', () => {
-            expect(wrapper).to.have.exactly(2).descendants(Item);
-            expect(wrapper).to.contain(firstItem);
-            expect(wrapper).to.contain(lastItem);
-            expect(wrapper).to.have.exactly(1).descendants(EllipsisItem);
+            expect(wrapper.find(Item).length).to.equal(2);
+            expect(wrapper.contains(firstItem)).to.equal(true);
+            expect(wrapper.contains(lastItem)).to.equal(true);
+            expect(wrapper.find(EllipsisItem).length).to.equal(1);
           });
 
           it('calls the onExpand handler when the ellipsis is clicked', () => {
@@ -105,8 +98,8 @@ describe(name, () => {
 
           it('renders all the items', () => {
             expect(wrapper.props().isExpanded).to.equal(true);
-            expect(wrapper).to.have.exactly(4).descendants(Item);
-            expect(wrapper).to.not.have.descendants(EllipsisItem);
+            expect(wrapper.find(Item).length).to.equal(4);
+            expect(wrapper.find(EllipsisItem).length).to.equal(0);
           });
         });
       });

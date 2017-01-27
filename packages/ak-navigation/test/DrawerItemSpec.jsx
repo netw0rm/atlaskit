@@ -1,12 +1,6 @@
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import { mount } from 'enzyme';
 import React from 'react';
 import DrawerItem from '../src/components/js/DrawerItem';
-
-chai.use(chaiEnzyme());
-chai.should();
-const expect = chai.expect;
 
 describe('<DrawerItem />', () => {
   describe('props', () => {

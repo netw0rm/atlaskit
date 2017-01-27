@@ -1,14 +1,9 @@
 import React, { PureComponent } from 'react';
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import { mount, shallow } from 'enzyme';
 
 import { name } from '../package.json';
 import Icon, { size, NotImplementedError } from '../src/Icon';
 import styles from '../src/styles.less';
-
-const { expect } = chai;
-chai.use(chaiEnzyme());
 
 describe(name, () => {
   describe('Icon', () => {
@@ -45,7 +40,7 @@ describe(name, () => {
 
     it('should be possible to create an Icon via a subclass', () => {
       const myIcon = mount(<MyIcon label="My icon" />);
-      expect(myIcon).to.have.text(secretContent);
+      expect(myIcon.text()).to.equal(secretContent);
     });
 
     it('should be able to create a component', () => {
@@ -65,7 +60,7 @@ describe(name, () => {
         }
         const labelContent = 'label content';
         const wrapper = mount(<LabelIcon label={labelContent} />);
-        expect(wrapper).to.have.text(labelContent);
+        expect(wrapper.text()).to.equal(labelContent);
       });
     });
 
@@ -73,7 +68,7 @@ describe(name, () => {
       Object.values(size).forEach((s) => {
         it(`with value ${s}`, () => {
           const wrapper = shallow(<MyIcon label="My icon" size={s} />);
-          expect(wrapper).to.have.className(styles.locals[s]);
+          expect((wrapper).hasClass((styles.locals[s]))).to.equal(true);
         });
       });
     });

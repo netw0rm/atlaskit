@@ -1,19 +1,9 @@
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
-import sinonChai from 'sinon-chai';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import styles from 'style!../src/style.less';
 import EmojiPreview from '../src/internal/common/EmojiPreview';
 import ToneSelector from '../src/internal/common/ToneSelector';
 import Emoji from '../src/Emoji';
-
-chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
-chai.use(sinonChai);
-chai.should();
-const expect = chai.expect;
 
 function skinVariation(id) {
   return {
@@ -80,7 +70,7 @@ describe('<EmojiPreview />', () => {
       />);
 
       wrapper.find('#toneSelectorButton').first().simulate('click');
-      expect(wrapper).to.have.state('selectingTone', true);
+      expect((wrapper).state('selectingTone')).to.equal(true);
       expect(wrapper.find(ToneSelector), 'ToneSelector in preview').to.have.length(1);
     });
 
@@ -93,11 +83,11 @@ describe('<EmojiPreview />', () => {
 
       expect(wrapper.find(Emoji), 'Emoji in preview').to.have.length(2);
       const first = wrapper.find(Emoji).first();
-      expect(first, 'Emoji shortcut').to.have.prop('shortcut').to.equal(emoji.shortcut);
-      expect(first, 'Emoji skin variation').to.have.prop('representation').to.have.all.keys(skinVariation(1));
+      expect(first.prop('shortcut'), 'Emoji shortcut').to.equal(emoji.shortcut);
+      expect(first.prop('representation'), 'Emoji skin variation').to.have.all.keys(skinVariation(1));
       const second = wrapper.find(Emoji).at(1);
-      expect(second, 'Tone shortcut').to.have.prop('shortcut').to.equal(toneEmoji.shortcut);
-      expect(second, 'Tone skin variation').to.have.prop('representation').to.have.all.keys(skinVariation(1));
+      expect(second.prop('shortcut'), 'Tone shortcut').to.equal(toneEmoji.shortcut);
+      expect(second.prop('representation'), 'Tone skin variation').to.have.all.keys(skinVariation(1));
     });
 
     it('button should show default tone if selected tone is not specified', () => {
@@ -108,11 +98,11 @@ describe('<EmojiPreview />', () => {
 
       expect(wrapper.find(Emoji), 'Emoji in preview').to.have.length(2);
       const first = wrapper.find(Emoji).first();
-      expect(first, 'Emoji shortcut').to.have.prop('shortcut').to.equal(emoji.shortcut);
-      expect(first, 'Emoji skin variation').to.have.prop('representation').to.have.all.keys(emoji.representation);
+      expect(first.prop('shortcut'), 'Emoji shortcut').to.equal(emoji.shortcut);
+      expect(first.prop('representation'), 'Emoji skin variation').to.have.all.keys(emoji.representation);
       const second = wrapper.find(Emoji).at(1);
-      expect(second, 'Tone shortcut').to.have.prop('shortcut').to.equal(toneEmoji.shortcut);
-      expect(second, 'Tone skin variation').to.have.prop('representation').to.have.all.keys(toneEmoji.representation);
+      expect(second.prop('shortcut'), 'Tone shortcut').to.equal(toneEmoji.shortcut);
+      expect(second.prop('representation'), 'Tone skin variation').to.have.all.keys(toneEmoji.representation);
     });
 
     it('should stop selecting tone when tone selected', () => {
@@ -123,7 +113,7 @@ describe('<EmojiPreview />', () => {
 
       wrapper.instance().onToneButtonClick();
       wrapper.instance().onToneSelected();
-      expect(wrapper).to.have.state('selectingTone', false);
+      expect(wrapper.state('selectingTone')).to.equal(false);
     });
 
     it('should pass onToneSelected to tone selector', () => {
@@ -134,7 +124,7 @@ describe('<EmojiPreview />', () => {
 
       wrapper.instance().onToneButtonClick();
 
-      expect(wrapper.find(ToneSelector)).to.have.prop('onToneSelected', wrapper.instance().onToneSelected);
+      expect(wrapper.find(ToneSelector).prop('onToneSelected')).to.equal(wrapper.instance().onToneSelected);
     });
 
     it('should stop selecting tone on mouse leave', () => {
@@ -146,7 +136,7 @@ describe('<EmojiPreview />', () => {
       wrapper.instance().onToneButtonClick();
 
       wrapper.simulate('mouseLeave');
-      expect(wrapper).to.have.state('selectingTone', false);
+      expect(wrapper.state('selectingTone')).to.equal(false);
     });
   });
 });

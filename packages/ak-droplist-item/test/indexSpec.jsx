@@ -1,18 +1,10 @@
-import chai from 'chai';
 import React from 'react';
-import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 
 import { name } from '../package.json';
 import { locals as styles } from '../src/styles.less';
 
 import Item, { SecondaryText } from '../src';
-
-chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
-
-const { expect } = chai;
 
 describe(name, () => {
   it('should be possible to create a component', () => {
@@ -25,30 +17,30 @@ describe(name, () => {
 
   describe('rendering', () => {
     it('should render content that is passed to the item', () => {
-      expect(mount(<Item>sample</Item>)).to.have.text('sample');
+      expect(mount(<Item>sample</Item>).text()).to.equal('sample');
     });
 
     it('should render elemBefore for all items', () => {
       const Icon = (<div id="icon">icon</div>);
-      expect(mount(<Item elemBefore={Icon}>sample</Item>)).to.contain(Icon);
-      expect(mount(<Item elemBefore={Icon} type="checkbox">sample</Item>)).to.contain(Icon);
-      expect(mount(<Item elemBefore={Icon} type="radio">sample</Item>)).to.contain(Icon);
+      expect(mount(<Item elemBefore={Icon}>sample</Item>).contains(Icon)).to.equal(true);
+      expect(mount(<Item elemBefore={Icon} type="checkbox">sample</Item>).contains(Icon)).to.equal(true);
+      expect(mount(<Item elemBefore={Icon} type="radio">sample</Item>).contains(Icon)).to.equal(true);
     });
 
     it('should render elemAfter for all items', () => {
       const Icon = (<div id="icon">icon</div>);
-      expect(mount(<Item elemAfter={Icon}>sample</Item>)).to.contain(Icon);
-      expect(mount(<Item elemAfter={Icon} type="checkbox">sample</Item>)).to.contain(Icon);
-      expect(mount(<Item elemAfter={Icon} type="radio">sample</Item>)).to.contain(Icon);
+      expect(mount(<Item elemAfter={Icon}>sample</Item>).contains(Icon)).to.equal(true);
+      expect(mount(<Item elemAfter={Icon} type="checkbox">sample</Item>).contains(Icon)).to.equal(true);
+      expect(mount(<Item elemAfter={Icon} type="radio">sample</Item>).contains(Icon)).to.equal(true);
     });
 
     it('should render icon for the radio or checkbox element', () => {
-      expect(mount(<Item type="radio" />)).to.have.descendants(`.${styles.checkradio}`);
-      expect(mount(<Item type="checkbox" />)).to.have.descendants(`.${styles.checkradio}`);
+      expect(mount(<Item type="radio" />).find(`.${styles.checkradio}`).length).to.be.above(0);
+      expect(mount(<Item type="checkbox" />).find(`.${styles.checkradio}`).length).to.be.above(0);
     });
 
     it('should NOT render icon for the link element', () => {
-      expect(mount(<Item type="link" />)).to.not.have.descendants(`.${styles.checkradio}`);
+      expect(mount(<Item type="link" />).find(`.${styles.checkradio}`).length).to.equal(0);
     });
   });
 
@@ -144,7 +136,7 @@ describe(name, () => {
 
   describe('secondary text', () => {
     it('should render content inside', () => {
-      expect(mount(<SecondaryText>text</SecondaryText>)).to.have.text('text');
+      expect(mount(<SecondaryText>text</SecondaryText>).text()).to.equal('text');
     });
 
     it('should have className', () => {

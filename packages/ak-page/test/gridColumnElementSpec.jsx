@@ -1,9 +1,6 @@
-import chai from 'chai';
 import { getColumnWidth } from '../src/internal/GridColumnElement';
 
 import { name } from '../package.json';
-
-chai.should();
 
 describe(name, () => {
   it('gridColumns should have no default width (flex-basis)', () => {

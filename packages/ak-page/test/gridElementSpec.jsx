@@ -1,9 +1,6 @@
-import chai from 'chai';
 import { getMargin, getMaxWidth, getPadding } from '../src/internal/GridElement';
 
 import { name } from '../package.json';
-
-chai.should();
 
 describe(name, () => {
   it('grid should have no max-width if fluid', () => {

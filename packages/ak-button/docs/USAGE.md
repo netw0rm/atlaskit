@@ -8,12 +8,12 @@ Buttons are used as triggers for actions. They are used in forms, toolbars, dial
 
 ## Try it out
 
-Interact with a [live demo of the ak-button component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-button/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-button
+npm install @NAME@
 ```
 
 ## Using the component
@@ -24,6 +24,6 @@ This package exports the `ak-button` React component.
 Import the component in your React app as follows:
 
 ```javascript
-import Button from 'ak-button';
+import Button from '@NAME@';
 ReactDOM.render(<Button />, container);
 ```

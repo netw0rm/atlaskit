@@ -8,12 +8,12 @@ Note: the previously-recommended [ak-page](https://www.npmjs.com/package/ak-page
 
 ## Try it out
 
-Interact with a [live demo of the ak-navigation component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-navigation/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-navigation
+npm install @NAME@
 ```
 
 ## Using the component
@@ -23,7 +23,7 @@ The `ak-navigation` module exposes a React component, and can be used in your Re
 ```js
 import Navigation, {
   AkContainerHeader,
-} from 'ak-navigation';
+} from '@NAME@';
 import {
   AtlassianIcon,
   SearchIcon,

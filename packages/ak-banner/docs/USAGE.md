@@ -6,10 +6,10 @@ This is a React component that displays a prominent banner message. It is intend
 
 ## Try it out
 
-Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/ak-banner/@VERSION@/).
+Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-banner
+npm install @NAME@
 ```

@@ -9,12 +9,12 @@ Use lozenges to highlight an item's status for quick recognition. Lozenges can b
 
 ## Try it out
 
-Interact with a [live demo of the ak-lozenge component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/ak-lozenge/@VERSION@/).
+Interact with a [live demo of the @NAME@ component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-lozenge
+npm install @NAME@
 ```
 
 ## Using the component
@@ -22,6 +22,6 @@ npm install ak-lozenge
 Import the component in your React app as follows:
 
 ```js
-import Lozenge from 'ak-lozenge';
+import Lozenge from '@NAME@';
 ReactDOM.render(<Lozenge />, container);
 ```

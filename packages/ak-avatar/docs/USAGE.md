@@ -6,10 +6,10 @@ The Avatars represent users that are collaborating within the same application. 
 
 ## Try it out
 
-Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/ak-avatar/@VERSION@/).
+Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-avatar
+npm install @NAME@
 ```

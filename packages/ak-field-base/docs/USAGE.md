@@ -18,7 +18,7 @@ Interact with a [live demo of the FieldBase component](https://aui-cdn.atlassian
 ## Installation
 
 ```sh
-npm install ak-field-base
+npm install @NAME@
 ```
 
 #### Using the component
@@ -26,7 +26,7 @@ npm install ak-field-base
 Import the component in your React app as follows:
 
 ```
-import FieldBase from 'ak-field-base';
+import FieldBase from '@NAME@';
 ReactDOM.render(<FieldBase />, container);
 ```
 

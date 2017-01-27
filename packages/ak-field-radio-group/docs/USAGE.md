@@ -5,12 +5,12 @@ Provides a standard way to select a single option from a list.
 
 ## Try it out
 
-Interact with a [live demo of the ak-field-radio-group component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-field-radio-group/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-field-radio-group
+npm install @NAME@
 ```
 
 ## Using the component
@@ -18,7 +18,7 @@ npm install ak-field-radio-group
 Import the component in your React app as follows:
 
 ```
-import FieldRadioGroup from 'ak-field-radio-group';
+import FieldRadioGroup from '@NAME@';
 
 const items = [
   { name: 'color', value: 'red', label: 'Red' },

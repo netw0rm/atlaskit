@@ -6,10 +6,10 @@ The main purpose of the blanket component is to provide the overlay layer for co
 
 ## Try it out
 
-Interact with a [live demo of the ak-blanket component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-blanket/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-blanket
+npm install @NAME@
 ```

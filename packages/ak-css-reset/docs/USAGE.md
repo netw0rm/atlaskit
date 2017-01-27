@@ -4,12 +4,12 @@ This package exports a CSS file which provides a minimal reset along with base s
 
 ## Try it out
 
-Interact with a [live demo of the ak-css-reset component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-css-reset/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-css-reset
+npm install @NAME@
 ```
 
 ## Using the component

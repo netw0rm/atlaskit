@@ -17,7 +17,7 @@ npm install @NAME@
 Import the component in your React app as follows:
 
 ```js
-import EmojiPicker from 'ak-emoji';
+import EmojiPicker from '@NAME@';
 ReactDOM.render(<EmojiPicker />, container);
 ```
 

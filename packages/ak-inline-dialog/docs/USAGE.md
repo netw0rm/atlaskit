@@ -6,12 +6,12 @@ The Inline Dialog is a container for secondary content and controls that are dis
 
 ## Try it out
 
-Interact with a [live demo of the ak-inline-dialog component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-inline-dialog/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-inline-dialog
+npm install @NAME@
 ```
 
 ## Using the component
@@ -22,7 +22,7 @@ Example usage:
 
 ```js
 import React, { PropTypes, PureComponent } from 'react';
-import AKInlineDialog from 'ak-inline-dialog';
+import AKInlineDialog from '@NAME@';
 
 class ButtonActivatedDialog extends PureComponent {
   static propTypes = {

@@ -18,7 +18,7 @@ Interact with a [live demo of the @NAME@ component with code examples](https://a
 Install from NPM:
 
 ```sh
-npm install --save @NAME@
+npm install @NAME@
 ```
 
 Two flavours of JavaScript are published:

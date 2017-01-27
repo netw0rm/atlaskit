@@ -6,12 +6,12 @@ The `ak-calendar` component is a generic calendar that can be used standalone or
 
 ## Try it out
 
-Interact with a [live demo of the ak-calendar component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/ak-calendar/@VERSION@/).
+Interact with a [live demo of the @NAME@ component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-calendar
+npm install @NAME@
 ```
 
 ## Using the component
@@ -47,7 +47,7 @@ Now you can use the defined tag in your HTML markup:
 You can also use it from within another JavaScript resource:
 
 ```js
-import Calendar from 'ak-calendar';
+import Calendar from '@NAME@';
 
 const component = new Calendar();
 document.body.appendChild(component);
@@ -58,7 +58,7 @@ document.body.appendChild(component);
 This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
 
 ```js
-import Calendar from 'ak-calendar';
+import Calendar from '@NAME@';
 import reactify from 'skatejs-react-integration';
 
 const ReactComponent = reactify(Calendar, {});

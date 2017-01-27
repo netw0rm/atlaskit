@@ -5,7 +5,7 @@
 ## Installation
 
 ```sh
-npm install ak-profilecard
+npm install @NAME@
 ```
 
 ## Using the resourced component
@@ -13,7 +13,7 @@ npm install ak-profilecard
 Import the component in your React app as follows:
 
 ```
-import AkProfileCardResourced from 'ak-profilecard';
+import AkProfileCardResourced from '@NAME@';
 ReactDOM.render(<AkProfileCardResourced />, container );
 ```
 
@@ -22,7 +22,7 @@ ReactDOM.render(<AkProfileCardResourced />, container );
 Import the component in your React app as follows:
 
 ```
-import { AkProfilecard } from 'ak-profilecard';
+import { AkProfilecard } from '@NAME@';
 ReactDOM.render(<AkProfileCard />, container);
 ```
 

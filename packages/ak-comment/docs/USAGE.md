@@ -4,10 +4,10 @@ Comments enable discussions on an entity such as a page, blog post, issue or pul
 
 ## Try it out
 
-Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/ak-comment/@VERSION@/).
+Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-comment
+npm install @NAME@
 ```

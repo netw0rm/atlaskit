@@ -6,22 +6,22 @@ This component displays content in a layer that sits above the rest of the page 
 
 ##Try it out
 
-Interact with a [live demo of the ak-modal-dialog](https://aui-cdn.atlassian.com/atlaskit/stories/ak-modal-dialog/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-modal-dialog
+npm install @NAME@
 ```
 
 ## Using the component
 
-This package exports the `ak-button` React component.
+This package exports a React component.
 
 Import the component in your React app as follows:
 
 ```js
-import ModalDialog from 'ak-modal-dialog';
+import ModalDialog from '@NAME@';
 ReactDOM.render(
   <ModalDialog
     open

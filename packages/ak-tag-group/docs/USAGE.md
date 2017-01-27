@@ -8,12 +8,12 @@ The group manages spacing and animation direction and allows for some alignment 
 
 ## Try it out
 
-Interact with a [live demo of the ak-tag-group component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/ak-tag-group/@VERSION@/).
+Interact with a [live demo of the @NAME@ component with code examples](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-tag ak-tag-group # ak-tag-group has a peer dependency on ak-tag
+npm install @NAME@ ak-tag # @NAME@ has a peer dependency on ak-tag
 ```
 
 ## Using the component
@@ -22,7 +22,7 @@ This is a React component and can be used in the following way:
 
 ```js
 import Tag from 'ak-tag';
-import TagGroup from 'ak-tag-group';
+import TagGroup from '@NAME@';
 
 ReactDOM.render((
   <TagGroup>

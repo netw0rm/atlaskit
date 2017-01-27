@@ -10,5 +10,5 @@ Detailed docs and example usage can be found [here](http://aui-cdn.atlassian.com
 ## Installation
 
 ```sh
-npm install ak-toggle
+npm install @NAME@
 ```

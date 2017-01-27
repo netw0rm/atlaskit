@@ -5,12 +5,12 @@ This is one of the building blocks of dropdowns and it gets activated by pressin
 ![Example trigger](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-droplist-trigger/docs/trigger.gif)
 ## Try it out
 
-Interact with a [live demo of the ak-droplist-trigger](https://aui-cdn.atlassian.com/atlaskit/stories/ak-droplist-trigger/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-droplist-trigger --save
+npm install @NAME@
 ```
 
 ## Using the component
@@ -22,7 +22,7 @@ This package exports the ak-droplist-trigger React component.
 Import the component in your React app as follows:
 
 ```js
-import Trigger from 'ak-droplist-trigger';
+import Trigger from '@NAME@';
 
 const callback = () => {
   // all the action should be happening in this callback

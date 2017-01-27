@@ -8,12 +8,12 @@ When the label is clicked, the input will receive focus as expected.
 
 ## Try it out
 
-Interact with a [live demo of the ak-field-text component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-field-text/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-field-text
+npm install @NAME@
 ```
 
 ## Using the component
@@ -21,6 +21,6 @@ npm install ak-field-text
 Import the component in your React app as follows:
 
 ```
-import FieldText from 'ak-field-text';
+import FieldText from '@NAME@';
 ReactDOM.render(<FieldText />, container);
 ```

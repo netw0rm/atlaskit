@@ -11,5 +11,5 @@ Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.co
 ## Installation
 
 ```sh
-npm install --save @NAME@
+npm install @NAME@
 ```

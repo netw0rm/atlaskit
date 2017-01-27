@@ -8,7 +8,7 @@ It includes support for rest based searching and custom search implementations.
 
 ## Try it out
 
-Interact with a [live demo of the ak-mention](https://aui-cdn.atlassian.com/atlaskit/stories/ak-mention/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 

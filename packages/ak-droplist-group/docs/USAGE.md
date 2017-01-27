@@ -4,12 +4,12 @@ Use this component in a dropdown list when you need to group relevant items toge
 
 ## Try it out
 
-Interact with a [live demo of the ak-droplist-group component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-droplist-group/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-droplist-group --save
+npm install @NAME@
 ```
 
 ## Using the component
@@ -22,7 +22,7 @@ Import the component in your React app as follows:
 
 ```js
 import Item from 'ak-droplist-item';
-import Group from 'ak-droplist-group';
+import Group from '@NAME@';
 
 ReactDOM.render(<Group heading="Australia">
   <Item>Sydney</Item>

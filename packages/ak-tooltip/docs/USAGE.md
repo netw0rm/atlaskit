@@ -7,7 +7,7 @@ Use this component to display extra information about an element by displaying a
 ## Installation
 
 ```sh
-npm install ak-tooltip
+npm install @NAME@
 ```
 
 ## Using the component
@@ -18,7 +18,7 @@ be handled for you. The dumb one on the other hand allows you to hook into event
 ### Smart Component
 
 ```js
-import Tooltip from 'ak-tooltip';
+import Tooltip from '@NAME@';
 
 ReactDOM.render(<div>
   <Tooltip description="Opens the user preferences screen in a new window" position="bottom">
@@ -35,7 +35,7 @@ If a user were to hover over this button, they would see a tooltip rendered unde
 
 
 ```js
-import { AKTooltip } from 'ak-tooltip';
+import { AKTooltip } from '@NAME@';
 let tooltipVisibleState = false;
 
 function handleMouseOver() {

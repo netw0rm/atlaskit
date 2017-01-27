@@ -6,10 +6,10 @@ A button group provides a visual grouping for related Button (`<ak-button>`) ele
 
 ## Try it out
 
-Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/ak-button-group/@VERSION@/).
+Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Setup and install
 
 ```
-npm install ak-button-group
+npm install @NAME@
 ```

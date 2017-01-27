@@ -7,8 +7,10 @@ popd > /dev/null
 
 PKG=$($BASEDIR/_get_package_name.sh)
 OUTFILE="$OUTDIR/$PKG.html"
+OUTFILEDIR=$(dirname $OUTFILE)
 
 if [ -e "README.md" ]; then
+  mkdir -p "$OUTFILEDIR";
   # add the npm styles to the readme.html
   echo "<html>" \
     "<head><link rel=\"stylesheet\" href=\"https://www.npmjs.com/static/css/index.css\" /></head>" \

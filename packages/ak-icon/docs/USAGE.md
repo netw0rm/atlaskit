@@ -7,12 +7,12 @@ This package contains the AtlasKit icons. All icons should be consumed separatel
 
 ## Try it out
 
-Interact with a [live demo of the ak-icon component.](https://aui-cdn.atlassian.com/atlaskit/stories/ak-icon/@VERSION@/)
+Interact with a [live demo of the @NAME@ component.](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/)
 
 ## Installation
 
 ```sh
-npm install ak-icon
+npm install @NAME@
 ```
 
 ## Using the component
@@ -26,7 +26,7 @@ Import the component in your React app as follows:
 #### bundle.js
 
 ```js
-import AkIconHome from 'ak-icon/glyph/home';
+import AkIconHome from '@NAME@/glyph/home';
 ReactDOM.render(<AkIconHome />, container);
 ```
 
@@ -47,7 +47,7 @@ This package provides all icons bundled in one export but unless your build tool
 ### bundle.js
 
 ```js
-import * as icons from 'ak-icon';
+import * as icons from '@NAME@';
 const { BitbucketLogo } = icons;
 
 ReactDOM.render(<BitbucketLogo />, container);
@@ -56,7 +56,7 @@ ReactDOM.render(<BitbucketLogo />, container);
 Importing a single icon (this will still bundle **all** of the icons in your final bundle if you don't use tree shaking):
 
 ```js
-import BitbucketLogo from 'ak-icon';
+import BitbucketLogo from '@NAME@';
 
 ReactDOM.render(<BitbucketLogo />, container);
 ```

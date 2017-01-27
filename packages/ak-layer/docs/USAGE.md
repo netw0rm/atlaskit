@@ -8,12 +8,12 @@ If you use a layer with a component that could be opened or closed, you have to 
 
 ## Try it out
 
-Interact with a [live demo of the ak-layer component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-layer/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-layer
+npm install @NAME@
 ```
 
 ## Using the component
@@ -25,7 +25,7 @@ This package exports the ak-layer React component.
 Import the component in your React app as follows:
 
 ```js
-import Layer from 'ak-layer';
+import Layer from '@NAME@';
 
 const myContent = (<div>I'm going to be aligned to the right!</div>);
 

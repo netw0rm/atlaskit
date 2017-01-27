@@ -8,10 +8,10 @@ Multiple flags can be shown at the same time. The top-most flag is always visibl
 
 ## Try it out
 
-Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/ak-flag/@VERSION@/).
+Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-flag
+npm install @NAME@
 ```

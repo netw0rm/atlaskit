@@ -6,12 +6,12 @@ This is a basic building block of a dropdown's list. Use it if you want to build
 
 ## Try it out
 
-Interact with a [live demo of the ak-droplist-item](https://aui-cdn.atlassian.com/atlaskit/stories/ak-droplist-item/@VERSION@/).
+Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-droplist-item --save
+npm install @NAME@
 ```
 
 ## Using the component
@@ -23,7 +23,7 @@ This package exports the ak-droplist-item React component.
 Import the component in your React app as follows:
 
 ```js
-import Item from 'ak-droplist-item';
+import Item from '@NAME@';
 
 ReactDOM.render(<Item>Some awesome text</Item>, container);
 ```

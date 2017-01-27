@@ -152,7 +152,7 @@ unable to imploy tree shaking.
 Install from NPM:
 
 ```sh
-npm install --save @NAME@
+npm install @NAME@
 ```
 
 Two flavours of JavaScript are published:

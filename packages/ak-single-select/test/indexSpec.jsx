@@ -1,6 +1,4 @@
-import chai from 'chai';
 import React from 'react';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import { Label, FieldBase } from 'ak-field-base';
 import Droplist from 'ak-droplist';
@@ -14,47 +12,43 @@ import Trigger from '../src/internal/Trigger';
 
 import { name } from '../package.json';
 
-chai.use(chaiEnzyme());
-
-const { expect } = chai;
-
 describe(name, () => {
   describe('render', () => {
     it('sanity check', () => {
-      expect(shallow(<StatelessSelect />)).to.exist;
+      expect(shallow(<StatelessSelect />).isEmpty()).to.equal(false);
     });
 
     it('should render with correct CSS class name', () => {
-      expect(mount(<StatelessSelect />)).to.have.exactly(1).descendants(`.${styles.selectWrapper}`);
+      expect(mount(<StatelessSelect />).find(`.${styles.selectWrapper}`).length).to.equal(1);
     });
 
     it('should render Label when the prop is set', () => {
-      expect(mount(<StatelessSelect />)).to.not.have.descendants(Label);
-      expect(mount(<StatelessSelect label="test" />)).to.have.exactly(1).descendants(Label);
+      expect(mount(<StatelessSelect />).find(Label).length).to.equal(0);
+      expect(mount(<StatelessSelect label="test" />).find(Label).length).to.equal(1);
     });
 
     it('should render Droplist', () => {
-      expect(mount(<StatelessSelect />)).to.have.exactly(1).descendants(Droplist);
+      expect(mount(<StatelessSelect />).find(Droplist).length).to.equal(1);
     });
 
     it('should render Fieldbase inside Droplist', () => {
-      expect(mount(<StatelessSelect />)).to.have.exactly(1).descendants(FieldBase);
-      expect(mount(<StatelessSelect />).find(Droplist)).to.have.exactly(1).descendants(FieldBase);
+      expect(mount(<StatelessSelect />).find(FieldBase).length).to.equal(1);
+      expect(mount(<StatelessSelect />).find(Droplist).find(FieldBase).length).to.equal(1);
     });
 
     it('should render Trigger inside Fieldbase', () => {
-      expect(mount(<StatelessSelect />)).to.have.exactly(1).descendants(Trigger);
-      expect(mount(<StatelessSelect />).find(FieldBase)).to.have.exactly(1).descendants(Trigger);
+      expect(mount(<StatelessSelect />).find(Trigger).length).to.equal(1);
+      expect(mount(<StatelessSelect />).find(FieldBase).find(Trigger).length).to.equal(1);
     });
 
     it('should render placeholder in trigger if there is no selected item', () => {
-      expect(mount(<StatelessSelect placeholder="test" />)).to.have.text('test');
+      expect(mount(<StatelessSelect placeholder="test" />).text()).to.equal('test');
     });
 
     it('should render selected items`s content instead of placeholder', () => {
       const select = mount(<StatelessSelect placeholder="test" selectedItem={{ content: 'selected' }} />);
-      expect(select).to.not.have.text('test');
-      expect(select).to.have.text('selected');
+      expect(select.text()).to.not.equal('test');
+      expect(select.text()).to.equal('selected');
     });
 
     it('should render groups and items inside Droplist (when open)', () => {
@@ -68,9 +62,9 @@ describe(name, () => {
         },
       ];
       const select = mount(<StatelessSelect items={selectItems} isOpen />);
-      expect(select).to.have.exactly(1).descendants(Group);
-      expect(select).to.have.exactly(2).descendants(Item);
-      expect(select.find(Group)).to.have.exactly(2).descendants(Item);
+      expect(select.find(Group).length).to.equal(1);
+      expect(select.find(Item).length).to.equal(2);
+      expect(select.find(Group).find(Item).length).to.equal(2);
     });
 
     it('should set isActive property to the selected item', () => {
@@ -146,11 +140,11 @@ describe(name, () => {
     });
 
     it('should render content', () => {
-      expect(mount(<Trigger>test</Trigger>).find(`.${styles.content}`)).to.have.text('test');
+      expect(mount(<Trigger>test</Trigger>).find(`.${styles.content}`).text()).to.equal('test');
     });
 
     it('should render icon', () => {
-      expect(mount(<Trigger />).find(`.${styles.expand}`)).to.contain(<ExpandIcon label="" />);
+      expect(mount(<Trigger />).find(`.${styles.expand}`).contains(<ExpandIcon label="" />)).to.equal(true);
     });
   });
 });

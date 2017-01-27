@@ -18,7 +18,7 @@ const StatelessSelectOverview = class extends PureComponent {
     super(props);
 
     this.state = {
-      isSelectOpen: true,
+      isSelectOpen: false,
     };
   }
 

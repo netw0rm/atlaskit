@@ -1,18 +1,8 @@
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
-import chaiEnzyme from 'chai-enzyme';
-import sinonChai from 'sinon-chai';
 import { mount } from 'enzyme';
 import React from 'react';
 import styles from 'style!../src/style.less';
 import EmojiButton from '../src/internal/common/EmojiButton';
-
-chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
-chai.use(sinonChai);
-chai.should();
-const expect = chai.expect;
 
 describe('<EmojiButton />', () => {
   describe('as sprite', () => {

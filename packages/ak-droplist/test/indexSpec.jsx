@@ -1,7 +1,4 @@
-import chai from 'chai';
 import React from 'react';
-import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import Group from 'ak-droplist-group';
 import Trigger from 'ak-droplist-trigger';
@@ -12,11 +9,6 @@ import { name } from '../package.json';
 import { locals as styles } from '../src/styles.less';
 
 import Droplist from '../src';
-
-chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
-
-const { expect } = chai;
 
 const itemsList = (<Group heading="test1">
   <Item>Some text</Item>
@@ -39,16 +31,16 @@ describe(name, () => {
       const layer = wrapper.find(`.${styles.dropWrapper}`).children().first();
       const layerNode = layer.node;
       expect(layerNode instanceof Layer).to.equal(true);
-      expect(layer).to.have.exactly(1).descendants(`.${styles.dropContent}`);
-      expect(layer).to.have.exactly(1).descendants(`.${styles.dropTrigger}`);
+      expect(layer.find(`.${styles.dropContent}`).length).to.equal(1);
+      expect(layer.find(`.${styles.dropTrigger}`).length).to.equal(1);
     });
 
     it('should pass required properties to Layer', () => {
       const layer = wrapper.find(`.${styles.dropWrapper}`).children().first();
-      expect(layer).to.have.prop('offset', '0 4');
-      expect(layer).to.have.prop('position', 'bottom left');
-      expect(layer).to.have.prop('autoPosition', wrapper.props().shouldFlip);
-      expect(layer).to.have.prop('content');
+      expect(layer.prop('offset')).to.equal('0 4');
+      expect(layer.prop('position')).to.equal('bottom left');
+      expect(layer.prop('autoPosition')).to.equal(wrapper.props().shouldFlip);
+      expect(layer.prop('content')).to.not.equal(undefined);
     });
 
     it('should render droplist content', () => {
@@ -61,14 +53,14 @@ describe(name, () => {
       const trigger = triggerWrapper.children().nodes[0];
 
       expect(trigger instanceof Trigger).to.equal(true);
-      expect(triggerWrapper).to.have.text('text');
+      expect(triggerWrapper.text()).to.equal('text');
     });
   });
 
   describe('onOpenChange', () => {
     it('should be open when the isOpen property set to true', () => {
-      expect(mount(<Droplist trigger="text">{itemsList}</Droplist>)).to.not.have.descendants(`.${styles.dropContent}`);
-      expect(mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>)).to.have.exactly(1).descendants(`.${styles.dropContent}`);
+      expect(mount(<Droplist trigger="text">{itemsList}</Droplist>).find(`.${styles.dropContent}`).length).to.equal(0);
+      expect(mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>).find(`.${styles.dropContent}`).length).to.equal(1);
     });
 
     it('interacting with trigger should call onOpenChange callback', () => {

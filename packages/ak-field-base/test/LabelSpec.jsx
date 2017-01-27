@@ -1,15 +1,7 @@
-import chai, { expect } from 'chai';
 import React from 'react';
-import chaiAsPromised from 'chai-as-promised';
-import sinonChai from 'sinon-chai';
 import { shallow } from 'enzyme';
-import chaiEnzyme from 'chai-enzyme';
 import Label from '../src/Label';
 import styles from '../src/styles.less';
-
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
-chai.use(chaiEnzyme());
 
 const defaultProps = {
   label: 'test',
@@ -20,7 +12,7 @@ describe('ak-field-base', () =>
   describe('Label', () => {
     describe('by default', () =>
       it('should render a label element', () =>
-        expect(shallow(<Label {...defaultProps} />)).to.have.descendants('label')
+        expect(shallow(<Label {...defaultProps} />).find('label').length).to.be.above(0)
       )
     );
 
@@ -28,7 +20,7 @@ describe('ak-field-base', () =>
       it('should be reflected in the label element', () => {
         const label = 'This is a label';
         const wrapper = shallow(<Label label={label} />);
-        expect(wrapper.find('label')).to.have.text(label);
+        expect(wrapper.find('label').text()).to.equal(label);
       });
     });
 
@@ -36,19 +28,18 @@ describe('ak-field-base', () =>
       it('should be reflected in the label element', () => {
         const label = 'This is a label';
         const wrapper = shallow(<Label label={label} isLabelHidden />);
-        expect(wrapper.find(`.${styles.locals.labelText}`))
-          .to.have.className(styles.locals.hidden);
+        expect(wrapper.find(`.${styles.locals.labelText}`).hasClass(styles.locals.hidden)).to.equal(true);
       });
     });
 
     describe('required prop', () => {
       it('should append an asterisk to the content', () =>
-        expect(shallow(<Label {...defaultProps} isRequired />).find(`.${styles.locals.required}`)).to.have.text('*')
+        expect(shallow(<Label {...defaultProps} isRequired />).find(`.${styles.locals.required}`).text()).to.equal('*')
       );
 
       it('should not append an asterisk to the content if required is not set', () => {
-        expect(shallow(<Label {...defaultProps} />)).to.not.have.descendants(`.${styles.locals.required}`);
-        expect(shallow(<Label {...defaultProps} />)).to.not.have.text('*');
+        expect(shallow(<Label {...defaultProps} />).find(`.${styles.locals.required}`).length).to.equal(0);
+        expect(shallow(<Label {...defaultProps} />).text()).to.equal('test');
       });
     });
 

@@ -1,13 +1,11 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 import ImageUploadPlugin from '../../../src/plugins/image-upload';
 import { chaiPlugin, makeEditor } from '../../../test-helper';
 import { doc, image, images, noimages, schema } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
-chai.use((sinonChai as any).default || sinonChai);
 
 describe('image-upload', () => {
   const testImgSrc = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
@@ -41,7 +39,7 @@ describe('image-upload', () => {
     const spy = sinon.spy();
     plugin.subscribe(spy);
 
-    expect(spy).to.have.been.callCount(1);
+    expect(spy.callCount).to.equal(1);
     expect(plugin).to.have.property('active', false);
     expect(plugin).to.have.property('enabled', true);
     expect(plugin).to.have.property('src', undefined);
@@ -55,7 +53,7 @@ describe('image-upload', () => {
 
     pm.setNodeSelection(sel);
 
-    expect(spy).to.have.been.callCount(2);
+    expect(spy.callCount).to.equal(2);
   });
 
   it('does not emit multiple changes when an image is not selected', () => {
@@ -67,7 +65,7 @@ describe('image-upload', () => {
     pm.setTextSelection(a);
     pm.setTextSelection(b);
 
-    expect(spy).to.have.been.callCount(1);
+    expect(spy.callCount).to.equal(1);
   });
 
   it('does not emit multiple changes when an image is selected multiple times', () => {
@@ -76,7 +74,7 @@ describe('image-upload', () => {
 
     plugin.subscribe(spy);
 
-    expect(spy).to.have.been.callCount(1);
+    expect(spy.callCount).to.equal(1);
   });
 
   it('emits a change event when selection leaves an image', () => {
@@ -88,7 +86,7 @@ describe('image-upload', () => {
 
     pm.setTextSelection(a);
 
-    expect(spy).to.have.been.callCount(2);
+    expect(spy.callCount).to.equal(2);
   });
 
   it('does not permit an image to be added when an image is selected', () => {

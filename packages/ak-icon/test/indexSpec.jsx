@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import { mount, shallow } from 'enzyme';
 
 import iconNameToComponentName from '../bin/iconNameToComponentName';
@@ -9,10 +7,6 @@ import pathToDashed from '../bin/pathToDashed';
 import * as bundle from '../src';
 import { size } from '../src/Icon';
 import { getGlyphs } from './_helpers';
-
-const { expect } = chai;
-chai.use(chaiEnzyme());
-chai.should();
 
 const components = getGlyphs();
 
@@ -185,7 +179,7 @@ describe(name, () => {
     it('should have role="img"', () => {
       const { AtlassianIcon } = bundle;
       const wrapper = mount(<AtlassianIcon label="My label" />);
-      expect(wrapper.find('svg')).to.have.attr('role', 'img');
+      expect(wrapper.find('svg').is('[role="img"]')).to.equal(true);
     });
 
     it('should be possible to create the components', () => {
@@ -205,7 +199,7 @@ describe(name, () => {
         const wrapper = mount(<AtlassianIcon label={label} />);
         const svgWrapper = wrapper.find('svg').first();
 
-        expect(svgWrapper).to.have.attr('aria-labelledby');
+        expect(svgWrapper.is('[aria-labelledby]')).to.equal(true);
 
         const svg = svgWrapper.get(0);
         const labelledBy = svg.getAttribute('aria-labelledby');

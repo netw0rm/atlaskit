@@ -1,16 +1,9 @@
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
-import chaiAsPromised from 'chai-as-promised';
 import Prism, {
   SWATCH_TEAL,
   SWATCH_PURPLE,
   InvalidSwatchError,
   InvalidColorError,
 } from './_Prism';
-
-chai.use(sinonChai);
-chai.use(chaiAsPromised);
-chai.should();
 
 describe('Prism', () => {
   describe('isColor', () => {

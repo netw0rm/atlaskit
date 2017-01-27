@@ -1,7 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 
 import { browser } from '../../../src';
 import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, img, makeEditor, mention, p } from '../../../test-helper';
@@ -9,7 +8,6 @@ import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, img, m
 import BlockTypePlugin from '../../../src/plugins/block-type';
 
 chai.use(chaiPlugin);
-chai.use((sinonChai as any).default || sinonChai);
 
 describe('block-type', () => {
   const editor = (doc: any) => {
@@ -205,8 +203,8 @@ describe('block-type', () => {
 
     plugin.subscribe(spy);
 
-    expect(spy).to.have.been.callCount(1);
-    expect(spy).to.have.been.calledWith(plugin);
+    expect(spy.callCount).to.equal(1);
+    expect(spy.calledWith(plugin)).to.equal(true);
   });
 
   it('should be able to subscribe the changes', () => {
@@ -216,8 +214,8 @@ describe('block-type', () => {
     plugin.subscribe(spy);
     plugin.changeBlockType('heading1');
 
-    expect(spy).to.have.been.callCount(2);
-    expect(spy).to.have.been.calledWith(plugin);
+    expect(spy.callCount).to.equal(2);
+    expect(spy.calledWith(plugin)).to.equal(true);
   });
 
   describe('keymap', () => {
@@ -229,7 +227,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-0');
-            expect(toggleBlockType).to.have.been.calledWith('normal');
+            expect(toggleBlockType.calledWith('normal')).to.equal(true);
           });
         });
 
@@ -239,7 +237,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-1');
-            expect(toggleBlockType).to.have.been.calledWith('heading1');
+            expect(toggleBlockType.calledWith('heading1')).to.equal(true);
           });
         });
 
@@ -249,7 +247,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-2');
-            expect(toggleBlockType).to.have.been.calledWith('heading2');
+            expect(toggleBlockType.calledWith('heading2')).to.equal(true);
           });
         });
 
@@ -259,7 +257,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-3');
-            expect(toggleBlockType).to.have.been.calledWith('heading3');
+            expect(toggleBlockType.calledWith('heading3')).to.equal(true);
           });
         });
 
@@ -269,7 +267,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-4');
-            expect(toggleBlockType).to.have.been.calledWith('heading4');
+            expect(toggleBlockType.calledWith('heading4')).to.equal(true);
           });
         });
 
@@ -279,7 +277,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-5');
-            expect(toggleBlockType).to.have.been.calledWith('heading5');
+            expect(toggleBlockType.calledWith('heading5')).to.equal(true);
           });
         });
 
@@ -289,7 +287,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-7');
-            expect(toggleBlockType).to.have.been.calledWith('blockquote');
+            expect(toggleBlockType.calledWith('blockquote')).to.equal(true);
           });
         });
 
@@ -299,7 +297,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-8');
-            expect(toggleBlockType).to.have.been.calledWith('codeblock');
+            expect(toggleBlockType.calledWith('codeblock')).to.equal(true);
           });
         });
       });
@@ -311,7 +309,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-0');
-            expect(toggleBlockType).to.have.been.calledWith('normal');
+            expect(toggleBlockType.calledWith('normal')).to.equal(true);
           });
         });
 
@@ -321,7 +319,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-1');
-            expect(toggleBlockType).to.have.been.calledWith('heading1');
+            expect(toggleBlockType.calledWith('heading1')).to.equal(true);
           });
         });
 
@@ -331,7 +329,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-2');
-            expect(toggleBlockType).to.have.been.calledWith('heading2');
+            expect(toggleBlockType.calledWith('heading2')).to.equal(true);
           });
         });
 
@@ -341,7 +339,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-3');
-            expect(toggleBlockType).to.have.been.calledWith('heading3');
+            expect(toggleBlockType.calledWith('heading3')).to.equal(true);
           });
         });
 
@@ -351,7 +349,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-4');
-            expect(toggleBlockType).to.have.been.calledWith('heading4');
+            expect(toggleBlockType.calledWith('heading4')).to.equal(true);
           });
         });
 
@@ -361,7 +359,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-5');
-            expect(toggleBlockType).to.have.been.calledWith('heading5');
+            expect(toggleBlockType.calledWith('heading5')).to.equal(true);
           });
         });
 
@@ -371,7 +369,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-7');
-            expect(toggleBlockType).to.have.been.calledWith('blockquote');
+            expect(toggleBlockType.calledWith('blockquote')).to.equal(true);
           });
         });
 
@@ -381,7 +379,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-8');
-            expect(toggleBlockType).to.have.been.calledWith('codeblock');
+            expect(toggleBlockType.calledWith('codeblock')).to.equal(true);
           });
         });
       });
@@ -394,7 +392,20 @@ describe('block-type', () => {
 
         pm.input.dispatchKey('Shift-Enter');
 
-        expect(insertNewLine).to.have.been.callCount(1);
+        expect(insertNewLine.callCount).to.equal(1);
+      });
+    });
+
+    context('Shift-Backspace', () => {
+      it('should call delete last character', function() {
+        if (browser.ios) {
+          this.skip(`Shift-Backspace doesn't work on Safari 9.`);
+        }
+
+        const { pm } = editor(doc(p('Hello World!{<>}')));
+
+        pm.input.dispatchKey('Shift-Backspace');
+        expect(pm.doc).to.deep.equal(doc(p('Hello World')));
       });
     });
   });
@@ -443,7 +454,7 @@ describe('block-type', () => {
 
         plugin.toggleBlockType('heading1');
 
-        expect(changeBlockType).to.have.been.calledWith('heading1');
+        expect(changeBlockType.calledWith('heading1')).to.equal(true);
       });
     });
 
@@ -464,7 +475,7 @@ describe('block-type', () => {
 
           plugin.toggleBlockType('heading1');
 
-          expect(changeBlockType).to.have.been.calledWith('normal');
+          expect(changeBlockType.calledWith('normal')).to.equal(true);
         });
       });
     });

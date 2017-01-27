@@ -125,12 +125,18 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
+  private parseHtml(html: string) {
+    const el = document.createElement('div');
+    el.innerHTML = html;
+    return schema.parseDOM(el);
+  }
+
   private handleRef = (place: Element | null) => {
     if (place) {
       const { context } = this.props;
       const pm = new ProseMirror({
         place,
-        doc: schema.nodes.doc.createAndFill(),
+        doc: this.parseHtml(this.props.defaultValue || ''),
         // doc: schema.nodes.doc.create({}, schema.nodes.paragraph.create({}, schema.text(''))),
         plugins: [
           HyperlinkPlugin,

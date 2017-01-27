@@ -8,7 +8,7 @@
   "dependencies": {
     "babel-runtime": "^6.11.6",
     "eslint": "^3.7.1",
-    "eslint-config-ak-base": "*",
+    "@atlaskit/eslint-config-base": "*",
     "eslint-plugin-react": "^6.4.1"
   },
   "repository": {

@@ -1,6 +1,6 @@
 {
-  "name": "ak-stories",
-  "extends": "ak-base",
+  "name": "stories",
+  "extends": "base",
   "plugins": [
     "react"
   ],

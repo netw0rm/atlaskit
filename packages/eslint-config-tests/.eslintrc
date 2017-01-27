@@ -4,8 +4,8 @@
    Any new rules that apply to all tests should be placed here.                                   */
 
 {
-  "name": "ak-tests",
-  "extends": "ak-base",
+  "name": "tests",
+  "extends": "base",
   "env": {
     "mocha": true
   },

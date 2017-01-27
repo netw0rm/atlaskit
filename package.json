@@ -4,7 +4,7 @@
   "author": "Atlassian Pty Ltd",
   "config": {
     "commitizen": {
-      "path": "./packages/akutil-cz-atlaskit-changelog"
+      "path": "./packages/util-cz-atlaskit-changelog"
     }
   },
   "dependencies": {

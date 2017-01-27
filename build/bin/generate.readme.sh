@@ -16,17 +16,11 @@ fi
 
 $CHALK --no-stdin -t "{blue $PREFIX Generating README.md...}"
 
-sedQuote () {
-  # Quote @ and /, to avoid conflicting with sed syntax.
-  # This is required when using '@atlaskit/foo' as the replacement string.
-  echo "$1" | sed -e 's/@/\\@/g' -e 's/\//\\\//g';
-}
-
 replacevars () {
     echo "$1" | \
-    sed "s/@VERSION@/$(sedQuote $VERSION)/g" | \
-    sed "s/@NAME@/$(sedQuote $NAME)/g" | \
-    sed "s/@BITBUCKET_COMMIT@/$(sedQuote $BITBUCKET_COMMIT)/g"
+    sed "s~@VERSION@~$VERSION~g" | \
+    sed "s~@NAME@~$NAME~g" | \
+    sed "s~@BITBUCKET_COMMIT@~$BITBUCKET_COMMIT~g"
 }
 
 replacefiles () {

@@ -1,16 +1,13 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 
-import * as mocha from 'mocha';
-import { commands, browser } from '../../../src';
-import { chaiPlugin, makeEditor, doc, p, h1, h2, h3, h4, h5, blockquote, code_block, br } from '../../../test-helper';
+import { browser } from '../../../src';
+import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, img, makeEditor, mention, p } from '../../../test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
 
 chai.use(chaiPlugin);
-chai.use((sinonChai as any).default || sinonChai);
 
 describe('block-type', () => {
   const editor = (doc: any) => {
@@ -19,8 +16,8 @@ describe('block-type', () => {
   };
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const Plugin = BlockTypePlugin as any; // .State is not public API.
-    expect(Plugin.State.name).is.be.a('string');
+    const plugin = BlockTypePlugin as any; // .State is not public API.
+    expect(plugin.State.name).is.be.a('string');
   });
 
   it('should be able to change to normal', () => {
@@ -72,47 +69,83 @@ describe('block-type', () => {
     expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 
-  it('should be able to change to code block', () => {
-    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+  describe('code block', () => {
+    it('should be able to change to code block', () => {
+      const { pm, plugin } = editor(doc(p('te{<>}xt')));
 
-    plugin.changeBlockType('codeblock');
-    expect(pm.doc).to.deep.equal(doc(code_block()('text')));
-  });
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('text')));
+    });
 
-  it('should be able to change to code block with multilines', () => {
-    const { pm, plugin } = editor(doc(p('line1{<>}', br, 'line2')));
+    it('should be able to change to code block with multilines', () => {
+      const { pm, plugin } = editor(
+        doc(p(
+          'line1{<>}',
+          img({ src: 'url', alt: 'text', title: 'text' }),
+          ' ',
+          br,
+          'line2 ',
+          br)));
 
-    plugin.changeBlockType('codeblock');
-    expect(pm.doc).to.deep.equal(doc(code_block()('line1\nline2')));
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('line1 \nline2 \n')));
+    });
+
+    it('should be able to preserve mention text', () => {
+      const { pm, plugin } = editor(
+        doc(p(
+          'hello ',
+          mention({ id: 'foo1', displayName: '@bar1' }),
+          img({ src: 'url', alt: 'text', title: 'text' }),
+          ' & ',
+          mention({ id: 'foo2', displayName: '@bar2' }),
+          ' & ',
+          mention({ id: 'foo3', displayName: '@bar3' }),
+        )));
+
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('hello @bar1 & @bar2 & @bar3')));
+    });
+
+    it('should collaps nested block and convert to code block', () => {
+      const {pm, plugin} = editor (
+        doc(blockquote(
+          h1('h1')
+        ))
+      );
+
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('h1')));
+    });
   });
 
   it('should be able to identify normal', () => {
-    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+    const { plugin } = editor(doc(p('te{<>}xt')));
     expect(plugin.currentBlockType.name).to.equal('normal');
   });
 
   it('should be able to identify heading1', () => {
-    const { pm, plugin } = editor(doc(h1('te{<>}xt')));
+    const { plugin } = editor(doc(h1('te{<>}xt')));
     expect(plugin.currentBlockType.name).to.equal('heading1');
   });
 
   it('should be able to identify heading2', () => {
-    const { pm, plugin } = editor(doc(h2('te{<>}xt')));
+    const { plugin } = editor(doc(h2('te{<>}xt')));
     expect(plugin.currentBlockType.name).to.equal('heading2');
   });
 
   it('should be able to identify heading3', () => {
-    const { pm, plugin } = editor(doc(h3('te{<>}xt')));
+    const { plugin } = editor(doc(h3('te{<>}xt')));
     expect(plugin.currentBlockType.name).to.equal('heading3');
   });
 
   it('should be able to identify block quote', () => {
-    const { pm, plugin } = editor(doc(blockquote(p('te{<>}xt'))));
+    const { plugin } = editor(doc(blockquote(p('te{<>}xt'))));
     expect(plugin.currentBlockType.name).to.equal('blockquote');
   });
 
   it('should be able to identify code block', () => {
-    const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
+    const { plugin } = editor(doc(code_block()('te{<>}xt')));
     expect(plugin.currentBlockType.name).to.equal('codeblock');
   });
 
@@ -165,28 +198,28 @@ describe('block-type', () => {
   });
 
   it('should get current state immediately once subscribed', () => {
-    const { pm, plugin } = editor(doc(p('text')));
+    const { plugin } = editor(doc(p('text')));
     const spy = sinon.spy();
 
     plugin.subscribe(spy);
 
-    expect(spy).to.have.been.callCount(1);
-    expect(spy).to.have.been.calledWith(plugin);
+    expect(spy.callCount).to.equal(1);
+    expect(spy.calledWith(plugin)).to.equal(true);
   });
 
   it('should be able to subscribe the changes', () => {
-    const { pm, plugin } = editor(doc(p('te{<>}xt')));
+    const { plugin } = editor(doc(p('te{<>}xt')));
     const spy = sinon.spy();
 
     plugin.subscribe(spy);
     plugin.changeBlockType('heading1');
 
-    expect(spy).to.have.been.callCount(2);
-    expect(spy).to.have.been.calledWith(plugin);
+    expect(spy.callCount).to.equal(2);
+    expect(spy.calledWith(plugin)).to.equal(true);
   });
 
   describe('keymap', () => {
-    if(browser.mac) {
+    if (browser.mac) {
       context('when on a Mac', () => {
         context('when hits Cmd-Alt-0', () => {
           it('toggles paragraph', () => {
@@ -194,7 +227,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-0');
-            expect(toggleBlockType).to.have.been.calledWith('normal');
+            expect(toggleBlockType.calledWith('normal')).to.equal(true);
           });
         });
 
@@ -204,7 +237,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-1');
-            expect(toggleBlockType).to.have.been.calledWith('heading1');
+            expect(toggleBlockType.calledWith('heading1')).to.equal(true);
           });
         });
 
@@ -214,7 +247,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-2');
-            expect(toggleBlockType).to.have.been.calledWith('heading2');
+            expect(toggleBlockType.calledWith('heading2')).to.equal(true);
           });
         });
 
@@ -224,7 +257,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-3');
-            expect(toggleBlockType).to.have.been.calledWith('heading3');
+            expect(toggleBlockType.calledWith('heading3')).to.equal(true);
           });
         });
 
@@ -234,7 +267,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-4');
-            expect(toggleBlockType).to.have.been.calledWith('heading4');
+            expect(toggleBlockType.calledWith('heading4')).to.equal(true);
           });
         });
 
@@ -244,7 +277,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-5');
-            expect(toggleBlockType).to.have.been.calledWith('heading5');
+            expect(toggleBlockType.calledWith('heading5')).to.equal(true);
           });
         });
 
@@ -254,7 +287,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-7');
-            expect(toggleBlockType).to.have.been.calledWith('blockquote');
+            expect(toggleBlockType.calledWith('blockquote')).to.equal(true);
           });
         });
 
@@ -264,7 +297,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Cmd-Alt-8');
-            expect(toggleBlockType).to.have.been.calledWith('codeblock');
+            expect(toggleBlockType.calledWith('codeblock')).to.equal(true);
           });
         });
       });
@@ -276,7 +309,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-0');
-            expect(toggleBlockType).to.have.been.calledWith('normal');
+            expect(toggleBlockType.calledWith('normal')).to.equal(true);
           });
         });
 
@@ -286,7 +319,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-1');
-            expect(toggleBlockType).to.have.been.calledWith('heading1');
+            expect(toggleBlockType.calledWith('heading1')).to.equal(true);
           });
         });
 
@@ -296,7 +329,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-2');
-            expect(toggleBlockType).to.have.been.calledWith('heading2');
+            expect(toggleBlockType.calledWith('heading2')).to.equal(true);
           });
         });
 
@@ -306,7 +339,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-3');
-            expect(toggleBlockType).to.have.been.calledWith('heading3');
+            expect(toggleBlockType.calledWith('heading3')).to.equal(true);
           });
         });
 
@@ -316,7 +349,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-4');
-            expect(toggleBlockType).to.have.been.calledWith('heading4');
+            expect(toggleBlockType.calledWith('heading4')).to.equal(true);
           });
         });
 
@@ -326,7 +359,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-5');
-            expect(toggleBlockType).to.have.been.calledWith('heading5');
+            expect(toggleBlockType.calledWith('heading5')).to.equal(true);
           });
         });
 
@@ -336,7 +369,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-7');
-            expect(toggleBlockType).to.have.been.calledWith('blockquote');
+            expect(toggleBlockType.calledWith('blockquote')).to.equal(true);
           });
         });
 
@@ -346,7 +379,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(plugin, 'toggleBlockType');
 
             pm.input.dispatchKey('Ctrl-8');
-            expect(toggleBlockType).to.have.been.calledWith('codeblock');
+            expect(toggleBlockType.calledWith('codeblock')).to.equal(true);
           });
         });
       });
@@ -359,7 +392,20 @@ describe('block-type', () => {
 
         pm.input.dispatchKey('Shift-Enter');
 
-        expect(insertNewLine).to.have.been.callCount(1);
+        expect(insertNewLine.callCount).to.equal(1);
+      });
+    });
+
+    context('Shift-Backspace', () => {
+      it('should call delete last character', function() {
+        if (browser.ios) {
+          this.skip(`Shift-Backspace doesn't work on Safari 9.`);
+        }
+
+        const { pm } = editor(doc(p('Hello World!{<>}')));
+
+        pm.input.dispatchKey('Shift-Backspace');
+        expect(pm.doc).to.deep.equal(doc(p('Hello World')));
       });
     });
   });
@@ -375,9 +421,9 @@ describe('block-type', () => {
       });
 
       it('returns true', () => {
-        const { pm, plugin } = editor(doc(code_block()('text')));
+        const { plugin } = editor(doc(code_block()('text')));
 
-        expect(plugin.insertNewLine()).to.be.true;
+        expect(plugin.insertNewLine()).to.equal(true);
       });
     });
 
@@ -392,9 +438,9 @@ describe('block-type', () => {
         });
 
         it('returns true', () => {
-          const { pm, plugin } = editor(doc(p('text')));
+          const { plugin } = editor(doc(p('text')));
 
-          expect(plugin.insertNewLine()).to.be.true;
+          expect(plugin.insertNewLine()).to.equal(true);
         });
       });
     });
@@ -403,12 +449,12 @@ describe('block-type', () => {
   describe('toggleBlockType', () => {
     context('when origin block type is different with target block type', () => {
       it('converts to target block type', () => {
-        const { pm, plugin } = editor(doc(p('text')));
+        const { plugin } = editor(doc(p('text')));
         const changeBlockType = sinon.spy(plugin, 'changeBlockType');
 
         plugin.toggleBlockType('heading1');
 
-        expect(changeBlockType).to.have.been.calledWith('heading1');
+        expect(changeBlockType.calledWith('heading1')).to.equal(true);
       });
     });
 
@@ -416,7 +462,6 @@ describe('block-type', () => {
       context('when it is a quote', () => {
         it('lifts content out of the quote', () => {
           const { pm, plugin } = editor(doc(blockquote(p('text'))));
-          const lift = sinon.spy(commands, 'lift');
 
           plugin.toggleBlockType('heading1');
           expect(pm.doc).to.deep.equal(doc(h1('text')));
@@ -425,12 +470,12 @@ describe('block-type', () => {
 
       context('when it is not a quote', () => {
         it('converts to a paragraph', () => {
-          const { pm, plugin } = editor(doc(h1('text')));
+          const { plugin } = editor(doc(h1('text')));
           const changeBlockType = sinon.spy(plugin, 'changeBlockType');
 
           plugin.toggleBlockType('heading1');
 
-          expect(changeBlockType).to.have.been.calledWith('normal');
+          expect(changeBlockType.calledWith('normal')).to.equal(true);
         });
       });
     });
@@ -438,7 +483,7 @@ describe('block-type', () => {
 
   describe('changeContext', () => {
     it('reverts to "default" in case the context is not defined', () => {
-      const { pm, plugin } = editor(doc(p('text')));
+      const { plugin } = editor(doc(p('text')));
       expect(plugin.context).to.eq('default');
       plugin.changeContext('!!!%%%UNDEFINED CONTEXT%%%!!!');
       expect(plugin.context).to.eq('default');

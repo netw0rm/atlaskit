@@ -1,7 +1,8 @@
-import { Fragment, Node, Schema } from '../';
+import { Node, Schema } from '../';
 import { DOMFragment } from '../dom';
 
 export class Fragment {
+  constructor(content: Node[], size: number)
   toString(): string;
   textBetween(from: number, to: number, separator: string): string;
   cut(from: number, to?: number): Fragment;

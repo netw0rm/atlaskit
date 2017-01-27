@@ -10,7 +10,6 @@ pipelines:
             - yarn
             - yarn run browserstack/tunnel/start
             - run-p -ln "validate/package.json" "lint" "test" "test/base" "test/wc/browserstack"
-            # AK-628 - yarn run test/integration
             - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
@@ -29,7 +28,6 @@ pipelines:
           - ./build/bin/setup.sh
           - yarn
           - yarn run browserstack/tunnel/start
-          - run-p -ln "validate/package.json" "lint" "test" "test/base" "test/wc/browserstack/pr"
+          - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base" "test/wc/browserstack/pr"
           - yarn run pr/artifacts
-          # AK-628 - yarn run test/integration/pr
           - yarn run browserstack/tunnel/stop

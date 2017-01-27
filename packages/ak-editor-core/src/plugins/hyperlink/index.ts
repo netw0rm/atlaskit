@@ -1,34 +1,34 @@
 import {
   commands,
   DOMFromPos,
-  inputRules,
   InputRule,
-  NodeSelection,
+  inputRules,
+  Node,
   Plugin,
   ProseMirror,
-  ResolvedPos,
-  Mark,
-  Node,
   Schema,
   TextSelection
 } from '../../prosemirror';
-import { LinkMarkType, LinkMark } from '../../schema';
+import { LinkMark, LinkMarkType } from '../../schema';
 import hyperlinkRule from './input-rule';
 import pasteTransformer from './paste-transformer';
 
 export type StateChangeHandler = (state: HyperlinkState) => void;
 
 export class HyperlinkState {
-  private changeHandlers: StateChangeHandler[] = [];
-  private inputRules: InputRule[] = [];
-  private pm: PM;
-
   // public state
   href?: string;
   text?: string;
   active = false;
   canAddLink = false;
   element?: HTMLElement;
+
+  private changeHandlers: StateChangeHandler[] = [];
+  private inputRules: InputRule[] = [];
+  private pm: PM;
+  private activeLinkNode?: Node;
+  private activeLinkMark?: LinkMark;
+  private activeLinkStartPos?: number;
 
   constructor(pm: PM) {
     this.pm = pm;
@@ -46,70 +46,7 @@ export class HyperlinkState {
       pm.on.activeMarkChange,
     ], () => this.update());
 
-    this.update();
-  }
-
-  private updateElement() {
-    const activeLink = this.getActiveLink();
-    let dirty = false;
-
-    const newElement = activeLink
-      ? this.getDomElement()
-      : undefined;
-    if (newElement !== this.element) {
-      this.element = newElement;
-      dirty = true;
-    }
-
-    if (dirty) {
-      this.changeHandlers.forEach(cb => cb(this));
-    }
-  }
-
-  private update() {
-    const activeNode = this.getActiveNode();
-    const activeLink = this.getActiveLink();
-    let dirty = false;
-
-    const newHref = activeLink
-      ? activeLink.attrs.href
-      : undefined;
-    if (newHref !== this.href) {
-      this.href = newHref;
-      dirty = true;
-    }
-
-    const newText = activeLink
-      ? activeNode.textContent
-      : undefined;
-    if (newText !== this.text) {
-      this.text = newText;
-      dirty = true;
-    }
-
-    const newElement = activeLink
-      ? this.getDomElement()
-      : undefined;
-    if (newElement !== this.element) {
-      this.element = newElement;
-      dirty = true;
-    }
-
-    const newActive = !!activeLink;
-    if (newActive !== this.active) {
-      this.active = newActive;
-      dirty = true;
-    }
-
-    const newCanAddLink = !activeLink && this.isActiveNodeLinkable();
-    if (newCanAddLink !== this.canAddLink) {
-      this.canAddLink = newCanAddLink;
-      dirty = true;
-    }
-
-    if (dirty) {
-      this.changeHandlers.forEach(cb => cb(this));
-    }
+    this.setup(this.getActiveLinkNodeInfo());
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -135,72 +72,29 @@ export class HyperlinkState {
     }
   }
 
-  getActiveMarkRange(): { markerFrom: number, markerTo: number } {
-    const { pm } = this;
-
-    if (pm.selection instanceof TextSelection) {
-      const { $head, empty } = pm.selection;
-
-      // why - 1?
-      // because of `exclusiveRight`, we need to get the node "left to"
-      // the current cursor
-      const node = pm.doc.nodeAt($head.pos - 1)!;
-
-      // start captures the start of the node position based on depth
-      // why - 1 ?
-      // we want to capture the start of the node instead of the inside of the node
-      const path = (pm.doc.resolve($head.pos - 1) as any).path as number[];
-
-      // why + 1 ? (https://prosemirror.net/ref.html#ResolvedPos.depth)
-      // depth positions are based on the parent not the node itself so we
-      // need to go inside one level deeper
-      const depth = ($head as any).resolveDepth($head.depth + 1) as number;
-
-      // See `ResolvedPos.prototype.start` method prosemirror/src/model/resolvedpos
-      const currentNodeOffset = depth === 0 ? 0 : path[depth * 3 - 1];
-
-      const markerFrom = currentNodeOffset;
-      const markerTo = markerFrom + node.nodeSize;
-
-      return {
-        markerFrom,
-        markerTo
-      };
-    }
-
-    return {
-      markerFrom: 1,
-      markerTo: 1
-    };
-  }
-
   removeLink(forceTextSelection = false) {
-    const { pm } = this;
-    const activeLink = this.getActiveLink();
-
-    if (activeLink && pm.selection instanceof TextSelection) {
-      const { markerFrom, markerTo } = this.getActiveMarkRange();
-
-      pm.tr.removeMark(markerFrom, markerTo, activeLink).apply();
+    if (this.activeLinkStartPos) {
+      const { pm } = this;
+      const from = this.activeLinkStartPos;
+      const to = this.activeLinkStartPos + this.text!.length;
+      pm.tr.removeMark(from, to, this.activeLinkMark).apply();
 
       if (forceTextSelection) {
-        pm.setTextSelection(markerFrom, markerTo);
+        pm.setTextSelection(from, to);
         pm.focus();
       }
     }
   }
 
   updateLink(options: HyperlinkOptions) {
-    const activeLink = this.getActiveLink();
-    if (activeLink) {
+    if (this.activeLinkStartPos) {
       const { pm } = this;
-      if (pm.selection instanceof TextSelection) {
-        const { markerFrom, markerTo } = this.getActiveMarkRange();
-        pm.tr
-          .removeMark(markerFrom, markerTo, activeLink)
-          .addMark(markerFrom, markerTo, pm.schema.mark('link', { href: options.href }))
-          .apply();
-      }
+      const from = this.activeLinkStartPos;
+      const to = this.activeLinkStartPos + this.text!.length;
+      pm.tr
+        .removeMark(from, to, this.activeLinkMark)
+        .addMark(from, to, pm.schema.mark('link', { href: options.href }))
+        .apply();
     }
   }
 
@@ -209,11 +103,57 @@ export class HyperlinkState {
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
 
+  private update() {
+    const nodeInfo = this.getActiveLinkNodeInfo();
+
+    if ((nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
+      this.setup(nodeInfo);
+      this.changeHandlers.forEach(cb => cb(this));
+    }
+  }
+
+  private setup(nodeInfo: NodeInfo | undefined): void {
+    this.activeLinkNode = nodeInfo && nodeInfo.node;
+    this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
+    this.activeLinkMark = nodeInfo && this.getActiveLinkMark(nodeInfo.node);
+    this.text = nodeInfo && nodeInfo.node.textContent;
+    this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
+    this.element = this.getDomElement();
+    this.active = !!nodeInfo;
+    this.canAddLink = !this.active && this.isActiveNodeLinkable();
+  }
+
+  private getActiveLinkNodeInfo(): NodeInfo| undefined {
+    const {pm} = this;
+    const {link} = pm.schema.marks;
+    const {$from, empty} = pm.selection as TextSelection;
+
+    if (link && $from) {
+      const {node, offset} = $from.parent.childAfter($from.parentOffset);
+
+      // offset is the end postion of previous node
+      // This is to check whether the cursor is at the beginning of current node
+      if (empty && offset + 1 === $from.pos) {
+        return;
+      }
+
+      if (node && node.isText && link.isInSet(node.marks)) {
+        return { node: node, startPos: offset + 1 };
+      }
+    }
+  }
+
+  private getActiveLinkMark(activeLinkNode: Node): LinkMark | undefined {
+    const linkMarks = activeLinkNode.marks.filter((mark) => {
+      return mark.type instanceof LinkMarkType;
+    });
+
+    return (linkMarks as LinkMark[])[0];
+  }
+
   private getDomElement(): HTMLElement | undefined {
-    if (this.pm.selection instanceof TextSelection) {
-      const { $head } = this.pm.selection;
-      const pos = getBoundariesWithin($head);
-      const { node, offset } = DOMFromPos(this.pm, pos, true);
+    if (this.activeLinkStartPos) {
+      const { node, offset } = DOMFromPos(this.pm, this.activeLinkStartPos, true);
 
       if (node.childNodes.length === 0) {
         return node.parentNode as HTMLElement;
@@ -226,53 +166,6 @@ export class HyperlinkState {
   private isActiveNodeLinkable(): boolean {
     const { link } = this.pm.schema.marks;
     return !!link && commands.toggleMark(link)(this.pm, false);
-  }
-
-  private getActiveNode(): Node {
-    const { pm } = this;
-    if (pm.selection instanceof NodeSelection) {
-      return pm.selection.node;
-    } else {
-      // why - 1?
-      // because of `exclusiveRight`, we need to get the node "left to"
-      // the current cursor
-      return pm.doc.nodeAt((pm.selection as TextSelection).$head.pos - 1)!;
-    }
-  }
-
-  private getActiveLink(): LinkMark | null {
-    const { pm } = this;
-
-    if (!(pm.selection instanceof TextSelection)) {
-      return null;
-    }
-
-    const { $head, empty } = pm.selection;
-    const pos = $head.pos;
-
-    let marks;
-    if (!empty) {
-      // because of `exclusiveRight`, we need to get the node "left to"
-      // the current cursor
-      marks = pm.doc.nodeAt(pos - 1)!.marks;
-    } else {
-      const node = pm.doc.nodeAt(pos)!;
-      const previousNode = pm.doc.nodeAt(pos - 1);
-
-      if (node !== previousNode) {
-        return null;
-      }
-
-      marks = node.marks;
-    }
-
-    for (let i = 0; i < marks.length; i++) {
-      if (marks[i].type.name === 'link') {
-        return marks[i];
-      }
-    }
-
-    return null;
   }
 }
 
@@ -295,13 +188,7 @@ export interface HyperlinkOptions {
   href: string;
 }
 
-// We want to get the postion of the DOM element,
-// when we are at the end of the Node we are no longer on the DOM element boundaries
-// so we need to subtract 1
-// when the parentOffset is 0 we dont need to subtract 1 since we are on the first element
-// returns the position to be used on 'getDomElement' to get the corrent DOM node
-function getBoundariesWithin(
-  $head: ResolvedPos
-): number {
-  return $head.parentOffset === 0 ? $head.pos : $head.pos -1;
+interface NodeInfo {
+  node: Node;
+  startPos: number;
 }

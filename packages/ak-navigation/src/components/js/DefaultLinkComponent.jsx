@@ -17,9 +17,9 @@ export default class DefaultLinkComponent extends PureComponent {
     } = this.props;
     return (href ? (
       <a
+        className={className}
         href={href}
         onMouseDown={onMouseDown}
-        className={className}
       >{children}</a>
     ) : children);
   }

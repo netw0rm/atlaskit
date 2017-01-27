@@ -1,5 +1,5 @@
 import Keymap from 'browserkeymap';
-import { Plugin, ProseMirror, inputRules, TextSelection, Schema } from '../../prosemirror';
+import { inputRules, Plugin, ProseMirror, Schema } from '../../prosemirror';
 
 import {
   MentionNodeType,
@@ -15,8 +15,6 @@ export class MentionsPluginState {
   private hasKeymap = false;
   private changeHandlers: StateChangeHandler[] = [];
 
-  renderHandler: (el: HTMLElement, pm: ProseMirror) => void;
-  autocompleteHandler: (el: HTMLElement, pm: ProseMirror) => void;
   query?: string;
   queryActive = false;
   anchorElement?: HTMLElement;
@@ -54,7 +52,7 @@ export class MentionsPluginState {
   private update(): void {
     let dirty = false;
 
-    let marks = this.pm.activeMarks();
+    const marks = this.pm.activeMarks();
     if (this.pm.schema.marks.mention_query.isInSet(marks)) {
       if (!this.queryActive) {
         dirty = true;
@@ -99,7 +97,6 @@ export class MentionsPluginState {
   }
 
   dismiss() {
-    let sel = this.pm.selection;
     this.queryActive = false;
     this.query = undefined;
 
@@ -125,7 +122,7 @@ export class MentionsPluginState {
 
     if (node && this.pm.schema.marks.mention_query.isInSet(node.marks)) {
       start = this.pm.doc.resolve(start).start(2) - 1;
-      end = this.pm.doc.resolve(start).end(1);
+      end = start + node.nodeSize;
     }
 
     return { start, end };

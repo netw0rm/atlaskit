@@ -1,15 +1,14 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
+import { SinonSpy } from 'sinon';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 
-import { fixtures, chaiPlugin } from '../../test-helper';
 import analytics from '../../src/analytics/decorator';
-import service from '../../src/analytics/service';
 import { AnalyticsHandler } from '../../src/analytics/handler';
+import service from '../../src/analytics/service';
+import { chaiPlugin } from '../../test-helper';
 
 chai.use(chaiPlugin);
-chai.use((sinonChai as any).default || sinonChai);
 
 describe('analytics decorator', () => {
   let spy: any;
@@ -30,16 +29,16 @@ describe('analytics decorator', () => {
       foo() {}
     }
 
-    let instance = new AnnotatedTestClass();
-    expect(spy).to.have.not.been.called;
+    const instance = new AnnotatedTestClass();
+    expect(spy.called).to.equal(false);
 
     instance.foo();
-    expect(spy).to.have.been.calledWith('test.event');
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.calledWith('test.event')).to.equal(true);
+    expect(spy.callCount).to.equal(1);
 
     instance.foo();
-    expect(spy).to.have.been.calledTwice;
-    expect(spy).to.have.been.calledWith('test.event');
+    expect(spy.callCount).to.equal(2);
+    expect(spy.calledWith('test.event')).to.equal(true);
   });
 
   it('tracks events after bound method (instance property) is called', () => {
@@ -52,15 +51,15 @@ describe('analytics decorator', () => {
     }
 
     const instance = new AnnotatedTestClass2();
-    expect(spy).to.have.not.been.called;
+    expect(spy.called).to.equal(false);
 
     instance.foo();
-    expect(spy).to.have.been.calledWith('test.event.foo');
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.calledWith('test.event.foo')).to.equal(true);
+    expect(spy.callCount).to.equal(1);
 
     instance.bar();
-    expect(spy).to.have.been.calledTwice;
-    expect(spy).to.have.been.calledWith('test.event.bar');
+    expect(spy.callCount).to.equal(2);
+    expect(spy.calledWith('test.event.bar')).to.equal(true);
   });
 
   it('returns unique decorated bound method (property) per instance', () => {
@@ -89,7 +88,7 @@ describe('analytics decorator', () => {
 
     const instance = new AnnotatedTestClassWithPrimitiveValue();
 
-    expect(console.warn).to.have.been.called;
+    expect((console.warn as SinonSpy).called).to.equal(true);
     expect(instance.foo).to.eq(15.15);
   });
 
@@ -104,12 +103,12 @@ describe('analytics decorator', () => {
       private bar = () => {};
     }
 
-    let instance = new AnnotatedTestClass3();
-    expect(spy).to.have.not.been.called;
+    const instance = new AnnotatedTestClass3();
+    expect(spy.called).to.equal(false);
 
     instance.foo();
-    expect(spy).to.have.been.calledTwice;
-    expect(spy).to.have.been.calledWith('test.event.foo');
-    expect(spy).to.have.been.calledWith('test.event.bar');
+    expect(spy.callCount).to.equal(2);
+    expect(spy.calledWith('test.event.foo')).to.equal(true);
+    expect(spy.calledWith('test.event.bar')).to.equal(true);
   });
 });

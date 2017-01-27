@@ -1,16 +1,10 @@
-import chai, { expect } from 'chai';
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import chaiEnzyme from 'chai-enzyme';
-import sinonChai from 'sinon-chai';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
 import CancelIcon from 'ak-icon/glyph/cancel';
 import FieldBase, { Label } from 'ak-field-base'; // eslint-disable-line
 import Spinner from 'ak-spinner';
 import InlineEdit from '../src/InlineEdit';
-
-chai.use(chaiEnzyme());
-chai.use(sinonChai);
 
 const noop = () => {};
 const Input = props =>
@@ -37,17 +31,17 @@ describe('ak-inline-edit', () => {
   it('should render read view inside FieldBase when in read mode', () => {
     const readView = <span>read</span>;
     const wrapper = mount(<InlineEdit {...defaultProps} readView={readView} />);
-    expect(wrapper).to.have.exactly(1).descendants(FieldBase);
+    expect(wrapper.find(FieldBase).length).to.equal(1);
     const fieldBase = wrapper.find(FieldBase);
-    expect(fieldBase).to.contain(readView);
+    expect(fieldBase.contains(readView)).to.equal(true);
   });
 
   it('should render edit view inside FieldBase when in editing mode', () => {
     const editView = <span>edit</span>;
     const wrapper = mount(<InlineEdit {...defaultProps} isEditing editView={editView} />);
-    expect(wrapper).to.have.exactly(1).descendants(FieldBase);
+    expect(wrapper.find(FieldBase).length).to.equal(1);
     const fieldBase = wrapper.find(FieldBase);
-    expect(fieldBase).to.contain(editView);
+    expect(fieldBase.contains(editView)).to.equal(true);
   });
 
   describe('read-only mode', () => {
@@ -61,7 +55,7 @@ describe('ak-inline-edit', () => {
           editView={false}
         />
       );
-      expect(wrapper).to.contain(readView);
+      expect(wrapper.contains(readView)).to.equal(true);
     });
 
     it('should render the read view when "null" is supplied as the edit view', () => {
@@ -74,7 +68,7 @@ describe('ak-inline-edit', () => {
           editView={null}
         />
       );
-      expect(wrapper).to.contain(readView);
+      expect(wrapper.contains(readView)).to.equal(true);
     });
 
     it('should render the read view when "undefined" is supplied as the edit view', () => {
@@ -87,7 +81,7 @@ describe('ak-inline-edit', () => {
           editView={undefined}
         />
       );
-      expect(wrapper).to.contain(readView);
+      expect(wrapper.contains(readView)).to.equal(true);
     });
   });
 
@@ -101,7 +95,7 @@ describe('ak-inline-edit', () => {
         />
       );
       wrapper.find(FieldBase).simulate('click');
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should not be called when the edit view is clicked', () => {
@@ -114,7 +108,7 @@ describe('ak-inline-edit', () => {
         />
       );
       wrapper.find(FieldBase).simulate('click');
-      expect(spy).to.have.been.notCalled;
+      expect(spy.called).to.equal(false);
     });
   });
 
@@ -128,7 +122,7 @@ describe('ak-inline-edit', () => {
         />
       );
       wrapper.find(ConfirmIcon).simulate('click');
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     })
   );
 
@@ -142,21 +136,21 @@ describe('ak-inline-edit', () => {
         />
       );
       wrapper.find(CancelIcon).simulate('click');
-      expect(spy).to.have.been.calledOnce;
+      expect(spy.callCount).to.equal(1);
     })
   );
 
   describe('label', () => {
     it('should set parameter into FieldBase', () => {
-      expect(shallow(<InlineEdit {...defaultProps} label="test" />).find(Label))
-        .to.have.prop('label', 'test');
+      expect(shallow(<InlineEdit {...defaultProps} label="test" />).find(Label).prop('label'))
+        .to.equal('test');
     });
 
     it('should set both isLabelHidden and label parameter into FieldBase', () => {
       const wrapper = shallow(<InlineEdit {...defaultProps} label="test" isLabelHidden />);
       const fieldBase = wrapper.find(Label);
-      expect(fieldBase).to.have.prop('label', 'test');
-      expect(fieldBase).to.have.prop('isLabelHidden', true);
+      expect(fieldBase.prop('label')).to.equal('test');
+      expect(fieldBase.prop('isLabelHidden')).to.equal(true);
     });
 
     it('it should not call onClick if is read only', () => {
@@ -181,7 +175,7 @@ describe('ak-inline-edit', () => {
        **/
       const onClickNode = label.findWhere(n => n.prop('onClick') && n.find(Label).isEmpty()).at(0);
       onClickNode.simulate('click');
-      expect(spy).to.not.have.been.called;
+      expect(spy.called).to.equal(false);
     });
   });
 
@@ -201,11 +195,11 @@ describe('ak-inline-edit', () => {
       ));
 
       it('should render Spinner', () =>
-        expect(wrapper).to.contain(<Spinner />)
+        expect(wrapper.contains(<Spinner />)).to.equal(true)
       );
 
       it('should disable field base', () =>
-        expect(wrapper.find(FieldBase)).to.have.prop('isDisabled', true)
+        expect(wrapper.find(FieldBase).prop('isDisabled', true)).to.not.equal(undefined)
       );
     });
   });

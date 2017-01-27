@@ -1,12 +1,5 @@
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
-import chaiEnzyme from 'chai-enzyme';
 
 import { modifyResponse } from '../src/api/profile-client';
-
-const { expect } = chai;
-chai.use(chaiEnzyme());
-chai.use(sinonChai);
 
 describe('ak-profilecard', () => {
   describe('profile-client', () => {
@@ -23,10 +16,10 @@ describe('ak-profilecard', () => {
 
         const result = modifyResponse(data);
 
-        expect(result.remoteWeekdayIndex).to.be.undefined;
-        expect(result.remoteWeekdayString).to.be.undefined;
-        expect(result.remoteTimeString).to.be.undefined;
-        expect(result.id).to.be.undefined;
+        expect(result.remoteWeekdayIndex).to.equal(undefined);
+        expect(result.remoteWeekdayString).to.equal(undefined);
+        expect(result.remoteTimeString).to.equal(undefined);
+        expect(result.id).to.equal(undefined);
       });
 
       it('should rename "remoteTimeString" property to "timestring"', () => {

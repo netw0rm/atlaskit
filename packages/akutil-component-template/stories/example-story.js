@@ -14,10 +14,6 @@ storiesOf(name, module)
   .add('with a handler prop', () => (
     <Component onTextClicked={action('Clicked!')} />
   ))
-  .addMonkeyTest('with monkey testing', () => (
-    // Use this to add a story that has fuzzy testing attached.
-    <Component />
-  ))
   .addMonitored('with monitored performance', () => (
     // Use this to add a story that has a little fps/memory gauge that allows you
     // to monitor performance whilst developing

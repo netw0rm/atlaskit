@@ -1,10 +1,5 @@
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
 
 import { hasClass } from '../src';
-
-chai.should();
-chai.use(sinonChai);
 
 describe.skip('hasClass', () => {
   let component;
@@ -17,25 +12,25 @@ describe.skip('hasClass', () => {
   });
 
   it('should return false with no arguments at all', () => {
-    expect(hasClass()).to.be.false;
-    expect(hasClass(false)).to.be.false;
-    expect(hasClass(null)).to.be.false;
+    expect(hasClass()).to.equal(false);
+    expect(hasClass(false)).to.equal(false);
+    expect(hasClass(null)).to.equal(false);
   });
 
   it('should return false if first argument is not a DOM Element', () => {
-    expect(hasClass({})).to.be.false;
-    expect(hasClass([])).to.be.false;
-    expect(hasClass('')).to.be.false;
-    expect(hasClass(1)).to.be.false;
+    expect(hasClass({})).to.equal(false);
+    expect(hasClass([])).to.equal(false);
+    expect(hasClass('')).to.equal(false);
+    expect(hasClass(1)).to.equal(false);
   });
 
   describe('when component has no class', () => {
     it('should return true if no class provided', () =>
-      expect(hasClass(component)).to.be.true
+      expect(hasClass(component)).to.equal(true)
     );
 
     it('should return false for any class provided', () =>
-      expect(hasClass(component, 'foo')).to.be.false
+      expect(hasClass(component, 'foo')).to.equal(false)
     );
   });
 
@@ -43,15 +38,15 @@ describe.skip('hasClass', () => {
     beforeEach(() => component.classList.add('foo'));
 
     it('should return true if no class provided', () =>
-      expect(hasClass(component)).to.be.true
+      expect(hasClass(component)).to.equal(true)
     );
 
     it('should return true for a known class', () =>
-      expect(hasClass(component, 'foo')).to.be.true
+      expect(hasClass(component, 'foo')).to.equal(true)
     );
 
     it('should return false for an unknown class', () =>
-      expect(hasClass(component, 'test')).to.be.false
+      expect(hasClass(component, 'test')).to.equal(false)
     );
   });
 
@@ -63,15 +58,15 @@ describe.skip('hasClass', () => {
     );
 
     it('should return true for known class', () =>
-      expect(hasClass(component, 'bar')).to.be.true
+      expect(hasClass(component, 'bar')).to.equal(true)
     );
 
     it('should return true for multiple known classes', () =>
-      expect(hasClass(component, 'bar', 'foo', 'zee')).to.be.true
+      expect(hasClass(component, 'bar', 'foo', 'zee')).to.equal(true)
     );
 
     it('should return false for unknown classes', () =>
-      expect(hasClass(component, 'bar', 'foo', 'wat')).to.be.false
+      expect(hasClass(component, 'bar', 'foo', 'wat')).to.equal(false)
     );
   });
 });

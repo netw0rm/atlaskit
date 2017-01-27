@@ -1,7 +1,7 @@
-import { Node } from '../';
+import { Node, Schema } from '../';
 
 export class MarkdownParser {
-  constructor(schema: Schema, tokenizer: MarkdownIt, tokens: { [key: string]: any }) {}
+  constructor(schema: Schema, tokenizer: any, tokens: { [key: string]: any });
 
   tokens: { [key: string]: any };
   parse(text: string): Node;

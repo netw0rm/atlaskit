@@ -1,19 +1,18 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
 import {
-  ProseMirror,
-  Keymap,
-  BlockTypePlugin,
-  CodeBlockPlugin,
-  ListsPlugin,
-  TextFormattingPlugin,
-  HorizontalRulePlugin,
-  Chrome,
-  schema,
   AnalyticsHandler,
   analyticsService,
-  ContextName
+  BlockTypePlugin,
+  Chrome,
+  CodeBlockPlugin,
+  ContextName,
+  HorizontalRulePlugin,
+  Keymap,
+  ListsPlugin,
+  ProseMirror,
+  TextFormattingPlugin
 } from 'ak-editor-core';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import { encode, parse } from './html';
 
 export interface Props {
@@ -127,7 +126,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { context, onChange } = this.props;
+      const { context } = this.props;
       const pm = new ProseMirror({
         place,
         doc: parse(this.props.defaultValue || ''),

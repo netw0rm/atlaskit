@@ -1,4 +1,4 @@
-import { Node } from '../';
+import { Node, NodeRange, NodeType } from '../';
 
 export function liftTarget(range: NodeRange): number | null;
 

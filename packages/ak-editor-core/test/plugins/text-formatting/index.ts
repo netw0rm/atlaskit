@@ -1,19 +1,17 @@
-import { TextFormattingPlugin, browser } from '../../../src';
-import { doc, em, mono, p, plain, schema, strike, strong, sub, sup, u } from '../../_schema-builder';
-import { chaiPlugin, makeEditor } from '../../../test-helper';
 import { expect } from 'chai';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
+import { browser, TextFormattingPlugin } from '../../../src';
+import { chaiPlugin, makeEditor } from '../../../test-helper';
+import { doc, em, mono, p, plain, schema, strike, strong, sub, sup, u } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
-chai.use((sinonChai as any).default || sinonChai);
 
 describe('text-formatting', () => {
   const editor = (doc: any) => makeEditor({ doc, plugin: TextFormattingPlugin, schema });
 
   describe('keymap', () => {
-    if(browser.mac) {
+    if (browser.mac) {
       context('when on a mac', () => {
         context('when hits Cmd-B', () => {
           it('toggles bold mark', () => {
@@ -22,7 +20,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Cmd-B');
 
-            expect(toggleStrong).to.have.been.callCount(1);
+            expect(toggleStrong.callCount).to.equal(1);
           });
         });
 
@@ -33,7 +31,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Cmd-I');
 
-            expect(toggleEm).to.have.been.callCount(1);
+            expect(toggleEm.callCount).to.equal(1);
           });
         });
 
@@ -44,7 +42,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Cmd-U');
 
-            expect(toggleUnderline).to.have.been.callCount(1);
+            expect(toggleUnderline.callCount).to.equal(1);
           });
         });
 
@@ -59,7 +57,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Shift-Cmd-S');
 
-            expect(toggleStrike).to.have.been.callCount(1);
+            expect(toggleStrike.callCount).to.equal(1);
           });
         });
 
@@ -70,7 +68,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Shift-Cmd-M');
 
-            expect(toggleMono).to.have.been.callCount(1);
+            expect(toggleMono.callCount).to.equal(1);
           });
         });
       });
@@ -83,7 +81,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Ctrl-B');
 
-            expect(toggleStrong).to.have.been.callCount(1);
+            expect(toggleStrong.callCount).to.equal(1);
           });
         });
 
@@ -94,7 +92,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Ctrl-I');
 
-            expect(toggleEm).to.have.been.callCount(1);
+            expect(toggleEm.callCount).to.equal(1);
           });
         });
 
@@ -105,7 +103,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Ctrl-U');
 
-            expect(toggleUnderline).to.have.been.callCount(1);
+            expect(toggleUnderline.callCount).to.equal(1);
           });
         });
 
@@ -120,7 +118,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Shift-Ctrl-S');
 
-            expect(toggleStrike).to.have.been.callCount(1);
+            expect(toggleStrike.callCount).to.equal(1);
           });
         });
 
@@ -131,7 +129,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Shift-Ctrl-M');
 
-            expect(toggleMono).to.have.been.callCount(1);
+            expect(toggleMono.callCount).to.equal(1);
           });
         });
       });
@@ -140,8 +138,8 @@ describe('text-formatting', () => {
   });
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const Plugin = TextFormattingPlugin as any; // .State is not public API.
-    expect(Plugin.State.name).is.be.a('string');
+    const plugin = TextFormattingPlugin as any; // .State is not public API.
+    expect(plugin.State.name).is.be.a('string');
   });
 
   it('should allow a change handler to be attached', () => {
@@ -149,8 +147,8 @@ describe('text-formatting', () => {
     const spy = sinon.spy();
     plugin.subscribe(spy);
 
-    expect(spy).to.have.been.callCount(1);
-    expect(spy).to.have.been.calledWith(plugin);
+    expect(spy.callCount).to.equal(1);
+    expect(spy.calledWith(plugin)).to.equal(true);
   });
 
   it('should call change handlers when em is toggled', () => {
@@ -160,8 +158,8 @@ describe('text-formatting', () => {
 
     plugin.toggleEm();
 
-    expect(spy).to.have.been.callCount(2);
-    expect(spy).to.have.been.calledWith(plugin);
+    expect(spy.callCount).to.equal(2);
+    expect(spy.calledWith(plugin)).to.equal(true);
   });
 
   describe('em', () => {
@@ -177,29 +175,29 @@ describe('text-formatting', () => {
     it('should expose whether em is active on an empty selection', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.emActive).to.be.false;
+      expect(plugin.emActive).to.equal(false);
       expect(plugin.toggleEm());
-      expect(plugin.emActive).to.be.true;
+      expect(plugin.emActive).to.equal(true);
     });
 
     it('should expose whether em is active on a text selection', () => {
       const { plugin } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.emActive).to.be.false;
+      expect(plugin.emActive).to.equal(false);
       expect(plugin.toggleEm());
-      expect(plugin.emActive).to.be.true;
+      expect(plugin.emActive).to.equal(true);
     });
 
     it('exposes em as disabled when the mark cannot be applied', () => {
       const { plugin } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.emDisabled).to.be.true;
+      expect(plugin.emDisabled).to.equal(true);
     });
 
     it('exposes em as not disabled when the mark can be applied', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.emDisabled).to.be.false;
+      expect(plugin.emDisabled).to.equal(false);
     });
   });
 
@@ -216,29 +214,29 @@ describe('text-formatting', () => {
     it('should expose whether strong is active on an empty selection', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.strongActive).to.be.false;
+      expect(plugin.strongActive).to.equal(false);
       expect(plugin.toggleStrong());
-      expect(plugin.strongActive).to.be.true;
+      expect(plugin.strongActive).to.equal(true);
     });
 
     it('should expose whether strong is active on a text selection', () => {
       const { plugin } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.strongActive).to.be.false;
+      expect(plugin.strongActive).to.equal(false);
       expect(plugin.toggleStrong());
-      expect(plugin.strongActive).to.be.true;
+      expect(plugin.strongActive).to.equal(true);
     });
 
     it('exposes strong as disabled when the mark cannot be applied', () => {
       const { plugin } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.strongDisabled).to.be.true;
+      expect(plugin.strongDisabled).to.equal(true);
     });
 
     it('exposes strong as not disabled when the mark can be applied', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.strongDisabled).to.be.false;
+      expect(plugin.strongDisabled).to.equal(false);
     });
   });
 
@@ -255,29 +253,29 @@ describe('text-formatting', () => {
     it('should expose whether underline is active on an empty selection', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.underlineActive).to.be.false;
+      expect(plugin.underlineActive).to.equal(false);
       expect(plugin.toggleUnderline());
-      expect(plugin.underlineActive).to.be.true;
+      expect(plugin.underlineActive).to.equal(true);
     });
 
     it('should expose whether underline is active on a text selection', () => {
       const { plugin } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.underlineActive).to.be.false;
+      expect(plugin.underlineActive).to.equal(false);
       expect(plugin.toggleUnderline());
-      expect(plugin.underlineActive).to.be.true;
+      expect(plugin.underlineActive).to.equal(true);
     });
 
     it('exposes underline as disabled when the mark cannot be applied', () => {
       const { plugin } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.underlineDisabled).to.be.true;
+      expect(plugin.underlineDisabled).to.equal(true);
     });
 
     it('exposes underline as not disabled when the mark can be applied', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.underlineDisabled).to.be.false;
+      expect(plugin.underlineDisabled).to.equal(false);
     });
   });
 
@@ -294,29 +292,29 @@ describe('text-formatting', () => {
     it('should expose whether mono is active on an empty selection', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.monoActive).to.be.false;
+      expect(plugin.monoActive).to.equal(false);
       expect(plugin.toggleMono());
-      expect(plugin.monoActive).to.be.true;
+      expect(plugin.monoActive).to.equal(true);
     });
 
     it('should expose whether mono is active on a text selection', () => {
       const { plugin } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.monoActive).to.be.false;
+      expect(plugin.monoActive).to.equal(false);
       expect(plugin.toggleMono());
-      expect(plugin.monoActive).to.be.true;
+      expect(plugin.monoActive).to.equal(true);
     });
 
     it('exposes mono as disabled when the mark cannot be applied', () => {
       const { plugin } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.monoDisabled).to.be.true;
+      expect(plugin.monoDisabled).to.equal(true);
     });
 
     it('exposes mono as not disabled when the mark can be applied', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.monoDisabled).to.be.false;
+      expect(plugin.monoDisabled).to.equal(false);
     });
   });
 
@@ -333,29 +331,29 @@ describe('text-formatting', () => {
     it('should expose whether strike is active on an empty selection', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.strikeActive).to.be.false;
+      expect(plugin.strikeActive).to.equal(false);
       expect(plugin.toggleStrike());
-      expect(plugin.strikeActive).to.be.true;
+      expect(plugin.strikeActive).to.equal(true);
     });
 
     it('should expose whether strike is active on a text selection', () => {
       const { plugin } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.strikeActive).to.be.false;
+      expect(plugin.strikeActive).to.equal(false);
       expect(plugin.toggleStrike());
-      expect(plugin.strikeActive).to.be.true;
+      expect(plugin.strikeActive).to.equal(true);
     });
 
     it('exposes strike as disabled when the mark cannot be applied', () => {
       const { plugin } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.strikeDisabled).to.be.true;
+      expect(plugin.strikeDisabled).to.equal(true);
     });
 
     it('exposes strike as not disabled when the mark can be applied', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.strikeDisabled).to.be.false;
+      expect(plugin.strikeDisabled).to.equal(false);
     });
   });
 
@@ -372,29 +370,29 @@ describe('text-formatting', () => {
     it('should expose whether subcript is active on an empty selection', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.subscriptActive).to.be.false;
+      expect(plugin.subscriptActive).to.equal(false);
       expect(plugin.toggleSubscript());
-      expect(plugin.subscriptActive).to.be.true;
+      expect(plugin.subscriptActive).to.equal(true);
     });
 
     it('should expose whether subcript is active on a text selection', () => {
       const { plugin } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.subscriptActive).to.be.false;
+      expect(plugin.subscriptActive).to.equal(false);
       expect(plugin.toggleSubscript());
-      expect(plugin.subscriptActive).to.be.true;
+      expect(plugin.subscriptActive).to.equal(true);
     });
 
     it('exposes subcript as disabled when the mark cannot be applied', () => {
       const { plugin } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.subscriptDisabled).to.be.true;
+      expect(plugin.subscriptDisabled).to.equal(true);
     });
 
     it('exposes subcript as not disabled when the mark can be applied', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.subscriptDisabled).to.be.false;
+      expect(plugin.subscriptDisabled).to.equal(false);
     });
 
     it('deactives superscript after toggling subscript for an empty selection', () => {
@@ -402,7 +400,7 @@ describe('text-formatting', () => {
 
       plugin.toggleSuperscript();
       plugin.toggleSubscript();
-      expect(plugin.superscriptActive).to.be.false;
+      expect(plugin.superscriptActive).to.equal(false);
     });
 
     it('deactives superscript after toggling subscript for selected text', () => {
@@ -410,7 +408,7 @@ describe('text-formatting', () => {
 
       plugin.toggleSuperscript();
       plugin.toggleSubscript();
-      expect(plugin.superscriptActive).to.be.false;
+      expect(plugin.superscriptActive).to.equal(false);
     });
   });
 
@@ -427,29 +425,29 @@ describe('text-formatting', () => {
     it('should expose whether superscript is active on an empty selection', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.superscriptActive).to.be.false;
+      expect(plugin.superscriptActive).to.equal(false);
       expect(plugin.toggleSuperscript());
-      expect(plugin.superscriptActive).to.be.true;
+      expect(plugin.superscriptActive).to.equal(true);
     });
 
     it('should expose whether superscript is active on a text selection', () => {
       const { plugin } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.superscriptActive).to.be.false;
+      expect(plugin.superscriptActive).to.equal(false);
       expect(plugin.toggleSuperscript());
-      expect(plugin.superscriptActive).to.be.true;
+      expect(plugin.superscriptActive).to.equal(true);
     });
 
     it('exposes superscript as disabled when the mark cannot be applied', () => {
       const { plugin } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.superscriptDisabled).to.be.true;
+      expect(plugin.superscriptDisabled).to.equal(true);
     });
 
     it('exposes superscript as not disabled when the mark can be applied', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.superscriptDisabled).to.be.false;
+      expect(plugin.superscriptDisabled).to.equal(false);
     });
 
     it('deactives subscript after toggling superscript for an empty selection', () => {
@@ -457,7 +455,7 @@ describe('text-formatting', () => {
 
       plugin.toggleSubscript();
       plugin.toggleSuperscript();
-      expect(plugin.subscriptActive).to.be.false;
+      expect(plugin.subscriptActive).to.equal(false);
     });
 
     it('deactives subscript after toggling superscript for selected text', () => {
@@ -465,7 +463,7 @@ describe('text-formatting', () => {
 
       plugin.toggleSubscript();
       plugin.toggleSuperscript();
-      expect(plugin.subscriptActive).to.be.false;
+      expect(plugin.subscriptActive).to.equal(false);
     });
   });
 });

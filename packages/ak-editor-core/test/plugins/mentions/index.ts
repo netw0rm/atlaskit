@@ -1,13 +1,12 @@
-import MentionsPlugin from '../../../src/plugins/mentions';
-import { MentionQueryMarkType, MentionNodeType, ProseMirror, Schema, ResolvedPos, schema as schemaBasic } from '../../../src';
-import { chaiPlugin, fixtures } from '../../../test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
+import { MentionNodeType, MentionQueryMarkType, ProseMirror, Schema, schema as schemaBasic } from '../../../src';
+import BlockTypePlugin from '../../../src/plugins/block-type';
+import MentionsPlugin from '../../../src/plugins/mentions';
+import { chaiPlugin, fixtures } from '../../../test-helper';
 
 chai.use(chaiPlugin);
-chai.use((sinonChai as any).default || sinonChai);
 
 const schema: Schema = new Schema({
   nodes: schemaBasic.nodeSpec.append({
@@ -21,7 +20,7 @@ const schema: Schema = new Schema({
 const makeEditor = (container: Node) => {
   return new ProseMirror({
     schema: schema,
-    plugins: [ MentionsPlugin ],
+    plugins: [ MentionsPlugin, BlockTypePlugin ],
     place: container
   });
 };
@@ -30,8 +29,8 @@ const container = fixtures();
 
 describe('mentions', () => {
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const Plugin = MentionsPlugin as any; // .State is not public API.
-    expect(Plugin.State.name).is.be.a('string');
+    const plugin = MentionsPlugin as any; // .State is not public API.
+    expect(plugin.State.name).is.be.a('string');
   });
 
   describe('keymap', () => {
@@ -96,7 +95,7 @@ describe('mentions', () => {
       (keyDownEvent as any).keyCode = 38;
 
       pm.input.dispatchKey('Up', keyDownEvent);
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
 
     it('should trigger "onSelectNext" when "Down"-key is pressed', () => {
@@ -111,7 +110,7 @@ describe('mentions', () => {
       (keyDownEvent as any).keyCode = 40;
 
       pm.input.dispatchKey('Down', keyDownEvent);
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
 
     it('should trigger "onSelectCurrent" when "Enter"-key is pressed', () => {
@@ -126,7 +125,7 @@ describe('mentions', () => {
       (keyDownEvent as any).keyCode = 13;
 
       pm.input.dispatchKey('Enter', keyDownEvent);
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
 
     it('should trigger "dismiss" when "Esc"-key is pressed', () => {
@@ -140,7 +139,7 @@ describe('mentions', () => {
       (keyDownEvent as any).keyCode = 27;
 
       pm.input.dispatchKey('Esc', keyDownEvent);
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
 
   });
@@ -164,6 +163,53 @@ describe('mentions', () => {
       expect(pm.doc.nodeAt(1)).to.be.of.nodeType(MentionNodeType);
     });
 
+    it('should allow inserting multiple @-mentions next to eachother', () => {
+      const pm = makeEditor(container());
+      const pluginInstance = MentionsPlugin.get(pm)!;
+
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+      pm.tr.typeText('oscar').apply();
+
+      pluginInstance.insertMention({
+        name: 'Oscar Wallhult',
+        mentionName: 'oscar',
+        id: '1234'
+      });
+
+      pm.input.insertText(2, 2, '@');
+      pm.flush();
+      pm.tr.typeText('brad').apply();
+
+      pluginInstance.insertMention({
+        name: 'Bradley Ayers',
+        mentionName: 'brad',
+        id: '5678'
+      });
+
+      expect(pm.doc.nodeAt(1)).to.be.of.nodeType(MentionNodeType);
+      expect(pm.doc.nodeAt(2)).to.be.of.nodeType(MentionNodeType);
+    });
+
+    it('should allow inserting @-mention on new line after hard break', () => {
+      const pm = makeEditor(container());
+      const pluginInstance = MentionsPlugin.get(pm)!;
+      const blockTypePluginInstance = BlockTypePlugin.get(pm)!;
+
+      blockTypePluginInstance.insertNewLine();
+
+      pm.input.insertText(2, 2, '@');
+      pm.flush();
+      pm.tr.typeText('oscar').apply();
+
+      pluginInstance.insertMention({
+        name: 'Oscar Wallhult',
+        mentionName: 'oscar',
+        id: '1234'
+      });
+
+      expect(pm.doc.nodeAt(2)).to.be.of.nodeType(MentionNodeType);
+    });
   });
 
 });

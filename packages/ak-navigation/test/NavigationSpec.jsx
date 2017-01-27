@@ -1,5 +1,3 @@
-import chai, { expect } from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import Navigation from '../src/components/js/Navigation';
@@ -8,21 +6,25 @@ import {
   navigationOpenWidth,
 } from '../src/shared-variables';
 
-chai.use(chaiEnzyme());
-
 describe('<Navigation />', () => {
-  describe('children', () => {
+  describe('renders', () => {
     it('should render a <ContainerNavigation />', () => {
-      expect(shallow(<Navigation />)).to.have.exactly(1).descendants('ContainerNavigation');
+      expect(shallow(<Navigation />).find('ContainerNavigation').length).to.equal(1);
     });
     it('should render a <GlobalNavigation />', () => {
-      expect(shallow(<Navigation />)).to.have.exactly(1).descendants('GlobalNavigation');
+      expect(shallow(<Navigation />).find('GlobalNavigation').length).to.equal(1);
+    });
+    it('should render a <GlobalActions /> in GlobalNavigation', () => {
+      expect(mount(<Navigation />).find('GlobalNavigation').find('GlobalActions').length).to.equal(1);
+    });
+    it('should render a <GlobalActions /> in ContainerNavigation', () => {
+      expect(mount(<Navigation />).find('ContainerNavigation').find('GlobalActions').length).to.equal(1);
     });
     it('should render a <Resizer />', () => {
-      expect(shallow(<Navigation />)).to.have.exactly(1).descendants('Resizer');
+      expect(shallow(<Navigation />).find('Resizer').length).to.equal(1);
     });
     it('should render two <Drawer />', () => {
-      expect(shallow(<Navigation />)).to.have.exactly(2).descendants('Drawer');
+      expect(shallow(<Navigation />).find('Drawer').length).to.equal(2);
     });
   });
 
@@ -38,26 +40,34 @@ describe('<Navigation />', () => {
         .find('Spacer').props().width).to.equal(containerClosedWidth);
     });
     it('isResizeable=false does not render a <Resizer />', () => {
-      expect(shallow(<Navigation isResizeable={false} />))
-      .to.not.have.descendants('Resizer');
+      expect(shallow(<Navigation isResizeable={false} />).find('Resizer').length).to.equal(0);
     });
     it('containerAppearance="global" is passed on to <ContainerNavigation/>', () => {
-      expect(shallow(<Navigation containerAppearance="global" />).find('ContainerNavigation')).to.have.prop('appearance', 'global');
+      expect(shallow(<Navigation containerAppearance="global" />).find('ContainerNavigation').prop('appearance')).to.equal('global');
     });
     it('isCollapsible=false does render a <Resizer />', () => {
-      expect(shallow(<Navigation isCollapsible={false} />))
-      .to.have.descendants('Resizer');
+      expect(shallow(<Navigation isCollapsible={false} />).find('Resizer').length).to.be.above(0);
     });
     it('containerHeader - can pass in an element for the container header', () => {
       const header = <div>foo</div>;
       expect(shallow(<Navigation containerHeader={header} />)
         .find('ContainerNavigation').props().header).to.equal(header);
     });
-    it('globalSearchIcon should insert search icon into navigation', () => {
-      expect(mount(<Navigation globalSearchIcon={<span className="SEARCH_ICON" />} />)).to.have.exactly(1).descendants('.SEARCH_ICON');
+    it('globalSearchIcon should pass search icon onto <GlobalNavigation />', () => {
+      const icon = <img alt="search" />;
+      expect(mount(<Navigation globalSearchIcon={icon} />).find('GlobalNavigation').props().searchIcon).to.equal(icon);
     });
-    it('globalCreateIcon should insert create icon into navigation', () => {
-      expect(mount(<Navigation globalCreateIcon={<span className="CREATE_ICON" />} />)).to.have.exactly(1).descendants('.CREATE_ICON');
+    it('globalCreateIcon should pass createIcon onto <GlobalNavigation />', () => {
+      const icon = <img alt="create" />;
+      expect(mount(<Navigation globalCreateIcon={icon} />).find('GlobalNavigation').props().createIcon).to.equal(icon);
+    });
+    it('globalSearchIcon should pass globalSearchIcon onto <ContainerNavigation />', () => {
+      const icon = <img alt="search" />;
+      expect(mount(<Navigation globalSearchIcon={icon} />).find('ContainerNavigation').props().globalSearchIcon).to.equal(icon);
+    });
+    it('globalCreateIcon should pass globalCreateIcon onto <ContainerNavigation />', () => {
+      const icon = <img alt="create" />;
+      expect(mount(<Navigation globalCreateIcon={icon} />).find('ContainerNavigation').props().globalCreateIcon).to.equal(icon);
     });
     it('isSearchDrawerOpen=true should set open=true on the SearchDrawer', () => {
       expect(mount(<Navigation isSearchDrawerOpen />).find('Drawer').at(0).props().isOpen).to.equal(true);

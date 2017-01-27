@@ -1,5 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
 import Button from 'ak-button';
+import Layer from 'ak-layer';
+import Navigation from 'ak-navigation';
+import DropdownMenu from 'ak-dropdown-menu';
 import React from 'react';
 import Lorem from 'react-lorem-component';
 import { name } from '../package.json';
@@ -60,4 +63,50 @@ storiesOf(name, module)
   ))
   .add('width="x-large"', () => (
     <ModalDemo width="x-large" />
+  ))
+  .add('z-index test', () => (
+    <div
+      style={{
+        display: 'flex',
+        height: '100vh',
+        overflowY: 'scroll',
+        padding: 32,
+        boxSizing: 'border-box',
+      }}
+    >
+      <style>{'body { margin: 0 }'}</style>
+      <ModalDemo>
+        <p>Open the dropdown to make sure that looks ok too:</p>
+        <p>
+          <DropdownMenu
+            appearance="default"
+            items={[
+              {
+                heading: 'Cities',
+                items: [
+                  { content: 'Sydney', type: 'radio' },
+                  { content: 'Canberra', type: 'radio' },
+                  { content: 'Melbourne', type: 'radio' },
+                  { content: 'Perth', type: 'radio' },
+                ],
+              },
+            ]}
+            position="right middle"
+            triggerType="button"
+          >
+            Choose
+          </DropdownMenu>
+        </p>
+      </ModalDemo>
+      <Navigation />
+      <Layer
+        content={
+          <span>I am the popup content</span>
+        }
+      >
+        <p style={{ border: '1px solid yellow' }}>
+          There should be a popup attached to this
+        </p>
+      </Layer>
+    </div>
   ));

@@ -6,6 +6,7 @@ export { StrongMark, StrongMarkType, isStrongMark } from './marks/strong';
 export { SubSupMark, SubSupMarkType, isSubSupMark } from './marks/subsup';
 export { UnderlineMark, UnderlineMarkType, isUnderlineMark } from './marks/underline';
 export { MentionQueryMark, MentionQueryMarkType } from './marks/mention-query';
+export { EmojiQueryMark, EmojiQueryMarkType } from './marks/emoji-query';
 
 export { BlockQuoteNode, BlockQuoteNodeType, isBlockQuoteNode } from './nodes/blockquote';
 export { BulletListNode, BulletListNodeType, isBulletListNode } from './nodes/bullet-list';
@@ -18,5 +19,5 @@ export { ImageNode, ImageNodeType, isImageNode } from './nodes/image';
 export { ListItemNode, ListItemNodeType, isListItemNode } from './nodes/list-item';
 export { OrderedListNode, OrderedListNodeType, isOrderedListNode } from './nodes/ordered-list';
 export { ParagraphNode, ParagraphNodeType, isParagraphNode } from './nodes/paragraph';
-export { MentionNode, MentionNodeType } from './nodes/mention';
+export { MentionNode, MentionNodeType, isMentionNode } from './nodes/mention';
 export { EmojiNode, EmojiNodeType } from './nodes/emoji';

@@ -1,7 +1,7 @@
 import { Plugin, ProseMirror } from '../';
 
 export class InputRule {
-  constructor(match: RegExp, filter?: string, handler: string | ((pm: ProseMirror, match: string[], pos: number) => void)) {}
+  constructor(match: RegExp, filter: string | null, handler: string | ((pm: ProseMirror, match: string[], pos: number) => void));
 
   handler(pm: ProseMirror, match: string[], pos: number): void;
 }

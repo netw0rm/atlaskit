@@ -2,15 +2,10 @@
 
 import { vdom } from 'skatejs';
 import { getShadowRoot } from 'akutil-common-test';
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 
 import { createTemporary, removeTemporary } from './_helpers';
 import Root from '../src/Root';
 import AnimationWrapper from '../src/AnimationWrapper';
-
-chai.use(chaiAsPromised);
-chai.should();
 
 describe.skip('ak-tag', () => {
   describe('AnimationWrapper', () => {
@@ -31,7 +26,7 @@ describe.skip('ak-tag', () => {
           return getShadowRoot(component);
         })
         .then((shadowRoot) => {
-          shadowRoot.should.exist;
+          expect(shadowRoot).to.not.equal(undefined);
         }).should.be.fulfilled;
     });
 

@@ -2,18 +2,10 @@
 
 import 'custom-event-polyfill';
 import { vdom } from 'skatejs';
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
-import chaiAsPromised from 'chai-as-promised';
 import keyCode from 'keycode';
 
 import { createTemporary, removeTemporary, getRootNode } from './_helpers';
 import Chrome from '../src/Chrome';
-
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
-chai.should();
-const expect = chai.expect;
 
 describe.skip('ak-tag', () => {
   describe('Chrome', () => {
@@ -43,7 +35,7 @@ describe.skip('ak-tag', () => {
         const mousedownEvent = new CustomEvent('mousedown', {});
         const spy = sinon.spy(mousedownEvent, 'preventDefault');
         rootNode.dispatchEvent(mousedownEvent);
-        expect(spy).to.have.been.called;
+        expect(spy.called).to.equal(true);
       });
 
       it('should pass the children through', () => {
@@ -80,7 +72,7 @@ describe.skip('ak-tag', () => {
           const keyPressEvent = new CustomEvent('keydown');
           keyPressEvent.keyCode = keyCode(keyName);
           rootNode.dispatchEvent(keyPressEvent);
-          expect(clickSpy).to.have.been.called;
+          expect(clickSpy.called).to.equal(true);
         }));
     });
   });

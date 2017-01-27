@@ -1,3 +1,6 @@
+import { ResolvedPos, Slice } from '../';
+import { DOMNode } from '../dom';
+
 export interface ParseSpecNodeContentTreatment {
   content?: boolean | DOMNode;
   preserveWhitespace?: boolean;

@@ -1,6 +1,7 @@
-import { MarkType, NodeType, ProseMirror } from '../'
+import { MarkType, NodeType, ProseMirror } from '../';
+
 export const commands: {
-  chainCommands(...commands: (_0: ProseMirror, _1?: boolean) => boolean[]): (_0: ProseMirror, _1?: boolean) => boolean,
+  chainCommands(...commands: ((_0: ProseMirror, _1?: boolean) => boolean)[]): (_0: ProseMirror, _1?: boolean) => boolean,
   deleteSelection(pm: ProseMirror, apply?: boolean): boolean,
   joinBackward(pm: ProseMirror, apply?: boolean): boolean,
   joinForward(pm: ProseMirror, apply?: boolean): boolean,

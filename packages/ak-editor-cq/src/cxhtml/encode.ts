@@ -1,28 +1,25 @@
-import schema from '../schema';
 import {
   Fragment,
   Node as PMNode
 } from 'ak-editor-core';
+import schema from '../schema';
 
 import {
   BlockQuoteNode,
   BulletListNode,
   DocNode,
-  HardBreakNode,
   HeadingNode,
-  HorizontalRuleNode,
-  ListItemNode,
-  OrderedListNode,
-  ParagraphNode,
   isBlockQuoteNode,
   isBulletListNode,
-  isDocNode,
   isHardBreakNode,
   isHeadingNode,
   isHorizontalRuleNode,
   isListItemNode,
   isOrderedListNode,
-  isParagraphNode
+  isParagraphNode,
+  ListItemNode,
+  OrderedListNode,
+  ParagraphNode
 } from 'ak-editor-core';
 
 

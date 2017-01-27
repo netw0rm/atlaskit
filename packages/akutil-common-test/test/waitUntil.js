@@ -1,10 +1,5 @@
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
 
 import { waitUntil } from '../src';
-
-chai.should();
-chai.use(sinonChai);
 
 describe('waitUntil', () => {
   it('should call .then after condition is met', (done) => {
@@ -31,7 +26,7 @@ describe('waitUntil', () => {
     setTimeout(() => (val += 1), 10);
     // now wait until val = 1;
     waitUntil(spy).then(() => {
-      spy.should.have.been.called;
+      expect(spy.called).to.equal(true);
       done();
     });
   });

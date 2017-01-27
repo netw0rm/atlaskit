@@ -1,11 +1,6 @@
 import Button from 'ak-button';
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
 
 import { getShadowRoot, waitUntil } from '../src';
-
-chai.should();
-chai.use(sinonChai);
 
 describe.skip('getShadowRoot', () => {
   let component;
@@ -24,6 +19,6 @@ describe.skip('getShadowRoot', () => {
 
   it('should return undefined for component without shadowroot', () => {
     const elem = document.body.appendChild(document.createElement('div'));
-    expect(getShadowRoot(elem)).to.not.exist;
+    expect(getShadowRoot(elem)).to.equal(undefined);
   });
 });

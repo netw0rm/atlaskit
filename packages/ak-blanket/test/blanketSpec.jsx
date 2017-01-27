@@ -1,14 +1,8 @@
 import React from 'react';
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 
 import Blanket from '../src';
 import styles from '../src/style.less';
-
-chai.should();
-const expect = chai.expect;
-chai.use(chaiEnzyme());
 
 describe('ak-blanket', () => {
   describe('exports', () => {
@@ -41,7 +35,7 @@ describe('ak-blanket', () => {
         const spy = sinon.spy();
         const wrapper = mount(<Blanket onBlanketClicked={spy} />);
         wrapper.find(`.${styles.locals.blanket}`).simulate('click');
-        expect(spy).to.have.been.calledOnce;
+        expect(spy.callCount).to.equal(1);
       });
     });
   });

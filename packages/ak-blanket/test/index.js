@@ -1,13 +1,7 @@
 import { Component } from 'skatejs';
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 
 import AkBlanket, { events } from '../src';
 import { name } from '../package.json';
-
-chai.use(chaiAsPromised);
-chai.should();
-const expect = chai.expect;
 
 describe.skip('ak-blanket', () => {
   describe('exports', () => {
@@ -16,7 +10,7 @@ describe.skip('ak-blanket', () => {
     });
 
     it('should have an events export with defined events', () => {
-      events.should.exist;
+      expect(events).not.to.equal(undefined);
       Object.keys(events).should.be.deep.equal([
         'activate',
       ]);

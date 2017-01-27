@@ -1,21 +1,19 @@
 import {
-  Plugin,
-  ProseMirror,
-  Mark,
-  Schema,
+  blockQuoteRule,
+  bulletListRule,
   InputRule,
   inputRules,
-  allInputRules,
-  textblockTypeInputRule,
-  bulletListRule,
-  blockQuoteRule,
-  codeBlockRule,
-  wrappingInputRule,
+  Node,
   NodeType,
-  Node
+  Plugin,
+  ProseMirror,
+  Schema,
+  textblockTypeInputRule,
+  wrappingInputRule
 } from '../../prosemirror';
 
 import { analyticsService, trackAndInvoke } from '../../analytics';
+import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 
 // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
 // input rule will allow for a list to start at any given number, which isn't allowed in
@@ -50,7 +48,7 @@ const headingRule = (nodeType: NodeType, maxLevel: Number) => {
 
 const buildBlockRules = (schema: Schema): Array<InputRule> => {
   const rules = Array<InputRule>();
-  const { heading, bullet_list, ordered_list, blockquote, code_block } = schema.nodes;
+  const { heading, bullet_list, ordered_list, blockquote } = schema.nodes;
 
   if (heading) {
     rules.push(headingRule(heading, 6));
@@ -66,10 +64,6 @@ const buildBlockRules = (schema: Schema): Array<InputRule> => {
 
   if (blockquote) {
     rules.push(createTrackedInputRule('atlassian.editor.format.blockquote.autoformatting', blockQuoteRule(blockquote)));
-  }
-
-  if (code_block) {
-    rules.push(createTrackedInputRule('atlassian.editor.format.codeblock.autoformatting', codeBlockRule(code_block)));
   }
 
   return rules;
@@ -164,6 +158,22 @@ const imgRule = new InputRule(/!\[(\S+)\]\((\S+)\)$/, ')', (
   return replaceWithNode(pm, match, pos, node);
 });
 
+const codeBlockRule = new InputRule(/^```$/, '`', (
+  pm: ProseMirror,
+  match: Array<string>,
+  pos: number
+) => {
+  if (isConvertableToCodeBlock(pm)) {
+    analyticsService.trackEvent(`atlassian.editor.format.codeblock.autoformatting`);
+    const start = pos - match[0].length;
+    return transformToCodeBlockAction(pm)
+      // remove markdown decorator ```
+      .delete(start, pos)
+      .applyAndScroll();
+  }
+  return false;
+});
+
 // **string** should bold the text
 const strongRule1 = new InputRule(/(\*\*([^\*]+)\*\*)$/, '*', (
   pm: ProseMirror,
@@ -190,6 +200,13 @@ const emRule2 = new InputRule(/(?:[^_]+)(_([^_]+?)_)$|^(_([^_]+)_)$/, '_', (
   match: Array<string>,
   pos: number
 ) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em'));
+
+// ~~string~~ should strikethrough the text
+const strikeRule = new InputRule(/(\~\~([^\*]+)\~\~)$/, '~', (
+  pm: ProseMirror,
+  match: Array<string>,
+  pos: number
+) => replaceWithMark(pm, match, pos, 'strike'));
 
 // `string` should change the current text to monospace
 const monoRule = new InputRule(/(`([^`]+)`)$/, '`', (
@@ -222,11 +239,13 @@ export class MarkdownInputRulesPlugin {
       strongRule2,
       emRule1,
       emRule2,
+      strikeRule,
       monoRule,
       imgRule,
       linkRule,
       hrRule1,
       hrRule2,
+      codeBlockRule,
       ...blockRules
     ];
 

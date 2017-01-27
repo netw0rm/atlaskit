@@ -1,5 +1,3 @@
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Avatar from 'ak-avatar';
@@ -9,14 +7,11 @@ import Comment, { CommentAction, CommentAuthor, CommentTime, CommentLayout } fro
 import styles from '../src/styles.less';
 import { name } from '../package.json';
 
-const { expect } = chai;
-chai.use(chaiEnzyme());
-
 describe(name, () => {
   describe('Comment', () => {
     describe('exports', () => {
       it('the Comment component', () => {
-        expect(Comment).to.exist;
+        expect(Comment).not.to.equal(undefined);
         expect(new Comment()).to.be.instanceOf(Component);
       });
     });
@@ -24,7 +19,7 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<Comment />);
-        expect(wrapper).to.exist;
+        expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
     });
@@ -39,9 +34,9 @@ describe(name, () => {
           ];
           const wrapper = mount(<Comment actions={actions} />);
           const container = wrapper.find(`.${styles.locals.actionsContainer}`);
-          expect(container).to.have.exactly(actions.length).descendants(CommentAction);
+          expect(container.find(CommentAction).length).to.equal(actions.length);
           actions.forEach((action) => {
-            expect(container).to.contain(action);
+            expect(container.contains(action)).to.equal(true);
           });
         });
       });
@@ -50,7 +45,7 @@ describe(name, () => {
         it('should render the author in the correct container', () => {
           const author = <CommentAuthor>Joshua Nelson</CommentAuthor>;
           const wrapper = mount(<Comment author={author} />);
-          expect(wrapper.find(`.${styles.locals.mainSection}`)).to.contain(author);
+          expect(wrapper.find(`.${styles.locals.mainSection}`).contains(author)).to.equal(true);
         });
       });
 
@@ -58,7 +53,7 @@ describe(name, () => {
         it('should be reflected to the CommentLayout', () => {
           const avatar = <Avatar src="test/src" label="test label" />;
           const wrapper = shallow(<Comment avatar={avatar} />);
-          expect(wrapper.find(CommentLayout)).to.have.prop('avatar', avatar);
+          expect(wrapper.find(CommentLayout).prop('avatar')).to.equal(avatar);
         });
       });
 
@@ -66,13 +61,13 @@ describe(name, () => {
         it('should render the provided content in the correct container', () => {
           const content = (<p>My sample content</p>);
           const wrapper = mount(<Comment content={content} />);
-          expect(wrapper.find(`.${styles.locals.contentContainer}`)).to.contain(content);
+          expect(wrapper.find(`.${styles.locals.contentContainer}`).contains(content)).to.equal(true);
         });
 
         it('can render string content', () => {
           const textContent = 'My sample content';
           const wrapper = mount(<Comment content={textContent} />);
-          expect(wrapper.find(`.${styles.locals.contentContainer}`)).to.have.text(textContent);
+          expect(wrapper.find(`.${styles.locals.contentContainer}`).text()).to.equal(textContent);
         });
       });
 
@@ -80,7 +75,7 @@ describe(name, () => {
         it('should render the time in the correct container', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
           const wrapper = mount(<Comment time={time} />);
-          expect(wrapper.find(`.${styles.locals.mainSection}`)).to.contain(time);
+          expect(wrapper.find(`.${styles.locals.mainSection}`).contains(time)).to.equal(true);
         });
       });
 
@@ -102,7 +97,7 @@ describe(name, () => {
       it('should reflect children to the CommentLayout', () => {
         const childComment = <Comment content="child" />;
         const wrapper = shallow(<Comment content="parent'">{childComment}</Comment>);
-        expect(wrapper.find(CommentLayout)).to.have.prop('children', childComment);
+        expect(wrapper.find(CommentLayout).prop('children')).to.equal(childComment);
       });
     });
   });

@@ -1,19 +1,14 @@
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
 import Radio from '../src/Radio';
 import { name } from '../package.json';
 
-const { expect } = chai;
-chai.use(chaiEnzyme());
-
 describe(name, () => {
   describe('Radio', () => {
     describe('exports', () => {
       it('the Radio component', () => {
-        expect(Radio).to.exist;
+        expect(Radio).not.to.equal(undefined);
         expect(new Radio()).to.be.instanceOf(Component);
       });
     });
@@ -21,22 +16,22 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<Radio />);
-        expect(wrapper).to.exist;
+        expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
       it('should render an input and the content', () => {
         const content = 'content';
         const wrapper = mount(<Radio>{content}</Radio>);
-        expect(wrapper).to.have.exactly(1).descendants('input');
-        expect(wrapper).to.have.text(content);
+        expect(wrapper.find('input').length).to.equal(1);
+        expect(wrapper.text()).to.equal(content);
       });
 
       it('should render content with markup correctly', () => {
         const content = (<div>content</div>);
         const wrapper = mount(<Radio>{content}</Radio>);
-        expect(wrapper).to.have.exactly(1).descendants('input');
-        expect(wrapper).to.contain(content);
+        expect(wrapper.find('input').length).to.equal(1);
+        expect(wrapper.contains(content)).to.equal(true);
       });
     });
 
@@ -45,7 +40,7 @@ describe(name, () => {
         it('should be reflected to the input', () => {
           const props = { [prop]: val };
           const wrapper = mount(<Radio {...props} />);
-          expect(wrapper.find('input')).to.have.prop(inputProp, val);
+          expect(wrapper.find('input').prop(inputProp)).to.equal(val);
         });
       }
 

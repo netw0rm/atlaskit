@@ -9,30 +9,30 @@ export default class PageNavigation extends PureComponent {
   render() {
     return (
       <Navigation
-        globalPrimaryIcon={<AtlassianIcon label="Home" size="medium" />}
-        globalPrimaryItemHref="/iframe.html"
-        linkComponent={RouterLinkComponent}
         containerHeader={
           <RouterHeader
             to="/iframe.html"
           />
         }
+        globalPrimaryIcon={<AtlassianIcon label="Home" size="medium" />}
+        globalPrimaryItemHref="/iframe.html"
+        linkComponent={RouterLinkComponent}
       >
         <RouterLinkItem
-          to="/page1"
           text="Page 1"
+          to="/page1"
         />
         <RouterLinkItem
-          to="/page2"
           text="Page 2"
+          to="/page2"
         />
         <RouterLinkItem
-          to="/page3"
           text="Page 3"
+          to="/page3"
         />
         <RouterLinkItem
-          to="/page4"
           text="Page 4"
+          to="/page4"
         />
       </Navigation>
     );

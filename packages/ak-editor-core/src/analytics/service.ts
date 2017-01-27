@@ -1,4 +1,4 @@
-import { AnalyticsHandler, AnalyticsProperties, detectHandler } from './handler';
+import { AnalyticsHandler, detectHandler } from './handler';
 
 /**
  * The service allows @analytics annotations to access the analytics Handler

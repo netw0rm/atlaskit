@@ -1,6 +1,3 @@
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
-import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import styles from '../src/styles/profilecard.less';
@@ -8,15 +5,11 @@ import styles from '../src/styles/profilecard.less';
 import { AkProfilecard } from '../src';
 import presences from '../src/internal/presences';
 
-const { expect } = chai;
-chai.use(chaiEnzyme());
-chai.use(sinonChai);
-
 describe('ak-profilecard', () => {
   describe('AkProfilecard', () => {
     it('should be possible to create a component', () => {
       const card = shallow(<AkProfilecard />);
-      expect(card).to.be.present();
+      expect(card.length).to.be.above(0);
     });
 
     describe('fullName property', () => {
@@ -25,13 +18,13 @@ describe('ak-profilecard', () => {
 
       it('should show the full name on the card if property is set', () => {
         const el = card.find(`.${styles.locals.detailsFullname}`);
-        expect(el).to.have.text(fullName);
+        expect(el.text()).to.equal(fullName);
       });
 
-      it('should render empty element for full name if not set', () => {
+      it('should render empty element for full name is not set', () => {
         card.setProps({ fullName: undefined });
         const el = card.find(`.${styles.locals.detailsFullname}`);
-        expect(el).to.be.blank();
+        expect(el.text()).to.equal('');
       });
     });
 
@@ -43,8 +36,8 @@ describe('ak-profilecard', () => {
           it(`should render label with content ${presence}`, () => {
             const card = mount(<AkProfilecard presence={presence} />);
             const el = card.find(`.${styles.locals.presence}`);
-            expect(el).to.be.present();
-            expect(el).to.have.text(presences[presence]);
+            expect(el.length).to.be.above(0);
+            expect(el.text()).to.equal(presences[presence]);
           });
         });
       });
@@ -52,7 +45,7 @@ describe('ak-profilecard', () => {
       it('should not render a presence label if property is not set', () => {
         const card = mount(<AkProfilecard />);
         const el = card.find(`.${styles.locals.presence}`);
-        expect(el).to.not.be.present();
+        expect(el.isEmpty()).to.equal(true);
       });
     });
 
@@ -86,7 +79,7 @@ describe('ak-profilecard', () => {
         }] });
         const actionsWrapper = card.find(`.${styles.locals.actionsWrapper}`);
         actionsWrapper.find('AkButton').first().simulate('click');
-        expect(spy).to.have.been.calledOnce;
+        expect(spy.callCount).to.equal(1);
       });
 
       it('should not render any action buttons if actions property is not set', () => {

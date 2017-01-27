@@ -1,14 +1,14 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
 import AkButton from 'ak-button';
+import DropdownList from 'ak-droplist';
 import Group from 'ak-droplist-group';
 import Item from 'ak-droplist-item';
-import DropdownList from 'ak-droplist';
+import * as React from 'react';
+import { PureComponent } from 'react';
 
-import { BlockType, BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
-import Panel from '../Panel';
-import * as styles from './styles';
 import { analyticsService as analytics } from '../../analytics';
+import { findKeymapByDescription, tooltip } from '../../keymaps';
+import { BlockType, BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
+import * as styles from './styles';
 
 export interface Props {
   pluginState: BlockTypeState;
@@ -68,13 +68,13 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
       >
       {availableBlockTypes.map((blockTypeGroup, groupNo) => (
         <Group key={`blockTypeGroup${groupNo}`}>
-        {blockTypeGroup.map(blockType =>(
+        {blockTypeGroup.map(blockType => (
           <Item
             key={blockType.name}
             isActive={currentBlockType === blockType}
             onActivate={() => { this.handleSelectBlockType(blockType); }}
           >
-            <span className={`${this.blockTypeItemClass(blockType)}`}>
+            <span className={`${this.blockTypeItemClass(blockType)}`} title={tooltip(findKeymapByDescription(blockType.title))}>
               {blockType.title}
             </span>
           </Item>
@@ -103,15 +103,6 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     });
 
     analytics.trackEvent(`atlassian.editor.format.${blockType.name}.button`);
-  }
-
-  private handleToggleDropdown = () => {
-    const { availableBlockTypes, currentBlockType } = this.state;
-    this.setState({
-      active: !this.state.active,
-      availableBlockTypes,
-      currentBlockType
-    });
   }
 
   private blockTypeItemClass(blockType: BlockType): string | undefined {

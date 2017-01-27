@@ -1,6 +1,6 @@
-import * as base64fileconverter from './base64fileconverter';
-import { offsetRefs, BuilderContent, coerce } from './schema-builder';
 import { ProseMirror } from '../';
+import * as base64fileconverter from './base64fileconverter';
+import { BuilderContent, coerce, offsetRefs } from './schema-builder';
 
 export { base64fileconverter };
 export { default as sendKeyToPm } from './send-key-to-pm';
@@ -14,7 +14,7 @@ export {
   doc, p, blockquote, code_block,
   h1, h2, h3, h4, h5, h6,
   li, ul, ol, br, img, hr, em, strong, mono, a,
-  text, fragment, slice, mention, emoji,
+  strike, text, fragment, slice, mention, emoji,
   nodeFactory, markFactory
 } from './schema-builder';
 export { fromHTML, toHTML } from './html-helpers';

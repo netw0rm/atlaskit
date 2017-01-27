@@ -1,11 +1,6 @@
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
 import keyCode from 'keycode';
 
 import { keydown, keyup, keypress } from '../src';
-
-chai.should();
-chai.use(sinonChai);
 
 describe('Keyboard interaction', () => {
   const utils = { keydown, keyup, keypress };
@@ -24,7 +19,7 @@ describe('Keyboard interaction', () => {
 
       it(`can fire ${type} events`, () => {
         key('[');
-        spy.should.have.been.calledOnce;
+        expect(spy.callCount).to.equal(1);
       });
       it('meta keys can be specified', () => {
         key('[', {

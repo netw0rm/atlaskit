@@ -1,8 +1,7 @@
-import * as chai from 'chai';
 import { expect } from 'chai';
 import { Schema, Text } from '../../../src';
-import { DocNodeType, MentionNodeType, MentionNode } from '../../../src';
-import { toHTML, fromHTML as fromHTML_ } from '../../../test-helper';
+import { CodeBlockNodeType, DocNodeType, isMentionNode, MentionNode, MentionNodeType } from '../../../src';
+import { fromHTML as fromHTML_, toHTML } from '../../../test-helper';
 
 const schema = makeSchema();
 const fromHTML = (html: string) => fromHTML_(html, schema);
@@ -47,6 +46,24 @@ describe('ak-editor-core/schema mention node', () => {
     expect(mention.attrs.id).to.equal('@user-1');
     expect(mention.attrs.displayName).to.equal('foo bar');
   });
+
+  describe('isMentionNode', () => {
+    context('when it is a mention node', () => {
+      it('returns true', () => {
+        const node = schema.nodes.mention.create({ id: '@bar', displayName: 'foo bar' });
+
+        expect(isMentionNode(node)).to.be.true;
+      });
+    });
+
+    context('when it is not a mention node', () => {
+      it('returns false', () => {
+        const node = schema.nodes.code_block.create({language: 'java'});
+
+        expect(isMentionNode(node)).to.be.false;
+      });
+    });
+  });
 });
 
 function makeSchema() {
@@ -54,6 +71,7 @@ function makeSchema() {
     nodes: {
       doc: DocNodeType;
       mention: MentionNodeType;
+      code_block: CodeBlockNodeType;
       text: Text;
     };
   }
@@ -62,6 +80,7 @@ function makeSchema() {
     nodes: {
       doc: { type: DocNodeType, content: 'inline<_>*' },
       mention: { type: MentionNodeType, group: 'inline' },
+      code_block: { type: CodeBlockNodeType, content: 'text*' },
       text: { type: Text }
     }
   }) as ISchema;

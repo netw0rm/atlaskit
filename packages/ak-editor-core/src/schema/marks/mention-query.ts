@@ -1,5 +1,5 @@
-import { style } from 'typestyle';
 import { akColorB400 } from 'akutil-shared-styles';
+import { style } from 'typestyle';
 import { Mark, MarkType, Schema } from '../../prosemirror';
 
 const mentionQueryStyle = style({

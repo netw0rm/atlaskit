@@ -1,34 +1,28 @@
 import * as chai from 'chai';
-import * as sinonChai from 'sinon-chai';
-import * as mocha from 'mocha';
-import * as chaiEnzyme from 'chai-enzyme';
 import { mount, ReactWrapper } from 'enzyme';
+import * as React from 'react';
 import * as sinon from 'sinon';
 import { SinonSpy } from 'sinon';
-import * as React from 'react';
-import { doc, strong, h1, p, mention } from './_schema-builder';
+import { doc, h1, mention, p, strong } from './_schema-builder';
 
-import Editor from '../src/index';
-import ImageIcon from 'ak-icon/glyph/editor/image';
 import { ProseMirror } from 'ak-editor-core';
-import { chaiPlugin, createEvent, fixtures, dispatchPasteEvent } from 'ak-editor-core/test-helper';
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from 'ak-editor-core/test-helper';
+import Editor from '../src/index';
 
 chai.use(chaiPlugin);
-chai.use(((chaiEnzyme as any).default || chaiEnzyme)());
-chai.use((sinonChai as any).default || sinonChai);
 
 const expect = chai.expect;
 
 describe('ak-editor-bitbucket/expand and collapse', () => {
   it('should not render expanded chrome when collapsed by default', () => {
-    expect(mount(<Editor />).find('ChromeCollapsed')).to.exist;
-    expect(mount(<Editor />).find('input[placeholder]')).to.exist;
-    expect(mount(<Editor />).find('ChromeExpanded')).not.to.exist;
+    expect(mount(<Editor />).find('ChromeCollapsed')).to.have.length.above(0);
+    expect(mount(<Editor />).find('input[placeholder]')).to.have.length.above(0);
+    expect(mount(<Editor />).find('ChromeExpanded').length).to.equal(0);
   });
 
   it('should respect defaultExpanded property', () => {
-    expect(mount(<Editor isExpandedByDefault />).find('ChromeCollapsed')).not.to.exist;
-    expect(mount(<Editor isExpandedByDefault />).find('ChromeExpanded')).to.exist;
+    expect(mount(<Editor isExpandedByDefault />).find('ChromeCollapsed').length).to.equal(0);
+    expect(mount(<Editor isExpandedByDefault />).find('ChromeExpanded')).to.have.length.above(0);
   });
 
   it('should expand after clicking', () => {
@@ -36,8 +30,8 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
 
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
 
-    expect(editorWrapper.find('ChromeCollapsed')).not.to.exist;
-    expect(editorWrapper.find('ChromeExpanded')).to.exist;
+    expect(editorWrapper.find('ChromeCollapsed').length).to.equal(0);
+    expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
   });
 
   it('.expand() method should expand the editor chrome', () => {
@@ -46,8 +40,8 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
 
     editor.expand();
 
-    expect(editorWrapper.find('ChromeCollapsed')).not.to.exist;
-    expect(editorWrapper.find('ChromeExpanded')).to.exist;
+    expect(editorWrapper.find('ChromeCollapsed').length).to.equal(0);
+    expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
   });
 
   it('.collapse() method should collapse the editor chrome', () => {
@@ -56,8 +50,8 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
 
     editor.collapse();
 
-    expect(editorWrapper.find('ChromeCollapsed')).to.exist;
-    expect(editorWrapper.find('ChromeExpanded')).not.to.exist;
+    expect(editorWrapper.find('ChromeCollapsed')).to.have.length.above(0);
+    expect(editorWrapper.find('ChromeExpanded').length).to.equal(0);
   });
 
   it('should call onExpanded after editor is expanded via click', () => {
@@ -65,7 +59,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
     const editorWrapper = mount(<Editor onExpanded={spy}/>);
 
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.callCount).to.equal(1);
   });
 
   it('should call onExpanded after editor is expanded via .expand()', () => {
@@ -75,7 +69,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
 
     editor.expand();
 
-    expect(spy).to.have.been.calledOnce;
+    expect(spy.callCount).to.equal(1);
   });
 });
 
@@ -115,12 +109,12 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
   it('should invoke upload handler after clicking image icon', () => {
     editor
       .find('ChromeExpanded')
-      .find(ImageIcon)
+      .find('EditorImageIcon')
       .parent()
       .simulate('click');
 
-    expect(spy).to.have.been.calledOnce;
-    expect(spy).to.have.been.calledWith(undefined);
+    expect(spy.callCount).to.equal(1);
+    expect(spy.calledWith(undefined)).to.equal(true);
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 
@@ -142,8 +136,8 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
 
     contentArea.dispatchEvent(event);
 
-    expect(spy).to.have.been.calledOnce;
-    expect(spy).to.have.been.calledWith(event);
+    expect(spy.callCount).to.equal(1);
+    expect(spy.calledWith(event)).to.equal(true);
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 
@@ -168,8 +162,8 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
 
     dropElement.dispatchEvent(event);
 
-    expect(spy).to.have.been.calledOnce;
-    expect(spy).to.have.been.calledWith(event);
+    expect(spy.callCount).to.equal(1);
+    expect(spy.calledWith(event)).to.equal(true);
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 });
@@ -200,19 +194,19 @@ describe('ak-editor-bitbucket/multiple editors as children', () => {
   });
 
   it('should render two editors inside a common container', () => {
-    expect(container.find(Editor)).to.exist;
-    expect(editor1.is(Editor)).to.be.true;
-    expect(editor2.is(Editor)).to.be.true;
+    expect(container.find(Editor)).to.have.length.above(0);
+    expect(editor1.is(Editor)).to.equal(true);
+    expect(editor2.is(Editor)).to.equal(true);
   });
 
   it('should render toolbar elements for both editors', () => {
-    expect(editor1.find('ChromeExpanded ToolbarBlockType')).to.exist;
-    expect(editor1.find('ChromeExpanded ToolbarTextFormatting')).to.exist;
-    expect(editor1.find('ChromeExpanded ToolbarLists')).to.exist;
+    expect(editor1.find('ChromeExpanded ToolbarBlockType')).to.have.length.above(0);
+    expect(editor1.find('ChromeExpanded ToolbarTextFormatting')).to.have.length.above(0);
+    expect(editor1.find('ChromeExpanded ToolbarLists')).to.have.length.above(0);
 
-    expect(editor2.find('ChromeExpanded ToolbarBlockType')).to.exist;
-    expect(editor2.find('ChromeExpanded ToolbarTextFormatting')).to.exist;
-    expect(editor2.find('ChromeExpanded ToolbarLists')).to.exist;
+    expect(editor2.find('ChromeExpanded ToolbarBlockType')).to.have.length.above(0);
+    expect(editor2.find('ChromeExpanded ToolbarTextFormatting')).to.have.length.above(0);
+    expect(editor2.find('ChromeExpanded ToolbarLists')).to.have.length.above(0);
   });
 });
 
@@ -226,14 +220,14 @@ describe('ak-editor-bitbucket/toolbar', () => {
   it('should close blocktype dropdown after second click', () => {
     const trigger = editor.find('ToolbarBlockType AkButton');
 
-    expect(trigger).to.exist;
-    expect(editor.find('ToolbarBlockType Group')).to.not.exist;
+    expect(trigger).to.have.length.above(0);
+    expect(editor.find('ToolbarBlockType Group').length).to.equal(0);
 
     trigger.simulate('click');
-    expect(editor.find('ToolbarBlockType Group')).to.exist;
+    expect(editor.find('ToolbarBlockType Group')).to.have.length.above(0);
 
     trigger.simulate('click');
-    expect(editor.find('ToolbarBlockType Group')).to.not.exist;
+    expect(editor.find('ToolbarBlockType Group').length).to.equal(0);
   });
 });
 
@@ -252,7 +246,7 @@ describe('ak-editor-bitbucket/pasting', () => {
       html: '<p>Nice! <img src="https://d301sr.cloudfront.net/69284d5bf158/emoji/img/%2B1.svg" class="emoji"></p>'
     };
 
-    if(!dispatchPasteEvent(pm, content)) {
+    if (!dispatchPasteEvent(pm, content)) {
       return this.skip('This environment does not support artificial paste events');
     }
 
@@ -264,7 +258,7 @@ describe('ak-editor-bitbucket/pasting', () => {
       html: '<p><a href="/mention/" rel="nofollow" title="@mention" class="mention">Mention</a> some mention.</p>'
     };
 
-    if(!dispatchPasteEvent(pm, content)) {
+    if (!dispatchPasteEvent(pm, content)) {
       return this.skip('This environment does not support artificial paste events');
     }
 

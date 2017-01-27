@@ -1,16 +1,8 @@
 /** @jsx vdom */
 
 import { vdom, define, Component } from 'skatejs';
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
-import chaiAsPromised from 'chai-as-promised';
 
 import { createTemporaryComponent, tearDownComponent, getShadowRoot, getRootNode } from '../src';
-
-chai.should();
-chai.use(sinonChai);
-chai.use(chaiAsPromised);
-const { expect } = chai;
 
 describe('createTemporaryComponent', () => {
   let component;
@@ -36,8 +28,8 @@ describe('createTemporaryComponent', () => {
     .then((newComponent) => {
       component = newComponent;
       expect(component.tagName).to.match(new RegExp('^x-', 'i'));
-      expect(getShadowRoot(component)).to.exist;
-      expect(getRootNode(component)).to.exist;
+      expect(getShadowRoot(component)).to.not.equal(undefined);
+      expect(getRootNode(component)).to.not.equal(undefined);
     })
   );
 

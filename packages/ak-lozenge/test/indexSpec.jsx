@@ -1,11 +1,8 @@
-import chai from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 
 import Lozenge from '../src';
 import styles from '../src/style.less';
-
-chai.should();
 
 describe('ak-lozenge', () => {
   const { locals: style } = styles;

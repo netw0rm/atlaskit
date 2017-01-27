@@ -1,13 +1,8 @@
-import chai from 'chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import chaiEnzyme from 'chai-enzyme';
 
 import ModalDialog from '../src';
 import styles from '../src/style.less';
-
-chai.should();
-chai.use(chaiEnzyme());
 
 describe('ak-modal-dialog', () => {
   describe('exports', () => {
@@ -19,15 +14,15 @@ describe('ak-modal-dialog', () => {
   describe('props', () => {
     describe('isOpen', () => {
       it('should be hidden by default', () => {
-        shallow(<ModalDialog />).should.have.text('');
+        shallow(<ModalDialog />).text().should.be.equal('');
       });
       it('should be visible when open = true', () => {
-        shallow(<ModalDialog isOpen />).should.not.have.text('');
+        shallow(<ModalDialog isOpen />).text().should.not.equal('');
       });
       it('should become hidden when open changed from true -> false', () => {
         const wrapper = shallow(<ModalDialog isOpen />);
         wrapper.setProps({ isOpen: false });
-        wrapper.should.have.text('');
+        wrapper.text().should.be.equal('');
       });
     });
 
@@ -61,7 +56,7 @@ describe('ak-modal-dialog', () => {
               <span>My header</span>
             }
           />
-        ).should.contain(<span>My header</span>);
+        ).contains(<span>My header</span>).should.be.equal(true);
       });
     });
 
@@ -74,7 +69,7 @@ describe('ak-modal-dialog', () => {
               <span>My footer</span>
             }
           />
-        ).should.contain(<span>My footer</span>);
+        ).contains(<span>My footer</span>).should.be.equal(true);
       });
     });
 
@@ -84,16 +79,16 @@ describe('ak-modal-dialog', () => {
           <ModalDialog isOpen>
             <form>This is <strong>my</strong> form</form>
           </ModalDialog>
-        ).should.contain(<form>This is <strong>my</strong> form</form>);
+        ).contains(<form>This is <strong>my</strong> form</form>).should.be.equal(true);
       });
     });
 
-    describe('onBlanketClicked', () => {
+    describe('onDialogDismissed', () => {
       it('should trigger when blanket clicked', () => {
         const spy = sinon.spy();
-        const wrapper = mount(<ModalDialog isOpen onBlanketClicked={spy} />);
+        const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
         wrapper.find(`.${styles.locals.modalWrapper}`).children().first().simulate('click');
-        expect(spy).to.have.been.calledOnce;
+        expect(spy.callCount).to.equal(1);
       });
     });
   });

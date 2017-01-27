@@ -1,37 +1,35 @@
 import Keymap from 'browserkeymap';
 import {
   commands,
-  EditorTransform,
-  liftTarget,
-  Plugin,
-  ProseMirror,
   Node,
   NodeSelection,
-  NodeType,
+  Plugin,
+  ProseMirror,
   ResolvedPos,
   Schema,
   Selection,
   TextSelection,
-  UpdateScheduler
 } from '../../prosemirror';
 
 import {
   BulletListNodeType,
-  ListItemNodeType,
-  OrderedListNodeType,
   isBulletListNode,
-  isOrderedListNode
+  isOrderedListNode,
+  ListItemNodeType,
+  OrderedListNodeType
 } from '../../schema';
 
 import {
   canJoinDown,
   canJoinUp,
-  getAncestorNodesBetween,
   findAncestorPosition,
+  getAncestorNodesBetween,
   getGroupsInRange,
-  liftSelection,
   isRangeOfType,
+  liftSelection,
 } from '../../utils';
+
+import * as keymaps from '../../keymaps';
 
 import { trackAndInvoke } from '../../analytics';
 
@@ -106,9 +104,9 @@ export class ListsState {
     const { list_item } = pm.schema.nodes;
 
     pm.addKeymap(new Keymap({
-      'Enter': () => commands.splitListItem(list_item)(pm),
-      'Mod-Shift-L': trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', () => this.toggleOrderedList()),
-      'Mod-Shift-B': trackAndInvoke('atlassian.editor.format.list.bullet.keyboard',() => this.toggleBulletList())
+      [keymaps.splitListItem.common!]: () => commands.splitListItem(list_item)(pm),
+      [keymaps.toggleOrderedList.common!]: trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', () => this.toggleOrderedList()),
+      [keymaps.toggleBulletList.common!]: trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', () => this.toggleBulletList())
     }));
   }
 
@@ -122,8 +120,8 @@ export class ListsState {
   private toggleList(nodeType: BulletListNodeType | OrderedListNodeType): void {
     const { pm } = this;
     const groups = getGroupsInRange(pm, this.pm.selection.$from, this.pm.selection.$to, isListNode);
-    let { $from } = groups[0];
-    let { $to } = groups[groups.length - 1];
+    const { $from } = groups[0];
+    const { $to } = groups[groups.length - 1];
     this.pm.setSelection(new TextSelection($from, $to));
 
     const adjustedSelection = this.adjustSelection(this.pm.selection);
@@ -142,10 +140,6 @@ export class ListsState {
     pm.setSelection(new TextSelection($from, $to));
 
     const adjustedSelection = this.adjustSelection(pm.selection);
-
-    const wrapInList = nodeType === pm.schema.nodes.bullet_list
-      ? this.wrapInBulletList
-      : this.wrapInOrderedList;
 
     if ($from === $to) {
       pm.setSelection(adjustedSelection);
@@ -198,7 +192,6 @@ export class ListsState {
 
   private update() {
     const { pm } = this;
-    const { bullet_list, ordered_list } = pm.schema.nodes;
     const ancestorPosition = findAncestorPosition(pm, pm.selection.$from);
     const rootNode = pm.selection instanceof NodeSelection
       ? pm.selection.node
@@ -297,17 +290,17 @@ export class ListsState {
       }
     }
 
-    if(!($from.parent && $from.parent.isTextblock && !$from.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
+    if (!($from.parent && $from.parent.isTextblock && !$from.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
       let node = this.pm.doc.nodeAt(startPos);
-      while(!node || (node && !node.isText)) {
+      while (!node || (node && !node.isText)) {
         startPos++;
         node = this.pm.doc.nodeAt(startPos)!;
       }
     }
 
-    if(!($to.parent && $to.parent.isTextblock && !$to.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
+    if (!($to.parent && $to.parent.isTextblock && !$to.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
       let node = this.pm.doc.nodeAt(endPos);
-      while(!node || (node && !node.isText)) {
+      while (!node || (node && !node.isText)) {
         endPos--;
         node = this.pm.doc.nodeAt(endPos);
       }

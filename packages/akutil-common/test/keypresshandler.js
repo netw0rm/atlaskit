@@ -49,8 +49,8 @@ describe(name, () => {
 
       afterMutations(
         () => {
-          expect(keyPressCallback).not.to.be.called;
-          expect(newCallback).to.be.called;
+          expect(keyPressCallback.called).to.equal(false);
+          expect(newCallback.called).to.equal(true);
         },
         done
       );
@@ -60,8 +60,8 @@ describe(name, () => {
       document.dispatchEvent(keyPressEvent);
       afterMutations(
         () => {
-          expect(keyPressCallback).to.be.called;
-          expect(keyPressCallback).to.have.been.calledWith(keyPressEvent);
+          expect(keyPressCallback.called).to.equal(true);
+          expect(keyPressCallback.calledWith(keyPressEvent)).to.equal(true);
         },
         done
       );
@@ -87,8 +87,8 @@ describe(name, () => {
 
       afterMutations(
         () => {
-          expect(keyPressCallback).not.to.be.called;
-          expect(newCallback).not.to.be.called;
+          expect(keyPressCallback.called).to.equal(false);
+          expect(newCallback.called).to.equal(false);
         },
         done
       );

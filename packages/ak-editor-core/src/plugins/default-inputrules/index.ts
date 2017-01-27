@@ -1,13 +1,13 @@
 import {
-  Plugin,
-  ProseMirror,
+  closeDoubleQuote,
+  closeSingleQuote,
+  ellipsis,
   InputRule,
   inputRules,
-  ellipsis,
   openDoubleQuote,
-  closeDoubleQuote,
   openSingleQuote,
-  closeSingleQuote,
+  Plugin,
+  ProseMirror,
 } from '../../prosemirror';
 
 /**

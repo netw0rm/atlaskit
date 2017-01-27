@@ -1,14 +1,14 @@
 import {
   akCodeFontFamily,
   akColorB100,
+  akColorB400,
+  akColorB50,
+  akColorN0,
+  akColorN20,
   akColorN40,
   akColorN500,
-  akColorN0,
-  akColorN900,
   akColorN700,
-  akColorB50,
-  akColorB400,
-  akColorN20,
+  akColorN900,
 } from 'akutil-shared-styles';
 
 export const akEditorCodeFontFamily = akCodeFontFamily;

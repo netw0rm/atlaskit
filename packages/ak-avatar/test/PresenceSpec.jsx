@@ -1,5 +1,3 @@
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
@@ -7,9 +5,7 @@ import { shallow, mount } from 'enzyme';
 import { Presence } from '../src/index';
 import icons from '../src/internal/icons';
 import presences from '../src/internal/presences';
-
-const { expect } = chai;
-chai.use(chaiEnzyme());
+import { locals as styles } from '../src/styles.less';
 
 describe('ak-avatar', () => {
   describe('Presence', () => {
@@ -27,20 +23,20 @@ describe('ak-avatar', () => {
           <span className="child" />
         </Presence>
       );
-      expect(wrapper).to.not.have.descendants(Presence);
-      expect(wrapper).to.have.exactly(1).descendants('span');
-      expect(wrapper.find('span')).to.have.className('child');
+      expect(wrapper.find(Presence).length).to.equal(0);
+      expect(wrapper.find('span').length).to.equal(1);
+      expect((wrapper.find('span')).hasClass(('child'))).to.equal(true);
     });
 
     describe('borderColor prop', () => {
       it('should be white by default', () => {
         const wrapper = mount(<Presence presence="online" />);
-        expect(wrapper).to.have.prop('borderColor', '#FFFFFF');
+        expect(wrapper.find(`.${styles.presence}`).node.style.borderColor).to.equal('#ffffff');
       });
 
       it('should reflect the prop as a CSS style property', () => {
         const wrapper = mount(<Presence presence="online" borderColor="#ff0000" />);
-        expect(wrapper).to.have.style('border-color', '#ff0000');
+        expect(wrapper.find(`.${styles.presence}`).node.style.borderColor).to.equal('#ff0000');
       });
     });
   });

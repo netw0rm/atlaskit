@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
 import BoldIcon from 'ak-icon/glyph/editor/bold';
 import ItalicIcon from 'ak-icon/glyph/editor/italic';
 import UnderlineIcon from 'ak-icon/glyph/editor/underline';
-import CodeIcon from 'ak-icon/glyph/editor/code';
-import { TextFormattingState } from '../../../src/plugins/text-formatting';
-import IconButton from '../ToolbarIconButton';
+import * as React from 'react';
+import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
+import { toggleBold, toggleItalic, toggleUnderline, tooltip } from '../../keymaps';
+import { TextFormattingState } from '../../plugins/text-formatting';
+import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
   pluginState: TextFormattingState;
@@ -39,30 +39,33 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
     return (
       <span>
         {this.state.boldHidden ? null :
-        <IconButton
-          onClick={this.handleBoldClick}
-          selected={this.state.boldActive}
-          disabled={this.state.boldDisabled}
-          icon={<BoldIcon label="Bold" />}
-        />
+          <ToolbarButton
+            onClick={this.handleBoldClick}
+            selected={this.state.boldActive}
+            disabled={this.state.boldDisabled}
+            title={tooltip(toggleBold)}
+            iconBefore={<BoldIcon label="" />}
+          />
         }
 
         {this.state.italicHidden ? null :
-        <IconButton
-          onClick={this.handleItalicClick}
-          selected={this.state.italicActive}
-          disabled={this.state.italicDisabled}
-          icon={<ItalicIcon label="Italic" />}
-        />
+          <ToolbarButton
+            onClick={this.handleItalicClick}
+            selected={this.state.italicActive}
+            disabled={this.state.italicDisabled}
+            title={tooltip(toggleItalic)}
+            iconBefore={<ItalicIcon label="" />}
+          />
         }
 
         {this.state.underlineHidden ? null :
-        <IconButton
-          onClick={this.handleUnderlineClick}
-          selected={this.state.underlineActive}
-          disabled={this.state.underlineDisabled}
-          icon={<UnderlineIcon label="Underline" />}
-        />
+          <ToolbarButton
+            onClick={this.handleUnderlineClick}
+            selected={this.state.underlineActive}
+            disabled={this.state.underlineDisabled}
+            title={tooltip(toggleUnderline)}
+            iconBefore={<UnderlineIcon label="" />}
+          />
         }
       </span>
     );

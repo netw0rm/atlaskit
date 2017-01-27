@@ -1,4 +1,4 @@
-import { Mappable, Node, PosMap, Schema } from '../';
+import { Mappable, Node, PosMap, Schema, Slice } from '../';
 
 export class Step {
   apply(doc: Node): StepResult;
@@ -12,7 +12,7 @@ export class Step {
 }
 
 export class StepResult {
-  constructor(doc?: Node, failed?: string) {}
+  constructor(doc?: Node, failed?: string);
 
   doc?: Node;
   failed?: string;

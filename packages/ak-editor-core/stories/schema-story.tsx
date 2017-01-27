@@ -1,20 +1,17 @@
 import { storiesOf } from '@kadira/storybook';
+import * as ajvModule from 'ajv';
+import { highlightBlock } from 'highlight.js';
+import * as React from 'react';
+import Thenable from 'thenable';
+import { OrderedMap } from '../src/prosemirror';
 import makeJsonSchema from '../src/schema/json-schema';
 import { schema } from '../test-helper/schema';
-import * as React from 'react';
-import { OrderedMap } from '../src/prosemirror';
-import { highlightBlock } from 'highlight.js';
-import reactify from 'akutil-react';
 import Editor from './editor';
-import * as ajvModule from 'ajv';
-import Thenable from 'thenable';
 
 // import 'style!css!highlight.js/styles/tomorrow.css';
-import TabsComponent, { Tab as TabComponent } from 'ak-tabs';
 
-const Tabs = reactify(TabsComponent);
-const Tab = reactify(TabComponent);
 const jsonSchema = makeJsonSchema(schema);
+// tslint:disable-next-line:variable-name
 const Ajv = ((ajvModule as any).default || ajvModule);
 const ajv = new Ajv();
 const validate = ajv.compile(jsonSchema);
@@ -58,32 +55,35 @@ storiesOf('ak-editor-core', module)
               ref="editor"
               isExpandedByDefault
             />
-            <Tabs style={{ backgroundColor: 'white' }}>
-              <Tab label="ProseMirror schema">
-                <pre><code className="json">{jsonPretty({
-                  nodes: toJS(schema.nodeSpec, val => ({
-                    content: val.content,
-                    type: val.type.name,
-                    group: val.group,
-                  })),
-                  marks: toJS(schema.markSpec, val => val.name),
-                })}</code></pre>
-              </Tab>
-              <Tab label="JSON Schema">
-                <pre><code className="json">{jsonPretty(jsonSchema)}</code></pre>
-              </Tab>
-              <Tab label="JSON" selected>
-                {this.state.docJson === null ? null :
-                  <pre><code className="json">{jsonPretty(this.state.docJson)}</code></pre>
-                }
-                {this.state.isValid ? null :
-                  <fieldset>
-                    <legend>Validation errors</legend>
-                    <pre>{jsonPretty(validate.errors)}</pre>
-                  </fieldset>
-                }
-              </Tab>
-            </Tabs>
+            <fieldset>
+              <legend>ProseMirror schema</legend>
+              <pre><code className="json">{jsonPretty({
+                nodes: toJS(schema.nodeSpec, val => ({
+                  content: val.content,
+                  type: val.type.name,
+                  group: val.group,
+                })),
+                marks: toJS(schema.markSpec, val => val.name),
+              })}</code></pre>
+            </fieldset>
+
+            <fieldset>
+              <legend>JSON Schema</legend>
+              <pre><code className="json">{jsonPretty(jsonSchema)}</code></pre>
+            </fieldset>
+
+            <fieldset>
+              <legend>JSON</legend>
+              {this.state.docJson === null ? null :
+                <pre><code className="json">{jsonPretty(this.state.docJson)}</code></pre>
+              }
+              {this.state.isValid ? null :
+                <fieldset>
+                  <legend>Validation errors</legend>
+                  <pre>{jsonPretty(validate.errors)}</pre>
+                </fieldset>
+              }
+            </fieldset>
           </div>
         );
       }

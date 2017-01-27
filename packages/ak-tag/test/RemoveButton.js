@@ -2,18 +2,10 @@
 
 import 'custom-event-polyfill';
 import { vdom } from 'skatejs';
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
-import chaiAsPromised from 'chai-as-promised';
 import keyCode from 'keycode';
 
 import { createTemporary, removeTemporary, getRootNode } from './_helpers';
 import RemoveButton from '../src/RemoveButton';
-
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
-chai.should();
-const expect = chai.expect;
 
 describe.skip('ak-tag', () => {
   describe('RemoveButton', () => {
@@ -54,22 +46,22 @@ describe.skip('ak-tag', () => {
       const mousedownEvent = new CustomEvent('mousedown', {});
       const spy = sinon.spy(mousedownEvent, 'preventDefault');
       rootNode.dispatchEvent(mousedownEvent);
-      expect(spy).to.have.been.called;
+      expect(spy.called).to.equal(true);
     });
 
     describe('should react to hovering', () => {
       it('when the mouse is over', () => {
         const mouseoverEvent = new CustomEvent('mouseover');
         rootNode.dispatchEvent(mouseoverEvent);
-        expect(hoverSpy).to.have.been.calledOnce;
-        expect(hoverSpy).to.have.been.calledWith(true);
+        expect(hoverSpy.callCount).to.equal(1);
+        expect(hoverSpy.calledWith(true)).to.equal(true);
       });
 
       it('when the mouse leaves', () => {
         const mouseoverEvent = new CustomEvent('mouseout');
         rootNode.dispatchEvent(mouseoverEvent);
-        expect(hoverSpy).to.have.been.calledOnce;
-        expect(hoverSpy).to.have.been.calledWith(false);
+        expect(hoverSpy.callCount).to.equal(1);
+        expect(hoverSpy.calledWith(false)).to.equal(true);
       });
     });
 
@@ -79,9 +71,9 @@ describe.skip('ak-tag', () => {
         const preventDefaultSpy = sinon.spy(clickEvent, 'preventDefault');
         const stopPropagationSpy = sinon.spy(clickEvent, 'stopPropagation');
         rootNode.dispatchEvent(clickEvent);
-        expect(activationSpy).to.have.been.calledOnce;
-        expect(preventDefaultSpy).to.have.been.called;
-        expect(stopPropagationSpy).to.have.been.called;
+        expect(activationSpy.callCount).to.equal(1);
+        expect(preventDefaultSpy.called).to.equal(true);
+        expect(stopPropagationSpy.called).to.equal(true);
       });
 
       ['SPACE', 'ENTER'].forEach(keyName =>
@@ -91,9 +83,9 @@ describe.skip('ak-tag', () => {
           const preventDefaultSpy = sinon.spy(keyPressEvent, 'preventDefault');
           const stopPropagationSpy = sinon.spy(keyPressEvent, 'stopPropagation');
           rootNode.dispatchEvent(keyPressEvent);
-          expect(activationSpy).to.have.been.called;
-          expect(preventDefaultSpy).to.have.been.called;
-          expect(stopPropagationSpy).to.have.been.called;
+          expect(activationSpy.called).to.equal(true);
+          expect(preventDefaultSpy.called).to.equal(true);
+          expect(stopPropagationSpy.called).to.equal(true);
         }));
     });
   });

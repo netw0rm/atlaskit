@@ -20,6 +20,6 @@ describe(name, () => {
     };
     const result = getColumnWidth(props);
 
-    expect(result).to.equal('calc(100% / 12 * 8 - 16px);');
+    expect(result).to.equal('calc(100% / 12 * 8 - 16px)');
   });
 });

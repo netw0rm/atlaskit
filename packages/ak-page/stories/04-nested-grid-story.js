@@ -26,12 +26,15 @@ storiesOf(name, module)
                 <div style={dummyNestedStyles}>4 col</div>
               </GridColumn>
             </Grid>
-            This content sits after the nested grid. Notice how the grid pulls itself out into the margins of the column its in.
+            This content sits after the nested grid. Notice how the grid pulls itself out into
+            the margins of the column its in.
           </div>
         </GridColumn>
         <GridColumn medium={4}><div style={dummyStyles}>4 col</div></GridColumn>
       </Grid>
-      <p>This story is used to verify that nested grids don't apply margin and line up correctly.</p>
+      <p>
+        This story is used to verify that nested grids apply negative margins and line up correctly.
+      </p>
     </Page>
   ))
   .add('nested grids with oversized column', () => (
@@ -48,15 +51,18 @@ storiesOf(name, module)
                 <div style={dummyNestedStyles}>10 col</div>
               </GridColumn>
             </Grid>
-            This content sits after the nested grid. Notice how the grid pulls itself out into the margins of the column its in.
+            This content sits after the nested grid. Notice how the grid pulls itself out into
+            the margins of the column its in.
           </div>
         </GridColumn>
         <GridColumn medium={4}><div style={dummyStyles}>4 col</div></GridColumn>
       </Grid>
       <p>
-        This story is used to verify that nested with larger column widths than available don't overflow the parent column. In this case there is
-        an 8 column grid which contains a nested grid that has two columns that should span 10 columns each. Because there's only 8 columns available
-        they sit at the max width instead of overflowing the parent.
+        This story is used to verify nested grids which contain columns wider than what they have
+        available to them do not overflow the parent column. In this case there is an 8 column
+        grid which contains a nested grid that has two columns that should span 10 columns each.
+        Because there are only 8 columns available they sit at the max width instead of overflowing
+        the parent.
       </p>
     </Page>
   ));

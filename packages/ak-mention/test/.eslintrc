@@ -1,6 +1,3 @@
 {
-  "extends": "ak-tests",
-  "rules": {
-    'no-underscore-dangle': ['error', { allowAfterThis: true }]
-  }
+  "extends": "ak-tests"
 }

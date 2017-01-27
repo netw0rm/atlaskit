@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 
-/* eslint-disable react/prefer-stateless-function */
 export default class RemoveIcon extends PureComponent {
   render = () => (<svg
     width="5px"

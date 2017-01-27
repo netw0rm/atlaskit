@@ -3,7 +3,6 @@ import Button from 'ak-button';
 import styles from 'style!../less/Flag.less';
 import CancelIcon from 'ak-icon/glyph/cancel';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class Flag extends PureComponent {
   static propTypes = {
     actions: PropTypes.arrayOf(PropTypes.shape({

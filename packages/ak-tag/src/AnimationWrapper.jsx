@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
 
-/* eslint-disable react/prefer-stateless-function */
 export default class AnimationWrapper extends PureComponent {
 
   static propTypes = {

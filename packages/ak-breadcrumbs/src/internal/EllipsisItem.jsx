@@ -7,7 +7,6 @@ import { locals } from '../styles.less';
  * @class EllipsisItem
  * @private
  */
-/* eslint-disable react/prefer-stateless-function */
 export default class EllipsisItem extends PureComponent {
   static propTypes = {
     onClick: PropTypes.func,
@@ -27,4 +26,3 @@ export default class EllipsisItem extends PureComponent {
     );
   }
 }
-/* eslint-enable react/prefer-stateless-function */

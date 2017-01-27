@@ -10,6 +10,7 @@ import Root from '../src/Root';
 chai.use(chaiAsPromised);
 chai.should();
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('ak-tag', () => {
   describe('Root', () => {
     let component;

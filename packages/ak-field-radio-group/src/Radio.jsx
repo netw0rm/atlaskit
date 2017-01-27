@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import styles from 'style!./styles.less';
 
 /* eslint-disable jsx-a11y/label-has-for */
-/* eslint-disable-next-line react/prefer-stateless-function */
 export default class Radio extends PureComponent {
   static propTypes = {
     isDisabled: PropTypes.bool,

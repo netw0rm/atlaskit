@@ -9,6 +9,7 @@ chai.use(chaiAsPromised);
 chai.should();
 const expect = chai.expect;
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('ak-blanket', () => {
   describe('exports', () => {
     it('should export a base component', () => {

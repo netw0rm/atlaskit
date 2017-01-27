@@ -13,7 +13,6 @@ import EmojiPeopleIcon from 'ak-icon/glyph/emoji/people';
 import EmojiSymbolsIcon from 'ak-icon/glyph/emoji/symbols';
 import EmojiTravelIcon from 'ak-icon/glyph/emoji/travel';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class CategorySelector extends PureComponent {
   static propTypes = {
     categories: PropTypes.array, // eslint-disable-line react/forbid-prop-types

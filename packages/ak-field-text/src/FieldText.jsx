@@ -10,7 +10,7 @@ import Base from 'ak-field-base';
  *   <FieldText label="My form field"></FieldText>
  * </form>
  */
- /* eslint-disable react/prefer-stateless-function, react/no-unused-prop-types */
+ /* eslint-disable react/no-unused-prop-types */
 export default class FieldText extends PureComponent {
   static propTypes = {
     /**

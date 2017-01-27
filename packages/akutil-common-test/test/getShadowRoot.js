@@ -7,6 +7,7 @@ import { getShadowRoot, waitUntil } from '../src';
 chai.should();
 chai.use(sinonChai);
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('getShadowRoot', () => {
   let component;
   beforeEach(() => {

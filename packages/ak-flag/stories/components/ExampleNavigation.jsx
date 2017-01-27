@@ -5,7 +5,6 @@ import Navigation, {
 } from 'ak-navigation';
 import { AtlassianIcon } from 'ak-icon';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class Flag extends PureComponent {
   static propTypes = {
     children: PropTypes.node,

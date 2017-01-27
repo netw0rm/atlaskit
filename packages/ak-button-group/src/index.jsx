@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import styles from 'style!./styles.less';
 
-/* eslint-disable react/prefer-stateless-function */
 /**
  * @description Create instances of the component programmatically, or using markup.
  * @class ButtonGroup

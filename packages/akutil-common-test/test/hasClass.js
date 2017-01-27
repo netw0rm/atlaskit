@@ -6,6 +6,7 @@ import { hasClass } from '../src';
 chai.should();
 chai.use(sinonChai);
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('hasClass', () => {
   let component;
   beforeEach(() => {

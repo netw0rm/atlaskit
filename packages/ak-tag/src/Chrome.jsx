@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
 
-/* eslint-disable react/prefer-stateless-function,jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 export default class Chrome extends PureComponent {
   static propTypes = {
     isLink: PropTypes.bool.isRequired,

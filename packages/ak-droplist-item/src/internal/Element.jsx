@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { ariaRoles, baseTypes } from './constants';
 
-/* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
+/* eslint-disable react/no-unused-prop-types */
 export default class Element extends PureComponent {
   static propTypes = {
     children: PropTypes.node,

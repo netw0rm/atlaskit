@@ -3,7 +3,6 @@ import styles from './styles.less';
 
 import AKLayer from '../src';
 
-// eslint-disable-next-line  react/prefer-stateless-function
 export default class ExampleAlignment extends PureComponent {
   static propTypes = {
     position: PropTypes.string,

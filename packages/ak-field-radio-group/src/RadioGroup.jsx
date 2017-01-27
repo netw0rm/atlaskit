@@ -4,7 +4,6 @@ import styles from 'style!./styles.less';
 import Radio from './Radio';
 import { itemsDefault, itemsPropType } from './internal/constants';
 
-/* eslint-disable-next-line react/prefer-stateless-function */
 export default class FieldRadioGroup extends PureComponent {
   static propTypes = {
     isRequired: PropTypes.bool,

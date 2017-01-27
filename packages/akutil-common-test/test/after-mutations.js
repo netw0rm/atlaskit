@@ -6,6 +6,7 @@ import { afterMutations } from '../src';
 chai.should();
 chai.use(sinonChai);
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('afterMutations', () => {
   it('should respond to prop changes', (done) => {
     const spy = sinon.spy();

@@ -3,7 +3,6 @@ import Button from 'ak-button';
 import PaddedDiv from './components/PaddedDiv';
 import Banner from '../src';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class AnimationDemo extends PureComponent {
   static propTypes = {
     children: PropTypes.node,

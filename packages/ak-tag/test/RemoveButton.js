@@ -15,6 +15,7 @@ chai.use(sinonChai);
 chai.should();
 const expect = chai.expect;
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('ak-tag', () => {
   describe('RemoveButton', () => {
     let component;

@@ -12,7 +12,7 @@ const leftClick = event => (
     && !event.shiftKey
 );
 
-// eslint-disable-next-line react/prefer-stateless-function
+// eslint-disable-next-line
 export default class EmojiButton extends PureComponent {
   static propTypes = {
     ...EmojiPropTypes.emojiPropType,

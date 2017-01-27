@@ -12,6 +12,7 @@ import AnimationWrapper from '../src/AnimationWrapper';
 chai.use(chaiAsPromised);
 chai.should();
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('ak-tag', () => {
   describe('AnimationWrapper', () => {
     let component;

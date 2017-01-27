@@ -5,7 +5,6 @@ const wrapperStyle = {
   display: 'flex',
 };
 
-/* eslint-disable react/prefer-stateless-function */
 export default class extends PureComponent {
   propTypes = {
     mention: PropTypes.shape({

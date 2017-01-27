@@ -2,7 +2,6 @@ import React, { PropTypes, PureComponent } from 'react';
 import classNames from 'classnames';
 import styles from 'style!../less/FlagAnimationWrapper.less';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class FlagAnimationWrapper extends PureComponent {
   static propTypes = {
     children: PropTypes.node,

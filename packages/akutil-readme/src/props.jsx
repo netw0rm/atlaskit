@@ -3,7 +3,7 @@ import React, { PropTypes, PureComponent } from 'react';
 import Description from './description';
 import Heading from './heading';
 
-// eslint-disable-next-line react/no-multi-comp, react/prefer-stateless-function
+// eslint-disable-next-line react/no-multi-comp
 export default class extends PureComponent {
   static displayName = 'AkutilReadmeProps'
   static propTypes = {

@@ -1,0 +1,11 @@
+{
+  "extends": "ak-base",
+  "settings": {
+        // Tell the compat plugin which browser features we have pollyfilled
+        // At this time caniuse (the database that compat uses) does not cover everything.
+        "polyfills": [
+            "promises",
+            "fetch"
+        ]
+    }
+}

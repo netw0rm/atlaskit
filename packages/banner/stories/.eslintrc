@@ -1,3 +1,3 @@
 {
-  "extends": "stories"
+  "extends": "@atlaskit/eslint-config-stories"
 }

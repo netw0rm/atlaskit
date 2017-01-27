@@ -1,5 +1,5 @@
 {
-  "extends": "stories",
+  "extends": "@atlaskit/eslint-config-stories",
   "rules": {
     'no-underscore-dangle': ['error', { allowAfterThis: true }]
   }

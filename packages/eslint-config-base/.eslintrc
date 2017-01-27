@@ -1,5 +1,5 @@
 {
-  "name": "base",
+  "name": "@atlaskit/eslint-config-base",
   "extends": "airbnb",
   "parser": "babel-eslint",
   "env": {

@@ -4,8 +4,8 @@
    Any new rules that apply to all tests should be placed here.                                   */
 
 {
-  "name": "tests",
-  "extends": "base",
+  "name": "@atlaskit/eslint-config-tests",
+  "extends": "@atlaskit/eslint-config-base",
   "env": {
     "mocha": true
   },

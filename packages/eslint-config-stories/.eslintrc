@@ -1,6 +1,6 @@
 {
-  "name": "stories",
-  "extends": "base",
+  "name": "@atlaskit/eslint-config-stories",
+  "extends": "@atlaskit/eslint-config-base",
   "plugins": [
     "react"
   ],

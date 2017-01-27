@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import StatelessSelect, { itemShape } from './StatelessSelect';
 
-export default class AkSelect extends PureComponent {
+export default class AkSingleSelect extends PureComponent {
   static propTypes = {
     defaultSelected: itemShape,
     id: PropTypes.string,
@@ -9,7 +9,7 @@ export default class AkSelect extends PureComponent {
     isDefaultOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
     isInvalid: PropTypes.bool,
-    items: React.PropTypes.array, // eslint-disable-line
+    items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
     onSelected: PropTypes.func,
     onOpenChange: PropTypes.func,

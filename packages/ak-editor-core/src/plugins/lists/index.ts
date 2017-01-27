@@ -75,6 +75,8 @@ export class ListsState {
       pm.on.selectionChange,
       pm.on.change,
     ], () => this.update());
+
+    this.update();
   }
 
   subscribe(cb: StateChangeHandler) {

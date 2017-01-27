@@ -1,6 +1,4 @@
 import { waitUntil } from 'akutil-common-test';
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -11,9 +9,6 @@ import MentionList from '../../src/components/ak-mention-list';
 import MentionListError from '../../src/components/ak-mention-list-error';
 import MentionItem from '../../src/components/ak-mention-item';
 import { isMentionItemSelected, getMentionItemById } from '../_ak-selectors';
-
-chai.use(chaiAsPromised);
-chai.should();
 
 const mentions = mentionData.mentions;
 
@@ -33,7 +28,7 @@ describe('MentionPicker', () => {
   it('should accept all mention names by default', () => {
     const component = setupPicker();
     const hasExpectedItems = () => component.find(MentionItem).length === mentionDataSize;
-    return waitUntil(hasExpectedItems).should.be.fulfilled;
+    return waitUntil(hasExpectedItems);
   });
 
   it('should accept limit result to starting with s', () => {
@@ -41,7 +36,7 @@ describe('MentionPicker', () => {
       query: 's',
     });
     const hasExpectedItems = () => component.find(MentionItem).length === 4;
-    return waitUntil(hasExpectedItems).should.be.fulfilled;
+    return waitUntil(hasExpectedItems);
   });
 
   it('should accept limit result to starting with shae', () => {
@@ -49,7 +44,7 @@ describe('MentionPicker', () => {
       query: 'shae',
     });
     const hasExpectedItems = () => component.find(MentionItem).length === 1;
-    return waitUntil(hasExpectedItems).should.be.fulfilled;
+    return waitUntil(hasExpectedItems);
   });
 
   it('should report error when service fails', () => {
@@ -58,14 +53,14 @@ describe('MentionPicker', () => {
     const noMentionItemsShown = () => component.find(MentionItem).length === 0;
     const mentionErrorShown = () => component.find(MentionListError).length > 0;
 
-    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+    return waitUntil(defaultMentionItemsShow)
       .then(() => {
         component.setProps({ query: 'nothing' });
-        return waitUntil(noMentionItemsShown).should.be.fulfilled;
+        return waitUntil(noMentionItemsShown);
       })
       .then(() => {
         component.setProps({ query: 'error' });
-        return waitUntil(mentionErrorShown).should.be.fulfilled;
+        return waitUntil(mentionErrorShown);
       });
   });
 
@@ -77,12 +72,12 @@ describe('MentionPicker', () => {
       return mentionList.prop('showError');
     };
 
-    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+    return waitUntil(defaultMentionItemsShow)
       .then(() => {
         component.setProps({ query: 'error' });
-        return waitUntil(mentionErrorProcessed).should.be.fulfilled;
+        return waitUntil(mentionErrorProcessed);
       })
-      .then(() => waitUntil(defaultMentionItemsShow).should.be.fulfilled);
+      .then(() => waitUntil(defaultMentionItemsShow));
   });
 
   it('should change selection when navigating next', () => {
@@ -90,10 +85,10 @@ describe('MentionPicker', () => {
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const secondItemSelected = () => isMentionItemSelected(component, mentions[1].id);
 
-    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+    return waitUntil(defaultMentionItemsShow)
       .then(() => {
         component.instance().selectNext();
-        return waitUntil(secondItemSelected).should.be.fulfilled;
+        return waitUntil(secondItemSelected);
       });
   });
 
@@ -103,10 +98,10 @@ describe('MentionPicker', () => {
     const lastItemSelected = () =>
       isMentionItemSelected(component, mentions[mentions.length - 1].id);
 
-    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+    return waitUntil(defaultMentionItemsShow)
       .then(() => {
         component.instance().selectPrevious();
-        return waitUntil(lastItemSelected).should.be.fulfilled;
+        return waitUntil(lastItemSelected);
       });
   });
 
@@ -120,14 +115,14 @@ describe('MentionPicker', () => {
     const secondItemSelected = () => isMentionItemSelected(component, mentions[1].id);
     const chooseSecondItem = () => (chosenMention && chosenMention.id === mentions[1].id);
 
-    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+    return waitUntil(defaultMentionItemsShow)
       .then(() => {
         component.instance().selectNext();
-        return waitUntil(secondItemSelected).should.be.fulfilled;
+        return waitUntil(secondItemSelected);
       })
       .then(() => {
         component.instance().chooseCurrentSelection();
-        return waitUntil(chooseSecondItem).should.be.fulfilled;
+        return waitUntil(chooseSecondItem);
       });
   });
 
@@ -142,11 +137,11 @@ describe('MentionPicker', () => {
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const chooseThirdItem = () => (chosenMention && chosenMention.id === mentions[2].id);
 
-    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+    return waitUntil(defaultMentionItemsShow)
       .then(() => {
         const item = getMentionItemById(component, mentions[2].id);
         item.simulate('mousedown', leftClick);
-        return waitUntil(chooseThirdItem).should.be.fulfilled;
+        return waitUntil(chooseThirdItem);
       });
   });
 
@@ -160,7 +155,7 @@ describe('MentionPicker', () => {
     });
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
 
-    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+    return waitUntil(defaultMentionItemsShow)
       .then(() => {
         expect(onOpen.callCount, 'opened').to.equal(1);
         expect(onClose.callCount, 'closed').to.equal(0);
@@ -178,12 +173,12 @@ describe('MentionPicker', () => {
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const noMentionItemsShown = () => component.find(MentionItem).length === 0;
 
-    return waitUntil(defaultMentionItemsShow).should.be.fulfilled
+    return waitUntil(defaultMentionItemsShow)
       .then(() => {
         expect(onOpen.callCount, 'opened 1').to.equal(1);
         expect(onClose.callCount, 'closed 1').to.equal(0);
         component.setProps({ query: 'nothing' });
-        return waitUntil(noMentionItemsShown).should.be.fulfilled;
+        return waitUntil(noMentionItemsShown);
       })
       .then(() => {
         expect(onOpen.callCount, 'opened 2').to.equal(1);

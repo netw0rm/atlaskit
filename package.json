@@ -37,7 +37,6 @@
     "babel-preset-stage-0": "^6.16.0",
     "camelcase": "^4.0.0",
     "chai": "^3.5.0",
-    "chai-as-promised": "^6.0.0",
     "chalk-cli": "^3.0.0",
     "commitizen": "^2.8.6",
     "css-loader": "^0.25.0",

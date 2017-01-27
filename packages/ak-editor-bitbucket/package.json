@@ -1,10 +1,9 @@
 {
   "name": "ak-editor-bitbucket",
-  "version": "6.9.3",
+  "version": "6.9.6",
   "description": "Editor web component",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
-  "ak:webpack:raw": "src/index.tsx",
   "types": "dist/types/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",

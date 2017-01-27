@@ -1,16 +1,12 @@
 import * as chai from 'chai';
-import * as chaiEnzyme from 'chai-enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 
 import { chaiPlugin } from 'ak-editor-core/test-helper';
 import { mount } from 'enzyme';
 import Editor from '../src';
 
 chai.use(chaiPlugin);
-chai.use(((chaiEnzyme as any).default || chaiEnzyme)());
-chai.use((sinonChai as any).default || sinonChai);
 
 const { expect } = chai;
 
@@ -52,7 +48,7 @@ describe('ak-editor-hipchat', () => {
       const { pm } = editor.state;
 
       pm!.input.dispatchKey('Enter', new CustomEvent('keydown'));
-      expect(spy).to.have.been.calledWith(editor.value);
+      expect(spy.calledWith(editor.value)).to.equal(true);
     });
 
   });

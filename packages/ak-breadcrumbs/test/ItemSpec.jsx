@@ -1,5 +1,3 @@
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Button from 'ak-button';
@@ -9,9 +7,6 @@ import Item from '../src/BreadcrumbsItem';
 import { itemTruncateWidth } from '../src/internal/constants';
 import { name } from '../package.json';
 import { setItemWidth } from './_helpers';
-
-const { expect } = chai;
-chai.use(chaiEnzyme());
 
 describe(name, () => {
   describe('BreadcrumbsItem', () => {
@@ -37,7 +32,7 @@ describe(name, () => {
       it('should render a link Button containing the content', () => {
         const text = 'text';
         const wrapper = mount(<Item text={text} />);
-        expect(wrapper.find(Button)).to.have.text(text);
+        expect(wrapper.find(Button).text()).to.equal(text);
       });
     });
 
@@ -46,27 +41,27 @@ describe(name, () => {
         it('should be reflected to the Button content', () => {
           const text = 'text';
           const wrapper = mount(<Item text={text} />);
-          expect(wrapper.find(Button)).to.have.text(text);
+          expect(wrapper.find(Button).text()).to.equal(text);
         });
       });
       describe('href prop', () => {
         it('should be reflected to the Button', () => {
           const href = '/my/href/';
           const wrapper = mount(<Item href={href} />);
-          expect(wrapper.find(Button)).to.have.prop('href', href);
+          expect(wrapper.find(Button).prop('href')).to.equal(href);
         });
         describe('iconAfter prop', () => {
           it('should be reflected to the Button', () => {
             const icon = <AtlassianIcon label="icon" />;
             const wrapper = shallow(<Item iconAfter={icon} />);
-            expect(wrapper.find(Button)).to.have.prop('iconAfter', icon);
+            expect(wrapper.find(Button).prop('iconAfter')).to.equal(icon);
           });
         });
         describe('iconBefore prop', () => {
           it('should be reflected to the Button', () => {
             const icon = <AtlassianIcon label="icon" />;
             const wrapper = shallow(<Item iconBefore={icon} />);
-            expect(wrapper.find(Button)).to.have.prop('iconBefore', icon);
+            expect(wrapper.find(Button).prop('iconBefore')).to.equal(icon);
           });
         });
       });

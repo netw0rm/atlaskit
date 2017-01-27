@@ -1,11 +1,5 @@
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 
 const stripTags = require('../src/strip-tags.js');
-
-chai.use(chaiAsPromised);
-chai.should();
-const expect = chai.expect;
 
 describe('akutil-dmd-plugin', () => {
   describe('stripTags helper', () => {

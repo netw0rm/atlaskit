@@ -1,7 +1,4 @@
-import chai from 'chai';
 import React from 'react';
-import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import keyCode from 'keycode';
 
@@ -9,11 +6,6 @@ import { name } from '../package.json';
 import styles from '../src/styles.less';
 
 import Trigger from '../src';
-
-chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
-
-const { expect } = chai;
 
 describe(name, () => {
   it('should be possible to create a component', () => {
@@ -24,20 +16,20 @@ describe(name, () => {
     it('should render trigger', () => {
       const TriggerSample = <div id="#test">test</div>;
       const wrapper = shallow(<Trigger>{TriggerSample}</Trigger>);
-      expect(wrapper).to.have.descendants(`.${styles.locals.triggerContainer}`);
-      expect(wrapper).to.have.descendants(`.${styles.locals.trigger}`);
-      expect(wrapper).to.contain(TriggerSample);
+      expect(wrapper.find(`.${styles.locals.triggerContainer}`).length).to.be.above(0);
+      expect(wrapper.find(`.${styles.locals.trigger}`).length).to.be.above(0);
+      expect(wrapper.contains(TriggerSample)).to.equal(true);
     });
 
     it('should render tabIndex attribute', () => {
       let wrapper = mount(<Trigger />);
-      expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
+      expect(wrapper.find(`.${styles.locals.trigger}`).is('[tabIndex=-1]')).to.equal(true);
 
       wrapper = mount(<Trigger isDisabled />);
-      expect(wrapper.children().first()).to.have.attr('tabIndex', '-1');
+      expect(wrapper.find(`.${styles.locals.trigger}`).is('[tabIndex=-1]')).to.equal(true);
 
       wrapper = mount(<Trigger isTabbable />);
-      expect(wrapper.children().first()).to.have.attr('tabIndex', '0');
+      expect(wrapper.find(`.${styles.locals.trigger}`).is('[tabIndex=0]')).to.equal(true);
     });
   });
 

@@ -1,4 +1,4 @@
-/// <reference path="./chai.d.ts"/>
+/// <reference path="./types/chai.d.ts"/>
 import { Fragment, Mark, Node, NodeType, Slice } from '../';
 
 function isNodeOrFragment(thing: any): thing is Node | Fragment {

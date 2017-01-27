@@ -1,8 +1,8 @@
 import Keymap from 'browserkeymap';
 import { ContextName } from '../../';
 import { trackAndInvoke } from '../../analytics';
+import * as keymaps from '../../keymaps';
 import {
-  browser,
   commands,
   Fragment,
   Node,
@@ -28,21 +28,19 @@ import {
 } from '../../utils';
 import transformToCodeBlock from './transform-to-code-block';
 
-const withSpecialKey = (key: string) => `${browser.mac ? 'Cmd-Alt' : 'Ctrl'}-${key}`;
-
 // The names of the blocks don't map precisely to schema nodes, because
 // of concepts like "paragraph" <-> "Normal text" and "Unknown".
 //
 // Rather than half-match half-not, this plugin introduces its own
 // nomenclature for what 'block type' is active.
-const NORMAL_TEXT = makeBlockType('normal', 'Normal text', withSpecialKey('0'));
-const HEADING_1 = makeBlockType('heading1', 'Heading 1', withSpecialKey('1'));
-const HEADING_2 = makeBlockType('heading2', 'Heading 2', withSpecialKey('2'));
-const HEADING_3 = makeBlockType('heading3', 'Heading 3', withSpecialKey('3'));
-const HEADING_4 = makeBlockType('heading4', 'Heading 4', withSpecialKey('4'));
-const HEADING_5 = makeBlockType('heading5', 'Heading 5', withSpecialKey('5'));
-const BLOCK_QUOTE = makeBlockType('blockquote', 'Block quote', withSpecialKey('7'));
-const CODE_BLOCK = makeBlockType('codeblock', 'Code block', withSpecialKey('8'));
+const NORMAL_TEXT = makeBlockType('normal', 'Normal text');
+const HEADING_1 = makeBlockType('heading1', 'Heading 1');
+const HEADING_2 = makeBlockType('heading2', 'Heading 2');
+const HEADING_3 = makeBlockType('heading3', 'Heading 3');
+const HEADING_4 = makeBlockType('heading4', 'Heading 4');
+const HEADING_5 = makeBlockType('heading5', 'Heading 5');
+const BLOCK_QUOTE = makeBlockType('blockquote', 'Block quote');
+const CODE_BLOCK = makeBlockType('codeblock', 'Code block');
 const OTHER = makeBlockType('other', 'Other…');
 
 export type GroupedBlockTypes = BlockType[][];
@@ -182,7 +180,7 @@ export class BlockTypeState {
         break;
       case CODE_BLOCK.name:
         if (nodes.code_block) {
-          transformToCodeBlock(nodes.code_block, pm);
+          transformToCodeBlock(pm);
         }
         break;
     }
@@ -240,9 +238,10 @@ export class BlockTypeState {
     };
 
     groupedBlockTypes.forEach(blockTypes => blockTypes.forEach((blockType) => {
-      if (blockType.shortcut) {
+      const shortcut = keymaps.findShorcutByDescription(blockType.title);
+      if (shortcut) {
         const eventName = this.analyticsEventName('keyboard', blockType.name);
-        bind(blockType.shortcut, trackAndInvoke(eventName, () => this.toggleBlockType(blockType.name)));
+        bind(shortcut, trackAndInvoke(eventName, () => this.toggleBlockType(blockType.name)));
       }
     }));
 
@@ -250,8 +249,10 @@ export class BlockTypeState {
   }
 
   private addBasicKeymap(): void {
+    const baseKeymap = this.pm.input.keymaps.filter(k => (k as any).priority === -100)[0];
     this.pm.addKeymap(new Keymap({
-      'Shift-Enter': trackAndInvoke('atlassian.editor.newline.keyboard', () => this.insertNewLine())
+      [keymaps.insertNewLine.common!]: trackAndInvoke('atlassian.editor.newline.keyboard', () => this.insertNewLine()),
+      [keymaps.shiftBackspace.common!]: (baseKeymap as any).map.lookup('Backspace')
     }));
   }
 
@@ -419,6 +420,6 @@ export interface PM extends ProseMirror {
   schema: S;
 }
 
-function makeBlockType(name: BlockTypeName, title: string, shortcut?: string): BlockType {
-  return { name: name, title: title, shortcut: shortcut };
+function makeBlockType(name: BlockTypeName, title: string): BlockType {
+  return { name: name, title: title };
 }

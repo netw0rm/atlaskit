@@ -1,13 +1,11 @@
 import { expect } from 'chai';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 import { browser, TextFormattingPlugin } from '../../../src';
 import { chaiPlugin, makeEditor } from '../../../test-helper';
 import { doc, em, mono, p, plain, schema, strike, strong, sub, sup, u } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
-chai.use((sinonChai as any).default || sinonChai);
 
 describe('text-formatting', () => {
   const editor = (doc: any) => makeEditor({ doc, plugin: TextFormattingPlugin, schema });
@@ -22,7 +20,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Cmd-B');
 
-            expect(toggleStrong).to.have.been.callCount(1);
+            expect(toggleStrong.callCount).to.equal(1);
           });
         });
 
@@ -33,7 +31,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Cmd-I');
 
-            expect(toggleEm).to.have.been.callCount(1);
+            expect(toggleEm.callCount).to.equal(1);
           });
         });
 
@@ -44,7 +42,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Cmd-U');
 
-            expect(toggleUnderline).to.have.been.callCount(1);
+            expect(toggleUnderline.callCount).to.equal(1);
           });
         });
 
@@ -59,7 +57,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Shift-Cmd-S');
 
-            expect(toggleStrike).to.have.been.callCount(1);
+            expect(toggleStrike.callCount).to.equal(1);
           });
         });
 
@@ -70,7 +68,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Shift-Cmd-M');
 
-            expect(toggleMono).to.have.been.callCount(1);
+            expect(toggleMono.callCount).to.equal(1);
           });
         });
       });
@@ -83,7 +81,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Ctrl-B');
 
-            expect(toggleStrong).to.have.been.callCount(1);
+            expect(toggleStrong.callCount).to.equal(1);
           });
         });
 
@@ -94,7 +92,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Ctrl-I');
 
-            expect(toggleEm).to.have.been.callCount(1);
+            expect(toggleEm.callCount).to.equal(1);
           });
         });
 
@@ -105,7 +103,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Ctrl-U');
 
-            expect(toggleUnderline).to.have.been.callCount(1);
+            expect(toggleUnderline.callCount).to.equal(1);
           });
         });
 
@@ -120,7 +118,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Shift-Ctrl-S');
 
-            expect(toggleStrike).to.have.been.callCount(1);
+            expect(toggleStrike.callCount).to.equal(1);
           });
         });
 
@@ -131,7 +129,7 @@ describe('text-formatting', () => {
 
             pm.input.dispatchKey('Shift-Ctrl-M');
 
-            expect(toggleMono).to.have.been.callCount(1);
+            expect(toggleMono.callCount).to.equal(1);
           });
         });
       });
@@ -149,8 +147,8 @@ describe('text-formatting', () => {
     const spy = sinon.spy();
     plugin.subscribe(spy);
 
-    expect(spy).to.have.been.callCount(1);
-    expect(spy).to.have.been.calledWith(plugin);
+    expect(spy.callCount).to.equal(1);
+    expect(spy.calledWith(plugin)).to.equal(true);
   });
 
   it('should call change handlers when em is toggled', () => {
@@ -160,8 +158,8 @@ describe('text-formatting', () => {
 
     plugin.toggleEm();
 
-    expect(spy).to.have.been.callCount(2);
-    expect(spy).to.have.been.calledWith(plugin);
+    expect(spy.callCount).to.equal(2);
+    expect(spy.calledWith(plugin)).to.equal(true);
   });
 
   describe('em', () => {

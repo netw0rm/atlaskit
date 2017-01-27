@@ -1,10 +1,9 @@
 {
   "name": "ak-editor-hipchat",
-  "version": "2.12.1",
+  "version": "2.12.4",
   "description": "Atlassian Editor component for HipChat",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
-  "ak:webpack:raw": "src/index.tsx",
   "types": "dist/types/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
@@ -19,7 +18,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "ak-editor-core": "^3.9.2",
+    "ak-editor-core": "^3.10.8",
     "classnames": "^2.2.5",
     "tslib": "^1.2.0"
   },

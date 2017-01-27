@@ -1,5 +1,3 @@
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { mount } from 'enzyme';
 
@@ -9,9 +7,6 @@ import Breadcrumbs, {
 } from '../src/';
 import EllipsisItem from '../src/internal/EllipsisItem';
 import { name } from '../package.json';
-
-const { expect } = chai;
-chai.use(chaiEnzyme());
 
 describe(name, () => {
   describe('Breadcrumbs', () => {

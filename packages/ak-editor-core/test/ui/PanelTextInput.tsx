@@ -1,15 +1,10 @@
-import * as chai from 'chai';
 import { expect } from 'chai';
-import * as chaiEnzyme from 'chai-enzyme';
 import { mount } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 
 import PanelTextInput from '../../src/ui/PanelTextInput';
 
-chai.use(chaiEnzyme());
-chai.use(sinonChai);
 
 describe('ak-editor-core/ui/PanelTextInput', () => {
   it('should call onSubmit when ENTER key is pressed', () => {
@@ -20,7 +15,7 @@ describe('ak-editor-core/ui/PanelTextInput', () => {
     (input.get(0) as any).value = 'http://atlassian.com';
     input.simulate('keydown', { which: 'enter', keyCode: 13 });
 
-    expect(onSubmitHandler).to.have.been.calledWith('http://atlassian.com');
+    expect(onSubmitHandler.calledWith('http://atlassian.com')).to.equal(true);
   });
 
   it('should prevent KeyDown event if ENTER key is pressed', () => {
@@ -31,7 +26,7 @@ describe('ak-editor-core/ui/PanelTextInput', () => {
     const input = panel.find('input');
     input.simulate('keydown', { which: 'enter', keyCode: 13, preventDefault });
 
-    expect(preventDefault, 'component didn`t call preventDefault').to.be.calledOnce;
+    expect(preventDefault.callCount, 'component didn`t call preventDefault').to.equal(1);
   });
 
   it('should not prevent KeyDown event if any other key is pressed', () => {
@@ -41,7 +36,7 @@ describe('ak-editor-core/ui/PanelTextInput', () => {
     const input = panel.find('input');
     input.simulate('keydown', { which: 'a', keyCode: 65, preventDefault });
 
-    expect(preventDefault).to.be.not.called;
+    expect(preventDefault.called).to.equal(false);
   });
 
   it('should call onCancel when ESC key is pressed', () => {
@@ -51,6 +46,6 @@ describe('ak-editor-core/ui/PanelTextInput', () => {
     const input = panel.find('input');
     input.simulate('keydown', { which: 'esc', keyCode: 27 });
 
-    expect(onCancelHandler).to.have.been.called;
+    expect(onCancelHandler.called).to.equal(true);
   });
 });

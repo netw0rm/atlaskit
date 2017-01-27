@@ -1,17 +1,7 @@
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
 import { mount } from 'enzyme';
 import React from 'react';
-import sinonChai from 'sinon-chai';
 import styles from 'style!../src/components/less/Drawer.less';
 import Drawer from '../src/components/js/Drawer';
-
-chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
-chai.use(sinonChai);
-chai.should();
-const expect = chai.expect;
 
 describe('<Drawer />', () => {
   describe('props', () => {

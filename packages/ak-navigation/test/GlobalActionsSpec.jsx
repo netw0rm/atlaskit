@@ -1,17 +1,7 @@
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
-import sinonChai from 'sinon-chai';
 import style from 'style!../src/components/less/GlobalActions.less';
 import GlobalActions from '../src/components/js/GlobalActions';
-
-chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
-chai.use(sinonChai);
-chai.should();
-const expect = chai.expect;
 
 describe('<GlobalActions />', () => {
   describe('renders', () => {

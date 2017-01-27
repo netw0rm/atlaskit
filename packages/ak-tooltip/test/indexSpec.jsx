@@ -1,13 +1,8 @@
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { shallow } from 'enzyme';
 
 // Testing the dumb component
 import { Tooltip } from '../src';
-
-const { expect } = chai;
-chai.use(chaiEnzyme());
 
 describe('ak-tooltip', () => {
   it('should be possible to create a component', () => {
@@ -19,7 +14,7 @@ describe('ak-tooltip', () => {
     it('should be reflected into Layers position prop when Tooltip is visible', () => {
       const wrapper = shallow(<Tooltip position="bottom" visible><div>Foo</div></Tooltip>);
 
-      expect(wrapper.find('Layer')).to.have.prop('position', 'bottom center');
+      expect(wrapper.find('Layer').prop('position')).to.equal('bottom center');
     });
   });
 
@@ -33,7 +28,7 @@ describe('ak-tooltip', () => {
       // have to wrap the prop in shallow so that we can run assertions against it.
       const layerContentProp = shallow(layer.prop('content'));
       expect(layerContentProp).not.to.equal(undefined);
-      expect(layerContentProp).to.have.text('Some words!');
+      expect(layerContentProp.text()).to.equal('Some words!');
     });
 
     it('should not be reflected in the Layer content prop when Tooltip is not visible', () => {
@@ -41,7 +36,7 @@ describe('ak-tooltip', () => {
 
       const layer = wrapper.find('Layer');
       expect(layer).to.have.length.above(0);
-      expect(layer).to.have.prop('content', null);
+      expect(layer.prop('content')).to.equal(null);
     });
   });
 
@@ -49,7 +44,7 @@ describe('ak-tooltip', () => {
     const wrapper = shallow(<Tooltip><div id="shouldBeRendered">Target</div></Tooltip>);
 
     it('should be rendered by Tooltip', () => {
-      expect(wrapper).to.have.exactly(1).descendants('#shouldBeRendered');
+      expect(wrapper.find('#shouldBeRendered').length).to.equal(1);
     });
   });
 

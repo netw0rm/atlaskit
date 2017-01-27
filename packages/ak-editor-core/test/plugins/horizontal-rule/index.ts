@@ -1,13 +1,11 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import * as sinonChai from 'sinon-chai';
 
 import { browser } from '../../../src';
 import HorizontalRulePlugin from '../../../src/plugins/horizontal-rule';
 import { chaiPlugin, doc, hr, makeEditor, p } from '../../../test-helper';
 
 chai.use(chaiPlugin);
-chai.use((sinonChai as any).default || sinonChai);
 
 describe('horizontal_rule', () => {
   const editor = (doc: any) => {

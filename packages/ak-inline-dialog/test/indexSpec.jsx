@@ -1,16 +1,9 @@
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
-import sinonChai from 'sinon-chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Layer from 'ak-layer';
 
 import InlineDialog from '../src';
 import styles from '../src/styles.less';
-
-const { expect } = chai;
-chai.use(chaiEnzyme());
-chai.use(sinonChai);
 
 const containerClass = styles.locals.inlineDialogContainer;
 
@@ -23,19 +16,19 @@ describe('ak-inline-dialog', () => {
   describe('default', () => {
     it('should have the expected default props', () => {
       const wrapper = mount(<InlineDialog />);
-      expect(wrapper).to.have.prop('position', 'bottom center');
-      expect(wrapper).to.have.prop('isOpen', false);
-      expect(wrapper).to.have.prop('content', null);
-      expect(wrapper).to.have.prop('shouldFlip', false);
+      expect(wrapper.prop('position')).to.equal('bottom center');
+      expect(wrapper.prop('isOpen')).to.equal(false);
+      expect(wrapper.prop('content')).to.equal(null);
+      expect(wrapper.prop('shouldFlip')).to.equal(false);
     });
 
     it('should pass the expected default props to Layer', () => {
       const wrapper = mount(<InlineDialog />);
       const layer = wrapper.find(Layer);
-      expect(layer).to.have.prop('autoPosition', false);
-      expect(layer).to.have.prop('content', null);
-      expect(layer).to.have.prop('position', 'bottom center');
-      expect(layer).to.have.prop('offset', '0 8');
+      expect(layer.prop('autoPosition')).to.equal(false);
+      expect(layer.prop('content')).to.equal(null);
+      expect(layer.prop('position')).to.equal('bottom center');
+      expect(layer.prop('offset')).to.equal('0 8');
     });
 
     it('should render any children passed to it', () => {
@@ -82,7 +75,7 @@ describe('ak-inline-dialog', () => {
       const wrapper = mount(<InlineDialog position="right middle" />);
       const layer = wrapper.find(Layer);
       expect(layer).to.have.length.above(0);
-      expect(layer).to.have.prop('position', 'right middle');
+      expect(layer.prop('position')).to.equal('right middle');
     });
   });
 
@@ -91,7 +84,7 @@ describe('ak-inline-dialog', () => {
       const wrapper = mount(<InlineDialog shouldFlip />);
       const layer = wrapper.find(Layer);
       expect(layer).to.have.length.above(0);
-      expect(layer).to.have.prop('autoPosition', true);
+      expect(layer.prop('autoPosition')).to.equal(true);
     });
   });
 });

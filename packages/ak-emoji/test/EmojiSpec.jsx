@@ -1,17 +1,7 @@
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
-import sinonChai from 'sinon-chai';
 import { shallow } from 'enzyme';
 import React from 'react';
 import styles from 'style!../src/style.less';
 import Emoji from '../src/Emoji';
-
-chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
-chai.use(sinonChai);
-chai.should();
-const expect = chai.expect;
 
 describe('<Emoji />', () => {
   describe('as sprite', () => {
@@ -28,7 +18,7 @@ describe('<Emoji />', () => {
       />);
 
       const sprite = wrapper.find(`.${styles.emojiSprite}`);
-      expect(sprite).to.have.style('background-image', 'url(https://path-to-spritesheet.png)');
+      expect(sprite.prop('style').backgroundImage).to.equal('url(https://path-to-spritesheet.png)');
     });
 
     it('should use percentage for background-position', () => {
@@ -46,7 +36,7 @@ describe('<Emoji />', () => {
       />);
 
       const sprite = wrapper.find(`.${styles.emojiSprite}`);
-      expect(sprite).to.have.style('background-position', '20% 20%');
+      expect(sprite.prop('style').backgroundPosition).to.equal('20% 20%');
     });
 
     it('should use zoom the background image', () => {
@@ -64,7 +54,7 @@ describe('<Emoji />', () => {
       />);
 
       const sprite = wrapper.find(`.${styles.emojiSprite}`);
-      expect(sprite).to.have.style('background-size', '600% 600%');
+      expect(sprite.prop('style').backgroundSize).to.equal('600% 600%');
     });
 
     it('should be selected', () => {
@@ -82,7 +72,7 @@ describe('<Emoji />', () => {
         selected
       />);
 
-      expect(wrapper.find(`.${styles.emojiContainer}`)).to.have.className(styles.selected);
+      expect((wrapper.find(`.${styles.emojiContainer}`)).hasClass((styles.selected))).to.equal(true);
     });
   });
 
@@ -98,7 +88,7 @@ describe('<Emoji />', () => {
       />);
 
       const sprite = wrapper.find(`.${styles.emoji}`);
-      expect(sprite).to.have.style('background-image', 'url(https://path-to-image.png)');
+      expect(sprite.prop('style').backgroundImage).to.equal('url(https://path-to-image.png)');
     });
 
     it('should be selected', () => {
@@ -113,7 +103,7 @@ describe('<Emoji />', () => {
       />);
 
       const sprite = wrapper.find(`.${styles.emoji}`);
-      expect(sprite).to.have.className(styles.selected);
+      expect((sprite).hasClass((styles.selected))).to.equal(true);
     });
   });
 });

@@ -1,14 +1,7 @@
-import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
-import sinonChai from 'sinon-chai';
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import Layer from '../src';
-
-const { expect } = chai;
-chai.use(chaiEnzyme());
-chai.use(sinonChai);
 
 /* There is a lot in Layer that can not be tested easily in JSDom. Most of it should already be
    tested in Popper itself, but we should really have some sort of sanity checks for things like
@@ -27,7 +20,7 @@ describe('ak-layer', () => {
     const wrapper = shallow(<Layer><div id="target">Target</div></Layer>);
 
     it('should be rendered by Layer', () => {
-      expect(wrapper).to.have.exactly(1).descendants('#target');
+      expect(wrapper.find('#target').length).to.equal(1);
     });
   });
 
@@ -36,7 +29,7 @@ describe('ak-layer', () => {
 
     it('should be rendered by Layer', () => {
       const wrapper = shallow(<Layer content={content} />);
-      expect(wrapper).to.have.exactly(1).descendants('#content');
+      expect(wrapper.find('#content').length).to.equal(1);
     });
   });
 
@@ -52,8 +45,8 @@ describe('ak-layer', () => {
 
       const contentParent = wrapper.find('#content').parent();
 
-      expect(contentParent).to.have.style('position', 'fixed');
-      expect(contentParent).to.have.style('transform', 'translate3d(13px, 13px, 0px)');
+      expect(contentParent.prop('style').position).to.equal('fixed');
+      expect(contentParent.prop('style').transform).to.equal('translate3d(13px, 13px, 0px)');
     });
 
     it('flipped should cause onFlippedChange callback to be called', () => {
@@ -65,7 +58,7 @@ describe('ak-layer', () => {
       wrapper.setState(state);
 
       expect(spy.callCount).to.equal(1);
-      expect(spy).to.have.been.calledWith(state);
+      expect(spy.calledWith(state)).to.equal(true);
     });
   });
 });

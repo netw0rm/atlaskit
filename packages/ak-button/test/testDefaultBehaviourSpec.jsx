@@ -1,16 +1,8 @@
-import chai from 'chai';
-import sinonChai from 'sinon-chai';
-import chaiEnzyme from 'chai-enzyme';
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 
 import Button from '../src/index';
 import styles from '../src/less/styles.less';
-
-chai.use(chaiEnzyme());
-chai.use(sinonChai);
-
-const expect = chai.expect;
 
 describe('ak-button/default-behaviour', () => {
   it('button should have type="button" by default', () =>
@@ -47,34 +39,34 @@ describe('ak-button/default-behaviour', () => {
   it('should render icon if the prop iconBefore is set', () => {
     const Icon = <div id="icon" />;
     const wrapper = mount(<Button href="test" iconBefore={Icon} />);
-    expect(wrapper).to.contain(Icon);
+    expect(wrapper.contains(Icon)).to.equal(true);
   });
 
   it('should render iconBefore before children', () => {
     const Icon = <div id="icon">icon</div>;
     const wrapper = mount(<Button href="test" iconBefore={Icon}>button</Button>);
-    expect(wrapper).to.have.text('iconbutton');
+    expect(wrapper.text()).to.equal('iconbutton');
   });
 
   it('should render icon if the prop iconAfter is set', () => {
     const Icon = <div id="icon" />;
     const wrapper = mount(<Button href="test" iconAfter={Icon} />);
-    expect(wrapper).to.contain(Icon);
+    expect(wrapper.contains(Icon)).to.equal(true);
   });
 
   it('should render iconAfter after children', () => {
     const Icon = <div id="icon">icon</div>;
     const wrapper = mount(<Button href="test" iconAfter={Icon}>button</Button>);
-    expect(wrapper).to.have.text('buttonicon');
+    expect(wrapper.text()).to.equal('buttonicon');
   });
 
   it('should be able to render both of the icons', () => {
     const Icon1 = <div id="icon">icon1</div>;
     const Icon2 = <div id="icon">icon2</div>;
     const wrapper = mount(<Button href="test" iconBefore={Icon1} iconAfter={Icon2}>button</Button>);
-    expect(wrapper).to.contain(Icon1);
-    expect(wrapper).to.contain(Icon2);
-    expect(wrapper).to.have.text('icon1buttonicon2');
+    expect(wrapper.contains(Icon1)).to.equal(true);
+    expect(wrapper.contains(Icon2)).to.equal(true);
+    expect(wrapper.text()).to.equal('icon1buttonicon2');
   });
 
   it('should call onClick handler when link is clicked', () => {
@@ -93,11 +85,11 @@ describe('ak-button/default-behaviour', () => {
 
   it('should render tabIndex attribute when the tabIndex property is set', () => {
     let wrapper = mount(<Button tabIndex={0}>button</Button>);
-    expect(wrapper).to.have.attr('tabIndex', '0');
+    expect(wrapper.find('button').is('[tabIndex=0]')).to.equal(true);
     wrapper = mount(<Button href="#" tabIndex={0}>link</Button>);
-    expect(wrapper).to.have.attr('tabIndex', '0');
+    expect(wrapper.find('a').is('[tabIndex=0]')).to.equal(true);
     wrapper = mount(<Button tabIndex={0} isDisabled>span</Button>);
-    expect(wrapper).to.have.attr('tabIndex', '0');
+    expect(wrapper.find('button').is('[tabIndex=0]')).to.equal(true);
   });
 
   it('should set accessibility attributes', () => {

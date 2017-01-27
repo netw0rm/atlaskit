@@ -1,13 +1,11 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import * as sinonChai from 'sinon-chai';
 
 import CodeBlockPlugin from '../../../src/plugins/code-block';
 import { chaiPlugin, code_block, doc, makeEditor, p } from '../../../test-helper';
 
 chai.use(chaiPlugin);
-chai.use((sinonChai as any).default || sinonChai);
 
 describe('code-block', () => {
   const editor = (doc: any) => {
@@ -21,7 +19,7 @@ describe('code-block', () => {
       const spy = sinon.spy();
       plugin.subscribe(spy);
 
-      expect(spy).to.have.been.calledWith(plugin);
+      expect(spy.calledWith(plugin)).to.equal(true);
     });
 
     context('when leaving code block', () => {
@@ -33,7 +31,7 @@ describe('code-block', () => {
         plugin.subscribe(spy);
         pm.setTextSelection(pPos);
 
-        expect(spy).to.have.been.calledTwice;
+        expect(spy.callCount).to.equal(2);
       });
     });
 
@@ -46,7 +44,7 @@ describe('code-block', () => {
         plugin.subscribe(spy);
         pm.setTextSelection(cbPos);
 
-        expect(spy).to.have.been.calledTwice;
+        expect(spy.callCount).to.equal(2);
       });
     });
 
@@ -59,7 +57,7 @@ describe('code-block', () => {
         plugin.subscribe(spy);
         pm.setTextSelection(cbPos);
 
-        expect(spy).to.have.been.calledTwice;
+        expect(spy.callCount).to.equal(2);
       });
     });
 
@@ -72,7 +70,7 @@ describe('code-block', () => {
         plugin.subscribe(spy);
         pm.setTextSelection(cbPos);
 
-        expect(spy).to.not.have.been.calledTwice;
+        expect(spy.callCount).to.not.equal(2);
       });
     });
 
@@ -86,7 +84,7 @@ describe('code-block', () => {
         plugin.unsubscribe(spy);
         pm.setTextSelection(cbPos);
 
-        expect(spy).to.not.have.been.calledTwice;
+        expect(spy.callCount).to.not.equal(2);
       });
     });
   });
@@ -99,7 +97,7 @@ describe('code-block', () => {
 
         pm.input.dispatchKey('Enter');
 
-        expect(splitCodeBlock).to.have.been.callCount(1);
+        expect(splitCodeBlock.callCount).to.equal(1);
       });
     });
 

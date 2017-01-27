@@ -1,8 +1,5 @@
-import chai from 'chai';
 
 import { positionToPopperPosition } from '../src/internal/helpers';
-
-const { expect } = chai;
 
 describe('ak-tooltip helpers', () => {
   describe('positionToPopperPosition', () => {

@@ -72,7 +72,7 @@ RUN echo "Installing AtlasKit tools" \
   bitbucket-build-status@1.0.2 \
   npm-run-all@3.1.1 \
   lerna@"${LERNA_VERSION}" \
-  lerna-semantic-release@8.0.2 \
+  lerna-semantic-release@9.0.1 \
   indexifier@2.0.0 \
   @atlassian/prebake-distributor-runner@1.0.2 \
   yarn@0.18.1 \

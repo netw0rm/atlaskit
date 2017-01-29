@@ -1,10 +1,10 @@
 {
   "name": "atlaskit",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "author": "Atlassian Pty Ltd",
   "config": {
     "commitizen": {
-      "path": "./packages/akutil-cz-atlaskit-changelog"
+      "path": "./packages/util-cz-atlaskit-changelog"
     }
   },
   "dependencies": {

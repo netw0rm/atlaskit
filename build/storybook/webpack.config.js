@@ -1,4 +1,5 @@
 const webpackConfig = require('../webpack/development.js');
+const webpack = require('webpack');
 
 module.exports = (storybookBaseConfig, configType) => { // eslint-disable-line no-unused-vars
   // configType has a value of 'DEVELOPMENT' or 'PRODUCTION'
@@ -14,6 +15,16 @@ module.exports = (storybookBaseConfig, configType) => { // eslint-disable-line n
     storybookBaseConfig.resolve || {},
     webpackConfig.resolve || {}
   );
+
+  if (configType === 'PRODUCTION') {
+    // Attempting to use source maps will cause out-of-memory errors when
+    // building very large sets of stories.
+    storybookBaseConfig.plugins.forEach((plugin) => {
+      if (plugin instanceof webpack.optimize.UglifyJsPlugin) {
+        plugin.options.sourceMap = false;
+      }
+    });
+  }
 
   // Return the altered config
   return storybookBaseConfig;

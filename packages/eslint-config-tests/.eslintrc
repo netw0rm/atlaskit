@@ -1,0 +1,24 @@
+/* This extends the default .eslintrc with some rules that should apply to all tests directories
+   .eslintrc files in those directories will need to extend this file and any extra rules they may
+   need.
+   Any new rules that apply to all tests should be placed here.                                   */
+
+{
+  "name": "@atlaskit/eslint-config-tests",
+  "extends": "@atlaskit/eslint-config-base",
+  "env": {
+    "mocha": true
+  },
+  "globals": {
+    "expect": false,  //will be defined globally, false prevents overriding them
+    "sinon": false
+  },
+  "rules": {
+    "mocha/no-exclusive-tests": 2,
+    "mocha/handle-done-callback": 2,
+    "import/no-extraneous-dependencies": 0,
+  },
+  "plugins": [
+    "eslint-plugin-mocha"
+  ]
+}

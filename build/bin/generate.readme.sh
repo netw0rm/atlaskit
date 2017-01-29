@@ -18,9 +18,9 @@ $CHALK --no-stdin -t "{blue $PREFIX Generating README.md...}"
 
 replacevars () {
     echo "$1" | \
-    sed "s/@VERSION@/$VERSION/g" | \
-    sed "s/@NAME@/$NAME/g" | \
-    sed "s/@BITBUCKET_COMMIT@/$BITBUCKET_COMMIT/g"
+    sed "s~@VERSION@~$VERSION~g" | \
+    sed "s~@NAME@~$NAME~g" | \
+    sed "s~@BITBUCKET_COMMIT@~$BITBUCKET_COMMIT~g"
 }
 
 replacefiles () {

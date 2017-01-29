@@ -1,0 +1,53 @@
+{
+  "name": "@atlaskit/icon",
+  "version": "1.0.0",
+  "description": "A react package that contains icons",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.jsx",
+  "scripts": {
+    "generate-bundle-exports": "node ./bin/generate-bundle-exports.js > ./src/index.jsx",
+    "generate-icon-exports": "node ./bin/generate-icon-exports.js",
+    "gen-js": "npm run generate-icon-exports && npm run generate-bundle-exports",
+    "gen-icons-md": "node ./bin/generate-icons-md.js > ./docs/Icons.md",
+    "prepublish": "CLI=1 npm run gen-js && npm run gen-icons-md && cd ../.. && npm run prepublish/single @atlaskit/icon",
+    "pretest": "npm run gen-js"
+  },
+  "files": [
+    "dist",
+    "glyph"
+  ],
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "Atlassian Pty Ltd",
+  "peerDependencies": {
+    "react": "^15.3.2"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.11.6",
+    "classnames": "^2.2.5",
+    "create-error": "^0.3.1"
+  },
+  "devDependencies": {
+    "ak-button": "^5.1.2",
+    "ak-button-group": "^3.0.7",
+    "akutil-common-test": "*",
+    "akutil-shared-styles": "^37.0.0",
+    "async": "^2.0.1",
+    "camelcase": "^3.0.0",
+    "glob": "^7.0.5",
+    "lodash.sample": "^4.2.1",
+    "mkdirp": "^0.5.1",
+    "pascal-case": "^2.0.0",
+    "rimraf": "^2.5.4",
+    "svgo": "^0.7.0",
+    "uid": "^0.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
+}

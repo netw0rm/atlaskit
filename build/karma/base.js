@@ -39,6 +39,12 @@ module.exports = (config) => {
 
     reportSlowerThan: 500, // default animation duration is 250ms
 
+    // The default 10s is not adequate to handle the bundle size when lerna *does not* link
+    // all the packages together. When lerna linking is not applied (for whatever reason)
+    // deduping is not implicit, and bundle sizes are huge, which can take a significant amount
+    // of time in CI.
+    browserNoActivityTimeout: 30000,
+
     singleRun: true,
 
     concurrency: Infinity,

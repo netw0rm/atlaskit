@@ -32,14 +32,7 @@ module.exports = {
   prompter(cz, commit) {
     check('validate/lint-changed', false, () => {
       console.log('✓ Linting ok');
-      czLernaChangelog.prompter(cz, {
-        questions: {
-          scope: {
-            message:
-              'Denote the scope of this change (build, bump, component, package, docs, story, etc.):\n', //eslint-disable-line max-len
-          },
-        },
-      }, commit);
+      czLernaChangelog.prompter(cz, commit);
     }, () => {
       console.log('✗ Linting failed');
       console.log('Do you want to try fixing automatically? (y/n): ');

@@ -72,6 +72,10 @@ RUN echo "Installing AtlasKit tools" \
   bitbucket-build-status@1.0.2 \
   npm-run-all@3.1.1 \
   lerna@"${LERNA_VERSION}" \
+# lerna-semantic-release depends on semantic-release@^6.3.1, but the "latest" dist-tag
+# is 6.3.2, which *doesn't* include https://github.com/semantic-release/semantic-release/pull/332
+# However the version 6.3.6 exists which *does* include it, so we depend on that explicitly.
+  semantic-release@6.3.6 \
   lerna-semantic-release@9.0.1 \
   indexifier@2.0.0 \
   @atlassian/prebake-distributor-runner@1.0.2 \

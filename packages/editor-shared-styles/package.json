@@ -1,6 +1,9 @@
 {
   "name": "@atlaskit/editor-shared-styles",
   "version": "1.0.0",
+  "config": {
+    "access": "public" 
+  },
   "description": "Shared styles for Atlassian Editor components",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",

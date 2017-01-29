@@ -1,6 +1,9 @@
 {
   "name": "@atlaskit/editor-bitbucket",
   "version": "1.0.0",
+  "config": {
+    "access": "public" 
+  },
   "description": "Editor web component",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",

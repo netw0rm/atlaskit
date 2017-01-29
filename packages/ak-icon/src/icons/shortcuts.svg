@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="background: #FFFFFF;">
+    <!-- Generator: Sketch 41 (35326) - http://www.bohemiancoding.com/sketch -->
+    <title>Shortcuts</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="shortcuts">
+            <g id="shortcut_icon_24x24">
+                <g id="icon_container_transparent">
+                    <rect x="0" y="0" width="24" height="24"></rect>
+                </g>
+                <path d="M6,18 L6,6 L11,6 C11.5522847,6 12,5.55228475 12,5 C12,4.44771525 11.5522847,4 11,4 L5,4 C4.44771525,4 4,4.44771525 4,5 L4,19 C4,19.5522847 4.44771525,20 5,20 L19,20 C19.5522847,20 20,19.5522847 20,19 L20,13 C20,12.4477153 19.5522847,12 19,12 C18.4477153,12 18,12.4477153 18,13 L18,18 L6,18 Z" id="Rectangle-7" fill="currentColor"></path>
+                <path d="M18,6 L18,9 C18,9.55228475 18.4477153,10 19,10 C19.5522847,10 20,9.55228475 20,9 L20,5 C20,4.44771525 19.5522847,4 19,4 L15,4 C14.4477153,4 14,4.44771525 14,5 C14,5.55228475 14.4477153,6 15,6 L18,6 Z" id="Rectangle-7-Copy" fill="currentColor"></path>
+                <path d="M11.7071068,13.7071068 L19.7071068,5.70710678 C20.0976311,5.31658249 20.0976311,4.68341751 19.7071068,4.29289322 C19.3165825,3.90236893 18.6834175,3.90236893 18.2928932,4.29289322 L10.2928932,12.2928932 C9.90236893,12.6834175 9.90236893,13.3165825 10.2928932,13.7071068 C10.6834175,14.0976311 11.3165825,14.0976311 11.7071068,13.7071068 Z" id="Path-4" fill="currentColor"></path>
+            </g>
+        </g>
+    </g>
+</svg>

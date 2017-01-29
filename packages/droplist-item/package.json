@@ -1,6 +1,9 @@
 {
   "name": "@atlaskit/droplist-item",
   "version": "1.0.0",
+  "config": {
+    "access": "public" 
+  },
   "description": "React building block of a dropdown.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

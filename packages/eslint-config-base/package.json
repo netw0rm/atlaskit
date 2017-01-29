@@ -1,6 +1,9 @@
 {
   "name": "@atlaskit/eslint-config-base",
   "version": "1.0.0",
+  "config": {
+    "access": "public" 
+  },
   "author": "Atlassian Pty Ltd",
   "description": "The eslint configuration for AtlasKit components",
   "license": "Apache-2.0",

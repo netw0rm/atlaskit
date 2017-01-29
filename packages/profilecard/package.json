@@ -1,6 +1,9 @@
 {
   "name": "@atlaskit/profilecard",
   "version": "1.0.0",
+  "config": {
+    "access": "public" 
+  },
   "description": "profilecard component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

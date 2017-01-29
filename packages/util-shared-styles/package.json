@@ -1,6 +1,9 @@
 {
   "name": "@atlaskit/util-shared-styles",
   "version": "1.0.0",
+  "config": {
+    "access": "public" 
+  },
   "description": "Shared styles for AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

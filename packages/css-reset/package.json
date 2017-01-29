@@ -1,6 +1,9 @@
 {
   "name": "@atlaskit/css-reset",
   "version": "1.0.0",
+  "config": {
+    "access": "public" 
+  },
   "description": "ak-css-reset webcomponent",
   "main": "dist/bundle.css",
   "scripts": {

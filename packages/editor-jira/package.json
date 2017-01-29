@@ -1,6 +1,9 @@
 {
   "name": "@atlaskit/editor-jira",
   "version": "1.0.0",
+  "config": {
+    "access": "public" 
+  },
   "description": "Atlassian Editor component for JIRA",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",

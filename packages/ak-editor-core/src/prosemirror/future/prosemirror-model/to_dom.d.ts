@@ -15,4 +15,11 @@ export class DOMSerializer {
   static marksFromSchema(schema: Schema<any, any>): { [key: string]: (mark: Mark) => DOMOutputSpec };
 }
 
-export interface DOMOutputSpec {}
+export type DOMOutputSpec = string
+  | dom.Node
+  // These could go indefinitely, but for the sake of typing we restrict it to four siblings.
+  | [string]
+  | [string, any]
+  | [string, any, any]
+  | [string, any, any, any]
+  | [string, any, any, any, any];

@@ -22,11 +22,14 @@
 // } from '../../';
 
 import { Schema } from '../../src/prosemirror/future';
+import { bullet_list } from '../../src/schema/nodes/bullet-list';
 import { doc } from '../../src/schema/nodes/doc';
+import { list_item } from '../../src/schema/nodes/list-item';
+import { ordered_list } from '../../src/schema/nodes/ordered-list';
 import { paragraph } from '../../src/schema/nodes/paragraph';
 import { text } from '../../src/schema/nodes/text';
 
-const nodes = { doc, paragraph, text };
+const nodes = { doc, paragraph, ordered_list, bullet_list, list_item, text };
 const marks = {};
 
 export default new Schema<typeof nodes, typeof marks>({ nodes, marks });

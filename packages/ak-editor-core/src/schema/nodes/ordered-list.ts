@@ -1,18 +1,35 @@
-import { Node, OrderedList, Schema } from '../../prosemirror';
+import { Node, NodeSpec } from '../../prosemirror/future';
 
-export class OrderedListNodeType extends OrderedList {
-  constructor(name: string, schema: Schema) {
-    super(name, schema);
-    if (name !== 'ordered_list') {
-      throw new Error('OrderedListNodeType must be named "ordered_list".');
-    }
+const attrs = {
+  order: {
+    default: 1
   }
-}
+};
 
-export interface OrderedListNode extends Node {
-  type: OrderedListNodeType;
+// tslint:disable-next-line:variable-name
+export const ordered_list: NodeSpec = {
+  attrs,
+  parseDOM: [
+    {
+      tag: 'ol',
+      getAttrs(dom: HTMLOListElement) {
+        return {
+          order: dom.hasAttribute('start') ? +dom.getAttribute('start')! : 1
+        };
+      }
+    }
+  ],
+  toDOM(node: OrderedListNode) {
+    return ['ol', { start: node.attrs.order === 1 ? null : node.attrs.order }, 0];
+  }
+};
+
+interface OrderedListNode extends Node {
+  attrs: {
+    [P in keyof typeof attrs]: typeof attrs[P]['default'];
+  };
 }
 
 export function isOrderedListNode(node: Node): node is OrderedListNode {
-  return node.type instanceof OrderedListNodeType;
+  return node.type.name === 'ordered_list';
 }

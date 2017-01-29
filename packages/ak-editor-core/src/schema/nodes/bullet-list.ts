@@ -1,18 +1,23 @@
-import { BulletList, Node, Schema } from '../../prosemirror';
+import { Node, NodeSpec } from '../../prosemirror/future';
 
-export class BulletListNodeType extends BulletList {
-  constructor(name: string, schema: Schema) {
-    super(name, schema);
-    if (name !== 'bullet_list') {
-      throw new Error('BulletListNodeType must be named "bullet_list".');
+// tslint:disable-next-line:variable-name
+export const bullet_list: NodeSpec = {
+  parseDOM: [
+    {
+      tag: 'ul'
     }
+  ],
+  toDOM() {
+    return ['ul', 0];
   }
-}
+};
 
 export interface BulletListNode extends Node {
-  type: BulletListNodeType;
+  attrs: {};
 }
 
 export function isBulletListNode(node: Node): node is BulletListNode {
-  return node.type instanceof BulletListNodeType;
+  return node.type.name === 'bullet_list';
+  // TODO: I would rather be able to do this (perhaps it works)
+  // return node.type.spec === bullet_list;
 }

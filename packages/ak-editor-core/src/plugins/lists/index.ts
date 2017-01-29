@@ -3,9 +3,11 @@ import {
   Node,
   NodeSelection,
   Plugin,
+  PluginKey,
   ResolvedPos,
   Schema,
   Selection,
+  StateField,
   TextSelection,
 } from '../../prosemirror/future';
 
@@ -37,9 +39,11 @@ export interface ListsOptions {
 
 export type StateChangeHandler = (state: ListsState) => any;
 
+export const pluginKey = new PluginKey('lists');
+
 export class ListsState {
   private changeHandlers: StateChangeHandler[] = [];
-  private pm: PM;
+  // private pm: PM;
   private wrapInBulletList: (pm: PM, apply?: boolean) => any;
   private wrapInOrderedList: (pm: PM, apply?: boolean) => any;
 
@@ -55,7 +59,7 @@ export class ListsState {
   enabled = true;
   type?: ListType;
 
-  constructor(pm: PM) {
+  constructor() {
     this.pm = pm;
     this.changeHandlers = [];
     const { bullet_list, ordered_list } = pm.schema.nodes;
@@ -318,7 +322,57 @@ export class ListsState {
 // IE11 + multiple prosemirror fix.
 Object.defineProperty(ListsState, 'name', { value: 'ListsState' });
 
-export default new Plugin(ListsState);
+// export default new Plugin(ListsState);
+
+
+export default new Plugin({
+  state: {
+    init(config, instance) {
+      return new ListsState();
+    },
+
+    apply(tr, value, oldState, newState) {
+      const { doc, selection } = newState;
+      const ancestorPosition = findAncestorPosition(doc, selection.$from);
+      const rootNode = selection instanceof NodeSelection
+        ? selection.node
+        : ancestorPosition.node(ancestorPosition.depth)!;
+
+      let dirty = false;
+
+      const newBulletListActive = isBulletListNode(rootNode);
+      if (newBulletListActive !== this.bulletListActive) {
+        this.bulletListActive = newBulletListActive;
+        dirty = true;
+      }
+
+      const newOrderedListActive = isOrderedListNode(rootNode);
+      if (newOrderedListActive !== this.orderedListActive) {
+        this.orderedListActive = newOrderedListActive;
+        dirty = true;
+      }
+
+      const anyListActive = newBulletListActive || newOrderedListActive;
+
+      const newBulletListDisabled = !(anyListActive || this.wrapInBulletList(pm, false));
+      if (newBulletListDisabled !== this.bulletListDisabled) {
+        this.bulletListDisabled = newBulletListDisabled;
+        dirty = true;
+      }
+
+      const newOrderedListDisabled = !(anyListActive || this.wrapInOrderedList(pm, false));
+      if (newOrderedListDisabled !== this.orderedListDisabled) {
+        this.orderedListDisabled = newOrderedListDisabled;
+        dirty = true;
+      }
+
+      if (dirty) {
+        this.changeHandlers.forEach(cb => cb(this));
+      }
+    }
+  }
+
+});
 
 // const nodes = { bullet_list, list_item, ordered_list }
 

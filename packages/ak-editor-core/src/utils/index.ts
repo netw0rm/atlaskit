@@ -7,7 +7,7 @@ import {
   ResolvedPos,
   Selection,
   TextSelection
-} from '../prosemirror';
+} from '../prosemirror/future';
 
 function validateNode(node: Node): boolean {
   return false;
@@ -127,7 +127,7 @@ export function getGroupsInRange(pm: ProseMirror, $from: ResolvedPos, $to: Resol
 /**
  * Traverse the document until an "ancestor" is found. Any nestable block can be an ancestor.
  */
-export function findAncestorPosition(pm: ProseMirror, pos: ResolvedPos): ResolvedPos {
+export function findAncestorPosition(doc: Node, pos: ResolvedPos): ResolvedPos {
   const nestableBlocks = ['blockquote', 'bullet_list', 'ordered_list'];
 
   if (pos.depth === 1) {
@@ -136,7 +136,7 @@ export function findAncestorPosition(pm: ProseMirror, pos: ResolvedPos): Resolve
 
   let node: Node | undefined = pos.node(pos.depth);
   while (pos.depth >= 1) {
-    pos = pm.doc.resolve(pos.before(pos.depth));
+    pos = doc.resolve(pos.before(pos.depth));
     node = pos.node(pos.depth);
 
     if (node && nestableBlocks.indexOf(node.type.name) !== -1) {
@@ -150,20 +150,20 @@ export function findAncestorPosition(pm: ProseMirror, pos: ResolvedPos): Resolve
 /**
  * Determine if two positions have a common ancestor.
  */
-export function hasCommonAncestor(pm: ProseMirror, $from: ResolvedPos, $to: ResolvedPos): boolean {
+export function hasCommonAncestor(doc: Node, $from: ResolvedPos, $to: ResolvedPos): boolean {
   let current;
   let target;
 
   if ($from.depth > $to.depth) {
-    current = findAncestorPosition(pm, $from);
-    target = findAncestorPosition(pm, $to);
+    current = findAncestorPosition(doc, $from);
+    target = findAncestorPosition(doc, $to);
   } else {
-    current = findAncestorPosition(pm, $to);
-    target = findAncestorPosition(pm, $from);
+    current = findAncestorPosition(doc, $to);
+    target = findAncestorPosition(doc, $from);
   }
 
   while (current.depth > target.depth && current.depth > 1) {
-    current = findAncestorPosition(pm, current);
+    current = findAncestorPosition(doc, current);
   }
 
   return current.node(current.depth) === target.node(target.depth);

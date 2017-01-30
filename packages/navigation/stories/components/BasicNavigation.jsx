@@ -70,21 +70,21 @@ export default class BasicNavigation extends PureComponent {
       isOpen: this.props.isOpen,
       openDrawer: this.props.openDrawer,
       width: this.props.width,
-      currentDrawerOffset: 0,
+      backIconOffset: 0,
     };
   }
 
   openDrawer(name, event) {
     this.setState({
       openDrawer: name,
-      currentDrawerOffset: event.currentTarget.getBoundingClientRect().top,
+      backIconOffset: event.currentTarget.getBoundingClientRect().top,
     });
   }
 
   closeDrawer() {
     this.setState({
       openDrawer: null,
-      currentDrawerOffset: 0,
+      backIconOffset: 0,
     });
   }
 
@@ -98,7 +98,7 @@ export default class BasicNavigation extends PureComponent {
   render() {
     return (
       <Navigation
-        backIconOffset={this.state.currentDrawerOffset}
+        backIconOffset={this.state.backIconOffset}
         containerHeader={this.props.containerHeader}
         displayBlanket={this.props.isAnyDrawerOpen || this.state.openDrawer !== null}
         drawerBackIcon={<ArrowleftIcon label="Back icon" size="medium" />}

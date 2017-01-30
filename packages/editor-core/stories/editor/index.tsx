@@ -5,13 +5,13 @@ import {
   ContextName
 } from '../../';
 import {
+  baseKeymap,
   EditorState,
   EditorView,
+  keymap,
   Node,
   TextSelection
 } from '../../src/prosemirror/future';
-import { baseKeymap } from '../../src/prosemirror/future/prosemirror-commands';
-import { keymap } from '../../src/prosemirror/future/prosemirror-keymap';
 import schema from './schema';
 
 export interface Props {

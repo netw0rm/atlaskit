@@ -121,10 +121,12 @@ export default class Editor extends PureComponent<Props, State> {
     const { pm } = this.state;
 
     if (!pm || !pm.doc) {
-      throw new Error('Unable to set from HTML before the editor is initialized');
+      // It seems that PM has not been initialized yet, so we'll overwrite defaultValue
+      // which will get picked up by handleRef()
+      this.props.defaultValue = html;
+    } else {
+      pm.setDoc(parseHtml(html.trim()));
     }
-
-    pm.setDoc(parseHtml(html.trim()));
   }
 
   /**

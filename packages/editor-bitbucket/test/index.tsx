@@ -95,6 +95,19 @@ describe('ak-editor-bitbucket/setFromHtml', () => {
     editor.setFromHtml('<p>foo <strong>bar</strong></p>');
     expect(editor.doc).to.deep.equal(doc(p('foo ', strong('bar'))));
   });
+
+  it('should work even before the editor has fully rendered', (done) => {
+    const onEditorReady = (editor) => {
+      editor.setFromHtml('<h1>foo</h1>');
+
+      // TODO: There should be a better way to know that the Editor is fully ready
+      setTimeout(() => {
+        expect(editor.doc).to.deep.equal(doc(h1('foo')));
+        done();
+      }, 0);
+    };
+    mount(<Editor isExpandedByDefault ref={onEditorReady} />);
+  });
 });
 
 describe('ak-editor-bitbucket/imageUploadHandler', () => {

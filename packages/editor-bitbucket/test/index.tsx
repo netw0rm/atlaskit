@@ -100,7 +100,7 @@ describe('ak-editor-bitbucket/setFromHtml', () => {
     const onEditorReady = (editor) => {
       editor.setFromHtml('<h1>foo</h1>');
 
-      // TODO: There should be a better way to know that the Editor is fully ready
+      // TODO: There should be a better way to know that the Editor has fully initialized
       setTimeout(() => {
         expect(editor.doc).to.deep.equal(doc(h1('foo')));
         done();

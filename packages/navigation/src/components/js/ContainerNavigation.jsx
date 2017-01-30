@@ -26,7 +26,6 @@ export default class ContainerNavigation extends PureComponent {
     globalCreateIcon: PropTypes.node,
     onGlobalCreateActivate: PropTypes.func,
     onGlobalSearchActivate: PropTypes.func,
-
   }
 
   static defaultProps = {

@@ -23,7 +23,7 @@ const bannerPropTypes = {
 };
 
 storiesOf(name, module)
-  .add('Banner readme', () => (
+  .add('📖 Banner readme', () => (
     <div>
       <Readme
         component={name}

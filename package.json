@@ -8,6 +8,9 @@
     }
   },
   "dependencies": {
+    "@atlaskit/eslint-config-base": "*",
+    "@atlaskit/eslint-config-stories": "*",
+    "@atlaskit/eslint-config-tests": "*",
     "@kadira/react-split-pane": "^1.4.7",
     "@kadira/storybook": "^2.24.0",
     "@types/ajv": "0.0.5",
@@ -44,11 +47,9 @@
     "cz-lerna-changelog": "0.3.1",
     "enzyme": "^2.6.0",
     "eslint": "^3.7.1",
-    "eslint-config-ak-base": "*",
-    "eslint-config-ak-stories": "*",
-    "eslint-config-ak-tests": "*",
     "eslint-friendly-formatter": "^2.0.6",
     "eslint-import-resolver-webpack": "^0.7.0",
+    "eslint-plugin-compat": "^1.0.1",
     "file-loader": "^0.9.0",
     "git-validate": "^2.2.2",
     "glob": "^7.1.1",

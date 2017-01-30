@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from 'ak-button';
+import Button from '@atlaskit/button';
 import AkFieldText from '@atlaskit/field-text';
 import ModalDialog from '../src';
 

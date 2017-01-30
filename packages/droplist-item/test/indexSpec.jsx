@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 
 import { name } from '../package.json';
 import { locals as styles } from '../src/styles.less';
+import { Span } from '../src/internal/SecondaryText';
 
 import Item, { SecondaryText } from '../src';
 
@@ -141,7 +142,7 @@ describe(name, () => {
 
     it('should have className', () => {
       expect(mount(<SecondaryText>text</SecondaryText>)
-        .find(`.${styles.secondaryText}`).length).to.equal(1);
+        .find(Span).length).to.equal(1);
     });
   });
 

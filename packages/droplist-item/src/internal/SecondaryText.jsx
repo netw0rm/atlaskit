@@ -1,5 +1,11 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { locals as styles } from '../styles.less';
+import styled from 'styled-components';
+import { akColorN200 } from 'akutil-shared-styles';
+
+
+export const Span = styled.span`
+  color: ${akColorN200};
+`;
 
 export default class SecondaryText extends PureComponent {
   static propTypes = {
@@ -7,8 +13,6 @@ export default class SecondaryText extends PureComponent {
   }
 
   render = () => (
-    <span
-      className={styles.secondaryText}
-    >{this.props.children}</span>
+    <Span>{this.props.children}</Span>
   );
 }

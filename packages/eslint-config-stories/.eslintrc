@@ -9,7 +9,7 @@
     // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md
     // Allowing the use of dependencies that are not defined in package.json
     // We do this because packages can use dependencies from the root as well
-    // as from other rolled up packages such eslint-config-ak-base.
+    // as from other rolled up packages such eslint-config-base.
     "import/no-extraneous-dependencies": "off"
   }
 }

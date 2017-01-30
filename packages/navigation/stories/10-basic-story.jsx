@@ -2,7 +2,7 @@ import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
 import { DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
-import AtlassianLogo from '@atlaskit/logo';
+import { AtlassianLogo } from '@atlaskit/logo';
 import { AkContainerItem } from '../src/index';
 import Page from './components/Page';
 import BasicNavigation from './components/BasicNavigation';

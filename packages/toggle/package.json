@@ -4,7 +4,9 @@
   "config": {
     "access": "public" 
   },
-  "description": "ak-toggle component",
+  "description": "A React component that displays a toggle that can be checked or unchecked",
+  "name": "ak-toggle",
+  "version": "1.0.4",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",

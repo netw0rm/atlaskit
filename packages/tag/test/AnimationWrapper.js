@@ -7,6 +7,7 @@ import { createTemporary, removeTemporary } from './_helpers';
 import Root from '../src/Root';
 import AnimationWrapper from '../src/AnimationWrapper';
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('ak-tag', () => {
   describe('AnimationWrapper', () => {
     let component;

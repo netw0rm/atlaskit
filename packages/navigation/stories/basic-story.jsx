@@ -2,11 +2,11 @@ import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
 import { DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
-import { AkContainerItem, AkContainerLogo } from '../src/index';
+import AtlassianLogo from 'ak-logo';
+import { AkContainerItem } from '../src/index';
 import Page from './components/Page';
 import BasicNavigation from './components/BasicNavigation';
 import nucleus from './nucleus.png';
-import bitbucketLogo from './bitbucket-logo.svg';
 import { name } from '../package.json';
 import RandomBadge from './components/RandomBadge';
 
@@ -88,11 +88,7 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation
         containerAppearance="global"
-        containerHeader={
-          <AkContainerLogo>
-            <img alt="Bitbucket logo" src={bitbucketLogo} />
-          </AkContainerLogo>
-        }
+        containerHeaderComponent={AtlassianLogo}
       >
         <AkContainerItem
           appearance="global"

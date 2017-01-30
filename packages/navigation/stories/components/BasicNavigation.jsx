@@ -3,7 +3,7 @@ import { action } from '@kadira/storybook';
 import { AtlassianIcon, SearchIcon, HelpIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon, ArrowleftIcon } from 'ak-icon';
 import AkDropdownMenu from 'ak-dropdown-menu';
 import AkAvatar from 'ak-avatar';
-import Navigation, { AkContainerHeader, AkContainerItemGroup, AkContainerItem, AkDrawerItem, AkGlobalItem } from '../../src/index';
+import Navigation, { AkContainerTitle, AkContainerItemGroup, AkContainerItem, AkDrawerItem, AkGlobalItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
 
@@ -12,7 +12,7 @@ export default class BasicNavigation extends PureComponent {
     children: PropTypes.node,
     isOpen: PropTypes.bool,
     width: PropTypes.number,
-    containerHeader: PropTypes.node,
+    containerHeaderComponent: PropTypes.func,
     openDrawer: PropTypes.string,
   }
 
@@ -31,8 +31,8 @@ export default class BasicNavigation extends PureComponent {
         text="Item C"
       />
     </div>),
-    containerHeader: (
-      <AkContainerHeader
+    containerHeaderComponent: () => (
+      <AkContainerTitle
         href="#foo"
         icon={
           <img alt="nucleus" src={nucleusLogo} />
@@ -89,7 +89,7 @@ export default class BasicNavigation extends PureComponent {
   render() {
     return (
       <Navigation
-        containerHeader={this.props.containerHeader}
+        containerHeaderComponent={this.props.containerHeaderComponent}
         drawerBackIcon={<ArrowleftIcon label="Back icon" size="medium" />}
         globalAccountItem={
           <AkDropdownMenu

@@ -6,7 +6,7 @@ module.exports = (config) => {
     // setting to process.cwd will make all paths start in current component directory
     basePath: process.cwd(),
 
-    frameworks: ['mocha', 'chai', 'sinon-chai'],
+    frameworks: ['mocha', 'chai', 'sinon'],
 
     webpack: webpackConfig,
 
@@ -38,6 +38,12 @@ module.exports = (config) => {
     browsers: ['Chrome', 'Firefox'],
 
     reportSlowerThan: 500, // default animation duration is 250ms
+
+    // The default 10s is not adequate to handle the bundle size when lerna *does not* link
+    // all the packages together. When lerna linking is not applied (for whatever reason)
+    // deduping is not implicit, and bundle sizes are huge, which can take a significant amount
+    // of time in CI.
+    browserNoActivityTimeout: 30000,
 
     singleRun: true,
 

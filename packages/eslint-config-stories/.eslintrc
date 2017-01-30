@@ -1,0 +1,16 @@
+{
+  "name": "@atlaskit/eslint-config-stories",
+  "extends": "@atlaskit/eslint-config-base",
+  "plugins": [
+    "react"
+  ],
+  "settings": {
+    "react": {
+      "pragma": "React"
+    }
+  },
+  "rules": {
+    "no-console": 0,
+    "import/no-extraneous-dependencies": 0
+  }
+}

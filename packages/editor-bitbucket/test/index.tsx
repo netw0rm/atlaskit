@@ -104,7 +104,7 @@ describe('ak-editor-bitbucket/setFromHtml', () => {
       setTimeout(() => {
         expect(editor.doc).to.deep.equal(doc(h1('foo')));
         done();
-      }, 0);
+      }, 1);
     };
     mount(<Editor isExpandedByDefault ref={onEditorReady} />);
   });

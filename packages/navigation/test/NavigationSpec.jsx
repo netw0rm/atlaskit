@@ -48,10 +48,10 @@ describe('<Navigation />', () => {
     it('isCollapsible=false does render a <Resizer />', () => {
       expect(shallow(<Navigation isCollapsible={false} />).find('Resizer').length).to.be.above(0);
     });
-    it('containerHeader - can pass in an element for the container header', () => {
-      const header = <div>foo</div>;
-      expect(shallow(<Navigation containerHeader={header} />)
-        .find('ContainerNavigation').props().header).to.equal(header);
+    it('containerHeader - can pass in a func for the container header component', () => {
+      const header = () => (<div>foo</div>);
+      expect(shallow(<Navigation containerHeaderComponent={header} />)
+        .find('ContainerNavigation').props().headerComponent).to.equal(header);
     });
     it('globalSearchIcon should pass search icon onto <GlobalNavigation />', () => {
       const icon = <img alt="search" />;

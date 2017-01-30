@@ -25,48 +25,49 @@ describe(name, () => {
       Object
         .keys(components)
         .should.be.deep.equal([
+          'activity',
+          'add-item',
+          'add',
+          'addon',
           'arrowleft',
           'arrowright',
           'arrowrightlong',
           'atlassian',
+          'attachment',
+          'backlog',
 
-          'bitbucket/addons',
-          'bitbucket/admin',
           'bitbucket/branches',
           'bitbucket/builds',
           'bitbucket/commits',
-          'bitbucket/dashboard',
-          'bitbucket/downloads',
-          'bitbucket/followers',
-          'bitbucket/following',
-          'bitbucket/issues',
-          'bitbucket/logo',
           'bitbucket/members',
           'bitbucket/optout',
           'bitbucket/pipelines',
-          'bitbucket/projects',
           'bitbucket/pullrequests',
           'bitbucket/repos',
           'bitbucket/repositories',
           'bitbucket/snippets',
-          'bitbucket/source',
-          'bitbucket/teams',
-          'bitbucket/wiki',
+          'bitbucket',
+          'board',
 
-          'cancel',
+          'calendar',
+          'camera',
+          'canvas',
+          'chart',
+          'check-circle',
+          'check',
           'checkbox',
-          'confirm',
+          'code',
+          'components',
+          'cross-circle',
+          'cross',
 
-          'confluence/calendar',
-          'confluence/canvas',
-          'confluence/page',
-          'confluence/person',
-          'confluence/quote',
-
-          'create',
           'dashboard',
-          'edit',
+          'date',
+          'decision',
+          'detail-view',
+          'discover',
 
+          'edit',
           'editor/add',
           'editor/addon',
           'editor/advanced',
@@ -127,20 +128,69 @@ describe(name, () => {
           'emoji/people',
           'emoji/symbols',
           'emoji/travel',
+          'emoji',
 
-          'error',
           'expand',
+          'export',
+
+          'favorite',
           'feedback',
-          'help',
+          'file',
+          'folder'
+          'followers',
+          'following',
+
           'home',
-          'jira/logo',
-          'moreoptions',
-          'projects',
+
+          'image-border',
+          'image-resize',
+          'image',
+          'info',
+          'invite-team',
+          'issue',
+          'issues',
+          'jira/addon',
+          'jira',
+
+          'light-bulb'
+          'link',
+          'list',
+
+          'mention',
+          'more',
+
+          'notification',
+
+          'open',
+
+          'page',
+          'people',
+          'person',
+
+          'question-circle',
           'question',
+          'quote',
+
           'radio',
+          'recent',
+          'redo',
+          'refresh',
+
           'search',
           'settings',
-          'success',
+          'share',
+          'ship',
+          'shortcut',
+          'source',
+
+          'table',
+          'task',
+          'trash',
+          'tray',
+
+          'undo',
+          'unlink',
+
           'warning',
         ]);
         // If you find yourself here and wonder why this list is not auto-generated, then bear in

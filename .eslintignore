@@ -3,5 +3,5 @@ dist
 /stories
 /build/typings
 /build/tslint-rules
-packages/ak-icon/glyph
-packages/ak-icon/src/tmp
+packages/icon/glyph
+packages/icon/src/tmp

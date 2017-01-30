@@ -51,10 +51,10 @@ describe('ak-modal-dialog', () => {
       it('should render when set', () => {
         shallow(
           <ModalDialog
-            isOpen
             header={
               <span>My header</span>
             }
+            isOpen
           />
         ).contains(<span>My header</span>).should.be.equal(true);
       });
@@ -64,10 +64,10 @@ describe('ak-modal-dialog', () => {
       it('should render when set', () => {
         shallow(
           <ModalDialog
-            isOpen
             footer={
               <span>My footer</span>
             }
+            isOpen
           />
         ).contains(<span>My footer</span>).should.be.equal(true);
       });
@@ -88,6 +88,14 @@ describe('ak-modal-dialog', () => {
         const spy = sinon.spy();
         const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
         wrapper.find(`.${styles.locals.modalWrapper}`).children().first().simulate('click');
+        expect(spy.callCount).to.equal(1);
+      });
+
+      it('should trigger when transparent positioner clicked, but not modal content', () => {
+        const spy = sinon.spy();
+        const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
+        wrapper.find(`.${styles.locals.modalPositioner}`).simulate('click');
+        wrapper.find(`.${styles.locals.headerFlex}`).simulate('click');
         expect(spy.callCount).to.equal(1);
       });
     });

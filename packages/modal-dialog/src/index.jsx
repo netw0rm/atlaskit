@@ -80,19 +80,30 @@ export default class ModalDialog extends PureComponent {
     }
   }
 
+  triggerDismissIfBlanketClicked = (e) => {
+    if (e.target === this.positionerEl) {
+      this.props.onDialogDismissed(e);
+    }
+  }
+
   render() {
     // don't render anything if open = false
     if (!this.props.isOpen) return null;
 
     const { onDialogDismissed, header, children, footer, width } = this.props;
+
     return (
       <div className={styles.modalWrapper}>
         <Blanket isTinted onBlanketClicked={onDialogDismissed} />
-        <div
+        <div // eslint-disable-line jsx-a11y/no-static-element-interactions
           className={classNames([
             styles.modalPositioner,
             styles[width],
           ])}
+          onClick={this.triggerDismissIfBlanketClicked}
+          ref={(ref) => {
+            this.positionerEl = ref;
+          }}
         >
           <div className={styles.headerFlex}>
             {header}

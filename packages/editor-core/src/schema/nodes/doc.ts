@@ -1,4 +1,9 @@
 import { Block, Node, Schema } from '../../prosemirror';
+import { NodeSpec } from '../../prosemirror/future';
+
+export const doc: NodeSpec = {
+  content: 'block+'
+};
 
 export class DocNodeType extends Block {
   constructor(name: string, schema: Schema) {

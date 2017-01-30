@@ -7,11 +7,11 @@ export { SubSupMark, SubSupMarkType, isSubSupMark } from './marks/subsup';
 export { UnderlineMark, UnderlineMarkType, isUnderlineMark } from './marks/underline';
 export { MentionQueryMark, MentionQueryMarkType } from './marks/mention-query';
 export { EmojiQueryMark, EmojiQueryMarkType } from './marks/emoji-query';
+export { DocNode, DocNodeType, isDocNode, doc } from './nodes/doc';
 
 export { BlockQuoteNode, BlockQuoteNodeType, isBlockQuoteNode } from './nodes/blockquote';
 export { BulletListNode, BulletListNodeType, isBulletListNode } from './nodes/bullet-list';
 export { CodeBlockNode, CodeBlockNodeType, isCodeBlockNode } from './nodes/code-block';
-export { DocNode, DocNodeType, isDocNode } from './nodes/doc';
 export { HardBreakNode, HardBreakNodeType, isHardBreakNode } from './nodes/hard-break';
 export { HeadingNode, HeadingNodeType, isHeadingNode } from './nodes/heading';
 export { HorizontalRuleNode, HorizontalRuleNodeType, isHorizontalRuleNode } from './nodes/horizontal-rule';

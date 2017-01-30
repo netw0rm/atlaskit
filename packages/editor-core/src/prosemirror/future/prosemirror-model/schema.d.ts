@@ -1,5 +1,5 @@
 import { OrderedMap } from '../orderedmap';
-import { DOMOutputSpec, Fragment, Mark, Node, ParseRule } from './';
+import { Fragment, Mark, Node, ParseRule } from './';
 
 export class NodeType {
   name: string;
@@ -48,7 +48,7 @@ export interface AttributeSpec {
 export interface MarkSpec {
   attrs?: { [key: string]: AttributeSpec };
   inclusiveRight?: boolean;
-  toDOM?: (mark: Mark) => DOMOutputSpec;
+  toDOM?: (mark: Mark) => {};
   parseDOM?: ParseRule[];
 }
 
@@ -61,7 +61,7 @@ export interface NodeSpec {
   draggable?: boolean;
   code?: boolean;
   defining?: boolean;
-  toDOM?: (_0: Node) => DOMOutputSpec;
+  toDOM?: (_0: Node) => {};
   parseDOM?: ParseRule[];
 }
 

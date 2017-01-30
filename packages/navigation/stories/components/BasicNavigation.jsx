@@ -16,6 +16,7 @@ export default class BasicNavigation extends PureComponent {
     openDrawer: PropTypes.string,
     drawerContent: PropTypes.node,
     isAnyDrawerOpen: PropTypes.bool,
+    onResize: PropTypes.func,
   }
 
   static defaultProps = {
@@ -60,6 +61,7 @@ export default class BasicNavigation extends PureComponent {
         </AkContainerItemGroup>
       </div>),
     openDrawer: null,
+    onResize: (resizeState) => { this.resize(resizeState); },
   }
 
   constructor(...args) {
@@ -86,7 +88,7 @@ export default class BasicNavigation extends PureComponent {
     });
   }
 
-  resize = (resizeState) => {
+  resize(resizeState) {
     this.setState({
       isOpen: resizeState.isOpen,
       width: resizeState.width,
@@ -96,8 +98,11 @@ export default class BasicNavigation extends PureComponent {
   render() {
     return (
       <Navigation
+        backIconOffset={this.state.currentDrawerOffset}
         containerHeader={this.props.containerHeader}
+        displayBlanket={this.props.isAnyDrawerOpen || this.state.openDrawer !== null}
         drawerBackIcon={<ArrowleftIcon label="Back icon" size="medium" />}
+        drawerContent={this.props.drawerContent}
         globalAccountItem={
           <AkDropdownMenu
             appearance="tall"
@@ -172,15 +177,12 @@ export default class BasicNavigation extends PureComponent {
         onBlanketClicked={action('blanket clicked')}
         onCreateDrawerClose={() => this.closeDrawer()}
         onCreateDrawerOpen={(e) => { this.openDrawer('create', e); }}
-        onResize={this.resize}
+        onResize={this.props.onResize}
         onSearchDrawerClose={() => this.closeDrawer()}
         onSearchDrawerOpen={(e) => { this.openDrawer('search', e); }}
         position="right bottom"
         resizeHandler={action('resize')}
         width={this.state.width}
-        drawerContent={this.props.drawerContent}
-        displayBlanket={this.props.isAnyDrawerOpen || this.state.openDrawer !== null}
-        backIconOffset={this.state.currentDrawerOffset}
         {...this.props}
       >
         {this.props.children}

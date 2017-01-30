@@ -46,7 +46,6 @@ export default class Navigation extends PureComponent {
     searchDrawerContent: PropTypes.node,
     drawerContent: PropTypes.node,
     displayBlanket: PropTypes.bool,
-    onNavOpenClose: PropTypes.func,
     width: PropTypes.number,
   };
 
@@ -102,7 +101,6 @@ export default class Navigation extends PureComponent {
     }, function callOnResizeAfterSetState() {
       this.props.onResize(resizeState);
     });
-    this.props.onNavOpenClose();
   }
 
   render() {
@@ -170,23 +168,23 @@ export default class Navigation extends PureComponent {
           </div>
           <div style={{ zIndex: 2 }}>
             <Drawer
-              key="search"
               backIcon={drawerBackIcon}
               backIconOffset={backIconOffset}
               header={containerHeader}
               isOpen={isSearchDrawerOpen}
               isWide
+              key="search"
               onBackButton={onSearchDrawerClose}
               primaryIcon={globalPrimaryIcon}
             >
               {searchDrawerContent}
             </Drawer>
             <Drawer
-              key="create"
               backIcon={drawerBackIcon}
               backIconOffset={backIconOffset}
               header={containerHeader}
               isOpen={isCreateDrawerOpen}
+              key="create"
               onBackButton={onCreateDrawerClose}
               primaryIcon={globalPrimaryIcon}
             >

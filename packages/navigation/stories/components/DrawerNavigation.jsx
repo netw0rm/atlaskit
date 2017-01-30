@@ -11,7 +11,8 @@ export default class DrawerNavigation extends PureComponent {
     this.state = {
       openDrawer: null,
       currentDrawerOffset: 0,
-      isNavOpen: true,
+      isOpen: true,
+      width: 300,
     };
   }
 
@@ -24,8 +25,11 @@ export default class DrawerNavigation extends PureComponent {
     }
   }
 
-  toggleNav() {
-    this.setState({ isNavOpen: !this.state.isNavOpen });
+  resize(resizeState) {
+    this.setState({
+      isOpen: resizeState.isOpen,
+      width: resizeState.width,
+    });
   }
 
   render() {
@@ -102,22 +106,32 @@ export default class DrawerNavigation extends PureComponent {
       </Drawer>);
 
     const queuesItemOpen = (<AkContainerItem icon={<DashboardIcon label="Queues" />} text="Queues" />);
-    const queuesItemCollapsed = (<AkContainerItem icon={<DashboardIcon label="Queues" />} href="#" onClick={(e) => { this.toggleDrawer('queues', e); }} text="Queues" />);
-
+    const queuesItemCollapsed = (<AkContainerItem
+      href="#"
+      icon={<DashboardIcon label="Queues" />}
+      onClick={(e) => { this.toggleDrawer('queues', e); }}
+      text="Queues"
+    />);
     const reportsItemOpen = (<AkContainerItem icon={<ProjectsIcon label="Reports" />} text="Reports" />);
-    const reportsItemCollapsed = (<AkContainerItem icon={<ProjectsIcon label="Reports" />} href="#" onClick={(e) => { this.toggleDrawer('reports', e); }} text="Reports" />);
+    const reportsItemCollapsed = (<AkContainerItem
+      href="#"
+      icon={<ProjectsIcon label="Reports" />}
+      onClick={(e) => { this.toggleDrawer('reports', e); }}
+      text="Reports"
+    />);
 
     return (
       <BasicNavigation
         drawerContent={[queuesDrawer, reportsDrawer]}
         isAnyDrawerOpen={this.state.openDrawer !== null}
-        isOpen={this.state.isNavOpen}
-        onNavOpenClose={() => this.toggleNav()}
+        isOpen={this.state.isOpen}
+        onResize={(resizeState) => { this.resize(resizeState); }}
+        width={this.state.width}
       >
         <div>
-          {this.state.isNavOpen ? queuesItemOpen : queuesItemCollapsed }
+          {this.state.isOpen ? queuesItemOpen : queuesItemCollapsed }
           <AkContainerItem icon={<EmojiPeopleIcon label="Customers" />} text="Customers" />
-          {this.state.isNavOpen ? reportsItemOpen : reportsItemCollapsed }
+          {this.state.isOpen ? reportsItemOpen : reportsItemCollapsed }
         </div>
       </BasicNavigation>
     );

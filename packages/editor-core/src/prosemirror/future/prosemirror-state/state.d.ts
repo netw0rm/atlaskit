@@ -1,4 +1,4 @@
-import { EditorProps, Mark, Node, Schema, Selection, Transaction } from '../';
+import { EditorProps, Mark, Node, Plugin, Schema, Selection, Transaction } from '../';
 
 export interface EditorStateCreateConfig<S> {
   schema: S;

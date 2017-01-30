@@ -5,8 +5,10 @@ import {
   ContextName
 } from '../../';
 import {
+  baseKeymap,
   EditorState,
   EditorView,
+  keymap,
   Node,
   TextSelection
 } from '../../src/prosemirror/future';
@@ -129,6 +131,7 @@ export default class Editor extends PureComponent<Props, State> {
       const editorState = EditorState.create({
         schema,
         plugins: [
+          keymap(baseKeymap)
         ]
       });
       const editorView = new EditorView(place, {

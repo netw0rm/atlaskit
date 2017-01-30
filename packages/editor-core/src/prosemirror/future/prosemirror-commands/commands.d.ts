@@ -34,4 +34,4 @@ export function autoJoin(command: (state: EditorState<any>, _1?: (tr: Transactio
 
 export function chainCommands(...commands: ((_0: EditorState<any>, _1?: (tr: Transaction) => void) => boolean)[]): (_0: EditorState<any>, _1?: (tr: Transaction) => void) => boolean;
 
-export const baseKeymap: { [key: string]: any };
+export const baseKeymap: { [key: string]: Function };

@@ -1,13 +1,15 @@
-import { ListItem, Node, Schema } from '../../prosemirror';
+import { ListItem as ListItemNodeType, Node } from '../../prosemirror';
+import { NodeSpec } from '../../prosemirror/future';
 
-export class ListItemNodeType extends ListItem {
-  constructor(name: string, schema: Schema) {
-    super(name, schema);
-    if (name !== 'list_item') {
-      throw new Error('ListItemNodeType must be named "list_item".');
-    }
+export { ListItemNodeType };
+
+export const listItem: NodeSpec = {
+  content: 'paragraph block*',
+  parseDOM: [{ tag: 'li' }],
+  toDOM() {
+    return ['li', 0];
   }
-}
+};
 
 export interface ListItemNode extends Node {
   type: ListItemNodeType;

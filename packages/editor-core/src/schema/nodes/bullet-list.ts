@@ -1,7 +1,7 @@
-import { BulletList as BulletListNodeType, Node } from '../../prosemirror';
+import { BulletList as BulletListNodeType, Node as BulletListNode } from '../../prosemirror';
 import { NodeSpec } from '../../prosemirror/future';
 
-export { BulletListNodeType };
+export { BulletListNodeType, BulletListNode };
 
 export const bulletList: NodeSpec = {
   group: 'block',
@@ -12,10 +12,6 @@ export const bulletList: NodeSpec = {
   }
 };
 
-export interface BulletListNode extends Node {
-  type: BulletListNodeType;
-}
-
-export function isBulletListNode(node: Node): node is BulletListNode {
-  return node.type instanceof BulletListNodeType;
+export function isBulletListNode(node: BulletListNode): node is BulletListNode {
+  return node.type.name === 'bullet_list';
 }

@@ -65,13 +65,6 @@ export default class ContainerNavigation extends PureComponent {
 
     const isWidthCollapsed = width <= containerClosedWidth;
 
-    const Header = () => (
-      this.props.headerComponent ? (
-        <ContainerHeader>
-          {this.props.headerComponent({ isCollapsed: isWidthCollapsed })}
-        </ContainerHeader>) : null
-    );
-
     return (
       <div
         className={classNames({
@@ -105,7 +98,12 @@ export default class ContainerNavigation extends PureComponent {
               isVisible={areGlobalActionsVisible}
             />
             <div>
-              <Header />
+              {
+                this.props.headerComponent ? (
+                  <ContainerHeader>
+                    {this.props.headerComponent({ isCollapsed: width <= containerClosedWidth })}
+                  </ContainerHeader>) : null
+              }
             </div>
             <div>
               {children}

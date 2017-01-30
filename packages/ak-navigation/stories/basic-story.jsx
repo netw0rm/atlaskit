@@ -2,7 +2,7 @@ import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
 import { DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
-import JiraLogo from 'ak-logo';
+import AtlassianLogo from 'ak-logo';
 import { AkContainerItem } from '../src/index';
 import Page from './components/Page';
 import BasicNavigation from './components/BasicNavigation';
@@ -88,7 +88,7 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation
         containerAppearance="global"
-        containerHeaderComponent={JiraLogo}
+        containerHeaderComponent={AtlassianLogo}
       >
         <AkContainerItem
           isSelected

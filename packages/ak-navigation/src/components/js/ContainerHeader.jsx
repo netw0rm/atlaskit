@@ -1,5 +1,20 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/ContainerHeader.less';
+import styled from 'styled-components';
+import { akGridSize } from 'akutil-shared-styles';
+
+const intGridSize = parseInt(akGridSize, 10);
+const paddingOpen = `0 ${intGridSize * 1.75}px 0 ${intGridSize * 1.5}px`;
+const paddingClosed = `0 ${intGridSize * 2.5}px 0 ${intGridSize * 0.5}px`;
+
+const ContainerHeaderWrapper = styled.div`
+  transition: padding 200ms;
+  padding: ${paddingOpen};
+  margin-bottom: ${intGridSize * 1.5}px;
+
+  [data-__ak-navigation-container-closed="true"] & {
+    padding: ${paddingClosed};
+  }
+`;
 
 export default class ContainerHeader extends PureComponent {
   static propTypes = {
@@ -8,9 +23,9 @@ export default class ContainerHeader extends PureComponent {
 
   render() {
     return (
-      <div className={styles.containerHeaderWrapper}>
+      <ContainerHeaderWrapper>
         {this.props.children}
-      </div>
+      </ContainerHeaderWrapper>
     );
   }
 }

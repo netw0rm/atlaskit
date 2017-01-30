@@ -9,19 +9,13 @@ const Size = styled.div`
   color: inherit;
   display: inline-block;
   height: ${props => sizes[props.size]}px;
-`;
-
-const Container = styled.div`
-`;
-
-const LogoType = styled.div`
-  height: 100%;
-  visibility: ${props => (props.isCollapsed ? 'hidden' : 'visible')};
+  .logo-type {
+    opacity: ${props => (props.isCollapsed ? 0 : 1)};
+  }
 `;
 
 export default class Logo extends PureComponent {
   static propTypes = {
-    icon: PropTypes.node.isRequired,
     isCollapsed: PropTypes.bool,
     logoText: PropTypes.node.isRequired,
   }
@@ -31,13 +25,8 @@ export default class Logo extends PureComponent {
   }
 
   render = () => (
-    <Container>
-      {this.props.icon}
-      <Size size="medium">
-        <LogoType isCollapsed={this.props.isCollapsed}>
-          {this.props.logoText}
-        </LogoType>
-      </Size>
-    </Container>
+    <Size size="medium" isCollapsed={this.props.isCollapsed}>
+      {this.props.logoText}
+    </Size>
   )
 }

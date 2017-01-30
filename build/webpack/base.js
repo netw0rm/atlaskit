@@ -42,7 +42,7 @@ const standardConfig = {
     library: camelCase(pkg.name),
   },
   resolve: {
-    extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.jsx'],
+    extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.ts', '.tsx'],
     packageMains: ['ak:webpack:raw', ...defaultPackageMains()],
     alias: {
       sinon: 'sinon/pkg/sinon',
@@ -78,6 +78,7 @@ const standardConfig = {
           loader: loaderChain({
             'ts-loader': {
               configFileName: 'tsconfig.webpack.json',
+              logLevel: 'warn',
             },
           }),
           exclude: /node_modules/,

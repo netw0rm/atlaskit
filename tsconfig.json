@@ -16,8 +16,6 @@
       "mocha",
       "react",
       "sinon",
-      "sinon-chai",
-      "chai-enzyme",
       "enzyme"
     ]
   },

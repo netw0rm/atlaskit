@@ -31,7 +31,7 @@ const flagPropTypes = {
 };
 
 storiesOf(name, module)
-  .add('Flag readme', () => (
+  .add('📖 Flag readme', () => (
     <div>
       <Readme
         component={name}

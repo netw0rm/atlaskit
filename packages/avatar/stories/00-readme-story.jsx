@@ -29,7 +29,7 @@ const presencePropDescriptions = {
 };
 
 storiesOf(name, module)
-  .add('Avatar readme', () => (
+  .add('📖 Avatar readme', () => (
     <div>
       <Readme
         component={name}
@@ -42,7 +42,7 @@ storiesOf(name, module)
       </Readme>
     </div>
   ))
-  .add('Presence readme', () => (
+  .add('📖 Presence readme', () => (
     <div>
       <Readme
         component={name}

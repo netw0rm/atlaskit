@@ -12,7 +12,7 @@ import OverviewExample from './examples/overview';
 import { description, name } from '../package.json';
 
 storiesOf(name, module)
-  .add('Readme', () => (
+  .add('📖 EditorHipchat Readme', () => (
     <div>
       <Readme
         component={name}

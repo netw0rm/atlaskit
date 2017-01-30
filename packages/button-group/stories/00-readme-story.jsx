@@ -13,7 +13,7 @@ const buttonGroupPropDescriptions = {
 };
 
 storiesOf(name, module)
-  .add('ButtonGroup readme', () => (
+  .add('📖 ButtonGroup readme', () => (
     <div>
       <Readme
         component={name}

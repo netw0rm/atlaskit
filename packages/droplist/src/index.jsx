@@ -20,6 +20,7 @@ export default class DropdownList extends PureComponent {
     children: PropTypes.node,
     isOpen: PropTypes.bool,
     shouldFitContainer: PropTypes.bool,
+    isTriggerDisabled: PropTypes.bool,
     isTriggerNotTabbable: PropTypes.bool,
     listContext: PropTypes.oneOf(['menu']),
     onOpenChange: PropTypes.func,
@@ -33,6 +34,7 @@ export default class DropdownList extends PureComponent {
     position: 'bottom left',
     isOpen: false,
     shouldFitContainer: false,
+    isTriggerDisabled: false,
     isTriggerNotTabbable: false,
     listContext: 'menu',
     onOpenChange: () => {},
@@ -224,6 +226,7 @@ export default class DropdownList extends PureComponent {
         >
           <div className={styles.dropTrigger} ref={ref => (this.triggerRef = ref)}>
             <Trigger
+              isDisabled={props.isTriggerDisabled}
               isNotTabbable={props.isTriggerNotTabbable}
               isOpened={props.isOpen}
               onActivate={this.handleTriggerActivation}

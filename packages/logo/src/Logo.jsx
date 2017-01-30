@@ -18,8 +18,9 @@ const Size = styled.div`
   display: inline-block;
   height: ${props => sizes[props.size] * logoIconRatio}px;
 
-  svg {
+  > svg {
     height: 100%;
+    display: inline-block;
   }
 
   .logo-type {
@@ -40,7 +41,7 @@ export default class Logo extends PureComponent {
   }
 
   render = () => (
-    <Size size={this.props.size} isCollapsed={this.props.isCollapsed}>
+    <Size isCollapsed={this.props.isCollapsed} size={this.props.size}>
       {this.props.logoText}
     </Size>
   )

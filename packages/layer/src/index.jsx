@@ -47,7 +47,7 @@ export default class Layer extends PureComponent {
      * @type String
      * @example @html <Layer autoPosition boundariesElement="window"></Layer>
      */
-    boundariesElement: PropTypes.oneOf(['viewport', 'window']),
+    boundariesElement: PropTypes.oneOf(['viewport', 'window', 'scrollParent']),
     /**
      * @description Sets whether a Layer will flip it's position if there is not enough space in
      * the requested position.

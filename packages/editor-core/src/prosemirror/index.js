@@ -11,4 +11,3 @@ exports.EditorTransform = require('./edit/transform').EditorTransform;
 exports.DOMFromPos = require('./edit/dompos').DOMFromPos;
 exports.UpdateScheduler = require('./edit/update').UpdateScheduler;
 exports.posFromDOM = require('./edit/dompos').posFromDOM;
-

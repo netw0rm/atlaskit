@@ -1,6 +1,3 @@
 {
-  "extends": "@atlaskit/eslint-config-tests",
-  "rules": {
-    'no-underscore-dangle': ['error', { allowAfterThis: true }]
-  }
+  "extends": "@atlaskit/eslint-config-tests"
 }

@@ -22,7 +22,7 @@ const description = `Toggles are a quick way to view and switch between enabled 
 Use toggles when your main intent is to turn something on or off`;
 
 storiesOf(name, module)
-  .add('Readme', () => (
+  .add('📖 Toggle Readme', () => (
     <div>
       <Readme
         component={name}

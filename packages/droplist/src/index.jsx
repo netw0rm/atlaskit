@@ -1,8 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
-import Layer from 'ak-layer';
-import Trigger from 'ak-droplist-trigger';
+import Layer from '@atlaskit/layer';
+import Trigger from '@atlaskit/droplist-trigger';
 import classnames from 'classnames';
 
 const halfGrid = 4;
@@ -169,23 +169,23 @@ export default class DropdownList extends PureComponent {
     }
   }
 
-  handleTriggerActivation = (e) => {
-    this.toggle({ source: e.source });
+  handleTriggerActivation = (event) => {
+    this.toggle({ source: event.source, event });
   }
 
   open = (attrs) => {
     this.sourceOfIsOpen = attrs.source;
-    this.props.onOpenChange({ isOpen: true });
+    this.props.onOpenChange({ isOpen: true, event: attrs.event });
   }
 
-  close = () => {
+  close = (attrs) => {
     this.sourceOfIsOpen = null;
-    this.props.onOpenChange({ isOpen: false });
+    this.props.onOpenChange({ isOpen: false, event: attrs.event });
   }
 
   toggle = (attrs) => {
     if (this.props.isOpen) {
-      this.close();
+      this.close(attrs);
     } else {
       this.open(attrs);
     }

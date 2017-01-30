@@ -7,7 +7,6 @@ storiesOf('ak-editor-core', module)
     <div style={{ padding: 20 }}>
       <Editor
         onChange={this.fetchEditorState}
-        ref="editor"
         isExpandedByDefault
       />
     </div>

@@ -27,14 +27,14 @@ if [ -d "packages/$COMP_NAME" ]
 fi
 
 # Copy template files into packages directory
-rm -rf packages/akutil-component-template/node_modules
-cp -r "packages/akutil-component-template" "packages/$COMP_NAME"
+rm -rf packages/util-component-template/node_modules
+cp -r "packages/util-component-template" "packages/$COMP_NAME"
 
 # `find` is getting all the files under the new directory
 # `xargs` is passing them to sed
-# `sed` is replacing instances of 'akutil-component-template' and 'AkUtilComponentTemplate' with the new component name
+# `sed` is replacing instances of 'util-component-template' and 'utilComponentTemplate' with the new component name
 # LC_CTYPE and LANG=C: http://stackoverflow.com/questions/19242275/re-error-illegal-byte-sequence-on-mac-os-x
-LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' -e "s/akutil-component-template/${COMP_NAME}/g" -e "s/AkUtilComponentTemplate/${PASCAL_CASE_NAME}/g" -e "s/akUtilComponentTemplate/${CAMEL_CASE}/g" '{}'
+LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' -e "s/util-component-template/${COMP_NAME}/g" -e "s/utilComponentTemplate/${PASCAL_CASE_NAME}/g" -e "s/utilComponentTemplate/${CAMEL_CASE}/g" '{}'
 
 pushd "packages/$COMP_NAME" > /dev/null
 

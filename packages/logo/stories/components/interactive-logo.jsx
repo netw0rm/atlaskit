@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import Button from '@atlaskit/button';
 import { akColorB400, akColorN800, akColorR500 } from 'akutil-shared-styles';
 import styled from 'styled-components';
-import AtlassianLogo from '../../src';
+import * as logos from '../../src';
 
 const Centered = styled.div`
   display: flex;
@@ -46,7 +46,11 @@ export default class InteractiveLogo extends PureComponent {
           <Button onClick={this.toggleColor}>Change colour</Button>
           <Button onClick={this.toggleCollapsed}>{this.state.isCollapsed ? 'Expand' : 'Collapse'}</Button>
         </div>
-        {sizeRange(AtlassianLogo, this.state.isCollapsed)}
+        {sizeRange(logos.AtlassianLogo, this.state.isCollapsed)}
+        {sizeRange(logos.BitbucketLogo, this.state.isCollapsed)}
+        {sizeRange(logos.ConfluenceLogo, this.state.isCollapsed)}
+        {sizeRange(logos.HipchatLogo, this.state.isCollapsed)}
+        {sizeRange(logos.JiraLogo, this.state.isCollapsed)}
       </Coloured>);
   }
 }

@@ -10,7 +10,7 @@ export default class DrawerNavigation extends PureComponent {
     super(...args);
     this.state = {
       openDrawer: null,
-      currentDrawerOffset: 0,
+      backIconOffset: 0,
       isOpen: true,
       width: 300,
     };
@@ -20,7 +20,7 @@ export default class DrawerNavigation extends PureComponent {
     if (this.state.openDrawer) {
       this.setState({ openDrawer: null });
     } else {
-      this.setState({ currentDrawerOffset: event.currentTarget.getBoundingClientRect().top });
+      this.setState({ backIconOffset: event.currentTarget.getBoundingClientRect().top });
       this.setState({ openDrawer: drawerId });
     }
   }
@@ -36,7 +36,7 @@ export default class DrawerNavigation extends PureComponent {
     const queuesDrawer = (
       <Drawer
         backIcon={(<ArrowleftIcon label="Back icon" size="medium" />)}
-        backIconOffset={this.state.currentDrawerOffset}
+        backIconOffset={this.state.backIconOffset}
         header={(
           <AkContainerHeader
             href="#foo"
@@ -71,7 +71,7 @@ export default class DrawerNavigation extends PureComponent {
     const reportsDrawer = (
       <Drawer
         backIcon={(<ArrowleftIcon label="Back icon" size="medium" />)}
-        backIconOffset={this.state.currentDrawerOffset}
+        backIconOffset={this.state.backIconOffset}
         header={(
           <AkContainerHeader
             href="#foo"

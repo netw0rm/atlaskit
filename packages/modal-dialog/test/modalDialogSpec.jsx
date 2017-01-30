@@ -35,6 +35,33 @@ describe('ak-modal-dialog', () => {
         hasClass(shallow(<ModalDialog isOpen />), medium).should.equal(true);
       });
 
+      it('should support a custom pixel width as string', () => {
+        expect(shallow(
+          <ModalDialog
+            isOpen
+            width="300px"
+          />
+        ).find(`.${modalPositioner}`).props().style).to.deep.equal({ width: '300px' });
+      });
+
+      it('should support a custom pixel width as string', () => {
+        expect(shallow(
+          <ModalDialog
+            isOpen
+            width="75%"
+          />
+        ).find(`.${modalPositioner}`).props().style).to.deep.equal({ width: '75%' });
+      });
+
+      it('should support a custom integer width', () => {
+        expect(shallow(
+          <ModalDialog
+            isOpen
+            width={300}
+          />
+        ).find(`.${modalPositioner}`).props().style).to.deep.equal({ width: 300 });
+      });
+
       allowedWidths.forEach((width) => {
         it(`width = "${width}" is applied uniquely`, () => {
           hasClass(shallow(<ModalDialog isOpen width={width} />), locals[width]).should.equal(true);
@@ -51,10 +78,10 @@ describe('ak-modal-dialog', () => {
       it('should render when set', () => {
         shallow(
           <ModalDialog
-            isOpen
             header={
               <span>My header</span>
             }
+            isOpen
           />
         ).contains(<span>My header</span>).should.be.equal(true);
       });
@@ -64,10 +91,10 @@ describe('ak-modal-dialog', () => {
       it('should render when set', () => {
         shallow(
           <ModalDialog
-            isOpen
             footer={
               <span>My footer</span>
             }
+            isOpen
           />
         ).contains(<span>My footer</span>).should.be.equal(true);
       });

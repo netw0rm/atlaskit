@@ -52,6 +52,24 @@ storiesOf(name, module)
       </div>
     </ModalDemo>
   ))
+  .add('width={300}', () => (
+    <div>
+      <p>Width should be 100 px smaller than width=small</p>
+      <ModalDemo width={300} />
+    </div>
+  ))
+  .add('width="300px"', () => (
+    <div>
+      <p>Width should be 100 px smaller than width=small</p>
+      <ModalDemo width="300px" />
+    </div>
+  ))
+  .add('width="75%"', () => (
+    <div>
+      <p>Width should be 75% of the viewport width</p>
+      <ModalDemo width="75%" />
+    </div>
+  ))
   .add('width="small"', () => (
     <ModalDemo width="small" />
   ))

@@ -17,6 +17,7 @@ const Size = styled.div`
   color: inherit;
   display: inline-block;
   height: ${props => sizes[props.size] * logoIconRatio}px;
+  width: ${props => (props.isCollapsed ? sizes[props.size] * logoIconRatio : 'auto')}px;
 
   > svg {
     height: 100%;

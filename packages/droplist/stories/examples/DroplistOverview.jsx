@@ -18,7 +18,6 @@ const DroplistOverview = class extends Component {
     return (<DropdownList
       isOpen={this.state.isDropdownOpen}
       onOpenChange={(attrs) => {
-        console.log(attrs);
         this.setState({ isDropdownOpen: attrs.isOpen });
       }}
       isTriggerNotTabbable

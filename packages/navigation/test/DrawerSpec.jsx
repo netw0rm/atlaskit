@@ -26,12 +26,6 @@ describe('<Drawer />', () => {
       expect(mount(<Drawer header={header} />)
         .contains(header)).to.equal(true);
     });
-    it('backIconPosition alters a class that is rendered', () => {
-      expect(mount(<Drawer backIconPosition="create" />)
-        .find(`.${styles.isBackIconPositionCreate}`).length).to.equal(1);
-      expect(mount(<Drawer backIconPosition="search" />)
-        .find(`.${styles.isBackIconPositionCreate}`).length).to.equal(0);
-    });
     it('onBackButton is triggered on activate of <DrawerTrigger />', () => {
       const spy = sinon.spy();
       mount(<Drawer onBackButton={spy} />).find('DrawerTrigger').simulate('click');

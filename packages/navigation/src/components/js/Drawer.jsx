@@ -34,7 +34,6 @@ export default class Drawer extends PureComponent {
     } = this.props;
 
     const backIconOuterStyle = {
-      position: 'absolute',
       top: `${backIconOffset}px`,
     };
 

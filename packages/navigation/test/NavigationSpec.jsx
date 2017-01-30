@@ -1,6 +1,7 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import Navigation from '../src/components/js/Navigation';
+import Drawer from '../src/components/js/Drawer';
 import {
   containerClosedWidth,
   navigationOpenWidth,
@@ -48,6 +49,12 @@ describe('<Navigation />', () => {
     it('isCollapsible=false does render a <Resizer />', () => {
       expect(shallow(<Navigation isCollapsible={false} />).find('Resizer').length).to.be.above(0);
     });
+    it('hasBlanket && displayBlanket=true does render a blanket', () => {
+      expect(shallow(<Navigation displayBlanket hasBlanket />).find('Blanket').length).to.equal(1);
+    });
+    it('hasBlanket && displayBlanket=false does not render a blanket', () => {
+      expect(shallow(<Navigation hasBlanket />).find('Blanket').length).to.equal(0);
+    });
     it('containerHeader - can pass in an element for the container header', () => {
       const header = <div>foo</div>;
       expect(shallow(<Navigation containerHeader={header} />)
@@ -81,6 +88,14 @@ describe('<Navigation />', () => {
     it('isCreateDrawerOpen=true should set open=true on the CreateDrawer', () => {
       expect(mount(<Navigation isCreateDrawerOpen={false} />).find('Drawer').at(1).props().isOpen).to.equal(false);
     });
+    it('backIconOffset should be passed to the SearchDrawer', () => {
+      const offset = 10;
+      expect(mount(<Navigation backIconOffset={offset} />).find('Drawer').at(0).props().backIconOffset).to.equal(offset);
+    });
+    it('backIconOffset should be passed to the CreateDrawer', () => {
+      const offset = 20;
+      expect(mount(<Navigation backIconOffset={offset} />).find('Drawer').at(1).props().backIconOffset).to.equal(offset);
+    });
     it('onResize is called after the resizeDelta has been reset to 0 (so that animations are enabled again)', (done) => {
       const navigation = shallow(<Navigation />);
       navigation.setProps({
@@ -92,6 +107,11 @@ describe('<Navigation />', () => {
       navigation.find('Resizer').simulate('resizeStart');
       navigation.find('Resizer').simulate('resize', -300);
       navigation.find('Resizer').simulate('resizeEnd');
+    });
+    it('should render list of Drawers passed as drawerContent', () => {
+      const drawer1 = (<Drawer key="d1" />);
+      const drawer2 = (<Drawer key="d2" />);
+      expect(shallow(<Navigation drawerContent={[drawer1, drawer2]} />).find('Drawer').length).to.equal(4);
     });
     it('globalPrimaryItem should map to global navigation\'s primaryItem', () => {
       const primaryIcon = <span className="PRIMARY_ICON" />;

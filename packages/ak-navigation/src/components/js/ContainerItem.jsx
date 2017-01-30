@@ -19,6 +19,7 @@ export default class ContainerItem extends PureComponent {
     action: PropTypes.node,
     href: PropTypes.string,
     linkComponent: PropTypes.func,
+    onClick: PropTypes.func,
   }
 
   static defaultProps = {
@@ -44,6 +45,7 @@ export default class ContainerItem extends PureComponent {
           linkComponent={this.props.linkComponent}
           text={this.props.text}
           textAfter={this.props.textAfter}
+          onClick={this.props.onClick}
         />
       </div>
     );

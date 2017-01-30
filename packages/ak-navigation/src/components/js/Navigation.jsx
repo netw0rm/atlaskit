@@ -22,6 +22,7 @@ export default class Navigation extends PureComponent {
     containerAppearance: PropTypes.string,
     containerHeader: PropTypes.node,
     createDrawerContent: PropTypes.node,
+    backIconOffset: PropTypes.number,
     drawerBackIcon: PropTypes.node,
     globalAccountItem: PropTypes.node,
     globalCreateIcon: PropTypes.node,
@@ -110,6 +111,7 @@ export default class Navigation extends PureComponent {
       containerAppearance,
       containerHeader,
       createDrawerContent,
+      backIconOffset,
       drawerBackIcon,
       globalAccountItem,
       globalCreateIcon,
@@ -170,7 +172,7 @@ export default class Navigation extends PureComponent {
             <Drawer
               key="search"
               backIcon={drawerBackIcon}
-              backIconPosition="search"
+              backIconOffset={backIconOffset}
               header={containerHeader}
               isOpen={isSearchDrawerOpen}
               isWide
@@ -182,7 +184,7 @@ export default class Navigation extends PureComponent {
             <Drawer
               key="create"
               backIcon={drawerBackIcon}
-              backIconPosition="create"
+              backIconOffset={backIconOffset}
               header={containerHeader}
               isOpen={isCreateDrawerOpen}
               onBackButton={onCreateDrawerClose}

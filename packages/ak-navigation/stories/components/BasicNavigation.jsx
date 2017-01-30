@@ -68,18 +68,23 @@ export default class BasicNavigation extends PureComponent {
       isOpen: this.props.isOpen,
       openDrawer: this.props.openDrawer,
       width: this.props.width,
+      currentDrawerOffset: 0,
     };
   }
 
-  openDrawer = name =>
-    () => this.setState({
+  openDrawer(name, event) {
+    this.setState({
       openDrawer: name,
+      currentDrawerOffset: event.currentTarget.getBoundingClientRect().top,
     });
+  }
 
-  closeDrawer = () =>
-    () => this.setState({
+  closeDrawer() {
+    this.setState({
       openDrawer: null,
+      currentDrawerOffset: 0,
     });
+  }
 
   resize = (resizeState) => {
     this.setState({
@@ -165,16 +170,17 @@ export default class BasicNavigation extends PureComponent {
         isOpen={this.state.isOpen}
         isSearchDrawerOpen={this.state.openDrawer === 'search'}
         onBlanketClicked={action('blanket clicked')}
-        onCreateDrawerClose={this.closeDrawer()}
-        onCreateDrawerOpen={this.openDrawer('create')}
+        onCreateDrawerClose={() => this.closeDrawer()}
+        onCreateDrawerOpen={(e) => { this.openDrawer('create', e); }}
         onResize={this.resize}
-        onSearchDrawerClose={this.closeDrawer()}
-        onSearchDrawerOpen={this.openDrawer('search')}
+        onSearchDrawerClose={() => this.closeDrawer()}
+        onSearchDrawerOpen={(e) => { this.openDrawer('search', e); }}
         position="right bottom"
         resizeHandler={action('resize')}
         width={this.state.width}
         drawerContent={this.props.drawerContent}
         displayBlanket={this.props.isAnyDrawerOpen || this.state.openDrawer !== null}
+        backIconOffset={this.state.currentDrawerOffset}
         {...this.props}
       >
         {this.props.children}

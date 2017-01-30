@@ -24,6 +24,7 @@ export default class NavigationItem extends PureComponent {
     action: PropTypes.node,
     href: PropTypes.string,
     linkComponent: PropTypes.func,
+    onClick: PropTypes.func,
   }
 
   static defaultProps = {
@@ -69,6 +70,7 @@ export default class NavigationItem extends PureComponent {
           className={link}
           href={this.props.href}
           onMouseDown={this.onMouseDown}
+          onClick={this.props.onClick}
         >
           <div
             className={navigationItemInner}

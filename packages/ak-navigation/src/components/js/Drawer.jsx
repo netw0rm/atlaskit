@@ -7,7 +7,7 @@ import DrawerBackIcon from './DrawerBackIcon';
 export default class Drawer extends PureComponent {
   static propTypes = {
     backIcon: PropTypes.node,
-    backIconPosition: PropTypes.oneOf(['search', 'create']),
+    backIconOffset: PropTypes.number,
     children: PropTypes.element,
     header: PropTypes.node,
     isOpen: PropTypes.bool,
@@ -25,13 +25,19 @@ export default class Drawer extends PureComponent {
   render() {
     const {
       backIcon,
-      backIconPosition,
+      backIconOffset,
       header,
       isOpen,
       isWide,
       onBackButton,
       primaryIcon,
     } = this.props;
+
+    const backIconOuterStyle = {
+      position: 'absolute',
+      top: `${backIconOffset}px`,
+    };
+
     return (
       <div
         className={classNames(styles.drawer, {
@@ -44,9 +50,7 @@ export default class Drawer extends PureComponent {
             {primaryIcon}
           </div>
           <div
-            className={classNames(styles.backIconOuter, {
-              [styles.isBackIconPositionCreate]: (backIconPosition === 'create'),
-            })}
+            className={classNames(styles.backIconOuter)} style={backIconOuterStyle}
           >
             <div className={classNames(styles.backIcon)}>
               <DrawerTrigger onActivate={onBackButton}>

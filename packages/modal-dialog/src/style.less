@@ -55,7 +55,7 @@
 
   // 3 direct flex children (header + content + footer slot areas)
   .header-flex, .content-flex, .footer-flex {
-    box-shadow: 0 @ak-grid-size (2 * @ak-grid-size) (@ak-grid-size * -0.5) fade(@ak-color-N900, 28%);
+    box-shadow: 0 @ak-grid-size (2.5 * @ak-grid-size) (@ak-grid-size * -0.5) fade(@ak-color-N900, 28%);
   }
 
   // Background and corners for header
@@ -70,6 +70,7 @@
   .content-flex {
     flex: 0 1 auto;
     overflow: auto;
+    box-sizing: border-box;
     padding: 0 (@grid * 4);
     z-index: @ak-z-index-modal + 1;
     .panel-background();
@@ -82,5 +83,31 @@
     z-index: @ak-z-index-modal + 2;
     .panel-background(0, @grid);
     // TODO: AK-704: animated keylines
+  }
+}
+
+// Shadow-scrolling behaviour based on
+// http://kizu.ru/en/fun/shadowscroll/
+@modal-inner-shadow-size: 3px;
+@transparent: rgba(255,255,255,0);
+.content-flex {
+  background-image:
+     linear-gradient(
+       to bottom,
+       @ak-color-N30 0,
+       @ak-color-N0 @modal-inner-shadow-size,
+       @transparent
+      );
+  position: relative;
+
+  &:before {
+    background: @ak-color-N0;
+    content: "";
+    display: block;
+    height: @modal-inner-shadow-size;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0px;
   }
 }

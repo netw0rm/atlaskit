@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   root: true,
-  extends: 'ak-base',
+  extends: '@atlaskit/eslint-config-base',
   settings: {
     'import/resolver': {
       webpack: {

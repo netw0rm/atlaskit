@@ -75,7 +75,6 @@ ak-avatar@0.12.5
 ak-inline-dialog@62.0.0
 ak-layer@50.0.0
 akutil-component-template@3.0.11
-akutil-cucumber@0.0.0
 akutil-polyfills@0.0.9
 akutil-shared-styles@33.0.0
 eslint-config-ak-base@1.1.2

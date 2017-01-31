@@ -1,7 +1,5 @@
 import { waitUntil } from 'akutil-common-test';
 import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import chaiEnzyme from 'chai-enzyme';
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -10,8 +8,6 @@ import EmojiTypeAhead, { defaultListLimit } from '../src/EmojiTypeAhead';
 import EmojiTypeAheadItem from '../src/internal/typeahead/EmojiTypeAheadItem';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from './emoji-selectors';
 
-chai.use(chaiAsPromised);
-chai.use(chaiEnzyme());
 chai.should();
 
 function setupPicker(props) {
@@ -32,7 +28,7 @@ describe('EmojiTypeAhead', () => {
   it('should display max emoji by default', () => {
     const component = setupPicker();
     const hasExpectedItems = () => component.find(EmojiTypeAheadItem).length === defaultListLimit;
-    return waitUntil(hasExpectedItems).should.be.fulfilled;
+    return waitUntil(hasExpectedItems);
   });
 
   it('should limit results to those matching "grin"', () => {
@@ -40,7 +36,7 @@ describe('EmojiTypeAhead', () => {
       query: 'grin',
     });
     const hasExpectedItems = () => component.find(EmojiTypeAheadItem).length === 3;
-    return waitUntil(hasExpectedItems).should.be.fulfilled;
+    return waitUntil(hasExpectedItems);
   });
 
   it('should limit result to matching "moon"', () => {
@@ -48,7 +44,7 @@ describe('EmojiTypeAhead', () => {
       query: 'moon',
     });
     const hasExpectedItems = () => component.find(EmojiTypeAheadItem).length === 14;
-    return waitUntil(hasExpectedItems).should.be.fulfilled;
+    return waitUntil(hasExpectedItems);
   });
 
   it('should change selection when navigating next', () => {
@@ -56,10 +52,10 @@ describe('EmojiTypeAhead', () => {
     const defaultEmojiShown = () => component.find(EmojiTypeAheadItem).length === defaultListLimit;
     const secondItemSelected = () => isEmojiTypeAheadItemSelected(component, testingEmojis[1].id);
 
-    return waitUntil(defaultEmojiShown).should.be.fulfilled
+    return waitUntil(defaultEmojiShown)
       .then(() => {
         component.instance().selectNext();
-        return waitUntil(secondItemSelected).should.be.fulfilled;
+        return waitUntil(secondItemSelected);
       });
   });
 
@@ -69,10 +65,10 @@ describe('EmojiTypeAhead', () => {
     const lastItemSelected = () =>
       isEmojiTypeAheadItemSelected(component, testingEmojis[defaultListLimit - 1].id);
 
-    return waitUntil(defaultEmojiShown).should.be.fulfilled
+    return waitUntil(defaultEmojiShown)
       .then(() => {
         component.instance().selectPrevious();
-        return waitUntil(lastItemSelected).should.be.fulfilled;
+        return waitUntil(lastItemSelected);
       });
   });
 
@@ -86,14 +82,14 @@ describe('EmojiTypeAhead', () => {
     const secondItemSelected = () => isEmojiTypeAheadItemSelected(component, testingEmojis[1].id);
     const chooseSecondItem = () => (choseEmoji && choseEmoji.id === testingEmojis[1].id);
 
-    return waitUntil(defaultEmojiShown).should.be.fulfilled
+    return waitUntil(defaultEmojiShown)
       .then(() => {
         component.instance().selectNext();
-        return waitUntil(secondItemSelected).should.be.fulfilled;
+        return waitUntil(secondItemSelected);
       })
       .then(() => {
         component.instance().chooseCurrentSelection();
-        return waitUntil(chooseSecondItem).should.be.fulfilled;
+        return waitUntil(chooseSecondItem);
       });
   });
 
@@ -106,11 +102,11 @@ describe('EmojiTypeAhead', () => {
     const defaultEmojiShown = () => component.find(EmojiTypeAheadItem).length === defaultListLimit;
     const chooseThirdItem = () => (choseEmoji && choseEmoji.id === testingEmojis[2].id);
 
-    return waitUntil(defaultEmojiShown).should.be.fulfilled
+    return waitUntil(defaultEmojiShown)
       .then(() => {
         const item = getEmojiTypeAheadItemById(component, testingEmojis[2].id);
         item.simulate('mousedown', leftClick);
-        return waitUntil(chooseThirdItem).should.be.fulfilled;
+        return waitUntil(chooseThirdItem);
       });
   });
 
@@ -124,7 +120,7 @@ describe('EmojiTypeAhead', () => {
     });
     const defaultEmojiShown = () => component.find(EmojiTypeAheadItem).length === defaultListLimit;
 
-    return waitUntil(defaultEmojiShown).should.be.fulfilled
+    return waitUntil(defaultEmojiShown)
       .then(() => {
         expect(onOpen.callCount, 'opened').to.equal(1);
         expect(onClose.callCount, 'closed').to.equal(0);
@@ -143,12 +139,12 @@ describe('EmojiTypeAhead', () => {
     const noEmojiShown = () => component.find(EmojiTypeAheadItem).length === 0;
     const defaultEmojiShown = () => component.find(EmojiTypeAheadItem).length === defaultListLimit;
 
-    return waitUntil(noEmojiShown).should.be.fulfilled
+    return waitUntil(noEmojiShown)
       .then(() => {
         expect(onOpen.callCount, 'opened').to.equal(0);
         expect(onClose.callCount, 'closed').to.equal(0);
         component.setProps({ query: '' });
-        return waitUntil(defaultEmojiShown).should.be.fulfilled;
+        return waitUntil(defaultEmojiShown);
       }).then(() => {
         expect(onOpen.callCount, 'opened').to.equal(1);
         expect(onClose.callCount, 'closed').to.equal(0);
@@ -166,12 +162,12 @@ describe('EmojiTypeAhead', () => {
     const defaultEmojiShown = () => component.find(EmojiTypeAheadItem).length === defaultListLimit;
     const noEmojiShown = () => component.find(EmojiTypeAheadItem).length === 0;
 
-    return waitUntil(defaultEmojiShown).should.be.fulfilled
+    return waitUntil(defaultEmojiShown)
       .then(() => {
         expect(onOpen.callCount, 'opened 1').to.equal(1);
         expect(onClose.callCount, 'closed 1').to.equal(0);
         component.setProps({ query: 'zeroresults' });
-        return waitUntil(noEmojiShown).should.be.fulfilled;
+        return waitUntil(noEmojiShown);
       })
       .then(() => {
         expect(onOpen.callCount, 'opened 2').to.equal(1);

@@ -13,11 +13,13 @@ const outerLogoSize = 40;
 const innerLogoSize = 30;
 const logoIconRatio = outerLogoSize / innerLogoSize;
 
+const logoSize = size => (`${sizes[size] * logoIconRatio}px`);
+
 const Size = styled.div`
   color: inherit;
   display: inline-block;
-  height: ${props => sizes[props.size] * logoIconRatio}px;
-  width: ${props => (props.isCollapsed ? sizes[props.size] * logoIconRatio : 'auto')}px;
+  height: ${props => logoSize(props.size)};
+  width: ${props => (props.isCollapsed ? logoSize(props.size) : 'auto')};
 
   > svg {
     height: 100%;

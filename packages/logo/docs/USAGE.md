@@ -1,24 +1,36 @@
 # Logo
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
+This package contains the Atlassian logo, as well as a range of product logos.
+
+> This packages is licensed under the Atlassian Design Guidelines - please check the LICENSE file for more information.
 
 ![Example ak-logo](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-logo/docs/screencast.gif)
 
 ## Try it out
 
-Interact with a [live demo of the ak-logo component](https://aui-cdn.atlassian.com/atlaskit/stories/ak-logo/@VERSION@/).
+Interact with a [live demo of the logo component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
 
 ## Installation
 
 ```sh
-npm install ak-logo
+npm install @atlaskit/logo
 ```
 
 ## Using the component
 
 Use the component in your React app as follows:
 
+```js
+import AtlassianLogo from '@atlaskit/logo';
+ReactDOM.render(<AtlassianLogo />, container);
 ```
-import Logo from 'ak-logo';
-ReactDOM.render(<Logo />, container);
+
+## Controlling the logo color
+
+You can control the logo color via CSS:
+
+```html
+<span style={{color: 'red'}}>
+  <ConfluenceLogo />
+</span>
 ```

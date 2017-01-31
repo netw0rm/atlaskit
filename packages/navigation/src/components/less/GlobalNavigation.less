@@ -1,0 +1,35 @@
+@import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/grid.less';
+@import '../../shared-variables.less';
+
+.globalNavigation {
+  background: @ak-color-B500;
+  height: 100%;
+  width: @global-open-width;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: @global-vertical-padding 0;
+  padding-bottom: 0;
+  box-sizing: border-box;
+  .shouldAnimate & {
+    transition: transform @resize-animation-time;
+  }
+}
+
+.primaryItem {
+  margin-bottom: (@ak-grid-size * 1.5);
+  margin-top: @ak-grid-size * 0.5;
+}
+
+.primaryContainer {
+  flex: 1 1 auto;
+}
+
+.secondaryContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: (@ak-grid-size * 2.5);
+}

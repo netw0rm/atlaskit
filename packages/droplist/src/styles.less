@@ -1,0 +1,24 @@
+@import 'variables.less';
+
+.dropContent {
+  background: @ak-dropdown-background-main-color;
+  border-radius: @ak-dropdown-border-radius;
+  box-shadow: 0 @grid/2 @grid -@grid/4 @ak-color-N50A, 0 0 1px @ak-color-N60A;
+  box-sizing: border-box;
+  overflow-y: auto;
+  padding: @grid 0;
+}
+
+.dropTrigger {
+  display: flex;
+  width: 100%;
+}
+
+.dropWrapper {
+  display: inline-flex;
+}
+
+.fitContainer {
+  display: block;
+  flex: 1 1 auto;
+}

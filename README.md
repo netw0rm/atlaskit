@@ -2,6 +2,7 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
 [![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
+[![yarn](https://img.shields.io/badge/yarn-0.18.1-brightgreen.svg)]()
 
 AtlasKit is the Design Platform's implementation of ADG3.
 It is a collection of reusable webcomponents that can be consumed independently (no more upgrade pains!).
@@ -31,7 +32,7 @@ If you want to redistribute this whole repository you will need to replace these
 #### Prerequisites
 * [node](https://nodejs.org/) version should be 6 or above (to check `node -v`)
 * [npm](https://www.npmjs.com/) version should be 3 or above (to check `npm --version`) or use [nvm](https://github.com/creationix/nvm)
-* [yarn](https://yarnpkg.com/) should be installed globally (`npm install -g yarn`)
+* [yarn](https://yarnpkg.com/) should be installed globally (`npm install -g yarn@0.18.1`)
 
 ```
 git clone git@bitbucket.org:atlassian/atlaskit.git
@@ -53,9 +54,6 @@ Will create a new templated component under `packages/my-component-name` with ev
 ```
 |-- packages/
    |-- my-component-name/
-     |-- cucumber/
-        |-- step_definitions/
-        |-- some.feature
      |-- docs/
         |-- USAGE.md
      |-- src/
@@ -159,21 +157,7 @@ You can also run all the Browserstack tests with Docker (as they are run in the 
 BROWSERSTACK_USERNAME=... BROWSERSTACK_KEY=... docker-compose -f docker-compose-browserstack.yml up
 ```
 
-### Integration tests
-
-> Hint: [docker-compose](https://docs.docker.com/compose/) is needed for this.
-
-Run the integration ([cucumber](https://github.com/cucumber/cucumber-js)) tests for a single component: `yarn run test/integration/single/local my-component`
-
-You can watch the cucumber tests via VNC by replacing the `selenium/node-chrome` with `selenium/node-chrome-debug` in `docker-compose-browserstack.yml` and connect to [vnc://0.0.0.0:5900](vnc://0.0.0.0:5900). Password is `secret`. For more information have a look at the [Selenium docker images](https://github.com/SeleniumHQ/docker-selenium).
-
-> Hint: Whilst cucumber is running (or after a test failed), you can access the [Storybook](http://0.0.0.0:9001/) instance that the tests were run against.
-
-> Hint: If you have problems starting the cucumber setup locally, try re-generating the docker images via: `yarn run test/integration/single/local my-component -- --force-recreate`
-
-> Hint: You can (re-)start the Chrome within the VNC container via: Right click > Applications > Shells > Bash > $ x-www-browser --user-data-dir=. and then opening http://dev:9001
-
-## Follow code style guidelines
+### Follow code style guidelines
 We are adhering to the [Airbnb](https://github.com/airbnb/javascript) javascript linting rules, which can be quite strict.
 
 Eslint will automatically run when attempting to commit, but can also run at any time using: `yarn run lint`

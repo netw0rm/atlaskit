@@ -46,7 +46,7 @@ describe('<NavigationItem />', () => {
       expect(mount(<NavigationItem textAfter={<span className="TEXTAFTER" />} />).find('.TEXTAFTER')).to.have.length.above(0);
     });
     it('textAfter should not render if the prop is not set', () => {
-      expect(mount(<NavigationItem />).find('TextAfter')).to.not.be.present();
+      expect(mount(<NavigationItem />).find('TextAfter').length).to.equal(0);
     });
     it('action should not render if the prop is not set', () => {
       expect(mount(<NavigationItem />).find(`.${action}`).length).to.equal(0);

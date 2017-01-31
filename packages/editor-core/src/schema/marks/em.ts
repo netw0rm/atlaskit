@@ -3,6 +3,7 @@ import {
   Mark,
   Schema
 } from '../../prosemirror';
+import { MarkSpec } from '../../prosemirror/future';
 
 export class EmMarkType extends BaseEmMark {
   constructor(name: string, rank: number, schema: Schema) {
@@ -12,6 +13,15 @@ export class EmMarkType extends BaseEmMark {
     super(name, rank, schema);
   }
 }
+
+export const em: MarkSpec = {
+  parseDOM: [
+    { tag: 'i' },
+    { tag: 'em' },
+    { style: 'font-style', getAttrs: value => value === 'italic' && null }
+  ],
+  toDOM() { return ['em']; }
+};
 
 export interface EmMark extends Mark {
   type: EmMarkType;

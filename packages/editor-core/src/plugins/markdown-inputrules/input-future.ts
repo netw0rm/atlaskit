@@ -1,14 +1,38 @@
 import { Fragment, InputRule, MarkType, Schema } from '../../prosemirror/future';
 
-function convert(markType: MarkType, schema: Schema<any, any>) {
-  return (state, match, start, end) => state.tr.replaceWith(start, end, Fragment.from(schema.text(match[1], [markType.create()])));
+function addMark(markType: MarkType, schema: Schema<any, any>) {
+  return (state, match, start, end) => {
+    const marks = [...state.doc.marksAt(start), markType.create()];
+
+    // Because the match can start with space.
+    // Preserve the space if there is one.
+    const content = match[0].indexOf(' ') === 0 ? ` ${match[1]}` : match[1];
+    return state.tr.replaceWith(start, end, Fragment.from(schema.text(content, marks)));
+  };
 };
 
 function buildMarkdownInputRules(schema: Schema<any, any>): Array<InputRule> {
   const rules: Array<InputRule> = [];
   if (schema.marks.strong) {
-    rules.push(new InputRule(/(\*\*([^\*]+)\*\*)$/, convert(schema.marks.strong, schema)));
-    rules.push(new InputRule(/(__([^_]+)__)$/, convert(schema.marks.strong, schema)));
+    // **string** and __string__ should bold the text
+    rules.push(new InputRule(/(?:^|\s)(?:\*\*([^\*]+)\*\*)$/, addMark(schema.marks.strong, schema)));
+    rules.push(new InputRule(/(?:^|\s)(?:__([^\_]+)__)$/, addMark(schema.marks.strong, schema)));
+  }
+
+  if (schema.marks.em) {
+    // *string* and _string_ should italic the text
+    rules.push(new InputRule(/(?:^|\s)(?:\*([^\*]+)\*)$/, addMark(schema.marks.em, schema)));
+    rules.push(new InputRule(/(?:^|\s)(?:_([^\_]+)_)$/, addMark(schema.marks.em, schema)));
+  }
+
+  if (schema.marks.strike) {
+    // ~~string~~ should strikethrough the text
+    rules.push(new InputRule(/(?:^|\s)(?:~~([^~]+)~~)$/, addMark(schema.marks.strike, schema)));
+  }
+
+  if (schema.marks.mono) {
+    // `string` should monospace the text
+    rules.push(new InputRule(/(?:^|\s)(?:`([^`]+)`)$/, addMark(schema.marks.mono, schema)));
   }
   return rules;
 }

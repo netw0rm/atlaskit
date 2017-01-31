@@ -1,4 +1,5 @@
 import { Mark, MarkType, Schema } from '../../prosemirror';
+import { MarkSpec } from '../../prosemirror/future';
 
 export class StrikeMarkType extends MarkType {
   constructor(name: string, rank: number, schema: Schema) {
@@ -25,6 +26,15 @@ export class StrikeMarkType extends MarkType {
     return ['s'];
   }
 }
+
+export const strike: MarkSpec = {
+  parseDOM: [
+    { tag: 'strike' },
+    { tag: 's' },
+    { style: 'text-decoration', getAttrs: value => value === 'line-through' && null }
+  ],
+  toDOM() { return ['s']; }
+};
 
 export interface StrikeMark extends Mark {
   type: StrikeMarkType;

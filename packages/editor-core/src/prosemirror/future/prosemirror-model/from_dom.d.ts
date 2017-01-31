@@ -22,7 +22,7 @@ export interface ParseRule {
   ignore?: boolean;
   skip?: boolean;
   attrs?: { [key: string]: any };
-  getAttrs?: (_0: dom.Node | string) => boolean | { [key: string]: any } | void;
+  getAttrs?: (_0: dom.Node | string) => boolean | { [key: string]: any } | null;
   contentElement?: string;
   getContent?: (_0: dom.Node) => Fragment;
   preserveWhitespace?: boolean;

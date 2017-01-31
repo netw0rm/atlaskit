@@ -169,8 +169,8 @@ export default class DropdownList extends PureComponent {
     }
   }
 
-  handleTriggerActivation = (event) => {
-    this.toggle({ source: event.source, event });
+  handleTriggerActivation = (attrs) => {
+    this.toggle(attrs);
   }
 
   open = (attrs) => {

@@ -1,10 +1,11 @@
 @import '~@atlaskit/util-shared-styles/src/colors.less';
+@import '~@atlaskit/util-shared-styles/src/grid.less';
 
 // Size of the entire component, not including the borders
-@img-size-small: 24px;
-@img-size-medium: 32px;
-@img-size-large: 48px;
-@img-size-xlarge: 96px;
+@img-size-small: @ak-grid-size * 3;
+@img-size-medium: @ak-grid-size * 4;
+@img-size-large: @ak-grid-size * 6;
+@img-size-xlarge: @ak-grid-size * 12;
 
 // Size of the presence icon, not including the borders
 @presence-size-small: 12px;
@@ -30,7 +31,7 @@
 // The top and left offset for where the presence icon should be positioned
 @presence-offset-small: -@ak-avatar-presence-border-width-small;
 @presence-offset-medium: -@ak-avatar-presence-border-width-medium;
-@presence-offset-large: -@ak-avatar-presence-border-width-medium;
+@presence-offset-large: -@ak-avatar-presence-border-width-large;
 @presence-offset-xlarge: 6px; // xlarge presence is a snowflake with regards to presence placement
 
 .root {

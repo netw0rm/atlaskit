@@ -5,8 +5,8 @@ import {
   ContextName,
   ListsPlugin
 } from '../../';
+import buildMarkdownInputRules from '../../src/plugins/markdown-inputrules/input-future';
 import {
-  allInputRules,
   baseKeymap,
   EditorState,
   EditorView,
@@ -143,7 +143,7 @@ export default class Editor extends PureComponent<Props, State> {
       const editorState = EditorState.create(
         createEdiorConfig(schema, [
           ListsPlugin,
-          inputRules({rules: allInputRules}),
+          inputRules({rules: buildMarkdownInputRules(schema)}),
           keymap(baseKeymap) // should be last :(
         ])
       );

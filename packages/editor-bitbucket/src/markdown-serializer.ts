@@ -4,7 +4,7 @@ import {
   MarkdownSerializer as PMMarkdownSerializer,
   MarkdownSerializerState as PMMarkdownSerializerState,
   Node
-} from 'ak-editor-core';
+} from '@atlaskit/editor-core';
 import stringRepeat from './util/string-repeat';
 
 /**

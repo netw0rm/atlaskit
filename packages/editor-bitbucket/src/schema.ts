@@ -20,7 +20,7 @@ import {
   StrikeMarkType,
   StrongMarkType,
   Text
-} from 'ak-editor-core';
+} from '@atlaskit/editor-core';
 
 export default new Schema({
   nodes: {

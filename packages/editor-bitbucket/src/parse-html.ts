@@ -1,4 +1,4 @@
-import { Node } from 'ak-editor-core';
+import { Node } from '@atlaskit/editor-core';
 import schema from './schema';
 import arrayFrom from './util/array-from';
 

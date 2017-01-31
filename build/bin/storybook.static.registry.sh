@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-BASEDIR=$(dirname $0)
-PKG="$1"
-# shift removes first command line arg (the package name)
-shift || true
+# This script is run from inside each package using `lerna exec` (see the "storybook/static/registry") script
 
+BASEDIR=$(dirname $0)
 PKG=$($BASEDIR/_get_package_name.sh)
 VERSION=$($BASEDIR/_get_package_version.sh)
 

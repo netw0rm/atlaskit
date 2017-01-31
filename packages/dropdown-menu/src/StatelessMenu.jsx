@@ -20,6 +20,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     onOpenChange: PropTypes.func,
     position: PropTypes.string,
     triggerType: PropTypes.oneOf(['default', 'button']),
+    triggerButtonOptions: PropTypes.shape(Button.propTypes),
     shouldFlip: PropTypes.bool,
   }
 
@@ -32,6 +33,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     onOpenChange: () => {},
     position: 'bottom left',
     triggerType: 'default',
+    triggerButtonOptions: {},
     shouldFlip: true,
   }
 
@@ -57,6 +59,27 @@ export default class StatelessDropdownMenu extends PureComponent {
 
   render = () => {
     const { props, state } = this;
+    let iconBefore = null;
+    let iconAfter = null;
+
+    if (!props.triggerButtonOptions.iconAfter && !props.triggerButtonOptions.iconBefore) {
+      iconAfter = Icon;
+    }
+
+    if (props.triggerButtonOptions.iconBefore) {
+      iconBefore = props.triggerButtonOptions.iconBefore;
+    }
+
+    const defaultOpts = {
+      isSelected: props.isOpen,
+      iconAfter,
+      iconBefore,
+      ariaHaspopup: true,
+      ariaExpanded: props.isOpen,
+      ariaControls: state.id,
+    };
+
+    const buttonOpts = { ...props.triggerButtonOptions, ...defaultOpts };
 
     return (
       <Droplist
@@ -67,13 +90,7 @@ export default class StatelessDropdownMenu extends PureComponent {
         isTriggerNotTabbable={(props.triggerType === 'button') || props.isTriggerNotTabbable}
         shouldFlip={props.shouldFlip}
         trigger={props.triggerType === 'button' ?
-          (<Button
-            isSelected={props.isOpen}
-            iconAfter={Icon}
-            ariaHaspopup
-            ariaExpanded={props.isOpen}
-            ariaControls={state.id}
-          >{props.children}</Button>) : props.children}
+          (<Button {...buttonOpts}>{props.children}</Button>) : props.children}
       >
         <div id={state.id} role="menu">
           {this.renderGroups(props.items)}

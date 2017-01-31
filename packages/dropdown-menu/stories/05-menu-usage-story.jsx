@@ -9,10 +9,12 @@ import { name } from '../package.json';
 import DropdownWithButtonExample from './DropdownWithButtonExample'; // eslint-disable-line
 import DropdownLoadItemsExample from './DropdownLoadItemsExample'; // eslint-disable-line
 import StatusDropdown from './examples/StatusDropdown'; // eslint-disable-line
+import DropdownWithTriggerOptions from './DropdownWithTriggerOptions'; // eslint-disable-line
 
 /* eslint-disable import/first, import/no-duplicates */
 import DropdownWithButtonExampleRaw from '!raw!./DropdownWithButtonExample';
 import DropdownLoadItemsExampleRaw from '!raw!./DropdownLoadItemsExample';
+import DropdownWithTriggerOptionsRaw from '!raw!./DropdownWithTriggerOptions';
 import StatusDropdownRaw from '!raw!./examples/StatusDropdown';
 /* eslint-enable import/first, import/no-duplicates */
 
@@ -189,6 +191,14 @@ storiesOf(name, module)
   ), {
     scripts: [
       DropdownLoadItemsExampleRaw,
+    ],
+  })
+  .addCodeExampleStory('Basic Dropdown menu with customized trigger button', () => (
+    <DropdownWithTriggerOptions />
+  ),
+  {
+    scripts: [
+      DropdownWithTriggerOptionsRaw,
     ],
   })
   .add('Status Dropdown (special for JIRA)', () => (

@@ -1,4 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
+import Button from 'ak-button';
 
 import StatelessDropdownMenu from './StatelessMenu';
 
@@ -14,6 +15,7 @@ export default class DropdownMenu extends PureComponent {
     onOpenChange: PropTypes.func,
     position: PropTypes.string,
     triggerType: PropTypes.oneOf(['default', 'button']),
+    triggerButtonOptions: PropTypes.shape(Button.propTypes),
     shouldFlip: PropTypes.bool,
   }
 
@@ -26,6 +28,7 @@ export default class DropdownMenu extends PureComponent {
     onOpenChange: () => {},
     position: 'bottom left',
     triggerType: 'default',
+    triggerButtonOptions: {},
     shouldFlip: true,
   }
 
@@ -93,6 +96,7 @@ export default class DropdownMenu extends PureComponent {
         onOpenChange={this.handleOpenChange}
         isTriggerNotTabbable={props.isTriggerNotTabbable}
         triggerType={props.triggerType}
+        triggerButtonOptions={props.triggerButtonOptions}
         shouldFlip={props.shouldFlip}
         items={state.items}
       >

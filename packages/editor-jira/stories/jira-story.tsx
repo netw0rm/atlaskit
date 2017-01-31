@@ -1,6 +1,7 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { name } from '../package.json';
 import Editor from '../src';
 import { name } from '../package.json';
 

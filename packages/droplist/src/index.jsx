@@ -128,43 +128,43 @@ export default class DropdownList extends PureComponent {
   isTargetChildItem = target => target && (target.getAttribute('data-role') === 'droplistItem') &&
     ReactDOM.findDOMNode(this).contains(target) // eslint-disable-line react/no-find-dom-node
 
-  handleKeyDown = (e) => {
-    if (e.key === 'Escape') {
-      this.close();
+  handleKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      this.close({ event });
     }
 
     if (this.props.isOpen) {
-      if (this.isTargetChildItem(e.target)) {
-        switch (e.key) {
+      if (this.isTargetChildItem(event.target)) {
+        switch (event.key) {
           case 'ArrowUp':
-            e.preventDefault();
+            event.preventDefault();
             this.focusPreviousItem();
             break;
           case 'ArrowDown':
-            e.preventDefault();
+            event.preventDefault();
             this.focusNextItem();
             break;
           case 'Tab':
-            e.preventDefault();
-            this.close();
+            event.preventDefault();
+            this.close({ event });
             break;
           default:
             break;
         }
-      } else if (e.key === 'ArrowDown') {
+      } else if (event.key === 'ArrowDown') {
         this.sourceOfIsOpen = 'keydown';
         this.focusFirstItem();
-      } else if (e.key === 'Tab') {
-        this.close();
+      } else if (event.key === 'Tab') {
+        this.close({ event });
       }
     }
   }
 
-  handleClickOutside = (e) => {
+  handleClickOutside = (event) => {
     if (this.props.isOpen) {
       const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
-      if (!domNode || (e.target instanceof Node && !domNode.contains(e.target))) {
-        this.close();
+      if (!domNode || (event.target instanceof Node && !domNode.contains(event.target))) {
+        this.close({ event });
       }
     }
   }

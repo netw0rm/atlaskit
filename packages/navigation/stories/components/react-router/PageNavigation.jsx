@@ -9,10 +9,10 @@ export default class PageNavigation extends PureComponent {
   render() {
     return (
       <Navigation
-        containerHeader={
-          <RouterHeader
+        containerHeaderComponent={() =>
+          (<RouterHeader
             to="/iframe.html"
-          />
+          />)
         }
         globalPrimaryIcon={<AtlassianIcon label="Home" size="medium" />}
         globalPrimaryItemHref="/iframe.html"

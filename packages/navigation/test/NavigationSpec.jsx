@@ -48,7 +48,7 @@ describe('<Navigation />', () => {
     it('isCollapsible=false does render a <Resizer />', () => {
       expect(shallow(<Navigation isCollapsible={false} />).find('Resizer').length).to.be.above(0);
     });
-    it('containerHeader - passes a func for the container header component to <ContainerNavigation />', () => {
+    it('containerHeaderComponent - passes a func for the container header component to <ContainerNavigation />', () => {
       const header = () => (<div>foo</div>);
       expect(shallow(<Navigation containerHeaderComponent={header} />)
         .find('ContainerNavigation').props().headerComponent).to.equal(header);

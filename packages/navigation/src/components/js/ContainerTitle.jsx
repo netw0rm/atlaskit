@@ -23,7 +23,7 @@ export default class ContainerTitle extends PureComponent {
 
     return (
       <Link className={styles.link} href={href}>
-        <div className={styles.containerHeader}>
+        <div className={styles.containerTitle}>
           <div className={styles.icon}>
             {this.props.icon}
           </div>

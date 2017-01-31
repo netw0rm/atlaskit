@@ -7,15 +7,15 @@ import JiraLogoText from 'babel-loader!svg-to-jsx-loader!./logos/jira.svg';
 import Logo from './Logo';
 
 const AtlassianLogo = props =>
-  (<Logo logoText={<AtlassianLogoText />} {...props} />);
+  (<Logo {...props} logoText={<AtlassianLogoText />} />);
 const BitbucketLogo = props =>
-  (<Logo logoText={<BitbucketLogoText />} {...props} />);
+  (<Logo {...props} logoText={<BitbucketLogoText />} />);
 const ConfluenceLogo = props =>
-  (<Logo logoText={<ConfluenceLogoText />} {...props} />);
+  (<Logo {...props} logoText={<ConfluenceLogoText />} />);
 const HipchatLogo = props =>
-  (<Logo logoText={<HipchatLogoText />} {...props} />);
+  (<Logo {...props} logoText={<HipchatLogoText />} />);
 const JiraLogo = props =>
-  (<Logo logoText={<JiraLogoText />} {...props} />);
+  (<Logo {...props} logoText={<JiraLogoText />} />);
 
 export default AtlassianLogo;
 export { AtlassianLogo, BitbucketLogo, ConfluenceLogo, HipchatLogo, JiraLogo };

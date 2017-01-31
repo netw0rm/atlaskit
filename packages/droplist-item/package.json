@@ -17,15 +17,15 @@
     "src/index.d.ts"
   ],
   "dependencies": {
-    "ak-icon": "^12.1.3",
-    "akutil-shared-styles": "^37.0.0",
+    "@atlaskit/icon": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "styled-components": "^1.3.1"
   },
   "devDependencies": {
-    "ak-avatar": "^5.0.4",
-    "ak-lozenge": "^5.0.4"
+    "@atlaskit/avatar": "^1.0.0",
+    "@atlaskit/lozenge": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

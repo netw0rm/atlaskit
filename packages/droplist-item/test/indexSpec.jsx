@@ -1,11 +1,15 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import Radio from '@atlaskit/icon/glyph/radio';
+import Checkbox from '@atlaskit/icon/glyph/checkbox';
 
 import { name } from '../package.json';
-import { locals as styles } from '../src/styles.less';
-import { Span } from '../src/internal/SecondaryText';
-
+import { ElementSpan, SecondaryTextSpan } from '../src/styled';
 import Item, { SecondaryText } from '../src';
+
+/* eslint-disable no-underscore-dangle */
+const getDomElement = node =>
+  node._reactInternalInstance._renderedComponent._hostNode;
 
 describe(name, () => {
   it('should be possible to create a component', () => {
@@ -36,72 +40,24 @@ describe(name, () => {
     });
 
     it('should render icon for the radio or checkbox element', () => {
-      expect(mount(<Item type="radio" />).find(`.${styles.checkradio}`).length).to.be.above(0);
-      expect(mount(<Item type="checkbox" />).find(`.${styles.checkradio}`).length).to.be.above(0);
+      expect(mount(<Item type="radio" />).find(Radio).length).to.equal(1);
+      expect(mount(<Item type="checkbox" />).find(Checkbox).length).to.equal(1);
     });
 
     it('should NOT render icon for the link element', () => {
-      expect(mount(<Item type="link" />).find(`.${styles.checkradio}`).length).to.equal(0);
-    });
-  });
-
-  describe('classes', () => {
-    it('should have "item" class by default', () => {
-      expect(mount(<Item type="link" />).find(`.${styles.item}`)).to.have.length.above(0);
-      expect(mount(<Item type="checkbox" />).find(`.${styles.item}`)).to.have.length.above(0);
-      expect(mount(<Item type="radio" />).find(`.${styles.item}`)).to.have.length.above(0);
-    });
-
-    it('should have "disabled" class when disabled', () => {
-      expect(mount(<Item type="link" isDisabled />).find(`.${styles.disabled}`)).to.have.length.above(0);
-      expect(mount(<Item type="radio" isDisabled />).find(`.${styles.disabled}`)).to.have.length.above(0);
-      expect(mount(<Item type="checkbox" isDisabled />).find(`.${styles.disabled}`)).to.have.length.above(0);
-    });
-
-    it('should have "active" class when link item is active', () => {
-      expect(mount(<Item type="link" isActive />).find(`.${styles.active}`)).to.have.length.above(0);
-    });
-
-    it('should have "active" class when option item is selected', () => {
-      expect(mount(<Item type="option" isSelected />).find(`.${styles.active}`)).to.have.length.above(0);
-    });
-
-    it('should NOT have "active" class for any other item types', () => {
-      expect(mount(<Item type="radio" isActive />).find(`.${styles.active}`).length).to.equal(0);
-      expect(mount(<Item type="checkbox" isActive />).find(`.${styles.active}`).length).to.equal(0);
-    });
-
-    it('should have "checked" class when checkbox or radio is checked', () => {
-      expect(mount(<Item type="checkbox" isChecked />).find(`.${styles.checked}`)).to.have.length.above(0);
-      expect(mount(<Item type="radio" isChecked />).find(`.${styles.checked}`)).to.have.length.above(0);
-    });
-
-    it('should NOT have "checked" class for any other items', () => {
-      expect(mount(<Item type="link" isChecked />).find(`.${styles.checked}`).length).to.equal(0);
-    });
-
-    it('should have "hidden" class when item is hidden', () => {
-      expect(mount(<Item type="link" isHidden />).find(`.${styles.hidden}`)).to.have.length.above(0);
-      expect(mount(<Item type="checkbox" isHidden />).find(`.${styles.hidden}`)).to.have.length.above(0);
-      expect(mount(<Item type="radio" isHidden />).find(`.${styles.hidden}`)).to.have.length.above(0);
+      const wrapper = mount(<Item type="link" />);
+      expect(wrapper.find(Checkbox).length).to.equal(0);
+      expect(wrapper.find(Radio).length).to.equal(0);
     });
   });
 
   describe('events', () => {
-    let onActivate;
-
-    beforeEach(() => {
-      onActivate = sinon.spy();
-    });
-    afterEach(() => {
-      onActivate.reset();
-    });
-
     describe('onActivate', () => {
       let wrapper;
+      let onActivate;
       beforeEach(() => {
         onActivate = sinon.spy();
-        wrapper = mount(<Item onActivate={onActivate} />).find(`.${styles.item}`);
+        wrapper = mount(<Item onActivate={onActivate} />).find(ElementSpan);
       });
 
       it('should be activated when enter is pressed', () => {
@@ -121,7 +77,7 @@ describe(name, () => {
 
       it('should not be activated when disabled', () => {
         const disabledWrapper =
-          mount(<Item onActivate={onActivate} isDisabled />).find(`.${styles.item}`);
+          mount(<Item onActivate={onActivate} isDisabled />).find(ElementSpan);
         disabledWrapper.simulate('click');
         disabledWrapper.simulate('keyPress', { key: 'Enter' });
         disabledWrapper.simulate('keyPress', { key: ' ' });
@@ -131,8 +87,8 @@ describe(name, () => {
   });
 
   it('should focus itself when the isFocused property is set to true', () => {
-    const wrapper = mount(<Item isFocused />).find(`.${styles.item}`);
-    expect(wrapper.find(`.${styles.item}`).node).to.equal(document.activeElement);
+    const wrapper = mount(<Item isFocused />).find(ElementSpan);
+    expect(getDomElement(wrapper.node)).to.equal(document.activeElement);
   });
 
   describe('secondary text', () => {
@@ -142,7 +98,7 @@ describe(name, () => {
 
     it('should have className', () => {
       expect(mount(<SecondaryText>text</SecondaryText>)
-        .find(Span).length).to.equal(1);
+        .find(SecondaryTextSpan).length).to.equal(1);
     });
   });
 

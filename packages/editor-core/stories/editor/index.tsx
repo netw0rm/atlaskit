@@ -6,9 +6,11 @@ import {
   ListsPlugin
 } from '../../';
 import {
+  allInputRules,
   baseKeymap,
   EditorState,
   EditorView,
+  inputRules,
   keymap,
   Node,
   TextSelection
@@ -141,6 +143,7 @@ export default class Editor extends PureComponent<Props, State> {
       const editorState = EditorState.create(
         createEdiorConfig(schema, [
           ListsPlugin,
+          inputRules({rules: allInputRules}),
           keymap(baseKeymap) // should be last :(
         ])
       );

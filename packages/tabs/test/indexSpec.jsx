@@ -1,5 +1,4 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
@@ -9,13 +8,12 @@ import { sampleTabs, sampleTabsNoSelection, sampleTabsDefaultSelected } from './
 import { name } from '../package.json';
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
 
 describe(name, () => {
   describe('Tabs', () => {
     describe('exports', () => {
       it('the Tabs component', () => {
-        expect(Tabs).to.exist;
+        expect(Tabs).not.to.equal(undefined);
         expect(new Tabs()).to.be.instanceOf(Component);
       });
     });
@@ -23,7 +21,7 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<Tabs />);
-        expect(wrapper).to.exist;
+        expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 

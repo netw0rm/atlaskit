@@ -1,5 +1,4 @@
 import chai from 'chai';
-import chaiEnzyme from 'chai-enzyme';
 import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 
@@ -10,7 +9,6 @@ import { sampleTabs, sampleTabsNoSelection } from './_constants';
 import { name } from '../package.json';
 
 const { expect } = chai;
-chai.use(chaiEnzyme());
 
 describe(name, () => {
   describe('StatelessTabs', () => {
@@ -18,7 +16,7 @@ describe(name, () => {
 
     describe('exports', () => {
       it('the StatelessTabs component', () => {
-        expect(Tabs).to.exist;
+        expect(Tabs).not.to.equal(undefined);
         expect(new Tabs()).to.be.instanceOf(Component);
       });
     });
@@ -26,7 +24,7 @@ describe(name, () => {
     describe('construction', () => {
       it('should be able to create a component', () => {
         const wrapper = shallow(<Tabs onKeyboardNav={kbNav} />);
-        expect(wrapper).to.exist;
+        expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
       });
 
@@ -35,7 +33,7 @@ describe(name, () => {
 
         const tabsNav = wrapper.find(TabsNav);
         expect(tabsNav).to.have.lengthOf(1);
-        expect(tabsNav).to.have.prop('tabs', sampleTabs);
+        expect(tabsNav.props().tabs).to.equal(sampleTabs);
       });
 
       it('should render the selected TabPane item', () => {
@@ -44,14 +42,15 @@ describe(name, () => {
 
         const tab = wrapper.find(TabPane);
         expect(tab).to.have.lengthOf(1);
-        expect(tab).to.have.prop('isSelected', selectedTab.isSelected);
-        expect(tab).to.contain(selectedTab.content);
+
+        expect(tab.props().isSelected).to.equal(selectedTab.isSelected);
+        expect(tab.props().children).to.equal(selectedTab.content);
       });
 
       it('should not render a TabPane item if there is no selected tab', () => {
         const wrapper = shallow(<Tabs tabs={sampleTabsNoSelection} onKeyboardNav={kbNav} />);
         const tab = wrapper.find(TabPane);
-        expect(tab).to.not.exist;
+        expect(tab.length).to.equal(0);
       });
     });
 

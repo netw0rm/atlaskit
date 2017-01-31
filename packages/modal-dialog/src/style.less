@@ -54,8 +54,8 @@
   .widthTier(x-large);
 
   // 3 direct flex children (header + content + footer slot areas)
-  .header-flex, .content-flex, .footer-flex {
-    box-shadow: 0 @ak-grid-size (2.5 * @ak-grid-size) (@ak-grid-size * -0.5) fade(@ak-color-N900, 28%);
+  .header-flex, .footer-flex {
+    box-shadow: 0 @ak-grid-size (2.5 * @ak-grid-size) (@ak-grid-size * -0.5) @ak-color-N50A;
   }
 
   // Background and corners for header
@@ -91,13 +91,9 @@
 @modal-inner-shadow-size: 2px;
 @transparent: rgba(255,255,255,0);
 .content-flex {
-  background-image:
-     linear-gradient(
-       to bottom,
-       @ak-color-N30 0,
-       @ak-color-N0 @modal-inner-shadow-size,
-       @transparent
-      );
+  box-shadow:
+    0 @ak-grid-size (2.5 * @ak-grid-size) (@ak-grid-size * -0.5) @ak-color-N50A,
+    inset 0px @modal-inner-shadow-size 0px 0px @ak-color-N30;
   position: relative;
 
   &:before {

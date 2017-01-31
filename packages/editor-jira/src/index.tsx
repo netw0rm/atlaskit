@@ -14,6 +14,7 @@ import {
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { encode, parse } from './html';
+import { makeSchema, SupportedSchema } from './schema';
 
 export interface Props {
   context?: ContextName;
@@ -24,11 +25,13 @@ export interface Props {
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
+  allowLists?: boolean;
 }
 
 export interface State {
   pm?: ProseMirror;
   isExpanded?: boolean;
+  schema: SupportedSchema;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -36,7 +39,10 @@ export default class Editor extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { isExpanded: props.isExpandedByDefault };
+    this.state = {
+      isExpanded: props.isExpandedByDefault,
+      schema: makeSchema(!!props.allowLists),
+    };
 
     analyticsService.handler = props.analyticsHandler || ((name) => {});
   }
@@ -76,14 +82,14 @@ export default class Editor extends PureComponent<Props, State> {
    * The current value of the editor, encoded as HTML.
    */
   get value(): string | undefined {
-    const { pm } = this.state;
+    const { pm, schema } = this.state;
     return pm
-      ? encode(pm.doc)
+      ? encode(pm.doc, schema)
       : this.props.defaultValue;
   }
 
   render() {
-    const { pm, isExpanded } = this.state;
+    const { pm, isExpanded, schema } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
 
@@ -91,10 +97,9 @@ export default class Editor extends PureComponent<Props, State> {
       <Chrome
         children={<div ref={this.handleRef} />}
         isExpanded={isExpanded}
-        feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
         onCancel={handleCancel}
         onSave={handleSave}
-        onCollapsedChromeFocus={() => this.setState({ isExpanded: true })}
+        onCollapsedChromeFocus={() => this.setState({ isExpanded: true, schema })}
         placeholder={this.props.placeholder}
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
@@ -125,11 +130,12 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   private handleRef = (place: Element | null) => {
+    const { schema } = this.state;
     if (place) {
       const { context } = this.props;
       const pm = new ProseMirror({
         place,
-        doc: parse(this.props.defaultValue || ''),
+        doc: parse(this.props.defaultValue || '', schema),
         plugins: [
           BlockTypePlugin,
           CodeBlockPlugin,
@@ -156,9 +162,9 @@ export default class Editor extends PureComponent<Props, State> {
 
       analyticsService.trackEvent('atlassian.editor.start');
 
-      this.setState({ pm });
+      this.setState({ pm, schema });
     } else {
-      this.setState({ pm: undefined });
+      this.setState({ pm: undefined, schema });
     }
   }
 }

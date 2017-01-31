@@ -76,7 +76,7 @@ Some things to look for:
 * Check the `All icons (usage)` story to make sure the naming has worked as expected (paths/namespacing makes sense, etc).
 * Check the `Icons with broken fills (solid parts)` story to make sure that no parts of your svg have hardcoded colors.
   * If any parts of your icon appear to be dark, check the svg file for instances of `fill="XXXXX"` and replace them with `fill="currentColor"`.
-* Check the `Icons that are too big (red parts)` story to show any parts of the icon that fall outside the 20x20 size that icons should fill.
+* Check the `Icons that are too big (red parts)` story to show any parts of the icon that fall outside the 24x24 size that icons should fill.
 * Make sure you update the test in `ak-icon/test/indexSpec.jsx` to include your icon.
 * Make sure you use the appropriate commit message when adding or modifying icons
   * changing an icon is a patch

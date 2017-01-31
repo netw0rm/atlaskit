@@ -23,7 +23,7 @@ const propDescriptions = {
 };
 
 storiesOf(name, module)
-  .add('Readme', () => (
+  .add('📖 Spinner Readme', () => (
     <div>
       <Readme
         component={Spinner}

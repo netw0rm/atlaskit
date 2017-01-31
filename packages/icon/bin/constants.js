@@ -5,7 +5,7 @@ module.exports.glyphFolderName = 'glyph';
 
 module.exports.tmpFolderName = 'tmp';
 
-module.exports.maxWidth = 20;
-module.exports.maxHeight = 20;
+module.exports.maxWidth = 24;
+module.exports.maxHeight = 24;
 
 module.exports.fileEnding = '.svg';

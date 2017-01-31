@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Button from 'ak-button';
-import Group from 'ak-droplist-group';
-import Item from 'ak-droplist-item';
+import Button from '@atlaskit/button';
+import Group from '@atlaskit/droplist-group';
+import Item from '@atlaskit/droplist-item';
 
 import DropdownList from '../../src';
 

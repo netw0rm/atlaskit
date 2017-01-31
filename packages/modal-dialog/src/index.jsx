@@ -1,7 +1,7 @@
 import React, { PropTypes, PureComponent } from 'react';
 import classNames from 'classnames';
 import styles from 'style!./style.less';
-import Blanket from 'ak-blanket';
+import Blanket from '@atlaskit/blanket';
 
 const WIDTH_ENUM = {
   values: ['small', 'medium', 'large', 'x-large'],

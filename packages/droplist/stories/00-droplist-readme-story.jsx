@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { Code, Props, Description, Chrome } from 'akutil-readme';
+import { Code, Props, Description, Chrome } from '@atlaskit/util-readme';
 
 import DropList from '../src';
 

@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/eslint-config-tests",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "author": "Atlassian Pty Ltd",
   "description": "The test file eslint configuration for AtlasKit components",

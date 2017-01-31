@@ -1,5 +1,5 @@
 import React from 'react';
-import { Presence } from 'ak-avatar';
+import { Presence } from '@atlaskit/avatar';
 
 const containerStyles = {
   display: 'flex',

@@ -2,7 +2,8 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import {
   Chrome,
-  ContextName
+  ContextName,
+  ListsPlugin
 } from '../../';
 import {
   baseKeymap,
@@ -27,6 +28,7 @@ export interface Props {
 
 export interface State {
   editorView?: EditorView;
+  editorState?: EditorState<any>;
   isExpanded?: boolean;
 }
 
@@ -90,7 +92,13 @@ export default class Editor extends PureComponent<Props, State> {
   render() {
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
-    const { isExpanded } = this.state;
+    const { isExpanded, editorState, editorView } = this.state;
+
+    const listsState = editorState && ListsPlugin.plugin.getState(editorState);
+
+    if (listsState) {
+      listsState.setView(editorView);
+    }
 
     return (
       <Chrome
@@ -101,6 +109,8 @@ export default class Editor extends PureComponent<Props, State> {
         onSave={handleSave}
         placeholder={this.props.placeholder}
         onCollapsedChromeFocus={this.expand}
+
+        pluginStateLists={listsState}
       />
     );
   }
@@ -128,12 +138,12 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const editorState = EditorState.create({
-        schema,
-        plugins: [
-          keymap(baseKeymap)
-        ]
-      });
+      const editorState = EditorState.create(
+        createEdiorConfig(schema, [
+          ListsPlugin,
+          keymap(baseKeymap) // should be last :(
+        ])
+      );
       const editorView = new EditorView(place, {
         state: editorState,
         dispatchTransaction: (tr) => {
@@ -145,9 +155,28 @@ export default class Editor extends PureComponent<Props, State> {
 
       editorView.focus();
 
-      this.setState({ editorView });
+      this.setState({ editorView, editorState });
     } else {
       this.setState({ editorView: undefined });
     }
   }
 }
+
+const createEdiorConfig = (schema, plugins: any[] = []) => {
+  return {
+    schema,
+    plugins: plugins.reduce((acc: any, plugin: { plugin?: any, keymap?: any }) => {
+      if (!plugin.plugin) {
+        return acc.concat(plugin);
+      }
+
+      acc = acc.concat(plugin.plugin);
+
+      if (plugin.keymap) {
+        acc = acc.concat(keymap(plugin.keymap));
+      }
+
+      return acc;
+    }, [])
+  };
+};

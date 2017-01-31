@@ -22,6 +22,7 @@ export class ResolvedPos {
 }
 
 export class NodeRange {
+  constructor($from: ResolvedPos, $to: ResolvedPos, depth: number);
   $from: ResolvedPos;
   $to: ResolvedPos;
   depth: number;

@@ -16,6 +16,7 @@ const navigationItemPropDescriptions = {
   isCompact: 'Whether the item should have reduced height, for higher density of items',
   text: 'The main text content of the item',
   textAfter: 'Addition text to display on the right hand side of the item – usually a badge communicating extra semantic information',
+  subText: 'Text to display underneath the main text prop',
   action: 'Content to display in the same spot as textAfter, but for interactive elements. This will obscure textAfter',
   href: 'The href that this item will link to',
   linkComponent: 'The component that will be used to render the link. See linkComponent docs for details',

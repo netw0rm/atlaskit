@@ -4,7 +4,7 @@ This package contains the Atlassian logo, as well as a range of product logos.
 
 > This packages is licensed under the Atlassian Design Guidelines - please check the LICENSE file for more information.
 
-![Example ak-logo](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-logo/docs/screencast.gif)
+![Example ak-logo](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-logo/docs/screencast.png)
 
 ## Try it out
 

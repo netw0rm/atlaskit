@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Button from 'ak-button';
+import Button from '@atlaskit/button';
 import Lorem from 'react-lorem-component';
 import { action } from '@kadira/storybook';
 import ModalDialog from '../src';
@@ -20,13 +20,13 @@ export default class ModalDemo extends React.PureComponent {
 
     return (
       <ModalDialog
-        isOpen
-        header={
-          header || <span>New issue</span>
-        }
         footer={
           footer || <Button appearance="primary">Create issue</Button>
         }
+        header={
+          header || <span>New issue</span>
+        }
+        isOpen
         onDialogDismissed={doSomethingOnDismiss}
         {...this.props}
       >

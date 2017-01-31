@@ -223,6 +223,8 @@ Build the new Docker image:
 yarn run build/docker/image
 ```
 
+**Note:** The credentials for pushing to Dockerhub can be found in the shared Lastpass vault.
+
 If you want to create a new image and download all the latest dependencies without actually changing the Dockerfile, you can use:
 
 ```console

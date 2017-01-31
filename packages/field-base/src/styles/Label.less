@@ -1,8 +1,7 @@
 @import './shared-variables.less';
 
 // Label margins
-@label-top-spacing: unit(@grid * 5, px);
-@label-bottom-spacing: unit(@grid, px);
+@label-top-spacing: unit(@grid * 2, px);
 @label-padding-left: unit(@grid * 2, px);
 
 // Label sizing
@@ -19,7 +18,7 @@
   font-size: unit(@label-font-size, px);
   font-weight: 600;
   line-height: @label-line-height;
-  padding: @label-top-spacing 0 @label-bottom-spacing @label-padding-left;
+  padding: @label-top-spacing 0 0 @label-padding-left;
 }
 
 .hidden {

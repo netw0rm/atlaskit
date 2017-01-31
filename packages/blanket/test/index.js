@@ -3,6 +3,7 @@ import { Component } from 'skatejs';
 import AkBlanket, { events } from '../src';
 import { name } from '../package.json';
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('ak-blanket', () => {
   describe('exports', () => {
     it('should export a base component', () => {

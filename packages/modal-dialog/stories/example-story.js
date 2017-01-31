@@ -1,8 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
-import Button from 'ak-button';
-import Layer from 'ak-layer';
-import Navigation from 'ak-navigation';
-import DropdownMenu from 'ak-dropdown-menu';
+import Button from '@atlaskit/button';
+import Layer from '@atlaskit/layer';
+import Navigation from '@atlaskit/navigation';
+import DropdownMenu from '@atlaskit/dropdown-menu';
 import React from 'react';
 import Lorem from 'react-lorem-component';
 import { name } from '../package.json';

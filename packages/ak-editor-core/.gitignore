@@ -1,3 +1,0 @@
-*.d.ts
-prosemirror
-!src/**/*.d.ts

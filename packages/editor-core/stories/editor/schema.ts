@@ -1,4 +1,4 @@
-import { Schema } from '../../src/prosemirror/future';
+import { marks as baseMarks, Schema } from '../../src/prosemirror/future';
 import { bulletList } from '../../src/schema/nodes/bullet-list';
 import { doc } from '../../src/schema/nodes/doc';
 import { listItem } from '../../src/schema/nodes/list-item';
@@ -14,6 +14,6 @@ const nodes = {
   ordered_list: orderedList,
   list_item: listItem
 };
-const marks = {};
+const marks = baseMarks;
 
 export default new Schema<typeof nodes, typeof marks>({ nodes, marks });

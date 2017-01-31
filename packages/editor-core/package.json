@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "A package contains Atlassian editor core functionality",
   "main": "src/index.js",

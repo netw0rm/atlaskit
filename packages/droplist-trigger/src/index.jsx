@@ -61,10 +61,6 @@ export default class Trigger extends PureComponent {
     }
   }
 
-  handleMouseDown = (e) => {
-    e.preventDefault();
-  }
-
   render() {
     const { props } = this;
 
@@ -73,7 +69,6 @@ export default class Trigger extends PureComponent {
       <div
         onClick={this.handleClick}
         onKeyDown={this.handleKeyDown}
-        onMouseDown={this.handleMouseDown}
         className={classNames(styles.triggerContainer, props.className, {
           [styles.fitContainer]: props.shouldFitContainer,
         })}

@@ -16,7 +16,7 @@ export default class Image extends PureComponent {
     const { hasError, isLoading, ...propsForImage } = this.props;
     if (!isLoading) {
       if (!this.props.src || hasError) {
-        return (<DefaultAvatar />);
+        return (<DefaultAvatar />); 
       }
     }
 

@@ -11,5 +11,5 @@ Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.co
 ## Installation
 
 ```sh
-npm install ak-tabs
+npm install @atlaskit/tabs
 ```

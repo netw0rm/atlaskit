@@ -1,5 +1,5 @@
 import { toggleMark } from '../../prosemirror/future/prosemirror-commands';
-import * as keymapShortcuts from './';
+import * as keymapShortcuts from './utils-future';
 
 import {redo, undo} from '../../prosemirror/future/prosemirror-history';
 

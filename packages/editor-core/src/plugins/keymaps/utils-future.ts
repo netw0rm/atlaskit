@@ -1,12 +1,12 @@
 import { browser } from '../../prosemirror';
 
-export const toggleOrderedList = makeKeyMapWithCommon('Toggle ordered list', 'Mod-Shift-L');
-export const toggleBulletList = makeKeyMapWithCommon('Toggle bullet list', 'Mod-Shift-B');
-export const toggleBold = makeKeyMapWithCommon('Toggle bold', 'Mod-B');
-export const toggleItalic = makeKeyMapWithCommon('Toggle italic', 'Mod-I');
-export const toggleUnderline = makeKeyMapWithCommon('Toggle underline', 'Mod-U');
-export const toggleStrikethrough = makeKeyMapWithCommon('Toggle strikethrough', 'Mod-Shift-S');
-export const toggleMonospace = makeKeyMapWithCommon('Toggle monospace', 'Mod-Shift-M');
+export const toggleOrderedList = makeKeyMapWithCommon('Toggle ordered list', 'Mod-Shift-l');
+export const toggleBulletList = makeKeyMapWithCommon('Toggle bullet list', 'Mod-Shift-b');
+export const toggleBold = makeKeyMapWithCommon('Toggle bold', 'Mod-b');
+export const toggleItalic = makeKeyMapWithCommon('Toggle italic', 'Mod-i');
+export const toggleUnderline = makeKeyMapWithCommon('Toggle underline', 'Mod-u');
+export const toggleStrikethrough = makeKeyMapWithCommon('Toggle strikethrough', 'Mod-Shift-s');
+export const toggleMonospace = makeKeyMapWithCommon('Toggle monospace', 'Mod-Shift-m');
 export const setNormalText = makeKeyMap('Normal text', 'Ctrl-0', 'Cmd-Alt-0');
 export const setHeading1 = makeKeyMap('Heading 1', 'Ctrl-1', 'Cmd-Alt-1');
 export const setHeading2 = makeKeyMap('Heading 2', 'Ctrl-2', 'Cmd-Alt-2');
@@ -20,8 +20,8 @@ export const shiftBackspace = makeKeyMapWithCommon('Shift Backspace', 'Shift-Bac
 export const splitCodeBlock = makeKeyMapWithCommon('Split code block', 'Enter');
 export const splitListItem = makeKeyMapWithCommon('Split list item', 'Enter');
 export const insertHorizontalRule = makeKeyMapWithCommon('Insert horizontal rule', 'Mod-Shift--');
-export const redo = makeKeyMapWithCommon('Redo', 'Mod-Shift-Z');
-export const undo = makeKeyMapWithCommon('Undo', 'Mod-Z');
+export const redo = makeKeyMapWithCommon('Redo', 'Mod-Shift-z');
+export const undo = makeKeyMapWithCommon('Undo', 'Mod-z');
 
 export function tooltip(keymap: Keymap | undefined): string | undefined {
   if (keymap) {

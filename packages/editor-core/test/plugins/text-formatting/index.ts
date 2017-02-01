@@ -85,23 +85,23 @@ describe('text-formatting', () => {
           });
         });
 
-        context('when hits Ctrl-b', () => {
+        context('when hits Ctrl-i', () => {
           it('toggles italic mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleEm = sinon.spy(plugin, 'toggleEm');
 
-            pm.input.dispatchKey('Ctrl-I');
+            pm.input.dispatchKey('Ctrl-i');
 
             expect(toggleEm.callCount).to.equal(1);
           });
         });
 
-        context('when hits Ctrl-b', () => {
+        context('when hits Ctrl-u', () => {
           it('toggles underline mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
 
-            pm.input.dispatchKey('Ctrl-U');
+            pm.input.dispatchKey('Ctrl-u');
 
             expect(toggleUnderline.callCount).to.equal(1);
           });

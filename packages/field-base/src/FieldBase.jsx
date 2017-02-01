@@ -1,6 +1,6 @@
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
-import WarningIcon from 'ak-icon/glyph/warning';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
 import React, { PureComponent, PropTypes } from 'react';
 import appearances, { standard, compact, none, subtle } from './internal/appearances';
 

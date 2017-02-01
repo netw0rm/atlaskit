@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/editor-bitbucket",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "Editor web component",
   "main": "dist/es5/index.js",
@@ -21,7 +21,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "ak-editor-core": "^3.10.1",
+    "@atlaskit/editor-core": "^1.0.0",
     "ak-editor-shared-styles": "^3.0.0",
     "ak-mention": "^1.9.0",
     "akutil-shared-styles": "^37.0.1",

@@ -127,6 +127,34 @@ describe(name, () => {
           'folder',
           'followers',
           'following',
+
+          'hipchat/arrow-down',
+          'hipchat/arrow-left',
+          'hipchat/arrow-right',
+          'hipchat/arrow-up',
+          'hipchat/authentication',
+          'hipchat/bell-all',
+          'hipchat/bell-default',
+          'hipchat/bell-direct',
+          'hipchat/billing',
+          'hipchat/carat-down',
+          'hipchat/carat-left',
+          'hipchat/carat-right',
+          'hipchat/carat-up',
+          'hipchat/close',
+          'hipchat/connect-addon',
+          'hipchat/lobby',
+          'hipchat/logo',
+          'hipchat/more-vertical',
+          'hipchat/preferences',
+          'hipchat/room-directory',
+          'hipchat/room-menu',
+          'hipchat/upgrade-available-settings',
+          'hipchat/upgrade-available',
+          'hipchat/upgrade-min',
+          'hipchat/video',
+          'hipchat/warning-circle',
+
           'home',
           'image-border',
           'image-resize',
@@ -175,7 +203,7 @@ describe(name, () => {
         //
         // * changing an icon is a patch
         // * adding an icon is a feature
-        // * removing an icon is breaking change
+        // * removing an icon is a breaking change
         // * renaming an icon is a breaking change
         //
         // If we were to auto-generate this list, then renaming, adding or removing would NOT

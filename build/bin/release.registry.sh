@@ -41,6 +41,7 @@ function build_registry() {
 
   $CHALK --no-stdin -t "{blue Building registry}"
   pushd $REGISTRY_PATH > /dev/null
+  NODE_ENV=production \
   BITBUCKET_PASS=$BITBUCKET_PW_READONLY \
   AK_REG_BUILD_DIR=$TARGET_PATH \
   $REGISTRY_BIN

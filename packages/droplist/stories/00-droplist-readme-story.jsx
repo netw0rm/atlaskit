@@ -18,6 +18,7 @@ const droplistPropDescriptions = {
   Default dropdown has scroll after its height exceeds the pre-defined amount. Tall dropdown has no
   restrictions.`,
   position: 'Position of the menu. See the documentation of ak-layer for more details.',
+  isTriggerDisabled: 'Disables all trigger`s handlers and eventListeners',
   isTriggerNotTabbable: `Controls whether it is possible to tab to the trigger. This property should
    be set to true if some interactive element is used inside trigger (links, buttons)`,
   isOpen: 'Controls the open state of the dropdown',
@@ -35,6 +36,7 @@ const droplistPropTypes = {
   appearance: 'oneOf([default, tall])',
   position: 'string',
   isTriggerNotTabbable: 'bool',
+  isTriggerDisabled: 'bool',
   isOpen: 'bool',
   onItemActivated: 'func',
   onOpenChange: 'func',

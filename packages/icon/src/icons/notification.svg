@@ -5,7 +5,7 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Fabric" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="fabric/notification" fill="#253858">
+        <g id="fabric/notification" fill="currentColor">
             <g id="notification" transform="translate(5.000000, 3.000000)">
                 <circle id="Oval-2" cx="7" cy="6" r="5"></circle>
                 <ellipse id="Oval-2-Copy" cx="7" cy="1" rx="1" ry="1"></ellipse>

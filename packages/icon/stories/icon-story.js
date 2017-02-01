@@ -95,7 +95,7 @@ const AllIconsSizeChecked = props => (
   </div>
 );
 
-storiesOf('ak-icon', module)
+storiesOf(name, module)
   .add('Single icon', () => (
     <AtlassianIcon
       label="Atlassian icon"

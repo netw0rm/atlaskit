@@ -64,6 +64,14 @@ describe('markdown-inputrules', () => {
       pm.input.insertText(sel, sel, '*italic*');
       expect(pm.doc).to.deep.equal(doc(p(strong('This is bold '), em(strong('italic')))));
     });
+
+    it('should only replace text with italic if there is blank space or beginning of the line before underscore', () => {
+      const text = '1_2_';
+      const { pm, sel } = editor(doc(p('{<>}')));
+      pm.input.insertText(sel, sel, text);
+
+      expect(pm.doc).to.deep.equal(doc(p(text)));
+    });
   });
 
   describe('stike rule', () => {

@@ -1,8 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
-import Droplist from 'ak-droplist';
-import Item from 'ak-droplist-item';
-import Group from 'ak-droplist-group';
-import { Label, FieldBase } from 'ak-field-base';
+import Droplist from '@atlaskit/droplist';
+import Item from '@atlaskit/droplist-item';
+import Group from '@atlaskit/droplist-group';
+import { Label, FieldBase } from '@atlaskit/field-base';
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
 

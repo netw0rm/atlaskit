@@ -20,6 +20,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     onOpenChange: PropTypes.func,
     position: PropTypes.string,
     triggerType: PropTypes.oneOf(['default', 'button']),
+    triggerButtonProps: PropTypes.shape(Button.propTypes),
     shouldFlip: PropTypes.bool,
   }
 
@@ -32,6 +33,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     onOpenChange: () => {},
     position: 'bottom left',
     triggerType: 'default',
+    triggerButtonProps: {},
     shouldFlip: true,
   }
 
@@ -55,9 +57,27 @@ export default class StatelessDropdownMenu extends PureComponent {
     <Group heading={group.heading} key={groupIndex}>{this.renderItems(group.items)}</Group>
   )
 
+  renderTrigger = () => {
+    if (this.props.triggerType === 'button') {
+      const triggerProps = { ...this.props.triggerButtonProps };
+      const defaultButtonProps = {
+        isSelected: this.props.isOpen,
+        ariaHaspopup: true,
+        ariaExpanded: this.props.isOpen,
+        ariaControls: this.state.id,
+      };
+      if (!triggerProps.iconAfter && !triggerProps.iconBefore) {
+        triggerProps.iconAfter = Icon;
+      }
+      return (
+        <Button {...defaultButtonProps} {...triggerProps}>{ this.props.children }</Button>
+      );
+    }
+    return this.props.children;
+  }
+
   render = () => {
     const { props, state } = this;
-
     return (
       <Droplist
         position={props.position}
@@ -66,14 +86,7 @@ export default class StatelessDropdownMenu extends PureComponent {
         onOpenChange={props.onOpenChange}
         isTriggerNotTabbable={(props.triggerType === 'button') || props.isTriggerNotTabbable}
         shouldFlip={props.shouldFlip}
-        trigger={props.triggerType === 'button' ?
-          (<Button
-            isSelected={props.isOpen}
-            iconAfter={Icon}
-            ariaHaspopup
-            ariaExpanded={props.isOpen}
-            ariaControls={state.id}
-          >{props.children}</Button>) : props.children}
+        trigger={this.renderTrigger()}
       >
         <div id={state.id} role="menu">
           {this.renderGroups(props.items)}

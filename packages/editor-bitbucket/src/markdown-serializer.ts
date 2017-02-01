@@ -4,7 +4,7 @@ import {
   MarkdownSerializer as PMMarkdownSerializer,
   MarkdownSerializerState as PMMarkdownSerializerState,
   Node
-} from 'ak-editor-core';
+} from '@atlaskit/editor-core';
 import stringRepeat from './util/string-repeat';
 
 /**
@@ -66,13 +66,18 @@ const nodes = {
   },
   bullet_list(state: MarkdownSerializerState, node: Node) {
     node.attrs['tight'] = true;
-    state.renderList(node, '  ', () => (node.attrs['bullet'] || '*') + ' ');
+    state.renderList(node, '    ', () => (node.attrs['bullet'] || '*') + ' ');
   },
   ordered_list(state: MarkdownSerializerState, node: Node) {
     node.attrs['tight'] = true;
     const start = node.attrs['order'] || 1;
     const maxW = String(start + node.childCount - 1).length;
-    const space = state.repeat(' ', maxW + 2);
+    // The reason that this is 3 is because maxW is always max list number's length.
+    // For example, if max list number is 8, then the space for the next list item should be '8'.length + 3, which is 4 spaces.
+    // It is consistent with bullet list that has 4 spaces in front of list item.
+    // If the max nubmer is 10, then the space for the next list item should be '10'.length + 3, which is 5 spaces.
+    // So that they are well aligned.
+    const space = state.repeat(' ', maxW + 3);
     state.renderList(node, space, (i: number) => {
       const nStr = String(start + i);
       return state.repeat(' ', maxW - nStr.length) + nStr + '. ';

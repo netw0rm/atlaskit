@@ -1,22 +1,17 @@
-@import '~akutil-shared-styles/src/colors.less';
+@import '~@atlaskit/util-shared-styles/src/colors.less';
+@import '~@atlaskit/util-shared-styles/src/grid.less';
 
 // Size of the entire component, not including the borders
-@img-size-small: 20px;
-@img-size-medium: 30px;
-@img-size-large: 50px;
-@img-size-xlarge: 100px;
+@img-size-small: @ak-grid-size * 3;
+@img-size-medium: @ak-grid-size * 4;
+@img-size-large: @ak-grid-size * 6;
+@img-size-xlarge: @ak-grid-size * 12;
 
 // Size of the presence icon, not including the borders
-@presence-size-small: 8px;
-@presence-size-medium: 8px;
-@presence-size-large: 12px;
-@presence-size-xlarge: 22px;
-
-// The top and left offset for where the presence icon should be positioned
-@presence-offset-small: 12px;
-@presence-offset-medium: 20px;
-@presence-offset-large: 35px;
-@presence-offset-xlarge: 72px;
+@presence-size-small: 12px;
+@presence-size-medium: 12px;
+@presence-size-large: 18px;
+@presence-size-xlarge: 18px;
 
 // The color shown behind the avatar whilst it is still loading
 @ak-avatar-background: @ak-color-N40;
@@ -27,9 +22,17 @@
 @ak-avatar-presence-color-offline: @ak-color-N40;
 
 // Presence icon styles
-@ak-avatar-presence-border-width: 2px;
+@ak-avatar-presence-border-width-small: 2px;
+@ak-avatar-presence-border-width-medium: 2px;
+@ak-avatar-presence-border-width-large: 3px;
+@ak-avatar-presence-border-width-xlarge: 3px;
 @ak-avatar-presence-border-color: @ak-color-primary3;
 
+// The top and left offset for where the presence icon should be positioned
+@presence-offset-small: -@ak-avatar-presence-border-width-small;
+@presence-offset-medium: -@ak-avatar-presence-border-width-medium;
+@presence-offset-large: -@ak-avatar-presence-border-width-large;
+@presence-offset-xlarge: 6px; // xlarge presence is a snowflake with regards to presence placement
 
 .root {
   display: inline-block;
@@ -38,15 +41,19 @@
 
 .small {
   .sizeMixin(small);
+  .borderMixin(small);
 }
 .medium {
   .sizeMixin(medium);
+  .borderMixin(medium);
 }
 .large {
   .sizeMixin(large);
+  .borderMixin(large);
 }
 .xlarge {
   .sizeMixin(xlarge);
+  .borderMixin(xlarge);
 }
 
 .imgWrapper {
@@ -84,9 +91,9 @@
 .presence {
   align-content: center;
   align-items: middle;
-  // we repeat the border color here as fallback in case the user passes an invalid color:
-  // to borderColor
-  border: @ak-avatar-presence-border-width solid @ak-avatar-presence-border-color;
+  // we repeat the border color and width here as fallback in case the user passes an invalid color
+  // to borderColor, or an invalid size to size
+  border: @ak-avatar-presence-border-width-medium solid @ak-avatar-presence-border-color;
   border-radius: 100%;
   box-sizing: border-box;
   display: flex;
@@ -114,9 +121,17 @@
   width: @@width;
 
   .presence-wrapper {
-    left: @@presenceOffset;
+    right: @@presenceOffset;
     height: @@presenceSize;
-    top: @@presenceOffset;
+    bottom: @@presenceOffset;
     width: @@presenceSize;
+  }
+}
+
+.borderMixin(@size) {
+  @borderWidth: "ak-avatar-presence-border-width-@{size}";
+
+  .presence {
+    border-width: @@borderWidth;
   }
 }

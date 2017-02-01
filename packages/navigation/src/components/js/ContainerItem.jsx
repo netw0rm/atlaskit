@@ -14,6 +14,7 @@ export default class ContainerItem extends PureComponent {
     icon: PropTypes.node,
     isCompact: PropTypes.bool,
     isSelected: PropTypes.bool,
+    subText: PropTypes.string,
     text: PropTypes.node,
     textAfter: PropTypes.node,
     action: PropTypes.node,
@@ -42,6 +43,7 @@ export default class ContainerItem extends PureComponent {
           isCompact={this.props.isCompact}
           isSelected={this.props.isSelected}
           linkComponent={this.props.linkComponent}
+          subText={this.props.subText}
           text={this.props.text}
           textAfter={this.props.textAfter}
         />

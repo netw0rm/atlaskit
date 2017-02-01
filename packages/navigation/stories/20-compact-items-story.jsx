@@ -23,6 +23,7 @@ const CompactItem = ({ children }) => (
     isCompact
     text={children}
     textAfter={<RandomBadge />}
+    subText={Math.random() > 0.5 && 'This is some really long sub text'}
   />
 );
 

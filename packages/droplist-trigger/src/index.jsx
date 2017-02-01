@@ -47,7 +47,7 @@ export default class Trigger extends PureComponent {
         case keyCode('space'):
         case keyCode('enter'):
           event.preventDefault();
-          props.onActivate({ source: 'keydown' });
+          props.onActivate({ source: 'keydown', event });
           break;
         default:
           break;
@@ -55,14 +55,10 @@ export default class Trigger extends PureComponent {
     }
   }
 
-  handleClick = () => {
+  handleClick = (event) => {
     if (!this.props.isDisabled) {
-      this.props.onActivate({ source: 'click' });
+      this.props.onActivate({ source: 'click', event });
     }
-  }
-
-  handleMouseDown = (e) => {
-    e.preventDefault();
   }
 
   render() {
@@ -73,7 +69,6 @@ export default class Trigger extends PureComponent {
       <div
         onClick={this.handleClick}
         onKeyDown={this.handleKeyDown}
-        onMouseDown={this.handleMouseDown}
         className={classNames(styles.triggerContainer, props.className, {
           [styles.fitContainer]: props.shouldFitContainer,
         })}

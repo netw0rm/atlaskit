@@ -1,4 +1,4 @@
-import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from 'ak-editor-core/test-helper';
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from '@atlaskit/editor-core/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { mount, ReactWrapper } from 'enzyme';
@@ -6,7 +6,7 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 import stringRepeat from '../src/util/string-repeat';
 
-import { analyticsService, browser, ProseMirror } from 'ak-editor-core';
+import { analyticsService, browser, ProseMirror } from '@atlaskit/editor-core';
 
 import Editor from '../src/index';
 

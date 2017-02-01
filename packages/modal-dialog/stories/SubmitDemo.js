@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from 'ak-button';
-import AkFieldText from 'ak-field-text';
+import Button from '@atlaskit/button';
+import AkFieldText from '@atlaskit/field-text';
 import ModalDialog from '../src';
 
 const testFormId = 'test-form';
@@ -9,39 +9,42 @@ export default function () {
   return (
     <div>
       <ModalDialog
-        isOpen
-        header={
-          <span>Submit demo</span>
-        }
         footer={
           <Button
-            form={testFormId}
             appearance="primary"
+            form={testFormId}
             type="submit"
           >Create issue</Button>
         }
+        header={
+          <span>Submit demo</span>
+        }
+        isOpen
       >
         <form
           action="https://httpbin.org/post"
-          target="submit-frame"
           id={testFormId}
           method="post"
+          target="submit-frame"
         >
           <p>Enter some text and then try submitting with enter + click.</p>
           <AkFieldText
-            name="my-name"
             label="Name"
+            name="my-name"
             placeholder="Your name"
           />
           <AkFieldText
-            name="my-email"
             label="Email"
+            name="my-email"
             placeholder="gbelson@hooli.com"
           />
         </form>
       </ModalDialog>
 
-      <iframe title="Form POST test" name="submit-frame" />
+      <iframe
+        name="submit-frame"
+        title="Form POST test"
+      />
     </div>
   );
 }

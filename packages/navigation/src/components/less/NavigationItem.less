@@ -1,4 +1,5 @@
 @import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/fonts.less';
 @import '~akutil-shared-styles/src/grid.less';
 @import '~akutil-shared-styles/src/mixins/focus-ring.less';
 @import '../../shared-variables.less';
@@ -8,6 +9,10 @@
 @icon-open-padding: 0 (@ak-grid-size * 3) 0 (@icon-offset-left - @ak-grid-size * 2);
 @icon-closed-horizontal-padding: (@container-closed-width - (@ak-grid-size * 4) - @icon-size) / 2;
 @icon-closed-padding: 0 @icon-closed-horizontal-padding 0 @icon-closed-horizontal-padding;
+@sub-text-size: unit(12px / @ak-font-size-default, em);
+@sub-text-line-height: unit(16px / @ak-font-size-default, em);
+@compact-sub-text-size: 10px;
+@compact-sub-text-line-height: 12px;
 
 @border-radius: 3px;
 
@@ -28,12 +33,13 @@
     padding: 0;
   }
 
-  &:hover {
-    padding: (@ak-grid-size / 4) 0;
+  &:hover &.isSelected {
+    padding: 0;
+  }
 
-    &.isSelected {
-      padding: 0;
-    }
+  a, a:hover, a:visited {
+    color: inherit;
+    text-decoration: none;
   }
 }
 
@@ -45,15 +51,19 @@
 .navigationItemInner {
   height: 100%;
   width: 100%;
+  padding: 0 @ak-grid-size;
   display: flex;
   align-items: center;
-  padding: 0 @ak-grid-size;
   box-sizing: border-box;
-
 }
 
 .isCompact {
   height: @ak-grid-size * 4.5;
+
+  .subText {
+    font-size: @compact-sub-text-size;
+    line-height: @compact-sub-text-line-height;
+  }
 }
 
 .link:focus {
@@ -95,16 +105,27 @@
 
 .text {
   .hide-when-closed();
-
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-x: hidden;
   display: inline-block;
   flex-grow: 1;
 
   &.hasTextAfterOrAction {
     margin-right: @ak-grid-size * 3;
   }
+}
+
+.mainText {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subText {
+  color: @ak-color-N90;
+  font-size: @sub-text-size;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .textAfter {

@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/droplist-trigger",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "React component that is enabled by pressing 'space' or 'enter', or by clicking on it.",
   "main": "dist/bundle.js",
@@ -17,14 +17,14 @@
     "src/index.d.ts"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^37.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "keycode": "^2.1.7"
   },
   "devDependencies": {
-    "ak-avatar": "^5.0.5",
-    "ak-button": "^5.0.3"
+    "@atlaskit/avatar": "^1.0.0",
+    "@atlaskit/button": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

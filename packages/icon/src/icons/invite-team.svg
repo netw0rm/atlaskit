@@ -15,9 +15,9 @@
                 <g id="icon_container_transparent">
                     <rect x="0" y="0" width="24" height="24"></rect>
                 </g>
-                <circle id="Oval-3" stroke="#243759" stroke-width="2" cx="10" cy="7" r="2"></circle>
-                <path d="M15,16.8989827 C13.729483,18.1955328 11.9586882,19 10,19 C8.04131183,19 6.27051704,18.1955328 5,16.8989827 L5,13.9981014 C5,12.8945804 5.88743329,12 6.99961498,12 L13.000385,12 C14.1047419,12 15,12.8867064 15,13.9981014 L15,16.8989827 Z" id="Combined-Shape" stroke="#243759" stroke-width="2"></path>
-                <use id="Combined-Shape" stroke="#243759" mask="url(#mask-2)" stroke-width="2" xlink:href="#path-1"></use>
+                <circle id="Oval-3" stroke="currentColor" stroke-width="2" cx="10" cy="7" r="2"></circle>
+                <path d="M15,16.8989827 C13.729483,18.1955328 11.9586882,19 10,19 C8.04131183,19 6.27051704,18.1955328 5,16.8989827 L5,13.9981014 C5,12.8945804 5.88743329,12 6.99961498,12 L13.000385,12 C14.1047419,12 15,12.8867064 15,13.9981014 L15,16.8989827 Z" id="Combined-Shape" stroke="currentColor" stroke-width="2"></path>
+                <use id="Combined-Shape" stroke="currentColor" mask="url(#mask-2)" stroke-width="2" xlink:href="#path-1"></use>
             </g>
         </g>
     </g>

@@ -1,5 +1,5 @@
 import Keymap from 'browserkeymap';
-import * as keymaps from '../../keymaps';
+import { trackAndInvoke } from '../../analytics';
 import {
   commands,
   Mark,
@@ -16,8 +16,7 @@ import {
   SubSupMarkType,
   UnderlineMarkType
 } from '../../schema';
-
-import { trackAndInvoke } from '../../analytics';
+import * as keymaps from '../keymaps';
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 

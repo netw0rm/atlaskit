@@ -3,7 +3,7 @@ import NumberListIcon from 'ak-icon/glyph/editor/number-list';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
-import { toggleBulletList, toggleOrderedList, tooltip } from '../../keymaps';
+import { toggleBulletList, toggleOrderedList, tooltip } from '../../plugins/keymaps';
 import { ListsState } from '../../plugins/lists';
 import ToolbarButton from '../ToolbarButton';
 

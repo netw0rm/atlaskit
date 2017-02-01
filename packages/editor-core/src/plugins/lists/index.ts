@@ -1,4 +1,5 @@
 import Keymap from 'browserkeymap';
+import { trackAndInvoke } from '../../analytics';
 import {
   commands,
   Node,
@@ -10,7 +11,6 @@ import {
   Selection,
   TextSelection,
 } from '../../prosemirror';
-
 import {
   BulletListNodeType,
   isBulletListNode,
@@ -18,7 +18,6 @@ import {
   ListItemNodeType,
   OrderedListNodeType
 } from '../../schema';
-
 import {
   canJoinDown,
   canJoinUp,
@@ -28,10 +27,7 @@ import {
   isRangeOfType,
   liftSelection,
 } from '../../utils';
-
-import * as keymaps from '../../keymaps';
-
-import { trackAndInvoke } from '../../analytics';
+import * as keymaps from '../keymaps';
 
 export type ListType = 'bullet_list' | 'ordered_list' | null;
 

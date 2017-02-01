@@ -6,8 +6,8 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 
 import { analyticsService as analytics } from '../../analytics';
-import { findKeymapByDescription, tooltip } from '../../keymaps';
 import { BlockType, BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
+import { findKeymapByDescription, tooltip } from '../../plugins/keymaps';
 import * as styles from './styles';
 
 export interface Props {

@@ -26,7 +26,7 @@ import {
   isOrderedListNode
 } from '../../schema';
 
-import * as keymaps from '../../keymaps';
+import * as keymaps from '../keymaps';
 
 export type StateChangeHandler = (state: ListsState) => any;
 

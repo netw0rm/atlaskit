@@ -1,7 +1,6 @@
 import Keymap from 'browserkeymap';
 import { ContextName } from '../../';
 import { trackAndInvoke } from '../../analytics';
-import * as keymaps from '../../keymaps';
 import {
   commands,
   Fragment,
@@ -26,6 +25,7 @@ import {
   getGroupsInRange,
   liftSelection
 } from '../../utils';
+import * as keymaps from '../keymaps';
 import transformToCodeBlock from './transform-to-code-block';
 
 // The names of the blocks don't map precisely to schema nodes, because

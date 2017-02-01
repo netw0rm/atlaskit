@@ -3,6 +3,7 @@ import { Component, ReactNode } from 'react';
 interface Props {
   appearance?: 'default' | 'tall';
   isOpen?: boolean;
+  isTriggerDisabled?: boolean;
   isTriggerNotTabbable?: boolean;
   listContext?: 'menu';
   onOpenChange?: ({ isOpen: boolean }) => void;

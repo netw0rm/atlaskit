@@ -61,8 +61,14 @@ storiesOf(name, module)
           <AkContainerItem
             action={<CancelIcon />}
             isCompact
-            subText="This should not be on the page"
-            text="Should only see one line"
+            subText="Text with y, q, etc."
+            text="Should have even smaller subText"
+            textAfter={<RandomBadge />}
+          />
+          <AkContainerItem
+            isCompact
+            subText="There's nothing quite like Parkay's squeeze™"
+            text="Should have even smaller subText"
             textAfter={<RandomBadge />}
           />
         </AkContainerItemGroup>

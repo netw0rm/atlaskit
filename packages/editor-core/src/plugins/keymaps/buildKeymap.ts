@@ -1,7 +1,7 @@
 import { toggleMark } from '../../prosemirror/future/prosemirror-commands';
-import { toggleBold, toggleItalic, toggleMonospace, toggleStrikethrough, toggleUnderline } from './';
+import * as keymapShortcuts from './';
 
-// const {undo, redo} = require("../../prosemirror/future/prosemirror-history")
+import {redo, undo} from '../../prosemirror/future/prosemirror-history';
 
 export function buildKeymap(schema) {
   const keymap = {};
@@ -11,24 +11,27 @@ export function buildKeymap(schema) {
   }
 
   if (schema.marks.strong) {
-    bind(toggleBold.common, toggleMark(schema.marks.strong));
+    bind(keymapShortcuts.toggleBold.common, toggleMark(schema.marks.strong));
   }
 
   if (schema.marks.em) {
-    bind(toggleItalic.common, toggleMark(schema.marks.em));
+    bind(keymapShortcuts.toggleItalic.common, toggleMark(schema.marks.em));
   }
 
   if (schema.marks.mono) {
-    bind(toggleMonospace.common, toggleMark(schema.marks.mono));
+    bind(keymapShortcuts.toggleMonospace.common, toggleMark(schema.marks.mono));
   }
 
   if (schema.marks.strike) {
-    bind(toggleStrikethrough.common, toggleMark(schema.marks.strike));
+    bind(keymapShortcuts.toggleStrikethrough.common, toggleMark(schema.marks.strike));
   }
 
   if (schema.marks.underline) {
-    bind(toggleUnderline.common, toggleMark(schema.marks.underline));
+    bind(keymapShortcuts.toggleUnderline.common, toggleMark(schema.marks.underline));
   }
+
+  bind(keymapShortcuts.redo.common, redo);
+  bind(keymapShortcuts.undo.common, undo);
 
   return keymap;
 }

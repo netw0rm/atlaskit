@@ -20,6 +20,8 @@ export const shiftBackspace = makeKeyMapWithCommon('Shift Backspace', 'Shift-Bac
 export const splitCodeBlock = makeKeyMapWithCommon('Split code block', 'Enter');
 export const splitListItem = makeKeyMapWithCommon('Split list item', 'Enter');
 export const insertHorizontalRule = makeKeyMapWithCommon('Insert horizontal rule', 'Mod-Shift--');
+export const redo = makeKeyMapWithCommon('Redo', 'Mod-Shift-z');
+export const undo = makeKeyMapWithCommon('Undo', 'Mod-z');
 
 export function tooltip(keymap: Keymap | undefined): string | undefined {
   if (keymap) {

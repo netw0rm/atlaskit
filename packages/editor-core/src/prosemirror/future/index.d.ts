@@ -1,4 +1,5 @@
 export * from './prosemirror-commands';
+export * from './prosemirror-history';
 export * from './prosemirror-inputrules';
 export * from './prosemirror-keymap';
 export * from './prosemirror-model';

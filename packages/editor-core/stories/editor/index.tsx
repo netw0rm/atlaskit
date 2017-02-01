@@ -11,6 +11,7 @@ import {
   baseKeymap,
   EditorState,
   EditorView,
+  history,
   inputRules,
   keymap,
   Node,
@@ -145,6 +146,7 @@ export default class Editor extends PureComponent<Props, State> {
         createEdiorConfig(schema, [
           ListsPlugin,
           inputRules({ rules: buildMarkdownInputRules(schema) }),
+          history(),
           keymap(buildKeymap(schema)),
           keymap(baseKeymap) // should be last :(
         ])

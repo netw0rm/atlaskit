@@ -6,7 +6,7 @@ import Tabs from '../src';
 import { name } from '../package.json';
 
 storiesOf(name, module)
-  .add('ak-tabs', () => (
+  .add('@atlaskit/tabs', () => (
     <Tabs
       tabs={[
         {
@@ -29,7 +29,7 @@ storiesOf(name, module)
       ]}
     />
   ))
-  .add('ak-tabs with no default selection', () => (
+  .add('@atlaskit/tabs with no default selection', () => (
     <Tabs
       tabs={[
         {
@@ -51,7 +51,7 @@ storiesOf(name, module)
       ]}
     />
   ))
-  .add('ak-tabs with many tabs', () => (
+  .add('@atlaskit/tabs with many tabs', () => (
     <Tabs
       tabs={[
         { label: 'Tab 1', content: 'Tab 1 content', defaultSelected: true },
@@ -67,10 +67,10 @@ storiesOf(name, module)
       ]}
     />
   ))
-  .add('ak-tabs with no child tabs', () => (
+  .add('@atlaskit/tabs with no child tabs', () => (
     <Tabs />
   ))
-  .add('ak-tabs with multiple selected tabs', () => (
+  .add('@atlaskit/tabs with multiple selected tabs', () => (
     <Tabs
       tabs={[
         {

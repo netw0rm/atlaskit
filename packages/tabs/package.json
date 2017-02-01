@@ -2,7 +2,7 @@
   "name": "@atlaskit/tabs",
   "version": "1.0.0",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "A React component for displaying multiple panels within a single window",
   "main": "dist/bundle.js",
@@ -26,7 +26,8 @@
     "keycode": "^2.1.4"
   },
   "devDependencies": {
-    "ak-tabs": "*",
+    "@atlaskit/tabs": "*",
+    "@atlaskit/util-readme": "^1.0.0",
     "react-lorem-component": "^0.11.0"
   },
   "peerDependencies": {

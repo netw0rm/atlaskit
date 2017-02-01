@@ -83,37 +83,37 @@ describe(name, () => {
       expect(menu.find(ExpandIcon).length).to.equal(1);
     });
 
-    it('should pass through triggerButtonOptions to the trigger for triggerType=button', () => {
-      const triggerOpts = {
+    it('should pass through triggerButtonProps to the trigger for triggerType=button', () => {
+      const triggerProps = {
         appearance: 'subtle',
         id: 'button-123',
         theme: 'dark',
       };
-      const menu = mount(<Menu items={itemsList} triggerType="button" triggerButtonOptions={triggerOpts} />);
+      const menu = mount(<Menu items={itemsList} triggerType="button" triggerButtonProps={triggerProps} />);
       const trigger = menu.find(Button);
-      expect(trigger.prop('appearance')).to.equal(triggerOpts.appearance);
-      expect(trigger.prop('id')).to.equal(triggerOpts.id);
-      expect(trigger.prop('theme')).to.equal(triggerOpts.theme);
+      expect(trigger.prop('appearance')).to.equal(triggerProps.appearance);
+      expect(trigger.prop('id')).to.equal(triggerProps.id);
+      expect(trigger.prop('theme')).to.equal(triggerProps.theme);
     });
 
     it('should render provided iconAfter in trigger instead of default expand icon if provided', () => {
-      const triggerOpts = {
+      const triggerProps = {
         iconAfter: <MoreIcon label="more" />,
       };
-      const menu = mount(<Menu items={itemsList} triggerType="button" triggerButtonOptions={triggerOpts} />);
+      const menu = mount(<Menu items={itemsList} triggerType="button" triggerButtonProps={triggerProps} />);
       const trigger = menu.find(Button);
       expect(trigger.prop('iconBefore')).to.equal(undefined);
-      expect(trigger.prop('iconAfter')).to.equal(triggerOpts.iconAfter);
+      expect(trigger.prop('iconAfter')).to.equal(triggerProps.iconAfter);
       expect(menu.find(MoreIcon).length).to.equal(1);
     });
 
     it('should render provided iconBefore in trigger instead of default expand icon if provided', () => {
-      const triggerOpts = {
+      const triggerProps = {
         iconBefore: <MoreIcon label="more" />,
       };
-      const menu = mount(<Menu items={itemsList} triggerType="button" triggerButtonOptions={triggerOpts} />);
+      const menu = mount(<Menu items={itemsList} triggerType="button" triggerButtonProps={triggerProps} />);
       const trigger = menu.find(Button);
-      expect(trigger.prop('iconBefore')).to.equal(triggerOpts.iconBefore);
+      expect(trigger.prop('iconBefore')).to.equal(triggerProps.iconBefore);
       expect(trigger.prop('iconAfter')).to.equal(undefined);
       expect(menu.find(MoreIcon).length).to.equal(1);
     });

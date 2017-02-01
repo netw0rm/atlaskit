@@ -15,7 +15,7 @@ export default class DropdownMenu extends PureComponent {
     onOpenChange: PropTypes.func,
     position: PropTypes.string,
     triggerType: PropTypes.oneOf(['default', 'button']),
-    triggerButtonOptions: PropTypes.shape(Button.propTypes),
+    triggerButtonProps: PropTypes.shape(Button.propTypes),
     shouldFlip: PropTypes.bool,
   }
 
@@ -28,7 +28,7 @@ export default class DropdownMenu extends PureComponent {
     onOpenChange: () => {},
     position: 'bottom left',
     triggerType: 'default',
-    triggerButtonOptions: {},
+    triggerButtonProps: {},
     shouldFlip: true,
   }
 
@@ -96,7 +96,7 @@ export default class DropdownMenu extends PureComponent {
         onOpenChange={this.handleOpenChange}
         isTriggerNotTabbable={props.isTriggerNotTabbable}
         triggerType={props.triggerType}
-        triggerButtonOptions={props.triggerButtonOptions}
+        triggerButtonProps={props.triggerButtonProps}
         shouldFlip={props.shouldFlip}
         items={state.items}
       >

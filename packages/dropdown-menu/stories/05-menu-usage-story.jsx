@@ -6,13 +6,11 @@ import { Code, Chrome, Description } from 'akutil-readme';
 
 import DropdownMenu from '../src';
 import { name } from '../package.json';
-import DropdownWithButtonExample from './DropdownWithButtonExample'; // eslint-disable-line
 import DropdownLoadItemsExample from './DropdownLoadItemsExample'; // eslint-disable-line
 import StatusDropdown from './examples/StatusDropdown'; // eslint-disable-line
 import DropdownWithTriggerOptions from './DropdownWithTriggerOptions'; // eslint-disable-line
 
 /* eslint-disable import/first, import/no-duplicates */
-import DropdownWithButtonExampleRaw from '!raw!./DropdownWithButtonExample';
 import DropdownLoadItemsExampleRaw from '!raw!./DropdownLoadItemsExample';
 import DropdownWithTriggerOptionsRaw from '!raw!./DropdownWithTriggerOptions';
 import StatusDropdownRaw from '!raw!./examples/StatusDropdown';
@@ -137,14 +135,6 @@ storiesOf(name, module)
     },
     scripts: [
       itemsOverride,
-    ],
-  })
-  .addCodeExampleStory('Basic Dropdown menu with a custom button', () => (
-    <DropdownWithButtonExample />
-  ),
-  {
-    scripts: [
-      DropdownWithButtonExampleRaw,
     ],
   })
   .addCodeExampleStory('Different appearances of the dropdown menu: default, tall', () => (

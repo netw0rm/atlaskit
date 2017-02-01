@@ -1,6 +1,6 @@
 import { Node, NodeRange, NodeType } from '../';
 
-export function liftTarget(range: NodeRange): number | null;
+export function liftTarget(range: NodeRange): number | undefined;
 
 export function findWrapping(range: NodeRange, nodeType: NodeType, attrs?: { [key: string]: any }, innerRange?: NodeRange): { type: NodeType, attrs?: { [key: string]: any } }[] | null;
 

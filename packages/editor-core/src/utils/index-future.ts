@@ -170,10 +170,10 @@ export function hasCommonAncestor(pm, $from: ResolvedPos, $to: ResolvedPos): boo
 /**
  * Takes a selection $from and $to and lift all text nodes from their parents to document-level
  */
-export function liftSelection(tr, state, $from: ResolvedPos, $to: ResolvedPos) {
+export function liftSelection(tr, doc, $from: ResolvedPos, $to: ResolvedPos) {
   let startPos = $from.start($from.depth);
   let endPos = $to.end($to.depth);
-  const target = Math.max(0, findAncestorPosition(state.doc, $from).depth - 1);
+  const target = Math.max(0, findAncestorPosition(doc, $from).depth - 1);
 
   tr.doc.nodesBetween(startPos, endPos, (node, pos) => {
     if (

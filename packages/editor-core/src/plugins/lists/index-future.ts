@@ -1,11 +1,11 @@
 import {
+  canJoin,
   canSplit,
   EditorState,
   EditorView,
   findWrapping,
   Fragment,
-  joinDown,
-  joinUp,
+  joinPoint,
   lift,
   liftTarget,
   Node,
@@ -16,8 +16,8 @@ import {
   ReplaceAroundStep,
   ResolvedPos,
   Slice,
-  Transaction,
   TextSelection,
+  Transaction,
   Transform,
 } from '../../prosemirror/future';
 import {
@@ -41,6 +41,11 @@ export type StateChangeHandler = (state: ListsState) => any;
 
 const noop = (...args: any[]) => {};
 
+/**
+ *
+ * Plugin State
+ *
+ */
 export class ListsState {
   private changeHandlers: StateChangeHandler[] = [];
   private editorView: EditorView | undefined;
@@ -63,13 +68,9 @@ export class ListsState {
     this.editorView = editorView;
 
     // Checks what types of lists schema supports.
-    const { bullet_list, ordered_list } = editorView.state.schema.nodes;
+    const { bullet_list, ordered_list } = this.editorView.state.schema.nodes;
     this.bulletListHidden = !bullet_list;
     this.orderedListHidden = !ordered_list;
-    this.wrapInBulletList = !!bullet_list ? () => wrapInList(bullet_list)(editorView.state, noop, editorView) : noop;
-    this.wrapInOrderedList = !!ordered_list ? () => wrapInList(ordered_list)(editorView.state, noop, editorView) : noop;
-
-    this.update(editorView.state);
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -124,176 +125,214 @@ export class ListsState {
 
     const anyListActive = newBulletListActive || newOrderedListActive;
 
-
-    // TODO: After removing list buttons disables till next key press.
-    const newBulletListDisabled = !(anyListActive || this.wrapInBulletList());
-    if (newBulletListDisabled !== this.bulletListDisabled) {
-      this.bulletListDisabled = newBulletListDisabled;
-      dirty = true;
-    }
-
-    const newOrderedListDisabled = !(anyListActive || this.wrapInOrderedList());
-    if (newOrderedListDisabled !== this.orderedListDisabled) {
-      this.orderedListDisabled = newOrderedListDisabled;
-      dirty = true;
-    }
-
     if (dirty) {
       this.triggerOnChange();
     }
   }
-}
-
-// Build a command that splits a non-empty textblock at the top level
-// of a list item by also splitting that list item.
-const splitListItem = (nodeType: NodeType) => (state: EditorState<any>, dispatch, view: EditorView): boolean => {
-  const {$from, $to, node} = state.selection as NodeSelection;
-  if ((node && node.isBlock) || !($from.parent.content as any).size || $from.depth < 2 || !$from.sameParent($to)) {
-    return false;
-  }
-  const grandParent = $from.node(-1);
-
-  if (grandParent.type !== nodeType) {
-    return false;
-  }
-
-  const nextType = $to.pos === $from.end() ? (grandParent as any).defaultContentType($from.indexAfter(-1)) : null;
-  const tr = (state.tr as any).delete($from.pos, $to.pos);
-  const types = nextType && [null, {type: nextType}];
-
-  if (!canSplit(tr.doc, $from.pos, 2)) {
-    return false;
-  }
-
-  if (dispatch) {
-    dispatch(tr.split($from.pos, 2, types).scrollIntoView())
-  }
-
-  return true;
 };
 
-// Returns a command function that wraps the selection in a list with
-// the given type an attributes. If `dispatch` is `false`, only return
-// a value to indicate whether this is possible, but don't actually
-// perform the change.
-const wrapInList = (nodeType: NodeType, attrs?) => (state: EditorState<any>, dispatch, view?: EditorView): boolean => {
-  const { tr } = state;
-  const { $from, $to } = state.selection;
-  let range = $from.blockRange($to);
-  let doJoin = false;
-  let outerRange;
+/**
+ *
+ * Utils
+ *
+ */
 
-  if (!range) {
-    return false;
-  }
+/**
+ * Wraps selection in list according to nodeType (Bullet List | Ordered List)
+ *
+ * For selection:
+ *
+ * doc
+ * <{p text
+ *   p text
+ *   p text}>
+ *
+ * Result:
+ *
+ * doc
+ *   ul
+ *     li
+ *       p text
+ *       p text
+ *       p text
+ */
+const wrapSelectionInList = (nodeType: NodeType, attrs?) => (state: EditorState<any>, transaction?: Transaction) => {
+  const {$from, $to} = state.selection;
+  const range = $from.blockRange($to);
+  const tr = transaction || state.tr;
 
-  // This is at the top of an existing list item
-  if (range.depth >= 2 && $from.node(range.depth - 1).type.compatibleContent(nodeType) && range.startIndex === 0) {
-    // Don't do anything if this is the top of the list
-    if ($from.index(range.depth - 1) === 0) {
-      return false;
-    }
+  if (!range) { return; }
 
-    const $insert = state.doc.resolve(range.start - 2);
-    outerRange = new NodeRange($insert, $insert, range.depth);
+  const wrap = findWrapping(range, nodeType, attrs);
 
-    if (range.endIndex < range.parent.childCount) {
-      range = new NodeRange($from, state.doc.resolve($to.end(range.depth)), range.depth);
-    }
+  if (!wrap) { return; }
 
-    doJoin = true;
-  }
-
-  const wrap = findWrapping(outerRange || range, nodeType, attrs, range);
-
-  if (!wrap) {
-    return false;
-  }
-
-  // Wraps whole selection in a list
   const content = wrap
-    .reduceRight((acc, item) => Fragment.from(item.type.create(item.attrs, acc)), Fragment.empty);
+    .reduceRight((fragment, wrapItem) => Fragment.from(wrapItem.type.create(wrapItem.attrs, fragment)), Fragment.empty);
 
-  tr.step(new ReplaceAroundStep(range.start - (doJoin ? 2 : 0), range.end, range.start, range.end,
-                                new Slice(content, 0, 0), wrap.length, true));
+  tr.step(
+    new ReplaceAroundStep(range.start, range.end, range.start, range.end, new Slice(content, 0, 0), wrap.length, true)
+  );
 
-  /**
-   * Splits list into list items for example if we have selection like this:
-   *
-   *  doc
-   *  <{p text
-   *    p text
-   *    p text
-   *    p text }>
-   *
-   * After first step where we wrap everything in a list we will have:
-   *
-   *  doc
-   *  <{ul
-   *      li
-   *        p text
-   *        p text
-   *        p text
-   *        p text }>
-   *
-   * After splitting step we will have structure like this:
-   *
-   * doc
-   *  <{ul
-   *      li
-   *        p text
-   *      li
-   *        p text
-   *      li
-   *        p text
-   *      li
-   *        p text }>
-   */
+  return tr;
+};
 
-  const found = wrap.reduce((acc, item, index) => item.type === nodeType ? (acc = index + 1) : acc, 0);
-  const parent = range.parent;
+const splitListItemWithMultipleBlocks = (nodeType: NodeType, attrs?) => (state: EditorState<any>, transaction?: Transaction) => {
+  const {$from, $to} = state.selection;
+  const range = $from.blockRange($to);
+  const tr = transaction || state.tr;
+
+  if (!range) { return; }
+
+  const wrap = findWrapping(range, nodeType, attrs);
+
+  if (!wrap) { return; }
+
+  const found = wrap.reduce((depth, wrapItem, index) => wrapItem.type === nodeType ? index + 1 : depth, 0);
   const splitDepth = wrap.length - found;
-  let splitPos = range.start + wrap.length - (doJoin ? 2 : 0);
+  const parent = range.parent;
+  let splitPos = range.start + wrap.length;
 
   for (let i = range.startIndex, first = true; i < range.endIndex; i++, first = false) {
     if (!first && canSplit(tr.doc, splitPos, splitDepth)) {
-      (tr as any).split(splitPos, splitDepth);
+      (tr as any).split(splitPos, splitDepth); // TODO: fix types for transaction
     }
 
     splitPos += parent.child(i).nodeSize + (first ? 0 : 2 * splitDepth);
   }
 
-  if (dispatch) {
-    dispatch(tr.scrollIntoView());
+  return tr;
+};
+
+const splitListItem = (nodeType: NodeType) => (state: EditorState<any>, transaction?: Transaction) => {
+  const tr = transaction || state.tr;
+  const {$from, $to, node} = state.selection as NodeSelection;
+
+  if ((node && node.isBlock) || !($from.parent.content as any).size || $from.depth < 2 || !$from.sameParent($to)) {
+    return;
   }
 
-  return true;
+  const grandParent = $from.node(-1);
+
+  if (grandParent.type !== nodeType) {
+    return;
+  }
+
+  const nextType = $to.pos === $from.end() ? (grandParent as any).defaultContentType($from.indexAfter(-1)) : null;
+  const types = nextType && [null, {type: nextType}];
+
+  (state.tr as any).delete($from.pos, $to.pos);
+
+  if (!canSplit(tr.doc, $from.pos, 2)) {
+    return;
+  }
+
+  return (tr as any).split($from.pos, 2, types).scrollIntoView(); // TODO: fix types for transaction
 };
 
-const toggleList = (nodeType: NodeType) => (state: EditorState<any>, dispatch?, view?: EditorView) => {
-  return wrapInList(nodeType)(state, dispatch, view);
+const liftListItems = () => (state: EditorState<any>, transaction?: Transaction) => {
+  const tr = transaction || state.tr;
+  const {$from, $to} = tr.selection;
+  return liftSelection(tr, tr.doc, $from, $to);
 };
 
-const untoggleList = (nodeType: NodeType) => (state: EditorState<any>, dispatch?, view?: EditorView) => {
-  return lift(state, dispatch);
+const joinUp = (nodeType: NodeType) => (state: EditorState<any>, transaction?: Transaction) => {
+  const tr = transaction || state.tr;
+
+  if (canJoinUp(tr.selection, tr.doc, nodeType)) {
+    const res = tr.doc.resolve(tr.selection.$from.before(findAncestorPosition(tr.doc, tr.selection.$from).depth));
+    const point = joinPoint(tr.doc, res.pos, -1);
+    if (point) {
+      (tr as any).join(point); // TODO: fix types for transaction
+    }
+  }
+
+  return tr;
 };
 
-const toggleBulletList = (pluginState?) => (state: EditorState<any>, dispatch, view: EditorView) =>
-  pluginState && pluginState.bulletListActive
-  ? untoggleList(state.schema.nodes.bullet_list)(state, dispatch, view)
-  : toggleList(state.schema.nodes.bullet_list)(state, dispatch, view);
+const joinDown = (nodeType: NodeType) => (state: EditorState<any>, transaction?: Transaction) => {
+  const tr = transaction || state.tr;
 
-const toggleOrderedList = (pluginState?) => (state: EditorState<any>, dispatch, view: EditorView) =>
-  toggleList(state.schema.nodes.ordered_list)(state, dispatch, view);
+  if (canJoinDown(tr.selection, tr.doc, nodeType)) {
+    const res = tr.doc.resolve(tr.selection.$to.after(findAncestorPosition(tr.doc, tr.selection.$to).depth));
+    const point = joinPoint(tr.doc, res.pos, 1);
+    if (point) {
+      (tr as any).join(point); // TODO: fix types for transaction
+    }
+  }
 
-const commands = { splitListItem, wrapInList, toggleBulletList, toggleOrderedList };
+  return tr;
+};
+
+
+/**
+ *
+ * Commands
+ *
+ */
+
+const composeCommands = (...args) => (state, dispatch) => {
+  const tr = args.reduce((tr, command) => command(state, tr), undefined);
+
+  if (dispatch && tr) {
+    dispatch(tr);
+    return true;
+  }
+
+  return false;
+};
+
+const toggleBulletList = (pluginState: ListsState) => (state: EditorState<any>, dispatch?, view?: EditorView) => {
+  if (!view) {
+    return;
+  }
+
+  if (pluginState.bulletListActive) {
+    return composeCommands(liftListItems())(view.state, view.dispatch);
+  }
+
+  if (pluginState.orderedListActive) {
+    composeCommands(liftListItems())(view.state, view.dispatch);
+  }
+
+  return composeCommands(
+    wrapSelectionInList(state.schema.nodes.bullet_list),
+    splitListItemWithMultipleBlocks(state.schema.nodes.bullet_list),
+    joinUp(state.schema.nodes.bullet_list),
+    joinDown(state.schema.nodes.bullet_list)
+  )(view.state, view.dispatch);
+};
+
+const toggleOrderedList = (pluginState: ListsState) => (state: EditorState<any>, dispatch?, view?: EditorView) => {
+  if (!view) {
+    return;
+  }
+
+  if (pluginState.orderedListActive) {
+    return composeCommands(liftListItems())(view.state, view.dispatch);
+  }
+
+  if (pluginState.bulletListActive) {
+    composeCommands(liftListItems())(view.state, view.dispatch);
+  }
+
+  return composeCommands(
+    wrapSelectionInList(state.schema.nodes.ordered_list),
+    splitListItemWithMultipleBlocks(state.schema.nodes.ordered_list),
+    joinUp(state.schema.nodes.ordered_list),
+    joinDown(state.schema.nodes.order_list)
+  )(view.state, view.dispatch);
+};
+
+/**
+ *
+ * Preparing Exports
+ *
+ */
 
 const keymap = {
-  [keymaps.splitListItem.common!]: (state, dispatch, view) => {
-    return splitListItem(state.schema.nodes.list_item)(state, dispatch, view);
-  },
-  // [keymaps.toggleOrderedList.common!]: trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', () => this.toggleOrderedList()),
-  // [keymaps.toggleBulletList.common!]: trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', () => this.toggleBulletList())
+  [keymaps.splitListItem.common!]: (state, dispatch, view) =>
+    composeCommands(splitListItem(state.schema.nodes.list_item))(state, dispatch)
 };
 
 const plugin = new Plugin({
@@ -308,4 +347,4 @@ const plugin = new Plugin({
   }
 });
 
-export default { commands, keymap, plugin };
+export default { keymap, plugin };

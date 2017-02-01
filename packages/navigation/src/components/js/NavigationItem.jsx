@@ -61,10 +61,10 @@ export default class NavigationItem extends PureComponent {
       </div>
     : null);
 
-    const SubText = () => (this.props.isCompact ? null :
-    <div className={subText}>
-      {this.props.subText}
-    </div>
+    const SubText = () => (
+      <div className={subText}>
+        {this.props.subText}
+      </div>
     );
 
     return (

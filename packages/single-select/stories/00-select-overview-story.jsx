@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { Code, Chrome, Description, Props } from 'akutil-readme';
+import { Code, Chrome, Description, Props } from '@atlaskit/util-readme';
 
 /* eslint-disable import/first, import/no-duplicates */
 import StatelessSelectOverview from './examples/StatelessSelectOverview';

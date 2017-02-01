@@ -1,32 +1,21 @@
 import {
-  canJoin,
   canSplit,
   EditorState,
   EditorView,
   findWrapping,
   Fragment,
   joinPoint,
-  lift,
-  liftTarget,
-  Node,
-  NodeRange,
   NodeSelection,
   NodeType,
   Plugin,
   ReplaceAroundStep,
-  ResolvedPos,
   Slice,
-  TextSelection,
   Transaction,
-  Transform,
 } from '../../prosemirror/future';
 import {
   canJoinDown,
   canJoinUp,
   findAncestorPosition,
-  getAncestorNodesBetween,
-  getGroupsInRange,
-  isRangeOfType,
   liftSelection,
 } from '../../utils/index-future';
 
@@ -39,8 +28,6 @@ import * as keymaps from '../keymaps';
 
 export type StateChangeHandler = (state: ListsState) => any;
 
-const noop = (...args: any[]) => {};
-
 /**
  *
  * Plugin State
@@ -49,8 +36,6 @@ const noop = (...args: any[]) => {};
 export class ListsState {
   private changeHandlers: StateChangeHandler[] = [];
   private editorView: EditorView | undefined;
-  private wrapInBulletList: () => any;
-  private wrapInOrderedList: () => any;
 
   // public state
   bulletListActive = false;
@@ -122,8 +107,6 @@ export class ListsState {
       this.orderedListActive = newOrderedListActive;
       dirty = true;
     }
-
-    const anyListActive = newBulletListActive || newOrderedListActive;
 
     if (dirty) {
       this.triggerOnChange();

@@ -1,10 +1,11 @@
 import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import Editor from './editor';
+import * as styles from './styles';
 
 storiesOf('ak-editor-core', module)
   .add('Example editor', () => (
-    <div style={{ padding: 20 }}>
+    <div className={styles.content} >
       <Editor
         onChange={this.fetchEditorState}
         isExpandedByDefault

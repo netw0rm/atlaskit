@@ -35,13 +35,13 @@ describe('keymaps', () => {
       describe('findShortcutByDescription', () => {
         context('shortcut is found', () => {
           it('returns matched shortcut', () => {
-            expect(keymaps.findShorcutByDescription('heading 1')).to.eq('Cmd-Alt-1');
+            expect(keymaps.findShortcutByDescription('heading 1')).to.eq('Cmd-Alt-1');
           });
         });
 
         context('shortcut is not found', () => {
           it('returns undefined', () => {
-            expect(keymaps.findShorcutByDescription('random')).to.be.undefined;
+            expect(keymaps.findShortcutByDescription('random')).to.be.undefined;
           });
         });
       });
@@ -71,13 +71,13 @@ describe('keymaps', () => {
       describe('findShortcutByDescription', () => {
         context('shortcut is found', () => {
           it('returns matched shortcut', () => {
-            expect(keymaps.findShorcutByDescription('heading 1')).to.eq('Ctrl-1');
+            expect(keymaps.findShortcutByDescription('heading 1')).to.eq('Ctrl-1');
           });
         });
 
         context('shortcut is not found', () => {
           it('returns undefined', () => {
-            expect(keymaps.findShorcutByDescription('random')).to.be.undefined;
+            expect(keymaps.findShortcutByDescription('random')).to.be.undefined;
           });
         });
       });

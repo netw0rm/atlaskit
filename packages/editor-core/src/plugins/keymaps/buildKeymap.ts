@@ -1,4 +1,4 @@
-import { toggleMark } from '../../prosemirror/future/prosemirror-commands';
+import { toggleMark, toggleCodeBlock } from '../../commands';
 import * as keymapShortcuts from './utils-future';
 
 import {redo, undo} from '../../prosemirror/future/prosemirror-history';
@@ -28,6 +28,10 @@ export function buildKeymap(schema) {
 
   if (schema.marks.underline) {
     bind(keymapShortcuts.toggleUnderline.common, toggleMark(schema.marks.underline));
+  }
+
+  if (schema.nodes.codeBlock) {
+    bind(keymapShortcuts.findShortcutByKeymap(keymapShortcuts.toggleCodeBlock), toggleCodeBlock());
   }
 
   bind(keymapShortcuts.redo.common, redo);

@@ -7,14 +7,14 @@ export const toggleItalic = makeKeyMapWithCommon('Toggle italic', 'Mod-I');
 export const toggleUnderline = makeKeyMapWithCommon('Toggle underline', 'Mod-U');
 export const toggleStrikethrough = makeKeyMapWithCommon('Toggle strikethrough', 'Mod-Shift-S');
 export const toggleMonospace = makeKeyMapWithCommon('Toggle monospace', 'Mod-Shift-M');
-export const setNormalText = makeKeyMap('Normal text', 'Ctrl-0', 'Cmd-Alt-0');
-export const setHeading1 = makeKeyMap('Heading 1', 'Ctrl-1', 'Cmd-Alt-1');
-export const setHeading2 = makeKeyMap('Heading 2', 'Ctrl-2', 'Cmd-Alt-2');
-export const setHeading3 = makeKeyMap('Heading 3', 'Ctrl-3', 'Cmd-Alt-3');
-export const setHeading4 = makeKeyMap('Heading 4', 'Ctrl-4', 'Cmd-Alt-4');
-export const setHeading5 = makeKeyMap('Heading 5', 'Ctrl-5', 'Cmd-Alt-5');
-export const setBlockQuote = makeKeyMap('Block quote', 'Ctrl-7', 'Cmd-Alt-7');
-export const setCodeBlock = makeKeyMap('Code block', 'Ctrl-8', 'Cmd-Alt-8');
+export const toggleNormalText = makeKeyMap('Normal text', 'Ctrl-0', 'Cmd-Alt-0');
+export const toggleHeading1 = makeKeyMap('Heading 1', 'Ctrl-1', 'Cmd-Alt-1');
+export const toggleHeading2 = makeKeyMap('Heading 2', 'Ctrl-2', 'Cmd-Alt-2');
+export const toggleHeading3 = makeKeyMap('Heading 3', 'Ctrl-3', 'Cmd-Alt-3');
+export const toggleHeading4 = makeKeyMap('Heading 4', 'Ctrl-4', 'Cmd-Alt-4');
+export const toggleHeading5 = makeKeyMap('Heading 5', 'Ctrl-5', 'Cmd-Alt-5');
+export const toggleBlockQuote = makeKeyMap('Block quote', 'Ctrl-7', 'Cmd-Alt-7');
+export const toggleCodeBlock = makeKeyMap('Code block', 'Ctrl-8', 'Cmd-Alt-8');
 export const insertNewLine = makeKeyMapWithCommon('Insert new line', 'Shift-Enter');
 export const shiftBackspace = makeKeyMapWithCommon('Shift Backspace', 'Shift-Backspace');
 export const splitCodeBlock = makeKeyMapWithCommon('Split code block', 'Enter');
@@ -44,7 +44,7 @@ export function findKeymapByDescription(description: string): Keymap | undefined
   return matches[0];
 }
 
-export function findShorcutByDescription(description: string): string | undefined {
+export function findShortcutByDescription(description: string): string | undefined {
   const keymap = findKeymapByDescription(description);
   if (keymap) {
     if (browser.mac) {
@@ -57,8 +57,8 @@ export function findShorcutByDescription(description: string): string | undefine
 
 const ALL = [toggleOrderedList, toggleBulletList, toggleBold, toggleItalic,
   toggleUnderline, toggleStrikethrough, toggleMonospace,
-  setNormalText, setHeading1, setHeading2, setHeading3, setHeading4, setHeading5,
-  setBlockQuote, setCodeBlock, insertNewLine, insertHorizontalRule,
+  toggleNormalText, toggleHeading1, toggleHeading2, toggleHeading3, toggleHeading4, toggleHeading5,
+  toggleBlockQuote, toggleCodeBlock, insertNewLine, insertHorizontalRule,
   splitCodeBlock, splitListItem];
 
 function makeKeyMap(description: string, windows: string, mac: string, common?: string): Keymap {

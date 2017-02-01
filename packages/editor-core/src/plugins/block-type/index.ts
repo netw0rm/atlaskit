@@ -238,7 +238,7 @@ export class BlockTypeState {
     };
 
     groupedBlockTypes.forEach(blockTypes => blockTypes.forEach((blockType) => {
-      const shortcut = keymaps.findShorcutByDescription(blockType.title);
+      const shortcut = keymaps.findShortcutByDescription(blockType.title);
       if (shortcut) {
         const eventName = this.analyticsEventName('keyboard', blockType.name);
         bind(shortcut, trackAndInvoke(eventName, () => this.toggleBlockType(blockType.name)));

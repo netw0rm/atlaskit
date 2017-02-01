@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/field-base",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "A React presentational component that wraps fields and provides styles for focus/hover states",
   "main": "dist/bundle.js",

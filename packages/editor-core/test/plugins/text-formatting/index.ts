@@ -13,60 +13,60 @@ describe('text-formatting', () => {
   describe('keymap', () => {
     if (browser.mac) {
       context('when on a mac', () => {
-        context('when hits Cmd-b', () => {
+        context('when hits Cmd-B', () => {
           it('toggles bold mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleStrong = sinon.spy(plugin, 'toggleStrong');
 
-            pm.input.dispatchKey('Cmd-b');
+            pm.input.dispatchKey('Cmd-B');
 
             expect(toggleStrong.callCount).to.equal(1);
           });
         });
 
-        context('when hits Cmd-i', () => {
+        context('when hits Cmd-I', () => {
           it('toggles italic mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleEm = sinon.spy(plugin, 'toggleEm');
 
-            pm.input.dispatchKey('Cmd-i');
+            pm.input.dispatchKey('Cmd-I');
 
             expect(toggleEm.callCount).to.equal(1);
           });
         });
 
-        context('when hits Cmd-u', () => {
+        context('when hits Cmd-U', () => {
           it('toggles underline mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
 
-            pm.input.dispatchKey('Cmd-u');
+            pm.input.dispatchKey('Cmd-U');
 
             expect(toggleUnderline.callCount).to.equal(1);
           });
         });
 
         /*
-          Node: Here dispatch key 'Shift-Cmd-s' instead of 'Cmd-shift-S',
+          Node: Here dispatch key 'Shift-Cmd-S' instead of 'Cmd-Shift-S',
                 Because after key binding, it was normalized.
         */
-        context('when hits Shift-Cmd-s', () => {
+        context('when hits Shift-Cmd-S', () => {
           it('toggles strikethrough mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleStrike = sinon.spy(plugin, 'toggleStrike');
 
-            pm.input.dispatchKey('Shift-Cmd-s');
+            pm.input.dispatchKey('Shift-Cmd-S');
 
             expect(toggleStrike.callCount).to.equal(1);
           });
         });
 
-        context('when hits Shift-Cmd-m', () => {
+        context('when hits Shift-Cmd-M', () => {
           it('toggles monospace mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleMono = sinon.spy(plugin, 'toggleMono');
 
-            pm.input.dispatchKey('Shift-Cmd-m');
+            pm.input.dispatchKey('Shift-Cmd-M');
 
             expect(toggleMono.callCount).to.equal(1);
           });
@@ -74,18 +74,18 @@ describe('text-formatting', () => {
       });
     } else {
       context('when not on a mac', () => {
-        context('when hits Ctrl-b', () => {
+        context('when hits Ctrl-B', () => {
           it('toggles bold mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleStrong = sinon.spy(plugin, 'toggleStrong');
 
-            pm.input.dispatchKey('Ctrl-b');
+            pm.input.dispatchKey('Ctrl-B');
 
             expect(toggleStrong.callCount).to.equal(1);
           });
         });
 
-        context('when hits Ctrl-b', () => {
+        context('when hits Ctrl-B', () => {
           it('toggles italic mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleEm = sinon.spy(plugin, 'toggleEm');
@@ -96,7 +96,7 @@ describe('text-formatting', () => {
           });
         });
 
-        context('when hits Ctrl-b', () => {
+        context('when hits Ctrl-B', () => {
           it('toggles underline mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
@@ -108,26 +108,26 @@ describe('text-formatting', () => {
         });
 
         /*
-          Node: Here dispatch key 'Shift-Ctrl-s' instead of 'Ctrl-shift-S',
+          Node: Here dispatch key 'Shift-Ctrl-S' instead of 'Ctrl-Shift-S',
                 Because after key binding, it was normalized.
         */
-        context('when hits Shift-Ctrl-s', () => {
+        context('when hits Shift-Ctrl-S', () => {
           it('toggles strikethrough mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleStrike = sinon.spy(plugin, 'toggleStrike');
 
-            pm.input.dispatchKey('Shift-Ctrl-s');
+            pm.input.dispatchKey('Shift-Ctrl-S');
 
             expect(toggleStrike.callCount).to.equal(1);
           });
         });
 
-        context('when hits Shift-Ctrl-m', () => {
+        context('when hits Shift-Ctrl-M', () => {
           it('toggles monospace mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
             const toggleMono = sinon.spy(plugin, 'toggleMono');
 
-            pm.input.dispatchKey('Shift-Ctrl-m');
+            pm.input.dispatchKey('Shift-Ctrl-M');
 
             expect(toggleMono.callCount).to.equal(1);
           });

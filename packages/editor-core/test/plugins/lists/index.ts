@@ -30,23 +30,23 @@ describe('lists', () => {
 
     if (browser.mac) {
       context('when on a mac', () => {
-        context('when hit Shift-Cmd-l', () => {
+        context('when hit Shift-Cmd-L', () => {
           it('should toggle ordered list', () => {
             const { pm, plugin } = editor(doc(ul(li(p('text')))));
             const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
 
-            pm.input.dispatchKey('Shift-Cmd-l');
+            pm.input.dispatchKey('Shift-Cmd-L');
 
             expect(toggleOrderedList.callCount).to.equal(1);
           });
         });
 
-        context('when hit Shift-Cmd-b', () => {
+        context('when hit Shift-Cmd-B', () => {
           it('should toggle bullet list', () => {
             const { pm, plugin } = editor(doc(ul(li(p('text')))));
             const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
 
-            pm.input.dispatchKey('Shift-Cmd-b');
+            pm.input.dispatchKey('Shift-Cmd-B');
 
             expect(toggleBulletList.callCount).to.equal(1);
           });
@@ -54,23 +54,23 @@ describe('lists', () => {
       });
     } else {
       context('when not on a mac', () => {
-        context('when hit Shift-Ctrl-l', () => {
+        context('when hit Shift-Ctrl-L', () => {
           it('should toggle ordered list', () => {
             const { pm, plugin } = editor(doc(ul(li(p('text')))));
             const toggleOrderedList = sinon.spy(plugin, 'toggleOrderedList');
 
-            pm.input.dispatchKey('Shift-Ctrl-l');
+            pm.input.dispatchKey('Shift-Ctrl-L');
 
             expect(toggleOrderedList.callCount).to.equal(1);
           });
         });
 
-        context('when hit Shift-Ctrl-b', () => {
+        context('when hit Shift-Ctrl-B', () => {
           it('should toggle bullet list', () => {
             const { pm, plugin } = editor(doc(ul(li(p('text')))));
             const toggleBulletList = sinon.spy(plugin, 'toggleBulletList');
 
-            pm.input.dispatchKey('Shift-Ctrl-b');
+            pm.input.dispatchKey('Shift-Ctrl-B');
 
             expect(toggleBulletList.callCount).to.equal(1);
           });

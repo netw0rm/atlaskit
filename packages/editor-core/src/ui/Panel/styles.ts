@@ -1,5 +1,5 @@
 import { akEditorPopupBackground } from 'ak-editor-shared-styles';
-import { akBorderRadius } from 'akutil-shared-styles';
+import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 
 export const container = style({

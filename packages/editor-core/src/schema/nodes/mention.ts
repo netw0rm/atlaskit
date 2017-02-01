@@ -2,7 +2,7 @@ import {
   akColorB400,
   akColorN30,
   akColorN50,
-} from 'akutil-shared-styles';
+} from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 import { Attribute, Inline, Node, Schema } from '../../prosemirror';
 

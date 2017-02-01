@@ -119,7 +119,11 @@ storiesOf(name)
       <p>This is an example of disabled droplist items</p>
       <ItemContainer>
         <Item elemBefore={<Icon />} isDisabled>first item</Item>
+        <Item elemBefore={<Icon />} isDisabled isChecked>first item</Item>
         <Item type="radio" isDisabled>second item</Item>
+        <Item type="radio" isDisabled isChecked>second item</Item>
+        <Item type="checkbox" isDisabled>second item</Item>
+        <Item type="checkbox" isDisabled isChecked>second item</Item>
         <Item href="http://atlassian.com" target="_blank" isDisabled>This link will open in another tab</Item>
       </ItemContainer>
     </StoryContainer>

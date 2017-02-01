@@ -4,7 +4,6 @@ import {
   akColorN70,
   akColorN200,
   akColorN400,
-  akColorN700,
   akColorN600,
   akColorN800,
   akColorB50,
@@ -21,7 +20,7 @@ const isActive = props =>
 
 const getCheckRadioFill = (props) => {
   if (isChecked(props)) {
-    return (props.theme.isDisabled ? akColorN700 : akColorN0);
+    return (props.theme.isDisabled ? 'transparent' : akColorN0);
   }
   return (props.theme.isDisabled ? 'transparent' : akColorN20);
 };
@@ -38,7 +37,7 @@ const akGridSize = 8;
 export const ElementWrapper = styled.div`
   & > .element-content {
     align-items: center;
-    background-color: ${props => (isActive(props) ? akColorN20 : null)};
+    background-color: ${props => (isActive(props) ? akColorN20 : 'transparent')};
     cursor: ${props => (props.theme.isDisabled ? 'not-allowed' : 'pointer')};
     color: ${props => (props.theme.isDisabled ? akColorN70 : akColorN800)};
     display: ${props => (props.theme.isHidden ? 'none' : 'flex')};
@@ -74,17 +73,18 @@ export const ElementWrapper = styled.div`
       color: ${props => (props.theme.isDisabled ? akColorN70 : akColorN800)};
     }
 
-    &:hover .checkradio {
-      color: ${props => (isChecked(props) ? akColorB400 : 'rgba(137, 147, 164, 0.48)')};
-      fill: ${props => (isChecked(props) ? akColorN0 : 'transparent')}
-    }
-
     ${
       props => (!props.theme.isDisabled ?
-        `&:active {
-          background-color: ${akColorB50};
-          color: ${akColorN800};
-        }` : '')
+        `
+          &:hover .checkradio {
+            color: ${(isChecked(props) ? akColorB400 : 'rgba(137, 147, 164, 0.48)')};
+            fill: ${(isChecked(props) ? akColorN0 : 'transparent')}
+          }
+          &:active {
+            background-color: ${akColorB50};
+            color: ${akColorN800};
+          }
+        ` : '')
      }
 
     $:active > .checkradio {

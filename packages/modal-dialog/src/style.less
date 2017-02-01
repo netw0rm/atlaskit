@@ -27,10 +27,11 @@
 }
 
 // Helper function for generating "base" box shadow with optional second shadow
-.modal-shadow(@extra-shadow: transparent 0 0 0 ) {
+.modal-shadow(@extra-shadow: transparent 0 0 0, @extra-shadow2: transparent 0 0 0 ) {
     box-shadow:
       0 @ak-grid-size (2.5 * @ak-grid-size) (@ak-grid-size * -0.5) @ak-color-N50A,
-      @extra-shadow;
+      @extra-shadow,
+      @extra-shadow2;
 }
 
 @viewportMargin: @grid * 15;
@@ -82,7 +83,7 @@
     padding: 0 (@grid * 4);
     position: relative;
     z-index: @ak-z-index-modal + 1;
-    .modal-shadow(inset 0px @modal-inner-shadow-size 0px 0px @ak-color-N30);
+    .modal-shadow(inset 0px @modal-inner-shadow-size 0px 0px @ak-color-N30, inset 0px -@modal-inner-shadow-size 0px 0px @ak-color-N30);
     .panel-background();
 
     // This pseudo element hides the top shadow when the scroll position is 0,
@@ -96,6 +97,15 @@
       position: absolute;
       right: 0;
       top: 0px;
+    }
+
+    &:after {
+      background: @ak-color-N0;
+      content: "";
+      display: block;
+      height: @modal-inner-shadow-size;
+      margin-right: -16px;
+      margin-left: -16px;
     }
   }
 

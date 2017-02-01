@@ -22,25 +22,19 @@ set +e
 
 # Run eslint and tslint in parallel for speed!
 
-eslint --color --format "$NODE_MODULES/eslint-friendly-formatter" . --ext .js &
-eslint_js_pid=$!
-
-eslint --color --format "$NODE_MODULES/eslint-friendly-formatter" . --ext .jsx &
-eslint_jsx_pid=$!
+eslint --color --format "$NODE_MODULES/eslint-friendly-formatter" . --ext .js --ext .jsx &
+eslint_pid=$!
 
 tslint --project tsconfig.json --format stylish &
 tslint_pid=$!
 
-wait $eslint_js_pid
-eslint_js_exit=$?
-
-wait $eslint_jsx_pid
-eslint_jsx_exit=$?
+wait $eslint_pid
+eslint_exit=$?
 
 wait $tslint_pid
 tslint_exit=$?
 
-if [ "$eslint_js_exit" == "0" ] && [ "$eslint_jsx_exit" == "0" ] && [ "$tslint_exit" == "0" ]; then
+if [ "$eslint_exit" == "0" ] && [ "$tslint_exit" == "0" ]; then
   lint_build_status "SUCCESSFUL"
 else
   lint_build_status "FAILED"

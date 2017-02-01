@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Group from 'ak-droplist-group';
-import Trigger from 'ak-droplist-trigger';
-import Item from 'ak-droplist-item';
-import Layer from 'ak-layer';
+import Group from '@atlaskit/droplist-group';
+import Trigger from '@atlaskit/droplist-trigger';
+import Item from '@atlaskit/droplist-item';
+import Layer from '@atlaskit/layer';
 
 import { name } from '../package.json';
 import { locals as styles } from '../src/styles.less';

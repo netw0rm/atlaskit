@@ -51,10 +51,10 @@ describe('ak-modal-dialog', () => {
       it('should render when set', () => {
         shallow(
           <ModalDialog
-            isOpen
             header={
               <span>My header</span>
             }
+            isOpen
           />
         ).contains(<span>My header</span>).should.be.equal(true);
       });
@@ -64,10 +64,10 @@ describe('ak-modal-dialog', () => {
       it('should render when set', () => {
         shallow(
           <ModalDialog
-            isOpen
             footer={
               <span>My footer</span>
             }
+            isOpen
           />
         ).contains(<span>My footer</span>).should.be.equal(true);
       });

@@ -10,6 +10,7 @@ export default class DrawerItem extends PureComponent {
   static propTypes = {
     icon: PropTypes.node,
     isCompact: PropTypes.bool,
+    subText: PropTypes.string,
     text: PropTypes.node,
     textAfter: PropTypes.node,
     action: PropTypes.node,
@@ -34,6 +35,7 @@ export default class DrawerItem extends PureComponent {
           icon={this.props.icon}
           isCompact={this.props.isCompact}
           linkComponent={this.props.linkComponent}
+          subText={this.props.subText}
           text={this.props.text}
           textAfter={this.props.textAfter}
         />

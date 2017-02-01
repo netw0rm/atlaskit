@@ -6,7 +6,7 @@ import {
   akColorN100,
   akColorN400,
   akColorN50
-} from 'akutil-shared-styles';
+} from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 
 export const input = style({

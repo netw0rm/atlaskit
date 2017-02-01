@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "A package contains Atlassian editor core functionality",
   "main": "src/index.js",
@@ -32,7 +32,7 @@
     "ak-emoji": "^0.7.0",
     "ak-icon": "^14.0.0",
     "ak-mention": "^1.9.0",
-    "akutil-shared-styles": "^37.0.2",
+    "@atlaskit/util-shared-styles": "^1.0.1",
     "browserkeymap": "git://github.com/bradleyayers/browserkeymap#es6-modules-compat-with-types",
     "popper.js": "^1.0.1",
     "prosemirror": "0.10.1",

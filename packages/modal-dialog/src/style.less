@@ -26,7 +26,20 @@
   }
 }
 
+// Helper function for generating "base" box shadow with optional second shadow
+.modal-shadow(@extra-shadow: transparent 0 0 0, @extra-shadow2: transparent 0 0 0 ) {
+    box-shadow:
+      0 @ak-grid-size (2.5 * @ak-grid-size) (@ak-grid-size * -0.5) @ak-color-N50A,
+      @extra-shadow,
+      @extra-shadow2;
+}
+
 @viewportMargin: @grid * 15;
+
+// Shadow-scrolling behaviour based on
+// http://kizu.ru/en/fun/shadowscroll/
+@modal-inner-shadow-size: 2px;
+@transparent: rgba(255,255,255,0);
 
 // Fixed container to avoid position clashing with other elements
 .modal-wrapper {
@@ -53,15 +66,11 @@
   .widthTier(large);
   .widthTier(x-large);
 
-  // 3 direct flex children (header + content + footer slot areas)
-  .header-flex, .content-flex, .footer-flex {
-    box-shadow: 0 @ak-grid-size (2 * @ak-grid-size) (@ak-grid-size * -0.5) fade(@ak-color-N900, 28%);
-  }
-
   // Background and corners for header
   .header-flex {
     flex: 0 0 auto;
     padding: @grid * 4;
+    .modal-shadow();
     .panel-background(@grid, 0);
     // TODO: AK-704: animated keylines
   }
@@ -70,9 +79,34 @@
   .content-flex {
     flex: 0 1 auto;
     overflow: auto;
+    box-sizing: border-box;
     padding: 0 (@grid * 4);
+    position: relative;
     z-index: @ak-z-index-modal + 1;
+    .modal-shadow(inset 0px @modal-inner-shadow-size 0px 0px @ak-color-N30, inset 0px -@modal-inner-shadow-size 0px 0px @ak-color-N30);
     .panel-background();
+
+    // This pseudo element hides the top shadow when the scroll position is 0,
+    // then reveals the top shadow once scroll position > 0
+    &:before {
+      background: @ak-color-N0;
+      content: "";
+      display: block;
+      height: @modal-inner-shadow-size;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0px;
+    }
+
+    &:after {
+      background: @ak-color-N0;
+      content: "";
+      display: block;
+      height: @modal-inner-shadow-size;
+      margin-right: -16px;
+      margin-left: -16px;
+    }
   }
 
   // Background and corners for footer
@@ -80,6 +114,7 @@
     flex: 0 0 auto;
     padding: @grid * 4;
     z-index: @ak-z-index-modal + 2;
+    .modal-shadow();
     .panel-background(0, @grid);
     // TODO: AK-704: animated keylines
   }

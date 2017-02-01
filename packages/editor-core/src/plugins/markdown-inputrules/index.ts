@@ -189,13 +189,13 @@ const strongRule2 = new InputRule(/(__([^_]+)__)$/, '_', (
 ) => replaceWithMark(pm, match, pos, 'strong'));
 
 // _string_ or *string* should change the text to italic
-const emRule1 = new InputRule(/(?:[^\*]+)(\*([^\*]+?)\*)$|^(\*([^\*]+)\*)$/, '*', (
+const emRule1 = new InputRule(/(?:[\s]+)(\*([^\*]+?)\*)$|^(\*([^\*]+)\*)$/, '*', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
 ) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em'));
 
-const emRule2 = new InputRule(/(?:[^_]+)(_([^_]+?)_)$|^(_([^_]+)_)$/, '_', (
+const emRule2 = new InputRule(/(?:[\s]+)(_([^_]+?)_)$|^(_([^_]+)_)$/, '_', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number

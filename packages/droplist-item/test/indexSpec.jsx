@@ -4,12 +4,8 @@ import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
 
 import { name } from '../package.json';
-import { ElementSpan, SecondaryTextSpan } from '../src/styled';
+import { SecondaryTextSpan } from '../src/styled';
 import Item, { SecondaryText } from '../src';
-
-/* eslint-disable no-underscore-dangle */
-const getDomElement = node =>
-  node._reactInternalInstance._renderedComponent._hostNode;
 
 describe(name, () => {
   it('should be possible to create a component', () => {
@@ -57,7 +53,7 @@ describe(name, () => {
       let onActivate;
       beforeEach(() => {
         onActivate = sinon.spy();
-        wrapper = mount(<Item onActivate={onActivate} />).find(ElementSpan);
+        wrapper = mount(<Item onActivate={onActivate} />).find('.element-content');
       });
 
       it('should be activated when enter is pressed', () => {
@@ -77,7 +73,7 @@ describe(name, () => {
 
       it('should not be activated when disabled', () => {
         const disabledWrapper =
-          mount(<Item onActivate={onActivate} isDisabled />).find(ElementSpan);
+          mount(<Item onActivate={onActivate} isDisabled />).find('.element-content');
         disabledWrapper.simulate('click');
         disabledWrapper.simulate('keyPress', { key: 'Enter' });
         disabledWrapper.simulate('keyPress', { key: ' ' });
@@ -87,8 +83,8 @@ describe(name, () => {
   });
 
   it('should focus itself when the isFocused property is set to true', () => {
-    const wrapper = mount(<Item isFocused />).find(ElementSpan);
-    expect(getDomElement(wrapper.node)).to.equal(document.activeElement);
+    const wrapper = mount(<Item isFocused />).find('.element-content');
+    expect(wrapper.node).to.equal(document.activeElement);
   });
 
   describe('secondary text', () => {

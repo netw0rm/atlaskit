@@ -1,5 +1,4 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { ThemeProvider } from 'styled-components';
 
 import Element from './Element';
 import SecondaryText from './SecondaryText';
@@ -74,26 +73,25 @@ export default class Item extends PureComponent {
   render = () => {
     const { props } = this;
     return (
-      <ThemeProvider theme={this.props}>
-        <span role="presentation">
-          <Element
-            handleClick={this.handleClick}
-            handleKeyPress={this.handleKeyPress}
-            href={props.href}
-            isDisabled={props.isDisabled}
-            isChecked={props.isChecked}
-            isSelected={props.isSelected}
-            isFocused={props.isFocused}
-            isHidden={props.isHidden}
-            target={props.target}
-            type={props.type}
-          >
-            {this.renderContentBefore()}
-            <Content>{ props.children }</Content>
-            {this.renderContentAfter()}
-          </Element>
-        </span>
-      </ThemeProvider>
+      <span role="presentation">
+        <Element
+          handleClick={this.handleClick}
+          handleKeyPress={this.handleKeyPress}
+          href={props.href}
+          isDisabled={props.isDisabled}
+          isChecked={props.isChecked}
+          isSelected={props.isSelected}
+          isFocused={props.isFocused}
+          isHidden={props.isHidden}
+          isActive={props.isActive}
+          target={props.target}
+          type={props.type}
+        >
+          {this.renderContentBefore()}
+          <Content>{ props.children }</Content>
+          {this.renderContentAfter()}
+        </Element>
+      </span>
     );
   }
 }

@@ -2,7 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
 import { ariaRoles, baseTypes } from './constants';
-import { ElementSpan as Span, ElementAnchor as Anchor, ElementWrapper as Wrapper } from './styled';
+import { ElementWrapper as Wrapper } from './styled';
 
 /* eslint-disable react/no-unused-prop-types, react/prefer-stateless-function */
 export default class Element extends PureComponent {
@@ -13,6 +13,7 @@ export default class Element extends PureComponent {
     isHidden: PropTypes.bool,
     isChecked: PropTypes.bool,
     isSelected: PropTypes.bool,
+    isActive: PropTypes.bool,
     handleClick: PropTypes.func,
     handleKeyPress: PropTypes.func,
     href: PropTypes.string,
@@ -57,7 +58,7 @@ export default class Element extends PureComponent {
     onKeyPress: this.props.handleKeyPress,
     onClick: this.props.handleClick,
     onMouseDown: this.handleMouseDown,
-    innerRef: ref => (this.ref = ref),
+    ref: ref => (this.ref = ref),
     'data-role': 'droplistItem',
   })
 
@@ -78,7 +79,7 @@ export default class Element extends PureComponent {
         {...ariaAttributes}
         className="element-content"
       >
-       {
+        {
           props.type === 'checkbox'
           ? <span className="checkradio"><Checkbox label="" /></span>
           : null
@@ -96,11 +97,18 @@ export default class Element extends PureComponent {
   render = () => {
     const { href, isDisabled, target } = this.props;
     return (
-      <Wrapper>
+      <Wrapper
+        elementType={this.props.type}
+        isDisabled={this.props.isDisabled}
+        isChecked={this.props.isChecked}
+        isSelected={this.props.isSelected}
+        isActive={this.props.isActive}
+        isHidden={this.props.isHidden}
+      >
         {
           href && !isDisabled ?
-            this.renderElement(Anchor, { href, target }) :
-            this.renderElement(Span, { tabIndex: '0' })
+            this.renderElement('a', { href, target }) :
+            this.renderElement('span', { tabIndex: '0' })
         }
       </Wrapper>
     );

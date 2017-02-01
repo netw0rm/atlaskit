@@ -20,8 +20,10 @@ export default class DrawerNavigation extends PureComponent {
     if (this.state.openDrawer) {
       this.setState({ openDrawer: null });
     } else {
-      this.setState({ backIconOffset: event.currentTarget.getBoundingClientRect().top });
-      this.setState({ openDrawer: drawerId });
+      this.setState({
+        backIconOffset: event.currentTarget.getBoundingClientRect().top,
+        openDrawer: drawerId,
+      });
     }
   }
 

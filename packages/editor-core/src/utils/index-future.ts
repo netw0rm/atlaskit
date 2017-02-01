@@ -15,16 +15,16 @@ function validateNode(node: Node): boolean {
  * Step through block-nodes between $from and $to and returns false if a node is
  * found that isn't of the specified type
  */
-export function isRangeOfType(pm, $from: ResolvedPos, $to: ResolvedPos, nodeType: NodeType): boolean {
-  return getAncestorNodesBetween(pm, $from, $to).filter(node => node.type !== nodeType).length === 0;
+export function isRangeOfType(doc, $from: ResolvedPos, $to: ResolvedPos, nodeType: NodeType): boolean {
+  return getAncestorNodesBetween(doc, $from, $to).filter(node => node.type !== nodeType).length === 0;
 }
 
 /**
  * Determines if content inside a selection can be joined with the next block.
  * We need this check since the built-in method for "joinDown" will join a ordered_list with bullet_list.
  */
-export function canJoinDown(pm, selection: Selection, doc: any, nodeType: NodeType): boolean {
-  const res = doc.resolve(selection.$to.after(findAncestorPosition(pm, selection.$to).depth));
+export function canJoinDown(selection: Selection, doc: any, nodeType: NodeType): boolean {
+  const res = doc.resolve(selection.$to.after(findAncestorPosition(doc, selection.$to).depth));
   return res.nodeAfter && res.nodeAfter.type === nodeType;
 }
 
@@ -32,18 +32,18 @@ export function canJoinDown(pm, selection: Selection, doc: any, nodeType: NodeTy
  * Determines if content inside a selection can be joined with the previous block.
  * We need this check since the built-in method for "joinUp" will join a ordered_list with bullet_list.
  */
-export function canJoinUp(pm, selection: Selection, doc: any, nodeType: NodeType): boolean {
-  const res = doc.resolve(selection.$from.before(findAncestorPosition(pm, selection.$from).depth));
+export function canJoinUp(selection: Selection, doc: any, nodeType: NodeType): boolean {
+  const res = doc.resolve(selection.$from.before(findAncestorPosition(doc, selection.$from).depth));
   return res.nodeBefore && res.nodeBefore.type === nodeType;
 }
 
 /**
  * Returns all top-level ancestor-nodes between $from and $to
  */
-export function getAncestorNodesBetween(pm, $from: ResolvedPos, $to: ResolvedPos): Node[] {
+export function getAncestorNodesBetween(doc, $from: ResolvedPos, $to: ResolvedPos): Node[] {
   const nodes = Array<Node>();
-  const maxDepth = findAncestorPosition(pm, $from).depth;
-  let current = pm.doc.resolve($from.start(maxDepth));
+  const maxDepth = findAncestorPosition(doc, $from).depth;
+  let current = doc.resolve($from.start(maxDepth));
 
   while (current.pos <= $to.start($to.depth)) {
     const depth = Math.min(current.depth, maxDepth);
@@ -53,19 +53,19 @@ export function getAncestorNodesBetween(pm, $from: ResolvedPos, $to: ResolvedPos
       nodes.push(node);
     }
 
-    let next: ResolvedPos = pm.doc.resolve(current.after(depth));
-    if (next.start(depth) >= pm.doc.nodeSize - 2) {
+    let next: ResolvedPos = doc.resolve(current.after(depth));
+    if (next.start(depth) >= doc.nodeSize - 2) {
       break;
     }
 
     if (next.depth !== current.depth) {
-      next = pm.doc.resolve(next.pos + 2);
+      next = doc.resolve(next.pos + 2);
     }
 
     if (next.depth) {
-      current = pm.doc.resolve(next.start(next.depth));
+      current = doc.resolve(next.start(next.depth));
     } else {
-      current = pm.doc.resolve(next.end(next.depth));
+      current = doc.resolve(next.end(next.depth));
     }
   }
 
@@ -88,10 +88,10 @@ export function getAncestorNodesBetween(pm, $from: ResolvedPos, $to: ResolvedPos
  *
  * The output will be two selection-groups. One within the ul and one with the two paragraphs.
  */
-export function getGroupsInRange(pm, $from: ResolvedPos, $to: ResolvedPos, isNodeValid: (node: Node) => boolean = validateNode): Array<{ $from: ResolvedPos, $to: ResolvedPos }> {
+export function getGroupsInRange(doc, $from: ResolvedPos, $to: ResolvedPos, isNodeValid: (node: Node) => boolean = validateNode): Array<{ $from: ResolvedPos, $to: ResolvedPos }> {
   const groups = Array<{ $from: ResolvedPos, $to: ResolvedPos }>();
-  const commonAncestor = hasCommonAncestor(pm, $from, $to);
-  const fromAncestor = findAncestorPosition(pm, $from);
+  const commonAncestor = hasCommonAncestor(doc, $from, $to);
+  const fromAncestor = findAncestorPosition(doc, $from);
 
   if (commonAncestor || (fromAncestor.depth === 1 && isNodeValid($from.node(1) !))) {
     groups.push({ $from, $to });
@@ -99,12 +99,12 @@ export function getGroupsInRange(pm, $from: ResolvedPos, $to: ResolvedPos, isNod
     let current = $from;
 
     while (current.pos < $to.pos) {
-      let ancestorPos = findAncestorPosition(pm, current);
+      let ancestorPos = findAncestorPosition(doc, current);
       while (ancestorPos.depth > 1) {
-        ancestorPos = findAncestorPosition(pm, ancestorPos);
+        ancestorPos = findAncestorPosition(doc, ancestorPos);
       }
 
-      const endPos = pm.doc.resolve(Math.min(
+      const endPos = doc.resolve(Math.min(
         // should not be smaller then start position in case of an empty paragpraph for example.
         Math.max(ancestorPos.start(ancestorPos.depth), ancestorPos.end(ancestorPos.depth) - 1),
         $to.pos
@@ -115,7 +115,7 @@ export function getGroupsInRange(pm, $from: ResolvedPos, $to: ResolvedPos, isNod
         $to: endPos
       });
 
-      current = pm.doc.resolve(Math.min(endPos.after(1) + 1, pm.doc.nodeSize - 2));
+      current = doc.resolve(Math.min(endPos.after(1) + 1, doc.nodeSize - 2));
     }
   }
 
@@ -170,26 +170,25 @@ export function hasCommonAncestor(pm, $from: ResolvedPos, $to: ResolvedPos): boo
 /**
  * Takes a selection $from and $to and lift all text nodes from their parents to document-level
  */
-export function liftSelection(pm, $from: ResolvedPos, $to: ResolvedPos) {
-  const { tr } = pm;
+export function liftSelection(tr, state, $from: ResolvedPos, $to: ResolvedPos) {
   let startPos = $from.start($from.depth);
   let endPos = $to.end($to.depth);
-  const target = Math.max(0, findAncestorPosition(pm, $from).depth - 1);
+  const target = Math.max(0, findAncestorPosition(state.doc, $from).depth - 1);
 
   tr.doc.nodesBetween(startPos, endPos, (node, pos) => {
     if (
       node.isText ||                          // Text node
       (node.isTextblock && !node.textContent) // Empty paragraph
     ) {
-      const res = tr.doc.resolve(tr.map(pos));
+      const res = tr.doc.resolve(tr.mapping.map(pos));
       const sel = new NodeSelection(res);
       const range = sel.$from.blockRange(sel.$to)!;
       tr.lift(range, target);
     }
   });
 
-  startPos = tr.map(startPos);
-  endPos = tr.map(endPos);
+  startPos = tr.mapping.map(startPos);
+  endPos = tr.mapping.map(endPos);
   endPos = tr.doc.resolve(endPos).end(tr.doc.resolve(endPos).depth); // We want to select the entire node
 
   tr.setSelection(new TextSelection(tr.doc.resolve(startPos), tr.doc.resolve(endPos)));

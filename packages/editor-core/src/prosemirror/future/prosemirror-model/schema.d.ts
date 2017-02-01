@@ -14,6 +14,7 @@ export class NodeType {
   createChecked(attrs?: { [key: string]: any }, content?: Fragment | Node | Node[], marks?: Mark[]): Node;
   createAndFill(attrs?: { [key: string]: any }, content?: Fragment | Node | Node[], marks?: Mark[]): Node | null;
   validContent(content: Fragment, attrs?: { [key: string]: any }): boolean;
+  compatibleContent(other: NodeType): boolean;
 }
 
 export class MarkType {

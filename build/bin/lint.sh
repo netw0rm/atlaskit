@@ -3,17 +3,6 @@ set -e
 
 export PATH="`yarn bin`:$PATH"
 NODE_MODULES=`npm root`
-BASEDIR=$(dirname $0)
-. $BASEDIR/_build_status.sh
-
-function lint_build_status() {
-  build_status \
-    "LINT" \
-    "Lint" \
-    "The linting result for this pull request" \
-    "$1" \
-    ""
-}
 
 chalk --no-stdin -t "{blue Start linting...}"
 lint_build_status "INPROGRESS"
@@ -34,7 +23,7 @@ eslint_exit=$?
 wait $tslint_pid
 tslint_exit=$?
 
-# Only report failed builds to prevent using the passing linting to merge before tests have run
+# if either lint fails, return non-zero status to fail build
 if [ "$eslint_exit" -ne "0" ] || [ "$tslint_exit" -ne "0" ]; then
-  lint_build_status "FAILED"
+  exit 1
 fi

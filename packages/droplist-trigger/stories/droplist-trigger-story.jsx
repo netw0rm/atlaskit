@@ -1,9 +1,9 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import styles from 'style!./story-styles.less';
-import Avatar from 'ak-avatar';
-import { akColorN800 } from 'akutil-shared-styles';
-import Button from 'ak-button';
+import Avatar from '@atlaskit/avatar';
+import { akColorN800 } from '@atlaskit/util-shared-styles';
+import Button from '@atlaskit/button';
 
 import Trigger from '../src';
 import { name } from '../package.json';

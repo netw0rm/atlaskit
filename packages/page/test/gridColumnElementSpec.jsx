@@ -3,14 +3,14 @@ import { getColumnWidth } from '../src/internal/GridColumnElement';
 import { name } from '../package.json';
 
 describe(name, () => {
-  it('gridColumns should have no default width (flex-basis)', () => {
+  it('gridColumns should have an auto flex-basis', () => {
     const props = {};
     const result = getColumnWidth(props);
 
-    expect(result).to.equal(0);
+    expect(result).to.equal('auto');
   });
 
-  it('gridColumns should ', () => {
+  it('gridColumns should have a calculated flex-basis if medium < columns', () => {
     const props = {
       medium: 8,
       theme: {
@@ -20,6 +20,19 @@ describe(name, () => {
     };
     const result = getColumnWidth(props);
 
-    expect(result).to.equal('calc(100% / 12 * 8 - 16px)');
+    expect(result).to.equal('calc(99.9999% / 12 * 8 - 16px)');
+  });
+
+  it('gridColumns should have a 100% calculated flex-basis if medium === columns', () => {
+    const props = {
+      medium: 12,
+      theme: {
+        columns: 12,
+        spacing: 'cosy',
+      },
+    };
+    const result = getColumnWidth(props);
+
+    expect(result).to.equal('calc(100% - 16px)');
   });
 });

@@ -24,6 +24,7 @@ describe('<ContainerNavigation />', () => {
     });
   });
   describe('behaviour', () => {
+    // eslint-disable-next-line mocha/no-skipped-tests
     it.skip('renders [data-__ak-navigation-container-closed="true"] if and only if it is closed', () => {
       expect(mount(<ContainerNavigation width={containerClosedWidth} />).find('[data-__ak-navigation-container-closed]').length).to.equal(1);
       expect(mount(<ContainerNavigation width={200} />).find('[data-__ak-navigation-container-closed]').length).to.equal(0);

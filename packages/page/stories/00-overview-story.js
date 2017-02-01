@@ -14,9 +14,7 @@ import OverviewExampleRaw from '!raw!./examples/overview';
 storiesOf(name, module)
   .add('Overview', () => (
     <Readme component={Page} description={description}>
-      <Code
-        code={OverviewExampleRaw}
-      >
+      <Code code={OverviewExampleRaw}>
         {OverviewExample}
       </Code>
     </Readme>

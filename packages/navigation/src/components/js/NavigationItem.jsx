@@ -8,6 +8,8 @@ import {
   isSelected,
   isCompact,
   link,
+  mainText,
+  subText,
   text,
   textAfter,
 } from 'style!../less/NavigationItem.less';
@@ -16,15 +18,16 @@ import DefaultLinkComponent from './DefaultLinkComponent';
 
 export default class NavigationItem extends PureComponent {
   static propTypes = {
+    action: PropTypes.node,
+    href: PropTypes.string,
     icon: PropTypes.node,
     isCompact: PropTypes.bool,
     isSelected: PropTypes.bool,
-    text: PropTypes.node,
-    textAfter: PropTypes.node,
-    action: PropTypes.node,
-    href: PropTypes.string,
     linkComponent: PropTypes.func,
     onClick: PropTypes.func,
+    subText: PropTypes.string,
+    text: PropTypes.node,
+    textAfter: PropTypes.node,
   }
 
   static defaultProps = {
@@ -53,11 +56,17 @@ export default class NavigationItem extends PureComponent {
       </div>
     : null);
 
-    const After = ({ children }) => (TextAfter || Action ?
+    const After = ({ children }) => (this.props.textAfter ?
       <div className={after}>
         {children}
       </div>
     : null);
+
+    const SubText = () => (this.props.isCompact ? null :
+    <div className={subText}>
+      {this.props.subText}
+    </div>
+    );
 
     return (
       <div
@@ -77,7 +86,10 @@ export default class NavigationItem extends PureComponent {
           >
             <Icon />
             <div className={text}>
-              {this.props.text}
+              <div className={mainText}>
+                {this.props.text}
+              </div>
+              <SubText />
             </div>
             <After>
               <TextAfter />

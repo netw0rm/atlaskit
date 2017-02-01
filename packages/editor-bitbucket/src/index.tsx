@@ -16,7 +16,7 @@ import {
   Node,
   ProseMirror,
   TextFormattingPlugin
-} from 'ak-editor-core';
+} from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 

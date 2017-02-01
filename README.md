@@ -223,6 +223,8 @@ Build the new Docker image:
 yarn run build/docker/image
 ```
 
+**Note:** Use the shared credentials to publish to docker (ask for access).
+
 If you want to create a new image and download all the latest dependencies without actually changing the Dockerfile, you can use:
 
 ```console

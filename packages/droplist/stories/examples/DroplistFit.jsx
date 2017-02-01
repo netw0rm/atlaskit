@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Group from 'ak-droplist-group';
-import Item from 'ak-droplist-item';
-import { akColorN800 } from 'akutil-shared-styles';
+import Group from '@atlaskit/droplist-group';
+import Item from '@atlaskit/droplist-item';
+import { akColorN800 } from '@atlaskit/util-shared-styles';
 
 import DropdownList from '../../src';
 

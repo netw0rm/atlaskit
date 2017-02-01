@@ -2,8 +2,8 @@ import React, { PropTypes, PureComponent } from 'react';
 import Navigation, {
   AkContainerHeader,
   AkContainerItem,
-} from 'ak-navigation';
-import { AtlassianIcon } from 'ak-icon';
+} from '@atlaskit/navigation';
+import { AtlassianIcon } from '@atlaskit/icon';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Flag extends PureComponent {

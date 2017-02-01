@@ -1,12 +1,7 @@
 import {
-  Fragment,
-  Node as PMNode
-} from 'ak-editor-core';
-import schema from '../schema';
-
-import {
   BulletListNode,
   DocNode,
+  Fragment,
   HeadingNode,
   isBulletListNode,
   isHardBreakNode,
@@ -16,12 +11,13 @@ import {
   isOrderedListNode,
   isParagraphNode,
   ListItemNode,
+  Node as PMNode,
   OrderedListNode,
   ParagraphNode
 } from 'ak-editor-core';
+import { isSchemaWithLists, SupportedSchema } from '../schema';
 
-
-export default function encode(node: DocNode) {
+export default function encode(node: DocNode, schema: SupportedSchema) {
   const doc = makeDocument();
   doc.body.appendChild(encodeFragment(node.content));
   const html = doc.body.innerHTML;
@@ -41,23 +37,27 @@ export default function encode(node: DocNode) {
   function encodeNode(node: PMNode) {
     if (node.isText) {
       return encodeText(node);
-    } else if (isBulletListNode(node)) {
-      return encodeBulletList(node);
     } else if (isHeadingNode(node)) {
       return encodeHeading(node);
     } else if (isHorizontalRuleNode(node)) {
       return encodeHorizontalRule();
-    } else if (isListItemNode(node)) {
-      return encodeListItem(node);
-    } else if (isOrderedListNode(node)) {
-      return encodeOrderedList(node);
     } else if (isParagraphNode(node)) {
       return encodeParagraph(node);
     } else if (isHardBreakNode(node)) {
       return encodeHardBreak();
-    } else {
-      throw new Error(`Unexpected node '${(node as any).type.name}' for HTML encoding`);
     }
+
+    if (isSchemaWithLists(schema)) {
+      if (isBulletListNode(node)) {
+        return encodeBulletList(node);
+      } else if (isOrderedListNode(node)) {
+        return encodeOrderedList(node);
+      } else if (isListItemNode(node)) {
+        return encodeListItem(node);
+      }
+    }
+
+    throw new Error(`Unexpected node '${(node as any).type.name}' for HTML encoding`);
   }
 
   function makeDocument() {

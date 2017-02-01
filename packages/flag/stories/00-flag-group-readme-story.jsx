@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Readme, { Code, Props } from 'akutil-readme';
+import Readme, { Code, Props } from '@atlaskit/util-readme';
 
 import FlagGroupExampleRaw from '!raw!./examples/FlagGroupExample'; // eslint-disable-line import/first, import/no-duplicates
 
@@ -18,7 +18,7 @@ const flagGroupPropTypes = {
 };
 
 storiesOf(name, module)
-  .add('Flag Group readme', () => (
+  .add('📖 Flag Group readme', () => (
     <div>
       <Readme
         component={name}

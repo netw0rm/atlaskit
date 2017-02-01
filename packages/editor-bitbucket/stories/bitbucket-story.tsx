@@ -1,6 +1,6 @@
 import '!style!css!less!./bitbucket-styles.less';
+import { base64fileconverter } from '@atlaskit/editor-core/test-helper';
 import { action, storiesOf } from '@kadira/storybook';
-import { base64fileconverter } from 'ak-editor-core/test-helper';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import Editor from '../src';

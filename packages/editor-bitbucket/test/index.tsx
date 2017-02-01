@@ -5,8 +5,8 @@ import * as sinon from 'sinon';
 import { SinonSpy } from 'sinon';
 import { doc, h1, mention, p, strong } from './_schema-builder';
 
-import { ProseMirror } from 'ak-editor-core';
-import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from 'ak-editor-core/test-helper';
+import { ProseMirror } from '@atlaskit/editor-core';
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from '@atlaskit/editor-core/test-helper';
 import Editor from '../src/index';
 
 chai.use(chaiPlugin);

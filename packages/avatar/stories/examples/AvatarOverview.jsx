@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Avatar from '@atlaskit/avatar';
 
-export default (
-  <Avatar
-    src="https://design.atlassian.com/images/avatars/project-128.png"
-    presence="online"
-    size="large"
-  />
-);
+
+export default class extends PureComponent {
+  render() {
+    return (
+      <Avatar
+        src="https://design.atlassian.com/images/avatars/project-128.png"
+        presence="online"
+        size="large"
+      />
+    );
+  }
+}

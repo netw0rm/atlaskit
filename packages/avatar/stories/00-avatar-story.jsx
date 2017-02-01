@@ -1,8 +1,16 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
+import Readme, { Code, Props } from 'akutil-readme';
+
 import avatarStoryStyles from 'style!./stories.less';
-import { name } from '../package.json';
+import { name, description } from '../package.json';
 import Avatar from '../src';
+
+import AvatarOverviewExample from './examples/AvatarOverview'; // eslint-disable-line import/no-duplicates
+
+/* eslint-disable import/first, import/no-duplicates */
+import AvatarOverviewExampleRaw from '!raw!./examples/AvatarOverview';
+/* eslint-enable import/first, import/no-duplicates */
 
 const transparentAvatarUrl = require('url-loader!./face-w-transparency.png');
 const tickUrl = require('url-loader!./tick.svg');
@@ -11,31 +19,37 @@ const tickWithBackgroundUrl = require('url-loader!./tick.png');
 const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
 const storybookExampleClass = avatarStoryStyles.example;
 
-const DefaultAvatar = props => (
-  <div style={{ display: 'inline-block', marginLeft: '10px' }}>
-    <Avatar {...props} />
-  </div>
-);
-
 const AllAvatarSizes = props => (
   <div className={avatarRowClass}>
-    <DefaultAvatar size="small" {...props} />
-    <DefaultAvatar size="medium" {...props} />
-    <DefaultAvatar size="large" {...props} />
-    <DefaultAvatar size="xlarge" {...props} />
+    <Avatar size="small" {...props} />
+    <Avatar size="medium" {...props} />
+    <Avatar size="large" {...props} />
+    <Avatar size="xlarge" {...props} />
   </div>
 );
 
 storiesOf(name, module)
-  .add('A default avatar', () => (
+  .add('Avatar — README', () => (
     <div>
-      <div>
-        By default an avatar should be medium sized and have no presence
-      </div>
-      <DefaultAvatar />
+      <Readme
+        component={name}
+        description={description}
+      >
+        <Code code={AvatarOverviewExampleRaw}>
+          <AvatarOverviewExample />
+        </Code>
+        <Props component={Avatar} />
+      </Readme>
     </div>
   ))
-  .add('Avatars on colored background', () => {
+  .addCodeExampleStory('Avatar — docs example', () => <AvatarOverviewExample />, { scripts: [AvatarOverviewExampleRaw] })
+  .add('Avatar — basic example', () => (
+    <div>
+      <p>By default an avatar should be medium sized and have no presence</p>
+      <p><Avatar /></p>
+    </div>
+  ))
+  .add('Avatar — transparency test', () => {
     const rainbowStyle = {
       background: 'linear-gradient(red, orange, yellow, green, blue, indigo, violet)',
       padding: '10px',
@@ -58,50 +72,59 @@ storiesOf(name, module)
     const transparentPixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='; // eslint-disable-line  max-len
     return (
       <div>
-        <div>
-          Here we have a xlarge avatar, an avatar with partial transparency, and a completely
-          transparent image. No border is shown around them.
-        </div>
+        <p>The below avatars are as follows:</p>
+        <ul>
+          <li>an avatar without any source image</li>
+          <li>an avatar with a partially transparent image</li>
+          <li>an avatar with a completely transparent image (use devtools to inspect)</li>
+        </ul>
+        <p>Note: there is no border around the images.</p>
         <div style={rainbowStyle}>
-          <DefaultAvatar size="xlarge" />
-          <DefaultAvatar size="xlarge" src={transparentAvatarUrl} />
-          <DefaultAvatar size="xlarge" src={transparentPixel} />
+          <Avatar size="xlarge" />
+          <Avatar size="xlarge" src={transparentAvatarUrl} />
+          <Avatar size="xlarge" src={transparentPixel} />
         </div>
         <div style={cubeStyle}>
-          <DefaultAvatar size="xlarge" />
-          <DefaultAvatar size="xlarge" src={transparentAvatarUrl} />
-          <DefaultAvatar size="xlarge" src={transparentPixel} />
+          <Avatar size="xlarge" />
+          <Avatar size="xlarge" src={transparentAvatarUrl} />
+          <Avatar size="xlarge" src={transparentPixel} />
         </div>
       </div>
     );
   })
-  .add('All avatar sizes', () => (
+  .add('Avatar — sizes', () => (
     <AllAvatarSizes />
   ))
-  .add('All avatars with online presence', () => (
+  .add('Avatar — with online presence', () => (
     <div>
-      <div>Presence icons should be allowed to be shown at any size,
+      <p>Presence icons should be allowed to be shown at any size,
         but are recommended only for <strong>medium</strong>
-      </div>
+      </p>
       <AllAvatarSizes presence="online" />
     </div>
   ))
-  .add('All presences', () => (
+  .add('Avatar — various presences', () => (
     <div className={avatarRowClass}>
-      <DefaultAvatar size="large" presence="none" />
-      <DefaultAvatar size="large" presence="online" />
-      <DefaultAvatar size="large" presence="busy" />
-      <DefaultAvatar size="large" presence="offline" />
+      <p>presence=&ldquo;none&rdquo; (default, same as not specifying it)</p>
+      <p><Avatar size="large" presence="none" /></p>
+      <p>presence=&ldquo;online&rdquo;</p>
+      <p><Avatar size="large" presence="online" /></p>
+      <p>presence=&ldquo;busy&rdquo;</p>
+      <p><Avatar size="large" presence="busy" /></p>
+      <p>presence=&ldquo;offline&rdquo;</p>
+      <p><Avatar size="large" presence="offline" /></p>
     </div>
   ))
-  .add('Avatars with custom presence', () => (
+  .add('Avatar — custom presence', () => (
     <div>
-      <div>As well as the presence attribute, avatars can also display custom content on their badge
-        by composing them inside. <br />
-        No styling is applied to custom content by default and it is up the consumer to make the
-        content fit (height and width of 100% and a background color
-        are a good start)
-      </div>
+      <p>
+        As well as the presence attribute, avatars can also display custom content on their badge
+        by composing them inside.
+      </p>
+      <p>
+        No styling is applied to custom content by default, and it is up the consumer to make the
+        content fit (height and width of 100% and a background color are a good start).
+      </p>
       <div className={storybookExampleClass} >
         <div>
           These avatars have an image as their default content and have been styled
@@ -148,18 +171,11 @@ storiesOf(name, module)
         <AllAvatarSizes presence="online">
           <div
             style={{
-              backgroundColor: 'green',
+              background: 'linear-gradient(90deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3)',
               height: '100%',
               width: '100%',
-              textAlign: 'center',
-              color: 'white',
-              marginTop: '1px',
-              lineHeight: '100%',
-              fontSize: '1em',
             }}
-          >
-            1
-          </div>
+          />
         </AllAvatarSizes>
       </div>
       <div className={storybookExampleClass} >
@@ -169,29 +185,35 @@ storiesOf(name, module)
         <AllAvatarSizes presence="online">
           <div
             style={{
-              width: '100%',
+              background: 'blue',
+              color: 'white',
               height: '100%',
-              background: 'grey',
-              display: 'inline-block',
+              width: '100%',
             }}
           >
             <div
               style={{
-                width: '60%',
-                height: '20%',
-                background: 'red',
+                height: 'inherit',
                 position: 'relative',
-                top: '45%',
-                left: '20%',
-                transform: 'rotate(50deg)',
               }}
-            />
+            >
+              <span
+                style={{
+                  left: '50%',
+                  position: 'absolute',
+                  transform: 'translate(-50%, -50%)',
+                  top: '50%',
+                }}
+              >
+                ?
+              </span>
+            </div>
           </div>
         </AllAvatarSizes>
       </div>
     </div>
   ))
-  .add('Avatar loaded from external source', () => {
+  .add('Avatar — from external source', () => {
     class ExternalSrcAvatar extends React.PureComponent {
       constructor(props) {
         super(props);
@@ -199,12 +221,13 @@ storiesOf(name, module)
         this.loadImage = this.loadImage.bind(this);
         this.state = {
           url: 'https://design.atlassian.com/images/avatars/project-128.png',
-          avatar: <DefaultAvatar size="xlarge" label="This is an avatar!" />,
+          avatar: <Avatar size="xlarge" label="This is an avatar!" />,
         };
       }
-      loadImage() {
+      loadImage(e) {
+        e.preventDefault();
         this.setState({
-          avatar: <DefaultAvatar size="xlarge" label="This is an avatar!" src={this.state.url} />,
+          avatar: <Avatar size="xlarge" label="This is an avatar!" src={this.state.url} />,
         });
       }
       changeUrl(event) {
@@ -213,18 +236,18 @@ storiesOf(name, module)
       render() {
         return (
           <div>
-            <div>
+            <form onSubmit={this.loadImage}>
               <label htmlFor="avatarUrl">
                 <span>URL:</span>
                 <input
                   type="text"
-                  style={{ marginTop: '10px' }}
+                  style={{ marginTop: '10px', width: '30em' }}
                   defaultValue={this.state.url}
                   onChange={this.changeUrl}
                 />
-                <input type="button" value="Load Image" onClick={this.loadImage} />
+                <button>Load Image</button>
               </label>
-            </div>
+            </form>
             {this.state.avatar}
           </div>
         );
@@ -233,25 +256,38 @@ storiesOf(name, module)
 
     return (
       <div className={avatarRowClass}>
-        <div>
-          Try loading an image from an external source to see the loading behaviour.
-        </div>
+        <p>Try loading an image from an external source to see the loading behaviour.</p>
         <ExternalSrcAvatar />
       </div>
     );
   })
-  .add('Avatar with a label', () => (
+  .add('Avatar — labels', () => (
     <div className={avatarRowClass}>
-      <div>
-        This image should have an aria-label that should be read out when tabbing to the link
-          around it and also an alt text.
-      </div>
-      <a href="//www.atlassian.com"><DefaultAvatar size="xlarge" label="This is an avatar!" /></a>
+      <p>
+        Just as the <code>alt</code> attribute is important on images, the <code>label</code> prop
+        is important for avatars. The <code>label</code> prop allows you to convey information to
+        people using a screen reader or other assistive technology.
+      </p>
+      <p>
+        The text &ldquo;This is an avatar!&rdquo; should be read aloud when you tab to the below
+        link-wrapped avatar while using a screen reader.
+      </p>
+      <p>
+        <a href="http://www.atlassian.com">
+          <Avatar size="xlarge" label="This is an avatar!" />
+        </a>
+      </p>
     </div>
   ))
-  .addCodeExampleStory('Avatar with a custom border', () => (
+  .add('Avatar — presence border color', () => (
     <div style={{ padding: '20px', backgroundColor: '#3a77d8' }}>
-      <DefaultAvatar size="xlarge" presence="online" presenceBorderColor="#3a77d8" />
-      <DefaultAvatar size="xlarge" presence="offline" presenceBorderColor="#3a77d8" />
+      <p style={{ color: 'white' }}>presenceBorderColor=&ldquo;black&rdquo;</p>
+      <p>
+        <Avatar size="xlarge" presence="online" presenceBorderColor="black" />
+      </p>
+      <p style={{ color: 'white' }}>presenceBorderColor=&ldquo;#3a77d8&rdquo;</p>
+      <p>
+        <Avatar size="xlarge" presence="offline" presenceBorderColor="#3a77d8" />
+      </p>
     </div>
   ));

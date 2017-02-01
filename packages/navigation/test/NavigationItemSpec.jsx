@@ -64,8 +64,8 @@ describe('<NavigationItem />', () => {
     it('subText should render in the navigation item', () => {
       expect(mount(<NavigationItem subText="SUBTEXT" />).html()).to.contain('SUBTEXT');
     });
-    it('subText should not render in the navigation item when it is compact', () => {
-      expect(mount(<NavigationItem isCompact subText="SUBTEXT" />).html()).to.not.contain('SUBTEXT');
+    it('subText should render in the navigation item when it is compact', () => {
+      expect(mount(<NavigationItem isCompact subText="SUBTEXT" />).html()).to.contain('SUBTEXT');
     });
   });
   describe('behaviour', () => {

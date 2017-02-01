@@ -1,6 +1,6 @@
-import styles from 'style!./ak-mention-list-error.less';
+import * as React from 'react';
+import * as styles from './styles';
 
-import React from 'react';
 import { whoopsUri } from './icons';
 
 export default () => (

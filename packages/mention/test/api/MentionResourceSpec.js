@@ -3,7 +3,7 @@ import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 import { assert } from 'chai';
 
-import MentionResource from '../../src/api/ak-mention-resource';
+import MentionResource from '../../src/api/MentionResource';
 import { resultC, resultCraig } from '../_mention-data';
 
 const baseUrl = 'https://bogus/';

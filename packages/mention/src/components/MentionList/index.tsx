@@ -1,17 +1,17 @@
-import styles from 'style!./ak-mention-list.less';
+import * as React from 'react';
+import { MouseEvent } from '@types/react';
+import { PureComponent } from 'react';
+import * as classNames from 'classnames';
 
-import classNames from 'classnames';
-import React, { PropTypes, PureComponent } from 'react';
+import * as styles from './styles';
+import Error from '../MentionListError';
+import MentionItem from '../MentionItem';
+import Scrollable from '../Scrollable';
+import { Mention, OnSelection } from '../../types';
+import debug from '../../util/logger';
+import { mouseLocation, actualMouseMove, Position } from '../../util/mouse';
 
-import Error from './ak-mention-list-error';
-import Item from './ak-mention-item';
-import Scrollable from './ak-scrollable';
-
-import MentionPropTypes from '../internal/ak-mention-prop-types';
-import debug from '../util/logger';
-import { mouseLocation, actualMouseMove } from '../util/mouse';
-
-function wrapIndex(mentions, index) {
+function wrapIndex(mentions: Mention[], index: number): number {
   const len = mentions.length;
   let newIndex = index;
   while (newIndex < 0 && len > 0) {
@@ -20,53 +20,66 @@ function wrapIndex(mentions, index) {
   return newIndex % len;
 }
 
-function getKey(index, mentions) {
+function getKey(index: number, mentions?: Mention[]): string | undefined {
   return mentions && mentions[index] && mentions[index].id;
 }
 
-export default class MentionList extends PureComponent {
-  static propTypes = {
-    mentions: PropTypes.arrayOf(MentionPropTypes.mention),
-    showError: PropTypes.bool,
-    onSelection: PropTypes.func,
-  }
+export interface Props {
+  mentions: Mention[];
+  showError?: boolean;
+  onSelection: OnSelection;
+}
 
-  constructor(props) {
+export interface State {
+  selectedKey?: string;
+  selectedIndex: number;
+}
+
+export interface Items {
+  [index: string]: MentionItem;
+}
+
+export default class MentionList extends PureComponent<Props, State> {
+  private lastMousePosition: Position | undefined;
+  private scrollable: Scrollable;
+  private items: Items;
+
+  constructor(props: Props) {
     super(props);
 
     this.state = {
       selectedKey: getKey(0, props.mentions),
       selectedIndex: 0,
     };
-
-    this._lastMousePosition = null;
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     // adjust selection
     const { mentions } = nextProps;
     const { selectedKey } = this.state;
-    if (!selectedKey) {
-      this._selectIndexNewMentions(0, mentions);
-      return;
-    }
-    for (let i = 0; i < mentions.length; i++) {
-      if (selectedKey === mentions[i].id) {
-        this.setState({
-          selectedIndex: i,
-        });
+    if (mentions) {
+      if (!selectedKey) {
+        this.selectIndexNewMentions(0, mentions);
         return;
       }
+      for (let i = 0; i < mentions.length; i++) {
+        if (selectedKey === mentions[i].id) {
+          this.setState({
+            selectedIndex: i,
+          });
+          return;
+        }
+      }
+      // existing selection not in results, pick first
+      this.selectIndexNewMentions(0, mentions);
     }
-    // existing selection not in results, pick first
-    this._selectIndexNewMentions(0, mentions);
   }
 
   componentDidUpdate() {
     const { mentions } = this.props;
     const { selectedIndex } = this.state;
     if (mentions && mentions[selectedIndex]) {
-      this._revealItem(mentions[selectedIndex].id);
+      this.revealItem(mentions[selectedIndex].id);
     }
     // FIXME - a React version of this _may_ be required for Confluence
     // integration tests. Will remove / fix once known
@@ -76,40 +89,15 @@ export default class MentionList extends PureComponent {
   // API
   selectNext = () => {
     const newIndex = wrapIndex(this.props.mentions, this.state.selectedIndex + 1);
-    this._selectIndex(newIndex);
+    this.selectIndex(newIndex);
   }
 
   selectPrevious = () => {
     const newIndex = wrapIndex(this.props.mentions, this.state.selectedIndex - 1);
-    this._selectIndex(newIndex);
+    this.selectIndex(newIndex);
   }
 
-  chooseCurrentSelection = () => {
-    const { mentions, onSelection } = this.props;
-    const { selectedIndex } = this.state;
-    const selectedMention = mentions[selectedIndex];
-    debug('ak-mention-list.chooseCurrentSelection', selectedMention);
-    if (onSelection) {
-      onSelection(selectedMention);
-    }
-  }
-
-  // Internal
-  _revealItem(key) {
-    const item = this._items[key];
-    if (item && this._scrollable) {
-      this._scrollable.reveal(item);
-    }
-  }
-
-  _selectIndexNewMentions(index, mentions) {
-    this.setState({
-      selectedIndex: index,
-      selectedKey: getKey(index, mentions),
-    });
-  }
-
-  _selectIndex(index, callback) {
+  selectIndex(index: number, callback?: () => any): void {
     const { mentions } = this.props;
     this.setState({
       selectedIndex: index,
@@ -117,52 +105,77 @@ export default class MentionList extends PureComponent {
     }, callback);
   }
 
-  _selectIndexOnHover(mouseEvent, index) {
-    const mousePosition = mouseLocation(mouseEvent);
-    if (actualMouseMove(this._lastMousePosition, mousePosition)) {
-      this._selectIndex(index);
+  chooseCurrentSelection = () => {
+    const { mentions, onSelection } = this.props;
+    const { selectedIndex } = this.state;
+    const selectedMention = mentions && mentions[selectedIndex || 0];
+    debug('ak-mention-list.chooseCurrentSelection', selectedMention);
+    if (onSelection && selectedMention) {
+      onSelection(selectedMention);
     }
-    this._lastMousePosition = mousePosition;
   }
 
-  _renderItems() {
+  // Internal
+  private revealItem(key: string): void {
+    const item = this.items[key];
+    if (item && this.scrollable) {
+      this.scrollable.reveal(item);
+    }
+  }
+
+  private selectIndexNewMentions(index: number, mentions: Mention[]): void {
+    this.setState({
+      selectedIndex: index,
+      selectedKey: getKey(index, mentions),
+    });
+  }
+
+  private selectIndexOnHover(mouseEvent: MouseEvent<any>, index: number) {
+    const mousePosition = mouseLocation(mouseEvent);
+    if (actualMouseMove(this.lastMousePosition, mousePosition)) {
+      this.selectIndex(index);
+    }
+    this.lastMousePosition = mousePosition;
+  }
+
+  private renderItems(): JSX.Element | null {
     const { mentions } = this.props;
     const { selectedKey } = this.state;
 
-    if (mentions.length) {
-      this._items = {};
+    if (mentions && mentions.length) {
+      this.items = {};
 
       return (
         <div>
           {mentions.map((mention, idx) => {
             const selected = selectedKey === mention.id;
             const key = mention.id;
-            const { status, time } = mention.presence || {};
+            const presence = mention.presence || {};
+            const { status, time } = presence;
             const item = (
-              <Item
+              <MentionItem
                 {...mention}
                 avatarUrl={mention.avatarUrl}
                 key={key}
-                idx={idx}
                 selected={selected}
                 status={status}
                 time={time}
                 onMouseMove={(mouseEvent) => {
-                  this._selectIndexOnHover(mouseEvent, idx);
+                  this.selectIndexOnHover(mouseEvent, idx);
                 }}
                 /* Cannot use onclick, as onblur will close the element, and prevent
                  * onClick from firing.
                  */
                 onSelection={() => {
-                  this._selectIndex(idx, () => {
+                  this.selectIndex(idx, () => {
                     this.chooseCurrentSelection();
                   });
                 }}
                 ref={(ref) => {
                   if (ref) {
-                    this._items[key] = ref;
+                    this.items[key] = ref;
                   } else {
-                    delete this._items[key];
+                    delete this.items[key];
                   }
                 }}
               />
@@ -190,16 +203,16 @@ export default class MentionList extends PureComponent {
       [styles.empty]: !hasMentions && !showError,
     });
 
-    let errorSection = null;
-    let resultSection = null;
+    let errorSection: JSX.Element | undefined;
+    let resultSection: JSX.Element | undefined;
     if (mustShowError) {
       errorSection = (<Error />);
     } else if (hasMentions) {
       resultSection = (
         <Scrollable
-          ref={(ref) => { this._scrollable = ref; }}
+          ref={(ref) => { this.scrollable = ref; }}
         >
-          {this._renderItems()}
+          {this.renderItems()}
         </Scrollable>
       );
     }

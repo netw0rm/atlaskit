@@ -1,90 +1,99 @@
-import styles from 'style!./ak-mention-picker.less';
+import * as React from 'react';
+import { PureComponent } from 'react';
+import * as classNames from 'classnames';
 
-import classNames from 'classnames';
-import React, { PureComponent, PropTypes } from 'react';
+import * as styles from './styles';
+import { OnSelection } from '../../types';
+import { MentionProvider, PresenceProvider } from '../../api/MentionResource';
+import ResourcedMentionList from '../ResourcedMentionList';
+import Popup from '../Popup';
+import debug from '../../util/logger';
+import uniqueId from '../../util/id';
 
-import ResourcedMentionList from './ak-resourced-mention-list';
-import Popup from './ak-popup';
-import MentionPropTypes from '../internal/ak-mention-prop-types';
-import debug from '../util/logger';
-import uniqueId from '../util/id';
+export interface OnOpen {
+  (): void;
+}
+
+export interface OnClose {
+  (): void;
+}
+
+export interface Props {
+  resourceProvider: MentionProvider;
+  presenceProvider?: PresenceProvider;
+  query: string;
+
+  onSelection?: OnSelection;
+  onOpen?: OnOpen;
+  onClose?: OnClose;
+
+  target: string;
+  position: 'above' | 'below' | 'auto';
+  zIndex: number | string;
+  offsetX: number;
+  offsetY: number;
+}
+
+export interface State {
+  visible: boolean;
+  info?: string;
+}
 
 /**
-* @class MentionPicker
-*/
-export default class MentionPicker extends PureComponent {
+ * @class MentionPicker
+ */
+export default class MentionPicker extends PureComponent<Props, State> {
 
-  static propTypes = {
-    // ak-resourced-mention-list
-    resourceProvider: MentionPropTypes.resourceProvider,
-    presenceProvider: MentionPropTypes.presenceProvider,
-    query: PropTypes.string,
-    onSelection: PropTypes.func,
-    onOpen: PropTypes.func,
-    onClose: PropTypes.func,
-
-    // ak-inline-dialog
-    /**
-     * id of element to target the picker against.
-     * if not specified the picker is rendered inline.
-     */
-    target: PropTypes.string,
-    position: PropTypes.string,
-    zIndex: PropTypes.number,
-    offsetX: PropTypes.number,
-    offsetY: PropTypes.number,
-  }
+  private subscriberKey: string;
+  private mentionListRef: ResourcedMentionList;
 
   static defaultProps = {
     onSelection: () => {},
     onOpen: () => {},
     onClose: () => {},
-  }
+  };
 
   constructor(props) {
     super(props);
-    this._subscriberKey = uniqueId('ak-mention-picker');
+    this.subscriberKey = uniqueId('ak-mention-picker');
     this.state = {
       visible: false,
     };
-    this._applyPropChanges({}, props);
+    this.applyPropChanges({} as Props, props);
   }
 
   componentDidMount() {
-    this._subscribeResourceProvider(this.props.resourceProvider);
+    this.subscribeResourceProvider(this.props.resourceProvider);
   }
 
   componentWillReceiveProps(nextProps) {
-    this._applyPropChanges(this.props, nextProps);
+    this.applyPropChanges(this.props, nextProps);
   }
 
   componentWillUnmount() {
-    if (this.resourceProvider) {
-      this.resourceProvider.unsubscribe(this._subscriberKey);
-    }
-    this._unsubscribeResourceProvider(this.props.resourceProvider);
+    this.unsubscribeResourceProvider(this.props.resourceProvider);
   }
 
   selectNext = () => {
-    if (this._mentionListRef) {
-      this._mentionListRef.selectNext();
+    if (this.mentionListRef) {
+      this.mentionListRef.selectNext();
     }
   }
 
   selectPrevious = () => {
-    if (this._mentionListRef) {
-      this._mentionListRef.selectPrevious();
+    if (this.mentionListRef) {
+      this.mentionListRef.selectPrevious();
     }
   }
 
   chooseCurrentSelection = () => {
-    if (this._mentionListRef) {
-      this._mentionListRef.chooseCurrentSelection();
+    if (this.mentionListRef) {
+      this.mentionListRef.chooseCurrentSelection();
     }
   }
 
   // Internal
-  _applyPropChanges(prevProps, nextProps) {
+  private applyPropChanges(prevProps: Props, nextProps: Props) {
     const oldResourceProvider = prevProps.resourceProvider;
     const newResourceProvider = nextProps.resourceProvider;
 
@@ -92,31 +101,31 @@ export default class MentionPicker extends PureComponent {
 
     // resource provider
     if (resourceProviderChanged) {
-      this._unsubscribeResourceProvider(oldResourceProvider);
-      this._subscribeResourceProvider(newResourceProvider);
+      this.unsubscribeResourceProvider(oldResourceProvider);
+      this.subscribeResourceProvider(newResourceProvider);
     }
   }
 
-  _subscribeResourceProvider(resourceProvider) {
+  private subscribeResourceProvider(resourceProvider) {
     if (resourceProvider) {
       resourceProvider.subscribe(
-        this._subscriberKey,
-        this._filterChange,
-        this._filterError,
-        this._filterInfo
+        this.subscriberKey,
+        this.filterChange,
+        this.filterError,
+        this.filterInfo
       );
     }
   }
 
-  _unsubscribeResourceProvider(resourceProvider) {
+  private unsubscribeResourceProvider(resourceProvider) {
     if (resourceProvider) {
-      resourceProvider.unsubscribe(this._subscriberKey);
+      resourceProvider.unsubscribe(this.subscriberKey);
     }
   }
 
   // internal, used for callbacks
-  _filterChange = (mentions) => {
-    debug('ak-mention-picker._filterChange', mentions.length);
+  private filterChange = (mentions) => {
+    debug('ak-mention-picker.filterChange', mentions.length);
     const wasVisible = this.state.visible;
     const visible = mentions.length > 0;
     this.setState({
@@ -124,27 +133,27 @@ export default class MentionPicker extends PureComponent {
     });
     if (wasVisible !== visible) {
       if (visible) {
-        this.props.onOpen();
+        this.props.onOpen && this.props.onOpen();
       } else {
-        this.props.onClose();
+        this.props.onClose && this.props.onClose();
       }
     }
   }
 
-  _filterError = (error) => {
-    debug('ak-mention-picker._filterError', error);
+  private filterError = (error) => {
+    debug('ak-mention-picker.filterError', error);
     this.setState({
       visible: true,
       info: undefined,
     });
   }
 
-  _filterInfo = (info) => {
-    debug('ak-mention-picker._filterInfo', info);
+  private filterInfo = (info) => {
+    debug('ak-mention-picker.filterInfo', info);
     this.setState({
       info,
-    });
-  };
+    } as State);
+  }
 
   render() {
     const { resourceProvider, presenceProvider, onSelection, query,
@@ -165,7 +174,7 @@ export default class MentionPicker extends PureComponent {
         presenceProvider={presenceProvider}
         onSelection={onSelection}
         query={query}
-        ref={(ref) => { this._mentionListRef = ref; }}
+        ref={(ref) => { this.mentionListRef = ref; }}
       />
     );
 
@@ -183,7 +192,7 @@ export default class MentionPicker extends PureComponent {
         content = (
           <Popup
             target={target}
-            position={position}
+            relativePosition={position}
             zIndex={zIndex}
             offsetX={offsetX}
             offsetY={offsetY}
@@ -200,7 +209,7 @@ export default class MentionPicker extends PureComponent {
       }
     } else {
       content = (
-        <div className={styles.noDialogContainer}>
+        <div>
           {resourceMentionList}
           {infoContent}
         </div>

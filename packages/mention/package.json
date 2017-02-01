@@ -2,21 +2,24 @@
   "name": "@atlaskit/mention",
   "version": "1.0.0",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "ak-mention component",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
-  "types": "src/index.d.ts",
+  "main": "dist/es5/index.js",
+  "jsnext:main": "dist/es2015/index.js",
+  "types": "dist/types/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/mention; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
+    "build": "npm run build/es5 && npm run build/es2015",
+    "build/es5": "../../node_modules/.bin/tsc -p build/es5",
+    "build/es2015": "../../node_modules/.bin/tsc -p build/es2015"
   },
   "files": [
     "dist",
-    "src/index.d.ts"
+    "src"
   ],
   "dependencies": {
+    "@types/whatwg-fetch": "^0.0.33",
     "ak-avatar": "^5.1.1",
     "ak-lozenge": "^5.0.4",
     "akutil-common": "^5.0.0",
@@ -24,6 +27,8 @@
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "es6-promise": "^4.0.5",
+    "tslib": "^1.2.0",
+    "typestyle": "^0.21.4",
     "uid": "^0.0.2",
     "url-search-params": "^0.6.1",
     "whatwg-fetch": "^1.0.0"

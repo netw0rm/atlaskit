@@ -4,10 +4,10 @@ import { mount } from 'enzyme';
 
 import mentionData, { mentionDataSize } from '../_mention-data';
 import MentionResource from '../_mock-ak-mention-resource';
-import MentionPicker from '../../src/components/ak-mention-picker';
-import MentionList from '../../src/components/ak-mention-list';
-import MentionListError from '../../src/components/ak-mention-list-error';
-import MentionItem from '../../src/components/ak-mention-item';
+import MentionPicker from '../../src/components/MentionPicker';
+import MentionList from '../../src/components/MentionList';
+import MentionListError from '../../src/components/MentionListError';
+import MentionItem from '../../src/components/MentionItem';
 import { isMentionItemSelected, getMentionItemById } from '../_ak-selectors';
 
 const mentions = mentionData.mentions;

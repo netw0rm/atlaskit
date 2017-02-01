@@ -1,20 +1,27 @@
-import styles from 'style!./ak-mention-item.less';
+import * as React from 'react';
+import { MouseEventHandler, MouseEvent } from '@types/react';
+import { PureComponent } from 'react';
+import * as styles from './styles';
 
-import classNames from 'classnames';
-import React, { PropTypes, PureComponent } from 'react';
+import * as classNames from 'classnames';
 
 import Avatar from 'ak-avatar';
 import Lozenge from 'ak-lozenge';
 
-import MentionPropTypes from '../internal/ak-mention-prop-types';
-import { leftClick } from '../util/mouse';
+import { Mention, HighlightDetail } from '../../types';
+import { leftClick } from '../../util/mouse';
 
-function renderHighlight(className, value, highlights, prefix) {
+interface Part {
+  value: string;
+  matches: boolean;
+}
+
+function renderHighlight(className?: string, value?: string, highlights?: HighlightDetail[], prefix?: string) {
   if (!value) {
     return null;
   }
 
-  const parts = [];
+  const parts: Part[] = [];
   const prefixText = prefix || '';
   let lastIndex = 0;
 
@@ -77,22 +84,25 @@ function renderTime(time) {
   return null;
 }
 
-export default class MentionItem extends PureComponent {
-  static propTypes = {
-    onMouseMove: PropTypes.func,
-    onSelection: PropTypes.func,
-    ...MentionPropTypes.mentionPropType,
-  };
+export interface OnSelection {
+  (mention: Mention) : void;
+}
 
+export interface Props extends Mention {
+  onMouseMove: MouseEventHandler<MouseEvent<any>>;
+  onSelection: OnSelection;
+}
+
+export default class MentionItem extends PureComponent<Props, undefined> {
   // internal, used for callbacks
-  _onMentionSelected = (event) => {
+  private onMentionSelected = (event: MouseEvent<any>) => {
     if (leftClick(event) && this.props.onSelection) {
       event.preventDefault();
       this.props.onSelection(this.props);
     }
   }
 
-  _onMentionMenuItemMouseMove = (event) => {
+  private onMentionMenuItemMouseMove = (event: MouseEvent<any>) => {
     if (this.props.onMouseMove) {
       this.props.onMouseMove(event);
     }
@@ -102,7 +112,7 @@ export default class MentionItem extends PureComponent {
     const { selected, highlight, avatarUrl, status, time, name, mentionName, lozenge } = this.props;
     const classes = classNames({
       'ak-mention-item': true,
-      [styles.akMentionItem]: true,
+      [styles.mentionItem]: true,
       [styles.selected]: selected,
     });
 
@@ -112,13 +122,15 @@ export default class MentionItem extends PureComponent {
     return (
       <div
         className={classes}
-        onMouseDown={this._onMentionSelected}
-        onMouseMove={this._onMentionMenuItemMouseMove}
+        onMouseDown={this.onMentionSelected}
+        onMouseMove={this.onMentionMenuItemMouseMove}
         data-mention-id={this.props.id}
         data-mention-name={this.props.mentionName}
       >
         <div className={styles.row}>
-          <Avatar src={avatarUrl} size="medium" presence={status} />
+          <span className={styles.akAvatar}>
+            <Avatar src={avatarUrl} size="medium" presence={status} />
+          </span>
           <div className={styles.nameSection}>
             {renderHighlight(styles.fullName, name, nameHighlights)}
             {renderHighlight(styles.mentionName, mentionName, mentionHighlights, '@')}

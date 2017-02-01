@@ -1,4 +1,4 @@
-import { Fragment, InputRule, MarkType, Schema } from '../../prosemirror/future';
+import { Fragment, headingRule, InputRule, MarkType, Schema } from '../../prosemirror/future';
 
 function addMark(markType: MarkType, schema: Schema<any, any>) {
   return (state, match, start, end) => {
@@ -35,6 +35,11 @@ function buildMarkdownInputRules(schema: Schema<any, any>): Array<InputRule> {
   if (schema.marks.mono) {
     // `string` should monospace the text
     rules.push(new InputRule(/(?:^|\s)(?:`([^`]+)`)$/, addMark(schema.marks.mono, schema)));
+  }
+
+  if (schema.nodes.heading) {
+    // '# ' for h1, '## ' for h2 and etc
+    rules.push(headingRule(schema.nodes.heading, 5));
   }
   return rules;
 }

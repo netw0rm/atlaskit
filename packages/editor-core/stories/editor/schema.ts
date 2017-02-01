@@ -7,6 +7,7 @@ import { strong } from '../../src/schema/marks/strong';
 import { underline } from '../../src/schema/marks/underline';
 import { bulletList } from '../../src/schema/nodes/bullet-list';
 import { doc } from '../../src/schema/nodes/doc';
+import { heading } from '../../src/schema/nodes/heading';
 import { listItem } from '../../src/schema/nodes/list-item';
 import { orderedList } from '../../src/schema/nodes/ordered-list';
 import { paragraph } from '../../src/schema/nodes/paragraph';
@@ -18,7 +19,8 @@ const nodes = {
   text,
   bullet_list: bulletList,
   ordered_list: orderedList,
-  list_item: listItem
+  list_item: listItem,
+  heading
 };
 
 const marks = {

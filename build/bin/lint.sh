@@ -34,8 +34,7 @@ eslint_exit=$?
 wait $tslint_pid
 tslint_exit=$?
 
-if [ "$eslint_exit" == "0" ] && [ "$tslint_exit" == "0" ]; then
-  lint_build_status "SUCCESSFUL"
-else
+# Only report failed builds to prevent using the passing linting to merge before tests have run
+if [ "$eslint_exit" -ne "0" ] || [ "$tslint_exit" -ne "0" ]; then
   lint_build_status "FAILED"
 fi

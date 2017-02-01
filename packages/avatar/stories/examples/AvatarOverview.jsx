@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import Avatar from '@atlaskit/avatar';
 
-
 export default class extends PureComponent {
   render() {
     return (

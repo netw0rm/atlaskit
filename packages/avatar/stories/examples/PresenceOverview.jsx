@@ -13,7 +13,6 @@ const presenceWrapperStyles = {
   width: '20px',
 };
 
-
 export default (
   <div style={containerStyles}>
     <div style={presenceWrapperStyles}><Presence /></div>

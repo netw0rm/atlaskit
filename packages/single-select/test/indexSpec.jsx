@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { Label, FieldBase } from 'ak-field-base';
-import Droplist from 'ak-droplist';
-import Group from 'ak-droplist-group';
-import Item from 'ak-droplist-item';
-import ExpandIcon from 'ak-icon/glyph/expand';
+import { Label, FieldBase } from '@atlaskit/field-base';
+import Droplist from '@atlaskit/droplist';
+import Group from '@atlaskit/droplist-group';
+import Item from '@atlaskit/droplist-item';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 import styles from 'style!../src/styles.less';
 import { StatelessSelect } from '../src';

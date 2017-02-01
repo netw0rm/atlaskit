@@ -77,8 +77,6 @@ Will create a new templated component under `packages/my-component-name` with ev
 ## Flesh-out a component
 The functionality of your component will be contained in `src/index.js`. The template will contain a skate definition and styles will already be linked.
 
-## Style a component
-Styles for AtlasKit components are written in Less and are separated into three main files by default (`host.less`, `shadow.less`, `shared.less`).
 
 ### Style the host element using host.less
 Is where you write styles that affect the component itself.

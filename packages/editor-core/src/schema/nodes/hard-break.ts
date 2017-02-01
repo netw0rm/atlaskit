@@ -1,4 +1,5 @@
 import { HardBreak, Node, Schema } from '../../prosemirror';
+import { NodeSpec } from '../../prosemirror/future';
 
 export class HardBreakNodeType extends HardBreak {
   constructor(name: string, schema: Schema) {
@@ -16,3 +17,11 @@ export interface HardBreakNode extends Node {
 export function isHardBreakNode(node: Node): node is HardBreakNode {
   return node.type instanceof HardBreakNodeType;
 }
+
+export const hardBreak: NodeSpec = {
+  inline: true,
+  group: 'inline',
+  selectable: false,
+  parseDOM: [{ tag: 'br' }],
+  toDOM() { return ['br']; }
+};

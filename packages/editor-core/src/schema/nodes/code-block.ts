@@ -1,4 +1,5 @@
-import { Attribute, Block, Node, Schema } from '../../prosemirror';
+import { Attribute, Block, dom, Node, Schema } from '../../prosemirror';
+import { NodeSpec } from '../../prosemirror/future';
 
 export class CodeBlockNodeType extends Block {
   constructor(name: string, schema: Schema) {
@@ -10,7 +11,7 @@ export class CodeBlockNodeType extends Block {
 
   get attrs() {
     return {
-      language: new Attribute({default: null})
+      language: new Attribute({ default: null })
     };
   }
 
@@ -77,3 +78,25 @@ export interface CodeBlockNode extends Node {
 export function isCodeBlockNode(node: Node): node is CodeBlockNode {
   return node.type instanceof CodeBlockNodeType;
 }
+
+
+export const codeBlock: NodeSpec = {
+  content: 'text*',
+  group: 'block',
+  code: true,
+  defining: true,
+  parseDOM: [{
+    tag: 'pre', getAttrs: node => {
+      const language = getLanguageFromEditorStyle((node as dom.Node).parentElement!) || getLanguageFromBitbucketStyle((node as dom.Node).parentElement!);
+      return [
+        {
+          'language': language
+        },
+        {
+          preserveWhitespace: true
+        }
+      ] as any;
+    }
+  }],
+  toDOM(node) { return ['pre', { 'data-language': node.attrs['language'] }, 0]; }
+};

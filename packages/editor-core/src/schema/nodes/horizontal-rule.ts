@@ -1,4 +1,5 @@
 import { HorizontalRule, Node, Schema } from '../../prosemirror';
+import { NodeSpec } from '../../prosemirror/future';
 
 export class HorizontalRuleNodeType extends HorizontalRule {
   constructor(name: string, schema: Schema) {
@@ -16,3 +17,9 @@ export interface HorizontalRuleNode extends Node {
 export function isHorizontalRuleNode(node: Node): node is HorizontalRuleNode {
   return node.type instanceof HorizontalRuleNodeType;
 }
+
+export const horizontalRule: NodeSpec = {
+  group: 'block',
+  parseDOM: [{ tag: 'hr' }],
+  toDOM() { return ['hr']; }
+};

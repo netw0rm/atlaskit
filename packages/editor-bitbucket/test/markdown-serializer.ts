@@ -191,7 +191,7 @@ describe('Bitbucket markdown serializer: ', () => {
             pre('code\nblock'),
           )
         )
-      ))).to.eq('* item\n\n      code\n      block');
+      ))).to.eq('* item\n\n        code\n        block');
     });
 
     it('with one empty element is preserved', () => {
@@ -220,10 +220,10 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '* foo 1\n' +
-        '  * bar 1\n' +
-        '    * baz 1\n' +
-        '    * baz 2\n' +
-        '  * bar 2\n' +
+        '    * bar 1\n' +
+        '        * baz 1\n' +
+        '        * baz 2\n' +
+        '    * bar 2\n' +
         '* foo 2'
       );
     });
@@ -272,7 +272,7 @@ describe('Bitbucket markdown serializer: ', () => {
             pre('code\nblock'),
           )
         )
-      ))).to.eq('1. item\n\n       code\n       block');
+      ))).to.eq('1. item\n\n        code\n        block');
     });
 
     it('with one empty element is preserved', () => {
@@ -301,10 +301,10 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '1. foo 1\n' +
-        '   1. bar 1\n' +
-        '      1. baz 1\n' +
-        '      2. baz 2\n' +
-        '   2. bar 2\n' +
+        '    1. bar 1\n' +
+        '        1. baz 1\n' +
+        '        2. baz 2\n' +
+        '    2. bar 2\n' +
         '2. foo 2'
       );
     });
@@ -338,11 +338,11 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '1. foo 1\n' +
-        '   * bar 1\n' +
-        '     1. baz 1\n' +
-        '     2. baz 2\n' +
-        '        * banana\n' +
-        '   * bar 2\n' +
+        '    * bar 1\n' +
+        '        1. baz 1\n' +
+        '        2. baz 2\n' +
+        '            * banana\n' +
+        '    * bar 2\n' +
         '2. foo 2'
       );
     });

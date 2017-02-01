@@ -76,7 +76,7 @@ storiesOf(name, module)
       </p>
     </div>
   ))
-  .addCodeExampleStory('Presence: borderColors', () => (
+  .addCodeExampleStory('Presence — custom border-color', () => (
     <div>
       <p>
         By default presences will display a white border (2px). This can be overridden with the

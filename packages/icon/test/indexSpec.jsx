@@ -149,9 +149,9 @@ describe(name, () => {
           'hipchat/preferences',
           'hipchat/room-directory',
           'hipchat/room-menu',
-          'hipchat/upgrade-available-settings.svg',
-          'hipchat/upgrade-available.svg',
-          'hipchat/upgrade-min.svg',
+          'hipchat/upgrade-available-settings',
+          'hipchat/upgrade-available',
+          'hipchat/upgrade-min',
           'hipchat/video',
           'hipchat/warning-circle',
 

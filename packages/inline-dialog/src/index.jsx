@@ -23,6 +23,7 @@ export default class AKInlineDialog extends PureComponent {
     isOpen: PropTypes.bool,
     content: PropTypes.node,
     shouldFlip: PropTypes.bool,
+    fullWidth: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -30,6 +31,7 @@ export default class AKInlineDialog extends PureComponent {
     isOpen: false,
     content: null,
     shouldFlip: false,
+    fullWidth: false,
   }
 
   render() {
@@ -45,7 +47,7 @@ export default class AKInlineDialog extends PureComponent {
         autoPosition={props.shouldFlip}
         offset={dialogOffset}
       >
-        <div style={{ display: 'inline-block' }}>
+        <div style={props.fullWidth ? {} : { display: 'inline-block' }}>
           {props.children}
         </div>
       </Layer>);

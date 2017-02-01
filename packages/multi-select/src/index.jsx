@@ -24,6 +24,7 @@ export default class AkMultiSelect extends PureComponent {
     label: '',
     onOpenChange: () => {},
     onSelected: () => {},
+    onSelectedChange: () => {},
     onRemoved: () => {},
     placeholder: '',
     position: 'bottom left',

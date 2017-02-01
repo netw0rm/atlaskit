@@ -140,7 +140,7 @@ export default class StatelessMultiSelect extends PureComponent {
                     <Tag
                       key={item.value}
                       text={item.content}
-                      removeButtonText="Unselect this item"
+                      removeButtonText={`${item.content}, remove`}
                       onAfterRemoveAction={() => {
                         this.handleItemRemove(item);
                       }}

@@ -17,8 +17,8 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "ak-dropdown-menu": "^2.2.1",
-    "ak-icon": "^12.2.0",
+    "@atlaskit/dropdown-menu": "^1.0.0",
+    "@atlaskit/icon": "^2.2.0",
     "akutil-shared-styles": "^37.3.2",
     "classnames": "^2.2.5",
     "css-element-queries": "^0.3.2",

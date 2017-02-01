@@ -11,7 +11,7 @@ import {
   makeArrayFromNumber,
 } from './util';
 import Btn from './Btn';
-import DateFn from './Date';
+import DateComponent from './Date';
 
 import {
   Announcer,
@@ -270,7 +270,7 @@ export default class StatelessCalendar extends PureComponent {
       const isToday = today === dateAsString;
 
       week.push(
-        <DateFn
+        <DateComponent
           disabled={isDisabled}
           focused={isFocused}
           isToday={isToday}
@@ -281,7 +281,7 @@ export default class StatelessCalendar extends PureComponent {
           selected={isSelected}
           sibling={isSiblingMonth}
           year={date.year}
-        >{date.day}</DateFn>
+        >{date.day}</DateComponent>
       );
     });
 

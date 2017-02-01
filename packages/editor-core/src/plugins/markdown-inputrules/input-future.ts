@@ -16,13 +16,15 @@ function buildMarkdownInputRules(schema: Schema<any, any>): Array<InputRule> {
   if (schema.marks.strong) {
     // **string** and __string__ should bold the text
     rules.push(new InputRule(/(?:^|\s)(?:\*\*([^\*]+)\*\*)$/, addMark(schema.marks.strong, schema)));
-    rules.push(new InputRule(/(?:^|\s)(?:__([^\_]+)__)$/, addMark(schema.marks.strong, schema)));
+  }
+
+  if (schema.marks.underline) {
+    rules.push(new InputRule(/(?:^|\s)(?:__([^\_]+)__)$/, addMark(schema.marks.underline, schema)));
   }
 
   if (schema.marks.em) {
     // *string* and _string_ should italic the text
     rules.push(new InputRule(/(?:^|\s)(?:\*([^\*]+)\*)$/, addMark(schema.marks.em, schema)));
-    rules.push(new InputRule(/(?:^|\s)(?:_([^\_]+)_)$/, addMark(schema.marks.em, schema)));
   }
 
   if (schema.marks.strike) {

@@ -4,6 +4,7 @@ import { em } from '../../src/schema/marks/em';
 import { mono } from '../../src/schema/marks/mono';
 import { strike } from '../../src/schema/marks/strike';
 import { strong } from '../../src/schema/marks/strong';
+import { underline } from '../../src/schema/marks/underline';
 import { bulletList } from '../../src/schema/nodes/bullet-list';
 import { doc } from '../../src/schema/nodes/doc';
 import { listItem } from '../../src/schema/nodes/list-item';
@@ -24,7 +25,8 @@ const marks = {
   em,
   strong,
   mono,
-  strike
+  strike,
+  underline
 };
 
 export default new Schema<typeof nodes, typeof marks>({ nodes, marks });

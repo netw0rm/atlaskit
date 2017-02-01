@@ -62,13 +62,13 @@ storiesOf(name, module)
             action={<CancelIcon />}
             isCompact
             subText="Text with y, q, etc."
-            text="Should hae even smaller subText"
+            text="Should have even smaller subText"
             textAfter={<RandomBadge />}
           />
           <AkContainerItem
             isCompact
             subText="There's nothing quite like Parkay's squeeze™"
-            text="Should hae even smaller subText"
+            text="Should have even smaller subText"
             textAfter={<RandomBadge />}
           />
         </AkContainerItemGroup>

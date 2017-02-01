@@ -1,7 +1,8 @@
  import {
    akBorderRadius,
-   akColorN0
- } from 'akutil-shared-styles';
+   akColorN0,
+   akColorN800
+ } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 
 export const popup = style({
@@ -9,6 +10,8 @@ export const popup = style({
   height: '385px',
   borderRadius: akBorderRadius,
   overflow: 'hidden',
+
+  background: akColorN0,
 
   $nest: {
     iframe: {
@@ -34,7 +37,7 @@ export const close = style({
   textAlign: 'center',
   textDecoration: 'none',
 
-  color: akColorN0,
+  color: akColorN800,
   fontSize: '20px',
   fontWeight: 'bold',
   opacity: 0.5,

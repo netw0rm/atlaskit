@@ -6,5 +6,7 @@ set -e
 # (this will end up as two folders `@atlaskit` and `component` if scopes are used)
 TARGET_PATH="$1"
 PKG=$(../../build/bin/_get_package_name.sh)
+SAFE_PKG=$(echo "$PKG" | sed -e "s/^@atlaskit\///")
+
 cd ../..
-yarn run storybook/static/single "$PKG" -- -o "$TARGET_PATH/$PKG"
+yarn run storybook/static/single "$PKG" -- -o "$TARGET_PATH/$SAFE_PKG"

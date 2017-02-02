@@ -3,21 +3,24 @@
 const fs = require('fs');
 
 const dir = process.argv[2];
-fs.readdir(dir, (err, files) => {
-  // eslint-disable-next-line no-console
-  console.log(`
-    <html>
-      <head>
-        <title>Index</title>
-      </head>
-      <body>
-        <h1>${dir}</h1>
-        <h2>Generated ${new Date()}</h2>
-        <ul>
-          ${files.map(file => `<li><a href="${file}/index.html">${file}</a></li>`).join('\n')}
-        </ul>
-      </body>
-    </html>
+const title = process.argv[3];
+
+const directories = fs.readdirSync(dir).filter(f => fs.statSync(`${dir}/${f}`).isDirectory());
+
+// eslint-disable-next-line no-console
+console.log(`
+  <html>
+    <head>
+      <title>${title}</title>
+      <link rel="stylesheet" href="https://unpkg.com/@atlaskit/css-reset" />
+    </head>
+    <body>
+      <h1>${title}</h1>
+      <h2>Generated on ${new Date()}</h2>
+      <ul>
+        ${directories.map(directory => `<li><a href="${directory}/index.html">${directory}</a></li>`).join('\n')}
+      </ul>
+    </body>
+  </html>
   `);
-});
 

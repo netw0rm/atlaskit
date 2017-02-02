@@ -1,6 +1,10 @@
-@import '~@atlaskit/util-shared-styles/src/colors.less';
-@import '~@atlaskit/util-shared-styles/src/grid.less';
+@import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/grid.less';
 @import '../../shared-variables.less';
+
+.globalNavigationOuter {
+  position: relative;
+}
 
 .globalNavigation {
   align-items: center;
@@ -19,17 +23,18 @@
 }
 
 .primaryItem {
-  margin-top: @ak-grid-size * 0.5;
   margin-bottom: (@ak-grid-size * 1.5);
+  margin-top: @ak-grid-size * 0.5;
 }
 
 .primaryContainer {
-  flex: 1 1 auto;
+  flex: 1;
+  margin-top: @ak-grid-size * 1.5;
 }
 
 .secondaryContainer {
-  align-items: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding-bottom: (@ak-grid-size * 2.5);
 }

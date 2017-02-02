@@ -121,7 +121,10 @@ export class MentionsPluginState {
     let end = start;
 
     if (node && this.pm.schema.marks.mention_query.isInSet(node.marks)) {
-      start = this.pm.doc.resolve(start).start(2) - 1;
+      const resolvedPos = this.pm.doc.resolve(start);
+      // -1 is to include @ in replacement
+      // resolvedPos.depth + 1 to make mentions work inside other blocks e.g. "list item" or "blockquote"
+      start = resolvedPos.start(resolvedPos.depth + 1) - 1;
       end = start + node.nodeSize;
     }
 

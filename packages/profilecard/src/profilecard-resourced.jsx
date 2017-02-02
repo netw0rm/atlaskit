@@ -59,6 +59,7 @@ export default class ProfilecardResourced extends PureComponent {
     this.state = {
       isLoading: false,
       hasError: false,
+      data: {},
     };
 
     this.clientFetchProfile = this.clientFetchProfile.bind(this);

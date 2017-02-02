@@ -1,13 +1,9 @@
 import React, { PureComponent } from 'react';
-import AkInlineDialog from 'ak-inline-dialog';
-import AkAvatar from 'ak-avatar';
-import { MentionList } from 'ak-mention';
-import SingleLineTextInput from 'ak-input';
-import reactify from 'akutil-react';
+import InlineDialog from '@atlaskit/inline-dialog';
+import AkAvatar from '@atlaskit/avatar';
+import { MentionList } from '@atlaskit/mention';
+import SingleLineTextInput from '@atlaskit/input';
 import AkInlineEdit from '../src';
-
-// TODO: Use native React version once available
-const InlineDialog = reactify(AkInlineDialog);
 
 const keyCodes = {
   up: 38,

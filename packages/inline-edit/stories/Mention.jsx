@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import AkAvatar from 'ak-avatar';
+import AkAvatar from '@atlaskit/avatar';
 
 const wrapperStyle = {
   display: 'flex',

@@ -6,24 +6,25 @@ import { locals as styles } from '../styles.less';
 
 export default class Trigger extends PureComponent {
   static propTypes = {
-    isOpen: PropTypes.bool,
     children: PropTypes.node,
+    onClick: PropTypes.func,
   }
 
   static defaultProps = {
     isOpen: false,
     children: null,
+    onClick: () => {},
   }
 
   render = () => {
-    const classes = classNames([styles.trigger, {
-      [styles.isOpen]: this.props.isOpen,
-    }]);
+    const classes = classNames([styles.trigger]);
 
+    /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
       <div
         className={classes}
         tabIndex="0"
+        onClick={this.props.onClick}
       >
         <div className={styles.content}>
           {this.props.children}
@@ -33,5 +34,6 @@ export default class Trigger extends PureComponent {
         </div>
       </div>
     );
+    /* eslint-enable jsx-a11y/no-static-element-interactions */
   }
 }

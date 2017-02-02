@@ -101,7 +101,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
 
     // enzyme currently requires setting value manually and simulating "change" event
     // https://github.com/airbnb/enzyme/issues/76
-    const input = toolbar.find('Panel PanelTextInput input');
+    const input = toolbar.find('FloatingToolbar PanelTextInput input');
     (input.get(0) as any).value = 'http://atlassian.com';
     input.simulate('change');
     input.simulate('keydown', { which: 'enter', keyCode: 13 });

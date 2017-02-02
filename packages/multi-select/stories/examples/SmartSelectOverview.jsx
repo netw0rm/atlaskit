@@ -1,9 +1,8 @@
 import React from 'react';
-import Select from '@atlaskit/single-select';
+import Select from '@atlaskit/multi-select';
 
 const selectItems = [
   {
-    heading: 'Cities',
     items: [
       { content: 'Sydney', value: 'city_1' },
       { content: 'Canberra', value: 'city_2' },
@@ -13,13 +12,13 @@ const selectItems = [
   },
 ];
 
-const selectedItem = selectItems[0].items[0];
-
 export default (
   <Select
     items={selectItems}
-    placeholder="Select all!"
-    defaultSelected={selectedItem}
+    label="Choose your favourite"
     shouldFitContainer
+    onSelectedChange={(item) => {
+      console.log(item);
+    }}
   />
 );

@@ -1,11 +1,14 @@
 import React, { PureComponent, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import Droplist from '@atlaskit/droplist';
 import Item from '@atlaskit/droplist-item';
 import Group from '@atlaskit/droplist-group';
 import { Label, FieldBase } from '@atlaskit/field-base';
-import styles from 'style!./styles.less';
+import TagGroup from '@atlaskit/tag-group';
+import Tag from '@atlaskit/tag';
 import classNames from 'classnames';
 
+import styles from 'style!./styles.less';
 import Trigger from './internal/Trigger';
 
 export const itemShape = PropTypes.shape({
@@ -17,35 +20,32 @@ export const itemShape = PropTypes.shape({
   elemAfter: PropTypes.node,
 });
 
-export default class StatelessSelect extends PureComponent {
+export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {
     id: PropTypes.string,
-    isDisabled: PropTypes.bool,
     isOpen: PropTypes.bool,
-    isRequired: PropTypes.bool,
-    isInvalid: PropTypes.bool,
     items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
-    onSelected: PropTypes.func,
     onOpenChange: PropTypes.func,
-    placeholder: PropTypes.string,
+    onSelected: PropTypes.func,
+    onRemoved: PropTypes.func,
     position: PropTypes.string,
-    selectedItem: itemShape,
+    selectedItems: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     shouldFitContainer: PropTypes.bool,
   }
 
   static defaultProps = {
     isOpen: false,
-    isRequired: false,
     items: [],
     label: '',
-    onSelected: () => {},
     onOpenChange: () => {},
-    placeholder: '',
+    onSelected: () => {},
+    onRemoved: () => {},
     position: 'bottom left',
-    selectedItem: {},
+    selectedItems: [],
   }
 
+  // This is used only to show the focus ring around , it's okay to have state in this case.
   state = {
     isFocused: this.props.isOpen,
   }
@@ -58,15 +58,40 @@ export default class StatelessSelect extends PureComponent {
     this.setState({ isFocused: false });
   }
 
+  onOpenChange = (attrs) => {
+    const target = attrs.event.target;
+    // eslint-disable-next-line react/no-find-dom-node
+    const tagGroup = ReactDOM.findDOMNode(this.tagGroup);
+    const tagGroupElements = tagGroup.children;
+    const isInsideTagGroup = [...tagGroupElements].some(node =>
+      node.contains(target) && node.tagName !== 'INPUT');
+
+    if (!isInsideTagGroup) {
+      this.props.onOpenChange(attrs);
+    }
+
+    if (attrs.isOpen) {
+      tagGroup.querySelector('input').focus();
+    }
+  }
+
+  handleTriggerClick = (event) => {
+    this.onOpenChange({ event, isOpen: true });
+  }
+
+  handleItemRemove = (item) => {
+    this.props.onRemoved(item);
+  }
+
   renderItems = items =>
     items.map((item, itemIndex) =>
       <Item
         {...item}
+        isHidden={this.props.selectedItems.indexOf(item) > -1}
         key={itemIndex}
         onActivate={() => {
           this.props.onSelected(item);
         }}
-        isActive={item.value === this.props.selectedItem.value}
       >
         {item.content}
       </Item>
@@ -89,28 +114,39 @@ export default class StatelessSelect extends PureComponent {
     return (
       <div className={classes}>
         {this.props.label ? <Label
-          label={this.props.label}
-          isRequired={this.props.isRequired}
           htmlFor={this.props.id}
+          label={this.props.label}
         /> : null}
         <Droplist
-          position={this.props.position}
           isOpen={this.props.isOpen}
-          onOpenChange={this.props.onOpenChange}
+          isTriggerDisabled
           isTriggerNotTabbable
+          onOpenChange={this.onOpenChange}
+          position={this.props.position}
           shouldFitContainer
           trigger={
             <FieldBase
-              isPaddingDisabled
-              isDisabled={this.props.isDisabled}
-              isInvalid={this.props.isInvalid}
-              isFocused={this.props.isOpen || this.state.isFocused}
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
               isFitContainerWidthEnabled
+              isFocused={this.props.isOpen || this.state.isFocused}
+              isPaddingDisabled
+              onBlur={this.onBlur}
+              onFocus={this.onFocus}
             >
-              <Trigger>
-                {this.props.selectedItem.content || this.props.placeholder}
+              <Trigger
+                onClick={this.handleTriggerClick}
+              >
+                <TagGroup ref={ref => (this.tagGroup = ref)}>
+                  {this.props.selectedItems.map(item =>
+                    <Tag
+                      key={item.value}
+                      onAfterRemoveAction={() => {
+                        this.handleItemRemove(item);
+                      }}
+                      removeButtonText={`${item.content}, remove`}
+                      text={item.content}
+                    />)}
+                  <input className={styles.input} type="text" />
+                </TagGroup>
               </Trigger>
             </FieldBase>
           }

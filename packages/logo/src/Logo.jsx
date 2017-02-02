@@ -10,7 +10,7 @@ const sizes = {
 
 // Ratio used by the logo svg template
 const outerLogoSize = 40;
-const innerLogoSize = 32;
+const innerLogoSize = 30;
 const logoIconRatio = outerLogoSize / innerLogoSize;
 
 const logoSize = size => (`${sizes[size] * logoIconRatio}px`);

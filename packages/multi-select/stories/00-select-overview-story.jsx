@@ -7,13 +7,13 @@ import SmartSelectOverview from './examples/SmartSelectOverview';
 import SmartSelectOverviewRaw from '!raw!./examples/SmartSelectOverview';
 /* eslint-enable import/first, import/no-duplicates */
 
-import { name } from '../package.json';
+import { name, description } from '../package.json';
 
 storiesOf(name, module)
-  .add('Single select (smart) - overview', () => (
-    <Chrome title="Single select (smart) - overview">
+  .add('Multi select (smart) - overview', () => (
+    <Chrome title="Multi select (smart) - overview">
       <Description>
-        <p>Multi select component</p>
+        <p>{description}</p>
       </Description>
       {SmartSelectOverview}
       <Code>

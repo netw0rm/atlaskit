@@ -12,7 +12,6 @@ export default class AkMultiSelect extends PureComponent {
     label: PropTypes.string,
     onSelectedChange: PropTypes.func,
     onOpenChange: PropTypes.func,
-    placeholder: PropTypes.string,
     position: PropTypes.string,
     shouldFitContainer: PropTypes.bool,
   }
@@ -26,7 +25,6 @@ export default class AkMultiSelect extends PureComponent {
     onSelected: () => {},
     onSelectedChange: () => {},
     onRemoved: () => {},
-    placeholder: '',
     position: 'bottom left',
   }
 
@@ -68,9 +66,8 @@ export default class AkMultiSelect extends PureComponent {
       items={this.props.items}
       label={this.props.label}
       onOpenChange={this.handleOpenChange}
-      onSelected={this.selectedChange}
       onRemoved={this.selectedChange}
-      placeholder={this.props.placeholder}
+      onSelected={this.selectedChange}
       position={this.props.position}
       selectedItems={this.state.selectedItems}
       shouldFitContainer={this.props.shouldFitContainer}
@@ -78,4 +75,4 @@ export default class AkMultiSelect extends PureComponent {
   );
 }
 
-export { StatelessMultiSelect }; // eslint-disable-line import/prefer-default-export
+export { StatelessMultiSelect };

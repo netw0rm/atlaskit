@@ -17,7 +17,7 @@ export default (
     items={selectItems}
     label="Choose your favourite"
     shouldFitContainer
-    onSelected={(item) => {
+    onSelectedChange={(item) => {
       console.log(item);
     }}
   />

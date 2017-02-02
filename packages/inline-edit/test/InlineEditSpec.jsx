@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import ConfirmIcon from 'ak-icon/glyph/confirm';
-import CancelIcon from 'ak-icon/glyph/cancel';
-import FieldBase, { Label } from 'ak-field-base'; // eslint-disable-line
-import Spinner from 'ak-spinner';
+import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
+import CancelIcon from '@atlaskit/icon/glyph/cancel';
+import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
+import Spinner from '@atlaskit/spinner';
 import InlineEdit from '../src/InlineEdit';
 
 const noop = () => {};
@@ -27,7 +27,7 @@ const defaultProps = {
   editView: <Input value="test" />,
 };
 
-describe('ak-inline-edit', () => {
+describe('@atlaskit/inline-edit', () => {
   it('should render read view inside FieldBase when in read mode', () => {
     const readView = <span>read</span>;
     const wrapper = mount(<InlineEdit {...defaultProps} readView={readView} />);

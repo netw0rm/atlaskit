@@ -108,7 +108,7 @@ example:
   buttons, surrounding borders, etc.
 - `src/ui/Chrome` -- An encapsulation of `ChromeCollapsed` and `ChromeExpanded`, providing "click to
   expand" behaviour.
-- `src/ui/Panel` -- A floating popup that can be used as the base for a floating toolbar (e.g.
+- `src/ui/FloatingToolbar` -- A floating popup that can be used as the base for a floating toolbar (e.g.
   `HyperlinkEdit`).
 - `src/ui/Toolbar*` -- A collection of button-groups that are suitable for placing in the fixed
   toolbar.

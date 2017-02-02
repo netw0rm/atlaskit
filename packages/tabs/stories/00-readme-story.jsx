@@ -9,6 +9,7 @@ import { name, description } from '../package.json';
 import Tabs from '../src';
 
 const propDescriptions = {
+  onSelect: 'Function that is called when the user selects a different tab. Not called on initial render.',
   tabs: 'Array of tab definition objects',
 };
 

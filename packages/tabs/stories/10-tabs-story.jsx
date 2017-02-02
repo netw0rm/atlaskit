@@ -1,13 +1,18 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
 
 import Tabs from '../src';
 import { name } from '../package.json';
 
+function handleTabSelect(selectedTabIndex) {
+  action(`Switched to tab at index ${selectedTabIndex}`)();
+}
+
 storiesOf(name, module)
   .add('@atlaskit/tabs', () => (
     <Tabs
+      onSelect={handleTabSelect}
       tabs={[
         {
           content: <Lorem count="1" />,
@@ -31,6 +36,7 @@ storiesOf(name, module)
   ))
   .add('@atlaskit/tabs with no default selection', () => (
     <Tabs
+      onSelect={handleTabSelect}
       tabs={[
         {
           content: <Lorem count="1" />,
@@ -53,6 +59,7 @@ storiesOf(name, module)
   ))
   .add('@atlaskit/tabs with many tabs', () => (
     <Tabs
+      onSelect={handleTabSelect}
       tabs={[
         { label: 'Tab 1', content: 'Tab 1 content', defaultSelected: true },
         { label: 'Tab 2', content: 'Tab 2 content' },
@@ -72,6 +79,7 @@ storiesOf(name, module)
   ))
   .add('@atlaskit/tabs with multiple selected tabs', () => (
     <Tabs
+      onSelect={handleTabSelect}
       tabs={[
         {
           content: <div>

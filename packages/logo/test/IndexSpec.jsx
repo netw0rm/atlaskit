@@ -19,8 +19,8 @@ describe(name, () => {
       expect(DefaultLogo).to.equal(logos.AtlassianLogo);
     });
     it('passes down props to the underlying Logo component', () => {
-      Object.values(logos).forEach((Logo) => {
-        const wrapper = shallow(<Logo isCollapsed size="small" />);
+      Object.values(logos).forEach((ProductLogo) => {
+        const wrapper = shallow(<ProductLogo isCollapsed size="small" />);
         expect(wrapper.find('Logo').props().isCollapsed).to.equal(true);
         expect(wrapper.find('Logo').props().size).to.equal('small');
       });

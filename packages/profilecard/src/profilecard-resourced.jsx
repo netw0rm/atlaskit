@@ -1,8 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 
 import AkProfilecardStatic from './profilecard';
-import LoadingMessage from './components/LoadingMessage';
-import ErrorMessage from './components/ErrorMessage';
 import ProfileClient from './api/profile-client';
 
 /**
@@ -116,16 +114,12 @@ export default class ProfilecardResourced extends PureComponent {
   }
 
   render() {
-    if (this.state.hasError) {
-      return <ErrorMessage reload={this.clientFetchProfile} />;
-    }
-
-    if (this.state.isLoading) {
-      return <LoadingMessage />;
-    }
-
+    const newProps = Object.assign(this.state.data, {
+      isLoading: this.state.isLoading,
+      hasError: this.state.hasError,
+    });
     return (
-      <AkProfilecardStatic {...this.state.data} actions={this.props.actions} />
+      <AkProfilecardStatic {...newProps} actions={this.props.actions} />
     );
   }
 }

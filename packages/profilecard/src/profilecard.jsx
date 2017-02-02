@@ -4,6 +4,8 @@ import AkAvatar from '@atlaskit/avatar';
 import AkButton from '@atlaskit/button';
 
 import styles from 'style!./styles/profilecard.less';
+import LoadingMessage from './components/LoadingMessage';
+import ErrorMessage from './components/ErrorMessage';
 
 import IconLabel from './components/IconLabel';
 import presences from './internal/presences';
@@ -74,6 +76,10 @@ export default class Profilecard extends PureComponent {
       callback: React.PropTypes.function,
       label: React.PropTypes.string,
     })),
+
+    isLoading: React.PropTypes.bool,
+    hasError: React.PropTypes.bool,
+
   }
 
   static defaultProps = {
@@ -81,6 +87,13 @@ export default class Profilecard extends PureComponent {
   }
 
   render() {
+    if (this.props.hasError) {
+      return <ErrorMessage reload={this.clientFetchProfile} />;
+    }
+
+    if (this.props.isLoading) {
+      return <LoadingMessage />;
+    }
     const actions = (this.props.actions || []).map(action => (
       <AkButton
         appearance="link"

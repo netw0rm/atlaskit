@@ -12,12 +12,13 @@ npm install @NAME@
 
 ## Using the component
 
-`ak-tooltip` exports two tooltip components, one "smart" and one "dumb". The smart component allows you to simply place the tooltip around an element and all the state handling will
+`@NAME@` exports two tooltip components, one "smart" and one "dumb". The smart component allows you to simply place the tooltip around an element and all the state handling will
 be handled for you. The dumb one on the other hand allows you to hook into events and to manage the state yourself.
 
 ### Smart Component
 
 ```js
+// Note we are using the default export here, so the name can be anything
 import Tooltip from '@NAME@';
 
 ReactDOM.render(<div>
@@ -35,7 +36,8 @@ If a user were to hover over this button, they would see a tooltip rendered unde
 
 
 ```js
-import { AKTooltip } from '@NAME@';
+// Note we are using a named export here, which *must* be 'Tooltip'
+import { Tooltip } from '@NAME@';
 let tooltipVisibleState = false;
 
 function handleMouseOver() {
@@ -50,7 +52,7 @@ function handleMouseOut() {
 
 function renderButtonInContainer() {
   ReactDOM.render(<div>
-    <AKTooltip
+    <Tooltip
       description="Opens the user preferences screen in a new window"
       position="bottom"
       visible={tooltipVisibleState}
@@ -58,7 +60,7 @@ function renderButtonInContainer() {
       onMouseOut={handleMouseOut}
     >
       <button>I do something!</button>
-    </AKTooltip>
+    </Tooltip>
   </div>, container);
 }
 ```

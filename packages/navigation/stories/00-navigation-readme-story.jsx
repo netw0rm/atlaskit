@@ -9,7 +9,7 @@ import { name, description } from '../package.json';
 const navigationPropDescriptions = {
   children: 'Content to go inside the Container Navigation',
   containerAppearance: 'The appearance of the container navigation',
-  containerHeaderComponent: 'The component to be rendered in the container as the header – usually the logo and title of the container',
+  containerHeaderComponent: 'The component to be rendered in the container as the header – usually a product logo or a title of the container',
   createDrawerContent: 'Content to go inside the create drawer. See the "create drawer" docs for more details',
   drawerBackIcon: 'An icon that will be used as the close button for all drawers',
   globalAccountItem: 'Content that will be placed in the global navigation - the account item is usually an avatar, wrapped in a dropdown trigger',

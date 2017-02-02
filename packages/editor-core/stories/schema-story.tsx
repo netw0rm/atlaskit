@@ -7,6 +7,8 @@ import { OrderedMap } from '../src/prosemirror';
 import makeJsonSchema from '../src/schema/json-schema';
 import { schema } from '../test-helper/schema';
 import Editor from './editor';
+import { name } from '../package.json';
+
 
 // import 'style!css!highlight.js/styles/tomorrow.css';
 
@@ -24,7 +26,7 @@ function toJS(map: OrderedMap<any>, transform: (value: any) => any) {
 
 const jsonPretty = (obj: any) => JSON.stringify(obj, null, 2);
 
-storiesOf('ak-editor-core', module)
+storiesOf(name, module)
   .add('JSON Schema', () => {
     interface State {
       docJson?: any;

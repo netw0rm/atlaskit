@@ -7,6 +7,8 @@ import Editor from '../src';
 import { MockMentionSource } from './_mock-mentionsource';
 import exampleHTML from './exampleHTML';
 
+import { name } from '../package.json';
+
 const CANCEL_ACTION = () => action('Cancel')();
 const CHANGE_ACTION = () => action('Change')();
 const SAVE_ACTION = () => action('Save')();
@@ -29,7 +31,7 @@ const imageUploadHandler = (e: any, fn: any) => {
 
 const mentionSource = new MockMentionSource();
 
-storiesOf('ak-editor-bitbucket', module)
+storiesOf(name, module)
   .add('Empty', () => (
     <div style={{ padding: 20 }}>
       <Editor

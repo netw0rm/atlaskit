@@ -3,6 +3,8 @@ import { shallow, mount } from 'enzyme';
 import styles from '../src/styles/profilecard.less';
 
 import { AkProfilecard } from '../src';
+import LoadingMessage from '../src/components/LoadingMessage';
+import ErrorMessage from '../src/components/ErrorMessage';
 import presences from '../src/internal/presences';
 
 describe('Profilecard', () => {
@@ -46,6 +48,24 @@ describe('Profilecard', () => {
         const card = mount(<AkProfilecard />);
         const el = card.find(`.${styles.locals.presence}`);
         expect(el.isEmpty()).to.equal(true);
+      });
+    });
+
+    describe('isLoading property', () => {
+      it('should render the LoadingMessage component', () => {
+        const card = mount(
+          <AkProfilecard isLoading={true} />
+        );
+        expect(card.find(LoadingMessage).length).to.equal(1);
+      });
+    });
+
+    describe('hasError property', () => {
+      it('should render the ErrorMessage component', () => {
+        const card = mount(
+          <AkProfilecard hasError={true} />
+        );
+        expect(card.find(ErrorMessage).length).to.equal(1);
       });
     });
 

@@ -76,8 +76,19 @@ export default class Profilecard extends PureComponent {
       callback: React.PropTypes.function,
       label: React.PropTypes.string,
     })),
-
+    /**
+     * @description Indicates that the user info is being fetched
+     * @memberof Profilecard
+     * @instance
+     * @type {bool}
+     */
     isLoading: React.PropTypes.bool,
+    /**
+     * @description Indicates that the user info fetch request has failed
+     * @memberof Profilecard
+     * @instance
+     * @type {bool}
+     */
     hasError: React.PropTypes.bool,
 
   }

@@ -1,5 +1,5 @@
 import React from 'react';
-import Readme, { Description, Props, Code } from 'akutil-readme';
+import Readme, { Description, Props, Code } from '@atlaskit/util-readme';
 import { storiesOf } from '@kadira/storybook';
 
 import ReactRouterLinkComponentRaw from '!raw!./components/react-router/RouterLinkComponent';

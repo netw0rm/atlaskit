@@ -14,7 +14,7 @@ fs.readdir(dir, (err, files) => {
         <h1>${dir}</h1>
         <h2>Generated ${new Date()}</h2>
         <ul>
-          ${files.map(file => `<li><a href="${file}/">${file}</a></li>`).join('\n')}
+          ${files.map(file => `<li><a href="${file}/index.html">${file}</a></li>`).join('\n')}
         </ul>
       </body>
     </html>

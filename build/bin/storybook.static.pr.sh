@@ -14,7 +14,7 @@ function storybook_build_status() {
     "Storybook" \
     "The storybook for this pull request" \
     "$1" \
-    "$CDN_URL_BASE/$CDN_URL_SCOPE/$BUILD_SPECIFIC_URL_PART/"
+    "$CDN_URL_BASE/$CDN_URL_SCOPE/$BUILD_SPECIFIC_URL_PART/index.html"
 }
 
 function build_storybook() {

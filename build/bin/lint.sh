@@ -5,7 +5,6 @@ export PATH="`yarn bin`:$PATH"
 NODE_MODULES=`npm root`
 
 chalk --no-stdin -t "{blue Start linting...}"
-lint_build_status "INPROGRESS"
 
 set +e
 

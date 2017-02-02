@@ -7,11 +7,16 @@ LERNA_LOC="$BIN_PATH/lerna"
 CHALK="$BIN_PATH/chalk"
 VALIDATE_LOC="$BIN_PATH/validate-commit-msg"
 
-$CHALK --no-stdin -t "{blue Lerna bootstrap...}"
+# check if we are running in CI (BITBUCKET_COMMIT will exist in CI)
 if [[ -z "$BITBUCKET_COMMIT" ]]; then
-  $LERNA_LOC bootstrap
+  # check if --skip-bootstrap flag is passed
+  if [[ "$1" != "--skip-bootstrap" ]]
+    then
+      $CHALK --no-stdin -t "{blue Lerna bootstrap...}"
+      $LERNA_LOC bootstrap
+  fi
 else
-  # piping to cat is used to put stdout in a non-TTY mode (hides the progress bar in lerna)
+  # piping to cat is used to put stdout in a non-TTY mode (hides the progress bar in CI)
   $LERNA_LOC bootstrap | cat
 fi
 

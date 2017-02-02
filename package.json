@@ -140,6 +140,7 @@
     "clean": "./node_modules/.bin/lerna exec -- git clean -Xdf . && rm -rf node_modules",
     "commit": "./build/bin/commit.sh",
     "create": "./build/bin/create.new.component.sh",
+    "install/fast": "yarn --ignore-scripts && yarn run postinstall -- --skip-bootstrap &> /dev/null",
     "lint": "./build/bin/lint.sh",
     "lint/fix": "./build/bin/lint.fix.sh",
     "postinstall": "./build/bin/postinstall.sh",

@@ -10,6 +10,7 @@ export default class AkMultiSelect extends PureComponent {
     isInvalid: PropTypes.bool,
     items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
+    onFilterChange: PropTypes.func,
     onSelectedChange: PropTypes.func,
     onOpenChange: PropTypes.func,
     position: PropTypes.string,
@@ -21,6 +22,7 @@ export default class AkMultiSelect extends PureComponent {
     isRequired: false,
     items: [],
     label: '',
+    onFilterChange: () => {},
     onOpenChange: () => {},
     onSelected: () => {},
     onSelectedChange: () => {},
@@ -31,6 +33,7 @@ export default class AkMultiSelect extends PureComponent {
   state = {
     isOpen: this.props.isDefaultOpen,
     selectedItems: [],
+    filterValue: '',
   }
 
   selectItem = (item) => {
@@ -51,6 +54,11 @@ export default class AkMultiSelect extends PureComponent {
     }
   }
 
+  handleFilterChange = (value) => {
+    this.props.onFilterChange(value);
+    this.setState({ filterValue: value });
+  }
+
   handleOpenChange = (attrs) => {
     this.setState({ isOpen: attrs.isOpen });
     this.props.onOpenChange(attrs);
@@ -58,6 +66,7 @@ export default class AkMultiSelect extends PureComponent {
 
   render = () => (
     <StatelessMultiSelect
+      filterValue={this.state.filterValue}
       id={this.props.id}
       isDisabled={this.props.isDisabled}
       isInvalid={this.props.isInvalid}
@@ -65,6 +74,7 @@ export default class AkMultiSelect extends PureComponent {
       isRequired={this.props.isRequired}
       items={this.props.items}
       label={this.props.label}
+      onFilterChange={this.handleFilterChange}
       onOpenChange={this.handleOpenChange}
       onRemoved={this.selectedChange}
       onSelected={this.selectedChange}

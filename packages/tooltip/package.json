@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/tooltip",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "This component is used to display extra information to a user about an element by displaying a floating description.",
   "main": "dist/bundle.js",

@@ -9,7 +9,6 @@ import { schema } from '../test-helper/schema';
 import Editor from './editor';
 import { name } from '../package.json';
 
-
 // import 'style!css!highlight.js/styles/tomorrow.css';
 
 const jsonSchema = makeJsonSchema(schema);

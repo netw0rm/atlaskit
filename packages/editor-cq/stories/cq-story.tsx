@@ -5,7 +5,6 @@ import { PureComponent } from 'react';
 import Editor from '../src';
 import { name } from '../package.json';
 
-
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
 

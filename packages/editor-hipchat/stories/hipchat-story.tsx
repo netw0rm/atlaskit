@@ -4,7 +4,6 @@ import Editor from '../src';
 import { resourceProvider } from './story-data';
 import { name } from '../package.json';
 
-
 storiesOf(name, module)
   .add('Simple', () => <Editor onSubmit={action('submit')}/>)
   .add('With MentionPicker', () => {

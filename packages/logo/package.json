@@ -17,7 +17,8 @@
     "classnames": "^2.2.5"
   },
   "devDependencies": {
-    "@atlaskit/button": "^1.0.0"
+    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/util-readme": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2",

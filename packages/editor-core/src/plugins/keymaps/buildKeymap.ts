@@ -1,7 +1,7 @@
-import { toggleBlockquote, toggleHeading, toggleMark, toggleCodeBlock } from '../../commands';
+import { setNormalText, toggleBlockquote, toggleHeading, toggleMark, toggleCodeBlock } from '../../commands';
 import * as keymapShortcuts from './utils-future';
 
-import {redo, undo} from '../../prosemirror/future/prosemirror-history';
+import { redo, undo } from '../../prosemirror/future/prosemirror-history';
 
 export function buildKeymap(schema) {
   const keymap = {};
@@ -44,6 +44,10 @@ export function buildKeymap(schema) {
     bind(keymapShortcuts.findShortcutByKeymap(keymapShortcuts.toggleHeading3), toggleHeading(3));
     bind(keymapShortcuts.findShortcutByKeymap(keymapShortcuts.toggleHeading4), toggleHeading(4));
     bind(keymapShortcuts.findShortcutByKeymap(keymapShortcuts.toggleHeading5), toggleHeading(5));
+  }
+
+  if (schema.nodes.paragraph) {
+    bind(keymapShortcuts.findShortcutByKeymap(keymapShortcuts.setNormalText), setNormalText());
   }
 
   bind(keymapShortcuts.redo.common, redo);

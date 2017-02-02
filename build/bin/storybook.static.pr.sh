@@ -25,7 +25,7 @@ function build_storybook() {
   $BASEDIR/generate.index.html.js $TARGET_PATH "PR storybook for ${BITBUCKET_COMMIT}" > "$TARGET_PATH/index.html"
 }
 
-# storybook_build_status "INPROGRESS"
+storybook_build_status "INPROGRESS"
 build_storybook "$OUTDIR"
-# cdn_publish_folder "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
-# storybook_build_status "SUCCESSFUL"
+cdn_publish_folder "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
+storybook_build_status "SUCCESSFUL"

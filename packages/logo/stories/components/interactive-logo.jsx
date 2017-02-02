@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import Button from '@atlaskit/button';
-import { akColorB400, akColorN800, akColorR500 } from 'akutil-shared-styles';
+import { akColorB400, akColorN800, akColorR500 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 import * as logos from '../../src';
 

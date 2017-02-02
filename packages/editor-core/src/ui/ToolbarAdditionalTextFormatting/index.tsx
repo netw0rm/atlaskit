@@ -6,7 +6,8 @@ import DropdownList from 'ak-droplist';
 import Group from 'ak-droplist-group';
 import Item from 'ak-droplist-item';
 import ToolbarButton from '../ToolbarButton';
-import ItalicIcon from 'ak-icon/glyph/editor/italic';
+import WarningIcon from 'ak-icon/glyph/editor/warning';
+import { toggleMonospace, toggleStrikethrough, tooltip } from '../../keymaps';
 
 export interface Props {
   pluginState: TextFormattingState;
@@ -43,40 +44,53 @@ export default class ToolbarAdditionalTextFormatting extends PureComponent<Props
   }
 
   render() {
-    const { isOpen } = this.state;
-    return (
-      <DropdownList
-        isOpen={isOpen}
-        onOpenChange={this.toggleOpen}
-        appearance="tall"
-        position="top left"
-        trigger={
-          <ToolbarButton
-            selected={isOpen}
-            iconBefore={<ItalicIcon label="" />}
-          />
-        }
-      >
-        <Group>
-          <Item
-            isActive={false}
-            onActivate={this.handleMonoClick}
-          >
-            <span title="test">
-              Monospace
-            </span>
-          </Item>
-          <Item
-            isActive={false}
-            onActivate={this.handleStrikeClick}
-          >
-            <span title="test">
-              Strikethrough
-            </span>
-          </Item>
-        </Group>
-      </DropdownList>
-    );
+    const {
+      isOpen,
+      monoActive,
+      strikeActive,
+      monoHidden,
+      strikeHidden,
+      monoDisabled,
+      strikeDisabled,
+    } = this.state;
+    if (!monoHidden && !strikeHidden) {
+      return (
+        <DropdownList
+          isOpen={isOpen}
+          onOpenChange={this.toggleOpen}
+          appearance="tall"
+          position="top left"
+          trigger={
+            <ToolbarButton
+              selected={isOpen}
+              iconBefore={<WarningIcon label="text-formatting" />}
+            />
+          }
+        >
+          <Group>
+            <Item
+              isActive={monoActive}
+              isDisabled={monoDisabled}
+              onActivate={this.handleMonoClick}
+            >
+              <span title={tooltip(toggleMonospace)}>
+                Monospace
+              </span>
+            </Item>
+            <Item
+              isActive={strikeActive}
+              isDisabled={strikeDisabled}
+              onActivate={this.handleStrikeClick}
+            >
+              <span title={tooltip(toggleStrikethrough)}>
+                Strikethrough
+              </span>
+            </Item>
+          </Group>
+        </DropdownList>
+      );
+    }
+    return null;
   }
 
   private handlePluginStateChange = (pluginState: TextFormattingState) => {
@@ -90,14 +104,14 @@ export default class ToolbarAdditionalTextFormatting extends PureComponent<Props
     });
   }
 
-  @analytics('atlassian.editor.format.strong.button')
+  @analytics('atlassian.editor.format.monospace.button')
   private handleStrikeClick = () => {
     if (!this.state.monoDisabled) {
       this.props.pluginState.toggleStrike();
     }
   }
 
-  @analytics('atlassian.editor.format.em.button')
+  @analytics('atlassian.editor.format.strikethrough.button')
   private handleMonoClick = () => {
     if (!this.state.monoDisabled) {
       this.props.pluginState.toggleMono();

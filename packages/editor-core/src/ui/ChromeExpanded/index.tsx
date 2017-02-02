@@ -9,7 +9,7 @@ import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
-import { ListsState } from '../../plugins/lists';
+import { ListsState } from '../../plugins/lists/index-future';
 import { MentionsPluginState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import HyperlinkEdit from '../HyperlinkEdit';
@@ -24,6 +24,7 @@ import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import * as styles from './styles';
 
 export interface Props {
+  editorView?: any;
   feedbackFormUrl?: string;
   onCancel?: () => void;
   onInsertMention?: () => void;
@@ -48,7 +49,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
         <div className={styles.toolbar}>
           {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
-          {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} /> : null}
+          {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} editorView={props.editorView} /> : null}
           {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} /> : null}
           <span style={{ flexGrow: 1 }} />
           {props.feedbackFormUrl ? <ToolbarFeedback feedbackFormUrl={props.feedbackFormUrl} /> : null}

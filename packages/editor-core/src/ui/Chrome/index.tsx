@@ -4,19 +4,20 @@ import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
-import { ListsState } from '../../plugins/lists';
+import { ListsState } from '../../plugins/lists/index-future';
 import { MentionsPluginState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
-import { ProseMirror } from '../../prosemirror';
+import { EditorView } from '../../prosemirror/future';
 import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
 export interface Props {
+  editorView?: EditorView;
+
   isExpanded?: boolean;
   placeholder?: string;
   onCancel?: () => void;
   onSave?: () => void;
-  pm?: ProseMirror;
   feedbackFormUrl?: string;
   pluginStateBlockType?: BlockTypeState;
   pluginStateCodeBlock?: CodeBlockState;
@@ -46,6 +47,7 @@ export default class Chrome extends PureComponent<Props, {}> {
           pluginStateImageUpload={props.pluginStateImageUpload}
           pluginStateMentions={props.pluginStateMentions}
           mentionsResourceProvider={props.mentionsResourceProvider}
+          editorView={props.editorView}
       >
         {props.children}
       </ChromeExpanded>

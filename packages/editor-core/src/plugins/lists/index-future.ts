@@ -35,7 +35,6 @@ export type StateChangeHandler = (state: ListsState) => any;
  */
 export class ListsState {
   private changeHandlers: StateChangeHandler[] = [];
-  private editorView: EditorView | undefined;
 
   // public state
   bulletListActive = false;
@@ -45,15 +44,11 @@ export class ListsState {
   orderedListDisabled = false;
   orderedListHidden = false;
 
-  constructor() {
+  constructor(state: EditorState<any>) {
     this.changeHandlers = [];
-  }
-
-  setView(editorView: EditorView) {
-    this.editorView = editorView;
 
     // Checks what types of lists schema supports.
-    const { bullet_list, ordered_list } = this.editorView.state.schema.nodes;
+    const { bullet_list, ordered_list } = state.schema.nodes;
     this.bulletListHidden = !bullet_list;
     this.orderedListHidden = !ordered_list;
   }
@@ -71,20 +66,25 @@ export class ListsState {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
-  toggleBulletList() {
-    if (!this.editorView) {
-      return;
-    }
-
-    toggleBulletList(this)(this.editorView.state, this.editorView.dispatch, this.editorView);
+  toggleBulletList(editorView) {
+    toggleBulletList(this)(editorView.state, editorView.dispatch, editorView);
   }
 
-  toggleOrderedList() {
-    if (!this.editorView) {
-      return;
-    }
+  toggleOrderedList(editorView) {
+    toggleOrderedList(this)(editorView.state, editorView.dispatch, editorView);
+  }
 
-    toggleOrderedList(this)(this.editorView.state, this.editorView.dispatch, this.editorView);
+  isWrappingPossible(nodeType, state) {
+    const {$from, $to} = state.selection;
+    const range = $from.blockRange($to);
+
+    if (!range) { return false; }
+
+    const wrap = findWrapping(range, nodeType);
+
+    if (!wrap) { return false; }
+
+    return true;
   }
 
   update(newEditorState) {
@@ -108,6 +108,23 @@ export class ListsState {
       dirty = true;
     }
 
+<<<<<<< HEAD
+=======
+    const anyListActive = newBulletListActive || newOrderedListActive;
+
+    const newBulletListDisabled = !(anyListActive || this.isWrappingPossible(newEditorState.schema.nodes.bullet_list, newEditorState));
+    if (newBulletListDisabled !== this.bulletListDisabled) {
+      this.bulletListDisabled = newBulletListDisabled;
+      dirty = true;
+    }
+
+    const newOrderedListDisabled = !(anyListActive || this.isWrappingPossible(newEditorState.schema.nodes.ordered_list, newEditorState));
+    if (newOrderedListDisabled !== this.orderedListDisabled) {
+      this.orderedListDisabled = newOrderedListDisabled;
+      dirty = true;
+    }
+
+>>>>>>> feat(component): Lists wip 3
     if (dirty) {
       this.triggerOnChange();
     }
@@ -116,7 +133,7 @@ export class ListsState {
 
 /**
  *
- * Utils
+ * Transforms
  *
  */
 
@@ -247,14 +264,7 @@ const joinDown = (nodeType: NodeType) => (state: EditorState<any>, transaction?:
   return tr;
 };
 
-
-/**
- *
- * Commands
- *
- */
-
-const composeCommands = (...args) => (state, dispatch) => {
+const composeTransforms = (...args) => (state, dispatch) => {
   const tr = args.reduce((tr, command) => command(state, tr), undefined);
 
   if (dispatch && tr) {
@@ -265,20 +275,26 @@ const composeCommands = (...args) => (state, dispatch) => {
   return false;
 };
 
+/**
+ *
+ * Commands
+ *
+ */
+
 const toggleBulletList = (pluginState: ListsState) => (state: EditorState<any>, dispatch?, view?: EditorView) => {
   if (!view) {
     return;
   }
 
   if (pluginState.bulletListActive) {
-    return composeCommands(liftListItems())(view.state, view.dispatch);
+    return composeTransforms(liftListItems())(view.state, view.dispatch);
   }
 
   if (pluginState.orderedListActive) {
-    composeCommands(liftListItems())(view.state, view.dispatch);
+    composeTransforms(liftListItems())(view.state, view.dispatch);
   }
 
-  return composeCommands(
+  return composeTransforms(
     wrapSelectionInList(state.schema.nodes.bullet_list),
     splitListItemWithMultipleBlocks(state.schema.nodes.bullet_list),
     joinUp(state.schema.nodes.bullet_list),
@@ -292,14 +308,14 @@ const toggleOrderedList = (pluginState: ListsState) => (state: EditorState<any>,
   }
 
   if (pluginState.orderedListActive) {
-    return composeCommands(liftListItems())(view.state, view.dispatch);
+    return composeTransforms(liftListItems())(view.state, view.dispatch);
   }
 
   if (pluginState.bulletListActive) {
-    composeCommands(liftListItems())(view.state, view.dispatch);
+    composeTransforms(liftListItems())(view.state, view.dispatch);
   }
 
-  return composeCommands(
+  return composeTransforms(
     wrapSelectionInList(state.schema.nodes.ordered_list),
     splitListItemWithMultipleBlocks(state.schema.nodes.ordered_list),
     joinUp(state.schema.nodes.ordered_list),
@@ -315,13 +331,13 @@ const toggleOrderedList = (pluginState: ListsState) => (state: EditorState<any>,
 
 const keymap = {
   [keymaps.splitListItem.common!]: (state, dispatch, view) =>
-    composeCommands(splitListItem(state.schema.nodes.list_item))(state, dispatch)
+    composeTransforms(splitListItem(state.schema.nodes.list_item))(state, dispatch)
 };
 
 const plugin = new Plugin({
   state: {
-    init() {
-      return new ListsState();
+    init(config, state: EditorState<any>) {
+      return new ListsState(state);
     },
     apply(tr, pluginState: ListsState, oldState, newState) {
       pluginState.update(newState);
@@ -331,3 +347,9 @@ const plugin = new Plugin({
 });
 
 export default { keymap, plugin };
+
+// TODO: Toggle multiple blocks
+// TODO: Adjust Selection
+// TODO: Comments
+// TODO: Fix types for transaction
+// TODO: Tests

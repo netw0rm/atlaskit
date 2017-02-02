@@ -1,4 +1,5 @@
 import {
+  liftTarget,
   Node,
   NodeSelection,
   NodeType,
@@ -148,20 +149,20 @@ export function findAncestorPosition(doc: Node, pos: any): any {
 /**
  * Determine if two positions have a common ancestor.
  */
-export function hasCommonAncestor(pm, $from: ResolvedPos, $to: ResolvedPos): boolean {
+export function hasCommonAncestor(doc, $from: ResolvedPos, $to: ResolvedPos): boolean {
   let current;
   let target;
 
   if ($from.depth > $to.depth) {
-    current = findAncestorPosition(pm, $from);
-    target = findAncestorPosition(pm, $to);
+    current = findAncestorPosition(doc, $from);
+    target = findAncestorPosition(doc, $to);
   } else {
-    current = findAncestorPosition(pm, $to);
-    target = findAncestorPosition(pm, $from);
+    current = findAncestorPosition(doc, $to);
+    target = findAncestorPosition(doc, $from);
   }
 
   while (current.depth > target.depth && current.depth > 1) {
-    current = findAncestorPosition(pm, current);
+    current = findAncestorPosition(doc, current);
   }
 
   return current.node(current.depth) === target.node(target.depth);
@@ -183,7 +184,10 @@ export function liftSelection(tr, doc, $from: ResolvedPos, $to: ResolvedPos) {
       const res = tr.doc.resolve(tr.mapping.map(pos));
       const sel = new NodeSelection(res);
       const range = sel.$from.blockRange(sel.$to)!;
-      tr.lift(range, target);
+
+      if (liftTarget(range) !== undefined) {
+        tr.lift(range, target);
+      }
     }
   });
 

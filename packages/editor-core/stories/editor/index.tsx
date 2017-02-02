@@ -97,12 +97,7 @@ export default class Editor extends PureComponent<Props, State> {
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const { isExpanded, editorState, editorView } = this.state;
-
     const listsState = editorState && ListsPlugin.plugin.getState(editorState);
-
-    if (listsState) {
-      listsState.setView(editorView);
-    }
 
     return (
       <Chrome
@@ -113,6 +108,7 @@ export default class Editor extends PureComponent<Props, State> {
         onSave={handleSave}
         placeholder={this.props.placeholder}
         onCollapsedChromeFocus={this.expand}
+        editorView={editorView}
 
         pluginStateLists={listsState}
       />

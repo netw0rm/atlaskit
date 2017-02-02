@@ -1,4 +1,3 @@
-
 import { Schema } from '../../src/prosemirror/future';
 import { em } from '../../src/schema/marks/em';
 import { mono } from '../../src/schema/marks/mono';

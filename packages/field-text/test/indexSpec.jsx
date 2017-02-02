@@ -15,7 +15,6 @@ describe('ak-field-text', () => {
     [
       { disabled: true },
       { required: true },
-      { label: 'test' },
     ].forEach(prop =>
       it('FieldBase should have attribute defined', () => {
         const key = Object.keys(prop)[0];

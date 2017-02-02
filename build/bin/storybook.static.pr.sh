@@ -21,7 +21,9 @@ function build_storybook() {
   local TARGET_PATH="$1"
 
   $CHALK --no-stdin -t "{blue Building storybook (PR)}"
-  yarn run storybook/static -- -o "$TARGET_PATH"
+  lerna exec -- ../../build/bin/storybook.static.pr.single.sh "$TARGET_PATH"
+  $BASEDIR/generate.index.html.js $TARGET_PATH > "$TARGET_PATH/index.html"
+  $BASEDIR/generate.index.html.js $TARGET_PATH/@atlaskit > "$TARGET_PATH/@atlaskit/index.html"
 }
 
 storybook_build_status "INPROGRESS"

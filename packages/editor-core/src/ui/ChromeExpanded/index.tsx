@@ -21,7 +21,7 @@ import ToolbarFeedback from '../ToolbarFeedback';
 import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
-import ToolbarAdditionalTextFormatting from '../ToolbarAdditionalTextFormatting';
+import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import * as styles from './styles';
 
 export interface Props {
@@ -49,7 +49,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
         <div className={styles.toolbar}>
           {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
-          {props.pluginStateTextFormatting ? <ToolbarAdditionalTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
+          {props.pluginStateTextFormatting ? <ToolbarAdvancedTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
           {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} /> : null}
           {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} /> : null}
           <span style={{ flexGrow: 1 }} />

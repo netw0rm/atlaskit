@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Base from 'ak-field-base';
+import Base from '@atlaskit/field-base';
 
 import { FieldText } from '../src';
 

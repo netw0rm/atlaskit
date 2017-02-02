@@ -54,7 +54,7 @@ describe('Profilecard', () => {
     describe('isLoading property', () => {
       it('should render the LoadingMessage component', () => {
         const card = mount(
-          <AkProfilecard isLoading={true} />
+          <AkProfilecard isLoading />
         );
         expect(card.find(LoadingMessage).length).to.equal(1);
       });
@@ -63,7 +63,7 @@ describe('Profilecard', () => {
     describe('hasError property', () => {
       it('should render the ErrorMessage component', () => {
         const card = mount(
-          <AkProfilecard hasError={true} />
+          <AkProfilecard hasError />
         );
         expect(card.find(ErrorMessage).length).to.equal(1);
       });

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { AtlassianIcon } from 'ak-icon';
+import { AtlassianIcon } from '@atlaskit/icon';
 import Navigation from '../../../src/index';
 import RouterHeader from './RouterHeader';
 import RouterLinkComponent from './RouterLinkComponent';

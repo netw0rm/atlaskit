@@ -61,6 +61,33 @@ describe(name, () => {
           expect(wrapper.find(StatelessTabs).prop('tabs')[0].isSelected).to.equal(true);
         });
       });
+
+      describe('onSelect prop', () => {
+        it('is not fired for default selected tab', () => {
+          const spy = sinon.spy();
+          mount(
+            <Tabs
+              onSelect={spy}
+              tabs={sampleTabsDefaultSelected}
+            />
+          );
+          expect(spy.called).to.equal(false);
+        });
+        it('is fired with selected tab index when new tab selected', () => {
+          const spy = sinon.spy();
+          const wrapper = mount(
+            <Tabs
+              onSelect={spy}
+              tabs={sampleTabsDefaultSelected}
+            />
+          );
+
+          // Clicks on the tab at index 2, then checks that the spy is called with 2 as argument
+          wrapper.find(`.${styles.locals.akTabLabel}`).at(2).simulate('click');
+          expect(spy.calledOnce).to.equal(true);
+          expect(spy.calledWith(2)).to.equal(true);
+        });
+      });
     });
 
     describe('behaviour', () => {

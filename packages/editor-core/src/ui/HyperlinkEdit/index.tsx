@@ -3,7 +3,7 @@ import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { HyperlinkState } from '../../plugins/hyperlink';
-import Panel from '../Panel';
+import FloatingToolbar from '../FloatingToolbar';
 import PanelTextInput from '../PanelTextInput';
 import ToolbarButton from '../ToolbarButton';
 import * as styles from './styles';
@@ -45,7 +45,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       const showSeparator = showOpenButton || showUnlinkButton;
 
       return (
-        <Panel target={target} align="left" autoPosition>
+        <FloatingToolbar target={target} align="left" autoPosition>
           <div className={styles.container}>
             {!showOpenButton ? null :
             <ToolbarButton
@@ -75,7 +75,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               ref="textInput"
             />
           </div>
-        </Panel>
+        </FloatingToolbar>
       );
     } else {
       return null;

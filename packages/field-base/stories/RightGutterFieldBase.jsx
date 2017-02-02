@@ -1,5 +1,5 @@
 import React from 'react';
-import Input from 'ak-input';
+import Input from '@atlaskit/input';
 import uid from 'uid';
 import AkFieldBase, { Label } from '../src';
 

@@ -1,12 +1,12 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import uid from 'uid';
-import Input from 'ak-input';
-import Button from 'ak-button';
-import Avatar from 'ak-avatar';
-import ErrorIcon from 'ak-icon/glyph/error';
-import HelpIcon from 'ak-icon/glyph/help';
-import ExpandIcon from 'ak-icon/glyph/expand';
+import Input from '@atlaskit/input';
+import Button from '@atlaskit/button';
+import Avatar from '@atlaskit/avatar';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
+import HelpIcon from '@atlaskit/icon/glyph/help';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import BasicFieldBase from './BasicFieldBase';
 import RightGutterFieldBase from './RightGutterFieldBase';
 import { name } from '../package.json';

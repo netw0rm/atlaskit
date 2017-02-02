@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tabs",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "config": {
     "access": "public"
   },
@@ -17,9 +17,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "ak-dropdown-menu": "^2.2.1",
-    "ak-icon": "^12.2.0",
-    "akutil-shared-styles": "^37.3.2",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "classnames": "^2.2.5",
     "css-element-queries": "^0.3.2",
     "debounce": "^1.0.0",

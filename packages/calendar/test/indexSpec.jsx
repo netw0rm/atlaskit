@@ -55,16 +55,14 @@ describe(name, () => {
       selected={['2016-01-01', '2016-01-02']}
     />);
 
-    expect(wrapper.find(DateComponent).contains({
+    expect(wrapper.find({
       children: 1,
       selected: true,
-      sibling: false,
-    }));
+    })).to.have.lengthOf(1);
 
-    expect(wrapper.find(DateComponent).contains({
+    expect(wrapper.find({
       children: 2,
       selected: true,
-      sibling: false,
-    }));
+    })).to.have.lengthOf(1);
   });
 });

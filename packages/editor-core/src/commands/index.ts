@@ -34,15 +34,14 @@ export function setNormalText() {
 
 export function toggleBlockquote() {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const {$from, $to} = state.selection;
-    const currentBlock = $from.parent;
+    const {$from} = state.selection;
+    const potentialBlockquoteNode = $from.node($from.depth - 1);
 
-    if (currentBlock.type !== state.schema.nodes.blockquote) {
-      return baseCommand.wrapIn(state.schema.nodes.blockquote)(state, dispatch);
-    } else {
-      dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
-      return true;
+    if (potentialBlockquoteNode && potentialBlockquoteNode.type === state.schema.nodes.blockquote) {
+      return baseCommand.lift(state, dispatch);
     }
+
+    return baseCommand.wrapIn(state.schema.nodes.blockquote)(state, dispatch);
   };
 }
 

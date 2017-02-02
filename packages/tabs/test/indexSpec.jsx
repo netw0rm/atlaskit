@@ -71,7 +71,7 @@ describe(name, () => {
               tabs={sampleTabsDefaultSelected}
             />
           );
-          expect(spy.calledOnce).to.equal(false);
+          expect(spy.called).to.equal(false);
         });
         it('is fired with selected tab index when new tab selected', () => {
           const spy = sinon.spy();
@@ -81,9 +81,11 @@ describe(name, () => {
               tabs={sampleTabsDefaultSelected}
             />
           );
+
+          // Clicks on the tab at index 2, then checks that the spy is called with 2 as argument
           wrapper.find(`.${styles.locals.akTabLabel}`).at(2).simulate('click');
           expect(spy.calledOnce).to.equal(true);
-          expect(spy.args[0][0]).to.equal(2);
+          expect(spy.calledWith(2)).to.equal(true);
         });
       });
     });

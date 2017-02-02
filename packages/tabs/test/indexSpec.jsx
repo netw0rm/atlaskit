@@ -61,6 +61,31 @@ describe(name, () => {
           expect(wrapper.find(StatelessTabs).prop('tabs')[0].isSelected).to.equal(true);
         });
       });
+
+      describe('onSelect prop', () => {
+        it('is not fired for default selected tab', () => {
+          const spy = sinon.spy();
+          mount(
+            <Tabs
+              onSelect={spy}
+              tabs={sampleTabsDefaultSelected}
+            />
+          );
+          expect(spy.calledOnce).to.equal(false);
+        });
+        it('is fired with selected tab index when new tab selected', () => {
+          const spy = sinon.spy();
+          const wrapper = mount(
+            <Tabs
+              onSelect={spy}
+              tabs={sampleTabsDefaultSelected}
+            />
+          );
+          wrapper.find(`.${styles.locals.akTabLabel}`).at(2).simulate('click');
+          expect(spy.calledOnce).to.equal(true);
+          expect(spy.args[0][0]).to.equal(2);
+        });
+      });
     });
 
     describe('behaviour', () => {

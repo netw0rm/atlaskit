@@ -24,7 +24,7 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
 
   // JIRA encodes empty documents as nbsp
   if (html === '<p></p>') {
-    return '&nbsp;';
+    return '';
   }
 
   // Normalise to XHTML style self closing tags.

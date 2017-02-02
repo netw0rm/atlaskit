@@ -67,7 +67,7 @@ function check(description: string, html: string, node: Node) {
 describe(`${name} html:`, () => {
   describe('paragraphs:', () => {
     check('empty',
-      '&nbsp;',
+      '',
       doc(p('')));
 
     check('a paragraph with text',

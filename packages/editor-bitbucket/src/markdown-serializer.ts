@@ -7,6 +7,11 @@ import {
 } from '@atlaskit/editor-core';
 import stringRepeat from './util/string-repeat';
 
+interface NodeRendererOption {
+  readonly isLastNode: boolean;
+  readonly trimTrailingWhitespace: boolean;
+};
+
 /**
  * This function escapes all plain-text sequences that might get converted into markdown
  * formatting by Bitbucket server (via python-markdown).
@@ -40,10 +45,10 @@ const generateOuterBacktickChain: (text: string, minLength?: number) => string =
 })();
 
 const nodes = {
-  blockquote(state: MarkdownSerializerState, node: Node, isLastNode?: boolean) {
+  blockquote(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     state.wrapBlock('> ', null, node, () => state.renderContent(node));
   },
-  code_block(state: MarkdownSerializerState, node: Node, isLastNode?: boolean) {
+  code_block(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     if (!node.attrs['language']) {
       state.wrapBlock('    ', null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
     } else {
@@ -55,20 +60,22 @@ const nodes = {
       state.closeBlock(node);
     }
   },
-  heading(state: MarkdownSerializerState, node: Node, isLastNode?: boolean) {
+  heading(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
+    const isLastNode = opts && opts.isLastNode;
+
     state.write(state.repeat('#', node.attrs['level']) + ' ');
     state.renderInline(node, isLastNode);
     state.closeBlock(node);
   },
-  horizontal_rule(state: MarkdownSerializerState, node: Node, isLastNode?: boolean) {
+  horizontal_rule(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     state.write(node.attrs['markup'] || '---');
     state.closeBlock(node);
   },
-  bullet_list(state: MarkdownSerializerState, node: Node, isLastNode?: boolean) {
+  bullet_list(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     node.attrs['tight'] = true;
     state.renderList(node, '    ', () => (node.attrs['bullet'] || '*') + ' ');
   },
-  ordered_list(state: MarkdownSerializerState, node: Node, isLastNode?: boolean) {
+  ordered_list(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     node.attrs['tight'] = true;
     const start = node.attrs['order'] || 1;
     const maxW = String(start + node.childCount - 1).length;
@@ -83,14 +90,15 @@ const nodes = {
       return state.repeat(' ', maxW - nStr.length) + nStr + '. ';
     });
   },
-  list_item(state: MarkdownSerializerState, node: Node, isLastNode?: boolean) {
+  list_item(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     state.renderContent(node);
   },
-  paragraph(state: MarkdownSerializerState, node: Node, isLastNode?: boolean) {
+  paragraph(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
+    const isLastNode = opts && opts.isLastNode;
     state.renderInline(node, isLastNode);
     state.closeBlock(node);
   },
-  image(state: MarkdownSerializerState, node: Node, isLastNode?: boolean) {
+  image(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     // Note: the 'title' is not escaped in this flavor of markdown.
     state.write('![' + state.esc(node.attrs['alt'] || '') + '](' + state.esc(node.attrs['src']) +
                 (node.attrs['title'] ? ` '${node.attrs['title']}'` : '') + ')');
@@ -98,8 +106,12 @@ const nodes = {
   hard_break(state: any) {
     state.write('  \n');
   },
-  text(state: MarkdownSerializerState, node: any, isLastNode?: boolean) {
-    const lines = node.text.split('\n');
+  text(state: MarkdownSerializerState, node: any, opts?: NodeRendererOption) {
+    const text = (opts && opts.trimTrailingWhitespace)
+      ? node.text.replace(' ', '') // only first blank space occurrence is replaced
+      : node.text;
+
+    const lines = text.split('\n');
     for (let i = 0; i < lines.length; i++) {
       const startOfLine = state.atBlank() || !!state.closed;
       state.write();
@@ -109,12 +121,14 @@ const nodes = {
       }
     }
   },
-  empty_line(state: MarkdownSerializerState, node: Node, isLastNode?: boolean) {
+  empty_line(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     state.write('\u200c'); // zero-width-non-joiner
     state.closeBlock(node);
   },
-  mention(state: MarkdownSerializerState, node: Node, isLastNode?: boolean) {
+  mention(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
+    const isLastNode = opts && opts.isLastNode;
     const delimiter = isLastNode ? '' : ' ';
+
     state.write(`@${node.attrs['id']}${delimiter}`);
   }
 };
@@ -144,6 +158,12 @@ export class MarkdownSerializer extends PMMarkdownSerializer {
 }
 
 export class MarkdownSerializerState extends PMMarkdownSerializerState {
+
+  /**
+   * If mention was followed with blank whitespace check the next node.
+   * If it starts with a blank space, trim this blank whitespace from the left
+   */
+  markNextNodeForTrim: boolean;
 
   renderContent(parent: Node): void {
     parent.forEach((child: Node, offset: number, index: number) => {
@@ -256,7 +276,16 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
    * Overrides prosemirror native behaviour
    */
   render(node: Node, isLastNode?: boolean) {
-    nodes[node.type.name](this, node, isLastNode);
+    const trimTrailingWhitespace = (
+      this.markNextNodeForTrim &&
+      node.isText &&
+      (node.text && node.text.indexOf(' ') === 0)
+    );
+
+    // if current node is mention and it's not the last child mark it for next node processing
+    this.markNextNodeForTrim = (node.type.name === 'mention' && !isLastNode);
+
+    nodes[node.type.name](this, node, { isLastNode, trimTrailingWhitespace });
   }
 }
 

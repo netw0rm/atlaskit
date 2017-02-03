@@ -97,7 +97,7 @@ export default class StatelessMultiSelect extends PureComponent {
     }
   }
 
-  handleKeyDownInInput = (event) => {
+  handleKeyUpInInput = (event) => {
     const key = event.key;
     const value = event.target.value;
 
@@ -112,14 +112,13 @@ export default class StatelessMultiSelect extends PureComponent {
 
   filterItems = (items) => {
     const value = this.props.filterValue;
+    const trimmedValue = value && value.toLowerCase().trim();
     const selectedItems = this.props.selectedItems;
+    const unselectedItems = items.filter(item => selectedItems.indexOf(item) === -1);
 
-    return items
-      .filter(item => selectedItems.indexOf(item) === -1)
-      .filter((item) => {
-        const content = item.content.toLowerCase();
-        return value ? content.indexOf(value.toLowerCase().trim()) > -1 : true;
-      });
+    return trimmedValue ?
+      unselectedItems.filter(item => (item.content.toLowerCase().indexOf(trimmedValue) > -1)) :
+      unselectedItems;
   }
 
   renderItems = (items) => {
@@ -190,7 +189,7 @@ export default class StatelessMultiSelect extends PureComponent {
                   <input
                     className={styles.input}
                     type="text"
-                    onKeyUp={this.handleKeyDownInInput}
+                    onKeyUp={this.handleKeyUpInInput}
                   />
                 </TagGroup>
               </Trigger>

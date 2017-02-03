@@ -64,33 +64,33 @@ describe('Bitbucket markdown serializer: ', () => {
   });
 
   it('should serialize mentions', () => {
-    const baban = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
-    const test1 = markdownSerializer.serialize(baban);
-    expect(test1).to.eq('@oscar');
+    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
+    const test = markdownSerializer.serialize(node);
+    expect(test).to.eq('@oscar');
   });
 
   it('should divide serialized mentions and text with one blank space', () => {
-    const baban = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), 'text'));
-    const test1 = markdownSerializer.serialize(baban);
-    expect(test1).to.eq('@oscar text');
+    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), 'text'));
+    const test = markdownSerializer.serialize(node);
+    expect(test).to.eq('@oscar text');
   });
 
   it('should not add a blank space in the end of the string for mentions', () => {
-    const baban = doc(p('text ', mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
-    const test1 = markdownSerializer.serialize(baban);
-    expect(test1).to.eq('text @oscar');
+    const node = doc(p('text ', mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
+    const test = markdownSerializer.serialize(node);
+    expect(test).to.eq('text @oscar');
   });
 
   it('should not divide mention and text with additional space if text starts with the space', () => {
-    const baban = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), ' text'));
-    const test1 = markdownSerializer.serialize(baban);
-    expect(test1).to.eq('@oscar text');
+    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), ' text'));
+    const test = markdownSerializer.serialize(node);
+    expect(test).to.eq('@oscar text');
   });
 
   it('should not divide mention and italic text node with additional space if text starts with the space', () => {
-    const baban = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), em(' text')));
-    const test1 = markdownSerializer.serialize(baban);
-    expect(test1).to.eq('@oscar *text*');
+    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), em(' text')));
+    const test = markdownSerializer.serialize(node);
+    expect(test).to.eq('@oscar *text*');
   });
 
   describe('code block', () => {

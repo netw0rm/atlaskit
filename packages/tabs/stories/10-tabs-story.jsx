@@ -1,6 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
+import Spinner from '@atlaskit/spinner';
 import { akColorN100 } from '@atlaskit/util-shared-styles';
 
 import Tabs from '../src';
@@ -133,6 +134,38 @@ storiesOf(name, module)
           {
             label: 'Unconstrained height',
             content: <Lorem />,
+          },
+        ]}
+      />
+    </div>
+  ))
+  .add('with flex content that needs to fill', () => (
+    <div
+      style={{
+        width: 400,
+        height: 200,
+        margin: '16px auto',
+        border: `1px dashed ${akColorN100}`,
+        display: 'flex',
+      }}
+    >
+      <Tabs
+        tabs={[
+          {
+            label: 'Spinner should be centered',
+            defaultSelected: true,
+            content: (
+              <div
+                style={{
+                  alignItems: 'center',
+                  display: 'flex',
+                  flex: '1 0 auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <Spinner size="medium" />
+              </div>
+            ),
           },
         ]}
       />

@@ -22,17 +22,17 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
   doc.body.appendChild(encodeFragment(node.content));
   const html = doc.body.innerHTML;
 
-  // JIRA encodes empty documents as nbsp
+  // JIRA encodes empty documents as an empty string
   if (html === '<p></p>') {
-    return '&nbsp;';
+    return '';
   }
 
   // Normalise to XHTML style self closing tags.
   return html
-    .replace('<br></br>', '<br />')
-    .replace('<br>', '<br />')
-    .replace('<hr></hr>', '<hr />')
-    .replace('<hr>', '<hr />');
+    .replace(/<br><\/br>/g, '<br />')
+    .replace(/<br>/g, '<br />')
+    .replace(/<hr><\/hr>/g, '<hr />')
+    .replace(/<hr>/g, '<hr />');
 
   function encodeNode(node: PMNode) {
     if (node.isText) {

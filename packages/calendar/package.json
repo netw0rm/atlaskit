@@ -2,7 +2,7 @@
   "name": "@atlaskit/calendar",
   "version": "1.0.0",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "A React component that is a generic calendar",
   "main": "dist/bundle.js",
@@ -18,7 +18,7 @@
     "ak-button": "^4.0.2",
     "ak-icon": "^11.2.2",
     "akutil-react": "^3.0.1",
-    "akutil-shared-styles": "^37.0.3",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "calendar-base": "^0.3.0",
     "glamor": "^2.17.14",

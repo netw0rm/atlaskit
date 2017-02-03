@@ -7,7 +7,7 @@ import {
   akColorN600,
   akColorN700,
   akColorN900,
-} from 'akutil-shared-styles';
+} from '@atlaskit/util-shared-styles';
 
 function getBackgroundColor({ selected, previouslySelected }) {
   if (selected) {

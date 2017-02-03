@@ -1,5 +1,5 @@
 import { style } from 'glamor';
-import { akColorN0, akColorN80, akColorN700 } from 'akutil-shared-styles';
+import { akColorN0, akColorN80, akColorN700 } from '@atlaskit/util-shared-styles';
 
 export default function () {
   return {

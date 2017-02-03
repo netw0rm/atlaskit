@@ -28,6 +28,7 @@ export default class StatelessMultiSelect extends PureComponent {
     isOpen: PropTypes.bool,
     items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
+    noMatchesFound: PropTypes.string,
     onFilterChange: PropTypes.func,
     onOpenChange: PropTypes.func,
     onSelected: PropTypes.func,
@@ -42,6 +43,7 @@ export default class StatelessMultiSelect extends PureComponent {
     isOpen: false,
     items: [],
     label: '',
+    noMatchesFound: 'No matches found',
     onFilterChange: () => {},
     onOpenChange: () => {},
     onSelected: () => {},
@@ -134,7 +136,7 @@ export default class StatelessMultiSelect extends PureComponent {
       </Item>));
     }
 
-    return (<NothingWasFound />);
+    return (<NothingWasFound noMatchesFound={this.props.noMatchesFound} />);
   }
 
   renderGroups = groups => groups.map((group, groupIndex) =>

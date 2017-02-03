@@ -1,13 +1,17 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 
 import { locals as styles } from '../styles.less';
 
 export default class NothingWasFound extends PureComponent {
+  static propTypes = {
+    noMatchesFound: PropTypes.string,
+  }
+
   render = () => (
     <div
       className={styles.nothing}
     >
-      No matches found
+      { this.props.noMatchesFound }
     </div>
   )
 }

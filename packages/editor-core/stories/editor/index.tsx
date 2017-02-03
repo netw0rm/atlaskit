@@ -160,7 +160,7 @@ export default class Editor extends PureComponent<Props, State> {
 
       this.setState({ editorView, editorState });
     } else {
-      this.setState({ editorView: undefined });
+      this.setState({ editorView: undefined, editorState: undefined });
     }
   }
 }

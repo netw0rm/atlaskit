@@ -16,6 +16,7 @@ import {
   canJoinDown,
   canJoinUp,
   findAncestorPosition,
+  isRangeOfType,
   liftSelection,
 } from '../../utils/index-future';
 
@@ -24,7 +25,8 @@ import {
   isOrderedListNode
 } from '../../schema';
 
-import * as keymaps from '../keymaps';
+import { trackAndInvoke } from '../../analytics';
+import * as keymaps from '../keymaps/utils-future';
 
 export type StateChangeHandler = (state: ListsState) => any;
 
@@ -67,11 +69,11 @@ export class ListsState {
   }
 
   toggleBulletList(editorView) {
-    toggleBulletList(this)(editorView.state, editorView.dispatch, editorView);
+    toggleBulletList()(editorView.state, editorView.dispatch, editorView);
   }
 
   toggleOrderedList(editorView) {
-    toggleOrderedList(this)(editorView.state, editorView.dispatch, editorView);
+    toggleOrderedList()(editorView.state, editorView.dispatch, editorView);
   }
 
   isWrappingPossible(nodeType, state) {
@@ -108,8 +110,6 @@ export class ListsState {
       dirty = true;
     }
 
-<<<<<<< HEAD
-=======
     const anyListActive = newBulletListActive || newOrderedListActive;
 
     const newBulletListDisabled = !(anyListActive || this.isWrappingPossible(newEditorState.schema.nodes.bullet_list, newEditorState));
@@ -124,7 +124,6 @@ export class ListsState {
       dirty = true;
     }
 
->>>>>>> feat(component): Lists wip 3
     if (dirty) {
       this.triggerOnChange();
     }
@@ -138,7 +137,7 @@ export class ListsState {
  */
 
 /**
- * Wraps selection in list according to nodeType (Bullet List | Ordered List)
+ * Wraps selection in list according to nodeType (Bullet List | Ordered List).
  *
  * For selection:
  *
@@ -177,6 +176,29 @@ const wrapSelectionInList = (nodeType: NodeType, attrs?) => (state: EditorState<
   return tr;
 };
 
+/**
+ * Splits list item with multiple blocks inside into separate list items.
+ *
+ * For list item:
+ *
+ * doc
+ *   ul
+ *     li
+ *       p text
+ *       p text
+ *       p text
+ *
+ * Result:
+ *
+ * doc
+ *   ul
+ *     li
+ *       p text
+ *     li
+ *       p text
+ *     li
+ *       p text
+ */
 const splitListItemWithMultipleBlocks = (nodeType: NodeType, attrs?) => (state: EditorState<any>, transaction?: Transaction) => {
   const {$from, $to} = state.selection;
   const range = $from.blockRange($to);
@@ -195,7 +217,7 @@ const splitListItemWithMultipleBlocks = (nodeType: NodeType, attrs?) => (state: 
 
   for (let i = range.startIndex, first = true; i < range.endIndex; i++, first = false) {
     if (!first && canSplit(tr.doc, splitPos, splitDepth)) {
-      (tr as any).split(splitPos, splitDepth); // TODO: fix types for transaction
+      tr.split(splitPos, splitDepth);
     }
 
     splitPos += parent.child(i).nodeSize + (first ? 0 : 2 * splitDepth);
@@ -204,6 +226,9 @@ const splitListItemWithMultipleBlocks = (nodeType: NodeType, attrs?) => (state: 
   return tr;
 };
 
+/**
+ * Splits list item when into 2 list items.
+ */
 const splitListItem = (nodeType: NodeType) => (state: EditorState<any>, transaction?: Transaction) => {
   const tr = transaction || state.tr;
   const {$from, $to, node} = state.selection as NodeSelection;
@@ -218,24 +243,68 @@ const splitListItem = (nodeType: NodeType) => (state: EditorState<any>, transact
     return;
   }
 
-  const nextType = $to.pos === $from.end() ? (grandParent as any).defaultContentType($from.indexAfter(-1)) : null;
-  const types = nextType && [null, {type: nextType}];
-
-  (state.tr as any).delete($from.pos, $to.pos);
+  tr.delete($from.pos, $to.pos);
 
   if (!canSplit(tr.doc, $from.pos, 2)) {
     return;
   }
 
-  return (tr as any).split($from.pos, 2, types).scrollIntoView(); // TODO: fix types for transaction
+  return tr.split($from.pos, 2).scrollIntoView();
 };
 
+/**
+ * Lifts all list items out of list.
+ *
+ * For structure:
+ *
+ * doc
+ *   ul
+ *     li
+ *       p text
+ *     li
+ *       p text
+ *     li
+ *       p text
+ *
+ * Result:
+ *
+ * doc
+ *   p text
+ *   p text
+ *   p text
+ */
 const liftListItems = () => (state: EditorState<any>, transaction?: Transaction) => {
   const tr = transaction || state.tr;
   const {$from, $to} = tr.selection;
   return liftSelection(tr, tr.doc, $from, $to);
 };
 
+/**
+ * Joins 2 lists up.
+ *
+ * For structure:
+ *
+ * doc
+ *   ul
+ *     li
+ *       p text
+ *   ul
+ *     li
+ *       p text
+ *     li
+ *       p text
+ *
+ * Result:
+ *
+ * doc
+ *   ul
+ *     li
+ *       p text
+ *     li
+ *       p text
+ *     li
+ *       p text
+ */
 const joinUp = (nodeType: NodeType) => (state: EditorState<any>, transaction?: Transaction) => {
   const tr = transaction || state.tr;
 
@@ -243,13 +312,39 @@ const joinUp = (nodeType: NodeType) => (state: EditorState<any>, transaction?: T
     const res = tr.doc.resolve(tr.selection.$from.before(findAncestorPosition(tr.doc, tr.selection.$from).depth));
     const point = joinPoint(tr.doc, res.pos, -1);
     if (point) {
-      (tr as any).join(point); // TODO: fix types for transaction
+      tr.join(point);
     }
   }
 
   return tr;
 };
 
+/**
+ * Joins 2 lists down.
+ *
+ * For structure:
+ *
+ * doc
+ *   ul
+ *     li
+ *       p text
+ *   ul
+ *     li
+ *       p text
+ *     li
+ *       p text
+ *
+ * Result:
+ *
+ * doc
+ *   ul
+ *     li
+ *       p text
+ *     li
+ *       p text
+ *     li
+ *       p text
+ */
 const joinDown = (nodeType: NodeType) => (state: EditorState<any>, transaction?: Transaction) => {
   const tr = transaction || state.tr;
 
@@ -257,13 +352,17 @@ const joinDown = (nodeType: NodeType) => (state: EditorState<any>, transaction?:
     const res = tr.doc.resolve(tr.selection.$to.after(findAncestorPosition(tr.doc, tr.selection.$to).depth));
     const point = joinPoint(tr.doc, res.pos, 1);
     if (point) {
-      (tr as any).join(point); // TODO: fix types for transaction
+      tr.join(point);
     }
   }
 
   return tr;
 };
 
+
+/**
+ * Helper for running sequence of transforms.
+ */
 const composeTransforms = (...args) => (state, dispatch) => {
   const tr = args.reduce((tr, command) => command(state, tr), undefined);
 
@@ -281,16 +380,16 @@ const composeTransforms = (...args) => (state, dispatch) => {
  *
  */
 
-const toggleBulletList = (pluginState: ListsState) => (state: EditorState<any>, dispatch?, view?: EditorView) => {
+export const toggleBulletList = () => (state: EditorState<any>, dispatch?, view?: EditorView) => {
   if (!view) {
     return;
   }
 
-  if (pluginState.bulletListActive) {
+  if (isRangeOfType(state.doc, state.selection.$from, state.selection.$to, state.schema.nodes.bullet_list)) {
     return composeTransforms(liftListItems())(view.state, view.dispatch);
   }
 
-  if (pluginState.orderedListActive) {
+  if (isRangeOfType(state.doc, state.selection.$from, state.selection.$to, state.schema.nodes.ordered_list)) {
     composeTransforms(liftListItems())(view.state, view.dispatch);
   }
 
@@ -302,16 +401,16 @@ const toggleBulletList = (pluginState: ListsState) => (state: EditorState<any>, 
   )(view.state, view.dispatch);
 };
 
-const toggleOrderedList = (pluginState: ListsState) => (state: EditorState<any>, dispatch?, view?: EditorView) => {
+export const toggleOrderedList = () => (state: EditorState<any>, dispatch?, view?: EditorView) => {
   if (!view) {
     return;
   }
 
-  if (pluginState.orderedListActive) {
+  if (isRangeOfType(state.doc, state.selection.$from, state.selection.$to, state.schema.nodes.ordered_list)) {
     return composeTransforms(liftListItems())(view.state, view.dispatch);
   }
 
-  if (pluginState.bulletListActive) {
+  if (isRangeOfType(state.doc, state.selection.$from, state.selection.$to, state.schema.nodes.bullet_list)) {
     composeTransforms(liftListItems())(view.state, view.dispatch);
   }
 
@@ -331,7 +430,11 @@ const toggleOrderedList = (pluginState: ListsState) => (state: EditorState<any>,
 
 const keymap = {
   [keymaps.splitListItem.common!]: (state, dispatch, view) =>
-    composeTransforms(splitListItem(state.schema.nodes.list_item))(state, dispatch)
+    composeTransforms(splitListItem(state.schema.nodes.list_item))(state, dispatch),
+  [keymaps.findShortcutByKeymap(keymaps.toggleOrderedList)!]:
+    trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', (state, dispatch, view) => toggleOrderedList()(state, dispatch, view)),
+  [keymaps.findShortcutByKeymap(keymaps.toggleBulletList)!]:
+    trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', (state, dispatch, view) => toggleBulletList()(state, dispatch, view))
 };
 
 const plugin = new Plugin({
@@ -348,8 +451,6 @@ const plugin = new Plugin({
 
 export default { keymap, plugin };
 
-// TODO: Toggle multiple blocks
-// TODO: Adjust Selection
-// TODO: Comments
-// TODO: Fix types for transaction
+// TODO: Toggle multiple blocks (!!!)
+// TODO: Adjust Selection (?)
 // TODO: Tests

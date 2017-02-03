@@ -3,7 +3,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { HyperlinkState } from '../../plugins/hyperlink';
-import Panel from '../Panel';
+import FloatingToolbar from '../FloatingToolbar';
 import TextInput from '../PanelTextInput';
 import ToolbarButton from '../ToolbarButton';
 import * as styles from './styles';
@@ -41,7 +41,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
           iconBefore={<LinkIcon label="Link" />}
         />
         {!adding ? null :
-        <Panel align="center" onOutsideClick={this.closeLinkPanel}>
+        <FloatingToolbar align="center" onOutsideClick={this.closeLinkPanel}>
           <div className={styles.textInputContainer}>
             <TextInput
               autoFocus
@@ -50,7 +50,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
               onCancel={this.closeLinkPanel}
             />
           </div>
-        </Panel>
+        </FloatingToolbar>
         }
       </span>
     );

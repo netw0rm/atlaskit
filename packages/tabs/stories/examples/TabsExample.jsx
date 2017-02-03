@@ -3,6 +3,7 @@ import Tabs from '@atlaskit/tabs';
 
 export default (
   <Tabs
+    onSelect={selectedIndex => (console.log(`Selected tab at index ${selectedIndex}`))}
     tabs={[
       {
         content: 'String content',

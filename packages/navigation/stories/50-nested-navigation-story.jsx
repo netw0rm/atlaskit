@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
-import { DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
+import { DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
 
 import { AkContainerItem } from '../src/index';
 import BasicNavigation from './components/BasicNavigation';
@@ -36,9 +36,9 @@ storiesOf(name, module)
             <AkContainerItem icon={<SettingsIcon label="Settings" />} text="Tame Impala – Lonerism" />
           </div>
           <div>
-            <AkContainerItem icon={<ProjectsIcon label="Projects" />} text="The Lord of the Rings" />
-            <AkContainerItem icon={<ProjectsIcon label="Projects" />} text="Marcovaldo" />
-            <AkContainerItem icon={<ProjectsIcon label="Projects" />} text="The Picture of Dorian Gray" />
+            <AkContainerItem icon={<TrayIcon label="Projects" />} text="The Lord of the Rings" />
+            <AkContainerItem icon={<TrayIcon label="Projects" />} text="Marcovaldo" />
+            <AkContainerItem icon={<TrayIcon label="Projects" />} text="The Picture of Dorian Gray" />
           </div>
         </PagedContainerNavigation>
       </BasicNavigation>

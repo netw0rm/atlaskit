@@ -156,7 +156,7 @@ export default class StatelessMultiSelect extends PureComponent {
     value={item.value}
   >{item.content}</option>))
 
-  renderOptGroup = groups => groups.map((group, groupIndex) =>
+  renderOptGroups = groups => groups.map((group, groupIndex) =>
     <optgroup
       label={group.heading}
       key={groupIndex}
@@ -173,7 +173,7 @@ export default class StatelessMultiSelect extends PureComponent {
     value={this.getAllValues(this.props.selectedItems)}
     style={{ display: 'none' }}
   >
-    {this.renderOptGroup(this.props.items)}
+    {this.renderOptGroups(this.props.items)}
   </select>)
 
   render = () => {

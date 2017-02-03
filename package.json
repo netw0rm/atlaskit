@@ -43,8 +43,6 @@
     "chalk-cli": "^3.0.0",
     "commitizen": "^2.8.6",
     "css-loader": "^0.25.0",
-    "cz-conventional-changelog": "^1.2.0",
-    "cz-lerna-changelog": "0.3.1",
     "enzyme": "^2.6.0",
     "eslint": "^3.7.1",
     "eslint-friendly-formatter": "^2.0.6",

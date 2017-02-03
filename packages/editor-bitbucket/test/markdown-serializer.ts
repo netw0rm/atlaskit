@@ -81,6 +81,18 @@ describe('Bitbucket markdown serializer: ', () => {
     expect(test1).to.eq('text @oscar');
   });
 
+  it('should not divide mention and text with additional space if text starts with the space', () => {
+    const baban = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), ' text'));
+    const test1 = markdownSerializer.serialize(baban);
+    expect(test1).to.eq('@oscar text');
+  });
+
+  it('should not divide mention and italic text node with additional space if text starts with the space', () => {
+    const baban = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), em(' text')));
+    const test1 = markdownSerializer.serialize(baban);
+    expect(test1).to.eq('@oscar *text*');
+  });
+
   describe('code block', () => {
     it('with simple text should be serialized', () => {
       expect(markdownSerializer.serialize(doc(pre('foo')))).to.eq('    foo');

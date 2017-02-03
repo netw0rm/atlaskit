@@ -7,7 +7,7 @@ import Question from 'ak-icon/glyph/question';
 import Expand from 'ak-icon/glyph/expand';
 import Unlink from 'ak-icon/glyph/editor/unlink';
 import Open from 'ak-icon/glyph/editor/open';
-import { akColorN20, akColorN700 } from 'akutil-shared-styles';
+import { akColorN20, akColorN700 } from '@atlaskit/util-shared-styles';
 import { name } from '../package.json';
 
 import AkButton from '../src';

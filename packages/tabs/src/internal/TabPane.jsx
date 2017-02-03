@@ -9,7 +9,7 @@ export default class TabPane extends PureComponent {
   }
 
   static defaultProps = {
-    selected: false,
+    isSelected: false,
   }
 
   render() {

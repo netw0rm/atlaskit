@@ -38,7 +38,23 @@ If you want to redistribute this whole repository you will need to replace these
 git clone git@bitbucket.org:atlassian/atlaskit.git
 yarn
 ```
-You're now ready to start developing in AtlasKit!
+You're now ready to start developing in AtlasKit! Each component/util lives in it's own package under the `packages` directory. You can build those all at once or individually using
+
+```sh
+yarn run bootstrap
+# cleans, installs and links all packages in the repository
+```
+
+```sh
+yarn run bootstrap/single @atlaskit/packageName
+# cleans, installs and links only a single package
+```
+
+```sh
+yarn run bootstrap/single/with-deps @atlaskit/packageName
+# cleans, installs and links a single package AND all of it's dependencies
+```
+
 
 Once you made some changes, stage them and then commit them using `yarn run commit` (This will use [Commitizen](https://github.com/commitizen/cz-cli) under the covers).
 

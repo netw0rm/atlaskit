@@ -18,9 +18,10 @@ export default (
   <Select
     items={selectItems}
     label="Choose your favourite"
-    shouldFitContainer
+    name="test"
     onSelectedChange={(item) => {
       console.log(item);
     }}
+    shouldFitContainer
   />
 );

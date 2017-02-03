@@ -14,14 +14,15 @@ function storybook_build_status() {
     "Storybook" \
     "The storybook for this pull request" \
     "$1" \
-    "$CDN_URL_BASE/$CDN_URL_SCOPE/$BUILD_SPECIFIC_URL_PART/"
+    "$CDN_URL_BASE/$CDN_URL_SCOPE/$BUILD_SPECIFIC_URL_PART/index.html"
 }
 
 function build_storybook() {
   local TARGET_PATH="$1"
 
   $CHALK --no-stdin -t "{blue Building storybook (PR)}"
-  yarn run storybook/static -- -o "$TARGET_PATH"
+  lerna exec -- ../../build/bin/storybook.static.pr.single.sh "$TARGET_PATH"
+  $BASEDIR/generate.index.html.js $TARGET_PATH "PR storybook for ${BITBUCKET_COMMIT}" > "$TARGET_PATH/index.html"
 }
 
 storybook_build_status "INPROGRESS"

@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import styled from 'styled-components';
-import { akGridSize } from 'akutil-shared-styles';
+import { akGridSize } from '@atlaskit/util-shared-styles';
 
 const intGridSize = parseInt(akGridSize, 10);
 const paddingOpen = `0 ${intGridSize * 1.75}px 0 ${intGridSize * 1.5}px`;

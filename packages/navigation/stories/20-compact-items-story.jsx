@@ -1,9 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import React, { PropTypes } from 'react';
 import Lorem from 'react-lorem-component';
-import { EmojiCustomIcon, DashboardIcon, CancelIcon } from 'ak-icon';
-import AkAvatar from 'ak-avatar';
-import AkButton from 'ak-button';
+import { EmojiCustomIcon, DashboardIcon, CrossIcon } from '@atlaskit/icon';
+import AkAvatar from '@atlaskit/avatar';
+import AkButton from '@atlaskit/button';
 import { name } from '../package.json';
 import Page from './components/Page';
 import BasicNavigation from './components/BasicNavigation';
@@ -18,7 +18,7 @@ const RandomAvatar = props => <AkAvatar
 
 const CompactItem = ({ children }) => (
   <AkContainerItem
-    action={<CancelIcon />}
+    action={<CrossIcon />}
     icon={<RandomAvatar />}
     isCompact
     text={children}

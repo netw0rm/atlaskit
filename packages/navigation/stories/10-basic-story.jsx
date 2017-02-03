@@ -1,7 +1,8 @@
 import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
-import { DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
+
+import { DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
 import { AtlassianLogo } from '@atlaskit/logo';
 import { AkContainerItem } from '../src/index';
 import Page from './components/Page';
@@ -105,7 +106,7 @@ storiesOf(name, module)
         />
         <AkContainerItem
           appearance="global"
-          icon={<ProjectsIcon label="Projects" />}
+          icon={<TrayIcon label="Tray" />}
           text="Item C"
           textAfter={<RandomBadge theme="dark" />}
         />

@@ -5,14 +5,16 @@ export { StatelessTabs };
 
 export default class Tabs extends PureComponent {
   static propTypes = {
+    onSelect: PropTypes.func,
     tabs: PropTypes.arrayOf(PropTypes.shape({
       content: PropTypes.node,
-      label: PropTypes.node.isRequired,
       defaultSelected: PropTypes.bool,
+      label: PropTypes.node.isRequired,
     })),
   }
 
   static defaultProps = {
+    onSelect: () => {},
     tabs: [],
   }
 
@@ -44,7 +46,10 @@ export default class Tabs extends PureComponent {
     },
   }));
 
-  tabSelectHandler = index => this.setState({ selectedTab: index })
+  tabSelectHandler = (selectedTabIndex) => {
+    this.props.onSelect(selectedTabIndex);
+    this.setState({ selectedTab: selectedTabIndex });
+  }
 
   tabKeyboardNavHandler = (key) => {
     // Handle left and right arrow key presses by selecting the previous or next tab

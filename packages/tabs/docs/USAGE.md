@@ -6,7 +6,7 @@ A tab is a simple graphical element that allows to contain multiple panels withi
 
 ## Try it out
 
-Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/@atlassian/tabs/@VERSION@/).
+Detailed docs and example usage can be found [here](https://aui-cdn.atlassian.com/atlaskit/stories/@atlaskit/tabs/@VERSION@/).
 
 ## Installation
 

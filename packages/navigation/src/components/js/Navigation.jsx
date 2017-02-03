@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import AkBlanket from 'ak-blanket';
+import AkBlanket from '@atlaskit/blanket';
 import styles from 'style!../less/Navigation.less';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerHeader from './ContainerHeader';

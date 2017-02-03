@@ -4,7 +4,7 @@ This component is displayed as a sidebar and it contains two sections: "global" 
 
 ![Example navigation](https://i.imgur.com/G3SusxW.gif)
 
-Note: the previously-recommended [ak-page](https://www.npmjs.com/package/ak-page) component is no longer used alongside `ak-navigation`. See below for how to use `ak-navigation` in your application.
+Note: the previously-recommended [ak-page](https://www.npmjs.com/package/ak-page) component is no longer used alongside `ak-navigation`. See below for how to use `@atlaskit/navigation` in your application.
 
 ## Try it out
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
-import Panel from '../Panel';
+import FloatingToolbar from '../FloatingToolbar';
 import ToolbarButton from '../ToolbarButton';
 import * as styles from './styles';
 
@@ -23,7 +23,7 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
           Feedback
         </ToolbarButton>
         {!this.state.active ? null :
-        <Panel align="right" spacing="none" onOutsideClick={this.closeFeedbackPanel}>
+        <FloatingToolbar align="right" spacing="none" onOutsideClick={this.closeFeedbackPanel}>
           <div className={styles.popup}>
             <button
               type="button"
@@ -39,7 +39,7 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
               src={this.props.feedbackFormUrl}
             />
           </div>
-        </Panel>
+        </FloatingToolbar>
         }
       </span>
     );

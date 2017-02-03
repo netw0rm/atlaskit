@@ -1,8 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { action } from '@kadira/storybook';
-import { AtlassianIcon, SearchIcon, HelpIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon, ArrowleftIcon } from 'ak-icon';
-import AkDropdownMenu from 'ak-dropdown-menu';
-import AkAvatar from 'ak-avatar';
+import { AtlassianIcon, SearchIcon, QuestionCircleIcon, AddIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowleftIcon } from '@atlaskit/icon';
+import AkDropdownMenu from '@atlaskit/dropdown-menu';
+import AkAvatar from '@atlaskit/avatar';
 import Navigation, { AkContainerTitle, AkContainerItemGroup, AkContainerItem, AkDrawerItem, AkGlobalItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
@@ -27,7 +27,7 @@ export default class BasicNavigation extends PureComponent {
         text="Item B"
       />
       <AkContainerItem
-        icon={<ProjectsIcon label="Projects" />}
+        icon={<IssuesIcon label="Projects" />}
         text="Item C"
       />
     </div>),
@@ -114,7 +114,7 @@ export default class BasicNavigation extends PureComponent {
             </AkGlobalItem>
           </AkDropdownMenu>
         }
-        globalCreateIcon={<CreateIcon label="Create icon" />}
+        globalCreateIcon={<AddIcon size="small" label="Create icon" />}
         globalHelpItem={
           <AkDropdownMenu
             appearance="tall"
@@ -151,7 +151,7 @@ export default class BasicNavigation extends PureComponent {
             position="right bottom"
           >
             <AkGlobalItem>
-              <HelpIcon label="Help icon" />
+              <QuestionCircleIcon label="Help icon" />
             </AkGlobalItem>
           </AkDropdownMenu>
         }

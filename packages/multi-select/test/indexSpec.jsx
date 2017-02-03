@@ -167,10 +167,10 @@ describe(name, () => {
       expect(onRemovedSpy.calledWith(selectedItems[0])).to.equal(true);
     });
 
-    describe('handleKeyDownInInput', () => {
+    describe('handleKeyUpInInput', () => {
       it('should call onOpenChange every time the value is changed', () => {
         const event = { key: '', target: { value: '1' } };
-        instance.handleKeyDownInInput(event);
+        instance.handleKeyUpInInput(event);
         expect(onOpenChangeSpy.calledOnce).to.equal(true);
         expect(onOpenChangeSpy.calledWith({ event, isOpen: true })).to.equal(true);
       });
@@ -179,14 +179,14 @@ describe(name, () => {
         const value1 = '1';
         const value2 = '2';
         let event = { key: '', target: { value: value1 } };
-        instance.handleKeyDownInInput(event);
+        instance.handleKeyUpInInput(event);
         expect(onFilterChangeSpy.calledOnce).to.equal(true);
         expect(onFilterChangeSpy.calledWith(value1)).to.equal(true);
         onFilterChangeSpy.reset();
 
         wrapper.setProps({ filterValue: value1 });
         event = { key: '', target: { value: value2 } };
-        instance.handleKeyDownInInput(event);
+        instance.handleKeyUpInInput(event);
         expect(onFilterChangeSpy.calledOnce).to.equal(true);
         expect(onFilterChangeSpy.calledWith(value2)).to.equal(true);
       });
@@ -195,13 +195,13 @@ describe(name, () => {
         const value = '1';
         const event = { key: '', target: { value } };
         wrapper.setProps({ filterValue: value });
-        instance.handleKeyDownInInput(event);
+        instance.handleKeyUpInInput(event);
         expect(onFilterChangeSpy.called).to.equal(false);
       });
 
       it('should call onOpenChange when there was no value and Backspace was pressed', () => {
         const event = { key: 'Backspace', target: { value: '' } };
-        instance.handleKeyDownInInput(event);
+        instance.handleKeyUpInInput(event);
         expect(onOpenChangeSpy.calledOnce).to.equal(true);
         expect(onOpenChangeSpy.calledWith({ event, isOpen: true })).to.equal(true);
       });
@@ -209,7 +209,7 @@ describe(name, () => {
       it('should call removeLatestItem when there was no value and Backspace was pressed', () => {
         const spy = sinon.spy(instance, 'removeLatestItem');
         const event = { key: 'Backspace', target: { value: '' } };
-        instance.handleKeyDownInInput(event);
+        instance.handleKeyUpInInput(event);
         expect(spy.calledOnce).to.equal(true);
       });
     });

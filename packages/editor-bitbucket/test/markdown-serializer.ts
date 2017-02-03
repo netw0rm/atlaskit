@@ -69,6 +69,18 @@ describe('Bitbucket markdown serializer: ', () => {
     expect(test1).to.eq('@oscar');
   });
 
+  it('should divide serialized mentions and text with one blank space', () => {
+    const baban = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), 'text'));
+    const test1 = markdownSerializer.serialize(baban);
+    expect(test1).to.eq('@oscar text');
+  });
+
+  it('should not add a blank space in the end of the string for mentions', () => {
+    const baban = doc(p('text ', mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
+    const test1 = markdownSerializer.serialize(baban);
+    expect(test1).to.eq('text @oscar');
+  });
+
   describe('code block', () => {
     it('with simple text should be serialized', () => {
       expect(markdownSerializer.serialize(doc(pre('foo')))).to.eq('    foo');

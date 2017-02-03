@@ -96,7 +96,7 @@ Will create a new templated component under `packages/my-component-name` with ev
 The entry point to your component will be defined in it's `package.json` under the `ak:webpack:raw` key.
 
 ## Add a dependency to a component
-The easiest way to install a dependency within a package is to either add it directly to the packages `package.json` and bootstrapping that package (see `Getting Started`) or by
+The easiest way to install a dependency within a package is to either add it directly to the package's `package.json` and bootstrapping that package (see `Getting Started`) or by
 performing a `yarn add` from **within** the package itself (this will create a `yarn.lock` file that we do not push to the repository).
 
 ## Verify a component bundle
@@ -201,7 +201,7 @@ Releasing components is completely automated. The process of releasing will begi
 
 ## Update a root dependency of AtlasKit
 * Install as usual (`yarn run clean && yarn`)
-* Install your new dependency: `yarn add my-package` (this updates the `yarn.lock file`).
+* Install your new dependency: `yarn add my-package` (this updates the `yarn.lock` file).
 * Create a PR
 
 ## Make changes to the Pipelines build

@@ -1,5 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
-import Button from 'ak-button';
+import Button from '@atlaskit/button';
 import React from 'react';
 
 import AkFieldText from '../src';
@@ -65,6 +65,9 @@ function submitTestForm(useNativeSubmitBtn) {
 storiesOf(name, module)
   .add('standard ak-field-text', () => (
     generateFormWithInput({ placeholder: 'Oh wow, such input' })
+  ))
+  .add('standard ak-field-text that fits container width', () => (
+    generateFormWithInput({ placeholder: 'Oh wow, such input', shouldFitContainer: true })
   ))
   .add('standard ak-field-text [type=email]', () => (
     generateFormWithInput({ type: 'email', placeholder: 'Enter your email' })

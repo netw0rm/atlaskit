@@ -10,7 +10,7 @@ import Layer from '../src';
    This file simply unit tests everything that can be unit tested. Browser and sanity checking will
    be done as a part of AK-1098 */
 
-describe('ak-layer', () => {
+describe('Layer', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Layer />);
     expect(wrapper).not.to.equal(undefined);

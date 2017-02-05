@@ -1,8 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
-import { SearchIcon, HelpIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon, EmojiCustomIcon } from 'ak-icon';
-import AkButton from 'ak-button';
+import { SearchIcon, AddIcon, DashboardIcon, SettingsIcon, IssuesIcon, EmojiCustomIcon } from '@atlaskit/icon';
+import AkButton from '@atlaskit/button';
 import { name } from '../package.json';
 import Page from './components/Page';
 import BasicNavigation from './components/BasicNavigation';
@@ -31,14 +31,14 @@ storiesOf(name, module)
         >
           <a href="#1">
             <AkContainerItem
-              icon={<HelpIcon label="Help" />}
+              icon={<IssuesIcon label="Issues" />}
               isCompact
-              text="Help"
+              text="Issues"
             />
           </a>
           <a href="#2">
             <AkContainerItem
-              icon={<CreateIcon label="Create" />}
+              icon={<AddIcon label="Create" />}
               isCompact
               text="Create"
             />
@@ -61,9 +61,9 @@ storiesOf(name, module)
           </a>
           <a href="#5">
             <AkContainerItem
-              icon={<ProjectsIcon label="Projects" />}
+              icon={<IssuesIcon label="Issues" />}
               isCompact
-              text="Projects"
+              text="Issues"
             />
           </a>
         </AkContainerItemGroup>

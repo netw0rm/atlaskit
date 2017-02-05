@@ -9,20 +9,19 @@ export default class TabPane extends PureComponent {
   }
 
   static defaultProps = {
-    selected: false,
+    isSelected: false,
   }
 
   render() {
     return (
-      <div aria-hidden={this.props.isSelected ? 'true' : 'false'}>
-        <div
-          className={classNames(styles.locals.akTabPane, {
-            [styles.locals.selected]: this.props.isSelected,
-          })}
-          role="tabpanel"
-        >
-          {this.props.children}
-        </div>
+      <div
+        aria-hidden={this.props.isSelected ? 'false' : 'true'}
+        className={classNames(styles.locals.akTabPane, {
+          [styles.locals.selected]: this.props.isSelected,
+        })}
+        role="tabpanel"
+      >
+        {this.props.children}
       </div>
     );
   }

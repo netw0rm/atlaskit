@@ -4,7 +4,7 @@ import React from 'react';
 import Lozenge from '../src';
 import styles from '../src/style.less';
 
-describe('ak-lozenge', () => {
+describe('Lozenge', () => {
   const { locals: style } = styles;
 
   describe('isBold property', () => {

@@ -2,7 +2,7 @@
   "name": "@atlaskit/input",
   "version": "1.0.0",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "ak-input component",
   "main": "dist/bundle.js",
@@ -18,7 +18,7 @@
     "react": "^15.3.2"
   },
   "dependencies": {
-    "akutil-shared-styles": "^37.2.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "glamor": "^2.17.14"
   },

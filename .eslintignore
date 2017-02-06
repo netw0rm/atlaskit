@@ -1,7 +1,6 @@
 node_modules
 dist
 /stories
-/build/typings
 /build/tslint-rules
 packages/icon/glyph
 packages/icon/src/tmp

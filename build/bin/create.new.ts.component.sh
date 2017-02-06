@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Creates a new component under the packages directory using a template
-# This is assumed to only be run from the `yarn run create` command from the root directory
+# This is assumed to only be run from the `yarn run create-ts` command from the root directory
 
 set -e
 
@@ -8,7 +8,7 @@ CHALK="`yarn bin`/chalk"
 
 if [[ $# -eq 0 || "$1" == "" ]]
   then
-    $CHALK --no-stdin -t "{white Usage: yarn run create component_name}"
+    $CHALK --no-stdin -t "{white Usage: yarn run create-ts component_name}"
     exit 1
 fi
 
@@ -27,14 +27,14 @@ if [ -d "packages/$COMP_NAME" ]
 fi
 
 # Copy template files into packages directory
-rm -rf packages/util-component-template/node_modules
-cp -r "packages/util-component-template" "packages/$COMP_NAME"
+rm -rf packages/util-component-ts-template/node_modules
+cp -r "packages/util-component-ts-template" "packages/$COMP_NAME"
 
 # `find` is getting all the files under the new directory
 # `xargs` is passing them to sed
-# `sed` is replacing instances of 'util-component-template' and 'UtilComponentTemplate' with the new component name
+# `sed` is replacing instances of 'util-component-ts-template' and 'UtilComponentTemplate' with the new component name
 # LC_CTYPE and LANG=C: http://stackoverflow.com/questions/19242275/re-error-illegal-byte-sequence-on-mac-os-x
-LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' -e "s/util-component-template/${COMP_NAME}/g" -e "s/UtilComponentTemplate/${PASCAL_CASE_NAME}/g" -e "s/utilComponentTemplate/${CAMEL_CASE}/g" '{}'
+LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' -e "s/util-component-ts-template/${COMP_NAME}/g" -e "s/UtilComponentTemplate/${PASCAL_CASE_NAME}/g" -e "s/utilComponentTemplate/${CAMEL_CASE}/g" '{}'
 
 pushd "packages/$COMP_NAME" > /dev/null
 

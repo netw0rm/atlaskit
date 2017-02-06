@@ -182,15 +182,21 @@ Atlaskit supports using TypeScript to write components. TypeScript brings static
 
 Using TypeScript is optional, leaving the decision to be made on a per-component basis.
 
-A single version of TypeScript is used in the repo, and version bumps need to include any migration work necessary for all packages.
+* To get started, use the `yarn run create-ts my-component-name` command.
+* A single version of TypeScript is used in the repo, however each component has its own `tsconfig.json` for configuration.
 
 ### Configuration
 
-To get started writing a component in TypeScript, create a `tsconfig.json` in your package that extends `build/bin/types/tsconfig.base`, and specifies appropriate include/exclude patterns.
+The structure of a TypeScript component contains a few important files, so it's helpful to familiarise yourself with them:
 
-Refer to one of the existing packages that use TypeScript for an example.
+* `/tsconfig.json` -- Component-specific configuration.
+* `/build/es5/tsconfig.json` -- ES5 distribution configuration.
+* `/build/es2015/tsconfig.json` -- ES2015 distribution configuration.
+* `package.json` -- Contains an NPM `build` script.
+* `/index.ts` -- An entrypoint to the package (used only in development).
+* `/.npmignore` -- Excludes `/index.ts` from being published (`main` and `jsnext:main` are used as entrypoints in published components).
 
-See the Packaging section below for package-specific configuration.
+The `packages/util-component-ts-template` component should serve as a reference for these.
 
 ### Linting
 
@@ -198,10 +204,9 @@ See the Packaging section below for package-specific configuration.
 
 * To run TSLint (without ESLint) across all components: `yarn run lint/ts`
 * To automatically fix TSLint vilations: `yarn run lint/ts/fix`
+* To lint in VS Code, install the TSLint extension and set the `"tslint.ignoreDefinitionFiles": false` workspace setting.
 
 All packages should use a consistent set of TSLint rules (found in `tslint.json`).
-
-TSLint is invoked for each TypeScript package using the `--project` option, which excludes `.d.ts` files from linting. Errors in hand-crafted `.d.ts` files are caught by `yarn run validate/typescript`.
 
 #### Custom TSLint rules
 
@@ -218,18 +223,19 @@ The TypeScript compiler alone (no Babel) is used to publish ES5 and ES2015 distr
 * `packages/*/build/es5/tsconfig.json`
 * `packages/*/build/es2015/tsconfig.json`
 
-Outline of published assets:
+Summary of published assets:
 
 * `dist/es2015` -- ES2015 compatible assets (referenced via `jsnext:main` in `package.json`).
 * `dist/es5` -- ES5 compatible assets (referenced via `main` in `package.json`).
-* `package.json` -- contains a `types` field pointing to a `index.d.ts` entrypoint.
+* `dist/types` -- TypeScript declarations.
+* `package.json` -- contains `types`, `main`, and `jsnext:main` entrypoint references.
 * `src/` -- contains original sources, for use with [source maps](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit#).
 
-#### Declaring use of ES2015 globals
+#### Component-specific TypeScript configuration
 
-Packages that publish ES5 distributions, but which *use* ES2015 globals like Promise or fetch will need add an approach `lib` entry to their `tsconfig.json`, and clearly document their requirements in their `README.md`.
+In some cases it's desirable to customise the TypeScript configuration for a specific component. The `tsconfig.json` file in each component provides this flexibility.
 
-Example `tsconfig.json` declarating use of ES2015 features:
+For example if a component requires an ES2015 global like `Promise`, it needs to include the appropriate `lib` value in its `tsconfig.json`:
 
 ```json
 {
@@ -250,7 +256,7 @@ Example `tsconfig.json` declarating use of ES2015 features:
 }
 ```
 
-This configuration would compile the package using only the listed ES2015 declarations, and will assume their global availability in the ES5 emit.
+This configuration would compile the package using only the listed ES2015 declarations.
 
 It is the responsibility of each package to document their environment requirements (e.g. presence of `window.Promise`).
 

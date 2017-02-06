@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Readme, { Code, Description, Heading, Props } from 'akutil-readme';
+import Readme, { Code, Description, Heading, Props } from '@atlaskit/util-readme';
 
 /* eslint-disable import/first, import/no-duplicates */
 import RadioGroupExample from './readme/RadioGroupOverview';

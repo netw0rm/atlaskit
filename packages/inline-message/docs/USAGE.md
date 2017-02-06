@@ -2,7 +2,7 @@
 
 Use inline messages to alert users of a required action or important information.
 
-![Example ak-inline-message](https://i.imgur.com/oUjCo2Z.png)
+![Example inline-message](https://i.imgur.com/oUjCo2Z.png)
 
 ## Try it out
 

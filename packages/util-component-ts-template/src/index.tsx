@@ -2,12 +2,12 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import * as styles from './styles';
 
-interface Props {
+export interface Props {
   audienceName?: string;
   onTextClicked?: () => void;
 }
 
-interface State {}
+export interface State {}
 
 export default class ComponentTemplate extends PureComponent<Props, State> {
   static defaultProps = {

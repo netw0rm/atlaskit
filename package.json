@@ -139,6 +139,7 @@
     "commit": "./build/bin/commit.sh",
     "create": "./build/bin/create.new.component.sh",
     "create-ts": "./build/bin/create.new.ts.component.sh",
+    "lint": "yarn run validate/lint",
     "postinstall": "./build/bin/postinstall.sh",
     "docs/all": "./node_modules/.bin/lerna exec -- ../../build/bin/generate.readme.sh",
     "docs/single": "./build/bin/docs.single.sh",

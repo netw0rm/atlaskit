@@ -16,12 +16,14 @@ export default class Page extends PureComponent {
 
   static propTypes = {
     children: PropTypes.node,
+    navigation: PropTypes.node,
   }
 
   render = () => (
     <Wrapper>
       <ThemeProvider theme={{}}>
         <PageContent>
+          {this.props.navigation}
           {this.props.children}
         </PageContent>
       </ThemeProvider>

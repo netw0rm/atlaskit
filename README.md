@@ -98,13 +98,13 @@ This is where you can write styles that need to be shared between `shadow.less` 
 This should only be used for shared variables, not shared rules. By default, this will already include the shared colors from the `share-styles` package.
 
 ## Add a dependency to a component
-Ensure that when running `npm install --save ...` you are in the component's directory, **not in the root!**.
+Ensure that when running `yarn add --save ...` you are in the component's directory, **not in the root!**.
 
 ## Verify a component bundle
 If you want to check that webpack is correctly bundling your component, you can build it locally to confirm.
 
 ```
-yarn run prepublish/single my-component-name
+yarn run prepublish/single @atlaskit/my-component-name
 ```
 
 This will build the component and place the generated bundle under `packages/my-component-name/dist/`.
@@ -166,7 +166,7 @@ Eslint will automatically run when attempting to commit, but can also run at any
 
 ### Modifying ESLint rules
 
-In order to modify the ESLint rules, you can add the rules to the `.eslintrc` file in the `eslint-config-ak-base` package.
+In order to modify the ESLint rules, you can add the rules to the `.eslintrc` file in the `eslint-config-base` package.
 
 The packages are linked to the main atlaskit directory so that the new eslint configuration will be effective immediately.
 

@@ -5,7 +5,7 @@ import Component from '../src';
 import { name } from '../package.json';
 
 storiesOf(name, module)
-  .add('simple akmedia-cardview', () => (
+  .add('simple akmedia-domain', () => (
     <Component />
   ))
   .add('with a prop set', () => (

@@ -1,27 +1,22 @@
 {
-  "name": "@atlaskit/media-cardview",
+  "name": "@atlaskit/media-domain",
   "version": "1.0.0",
   "config": {
-    "access": "public"
+    "access": "public" 
   },
-  "description": "akmedia-cardview React component",
+  "description": "akmedia-domain React component",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.tsx",
+  "ak:webpack:raw": "src/index.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/media-cardview; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/media-domain; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/droplist-group": "^1.0.0",
-    "@atlaskit/droplist-item": "^1.0.0",
-    "@atlaskit/media-domain": "^1.0.0",
-    "@atlaskit/util-shared-styles": "^1.0.0",
     "akutil-shared-styles": "^37.0.0",
     "babel-runtime": "^6.11.6",
-    "bytes": "^2.4.0",
     "classnames": "^2.2.5"
   },
   "peerDependencies": {

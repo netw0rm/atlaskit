@@ -11,12 +11,21 @@ export default class extends PureComponent {
       value: props.value,
     };
   }
+
+  handleOnChange = (e) => {
+    this.setState({ value: e.target.value });
+
+    if (this.props.onChange) {
+      this.props.onChange(e);
+    }
+  }
+
   render() {
     return (
       <FieldText
         {...this.props}
         value={this.state.value}
-        onChange={e => this.setState({ value: e.target.value })}
+        onChange={this.handleOnChange}
       />
     );
   }

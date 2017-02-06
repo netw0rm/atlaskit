@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import Popper from 'popper.js';
-import { akZIndexLayer } from 'akutil-shared-styles';
+import { akZIndexLayer } from '@atlaskit/util-shared-styles';
 
 import { POSITION_ATTRIBUTE_ENUM, positionPropToPopperPosition } from './internal/helpers';
 

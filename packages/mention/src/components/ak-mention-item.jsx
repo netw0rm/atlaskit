@@ -3,8 +3,8 @@ import styles from 'style!./ak-mention-item.less';
 import classNames from 'classnames';
 import React, { PropTypes, PureComponent } from 'react';
 
-import Avatar from 'ak-avatar';
-import Lozenge from 'ak-lozenge';
+import Avatar from '@atlaskit/avatar';
+import Lozenge from '@atlaskit/lozenge';
 
 import MentionPropTypes from '../internal/ak-mention-prop-types';
 import { leftClick } from '../util/mouse';

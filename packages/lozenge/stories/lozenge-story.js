@@ -6,7 +6,7 @@ import { name } from '../package.json';
 
 const imports = [
   ['React', 'react'],
-  ['Lozenge', 'ak-lozenge'],
+  ['Lozenge', '@atlaskit/lozenge'],
 ];
 
 storiesOf(name, module)

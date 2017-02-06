@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 
 import SuggestedApplication from '../src/components/SuggestedApplication';
 import { MenuItemContainer } from '../src/styled';

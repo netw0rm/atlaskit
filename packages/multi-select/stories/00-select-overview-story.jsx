@@ -10,7 +10,7 @@ import SmartSelectOverviewRaw from '!raw!./examples/SmartSelectOverview';
 
 import { name, description } from '../package.json';
 
-const formTestUrl = 'http://www.w3schools.com/html/action_page.php';
+const formTestUrl = 'https://httpbin.org/post';
 
 storiesOf(name, module)
   .add('Multi select (smart) - overview', () => (
@@ -28,7 +28,7 @@ storiesOf(name, module)
     <Chrome title="Multi select is submittable">
       <form
         action={formTestUrl}
-        method="get"
+        method="POST"
         target="myFrame"
       >
         {SmartSelectOverview}

@@ -2,7 +2,7 @@
   "name": "@atlaskit/button",
   "version": "1.0.0",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "A React component that is used to trigger events.",
   "main": "dist/bundle.js",
@@ -17,7 +17,7 @@
     "src/index.d.ts"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^37.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
   },

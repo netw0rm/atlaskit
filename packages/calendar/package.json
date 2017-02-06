@@ -2,9 +2,9 @@
   "name": "@atlaskit/calendar",
   "version": "1.0.0",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
-  "description": "A React component that is a generic calendar",
+  "description": "A React component that is a generic calendar.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",

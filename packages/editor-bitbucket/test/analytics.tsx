@@ -227,7 +227,8 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
 
   it('atlassian.editor.paste', function() {
     if (!dispatchPasteEvent(pm, { plain: 'foo' })) {
-      this.skip('This environment does not support artificial paste events');
+      // This environment does not support artificial paste events
+      this.skip();
       return;
     }
 
@@ -257,7 +258,8 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
         }
       });
     } catch (e) {
-      return this.skip('This environment does not allow mocking paste events - ' + e);
+      // This environment does not allow mocking paste events
+      return this.skip();
     }
 
     contentArea.dispatchEvent(event);

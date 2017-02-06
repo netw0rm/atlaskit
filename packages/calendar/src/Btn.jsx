@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import Button from 'ak-button';
+import Button from '@atlaskit/button';
 
 export default class extends PureComponent {
   static propTypes = {

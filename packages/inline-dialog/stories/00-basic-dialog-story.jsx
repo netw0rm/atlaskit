@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { akColorG300 } from 'akutil-shared-styles';
+import { akColorG300 } from '@atlaskit/util-shared-styles';
 
 import InlineDialog from '../src';
 import { name } from '../package.json';

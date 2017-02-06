@@ -10,6 +10,7 @@ import classNames from 'classnames';
 
 import styles from 'style!./styles.less';
 import Trigger from './internal/Trigger';
+import NothingWasFound from './internal/NothingWasFound';
 
 export const itemShape = PropTypes.shape({
   content: PropTypes.node,
@@ -22,10 +23,14 @@ export const itemShape = PropTypes.shape({
 
 export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {
+    filterValue: PropTypes.string,
     id: PropTypes.string,
     isOpen: PropTypes.bool,
     items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
+    noMatchesFound: PropTypes.string,
+    name: PropTypes.string,
+    onFilterChange: PropTypes.func,
     onOpenChange: PropTypes.func,
     onSelected: PropTypes.func,
     onRemoved: PropTypes.func,
@@ -35,9 +40,12 @@ export default class StatelessMultiSelect extends PureComponent {
   }
 
   static defaultProps = {
+    filterValue: null,
     isOpen: false,
     items: [],
     label: '',
+    noMatchesFound: 'No matches found',
+    onFilterChange: () => {},
     onOpenChange: () => {},
     onSelected: () => {},
     onRemoved: () => {},
@@ -75,6 +83,8 @@ export default class StatelessMultiSelect extends PureComponent {
     }
   }
 
+  getAllValues = () => this.props.selectedItems.map(item => item.value)
+
   handleTriggerClick = (event) => {
     this.onOpenChange({ event, isOpen: true });
   }
@@ -83,19 +93,53 @@ export default class StatelessMultiSelect extends PureComponent {
     this.props.onRemoved(item);
   }
 
-  renderItems = items =>
-    items.map((item, itemIndex) =>
-      <Item
+  removeLatestItem = () => {
+    if (this.props.selectedItems.length) {
+      const selectedItems = this.props.selectedItems;
+      this.handleItemRemove(selectedItems[selectedItems.length - 1]);
+    }
+  }
+
+  handleKeyUpInInput = (event) => {
+    const key = event.key;
+    const value = event.target.value;
+
+    if (key === 'Backspace' && !this.props.filterValue) {
+      this.removeLatestItem();
+      this.onOpenChange({ event, isOpen: true });
+    } else if (value !== this.props.filterValue) {
+      this.props.onFilterChange(value);
+      this.onOpenChange({ event, isOpen: true });
+    }
+  }
+
+  filterItems = (items) => {
+    const value = this.props.filterValue;
+    const trimmedValue = value && value.toLowerCase().trim();
+    const selectedItems = this.props.selectedItems;
+    const unselectedItems = items.filter(item => selectedItems.indexOf(item) === -1);
+
+    return trimmedValue ?
+      unselectedItems.filter(item => (item.content.toLowerCase().indexOf(trimmedValue) > -1)) :
+      unselectedItems;
+  }
+
+  renderItems = (items) => {
+    const filteredItems = this.filterItems(items);
+    if (filteredItems.length) {
+      return filteredItems.map((item, itemIndex) => (<Item
         {...item}
-        isHidden={this.props.selectedItems.indexOf(item) > -1}
         key={itemIndex}
         onActivate={() => {
           this.props.onSelected(item);
         }}
       >
         {item.content}
-      </Item>
-    )
+      </Item>));
+    }
+
+    return (<NothingWasFound noMatchesFound={this.props.noMatchesFound} />);
+  }
 
   renderGroups = groups => groups.map((group, groupIndex) =>
     <Group
@@ -106,6 +150,32 @@ export default class StatelessMultiSelect extends PureComponent {
     </Group>
   )
 
+  renderOptions = items => items.map((item, itemIndex) => (<option
+    disabled={item.isDisabled}
+    key={itemIndex}
+    value={item.value}
+  >{item.content}</option>))
+
+  renderOptGroups = groups => groups.map((group, groupIndex) =>
+    <optgroup
+      label={group.heading}
+      key={groupIndex}
+    >
+      {this.renderOptions(group.items)}
+    </optgroup>
+  )
+
+  renderSelect = () => (<select
+    id={this.props.id}
+    multiple
+    name={this.props.name}
+    readOnly
+    value={this.getAllValues(this.props.selectedItems)}
+    style={{ display: 'none' }}
+  >
+    {this.renderOptGroups(this.props.items)}
+  </select>)
+
   render = () => {
     const classes = classNames([styles.selectWrapper, {
       [styles.fitContainer]: this.props.shouldFitContainer,
@@ -113,6 +183,7 @@ export default class StatelessMultiSelect extends PureComponent {
 
     return (
       <div className={classes}>
+        {this.renderSelect()}
         {this.props.label ? <Label
           htmlFor={this.props.id}
           label={this.props.label}
@@ -145,7 +216,11 @@ export default class StatelessMultiSelect extends PureComponent {
                       removeButtonText={`${item.content}, remove`}
                       text={item.content}
                     />)}
-                  <input className={styles.input} type="text" />
+                  <input
+                    className={styles.input}
+                    type="text"
+                    onKeyUp={this.handleKeyUpInInput}
+                  />
                 </TagGroup>
               </Trigger>
             </FieldBase>

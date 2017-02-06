@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
-import AkAvatar from 'ak-avatar';
-import AkButton from 'ak-button';
+import AkAvatar from '@atlaskit/avatar';
+import AkButton from '@atlaskit/button';
 
 import styles from 'style!./styles/profilecard.less';
 

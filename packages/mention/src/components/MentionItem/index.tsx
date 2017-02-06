@@ -5,8 +5,8 @@ import * as styles from './styles';
 
 import * as classNames from 'classnames';
 
-import Avatar from 'ak-avatar';
-import Lozenge from 'ak-lozenge';
+import Avatar from '@atlaskit/avatar';
+import Lozenge from '@atlaskit/lozenge';
 
 import { Mention, HighlightDetail } from '../../types';
 import { leftClick } from '../../util/mouse';

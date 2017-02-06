@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { style } from 'glamor';
-import { akFontSizeDefault } from 'akutil-shared-styles';
+import { akFontSizeDefault } from '@atlaskit/util-shared-styles';
 
 const css = {
   common: style({

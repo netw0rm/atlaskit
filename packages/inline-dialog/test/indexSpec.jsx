@@ -1,13 +1,13 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Layer from 'ak-layer';
+import Layer from '@atlaskit/layer';
 
 import InlineDialog from '../src';
 import styles from '../src/styles.less';
 
 const containerClass = styles.locals.inlineDialogContainer;
 
-describe('ak-inline-dialog', () => {
+describe('inline-dialog', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<InlineDialog />);
     expect(wrapper).not.to.equal(undefined);

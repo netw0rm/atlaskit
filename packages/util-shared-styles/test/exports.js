@@ -113,6 +113,7 @@ describe('exports', () => {
       'akZIndexBlanket',
       'akZIndexFlag',
       'akZIndexLayer',
+      'akZIndexNavigation',
       'default',
     ]);
   });

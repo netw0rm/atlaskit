@@ -8,6 +8,8 @@ const selectItems = [
       { content: 'Canberra', value: 'city_2' },
       { content: 'Melbourne', value: 'city_3' },
       { content: 'Perth', value: 'city_4', isDisabled: true },
+      { content: 'Some city with spaces', value: 'city_5' },
+      { content: 'Some city with another spaces', value: 'city_6' },
     ],
   },
 ];

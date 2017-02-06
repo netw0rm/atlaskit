@@ -9,7 +9,7 @@ const data = {
       name: 'Recent container',
       url: 'https://instance.atlassian.net/view/container',
       iconUrl: containerImage,
-      type: 'Space',
+      type: 'confluence-space',
     },
   ],
   linkedApplications: {
@@ -28,7 +28,6 @@ const data = {
   suggestedApplication: {
     show: true,
     application: 'confluence',
-    description: 'Issue & project tracking software',
     url: 'https://www.atlassian.com/confluence',
   },
   i18n: {
@@ -37,6 +36,10 @@ const data = {
     configure: 'Configure',
     'try.other.apps': 'Try Other Atlassian Apps',
     'don\'t.show.this.again': 'Don’t show this again',
+    'container.confluence-space': 'Space',
+    'container.jira-project': 'Project',
+    'suggested.application.description.confluence': 'Collaboration and content sharing',
+    'suggested.application.description.jira': 'Issue & project tracking software',
   },
 };
 

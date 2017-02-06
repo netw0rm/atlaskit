@@ -26,12 +26,15 @@ export default {
     configure: PropTypes.string.isRequired,
     'try.other.apps': PropTypes.string.isRequired,
     "don't.show.this.again": PropTypes.string.isRequired,
+    'container.confluence-space': PropTypes.string.isRequired,
+    'container.jira-project': PropTypes.string.isRequired,
+    'suggested.application.description.confluence': PropTypes.string.isRequired,
+    'suggested.application.description.jira': PropTypes.string.isRequired,
   }),
 
   suggestedApplication: PropTypes.shape({
     show: PropTypes.bool.isRequired,
     application: PropTypes.oneOf(['jira', 'confluence']),
-    description: PropTypes.string,
     url: PropTypes.string,
     onDontShowAgainClick: PropTypes.func,
   }),

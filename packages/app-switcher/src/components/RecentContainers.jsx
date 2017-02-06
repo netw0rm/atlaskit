@@ -5,9 +5,16 @@ import AppSwitcherPropTypes from '../internal/prop-types';
 export default class RecentContainers extends PureComponent {
   static propTypes = {
     containers: AppSwitcherPropTypes.recentContainers,
+    i18n: AppSwitcherPropTypes.i18n,
   };
 
-  static item(container) {
+  constructor() {
+    super();
+
+    this.item = this.item.bind(this);
+  }
+
+  item(container) {
     return (
       <a href={container.url} key={container.url}>
         <MenuItemContainer>
@@ -16,7 +23,7 @@ export default class RecentContainers extends PureComponent {
           </MenuItemIcon>
           <MenuItemTwoLineContent>
             <div>{container.name}</div>
-            <div>{container.type}</div>
+            <div>{this.props.i18n[`container.${container.type}`]}</div>
           </MenuItemTwoLineContent>
         </MenuItemContainer>
       </a>
@@ -28,7 +35,7 @@ export default class RecentContainers extends PureComponent {
       return null;
     }
 
-    const items = this.props.containers.map(RecentContainers.item);
+    const items = this.props.containers.map(this.item);
 
     return (
       <div>

@@ -32,7 +32,9 @@ export default class SuggestedApplication extends PureComponent {
         <a href={this.props.url}>
           <SuggestedApplicationContainer>
             <img src={logos[this.props.application]} alt={this.props.application} height="20px" />
-            <SuggestedApplicationTagline>{this.props.description}</SuggestedApplicationTagline>
+            <SuggestedApplicationTagline>
+              {this.props.i18n[`suggested.application.description.${this.props.application}`]}
+            </SuggestedApplicationTagline>
           </SuggestedApplicationContainer>
         </a>
         <MenuItemContainer onClick={this.props.onDontShowAgainClick}>

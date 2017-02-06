@@ -20,6 +20,7 @@ export default class AppSwitcher extends PureComponent {
       <HomeLink />
       <RecentContainers
         containers={this.props.recentContainers}
+        i18n={this.props.i18n}
       />
       <ApplicationLinks
         apps={this.props.linkedApplications.apps}

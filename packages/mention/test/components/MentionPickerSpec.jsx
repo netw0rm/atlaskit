@@ -92,6 +92,30 @@ describe('MentionPicker', () => {
       });
   });
 
+  it('should change selection when selectIndex called', () => {
+    const component = setupPicker();
+    const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
+    const thirdItemSelected = () => isMentionItemSelected(component, mentions[2].id);
+
+    return waitUntil(defaultMentionItemsShow)
+      .then(() => {
+        component.instance().selectIndex(2);
+        return waitUntil(thirdItemSelected);
+      });
+  });
+
+  it('should change selection when selectId called', () => {
+    const component = setupPicker();
+    const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
+    const thirdItemSelected = () => isMentionItemSelected(component, mentions[2].id);
+
+    return waitUntil(defaultMentionItemsShow)
+      .then(() => {
+        component.instance().selectId(mentions[2].id);
+        return waitUntil(thirdItemSelected);
+      });
+  });
+
   it('should change selection when navigating previous', () => {
     const component = setupPicker();
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;

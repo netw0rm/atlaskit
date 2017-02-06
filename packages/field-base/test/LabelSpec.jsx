@@ -43,14 +43,14 @@ describe('ak-field-base', () =>
       });
     });
 
-    describe('type prop', () => {
-      it('should by "form" type by default', () => {
-        expect(mount(<Label />).prop('type')).to.equal('form');
+    describe('appearance prop', () => {
+      it('should be "default" appearance by default', () => {
+        expect(mount(<Label />).prop('appearance')).to.equal('default');
       });
 
       it('should set className for it', () => {
         expect(mount(<Label />).find(`.${styles.locals.inlineEdit}`).length).to.equal(0);
-        expect(mount(<Label type="inline-edit" />).find(`.${styles.locals.inlineEdit}`).length).to.equal(1);
+        expect(mount(<Label appearance="inline-edit" />).find(`.${styles.locals.inlineEdit}`).length).to.equal(1);
       });
     });
 

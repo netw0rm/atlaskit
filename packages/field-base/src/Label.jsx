@@ -51,19 +51,19 @@ export default class Label extends PureComponent {
     isRequired: PropTypes.bool,
     htmlFor: PropTypes.string,
     children: PropTypes.node,
-    type: PropTypes.oneOf(['form', 'inline-edit']),
+    appearance: PropTypes.oneOf(['default', 'inline-edit']),
     isFirstChild: PropTypes.bool,
   }
 
   static defaultProps = {
-    type: 'form',
+    appearance: 'default',
   }
 
   /* eslint-disable jsx-a11y/no-static-element-interactions */
   render() {
     const labelClasses = classNames(styles.labelText, {
       [styles.hidden]: this.props.isLabelHidden,
-      [styles.inlineEdit]: this.props.type === 'inline-edit',
+      [styles.inlineEdit]: this.props.appearance === 'inline-edit',
       [styles.firstChild]: this.props.isFirstChild,
     });
 

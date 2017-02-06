@@ -38,7 +38,7 @@ storiesOf(name, module)
     <BasicFieldBase
       label="basic example for inline edit"
       id="fieldbase"
-      type="inline-edit"
+      labelAppearance="inline-edit"
     >
       <Input
         value="input children"

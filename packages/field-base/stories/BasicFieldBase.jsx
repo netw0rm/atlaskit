@@ -14,7 +14,7 @@ export default props => (
       htmlFor={props.id}
       isLabelHidden={props.isLabelHidden}
       isRequired={props.isRequired}
-      type={props.type}
+      appearance={props.labelAppearance}
       isFirstChild={props.isFirstChild}
     />
     <AkFieldBase

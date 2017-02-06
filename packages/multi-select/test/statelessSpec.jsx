@@ -12,7 +12,7 @@ import Trigger from '../src/internal/Trigger';
 
 import { name } from '../package.json';
 
-describe(name, () => {
+describe(`${name}`, () => {
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {
     window.cancelAnimationFrame = () => {};

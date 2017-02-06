@@ -4,7 +4,7 @@ import styles from '../src/styles/profilecard.less';
 
 import IconLabel from '../src/components/IconLabel';
 
-describe('ak-profilecard', () => {
+describe('Profilecard', () => {
   describe('IconLabel', () => {
     it('should render no label when not children are present', () => {
       const wrapper = shallow(<IconLabel />);

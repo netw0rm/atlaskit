@@ -1,7 +1,7 @@
 import React, { PropTypes, PureComponent } from 'react';
-import AKButton from 'ak-button';
+import AKButton from '@atlaskit/button';
 import BitbucketAdminIcon from 'ak-icon/glyph/bitbucket/admin';
-import AKInlineDialog from '../../src/index';
+import AKInlineDialog from '@atlaskit/inline-dialog';
 
 class ButtonActivatedDialog extends PureComponent {
   static propTypes = {

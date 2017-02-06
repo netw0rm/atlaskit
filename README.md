@@ -176,6 +176,84 @@ Changes to the ESLint rules should be treated like any other package:
 - If you add a rule, it should be considered a feature
 - If you change / remove a rule, it should be considered breaking
 
+## Using TypeScript for a component
+
+Atlaskit supports using TypeScript to write components. TypeScript brings static type checking to the JavaScript ecosystem and lets you concisely describe the interfaces between components (which is incredibly powerful for a set reusable shared components like Atlaskit).
+
+Using TypeScript is optional, leaving the decision to be made on a per-component basis.
+
+A single version of TypeScript is used in the repo, and version bumps need to include any migration work necessary for all packages.
+
+### Configuration
+
+To get started writing a component in TypeScript, create a `tsconfig.json` in your package that extends `build/bin/types/tsconfig.base`, and specifies appropriate include/exclude patterns.
+
+Refer to one of the existing packages that use TypeScript for an example.
+
+See the Packaging section below for package-specific configuration.
+
+### Linting
+
+[TSLint](https://palantir.github.io/tslint/) is used (instead of ESLint) to lint TypeScript files (`.d.ts`, `.ts`, `.tsx`). TSLint also supports linting JavaScript files (`.js`) but this is disabled in favour of ESLint.
+
+* To run TSLint (without ESLint) across all components: `yarn run lint/ts`
+* To automatically fix TSLint vilations: `yarn run lint/ts/fix`
+
+All packages should use a consistent set of TSLint rules (found in `tslint.json`).
+
+TSLint is invoked for each TypeScript package using the `--project` option, which excludes `.d.ts` files from linting. Errors in hand-crafted `.d.ts` files are caught by `yarn run validate/typescript`.
+
+#### Custom TSLint rules
+
+Custom TSLint rules can be written and contributed to the repo to enforce patterns. This can be used as to 'incubate' new rules before promoting them to standalone packages, or to house rules that are Atlaskit specific.
+
+These rules live in `build/tslint-rules`.
+
+### Packaging
+
+All packages should aim to publish TypeScript declaration files, as this is an extremely powerful mechanism for validating contracts between components. Publishing declarations allows TypeScript consumers to automatically verify interface stability when updating components.
+
+The TypeScript compiler alone (no Babel) is used to publish ES5 and ES2015 distributions, using configuration in each package:
+
+* `packages/*/build/es5/tsconfig.json`
+* `packages/*/build/es2015/tsconfig.json`
+
+Outline of published assets:
+
+* `dist/es2015` -- ES2015 compatible assets (referenced via `jsnext:main` in `package.json`).
+* `dist/es5` -- ES5 compatible assets (referenced via `main` in `package.json`).
+* `package.json` -- contains a `types` field pointing to a `index.d.ts` entrypoint.
+* `src/` -- contains original sources, for use with [source maps](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit#).
+
+#### Declaring use of ES2015 globals
+
+Packages that publish ES5 distributions, but which *use* ES2015 globals like Promise or fetch will need add an approach `lib` entry to their `tsconfig.json`, and clearly document their requirements in their `README.md`.
+
+Example `tsconfig.json` declarating use of ES2015 features:
+
+```json
+{
+  "extends": "../../build/types/tsconfig.base",
+  "include": [
+    "**/*"
+  ],
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "es5",
+      "scripthost",
+      "es2015.collection",
+      "es2015.iterable",
+      "es2015.promise"
+    ]
+  }
+}
+```
+
+This configuration would compile the package using only the listed ES2015 declarations, and will assume their global availability in the ES5 emit.
+
+It is the responsibility of each package to document their environment requirements (e.g. presence of `window.Promise`).
+
 ## Commit changes
 To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Running commitizen is as simple as running `yarn run commit` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Component = React.Component;
-import styles from 'style!./progressBar.less'; // MEDIA-FIX
+import styles from 'style!./styles.less';
 
 export interface ProgressBarProps {
   progress: number;

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>unknown</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M6,5.25 L6,2.63223714 C6,2.42073959 5.83530397,2.25 5.63214111,2.25 L3.75702667,2.25 C3.34413815,2.25 3,2.584241 3,2.99654818 L3,9.00345182 C3,9.4082517 3.33893239,9.75 3.75702667,9.75 L5.625,9.75 L8.24113154,9.75 C8.66721252,9.75 9,9.4173102 9,9.00691652 L9,5.63366747 C9,5.42091036 8.8328795,5.25 8.62672591,5.25 L6,5.25 Z M6.75,2.25 L9,4.5 L6.75,4.5 L6.75,2.25 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Unkown-icon">
+            <g id="unknown">
+                <g id="audio-copy" fill="#3DC7DC">
+                    <rect id="Combined-Shape" x="0" y="0" width="12" height="12" rx="1"></rect>
+                </g>
+                <g id="Combined-Shape">
+                    <use fill="#D8D8D8" xlink:href="#path-1"></use>
+                    <use fill="#FFFFFF" xlink:href="#path-1"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

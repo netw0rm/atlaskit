@@ -1,9 +1,8 @@
 import * as React from 'react';
 import Component = React.Component;
-// import * as styles from './bottomBar.less'; // MEDIA-FIX --> styles is never used
 
-import {Placeholder} from '../../generic/placeholder/placeholder'; // MEDIA-FIX
-import {Spinner} from '../../generic/spinner/spinner'; // MEDIA-FIX
+import {Placeholder} from './placeholder'; // MEDIA-FIX
+import {Spinner} from './spinner'; // MEDIA-FIX
 import {MediaTypes} from '@atlaskit/media-domain';
 
 export interface CardContentProps {

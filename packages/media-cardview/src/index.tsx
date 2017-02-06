@@ -1,11 +1,11 @@
 import * as React from 'react';
-import * as styles from './cardView.less'; // MEDIA-FIX
+import styles from 'style!./styles.less';
 import {Component, MouseEvent} from 'react';
 import {Actions} from '@atlaskit/media-domain';
 
 /* Child stateless components*/
-import {CardContent} from './cardContent/cardContent';
-import {CardOverlay} from './cardOverlay/cardOverlay';
+import {CardContent} from './cardContent';
+import {CardOverlay} from './cardOverlay';
 import {MediaTypes} from '@atlaskit/media-domain';
 
 export interface CardViewProps {

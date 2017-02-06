@@ -1,10 +1,9 @@
 import Readme, { Code, Heading } from '@atlaskit/util-readme';
 import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-
 import * as OverviewExampleRaw from '!raw!./examples/overview.tsx';
 import OverviewExample from './examples/overview';
-
+import EncodingExamples from './examples/encoding';
 import { description, name } from '../package.json';
 
 storiesOf(name, module)
@@ -38,7 +37,7 @@ storiesOf(name, module)
               <td><code>isExpandedByDefault</code></td>
               <td><code>boolean</code></td>
               <td>false</td>
-              <td>If true, the editor is expanded (i.e. not collapsed).</td>
+              <td>If <code>true</code>, the editor is expanded (i.e. not collapsed).</td>
             </tr>
             <tr>
               <td><code>defaultValue</code></td>
@@ -50,7 +49,7 @@ storiesOf(name, module)
               <td><code>onCancel</code></td>
               <td><code>(editor?: Editor) => void</code></td>
               <td>--</td>
-              <td>A callback for when the editor's 'cancel' button is triggered.</td>
+              <td>A callback for when the editor's cancel button is triggered.</td>
             </tr>
             <tr>
               <td><code>onChange</code></td>
@@ -62,7 +61,7 @@ storiesOf(name, module)
               <td><code>onSave</code></td>
               <td><code>(editor?: Editor) => void</code></td>
               <td>--</td>
-              <td>A callback for when the editor's 'save' button is triggered.</td>
+              <td>A callback for when the editor's save button is triggered.</td>
             </tr>
             <tr>
               <td><code>placeholder</code></td>
@@ -80,8 +79,30 @@ storiesOf(name, module)
               <td><code>allowLists</code></td>
               <td><code>boolean</code></td>
               <td><code>false</code></td>
-              <td>If true, 'lists' can be used in the editor.</td>
+              <td>If <code>true</code>, unordered and ordered lists can be used in the editor.</td>
             </tr>
+          </tbody>
+        </table>
+        <Heading type="2">Document structure translation</Heading>
+        <p>{name} includes translation logic between Atlassian Editor's internal structure, and JIRA's HTML encoding structure.</p>
+        <table>
+          <thead style={{ border: 0, borderBottom: '1px solid #ddd' }}>
+            <tr>
+              <th>Description</th>
+              <th>Document structure</th>
+              <th>JIRA HTML (raw)</th>
+              <th>JIRA HTML (rendered)</th>
+            </tr>
+          </thead>
+          <tbody style={{ border: 0 }}>
+            {EncodingExamples.map((example, i) =>
+            <tr key={i}>
+              <td>{example.description}</td>
+              <td><code>{example.editor}</code></td>
+              <td><code>{example.jira}</code></td>
+              <td dangerouslySetInnerHTML={{ __html: example.jira }} />
+            </tr>
+            )}
           </tbody>
         </table>
       </Readme>

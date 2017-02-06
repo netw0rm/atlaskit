@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { Chrome } from 'akutil-readme';
+import { Chrome } from '@atlaskit/util-readme';
 
 import AppSwitcherMenu from './examples/AppSwitcherMenu';
 import { name } from '../package.json';

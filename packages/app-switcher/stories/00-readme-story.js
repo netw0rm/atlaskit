@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Readme, { Code, Description } from 'akutil-readme';
+import Readme, { Code, Description } from '@atlaskit/util-readme';
 
 import { name } from '../package.json';
 

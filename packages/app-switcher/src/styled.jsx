@@ -7,7 +7,7 @@ import {
   akColorN100,
   akColorN300,
   akColorN800,
-} from 'akutil-shared-styles';
+} from '@atlaskit/util-shared-styles';
 
 export const AppSwitcherContainer = styled.div`
   width: 232px;

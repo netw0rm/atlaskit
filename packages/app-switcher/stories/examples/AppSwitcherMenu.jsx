@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Button from 'ak-button';
-import DropdownList from 'ak-droplist';
+import Button from '@atlaskit/button';
+import DropdownList from '@atlaskit/droplist';
 import AppSwitcher from '../../src';
 
 const AppSwitcherMenu = class extends Component {

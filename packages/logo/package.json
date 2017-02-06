@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/logo",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "A component to display Atlassian branded product logo lockups",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",

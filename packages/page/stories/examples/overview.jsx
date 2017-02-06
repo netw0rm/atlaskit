@@ -1,5 +1,5 @@
 import React from 'react';
-import Page, { Grid, GridColumn } from 'ak-page';
+import Page, { Grid, GridColumn } from '@atlaskit/page';
 
 export default (
   <Page>

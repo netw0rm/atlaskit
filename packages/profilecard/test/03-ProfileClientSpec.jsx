@@ -1,7 +1,7 @@
 
 import { modifyResponse } from '../src/api/profile-client';
 
-describe('ak-profilecard', () => {
+describe('Profilecard', () => {
   describe('profile-client', () => {
     describe('#modifyResponse', () => {
       it('should remove certain properties from the data object', () => {

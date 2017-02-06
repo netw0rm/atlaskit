@@ -14,7 +14,7 @@ export default class DropWithTriggerOpts extends Component {
         <DropdownMenu
           items={simpleDropdownItems}
           triggerType="button"
-          triggerButtonOptions={{
+          triggerButtonProps={{
             appearance: 'subtle',
             iconBefore: <MoreIcon label="More" />,
           }}

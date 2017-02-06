@@ -1,13 +1,20 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import Lorem from 'react-lorem-component';
+import Spinner from '@atlaskit/spinner';
+import { akColorN100 } from '@atlaskit/util-shared-styles';
 
 import Tabs from '../src';
 import { name } from '../package.json';
 
+function handleTabSelect(selectedTabIndex) {
+  action(`Switched to tab at index ${selectedTabIndex}`)();
+}
+
 storiesOf(name, module)
-  .add('@atlaskit/tabs', () => (
+  .add('standard tabs', () => (
     <Tabs
+      onSelect={handleTabSelect}
       tabs={[
         {
           content: <Lorem count="1" />,
@@ -29,8 +36,9 @@ storiesOf(name, module)
       ]}
     />
   ))
-  .add('@atlaskit/tabs with no default selection', () => (
+  .add('with no default selection', () => (
     <Tabs
+      onSelect={handleTabSelect}
       tabs={[
         {
           content: <Lorem count="1" />,
@@ -51,8 +59,9 @@ storiesOf(name, module)
       ]}
     />
   ))
-  .add('@atlaskit/tabs with many tabs', () => (
+  .add('with many tabs', () => (
     <Tabs
+      onSelect={handleTabSelect}
       tabs={[
         { label: 'Tab 1', content: 'Tab 1 content', defaultSelected: true },
         { label: 'Tab 2', content: 'Tab 2 content' },
@@ -67,11 +76,12 @@ storiesOf(name, module)
       ]}
     />
   ))
-  .add('@atlaskit/tabs with no child tabs', () => (
+  .add('with no child tabs', () => (
     <Tabs />
   ))
-  .add('@atlaskit/tabs with multiple selected tabs', () => (
+  .add('with multiple selected tabs', () => (
     <Tabs
+      onSelect={handleTabSelect}
       tabs={[
         {
           content: <div>
@@ -96,4 +106,68 @@ storiesOf(name, module)
         },
       ]}
     />
-));
+  ))
+  .add('with content overflow and flex box', () => (
+    <div
+      style={{
+        width: 400,
+        height: 200,
+        margin: '16px auto',
+        border: `1px dashed ${akColorN100}`,
+        display: 'flex',
+      }}
+    >
+      <Tabs
+        tabs={[
+          {
+            label: 'Constrained height scrolls',
+            defaultSelected: true,
+            content: (
+              <Lorem
+                style={{
+                  flex: '0 1 auto',
+                  overflowY: 'auto',
+                }}
+              />
+            ),
+          },
+          {
+            label: 'Unconstrained height',
+            content: <Lorem />,
+          },
+        ]}
+      />
+    </div>
+  ))
+  .add('with flex content that needs to fill', () => (
+    <div
+      style={{
+        width: 400,
+        height: 200,
+        margin: '16px auto',
+        border: `1px dashed ${akColorN100}`,
+        display: 'flex',
+      }}
+    >
+      <Tabs
+        tabs={[
+          {
+            label: 'Spinner should be centered',
+            defaultSelected: true,
+            content: (
+              <div
+                style={{
+                  alignItems: 'center',
+                  display: 'flex',
+                  flex: '1 0 auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <Spinner size="medium" />
+              </div>
+            ),
+          },
+        ]}
+      />
+    </div>
+  ));

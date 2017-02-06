@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { ErrorIcon } from 'ak-icon';
-import AkButton from 'ak-button';
+import { ErrorIcon } from '@atlaskit/icon';
+import AkButton from '@atlaskit/button';
 
 import styles from 'style!../styles/profilecard-resourced.less';
 

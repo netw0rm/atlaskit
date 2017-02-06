@@ -3,30 +3,30 @@
 
 
 "@atlaskit/eslint-config-base@*":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/eslint-config-base/-/eslint-config-base-1.0.0.tgz#9df5a47ee240b24dd742a0a6478c2c3b7e5b36ea"
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/eslint-config-base/-/eslint-config-base-2.0.0.tgz#f03ee2b927dcc500afeb6f0102b7a0ec1c079e2c"
   dependencies:
     babel-eslint "^7.1.1"
     babel-runtime "^6.11.6"
     eslint "^3.10.2"
     eslint-config-airbnb "^13.0.0"
+    eslint-plugin-compat "^1.0.1"
     eslint-plugin-import "^2.2.0"
     eslint-plugin-jsx-a11y "^2.2.3"
     eslint-plugin-prefer-object-spread "^1.1.0"
     eslint-plugin-react "^6.4.1"
 
 "@atlaskit/eslint-config-stories@*":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/eslint-config-stories/-/eslint-config-stories-1.0.0.tgz#e646ebf611f4e9cd185c13c5def9df97ac0a4fe0"
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/eslint-config-stories/-/eslint-config-stories-2.0.0.tgz#869d6095a78c34d069dffb06400e22ea6c4957c0"
   dependencies:
     "@atlaskit/eslint-config-base" "*"
     babel-runtime "^6.11.6"
     eslint "^3.7.1"
-    eslint-plugin-react "^6.4.1"
 
 "@atlaskit/eslint-config-tests@*":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/eslint-config-tests/-/eslint-config-tests-1.0.0.tgz#f31b241e0b1cdd40d0079777fb70478d7123b7d8"
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/eslint-config-tests/-/eslint-config-tests-2.0.0.tgz#fa2527f62d2e4cecd64e0854b1a7a19e3f8283e6"
   dependencies:
     "@atlaskit/eslint-config-base" "*"
     babel-runtime "^6.11.6"
@@ -478,13 +478,6 @@ array-uniq@^1.0.1:
 array-unique@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/array-unique/-/array-unique-0.2.1.tgz#a1d97ccafcbc2625cc70fadceb36a50c58b01a53"
-
-array.prototype.find@^2.0.1:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/array.prototype.find/-/array.prototype.find-2.0.3.tgz#08c3ec33e32ec4bab362a2958e686ae92f59271d"
-  dependencies:
-    define-properties "^1.1.2"
-    es-abstract "^1.7.0"
 
 arraybuffer.slice@0.0.6:
   version "0.0.6"
@@ -1654,8 +1647,8 @@ browserify-zlib@^0.1.4:
     pako "~0.2.0"
 
 browserslist@^1.4.0, browserslist@^1.6.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-1.7.0.tgz#738df5b2971354d198b2fbd5a22c560d2d896084"
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-1.7.1.tgz#cc9bd193979a2a4b09fdb3df6003fefe48ccefe1"
   dependencies:
     caniuse-db "^1.0.30000617"
     electron-to-chromium "^1.2.1"
@@ -1776,8 +1769,8 @@ caniuse-db@^1.0.30000539, caniuse-db@^1.0.30000578:
   resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000592.tgz#7b916023941df4063d9d946a1f9ad0d5edaf2bcd"
 
 caniuse-db@^1.0.30000617:
-  version "1.0.30000617"
-  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000617.tgz#9b7fd81f58a35526315c83e60cb5f076f0beb392"
+  version "1.0.30000618"
+  resolved "https://registry.yarnpkg.com/caniuse-db/-/caniuse-db-1.0.30000618.tgz#821258ff484f662864f28ffbcf849a6247acf1fa"
 
 capture-stack-trace@^1.0.0:
   version "1.0.0"
@@ -2470,7 +2463,7 @@ cycle@1.0.x:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/cycle/-/cycle-1.0.3.tgz#21e80b2be8580f98b468f379430662b046c34ad2"
 
-cz-conventional-changelog@1.2.0, cz-conventional-changelog@^1.2.0:
+cz-conventional-changelog@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/cz-conventional-changelog/-/cz-conventional-changelog-1.2.0.tgz#2bca04964c8919b23f3fd6a89ef5e6008b31b3f8"
   dependencies:
@@ -2480,19 +2473,6 @@ cz-conventional-changelog@1.2.0, cz-conventional-changelog@^1.2.0:
     pad-right "^0.2.2"
     right-pad "^1.0.1"
     word-wrap "^1.0.3"
-
-cz-conventional-changelog@jpnelson/cz-conventional-changelog#a9a5468d:
-  version "0.0.0-semantically-released.0"
-  resolved "https://codeload.github.com/jpnelson/cz-conventional-changelog/tar.gz/a9a5468d"
-  dependencies:
-    word-wrap "^1.0.3"
-
-cz-lerna-changelog@0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/cz-lerna-changelog/-/cz-lerna-changelog-0.3.1.tgz#116aed19f996771da8c44cb4346c3a25ccc42973"
-  dependencies:
-    cz-conventional-changelog jpnelson/cz-conventional-changelog#a9a5468d
-    shelljs "0.7.0"
 
 d@^0.1.1, d@~0.1.1:
   version "0.1.1"
@@ -2886,15 +2866,6 @@ es-abstract@^1.4.3, es-abstract@^1.5.0, es-abstract@^1.5.1, es-abstract@^1.6.1:
     is-callable "^1.1.3"
     is-regex "^1.0.3"
 
-es-abstract@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.7.0.tgz#dfade774e01bfcd97f96180298c449c8623fb94c"
-  dependencies:
-    es-to-primitive "^1.1.1"
-    function-bind "^1.1.0"
-    is-callable "^1.1.3"
-    is-regex "^1.0.3"
-
 es-to-primitive@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/es-to-primitive/-/es-to-primitive-1.1.1.tgz#45355248a88979034b6792e19bb81f2b7975dd0d"
@@ -3072,8 +3043,8 @@ eslint-plugin-jsx-a11y@^2.2.3:
     object-assign "^4.0.1"
 
 eslint-plugin-mocha@^4.6.0:
-  version "4.8.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-mocha/-/eslint-plugin-mocha-4.8.0.tgz#7627b35a61e5a720412da96eab06f0e03a1dcdb6"
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-mocha/-/eslint-plugin-mocha-4.7.0.tgz#69262362f4ec69ae5849908824f325b8d465e7f3"
   dependencies:
     ramda "^0.22.1"
 
@@ -3082,10 +3053,9 @@ eslint-plugin-prefer-object-spread@^1.1.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-prefer-object-spread/-/eslint-plugin-prefer-object-spread-1.1.0.tgz#e07ff58a096704deaff503ef260195a3159fa6c3"
 
 eslint-plugin-react@^6.4.1:
-  version "6.9.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-6.9.0.tgz#54c2e9906b76f9d10142030bdc34e9d6840a0bb2"
+  version "6.8.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-6.8.0.tgz#741ab5438a094532e5ce1bbb935d6832356f492d"
   dependencies:
-    array.prototype.find "^2.0.1"
     doctrine "^1.2.2"
     jsx-ast-utils "^1.3.4"
 
@@ -4585,8 +4555,8 @@ jstransform@^11.0.3:
     source-map "^0.4.2"
 
 jsx-ast-utils@^1.0.0, jsx-ast-utils@^1.3.4:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-1.3.5.tgz#9ba6297198d9f754594d62e59496ffb923778dd4"
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-1.3.4.tgz#0257ed1cc4b1e65b39d7d9940f9fb4f20f7ba0a9"
   dependencies:
     acorn-jsx "^3.0.1"
     object-assign "^4.1.0"
@@ -6897,14 +6867,6 @@ shallowequal@0.2.x, shallowequal@^0.2.2:
 shelljs@0.5.3:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.5.3.tgz#c54982b996c76ef0c1e6b59fbdc5825f5b713113"
-
-shelljs@0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.7.0.tgz#3f6f2e4965cec565f65ff3861d644f879281a576"
-  dependencies:
-    glob "^7.0.0"
-    interpret "^1.0.0"
-    rechoir "^0.6.2"
 
 shelljs@^0.7.4, shelljs@^0.7.5:
   version "0.7.5"

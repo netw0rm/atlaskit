@@ -1,6 +1,6 @@
 import React from 'react';
-import { AkContainerItem, AkContainerNavigation } from 'ak-navigation';
-import AtlassianIcon from 'ak-icon/glyph/atlassian';
+import { AkContainerItem, AkContainerNavigation } from '@atlaskit/navigation';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 
 export default (
   <AkContainerNavigation>

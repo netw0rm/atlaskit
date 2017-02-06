@@ -1,6 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react';
 
-import 'style!./styles.less';
+import styles from './styles.less';
 import TabPane from './internal/TabPane';
 import TabsNav from './internal/TabsNav';
 
@@ -9,9 +9,9 @@ export default class Tabs extends PureComponent {
     onKeyboardNav: PropTypes.func.isRequired,
     tabs: PropTypes.arrayOf(PropTypes.shape({
       content: PropTypes.node,
+      isSelected: PropTypes.bool,
       label: PropTypes.node.isRequired,
       onSelect: PropTypes.func.isRequired,
-      isSelected: PropTypes.bool,
     })),
   }
 
@@ -28,7 +28,7 @@ export default class Tabs extends PureComponent {
     ) : null;
 
     return (
-      <div>
+      <div className={styles.locals.akTabsRoot}>
         <TabsNav
           onKeyboardNav={this.props.onKeyboardNav}
           tabs={this.props.tabs}

@@ -94,6 +94,16 @@ storiesOf(name, module)
       <DefaultAvatar size="large" presence="offline" />
     </div>
   ))
+  .add('Square container avatar', () => (
+    <div className={avatarRowClass}>
+      <DefaultAvatar
+        presence="online"
+        type="container"
+        size="large"
+        src="TODO_IMG_URL_HERE"
+      />
+    </div>
+  ))
   .add('Avatars with custom presence', () => (
     <div>
       <div>As well as the presence attribute, avatars can also display custom content on their badge

@@ -6,6 +6,7 @@ import Presence from './Presence';
 import Image from './Image';
 
 import sizes from './internal/sizes';
+import types from './internal/types';
 import presences from './internal/presences';
 
 // we export the presence component to so that it can be consumed separately
@@ -18,6 +19,7 @@ export default class Avatar extends PureComponent {
     presence: PropTypes.oneOf(presences),
     size: PropTypes.oneOf(sizes),
     src: PropTypes.string,
+    type: PropTypes.oneOf(types),
     label: PropTypes.string,
     children: PropTypes.element,
   }
@@ -26,6 +28,7 @@ export default class Avatar extends PureComponent {
     presenceBorderColor: akColorPrimary3, // white
     presence: 'none',
     size: 'medium',
+    type: types[0],
   }
 
   constructor(props) {
@@ -64,6 +67,8 @@ export default class Avatar extends PureComponent {
     ]);
     const imgWrapperClasses = classNames({
       [styles.loaded]: !this.state.isLoading,
+      [styles.objectAvatar]: this.props.type === 'object',
+      [styles.containerAvatar]: this.props.type === 'container',
     }, styles.imgWrapper);
     const presenceWrapperClasses = classNames({
       // hide the presence if presence prop is set to none and no custom presence is passed in

@@ -43,8 +43,6 @@
     "chalk-cli": "^3.0.0",
     "commitizen": "^2.8.6",
     "css-loader": "^0.25.0",
-    "cz-conventional-changelog": "^1.2.0",
-    "cz-lerna-changelog": "0.3.1",
     "enzyme": "^2.6.0",
     "eslint": "^3.7.1",
     "eslint-friendly-formatter": "^2.0.6",
@@ -133,6 +131,9 @@
   },
   "scripts": {
     "build/docker/image": "build/bin/build.docker.image.sh",
+    "bootstrap": "lerna exec -- git clean -Xdf . && lerna bootstrap",
+    "bootstrap/single": "./build/bin/bootstrap.single.sh",
+    "bootstrap/single/with-deps": "./build/bin/bootstrap.single.with.deps.sh",
     "browserstack/tunnel/start": "./build/bin/browserstack.tunnel.start.sh",
     "browserstack/tunnel/stop": "./build/bin/browserstack.tunnel.stop.sh",
     "clean": "./node_modules/.bin/lerna exec -- git clean -Xdf . && rm -rf node_modules",

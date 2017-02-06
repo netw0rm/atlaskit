@@ -1,5 +1,5 @@
 import React from 'react';
-import FieldRadioGroup from 'ak-field-radio-group';
+import FieldRadioGroup from '@atlaskit/field-radio-group';
 
 const items = [
   { name: 'color', value: 'red', label: 'Red' },

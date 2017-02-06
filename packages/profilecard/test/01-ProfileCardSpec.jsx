@@ -5,7 +5,7 @@ import styles from '../src/styles/profilecard.less';
 import { AkProfilecard } from '../src';
 import presences from '../src/internal/presences';
 
-describe('ak-profilecard', () => {
+describe('Profilecard', () => {
   describe('AkProfilecard', () => {
     it('should be possible to create a component', () => {
       const card = shallow(<AkProfilecard />);

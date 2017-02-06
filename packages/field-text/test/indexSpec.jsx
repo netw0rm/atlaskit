@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Base from 'ak-field-base';
+import Base from '@atlaskit/field-base';
 
 import { FieldText } from '../src';
 
@@ -15,7 +15,6 @@ describe('ak-field-text', () => {
     [
       { disabled: true },
       { required: true },
-      { label: 'test' },
     ].forEach(prop =>
       it('FieldBase should have attribute defined', () => {
         const key = Object.keys(prop)[0];

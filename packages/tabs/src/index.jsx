@@ -1,4 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
+import 'style!./styles.less';
 import StatelessTabs from './Tabs';
 
 export { StatelessTabs };

@@ -39,13 +39,15 @@ export default class AkMultiSelect extends PureComponent {
   }
 
   selectItem = (item) => {
-    this.setState({ selectedItems: [item].concat(this.state.selectedItems) });
-    this.props.onSelectedChange({ items: this.state.selectedItems, action: 'select', changed: item });
+    const selectedItems = [item].concat(this.state.selectedItems);
+    this.setState({ selectedItems });
+    this.props.onSelectedChange({ items: selectedItems, action: 'select', changed: item });
   }
 
   removeItem = (item) => {
-    this.setState({ selectedItems: this.state.selectedItems.filter(i => i.value !== item.value) });
-    this.props.onSelectedChange({ items: this.state.selectedItems, action: 'remove', changed: item });
+    const selectedItems = this.state.selectedItems.filter(i => i.value !== item.value);
+    this.setState({ selectedItems });
+    this.props.onSelectedChange({ items: selectedItems, action: 'remove', changed: item });
   }
 
   selectedChange = (item) => {

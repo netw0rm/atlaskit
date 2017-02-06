@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/multi-select",
-  "version": "2.0.0",
+  "version": "2.2.1",
   "config": {
     "access": "public"
   },
@@ -21,7 +21,6 @@
     "@atlaskit/droplist": "^1.0.0",
     "@atlaskit/droplist-group": "^1.0.0",
     "@atlaskit/droplist-item": "^1.0.0",
-    "@atlaskit/button": "^1.0.0",
     "@atlaskit/icon": "^2.0.0",
     "@atlaskit/field-base": "^1.0.0",
     "@atlaskit/tag": "^1.0.0",
@@ -33,7 +32,8 @@
   },
   "devDependencies": {
     "@atlaskit/util-readme": "^1.0.0",
-    "@atlaskit/multi-select": "*"
+    "@atlaskit/multi-select": "*",
+    "@atlaskit/button": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

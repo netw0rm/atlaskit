@@ -29,5 +29,10 @@ describe('<ContainerNavigation />', () => {
       expect(mount(<ContainerNavigation width={containerClosedWidth} />).find('[data-__ak-navigation-container-closed]').length).to.equal(1);
       expect(mount(<ContainerNavigation width={200} />).find('[data-__ak-navigation-container-closed]').length).to.equal(0);
     });
+    it('collapses the container header when closed', () => {
+      const headerComponent = sinon.spy();
+      shallow(<ContainerNavigation width={0} headerComponent={headerComponent} />);
+      expect(headerComponent.calledWith({ isCollapsed: true })).to.equal(true);
+    });
   });
 });

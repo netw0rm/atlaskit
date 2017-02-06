@@ -14,9 +14,15 @@
 @ak-tabs-line-height: 25px;
 @ak-tabs-font-size: 14px;
 
+.ak-tabs-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
 
 .ak-tab-labels {
   display: flex;
+  flex: 0 0 auto;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -101,8 +107,10 @@
 
 // Tab content
 .ak-tab-pane {
-  display: block;
-  padding: @ak-tabs-margin (2 * @ak-tabs-margin);
+  display: flex;
+  min-height: 0; // needed for Firefox flex box
+  padding-left: 2 * @ak-tabs-margin;
+  flex-grow: 1;
 
   &:not(.selected) {
     display: none;

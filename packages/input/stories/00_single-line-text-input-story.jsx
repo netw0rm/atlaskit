@@ -23,9 +23,7 @@ const createSingleLineTextInput = props => (
   />
 );
 
-const storyName = `${name} single-line-text-input`;
-
-storiesOf(storyName, module)
+storiesOf(name, module)
   .add('with default font size', () => (
     <div style={containerStyle}>
       {createSingleLineTextInput()}

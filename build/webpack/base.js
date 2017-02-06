@@ -93,7 +93,7 @@ const standardConfig = {
         // Images (for storybook)
         //
         {
-          test: [/\.png$/, /\.svg$/],
+          test: [/\.png$/],
           loader: 'url-loader',
         },
         //

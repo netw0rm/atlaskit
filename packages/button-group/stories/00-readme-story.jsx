@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Readme, { Code, Props } from 'akutil-readme';
+import Readme, { Code, Props } from '@atlaskit/util-readme';
 
 import ButtonGroupOverviewExample from './examples/ButtonGroupOverview'; // eslint-disable-line import/no-duplicates
 import ButtonGroupOverviewExampleRaw from '!raw!./examples/ButtonGroupOverview'; // eslint-disable-line import/no-duplicates, import/first

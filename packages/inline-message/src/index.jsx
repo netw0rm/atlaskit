@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!./styles.less';
-import Button from 'ak-button';
-import InlineDialog from 'ak-inline-dialog';
+import Button from '@atlaskit/button';
+import InlineDialog from '@atlaskit/inline-dialog';
 import IconForType from './internal/IconForType';
 import { types, defaultType } from './internal/types';
 

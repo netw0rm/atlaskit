@@ -9,10 +9,10 @@ import AppSwitcherPropTypes from './internal/prop-types';
 export default class AppSwitcher extends PureComponent {
 
   static propTypes = {
-    recentContainers: AppSwitcherPropTypes.recentContainers,
-    linkedApplications: AppSwitcherPropTypes.linkedApplications,
-    suggestedApplication: AppSwitcherPropTypes.suggestedApplication,
-    i18n: AppSwitcherPropTypes.i18n,
+    recentContainers: AppSwitcherPropTypes.recentContainers.isRequired,
+    linkedApplications: AppSwitcherPropTypes.linkedApplications.isRequired,
+    suggestedApplication: AppSwitcherPropTypes.suggestedApplication.isRequired,
+    i18n: AppSwitcherPropTypes.i18n.isRequired,
   };
 
   render = () => (

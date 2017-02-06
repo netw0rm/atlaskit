@@ -15,7 +15,7 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^37.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6"
   },
   "peerDependencies": {
@@ -33,13 +33,13 @@
     "ui"
   ],
   "devDependencies": {
-    "ak-avatar": "^5.1.1",
-    "ak-breadcrumbs": "^3.0.2",
-    "ak-button": "^5.4.0",
-    "ak-button-group": "^3.0.10",
-    "ak-comment": "^5.0.1",
-    "ak-page": "*",
-    "akutil-readme": "^1.2.1",
+    "@atlaskit/avatar": "^1.0.0",
+    "@atlaskit/breadcrumbs": "^1.0.0",
+    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/button-group": "^1.0.0",
+    "@atlaskit/comment": "^1.0.0",
+    "@atlaskit/page": "*",
+    "@atlaskit/util-readme": "^1.0.0",
     "react-syntax-highlighter": "^4.0.1"
   }
 }

@@ -18,12 +18,13 @@ const browserStackBrowsers = {
     os_version: 'El Capitan',
   },
 
-  // Safari
-  safari_latest: {
-    browser: 'safari',
-    os: 'OS X',
-    os_version: 'El Capitan',
-  },
+  // We don't support El Capitan, and Browserstack does not support macOS Sierra that has Safari 10.
+  // // Safari
+  // safari_latest: {
+  //   browser: 'safari',
+  //   os: 'OS X',
+  //   os_version: 'El Capitan',
+  // },
 
   // Edge
   edge_latest: {

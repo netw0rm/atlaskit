@@ -1,6 +1,7 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import Editor from '../src';
+import { emojiService } from '../test/_emoji-service';
 import { resourceProvider } from './story-data';
 import { name } from '../package.json';
 
@@ -11,6 +12,7 @@ storiesOf(name, module)
       <Editor
         onSubmit={action('submit')}
         mentionResourceProvider={resourceProvider}
+        emojiService={emojiService}
         reverseMentionPicker={false}
       />
     );

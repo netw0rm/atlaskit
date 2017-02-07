@@ -21,7 +21,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "ak-editor-core": "^3.10.8",
+    "@atlaskit/editor-core": "^1.0.6",
     "classnames": "^2.2.5",
     "tslib": "^1.2.0"
   },
@@ -29,9 +29,10 @@
     "react": "^15.3.2"
   },
   "devDependencies": {
-    "ak-editor-hipchat": "^2.10.0",
-    "ak-mention": "*",
-    "akutil-readme": "^1.2.0",
+    "@atlaskit/emoji": "^1.0.0",
+    "@atlaskit/editor-hipchat": "^1.0.0",
+    "@atlaskit/mention": "1.0.0",
+    "@atlaskit/util-readme": "^1.0.0",
     "js-search": "^1.3.3"
   },
   "repository": {

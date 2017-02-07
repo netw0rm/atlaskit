@@ -1,5 +1,7 @@
 import {
   DocNodeType,
+  EmojiNodeType,
+  EmojiQueryMarkType,
   HardBreakNodeType,
   LinkMarkType,
   MentionNodeType,
@@ -7,12 +9,15 @@ import {
   ParagraphNodeType,
   Schema,
   Text,
-} from 'ak-editor-core';
+} from '@atlaskit/editor-core';
 
 export default new Schema({
   nodes: {
     // The top level node for a document.
     doc: { type: DocNodeType, content: 'paragraph' },
+
+    // An emoji.
+    emoji: { type: EmojiNodeType, group: 'inline' },
 
     // A paragraph node.
     paragraph: { type: ParagraphNodeType, content: 'inline<_>*' },
@@ -30,6 +35,13 @@ export default new Schema({
     mention: { type: MentionNodeType, group: 'inline' }
   },
   marks: {
+    // Represents a "emoji query". A emoji query is created by typing the : symbol. The text
+    // within a emoji query is used to search for a emoji.
+    //
+    // This mark is used internally, and is stripped from documents before they are exposed through
+    // the editor getter APIs.
+    emoji_query: EmojiQueryMarkType,
+
     // Represents a hyperlink to a URL.
     link: LinkMarkType,
 
@@ -45,12 +57,14 @@ export default new Schema({
 export interface HipChatSchema extends Schema {
   nodes: {
     doc: DocNodeType;
+    emoji: EmojiNodeType;
     paragraph: ParagraphNodeType;
     text: Text;
     hard_break: HardBreakNodeType;
     mention: MentionNodeType;
   };
   marks: {
+    emoji_query: EmojiQueryMarkType,
     link: LinkMarkType;
     mention_query: MentionQueryMarkType;
   };

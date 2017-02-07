@@ -1,7 +1,6 @@
 import {MediaItem, FileDetails} from './item';
 // import {Card} from '../components/card/card'; // MEDIA-FIX --> are we using this?
 
-
 export type CardEventHandler = (item?: MediaItem, event?: Event) => void;
 export type ListEventHandler = (item?: MediaItem, siblings?: Array<FileDetails>, event?: Event) => void;
 

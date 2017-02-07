@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Component} from 'react';
 
-import {Placeholder} from './placeholder'; // MEDIA-FIX
-import {Spinner} from './spinner'; // MEDIA-FIX
+import {Placeholder} from './placeholder';
+import {Spinner} from './spinner';
 import {MediaTypes} from '@atlaskit/media-domain';
 
 export interface CardContentProps {

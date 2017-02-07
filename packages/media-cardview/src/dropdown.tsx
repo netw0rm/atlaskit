@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import * as styles from 'style!./styles.less';
-import {Actions} from '@atlaskit/media-domain'; // MEDIA-FIX
+import {Actions} from '@atlaskit/media-domain';
 
 import * as DropdownItem from '@atlaskit/droplist-item';
 import * as DropdownGroup from '@atlaskit/droplist-group';

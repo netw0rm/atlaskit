@@ -13,6 +13,8 @@
     "target": "es5",
     "types": [
       "chai",
+      "whatwg-fetch",
+      "whatwg-streams",
       "mocha",
       "react",
       "sinon",

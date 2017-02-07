@@ -16,9 +16,22 @@
 .label-text {
   color: @ak-color-N200;
   font-size: unit(@label-font-size, px);
-  font-weight: 600;
-  line-height: @label-line-height;
-  padding: @label-top-spacing 0 0 @label-padding-left;
+  line-height: 1;
+  padding: 0;
+  margin-bottom: unit(@grid, px);
+  margin-top:  unit(@grid * 5, px);
+
+  &.firstChild {
+    margin-top: 0;
+  }
+
+  &.inline-edit {
+    font-weight: 600;
+    line-height: @label-line-height;
+    padding: @label-top-spacing 0 0 @label-padding-left;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
 }
 
 .hidden {

@@ -250,15 +250,16 @@ describe('MentionResource', () => {
   });
 
   describe('#recordMentionSelection', () => {
-    it.skip('should call record endpoint', (done) => {
-      const resource = new MentionResource(apiConfig);
-
-      resource.recordMentionSelection({
-        id: 666,
-      }).then(() => {
-        expect(fetchMock.called('record')).to.equal(true);
-        done();
-      });
-    });
+    // disable the test to check whether it breaks the master
+    // it('should call record endpoint', (done) => {
+    //   const resource = new MentionResource(apiConfig);
+    //
+    //   resource.recordMentionSelection({
+    //     id: 666,
+    //   }).then(() => {
+    //     expect(fetchMock.called('record')).to.equal(true);
+    //     done();
+    //   });
+    // });
   });
 });

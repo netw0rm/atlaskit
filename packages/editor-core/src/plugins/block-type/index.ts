@@ -53,6 +53,7 @@ export class BlockTypeState {
   private pm: PM;
   private changeHandlers: BlockTypeStateSubscriber[] = [];
   private availableContexts: Context[] = [];
+  private cursorMovable?: boolean = true;
 
   // public state
   currentBlockType: BlockType = NORMAL_TEXT;
@@ -66,6 +67,10 @@ export class BlockTypeState {
       pm.on.selectionChange,
       pm.on.change,
     ], () => this.update());
+
+    pm.updateScheduler([
+      pm.on.selectionChange
+    ], () => this.onSelectionChange());
 
     this.addBasicKeymap();
 
@@ -234,6 +239,24 @@ export class BlockTypeState {
     }
   }
 
+  private createNewParagraphAbove() {
+    this.cursorMovable = false;
+    setTimeout(() => this.createParagraphNear(0), 105);
+    return false;
+  }
+
+  private createParagraphNear(pos: number): void {
+    const paragraph = this.pm.schema.nodes.paragraph;
+    if (paragraph && !this.cursorMovable) {
+      const next = new TextSelection(this.pm.selection.$from);
+      this.pm.tr.insert(pos, paragraph.create()).setSelection(next).applyAndScroll();
+    }
+  }
+
+  private onSelectionChange() {
+    this.cursorMovable = true;
+  }
+
   private updateBlockTypeKeymap(context: Context) {
     const { pm } = this;
     if (this.context) {
@@ -268,6 +291,7 @@ export class BlockTypeState {
     const baseKeymap = this.pm.input.keymaps.filter(k => (k as any).priority === -100)[0];
     this.pm.addKeymap(new Keymap({
       [keymaps.insertNewLine.common!]: trackAndInvoke('atlassian.editor.newline.keyboard', () => this.insertNewLine()),
+      [keymaps.moveUp.common!]: trackAndInvoke('atlassian.editor.moveup.keyboard', () => this.createNewParagraphAbove()),
       [keymaps.shiftBackspace.common!]: (baseKeymap as any).map.lookup('Backspace')
     }));
   }

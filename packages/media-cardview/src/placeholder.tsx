@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Component = React.Component;
+import {Component} from 'react';
 import styles from 'style!./styles.less';
 import {MediaTypes} from '@atlaskit/media-domain';
 

@@ -7,14 +7,14 @@ import * as DropdownItem from '@atlaskit/droplist-item';
 import * as DropdownGroup from '@atlaskit/droplist-group';
 
 export interface DropdownProps {
-  items: Array<Actions.CardAction>;
+  items?: Array<Actions.CardAction>;
 }
 
 export class Dropdown extends Component<DropdownProps, {}> {
   render() {
     const Group: any = (DropdownGroup as any).default;
 
-    const items = this.props.items.map(item => this._itemElement(item.label, item.handler));
+    const items = this.props.items ? this.props.items.map(item => this._itemElement(item.label, item.handler)) : null;
 
     return (
       <div className={styles['dropdown']}>
@@ -25,7 +25,7 @@ export class Dropdown extends Component<DropdownProps, {}> {
     );
   }
 
-  private _itemElement(name: string, handler: Actions.CardEventHandler) {
+  private _itemElement(name: string | undefined, handler: Actions.CardEventHandler) {
     const Item: any = (DropdownItem as any).default;
 
     return (

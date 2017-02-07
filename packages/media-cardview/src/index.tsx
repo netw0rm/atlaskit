@@ -13,7 +13,7 @@ export interface CardViewProps {
   width?: number;
 
   mediaName?: string;
-  mediaType?: MediaTypes.MediaType;
+  mediaType: MediaTypes.MediaType;
   mediaSize?: number;
 
   dataURI?: string;
@@ -67,6 +67,6 @@ export class CardView extends Component<CardViewProps, {}> {
   }
 
   onClick(event: MouseEvent<HTMLDivElement>) {
-    this.props.onClick(event.nativeEvent);
+    this.props.onClick && this.props.onClick(event.nativeEvent);
   }
 }

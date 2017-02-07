@@ -1,9 +1,9 @@
 import * as React from 'react';
-import Component = React.Component;
+import {Component} from 'react';
 import styles from 'style!./styles.less';
 
 export interface ProgressBarProps {
-  progress: number;
+  progress?: number;
 }
 
 export class ProgressBar extends Component<ProgressBarProps, {}> {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Component = React.Component;
+import {Component} from 'react';
 
 import {Placeholder} from './placeholder'; // MEDIA-FIX
 import {Spinner} from './spinner'; // MEDIA-FIX
@@ -7,8 +7,8 @@ import {MediaTypes} from '@atlaskit/media-domain';
 
 export interface CardContentProps {
   mediaType: MediaTypes.MediaType;
-  dataURI: string;
-  loading: boolean;
+  dataURI?: string;
+  loading?: boolean;
 }
 
 export class CardContent extends Component<CardContentProps, {}> {

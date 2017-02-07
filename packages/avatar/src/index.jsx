@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
 import styles from 'style!./styles.less';
-import foo from 'style!./foo.less';
 import React, { PureComponent, PropTypes } from 'react';
 import Presence from './Presence';
 import Image from './Image';

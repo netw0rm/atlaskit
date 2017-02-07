@@ -1,17 +1,16 @@
 import * as React from 'react';
-import {MouseEvent} from 'react';
-import Component = React.Component;
+import {Component, MouseEvent} from 'react';
 import * as bytes from 'bytes';
 import styles from 'style!./styles.less';
 import {ProgressBar} from './progressBar';
 import {MediaTypes} from '@atlaskit/media-domain';
 import {Dropdown} from './dropdown';
 import {Actions} from '@atlaskit/media-domain';
-import {FileIcon} from './fileIcon';// MEDIA-FIX
+import {FileIcon} from './foo/fileIcon';// MEDIA-FIX
 
 export interface CardOverlayProps {
   mediaType: MediaTypes.MediaType;
-  mediaName: string;
+  mediaName?: string;
   mediaSize?: number;
 
   selectable?: boolean;
@@ -27,8 +26,6 @@ export interface CardOverlayState {
 }
 
 export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
-  private _clickDetector: (e: Event) => void;
-
   constructor(props: CardOverlayProps) {
     super(props);
 
@@ -36,6 +33,9 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       isMenuExpanded: false
     };
   }
+
+  private _clickDetector: (e: Event) => void;
+
 
   static get defaultProps() {
     const menuActions: Array<Actions.CardAction> = [];
@@ -111,7 +111,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   moreBtn() {
-    const actions = this.props.menuActions;
+    const actions = this.props.menuActions || [];
     if (!actions.length) {
       return null;
     }

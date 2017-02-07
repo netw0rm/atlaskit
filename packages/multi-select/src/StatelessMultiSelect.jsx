@@ -131,7 +131,6 @@ export default class StatelessMultiSelect extends PureComponent {
         {...item}
         key={itemIndex}
         onActivate={(attrs) => {
-          console.log('attar,', attrs);
           this.props.onOpenChange({ isOpen: false, event: attrs.event });
           this.props.onSelected(item);
         }}

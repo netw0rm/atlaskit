@@ -1,6 +1,6 @@
 import React from 'react';
-import Comment, { CommentAuthor, CommentTime, CommentAction } from 'ak-comment';
-import Avatar from 'ak-avatar';
+import Comment, { CommentAuthor, CommentTime, CommentAction } from '@atlaskit/comment';
+import Avatar from '@atlaskit/avatar';
 
 const clickHandler = e => console.log(`${e.target.textContent} was clicked.`);
 

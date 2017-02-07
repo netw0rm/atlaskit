@@ -6,6 +6,8 @@
 
 ```sh
 npm install @NAME@
+# or
+yarn add @NAME@
 ```
 
 ## Using the resourced component

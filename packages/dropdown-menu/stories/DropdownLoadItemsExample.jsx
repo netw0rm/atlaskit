@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Button from 'ak-button';
+import Button from '@atlaskit/button';
 
 import DropdownMenu from '../src';
 import { simpleDropdownItems } from './DropdownsData';

@@ -131,7 +131,8 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
         }
       });
     } catch (e) {
-      return this.skip('This environment does not allow mocking paste events - ' + e);
+      // This environment does not allow mocking paste events
+      return this.skip();
     }
 
     contentArea.dispatchEvent(event);
@@ -247,7 +248,8 @@ describe('ak-editor-bitbucket/pasting', () => {
     };
 
     if (!dispatchPasteEvent(pm, content)) {
-      return this.skip('This environment does not support artificial paste events');
+      // This environment does not allow mocking paste events
+      return this.skip();
     }
 
     expect(editor.doc).to.deep.equal(doc(p('Nice! :+1:')));
@@ -259,7 +261,8 @@ describe('ak-editor-bitbucket/pasting', () => {
     };
 
     if (!dispatchPasteEvent(pm, content)) {
-      return this.skip('This environment does not support artificial paste events');
+      // This environment does not allow mocking paste events
+      return this.skip();
     }
 
     expect(editor.doc).to.deep.equal(doc(p(mention({ id: 'mention', displayName: '@Mention' }), ' some mention.')));

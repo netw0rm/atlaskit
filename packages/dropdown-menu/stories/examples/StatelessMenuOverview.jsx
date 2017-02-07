@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StatelessDropdownMenu } from 'ak-dropdown-menu';
+import { StatelessDropdownMenu } from '@atlaskit/dropdown-menu';
 
 const simpleDropdownItems = [
   {

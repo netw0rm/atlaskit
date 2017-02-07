@@ -15,6 +15,8 @@ Interact with a [live demo of the @NAME@ component with code examples](https://a
 
 ```sh
 npm install @NAME@
+# or
+yarn add @NAME@
 ```
 
 ## Using the component

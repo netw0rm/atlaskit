@@ -225,32 +225,40 @@ export class BlockTypeState {
 
   private createNewParagraphAbove() {
     this.cursorMovable = false;
-    setTimeout(() => this.createParagraphNear(1), 105);
+    const append = false;
+
+    setTimeout(() => this.createParagraphNear(append), 105);
     return false;
   }
 
   private createNewParagraphBelow() {
     this.cursorMovable = false;
-    setTimeout(() => this.createParagraphNear(), 105);
+    const append = true;
+    setTimeout(() => this.createParagraphNear(append), 105);
     return false;
   }
 
-  private createParagraphNear(pos?: number): void {
+  private createParagraphNear(append: boolean = true): void {
     const paragraph = this.pm.schema.nodes.paragraph;
     if (!paragraph) {
       return;
     }
 
     if (!this.cursorMovable) {
-      if (pos) {
+      const {$from, $to} = this.pm.selection;
+      if (!append) {
+        let pos = $from.start($from.depth);
+        pos = $from.depth > 1 ? pos - 1 : pos;
         const next = new TextSelection(this.pm.doc.resolve(pos));
 
         this.pm.tr.insert(pos - 1, paragraph.create()).setSelection(next).applyAndScroll();
-        return;
+      } else {
+        let pos = $to.end($to.depth);
+        pos = $to.depth > 1 ? pos + 1 : pos;
+        const next = new TextSelection(this.pm.doc.resolve(pos + 1));
+
+        this.pm.tr.setSelection(next).insert(pos + 1, paragraph.create()).applyAndScroll();
       }
-      pos = this.pm.selection.$to.pos;
-      const next = new TextSelection(this.pm.doc.resolve(pos + 1));
-      this.pm.tr.setSelection(next).insert(pos + 1, paragraph.create()).applyAndScroll();
     }
   }
 

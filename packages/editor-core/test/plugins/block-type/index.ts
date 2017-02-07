@@ -412,22 +412,28 @@ describe('block-type', () => {
 
     context('when hits up', () => {
       context('when cursor not movable', () => {
-        it('creates new paragraph above', (done) => {
-          const { pm } = editor(doc(code_block()('{<>}text')));
-          pm.input.dispatchKey('Up');
-          setTimeout(function () {
-            expect(pm.doc).to.deep.equal(doc(p(''), code_block()('text')));
-            done();
-          }, 110);
-        });
+        context('on non nested content', () => {
+          it('creates new paragraph above', (done) => {
+            const { pm } = editor(doc(code_block()('{<>}text')));
+            pm.input.dispatchKey('Up');
+            setTimeout(function () {
+              expect(pm.doc).to.deep.equal(doc(p(''), code_block()('text')));
+              expect(pm.selection.$from.pos).to.eq(1);
+              done();
+            }, 110);
+          });
 
-        it('moves cursor to the top', (done) => {
-          const { pm } = editor(doc(blockquote(p('{<>}text'))));
-          pm.input.dispatchKey('Up');
-          setTimeout(function () {
-            expect(pm.selection.$from.pos).to.eq(1);
-            done();
-          }, 110);
+          context('creates new paragraph above', () => {
+            it('creates new paragraph above', (done) => {
+              const { pm } = editor(doc(blockquote(blockquote(p('{<>}text')), p('text'))));
+              pm.input.dispatchKey('Up');
+              setTimeout(function () {
+                expect(pm.doc).to.deep.equal(doc(blockquote(p(''), blockquote(p('text')), p('text'))));
+                expect(pm.selection.$from.pos).to.eq(2);
+                done();
+              }, 110);
+            });
+          });
         });
       });
 
@@ -448,28 +454,53 @@ describe('block-type', () => {
 
     context('when hits down', () => {
       context('when cursor not movable', () => {
-        it('creates new paragraph below', (done) => {
-          const { pm } = editor(doc(code_block()('text{<>}')));
-          pm.input.dispatchKey('Down');
-          setTimeout(function () {
-            expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
-            done();
-          }, 110);
+        context('on non nested content', () => {
+          it('creates new paragraph below', (done) => {
+            const { pm } = editor(doc(code_block()('text{<>}')));
+            pm.input.dispatchKey('Down');
+            setTimeout(function () {
+              expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
+              expect(pm.selection.$from.pos).to.eq(7);
+              done();
+            }, 110);
+          });
         });
 
-        it('moves cursor to the bottom', (done) => {
-          const { pm } = editor(
-            doc(
-              blockquote(
-                p('text', mention({ id: 'foo1', displayName: '@bar1' }), '{<>}'),
+        context('on nested content', () => {
+          it('creates new paragraph below', (done) => {
+            const { pm } = editor(
+              doc(
+                blockquote(
+                  p(
+                    'text',
+                    mention({ id: 'foo1', displayName: '@bar1' })
+                  ),
+                  blockquote(
+                    p('text{<>}')
+                  )
+                )
               )
-            )
-          );
-          pm.input.dispatchKey('Down');
-          setTimeout(function () {
-            expect(pm.selection.$from.pos).to.eq(9);
-            done();
-          }, 110);
+            );
+            pm.input.dispatchKey('Down');
+            setTimeout(function () {
+              expect(pm.doc).to.deep.equal(
+                doc(
+                  blockquote(
+                    p(
+                      'text',
+                      mention({ id: 'foo1', displayName: '@bar1' })
+                    ),
+                    blockquote(
+                      p('text')
+                    ),
+                    p('')
+                  )
+                )
+              );
+              expect(pm.selection.$from.pos).to.eq(17);
+              done();
+            }, 110);
+          });
         });
       });
 

@@ -45,7 +45,7 @@ export default class AKInlineDialog extends PureComponent {
         autoPosition={props.shouldFlip}
         offset={dialogOffset}
       >
-        {props.children}
+        <div>{props.children}</div>
       </Layer>);
   }
 }

@@ -257,6 +257,25 @@ This configuration would compile the package using only the listed ES2015 declar
 
 It is the responsibility of each package to document their environment requirements (e.g. presence of `window.Promise`).
 
+### Using `@types/` declarations
+
+AtlasKit supports consumers using the `"strictNullChecks": true` compiler option, by itself using that option. A side effect of this is that global untyped packages are not implicitly `any`, and must instead have types provided.
+
+This means that if you're using a package that doesn't ship with types, there are two options:
+
+* Install an appropriate `@types/package-name` package from NPM (in Atlaskit's root `package.json`), or
+* Write a `build/types/package-name.d.ts` file that contains the types
+* Raise an issue / pull request to the upstream library to include types
+
+In both of these cases, `build/types/tsconfig.base.json` needs to be updated.
+
+**Pitfalls of `@types/` declarations:**
+
+`@types/package-name` declarations are ambient and contain `declare module "package-name" {}` statements. This style of declaration must be executed once **any only once**. Unfortunately this requirement can be violated when multiple packages declare a `@types/` package as a `dependencies`, since NPM can choose to install multiple instances of a package in its nested `node_modules/` hierarchy. There are two solutions here:
+
+* Add the `@types/package-name` dependency to Atlaskit's root `package.json`. In components either don't declare the `@types/package-name` dependency, or use `peerDependency` instead of `dependency`.
+* Encourage library authors to bundle TypeScript declarations in their own package, to avoid the need for an `@types/package-name` package entirely.
+
 ## Commit changes
 To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Running commitizen is as simple as running `yarn run commit` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.
 

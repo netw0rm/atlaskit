@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import styles from 'style!./styles.less';
+import * as styles from 'style!./styles.less';
 
 export const spinnerSize = {
   HEIGHT: 60,

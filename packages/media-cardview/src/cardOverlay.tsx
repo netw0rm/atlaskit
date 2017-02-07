@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import * as bytes from 'bytes';
-import styles from 'style!./styles.less';
+import * as styles from 'style!./styles.less';
 import {ProgressBar} from './progressBar';
 import {MediaTypes} from '@atlaskit/media-domain';
 import {Dropdown} from './dropdown';
 import {Actions} from '@atlaskit/media-domain';
-import {FileIcon} from './foo/fileIcon';// MEDIA-FIX
+import {FileIcon} from './fileIcon';// MEDIA-FIX
 
 export interface CardOverlayProps {
   mediaType: MediaTypes.MediaType;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styles from 'style!./styles.less';
+import * as styles from 'style!./styles.less';
 import {Component, MouseEvent} from 'react';
 import {Actions} from '@atlaskit/media-domain';
 

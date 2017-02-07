@@ -20,10 +20,11 @@ const icons = {
 };
 
 export interface Props {
-  pluginState: PanelState;
+  pluginState: PanelState | undefined;
 }
 
 export interface State {
+  showToolbar?: boolean;
   target?: HTMLElement | undefined;
   activePanel?: PanelNode | undefined;
 }
@@ -36,17 +37,19 @@ export default class PanelEdit extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.props.pluginState.subscribe(this.handlePluginStateChange);
+    const { pluginState } = this.props;
+    pluginState && pluginState.subscribe(this.handlePluginStateChange);
   }
 
   componentWillUnmount() {
-    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
+    const { pluginState } = this.props;
+    pluginState && pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
   render() {
-    const { target, activePanel } = this.state;
+    const { target, activePanel, showToolbar } = this.state;
     const activePanelType =  activePanel && activePanel.attrs['panelType'];
-    if (target) {
+    if (target && showToolbar) {
       return (
         <FloatingToolbar target={target} align="left">
           {availablePanelType.map((panelType, index) => {
@@ -76,17 +79,21 @@ export default class PanelEdit extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: PanelState) => {
+    const { target } = this.state;
     this.setState({
+      showToolbar: pluginState.element && target !== pluginState.element,
       target: pluginState.element,
       activePanel: pluginState.activePanel,
     });
   }
 
   private handleSelectPanelType = (panelType: PanelType, event) => {
-    this.props.pluginState.changePanelType(panelType);
+    const { pluginState } = this.props;
+    pluginState && pluginState.changePanelType(panelType);
   }
 
   private handleRemovePanelType = () => {
-    this.props.pluginState.removePanelType();
+    const { pluginState } = this.props;
+    pluginState && pluginState.removePanelType();
   }
 }

@@ -8,27 +8,19 @@ export default class RecentContainers extends PureComponent {
     i18n: AppSwitcherPropTypes.i18n,
   };
 
-  constructor() {
-    super();
-
-    this.item = this.item.bind(this);
-  }
-
-  item(container) {
-    return (
-      <a href={container.url} key={container.url}>
-        <MenuItemContainer>
-          <MenuItemIcon>
-            <img src={container.iconUrl} alt={container.name} />
-          </MenuItemIcon>
-          <MenuItemTwoLineContent>
-            <div>{container.name}</div>
-            <div>{this.props.i18n[`container.${container.type}`]}</div>
-          </MenuItemTwoLineContent>
-        </MenuItemContainer>
-      </a>
-    );
-  }
+  item = container => (
+    <a href={container.url} key={container.url}>
+      <MenuItemContainer>
+        <MenuItemIcon>
+          <img src={container.iconUrl} alt={container.name} />
+        </MenuItemIcon>
+        <MenuItemTwoLineContent>
+          <div>{container.name}</div>
+          <div>{this.props.i18n[`container.${container.type}`]}</div>
+        </MenuItemTwoLineContent>
+      </MenuItemContainer>
+    </a>
+  );
 
   render() {
     if (this.props.containers.length === 0) {

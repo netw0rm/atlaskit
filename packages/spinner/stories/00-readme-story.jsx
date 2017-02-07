@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Readme, { Code, Props } from 'akutil-readme';
+import Readme, { Code, Props } from '@atlaskit/util-readme';
 
 import { name } from '../package.json';
 import Spinner from '../src';

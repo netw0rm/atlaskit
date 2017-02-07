@@ -20,6 +20,8 @@ fi
 if [[ "$BITBUCKET_COMMIT" != "" ]]; then
   # piping to cat is used to put stdout in a non-TTY mode (hides the progress bar)
   $LERNA_LOC bootstrap | cat
+  # we test PIPESTATUS here to know if they previous command failed
+  test ${PIPESTATUS[0]} -eq 0
 else
   # Need to bootstrap @atlaskit/util-cz-atlaskit-changelog so that we can run commitizen (hide the output as it's pretty noisy)
   $CHALK --no-stdin -t "{blue Bootstrapping @ataskit/util-cz-lerna-changelog for commitizen}"

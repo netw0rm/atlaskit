@@ -1,5 +1,5 @@
 import React from 'react';
-import { CommentAuthor } from 'ak-comment';
+import { CommentAuthor } from '@atlaskit/comment';
 
 const mouseOverHandler = e => console.log(`${e.target.textContent} was moused over.`);
 

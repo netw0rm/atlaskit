@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Droplist from 'ak-droplist';
-import Button from 'ak-button';
+import Droplist from '@atlaskit/droplist';
+import Button from '@atlaskit/button';
 import MoreIcon from 'ak-icon/glyph/moreoptions';
 import ExpandIcon from 'ak-icon/glyph/expand';
 

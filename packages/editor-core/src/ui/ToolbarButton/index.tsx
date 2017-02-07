@@ -10,16 +10,21 @@ export interface Props {
   title?: string;
   target?: string;
   theme?: 'dark';
+  wrapperClassName?: string;
   iconBefore?: ReactElement<any>;
   spacing?: 'default' | 'compact' | 'none';
   onClick?: () => void;
 }
 
 export default class ToolbarButton extends PureComponent<Props, {}> {
+  static defaultProps = {
+    wrapperClassName: '',
+  };
+
   render() {
     return (
       <span
-        className={styles.button}
+        className={`${styles.button} ${this.props.wrapperClassName}`}
         onClick={this.handleClick}
         onMouseDown={this.handleMouseDown}
         title={this.props.title}

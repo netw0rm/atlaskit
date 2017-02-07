@@ -250,7 +250,7 @@ describe('MentionResource', () => {
   });
 
   describe('#recordMentionSelection', () => {
-    it('should call record endpoint', (done) => {
+    it.skip('should call record endpoint', (done) => {
       const resource = new MentionResource(apiConfig);
 
       resource.recordMentionSelection({

@@ -13,7 +13,7 @@ export interface CardViewProps {
   width?: number;
 
   mediaName?: string;
-  mediaType: MediaTypes.MediaType;
+  mediaType?: MediaTypes.MediaType;
   mediaSize?: number;
 
   dataURI?: string;
@@ -25,6 +25,8 @@ export interface CardViewProps {
 
   menuActions?: Array<Actions.CardAction>;
   onClick?: (event: Event) => void;
+
+  error?: string;
 }
 
 export const DEFAULT_CARD_DIMENSIONS = {

@@ -2,7 +2,7 @@
 
 This component provides an ADG3 app switcher.
 
-![Example @NAME@](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/akapp-switcher/docs/example.png)
+![Example @NAME@](https://i.imgur.com/zjOGkM7.png)
 
 ## Try it out
 

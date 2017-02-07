@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React, { PropTypes } from 'react';
-import Avatar from 'ak-avatar';
-import Editor from 'ak-editor-bitbucket';
+import Avatar from '@atlaskit/avatar';
+import Editor from '@atlaskit/editor-bitbucket';
 
 import storyStyles from 'style!./stories.less';
 import { CommentLayout } from '../src';

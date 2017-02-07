@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import { Code, Chrome, Description, Heading, Props } from 'akutil-readme';
+import { Code, Chrome, Description, Heading, Props } from '@atlaskit/util-readme';
 import { name } from '../../package.json';
 
 export default class CommentReadme extends PureComponent {

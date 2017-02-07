@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import Button from 'ak-button';
+import Button from '@atlaskit/button';
 import PaddedDiv from './components/PaddedDiv';
 import Banner from '../src';
 

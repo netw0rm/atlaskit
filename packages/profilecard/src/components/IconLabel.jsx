@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
-import { EditorLocationIcon, EditorRecentIcon, EditorMentionIcon } from 'ak-icon';
-import { Presence } from 'ak-avatar';
+import { EditorLocationIcon, EditorRecentIcon, EditorMentionIcon } from '@atlaskit/icon';
+import { Presence } from '@atlaskit/avatar';
 
 import styles from 'style!../styles/profilecard.less';
 

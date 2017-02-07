@@ -1,6 +1,6 @@
-import Layer from 'ak-layer';
+import Layer from '@atlaskit/layer';
 import React, { PureComponent, PropTypes } from 'react';
-import { akGridSize } from 'akutil-shared-styles';
+import { akGridSize } from '@atlaskit/util-shared-styles';
 
 import styles from 'style!./styles.less';
 

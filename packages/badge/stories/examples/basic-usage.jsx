@@ -1,5 +1,5 @@
 import React from 'react';
-import Badge from 'ak-badge';
+import Badge from '@atlaskit/badge';
 
 export default (
   <div>

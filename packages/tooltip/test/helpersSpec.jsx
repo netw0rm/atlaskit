@@ -1,7 +1,7 @@
 
 import { positionToPopperPosition } from '../src/internal/helpers';
 
-describe('ak-tooltip helpers', () => {
+describe('Tooltip helpers', () => {
   describe('positionToPopperPosition', () => {
     const testCases = [
       { position: 'top', expected: 'top center' },

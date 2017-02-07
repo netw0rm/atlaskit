@@ -6,8 +6,14 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-const PageContent = styled.div`
+const NavigationAndContent = styled.div`
   min-height: 100%;
+  width: 100%;
+  display: flex;
+`;
+
+const PageContent = styled.div`
+  height: 100%;
   width: 100%;
 `;
 
@@ -22,10 +28,12 @@ export default class Page extends PureComponent {
   render = () => (
     <Wrapper>
       <ThemeProvider theme={{}}>
-        <PageContent>
+        <NavigationAndContent>
           {this.props.navigation}
-          {this.props.children}
-        </PageContent>
+          <PageContent>
+            {this.props.children}
+          </PageContent>
+        </NavigationAndContent>
       </ThemeProvider>
     </Wrapper>
   );

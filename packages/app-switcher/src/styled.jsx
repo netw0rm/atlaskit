@@ -87,11 +87,15 @@ export const MenuLinkItem = styled.span`
 
 export const SuggestedApplicationContainer = styled(MenuItemContainer)`
   display: block;
-  padding: 10px 0 6px 24px;
+  padding: 0 14px 6px 24px;
 `;
 
 export const SuggestedApplicationTagline = styled.div`
   font-size: 12px;
   color: ${akColorN90};
-  white-space: normal;
+  white-space: normal !important;
+`;
+
+export const LogoContainer = styled.div`
+  color: ${akColorB400};
 `;

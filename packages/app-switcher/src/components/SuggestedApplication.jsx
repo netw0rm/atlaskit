@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
+import { ConfluenceLogo, JiraLogo } from '@atlaskit/logo';
+
 import {
   SuggestedApplicationContainer,
   SuggestedApplicationTagline,
   MenuHeader,
   MenuItemContainer,
   MenuLinkItem,
+  LogoContainer,
 } from '../styled';
-import jiraLogo from '../img/jira.png';
-import confluenceLogo from '../img/confluence.png';
 import AppSwitcherPropTypes from '../internal/prop-types';
 
 export default class SuggestedApplication extends PureComponent {
@@ -18,8 +19,8 @@ export default class SuggestedApplication extends PureComponent {
 
   render() {
     const logos = {
-      jira: jiraLogo,
-      confluence: confluenceLogo,
+      jira: <JiraLogo />,
+      confluence: <ConfluenceLogo />,
     };
 
     if (!this.props.show) {
@@ -31,7 +32,7 @@ export default class SuggestedApplication extends PureComponent {
         <MenuHeader>{this.props.i18n['try.other.apps']}</MenuHeader>
         <a href={this.props.url}>
           <SuggestedApplicationContainer>
-            <img src={logos[this.props.application]} alt={this.props.application} height="20px" />
+            <LogoContainer>{logos[this.props.application]}</LogoContainer>
             <SuggestedApplicationTagline>
               {this.props.i18n[`suggested.application.description.${this.props.application}`]}
             </SuggestedApplicationTagline>

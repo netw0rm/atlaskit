@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
 
-import Badge from 'ak-badge';
+import Badge from '@atlaskit/badge';
 
 export default class OnValueUpdatedDemo extends PureComponent {
   constructor() {

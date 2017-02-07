@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Button from 'ak-button';
+import Button from '@atlaskit/button';
 import WarningIcon from 'ak-icon/glyph/warning';
 import {
   akColorB400,
@@ -8,7 +8,7 @@ import {
   akColorP300,
   akColorR300,
   akColorY300,
-} from 'akutil-shared-styles';
+} from '@atlaskit/util-shared-styles';
 import SuccessIcon from 'ak-icon/glyph/success';
 import styles from 'style!../src/styles.less';
 import InlineMessage from '../src';

@@ -1,6 +1,6 @@
 import { style } from 'typestyle';
 
-import { akBorderRadius } from '~@atlaskit/util-shared-styles';
+import { akBorderRadius } from '@atlaskit/util-shared-styles';
 
 export const mentionListError = style({
   backgroundColor: '#344563',

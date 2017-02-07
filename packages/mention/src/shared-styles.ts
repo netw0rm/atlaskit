@@ -1,7 +1,7 @@
 import {
   akBorderRadius,
   akColorN40,
-} from '~@atlaskit/util-shared-styles';
+} from '@atlaskit/util-shared-styles';
 
 export const noDialogContainerBorderColor = akColorN40; // This has not been confirmed by the ADG yet
 export const noDialogContainerBorderRadius = akBorderRadius;

@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "@atlaskit/avatar": "^1.0.0",
-    "@atlaskit/lozenge": "^1.0.0",
+    "@atlaskit/lozenge": "^1.0.1",
     "@atlaskit/util-common": "^1.0.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "@types/whatwg-fetch": "^0.0.33",

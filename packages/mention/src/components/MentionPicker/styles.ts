@@ -1,6 +1,6 @@
 import { style } from 'typestyle';
 
-import { akColorN100 } from '~@atlaskit/util-shared-styles';
+import { akColorN100 } from '@atlaskit/util-shared-styles';
 
 import {
   mentionListWidth,

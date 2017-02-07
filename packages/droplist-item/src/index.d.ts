@@ -12,7 +12,7 @@ interface Props {
   href?: string;
   target?: string;
   type?: 'link' | 'radio' | 'checkbox' | 'option';
-  onActivate?: ({ item: Item, event: KeyboardOrMouseEvent }) => void;
+  onActivate?: (attr: { item: Item, event: KeyboardOrMouseEvent }) => void;
   elemBefore?: ReactNode;
   elemAfter?: ReactNode;
 }

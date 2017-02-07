@@ -50,4 +50,19 @@ storiesOf(name, module)
         }}
       />
     </Chrome>
+  ))
+
+  .add('with JIRA as suggested application', () => (
+    <Chrome>
+      <AppSwitcherMenu
+        {...{
+          ...data,
+          suggestedApplication: {
+            show: true,
+            application: 'jira',
+            url: 'http://www.atlassian.com/jira',
+          },
+        }}
+      />
+    </Chrome>
   ));

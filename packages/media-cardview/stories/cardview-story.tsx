@@ -1,12 +1,9 @@
 import * as React from 'react';
 import {storiesOf, action} from '@kadira/storybook';
-import MediaEmbed from '../src/index';
-import * as tallImageBase64 from 'base64!./images/tall.png'; // MEDIA-FIX
+import CardView from '../src/index';
+import * as tallImageBase64 from 'base64!./images/tall.png';
 
 const tallImageDataUri = 'data:image/png;base64,' + tallImageBase64;
-
-const CardView = MediaEmbed.CardView;
-
 const onClick = (event: Event) => {
   action('click');
 };

@@ -70,3 +70,5 @@ export class CardView extends Component<CardViewProps, {}> {
     this.props.onClick && this.props.onClick(event.nativeEvent);
   }
 }
+
+export default CardView;

@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
-import ReactAkButton from 'ak-button';
-import Dropdown from 'ak-dropdown-menu';
+import ReactAkButton from '@atlaskit/button';
+import Dropdown from '@atlaskit/dropdown-menu';
 import CharlieIcon from 'ak-icon/glyph/atlassian';
 import React from 'react';
 

@@ -1,8 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
-import Droplist from 'ak-droplist';
-import Item from 'ak-droplist-item';
-import Group from 'ak-droplist-group';
-import Button from 'ak-button';
+import Droplist from '@atlaskit/droplist';
+import Item from '@atlaskit/droplist-item';
+import Group from '@atlaskit/droplist-group';
+import Button from '@atlaskit/button';
 import ExpandIcon from 'ak-icon/glyph/expand';
 import uid from 'uid';
 

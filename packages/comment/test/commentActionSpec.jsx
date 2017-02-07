@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { shallow } from 'enzyme';
-import Button from 'ak-button';
+import Button from '@atlaskit/button';
 
 import { CommentAction } from '../src/';
 import { name } from '../package.json';

@@ -34,7 +34,7 @@ CompactItem.propTypes = {
 storiesOf(name, module)
   .add('with compact items', () => (
     <Page>
-      <BasicNavigation containerHeader={null}>
+      <BasicNavigation containerHeaderComponent={null}>
         <a href="#1">
           <AkContainerItem
             icon={<RandomAvatar presence="online" />}

@@ -1,14 +1,14 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
-import ContainerHeader from '../src/components/js/ContainerHeader';
+import ContainerTitle from '../src/components/js/ContainerTitle';
 
-describe('<ContainerHeader />', () => {
+describe('<ContainerTitle />', () => {
   describe('props', () => {
     it('icon should render an image', () => {
-      expect(shallow(<ContainerHeader icon={<img alt="foo" />} />).find('img')).to.have.length(1);
+      expect(shallow(<ContainerTitle icon={<img alt="foo" />} />).find('img')).to.have.length(1);
     });
     it('linkComponent can be used to render an arbitrary link', () => {
-      const header = mount(<ContainerHeader
+      const header = mount(<ContainerTitle
         href="http://google.com"
         linkComponent={({ href, children }) => <a href={href} data-foo="foo">{children}</a>}
       />);

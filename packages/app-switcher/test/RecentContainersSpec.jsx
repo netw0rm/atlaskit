@@ -21,7 +21,7 @@ describe(name, () => {
       },
     ];
 
-    const wrapper = shallow(<RecentContainers containers={containers} />);
+    const wrapper = shallow(<RecentContainers containers={containers} i18n={{}} />);
 
     expect(wrapper.find('img').first().props().src).to.equal('iconurl');
   });

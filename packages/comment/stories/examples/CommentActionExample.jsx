@@ -1,5 +1,5 @@
 import React from 'react';
-import { CommentAction } from 'ak-comment';
+import { CommentAction } from '@atlaskit/comment';
 
 const clickHandler = e => console.log(`${e.target.textContent} was clicked.`);
 

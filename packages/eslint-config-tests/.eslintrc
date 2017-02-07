@@ -14,7 +14,8 @@
     "sinon": false
   },
   "plugins": [
-    "eslint-plugin-mocha"
+    "mocha",
+    "chai-expect"
   ],
   "rules": {
     // https://github.com/lo1tuma/eslint-plugin-mocha/blob/master/docs/rules/no-exclusive-tests.md
@@ -37,6 +38,18 @@
     // Allowing the use of dependencies that are not defined in package.json
     // We do this because packages can use dependencies from the root as well
     // as from other rolled up packages such eslint-config-base.
-    "import/no-extraneous-dependencies": "off"
+    "import/no-extraneous-dependencies": "off",
+
+    // https://github.com/Turbo87/eslint-plugin-chai-expect
+    // Disallow `expect` calls without assertions.
+    // Allow: expect(true).to.be.ok;
+    // Disallow: expect(true);
+    "chai-expect/missing-assertion": "error",
+
+    // https://github.com/Turbo87/eslint-plugin-chai-expect
+    // Disallow calling chai properties as functions
+    // Allow supported syntax: `expect(true).to.be.ok;`
+    // Disallow calling properties as functions: `expect(true).to.be.ok();`
+    "chai-expect/terminating-properties": "error"
   }
 }

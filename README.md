@@ -173,6 +173,109 @@ Changes to the ESLint rules should be treated like any other package:
 - If you add a rule, it should be considered a feature
 - If you change / remove a rule, it should be considered breaking
 
+## Using TypeScript for a component
+
+Atlaskit supports using TypeScript to write components. TypeScript brings static type checking to the JavaScript ecosystem and lets you concisely describe the interfaces between components (which is incredibly powerful for a set reusable shared components like Atlaskit).
+
+Using TypeScript is optional, leaving the decision to be made on a per-component basis.
+
+* To get started, use the `yarn run create-ts my-component-name` command.
+* A single version of TypeScript is used in the repo, however each component has its own `tsconfig.json` for configuration.
+
+### Configuration
+
+The structure of a TypeScript component contains a few important files, so it's helpful to familiarise yourself with them:
+
+* `/tsconfig.json` -- Component-specific configuration.
+* `/build/es5/tsconfig.json` -- ES5 distribution configuration.
+* `/build/es2015/tsconfig.json` -- ES2015 distribution configuration.
+* `package.json` -- Contains an NPM `build` script.
+* `/index.ts` -- An entrypoint to the package (used only in development).
+* `/.npmignore` -- Excludes `/index.ts` from being published (`main` and `jsnext:main` are used as entrypoints in published components).
+
+The `packages/util-component-ts-template` component should serve as a reference for these.
+
+### Linting
+
+[TSLint](https://palantir.github.io/tslint/) is used (instead of ESLint) to lint TypeScript files (`.d.ts`, `.ts`, `.tsx`). TSLint also supports linting JavaScript files (`.js`) but this is disabled in favour of ESLint.
+
+* To run TSLint (without ESLint) across all components: `yarn run lint/ts`
+* To automatically fix TSLint vilations: `yarn run lint/ts/fix`
+* To lint in VS Code, install the TSLint extension and set the `"tslint.ignoreDefinitionFiles": false` workspace setting.
+
+All packages should use a consistent set of TSLint rules (found in `tslint.json`).
+
+#### Custom TSLint rules
+
+Custom TSLint rules can be written and contributed to the repo to enforce patterns. This can be used as to 'incubate' new rules before promoting them to standalone packages, or to house rules that are Atlaskit specific.
+
+These rules live in `build/tslint-rules`.
+
+### Packaging
+
+All packages should aim to publish TypeScript declaration files, as this is an extremely powerful mechanism for validating contracts between components. Publishing declarations allows TypeScript consumers to automatically verify interface stability when updating components.
+
+The TypeScript compiler alone (no Babel) is used to publish ES5 and ES2015 distributions, using configuration in each package:
+
+* `packages/*/build/es5/tsconfig.json`
+* `packages/*/build/es2015/tsconfig.json`
+
+Summary of published assets:
+
+* `dist/es2015` -- ES2015 compatible assets (referenced via `jsnext:main` in `package.json`).
+* `dist/es5` -- ES5 compatible assets (referenced via `main` in `package.json`).
+* `dist/types` -- TypeScript declarations.
+* `package.json` -- contains `types`, `main`, and `jsnext:main` entrypoint references.
+* `src/` -- contains original sources, for use with [source maps](https://docs.google.com/document/d/1U1RGAehQwRypUTovF1KRlpiOFze0b-_2gc6fAH0KY0k/edit#).
+
+#### Component-specific TypeScript configuration
+
+In some cases it's desirable to customise the TypeScript configuration for a specific component. The `tsconfig.json` file in each component provides this flexibility.
+
+For example if a component requires an ES2015 global like `Promise`, it needs to include the appropriate `lib` value in its `tsconfig.json`:
+
+```json
+{
+  "extends": "../../build/types/tsconfig.base",
+  "include": [
+    "**/*"
+  ],
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "es5",
+      "scripthost",
+      "es2015.collection",
+      "es2015.iterable",
+      "es2015.promise"
+    ]
+  }
+}
+```
+
+This configuration would compile the package using only the listed ES2015 declarations.
+
+It is the responsibility of each package to document their environment requirements (e.g. presence of `window.Promise`).
+
+### Using `@types/` declarations
+
+AtlasKit supports consumers using the `"strictNullChecks": true` compiler option, by itself using that option. A side effect of this is that global untyped packages are not implicitly `any`, and must instead have types provided.
+
+This means that if you're using a package that doesn't ship with types, there are two options:
+
+* Install an appropriate `@types/package-name` package from NPM (in Atlaskit's root `package.json`), or
+* Write a `build/types/package-name.d.ts` file that contains the types
+* Raise an issue / pull request to the upstream library to include types
+
+In both of these cases, `build/types/tsconfig.base.json` needs to be updated.
+
+**Pitfalls of `@types/` declarations:**
+
+`@types/package-name` declarations are ambient and contain `declare module "package-name" {}` statements. This style of declaration must be executed once **any only once**. Unfortunately this requirement can be violated when multiple packages declare a `@types/` package as a `dependencies`, since NPM can choose to install multiple instances of a package in its nested `node_modules/` hierarchy. There are two solutions here:
+
+* Add the `@types/package-name` dependency to Atlaskit's root `package.json`. In components either don't declare the `@types/package-name` dependency, or use `peerDependency` instead of `dependency`.
+* Encourage library authors to bundle TypeScript declarations in their own package, to avoid the need for an `@types/package-name` package entirely.
+
 ## Commit changes
 To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Running commitizen is as simple as running `yarn run commit` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.
 

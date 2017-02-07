@@ -19,11 +19,11 @@
     "src"
   ],
   "dependencies": {
-    "@types/whatwg-fetch": "^0.0.33",
     "@atlaskit/avatar": "^1.0.0",
-    "@atlaskit/lozenge": "^1.0.0",
+    "@atlaskit/lozenge": "^1.0.2",
     "@atlaskit/util-common": "^1.0.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
+    "@types/whatwg-fetch": "^0.0.33",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "es6-promise": "^4.0.5",

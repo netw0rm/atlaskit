@@ -24,6 +24,20 @@ function getKey(index: number, mentions?: Mention[]): string | undefined {
   return mentions && mentions[index] && mentions[index].id;
 }
 
+function getIndex(key: string, mentions?: Mention[]): number | undefined {
+  let index: number | undefined;
+  if (mentions) {
+    index = 0;
+    while (index < mentions.length && mentions[index].id !== key) {
+      index++;
+    }
+    if (index === mentions.length) {
+      index = undefined;
+    }
+  }
+  return index;
+}
+
 export interface Props {
   mentions: Mention[];
   showError?: boolean;
@@ -103,6 +117,17 @@ export default class MentionList extends PureComponent<Props, State> {
       selectedIndex: index,
       selectedKey: getKey(index, mentions),
     }, callback);
+  }
+
+  selectId(id: string, callback?: () => any): void {
+    const { mentions } = this.props;
+    const index = getIndex(id, mentions);
+    if (index !== undefined) {
+      this.setState({
+        selectedIndex: index,
+        selectedKey: id,
+      }, callback);
+    }
   }
 
   chooseCurrentSelection = () => {

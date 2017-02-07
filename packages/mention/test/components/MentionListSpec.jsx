@@ -27,4 +27,28 @@ describe('MentionList', () => {
     return waitUntil(defaultMentionItemsShow)
       .then(() => waitUntil(firstItemSelected));
   });
+
+  it('selectIndex selects correct item', () => {
+    const component = setupList();
+    const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
+    const thirdItemSelected = () => isMentionItemSelected(component, mentions[2].id);
+
+    return waitUntil(defaultMentionItemsShow)
+      .then(() => {
+        component.instance().selectIndex(2);
+        return waitUntil(thirdItemSelected);
+      });
+  });
+
+  it('selectId selects correct item', () => {
+    const component = setupList();
+    const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
+    const thirdItemSelected = () => isMentionItemSelected(component, mentions[2].id);
+
+    return waitUntil(defaultMentionItemsShow)
+      .then(() => {
+        component.instance().selectId(mentions[2].id);
+        return waitUntil(thirdItemSelected);
+      });
+  });
 });

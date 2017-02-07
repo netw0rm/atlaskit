@@ -86,6 +86,18 @@ export default class MentionPicker extends PureComponent<Props, State> {
     }
   }
 
+  selectIndex(index: number, callback?: () => any): void {
+    if (this.mentionListRef) {
+      this.mentionListRef.selectIndex(index, callback);
+    }
+  }
+
+  selectId(id: string, callback?: () => any): void {
+    if (this.mentionListRef) {
+      this.mentionListRef.selectId(id, callback);
+    }
+  }
+
   chooseCurrentSelection = () => {
     if (this.mentionListRef) {
       this.mentionListRef.chooseCurrentSelection();

@@ -93,4 +93,5 @@ export const SuggestedApplicationContainer = styled(MenuItemContainer)`
 export const SuggestedApplicationTagline = styled.div`
   font-size: 12px;
   color: ${akColorN90};
+  white-space: normal;
 `;

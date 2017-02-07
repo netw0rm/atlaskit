@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Readme, { Code, Props, Description } from '@atlaskit/util-readme';
 
-import AppSwitcher from '../src'
+import AppSwitcher from '../src';
 import { name } from '../package.json';
 
 /* eslint-disable import/first, import/no-duplicates */

@@ -177,8 +177,17 @@ describe(`${name} - stateless`, () => {
     it('should call onSelected when an item is activated', () => {
       const spy = sinon.spy();
       const select = mount(<StatelessMultiSelect items={selectItems} isOpen onSelected={spy} />);
-      select.find(Item).first().props().onActivate();
+      select.find(Item).first().props().onActivate({});
       expect(spy.callCount).to.equal(1);
+    });
+
+    it('should call onOpenChange when an item is activated', () => {
+      const spy = sinon.spy();
+      const attrs = { event: {} };
+      const select = mount(<StatelessMultiSelect items={selectItems} isOpen onOpenChange={spy} />);
+      select.find(Item).first().props().onActivate(attrs);
+      expect(spy.callCount).to.equal(1);
+      expect(spy.calledWith({ isOpen: false, event: attrs.event })).to.equal(true);
     });
 
     it('should call onRemoved when an item is removed', () => {

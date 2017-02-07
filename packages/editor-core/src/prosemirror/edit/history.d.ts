@@ -1,4 +1,4 @@
-import { Transform, Selection } from '../'
+import { Transform, Selection } from '../';
 
 export class History {
   recordTransform(transform: Transform, selection: Selection, options: { [key: string]: any }): void;

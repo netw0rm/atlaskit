@@ -6,6 +6,8 @@ import Button from '@atlaskit/button';
 /* eslint-disable import/first, import/no-duplicates */
 import SmartSelectOverview from './examples/SmartSelectOverview';
 import SmartSelectOverviewRaw from '!raw!./examples/SmartSelectOverview';
+import SmartSelectOverviewWithDefaultSelected from './examples/SmartSelectDefaultSelectedItems';
+import SmartSelectOverviewWithDefaultSelectedRaw from '!raw!./examples/SmartSelectDefaultSelectedItems';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name, description } from '../package.json';
@@ -40,5 +42,13 @@ storiesOf(name, module)
           {SmartSelectOverviewRaw}
         </Code>
       </form>
+    </Chrome>
+  ))
+  .add('Multi select with default selected items', () => (
+    <Chrome title="Multi select (smart) - overview">
+      {SmartSelectOverviewWithDefaultSelected}
+      <Code>
+        {SmartSelectOverviewWithDefaultSelectedRaw}
+      </Code>
     </Chrome>
   ));

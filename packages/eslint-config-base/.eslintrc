@@ -34,6 +34,17 @@
     // Allow webpack loader syntax in imports.
     "import/no-webpack-loader-syntax": "off",
 
+    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-named-as-default-member.md
+    // Allowing you to name the default import the same as named import.
+    // It is a common pattern to export a managed and an unmanaged version of a component.
+    // Example:
+    // ```js
+    // export default from './managed';
+    // export { default as Greeting } from './unmanaged';
+    // ```
+    // You can then import whichever one you want an name it 'Greeting'
+    // "import/no-named-as-default-member": "off",
+
     // http://eslint.org/docs/rules/no-plusplus
     // Allowing ++ on numbers
     "no-plusplus": "off",

@@ -108,7 +108,7 @@ describe('block-type', () => {
     });
 
     it('should collaps nested block and convert to code block', () => {
-      const {pm, plugin} = editor (
+      const {pm, plugin} = editor(
         doc(blockquote(
           h1('h1')
         ))
@@ -397,7 +397,7 @@ describe('block-type', () => {
     });
 
     context('Shift-Backspace', () => {
-      it('should call delete last character', function() {
+      it('should call delete last character', function () {
         if (browser.ios) {
           // Shift-Backspace doesn't work on Safari 9.
           return this.skip();
@@ -407,6 +407,33 @@ describe('block-type', () => {
 
         pm.input.dispatchKey('Shift-Backspace');
         expect(pm.doc).to.deep.equal(doc(p('Hello World')));
+      });
+    });
+
+    context('when hits up', () => {
+      context('when cursor not movable', () => {
+        it('creates new paragraph above', (done) => {
+          const { pm } = editor(doc(code_block()('{<>}text')));
+          pm.input.dispatchKey('Up');
+          setTimeout(function () {
+            expect(pm.doc).to.deep.equal(doc(p(''), code_block()('text')));
+            done();
+          }, 110);
+        });
+      });
+
+      context('when cursor is movable', () => {
+        it('does not create a new paragraph above', (done) => {
+          const { pm } = editor(doc(code_block()('t{next}e{<>}xt')));
+          const { next } = pm.doc.refs;
+          pm.input.dispatchKey('Up');
+          pm.setTextSelection(next);
+
+          setTimeout(function () {
+            expect(pm.doc).to.deep.equal(doc(code_block()('text')));
+            done();
+          }, 110);
+        });
       });
     });
   });

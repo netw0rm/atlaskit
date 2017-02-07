@@ -2,7 +2,7 @@
 
 Spinners are used for showing a system process of unknown length going on that ends with the system displaying results to the user.
 
-![Example spinner](http://i.imgur.com/jd0JSly.gif)
+![Example spinner](https://i.imgur.com/jd0JSly.gif)
 
 ## Try it out
 

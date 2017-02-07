@@ -420,6 +420,15 @@ describe('block-type', () => {
             done();
           }, 110);
         });
+
+        it('moves cursor to the top', (done) => {
+          const { pm } = editor(doc(blockquote(p('{<>}text'))));
+          pm.input.dispatchKey('Up');
+          setTimeout(function () {
+            expect(pm.selection.$from.pos).to.eq(1);
+            done();
+          }, 110);
+        });
       });
 
       context('when cursor is movable', () => {
@@ -427,6 +436,48 @@ describe('block-type', () => {
           const { pm } = editor(doc(code_block()('t{next}e{<>}xt')));
           const { next } = pm.doc.refs;
           pm.input.dispatchKey('Up');
+          pm.setTextSelection(next);
+
+          setTimeout(function () {
+            expect(pm.doc).to.deep.equal(doc(code_block()('text')));
+            done();
+          }, 110);
+        });
+      });
+    });
+
+    context('when hits down', () => {
+      context('when cursor not movable', () => {
+        it('creates new paragraph below', (done) => {
+          const { pm } = editor(doc(code_block()('text{<>}')));
+          pm.input.dispatchKey('Down');
+          setTimeout(function () {
+            expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
+            done();
+          }, 110);
+        });
+
+        it('moves cursor to the bottom', (done) => {
+          const { pm } = editor(
+            doc(
+              blockquote(
+                p('text', mention({ id: 'foo1', displayName: '@bar1' }), '{<>}'),
+              )
+            )
+          );
+          pm.input.dispatchKey('Down');
+          setTimeout(function () {
+            expect(pm.selection.$from.pos).to.eq(9);
+            done();
+          }, 110);
+        });
+      });
+
+      context('when cursor is movable', () => {
+        it('does not create a new paragraph below', (done) => {
+          const { pm } = editor(doc(code_block()('t{<>}e{next}xt')));
+          const { next } = pm.doc.refs;
+          pm.input.dispatchKey('Down');
           pm.setTextSelection(next);
 
           setTimeout(function () {

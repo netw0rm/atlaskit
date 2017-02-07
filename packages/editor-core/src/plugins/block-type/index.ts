@@ -225,15 +225,32 @@ export class BlockTypeState {
 
   private createNewParagraphAbove() {
     this.cursorMovable = false;
-    setTimeout(() => this.createParagraphNear(0), 105);
+    setTimeout(() => this.createParagraphNear(1), 105);
     return false;
   }
 
-  private createParagraphNear(pos: number): void {
+  private createNewParagraphBelow() {
+    this.cursorMovable = false;
+    setTimeout(() => this.createParagraphNear(), 105);
+    return false;
+  }
+
+  private createParagraphNear(pos?: number): void {
     const paragraph = this.pm.schema.nodes.paragraph;
-    if (paragraph && !this.cursorMovable) {
-      const next = new TextSelection(this.pm.selection.$from);
-      this.pm.tr.insert(pos, paragraph.create()).setSelection(next).applyAndScroll();
+    if (!paragraph) {
+      return;
+    }
+
+    if (!this.cursorMovable) {
+      if (pos) {
+        const next = new TextSelection(this.pm.doc.resolve(pos));
+
+        this.pm.tr.insert(pos - 1, paragraph.create()).setSelection(next).applyAndScroll();
+        return;
+      }
+      pos = this.pm.selection.$to.pos;
+      const next = new TextSelection(this.pm.doc.resolve(pos + 1));
+      this.pm.tr.setSelection(next).insert(pos + 1, paragraph.create()).applyAndScroll();
     }
   }
 
@@ -276,6 +293,7 @@ export class BlockTypeState {
     this.pm.addKeymap(new Keymap({
       [keymaps.insertNewLine.common!]: trackAndInvoke('atlassian.editor.newline.keyboard', () => this.insertNewLine()),
       [keymaps.moveUp.common!]: trackAndInvoke('atlassian.editor.moveup.keyboard', () => this.createNewParagraphAbove()),
+      [keymaps.moveDown.common!]: trackAndInvoke('atlassian.editor.movedown.keyboard', () => this.createNewParagraphBelow()),
       [keymaps.shiftBackspace.common!]: (baseKeymap as any).map.lookup('Backspace')
     }));
   }
@@ -317,7 +335,7 @@ export class BlockTypeState {
     const { $from } = pm.selection;
 
     for (let depth = 0; depth <= $from.depth; depth++) {
-      const node = $from.node(depth)!;
+      const node = $from.node(depth) !;
       const blocktype = this.nodeBlockType(node);
       if (blocktype !== OTHER) {
         return blocktype;

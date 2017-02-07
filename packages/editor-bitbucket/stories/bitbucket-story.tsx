@@ -103,6 +103,7 @@ storiesOf(name, module)
               onCancel={CANCEL_ACTION}
               onChange={this.handleChange}
               onSave={SAVE_ACTION}
+              mentionSource={mentionSource}
             />
             <fieldset style={{ marginTop: 20 }}>
               <legend>Markdown</legend>

@@ -1,37 +1,31 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/ContainerHeader.less';
-import DefaultLinkComponent from './DefaultLinkComponent';
+import styled from 'styled-components';
+import { akGridSize } from '@atlaskit/util-shared-styles';
+
+const intGridSize = parseInt(akGridSize, 10);
+const paddingOpen = `0 ${intGridSize * 1.75}px 0 ${intGridSize * 1.5}px`;
+const paddingClosed = `0 ${intGridSize * 2.5}px 0 ${intGridSize * 0.5}px`;
+
+const ContainerHeaderWrapper = styled.div`
+  transition: padding 200ms;
+  padding: ${paddingOpen};
+  margin-bottom: ${intGridSize * 1.5}px;
+
+  [data-__ak-navigation-container-closed="true"] & {
+    padding: ${paddingClosed};
+  }
+`;
 
 export default class ContainerHeader extends PureComponent {
   static propTypes = {
-    icon: PropTypes.node,
-    text: PropTypes.string,
-    href: PropTypes.string,
-    linkComponent: PropTypes.func,
-  }
-
-  static defaultProps = {
-    linkComponent: DefaultLinkComponent,
+    children: PropTypes.node,
   }
 
   render() {
-    const {
-      href,
-      text,
-      linkComponent: Link,
-    } = this.props;
-
     return (
-      <div className={styles.containerHeaderWrapper}>
-        <Link className={styles.link} href={href}>
-          <div className={styles.containerHeader}>
-            <div className={styles.icon}>
-              {this.props.icon}
-            </div>
-            <div className={styles.text}> {text} </div>
-          </div>
-        </Link>
-      </div>
+      <ContainerHeaderWrapper>
+        {this.props.children}
+      </ContainerHeaderWrapper>
     );
   }
 }

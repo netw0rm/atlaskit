@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Breadcrumbs, { AkBreadcrumbsItem } from 'ak-breadcrumbs';
+import Breadcrumbs, { AkBreadcrumbsItem } from '@atlaskit/breadcrumbs';
 
 export default class DummyCode extends PureComponent {
   render() {

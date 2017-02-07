@@ -1,5 +1,5 @@
 import React from 'react';
-import { CommentTime } from 'ak-comment';
+import { CommentTime } from '@atlaskit/comment';
 
 const mouseOverHandler = e => console.log(`${e.target.textContent} was moused over.`);
 const monthNames = [

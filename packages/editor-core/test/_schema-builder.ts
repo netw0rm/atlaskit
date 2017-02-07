@@ -10,6 +10,7 @@ import {
   ListItemNodeType,
   MonoMarkType,
   OrderedListNodeType,
+  PanelNodeType,
   ParagraphNodeType,
   Schema,
   StrikeMarkType,
@@ -34,6 +35,7 @@ export const schema = new Schema({
     list_item: { type: ListItemNodeType, content: 'paragraph+' },
     ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
     blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
+    panel: { type: PanelNodeType, content: 'block+', group: 'block' },
     plain: { type: ParagraphNodeType, content: 'text' },
     horizontal_rule: {type: HorizontalRuleNodeType, group: 'block' }
   },
@@ -65,6 +67,8 @@ export const ol = nodeFactory(schema.nodes.ordered_list);
 export const p = nodeFactory(schema.nodes.paragraph);
 export const ul = nodeFactory(schema.nodes.bullet_list);
 export const blockquote = nodeFactory(schema.nodes.blockquote);
+export const panel = nodeFactory(schema.nodes.panel, { panelType: 'info' });
+export const paragraph = nodeFactory(schema.nodes.paragraph);
 
 // tslint:disable-next-line:variable-name
 export const horizontal_rule = nodeFactory(schema.nodes.horizontal_rule);

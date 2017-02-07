@@ -1,5 +1,5 @@
 import React from 'react';
-import Banner from 'ak-banner';
+import Banner from '@atlaskit/banner';
 import WarningIcon from 'ak-icon/glyph/warning';
 
 export default (

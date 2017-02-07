@@ -19,12 +19,15 @@ import {
   isBlockQuoteNode,
   isCodeBlockNode,
   isHeadingNode,
+  isPanelNode,
   isParagraphNode,
-  ParagraphNodeType
+  PanelNodeType,
+  ParagraphNodeType,
 } from '../../schema';
 import {
   getGroupsInRange,
-  liftSelection
+  liftSelection,
+  removeCodeBlocksFromSelection
 } from '../../utils';
 import transformToCodeBlock from './transform-to-code-block';
 
@@ -41,6 +44,7 @@ const HEADING_4 = makeBlockType('heading4', 'Heading 4');
 const HEADING_5 = makeBlockType('heading5', 'Heading 5');
 const BLOCK_QUOTE = makeBlockType('blockquote', 'Block quote');
 const CODE_BLOCK = makeBlockType('codeblock', 'Code block');
+const PANEL = makeBlockType('panel', 'Panel');
 const OTHER = makeBlockType('other', 'Other…');
 
 export type GroupedBlockTypes = BlockType[][];
@@ -68,7 +72,7 @@ export class BlockTypeState {
     this.addAvailableContext('default', [
       [NORMAL_TEXT],
       [HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5],
-      [BLOCK_QUOTE, CODE_BLOCK]
+      [BLOCK_QUOTE, CODE_BLOCK, PANEL]
     ]);
 
     this.changeContext('default');
@@ -109,6 +113,12 @@ export class BlockTypeState {
 
     if (name === BLOCK_QUOTE.name && nodes.blockquote) {
       if (commands.wrapIn(nodes.blockquote)(pm, false)) {
+        return this.changeBlockTypeAtSelection(name, pm.selection.$from, pm.selection.$to, true);
+      }
+    }
+
+    if (name === PANEL.name && nodes.panel) {
+      if (commands.wrapIn(nodes.panel)(pm, false)) {
         return this.changeBlockTypeAtSelection(name, pm.selection.$from, pm.selection.$to, true);
       }
     }
@@ -181,6 +191,12 @@ export class BlockTypeState {
       case CODE_BLOCK.name:
         if (nodes.code_block) {
           transformToCodeBlock(pm);
+        }
+        break;
+      case PANEL.name:
+        if (nodes.panel && nodes.paragraph) {
+          removeCodeBlocksFromSelection(pm).applyAndScroll();
+          commands.wrapIn(nodes.panel)(pm);
         }
         break;
     }
@@ -321,6 +337,8 @@ export class BlockTypeState {
       return CODE_BLOCK;
     } else if (isBlockQuoteNode(node)) {
       return BLOCK_QUOTE;
+    } else if (isPanelNode(node)) {
+      return PANEL;
     } else if (isParagraphNode(node)) {
       return NORMAL_TEXT;
     }
@@ -371,6 +389,8 @@ export class BlockTypeState {
         return !!pm.schema.nodes.blockquote;
       case CODE_BLOCK:
         return !!pm.schema.nodes.code_block;
+      case PANEL:
+        return !!pm.schema.nodes.panel;
     }
   }
 }
@@ -391,6 +411,7 @@ export type BlockTypeName =
   'heading5' |
   'blockquote' |
   'codeblock' |
+  'panel' |
   'other';
 
 export interface BlockType {
@@ -412,6 +433,7 @@ export interface S extends Schema {
     code_block?: CodeBlockNodeType;
     heading?: HeadingNodeType;
     paragraph?: ParagraphNodeType;
+    panel?: PanelNodeType;
     hard_break?: HardBreakNodeType;
   };
 }

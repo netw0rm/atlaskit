@@ -187,7 +187,7 @@ describe(`${name} - stateless`, () => {
       const select = mount(<StatelessMultiSelect items={selectItems} isOpen onOpenChange={spy} />);
       select.find(Item).first().props().onActivate(attrs);
       expect(spy.callCount).to.equal(1);
-      expect(spy.calledWith({ isOpen: false, event: attrs.event }));
+      expect(spy.calledWith({ isOpen: false, event: attrs.event })).to.equal(true);
     });
 
     it('should call onRemoved when an item is removed', () => {

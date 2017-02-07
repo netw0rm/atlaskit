@@ -18,7 +18,7 @@ export interface State {
   transform?: string;
 }
 
-export default class Panel extends PureComponent<Props, State> {
+export default class FloatingToolbar extends PureComponent<Props, State> {
   state: State = {};
   popper?: IPopper;
 

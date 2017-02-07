@@ -2,12 +2,12 @@ import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
-import Button from 'ak-button';
-import Spinner from 'ak-spinner';
-import ConfirmIcon from 'ak-icon/glyph/confirm';
-import CancelIcon from 'ak-icon/glyph/cancel';
-import EditIcon from 'ak-icon/glyph/edit';
-import FieldBase, { Label } from 'ak-field-base'; // eslint-disable-line
+import Button from '@atlaskit/button';
+import Spinner from '@atlaskit/spinner';
+import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
+import CancelIcon from '@atlaskit/icon/glyph/cancel';
+import EditIcon from '@atlaskit/icon/glyph/edit';
+import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {

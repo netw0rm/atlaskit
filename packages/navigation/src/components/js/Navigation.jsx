@@ -1,7 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
-import AkBlanket from 'ak-blanket';
+import AkBlanket from '@atlaskit/blanket';
 import styles from 'style!../less/Navigation.less';
 import GlobalNavigation from './GlobalNavigation';
+import ContainerHeader from './ContainerHeader';
 import ContainerNavigation from './ContainerNavigation';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import Drawer from './Drawer';
@@ -20,7 +21,7 @@ export default class Navigation extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     containerAppearance: PropTypes.string,
-    containerHeader: PropTypes.node,
+    containerHeaderComponent: PropTypes.func,
     createDrawerContent: PropTypes.node,
     drawerBackIcon: PropTypes.node,
     globalAccountItem: PropTypes.node,
@@ -104,7 +105,7 @@ export default class Navigation extends PureComponent {
     const {
       children,
       containerAppearance,
-      containerHeader,
+      containerHeaderComponent,
       createDrawerContent,
       drawerBackIcon,
       globalAccountItem,
@@ -132,6 +133,9 @@ export default class Navigation extends PureComponent {
     const isPartiallyCollapsed = renderedWidth < globalOpenWidth + containerClosedWidth;
     const onSearchDrawerTrigger = isSearchDrawerOpen ? onSearchDrawerClose : onSearchDrawerOpen;
     const onCreateDrawerTrigger = isCreateDrawerOpen ? onCreateDrawerClose : onCreateDrawerOpen;
+    const containerHeader = containerHeaderComponent ?
+      <ContainerHeader> {containerHeaderComponent()} </ContainerHeader> : null;
+
     return (
       <div className={styles.navigation}>
         {
@@ -191,7 +195,7 @@ export default class Navigation extends PureComponent {
               globalPrimaryIcon={globalPrimaryIcon}
               globalPrimaryItemHref={globalPrimaryItemHref}
               globalSearchIcon={globalSearchIcon}
-              header={containerHeader}
+              headerComponent={containerHeaderComponent}
               linkComponent={linkComponent}
               offsetX={Math.min(renderedWidth - (globalOpenWidth + containerClosedWidth), 0)}
               onGlobalCreateActivate={onCreateDrawerTrigger}

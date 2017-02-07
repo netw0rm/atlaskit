@@ -1,6 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-// import styles from 'style!./story-styles.less';
 import styled from 'styled-components';
 
 import Question from '@atlaskit/icon/glyph/question';
@@ -27,7 +26,7 @@ const ItemContainer = styled.div`
   margin-top: 10px;
 `;
 
-storiesOf(name)
+storiesOf(name, module)
   .addCodeExampleStory('simple item', () => (
     <StoryContainer>
       <p>This is an example of simple droplist items with or without links</p>
@@ -82,7 +81,7 @@ storiesOf(name)
         <Item elemBefore={<Avatar size="small" />}>third item</Item>
       </ItemContainer>
     </StoryContainer>
-  ), { imports: [...imports, ['Avatar', 'ak-avatar']] })
+  ), { imports: [...imports, ['Avatar', '@atlaskit/avatar']] })
   .addCodeExampleStory('simple item with additional space', () => (
     <StoryContainer>
       <p>This is an example of droplist items with additional space to the right</p>
@@ -103,7 +102,7 @@ storiesOf(name)
         >second item with very long text that is going to be cut off</Item>
       </ItemContainer>
     </StoryContainer>
-  ), { imports: [...imports, ['Lozenge', 'ak-lozenge'], ['t', 'ak-icon/glyph/arrowrightlong']] })
+  ), { imports: [...imports, ['Lozenge', '@atlaskit/lozenge'], ['t', 'ak-icon/glyph/arrowrightlong']] })
   .addCodeExampleStory('item with avatars and checkboxes', () => (
     <StoryContainer>
       <p>This is an example of droplist items with avatars and checkboxes</p>
@@ -113,7 +112,7 @@ storiesOf(name)
         <Item elemBefore={<Avatar size="small" />} type="checkbox">third item</Item>
       </ItemContainer>
     </StoryContainer>
-  ), { imports: [...imports, ['Avatar', 'ak-avatar']] })
+  ), { imports: [...imports, ['Avatar', '@atlaskit/avatar']] })
   .addCodeExampleStory('disabled items', () => (
     <StoryContainer>
       <p>This is an example of disabled droplist items</p>

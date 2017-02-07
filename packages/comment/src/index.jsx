@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import Lozenge from 'ak-lozenge';
+import Lozenge from '@atlaskit/lozenge';
 
 import styles from 'style!./styles.less';
 import CommentAction from './CommentAction';

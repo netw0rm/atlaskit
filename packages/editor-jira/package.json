@@ -1,10 +1,10 @@
 {
   "name": "@atlaskit/editor-jira",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "config": {
     "access": "public"
   },
-  "description": "Atlassian Editor component for JIRA",
+  "description": "An Atlassian Editor component specially crafted for JIRA.",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",
@@ -31,6 +31,8 @@
     "react": "^15.3.2"
   },
   "devDependencies": {
+    "@atlaskit/editor-jira": "*",
+    "@atlaskit/util-readme": "^1.0.0",
     "akutil-common-test": "*"
   },
   "repository": {

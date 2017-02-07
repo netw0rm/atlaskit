@@ -1,10 +1,10 @@
 {
   "name": "@atlaskit/droplist-group",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
-  "description": "ak-droplist-group component",
+  "description": "Component used to grouping droplist-items within droplist-menus",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
@@ -17,7 +17,7 @@
     "src/index.d.ts"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^37.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
   },

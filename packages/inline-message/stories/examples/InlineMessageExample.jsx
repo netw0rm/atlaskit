@@ -1,5 +1,5 @@
 import React from 'react';
-import InlineMessage from 'ak-inline-message';
+import InlineMessage from '@atlaskit/inline-message';
 
 export default (
   <InlineMessage

@@ -1,15 +1,17 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import Editor from '../src';
+import { emojiService } from '../test/_emoji-service';
 import { resourceProvider } from './story-data';
 
-storiesOf('ak-editor-hipchat', module)
+storiesOf('@atlaskit/editor-hipchat', module)
   .add('Simple', () => <Editor onSubmit={action('submit')}/>)
   .add('With MentionPicker', () => {
     return (
       <Editor
         onSubmit={action('submit')}
         mentionResourceProvider={resourceProvider}
+        emojiService={emojiService}
         reverseMentionPicker={false}
       />
     );

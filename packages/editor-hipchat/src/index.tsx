@@ -1,6 +1,8 @@
 import {
   BlockTypePlugin,
   DocNode,
+  EmojisPlugin,
+  EmojiTypeAhead,
   HyperlinkEdit,
   HyperlinkPlugin,
   Keymap,
@@ -8,7 +10,7 @@ import {
   MentionsPlugin,
   ProseMirror,
   TextSelection,
-} from 'ak-editor-core';
+} from '@atlaskit/editor-core';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -25,6 +27,15 @@ const hipchatSerializer = (doc: any) => {
 
   return root.content.map(node => {
     switch (node.type) {
+      case 'emoji':
+        node = {
+          type: 'emoji',
+          attrs: {
+            id: node.attrs.id
+          }
+        };
+        break;
+
       case 'mention':  // Hipchat expects a 'text'-field for mentions
         node.text = node.attrs.displayName;
         break;
@@ -67,6 +78,7 @@ export interface Props {
   onSubmit?: (doc: Doc) => void;
   onChange?: () => void;
   mentionResourceProvider?: any;
+  emojiService?: any;
   reverseMentionPicker?: boolean;
 }
 
@@ -94,6 +106,7 @@ export default class Editor extends PureComponent<Props, State> {
 
     const pluginStateMentions = props.mentionResourceProvider && pm && MentionsPlugin.get(pm);
     const pluginStateHyperlink = pm && HyperlinkPlugin.get(pm);
+    const pluginStateEmojis = props.emojiService && pm && EmojisPlugin.get(pm);
     const classNames = cx('ak-editor-hipchat', {
       'max-length-reached': this.state.maxLengthReached,
       'flash-toggle': this.state.flashToggle
@@ -107,6 +120,9 @@ export default class Editor extends PureComponent<Props, State> {
           }
           {!pluginStateMentions ? null :
             <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reverseMentionPicker} />
+          }
+          {!pluginStateEmojis ? null :
+            <EmojiTypeAhead emojiService={props.emojiService} pluginState={pluginStateEmojis} reversePosition={props.reverseMentionPicker} />
           }
         </div>
       </div>
@@ -125,7 +141,8 @@ export default class Editor extends PureComponent<Props, State> {
       plugins: [
         BlockTypePlugin,
         HyperlinkPlugin,
-        ...(this.props.mentionResourceProvider ? [MentionsPlugin] : [])
+        ...(this.props.mentionResourceProvider ? [MentionsPlugin] : []),
+        ...(this.props.emojiService ? [EmojisPlugin] : [])
       ],
     });
 

@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import styles from 'style!../src/style.less';
-import Emoji from '../src/Emoji';
+import styles from '../src/components/common/Emoji-styles';
+import Emoji from '../src/components/common/Emoji';
 
 describe('<Emoji />', () => {
   describe('as sprite', () => {

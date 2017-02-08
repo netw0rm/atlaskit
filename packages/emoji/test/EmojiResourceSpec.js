@@ -2,7 +2,7 @@ import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
-import EmojiResource from '../src/api/EmojiResource';
+import EmojiResource, { denormaliseEmojis } from '../src/api/EmojiResource';
 
 const baseUrl = 'https://bogus/';
 const p1Url = 'https://p1/';
@@ -68,8 +68,8 @@ describe('EmojiResource', () => {
         providers: [],
       };
       const resource = new EmojiResource(config);
-      return resource.loadAllEmoji().then((emojis) => {
-        checkOrder([], emojis);
+      return resource.loadAllEmoji().then((emojiResponse) => {
+        checkOrder([], emojiResponse.emojis);
       });
     });
 
@@ -84,8 +84,8 @@ describe('EmojiResource', () => {
       });
 
       const resource = new EmojiResource(config);
-      return resource.loadAllEmoji().then((emojis) => {
-        checkOrder(providerData1, emojis);
+      return resource.loadAllEmoji().then((emojiResponse) => {
+        checkOrder(providerData1, emojiResponse.emojis);
       });
     });
 
@@ -103,8 +103,8 @@ describe('EmojiResource', () => {
       });
 
       const resource = new EmojiResource(config);
-      return resource.loadAllEmoji().then((emojis) => {
-        checkOrder([...providerData1, ...providerData2], emojis);
+      return resource.loadAllEmoji().then((emojiResponse) => {
+        checkOrder([...providerData1, ...providerData2], emojiResponse.emojis);
       });
     });
 
@@ -124,8 +124,8 @@ describe('EmojiResource', () => {
       });
 
       const resource = new EmojiResource(config);
-      return resource.loadAllEmoji().then((emojis) => {
-        checkOrder([...providerData1, ...providerData2], emojis);
+      return resource.loadAllEmoji().then((emojiResponse) => {
+        checkOrder([...providerData1, ...providerData2], emojiResponse.emojis);
       });
     });
 
@@ -143,8 +143,8 @@ describe('EmojiResource', () => {
       });
 
       const resource = new EmojiResource(config);
-      return resource.loadAllEmoji().then((emojis) => {
-        checkOrder(providerData2, emojis);
+      return resource.loadAllEmoji().then((emojiResponse) => {
+        checkOrder(providerData2, emojiResponse.emojis);
       });
     });
 
@@ -181,14 +181,14 @@ describe('EmojiResource', () => {
       });
 
       const resource = new EmojiResource(config);
-      return resource.loadAllEmoji().then((emojis) => {
+      return resource.loadAllEmoji().then((emojiResponse) => {
         expect(refreshedSecurityProvider.callCount, 'refreshedSecurityProvider called once').to.equal(1);
         const calls = fetchMock.calls(provider401Matcher.name);
         expect(calls.length, 'number of calls to fetch').to.equal(2);
         expect(getSecurityHeader(calls[0]), 'first call').to.equal(defaultSecurityCode);
         expect(getSecurityHeader(calls[1]), 'forced refresh call').to.equal('666');
 
-        checkOrder([...providerData1, ...providerData2], emojis);
+        checkOrder([...providerData1, ...providerData2], emojiResponse.emojis);
       });
     });
 
@@ -220,14 +220,14 @@ describe('EmojiResource', () => {
       });
 
       const resource = new EmojiResource(config);
-      return resource.loadAllEmoji().then((emojis) => {
+      return resource.loadAllEmoji().then((emojiResponse) => {
         expect(refreshedSecurityProvider.callCount, 'refreshedSecurityProvider called once').to.equal(1);
         const calls = fetchMock.calls(provider401Matcher.name);
         expect(calls.length, 'number of calls to fetch').to.equal(2);
         expect(getSecurityHeader(calls[0]), 'first call').to.equal(defaultSecurityCode);
         expect(getSecurityHeader(calls[1]), 'forced refresh call').to.equal('666');
         // provider 1 data not returned due to two 401's
-        checkOrder(providerData2, emojis);
+        checkOrder(providerData2, emojiResponse.emojis);
       });
     });
   });
@@ -247,6 +247,107 @@ describe('EmojiResource', () => {
       return resource.recordEmojiSelection(':bacon:').then(() => {
         expect(fetchMock.called('record')).to.equal(true);
       });
+    });
+  });
+
+  describe('#denormaliseEmojis', () => {
+    const emojiFields = ['id', 'name', 'shortcut', 'type', 'category', 'order'];
+
+    const checkFields = (actual, expected, fields) => {
+      fields.forEach((field) => {
+        expect(actual[field], field).to.equal(expected[field]);
+      });
+    };
+
+    it('denormaliseEmojis emoji with sprite', () => {
+      const spriteRef = 'http://spriteref/test.png';
+      const emoji = {
+        id: '1f600',
+        name: 'grinning face',
+        shortcut: 'grinning',
+        type: 'STANDARD',
+        category: 'PEOPLE',
+        order: 1,
+        skinVariations: [
+          {
+            spriteRef,
+            x: 666,
+            y: 777,
+            height: 42,
+            width: 43,
+            xIndex: 6,
+            yIndex: 23,
+          },
+        ],
+        representation: {
+          spriteRef,
+          x: 216,
+          y: 2304,
+          height: 72,
+          width: 75,
+          xIndex: 3,
+          yIndex: 32,
+        },
+      };
+      const spriteSheet = {
+        url: spriteRef,
+        row: 41,
+        column: 56,
+        height: 2952,
+        width: 4032,
+      };
+      const emojiResponse = denormaliseEmojis({
+        emojis: [emoji],
+        meta: {
+          spriteSheets: {
+            [spriteRef]: spriteSheet,
+          },
+        },
+      });
+      const emojis = emojiResponse.emojis;
+      expect(emojis.length).to.equal(1);
+      const e = emojis[0];
+      checkFields(e, emoji, emojiFields);
+      const spriteFields = ['x', 'y', 'height', 'width', 'xIndex', 'yIndex'];
+      checkFields(e.representation, emoji.representation, spriteFields);
+      const spriteSheetFields = ['url', 'row', 'column', 'height', 'width'];
+      checkFields(e.representation.sprite, spriteSheet, spriteSheetFields);
+      expect(e.skinVariations.length).to.equal(1);
+      checkFields(e.skinVariations[0], emoji.skinVariations[0], spriteFields);
+      checkFields(e.skinVariations[0].sprite, spriteSheet, spriteSheetFields);
+    });
+
+    it('denormaliseEmojis emoji with image', () => {
+      const emoji = {
+        id: '13d29267-ff9e-4892-a484-1a1eef3b5ca3',
+        name: 'standup.png',
+        shortcut: 'standup.png',
+        type: 'SITE',
+        category: 'CUSTOM',
+        order: -1,
+        skinVariations: [
+          {
+            imagePath: 'https://something/something2.png',
+            height: 666,
+            width: 666,
+          },
+        ],
+        representation: {
+          imagePath: 'https://something/something.png',
+          height: 64,
+          width: 64,
+        },
+      };
+      const emojiResponse = denormaliseEmojis({
+        emojis: [emoji],
+      });
+      const emojis = emojiResponse.emojis;
+      expect(emojis.length).to.equal(1);
+      const e = emojis[0];
+      checkFields(e, emoji, emojiFields);
+      checkFields(e.representation, emoji.representation, ['imagePath', 'height', 'width']);
+      expect(e.skinVariations.length).to.equal(1);
+      checkFields(e.skinVariations[0], emoji.skinVariations[0], ['imagePath', 'height', 'width']);
     });
   });
 });

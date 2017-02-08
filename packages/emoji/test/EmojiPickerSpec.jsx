@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import emojiService from '../stories/story-data';
 
 import CategorySelector from '../src/internal/picker/CategorySelector';
-import Emoji from '../src/Emoji';
+import Emoji from '../src/components/common/Emoji';
 import EmojiButton from '../src/internal/common/EmojiButton';
 import EmojiPicker from '../src/EmojiPicker';
 import EmojiPickerFooter from '../src/internal/picker/EmojiPickerFooter';

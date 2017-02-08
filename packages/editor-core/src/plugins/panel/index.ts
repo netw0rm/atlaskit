@@ -32,7 +32,6 @@ export class PanelState {
 
   clicked?: boolean;
   element?: HTMLElement | undefined;
-  activePanel?: PanelNode | undefined;
 
   constructor(pm: PM) {
     this.pm = pm;
@@ -104,20 +103,24 @@ export class PanelState {
 
   private update(clicked = false) {
     const newPanel = this.getActivePanel();
-    const newElement = this.getDomElement();
-    if ((clicked && this.activePanel) || this.activePanel !== newPanel) {
-      this.clicked = clicked;
-      this.activePanel = newPanel;
-      this.element = newElement;
-      this.changeHandlers.forEach(cb => cb(this));
+    if (newPanel) {
+      const newElement = this.getDomElement();
+      if (clicked || this.element !== newElement) {
+        this.clicked = clicked;
+        this.element = newElement;
+        this.changeHandlers.forEach(cb => cb(this));
+      }
+    } else {
+      this.clear();
     }
   }
 
   private clear() {
-    this.clicked = undefined;
-    this.activePanel = undefined;
-    this.element = undefined;
-    this.changeHandlers.forEach(cb => cb(this));
+    if (this.clicked || this.element) {
+      this.clicked = undefined;
+      this.element = undefined;
+      this.changeHandlers.forEach(cb => cb(this));
+    }
   }
 
   private getActivePanel(): PanelNode | undefined {

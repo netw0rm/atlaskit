@@ -9,7 +9,7 @@ const {
   active: activeClass,
 } = styles.locals;
 
-describe('ak-spinner', () => {
+describe('Spinner', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Spinner />);
     expect(wrapper).not.to.equal(undefined);

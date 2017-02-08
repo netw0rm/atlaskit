@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tooltip",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "config": {
     "access": "public"
   },
@@ -15,9 +15,9 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^37.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
-    "ak-layer": "^62.0.2"
+    "@atlaskit/layer": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Readme, { Props, Code } from 'akutil-readme';
+import Readme, { Props, Code } from '@atlaskit/util-readme';
 import ExampleRaw from '!raw!./ToggleExample'; // eslint-disable-line import/no-duplicates
 import { name } from '../package.json';
 import { Toggle } from '../src';

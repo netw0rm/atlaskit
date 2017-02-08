@@ -80,4 +80,22 @@ storiesOf(name, module)
         }}
       />
     </Chrome>
+  ))
+
+  .add('with applinks error', () => (
+    <Chrome>
+      <AppSwitcherMenu
+        {...{
+          ...data,
+          suggestedApplication: {
+            show: false,
+          },
+          linkedApplications: {
+            configureLink: 'https://www.atlassian.com',
+            apps: [],
+            error: true,
+          },
+        }}
+      />
+    </Chrome>
   ));

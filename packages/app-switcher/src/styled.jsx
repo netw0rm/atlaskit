@@ -102,3 +102,7 @@ export const SuggestedApplicationTagline = styled.div`
 export const LogoContainer = styled.div`
   color: ${akColorB400};
 `;
+
+export const ErrorContainer = styled.div`
+  white-space: normal !important;
+`;

@@ -69,6 +69,11 @@ const linkedApplicationsPropDescriptions = [
       },
     ],
   },
+  {
+    name: 'error',
+    type: 'Boolean',
+    description: 'If true the app switcher will display an error message.',
+  },
 ];
 
 const suggestedApplicationPropDescriptions = [

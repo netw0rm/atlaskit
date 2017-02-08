@@ -24,6 +24,7 @@ const data = {
         url: 'https://instance.atlassian.net/wiki',
       },
     ],
+    error: false,
   },
   isAnonymousUser: false,
   suggestedApplication: {

@@ -1,23 +1,28 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { MenuHeader, MenuItemContainer, MenuLinkItem } from '../styled';
+import { MenuHeader, MenuItemContainer, MenuLinkItem, ErrorContainer } from '../styled';
 import AppSwitcherPropTypes from '../internal/prop-types';
 
 export default class ApplicationLinks extends PureComponent {
   static propTypes = {
-    apps: AppSwitcherPropTypes.applications,
     i18n: AppSwitcherPropTypes.i18n,
-    configureLink: PropTypes.string,
     isAnonymousUser: PropTypes.bool,
+    ...AppSwitcherPropTypes.linkedApplications,
   };
 
   render() {
-    const apps = this.props.apps.map(app => (
-      <a href={app.url} key={app.url}>
+    const apps = this.props.error
+      ? (
         <MenuItemContainer>
-          <div>{app.name}</div>
+          <ErrorContainer>{this.props.i18n['applinks.error']}</ErrorContainer>
         </MenuItemContainer>
-      </a>
-    ));
+      )
+      : this.props.apps.map(app => (
+        <a href={app.url} key={app.url}>
+          <MenuItemContainer>
+            <div>{app.name}</div>
+          </MenuItemContainer>
+        </a>
+     ));
 
     const configureLink = this.props.configureLink ?
       (

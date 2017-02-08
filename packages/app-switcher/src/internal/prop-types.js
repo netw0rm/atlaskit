@@ -5,7 +5,7 @@ const applications = PropTypes.arrayOf(PropTypes.shape({
   url: PropTypes.string.isRequired,
 }));
 
-const configureLink = PropTypes.oneOfType([PropTypes.string, PropTypes.bool]);
+const configureLink = PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired;
 
 export default {
   recentContainers: PropTypes.arrayOf(PropTypes.shape({
@@ -18,6 +18,7 @@ export default {
   linkedApplications: PropTypes.shape({
     configureLink,
     apps: applications,
+    error: PropTypes.bool.isRequired,
   }),
 
   i18n: PropTypes.shape({

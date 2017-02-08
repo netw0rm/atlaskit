@@ -34,6 +34,7 @@ export default class AppSwitcher extends PureComponent {
           configureLink={!this.props.isAnonymousUser && this.props.linkedApplications.configureLink}
           i18n={this.props.i18n}
           isAnonymousUser={this.props.isAnonymousUser}
+          error={this.props.linkedApplications.error}
         />
         <SuggestedApplication
           show={!this.props.isAnonymousUser && this.props.suggestedApplication.show}

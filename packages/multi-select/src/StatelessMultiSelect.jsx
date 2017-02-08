@@ -34,6 +34,7 @@ export default class StatelessMultiSelect extends PureComponent {
     onOpenChange: PropTypes.func,
     onSelected: PropTypes.func,
     onRemoved: PropTypes.func,
+    placeholder: PropTypes.string,
     position: PropTypes.string,
     selectedItems: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     shouldFitContainer: PropTypes.bool,
@@ -84,6 +85,14 @@ export default class StatelessMultiSelect extends PureComponent {
   }
 
   getAllValues = () => this.props.selectedItems.map(item => item.value)
+
+  getPlaceholder = () => {
+    if (!this.props.isOpen && this.props.selectedItems.length === 0) {
+      return this.props.placeholder;
+    }
+
+    return null;
+  }
 
   handleTriggerClick = (event) => {
     this.onOpenChange({ event, isOpen: true });
@@ -218,8 +227,9 @@ export default class StatelessMultiSelect extends PureComponent {
                     />)}
                   <input
                     className={styles.input}
-                    type="text"
                     onKeyUp={this.handleKeyUpInInput}
+                    placeholder={this.getPlaceholder()}
+                    type="text"
                   />
                 </TagGroup>
               </Trigger>

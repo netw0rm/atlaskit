@@ -18,6 +18,7 @@ export default class AkMultiSelect extends PureComponent {
     onFilterChange: PropTypes.func,
     onSelectedChange: PropTypes.func,
     onOpenChange: PropTypes.func,
+    placeholder: PropTypes.string,
     position: PropTypes.string,
     shouldFitContainer: PropTypes.bool,
   }
@@ -86,6 +87,7 @@ export default class AkMultiSelect extends PureComponent {
       onOpenChange={this.handleOpenChange}
       onRemoved={this.selectedChange}
       onSelected={this.selectedChange}
+      placeholder={this.props.placeholder}
       position={this.props.position}
       selectedItems={this.state.selectedItems}
       shouldFitContainer={this.props.shouldFitContainer}

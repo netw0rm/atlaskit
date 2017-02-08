@@ -242,6 +242,10 @@ export class BlockTypeState {
     this.cursorMovable = false;
     const append = false;
 
+    // The reason that we need to set a timeout here is because
+    // prosemirror sets a timeout (100 miliseconds) to check
+    // whether dom cursor position has changed after keypress.
+    // So we check later (105 miliseconds) that whether prosemirror has detect cursor change.
     setTimeout(() => this.createParagraphNear(append), 105);
     return false;
   }
@@ -262,18 +266,20 @@ export class BlockTypeState {
 
     if (!this.cursorMovable) {
       const {$from, $to} = this.pm.selection;
+      const {doc, tr} = this.pm;
+
       if (!append) {
         let pos = $from.start($from.depth);
         pos = $from.depth > 1 ? pos - 1 : pos;
-        const next = new TextSelection(this.pm.doc.resolve(pos));
+        const next = new TextSelection(doc.resolve(pos));
 
-        this.pm.tr.insert(pos - 1, paragraph.create()).setSelection(next).applyAndScroll();
+        tr.insert(pos - 1, paragraph.create()).setSelection(next).applyAndScroll();
       } else {
         let pos = $to.end($to.depth);
         pos = $to.depth > 1 ? pos + 1 : pos;
-        const next = new TextSelection(this.pm.doc.resolve(pos + 1));
+        const next = new TextSelection(doc.resolve(pos + 1));
 
-        this.pm.tr.setSelection(next).insert(pos + 1, paragraph.create()).applyAndScroll();
+        tr.setSelection(next).insert(pos + 1, paragraph.create()).applyAndScroll();
       }
     }
   }
@@ -359,7 +365,7 @@ export class BlockTypeState {
     const { $from } = pm.selection;
 
     for (let depth = 0; depth <= $from.depth; depth++) {
-      const node = $from.node(depth) !;
+      const node = $from.node(depth)!;
       const blocktype = this.nodeBlockType(node);
       if (blocktype !== OTHER) {
         return blocktype;

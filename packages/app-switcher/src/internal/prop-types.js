@@ -3,6 +3,7 @@ import { PropTypes } from 'react';
 const applications = PropTypes.arrayOf(PropTypes.shape({
   name: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
+  product: PropTypes.string.isRequired,
 }));
 
 const configureLink = PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired;

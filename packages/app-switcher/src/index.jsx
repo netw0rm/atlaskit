@@ -14,16 +14,26 @@ export default class AppSwitcher extends PureComponent {
     isAnonymousUser: PropTypes.bool.isRequired,
     suggestedApplication: AppSwitcherPropTypes.suggestedApplication.isRequired,
     i18n: AppSwitcherPropTypes.i18n.isRequired,
+    analytics: PropTypes.func,
+  };
+
+  static defaultProps = {
+    analytics: () => {},
   };
 
   render = () => {
-    const homeLink = this.props.isAnonymousUser ? null : (<HomeLink />);
-    const recentContainers = this.props.isAnonymousUser ? null : (
-      <RecentContainers
-        containers={this.props.recentContainers}
-        i18n={this.props.i18n}
-      />
-    );
+    const homeLink = this.props.isAnonymousUser
+      ? null
+      : (<HomeLink analytics={this.props.analytics} />);
+
+    const recentContainers = this.props.isAnonymousUser
+      ? null
+      : (
+        <RecentContainers
+          containers={this.props.recentContainers}
+          i18n={this.props.i18n}
+        />
+      );
 
     return (
       <AppSwitcherContainer>
@@ -35,6 +45,7 @@ export default class AppSwitcher extends PureComponent {
           i18n={this.props.i18n}
           isAnonymousUser={this.props.isAnonymousUser}
           error={this.props.linkedApplications.error}
+          analytics={this.props.analytics}
         />
         <SuggestedApplication
           show={!this.props.isAnonymousUser && this.props.suggestedApplication.show}
@@ -43,6 +54,7 @@ export default class AppSwitcher extends PureComponent {
           url={this.props.suggestedApplication.url}
           onDontShowAgainClick={this.props.suggestedApplication.onDontShowAgainClick}
           i18n={this.props.i18n}
+          analytics={this.props.analytics}
         />
       </AppSwitcherContainer>
     );

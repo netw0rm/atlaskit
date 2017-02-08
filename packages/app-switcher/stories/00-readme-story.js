@@ -20,6 +20,8 @@ const propDescriptions = {
   suggestedApplication: 'Map containing which application to suggest to the user.',
   i18n: 'Mapping of i18n keys to translations.',
   isAnonymousUser: 'If set to true, the home icon, recent containers and suggested application will not display.',
+  analytics: 'This function is called when the user performs certain actions in the app switcher. ' +
+             'The function supplied should have the following signature: function analyics(eventName, payload) { ... }.',
 };
 
 const recentContainerPropDescriptions = [
@@ -66,6 +68,11 @@ const linkedApplicationsPropDescriptions = [
         name: 'url',
         type: 'String',
         description: 'URL of the application.',
+      },
+      {
+        name: 'product',
+        type: 'String',
+        description: 'Product - e.g. "jira", "confluence" or "custom".',
       },
     ],
   },

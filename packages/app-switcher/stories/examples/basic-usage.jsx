@@ -18,10 +18,12 @@ const data = {
       {
         name: 'JIRA',
         url: 'https://instance.atlassian.net/',
+        product: 'jira',
       },
       {
         name: 'Confluence',
         url: 'https://instance.atlassian.net/wiki',
+        product: 'confluence',
       },
     ],
     error: false,

@@ -24,15 +24,18 @@
     "apps": [
       {
         "name": "JIRA",
-        "url": "https://www.atlassian.com/#4"
+        "url": "https://www.atlassian.com/#4",
+        "product": "jira"
       },
       {
         "name": "Confluence",
-        "url": "https://www.atlassian.com/#5"
+        "url": "https://www.atlassian.com/#5",
+        "product": "confluence"
       },
       {
         "name": "Long application name which overflows",
-        "url": "https://www.atlassian.com/#6"
+        "url": "https://www.atlassian.com/#6",
+        "product": "custom"
       }
     ],
     "error": false

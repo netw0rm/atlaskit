@@ -15,7 +15,7 @@ describe(name, () => {
   it('should listen for click events', () => {
     const onClick = sinon.spy();
 
-    const wrapper = shallow(<SuggestedApplication show application="jira" onDontShowAgainClick={onClick} i18n={{}} />);
+    const wrapper = shallow(<SuggestedApplication show application="jira" onDontShowAgainClick={onClick} i18n={{}} analytics={() => {}} />);
     wrapper.find(MenuItemContainer).simulate('click');
 
     expect(onClick).to.have.property('callCount', 1);

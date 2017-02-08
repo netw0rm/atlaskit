@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { ConfluenceLogo, JiraLogo } from '@atlaskit/logo';
 
 import {
@@ -14,7 +14,16 @@ import AppSwitcherPropTypes from '../internal/prop-types';
 export default class SuggestedApplication extends PureComponent {
   static propTypes = {
     i18n: AppSwitcherPropTypes.i18n,
+    analytics: PropTypes.func,
     ...AppSwitcherPropTypes.suggestedApplication,
+  };
+
+  onSuggestedApplicationClick =
+    () => this.props.analytics(`appswitcher.discovery.user.select.${this.props.application}`);
+
+  onDontShowAgainClick = () => {
+    this.props.analytics('appswitcher.discovery.nothanks.button.click');
+    this.props.onDontShowAgainClick();
   };
 
   render() {
@@ -30,7 +39,7 @@ export default class SuggestedApplication extends PureComponent {
     return (
       <div>
         <MenuHeader>{this.props.i18n['try.other.apps']}</MenuHeader>
-        <a href={this.props.url}>
+        <a href={this.props.url} onClick={this.onSuggestedApplicationClick}>
           <SuggestedApplicationContainer>
             <LogoContainer>{logos[this.props.application]}</LogoContainer>
             <SuggestedApplicationTagline>
@@ -38,7 +47,7 @@ export default class SuggestedApplication extends PureComponent {
             </SuggestedApplicationTagline>
           </SuggestedApplicationContainer>
         </a>
-        <MenuItemContainer onClick={this.props.onDontShowAgainClick}>
+        <MenuItemContainer onClick={this.onDontShowAgainClick}>
           <MenuLinkItem>{this.props.i18n["don't.show.this.again"]}</MenuLinkItem>
         </MenuItemContainer>
       </div>

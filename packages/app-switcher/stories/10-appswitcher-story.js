@@ -7,6 +7,8 @@ import { name } from '../package.json';
 
 import data from './data.json';
 
+data.analytics = (key, props) => console.log(key, props);
+
 storiesOf(name, module)
   .add('with all components', () => (
     <Chrome>

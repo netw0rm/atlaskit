@@ -6,8 +6,12 @@ export default class ApplicationLinks extends PureComponent {
   static propTypes = {
     i18n: AppSwitcherPropTypes.i18n,
     isAnonymousUser: PropTypes.bool,
+    analytics: PropTypes.func,
     ...AppSwitcherPropTypes.linkedApplications,
   };
+
+  onConfigureClick = () => this.props.analytics('appswitcher.configure.link.click');
+  onLinkedApplicationClick = product => this.props.analytics('appswitcher.app.link.click', { product });
 
   render() {
     const apps = this.props.error
@@ -17,7 +21,7 @@ export default class ApplicationLinks extends PureComponent {
         </MenuItemContainer>
       )
       : this.props.apps.map(app => (
-        <a href={app.url} key={app.url}>
+        <a href={app.url} key={app.url} onClick={() => this.onLinkedApplicationClick(app.product)}>
           <MenuItemContainer>
             <div>{app.name}</div>
           </MenuItemContainer>
@@ -26,7 +30,7 @@ export default class ApplicationLinks extends PureComponent {
 
     const configureLink = this.props.configureLink ?
       (
-        <a href={this.props.configureLink}>
+        <a href={this.props.configureLink} onClick={this.onConfigureClick}>
           <MenuItemContainer>
             <MenuLinkItem>{this.props.i18n.configure}</MenuLinkItem>
           </MenuItemContainer>

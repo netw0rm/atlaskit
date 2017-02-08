@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import ManagedGreeting from '../../src';
+import { StatelessToggle } from '@atlaskit/util-component-template';
 
 export default class extends PureComponent {
   render() {
     return (
-      <ManagedGreeting />
+      <StatelessToggle />
     );
   }
 }

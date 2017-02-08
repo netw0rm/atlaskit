@@ -1,3 +1,3 @@
 // module API
-export default from './managed';
-export { default as Greeting } from './unmanaged';
+export default from './stateful';
+export { default as StatelessToggle } from './stateless';

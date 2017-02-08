@@ -7,7 +7,7 @@
   "description": "A template for creating AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
+  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/util-component-template; } || ../../node_modules/.bin/not-in-publish"
   },

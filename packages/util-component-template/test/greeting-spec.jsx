@@ -1,4 +1,6 @@
 import React from 'react';
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 import ManagedGreeting, { Greeting } from '../src';
@@ -24,7 +26,7 @@ describe(name, () => {
 
       wrapper.simulate('click');
 
-      expect(stub.calledWithExactly('Hello Alex!'));
+      expect(stub.calledWithExactly('Hello Alex!')).to.equal(true);
     });
 
     it('should speak with a default name when none is provided', () => {
@@ -38,7 +40,7 @@ describe(name, () => {
 
       wrapper.find('button').simulate('click');
 
-      expect(stub.calledWithExactly('[ Name not provided ]'));
+      expect(stub.calledWithExactly('[ Name not provided ]')).to.equal(true);
     });
   });
 

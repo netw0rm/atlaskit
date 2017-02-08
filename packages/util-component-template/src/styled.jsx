@@ -3,6 +3,7 @@ import {
   akColorB200,
   akColorG300,
   akColorP300,
+  akColorR400,
   akColorPrimary3,
   akColorG75,
   akGridSize,
@@ -25,9 +26,10 @@ export const Button = styled.button`
 `;
 
 export const Container = styled.div`
-  backgroundColor: ${akColorG75};
+  backgroundColor: ${props => (props.isActive ? akColorG75 : akColorR400)};
   display: flex;
   padding: ${akGridSize};
   justify-content: center;
+  transition: background-color 0.3s ease;
   width: 400px;
 `;

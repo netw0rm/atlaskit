@@ -66,7 +66,7 @@ describe('panel', () => {
       plugin.subscribe(spy);
       expect(spy.callCount).to.equal(1);
       plugin.changePanelType({ panelType: 'note' });
-      isPanelNode(pm.selection.$from.node(1))
+      isPanelNode(pm.selection.$from.node(1));
       const newPanelType = pm.selection.$from.node(1).attrs['panelType'];
       expect(newPanelType).to.equal('note');
       expect(plugin.element).not.to.be.undefined;

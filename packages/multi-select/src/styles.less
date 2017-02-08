@@ -1,4 +1,5 @@
 @import '~@atlaskit/util-shared-styles/src/grid.less';
+@import '~@atlaskit/util-shared-styles/src/colors.less';
 
 .selectWrapper {
   display: inline-block;
@@ -42,6 +43,11 @@
   height: 30px;
   border: 0;
   background: none;
+
+  &::placeholder {
+    font-size: 14px;
+    color: @ak-color-N200;
+  }
 }
 
 .nothing {

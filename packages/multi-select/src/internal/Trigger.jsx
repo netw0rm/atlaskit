@@ -6,24 +6,28 @@ import { locals as styles } from '../styles.less';
 
 export default class Trigger extends PureComponent {
   static propTypes = {
+    hasSelectedItems: PropTypes.bool,
     children: PropTypes.node,
     onClick: PropTypes.func,
     isDisabled: PropTypes.bool,
   }
 
   static defaultProps = {
+    hasSelectedItems: false,
     isOpen: false,
     isDisabled: false,
     children: null,
     onClick: () => {},
   }
 
+  // disabled because all of the accessibility is handled manually
   /* eslint-disable jsx-a11y/no-static-element-interactions */
   render() {
     return (
       <div
         className={classNames([styles.trigger, {
           [styles.disabled]: this.props.isDisabled,
+          [styles.hasSelected]: this.props.hasSelectedItems,
         }])}
         onClick={this.props.onClick}
         tabIndex={this.props.isDisabled ? -1 : 0}

@@ -14,9 +14,11 @@ storiesOf(name, module)
         component={name}
         description={description}
       >
-        <Code code={OverviewExampleRaw}>
-          {OverviewExample}
-        </Code>
+        <div style={{ position: 'relative' }}>
+          <Code code={OverviewExampleRaw}>
+            {OverviewExample}
+          </Code>
+        </div>
         <Heading type="2">Picker Props</Heading>
         <table>
           <thead style={{ border: 0, borderBottom: '1px solid #ddd' }}>

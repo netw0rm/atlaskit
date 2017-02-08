@@ -7,7 +7,7 @@ import { reactionsService } from './reactions-service';
 const ari = 'ari:cloud:demo:123:123';
 
 export default (
-  <div>
+  <div style={{ position: 'relative' }}>
     <ReactionPicker
       emojiService={emojiService}
       onSelection={(emojiId) => reactionsService.toggleReaction(ari, emojiId)}

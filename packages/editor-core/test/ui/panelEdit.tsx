@@ -15,11 +15,7 @@ describe('ak-editor-core/ui/PanelEdit', () => {
   it('should return null if state variable showToolbar is false or target is undefined', () => {
     const { pm } = editor(doc());
     const panelEditOptions = shallow(<PanelEdit pluginState={PanelPlugin.get(pm)!}/>);
-    panelEditOptions.setState({ showToolbar: false, target: undefined });
-    expect(panelEditOptions.html()).to.equal(null);
-    panelEditOptions.setState({ showToolbar: false, target: document.createElement('div') });
-    expect(panelEditOptions.html()).to.equal(null);
-    panelEditOptions.setState({ showToolbar: true, target: undefined });
+    panelEditOptions.setState({ showToolbar: false });
     expect(panelEditOptions.html()).to.equal(null);
     panelEditOptions.setState({ showToolbar: true, target: document.createElement('div') });
     expect(panelEditOptions.html()).to.not.equal(null);

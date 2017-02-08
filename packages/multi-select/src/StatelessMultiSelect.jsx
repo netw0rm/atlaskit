@@ -231,7 +231,6 @@ export default class StatelessMultiSelect extends PureComponent {
               onFocus={this.onFocus}
             >
               <Trigger
-                hasSelectedItems={!!this.props.selectedItems.length}
                 isDisabled={this.props.isDisabled}
                 onClick={this.handleTriggerClick}
               >

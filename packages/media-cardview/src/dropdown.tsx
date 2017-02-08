@@ -12,24 +12,24 @@ export interface DropdownProps {
 
 export class Dropdown extends Component<DropdownProps, {}> {
   render() {
-    const group: any = (DropdownGroup as any).default;
+    const GROUP: any = (DropdownGroup as any).default;
 
     const items = this.props.items ? this.props.items.map(item => this._itemElement(item.label, item.handler)) : null;
 
     return (
       <div className={styles['dropdown']}>
-        <group>
+        <GROUP>
           {items}
-        </group>
+        </GROUP>
       </div>
     );
   }
 
   private _itemElement(name: string | undefined, handler: Actions.CardEventHandler) {
-    const item: any = (DropdownItem as any).default;
+    const ITEM: any = (DropdownItem as any).default;
 
     return (
-      <item onActivate={handler} key={name}>{name}</item>
+      <ITEM onActivate={handler} key={name}>{name}</ITEM>
     );
   }
 }

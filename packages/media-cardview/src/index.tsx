@@ -7,6 +7,11 @@ import {Actions} from '@atlaskit/media-domain';
 import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';
 import {MediaTypes} from '@atlaskit/media-domain';
+import {CardViewSmall} from './cardViewSmall/cardViewSmall';
+
+export {
+  CardViewSmall
+};
 
 export interface CardViewProps {
   height?: number;

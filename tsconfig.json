@@ -33,6 +33,8 @@
     "packages/*/stories/**/*.tsx"
   ],
   "files": [
+    "build/types/png.d.ts",
+    "build/types/styles.d.ts",
     "build/types/node.d.ts",
     "build/types/popper.d.ts",
     "build/types/raw-loader.d.ts"

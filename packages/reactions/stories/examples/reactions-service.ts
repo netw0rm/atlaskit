@@ -4,6 +4,7 @@ import { default as AbstractReactionsService } from '../../src/reactions-service
 import { Reactions, ReactionSummary } from '../../src/reactions-service';
 
 export default class MockReactionsService extends AbstractReactionsService {
+
   protected cachedReactions = {
     'ari:cloud:demo:123:123': [
       {

@@ -94,6 +94,28 @@ describe('@atlaskit/reactions/reactions-service', () => {
           expect((reactionsService as any).cachedReactions).to.deep.equal(reactions);
         });
     });
+
+    it('should not overwrite cache for excluded aris', () => {
+      populateCache(reactionsService);
+      const anotherAri = 'another:ari:123';
+      const anotherAriData = [
+        {
+          ari: anotherAri,
+          emojiId: 'grinning',
+          count: 1,
+          reacted: false
+        }
+      ];
+
+      (reactionsService as any).cachedReactions[anotherAri] = anotherAriData;
+
+      return reactionsService.getReactions([ari])
+        .then(reactions => {
+          expect((reactionsService as any).cachedReactions).not.to.deep.equal(reactions);
+          expect((reactionsService as any).cachedReactions[ari]).to.deep.equal(reactions[ari]);
+          expect((reactionsService as any).cachedReactions[anotherAri]).to.deep.equal(anotherAriData);
+        });
+    });
   });
 
   describe('addReaction', () => {

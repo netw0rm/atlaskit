@@ -21,10 +21,36 @@ export interface Reactions {
 
 export default class AbstractReactionsService {
 
+  protected excludeArisFromAutoPoll: string[] = [];
   protected cachedReactions: Reactions = {};
   protected subscribers: { [ari: string]: Listener[] } = {};
+  protected lastActionForAri: { [ari: string]: number } = {};
 
   private batchedAris: string[] = [];
+
+  protected autoPoll(autoPollInterval) {
+    if (!autoPollInterval) {
+      return;
+    }
+
+    setTimeout(() => {
+      const aris = Object.keys(this.subscribers);
+
+      if (aris.length) {
+        this.getReactions(aris)
+          .then(reactions => {
+            Object.keys(reactions).forEach(ari => {
+              this.includeAriInAutoPoll(ari);
+              this.notifyUpdated(ari, reactions[ari]);
+            });
+            this.autoPoll(autoPollInterval);
+          });
+      } else {
+        this.autoPoll(autoPollInterval);
+      }
+    }, autoPollInterval);
+  }
+
 
   getReactions(aris: string[]): Promise<Reactions> {
     return new Promise<Reactions>((resolve, reject) => {
@@ -133,7 +159,23 @@ export default class AbstractReactionsService {
     }
   }
 
+  private excludeAriFromAutoPoll(ari): void {
+    if (this.excludeArisFromAutoPoll.indexOf(ari) === -1) {
+      this.excludeArisFromAutoPoll.push(ari);
+    }
+  }
+
+  private includeAriInAutoPoll(ari): void {
+    const index = this.excludeArisFromAutoPoll.indexOf(ari);
+    if (index === -1) {
+      return;
+    }
+    this.excludeArisFromAutoPoll.splice(index, 1);
+  }
+
   protected optimisticAddReaction(ari: string, emojiId: string): void {
+    this.excludeAriFromAutoPoll(ari);
+
     if (!this.cachedReactions[ari]) {
       this.cachedReactions[ari] = [];
     }
@@ -157,6 +199,8 @@ export default class AbstractReactionsService {
   }
 
   protected optimisticDeleteReaction(ari: string, emojiId: string): void {
+    this.excludeAriFromAutoPoll(ari);
+
     if (!this.cachedReactions[ari]) {
       this.cachedReactions[ari] = [];
     }
@@ -178,6 +222,7 @@ export default class AbstractReactionsService {
 export interface ReactionsServiceConfig {
   sessionToken?: string;
   baseUrl: string;
+  autoPoll?: number;
 }
 
 const requestService = <T>(baseUrl: string, path: string, opts?: {}) => {
@@ -205,6 +250,10 @@ export class ReactionsService extends AbstractReactionsService {
 
   constructor(private config: ReactionsServiceConfig) {
     super();
+
+    if (config.autoPoll) {
+      this.autoPoll(config.autoPoll);
+    }
   }
 
   private getHeaders(): Headers {
@@ -226,7 +275,9 @@ export class ReactionsService extends AbstractReactionsService {
         'body': JSON.stringify({ aris }),
         'credentials': 'include'
       }).then(reactions => {
-        this.cachedReactions = reactions;
+        Object.keys(reactions).forEach(ari => {
+          this.cachedReactions[ari] = reactions[ari];
+        });
         resolve(reactions);
       });
     });
@@ -235,6 +286,9 @@ export class ReactionsService extends AbstractReactionsService {
   addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
     this.optimisticAddReaction(ari, emojiId);
 
+    const timestamp = Date.now();
+    this.lastActionForAri[ari] = timestamp;
+
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       requestService<{ ari: string, reactions: ReactionSummary[] }>(this.config.baseUrl, 'reactions', {
         'method': 'POST',
@@ -242,8 +296,13 @@ export class ReactionsService extends AbstractReactionsService {
         'body': JSON.stringify({ emojiId, ari }),
         'credentials': 'include'
       }).then(reactions => {
-        this.cachedReactions[ari] = reactions.reactions;
-        resolve(reactions.reactions);
+
+        // Do not update cache if it was already updated by a more recent action
+        if (this.lastActionForAri[ari] === timestamp) {
+          this.cachedReactions[ari] = reactions.reactions;
+        }
+
+        resolve(this.cachedReactions[ari]);
       }).catch(() => reject());
     });
   }
@@ -251,14 +310,22 @@ export class ReactionsService extends AbstractReactionsService {
   deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
     this.optimisticDeleteReaction(ari, emojiId);
 
+    const timestamp = Date.now();
+    this.lastActionForAri[ari] = timestamp;
+
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       requestService<{ ari: string, reactions: ReactionSummary[] }>(this.config.baseUrl, `reactions?ari=${ari}&emojiId=${emojiId}`, {
         'method': 'DELETE',
         'headers': this.getHeaders(),
         'credentials': 'include'
       }).then(reactions => {
-        this.cachedReactions[ari] = reactions.reactions;
-        resolve(reactions.reactions);
+
+        // Do not update cache if it was already updated by a more recent action
+        if (this.lastActionForAri[ari] === timestamp) {
+          this.cachedReactions[ari] = reactions.reactions;
+        }
+
+        resolve(this.cachedReactions[ari]);
       }).catch(() => reject());
     });
   }

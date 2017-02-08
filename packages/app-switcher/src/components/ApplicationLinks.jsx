@@ -7,6 +7,7 @@ export default class ApplicationLinks extends PureComponent {
     apps: AppSwitcherPropTypes.applications,
     i18n: AppSwitcherPropTypes.i18n,
     configureLink: PropTypes.string,
+    isAnonymousUser: PropTypes.bool,
   };
 
   render() {
@@ -29,7 +30,9 @@ export default class ApplicationLinks extends PureComponent {
 
     return (
       <div>
-        <MenuHeader>{this.props.i18n.apps}</MenuHeader>
+        <MenuHeader paddingTop={!this.props.isAnonymousUser}>
+          {this.props.i18n.apps}
+        </MenuHeader>
         {apps}
         {configureLink}
       </div>

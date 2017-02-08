@@ -25,6 +25,7 @@ const data = {
       },
     ],
   },
+  isAnonymousUser: false,
   suggestedApplication: {
     show: true,
     application: 'confluence',

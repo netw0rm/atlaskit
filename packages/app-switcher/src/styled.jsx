@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import {
-  akGridSize,
   akColorB400,
   akColorN30,
   akColorN90,
@@ -77,9 +76,13 @@ export const MenuHeader = styled.div`
   color: ${akColorN300};
   font-size: 12px;
   text-transform: uppercase;
-  padding: 24px 0 ${akGridSize} 24px;
+  padding: ${props => (props.paddingTop ? '24px 0 8px 24px' : '0 0 8px 24px')}
   font-weight: 500;
 `;
+
+MenuHeader.defaultProps = {
+  paddingTop: true,
+};
 
 export const MenuLinkItem = styled.span`
   color: ${akColorB400};

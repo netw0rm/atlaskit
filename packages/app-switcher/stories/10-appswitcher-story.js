@@ -65,4 +65,19 @@ storiesOf(name, module)
         }}
       />
     </Chrome>
+  ))
+
+  .add('with anonymous mode', () => (
+    <Chrome>
+      <AppSwitcherMenu
+        {...{
+          ...data,
+          suggestedApplication: {
+            show: false,
+          },
+          recentContainers: [],
+          isAnonymousUser: true,
+        }}
+      />
+    </Chrome>
   ));

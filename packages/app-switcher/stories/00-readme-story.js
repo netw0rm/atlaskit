@@ -19,6 +19,7 @@ const propDescriptions = {
   linkedApplications: 'Map containing an array of linked applications.',
   suggestedApplication: 'Map containing which application to suggest to the user.',
   i18n: 'Mapping of i18n keys to translations.',
+  isAnonymousUser: 'If set to true, the home icon, recent containers and suggested application will not display.',
 };
 
 const recentContainerPropDescriptions = [
@@ -132,8 +133,8 @@ const i18nPropDescriptions = [
   },
 ];
 
-function propDescriptionList(props) {
-  const listItems = props.map((item, index) => {
+function propDescriptionList(descriptions) {
+  const listItems = descriptions.map((item, index) => {
     const children = item.children ? propDescriptionList(item.children) : null;
     const type = item.type ? (<i>({item.type})</i>) : null;
 

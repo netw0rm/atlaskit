@@ -9,7 +9,6 @@ import FloatingToolbar from '../FloatingToolbar';
 import ToolbarButton from '../ToolbarButton';
 
 import { availablePanelType, PanelState, PanelType } from '../../plugins/panel';
-import { PanelNode } from '../../schema';
 import * as styles from './styles';
 
 const icons = {
@@ -26,7 +25,7 @@ export interface Props {
 export interface State {
   showToolbar?: boolean;
   target?: HTMLElement | undefined;
-  activePanel?: PanelNode | undefined;
+  activePanelType?: string | undefined;
 }
 
 export default class PanelEdit extends PureComponent<Props, State> {
@@ -37,18 +36,15 @@ export default class PanelEdit extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const { pluginState } = this.props;
-    pluginState && pluginState.subscribe(this.handlePluginStateChange);
+    this.props.pluginState.subscribe(this.handlePluginStateChange);
   }
 
   componentWillUnmount() {
-    const { pluginState } = this.props;
-    pluginState && pluginState.unsubscribe(this.handlePluginStateChange);
+    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
   render() {
-    const { target, activePanel, showToolbar } = this.state;
-    const activePanelType =  activePanel && activePanel.attrs['panelType'];
+    const { target, activePanelType, showToolbar } = this.state;
     if (showToolbar) {
       return (
         <FloatingToolbar target={target} align="left">
@@ -80,21 +76,20 @@ export default class PanelEdit extends PureComponent<Props, State> {
 
   private handlePluginStateChange = (pluginState: PanelState) => {
     const { target } = this.state;
-    const showToolbar = pluginState.element && (pluginState.clicked || target !== pluginState.element);
+    const { activePanel, element, clicked } = pluginState;
+    const showToolbar = element && (clicked || target !== element);
     this.setState({
       showToolbar,
-      target: pluginState.element,
-      activePanel: pluginState.activePanel,
+      target: element,
+      activePanelType: activePanel && activePanel.attrs['panelType'],
     });
   }
 
   private handleSelectPanelType = (panelType: PanelType, event) => {
-    const { pluginState } = this.props;
-    pluginState && pluginState.changePanelType(panelType);
+    this.props.pluginState.changePanelType(panelType);
   }
 
   private handleRemovePanelType = () => {
-    const { pluginState } = this.props;
-    pluginState && pluginState.removePanelType();
+    this.props.pluginState.removePanelType();
   }
 }

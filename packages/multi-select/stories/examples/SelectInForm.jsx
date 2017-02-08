@@ -38,6 +38,7 @@ export default (
     <Select
       id="cities_id"
       isFirstChild
+      isFocusedInitially
       isRequired
       items={cities}
       label="Required field"

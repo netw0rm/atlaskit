@@ -63,15 +63,14 @@ describe('code-block', () => {
 
     context('when moving within the same code block', () => {
       it('does not notify subscriber', () => {
-        const { pm, plugin } = editor(doc(code_block()('{<>}code{cbPos2}Block{cbPos1}')));
+        const { pm, plugin } = editor(doc(code_block()('{<>}codeBlock{cbPos}')));
         const spy = sinon.spy();
-        const { cbPos1, cbPos2 } = pm.doc.refs;
+        const { cbPos } = pm.doc.refs;
 
         plugin.subscribe(spy);
-        pm.setTextSelection(cbPos1);
-        pm.setTextSelection(cbPos2);
+        pm.setTextSelection(cbPos);
 
-        expect(spy.callCount).to.equal(2);
+        expect(spy.callCount).to.not.equal(2);
       });
     });
 
@@ -261,7 +260,7 @@ describe('code-block', () => {
 
   context('updateLanguage', () => {
     it('keeps the content', () => {
-      const { plugin } = editor(doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock')));
+      const { plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
       const previousElement = plugin.element;
 
       plugin.updateLanguage('php');
@@ -272,7 +271,7 @@ describe('code-block', () => {
     });
 
     it('can update language to be null', () => {
-      const { plugin } = editor(doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock')));
+      const { plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
 
       plugin.updateLanguage(null);
 
@@ -280,7 +279,7 @@ describe('code-block', () => {
     });
 
     it('updates language', () => {
-      const { plugin } = editor(doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock')));
+      const { plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
 
       plugin.updateLanguage('php');
 
@@ -288,7 +287,7 @@ describe('code-block', () => {
     });
 
     it('updates the node', () => {
-      const { plugin } = editor(doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock')));
+      const { plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
       const previousActiveCodeBlock = plugin.activeCodeBlock;
 
       plugin.updateLanguage('php');
@@ -301,35 +300,11 @@ describe('code-block', () => {
 
   describe('active', () => {
     context('inside a code block', () => {
-
       it('is active', () => {
-        const { plugin } = editor(doc(code_block()('text')));
+        const { plugin } = editor(doc(code_block()('te{<>}xt')));
 
-        expect(plugin.active).to.be.true;
+        expect(plugin.active).to.equal(true);
       });
-
-      context('when switch between different code blocks', () => {
-        it('is active', () => {
-        const { pm, plugin } = editor(doc(code_block()('codeBlock{<>}'), code_block()('codeBlock{cbPos}')));
-        const { cbPos } = pm.doc.refs;
-
-        pm.setTextSelection(cbPos);
-
-        expect(plugin.active).to.be.true;
-        });
-      });
-
-      context('when continue typing', () => {
-        it('is not active', () => {
-          const { pm, plugin, sel} = editor(doc(code_block()('te{<>}xt')));
-
-          pm.input.insertText(sel, sel, 'hello');
-
-          expect(plugin.active).to.be.false;
-        });
-      });
-
-
     });
 
     context('outside of a code block', () => {
@@ -343,13 +318,13 @@ describe('code-block', () => {
 
   describe('language', () => {
     it('is the same as activeCodeBlock language', () => {
-      const { plugin } = editor(doc(code_block({ language: 'java' })('te{<>}xt')));
+      const { plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
 
       expect(plugin.language).to.eq('java');
     });
 
     it('updates if activeCodeBlock updates langugae', () => {
-      const { plugin } = editor(doc(code_block({ language: 'java' })('te{<>}xt')));
+      const { plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
 
       plugin.updateLanguage('php');
 
@@ -365,13 +340,13 @@ describe('code-block', () => {
 
   describe('content', () => {
     it('is the same as activeCodeBlock text content', () => {
-      const { plugin } = editor(doc(code_block({ language: 'java' })('te{<>}xt')));
+      const { plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
 
       expect(plugin.content).to.eq('text');
     });
 
     it('updates if activeCodeBlock updates content', () => {
-      const { pm, plugin, sel } = editor(doc(code_block({ language: 'java' })('te{<>}xt')));
+      const { pm, plugin, sel } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
 
       pm.input.insertText(sel, sel, 'bar');
 

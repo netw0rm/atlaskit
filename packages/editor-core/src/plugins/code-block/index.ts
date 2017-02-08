@@ -43,7 +43,7 @@ export class CodeBlockState {
 
   updateLanguage(language: string): void {
     if (this.activeCodeBlock) {
-      this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.activeCodeBlock.type, { language: language }).apply();
+      this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.activeCodeBlock.type, {language: language}).apply();
     }
   }
 
@@ -81,41 +81,19 @@ export class CodeBlockState {
 
   private update() {
     const codeBlockNode = this.activeCodeBlockNode();
-    let nextActive = true;
-    let dirty = false;
-
-    if (!codeBlockNode || !this.nodeUpdated(codeBlockNode) || this.contentUpdated(codeBlockNode)) {
-      nextActive = false;
-    }
-
-    if (this.active !== nextActive) {
-      this.active = nextActive;
-      dirty = true;
-    }
 
     if (codeBlockNode !== this.activeCodeBlock) {
       this.activeCodeBlock = codeBlockNode;
+      this.active = !!codeBlockNode;
       this.language = codeBlockNode && codeBlockNode.attrs['language'];
       this.content = codeBlockNode && codeBlockNode.textContent;
       this.element = this.activeCodeBlockElement();
-      dirty = true;
-    }
-
-    if (dirty) {
       this.changeHandlers.forEach(changeHandler => changeHandler(this));
     }
   }
 
-  private nodeUpdated(other: Node) {
-    return this.activeCodeBlock !== other;
-  }
-
-  private contentUpdated(other: Node) {
-    return this.activeCodeBlock && other && this.activeCodeBlock.textContent !== other.textContent;
-  }
-
   private activeCodeBlockElement(): HTMLElement {
-    const offset = this.nodeStartPos();
+    const offset =  this.nodeStartPos();
     const { node } = DOMFromPos(this.pm, offset, true);
 
     return node as HTMLElement;

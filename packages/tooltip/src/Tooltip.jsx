@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import Layer from 'ak-layer';
+import Layer from '@atlaskit/layer';
 
 import styles from 'style!./styles.less';
 import { positionToPopperPosition, getAnimationClass } from './internal/helpers';

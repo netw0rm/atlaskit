@@ -1,8 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Avatar from 'ak-avatar';
+import Avatar from '@atlaskit/avatar';
 import Question from 'ak-icon/glyph/question';
-import { Code, Chrome, Description } from 'akutil-readme';
+import { Code, Chrome, Description } from '@atlaskit/util-readme';
 
 import DropdownMenu from '../src';
 import { name } from '../package.json';

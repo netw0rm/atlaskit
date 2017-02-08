@@ -12,9 +12,11 @@ import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
 import { MentionsPluginState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
+import { PanelState } from '../../plugins/panel';
 import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
 import MentionPicker from '../MentionPicker';
+import PanelEdit from '../PanelEdit';
 import ToolbarBlockType from '../ToolbarBlockType';
 import ToolbarButton from '../ToolbarButton';
 import ToolbarFeedback from '../ToolbarFeedback';
@@ -38,6 +40,7 @@ export interface Props {
   pluginStateImageUpload?: ImageUploadState;
   pluginStateMentions?: MentionsPluginState;
   mentionsResourceProvider?: any; // AbstractMentionResource
+  pluginStatePanel?: PanelState;
 }
 
 export default class ChromeExpanded extends PureComponent<Props, {}> {
@@ -60,6 +63,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} /> : null}
           {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} /> : null}
           {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} /> : null}
+          {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} /> : null}
         </div>
         <div className={styles.footer}>
           <div className={styles.footerActions}>

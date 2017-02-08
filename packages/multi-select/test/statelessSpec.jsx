@@ -398,6 +398,36 @@ describe(`${name} - stateless`, () => {
         expect(wrapper.state().isFocused).to.equal(true);
       });
     });
+
+    describe('getPlaceholder', () => {
+      const items = [
+        { value: 1, content: 'Test1' },
+        { value: 2, content: 'Test 2' },
+        { value: 3, content: 'Third test' },
+      ];
+      const placeholder = 'Test!';
+
+      it('should return "placeholder" text for the empty select', () => {
+        wrapper.setProps({ isOpen: false });
+        wrapper.setProps({ selectedItems: [] });
+        wrapper.setProps({ placeholder });
+        expect(instance.getPlaceholder()).to.equal(placeholder);
+      });
+
+      it('should return null if some items are selected', () => {
+        wrapper.setProps({ isOpen: false });
+        wrapper.setProps({ selectedItems: [items[0]] });
+        wrapper.setProps({ placeholder });
+        expect(instance.getPlaceholder()).to.equal(null);
+      });
+
+      it('should return null if the select is opened', () => {
+        wrapper.setProps({ isOpen: true });
+        wrapper.setProps({ selectedItems: [] });
+        wrapper.setProps({ placeholder });
+        expect(instance.getPlaceholder()).to.equal(null);
+      });
+    });
   });
 
   describe('disabled component', () => {
@@ -436,36 +466,6 @@ describe(`${name} - stateless`, () => {
 
     it('should not render input if disabled', () => {
       expect(wrapper.find('input[disabled]').length).to.equal(0);
-    });
-
-    describe('getPlaceholder', () => {
-      const items = [
-        { value: 1, content: 'Test1' },
-        { value: 2, content: 'Test 2' },
-        { value: 3, content: 'Third test' },
-      ];
-      const placeholder = 'Test!';
-
-      it('should return "placeholder" text for the empty select', () => {
-        wrapper.setProps({ isOpen: false });
-        wrapper.setProps({ selectedItems: [] });
-        wrapper.setProps({ placeholder });
-        expect(instance.getPlaceholder()).to.equal(placeholder);
-      });
-
-      it('should return null if some items are selected', () => {
-        wrapper.setProps({ isOpen: false });
-        wrapper.setProps({ selectedItems: [items[0]] });
-        wrapper.setProps({ placeholder });
-        expect(instance.getPlaceholder()).to.equal(null);
-      });
-
-      it('should return null if the select is opened', () => {
-        wrapper.setProps({ isOpen: true });
-        wrapper.setProps({ selectedItems: [] });
-        wrapper.setProps({ placeholder });
-        expect(instance.getPlaceholder()).to.equal(null);
-      });
     });
   });
 });

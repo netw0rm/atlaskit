@@ -20,7 +20,7 @@ const icons = {
 };
 
 export interface Props {
-  pluginState: PanelState | undefined;
+  pluginState: PanelState;
 }
 
 export interface State {
@@ -49,7 +49,7 @@ export default class PanelEdit extends PureComponent<Props, State> {
   render() {
     const { target, activePanel, showToolbar } = this.state;
     const activePanelType =  activePanel && activePanel.attrs['panelType'];
-    if (target && showToolbar) {
+    if (showToolbar) {
       return (
         <FloatingToolbar target={target} align="left">
           {availablePanelType.map((panelType, index) => {

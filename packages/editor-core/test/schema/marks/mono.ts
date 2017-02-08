@@ -46,10 +46,10 @@ describe('ak-editor-core/schema mono mark', () => {
   itMatches('<span style="font-family: monospace; white-space: pre-wrap">text</span>', 'text');
   itMatches('<span style="font-family: monospace; white-space: pre-line">text</span>', 'text');
 
-  it('serializes to <span style="font-family: monospace; white-space: pre-wrap">', () => {
+  it('serializes to <span style="font-family: monospace; white-space: pre-wrap" class="mono">', () => {
     const schema = makeSchema();
     const node = schema.text('foo', [ schema.marks.mono.create() ] );
-    expect(toHTML(node)).to.equal('<span style="font-family: monospace; white-space: pre-wrap;">foo</span>');
+    expect(toHTML(node)).to.equal('<span style="font-family: monospace; white-space: pre-wrap;" class="mono">foo</span>');
   });
 });
 

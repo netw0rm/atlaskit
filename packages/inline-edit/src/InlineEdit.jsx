@@ -270,6 +270,7 @@ export default class InlineEdit extends PureComponent {
     <div className={this.getRootClasses()}>
       <div style={{ position: (this.props.isLabelHidden ? 'absolute' : 'relative') }}>
         <Label
+          appearance="inline-edit"
           label={this.props.label}
           isLabelHidden={this.props.isLabelHidden}
           htmlFor={this.isReadOnly() ? undefined : this.props.labelHtmlFor}

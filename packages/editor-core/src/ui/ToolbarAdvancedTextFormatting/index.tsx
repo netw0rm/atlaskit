@@ -111,6 +111,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     if (!this.state.monoDisabled) {
       const { pluginState } = this.props;
       pluginState && pluginState.toggleStrike();
+      this.toggleOpen();
     }
   }
 
@@ -119,6 +120,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     if (!this.state.monoDisabled) {
       const { pluginState } = this.props;
       pluginState && pluginState.toggleMono();
+      this.toggleOpen();
     }
   }
 };

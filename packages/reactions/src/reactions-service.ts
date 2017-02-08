@@ -119,14 +119,14 @@ export default class AbstractReactionsService {
     }
   }
 
-  private queueAri(ari: string) {
+  private queueAri(ari: string): void {
     const index = findIndex(this.batchedAris, (i => i === ari));
     if (index === -1) {
       this.batchedAris.push(ari);
     }
   }
 
-  private dequeueAri(ari: string) {
+  private dequeueAri(ari: string): void {
     const index = findIndex(this.batchedAris, (i => i === ari));
     if (index !== -1) {
       this.batchedAris.splice(index, 1);
@@ -180,22 +180,25 @@ export interface ReactionsServiceConfig {
   baseUrl: string;
 }
 
-const requestService = (baseUrl: string, path: string, opts?: {}) => {
+const requestService = <T>(baseUrl: string, path: string, opts?: {}) => {
 
   const url = `${baseUrl}/${path}`;
   const options = opts;
 
-  return fetch(new Request(url, options))
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-
-      return Promise.reject({
-        code: response.status,
-        reason: response.statusText,
-      });
-    });
+  return new Promise<T>((resolve, reject) => {
+    fetch(new Request(url, options))
+      .then((response) => {
+        if (response.ok) {
+          resolve(response.json());
+        } else {
+          reject({
+            code: response.status,
+            reason: response.statusText,
+          });
+        }
+      })
+      .catch(reject);
+  });
 };
 
 export class ReactionsService extends AbstractReactionsService {
@@ -204,7 +207,7 @@ export class ReactionsService extends AbstractReactionsService {
     super();
   }
 
-  private getHeaders() {
+  private getHeaders(): Headers {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-Type', 'application/json');
@@ -217,12 +220,12 @@ export class ReactionsService extends AbstractReactionsService {
 
   getReactions(aris: string[]): Promise<Reactions> {
     return new Promise<Reactions>((resolve, reject) => {
-      requestService(this.config.baseUrl, 'reactions/view', {
+      requestService<Reactions>(this.config.baseUrl, 'reactions/view', {
         'method': 'POST',
         'headers': this.getHeaders(),
         'body': JSON.stringify({ aris }),
         'credentials': 'include'
-      }).then((reactions: Reactions) => {
+      }).then(reactions => {
         this.cachedReactions = reactions;
         resolve(reactions);
       });
@@ -233,12 +236,12 @@ export class ReactionsService extends AbstractReactionsService {
     this.optimisticAddReaction(ari, emojiId);
 
     return new Promise<ReactionSummary[]>((resolve, reject) => {
-      requestService(this.config.baseUrl, 'reactions', {
+      requestService<{ ari: string, reactions: ReactionSummary[] }>(this.config.baseUrl, 'reactions', {
         'method': 'POST',
         'headers': this.getHeaders(),
         'body': JSON.stringify({ emojiId, ari }),
         'credentials': 'include'
-      }).then((reactions: { ari: string, reactions: ReactionSummary[] }) => {
+      }).then(reactions => {
         this.cachedReactions[ari] = reactions.reactions;
         resolve(reactions.reactions);
       }).catch(() => reject());
@@ -249,11 +252,11 @@ export class ReactionsService extends AbstractReactionsService {
     this.optimisticDeleteReaction(ari, emojiId);
 
     return new Promise<ReactionSummary[]>((resolve, reject) => {
-      requestService(this.config.baseUrl, `reactions?ari=${ari}&emojiId=${emojiId}`, {
+      requestService<{ ari: string, reactions: ReactionSummary[] }>(this.config.baseUrl, `reactions?ari=${ari}&emojiId=${emojiId}`, {
         'method': 'DELETE',
         'headers': this.getHeaders(),
         'credentials': 'include'
-      }).then((reactions: { ari: string, reactions: ReactionSummary[] }) => {
+      }).then(reactions => {
         this.cachedReactions[ari] = reactions.reactions;
         resolve(reactions.reactions);
       }).catch(() => reject());

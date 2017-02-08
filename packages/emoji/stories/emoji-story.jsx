@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
 import { name } from '../package.json';
-import Emoji from '../src/Emoji';
+import Emoji from '../src/components/common/Emoji';
 
 import emojiService from './story-data';
 

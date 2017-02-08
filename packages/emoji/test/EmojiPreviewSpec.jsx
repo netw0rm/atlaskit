@@ -3,7 +3,7 @@ import React from 'react';
 import styles from 'style!../src/style.less';
 import EmojiPreview from '../src/internal/common/EmojiPreview';
 import ToneSelector from '../src/internal/common/ToneSelector';
-import Emoji from '../src/Emoji';
+import Emoji from '../src/components/common/Emoji';
 
 function skinVariation(id) {
   return {

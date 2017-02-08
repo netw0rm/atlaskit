@@ -2,7 +2,7 @@ import { denormaliseEmojis } from '../src/api/EmojiResource';
 import EmojiService from '../src/api/EmojiService';
 import emojiData from './story-data.json';
 
-export const emojis = denormaliseEmojis(emojiData);
+export const emojis = denormaliseEmojis(emojiData).emojis;
 
 export const lorem = `
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tincidunt,

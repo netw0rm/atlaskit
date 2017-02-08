@@ -177,8 +177,17 @@ describe(`${name} - stateless`, () => {
     it('should call onSelected when an item is activated', () => {
       const spy = sinon.spy();
       const select = mount(<StatelessMultiSelect items={selectItems} isOpen onSelected={spy} />);
-      select.find(Item).first().props().onActivate();
+      select.find(Item).first().props().onActivate({});
       expect(spy.callCount).to.equal(1);
+    });
+
+    it('should call onOpenChange when an item is activated', () => {
+      const spy = sinon.spy();
+      const attrs = { event: {} };
+      const select = mount(<StatelessMultiSelect items={selectItems} isOpen onOpenChange={spy} />);
+      select.find(Item).first().props().onActivate(attrs);
+      expect(spy.callCount).to.equal(1);
+      expect(spy.calledWith({ isOpen: false, event: attrs.event })).to.equal(true);
     });
 
     it('should call onRemoved when an item is removed', () => {
@@ -234,11 +243,20 @@ describe(`${name} - stateless`, () => {
       wrapper.setProps({ selectedItems });
     });
 
-    it('handleTriggerClick', () => {
-      const args = { event: {}, isOpen: true };
-      instance.handleTriggerClick({});
-      expect(onOpenChangeSpy.calledOnce).to.equal(true);
-      expect(onOpenChangeSpy.calledWith(args)).to.equal(true);
+    describe('handleTriggerClick', () => {
+      it('default behavior', () => {
+        const args = { event: {}, isOpen: true };
+        instance.handleTriggerClick({});
+        expect(onOpenChangeSpy.calledOnce).to.equal(true);
+        expect(onOpenChangeSpy.calledWith(args)).to.equal(true);
+      });
+
+      it('disabled select', () => {
+        wrapper.setProps({ isDisabled: true });
+        instance.handleTriggerClick({});
+        expect(onOpenChangeSpy.called).to.equal(false);
+        wrapper.setProps({ isDisabled: false });
+      });
     });
 
     it('handleItemRemove', () => {
@@ -349,6 +367,75 @@ describe(`${name} - stateless`, () => {
         wrapper.setProps({ selectedItems: [items[0]] });
         expect(instance.filterItems(items)).to.deep.equal([items[1], items[2]]);
       });
+    });
+
+    describe('onFocus', () => {
+      it('default behavior', () => {
+        wrapper.setState({ isFocused: false });
+        instance.onFocus();
+        expect(wrapper.state().isFocused).to.equal(true);
+      });
+
+      it('disabled select', () => {
+        wrapper.setState({ isFocused: false });
+        wrapper.setProps({ isDisabled: true });
+        instance.onFocus();
+        expect(wrapper.state().isFocused).to.equal(false);
+      });
+    });
+
+    describe('onBlur', () => {
+      it('default behavior', () => {
+        wrapper.setState({ isFocused: true });
+        instance.onBlur();
+        expect(wrapper.state().isFocused).to.equal(false);
+      });
+
+      it('disabled select', () => {
+        wrapper.setState({ isFocused: true });
+        wrapper.setProps({ isDisabled: true });
+        instance.onBlur();
+        expect(wrapper.state().isFocused).to.equal(true);
+      });
+    });
+  });
+
+  describe('disabled component', () => {
+    let wrapper;
+    const selectItems = [
+      {
+        heading: 'test',
+        items: [
+          { value: 1, content: 'Test1' },
+          { value: 2, content: 'Test 2' },
+          { value: 3, content: 'Third test' },
+        ],
+      },
+    ];
+    const selectedItems = [selectItems[0].items[1]];
+
+    beforeEach(() => {
+      wrapper = mount(<StatelessMultiSelect
+        isDisabled
+        items={selectItems}
+        selectedItems={selectedItems}
+      />);
+    });
+
+    it('native select should be "disabled"', () => {
+      expect(wrapper.find('select[disabled]').length).to.equal(1);
+    });
+
+    it('should pass isDisabled property to field base', () => {
+      expect(wrapper.find(FieldBase).prop('isDisabled')).to.equal(true);
+    });
+
+    it('should pass isDisabled property to Trigger sub-component', () => {
+      expect(wrapper.find(Trigger).prop('isDisabled')).to.equal(true);
+    });
+
+    it('should not render input if disabled', () => {
+      expect(wrapper.find('input[disabled]').length).to.equal(0);
     });
 
     describe('getPlaceholder', () => {

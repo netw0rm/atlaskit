@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-edit",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "config": {
     "access": "public"
   },

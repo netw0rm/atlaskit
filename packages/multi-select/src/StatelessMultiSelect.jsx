@@ -29,6 +29,7 @@ export default class StatelessMultiSelect extends PureComponent {
     items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
     noMatchesFound: PropTypes.string,
+    name: PropTypes.string,
     onFilterChange: PropTypes.func,
     onOpenChange: PropTypes.func,
     onSelected: PropTypes.func,
@@ -82,6 +83,8 @@ export default class StatelessMultiSelect extends PureComponent {
     }
   }
 
+  getAllValues = () => this.props.selectedItems.map(item => item.value)
+
   handleTriggerClick = (event) => {
     this.onOpenChange({ event, isOpen: true });
   }
@@ -127,7 +130,8 @@ export default class StatelessMultiSelect extends PureComponent {
       return filteredItems.map((item, itemIndex) => (<Item
         {...item}
         key={itemIndex}
-        onActivate={() => {
+        onActivate={(attrs) => {
+          this.props.onOpenChange({ isOpen: false, event: attrs.event });
           this.props.onSelected(item);
         }}
       >
@@ -147,6 +151,32 @@ export default class StatelessMultiSelect extends PureComponent {
     </Group>
   )
 
+  renderOptions = items => items.map((item, itemIndex) => (<option
+    disabled={item.isDisabled}
+    key={itemIndex}
+    value={item.value}
+  >{item.content}</option>))
+
+  renderOptGroups = groups => groups.map((group, groupIndex) =>
+    <optgroup
+      label={group.heading}
+      key={groupIndex}
+    >
+      {this.renderOptions(group.items)}
+    </optgroup>
+  )
+
+  renderSelect = () => (<select
+    id={this.props.id}
+    multiple
+    name={this.props.name}
+    readOnly
+    value={this.getAllValues(this.props.selectedItems)}
+    style={{ display: 'none' }}
+  >
+    {this.renderOptGroups(this.props.items)}
+  </select>)
+
   render = () => {
     const classes = classNames([styles.selectWrapper, {
       [styles.fitContainer]: this.props.shouldFitContainer,
@@ -154,6 +184,7 @@ export default class StatelessMultiSelect extends PureComponent {
 
     return (
       <div className={classes}>
+        {this.renderSelect()}
         {this.props.label ? <Label
           htmlFor={this.props.id}
           label={this.props.label}

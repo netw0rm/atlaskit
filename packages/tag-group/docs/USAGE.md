@@ -1,10 +1,10 @@
 # TagGroup
 
-This component displays an arbitrary number of [`ak-tag`](https://www.npmjs.com/package/ak-tag)s
+This component displays an arbitrary number of [`@atlaskit/tag`](https://www.npmjs.com/package/@atlaskit/tag)s
 in a grouped manner.
 The group manages spacing and animation direction and allows for some alignment options.
 
-![Example tag group](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-tag-group/docs/animation.gif)
+![Example tag group](https://i.imgur.com/A10xBnV.gif)
 
 ## Try it out
 

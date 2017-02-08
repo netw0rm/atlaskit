@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import Button from 'ak-button';
-import Tooltip from 'ak-tooltip'; // eslint-disable-line
+import Button from '@atlaskit/button';
+import AKTooltip from '@atlaskit/tooltip';
 import classnames from 'classnames';
 import { locals } from './styles.less';
 import { itemTruncateWidth } from './internal/constants';
@@ -101,12 +101,12 @@ export default class BreadcrumbsItem extends PureComponent {
   );
 
   renderButtonWithTooltip = () => (
-    <Tooltip
+    <AKTooltip
       description={this.props.text}
       position="bottom"
     >
       {this.renderButton()}
-    </Tooltip>
+    </AKTooltip>
   );
 
   render() {

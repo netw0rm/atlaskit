@@ -2,7 +2,7 @@
 
 Use this component to display extra information about an element by displaying a floating description.
 
-![Example tooltip](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-tooltip/docs/exampleTooltip.gif)
+![Example tooltip](https://i.imgur.com/vlvguzg.gif)
 
 ## Installation
 

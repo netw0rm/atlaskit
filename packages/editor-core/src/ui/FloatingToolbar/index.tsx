@@ -15,8 +15,7 @@ export interface Props {
 
 export interface State {
   position?: string;
-  transformLeft?: number;
-  transformTop?: number;
+  transform?: string;
 }
 
 export default class FloatingToolbar extends PureComponent<Props, State> {
@@ -45,8 +44,7 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
 
       this.setState({
         position: state.offsets.popper.position,
-        transformLeft: left,
-        transformTop: top,
+        transform: `translate3d(${left}px, ${top}px, 0px)`,
       });
     }
   }
@@ -91,7 +89,7 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
   }
 
   render() {
-    const { position, transformLeft, transformTop } = this.state;
+    const { position, transform } = this.state;
     const padding = this.props.spacing === 'none'
       ? '0'
       : undefined;
@@ -100,7 +98,7 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
       <OutsideClickable onClick={this.props.onOutsideClick}>
         <div
           ref="content"
-          style={{ top: `${transformTop}px`, left: `${transformLeft}px`, position, padding }}
+          style={{ top: 0, left: 0, position, transform, padding }}
           className={styles.container}
         >
           {this.props.children}

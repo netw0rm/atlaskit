@@ -3,7 +3,6 @@ import * as sinon from 'sinon';
 import PanelPlugin from '../../../src/plugins/panel';
 import { makeEditor } from '../../../test-helper';
 import { doc, panel, schema, paragraph } from '../../_schema-builder';
-import { isPanelNode } from '../../../src/schema';
 
 describe('panel', () => {
   const editor = (doc: any) => {
@@ -37,38 +36,42 @@ describe('panel', () => {
       expect(spy.calledWith(plugin)).to.equal(true);
     });
 
+    it('should call subscribers when panel is clicked', () => {
+      const { plugin, pm } = editor(doc(panel(paragraph('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.click.dispatch();
+      expect(spy.callCount).to.equal(2);
+    });
+
     it('should be able to identify panel node', () => {
       const { plugin } = editor(doc(panel(paragraph('text'))));
       expect(plugin.element).to.not.be.undefined;
     });
 
     it('should be able to change panel type using function changeType', () => {
-      const { pm, plugin } = editor(doc(panel(paragraph('text'))));
-      let newPanelType = pm.selection.$from.node(1).attrs['panelType'];
-      expect(newPanelType).to.equal('info');
+      const { plugin } = editor(doc(panel(paragraph('text'))));
+      expect(plugin.activePanel.attrs['panelType']).to.equal('info');
       expect(plugin.element).to.not.be.undefined;
-      expect(plugin.element.getAttribute('data-panel-type')).to.not.be.undefined;
+      expect(plugin.activePanel.attrs['panelType']).to.not.be.undefined;
       plugin.changePanelType({ panelType: 'note' });
-      newPanelType = pm.selection.$from.node(1).attrs['panelType'];
-      expect(newPanelType).to.equal('note');
+      expect(plugin.activePanel.attrs['panelType']).to.equal('note');
     });
 
     it('should be able to remove panel type using function removePanelType', () => {
       const { plugin } = editor(doc(panel(paragraph('text'))));
-      expect(plugin.element.getAttribute('data-panel-type')).to.equal('info');
+      expect(plugin.activePanel.attrs['panelType']).to.equal('info');
       plugin.removePanelType();
       expect(plugin.element).to.be.undefined;
     });
 
     it('should be able to call handlers for change in panel type', () => {
-      const { pm, plugin } = editor(doc(panel(paragraph('text'))));
+      const { plugin } = editor(doc(panel(paragraph('text'))));
       const spy = sinon.spy();
       plugin.subscribe(spy);
       expect(spy.callCount).to.equal(1);
       plugin.changePanelType({ panelType: 'note' });
-      isPanelNode(pm.selection.$from.node(1));
-      const newPanelType = pm.selection.$from.node(1).attrs['panelType'];
-      expect(newPanelType).to.equal('note');
+      expect(plugin.activePanel.attrs['panelType']).to.equal('note');
       expect(plugin.element).not.to.be.undefined;
       expect(spy.callCount).to.equal(3);
     });

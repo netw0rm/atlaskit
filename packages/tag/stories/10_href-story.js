@@ -7,7 +7,7 @@ import { name } from '../package.json';
 const Component = (Tag);
 const imports = [
   ['React', 'react'],
-  ['Tag', 'ak-tag'],
+  ['Tag', '@atlaskit/tag'],
 ];
 
 storiesOf(name, module)

@@ -1,5 +1,5 @@
 import React from 'react';
-import Blanket from 'ak-blanket';
+import Blanket from '@atlaskit/blanket';
 
 export default (
   <div>

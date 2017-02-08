@@ -1,0 +1,9 @@
+{
+  "extends": "../../build/types/tsconfig.base",
+  "include": [
+    "src/*"
+  ],
+  "XcompilerOptions": {
+    "types": []
+  }
+}

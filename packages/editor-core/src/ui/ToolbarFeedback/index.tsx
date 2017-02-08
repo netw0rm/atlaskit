@@ -18,7 +18,7 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
 
   render() {
     return (
-      <span style={{ position: 'relative' }}>
+      <span style={{ display: 'inline-block' }}>
         <ToolbarButton onClick={this.openFeedbackPanel} selected={this.state.active} spacing="compact">
           Feedback
         </ToolbarButton>

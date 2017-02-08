@@ -25,6 +25,7 @@ export default class RemoveButton extends PureComponent {
       onMouseOut={() => this.props.onHoverChange(false)}
       onClick={this.props.onRemoveAction}
       onKeyPress={this.handleKeyPress}
+      type="button"
     >
       <RemoveIcon />
     </button>

@@ -11,7 +11,7 @@ export class MarkdownSerializer {
 export const defaultMarkdownSerializer: MarkdownSerializer;
 
 export class MarkdownSerializerState {
-  constructor(nodes: { [key: string]: (MarkdownSerializerState, Node) => void }, marks: { [key: string]: any }, options?: { [key: string]: any });
+  constructor(nodes: { [key: string]: (state: MarkdownSerializerState, node: Node) => void }, marks: { [key: string]: any }, options?: { [key: string]: any });
 
   marks: { [key: string]: any }; // private
   out: string; // private

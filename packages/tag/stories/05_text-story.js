@@ -14,7 +14,7 @@ const MyTag = props => (
 const cupcakeipsum = 'Croissant topping tiramisu gummi bears. Bonbon chocolate bar danish soufflé';
 const imports = [
   ['React', 'react'],
-  ['Tag', 'ak-tag'],
+  ['Tag', '@atlaskit/tag'],
 ];
 
 storiesOf(name, module)

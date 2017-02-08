@@ -1,5 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
-import Tag from 'ak-tag';
+import Tag from '@atlaskit/tag';
 import React from 'react';
 
 import Group from '../src';
@@ -8,12 +8,12 @@ import styles from '../src/styles.less';
 
 const imports = [
   ['React', 'react'],
-  ['TagGroup', 'ak-tag-group'],
-  ['Tag', 'ak-tag'],
+  ['TagGroup', '@atlaskit/tag-group'],
+  ['Tag', '@atlaskit/tag'],
 ];
 
 storiesOf(name, module)
-  .addCodeExampleStory('a simple ak-tag-group', () => (
+  .addCodeExampleStory('a simple @atlaskit/tag-group', () => (
     <Group className={styles.locals.akTagGroup}>
       <Tag text="Cupcake" />
       <Tag text="Wagon Wheel" />

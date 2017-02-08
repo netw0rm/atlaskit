@@ -61,7 +61,7 @@ export default class PanelEdit extends PureComponent<Props, State> {
                 iconBefore={<Icon label={panelType.panelType} />}
               />
           );})}
-          <span className={styles.removeIconWrapperStyle}>
+          <span className={styles.removeButtonWrapperStyle}>
             <ToolbarButton
               wrapperClassName={styles.buttonWrapperStyle}
               onClick={this.handleRemovePanelType}

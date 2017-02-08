@@ -9,7 +9,10 @@ const Wrapper = styled.div`
 const NavigationAndContent = styled.div`
   min-height: 100%;
   width: 100%;
-  display: flex;
+`;
+
+const Navigation = styled.div`
+  float: left;
 `;
 
 const PageContent = styled.div`
@@ -29,7 +32,9 @@ export default class Page extends PureComponent {
     <Wrapper>
       <ThemeProvider theme={{}}>
         <NavigationAndContent>
-          {this.props.navigation}
+          <Navigation>
+            {this.props.navigation}
+          </Navigation>
           <PageContent>
             {this.props.children}
           </PageContent>

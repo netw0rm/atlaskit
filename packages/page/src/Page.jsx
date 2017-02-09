@@ -46,7 +46,7 @@ const PageContent = styled.div`
   flex-basis: auto;
   position: relative;
   z-index: 1;
-  width: calc(100% - ${props => props.navigationWidth}px); /* TODO: Josh this needs to be aware of the nav width */
+  width: calc(100% - ${props => props.navigationWidth}px);
 `;
 
 export default class Page extends PureComponent {

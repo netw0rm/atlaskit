@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/util-component-template",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "akutil-component-template React component",
   "main": "dist/bundle.js",

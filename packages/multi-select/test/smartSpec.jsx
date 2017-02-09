@@ -164,7 +164,7 @@ describe(`${name} - smart`, () => {
       it('should add the item and set the new selectedItems state', () => {
         const item = { content: 'new' };
         instance.selectItem(item);
-        expect(wrapper.state().selectedItems).to.deep.equal([item, items[0].items[0]]);
+        expect(wrapper.state().selectedItems).to.deep.equal([items[0].items[0], item]);
       });
 
       it('should add the item and call onSelectedChange', () => {
@@ -176,7 +176,7 @@ describe(`${name} - smart`, () => {
       it('onSelectedChange should be called with the correct params', () => {
         const item = { content: 'new' };
         instance.selectItem(item);
-        expect(onSelectedChange.calledWith({ items: [item, items[0].items[0]], action: 'select', changed: item })).to.equal(true);
+        expect(onSelectedChange.calledWith({ items: [items[0].items[0], item], action: 'select', changed: item })).to.equal(true);
       });
     });
   });

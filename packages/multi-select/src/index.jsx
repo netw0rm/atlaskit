@@ -45,7 +45,7 @@ export default class AkMultiSelect extends PureComponent {
   }
 
   selectItem = (item) => {
-    const selectedItems = [item].concat(this.state.selectedItems);
+    const selectedItems = [...this.state.selectedItems, item];
     this.setState({ selectedItems });
     this.props.onSelectedChange({ items: selectedItems, action: 'select', changed: item });
   }
@@ -80,7 +80,6 @@ export default class AkMultiSelect extends PureComponent {
       id={this.props.id}
       isDisabled={this.props.isDisabled}
       isFirstChild={this.props.isFirstChild}
-      shouldFocus={this.props.shouldFocus}
       isInvalid={this.props.isInvalid}
       isOpen={this.state.isOpen}
       isRequired={this.props.isRequired}
@@ -95,6 +94,7 @@ export default class AkMultiSelect extends PureComponent {
       placeholder={this.props.placeholder}
       position={this.props.position}
       selectedItems={this.state.selectedItems}
+      shouldFocus={this.props.shouldFocus}
       shouldFitContainer={this.props.shouldFitContainer}
     />
   );

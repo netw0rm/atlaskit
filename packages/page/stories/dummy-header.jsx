@@ -17,22 +17,24 @@ const RightButtons = styled.div`
 `;
 
 export default class Dummy extends PureComponent {
-  render = () => (
-    <Grid spacing="comfortable">
-      <GridColumn>
-        <CommentHeader>
-          <h1>Commit</h1>
-        </CommentHeader>
-      </GridColumn>
-      <GridColumn>
-        <RightButtons>
-          <ButtonGroup>
-            <Button>Approve</Button>
-            <Button>Decline</Button>
-            <Button>Edit</Button>
-          </ButtonGroup>
-        </RightButtons>
-      </GridColumn>
-    </Grid>
-  );
+  render() {
+    return (
+      <Grid spacing="comfortable">
+        <GridColumn>
+          <CommentHeader>
+            <h1>Commit</h1>
+          </CommentHeader>
+        </GridColumn>
+        <GridColumn>
+          <RightButtons>
+            <ButtonGroup>
+              <Button>Approve</Button>
+              <Button>Decline</Button>
+              <Button>Edit</Button>
+            </ButtonGroup>
+          </RightButtons>
+        </GridColumn>
+      </Grid>
+    );
+  }
 }

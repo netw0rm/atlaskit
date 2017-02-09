@@ -15,7 +15,7 @@ export default class Trigger extends PureComponent {
     children: null,
   }
 
-  render = () => {
+  render() {
     const classes = classNames([styles.trigger, {
       [styles.isOpen]: this.props.isOpen,
     }]);

@@ -31,11 +31,14 @@ export default class extends PureComponent {
     this.props.onBlur(e);
   }
 
-  render = () =>
-    <FieldBase
-      {...this.props}
-      isFocused={this.state.isFocused}
-      onBlur={this.onBlur}
-      onFocus={this.onFocus}
-    />
+  render() {
+    return (
+      <FieldBase
+        {...this.props}
+        isFocused={this.state.isFocused}
+        onBlur={this.onBlur}
+        onFocus={this.onFocus}
+      />
+    );
+  }
 }

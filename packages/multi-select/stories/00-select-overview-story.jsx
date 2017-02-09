@@ -15,6 +15,8 @@ import SmartSelectInvalid from './examples/SmartSelectInvalid';
 import SmartSelectInvalidRaw from '!raw!./examples/SmartSelectInvalid';
 import SelectInForm from './examples/SelectInForm';
 import SelectInFormRaw from '!raw!./examples/SelectInForm';
+import SmartSelectFocus from './examples/SmartSelectFocus';
+import SmartSelectFocusRaw from '!raw!./examples/SmartSelectFocus';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name, description } from '../package.json';
@@ -68,6 +70,14 @@ storiesOf(name, module)
       {SmartSelectInvalid}
       <Code>
         {SmartSelectInvalidRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Multi select - focus behavior', () => (
+    <Chrome title="Multi select (smart) - overview">
+      <SmartSelectFocus />
+      <Code>
+        {SmartSelectFocusRaw}
       </Code>
     </Chrome>
   ));

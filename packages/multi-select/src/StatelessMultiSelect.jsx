@@ -66,7 +66,7 @@ export default class StatelessMultiSelect extends PureComponent {
   }
 
   componentDidMount = () => {
-    if (this.props.shouldFocus && this.inputNode) {
+    if (this.state.isFocused && this.inputNode) {
       this.inputNode.focus();
     }
   }
@@ -80,6 +80,7 @@ export default class StatelessMultiSelect extends PureComponent {
   onFocus = () => {
     if (!this.props.isDisabled) {
       this.setState({ isFocused: true });
+      this.inputNode.focus();
     }
   }
 

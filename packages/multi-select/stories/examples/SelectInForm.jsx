@@ -38,12 +38,12 @@ export default (
     <Select
       id="cities_id"
       isFirstChild
-      shouldFocus
       isRequired
       items={cities}
       label="Required field"
       name="cities"
       shouldFitContainer
+      shouldFocus
     />
     <Select
       id="colors_id"

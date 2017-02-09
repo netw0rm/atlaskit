@@ -12,7 +12,6 @@ import {
   globalOpenWidth,
   navigationOpenWidth,
   resizeClosedBreakpoint,
-  resizeExpandedBreakpoint,
 } from '../../shared-variables';
 import getContainerWidth from '../../utils/collapse';
 
@@ -87,12 +86,22 @@ export default class Navigation extends PureComponent {
 
   triggerResizeHandler = () => {
     const width = this.getRenderedWidth();
+
+    const snappedWidth = (() => {
+      if (width > navigationOpenWidth) {
+        return width;
+      }
+      if (width < resizeClosedBreakpoint) {
+        return containerClosedWidth;
+      }
+      return navigationOpenWidth;
+    })();
+
     const resizeState = {
       isOpen: (width > resizeClosedBreakpoint),
+      width: snappedWidth,
     };
-    if (width > resizeExpandedBreakpoint) {
-      resizeState.width = width;
-    }
+
     this.setState({
       resizeDelta: 0,
     }, function callOnResizeAfterSetState() {

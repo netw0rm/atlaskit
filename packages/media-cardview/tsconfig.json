@@ -3,7 +3,8 @@
   "include": [
     "src/*"
   ],
-  "XcompilerOptions": {
-    "types": []
+  "compilerOptions": {
+    "types": [
+    ]
   }
 }

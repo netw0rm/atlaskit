@@ -90,7 +90,7 @@ const SmallCard = styled.div`
   box-sizing: border-box;
   height: 42px;
   padding: 5px;
-  width: ${props => props.width}
+  width: ${props => props.width};
   &:hover {
     background-color: ${akColorN30};
   }

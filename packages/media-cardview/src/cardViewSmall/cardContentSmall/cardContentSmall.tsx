@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Component} from 'react';
 
 import {PlaceholderSmall} from '../placholderSmall/placeholderSmall';
-import {Spinner} from '../../spinner';
+// import {Spinner} from '../../spinner';
 import {MediaTypes} from '@atlaskit/media-domain';
 
 export interface CardContentProps {
@@ -14,7 +14,8 @@ export interface CardContentProps {
 export class CardContentSmall extends Component<CardContentProps, {}> {
   render() {
     if (this.props.loading) {
-      return <Spinner width={25} height={25} loading={this.props.loading} />;
+      return <div>Loading...</div>
+      // return <Spinner width={25} height={25} loading={this.props.loading} />;
     }
 
     if (this.props.mediaType === 'image' && this.props.dataURI) {

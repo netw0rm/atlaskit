@@ -1,4 +1,4 @@
-import { KeyPressHandler } from 'akutil-common';
+import { KeyPressHandler } from '@atlaskit/util-common';
 
 const handledKeys = ['ENTER', 'SPACE'];
 

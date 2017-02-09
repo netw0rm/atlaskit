@@ -9,6 +9,7 @@ export default class AkMultiSelect extends PureComponent {
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
     isFirstChild: PropTypes.bool,
+    shouldFocus: PropTypes.bool,
     isDefaultOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
     isInvalid: PropTypes.bool,
@@ -27,6 +28,7 @@ export default class AkMultiSelect extends PureComponent {
   static defaultProps = {
     defaultSelected: [],
     isOpen: false,
+    shouldFocus: false,
     isRequired: false,
     items: [],
     label: '',
@@ -78,6 +80,7 @@ export default class AkMultiSelect extends PureComponent {
       id={this.props.id}
       isDisabled={this.props.isDisabled}
       isFirstChild={this.props.isFirstChild}
+      shouldFocus={this.props.shouldFocus}
       isInvalid={this.props.isInvalid}
       isOpen={this.state.isOpen}
       isRequired={this.props.isRequired}

@@ -243,11 +243,20 @@ describe(`${name} - stateless`, () => {
       wrapper.setProps({ selectedItems });
     });
 
-    it('handleTriggerClick', () => {
-      const args = { event: {}, isOpen: true };
-      instance.handleTriggerClick({});
-      expect(onOpenChangeSpy.calledOnce).to.equal(true);
-      expect(onOpenChangeSpy.calledWith(args)).to.equal(true);
+    describe('handleTriggerClick', () => {
+      it('default behavior', () => {
+        const args = { event: {}, isOpen: true };
+        instance.handleTriggerClick({});
+        expect(onOpenChangeSpy.calledOnce).to.equal(true);
+        expect(onOpenChangeSpy.calledWith(args)).to.equal(true);
+      });
+
+      it('disabled select', () => {
+        wrapper.setProps({ isDisabled: true });
+        instance.handleTriggerClick({});
+        expect(onOpenChangeSpy.called).to.equal(false);
+        wrapper.setProps({ isDisabled: false });
+      });
     });
 
     it('handleItemRemove', () => {
@@ -358,6 +367,105 @@ describe(`${name} - stateless`, () => {
         wrapper.setProps({ selectedItems: [items[0]] });
         expect(instance.filterItems(items)).to.deep.equal([items[1], items[2]]);
       });
+    });
+
+    describe('onFocus', () => {
+      it('default behavior', () => {
+        wrapper.setState({ isFocused: false });
+        instance.onFocus();
+        expect(wrapper.state().isFocused).to.equal(true);
+      });
+
+      it('disabled select', () => {
+        wrapper.setState({ isFocused: false });
+        wrapper.setProps({ isDisabled: true });
+        instance.onFocus();
+        expect(wrapper.state().isFocused).to.equal(false);
+      });
+    });
+
+    describe('onBlur', () => {
+      it('default behavior', () => {
+        wrapper.setState({ isFocused: true });
+        instance.onBlur();
+        expect(wrapper.state().isFocused).to.equal(false);
+      });
+
+      it('disabled select', () => {
+        wrapper.setState({ isFocused: true });
+        wrapper.setProps({ isDisabled: true });
+        instance.onBlur();
+        expect(wrapper.state().isFocused).to.equal(true);
+      });
+    });
+
+    describe('getPlaceholder', () => {
+      const items = [
+        { value: 1, content: 'Test1' },
+        { value: 2, content: 'Test 2' },
+        { value: 3, content: 'Third test' },
+      ];
+      const placeholder = 'Test!';
+
+      it('should return "placeholder" text for the empty select', () => {
+        wrapper.setProps({ isOpen: false });
+        wrapper.setProps({ selectedItems: [] });
+        wrapper.setProps({ placeholder });
+        expect(instance.getPlaceholder()).to.equal(placeholder);
+      });
+
+      it('should return null if some items are selected', () => {
+        wrapper.setProps({ isOpen: false });
+        wrapper.setProps({ selectedItems: [items[0]] });
+        wrapper.setProps({ placeholder });
+        expect(instance.getPlaceholder()).to.equal(null);
+      });
+
+      it('should return null if the select is opened', () => {
+        wrapper.setProps({ isOpen: true });
+        wrapper.setProps({ selectedItems: [] });
+        wrapper.setProps({ placeholder });
+        expect(instance.getPlaceholder()).to.equal(null);
+      });
+    });
+  });
+
+  describe('disabled component', () => {
+    let wrapper;
+    const selectItems = [
+      {
+        heading: 'test',
+        items: [
+          { value: 1, content: 'Test1' },
+          { value: 2, content: 'Test 2' },
+          { value: 3, content: 'Third test' },
+        ],
+      },
+    ];
+    const selectedItems = [selectItems[0].items[1]];
+
+    beforeEach(() => {
+      wrapper = mount(<StatelessMultiSelect
+        isDisabled
+        items={selectItems}
+        selectedItems={selectedItems}
+      />);
+    });
+
+    it('native select should be "disabled"', () => {
+      expect(wrapper.find('select[disabled]').length).to.equal(1);
+    });
+
+    it('should pass isDisabled property to field base', () => {
+      expect(wrapper.find(FieldBase).prop('isDisabled')).to.equal(true);
+    });
+
+    it('should pass isDisabled property to Trigger sub-component', () => {
+      expect(wrapper.find(Trigger).prop('isDisabled')).to.equal(true);
+    });
+
+    it('should not render input if disabled', () => {
+      expect(wrapper.find('input[disabled]').length).to.equal(0);
     });
   });
 });

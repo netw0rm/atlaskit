@@ -51,4 +51,14 @@ describe('MentionList', () => {
         return waitUntil(thirdItemSelected);
       });
   });
+
+  it('mentionsCount returns the number of mentions in the list', () => {
+    const component = setupList();
+    const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
+
+    return waitUntil(defaultMentionItemsShow)
+      .then(() => {
+        expect(component.instance().mentionsCount()).to.equal(mentionDataSize);
+      });
+  });
 });

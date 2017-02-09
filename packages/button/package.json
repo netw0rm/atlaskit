@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/button",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "config": {
     "access": "public"
   },
@@ -24,9 +24,10 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-react": "*",
-    "ak-icon": "^12.1.2",
-    "uid": "^0.0.2"
+    "@atlaskit/icon": "^1.0.0",
+    "@atlaskit/button": "*",
+    "uid": "^0.0.2",
+    "@atlaskit/util-readme": "1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

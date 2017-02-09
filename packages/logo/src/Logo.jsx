@@ -43,9 +43,11 @@ export default class Logo extends PureComponent {
     size: 'medium',
   }
 
-  render = () => (
-    <Size isCollapsed={this.props.isCollapsed} size={this.props.size}>
-      {this.props.logoText}
-    </Size>
-  )
+  render() {
+    return (
+      <Size isCollapsed={this.props.isCollapsed} size={this.props.size}>
+        {this.props.logoText}
+      </Size>
+    );
+  }
 }

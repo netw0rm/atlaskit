@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import Readme, { Code, Props } from '@atlaskit/util-readme';
 import { name, description } from '../package.json';
-import { StatelessToggle } from '../src/';
+import { Toggle } from '../src/';
 
 /* eslint-disable import/no-duplicates, import/first */
 import OverviewExample from './examples/stateless-overview';
@@ -18,16 +18,16 @@ storiesOf(name, module)
       <Code code={OverviewExampleRaw}>
         <OverviewExample />
       </Code>
-      <Props component={StatelessToggle} />
+      <Props component={Toggle} />
     </Readme>
   ))
   .add('Toggle - stateless: basic usage', () => (
-    <StatelessToggle
+    <Toggle
       onToggle={action('onToggle')}
     />
   ))
   .add('Toggle - stateless: custom label', () => (
-    <StatelessToggle
+    <Toggle
       label="Power station"
       onToggle={action('onToggle')}
     />

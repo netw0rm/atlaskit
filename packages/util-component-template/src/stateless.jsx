@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { Button, Container } from './styled';
 
-export default class extends PureComponent {
+export default class Toggle extends PureComponent {
   static propTypes = {
     label: PropTypes.string,
     onToggle: PropTypes.func,
@@ -24,7 +24,7 @@ export default class extends PureComponent {
           onClick={onToggle}
         >
           {/* not great i18n: just illustrative */}
-          {label ? `${label}:` : ''} {isActive ? 'active' : 'not active'}
+          {label ? `${label}: ` : ''}{isActive ? 'active' : 'not active'}
         </Button>
       </Container>
     );

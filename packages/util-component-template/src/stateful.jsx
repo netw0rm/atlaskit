@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
-import StatelessToggle from './stateless';
+import Toggle from './stateless';
 
-export default class extends PureComponent {
+export default class AkToggle extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
   }
@@ -20,7 +20,7 @@ export default class extends PureComponent {
 
   render() {
     return (
-      <StatelessToggle
+      <Toggle
         label={this.props.label}
         onToggle={this.onToggle}
         isActive={this.state.isActive}

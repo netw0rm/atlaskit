@@ -25,8 +25,10 @@ export const Button = styled.button`
   }
 `;
 
+export const getContainerBackgroundColor = props => (props.isActive ? akColorG75 : akColorR400);
+
 export const Container = styled.div`
-  backgroundColor: ${props => (props.isActive ? akColorG75 : akColorR400)};
+  backgroundColor: ${getContainerBackgroundColor};
   display: flex;
   padding: ${akGridSize};
   justify-content: center;

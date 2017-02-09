@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import Readme, { Code, Props } from '@atlaskit/util-readme';
 import { name, description } from '../package.json';
-import Toggle from '../src/';
+import AkToggle from '../src/';
 
 /* eslint-disable import/no-duplicates, import/first */
 import OverviewExample from './examples/stateful-overview';
@@ -18,10 +18,9 @@ storiesOf(name, module)
       <Code code={OverviewExampleRaw}>
         <OverviewExample />
       </Code>
-      <Props component={Toggle} />
+      <Props component={AkToggle} />
     </Readme>
   ))
   .add('Toggle - stateful: basic usage', () => (
-    <Toggle label="My toggle" />
+    <AkToggle label="My toggle" />
   ));
-

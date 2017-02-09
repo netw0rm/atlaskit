@@ -1,3 +1,3 @@
 // module API
 export default from './stateful';
-export { default as StatelessToggle } from './stateless';
+export { default as Toggle } from './stateless';

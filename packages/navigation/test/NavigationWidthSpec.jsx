@@ -2,73 +2,70 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import Navigation from '../src/components/js/Navigation';
 
+/**
+ *  Note: these are duplicated from the Navigation code
+ * to ensure that tests fail when the variable is changed */
+const navigationOpenWidth = 284;
+const navigationClosedWidth = 64;
+const navigationSnapOpenBreakpoint = 174;
+
 describe('<Navigation />', () => {
   describe('rendered widths', () => {
     [
       {
         isOpen: false,
         width: 0,
-        expectedRenderedWidth: 64,
+        expectedRenderedWidth: navigationClosedWidth,
       },
       {
         isOpen: false,
         width: 128,
-        expectedRenderedWidth: 64,
+        expectedRenderedWidth: navigationClosedWidth,
       },
       {
         isOpen: false,
         width: 300,
-        expectedRenderedWidth: 64,
+        expectedRenderedWidth: navigationClosedWidth,
       },
       {
         isOpen: true,
         width: 0,
-        expectedRenderedWidth: 64,
+        expectedRenderedWidth: navigationClosedWidth,
       },
       {
         isOpen: true,
-        width: 63,
-        expectedRenderedWidth: 64,
+        width: navigationClosedWidth - 1,
+        expectedRenderedWidth: navigationClosedWidth,
       },
       {
         isOpen: true,
-        width: 64,
-        expectedRenderedWidth: 64,
+        width: navigationClosedWidth,
+        expectedRenderedWidth: navigationClosedWidth,
       },
       {
         isOpen: true,
-        width: 65,
-        expectedRenderedWidth: 65,
+        width: navigationClosedWidth + 1,
+        expectedRenderedWidth: navigationClosedWidth + 1,
       },
       {
         isOpen: true,
-        width: 173,
-        expectedRenderedWidth: 173,
+        width: navigationSnapOpenBreakpoint - 1,
+        expectedRenderedWidth: navigationSnapOpenBreakpoint - 1,
       },
       {
         isOpen: true,
-        width: 174,
-        expectedRenderedWidth: 174,
+        width: navigationSnapOpenBreakpoint,
+        expectedRenderedWidth: navigationSnapOpenBreakpoint,
       },
       {
         isOpen: true,
-        width: 175,
-        expectedRenderedWidth: 175,
+        width: navigationSnapOpenBreakpoint + 1,
+        expectedRenderedWidth: navigationSnapOpenBreakpoint + 1,
       },
       {
         isOpen: true,
-        width: 333,
-        expectedRenderedWidth: 333,
-      },
-      {
-        isOpen: true,
-        width: 334,
-        expectedRenderedWidth: 334,
-      },
-      {
-        isOpen: true,
-        width: 335,
-        expectedRenderedWidth: 335,
+        width: 500,
+        expectedRenderedWidth: 500,
       },
     ].forEach(({ isOpen, width, expectedRenderedWidth }) => {
       it(`with isOpen=${isOpen} and width=${width}, rendered width is ${expectedRenderedWidth}`, () => {
@@ -79,9 +76,9 @@ describe('<Navigation />', () => {
   });
 
   describe('snapping', () => {
-    const assertSnappingBehaviour = ({ initial, drag, expected }) => {
+    const assertSnappingBehaviour = ({ initial, draggedWidth, expected }) => {
       it(`starting at width=${initial.width}px and isOpen=${initial.isOpen},
-        dragging by ${drag}px results in width=${expected.width}px and isOpen=${expected.isOpen}
+        dragging to ${draggedWidth}px results in width=${expected.width}px and isOpen=${expected.isOpen}
         being passed to the onResize handler`, (done) => {
         const navigation = shallow(<Navigation />);
         navigation.setProps({
@@ -93,251 +90,89 @@ describe('<Navigation />', () => {
           },
         });
         navigation.find('Resizer').simulate('resizeStart');
-        navigation.find('Resizer').simulate('resize', drag);
+        navigation.find('Resizer').simulate('resize', (draggedWidth - initial.width));
         navigation.find('Resizer').simulate('resizeEnd');
       });
     };
 
-    const collapsed = [
+    const collapsedState = {
+      width: navigationClosedWidth,
+      isOpen: false,
+    };
+
+    const openState = {
+      width: navigationOpenWidth,
+      isOpen: true,
+    };
+
+    const expandedState = {
+      width: 500,
+      isOpen: true,
+    };
+
+    const scenarios = [
       {
-        initial: {
-          width: 64,
-          isOpen: false,
-        },
-        drag: -50,
-        expected: {
-          width: 64,
-          isOpen: false,
-        },
+        draggedWidth: 0,
+        expected: collapsedState,
       },
       {
-        initial: {
-          width: 64,
-          isOpen: false,
-        },
-        drag: 50,
-        expected: {
-          width: 64,
-          isOpen: false,
-        },
+        draggedWidth: navigationClosedWidth - 1,
+        expected: collapsedState,
       },
       {
-        initial: {
-          width: 64,
-          isOpen: false,
-        },
-        drag: 109,
-        expected: {
-          width: 64,
-          isOpen: false,
-        },
+        draggedWidth: navigationClosedWidth,
+        expected: collapsedState,
       },
       {
-        initial: {
-          width: 64,
-          isOpen: false,
-        },
-        drag: 110,
+        draggedWidth: navigationClosedWidth + 1,
+        expected: collapsedState,
+      },
+      {
+        draggedWidth: navigationSnapOpenBreakpoint - 1,
+        expected: collapsedState,
+      },
+      {
+        draggedWidth: navigationSnapOpenBreakpoint,
+        expected: openState,
+      },
+      {
+        draggedWidth: navigationSnapOpenBreakpoint + 1,
+        expected: openState,
+      },
+      {
+        draggedWidth: navigationOpenWidth - 1,
+        expected: openState,
+      },
+      {
+        draggedWidth: navigationOpenWidth,
+        expected: openState,
+      },
+      {
+        draggedWidth: navigationOpenWidth + 1,
         expected: {
-          width: 284,
+          width: navigationOpenWidth + 1,
           isOpen: true,
         },
       },
       {
-        initial: {
-          width: 64,
-          isOpen: false,
-        },
-        drag: 111,
+        draggedWidth: 500,
         expected: {
-          width: 284,
-          isOpen: true,
-        },
-      },
-      {
-        initial: {
-          width: 64,
-          isOpen: false,
-        },
-        drag: 219,
-        expected: {
-          width: 284,
-          isOpen: true,
-        },
-      },
-      {
-        initial: {
-          width: 64,
-          isOpen: false,
-        },
-        drag: 220,
-        expected: {
-          width: 284,
-          isOpen: true,
-        },
-      },
-      {
-        initial: {
-          width: 64,
-          isOpen: false,
-        },
-        drag: 221,
-        expected: {
-          width: 285,
-          isOpen: true,
-        },
-      },
-      {
-        initial: {
-          width: 64,
-          isOpen: false,
-        },
-        drag: 500,
-        expected: {
-          width: 564,
-          isOpen: true,
-        },
-      },
-    ];
-    const open = [
-      {
-        initial: {
-          width: 284,
-          isOpen: true,
-        },
-        drag: -10,
-        expected: {
-          width: 284,
-          isOpen: true,
-        },
-      },
-      {
-        initial: {
-          width: 284,
-          isOpen: true,
-        },
-        drag: -110,
-        expected: {
-          width: 284,
-          isOpen: true,
-        },
-      },
-      {
-        initial: {
-          width: 284,
-          isOpen: true,
-        },
-        drag: -111,
-        expected: {
-          width: 64,
-          isOpen: false,
-        },
-      },
-      {
-        initial: {
-          width: 284,
-          isOpen: true,
-        },
-        drag: -120,
-        expected: {
-          width: 64,
-          isOpen: false,
-        },
-      },
-      {
-        initial: {
-          width: 284,
-          isOpen: true,
-        },
-        drag: -121,
-        expected: {
-          width: 64,
-          isOpen: false,
-        },
-      },
-    ];
-    const expanded = [
-      {
-        initial: {
           width: 500,
           isOpen: true,
-        },
-        drag: -10,
-        expected: {
-          width: 490,
-          isOpen: true,
-        },
-      },
-      {
-        initial: {
-          width: 500,
-          isOpen: true,
-        },
-        drag: -216,
-        expected: {
-          width: 284,
-          isOpen: true,
-        },
-      },
-      {
-        initial: {
-          width: 500,
-          isOpen: true,
-        },
-        drag: -217,
-        expected: {
-          width: 284,
-          isOpen: true,
-        },
-      },
-      {
-        initial: {
-          width: 500,
-          isOpen: true,
-        },
-        drag: -326,
-        expected: {
-          width: 284,
-          isOpen: true,
-        },
-      },
-      {
-        initial: {
-          width: 500,
-          isOpen: true,
-        },
-        drag: -327,
-        expected: {
-          width: 64,
-          isOpen: false,
-        },
-      },
-      {
-        initial: {
-          width: 500,
-          isOpen: true,
-        },
-        drag: -500,
-        expected: {
-          width: 64,
-          isOpen: false,
-        },
-      },
-      {
-        initial: {
-          width: 500,
-          isOpen: true,
-        },
-        drag: -600,
-        expected: {
-          width: 64,
-          isOpen: false,
         },
       },
     ];
 
-    collapsed.forEach(assertSnappingBehaviour);
-    open.forEach(assertSnappingBehaviour);
-    expanded.forEach(assertSnappingBehaviour);
+    function makeScenario(initial) {
+      return scenarios.map(({ draggedWidth, expected }) => ({
+        initial,
+        draggedWidth,
+        expected,
+      }));
+    }
+
+    makeScenario(collapsedState).forEach(assertSnappingBehaviour);
+    makeScenario(openState).forEach(assertSnappingBehaviour);
+    makeScenario(expandedState).forEach(assertSnappingBehaviour);
   });
 });

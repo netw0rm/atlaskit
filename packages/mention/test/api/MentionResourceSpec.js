@@ -197,7 +197,8 @@ describe('MentionResource', () => {
       const resource = new MentionResource(retryConfig);
       resource.subscribe('test1', () => {
         try {
-          expect(refreshedSecurityProvider.callCount, 'refreshedSecurityProvider called once').to.equal(1);
+          expect(refreshedSecurityProvider.callCount,
+'refreshedSecurityProvider called once').to.equal(1);
           const calls = fetchMock.calls(matcher.name);
           expect(calls.length, 'number of calls to fetch').to.equal(2);
           expect(getSecurityHeader(calls[0]), 'first call').to.equal(defaultSecurityCode);
@@ -235,7 +236,8 @@ describe('MentionResource', () => {
         assert.fail('listener called', 'listener not called');
       }, (err) => {
         try {
-          expect(refreshedSecurityProvider.callCount, 'refreshedSecurityProvider called once').to.equal(1);
+          expect(refreshedSecurityProvider.callCount,
+'refreshedSecurityProvider called once').to.equal(1);
           expect(err.code, 'response code').to.be.equal(401);
           const calls = fetchMock.calls(matcher.name);
           expect(calls.length, 'number of calls to fetch').to.equal(2);
@@ -251,16 +253,15 @@ describe('MentionResource', () => {
   });
 
   describe('#recordMentionSelection', () => {
-    // disable the test to check whether it breaks the master
-    // it('should call record endpoint', (done) => {
-    //   const resource = new MentionResource(apiConfig);
-    //
-    //   resource.recordMentionSelection({
-    //     id: 666,
-    //   }).then(() => {
-    //     expect(fetchMock.called('record')).to.equal(true);
-    //     done();
-    //   });
-    // });
+    it('should call record endpoint', (done) => {
+      const resource = new MentionResource(apiConfig);
+
+      resource.recordMentionSelection({
+        id: 666,
+      }).then(() => {
+        expect(fetchMock.called('record')).to.equal(true);
+        done();
+      });
+    });
   });
 });

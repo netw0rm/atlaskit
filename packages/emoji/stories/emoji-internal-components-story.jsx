@@ -97,6 +97,6 @@ storiesOf(`${name}/Internal components`, module)
   .add('emoji list - everything', () => (
     <EmojiTypeAheadList
       emojis={emojis}
-      onSelection={action('onSelection')}
+      onEmojiSelected={action('onSelection')}
     />
   ));

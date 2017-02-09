@@ -21,7 +21,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "@atlaskit/editor-core": "^1.0.6",
+    "@atlaskit/editor-core": "^1.1.1",
     "classnames": "^2.2.5",
     "tslib": "^1.2.0"
   },

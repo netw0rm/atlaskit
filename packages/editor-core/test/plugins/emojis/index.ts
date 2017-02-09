@@ -3,10 +3,16 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { EmojiNodeType, EmojiQueryMarkType, ProseMirror, Schema, schema as schemaBasic } from '../../../src';
 import BlockTypePlugin from '../../../src/plugins/block-type';
-import EmojisPlugin from '../../../src/plugins/emojis';
+import EmojisPluginFactory from '../../../src/plugins/emojis';
 import { chaiPlugin, fixtures } from '../../../test-helper';
 
 chai.use(chaiPlugin);
+
+const emojisPlugin = EmojisPluginFactory({ emojiService: {
+  findById() {
+    return smileEmoji;
+  }
+}});
 
 const schema: Schema = new Schema({
   nodes: schemaBasic.nodeSpec.append({
@@ -20,7 +26,7 @@ const schema: Schema = new Schema({
 const makeEditor = (container: Node) => {
   return new ProseMirror({
     schema: schema,
-    plugins: [EmojisPlugin, BlockTypePlugin],
+    plugins: [emojisPlugin, BlockTypePlugin],
     place: container
   });
 };
@@ -42,7 +48,7 @@ const smileEmoji = {
 
 describe('emojis', () => {
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = EmojisPlugin as any; // .State is not public API.
+    const plugin = emojisPlugin as any; // .State is not public API.
     expect(plugin.State.name).is.be.a('string');
   });
 
@@ -98,7 +104,7 @@ describe('emojis', () => {
 
     it('should trigger "onSelectPrevious" when "Up"-key is pressed', () => {
       const pm = makeEditor(container());
-      const pluginState = EmojisPlugin.get(pm)!;
+      const pluginState = emojisPlugin.get(pm)!;
       pm.input.insertText(0, 0, ':');
       pm.flush();
 
@@ -113,7 +119,7 @@ describe('emojis', () => {
 
     it('should trigger "onSelectNext" when "Down"-key is pressed', () => {
       const pm = makeEditor(container());
-      const pluginState = EmojisPlugin.get(pm)!;
+      const pluginState = emojisPlugin.get(pm)!;
       pm.input.insertText(0, 0, ':');
       pm.flush();
 
@@ -128,7 +134,7 @@ describe('emojis', () => {
 
     it('should trigger "onSelectCurrent" when "Enter"-key is pressed', () => {
       const pm = makeEditor(container());
-      const pluginState = EmojisPlugin.get(pm)!;
+      const pluginState = emojisPlugin.get(pm)!;
       pm.input.insertText(0, 0, ':');
       pm.flush();
 
@@ -143,7 +149,7 @@ describe('emojis', () => {
 
     it('should trigger "dismiss" when "Esc"-key is pressed', () => {
       const pm = makeEditor(container());
-      const pluginState = EmojisPlugin.get(pm)!;
+      const pluginState = emojisPlugin.get(pm)!;
       pm.input.insertText(0, 0, ':');
       pm.flush();
 
@@ -161,7 +167,7 @@ describe('emojis', () => {
 
     it('should replace emoji-query-mark with emoji-node', () => {
       const pm = makeEditor(container());
-      const pluginInstance = EmojisPlugin.get(pm)!;
+      const pluginInstance = emojisPlugin.get(pm)!;
 
       pm.input.insertText(0, 0, ':');
       pm.flush();
@@ -174,7 +180,7 @@ describe('emojis', () => {
 
     it('should allow inserting multiple emojis next to eachother', () => {
       const pm = makeEditor(container());
-      const pluginInstance = EmojisPlugin.get(pm)!;
+      const pluginInstance = emojisPlugin.get(pm)!;
 
       pm.input.insertText(0, 0, ':');
       pm.flush();
@@ -196,7 +202,7 @@ describe('emojis', () => {
 
     it('should allow inserting emoji on new line after hard break', () => {
       const pm = makeEditor(container());
-      const pluginInstance = EmojisPlugin.get(pm)!;
+      const pluginInstance = emojisPlugin.get(pm)!;
       const blockTypePluginInstance = BlockTypePlugin.get(pm)!;
 
       blockTypePluginInstance.insertNewLine();

@@ -71,6 +71,7 @@ export class ProseMirror {
   scheduleDOMUpdate(f: () => (() => (() => void) | void) | void): void;
   unscheduleDOMUpdate(f: () => (() => (() => void) | void) | void): void;
   updateScheduler(subscriptions: Subscription<any>[], start: () => (() => void) | void): UpdateScheduler;
+  plugin: { [index: string]: any };
 }
 
 export interface Operation {}

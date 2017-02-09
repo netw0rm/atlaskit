@@ -6,6 +6,31 @@ const availableCategories = emojis => emojis.reduce((categories, emoji) => {
   return categories;
 }, {});
 
+export const toEmojiId = emoji => ({
+  id: emoji.id,
+});
+
+export const createMapBy = (emojis, keyFn) => {
+  const map = new Map();
+  emojis.forEach((emoji) => {
+    const key = keyFn(emoji);
+    if (!map.has(key)) {
+      map.set(key, []);
+    }
+    const emojisForKey = map.get(key);
+    emojisForKey.push(emoji);
+  });
+  return map;
+};
+
+export const findByKey = (emojiMap, key) => {
+  const emojis = emojiMap.get(key);
+  if (emojis && emojis.length) {
+    return emojis[0];
+  }
+  return null;
+};
+
 export default class EmojiService {
   constructor(emojis) {
     this.emojis = emojis;
@@ -15,15 +40,8 @@ export default class EmojiService {
     this.fullSearch.addIndex('shortcut');
     this.fullSearch.addDocuments(emojis);
 
-    this.shortcutLookup = new Map();
-    emojis.forEach((emoji) => {
-      const key = emoji.shortcut;
-      if (!this.shortcutLookup.has(key)) {
-        this.shortcutLookup.set(key, []);
-      }
-      const emojisForShortcut = this.shortcutLookup.get(key);
-      emojisForShortcut.push(emoji);
-    });
+    this.shortcutLookup = createMapBy(emojis, emoji => emoji.shortcut);
+    this.idLookup = createMapBy(emojis, emoji => emoji.id);
   }
 
   /**
@@ -56,10 +74,13 @@ export default class EmojiService {
    * Returns the first matching emoji matching the shortcut, or null if none found.
    */
   findByShortcut(shortcut) {
-    const emojis = this.shortcutLookup.get(shortcut);
-    if (emojis && emojis.length) {
-      return emojis[0];
-    }
-    return null;
+    return findByKey(this.shortcutLookup, shortcut);
+  }
+
+  /**
+   * Returns the first matching emoji matching the id, or null if none found.
+   */
+  findById(id) {
+    return findByKey(this.idLookup, id);
   }
 }

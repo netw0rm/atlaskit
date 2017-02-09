@@ -38,7 +38,7 @@ export default class RefreshableEmojiList extends Component {
     const emojiList = (
       <EmojiTypeAheadList
         emojis={this.state.emojis}
-        onSelection={action('onSelection')}
+        onEmojiSelected={action('onSelection')}
         ref={(ref) => { this.emojiList = ref; }}
       />
     );

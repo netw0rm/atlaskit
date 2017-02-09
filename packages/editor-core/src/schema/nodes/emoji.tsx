@@ -1,4 +1,4 @@
-import { Emoji } from 'ak-emoji';
+import { ResourcedEmoji } from '@atlaskit/emoji';
 import {
   akColorN50,
 } from '@atlaskit/util-shared-styles';
@@ -48,16 +48,7 @@ export class EmojiNodeType extends Inline {
   get attrs() {
     return {
       id: new Attribute({ default: '' }),
-      shortcut: new Attribute({ default: '' }),
-      representation: new Attribute({ default: {
-        xIndex: 0,
-        yIndex: 0,
-        sprite: {
-          url: '',
-          row: '',
-          column: ''
-        }
-      }})
+      emojiService: new Attribute({ default: null }),
     };
   }
 
@@ -74,7 +65,7 @@ export class EmojiNodeType extends Inline {
     dom.setAttribute('contenteditable', 'false');
     dom.setAttribute('data-emoji-id', node.attrs.id);
     dom.classList.add(emojiStyle);
-    ReactDOM.render(<Emoji {...node.attrs} />, dom);
+    ReactDOM.render(<ResourcedEmoji {...node.attrs} />, dom);
     return dom;
   }
 }
@@ -83,7 +74,7 @@ export interface EmojiNode extends Node {
   type: EmojiNodeType;
   attrs: {
     id: string;
-    [key: string]: any;
+    emojiService?: any; // FIXME get real type
   };
 }
 

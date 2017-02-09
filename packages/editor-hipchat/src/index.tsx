@@ -1,13 +1,14 @@
 import {
   BlockTypePlugin,
   DocNode,
-  EmojisPlugin,
+  EmojisPluginFactory,
   EmojiTypeAhead,
   HyperlinkEdit,
   HyperlinkPlugin,
   Keymap,
   MentionPicker,
   MentionsPlugin,
+  Plugin,
   ProseMirror,
   TextSelection,
 } from '@atlaskit/editor-core';
@@ -17,6 +18,11 @@ import { PureComponent } from 'react';
 import schema from './schema';
 
 let debounced: number | null = null;
+
+const emojiAttrs = (node) => {
+  const { emojiService, ...attrs } = node.attrs;
+  return attrs;
+};
 
 const hipchatSerializer = (doc: any) => {
   const root = doc.content[0];
@@ -30,9 +36,7 @@ const hipchatSerializer = (doc: any) => {
       case 'emoji':
         node = {
           type: 'emoji',
-          attrs: {
-            id: node.attrs.id
-          }
+          attrs: emojiAttrs(node),
         };
         break;
 
@@ -67,6 +71,23 @@ const hipchatSerializer = (doc: any) => {
   });
 };
 
+const hipchatDeserializer = (content: any, emojiService: any) => {
+  return content.map(node => {
+    switch (node.type) {
+      case 'emoji': {
+        node = {
+          type: 'emoji',
+          attrs: {
+            ...node.attrs,
+            emojiService,
+          },
+        };
+      }
+    }
+    return node;
+  });
+};
+
 export type Doc = {
   type: 'doc',
   content?: any[]
@@ -89,6 +110,8 @@ export interface State {
 }
 
 export default class Editor extends PureComponent<Props, State> {
+  private emojiPlugin: Plugin<any>;
+
   public static defaultProps: Props = {
     reverseMentionPicker: true
   };
@@ -98,6 +121,8 @@ export default class Editor extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {};
+    // FIXME deal with prop change
+    this.emojiPlugin = EmojisPluginFactory({ emojiService: props.emojiService});
   }
 
   render() {
@@ -106,7 +131,7 @@ export default class Editor extends PureComponent<Props, State> {
 
     const pluginStateMentions = props.mentionResourceProvider && pm && MentionsPlugin.get(pm);
     const pluginStateHyperlink = pm && HyperlinkPlugin.get(pm);
-    const pluginStateEmojis = props.emojiService && pm && EmojisPlugin.get(pm);
+    const pluginStateEmojis = props.emojiService && pm && this.emojiPlugin.get(pm);
     const classNames = cx('ak-editor-hipchat', {
       'max-length-reached': this.state.maxLengthReached,
       'flash-toggle': this.state.flashToggle
@@ -122,7 +147,7 @@ export default class Editor extends PureComponent<Props, State> {
             <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reverseMentionPicker} />
           }
           {!pluginStateEmojis ? null :
-            <EmojiTypeAhead emojiService={props.emojiService} pluginState={pluginStateEmojis} reversePosition={props.reverseMentionPicker} />
+            <EmojiTypeAhead emojiService={props.emojiService} pluginState={pluginStateEmojis} />
           }
         </div>
       </div>
@@ -142,7 +167,7 @@ export default class Editor extends PureComponent<Props, State> {
         BlockTypePlugin,
         HyperlinkPlugin,
         ...(this.props.mentionResourceProvider ? [MentionsPlugin] : []),
-        ...(this.props.emojiService ? [EmojisPlugin] : [])
+        ...(this.props.emojiService ? [this.emojiPlugin] : [])
       ],
     });
 
@@ -214,7 +239,7 @@ export default class Editor extends PureComponent<Props, State> {
     if (pm) {
       const val = {
         type: 'paragraph',
-        content: (value.length ? value : [{ type: 'text', text: ' ' }]) // We need to insert a space instead of an empty node in order to trigger the update event (which will close the mentions picker)
+        content: (value.length ? hipchatDeserializer(value, this.props.emojiService) : [{ type: 'text', text: ' ' }]) // We need to insert a space instead of an empty node in order to trigger the update event (which will close the mentions picker)
       };
 
       pm.setDoc(schema.nodes.doc.create({}, pm.schema.nodeFromJSON(val)));

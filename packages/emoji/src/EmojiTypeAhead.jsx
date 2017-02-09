@@ -34,10 +34,10 @@ export default class EmojiTypeAhead extends PureComponent {
 
     // ak-inline-dialog
     /**
-     * id of element to target the picker against.
+     * a HTMLElement or a string css selector of element to target the picker against.
      * if not specified the picker is rendered inline.
      */
-    target: PropTypes.string,
+    target: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     position: PropTypes.string,
     zIndex: PropTypes.number,
     offsetX: PropTypes.number,
@@ -123,7 +123,7 @@ export default class EmojiTypeAhead extends PureComponent {
       <div style={style} className={classes}>
         <EmojiList
           emojis={emojis}
-          onSelection={onSelection}
+          onEmojiSelected={onSelection}
           ref={(ref) => { this.emojiListRef = ref; }}
         />
       </div>

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import {
   EmojiNodeType,
   EmojiQueryMarkType,
-  EmojisPlugin,
+  EmojisPluginFactory,
   ProseMirror,
   Schema,
   schema as schemaBasic
@@ -23,7 +23,7 @@ const schema: Schema = new Schema({
 
 const makeEditor = () => new ProseMirror({
   schema: schema,
-  plugins: [EmojisPlugin],
+  plugins: [EmojisPluginFactory({ emojiService: {} })],
 });
 
 describe('emojis - input rules', () => {

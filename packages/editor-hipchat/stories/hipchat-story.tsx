@@ -12,9 +12,34 @@ storiesOf(name, module)
       <Editor
         onSubmit={action('submit')}
         mentionResourceProvider={resourceProvider}
-        emojiService={emojiService}
         reverseMentionPicker={false}
       />
+    );
+  })
+  .add('With EmojiTypeAhead', () => {
+    let editorRef;
+    const reloadEditor = () => {
+      if (editorRef) {
+        const jsonDoc = editorRef.value;
+        editorRef.setFromJson(jsonDoc);
+      }
+    };
+    return (
+      <div>
+        <button onClick={reloadEditor}>Reload document</button>
+        <div
+          style={{
+            border: '1px solid #ccc',
+            margin: '5px',
+          }}
+        >
+          <Editor
+            onSubmit={action('submit')}
+            emojiService={emojiService}
+            ref={(ref) => { editorRef = ref; }}
+          />
+        </div>
+      </div>
     );
   })
   .add('With maxContentSize', () => <Editor maxContentSize={100}/>)

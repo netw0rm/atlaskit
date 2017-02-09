@@ -7,6 +7,7 @@ import EmojiPickerListCategory from './EmojiPickerListCategory';
 import EmojiPickerListRow from './EmojiPickerListRow';
 import EmojiPickerListSearch from './EmojiPickerListSearch';
 import { emojiPickerListWidth, emojiPickerListHeight } from '../../shared-variables';
+import { toEmojiId } from '../../api/EmojiService';
 
 const emojiPerRow = 8;
 
@@ -190,7 +191,7 @@ export default class EmojiPickerList extends PureComponent {
           emojis={item.emojis}
           selectedEmojiShortcut={selectedShortcut}
           onEmojiMouseEnter={emoji => this.onEmojiMouseEnter(emoji)}
-          onEmojiSelected={emoji => this.props.onEmojiSelected(emoji)}
+          onEmojiSelected={emoji => this.props.onEmojiSelected(toEmojiId(emoji), emoji)}
         />
       );
     } else if (item.type === 'category') {

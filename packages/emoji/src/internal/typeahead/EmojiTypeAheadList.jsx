@@ -9,6 +9,7 @@ import Scrollable from './Scrollable';
 import EmojiPropTypes from '../ak-emoji-prop-types';
 import debug from '../logger';
 import { mouseLocation, actualMouseMove } from '../mouse';
+import { toEmojiId } from '../../api/EmojiService';
 
 function wrapIndex(emojis, index) {
   const len = emojis.length;
@@ -26,11 +27,11 @@ function getKey(index, emojis) {
 export default class EmojiTypeAheadList extends PureComponent {
   static propTypes = {
     emojis: PropTypes.arrayOf(EmojiPropTypes.emoji),
-    onSelection: PropTypes.func,
+    onEmojiSelected: PropTypes.func,
   }
 
   static defaultProps = {
-    onSelection: () => {},
+    onEmojiSelected: () => {},
   }
 
   constructor(props) {
@@ -84,12 +85,12 @@ export default class EmojiTypeAheadList extends PureComponent {
   }
 
   chooseCurrentSelection = () => {
-    const { emojis, onSelection } = this.props;
+    const { emojis, onEmojiSelected } = this.props;
     const { selectedIndex } = this.state;
     const selectedEmoji = emojis[selectedIndex];
     debug('ak-typeahead-list.chooseCurrentSelection', selectedEmoji);
-    if (onSelection) {
-      onSelection(selectedEmoji);
+    if (onEmojiSelected) {
+      onEmojiSelected(toEmojiId(selectedEmoji), selectedEmoji);
     }
   }
 

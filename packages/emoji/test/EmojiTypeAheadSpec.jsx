@@ -66,7 +66,7 @@ describe('EmojiTypeAhead', () => {
     let choseEmoji = null;
 
     const component = setupPicker({
-      onSelection: (emoji) => { choseEmoji = emoji; },
+      onSelection: (emojiId, emoji) => { choseEmoji = emoji; },
     });
     const defaultEmojiShown = () => component.find(EmojiTypeAheadItem).length === defaultListLimit;
     const secondItemSelected = () => isEmojiTypeAheadItemSelected(component, emojis[1].id);

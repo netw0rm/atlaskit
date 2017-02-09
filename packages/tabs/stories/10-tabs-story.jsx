@@ -123,17 +123,25 @@ storiesOf(name, module)
             label: 'Constrained height scrolls',
             defaultSelected: true,
             content: (
-              <Lorem
+              <div
                 style={{
-                  flex: '0 1 auto',
-                  overflowY: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  flexBasis: '100%',
+                  overflowY: 'scroll',
                 }}
-              />
+              >
+                <Lorem />
+              </div>
             ),
           },
           {
             label: 'Unconstrained height',
-            content: <Lorem />,
+            content: (
+              <div>
+                <Lorem />
+              </div>
+            ),
           },
         ]}
       />

@@ -34,13 +34,4 @@ describe('ak-editor-core/ui/LanguagePicker', () => {
       expect(languagePicker.find(FloatingToolbar)).to.have.length(1);
     });
   });
-
-  // it('should return null if state variable showToolbar is false or target is undefined', () => {
-  //   const { pm } = editor(doc());
-  //   const LanguagePickerOptions = shallow(<LanguagePicker pluginState={CodeBlockPlugin.get(pm)!}/>);
-  //   LanguagePickerOptions.setState({ showToolbar: false });
-  //   expect(LanguagePickerOptions.html()).to.equal(null);
-  //   LanguagePickerOptions.setState({ showToolbar: true, target: document.createElement('div') });
-  //   expect(LanguagePickerOptions.html()).to.not.equal(null);
-  // });
 });

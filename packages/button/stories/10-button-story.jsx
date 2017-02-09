@@ -1,17 +1,16 @@
 import { storiesOf, action } from '@kadira/storybook';
 
 import React from 'react';
-import Calendar from 'ak-icon/glyph/confluence/calendar';
-import Page from 'ak-icon/glyph/confluence/page';
-import Question from 'ak-icon/glyph/question';
-import Expand from 'ak-icon/glyph/expand';
-import Unlink from 'ak-icon/glyph/editor/unlink';
-import Open from 'ak-icon/glyph/editor/open';
+import Calendar from '@atlaskit/icon/glyph/confluence/calendar';
+import Page from '@atlaskit/icon/glyph/confluence/page';
+import Question from '@atlaskit/icon/glyph/question';
+import Expand from '@atlaskit/icon/glyph/expand';
+import Unlink from '@atlaskit/icon/glyph/editor/unlink';
+import Open from '@atlaskit/icon/glyph/editor/open';
 import { akColorN20, akColorN700 } from '@atlaskit/util-shared-styles';
 import { name } from '../package.json';
 
 import AkButton from '../src';
-import ButtonBuilderExample from './button-builder-example';
 
 const css = `
   .container {
@@ -358,12 +357,9 @@ const buildStory = props => (
 );
 
 storiesOf(name, module)
-    .add('standard ak-button states', buildStory({ appearance: 'default' }))
-    .add('primary ak-button states', buildStory({ appearance: 'primary' }))
-    .add('subtle ak-button states', buildStory({ appearance: 'subtle' }))
-    .add('link ak-button states', buildStory({ appearance: 'link' }))
-    .add('subtle-link ak-button states', buildStory({ appearance: 'subtle-link' }))
-    .add('different backgrounds', buildBackgroundStory)
-    .add('button builder example', () =>
-      <ButtonBuilderExample icons={[() => null].concat([Page, Question, Calendar, Expand])} />
-    );
+    .add('standard states', buildStory({ appearance: 'default' }))
+    .add('primary states', buildStory({ appearance: 'primary' }))
+    .add('subtle states', buildStory({ appearance: 'subtle' }))
+    .add('link states', buildStory({ appearance: 'link' }))
+    .add('subtle-link states', buildStory({ appearance: 'subtle-link' }))
+    .add('different backgrounds', buildBackgroundStory);

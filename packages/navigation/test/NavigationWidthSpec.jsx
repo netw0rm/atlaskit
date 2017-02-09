@@ -14,6 +14,11 @@ describe('<Navigation />', () => {
     [
       {
         isOpen: false,
+        width: -50,
+        expectedRenderedWidth: navigationClosedWidth,
+      },
+      {
+        isOpen: false,
         width: 0,
         expectedRenderedWidth: navigationClosedWidth,
       },
@@ -64,8 +69,8 @@ describe('<Navigation />', () => {
       },
       {
         isOpen: true,
-        width: 500,
-        expectedRenderedWidth: 500,
+        width: 5000,
+        expectedRenderedWidth: 5000,
       },
     ].forEach(({ isOpen, width, expectedRenderedWidth }) => {
       it(`with isOpen=${isOpen} and width=${width}, rendered width is ${expectedRenderedWidth}`, () => {
@@ -111,6 +116,10 @@ describe('<Navigation />', () => {
     };
 
     const scenarios = [
+      {
+        draggedWidth: -50,
+        expected: collapsedState,
+      },
       {
         draggedWidth: 0,
         expected: collapsedState,

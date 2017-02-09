@@ -11,7 +11,6 @@ import {
 } from '../../prosemirror';
 import { LinkMark, LinkMarkType } from '../../schema';
 import hyperlinkRule from './input-rule';
-import pasteTransformer from './paste-transformer';
 
 export type StateChangeHandler = (state: HyperlinkState) => void;
 
@@ -32,8 +31,6 @@ export class HyperlinkState {
 
   constructor(pm: PM) {
     this.pm = pm;
-
-    pm.on.transformPasted.add(pasteTransformer.bind(pasteTransformer, pm));
 
     this.inputRules = [hyperlinkRule];
 

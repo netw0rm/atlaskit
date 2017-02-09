@@ -24,8 +24,21 @@ const formStyle = {
 storiesOf(name, module)
   .add('with label', () =>
     <BasicFieldBase
-      label="basic example"
+      label="basic example for form"
       id="fieldbase"
+    >
+      <Input
+        value="input children"
+        isEditing
+        id="fieldbase"
+      />
+    </BasicFieldBase>
+  )
+  .add('for inline edit', () =>
+    <BasicFieldBase
+      label="basic example for inline edit"
+      id="fieldbase"
+      labelAppearance="inline-edit"
     >
       <Input
         value="input children"
@@ -242,5 +255,55 @@ storiesOf(name, module)
         label="With only icon"
         rightGutter="important"
       />
+    </div>
+  )
+  .add('when it`s the first element of a form', () =>
+    <div
+      style={{
+        margin: '20px',
+        padding: '20px',
+        border: '1px solid #f0f0f0',
+        display: 'flex',
+        flexDirection: 'column',
+        background: '#fff',
+      }}
+    >
+      <BasicFieldBase
+        id="fieldbase"
+        isFirstChild
+        isFitContainerWidthEnabled
+        label="basic example for form"
+        disablePadding
+      >
+        <Input
+          value="input children"
+          isEditing
+          id="fieldbase"
+        />
+      </BasicFieldBase>
+      <BasicFieldBase
+        label="basic example for form"
+        id="fieldbase"
+        isFitContainerWidthEnabled
+        disablePadding
+      >
+        <Input
+          value="input children"
+          isEditing
+          id="fieldbase"
+        />
+      </BasicFieldBase>
+      <BasicFieldBase
+        label="basic example for form"
+        id="fieldbase"
+        isFitContainerWidthEnabled
+        disablePadding
+      >
+        <Input
+          value="input children"
+          isEditing
+          id="fieldbase"
+        />
+      </BasicFieldBase>
     </div>
   );

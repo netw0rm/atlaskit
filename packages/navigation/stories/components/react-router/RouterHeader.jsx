@@ -1,6 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react';
 import RouterLinkComponent from './RouterLinkComponent';
-import { AkContainerHeader } from '../../../src/index';
+import { AkContainerTitle } from '../../../src/index';
 import nucleusLogo from '../../nucleus.png';
 
 export default class RouterHeader extends PureComponent {
@@ -10,7 +10,7 @@ export default class RouterHeader extends PureComponent {
 
   render() {
     return (
-      <AkContainerHeader
+      <AkContainerTitle
         href={this.props.to}
         icon={<img alt="nucleus" src={nucleusLogo} />}
         linkComponent={RouterLinkComponent}

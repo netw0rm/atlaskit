@@ -18,9 +18,11 @@ export default (
   <Select
     items={selectItems}
     label="Choose your favourite"
-    shouldFitContainer
+    placeholder="Australia"
+    name="test"
     onSelectedChange={(item) => {
       console.log(item);
     }}
+    shouldFitContainer
   />
 );

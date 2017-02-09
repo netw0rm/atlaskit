@@ -190,21 +190,6 @@ describe(`${name} - stateless`, () => {
         ],
       },
     ];
-    it('should call onSelected when an item is activated', () => {
-      const spy = sinon.spy();
-      const select = mount(<StatelessMultiSelect items={selectItems} isOpen onSelected={spy} />);
-      select.find(Item).first().props().onActivate({});
-      expect(spy.callCount).to.equal(1);
-    });
-
-    it('should call onOpenChange when an item is activated', () => {
-      const spy = sinon.spy();
-      const attrs = { event: {} };
-      const select = mount(<StatelessMultiSelect items={selectItems} isOpen onOpenChange={spy} />);
-      select.find(Item).first().props().onActivate(attrs);
-      expect(spy.callCount).to.equal(1);
-      expect(spy.calledWith({ isOpen: false, event: attrs.event })).to.equal(true);
-    });
 
     it('should call onRemoved when an item is removed', () => {
       const spy = sinon.spy();
@@ -290,37 +275,6 @@ describe(`${name} - stateless`, () => {
     });
 
     describe('handleKeyUpInInput', () => {
-      it('should call onOpenChange every time the value is changed', () => {
-        const event = { key: '', target: { value: '1' } };
-        instance.handleKeyUpInInput(event);
-        expect(onOpenChangeSpy.calledOnce).to.equal(true);
-        expect(onOpenChangeSpy.calledWith({ event, isOpen: true })).to.equal(true);
-      });
-
-      it('should call onFilterChange every time the value is changed', () => {
-        const value1 = '1';
-        const value2 = '2';
-        let event = { key: '', target: { value: value1 } };
-        instance.handleKeyUpInInput(event);
-        expect(onFilterChangeSpy.calledOnce).to.equal(true);
-        expect(onFilterChangeSpy.calledWith(value1)).to.equal(true);
-        onFilterChangeSpy.reset();
-
-        wrapper.setProps({ filterValue: value1 });
-        event = { key: '', target: { value: value2 } };
-        instance.handleKeyUpInInput(event);
-        expect(onFilterChangeSpy.calledOnce).to.equal(true);
-        expect(onFilterChangeSpy.calledWith(value2)).to.equal(true);
-      });
-
-      it('should not call onFilterChange when value is the same', () => {
-        const value = '1';
-        const event = { key: '', target: { value } };
-        wrapper.setProps({ filterValue: value });
-        instance.handleKeyUpInInput(event);
-        expect(onFilterChangeSpy.called).to.equal(false);
-      });
-
       it('should call onOpenChange when there was no value and Backspace was pressed', () => {
         const event = { key: 'Backspace', target: { value: '' } };
         instance.handleKeyUpInInput(event);
@@ -333,6 +287,32 @@ describe(`${name} - stateless`, () => {
         const event = { key: 'Backspace', target: { value: '' } };
         instance.handleKeyUpInInput(event);
         expect(spy.calledOnce).to.equal(true);
+      });
+    });
+
+    describe('handleOnChange', () => {
+      it('should call onFilterChange every time the value is changed', () => {
+        const value1 = '1';
+        const value2 = '2';
+        let event = { key: '', target: { value: value1 } };
+        instance.handleOnChange(event);
+        expect(onFilterChangeSpy.calledOnce).to.equal(true);
+        expect(onFilterChangeSpy.calledWith(value1)).to.equal(true);
+        onFilterChangeSpy.reset();
+
+        wrapper.setProps({ filterValue: value1 });
+        event = { key: '', target: { value: value2 } };
+        instance.handleOnChange(event);
+        expect(onFilterChangeSpy.calledOnce).to.equal(true);
+        expect(onFilterChangeSpy.calledWith(value2)).to.equal(true);
+      });
+
+      it('should not call onFilterChange when value is the same', () => {
+        const value = '1';
+        const event = { key: '', target: { value } };
+        wrapper.setProps({ filterValue: value });
+        instance.handleOnChange(event);
+        expect(onFilterChangeSpy.called).to.equal(false);
       });
     });
 
@@ -442,6 +422,33 @@ describe(`${name} - stateless`, () => {
         wrapper.setProps({ selectedItems: [] });
         wrapper.setProps({ placeholder });
         expect(instance.getPlaceholder()).to.equal(null);
+      });
+    });
+
+    describe('handleItemSelect', () => {
+      const item = selectItems[0].items[0];
+      const attrs = { event: {} };
+
+      it('should call onSelected when called', () => {
+        instance.handleItemSelect(item, attrs);
+        expect(onSelectedSpy.callCount).to.equal(1);
+      });
+
+      it('should call onOpenChange when called', () => {
+        instance.handleItemSelect(item, attrs);
+        expect(onOpenChangeSpy.callCount).to.equal(1);
+        expect(onOpenChangeSpy.calledWith({ isOpen: false, event: attrs.event })).to.equal(true);
+      });
+
+      it('should call onFilterChange with empty string when called', () => {
+        instance.handleItemSelect(item, attrs);
+        expect(onFilterChangeSpy.callCount).to.equal(1);
+        expect(onFilterChangeSpy.calledWith('')).to.equal(true);
+      });
+
+      it('should clear the oldFilterValue state when called', () => {
+        instance.handleItemSelect(item, attrs);
+        expect(wrapper.state().oldFilterValue).to.equal('');
       });
     });
   });

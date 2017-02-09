@@ -1,9 +1,8 @@
 import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Lorem from 'react-lorem-component';
 import { DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
 import { AkContainerItem, AkContainerLogo } from '../src/index';
-import Page from './components/Page';
+import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import nucleus from './nucleus.png';
 import bitbucketLogo from './bitbucket-logo.svg';
@@ -12,7 +11,7 @@ import RandomBadge from './components/RandomBadge';
 
 const manyContainerItems = () => {
   const items = [];
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 40; i++) {
     items.push(
       <a href="#1" key={i}>
         <AkContainerItem
@@ -46,9 +45,6 @@ storiesOf(name, module)
           />
         </a>
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('with many container items', () => (
@@ -63,9 +59,6 @@ storiesOf(name, module)
         </a>
         {manyContainerItems()}
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('with a selected item', () => (
@@ -79,9 +72,6 @@ storiesOf(name, module)
           />
         </a>
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('with global appearance', () => (
@@ -114,25 +104,16 @@ storiesOf(name, module)
           textAfter={<RandomBadge theme="dark" />}
         />
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('that is not resizeable', () => (
     <Page>
       <BasicNavigation isResizeable={false} />
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('with isCollapsible=false', () => (
     <Page>
       <BasicNavigation isCollapsible={false} />
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('that starts closed', () => (
@@ -148,9 +129,6 @@ storiesOf(name, module)
           text="This one is not selected"
         />
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('with controllable drawers', () => (

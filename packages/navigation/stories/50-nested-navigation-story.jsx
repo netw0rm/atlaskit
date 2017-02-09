@@ -1,11 +1,10 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Lorem from 'react-lorem-component';
 import { DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
 
 import { AkContainerItem } from '../src/index';
 import BasicNavigation from './components/BasicNavigation';
-import Page from './components/Page';
+import Page from './components/HtmlPage';
 import PagedContainerNavigation from './components/nested-navigation/PagedContainerNavigation';
 import { name } from '../package.json';
 
@@ -15,9 +14,6 @@ storiesOf(name, module)
       <BasicNavigation>
         <PagedContainerNavigation />
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('with nested navigation and container items', () => (
@@ -42,9 +38,6 @@ storiesOf(name, module)
           </div>
         </PagedContainerNavigation>
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   )
 );

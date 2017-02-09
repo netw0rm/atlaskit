@@ -41,6 +41,7 @@
     "@atlaskit/comment": "^1.0.0",
     "@atlaskit/navigation": "^1.2.2",
     "@atlaskit/page": "*",
+    "@atlaskit/toggle": "^1.0.1",
     "@atlaskit/util-readme": "^1.0.0",
     "react-lorem-component": "^0.11.0",
     "react-syntax-highlighter": "^4.0.1"

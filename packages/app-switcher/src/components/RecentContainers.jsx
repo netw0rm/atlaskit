@@ -1,5 +1,12 @@
 import React, { PureComponent } from 'react';
-import { MenuItemContainer, MenuItemIcon, MenuItemTwoLineContent, MenuHeader } from '../styled';
+import {
+  MenuItemContainer,
+  MenuItemIcon,
+  MenuItemTwoLineContent,
+  MenuHeader,
+  AppSwitcherLink,
+  FlexContainer,
+} from '../styled';
 import AppSwitcherPropTypes from '../internal/prop-types';
 
 export default class RecentContainers extends PureComponent {
@@ -9,17 +16,19 @@ export default class RecentContainers extends PureComponent {
   };
 
   item = container => (
-    <a href={container.url} key={container.url}>
+    <AppSwitcherLink href={container.url} key={container.url}>
       <MenuItemContainer>
-        <MenuItemIcon>
-          <img src={container.iconUrl} alt={container.name} />
-        </MenuItemIcon>
-        <MenuItemTwoLineContent>
-          <div>{container.name}</div>
-          <div>{this.props.i18n[`container.${container.type}`]}</div>
-        </MenuItemTwoLineContent>
+        <FlexContainer>
+          <MenuItemIcon>
+            <img src={container.iconUrl} alt={container.name} />
+          </MenuItemIcon>
+          <MenuItemTwoLineContent className="ellipsis">
+            <div className="ellipsis">{container.name}</div>
+            <div>{this.props.i18n[`container.${container.type}`]}</div>
+          </MenuItemTwoLineContent>
+        </FlexContainer>
       </MenuItemContainer>
-    </a>
+    </AppSwitcherLink>
   );
 
   render() {

@@ -1,5 +1,10 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { MenuItemContainer, MenuItemIcon } from '../styled';
+import {
+  MenuItemContainer,
+  MenuItemIcon,
+  AppSwitcherLink,
+  FlexContainer,
+} from '../styled';
 import HomeIcon from './HomeIcon';
 
 export default class HomeLink extends PureComponent {
@@ -11,14 +16,16 @@ export default class HomeLink extends PureComponent {
 
   render() {
     return (
-      <a href="/home" onClick={this.onHomeClick}>
+      <AppSwitcherLink href="/home" onClick={this.onHomeClick}>
         <MenuItemContainer>
-          <MenuItemIcon>
-            <HomeIcon />
-          </MenuItemIcon>
-          <div>Home</div>
+          <FlexContainer>
+            <MenuItemIcon>
+              <HomeIcon />
+            </MenuItemIcon>
+            <div>Home</div>
+          </FlexContainer>
         </MenuItemContainer>
-      </a>
+      </AppSwitcherLink>
     );
   }
 }

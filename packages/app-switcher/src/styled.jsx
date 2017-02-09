@@ -9,75 +9,83 @@ import {
 } from '@atlaskit/util-shared-styles';
 
 export const AppSwitcherContainer = styled.div`
-  width: 232px;
   padding: 8px 0;
-  
-  a, a:hover {
-    text-decoration: none;
-    
-    // Overriding AUI default styles
+  width: 232px;
+`;
+
+export const AppSwitcherLink = styled.a`
+  // HACK to trump the AUI header styles for a
+  html & {
     display: inline;
-    line-height: 20px;
-    padding: 0px;
+    line-height: 1.42857142857143;
+    padding: 0;
+    
+    &:hover {
+      text-decoration: none;
+    }
   }
 `;
 
 export const MenuItemContainer = styled.div`
-  outline: none;
   color: ${akColorN800};
   cursor: pointer;
-  padding: 6px 24px; 6px 24px;
-  display: flex;
-  align-items: center;
   font-size: 14px;
+  outline: none;
+  padding: 6px 24px;
   
-  &:hover {
-    background: ${akColorN30};
-  }
-  
-  div {
+  &.ellipsis {
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
+  }
+
+  &:hover {
+    background: ${akColorN30};
   }
 `;
 
 export const MenuItemIcon = styled.div`
-  padding-right: 8px;
-  height: 32px;
-  width: 32px;
   flex-shrink: 0;
-  
-  img {
+  height: 32px;
+  padding-right: 8px;
+  width: 32px;
+
+  & img {
+    border-radius: 3px;
     height: 32px;
     width: 32px;
-    border-radius: 3px;
   }
 `;
 
 export const MenuItemTwoLineContent = styled.div`
   display: flex;
   flex-direction: column;
+  flex-grow: 0;
   height: 32px;
   line-height: normal;
-  flex-grow: 0;
-  
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
   div:first-child {
+    overflow: hidden;
     padding-top: 2px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  
+
   div:last-child {
-    font-size: 10px;
     color: ${akColorN100}
+    font-size: 10px;
   }
 `;
 
 export const MenuHeader = styled.div`
   color: ${akColorN300};
   font-size: 12px;
-  text-transform: uppercase;
-  padding: ${props => (props.paddingTop ? '24px 0 8px 24px' : '0 0 8px 24px')}
   font-weight: 500;
+  padding: ${props => (props.paddingTop ? '24px 0 8px 24px' : '0 0 8px 24px')}
+  text-transform: uppercase;
 `;
 
 MenuHeader.defaultProps = {
@@ -94,15 +102,15 @@ export const SuggestedApplicationContainer = styled(MenuItemContainer)`
 `;
 
 export const SuggestedApplicationTagline = styled.div`
-  font-size: 12px;
   color: ${akColorN90};
-  white-space: normal !important;
+  font-size: 12px;
 `;
 
 export const LogoContainer = styled.div`
   color: ${akColorB400};
 `;
 
-export const ErrorContainer = styled.div`
-  white-space: normal !important;
+export const FlexContainer = styled.div`
+  align-items: center;
+  display: flex;
 `;

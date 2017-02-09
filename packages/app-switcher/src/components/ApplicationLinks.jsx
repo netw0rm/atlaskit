@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { MenuHeader, MenuItemContainer, MenuLinkItem, ErrorContainer } from '../styled';
+import { MenuHeader, MenuItemContainer, MenuLinkItem, AppSwitcherLink } from '../styled';
 import AppSwitcherPropTypes from '../internal/prop-types';
 
 export default class ApplicationLinks extends PureComponent {
@@ -16,25 +16,25 @@ export default class ApplicationLinks extends PureComponent {
   render() {
     const apps = this.props.error
       ? (
-        <MenuItemContainer>
-          <ErrorContainer>{this.props.i18n['applinks.error']}</ErrorContainer>
-        </MenuItemContainer>
+        <MenuItemContainer>{this.props.i18n['applinks.error']}</MenuItemContainer>
       )
       : this.props.apps.map(app => (
-        <a href={app.url} key={app.url} onClick={() => this.onLinkedApplicationClick(app.product)}>
-          <MenuItemContainer>
-            <div>{app.name}</div>
-          </MenuItemContainer>
-        </a>
+        <AppSwitcherLink
+          href={app.url}
+          key={app.url}
+          onClick={() => this.onLinkedApplicationClick(app.product)}
+        >
+          <MenuItemContainer className="ellipsis">{app.name}</MenuItemContainer>
+        </AppSwitcherLink>
      ));
 
     const configureLink = this.props.configureLink ?
       (
-        <a href={this.props.configureLink} onClick={this.onConfigureClick}>
+        <AppSwitcherLink href={this.props.configureLink} onClick={this.onConfigureClick}>
           <MenuItemContainer>
             <MenuLinkItem>{this.props.i18n.configure}</MenuLinkItem>
           </MenuItemContainer>
-        </a>
+        </AppSwitcherLink>
       ) : null;
 
     return (

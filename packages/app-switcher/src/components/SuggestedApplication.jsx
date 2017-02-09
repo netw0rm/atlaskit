@@ -8,6 +8,7 @@ import {
   MenuItemContainer,
   MenuLinkItem,
   LogoContainer,
+  AppSwitcherLink,
 } from '../styled';
 import AppSwitcherPropTypes from '../internal/prop-types';
 
@@ -39,14 +40,14 @@ export default class SuggestedApplication extends PureComponent {
     return (
       <div>
         <MenuHeader>{this.props.i18n['try.other.apps']}</MenuHeader>
-        <a href={this.props.url} onClick={this.onSuggestedApplicationClick}>
+        <AppSwitcherLink href={this.props.url} onClick={this.onSuggestedApplicationClick}>
           <SuggestedApplicationContainer>
             <LogoContainer>{logos[this.props.application]}</LogoContainer>
             <SuggestedApplicationTagline>
               {this.props.i18n[`suggested.application.description.${this.props.application}`]}
             </SuggestedApplicationTagline>
           </SuggestedApplicationContainer>
-        </a>
+        </AppSwitcherLink>
         <MenuItemContainer onClick={this.onDontShowAgainClick}>
           <MenuLinkItem>{this.props.i18n["don't.show.this.again"]}</MenuLinkItem>
         </MenuItemContainer>

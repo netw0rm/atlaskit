@@ -85,7 +85,7 @@ export default class DropdownMenu extends PureComponent {
     this.props.onOpenChange({ isOpen: false });
   }
 
-  render = () => {
+  render() {
     const { props, state } = this;
     return (
       <StatelessDropdownMenu

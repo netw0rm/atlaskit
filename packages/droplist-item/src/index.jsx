@@ -76,7 +76,7 @@ export default class Item extends PureComponent {
     }
   }
 
-  render = () => {
+  render() {
     const { props } = this;
     return (
       <span role="presentation">

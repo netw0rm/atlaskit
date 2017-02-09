@@ -19,19 +19,21 @@ class ButtonActivatedDialog extends PureComponent {
     });
   }
 
-  render = () => (
-    <AKInlineDialog
-      content={this.props.content}
-      position={this.props.position}
-      isOpen={this.state.isOpen}
-    >
-      <AKButton
-        onClick={this.handleClick}
-        iconBefore={<BitbucketAdminIcon />}
-        isSelected
-      />
-    </AKInlineDialog>
-  )
+  render() {
+    return (
+      <AKInlineDialog
+        content={this.props.content}
+        position={this.props.position}
+        isOpen={this.state.isOpen}
+      >
+        <AKButton
+          onClick={this.handleClick}
+          iconBefore={<BitbucketAdminIcon />}
+          isSelected
+        />
+      </AKInlineDialog>
+    );
+  }
 }
 
 export default ButtonActivatedDialog;

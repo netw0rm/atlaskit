@@ -21,7 +21,6 @@ const DroplistOverview = class extends Component {
         this.setState({ isDropdownOpen: attrs.isOpen });
       }}
       isTriggerNotTabbable
-      isKeyboardInteractionDisabled
       appearance="default"
       position="right top"
       listContext="menu"

@@ -1,3 +1,4 @@
+@import '~akutil-shared-styles/src/colors.less';
 @import "./base";
 
 .card {
@@ -72,6 +73,7 @@
       word-wrap: break-word;
       color: #091E42;
       font-size: 12px;
+      line-height: 18px;
     }
 
     .tickbox {
@@ -279,6 +281,64 @@
       }
     }
   }
+
+  &.error {
+  .top-row {
+    .error-line {
+      display: block;
+      height: 24px;
+
+      .error-icon {
+        display: inline-block;
+        vertical-align: middle;
+        width: 24px;
+      }
+
+      .error-message {
+        display: inline-block;
+        vertical-align: middle;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-weight: bold;
+        color: @ak-color-N70;
+        font-size: 12px;
+        line-height: 15px;
+        overflow: hidden;
+        max-width: ~"calc(100% - 24px)";
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .bottom-row {
+    .retry {
+      position: absolute;
+      box-sizing: border-box;
+      padding: 0 7px 7px 0;
+      bottom: 0;
+      width: 100%;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-weight: bold;
+      color: #0065FF;
+      font-size: 12px;
+      line-height: 15px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  &:hover, &.active {
+    .top-row {
+      .title {
+        color: #091E42;
+      }
+    }
+  }
+}
+
 }
 
 // 

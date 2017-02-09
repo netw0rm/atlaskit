@@ -1,11 +1,13 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import * as bytes from 'bytes';
+
 import * as styles from './styles.less';
 import {ProgressBar} from './progressBar';
 import {MediaTypes, Actions} from '@atlaskit/media-domain';
 import {Dropdown} from './dropdown';
 import {FileIcon} from './fileIcon';
+import {ErrorIcon} from './errorIcon';
 
 export interface CardOverlayProps {
   mediaType: MediaTypes.MediaType;
@@ -17,6 +19,9 @@ export interface CardOverlayProps {
 
   progress?: number;
 
+  error?: string;
+  onRetry?: Actions.CardAction;
+
   menuActions?: Array<Actions.CardAction>;
 }
 
@@ -25,6 +30,8 @@ export interface CardOverlayState {
 }
 
 export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
+  private _clickDetector: (e: Event) => void;
+
   constructor(props: CardOverlayProps) {
     super(props);
 
@@ -32,9 +39,6 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       isMenuExpanded: false
     };
   }
-
-  private clickDetector: (e: Event) => void;
-
 
   static get defaultProps() {
     const menuActions: Array<Actions.CardAction> = [];
@@ -48,39 +52,43 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
     const active = (typeof this.props.progress === 'number');
 
     let classNames: Array<string> = [styles['overlay']];
-    if (active) {
-     classNames.push(styles['active']);
-    }
 
-    if (this.props.selectable) {
-      classNames.push(styles['selectable']);
-    }
+    if (this.props.error) {
+      classNames.push(styles['error']);
+    } else {
+      if (active) {
+        classNames.push(styles['active']);
+      }
 
-    if (this.props.selected) {
-      classNames.push(styles['selected']);
-    }
+      if (this.props.selectable) {
+        classNames.push(styles['selectable']);
+      }
 
-    if (this.props.mediaType === 'image') {
-      classNames.push(styles['image']);
-    }
+      if (this.props.selected) {
+        classNames.push(styles['selected']);
+      }
 
-    if (this.props.mediaType === 'video') {
-      classNames.push(styles['video']);
-    }
+      if (this.props.mediaType === 'image') {
+        classNames.push(styles['image']);
+      }
 
-    if (typeof this.props.progress === 'number') {
-      classNames.push(styles['inProgress']);
+      if (this.props.mediaType === 'video') {
+        classNames.push(styles['video']);
+      }
+
+      if (typeof this.props.progress === 'number') {
+        classNames.push(styles['inProgress']);
+      }
     }
 
     if (this.state.isMenuExpanded) {
       classNames.push(styles['active']);
     }
 
-    const fileSize = this.props.mediaSize && bytes.format(this.props.mediaSize, {unitSeparator: ' '});
-
     return (
       <div className={classNames.join(' ')}>
         <div className={styles['topRow']}>
+          {this.errorLine()}
           <div className={styles['title']}>
             {this.props.mediaName}
           </div>
@@ -88,13 +96,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
         </div>
         <div className={styles['bottomRow']}>
           <div className={styles['leftColumn']}>
-            <div className={styles['metadata']}>
-              <div className={styles['fileTypeIcon']}>
-                <FileIcon mediaType={this.props.mediaType} />
-              </div>
-              <div className={styles['fileSize']}>{fileSize}</div>
-            </div>
-            <ProgressBar progress={this.props.progress} />
+            {this.bottomLeftColumn()}
           </div>
           <div className={styles['rightColumn']}>
             {this.moreBtn()}
@@ -105,8 +107,56 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
     );
   }
 
+  errorLine() {
+    const error = this.props.error;
+    return error && (
+      <div className={styles['errorLine']}>
+        <div className={styles['errorIcon']}>
+          <ErrorIcon />
+        </div>
+        <div className={styles['errorMessage']}>{this.props.error}</div>
+      </div>
+    );
+  }
+
   tickBox() {
     return this.props.selectable && (<div className={styles['tickbox']} />);
+  }
+
+  bottomLeftColumn() {
+    if (this.props.error) {
+      const onRetry = this.props.onRetry;
+      if (!onRetry) {
+        return null;
+      }
+
+      const retryMessage = onRetry.label || 'Try again';
+      const retryHandler = (event: MouseEvent<HTMLSpanElement>) => {
+        // We need to prevent the card's onClick to be invoked
+        event.stopPropagation();
+        event.preventDefault();
+        onRetry.handler(undefined, event.nativeEvent);
+      };
+
+      return (
+        <div className={styles['retry']}>
+          <span onClick={retryHandler}>{retryMessage}</span>
+        </div>
+      );
+    } else {
+      const fileSize = this.props.mediaSize && bytes.format(this.props.mediaSize, {unitSeparator: ' '});
+      return (
+        <div>
+          <div className={styles['metadata']}>
+            <div className={styles['fileTypeIcon']}>
+              <FileIcon mediaType={this.props.mediaType} />
+            </div>
+            <div className={styles['fileSize']}>{fileSize}</div>
+          </div>
+          <ProgressBar progress={this.props.progress} />
+        </div>
+      );
+    }
   }
 
   moreBtn() {
@@ -161,11 +211,11 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
     e.preventDefault();
     e.stopPropagation();
 
-    if (this.state.isMenuExpanded) {    // we should remove handlers
-      document.removeEventListener('click', this.clickDetector);
-    } else {    // we should add handlers on clicking outside of element
-      this.clickDetector = this.newClickDetector.bind(this);
-      document.addEventListener('click', this.clickDetector);
+    if (this.state.isMenuExpanded) {    //we should remove handlers
+      document.removeEventListener('click', this._clickDetector);
+    } else {    //we should add handlers on clicking outside of element
+      this._clickDetector = this.newClickDetector.bind(this);
+      document.addEventListener('click', this._clickDetector);
     }
 
     this.setState({
@@ -178,6 +228,6 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       isMenuExpanded: false
     });
 
-    document.removeEventListener('click', this.clickDetector);
+    document.removeEventListener('click', this._clickDetector);
   }
 }

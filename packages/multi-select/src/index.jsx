@@ -9,6 +9,7 @@ export default class AkMultiSelect extends PureComponent {
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
     isFirstChild: PropTypes.bool,
+    shouldFocus: PropTypes.bool,
     isDefaultOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
     isInvalid: PropTypes.bool,
@@ -27,6 +28,7 @@ export default class AkMultiSelect extends PureComponent {
   static defaultProps = {
     defaultSelected: [],
     isOpen: false,
+    shouldFocus: false,
     isRequired: false,
     items: [],
     label: '',
@@ -43,7 +45,7 @@ export default class AkMultiSelect extends PureComponent {
   }
 
   selectItem = (item) => {
-    const selectedItems = [item].concat(this.state.selectedItems);
+    const selectedItems = [...this.state.selectedItems, item];
     this.setState({ selectedItems });
     this.props.onSelectedChange({ items: selectedItems, action: 'select', changed: item });
   }
@@ -93,6 +95,7 @@ export default class AkMultiSelect extends PureComponent {
         placeholder={this.props.placeholder}
         position={this.props.position}
         selectedItems={this.state.selectedItems}
+        shouldFocus={this.props.shouldFocus}
         shouldFitContainer={this.props.shouldFitContainer}
       />
     );

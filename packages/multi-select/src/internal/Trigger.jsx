@@ -18,6 +18,7 @@ export default class Trigger extends PureComponent {
     onClick: () => {},
   }
 
+  // disabled because all of the accessibility is handled manually
   /* eslint-disable jsx-a11y/no-static-element-interactions */
   render() {
     return (

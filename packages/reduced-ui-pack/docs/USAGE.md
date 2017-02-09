@@ -1,4 +1,4 @@
-# CssReset
+# Reduced UI Pack
 
 This package exports a CSS file which includes CSS classes that provide styling for a reduced number of Atlaskit components.
 
@@ -16,12 +16,12 @@ npm install @NAME@
 
 ### Importing
 
-The `reduced-ui-pack` package can be consumed via the dist, or in Webpack.
+The `@NAME@` package can be consumed via the dist, or in Webpack.
 
 #### Importing in Webpack
 
 ```js
-import 'reduced-ui-pack';
+import '@NAME@';
 ```
 
 The Webpack style loader should then place the CSS within the HEAD of your HTML element.
@@ -31,7 +31,7 @@ The Webpack style loader should then place the CSS within the HEAD of your HTML 
 ```html
 <html>
   <head>
-    <link rel="stylesheet" href="node_modules/reduced-ui-pack/dist/bundle.css" />
+    <link rel="stylesheet" href="node_modules/@NAME@/dist/bundle.css" />
   </head>
   <body>
     <!-- ... -->

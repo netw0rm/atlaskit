@@ -4,7 +4,7 @@
   "config": {
     "access": "public"
   },
-  "description": "CSS classes which provide styling for a reduced number of Atlaskit components.",
+  "description": "CSS classes which provide styling for a reduced number of AtlasKit components.",
   "main": "dist/bundle.css",
   "scripts": {
     "prepublish": "lessc src/index.less dist/bundle.css"
@@ -13,7 +13,7 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^37.1.0"
+    "@atlaskit/util-shared-styles": "^1.0.0"
   },
   "peerDependencies": {
     "@atlaskit/css-reset": "^1.0.0"

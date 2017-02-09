@@ -4,6 +4,8 @@ import React from 'react';
 import { name } from '../package.json';
 import Emoji from '../src/Emoji';
 
+import emojiService from './story-data';
+
 const emoji = {
   id: '118608',
   name: null,
@@ -22,7 +24,11 @@ const emoji = {
 
 storiesOf(`${name}/Emoji`, module)
   .add('simple emoji', () => (
-    <Emoji {...emoji} />
+    <div>
+      <Emoji {...emoji} />
+      <Emoji {...emojiService.findByShortcut('wtf')} />
+      <Emoji {...emojiService.findByShortcut('grimacing')} />
+    </div>
   )).add('simple emoji selected', () => {
     const selectedEmoji = {
       ...emoji,

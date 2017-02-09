@@ -6,6 +6,8 @@ import { akColorN100 } from '@atlaskit/util-shared-styles';
 
 import Tabs from '../src';
 import { name } from '../package.json';
+import HipChatExample from './examples/HipChatExample';
+import OverflowExamples from './examples/OverflowExamples';
 
 function handleTabSelect(selectedTabIndex) {
   action(`Switched to tab at index ${selectedTabIndex}`)();
@@ -108,44 +110,7 @@ storiesOf(name, module)
     />
   ))
   .add('with content overflow and flex box', () => (
-    <div
-      style={{
-        width: 400,
-        height: 200,
-        margin: '16px auto',
-        border: `1px dashed ${akColorN100}`,
-        display: 'flex',
-      }}
-    >
-      <Tabs
-        tabs={[
-          {
-            label: 'Constrained height scrolls',
-            defaultSelected: true,
-            content: (
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  flexBasis: '100%',
-                  overflowY: 'scroll',
-                }}
-              >
-                <Lorem />
-              </div>
-            ),
-          },
-          {
-            label: 'Unconstrained height',
-            content: (
-              <div>
-                <Lorem />
-              </div>
-            ),
-          },
-        ]}
-      />
-    </div>
+    <OverflowExamples />
   ))
   .add('with flex content that needs to fill', () => (
     <div
@@ -178,4 +143,7 @@ storiesOf(name, module)
         ]}
       />
     </div>
+  ))
+  .add('with example HipChat lobby usage', () => (
+    <HipChatExample />
   ));

@@ -209,4 +209,14 @@ describe('MentionPicker', () => {
         expect(onClose.callCount, 'closed 2').to.equal(1);
       });
   });
+
+  it('mentionsCount returns the number of mentions in the list', () => {
+    const component = setupPicker();
+    const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
+
+    return waitUntil(defaultMentionItemsShow)
+      .then(() => {
+        expect(component.instance().mentionsCount()).to.equal(mentionDataSize);
+      });
+  });
 });

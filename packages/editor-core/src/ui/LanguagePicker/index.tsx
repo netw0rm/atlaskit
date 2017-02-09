@@ -15,7 +15,7 @@ export interface State {
   active?: boolean;
   element?: HTMLElement;
   language: string;
-  content?: string;
+  showToolbar?: boolean;
 }
 
 const items = [{
@@ -36,9 +36,9 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { active, language, element } = this.state;
+    const { language, element, showToolbar } = this.state;
 
-    if (active) {
+    if (showToolbar) {
       return (
         <FloatingToolbar target={element} align="left" autoPosition>
           <div className={styles.container}>
@@ -54,13 +54,13 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: CodeBlockState) => {
-    const {active, element, language, content} = pluginState;
+    const { element, language, clicked} = pluginState;
+    const showToolbar = element && (clicked || this.state.element !== element);
 
     this.setState({
-      active: active,
       language: findMatchedLanguage(language),
       element: element,
-      content: content
+      showToolbar: showToolbar
     });
   }
 

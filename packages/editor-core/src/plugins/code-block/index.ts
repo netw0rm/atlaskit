@@ -5,10 +5,10 @@ import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
 import CodeBlockPasteListener from './code-block-paste-listener';
 
 export class CodeBlockState {
-  active: boolean = false;
-  content?: string;
   element?: HTMLElement;
   language?: string;
+  clicked?: boolean;
+
   private pm: PM;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
   private activeCodeBlock?: Node;
@@ -28,6 +28,14 @@ export class CodeBlockState {
       pm.on.selectionChange,
       pm.on.change,
     ], () => this.update());
+
+    pm.on.click.add(() => {
+      this.update(true);
+    });
+
+    pm.on.blur.add(() => {
+      this.clear();
+    });
 
     this.update();
   }
@@ -79,16 +87,25 @@ export class CodeBlockState {
     return empty && $from.end() === $from.pos;
   }
 
-  private update() {
+  private update(clicked = false) {
     const codeBlockNode = this.activeCodeBlockNode();
 
-    if (codeBlockNode !== this.activeCodeBlock) {
+    if ((clicked && this.activeCodeBlock) || codeBlockNode !== this.activeCodeBlock) {
+      this.clicked = clicked;
       this.activeCodeBlock = codeBlockNode;
-      this.active = !!codeBlockNode;
       this.language = codeBlockNode && codeBlockNode.attrs['language'];
-      this.content = codeBlockNode && codeBlockNode.textContent;
       this.element = this.activeCodeBlockElement();
       this.changeHandlers.forEach(changeHandler => changeHandler(this));
+    }
+  }
+
+  private clear() {
+    if (this.clicked || this.element) {
+      this.clicked = undefined;
+      this.activeCodeBlock = undefined;
+      this.language = undefined;
+      this.element = undefined;
+      this.changeHandlers.forEach(cb => cb(this));
     }
   }
 

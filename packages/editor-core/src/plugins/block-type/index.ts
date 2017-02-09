@@ -21,8 +21,8 @@ import {
   isHeadingNode,
   isPanelNode,
   isParagraphNode,
-  ParagraphNodeType,
-  PanelNodeType
+  PanelNodeType,
+  ParagraphNodeType
 } from '../../schema';
 import {
   getGroupsInRange,
@@ -48,7 +48,6 @@ const PANEL = makeBlockType('panel', 'Panel');
 const OTHER = makeBlockType('other', 'Other…');
 
 export type GroupedBlockTypes = BlockType[][];
-
 export class BlockTypeState {
   private pm: PM;
   private changeHandlers: BlockTypeStateSubscriber[] = [];

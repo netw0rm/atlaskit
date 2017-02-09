@@ -1,10 +1,11 @@
 {
   "extends": "../../build/types/tsconfig.base",
-  "include": [
-    "src/*"
-  ],
   "compilerOptions": {
     "types": [
+
     ]
-  }
+  },
+  "files": [
+    "./types/styles.d.ts"
+  ]
 }

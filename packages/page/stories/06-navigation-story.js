@@ -1,6 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Navigation from '@atlaskit/navigation';
+import Banner from '@atlaskit/banner';
 import styled from 'styled-components';
 import Lorem from 'react-lorem-component';
 
@@ -14,6 +15,12 @@ const Dummy = styled.div`
 storiesOf(name, module)
   .add('navigation', () => (
     <Page
+      banner={<Banner
+        appearance="error"
+        isOpen
+      >
+        Your JIRA OnDemand license is about to expire. There are two days left to renew your license
+      </Banner>}
       navigation={<Navigation />}
     >
       <Grid>

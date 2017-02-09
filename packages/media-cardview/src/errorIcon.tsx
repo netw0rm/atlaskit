@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import * as styles from 'style!./styles.less';
+import * as styles from './styles.less';
 
 export const errorIconSize = {
   HEIGHT: 15,

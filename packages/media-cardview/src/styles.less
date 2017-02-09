@@ -1,17 +1,77 @@
+@import "./base";
+
+.card {
+  .component-root;
+  
+  background: #fff;
+  display: table;
+  font-family: sans-serif;
+  border-radius: 3px;
+  cursor: pointer;
+  line-height: normal;
+  position: relative;
+  
+  .wrapper {
+    background: #E5E8EC;
+    display: block;
+    height: inherit;
+    overflow: hidden;
+    position: relative;
+    border-radius: 3px;
+
+    .img-wrapper{
+      position: relative;
+      width: inherit;
+      height: inherit;
+      display: block;
+
+      .spinner {
+        width: 30px;
+        height: 30px;
+      }
+
+      img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        max-height: 100%;
+        max-width: 100%;
+        display: block;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+}
+
 // 
 // Card overlay
 // 
 @activecolor: rgba(9, 30, 66, 0.5);
 
 .overlay {
-  
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 3px;
+  border: 2px solid transparent;
 
 
   .top-row {
-    
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 8px 0 8px;
 
     .title {
-      
+      box-sizing: border-box;
+      word-wrap: break-word;
+      color: #091E42;
+      font-size: 12px;
     }
 
     .tickbox {
@@ -28,19 +88,41 @@
   }
 
   .bottom-row {
-    
+    position: absolute;
+    display: table;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    height: 28px;
+    line-height: 26px;
+    padding: 0 2px 0 2px;
 
     .left-column {
-      
+      width: 100%;
+      display: table-cell;
+      position: relative;
+      box-sizing: border-box;
+      vertical-align: middle;
+      padding: 0 5px 0 5px;
 
       .file-type-icon {
+        float: left;
+        margin-right: 6px;
+        position: relative;
+        top: 7px;
       }
 
       .file-size {
-        
+        float: left;
+        font-size: 12px;
+        color: #5E6C84;
       }
     }
 
+    .right-column {
+      display: table-cell;
+    }
 
     .more-btn {
       display: none;
@@ -80,6 +162,24 @@
     left: ~'calc(100% - 40px)';
     top: 100%;
     display: block;
+  }
+
+  &:hover, &.active {
+    .top-row {
+      .title {
+        color: #0065FF;
+      }
+    }
+
+    .bottom-row {
+      .more-btn {
+        display: block;
+      }
+
+      .delete-btn {
+        display: block;
+      }
+    }
   }
 
   /* Image */
@@ -149,7 +249,22 @@
 
   /* Selectable */
   &.selectable {
-    
+    &:hover, &.active {
+      .tickbox {
+        display: block;
+      }
+    }
+
+    &.selected {
+      border-color: #3384FF !important;
+
+      .tickbox {
+        display: block !important;
+        background-color: #3384FF !important;
+        border-color: #3384FF !important;
+          background: data-uri("./icons/tick.svg") no-repeat center;
+      }
+    }
   }
 
   /* In progress*/
@@ -177,6 +292,23 @@
 }
 
 // 
+// Progressbar
+// 
+.progressWrapper {
+  border-radius: 3px;
+  z-index: 30;
+
+  overflow: hidden;
+  background-color: rgba(255,255,255,0.3);
+
+  .progressBar{
+    width: 0%;
+    height: 3px;
+    background-color: white;
+  }
+}
+
+// 
 // 
 // Generic --> Remove from here
 // 
@@ -187,7 +319,60 @@
 }
 
 
-// TODO: REMOVE SPINNER AND USE AK ONE
+
+
+.file-type-icon {
+  width: 12px;
+  height: 12px;
+
+  &.audio {
+    background: data-uri("./icons/audio.svg") no-repeat center;
+  }
+
+  &.doc {
+    background: data-uri("./icons/doc.svg") no-repeat center;
+  }
+
+  &.image {
+    background: data-uri("./icons/image.svg") no-repeat center;
+  }
+
+  &.unknown {
+    background: data-uri("./icons/unknown.svg") no-repeat center;
+  }
+
+  &.video {
+    background: data-uri("./icons/video.svg") no-repeat center;
+  }
+}
+
+
+
+
+.fallback {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAAAAAByaaZbAAAAg0lEQVR4Ae2WsQ0DQQgEKXkb4FzGZZRBF/9l3FVAbuPMer/ESnbGBBCNVhuBxDJFEbUVstR3FNmuS8zjApKvipvoDoKtgtz1EKTAkALT4VcJ3aE7dIfuwCVMvJn10h+rhTthApMSkOOPCePIeTzKwjnwYpy3AgEv8IfdnBHc+OeEfX+eRtkEbLrqLcMAAAAASUVORK5CYII=) no-repeat center;
+  background-size: initial;
+  width: 100%;
+  height: 100%;
+}
+
+.fallback-unknown {
+  .fallback;
+  background: data-uri("./icons/fallback-unknown.svg") no-repeat center;
+}
+
+.fallback-video {
+  .fallback;
+  background: data-uri("./icons/fallback-play.svg") no-repeat center;
+}
+
+.fallback-audio {
+  .fallback;
+  background: data-uri("./icons/fallback-play.svg") no-repeat center;
+}
+
+
+
 /* Spinner */
 @-moz-keyframes l8 {
   0% {

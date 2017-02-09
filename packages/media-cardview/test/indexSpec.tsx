@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import {mount} from 'enzyme';
 import {CardViewProps, CardView} from '../src';
-import * as overlayStyles from 'style!../src/styles.less';
+import * as overlayStyles from '../src/styles.less';
 // import {Actions} from '@atlaskit/media-domain';
 // const {CardActionType, CardAction} = Actions;
 

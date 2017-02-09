@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import * as bytes from 'bytes';
-import * as styles from 'style!./styles.less';
+import * as styles from './styles.less';
 import {ProgressBar} from './progressBar';
 import {MediaTypes, Actions} from '@atlaskit/media-domain';
 import {Dropdown} from './dropdown';

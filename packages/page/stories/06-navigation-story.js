@@ -22,6 +22,7 @@ class ToggleBannerPage extends React.PureComponent {
     return (
       <Page
         isBannerOpen={this.state.isBannerOpen}
+        navigationWidth={this.state.navigationWidth}
         banner={
           <Banner
             appearance="error"
@@ -32,7 +33,16 @@ class ToggleBannerPage extends React.PureComponent {
           </Banner>
         }
         navigation={
-          <Navigation>
+          <Navigation
+            width={this.state.navigationWidth}
+            isOpen={this.state.isNavigationOpen}
+            onResize={({ width, isOpen }) => {
+              this.setState({
+                navigationWidth: width,
+                isNavigationOpen: isOpen,
+              });
+            }}
+          >
             Hello world
           </Navigation>
         }

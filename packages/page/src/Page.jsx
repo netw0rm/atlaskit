@@ -46,17 +46,23 @@ const PageContent = styled.div`
   flex-basis: auto;
   position: relative;
   z-index: 1;
-  width: calc(100% - 284px); /* TODO: Josh this needs to be aware of the nav width */
+  width: calc(100% - ${props => props.navigationWidth}px); /* TODO: Josh this needs to be aware of the nav width */
 `;
 
 export default class Page extends PureComponent {
   static displayName = 'AkPage';
 
   static propTypes = {
-    children: PropTypes.node,
-    navigation: PropTypes.node,
     banner: PropTypes.node,
+    children: PropTypes.node,
     isBannerOpen: PropTypes.bool,
+    navigation: PropTypes.node,
+    navigationWidth: PropTypes.number,
+  }
+
+  static defaultProps = {
+    isBannerOpen: false,
+    navigationWidth: 284,
   }
 
   render = () => (
@@ -74,7 +80,7 @@ export default class Page extends PureComponent {
           <Navigation>
             {this.props.navigation}
           </Navigation>
-          <PageContent>
+          <PageContent navigationWidth={this.props.navigationWidth}>
             {this.props.children}
           </PageContent>
         </NavigationAndContent>

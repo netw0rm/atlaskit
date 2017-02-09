@@ -98,7 +98,7 @@ export default class Navigation extends PureComponent {
     })();
 
     const resizeState = {
-      isOpen: (width > resizeClosedBreakpoint),
+      isOpen: (width >= resizeClosedBreakpoint),
       width: snappedWidth,
     };
 

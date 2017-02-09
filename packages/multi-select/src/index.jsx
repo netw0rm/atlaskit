@@ -1,10 +1,14 @@
 import React, { PureComponent, PropTypes } from 'react';
+import Item from '@atlaskit/droplist-item';
+
 import StatelessMultiSelect from './StatelessMultiSelect';
 
 export default class AkMultiSelect extends PureComponent {
   static propTypes = {
+    defaultSelected: PropTypes.arrayOf(PropTypes.shape(Item.propTypes)),
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
+    isFirstChild: PropTypes.bool,
     isDefaultOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
     isInvalid: PropTypes.bool,
@@ -15,26 +19,26 @@ export default class AkMultiSelect extends PureComponent {
     onFilterChange: PropTypes.func,
     onSelectedChange: PropTypes.func,
     onOpenChange: PropTypes.func,
+    placeholder: PropTypes.string,
     position: PropTypes.string,
     shouldFitContainer: PropTypes.bool,
   }
 
   static defaultProps = {
+    defaultSelected: [],
     isOpen: false,
     isRequired: false,
     items: [],
     label: '',
     onFilterChange: () => {},
     onOpenChange: () => {},
-    onSelected: () => {},
     onSelectedChange: () => {},
-    onRemoved: () => {},
     position: 'bottom left',
   }
 
   state = {
     isOpen: this.props.isDefaultOpen,
-    selectedItems: [],
+    selectedItems: this.props.defaultSelected,
     filterValue: '',
   }
 
@@ -73,6 +77,7 @@ export default class AkMultiSelect extends PureComponent {
       filterValue={this.state.filterValue}
       id={this.props.id}
       isDisabled={this.props.isDisabled}
+      isFirstChild={this.props.isFirstChild}
       isInvalid={this.props.isInvalid}
       isOpen={this.state.isOpen}
       isRequired={this.props.isRequired}
@@ -84,6 +89,7 @@ export default class AkMultiSelect extends PureComponent {
       onOpenChange={this.handleOpenChange}
       onRemoved={this.selectedChange}
       onSelected={this.selectedChange}
+      placeholder={this.props.placeholder}
       position={this.props.position}
       selectedItems={this.state.selectedItems}
       shouldFitContainer={this.props.shouldFitContainer}

@@ -81,7 +81,8 @@ export default class ModalDialog extends PureComponent {
   }
 
   handleKeyDown = (e) => {
-    if (e.key === 'Escape') {
+    const escapeKeyCode = 27;
+    if (e.keyCode === escapeKeyCode) {
       this.props.onDialogDismissed(e);
     }
   }

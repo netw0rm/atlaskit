@@ -15,7 +15,7 @@ function handleAfterRemoveAction() {
 
 const imports = [
   ['React', 'react'],
-  ['Tag', 'ak-tag'],
+  ['Tag', '@atlaskit/tag'],
 ];
 
 storiesOf(name, module)

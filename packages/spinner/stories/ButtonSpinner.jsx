@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import AKButton from 'ak-button';
+import AKButton from '@atlaskit/button';
 
 import Spinner from '../src/index';
 /**

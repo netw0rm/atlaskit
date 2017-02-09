@@ -25,7 +25,11 @@ export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {
     filterValue: PropTypes.string,
     id: PropTypes.string,
+    isDisabled: PropTypes.bool,
+    isFirstChild: PropTypes.bool,
+    isInvalid: PropTypes.bool,
     isOpen: PropTypes.bool,
+    isRequired: PropTypes.bool,
     items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
     noMatchesFound: PropTypes.string,
@@ -34,6 +38,7 @@ export default class StatelessMultiSelect extends PureComponent {
     onOpenChange: PropTypes.func,
     onSelected: PropTypes.func,
     onRemoved: PropTypes.func,
+    placeholder: PropTypes.string,
     position: PropTypes.string,
     selectedItems: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     shouldFitContainer: PropTypes.bool,
@@ -59,11 +64,15 @@ export default class StatelessMultiSelect extends PureComponent {
   }
 
   onFocus = () => {
-    this.setState({ isFocused: true });
+    if (!this.props.isDisabled) {
+      this.setState({ isFocused: true });
+    }
   }
 
   onBlur = () => {
-    this.setState({ isFocused: false });
+    if (!this.props.isDisabled) {
+      this.setState({ isFocused: false });
+    }
   }
 
   onOpenChange = (attrs) => {
@@ -85,8 +94,18 @@ export default class StatelessMultiSelect extends PureComponent {
 
   getAllValues = () => this.props.selectedItems.map(item => item.value)
 
+  getPlaceholder = () => {
+    if (!this.props.isOpen && this.props.selectedItems.length === 0) {
+      return this.props.placeholder;
+    }
+
+    return null;
+  }
+
   handleTriggerClick = (event) => {
-    this.onOpenChange({ event, isOpen: true });
+    if (!this.props.isDisabled) {
+      this.onOpenChange({ event, isOpen: true });
+    }
   }
 
   handleItemRemove = (item) => {
@@ -130,7 +149,8 @@ export default class StatelessMultiSelect extends PureComponent {
       return filteredItems.map((item, itemIndex) => (<Item
         {...item}
         key={itemIndex}
-        onActivate={() => {
+        onActivate={(attrs) => {
+          this.props.onOpenChange({ isOpen: false, event: attrs.event });
           this.props.onSelected(item);
         }}
       >
@@ -166,12 +186,14 @@ export default class StatelessMultiSelect extends PureComponent {
   )
 
   renderSelect = () => (<select
+    disabled={this.props.isDisabled}
     id={this.props.id}
     multiple
     name={this.props.name}
     readOnly
-    value={this.getAllValues(this.props.selectedItems)}
+    required={this.props.isRequired}
     style={{ display: 'none' }}
+    value={this.getAllValues(this.props.selectedItems)}
   >
     {this.renderOptGroups(this.props.items)}
   </select>)
@@ -186,6 +208,8 @@ export default class StatelessMultiSelect extends PureComponent {
         {this.renderSelect()}
         {this.props.label ? <Label
           htmlFor={this.props.id}
+          isFirstChild={this.props.isFirstChild}
+          isRequired={this.props.isRequired}
           label={this.props.label}
         /> : null}
         <Droplist
@@ -197,13 +221,17 @@ export default class StatelessMultiSelect extends PureComponent {
           shouldFitContainer
           trigger={
             <FieldBase
+              isDisabled={this.props.isDisabled}
               isFitContainerWidthEnabled
               isFocused={this.props.isOpen || this.state.isFocused}
+              isInvalid={this.props.isInvalid}
               isPaddingDisabled
+              isRequired={this.props.isRequired}
               onBlur={this.onBlur}
               onFocus={this.onFocus}
             >
               <Trigger
+                isDisabled={this.props.isDisabled}
                 onClick={this.handleTriggerClick}
               >
                 <TagGroup ref={ref => (this.tagGroup = ref)}>
@@ -213,14 +241,16 @@ export default class StatelessMultiSelect extends PureComponent {
                       onAfterRemoveAction={() => {
                         this.handleItemRemove(item);
                       }}
-                      removeButtonText={`${item.content}, remove`}
+                      removeButtonText={this.props.isDisabled ? null : `${item.content}, remove`}
                       text={item.content}
                     />)}
-                  <input
+                  {this.props.isDisabled ? null : <input
                     className={styles.input}
-                    type="text"
+                    disabled={this.props.isDisabled}
                     onKeyUp={this.handleKeyUpInInput}
-                  />
+                    placeholder={this.getPlaceholder()}
+                    type="text"
+                  />}
                 </TagGroup>
               </Trigger>
             </FieldBase>

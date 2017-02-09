@@ -22,7 +22,7 @@ module.exports = (config) => {
       'application/javascript': ['ts', 'tsx'],
     },
 
-    reporters: ['progress'],
+    reporters: ['spec'],
 
     port: 9876,
 

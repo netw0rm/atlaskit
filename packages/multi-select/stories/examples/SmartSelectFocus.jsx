@@ -50,7 +50,7 @@ export default class extends PureComponent {
         <Select
           id="cities_id"
           isFirstChild
-          isFocusedInitially={this.state.focusedSelect === 1}
+          shouldFocus={this.state.focusedSelect === 1}
           isRequired
           items={cities}
           label="Required field"
@@ -59,7 +59,7 @@ export default class extends PureComponent {
         />
         <Select
           id="colors_id"
-          isFocusedInitially={this.state.focusedSelect === 2}
+          shouldFocus={this.state.focusedSelect === 2}
           isInvalid
           items={colors}
           label="Invalid field"
@@ -69,7 +69,7 @@ export default class extends PureComponent {
         <Select
           defaultSelected={[animals[0].items[0]]}
           id="animal_id"
-          isFocusedInitially={this.state.focusedSelect === 3}
+          shouldFocus={this.state.focusedSelect === 3}
           items={animals}
           label="Disabled field"
           name="animal"

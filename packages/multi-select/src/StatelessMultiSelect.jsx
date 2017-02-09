@@ -27,7 +27,7 @@ export default class StatelessMultiSelect extends PureComponent {
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
     isFirstChild: PropTypes.bool,
-    isFocusedInitially: PropTypes.bool,
+    shouldFocus: PropTypes.bool,
     isInvalid: PropTypes.bool,
     isOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
@@ -47,7 +47,7 @@ export default class StatelessMultiSelect extends PureComponent {
 
   static defaultProps = {
     filterValue: null,
-    isFocusedInitially: false,
+    shouldFocus: false,
     isOpen: false,
     items: [],
     label: '',
@@ -62,17 +62,17 @@ export default class StatelessMultiSelect extends PureComponent {
 
   // This is used only to show the focus ring around , it's okay to have state in this case.
   state = {
-    isFocused: this.props.isOpen || this.props.isFocusedInitially,
+    isFocused: this.props.isOpen || this.props.shouldFocus,
   }
 
   componentDidMount = () => {
-    if (this.props.isFocusedInitially && this.inputNode) {
+    if (this.props.shouldFocus && this.inputNode) {
       this.inputNode.focus();
     }
   }
 
   componentDidUpdate = (prevProps) => {
-    if (!prevProps.isFocusedInitially && this.props.isFocusedInitially && this.inputNode) {
+    if (!prevProps.shouldFocus && this.props.shouldFocus && this.inputNode) {
       this.inputNode.focus();
     }
   }

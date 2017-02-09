@@ -34,7 +34,7 @@ describe(`${name} - smart`, () => {
         id="id"
         isDefaultOpen
         isDisabled
-        isFocusedInitially
+        shouldFocus
         isInvalid
         isRequired
         items={items}
@@ -57,7 +57,7 @@ describe(`${name} - smart`, () => {
       expect(statelessProps.position, 'position').to.equal('top left');
       expect(statelessProps.selectedItems, 'selectedItems').to.deep.equal([items[0].items[0]]);
       expect(statelessProps.shouldFitContainer, 'shouldFitContainer').to.equal(true);
-      expect(statelessProps.isFocusedInitially, 'isFocusedInitially').to.equal(true);
+      expect(statelessProps.shouldFocus, 'shouldFocus').to.equal(true);
     });
   });
 

@@ -74,10 +74,10 @@ describe(`${name} - stateless`, () => {
     });
 
     describe('focus', () => {
-      it('should focus the input field if isFocusedInitially is set to true', () => {
+      it('should focus the input field if shouldFocus is set to true', () => {
         const input = select.find('input');
         expect(document.activeElement).not.to.equal(input.node);
-        select.setProps({ isFocusedInitially: true });
+        select.setProps({ shouldFocus: true });
         expect(document.activeElement).to.equal(input.node);
       });
     });

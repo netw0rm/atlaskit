@@ -7,7 +7,7 @@ import CodeBlockPasteListener from './code-block-paste-listener';
 export class CodeBlockState {
   element?: HTMLElement;
   language?: string;
-  clicked?: boolean;
+  clicked: boolean = false;
 
   private pm: PM;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
@@ -90,18 +90,18 @@ export class CodeBlockState {
   private update(clicked = false) {
     const codeBlockNode = this.activeCodeBlockNode();
 
-    if ((clicked && this.activeCodeBlock) || codeBlockNode !== this.activeCodeBlock) {
+    if (clicked && codeBlockNode || codeBlockNode !== this.activeCodeBlock) {
       this.clicked = clicked;
       this.activeCodeBlock = codeBlockNode;
       this.language = codeBlockNode && codeBlockNode.attrs['language'];
-      this.element = this.activeCodeBlockElement();
+      this.element = codeBlockNode && this.activeCodeBlockElement();
       this.changeHandlers.forEach(changeHandler => changeHandler(this));
     }
   }
 
   private clear() {
     if (this.clicked || this.element) {
-      this.clicked = undefined;
+      this.clicked = false;
       this.activeCodeBlock = undefined;
       this.language = undefined;
       this.element = undefined;

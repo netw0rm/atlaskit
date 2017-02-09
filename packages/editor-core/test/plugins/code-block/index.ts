@@ -74,6 +74,30 @@ describe('code-block', () => {
       });
     });
 
+    context('when click inside code_block', () => {
+      it('notify the subscriber', () => {
+        const { pm, plugin } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
+        const spy = sinon.spy();
+        plugin.subscribe(spy);
+
+        pm.on.click.dispatch();
+
+        expect(spy.callCount).to.equal(2);
+      });
+    });
+
+    context('when click outside of code_block', () => {
+      it('does not notify the subscriber', () => {
+        const { pm, plugin } = editor(doc(p('paragraph{<>}')));
+        const spy = sinon.spy();
+        plugin.subscribe(spy);
+
+        pm.on.click.dispatch();
+
+        expect(spy.callCount).to.equal(1);
+      });
+    });
+
     context('when unsubscribe', () => {
       it('does not notify the subscriber', () => {
         const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
@@ -254,6 +278,37 @@ describe('code-block', () => {
         const { plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock')));
 
         expect(plugin.element).to.equal(undefined);
+      });
+    });
+  });
+
+  context('clicked', () => {
+    context('when click inside code block', () => {
+      it('returns true', () => {
+        const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+        pm.on.click.dispatch();
+
+        expect(plugin.clicked).to.be.true;
+      });
+    });
+
+    context('when click outside of code block', () => {
+      it('returns false', () => {
+        const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock')));
+        pm.on.click.dispatch();
+
+        expect(plugin.clicked).to.be.false;
+      });
+    });
+
+    context('when has not been clicked', () => {
+      it('returns false', () => {
+        const { pm, plugin } = editor(doc(p('paragraph'), code_block()('codeB{cbPos}lock')));
+        const { cbPos } = pm.doc.refs;
+
+        pm.setTextSelection(cbPos);
+
+        expect(plugin.clicked).to.be.false;
       });
     });
   });

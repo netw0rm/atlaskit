@@ -27,3 +27,16 @@ export const buttonWrapperStyle = style({
     }
   }
 });
+
+export const selectedButtonWrapperStyle = style({
+  margin: '5px 3px',
+  display: 'inline-block',
+  background: akColorPrimary1,
+  borderRadius: '3px',
+
+  $nest: {
+    ' button': {
+      background: 'none !important',
+    }
+  }
+});

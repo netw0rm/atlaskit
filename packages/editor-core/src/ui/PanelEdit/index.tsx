@@ -55,7 +55,11 @@ export default class PanelEdit extends PureComponent<Props, State> {
             return (
               <ToolbarButton
                 key={index}
-                wrapperClassName={styles.buttonWrapperStyle}
+                wrapperClassName={
+                  activePanelType === panelType.panelType ?
+                  styles.selectedButtonWrapperStyle :
+                  styles.buttonWrapperStyle
+                }
                 selected={activePanelType === panelType.panelType}
                 onClick={this.handleSelectPanelType.bind(this, panelType)}
                 iconBefore={<Icon label={panelType.panelType} />}

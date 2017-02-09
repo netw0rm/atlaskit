@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Navigation from '@atlaskit/navigation';
 import Banner from '@atlaskit/banner';
-import Toggle from '@atlaskit/toggle';
+import AkToggle from '@atlaskit/toggle';
 import styled from 'styled-components';
 import Lorem from 'react-lorem-component';
 
@@ -50,14 +50,14 @@ class ToggleBannerPage extends React.PureComponent {
         <Grid>
           <GridColumn>
             <p>Toggle banner</p>
-            <Toggle
+            <AkToggle
               size="large"
               onChange={() => {
                 this.setState({
                   isBannerOpen: !this.state.isBannerOpen,
                 });
               }}
-            >Toggle banner</Toggle>
+            >Toggle banner</AkToggle>
           </GridColumn>
         </Grid>
         <Grid>

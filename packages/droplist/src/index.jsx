@@ -20,6 +20,7 @@ export default class DropdownList extends PureComponent {
     children: PropTypes.node,
     isOpen: PropTypes.bool,
     shouldFitContainer: PropTypes.bool,
+    isKeyboardInteractionDisabled: PropTypes.bool,
     isTriggerDisabled: PropTypes.bool,
     isTriggerNotTabbable: PropTypes.bool,
     listContext: PropTypes.oneOf(['menu']),
@@ -34,6 +35,7 @@ export default class DropdownList extends PureComponent {
     position: 'bottom left',
     isOpen: false,
     shouldFitContainer: false,
+    isKeyboardInteractionDisabled: false,
     isTriggerDisabled: false,
     isTriggerNotTabbable: false,
     listContext: 'menu',
@@ -57,7 +59,9 @@ export default class DropdownList extends PureComponent {
 
   componentDidUpdate = () => {
     if (this.props.isOpen) {
-      this.focusFirstItem();
+      if (!this.props.isKeyboardInteractionDisabled) {
+        this.focusFirstItem();
+      }
 
       if (this.props.shouldFitContainer && this.dropContentRef) {
         this.dropContentRef.style.width = `${this.triggerRef.offsetWidth}px`;
@@ -135,7 +139,7 @@ export default class DropdownList extends PureComponent {
       this.close({ event });
     }
 
-    if (this.props.isOpen) {
+    if (this.props.isOpen && !this.props.isKeyboardInteractionDisabled) {
       if (this.isTargetChildItem(event.target)) {
         switch (event.key) {
           case 'ArrowUp':
@@ -186,6 +190,8 @@ export default class DropdownList extends PureComponent {
   }
 
   toggle = (attrs) => {
+    if (this.props.isKeyboardInteractionDisabled && attrs.source === 'keydown') return;
+
     if (this.props.isOpen) {
       this.close(attrs);
     } else {

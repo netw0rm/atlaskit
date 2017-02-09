@@ -1,6 +1,6 @@
 # Reduced UI Pack
 
-This package exports a CSS file which includes CSS classes that provide styling for a reduced number of Atlaskit components.
+This package exports a CSS file which includes CSS classes that provide styling for a reduced number of AtlasKit components.
 
 ## Try it out
 

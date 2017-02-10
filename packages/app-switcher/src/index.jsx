@@ -1,4 +1,4 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { AppSwitcherContainer } from './styled';
 import HomeLink from './components/HomeLink';
 import RecentContainers from './components/RecentContainers';
@@ -6,7 +6,7 @@ import ApplicationLinks from './components/ApplicationLinks';
 import SuggestedApplication from './components/SuggestedApplication';
 import AppSwitcherPropTypes from './internal/prop-types';
 
-export default class AppSwitcher extends PureComponent {
+export default class AppSwitcher extends Component {
 
   static propTypes = {
     recentContainers: AppSwitcherPropTypes.recentContainers.isRequired,
@@ -32,6 +32,7 @@ export default class AppSwitcher extends PureComponent {
         <RecentContainers
           containers={this.props.recentContainers}
           i18n={this.props.i18n}
+          analytics={this.props.analytics}
         />
       );
 

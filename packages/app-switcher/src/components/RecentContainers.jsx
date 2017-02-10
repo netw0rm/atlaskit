@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import {
   MenuItemContainer,
   MenuItemIcon,
@@ -13,10 +13,17 @@ export default class RecentContainers extends PureComponent {
   static propTypes = {
     containers: AppSwitcherPropTypes.recentContainers,
     i18n: AppSwitcherPropTypes.i18n,
+    analytics: PropTypes.func,
   };
 
+  onRecentContainerItemClick = () => this.props.analytics('appswitcher.recent.container.click');
+
   item = container => (
-    <AppSwitcherLink href={container.url} key={container.url}>
+    <AppSwitcherLink
+      href={container.url}
+      key={container.url}
+      onClick={this.onRecentContainerItemClick}
+    >
       <MenuItemContainer>
         <FlexContainer>
           <MenuItemIcon>

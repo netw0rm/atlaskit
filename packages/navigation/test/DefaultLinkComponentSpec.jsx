@@ -18,6 +18,12 @@ describe('<DefaultLinkComponent />', () => {
         .find('a').simulate('mouseDown');
       expect(mouseDown.called).to.equal(true);
     });
+    it('should pass on onClick to the a tag', () => {
+      const onClick = sinon.spy();
+      shallow(<DefaultLinkComponent href="foo" onClick={onClick} />)
+        .find('a').simulate('click');
+      expect(onClick.called).to.equal(true);
+    });
     it('renders children directly when no href is given', () => {
       expect(shallow(<DefaultLinkComponent><span>foo</span></DefaultLinkComponent>)
         .find('a').length).to.equal(0);

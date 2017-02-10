@@ -16,7 +16,6 @@ const NavigationAndContent = styled.div`
 `;
 
 const BannerContainer = styled.div`
-  flex-grow: 1;
   flex-shrink: 0;
   flex-basis: auto;
   transition: height .25s ease-in-out;
@@ -62,7 +61,7 @@ export default class Page extends PureComponent {
 
   static defaultProps = {
     isBannerOpen: false,
-    navigationWidth: 284,
+    navigationWidth: 0,
   }
 
   render = () => (

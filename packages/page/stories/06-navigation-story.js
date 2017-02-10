@@ -16,6 +16,7 @@ const Dummy = styled.div`
 class ToggleBannerPage extends React.PureComponent {
   state = {
     isBannerOpen: false,
+    navigationWidth: 284,
   }
 
   render() {

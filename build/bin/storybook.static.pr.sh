@@ -8,6 +8,9 @@ OUTDIR=$(mktemp -d)
 . $BASEDIR/_build_status.sh
 . $BASEDIR/_cdn_publish_folder.sh
 
+# get list of changed packages in the form @atlaskit/package1,@atlaskit/package2
+PACKAGES=$($BASEDIR/_get.changed.packages.js)
+
 function storybook_build_status() {
   build_status \
     "STORYBOOK" \
@@ -21,7 +24,7 @@ function build_storybook() {
   local TARGET_PATH="$1"
 
   $CHALK --no-stdin -t "{blue Building storybook (PR)}"
-  lerna exec -- ../../build/bin/storybook.static.pr.single.sh "$TARGET_PATH"
+  lerna exec --scope "{$PACKAGES}" -- ../../build/bin/storybook.static.pr.single.sh "$TARGET_PATH"
   $BASEDIR/generate.index.html.js $TARGET_PATH "PR storybook for ${BITBUCKET_COMMIT}" > "$TARGET_PATH/index.html"
 }
 

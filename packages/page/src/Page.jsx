@@ -18,13 +18,15 @@ export default class Page extends PureComponent {
     children: PropTypes.node,
   }
 
-  render = () => (
-    <Wrapper>
-      <ThemeProvider theme={{}}>
-        <PageContent>
-          {this.props.children}
-        </PageContent>
-      </ThemeProvider>
-    </Wrapper>
-  );
+  render() {
+    return (
+      <Wrapper>
+        <ThemeProvider theme={{}}>
+          <PageContent>
+            {this.props.children}
+          </PageContent>
+        </ThemeProvider>
+      </Wrapper>
+    );
+  }
 }

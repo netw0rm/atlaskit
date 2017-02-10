@@ -230,7 +230,7 @@ export default class StatelessMultiSelect extends PureComponent {
     {this.renderOptGroups(this.props.items)}
   </select>)
 
-  render = () => {
+  render() {
     const classes = classNames([styles.selectWrapper, {
       [styles.fitContainer]: this.props.shouldFitContainer,
     }]);

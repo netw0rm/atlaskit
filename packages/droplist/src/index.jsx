@@ -193,7 +193,7 @@ export default class DropdownList extends PureComponent {
     }
   }
 
-  render = () => {
+  render() {
     const { props } = this;
 
     // items' event delegation

@@ -45,23 +45,25 @@ export default class AkSingleSelect extends PureComponent {
     this.props.onOpenChange(attrs);
   }
 
-  render = () => (
-    <StatelessSelect
-      id={this.props.id}
-      isDisabled={this.props.isDisabled}
-      isInvalid={this.props.isInvalid}
-      isOpen={this.state.isOpen}
-      isRequired={this.props.isRequired}
-      items={this.props.items}
-      label={this.props.label}
-      onOpenChange={this.handleOpenChange}
-      onSelected={this.selectItem}
-      placeholder={this.props.placeholder}
-      position={this.props.position}
-      selectedItem={this.state.selectedItem}
-      shouldFitContainer={this.props.shouldFitContainer}
-    />
-  );
+  render() {
+    return (
+      <StatelessSelect
+        id={this.props.id}
+        isDisabled={this.props.isDisabled}
+        isInvalid={this.props.isInvalid}
+        isOpen={this.state.isOpen}
+        isRequired={this.props.isRequired}
+        items={this.props.items}
+        label={this.props.label}
+        onOpenChange={this.handleOpenChange}
+        onSelected={this.selectItem}
+        placeholder={this.props.placeholder}
+        position={this.props.position}
+        selectedItem={this.state.selectedItem}
+        shouldFitContainer={this.props.shouldFitContainer}
+      />
+    );
+  }
 }
 
 export { StatelessSelect }; // eslint-disable-line import/prefer-default-export

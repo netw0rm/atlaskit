@@ -74,30 +74,32 @@ export default class AkMultiSelect extends PureComponent {
     this.props.onOpenChange(attrs);
   }
 
-  render = () => (
-    <StatelessMultiSelect
-      filterValue={this.state.filterValue}
-      id={this.props.id}
-      isDisabled={this.props.isDisabled}
-      isFirstChild={this.props.isFirstChild}
-      isInvalid={this.props.isInvalid}
-      isOpen={this.state.isOpen}
-      isRequired={this.props.isRequired}
-      items={this.props.items}
-      label={this.props.label}
-      name={this.props.name}
-      noMatchesFound={this.props.noMatchesFound}
-      onFilterChange={this.handleFilterChange}
-      onOpenChange={this.handleOpenChange}
-      onRemoved={this.selectedChange}
-      onSelected={this.selectedChange}
-      placeholder={this.props.placeholder}
-      position={this.props.position}
-      selectedItems={this.state.selectedItems}
-      shouldFocus={this.props.shouldFocus}
-      shouldFitContainer={this.props.shouldFitContainer}
-    />
-  );
+  render() {
+    return (
+      <StatelessMultiSelect
+        filterValue={this.state.filterValue}
+        id={this.props.id}
+        isDisabled={this.props.isDisabled}
+        isFirstChild={this.props.isFirstChild}
+        isInvalid={this.props.isInvalid}
+        isOpen={this.state.isOpen}
+        isRequired={this.props.isRequired}
+        items={this.props.items}
+        label={this.props.label}
+        name={this.props.name}
+        noMatchesFound={this.props.noMatchesFound}
+        onFilterChange={this.handleFilterChange}
+        onOpenChange={this.handleOpenChange}
+        onRemoved={this.selectedChange}
+        onSelected={this.selectedChange}
+        placeholder={this.props.placeholder}
+        position={this.props.position}
+        selectedItems={this.state.selectedItems}
+        shouldFocus={this.props.shouldFocus}
+        shouldFitContainer={this.props.shouldFitContainer}
+      />
+    );
+  }
 }
 
 export { StatelessMultiSelect };

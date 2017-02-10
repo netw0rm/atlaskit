@@ -150,7 +150,9 @@ export default class Navigation extends PureComponent {
         {
           hasBlanket && (isSearchDrawerOpen || isCreateDrawerOpen) ?
           (
-            <AkBlanket isTinted onBlanketClicked={onBlanketClicked} />
+            <div style={{ zIndex: 0 }}>
+              <AkBlanket isTinted onBlanketClicked={onBlanketClicked} />
+            </div>
           )
           : null
         }

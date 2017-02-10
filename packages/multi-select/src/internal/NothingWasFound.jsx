@@ -7,11 +7,11 @@ export default class NothingWasFound extends PureComponent {
     noMatchesFound: PropTypes.string,
   }
 
-  render = () => (
-    <div
-      className={styles.nothing}
-    >
-      { this.props.noMatchesFound }
-    </div>
-  )
+  render() {
+    return (
+      <div className={styles.nothing}>
+        { this.props.noMatchesFound }
+      </div>
+    );
+  }
 }

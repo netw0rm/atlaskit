@@ -34,20 +34,16 @@ storiesOf(name, module)
   .add('with compact items', () => (
     <Page>
       <BasicNavigation containerHeaderComponent={null}>
-        <a href="#1">
-          <AkContainerItem
-            icon={<RandomAvatar presence="online" />}
-            isCompact
-            text="Available"
-          />
-        </a>
-        <a href="#1">
-          <AkContainerItem
-            icon={<DashboardIcon label="Lobby" />}
-            isCompact
-            text="Lobby"
-          />
-        </a>
+        <AkContainerItem
+          icon={<RandomAvatar presence="online" />}
+          isCompact
+          text="Available"
+        />
+        <AkContainerItem
+          icon={<DashboardIcon label="Lobby" />}
+          isCompact
+          text="Lobby"
+        />
         <AkContainerItemGroup
           action={
             <AkButton
@@ -58,23 +54,13 @@ storiesOf(name, module)
           }
           title="Rooms"
         >
-          <a href="#1">
-            <CompactItem>Front deskers</CompactItem>
-          </a>
-          <a href="#2">
-            <CompactItem>Parents anonymous</CompactItem>
-          </a>
-          <a href="#3">
-            <CompactItem>Gone fishing</CompactItem>
-          </a>
+          <CompactItem>Front deskers</CompactItem>
+          <CompactItem>Parents anonymous</CompactItem>
+          <CompactItem>Gone fishing</CompactItem>
         </AkContainerItemGroup>
         <AkContainerItemGroup title="People">
-          <a href="#4">
-            <CompactItem>John Lennon</CompactItem>
-          </a>
-          <a href="#5">
-            <CompactItem>George Harrison</CompactItem>
-          </a>
+          <CompactItem>John Lennon</CompactItem>
+          <CompactItem>George Harrison</CompactItem>
         </AkContainerItemGroup>
       </BasicNavigation>
     </Page>

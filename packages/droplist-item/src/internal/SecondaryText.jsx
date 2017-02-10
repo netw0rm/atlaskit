@@ -6,9 +6,11 @@ export default class SecondaryText extends PureComponent {
     children: PropTypes.node,
   }
 
-  render = () => (
-    <span
-      className={styles.secondaryText}
-    >{this.props.children}</span>
-  );
+  render() {
+    return (
+      <span className={styles.secondaryText}>
+        {this.props.children}
+      </span>
+    );
+  }
 }

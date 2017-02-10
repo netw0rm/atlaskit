@@ -13,11 +13,10 @@ const manyContainerItems = () => {
   const items = [];
   for (let i = 0; i < 40; i++) {
     items.push(
-      <a href="#1" key={i}>
-        <AkContainerItem
-          text="Test page"
-        />
-      </a>
+      <AkContainerItem
+        key={i}
+        text="Test page"
+      />
     );
   }
   return items;
@@ -27,36 +26,28 @@ storiesOf(name, module)
   .add('with a few container items', () => (
     <Page>
       <BasicNavigation>
-        <a href="#1">
-          <AkContainerItem
-            text="Test page"
-          />
-        </a>
-        <a href="#2">
-          <AkContainerItem
-            icon={<img alt="icon" src={nucleus} />}
-            text="Item with an icon"
-          />
-        </a>
-        <a href="#3">
-          <AkContainerItem
-            icon={<img alt="icon" src={nucleus} />}
-            text="A really, really, quite long, actually super long container name"
-          />
-        </a>
+        <AkContainerItem
+          text="Test page"
+        />
+        <AkContainerItem
+          icon={<img alt="icon" src={nucleus} />}
+          text="Item with an icon"
+        />
+        <AkContainerItem
+          icon={<img alt="icon" src={nucleus} />}
+          text="A really, really, quite long, actually super long container name"
+        />
       </BasicNavigation>
     </Page>
   ))
   .add('with many container items', () => (
     <Page>
       <BasicNavigation>
-        <a href="#1">
-          <AkContainerItem
-            icon={<img alt="icon" src={nucleus} />}
-            isSelected
-            text="This one is selected"
-          />
-        </a>
+        <AkContainerItem
+          icon={<img alt="icon" src={nucleus} />}
+          isSelected
+          text="This one is selected"
+        />
         {manyContainerItems()}
       </BasicNavigation>
     </Page>
@@ -64,13 +55,11 @@ storiesOf(name, module)
   .add('with a selected item', () => (
     <Page>
       <BasicNavigation>
-        <a href="#1">
-          <AkContainerItem
-            icon={<img alt="icon" src={nucleus} />}
-            isSelected
-            text="Nucleus"
-          />
-        </a>
+        <AkContainerItem
+          icon={<img alt="icon" src={nucleus} />}
+          isSelected
+          text="Nucleus"
+        />
       </BasicNavigation>
     </Page>
   ))

@@ -16,6 +16,7 @@ const NavigationAndContent = styled.div`
 `;
 
 const BannerContainer = styled.div`
+  flex-grow: 1;
   flex-shrink: 0;
   flex-basis: auto;
   transition: height .25s ease-in-out;
@@ -63,27 +64,28 @@ export default class Page extends PureComponent {
     isBannerOpen: false,
     navigationWidth: 0,
   }
-
-  render = () => (
-    <ThemeProvider theme={{}}>
-      <Wrapper>
-        <BannerContainer
-          aria-hidden={this.props.isBannerOpen}
-          isBannerOpen={this.props.isBannerOpen}
-        >
-          <Banner>
-            {this.props.banner}
-          </Banner>
-        </BannerContainer>
-        <NavigationAndContent>
-          <Navigation>
-            {this.props.navigation}
-          </Navigation>
-          <PageContent navigationWidth={this.props.navigationWidth}>
-            {this.props.children}
-          </PageContent>
-        </NavigationAndContent>
-      </Wrapper>
-    </ThemeProvider>
-  );
+  render() {
+    return (
+      <ThemeProvider theme={{}}>
+        <Wrapper>
+          <BannerContainer
+            aria-hidden={this.props.isBannerOpen}
+            isBannerOpen={this.props.isBannerOpen}
+          >
+            <Banner>
+              {this.props.banner}
+            </Banner>
+          </BannerContainer>
+          <NavigationAndContent>
+            <Navigation>
+              {this.props.navigation}
+            </Navigation>
+            <PageContent navigationWidth={this.props.navigationWidth}>
+              {this.props.children}
+            </PageContent>
+          </NavigationAndContent>
+        </Wrapper>
+      </ThemeProvider>
+    );
+  }
 }

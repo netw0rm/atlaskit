@@ -24,7 +24,6 @@
     "@types/sinon": "^1.16.32",
     "@types/whatwg-fetch": "^0.0.33",
     "ak-css-reset": "^1.1.0",
-    "akutil-common-test": "^7.0.0",
     "akutil-dmd-plugin": "^4.0.0",
     "akutil-polyfills": "^5.0.1",
     "akutil-shared-styles": "^37.0.0",

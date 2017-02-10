@@ -12,12 +12,14 @@ export default class ComponentTemplate extends PureComponent {
     onTextClicked: () => {},
   }
 
-  render = () => (
-    <button
-      className={styles.root}
-      onClick={this.props.onTextClicked}
-    >
-      Hello {this.props.audienceName}!
-    </button>
-  )
+  render() {
+    return (
+      <button
+        className={styles.root}
+        onClick={this.props.onTextClicked}
+      >
+        Hello {this.props.audienceName}!
+     </button>
+    );
+  }
 }

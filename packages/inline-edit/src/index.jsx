@@ -48,13 +48,15 @@ export default class extends PureComponent {
   exitEditingMode = () =>
     this.setState({ isEditing: false });
 
-  render = () => (
-    <InlineEdit
-      {...this.props}
-      isEditing={this.state.isEditing}
-      onEditRequested={this.enterEditingMode}
-      onConfirm={this.onConfirm}
-      onCancel={this.onCancel}
-    />
-  )
+  render() {
+    return (
+      <InlineEdit
+        {...this.props}
+        isEditing={this.state.isEditing}
+        onEditRequested={this.enterEditingMode}
+        onConfirm={this.onConfirm}
+        onCancel={this.onCancel}
+      />
+    );
+  }
 }

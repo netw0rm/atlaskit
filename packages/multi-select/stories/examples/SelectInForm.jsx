@@ -43,6 +43,7 @@ export default (
       label="Required field"
       name="cities"
       shouldFitContainer
+      shouldFocus
     />
     <Select
       id="colors_id"

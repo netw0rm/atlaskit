@@ -153,22 +153,24 @@ export default class extends PureComponent {
     </InlineDialog>
   )
 
-  render = () => (
-    <div>
-      <div ref={(field) => { this.field = field; }}>
-        <AkInlineEdit
-          label={this.props.label}
-          editView={this.renderEditView()}
-          readView={this.renderReadView()}
-          areActionButtonsHidden={this.isMentionsListVisible()}
-          onConfirm={this.onConfirm}
-          onCancel={this.onCancel}
-          {...this.props}
-        />
+  render() {
+    return (
+      <div>
+        <div ref={(field) => { this.field = field; }}>
+          <AkInlineEdit
+            label={this.props.label}
+            editView={this.renderEditView()}
+            readView={this.renderReadView()}
+            areActionButtonsHidden={this.isMentionsListVisible()}
+            onConfirm={this.onConfirm}
+            onCancel={this.onCancel}
+            {...this.props}
+          />
+        </div>
+        <div style={mentionListWrapperStyle}>
+          {this.isMentionsListVisible() && this.renderMentionsList()}
+        </div>
       </div>
-      <div style={mentionListWrapperStyle}>
-        {this.isMentionsListVisible() && this.renderMentionsList()}
-      </div>
-    </div>
-  )
+    );
+  }
 }

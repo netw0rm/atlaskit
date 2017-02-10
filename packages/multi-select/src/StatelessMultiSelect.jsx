@@ -27,6 +27,7 @@ export default class StatelessMultiSelect extends PureComponent {
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
     isFirstChild: PropTypes.bool,
+    shouldFocus: PropTypes.bool,
     isInvalid: PropTypes.bool,
     isOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
@@ -45,7 +46,8 @@ export default class StatelessMultiSelect extends PureComponent {
   }
 
   static defaultProps = {
-    filterValue: null,
+    filterValue: '',
+    shouldFocus: false,
     isOpen: false,
     items: [],
     label: '',
@@ -60,12 +62,26 @@ export default class StatelessMultiSelect extends PureComponent {
 
   // This is used only to show the focus ring around , it's okay to have state in this case.
   state = {
-    isFocused: this.props.isOpen,
+    isFocused: this.props.isOpen || this.props.shouldFocus,
+    oldFilterValue: null,
+  }
+
+  componentDidMount = () => {
+    if (this.state.isFocused && this.inputNode) {
+      this.inputNode.focus();
+    }
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (!prevProps.shouldFocus && this.props.shouldFocus && this.inputNode) {
+      this.inputNode.focus();
+    }
   }
 
   onFocus = () => {
     if (!this.props.isDisabled) {
       this.setState({ isFocused: true });
+      this.inputNode.focus();
     }
   }
 
@@ -108,6 +124,13 @@ export default class StatelessMultiSelect extends PureComponent {
     }
   }
 
+  handleItemSelect = (item, attrs) => {
+    this.props.onOpenChange({ isOpen: false, event: attrs.event });
+    this.props.onSelected(item);
+    this.props.onFilterChange('');
+    this.setState({ oldFilterValue: '' });
+  }
+
   handleItemRemove = (item) => {
     this.props.onRemoved(item);
   }
@@ -121,12 +144,22 @@ export default class StatelessMultiSelect extends PureComponent {
 
   handleKeyUpInInput = (event) => {
     const key = event.key;
-    const value = event.target.value;
 
     if (key === 'Backspace' && !this.props.filterValue) {
-      this.removeLatestItem();
-      this.onOpenChange({ event, isOpen: true });
-    } else if (value !== this.props.filterValue) {
+      if (this.state.oldFilterValue) {
+        this.setState({ oldFilterValue: '' });
+      } else {
+        this.removeLatestItem();
+        this.onOpenChange({ event, isOpen: true });
+      }
+    }
+  }
+
+  handleOnChange = (event) => {
+    const value = event.target.value;
+
+    if (value !== this.props.filterValue) {
+      this.setState({ oldFilterValue: this.props.filterValue });
       this.props.onFilterChange(value);
       this.onOpenChange({ event, isOpen: true });
     }
@@ -150,8 +183,7 @@ export default class StatelessMultiSelect extends PureComponent {
         {...item}
         key={itemIndex}
         onActivate={(attrs) => {
-          this.props.onOpenChange({ isOpen: false, event: attrs.event });
-          this.props.onSelected(item);
+          this.handleItemSelect(item, attrs);
         }}
       >
         {item.content}
@@ -198,7 +230,7 @@ export default class StatelessMultiSelect extends PureComponent {
     {this.renderOptGroups(this.props.items)}
   </select>)
 
-  render = () => {
+  render() {
     const classes = classNames([styles.selectWrapper, {
       [styles.fitContainer]: this.props.shouldFitContainer,
     }]);
@@ -247,9 +279,12 @@ export default class StatelessMultiSelect extends PureComponent {
                   {this.props.isDisabled ? null : <input
                     className={styles.input}
                     disabled={this.props.isDisabled}
+                    onChange={this.handleOnChange}
                     onKeyUp={this.handleKeyUpInInput}
                     placeholder={this.getPlaceholder()}
+                    ref={ref => (this.inputNode = ref)}
                     type="text"
+                    value={this.props.filterValue}
                   />}
                 </TagGroup>
               </Trigger>

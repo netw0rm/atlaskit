@@ -93,13 +93,6 @@ describe('markdown-inputrules', () => {
   });
 
   describe('horizontal rule', () => {
-    it('should convert "***" at the start of a line to horizontal rule', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '***');
-      expect(pm.doc).to.deep.equal(doc(p(), hr, p()));
-    });
-
     it('should not convert "***" in the middle of a line to a horizontal rule', () => {
       const { pm, sel } = editor(doc(p('test{<>}')));
 

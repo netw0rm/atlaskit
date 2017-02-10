@@ -12,13 +12,11 @@ storiesOf(name, module)
   .add('with a container item group', () => (
     <Page>
       <BasicNavigation>
-        <a href="#1">
-          <AkContainerItem
-            icon={<SearchIcon label="Search" />}
-            isCompact
-            text="Search"
-          />
-        </a>
+        <AkContainerItem
+          icon={<SearchIcon label="Search" />}
+          isCompact
+          text="Search"
+        />
         <AkContainerItemGroup
           action={
             <AkButton
@@ -29,43 +27,33 @@ storiesOf(name, module)
           }
           title="Rooms"
         >
-          <a href="#1">
-            <AkContainerItem
-              icon={<IssuesIcon label="Issues" />}
-              isCompact
-              text="Issues"
-            />
-          </a>
-          <a href="#2">
-            <AkContainerItem
-              icon={<AddIcon label="Create" />}
-              isCompact
-              text="Create"
-            />
-          </a>
-          <a href="#3">
-            <AkContainerItem
-              icon={<DashboardIcon label="Dashboard" />}
-              isCompact
-              text="Nucleus"
-            />
-          </a>
+          <AkContainerItem
+            icon={<IssuesIcon label="Issues" />}
+            isCompact
+            text="Issues"
+          />
+          <AkContainerItem
+            icon={<AddIcon label="Create" />}
+            isCompact
+            text="Create"
+          />
+          <AkContainerItem
+            icon={<DashboardIcon label="Dashboard" />}
+            isCompact
+            text="Nucleus"
+          />
         </AkContainerItemGroup>
         <AkContainerItemGroup title="People">
-          <a href="#4">
-            <AkContainerItem
-              icon={<SettingsIcon label="Settings" />}
-              isCompact
-              text="Settings"
-            />
-          </a>
-          <a href="#5">
-            <AkContainerItem
-              icon={<IssuesIcon label="Issues" />}
-              isCompact
-              text="Issues"
-            />
-          </a>
+          <AkContainerItem
+            icon={<SettingsIcon label="Settings" />}
+            isCompact
+            text="Settings"
+          />
+          <AkContainerItem
+            icon={<IssuesIcon label="Issues" />}
+            isCompact
+            text="Issues"
+          />
         </AkContainerItemGroup>
       </BasicNavigation>
       <div>

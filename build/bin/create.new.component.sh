@@ -32,7 +32,7 @@ cp -r "packages/util-component-template" "packages/$COMP_NAME"
 
 # `find` is getting all the files under the new directory
 # `xargs` is passing them to sed
-# `sed` is replacing instances of 'util-component-template' and 'UtilComponentTemplate' with the new component name
+# `sed` is replacing instances of 'util-component-template' and 'Toggle' with the new component name
 # LC_CTYPE and LANG=C: http://stackoverflow.com/questions/19242275/re-error-illegal-byte-sequence-on-mac-os-x
 LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' -e "s/util-component-template/${COMP_NAME}/g" -e "s/Toggle/${PASCAL_CASE_NAME}/g" -e "s/utilComponentTemplate/${CAMEL_CASE}/g" '{}'
 
@@ -47,7 +47,6 @@ rm -f CHANGELOG.md
 popd > /dev/null
 
 # Install dependencies and link internal packages
-yarn install
 yarn run bootstrap/single/with-deps "@atlaskit/$COMP_NAME"
 
 yarn run docs/single "@atlaskit/$COMP_NAME"

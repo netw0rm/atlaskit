@@ -4,7 +4,7 @@ import AkToggle from '@atlaskit/util-component-template';
 export default class extends PureComponent {
   render() {
     return (
-      <AkToggle label="Toggle" />
+      <AkToggle label="Stateful toggle" />
     );
   }
 }

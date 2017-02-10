@@ -51,16 +51,16 @@ describe('panel', () => {
 
     it('should be able to change panel type using function changeType', () => {
       const { plugin } = editor(doc(panel(paragraph('text'))));
-      expect(plugin.activePanel.attrs['panelType']).to.equal('info');
+      expect(plugin.activePanelType).to.equal('info');
       expect(plugin.element).to.not.be.undefined;
-      expect(plugin.activePanel.attrs['panelType']).to.not.be.undefined;
+      expect(plugin.activePanelType).to.not.be.undefined;
       plugin.changePanelType({ panelType: 'note' });
-      expect(plugin.activePanel.attrs['panelType']).to.equal('note');
+      expect(plugin.activePanelType).to.equal('note');
     });
 
     it('should be able to remove panel type using function removePanelType', () => {
       const { plugin } = editor(doc(panel(paragraph('text'))));
-      expect(plugin.activePanel.attrs['panelType']).to.equal('info');
+      expect(plugin.activePanelType).to.equal('info');
       plugin.removePanelType();
       expect(plugin.element).to.be.undefined;
     });
@@ -71,7 +71,7 @@ describe('panel', () => {
       plugin.subscribe(spy);
       expect(spy.callCount).to.equal(1);
       plugin.changePanelType({ panelType: 'note' });
-      expect(plugin.activePanel.attrs['panelType']).to.equal('note');
+      expect(plugin.activePanelType).to.equal('note');
       expect(plugin.element).not.to.be.undefined;
       expect(spy.callCount).to.equal(3);
     });

@@ -6,6 +6,7 @@ import PanelEdit from '../../src/ui/PanelEdit';
 import { makeEditor } from '../../test-helper';
 import { doc, panel, paragraph, schema } from '../_schema-builder';
 
+
 describe('ak-editor-core/ui/PanelEdit', () => {
   const editor = (doc: any) => {
     const { pm, plugin } = makeEditor({ doc, plugin: PanelPlugin, schema });
@@ -30,5 +31,26 @@ describe('ak-editor-core/ui/PanelEdit', () => {
     const { plugin } = editor(doc(panel(paragraph('text'))));
     const panelEditOptions = mount(<PanelEdit pluginState={plugin}/>);
     expect(panelEditOptions.find('button')).to.have.length(5);
+  });
+
+  it('should set showToolbar to true when panel is clicked', () => {
+    const { pm, plugin } = editor(doc(panel(paragraph('text'))));
+    const panelEditOptions = mount(<PanelEdit pluginState={plugin}/>);
+    pm.on.click.dispatch();
+    expect(panelEditOptions.state('showToolbar')).to.be.true;
+  });
+
+  it('should continue showToolbar to true when panelType is changed', () => {
+    const { plugin } = editor(doc(panel(paragraph('text'))));
+    const panelEditOptions = mount(<PanelEdit pluginState={plugin}/>);
+    plugin.changePanelType({ panelType: 'note' });
+    expect(panelEditOptions.state('showToolbar')).to.be.true;
+  });
+
+  it('should set showToolbar to false when panelType is removed', () => {
+    const { plugin } = editor(doc(panel(paragraph('text'))));
+    const panelEditOptions = mount(<PanelEdit pluginState={plugin}/>);
+    plugin.removePanelType();
+    expect(panelEditOptions.state('showToolbar')).to.be.false;
   });
 });

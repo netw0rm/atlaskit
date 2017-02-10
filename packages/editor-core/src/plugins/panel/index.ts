@@ -27,12 +27,13 @@ export const availablePanelType = [
 
 export class PanelState {
   private pm: PM;
+  private activeNode: PanelNode | undefined;
   private changeHandlers: PanelStateSubscriber[] = [];
   private inputRules: InputRule[] = [];
 
   clicked?: boolean;
   element?: HTMLElement | undefined;
-  activePanel?: PanelNode | undefined;
+  activePanelType?: string | undefined;
 
   constructor(pm: PM) {
     this.pm = pm;
@@ -52,10 +53,6 @@ export class PanelState {
 
     pm.on.click.add(() => {
       this.update(true);
-    });
-
-    pm.on.blur.add(() => {
-      this.clear();
     });
 
     this.update();
@@ -104,12 +101,16 @@ export class PanelState {
 
   private update(clicked = false) {
     const newPanel = this.getActivePanel();
-    const newElement = newPanel ? this.getDomElement() : undefined;
-    if ((clicked && newPanel) || this.activePanel !== newPanel) {
-      this.clicked = clicked;
-      this.element = newElement;
-      this.activePanel = newPanel;
-      this.changeHandlers.forEach(cb => cb(this));
+    if (newPanel) {
+      if (clicked || this.activeNode !== newPanel) {
+        this.clicked = clicked;
+        this.element = this.getDomElement();
+        this.activeNode = newPanel;
+        this.activePanelType = newPanel.attrs['panelType'];
+        this.changeHandlers.forEach(cb => cb(this));
+      }
+    } else {
+      this.clear();
     }
   }
 

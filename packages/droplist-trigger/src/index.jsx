@@ -76,7 +76,7 @@ export default class Trigger extends PureComponent {
         ref={ref => (this.ref = ref)}
       >
         <div
-          tabIndex={props.isDisabled || !props.isTabbable ? -1 : 0}
+          tabIndex={props.isDisabled || !props.isTabbable ? null : 0}
           className={styles.trigger}
         >{props.children}</div>
       </div>

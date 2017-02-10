@@ -8,6 +8,7 @@ import classnames from 'classnames';
 const halfGrid = 4;
 const itemHeight = halfGrid * 7;
 const dropdownMaxHeight = (itemHeight * 9.5) + (halfGrid * 2);
+const halfFocusRing = 1;
 
 /* eslint-disable react/no-unused-prop-types */
 /**
@@ -51,7 +52,7 @@ export default class DropdownList extends PureComponent {
     }
 
     if (this.props.shouldFitContainer && this.dropContentRef) {
-      this.dropContentRef.style.width = `${this.triggerRef.offsetWidth}px`;
+      this.dropContentRef.style.width = `${this.triggerRef.offsetWidth - (halfFocusRing * 2)}px`;
     }
 
     document.addEventListener('click', this.handleClickOutside);
@@ -64,7 +65,7 @@ export default class DropdownList extends PureComponent {
       }
 
       if (this.props.shouldFitContainer && this.dropContentRef) {
-        this.dropContentRef.style.width = `${this.triggerRef.offsetWidth}px`;
+        this.dropContentRef.style.width = `${this.triggerRef.offsetWidth - (halfFocusRing * 2)}px`;
       }
     }
   }
@@ -215,20 +216,22 @@ export default class DropdownList extends PureComponent {
           offset="0 4"
           autoPosition={props.shouldFlip}
           content={props.isOpen ?
-            <div
-              className={styles.dropContent}
-              ref={(ref) => {
-                if (ref) {
-                  this.dropContentRef = ref;
-                  this.domItemsList = ref.querySelectorAll('[data-role="droplistItem"]');
-                  this.setMaxHeight(ref);
-                }
-              }}
-            >
-              {props.children}
+            <div className={styles.dropContentWrapper}>
+              <div
+                className={styles.dropContent}
+                ref={(ref) => {
+                  if (ref) {
+                    this.dropContentRef = ref;
+                    this.domItemsList = ref.querySelectorAll('[data-role="droplistItem"]');
+                    this.setMaxHeight(ref);
+                  }
+                }}
+              >
+                {props.children}
+              </div>
             </div> :
-            null
-          }
+          null
+        }
         >
           <div className={styles.dropTrigger} ref={ref => (this.triggerRef = ref)}>
             <Trigger

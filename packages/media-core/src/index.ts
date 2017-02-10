@@ -32,5 +32,3 @@ export interface Metadata {
   processingStatus: string;
   size: number;
 }
-
-export default {};

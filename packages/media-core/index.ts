@@ -9,4 +9,3 @@
 // falls through to the `types` and `main` `package.json` fields.
 //
 export * from './src';
-export { default } from './src';

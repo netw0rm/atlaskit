@@ -1,4 +1,4 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent, PropTypes, cloneElement } from 'react';
 import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
@@ -36,6 +36,8 @@ export default class InlineEdit extends PureComponent {
      * This node should allow the user to edit the value of the field.
      *
      * If this node is undefined/null/false, the component will display in read-only mode.
+     *
+     * This node will be passed the onConfirm callback passed to InlineEdit.
      *
      * @memberof InlineEdit
      * @type {ReactNode}
@@ -135,6 +137,17 @@ export default class InlineEdit extends PureComponent {
      * @type {Function}
      */
     onCancel: PropTypes.func.isRequired,
+    /**
+     * @description Flag to handle input confirmation automatically when enter is pressed
+     *
+     * This property assumes that the editView has an `onConfirm` property
+     * which is a function to be called
+     *
+     * @memberof InlineEdit
+     * @type {boolean}
+     * @default {false}
+     */
+    shouldConfirmOnEnter: PropTypes.bool,
     labelHtmlFor: PropTypes.string,
   }
 
@@ -144,10 +157,16 @@ export default class InlineEdit extends PureComponent {
     isLabelHidden: false,
     areActionButtonsHidden: false,
     isConfirmOnBlurDisabled: false,
+    shouldConfirmOnEnter: false,
   }
 
   state = {
     wasFocusReceivedSinceLastBlur: false,
+    resetFieldBase: false,
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.shouldResetFieldBase = this.props.isEditing && !nextProps.isEditing;
   }
 
   onWrapperClick = () => {
@@ -260,6 +279,14 @@ export default class InlineEdit extends PureComponent {
     </div>
   )
 
+  renderEditView = () => (
+    this.props.shouldConfirmOnEnter ?
+      cloneElement(this.props.editView, {
+        onConfirm: this.props.onConfirm,
+      }) :
+      this.props.editView
+  )
+
   renderSpinner = () => (
     <div className={styles.spinnerWrapper}>
       <Spinner />
@@ -289,13 +316,14 @@ export default class InlineEdit extends PureComponent {
           >
             <FieldBase
               isInvalid={this.props.isInvalid}
-              isFocused={this.isReadOnly() ? false : undefined}
+              isFocused={this.isReadOnly() || !this.isEditing ? false : undefined}
               isReadOnly={this.isReadOnly()}
               isFitContainerWidthEnabled={this.props.isEditing}
               appearance={this.props.isEditing ? 'standard' : 'subtle'}
               isDisabled={this.shouldRenderSpinner()}
+              shouldReset={this.shouldResetFieldBase}
             >
-              {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
+              {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
             </FieldBase>
           </div>
           {this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()}

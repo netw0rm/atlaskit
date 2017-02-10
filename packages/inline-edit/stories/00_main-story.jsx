@@ -2,6 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import MentionInlineEdit from './MentionInlineEdit';
 import TextInlineEdit from './TextInlineEdit';
+import LoopConfirmInlineEdit from './LoopConfirmInlineEdit';
 import SlowInlineEdit from './SlowInlineEdit';
 import exampleMentions from './example-mentions';
 import AkInlineEdit, { InlineEdit } from '../src';
@@ -37,6 +38,25 @@ storiesOf(name, module)
   .add('with lots of text and no spaces', () => (
     <div style={containerStyle}>
       <TextInlineEdit initialValue="BananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBanana" />
+    </div>
+  ))
+  .add('with confirmation when enter is pressed', () => (
+    <div style={containerStyle}>
+      <TextInlineEdit
+        shouldConfirmOnEnter
+      />
+    </div>
+  ))
+  .add('with confirmation loop', () => (
+    <div style={containerStyle}>
+      <LoopConfirmInlineEdit />
+    </div>
+  ))
+  .add('with confirmation when enter is pressed', () => (
+    <div style={containerStyle}>
+      <TextInlineEdit
+        shouldConfirmOnEnter
+      />
     </div>
   ))
   .add('with confirmation cancellation', () => (

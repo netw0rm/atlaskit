@@ -36,6 +36,7 @@ export default class extends PureComponent {
       isInitiallySelected
       value={this.state.editValue}
       onChange={this.onChange}
+      onConfirm={this.onConfirm}
     />
   )
 

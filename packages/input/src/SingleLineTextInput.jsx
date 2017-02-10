@@ -70,11 +70,24 @@ export default class SingleLineTextInput extends PureComponent {
      * @type {boolean}
      */
     isEditing: PropTypes.bool.isRequired,
+    /**
+     * @description Called when the user confirms input by pressing the enter key
+     * @memberof SingleLineTextInput
+     * @type {Function}
+     */
+    onConfirm: PropTypes.func,
+    /**
+     * @description Regular onKeyDown handler passed to the input
+     * @memberof SingleLineTextInput
+     * @type {Function}
+     */
+    onKeyDown: PropTypes.func,
   }
 
   static defaultProps = {
     style: {},
     isInitiallySelected: false,
+    onConfirm: () => {},
   }
 
   componentDidMount() {
@@ -87,14 +100,25 @@ export default class SingleLineTextInput extends PureComponent {
     }
   }
 
+  onKeyDown = (event) => {
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(event);
+    }
+    if (event.keyCode === 13) {
+      this.props.onConfirm(event);
+    }
+  }
+
   getInputProps = () => {
     const inputProps = {
       ...this.props,
       type: 'text',
+      onKeyDown: this.onKeyDown,
     };
     delete inputProps.style;
     delete inputProps.isEditing;
     delete inputProps.isInitiallySelected;
+    delete inputProps.onConfirm;
     return inputProps;
   }
 

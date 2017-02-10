@@ -1,4 +1,4 @@
-import { waitUntil } from 'akutil-common-test';
+import { waitUntil } from '@atlaskit/util-common-test';
 import React from 'react';
 import { mount } from 'enzyme';
 

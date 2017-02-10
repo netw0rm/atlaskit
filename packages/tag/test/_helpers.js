@@ -3,7 +3,7 @@ import {
   createTemporaryComponent,
   tearDownComponent,
   getRootNode,
-} from 'akutil-common-test';
+} from '@atlaskit/util-common-test';
 
 export const createTemporary = definition => createTemporaryComponent(define, definition);
 export const removeTemporary = tearDownComponent;

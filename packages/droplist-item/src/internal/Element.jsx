@@ -38,7 +38,7 @@ export default class Element extends PureComponent {
     e.preventDefault();
   }
 
-  render = () => {
+  render() {
     const { props } = this;
     const { href, target, type, isDisabled, handleKeyPress, handleClick, className } = props;
     const ariaAttributes = {};

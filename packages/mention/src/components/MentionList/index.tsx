@@ -140,6 +140,11 @@ export default class MentionList extends PureComponent<Props, State> {
     }
   }
 
+  mentionsCount(): number {
+    const { mentions } = this.props;
+    return mentions && mentions.length || 0;
+  }
+
   // Internal
   private revealItem(key: string): void {
     const item = this.items[key];

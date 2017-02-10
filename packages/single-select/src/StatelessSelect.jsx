@@ -81,7 +81,7 @@ export default class StatelessSelect extends PureComponent {
     </Group>
   )
 
-  render = () => {
+  render() {
     const classes = classNames([styles.selectWrapper, {
       [styles.fitContainer]: this.props.shouldFitContainer,
     }]);

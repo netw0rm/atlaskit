@@ -76,7 +76,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     return this.props.children;
   }
 
-  render = () => {
+  render() {
     const { props, state } = this;
     return (
       <Droplist

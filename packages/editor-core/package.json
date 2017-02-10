@@ -25,6 +25,7 @@
     "@atlaskit/emoji": "^1.0.0",
     "@atlaskit/mention": "^1.2.0",
     "@atlaskit/util-shared-styles": "^1.0.1",
+    "@atlassian/media-embed": "^0.2.1",
     "ak-button": "^5.0.0",
     "ak-button-group": "^3.0.2",
     "ak-dropdown-menu": "^2.1.0",

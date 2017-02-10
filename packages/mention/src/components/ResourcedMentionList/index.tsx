@@ -109,6 +109,14 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
     }
   }
 
+  mentionsCount(): number {
+    if (this.mentionListRef) {
+      return this.mentionListRef.mentionsCount();
+    }
+
+    return 0;
+  }
+
   // internal
   private subscribeMentionProvider(mentionProvider?: MentionProvider) {
     if (mentionProvider) {

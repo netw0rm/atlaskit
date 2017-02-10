@@ -409,5 +409,29 @@ describe('hyperlink', () => {
 
       expect(pm.doc).to.deep.equal(doc(linkable('text')));
     });
+
+    it('should escape from link mark when typing at the beginning of the link', () => {
+      const { pm } = editor(doc(linkable(link({ href: 'http://example.com' })('text'))));
+
+      pm.input.insertText(1, 1, '1');
+
+      expect(pm.doc).to.deep.equal(doc(linkable('1', link({ href: 'http://example.com' })('text'))));
+    });
+
+    it('should not escape from link mark when typing at the middle of the link', () => {
+      const { pm } = editor(doc(linkable(link({ href: 'http://example.com' })('text'))));
+
+      pm.input.insertText(2, 2, '1');
+
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('t1ext'))));
+    });
+
+    it('should not escape from link mark when deliting second character', () => {
+      const { pm } = editor(doc(linkable(link({ href: 'http://example.com' })('t{<>}ext'))));
+
+      pm.input.dispatchKey('Delete');
+
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('txt'))));
+    });
   });
 });

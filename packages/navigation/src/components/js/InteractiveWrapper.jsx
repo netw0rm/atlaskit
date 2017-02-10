@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const InvisibleButton = styled.button`
   background: none;
   box-sizing: content-box;
-  border: 0;
+  border: none;
   color: inherit;
   cursor: pointer;
   display: inline;
@@ -32,12 +32,11 @@ export default class InteractiveWrapper extends PureComponent {
       children,
       className,
       href,
-      linkComponent,
+      linkComponent: LinkComponent,
       onClick,
       onMouseDown,
     } = this.props;
 
-    const LinkComponent = linkComponent;
     return href ? (
       <LinkComponent
         onMouseDown={onMouseDown}

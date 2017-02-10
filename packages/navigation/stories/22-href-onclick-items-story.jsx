@@ -3,7 +3,7 @@ import React from 'react';
 import Lorem from 'react-lorem-component';
 import { DashboardIcon } from '@atlaskit/icon';
 import { name } from '../package.json';
-import Page from './components/Page';
+import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import { AkContainerItem } from '../src/index';
 

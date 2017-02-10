@@ -29,7 +29,7 @@ export const mentions = [
   },
   {
     id: '55',
-    avatarUrl: 'http://www.dystopianmovies.org/wp-content/uploads/malcolm-reynolds-serenity-nathon-fillion-64x64.jpg',
+    avatarUrl: '//www.dystopianmovies.org/wp-content/uploads/malcolm-reynolds-serenity-nathon-fillion-64x64.jpg',
     name: 'Captain Mal',
     mentionName: 'captaintightpants',
     presence: {
@@ -39,7 +39,7 @@ export const mentions = [
   },
   {
     id: '11',
-    avatarUrl: 'http://66.media.tumblr.com/avatar_2072eeb45575_64.png',
+    avatarUrl: '//66.media.tumblr.com/avatar_2072eeb45575_64.png',
     name: 'Doctor Who',
     mentionName: 'thedoctor',
     presence: {
@@ -48,7 +48,7 @@ export const mentions = [
   },
   {
     id: '27',
-    avatarUrl: 'http://seatfleet.io/system/users/pictures/54a7/6630/7365/6111/ba00/0000/thumb/picard_s5hq_pbvariant.jpg?1420256904',
+    avatarUrl: '//seatfleet.io/system/users/pictures/54a7/6630/7365/6111/ba00/0000/thumb/picard_s5hq_pbvariant.jpg?1420256904',
     name: 'Jean Luc Picard',
     mentionName: 'makeitso',
     presence: {
@@ -58,7 +58,7 @@ export const mentions = [
   },
   {
     id: '1701',
-    avatarUrl: 'http://cdn.akamai.steamstatic.com/steamcommunity/public/images/avatars/ab/abee9ce4fbd1c9c94b695b16062b8fdf57a21de7_medium.jpg',
+    avatarUrl: '//cdn.akamai.steamstatic.com/steamcommunity/public/images/avatars/ab/abee9ce4fbd1c9c94b695b16062b8fdf57a21de7_medium.jpg',
     name: 'James T. Kirk',
     mentionName: 'wheresmyshirt',
   },

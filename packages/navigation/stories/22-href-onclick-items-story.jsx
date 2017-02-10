@@ -12,7 +12,7 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation>
         <AkContainerItem
-          href="http://atlassian.com"
+          href="//atlassian.com"
           icon={<DashboardIcon label="Dashboard" />}
           text="Just a href"
         />
@@ -23,7 +23,7 @@ storiesOf(name, module)
         />
         <AkContainerItem
           onClick={action('onClick')}
-          href="http://atlassian.com"
+          href="//atlassian.com"
           icon={<DashboardIcon label="Dashboard" />}
           text="href and an onClick"
         />

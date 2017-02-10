@@ -25,3 +25,5 @@ export default class Image extends PureComponent {
     return (<img alt={this.props.alt} {...propsForImage} />);
   }
 }
+
+// dummy comment!

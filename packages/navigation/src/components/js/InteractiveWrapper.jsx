@@ -2,20 +2,19 @@ import React, { PureComponent, PropTypes } from 'react';
 import styled from 'styled-components';
 
 const InvisibleButton = styled.button`
+  align-items: inherit;
   background: none;
+  border: none;
   box-sizing: content-box;
-  border: 0;
   color: inherit;
   cursor: pointer;
   display: inline;
   font: inherit;
   height: 100%;
   line-height: normal;
-  overflow: visible;
   padding: 0;
-  width: 100%;
   text-align: inherit;
-  align-items: inherit;
+  width: 100%;
 `;
 
 export default class InteractiveWrapper extends PureComponent {
@@ -32,12 +31,11 @@ export default class InteractiveWrapper extends PureComponent {
       children,
       className,
       href,
-      linkComponent,
+      linkComponent: LinkComponent,
       onClick,
       onMouseDown,
     } = this.props;
 
-    const LinkComponent = linkComponent;
     return href ? (
       <LinkComponent
         onMouseDown={onMouseDown}

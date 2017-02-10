@@ -20,11 +20,11 @@ export default class RecentContainers extends PureComponent {
       <MenuItemContainer>
         <FlexContainer>
           <MenuItemIcon>
-            <img src={container.iconUrl} alt={container.name} />
+            <img src={container.iconUrl} alt={container.name} className="menuItemIcon" />
           </MenuItemIcon>
           <MenuItemTwoLineContent className="ellipsis">
-            <div className="ellipsis">{container.name}</div>
-            <div>{this.props.i18n[`container.${container.type}`]}</div>
+            <div className="ellipsis top">{container.name}</div>
+            <div className="bottom">{this.props.i18n[`container.${container.type}`]}</div>
           </MenuItemTwoLineContent>
         </FlexContainer>
       </MenuItemContainer>

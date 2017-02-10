@@ -50,7 +50,7 @@ export const MenuItemIcon = styled.div`
   padding-right: 8px;
   width: 32px;
 
-  & img {
+  & .menuItemIcon {
     border-radius: 3px;
     height: 32px;
     width: 32px;
@@ -67,14 +67,14 @@ export const MenuItemTwoLineContent = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
 
-  div:first-child {
+  > .top {
     overflow: hidden;
     padding-top: 2px;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  div:last-child {
+  > .bottom {
     color: ${akColorN100}
     font-size: 10px;
   }

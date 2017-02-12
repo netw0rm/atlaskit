@@ -43,7 +43,7 @@ export default class Group extends PureComponent {
     return `${props.heading} ${elemAfter || ''}`;
   }
 
-  render = () => {
+  render() {
     const { props } = this;
 
     return (

@@ -30,6 +30,7 @@ const droplistPropDescriptions = {
   the accessibility point of view. Only 'menu' value is available at the moment.`,
   children: 'Content of the droplist.',
   trigger: 'Content that will be rendered inside the trigger element.',
+  isKeyboardInteractionDisabled: 'Disables all keyboard interactions',
 };
 
 const droplistPropTypes = {
@@ -50,7 +51,7 @@ storiesOf(name, module)
     <Chrome title={name}>
       <Description>
         <p>This is a `base` component on which such components as ak-dropdow-menu,
-          ak-single-select (TBD), ak-multi-select (TBD) are built. They should
+          ak-single-select and ak-multi-select are built. They should
           satisfy most of the requirements and use cases and recommended to use instead.</p>
       </Description>
       <Code code={DroplistOverviewExampleRaw}>

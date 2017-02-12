@@ -12,6 +12,7 @@ const defaultLinkComponentPropDescriptions = {
   href: 'The href of the link',
   children: 'The contents of the link',
   onMouseDown: 'The mousedown handler of the link - used to preventDefault on the click, so that the focus ring can be removed for mouse activation of the link',
+  onClick: 'The onclick handler of the link - passed in through ',
   className: 'The classnames that are to be applied to the link',
 };
 

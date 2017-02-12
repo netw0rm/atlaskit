@@ -1,9 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Lorem from 'react-lorem-component';
 import { BitbucketBranchesIcon, PageIcon, FeedbackIcon, IssuesIcon, EmojiObjectsIcon, EmojiNatureIcon, EmojiTravelIcon, ExpandIcon } from '@atlaskit/icon';
 import { AkDrawerItem, AkContainerItemGroup } from '../src/index';
-import Page from './components/Page';
+import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import nucleus from './nucleus.png';
 import { name } from '../package.json';
@@ -62,9 +61,6 @@ storiesOf(name, module)
         )}
         openDrawer="create"
       />
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('with create drawer having many groups', () => (
@@ -110,9 +106,6 @@ storiesOf(name, module)
         )}
         openDrawer="create"
       />
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('with create having many items', () => (
@@ -123,8 +116,5 @@ storiesOf(name, module)
         )}
         openDrawer="create"
       />
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ));

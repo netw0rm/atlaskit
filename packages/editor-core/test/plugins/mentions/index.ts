@@ -232,7 +232,7 @@ describe('mentions', () => {
       expect(pm.doc.nodeAt(5)).to.equal(null);
     });
 
-    it('should not only 1 mention at a time inside blockqoute', () => {
+    it('should insert only 1 mention at a time inside blockqoute', () => {
       const pm = makeEditor(container());
       const pluginInstance = MentionsPlugin.get(pm)!;
       const blockTypePluginInstance = BlockTypePlugin.get(pm)!;

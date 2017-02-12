@@ -3,11 +3,11 @@ import { PureComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 
 export interface Props {
-  target: string;
-  relativePosition: 'above' | 'below' | 'auto';
-  offsetX: number;
-  offsetY: number;
-  zIndex: number | string;
+  target?: string;
+  relativePosition?: 'above' | 'below' | 'auto';
+  offsetX?: number;
+  offsetY?: number;
+  zIndex?: number | string;
   children?: any;
 }
 
@@ -42,11 +42,11 @@ export default class Popup extends PureComponent<Props, undefined> {
   }
 
   _applyBelowPosition() {
-    const targetNode = document.getElementById(this.props.target);
+    const targetNode = this.props.target && document.getElementById(this.props.target);
     if (targetNode) {
       const box = targetNode.getBoundingClientRect();
-      const top = box.bottom + this.props.offsetY;
-      const left = box.left + this.props.offsetX;
+      const top = box.bottom + (this.props.offsetY || 0);
+      const left = box.left + (this.props.offsetX || 0);
       this.popup.style.top = `${top}px`;
       this.popup.style.bottom = '';
       this.popup.style.left = `${left}px`;
@@ -54,11 +54,11 @@ export default class Popup extends PureComponent<Props, undefined> {
   }
 
   _applyAbovePosition() {
-    const targetNode = document.getElementById(this.props.target);
+    const targetNode = this.props.target && document.getElementById(this.props.target);
     if (targetNode) {
       const box = targetNode.getBoundingClientRect();
-      const bottom = (window.innerHeight - box.top) + this.props.offsetY;
-      const left = box.left + this.props.offsetX;
+      const bottom = (window.innerHeight - box.top) + (this.props.offsetY || 0);
+      const left = box.left + (this.props.offsetX || 0);
       this.popup.style.top = '';
       this.popup.style.bottom = `${bottom}px`;
       this.popup.style.left = `${left}px`;
@@ -71,7 +71,7 @@ export default class Popup extends PureComponent<Props, undefined> {
     } else if (this.props.relativePosition === 'below') {
       this._applyBelowPosition();
     } else {
-      const targetNode = document.getElementById(this.props.target);
+      const targetNode = this.props.target && document.getElementById(this.props.target);
       if (targetNode) {
         const box = targetNode.getBoundingClientRect();
         const viewPortHeight = window.innerHeight;

@@ -23,11 +23,13 @@ export default class extends PureComponent {
     this.props.onChange(e);
   }
 
-  render = () => (
-    <Toggle
-      {...this.props}
-      isChecked={this.state.isChecked}
-      onChange={this.onChange}
-    />
-  )
+  render() {
+    return (
+      <Toggle
+        {...this.props}
+        isChecked={this.state.isChecked}
+        onChange={this.onChange}
+      />
+    );
+  }
 }

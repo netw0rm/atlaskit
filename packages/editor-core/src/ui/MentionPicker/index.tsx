@@ -1,4 +1,4 @@
-import { MentionPicker as AkMentionPicker } from '@atlaskit/mention';
+import { MentionPicker as AkMentionPicker } from 'ak-mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionsPluginState } from '../../plugins/mentions';

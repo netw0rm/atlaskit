@@ -1,4 +1,4 @@
-import { Emoji } from '@atlaskit/emoji';
+import { Emoji } from 'ak-emoji';
 import {
   akColorN50,
 } from '@atlaskit/util-shared-styles';

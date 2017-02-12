@@ -9,7 +9,7 @@ const exec = require('child_process').exec;
    etc.
 */
 function getChangedPackages() {
-  exec('git fetch && git diff --name-only master', (err, stdout, stderr) => {
+  exec('git fetch origin && git diff --name-only origin/master', (err, stdout, stderr) => {
     if (!err) {
       const changedPackages = stdout.split('\n')
         // remove any empty strings

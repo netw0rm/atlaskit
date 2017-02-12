@@ -339,6 +339,8 @@ Doing it like this will ensure you don't update any extra dependencies that you 
 The easiest way to install a dependency within a package is to either add it directly to the package's `package.json` and bootstrapping that package (see `Getting Started`) or by
 performing a `yarn add` from **within** the package itself (this will create a `yarn.lock` file that we do not push to the repository).
 
+It can also happen that this doesn't help. In this case make sure that all the packages your changes depend on have TypeScript definition files.
+
 Our package dependencies are not pinned in any way.
 
 ## Make changes to the Pipelines build

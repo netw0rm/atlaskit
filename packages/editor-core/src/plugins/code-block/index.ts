@@ -61,30 +61,10 @@ export class CodeBlockState {
     const node = $from.parent;
 
     if (isCodeBlockNode(node)) {
-      if (!this.lastCharIsNewline(node) || !this.cursorIsAtTheEndOfLine()) {
         pm.tr.typeText('\n').applyAndScroll();
         return true;
-      } else {
-        this.deleteCharBefore();
-      }
     }
     return false;
-  }
-
-  // Replaced the one from prosemirror. Because it was not working with IOS.
-  private deleteCharBefore() {
-    const { pm } = this;
-    const { $from } = pm.selection;
-    pm.tr.delete($from.pos - 1, $from.pos).applyAndScroll();
-  }
-
-  private lastCharIsNewline(node: Node): boolean {
-    return node.textContent.slice(-1) === '\n';
-  }
-
-  private cursorIsAtTheEndOfLine() {
-    const { $from, empty } = this.pm.selection;
-    return empty && $from.end() === $from.pos;
   }
 
   private update(clicked = false) {

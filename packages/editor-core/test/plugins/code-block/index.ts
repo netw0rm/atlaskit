@@ -124,35 +124,24 @@ describe('code-block', () => {
         expect(splitCodeBlock.callCount).to.equal(1);
       });
     });
-
-    context('when hits double enter', () => {
-      it('exits code block', () => {
-        const { pm } = editor(doc(code_block()('text{<>}')));
-
-        pm.input.dispatchKey('Enter');
-        pm.input.dispatchKey('Enter');
-
-        expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
-      });
-    });
   });
 
   describe('splitCodeBlock', () => {
     context('when it is a code block', () => {
       context('when last char is a new line', () => {
         context('when cursor is at the end of code block', () => {
-          it('removes the last new line char in code block', () => {
+          it('inserts a new line', () => {
             const { pm, plugin } = editor(doc(code_block()('text\n{<>}')));
 
             plugin.splitCodeBlock();
 
-            expect(pm.doc).to.deep.equal(doc(code_block()('text')));
+            expect(pm.doc).to.deep.equal(doc(code_block()('text\n\n')));
           });
 
-          it('returns false', () => {
+          it('returns true', () => {
             const { plugin } = editor(doc(code_block()('text\n{<>}')));
 
-            expect(plugin.splitCodeBlock()).to.equal(false);
+            expect(plugin.splitCodeBlock()).to.equal(true);
           });
         });
 

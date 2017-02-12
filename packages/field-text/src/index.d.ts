@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, FormEvent } from 'react';
 
 export interface Props {
   compact?: boolean;
@@ -9,7 +9,7 @@ export interface Props {
   name?: string;
   placeholder?: string;
   value?: string;
-  onChange: (event: Event) => void;
+  onChange: (event: FormEvent<HTMLInputElement>) => void;
   id?: string;
   isLabelHidden?: boolean;
   shouldFitContainer?: boolean;

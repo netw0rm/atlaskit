@@ -32,7 +32,7 @@ function docs_build_status() {
 
 function generate_docs() {
   $CHALK --no-stdin -t "{blue Generating docs HTML output from README.md files...}"
-  LERNA_LOC exec --scope="{$PACKAGES}" -- ../../build/bin/generate.readme.html.sh
+  $LERNA_LOC exec --scope="{$PACKAGES}" -- ../../build/bin/generate.readme.html.sh
 
   $CHALK --no-stdin -t "{blue Generating docs index...}"
   pushd $OUTDIR > /dev/null

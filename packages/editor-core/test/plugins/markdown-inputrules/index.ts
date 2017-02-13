@@ -1,11 +1,11 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
+import { MentionNodeType } from '../../../src';
 import {
   a, blockquote, br, chaiPlugin, code_block, doc, em, h1, h2,
-  h3, hr, img, li, makeEditor, mono, ol, p, strike, strong, ul
+  h3, hr, img, li, makeEditor, mono, ol, p, strike, strong, ul, mention
 } from '../../../test-helper';
-
 chai.use(chaiPlugin);
 
 describe('markdown-inputrules', () => {
@@ -121,6 +121,16 @@ describe('markdown-inputrules', () => {
 
       pm.input.insertText(sel, sel, '`text`');
       expect(pm.doc).to.deep.equal(doc(p(mono('text'))));
+    });
+
+    it('should be able to preserve mention inside mono text', () => {
+      const { pm } = editor(
+      doc(p(
+        mono(
+          mention({ id: '1234', displayName: '@bob' })
+        )
+      )));
+      expect(pm.doc.nodeAt(1)).to.be.of.nodeType(MentionNodeType);
     });
   });
 

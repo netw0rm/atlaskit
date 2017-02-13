@@ -649,22 +649,48 @@ describe('block-type', () => {
         });
 
         context('on nested content', () => {
-          it('creates new paragraph above', () => {
-            const { pm, plugin } = editor(doc(blockquote(blockquote(p('{<>}text')), p('text'))));
-            plugin.cursorMovable = false;
+          context('cursors on text block', () => {
+            it('creates new paragraph above', () => {
+              const { pm, plugin } = editor(doc(blockquote(blockquote(p('{<>}text')), p('text'))));
+              plugin.cursorMovable = false;
 
-            plugin.createParagraphNear(false);
+              plugin.createParagraphNear(false);
 
-            expect(pm.doc).to.deep.equal(doc(blockquote(p(''), blockquote(p('text')), p('text'))));
+              expect(pm.doc).to.deep.equal(doc(blockquote(p(''), blockquote(p('text')), p('text'))));
+            });
+
+            it('moves cursor to the top sibling', () => {
+              const { pm, plugin } = editor(doc(blockquote(blockquote(p('{<>}text')), p('text'))));
+              plugin.cursorMovable = false;
+
+              plugin.createParagraphNear(false);
+
+              expect(pm.selection.$from.pos).to.eq(2);
+            });
           });
 
-          it('moves cursor to the top sibling', () => {
-            const { pm, plugin } = editor(doc(blockquote(blockquote(p('{<>}text')), p('text'))));
-            plugin.cursorMovable = false;
+          context('curosor on non text block', () => {
+            context('nested with on layer', () => {
+              it('creates a new paragraph above', () => {
+                const { pm, plugin } = editor(doc(blockquote(blockquote(hr), p('text'))));
+                plugin.cursorMovable = false;
 
-            plugin.createParagraphNear(false);
+                plugin.createParagraphNear(false);
 
-            expect(pm.selection.$from.pos).to.eq(2);
+                expect(pm.doc).to.deep.equal(doc(blockquote(p(''), blockquote(hr), p('text'))));
+              });
+            });
+
+            context('nested with two layers', () => {
+              it('creates a new paragraph above', () => {
+                const { pm, plugin } = editor(doc(blockquote(hr)));
+                plugin.cursorMovable = false;
+
+                plugin.createParagraphNear(false);
+
+                expect(pm.doc).to.deep.equal(doc(p(''), blockquote(hr)));
+              });
+            });
           });
         });
       });
@@ -792,39 +818,65 @@ describe('block-type', () => {
         });
 
         context('on nested content', () => {
-          it('creates new paragraph below', () => {
-            const { pm, plugin } = editor(
-              doc(
-                blockquote(
-                  p(
-                    'text',
-                    mention({ id: 'foo1', displayName: '@bar1' })
-                  ),
+          context('cursor on a text block', () => {
+            it('creates new paragraph below', () => {
+              const { pm, plugin } = editor(
+                doc(
                   blockquote(
-                    p('text{<>}')
+                    p(
+                      'text',
+                      mention({ id: 'foo1', displayName: '@bar1' })
+                    ),
+                    blockquote(
+                      p('text{<>}')
+                    )
                   )
                 )
-              )
-            );
-            plugin.cursorMovable = false;
+              );
+              plugin.cursorMovable = false;
 
-            plugin.createParagraphNear(true);
+              plugin.createParagraphNear(true);
 
-            expect(pm.doc).to.deep.equal(
-              doc(
-                blockquote(
-                  p(
-                    'text',
-                    mention({ id: 'foo1', displayName: '@bar1' })
-                  ),
+              expect(pm.doc).to.deep.equal(
+                doc(
                   blockquote(
-                    p('text')
-                  ),
-                  p('')
+                    p(
+                      'text',
+                      mention({ id: 'foo1', displayName: '@bar1' })
+                    ),
+                    blockquote(
+                      p('text')
+                    ),
+                    p('')
+                  )
                 )
-              )
-            );
-            expect(pm.selection.$from.pos).to.eq(17);
+              );
+              expect(pm.selection.$from.pos).to.eq(17);
+            });
+          });
+
+          context('coursor on a non text block', () => {
+            context('nested with on layer', () => {
+              it('creates a new paragraph below', () => {
+                const { pm, plugin } = editor(doc(blockquote(blockquote(hr))));
+                plugin.cursorMovable = false;
+
+                plugin.createParagraphNear(true);
+
+                expect(pm.doc).to.deep.equal(doc(blockquote(blockquote(hr), p(''))));
+              });
+            });
+
+            context('nested with two layers', () => {
+              it('creates a new paragraph below', () => {
+                const { pm, plugin } = editor(doc(blockquote(hr)));
+                plugin.cursorMovable = false;
+
+                plugin.createParagraphNear(true);
+
+                expect(pm.doc).to.deep.equal(doc(blockquote(hr), p('')));
+              });
+            });
           });
         });
 

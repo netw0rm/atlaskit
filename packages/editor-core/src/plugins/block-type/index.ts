@@ -293,6 +293,7 @@ export class BlockTypeState {
 
     if (!append) {
       let pos = $from.start($from.depth);
+      pos = $from.depth > 0 ? pos - 1 : pos;
 
       pm.tr.insert(pos, paragraph.create()).applyAndScroll();
 
@@ -300,6 +301,7 @@ export class BlockTypeState {
       pm.setSelection(next);
     } else {
       let pos = $to.end($to.depth);
+      pos = $to.depth > 0 ? pos + 1 : pos;
 
       const next = new TextSelection(pm.doc.resolve(pos));
       pm.setSelection(next);

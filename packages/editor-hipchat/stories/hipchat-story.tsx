@@ -12,8 +12,15 @@ storiesOf(name, module)
       <Editor
         onSubmit={action('submit')}
         mentionResourceProvider={resourceProvider}
-        emojiService={emojiService}
         reverseMentionPicker={false}
+      />
+    );
+  })
+  .add('With EmojiTypeAhead', () => {
+    return (
+      <Editor
+        onSubmit={action('submit')}
+        emojiService={emojiService}
       />
     );
   })

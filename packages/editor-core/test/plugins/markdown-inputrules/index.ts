@@ -1,7 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
-import { MentionNodeType } from '../../../src';
 import {
   a, blockquote, br, chaiPlugin, code_block, doc, em, h1, h2,
   h3, hr, img, li, makeEditor, mono, ol, p, strike, strong, ul, mention
@@ -124,13 +123,15 @@ describe('markdown-inputrules', () => {
     });
 
     it('should be able to preserve mention inside mono text', () => {
+      const mentionNode = mention({ id: '1234', displayName: '@helga' });
       const { pm } = editor(
       doc(p(
-        '`',
-        mention({ id: '1234', displayName: '@bob' }),
-        '`'
+        '`hello, ',
+        mentionNode,
+        'there'
       )));
-      expect(pm.doc.nodeAt(2)).to.be.of.nodeType(MentionNodeType);
+      pm.input.insertText(15, 15, '`');
+      expect(pm.doc).to.deep.equal(doc(p(mono('hello, '), mono(mentionNode), mono('there'))));
     });
   });
 

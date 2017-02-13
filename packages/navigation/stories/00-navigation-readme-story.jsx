@@ -29,6 +29,7 @@ const navigationPropDescriptions = {
   onCreateDrawerOpen: 'A handler to call when the navigation intends for the create drawer to be opened - called when the global create item is pressed',
   onSearchDrawerClose: 'A handler to call when the navigation intends for the search drawer to be closed - called when the back button is pressed',
   onSearchDrawerOpen: 'A handler to call when the navigation intends for the search drawer to be opened - called when the back button is pressed',
+  onResizeStart: 'A handler to call when the navigation starts resizing - called when the resizer starts dragging',
   searchDrawerContent: 'Content to go inside the search drawer. See the "search drawer" docs for more details',
   width: 'The width at which to render the navigation. This is only adhered to if Navigation.isOpen is true.',
 };

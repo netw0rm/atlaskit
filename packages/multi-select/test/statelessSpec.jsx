@@ -67,6 +67,22 @@ describe(`${name} - stateless`, () => {
     });
   });
 
+  describe('behavior', () => {
+    let select;
+    beforeEach(() => {
+      select = mount(<StatelessMultiSelect />);
+    });
+
+    describe('focus', () => {
+      it('should focus the input field if shouldFocus is set to true', () => {
+        const input = select.find('input');
+        expect(document.activeElement).not.to.equal(input.node);
+        select.setProps({ shouldFocus: true });
+        expect(document.activeElement).to.equal(input.node);
+      });
+    });
+  });
+
   describe('hidden select', () => {
     let wrapper;
     const selectItems = [
@@ -174,12 +190,6 @@ describe(`${name} - stateless`, () => {
         ],
       },
     ];
-    it('should call onSelected when an item is activated', () => {
-      const spy = sinon.spy();
-      const select = mount(<StatelessMultiSelect items={selectItems} isOpen onSelected={spy} />);
-      select.find(Item).first().props().onActivate();
-      expect(spy.callCount).to.equal(1);
-    });
 
     it('should call onRemoved when an item is removed', () => {
       const spy = sinon.spy();
@@ -234,11 +244,20 @@ describe(`${name} - stateless`, () => {
       wrapper.setProps({ selectedItems });
     });
 
-    it('handleTriggerClick', () => {
-      const args = { event: {}, isOpen: true };
-      instance.handleTriggerClick({});
-      expect(onOpenChangeSpy.calledOnce).to.equal(true);
-      expect(onOpenChangeSpy.calledWith(args)).to.equal(true);
+    describe('handleTriggerClick', () => {
+      it('default behavior', () => {
+        const args = { event: {}, isOpen: true };
+        instance.handleTriggerClick({});
+        expect(onOpenChangeSpy.calledOnce).to.equal(true);
+        expect(onOpenChangeSpy.calledWith(args)).to.equal(true);
+      });
+
+      it('disabled select', () => {
+        wrapper.setProps({ isDisabled: true });
+        instance.handleTriggerClick({});
+        expect(onOpenChangeSpy.called).to.equal(false);
+        wrapper.setProps({ isDisabled: false });
+      });
     });
 
     it('handleItemRemove', () => {
@@ -256,37 +275,6 @@ describe(`${name} - stateless`, () => {
     });
 
     describe('handleKeyUpInInput', () => {
-      it('should call onOpenChange every time the value is changed', () => {
-        const event = { key: '', target: { value: '1' } };
-        instance.handleKeyUpInInput(event);
-        expect(onOpenChangeSpy.calledOnce).to.equal(true);
-        expect(onOpenChangeSpy.calledWith({ event, isOpen: true })).to.equal(true);
-      });
-
-      it('should call onFilterChange every time the value is changed', () => {
-        const value1 = '1';
-        const value2 = '2';
-        let event = { key: '', target: { value: value1 } };
-        instance.handleKeyUpInInput(event);
-        expect(onFilterChangeSpy.calledOnce).to.equal(true);
-        expect(onFilterChangeSpy.calledWith(value1)).to.equal(true);
-        onFilterChangeSpy.reset();
-
-        wrapper.setProps({ filterValue: value1 });
-        event = { key: '', target: { value: value2 } };
-        instance.handleKeyUpInInput(event);
-        expect(onFilterChangeSpy.calledOnce).to.equal(true);
-        expect(onFilterChangeSpy.calledWith(value2)).to.equal(true);
-      });
-
-      it('should not call onFilterChange when value is the same', () => {
-        const value = '1';
-        const event = { key: '', target: { value } };
-        wrapper.setProps({ filterValue: value });
-        instance.handleKeyUpInInput(event);
-        expect(onFilterChangeSpy.called).to.equal(false);
-      });
-
       it('should call onOpenChange when there was no value and Backspace was pressed', () => {
         const event = { key: 'Backspace', target: { value: '' } };
         instance.handleKeyUpInInput(event);
@@ -299,6 +287,32 @@ describe(`${name} - stateless`, () => {
         const event = { key: 'Backspace', target: { value: '' } };
         instance.handleKeyUpInInput(event);
         expect(spy.calledOnce).to.equal(true);
+      });
+    });
+
+    describe('handleOnChange', () => {
+      it('should call onFilterChange every time the value is changed', () => {
+        const value1 = '1';
+        const value2 = '2';
+        let event = { key: '', target: { value: value1 } };
+        instance.handleOnChange(event);
+        expect(onFilterChangeSpy.calledOnce).to.equal(true);
+        expect(onFilterChangeSpy.calledWith(value1)).to.equal(true);
+        onFilterChangeSpy.reset();
+
+        wrapper.setProps({ filterValue: value1 });
+        event = { key: '', target: { value: value2 } };
+        instance.handleOnChange(event);
+        expect(onFilterChangeSpy.calledOnce).to.equal(true);
+        expect(onFilterChangeSpy.calledWith(value2)).to.equal(true);
+      });
+
+      it('should not call onFilterChange when value is the same', () => {
+        const value = '1';
+        const event = { key: '', target: { value } };
+        wrapper.setProps({ filterValue: value });
+        instance.handleOnChange(event);
+        expect(onFilterChangeSpy.called).to.equal(false);
       });
     });
 
@@ -349,6 +363,132 @@ describe(`${name} - stateless`, () => {
         wrapper.setProps({ selectedItems: [items[0]] });
         expect(instance.filterItems(items)).to.deep.equal([items[1], items[2]]);
       });
+    });
+
+    describe('onFocus', () => {
+      it('default behavior', () => {
+        wrapper.setState({ isFocused: false });
+        instance.onFocus();
+        expect(wrapper.state().isFocused).to.equal(true);
+      });
+
+      it('disabled select', () => {
+        wrapper.setState({ isFocused: false });
+        wrapper.setProps({ isDisabled: true });
+        instance.onFocus();
+        expect(wrapper.state().isFocused).to.equal(false);
+      });
+    });
+
+    describe('onBlur', () => {
+      it('default behavior', () => {
+        wrapper.setState({ isFocused: true });
+        instance.onBlur();
+        expect(wrapper.state().isFocused).to.equal(false);
+      });
+
+      it('disabled select', () => {
+        wrapper.setState({ isFocused: true });
+        wrapper.setProps({ isDisabled: true });
+        instance.onBlur();
+        expect(wrapper.state().isFocused).to.equal(true);
+      });
+    });
+
+    describe('getPlaceholder', () => {
+      const items = [
+        { value: 1, content: 'Test1' },
+        { value: 2, content: 'Test 2' },
+        { value: 3, content: 'Third test' },
+      ];
+      const placeholder = 'Test!';
+
+      it('should return "placeholder" text for the empty select', () => {
+        wrapper.setProps({ isOpen: false });
+        wrapper.setProps({ selectedItems: [] });
+        wrapper.setProps({ placeholder });
+        expect(instance.getPlaceholder()).to.equal(placeholder);
+      });
+
+      it('should return null if some items are selected', () => {
+        wrapper.setProps({ isOpen: false });
+        wrapper.setProps({ selectedItems: [items[0]] });
+        wrapper.setProps({ placeholder });
+        expect(instance.getPlaceholder()).to.equal(null);
+      });
+
+      it('should return null if the select is opened', () => {
+        wrapper.setProps({ isOpen: true });
+        wrapper.setProps({ selectedItems: [] });
+        wrapper.setProps({ placeholder });
+        expect(instance.getPlaceholder()).to.equal(null);
+      });
+    });
+
+    describe('handleItemSelect', () => {
+      const item = selectItems[0].items[0];
+      const attrs = { event: {} };
+
+      it('should call onSelected when called', () => {
+        instance.handleItemSelect(item, attrs);
+        expect(onSelectedSpy.callCount).to.equal(1);
+      });
+
+      it('should call onOpenChange when called', () => {
+        instance.handleItemSelect(item, attrs);
+        expect(onOpenChangeSpy.callCount).to.equal(1);
+        expect(onOpenChangeSpy.calledWith({ isOpen: false, event: attrs.event })).to.equal(true);
+      });
+
+      it('should call onFilterChange with empty string when called', () => {
+        instance.handleItemSelect(item, attrs);
+        expect(onFilterChangeSpy.callCount).to.equal(1);
+        expect(onFilterChangeSpy.calledWith('')).to.equal(true);
+      });
+
+      it('should clear the oldFilterValue state when called', () => {
+        instance.handleItemSelect(item, attrs);
+        expect(wrapper.state().oldFilterValue).to.equal('');
+      });
+    });
+  });
+
+  describe('disabled component', () => {
+    let wrapper;
+    const selectItems = [
+      {
+        heading: 'test',
+        items: [
+          { value: 1, content: 'Test1' },
+          { value: 2, content: 'Test 2' },
+          { value: 3, content: 'Third test' },
+        ],
+      },
+    ];
+    const selectedItems = [selectItems[0].items[1]];
+
+    beforeEach(() => {
+      wrapper = mount(<StatelessMultiSelect
+        isDisabled
+        items={selectItems}
+        selectedItems={selectedItems}
+      />);
+    });
+
+    it('native select should be "disabled"', () => {
+      expect(wrapper.find('select[disabled]').length).to.equal(1);
+    });
+
+    it('should pass isDisabled property to field base', () => {
+      expect(wrapper.find(FieldBase).prop('isDisabled')).to.equal(true);
+    });
+
+    it('should pass isDisabled property to Trigger sub-component', () => {
+      expect(wrapper.find(Trigger).prop('isDisabled')).to.equal(true);
+    });
+
+    it('should not render input if disabled', () => {
+      expect(wrapper.find('input[disabled]').length).to.equal(0);
     });
   });
 });

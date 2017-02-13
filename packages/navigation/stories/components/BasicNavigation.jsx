@@ -166,6 +166,7 @@ export default class BasicNavigation extends PureComponent {
         onCreateDrawerClose={this.closeDrawer()}
         onCreateDrawerOpen={this.openDrawer('create')}
         onResize={this.resize}
+        onResizeStart={action('resizeStart')}
         onSearchDrawerClose={this.closeDrawer()}
         onSearchDrawerOpen={this.openDrawer('search')}
         position="right bottom"

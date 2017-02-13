@@ -52,6 +52,7 @@ export default class Item extends PureComponent {
       [styles.active]: (props.type === 'link' && props.isActive) || (props.type === 'option' && props.isSelected),
       [styles.checked]: (['checkbox', 'radio'].indexOf(props.type) > -1) && props.isChecked,
       [styles.hidden]: props.isHidden,
+      [styles.focus]: props.isFocused,
     }]
   )
 
@@ -76,7 +77,7 @@ export default class Item extends PureComponent {
     }
   }
 
-  render = () => {
+  render() {
     const { props } = this;
     return (
       <span role="presentation">
@@ -85,11 +86,10 @@ export default class Item extends PureComponent {
           handleClick={this.handleClick}
           handleKeyPress={this.handleKeyPress}
           href={props.href}
-          isDisabled={props.isDisabled}
           isChecked={props.isChecked}
-          isSelected={props.isSelected}
-          isFocused={props.isFocused}
+          isDisabled={props.isDisabled}
           isHidden={props.isHidden}
+          isSelected={props.isSelected}
           target={props.target}
           type={props.type}
         >

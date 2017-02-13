@@ -81,7 +81,8 @@ export default class ModalDialog extends PureComponent {
   }
 
   handleKeyDown = (e) => {
-    if (e.key === 'Escape') {
+    const escapeKeyCode = 27;
+    if (e.keyCode === escapeKeyCode) {
       this.props.onDialogDismissed(e);
     }
   }
@@ -112,15 +113,23 @@ export default class ModalDialog extends PureComponent {
           ])}
           {...customStyle}
         >
-          <div className={styles.headerFlex}>
-            {header}
-          </div>
+          {
+            header
+              ? <div className={styles.headerFlex}>
+                {header}
+              </div>
+              : null
+          }
           <div className={styles.contentFlex}>
             {children}
           </div>
-          <div className={styles.footerFlex}>
-            {footer}
-          </div>
+          {
+            footer
+              ? <div className={styles.footerFlex}>
+                {footer}
+              </div>
+              : null
+          }
         </div>
       </div>
     );

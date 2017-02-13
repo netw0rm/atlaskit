@@ -27,11 +27,11 @@ export interface Props {
   onOpen?: OnOpen;
   onClose?: OnClose;
 
-  target: string;
-  position: 'above' | 'below' | 'auto';
-  zIndex: number | string;
-  offsetX: number;
-  offsetY: number;
+  target?: string;
+  position?: 'above' | 'below' | 'auto';
+  zIndex?: number | string;
+  offsetX?: number;
+  offsetY?: number;
 }
 
 export interface State {
@@ -102,6 +102,14 @@ export default class MentionPicker extends PureComponent<Props, State> {
     if (this.mentionListRef) {
       this.mentionListRef.chooseCurrentSelection();
     }
+  }
+
+  mentionsCount(): number {
+    if (this.mentionListRef) {
+      return this.mentionListRef.mentionsCount();
+    }
+
+    return 0;
   }
 
   // Internal

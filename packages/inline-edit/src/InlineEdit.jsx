@@ -266,38 +266,41 @@ export default class InlineEdit extends PureComponent {
     </div>
   )
 
-  render = () => (
-    <div className={this.getRootClasses()}>
-      <div style={{ position: (this.props.isLabelHidden ? 'absolute' : 'relative') }}>
-        <Label
-          label={this.props.label}
-          isLabelHidden={this.props.isLabelHidden}
-          htmlFor={this.isReadOnly() ? undefined : this.props.labelHtmlFor}
-          onClick={this.onWrapperClick}
-        />
-      </div>
-      <div
-        className={styles.contentWrapper}
-        onBlur={this.onWrapperBlur}
-        onFocus={this.onWrapperFocus}
-      >
-        <div // eslint-disable-line jsx-a11y/no-static-element-interactions
-          className={styles.fieldBaseWrapper}
-          onClick={this.onWrapperClick}
-        >
-          <FieldBase
-            isInvalid={this.props.isInvalid}
-            isFocused={this.isReadOnly() ? false : undefined}
-            isReadOnly={this.isReadOnly()}
-            isFitContainerWidthEnabled={this.props.isEditing}
-            appearance={this.props.isEditing ? 'standard' : 'subtle'}
-            isDisabled={this.shouldRenderSpinner()}
-          >
-            {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
-          </FieldBase>
+  render() {
+    return (
+      <div className={this.getRootClasses()}>
+        <div style={{ position: (this.props.isLabelHidden ? 'absolute' : 'relative') }}>
+          <Label
+            appearance="inline-edit"
+            label={this.props.label}
+            isLabelHidden={this.props.isLabelHidden}
+            htmlFor={this.isReadOnly() ? undefined : this.props.labelHtmlFor}
+            onClick={this.onWrapperClick}
+          />
         </div>
-        {this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()}
+        <div
+          className={styles.contentWrapper}
+          onBlur={this.onWrapperBlur}
+          onFocus={this.onWrapperFocus}
+        >
+          <div // eslint-disable-line jsx-a11y/no-static-element-interactions
+            className={styles.fieldBaseWrapper}
+            onClick={this.onWrapperClick}
+          >
+            <FieldBase
+              isInvalid={this.props.isInvalid}
+              isFocused={this.isReadOnly() ? false : undefined}
+              isReadOnly={this.isReadOnly()}
+              isFitContainerWidthEnabled={this.props.isEditing}
+              appearance={this.props.isEditing ? 'standard' : 'subtle'}
+              isDisabled={this.shouldRenderSpinner()}
+            >
+              {this.shouldShowEditView() ? this.props.editView : this.renderReadView()}
+            </FieldBase>
+          </div>
+          {this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()}
+        </div>
       </div>
-    </div>
-  )
+    );
+  }
 }

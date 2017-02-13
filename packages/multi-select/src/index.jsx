@@ -8,6 +8,8 @@ export default class AkMultiSelect extends PureComponent {
     defaultSelected: PropTypes.arrayOf(PropTypes.shape(Item.propTypes)),
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
+    isFirstChild: PropTypes.bool,
+    shouldFocus: PropTypes.bool,
     isDefaultOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
     isInvalid: PropTypes.bool,
@@ -18,6 +20,7 @@ export default class AkMultiSelect extends PureComponent {
     onFilterChange: PropTypes.func,
     onSelectedChange: PropTypes.func,
     onOpenChange: PropTypes.func,
+    placeholder: PropTypes.string,
     position: PropTypes.string,
     shouldFitContainer: PropTypes.bool,
   }
@@ -25,6 +28,7 @@ export default class AkMultiSelect extends PureComponent {
   static defaultProps = {
     defaultSelected: [],
     isOpen: false,
+    shouldFocus: false,
     isRequired: false,
     items: [],
     label: '',
@@ -41,7 +45,7 @@ export default class AkMultiSelect extends PureComponent {
   }
 
   selectItem = (item) => {
-    const selectedItems = [item].concat(this.state.selectedItems);
+    const selectedItems = [...this.state.selectedItems, item];
     this.setState({ selectedItems });
     this.props.onSelectedChange({ items: selectedItems, action: 'select', changed: item });
   }
@@ -70,27 +74,32 @@ export default class AkMultiSelect extends PureComponent {
     this.props.onOpenChange(attrs);
   }
 
-  render = () => (
-    <StatelessMultiSelect
-      filterValue={this.state.filterValue}
-      id={this.props.id}
-      isDisabled={this.props.isDisabled}
-      isInvalid={this.props.isInvalid}
-      isOpen={this.state.isOpen}
-      isRequired={this.props.isRequired}
-      items={this.props.items}
-      label={this.props.label}
-      name={this.props.name}
-      noMatchesFound={this.props.noMatchesFound}
-      onFilterChange={this.handleFilterChange}
-      onOpenChange={this.handleOpenChange}
-      onRemoved={this.selectedChange}
-      onSelected={this.selectedChange}
-      position={this.props.position}
-      selectedItems={this.state.selectedItems}
-      shouldFitContainer={this.props.shouldFitContainer}
-    />
-  );
+  render() {
+    return (
+      <StatelessMultiSelect
+        filterValue={this.state.filterValue}
+        id={this.props.id}
+        isDisabled={this.props.isDisabled}
+        isFirstChild={this.props.isFirstChild}
+        isInvalid={this.props.isInvalid}
+        isOpen={this.state.isOpen}
+        isRequired={this.props.isRequired}
+        items={this.props.items}
+        label={this.props.label}
+        name={this.props.name}
+        noMatchesFound={this.props.noMatchesFound}
+        onFilterChange={this.handleFilterChange}
+        onOpenChange={this.handleOpenChange}
+        onRemoved={this.selectedChange}
+        onSelected={this.selectedChange}
+        placeholder={this.props.placeholder}
+        position={this.props.position}
+        selectedItems={this.state.selectedItems}
+        shouldFocus={this.props.shouldFocus}
+        shouldFitContainer={this.props.shouldFitContainer}
+      />
+    );
+  }
 }
 
 export { StatelessMultiSelect };

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import ModalDialog from '@atlaskit/modal-dialog';
 import { analyticsDecorator as analytics } from '../../analytics';
-import FloatingToolbar from '../FloatingToolbar';
 import ToolbarButton from '../ToolbarButton';
 import * as styles from './styles';
 
@@ -18,29 +18,30 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
 
   render() {
     return (
-      <span style={{ position: 'relative' }}>
+      <span style={{ display: 'inline-block' }}>
         <ToolbarButton onClick={this.openFeedbackPanel} selected={this.state.active} spacing="compact">
           Feedback
         </ToolbarButton>
-        {!this.state.active ? null :
-        <FloatingToolbar align="right" spacing="none" onOutsideClick={this.closeFeedbackPanel}>
+        <ModalDialog
+          onDialogDismissed={this.closeFeedbackPanel}
+          isOpen={this.state.active}
+        >
           <div className={styles.popup}>
-            <button
-              type="button"
-              className={styles.close}
-              onClick={this.closeFeedbackPanel}
-            >
-            &#10005;
-            </button>
-            <iframe
-              allowTransparency
-              frameBorder="0"
-              scrolling="no"
-              src={this.props.feedbackFormUrl}
-            />
-          </div>
-        </FloatingToolbar>
-        }
+              <button
+                type="button"
+                className={styles.close}
+                onClick={this.closeFeedbackPanel}
+              >
+              &#10005;
+              </button>
+              <iframe
+                allowTransparency
+                frameBorder="0"
+                scrolling="no"
+                src={this.props.feedbackFormUrl}
+              />
+            </div>
+        </ModalDialog>
       </span>
     );
   }

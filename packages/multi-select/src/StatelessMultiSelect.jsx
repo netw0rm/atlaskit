@@ -25,7 +25,12 @@ export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {
     filterValue: PropTypes.string,
     id: PropTypes.string,
+    isDisabled: PropTypes.bool,
+    isFirstChild: PropTypes.bool,
+    shouldFocus: PropTypes.bool,
+    isInvalid: PropTypes.bool,
     isOpen: PropTypes.bool,
+    isRequired: PropTypes.bool,
     items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
     noMatchesFound: PropTypes.string,
@@ -34,13 +39,15 @@ export default class StatelessMultiSelect extends PureComponent {
     onOpenChange: PropTypes.func,
     onSelected: PropTypes.func,
     onRemoved: PropTypes.func,
+    placeholder: PropTypes.string,
     position: PropTypes.string,
     selectedItems: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     shouldFitContainer: PropTypes.bool,
   }
 
   static defaultProps = {
-    filterValue: null,
+    filterValue: '',
+    shouldFocus: false,
     isOpen: false,
     items: [],
     label: '',
@@ -55,15 +62,33 @@ export default class StatelessMultiSelect extends PureComponent {
 
   // This is used only to show the focus ring around , it's okay to have state in this case.
   state = {
-    isFocused: this.props.isOpen,
+    isFocused: this.props.isOpen || this.props.shouldFocus,
+    oldFilterValue: null,
+  }
+
+  componentDidMount = () => {
+    if (this.state.isFocused && this.inputNode) {
+      this.inputNode.focus();
+    }
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (!prevProps.shouldFocus && this.props.shouldFocus && this.inputNode) {
+      this.inputNode.focus();
+    }
   }
 
   onFocus = () => {
-    this.setState({ isFocused: true });
+    if (!this.props.isDisabled) {
+      this.setState({ isFocused: true });
+      this.inputNode.focus();
+    }
   }
 
   onBlur = () => {
-    this.setState({ isFocused: false });
+    if (!this.props.isDisabled) {
+      this.setState({ isFocused: false });
+    }
   }
 
   onOpenChange = (attrs) => {
@@ -85,8 +110,25 @@ export default class StatelessMultiSelect extends PureComponent {
 
   getAllValues = () => this.props.selectedItems.map(item => item.value)
 
+  getPlaceholder = () => {
+    if (!this.props.isOpen && this.props.selectedItems.length === 0) {
+      return this.props.placeholder;
+    }
+
+    return null;
+  }
+
   handleTriggerClick = (event) => {
-    this.onOpenChange({ event, isOpen: true });
+    if (!this.props.isDisabled) {
+      this.onOpenChange({ event, isOpen: true });
+    }
+  }
+
+  handleItemSelect = (item, attrs) => {
+    this.props.onOpenChange({ isOpen: false, event: attrs.event });
+    this.props.onSelected(item);
+    this.props.onFilterChange('');
+    this.setState({ oldFilterValue: '' });
   }
 
   handleItemRemove = (item) => {
@@ -102,12 +144,22 @@ export default class StatelessMultiSelect extends PureComponent {
 
   handleKeyUpInInput = (event) => {
     const key = event.key;
-    const value = event.target.value;
 
     if (key === 'Backspace' && !this.props.filterValue) {
-      this.removeLatestItem();
-      this.onOpenChange({ event, isOpen: true });
-    } else if (value !== this.props.filterValue) {
+      if (this.state.oldFilterValue) {
+        this.setState({ oldFilterValue: '' });
+      } else {
+        this.removeLatestItem();
+        this.onOpenChange({ event, isOpen: true });
+      }
+    }
+  }
+
+  handleOnChange = (event) => {
+    const value = event.target.value;
+
+    if (value !== this.props.filterValue) {
+      this.setState({ oldFilterValue: this.props.filterValue });
       this.props.onFilterChange(value);
       this.onOpenChange({ event, isOpen: true });
     }
@@ -130,8 +182,8 @@ export default class StatelessMultiSelect extends PureComponent {
       return filteredItems.map((item, itemIndex) => (<Item
         {...item}
         key={itemIndex}
-        onActivate={() => {
-          this.props.onSelected(item);
+        onActivate={(attrs) => {
+          this.handleItemSelect(item, attrs);
         }}
       >
         {item.content}
@@ -166,17 +218,19 @@ export default class StatelessMultiSelect extends PureComponent {
   )
 
   renderSelect = () => (<select
+    disabled={this.props.isDisabled}
     id={this.props.id}
     multiple
     name={this.props.name}
     readOnly
-    value={this.getAllValues(this.props.selectedItems)}
+    required={this.props.isRequired}
     style={{ display: 'none' }}
+    value={this.getAllValues(this.props.selectedItems)}
   >
     {this.renderOptGroups(this.props.items)}
   </select>)
 
-  render = () => {
+  render() {
     const classes = classNames([styles.selectWrapper, {
       [styles.fitContainer]: this.props.shouldFitContainer,
     }]);
@@ -186,6 +240,8 @@ export default class StatelessMultiSelect extends PureComponent {
         {this.renderSelect()}
         {this.props.label ? <Label
           htmlFor={this.props.id}
+          isFirstChild={this.props.isFirstChild}
+          isRequired={this.props.isRequired}
           label={this.props.label}
         /> : null}
         <Droplist
@@ -197,13 +253,17 @@ export default class StatelessMultiSelect extends PureComponent {
           shouldFitContainer
           trigger={
             <FieldBase
+              isDisabled={this.props.isDisabled}
               isFitContainerWidthEnabled
               isFocused={this.props.isOpen || this.state.isFocused}
+              isInvalid={this.props.isInvalid}
               isPaddingDisabled
+              isRequired={this.props.isRequired}
               onBlur={this.onBlur}
               onFocus={this.onFocus}
             >
               <Trigger
+                isDisabled={this.props.isDisabled}
                 onClick={this.handleTriggerClick}
               >
                 <TagGroup ref={ref => (this.tagGroup = ref)}>
@@ -213,14 +273,19 @@ export default class StatelessMultiSelect extends PureComponent {
                       onAfterRemoveAction={() => {
                         this.handleItemRemove(item);
                       }}
-                      removeButtonText={`${item.content}, remove`}
+                      removeButtonText={this.props.isDisabled ? null : `${item.content}, remove`}
                       text={item.content}
                     />)}
-                  <input
+                  {this.props.isDisabled ? null : <input
                     className={styles.input}
-                    type="text"
+                    disabled={this.props.isDisabled}
+                    onChange={this.handleOnChange}
                     onKeyUp={this.handleKeyUpInInput}
-                  />
+                    placeholder={this.getPlaceholder()}
+                    ref={ref => (this.inputNode = ref)}
+                    type="text"
+                    value={this.props.filterValue}
+                  />}
                 </TagGroup>
               </Trigger>
             </FieldBase>

@@ -343,7 +343,7 @@ performing a `yarn add` from **within** the package itself (this will create a `
 
 Our package dependencies are not pinned in any way.
 
-If you're using TypeScript and encounter TS errors "no module X", one of the packages might be missing TS types. See [Using TypeScript for a component](https://bitbucket.org/atlassian/atlaskit/src#markdown-header-using-typescript-for-a-component) section for more details.
+If you're using TypeScript and encounter TS errors "no module X", one of the packages might be missing TS types. See [Using TypeScript for a component](#markdown-header-using-typescript-for-a-component) section for more details.
 
 ## Make changes to the Pipelines build
 AtlasKit uses Bitbucket Pipelines for it's continuous integration. The build scripts are defined in `bitbucket-pipelines.yml`.

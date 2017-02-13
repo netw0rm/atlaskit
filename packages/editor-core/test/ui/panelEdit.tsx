@@ -40,6 +40,13 @@ describe('ak-editor-core/ui/PanelEdit', () => {
     expect(panelEditOptions.state('showToolbar')).to.be.true;
   });
 
+  it('should set showToolbar to false when panel is blur', () => {
+    const { pm, plugin } = editor(doc(panel(paragraph('text'))));
+    const panelEditOptions = mount(<PanelEdit pluginState={plugin}/>);
+    pm.on.blur.dispatch();
+    expect(panelEditOptions.state('showToolbar')).not.to.be.true;
+  });
+
   it('should continue showToolbar to true when panelType is changed', () => {
     const { plugin } = editor(doc(panel(paragraph('text'))));
     const panelEditOptions = mount(<PanelEdit pluginState={plugin}/>);

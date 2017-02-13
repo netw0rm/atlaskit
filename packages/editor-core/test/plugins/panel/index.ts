@@ -44,6 +44,14 @@ describe('panel', () => {
       expect(spy.callCount).to.equal(2);
     });
 
+    it('should call subscribers when panel is blur', () => {
+      const { plugin, pm } = editor(doc(panel(paragraph('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      expect(spy.callCount).to.equal(2);
+    });
+
     it('should be able to identify panel node', () => {
       const { plugin } = editor(doc(panel(paragraph('text'))));
       expect(plugin.element).to.not.be.undefined;

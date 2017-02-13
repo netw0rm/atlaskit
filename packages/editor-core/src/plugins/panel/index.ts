@@ -55,6 +55,10 @@ export class PanelState {
       this.update(true);
     });
 
+    pm.on.blur.add(() => {
+      this.clear();
+    });
+
     this.update();
   }
 

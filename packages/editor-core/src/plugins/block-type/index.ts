@@ -242,23 +242,32 @@ export class BlockTypeState {
       return;
     }
 
-    if (this.pm.selection instanceof TextSelection) {
-      if (this.topLevelNodeIsEmptyTextBlock()) {
-        return;
-      }
-      this.creatPragraphNearTextBlock(append);
-    } else {
-      this.createParagraphNearNonTextBlock(append);
-    }
-  }
-
-  private creatPragraphNearTextBlock(append: boolean): void {
     const {pm} = this;
     const paragraph = pm.schema.nodes.paragraph;
 
     if (!paragraph) {
       return;
     }
+
+    let insertPos;
+
+    if (pm.selection instanceof TextSelection) {
+      if (this.topLevelNodeIsEmptyTextBlock()) {
+        return;
+      }
+      insertPos = this.getInsertPosFromTextBlock(append);
+    } else {
+      insertPos = this.getInsertPosFromNonTextBlock(append);
+    }
+
+    pm.tr.insert(insertPos, paragraph.create()).applyAndScroll();
+
+    const next = new TextSelection(pm.doc.resolve(insertPos + 1));
+    pm.setSelection(next);
+  }
+
+  private getInsertPosFromTextBlock(append: boolean): void {
+    const {pm} = this;
 
     const {$from, $to} = pm.selection;
     let pos;
@@ -271,35 +280,26 @@ export class BlockTypeState {
       pos = $to.depth > 1 ? pos + 1 : pos;
     }
 
-    pm.tr.insert(pos, paragraph.create()).applyAndScroll();
-
-    const next = new TextSelection(pm.doc.resolve(pos + 1));
-    pm.setSelection(next);
+    return pos;
   }
 
-  private createParagraphNearNonTextBlock(append: boolean): void {
+  private getInsertPosFromNonTextBlock(append: boolean): void {
     const {pm} = this;
-    const paragraph = pm.schema.nodes.paragraph;
 
-    if (!paragraph) {
-      return;
-    }
-
-    const {$from} = pm.selection;
+    const {$from, $to} = pm.selection;
     let pos;
 
     if (!append) {
+      // The start position is different with text block because it starts from 0
       pos = $from.start($from.depth);
+      // The depth is different with text block because it starts from 0
       pos = $from.depth > 0 ? pos - 1 : pos;
     } else {
-      pos = $from.end($from.depth);
-      pos = $from.depth > 0 ? pos + 1 : pos;
+      pos = $to.end($to.depth);
+      pos = $to.depth > 0 ? pos + 1 : pos;
     }
 
-    pm.tr.insert(pos, paragraph.create()).applyAndScroll();
-
-    const next = new TextSelection(pm.doc.resolve(pos + 1));
-    pm.setSelection(next);
+    return pos;
   }
 
   private topLevelNodeIsEmptyTextBlock(): boolean {

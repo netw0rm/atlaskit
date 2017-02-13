@@ -237,27 +237,7 @@ export class BlockTypeState {
     }
   }
 
-  private createNewParagraphAbove() {
-    this.cursorMovable = false;
-    const append = false;
-
-    // The reason that we need to set a timeout here is because
-    // prosemirror sets a timeout (100 miliseconds) to check
-    // whether dom cursor position has changed after keypress.
-    // So we check later (105 miliseconds) that whether prosemirror has detect cursor change.
-    setTimeout(() => this.createParagraphNear(append), 105);
-    return false;
-  }
-
-  private createNewParagraphBelow() {
-    this.cursorMovable = false;
-    const append = true;
-
-    setTimeout(() => this.createParagraphNear(append), 105);
-    return false;
-  }
-
-  private createParagraphNear(append: boolean = true): void {
+  createParagraphNear(append: boolean = true): void {
     const paragraph = this.pm.schema.nodes.paragraph;
     if (!paragraph) {
       return;
@@ -281,6 +261,26 @@ export class BlockTypeState {
         tr.setSelection(next).insert(pos + 1, paragraph.create()).applyAndScroll();
       }
     }
+  }
+
+  private createNewParagraphAbove() {
+    this.cursorMovable = false;
+    const append = false;
+
+    // The reason that we need to set a timeout here is because
+    // prosemirror sets a timeout (100 miliseconds) to check
+    // whether dom cursor position has changed after keypress.
+    // So we check later (105 miliseconds) that whether prosemirror has detect cursor change.
+    setTimeout(() => this.createParagraphNear(append), 105);
+    return false;
+  }
+
+  private createNewParagraphBelow() {
+    this.cursorMovable = false;
+    const append = true;
+
+    setTimeout(() => this.createParagraphNear(append), 105);
+    return false;
   }
 
   private onSelectionChange() {

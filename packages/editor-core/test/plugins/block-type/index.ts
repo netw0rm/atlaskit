@@ -411,111 +411,26 @@ describe('block-type', () => {
     });
 
     context('when hits up', () => {
-      context('when cursor not movable', () => {
-        context('on non nested content', () => {
-          it('creates new paragraph above', (done) => {
-            const { pm } = editor(doc(code_block()('{<>}text')));
-            pm.input.dispatchKey('Up');
-            setTimeout(function () {
-              expect(pm.doc).to.deep.equal(doc(p(''), code_block()('text')));
-              expect(pm.selection.$from.pos).to.eq(1);
-              done();
-            }, 110);
-          });
-
-          context('creates new paragraph above', () => {
-            it('creates new paragraph above', (done) => {
-              const { pm } = editor(doc(blockquote(blockquote(p('{<>}text')), p('text'))));
-              pm.input.dispatchKey('Up');
-              setTimeout(function () {
-                expect(pm.doc).to.deep.equal(doc(blockquote(p(''), blockquote(p('text')), p('text'))));
-                expect(pm.selection.$from.pos).to.eq(2);
-                done();
-              }, 110);
-            });
-          });
-        });
-      });
-
-      context('when cursor is movable', () => {
-        it('does not create a new paragraph above', (done) => {
-          const { pm } = editor(doc(code_block()('t{next}e{<>}xt')));
-          const { next } = pm.doc.refs;
-          pm.input.dispatchKey('Up');
-          pm.setTextSelection(next);
-
-          setTimeout(function () {
-            expect(pm.doc).to.deep.equal(doc(code_block()('text')));
-            done();
-          }, 110);
-        });
+      it('creates new paragraph above', (done) => {
+        const { pm, plugin } = editor(doc(code_block()('{<>}text')));
+        const createParagraphNear = sinon.spy(plugin, 'createParagraphNear');
+        pm.input.dispatchKey('Up');
+        setTimeout(function () {
+          expect(createParagraphNear.withArgs(false).callCount).to.equal(1);
+          done();
+        }, 110);
       });
     });
 
     context('when hits down', () => {
-      context('when cursor not movable', () => {
-        context('on non nested content', () => {
-          it('creates new paragraph below', (done) => {
-            const { pm } = editor(doc(code_block()('text{<>}')));
-            pm.input.dispatchKey('Down');
-            setTimeout(function () {
-              expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
-              expect(pm.selection.$from.pos).to.eq(7);
-              done();
-            }, 110);
-          });
-        });
-
-        context('on nested content', () => {
-          it('creates new paragraph below', (done) => {
-            const { pm } = editor(
-              doc(
-                blockquote(
-                  p(
-                    'text',
-                    mention({ id: 'foo1', displayName: '@bar1' })
-                  ),
-                  blockquote(
-                    p('text{<>}')
-                  )
-                )
-              )
-            );
-            pm.input.dispatchKey('Down');
-            setTimeout(function () {
-              expect(pm.doc).to.deep.equal(
-                doc(
-                  blockquote(
-                    p(
-                      'text',
-                      mention({ id: 'foo1', displayName: '@bar1' })
-                    ),
-                    blockquote(
-                      p('text')
-                    ),
-                    p('')
-                  )
-                )
-              );
-              expect(pm.selection.$from.pos).to.eq(17);
-              done();
-            }, 110);
-          });
-        });
-      });
-
-      context('when cursor is movable', () => {
-        it('does not create a new paragraph below', (done) => {
-          const { pm } = editor(doc(code_block()('t{<>}e{next}xt')));
-          const { next } = pm.doc.refs;
-          pm.input.dispatchKey('Down');
-          pm.setTextSelection(next);
-
-          setTimeout(function () {
-            expect(pm.doc).to.deep.equal(doc(code_block()('text')));
-            done();
-          }, 110);
-        });
+      it('creates new paragraph above', (done) => {
+        const { pm, plugin } = editor(doc(code_block()('text{<>}')));
+        const createParagraphNear = sinon.spy(plugin, 'createParagraphNear');
+        pm.input.dispatchKey('Down');
+        setTimeout(function () {
+          expect(createParagraphNear.withArgs(true).callCount).to.equal(1);
+          done();
+        }, 110);
       });
     });
   });
@@ -597,6 +512,170 @@ describe('block-type', () => {
       expect(plugin.context).to.eq('default');
       plugin.changeContext('!!!%%%UNDEFINED CONTEXT%%%!!!');
       expect(plugin.context).to.eq('default');
+    });
+  });
+
+  describe('createParagraphNear', () => {
+    context('when prepend', () => {
+      context('when cursor not movable', () => {
+        context('on non nested content', () => {
+          it('creates new paragraph above', () => {
+            const { pm, plugin } = editor(doc(code_block()('{<>}text')));
+            plugin.cursorMovable = false;
+
+            plugin.createParagraphNear(false);
+
+            expect(pm.doc).to.deep.equal(doc(p(''), code_block()('text')));
+          });
+
+          it('moves cursor to the top', () => {
+            const { pm, plugin } = editor(doc(code_block()('{<>}text')));
+            plugin.cursorMovable = false;
+
+            plugin.createParagraphNear(false);
+
+            expect(pm.selection.$from.pos).to.eq(1);
+          });
+        });
+
+        context('on nested content', () => {
+          it('creates new paragraph above', () => {
+            const { pm, plugin } = editor(doc(blockquote(blockquote(p('{<>}text')), p('text'))));
+            plugin.cursorMovable = false;
+
+            plugin.createParagraphNear(false);
+
+            expect(pm.doc).to.deep.equal(doc(blockquote(p(''), blockquote(p('text')), p('text'))));
+          });
+
+          it('moves cursor to the top sibling', () => {
+            const { pm, plugin } = editor(doc(blockquote(blockquote(p('{<>}text')), p('text'))));
+            plugin.cursorMovable = false;
+
+            plugin.createParagraphNear(false);
+
+            expect(pm.selection.$from.pos).to.eq(2);
+          });
+        });
+      });
+
+      context('when cursor is movable', () => {
+        it('does not create a new paragraph above', () => {
+          const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
+          plugin.cursorMovable = true;
+
+          plugin.createParagraphNear(false);
+
+          expect(pm.doc).to.deep.equal(doc(code_block()('text')));
+        });
+      });
+    });
+
+    context('when append', () => {
+      context('when cursor not movable', () => {
+        context('on non nested content', () => {
+          it('creates new paragraph below', () => {
+            const { pm, plugin } = editor(doc(code_block()('text{<>}')));
+            plugin.cursorMovable = false;
+
+            plugin.createParagraphNear(true);
+
+            expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
+          });
+
+          it('moves cursor to the bottom', () => {
+            const { pm, plugin } = editor(doc(code_block()('text{<>}')));
+            plugin.cursorMovable = false;
+
+            plugin.createParagraphNear(true);
+
+            expect(pm.selection.$from.pos).to.eq(7);
+          });
+        });
+
+        context('on nested content', () => {
+          it('creates new paragraph below', () => {
+            const { pm, plugin } = editor(
+              doc(
+                blockquote(
+                  p(
+                    'text',
+                    mention({ id: 'foo1', displayName: '@bar1' })
+                  ),
+                  blockquote(
+                    p('text{<>}')
+                  )
+                )
+              )
+            );
+            plugin.cursorMovable = false;
+
+            plugin.createParagraphNear(true);
+
+            expect(pm.doc).to.deep.equal(
+              doc(
+                blockquote(
+                  p(
+                    'text',
+                    mention({ id: 'foo1', displayName: '@bar1' })
+                  ),
+                  blockquote(
+                    p('text')
+                  ),
+                  p('')
+                )
+              )
+            );
+            expect(pm.selection.$from.pos).to.eq(17);
+          });
+        });
+
+        it('creates new paragraph below', () => {
+          const { pm, plugin } = editor(
+            doc(
+              blockquote(
+                p(
+                  'text',
+                  mention({ id: 'foo1', displayName: '@bar1' })
+                ),
+                blockquote(
+                  p('text{<>}')
+                )
+              )
+            )
+          );
+          plugin.cursorMovable = false;
+
+          plugin.createParagraphNear(true);
+
+          expect(pm.doc).to.deep.equal(
+            doc(
+              blockquote(
+                p(
+                  'text',
+                  mention({ id: 'foo1', displayName: '@bar1' })
+                ),
+                blockquote(
+                  p('text')
+                ),
+                p('')
+              )
+            )
+          );
+          expect(pm.selection.$from.pos).to.eq(17);
+        });
+      });
+    });
+
+    context('when cursor is movable', () => {
+      it('does not create a new paragraph below', () => {
+        const { pm, plugin } = editor(doc(code_block()('t{<>}ext')));
+        plugin.cursorMovable = true;
+
+        plugin.createParagraphNear(true);
+
+        expect(pm.doc).to.deep.equal(doc(code_block()('text')));
+      });
     });
   });
 });

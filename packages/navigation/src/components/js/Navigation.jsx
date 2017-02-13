@@ -40,6 +40,7 @@ export default class Navigation extends PureComponent {
     onCreateDrawerClose: PropTypes.func,
     onCreateDrawerOpen: PropTypes.func,
     onResize: PropTypes.func,
+    onResizeStart: PropTypes.func,
     onSearchDrawerClose: PropTypes.func,
     onSearchDrawerOpen: PropTypes.func,
     searchDrawerContent: PropTypes.node,
@@ -60,6 +61,7 @@ export default class Navigation extends PureComponent {
     onCreateDrawerClose: () => {},
     onCreateDrawerOpen: () => {},
     onResize: () => {},
+    onResizeStart: () => {},
     onSearchDrawerClose: () => {},
     onSearchDrawerOpen: () => {},
     width: navigationOpenWidth,
@@ -132,6 +134,7 @@ export default class Navigation extends PureComponent {
       onBlanketClicked,
       onCreateDrawerClose,
       onCreateDrawerOpen,
+      onResizeStart,
       onSearchDrawerClose,
       onSearchDrawerOpen,
       searchDrawerContent,
@@ -221,6 +224,7 @@ export default class Navigation extends PureComponent {
             isResizeable
             ? <Resizer
               onResize={this.onResize}
+              onResizeStart={onResizeStart}
               onResizeEnd={this.triggerResizeHandler}
             />
             : null

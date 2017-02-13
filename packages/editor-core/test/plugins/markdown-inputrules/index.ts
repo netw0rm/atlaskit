@@ -287,15 +287,20 @@ describe('markdown-inputrules', () => {
     it('should convert "_`text`_" to italic mono text', () => {
       const { pm, sel } = editor(doc(p('{<>}')));
 
-      pm.input.insertText(sel, sel, '`text`');
+      pm.input.insertText(sel, sel, '_`text`');
+      expect(pm.doc).to.deep.equal(doc(p('_', mono('text'))));
+      pm.input.insertText(sel + 5, sel + 5, '_');
       expect(pm.doc).to.deep.equal(doc(p(em(mono('text')))));
     });
 
     it('should convert "~~**text**~~" to strike strong', () => {
       const { pm, sel } = editor(doc(p('{<>}')));
 
-      pm.input.insertText(sel, sel, '~~**text**~~');
+      pm.input.insertText(sel, sel, '~~**text**');
+      expect(pm.doc).to.deep.equal(doc(p('~~', strong('text'))));
+      pm.input.insertText(sel + 6, sel + 6, '~~');
       expect(pm.doc).to.deep.equal(doc(p(strike(strong('text')))));
     });
+
   });
 });

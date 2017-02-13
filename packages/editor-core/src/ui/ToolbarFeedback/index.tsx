@@ -4,15 +4,9 @@ import { analyticsDecorator as analytics } from '../../analytics';
 import ToolbarButton from '../ToolbarButton';
 
 const JIRA_ISSUE_COLLECTOR_URL = 'https://product-fabric.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-j519ub/b/c/78bd26fb4be69a8bdb879359a9397e96/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?locale=en-US&collectorId=305d3263';
-const JQUERY_CDN_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js';
 
-export interface Props {
-  feedbackFormUrl: string;
-}
-
-export interface State {
-  active: boolean;
-}
+export interface Props {}
+export interface State {}
 
 declare global {
   interface Window {
@@ -34,36 +28,27 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    // JIRA issue collector script is using jQuery internally
-    // we just need to ensure jQuery is available on the host page
-    this.ensureJqueryLoaded().then((jQuery: any) => {
-      const self = this;
+    // triggerFunction is executed as soon as JIRA issue collector script is loaded
+    window.ATL_JQ_PAGE_PROPS = {
+      triggerFunction: (showCollectorDialog) => {
+        this.showJiraCollectorDialogCallback = showCollectorDialog;
+      }
+    };
 
-      // triggerFunction is executed as soon as JIRA issue collector script is loaded
-      window.ATL_JQ_PAGE_PROPS = {
-        triggerFunction: (showCollectorDialog) => {
-          self.showJiraCollectorDialogCallback = showCollectorDialog;
-        }
-      };
-
-      // load JIRA issue collector script
-      jQuery.ajax({
-        url: JIRA_ISSUE_COLLECTOR_URL,
-        type: 'get',
-        cache: true,
-        dataType: 'script'
-      });
-    });
+    this.loadJiraIssueCollectorScript();
   }
 
   render() {
-    return (
-      <span style={{ display: 'inline-block' }}>
-        <ToolbarButton onClick={this.openFeedbackPopup} selected={false} spacing="compact">
-          Feedback
-        </ToolbarButton>
-      </span>
-    );
+    // JIRA issue collector script is using jQuery internally
+    return window.jQuery
+      ? (
+        <span style={{ display: 'inline-block' }}>
+          <ToolbarButton onClick={this.openFeedbackPopup} selected={false} spacing="compact">
+            Feedback
+          </ToolbarButton>
+        </span>
+      )
+      : null;
   }
 
   @analytics('atlassian.editor.feedback.button')
@@ -71,26 +56,10 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
     this.showJiraCollectorDialogCallback();
   }
 
-  private ensureJqueryLoaded = (): Promise<any> => {
-    return new Promise<any>((resolve, reject) => {
-      if (window.jQuery) {
-        resolve(window.jQuery);
-        return;
-      }
-
-      const scriptElem = document.createElement('script');
-      scriptElem.type = 'text/javascript';
-      scriptElem.src = JQUERY_CDN_URL;
-
-      scriptElem.onload = () => {
-        resolve(window.jQuery);
-      };
-
-      scriptElem.onerror = (err) => {
-        reject(err);
-      };
-
-      (document.head || document.body).appendChild(scriptElem);
-    });
+  private loadJiraIssueCollectorScript = (): void => {
+    const scriptElem = document.createElement('script');
+    scriptElem.type = 'text/javascript';
+    scriptElem.src = JIRA_ISSUE_COLLECTOR_URL;
+    (document.head || document.body).appendChild(scriptElem);
   }
 }

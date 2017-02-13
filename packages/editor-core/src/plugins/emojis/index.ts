@@ -10,11 +10,16 @@ import { emojiQueryRule } from './input-rules';
 
 export type StateChangeHandler = (state: EmojisPluginState) => any;
 
+export interface EmojiPluginOptions {
+  emojiService: any;
+}
+
 export class EmojisPluginState {
   private pm: PM;
   private hasKeymap = false;
   private changeHandlers: StateChangeHandler[] = [];
 
+  emojiService: any;
   query?: string;
   queryActive = false;
   anchorElement?: HTMLElement;
@@ -23,8 +28,10 @@ export class EmojisPluginState {
   onSelectNext =  () => {};
   onSelectCurrent = () => {};
 
-  constructor(pm: PM) {
+  constructor(pm: PM, opts: EmojiPluginOptions) {
     this.pm = pm;
+
+    this.emojiService = opts.emojiService;
 
     this.keymap = new Keymap({
       Up: () => this.onSelectPrevious(),
@@ -128,7 +135,10 @@ export class EmojisPluginState {
     return { start, end };
   }
 
-  insertEmoji(emojiData?: Emoji) {
+  insertEmoji(emojiId?: EmojiId, emojiData?: Emoji) {
+
+    console.log('insertEmoji', this.emojiService);
+
     const { emoji } = this.pm.schema.nodes;
 
     if (emoji && emojiData) {
@@ -153,7 +163,11 @@ export class EmojisPluginState {
 // IE11 + multiple prosemirror fix.
 Object.defineProperty(EmojisPluginState, 'name', { value: 'EmojisPluginState' });
 
-export default new Plugin(EmojisPluginState);
+export default (opts: EmojiPluginOptions) => new Plugin(EmojisPluginState, opts);
+
+export interface EmojiId {
+  id: string;
+}
 
 export interface Emoji {
   id: string;

@@ -1,13 +1,14 @@
 import {
   BlockTypePlugin,
   DocNode,
-  EmojisPlugin,
+  EmojisPluginFactory,
   EmojiTypeAhead,
   HyperlinkEdit,
   HyperlinkPlugin,
   Keymap,
   MentionPicker,
   MentionsPlugin,
+  Plugin,
   ProseMirror,
   TextSelection,
 } from '@atlaskit/editor-core';
@@ -89,6 +90,8 @@ export interface State {
 }
 
 export default class Editor extends PureComponent<Props, State> {
+  private emojiPlugin: Plugin<any>;
+
   public static defaultProps: Props = {
     reverseMentionPicker: true
   };
@@ -98,6 +101,8 @@ export default class Editor extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {};
+    // FIXME deal with prop change
+    this.emojiPlugin = EmojisPluginFactory({ emojiService: props.emojiService});
   }
 
   render() {
@@ -106,7 +111,7 @@ export default class Editor extends PureComponent<Props, State> {
 
     const pluginStateMentions = props.mentionResourceProvider && pm && MentionsPlugin.get(pm);
     const pluginStateHyperlink = pm && HyperlinkPlugin.get(pm);
-    const pluginStateEmojis = props.emojiService && pm && EmojisPlugin.get(pm);
+    const pluginStateEmojis = props.emojiService && pm && this.emojiPlugin.get(pm);
     const classNames = cx('ak-editor-hipchat', {
       'max-length-reached': this.state.maxLengthReached,
       'flash-toggle': this.state.flashToggle
@@ -142,7 +147,7 @@ export default class Editor extends PureComponent<Props, State> {
         BlockTypePlugin,
         HyperlinkPlugin,
         ...(this.props.mentionResourceProvider ? [MentionsPlugin] : []),
-        ...(this.props.emojiService ? [EmojisPlugin] : [])
+        ...(this.props.emojiService ? [this.emojiPlugin] : [])
       ],
     });
 

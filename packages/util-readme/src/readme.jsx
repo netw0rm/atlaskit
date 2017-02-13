@@ -1,28 +1,32 @@
+import uppercamelcase from 'uppercamelcase';
 import React, { PropTypes, PureComponent } from 'react';
-import decamelize from 'decamelize';
+import Markdown from 'react-remarkable';
+
 import Chrome from './chrome';
 import Code from './code';
 import Description from './description';
 import Heading from './heading';
 
-export default class extends PureComponent {
-  static displayName = 'AkutilReadme'
+export default class AtlaskitUtilReadme extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    name: PropTypes.string.isRequired,
   }
   render() {
-    const { children, component, description } = this.props;
-    const displayName = (typeof component === 'string' ? component : component.displayName) || 'Unknown';
-    const displayNameDashed = displayName ? decamelize(displayName, '-') : '';
+    const { children, description, name } = this.props;
     return (
-      <Chrome title={displayName}>
-        <Description>{description}</Description>
+      <Chrome title={uppercamelcase(name.split('/').pop())}>
+        {description ? <Description>{description}</Description> : null}
         <Heading type="2">Usage</Heading>
         <Description>Installing:</Description>
-        <Code language="bash">{`npm install ${displayNameDashed}`}</Code>
-        {children ? [<Description>Basic usage:</Description>, children] : ''}
+        <Code language="bash">{`npm install ${name}`}</Code>
+        {children ? (
+          <div>
+            <Description>Basic usage:</Description>
+            <Markdown>{children}</Markdown>
+          </div>
+        ) : null}
       </Chrome>
     );
   }

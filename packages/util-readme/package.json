@@ -18,9 +18,9 @@
   ],
   "dependencies": {
     "akutil-shared-styles": "^37.2.0",
-    "camelcase": "^4.0.0",
     "react-remarkable": "^1.1.1",
-    "react-syntax-highlighter": "^3.0.2"
+    "react-syntax-highlighter": "^3.0.2",
+    "uppercamelcase": "^1.1.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

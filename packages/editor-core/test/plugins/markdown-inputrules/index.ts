@@ -126,11 +126,11 @@ describe('markdown-inputrules', () => {
     it('should be able to preserve mention inside mono text', () => {
       const { pm } = editor(
       doc(p(
-        mono(
-          mention({ id: '1234', displayName: '@bob' })
-        )
+        '`',
+        mention({ id: '1234', displayName: '@bob' }),
+        '`'
       )));
-      expect(pm.doc.nodeAt(1)).to.be.of.nodeType(MentionNodeType);
+      expect(pm.doc.nodeAt(2)).to.be.of.nodeType(MentionNodeType);
     });
   });
 
@@ -312,5 +312,13 @@ describe('markdown-inputrules', () => {
       expect(pm.doc).to.deep.equal(doc(p(strike(strong('text')))));
     });
 
+    it('should convert "`_text_`" to "_text_"', () => {
+      const { pm, sel } = editor(doc(p('{<>}')));
+
+      pm.input.insertText(sel, sel, '`_text_');
+      expect(pm.doc).to.deep.equal(doc(p('`_text_')));
+      pm.input.insertText(sel + 7, sel + 7, '`');
+      expect(pm.doc).to.deep.equal(doc(p(mono('_text_'))));
+    });
   });
 });

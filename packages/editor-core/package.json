@@ -38,7 +38,7 @@
     "ak-icon": "^14.0.0",
     "browserkeymap": "git://github.com/bradleyayers/browserkeymap#es6-modules-compat-with-types",
     "popper.js": "^1.0.1",
-    "prosemirror": "0.10.1",
+    "prosemirror": "git+https://bitbucket.org/atlassian/prosemirror.git#backport-fixes-from-future",
     "tslib": "^1.2.0",
     "typestyle": "^0.21.4"
   },

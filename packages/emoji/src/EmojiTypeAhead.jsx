@@ -123,7 +123,7 @@ export default class EmojiTypeAhead extends PureComponent {
       <div style={style} className={classes}>
         <EmojiList
           emojis={emojis}
-          onSelection={onSelection}
+          onEmojiSelected={onSelection}
           ref={(ref) => { this.emojiListRef = ref; }}
         />
       </div>

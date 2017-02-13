@@ -41,9 +41,9 @@ export default class EmojiTypeAheadTextInput extends Component {
     });
   }
 
-  handleSelection = (emoji) => {
+  handleSelection = (emojiId, emoji) => {
     this.hideEmojiPopup();
-    this.props.onSelection(emoji);
+    this.props.onSelection(emojiId, emoji);
   }
 
   updateSearch = (event) => {
@@ -79,7 +79,7 @@ export default class EmojiTypeAheadTextInput extends Component {
         <EmojiTypeAhead
           target={target}
           position={position}
-          onSelection={(event) => { this.handleSelection(event); }}
+          onSelection={(emojiId, emoji) => { this.handleSelection(emojiId, emoji); }}
           onOpen={action('picker opened')}
           onClose={action('picker closed')}
           ref={(ref) => { this.emojiListRef = ref; }}

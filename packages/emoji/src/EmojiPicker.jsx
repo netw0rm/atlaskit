@@ -60,8 +60,8 @@ export default class EmojiPicker extends PureComponent {
     }
   }
 
-  onEmojiSelected = (emoji) => {
-    this.props.onSelection(emoji);
+  onEmojiSelected = (emojiId, emoji) => {
+    this.props.onSelection(emojiId, emoji);
   }
 
   onEmojiActive = (emoji) => {

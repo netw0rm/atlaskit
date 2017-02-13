@@ -6,6 +6,10 @@ const availableCategories = emojis => emojis.reduce((categories, emoji) => {
   return categories;
 }, {});
 
+export const toEmojiId = emoji => ({
+  id: emoji.id,
+});
+
 export default class EmojiService {
   constructor(emojis) {
     this.emojis = emojis;

@@ -48,16 +48,7 @@ export class EmojiNodeType extends Inline {
   get attrs() {
     return {
       id: new Attribute({ default: '' }),
-      shortcut: new Attribute({ default: '' }),
-      representation: new Attribute({ default: {
-        xIndex: 0,
-        yIndex: 0,
-        sprite: {
-          url: '',
-          row: '',
-          column: ''
-        }
-      }})
+      emojiService: new Attribute({ default: undefined }),
     };
   }
 
@@ -74,11 +65,7 @@ export class EmojiNodeType extends Inline {
     dom.setAttribute('contenteditable', 'false');
     dom.setAttribute('data-emoji-id', node.attrs.id);
     dom.classList.add(emojiStyle);
-    ReactDOM.render(
-      <ResourcedEmoji
-        id={node.attrs.id}
-
-      />, dom);
+    ReactDOM.render(<ResourcedEmoji {...node.attrs} />, dom);
     return dom;
   }
 }
@@ -87,6 +74,7 @@ export interface EmojiNode extends Node {
   type: EmojiNodeType;
   attrs: {
     id: string;
+    emojiService?: any; // FIXME get real type
   };
 }
 

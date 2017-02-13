@@ -135,15 +135,18 @@ export class EmojisPluginState {
     return { start, end };
   }
 
-  insertEmoji(emojiId?: EmojiId, emojiData?: Emoji) {
+  insertEmoji(emojiId?: EmojiId) {
 
-    console.log('insertEmoji', this.emojiService);
+    const resourcedEmojiData = {
+      ...emojiId,
+      emojiService: this.emojiService,
+    };
 
     const { emoji } = this.pm.schema.nodes;
 
-    if (emoji && emojiData) {
+    if (emoji && emojiId) {
       const { start, end } = this.findEmojiQueryMark();
-      const node = emoji.create(emojiData);
+      const node = emoji.create(resourcedEmojiData);
       this.pm.tr.delete(start, end).insert(start, node).apply();
     } else {
       this.dismiss();

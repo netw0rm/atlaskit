@@ -69,8 +69,8 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     );
   }
 
-  private handleSelectedEmoji = (emoji: any) => {
-    this.props.pluginState.insertEmoji(emoji);
+  private handleSelectedEmoji = (emojiId: any) => {
+    this.props.pluginState.insertEmoji(emojiId);
   }
 
   private handleSelectPrevious = () => {

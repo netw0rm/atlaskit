@@ -19,6 +19,11 @@ import schema from './schema';
 
 let debounced: number | null = null;
 
+const emojiAttrs = (node) => {
+  const { emojiService, ...attrs } = node.attrs;
+  return attrs;
+};
+
 const hipchatSerializer = (doc: any) => {
   const root = doc.content[0];
 
@@ -31,9 +36,7 @@ const hipchatSerializer = (doc: any) => {
       case 'emoji':
         node = {
           type: 'emoji',
-          attrs: {
-            id: node.attrs.id
-          }
+          attrs: emojiAttrs(node),
         };
         break;
 

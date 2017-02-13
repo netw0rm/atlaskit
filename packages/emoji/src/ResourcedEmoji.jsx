@@ -4,13 +4,13 @@ import Emoji from './Emoji';
 
 export default class ResourcedEmoji extends PureComponent {
   static propTypes = {
-    shortcut: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     emojiService: EmojiPropTypes.emojiService.isRequired,
   };
 
   render() {
-    const { emojiService, shortcut } = this.props;
-    const emoji = emojiService.findByShortcut(shortcut);
+    const { emojiService, id } = this.props;
+    const emoji = emojiService.findById(id);
     if (emoji) {
       return (<Emoji {...emoji} />);
     }

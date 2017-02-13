@@ -1,6 +1,6 @@
-export Emoji from './Emoji';
-export EmojiPicker from './EmojiPicker';
-export EmojiTypeAhead from './EmojiTypeAhead';
-export EmojiResource from './api/EmojiResource';
-export EmojiService from './api/EmojiService';
-export ResourcedEmoji from './ResourcedEmoji';
+export { default as Emoji } from './Emoji';
+export { default as EmojiPicker } from './EmojiPicker';
+export { default as EmojiTypeAhead } from './EmojiTypeAhead';
+export { default as EmojiResource } from './api/EmojiResource';
+export { default as EmojiService } from './api/EmojiService';
+export { default as ResourcedEmoji } from './ResourcedEmoji';

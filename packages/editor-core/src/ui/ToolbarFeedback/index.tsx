@@ -40,7 +40,7 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
 
   render() {
     // JIRA issue collector script is using jQuery internally
-    return window.jQuery
+    return this.hasJquery()
       ? (
         <span style={{ display: 'inline-block' }}>
           <ToolbarButton onClick={this.openFeedbackPopup} selected={false} spacing="compact">
@@ -57,9 +57,17 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
   }
 
   private loadJiraIssueCollectorScript = (): void => {
-    const scriptElem = document.createElement('script');
-    scriptElem.type = 'text/javascript';
-    scriptElem.src = JIRA_ISSUE_COLLECTOR_URL;
-    (document.head || document.body).appendChild(scriptElem);
+    if (this.hasJquery()) {
+      window.jQuery.ajax({
+        url: JIRA_ISSUE_COLLECTOR_URL,
+        type: 'get',
+        cache: true,
+        dataType: 'script'
+      });
+    }
+  }
+
+  private hasJquery = (): boolean => {
+    return (typeof window.jQuery !== 'undefined');
   }
 }

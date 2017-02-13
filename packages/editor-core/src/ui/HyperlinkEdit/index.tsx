@@ -52,7 +52,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               href={href}
               target="_blank"
               theme="dark"
-              title="Open"
+              title="Open link in new tab"
             >
               <OpenIcon label="Open" />
             </ToolbarButton>

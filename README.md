@@ -152,6 +152,8 @@ Atlaskit supports using TypeScript to write components. TypeScript brings static
 
 Using TypeScript is optional, leaving the decision to be made on a per-component basis.
 
+You can encounter TS errors "no module X" when you add dependency to one of your components. In this case make sure that all the packages your changes depend on have TypeScript definition files.
+
 * To get started, use the `yarn run create-ts my-component-name` command.
 * A single version of TypeScript is used in the repo, however each component has its own `tsconfig.json` for configuration.
 
@@ -339,9 +341,9 @@ Doing it like this will ensure you don't update any extra dependencies that you 
 The easiest way to install a dependency within a package is to either add it directly to the package's `package.json` and bootstrapping that package (see `Getting Started`) or by
 performing a `yarn add` from **within** the package itself (this will create a `yarn.lock` file that we do not push to the repository).
 
-It can also happen that this doesn't help. In this case make sure that all the packages your changes depend on have TypeScript definition files.
-
 Our package dependencies are not pinned in any way.
+
+If you're using TypeScript and encounter TS errors "no module X", one of the packages might be missing TS types. See [Using TypeScript for a component](https://bitbucket.org/atlassian/atlaskit/src#markdown-header-using-typescript-for-a-component) section for more details.
 
 ## Make changes to the Pipelines build
 AtlasKit uses Bitbucket Pipelines for it's continuous integration. The build scripts are defined in `bitbucket-pipelines.yml`.

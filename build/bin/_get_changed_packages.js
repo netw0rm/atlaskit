@@ -18,6 +18,8 @@ function generateRandomString() {
    etc.
 */
 function getChangedPackages() {
+  let changedPackages;
+
   exec('git fetch origin')
     .then(() => {
       const tempBranchName = `temp_${generateRandomString()}`;
@@ -26,8 +28,7 @@ function getChangedPackages() {
     .then(() => exec('git merge origin/master'))
     .then(() => exec('git diff --name-only origin/master'))
     .then((result) => {
-      const stdout = result.stdout;
-      const changedPackages = stdout.split('\n')
+      changedPackages = result.stdout.split('\n')
         // remove any empty strings
         .filter(filePath => filePath.length > 0)
         // remove files not in /packages directory
@@ -39,10 +40,12 @@ function getChangedPackages() {
         // add the @atlaskit scope to them
         .map(packageName => `@atlaskit/${packageName}`);
 
-      // return the result
-      console.log(`${changedPackages.join(',')}`); // eslint-disable-line no-console
-
       return exec('git checkout -');
+    })
+    .then(() => {
+      // output in the form "@atlaskit/packageOne,@atlaskit/packageTwo" to allow for easy scoping
+      // by passing the list as a glob
+      console.log(`${changedPackages.join(',')}`); // eslint-disable-line no-console
     })
     .catch((err) => {
       console.error(err); // eslint-disable-line no-console

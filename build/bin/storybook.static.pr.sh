@@ -16,8 +16,9 @@ BASEDIR=$(dirname $0)
 OUTDIR=$(mktemp -d)
 BUILD_SPECIFIC_URL_PART="pr/$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME/storybook"
 
-# get list of changed packages in the form @atlaskit/package1,@atlaskit/package2
-PACKAGES=$($BASEDIR/_get.changed.packages.js)
+# get list of changed packages which should have been outputted by get.changed.packages.sh
+# in the form "@atlaskit/packageOne,@atlaskit/packageTwo" to allow easy scoping
+PACKAGES=$(cat changed-packages)
 
 function storybook_build_status() {
   build_status \

@@ -27,8 +27,9 @@ pipelines:
           - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
           - ./build/bin/setup.sh
           - ./build/bin/prep_for_release.sh
-          - ./build/bin/get.changed.packages.sh
           - yarn
+          # have to run this after yarn to have access to child-process-promise
+          - ./build/bin/get.changed.packages.sh
          # - yarn run browserstack/tunnel/start
          # - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base" "test/wc/browserstack/pr"
           - yarn run pr/artifacts

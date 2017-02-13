@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { browser } from '../../../src';
-import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, img, makeEditor, mention, p } from '../../../test-helper';
+import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, img, makeEditor, mention, p, hr } from '../../../test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
 
@@ -563,31 +563,31 @@ describe('block-type', () => {
 
           context('on a paragraph', () => {
             context('when content is empty', () => {
-              it('creates a new paragraph above', () => {
+              it('does not create a new paragraph above', () => {
                 const { pm, plugin } = editor(doc(p('{<>}')));
                 plugin.cursorMovable = false;
 
                 plugin.createParagraphNear(false);
 
-                expect(pm.doc).to.deep.equal(doc(p('{<>}')));
+                expect(pm.doc).to.deep.equal(doc(p('')));
               });
             });
 
             context('when has content', () => {
-              it('does not create a new pagraph', () => {
+              it('creates a new pagraph', () => {
                 const { pm, plugin } = editor(doc(p('{<>}text')));
                 plugin.cursorMovable = false;
 
                 plugin.createParagraphNear(false);
 
-                expect(pm.doc).to.deep.equal(doc(p(''), p('{<>}text')));
+                expect(pm.doc).to.deep.equal(doc(p(''), p('text')));
               });
             });
           });
 
           context('on a heading', () => {
-            context('when content is empty', () => {
-              it('creates a new paragraph above', () => {
+            context('when content is empty above', () => {
+              it('does not create a new paragraph above', () => {
                 const { pm, plugin } = editor(doc(h1('{<>}')));
                 plugin.cursorMovable = false;
 
@@ -598,14 +598,34 @@ describe('block-type', () => {
             });
 
             context('when has content', () => {
-              it('does not create a new pagraph', () => {
+              it('creates a new pagraph above', () => {
                 const { pm, plugin } = editor(doc(h1('{<>}text')));
                 plugin.cursorMovable = false;
 
                 plugin.createParagraphNear(false);
 
-                expect(pm.doc).to.deep.equal(doc(p(''), h1('{<>}text')));
+                expect(pm.doc).to.deep.equal(doc(p(''), h1('text')));
               });
+            });
+          });
+
+          context('on a hr', () => {
+            it('creates a new pagraph above', () => {
+              const { pm, plugin } = editor(doc(hr));
+              plugin.cursorMovable = false;
+
+              plugin.createParagraphNear(false);
+
+              expect(pm.doc).to.deep.equal(doc(p(''), hr));
+            });
+
+            it('moves cursor to the top', () => {
+              const { pm, plugin } = editor(doc(hr));
+              plugin.cursorMovable = false;
+
+              plugin.createParagraphNear(false);
+
+              expect(pm.selection.$from.pos).to.eq(0);
             });
           });
         });
@@ -646,22 +666,92 @@ describe('block-type', () => {
     context('when append', () => {
       context('when cursor not movable', () => {
         context('on non nested content', () => {
-          it('creates new paragraph below', () => {
-            const { pm, plugin } = editor(doc(code_block()('text{<>}')));
-            plugin.cursorMovable = false;
+          context('on a code block', () => {
+            it('creates new paragraph below', () => {
+              const { pm, plugin } = editor(doc(code_block()('text{<>}')));
+              plugin.cursorMovable = false;
 
-            plugin.createParagraphNear(true);
+              plugin.createParagraphNear(true);
 
-            expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
+              expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
+            });
+
+            it('moves cursor to the bottom', () => {
+              const { pm, plugin } = editor(doc(code_block()('text{<>}')));
+              plugin.cursorMovable = false;
+
+              plugin.createParagraphNear(true);
+
+              expect(pm.selection.$from.pos).to.eq(7);
+            });
           });
 
-          it('moves cursor to the bottom', () => {
-            const { pm, plugin } = editor(doc(code_block()('text{<>}')));
-            plugin.cursorMovable = false;
+          context('on a paragraph', () => {
+            context('when content is empty', () => {
+              it('does not create a new paragraph above', () => {
+                const { pm, plugin } = editor(doc(p('{<>}')));
+                plugin.cursorMovable = false;
 
-            plugin.createParagraphNear(true);
+                plugin.createParagraphNear(true);
 
-            expect(pm.selection.$from.pos).to.eq(7);
+                expect(pm.doc).to.deep.equal(doc(p('{<>}')));
+              });
+            });
+
+            context('when has content', () => {
+              it('creates a new pagraph below', () => {
+                const { pm, plugin } = editor(doc(p('{<>}text')));
+                plugin.cursorMovable = false;
+
+                plugin.createParagraphNear(true);
+
+                expect(pm.doc).to.deep.equal(doc(p('{<>}text'), p('')));
+              });
+            });
+          });
+
+          context('on a heading', () => {
+            context('when content is empty below', () => {
+              it('does not create a new paragraph above', () => {
+                const { pm, plugin } = editor(doc(h1('{<>}')));
+                plugin.cursorMovable = false;
+
+                plugin.createParagraphNear(true);
+
+                expect(pm.doc).to.deep.equal(doc(h1('{<>}')));
+              });
+            });
+
+            context('when has content', () => {
+              it('creates a new pagraph below', () => {
+                const { pm, plugin } = editor(doc(h1('text{<>}')));
+                plugin.cursorMovable = false;
+
+                plugin.createParagraphNear(true);
+
+                expect(pm.doc).to.deep.equal(doc(h1('text'), p('')));
+              });
+            });
+          });
+
+          context('on a hr', () => {
+            it('creates a new pagraph below', () => {
+              const { pm, plugin } = editor(doc(hr));
+              plugin.cursorMovable = false;
+
+              plugin.createParagraphNear(true);
+
+              expect(pm.doc).to.deep.equal(doc(hr, p('')));
+            });
+
+            it('moves cursor to the bottom', () => {
+              const { pm, plugin } = editor(doc(hr));
+              plugin.cursorMovable = false;
+
+              plugin.createParagraphNear(true);
+
+              expect(pm.selection.$from.pos).to.eq(2);
+            });
           });
         });
 
@@ -702,7 +792,7 @@ describe('block-type', () => {
           });
         });
 
-        it('creates new paragraph below', () => {
+        it('moves cursor to the bottom of the sibling', () => {
           const { pm, plugin } = editor(
             doc(
               blockquote(

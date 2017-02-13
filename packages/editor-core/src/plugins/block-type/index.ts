@@ -9,7 +9,7 @@ import {
   Plugin,
   ProseMirror,
   Schema,
-  TextSelection,
+  TextSelection
 } from '../../prosemirror';
 import {
   BlockQuoteNodeType,
@@ -238,38 +238,72 @@ export class BlockTypeState {
   }
 
   createParagraphNear(append: boolean = true): void {
+    if (this.cursorMovable) {
+      return;
+    }
+
+    if (this.pm.selection instanceof TextSelection) {
+      if (this.topLevelNodeIsEmptyTextBlock()) {
+        return;
+      }
+      this.creatPragraphNearTextBlock(append);
+    } else {
+      this.createParagraphNearNonTextBlock(append);
+    }
+  }
+
+  private creatPragraphNearTextBlock(append: boolean): void {
     const paragraph = this.pm.schema.nodes.paragraph;
+
     if (!paragraph) {
       return;
     }
 
-    if (this.topLevelNodeIsEmptyTextBlock()) {
+    const {$from, $to} = this.pm.selection;
+    const {doc, tr} = this.pm;
+
+    if (!append) {
+      let pos = $from.start($from.depth);
+      pos = $from.depth > 1 ? pos - 1 : pos;
+      const next = new TextSelection(doc.resolve(pos));
+
+      tr.insert(pos - 1, paragraph.create()).setSelection(next).applyAndScroll();
+    } else {
+      let pos = $to.end($to.depth);
+      pos = $to.depth > 1 ? pos + 1 : pos;
+      const next = new TextSelection(doc.resolve(pos + 1));
+
+      tr.setSelection(next).insert(pos + 1, paragraph.create()).applyAndScroll();
+    }
+  }
+
+  private createParagraphNearNonTextBlock(append: boolean): void {
+    const paragraph = this.pm.schema.nodes.paragraph;
+
+    if (!paragraph) {
       return;
     }
 
-    if (!this.cursorMovable) {
-      const {$from, $to} = this.pm.selection;
-      const {doc, tr} = this.pm;
+    const {$from, $to} = this.pm.selection;
+    const {doc, tr} = this.pm;
 
-      if (!append) {
-        let pos = $from.start($from.depth);
-        pos = $from.depth > 1 ? pos - 1 : pos;
-        const next = new TextSelection(doc.resolve(pos));
+    if (!append) {
+      let pos = $from.start($from.depth);
+      const next = new TextSelection(doc.resolve(pos));
 
-        tr.insert(pos - 1, paragraph.create()).setSelection(next).applyAndScroll();
-      } else {
-        let pos = $to.end($to.depth);
-        pos = $to.depth > 1 ? pos + 1 : pos;
-        const next = new TextSelection(doc.resolve(pos + 1));
+      tr.insert(pos, paragraph.create()).setSelection(next).applyAndScroll();
+    } else {
+      let pos = $to.end($to.depth);
+      const next = new TextSelection(doc.resolve(pos));
 
-        tr.setSelection(next).insert(pos + 1, paragraph.create()).applyAndScroll();
-      }
+      tr.setSelection(next).insert(pos, paragraph.create()).applyAndScroll();
     }
+
   }
 
   private topLevelNodeIsEmptyTextBlock(): boolean {
     const topLevelNode = this.pm.selection.$from.node(1);
-    return !isCodeBlockNode(topLevelNode) && topLevelNode.isTextblock && topLevelNode.textContent.length === 0;
+    return topLevelNode.isTextblock && !isCodeBlockNode(topLevelNode) && topLevelNode.textContent.length === 0;
   }
 
   private createNewParagraphAbove() {

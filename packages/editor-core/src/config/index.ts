@@ -1,47 +1,15 @@
-// import { Promise } from 'es6-promise';
+import { EmojiResource } from 'ak-emoji';
+import { MentionResource } from 'ak-mention';
+import { MediaResource } from '../media';
 
-export { EditorServicesConfig } from './editor-services-config';
+export interface EditorServicesConfig {
+  emojiResourceProvider?: () => Promise<EmojiResource>;
+  mediaResourceProvider?: () => Promise<MediaResource>;
+  mentionResourceProvider?: () => Promise<MentionResource>;
+  reactionsResourceProvider?: () => Promise<any>;
 
-
-// type ServiceEnvironment = 'localhost' | 'ddev' | 'staging' | 'production';
-// class AtlassianDefaultConfigFactory {
-//   // give me a provider for specific service
-//   getMentionResourceProvider(environment: ServiceEnvironment): Promise<MentionResource>
-//   getEmojiResourceProvider(environment: ServiceEnvironment): Promise<EmojiResource>
-//   getMediaResourceProvider(environment: ServiceEnvironment): Promise<MediaResource>
-//   getReactionsResourceProvider(environment: ServiceEnvironment): Promise<ReactionsResource>;
-
-//   // give me a ready to use config that is using Atlassian defaults
-//   getEditorServicesConfig(environment: ServiceEnvironment): EditorServicesConfig {
-//     return {
-//       mentionResourceProvider: this.getMentionResourceProvider(environment),
-//       emojiResourceProvider: this.getEmojiResourceProvider(environment),
-//       reactionsResourceProvider: this.getReactionsResourceProvider(environment),
-//       mediaResourceProvider: this.getMediaResourceProvider(environment)
-//     };
-//   }
-// }
-
-// type foo extends EditorServicesConfig = {
-//   bar: string;
-// }
-
-
-// interface Resource {};
-
-// type EditorServicesConfig = {
-//     [serviceName: string]: Promise<Resource>;
-// };
-
-// An async function providing
-// async function constructEmojiResource(): Promise<EmojiResource> {
-//   return new Promise(function(resolve, reject) {
-//     const resource = new DefaultEmojiResource();
-
-//     // Initialize the resource by loading all emoji metadata
-//     resource.loadAllEmoji.then(() => {
-//       resolve(resource);
-//     }, reject);
-//   });
-// };
-
+  // TODO: add as soon as ReactionsResource is merged
+  // @link https://bitbucket.org/atlassian/atlaskit/pull-requests/1670/feat-reactions-picker/diff
+  //
+  // reactionsResourceProvider?: Promise<ReactionsResource>
+};

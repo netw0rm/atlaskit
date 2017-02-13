@@ -253,50 +253,58 @@ export class BlockTypeState {
   }
 
   private creatPragraphNearTextBlock(append: boolean): void {
-    const paragraph = this.pm.schema.nodes.paragraph;
+    const {pm} = this;
+    const paragraph = pm.schema.nodes.paragraph;
 
     if (!paragraph) {
       return;
     }
 
-    const {$from, $to} = this.pm.selection;
-    const {doc, tr} = this.pm;
+    const {$from, $to} = pm.selection;
 
     if (!append) {
       let pos = $from.start($from.depth);
       pos = $from.depth > 1 ? pos - 1 : pos;
-      const next = new TextSelection(doc.resolve(pos));
 
-      tr.insert(pos - 1, paragraph.create()).setSelection(next).applyAndScroll();
+      pm.tr.insert(pos - 1, paragraph.create()).applyAndScroll();
+
+      const next = new TextSelection(pm.doc.resolve(pos));
+      pm.setSelection(next);
     } else {
       let pos = $to.end($to.depth);
       pos = $to.depth > 1 ? pos + 1 : pos;
-      const next = new TextSelection(doc.resolve(pos + 1));
 
-      tr.setSelection(next).insert(pos + 1, paragraph.create()).applyAndScroll();
+      const next = new TextSelection(pm.doc.resolve(pos + 1));
+      pm.setSelection(next);
+
+      pm.tr.insert(pos + 1, paragraph.create()).applyAndScroll();
     }
   }
 
   private createParagraphNearNonTextBlock(append: boolean): void {
-    const paragraph = this.pm.schema.nodes.paragraph;
+    const {pm} = this;
+    const paragraph = pm.schema.nodes.paragraph;
 
     if (!paragraph) {
       return;
     }
 
-    const {$from, $to} = this.pm.selection;
-    const {doc, tr} = this.pm;
+    const {$from, $to} = pm.selection;
 
     if (!append) {
       let pos = $from.start($from.depth);
-      const next = new TextSelection(doc.resolve(pos));
 
-      tr.insert(pos, paragraph.create()).setSelection(next).applyAndScroll();
+      pm.tr.insert(pos, paragraph.create()).applyAndScroll();
+
+      const next = new TextSelection(pm.doc.resolve(pos + 1));
+      pm.setSelection(next);
     } else {
       let pos = $to.end($to.depth);
-      const next = new TextSelection(doc.resolve(pos));
 
-      tr.setSelection(next).insert(pos, paragraph.create()).applyAndScroll();
+      const next = new TextSelection(pm.doc.resolve(pos));
+      pm.setSelection(next);
+
+      pm.tr.setSelection(next).insert(pos, paragraph.create()).applyAndScroll();
     }
 
   }

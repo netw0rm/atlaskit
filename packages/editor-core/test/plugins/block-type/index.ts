@@ -538,6 +538,15 @@ describe('block-type', () => {
 
                 expect(pm.selection.$from.pos).to.eq(1);
               });
+
+              it('should become a paragraph type', () => {
+                const { plugin } = editor(doc(code_block()('{<>}')));
+                plugin.cursorMovable = false;
+
+                plugin.createParagraphNear(false);
+
+                expect(plugin.currentBlockType.name).to.eq('normal');
+              });
             });
 
             context('when code block is not empty', () => {
@@ -625,7 +634,16 @@ describe('block-type', () => {
 
               plugin.createParagraphNear(false);
 
-              expect(pm.selection.$from.pos).to.eq(0);
+              expect(pm.selection.$from.pos).to.eq(1);
+            });
+
+            it('should become a paragraph type', () => {
+              const { plugin } = editor(doc(hr));
+              plugin.cursorMovable = false;
+
+              plugin.createParagraphNear(false);
+
+              expect(plugin.currentBlockType.name).to.eq('normal');
             });
           });
         });
@@ -683,6 +701,15 @@ describe('block-type', () => {
               plugin.createParagraphNear(true);
 
               expect(pm.selection.$from.pos).to.eq(7);
+            });
+
+            it('should be a paragraph type', () => {
+              const { plugin } = editor(doc(code_block()('text{<>}')));
+              plugin.cursorMovable = false;
+
+              plugin.createParagraphNear(true);
+
+              expect(plugin.currentBlockType.name).to.eq('normal');
             });
           });
 
@@ -751,6 +778,15 @@ describe('block-type', () => {
               plugin.createParagraphNear(true);
 
               expect(pm.selection.$from.pos).to.eq(2);
+            });
+
+            it('should become a paragraph type', () => {
+              const { plugin } = editor(doc(hr));
+              plugin.cursorMovable = false;
+
+              plugin.createParagraphNear(true);
+
+              expect(plugin.currentBlockType.name).to.eq('normal');
             });
           });
         });

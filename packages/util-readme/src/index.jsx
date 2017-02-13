@@ -12,7 +12,7 @@ import Readme from './readme';
 The https://github.com/storybooks/react-storybook-addon-info addon only
 displayed a tiny question mark (?) in the upper right corner that the viewer
 had to click if they wanted to view the information we decorated the story
-with. Unfortunatley it didn't seem there was any way to disable this.
+with. Unfortunately it didn't seem there was any way to disable this.
 
 There was https://github.com/tuchk4/storybook-readme but it, too, didn't render
 how we wanted it to.

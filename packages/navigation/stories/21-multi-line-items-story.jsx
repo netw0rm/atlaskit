@@ -1,9 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Lorem from 'react-lorem-component';
 import { CrossIcon, DashboardIcon, EmojiTravelIcon, EmojiNatureIcon } from '@atlaskit/icon';
 import { name } from '../package.json';
-import Page from './components/Page';
+import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import { AkContainerItem, AkContainerItemGroup, AkDrawerItem } from '../src/index';
 import RandomBadge from './components/RandomBadge';
@@ -73,8 +72,5 @@ storiesOf(name, module)
           />
         </AkContainerItemGroup>
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ));

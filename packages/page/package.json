@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/page",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "config": {
     "access": "public"
   },
@@ -34,12 +34,16 @@
   ],
   "devDependencies": {
     "@atlaskit/avatar": "^1.0.0",
+    "@atlaskit/banner": "^1.0.1",
     "@atlaskit/breadcrumbs": "^1.0.0",
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/button-group": "^1.0.0",
     "@atlaskit/comment": "^1.0.0",
+    "@atlaskit/navigation": "^1.2.2",
     "@atlaskit/page": "*",
+    "@atlaskit/toggle": "^1.0.1",
     "@atlaskit/util-readme": "^1.0.0",
+    "react-lorem-component": "^0.11.0",
     "react-syntax-highlighter": "^4.0.1"
   }
 }

@@ -1,16 +1,15 @@
  import {
    akBorderRadius,
    akColorN0,
-   akColorN800
+   akColorN800,
+
  } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 
 export const popup = style({
-  width: '300px',
   height: '385px',
   borderRadius: akBorderRadius,
   overflow: 'hidden',
-
   background: akColorN0,
 
   $nest: {
@@ -24,8 +23,8 @@ export const popup = style({
 export const close = style({
   position: 'absolute',
   top: '10px',
-  right: '15px',
-  width: '25px',
+  right: '32px', // 16px for modal-dialog and 16px for inner wufoo iframe
+  width: '16px',
   height: '25px',
 
   background: 'transparent',

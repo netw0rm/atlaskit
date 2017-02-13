@@ -24,7 +24,7 @@ Import the component in your React app as follows:
 import ModalDialog from '@NAME@';
 ReactDOM.render(
   <ModalDialog
-    open
+    isOpen
     header={
       <h2>Modal header</h2>
     }

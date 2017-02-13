@@ -9,7 +9,6 @@ import FloatingToolbar from '../FloatingToolbar';
 import ToolbarButton from '../ToolbarButton';
 
 import { availablePanelType, PanelState, PanelType } from '../../plugins/panel';
-import { PanelNode } from '../../schema';
 import * as styles from './styles';
 
 const icons = {
@@ -24,8 +23,9 @@ export interface Props {
 }
 
 export interface State {
+  showToolbar?: boolean;
   target?: HTMLElement | undefined;
-  activePanel?: PanelNode | undefined;
+  activePanelType?: string | undefined;
 }
 
 export default class PanelEdit extends PureComponent<Props, State> {
@@ -44,9 +44,8 @@ export default class PanelEdit extends PureComponent<Props, State> {
   }
 
   render() {
-    const { target, activePanel } = this.state;
-    const activePanelType =  activePanel && activePanel.attrs['panelType'];
-    if (target) {
+    const { target, activePanelType, showToolbar } = this.state;
+    if (showToolbar) {
       return (
         <FloatingToolbar target={target} align="left">
           {availablePanelType.map((panelType, index) => {
@@ -80,9 +79,13 @@ export default class PanelEdit extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: PanelState) => {
+    const { target } = this.state;
+    const { element, clicked, activePanelType } = pluginState;
+    const showToolbar = !!element && (clicked || target !== element);
     this.setState({
-      target: pluginState.element,
-      activePanel: pluginState.activePanel,
+      showToolbar,
+      target: element,
+      activePanelType,
     });
   }
 

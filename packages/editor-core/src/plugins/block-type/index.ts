@@ -243,6 +243,10 @@ export class BlockTypeState {
       return;
     }
 
+    if (this.topLevelNodeIsEmptyTextBlock()) {
+      return;
+    }
+
     if (!this.cursorMovable) {
       const {$from, $to} = this.pm.selection;
       const {doc, tr} = this.pm;
@@ -261,6 +265,11 @@ export class BlockTypeState {
         tr.setSelection(next).insert(pos + 1, paragraph.create()).applyAndScroll();
       }
     }
+  }
+
+  private topLevelNodeIsEmptyTextBlock(): boolean {
+    const topLevelNode = this.pm.selection.$from.node(1);
+    return !isCodeBlockNode(topLevelNode) && topLevelNode.isTextblock && topLevelNode.textContent.length === 0;
   }
 
   private createNewParagraphAbove() {

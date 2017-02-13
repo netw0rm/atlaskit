@@ -129,11 +129,6 @@ describe(name, () => {
     });
   });
 
-  it('should focus itself when the isFocused property is set to true', () => {
-    const wrapper = mount(<Item isFocused />).find(`.${styles.item}`);
-    expect(wrapper.find(`.${styles.item}`).node).to.equal(document.activeElement);
-  });
-
   describe('secondary text', () => {
     it('should render content inside', () => {
       expect(mount(<SecondaryText>text</SecondaryText>).text()).to.equal('text');

@@ -28,7 +28,11 @@ export class SyncPlugin {
 
     const defaultHandler = () => { forceSync(); };
 
+    // Because force in handlers for these events might cause infinite loop
+    const ignore = ['beforeTransform', 'filterTransform'];
+
     Object.keys(pm.on)
+      .filter(key => ignore.indexOf(key) === -1)
       .forEach(name => {
         const handler = (handlers as any)[name] || defaultHandler;
         (pm.on as any)[name].add(handler);

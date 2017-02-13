@@ -25,35 +25,37 @@ export default class InlineMessage extends PureComponent {
     this.setState({ isOpen: !this.state.isOpen });
   }
 
-  render = () => (
-    <div className={styles.root}>
-      <InlineDialog
-        content={this.props.children}
-        isOpen={this.state.isOpen}
-        position="bottom left"
-        shouldFlip
-      >
-        <Button
-          appearance="subtle-link"
-          onClick={this.toggleDialog}
+  render() {
+    return (
+      <div className={styles.root}>
+        <InlineDialog
+          content={this.props.children}
+          isOpen={this.state.isOpen}
+          position="bottom left"
+          shouldFlip
         >
-          <div className={styles.buttonContents}>
-            <IconForType type={this.props.type} />
-            {
-              this.props.title ? (
-                <span className={styles.titleText}>
-                  {this.props.title}
-                </span>
-              ) : null
-            }
-            {
-              this.props.secondaryText ? (
-                <span className={styles.secondaryText}>{this.props.secondaryText}</span>
-              ) : null
-            }
-          </div>
-        </Button>
-      </InlineDialog>
-    </div>
-  )
+          <Button
+            appearance="subtle-link"
+            onClick={this.toggleDialog}
+          >
+            <div className={styles.buttonContents}>
+              <IconForType type={this.props.type} />
+              {
+                this.props.title ? (
+                  <span className={styles.titleText}>
+                    {this.props.title}
+                  </span>
+                ) : null
+              }
+              {
+                this.props.secondaryText ? (
+                  <span className={styles.secondaryText}>{this.props.secondaryText}</span>
+                ) : null
+              }
+            </div>
+          </Button>
+        </InlineDialog>
+      </div>
+    );
+  }
 }

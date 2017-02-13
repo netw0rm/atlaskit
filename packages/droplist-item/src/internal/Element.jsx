@@ -7,7 +7,6 @@ export default class Element extends PureComponent {
     children: PropTypes.node,
     className: PropTypes.string,
     isDisabled: PropTypes.bool,
-    isFocused: PropTypes.bool,
     isHidden: PropTypes.bool,
     isChecked: PropTypes.bool,
     isSelected: PropTypes.bool,
@@ -18,27 +17,13 @@ export default class Element extends PureComponent {
     type: PropTypes.oneOf(baseTypes.values),
   }
 
-  componentDidMount = () => {
-    this.setFocus();
-  }
-
-  componentDidUpdate = () => {
-    this.setFocus();
-  }
-
-  setFocus = () => {
-    if (this.props.isFocused) {
-      this.ref.focus();
-    }
-  }
-
   // this prevents the focus ring from appearing when the element is clicked.
   // It doesn't interfere with the onClick handler
   handleMouseDown = (e) => {
     e.preventDefault();
   }
 
-  render = () => {
+  render() {
     const { props } = this;
     const { href, target, type, isDisabled, handleKeyPress, handleClick, className } = props;
     const ariaAttributes = {};
@@ -48,7 +33,6 @@ export default class Element extends PureComponent {
       onKeyPress: handleKeyPress,
       onClick: handleClick,
       onMouseDown: this.handleMouseDown,
-      ref: ref => (this.ref = ref),
       'data-role': 'droplistItem',
     };
 

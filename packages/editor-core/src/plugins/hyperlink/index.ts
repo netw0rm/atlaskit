@@ -43,6 +43,10 @@ export class HyperlinkState {
       pm.on.activeMarkChange,
     ], () => this.update());
 
+    pm.updateScheduler([
+      pm.on.textInput,
+    ], () => this.escapeFromMark());
+
     this.setup(this.getActiveLinkNodeInfo());
   }
 
@@ -107,6 +111,18 @@ export class HyperlinkState {
       this.setup(nodeInfo);
       this.changeHandlers.forEach(cb => cb(this));
     }
+  }
+
+  private escapeFromMark() {
+    const nodeInfo = this.getActiveLinkNodeInfo();
+    if (nodeInfo && this.isShouldEscapeFromMark(nodeInfo)) {
+      this.pm.tr.removeMark(nodeInfo.startPos, this.pm.selection.$from.pos, this.pm.schema.marks.link).apply();
+    }
+  }
+
+  private isShouldEscapeFromMark(nodeInfo: NodeInfo | undefined) {
+    const parentOffset = this.pm.selection.$from.parentOffset;
+    return nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset;
   }
 
   private setup(nodeInfo: NodeInfo | undefined): void {

@@ -40,15 +40,17 @@ class ButtonActivatedDialog extends PureComponent {
     });
   }
 
-  render = () => (
-    <AKInlineDialog
-      content={this.props.content}
-      position={this.props.position}
-      isOpen={this.state.isOpen}
-    >
+  render() {
+    return (
+      <AKInlineDialog
+        content={this.props.content}
+        position={this.props.position}
+        isOpen={this.state.isOpen}
+      >
       <button onClick={this.handleClick} />
     </AKInlineDialog>
-  )
+    );
+  }
 }
 ```
 

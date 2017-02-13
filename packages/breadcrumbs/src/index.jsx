@@ -23,13 +23,15 @@ export default class Breadcrumbs extends PureComponent {
 
   expand = () => this.setState({ isExpanded: true });
 
-  render = () => (
-    <BreadcrumbsStateless
-      {...this.props}
-      isExpanded={this.state.isExpanded}
-      onExpand={this.expand}
-    >
-      {this.props.children}
-    </BreadcrumbsStateless>
-  );
+  render() {
+    return (
+      <BreadcrumbsStateless
+        {...this.props}
+        isExpanded={this.state.isExpanded}
+        onExpand={this.expand}
+      >
+        {this.props.children}
+      </BreadcrumbsStateless>
+    );
+  }
 }

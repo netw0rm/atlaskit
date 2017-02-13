@@ -1,12 +1,24 @@
 #!/usr/bin/env bash
 set -e
 
-CHALK="`yarn bin`/chalk"
+# Paths for binaries in our node_modules
+BIN_PATH=$(yarn bin)
+CHALK="$BIN_PATH/chalk"
+LERNA_LOC="$BIN_PATH/lerna"
+
+# Paths for our build scripts
 BASEDIR=$(dirname $0)
-BUILD_SPECIFIC_URL_PART="pr/$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME/storybook"
-OUTDIR=$(mktemp -d)
+
+# source build scripts to get functions from them
 . $BASEDIR/_build_status.sh
 . $BASEDIR/_cdn_publish_folder.sh
+
+OUTDIR=$(mktemp -d)
+BUILD_SPECIFIC_URL_PART="pr/$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME/storybook"
+
+# get list of changed packages which should have been outputted by generate.changed.packages.file.sh
+# in the form "@atlaskit/packageOne,@atlaskit/packageTwo" to allow easy scoping via globs
+PACKAGES=$(cat changed-packages)
 
 function storybook_build_status() {
   build_status \
@@ -21,7 +33,7 @@ function build_storybook() {
   local TARGET_PATH="$1"
 
   $CHALK --no-stdin -t "{blue Building storybook (PR)}"
-  lerna exec -- ../../build/bin/storybook.static.pr.single.sh "$TARGET_PATH"
+  $LERNA_LOC exec --scope "{$PACKAGES}" -- ../../build/bin/storybook.static.pr.single.sh "$TARGET_PATH"
   $BASEDIR/generate.index.html.js $TARGET_PATH "PR storybook for ${BITBUCKET_COMMIT}" > "$TARGET_PATH/index.html"
 }
 

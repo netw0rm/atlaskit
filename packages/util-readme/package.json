@@ -2,7 +2,7 @@
   "name": "@atlaskit/util-readme",
   "version": "1.0.0",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "A suite of components for building readme-style docs into your stories.",
   "main": "dist/bundle.js",
@@ -17,9 +17,10 @@
     "**/*.d.ts"
   ],
   "dependencies": {
-    "decamelize": "^1.2.0",
-    "react-syntax-highlighter": "^3.0.2",
-    "akutil-shared-styles": "^37.2.0"
+    "akutil-shared-styles": "^37.2.0",
+    "camelcase": "^4.0.0",
+    "react-remarkable": "^1.1.1",
+    "react-syntax-highlighter": "^3.0.2"
   },
   "peerDependencies": {
     "react": "^15.3.2"

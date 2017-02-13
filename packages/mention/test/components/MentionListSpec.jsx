@@ -1,4 +1,4 @@
-import { waitUntil } from 'akutil-common-test';
+import { waitUntil } from '@atlaskit/util-common-test';
 import React from 'react';
 import { mount } from 'enzyme';
 
@@ -49,6 +49,16 @@ describe('MentionList', () => {
       .then(() => {
         component.instance().selectId(mentions[2].id);
         return waitUntil(thirdItemSelected);
+      });
+  });
+
+  it('mentionsCount returns the number of mentions in the list', () => {
+    const component = setupList();
+    const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
+
+    return waitUntil(defaultMentionItemsShow)
+      .then(() => {
+        expect(component.instance().mentionsCount()).to.equal(mentionDataSize);
       });
   });
 });

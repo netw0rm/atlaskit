@@ -30,31 +30,39 @@ describe('panel', () => {
     });
 
     it('should be able to register handlers for state change events', () => {
-      const { plugin } = editor(doc(panel('panel')));
+      const { plugin } = editor(doc(panel(paragraph('text'))));
       const spy = sinon.spy();
       plugin.subscribe(spy);
       expect(spy.calledWith(plugin)).to.equal(true);
     });
 
+    it('should call subscribers when panel is clicked', () => {
+      const { plugin, pm } = editor(doc(panel(paragraph('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.click.dispatch();
+      expect(spy.callCount).to.equal(2);
+    });
+
     it('should be able to identify panel node', () => {
       const { plugin } = editor(doc(panel(paragraph('text'))));
-      expect(plugin.activePanel).to.not.be.undefined;
+      expect(plugin.element).to.not.be.undefined;
     });
 
     it('should be able to change panel type using function changeType', () => {
       const { plugin } = editor(doc(panel(paragraph('text'))));
-      expect(plugin.activePanel.attrs['panelType']).to.equal('info');
+      expect(plugin.activePanelType).to.equal('info');
       expect(plugin.element).to.not.be.undefined;
-      expect(plugin.element.attributes['data-panel-type']).to.not.be.undefined;
+      expect(plugin.activePanelType).to.not.be.undefined;
       plugin.changePanelType({ panelType: 'note' });
-      expect(plugin.activePanel.attrs['panelType']).to.equal('note');
+      expect(plugin.activePanelType).to.equal('note');
     });
 
     it('should be able to remove panel type using function removePanelType', () => {
       const { plugin } = editor(doc(panel(paragraph('text'))));
-      expect(plugin.activePanel.attrs['panelType']).to.equal('info');
+      expect(plugin.activePanelType).to.equal('info');
       plugin.removePanelType();
-      expect(plugin.activePanel).to.be.undefined;
+      expect(plugin.element).to.be.undefined;
     });
 
     it('should be able to call handlers for change in panel type', () => {
@@ -63,7 +71,7 @@ describe('panel', () => {
       plugin.subscribe(spy);
       expect(spy.callCount).to.equal(1);
       plugin.changePanelType({ panelType: 'note' });
-      expect(plugin.activePanel.attrs['panelType']).to.equal('note');
+      expect(plugin.activePanelType).to.equal('note');
       expect(plugin.element).not.to.be.undefined;
       expect(spy.callCount).to.equal(3);
     });
@@ -74,7 +82,7 @@ describe('panel', () => {
       plugin.subscribe(spy);
       expect(spy.callCount).to.equal(1);
       plugin.removePanelType();
-      expect(plugin.activePanel).to.be.undefined;
+      expect(plugin.element).to.be.undefined;
       expect(spy.callCount).to.equal(2);
     });
 

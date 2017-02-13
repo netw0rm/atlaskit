@@ -13,7 +13,6 @@ import {
   globalOpenWidth,
   navigationOpenWidth,
   resizeClosedBreakpoint,
-  resizeExpandedBreakpoint,
 } from '../../shared-variables';
 import getContainerWidth from '../../utils/collapse';
 
@@ -41,6 +40,7 @@ export default class Navigation extends PureComponent {
     onCreateDrawerClose: PropTypes.func,
     onCreateDrawerOpen: PropTypes.func,
     onResize: PropTypes.func,
+    onResizeStart: PropTypes.func,
     onSearchDrawerClose: PropTypes.func,
     onSearchDrawerOpen: PropTypes.func,
     searchDrawerContent: PropTypes.node,
@@ -61,6 +61,7 @@ export default class Navigation extends PureComponent {
     onCreateDrawerClose: () => {},
     onCreateDrawerOpen: () => {},
     onResize: () => {},
+    onResizeStart: () => {},
     onSearchDrawerClose: () => {},
     onSearchDrawerOpen: () => {},
     width: navigationOpenWidth,
@@ -88,12 +89,22 @@ export default class Navigation extends PureComponent {
 
   triggerResizeHandler = () => {
     const width = this.getRenderedWidth();
+
+    const snappedWidth = (() => {
+      if (width > navigationOpenWidth) {
+        return width;
+      }
+      if (width < resizeClosedBreakpoint) {
+        return containerClosedWidth;
+      }
+      return navigationOpenWidth;
+    })();
+
     const resizeState = {
-      isOpen: (width > resizeClosedBreakpoint),
+      isOpen: (width >= resizeClosedBreakpoint),
+      width: snappedWidth,
     };
-    if (width > resizeExpandedBreakpoint) {
-      resizeState.width = width;
-    }
+
     this.setState({
       resizeDelta: 0,
     }, function callOnResizeAfterSetState() {
@@ -123,6 +134,7 @@ export default class Navigation extends PureComponent {
       onBlanketClicked,
       onCreateDrawerClose,
       onCreateDrawerOpen,
+      onResizeStart,
       onSearchDrawerClose,
       onSearchDrawerOpen,
       searchDrawerContent,
@@ -141,7 +153,9 @@ export default class Navigation extends PureComponent {
         {
           hasBlanket && (isSearchDrawerOpen || isCreateDrawerOpen) ?
           (
-            <AkBlanket isTinted onBlanketClicked={onBlanketClicked} />
+            <div style={{ zIndex: 0 }}>
+              <AkBlanket isTinted onBlanketClicked={onBlanketClicked} />
+            </div>
           )
           : null
         }
@@ -210,6 +224,7 @@ export default class Navigation extends PureComponent {
             isResizeable
             ? <Resizer
               onResize={this.onResize}
+              onResizeStart={onResizeStart}
               onResizeEnd={this.triggerResizeHandler}
             />
             : null

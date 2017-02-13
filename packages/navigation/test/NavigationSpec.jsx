@@ -81,6 +81,15 @@ describe('<Navigation />', () => {
     it('isCreateDrawerOpen=true should set open=true on the CreateDrawer', () => {
       expect(mount(<Navigation isCreateDrawerOpen={false} />).find('Drawer').at(1).props().isOpen).to.equal(false);
     });
+    it('onResizeStart is called when the resizer starts resizing', (done) => {
+      const navigation = shallow(<Navigation />);
+      navigation.setProps({
+        onResizeStart: () => {
+          done();
+        },
+      });
+      navigation.find('Resizer').simulate('resizeStart');
+    });
     it('onResize is called after the resizeDelta has been reset to 0 (so that animations are enabled again)', (done) => {
       const navigation = shallow(<Navigation />);
       navigation.setProps({

@@ -1,36 +1,37 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
+import styled from 'styled-components';
 
 import Page, { Grid, GridColumn } from '../src';
 import { name } from '../package.json';
 
-const dummyStyles = {
-  background: '#fea',
-};
-const dummyNestedStyles = {
-  background: '#afe',
-};
+const Dummy = styled.div`
+  background: #fea;
+`;
+const DummyNested = styled.div`
+  background: #afe;
+`;
 
 storiesOf(name, module)
   .add('nested grids', () => (
     <Page>
       <Grid spacing={'cosy'}>
         <GridColumn medium={8}>
-          <div style={dummyStyles}>
+          <Dummy>
             This content sits inside a column of width 8. The text is before the nested grid.
             <Grid>
               <GridColumn medium={4}>
-                <div style={dummyNestedStyles}>4 col</div>
+                <DummyNested>4 col</DummyNested>
               </GridColumn>
               <GridColumn medium={4}>
-                <div style={dummyNestedStyles}>4 col</div>
+                <DummyNested>4 col</DummyNested>
               </GridColumn>
             </Grid>
             This content sits after the nested grid. Notice how the grid pulls itself out into
             the margins of the column its in.
-          </div>
+          </Dummy>
         </GridColumn>
-        <GridColumn medium={4}><div style={dummyStyles}>4 col</div></GridColumn>
+        <GridColumn medium={4}><Dummy>4 col</Dummy></GridColumn>
       </Grid>
       <p>
         This story is used to verify that nested grids apply negative margins and line up correctly.
@@ -41,21 +42,21 @@ storiesOf(name, module)
     <Page>
       <Grid>
         <GridColumn medium={8}>
-          <div style={dummyStyles}>
+          <Dummy>
             This content sits inside a column of width 8. The text is before the nested grid.
             <Grid>
               <GridColumn medium={10}>
-                <div style={dummyNestedStyles}>10 col</div>
+                <DummyNested>10 col</DummyNested>
               </GridColumn>
               <GridColumn medium={10}>
-                <div style={dummyNestedStyles}>10 col</div>
+                <DummyNested>10 col</DummyNested>
               </GridColumn>
             </Grid>
             This content sits after the nested grid. Notice how the grid pulls itself out into
             the margins of the column its in.
-          </div>
+          </Dummy>
         </GridColumn>
-        <GridColumn medium={4}><div style={dummyStyles}>4 col</div></GridColumn>
+        <GridColumn medium={4}><Dummy>4 col</Dummy></GridColumn>
       </Grid>
       <p>
         This story is used to verify nested grids which contain columns wider than what they have

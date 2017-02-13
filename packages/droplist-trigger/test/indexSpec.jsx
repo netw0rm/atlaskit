@@ -21,21 +21,22 @@ describe(name, () => {
       expect(wrapper.contains(TriggerSample)).to.equal(true);
     });
 
-    it('should render tabIndex attribute', () => {
-      let wrapper = mount(<Trigger />);
-      expect(wrapper.find(`.${styles.locals.trigger}`).is('[tabIndex=-1]')).to.equal(true);
-
-      wrapper = mount(<Trigger isDisabled />);
-      expect(wrapper.find(`.${styles.locals.trigger}`).is('[tabIndex=-1]')).to.equal(true);
-
-      wrapper = mount(<Trigger isTabbable />);
+    it('should render tabIndex attribute when tabbable', () => {
+      const wrapper = mount(<Trigger isTabbable />);
       expect(wrapper.find(`.${styles.locals.trigger}`).is('[tabIndex=0]')).to.equal(true);
+    });
+
+    it('should not render tabIndex when disabled or not tabbable', () => {
+      let wrapper = mount(<Trigger />);
+      expect(wrapper.find('[tabindex]').length).to.equal(0);
+      wrapper = mount(<Trigger isDisabled />);
+      expect(wrapper.find('[tabindex]').length).to.equal(0);
     });
   });
 
   describe('props', () => {
     it('should focus trigger when isFocused prop is set to true', () => {
-      const wrapper = mount(<Trigger isFocused>trigger</Trigger>);
+      const wrapper = mount(<Trigger isFocused isTabbable>trigger</Trigger>);
       expect(document.activeElement).to.equal(wrapper.children().first().node);
     });
   });

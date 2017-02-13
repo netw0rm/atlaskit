@@ -40,7 +40,7 @@ function generate_docs() {
   popd > /dev/null
 }
 
-#docs_build_status "INPROGRESS"
+docs_build_status "INPROGRESS"
 generate_docs
-#cdn_publish_folder "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
-#docs_build_status "SUCCESSFUL"
+cdn_publish_folder "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
+docs_build_status "SUCCESSFUL"

@@ -152,7 +152,7 @@ Atlaskit supports using TypeScript to write components. TypeScript brings static
 
 Using TypeScript is optional, leaving the decision to be made on a per-component basis.
 
-You can encounter TS errors "no module X" when you add dependency to one of your components. In this case make sure that all the packages your changes depend on have TypeScript definition files.
+In case of "no module X" errors when importing other Atlaskit packages, they might be missing types. Make sure that `package.json` of imported packages contains "types" section pointing to a TS file (i.e. "src/index.d.ts"). In most cases it's enough to describe the main React component with its Props, which is the public API for most Atlaskit packages.
 
 * To get started, use the `yarn run create-ts my-component-name` command.
 * A single version of TypeScript is used in the repo, however each component has its own `tsconfig.json` for configuration.

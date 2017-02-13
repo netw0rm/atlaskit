@@ -261,24 +261,20 @@ export class BlockTypeState {
     }
 
     const {$from, $to} = pm.selection;
+    let pos;
 
     if (!append) {
-      let pos = $from.start($from.depth);
+      pos = $from.start($from.depth) - 1;
       pos = $from.depth > 1 ? pos - 1 : pos;
-
-      pm.tr.insert(pos - 1, paragraph.create()).applyAndScroll();
-
-      const next = new TextSelection(pm.doc.resolve(pos));
-      pm.setSelection(next);
     } else {
-      let pos = $to.end($to.depth);
+      pos = $to.end($to.depth) + 1;
       pos = $to.depth > 1 ? pos + 1 : pos;
-
-      const next = new TextSelection(pm.doc.resolve(pos + 1));
-      pm.setSelection(next);
-
-      pm.tr.insert(pos + 1, paragraph.create()).applyAndScroll();
     }
+
+    pm.tr.insert(pos, paragraph.create()).applyAndScroll();
+
+    const next = new TextSelection(pm.doc.resolve(pos + 1));
+    pm.setSelection(next);
   }
 
   private createParagraphNearNonTextBlock(append: boolean): void {
@@ -289,26 +285,21 @@ export class BlockTypeState {
       return;
     }
 
-    const {$from, $to} = pm.selection;
+    const {$from} = pm.selection;
+    let pos;
 
     if (!append) {
-      let pos = $from.start($from.depth);
+      pos = $from.start($from.depth);
       pos = $from.depth > 0 ? pos - 1 : pos;
-
-      pm.tr.insert(pos, paragraph.create()).applyAndScroll();
-
-      const next = new TextSelection(pm.doc.resolve(pos + 1));
-      pm.setSelection(next);
     } else {
-      let pos = $to.end($to.depth);
-      pos = $to.depth > 0 ? pos + 1 : pos;
-
-      const next = new TextSelection(pm.doc.resolve(pos));
-      pm.setSelection(next);
-
-      pm.tr.setSelection(next).insert(pos, paragraph.create()).applyAndScroll();
+      pos = $from.end($from.depth);
+      pos = $from.depth > 0 ? pos + 1 : pos;
     }
 
+    pm.tr.insert(pos, paragraph.create()).applyAndScroll();
+
+    const next = new TextSelection(pm.doc.resolve(pos + 1));
+    pm.setSelection(next);
   }
 
   private topLevelNodeIsEmptyTextBlock(): boolean {

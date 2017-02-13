@@ -3,12 +3,12 @@ import { Component, ReactNode, MouseEvent, KeyboardEvent } from 'react';
 type KeyboardOrMouseEvent = MouseEvent<any> | KeyboardEvent<any>;
 
 interface Props {
-  className?: any;
+  className?: string;
   isOpen?: boolean;
   header?: ReactNode;
   children?: ReactNode;
   footer?: ReactNode;
-  width?: any;
+  width?: string | number | 'small' | 'medium' | 'large' | 'x-large';
   onDialogDismissed?: (event: KeyboardOrMouseEvent) => void;
 }
 

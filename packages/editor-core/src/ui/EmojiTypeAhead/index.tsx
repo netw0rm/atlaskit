@@ -36,36 +36,19 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   render() {
     const { anchorElement, query } = this.state;
 
-    let style: any = {
-      display: 'none'
-    };
-
-    if (anchorElement && query) {
-      const rect = anchorElement.getBoundingClientRect();
-      const parentRect = anchorElement.offsetParent.getBoundingClientRect();
-      style = {
-        display: 'block',
-        position: 'absolute',
-        left: (rect.left - parentRect.left),
-        top: !this.props.reversePosition ? (rect.top - parentRect.top) + rect.height : null,
-        bottom: this.props.reversePosition ? (window.innerHeight - parentRect.bottom) + 20 : null,
-        zIndex: 1
-      };
+    if (!query) {
+      return <div/>;
     }
 
-    const typeAhead = (
+    return (
       <AkEmojiTypeAhead
         emojiService={this.props.emojiService}
         onSelection={this.handleSelectedEmoji}
         query={query}
         ref="typeAhead"
+        target={anchorElement}
+        position="auto"
       />
-    );
-
-    return (
-      <div style={style}>
-        {typeAhead}
-      </div>
     );
   }
 

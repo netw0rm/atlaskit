@@ -1,12 +1,21 @@
 import React, { PropTypes, PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 
+const getTargetNode = (target) => {
+  console.log('typeof targetNode', typeof target);
+  if (typeof target === 'string') {
+    return document.querySelector(target);
+  }
+  // Expect to be an element
+  return target;
+};
+
 /*
  * Simple implementation of popup while waiting for ak-inline-dialog
  */
 export default class Popup extends PureComponent {
   static propTypes = {
-    target: PropTypes.string.isRequired,
+    target: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     relativePosition: PropTypes.oneOf(['above', 'below', 'auto']),
     offsetX: PropTypes.number,
     offsetY: PropTypes.number,
@@ -43,7 +52,7 @@ export default class Popup extends PureComponent {
 
   // Internal
   applyBelowPosition() {
-    const targetNode = document.querySelector(this.props.target);
+    const targetNode = getTargetNode(this.props.target);
     const box = targetNode.getBoundingClientRect();
     const top = box.bottom + this.props.offsetY;
     const left = box.left + this.props.offsetX;
@@ -53,7 +62,7 @@ export default class Popup extends PureComponent {
   }
 
   applyAbovePosition() {
-    const targetNode = document.querySelector(this.props.target);
+    const targetNode = getTargetNode(this.props.target);
     const box = targetNode.getBoundingClientRect();
     const bottom = (window.innerHeight - box.top) + this.props.offsetY;
     const left = box.left + this.props.offsetX;
@@ -68,7 +77,7 @@ export default class Popup extends PureComponent {
     } else if (this.props.relativePosition === 'below') {
       this.applyBelowPosition();
     } else {
-      const targetNode = document.querySelector(this.props.target);
+      const targetNode = getTargetNode(this.props.target);
       const box = targetNode.getBoundingClientRect();
       const viewPortHeight = window.innerHeight;
       if (box.top < viewPortHeight / 2) {

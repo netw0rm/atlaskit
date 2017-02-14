@@ -71,6 +71,21 @@ const hipchatSerializer = (doc: any) => {
   });
 };
 
+const hipchatDeserializer = (json: any, pm: ProseMirror) => {
+  console.log('hipchatDeserializer pm.plugins', pm);
+  return json.map(node => {
+    switch (node.type) {
+      case 'emoji': {
+        node = {
+          ...node.attrs,
+          // emojiService:
+        }
+      }
+    }
+    return node;
+  });
+};
+
 export type Doc = {
   type: 'doc',
   content?: any[]
@@ -83,7 +98,7 @@ export interface Props {
   onChange?: () => void;
   mentionResourceProvider?: any;
   emojiService?: any;
-  reverseMentionPicker?: boolean;
+  reversePickers?: boolean;
 }
 
 export interface State {
@@ -96,7 +111,7 @@ export default class Editor extends PureComponent<Props, State> {
   private emojiPlugin: Plugin<any>;
 
   public static defaultProps: Props = {
-    reverseMentionPicker: true
+    reversePickers: true
   };
 
   state: State;
@@ -127,10 +142,10 @@ export default class Editor extends PureComponent<Props, State> {
             <HyperlinkEdit pluginState={pluginStateHyperlink} />
           }
           {!pluginStateMentions ? null :
-            <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reverseMentionPicker} />
+            <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reversePickers} />
           }
           {!pluginStateEmojis ? null :
-            <EmojiTypeAhead emojiService={props.emojiService} pluginState={pluginStateEmojis} reversePosition={props.reverseMentionPicker} />
+            <EmojiTypeAhead emojiService={props.emojiService} pluginState={pluginStateEmojis} reversePosition={props.reversePickers} />
           }
         </div>
       </div>
@@ -225,7 +240,7 @@ export default class Editor extends PureComponent<Props, State> {
         content: (value.length ? value : [{ type: 'text', text: ' ' }]) // We need to insert a space instead of an empty node in order to trigger the update event (which will close the mentions picker)
       };
 
-      pm.setDoc(schema.nodes.doc.create({}, pm.schema.nodeFromJSON(val)));
+      pm.setDoc(schema.nodes.doc.create({}, pm.schema.nodeFromJSON(hipchatDeserializer(val, pm))));
       pm.setSelection(new TextSelection(pm.doc.resolve(pm.doc.nodeSize - 3)));
       pm.flush();
 

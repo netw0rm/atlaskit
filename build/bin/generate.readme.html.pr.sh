@@ -48,6 +48,6 @@ docs_build_status "INPROGRESS"
 # if we had any changed packages (string is not empty)
 if [ -n "$CHANGED_PACKAGES" ] ; then
   generate_docs
+  cdn_publish_folder "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
 fi
-cdn_publish_folder "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
 docs_build_status "SUCCESSFUL"

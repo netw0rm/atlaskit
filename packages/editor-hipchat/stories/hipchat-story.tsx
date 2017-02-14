@@ -12,7 +12,7 @@ storiesOf(name, module)
       <Editor
         onSubmit={action('submit')}
         mentionResourceProvider={resourceProvider}
-        reversePosition={true}
+        reverseMentionPicker={false}
       />
     );
   })

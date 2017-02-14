@@ -100,7 +100,7 @@ export interface Props {
   onChange?: () => void;
   mentionResourceProvider?: any;
   emojiService?: any;
-  reversePosition?: boolean;
+  reverseMentionPicker?: boolean;
 }
 
 export interface State {
@@ -113,7 +113,7 @@ export default class Editor extends PureComponent<Props, State> {
   private emojiPlugin: Plugin<any>;
 
   public static defaultProps: Props = {
-    reversePickers: true
+    reverseMentionPicker: true
   };
 
   state: State;
@@ -144,7 +144,7 @@ export default class Editor extends PureComponent<Props, State> {
             <HyperlinkEdit pluginState={pluginStateHyperlink} />
           }
           {!pluginStateMentions ? null :
-            <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reversePosition} />
+            <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reverseMentionPicker} />
           }
           {!pluginStateEmojis ? null :
             <EmojiTypeAhead emojiService={props.emojiService} pluginState={pluginStateEmojis} />

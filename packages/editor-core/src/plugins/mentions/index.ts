@@ -47,6 +47,10 @@ export class MentionsPluginState {
         pm.on.activeMarkChange,
       ], () => this.update());
     }
+
+    pm.on.blur.add(() => {
+      this.dismiss();
+    });
   }
 
   private update(): void {

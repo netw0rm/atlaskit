@@ -142,6 +142,17 @@ describe('mentions', () => {
       expect(spy.called).to.equal(true);
     });
 
+    it('should trigger "dismiss" when editor is blur', () => {
+      const pm = makeEditor(container());
+      const pluginState = MentionsPlugin.get(pm)!;
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+
+      const spy = sinon.spy(pluginState, 'dismiss');
+
+      pm.on.blur.dispatch();
+      expect(spy.called).to.equal(true);
+    });
   });
 
   describe('insertMention', () => {

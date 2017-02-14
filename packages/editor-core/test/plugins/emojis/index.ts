@@ -8,7 +8,11 @@ import { chaiPlugin, fixtures } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 
-const emojisPlugin = EmojisPluginFactory({ emojiService: {} });
+const emojisPlugin = EmojisPluginFactory({ emojiService: {
+  findById() {
+    return smileEmoji;
+  }
+}});
 
 const schema: Schema = new Schema({
   nodes: schemaBasic.nodeSpec.append({

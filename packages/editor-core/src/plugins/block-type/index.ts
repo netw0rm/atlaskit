@@ -9,7 +9,7 @@ import {
   Plugin,
   ProseMirror,
   Schema,
-  TextSelection
+  TextSelection,
 } from '../../prosemirror';
 import {
   BlockQuoteNodeType,
@@ -22,7 +22,7 @@ import {
   isPanelNode,
   isParagraphNode,
   PanelNodeType,
-  ParagraphNodeType
+  ParagraphNodeType,
 } from '../../schema';
 import {
   getGroupsInRange,

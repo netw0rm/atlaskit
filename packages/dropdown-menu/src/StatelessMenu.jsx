@@ -3,7 +3,7 @@ import Droplist from '@atlaskit/droplist';
 import Item from '@atlaskit/droplist-item';
 import Group from '@atlaskit/droplist-group';
 import Button from '@atlaskit/button';
-import ExpandIcon from 'ak-icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import uid from 'uid';
 
 const Icon = <ExpandIcon label="" />;

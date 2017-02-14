@@ -56,7 +56,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} /> : null}
           {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} /> : null}
           <span style={{ flexGrow: 1 }} />
-          {props.feedbackFormUrl ? <ToolbarFeedback feedbackFormUrl={props.feedbackFormUrl} /> : null}
+          {props.feedbackFormUrl ? <ToolbarFeedback /> : null}
         </div>
         <div className={styles.content}>
           {props.children}

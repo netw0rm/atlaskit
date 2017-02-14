@@ -11,7 +11,7 @@ set -e
 BASEDIR=$(dirname $0)
 
 # set this flag to true to prevent any scoping of changed packages (run all commands for all packages)
-KILL_SWITCH=false
+KILL_SWITCH=true
 
 if [ "$KILL_SWITCH" = true ] ; then
   # we echo "**," to make the globs match all packages. The comma is because the glob will be inside

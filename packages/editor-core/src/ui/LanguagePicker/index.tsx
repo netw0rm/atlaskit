@@ -55,7 +55,8 @@ export default class LanguagePicker extends PureComponent<Props, State> {
 
   private handlePluginStateChange = (pluginState: CodeBlockState) => {
     const { element, language, clicked} = pluginState;
-    const showToolbar = !!element && (clicked || this.state.element !== element);
+    const currentElement = this.state.element;
+    const showToolbar = !!element && (clicked || currentElement !== element);
 
     this.setState({
       language: findMatchedLanguage(language),

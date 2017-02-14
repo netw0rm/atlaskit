@@ -33,10 +33,6 @@ export class CodeBlockState {
       this.update(true);
     });
 
-    pm.on.blur.add(() => {
-      this.clear();
-    });
-
     this.update();
   }
 
@@ -76,16 +72,6 @@ export class CodeBlockState {
       this.language = codeBlockNode && codeBlockNode.attrs['language'];
       this.element = codeBlockNode && this.activeCodeBlockElement();
       this.changeHandlers.forEach(changeHandler => changeHandler(this));
-    }
-  }
-
-  private clear() {
-    if (this.clicked || this.element) {
-      this.clicked = false;
-      this.activeCodeBlock = undefined;
-      this.language = undefined;
-      this.element = undefined;
-      this.changeHandlers.forEach(cb => cb(this));
     }
   }
 

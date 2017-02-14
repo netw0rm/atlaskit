@@ -1,12 +1,16 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import Spinner from '@atlaskit/spinner';
+
 import { analyticsDecorator as analytics } from '../../analytics';
 import ToolbarButton from '../ToolbarButton';
 
 const JIRA_ISSUE_COLLECTOR_URL = 'https://product-fabric.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-j519ub/b/c/78bd26fb4be69a8bdb879359a9397e96/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?locale=en-US&collectorId=305d3263';
 
 export interface Props {}
-export interface State {}
+export interface State {
+  jiraIssueCollectorScriptLoading: boolean;
+}
 
 declare global {
   interface Window {
@@ -16,15 +20,27 @@ declare global {
 }
 
 export default class ToolbarFeedback extends PureComponent<Props, State> {
+  state: State = {
+    jiraIssueCollectorScriptLoading: false
+  };
 
   showJiraCollectorDialogCallback?: () => void;
 
   render() {
+    const iconBefore = this.state.jiraIssueCollectorScriptLoading
+      ? <Spinner isCompleting={false} onComplete={() => {}}/>
+      : undefined;
+
     // JIRA issue collector script is using jQuery internally
     return this.hasJquery()
       ? (
         <span style={{ display: 'inline-block' }}>
-          <ToolbarButton onClick={this.openFeedbackPopup} selected={false} spacing="compact">
+          <ToolbarButton
+            iconBefore={iconBefore}
+            onClick={this.openFeedbackPopup}
+            selected={false}
+            spacing="compact"
+          >
             Feedback
           </ToolbarButton>
         </span>
@@ -39,9 +55,13 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
       return;
     }
 
+    this.setState({jiraIssueCollectorScriptLoading: true});
+
     // triggerFunction is executed as soon as JIRA issue collector script is loaded
     window.ATL_JQ_PAGE_PROPS = {
       triggerFunction: (showCollectorDialog) => {
+        this.setState({jiraIssueCollectorScriptLoading: false});
+
         if (typeof showCollectorDialog === 'function') {
           // save reference to `showCollectorDialog` for future calls
           this.showJiraCollectorDialogCallback = showCollectorDialog;

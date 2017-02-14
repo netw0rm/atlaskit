@@ -216,19 +216,17 @@ export default class DropdownList extends PureComponent {
           offset="0 4"
           autoPosition={props.shouldFlip}
           content={props.isOpen ?
-            <div className={styles.dropContentWrapper}>
-              <div
-                className={styles.dropContent}
-                ref={(ref) => {
-                  if (ref) {
-                    this.dropContentRef = ref;
-                    this.domItemsList = ref.querySelectorAll('[data-role="droplistItem"]');
-                    this.setMaxHeight(ref);
-                  }
-                }}
-              >
-                {props.children}
-              </div>
+            <div
+              className={styles.dropContent}
+              ref={(ref) => {
+                if (ref) {
+                  this.dropContentRef = ref;
+                  this.domItemsList = ref.querySelectorAll('[data-role="droplistItem"]');
+                  this.setMaxHeight(ref);
+                }
+              }}
+            >
+              {props.children}
             </div> :
           null
         }

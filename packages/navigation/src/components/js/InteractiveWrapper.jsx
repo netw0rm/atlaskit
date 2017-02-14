@@ -21,7 +21,7 @@ export default class InteractiveWrapper extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    href: PropTypes.href,
+    href: PropTypes.string,
     linkComponent: PropTypes.func,
     onClick: PropTypes.func,
     onMouseDown: PropTypes.func,

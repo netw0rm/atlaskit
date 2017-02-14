@@ -73,19 +73,17 @@ const hipchatSerializer = (doc: any) => {
 
 const hipchatDeserializer = (content: any, emojiService: any) => {
   return content.map(node => {
-    console.log('node before', node);
     switch (node.type) {
       case 'emoji': {
         node = {
           type: 'emoji',
-          attr: {
+          attrs: {
             ...node.attrs,
             emojiService,
           },
-        }
+        };
       }
     }
-    console.log('node after', node);
     return node;
   });
 };

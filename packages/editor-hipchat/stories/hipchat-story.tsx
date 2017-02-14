@@ -19,7 +19,7 @@ storiesOf(name, module)
   .add('With EmojiTypeAhead', () => {
     let editorRef;
     const reloadEditor = () => {
-      if(editorRef) {
+      if (editorRef) {
         const jsonDoc = editorRef.value;
         editorRef.setFromJson(jsonDoc);
       }

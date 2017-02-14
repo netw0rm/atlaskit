@@ -153,6 +153,23 @@ describe('hyperlink', () => {
         expect(plugin.active).to.be.false;
       });
     });
+
+    context('when editor is blur', () => {
+      it('returns false', () => {
+        const { plugin, pm } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
+        pm.on.blur.dispatch();
+        expect(plugin.active).to.be.false;
+      });
+    });
+
+    context('when link is focused', () => {
+      it('returns true', () => {
+        const { plugin, pm } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
+        pm.on.blur.dispatch();
+        pm.on.focus.dispatch();
+        expect(plugin.active).to.be.true;
+      });
+    });
   });
 
   describe('element', () => {
@@ -232,6 +249,23 @@ describe('hyperlink', () => {
         const { plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('text{<>}'), 'after')));
 
         expect(plugin.element).to.be.undefined;
+      });
+    });
+
+    context('when editor is blur', () => {
+      it('returns undefined', () => {
+        const { plugin, pm } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
+        pm.on.blur.dispatch();
+        expect(plugin.element).to.be.undefined;
+      });
+    });
+
+    context('when link is focused', () => {
+      it('returns defined', () => {
+        const { plugin, pm } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
+        pm.on.blur.dispatch();
+        pm.on.focus.dispatch();
+        expect(plugin.element).not.to.be.undefined;
       });
     });
   });
@@ -433,5 +467,23 @@ describe('hyperlink', () => {
 
       expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('txt'))));
     });
+
+    it('should call subscribers when editor is blur', () => {
+      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      expect(spy.callCount).to.equal(2);
+    });
+
+    it('should call subscribers when link is focused', () => {
+      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      pm.on.focus.dispatch();
+      expect(spy.callCount).to.equal(3);
+    });
+
   });
 });

@@ -31,13 +31,14 @@ export class PanelState {
   private changeHandlers: PanelStateSubscriber[] = [];
   private inputRules: InputRule[] = [];
 
-  clicked?: boolean;
+  clicked: boolean;
   element?: HTMLElement | undefined;
   activePanelType?: string | undefined;
 
   constructor(pm: PM) {
     this.pm = pm;
 
+    this.clicked = false;
     this.inputRules = panelRules;
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach(rule => rules.addRule(rule));
@@ -53,6 +54,10 @@ export class PanelState {
 
     pm.on.click.add(() => {
       this.update(true);
+    });
+
+    pm.on.focus.add(() => {
+      this.update();
     });
 
     pm.on.blur.add(() => {
@@ -119,9 +124,15 @@ export class PanelState {
   }
 
   private clear() {
-    if (this.clicked || this.element) {
-      this.clicked = undefined;
+    if (this.clicked
+      || this.element
+      || this.activePanelType
+      || this.activeNode
+    ) {
+      this.activeNode = undefined;
+      this.clicked = false;
       this.element = undefined;
+      this.activePanelType = undefined;
       this.changeHandlers.forEach(cb => cb(this));
     }
   }

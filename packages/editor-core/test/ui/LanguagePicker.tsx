@@ -19,4 +19,12 @@ describe('ak-editor-core/ui/LanguagePicker', () => {
     pm.on.blur.dispatch();
     expect(languagePicker.html()).to.equal(null);
   });
+
+  it('should not produce null HTML when editor is focused', () => {
+    const { pm, plugin } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+    const languagePicker = mount(<LanguagePicker pluginState={plugin}/>);
+    pm.on.blur.dispatch();
+    pm.on.focus.dispatch();
+    expect(languagePicker.html()).to.not.equal(null);
+  });
 });

@@ -29,6 +29,10 @@ export class CodeBlockState {
       pm.on.change,
     ], () => this.update());
 
+    pm.on.focus.add(() => {
+      this.update();
+    });
+
     pm.on.blur.add(() => {
       this.clear();
     });

@@ -47,6 +47,14 @@ export class HyperlinkState {
       pm.on.textInput,
     ], () => this.escapeFromMark());
 
+    pm.on.focus.add(() => {
+      this.update();
+    });
+
+    pm.on.blur.add(() => {
+      this.clear();
+    });
+
     this.setup(this.getActiveLinkNodeInfo());
   }
 
@@ -111,6 +119,17 @@ export class HyperlinkState {
       this.setup(nodeInfo);
       this.changeHandlers.forEach(cb => cb(this));
     }
+  }
+
+  private clear() {
+    this.activeLinkNode = undefined;
+    this.activeLinkStartPos = undefined;
+    this.activeLinkMark = undefined;
+    this.text = undefined;
+    this.href = undefined;
+    this.element = undefined;
+    this.active = false;
+    this.changeHandlers.forEach(cb => cb(this));
   }
 
   private escapeFromMark() {

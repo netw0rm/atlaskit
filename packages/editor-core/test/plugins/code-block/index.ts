@@ -76,11 +76,22 @@ describe('code-block', () => {
 
     context('when editor is blur', () => {
       it('should call subscribers', () => {
-        const { pm, plugin } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+        const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
         const spy = sinon.spy();
         plugin.subscribe(spy);
         pm.on.blur.dispatch();
         expect(spy.callCount).to.equal(2);
+      });
+    });
+
+    context('when code block is focused', () => {
+      it('should call subscribers', () => {
+        const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+        const spy = sinon.spy();
+        plugin.subscribe(spy);
+        pm.on.blur.dispatch();
+        pm.on.focus.dispatch();
+        expect(spy.callCount).to.equal(3);
       });
     });
 
@@ -267,10 +278,17 @@ describe('code-block', () => {
       });
     });
 
-    it('should reset when editor is blur', () => {
-      const { pm, plugin } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+    it('should be undefined editor is blur', () => {
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
       pm.on.blur.dispatch();
       expect(plugin.element).to.be.undefined;
+    });
+
+    it('should be defined editor is focused', () => {
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+      pm.on.blur.dispatch();
+      pm.on.focus.dispatch();
+      expect(plugin.element).not.to.be.undefined;
     });
   });
 
@@ -330,10 +348,22 @@ describe('code-block', () => {
         expect(plugin.active).to.equal(false);
       });
     });
-    it('should reset when editor is blur', () => {
-      const { pm, plugin } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
-      pm.on.blur.dispatch();
-      expect(plugin.active).to.be.undefined;
+
+    context('when editor is blur', () => {
+      it('should be false', () => {
+        const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+        pm.on.blur.dispatch();
+        expect(plugin.active).to.be.false;
+      });
+    });
+
+    context('when code block is focused', () => {
+      it('should be true', () => {
+        const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+        pm.on.blur.dispatch();
+        pm.on.focus.dispatch();
+        expect(plugin.active).to.be.true;
+      });
     });
   });
 
@@ -358,10 +388,17 @@ describe('code-block', () => {
       expect(plugin.language).to.be.undefined;
     });
 
-    it('should reset when editor is blur', () => {
-      const { pm, plugin } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+    it('should be undefined when editor is blur', () => {
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
       pm.on.blur.dispatch();
       expect(plugin.language).to.be.undefined;
+    });
+
+    it('should be defined when code block is focused', () => {
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+      pm.on.blur.dispatch();
+      pm.on.focus.dispatch();
+      expect(plugin.language).not.to.be.undefined;
     });
   });
 
@@ -386,10 +423,17 @@ describe('code-block', () => {
       expect(plugin.content).to.be.undefined;
     });
 
-    it('should reset when editor is blur', () => {
-      const { pm, plugin } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+    it('should be undefined when editor is blur', () => {
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
       pm.on.blur.dispatch();
       expect(plugin.content).to.be.undefined;
+    });
+
+    it('should be defined when code block is focused', () => {
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
+      pm.on.blur.dispatch();
+      pm.on.focus.dispatch();
+      expect(plugin.content).not.to.be.undefined;
     });
   });
 });

@@ -13,6 +13,50 @@ const selectItems = [
   },
 ];
 
+const selectItems2 = [
+  {
+    items: [
+      { content: 'Sydney', value: 'city_1' },
+      { content: 'Canberra', value: 'city_2' },
+      { content: 'Melbourne', value: 'city_3' },
+      { content: 'Sydney', value: 'city_1' },
+      { content: 'Canberra', value: 'city_2' },
+      { content: 'Melbourne', value: 'city_3' },
+      { content: 'Sydney', value: 'city_1' },
+      { content: 'Canberra', value: 'city_2' },
+      { content: 'Melbourne', value: 'city_3' },
+      { content: 'Sydney', value: 'city_1' },
+      { content: 'Canberra', value: 'city_2' },
+      { content: 'Melbourne', value: 'city_3' },
+    ],
+  },
+];
+
+const selectItems3 = [
+  {
+    heading: 'Cities',
+    items: [
+      { content: 'Sydney', value: 'city_1' },
+      { content: 'Canberra', value: 'city_2' },
+      { content: 'Melbourne', value: 'city_3' },
+    ],
+  },
+  {
+    heading: 'Another',
+    items: [
+      { content: 'Sydney', value: 'city_1' },
+      { content: 'Canberra', value: 'city_2' },
+      { content: 'Melbourne', value: 'city_3' },
+      { content: 'Sydney', value: 'city_1' },
+      { content: 'Canberra', value: 'city_2' },
+      { content: 'Melbourne', value: 'city_3' },
+      { content: 'Sydney', value: 'city_1' },
+      { content: 'Canberra', value: 'city_2' },
+      { content: 'Melbourne', value: 'city_3' },
+    ],
+  },
+];
+
 export default (
   <div>
     <Select
@@ -21,12 +65,12 @@ export default (
     />
     or
     <Select
-      items={selectItems}
-      placeholder="Me!"
+      items={selectItems2}
+      placeholder="Me! Me! Me! "
     />
     or
     <Select
-      items={selectItems}
+      items={selectItems3}
       placeholder="I'm also good"
     />
   </div>

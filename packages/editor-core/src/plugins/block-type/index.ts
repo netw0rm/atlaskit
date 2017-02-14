@@ -221,6 +221,13 @@ export class BlockTypeState {
     return true;
   }
 
+  focus(): void {
+    this.pm.content.focus();
+  }
+
+  blur(): void {
+    this.pm.content.blur();
+  }
 
   toggleBlockType(name: BlockTypeName): void {
     const blockNodes = this.blockNodesBetweenSelection();

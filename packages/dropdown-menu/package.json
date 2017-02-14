@@ -23,7 +23,7 @@
     "@atlaskit/layer": "^1.0.0",
     "@atlaskit/droplist": "^1.0.0",
     "@atlaskit/droplist-group": "^1.0.0",
-    "@atlaskit/droplist-item": "^1.0.0",
+    "@atlaskit/droplist-item": "^2.0.0",
     "@atlaskit/button": "^1.0.0",
     "ak-icon": "^12.2.0",
     "keycode": "^2.1.2",

@@ -20,43 +20,28 @@ describe(name, () => {
 
       const configInstance: EditorServicesConfig = {
         emojiResourceProvider: function (): Promise<EmojiResource> {
-          return new Promise((resolve) => {
-            resolve(new EmojiResource());
-          });
+          return Promise.resolve({} as EmojiResource);
         },
         mediaResourceProvider: function (): Promise<MediaResource> {
-          return new Promise((resolve) => {
-            resolve({
-              getUploadContext() {
-                  return resolve({
-                    clientId: 'e3afd8e5-b7d2-4b8d-bff0-ec86e4b14595',
-                    serviceHost: 'http://media-api.host.com',
-                    tokenProvider: stubJwtTokenProvider
-                  });
-              },
-              getViewContext(scope?: MediaViewContextScope){
-                return new Promise((resolve) => {
-                  return resolve({
-                    clientId: 'e3afd8e5-b7d2-4b8d-bff0-ec86e4b14595',
-                    serviceHost: 'http://media-api.host.com',
-                    tokenProvider: stubJwtTokenProvider
-                  });
+          return Promise.resolve({
+            getUploadContext() {
+                return Promise.resolve({
+                  clientId: 'e3afd8e5-b7d2-4b8d-bff0-ec86e4b14595',
+                  serviceHost: 'http://media-api.host.com',
+                  tokenProvider: stubJwtTokenProvider
                 });
-              }
-            });
+            },
+            getViewContext(scope?: MediaViewContextScope){
+              return Promise.resolve({
+                clientId: 'e3afd8e5-b7d2-4b8d-bff0-ec86e4b14595',
+                serviceHost: 'http://media-api.host.com',
+                tokenProvider: stubJwtTokenProvider
+              });
+            }
           });
         },
         mentionResourceProvider: function (): Promise<MentionResource> {
-          return new Promise((resolve) => {
-            resolve(new MentionResource());
-          });
-        },
-        reactionsResourceProvider: function (): Promise<any> {
-          return new Promise((resolve) => {
-            resolve({
-              TBD: 'TBD'
-            });
-          });
+          return Promise.resolve({} as MentionResource);
         },
       };
 
@@ -64,7 +49,11 @@ describe(name, () => {
       expect(configInstance.emojiResourceProvider!()).to.be.a('Promise');
       expect(configInstance.mediaResourceProvider!()).to.be.a('Promise');
       expect(configInstance.mentionResourceProvider!()).to.be.a('Promise');
-      expect(configInstance.reactionsResourceProvider!()).to.be.a('Promise');
+
+      return configInstance.mediaResourceProvider!().then((mr: MediaResource) => {
+        expect(mr.getUploadContext()).to.be.a('Promise');
+        expect(mr.getViewContext()).to.be.a('Promise');
+      });
     });
   });
 });

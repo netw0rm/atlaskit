@@ -3,9 +3,8 @@ import { expect } from 'chai';
 import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
 import {
   a, blockquote, br, chaiPlugin, code_block, doc, em, h1, h2,
-  h3, hr, img, li, makeEditor, mono, ol, p, strike, strong, ul
+  h3, hr, img, li, makeEditor, mono, ol, p, strike, strong, ul, mention
 } from '../../../test-helper';
-
 chai.use(chaiPlugin);
 
 describe('markdown-inputrules', () => {
@@ -93,13 +92,6 @@ describe('markdown-inputrules', () => {
   });
 
   describe('horizontal rule', () => {
-    it('should convert "***" at the start of a line to horizontal rule', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '***');
-      expect(pm.doc).to.deep.equal(doc(p(), hr, p()));
-    });
-
     it('should not convert "***" in the middle of a line to a horizontal rule', () => {
       const { pm, sel } = editor(doc(p('test{<>}')));
 
@@ -128,6 +120,18 @@ describe('markdown-inputrules', () => {
 
       pm.input.insertText(sel, sel, '`text`');
       expect(pm.doc).to.deep.equal(doc(p(mono('text'))));
+    });
+
+    it('should be able to preserve mention inside mono text', () => {
+      const mentionNode = mention({ id: '1234', displayName: '@helga' });
+      const { pm } = editor(
+      doc(p(
+        '`hello, ',
+        mentionNode,
+        'there'
+      )));
+      pm.input.insertText(15, 15, '`');
+      expect(pm.doc).to.deep.equal(doc(p(mono('hello, '), mono(mentionNode), mono('there'))));
     });
   });
 
@@ -287,6 +291,35 @@ describe('markdown-inputrules', () => {
 
       pm.input.insertText(sel, sel, '```');
       expect(pm.doc).to.deep.equal(doc(ul(li(p('```')))));
+    });
+  });
+
+  describe('nested rules', () => {
+    it('should convert "_`text`_" to italic mono text', () => {
+      const { pm, sel } = editor(doc(p('{<>}')));
+
+      pm.input.insertText(sel, sel, '_`text`');
+      expect(pm.doc).to.deep.equal(doc(p('_', mono('text'))));
+      pm.input.insertText(sel + 5, sel + 5, '_');
+      expect(pm.doc).to.deep.equal(doc(p(em(mono('text')))));
+    });
+
+    it('should convert "~~**text**~~" to strike strong', () => {
+      const { pm, sel } = editor(doc(p('{<>}')));
+
+      pm.input.insertText(sel, sel, '~~**text**');
+      expect(pm.doc).to.deep.equal(doc(p('~~', strong('text'))));
+      pm.input.insertText(sel + 6, sel + 6, '~~');
+      expect(pm.doc).to.deep.equal(doc(p(strike(strong('text')))));
+    });
+
+    it('should convert "`_text_`" to "_text_"', () => {
+      const { pm, sel } = editor(doc(p('{<>}')));
+
+      pm.input.insertText(sel, sel, '`_text_');
+      expect(pm.doc).to.deep.equal(doc(p('`_text_')));
+      pm.input.insertText(sel + 7, sel + 7, '`');
+      expect(pm.doc).to.deep.equal(doc(p(mono('_text_'))));
     });
   });
 });

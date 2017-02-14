@@ -14,6 +14,7 @@ describe(name, () => {
         'EmojiTypeAhead',
         'EmojiResource',
         'EmojiService',
+        'ResourcedEmoji',
       ]);
     });
   });

@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "@atlaskit/eslint-config-base",
+    "plugin:flowtype/recommended"
+  ],
+  "plugins": [
+    "flowtype"
+  ],
+  "rules": {
+    // allowing long lines for flowtype
+    "max-len": "off"
+  }
+}

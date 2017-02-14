@@ -1,0 +1,8 @@
+[ignore]
+
+[include]
+../../node_modules/react/package.json
+
+[libs]
+
+[options]

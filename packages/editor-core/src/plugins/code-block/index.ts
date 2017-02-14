@@ -29,6 +29,10 @@ export class CodeBlockState {
       pm.on.change,
     ], () => this.update());
 
+    pm.on.blur.add(() => {
+      this.clear();
+    });
+
     this.update();
   }
 
@@ -90,6 +94,15 @@ export class CodeBlockState {
       this.element = this.activeCodeBlockElement();
       this.changeHandlers.forEach(changeHandler => changeHandler(this));
     }
+  }
+
+  private clear() {
+    this.activeCodeBlock = undefined;
+    this.active = false;
+    this.language = undefined;
+    this.content = undefined;
+    this.element = undefined;
+    this.changeHandlers.forEach(changeHandler => changeHandler(this));
   }
 
   private activeCodeBlockElement(): HTMLElement {

@@ -74,6 +74,16 @@ describe('code-block', () => {
       });
     });
 
+    context('when editor is blur', () => {
+      it('should call subscribers', () => {
+        const { pm, plugin } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+        const spy = sinon.spy();
+        plugin.subscribe(spy);
+        pm.on.blur.dispatch();
+        expect(spy.callCount).to.equal(2);
+      });
+    });
+
     context('when unsubscribe', () => {
       it('does not notify the subscriber', () => {
         const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
@@ -256,6 +266,12 @@ describe('code-block', () => {
         expect(plugin.element).to.equal(undefined);
       });
     });
+
+    it('should reset when editor is blur', () => {
+      const { pm, plugin } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+      pm.on.blur.dispatch();
+      expect(plugin.element).to.be.undefined;
+    });
   });
 
   context('updateLanguage', () => {
@@ -314,6 +330,11 @@ describe('code-block', () => {
         expect(plugin.active).to.equal(false);
       });
     });
+    it('should reset when editor is blur', () => {
+      const { pm, plugin } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+      pm.on.blur.dispatch();
+      expect(plugin.active).to.be.undefined;
+    });
   });
 
   describe('language', () => {
@@ -336,6 +357,12 @@ describe('code-block', () => {
 
       expect(plugin.language).to.be.undefined;
     });
+
+    it('should reset when editor is blur', () => {
+      const { pm, plugin } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+      pm.on.blur.dispatch();
+      expect(plugin.language).to.be.undefined;
+    });
   });
 
   describe('content', () => {
@@ -356,6 +383,12 @@ describe('code-block', () => {
     it('sets content to undefined if no activeCodeBlock', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
+      expect(plugin.content).to.be.undefined;
+    });
+
+    it('should reset when editor is blur', () => {
+      const { pm, plugin } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+      pm.on.blur.dispatch();
       expect(plugin.content).to.be.undefined;
     });
   });

@@ -38,7 +38,7 @@ function getChangedPackages() {
         // remove duplicate names (if the first index of ourself isnt our idx, we arent unique)
         .filter((packageName, idx, arr) => arr.indexOf(packageName) === idx)
         // add the @atlaskit scope to them
-        .map(packageName => `@atlaskit/${packageName}`);
+        .map(packageName => `**/${packageName}`);
 
       return exec('git checkout -');
     })

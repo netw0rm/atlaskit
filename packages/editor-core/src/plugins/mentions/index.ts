@@ -1,5 +1,5 @@
 import Keymap from 'browserkeymap';
-import { inputRules, Plugin, ProseMirror, Schema } from '../../prosemirror';
+import { inputRules, Fragment, Plugin, ProseMirror, Schema, Text } from '../../prosemirror';
 
 import {
   MentionNodeType,
@@ -22,6 +22,7 @@ export class MentionsPluginState {
   onSelectPrevious = () => {};
   onSelectNext =  () => {};
   onSelectCurrent = () => {};
+  onTrySelectCurrent = (): boolean => { return false; };
 
   constructor(pm: PM) {
     this.pm = pm;
@@ -30,6 +31,8 @@ export class MentionsPluginState {
       Up: () => this.onSelectPrevious(),
       Down: () => this.onSelectNext(),
       Enter: () => this.onSelectCurrent(),
+      Tab: () => this.onSelectCurrent(),
+      Space: () => this.onTrySelectCurrent(),
       Esc: () => this.dismiss(),
     }, {
       name: 'mentions-plugin-keymap'
@@ -132,12 +135,14 @@ export class MentionsPluginState {
   }
 
   insertMention(mentionData?: Mention) {
-    const { mention } = this.pm.schema.nodes;
+    const { mention, text } = this.pm.schema.nodes;
 
     if (mention && mentionData) {
       const { start, end } = this.findMentionQueryMark();
       const node = mention.create({ displayName: `@${mentionData.name}`, id: mentionData.id });
-      this.pm.tr.delete(start, end).insert(start, node).apply();
+      const textNode = text.create({}, ' ');
+      const fragment = new Fragment([node, textNode], node.nodeSize + textNode.nodeSize);
+      this.pm.tr.delete(start, end).insert(start, fragment).apply();
     } else {
       this.dismiss();
     }
@@ -167,6 +172,7 @@ export interface Mention {
 export interface S extends Schema {
   nodes: {
     mention?: MentionNodeType
+    text: Text;
   };
 
   marks: {

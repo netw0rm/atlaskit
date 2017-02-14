@@ -1,16 +1,6 @@
 #!/usr/bin/env node
 /* Writing this file in js to make it easier to read and maintain */
-
-// child_process_promise is a wrapper around nodes child_process'
 const exec = require('child-process-promise').exec;
-
-// returns a random 5 character string for use in branch names to avoid collisions (super unlikely)
-function generateRandomString() {
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-  return [...new Array(5)]
-    .map(() => alphabet.charAt(Math.random() * alphabet.length))
-    .join('');
-}
 
 /*
   Gets a list of changed packages between current branch and master and returns them in the form
@@ -21,10 +11,8 @@ function getChangedPackages() {
   let changedPackages;
 
   exec('git fetch origin')
-    .then(() => {
-      const tempBranchName = `temp_${generateRandomString()}`;
-      return exec(`git checkout -b ${tempBranchName}`);
-    })
+    // we can fairly safely hard code the name here as we are never pushing back to origin
+    .then(() => exec('git checkout -b temp-branch-for-merging-master-and-doing-diff'))
     .then(() => exec('git merge origin/master'))
     .then(() => exec('git diff --name-only origin/master'))
     .then((result) => {

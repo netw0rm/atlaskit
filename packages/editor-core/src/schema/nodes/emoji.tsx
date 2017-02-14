@@ -48,7 +48,7 @@ export class EmojiNodeType extends Inline {
   get attrs() {
     return {
       id: new Attribute({ default: '' }),
-      emojiService: new Attribute({ default: undefined }),
+      emojiService: new Attribute({ default: null }),
     };
   }
 

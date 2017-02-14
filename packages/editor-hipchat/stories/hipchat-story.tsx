@@ -21,7 +21,6 @@ storiesOf(name, module)
     const reloadEditor = () => {
       if(editorRef) {
         const jsonDoc = editorRef.value;
-        console.log('jsonDoc', jsonDoc);
         editorRef.setFromJson(jsonDoc);
       }
     };

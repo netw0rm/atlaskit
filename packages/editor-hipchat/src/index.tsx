@@ -71,17 +71,21 @@ const hipchatSerializer = (doc: any) => {
   });
 };
 
-const hipchatDeserializer = (json: any, pm: ProseMirror) => {
-  console.log('hipchatDeserializer pm.plugins', pm);
-  return json.map(node => {
+const hipchatDeserializer = (content: any, emojiService: any) => {
+  return content.map(node => {
+    console.log('node before', node);
     switch (node.type) {
       case 'emoji': {
         node = {
-          ...node.attrs,
-          // emojiService:
+          type: 'emoji',
+          attr: {
+            ...node.attrs,
+            emojiService,
+          },
         }
       }
     }
+    console.log('node after', node);
     return node;
   });
 };
@@ -237,10 +241,10 @@ export default class Editor extends PureComponent<Props, State> {
     if (pm) {
       const val = {
         type: 'paragraph',
-        content: (value.length ? value : [{ type: 'text', text: ' ' }]) // We need to insert a space instead of an empty node in order to trigger the update event (which will close the mentions picker)
+        content: (value.length ? hipchatDeserializer(value, this.props.emojiService) : [{ type: 'text', text: ' ' }]) // We need to insert a space instead of an empty node in order to trigger the update event (which will close the mentions picker)
       };
 
-      pm.setDoc(schema.nodes.doc.create({}, pm.schema.nodeFromJSON(hipchatDeserializer(val, pm))));
+      pm.setDoc(schema.nodes.doc.create({}, pm.schema.nodeFromJSON(val)));
       pm.setSelection(new TextSelection(pm.doc.resolve(pm.doc.nodeSize - 3)));
       pm.flush();
 

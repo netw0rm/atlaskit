@@ -200,6 +200,17 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.feedback.button', () => {
+    window.jQuery = { ajax() {} };
+    const noop = () => {};
+
+    editor = mount(
+      <Editor isExpandedByDefault onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,
+
+      // We need to attach the editor to DOM because ProseMirror depends on having
+      // focus on the content area (detached DOM elements can not receive focus)
+      { attachTo: fixture() }
+    );
+
     editor
       .find('ToolbarFeedback > ToolbarButton')
       .simulate('click');

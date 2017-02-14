@@ -59,10 +59,10 @@ describe('ak-editor-core/schema code_block node', () => {
           expect(doc.firstChild!.type).to.be.an.instanceOf(CodeBlockNodeType);
         });
         SUPPORTED_LANGUAGES.forEach((language) => {
-          it(`extracts language "${language}" from data-language attribute`, () => {
-            const doc = fromHTML(`<pre data-language='${language}'><span>window.alert("hello");<span></pre>`, schema);
+          it(`extracts language "${language.name}" from data-language attribute`, () => {
+            const doc = fromHTML(`<pre data-language='${language.name}'><span>window.alert("hello");<span></pre>`, schema);
 
-            expect(doc.firstChild!.attrs['language']).to.eq(language);
+            expect(doc.firstChild!.attrs['language']).to.eq(language.name);
           });
         });
       });
@@ -108,11 +108,11 @@ describe('ak-editor-core/schema code_block node', () => {
       });
 
       SUPPORTED_LANGUAGES.forEach((language) => {
-        it(`extracts language attribute from class "language-${language}"`, () => {
-          const doc = fromHTML(`<div class="codehilite language-${language}"><pre><span>window.alert("hello");<span></pre></div>`, schema);
+        it(`extracts language attribute from class "language-${language.name}"`, () => {
+          const doc = fromHTML(`<div class="codehilite language-${language.name}"><pre><span>window.alert("hello");<span></pre></div>`, schema);
           const codeBlock = doc.firstChild! as CodeBlockNode;
 
-          expect(codeBlock.attrs.language).to.eq(language);
+          expect(codeBlock.attrs.language).to.eq(language.name);
         });
       });
 

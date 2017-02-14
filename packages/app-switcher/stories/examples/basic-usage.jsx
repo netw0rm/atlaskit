@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '@atlaskit/button';
 import AppSwitcher from '../../src';
 
 import containerImage from './nucleus.png';
@@ -38,6 +39,7 @@ const data = {
     home: 'Home',
     apps: 'Apps',
     configure: 'Configure',
+    recent: 'Recent',
     'try.other.apps': 'Try Other Atlassian Apps',
     'don\'t.show.this.again': 'Don’t show this again',
     'container.confluence-space': 'Space',
@@ -45,6 +47,8 @@ const data = {
     'suggested.application.description.confluence': 'Collaboration and content sharing',
     'suggested.application.description.jira': 'Issue & project tracking software',
   },
+  isDropdownOpenInitially: false,
+  trigger: isSelected => (<Button isSelected={isSelected}>...</Button>),
 };
 
 export default (

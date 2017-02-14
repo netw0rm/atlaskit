@@ -1,24 +1,27 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import { Chrome } from '@atlaskit/util-readme';
+import Button from '@atlaskit/button';
 
-import AppSwitcherMenu from './examples/AppSwitcherMenu';
+import AppSwitcher from '../src';
 import { name } from '../package.json';
 
 import data from './data.json';
 
 data.analytics = (key, props) => console.log(key, props);
+data.suggestedApplication.onDontShowAgainClick = () => {};
+data.trigger = isSelected => (<Button isSelected={isSelected}>...</Button>);
 
 storiesOf(name, module)
   .add('with all components', () => (
     <Chrome>
-      <AppSwitcherMenu {...data} />
+      <AppSwitcher {...data} />
     </Chrome>
   ))
 
   .add('with no recent containers', () => (
     <Chrome>
-      <AppSwitcherMenu
+      <AppSwitcher
         {...{
           ...data,
           recentContainers: [],
@@ -29,7 +32,7 @@ storiesOf(name, module)
 
   .add('with no suggested application', () => (
     <Chrome>
-      <AppSwitcherMenu
+      <AppSwitcher
         {...{
           ...data,
           suggestedApplication: {
@@ -42,7 +45,7 @@ storiesOf(name, module)
 
   .add('with only applications', () => (
     <Chrome>
-      <AppSwitcherMenu
+      <AppSwitcher
         {...{
           ...data,
           suggestedApplication: {
@@ -56,7 +59,7 @@ storiesOf(name, module)
 
   .add('with JIRA as suggested application', () => (
     <Chrome>
-      <AppSwitcherMenu
+      <AppSwitcher
         {...{
           ...data,
           suggestedApplication: {
@@ -71,7 +74,7 @@ storiesOf(name, module)
 
   .add('with anonymous mode', () => (
     <Chrome>
-      <AppSwitcherMenu
+      <AppSwitcher
         {...{
           ...data,
           suggestedApplication: {
@@ -86,7 +89,7 @@ storiesOf(name, module)
 
   .add('with applinks error', () => (
     <Chrome>
-      <AppSwitcherMenu
+      <AppSwitcher
         {...{
           ...data,
           suggestedApplication: {

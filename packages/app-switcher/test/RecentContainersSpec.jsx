@@ -1,28 +1,23 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-
-import RecentContainers from '../src/components/RecentContainers';
+import getRecentContainers from '../src/items/recent-containers';
 import { name } from '../package.json';
+
+const container = {
+  name: 'Recent container',
+  url: 'https://www.atlassian.com/#1',
+  iconUrl: '',
+  type: 'confluence-space',
+};
 
 describe(name, () => {
   it('should return null if there are no containers provided', () => {
-    const wrapper = shallow(<RecentContainers containers={[]} />);
+    const items = getRecentContainers({}, false, []);
 
-    expect(wrapper.type()).to.equal(null);
+    expect(items).to.equal(null);
   });
 
-  it('should render the icon with the correct url', () => {
-    const containers = [
-      {
-        name: 'Recent container',
-        url: 'url',
-        iconUrl: 'iconurl',
-        type: 'type',
-      },
-    ];
+  it('should return null if there are no containers provided', () => {
+    const items = getRecentContainers({}, true, [container]);
 
-    const wrapper = shallow(<RecentContainers containers={containers} i18n={{}} />);
-
-    expect(wrapper.find('img').first().props().src).to.equal('iconurl');
+    expect(items).to.equal(null);
   });
 });

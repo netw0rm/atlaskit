@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import { AppSwitcherContainer } from './styled';
-import HomeLink from './components/HomeLink';
-import RecentContainers from './components/RecentContainers';
-import ApplicationLinks from './components/ApplicationLinks';
-import SuggestedApplication from './components/SuggestedApplication';
+import { StatelessDropdownMenu } from '@atlaskit/dropdown-menu';
+
 import AppSwitcherPropTypes from './internal/prop-types';
+
+import getHomeLink from './items/home-link';
+import getRecentContainers from './items/recent-containers';
+import getLinkedApplications from './items/linked-applications';
+import getSuggestedApplication from './items/suggested-application';
 
 export default class AppSwitcher extends Component {
 
@@ -14,50 +16,68 @@ export default class AppSwitcher extends Component {
     isAnonymousUser: PropTypes.bool.isRequired,
     suggestedApplication: AppSwitcherPropTypes.suggestedApplication.isRequired,
     i18n: AppSwitcherPropTypes.i18n.isRequired,
+    trigger: PropTypes.func.isRequired,
     analytics: PropTypes.func,
+    isDropdownOpenInitially: PropTypes.bool,
   };
 
   static defaultProps = {
     analytics: () => {},
+    isDropdownOpenInitially: true,
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isDropdownOpen: props.isDropdownOpenInitially,
+      suggestedApplicationHiddenByUser: false,
+    };
+  }
+
+  onItemActivated = ({ item }) => {
+    if (item.analyticEvent) {
+      this.props.analytics(item.analyticEvent.key, item.analyticEvent.properties);
+    }
+
+    if (item.action === 'suggestedApplicationDontShowAgainClick') {
+      // If we remove the suggested application immediately, the droplist component interprets the
+      // click as outside the dropdown menu and closes the menu, which isn't the behaviour we want.
+      setTimeout(() => this.setState({ suggestedApplicationHiddenByUser: true }), 0);
+      this.props.suggestedApplication.onDontShowAgainClick();
+    }
   };
 
   render = () => {
-    const homeLink = this.props.isAnonymousUser
-      ? null
-      : (<HomeLink analytics={this.props.analytics} />);
+    const {
+      i18n,
+      isAnonymousUser,
+      recentContainers,
+      linkedApplications,
+      suggestedApplication,
+      trigger,
+    } = this.props;
 
-    const recentContainers = this.props.isAnonymousUser
-      ? null
-      : (
-        <RecentContainers
-          containers={this.props.recentContainers}
-          i18n={this.props.i18n}
-          analytics={this.props.analytics}
-        />
-      );
+    const dropdownItems = [
+      getHomeLink(i18n, isAnonymousUser),
+      getRecentContainers(i18n, isAnonymousUser, recentContainers),
+      getLinkedApplications(i18n, isAnonymousUser, linkedApplications),
+      getSuggestedApplication(i18n, isAnonymousUser, suggestedApplication,
+        this.state.suggestedApplicationHiddenByUser),
+    ].filter(item => item != null);
 
     return (
-      <AppSwitcherContainer>
-        {homeLink}
-        {recentContainers}
-        <ApplicationLinks
-          apps={this.props.linkedApplications.apps}
-          configureLink={!this.props.isAnonymousUser && this.props.linkedApplications.configureLink}
-          i18n={this.props.i18n}
-          isAnonymousUser={this.props.isAnonymousUser}
-          error={this.props.linkedApplications.error}
-          analytics={this.props.analytics}
-        />
-        <SuggestedApplication
-          show={!this.props.isAnonymousUser && this.props.suggestedApplication.show}
-          application={this.props.suggestedApplication.application}
-          description={this.props.suggestedApplication.description}
-          url={this.props.suggestedApplication.url}
-          onDontShowAgainClick={this.props.suggestedApplication.onDontShowAgainClick}
-          i18n={this.props.i18n}
-          analytics={this.props.analytics}
-        />
-      </AppSwitcherContainer>
+      <StatelessDropdownMenu
+        items={dropdownItems}
+        isOpen={this.state.isDropdownOpen}
+        onOpenChange={(attrs) => { this.setState({ isDropdownOpen: attrs.isOpen }); }}
+        onItemActivated={this.onItemActivated}
+        appearance="tall"
+        position="bottom left"
+        shouldFlip={false}
+      >
+        {trigger(this.state.isDropdownOpen)}
+      </StatelessDropdownMenu>
     );
   }
 }

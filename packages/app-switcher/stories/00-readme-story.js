@@ -20,8 +20,11 @@ const propDescriptions = {
   suggestedApplication: 'Map containing which application to suggest to the user.',
   i18n: 'Mapping of i18n keys to translations.',
   isAnonymousUser: 'If set to true, the home icon, recent containers and suggested application will not display.',
+  trigger: 'This function is called to render the trigger for the dropdown. It is called with one parameter - the ' +
+           'dropdown\'s current state (open or closed).',
   analytics: 'This function is called when the user performs certain actions in the app switcher. ' +
              'The function supplied should have the following signature: function analyics(eventName, payload) { ... }.',
+  isDropdownOpenInitially: 'The initial state of the dropdown.',
 };
 
 const recentContainerPropDescriptions = [
@@ -118,6 +121,10 @@ const i18nPropDescriptions = [
   {
     name: 'configure',
     description: 'Configure',
+  },
+  {
+    name: 'recent',
+    description: 'Recent',
   },
   {
     name: 'try.other.apps',

@@ -17,26 +17,7 @@ declare global {
 
 export default class ToolbarFeedback extends PureComponent<Props, State> {
 
-  showJiraCollectorDialogCallback: () => void;
-
-  constructor(...args) {
-    super(...args);
-
-    // when JIRA issue collector script is loaded
-    // its callback is saved into this field
-    this.showJiraCollectorDialogCallback = () => {};
-  }
-
-  componentDidMount() {
-    // triggerFunction is executed as soon as JIRA issue collector script is loaded
-    window.ATL_JQ_PAGE_PROPS = {
-      triggerFunction: (showCollectorDialog) => {
-        this.showJiraCollectorDialogCallback = showCollectorDialog;
-      }
-    };
-
-    this.loadJiraIssueCollectorScript();
-  }
+  showJiraCollectorDialogCallback?: () => void;
 
   render() {
     // JIRA issue collector script is using jQuery internally
@@ -53,7 +34,26 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
 
   @analytics('atlassian.editor.feedback.button')
   private openFeedbackPopup = () => {
-    this.showJiraCollectorDialogCallback();
+    if (typeof this.showJiraCollectorDialogCallback === 'function') {
+      this.showJiraCollectorDialogCallback();
+      return;
+    }
+
+    // triggerFunction is executed as soon as JIRA issue collector script is loaded
+    window.ATL_JQ_PAGE_PROPS = {
+      triggerFunction: (showCollectorDialog) => {
+        if (typeof showCollectorDialog === 'function') {
+          // save reference to `showCollectorDialog` for future calls
+          this.showJiraCollectorDialogCallback = showCollectorDialog;
+
+          // and run it now
+          // next tick is essential due to JIRA issue collector behaviour
+          setTimeout(showCollectorDialog, 0);
+        }
+      }
+    };
+
+    this.loadJiraIssueCollectorScript();
   }
 
   private loadJiraIssueCollectorScript = (): void => {

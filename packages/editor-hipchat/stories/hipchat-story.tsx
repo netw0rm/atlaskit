@@ -12,7 +12,7 @@ storiesOf(name, module)
       <Editor
         onSubmit={action('submit')}
         mentionResourceProvider={resourceProvider}
-        reversePickers={false}
+        reversePosition={true}
       />
     );
   })
@@ -36,7 +36,6 @@ storiesOf(name, module)
           <Editor
             onSubmit={action('submit')}
             emojiService={emojiService}
-            reversePickers={false}
             ref={(ref) => { editorRef = ref; }}
           />
         </div>

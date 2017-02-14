@@ -100,7 +100,7 @@ export interface Props {
   onChange?: () => void;
   mentionResourceProvider?: any;
   emojiService?: any;
-  reversePickers?: boolean;
+  reversePosition?: boolean;
 }
 
 export interface State {
@@ -144,10 +144,10 @@ export default class Editor extends PureComponent<Props, State> {
             <HyperlinkEdit pluginState={pluginStateHyperlink} />
           }
           {!pluginStateMentions ? null :
-            <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reversePickers} />
+            <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reversePosition} />
           }
           {!pluginStateEmojis ? null :
-            <EmojiTypeAhead emojiService={props.emojiService} pluginState={pluginStateEmojis} reversePosition={props.reversePickers} />
+            <EmojiTypeAhead emojiService={props.emojiService} pluginState={pluginStateEmojis} />
           }
         </div>
       </div>

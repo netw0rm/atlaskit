@@ -6,7 +6,6 @@ import { EmojisPluginState } from '../../plugins/emojis';
 export interface Props {
   pluginState: EmojisPluginState;
   emojiService: any; // EmojiResource;
-  reversePosition?: boolean;
 }
 
 export interface State {

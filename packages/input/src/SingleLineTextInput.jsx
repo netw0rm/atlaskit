@@ -1,4 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
+import keyCode from 'keycode';
 import { style } from 'glamor';
 import { akFontSizeDefault } from '@atlaskit/util-shared-styles';
 
@@ -105,7 +106,7 @@ export default class SingleLineTextInput extends PureComponent {
     if (this.props.onKeyDown) {
       this.props.onKeyDown(event);
     }
-    if (event.keyCode === 13) {
+    if (event.keyCode === keyCode('enter')) {
       this.props.onConfirm(event);
     }
   }

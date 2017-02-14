@@ -316,7 +316,7 @@ export default class InlineEdit extends PureComponent {
           >
             <FieldBase
               isInvalid={this.props.isInvalid}
-              isFocused={this.isReadOnly() || !this.isEditing ? false : undefined}
+              isFocused={this.isReadOnly() ? false : undefined}
               isReadOnly={this.isReadOnly()}
               isFitContainerWidthEnabled={this.props.isEditing}
               appearance={this.props.isEditing ? 'standard' : 'subtle'}

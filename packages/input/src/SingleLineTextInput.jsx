@@ -88,6 +88,7 @@ export default class SingleLineTextInput extends PureComponent {
     style: {},
     isInitiallySelected: false,
     onConfirm: () => {},
+    onKeyDown: () => {},
   }
 
   componentDidMount() {

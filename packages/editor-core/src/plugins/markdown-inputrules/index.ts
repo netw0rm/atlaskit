@@ -11,7 +11,6 @@ import {
   textblockTypeInputRule,
   wrappingInputRule
 } from '../../prosemirror';
-
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 
@@ -87,22 +86,18 @@ function replaceWithMark(
   pm: ProseMirror,
   match: Array<string>,
   pos: number,
-  mark: string
+  mark: string,
+  specialChar: string
 ): boolean {
   const schema = pm.schema;
   const to = pos;
   const from = pos - match[1].length;
   const markType = schema.mark(mark);
-  const marks = [...pm.tr.doc.marksAt(pos), markType];
+  const charSize = specialChar.length;
 
-  pm.tr.replaceWith(
-    from,
-    to,
-    schema.text(
-      match[2],
-      marks,
-    )
-  ).apply();
+  pm.tr.addMark(from, to, markType.type.create()).applyAndScroll();
+  pm.tr.delete(from, from + charSize).apply();
+  pm.tr.delete(to - charSize * 2, to - charSize).apply();
 
   analyticsService.trackEvent(`atlassian.editor.format.${mark}.autoformatting`);
 
@@ -179,50 +174,43 @@ const strongRule1 = new InputRule(/(\*\*([^\*]+)\*\*)$/, '*', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
-) => replaceWithMark(pm, match, pos, 'strong'));
+) => replaceWithMark(pm, match, pos, 'strong', '**'));
 
 // __string__ should bold the text
 const strongRule2 = new InputRule(/(__([^_]+)__)$/, '_', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
-) => replaceWithMark(pm, match, pos, 'strong'));
+) => replaceWithMark(pm, match, pos, 'strong', '__'));
 
 // _string_ or *string* should change the text to italic
-const emRule1 = new InputRule(/(?:[\s]+)(\*([^\*]+?)\*)$|^(\*([^\*]+)\*)$/, '*', (
+const emRule1 = new InputRule(/(?:[^\*]+)(\*([^\*]+?)\*)$|^(\*([^\*]+)\*)$/, '*', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
-) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em'));
+) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em', '*'));
 
 const emRule2 = new InputRule(/(?:[\s]+)(_([^_]+?)_)$|^(_([^_]+)_)$/, '_', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
-) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em'));
+) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em', '_'));
 
 // ~~string~~ should strikethrough the text
 const strikeRule = new InputRule(/(\~\~([^\*]+)\~\~)$/, '~', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
-) => replaceWithMark(pm, match, pos, 'strike'));
+) => replaceWithMark(pm, match, pos, 'strike', '~~'));
 
 // `string` should change the current text to monospace
 const monoRule = new InputRule(/(`([^`]+)`)$/, '`', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
-) => replaceWithMark(pm, match, pos, 'mono'));
+) => replaceWithMark(pm, match, pos, 'mono', '`'));
 
-// --- or *** should add a horizontal line
-const hrRule1 = new InputRule(/^\*\*\*$/, '*', (
-  pm: ProseMirror,
-  match: Array<string>,
-  pos: number
-) => replaceWithNode(pm, match, pos, pm.schema.nodes['horizontal_rule'].create()));
-
-const hrRule2 = new InputRule(/^\-\-\-$/, '-', (
+const hrRule = new InputRule(/^\-\-\-$/, '-', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
@@ -243,8 +231,7 @@ export class MarkdownInputRulesPlugin {
       monoRule,
       imgRule,
       linkRule,
-      hrRule1,
-      hrRule2,
+      hrRule,
       codeBlockRule,
       ...blockRules
     ];

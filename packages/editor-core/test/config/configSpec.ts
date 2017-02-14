@@ -13,9 +13,7 @@ describe(name, () => {
     // if any of the related packages' APIs change.
     it('should compile with TypeScript.', () => {
       const stubJwtTokenProvider: JwtTokenProvider = (collectionName?: string) => {
-        return new Promise((resolve) => {
-          resolve('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ');
-        });
+        return Promise.resolve('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ');
       };
 
       const configInstance: EditorServicesConfig = {

@@ -12,6 +12,7 @@ const mentionStyle = style({
   color: akColorB400,
   padding: '0 4px',
   userSelect: 'all',
+  whiteSpace: 'nowrap',
 
   $nest: {
     '&.ProseMirror-selectednode': {

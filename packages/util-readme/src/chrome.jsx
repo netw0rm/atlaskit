@@ -8,7 +8,7 @@ const style = {
 };
 
 export default class extends PureComponent {
-  static displayName = 'AkutilReadmeChrome'
+  static displayName = 'utilReadmeChrome'
   static propTypes = {
     children: PropTypes.node,
     title: PropTypes.string,

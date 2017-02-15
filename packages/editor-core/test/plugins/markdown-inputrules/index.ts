@@ -125,11 +125,11 @@ describe('markdown-inputrules', () => {
     it('should be able to preserve mention inside mono text', () => {
       const mentionNode = mention({ id: '1234', displayName: '@helga' });
       const { pm } = editor(
-      doc(p(
-        '`hello, ',
-        mentionNode,
-        'there'
-      )));
+        doc(p(
+          '`hello, ',
+          mentionNode,
+          'there'
+        )));
       pm.input.insertText(15, 15, '`');
       expect(pm.doc).to.deep.equal(doc(p(mono('hello, '), mono(mentionNode), mono('there'))));
     });
@@ -279,19 +279,36 @@ describe('markdown-inputrules', () => {
   });
 
   describe('codeblock rule', () => {
-    it('should convert "```" to a code block', () => {
-      const { pm, sel } = editor(doc(p('{<>}hello', br, 'world')));
+    context('when node is not convertable to code block', () => {
+      it('should not convert "```" to a code block\t', () => {
+        const { pm, sel } = editor(doc(ul(li(p('{<>}hello')))));
 
-      pm.input.insertText(sel, sel, '```');
-      expect(pm.doc).to.deep.equal(doc(code_block()('hello\nworld')));
+        pm.input.insertText(sel, sel, '```');
+        expect(pm.doc).to.deep.equal(doc(ul(li(p('```hello')))));
+      });
     });
 
-    it('should not convert "```" to a code block when inside a list', () => {
-      const { pm, sel } = editor(doc(ul(li(p('{<>}')))));
+    context('when node is convertable to code block', () => {
+      context('when converted node has content', () => {
+        it('should convert "```" to a code block', () => {
+          const { pm, sel } = editor(doc(p('{<>}hello', br, 'world')));
 
-      pm.input.insertText(sel, sel, '```');
-      expect(pm.doc).to.deep.equal(doc(ul(li(p('```')))));
+          pm.input.insertText(sel, sel, '```');
+          expect(pm.doc).to.deep.equal(doc(code_block()('hello\nworld')));
+        });
+      });
+
+      context('when converted node has no content', () => {
+        it('should not convert "```" to a code block\t', () => {
+          const { pm, sel } = editor(doc(p('{<>}')));
+
+          pm.input.insertText(sel, sel, '```');
+          expect(pm.doc).to.deep.equal(doc(p('```')));
+        });
+      });
+
     });
+
   });
 
   describe('nested rules', () => {

@@ -108,7 +108,7 @@ describe('block-type', () => {
     });
 
     it('should collaps nested block and convert to code block', () => {
-      const {pm, plugin} = editor (
+      const {pm, plugin} = editor(
         doc(blockquote(
           h1('h1')
         ))
@@ -396,8 +396,48 @@ describe('block-type', () => {
       });
     });
 
+    context('when hits enter', () => {
+      context('when it matches fence format', () => {
+        context('when it is already inside a code block', () => {
+          it('does not create another code block', () => {
+            const { pm } = editor(doc(code_block()('```{<>}')));
+
+            pm.input.dispatchKey('Enter');
+
+            expect(pm.doc).to.deep.equal(doc(code_block()('```'), p('')));
+          });
+        });
+
+        context('when it is not inside a code block', () => {
+          context('when langauge is provided', () => {
+            it('returns code block with language', () => {
+
+            });
+          });
+
+          context('when langauge is not provided', () => {
+            it('returns code block without language', () => {
+              const { pm } = editor(doc(p('```{<>}')));
+
+              pm.input.dispatchKey('Enter');
+
+              expect(pm.doc).to.deep.equal(doc(code_block()('')));
+            });
+
+            // it('trims the spaces', () => {
+            //   const { pm } = editor(doc(p('```    {<>}   hello')));
+
+            //   pm.input.dispatchKey('Enter');
+
+            //   expect(pm.doc).to.deep.equal(doc(code_block()('   hello')));
+            // });
+          });
+        });
+      });
+    });
+
     context('Shift-Backspace', () => {
-      it('should call delete last character', function() {
+      it('should call delete last character', function () {
         if (browser.ios) {
           // Shift-Backspace doesn't work on Safari 9.
           return this.skip();

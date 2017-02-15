@@ -158,9 +158,12 @@ const codeBlockRule = new InputRule(/^```$/, '`', (
   match: Array<string>,
   pos: number
 ) => {
-  if (isConvertableToCodeBlock(pm)) {
+  const lengthOfDecorator = match[0].length;
+  const isConvertedNodeHasContent = pm.selection.$from.parent.nodeSize > lengthOfDecorator + 2;
+
+  if (isConvertableToCodeBlock(pm) && isConvertedNodeHasContent) {
     analyticsService.trackEvent(`atlassian.editor.format.codeblock.autoformatting`);
-    const start = pos - match[0].length;
+    const start = pos - lengthOfDecorator;
     return transformToCodeBlockAction(pm)
       // remove markdown decorator ```
       .delete(start, pos)

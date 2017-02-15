@@ -52,7 +52,6 @@ export class BlockTypeState {
   private pm: PM;
   private changeHandlers: BlockTypeStateSubscriber[] = [];
   private availableContexts: Context[] = [];
-  private cursorMovable?: boolean = true;
 
   // public state
   currentBlockType: BlockType = NORMAL_TEXT;
@@ -233,11 +232,49 @@ export class BlockTypeState {
     }
   }
 
-  createParagraphNear(append: boolean = true): void {
-    if (this.cursorMovable) {
-      return;
+  private createNewParagraphAbove() {
+    const append = false;
+
+    if (!this.canMoveUp()) {
+      this.createParagraphNear(append);
+      return true;
     }
 
+    return false;
+  }
+
+  private canMoveUp(): boolean {
+    if (this.pm.selection instanceof TextSelection) {
+      if (!this.pm.selection.empty) {
+        return true;
+      }
+    }
+
+    return this.pm.selection.$from.pos !== this.pm.selection.$from.depth;
+  }
+
+  private createNewParagraphBelow() {
+    const append = true;
+
+    if (!this.canMoveDown()) {
+      this.createParagraphNear(append);
+      return true;
+    }
+
+    return false;
+  }
+
+  private canMoveDown(): boolean {
+    if (this.pm.selection instanceof TextSelection) {
+      if (!this.pm.selection.empty) {
+        return true;
+      }
+    }
+
+    return this.pm.doc.nodeSize - this.pm.selection.$to.pos - 2 !== this.pm.selection.$to.depth;
+  }
+
+  private createParagraphNear(append: boolean = true): void {
     const {pm} = this;
     const paragraph = pm.schema.nodes.paragraph;
 
@@ -301,43 +338,6 @@ export class BlockTypeState {
   private topLevelNodeIsEmptyTextBlock(): boolean {
     const topLevelNode = this.pm.selection.$from.node(1);
     return topLevelNode.isTextblock && !isCodeBlockNode(topLevelNode) && topLevelNode.textContent.length === 0;
-  }
-
-  private createNewParagraphAbove() {
-    const append = false;
-
-    if (!this.canMoveUp()) {
-      this.createParagraphNear(append);
-      return true;
-    }
-
-    return false;
-  }
-
-  private canMoveUp(): boolean {
-    if (this.pm.selection instanceof TextSelection) {
-      if (!this.pm.selection.empty) {
-        this.cursorMovable = true;
-        return true;
-      }
-    }
-
-    this.cursorMovable = (this.pm.selection.$from.pos !== this.pm.selection.$from.depth);
-    return this.cursorMovable;
-  }
-
-  private createNewParagraphBelow() {
-    const append = true;
-
-    if (!this.canMoveDown()) {
-      this.createParagraphNear(append);
-    }
-
-    return false;
-  }
-
-  private canMoveDown(): boolean {
-    return false;
   }
 
   private updateBlockTypeKeymap(context: Context) {

@@ -40,13 +40,6 @@ storiesOf(name, module)
       <TextInlineEdit initialValue="BananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBanana" />
     </div>
   ))
-  .add('with confirmation when enter is pressed', () => (
-    <div style={containerStyle}>
-      <TextInlineEdit
-        shouldConfirmOnEnter
-      />
-    </div>
-  ))
   .add('with confirmation loop', () => (
     <div style={containerStyle}>
       <LoopConfirmInlineEdit />

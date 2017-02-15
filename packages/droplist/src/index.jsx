@@ -6,6 +6,7 @@ import Trigger from '@atlaskit/droplist-trigger';
 import classnames from 'classnames';
 
 const halfFocusRing = 1;
+const numberOfVisibleItems = 9;
 
 /* eslint-disable react/no-unused-prop-types */
 /**
@@ -83,7 +84,7 @@ export default class DropdownList extends PureComponent {
     // it should have scroll and cut off half of the 10th item to indicate that there are more
     // items then are seen.
     const items = this.dropContentRef.querySelectorAll('[data-role="droplistGroupHeading"], [data-role="droplistItem"]');
-    const scrollThresholdItemIndex = items.length >= 9 ? 9 : items.length;
+    const scrollThresholdItemIndex = Math.min(items.length, numberOfVisibleItems);
     const scrollThresholdItem = items[scrollThresholdItemIndex - 1];
 
     if (!scrollThresholdItem) return null;
@@ -93,7 +94,7 @@ export default class DropdownList extends PureComponent {
     // since the values are the same.
     const bottomPadding = this.dropContentRef.firstChild.offsetTop;
 
-    return scrollThresholdItemIndex < 9 ?
+    return scrollThresholdItemIndex < numberOfVisibleItems ?
       scrollThresholdItem.offsetTop + scrollThresholdItem.clientHeight + bottomPadding :
       scrollThresholdItem.offsetTop + (scrollThresholdItem.clientHeight / 2);
   }

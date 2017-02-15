@@ -18,7 +18,7 @@ KILL_SWITCH=false
 if [ "$KILL_SWITCH" = true ] ; then
   # we echo "**," to make the glob match all packages. The comma is because the glob will be inside
   # a pair of curly braces `--scope="{$PACKAGES}"`
-  echo "**," > changed-packages
+  echo "**" > changed-packages
 else
   $BASEDIR/_get_changed_packages.js > changed-packages
 fi

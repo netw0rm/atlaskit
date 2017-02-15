@@ -1,7 +1,7 @@
 import {
-  akColorB400,
   akColorN30,
   akColorN50,
+  akColorN500
 } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 import { Attribute, Inline, Node, Schema } from '../../prosemirror';
@@ -9,9 +9,10 @@ import { Attribute, Inline, Node, Schema } from '../../prosemirror';
 const mentionStyle = style({
   background: akColorN30,
   borderRadius: '20px',
-  color: akColorB400,
-  padding: '0 4px',
+  color: akColorN500,
+  padding: '0 4px 2px 3px',
   userSelect: 'all',
+  whiteSpace: 'nowrap',
 
   $nest: {
     '&.ProseMirror-selectednode': {

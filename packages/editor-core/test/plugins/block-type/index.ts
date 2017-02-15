@@ -413,7 +413,7 @@ describe('block-type', () => {
     context('when hits up', () => {
       context('when on a text block', () => {
         context('when selection is not empty', () => {
-          it('does not create a new pagraph above', () => {
+          it('does not create a new paragraph above', () => {
             const { pm } = editor(doc(code_block()('{<}te{>}xt')));
 
             pm.input.dispatchKey('Up');
@@ -425,7 +425,7 @@ describe('block-type', () => {
         context('when selection is empty', () => {
           context('on a non nested structure', () => {
             context('when cursor is in the middle of the first block node', () => {
-              it('does not create a new pagraph above', () => {
+              it('does not create a new paragraph above', () => {
                 const { pm } = editor(doc(code_block()('te{<>}xt')));
 
                 pm.input.dispatchKey('Up');
@@ -435,7 +435,7 @@ describe('block-type', () => {
             });
 
             context('when cursor is at the beginning of the second block node', () => {
-              it('does not create a new pagraph above', () => {
+              it('does not create a new paragraph above', () => {
                 const { pm } = editor(doc(p('text'), code_block()('{<>}text')));
 
                 pm.input.dispatchKey('Up');
@@ -445,12 +445,21 @@ describe('block-type', () => {
             });
 
             context('when cursor is at the beginning of the whole content', () => {
-              it('creates a new pagraph above', () => {
+              it('creates a new paragraph above', () => {
                 const { pm } = editor(doc(code_block()('{<>}text')));
 
                 pm.input.dispatchKey('Up');
 
                 expect(pm.doc).to.deep.equal(doc(p(''), code_block()('text')));
+              });
+
+              it('does not ignore @mention', () => {
+
+                const { pm } = editor(doc(p(mention({ id: 'foo1', displayName: '@bar1' }))));
+
+                pm.input.dispatchKey('Up');
+
+                expect(pm.doc).to.deep.equal(doc(p(''), p(mention({ id: 'foo1', displayName: '@bar1' }))));
               });
             });
           });
@@ -458,7 +467,7 @@ describe('block-type', () => {
           context('on a nested structure', () => {
             context('when cursor is at the beginning of the nested structure', () => {
               context('when there is still content before the nested block', () => {
-                it('does not create a new pagraph above', () => {
+                it('does not create a new paragraph above', () => {
                   const { pm } = editor(doc(p('text'), blockquote(p('{<>}text'))));
 
                   pm.input.dispatchKey('Up');
@@ -469,7 +478,7 @@ describe('block-type', () => {
               });
 
               context('when there is no more content before the nested block', () => {
-                it('creates a new pagraph above', () => {
+                it('creates a new paragraph above', () => {
                   const { pm } = editor(doc(blockquote(p('{<>}text'))));
 
                   pm.input.dispatchKey('Up');
@@ -496,7 +505,7 @@ describe('block-type', () => {
           });
 
           context('when selection is at the beginning of the content', () => {
-            it('creates a new pagraph above', () => {
+            it('creates a new paragraph above', () => {
               const { pm } = editor(doc(hr, code_block()('text')));
               pm.setNodeSelection(0);
 
@@ -520,7 +529,7 @@ describe('block-type', () => {
           });
 
           context('when there is no more content before the nested block', () => {
-            it('creates a new pagraph above', () => {
+            it('creates a new paragraph above', () => {
               const { pm } = editor(doc(blockquote(hr, code_block()('{<>}text'))));
               pm.setNodeSelection(0);
 
@@ -536,7 +545,7 @@ describe('block-type', () => {
     context('when hits down', () => {
       context('when on a text block', () => {
         context('when selection is not empty', () => {
-          it('does not create a new pagraph below', () => {
+          it('does not create a new paragraph below', () => {
             const { pm } = editor(doc(code_block()('te{<}xt{>}')));
 
             pm.input.dispatchKey('Down');
@@ -548,7 +557,7 @@ describe('block-type', () => {
         context('when selection is empty', () => {
           context('on a non nested structure', () => {
             context('when cursor is in the middle of the first block node', () => {
-              it('does not create a new pagraph below', () => {
+              it('does not create a new paragraph below', () => {
                 const { pm } = editor(doc(code_block()('te{<>}xt')));
 
                 pm.input.dispatchKey('Down');
@@ -558,7 +567,7 @@ describe('block-type', () => {
             });
 
             context('when cursor is at the end of the second last block node', () => {
-              it('does not create a new pagraph below', () => {
+              it('does not create a new paragraph below', () => {
                 const { pm } = editor(doc(code_block()('text{<>}'), p('text')));
 
                 pm.input.dispatchKey('Down');
@@ -568,7 +577,7 @@ describe('block-type', () => {
             });
 
             context('when cursor is at the end of the whole content', () => {
-              it('creates a new pagraph below', () => {
+              it('creates a new paragraph below', () => {
                 const { pm } = editor(doc(code_block()('text{<>}')));
 
                 pm.input.dispatchKey('Down');
@@ -581,7 +590,7 @@ describe('block-type', () => {
           context('on a nested structure', () => {
             context('when cursor is at the end of the nested structure', () => {
               context('when there is still content after the nested block', () => {
-                it('does not create a new pagraph below', () => {
+                it('does not create a new paragraph below', () => {
                   const { pm } = editor(doc(blockquote(p('text{<>}')), p('text')));
 
                   pm.input.dispatchKey('Down');
@@ -592,7 +601,7 @@ describe('block-type', () => {
               });
 
               context('when there is no more content before the nested block', () => {
-                it('creates a new pagraph below', () => {
+                it('creates a new paragraph below', () => {
                   const { pm } = editor(doc(blockquote(p('text{<>}'))));
 
                   pm.input.dispatchKey('Down');
@@ -619,7 +628,7 @@ describe('block-type', () => {
           });
 
           context('when selection is at the end of the content', () => {
-            it('creates a new pagraph below', () => {
+            it('creates a new paragraph below', () => {
               const { pm, sel } = editor(doc(code_block()('text{<>}'), hr));
               pm.setNodeSelection(sel + 1);
 
@@ -643,7 +652,7 @@ describe('block-type', () => {
           });
 
           context('when there is no more content after the nested block', () => {
-            it('creates a new pagraph below', () => {
+            it('creates a new paragraph below', () => {
               const { pm, sel } = editor(doc(blockquote(code_block()('text{<>}'), hr)));
               pm.setNodeSelection(sel + 1);
 

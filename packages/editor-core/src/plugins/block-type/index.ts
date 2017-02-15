@@ -337,7 +337,7 @@ export class BlockTypeState {
 
   private topLevelNodeIsEmptyTextBlock(): boolean {
     const topLevelNode = this.pm.selection.$from.node(1);
-    return topLevelNode.isTextblock && !isCodeBlockNode(topLevelNode) && topLevelNode.textContent.length === 0;
+    return topLevelNode.isTextblock && !isCodeBlockNode(topLevelNode) && topLevelNode.nodeSize === 2;
   }
 
   private updateBlockTypeKeymap(context: Context) {

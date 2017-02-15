@@ -9,7 +9,7 @@ pipelines:
             - ./build/bin/prep_for_release.sh
             - yarn
             - yarn run browserstack/tunnel/start
-            - run-p -ln "validate/package.json" "lint" "test" "test/base" "test/wc/browserstack"
+            - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base" "test/wc/browserstack"
             - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0

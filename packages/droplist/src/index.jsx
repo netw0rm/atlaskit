@@ -5,9 +5,6 @@ import Layer from '@atlaskit/layer';
 import Trigger from '@atlaskit/droplist-trigger';
 import classnames from 'classnames';
 
-const halfGrid = 4;
-const itemHeight = halfGrid * 7;
-const dropdownMaxHeight = (itemHeight * 9.5) + (halfGrid * 2);
 const halfFocusRing = 1;
 
 /* eslint-disable react/no-unused-prop-types */
@@ -76,7 +73,25 @@ export default class DropdownList extends PureComponent {
 
   setMaxHeight = (dropDomRef) => {
     const { appearance } = this.props;
-    dropDomRef.style.maxHeight = appearance !== 'tall' ? `${dropdownMaxHeight}px` : 'none';
+    dropDomRef.style.maxHeight = appearance !== 'tall' ? `${this.getMaxHeight()}px` : 'none';
+  }
+
+  getMaxHeight = () => {
+    // When dropdown contains more than 9 elemens (droplist items, droplist groups),
+    // it should have scroll and cut off half of the 10th item to indicate that there are more
+    // items then are seen.
+    const items = this.dropContentRef.querySelectorAll('[data-role="droplistGroupHeading"], [data-role="droplistItem"]');
+    const scrollThresholdItemIndex = items.length >= 9 ? 9 : items.length;
+    const scrollThresholdItem = items[scrollThresholdItemIndex - 1];
+
+    // It really should be something like this.dropContentRef.lastChild.offsetBottom,
+    // but since there is no offsetBottom method, it's just easier to do it like this
+    // since the values are the same.
+    const bottomPadding = this.dropContentRef.firstChild.offsetTop;
+
+    return scrollThresholdItemIndex < 9 ?
+      scrollThresholdItem.offsetTop + scrollThresholdItem.clientHeight + bottomPadding :
+      scrollThresholdItem.offsetTop + (scrollThresholdItem.clientHeight / 2);
   }
 
   getNextFocusable = (indexItem, available) => {

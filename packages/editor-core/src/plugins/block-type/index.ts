@@ -244,13 +244,14 @@ export class BlockTypeState {
   }
 
   private canMoveUp(): boolean {
-    if (this.pm.selection instanceof TextSelection) {
-      if (!this.pm.selection.empty) {
+    const {selection} = this.pm;
+    if (selection instanceof TextSelection) {
+      if (!selection.empty) {
         return true;
       }
     }
 
-    return this.pm.selection.$from.pos !== this.pm.selection.$from.depth;
+    return selection.$from.pos !== selection.$from.depth;
   }
 
   private createNewParagraphBelow() {
@@ -265,13 +266,14 @@ export class BlockTypeState {
   }
 
   private canMoveDown(): boolean {
-    if (this.pm.selection instanceof TextSelection) {
-      if (!this.pm.selection.empty) {
+    const {selection, doc} = this.pm;
+    if (selection instanceof TextSelection) {
+      if (!selection.empty) {
         return true;
       }
     }
 
-    return this.pm.doc.nodeSize - this.pm.selection.$to.pos - 2 !== this.pm.selection.$to.depth;
+    return doc.nodeSize - selection.$to.pos - 2 !== selection.$to.depth;
   }
 
   private createParagraphNear(append: boolean = true): void {

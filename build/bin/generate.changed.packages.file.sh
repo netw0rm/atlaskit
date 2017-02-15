@@ -13,7 +13,7 @@ BASEDIR=$(dirname $0)
 # set this flag to true to prevent any scoping of changed packages (run all commands for all packages)
 # You may also need to move the "pr/storybook" step out of the parallel step in bitbucket-pipelines.yml
 # to prevent out of memory errors
-KILL_SWITCH=false
+KILL_SWITCH=true
 
 if [ "$KILL_SWITCH" = true ] ; then
   # we echo "**," to make the glob match all packages. The comma is because the glob will be inside

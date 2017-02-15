@@ -31,9 +31,15 @@ function getChangedPackages() {
       return exec('git checkout -');
     })
     .then(() => {
-      // output in the form "@atlaskit/packageOne,@atlaskit/packageTwo" to allow for easy scoping
-      // by passing the list as a glob
-      console.log(`${changedPackages.join(',')}`); // eslint-disable-line no-console
+      if (changedPackages.length > 1) {
+        // if we have more than 1 package, we output in the form
+        // "{@atlaskit/packageOne,@atlaskit/packageTwo}" (no quotes)
+        // This creates a glob that can be passed to lerna to scope commands to those packages
+        console.log(`{${changedPackages.join(',')}}`); // eslint-disable-line no-console
+      } else {
+        // otherwise we can just output the name (or an empty string) and the glob should work fine
+        console.log(changedPackages); // eslint-disable-line no-console
+      }
     })
     .catch((err) => {
       console.error(err); // eslint-disable-line no-console

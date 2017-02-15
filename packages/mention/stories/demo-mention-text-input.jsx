@@ -1,7 +1,7 @@
 import { action } from '@kadira/storybook';
 import React, { Component, PropTypes } from 'react';
 
-import MentionPicker from '../src/components/ak-mention-picker';
+import MentionPicker from '../src/components/MentionPicker';
 import SearchTextInput from './demo-search-text-input';
 import debug from '../src/util/logger';
 import uniqueId from '../src/util/id';

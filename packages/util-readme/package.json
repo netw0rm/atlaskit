@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/util-readme",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "A suite of components for building readme-style docs into your stories.",
   "main": "dist/bundle.js",

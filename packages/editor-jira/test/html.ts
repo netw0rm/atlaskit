@@ -67,7 +67,7 @@ function check(description: string, html: string, node: Node) {
 describe(`${name} html:`, () => {
   describe('paragraphs:', () => {
     check('empty',
-      '&nbsp;',
+      '',
       doc(p('')));
 
     check('a paragraph with text',
@@ -92,6 +92,10 @@ describe(`${name} html:`, () => {
     check('a hard break in a paragraph',
       '<p>one<br />two</p>',
       doc(p('one', br, 'two')));
+
+    check('multiple hard break in a paragraph',
+      '<p>one<br /><br />two</p>',
+      doc(p('one', br, br, 'two')));
   });
 
   describe('marks formatting:', () => {
@@ -271,9 +275,13 @@ describe(`${name} html:`, () => {
   });
 
   describe('horizontal rule', () => {
-    check('<hr />',
+    check('single <hr />',
       '<hr />',
       doc(hr()));
+
+    check('multiple <hr />',
+      '<hr /><hr />',
+      doc(hr(), hr()));
   });
 });
 

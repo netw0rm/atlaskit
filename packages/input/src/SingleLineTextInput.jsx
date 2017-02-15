@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { style } from 'glamor';
-import { akFontSizeDefault } from 'akutil-shared-styles';
+import { akFontSizeDefault } from '@atlaskit/util-shared-styles';
 
 const css = {
   common: style({
@@ -104,21 +104,25 @@ export default class SingleLineTextInput extends PureComponent {
     }
   }
 
-  renderEditView = () => (
-    <input
-      {...style(css.common, css.editView, this.props.style)}
-      {...this.getInputProps()}
-      ref={(ref) => { this.inputRef = ref; }}
-    />
-  )
+  renderEditView() {
+    return (
+      <input
+        {...style(css.common, css.editView, this.props.style)}
+        {...this.getInputProps()}
+        ref={(ref) => { this.inputRef = ref; }}
+      />
+    );
+  }
 
-  renderReadView = () => (
-    <div {...style(css.common, css.readView, this.props.style)}>
-      {this.props.value}
-    </div>
-  )
+  renderReadView() {
+    return (
+      <div {...style(css.common, css.readView, this.props.style)}>
+        {this.props.value}
+      </div>
+    );
+  }
 
-  render = () => (
-    this.props.isEditing ? this.renderEditView() : this.renderReadView()
-  )
+  render() {
+    return this.props.isEditing ? this.renderEditView() : this.renderReadView();
+  }
 }

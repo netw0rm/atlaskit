@@ -4,7 +4,7 @@ The main purpose of the mention component is to provide a mention picker for cho
 
 It includes support for rest based searching and custom search implementations.
 
-![Example mention](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-mention/docs/mention.png)
+![Example mention](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/@NAME@/docs/mention.png)
 
 ## Try it out
 
@@ -13,13 +13,15 @@ Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.co
 ## Installation
 
 ```sh
-npm install ak-mention
+npm install @NAME@
+# or
+yarn add @NAME@
 ```
 
 ## Using the component
 Import the component in your React app as follows:
 ```js
-import MentionPicker, { MentionResource } from 'ak-mention';
+import MentionPicker, { MentionResource } from '@NAME@';
 const mentionProvider = new MentionResource({
   url: 'http://example-mention-server/service',
   securityProvider: () => {

@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import ExpandIcon from 'ak-icon/glyph/expand';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import classNames from 'classnames';
 
 import { locals as styles } from '../styles.less';
@@ -15,7 +15,7 @@ export default class Trigger extends PureComponent {
     children: null,
   }
 
-  render = () => {
+  render() {
     const classes = classNames([styles.trigger, {
       [styles.isOpen]: this.props.isOpen,
     }]);

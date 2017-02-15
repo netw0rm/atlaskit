@@ -55,10 +55,10 @@ describe('<Navigation />', () => {
     it('hasBlanket && displayBlanket=false does not render a blanket', () => {
       expect(shallow(<Navigation hasBlanket />).find('Blanket').length).to.equal(0);
     });
-    it('containerHeader - can pass in an element for the container header', () => {
-      const header = <div>foo</div>;
-      expect(shallow(<Navigation containerHeader={header} />)
-        .find('ContainerNavigation').props().header).to.equal(header);
+    it('containerHeaderComponent - passes a func for the container header component to <ContainerNavigation />', () => {
+      const header = () => (<div>foo</div>);
+      expect(shallow(<Navigation containerHeaderComponent={header} />)
+        .find('ContainerNavigation').props().headerComponent).to.equal(header);
     });
     it('globalSearchIcon should pass search icon onto <GlobalNavigation />', () => {
       const icon = <img alt="search" />;
@@ -95,6 +95,15 @@ describe('<Navigation />', () => {
     it('backIconOffset should be passed to the CreateDrawer', () => {
       const offset = 20;
       expect(mount(<Navigation backIconOffset={offset} />).find('Drawer').at(1).props().backIconOffset).to.equal(offset);
+    });
+    it('onResizeStart is called when the resizer starts resizing', (done) => {
+      const navigation = shallow(<Navigation />);
+      navigation.setProps({
+        onResizeStart: () => {
+          done();
+        },
+      });
+      navigation.find('Resizer').simulate('resizeStart');
     });
     it('onResize is called after the resizeDelta has been reset to 0 (so that animations are enabled again)', (done) => {
       const navigation = shallow(<Navigation />);

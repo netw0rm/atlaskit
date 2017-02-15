@@ -4,7 +4,7 @@
 @base-background-color-focused: @ak-color-N0;
 @base-background-color-hover: @ak-color-N20;
 @base-background-color-subtle: transparent;
-@base-background-color: @ak-color-N10A;
+@base-background-color: @ak-color-N10;
 @base-border-color-disabled: @ak-color-N20A;
 @base-border-color-focused: @ak-color-B100;
 @base-border-color-hover: @ak-color-N20;
@@ -86,6 +86,10 @@
       &.compact {
         .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height-compact)
       }
+
+      &.paddingDisabled {
+        margin: unit(-(@base-border-width-focused/2), px);
+      }
     }
     &.invalid {
       // we run this mixin so that we get a border the same thickness as the focus style
@@ -98,6 +102,10 @@
       &:hover {
         background-color: @base-background-color-subtle;
         border-color: @base-color-invalid;
+      }
+
+      &.paddingDisabled {
+        margin: unit(-(@base-border-width-focused/2), px);
       }
     }
   }

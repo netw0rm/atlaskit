@@ -12,7 +12,6 @@ const Grid = styled.div`
   flex-wrap: wrap;
   margin: 0 ${getMargin};
   max-width: ${getMaxWidth};
-  min-height: 100%;
   padding: 0 ${getPadding};
   position: relative;
 `;

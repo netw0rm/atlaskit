@@ -1,7 +1,7 @@
 import React, { PropTypes, PureComponent } from 'react';
-import AKButton from 'ak-button';
+import AKButton from '@atlaskit/button';
 import BitbucketAdminIcon from 'ak-icon/glyph/bitbucket/admin';
-import AKInlineDialog from '../../src/index';
+import AKInlineDialog from '@atlaskit/inline-dialog';
 
 class ButtonActivatedDialog extends PureComponent {
   static propTypes = {
@@ -19,19 +19,21 @@ class ButtonActivatedDialog extends PureComponent {
     });
   }
 
-  render = () => (
-    <AKInlineDialog
-      content={this.props.content}
-      position={this.props.position}
-      isOpen={this.state.isOpen}
-    >
-      <AKButton
-        onClick={this.handleClick}
-        iconBefore={<BitbucketAdminIcon />}
-        isSelected
-      />
-    </AKInlineDialog>
-  )
+  render() {
+    return (
+      <AKInlineDialog
+        content={this.props.content}
+        position={this.props.position}
+        isOpen={this.state.isOpen}
+      >
+        <AKButton
+          onClick={this.handleClick}
+          iconBefore={<BitbucketAdminIcon />}
+          isSelected
+        />
+      </AKInlineDialog>
+    );
+  }
 }
 
 export default ButtonActivatedDialog;

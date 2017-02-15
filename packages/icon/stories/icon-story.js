@@ -1,8 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
-import AkButton from 'ak-button';
-import AkButtonGroup from 'ak-button-group';
+import AkButton from '@atlaskit/button';
+import AkButtonGroup from '@atlaskit/button-group';
 
 import styles from 'style!./styles.less';
 
@@ -95,7 +95,7 @@ const AllIconsSizeChecked = props => (
   </div>
 );
 
-storiesOf('ak-icon', module)
+storiesOf(name, module)
   .add('Single icon', () => (
     <AtlassianIcon
       label="Atlassian icon"

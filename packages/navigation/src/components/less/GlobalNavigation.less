@@ -2,17 +2,21 @@
 @import '~akutil-shared-styles/src/grid.less';
 @import '../../shared-variables.less';
 
+.globalNavigationOuter {
+  position: relative;
+}
+
 .globalNavigation {
-  background: @ak-color-B500;
-  height: 100%;
-  width: @global-open-width;
-  position: fixed;
-  display: flex;
   align-items: center;
-  flex-direction: column;
-  padding: @global-vertical-padding 0;
-  padding-bottom: 0;
+  background: @ak-color-B500;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-bottom: 0;
+  padding: @global-vertical-padding 0;
+  position: fixed;
+  width: @global-open-width;
   .shouldAnimate & {
     transition: transform @resize-animation-time;
   }
@@ -24,7 +28,7 @@
 }
 
 .primaryContainer {
-  flex: 1 1 auto;
+  flex: 1;
 }
 
 .secondaryContainer {

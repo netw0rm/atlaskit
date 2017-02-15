@@ -1,11 +1,13 @@
 # Profilecard
 
-![Example profilecard](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/pf-profilecard/docs/profilecard.png)
+![Example profilecard](https://i.imgur.com/A8o1MIQ.png)
 
 ## Installation
 
 ```sh
 npm install @NAME@
+# or
+yarn add @NAME@
 ```
 
 ## Using the resourced component

@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { MentionNodeType, MentionQueryMarkType, ProseMirror, Schema, schema as schemaBasic } from '../../../src';
+import { ListsPlugin, MentionNodeType, MentionQueryMarkType, ProseMirror, Schema, schema as schemaBasic } from '../../../src';
 import BlockTypePlugin from '../../../src/plugins/block-type';
 import MentionsPlugin from '../../../src/plugins/mentions';
 import { chaiPlugin, fixtures } from '../../../test-helper';
@@ -20,7 +20,7 @@ const schema: Schema = new Schema({
 const makeEditor = (container: Node) => {
   return new ProseMirror({
     schema: schema,
-    plugins: [ MentionsPlugin, BlockTypePlugin ],
+    plugins: [ ListsPlugin, MentionsPlugin, BlockTypePlugin ],
     place: container
   });
 };
@@ -210,6 +210,47 @@ describe('mentions', () => {
 
       expect(pm.doc.nodeAt(2)).to.be.of.nodeType(MentionNodeType);
     });
-  });
 
+    it('should not break list into two when inserting mention inside list item', () => {
+      const pm = makeEditor(container());
+      const pluginInstance = MentionsPlugin.get(pm)!;
+      const listsPluginInstance = ListsPlugin.get(pm)!;
+
+      listsPluginInstance.toggleBulletList();
+
+      pm.input.insertText(3, 3, '@');
+      pm.flush();
+      pm.tr.typeText('oscar').apply();
+
+      pluginInstance.insertMention({
+        name: 'Oscar Wallhult',
+        mentionName: 'oscar',
+        id: '1234'
+      });
+
+      expect(pm.doc.nodeAt(3)).to.be.of.nodeType(MentionNodeType);
+      expect(pm.doc.nodeAt(5)).to.equal(null);
+    });
+
+    it('should insert only 1 mention at a time inside blockqoute', () => {
+      const pm = makeEditor(container());
+      const pluginInstance = MentionsPlugin.get(pm)!;
+      const blockTypePluginInstance = BlockTypePlugin.get(pm)!;
+
+      blockTypePluginInstance.toggleBlockType('blockquote');
+
+      pm.input.insertText(2, 2, '@');
+      pm.flush();
+      pm.tr.typeText('oscar').apply();
+
+      pluginInstance.insertMention({
+        name: 'Oscar Wallhult',
+        mentionName: 'oscar',
+        id: '1234'
+      });
+
+      expect(pm.doc.nodeAt(2)).to.be.of.nodeType(MentionNodeType);
+      expect(pm.doc.nodeAt(5)).to.equal(null);
+    });
+  });
 });

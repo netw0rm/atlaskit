@@ -11,7 +11,6 @@ import {
 } from '../../prosemirror';
 import { LinkMark, LinkMarkType } from '../../schema';
 import hyperlinkRule from './input-rule';
-import pasteTransformer from './paste-transformer';
 
 export type StateChangeHandler = (state: HyperlinkState) => void;
 
@@ -33,8 +32,6 @@ export class HyperlinkState {
   constructor(pm: PM) {
     this.pm = pm;
 
-    pm.on.transformPasted.add(pasteTransformer.bind(pasteTransformer, pm));
-
     this.inputRules = [hyperlinkRule];
 
     const rules = inputRules.ensure(pm);
@@ -45,6 +42,10 @@ export class HyperlinkState {
       pm.on.change,
       pm.on.activeMarkChange,
     ], () => this.update());
+
+    pm.updateScheduler([
+      pm.on.textInput,
+    ], () => this.escapeFromMark());
 
     this.setup(this.getActiveLinkNodeInfo());
   }
@@ -110,6 +111,18 @@ export class HyperlinkState {
       this.setup(nodeInfo);
       this.changeHandlers.forEach(cb => cb(this));
     }
+  }
+
+  private escapeFromMark() {
+    const nodeInfo = this.getActiveLinkNodeInfo();
+    if (nodeInfo && this.isShouldEscapeFromMark(nodeInfo)) {
+      this.pm.tr.removeMark(nodeInfo.startPos, this.pm.selection.$from.pos, this.pm.schema.marks.link).apply();
+    }
+  }
+
+  private isShouldEscapeFromMark(nodeInfo: NodeInfo | undefined) {
+    const parentOffset = this.pm.selection.$from.parentOffset;
+    return nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset;
   }
 
   private setup(nodeInfo: NodeInfo | undefined): void {

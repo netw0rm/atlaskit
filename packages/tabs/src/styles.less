@@ -1,0 +1,121 @@
+@import '~akutil-shared-styles/src/colors.less';
+@import '~akutil-shared-styles/src/borders.less';
+
+@ak-tabs-padding-vertical: 5px;
+@ak-tabs-padding-horizontal: 10px;
+@ak-tabs-margin: @ak-tabs-padding-horizontal / 2;
+@ak-tabs-color-label-default: @ak-color-N500;
+@ak-tabs-color-line-default: @ak-color-N30;
+@ak-tabs-color-selected: @ak-color-B400;
+@ak-tabs-color-active: @ak-color-B500;
+@ak-tabs-color-hover: @ak-tabs-color-selected;
+@ak-tabs-color-focus: @ak-color-B100;
+@ak-tabs-focus-width: 2px;
+@ak-tabs-line-height: 25px;
+@ak-tabs-font-size: 14px;
+
+.ak-tabs-root {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0%; // FF http://stackoverflow.com/questions/28636832/firefox-overflow-y-not-working-with-nested-flexbox
+  max-width: 100%;
+}
+
+.ak-tab-labels {
+  display: flex;
+  font-weight: 500;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.ak-tab-label,
+.ak-tabs-button-container {
+  color: @ak-tabs-color-label-default;
+  cursor: pointer;
+  font-size: @ak-tabs-font-size;
+  line-height: @ak-tabs-line-height;
+  margin: 0;
+  padding: @ak-tabs-padding-vertical @ak-tabs-padding-horizontal;
+  white-space: nowrap;
+
+  &:hover,
+  &:active,
+  &:active::before{
+    color: @ak-tabs-color-active;
+  }
+
+  &:focus {
+    border-radius: @ak-border-radius;
+    box-shadow: 0 0 0 @ak-tabs-focus-width @ak-tabs-color-focus inset;
+    outline: none;
+  }
+
+  &.ak-tab-label-hidden {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+  }
+}
+
+.ak-tab-label {
+  position: relative;
+
+  &.ak-tab-label-single {
+    flex-shrink: 1;
+    min-width: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.ak-tabs-button-container {
+  .ak-tabs-button {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+  }
+}
+
+// Tab labels line
+.ak-tab-labels:not(:empty)::before,
+.ak-tab-label-selected::after {
+  background-color: @ak-tabs-color-line-default;
+  bottom: 0;
+  border-radius: 2px;
+  content: '';
+  height: 2px;
+  left: @ak-tabs-padding-horizontal;
+  margin: 0;
+  position: absolute;
+  right: @ak-tabs-padding-horizontal;
+  width: inherit;
+}
+
+.ak-tab-label-selected {
+  color: @ak-tabs-color-selected;
+
+  &::after {
+    background-color: currentColor;
+  }
+}
+
+// Dropdown items
+.ak-tab-dd-item-hidden {
+  display: none;
+}
+
+// Tab content
+.ak-tab-pane {
+  display: flex;
+  padding-left: 2 * @ak-tabs-margin;
+  flex-grow: 1;
+  min-height: 0%; // FF http://stackoverflow.com/questions/28636832/firefox-overflow-y-not-working-with-nested-flexbox
+
+  &:not(.selected) {
+    display: none;
+  }
+}

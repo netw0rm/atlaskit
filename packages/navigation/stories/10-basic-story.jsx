@@ -1,24 +1,22 @@
 import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Lorem from 'react-lorem-component';
-import { DashboardIcon, SettingsIcon, ProjectsIcon } from 'ak-icon';
-import { AkContainerItem, AkContainerLogo } from '../src/index';
-import Page from './components/Page';
+import { DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
+import { AtlassianLogo } from '@atlaskit/logo';
+import { AkContainerItem } from '../src/index';
+import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import nucleus from './nucleus.png';
-import bitbucketLogo from './bitbucket-logo.svg';
 import { name } from '../package.json';
 import RandomBadge from './components/RandomBadge';
 
 const manyContainerItems = () => {
   const items = [];
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 40; i++) {
     items.push(
-      <a href="#1" key={i}>
-        <AkContainerItem
-          text="Test page"
-        />
-      </a>
+      <AkContainerItem
+        key={i}
+        text="Test page"
+      />
     );
   }
   return items;
@@ -28,71 +26,48 @@ storiesOf(name, module)
   .add('with a few container items', () => (
     <Page>
       <BasicNavigation>
-        <a href="#1">
-          <AkContainerItem
-            text="Test page"
-          />
-        </a>
-        <a href="#2">
-          <AkContainerItem
-            icon={<img alt="icon" src={nucleus} />}
-            text="Item with an icon"
-          />
-        </a>
-        <a href="#3">
-          <AkContainerItem
-            icon={<img alt="icon" src={nucleus} />}
-            text="A really, really, quite long, actually super long container name"
-          />
-        </a>
+        <AkContainerItem
+          text="Test page"
+        />
+        <AkContainerItem
+          icon={<img alt="icon" src={nucleus} />}
+          text="Item with an icon"
+        />
+        <AkContainerItem
+          icon={<img alt="icon" src={nucleus} />}
+          text="A really, really, quite long, actually super long container name"
+        />
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('with many container items', () => (
     <Page>
       <BasicNavigation>
-        <a href="#1">
-          <AkContainerItem
-            icon={<img alt="icon" src={nucleus} />}
-            isSelected
-            text="This one is selected"
-          />
-        </a>
+        <AkContainerItem
+          icon={<img alt="icon" src={nucleus} />}
+          isSelected
+          text="This one is selected"
+        />
         {manyContainerItems()}
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('with a selected item', () => (
     <Page>
       <BasicNavigation>
-        <a href="#1">
-          <AkContainerItem
-            icon={<img alt="icon" src={nucleus} />}
-            isSelected
-            text="Nucleus"
-          />
-        </a>
+        <AkContainerItem
+          icon={<img alt="icon" src={nucleus} />}
+          isSelected
+          text="Nucleus"
+        />
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('with global appearance', () => (
     <Page>
       <BasicNavigation
         containerAppearance="global"
-        containerHeader={
-          <AkContainerLogo>
-            <img alt="Bitbucket logo" src={bitbucketLogo} />
-          </AkContainerLogo>
-        }
+        containerHeaderComponent={AtlassianLogo}
       >
         <AkContainerItem
           appearance="global"
@@ -109,30 +84,21 @@ storiesOf(name, module)
         />
         <AkContainerItem
           appearance="global"
-          icon={<ProjectsIcon label="Projects" />}
+          icon={<TrayIcon label="Tray" />}
           text="Item C"
           textAfter={<RandomBadge theme="dark" />}
         />
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('that is not resizeable', () => (
     <Page>
       <BasicNavigation isResizeable={false} />
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('with isCollapsible=false', () => (
     <Page>
       <BasicNavigation isCollapsible={false} />
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('that starts closed', () => (
@@ -148,9 +114,6 @@ storiesOf(name, module)
           text="This one is not selected"
         />
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ))
   .add('with controllable drawers', () => (

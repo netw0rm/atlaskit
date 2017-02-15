@@ -80,8 +80,20 @@ akutil-shared-styles@33.0.0
 eslint-config-ak-base@1.1.2
 */
 const changedPackages = releasesFileContents
-                          .split('\n')
-                          .map(line => line.split('@'));
+  .split('\n')
+  .map((line) => {
+    // if `package@version` starts with a "@" symbol
+    // this is a scoped package
+    // TODO: this can be easier with a proper regexp
+    if (line.startsWith('@')) {
+      const lineChunks = line.substr(1).split('@');
+      lineChunks[0] = `@${lineChunks[0]}`;
+
+      return lineChunks;
+    }
+
+    return line.split('@');
+  });
 
 const buildLink = `https://bitbucket.org/${REPO_OWNER}/${REPO_SLUG}/commits/${COMMIT}?at=${BRANCH}`;
 const message = `

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>hipchat/arrow-right</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g fill="currentColor">
+            <path d="M2,10.99975 C1.45,10.99975 1,10.54975 1,9.99975 C1,9.44975 1.45,8.99975 2,8.99975 L15.586,8.99975 L10.292,3.70575 C9.903,3.31675 9.903,2.67975 10.292,2.29175 C10.681,1.90275 11.317,1.90275 11.706,2.29175 L18.701,9.28675 C18.703,9.28875 18.706,9.28975 18.709,9.29175 C18.903,9.48575 19,9.74275 19,9.99975 C19,10.25675 18.903,10.51375 18.709,10.70775 C18.706,10.70975 18.704,10.71075 18.702,10.71275 L11.703,17.71075 C11.315,18.09975 10.678,18.09975 10.289,17.71075 C9.9,17.32175 9.9,16.68575 10.289,16.29675 L15.586,10.99975 L2,10.99975 Z" id="arrow-right"></path>
+        </g>
+    </g>
+</svg>

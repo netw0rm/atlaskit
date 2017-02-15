@@ -5,9 +5,8 @@ import Layer from '@atlaskit/layer';
 import Trigger from '@atlaskit/droplist-trigger';
 import classnames from 'classnames';
 
-const halfGrid = 4;
-const itemHeight = halfGrid * 7;
-const dropdownMaxHeight = (itemHeight * 9.5) + (halfGrid * 2);
+const halfFocusRing = 1;
+const numberOfVisibleItems = 9;
 
 /* eslint-disable react/no-unused-prop-types */
 /**
@@ -20,6 +19,8 @@ export default class DropdownList extends PureComponent {
     children: PropTypes.node,
     isOpen: PropTypes.bool,
     shouldFitContainer: PropTypes.bool,
+    isKeyboardInteractionDisabled: PropTypes.bool,
+    isTriggerDisabled: PropTypes.bool,
     isTriggerNotTabbable: PropTypes.bool,
     listContext: PropTypes.oneOf(['menu']),
     onOpenChange: PropTypes.func,
@@ -33,6 +34,8 @@ export default class DropdownList extends PureComponent {
     position: 'bottom left',
     isOpen: false,
     shouldFitContainer: false,
+    isKeyboardInteractionDisabled: false,
+    isTriggerDisabled: false,
     isTriggerNotTabbable: false,
     listContext: 'menu',
     onOpenChange: () => {},
@@ -47,7 +50,7 @@ export default class DropdownList extends PureComponent {
     }
 
     if (this.props.shouldFitContainer && this.dropContentRef) {
-      this.dropContentRef.style.width = `${this.triggerRef.offsetWidth}px`;
+      this.dropContentRef.style.width = `${this.triggerRef.offsetWidth - (halfFocusRing * 2)}px`;
     }
 
     document.addEventListener('click', this.handleClickOutside);
@@ -55,10 +58,12 @@ export default class DropdownList extends PureComponent {
 
   componentDidUpdate = () => {
     if (this.props.isOpen) {
-      this.focusFirstItem();
+      if (!this.props.isKeyboardInteractionDisabled) {
+        this.focusFirstItem();
+      }
 
       if (this.props.shouldFitContainer && this.dropContentRef) {
-        this.dropContentRef.style.width = `${this.triggerRef.offsetWidth}px`;
+        this.dropContentRef.style.width = `${this.triggerRef.offsetWidth - (halfFocusRing * 2)}px`;
       }
     }
   }
@@ -69,7 +74,29 @@ export default class DropdownList extends PureComponent {
 
   setMaxHeight = (dropDomRef) => {
     const { appearance } = this.props;
-    dropDomRef.style.maxHeight = appearance !== 'tall' ? `${dropdownMaxHeight}px` : 'none';
+    const maxHeight = this.getMaxHeight();
+    const height = maxHeight ? `${maxHeight}px` : 'none';
+    dropDomRef.style.maxHeight = appearance !== 'tall' ? height : 'none';
+  }
+
+  getMaxHeight = () => {
+    // When dropdown contains more than 9 elemens (droplist items, droplist groups),
+    // it should have scroll and cut off half of the 10th item to indicate that there are more
+    // items then are seen.
+    const items = this.dropContentRef.querySelectorAll('[data-role="droplistGroupHeading"], [data-role="droplistItem"]');
+    const scrollThresholdItemIndex = Math.min(items.length, numberOfVisibleItems);
+    const scrollThresholdItem = items[scrollThresholdItemIndex - 1];
+
+    if (!scrollThresholdItem) return null;
+
+    // It really should be something like this.dropContentRef.lastChild.offsetBottom,
+    // but since there is no offsetBottom method, it's just easier to do it like this
+    // since the values are the same.
+    const bottomPadding = this.dropContentRef.firstChild.offsetTop;
+
+    return scrollThresholdItemIndex < numberOfVisibleItems ?
+      scrollThresholdItem.offsetTop + scrollThresholdItem.clientHeight + bottomPadding :
+      scrollThresholdItem.offsetTop + (scrollThresholdItem.clientHeight / 2);
   }
 
   getNextFocusable = (indexItem, available) => {
@@ -133,7 +160,7 @@ export default class DropdownList extends PureComponent {
       this.close({ event });
     }
 
-    if (this.props.isOpen) {
+    if (this.props.isOpen && !this.props.isKeyboardInteractionDisabled) {
       if (this.isTargetChildItem(event.target)) {
         switch (event.key) {
           case 'ArrowUp':
@@ -184,6 +211,8 @@ export default class DropdownList extends PureComponent {
   }
 
   toggle = (attrs) => {
+    if (this.props.isKeyboardInteractionDisabled && attrs.source === 'keydown') return;
+
     if (this.props.isOpen) {
       this.close(attrs);
     } else {
@@ -191,7 +220,7 @@ export default class DropdownList extends PureComponent {
     }
   }
 
-  render = () => {
+  render() {
     const { props } = this;
 
     // items' event delegation
@@ -219,11 +248,12 @@ export default class DropdownList extends PureComponent {
             >
               {props.children}
             </div> :
-            null
-          }
+          null
+        }
         >
           <div className={styles.dropTrigger} ref={ref => (this.triggerRef = ref)}>
             <Trigger
+              isDisabled={props.isTriggerDisabled}
               isNotTabbable={props.isTriggerNotTabbable}
               isOpened={props.isOpen}
               onActivate={this.handleTriggerActivation}

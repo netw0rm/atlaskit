@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { DashboardIcon, ProjectsIcon, ArrowleftIcon, AtlassianIcon, EmojiPeopleIcon } from 'ak-icon';
+import { DashboardIcon, ProjectsIcon, ArrowleftIcon, AtlassianIcon, EmojiPeopleIcon } from '@atlaskit/icon';
 import { AkContainerItemGroup, AkContainerItem, AkContainerHeader, AkDrawerItem } from '../../src/index';
 import Drawer from '../../src/components/js/Drawer';
 import nucleusLogo from '../nucleus.png';

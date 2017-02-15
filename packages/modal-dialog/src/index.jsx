@@ -44,13 +44,19 @@ export default class ModalDialog extends PureComponent {
     footer: PropTypes.node,
     /**
      * @description The maximum width tier of the dialog
-     * Allowed values are: 'small' (400px), 'medium' (600px), 'large' (800px), 'x-large' (968px).
+     * Allowed values are: 'small' (400px), 'medium' (600px), 'large' (800px), 'x-large' (968px),
+     * or any integer value defining the pixel width (e.g. 300), or any string value defining the
+     * pixel or percentage width including unit (e.g. 300px, 75%).
      * @memberof ModalDialog
      * @instance
      * @type {string}
      * @default default
      */
-    width: PropTypes.oneOf(WIDTH_ENUM.values),
+    width: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
+      PropTypes.oneOf(WIDTH_ENUM.values),
+    ]),
     /**
      * @description Handler function to be called when the blanket is clicked
      * @memberof ModalDialog
@@ -75,7 +81,8 @@ export default class ModalDialog extends PureComponent {
   }
 
   handleKeyDown = (e) => {
-    if (e.key === 'Escape') {
+    const escapeKeyCode = 27;
+    if (e.keyCode === escapeKeyCode) {
       this.props.onDialogDismissed(e);
     }
   }
@@ -85,24 +92,44 @@ export default class ModalDialog extends PureComponent {
     if (!this.props.isOpen) return null;
 
     const { onDialogDismissed, header, children, footer, width } = this.props;
+
+    // If a custom width (number of percentage) is supplied, set inline style
+    const customStyle = WIDTH_ENUM.values.indexOf(width) === -1 ? (
+      { style: { width } }
+    ) : {};
+
     return (
       <div className={styles.modalWrapper}>
         <Blanket isTinted onBlanketClicked={onDialogDismissed} />
         <div
           className={classNames([
             styles.modalPositioner,
-            styles[width],
+            {
+              [styles.small]: width === 'small',
+              [styles.medium]: width === 'medium',
+              [styles.large]: width === 'large',
+              [styles.xLarge]: width === 'x-large',
+            },
           ])}
+          {...customStyle}
         >
-          <div className={styles.headerFlex}>
-            {header}
-          </div>
+          {
+            header
+              ? <div className={styles.headerFlex}>
+                {header}
+              </div>
+              : null
+          }
           <div className={styles.contentFlex}>
             {children}
           </div>
-          <div className={styles.footerFlex}>
-            {footer}
-          </div>
+          {
+            footer
+              ? <div className={styles.footerFlex}>
+                {footer}
+              </div>
+              : null
+          }
         </div>
       </div>
     );

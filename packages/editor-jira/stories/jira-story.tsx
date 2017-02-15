@@ -1,6 +1,7 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { name } from '../package.json';
 import Editor from '../src';
 
 const CANCEL_ACTION = () => action('Cancel')();
@@ -33,6 +34,6 @@ class Demo extends PureComponent<Props, State> {
   }
 }
 
-storiesOf('ak-editor-jira', module)
+storiesOf(name, module)
   .add('Editor', () => <Demo />)
   .add('Editor (allowLists)', () => <Demo allowLists />);

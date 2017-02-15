@@ -1,9 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Lorem from 'react-lorem-component';
-import { CancelIcon, DashboardIcon, EmojiTravelIcon, EmojiNatureIcon } from 'ak-icon';
+import { CrossIcon, DashboardIcon, EmojiTravelIcon, EmojiNatureIcon } from '@atlaskit/icon';
 import { name } from '../package.json';
-import Page from './components/Page';
+import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import { AkContainerItem, AkContainerItemGroup, AkDrawerItem } from '../src/index';
 import RandomBadge from './components/RandomBadge';
@@ -43,14 +42,14 @@ storiesOf(name, module)
         />
         <AkContainerItemGroup title="With things at the end">
           <AkContainerItem
-            action={<CancelIcon />}
+            action={<CrossIcon />}
             icon={<DashboardIcon label="Dashboard" />}
             subText="And two lines"
             text="With an action"
             textAfter={<RandomBadge />}
           />
           <AkContainerItem
-            action={<CancelIcon />}
+            action={<CrossIcon />}
             icon={<EmojiNatureIcon label="Nature" />}
             subText="And a very long second line of text"
             text="A very long first line of text"
@@ -59,16 +58,19 @@ storiesOf(name, module)
         </AkContainerItemGroup>
         <AkContainerItemGroup title="With compact items">
           <AkContainerItem
-            action={<CancelIcon />}
+            action={<CrossIcon />}
             isCompact
-            subText="This should not be on the page"
-            text="Should only see one line"
+            subText="Text with y, q, etc."
+            text="Should have even smaller subText"
+            textAfter={<RandomBadge />}
+          />
+          <AkContainerItem
+            isCompact
+            subText="There's nothing quite like Parkay's squeeze™"
+            text="Should have even smaller subText"
             textAfter={<RandomBadge />}
           />
         </AkContainerItemGroup>
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ));

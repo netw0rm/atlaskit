@@ -101,7 +101,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
 
     // enzyme currently requires setting value manually and simulating "change" event
     // https://github.com/airbnb/enzyme/issues/76
-    const input = toolbar.find('Panel PanelTextInput input');
+    const input = toolbar.find('FloatingToolbar PanelTextInput input');
     (input.get(0) as any).value = 'http://atlassian.com';
     input.simulate('change');
     input.simulate('keydown', { which: 'enter', keyCode: 13 });
@@ -200,6 +200,17 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.feedback.button', () => {
+    window.jQuery = { ajax() {} };
+    const noop = () => {};
+
+    editor = mount(
+      <Editor isExpandedByDefault onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,
+
+      // We need to attach the editor to DOM because ProseMirror depends on having
+      // focus on the content area (detached DOM elements can not receive focus)
+      { attachTo: fixture() }
+    );
+
     editor
       .find('ToolbarFeedback > ToolbarButton')
       .simulate('click');
@@ -227,8 +238,8 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
 
   it('atlassian.editor.paste', function() {
     if (!dispatchPasteEvent(pm, { plain: 'foo' })) {
-      this.skip('This environment does not support artificial paste events');
-      return;
+      // This environment does not support artificial paste events
+      return this.skip();
     }
 
     expect(handler.calledWith('atlassian.editor.paste')).to.equal(true);
@@ -257,7 +268,8 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
         }
       });
     } catch (e) {
-      return this.skip('This environment does not allow mocking paste events - ' + e);
+      // This environment does not allow mocking paste events
+      return this.skip();
     }
 
     contentArea.dispatchEvent(event);

@@ -1,34 +1,41 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { style } from 'glamor';
+import styled from 'styled-components';
 import { akFontSizeDefault } from '@atlaskit/util-shared-styles';
 
-const css = {
-  common: style({
-    color: 'inherit',
-    fontSize: akFontSizeDefault,
-    letterSpacing: 'normal',
-    appearance: 'none',
-  }),
-  readView: style({
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-  }),
-  editView: style({
-    lineHeight: 'inherit',
-    background: 'transparent',
-    border: 0,
-    margin: 0,
-    padding: 0,
-    boxSizing: 'border-box',
-    cursor: 'inherit',
-    outline: 'none',
-    width: '100%',
-    ':invalid': {
-      boxShadow: 'none',
-    },
-  }),
-};
+const commonStyles = `
+  color: inherit;
+  fontSize: ${akFontSizeDefault};
+  letterSpacing: normal;
+  appearance: none;
+`;
+
+const EditView = styled.input`
+  ${commonStyles}
+
+  lineHeight: inherit;
+  background: transparent;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  boxSizing: border-box;
+  cursor: inherit;
+  outline: none;
+  width: 100%;
+  &:invalid: {
+    boxShadow: none;
+  };
+  ${props => props.style}
+`;
+
+const ReadView = styled.div`
+  ${commonStyles}
+
+  overflow: hidden;
+  whiteSpace: nowrap;
+  textOverflow: ellipsis;
+
+  ${props => props.style}
+`;
 
 /**
  * @description A text input component with extremely basic styling that supports read/edit modes.
@@ -92,7 +99,6 @@ export default class SingleLineTextInput extends PureComponent {
       ...this.props,
       type: 'text',
     };
-    delete inputProps.style;
     delete inputProps.isEditing;
     delete inputProps.isInitiallySelected;
     return inputProps;
@@ -106,19 +112,18 @@ export default class SingleLineTextInput extends PureComponent {
 
   renderEditView() {
     return (
-      <input
-        {...style(css.common, css.editView, this.props.style)}
+      <EditView
         {...this.getInputProps()}
-        ref={(ref) => { this.inputRef = ref; }}
+        innerRef={(ref) => { this.inputRef = ref; }}
       />
     );
   }
 
   renderReadView() {
     return (
-      <div {...style(css.common, css.readView, this.props.style)}>
+      <ReadView style={this.props.style}>
         {this.props.value}
-      </div>
+      </ReadView>
     );
   }
 

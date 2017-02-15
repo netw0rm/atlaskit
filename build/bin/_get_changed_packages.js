@@ -36,9 +36,11 @@ function getChangedPackages() {
         // "{@atlaskit/packageOne,@atlaskit/packageTwo}" (no quotes)
         // This creates a glob that can be passed to lerna to scope commands to those packages
         console.log(`{${changedPackages.join(',')}}`); // eslint-disable-line no-console
+      } else if (changedPackages.length === 1) {
+        // if it is just one package we can just output the name as the glob
+        console.log(changedPackages[0]); // eslint-disable-line no-console
       } else {
-        // otherwise we can just output the name (or an empty string) and the glob should work fine
-        console.log(changedPackages); // eslint-disable-line no-console
+        console.log(''); // eslint-disable-line no-console
       }
     })
     .catch((err) => {

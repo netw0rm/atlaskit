@@ -7,7 +7,7 @@ import LanguagePicker from '../../src/ui/LanguagePicker';
 import { makeEditor } from '../../test-helper';
 import { code_block, doc, p, schema } from '../_schema-builder';
 
-describe('ak-editor-core/ui/LanguagePicker', () => {
+describe('LanguagePicker', () => {
   const editor = (doc: any) => {
     const { pm, plugin } = makeEditor({ doc, plugin: CodeBlockPlugin, schema });
     return { pm, plugin, sel: pm.doc.refs['<>'] };

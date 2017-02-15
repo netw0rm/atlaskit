@@ -60,8 +60,8 @@ export default class LanguagePicker extends PureComponent<Props, State> {
 
     this.setState({
       language: findMatchedLanguage(language),
-      element: element,
-      showToolbar: showToolbar
+      element,
+      showToolbar
     });
   }
 

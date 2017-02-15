@@ -30,6 +30,7 @@ import {
   removeCodeBlocksFromSelection
 } from '../../utils';
 import transformToCodeBlock from './transform-to-code-block';
+import { isConvertableToCodeBlock, transformToCodeBlockAction } from './transform-to-code-block';
 
 // The names of the blocks don't map precisely to schema nodes, because
 // of concepts like "paragraph" <-> "Normal text" and "Unknown".
@@ -378,8 +379,36 @@ export class BlockTypeState {
       [keymaps.insertNewLine.common!]: trackAndInvoke('atlassian.editor.newline.keyboard', () => this.insertNewLine()),
       [keymaps.moveUp.common!]: trackAndInvoke('atlassian.editor.moveup.keyboard', () => this.createNewParagraphAbove()),
       [keymaps.moveDown.common!]: trackAndInvoke('atlassian.editor.movedown.keyboard', () => this.createNewParagraphBelow()),
-      [keymaps.shiftBackspace.common!]: (baseKeymap as any).map.lookup('Backspace')
+      [keymaps.shiftBackspace.common!]: (baseKeymap as any).map.lookup('Backspace'),
+      [keymaps.createCodeBlock.common!]: () => this.createCodeBlock()
     }));
+  }
+
+  private createCodeBlock(): boolean {
+    const {$from} = this.pm.selection;
+    const parentBlock = $from.parent;
+    if (!parentBlock.isTextblock) {
+      return false;
+    }
+
+    if (parentBlock.nodeSize - 2 !== parentBlock.textContent.length) {
+      return false;
+    }
+
+    if (!this.pm.schema.nodes.code_block) {
+      return false;
+    }
+
+    const textContent = parentBlock.textContent.replace(/^\s+|\s+$/g, '');
+    if (textContent === '```') {
+      const startPos = $from.start($from.depth);
+      if (isConvertableToCodeBlock(this.pm)) {
+        transformToCodeBlockAction(this.pm).delete(startPos, startPos + parentBlock.textContent.length).applyAndScroll();
+        return true;
+      }
+    }
+
+    return false;
   }
 
   private blockNodesBetweenSelection(): Node[] {
@@ -419,7 +448,7 @@ export class BlockTypeState {
     const { $from } = pm.selection;
 
     for (let depth = 0; depth <= $from.depth; depth++) {
-      const node = $from.node(depth)!;
+      const node = $from.node(depth) !;
       const blocktype = this.nodeBlockType(node);
       if (blocktype !== OTHER) {
         return blocktype;

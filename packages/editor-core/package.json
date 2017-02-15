@@ -22,6 +22,8 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
+    "@atlaskit/modal-dialog": "^1.2.3",
+    "@atlaskit/media-core": "^1.0.0",
     "ak-button": "^5.0.0",
     "ak-button-group": "^3.0.2",
     "ak-droplist": "^4.1.0",

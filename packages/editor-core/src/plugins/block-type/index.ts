@@ -497,6 +497,8 @@ export class BlockTypeState {
         return !!pm.schema.nodes.blockquote;
       case CODE_BLOCK:
         return !!pm.schema.nodes.code_block;
+      case PANEL:
+        return !!pm.schema.nodes.panel;
     }
   }
 }

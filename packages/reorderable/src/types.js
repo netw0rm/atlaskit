@@ -10,26 +10,6 @@ export type DraggableId = Id;
 export type DroppableId = Id;
 export type TypeId = Id;
 
-export type Position = {| x: number, y: number |};
-
-export type Dimension = {|
-  id: Id,
-  top: number,
-  right: number,
-  bottom: number,
-  left: number,
-  width: number,
-  height: number,
-  center: Position,
-|}
-
-export type DraggableLocation = {|
-  droppableId: ?DroppableId,
-  order: ?number
-|};
-
-// export type GetId = (props: Object) => ItemId;
-
 // HOC: DragDropContext: root that holds drag state
 export type DragDropContext = HOC;
 

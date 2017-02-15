@@ -42,18 +42,18 @@ export default (type: TypeIdentifier,
   // console.log('hello');
 
    class extends PureComponent {
-    store: any
-    unsubscribe: Function
-    state: DraggableState
+     store: any
+     unsubscribe: Function
+     state: DraggableState
 
-    constructor(...args) {
+     constructor(...args) {
       super(...args);
       this.store = this.context.dragDropStore;
     }
 
-    contextTypes: Context
+     contextTypes: Context
 
-    componentDidMount() {
+     componentDidMount() {
       this.unsubscribe = this.store.subscribe(() => {
         const newState = selector(this.store.getState(), this.props, provide(this.props));
 
@@ -62,11 +62,11 @@ export default (type: TypeIdentifier,
       });
     }
 
-    componentWillUnmount() {
+     componentWillUnmount() {
       this.unsubscribe();
     }
 
-    render() {
+     render() {
       const newProps = {
         ...this.props,
         ...mapDraggableStateToProps(this.state),

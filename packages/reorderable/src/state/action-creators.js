@@ -1,17 +1,9 @@
 // @flow
-import type { Dimension, DraggableLocation, DraggableId, TypeId } from '../types';
+import type { DraggableId, TypeId } from '../types';
+import type { Dimension, DraggableLocation, Position } from './types';
 
-import {
-  LIFT,
-  PUBLISH_DRAGGABLE_DIMENSION,
-  PUBLISH_DROPPABLE_DIMENSION,
-  MOVE,
-  DROP,
-  CANCEL,
-} from './action-types';
-
-type LiftAction = {|
-  type: LIFT,
+export type LiftAction = {|
+  type: 'LIFT',
   payload: {|
     id: DraggableId,
     type: TypeId,
@@ -19,7 +11,7 @@ type LiftAction = {|
     offset: Position,
     scroll: Position,
     selection: Position,
-    location: DraggableLocation,
+    source: DraggableLocation,
   |}
 |}
 
@@ -29,35 +21,34 @@ export const lift = (id: DraggableId,
   offset: Position,
   scroll: Position,
   selection: Position,
-  order: number,
-  location: DraggableLocation,
+  source: DraggableLocation,
 ): LiftAction => ({
-  type: LIFT,
-  payload: { id, type, center, offset, scroll, selection, location },
+  type: 'LIFT',
+  payload: { id, type, center, offset, scroll, selection, source },
 });
 
 type PublishDraggableDimensionAction = {|
-  type: PUBLISH_DRAGGABLE_DIMENSION,
+  type: 'PUBLISH_DRAGGABLE_DIMENSION',
   payload: Dimension
 |}
 
 export const publishDraggableDimension = (dimension: Dimension): PublishDraggableDimensionAction => ({
-  type: PUBLISH_DRAGGABLE_DIMENSION,
+  type: 'PUBLISH_DRAGGABLE_DIMENSION',
   payload: dimension,
 });
 
 type PublishDroppableDimensionAction = {|
-  type: PUBLISH_DROPPABLE_DIMENSION,
+  type: 'PUBLISH_DROPPABLE_DIMENSION',
   payload: Dimension
 |}
 
 export const publishDroppableDimension = (dimension: Dimension): PublishDroppableDimensionAction => ({
-  type: PUBLISH_DROPPABLE_DIMENSION,
+  type: 'PUBLISH_DROPPABLE_DIMENSION',
   payload: dimension,
 });
 
 type MoveAction = {|
-  type: MOVE,
+  type: 'MOVE',
   payload: {|
     id: DraggableId,
     offset: Position,
@@ -66,7 +57,7 @@ type MoveAction = {|
 |}
 
 export const move = (id: DraggableId, offset: Position, center: Position): MoveAction => ({
-  type: MOVE,
+  type: 'MOVE',
   payload: {
     id,
     offset,
@@ -75,26 +66,26 @@ export const move = (id: DraggableId, offset: Position, center: Position): MoveA
 });
 
 type DropAction = {
-  type: DROP,
+  type: 'DROP',
   payload: DraggableId
 }
 
 export const drop = (id: DraggableId): DropAction => ({
-  type: DROP,
+  type: 'DROP',
   payload: id,
 });
 
 type CancelAction = {
-  type: CANCEL,
+  type: 'CANCEL',
   payload: DraggableId
 }
 
 export const cancel = (id: DraggableId): CancelAction => ({
-  type: CANCEL,
+  type: 'CANCEL',
   payload: id,
 });
 
-export type Actions = LiftAction |
+export type Action = LiftAction |
   PublishDraggableDimensionAction |
   PublishDroppableDimensionAction |
   MoveAction |

@@ -1,66 +1,7 @@
 // @flow
-import type {
-  Dimension,
-  Position,
-  DraggableId,
-  TypeId,
-  Id,
-  DraggableLocation,
-} from '../types';
-import type { Actions } from './action-creators';
-// import {
-//   LIFT,
-//   MOVE,
-//   PUBLISH_DRAGGABLE_DIMENSION,
-//   PUBLISH_DROPPABLE_DIMENSION,
-//   DROP,
-//   CANCEL,
-// } from './action-types';
+import type { Action, State, Dimension, Position, DragImpact, Dragging, DimensionMap, DragResult, CurrentDrag } from './types';
 
-type DimensionMap = { [key: Id]: Dimension };
-
-type DragImpact = {|
-  movement: ?{|
-    draggables: DraggableId[],
-    amount: number,
-  |},
-  destination: ?DraggableLocation
-|}
-
-type Dragging = {|
-    id: DraggableId,
-    type: TypeId,
-    offset: Position,
-    center: Position,
-    initial: {|
-      source: DraggableLocation,
-      center: Position,
-      offset: Position,
-      scroll: Position,
-      selection: Position,
-    |}
-  |}
-
-type CurrentDrag = {|
-    dragging: Dragging,
-    impact: DragImpact
-|}
-
-type DragResult = {|
-  draggableId: DraggableId,
-  source: DraggableLocation,
-  // may not have any destination (drag to nowhere)
-  destination: ?DraggableLocation
-|}
-
-type StateShape = {
-  draggableDimensions: DimensionMap,
-  droppableDimensions: DimensionMap,
-  currentDrag: ?CurrentDrag,
-  dragResult: ?DragResult,
-};
-
-const initialState: StateShape = {
+const initialState: State = {
   draggableDimensions: {},
   droppableDimensions: {},
   currentDrag: null,
@@ -81,7 +22,7 @@ const getDragImpact = (currentDrag: Dragging, draggableDimensions: DimensionMap,
   return noImpact;
 };
 
-export default (state: StateShape = initialState, action: Actions): StateShape => {
+export default (state: State = initialState, action: Action): State => {
   if (action.type === 'LIFT') {
     const { id, type, center, offset, scroll, selection, source } = action.payload;
 

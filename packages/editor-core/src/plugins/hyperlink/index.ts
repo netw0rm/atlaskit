@@ -151,7 +151,10 @@ export class HyperlinkState {
       }
 
       if (node && node.isText && link.isInSet(node.marks)) {
-        return { node: node, startPos: offset + 1 };
+        return {
+          node,
+          startPos: pm.selection.$from.start(pm.selection.$from.depth) + offset + 1
+        };
       }
     }
   }

@@ -26,6 +26,7 @@ export default {
     home: PropTypes.string.isRequired,
     apps: PropTypes.string.isRequired,
     configure: PropTypes.string.isRequired,
+    recent: PropTypes.string.isRequired,
     'try.other.apps': PropTypes.string.isRequired,
     "don't.show.this.again": PropTypes.string.isRequired,
     'container.confluence-space': PropTypes.string.isRequired,

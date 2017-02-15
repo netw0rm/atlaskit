@@ -1,5 +1,5 @@
 import React from 'react';
-import { RecentContainerType, RecentContainerImage } from '../styled';
+import { ItemWithIcon, RecentContainerType, RecentContainerImage, RecentContainerName } from '../styled';
 
 export default function (i18n, isAnonymousUser, recentContainers) {
   if (isAnonymousUser || !recentContainers.length) {
@@ -10,10 +10,10 @@ export default function (i18n, isAnonymousUser, recentContainers) {
     heading: i18n.recent,
     items: recentContainers.map(container => ({
       content: (
-        <div>
-          <div>{container.name}</div>
+        <ItemWithIcon>
+          <RecentContainerName>{container.name}</RecentContainerName>
           <RecentContainerType>{i18n[`container.${container.type}`]}</RecentContainerType>
-        </div>
+        </ItemWithIcon>
       ),
       elemBefore: (<RecentContainerImage src={container.iconUrl} alt={container.name} />),
       href: container.url,

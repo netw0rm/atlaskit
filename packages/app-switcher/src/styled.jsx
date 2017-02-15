@@ -5,6 +5,26 @@ import {
   akColorN100,
 } from '@atlaskit/util-shared-styles';
 
+const ellipsis = `
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+export const Item = styled.div`
+  max-width: 350px;
+  min-width: 150px;
+  
+  ${ellipsis}
+`;
+
+export const ItemWithIcon = styled.div`
+  max-width: 300px;
+  min-width: 150px;
+  
+  ${ellipsis}
+`;
+
 export const SuggestedApplicationTagline = styled.div`
   color: ${akColorN90};
   font-size: 12px;
@@ -14,7 +34,7 @@ export const LogoContainer = styled.div`
   color: ${akColorB400};
 `;
 
-export const HomeLinkContainer = styled.div`
+export const HomeLinkContainer = styled(ItemWithIcon)`
   padding: 8px 0;
 `;
 
@@ -24,12 +44,16 @@ export const RecentContainerType = styled.div`
   padding-top: 3px;
 `;
 
+export const RecentContainerName = styled.div`
+  ${ellipsis}
+`;
+
 export const RecentContainerImage = styled.img`
   border-radius: 2px;
   height: 32px;
   width: 32px;
 `;
 
-export const Link = styled.div`
+export const Link = styled.span`
   color: ${akColorB400};
 `;

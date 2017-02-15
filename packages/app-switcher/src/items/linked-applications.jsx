@@ -1,25 +1,25 @@
 import React from 'react';
-import { Link } from '../styled';
+import { Item, Link } from '../styled';
 
 export default function (i18n, isAnonymousUser, linkedApplications) {
   if (linkedApplications.error) {
     return {
       heading: i18n.apps,
       items: [{
-        content: (<div>{i18n['applinks.error']}</div>),
+        content: (<Item>{i18n['applinks.error']}</Item>),
       }],
     };
   }
 
   const items = linkedApplications.apps.map(application => ({
-    content: (<div>{application.name}</div>),
+    content: (<Item>{application.name}</Item>),
     href: application.url,
     analyticEvent: { key: 'appswitcher.app.link.click', properties: { product: application.product } },
   }));
 
   if (linkedApplications.configureLink && !isAnonymousUser) {
     items.push({
-      content: (<Link>Configure</Link>),
+      content: (<Item><Link>Configure</Link></Item>),
       href: linkedApplications.configureLink,
       analyticEvent: { key: 'appswitcher.configure.link.click' },
     });

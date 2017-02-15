@@ -1,6 +1,6 @@
 import React from 'react';
 import { ConfluenceLogo, JiraLogo } from '@atlaskit/logo';
-import { LogoContainer, SuggestedApplicationTagline, Link } from '../styled';
+import { LogoContainer, SuggestedApplicationTagline, Link, Item } from '../styled';
 
 const logos = {
   jira: <JiraLogo />,
@@ -19,10 +19,10 @@ export default function (i18n, isAnonymousUser, suggestedApplication, hiddenByUs
     items: [
       {
         content: (
-          <div>
+          <Item>
             <LogoContainer>{logos[application]}</LogoContainer>
             <SuggestedApplicationTagline>{i18n[`suggested.application.description.${application}`]}</SuggestedApplicationTagline>
-          </div>
+          </Item>
         ),
         href: url,
         analyticEvent: { key: `appswitcher.discovery.user.select.${application}` },

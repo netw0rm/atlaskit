@@ -73,7 +73,9 @@ export default class DropdownList extends PureComponent {
 
   setMaxHeight = (dropDomRef) => {
     const { appearance } = this.props;
-    dropDomRef.style.maxHeight = appearance !== 'tall' ? `${this.getMaxHeight()}px` : 'none';
+    const maxHeight = this.getMaxHeight();
+    const height = maxHeight ? `${maxHeight}px` : 'none';
+    dropDomRef.style.maxHeight = appearance !== 'tall' ? height : 'none';
   }
 
   getMaxHeight = () => {
@@ -83,6 +85,8 @@ export default class DropdownList extends PureComponent {
     const items = this.dropContentRef.querySelectorAll('[data-role="droplistGroupHeading"], [data-role="droplistItem"]');
     const scrollThresholdItemIndex = items.length >= 9 ? 9 : items.length;
     const scrollThresholdItem = items[scrollThresholdItemIndex - 1];
+
+    if (!scrollThresholdItem) return null;
 
     // It really should be something like this.dropContentRef.lastChild.offsetBottom,
     // but since there is no offsetBottom method, it's just easier to do it like this

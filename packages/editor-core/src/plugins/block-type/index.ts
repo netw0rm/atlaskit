@@ -67,10 +67,6 @@ export class BlockTypeState {
       pm.on.change,
     ], () => this.update());
 
-    pm.updateScheduler([
-      pm.on.selectionChange
-    ], () => this.onSelectionChange());
-
     this.addBasicKeymap();
 
     this.addAvailableContext('default', [
@@ -308,27 +304,40 @@ export class BlockTypeState {
   }
 
   private createNewParagraphAbove() {
-    this.cursorMovable = false;
     const append = false;
 
-    // The reason that we need to set a timeout here is because
-    // prosemirror sets a timeout (100 miliseconds) to check
-    // whether dom cursor position has changed after keypress.
-    // So we check later (105 miliseconds) that whether prosemirror has detect cursor change.
-    setTimeout(() => this.createParagraphNear(append), 105);
+    if (!this.canMoveUp()) {
+      this.createParagraphNear(append);
+      return true;
+    }
+
     return false;
+  }
+
+  private canMoveUp(): boolean {
+    if (this.pm.selection instanceof TextSelection) {
+      if (!this.pm.selection.empty) {
+        this.cursorMovable = true;
+        return true;
+      }
+    }
+
+    this.cursorMovable = (this.pm.selection.$from.pos !== this.pm.selection.$from.depth);
+    return this.cursorMovable;
   }
 
   private createNewParagraphBelow() {
-    this.cursorMovable = false;
     const append = true;
 
-    setTimeout(() => this.createParagraphNear(append), 105);
+    if (!this.canMoveDown()) {
+      this.createParagraphNear(append);
+    }
+
     return false;
   }
 
-  private onSelectionChange() {
-    this.cursorMovable = true;
+  private canMoveDown(): boolean {
+    return false;
   }
 
   private updateBlockTypeKeymap(context: Context) {

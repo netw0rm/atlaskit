@@ -411,26 +411,143 @@ describe('block-type', () => {
     });
 
     context('when hits up', () => {
-      it('creates new paragraph above', (done) => {
-        const { pm, plugin } = editor(doc(code_block()('{<>}text')));
-        const createParagraphNear = sinon.spy(plugin, 'createParagraphNear');
-        pm.input.dispatchKey('Up');
-        setTimeout(function () {
-          expect(createParagraphNear.withArgs(false).callCount).to.equal(1);
-          done();
-        }, 110);
+      context('when on a text block', () => {
+        context('when selection is not empty', () => {
+          it('does not create a new pagraph above', () => {
+            const { pm, plugin } = editor(doc(code_block()('{<}te{>}xt')));
+            const createParagraphNear = sinon.spy(plugin, 'createParagraphNear');
+
+            pm.input.dispatchKey('Up');
+
+            expect(createParagraphNear.callCount).to.equal(0);
+          });
+        });
+
+        context('when selection is empty', () => {
+          context('on a non nested structure', () => {
+            context('when cursor is in the middle of the first block node', () => {
+              it('does not create a new pagraph above', () => {
+                const { pm, plugin } = editor(doc(code_block()('te{<>}xt')));
+                const createParagraphNear = sinon.spy(plugin, 'createParagraphNear');
+
+                pm.input.dispatchKey('Up');
+
+                expect(createParagraphNear.callCount).to.equal(0);
+              });
+            });
+
+            context('when cursor is at the beginning of the second block node', () => {
+              it('does not create a new pagraph above', () => {
+                const { pm, plugin } = editor(doc(p('text'), code_block()('{<>}text')));
+                const createParagraphNear = sinon.spy(plugin, 'createParagraphNear');
+
+                pm.input.dispatchKey('Up');
+
+                expect(createParagraphNear.callCount).to.equal(0);
+              });
+            });
+
+            context('when cursor is at the beginning of the whole content', () => {
+              it('creates a new pagraph above', () => {
+                const { pm, plugin } = editor(doc(code_block()('{<>}text')));
+                const createParagraphNear = sinon.spy(plugin, 'createParagraphNear');
+
+                pm.input.dispatchKey('Up');
+
+                expect(createParagraphNear.withArgs(false).callCount).to.equal(1);
+              });
+            });
+          });
+
+          context('on a nested structure', () => {
+            context('when cursor is at the beginning of the nested structure', () => {
+              context('when there is still content before the nested block', () => {
+                it('does not create a new pagraph above', () => {
+                  const { pm, plugin } = editor(doc(p('text'), blockquote(p('{<>}text'))));
+                  const createParagraphNear = sinon.spy(plugin, 'createParagraphNear');
+
+                  pm.input.dispatchKey('Up');
+
+                  expect(createParagraphNear.callCount).to.equal(0);
+                });
+              });
+
+              context('when there is no more content before the nested block', () => {
+                it('creates a new pagraph above', () => {
+                  const { pm, plugin } = editor(doc(blockquote(p('{<>}text'))));
+                  const createParagraphNear = sinon.spy(plugin, 'createParagraphNear');
+
+                  pm.input.dispatchKey('Up');
+
+                  expect(createParagraphNear.withArgs(false).callCount).to.equal(1);
+                });
+              });
+            });
+          });
+        });
+      });
+
+      context('when on a node selection', () => {
+        context('on a non nested structure', () => {
+          context('when selection is in the middle of the content', () => {
+            it('does not create a paragraph', () => {
+              const { pm, plugin, sel } = editor(doc(p('text'), hr, code_block()('{<>}text')));
+              const createParagraphNear = sinon.spy(plugin, 'createParagraphNear');
+              pm.setNodeSelection(sel - 1);
+
+              pm.input.dispatchKey('Up');
+
+              expect(createParagraphNear.callCount).to.equal(0);
+            });
+          });
+
+          context('when selection is in the beginning of the content', () => {
+            it('creates a new pagraph above', () => {
+              const { pm, plugin } = editor(doc(hr, code_block()('text')));
+              const createParagraphNear = sinon.spy(plugin, 'createParagraphNear');
+              pm.setNodeSelection(0);
+
+              pm.input.dispatchKey('Up');
+
+              expect(createParagraphNear.withArgs(false).callCount).to.equal(1);
+            });
+          });
+        });
+
+        context('on a nested structure', () => {
+          context('when there is more content before the nested block', () => {
+            it('does not create a paragraph', () => {
+              const { pm, plugin, sel } = editor(doc(p('text'), blockquote(hr, code_block()('{<>}text'))));
+              const createParagraphNear = sinon.spy(plugin, 'createParagraphNear');
+              pm.setNodeSelection(sel - 1);
+
+              pm.input.dispatchKey('Up');
+
+              expect(createParagraphNear.callCount).to.equal(0);
+            });
+          });
+
+          context('when there is no more content before the nested block', () => {
+            it('creates a new pagraph above', () => {
+              const { pm, plugin } = editor(doc(blockquote(hr, code_block()('{<>}text'))));
+              const createParagraphNear = sinon.spy(plugin, 'createParagraphNear');
+              pm.setNodeSelection(0);
+
+              pm.input.dispatchKey('Up');
+
+              expect(createParagraphNear.withArgs(false).callCount).to.equal(1);
+            });
+          });
+        });
       });
     });
 
     context('when hits down', () => {
-      it('creates new paragraph above', (done) => {
+      it('creates new paragraph below', () => {
         const { pm, plugin } = editor(doc(code_block()('text{<>}')));
         const createParagraphNear = sinon.spy(plugin, 'createParagraphNear');
         pm.input.dispatchKey('Down');
-        setTimeout(function () {
-          expect(createParagraphNear.withArgs(true).callCount).to.equal(1);
-          done();
-        }, 110);
+        expect(createParagraphNear.withArgs(true).callCount).to.equal(1);
       });
     });
   });

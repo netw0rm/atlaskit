@@ -6,7 +6,7 @@ import CodeBlockPasteListener from './code-block-paste-listener';
 
 export class CodeBlockState {
   element?: HTMLElement;
-  language?: string;
+  language: string | undefined;
   clicked: boolean = false;
 
   private pm: PM;

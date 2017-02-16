@@ -28,6 +28,7 @@ describe(name, () => {
           'arrowrightlong',
           'atlassian',
           'attachment',
+          'audio',
           'backlog',
           'bitbucket',
           'bitbucket/branches',
@@ -57,6 +58,7 @@ describe(name, () => {
           'decision',
           'detail-view',
           'discover',
+          'document',
           'edit',
           'editor/add',
           'editor/addon',
@@ -175,6 +177,7 @@ describe(name, () => {
           'page',
           'people',
           'person',
+          'play',
           'question-circle',
           'question',
           'quote',
@@ -195,6 +198,7 @@ describe(name, () => {
           'tray',
           'undo',
           'unlink',
+          'video',
           'warning',
         ]);
         // If you find yourself here and wonder why this list is not auto-generated, then bear in

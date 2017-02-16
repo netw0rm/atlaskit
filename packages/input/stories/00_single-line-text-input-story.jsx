@@ -18,12 +18,15 @@ const createSingleLineTextInput = props => (
   <SingleLineTextInput
     value="Lorem ipsum dolor sit amet"
     onChange={action('onChange')}
+    onConfirm={action('onConfirm')}
     isEditing={false}
     {...props}
   />
 );
 
-storiesOf(name, module)
+const storyName = `${name} single-line-text-input`;
+
+storiesOf(storyName, module)
   .add('with default font size', () => (
     <div style={containerStyle}>
       {createSingleLineTextInput()}

@@ -125,6 +125,15 @@ export default class FieldBase extends PureComponent {
      */
     onBlur: PropTypes.func.isRequired,
     /**
+     * @description This flag will force blur on fieldbase after it is rendered.
+     *
+     * @memberof FieldBase
+     * @type {boolean}
+     * @default false
+     * @example <FieldBase shouldReset />
+     */
+    shouldReset: PropTypes.bool,
+    /**
      * @description The content that will be displayed within the field
      *
      * @memberof FieldBase
@@ -144,6 +153,13 @@ export default class FieldBase extends PureComponent {
     isReadOnly: false,
     isRequired: false,
     isFitContainerWidthEnabled: false,
+    shouldReset: false,
+  }
+
+  componentDidUpdate() {
+    if (this.props.shouldReset) {
+      this.props.onBlur();
+    }
   }
 
   renderWarningIcon = () => (

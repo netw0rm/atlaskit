@@ -27,7 +27,7 @@ const DroplistOverview = class extends Component {
       trigger={<Button isSelected={this.state.isDropdownOpen}>...</Button>}
     >
       <Group heading="Australia">
-        <Item href="http://atlassian.com" target="_blank">Sydney</Item>
+        <Item href="//atlassian.com" target="_blank">Sydney</Item>
         <Item isHidden>Hidden item</Item>
         <Item>Canberra</Item>
         <Item

@@ -21,7 +21,7 @@ export interface OnClose {
 export interface Props {
   resourceProvider: MentionProvider;
   presenceProvider?: PresenceProvider;
-  query: string;
+  query?: string;
 
   onSelection?: OnSelection;
   onOpen?: OnOpen;

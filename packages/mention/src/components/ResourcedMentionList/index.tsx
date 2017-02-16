@@ -39,7 +39,7 @@ function extractPresences(mentions: Mention[]) {
 export interface Props {
   resourceProvider: MentionProvider;
   presenceProvider?: PresenceProvider;
-  query: string;
+  query?: string;
   onSelection?: OnSelection;
 }
 
@@ -169,7 +169,7 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
     }
 
     if (shouldFilter) {
-      newResourceProvider.filter(newQuery);
+      newResourceProvider.filter(newQuery!);
     }
   }
 

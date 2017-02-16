@@ -46,8 +46,8 @@ export const HomeLinkContainer = styled(ItemWithIcon)`
 export const RecentContainerType = styled.div`
   color: ${akColorN100}
   font-size: 10px;
-  line-height: 1.4;
-  padding-top: 4px;
+  line-height: 1.6;
+  padding-top: 2px;
 `;
 
 export const RecentContainerName = styled.div`

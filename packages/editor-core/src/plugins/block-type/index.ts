@@ -1,6 +1,6 @@
 import Keymap from 'browserkeymap';
 import { ContextName } from '../../';
-import { trackAndInvoke } from '../../analytics';
+import { analyticsService, trackAndInvoke } from '../../analytics';
 import * as keymaps from '../../keymaps';
 import {
   commands,
@@ -406,7 +406,10 @@ export class BlockTypeState {
 
     if (matches) {
       if (isConvertableToCodeBlock(this.pm)) {
-        transformToCodeBlockAction(this.pm, {language: matches[1]}).delete(startPos, $from.pos).applyAndScroll();
+        const eventName = this.analyticsEventName('autoformatting', 'codeblock');
+        analyticsService.trackEvent(eventName);
+
+        transformToCodeBlockAction(this.pm, { language: matches[1] }).delete(startPos, $from.pos).applyAndScroll();
         return true;
       }
     }

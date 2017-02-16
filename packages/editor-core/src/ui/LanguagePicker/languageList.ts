@@ -69,7 +69,7 @@ export const SUPPORTED_LANGUAGES = [
   makeLanguage('LiveScript', ['live-script']),
   makeLanguage('XQuery', ['xqy', 'xq', 'xql', 'xqm'])];
 
-const languageList = [NO_LANGUAGE, ...(SUPPORTED_LANGUAGES.sort())];
+const languageList = [NO_LANGUAGE, ...(SUPPORTED_LANGUAGES.map((language) => language.name).sort())];
 
 function makeLanguage(name: string, alias?: Array<string>): Language {
   alias = alias || [];

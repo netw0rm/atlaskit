@@ -11,6 +11,7 @@ import {
   textblockTypeInputRule,
   wrappingInputRule
 } from '../../prosemirror';
+import Keymap from 'browserkeymap';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 
@@ -94,6 +95,19 @@ function replaceWithMark(
   const from = pos - match[1].length;
   const markType = schema.mark(mark);
   const charSize = specialChar.length;
+  const nodes: Node[] = [];
+
+  pm.doc.nodesBetween(from, to, (node) => {
+    if (node.isText) {
+      nodes.push(node);
+    }
+  });
+
+  if (nodes.length > 1 && nodes[0].marks.length && (nodes[0].text || '').indexOf(specialChar) > -1) {
+    // TODO: remove setTimeout line after upgrading to new version of ProseMirror
+    setTimeout(() => pm.input.dispatchKey('Backspace'), 0);
+    return false;
+  }
 
   pm.tr.addMark(from, to, markType.type.create()).applyAndScroll();
   pm.tr.delete(from, from + charSize).apply();
@@ -238,6 +252,7 @@ export class MarkdownInputRulesPlugin {
 
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.addRule(rule));
+    pm.addKeymap(new Keymap({'Cmd-Z': pm => pm.input.dispatchKey('Backspace')}, {name: 'inputRules'}), 20);
   }
 
   detach(pm: ProseMirror) {

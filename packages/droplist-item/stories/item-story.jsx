@@ -18,9 +18,9 @@ storiesOf(name, module)
     <div className={styles.storiesContainer}>
       <p>This is an example of simple droplist items with or without links</p>
       <div className={styles.itemsContainer}>
-        <Item href="http://atlassian.com">This link will reload this window</Item>
+        <Item href="//atlassian.com">This link will reload this window</Item>
         <Item isActive>This is just a highlighted item</Item>
-        <Item href="http://atlassian.com" target="_blank">This link will open in another tab</Item>
+        <Item href="//atlassian.com" target="_blank">This link will open in another tab</Item>
         <Item>This item has <SecondaryText>(secondary text)</SecondaryText></Item>
         <Item isFocused>Focused item</Item>
       </div>
@@ -106,7 +106,7 @@ storiesOf(name, module)
       <div className={styles.itemsContainer}>
         <Item elemBefore={<Icon />} isDisabled>first item</Item>
         <Item type="radio" isDisabled>second item</Item>
-        <Item href="http://atlassian.com" target="_blank" isDisabled>This link will open in another tab</Item>
+        <Item href="//atlassian.com" target="_blank" isDisabled>This link will open in another tab</Item>
       </div>
     </div>
   ), { imports: [...imports, ['Icon', 'ak-icon/glyph/question']] })

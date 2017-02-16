@@ -9,6 +9,10 @@ import {
   Schema,
   Selection,
   TextSelection,
+  ReplaceStep,
+  ReplaceAroundStep,
+  Slice,
+  Fragment
 } from '../../prosemirror';
 
 import {
@@ -102,10 +106,36 @@ export class ListsState {
     }
   }
 
+  replaceParagraphWithNewLine(pm: PM): any {
+    let {$head, empty} = pm.selection;
+    if (!empty || $head.parentOffset > 0) {
+      return false;
+    }
+
+    // Find the node before this one
+    let before;
+    for (let i = $head.depth - 1; !before && i >= 0; i--) {
+      if ($head.index(i) > 0) {
+        before = $head.node(i).child($head.index(i) - 1);
+      }
+    }
+
+    // replace second paragraph with \n
+    if (before && before.type instanceof ListItemNodeType) {
+      commands.joinBackward(pm);
+      commands.joinBackward(pm);
+      pm.tr.typeText('\n').applyAndScroll();
+      return;
+    }
+
+    pm.getOption('keymap').bindings.Backspace(pm);
+  }
+
   private addKeymap(pm: PM): void {
     const { list_item } = pm.schema.nodes;
 
     pm.addKeymap(new Keymap({
+      'Backspace': () => this.replaceParagraphWithNewLine(pm),
       [keymaps.splitListItem.common!]: () => commands.splitListItem(list_item)(pm),
       [keymaps.toggleOrderedList.common!]: trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', () => this.toggleOrderedList()),
       [keymaps.toggleBulletList.common!]: trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', () => this.toggleBulletList())

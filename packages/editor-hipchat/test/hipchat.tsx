@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
-import { chaiPlugin } from 'ak-editor-core/test-helper';
+import { chaiPlugin } from '@atlaskit/editor-core/test-helper';
 import { mount } from 'enzyme';
 import Editor from '../src';
 

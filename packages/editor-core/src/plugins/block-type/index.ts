@@ -408,7 +408,6 @@ export class BlockTypeState {
       if (isConvertableToCodeBlock(this.pm)) {
         const eventName = this.analyticsEventName('autoformatting', 'codeblock');
         analyticsService.trackEvent(eventName);
-
         transformToCodeBlockAction(this.pm, { language: matches[1] }).delete(startPos, $from.pos).applyAndScroll();
         return true;
       }

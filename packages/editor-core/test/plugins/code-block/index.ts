@@ -376,6 +376,26 @@ describe('code-block', () => {
   });
 
   describe('language', () => {
+    it('is the same as activeCodeBlock language', () => {
+      const { plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
+
+      expect(plugin.language).to.eq('java');
+    });
+
+    it('updates if activeCodeBlock updates langugae', () => {
+      const { plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
+
+      plugin.updateLanguage('php');
+
+      expect(plugin.language).to.eq('php');
+    });
+
+    it('sets language to null if no activeCodeBlock', () => {
+      const { plugin } = editor(doc(p('te{<>}xt')));
+
+      expect(plugin.language).to.be.undefined;
+    });
+
     it('should be undefined when editor is blur', () => {
       const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
       pm.on.blur.dispatch();

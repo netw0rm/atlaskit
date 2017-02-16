@@ -350,11 +350,6 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     expect(handler.calledWith('atlassian.editor.format.codeblock.keyboard')).to.equal(true);
   });
 
-  it('atlassian.editor.format.codeblock.autoformatting', () => {
-    pm.input.insertText(0, 0, '```');
-    expect(handler.calledWith('atlassian.editor.format.codeblock.autoformatting')).to.equal(true);
-  });
-
   it('atlassian.editor.newline.keyboard', () => {
     sendKeyToPm(pm, 'Shift-Enter');
     expect(handler.calledWith('atlassian.editor.newline.keyboard')).to.equal(true);

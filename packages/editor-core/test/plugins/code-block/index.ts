@@ -91,6 +91,7 @@ describe('code-block', () => {
         plugin.subscribe(spy);
 
         pm.on.click.dispatch();
+
         expect(spy.callCount).to.equal(2);
       });
     });

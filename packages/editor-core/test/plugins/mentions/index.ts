@@ -166,6 +166,7 @@ describe('mentions', () => {
       pm.input.dispatchKey('Esc', keyDownEvent);
       expect(spy.called).to.equal(true);
     });
+
   });
 
   describe('insertMention', () => {

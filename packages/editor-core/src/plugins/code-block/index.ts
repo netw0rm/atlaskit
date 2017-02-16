@@ -47,7 +47,7 @@ export class CodeBlockState {
 
   updateLanguage(language?: string): void {
     if (this.activeCodeBlock) {
-      this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.activeCodeBlock.type, {language: language}).apply();
+      this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.activeCodeBlock.type, {language: language}).applyAndScroll();
     }
   }
 
@@ -69,7 +69,7 @@ export class CodeBlockState {
     if (clicked && codeBlockNode || codeBlockNode !== this.activeCodeBlock) {
       this.clicked = clicked;
       this.activeCodeBlock = codeBlockNode;
-      this.language = codeBlockNode && codeBlockNode.attrs['language'];
+      this.language = codeBlockNode && codeBlockNode.attrs['language'] || undefined;
       this.element = codeBlockNode && this.activeCodeBlockElement();
       this.changeHandlers.forEach(changeHandler => changeHandler(this));
     }

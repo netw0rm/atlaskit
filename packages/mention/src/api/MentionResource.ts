@@ -63,7 +63,7 @@ export interface ResourceProvider<Result> {
 }
 
 export interface MentionProvider extends ResourceProvider<Mention[]> {
-  filter(query: string): void;
+  filter(query?: string): void;
   recordMentionSelection(mention: Mention): void;
 }
 
@@ -200,7 +200,7 @@ class AbstractPresenceResource extends AbstractResource<PresenceUpdate> {
 class AbstractMentionResource extends AbstractResource<Mention[]> implements MentionProvider {
 
   // eslint-disable-next-line class-methods-use-this
-  filter(query: string): void {
+  filter(query?: string): void {
     throw new Error(`not yet implemented.\nParams: query=${query}`);
   }
 
@@ -269,7 +269,7 @@ class MentionResource extends AbstractMentionResource {
     this.lastReturnedSearch = 0;
   }
 
-  filter(query: string): void {
+  filter(query?: string): void {
     const searchTime = Date.now();
     const notify = (mentionResult) => {
       if (searchTime > this.lastReturnedSearch) {

@@ -169,7 +169,7 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
     }
 
     if (shouldFilter) {
-      newResourceProvider.filter(newQuery!);
+      newResourceProvider.filter(newQuery);
     }
   }
 

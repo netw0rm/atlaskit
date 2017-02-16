@@ -76,7 +76,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
       <AkMentionPicker
         resourceProvider={this.props.resourceProvider}
         onSelection={this.handleSelectedMention}
-        query={query || ''}
+        query={query}
         ref="picker"
       />
     );

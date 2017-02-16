@@ -1,6 +1,6 @@
 import React from 'react';
 import HomeIcon from '../components/HomeIcon';
-import { HomeLinkContainer } from '../styled';
+import { HomeIconContainer, HomeLinkContainer } from '../styled';
 
 export default function (i18n, isAnonymousUser) {
   if (isAnonymousUser) {
@@ -11,7 +11,7 @@ export default function (i18n, isAnonymousUser) {
     items: [
       {
         content: (<HomeLinkContainer>{i18n.home}</HomeLinkContainer>),
-        elemBefore: (<HomeIcon />),
+        elemBefore: (<HomeIconContainer><HomeIcon /></HomeIconContainer>),
         href: '/home',
         analyticEvent: { key: 'appswitcher.home.link.click' },
       },

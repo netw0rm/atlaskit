@@ -11,6 +11,10 @@ const ellipsis = `
   white-space: nowrap;
 `;
 
+export const HomeIconContainer = styled.div`
+  color: ${akColorB400};
+`;
+
 export const Item = styled.div`
   max-width: 350px;
   min-width: 150px;
@@ -28,6 +32,7 @@ export const ItemWithIcon = styled.div`
 export const SuggestedApplicationTagline = styled.div`
   color: ${akColorN90};
   font-size: 12px;
+  line-height: 1.666666667;
 `;
 
 export const LogoContainer = styled.div`
@@ -41,7 +46,8 @@ export const HomeLinkContainer = styled(ItemWithIcon)`
 export const RecentContainerType = styled.div`
   color: ${akColorN100}
   font-size: 10px;
-  padding-top: 3px;
+  line-height: 1.4;
+  padding-top: 4px;
 `;
 
 export const RecentContainerName = styled.div`

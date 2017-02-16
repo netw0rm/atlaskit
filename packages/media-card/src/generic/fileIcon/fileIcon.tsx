@@ -10,7 +10,7 @@ import {FileTypeIcon} from '../../cardOverlay/styled';
 
 export interface FileIconProps {
   mediaType?: string;
-  style?: string;
+  style?: any;
 }
 
 export class FileIcon extends Component<FileIconProps, {}> {

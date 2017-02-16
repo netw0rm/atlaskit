@@ -1,12 +1,12 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "config": {
     "access": "public"
   },
   "description": "Includes all media card related components, CardView, CardViewSmall, Card...",
-  "main": "dist/es5/bundle.js",
-  "jsnext:main": "dist/es2015/bundle.js",
+  "main": "dist/es5/index.js",
+  "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",

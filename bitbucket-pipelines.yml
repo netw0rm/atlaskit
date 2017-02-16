@@ -28,7 +28,8 @@ pipelines:
           - ./build/bin/setup.sh
           # we have to run this so we have access to the bitbucket credentials for the changed.packages script
           #- ./build/bin/prep_for_release.sh
-          - yarn
+          #- yarn
+          - ./node_modules/.bin/lerna bootstrap --scope="{@atlassian/avatar,@atlassian/badge}" --include-filtered-dependencies
           # we have to run this after `yarn` to have access to child-process-promise
           #- ./build/bin/generate.changed.packages.file.sh
           #- yarn run browserstack/tunnel/start

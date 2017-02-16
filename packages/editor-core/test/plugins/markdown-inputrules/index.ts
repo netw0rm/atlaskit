@@ -338,5 +338,14 @@ describe('markdown-inputrules', () => {
       pm.input.insertText(sel + 7, sel + 7, '`');
       expect(pm.doc).to.deep.equal(doc(p(mono('_text_'))));
     });
+
+    it('should not convert "`_text`_" to italic', () => {
+      const { pm, sel } = editor(doc(p('{<>}')));
+
+      pm.input.insertText(sel, sel, '`_text`');
+      expect(pm.doc).to.deep.equal(doc(p(mono('_text'))));
+      pm.input.insertText(sel + 5, sel + 5, '_');
+      expect(pm.doc).to.deep.equal(doc(p(mono('_text'), '_')));
+  });
   });
 });

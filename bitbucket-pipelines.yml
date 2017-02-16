@@ -26,8 +26,10 @@ pipelines:
           - export FORCE_COLOR=1
           - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
           - ./build/bin/setup.sh
+          - ./build/bin/prep_for_release.sh
           - yarn
+          # we have to run this after `yarn` to have access to child-process-promise
+          - ./build/bin/generate.changed.packages.file.sh
           - yarn run browserstack/tunnel/start
-          - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base" "test/wc/browserstack/pr"
-          - yarn run pr/artifacts
+          - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base" "test/wc/browserstack/pr" "pr/storybook"
           - yarn run browserstack/tunnel/stop

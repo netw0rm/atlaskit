@@ -22,6 +22,8 @@ export const splitCodeBlock = makeKeyMapWithCommon('Split code block', 'Enter');
 export const splitListItem = makeKeyMapWithCommon('Split list item', 'Enter');
 export const insertHorizontalRule = makeKeyMapWithCommon('Insert horizontal rule', 'Mod-Shift--');
 export const createCodeBlock = makeKeyMapWithCommon('Create code block', 'Enter');
+export const moveUp = makeKeyMapWithCommon('Move up', 'Up');
+export const moveDown = makeKeyMapWithCommon('Move down', 'Down');
 
 export function tooltip(keymap: Keymap | undefined): string | undefined {
   if (keymap) {
@@ -59,7 +61,7 @@ const ALL = [toggleOrderedList, toggleBulletList, toggleBold, toggleItalic,
   toggleUnderline, toggleStrikethrough, toggleMonospace,
   setNormalText, setHeading1, setHeading2, setHeading3, setHeading4, setHeading5,
   setBlockQuote, setCodeBlock, setPanel, insertNewLine, insertHorizontalRule,
-  splitCodeBlock, splitListItem, createCodeBlock];
+  splitCodeBlock, createCodeBlock, splitListItem, moveUp, moveDown];
 
 function makeKeyMap(description: string, windows: string, mac: string, common?: string): Keymap {
   return {

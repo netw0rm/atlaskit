@@ -1,4 +1,4 @@
-# Icon
+# Icon 
 This package contains the AtlasKit icons. All icons should be consumed separately unless your build tool supports tree shaking.
 
 > This packages is licensed under the Atlassian Design Guidelines - please check the LICENSE file for more information.

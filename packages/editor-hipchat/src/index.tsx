@@ -8,7 +8,7 @@ import {
   MentionsPlugin,
   ProseMirror,
   TextSelection,
-} from 'ak-editor-core';
+} from '@atlaskit/editor-core';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';

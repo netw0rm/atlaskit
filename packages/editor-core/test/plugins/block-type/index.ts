@@ -411,7 +411,19 @@ describe('block-type', () => {
         context('when it is not inside a code block', () => {
           context('when langauge is provided', () => {
             it('returns code block with language', () => {
+              const { pm } = editor(doc(p('```javascript{<>}')));
 
+              pm.input.dispatchKey('Enter');
+
+              expect(pm.doc).to.deep.equal(doc(code_block({language: 'javascript'})('')));
+            });
+
+            it('trims the spaces', () => {
+              const { pm } = editor(doc(p('```javascript    {<>}   hello')));
+
+              pm.input.dispatchKey('Enter');
+
+              expect(pm.doc).to.deep.equal(doc(code_block({language: 'javascript'})('   hello')));
             });
           });
 
@@ -424,13 +436,13 @@ describe('block-type', () => {
               expect(pm.doc).to.deep.equal(doc(code_block()('')));
             });
 
-            // it('trims the spaces', () => {
-            //   const { pm } = editor(doc(p('```    {<>}   hello')));
+            it('trims the spaces', () => {
+              const { pm } = editor(doc(p('```    {<>}   hello')));
 
-            //   pm.input.dispatchKey('Enter');
+              pm.input.dispatchKey('Enter');
 
-            //   expect(pm.doc).to.deep.equal(doc(code_block()('   hello')));
-            // });
+              expect(pm.doc).to.deep.equal(doc(code_block()('   hello')));
+            });
           });
         });
       });

@@ -289,11 +289,14 @@ export class BlockTypeState {
       return false;
     }
 
-    const textContent = parentBlock.textContent.replace(/^\s+|\s+$/g, '');
-    if (textContent === '```') {
-      const startPos = $from.start($from.depth);
+    const startPos = $from.start($from.depth);
+    const fencePart = parentBlock.textContent.slice(0, $from.pos - startPos).trim();
+
+    const matches = /```([^\s]+)?/.exec(fencePart);
+
+    if (matches) {
       if (isConvertableToCodeBlock(this.pm)) {
-        transformToCodeBlockAction(this.pm).delete(startPos, startPos + parentBlock.textContent.length).applyAndScroll();
+        transformToCodeBlockAction(this.pm, {language: matches[1]}).delete(startPos, $from.pos).applyAndScroll();
         return true;
       }
     }

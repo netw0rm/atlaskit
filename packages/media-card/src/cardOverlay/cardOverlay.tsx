@@ -24,7 +24,8 @@ import {
   Retry,
   DropdownWrapper,
   TitleWrapper,
-  FileSize
+  FileSize,
+  Metadata
 } from './styled';
 
 export interface CardOverlayProps {
@@ -83,10 +84,6 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
 
       if (this.props.selected) {
         classNames.push('selected');
-      }
-
-      if (this.props.mediaType === 'image') {
-        classNames.push('image');
       }
 
       if (this.props.mediaType) {
@@ -158,12 +155,15 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       );
     } else {
       const fileSize = this.props.mediaSize && bytes.format(this.props.mediaSize, {unitSeparator: ' '});
+      const hasProgress = !!this.props.progress;
+      const className = `metadata ${hasProgress ? 'has-progress' : ''}`;
+
       return (
         <div>
-          <div className={'metadata'}>
-              <FileIcon mediaType={this.props.mediaType} />
+          <Metadata className={className}>
+            <FileIcon mediaType={this.props.mediaType} />
             <FileSize className={'file-size'}>{fileSize}</FileSize>
-          </div>
+          </Metadata>
           <ProgressBar progress={this.props.progress} />
         </div>
       );

@@ -390,8 +390,17 @@ export class BlockTypeState {
     if (!parentBlock.isTextblock) {
       return false;
     }
+    const startPos = $from.start($from.depth);
 
-    if (parentBlock.nodeSize - 2 !== parentBlock.textContent.length) {
+    let textOnly = true;
+
+    this.pm.doc.nodesBetween(startPos, $from.pos, (node) => {
+      if (!node.isText && !node.isTextblock) {
+        textOnly = false;
+      }
+    });
+
+    if (!textOnly) {
       return false;
     }
 
@@ -399,10 +408,9 @@ export class BlockTypeState {
       return false;
     }
 
-    const startPos = $from.start($from.depth);
     const fencePart = parentBlock.textContent.slice(0, $from.pos - startPos).trim();
 
-    const matches = /```([^\s]+)?/.exec(fencePart);
+    const matches = /^```([^\s]+)?/.exec(fencePart);
 
     if (matches) {
       if (isConvertableToCodeBlock(this.pm)) {
@@ -454,7 +462,7 @@ export class BlockTypeState {
     const { $from } = pm.selection;
 
     for (let depth = 0; depth <= $from.depth; depth++) {
-      const node = $from.node(depth)!;
+      const node = $from.node(depth) !;
       const blocktype = this.nodeBlockType(node);
       if (blocktype !== OTHER) {
         return blocktype;

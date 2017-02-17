@@ -419,11 +419,11 @@ describe('block-type', () => {
             });
 
             it('trims the spaces', () => {
-              const { pm } = editor(doc(p('```javascript    {<>}   hello')));
+              const { pm } = editor(doc(p('```javascript    {<>}   hello ', mention({ id: 'foo1', displayName: '@bar1' }))));
 
               pm.input.dispatchKey('Enter');
 
-              expect(pm.doc).to.deep.equal(doc(code_block({language: 'javascript'})('   hello')));
+              expect(pm.doc).to.deep.equal(doc(code_block({language: 'javascript'})('   hello @bar1')));
             });
           });
 
@@ -442,6 +442,14 @@ describe('block-type', () => {
               pm.input.dispatchKey('Enter');
 
               expect(pm.doc).to.deep.equal(doc(code_block()('   hello')));
+            });
+
+            it('does not convert to code block if it does not start with fence', () => {
+              const { pm } = editor(doc(p('hello```    {<>}   hello')));
+
+              pm.input.dispatchKey('Enter');
+
+              expect(pm.doc).to.deep.equal(doc(p('hello```    '), p('   hello')));
             });
           });
         });

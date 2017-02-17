@@ -1,4 +1,4 @@
-import { ReactionPicker, Reactions } from '@atlaskit/reactions';
+import { ReactionPicker, Reactions } from '../../src/';
 import * as React from 'react';
 
 import { emojiService } from './emoji-service';

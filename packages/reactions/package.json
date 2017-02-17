@@ -1,10 +1,10 @@
 {
-  "name": "@atlaskit/mention",
-  "version": "1.3.4",
+  "name": "@atlaskit/reactions",
+  "version": "2.0.0",
   "config": {
     "access": "public"
   },
-  "description": "A React component used to display user profiles in a list for 'Mention' functionality",
+  "description": "Reactions component",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",
@@ -19,29 +19,24 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/avatar": "^1.0.0",
-    "@atlaskit/lozenge": "^1.0.2",
-    "@atlaskit/util-common": "^1.0.0",
+    "@atlaskit/emoji": "^1.0.0",
+    "@atlaskit/icon": "^2.3.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
-    "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "es6-promise": "^4.0.5",
     "tslib": "^1.2.0",
     "typestyle": "^0.21.4",
-    "uid": "^0.0.2",
-    "url-search-params": "^0.6.1",
     "whatwg-fetch": "^1.0.0"
   },
-  "devDependencies": {
-    "@atlaskit/util-common-test": "*",
-    "fetch-mock": "^5.8.0",
-    "js-search": "^1.3.2"
-  },
-  "author": "Atlassian Pty. Ltd",
-  "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@atlaskit/util-readme": "^1.0.0",
+    "fetch-mock": "^5.8.0"
   },
   "repository": {
     "type": "git",
@@ -49,8 +44,6 @@
   },
   "keywords": [
     "atlaskit",
-    "ui",
-    "mention",
-    "fabric"
+    "ui"
   ]
 }

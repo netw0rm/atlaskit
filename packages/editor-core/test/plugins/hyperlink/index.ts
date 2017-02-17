@@ -433,5 +433,13 @@ describe('hyperlink', () => {
 
       expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('txt'))));
     });
+
+    it('should return referring DOM element', () => {
+      const { plugin } = editor(doc(
+        linkable(link({ href: 'http://www.atlassian.com' })('atlassian')),
+        linkable(link({ href: 'http://www.stypositive.ru' })('d{<>}sorin'))));
+
+      expect(plugin.element.text).to.eq('dsorin');
+    });
   });
 });

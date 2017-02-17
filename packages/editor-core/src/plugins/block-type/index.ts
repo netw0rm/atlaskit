@@ -48,7 +48,6 @@ const PANEL = makeBlockType('panel', 'Panel');
 const OTHER = makeBlockType('other', 'Other…');
 
 export type GroupedBlockTypes = BlockType[][];
-
 export class BlockTypeState {
   private pm: PM;
   private changeHandlers: BlockTypeStateSubscriber[] = [];
@@ -116,7 +115,6 @@ export class BlockTypeState {
         return this.changeBlockTypeAtSelection(name, pm.selection.$from, pm.selection.$to, true);
       }
     }
-
     if (name === PANEL.name && nodes.panel) {
       if (commands.wrapIn(nodes.panel)(pm, false)) {
         return this.changeBlockTypeAtSelection(name, pm.selection.$from, pm.selection.$to, true);
@@ -234,6 +232,116 @@ export class BlockTypeState {
     }
   }
 
+  private createNewParagraphAbove() {
+    const append = false;
+
+    if (!this.canMoveUp()) {
+      this.createParagraphNear(append);
+      return true;
+    }
+
+    return false;
+  }
+
+  private canMoveUp(): boolean {
+    const {selection} = this.pm;
+    if (selection instanceof TextSelection) {
+      if (!selection.empty) {
+        return true;
+      }
+    }
+
+    return selection.$from.pos !== selection.$from.depth;
+  }
+
+  private createNewParagraphBelow() {
+    const append = true;
+
+    if (!this.canMoveDown()) {
+      this.createParagraphNear(append);
+      return true;
+    }
+
+    return false;
+  }
+
+  private canMoveDown(): boolean {
+    const {selection, doc} = this.pm;
+    if (selection instanceof TextSelection) {
+      if (!selection.empty) {
+        return true;
+      }
+    }
+
+    return doc.nodeSize - selection.$to.pos - 2 !== selection.$to.depth;
+  }
+
+  private createParagraphNear(append: boolean = true): void {
+    const {pm} = this;
+    const paragraph = pm.schema.nodes.paragraph;
+
+    if (!paragraph) {
+      return;
+    }
+
+    let insertPos;
+
+    if (pm.selection instanceof TextSelection) {
+      if (this.topLevelNodeIsEmptyTextBlock()) {
+        return;
+      }
+      insertPos = this.getInsertPosFromTextBlock(append);
+    } else {
+      insertPos = this.getInsertPosFromNonTextBlock(append);
+    }
+
+    pm.tr.insert(insertPos, paragraph.create()).applyAndScroll();
+
+    const next = new TextSelection(pm.doc.resolve(insertPos + 1));
+    pm.setSelection(next);
+  }
+
+  private getInsertPosFromTextBlock(append: boolean): void {
+    const {pm} = this;
+
+    const {$from, $to} = pm.selection;
+    let pos;
+
+    if (!append) {
+      pos = $from.start($from.depth) - 1;
+      pos = $from.depth > 1 ? pos - 1 : pos;
+    } else {
+      pos = $to.end($to.depth) + 1;
+      pos = $to.depth > 1 ? pos + 1 : pos;
+    }
+
+    return pos;
+  }
+
+  private getInsertPosFromNonTextBlock(append: boolean): void {
+    const {pm} = this;
+
+    const {$from, $to} = pm.selection;
+    let pos;
+
+    if (!append) {
+      // The start position is different with text block because it starts from 0
+      pos = $from.start($from.depth);
+      // The depth is different with text block because it starts from 0
+      pos = $from.depth > 0 ? pos - 1 : pos;
+    } else {
+      pos = $to.end($to.depth);
+      pos = $to.depth > 0 ? pos + 1 : pos;
+    }
+
+    return pos;
+  }
+
+  private topLevelNodeIsEmptyTextBlock(): boolean {
+    const topLevelNode = this.pm.selection.$from.node(1);
+    return topLevelNode.isTextblock && !isCodeBlockNode(topLevelNode) && topLevelNode.nodeSize === 2;
+  }
+
   private updateBlockTypeKeymap(context: Context) {
     const { pm } = this;
     if (this.context) {
@@ -268,6 +376,8 @@ export class BlockTypeState {
     const baseKeymap = this.pm.input.keymaps.filter(k => (k as any).priority === -100)[0];
     this.pm.addKeymap(new Keymap({
       [keymaps.insertNewLine.common!]: trackAndInvoke('atlassian.editor.newline.keyboard', () => this.insertNewLine()),
+      [keymaps.moveUp.common!]: trackAndInvoke('atlassian.editor.moveup.keyboard', () => this.createNewParagraphAbove()),
+      [keymaps.moveDown.common!]: trackAndInvoke('atlassian.editor.movedown.keyboard', () => this.createNewParagraphBelow()),
       [keymaps.shiftBackspace.common!]: (baseKeymap as any).map.lookup('Backspace')
     }));
   }

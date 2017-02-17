@@ -48,8 +48,9 @@ export default class Tabs extends PureComponent {
   }));
 
   tabSelectHandler = (selectedTabIndex) => {
-    this.props.onSelect(selectedTabIndex);
-    this.setState({ selectedTab: selectedTabIndex });
+    if (this.props.onSelect(selectedTabIndex) !== false) {
+      this.setState({ selectedTab: selectedTabIndex });
+    }
   }
 
   tabKeyboardNavHandler = (key) => {

@@ -27,7 +27,7 @@ import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import * as styles from './styles';
 
 export interface Props {
-  showFeedbackButton?: boolean;
+  feedbackFormUrl?: string;
   onCancel?: () => void;
   onInsertMention?: () => void;
   onInsertImage?: () => void;
@@ -58,7 +58,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} /> : null}
           {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} /> : null}
           <span style={{ flexGrow: 1 }} />
-          {props.showFeedbackButton ? <ToolbarFeedback packageVersion={props.packageVersion} packageName={props.packageName} /> : null}
+          {props.feedbackFormUrl ? <ToolbarFeedback packageVersion={props.packageVersion} packageName={props.packageName} /> : null}
         </div>
         <div className={styles.content}>
           {props.children}

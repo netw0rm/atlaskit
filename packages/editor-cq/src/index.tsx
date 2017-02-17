@@ -11,7 +11,8 @@ import {
   ListsPlugin,
   MarkdownInputRulesPlugin,
   ProseMirror,
-  TextFormattingPlugin
+  TextFormattingPlugin,
+  version as coreVersion
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';

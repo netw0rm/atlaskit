@@ -20,7 +20,7 @@ export interface Props {
   packageVersion?: string;
   packageName?: string;
   pm?: ProseMirror;
-  showFeedbackButton?: boolean;
+  feedbackFormUrl?: string;
   pluginStateBlockType?: BlockTypeState;
   pluginStateCodeBlock?: CodeBlockState;
   pluginStateHyperlink?: HyperlinkState;
@@ -41,7 +41,7 @@ export default class Chrome extends PureComponent<Props, {}> {
       ? <ChromeExpanded
           onCancel={props.onCancel}
           onSave={props.onSave}
-          showFeedbackButton={props.showFeedbackButton}
+          feedbackFormUrl={props.feedbackFormUrl}
           pluginStateBlockType={props.pluginStateBlockType}
           pluginStateCodeBlock={props.pluginStateCodeBlock}
           pluginStateHyperlink={props.pluginStateHyperlink}

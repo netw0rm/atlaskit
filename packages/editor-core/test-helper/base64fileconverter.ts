@@ -6,11 +6,11 @@ const HAS_BASE64_FILE_SUPPORT =
 
 export class Converter {
   HAS_BASE64_FILE_SUPPORT = HAS_BASE64_FILE_SUPPORT;
-  supportedTypes: Array<string>;
+  supportedTypes: string[];
   maxFileSizeInBytes: number;
 
   constructor(
-    supportedTypes: Array<string>,
+    supportedTypes: string[],
     maxFileSizeInBytes: number
   ) {
     this.supportedTypes = supportedTypes;
@@ -18,7 +18,7 @@ export class Converter {
   }
 
   convert(
-    files: Array<File>,
+    files: File[],
     fn = (base64src: string) => {},
     errFn = (file: File) => {}
   ) {
@@ -91,7 +91,7 @@ export function pasteHandler(
 
   const items = e.clipboardData.items;
   const files = (Array.prototype.slice.call(items)).reduce((
-    filesArr: Array<File>,
+    filesArr: File[],
     item: DataTransferItem
   ) => {
     if (item.kind === 'file') {

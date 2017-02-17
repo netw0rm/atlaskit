@@ -7,7 +7,7 @@ export const row = style({
   flexDirection: 'row',
   flexWrap: 'wrap',
   overflow: 'hidden',
-  padding: '8px 16px',
+  padding: '9px 20px',
   position: 'relative',
   textOverflow: 'ellipsis',
   verticalAlign: 'middle',

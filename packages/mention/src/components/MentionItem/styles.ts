@@ -1,4 +1,5 @@
 import { style } from 'typestyle';
+import { akColorN30 } from '@atlaskit/util-shared-styles';
 
 export const row = style({
   alignItems: 'center',
@@ -6,7 +7,7 @@ export const row = style({
   flexDirection: 'row',
   flexWrap: 'wrap',
   overflow: 'hidden',
-  padding: '9px 20px',
+  padding: '8px 16px',
   position: 'relative',
   textOverflow: 'ellipsis',
   verticalAlign: 'middle',
@@ -75,14 +76,7 @@ export const mentionItem = style({
 
   $nest: {
     [`&.${selected}`]: {
-      backgroundColor: '#5d6c85',
-      color: '#fff',
-
-      $nest: {
-        [`.${mentionName}, .${time}`]: {
-          color: '#aeb5c2',
-        }
-      },
+      backgroundColor: akColorN30
     },
   },
 });

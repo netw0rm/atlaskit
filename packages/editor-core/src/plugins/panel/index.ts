@@ -27,18 +27,20 @@ export const availablePanelType = [
 
 export class PanelState {
   private pm: PM;
+  private editorFocused: boolean;
   private activeNode: PanelNode | undefined;
   private changeHandlers: PanelStateSubscriber[] = [];
   private inputRules: InputRule[] = [];
 
-  clicked: boolean;
+  editMode: boolean;
   element?: HTMLElement | undefined;
   activePanelType?: string | undefined;
 
   constructor(pm: PM) {
     this.pm = pm;
 
-    this.clicked = false;
+    this.editMode = false;
+    this.editorFocused = false;
     this.inputRules = panelRules;
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach(rule => rules.addRule(rule));
@@ -57,11 +59,13 @@ export class PanelState {
     });
 
     pm.on.focus.add(() => {
-      this.update();
+      this.editorFocused = true;
+      this.update(true);
     });
 
     pm.on.blur.add(() => {
-      this.clear();
+      this.editorFocused = false;
+      this.update(true);
     });
 
     this.update();
@@ -108,31 +112,14 @@ export class PanelState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  private update(clicked = false) {
+  private update(domEvent = false) {
     const newPanel = this.getActivePanel();
-    if (newPanel) {
-      if (clicked || this.activeNode !== newPanel) {
-        this.clicked = clicked;
-        this.element = this.getDomElement();
-        this.activeNode = newPanel;
-        this.activePanelType = newPanel.attrs['panelType'];
-        this.changeHandlers.forEach(cb => cb(this));
-      }
-    } else {
-      this.clear();
-    }
-  }
-
-  private clear() {
-    if (this.clicked
-      || this.element
-      || this.activePanelType
-      || this.activeNode
-    ) {
-      this.activeNode = undefined;
-      this.clicked = false;
-      this.element = undefined;
-      this.activePanelType = undefined;
+    if (domEvent || this.activeNode !== newPanel) {
+      const newElement = newPanel && this.getDomElement();
+      this.activeNode = newPanel;
+      this.editMode = this.editorFocused && !!newPanel && (domEvent || this.element !== newElement);
+      this.element = newElement;
+      this.activePanelType = newPanel && newPanel.attrs['panelType'];
       this.changeHandlers.forEach(cb => cb(this));
     }
   }

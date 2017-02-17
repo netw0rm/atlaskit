@@ -79,12 +79,10 @@ export default class PanelEdit extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: PanelState) => {
-    const { target } = this.state;
-    const { element, clicked, activePanelType } = pluginState;
-    const showToolbar = !!element && (clicked || target !== element);
+    const { element: target, activePanelType, editMode : showToolbar } = pluginState;
     this.setState({
       showToolbar,
-      target: element,
+      target,
       activePanelType,
     });
   }

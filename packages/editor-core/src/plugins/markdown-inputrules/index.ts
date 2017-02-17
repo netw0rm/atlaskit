@@ -23,7 +23,7 @@ const orderedListRule = (nodeType: NodeType): InputRule => {
     (match, node) => node.childCount > 0);
 };
 
-// NOTE: we decided to resctict the creation of bullet lists to only "*"
+// NOTE: we decided to restrict the creation of bullet lists to only "*"
 function bulletListRule(nodeType) {
   return wrappingInputRule(/^\s*(\*) $/, ' ', nodeType);
 }

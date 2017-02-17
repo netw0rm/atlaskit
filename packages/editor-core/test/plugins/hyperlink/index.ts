@@ -469,5 +469,12 @@ describe('hyperlink', () => {
       expect(spy.callCount).to.equal(3);
     });
 
+    it('should return referring DOM element', () => {
+      const { plugin } = editor(doc(
+        linkable(link({ href: 'http://www.atlassian.com' })('atlassian')),
+        linkable(link({ href: 'http://www.stypositive.ru' })('d{<>}sorin'))));
+
+      expect(plugin.element.text).to.eq('dsorin');
+    });
   });
 });

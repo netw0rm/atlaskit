@@ -140,7 +140,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.format.em.autoformatting', () => {
-    pm.input.insertText(0, 0, '_text_');
+    pm.input.insertText(0, 0, '*text*');
     expect(handler.calledWith('atlassian.editor.format.em.autoformatting')).to.equal(true);
   });
 

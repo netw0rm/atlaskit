@@ -8,7 +8,7 @@ export default class CommentReadme extends PureComponent {
     description: PropTypes.string,
     example: PropTypes.node,
     exampleRaw: PropTypes.node,
-    component: PropTypes.node,
+    component: PropTypes.func,
     propDescriptions: PropTypes.objectOf(PropTypes.string),
     propTypes: PropTypes.objectOf(PropTypes.string),
     children: PropTypes.node,

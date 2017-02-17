@@ -15,4 +15,5 @@ export interface Props {
   shouldFitContainer?: boolean;
 }
 
+export class FieldText extends Component<Props, {}> { }
 export default class extends Component<Props, {}> { }

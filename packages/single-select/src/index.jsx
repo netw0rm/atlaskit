@@ -5,12 +5,14 @@ export default class AkSingleSelect extends PureComponent {
   static propTypes = {
     defaultSelected: itemShape,
     id: PropTypes.string,
+    isFirstChild: PropTypes.bool,
     isDisabled: PropTypes.bool,
     isDefaultOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
     isInvalid: PropTypes.bool,
     items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
+    name: PropTypes.string,
     onSelected: PropTypes.func,
     onOpenChange: PropTypes.func,
     placeholder: PropTypes.string,
@@ -50,11 +52,13 @@ export default class AkSingleSelect extends PureComponent {
       <StatelessSelect
         id={this.props.id}
         isDisabled={this.props.isDisabled}
+        isFirstChild={this.props.isFirstChild}
         isInvalid={this.props.isInvalid}
         isOpen={this.state.isOpen}
         isRequired={this.props.isRequired}
         items={this.props.items}
         label={this.props.label}
+        name={this.props.name}
         onOpenChange={this.handleOpenChange}
         onSelected={this.selectItem}
         placeholder={this.props.placeholder}

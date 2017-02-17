@@ -44,6 +44,14 @@ describe('panel', () => {
       expect(spy.callCount).to.equal(2);
     });
 
+    it('should not call subscribers when another block in editor is clicked', () => {
+      const { plugin, pm } = editor(doc(paragraph('text')));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.click.dispatch();
+      expect(spy.callCount).to.equal(1);
+    });
+
     it('should call subscribers when panel is blur', () => {
       const { plugin, pm } = editor(doc(panel(paragraph('text'))));
       const spy = sinon.spy();

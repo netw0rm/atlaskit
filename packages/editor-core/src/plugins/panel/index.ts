@@ -114,7 +114,7 @@ export class PanelState {
 
   private update(domEvent = false) {
     const newPanel = this.getActivePanel();
-    if (domEvent || this.activeNode !== newPanel) {
+    if ((domEvent && newPanel) || this.activeNode !== newPanel) {
       const newElement = newPanel && this.getDomElement();
       this.activeNode = newPanel;
       this.editMode = this.editorFocused && !!newPanel && (domEvent || this.element !== newElement);

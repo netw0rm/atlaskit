@@ -139,11 +139,6 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     expect(handler.calledWith('atlassian.editor.format.strong.button')).to.equal(true);
   });
 
-  it('atlassian.editor.format.em.autoformatting', () => {
-    pm.input.insertText(0, 0, '_text_');
-    expect(handler.calledWith('atlassian.editor.format.em.autoformatting')).to.equal(true);
-  });
-
   it('atlassian.editor.format.em.keyboard', () => {
     sendKeyToPm(pm, 'Mod-I');
     expect(handler.calledWith('atlassian.editor.format.em.keyboard')).to.equal(true);

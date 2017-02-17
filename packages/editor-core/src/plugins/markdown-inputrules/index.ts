@@ -1,6 +1,5 @@
 import {
   blockQuoteRule,
-  bulletListRule,
   InputRule,
   inputRules,
   Node,
@@ -11,6 +10,7 @@ import {
   textblockTypeInputRule,
   wrappingInputRule
 } from '../../prosemirror';
+import Keymap from 'browserkeymap';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 
@@ -22,6 +22,11 @@ const orderedListRule = (nodeType: NodeType): InputRule => {
   return wrappingInputRule(/^(\d+)\. $/, ' ', nodeType, (match: RegExpMatchArray) => ({}),
     (match, node) => node.childCount > 0);
 };
+
+// NOTE: we decided to restrict the creation of bullet lists to only "*"
+function bulletListRule(nodeType) {
+  return wrappingInputRule(/^\s*(\*) $/, ' ', nodeType);
+}
 
 const createTrackedInputRule = (analyticsEventName: string, rule: InputRule): InputRule => {
   if (typeof (rule.handler) !== 'function') {
@@ -94,6 +99,19 @@ function replaceWithMark(
   const from = pos - match[1].length;
   const markType = schema.mark(mark);
   const charSize = specialChar.length;
+  const nodes: Node[] = [];
+
+  pm.doc.nodesBetween(from, to, (node) => {
+    if (node.isText) {
+      nodes.push(node);
+    }
+  });
+
+  if (nodes.length > 1 && nodes[0].marks.length && (nodes[0].text || '').indexOf(specialChar) > -1) {
+    // TODO: remove setTimeout line after upgrading to new version of ProseMirror
+    setTimeout(() => pm.input.dispatchKey('Backspace'), 0);
+    return false;
+  }
 
   pm.tr.addMark(from, to, markType.type.create()).applyAndScroll();
   pm.tr.delete(from, from + charSize).apply();
@@ -170,31 +188,18 @@ const codeBlockRule = new InputRule(/^```$/, '`', (
 });
 
 // **string** should bold the text
-const strongRule1 = new InputRule(/(\*\*([^\*]+)\*\*)$/, '*', (
+const strongRule = new InputRule(/(\*\*([^\*]+)\*\*)$/, '*', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
 ) => replaceWithMark(pm, match, pos, 'strong', '**'));
 
-// __string__ should bold the text
-const strongRule2 = new InputRule(/(__([^_]+)__)$/, '_', (
-  pm: ProseMirror,
-  match: Array<string>,
-  pos: number
-) => replaceWithMark(pm, match, pos, 'strong', '__'));
-
-// _string_ or *string* should change the text to italic
-const emRule1 = new InputRule(/(?:[^\*]+)(\*([^\*]+?)\*)$|^(\*([^\*]+)\*)$/, '*', (
+// *string* should change the text to italic
+const emRule = new InputRule(/(?:[^\*]+)(\*([^\*]+?)\*)$|^(\*([^\*]+)\*)$/, '*', (
   pm: ProseMirror,
   match: Array<string>,
   pos: number
 ) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em', '*'));
-
-const emRule2 = new InputRule(/(?:[\s]+)(_([^_]+?)_)$|^(_([^_]+)_)$/, '_', (
-  pm: ProseMirror,
-  match: Array<string>,
-  pos: number
-) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em', '_'));
 
 // ~~string~~ should strikethrough the text
 const strikeRule = new InputRule(/(\~\~([^\*]+)\~\~)$/, '~', (
@@ -223,10 +228,8 @@ export class MarkdownInputRulesPlugin {
     const blockRules = buildBlockRules(pm.schema);
 
     this.inputRules = [
-      strongRule1,
-      strongRule2,
-      emRule1,
-      emRule2,
+      strongRule,
+      emRule,
       strikeRule,
       monoRule,
       imgRule,
@@ -238,6 +241,7 @@ export class MarkdownInputRulesPlugin {
 
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.addRule(rule));
+    pm.addKeymap(new Keymap({'Cmd-Z': pm => pm.input.dispatchKey('Backspace')}, {name: 'inputRules'}), 20);
   }
 
   detach(pm: ProseMirror) {

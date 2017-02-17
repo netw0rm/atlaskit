@@ -36,7 +36,7 @@ storiesOf(name, module)
   .add('within a form', () =>
     <div style={containerStyles}>
       <form
-        action={'http://www.w3schools.com/html/action_page.php'}
+        action={'//httpbin.org/get'}
         method="get"
         style={{ backgroundColor: 'white', padding: '40px', width: '500px' }}
         target="myFrame"

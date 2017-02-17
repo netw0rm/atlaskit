@@ -7,18 +7,18 @@ export const simpleDropdownItems = [
     items: [
       {
         content: 'Some text',
-        href: 'http://atlassian.com',
+        href: '//atlassian.com',
         target: '_blank',
       },
       {
         content: 'Some text 2',
-        href: 'http://atlassian.com',
+        href: '//atlassian.com',
         target: '_blank',
         isDisabled: true,
       },
       {
         content: 'Some text 4',
-        href: 'http://atlassian.com',
+        href: '//atlassian.com',
         target: '_blank',
       },
     ],

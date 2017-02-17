@@ -173,6 +173,9 @@ const codeBlockRule = new InputRule(/^```$/, '`', (
   pos: number
 ) => {
   const lengthOfDecorator = match[0].length;
+
+  // Because the node content is wrap by the node margin in prosemirror
+  // + 2 is the parent margin size. 1 in the front, and 1 at the end.
   const convertedNodeHasContent = pm.selection.$from.parent.nodeSize > lengthOfDecorator + 2;
 
   if (isConvertableToCodeBlock(pm) && convertedNodeHasContent) {
@@ -255,7 +258,7 @@ export class MarkdownInputRulesPlugin {
 
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.addRule(rule));
-    pm.addKeymap(new Keymap({'Cmd-Z': pm => pm.input.dispatchKey('Backspace')}, {name: 'inputRules'}), 20);
+    pm.addKeymap(new Keymap({ 'Cmd-Z': pm => pm.input.dispatchKey('Backspace') }, { name: 'inputRules' }), 20);
   }
 
   detach(pm: ProseMirror) {

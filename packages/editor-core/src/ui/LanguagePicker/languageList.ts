@@ -71,13 +71,13 @@ export const SUPPORTED_LANGUAGES = [
 
 const languageList = [NO_LANGUAGE, ...(SUPPORTED_LANGUAGES.map((language) => language.name).sort())];
 
-function makeLanguage(name: string, alias: Array<string>): Language {
+function makeLanguage(name: string, alias: string[]): Language {
   return {name, alias};
 }
 
 export interface Language {
   name: string;
-  alias: Array<string>;
+  alias: string[];
 }
 
 export function findMatchedLanguage(languge?: string): string {

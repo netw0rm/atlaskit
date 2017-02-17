@@ -44,7 +44,7 @@ export function canJoinUp(pm: ProseMirror, selection: Selection, doc: any, nodeT
  * Returns all top-level ancestor-nodes between $from and $to
  */
 export function getAncestorNodesBetween(pm: ProseMirror, $from: ResolvedPos, $to: ResolvedPos): Node[] {
-  const nodes = Array<Node>();
+  const nodes = Node[]();
   const maxDepth = findAncestorPosition(pm, $from).depth;
   let current = pm.doc.resolve($from.start(maxDepth));
 

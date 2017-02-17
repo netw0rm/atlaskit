@@ -7,9 +7,10 @@ import CodeBlockPasteListener from './code-block-paste-listener';
 export class CodeBlockState {
   element?: HTMLElement;
   language?: string;
-  clicked: boolean = false;
+  toolbarVisible: boolean = false;
 
   private pm: PM;
+  private editorFocused: boolean = false;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
   private activeCodeBlock?: Node;
 
@@ -30,11 +31,13 @@ export class CodeBlockState {
     ], () => this.update());
 
     pm.on.focus.add(() => {
-      this.update();
+      this.editorFocused = true;
+      this.update(true);
     });
 
     pm.on.blur.add(() => {
-      this.clear();
+      this.editorFocused = false;
+      this.update(true);
     });
 
     pm.on.click.add(() => {
@@ -71,23 +74,17 @@ export class CodeBlockState {
     return false;
   }
 
-  private update(clicked = false) {
+  private update(domEvent = false) {
     const codeBlockNode = this.activeCodeBlockNode();
 
-    if (clicked && codeBlockNode || codeBlockNode !== this.activeCodeBlock) {
-      this.clicked = clicked;
+    if ((domEvent && codeBlockNode) || codeBlockNode !== this.activeCodeBlock) {
+      const newElement = codeBlockNode && this.activeCodeBlockElement();
+      this.toolbarVisible = this.editorFocused && !!codeBlockNode && (domEvent || this.element !== newElement);
       this.activeCodeBlock = codeBlockNode;
       this.language = codeBlockNode && codeBlockNode.attrs['language'];
-      this.element = codeBlockNode && this.activeCodeBlockElement();
+      this.element = newElement;
       this.changeHandlers.forEach(changeHandler => changeHandler(this));
     }
-  }
-
-  private clear() {
-    this.activeCodeBlock = undefined;
-    this.language = undefined;
-    this.element = undefined;
-    this.changeHandlers.forEach(changeHandler => changeHandler(this));
   }
 
   private activeCodeBlockElement(): HTMLElement {

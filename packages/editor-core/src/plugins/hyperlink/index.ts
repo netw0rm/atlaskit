@@ -21,7 +21,7 @@ export class HyperlinkState {
   active = false;
   canAddLink = false;
   element?: HTMLElement;
-  toolbarVisible: boolean;
+  toolbarVisible: boolean = false;
 
   private changeHandlers: StateChangeHandler[] = [];
   private inputRules: InputRule[] = [];
@@ -29,14 +29,12 @@ export class HyperlinkState {
   private activeLinkNode?: Node;
   private activeLinkMark?: LinkMark;
   private activeLinkStartPos?: number;
-  private editorFocused: boolean;
+  private editorFocused: boolean = false;
 
   constructor(pm: PM) {
     this.pm = pm;
 
     this.inputRules = [hyperlinkRule];
-    this.toolbarVisible = false;
-    this.editorFocused = false;
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach(rule => rules.addRule(rule));
 

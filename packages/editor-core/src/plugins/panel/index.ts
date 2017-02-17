@@ -27,20 +27,18 @@ export const availablePanelType = [
 
 export class PanelState {
   private pm: PM;
-  private editorFocused: boolean;
+  private editorFocused: boolean = false;
   private activeNode: PanelNode | undefined;
   private changeHandlers: PanelStateSubscriber[] = [];
   private inputRules: InputRule[] = [];
 
-  toolbarVisible: boolean;
+  toolbarVisible: boolean = false;
   element?: HTMLElement | undefined;
   activePanelType?: string | undefined;
 
   constructor(pm: PM) {
     this.pm = pm;
 
-    this.toolbarVisible = false;
-    this.editorFocused = false;
     this.inputRules = panelRules;
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach(rule => rules.addRule(rule));

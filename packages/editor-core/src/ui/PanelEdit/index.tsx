@@ -29,7 +29,7 @@ export interface State {
 }
 
 export default class PanelEdit extends PureComponent<Props, State> {
-  state: State = { toolbarVisible: false, };
+  state: State = { toolbarVisible: false };
 
   constructor(props: Props) {
     super(props);

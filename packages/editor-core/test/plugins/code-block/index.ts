@@ -290,37 +290,27 @@ describe('code-block', () => {
         expect(plugin.element).to.equal(undefined);
       });
     });
-
-    it('should be undefined editor is blur', () => {
-      const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
-      pm.on.blur.dispatch();
-      expect(plugin.element).to.be.undefined;
-    });
-
-    it('should be defined editor is focused', () => {
-      const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
-      pm.on.blur.dispatch();
-      pm.on.focus.dispatch();
-      expect(plugin.element).not.to.be.undefined;
-    });
   });
 
-  context('clicked', () => {
+  context('toolbarVisible', () => {
     context('when click inside code block', () => {
       it('returns true', () => {
         const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+
+        pm.on.focus.dispatch();
         pm.on.click.dispatch();
 
-        expect(plugin.clicked).to.be.true;
+        expect(plugin.toolbarVisible).to.be.true;
       });
     });
 
     context('when click outside of code block', () => {
       it('returns false', () => {
         const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock')));
+
         pm.on.click.dispatch();
 
-        expect(plugin.clicked).to.be.false;
+        expect(plugin.toolbarVisible).to.be.false;
       });
     });
 
@@ -331,7 +321,7 @@ describe('code-block', () => {
 
         pm.setTextSelection(cbPos);
 
-        expect(plugin.clicked).to.be.false;
+        expect(plugin.toolbarVisible).to.be.false;
       });
     });
   });
@@ -395,19 +385,6 @@ describe('code-block', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
       expect(plugin.language).to.be.undefined;
-    });
-
-    it('should be undefined when editor is blur', () => {
-      const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
-      pm.on.blur.dispatch();
-      expect(plugin.language).to.be.undefined;
-    });
-
-    it('should be defined when code block is focused', () => {
-      const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
-      pm.on.blur.dispatch();
-      pm.on.focus.dispatch();
-      expect(plugin.language).not.to.be.undefined;
     });
   });
 });

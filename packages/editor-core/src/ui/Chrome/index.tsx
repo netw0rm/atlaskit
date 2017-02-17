@@ -17,8 +17,10 @@ export interface Props {
   placeholder?: string;
   onCancel?: () => void;
   onSave?: () => void;
+  packageVersion?: string;
+  packageName?: string;
   pm?: ProseMirror;
-  feedbackFormUrl?: string;
+  showFeedbackButton?: boolean;
   pluginStateBlockType?: BlockTypeState;
   pluginStateCodeBlock?: CodeBlockState;
   pluginStateHyperlink?: HyperlinkState;
@@ -39,7 +41,7 @@ export default class Chrome extends PureComponent<Props, {}> {
       ? <ChromeExpanded
           onCancel={props.onCancel}
           onSave={props.onSave}
-          feedbackFormUrl={props.feedbackFormUrl}
+          showFeedbackButton={props.showFeedbackButton}
           pluginStateBlockType={props.pluginStateBlockType}
           pluginStateCodeBlock={props.pluginStateCodeBlock}
           pluginStateHyperlink={props.pluginStateHyperlink}
@@ -49,6 +51,8 @@ export default class Chrome extends PureComponent<Props, {}> {
           pluginStateMentions={props.pluginStateMentions}
           mentionsResourceProvider={props.mentionsResourceProvider}
           pluginStatePanel={props.pluginStatePanel}
+          packageVersion={props.packageVersion}
+          packageName={props.packageName}
       >
         {props.children}
       </ChromeExpanded>

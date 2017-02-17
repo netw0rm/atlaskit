@@ -15,7 +15,7 @@ import {
   SubSupMarkType,
   Text,
   UnderlineMarkType
-} from 'ak-editor-core';
+} from '@atlaskit/editor-core';
 
 export interface BaseSchemaNodes {
   doc: DocNodeType;

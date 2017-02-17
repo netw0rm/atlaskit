@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
 import { chaiPlugin, insert, makeEditor } from '../../../test-helper';
-import { doc, link, linkable, schema, unlinkable } from '../../_schema-builder';
+import { doc, paragraph, link, linkable, schema, unlinkable } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
 
@@ -452,12 +452,20 @@ describe('hyperlink', () => {
       expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('txt'))));
     });
 
-    it('should call subscribers when editor is blur', () => {
+    it('should call subscribers when link was focused and then editor is blur', () => {
       const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
       const spy = sinon.spy();
       plugin.subscribe(spy);
       pm.on.blur.dispatch();
       expect(spy.callCount).to.equal(2);
+    });
+
+    it('should not call subscribers if link was not focused when editor is blur', () => {
+      const { pm, plugin } = editor(doc(paragraph('te{<>}st'), linkable(link({ href: 'http://www.atlassian.com' })('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should call subscribers when link is focused', () => {
@@ -467,6 +475,15 @@ describe('hyperlink', () => {
       pm.on.blur.dispatch();
       pm.on.focus.dispatch();
       expect(spy.callCount).to.equal(3);
+    });
+
+    it('should not call subscribers if editor is focused but link is not focused', () => {
+      const { pm, plugin } = editor(doc(paragraph('te{<>}st'), linkable(link({ href: 'http://www.atlassian.com' })('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      pm.on.focus.dispatch();
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should return referring DOM element', () => {

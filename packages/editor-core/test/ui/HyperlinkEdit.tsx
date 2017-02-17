@@ -4,7 +4,7 @@ import * as React from 'react';
 import HyperlinkPlugin from '../../src/plugins/hyperlink';
 import HyperlinkEdit from '../../src/ui/HyperlinkEdit';
 import { makeEditor } from '../../test-helper';
-import { doc, link, linkable, schema } from '../_schema-builder';
+import { doc, paragraph, link, linkable, schema } from '../_schema-builder';
 
 describe('ak-editor-core/ui/HyperlinkEdit', () => {
   const editor = (doc: any) => {
@@ -17,6 +17,13 @@ describe('ak-editor-core/ui/HyperlinkEdit', () => {
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={plugin}/>);
     pm.on.focus.dispatch();
     expect(hyperlinkEdit.html()).to.not.equal(null);
+  });
+
+  it('should produce null HTML when anothe block on editor is focused', () => {
+    const { pm, plugin } = editor(doc(paragraph('te{<>}xt'), linkable('before', link({ href: 'http://www.atlassian.com' })('text'), 'after')));
+    const hyperlinkEdit = mount(<HyperlinkEdit pluginState={plugin}/>);
+    pm.on.focus.dispatch();
+    expect(hyperlinkEdit.html()).to.equal(null);
   });
 
   it('should produce null HTML when editor is blur', () => {

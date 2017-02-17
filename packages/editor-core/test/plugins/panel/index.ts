@@ -52,12 +52,20 @@ describe('panel', () => {
       expect(spy.callCount).to.equal(1);
     });
 
-    it('should call subscribers when panel is blur', () => {
+    it('should call subscribers when panel was focused when editor blur panel is blur', () => {
       const { plugin, pm } = editor(doc(panel(paragraph('text'))));
       const spy = sinon.spy();
       plugin.subscribe(spy);
       pm.on.blur.dispatch();
       expect(spy.callCount).to.equal(2);
+    });
+
+    it('should call subscribers when another block was focused when editor blur panel is blur', () => {
+      const { plugin, pm } = editor(doc(paragraph('te{<>}xt'), panel(paragraph('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should call subscribers when panel is focus', () => {
@@ -67,6 +75,15 @@ describe('panel', () => {
       pm.on.blur.dispatch();
       pm.on.focus.dispatch();
       expect(spy.callCount).to.equal(3);
+    });
+
+    it('should not call subscribers when another block in editor is focus', () => {
+      const { plugin, pm } = editor(doc(paragraph('te{<>}xt'), panel(paragraph('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      pm.on.focus.dispatch();
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should be able to identify panel node', () => {

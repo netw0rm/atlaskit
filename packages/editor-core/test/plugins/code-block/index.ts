@@ -74,13 +74,23 @@ describe('code-block', () => {
       });
     });
 
-    context('when editor is blur', () => {
+    context('when code block is focused and then editor is blur', () => {
       it('should call subscribers', () => {
         const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
         const spy = sinon.spy();
         plugin.subscribe(spy);
         pm.on.blur.dispatch();
         expect(spy.callCount).to.equal(2);
+      });
+    });
+
+    context('when code block is not focused and then editor is blur', () => {
+      it('should not call subscribers', () => {
+        const { pm, plugin } = editor(doc(p('para{<>}graph'), code_block()('codeBlock')));
+        const spy = sinon.spy();
+        plugin.subscribe(spy);
+        pm.on.blur.dispatch();
+        expect(spy.callCount).to.equal(1);
       });
     });
 
@@ -104,6 +114,17 @@ describe('code-block', () => {
         pm.on.blur.dispatch();
         pm.on.focus.dispatch();
         expect(spy.callCount).to.equal(3);
+      });
+    });
+
+    context('when some other block is focused', () => {
+      it('should not call subscribers', () => {
+        const { pm, plugin } = editor(doc(p('para{<>}graph'), code_block()('codeBlock')));
+        const spy = sinon.spy();
+        plugin.subscribe(spy);
+        pm.on.blur.dispatch();
+        pm.on.focus.dispatch();
+        expect(spy.callCount).to.equal(1);
       });
     });
 

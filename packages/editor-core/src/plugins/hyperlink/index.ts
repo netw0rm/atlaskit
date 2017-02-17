@@ -35,6 +35,7 @@ export class HyperlinkState {
     this.pm = pm;
 
     this.inputRules = [hyperlinkRule];
+
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach(rule => rules.addRule(rule));
 

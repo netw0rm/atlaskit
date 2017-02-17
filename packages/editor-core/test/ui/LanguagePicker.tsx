@@ -61,7 +61,7 @@ describe('LanguagePicker', () => {
 
   it('editor is blur', () => {
     it('LanguagePicker produce null HTML', () => {
-      const { pm, plugin } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
       const languagePicker = mount(<LanguagePicker pluginState={plugin}/>);
       expect(languagePicker.html()).to.not.equal(null);
       pm.on.blur.dispatch();
@@ -69,13 +69,23 @@ describe('LanguagePicker', () => {
     });
   });
 
-  it('editor is focused', () => {
+  it('editor is focuseda and languagePicker is also focused', () => {
     it('LanguagePicker will not produce null HTML', () => {
-      const { pm, plugin } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+      const { pm, plugin } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
       const languagePicker = mount(<LanguagePicker pluginState={plugin}/>);
       pm.on.blur.dispatch();
       pm.on.focus.dispatch();
       expect(languagePicker.html()).to.not.equal(null);
+    });
+  });
+
+  it('editor is focused but languagePicker is not focused', () => {
+    it('LanguagePicker will produce null HTML', () => {
+      const { pm, plugin } = editor(doc(p('parag{<>}raph'), code_block()('codeBlock')));
+      const languagePicker = mount(<LanguagePicker pluginState={plugin}/>);
+      pm.on.blur.dispatch();
+      pm.on.focus.dispatch();
+      expect(languagePicker.html()).to.equal(null);
     });
   });
 });

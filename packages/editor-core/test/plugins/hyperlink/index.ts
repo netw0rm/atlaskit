@@ -154,14 +154,6 @@ describe('hyperlink', () => {
       });
     });
 
-    context('when editor is blur', () => {
-      it('returns false', () => {
-        const { plugin, pm } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
-        pm.on.blur.dispatch();
-        expect(plugin.active).to.be.false;
-      });
-    });
-
     context('when link is focused', () => {
       it('returns true', () => {
         const { plugin, pm } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
@@ -248,14 +240,6 @@ describe('hyperlink', () => {
       it('returns undefined', () => {
         const { plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('text{<>}'), 'after')));
 
-        expect(plugin.element).to.be.undefined;
-      });
-    });
-
-    context('when editor is blur', () => {
-      it('returns undefined', () => {
-        const { plugin, pm } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
-        pm.on.blur.dispatch();
         expect(plugin.element).to.be.undefined;
       });
     });

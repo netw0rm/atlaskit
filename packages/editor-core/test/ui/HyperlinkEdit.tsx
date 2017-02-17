@@ -12,19 +12,19 @@ describe('ak-editor-core/ui/HyperlinkEdit', () => {
     return { pm, plugin, sel: pm.doc.refs['<>'] };
   };
 
-  it('should produce null HTML when editor is blur', () => {
-    const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
-    const hyperlinkEdit = mount(<HyperlinkEdit pluginState={plugin}/>);
-    expect(hyperlinkEdit.html()).to.not.equal(null);
-    pm.on.blur.dispatch();
-    expect(hyperlinkEdit.html()).to.equal(null);
-  });
-
   it('should not produce null HTML when editor is focused', () => {
     const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={plugin}/>);
-    pm.on.blur.dispatch();
     pm.on.focus.dispatch();
     expect(hyperlinkEdit.html()).to.not.equal(null);
+  });
+
+  it('should produce null HTML when editor is blur', () => {
+    const { pm, plugin } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('te{<>}xt'), 'after')));
+    const hyperlinkEdit = mount(<HyperlinkEdit pluginState={plugin}/>);
+    pm.on.focus.dispatch();
+    expect(hyperlinkEdit.html()).to.not.equal(null);
+    pm.on.blur.dispatch();
+    expect(hyperlinkEdit.html()).to.equal(null);
   });
 });

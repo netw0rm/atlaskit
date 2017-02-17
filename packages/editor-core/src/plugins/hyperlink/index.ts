@@ -21,6 +21,7 @@ export class HyperlinkState {
   active = false;
   canAddLink = false;
   element?: HTMLElement;
+  toolbarVisible: boolean;
 
   private changeHandlers: StateChangeHandler[] = [];
   private inputRules: InputRule[] = [];
@@ -28,12 +29,14 @@ export class HyperlinkState {
   private activeLinkNode?: Node;
   private activeLinkMark?: LinkMark;
   private activeLinkStartPos?: number;
+  private editorFocused: boolean;
 
   constructor(pm: PM) {
     this.pm = pm;
 
     this.inputRules = [hyperlinkRule];
-
+    this.toolbarVisible = false;
+    this.editorFocused = false;
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach(rule => rules.addRule(rule));
 
@@ -48,11 +51,13 @@ export class HyperlinkState {
     ], () => this.escapeFromMark());
 
     pm.on.focus.add(() => {
-      this.update();
+      this.editorFocused = true;
+      this.update(true);
     });
 
     pm.on.blur.add(() => {
-      this.clear();
+      this.editorFocused = false;
+      this.update(true);
     });
 
     this.setup(this.getActiveLinkNodeInfo());
@@ -112,24 +117,13 @@ export class HyperlinkState {
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
 
-  private update() {
+  private update(domEvent = false) {
     const nodeInfo = this.getActiveLinkNodeInfo();
 
-    if ((nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
+    if ((nodeInfo && domEvent) || (nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
       this.setup(nodeInfo);
       this.changeHandlers.forEach(cb => cb(this));
     }
-  }
-
-  private clear() {
-    this.activeLinkNode = undefined;
-    this.activeLinkStartPos = undefined;
-    this.activeLinkMark = undefined;
-    this.text = undefined;
-    this.href = undefined;
-    this.element = undefined;
-    this.active = false;
-    this.changeHandlers.forEach(cb => cb(this));
   }
 
   private escapeFromMark() {
@@ -152,6 +146,7 @@ export class HyperlinkState {
     this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
     this.element = this.getDomElement();
     this.active = !!nodeInfo;
+    this.toolbarVisible = this.editorFocused && !!nodeInfo;
     this.canAddLink = !this.active && this.isActiveNodeLinkable();
   }
 

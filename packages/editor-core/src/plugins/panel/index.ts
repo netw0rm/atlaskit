@@ -32,14 +32,14 @@ export class PanelState {
   private changeHandlers: PanelStateSubscriber[] = [];
   private inputRules: InputRule[] = [];
 
-  editMode: boolean;
+  toolbarVisible: boolean;
   element?: HTMLElement | undefined;
   activePanelType?: string | undefined;
 
   constructor(pm: PM) {
     this.pm = pm;
 
-    this.editMode = false;
+    this.toolbarVisible = false;
     this.editorFocused = false;
     this.inputRules = panelRules;
     const rules = inputRules.ensure(pm);
@@ -117,7 +117,7 @@ export class PanelState {
     if ((domEvent && newPanel) || this.activeNode !== newPanel) {
       const newElement = newPanel && this.getDomElement();
       this.activeNode = newPanel;
-      this.editMode = this.editorFocused && !!newPanel && (domEvent || this.element !== newElement);
+      this.toolbarVisible = this.editorFocused && !!newPanel && (domEvent || this.element !== newElement);
       this.element = newElement;
       this.activePanelType = newPanel && newPanel.attrs['panelType'];
       this.changeHandlers.forEach(cb => cb(this));

@@ -151,7 +151,10 @@ export class HyperlinkState {
       }
 
       if (node && node.isText && link.isInSet(node.marks)) {
-        return { node: node, startPos: offset + 1 };
+        return {
+          node,
+          startPos: offset + 1
+        };
       }
     }
   }
@@ -166,7 +169,11 @@ export class HyperlinkState {
 
   private getDomElement(): HTMLElement | undefined {
     if (this.activeLinkStartPos) {
-      const { node, offset } = DOMFromPos(this.pm, this.activeLinkStartPos, true);
+      const { node, offset } = DOMFromPos(
+        this.pm,
+        this.activeLinkStartPos + this.pm.selection.$from.start(this.pm.selection.$from.depth),
+        true
+      );
 
       if (node.childNodes.length === 0) {
         return node.parentNode as HTMLElement;

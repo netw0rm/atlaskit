@@ -80,13 +80,13 @@ export interface Language {
   alias: string[];
 }
 
-export function findMatchedLanguage(languge?: string): string {
-  if (!languge) {
+export function findMatchedLanguage(language?: string): string {
+  if (!language) {
     return NO_LANGUAGE;
   }
 
   const matches = SUPPORTED_LANGUAGES.filter((supportedLanguage) => {
-    return supportedLanguage.alias.indexOf(languge.toLowerCase()) !== -1;
+    return supportedLanguage.alias.indexOf(language.toLowerCase()) !== -1;
   });
 
   if (matches.length > 0) {

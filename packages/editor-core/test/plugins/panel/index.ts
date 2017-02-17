@@ -5,6 +5,7 @@ import { makeEditor } from '../../../test-helper';
 import { doc, panel, schema, paragraph } from '../../_schema-builder';
 
 describe('panel', () => {
+
   const editor = (doc: any) => {
     const { pm, plugin } = makeEditor({ doc, plugin: PanelPlugin, schema });
     return { pm, plugin, sel: pm.doc.refs['<>'] };
@@ -128,5 +129,32 @@ describe('panel', () => {
       expect(spy.callCount).to.equal(2);
     });
 
+  });
+
+  describe('toolbarVisible', () => {
+    context('when panel is focused', () => {
+      it('it is true', () => {
+        const { plugin, pm } = editor(doc(panel(paragraph('te{<>}xt'))));
+        pm.on.focus.dispatch();
+        expect(plugin.toolbarVisible).to.be.true;
+      });
+    });
+
+    context('when another block is focused', () => {
+      it('it is false', () => {
+        const { plugin, pm } = editor(doc(paragraph('te{<>}xt'), panel(paragraph('text'))));
+        pm.on.focus.dispatch();
+        expect(plugin.toolbarVisible).to.not.be.true;
+      });
+    });
+
+    context('when editor is blur', () => {
+      it('it is false', () => {
+        const { plugin, pm } = editor(doc(panel(paragraph('te{<>}xt'))));
+        pm.on.focus.dispatch();
+        pm.on.blur.dispatch();
+        expect(plugin.toolbarVisible).to.not.be.true;
+      });
+    });
   });
 });

@@ -494,4 +494,31 @@ describe('hyperlink', () => {
       expect(plugin.element.text).to.eq('dsorin');
     });
   });
+
+  describe('toolbarVisible', () => {
+    context('when link is focused', () => {
+      it('it is true', () => {
+        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+        pm.on.focus.dispatch();
+        expect(plugin.toolbarVisible).to.be.true;
+      });
+    });
+
+    context('when another block is focused', () => {
+      it('it is false', () => {
+        const { pm, plugin } = editor(doc(paragraph('te{<>}st'), linkable(link({ href: 'http://www.atlassian.com' })('text'))));
+        pm.on.focus.dispatch();
+        expect(plugin.toolbarVisible).to.not.be.true;
+      });
+    });
+
+    context('when editor is blur', () => {
+      it('it is false', () => {
+        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+        pm.on.focus.dispatch();
+        pm.on.blur.dispatch();
+        expect(plugin.toolbarVisible).to.not.be.true;
+      });
+    });
+  });
 });

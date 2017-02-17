@@ -13,6 +13,8 @@ import WideSelect from './examples/WideSelect';
 import WideSelectRaw from '!raw!./examples/WideSelect';
 import SelectAlignment from './examples/SelectAlignment';
 import SelectAlignmentRaw from '!raw!./examples/SelectAlignment';
+import SelectWithGroups from './examples/SelectWithGroups';
+import SelectWithGroupsRaw from '!raw!./examples/SelectWithGroups';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name } from '../package.json';
@@ -96,6 +98,15 @@ storiesOf(name, module)
       {WideSelect}
       <Code>
         {WideSelectRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select with groups', () => (
+    <Chrome title="Select with groups">
+      {SelectWithGroups}
+      <Code>
+        {SelectWithGroupsRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

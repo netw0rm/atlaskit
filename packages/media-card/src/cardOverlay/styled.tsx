@@ -58,6 +58,10 @@ export const FileTypeIcon = styled.div`
     color: #ff7143;
   }
 
+  &.unknown {
+    color: #3dc7dc;
+  }
+
   span{
     width: 12px !important;
     height: 12px !important;
@@ -105,7 +109,7 @@ export const Overlay = styled.div`
     }
   }
   
-  &.video, &.doc {
+  &.video, &.doc, &.unknown {
     .file-type-icon {
       display: block;
     }
@@ -320,4 +324,10 @@ export const FileSize = styled.div`
   float: left;
   font-size: 12px;
   color: #5E6C84;
+`;
+
+export const Metadata = styled.div`
+  &.has-progress {
+    display: none;
+  }
 `;

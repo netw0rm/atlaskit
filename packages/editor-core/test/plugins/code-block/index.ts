@@ -74,6 +74,30 @@ describe('code-block', () => {
       });
     });
 
+    context('when click inside code_block', () => {
+      it('notify the subscriber', () => {
+        const { pm, plugin } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
+        const spy = sinon.spy();
+        plugin.subscribe(spy);
+
+        pm.on.click.dispatch();
+
+        expect(spy.callCount).to.equal(2);
+      });
+    });
+
+    context('when click outside of code_block', () => {
+      it('does not notify the subscriber', () => {
+        const { pm, plugin } = editor(doc(p('paragraph{<>}')));
+        const spy = sinon.spy();
+        plugin.subscribe(spy);
+
+        pm.on.click.dispatch();
+
+        expect(spy.callCount).to.equal(1);
+      });
+    });
+
     context('when unsubscribe', () => {
       it('does not notify the subscriber', () => {
         const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
@@ -100,35 +124,24 @@ describe('code-block', () => {
         expect(splitCodeBlock.callCount).to.equal(1);
       });
     });
-
-    context('when hits double enter', () => {
-      it('exits code block', () => {
-        const { pm } = editor(doc(code_block()('text{<>}')));
-
-        pm.input.dispatchKey('Enter');
-        pm.input.dispatchKey('Enter');
-
-        expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
-      });
-    });
   });
 
   describe('splitCodeBlock', () => {
     context('when it is a code block', () => {
       context('when last char is a new line', () => {
         context('when cursor is at the end of code block', () => {
-          it('removes the last new line char in code block', () => {
+          it('inserts a new line', () => {
             const { pm, plugin } = editor(doc(code_block()('text\n{<>}')));
 
             plugin.splitCodeBlock();
 
-            expect(pm.doc).to.deep.equal(doc(code_block()('text')));
+            expect(pm.doc).to.deep.equal(doc(code_block()('text\n\n')));
           });
 
-          it('returns false', () => {
+          it('returns true', () => {
             const { plugin } = editor(doc(code_block()('text\n{<>}')));
 
-            expect(plugin.splitCodeBlock()).to.equal(false);
+            expect(plugin.splitCodeBlock()).to.equal(true);
           });
         });
 
@@ -258,6 +271,37 @@ describe('code-block', () => {
     });
   });
 
+  context('clicked', () => {
+    context('when click inside code block', () => {
+      it('returns true', () => {
+        const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+        pm.on.click.dispatch();
+
+        expect(plugin.clicked).to.be.true;
+      });
+    });
+
+    context('when click outside of code block', () => {
+      it('returns false', () => {
+        const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock')));
+        pm.on.click.dispatch();
+
+        expect(plugin.clicked).to.be.false;
+      });
+    });
+
+    context('when has not been clicked', () => {
+      it('returns false', () => {
+        const { pm, plugin } = editor(doc(p('paragraph'), code_block()('codeB{cbPos}lock')));
+        const { cbPos } = pm.doc.refs;
+
+        pm.setTextSelection(cbPos);
+
+        expect(plugin.clicked).to.be.false;
+      });
+    });
+  });
+
   context('updateLanguage', () => {
     it('keeps the content', () => {
       const { plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
@@ -298,24 +342,6 @@ describe('code-block', () => {
     });
   });
 
-  describe('active', () => {
-    context('inside a code block', () => {
-      it('is active', () => {
-        const { plugin } = editor(doc(code_block()('te{<>}xt')));
-
-        expect(plugin.active).to.equal(true);
-      });
-    });
-
-    context('outside of a code block', () => {
-      it('is not active', () => {
-        const { plugin } = editor(doc(p('te{<>}xt')));
-
-        expect(plugin.active).to.equal(false);
-      });
-    });
-  });
-
   describe('language', () => {
     it('is the same as activeCodeBlock language', () => {
       const { plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
@@ -335,28 +361,6 @@ describe('code-block', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
       expect(plugin.language).to.be.undefined;
-    });
-  });
-
-  describe('content', () => {
-    it('is the same as activeCodeBlock text content', () => {
-      const { plugin } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
-
-      expect(plugin.content).to.eq('text');
-    });
-
-    it('updates if activeCodeBlock updates content', () => {
-      const { pm, plugin, sel } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
-
-      pm.input.insertText(sel, sel, 'bar');
-
-      expect(plugin.content).to.eq('tebarxt');
-    });
-
-    it('sets content to undefined if no activeCodeBlock', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
-
-      expect(plugin.content).to.be.undefined;
     });
   });
 });

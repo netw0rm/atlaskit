@@ -55,4 +55,16 @@ describe('ak-editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     strikeButton.simulate('click');
     expect(plugin.toggleStrike.callCount).to.equal(1);
   });
+
+  it('should be disabled if both monoDisabled and strikeDisabled are true', () => {
+    const { pm } = editor(doc(p('text')));
+    const pluginState = pm && TextFormattingPlugin.get(pm);
+    if (pluginState) {
+      pluginState.monoDisabled = true;
+      pluginState.strikeDisabled = true;
+    }
+    const toolbarOption = mount(<ToolbarAdvancedTextFormatting pluginState={pluginState}/>);
+    const disabledButton = toolbarOption.find('button');
+    expect(disabledButton.prop('disabled')).to.be.true;
+  });
 });

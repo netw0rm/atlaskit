@@ -38,6 +38,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
           disabled={disabled || active}
           onClick={this.openLinkPanel}
           selected={adding}
+          title="Hyperlink"
           iconBefore={<LinkIcon label="Link" />}
         />
         {!adding ? null :

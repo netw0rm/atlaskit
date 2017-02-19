@@ -1,7 +1,7 @@
 import AkButton from 'ak-button';
+import {Tooltip} from '@atlaskit/tooltip';
 import * as React from 'react';
-import { MouseEvent, PureComponent, ReactElement } from 'react';
-import * as styles from './styles';
+import { PureComponent, ReactElement } from 'react';
 
 export interface Props {
   selected?: boolean;
@@ -16,44 +16,66 @@ export interface Props {
   onClick?: () => void;
 }
 
+export interface State {
+  isTooltipVisible: boolean;
+}
+
 export default class ToolbarButton extends PureComponent<Props, {}> {
+  state: State = {
+    isTooltipVisible: false
+  };
+
   static defaultProps = {
     wrapperClassName: '',
   };
 
   render() {
-    return (
-      <span
-        className={`${styles.button} ${this.props.wrapperClassName}`}
+    const button = (
+      <AkButton
+        ariaHaspopup={true}
+        isDisabled={this.props.disabled}
+        isSelected={this.props.selected}
+        spacing={this.props.spacing || 'none'}
+        appearance="subtle"
+        href={this.props.href}
         onClick={this.handleClick}
-        onMouseDown={this.handleMouseDown}
-        title={this.props.title}
+        target={this.props.target}
+        theme={this.props.theme}
+        iconBefore={this.props.iconBefore}
       >
-        <AkButton
-          isDisabled={this.props.disabled}
-          isSelected={this.props.selected}
-          spacing={this.props.spacing || 'none'}
-          appearance="subtle"
-          href={this.props.href}
-          target={this.props.target}
-          theme={this.props.theme}
-          iconBefore={this.props.iconBefore}
-        >
-          {this.props.children}
-        </AkButton>
-      </span>
+        {this.props.children}
+      </AkButton>
     );
+
+    return this.props.title
+      ? (
+        <Tooltip
+          position="top"
+          description={this.props.title}
+          visible={this.state.isTooltipVisible}
+          onMouseOver={this.handleMouseOver}
+          onMouseOut={this.handleMouseOut}
+        >
+          {button}
+        </Tooltip>
+      )
+      : button;
   }
 
-  private handleClick = (e: MouseEvent<any>) => {
+  private handleClick = () => {
     const { disabled, onClick } = this.props;
     if (!disabled && onClick) {
       onClick();
     }
+
+    this.setState({isTooltipVisible: false});
   }
 
-  private handleMouseDown = (e: MouseEvent<any>) => {
-    // Don't let ProseMirror lose focus.
-    e.preventDefault();
+  private handleMouseOver = () => {
+    this.setState({isTooltipVisible: true});
+  }
+
+  private handleMouseOut = () => {
+    this.setState({isTooltipVisible: false});
   }
 };

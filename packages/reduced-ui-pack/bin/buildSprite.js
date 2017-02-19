@@ -26,7 +26,7 @@ const addTitleIds = {
 };
 
 const spriterConfig = {
-  dest: './src',
+  dest: './dist',
   // this generates the id attr for each svg in the sprite
   shape: {
     id: {
@@ -40,7 +40,13 @@ const spriterConfig = {
     ],
   },
   // this puts an inline style on the sprite to prevent it from being displayed on the page
-  mode: { symbol: { inline: true } },
+  mode: {
+    symbol: {
+      dest: '.',
+      inline: true,
+      sprite: 'icons-sprite.svg',
+    },
+  },
 };
 
 const spriter = new SVGSpriter(spriterConfig);

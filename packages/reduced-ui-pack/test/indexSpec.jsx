@@ -1,6 +1,6 @@
 import cheerio from 'cheerio'; // eslint-disable-line import/no-extraneous-dependencies
+import icons from '!raw!../dist/icons-sprite.svg';
 import { name } from '../package.json';
-import { icons } from '../src';
 import expectedSvgIds from '../src/internal/iconIds';
 
 describe(name, () => {

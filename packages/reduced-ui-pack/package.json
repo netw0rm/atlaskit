@@ -5,11 +5,9 @@
     "access": "public"
   },
   "description": "CSS classes which provide styling for a reduced number of AtlasKit components.",
-  "main": "dist/bundle.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
+  "main": "dist/bundle.css",
   "scripts": {
-    "prepublish": "npm run sprite && cd ../.. && npm run prepublish/single @atlaskit/reduced-ui-pack",
+    "prepublish": "lessc src/index.less dist/bundle.css && npm run sprite",
     "sprite": "node ./bin/buildSprite.js"
   },
   "files": [
@@ -24,6 +22,7 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@atlaskit/field-text": "^2.0.5",
     "@atlaskit/util-readme": "^1.0.0",
     "cheerio": "^0.22.0",
     "glob": "^7.1.1",

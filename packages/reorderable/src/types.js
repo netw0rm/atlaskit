@@ -33,8 +33,8 @@ type DraggableHooks = {|
   onDragEnd: (id: DraggableId) => void,
 |}
 
-export type Draggable =
-  (TypeId, ProvideDraggableState, MapDraggableStateToProps, DraggableHooks) => HOC;
+// type Draggable =
+//   (TypeId, ProvideDraggableState, MapDraggableStateToProps, DraggableHooks?) => HOC;
 
 type DroppableState = {|
   draggingId: DraggableId,

@@ -1,0 +1,6 @@
+{
+  "extends": "../../.babelrc",
+  "plugins": [
+    "transform-flow-strip-types"
+  ]
+}

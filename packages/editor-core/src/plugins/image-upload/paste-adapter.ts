@@ -28,7 +28,7 @@ export default class PasteAdapter {
 
   remove(handler: ImageUploadPasteHandler) {
     this.handlers = this.handlers.reduce((
-      handlers: Array<ImageUploadPasteHandler>,
+      handlers: ImageUploadPasteHandler[],
       func: ImageUploadPasteHandler
     ) => {
       if (handler !== func) {

@@ -6,7 +6,7 @@ import CodeBlockPasteListener from './code-block-paste-listener';
 
 export class CodeBlockState {
   element?: HTMLElement;
-  language?: string;
+  language: string | undefined;
   clicked: boolean = false;
 
   private pm: PM;
@@ -45,9 +45,9 @@ export class CodeBlockState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  updateLanguage(language: string): void {
+  updateLanguage(language?: string): void {
     if (this.activeCodeBlock) {
-      this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.activeCodeBlock.type, {language: language}).apply();
+      this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.activeCodeBlock.type, {language: language}).applyAndScroll();
     }
   }
 
@@ -69,7 +69,7 @@ export class CodeBlockState {
     if (clicked && codeBlockNode || codeBlockNode !== this.activeCodeBlock) {
       this.clicked = clicked;
       this.activeCodeBlock = codeBlockNode;
-      this.language = codeBlockNode && codeBlockNode.attrs['language'];
+      this.language = codeBlockNode && codeBlockNode.attrs['language'] || undefined;
       this.element = codeBlockNode && this.activeCodeBlockElement();
       this.changeHandlers.forEach(changeHandler => changeHandler(this));
     }

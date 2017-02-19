@@ -99,7 +99,7 @@ export default class Editor extends PureComponent<Props, State> {
       <Chrome
         children={<div ref={this.handleRef} />}
         isExpanded={isExpanded}
-        feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
+        feedbackFormUrl="yes"
         onCancel={handleCancel}
         onSave={handleSave}
         onCollapsedChromeFocus={() => this.setState({ isExpanded: true })}

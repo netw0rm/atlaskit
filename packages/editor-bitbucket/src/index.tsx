@@ -161,7 +161,7 @@ export default class Editor extends PureComponent<Props, State> {
       <Chrome
         children={<div ref={this.handleRef} />}
         isExpanded={isExpanded}
-        feedbackFormUrl={'yes'}
+        feedbackFormUrl="yes"
         onCancel={handleCancel}
         onSave={handleSave}
         placeholder={this.props.placeholder}

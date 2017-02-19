@@ -1,38 +1,8 @@
 #!/usr/bin/env node
 /* Writing this file in js to make it easier to read and maintain */
 const exec = require('child-process-promise').exec;
-
-// Takes an array of file names (with paths) and returns a list of packages that those files came
-// from. i.e ['packages/foo/bar.js','packages/foo/xyz.js','packages/abc/something.js']
-// would return ['@atlaskit/foo', '@atlaskit/abc']
-function changedFilesToChangedPackages(changedFiles) {
-  return changedFiles
-    // remove any empty strings
-    .filter(filePath => filePath.length > 0)
-    // remove files not in /packages directory
-    .filter(filePath => filePath.match(/^packages\//))
-    // get packageNames from paths
-    .map(filePath => filePath.match(/^packages\/(.+?)\//)[1])
-    // remove duplicate names (if the first index of ourself isnt our idx, we arent unique)
-    .filter((packageName, idx, arr) => arr.indexOf(packageName) === idx)
-    // add the @atlaskit scope to them
-    .map(packageName => `@atlaskit/${packageName}`);
-}
-
-// Takes an array of changed packages and outputs a glob that will select all those packages in
-// lerna.
-// if we have more than 1 package, we output in the form
-//  "{@atlaskit/packageOne,@atlaskit/packageTwo}" (no quotes)
-// if exactly one, we output just the name itself "@atlaskit/packageOne" (no quotes)
-// otherwise
-function changedPackagesToLernaGlob(changedPackages) {
-  if (changedPackages.length > 1) {
-    return `{${changedPackages.join(',')}}`;
-  } else if (changedPackages.length === 1) {
-    return changedPackages[0];
-  }
-  return '';
-}
+const changedPackagesToLernaGlob = require('./_changed_packages_to_lerna_glob');
+const changedFilesToChangedPackages = require('./_changed_files_to_changed_packages');
 
 /*
   Gets a list of changed packages between current branch and master and returns them as a glob
@@ -65,6 +35,4 @@ function getChangedPackages() {
 }
 
 getChangedPackages();
-
-module.exports = { changedFilesToChangedPackages, changedPackagesToLernaGlob };
 

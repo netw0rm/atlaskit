@@ -12,12 +12,6 @@ export default new InputRule(urlAtEndOfLine, '', (
   const from = to - match[1].length;
   const url = match[3] ? match[1] : `http://${match[1]}`;
 
-  if (/\.(\w+)?[^\.\w\d\/\?#%]+(.*)?$/.test(match[0])) {
-    // TODO: remove setTimeout line after upgrading to new version of ProseMirror
-    setTimeout(() => pm.input.dispatchKey('Backspace'), 0);
-    return false;
-  }
-
   const markType = schema.mark(
     'link',
     {

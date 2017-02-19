@@ -29,10 +29,10 @@ pipelines:
           # we have to run this so we have access to the bitbucket credentials for the changed.packages script
           #- ./build/bin/prep_for_release.sh
           - yarn --ignore-scripts
-          - ./node_modules/.bin/lerna bootstrap --scope="{@atlassian/avatar,@atlassian/badge}" --include-filtered-dependencies
+          - ./node_modules/.bin/lerna bootstrap --scope="{@atlaskit/avatar,@atlaskit/badge}" --include-filtered-dependencies
           # we have to run this after `yarn` to have access to child-process-promise
           #- ./build/bin/generate.changed.packages.file.sh
           #- yarn run browserstack/tunnel/start
-          #- run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base" "test/wc/browserstack/pr" "pr/storybook"
+          - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base" "test/wc/browserstack/pr" "pr/storybook"
           #- yarn run browserstack/tunnel/stop
           - yarn run release/storybooks

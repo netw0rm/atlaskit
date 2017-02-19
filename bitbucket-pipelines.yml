@@ -33,6 +33,6 @@ pipelines:
           # we have to run this after `yarn` to have access to child-process-promise
           #- ./build/bin/generate.changed.packages.file.sh
           #- yarn run browserstack/tunnel/start
-          - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base" "test/wc/browserstack/pr" "pr/storybook"
+          #- run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base" "test/wc/browserstack/pr" "pr/storybook"
           #- yarn run browserstack/tunnel/stop
           - yarn run release/storybooks

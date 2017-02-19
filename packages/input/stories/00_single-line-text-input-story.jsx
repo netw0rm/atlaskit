@@ -1,7 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import SmartFieldBase from 'ak-field-base';
-import SingleLineTextInput from '../src';
+import SingleLineTextInput, { MultiLineTextInput } from '../src';
 import { name } from '../package.json';
 
 const containerStyle = {
@@ -75,5 +75,18 @@ storiesOf(name, module)
           isEditing: false,
         })}
       </SmartFieldBase>
+    </div>
+  ))
+  .add('with multi line', () => (
+    <div style={containerStyle}>
+      <MultiLineTextInput
+        value={`
+          Lorem ipsum dolor sit amet test asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdas
+          ara
+          asdasd
+        `}
+        onChange={action('onChange')}
+        isEditing
+      />
     </div>
   ));

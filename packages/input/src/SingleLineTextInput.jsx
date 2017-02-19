@@ -1,41 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styled from 'styled-components';
-import { akFontSizeDefault } from '@atlaskit/util-shared-styles';
-
-const commonStyles = `
-  color: inherit;
-  fontSize: ${akFontSizeDefault};
-  letterSpacing: normal;
-  appearance: none;
-`;
-
-const EditView = styled.input`
-  ${commonStyles}
-
-  lineHeight: inherit;
-  background: transparent;
-  border: 0;
-  margin: 0;
-  padding: 0;
-  boxSizing: border-box;
-  cursor: inherit;
-  outline: none;
-  width: 100%;
-  &:invalid: {
-    boxShadow: none;
-  };
-  ${props => props.style}
-`;
-
-const ReadView = styled.div`
-  ${commonStyles}
-
-  overflow: hidden;
-  whiteSpace: nowrap;
-  textOverflow: ellipsis;
-
-  ${props => props.style}
-`;
+import { InputEditView as EditView, ReadView } from './styled';
 
 /**
  * @description A text input component with extremely basic styling that supports read/edit modes.
@@ -61,7 +25,7 @@ export default class SingleLineTextInput extends PureComponent {
      * Typical use would be to specify a custom font size.
      *
      * @memberof SingleLineTextInput
-     * @type {object}
+     * @type {string}
      */
     style: PropTypes.shape({}),
     /**

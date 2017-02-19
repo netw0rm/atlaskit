@@ -157,6 +157,7 @@ export default class InlineEdit extends PureComponent {
   }
 
   onWrapperBlur = () => {
+    console.log('onWrapperBlur')
     if (this.isReadOnly() || !this.props.isEditing || this.props.isConfirmOnBlurDisabled) {
       return;
     }
@@ -165,6 +166,7 @@ export default class InlineEdit extends PureComponent {
   }
 
   onWrapperFocus = () => {
+    console.log('onWrapperFocus')
     this.setState({ wasFocusReceivedSinceLastBlur: true });
   }
 

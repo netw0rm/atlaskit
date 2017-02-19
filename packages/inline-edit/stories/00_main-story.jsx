@@ -2,6 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import MentionInlineEdit from './MentionInlineEdit';
 import TextInlineEdit from './TextInlineEdit';
+import MultiLineInlineEdit from './MultiLineInlineEdit';
 import SlowInlineEdit from './SlowInlineEdit';
 import exampleMentions from './example-mentions';
 import AkInlineEdit, { InlineEdit } from '../src';
@@ -101,6 +102,17 @@ storiesOf(name, module)
   .add('with slow confirmation', () => (
     <div style={containerStyle}>
       <SlowInlineEdit />
+    </div>
+  ))
+  .add('with multi line support', () => (
+    <div style={containerStyle}>
+      <MultiLineInlineEdit
+        initialValue={`
+          Lorem ipsum dolor sit amet test asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdas
+          ara
+          asdasd
+        `}
+      />
     </div>
   ))
   .add('with mention list', () => (

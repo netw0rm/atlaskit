@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { CodeBlockNode, CodeBlockNodeType, DocNodeType, Schema, Text } from '../../../src';
+import { CodeBlockNode, CodeBlockNodeType, DocNodeType, ParagraphNodeType, Schema, Text } from '../../../src';
 import { SUPPORTED_LANGUAGES } from '../../../src/ui/LanguagePicker/languageList';
 import { fromHTML, toHTML } from '../../../test-helper';
 
@@ -32,6 +32,7 @@ describe('ak-editor-core/schema code_block node', () => {
     const schema = new Schema({
       nodes: {
         doc: { type: DocNodeType, content: 'block+' },
+        paragraph: { type: ParagraphNodeType, content: 'inline<_>*', group: 'block' },
         code_block: { type: CodeBlockNodeType, content: 'text*', group: 'block' },
         text: { type: Text, group: 'inline' }
       }
@@ -40,27 +41,27 @@ describe('ak-editor-core/schema code_block node', () => {
     context('parse from editor encoded HTML', () => {
       context('when language is not set', () => {
         it('converts to block code node', () => {
-          const doc = fromHTML('<pre><span>window.alert("hello");<span></pre>', schema);
+          const doc = fromHTML('<div data-language=""><span>window.alert("hello");<span></div>', schema);
 
           expect(doc.firstChild!.type).to.be.an.instanceOf(CodeBlockNodeType);
         });
 
-        it('has language attribute as null', () => {
-          const doc = fromHTML('<pre><span>window.alert("hello");<span></pre>', schema);
+        it('has language attribute as empty string', () => {
+          const doc = fromHTML('<div data-language=""><span>window.alert("hello");<span></div>', schema);
 
-          expect(doc.firstChild!.attrs['language']).to.eq(null);
+          expect(doc.firstChild!.attrs['language']).to.eq('');
         });
       });
 
       context('when language is set', () => {
         it('converts to block code node', () => {
-          const doc = fromHTML('<pre data-language="javascript"><span>window.alert("hello");<span></pre>', schema);
+          const doc = fromHTML('<div data-language="javascript"><span>window.alert("hello");<span></div>', schema);
 
           expect(doc.firstChild!.type).to.be.an.instanceOf(CodeBlockNodeType);
         });
         SUPPORTED_LANGUAGES.forEach((language) => {
           it(`extracts language "${language.name}" from data-language attribute`, () => {
-            const doc = fromHTML(`<pre data-language='${language.name}'><span>window.alert("hello");<span></pre>`, schema);
+            const doc = fromHTML(`<div data-language='${language.name}'><span>window.alert("hello");<span></div>`, schema);
 
             expect(doc.firstChild!.attrs['language']).to.eq(language.name);
           });

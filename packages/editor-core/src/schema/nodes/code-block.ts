@@ -10,7 +10,7 @@ export class CodeBlockNodeType extends Block {
 
   get attrs() {
     return {
-      language: new Attribute({default: null})
+      language: new Attribute({ default: null })
     };
   }
 
@@ -21,7 +21,18 @@ export class CodeBlockNodeType extends Block {
   get matchDOMTag() {
     return {
       'pre': (dom: HTMLElement) => {
-        const language = getLanguageFromEditorStyle(dom) || getLanguageFromBitbucketStyle(dom);
+        const language =  getLanguageFromBitbucketStyle(dom);
+        return [
+          {
+            'language': language
+          },
+          {
+            preserveWhitespace: true
+          }
+        ] as any;
+      },
+      'div[data-language]': (dom: HTMLElement) => {
+        const language = getLanguageFromEditorStyle(dom);
         return [
           {
             'language': language
@@ -35,7 +46,7 @@ export class CodeBlockNodeType extends Block {
   }
 
   toDOM(node: CodeBlockNode): [string, any, number] {
-    return ['pre', { 'data-language': node.attrs.language }, 0];
+    return ['pre', { 'data-language': (node.attrs.language || '') }, 0];
   }
 }
 

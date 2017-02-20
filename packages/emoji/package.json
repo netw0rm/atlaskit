@@ -1,11 +1,10 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "config": {
     "access": "public"
   },
   "description": "ak-emoji react component",
-
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "scripts": {

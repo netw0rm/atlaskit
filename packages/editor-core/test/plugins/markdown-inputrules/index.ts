@@ -305,17 +305,6 @@ describe('markdown-inputrules', () => {
 
   describe('undo mark convertion', () => {
     context('when hits Cmd+Z', () => {
-      it('should undo codeblock', () => {
-        const { pm, sel } = editor(doc(p('{<>}foo')));
-
-        pm.input.insertText(sel, sel, '```');
-        expect(pm.doc).to.deep.equal(doc(code_block()('foo')));
-
-        pm.input.dispatchKey('Cmd-Z');
-
-        expect(pm.doc).to.deep.equal(doc(p('foo')));
-      });
-
       it('should undo previously applied mark', () => {
         const { pm, sel } = editor(doc(p('{<>}')));
 

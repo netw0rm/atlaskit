@@ -18,6 +18,7 @@ export {
   nodeFactory, markFactory
 } from './schema-builder';
 export { fromHTML, toHTML } from './html-helpers';
+export { default as storyDecorator } from './story-decorator';
 
 /**
  * Insert nodes at the current selection.

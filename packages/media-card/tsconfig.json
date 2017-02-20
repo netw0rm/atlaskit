@@ -4,7 +4,7 @@
     "declaration": true,
     "declarationDir": "./types",
     "types": [
-
+      "mocha"
     ]
   }
 }

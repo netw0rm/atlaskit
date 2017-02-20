@@ -448,7 +448,7 @@ export class BlockTypeState {
 
   private update(dirty = false) {
     const newBlockType = this.detectBlockType();
-    if (newBlockType !== this.currentBlockType) {
+    if (newBlockType && newBlockType !== this.currentBlockType) {
       this.currentBlockType = newBlockType;
       dirty = true;
     }
@@ -458,7 +458,7 @@ export class BlockTypeState {
     }
   }
 
-  private detectBlockType(): BlockType {
+  private detectBlockType(): BlockType | undefined {
     const { pm } = this;
 
     // Before a document is loaded, there is no selection.
@@ -475,8 +475,6 @@ export class BlockTypeState {
         return blocktype;
       }
     }
-
-    return OTHER;
   }
 
   private nodeBlockType(node: Node): BlockType {

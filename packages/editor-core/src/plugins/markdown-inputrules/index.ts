@@ -8,8 +8,7 @@ import {
   ProseMirror,
   Schema,
   textblockTypeInputRule,
-  wrappingInputRule,
-  commands
+  wrappingInputRule
 } from '../../prosemirror';
 import Keymap from 'browserkeymap';
 import { analyticsService, trackAndInvoke } from '../../analytics';

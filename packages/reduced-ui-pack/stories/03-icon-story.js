@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import FieldText from '@atlaskit/field-text';
+import AkFieldText from '@atlaskit/field-text';
 import { Code } from '@atlaskit/util-readme';
 import '!style-loader!css-loader!less-loader!../src/index.less';
 import icons from '!raw!../dist/icons-sprite.svg';
@@ -62,7 +62,7 @@ storiesOf(name, module)
         This story can be used to check screen reader behaviour on these icons.
       </p>
       <p>
-        <FieldText
+        <AkFieldText
           isLabelHidden
           type="text"
           placeholder="Focus on me then tab to the button"

@@ -144,6 +144,23 @@ storiesOf('CardView', {})
       onClick={onClick}
     />
   ))
+  .add('Loading states', () => (
+    <ul style={styles.statesWrapper}>
+      <li style={styles.foo}>
+        <div style={styles.stateTitle}>Infinite loading</div>
+        <CardView
+          loading={true}
+          selectable={false}
+          selected={false}
+          mediaName="loading.png"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+    </ul>
+  ))
   .add('Error', () => (
     <CardView
       mediaName="with_progress.wav"

@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { SinonSpy } from 'sinon';
-import { doc, h1, mention, p, strong } from './_schema-builder';
+import { doc, h1, mention, p, strong, code_block } from './_schema-builder';
 
 import { ProseMirror } from '@atlaskit/editor-core';
 import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from '@atlaskit/editor-core/test-helper';
@@ -266,5 +266,24 @@ describe('ak-editor-bitbucket/pasting', () => {
     }
 
     expect(editor.doc).to.deep.equal(doc(p(mention({ id: 'mention', displayName: '@Mention' }), ' some mention.')));
+  });
+
+  it('should undo code block with Cmd+Z', function() {
+    const content = {
+      html: '<p>```</p>'
+    };
+
+    if (!dispatchPasteEvent(pm, content)) {
+      // This environment does not allow mocking paste events
+      return this.skip();
+    }
+
+    pm.input.dispatchKey('Enter');
+
+    expect(pm.doc).to.deep.equal(doc(code_block()('')));
+
+    pm.input.dispatchKey('Cmd-Z');
+
+    expect(pm.doc).to.deep.equal(doc(p('')));
   });
 });

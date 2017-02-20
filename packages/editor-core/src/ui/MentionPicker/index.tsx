@@ -1,5 +1,6 @@
-import { MentionPicker as AkMentionPicker } from 'ak-mention';
+import { MentionPicker as AkMentionPicker } from '@atlaskit/mention';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import { PureComponent } from 'react';
 import { MentionsPluginState } from '../../plugins/mentions';
 
@@ -22,10 +23,28 @@ export default class MentionPicker extends PureComponent<Props, State> {
     this.props.pluginState.onSelectPrevious = this.handleSelectPrevious;
     this.props.pluginState.onSelectNext = this.handleSelectNext;
     this.props.pluginState.onSelectCurrent = this.handleSelectCurrent;
+    this.props.pluginState.onTrySelectCurrent = this.handleTrySelectCurrent;
+  }
+
+  componentDidUpdate() {
+    document.removeEventListener('click', this.handleClickOutside);
+    document.addEventListener('click', this.handleClickOutside);
   }
 
   componentWillUmount() {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
+    document.removeEventListener('click', this.handleClickOutside);
+  }
+
+  private handleClickOutside = (e) => {
+    if (!this.state.query) {
+      return;
+    }
+
+    const domNode = ReactDOM.findDOMNode(this);
+    if (!domNode || (e.target instanceof Node && !domNode.contains(e.target))) {
+      this.props.pluginState.dismiss();
+    }
   }
 
   private handlePluginStateChange = (state: MentionsPluginState) => {
@@ -89,8 +108,20 @@ export default class MentionPicker extends PureComponent<Props, State> {
 
   private handleSelectCurrent = () => {
     const { picker } = this.refs;
-    if (picker) {
+    if (picker && (picker as AkMentionPicker).mentionsCount() > 0) {
       (picker as AkMentionPicker).chooseCurrentSelection();
+    } else {
+      this.props.pluginState.dismiss();
     }
+  }
+
+  private handleTrySelectCurrent = (): boolean => {
+    const { picker } = this.refs;
+    if (picker && (picker as AkMentionPicker).mentionsCount() === 1) {
+      (picker as AkMentionPicker).chooseCurrentSelection();
+      return true;
+    }
+
+    return false;
   }
 }

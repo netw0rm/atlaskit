@@ -140,7 +140,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.format.em.autoformatting', () => {
-    pm.input.insertText(0, 0, '_text_');
+    pm.input.insertText(0, 0, '*text*');
     expect(handler.calledWith('atlassian.editor.format.em.autoformatting')).to.equal(true);
   });
 
@@ -348,11 +348,6 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.codeblock.keyboard', () => {
     sendKeyToPm(pm, browser.mac ? 'Cmd-Alt-8' : 'Ctrl-8');
     expect(handler.calledWith('atlassian.editor.format.codeblock.keyboard')).to.equal(true);
-  });
-
-  it('atlassian.editor.format.codeblock.autoformatting', () => {
-    pm.input.insertText(0, 0, '```');
-    expect(handler.calledWith('atlassian.editor.format.codeblock.autoformatting')).to.equal(true);
   });
 
   it('atlassian.editor.newline.keyboard', () => {

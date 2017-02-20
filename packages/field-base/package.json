@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-base",
-  "version": "2.0.2",
+  "version": "2.0.4",
   "config": {
     "access": "public"
   },
@@ -8,6 +8,7 @@
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
+  "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/field-base; } || ../../node_modules/.bin/not-in-publish"
   },

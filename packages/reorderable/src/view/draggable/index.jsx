@@ -1,9 +1,10 @@
 // @flow
 import React, { PureComponent } from 'react';
 import type { DraggableId, TypeId } from '../../types';
+import type { Position } from '../../state/types';
 import Movable from './movable';
 import createDragHandle from './create-drag-handle-new';
-// import Draggable from './move;
+// eslint-disable-next-line no-duplicate-imports
 
 type NeedsProviding = {|
   id: DraggableId,

@@ -51,6 +51,8 @@ export default class Movable extends PureComponent {
     };
 
     return (
+      // https://github.com/chenglou/react-motion/issues/375
+      // $FlowFixMe
       <Motion defaultStyle={origin} style={destination} onRest={this.onRest}>
         {(current: Position) => (
           <Canvas style={getMovement(current)}>

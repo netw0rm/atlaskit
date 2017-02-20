@@ -3,6 +3,8 @@ import React, { cloneElement, PureComponent } from 'react';
 import invariant from 'invariant';
 import type { Position } from '../../state/types';
 
+// declare function OnLift(point: Position): void;
+
 export type OnLift = (point: Position) => void;
 export type OnMove = (point: Position) => void;
 export type OnDrop = (point: Position) => void;
@@ -19,15 +21,17 @@ type Props = {
   onMove: OnMove,
   onDrop: OnDrop,
   onCancel: OnCancel,
+  // https://github.com/facebook/flow/issues/1964
   children: React$Element<*>,
 }
 
 // need a component so that we can kill events on unmount
 export class Handle extends PureComponent {
+  /* eslint-disable react/sort-comp */
   props: Props
-
   areMouseEventsBound: boolean;
   isDragging: boolean;
+  /* eslint-enable react/sort-comp */
 
   constructor(props: Props, context: any) {
     super(props, context);
@@ -36,27 +40,16 @@ export class Handle extends PureComponent {
     this.isDragging = false;
   }
 
-  bindWindowMouseEvents = () => {
-    invariant(!this.areMouseEventsBound, 'mouse events are already bound');
-    invariant(!this.isDragging, 'cannot bind mouse events - already dragging');
+  componentWillUnmount() {
+    if (this.areMouseEventsBound) {
+      this.unbindWindowMouseEvents();
+    }
 
-    console.log('binding mouse events');
-
-    window.addEventListener('mousemove', this.onMouseMove);
-    window.addEventListener('mouseup', this.onMouseUp);
-
-    this.areMouseEventsBound = true;
-  };
-
-  unbindWindowMouseEvents = () => {
-    invariant(this.areMouseEventsBound, 'there are no mouse events bound');
-    console.log('unbinding mouse events');
-
-    window.removeEventListener('mousemove', this.onMouseMove);
-    window.removeEventListener('mouseup', this.onMouseUp);
-
-    this.areMouseEventsBound = false;
-  };
+    if (this.isDragging) {
+      this.isDragging = false;
+      this.props.onCancel();
+    }
+  }
 
   onMouseMove = (event: SyntheticMouseEvent) => {
     const { button, clientX, clientY } = event;
@@ -112,16 +105,27 @@ export class Handle extends PureComponent {
     this.props.onLift(point);
   };
 
-  componentWillUnmount() {
-    if (this.areMouseEventsBound) {
-      this.unbindWindowMouseEvents();
-    }
+  bindWindowMouseEvents = () => {
+    invariant(!this.areMouseEventsBound, 'mouse events are already bound');
+    invariant(!this.isDragging, 'cannot bind mouse events - already dragging');
 
-    if (this.isDragging) {
-      this.isDragging = false;
-      this.props.onCancel();
-    }
-  }
+    console.log('binding mouse events');
+
+    window.addEventListener('mousemove', this.onMouseMove);
+    window.addEventListener('mouseup', this.onMouseUp);
+
+    this.areMouseEventsBound = true;
+  };
+
+  unbindWindowMouseEvents = () => {
+    invariant(this.areMouseEventsBound, 'there are no mouse events bound');
+    console.log('unbinding mouse events');
+
+    window.removeEventListener('mousemove', this.onMouseMove);
+    window.removeEventListener('mouseup', this.onMouseUp);
+
+    this.areMouseEventsBound = false;
+  };
 
   render() {
     // not creating any new nodes
@@ -140,13 +144,14 @@ export default (onLift: OnLift,
   onDrop: OnDrop,
   onCancel: OnCancel
 ) => (el: React$Element<*>) => (
+  // https://github.com/facebook/flow/issues/1964
+  /* eslint-disable react/no-children-prop */
   <Handle
     onLift={onLift}
     onMove={onMove}
     onDrop={onDrop}
     onCancel={onCancel}
-  >
-    {el}
-  </Handle>
+    children={el}
+  />
 );
 

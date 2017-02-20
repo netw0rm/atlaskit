@@ -2,7 +2,7 @@
 
 The `@NAME@` component is a generic calendar that can be used standalone or together with a form field to make a datepicker.
 
-![Example buttons](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/calendar/docs/calendar.gif)
+![Example calendar](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/calendar/docs/calendar.gif)
 
 ## Try it out
 

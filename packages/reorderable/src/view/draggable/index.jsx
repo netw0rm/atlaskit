@@ -34,12 +34,9 @@ hooks?: Hooks) =>
     console.log('args', type, provide, map, hooks, Component);
 
     class WrappedComponent extends PureComponent {
-
-      state: DraggableState
-      handle: Function
-
       constructor(props, context) {
         super(props, context);
+
         this.handle = createDragHandle(this.onLift, this.onMove, this.onDrop, this.onCancel);
       }
 
@@ -70,6 +67,8 @@ hooks?: Hooks) =>
       onCancel = () => {
         console.log('cancelling drag');
       }
+
+      handle: Function
 
       render() {
         const ownProps = this.props;

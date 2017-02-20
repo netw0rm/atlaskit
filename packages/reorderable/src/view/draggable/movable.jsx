@@ -26,9 +26,6 @@ const getMovement = (point: Position): Object => ({
 const Canvas = styled.div``;
 
 export default class Movable extends PureComponent {
-  static defaultProps = {
-    origin: { x: 0, y: 0 },
-  }
 
   onRest = () => {
     const { onMoveEnd } = this.props;

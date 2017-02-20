@@ -3,30 +3,43 @@ import React, { cloneElement, PureComponent } from 'react';
 import invariant from 'invariant';
 import type { Position } from '../../state/types';
 
+export type OnLift = (point: Position) => void;
+export type OnMove = (point: Position) => void;
+export type OnDrop = (point: Position) => void;
+export type OnCancel = () => void;
+
 // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
 export const primaryClick = 0;
 
-const threshold: number = 10;
+// TODO: drag threshold
+// const threshold: number = 10;
+
+type Props = {
+  onLift: OnLift,
+  onMove: OnMove,
+  onDrop: OnDrop,
+  onCancel: OnCancel,
+  children: React$Element<*>,
+}
 
 // need a component so that we can kill events on unmount
 export class Handle extends PureComponent {
-  props: {
-    onLift: (point: Position) => void,
-    onMove: (point: Position) => void,
-    onDrop: (point: Position) => void,
-    children: any,
-  }
+  props: Props
 
   areMouseEventsBound: boolean;
+  isDragging: boolean;
 
-  constructor(props, context) {
+  constructor(props: Props, context: any) {
     super(props, context);
 
     this.areMouseEventsBound = false;
+    this.isDragging = false;
   }
 
   bindWindowMouseEvents = () => {
     invariant(!this.areMouseEventsBound, 'mouse events are already bound');
+    invariant(!this.isDragging, 'cannot bind mouse events - already dragging');
+
     console.log('binding mouse events');
 
     window.addEventListener('mousemove', this.onMouseMove);
@@ -73,11 +86,17 @@ export class Handle extends PureComponent {
     };
 
     this.unbindWindowMouseEvents();
+    this.isDragging = false;
     this.props.onDrop(point);
   };
 
   onMouseDown = (event: SyntheticMouseEvent) => {
     const { button, clientX, clientY } = event;
+
+    if (this.isDragging) {
+      console.warn('mouse down will not start a drag as it is already dragging');
+      return;
+    }
 
     if (button !== primaryClick) {
       return;
@@ -89,17 +108,18 @@ export class Handle extends PureComponent {
     };
 
     this.bindWindowMouseEvents();
+    this.isDragging = true;
     this.props.onLift(point);
   };
 
   componentWillUnmount() {
-    // TODO: true check is: isDragging?
-    if(this.areMouseEventsBound) {
-      this.props.onCancel();
+    if (this.areMouseEventsBound) {
+      this.unbindWindowMouseEvents();
     }
 
-    if(this.areMouseEventsBound) {
-      this.unbindWindowMouseEvents();
+    if (this.isDragging) {
+      this.isDragging = false;
+      this.props.onCancel();
     }
   }
 
@@ -109,14 +129,16 @@ export class Handle extends PureComponent {
     return cloneElement(this.props.children, {
       tabIndex: '0',
       onMouseDown: this.onMouseDown,
+      // prevent html5 drag and drop
+      draggable: 'false',
     });
   }
 }
 
-export default (onLift: (point: Position) => void,
-  onMove: (point: Position) => void,
-  onDrop: (point: Position) => void,
-  onCancel: () => void
+export default (onLift: OnLift,
+  onMove: OnMove,
+  onDrop: OnDrop,
+  onCancel: OnCancel
 ) => (el: React$Element<*>) => (
   <Handle
     onLift={onLift}

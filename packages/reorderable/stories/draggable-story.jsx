@@ -23,7 +23,7 @@ storiesOf('draggable', module)
 
     // });
 
-    const Connected = draggable('CAR', provide)(Item);
+    const Connected = draggable('TYPE', provide)(Item);
 
     return <Connected itemId="5" />;
   })

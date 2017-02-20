@@ -267,23 +267,27 @@ describe('ak-editor-bitbucket/pasting', () => {
 
     expect(editor.doc).to.deep.equal(doc(p(mention({ id: 'mention', displayName: '@Mention' }), ' some mention.')));
   });
+});
+
+describe('ak-editor-bitbucket/keymaps', () => {
+  const fixture = fixtures();
+  let editor: Editor;
+  let pm: ProseMirror;
+
+  beforeEach(() => {
+    editor = mount(<Editor isExpandedByDefault />, { attachTo: fixture() }).get(0) as any;
+    pm = editor!.state!.pm as ProseMirror;
+  });
 
   it('should undo code block with Cmd+Z', function() {
-    const content = {
-      html: '<p>```</p>'
-    };
-
-    if (!dispatchPasteEvent(pm, content)) {
-      // This environment does not allow mocking paste events
-      return this.skip();
-    }
-
+    editor.setFromHtml('<p></p>');
+    pm.input.insertText(1, 1, '```');
     pm.input.dispatchKey('Enter');
 
     expect(pm.doc).to.deep.equal(doc(code_block()('')));
 
     pm.input.dispatchKey('Cmd-Z');
 
-    expect(pm.doc).to.deep.equal(doc(p('')));
+    expect(pm.doc).to.deep.equal(doc(p()));
   });
 });

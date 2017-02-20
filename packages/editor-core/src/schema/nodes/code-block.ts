@@ -21,7 +21,7 @@ export class CodeBlockNodeType extends Block {
   get matchDOMTag() {
     return {
       'pre': (dom: HTMLElement) => {
-        const language =  getLanguageFromBitbucketStyle(dom);
+        const language = getLanguageFromBitbucketStyle(dom);
         return [
           {
             'language': language
@@ -31,7 +31,7 @@ export class CodeBlockNodeType extends Block {
           }
         ] as any;
       },
-      'div[data-language]': (dom: HTMLElement) => {
+      'div[data-type="codeblock"]': (dom: HTMLElement) => {
         const language = getLanguageFromEditorStyle(dom);
         return [
           {
@@ -46,7 +46,7 @@ export class CodeBlockNodeType extends Block {
   }
 
   toDOM(node: CodeBlockNode): [string, any, number] {
-    return ['pre', { 'data-language': (node.attrs.language || '') }, 0];
+    return ['div', { 'data-type': 'codeblock', 'data-language': node.attrs.language }, 0];
   }
 }
 

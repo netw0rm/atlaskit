@@ -41,27 +41,28 @@ describe('ak-editor-core/schema code_block node', () => {
     context('parse from editor encoded HTML', () => {
       context('when language is not set', () => {
         it('converts to block code node', () => {
-          const doc = fromHTML('<div data-language=""><span>window.alert("hello");<span></div>', schema);
+          const doc = fromHTML('<div data-type="codeblock"><span>window.alert("hello");<span></div>', schema);
 
           expect(doc.firstChild!.type).to.be.an.instanceOf(CodeBlockNodeType);
         });
 
-        it('has language attribute as empty string', () => {
-          const doc = fromHTML('<div data-language=""><span>window.alert("hello");<span></div>', schema);
+        it('has language attribute as null', () => {
+          const doc = fromHTML('<div data-type="codeblock"><span>window.alert("hello");<span></div>', schema);
 
-          expect(doc.firstChild!.attrs['language']).to.eq('');
+          expect(doc.firstChild!.attrs['language']).to.eq(null);
         });
       });
 
       context('when language is set', () => {
         it('converts to block code node', () => {
-          const doc = fromHTML('<div data-language="javascript"><span>window.alert("hello");<span></div>', schema);
+          const doc = fromHTML('<div data-type="codeblock" data-language="javascript"><span>window.alert("hello");<span></div>', schema);
 
           expect(doc.firstChild!.type).to.be.an.instanceOf(CodeBlockNodeType);
         });
+
         SUPPORTED_LANGUAGES.forEach((language) => {
           it(`extracts language "${language.name}" from data-language attribute`, () => {
-            const doc = fromHTML(`<div data-language='${language.name}'><span>window.alert("hello");<span></div>`, schema);
+            const doc = fromHTML(`<div data-type="codeblock" data-language='${language.name}'><span>window.alert("hello");<span></div>`, schema);
 
             expect(doc.firstChild!.attrs['language']).to.eq(language.name);
           });
@@ -69,7 +70,7 @@ describe('ak-editor-core/schema code_block node', () => {
       });
 
       it('preserves all newlines and whitespace', () => {
-        const doc = fromHTML('<pre><span></span>    bar\n       baz\n</pre>', schema);
+        const doc = fromHTML('<div data-type="codeblock" data-language="javascript"><span>    bar\n       baz\n<span></div>', schema);
 
         expect(doc.firstChild!.textContent).to.eq('    bar\n       baz\n');
       });
@@ -141,40 +142,30 @@ describe('ak-editor-core/schema code_block node', () => {
     });
 
     context('when language is not set', () => {
-      it('converts to pre tag', () => {
+      it('converts to div tag with data-language attribute', () => {
         const codeBlock = schema.nodes.code_block.create();
-        expect(toHTML(codeBlock)).to.have.string('<pre');
-      });
-
-      it('does not set data-language attributes', () => {
-        const codeBlock = schema.nodes.code_block.create();
-        expect(toHTML(codeBlock)).to.not.have.string('data-language');
+        expect(toHTML(codeBlock)).to.have.string('<div data-type="codeblock"');
       });
     });
 
     context('when language is set to null', () => {
-      it('does not set data-language attributes', () => {
+      it('converts to div tag with data-language attribute', () => {
         const codeBlock = schema.nodes.code_block.create({ language: null });
-        expect(toHTML(codeBlock)).to.not.have.string('data-language');
+        expect(toHTML(codeBlock)).to.have.string('<div data-type="codeblock"');
       });
     });
 
     context('when language is set to undefined', () => {
-      it('does not set data-language attributes', () => {
+      it('converts to div tag with data-language attribute', () => {
         const codeBlock = schema.nodes.code_block.create({ language: undefined });
-        expect(toHTML(codeBlock)).to.not.have.string('data-language');
+        expect(toHTML(codeBlock)).to.have.string('<div data-type="codeblock"');
       });
     });
 
     context('when language is set to a value', () => {
       it('converts to pre tag', () => {
         const codeBlock = schema.nodes.code_block.create({ language: 'javascript' });
-        expect(toHTML(codeBlock)).to.have.string('<pre');
-      });
-
-      it('sets data-language attributes', () => {
-        const codeBlock = schema.nodes.code_block.create({ language: 'javascript' });
-        expect(toHTML(codeBlock)).to.have.string('data-language="javascript"');
+        expect(toHTML(codeBlock)).to.have.string('<div data-type="codeblock" data-language="javascript"');
       });
     });
   });

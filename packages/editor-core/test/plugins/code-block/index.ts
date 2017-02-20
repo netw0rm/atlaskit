@@ -241,7 +241,7 @@ describe('code-block', () => {
         it('returns code block element', () => {
           const { plugin } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
 
-          expect(plugin.element).to.instanceOf(HTMLPreElement);
+          expect(plugin.element.dataset['type']).to.eq('codeblock');
         });
       });
 
@@ -249,7 +249,7 @@ describe('code-block', () => {
         it('returns code block element', () => {
           const { plugin } = editor(doc(p('paragraph'), code_block()('{<>}codeBlock')));
 
-          expect(plugin.element).to.instanceOf(HTMLPreElement);
+          expect(plugin.element.dataset['type']).to.eq('codeblock');
         });
       });
 
@@ -257,7 +257,7 @@ describe('code-block', () => {
         it('returns code block element', () => {
           const { plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
 
-          expect(plugin.element).to.instanceOf(HTMLPreElement);
+          expect(plugin.element.dataset['type']).to.eq('codeblock');
         });
       });
     });

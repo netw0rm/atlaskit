@@ -219,6 +219,14 @@ describe('block-type', () => {
   });
 
   describe('keymap', () => {
+    context('when selecting block quote node', () => {
+      it('should remain in "Block quote" state', () => {
+        const { pm, plugin } = editor(doc(blockquote(p('{<>}text'))));
+        pm.setNodeSelection(0);
+        expect(plugin.currentBlockType.name).to.equal('blockquote');
+      });
+    });
+
     if (browser.mac) {
       context('when on a Mac', () => {
         context('when hits Cmd-Alt-0', () => {

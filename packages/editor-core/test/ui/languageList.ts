@@ -16,6 +16,12 @@ describe('findMatchedLanguage', () => {
     });
   });
 
+  context('when language is found in alias', () => {
+    it('returns the name of the language', () => {
+      expect(findMatchedLanguage('js')).to.eq('JavaScript');
+    });
+  });
+
   context('when language is not in the list', () => {
     it('returns default language', () => {
       expect(findMatchedLanguage('random')).to.eq(NO_LANGUAGE);

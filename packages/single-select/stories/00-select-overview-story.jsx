@@ -15,6 +15,8 @@ import SelectAlignment from './examples/SelectAlignment';
 import SelectAlignmentRaw from '!raw!./examples/SelectAlignment';
 import SelectWithGroups from './examples/SelectWithGroups';
 import SelectWithGroupsRaw from '!raw!./examples/SelectWithGroups';
+import SelectInForm from './examples/SelectInForm';
+import SelectInFormRaw from '!raw!./examples/SelectInForm';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name } from '../package.json';
@@ -116,6 +118,15 @@ storiesOf(name, module)
       {SelectAlignment}
       <Code>
         {SelectAlignmentRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select in a form', () => (
+    <Chrome title="Select alignment">
+      {SelectInForm}
+      <Code>
+        {SelectInFormRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

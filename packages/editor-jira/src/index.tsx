@@ -9,12 +9,16 @@ import {
   Keymap,
   ListsPlugin,
   ProseMirror,
-  TextFormattingPlugin
-} from 'ak-editor-core';
+  TextFormattingPlugin,
+  version as coreVersion
+} from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { encode, parse } from './html';
 import { makeSchema, SupportedSchema } from './schema';
+import { version, name } from '../package.json';
+
+export { version };
 
 export interface Props {
   context?: ContextName;
@@ -37,6 +41,7 @@ export interface State {
 
 export default class Editor extends PureComponent<Props, State> {
   state: State;
+  version = `${version} (editor-core ${coreVersion})`;
 
   constructor(props: Props) {
     super(props);
@@ -128,6 +133,8 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
+        packageVersion={version}
+        packageName={name}
       />
     );
   }

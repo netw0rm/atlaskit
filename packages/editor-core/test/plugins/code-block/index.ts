@@ -359,12 +359,12 @@ describe('code-block', () => {
       expect(previousElement.textContent).to.eq(currentElement.textContent);
     });
 
-    it('can update language to be null', () => {
+    it('can update language to be undefined', () => {
       const { plugin } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
 
-      plugin.updateLanguage(null);
+      plugin.updateLanguage(undefined);
 
-      expect(plugin.language).to.be.null;
+      expect(plugin.language).to.be.undefined;
     });
 
     it('updates language', () => {

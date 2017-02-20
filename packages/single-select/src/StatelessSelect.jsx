@@ -21,11 +21,13 @@ export default class StatelessSelect extends PureComponent {
   static propTypes = {
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
+    isFirstChild: PropTypes.bool,
     isOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
     isInvalid: PropTypes.bool,
     items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
+    name: PropTypes.string,
     onSelected: PropTypes.func,
     onOpenChange: PropTypes.func,
     placeholder: PropTypes.string,
@@ -81,6 +83,34 @@ export default class StatelessSelect extends PureComponent {
     </Group>
   )
 
+  renderOptions = items => items.map((item, itemIndex) => (<option
+    disabled={item.isDisabled}
+    key={itemIndex}
+    value={item.value}
+  >{item.content}</option>))
+
+  renderOptGroups = groups => groups.map((group, groupIndex) =>
+    <optgroup
+      label={group.heading}
+      key={groupIndex}
+    >
+      {this.renderOptions(group.items)}
+    </optgroup>
+  )
+
+  renderSelect = () => (<select
+    disabled={this.props.isDisabled}
+    id={this.props.id}
+    name={this.props.name}
+    readOnly
+    required={this.props.isRequired}
+    style={{ display: 'none' }}
+    value={this.props.selectedItem.value}
+  >
+    <option value="" />
+    {this.renderOptGroups(this.props.items)}
+  </select>)
+
   render() {
     const classes = classNames([styles.selectWrapper, {
       [styles.fitContainer]: this.props.shouldFitContainer,
@@ -88,26 +118,28 @@ export default class StatelessSelect extends PureComponent {
 
     return (
       <div className={classes}>
+        {this.renderSelect()}
         {this.props.label ? <Label
-          label={this.props.label}
-          isRequired={this.props.isRequired}
           htmlFor={this.props.id}
+          isFirstChild={this.props.isFirstChild}
+          isRequired={this.props.isRequired}
+          label={this.props.label}
         /> : null}
         <Droplist
-          position={this.props.position}
           isOpen={this.props.isOpen}
-          onOpenChange={this.props.onOpenChange}
           isTriggerNotTabbable
+          onOpenChange={this.props.onOpenChange}
+          position={this.props.position}
           shouldFitContainer
           trigger={
             <FieldBase
-              isPaddingDisabled
               isDisabled={this.props.isDisabled}
-              isInvalid={this.props.isInvalid}
-              isFocused={this.props.isOpen || this.state.isFocused}
-              onFocus={this.onFocus}
-              onBlur={this.onBlur}
               isFitContainerWidthEnabled
+              isFocused={this.props.isOpen || this.state.isFocused}
+              isInvalid={this.props.isInvalid}
+              isPaddingDisabled
+              onBlur={this.onBlur}
+              onFocus={this.onFocus}
             >
               <Trigger>
                 {this.props.selectedItem.content || this.props.placeholder}

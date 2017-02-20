@@ -88,4 +88,29 @@ describe('LanguagePicker', () => {
       expect(languagePicker.html()).to.equal(null);
     });
   });
+
+  context('when code block has a language', () => {
+    it('shows the formatted language', () => {
+      const { plugin } = editor(doc(code_block({ language: 'js' })('text')));
+      const languagePicker = mount(<LanguagePicker pluginState={plugin} />);
+
+      expect(languagePicker.state('language')).to.be.equal('JavaScript');
+    });
+
+    it('updates plugin with the formatted langauge', () => {
+      const { plugin } = editor(doc(code_block({ language: 'js' })('text')));
+      mount(<LanguagePicker pluginState={plugin} />);
+
+      expect(plugin.language).to.equal('JavaScript');
+    });
+  });
+
+  context('when code block has no language set', () => {
+    it('shows no specific language', () => {
+      const { plugin } = editor(doc(code_block()('text')));
+      const languagePicker = mount(<LanguagePicker pluginState={plugin} />);
+
+      expect(languagePicker.state('language')).to.be.equal('Language');
+    });
+  });
 });

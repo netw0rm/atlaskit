@@ -1,6 +1,6 @@
 import Keymap from 'browserkeymap';
 import { ContextName } from '../../';
-import { trackAndInvoke } from '../../analytics';
+import { analyticsService, trackAndInvoke } from '../../analytics';
 import * as keymaps from '../../keymaps';
 import {
   commands,
@@ -30,6 +30,7 @@ import {
   removeCodeBlocksFromSelection
 } from '../../utils';
 import transformToCodeBlock from './transform-to-code-block';
+import { isConvertableToCodeBlock, transformToCodeBlockAction } from './transform-to-code-block';
 
 // The names of the blocks don't map precisely to schema nodes, because
 // of concepts like "paragraph" <-> "Normal text" and "Unknown".
@@ -219,6 +220,13 @@ export class BlockTypeState {
     return true;
   }
 
+  focus(): void {
+    this.pm.content.focus();
+  }
+
+  blur(): void {
+    this.pm.content.blur();
+  }
 
   toggleBlockType(name: BlockTypeName): void {
     const blockNodes = this.blockNodesBetweenSelection();
@@ -378,8 +386,50 @@ export class BlockTypeState {
       [keymaps.insertNewLine.common!]: trackAndInvoke('atlassian.editor.newline.keyboard', () => this.insertNewLine()),
       [keymaps.moveUp.common!]: trackAndInvoke('atlassian.editor.moveup.keyboard', () => this.createNewParagraphAbove()),
       [keymaps.moveDown.common!]: trackAndInvoke('atlassian.editor.movedown.keyboard', () => this.createNewParagraphBelow()),
-      [keymaps.shiftBackspace.common!]: (baseKeymap as any).map.lookup('Backspace')
+      [keymaps.shiftBackspace.common!]: (baseKeymap as any).map.lookup('Backspace'),
+      [keymaps.createCodeBlock.common!]: () => this.createCodeBlock()
     }));
+  }
+
+  private createCodeBlock(): boolean {
+    const {$from} = this.pm.selection;
+    const parentBlock = $from.parent;
+    if (!parentBlock.isTextblock) {
+      return false;
+    }
+    const startPos = $from.start($from.depth);
+
+    let textOnly = true;
+
+    this.pm.doc.nodesBetween(startPos, $from.pos, (node) => {
+      if (!node.isText && !node.isTextblock) {
+        textOnly = false;
+      }
+    });
+
+    if (!textOnly) {
+      return false;
+    }
+
+    if (!this.pm.schema.nodes.code_block) {
+      return false;
+    }
+
+    const fencePart = parentBlock.textContent.slice(0, $from.pos - startPos).trim();
+
+    const matches = /^```([^\s]+)?/.exec(fencePart);
+
+    if (matches) {
+      if (isConvertableToCodeBlock(this.pm)) {
+        const eventName = this.analyticsEventName('autoformatting', 'codeblock');
+        analyticsService.trackEvent(eventName);
+
+        transformToCodeBlockAction(this.pm, { language: matches[1] }).delete(startPos, $from.pos).applyAndScroll();
+        return true;
+      }
+    }
+
+    return false;
   }
 
   private blockNodesBetweenSelection(): Node[] {

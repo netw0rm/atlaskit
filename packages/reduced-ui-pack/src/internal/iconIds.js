@@ -37,9 +37,6 @@ const iconIds = [
   'date',
   'decision',
   'detail-view',
-  'directory/organization',
-  'directory/private',
-  'directory/public',
   'discover',
   'document',
   'edit',
@@ -153,9 +150,11 @@ const iconIds = [
   'light-bulb',
   'link',
   'list',
+  'lock',
   'mention',
   'more',
   'notification',
+  'office-building',
   'open',
   'page',
   'people',
@@ -183,6 +182,7 @@ const iconIds = [
   'unlink',
   'video',
   'warning',
+  'world',
 ].map(id => `ak-icon-${id}`);
 
 export default iconIds;

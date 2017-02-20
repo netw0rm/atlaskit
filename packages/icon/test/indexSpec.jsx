@@ -61,9 +61,6 @@ describe(name, () => {
           'date',
           'decision',
           'detail-view',
-          'directory/organization',
-          'directory/private',
-          'directory/public',
           'discover',
           'document',
           'edit',
@@ -177,9 +174,11 @@ describe(name, () => {
           'light-bulb',
           'link',
           'list',
+          'lock',
           'mention',
           'more',
           'notification',
+          'office-building',
           'open',
           'page',
           'people',
@@ -207,6 +206,7 @@ describe(name, () => {
           'unlink',
           'video',
           'warning',
+          'world',
         ]);
         // If you find yourself here and wonder why this list is not auto-generated, then bear in
         // mind that tests are supposed to tell you when a piece of software breaks.

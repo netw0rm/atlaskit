@@ -120,7 +120,7 @@ export const Overlay = styled.div`
       .title {
         color: white;
         font-size: 12px;
-        display: none;
+        visibility: hidden;
       }
     }
 
@@ -155,7 +155,7 @@ export const Overlay = styled.div`
       background-color: rgba(9, 30, 66, 0.5);
 
       .title {
-        display: block;
+        visibility: visible;
       }
 
       .file-type-icon {
@@ -212,6 +212,9 @@ export const Overlay = styled.div`
   }
   /* Error state */
   &.error {
+    .top-row{
+      overflow: visible;
+    }
     &:hover, &.active {
       .top-row {
         .title {

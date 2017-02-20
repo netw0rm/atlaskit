@@ -17,6 +17,22 @@ const menuActions = [
   {label: 'Close', handler: () => { action('close')(); }}
 ];
 
+const styles = {
+  statesWrapper: {
+    listStyle: 'none',
+    display: 'inline-block'
+  },
+  foo: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  stateTitle: {
+    textAlign: 'center',
+    padding: '5px'
+  }
+};
+
 storiesOf('CardView', {})
   .add('Default', () => (
     <CardView
@@ -29,6 +45,77 @@ storiesOf('CardView', {})
       dataURI={tallImageDataUri}
       onClick={onClick}
     />
+  ))
+  .add('Different name lengths', () => (
+    <ul style={styles.statesWrapper}>
+      <li style={styles.foo}>
+        <div style={styles.stateTitle}>Sort name</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="My awesome file.tsx"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+      <li style={styles.foo}>
+        <div style={styles.stateTitle}>2 lines name</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="Hey guys this is my awesome file.tsx"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+      <li style={styles.foo}>
+        <div style={styles.stateTitle}>Long name</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="Lorem ipsum Nulla veniam exercitation duis sit ut in sed consectetur dolore cupidatat ut pariatur.js"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+      <li style={styles.foo}>
+        <div style={styles.stateTitle}>Large width</div>
+        <CardView
+          width={380}
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="Lorem ipsum nulla veniam exercitation duis sit ut in sed consectetur dolore cupidatat ut pariatur.json"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+      <li style={styles.foo}>
+        <div style={styles.stateTitle}>Long name with large width</div>
+        <CardView
+          width={380}
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="Lorem ipsum nulla veniam exercitation duis sit ut in sed consectetur dolore cupidatat sedconsectetur dolore cupidatat seddolore cupidatat sed sed consectetur dolore cupidatat ut pariatur.json"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+    </ul>
   ))
   .add('Custom sized', () => (
     <CardView

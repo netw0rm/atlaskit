@@ -1,4 +1,7 @@
 @import '~@atlaskit/util-shared-styles/src/colors.less';
+@import '~@atlaskit/util-shared-styles/src/grid.less';
+@import '~@atlaskit/util-shared-styles/src/mixins/headings.less';
+
 @import '../shared-variables.less';
 
 .horizontalNavigationOuter {
@@ -6,22 +9,36 @@
 }
 
 .horizontalNavigation {
-  display: flex;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  height: 75px;
-  position: relative;
   background-color: @dac-header-color;
   box-sizing: border-box;
   color: white;
+  display: flex;
+  height: 75px;
+  list-style-type: none;
+  margin: 0;
+  padding: @global-vertical-padding 0;
+  position: relative;
 }
 
 .primaryContainer {
   flex: 1;
+  display: flex;
+  padding-left: @global-vertical-padding;
 }
+
+.logo {
+  color: @dac-logo-color;
+}
+
 
 .secondaryContainer {
   // TODO Does DAC have a grid system with values we can calculate padding from?
   padding-right: 20px;
+}
+
+.primaryTitle {
+  .adg-typography-h600();
+  align-self: center;
+  margin-top: 0px;
+
 }

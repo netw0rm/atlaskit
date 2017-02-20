@@ -20,6 +20,7 @@
     "classnames": "^2.2.5"
   },
   "devDependencies": {
+    "@atlaskit/logo": "2.0.1",
     "@atlaskit/util-readme": "^1.0.0",
     "@atlaskit/horizontal-navigation": "*"
   },

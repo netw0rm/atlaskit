@@ -8,11 +8,13 @@ import {
   ProseMirror,
   Schema,
   textblockTypeInputRule,
-  wrappingInputRule
+  wrappingInputRule,
+  commands
 } from '../../prosemirror';
 import Keymap from 'browserkeymap';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
+import { isCodeBlockNode } from '../../schema';
 
 // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
 // input rule will allow for a list to start at any given number, which isn't allowed in
@@ -247,13 +249,26 @@ export class MarkdownInputRulesPlugin {
 
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.addRule(rule));
-    pm.addKeymap(new Keymap({ 'Cmd-Z': pm => pm.input.dispatchKey('Backspace') }, { name: 'inputRules' }), 20);
+    bindCmdZ(pm);
   }
 
   detach(pm: ProseMirror) {
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
+}
+
+function bindCmdZ (pm) {
+  pm.addKeymap(new Keymap({ 'Cmd-Z': pm => {
+    const { $from } = pm.selection;
+    const node = $from.parent;
+
+    if (isCodeBlockNode(node)) {
+      commands.undo(pm);
+    } else {
+      pm.input.dispatchKey('Backspace');
+    }
+  }}, { name: 'inputRules' }), 20);
 }
 
 // IE11 + multiple prosemirror fix.

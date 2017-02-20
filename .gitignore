@@ -6,7 +6,6 @@ npm-debug.log.*
 yarn-error.log
 .jshintignore
 .jshintrc
-.released-packages
 .idea
 .idea/
 .ci_failed

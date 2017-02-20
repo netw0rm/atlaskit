@@ -13,7 +13,7 @@ type Context = {
 }
 
 export default class Provider extends PureComponent {
-  // https://github.com/brigand/babel-plugin-flow-react-proptypes/issues/22
+  // [need to declare childContextTypes without flow](https://github.com/brigand/babel-plugin-flow-react-proptypes/issues/22)
   static childContextTypes = {
     dragDropStore: PropTypes.shape({
       dispatch: PropTypes.func.isRequired,
@@ -25,7 +25,12 @@ export default class Provider extends PureComponent {
   constructor(props: Props, context: any) {
     super(props, context);
 
-    this.store = createStore(reducer);
+    this.store = createStore(
+      reducer,
+      // TODO: disable in production
+      // eslint-disable-next-line no-underscore-dangle
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    );
   }
 
   getChildContext(): Context {

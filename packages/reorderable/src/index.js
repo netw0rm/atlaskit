@@ -1,2 +1,2 @@
 // TODO
-export { DragDropContext } from './view/drag-drop-context/';
+export dragDropContext from './view/drag-drop-context/';

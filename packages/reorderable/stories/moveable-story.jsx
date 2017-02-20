@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { storiesOf, action } from '@kadira/storybook';
 import type { Position } from '../src/state/types';
-import Moveable from '../src/view/draggable/movable';
+import Moveable from '../src/view/draggable/moveable';
 
 const Box = styled.div`
   width: 150px;
@@ -14,36 +14,33 @@ const Box = styled.div`
 storiesOf('Moveable', module)
   .add('no movement', () => {
     const point: Position = { x: 0, y: 0 };
-    const origin: Position = { x: 0, y: 0 };
 
     return (
-      <Moveable offset={point} origin={origin}>
+      <Moveable destination={point} shouldAnimate={false}>
         <Box color="lightblue">
           offset: (x: {point.x}, y: {point.y})
         </Box>
       </Moveable>
     );
   })
-  .add('with offset', () => {
+  .add('with destination but no animation', () => {
     const point: Position = { x: 100, y: 100 };
-    const origin: Position = { x: 100, y: 100 };
 
     return (
-      <Moveable offset={point} origin={origin}>
+      <Moveable destination={point} shouldAnimate={false}>
         <Box color="lightgreen">
           offset: (x: {point.x}, y: {point.y})
         </Box>
       </Moveable>
     );
   })
-  .add('moving from origin', () => {
+  .add('moving from origin with animation', () => {
     const point: Position = { x: 200, y: 200 };
-    const origin: Position = { x: 0, y: 0 };
 
     return (
       <Moveable
-        offset={point}
-        origin={origin}
+        destination={point}
+        shouldAnimate
         onMoveEnd={action('onMoveEnd')}
       >
         <Box color="yellow">
@@ -52,13 +49,12 @@ storiesOf('Moveable', module)
       </Moveable>
     );
   })
-  .add('staged movements', () => {
+  .add('staged movements with animation', () => {
     const fireAction = action('onMoveEnd');
 
     class App extends PureComponent {
       state = {
-        origin: { x: 0, y: 0 },
-        offset: { x: 0, y: 0 },
+        destination: { x: 0, y: 0 },
       }
 
       componentDidMount() {
@@ -67,28 +63,27 @@ storiesOf('Moveable', module)
 
       onMoveEnd = () => {
         fireAction();
-        const { offset } = this.state;
-        const newOffset = {
-          x: (offset.x + 40) % 200,
-          y: offset.y,
+        const { destination } = this.state;
+        const newDestination = {
+          x: (destination.x + 40) % 200,
+          y: destination.y,
         };
 
         this.setState({
-          origin: offset,
-          offset: newOffset,
+          destination: newDestination,
         });
       }
 
       render() {
-        const { offset, origin } = this.state;
+        const { destination } = this.state;
         return (
           <Moveable
-            origin={origin}
-            offset={offset}
+            shouldAnimate
+            destination={destination}
             onMoveEnd={this.onMoveEnd}
           >
             <Box color="pink">
-              offset: (x: {offset.x}, y: {offset.y})
+              offset: (x: {destination.x}, y: {destination.y})
             </Box>
           </Moveable>
         );

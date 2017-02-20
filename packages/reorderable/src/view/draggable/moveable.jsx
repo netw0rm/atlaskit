@@ -6,8 +6,8 @@ import type { Position } from '../../state/types';
 
 type Props = {
   children?: React$Element<*>,
-  offset: Position,
-  origin: Position,
+  destination: Position,
+  shouldAnimate: boolean,
   onMoveEnd?: Function,
 }
 
@@ -24,6 +24,11 @@ const getMovement = (point: Position): Object => ({
 });
 
 const Canvas = styled.div``;
+
+const start = {
+  x: 0,
+  y: 0,
+};
 
 export default class Movable extends PureComponent {
 
@@ -44,16 +49,17 @@ export default class Movable extends PureComponent {
   props: Props
 
   render() {
-    const { offset, origin } = this.props;
-    const destination = {
-      x: spring(offset.x, physics),
-      y: spring(offset.y, physics),
+    const { destination, shouldAnimate } = this.props;
+
+    const final = {
+      x: shouldAnimate ? spring(destination.x, physics) : destination.x,
+      y: shouldAnimate ? spring(destination.y, physics) : destination.y,
     };
 
     return (
       // https://github.com/chenglou/react-motion/issues/375
       // $FlowFixMe
-      <Motion defaultStyle={origin} style={destination} onRest={this.onRest}>
+      <Motion defaultStyle={start} style={final} onRest={this.onRest}>
         {(current: Position) => (
           <Canvas style={getMovement(current)}>
             {this.props.children}

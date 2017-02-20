@@ -1,14 +1,21 @@
 // @flow
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
 import type { DraggableId, TypeId } from '../../types';
-import type { Position } from '../../state/types';
-import Movable from './movable';
-import createDragHandle from './create-drag-handle-new';
-// eslint-disable-next-line no-duplicate-imports
+import type { Position, State, DraggableLocation } from '../../state/types';
+import Moveable from './moveable';
+import createDragHandle from './create-drag-handle';
+import {
+  lift as liftAction,
+  move as moveAction,
+  drop as dropAction,
+  cancel as cancelAction,
+} from '../../state/action-creators';
 
 type NeedsProviding = {|
   id: DraggableId,
-  isDropEnabled?: boolean
+    isDragEnabled ?: boolean,
 |}
 
 type DraggableState = {|
@@ -20,21 +27,45 @@ type MapState = (ownProps: Object, state: DraggableState, getDragHandle: Functio
 type Hooks = {|
   // ? needs to fire before isDropEnabled checks
   onDragStart: (id: DraggableId) => void,
-  onDragEnd: (id: DraggableId) => void,
+    onDragEnd: (id: DraggableId) => void,
 |}
 
 const empty = {};
 const identity = x => x;
+const nowhere: Position = { x: 0, y: 0 };
+
+type Props = {|
+  lift: typeof liftAction,
+  move: typeof move,
+  drop: typeof drop,
+  move: typeof move,
+  cancel: typeof cancel,
+  provided: NeedsProviding,
+  isDragging: boolean,
+  offset: ?Position,
+|};
+
+const Container = styled.div`
+  user-select: ${props => (props.isDragging ? 'none' : 'auto')};
+  border: ${props => (props.isDragging ? '5px solid blue' : 'none')};
+`;
 
 export default (type: TypeId,
-provide: Provide,
-map?: MapState = () => empty,
-// getDragHandle?: boolean = false,
-hooks?: Hooks) =>
+  provide: Provide,
+  map?: MapState = () => empty,
+  // getDragHandle?: boolean = false,
+  hooks?: Hooks) =>
   (Component: any): any => {
     console.log('args', type, provide, map, hooks, Component);
 
     class WrappedComponent extends PureComponent {
+      // eslint-disable-next-line react/sort-comp
+      props: Props
+
+      static defaultProps = {
+        offset: nowhere,
+      }
+
       constructor(props, context) {
         super(props, context);
 
@@ -53,12 +84,31 @@ hooks?: Hooks) =>
         console.log('onMoveEnd');
       }
 
-      onLift = (point: Position) => {
-        console.info('draggable lifted at', point);
+      onLift = (selection: Position) => {
+        const { provided: { id, isDragEnabled }, lift } = this.props;
+
+        if (isDragEnabled === false) {
+          return;
+        }
+
+        const center: Position = { x: 0, y: 0 };
+        const offset: Position = { x: 0, y: 0 };
+        const scroll: Position = { x: 0, y: 0 };
+        const location: DraggableLocation = null;
+
+        lift(id, type, center, offset, scroll, selection, location);
       }
 
       onMove = (point: Position) => {
-        console.log('draggable moving to', point);
+        const { provided: { id, isDragEnabled }, move } = this.props;
+
+        if (isDragEnabled === false) {
+          throw new Error('need to cancel the current drag');
+        }
+
+        const center = { x: 0, y: 0 };
+
+        move(id, point, center);
       }
 
       onDrop = (point: Position) => {
@@ -79,13 +129,9 @@ hooks?: Hooks) =>
           return this.handle;
         };
 
-        const provided: NeedsProviding = provide(ownProps);
-
-        // console.log('created handle', handle);
-
-        // const dragHandle = x => x;
         const additionalProps = map(ownProps, this.state, requestDragHandle);
 
+        // TODO: clear draggable props
         const props = {
           ...ownProps,
           ...additionalProps,
@@ -95,19 +141,40 @@ hooks?: Hooks) =>
         const wrap = requestDragHandle.wasCalled ? identity : this.handle;
 
         return wrap(
-          <div>
-            <Movable
-              origin={{ x: 0, y: 0 }}
-              offset={{ x: 0, y: 0 }}
-              onMoveEnd={this.onMoveEnd}
-            >
+          <Moveable
+            shouldAnimate={false}
+            destination={ownProps.offset}
+            onMoveEnd={this.onMoveEnd}
+          >
+            <Container isDragging={ownProps.isDragging}>
               <Component {...props} />
-            </Movable>
-          </div>
+            </Container>
+          </Moveable>
         );
       }
-  }
+    }
 
-    // TODO: connect to redux store
-    return WrappedComponent;
+    const mapStateToProps = (state: State, ownProps: Object) => {
+      const provided: NeedsProviding = provide(ownProps);
+      const { currentDrag } = state;
+
+      console.log('current drag', currentDrag);
+      const isDragging = currentDrag && currentDrag.dragging.id === provided.id;
+      const offset = (isDragging && currentDrag.dragging.offset) || undefined;
+
+      return {
+        provided,
+        isDragging,
+        offset,
+      };
+    };
+
+    const mapDispatchToProps = {
+      lift: liftAction,
+      move: moveAction,
+      drop: dropAction,
+      cancel: cancelAction,
+    };
+
+    return connect(mapStateToProps, mapDispatchToProps, null, { storeKey: 'dragDropStore' })(WrappedComponent);
   };

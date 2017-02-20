@@ -1,150 +1,180 @@
-// // @flow
-// import { cloneElement } from 'react';
-// import invariant from 'invariant';
-// import type { Position } from '../../state/types';
+// @flow
+import React, { PureComponent } from 'react';
+import invariant from 'invariant';
+import styled from 'styled-components';
+import type { Position } from '../../state/types';
 
-// // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
-// export const primaryClick = 0;
+// declare function OnLift(point: Position): void;
 
+export type OnLift = (point: Position) => void;
+export type OnMove = (point: Position) => void;
+export type OnDrop = (point: Position) => void;
+export type OnCancel = () => void;
+
+// https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
+export const primaryClick = 0;
+
+// TODO: drag threshold
 // const threshold: number = 10;
 
-// export default (onLift: (point: Position) => void,
-//   onMove: (point: Position) => void,
-//   onDrop: (point: Position) => void,
-//   onCancel: () => void
-// ) => (el: React$Element<*>) => {
-//   // const pendingIntial: ?Position = null;
-//   let areMouseEventsBound: boolean = false;
+type Props = {
+  onLift: OnLift,
+  onMove: OnMove,
+  onDrop: OnDrop,
+  onCancel: OnCancel,
+  children: React$Element<*>,
+}
 
-//   const bindWindowMouseEvents = () => {
-//     invariant(!areMouseEventsBound, 'mouse events are already bound');
-//     console.log('binding mouse events');
+const Container = styled.div`
+  cursor: ${props => props.isDragging ? 'grabbing' : 'grab'};
+`;
 
-//     window.addEventListener('mousemove', onMouseMove);
-//     window.addEventListener('mouseup', onMouseUp);
+// need a component so that we can kill events on unmount
+export class Handle extends PureComponent {
+  /* eslint-disable react/sort-comp */
+  props: Props
+  areMouseEventsBound: boolean;
+  state: {|
+    isDragging: boolean
+  |}
 
-//     areMouseEventsBound = true;
-//   };
+  state = {
+    isDragging: false,
+  }
+  /* eslint-enable react/sort-comp */
 
-//   const unbindWindowMouseEvents = () => {
-//     invariant(areMouseEventsBound, 'there are no mouse events bound');
-//     console.log('unbinding mouse events');
+  constructor(props: Props, context: any) {
+    super(props, context);
 
-//     window.removeEventListener('mousemove', onMouseMove);
-//     window.removeEventListener('mouseup', onMouseUp);
+    this.areMouseEventsBound = false;
+  }
 
-//     areMouseEventsBound = false;
-//   };
+  componentWillUnmount() {
+    if (this.areMouseEventsBound) {
+      this.unbindWindowMouseEvents();
+    }
 
-//   const onKeyUp = (event) => {
-//     // state = {
-//     //   initial: point,
-//     //   isWaitingForThreshold: false,
-//     // };
+    if (this.isDragging) {
+      this.props.onCancel();
+    }
+  }
 
-//     // onLift();
-//   };
+  onMouseMove = (event: SyntheticMouseEvent) => {
+    const { button, clientX, clientY } = event;
 
-//   const onMouseMove = (event) => {
-//     const { button, clientX, clientY } = event;
+    if (button !== primaryClick) {
+      return;
+    }
 
-//     if (button !== primaryClick) {
-//       return;
-//     }
+    const point: Position = {
+      x: clientX,
+      y: clientY,
+    };
 
-//     const point: Position = {
-//       x: clientX,
-//       y: clientY,
-//     };
+    this.props.onMove(point);
+  };
 
-//     onMove(point);
-//   };
+  onMouseUp = (event: SyntheticMouseEvent): void => {
+    const { button, clientX, clientY } = event;
 
-//   const onMouseUp = (event: SyntheticMouseEvent): void => {
-//     const { button, clientX, clientY } = event;
+    if (button !== primaryClick) {
+      return;
+    }
 
-//     if (button !== primaryClick) {
-//       return;
-//     }
+    const point: Position = {
+      x: clientX,
+      y: clientY,
+    };
 
-//     const point: Position = {
-//       x: clientX,
-//       y: clientY,
-//     };
+    this.unbindWindowMouseEvents();
+    this.setState({
+      isDragging: false,
+    });
+    this.props.onDrop(point);
+  };
 
-//     unbindWindowMouseEvents();
-//     onDrop(point);
-//   };
+  onMouseDown = (event: SyntheticMouseEvent) => {
+    const { button, clientX, clientY } = event;
 
-//   const onMouseDown = (event) => {
-//     const { button, clientX, clientY } = event;
+    if (this.isDragging) {
+      console.warn('mouse down will not start a drag as it is already dragging');
+      return;
+    }
 
-//     if (button !== primaryClick) {
-//       return;
-//     }
+    if (button !== primaryClick) {
+      return;
+    }
 
-//     const point: Position = {
-//       x: clientX,
-//       y: clientY,
-//     };
+    const point: Position = {
+      x: clientX,
+      y: clientY,
+    };
 
-//     bindWindowMouseEvents();
-//     // todo: sloppy clicks
-//     onLift(point);
-//   };
+    this.bindWindowMouseEvents();
+    this.setState({
+      isDragging: true,
+    });
+    this.props.onLift(point);
+  };
 
-//   // class Temp extends PureComponent {
-//   //   componentDidMount() {
-//   //     this.addEvent('onClick', this._onClick) // will also auto-remove on unmount
-//   //   }
+  bindWindowMouseEvents = () => {
+    invariant(!this.areMouseEventsBound, 'mouse events are already bound');
+    invariant(!this.isDragging, 'cannot bind mouse events - already dragging');
 
-//   //   render() {
-//   //     return React.Children.only(this.props.children)
-//   //   }
-//   // }
+    console.log('binding mouse events');
 
-//   // TODO: need to kill handlers on unmount
-//   // investigate using a component
+    window.addEventListener('mousemove', this.onMouseMove);
+    window.addEventListener('mouseup', this.onMouseUp);
 
-//   return cloneElement(el, {
-//     tabIndex: '0',
-//     onKeyUp,
-//     onMouseDown,
-//   });
-// };
+    this.areMouseEventsBound = true;
+  };
 
-// // let ref = null;
+  unbindWindowMouseEvents = () => {
+    invariant(this.areMouseEventsBound, 'there are no mouse events bound');
+    console.log('unbinding mouse events');
 
-// //   console.info('get drag handled called');
+    window.removeEventListener('mousemove', this.onMouseMove);
+    window.removeEventListener('mouseup', this.onMouseUp);
 
-// //   const onMouseDown = () => console.log('onmousedown');
+    this.areMouseEventsBound = false;
+  };
 
-// //   const attachListeners = (target: Node): void => {
-// //     console.log('adding listeners');
-// //     target.addEventListener('click', onMouseDown);
-// //   };
+  render() {
+    return (
+      <Container
+        isDragging={this.state.isDragging}
+        tabIndex="0"
+        draggable="false"
+        onMouseDown={this.onMouseDown}
+      >
+        {this.props.children}
+      </Container>
+    );
 
-// //   const removeListeners = (target: Node): void => {
-// //     console.log('removing listeners');
-// //     target.removeEventListener('click', onMouseDown);
-// //   };
+    // not creating any new nodes
+    // could use ref rather than adding handler directly
+    // return cloneElement(this.props.children, {
+    //   tabIndex: '0',
+    //   onMouseDown: this.onMouseDown,
+    //   // prevent html5 drag and drop
+    //   draggable: 'false',
+    // });
+  }
+}
 
-// //   // React will call the ref callback with the DOM element when the component mounts,
-// //   // and call it with null when it unmounts.
-// //   const setRef = (newRef: ?Node) => {
-// //     // is unmounting
-// //     if (ref && !newRef) {
-// //       removeListeners(ref);
-// //       ref = null;
-// //       return;
-// //     }
+export default (onLift: OnLift,
+  onMove: OnMove,
+  onDrop: OnDrop,
+  onCancel: OnCancel
+) => (el: React$Element<*>) => (
+  // https://github.com/facebook/flow/issues/1964
+  /* eslint-disable react/no-children-prop */
+  <Handle
+    onLift={onLift}
+    onMove={onMove}
+    onDrop={onDrop}
+    onCancel={onCancel}
+    children={el}
+  />
+);
 
-// //     if (!newRef) {
-// //       throw new Error('setRef called with null without a mounted ref');
-// //     }
-
-// //     ref = newRef;
-// //     attachListeners(ref);
-// //   };
-
-// //   console.log('returning cloned element');

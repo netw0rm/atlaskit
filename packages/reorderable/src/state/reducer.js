@@ -23,6 +23,8 @@ const getDragImpact = (currentDrag: Dragging, draggableDimensions: DimensionMap,
 };
 
 export default (state: State = initialState, action: Action): State => {
+  console.log(`%c reducing ${action.type}`, 'color: green; font-size: 1.5em');
+
   if (action.type === 'LIFT') {
     const { id, type, center, offset, scroll, selection, source } = action.payload;
 

@@ -2,30 +2,22 @@
 import React, { PureComponent } from 'react';
 import { storiesOf } from '@kadira/storybook';
 import draggable from '../src/view/draggable';
-
-class Item extends PureComponent {
-  props: {
-    itemId: string
-  }
-
-  render() {
-    return (<div>item id: {this.props.itemId}</div>);
-  }
-}
+import { dragDropContext } from '../src/';
 
 storiesOf('draggable', module)
   .add('basic', () => {
-    const provide = ownProps => ({
-      id: ownProps.itemId,
+    class Item extends PureComponent {
+      render() {
+        return (<div>basic drag handle</div>);
+      }
+    }
+    const provide = () => ({
+      id: '10',
     });
-
-    // const mapStateToProps = (ownProps, state, getDragHandle) => ({
-
-    // });
 
     const Connected = draggable('TYPE', provide)(Item);
 
-    return <Connected itemId="5" />;
+    return dragDropContext(Connected);
   })
   .add('custom drag handle', () => {
     class App extends PureComponent {
@@ -54,5 +46,5 @@ storiesOf('draggable', module)
 
     const Connected = draggable('CUSTOM', provide, mapStateToProps)(App);
 
-    return <Connected />;
+    return dragDropContext(Connected);
   });

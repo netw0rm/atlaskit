@@ -3,6 +3,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import styles from 'style!../less/Drawer.less';
 import DrawerTrigger from './DrawerTrigger';
 import DrawerBackIcon from './DrawerBackIcon';
+import ContainerHeader from './ContainerHeader';
 
 export default class Drawer extends PureComponent {
   static propTypes = {
@@ -64,7 +65,7 @@ export default class Drawer extends PureComponent {
         </div>
         <div className={classNames(styles.main)}>
           <div className={classNames(styles.fixed)}>
-            {header}
+            <ContainerHeader>{header}</ContainerHeader>
           </div>
           <div>
             {this.props.children}

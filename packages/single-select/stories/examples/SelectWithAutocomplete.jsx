@@ -3,7 +3,6 @@ import Select from '@atlaskit/single-select';
 
 const selectItems = [
   {
-    heading: 'Cities',
     items: [
       { content: 'Sydney', value: 'city_1' },
       { content: 'Canberra', value: 'city_2' },
@@ -13,12 +12,13 @@ const selectItems = [
   },
 ];
 
+const selectedItem = selectItems[0].items[0];
+
 export default (
   <Select
+    defaultSelected={selectedItem}
+    hasAutocomplete
     items={selectItems}
-    label="Choose your favourite"
-    onSelected={(item) => {
-      console.log(item);
-    }}
+    placeholder="Select all!"
   />
 );

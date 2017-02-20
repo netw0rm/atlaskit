@@ -564,6 +564,7 @@ describe(`${name} - stateless`, () => {
 
     beforeEach(() => {
       wrapper = mount(<StatelessMultiSelect
+        appearance="subtle"
         isDisabled
         items={selectItems}
         selectedItems={selectedItems}
@@ -572,6 +573,10 @@ describe(`${name} - stateless`, () => {
 
     it('native select should be "disabled"', () => {
       expect(wrapper.find('select[disabled]').length).to.equal(1);
+    });
+
+    it('should pass appearance property to field base', () => {
+      expect(wrapper.find(FieldBase).prop('appearance')).to.equal('subtle');
     });
 
     it('should pass isDisabled property to field base', () => {

@@ -103,8 +103,9 @@ describe(name, () => {
     });
 
     it('should pass props to fieldBase', () => {
-      const select = mount(<StatelessSelect isDisabled isInvalid isOpen />);
+      const select = mount(<StatelessSelect appearance="subtle" isDisabled isInvalid isOpen />);
       const fieldbaseProps = select.find(FieldBase).props();
+      expect(fieldbaseProps.appearance).to.equal('subtle');
       expect(fieldbaseProps.isDisabled).to.equal(true);
       expect(fieldbaseProps.isInvalid).to.equal(true);
       expect(fieldbaseProps.onFocus).to.equal(select.instance().onFocus);

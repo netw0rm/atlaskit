@@ -17,6 +17,8 @@ import SelectInForm from './examples/SelectInForm';
 import SelectInFormRaw from '!raw!./examples/SelectInForm';
 import SmartSelectFocus from './examples/SmartSelectFocus';
 import SmartSelectFocusRaw from '!raw!./examples/SmartSelectFocus';
+import SmartSelectAppearances from './examples/SmartSelectAppearances';
+import SmartSelectAppearancesRaw from '!raw!./examples/SmartSelectAppearances';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name, description } from '../package.json';
@@ -78,6 +80,14 @@ storiesOf(name, module)
       <SmartSelectFocus />
       <Code>
         {SmartSelectFocusRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Multi select - different appearances', () => (
+    <Chrome title="Multi select (smart) - overview">
+      {SmartSelectAppearances}
+      <Code>
+        {SmartSelectAppearancesRaw}
       </Code>
     </Chrome>
   ));

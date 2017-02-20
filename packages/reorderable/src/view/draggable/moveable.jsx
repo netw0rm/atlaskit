@@ -4,12 +4,12 @@ import { Motion, spring } from 'react-motion';
 import styled from 'styled-components';
 import type { Position } from '../../state/types';
 
-type Props = {
+type Props = {|
   children?: React$Element<*>,
   destination: Position,
   shouldAnimate: boolean,
   onMoveEnd?: Function,
-}
+|}
 
 // stiff physics from jira-frontend
 const physics = {

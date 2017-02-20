@@ -69,6 +69,16 @@ describe('block-type', () => {
     expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 
+  context('when rendering a block quote', () => {
+    it('should not be selectable', () => {
+      const { pm } = editor(doc(blockquote(p('{<>}text'))));
+      const node = pm.doc.nodeAt(0);
+      if (node) {
+        expect(node.type.selectable).to.be.false;
+      }
+    });
+  });
+
   describe('code block', () => {
     it('should be able to change to code block', () => {
       const { pm, plugin } = editor(doc(p('te{<>}xt')));
@@ -219,14 +229,6 @@ describe('block-type', () => {
   });
 
   describe('keymap', () => {
-    context('when selecting block quote node', () => {
-      it('should remain in "Block quote" state', () => {
-        const { pm, plugin } = editor(doc(blockquote(p('{<>}text'))));
-        pm.setNodeSelection(0);
-        expect(plugin.currentBlockType.name).to.equal('blockquote');
-      });
-    });
-
     if (browser.mac) {
       context('when on a Mac', () => {
         context('when hits Cmd-Alt-0', () => {
@@ -598,12 +600,12 @@ describe('block-type', () => {
 
           context('when there is no more content before the nested block', () => {
             it('creates a new paragraph above', () => {
-              const { pm } = editor(doc(blockquote(hr, code_block()('{<>}text'))));
+              const { pm } = editor(doc(p(hr, code_block()('{<>}text'))));
               pm.setNodeSelection(0);
 
               pm.input.dispatchKey('Up');
 
-              expect(pm.doc).to.deep.equal(doc(p(''), blockquote(hr, code_block()('text'))));
+              expect(pm.doc).to.deep.equal(doc(p(''), p(hr, code_block()('text'))));
             });
           });
         });

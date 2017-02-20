@@ -16,4 +16,4 @@ interface PropsExtendedTooltip {
 }
 
 export default class AKTooltip extends Component<PropsSimpleTooltip, {}> {}
-export class StatelessTooltip extends PureComponent<PropsExtendedTooltip, {}> {}
+export class Tooltip extends PureComponent<PropsExtendedTooltip, {}> {}

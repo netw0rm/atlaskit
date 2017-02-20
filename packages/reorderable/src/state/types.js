@@ -34,18 +34,20 @@ export type DragImpact = {|
   destination: ?DraggableLocation
 |}
 
+export type DraggingInitial = {|
+  source: DraggableLocation,
+  center: Position,
+  offset: Position,
+  scroll: Position,
+  selection: Position,
+|}
+
 export type Dragging = {|
     id: DraggableId,
     type: TypeId,
     offset: Position,
     center: Position,
-    initial: {|
-      source: DraggableLocation,
-      center: Position,
-      offset: Position,
-      scroll: Position,
-      selection: Position,
-    |}
+    initial: DraggingInitial,
 |}
 
 export type CurrentDrag = {|

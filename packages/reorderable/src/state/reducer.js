@@ -32,7 +32,7 @@ export default (state: State = initialState, action: Action): State => {
       id,
       type,
       center,
-      offset: origin,
+      offset,
       initial: {
         source,
         center,

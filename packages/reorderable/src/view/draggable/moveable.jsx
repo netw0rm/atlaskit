@@ -9,6 +9,7 @@ type Props = {|
   destination: Position,
   shouldAnimate: boolean,
   onMoveEnd?: Function,
+  innerRef?: Function,
 |}
 
 // stiff physics from jira-frontend
@@ -25,12 +26,16 @@ const getMovement = (point: Position): Object => ({
 
 const Canvas = styled.div``;
 
-const start = {
+const start: Position = {
   x: 0,
   y: 0,
 };
 
 export default class Movable extends PureComponent {
+
+  static defaultProps = {
+    innerRef: () => {},
+  }
 
   onRest = () => {
     const { onMoveEnd } = this.props;
@@ -61,7 +66,10 @@ export default class Movable extends PureComponent {
       // $FlowFixMe
       <Motion defaultStyle={start} style={final} onRest={this.onRest}>
         {(current: Position) => (
-          <Canvas style={getMovement(current)}>
+          <Canvas
+            style={getMovement(current)}
+            innerRef={this.props.innerRef}
+          >
             {this.props.children}
           </Canvas>
         )}

@@ -2,12 +2,19 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import invariant from 'invariant';
 import type { DraggableId, TypeId } from '../../types';
-import type { Position, State, DraggableLocation } from '../../state/types';
+import type {
+  Position,
+  State,
+  DraggableLocation,
+  DraggingInitial,
+} from '../../state/types';
 import Moveable from './moveable';
 import createDragHandle from './create-drag-handle';
 import getCenterPosition from './get-center-position';
 import getScrollPosition from './get-scroll-position';
+import getOffset from './get-offset';
 
 import {
   lift as liftAction,
@@ -18,7 +25,7 @@ import {
 
 type NeedsProviding = {|
   id: DraggableId,
-  isDragEnabled ?: boolean,
+  isDragEnabled?: boolean,
 |}
 
 type DraggableState = {|
@@ -46,6 +53,7 @@ type Props = {|
   provided: NeedsProviding,
   isDragging: boolean,
   offset: ?Position,
+  initial: ?DraggingInitial,
 |};
 
 const Container = styled.div`
@@ -64,7 +72,8 @@ export default (type: TypeId,
     class WrappedComponent extends PureComponent {
       // eslint-disable-next-line react/sort-comp
       props: Props
-      ref: Node
+      ref: ?Node
+      // movingRef: Node
 
       static defaultProps = {
         offset: nowhere,
@@ -89,6 +98,9 @@ export default (type: TypeId,
       }
 
       onLift = (selection: Position) => {
+        invariant(this.ref != null, 'cannot move an item that is not in the DOM');
+        console.log('ref is', this.ref);
+
         const { provided: { id, isDragEnabled }, lift } = this.props;
 
         if (isDragEnabled === false) {
@@ -96,23 +108,51 @@ export default (type: TypeId,
         }
 
         const center: Position = getCenterPosition(this.ref);
-        const offset: Position = { x: 0, y: 0 };
+        // const offset: Position = { x: 0, y: 0 };
         const scroll: Position = getScrollPosition();
         const location: DraggableLocation = null;
+
+        const offset: Position = getOffset(this.ref);
 
         lift(id, type, center, offset, scroll, selection, location);
       }
 
       onMove = (point: Position) => {
-        const { provided: { id, isDragEnabled }, move } = this.props;
+        const { provided: { id, isDragEnabled }, initial, move } = this.props;
 
         if (isDragEnabled === false) {
           throw new Error('need to cancel the current drag');
         }
 
-        const center: Position = getCenterPosition(this.ref);
+        invariant(initial != null, 'cannot move an item that has not been lifted');
 
-        move(id, point, center);
+        const scroll: Position = getScrollPosition();
+
+        // diffs
+        const mouseDiff: Position = {
+          x: point.x - initial.selection.x,
+          y: point.y - initial.selection.y,
+        };
+        const scrollDiff: Position = {
+          x: scroll.x - initial.scroll.x,
+          y: scroll.y - initial.scroll.y,
+        };
+        const diff: Position = {
+          x: mouseDiff.x + scrollDiff.x,
+          y: mouseDiff.y + scrollDiff.y,
+        };
+
+        // adjusted positions
+        const offset: Position = {
+          x: initial.offset.x + diff.x,
+          y: initial.offset.y + diff.y,
+        };
+        const center: Position = {
+          x: initial.center.x + diff.x,
+          y: initial.center.y + diff.y,
+        };
+
+        move(id, offset, center);
       }
 
       onDrop = (point: Position) => {
@@ -124,7 +164,13 @@ export default (type: TypeId,
       }
 
       setRef = (ref: Node) => {
+        console.log('container ref', ref);
         this.ref = ref;
+      }
+
+      setMovingRef = (ref: Node) => {
+        console.log('moving ref', ref);
+        this.movingRef = ref;
       }
 
       handle: Function
@@ -153,9 +199,12 @@ export default (type: TypeId,
             shouldAnimate={false}
             destination={ownProps.offset}
             onMoveEnd={this.onMoveEnd}
+            innerRef={this.setRef}
           >
             {wrap(
-              <Container isDragging={ownProps.isDragging} innerRef={this.setRef}>
+              <Container
+                isDragging={ownProps.isDragging}
+              >
                 <Component {...props} />
               </Container>
             )}
@@ -164,17 +213,25 @@ export default (type: TypeId,
       }
     }
 
+    // TODO: memoize
     const mapStateToProps = (state: State, ownProps: Object) => {
       const provided: NeedsProviding = provide(ownProps);
       const { currentDrag } = state;
+      if (!currentDrag || !currentDrag.dragging) {
+        return {
+          provided,
+          isDragging: false,
+        };
+      }
 
-      const isDragging = currentDrag && currentDrag.dragging.id === provided.id;
-      const offset = (isDragging && currentDrag.dragging.offset) || undefined;
+      const offset = currentDrag.dragging.offset;
+      const initial = currentDrag.dragging.initial;
 
       return {
         provided,
-        isDragging,
+        isDragging: true,
         offset,
+        initial,
       };
     };
 

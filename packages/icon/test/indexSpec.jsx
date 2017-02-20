@@ -16,6 +16,10 @@ describe(name, () => {
       // NOTE Please remember:
       // An addition is a feature
       // a removal or rename is a BREAKING CHANGE
+
+      // NOTE the reduced-ui-pack package uses the icons from this package, so if you change
+      // anything in the list below then you'll also need to update the tests in reduced-ui-pack.
+
       Object
         .keys(components)
         .should.be.deep.equal([

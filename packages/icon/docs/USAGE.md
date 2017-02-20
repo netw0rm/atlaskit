@@ -62,13 +62,16 @@ ReactDOM.render(<BitbucketLogo />, container);
 ```
 
 ### Adding new icons
-Adding new icons is as simple as checking out the Atlaskit repo, adding your svg file to `/packages/icon/src/icons` and running
+
+Adding new icons is as simple as checking out the AtlasKit repo, adding your SVG file to `/packages/icon/src/icons` and running
 
 ```sh
 npm run prepublish
 ```
 
-from within the `icon` package. This will clean up the svg and generate a new `src/index.jsx` file and update all the stories in storybook to use it.
+from within the `icon` package. This will clean up the SVG and generate a new `src/index.jsx` file and update all the stories in storybook to use it.
+
+**NOTE:** The `reduced-ui-pack` package uses the icons from this package, so if you change add or remove any icons then you'll also need to update the tests in reduced-ui-pack.
 
 Some things to look for:
 * If your icon is used only in a specific context or product, place it in `/icon/src/icons/subfolder` and it will be namespaced appropriately.

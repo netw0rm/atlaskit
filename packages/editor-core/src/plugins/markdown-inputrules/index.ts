@@ -263,11 +263,10 @@ function bindCmdZ (pm) {
     const { $from } = pm.selection;
     const node = $from.parent;
 
-    if (isCodeBlockNode(node)) {
-      commands.undo(pm);
-    } else {
-      pm.input.dispatchKey('Backspace');
+    if (!isCodeBlockNode(node)) {
+      return pm.input.dispatchKey('Backspace');
     }
+    return false;
   }}, { name: 'inputRules' }), 20);
 }
 

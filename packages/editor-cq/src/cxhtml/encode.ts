@@ -1,7 +1,7 @@
 import {
   Fragment,
   Node as PMNode
-} from 'ak-editor-core';
+} from '@atlaskit/editor-core';
 import schema from '../schema';
 
 import {
@@ -20,7 +20,7 @@ import {
   ListItemNode,
   OrderedListNode,
   ParagraphNode
-} from 'ak-editor-core';
+} from '@atlaskit/editor-core';
 
 
 export default function encode(node: DocNode) {

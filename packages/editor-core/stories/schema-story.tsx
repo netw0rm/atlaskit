@@ -29,13 +29,11 @@ storiesOf(name, module)
   .add('JSON Schema', () => {
     interface State {
       docJson?: any;
-      isJqueryLoaded: boolean;
       isValid: boolean | Thenable<boolean>;
     }
 
     class Story extends React.PureComponent<{}, State> {
       state: State = {
-        isJqueryLoaded: false,
         isValid: true
       };
 
@@ -43,9 +41,6 @@ storiesOf(name, module)
       editor?: Element;
 
       componentDidMount() {
-        // reset jQuery state
-        delete window.jQuery;
-
         const { container } = this.refs;
         if (container instanceof HTMLElement) {
           const codes = container.querySelectorAll('code');
@@ -55,14 +50,9 @@ storiesOf(name, module)
         }
 
         this.fetchEditorState();
-        this.loadJquery();
       }
 
       render() {
-        if (!this.state.isJqueryLoaded) {
-          return <div>jQuery is loading...</div>;
-        }
-
         return (
           <div style={{ display: 'flex', flexDirection: 'column' }} ref="container">
             <Editor
@@ -117,21 +107,6 @@ storiesOf(name, module)
             });
           }
         }
-      }
-
-      private loadJquery = () => {
-        const scriptElem = document.createElement('script');
-        scriptElem.type = 'text/javascript';
-        scriptElem.src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js';
-
-        scriptElem.onload = () => {
-          this.setState({
-            ...this.state,
-            isJqueryLoaded: true
-          });
-        };
-
-        document.body.appendChild(scriptElem);
       }
     }
 

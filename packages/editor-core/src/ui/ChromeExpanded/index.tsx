@@ -32,6 +32,8 @@ export interface Props {
   onInsertMention?: () => void;
   onInsertImage?: () => void;
   onSave?: () => void;
+  packageVersion?: string;
+  packageName?: string;
   pluginStateBlockType?: BlockTypeState;
   pluginStateCodeBlock?: CodeBlockState;
   pluginStateHyperlink?: HyperlinkState;
@@ -56,7 +58,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} /> : null}
           {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} /> : null}
           <span style={{ flexGrow: 1 }} />
-          {props.feedbackFormUrl ? <ToolbarFeedback /> : null}
+          {props.feedbackFormUrl ? <ToolbarFeedback packageVersion={props.packageVersion} packageName={props.packageName} /> : null}
         </div>
         <div className={styles.content}>
           {props.children}

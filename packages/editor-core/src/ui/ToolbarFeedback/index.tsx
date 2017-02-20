@@ -4,10 +4,15 @@ import Spinner from '@atlaskit/spinner';
 
 import { analyticsDecorator as analytics } from '../../analytics';
 import ToolbarButton from '../ToolbarButton';
+import { version as coreVersion } from '../../../package.json';
 
 const JIRA_ISSUE_COLLECTOR_URL = 'https://product-fabric.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-j519ub/b/c/78bd26fb4be69a8bdb879359a9397e96/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?locale=en-US&collectorId=305d3263';
 
-export interface Props {}
+export interface Props {
+  packageVersion?: string;
+  packageName?: string;
+}
+
 export interface State {
   jiraIssueCollectorScriptLoading: boolean;
 }
@@ -70,6 +75,14 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
           // next tick is essential due to JIRA issue collector behaviour
           setTimeout(showCollectorDialog, 0);
         }
+      },
+      fieldValues: {
+        description: `Please describe the problem you're having or feature you'd like to see:\n\n\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n version: ${this.props.packageName}@${this.props.packageVersion} (${coreVersion})\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n\n`
+      },
+      environment: {
+        'Editor Package' : this.props.packageName,
+        'Editor Version' : this.props.packageVersion,
+        'Editor Core Version' : coreVersion,
       }
     };
 

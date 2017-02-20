@@ -18,12 +18,12 @@
   /**/
 
   blockquote,
-  pre {
+  div[data-type='codeblock'] {
     margin: 10px 0 0 0;
   }
 
   blockquote:first-child,
-  pre:first-child {
+  div[data-type='codeblock']:first-child {
     margin-top: 0;
   }
 
@@ -40,13 +40,6 @@
     margin-top: 10px;
   }
 
-  code,
-  pre {
-    font-family: Consolas, Menlo, 'Liberation Mono', Courier, monospace;
-    font-size: 12px;
-    line-height: 1.4;
-  }
-
   li,
   p {
     word-wrap: break-word;
@@ -56,23 +49,16 @@
     margin-bottom: 10px;
   }
 
-  pre {
+  div[data-type='codeblock'] {
     overflow-x: auto;
-
     padding: 5px 10px;
-
     word-wrap: normal;
-
     border: 1px solid #ccc;
     border-radius: 3px;
     background: #f5f5f5;
-  }
-
-  pre > code {
-    margin: 0;
-    padding: 1px 3px;
-
-    border: none;
+    font-family: Consolas, Menlo, 'Liberation Mono', Courier, monospace;
+    font-size: 12px;
+    line-height: 1.4;
   }
 
   img {

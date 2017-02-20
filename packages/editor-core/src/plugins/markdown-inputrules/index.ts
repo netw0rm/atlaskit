@@ -1,6 +1,5 @@
 import {
   blockQuoteRule,
-  bulletListRule,
   InputRule,
   inputRules,
   Node,
@@ -24,6 +23,11 @@ const orderedListRule = (nodeType: NodeType): InputRule => {
     (match, node) => node.childCount > 0);
 };
 
+// NOTE: we decided to restrict the creation of bullet lists to only "*"
+function bulletListRule(nodeType) {
+  return wrappingInputRule(/^\s*(\*) $/, ' ', nodeType);
+}
+
 const createTrackedInputRule = (analyticsEventName: string, rule: InputRule): InputRule => {
   if (typeof (rule.handler) !== 'function') {
     throw new SyntaxError('The provided cannot be tracked because it does not provide a callable handler');
@@ -46,7 +50,7 @@ const headingRule = (nodeType: NodeType, maxLevel: Number) => {
   );
 };
 
-const buildBlockRules = (schema: Schema): Array<InputRule> => {
+const buildBlockRules = (schema: Schema): InputRule[] => {
   const rules = Array<InputRule>();
   const { heading, bullet_list, ordered_list, blockquote } = schema.nodes;
 
@@ -71,7 +75,7 @@ const buildBlockRules = (schema: Schema): Array<InputRule> => {
 
 function replaceWithNode(
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number,
   node: Node
 ): boolean {
@@ -85,7 +89,7 @@ function replaceWithNode(
 
 function replaceWithMark(
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number,
   mark: string,
   specialChar: string
@@ -123,7 +127,7 @@ function replaceWithMark(
 // [something](link) should convert to a hyperlink
 const linkRule = new InputRule(/\[(\S+)\]\((\S+)\)$/, ')', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
 ) => {
   const schema = pm.schema;
@@ -154,7 +158,7 @@ const linkRule = new InputRule(/\[(\S+)\]\((\S+)\)$/, ')', (
 // Note: You have to load this rule before the link rule.
 const imgRule = new InputRule(/!\[(\S+)\]\((\S+)\)$/, ')', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
 ) => {
   const attrs = {
@@ -169,12 +173,18 @@ const imgRule = new InputRule(/!\[(\S+)\]\((\S+)\)$/, ')', (
 
 const codeBlockRule = new InputRule(/^```$/, '`', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
 ) => {
-  if (isConvertableToCodeBlock(pm)) {
+  const lengthOfDecorator = match[0].length;
+
+  // Because the node content is wrap by the node margin in prosemirror
+  // + 2 is the parent margin size. 1 in the front, and 1 at the end.
+  const convertedNodeHasContent = pm.selection.$from.parent.nodeSize > lengthOfDecorator + 2;
+
+  if (isConvertableToCodeBlock(pm) && convertedNodeHasContent) {
     analyticsService.trackEvent(`atlassian.editor.format.codeblock.autoformatting`);
-    const start = pos - match[0].length;
+    const start = pos - lengthOfDecorator;
     return transformToCodeBlockAction(pm)
       // remove markdown decorator ```
       .delete(start, pos)
@@ -184,49 +194,36 @@ const codeBlockRule = new InputRule(/^```$/, '`', (
 });
 
 // **string** should bold the text
-const strongRule1 = new InputRule(/(\*\*([^\*]+)\*\*)$/, '*', (
+const strongRule = new InputRule(/(\*\*([^\*]+)\*\*)$/, '*', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
 ) => replaceWithMark(pm, match, pos, 'strong', '**'));
 
-// __string__ should bold the text
-const strongRule2 = new InputRule(/(__([^_]+)__)$/, '_', (
+// *string* should change the text to italic
+const emRule = new InputRule(/(?:[^\*]+)(\*([^\*]+?)\*)$|^(\*([^\*]+)\*)$/, '*', (
   pm: ProseMirror,
-  match: Array<string>,
-  pos: number
-) => replaceWithMark(pm, match, pos, 'strong', '__'));
-
-// _string_ or *string* should change the text to italic
-const emRule1 = new InputRule(/(?:[^\*]+)(\*([^\*]+?)\*)$|^(\*([^\*]+)\*)$/, '*', (
-  pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
 ) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em', '*'));
-
-const emRule2 = new InputRule(/(?:[\s]+)(_([^_]+?)_)$|^(_([^_]+)_)$/, '_', (
-  pm: ProseMirror,
-  match: Array<string>,
-  pos: number
-) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em', '_'));
 
 // ~~string~~ should strikethrough the text
 const strikeRule = new InputRule(/(\~\~([^\*]+)\~\~)$/, '~', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
 ) => replaceWithMark(pm, match, pos, 'strike', '~~'));
 
 // `string` should change the current text to monospace
 const monoRule = new InputRule(/(`([^`]+)`)$/, '`', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
 ) => replaceWithMark(pm, match, pos, 'mono', '`'));
 
 const hrRule = new InputRule(/^\-\-\-$/, '-', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
 ) => replaceWithNode(pm, match, pos, pm.schema.nodes['horizontal_rule'].create()));
 
@@ -237,10 +234,8 @@ export class MarkdownInputRulesPlugin {
     const blockRules = buildBlockRules(pm.schema);
 
     this.inputRules = [
-      strongRule1,
-      strongRule2,
-      emRule1,
-      emRule2,
+      strongRule,
+      emRule,
       strikeRule,
       monoRule,
       imgRule,
@@ -252,7 +247,7 @@ export class MarkdownInputRulesPlugin {
 
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.addRule(rule));
-    pm.addKeymap(new Keymap({'Cmd-Z': pm => pm.input.dispatchKey('Backspace')}, {name: 'inputRules'}), 20);
+    pm.addKeymap(new Keymap({ 'Cmd-Z': pm => pm.input.dispatchKey('Backspace') }, { name: 'inputRules' }), 20);
   }
 
   detach(pm: ProseMirror) {

@@ -69,6 +69,16 @@ describe('block-type', () => {
     expect(pm.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 
+  context('when rendering a block quote', () => {
+    it('should not be selectable', () => {
+      const { pm } = editor(doc(blockquote(p('{<>}text'))));
+      const node = pm.doc.nodeAt(0);
+      if (node) {
+        expect(node.type.selectable).to.be.false;
+      }
+    });
+  });
+
   describe('code block', () => {
     it('should be able to change to code block', () => {
       const { pm, plugin } = editor(doc(p('te{<>}xt')));
@@ -591,7 +601,7 @@ describe('block-type', () => {
           context('when there is no more content before the nested block', () => {
             it('creates a new paragraph above', () => {
               const { pm } = editor(doc(blockquote(hr, code_block()('{<>}text'))));
-              pm.setNodeSelection(0);
+              pm.setNodeSelection(1);
 
               pm.input.dispatchKey('Up');
 

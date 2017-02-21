@@ -48,7 +48,6 @@ export default class ContainerItem extends PureComponent {
           subText={this.props.subText}
           text={this.props.text}
           textAfter={this.props.textAfter}
-          onClick={this.props.onClick}
         />
       </div>
     );

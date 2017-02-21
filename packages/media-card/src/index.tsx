@@ -12,6 +12,7 @@ export * from './generic/fileIcon/fileIcon';
 export * from './generic/errorIcon/errorIcon';
 export * from './generic/placeholder/placeholder';
 export * from './generic/spinner/spinner';
+export * from './ellipsify';
 
 export interface CardViewProps {
   height?: number;
@@ -59,6 +60,8 @@ export class CardView extends Component<CardViewProps, {}> {
             error={error}
             onRetry={this.props.onRetry}
             menuActions={this.props.menuActions}
+            height={height}
+            width={width}
           />
         </Card>
       );
@@ -84,6 +87,8 @@ export class CardView extends Component<CardViewProps, {}> {
             progress={this.props.progress}
 
             menuActions={this.props.menuActions}
+            height={height}
+            width={width}
           />
         </Card>
       );

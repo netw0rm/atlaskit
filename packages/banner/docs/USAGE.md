@@ -2,7 +2,7 @@
 
 This is a React component that displays a prominent banner message. It is intended to be used at the top of the page.
 
-![Example ak-banner](https://i.imgur.com/5N9j2tp.png)
+![Example Banner](https://i.imgur.com/5N9j2tp.png)
 
 ## Try it out
 

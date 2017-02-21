@@ -42,3 +42,30 @@
   margin-top: 0px;
 
 }
+
+ul.linkItems {
+
+  li {
+    .adg-typography-h600();
+    margin-top: 0px;
+    display: table-cell;
+
+    a {
+      color: white;
+      font-weight: 300;
+
+      margin-right: 2rem;
+      letter-spacing: 0.05rem;
+
+      &.current {
+        border-bottom: 2px solid !important;
+        font-weight: 400;
+      }
+
+      &:hover {
+        border-bottom: 2px solid;
+        text-decoration: none;
+      }
+    }
+  }
+}

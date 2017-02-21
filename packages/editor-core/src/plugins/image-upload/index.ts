@@ -96,8 +96,8 @@ export class ImageUploadState {
   addImage = (options: { src?: string }): void => {
     const { pm } = this;
     const { image } = pm.schema.nodes;
-    if (this.enabled && image && pm.selection instanceof TextSelection) {
-      pm.tr.insert(pm.selection.$head.pos, image.create(options)).apply();
+    if (this.enabled && image) {
+      pm.tr.insert(pm.selection.$to.pos, image.create(options)).apply();
     }
   }
 
@@ -171,11 +171,10 @@ export class ImageUploadState {
   private canInsertImage(): boolean {
     const { pm } = this;
     const { image } = pm.schema.nodes;
-    const { $from, $to, empty } = pm.selection;
+    const { $to} = pm.selection;
 
     return !!image
-      && empty
-      && $from.parent.canReplaceWith($from.parentOffset, $to.parentOffset, image);
+      && $to.parent.canReplaceWith($to.parentOffset, $to.parentOffset, image);
   }
 }
 

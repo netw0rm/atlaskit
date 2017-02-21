@@ -89,13 +89,21 @@ describe('image-upload', () => {
     expect(spy.callCount).to.equal(2);
   });
 
-  it('does not permit an image to be added when an image is selected', () => {
+  it('permits an image to be added when an image is selected', () => {
     const { pm, plugin, sel } = editor(doc(images('{<>}', testImg())));
     pm.setNodeSelection(sel);
 
     plugin.addImage({ src: testImgSrc });
 
-    expect(pm.doc).to.deep.equal(doc(images(testImg())));
+    expect(pm.doc).to.deep.equal(doc(images(testImg(), testImg())));
+  });
+
+  it('permits an image to be added when there is selected text', () => {
+    const { pm, plugin} = editor(doc(images('{<}hello{>}')));
+
+    plugin.addImage({ src: testImgSrc });
+
+    expect(pm.doc).to.deep.equal(doc(images('hello', testImg())));
   });
 
   it('does not permit an image to be added when the state is disabled', () => {

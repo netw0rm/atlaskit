@@ -56,7 +56,7 @@ export default class Blanket extends PureComponent {
           [styles.tinted]: isTinted,
           [styles.canClickThrough]: canClickThrough,
         })}
-        onClick={onBlanketClicked}
+        onClick={canClickThrough ? null : onBlanketClicked}
       />
     );
   }

@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
+import Blanket from '@atlaskit/blanket';
 import styles from 'style!../less/Drawer.less';
 import DrawerTrigger from './DrawerTrigger';
 import DrawerBackIcon from './DrawerBackIcon';
@@ -39,36 +40,46 @@ export default class Drawer extends PureComponent {
     };
 
     return (
-      <div
-        className={classNames(styles.drawer, {
-          [styles.open]: isOpen,
-          [styles.wide]: isWide,
-        })}
-      >
-        <div className={classNames(styles.fixed, styles.side)}>
-          <div className={classNames(styles.icon)}>
-            {primaryIcon}
-          </div>
-          <div
-            className={classNames(styles.backIconOuter)} style={backIconOuterStyle}
-          >
-            <div className={classNames(styles.backIcon)}>
-              <DrawerTrigger onActivate={onBackButton}>
-                <DrawerBackIcon
-                  isVisible={isOpen}
-                >
-                  {backIcon}
-                </DrawerBackIcon>
-              </DrawerTrigger>
+      <div>
+        <div style={{ zIndex: 0, position: 'relative' }}>
+          <Blanket
+            isTinted={isOpen}
+            canClickThrough={!isOpen}
+            onBlanketClicked={onBackButton}
+          />
+        </div>
+        <div
+          className={classNames(styles.drawer, {
+            [styles.open]: isOpen,
+            [styles.wide]: isWide,
+          })}
+        >
+
+          <div className={classNames(styles.fixed, styles.side)}>
+            <div className={classNames(styles.icon)}>
+              {primaryIcon}
+            </div>
+            <div
+              className={classNames(styles.backIconOuter)} style={backIconOuterStyle}
+            >
+              <div className={classNames(styles.backIcon)}>
+                <DrawerTrigger onActivate={onBackButton}>
+                  <DrawerBackIcon
+                    isVisible={isOpen}
+                  >
+                    {backIcon}
+                  </DrawerBackIcon>
+                </DrawerTrigger>
+              </div>
             </div>
           </div>
-        </div>
-        <div className={classNames(styles.main)}>
-          <div className={classNames(styles.fixed)}>
-            <ContainerHeader>{header}</ContainerHeader>
-          </div>
-          <div>
-            {this.props.children}
+          <div className={classNames(styles.main)}>
+            <div className={classNames(styles.fixed)}>
+              <ContainerHeader>{header}</ContainerHeader>
+            </div>
+            <div>
+              {this.props.children}
+            </div>
           </div>
         </div>
       </div>

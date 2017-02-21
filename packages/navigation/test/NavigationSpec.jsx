@@ -24,9 +24,6 @@ describe('<Navigation />', () => {
     it('should render a <Resizer />', () => {
       expect(shallow(<Navigation />).find('Resizer').length).to.equal(1);
     });
-    it('should render two <Drawer />', () => {
-      expect(shallow(<Navigation />).find('Drawer').length).to.equal(2);
-    });
   });
 
   describe('props', () => {
@@ -49,12 +46,6 @@ describe('<Navigation />', () => {
     it('isCollapsible=false does render a <Resizer />', () => {
       expect(shallow(<Navigation isCollapsible={false} />).find('Resizer').length).to.be.above(0);
     });
-    it('hasBlanket && displayBlanket=true does render a blanket', () => {
-      expect(shallow(<Navigation displayBlanket hasBlanket />).find('Blanket').length).to.equal(1);
-    });
-    it('hasBlanket && displayBlanket=false does not render a blanket', () => {
-      expect(shallow(<Navigation hasBlanket />).find('Blanket').length).to.equal(0);
-    });
     it('containerHeaderComponent - passes a func for the container header component to <ContainerNavigation />', () => {
       const header = () => (<div>foo</div>);
       expect(shallow(<Navigation containerHeaderComponent={header} />)
@@ -75,26 +66,6 @@ describe('<Navigation />', () => {
     it('globalCreateIcon should pass globalCreateIcon onto <ContainerNavigation />', () => {
       const icon = <img alt="create" />;
       expect(mount(<Navigation globalCreateIcon={icon} />).find('ContainerNavigation').props().globalCreateIcon).to.equal(icon);
-    });
-    it('isSearchDrawerOpen=true should set open=true on the SearchDrawer', () => {
-      expect(mount(<Navigation isSearchDrawerOpen />).find('Drawer').at(0).props().isOpen).to.equal(true);
-    });
-    it('isSearchDrawerOpen=false should set open=false on the SearchDrawer', () => {
-      expect(mount(<Navigation isSearchDrawerOpen={false} />).find('Drawer').at(0).props().isOpen).to.equal(false);
-    });
-    it('isCreateDrawerOpen=true should set open=true on the CreateDrawer', () => {
-      expect(mount(<Navigation isCreateDrawerOpen />).find('Drawer').at(1).props().isOpen).to.equal(true);
-    });
-    it('isCreateDrawerOpen=true should set open=true on the CreateDrawer', () => {
-      expect(mount(<Navigation isCreateDrawerOpen={false} />).find('Drawer').at(1).props().isOpen).to.equal(false);
-    });
-    it('backIconOffset should be passed to the SearchDrawer', () => {
-      const offset = 10;
-      expect(mount(<Navigation backIconOffset={offset} />).find('Drawer').at(0).props().backIconOffset).to.equal(offset);
-    });
-    it('backIconOffset should be passed to the CreateDrawer', () => {
-      const offset = 20;
-      expect(mount(<Navigation backIconOffset={offset} />).find('Drawer').at(1).props().backIconOffset).to.equal(offset);
     });
     it('onResizeStart is called when the resizer starts resizing', (done) => {
       const navigation = shallow(<Navigation />);
@@ -117,10 +88,10 @@ describe('<Navigation />', () => {
       navigation.find('Resizer').simulate('resize', -300);
       navigation.find('Resizer').simulate('resizeEnd');
     });
-    it('should render list of Drawers passed as drawerContent', () => {
+    it('drawers should render list of Drawers', () => {
       const drawer1 = (<Drawer key="d1" />);
       const drawer2 = (<Drawer key="d2" />);
-      expect(shallow(<Navigation drawerContent={[drawer1, drawer2]} />).find('Drawer').length).to.equal(4);
+      expect(shallow(<Navigation drawers={[drawer1, drawer2]} />).find('Drawer').length).to.equal(2);
     });
     it('globalPrimaryItem should map to global navigation\'s primaryItem', () => {
       const primaryIcon = <span className="PRIMARY_ICON" />;

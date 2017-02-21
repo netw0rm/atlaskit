@@ -1,6 +1,8 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
 import { Root } from './styles/base';
+import { easeInOutCubic } from './styles/easing';
+import { fadeIn } from './styles/animations';
 
 export const Card = styled(Root)`
   background: #fff;
@@ -65,4 +67,16 @@ export const PlaceholderWrapper = styled.div`
     width: 100%;
     height: 100%;
   }
+`;
+
+export const LoadingWrapper = styled.div`
+  color: #cfd4db;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const FadeinImage = styled.div`
+  animation: ${fadeIn} .3s ${easeInOutCubic};
 `;

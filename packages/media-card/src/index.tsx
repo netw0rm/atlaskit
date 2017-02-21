@@ -11,7 +11,6 @@ import {MediaType} from '@atlaskit/media-core';
 export * from './generic/fileIcon/fileIcon';
 export * from './generic/errorIcon/errorIcon';
 export * from './generic/placeholder/placeholder';
-export * from './generic/spinner/spinner';
 export * from './ellipsify';
 
 export interface CardViewProps {

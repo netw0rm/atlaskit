@@ -7,13 +7,13 @@ FieldBase provides an Atlassian Design Guidelines compatible implementation for:
 * Fields: sizing, borders, colors, wrapping behaviour, hover/focus states.
 * Validation: styles (built in validation coming soon!)
 
-FieldBase's *will* work by themselves but are really meant to be extended into a full field component.
+FieldBase components *will* work by themselves, but are really meant to be extended into a full field component.
 
-![Example Fieldbase](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/FieldBase/docs/fieldbase.png)
+![Example Fieldbase](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/field-base/docs/fieldbase.png)
 
 ## Try it out
 
-Interact with a [live demo of the FieldBase component](https://aui-cdn.atlassian.com/atlaskit/stories/FieldBase/@VERSION@/).
+Interact with a [live demo of the FieldBase component](https://aui-cdn.atlassian.com/atlaskit/stories/field-base/@VERSION@/).
 
 ## Installation
 

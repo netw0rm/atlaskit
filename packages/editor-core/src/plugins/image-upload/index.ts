@@ -13,7 +13,7 @@ import PasteAdapter from './paste-adapter';
 
 export interface ImageUploadPluginOptions {
   defaultHandlersEnabled?: boolean;
-  supportedImageTypes?: Array<string>;
+  supportedImageTypes?: string[];
   maxFileSizeInBytes: number;
 }
 

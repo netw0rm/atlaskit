@@ -1,8 +1,8 @@
 # Calendar
 
-The `ak-calendar` component is a generic calendar that can be used standalone or together with a form field to make a datepicker.
+The `@NAME@` component is a generic calendar that can be used standalone or together with a form field to make a datepicker.
 
-![Example buttons](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-calendar/docs/calendar.gif)
+![Example calendar](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/calendar/docs/calendar.gif)
 
 ## Try it out
 
@@ -18,14 +18,14 @@ npm install @NAME@
 
 ### HTML
 
-The `ak-calendar` package exports the a web component.
+The `@NAME@` package exports the a web component.
 
 Import the component in your JS resource:
 
 #### bundle.js
 
 ```js
-import 'ak-calendar';
+import '@NAME@';
 ```
 
 Now you can use the defined tag in your HTML markup:
@@ -44,15 +44,6 @@ Now you can use the defined tag in your HTML markup:
 </html>
 ```
 
-You can also use it from within another JavaScript resource:
-
-```js
-import Calendar from '@NAME@';
-
-const component = new Calendar();
-document.body.appendChild(component);
-```
-
 ### React
 
 This is a standard web component, if you want to use it in your React app, use the Skate.js [React integration](https://github.com/webcomponents/react-integration).
@@ -66,27 +57,11 @@ const ReactComponent = reactify(Calendar, {});
 ReactDOM.render(<ReactComponent />, container);
 ```
 
-#### Setting props
-
-When using it as a react component, you should set the `camelCased` version of the HTML attribute:
-
-HTML:
-
-```html
-<ak-calendar some-prop="something" />
-```
-
-React JSX:
-
-```js
-<ReactComponent someProp="something" />
-```
-
 ## API
 
 As with all web components, the calendar is given safe defaults and no parameters are required.
 
-Any prop that takes multiple dates will expect the dates in `yyyy-mm-dd` without leading zeroes. Any prop that takes more than one date can be specified as an attribute as an array. 
+Any prop that takes multiple dates will expect the dates in `yyyy-mm-dd` without leading zeroes. Any prop that takes more than one date can be specified as an attribute as an array.
 
 ### `disabled`
 

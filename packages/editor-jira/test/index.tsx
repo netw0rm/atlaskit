@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
-import { chaiPlugin } from 'ak-editor-core/test-helper';
+import { chaiPlugin } from '@atlaskit/editor-core/test-helper';
 import Editor from '../src/index';
 
 chai.use(chaiPlugin);

@@ -246,7 +246,7 @@ storiesOf(name, module)
         This image should have an aria-label that should be read out when tabbing to the link
           around it and also an alt text.
       </div>
-      <a href="http://www.atlassian.com"><DefaultAvatar size="xlarge" label="This is an avatar!" /></a>
+      <a href="//www.atlassian.com"><DefaultAvatar size="xlarge" label="This is an avatar!" /></a>
     </div>
   ))
   .addCodeExampleStory('Avatar with a custom border', () => (

@@ -58,7 +58,7 @@ const selectItems3 = [
 ];
 
 export default (
-  <div>
+  <div style={{ display: 'flex', alignItems: 'center' }}>
     <Select
       items={selectItems}
       placeholder="Select me!"

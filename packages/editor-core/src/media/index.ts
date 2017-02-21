@@ -4,7 +4,7 @@ export type MediaItemId = string;
 export type MediaCollectionId = string;
 export type MediaViewContextScope = MediaCollectionItem[] | MediaCollectionId;
 
-type IsScopedToCloudClientId = {
+export type IsScopedToCloudClientId = {
   clientId: string;
 };
 

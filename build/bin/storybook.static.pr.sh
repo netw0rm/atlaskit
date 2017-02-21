@@ -17,7 +17,6 @@ OUTDIR=$(mktemp -d)
 BUILD_SPECIFIC_URL_PART="pr/$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME/storybook"
 
 # get list of changed packages which should have been outputted by generate.changed.packages.file.sh
-# in the form "@atlaskit/packageOne,@atlaskit/packageTwo" to allow easy scoping via globs
 CHANGED_PACKAGES=$(cat changed-packages)
 
 function storybook_build_status() {
@@ -33,7 +32,7 @@ function build_storybook() {
   local TARGET_PATH="$1"
 
   $CHALK --no-stdin -t "{blue Building storybook (PR)}"
-  $LERNA_LOC exec --scope "{$CHANGED_PACKAGES}" -- ../../build/bin/storybook.static.pr.single.sh "$TARGET_PATH"
+  $LERNA_LOC exec --scope "$CHANGED_PACKAGES" -- ../../build/bin/storybook.static.pr.single.sh "$TARGET_PATH"
   $BASEDIR/generate.index.html.js $TARGET_PATH "PR storybook for ${BITBUCKET_COMMIT}" > "$TARGET_PATH/index.html"
 }
 

@@ -2,11 +2,11 @@ import React, { PureComponent, PropTypes } from 'react';
 import Item from '@atlaskit/droplist-item';
 
 import StatelessMultiSelect from './StatelessMultiSelect';
-import appearances, { standard } from './internal/appearances';
+import { appearances } from './internal/appearances';
 
 export default class AkMultiSelect extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.oneOf(Object.keys(appearances)),
+    appearance: PropTypes.oneOf(appearances.values),
     defaultSelected: PropTypes.arrayOf(PropTypes.shape(Item.propTypes)),
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
@@ -28,7 +28,7 @@ export default class AkMultiSelect extends PureComponent {
   }
 
   static defaultProps = {
-    appearance: standard,
+    appearance: appearances.default,
     defaultSelected: [],
     isOpen: false,
     shouldFocus: false,

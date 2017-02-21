@@ -1,10 +1,10 @@
 import React, { PureComponent, PropTypes } from 'react';
 import StatelessSelect, { itemShape } from './StatelessSelect';
-import appearances, { standard } from './internal/appearances';
+import { appearances } from './internal/appearances';
 
 export default class AkSingleSelect extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.oneOf(Object.keys(appearances)),
+    appearance: PropTypes.oneOf(appearances.values),
     defaultSelected: itemShape,
     id: PropTypes.string,
     isFirstChild: PropTypes.bool,
@@ -23,7 +23,7 @@ export default class AkSingleSelect extends PureComponent {
   }
 
   static defaultProps = {
-    appearance: standard,
+    appearance: appearances.default,
     isOpen: false,
     isRequired: false,
     items: [],

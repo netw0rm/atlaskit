@@ -1,12 +1,14 @@
-export const standard = 'standard';
-export const subtle = 'subtle';
+export const appearances = {
+  values: [
+    'default',
+    'subtle',
+  ],
+  default: 'default',
+};
 
-/**
- * Multi-select appearances values.
- *
- * @enum {string}
- */
-export default {
-  standard: 'standard',
+const appearancesMap = {
+  default: 'standard',
   subtle: 'subtle',
 };
+
+export const mapAppearanceToFieldBase = appearance => appearancesMap[appearance];

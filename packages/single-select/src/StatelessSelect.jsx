@@ -7,7 +7,7 @@ import styles from 'style!./styles.less';
 import classNames from 'classnames';
 
 import Trigger from './internal/Trigger';
-import appearances, { standard } from './internal/appearances';
+import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
 
 export const itemShape = PropTypes.shape({
   content: PropTypes.node,
@@ -20,7 +20,7 @@ export const itemShape = PropTypes.shape({
 
 export default class StatelessSelect extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.oneOf(Object.keys(appearances)),
+    appearance: PropTypes.oneOf(appearances.values),
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
     isFirstChild: PropTypes.bool,
@@ -39,7 +39,7 @@ export default class StatelessSelect extends PureComponent {
   }
 
   static defaultProps = {
-    appearance: standard,
+    appearance: appearances.default,
     isOpen: false,
     isRequired: false,
     items: [],
@@ -136,7 +136,7 @@ export default class StatelessSelect extends PureComponent {
           shouldFitContainer
           trigger={
             <FieldBase
-              appearance={this.props.appearance}
+              appearance={mapAppearanceToFieldBase([this.props.appearance])}
               isDisabled={this.props.isDisabled}
               isFitContainerWidthEnabled
               isFocused={this.props.isOpen || this.state.isFocused}

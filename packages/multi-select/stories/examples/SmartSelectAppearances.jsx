@@ -17,9 +17,9 @@ const selectItems = [
 export default (
   <div>
     <Select
-      appearance="standard"
+      appearance="default"
       items={selectItems}
-      label="standard"
+      label="default"
       placeholder="Australia"
       name="test"
       shouldFitContainer

@@ -46,7 +46,7 @@ const propDescriptions = {
 const shape = 'shape({ content, value, isDisabled, isSelected, elemBefore, elemAfter })';
 
 const propTypes = {
-  appearance: 'Predefined appearances of single-select. One of: \'standard\', \'subtle\'',
+  appearance: 'Predefined appearances of single-select. One of: \'default\', \'subtle\'',
   defaultSelected: shape,
   id: 'string',
   isDisabled: 'bool',
@@ -135,8 +135,8 @@ storiesOf(name, module)
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>
   ))
-  .add('Different appearances', () => (
-    <Chrome title="Different appearances">
+  .add('Appearance variations', () => (
+    <Chrome title="Appearance variations">
       {Appearances}
       <Code>
         {AppearancesRaw}

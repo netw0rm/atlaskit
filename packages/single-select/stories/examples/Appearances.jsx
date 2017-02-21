@@ -18,9 +18,9 @@ const selectedItem = selectItems[0].items[0];
 export default (
   <div>
     <Select
-      appearance="standard"
+      appearance="default"
       items={selectItems}
-      label="standard"
+      label="default"
       defaultSelected={selectedItem}
     />
     { ' or ' }

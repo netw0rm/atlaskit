@@ -83,8 +83,8 @@ storiesOf(name, module)
       </Code>
     </Chrome>
   ))
-  .add('Multi select - different appearances', () => (
-    <Chrome title="Multi select (smart) - overview">
+  .add('Multi select - appearance variations', () => (
+    <Chrome title="Multi select - appearance variations">
       {SmartSelectAppearances}
       <Code>
         {SmartSelectAppearancesRaw}

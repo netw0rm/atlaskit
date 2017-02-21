@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {DragEvent as ReactDragEvent, DragEventHandler} from 'react';
 import {CardView} from '@atlaskit/media-card';
-import {FilmStripViewWrapper} from './styled';
+import FilmStripNavigator from './filmstrip-navigator';
 import {MediaType} from '@atlaskit/media-core';
 import {MediaItem} from '@atlaskit/media-core';
 import {ListAction, CardAction, ListEventHandler} from '@atlaskit/media-core';
@@ -32,17 +31,6 @@ function onItemClick(item: FilmStripViewItem, props: FilmStripViewProps): (event
       type: 'file',
       details: item
     }, props.items, event);
-  };
-}
-
-function onDragEvent(dragEventHandler?: (event: DragEvent) => void): DragEventHandler<HTMLUListElement> {
-  return (event: ReactDragEvent<HTMLUListElement>) => {
-    if (!dragEventHandler) {
-      return;
-    }
-
-    event.preventDefault();
-    dragEventHandler(event.nativeEvent as DragEvent);
   };
 }
 
@@ -79,11 +67,7 @@ export function FilmStripView(props: FilmStripViewProps): JSX.Element {
       />
     </li>
   ));
-  return <FilmStripViewWrapper
-             onDrop={onDragEvent(props.onDrop)}
-             onDragEnter={onDragEvent(props.onDragEnter)}
-             onDragOver={onDragEvent(props.onDragOver)}
-  >
-    {itemEls}
-  </FilmStripViewWrapper>;
+  return <FilmStripNavigator onDrop={props.onDrop} onDragEnter={props.onDragEnter} onDragOver={props.onDragOver} width={482}>
+           {itemEls}
+         </FilmStripNavigator>;
 }

@@ -47,6 +47,48 @@ storiesOf('FilmListView', {})
         mediaName: 'some image',
         mediaType: 'image',
         mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
       }
     ];
     return (

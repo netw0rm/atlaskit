@@ -16,12 +16,12 @@ npm install @NAME@
 
 ### HTML
 
-This package exports the ak-droplist-group React component.
+This package exports the @NAME@ React component.
 
 Import the component in your React app as follows:
 
 ```js
-import Item from 'ak-droplist-item';
+import Item from '@atlaskit/droplist-item';
 import Group from '@NAME@';
 
 ReactDOM.render(<Group heading="Australia">

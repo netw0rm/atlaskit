@@ -2,9 +2,9 @@
 
 Buttons are used as triggers for actions. They are used in forms, toolbars, dialog footers and as stand-alone action triggers.
 
-![Example buttons](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-button/docs/button_1.png)
+![Example buttons](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/button/docs/button_1.png)
 
-![Example buttons](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-button/docs/button_2.png)
+![Example buttons](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/button/docs/button_2.png)
 
 ## Try it out
 
@@ -19,7 +19,7 @@ npm install @NAME@
 ## Using the component
 
 ### HTML
-This package exports the `ak-button` React component.
+This package exports the `@NAME@` React component.
 
 Import the component in your React app as follows:
 

@@ -18,7 +18,7 @@ npm install @NAME@
 
 ### HTML
 
-This package exports the ak-droplist-item React component.
+This package exports the @NAME@ React component.
 
 Import the component in your React app as follows:
 

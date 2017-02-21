@@ -5,8 +5,9 @@ import Group from '@atlaskit/droplist-group';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
-import Trigger from './internal/Trigger';
+import NothingWasFound from './internal/NothingWasFound';
 import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
 
 export const itemShape = PropTypes.shape({
@@ -21,6 +22,8 @@ export const itemShape = PropTypes.shape({
 export default class StatelessSelect extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(appearances.values),
+    filterValue: PropTypes.string,
+    hasAutocomplete: PropTypes.bool,
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
     isFirstChild: PropTypes.bool,
@@ -30,52 +33,205 @@ export default class StatelessSelect extends PureComponent {
     items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
     name: PropTypes.string,
+    noMatchesFound: PropTypes.string,
     onSelected: PropTypes.func,
+    onFilterChange: PropTypes.func,
     onOpenChange: PropTypes.func,
     placeholder: PropTypes.string,
     position: PropTypes.string,
+    shouldFocus: PropTypes.bool,
     selectedItem: itemShape,
     shouldFitContainer: PropTypes.bool,
   }
 
   static defaultProps = {
     appearance: appearances.default,
+    filterValue: '',
+    hasAutocomplete: false,
     isOpen: false,
     isRequired: false,
     items: [],
     label: '',
+    noMatchesFound: 'No matches found',
+    onFilterChange: () => {},
     onSelected: () => {},
     onOpenChange: () => {},
     placeholder: '',
     position: 'bottom left',
+    shouldFocus: false,
     selectedItem: {},
   }
 
   state = {
     isFocused: this.props.isOpen,
+    focusedItemIndex: null,
+  }
+
+  componentDidMount = () => {
+    if (this.state.isFocused && this.inputNode) {
+      this.inputNode.focus();
+    }
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (!prevProps.shouldFocus && this.props.shouldFocus && this.inputNode) {
+      this.inputNode.focus();
+    }
   }
 
   onFocus = () => {
-    this.setState({ isFocused: true });
+    if (!this.props.isDisabled) {
+      this.setState({ isFocused: true });
+      if (this.inputNode) {
+        this.inputNode.focus();
+      }
+    }
   }
 
   onBlur = () => {
-    this.setState({ isFocused: false });
+    if (!this.props.isDisabled) {
+      this.setState({ isFocused: false });
+    }
   }
 
-  renderItems = items =>
-    items.map((item, itemIndex) =>
-      <Item
+  onOpenChange = (attrs) => {
+    this.props.onOpenChange(attrs);
+
+    if (this.inputNode) {
+      this.inputNode.focus();
+    }
+  }
+
+  getNextFocusable = (indexItem, length) => {
+    let currentItem = indexItem;
+
+    if (currentItem === null) {
+      currentItem = 0;
+    } else if (currentItem < length) {
+      currentItem++;
+    } else {
+      currentItem = 0;
+    }
+
+    return currentItem;
+  }
+
+  getPrevFocusable = (indexItem, length) => {
+    let currentItem = indexItem;
+
+    if (currentItem > 0) {
+      currentItem--;
+    } else {
+      currentItem = length;
+    }
+
+    return currentItem;
+  }
+
+  getAllVisibleItems = (groups) => {
+    let allFilteredItems = [];
+    groups.forEach((val) => {
+      allFilteredItems = allFilteredItems.concat(this.filterItems(val.items));
+    });
+    return allFilteredItems;
+  }
+
+  filterItems = (items) => {
+    const value = this.props.filterValue;
+    const trimmedValue = value && value.toLowerCase().trim();
+    const selectedItem = this.props.selectedItem;
+    const unselectedItems = items.filter(item => selectedItem.value !== item.value);
+
+    return trimmedValue &&
+      (trimmedValue !== (selectedItem.content && selectedItem.content.toLowerCase())) ?
+      unselectedItems.filter(item => (item.content.toLowerCase().indexOf(trimmedValue) > -1)) :
+      unselectedItems;
+  }
+
+  focusNextItem = () => {
+    const filteredItems = this.getAllVisibleItems(this.props.items);
+    const length = filteredItems.length - 1;
+    this.setState({
+      focusedItemIndex: this.getNextFocusable(this.state.focusedItemIndex, length),
+    });
+  }
+
+  focusPreviousItem = () => {
+    const filteredItems = this.getAllVisibleItems(this.props.items);
+    const length = filteredItems.length - 1;
+    this.setState({
+      focusedItemIndex: this.getPrevFocusable(this.state.focusedItemIndex, length),
+    });
+  }
+
+  handleKeyboardInteractions = (event) => {
+    const isSelectOpen = this.props.isOpen;
+    switch (event.key) {
+      case 'ArrowDown':
+        if (!isSelectOpen) {
+          this.onOpenChange({ event, isOpen: true });
+        }
+        this.focusNextItem();
+        break;
+      case 'ArrowUp':
+        if (isSelectOpen) {
+          this.focusPreviousItem();
+        }
+        break;
+      case 'Enter':
+        if (isSelectOpen && this.state.focusedItemIndex !== null) {
+          this.handleItemSelect(
+            this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
+          );
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  handleInputOnChange = (event) => {
+    const value = event.target.value;
+
+    if (value !== this.props.filterValue) {
+      this.props.onFilterChange(value);
+      this.onOpenChange({ event, isOpen: true });
+    }
+  }
+
+  handleTriggerClick = (event) => {
+    if (!this.props.isDisabled) {
+      this.onOpenChange({ event, isOpen: true });
+    }
+  }
+
+  handleItemSelect = (item, attrs) => {
+    if (!item.isDisabled) {
+      this.props.onOpenChange({ isOpen: false, event: attrs.event });
+      this.props.onSelected(item);
+      this.props.onFilterChange(item.content);
+      this.setState({ focusedItemIndex: null });
+    }
+  }
+
+  renderItems = (items) => {
+    const filteredItems = this.filterItems(items);
+
+    if (filteredItems.length) {
+      return filteredItems.map((item, itemIndex) => (<Item
         {...item}
+        isFocused={itemIndex === this.state.focusedItemIndex}
         key={itemIndex}
-        onActivate={() => {
-          this.props.onSelected(item);
+        onActivate={(attrs) => {
+          this.handleItemSelect(item, attrs);
         }}
-        isActive={item.value === this.props.selectedItem.value}
       >
         {item.content}
-      </Item>
-    )
+      </Item>));
+    }
+
+    return (<NothingWasFound noMatchesFound={this.props.noMatchesFound} />);
+  }
 
   renderGroups = groups => groups.map((group, groupIndex) =>
     <Group
@@ -119,8 +275,17 @@ export default class StatelessSelect extends PureComponent {
       [styles.fitContainer]: this.props.shouldFitContainer,
     }]);
 
+    const triggerClasses = classNames([styles.trigger, {
+      [styles.isOpen]: this.props.isOpen,
+    }]);
+
+    // disabled because all of the accessibility is handled manually
+    /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
-      <div className={classes}>
+      <div
+        className={classes}
+        onKeyDown={this.handleKeyboardInteractions}
+      >
         {this.renderSelect()}
         {this.props.label ? <Label
           htmlFor={this.props.id}
@@ -129,9 +294,11 @@ export default class StatelessSelect extends PureComponent {
           label={this.props.label}
         /> : null}
         <Droplist
+          isKeyboardInteractionDisabled
           isOpen={this.props.isOpen}
+          isTriggerDisabled
           isTriggerNotTabbable
-          onOpenChange={this.props.onOpenChange}
+          onOpenChange={this.onOpenChange}
           position={this.props.position}
           shouldFitContainer
           trigger={
@@ -145,9 +312,33 @@ export default class StatelessSelect extends PureComponent {
               onBlur={this.onBlur}
               onFocus={this.onFocus}
             >
-              <Trigger>
-                {this.props.selectedItem.content || this.props.placeholder}
-              </Trigger>
+              <div
+                className={triggerClasses}
+                onClick={this.handleTriggerClick}
+                tabIndex="0"
+              >
+                {
+                  !this.props.hasAutocomplete || this.props.isDisabled ?
+                    <div className={styles.content}>
+                      {
+                        this.props.selectedItem.content ||
+                        <span className={styles.placeholder}>{this.props.placeholder}</span>
+                      }
+                    </div> :
+                    <div className={styles.contentAutocomplete}>
+                      <input
+                        onChange={this.handleInputOnChange}
+                        placeholder={this.props.placeholder}
+                        ref={ref => (this.inputNode = ref)}
+                        type="text"
+                        value={this.props.filterValue}
+                      />
+                    </div>
+                }
+                <div className={styles.expand}>
+                  <ExpandIcon label="" />
+                </div>
+              </div>
             </FieldBase>
           }
         >
@@ -155,5 +346,6 @@ export default class StatelessSelect extends PureComponent {
         </Droplist>
       </div>
     );
+    /* eslint-enable jsx-a11y/no-static-element-interactions */
   }
 }

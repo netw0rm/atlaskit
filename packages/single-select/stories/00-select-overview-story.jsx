@@ -17,6 +17,8 @@ import SelectWithGroups from './examples/SelectWithGroups';
 import SelectWithGroupsRaw from '!raw!./examples/SelectWithGroups';
 import SelectInForm from './examples/SelectInForm';
 import SelectInFormRaw from '!raw!./examples/SelectInForm';
+import SelectWithAutocomplete from './examples/SelectWithAutocomplete';
+import SelectWithAutocompleteRaw from '!raw!./examples/SelectWithAutocomplete';
 import Appearances from './examples/Appearances';
 import AppearancesRaw from '!raw!./examples/Appearances';
 /* eslint-enable import/first, import/no-duplicates */
@@ -131,6 +133,15 @@ storiesOf(name, module)
       {SelectInForm}
       <Code>
         {SelectInFormRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select with autocomplete', () => (
+    <Chrome title="Select with autocomplete">
+      {SelectWithAutocomplete}
+      <Code>
+        {SelectWithAutocompleteRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

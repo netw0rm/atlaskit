@@ -600,12 +600,12 @@ describe('block-type', () => {
 
           context('when there is no more content before the nested block', () => {
             it('creates a new paragraph above', () => {
-              const { pm } = editor(doc(p(hr, code_block()('{<>}text'))));
-              pm.setNodeSelection(0);
+              const { pm } = editor(doc(blockquote(hr, code_block()('{<>}text'))));
+              pm.setNodeSelection(1);
 
               pm.input.dispatchKey('Up');
 
-              expect(pm.doc).to.deep.equal(doc(p(''), p(hr, code_block()('text'))));
+              expect(pm.doc).to.deep.equal(doc(p(''), blockquote(hr, code_block()('text'))));
             });
           });
         });

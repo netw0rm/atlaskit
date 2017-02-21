@@ -2,9 +2,9 @@ import React from 'react';
 import Readme, { Description, Props } from '@atlaskit/util-readme';
 import { storiesOf } from '@kadira/storybook';
 
-import { AkContainerItem, AkDrawerItem } from '../src/index';
+import { AkContainerItem, AkDrawerItem } from '../../src/index';
 
-import { name, description } from '../package.json';
+import { name, description } from '../../package.json';
 
 const containerItemSpeificPropDescriptions = {
   appearance: 'The appearance of the navigation item – can be styled to match a global container',

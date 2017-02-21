@@ -2,9 +2,9 @@ import React from 'react';
 import Readme, { Description, Props } from '@atlaskit/util-readme';
 import { storiesOf } from '@kadira/storybook';
 
-import { AkContainerTitle } from '../src/index';
+import { AkContainerTitle } from '../../src/index';
 
-import { name, description } from '../package.json';
+import { name, description } from '../../package.json';
 
 const containerTitlePropDescriptions = {
   icon: 'The icon for the what is currently being navigated in the container.',

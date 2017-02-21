@@ -2,11 +2,11 @@ import React from 'react';
 import Readme, { Description, Props, Code } from '@atlaskit/util-readme';
 import { storiesOf } from '@kadira/storybook';
 
-import ReactRouterLinkComponentRaw from '!raw!./components/react-router/RouterLinkComponent';
-import ReactRouterLinkItemRaw from '!raw!./components/react-router/RouterLinkItem';
-import DefaultLinkComponent from '../src/components/js/DefaultLinkComponent';
+import ReactRouterLinkComponentRaw from '!raw!../components/react-router/RouterLinkComponent';
+import ReactRouterLinkItemRaw from '!raw!../components/react-router/RouterLinkItem';
+import DefaultLinkComponent from '../../src/components/js/DefaultLinkComponent';
 
-import { name, description } from '../package.json';
+import { name, description } from '../../package.json';
 
 const defaultLinkComponentPropDescriptions = {
   href: 'The href of the link',

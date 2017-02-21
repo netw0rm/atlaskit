@@ -2,9 +2,9 @@ import React from 'react';
 import Readme, { Description, Props, Code } from '@atlaskit/util-readme';
 import { storiesOf } from '@kadira/storybook';
 
-import { AkGlobalNavigation } from '../src/index';
+import { AkGlobalNavigation } from '../../src/index';
 
-import { name, description } from '../package.json';
+import { name, description } from '../../package.json';
 
 const globalNavigationPropDescriptions = {
   accountItem: 'The user profile item to place at the bottom, usually an avatar and a dropdown trigger',

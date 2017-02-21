@@ -7,6 +7,11 @@ export const FilmStripViewWrapper = styled.div`
   overflow: hidden;
   padding: 10px;
   border-radius: 3px;
+  display: inline-flex;
+
+  &:hover .arrow{
+    opacity: 1;
+  }
 `;
 
 export const FilmStripList = styled.ul`
@@ -33,17 +38,21 @@ export const ArrowWrapper = styled.div`
   z-index: 10;
   top: 50%;
   transform: translateY(-50%);
-  background-color: white;
+  background-color: #eee;
   border-radius: 100%;
   display: flex;
   cursor: pointer;
   transition: all .3s;
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.6);
-  color: #c0c0c0;
+  color: black;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  opacity: 0;
 
   &:hover{
     color: black;
-    box-shadow: 0 0 6px rgba(0,0,0,.16), 0 6px 12px rgba(0,0,0,.32);
+    background-color: #dadddd;
   }
 `;
 

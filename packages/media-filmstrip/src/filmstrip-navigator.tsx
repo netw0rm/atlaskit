@@ -40,10 +40,10 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     const defaultWidth = 'auto';
     const width = `${this.props.width || defaultWidth}px`;
     const transform = `translateX(${this.state.offset}px)`;
-    const leftArrow = <ArrowLeftWrapper>
+    const leftArrow = <ArrowLeftWrapper className="arrow">
                         <ArrowLeft label="left" onClick={this.navigate('left')}/>
                       </ArrowLeftWrapper>;
-    const rightArrow = <ArrowRightWrapper>
+    const rightArrow = <ArrowRightWrapper className="arrow">
                          <ArrowRight label="right" onClick={this.navigate('right')}/>
                        </ArrowRightWrapper>;
 

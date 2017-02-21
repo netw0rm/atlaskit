@@ -25,8 +25,25 @@ const clickAction = (item: MediaItem, items: Array<{id: string}>, e?: Event) => 
 
 const menuActions = [deleteAction];
 
+// TODO: Move common Stories styles to a better place
+const styles = {
+  statesWrapper: {
+    listStyle: 'none',
+    display: 'inline-block'
+  },
+  stateItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  stateTitle: {
+    textAlign: 'center',
+    padding: '5px'
+  }
+};
+
 storiesOf('FilmListView', {})
-  .add('Default', () => {
+  .add('Fixed width', () => {
     const items: Array<FilmStripViewItem> = [
       {
         loading: true,
@@ -66,6 +83,41 @@ storiesOf('FilmListView', {})
         mediaType: 'image',
         mediaSize: 8041
       },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      }
+    ];
+    return (
+      <FilmStripView
+        items={items}
+        onClick={clickAction}
+        menuActions={menuActions}
+        width={480}
+      />
+    );
+  }).add('Auto width', () => {
+    const items: Array<FilmStripViewItem> = [
       {
         dataURI: tallImageDataUri,
         mediaName: 'some image',

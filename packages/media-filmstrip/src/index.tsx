@@ -23,6 +23,7 @@ export interface FilmStripViewProps {
   onDrop?: (event: DragEvent) => void;
   onDragEnter?: (event: DragEvent) => void;
   onDragOver?: (event: DragEvent) => void;
+  width?: number;
 }
 
 function onItemClick(item: FilmStripViewItem, props: FilmStripViewProps): (event: Event) => void {
@@ -67,7 +68,7 @@ export function FilmStripView(props: FilmStripViewProps): JSX.Element {
       />
     </li>
   ));
-  return <FilmStripNavigator onDrop={props.onDrop} onDragEnter={props.onDragEnter} onDragOver={props.onDragOver} width={482}>
+  return <FilmStripNavigator onDrop={props.onDrop} onDragEnter={props.onDragEnter} onDragOver={props.onDragOver} width={props.width}>
            {itemEls}
          </FilmStripNavigator>;
 }

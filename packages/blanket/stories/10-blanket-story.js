@@ -33,7 +33,5 @@ storiesOf(name, module)
     </div>
   ))
   .add('toggle blanket', () => (
-    <div>
-      <TogglingBlanketDemo />
-    </div>
+    <TogglingBlanketDemo />
   ));

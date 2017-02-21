@@ -18,6 +18,7 @@ export default class Drawer extends PureComponent {
     primaryIcon: PropTypes.node,
   }
   static defaultProps = {
+    backIconOffset: 0,
     onBackButton: () => {},
     primaryIcon: null,
     isWide: false,

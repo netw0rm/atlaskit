@@ -97,11 +97,6 @@ export const Overlay = styled.div`
       }
     }
 
-    .left-column{
-      opacity: 1;
-      transform: translateY(0);
-    }
-
     .bottom-row {
       .more-btn {
         display: flex;
@@ -161,8 +156,6 @@ export const Overlay = styled.div`
 
       .title {
         visibility: visible;
-        transform: translateY(0);
-        opacity: 1;
       }
 
       .file-type-icon {
@@ -250,9 +243,6 @@ export const LeftColumn = styled.div`
   box-sizing: border-box;
   vertical-align: middle;
   padding: 0 5px 0 5px;
-  opacity: 0;
-  transform: translateY(25px);
-  transition: all .3s;
 `;
 
 export const TopRow = styled.div`
@@ -331,9 +321,6 @@ export const TitleWrapper = styled.div`
   color: #091E42;
   font-size: 12px;
   line-height: 18px;
-  transform: translateY(-25px);
-  transition: all .3s;
-  opacity: 0;
 `;
 
 export const FileSize = styled.div`

@@ -28,7 +28,6 @@ export const Card = styled(Root)`
       display: block;
 
       img {
-        border-radius: 3px;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -79,5 +78,5 @@ export const LoadingWrapper = styled.div`
 `;
 
 export const FadeinImage = styled.div`
-  animation: ${fadeIn} 1s ${easeInOutCubic};
+  animation: ${fadeIn} .3s ${easeInOutCubic};
 `;

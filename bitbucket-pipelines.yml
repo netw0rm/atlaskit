@@ -35,3 +35,4 @@ pipelines:
           - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base" "test/wc/browserstack/pr"
           - yarn run pr/storybook
           - yarn run browserstack/tunnel/stop
+

@@ -2,7 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 
 import { name } from '../package.json';
-import { emojis } from './story-data';
+import { getEmojis } from './story-data';
 
 import CategorySelector from '../src/components/picker/CategorySelector';
 import EmojiPickerFooter from '../src/components/picker/EmojiPickerFooter';
@@ -30,6 +30,8 @@ const emoji = {
   },
   hasSkinVariations: false,
 };
+
+const emojis = getEmojis();
 
 const tongueEmoji = filters.byShortcut(emojis, 'stuck_out_tongue_closed_eyes');
 const longTongueEmoji = {

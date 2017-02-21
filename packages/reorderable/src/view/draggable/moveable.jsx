@@ -14,7 +14,8 @@ type Props = {|
 
 // stiff physics from jira-frontend
 const physics = {
-  stiffness: 500,
+  // stiffness: 500,
+  stiffness: 25,
   damping: 50,
   precision: 0.5,
 };
@@ -24,7 +25,9 @@ const getMovement = (point: Position): Object => ({
   transform: `translate(${point.x}px, ${point.y}px)`,
 });
 
-const Canvas = styled.div``;
+const Canvas = styled.div`
+  display: inline-block;
+`;
 
 const start: Position = {
   x: 0,

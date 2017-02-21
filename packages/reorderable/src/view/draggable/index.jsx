@@ -15,12 +15,14 @@ import createDragHandle from './create-drag-handle';
 import getCenterPosition from './get-center-position';
 import getScrollPosition from './get-scroll-position';
 import getOffset from './get-offset';
+import getDisplayName from '../get-display-name';
 
 import {
   lift as liftAction,
   move as moveAction,
   drop as dropAction,
   cancel as cancelAction,
+  dropFinished as dropFinishedAction,
 } from '../../state/action-creators';
 
 type NeedsProviding = {|
@@ -33,7 +35,7 @@ type DraggableState = {|
 |}
 
 type Provide = (ownProps: Object) => NeedsProviding;
-type MapState = (ownProps: Object, state: DraggableState, getDragHandle: Function) => Object;
+type MapState = (state: DraggableState, ownProps: Object, getDragHandle: Function) => Object;
 type Hooks = {|
   // ? needs to fire before isDropEnabled checks
   onDragStart: (id: DraggableId) => void,
@@ -48,6 +50,7 @@ type Props = {|
   lift: typeof liftAction,
   move: typeof moveAction,
   drop: typeof dropAction,
+  dropFinished: typeof dropFinishedAction,
   move: typeof moveAction,
   cancel: typeof cancelAction,
   provided: NeedsProviding,
@@ -56,9 +59,12 @@ type Props = {|
   initial: ?DraggingInitial,
 |};
 
+type ComponentState = {|
+  wasDragging: boolean
+|}
+
 const Container = styled.div`
   user-select: ${props => (props.isDragging ? 'none' : 'auto')};
-  border: ${props => (props.isDragging ? '5px solid blue' : 'none')};
 `;
 
 export default (type: TypeId,
@@ -67,13 +73,18 @@ export default (type: TypeId,
   // getDragHandle?: boolean = false,
   hooks?: Hooks) =>
   (Component: any): any => {
-    console.log('args', type, provide, map, hooks, Component);
-
     class WrappedComponent extends PureComponent {
-      // eslint-disable-next-line react/sort-comp
+      static displayName = `Draggable(${getDisplayName(Component)})`
+
+      /* eslint-disable react/sort-comp */
       props: Props
+      state: ComponentState
       ref: ?Node
-      // movingRef: Node
+
+      state = {
+        wasDragging: false,
+      }
+      /* eslint-enable */
 
       static defaultProps = {
         offset: nowhere,
@@ -85,21 +96,28 @@ export default (type: TypeId,
         this.handle = createDragHandle(this.onLift, this.onMove, this.onDrop, this.onCancel);
       }
 
-      onMouseDown = (event: SyntheticMouseEvent) => {
-        console.log('onMouseDown', event);
-      }
+      componentWillReceiveProps(nextProps) {
+        const wasDragging = this.props.isDragging && !nextProps.isDragging;
 
-      onKeyUp = (event: SyntheticKeyboardEvent) => {
-        console.log('onKeyUp', event);
+        if (this.state.wasDragging !== wasDragging) {
+          this.setState({
+            wasDragging,
+          });
+        }
       }
 
       onMoveEnd = () => {
-        console.log('onMoveEnd');
+        if (!this.state.wasDragging) {
+          return;
+        }
+
+        const { provided: { id }, dropFinished } = this.props;
+
+        dropFinished(id);
       }
 
       onLift = (selection: Position) => {
         invariant(this.ref != null, 'cannot move an item that is not in the DOM');
-        console.log('ref is', this.ref);
 
         const { provided: { id, isDragEnabled }, lift } = this.props;
 
@@ -155,8 +173,10 @@ export default (type: TypeId,
         move(id, offset, center);
       }
 
-      onDrop = (point: Position) => {
-        console.log('dropping on', point);
+      onDrop = () => {
+        const { provided: { id }, drop } = this.props;
+
+        drop(id);
       }
 
       onCancel = () => {
@@ -166,11 +186,6 @@ export default (type: TypeId,
       setRef = (ref: Node) => {
         console.log('container ref', ref);
         this.ref = ref;
-      }
-
-      setMovingRef = (ref: Node) => {
-        console.log('moving ref', ref);
-        this.movingRef = ref;
       }
 
       handle: Function
@@ -183,7 +198,11 @@ export default (type: TypeId,
           return this.handle;
         };
 
-        const additionalProps = map(ownProps, this.state, requestDragHandle);
+        const snapshot: DraggableState = {
+          isDragging: ownProps.isDragging,
+        };
+
+        const additionalProps = map(snapshot, ownProps, requestDragHandle);
 
         // TODO: clear draggable props
         const props = {
@@ -196,7 +215,7 @@ export default (type: TypeId,
 
         return (
           <Moveable
-            shouldAnimate={false}
+            shouldAnimate={this.state.wasDragging}
             destination={ownProps.offset}
             onMoveEnd={this.onMoveEnd}
             innerRef={this.setRef}
@@ -217,7 +236,7 @@ export default (type: TypeId,
     const mapStateToProps = (state: State, ownProps: Object) => {
       const provided: NeedsProviding = provide(ownProps);
       const { currentDrag } = state;
-      if (!currentDrag || !currentDrag.dragging) {
+      if (!currentDrag || !currentDrag.dragging || currentDrag.dragging.id !== provided.id) {
         return {
           provided,
           isDragging: false,
@@ -239,6 +258,7 @@ export default (type: TypeId,
       lift: liftAction,
       move: moveAction,
       drop: dropAction,
+      dropFinished: dropFinishedAction,
       cancel: cancelAction,
     };
 

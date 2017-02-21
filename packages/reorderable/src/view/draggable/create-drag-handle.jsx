@@ -8,7 +8,7 @@ import type { Position } from '../../state/types';
 
 export type OnLift = (point: Position) => void;
 export type OnMove = (point: Position) => void;
-export type OnDrop = (point: Position) => void;
+export type OnDrop = () => void;
 export type OnCancel = () => void;
 
 // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
@@ -26,11 +26,12 @@ type Props = {
 }
 
 const Container = styled.div`
-  cursor: ${props => props.isDragging ? 'grabbing' : 'grab'};
+  cursor: ${props => (props.isDragging ? 'grabbing' : 'grab')};
 `;
 
 // need a component so that we can kill events on unmount
 export class Handle extends PureComponent {
+
   /* eslint-disable react/sort-comp */
   props: Props
   areMouseEventsBound: boolean;

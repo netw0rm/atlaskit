@@ -75,6 +75,16 @@ export const drop = (id: DraggableId): DropAction => ({
   payload: id,
 });
 
+type DropFinishedAction = {
+  type: 'DROP_FINISHED',
+  payload: DraggableId
+}
+
+export const dropFinished = (id: DraggableId): DropFinishedAction => ({
+  type: 'DROP_FINISHED',
+  payload: id,
+});
+
 type CancelAction = {
   type: 'CANCEL',
   payload: DraggableId
@@ -90,4 +100,5 @@ export type Action = LiftAction |
   PublishDroppableDimensionAction |
   MoveAction |
   DropAction |
+  DropFinishedAction |
   CancelAction;

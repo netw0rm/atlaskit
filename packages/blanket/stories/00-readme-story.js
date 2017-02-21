@@ -28,7 +28,7 @@ const blanketPropDescriptions = {
 };
 
 storiesOf(name, module)
-  .add('Blanket Readme', () => (
+  .add('📖 Blanket Readme', () => (
     <Readme
       component={name}
       description={BlanketDescription}

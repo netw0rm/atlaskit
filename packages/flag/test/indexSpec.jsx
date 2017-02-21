@@ -106,6 +106,71 @@ describe(name, () => {
         expect(spy.calledWith('a')).to.equal(true);
       });
 
+      describe('onDismissed auto dismiss behaviour', () => {
+        let clock;
+
+        beforeEach(() => {
+          clock = sinon.useFakeTimers();
+        });
+
+        afterEach(() => {
+          clock.restore();
+        });
+
+        it('onDismissed should be called after 15 seconds automatically', () => {
+          const spy = sinon.spy();
+          mount(
+            generateFlag({
+              id: 'a',
+              isDismissAllowed: true,
+              onDismissed: spy,
+            })
+          );
+
+          // Make sure handler *hasn't* fired after 4.5 seconds
+          clock.tick(4500);
+          expect(spy.callCount).to.equal(0);
+
+          // Make sure handler *has* fired after the 5 second mark
+          clock.tick(500);
+          expect(spy.callCount).to.equal(1);
+          expect(spy.calledWith('a')).to.equal(true);
+        });
+
+        it('onDismissed auto timer should reset if flag is hovered', () => {
+          const spy = sinon.spy();
+          const wrapper = mount(
+            generateFlag({
+              id: 'a',
+              isDismissAllowed: true,
+              onDismissed: spy,
+            })
+          );
+
+          // Make sure handler *hasn't* fired after 4.5 seconds
+          clock.tick(4500);
+          expect(spy.callCount).to.equal(0);
+
+          // Trigger a mouseover
+          wrapper.find(`.${flagLocals.root}`).simulate('mouseOver');
+
+          // Make sure handler *still hasn't* fired after the 5.5 second mark (because of mouseover)
+          clock.tick(1000);
+          expect(spy.callCount).to.equal(0);
+
+          // After a long time, mouse out of the flag to start the timer again
+          clock.tick(20000);
+          wrapper.find(`.${flagLocals.root}`).simulate('mouseOut');
+
+          // Make sure handler *has* fired after the 5 second mark
+          clock.tick(5000);
+          expect(spy.callCount).to.equal(1);
+          expect(spy.calledWith('a')).to.equal(true);
+        });
+
+        // it.skip('auto dismiss timer should only apply to flags where isDismissAllowed === true');
+      });
+
       it('Dismiss button should not be rendered is isDismissAllowed is omitted', () => {
         const spy = sinon.spy();
         const wrapper = mount(

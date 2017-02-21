@@ -3,6 +3,9 @@ import Button from '@atlaskit/button';
 import styles from 'style!../less/Flag.less';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
 
+// TODO SET TO 15s BEFORE PR
+const AUTO_DISMISS_SECONDS = 5;
+
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Flag extends PureComponent {
   static propTypes = {
@@ -27,8 +30,27 @@ export default class Flag extends PureComponent {
     onDismissed: () => {},
   }
 
+  componentDidMount = () => {
+    this.startAutoDismissTimer();
+  }
+
   flagDismissed = () => {
     this.props.onDismissed(this.props.id);
+  }
+
+  startAutoDismissTimer = () => {
+    this.stopAutoDismissTimer();
+    this.autoDismissTimer = setTimeout(this.handleAutoDismissTimerEnd, AUTO_DISMISS_SECONDS * 1000);
+  }
+
+  stopAutoDismissTimer = () => {
+    if (this.autoDismissTimer) {
+      clearTimeout(this.autoDismissTimer);
+    }
+  }
+
+  handleAutoDismissTimerEnd = () => {
+    this.flagDismissed();
   }
 
   renderActions = () => {
@@ -56,6 +78,8 @@ export default class Flag extends PureComponent {
         className={styles.root}
         role="alert"
         tabIndex="0"
+        onMouseOver={this.stopAutoDismissTimer}
+        onMouseOut={this.startAutoDismissTimer}
       >
         <div className={styles.primaryIcon}>
           {this.props.icon}

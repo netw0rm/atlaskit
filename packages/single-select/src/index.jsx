@@ -4,6 +4,7 @@ import StatelessSelect, { itemShape } from './StatelessSelect';
 export default class AkSingleSelect extends PureComponent {
   static propTypes = {
     defaultSelected: itemShape,
+    hasAutocomplete: PropTypes.bool,
     id: PropTypes.string,
     isFirstChild: PropTypes.bool,
     isDisabled: PropTypes.bool,
@@ -13,11 +14,14 @@ export default class AkSingleSelect extends PureComponent {
     items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
     name: PropTypes.string,
+    noMatchesFound: PropTypes.string,
+    onFilterChange: PropTypes.func,
     onSelected: PropTypes.func,
     onOpenChange: PropTypes.func,
     placeholder: PropTypes.string,
     position: PropTypes.string,
     shouldFitContainer: PropTypes.bool,
+    shouldFocus: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -25,16 +29,19 @@ export default class AkSingleSelect extends PureComponent {
     isRequired: false,
     items: [],
     label: '',
+    onFilterChange: () => {},
     onItemActivated: () => {},
     onOpenChange: () => {},
     onSelected: () => {},
     placeholder: '',
     position: 'bottom left',
+    shouldFocus: false,
   }
 
   state = {
     isOpen: this.props.isDefaultOpen,
     selectedItem: this.props.defaultSelected,
+    filterValue: this.props.defaultSelected ? this.props.defaultSelected.content : '',
   }
 
   selectItem = (item) => {
@@ -47,9 +54,16 @@ export default class AkSingleSelect extends PureComponent {
     this.props.onOpenChange(attrs);
   }
 
+  handleFilterChange = (value) => {
+    this.props.onFilterChange(value);
+    this.setState({ filterValue: value });
+  }
+
   render() {
     return (
       <StatelessSelect
+        filterValue={this.state.filterValue}
+        hasAutocomplete={this.props.hasAutocomplete}
         id={this.props.id}
         isDisabled={this.props.isDisabled}
         isFirstChild={this.props.isFirstChild}
@@ -59,12 +73,15 @@ export default class AkSingleSelect extends PureComponent {
         items={this.props.items}
         label={this.props.label}
         name={this.props.name}
+        noMatchesFound={this.props.noMatchesFound}
+        onFilterChange={this.handleFilterChange}
         onOpenChange={this.handleOpenChange}
         onSelected={this.selectItem}
         placeholder={this.props.placeholder}
         position={this.props.position}
         selectedItem={this.state.selectedItem}
         shouldFitContainer={this.props.shouldFitContainer}
+        shouldFocus={this.props.shouldFocus}
       />
     );
   }

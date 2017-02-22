@@ -67,7 +67,7 @@ export default class Tabs extends PureComponent {
       }
 
       if (nextIndex !== selectedIndex) {
-        this.setState({ selectedTab: nextIndex });
+        this.tabSelectHandler(nextIndex);
       }
     }
   }

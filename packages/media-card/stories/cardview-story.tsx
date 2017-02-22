@@ -35,17 +35,87 @@ const styles = {
 };
 
 storiesOf('CardView', {})
-  .add('Default', () => (
-    <CardView
-      loading={false}
-      selectable={false}
-      selected={false}
-      mediaName="some image"
-      mediaType="image"
-      mediaSize={32831}
-      dataURI={tallImageDataUri}
-      onClick={onClick}
-    />
+  .add('Media types', () => (
+    <ul style={styles.statesWrapper}>
+      <li style={styles.stateItem}>
+        <div style={styles.stateTitle}>Image type</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="this is my image.png"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+      <li style={styles.stateItem}>
+        <div style={styles.stateTitle}>Image type, no preview</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="image with no preview.png"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      </li>
+      <li style={styles.stateItem}>
+        <div style={styles.stateTitle}>Video type</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="this is my video.mpg"
+          mediaType="video"
+          mediaSize={32831}
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+      <li style={styles.stateItem}>
+        <div style={styles.stateTitle}>Doc type</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="this is my doc.docx"
+          mediaType="doc"
+          mediaSize={32831}
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+      <li style={styles.stateItem}>
+        <div style={styles.stateTitle}>Audio type</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="this is my audio file.mp3"
+          mediaType="audio"
+          mediaSize={32831}
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+      <li style={styles.stateItem}>
+        <div style={styles.stateTitle}>Unknown type</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="this is my unknown file.kpf"
+          mediaType="unknown"
+          mediaSize={32831}
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+    </ul>
   ))
   .add('Different name lengths', () => (
     <ul style={styles.statesWrapper}>

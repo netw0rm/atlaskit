@@ -402,7 +402,7 @@ export class BlockTypeState {
     let textOnly = true;
 
     this.pm.doc.nodesBetween(startPos, $from.pos, (node) => {
-      if (!node.isText && !node.isTextblock) {
+      if (node.childCount === 0 && !node.isText && !node.isTextblock) {
         textOnly = false;
       }
     });

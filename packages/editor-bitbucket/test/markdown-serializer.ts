@@ -765,5 +765,13 @@ describe('Bitbucket markdown serializer: ', () => {
           )))).to.eq('`__bar_baz__`');
         });
       });
+
+      describe('tilde ~', () => {
+        it('should not escape tilde ~', () => {
+          expect(markdownSerializer.serialize(doc(p(
+            '~',
+          )))).to.eq('~');
+        });
+      });
     });
 });

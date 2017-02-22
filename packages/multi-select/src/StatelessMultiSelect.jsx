@@ -210,12 +210,14 @@ export default class StatelessMultiSelect extends PureComponent {
     const isSelectOpen = this.props.isOpen;
     switch (event.key) {
       case 'ArrowDown':
+        event.preventDefault();
         if (!isSelectOpen) {
           this.onOpenChange({ event, isOpen: true });
         }
         this.focusNextItem();
         break;
       case 'ArrowUp':
+        event.preventDefault();
         if (isSelectOpen) {
           this.focusPreviousItem();
         }

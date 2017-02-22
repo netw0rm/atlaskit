@@ -291,40 +291,50 @@ describe(`${name} - stateless`, () => {
 
       it('should call focusNextItem when ArrowDown is pressed and Select is open', () => {
         const spy = sinon.spy(instance, 'focusNextItem');
-        const event = { key: 'ArrowDown' };
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowDown', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
         expect(spy.calledOnce).to.equal(true);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
       });
 
       it('should call focusNextItem when ArrowDown is pressed and Select is closed', () => {
         wrapper.setProps({ isOpen: false });
         const spy = sinon.spy(instance, 'focusNextItem');
-        const event = { key: 'ArrowDown' };
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowDown', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
         expect(spy.calledOnce).to.equal(true);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
       });
 
       it('should call onOpenChange when ArrowDown is pressed and Select is closed', () => {
         wrapper.setProps({ isOpen: false });
         const spy = sinon.spy(instance, 'onOpenChange');
-        const event = { key: 'ArrowDown' };
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowDown', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
         expect(spy.calledOnce).to.equal(true);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
       });
 
       it('should call focusPreviousItem when ArrowUp is pressed and Select is open', () => {
         const spy = sinon.spy(instance, 'focusPreviousItem');
-        const event = { key: 'ArrowUp' };
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowUp', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
         expect(spy.calledOnce).to.equal(true);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
       });
 
       it('should NOT call focusPreviousItem when ArrowUp is pressed and Select is closed', () => {
         wrapper.setProps({ isOpen: false });
         const spy = sinon.spy(instance, 'focusPreviousItem');
-        const event = { key: 'ArrowUp' };
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowUp', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
         expect(spy.called).to.equal(false);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
       });
 
       it('should call handleItemSelect when Enter is pressed and an item is focused and Select is open', () => {

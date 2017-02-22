@@ -11,11 +11,11 @@ import type {
   DraggingInitial,
 } from '../../state/types';
 import DimensionPublisher from '../dimension-publisher/';
-import Moveable from './moveable';
+import Moveable from '../moveable/';
 import createDragHandle from './create-drag-handle';
-import getCenterPosition from './get-center-position';
-import getScrollPosition from './get-scroll-position';
-import getOffset from './get-offset';
+import getCenterPosition from '../get-center-position';
+import getScrollPosition from '../get-scroll-position';
+import getOffset from '../get-offset';
 import getDisplayName from '../get-display-name';
 
 import {

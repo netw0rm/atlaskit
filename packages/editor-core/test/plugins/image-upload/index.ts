@@ -56,6 +56,17 @@ describe('image-upload', () => {
     expect(spy.callCount).to.equal(2);
   });
 
+  it('does not emits a change when unsubscribe', () => {
+    const { pm, plugin, sel } = editor(doc(images('{<>}', testImg())));
+    const spy = sinon.spy();
+    plugin.subscribe(spy);
+    plugin.unsubscribe(spy);
+
+    pm.setNodeSelection(sel);
+
+    expect(spy.callCount).to.equal(1);
+  });
+
   it('does not emit multiple changes when an image is not selected', () => {
     const { pm, plugin } = editor(doc(images('{<>}t{a}e{b}st', testImg())));
     const { a, b } = pm.doc.refs;

@@ -71,6 +71,8 @@ export class ImageUploadState {
 
     this.dropAdapter.add(this.handleImageUpload);
     this.pasteAdapter.add(this.handleImageUpload);
+
+    this.update(true);
   }
 
   handleImageUpload = (_?: any, e?: any): boolean => {
@@ -88,6 +90,10 @@ export class ImageUploadState {
   subscribe = (cb: StateChangeHandler): void => {
     this.changeHandlers.push(cb);
     cb(this);
+  }
+
+  unsubscribe(cb: StateChangeHandler) {
+    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
   /**
@@ -129,8 +135,7 @@ export class ImageUploadState {
       && selection.node.type instanceof ImageNodeType;
   }
 
-  private update(): void {
-    let dirty = false;
+  private update(dirty = false): void {
 
     const newActive = this.isImageSelected();
     if (newActive !== this.active) {

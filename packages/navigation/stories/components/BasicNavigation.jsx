@@ -187,7 +187,7 @@ export default class BasicNavigation extends PureComponent {
           </AkDropdownMenu>
         }
         globalPrimaryIcon={globalPrimaryIcon}
-        globalPrimaryItemHref="http://www.atlassian.com"
+        globalPrimaryItemHref="//www.atlassian.com"
         globalSearchIcon={<SearchIcon label="Search icon" />}
         isOpen={this.state.isOpen}
         onCreateDrawerOpen={() => { this.openDrawer('create'); }}

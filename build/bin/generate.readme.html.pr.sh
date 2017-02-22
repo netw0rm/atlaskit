@@ -19,7 +19,6 @@ BUILD_SPECIFIC_URL_PART="pr/$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME/docs"
 
 
 # get list of changed packages which should have been outputted by generate.changed.packages.file.sh
-# in the form "@atlaskit/packageOne,@atlaskit/packageTwo" to allow easy scoping via globs
 CHANGED_PACKAGES=$(cat changed-packages)
 
 function docs_build_status() {
@@ -34,9 +33,9 @@ function docs_build_status() {
 function generate_docs() {
   $CHALK --no-stdin -t "{blue Generating docs HTML output from README.md files...}"
   # generate the readme.md files
-  $LERNA_LOC exec --scope="{$CHANGED_PACKAGES}" -- ../../build/bin/generate.readme.sh
+  $LERNA_LOC exec --scope="$CHANGED_PACKAGES" -- ../../build/bin/generate.readme.sh
   # generate the html for those readmes
-  $LERNA_LOC exec --scope="{$CHANGED_PACKAGES}" -- ../../build/bin/generate.readme.html.sh
+  $LERNA_LOC exec --scope="$CHANGED_PACKAGES" -- ../../build/bin/generate.readme.html.sh
 
   $CHALK --no-stdin -t "{blue Generating docs index...}"
   pushd $OUTDIR > /dev/null

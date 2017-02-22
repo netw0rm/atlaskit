@@ -13,6 +13,12 @@ import WideSelect from './examples/WideSelect';
 import WideSelectRaw from '!raw!./examples/WideSelect';
 import SelectAlignment from './examples/SelectAlignment';
 import SelectAlignmentRaw from '!raw!./examples/SelectAlignment';
+import SelectWithGroups from './examples/SelectWithGroups';
+import SelectWithGroupsRaw from '!raw!./examples/SelectWithGroups';
+import SelectInForm from './examples/SelectInForm';
+import SelectInFormRaw from '!raw!./examples/SelectInForm';
+import SelectWithAutocomplete from './examples/SelectWithAutocomplete';
+import SelectWithAutocompleteRaw from '!raw!./examples/SelectWithAutocomplete';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name } from '../package.json';
@@ -100,11 +106,38 @@ storiesOf(name, module)
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>
   ))
+  .add('Select with groups', () => (
+    <Chrome title="Select with groups">
+      {SelectWithGroups}
+      <Code>
+        {SelectWithGroupsRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
   .add('Select alignment', () => (
     <Chrome title="Select alignment">
       {SelectAlignment}
       <Code>
         {SelectAlignmentRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select in a form', () => (
+    <Chrome title="Select alignment">
+      {SelectInForm}
+      <Code>
+        {SelectInFormRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select with autocomplete', () => (
+    <Chrome title="Select with autocomplete">
+      {SelectWithAutocomplete}
+      <Code>
+        {SelectWithAutocompleteRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

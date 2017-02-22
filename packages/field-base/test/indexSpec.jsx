@@ -72,6 +72,15 @@ describe('ak-field-base', () => {
         )
       );
     });
+
+    describe('shouldReset', () =>
+      it('should call onBlur when set', () => {
+        const spy = sinon.spy();
+        const wrapper = mount(<FieldBase {...defaultProps} onBlur={spy} />);
+        wrapper.setProps({ shouldReset: true });
+        expect(spy.called).to.equal(true);
+      })
+    );
   });
 
   describe('focus behaviour', () => {

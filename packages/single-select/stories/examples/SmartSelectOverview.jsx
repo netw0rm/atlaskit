@@ -16,7 +16,6 @@ const selectItems = [
 export default (
   <Select
     items={selectItems}
-    placeholder="Select all!"
     label="Choose your favourite"
     onSelected={(item) => {
       console.log(item);

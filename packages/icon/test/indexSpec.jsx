@@ -16,6 +16,10 @@ describe(name, () => {
       // NOTE Please remember:
       // An addition is a feature
       // a removal or rename is a BREAKING CHANGE
+
+      // NOTE the reduced-ui-pack package uses the icons from this package, so if you change
+      // anything in the list below then you'll also need to update the tests in reduced-ui-pack.
+
       Object
         .keys(components)
         .should.be.deep.equal([
@@ -170,9 +174,11 @@ describe(name, () => {
           'light-bulb',
           'link',
           'list',
+          'lock',
           'mention',
           'more',
           'notification',
+          'office-building',
           'open',
           'page',
           'people',
@@ -200,6 +206,7 @@ describe(name, () => {
           'unlink',
           'video',
           'warning',
+          'world',
         ]);
         // If you find yourself here and wonder why this list is not auto-generated, then bear in
         // mind that tests are supposed to tell you when a piece of software breaks.

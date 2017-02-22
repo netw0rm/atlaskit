@@ -10,6 +10,7 @@ import TickIcon from '@atlaskit/icon/glyph/editor/check';
 import {FileIcon} from '../generic/fileIcon/fileIcon';
 import {ErrorIcon} from '../generic/errorIcon/errorIcon';
 import MoreIcon from '@atlaskit/icon/glyph/more';
+import Ellipsify from '../ellipsify';
 import {
   MoreBtn,
   DeleteBtn,
@@ -24,10 +25,14 @@ import {
   Retry,
   DropdownWrapper,
   TitleWrapper,
-  FileSize
+  FileSize,
+  Metadata
 } from './styled';
 
 export interface CardOverlayProps {
+  height: number;
+  width: number;
+
   mediaType?: MediaType;
   mediaName?: string;
   mediaSize?: number;
@@ -85,10 +90,6 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
         classNames.push('selected');
       }
 
-      if (this.props.mediaType === 'image') {
-        classNames.push('image');
-      }
-
       if (this.props.mediaType) {
         classNames.push(this.props.mediaType);
       }
@@ -98,12 +99,14 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       classNames.push('active');
     }
 
+    const text = this.props.mediaName || '';
+
     return (
       <Overlay className={classNames.join(' ')}>
         <TopRow className={'top-row'}>
           {this.errorLine()}
           <TitleWrapper className={'title'}>
-            {this.props.mediaName}
+            <Ellipsify text={text} lines={2}/>
           </TitleWrapper>
           {this.tickBox()}
         </TopRow>
@@ -158,12 +161,15 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       );
     } else {
       const fileSize = this.props.mediaSize && bytes.format(this.props.mediaSize, {unitSeparator: ' '});
+      const hasProgress = !!this.props.progress;
+      const className = `metadata ${hasProgress ? 'has-progress' : ''}`;
+
       return (
         <div>
-          <div className={'metadata'}>
-              <FileIcon mediaType={this.props.mediaType} />
+          <Metadata className={className}>
+            <FileIcon mediaType={this.props.mediaType} />
             <FileSize className={'file-size'}>{fileSize}</FileSize>
-          </div>
+          </Metadata>
           <ProgressBar progress={this.props.progress} />
         </div>
       );

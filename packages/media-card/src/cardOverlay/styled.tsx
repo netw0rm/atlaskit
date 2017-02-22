@@ -58,6 +58,10 @@ export const FileTypeIcon = styled.div`
     color: #ff7143;
   }
 
+  &.unknown {
+    color: #3dc7dc;
+  }
+
   span{
     width: 12px !important;
     height: 12px !important;
@@ -105,7 +109,7 @@ export const Overlay = styled.div`
     }
   }
   
-  &.video, &.doc {
+  &.video, &.doc, &.unknown {
     .file-type-icon {
       display: block;
     }
@@ -116,7 +120,7 @@ export const Overlay = styled.div`
       .title {
         color: white;
         font-size: 12px;
-        display: none;
+        visibility: hidden;
       }
     }
 
@@ -151,7 +155,7 @@ export const Overlay = styled.div`
       background-color: rgba(9, 30, 66, 0.5);
 
       .title {
-        display: block;
+        visibility: visible;
       }
 
       .file-type-icon {
@@ -208,6 +212,9 @@ export const Overlay = styled.div`
   }
   /* Error state */
   &.error {
+    .top-row{
+      overflow: visible;
+    }
     &:hover, &.active {
       .top-row {
         .title {
@@ -320,4 +327,10 @@ export const FileSize = styled.div`
   float: left;
   font-size: 12px;
   color: #5E6C84;
+`;
+
+export const Metadata = styled.div`
+  &.has-progress {
+    display: none;
+  }
 `;

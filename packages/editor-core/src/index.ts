@@ -1,3 +1,4 @@
+export { version } from '../package.json';
 export { default as Keymap } from 'browserkeymap';
 export * from './config';
 export * from './media';

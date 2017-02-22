@@ -58,6 +58,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
           trigger={
             <ToolbarButton
               selected={isOpen}
+              disabled={monoDisabled && strikeDisabled}
               iconBefore={<AdvancedIcon label="text-formatting" />}
             />
           }

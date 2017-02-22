@@ -5,7 +5,6 @@ import {
   Plugin,
   ProseMirror,
   Schema,
-  TextSelection
 } from '../../prosemirror';
 import { ImageNodeType } from '../../schema';
 import DropAdapter from './drop-adapter';

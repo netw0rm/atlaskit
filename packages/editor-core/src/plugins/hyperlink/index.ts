@@ -19,7 +19,7 @@ export class HyperlinkState {
   href?: string;
   text?: string;
   active = false;
-  canAddLink = false;
+  linkable = false;
   element?: HTMLElement;
 
   private changeHandlers: StateChangeHandler[] = [];
@@ -47,7 +47,7 @@ export class HyperlinkState {
       pm.on.textInput,
     ], () => this.escapeFromMark());
 
-    this.setup(this.getActiveLinkNodeInfo());
+    this.update(true);
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -60,7 +60,7 @@ export class HyperlinkState {
   }
 
   addLink(options: HyperlinkOptions) {
-    if (this.canAddLink) {
+    if (this.linkable && !this.active) {
       const { pm } = this;
       const { href } = options;
       const { empty, $from, $to } = pm.selection;
@@ -104,11 +104,27 @@ export class HyperlinkState {
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
 
-  private update() {
+  private update(dirty = false) {
     const nodeInfo = this.getActiveLinkNodeInfo();
+    const canAddLink = this.isActiveNodeLinkable();
+
+    if (canAddLink !== this.linkable) {
+      this.linkable = canAddLink;
+      dirty = true;
+    }
 
     if ((nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
-      this.setup(nodeInfo);
+      this.activeLinkNode = nodeInfo && nodeInfo.node;
+      this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
+      this.activeLinkMark = nodeInfo && this.getActiveLinkMark(nodeInfo.node);
+      this.text = nodeInfo && nodeInfo.node.textContent;
+      this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
+      this.element = this.getDomElement();
+      this.active = !!nodeInfo;
+      dirty = true;
+    }
+
+    if (dirty) {
       this.changeHandlers.forEach(cb => cb(this));
     }
   }
@@ -125,18 +141,7 @@ export class HyperlinkState {
     return nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset;
   }
 
-  private setup(nodeInfo: NodeInfo | undefined): void {
-    this.activeLinkNode = nodeInfo && nodeInfo.node;
-    this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
-    this.activeLinkMark = nodeInfo && this.getActiveLinkMark(nodeInfo.node);
-    this.text = nodeInfo && nodeInfo.node.textContent;
-    this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
-    this.element = this.getDomElement();
-    this.active = !!nodeInfo;
-    this.canAddLink = !this.active && this.isActiveNodeLinkable();
-  }
-
-  private getActiveLinkNodeInfo(): NodeInfo| undefined {
+  private getActiveLinkNodeInfo(): NodeInfo | undefined {
     const {pm} = this;
     const {link} = pm.schema.marks;
     const {$from, empty} = pm.selection as TextSelection;

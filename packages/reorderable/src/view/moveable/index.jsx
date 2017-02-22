@@ -6,10 +6,15 @@ import type { Position } from '../../state/types';
 
 type Props = {|
   children?: React$Element<*>,
-  destination: Position,
+  destination: ?Position,
   shouldAnimate: boolean,
   onMoveEnd?: Function,
   innerRef?: Function,
+|}
+
+type DefaultProps = {|
+  destination: Position,
+  innerRef: Function
 |}
 
 // stiff physics from jira-frontend
@@ -21,9 +26,15 @@ const physics = {
 };
 
 // TODO: memoizeOne
-const getMovement = (point: Position): Object => ({
-  transform: `translate(${point.x}px, ${point.y}px)`,
-});
+const getMovement = (point: Position): Object => {
+  if (point.x === 0 && point.y === 0) {
+    return {};
+  }
+  // todo: support different vendors
+  return {
+    transform: `translate(${point.x}px, ${point.y}px)`,
+  };
+};
 
 const Canvas = styled.div`
   display: inline-block;
@@ -36,10 +47,15 @@ const start: Position = {
 };
 
 export default class Movable extends PureComponent {
+  /* eslint-disable react/sort-comp */
+  props: Props
+  defaultProps: DefaultProps
 
   static defaultProps = {
     innerRef: () => {},
+    destination: start,
   }
+  /* eslint-enable */
 
   onRest = () => {
     const { onMoveEnd } = this.props;
@@ -49,13 +65,11 @@ export default class Movable extends PureComponent {
     }
 
     // needs to be async otherwise Motion will not re-execute if
-    // offset or origin change
+    // offset or start change
 
     // could check to see if another move has started and abort the previous onMoveEnd
     setTimeout(onMoveEnd);
   }
-
-  props: Props
 
   render() {
     const { destination, shouldAnimate } = this.props;

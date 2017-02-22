@@ -3,6 +3,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import DimensionPublisher from '../dimension-publisher/';
 import getDisplayName from '../get-display-name';
+import type { TypeId, DroppableId } from '../../types';
+import type { DragResult, State, DraggableLocation } from '../../state/types';
 
 type DroppableState = {|
   isDraggingOver: boolean
@@ -15,7 +17,7 @@ type NeedsProviding = {|
 
 type Provide = (ownProps: Object) => NeedsProviding;
 
-type MapState = (state: DroppableState, ownProps: Object) => NeedsProviding;
+type MapState = (state: DroppableState, ownProps: Object) => Object;
 
 type Hooks = {|
   onDrop: (id: DragResult) => void,
@@ -28,7 +30,7 @@ type Props = {|
 
 export default (type: TypeId,
   provide: Provide,
-  map?: MapState = () => {},
+  map?: MapState = () => ({}),
   hooks?: Hooks) =>
     // Component must be a styled-component
     (Component: any): any => {
@@ -52,7 +54,7 @@ export default (type: TypeId,
         }
       }
 
-      const mapStateToProps = (state: State, ownProps: Object): DroppableState => {
+      const mapStateToProps = (state: State, ownProps: Object): Object => {
         const provided: NeedsProviding = provide(ownProps);
         const { currentDrag } = state;
 
@@ -71,7 +73,7 @@ export default (type: TypeId,
         // type is equal - now need to know if you are dragging over this specific droppable
         const destination: ?DraggableLocation = currentDrag.impact.destination;
 
-        const isDraggingOver = destination && destination.droppableId === provided.id;
+        const isDraggingOver = Boolean(destination && destination.droppableId === provided.id);
 
         return {
           isDraggingOver,

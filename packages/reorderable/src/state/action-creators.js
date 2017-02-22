@@ -11,7 +11,6 @@ export type LiftAction = {|
     offset: Position,
     scroll: Position,
     selection: Position,
-    source: DraggableLocation,
   |}
 |}
 
@@ -21,10 +20,9 @@ export const lift = (id: DraggableId,
   offset: Position,
   scroll: Position,
   selection: Position,
-  source: DraggableLocation,
 ): LiftAction => ({
   type: 'LIFT',
-  payload: { id, type, center, offset, scroll, selection, source },
+  payload: { id, type, center, offset, scroll, selection },
 });
 
 type PublishDraggableDimensionAction = {|

@@ -5,6 +5,7 @@ import { storiesOf } from '@kadira/storybook';
 import draggable from '../src/view/draggable';
 import droppable from '../src/view/droppable/';
 import { dragDropContext } from '../src/';
+import type { DroppableId, TypeId } from '../src/types';
 
 const ItemContainer = styled.div`
   height: 80px;
@@ -55,18 +56,6 @@ type ItemData = {|
   id: string,
 |}
 
-const items: ItemData[] = [
-  {
-    id: '1',
-  },
-  {
-    id: '2',
-  },
-  {
-    id: '3',
-  },
-];
-
 class List extends PureComponent {
   props: {|
     items: ItemData[],
@@ -78,7 +67,7 @@ class List extends PureComponent {
     return (
       <ListContainer isDraggingOver={isDraggingOver}>
         <h3>Droppable {isDraggingOver ? '(is dragging over)' : '' }</h3>
-        {this.props.items.map((item: Item) => (
+        {this.props.items.map((item: ItemData) => (
           <DraggableItem
             key={item.id}
             itemId={item.id}
@@ -94,7 +83,7 @@ const DroppableList = (id: DroppableId, type: TypeId) => {
     id,
   });
 
-  const map = (state: DroppableState) => ({
+  const map = state => ({
     isDraggingOver: state.isDraggingOver,
   });
 
@@ -102,7 +91,7 @@ const DroppableList = (id: DroppableId, type: TypeId) => {
 };
 
 let id = 0;
-const getItem = () => ({
+const getItem = (): ItemData => ({
   id: `${++id}`,
 });
 

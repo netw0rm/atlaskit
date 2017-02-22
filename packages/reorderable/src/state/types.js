@@ -47,7 +47,9 @@ export type Dragging = {|
     type: TypeId,
     offset: Position,
     center: Position,
-    initial: DraggingInitial,
+    // when first lifted we do not know where it lives:
+    // need the dimensions first
+    initial: ?DraggingInitial,
 |}
 
 export type CurrentDrag = {|

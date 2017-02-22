@@ -51,13 +51,13 @@ type ItemData = {|
 
 class List extends PureComponent {
   props: {|
-    items: Item[]
+    items: ItemData[]
   |}
 
   render() {
     return (
       <ListContainer>
-        {this.props.items.map((item: Item) => (
+        {this.props.items.map((item: ItemData) => (
           <DraggableItem
             key={item.id}
             itemId={item.id}

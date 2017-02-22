@@ -1,6 +1,6 @@
 // @flow
 import invariant from 'invariant';
-import type { Action, State, Dimension, Position, DragImpact, Dragging, DimensionMap, DragResult, CurrentDrag } from './types';
+import type { Action, State, Dimension, DragImpact, Dragging, DimensionMap, DragResult, CurrentDrag } from './types';
 
 const initialState: State = {
   draggableDimensions: {},
@@ -8,8 +8,6 @@ const initialState: State = {
   currentDrag: null,
   dragResult: null,
 };
-
-const origin: Position = { x: 0, y: 0 };
 
 const noImpact: DragImpact = {
   movement: null,
@@ -27,7 +25,9 @@ export default (state: State = initialState, action: Action): State => {
   console.log(`%c reducing ${action.type}`, 'color: green; font-size: 1.5em');
 
   if (action.type === 'LIFT') {
-    const { id, type, center, offset, scroll, selection, source } = action.payload;
+    const { id, type, center, offset, scroll, selection } = action.payload;
+
+    // TODO: need source but do not have dimensions yet
 
     const dragging: Dragging = {
       id,
@@ -35,7 +35,7 @@ export default (state: State = initialState, action: Action): State => {
       center,
       offset,
       initial: {
-        source,
+        source: null,
         center,
         offset,
         scroll,
@@ -94,6 +94,8 @@ export default (state: State = initialState, action: Action): State => {
     if (previous == null) {
       return state;
     }
+
+    // TODO: if source is not present - set it
 
     // not using spread to ensure exact typing works
     const dragging = {

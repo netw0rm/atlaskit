@@ -7,18 +7,23 @@ import {
   publishDraggableDimension,
   publishDroppableDimension,
 } from '../../state/action-creators';
-import type { Dimension, Position } from '../../state/types';
+import type { Id, TypeId } from '../../types';
+import type { Dimension, Position, State, Dispatch } from '../../state/types';
 
-export class DimensionPublisher extends PureComponent {
-  /* eslint-disable react/sort-comp */
-  props: {|
+type Props = {|
     itemId: Id,
     // needs to always be a styled component
     // todo: add check
     children: React$Element<any>,
     shouldPublish: boolean,
     publish: Function,
-  |}
+|}
+
+export class DimensionPublisher extends PureComponent {
+  /* eslint-disable react/sort-comp */
+  props: Props
+
+  ref: ?Element
 /* eslint-enable */
   getDimension = (): Dimension => {
     invariant(this.ref, 'cannot get dimensions when not attached');
@@ -55,7 +60,7 @@ export class DimensionPublisher extends PureComponent {
     return dimension;
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
   // no request - publish not needed
     if (!nextProps.shouldPublish) {
       return;
@@ -81,10 +86,7 @@ export class DimensionPublisher extends PureComponent {
 }
 
 const mapStateToProps = (state: State, ownProps: Object) => {
-  console.log('mapping dimension-publisher props');
-  const isDragging: boolean = !!state.currentDrag;
-
-  if (!isDragging) {
+  if (!state.currentDrag) {
     return {
       shouldPublish: false,
     };
@@ -103,7 +105,7 @@ const mapStateToProps = (state: State, ownProps: Object) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch: Dispatch, ownProps) => {
   const publish = (ownProps.dimensionType === 'DRAGGABLE' ? publishDraggableDimension : publishDroppableDimension);
 
   return bindActionCreators({

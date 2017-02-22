@@ -60,6 +60,10 @@ type Props = {|
   initial: ?DraggingInitial,
 |};
 
+type DefaultProps = {|
+  offset: Position
+|}
+
 type ComponentState = {|
   wasDragging: boolean
 |}
@@ -79,17 +83,18 @@ export default (type: TypeId,
 
       /* eslint-disable react/sort-comp */
       props: Props
+      defaultProps: DefaultProps
       state: ComponentState
-      ref: ?Node
+      ref: ?Element
 
       state = {
         wasDragging: false,
       }
-      /* eslint-enable */
 
       static defaultProps = {
         offset: nowhere,
       }
+      /* eslint-enable */
 
       constructor(props, context) {
         super(props, context);
@@ -118,7 +123,7 @@ export default (type: TypeId,
       }
 
       onLift = (selection: Position) => {
-        invariant(this.ref != null, 'cannot move an item that is not in the DOM');
+        invariant(this.ref, 'cannot move an item that is not in the DOM');
 
         const { provided: { id, isDragEnabled }, lift } = this.props;
 
@@ -129,11 +134,11 @@ export default (type: TypeId,
         const center: Position = getCenterPosition(this.ref);
         // const offset: Position = { x: 0, y: 0 };
         const scroll: Position = getScrollPosition();
-        const location: DraggableLocation = null;
 
+        // $FlowFixMe
         const offset: Position = getOffset(this.ref);
 
-        lift(id, type, center, offset, scroll, selection, location);
+        lift(id, type, center, offset, scroll, selection);
       }
 
       onMove = (point: Position) => {
@@ -184,7 +189,7 @@ export default (type: TypeId,
         console.log('cancelling drag');
       }
 
-      setRef = (ref: Node) => {
+      setRef = (ref: ?Element) => {
         if (ref !== this.ref) {
           // need to pass ref to dimension-publisher
           console.warn('force setting ref');
@@ -196,7 +201,7 @@ export default (type: TypeId,
       handle: Function
 
       render() {
-        const ownProps = this.props;
+        const ownProps: Props = this.props;
 
         const requestDragHandle = () => {
           requestDragHandle.wasCalled = true;
@@ -223,7 +228,7 @@ export default (type: TypeId,
         return (
           <Moveable
             shouldAnimate={this.state.wasDragging}
-            destination={ownProps.offset}
+            destination={this.props.offset}
             onMoveEnd={this.onMoveEnd}
             innerRef={this.setRef}
           >

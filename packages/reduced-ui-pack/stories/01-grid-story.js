@@ -2,8 +2,6 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import { Code } from '@atlaskit/util-readme';
 
-import 'style-loader!../src/index.less';
-
 import { name } from '../package.json';
 
 /* eslint-disable quotes, max-len,  */

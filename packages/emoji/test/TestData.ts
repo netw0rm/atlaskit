@@ -1,3 +1,4 @@
+import EmojiService from '../src/api/EmojiService';
 import { EmojiDescription } from '../src/types';
 
 export const spriteEmoji: EmojiDescription = {
@@ -37,3 +38,12 @@ export const imageEmoji: EmojiDescription = {
     height: 24,
   },
 };
+
+declare var require: {
+    <T>(path: string): T;
+};
+
+// tslint:disable-next-line:no-var-requires
+export const emojis: EmojiDescription[] = require('./test-emoji.json') as EmojiDescription[];
+
+export const emojiService = new EmojiService(emojis);

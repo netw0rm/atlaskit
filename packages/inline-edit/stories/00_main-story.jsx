@@ -1,6 +1,6 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
-import ModalDialog from "@atlaskit/modal-dialog";
+import ModalDialog from '@atlaskit/modal-dialog';
 import MentionInlineEdit from './MentionInlineEdit';
 import TextInlineEdit from './TextInlineEdit';
 import LoopConfirmInlineEdit from './LoopConfirmInlineEdit';
@@ -128,18 +128,12 @@ storiesOf(name, module)
   .add('inside modal dialog', () => (
     <div style={containerStyle}>
       <ModalDialog
-        header={<span>New issue</span>}
+        width="200"
         isOpen
       >
-        <div>
+        <div style={{ height: '200px' }}>
           <TextInlineEdit
             label="field 1"
-            isConfirmOnBlurDisabled
-          />
-        </div>
-        <div>
-          <TextInlineEdit
-            label="field 2"
             isConfirmOnBlurDisabled
           />
         </div>

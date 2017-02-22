@@ -11,7 +11,6 @@ module.exports = (config) => {
   removeSourcemaps(config);
   assignPattern(config, path.join(__dirname, 'all.entry.js'));
 
-  console.log(config);
   config.set({
     browsers: ['jsdom'],
   });

@@ -27,6 +27,7 @@ const getMovement = (point: Position): Object => ({
 
 const Canvas = styled.div`
   display: inline-block;
+  z-index: ${props => (props.isMoving ? '100' : 'auto')};
 `;
 
 const start: Position = {
@@ -68,14 +69,18 @@ export default class Movable extends PureComponent {
       // https://github.com/chenglou/react-motion/issues/375
       // $FlowFixMe
       <Motion defaultStyle={start} style={final} onRest={this.onRest}>
-        {(current: Position) => (
-          <Canvas
-            style={getMovement(current)}
-            innerRef={this.props.innerRef}
-          >
-            {this.props.children}
-          </Canvas>
-        )}
+        {(current: Position) => {
+          const isMoving = current.x !== 0 || current.y !== 0;
+          return (
+            <Canvas
+              style={getMovement(current)}
+              isMoving={isMoving}
+              innerRef={this.props.innerRef}
+            >
+              {this.props.children}
+            </Canvas>
+          );
+        }}
       </Motion>
     );
   }

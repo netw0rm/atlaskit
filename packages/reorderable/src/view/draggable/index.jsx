@@ -10,6 +10,7 @@ import type {
   DraggableLocation,
   DraggingInitial,
 } from '../../state/types';
+import DimensionPublisher from '../dimension-publisher/';
 import Moveable from './moveable';
 import createDragHandle from './create-drag-handle';
 import getCenterPosition from './get-center-position';
@@ -184,8 +185,12 @@ export default (type: TypeId,
       }
 
       setRef = (ref: Node) => {
-        console.log('container ref', ref);
-        this.ref = ref;
+        if (ref !== this.ref) {
+          // need to pass ref to dimension-publisher
+          console.warn('force setting ref');
+          this.ref = ref;
+          this.forceUpdate();
+        }
       }
 
       handle: Function
@@ -213,6 +218,8 @@ export default (type: TypeId,
         // if a drag handle was not request then the whole thing is the handle
         const wrap = requestDragHandle.wasCalled ? identity : this.handle;
 
+        const { id: itemId } = ownProps.provided;
+
         return (
           <Moveable
             shouldAnimate={this.state.wasDragging}
@@ -221,11 +228,17 @@ export default (type: TypeId,
             innerRef={this.setRef}
           >
             {wrap(
-              <Container
-                isDragging={ownProps.isDragging}
+              <DimensionPublisher
+                itemId={itemId}
+                type={type}
+                dimensionType="DRAGGABLE"
               >
-                <Component {...props} />
-              </Container>
+                <Container
+                  isDragging={ownProps.isDragging}
+                >
+                  <Component {...props} />
+                </Container>
+              </DimensionPublisher>
             )}
           </Moveable>
         );

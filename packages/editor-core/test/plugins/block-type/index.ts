@@ -462,6 +462,16 @@ describe('block-type', () => {
               expect(pm.doc).to.deep.equal(doc(p('hello```    '), p('   hello')));
             });
           });
+
+          context('on a nested structure', () => {
+            it('converts to code block', () => {
+              const { pm } = editor(doc(blockquote(p('```{<>}'))));
+
+              pm.input.dispatchKey('Enter');
+
+              expect(pm.doc).to.deep.equal(doc(blockquote(code_block()(''))));
+            });
+          });
         });
       });
     });

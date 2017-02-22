@@ -76,7 +76,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   let pm: ProseMirror;
 
   beforeEach(() => {
-    const noop = () => {};
+    const noop = () => { };
     handler = sinon.spy();
 
     editor = mount(
@@ -200,8 +200,8 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.feedback.button', () => {
-    window.jQuery = { ajax() {} };
-    const noop = () => {};
+    window.jQuery = { ajax() { } };
+    const noop = () => { };
 
     editor = mount(
       <Editor isExpandedByDefault onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,
@@ -236,7 +236,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     expect(handler.calledWith('atlassian.editor.stop.cancel')).to.equal(true);
   });
 
-  it('atlassian.editor.paste', function() {
+  it('atlassian.editor.paste', function () {
     if (!dispatchPasteEvent(pm, { plain: 'foo' })) {
       // This environment does not support artificial paste events
       return this.skip();
@@ -255,7 +255,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     expect(handler.calledWith('atlassian.editor.image.button')).to.equal(true);
   });
 
-  it('atlassian.editor.image.paste', function() {
+  it('atlassian.editor.image.paste', function () {
     const contentArea: HTMLElement = (editor.get(0) as any).state.pm.content;
     const event = createEvent('paste');
 
@@ -286,8 +286,8 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
       dataTransfer: {
         value: {
           getData: (type: string) => '',
-          setData: () => {},
-          clearData: () => {},
+          setData: () => { },
+          clearData: () => { },
           types: ['Files'],
           files: [],
           items: [],
@@ -314,8 +314,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
         .find('Item')
         .filterWhere(n => n.key() === blockTypeName)
         .find('Element')
-        .simulate('click')
-      ;
+        .simulate('click');
 
       expect(handler.calledWith(`atlassian.editor.format.${blockTypeName}.button`)).to.equal(true);
     });
@@ -348,6 +347,12 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.format.codeblock.keyboard', () => {
     sendKeyToPm(pm, browser.mac ? 'Cmd-Alt-8' : 'Ctrl-8');
     expect(handler.calledWith('atlassian.editor.format.codeblock.keyboard')).to.equal(true);
+  });
+
+  it('atlassian.editor.format.codeblock.autoformatting', () => {
+    pm.input.insertText(0, 0, '```');
+    sendKeyToPm(pm, 'Enter');
+    expect(handler.calledWith('atlassian.editor.format.codeblock.autoformatting')).to.equal(true);
   });
 
   it('atlassian.editor.newline.keyboard', () => {

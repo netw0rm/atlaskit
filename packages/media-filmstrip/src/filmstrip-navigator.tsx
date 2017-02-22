@@ -74,6 +74,7 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
   }
 
   _getDimensions(element) {
+    if (!element) { return; }
     this.wrapperWidth = element.parentElement.getBoundingClientRect().width;
     this.listWidth = element.getBoundingClientRect().width;
     this.numOfCards = element.children.length;

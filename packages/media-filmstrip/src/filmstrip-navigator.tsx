@@ -62,7 +62,9 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
   }
 
   updateState(newState: FilmStripNavigatorPartialState) {
-    this.setState({...this.state, ...newState});
+    this.setState((prevState) => {
+      return {...prevState, ...newState};
+    });
   }
 
   _onScroll(e) {
@@ -77,7 +79,6 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     const defaultWidth = 'auto';
     const width = `${this.props.width || defaultWidth}px`;
     const transform = `translateX(${-this.state.position}px)`;
-    // TODO: Create method to create arrow elements
     const leftArrow = <ShadowLeft>
                         <ArrowLeftWrapper className="arrow" onClick={this.navigate('left')}>
                           <ArrowLeft label="left"/>

@@ -37,6 +37,14 @@ describe('mentions - input rules', () => {
     expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.equal(undefined);
   });
 
+  it('should not replace a "@" after the "`"', () => {
+    const pm = makeEditor();
+    pm.input.insertText(0, 0, '`@');
+
+    const cursorFocus = pm.selection.$to;
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.equal(undefined);
+  });
+
   it('should replace "@" at the start of the content', () => {
     const pm = makeEditor();
     pm.input.insertText(0, 0, '@');

@@ -26,7 +26,7 @@ function replaceWithMark(
   return true;
 }
 
-export const mentionQueryRule = new InputRule(/(^|[^\w])@$/, '@', (
+export const mentionQueryRule = new InputRule(/(^|[^\w\`])@$/, '@', (
   pm: ProseMirror,
   match: string[],
   pos: number

@@ -2875,15 +2875,14 @@ envify@^3.0.0:
     jstransform "^11.0.3"
     through "~2.3.4"
 
-enzyme@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/enzyme/-/enzyme-2.6.0.tgz#148d742b25e2565f7e80870a0c92aea9be1b90ea"
+enzyme@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/enzyme/-/enzyme-2.7.1.tgz#76370e1d99e91f73091bb8c4314b7c128cc2d621"
   dependencies:
     cheerio "^0.22.0"
     function.prototype.name "^1.0.0"
-    in-publish "^2.0.0"
     is-subset "^0.1.1"
-    lodash "^4.16.4"
+    lodash "^4.17.2"
     object-is "^1.0.1"
     object.assign "^4.0.4"
     object.entries "^1.0.3"
@@ -5045,17 +5044,17 @@ lodash.words@^3.0.0:
   dependencies:
     lodash._root "^3.0.0"
 
-lodash@4.15.0, lodash@^4.2.0:
+lodash@4.15.0, lodash@4.x.x, lodash@^4.0.0, lodash@^4.13.1, lodash@^4.14.2, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.0:
   version "4.15.0"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.15.0.tgz#3162391d8f0140aa22cf8f6b3c34d6b7f63d3aa9"
-
-lodash@4.x.x, lodash@^4.0.0, lodash@^4.13.1, lodash@^4.14.2, lodash@^4.16.4, lodash@^4.17.2, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.0:
-  version "4.17.2"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
 
 lodash@^3.10.0, lodash@^3.5.0, lodash@^3.8.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
+
+lodash@^4.17.2:
+  version "4.17.2"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
 
 log4js@^0.6.31:
   version "0.6.38"

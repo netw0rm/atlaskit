@@ -234,16 +234,16 @@ export default class InlineEdit extends PureComponent {
   renderActionButtons = () => (
     <div className={this.getActionButtonClasses()}>
       <Button
-        appearance="subtle"
         iconBefore={<ConfirmIcon label="confirm" />}
         onClick={this.onConfirmClick}
         ref={(ref) => { this.confirmButtonRef = ref; }}
+        className={styles.buttonWrapper}
       />
       <Button
-        appearance="subtle"
         iconBefore={<CancelIcon label="cancel" />}
         onClick={this.onCancelClick}
         ref={(ref) => { this.cancelButtonRef = ref; }}
+        className={styles.buttonWrapper}
       />
     </div>
   )

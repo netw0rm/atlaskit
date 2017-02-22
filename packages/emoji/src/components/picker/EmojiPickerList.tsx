@@ -151,7 +151,7 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
     }
   }
 
-  getItemSize = ({ index }) => {
+  private getItemSize = ({ index }) => {
     const item = this.groupedItems[index];
     if (item.type === 'emoji') {
       return 40;
@@ -164,7 +164,7 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
     return 20;
   }
 
-  buildList = (emojis: EmojiDescription[], selectedTone: number): ListItem[] => {
+  private buildList = (emojis: EmojiDescription[], selectedTone: number): ListItem[] => {
     let currentGroup;
     let currentCategory: string | undefined;
 
@@ -223,7 +223,7 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
     return list;
   }
 
-  renderItem = ({ index, key, style }) => {
+  private renderItem = ({ index, key, style }) => {
     const item = this.groupedItems[index];
 
     if (item.type === 'emoji') {

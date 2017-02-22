@@ -125,6 +125,14 @@ export default class StatelessSelect extends PureComponent {
     return currentItem;
   }
 
+  getAllItems = (groups) => {
+    let allItems = [];
+    groups.forEach((val) => {
+      allItems = allItems.concat(val.items);
+    });
+    return allItems;
+  }
+
   getAllVisibleItems = (groups) => {
     let allFilteredItems = [];
     groups.forEach((val) => {
@@ -132,6 +140,26 @@ export default class StatelessSelect extends PureComponent {
     });
     return allFilteredItems;
   }
+
+  getNextNativeSearchItem = (items, key, currentIndex, isSecondStep) => {
+    let res = items.find((item, index) => {
+      const content = item.content && item.content.toLowerCase();
+      if (index <= currentIndex) {
+        return false;
+      }
+      return content && content.indexOf(key) === 0;
+    });
+
+    if (!res && !isSecondStep) {
+      res = this.getNextNativeSearchItem(items, key, 0, true);
+    }
+
+    return res;
+  }
+
+  setNativeSearchCounter = () => setTimeout(() => {
+    this.nativeSearchKey = '';
+  }, 200)
 
   filterItems = (items) => {
     const value = this.props.filterValue;
@@ -161,6 +189,35 @@ export default class StatelessSelect extends PureComponent {
     });
   }
 
+  handleNativeSearch = (event) => {
+    if (this.props.hasAutocomplete) return;
+    const { selectedItem, items } = this.props;
+    const { key: eventKey } = event;
+    let { nativeSearchKey } = this;
+    const allItems = this.getAllItems(items);
+
+    if (!this.nativeSearchCounter) {
+      nativeSearchKey = eventKey;
+    } else {
+      nativeSearchKey += eventKey;
+    }
+
+    const matchingItem = this.getNextNativeSearchItem(
+      allItems,
+      nativeSearchKey,
+      allItems.indexOf(selectedItem),
+    );
+
+    if (matchingItem) {
+      this.handleItemSelect(matchingItem, { event });
+    }
+
+    clearTimeout(this.nativeSearchCounter);
+    this.nativeSearchCounter = this.setNativeSearchCounter();
+    this.previousKey = eventKey;
+    this.nativeSearchKey = nativeSearchKey;
+  }
+
   handleKeyboardInteractions = (event) => {
     const isSelectOpen = this.props.isOpen;
     switch (event.key) {
@@ -185,6 +242,7 @@ export default class StatelessSelect extends PureComponent {
         }
         break;
       default:
+        this.handleNativeSearch(event);
         break;
     }
   }

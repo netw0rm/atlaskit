@@ -8,12 +8,8 @@ const removeSourcemaps = require('../removeSourceMaps');
 
 module.exports = (config) => {
   karmaConf(config);
-
   assignPattern(config, path.join(__dirname, 'all.entry.js'));
-
-  // add the polyfill file to the test run
   addPolyFills(config);
-  removeSourcemaps(config);
-
   setUpEnzyme(config);
+  removeSourcemaps(config);
 };

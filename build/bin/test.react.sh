@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-karma \
+node \
+./node_modules/.bin/karma \
 start \
 ./build/karma/react/all.js \
 $@

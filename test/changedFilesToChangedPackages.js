@@ -2,7 +2,7 @@ const chai = require('chai');
 
 chai.should();
 
-const { changedFilesToChangedPackages } = require('../build/bin/_get_changed_packages_pr');
+const changedFilesToChangedPackages = require('../build/bin/_changed_files_to_changed_packages');
 
 describe('_changed_files_to_changed_packages.js', () => {
   describe('changedFilesToChangedPackages()', () => {

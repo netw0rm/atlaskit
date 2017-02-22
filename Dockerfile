@@ -76,7 +76,7 @@ RUN echo "Installing AtlasKit tools" \
 # is 6.3.2, which *doesn't* include https://github.com/semantic-release/semantic-release/pull/332
 # However the version 6.3.6 exists which *does* include it, so we depend on that explicitly.
   semantic-release@6.3.6 \
-  lerna-semantic-release@9.0.6 \
+  lerna-semantic-release@9.0.7 \
   indexifier@2.0.0 \
   @atlassian/prebake-distributor-runner@1.0.2 \
   yarn@0.18.1 \

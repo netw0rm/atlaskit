@@ -65,13 +65,13 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     const transform = `translateX(${-this.state.position}px)`;
     // TODO: Create method to create arrow elements
     const leftArrow = <ShadowLeft>
-                        <ArrowLeftWrapper className="arrow">
-                          <ArrowLeft label="left" onClick={this.navigate('left')}/>
+                        <ArrowLeftWrapper className="arrow" onClick={this.navigate('left')}>
+                          <ArrowLeft label="left"/>
                         </ArrowLeftWrapper>
                       </ShadowLeft>;
     const rightArrow = <ShadowRight>
-                         <ArrowRightWrapper className="arrow">
-                           <ArrowRight label="right" onClick={this.navigate('right')}/>
+                         <ArrowRightWrapper className="arrow" onClick={this.navigate('right')}>
+                           <ArrowRight label="right"/>
                          </ArrowRightWrapper>
                        </ShadowRight>;
     const transitionProperty = this.state.showTransition ? 'transform' : 'none';

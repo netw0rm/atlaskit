@@ -46,7 +46,7 @@ export const ArrowWrapper = styled.div`
   border-radius: 100%;
   display: flex;
   cursor: pointer;
-  transition: all .3s;
+  transition: opacity .3s;
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.6);
   color: black;
   width: 30px;
@@ -56,7 +56,11 @@ export const ArrowWrapper = styled.div`
 
   &:hover{
     color: black;
-    background-color: #dadddd;
+    background-color: #d8dddd;
+  }
+
+  &:active{
+    background-color: #2287ff;
   }
 `;
 

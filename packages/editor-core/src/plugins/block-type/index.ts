@@ -416,7 +416,7 @@ export class BlockTypeState {
     }
 
     const fencePart = parentBlock.textContent.slice(0, $from.pos - startPos).trim();
-    
+
     const matches = /^```([^\s]+)?/.exec(fencePart);
 
     if (matches) {

@@ -4,10 +4,10 @@ import { action } from '@kadira/storybook';
 
 import EmojiTypeAheadList from '../src/components/typeahead/EmojiTypeAheadList';
 import { EmojiDescription } from '../src/types';
-import { emojis } from './story-data';
+import { getEmojis } from './story-data';
 
 function randomEmojis(): EmojiDescription[] {
-  return emojis.filter(() => Math.random() < 0.02).slice(0, 50);
+  return getEmojis().filter(() => Math.random() < 0.02).slice(0, 50);
 }
 
 export interface Props {}

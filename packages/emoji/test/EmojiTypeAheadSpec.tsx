@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import emojiService, { emojis } from '../stories/story-data';
+import { emojiService, emojis } from './TestData';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from './emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../src/components/typeahead/EmojiTypeAhead';
@@ -27,24 +27,21 @@ const leftClick = {
 describe('EmojiTypeAhead', () => {
   it('should display max emoji by default', () => {
     const component = setupPicker();
-    const hasExpectedItems = () => component.find(EmojiTypeAheadItem).length === defaultListLimit;
-    expect(hasExpectedItems()).to.equal(true);
+    expect(component.find(EmojiTypeAheadItem).length).to.equal(defaultListLimit);
   });
 
   it('should limit results to those matching "grin"', () => {
     const component = setupPicker({
       query: 'grin',
     } as Props);
-    const hasExpectedItems = () => component.find(EmojiTypeAheadItem).length === 3;
-    expect(hasExpectedItems()).to.equal(true);
+    expect(component.find(EmojiTypeAheadItem).length).to.equal(2);
   });
 
-  it('should limit result to matching "moon"', () => {
+  it('should limit result to matching "ball"', () => {
     const component = setupPicker({
-      query: 'moon',
+      query: 'ball',
     } as Props);
-    const hasExpectedItems = () => component.find(EmojiTypeAheadItem).length === 14;
-    expect(hasExpectedItems()).to.equal(true);
+    expect(component.find(EmojiTypeAheadItem).length).to.equal(3);
   });
 
   it('should change selection when navigating next', () => {

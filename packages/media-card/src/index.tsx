@@ -46,9 +46,7 @@ export class CardView extends Component<CardViewProps, {}> {
     const height = this.props.height || DEFAULT_CARD_DIMENSIONS.HEIGHT;
     const width = this.props.width || DEFAULT_CARD_DIMENSIONS.WIDTH;
     const cardStyle = {height: `${height}px`, width: `${width}px`};
-
     const error = this.props.error;
-    const isPersistent = !(this.props.mediaType === 'image' && this.props.dataURI);
 
     if (error) {
       return (
@@ -67,6 +65,7 @@ export class CardView extends Component<CardViewProps, {}> {
         </Card>
       );
     } else {
+      const isPersistent = !(this.props.mediaType === 'image' && this.props.dataURI);
       const overlay = this.props.loading ? false : <CardOverlay
         persistent={isPersistent}
         selectable={this.props.selectable}

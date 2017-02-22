@@ -2,7 +2,7 @@ import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { expect } from 'chai';
 
-import emojiService from '../stories/story-data';
+import { emojiService } from './TestData';
 
 import CategorySelector from '../src/components/picker/CategorySelector';
 import Emoji from '../src/components/common/Emoji';

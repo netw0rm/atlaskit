@@ -4,7 +4,9 @@ import * as React from 'react';
 import { name } from '../package.json';
 import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
 
-import emojiService from './story-data';
+import { getEmojiService } from './story-data';
+
+const emojiService = getEmojiService();
 
 storiesOf(`${name}/Resourced Emoji`, module)
   .add('resourced emoji', () => (

@@ -20,6 +20,10 @@ export const content = style({
       outline: 'none',
       whiteSpace: 'pre-wrap',
       padding: '12px 20px',
+    },
+    '& .ie11': {
+      overflow: 'visible',
+      wordWrap: 'break-word'
     }
   }
 });

@@ -2,9 +2,11 @@ import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 
 import { name } from '../package.json';
-import emojiService, { lorem } from './story-data';
+import { getEmojiService, lorem } from './story-data';
 
 import EmojiPicker from '../src/components/picker/EmojiPicker';
+
+const emojiService = getEmojiService();
 
 storiesOf(`${name}/EmojiPicker`, module)
   .add('picker popup', () => (

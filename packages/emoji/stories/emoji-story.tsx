@@ -3,7 +3,9 @@ import * as React from 'react';
 
 import { name } from '../package.json';
 import Emoji from '../src/components/common/Emoji';
-import emojiService from './story-data';
+import { getEmojiService } from './story-data';
+
+const emojiService = getEmojiService();
 
 const emoji = {
   id: '118608',

@@ -3,7 +3,9 @@ import * as React from 'react';
 
 import { name } from '../package.json';
 import EmojiTextInput from './demo-emoji-typeahead-text-input';
-import emojiService from './story-data';
+import { getEmojiService } from './story-data';
+
+const emojiService = getEmojiService();
 
 const bottomStyle = {
   position: 'absolute',

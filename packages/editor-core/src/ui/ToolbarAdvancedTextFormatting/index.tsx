@@ -65,24 +65,24 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
           }
         >
           <Group>
-            <Item
-              isActive={monoActive}
-              isDisabled={monoDisabled}
-              onActivate={this.handleMonoClick}
-            >
-              <Tooltip position="right" description={tooltip(toggleMonospace)}>
+            <Tooltip position="right" description={tooltip(toggleMonospace)}>
+              <Item
+                isActive={monoActive}
+                isDisabled={monoDisabled}
+                onActivate={this.handleMonoClick}
+              >
                 <span>Monospace</span>
-              </Tooltip>
-            </Item>
-            <Item
-              isActive={strikeActive}
-              isDisabled={strikeDisabled}
-              onActivate={this.handleStrikeClick}
-            >
-              <Tooltip position="right" description={tooltip(toggleStrikethrough)}>
+              </Item>
+            </Tooltip>
+            <Tooltip position="right" description={tooltip(toggleStrikethrough)}>
+              <Item
+                isActive={strikeActive}
+                isDisabled={strikeDisabled}
+                onActivate={this.handleStrikeClick}
+              >
                 <span>Strikethrough</span>
-              </Tooltip>
-            </Item>
+              </Item>
+            </Tooltip>
           </Group>
         </DropdownList>
       );

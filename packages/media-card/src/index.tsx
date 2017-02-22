@@ -48,12 +48,14 @@ export class CardView extends Component<CardViewProps, {}> {
     const cardStyle = {height: `${height}px`, width: `${width}px`};
 
     const error = this.props.error;
+    const isPersistent = !(this.props.mediaType === 'image' && this.props.dataURI);
 
     if (error) {
       return (
         <Card style={cardStyle} className={'card'} onClick={this.onClick.bind(this)}>
           <div className={'wrapper'} />
           <CardOverlay
+            persistent={true}
             mediaName={this.props.mediaName}
             mediaType={this.props.mediaType}
             error={error}
@@ -65,6 +67,20 @@ export class CardView extends Component<CardViewProps, {}> {
         </Card>
       );
     } else {
+      const overlay = this.props.loading ? false : <CardOverlay
+        persistent={isPersistent}
+        selectable={this.props.selectable}
+        selected={this.props.selected}
+
+        mediaName={this.props.mediaName}
+        mediaType={this.props.mediaType}
+        mediaSize={this.props.mediaSize}
+        progress={this.props.progress}
+
+        menuActions={this.props.menuActions}
+        height={height}
+        width={width}
+      />;
       return (
         <Card style={cardStyle} className={'card'} onClick={this.onClick.bind(this)}>
           <div className={'wrapper'}>
@@ -75,20 +91,8 @@ export class CardView extends Component<CardViewProps, {}> {
                 dataURI={this.props.dataURI}
               />
             </div>
+            {overlay}
           </div>
-          <CardOverlay
-            selectable={this.props.selectable}
-            selected={this.props.selected}
-
-            mediaName={this.props.mediaName}
-            mediaType={this.props.mediaType}
-            mediaSize={this.props.mediaSize}
-            progress={this.props.progress}
-
-            menuActions={this.props.menuActions}
-            height={height}
-            width={width}
-          />
         </Card>
       );
     }

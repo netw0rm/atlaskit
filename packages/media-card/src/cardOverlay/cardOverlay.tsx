@@ -39,6 +39,7 @@ export interface CardOverlayProps {
 
   selectable?: boolean;
   selected?: boolean;
+  persistent: boolean;
 
   progress?: number;
 
@@ -93,6 +94,11 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       if (this.props.mediaType) {
         classNames.push(this.props.mediaType);
       }
+
+      if (!this.props.persistent) {
+        classNames.push('show-on-hover');
+      }
+
     }
 
     if (this.state.isMenuExpanded) {

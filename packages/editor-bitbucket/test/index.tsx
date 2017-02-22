@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { SinonSpy } from 'sinon';
-import { doc, h1, mention, p, strong } from './_schema-builder';
+import { doc, h1, mention, p, strong, code_block } from './_schema-builder';
 
 import { ProseMirror } from '@atlaskit/editor-core';
 import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from '@atlaskit/editor-core/test-helper';
@@ -266,5 +266,28 @@ describe('ak-editor-bitbucket/pasting', () => {
     }
 
     expect(editor.doc).to.deep.equal(doc(p(mention({ id: 'mention', displayName: '@Mention' }), ' some mention.')));
+  });
+});
+
+describe('ak-editor-bitbucket/keymaps', () => {
+  const fixture = fixtures();
+  let editor: Editor;
+  let pm: ProseMirror;
+
+  beforeEach(() => {
+    editor = mount(<Editor isExpandedByDefault />, { attachTo: fixture() }).get(0) as any;
+    pm = editor!.state!.pm as ProseMirror;
+  });
+
+  it('should undo code block with Cmd+Z', function() {
+    editor.setFromHtml('<p></p>');
+    pm.input.insertText(1, 1, '```');
+    pm.input.dispatchKey('Enter');
+
+    expect(pm.doc).to.deep.equal(doc(code_block()('')));
+
+    pm.input.dispatchKey('Cmd-Z');
+
+    expect(pm.doc).to.deep.equal(doc(p()));
   });
 });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component, DragEvent as ReactDragEvent, DragEventHandler} from 'react';
-import {FilmStripViewWrapper, FilmStripList, ArrowLeftWrapper, ArrowRightWrapper, ShadowLeft, ShadowRight} from './styled';
+import {FilmStripViewWrapper, FilmStripListWrapper, FilmStripList, ArrowLeftWrapper, ArrowRightWrapper, ShadowLeft, ShadowRight} from './styled';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
 import ArrowRight from '@atlaskit/icon/glyph/arrowright';
 
@@ -90,12 +90,13 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
                        </ShadowRight>;
     const transitionProperty = this.state.showTransition ? 'transform' : 'none';
     const transitionDuration = `${this.state.transitionDuration}s`;
-
     return <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(props.onDrop)} onDragEnter={onDragEvent(props.onDragEnter)} onDragOver={onDragEvent(props.onDragOver)}>
              {this.state.showLeft ? leftArrow : undefined}
-             <FilmStripList style={{transform, transitionProperty, transitionDuration}} innerRef={this.getDimensions}>
-               {props.children}
-             </FilmStripList>
+             <FilmStripListWrapper>
+               <FilmStripList style={{transform, transitionProperty, transitionDuration}} innerRef={this.getDimensions}>
+                 {props.children}
+               </FilmStripList>
+             </FilmStripListWrapper>
              {this.state.showRight ? rightArrow : undefined}
            </FilmStripViewWrapper>;
   }

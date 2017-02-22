@@ -1,16 +1,25 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
+import {
+  akColorB200,
+  akColorN20,
+  akColorN40
+} from '@atlaskit/util-shared-styles';
 
 export const FilmStripViewWrapper = styled.div`
   position: relative;
-  overflow: hidden;
-  padding: 10px 0 10px 0;
+  padding: 3px 0;
   border-radius: 3px;
   display: inline-flex;
 
   &:hover .arrow{
     opacity: 1;
   }
+`;
+
+export const FilmStripListWrapper = styled.div`
+  width: inherit;
+  overflow: hidden;
 `;
 
 export const FilmStripList = styled.ul`
@@ -42,7 +51,7 @@ export const ArrowWrapper = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #eee;
+  background-color: ${akColorN20};
   border-radius: 100%;
   display: flex;
   cursor: pointer;
@@ -53,23 +62,23 @@ export const ArrowWrapper = styled.div`
   height: 30px;
   justify-content: center;
   opacity: 0;
-
+  
   &:hover{
     color: black;
-    background-color: #d8dddd;
+    background-color: ${akColorN40};
   }
 
   &:active{
-    background-color: #2287ff;
+    background-color: ${akColorB200};
   }
 `;
 
 export const ArrowLeftWrapper = styled(ArrowWrapper)`
-  left: 10px;
+  left: -14px;
 `;
 
 export const ArrowRightWrapper = styled(ArrowWrapper)`
-  right: 10px;
+  right: -14px;
 `;
 
 export const Shadow = styled.div`
@@ -77,15 +86,14 @@ export const Shadow = styled.div`
   z-index: 10;
   height: 100%;
   top: 0;
-  width: 25px;
+  width: 2px;
+  background-color: rgba(0,0,0,0.2);
 `;
 
 export const ShadowLeft = styled(Shadow)`
   left: 0;
-  background: linear-gradient(to right, white, rgba(255, 255, 255, 0.2));
 `;
 
 export const ShadowRight = styled(Shadow)`
   right: 0;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0.2), white);
 `;

@@ -19,7 +19,8 @@ export const FilmStripList = styled.ul`
   display: inline-flex;
   flex-direction: row;
   line-height: 0;
-  transition: transform .5s cubic-bezier(0.77, 0, 0.175, 1);
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
 
   li {
     list-style-type: none;

@@ -26,10 +26,12 @@ interface FilmstripNavigatorState {
   showLeft: boolean;
   showRight: boolean;
   position: number;
+  showTransition: boolean;
 }
 
 export default class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmstripNavigatorState> {
   getDimensions: Function;
+  onScroll: Function;
   wrapperWidth: number;
   listWidth: number;
   numOfCards: number;
@@ -42,9 +44,18 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     this.state = {
       showLeft: false,
       showRight: false,
-      position: 0
+      position: 0,
+      showTransition: true
     };
     this.getDimensions = this._getDimensions.bind(this);
+    this.onScroll = this._onScroll.bind(this);
+  }
+
+  _onScroll(e) {
+    e.preventDefault();
+
+    this.setState({showTransition: false});
+    this._setNewPosition(this.state.position + e.nativeEvent.deltaX);
   }
 
   render() {
@@ -63,10 +74,12 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
                            <ArrowRight label="right" onClick={this.navigate('right')}/>
                          </ArrowRightWrapper>
                        </ShadowRight>;
+    const transitionProperty = this.state.showTransition ? 'transform' : 'none';
+    const transitionDuration = '0.5s';
 
-    return <FilmStripViewWrapper style={{width}} onDrop={onDragEvent(props.onDrop)} onDragEnter={onDragEvent(props.onDragEnter)} onDragOver={onDragEvent(props.onDragOver)}>
+    return <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(props.onDrop)} onDragEnter={onDragEvent(props.onDragEnter)} onDragOver={onDragEvent(props.onDragOver)}>
              {this.state.showLeft ? leftArrow : undefined}
-             <FilmStripList style={{transform}} innerRef={this.getDimensions}>
+             <FilmStripList style={{transform, transitionProperty, transitionDuration}} innerRef={this.getDimensions}>
                {props.children}
              </FilmStripList>
              {this.state.showRight ? rightArrow : undefined}
@@ -161,6 +174,8 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     const component = this;
 
     return () => {
+      component.setState({showTransition: true});
+
       if (direction === 'left') {
         component._moveLeft();
       } else {

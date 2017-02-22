@@ -8,7 +8,8 @@ import {
   ProseMirror,
   Schema,
   textblockTypeInputRule,
-  wrappingInputRule
+  wrappingInputRule,
+  commands
 } from '../../prosemirror';
 import Keymap from 'browserkeymap';
 import { analyticsService, trackAndInvoke } from '../../analytics';
@@ -263,9 +264,11 @@ function bindCmdZ (pm) {
     const node = $from.parent;
 
     if (!isCodeBlockNode(node)) {
-      return pm.input.dispatchKey('Backspace');
+      pm.input.dispatchKey('Backspace');
+    } else {
+      commands.undo(pm);
     }
-    return false;
+    return true;
   }}, { name: 'inputRules' }), 20);
 }
 

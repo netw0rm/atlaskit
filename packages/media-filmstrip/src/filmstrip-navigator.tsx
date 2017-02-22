@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component, DragEvent as ReactDragEvent, DragEventHandler} from 'react';
-import {FilmStripViewWrapper, FilmStripList, ArrowLeftWrapper, ArrowRightWrapper} from './styled';
+import {FilmStripViewWrapper, FilmStripList, ArrowLeftWrapper, ArrowRightWrapper, ShadowLeft, ShadowRight} from './styled';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
 import ArrowRight from '@atlaskit/icon/glyph/arrowright';
 
@@ -40,12 +40,17 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     const defaultWidth = 'auto';
     const width = `${this.props.width || defaultWidth}px`;
     const transform = `translateX(${this.state.offset}px)`;
-    const leftArrow = <ArrowLeftWrapper className="arrow">
-                        <ArrowLeft label="left" onClick={this.navigate('left')}/>
-                      </ArrowLeftWrapper>;
-    const rightArrow = <ArrowRightWrapper className="arrow">
-                         <ArrowRight label="right" onClick={this.navigate('right')}/>
-                       </ArrowRightWrapper>;
+    // TODO: Create method to create arrow elements
+    const leftArrow = <ShadowLeft>
+                        <ArrowLeftWrapper className="arrow">
+                          <ArrowLeft label="left" onClick={this.navigate('left')}/>
+                        </ArrowLeftWrapper>
+                      </ShadowLeft>;
+    const rightArrow = <ShadowRight>
+                         <ArrowRightWrapper className="arrow">
+                           <ArrowRight label="right" onClick={this.navigate('right')}/>
+                         </ArrowRightWrapper>
+                       </ShadowRight>;
 
     return <FilmStripViewWrapper style={{width}} onDrop={onDragEvent(props.onDrop)} onDragEnter={onDragEvent(props.onDragEnter)} onDragOver={onDragEvent(props.onDragOver)}>
              {this.state.showLeft ? leftArrow : undefined}

@@ -3,9 +3,7 @@ import styled from 'styled-components';
 
 export const FilmStripViewWrapper = styled.div`
   position: relative;
-  background: #172b4d;
   overflow: hidden;
-  padding: 10px;
   border-radius: 3px;
   display: inline-flex;
 
@@ -35,7 +33,6 @@ export const FilmStripList = styled.ul`
 
 export const ArrowWrapper = styled.div`
   position: absolute;
-  z-index: 10;
   top: 50%;
   transform: translateY(-50%);
   background-color: #eee;
@@ -57,9 +54,27 @@ export const ArrowWrapper = styled.div`
 `;
 
 export const ArrowLeftWrapper = styled(ArrowWrapper)`
-  left: 15px;
+  left: 10px;
 `;
 
 export const ArrowRightWrapper = styled(ArrowWrapper)`
-  right: 15px;
+  right: 10px;
+`;
+
+export const Shadow = styled.div`
+  position: absolute;
+  z-index: 10;
+  height: 100%;
+  top: 0;
+  width: 25px;
+`;
+
+export const ShadowLeft = styled(Shadow)`
+  left: 0;
+  background: linear-gradient(to right, white, rgba(255, 255, 255, 0.2));
+`;
+
+export const ShadowRight = styled(Shadow)`
+  right: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.2), white);
 `;

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 export const FilmStripViewWrapper = styled.div`
   position: relative;
   overflow: hidden;
+  padding: 10px 0 10px 0;
   border-radius: 3px;
   display: inline-flex;
 
@@ -23,10 +24,15 @@ export const FilmStripList = styled.ul`
   li {
     list-style-type: none;
     margin: 0;
-    padding-left: 8px;
+    padding-left: 4px;
+    padding-right: 4px;
 
     &:first-child {
-      padding-left: 0;
+      padding-left: 10px;
+    }
+    
+    &:last-child {
+      padding-right: 10px;
     }
   }
 `;

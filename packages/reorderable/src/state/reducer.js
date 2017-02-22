@@ -1,4 +1,5 @@
 // @flow
+import invariant from 'invariant';
 import type { Action, State, Dimension, Position, DragImpact, Dragging, DimensionMap, DragResult, CurrentDrag } from './types';
 
 const initialState: State = {
@@ -56,6 +57,11 @@ export default (state: State = initialState, action: Action): State => {
   if (action.type === 'PUBLISH_DRAGGABLE_DIMENSION') {
     const dimension: Dimension = action.payload;
 
+    if (state.draggableDimensions[dimension.id]) {
+      console.error(`dimension already exists for ${dimension.id}`);
+      return state;
+    }
+
     return {
       ...state,
       draggableDimensions: {
@@ -67,6 +73,11 @@ export default (state: State = initialState, action: Action): State => {
 
   if (action.type === 'PUBLISH_DROPPABLE_DIMENSIONS') {
     const dimension: Dimension = action.payload;
+
+    if (state.draggableDimensions[dimension.id]) {
+      console.error(`dimension already exists for ${dimension.id}`);
+      return state;
+    }
 
     return {
       ...state,

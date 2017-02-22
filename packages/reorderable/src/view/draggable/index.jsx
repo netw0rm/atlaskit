@@ -40,7 +40,7 @@ type MapState = (state: DraggableState, ownProps: Object, getDragHandle: Functio
 type Hooks = {|
   // ? needs to fire before isDropEnabled checks
   onDragStart: (id: DraggableId) => void,
-    onDragEnd: (id: DraggableId) => void,
+  onDragEnd: (id: DraggableId) => void,
 |}
 
 const empty = {};
@@ -74,7 +74,7 @@ export default (type: TypeId,
   // getDragHandle?: boolean = false,
   hooks?: Hooks) =>
   (Component: any): any => {
-    class WrappedComponent extends PureComponent {
+    class Draggable extends PureComponent {
       static displayName = `Draggable(${getDisplayName(Component)})`
 
       /* eslint-disable react/sort-comp */
@@ -218,7 +218,7 @@ export default (type: TypeId,
         // if a drag handle was not request then the whole thing is the handle
         const wrap = requestDragHandle.wasCalled ? identity : this.handle;
 
-        const { id: itemId } = ownProps.provided;
+        const { id: droppableId } = ownProps.provided;
 
         return (
           <Moveable
@@ -229,7 +229,7 @@ export default (type: TypeId,
           >
             {wrap(
               <DimensionPublisher
-                itemId={itemId}
+                itemId={droppableId}
                 type={type}
                 dimensionType="DRAGGABLE"
               >
@@ -275,5 +275,5 @@ export default (type: TypeId,
       cancel: cancelAction,
     };
 
-    return connect(mapStateToProps, mapDispatchToProps, null, { storeKey: 'dragDropStore' })(WrappedComponent);
+    return connect(mapStateToProps, mapDispatchToProps, null, { storeKey: 'dragDropStore' })(Draggable);
   };

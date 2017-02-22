@@ -10,7 +10,7 @@ export default class Drawer extends PureComponent {
   static propTypes = {
     backIcon: PropTypes.node,
     backIconOffset: PropTypes.number,
-    children: PropTypes.element,
+    children: PropTypes.node,
     header: PropTypes.node,
     isOpen: PropTypes.bool,
     isWide: PropTypes.bool,

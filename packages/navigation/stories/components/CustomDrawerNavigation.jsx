@@ -1,22 +1,20 @@
 import React, { PureComponent } from 'react';
 import { AtlassianIcon, ArrowleftIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowrightIcon } from '@atlaskit/icon';
-import { AkDrawer, AkContainerItemGroup, AkContainerItem, AkDrawerItem } from '../../src/index';
+import { AkCustomDrawer, AkSearchDrawer, AkCreateDrawer, AkContainerItemGroup, AkContainerItem, AkDrawerItem } from '../../src/index';
 import BasicNavigation from './BasicNavigation';
 
-export default class DrawerNavigation extends PureComponent {
+export default class CustomDrawerNavigation extends PureComponent {
   constructor(...args) {
     super(...args);
     this.state = {
       openDrawer: null,
-      backIconOffset: 0,
       isOpen: true,
       width: 300,
     };
   }
 
-  setDrawer(drawerId, event) {
+  setDrawer(drawerId) {
     this.setState({
-      backIconOffset: event ? event.currentTarget.getBoundingClientRect().top : 0,
       openDrawer: drawerId,
     });
   }
@@ -30,9 +28,8 @@ export default class DrawerNavigation extends PureComponent {
   );
 
   getSearchDrawer = () => (
-    <AkDrawer
+    <AkSearchDrawer
       backIcon={this.getBackIcon()}
-      backIconOffset={68}
       isOpen={this.state.openDrawer === 'search'}
       isWide
       key="search"
@@ -40,27 +37,26 @@ export default class DrawerNavigation extends PureComponent {
       primaryIcon={this.getPrimaryIcon()}
     >
       <p>Search drawer</p>
-    </AkDrawer>
+    </AkSearchDrawer>
   );
 
   getCreateDrawer = () => (
-    <AkDrawer
+    <AkCreateDrawer
       backIcon={this.getBackIcon()}
-      backIconOffset={108}
       isOpen={this.state.openDrawer === 'create'}
       isWide
       key="create"
       onBackButton={() => this.setDrawer(null)}
       primaryIcon={this.getPrimaryIcon()}
+      triggerRef={this.state.reportsTrigger}
     >
       <p>Create drawer</p>
-    </AkDrawer>
+    </AkCreateDrawer>
   );
 
   getQueuesDrawer = () => (
-    <AkDrawer
+    <AkCustomDrawer
       backIcon={this.getBackIcon()}
-      backIconOffset={this.state.backIconOffset}
       isOpen={this.state.openDrawer === 'queues'}
       key="queues"
       onBackButton={() => this.setDrawer(null)}
@@ -82,13 +78,12 @@ export default class DrawerNavigation extends PureComponent {
           />
         </AkContainerItemGroup>
       </div>
-    </AkDrawer>
+    </AkCustomDrawer>
   );
 
   getReportsDrawer = () => (
-    <AkDrawer
+    <AkCustomDrawer
       backIcon={this.getBackIcon()}
-      backIconOffset={this.state.backIconOffset}
       isOpen={this.state.openDrawer === 'reports'}
       key="reports"
       onBackButton={() => this.setDrawer(null)}
@@ -112,7 +107,7 @@ export default class DrawerNavigation extends PureComponent {
           <AkDrawerItem text="Resolution by component" />
         </AkContainerItemGroup>
       </div>
-    </AkDrawer>
+    </AkCustomDrawer>
   );
 
   resize(resizeState) {
@@ -125,16 +120,14 @@ export default class DrawerNavigation extends PureComponent {
   render() {
     const queuesItemOpen = (<AkContainerItem icon={<DashboardIcon label="Queues" />} text="Queues" />);
     const queuesItemCollapsed = (<AkContainerItem
-      href="#"
       icon={<ArrowrightIcon label="Queues" />}
-      onClick={(e) => { this.setDrawer('queues', e); }}
+      onClick={() => { this.setDrawer('queues'); }}
       text="Queues"
     />);
     const reportsItemOpen = (<AkContainerItem icon={<SettingsIcon label="Reports" />} text="Reports" />);
     const reportsItemCollapsed = (<AkContainerItem
-      href="#"
       icon={<ArrowrightIcon label="Reports" />}
-      onClick={(e) => { this.setDrawer('reports', e); }}
+      onClick={() => { this.setDrawer('reports'); }}
       text="Reports"
     />);
 
@@ -154,7 +147,7 @@ export default class DrawerNavigation extends PureComponent {
       >
         <div>
           {this.state.isOpen ? queuesItemOpen : queuesItemCollapsed }
-          <AkContainerItem icon={<IssuesIcon label="Customers" />} text="Customers" />
+          <AkContainerItem icon={<IssuesIcon label="Customers" />} text="Collapse navigation and click one of the other two icons" />
           {this.state.isOpen ? reportsItemOpen : reportsItemCollapsed }
         </div>
       </BasicNavigation>

@@ -2,7 +2,7 @@ import React from 'react';
 import Readme, { Description, Props } from '@atlaskit/util-readme';
 import { storiesOf } from '@kadira/storybook';
 
-import { AkDrawer as Drawer } from '../../src/index';
+import { AkSearchDrawer, AkCreateDrawer, AkCustomDrawer } from '../../src/index';
 
 import { name, description } from '../../package.json';
 
@@ -31,7 +31,15 @@ storiesOf(name, module)
         Usually the Navigation contaisn two main Drawers – search and create.
         Other Drawers can be added that are triggered from ContainerItems – you
         may want to do this instead of NestedNavigation in the collapsed state.
+
+        You can specify custom drawers with the CustomDrawer component - see the
+        <em>custom drawer</em> story for more details.
       </Description>
-      <Props component={Drawer} descriptions={drawerComponentPropDescriptions} />
+      <h1>SearchDrawer</h1>
+      <Props component={AkSearchDrawer} descriptions={drawerComponentPropDescriptions} />
+      <h1>CreateDrawer</h1>
+      <Props component={AkCreateDrawer} descriptions={drawerComponentPropDescriptions} />
+      <h1>CustomDrawer</h1>
+      <Props component={AkCustomDrawer} descriptions={drawerComponentPropDescriptions} />
     </Readme>
   ));

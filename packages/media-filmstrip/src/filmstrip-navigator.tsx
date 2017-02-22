@@ -22,14 +22,23 @@ function onDragEvent(dragEventHandler?: (event: DragEvent) => void): DragEventHa
   };
 }
 
-interface FilmstripNavigatorState {
+interface FilmStripNavigatorState {
   showLeft: boolean;
   showRight: boolean;
   position: number;
   showTransition: boolean;
+  transitionDuration: number;
 }
 
-export default class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmstripNavigatorState> {
+interface FilmStripNavigatorPartialState {
+  showLeft?: boolean;
+  showRight?: boolean;
+  position?: number;
+  showTransition?: boolean;
+  transitionDuration?: number;
+}
+
+export default class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmStripNavigatorState> {
   getDimensions: Function;
   onScroll: Function;
   wrapperWidth: number;
@@ -45,16 +54,21 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
       showLeft: false,
       showRight: false,
       position: 0,
-      showTransition: true
+      showTransition: true,
+      transitionDuration: 0
     };
     this.getDimensions = this._getDimensions.bind(this);
     this.onScroll = this._onScroll.bind(this);
   }
 
+  updateState(newState: FilmStripNavigatorPartialState) {
+    this.setState({...this.state, ...newState});
+  }
+
   _onScroll(e) {
     e.preventDefault();
 
-    this.setState({showTransition: false});
+    this.updateState({showTransition: false});
     this._setNewPosition(this.state.position + e.nativeEvent.deltaX);
   }
 
@@ -75,7 +89,7 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
                          </ArrowRightWrapper>
                        </ShadowRight>;
     const transitionProperty = this.state.showTransition ? 'transform' : 'none';
-    const transitionDuration = '0.5s';
+    const transitionDuration = `${this.state.transitionDuration}s`;
 
     return <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(props.onDrop)} onDragEnter={onDragEvent(props.onDragEnter)} onDragOver={onDragEvent(props.onDragOver)}>
              {this.state.showLeft ? leftArrow : undefined}
@@ -104,7 +118,23 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     this._setNewPosition(0);
   }
 
+  _getTransitionDuration(oldPosition: number, newPosition: number): number {
+    const minDuration = 0.5;
+    const baseDuration = 0.5;
+    const maxDuration = 1.0;
+
+    if (Math.abs(newPosition - oldPosition) < 1E-6) {
+      return baseDuration;
+    } else {
+      const diff = Math.abs(newPosition - oldPosition);
+      const relativeOffset = diff / this.wrapperWidth;
+      const duration = maxDuration - baseDuration * relativeOffset;
+      return Math.max(Math.min(duration, maxDuration), minDuration);
+    }
+  }
+
   _setNewPosition(desiredPosition: number) {
+    const oldPosition = this.state.position;
     const minPosition = 0;
     const maxPosition = Math.max(this.listWidth - this.wrapperWidth, 0);
     const position = Math.max(Math.min(desiredPosition, maxPosition), minPosition);
@@ -115,7 +145,8 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     const showLeft = left > 0;
     const showRight = right < this.listWidth;
 
-    this.setState({showLeft, showRight, position});
+    const transitionDuration = this._getTransitionDuration(oldPosition, position);
+    this.updateState({showLeft, showRight, position, transitionDuration});
   }
 
   _getClosest(position: number, start: number, accumulator: number, stop: number): number {
@@ -174,7 +205,7 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     const component = this;
 
     return () => {
-      component.setState({showTransition: true});
+      component.updateState({showTransition: true});
 
       if (direction === 'left') {
         component._moveLeft();

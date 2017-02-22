@@ -41,7 +41,7 @@ export const FileTypeIcon = styled.div`
   margin-right: 6px;
   position: relative;
   top: 1px;
-  
+
   &.audio {
     color: #8777D9;
   }
@@ -49,7 +49,7 @@ export const FileTypeIcon = styled.div`
   &.doc {
     color: #0065ff;
   }
-  
+
   &.image {
     color: #ffc400;
   }
@@ -108,14 +108,12 @@ export const Overlay = styled.div`
       }
     }
   }
-  
-  &.video, &.doc, &.unknown {
-    .file-type-icon {
-      display: block;
-    }
+
+  .file-type-icon {
+    display: block;
   }
-  /* Image */
-  &.image {
+
+  &.show-on-hover {
     .top-row {
       .title {
         color: white;
@@ -210,7 +208,7 @@ export const Overlay = styled.div`
       }
     }
   }
-  /* Error state */
+
   &.error {
     .top-row{
       overflow: visible;
@@ -224,9 +222,6 @@ export const Overlay = styled.div`
     }
   }
 
-  .file-type-icon {
-    display: none;
-  }
 `;
 
 export const ErrorLine = styled.div`

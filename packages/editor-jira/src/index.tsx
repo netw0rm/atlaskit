@@ -16,7 +16,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { encode, parse } from './html';
 import { makeSchema, SupportedSchema } from './schema';
-import { version, name } from '../package.json';
+import { version, name } from './version';
 
 export { version };
 

@@ -118,6 +118,7 @@ describe('@atlaskit/inline-edit', () => {
       const wrapper = mount(
         <InlineEdit
           {...defaultProps}
+          isEditing
           onConfirm={spy}
         />
       );
@@ -132,6 +133,7 @@ describe('@atlaskit/inline-edit', () => {
       const wrapper = mount(
         <InlineEdit
           {...defaultProps}
+          isEditing
           onCancel={spy}
         />
       );

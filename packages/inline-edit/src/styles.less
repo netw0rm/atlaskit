@@ -1,7 +1,6 @@
 @import '~akutil-shared-styles/src/colors.less';
 @import '~akutil-shared-styles/src/grid.less';
-
-@grid: 4;
+@import '~akutil-shared-styles/src/z-indexes.less';
 
 .root {
   margin-left: -@ak-grid-size;
@@ -16,6 +15,7 @@
 }
 
 .content-wrapper {
+  position: relative;
   display: inline-flex;
   flex-direction: column;
   align-items: flex-end;
@@ -33,14 +33,14 @@
 }
 
 .spinner-wrapper {
-  margin-left: unit(@grid, px);
-  margin-top: unit(@grid, px);
+  margin-left: unit(@ak-grid-size / 2, px);
+  margin-top: unit(@ak-grid-size / 2, px);
   display: inline-flex;
   align-items: flex-end;
   // TODO: Remove this when updated to specs version 1.1
   // field-base should stay the same width so we need to provide a
   // min-width to cover action buttons width.
-  // min-width: unit(@grid*3 + 32 + 32, px);
+  // min-width: unit(@ak-grid-size / 2*3 + 32 + 32, px);
 }
 
 .read-view-content-wrapper {
@@ -50,23 +50,23 @@
 
 .buttons-wrapper {
   display: flex;
-  margin-top: unit(@grid, px);
+  position: absolute;
+  top: 100%;
+  margin-top: unit(@ak-grid-size / 2, px);
   flex-shrink: 0;
 
   .button-wrapper {
+    z-index: 200;
     box-sizing: border-box;
-    border: 1px solid @ak-color-N30;
-    box-shadow: 0 (@grid * 2.5) (@grid * 2.5) (@grid * 2.5) fade(@ak-color-N900, 24%),
-                0 0 1px fade(@ak-color-N900, 3%);
+    border-radius: unit(@ak-grid-size / 2 - 1, px);
+    background-color: @ak-color-N0;
+    box-shadow: 0 unit(@ak-grid-size / 2, px) @ak-grid-size unit(-(@ak-grid-size / 4), px) fade(@ak-color-N900, 28%),
+                0 0 1px fade(@ak-color-N900, 30%);
   }
 
   .button-wrapper:last-child {
-    margin-left: unit(@grid, px);
+    margin-left: unit(@ak-grid-size / 2, px);
   }
-}
-
-.button-wrapper-hidden {
-  visibility: hidden;
 }
 
 .edit-button-wrapper {
@@ -96,7 +96,7 @@
   margin: 0;
   opacity: 0;
   outline: 0;
-  padding: 0 0 0 unit(@grid * 2, px);
+  padding: 0 0 0 unit(@ak-grid-size / 2 * 2, px);
   transition: opacity 0.2s ease-in-out;
 
   &:focus {

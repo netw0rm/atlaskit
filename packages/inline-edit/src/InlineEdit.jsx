@@ -209,12 +209,6 @@ export default class InlineEdit extends PureComponent {
       [styles.readViewWrapper]: !this.props.isEditing,
     })
 
-  getActionButtonClasses = () =>
-    classNames({
-      [styles.buttonsWrapper]: true,
-      [styles.buttonWrapperHidden]: !this.props.isEditing || this.props.areActionButtonsHidden,
-    })
-
   confirmIfUnfocused = () => {
     if (!this.state.wasFocusReceivedSinceLastBlur) {
       this.props.onConfirm();
@@ -232,20 +226,26 @@ export default class InlineEdit extends PureComponent {
   shouldRenderSpinner = () => this.props.isWaiting && this.props.isEditing;
 
   renderActionButtons = () => (
-    <div className={this.getActionButtonClasses()}>
-      <Button
-        iconBefore={<ConfirmIcon label="confirm" />}
-        onClick={this.onConfirmClick}
-        ref={(ref) => { this.confirmButtonRef = ref; }}
-        className={styles.buttonWrapper}
-      />
-      <Button
-        iconBefore={<CancelIcon label="cancel" />}
-        onClick={this.onCancelClick}
-        ref={(ref) => { this.cancelButtonRef = ref; }}
-        className={styles.buttonWrapper}
-      />
-    </div>
+    this.props.isEditing && !this.props.areActionButtonsHidden ?
+      <div className={styles.buttonsWrapper}>
+        <div className={styles.buttonWrapper}>
+          <Button
+            iconBefore={<ConfirmIcon label="confirm" />}
+            onClick={this.onConfirmClick}
+            ref={(ref) => { this.confirmButtonRef = ref; }}
+            className={styles.button}
+          />
+        </div>
+        <div className={styles.buttonWrapper}>
+          <Button
+            iconBefore={<CancelIcon label="cancel" />}
+            onClick={this.onCancelClick}
+            ref={(ref) => { this.cancelButtonRef = ref; }}
+            className={styles.button}
+          />
+        </div>
+      </div> :
+      null
   )
 
   renderEditIcon = () => (

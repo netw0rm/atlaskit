@@ -69,6 +69,9 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
 
   _onScroll(e) {
     e.preventDefault();
+    const isHorizontalScroll = Math.abs(e.nativeEvent.deltaX) > Math.abs(e.nativeEvent.deltaY);
+    if (!isHorizontalScroll) { return; }
+
     const showTransition = false;
     this.updateState({showTransition});
     this._setNewPosition(this.state.position + e.nativeEvent.deltaX, showTransition);

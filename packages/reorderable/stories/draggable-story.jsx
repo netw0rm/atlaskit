@@ -1,45 +1,102 @@
+// @flow
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 import { storiesOf } from '@kadira/storybook';
-import createDragHandle from '../src/view/draggable/create-drag-handle';
+import draggable from '../src/view/draggable';
+import droppable from '../src/view/droppable/';
+import { dragDropContext } from '../src/';
 
-const handle = createDragHandle(() => {});
+const Badge = styled.div`
+  height: 100px;
+  width: 200px;
+  padding: 8px;
+  background: lightgrey;
+  border: 1px solid grey;
+  display: flex;
+  align-items: center;
+`;
 
-storiesOf('drag handle', module)
+class Container extends PureComponent {
+  render() {
+    return (
+      <div>
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+const Context = dragDropContext(Container);
+
+const provide = ownProps => ({
+  id: '1',
+});
+const Droppable = dragDropContext(droppable('TYPE', provide)(Container));
+
+storiesOf('draggable', module)
   .add('basic', () => {
-    class Child extends PureComponent {
+    class Item extends PureComponent {
       render() {
-        console.warn('child rendered :(');
-        return (
-          <div>child component</div>
-        );
+        return (<Badge>basic drag handle</Badge>);
       }
     }
+    const provide = () => ({
+      id: '10',
+    });
+
+    const Connected = draggable('TYPE', provide)(Item);
+
+    return (
+      <Context>
+        <Droppable>
+          <Connected />
+        </Droppable>
+      </Context>
+    );
+  })
+  .add('custom drag handle', () => {
+    const Avatar = styled.img`
+      border-radius: 50%;
+      vertical-align: middle;
+      height: 60px;
+      width: 60px;
+    `;
+
+    const Description = styled.div`
+      margin-left: 16px;
+    `;
 
     class App extends PureComponent {
-      state = {
-        count: 0,
-      }
-
-      onClick = () => {
-        this.setState({
-          count: this.state.count + 1,
-        });
+      props: {
+        dragHandle: Function
       }
 
       render() {
+        const { dragHandle } = this.props;
         return (
-          <div>
-            <h3>outer</h3>
-            <button onClick={this.onClick}>count: {this.state.count}</button>
-            {handle(
-              <div>
-                <Child />
-              </div>
-            )}
-          </div>
+          <Badge>
+            {dragHandle(<Avatar draggable="false" alt="Alex" src="https://api.adorable.io/avatars/60/alex%40adorable.io" />)}
+            <Description>Some cool text about Alex that is not a handle</Description>
+          </Badge>
         );
       }
     }
 
-    return <App />;
+    const provide = () => ({
+      id: '5',
+    });
+
+    const mapStateToProps = (ownProps, state, requestDragHandle) => ({
+      dragHandle: requestDragHandle(),
+    });
+
+    const Connected = draggable('TYPE', provide, mapStateToProps)(App);
+
+    return (
+      <Context>
+        <Droppable>
+          <Connected />
+        </Droppable>
+      </Context>
+    );
   });

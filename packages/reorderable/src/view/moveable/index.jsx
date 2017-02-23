@@ -6,6 +6,7 @@ import type { Position } from '../../state/types';
 
 type Props = {|
   children?: React$Element<*>,
+  // TODO: should this be optional?
   destination: ?Position,
   shouldAnimate: boolean,
   onMoveEnd?: Function,
@@ -51,7 +52,7 @@ export default class Movable extends PureComponent {
   props: Props
   defaultProps: DefaultProps
 
-  static defaultProps = {
+  static defaultProps: DefaultProps = {
     innerRef: () => {},
     destination: start,
   }

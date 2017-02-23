@@ -1,5 +1,5 @@
 // @flow
-import invariant from 'invariant';
+import getDroppableOver from './get-droppable-over';
 import type { Action, State, Dimension, DragImpact, Dragging, DimensionMap, DragResult, CurrentDrag } from './types';
 
 const initialState: State = {
@@ -7,27 +7,73 @@ const initialState: State = {
   droppableDimensions: {},
   currentDrag: null,
   dragResult: null,
+  requestDimensions: null,
 };
 
-const noImpact: DragImpact = {
-  movement: null,
-  destination: null,
+const noMovement = {
+  draggables: [],
+  amount: 0,
 };
 
-const getDragImpact = (currentDrag: Dragging, draggableDimensions: DimensionMap, droppableDimensions: DimensionMap): DragImpact => {
-  // TODO: calculate actual movement
-  // eslint-disable-next-line no-console
-  console.log('returning no movement', currentDrag, draggableDimensions, droppableDimensions);
-  return noImpact;
+const shout = (message) => {
+  console.log(`%c ${message}`, 'color: green; font-size: 1.5em');
+};
+
+const getDragImpact = (currentDrag: Dragging,
+draggableDimensions: DimensionMap,
+droppableDimensions: DimensionMap): DragImpact => {
+  const droppableId: ?DroppableId = getDroppableOver(
+    currentDrag.center, draggableDimensions, droppableDimensions
+  );
+  shout(`currently over: ${droppableId}`);
+
+  return {
+    movement: null,
+    destination: {
+      droppableId,
+      order: null,
+    },
+  };
 };
 
 export default (state: State = initialState, action: Action): State => {
-  console.log(`%c reducing ${action.type}`, 'color: green; font-size: 1.5em');
+  shout(`reducing ${action.type}`);
+
+  if (action.type === 'REQUEST_DIMENSIONS') {
+    const typeId: TypeId = action.payload;
+
+    console.log('about to request dimensions');
+    return {
+      ...state,
+      requestDimensions: typeId,
+    };
+  }
 
   if (action.type === 'LIFT') {
     const { id, type, center, offset, scroll, selection } = action.payload;
 
     // TODO: need source but do not have dimensions yet
+    // source: need to take into account offset
+    // current impact: do not need to take into account offset
+    // current center: do not need to consider offset
+
+    const originCenter: Position = {
+      x: center.x - offset.x,
+      y: center.y - offset.y,
+    };
+
+    const droppableId: ?DroppableId = getDroppableOver(originCenter, state.draggableDimensions, state.droppableDimensions);
+
+    if (!droppableId) {
+      console.error('lifting a draggable that is not inside a droppable');
+      return state;
+    }
+
+    const source: DragLocation = {
+      droppableId,
+      // TODO: correct order
+      order: 0,
+    };
 
     const dragging: Dragging = {
       id,
@@ -35,7 +81,7 @@ export default (state: State = initialState, action: Action): State => {
       center,
       offset,
       initial: {
-        source: null,
+        source,
         center,
         offset,
         scroll,
@@ -47,7 +93,10 @@ export default (state: State = initialState, action: Action): State => {
       ...state,
       currentDrag: {
         dragging,
-        impact: noImpact,
+        impact: {
+          movement: noMovement,
+          destination: source,
+        },
       },
       // clearing any previous dragResult
       dragResult: null,
@@ -71,10 +120,10 @@ export default (state: State = initialState, action: Action): State => {
     };
   }
 
-  if (action.type === 'PUBLISH_DROPPABLE_DIMENSIONS') {
+  if (action.type === 'PUBLISH_DROPPABLE_DIMENSION') {
     const dimension: Dimension = action.payload;
 
-    if (state.draggableDimensions[dimension.id]) {
+    if (state.droppableDimensions[dimension.id]) {
       console.error(`dimension already exists for ${dimension.id}`);
       return state;
     }
@@ -95,15 +144,10 @@ export default (state: State = initialState, action: Action): State => {
       return state;
     }
 
-    // TODO: if source is not present - set it
-
-    // not using spread to ensure exact typing works
     const dragging = {
-      id: previous.dragging.id,
-      type: previous.dragging.type,
+      ...previous.dragging,
       center,
       offset,
-      initial: previous.dragging.initial,
     };
 
     const impact: DragImpact = getDragImpact(dragging, state.draggableDimensions, state.droppableDimensions);

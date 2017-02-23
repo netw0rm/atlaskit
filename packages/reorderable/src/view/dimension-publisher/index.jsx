@@ -1,6 +1,5 @@
 // @flow
-import { cloneElement, PureComponent } from 'react';
-import { bindActionCreators } from 'redux';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import invariant from 'invariant';
 import {
@@ -8,7 +7,7 @@ import {
   publishDroppableDimension,
 } from '../../state/action-creators';
 import type { Id, TypeId } from '../../types';
-import type { Dimension, Position, State, Dispatch } from '../../state/types';
+import type { Dimension, Position, State } from '../../state/types';
 
 type Props = {|
     itemId: Id,
@@ -79,20 +78,26 @@ export class DimensionPublisher extends PureComponent {
   }
 
   render() {
-    return cloneElement(this.props.children, {
-      innerRef: this.setRef,
-    });
+    // sadly using a container div because sometimes ref is 'ref' and sometimes it is innerRef :|
+    return (
+      <div ref={this.setRef}>
+        {this.props.children}
+      </div>
+    );
+    // return cloneElement(this.props.children, {
+    //   innerRef: this.setRef,
+    // });
   }
 }
 
 const mapStateToProps = (state: State, ownProps: Object) => {
-  if (!state.currentDrag) {
+  if (!state.requestDimensions) {
     return {
       shouldPublish: false,
     };
   }
 
-  const type: TypeId = state.currentDrag.dragging.type;
+  const type: TypeId = state.requestDimensions;
 
   if (type !== ownProps.type) {
     return {
@@ -105,13 +110,18 @@ const mapStateToProps = (state: State, ownProps: Object) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch, ownProps) => {
-  const publish = (ownProps.dimensionType === 'DRAGGABLE' ? publishDraggableDimension : publishDroppableDimension);
+export const DraggableDimensionPublisher = (() => {
+  const mapDispatchToProps = {
+    publish: publishDraggableDimension,
+  };
 
-  return bindActionCreators({
-    publish,
-  }, (dispatch));
-};
+  return connect(mapStateToProps, mapDispatchToProps, null, { storeKey: 'dragDropStore' })(DimensionPublisher);
+})();
 
-// TODO: type prop type for connect
-export default connect(mapStateToProps, mapDispatchToProps, null, { storeKey: 'dragDropStore' })(DimensionPublisher);
+export const DroppableDimensionPublisher = (() => {
+  const mapDispatchToProps = {
+    publish: publishDroppableDimension,
+  };
+
+  return connect(mapStateToProps, mapDispatchToProps, null, { storeKey: 'dragDropStore' })(DimensionPublisher);
+})();

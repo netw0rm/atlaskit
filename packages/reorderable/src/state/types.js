@@ -20,8 +20,8 @@ export type Dimension = {|
 |}
 
 export type DraggableLocation = {|
-  droppableId: ?DroppableId,
-  order: ?number
+  droppableId: DroppableId,
+  order: number
 |};
 
 export type DimensionMap = { [key: Id]: Dimension };
@@ -47,9 +47,7 @@ export type Dragging = {|
     type: TypeId,
     offset: Position,
     center: Position,
-    // when first lifted we do not know where it lives:
-    // need the dimensions first
-    initial: ?DraggingInitial,
+    initial: DraggingInitial,
 |}
 
 export type CurrentDrag = {|
@@ -69,6 +67,7 @@ export type State = {
   droppableDimensions: DimensionMap,
   currentDrag: ?CurrentDrag,
   dragResult: ?DragResult,
+  requestDimensions: ?TypeId
 };
 
 export type Action = ActionCreators;

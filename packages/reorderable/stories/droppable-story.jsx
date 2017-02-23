@@ -17,7 +17,7 @@ const ItemContainer = styled.div`
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 200px;
+  width: 300px;
   align-items: stretch;
   margin: 8px;
   background-color: ${props => (props.isDraggingOver ? 'gold' : 'deepskyblue')};
@@ -95,9 +95,9 @@ const getItem = (): ItemData => ({
   id: `${++id}`,
 });
 
-const List1 = DroppableList('1', 'CAR');
-const List2 = DroppableList('2', 'CAR');
-const List3 = DroppableList('3', 'BUS');
+const List1 = DroppableList('1', 'ITEM');
+const List2 = DroppableList('2', 'ITEM');
+const List3 = DroppableList('3', 'ITEM');
 const List4 = DroppableList('4', 'BUS');
 
 const AppContainer = styled.div`
@@ -111,8 +111,8 @@ class App extends PureComponent {
       <AppContainer>
         <List1 items={[getItem(), getItem(), getItem()]} />
         <List2 items={[getItem(), getItem(), getItem()]} />
-        <List3 items={[getItem(), getItem(), getItem()]} />
-        <List4 items={[getItem(), getItem(), getItem()]} />
+        {/* <List3 items={[getItem(), getItem(), getItem()]} />
+        <List4 items={[]} />*/}
       </AppContainer>
     );
   }

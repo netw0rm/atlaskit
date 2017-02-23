@@ -40,7 +40,6 @@ storiesOf('dimension publisher', module)
           <div>
             <DimensionPublisher
               itemId="10"
-              type="DRAGGABLE"
               shouldPublish={this.state.shouldPublish}
               publish={publishDimensions}
             >

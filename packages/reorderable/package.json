@@ -21,7 +21,10 @@
     "memoize-one": "1.0.2",
     "react-motion": "0.4.7",
     "react-redux": "5.0.2",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "redux-thunk": "2.2.0",
+    "reselect": "2.5.4",
+    "shallowequal": "0.2.2"
   },
   "devDependencies": {
     "@atlaskit/util-readme": "^1.0.0",

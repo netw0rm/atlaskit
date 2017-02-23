@@ -1,7 +1,7 @@
-import type { Position } from '../../state/types';
+import type { Position } from '../state/types';
 
-export default (node: Node): Position => {
-  const { top, right, bottom, left } = node.getBoundingClientRect();
+export default (el: Element): Position => {
+  const { top, right, bottom, left } = el.getBoundingClientRect();
   const centerX = (left + right) / 2;
   const centerY = (top + bottom) / 2;
 

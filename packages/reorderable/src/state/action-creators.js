@@ -1,6 +1,16 @@
 // @flow
 import type { DraggableId, TypeId } from '../types';
-import type { Dimension, DraggableLocation, Position } from './types';
+import type { Dimension, Position } from './types';
+
+export type RequestDimensionsAction = {|
+  type: 'REQUEST_DIMENSION',
+  payload: TypeId
+|}
+
+export const requestDimensions = (type: TypeId): RequestDimensionsAction => ({
+  type: 'REQUEST_DIMENSIONS',
+  payload: type,
+});
 
 export type LiftAction = {|
   type: 'LIFT',
@@ -14,16 +24,43 @@ export type LiftAction = {|
   |}
 |}
 
-export const lift = (id: DraggableId,
+export type BeginLiftAction = LiftAction;
+
+const lift = (id: DraggableId,
+  type: TypeId,
+  center: Position,
+  offset: Position,
+  scroll: Position,
+  selection: Position): LiftAction => ({
+    type: 'LIFT',
+    payload: {
+      id,
+      type,
+      center,
+      offset,
+      scroll,
+      selection,
+    },
+  });
+
+// using redux-thunk
+export const beginLift = (id: DraggableId,
   type: TypeId,
   center: Position,
   offset: Position,
   scroll: Position,
   selection: Position,
-): LiftAction => ({
-  type: 'LIFT',
-  payload: { id, type, center, offset, scroll, selection },
-});
+) => (dispatch) => {
+  dispatch(requestDimensions(type));
+
+  // Dimensions will be requested synronously
+  // after they are done - lift.
+  // Could improve this by explicitly waiting until all dimensions are published.
+  // Could also allow a lift to occur before all the dimensions are published
+  setTimeout(() => {
+    dispatch(lift(id, type, center, offset, scroll, selection));
+  });
+};
 
 type PublishDraggableDimensionAction = {|
   type: 'PUBLISH_DRAGGABLE_DIMENSION',
@@ -93,7 +130,9 @@ export const cancel = (id: DraggableId): CancelAction => ({
   payload: id,
 });
 
-export type Action = LiftAction |
+export type Action = BeginLiftAction |
+  LiftAction |
+  RequestDimensionsAction |
   PublishDraggableDimensionAction |
   PublishDroppableDimensionAction |
   MoveAction |

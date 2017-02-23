@@ -1,8 +1,7 @@
 // @flow
 import { PureComponent, PropTypes } from 'react';
-import { createStore } from 'redux';
 import type { Store } from '../../state/types';
-import reducer from '../../state/reducer';
+import createStore from '../../state/create-store';
 
 type Props = {
   children: React$Element<any>
@@ -25,12 +24,7 @@ export default class Provider extends PureComponent {
   constructor(props: Props, context: any) {
     super(props, context);
 
-    this.store = createStore(
-      reducer,
-      // TODO: disable in production
-      // eslint-disable-next-line no-underscore-dangle
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    );
+    this.store = createStore();
   }
 
   getChildContext(): Context {

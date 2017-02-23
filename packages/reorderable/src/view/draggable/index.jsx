@@ -3,6 +3,10 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import invariant from 'invariant';
+import memoizeOne from 'memoize-one';
+import { createSelector } from 'reselect';
+// import { createSelectorCreator, defaultMemoize } from 'reselect';
+import isShallowEqual from 'shallowequal';
 import type { DraggableId, TypeId } from '../../types';
 import type {
   Position,
@@ -10,16 +14,17 @@ import type {
   DraggableLocation,
   DraggingInitial,
 } from '../../state/types';
-import DimensionPublisher from '../dimension-publisher/';
+import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
 import createDragHandle from './create-drag-handle';
 import getCenterPosition from '../get-center-position';
 import getScrollPosition from '../get-scroll-position';
 import getOffset from '../get-offset';
 import getDisplayName from '../get-display-name';
+import { currentDragSelector } from '../../state/selectors';
 
 import {
-  lift as liftAction,
+  beginLift as beginLiftAction,
   move as moveAction,
   drop as dropAction,
   cancel as cancelAction,
@@ -48,7 +53,7 @@ const identity = x => x;
 const nowhere: Position = { x: 0, y: 0 };
 
 type Props = {|
-  lift: typeof liftAction,
+  beginLift: typeof beginLiftAction,
   move: typeof moveAction,
   drop: typeof dropAction,
   dropFinished: typeof dropFinishedAction,
@@ -125,20 +130,25 @@ export default (type: TypeId,
       onLift = (selection: Position) => {
         invariant(this.ref, 'cannot move an item that is not in the DOM');
 
-        const { provided: { id, isDragEnabled }, lift } = this.props;
+        const { provided: { id, isDragEnabled }, beginLift } = this.props;
 
         if (isDragEnabled === false) {
           return;
         }
 
-        const center: Position = getCenterPosition(this.ref);
         // const offset: Position = { x: 0, y: 0 };
         const scroll: Position = getScrollPosition();
 
         // $FlowFixMe
         const offset: Position = getOffset(this.ref);
+        const center: Position = getCenterPosition(this.ref);
 
-        lift(id, type, center, offset, scroll, selection);
+        // const originCenter: Position = {
+        //   x: center.x - offset.x,
+        //   y: center.x - offset.y,
+        // };
+
+        beginLift(id, type, center, offset, scroll, selection);
       }
 
       onMove = (point: Position) => {
@@ -148,7 +158,10 @@ export default (type: TypeId,
           throw new Error('need to cancel the current drag');
         }
 
-        invariant(initial != null, 'cannot move an item that has not been lifted');
+        // dimensions not provided yet
+        if (!initial) {
+          return;
+        }
 
         const scroll: Position = getScrollPosition();
 
@@ -225,6 +238,8 @@ export default (type: TypeId,
 
         const { id: droppableId } = ownProps.provided;
 
+        console.info('rendering draggable', droppableId);
+
         return (
           <Moveable
             shouldAnimate={this.state.wasDragging}
@@ -233,52 +248,65 @@ export default (type: TypeId,
             innerRef={this.setRef}
           >
             {wrap(
-              <DimensionPublisher
+              <DraggableDimensionPublisher
                 itemId={droppableId}
                 type={type}
-                dimensionType="DRAGGABLE"
               >
                 <Container
                   isDragging={ownProps.isDragging}
                 >
                   <Component {...props} />
                 </Container>
-              </DimensionPublisher>
+              </DraggableDimensionPublisher>
             )}
           </Moveable>
         );
       }
     }
 
-    // TODO: memoize
-    const mapStateToProps = (state: State, ownProps: Object) => {
-      const provided: NeedsProviding = provide(ownProps);
-      const { currentDrag } = state;
-      if (!currentDrag || !currentDrag.dragging || currentDrag.dragging.id !== provided.id) {
-        return {
-          provided,
-          isDragging: false,
-        };
-      }
+    const makeSelector = () => {
+      const memoizedProvide = memoizeOne(provide, isShallowEqual);
+      const getProvided = (state, ownProps) => memoizedProvide(ownProps);
 
-      const offset = currentDrag.dragging.offset;
-      const initial = currentDrag.dragging.initial;
+      return createSelector(
+        [currentDragSelector, getProvided],
+        (currentDrag, provided) => {
+          if (!currentDrag || !currentDrag.dragging || currentDrag.dragging.id !== provided.id) {
+            return {
+              provided,
+              isDragging: false,
+            };
+          }
 
-      return {
-        provided,
-        isDragging: true,
-        offset,
-        initial,
-      };
+          const offset = currentDrag.dragging.offset;
+          const initial = currentDrag.dragging.initial;
+
+          return {
+            provided,
+            isDragging: true,
+            offset,
+            initial,
+          };
+        }
+      );
+    };
+
+    const makeMapStateToProps = () => {
+      const selector = makeSelector();
+
+      const mapStateToProps = (state, props) =>
+        selector(state, props);
+
+      return mapStateToProps;
     };
 
     const mapDispatchToProps = {
-      lift: liftAction,
+      beginLift: beginLiftAction,
       move: moveAction,
       drop: dropAction,
       dropFinished: dropFinishedAction,
       cancel: cancelAction,
     };
 
-    return connect(mapStateToProps, mapDispatchToProps, null, { storeKey: 'dragDropStore' })(Draggable);
+    return connect(makeMapStateToProps, mapDispatchToProps, null, { storeKey: 'dragDropStore' })(Draggable);
   };

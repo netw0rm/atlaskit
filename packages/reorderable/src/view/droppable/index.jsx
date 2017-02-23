@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import DimensionPublisher from '../dimension-publisher/';
+import { DroppableDimensionPublisher } from '../dimension-publisher/';
 import getDisplayName from '../get-display-name';
 import type { TypeId, DroppableId } from '../../types';
 import type { DragResult, State, DraggableLocation } from '../../state/types';
@@ -43,13 +43,12 @@ export default (type: TypeId,
           const { id: droppableId } = this.props.provided;
 
           return (
-            <DimensionPublisher
+            <DroppableDimensionPublisher
               itemId={droppableId}
               type={type}
-              dimensionType="DROPPABLE"
             >
               <Component {...this.props} />
-            </DimensionPublisher>
+            </DroppableDimensionPublisher>
           );
         }
       }
@@ -58,7 +57,7 @@ export default (type: TypeId,
         const provided: NeedsProviding = provide(ownProps);
         const { currentDrag } = state;
 
-        if (!currentDrag || !currentDrag.dragging) {
+        if (!currentDrag || !currentDrag.dragging || !currentDrag.impact) {
           return {
             isDraggingOver: false,
             provided,
@@ -74,6 +73,7 @@ export default (type: TypeId,
         const destination: ?DraggableLocation = currentDrag.impact.destination;
 
         const isDraggingOver = Boolean(destination && destination.droppableId === provided.id);
+        // console.log({ destination, isDraggingOver });
 
         return {
           isDraggingOver,

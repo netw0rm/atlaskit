@@ -13,7 +13,6 @@ export default (classKeys, props) => {
     [classKeys.href]: props.href && !props.isDisabled,
     [classKeys.themeDefault]: props.theme === 'default',
     [classKeys.themeDark]: props.theme === 'dark',
-    [classKeys.solidBackground]: props.hasSolidBackground,
   };
   if (props.className) {
     props.className.split(' ').forEach(c => (classes[c] = true));

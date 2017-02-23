@@ -3,7 +3,6 @@ import { mount, shallow } from 'enzyme';
 import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
 import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
-import Spinner from '@atlaskit/spinner';
 import InlineEdit from '../src/InlineEdit';
 
 const noop = () => {};
@@ -201,9 +200,9 @@ describe('@atlaskit/inline-edit', () => {
 
   describe('isWaiting', () => {
     describe('when isEditing is false', () =>
-      it('should not render Spinner', () => {
+      it('FieldBase should not have hasSpinner prop', () => {
         const wrapper = mount(<InlineEdit {...defaultProps} isWaiting />);
-        expect(wrapper).to.not.contain(<Spinner />);
+        expect(wrapper.find(FieldBase).prop('hasSpinner')).to.equal(false);
       })
     );
 
@@ -214,8 +213,8 @@ describe('@atlaskit/inline-edit', () => {
         wrapper = shallow(<InlineEdit {...defaultProps} isWaiting isEditing />)
       ));
 
-      it('should render Spinner', () =>
-        expect(wrapper.contains(<Spinner />)).to.equal(true)
+      it('FieldBase should have prop hasSpinner', () =>
+        expect(wrapper.find(FieldBase).prop('hasSpinner')).to.equal(true)
       );
 
       it('should disable field base', () =>

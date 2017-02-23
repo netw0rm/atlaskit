@@ -3,7 +3,6 @@ import {
   akColorB400,
   akColorN20,
   akColorN30,
-  // akColorN50,
   akColorN500
 } from '@atlaskit/util-shared-styles';
 

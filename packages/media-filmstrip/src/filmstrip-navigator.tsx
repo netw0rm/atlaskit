@@ -162,7 +162,7 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
   _getClosest(position: number, start: number, accumulator: number, stop: number): number {
     // First position
     let minDist = Math.abs(position - start);
-    let result = position;
+    let result = start;
 
     // Positions between cards
     let x = accumulator;

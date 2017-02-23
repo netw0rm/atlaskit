@@ -69,9 +69,9 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
 
   _onScroll(e) {
     e.preventDefault();
-
-    this.updateState({showTransition: false});
-    this._setNewPosition(this.state.position + e.nativeEvent.deltaX);
+    const showTransition = false;
+    this.updateState({showTransition});
+    this._setNewPosition(this.state.position + e.nativeEvent.deltaX, showTransition);
   }
 
   render() {
@@ -117,7 +117,7 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
       this.cardWidth = 0;
     }
 
-    this._setNewPosition(0);
+    this._setNewPosition(0, this.state.showTransition);
   }
 
   _getTransitionDuration(oldPosition: number, newPosition: number): number {
@@ -135,7 +135,7 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     }
   }
 
-  _setNewPosition(desiredPosition: number) {
+  _setNewPosition(desiredPosition: number, showTransition: boolean) {
     const oldPosition = this.state.position;
     const minPosition = 0;
     const maxPosition = Math.max(this.listWidth - this.wrapperWidth, 0);
@@ -148,7 +148,12 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     const showRight = right < this.listWidth;
 
     const transitionDuration = this._getTransitionDuration(oldPosition, position);
-    this.updateState({showLeft, showRight, position, transitionDuration});
+    const arrowVisibilityDelay = showTransition ? transitionDuration * 1000 : 0;
+
+    // Delaying arrow state in order to not modify it visibility until the transition has finished
+    setTimeout(() => this.updateState({showLeft, showRight}), arrowVisibilityDelay);
+
+    this.updateState({position, transitionDuration});
   }
 
   _getClosest(position: number, start: number, accumulator: number, stop: number): number {
@@ -190,29 +195,30 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     return this._getClosest(rightPosition, initialPadding, initialPadding, this.listWidth);
   }
 
-  _moveLeft() {
+  _moveLeft(showTransition: boolean) {
     const currentLeft = this.state.position;
     const newLeft = currentLeft - this.wrapperWidth;
-    this._setNewPosition(this._getClosestForLeft(newLeft));
+    this._setNewPosition(this._getClosestForLeft(newLeft), showTransition);
   }
 
-  _moveRight() {
+  _moveRight(showTransition: boolean) {
     const currentRight = this.state.position + this.wrapperWidth;
     const newRight = currentRight + this.wrapperWidth;
     const adjustedRight = this._getClosestForRight(newRight);
-    this._setNewPosition(adjustedRight - this.wrapperWidth);
+    this._setNewPosition(adjustedRight - this.wrapperWidth, showTransition);
   }
 
   navigate(direction) {
     const component = this;
 
     return () => {
-      component.updateState({showTransition: true});
+      const showTransition = true;
+      component.updateState({showTransition});
 
       if (direction === 'left') {
-        component._moveLeft();
+        component._moveLeft(showTransition);
       } else {
-        component._moveRight();
+        component._moveRight(showTransition);
       }
     };
   }

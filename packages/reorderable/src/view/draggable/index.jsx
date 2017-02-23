@@ -73,8 +73,9 @@ type ComponentState = {|
   wasDragging: boolean
 |}
 
+  // user-select: ${props => (props.isDragging ? 'none' : 'auto')};
 const Container = styled.div`
-  user-select: ${props => (props.isDragging ? 'none' : 'auto')};
+  user-select: 'none';
 `;
 
 export default (type: TypeId,
@@ -251,6 +252,7 @@ export default (type: TypeId,
               <DraggableDimensionPublisher
                 itemId={droppableId}
                 type={type}
+                outerRef={this.ref}
               >
                 <Container
                   isDragging={ownProps.isDragging}
@@ -271,21 +273,42 @@ export default (type: TypeId,
       return createSelector(
         [currentDragSelector, getProvided],
         (currentDrag, provided) => {
-          if (!currentDrag || !currentDrag.dragging || currentDrag.dragging.id !== provided.id) {
+          if (!currentDrag || !currentDrag.dragging) {
             return {
               provided,
               isDragging: false,
             };
           }
 
-          const offset = currentDrag.dragging.offset;
-          const initial = currentDrag.dragging.initial;
+          if (currentDrag.dragging.id === provided.id) {
+            const offset = currentDrag.dragging.offset;
+            const initial = currentDrag.dragging.initial;
 
+            return {
+              provided,
+              isDragging: true,
+              offset,
+              initial,
+            };
+          }
+
+          // not the one being dragged - but might still be mvoing
+
+          if (!currentDrag.impact.movement.draggables.includes(provided.id)) {
+            return {
+              provided,
+              isDragging: false,
+            };
+          }
+
+          console.info('should be moving out of the way');
           return {
             provided,
-            isDragging: true,
-            offset,
-            initial,
+            isDragging: false,
+            offset: {
+              x: 0,
+              y: currentDrag.impact.movement.amount,
+            },
           };
         }
       );

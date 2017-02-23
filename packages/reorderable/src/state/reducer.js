@@ -1,6 +1,7 @@
 // @flow
 import getDroppableOver from './get-droppable-over';
 import type { Action, State, Dimension, DragImpact, Dragging, DimensionMap, DragResult, CurrentDrag } from './types';
+import getDragImpact from './get-drag-impact';
 
 const initialState: State = {
   draggableDimensions: {},
@@ -17,23 +18,6 @@ const noMovement = {
 
 const shout = (message) => {
   console.log(`%c ${message}`, 'color: green; font-size: 1.5em');
-};
-
-const getDragImpact = (currentDrag: Dragging,
-draggableDimensions: DimensionMap,
-droppableDimensions: DimensionMap): DragImpact => {
-  const droppableId: ?DroppableId = getDroppableOver(
-    currentDrag.center, draggableDimensions, droppableDimensions
-  );
-  shout(`currently over: ${droppableId}`);
-
-  return {
-    movement: null,
-    destination: {
-      droppableId,
-      order: null,
-    },
-  };
 };
 
 export default (state: State = initialState, action: Action): State => {

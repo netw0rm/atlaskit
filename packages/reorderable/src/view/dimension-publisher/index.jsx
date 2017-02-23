@@ -2,12 +2,34 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import invariant from 'invariant';
+import styled from 'styled-components';
 import {
   publishDraggableDimension,
   publishDroppableDimension,
 } from '../../state/action-creators';
+import getOffset from '../get-offset';
 import type { Id, TypeId } from '../../types';
 import type { Dimension, Position, State } from '../../state/types';
+
+const getBounds = (ref: Element) => {
+  const { top, right, bottom, left, width, height } = ref.getBoundingClientRect();
+  const offset: Position = getOffset(ref);
+  const style = window.getComputedStyle(ref);
+
+  const marginTop = parseInt(style.marginTop, 10);
+  const marginRight = parseInt(style.marginRight, 10);
+  const marginBottom = parseInt(style.marginBottom, 10);
+  const marginLeft = parseInt(style.marginLeft, 10);
+
+  return {
+    top: (top + marginTop) - offset.y,
+    right: (right + marginRight) - offset.x,
+    left: (left + marginLeft) - offset.x,
+    bottom: (bottom + marginBottom) - offset.y,
+    width: width + marginLeft + marginRight,
+    height: height + marginRight + marginLeft,
+  };
+};
 
 type Props = {|
     itemId: Id,
@@ -16,6 +38,7 @@ type Props = {|
     children: React$Element<any>,
     shouldPublish: boolean,
     publish: Function,
+    outerRef?: Element
 |}
 
 export class DimensionPublisher extends PureComponent {
@@ -25,34 +48,23 @@ export class DimensionPublisher extends PureComponent {
   ref: ?Element
 /* eslint-enable */
   getDimension = (): Dimension => {
-    invariant(this.ref, 'cannot get dimensions when not attached');
+    const ref = this.props.outerRef;
+    invariant(ref, 'cannot get dimensions when not attached');
 
-    const { top, right, bottom, left, width, height } = this.ref.getBoundingClientRect();
+    const { top, right, bottom, left, width, height } = getBounds(ref);
 
-    const style = window.getComputedStyle(this.ref);
-    const marginTop = parseInt(style.marginTop, 10);
-    const marginRight = parseInt(style.marginRight, 10);
-    const marginBottom = parseInt(style.marginBottom, 10);
-    const marginLeft = parseInt(style.marginLeft, 10);
-
-    const topWithMargin = top + marginTop;
-    const rightWithMargin = right + marginRight;
-    const leftWithMargin = left + marginLeft;
-    const bottomWithMargin = bottom + marginBottom;
-
-  // custom properties
-    const centerX = (leftWithMargin + rightWithMargin) / 2;
-    const centerY = (topWithMargin + bottomWithMargin) / 2;
+    const centerX = (left + right) / 2;
+    const centerY = (top + bottom) / 2;
     const center: Position = { x: centerX, y: centerY };
 
     const dimension: Dimension = {
       id: this.props.itemId,
-      top: topWithMargin,
-      right: rightWithMargin,
-      bottom: bottomWithMargin,
-      left: leftWithMargin,
-      width: width + marginLeft + marginRight,
-      height: height + marginTop + marginBottom,
+      top,
+      right,
+      bottom,
+      left,
+      width,
+      height,
       center,
     };
 
@@ -78,15 +90,7 @@ export class DimensionPublisher extends PureComponent {
   }
 
   render() {
-    // sadly using a container div because sometimes ref is 'ref' and sometimes it is innerRef :|
-    return (
-      <div ref={this.setRef}>
-        {this.props.children}
-      </div>
-    );
-    // return cloneElement(this.props.children, {
-    //   innerRef: this.setRef,
-    // });
+    return this.props.children;
   }
 }
 

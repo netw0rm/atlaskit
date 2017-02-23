@@ -26,11 +26,13 @@ export type DraggableLocation = {|
 
 export type DimensionMap = { [key: Id]: Dimension };
 
+export type DragMovement = {|
+  draggables: DraggableId[],
+  amount: number,
+|}
+
 export type DragImpact = {|
-  movement: ?{|
-    draggables: DraggableId[],
-    amount: number,
-  |},
+  movement: DragMovement,
   destination: ?DraggableLocation
 |}
 

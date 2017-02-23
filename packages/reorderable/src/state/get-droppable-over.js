@@ -1,18 +1,14 @@
 // @flow
 import type { Position } from './types';
 import type { DroppableId, DimensionMap } from '../types';
+import isInsideDimension from './is-inside-dimension';
 
 export default (target: Position,
+// TODO: remove unused param
 draggableDimensions: DimensionMap,
 droppableDimensions: DimensionMap): ?DroppableId => {
-  const maybeId: ?DroppableId = Object.keys(droppableDimensions).find((key) => {
-    const { top, right, bottom, left } = droppableDimensions[key];
-
-    return target.x > left &&
-            target.x < right &&
-            target.y > top &&
-            target.y < bottom;
-  });
+  const maybeId: ?DroppableId = Object.keys(droppableDimensions)
+    .find(key => isInsideDimension(target, droppableDimensions[key]));
 
   return maybeId;
 };

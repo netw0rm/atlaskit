@@ -39,16 +39,28 @@ export default (type: TypeId,
 
         props: Props
 
+        ref: ?Element
+
+        setRef = (ref: ?Element) => {
+          if (ref !== this.ref) {
+            this.ref = ref;
+            this.forceUpdate();
+          }
+        }
+
         render() {
           const { id: droppableId } = this.props.provided;
 
           return (
-            <DroppableDimensionPublisher
-              itemId={droppableId}
-              type={type}
-            >
-              <Component {...this.props} />
-            </DroppableDimensionPublisher>
+            <div ref={this.setRef}>
+              <DroppableDimensionPublisher
+                itemId={droppableId}
+                type={type}
+                outerRef={this.ref}
+              >
+                <Component {...this.props} />
+              </DroppableDimensionPublisher>
+            </div>
           );
         }
       }

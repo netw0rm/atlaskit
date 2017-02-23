@@ -263,11 +263,20 @@ function bindCmdZ (pm) {
     const { $from } = pm.selection;
     const node = $from.parent;
 
-    if (!isCodeBlockNode(node)) {
-      pm.input.dispatchKey('Backspace');
-    } else {
-      commands.undo(pm);
+    if (!isCodeBlockNode(node) && node.content && node.content.content) {
+      let i = node.content.content.length;
+
+      while (i--) {
+        let child = node.content.content[i];
+
+        if (child.isText && child.marks.length) {
+          pm.input.dispatchKey('Backspace');
+          return true;
+        }
+      }
     }
+
+    commands.undo(pm);
     return true;
   }}, { name: 'inputRules' }), 20);
 }

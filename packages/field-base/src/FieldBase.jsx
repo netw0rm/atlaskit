@@ -1,8 +1,9 @@
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
+import Spinner from '@atlaskit/spinner';
 import React, { PureComponent, PropTypes } from 'react';
-import appearances, { standard, compact, none, subtle } from './internal/appearances';
+import appearances, { standard, none, subtle } from './internal/appearances';
 
 /**
  * @description Create instances of the FieldBase.
@@ -15,17 +16,28 @@ export default class FieldBase extends PureComponent {
     /**
      * @description The appearance of the field.
      *
-     * Valid values for this property are: 'standard' (default), 'compact' and 'subtle'.
+     * Valid values for this property are: 'standard' (default) and 'subtle'.
      *
-     * Compact will make the field have less padding and subtle will remove the background/border
+     * Subtle will remove the background/border
      * until a user hovers over it.
      *
      * @memberof FieldBase
      * @type {string}
      * @default standard
-     * @example <FieldBase appearance="compact" />
+     * @example <FieldBase appearance="subtle" />
      */
     appearance: PropTypes.oneOf(Object.keys(appearances)),
+    /**
+     * @description Whether the field base should be compact or not
+     *
+     * Compact will make the field have less padding.
+     *
+     * @memberof FieldBase
+     * @type {bool}
+     * @default standard
+     * @example <FieldBase isCompact />
+     */
+    isCompact: PropTypes.bool,
     /**
      * @description Whether or not a field should show a validation error.
      *
@@ -134,6 +146,17 @@ export default class FieldBase extends PureComponent {
      */
     shouldReset: PropTypes.bool,
     /**
+     * @description This flag will render a spinner on the right.
+     *
+     * Property isInvalid will take precedence if both are set.
+     *
+     * @memberof FieldBase
+     * @type {boolean}
+     * @default false
+     * @example <FieldBase hasSpinner />
+     */
+    hasSpinner: PropTypes.bool,
+    /**
      * @description The content that will be displayed within the field
      *
      * @memberof FieldBase
@@ -154,6 +177,7 @@ export default class FieldBase extends PureComponent {
     isRequired: false,
     isFitContainerWidthEnabled: false,
     shouldReset: false,
+    hasSpinner: false,
   }
 
   componentDidUpdate() {
@@ -168,9 +192,17 @@ export default class FieldBase extends PureComponent {
     </div>
   )
 
+  renderRightGutter = () => {
+    if (this.props.isInvalid) {
+      return this.renderWarningIcon();
+    }
+
+    return this.props.hasSpinner ? <Spinner /> : null;
+  }
+
   render() {
     const contentClasses = classNames(styles.contentContainer, {
-      [styles.compact]: this.props.appearance === compact,
+      [styles.compact]: this.props.isCompact,
       [styles.none]: this.props.appearance === none,
       [styles.subtle]: this.props.appearance === subtle,
       [styles.disabled]: this.props.isDisabled,
@@ -183,6 +215,7 @@ export default class FieldBase extends PureComponent {
 
     const contentWrapperClasses = classNames(styles.contentWrapper, {
       [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
+      [styles.disabled]: this.props.isDisabled,
     });
 
     return (
@@ -193,7 +226,7 @@ export default class FieldBase extends PureComponent {
           onBlurCapture={this.props.onBlur}
         >
           {this.props.children}
-          {this.props.isInvalid ? this.renderWarningIcon() : null}
+          {this.renderRightGutter()}
         </div>
       </div>
     );

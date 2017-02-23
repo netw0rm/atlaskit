@@ -16,7 +16,6 @@ export default class FieldText extends PureComponent {
     id: PropTypes.string,
     isLabelHidden: PropTypes.bool,
     shouldFitContainer: PropTypes.bool,
-    isHideMSClearButton: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -27,8 +26,6 @@ export default class FieldText extends PureComponent {
   }
 
   render() {
-    const inputClass = this.props.isHideMSClearButton ? styles.inputHideMSClear : styles.input;
-
     return (
       <div>
         <Label
@@ -44,7 +41,7 @@ export default class FieldText extends PureComponent {
           isFitContainerWidthEnabled={this.props.shouldFitContainer}
         >
           <input
-            className={inputClass}
+            className={styles.input}
             type={this.props.type}
             disabled={this.props.disabled}
             name={this.props.name}

@@ -13,7 +13,6 @@ export interface Props {
   id?: string;
   isLabelHidden?: boolean;
   shouldFitContainer?: boolean;
-  isHideMSClearButton?: boolean;
 }
 
 export class FieldText extends Component<Props, {}> { }

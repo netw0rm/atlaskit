@@ -21,7 +21,6 @@ const fieldTextPropDescriptions = {
   id: 'The id of the field text',
   isLabelHidden: 'Whether the field should show a label above it. If set to true no label will be shown and no space will be reserved for it.',
   shouldFitContainer: 'Whether or not the field should fill the width of its container.',
-  isHideMSClearButton: 'Whether or not the field should hide the browser hint to clear the field in MS browsers',
 };
 
 storiesOf(name, module)

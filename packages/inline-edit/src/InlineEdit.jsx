@@ -6,7 +6,6 @@ import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
-import EditIcon from '@atlaskit/icon/glyph/edit';
 import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
 
 export default class InlineEdit extends PureComponent {
@@ -248,34 +247,10 @@ export default class InlineEdit extends PureComponent {
       null
   )
 
-  renderEditIcon = () => (
-    <div
-      className={classNames({
-        [styles.editButtonWrapper]: true,
-      })}
-    >
-      <button
-        className={classNames({
-          [styles.editButton]: true,
-          [styles.hidden]: !this.shouldRenderEditIcon(),
-        })}
-      >
-        <div
-          className={classNames({
-            [styles.editIconWrapper]: true,
-            [styles.hidden]: !this.shouldRenderEditIcon(),
-          })}
-        >
-          <EditIcon label="Edit" size="small" />
-        </div>
-      </button>
-    </div>
-  )
-
   renderReadView = () => (
     <div className={styles.readViewContentWrapper}>
       {this.props.readView}
-      {this.renderEditIcon()}
+      <button className={styles.editButton} />
     </div>
   )
 

@@ -31,6 +31,7 @@ const DraggableItem = (() => {
     |}
 
     render() {
+      console.log('rendering', this.props.itemId);
       const { isDragging } = this.props;
       return (
         <ItemContainer isDragging={isDragging}>
@@ -95,6 +96,8 @@ const getItem = (): ItemData => ({
   id: `${++id}`,
 });
 
+const getItems = count => Array.from({ length: count }, () => getItem());
+
 const List1 = DroppableList('1', 'ITEM');
 const List2 = DroppableList('2', 'ITEM');
 const List3 = DroppableList('3', 'ITEM');
@@ -109,8 +112,8 @@ class App extends PureComponent {
   render() {
     return (
       <AppContainer>
-        <List1 items={[getItem(), getItem(), getItem()]} />
-        <List2 items={[getItem(), getItem(), getItem()]} />
+        <List1 items={getItems(3)} />
+        <List2 items={getItems(3)} />
         {/* <List3 items={[getItem(), getItem(), getItem()]} />
         <List4 items={[]} />*/}
       </AppContainer>

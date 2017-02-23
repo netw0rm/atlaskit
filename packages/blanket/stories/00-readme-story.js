@@ -23,12 +23,13 @@ const BlanketDescription = (<Description>
 </Description>);
 
 const blanketPropDescriptions = {
+  canClickThrough: 'Whether mouse events can pierce the blanket. If true, onBlanketClicked will not be fired',
   isTinted: 'Whether the blanket has a tinted background color.',
   onBlanketClicked: 'Handler function to be called when the blanket is clicked',
 };
 
 storiesOf(name, module)
-  .add('Blanket Readme', () => (
+  .add('📖 Blanket readme', () => (
     <Readme
       component={name}
       description={BlanketDescription}

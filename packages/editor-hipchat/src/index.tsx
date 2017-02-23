@@ -14,7 +14,7 @@ import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import schema from './schema';
-import { version } from '../package.json';
+import { version } from './version';
 
 let debounced: number | null = null;
 

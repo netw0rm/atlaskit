@@ -2,7 +2,7 @@ import * as React from 'react';
 import {expect} from 'chai';
 import {mount} from 'enzyme';
 import {FilmStripView, FilmStripViewItem} from '../src/index';
-import {ArrowLeftWrapper, ArrowRightWrapper, FilmStripViewWrapper} from '../src/styled';
+import {ArrowLeftWrapper, ArrowRightWrapper} from '../src/styled';
 
 const mountFilmStrip = (container: HTMLDivElement, items: Array<FilmStripViewItem>, width: number) => {
   const wrapper = mount(<FilmStripView items={items} width={width} />, {attachTo: container});

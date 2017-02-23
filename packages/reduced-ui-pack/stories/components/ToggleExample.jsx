@@ -20,7 +20,6 @@ export default class ToggleExample extends PureComponent {
           name={exampleId}
           id={exampleId}
           value={exampleId}
-          className="ak-toggle"
           defaultChecked={checked}
           disabled={disabled}
         />

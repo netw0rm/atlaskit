@@ -249,7 +249,9 @@ export class MarkdownInputRulesPlugin {
 
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.addRule(rule));
-    bindCmdZ(pm);
+    
+    // check if Cmd+Z works after prosemirror upgrade
+    //bindCmdZ(pm);
   }
 
   detach(pm: ProseMirror) {

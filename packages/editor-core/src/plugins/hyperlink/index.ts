@@ -51,7 +51,6 @@ export class HyperlinkState {
 
     pm.on.focus.add(() => {
       this.editorFocused = true;
-      this.update(false, true);
     });
 
     pm.on.blur.add(() => {

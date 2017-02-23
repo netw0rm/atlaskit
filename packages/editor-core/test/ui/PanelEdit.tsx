@@ -28,9 +28,9 @@ describe('ak-editor-core/ui/PanelEdit', () => {
   });
 
   it('should have 5 buttons in it', () => {
-    const { plugin, pm } = editor(doc(panel(paragraph('text'))));
+    const { plugin } = editor(doc(panel(paragraph('te{<>}xt'))));
     const panelEditOptions = mount(<PanelEdit pluginState={plugin}/>);
-    pm.on.focus.dispatch();
+    panelEditOptions.setState({ toolbarVisible: true });
     expect(panelEditOptions.find('button')).to.have.length(5);
   });
 
@@ -47,13 +47,6 @@ describe('ak-editor-core/ui/PanelEdit', () => {
     const panelEditOptions = mount(<PanelEdit pluginState={plugin}/>);
     pm.on.blur.dispatch();
     expect(panelEditOptions.state('toolbarVisible')).not.to.be.true;
-  });
-
-  it('should set toolbarVisible to true when panel is focused', () => {
-    const { pm, plugin } = editor(doc(panel(paragraph('text'))));
-    const panelEditOptions = mount(<PanelEdit pluginState={plugin}/>);
-    pm.on.focus.dispatch();
-    expect(panelEditOptions.state('toolbarVisible')).to.be.true;
   });
 
   it('should continue toolbarVisible to true when panelType is changed', () => {

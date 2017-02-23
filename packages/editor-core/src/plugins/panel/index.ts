@@ -58,7 +58,6 @@ export class PanelState {
 
     pm.on.focus.add(() => {
       this.editorFocused = true;
-      this.update(true);
     });
 
     pm.on.blur.add(() => {

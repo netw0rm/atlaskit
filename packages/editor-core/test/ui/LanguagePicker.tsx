@@ -69,26 +69,6 @@ describe('LanguagePicker', () => {
     });
   });
 
-  it('editor is focuseda and languagePicker is also focused', () => {
-    it('LanguagePicker will not produce null HTML', () => {
-      const { pm, plugin } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
-      const languagePicker = mount(<LanguagePicker pluginState={plugin}/>);
-      pm.on.blur.dispatch();
-      pm.on.focus.dispatch();
-      expect(languagePicker.html()).to.not.equal(null);
-    });
-  });
-
-  it('editor is focused but languagePicker is not focused', () => {
-    it('LanguagePicker will produce null HTML', () => {
-      const { pm, plugin } = editor(doc(p('parag{<>}raph'), code_block()('codeBlock')));
-      const languagePicker = mount(<LanguagePicker pluginState={plugin}/>);
-      pm.on.blur.dispatch();
-      pm.on.focus.dispatch();
-      expect(languagePicker.html()).to.equal(null);
-    });
-  });
-
   context('when code block has a language', () => {
     it('shows the formatted language', () => {
       const { plugin } = editor(doc(code_block({ language: 'js' })('text')));

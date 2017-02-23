@@ -32,7 +32,6 @@ export class CodeBlockState {
 
     pm.on.focus.add(() => {
       this.editorFocused = true;
-      this.update(true);
     });
 
     pm.on.blur.add(() => {

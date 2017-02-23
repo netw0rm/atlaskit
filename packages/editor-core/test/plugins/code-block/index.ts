@@ -106,28 +106,6 @@ describe('code-block', () => {
       });
     });
 
-    context('when code block is focused', () => {
-      it('should call subscribers', () => {
-        const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
-        const spy = sinon.spy();
-        plugin.subscribe(spy);
-        pm.on.blur.dispatch();
-        pm.on.focus.dispatch();
-        expect(spy.callCount).to.equal(3);
-      });
-    });
-
-    context('when some other block is focused', () => {
-      it('should not call subscribers', () => {
-        const { pm, plugin } = editor(doc(p('para{<>}graph'), code_block()('codeBlock')));
-        const spy = sinon.spy();
-        plugin.subscribe(spy);
-        pm.on.blur.dispatch();
-        pm.on.focus.dispatch();
-        expect(spy.callCount).to.equal(1);
-      });
-    });
-
     context('when click outside of code_block', () => {
       it('does not notify the subscriber', () => {
         const { pm, plugin } = editor(doc(p('paragraph{<>}')));
@@ -410,28 +388,31 @@ describe('code-block', () => {
   });
 
   describe('toolbarVisible', () => {
-    context('when code-block is focused', () => {
-      it('it is true', () => {
-        const { plugin, pm } = editor(doc(p('paragraph'), code_block({language: 'java'})('code{<>}Block')));
-        pm.on.focus.dispatch();
-        expect(plugin.toolbarVisible).to.be.true;
-      });
-    });
-
-    context('when another block is focused', () => {
-      it('it is false', () => {
-        const { plugin, pm } = editor(doc(p('parag{<>}raph'), code_block({language: 'java'})('codeBlock')));
-        pm.on.focus.dispatch();
-        expect(plugin.toolbarVisible).to.not.be.true;
-      });
-    });
-
     context('when editor is blur', () => {
       it('it is false', () => {
         const { plugin, pm } = editor(doc(p('paragraph'), code_block({language: 'java'})('code{<>}Block')));
         pm.on.focus.dispatch();
         pm.on.blur.dispatch();
         expect(plugin.toolbarVisible).to.not.be.true;
+      });
+    });
+  });
+
+  describe('editorFocued', () => {
+    context('when editor is focused', () => {
+      it('it is true', () => {
+        const { plugin, pm } = editor(doc(p('paragraph'), code_block({language: 'java'})('code{<>}Block')));
+        pm.on.blur.dispatch();
+        pm.on.focus.dispatch();
+        expect(plugin.editorFocused).to.be.true;
+      });
+    });
+
+    context('when editor is blur', () => {
+      it('it is false', () => {
+        const { plugin, pm } = editor(doc(p('paragraph'), code_block({language: 'java'})('code{<>}Block')));
+        pm.on.blur.dispatch();
+        expect(plugin.editorFocused).not.to.be.true;
       });
     });
   });

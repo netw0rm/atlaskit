@@ -69,15 +69,6 @@ describe('panel', () => {
       expect(spy.callCount).to.equal(1);
     });
 
-    it('should call subscribers when panel is focus', () => {
-      const { plugin, pm } = editor(doc(panel(paragraph('text'))));
-      const spy = sinon.spy();
-      plugin.subscribe(spy);
-      pm.on.blur.dispatch();
-      pm.on.focus.dispatch();
-      expect(spy.callCount).to.equal(3);
-    });
-
     it('should not call subscribers when another block in editor is focus', () => {
       const { plugin, pm } = editor(doc(paragraph('te{<>}xt'), panel(paragraph('text'))));
       const spy = sinon.spy();
@@ -132,22 +123,6 @@ describe('panel', () => {
   });
 
   describe('toolbarVisible', () => {
-    context('when panel is focused', () => {
-      it('it is true', () => {
-        const { plugin, pm } = editor(doc(panel(paragraph('te{<>}xt'))));
-        pm.on.focus.dispatch();
-        expect(plugin.toolbarVisible).to.be.true;
-      });
-    });
-
-    context('when another block is focused', () => {
-      it('it is false', () => {
-        const { plugin, pm } = editor(doc(paragraph('te{<>}xt'), panel(paragraph('text'))));
-        pm.on.focus.dispatch();
-        expect(plugin.toolbarVisible).to.not.be.true;
-      });
-    });
-
     context('when editor is blur', () => {
       it('it is false', () => {
         const { plugin, pm } = editor(doc(panel(paragraph('te{<>}xt'))));
@@ -157,4 +132,24 @@ describe('panel', () => {
       });
     });
   });
+
+  describe('editorFocued', () => {
+  context('when editor is focused', () => {
+    it('it is true', () => {
+      const { plugin, pm } = editor(doc(panel(paragraph('te{<>}xt'))));
+      pm.on.blur.dispatch();
+      pm.on.focus.dispatch();
+      expect(plugin.editorFocused).to.be.true;
+    });
+  });
+
+  context('when editor is blur', () => {
+    it('it is false', () => {
+      const { plugin, pm } = editor(doc(panel(paragraph('te{<>}xt'))));
+      pm.on.blur.dispatch();
+      expect(plugin.editorFocused).not.to.be.true;
+    });
+  });
+});
+
 });

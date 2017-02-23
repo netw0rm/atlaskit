@@ -23,7 +23,7 @@ function onDragEvent(dragEventHandler?: (event: DragEvent) => void): DragEventHa
   };
 }
 
-interface FilmStripNavigatorState {
+export interface FilmStripNavigatorState {
   showLeft: boolean;
   showRight: boolean;
   position: number;
@@ -78,12 +78,12 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     const width = `${this.props.width || defaultWidth}px`;
     const transform = `translateX(${-this.state.position}px)`;
     const leftArrow = <ShadowLeft>
-                        <ArrowLeftWrapper className="arrow" onClick={this._navigate('left')}>
+                        <ArrowLeftWrapper className="arrow" onClick={this.navigate('left')}>
                           <ArrowLeft label="left"/>
                         </ArrowLeftWrapper>
                       </ShadowLeft>;
     const rightArrow = <ShadowRight>
-                         <ArrowRightWrapper className="arrow" onClick={this._navigate('right')}>
+                         <ArrowRightWrapper className="arrow" onClick={this.navigate('right')}>
                            <ArrowRight label="right"/>
                          </ArrowRightWrapper>
                        </ShadowRight>;
@@ -105,7 +105,7 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     if (!parent) { return; }
 
     this.wrapperWidth = parent.getBoundingClientRect().width;
-    this._setNewPosition(this.state.position, this.state.showTransition);
+    this.setNewPosition(this.state.position, this.state.showTransition);
   }
 
   private getDimensions = (element: HTMLElement) => {
@@ -125,7 +125,7 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
       this.cardWidth = 0;
     }
 
-    this._setNewPosition(0, this.state.showTransition);
+    this.setNewPosition(0, this.state.showTransition);
   }
 
   private onScroll = (e: WheelEvent<HTMLDivElement>) => {
@@ -134,17 +134,17 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     if (!isHorizontalScroll) { return; }
 
     const showTransition = false;
-    this._updateState({showTransition});
-    this._setNewPosition(this.state.position + e.deltaX, showTransition);
+    this.updateState({showTransition});
+    this.setNewPosition(this.state.position + e.deltaX, showTransition);
   }
 
-  private _updateState(newState: FilmStripNavigatorPartialState) {
+  private updateState(newState: FilmStripNavigatorPartialState) {
     this.setState((prevState) => {
       return {...prevState, ...newState};
     });
   }
 
-  private _getTransitionDuration(oldPosition: number, newPosition: number): number {
+  private getTransitionDuration(oldPosition: number, newPosition: number): number {
     if (Math.abs(newPosition - oldPosition) < 1E-6) {
       return baseAnimationDuration;
     } else {
@@ -155,7 +155,7 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     }
   }
 
-  private _setNewPosition(desiredPosition: number, showTransition: boolean): void {
+  private setNewPosition(desiredPosition: number, showTransition: boolean): void {
     const oldPosition = this.state.position;
     const minPosition = 0;
     const maxPosition = Math.max(this.listWidth - this.wrapperWidth, 0);
@@ -167,16 +167,16 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     const showLeft = left > 0;
     const showRight = right < this.listWidth;
 
-    const transitionDuration = this._getTransitionDuration(oldPosition, position);
+    const transitionDuration = this.getTransitionDuration(oldPosition, position);
     const arrowVisibilityDelay = showTransition ? transitionDuration * 1000 : 0;
 
     // Delaying arrow state in order to not modify it visibility until the transition has finished
-    setTimeout(() => this._updateState({showLeft, showRight}), arrowVisibilityDelay);
+    setTimeout(() => this.updateState({showLeft, showRight}), arrowVisibilityDelay);
 
-    this._updateState({position, transitionDuration});
+    this.updateState({position, transitionDuration});
   }
 
-  private _getClosest(position: number, start: number, accumulator: number, stop: number): number {
+  private getClosest(position: number, start: number, accumulator: number, stop: number): number {
     // First position
     let minDist = Math.abs(position - start);
     let result = start;
@@ -202,38 +202,38 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     return result;
   }
 
-  private _getClosestForLeft(leftPosition: number): number {
-    return this._getClosest(leftPosition, 0, initialPadding - 2 * cardPadding, this.listWidth - initialPadding);
+  private getClosestForLeft(leftPosition: number): number {
+    return this.getClosest(leftPosition, 0, initialPadding - 2 * cardPadding, this.listWidth - initialPadding);
   }
 
-  private _getClosestForRight(rightPosition: number): number {
-    return this._getClosest(rightPosition, initialPadding, initialPadding, this.listWidth);
+  private getClosestForRight(rightPosition: number): number {
+    return this.getClosest(rightPosition, initialPadding, initialPadding, this.listWidth);
   }
 
-  private _moveLeft(showTransition: boolean): void {
+  private moveLeft(showTransition: boolean): void {
     const currentLeft = this.state.position;
     const newLeft = currentLeft - this.wrapperWidth;
-    this._setNewPosition(this._getClosestForLeft(newLeft), showTransition);
+    this.setNewPosition(this.getClosestForLeft(newLeft), showTransition);
   }
 
-  private _moveRight(showTransition: boolean): void {
+  private moveRight(showTransition: boolean): void {
     const currentRight = this.state.position + this.wrapperWidth;
     const newRight = currentRight + this.wrapperWidth;
-    const adjustedRight = this._getClosestForRight(newRight);
-    this._setNewPosition(adjustedRight - this.wrapperWidth, showTransition);
+    const adjustedRight = this.getClosestForRight(newRight);
+    this.setNewPosition(adjustedRight - this.wrapperWidth, showTransition);
   }
 
-  private _navigate(direction: NavigationDirection): () => void {
+  private navigate(direction: NavigationDirection): () => void {
     const component = this;
 
     return () => {
       const showTransition = true;
-      component._updateState({showTransition});
+      component.updateState({showTransition});
 
       if (direction === 'left') {
-        component._moveLeft(showTransition);
+        component.moveLeft(showTransition);
       } else {
-        component._moveRight(showTransition);
+        component.moveRight(showTransition);
       }
     };
   }

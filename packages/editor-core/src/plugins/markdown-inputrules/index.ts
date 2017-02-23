@@ -249,38 +249,12 @@ export class MarkdownInputRulesPlugin {
 
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.addRule(rule));
-    
-    // check if Cmd+Z works after prosemirror upgrade
-    //bindCmdZ(pm);
   }
 
   detach(pm: ProseMirror) {
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
-}
-
-function bindCmdZ (pm) {
-  pm.addKeymap(new Keymap({ 'Cmd-Z': pm => {
-    const { $from } = pm.selection;
-    const node = $from.parent;
-
-    if (!isCodeBlockNode(node) && node.content && node.content.content) {
-      let i = node.content.content.length;
-
-      while (i--) {
-        let child = node.content.content[i];
-
-        if (child.isText && child.marks.length) {
-          pm.input.dispatchKey('Backspace');
-          return true;
-        }
-      }
-    }
-
-    commands.undo(pm);
-    return true;
-  }}, { name: 'inputRules' }), 20);
 }
 
 // IE11 + multiple prosemirror fix.

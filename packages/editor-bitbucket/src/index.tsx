@@ -206,7 +206,7 @@ export default class Editor extends PureComponent<Props, State> {
       const { context } = this.props;
       const pm = new ProseMirror({
         place,
-        doc: parseHtml(this.props.defaultValue || ''),
+        doc: parseHtml(this.props.defaultValue || '<p><br><br></p>'),
         plugins: [
           MarkdownInputRulesPlugin,
           HyperlinkPlugin,

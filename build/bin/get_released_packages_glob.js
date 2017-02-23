@@ -15,6 +15,8 @@ function releasedPackagesToScopeGlob() {
   } else {
     const releasedPackages = process.argv[2]
       .split('\n')
+      // Remove any lines that don't look like packages, Should never happen, but just in case...
+      .filter(releasedPackage => releasedPackage.match(/^(.+?)@/))
       // remove the version field
       .map(releasedPackage => releasedPackage.match(/^(.+?)@/)[1]);
     const lernaGlob = changedPackagesToLernaGlob(releasedPackages);

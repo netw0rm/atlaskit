@@ -87,6 +87,12 @@
         .borders-and-padding(@base-border-width-focused, @base-horizontal-padding, @base-height-compact)
       }
 
+      &.subtle {
+        &.paddingDisabled {
+          margin: unit(-(@base-border-width-focused), px);
+        }
+      }
+
       &.paddingDisabled {
         margin: unit(-(@base-border-width-focused/2), px);
       }

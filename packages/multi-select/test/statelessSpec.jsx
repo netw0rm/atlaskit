@@ -291,40 +291,50 @@ describe(`${name} - stateless`, () => {
 
       it('should call focusNextItem when ArrowDown is pressed and Select is open', () => {
         const spy = sinon.spy(instance, 'focusNextItem');
-        const event = { key: 'ArrowDown' };
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowDown', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
         expect(spy.calledOnce).to.equal(true);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
       });
 
       it('should call focusNextItem when ArrowDown is pressed and Select is closed', () => {
         wrapper.setProps({ isOpen: false });
         const spy = sinon.spy(instance, 'focusNextItem');
-        const event = { key: 'ArrowDown' };
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowDown', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
         expect(spy.calledOnce).to.equal(true);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
       });
 
       it('should call onOpenChange when ArrowDown is pressed and Select is closed', () => {
         wrapper.setProps({ isOpen: false });
         const spy = sinon.spy(instance, 'onOpenChange');
-        const event = { key: 'ArrowDown' };
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowDown', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
         expect(spy.calledOnce).to.equal(true);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
       });
 
       it('should call focusPreviousItem when ArrowUp is pressed and Select is open', () => {
         const spy = sinon.spy(instance, 'focusPreviousItem');
-        const event = { key: 'ArrowUp' };
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowUp', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
         expect(spy.calledOnce).to.equal(true);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
       });
 
       it('should NOT call focusPreviousItem when ArrowUp is pressed and Select is closed', () => {
         wrapper.setProps({ isOpen: false });
         const spy = sinon.spy(instance, 'focusPreviousItem');
-        const event = { key: 'ArrowUp' };
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowUp', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
         expect(spy.called).to.equal(false);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
       });
 
       it('should call handleItemSelect when Enter is pressed and an item is focused and Select is open', () => {
@@ -564,6 +574,7 @@ describe(`${name} - stateless`, () => {
 
     beforeEach(() => {
       wrapper = mount(<StatelessMultiSelect
+        appearance="subtle"
         isDisabled
         items={selectItems}
         selectedItems={selectedItems}
@@ -572,6 +583,10 @@ describe(`${name} - stateless`, () => {
 
     it('native select should be "disabled"', () => {
       expect(wrapper.find('select[disabled]').length).to.equal(1);
+    });
+
+    it('should pass appearance property to field base', () => {
+      expect(wrapper.find(FieldBase).prop('appearance')).to.equal('subtle');
     });
 
     it('should pass isDisabled property to field base', () => {
@@ -584,6 +599,22 @@ describe(`${name} - stateless`, () => {
 
     it('should not render input if disabled', () => {
       expect(wrapper.find('input[disabled]').length).to.equal(0);
+    });
+  });
+
+  describe('appearance variations', () => {
+    it('should have appearance prop by default', () => {
+      const wrapper = mount(<StatelessMultiSelect />);
+      expect(wrapper.prop('appearance')).to.equal('default');
+    });
+
+    it('should correctly map appearance prop to FieldBase', () => {
+      const defaultMultiSelect = mount(<StatelessMultiSelect />);
+      const standardFieldBase = defaultMultiSelect.find(FieldBase);
+      const subtleMultiSelect = mount(<StatelessMultiSelect appearance="subtle" />);
+      const subtleFieldBase = subtleMultiSelect.find(FieldBase);
+      expect(standardFieldBase.prop('appearance')).to.equal('standard');
+      expect(subtleFieldBase.prop('appearance')).to.equal('subtle');
     });
   });
 });

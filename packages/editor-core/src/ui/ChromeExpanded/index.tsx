@@ -1,6 +1,5 @@
 import AkButton from 'ak-button';
 import AkButtonGroup from 'ak-button-group';
-import ImageIcon from 'ak-icon/glyph/editor/image';
 import MentionIcon from 'ak-icon/glyph/editor/mention';
 import { PureComponent } from 'react';
 import * as React from 'react';
@@ -24,6 +23,7 @@ import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
+import ToolbarImage from '../ToolbarImage';
 import * as styles from './styles';
 
 export interface Props {
@@ -88,11 +88,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
               <MentionIcon label="Mention" />
             </ToolbarButton>
             }
-            {!props.pluginStateImageUpload ? null :
-            <ToolbarButton onClick={this.handleInsertImage}>
-              <ImageIcon label="Image" />
-            </ToolbarButton>
-            }
+            {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} /> : null}
           </div>
         </div>
       </div>
@@ -104,15 +100,6 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
     const { onCancel } = this.props;
     if (onCancel) {
       onCancel();
-    }
-  }
-
-  @analytics('atlassian.editor.image.button')
-  private handleInsertImage = () => {
-    const { pluginStateImageUpload } = this.props;
-
-    if (pluginStateImageUpload) {
-      pluginStateImageUpload.handleImageUpload();
     }
   }
 

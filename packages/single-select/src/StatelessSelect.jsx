@@ -133,13 +133,7 @@ export default class StatelessSelect extends PureComponent {
     return allItems;
   }
 
-  getAllVisibleItems = (groups) => {
-    let allFilteredItems = [];
-    groups.forEach((val) => {
-      allFilteredItems = allFilteredItems.concat(this.filterItems(val.items));
-    });
-    return allFilteredItems;
-  }
+  getAllVisibleItems = groups => this.filterItems(this.getAllItems(groups))
 
   getNextNativeSearchItem = (items, key, currentIndex, isSecondStep) => {
     let res = items.find((item, index) => {
@@ -159,6 +153,7 @@ export default class StatelessSelect extends PureComponent {
 
   setNativeSearchCounter = () => setTimeout(() => {
     this.nativeSearchKey = '';
+    this.nativeSearchCounter = undefined;
   }, 200)
 
   filterItems = (items) => {
@@ -190,7 +185,6 @@ export default class StatelessSelect extends PureComponent {
   }
 
   handleNativeSearch = (event) => {
-    if (this.props.hasAutocomplete) return;
     const { selectedItem, items } = this.props;
     const { key: eventKey } = event;
     let { nativeSearchKey } = this;
@@ -242,7 +236,9 @@ export default class StatelessSelect extends PureComponent {
         }
         break;
       default:
-        this.handleNativeSearch(event);
+        if (!this.props.hasAutocomplete) {
+          this.handleNativeSearch(event);
+        }
         break;
     }
   }

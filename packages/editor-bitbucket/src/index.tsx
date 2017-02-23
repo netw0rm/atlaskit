@@ -24,7 +24,7 @@ import { PureComponent } from 'react';
 import markdownSerializer from './markdown-serializer';
 import { MentionResource, MentionSource } from './mention-resource';
 import { parseHtml, transformHtml } from './parse-html';
-import { version, name } from '../package.json';
+import { version, name } from './version';
 
 export { version };
 

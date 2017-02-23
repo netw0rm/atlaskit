@@ -14,7 +14,7 @@ const waitAndContinue = (f: () => void) => {
   setTimeout(f, 1000);
 };
 
-describe('Filmstrip', () => {
+describe.skip('Filmstrip', () => {
   const items: Array<FilmStripViewItem> = [
     {
       id: 'some-id-1',

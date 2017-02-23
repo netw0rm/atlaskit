@@ -4,7 +4,7 @@
   "config": {
     "access": "public"
   },
-  "description": "TypeScript component template",
+  "description": "Includes components that show media cards as a filmstrip",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",

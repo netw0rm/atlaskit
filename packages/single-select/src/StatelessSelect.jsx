@@ -144,11 +144,11 @@ export default class StatelessSelect extends PureComponent {
       if (index <= currentIndex) {
         return false;
       }
-      return content && content.indexOf(key) === 0;
+      return content && (content.indexOf(key.toLowerCase()) === 0);
     });
 
     if (!res && !isSecondStep) {
-      res = this.getNextNativeSearchItem(items, key, 0, true);
+      res = this.getNextNativeSearchItem(items, key, -1, true);
     }
 
     return res;

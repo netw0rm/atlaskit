@@ -24,6 +24,7 @@ export default props => (
       appearance={props.appearance}
       isPaddingDisabled={props.isPaddingDisabled}
       isFitContainerWidthEnabled={props.isFitContainerWidthEnabled}
+      hasSpinner={props.hasSpinner}
     >
       {props.children}
     </AkFieldBase>

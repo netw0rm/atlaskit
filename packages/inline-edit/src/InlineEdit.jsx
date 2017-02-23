@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import Button from '@atlaskit/button';
-import Spinner from '@atlaskit/spinner';
 import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
 import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
@@ -262,12 +261,6 @@ export default class InlineEdit extends PureComponent {
       this.props.editView
   )
 
-  renderSpinner = () => (
-    <div className={styles.spinnerWrapper}>
-      <Spinner />
-    </div>
-  )
-
   render() {
     return (
       <div className={this.getRootClasses()}>
@@ -296,12 +289,13 @@ export default class InlineEdit extends PureComponent {
               isFitContainerWidthEnabled={this.props.isEditing}
               appearance={this.props.isEditing ? 'standard' : 'subtle'}
               isDisabled={this.shouldRenderSpinner()}
+              hasSpinner={this.shouldRenderSpinner()}
               shouldReset={this.shouldResetFieldBase}
             >
               {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
             </FieldBase>
           </div>
-          {this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()}
+          {!this.shouldRenderSpinner() ? this.renderActionButtons() : null}
         </div>
       </div>
     );

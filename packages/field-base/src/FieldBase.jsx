@@ -2,6 +2,7 @@ import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import React, { PureComponent, PropTypes } from 'react';
+import Spinner from '@atlaskit/spinner';
 import appearances, { standard, compact, none, subtle } from './internal/appearances';
 
 /**
@@ -133,6 +134,16 @@ export default class FieldBase extends PureComponent {
      * @example <FieldBase shouldReset />
      */
     shouldReset: PropTypes.bool,
+    /** @description This flag will render a spinner on the right.
+     *
+     * Property isInvalid will take precedence if both are set.
+     *
+     * @memberof FieldBase
+     * @type {boolean}
+     * @default false
+     * @example <FieldBase hasSpinner />
+     */
+    hasSpinner: PropTypes.bool,
     /**
      * @description The content that will be displayed within the field
      *
@@ -154,6 +165,7 @@ export default class FieldBase extends PureComponent {
     isRequired: false,
     isFitContainerWidthEnabled: false,
     shouldReset: false,
+    hasSpinner: false,
   }
 
   componentDidUpdate() {
@@ -167,6 +179,14 @@ export default class FieldBase extends PureComponent {
       <WarningIcon label="warning" />
     </div>
   )
+
+  renderRightGutter = () => {
+    if (this.props.isInvalid) {
+      return this.renderWarningIcon();
+    }
+
+    return this.props.hasSpinner ? <Spinner /> : null;
+  }
 
   render() {
     const contentClasses = classNames(styles.contentContainer, {
@@ -183,6 +203,7 @@ export default class FieldBase extends PureComponent {
 
     const contentWrapperClasses = classNames(styles.contentWrapper, {
       [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
+      [styles.disabled]: this.props.isDisabled,
     });
 
     return (
@@ -193,7 +214,7 @@ export default class FieldBase extends PureComponent {
           onBlurCapture={this.props.onBlur}
         >
           {this.props.children}
-          {this.props.isInvalid ? this.renderWarningIcon() : null}
+          {this.renderRightGutter()}
         </div>
       </div>
     );

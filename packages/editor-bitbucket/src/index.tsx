@@ -24,7 +24,7 @@ import { PureComponent } from 'react';
 import markdownSerializer from './markdown-serializer';
 import { MentionResource, MentionSource } from './mention-resource';
 import { parseHtml, transformHtml } from './parse-html';
-import { version, name } from '../package.json';
+import { version, name } from './version';
 
 export { version };
 
@@ -206,7 +206,7 @@ export default class Editor extends PureComponent<Props, State> {
       const { context } = this.props;
       const pm = new ProseMirror({
         place,
-        doc: parseHtml(this.props.defaultValue || ''),
+        doc: parseHtml(this.props.defaultValue || '<p><br><br></p>'),
         plugins: [
           MarkdownInputRulesPlugin,
           HyperlinkPlugin,

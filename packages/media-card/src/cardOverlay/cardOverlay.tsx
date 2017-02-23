@@ -10,6 +10,7 @@ import TickIcon from '@atlaskit/icon/glyph/editor/check';
 import {FileIcon} from '../generic/fileIcon/fileIcon';
 import {ErrorIcon} from '../generic/errorIcon/errorIcon';
 import MoreIcon from '@atlaskit/icon/glyph/more';
+import Ellipsify from '../ellipsify';
 import {
   MoreBtn,
   DeleteBtn,
@@ -29,12 +30,16 @@ import {
 } from './styled';
 
 export interface CardOverlayProps {
+  height: number;
+  width: number;
+
   mediaType?: MediaType;
   mediaName?: string;
   mediaSize?: number;
 
   selectable?: boolean;
   selected?: boolean;
+  persistent: boolean;
 
   progress?: number;
 
@@ -89,18 +94,25 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       if (this.props.mediaType) {
         classNames.push(this.props.mediaType);
       }
+
+      if (!this.props.persistent) {
+        classNames.push('show-on-hover');
+      }
+
     }
 
     if (this.state.isMenuExpanded) {
       classNames.push('active');
     }
 
+    const text = this.props.mediaName || '';
+
     return (
       <Overlay className={classNames.join(' ')}>
         <TopRow className={'top-row'}>
           {this.errorLine()}
           <TitleWrapper className={'title'}>
-            {this.props.mediaName}
+            <Ellipsify text={text} lines={2}/>
           </TitleWrapper>
           {this.tickBox()}
         </TopRow>

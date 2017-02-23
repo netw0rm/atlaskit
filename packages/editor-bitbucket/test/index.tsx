@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { SinonSpy } from 'sinon';
-import { doc, h1, mention, p, strong } from './_schema-builder';
+import { br, doc, h1, mention, p, strong, code_block } from './_schema-builder';
 
 import { ProseMirror } from '@atlaskit/editor-core';
 import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from '@atlaskit/editor-core/test-helper';
@@ -13,7 +13,7 @@ chai.use(chaiPlugin);
 
 const expect = chai.expect;
 
-describe('ak-editor-bitbucket/expand and collapse', () => {
+describe('editor-bitbucket/expand and collapse', () => {
   it('should not render expanded chrome when collapsed by default', () => {
     expect(mount(<Editor />).find('ChromeCollapsed')).to.have.length.above(0);
     expect(mount(<Editor />).find('input[placeholder]')).to.have.length.above(0);
@@ -32,6 +32,11 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
 
     expect(editorWrapper.find('ChromeCollapsed').length).to.equal(0);
     expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
+  });
+
+  it('defaults to have a paragraph with a few new lines', () => {
+    const editor = mount(<Editor isExpandedByDefault />).get(0) as any;
+    expect(editor.doc).to.deep.equal(doc(p(br, br)));
   });
 
   it('.expand() method should expand the editor chrome', () => {
@@ -73,7 +78,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
   });
 });
 
-describe('ak-editor-bitbucket/setFromHtml', () => {
+describe('editor-bitbucket/setFromHtml', () => {
   let editor: Editor;
 
   beforeEach(() => {
@@ -97,7 +102,7 @@ describe('ak-editor-bitbucket/setFromHtml', () => {
   });
 });
 
-describe('ak-editor-bitbucket/imageUploadHandler', () => {
+describe('editor-bitbucket/imageUploadHandler', () => {
   let editor: ReactWrapper<any, any>;
   let spy: SinonSpy;
 
@@ -169,7 +174,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
   });
 });
 
-describe('ak-editor-bitbucket/multiple editors as children', () => {
+describe('editor-bitbucket/multiple editors as children', () => {
   const fixture = fixtures();
   type Props = {};
   type State = {};
@@ -211,7 +216,7 @@ describe('ak-editor-bitbucket/multiple editors as children', () => {
   });
 });
 
-describe('ak-editor-bitbucket/toolbar', () => {
+describe('editor-bitbucket/toolbar', () => {
   let editor: ReactWrapper<any, any>;
 
   beforeEach(() => {
@@ -232,13 +237,13 @@ describe('ak-editor-bitbucket/toolbar', () => {
   });
 });
 
-describe('ak-editor-bitbucket/pasting', () => {
+describe('editor-bitbucket/pasting', () => {
   const fixture = fixtures();
   let editor: Editor;
   let pm: ProseMirror;
 
   beforeEach(() => {
-    editor = mount(<Editor isExpandedByDefault />, { attachTo: fixture() }).get(0) as any;
+    editor = mount(<Editor isExpandedByDefault defaultValue="<p></p>" />, { attachTo: fixture() }).get(0) as any;
     pm = editor!.state!.pm as ProseMirror;
   });
 
@@ -266,5 +271,28 @@ describe('ak-editor-bitbucket/pasting', () => {
     }
 
     expect(editor.doc).to.deep.equal(doc(p(mention({ id: 'mention', displayName: '@Mention' }), ' some mention.')));
+  });
+});
+
+describe('editor-bitbucket/keymaps', () => {
+  const fixture = fixtures();
+  let editor: Editor;
+  let pm: ProseMirror;
+
+  beforeEach(() => {
+    editor = mount(<Editor isExpandedByDefault />, { attachTo: fixture() }).get(0) as any;
+    pm = editor!.state!.pm as ProseMirror;
+  });
+
+  it('should undo code block with Cmd+Z', function() {
+    editor.setFromHtml('<p></p>');
+    pm.input.insertText(1, 1, '```');
+    pm.input.dispatchKey('Enter');
+
+    expect(pm.doc).to.deep.equal(doc(code_block()('')));
+
+    pm.input.dispatchKey('Cmd-Z');
+
+    expect(pm.doc).to.deep.equal(doc(p()));
   });
 });

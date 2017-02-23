@@ -11,7 +11,7 @@ import {MediaType} from '@atlaskit/media-core';
 export * from './generic/fileIcon/fileIcon';
 export * from './generic/errorIcon/errorIcon';
 export * from './generic/placeholder/placeholder';
-export * from './generic/spinner/spinner';
+export * from './ellipsify';
 
 export interface CardViewProps {
   height?: number;
@@ -46,7 +46,6 @@ export class CardView extends Component<CardViewProps, {}> {
     const height = this.props.height || DEFAULT_CARD_DIMENSIONS.HEIGHT;
     const width = this.props.width || DEFAULT_CARD_DIMENSIONS.WIDTH;
     const cardStyle = {height: `${height}px`, width: `${width}px`};
-
     const error = this.props.error;
 
     if (error) {
@@ -54,15 +53,33 @@ export class CardView extends Component<CardViewProps, {}> {
         <Card style={cardStyle} className={'card'} onClick={this.onClick.bind(this)}>
           <div className={'wrapper'} />
           <CardOverlay
+            persistent={true}
             mediaName={this.props.mediaName}
             mediaType={this.props.mediaType}
             error={error}
             onRetry={this.props.onRetry}
             menuActions={this.props.menuActions}
+            height={height}
+            width={width}
           />
         </Card>
       );
     } else {
+      const isPersistent = !(this.props.mediaType === 'image' && this.props.dataURI);
+      const overlay = this.props.loading ? false : <CardOverlay
+        persistent={isPersistent}
+        selectable={this.props.selectable}
+        selected={this.props.selected}
+
+        mediaName={this.props.mediaName}
+        mediaType={this.props.mediaType}
+        mediaSize={this.props.mediaSize}
+        progress={this.props.progress}
+
+        menuActions={this.props.menuActions}
+        height={height}
+        width={width}
+      />;
       return (
         <Card style={cardStyle} className={'card'} onClick={this.onClick.bind(this)}>
           <div className={'wrapper'}>
@@ -73,18 +90,8 @@ export class CardView extends Component<CardViewProps, {}> {
                 dataURI={this.props.dataURI}
               />
             </div>
+            {overlay}
           </div>
-          <CardOverlay
-            selectable={this.props.selectable}
-            selected={this.props.selected}
-
-            mediaName={this.props.mediaName}
-            mediaType={this.props.mediaType}
-            mediaSize={this.props.mediaSize}
-            progress={this.props.progress}
-
-            menuActions={this.props.menuActions}
-          />
         </Card>
       );
     }

@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* Writing this file in js to make it easier to read and maintain */
 const changedPackagesToLernaGlob = require('./_changed_packages_to_lerna_glob');
 
 /* Takes a list of released packages from the command line and outputs a glob that can be used

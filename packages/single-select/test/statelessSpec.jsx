@@ -474,4 +474,20 @@ describe(name, () => {
       });
     });
   });
+
+  describe('appearance variations', () => {
+    it('should have appearance prop by default', () => {
+      const wrapper = mount(<StatelessSelect />);
+      expect(wrapper.prop('appearance')).to.equal('default');
+    });
+
+    it('should correctly map appearance prop to FieldBase', () => {
+      const defaultMultiSelect = mount(<StatelessSelect />);
+      const standardFieldBase = defaultMultiSelect.find(FieldBase);
+      const subtleMultiSelect = mount(<StatelessSelect appearance="subtle" />);
+      const subtleFieldBase = subtleMultiSelect.find(FieldBase);
+      expect(standardFieldBase.prop('appearance')).to.equal('standard');
+      expect(subtleFieldBase.prop('appearance')).to.equal('subtle');
+    });
+  });
 });

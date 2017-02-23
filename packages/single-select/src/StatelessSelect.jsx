@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 import NothingWasFound from './internal/NothingWasFound';
+import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
 
 export const itemShape = PropTypes.shape({
   content: PropTypes.node,
@@ -20,6 +21,7 @@ export const itemShape = PropTypes.shape({
 
 export default class StatelessSelect extends PureComponent {
   static propTypes = {
+    appearance: PropTypes.oneOf(appearances.values),
     filterValue: PropTypes.string,
     hasAutocomplete: PropTypes.bool,
     id: PropTypes.string,
@@ -43,6 +45,7 @@ export default class StatelessSelect extends PureComponent {
   }
 
   static defaultProps = {
+    appearance: appearances.default,
     filterValue: '',
     hasAutocomplete: false,
     isOpen: false,
@@ -356,6 +359,7 @@ export default class StatelessSelect extends PureComponent {
           shouldFitContainer
           trigger={
             <FieldBase
+              appearance={mapAppearanceToFieldBase([this.props.appearance])}
               isDisabled={this.props.isDisabled}
               isFitContainerWidthEnabled
               isFocused={this.props.isOpen || this.state.isFocused}

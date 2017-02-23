@@ -574,6 +574,7 @@ describe(`${name} - stateless`, () => {
 
     beforeEach(() => {
       wrapper = mount(<StatelessMultiSelect
+        appearance="subtle"
         isDisabled
         items={selectItems}
         selectedItems={selectedItems}
@@ -582,6 +583,10 @@ describe(`${name} - stateless`, () => {
 
     it('native select should be "disabled"', () => {
       expect(wrapper.find('select[disabled]').length).to.equal(1);
+    });
+
+    it('should pass appearance property to field base', () => {
+      expect(wrapper.find(FieldBase).prop('appearance')).to.equal('subtle');
     });
 
     it('should pass isDisabled property to field base', () => {
@@ -594,6 +599,22 @@ describe(`${name} - stateless`, () => {
 
     it('should not render input if disabled', () => {
       expect(wrapper.find('input[disabled]').length).to.equal(0);
+    });
+  });
+
+  describe('appearance variations', () => {
+    it('should have appearance prop by default', () => {
+      const wrapper = mount(<StatelessMultiSelect />);
+      expect(wrapper.prop('appearance')).to.equal('default');
+    });
+
+    it('should correctly map appearance prop to FieldBase', () => {
+      const defaultMultiSelect = mount(<StatelessMultiSelect />);
+      const standardFieldBase = defaultMultiSelect.find(FieldBase);
+      const subtleMultiSelect = mount(<StatelessMultiSelect appearance="subtle" />);
+      const subtleFieldBase = subtleMultiSelect.find(FieldBase);
+      expect(standardFieldBase.prop('appearance')).to.equal('standard');
+      expect(subtleFieldBase.prop('appearance')).to.equal('subtle');
     });
   });
 });

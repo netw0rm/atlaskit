@@ -3,9 +3,8 @@ import * as React from 'react';
 
 import { name } from '../package.json';
 import EmojiTextInput from './demo-emoji-typeahead-text-input';
-import { getEmojiService } from './story-data';
-
-const emojiService = getEmojiService();
+import { getEmojiResource } from './story-data';
+import TriggeredEmojiResource from './TriggeredEmojiResource';
 
 const bottomStyle = {
   position: 'absolute',
@@ -26,7 +25,7 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
     <EmojiTextInput
       label="Emoji search"
       onSelection={action('emoji selected')}
-      emojiService={emojiService}
+      emojiProvider={getEmojiResource()}
       position="below"
       afterContent
     />
@@ -35,7 +34,7 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
     <EmojiTextInput
       label="Emoji search"
       onSelection={action('emoji selected')}
-      emojiService={emojiService}
+      emojiProvider={getEmojiResource()}
       beforeContent
       afterContent
     />
@@ -45,7 +44,7 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
       <EmojiTextInput
         label="Emoji search"
         onSelection={action('emoji selected')}
-        emojiService={emojiService}
+        emojiProvider={getEmojiResource()}
         position="above"
         beforeContent
       />
@@ -57,11 +56,48 @@ storiesOf(`${name}/EmojiTypeAhead`, module)
         <EmojiTextInput
           label="Emoji search"
           onSelection={action('emoji selected')}
-          emojiService={emojiService}
+          emojiProvider={getEmojiResource()}
           position="above"
           beforeContent
           afterContent
         />
       </div>
     </div>
-  ));
+  ))
+  .add('slow loading typeahead', () => {
+    let loadStandardRef;
+    let loadAtlassianRef;
+    const emojiResource: TriggeredEmojiResource = new TriggeredEmojiResource();
+
+    const loadStandard = () => {
+      emojiResource.triggerStandardLoaded();
+      if (loadStandardRef) {
+        loadStandardRef.disabled = 'disabled';
+      }
+    };
+
+    const loadAtlassian = () => {
+      emojiResource.triggerAtlassianLoaded();
+      if (loadAtlassianRef) {
+        loadAtlassianRef.disabled = 'disabled';
+      }
+    };
+
+    return (
+      <div style={{ padding: '10px' }} >
+        <div style={{ padding: '10px' }}>
+          <button onClick={loadStandard} ref={(ref) => { loadStandardRef = ref; }}>Load Standard Emojis</button>
+          <button onClick={loadAtlassian} ref={(ref) => { loadAtlassianRef = ref; }}>Load Atlassian Emojis</button>
+        </div>
+        <EmojiTextInput
+          label="Emoji search"
+          onSelection={action('emoji selected')}
+          emojiProvider={Promise.resolve(emojiResource)}
+          position="below"
+          afterContent
+          disableBlur
+        />
+      </div>
+    );
+  });
+

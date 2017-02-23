@@ -9,11 +9,12 @@ import CategorySelector from './CategorySelector';
 import EmojiPickerList from './EmojiPickerList';
 import EmojiPickerFooter from './EmojiPickerFooter';
 import Popup from '../common/Popup';
-import EmojiService from '../../api/EmojiService';
+import { EmojiSearchResult } from '../../api/EmojiService';
+import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
 import { AvailableCategories, EmojiDescription, EmojiId, OnEmojiEvent, RelativePosition } from '../../types';
 
 export interface Props {
-  emojiService: EmojiService;
+  emojiProvider: Promise<EmojiProvider>;
   onSelection?: OnEmojiEvent;
 
   target?: string | HTMLElement;
@@ -30,25 +31,10 @@ export interface State {
   selectedCategory?: string;
   selectedTone?: number;
   availableCategories?: AvailableCategories;
-  query?: string;
+  query: string;
+  // the picker is considered loaded when at least 1 set of emojis have loaded
+  loaded: boolean;
 }
-
-const newState = (emojiService: EmojiService, query?: string): State => {
-  const { emojis, categories } = emojiService.search(query);
-  const activeCategory = emojis.length ? emojis[0].category : undefined;
-
-  const state: State = {
-    selectedEmoji: undefined,
-    activeCategory,
-    selectedCategory: undefined,
-    filteredEmojis: emojis,
-    selectedTone: undefined,
-    availableCategories: categories,
-    query,
-  };
-
-  return state;
-};
 
 export default class EmojiPicker extends PureComponent<Props, State> {
 
@@ -59,12 +45,46 @@ export default class EmojiPicker extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.state = newState(props.emojiService, '');
+    this.state = {
+      filteredEmojis: [],
+      query: '',
+      loaded: false,
+    };
+
+  }
+
+  componentWillMount() {
+    if (this.props.emojiProvider) {
+      this.props.emojiProvider.then(provider => {
+        provider.subscribe(this.onProviderChange);
+        this.onSearch(this.state.query);
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.emojiProvider) {
+      this.props.emojiProvider.then(provider => {
+        provider.unsubscribe(this.onProviderChange);
+      });
+    }
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (this.props.emojiService !== nextProps.emojiService) {
-      this.setState(newState(nextProps.emojiService, this.state.query));
+    const prevEmojiProvider = this.props.emojiProvider;
+    const nextEmojiProvider = nextProps.emojiProvider;
+    if (prevEmojiProvider !== nextEmojiProvider) {
+      if (prevEmojiProvider) {
+        prevEmojiProvider.then(provider => {
+          provider.unsubscribe(this.onProviderChange);
+        });
+      }
+      if (nextEmojiProvider) {
+        nextEmojiProvider.then(provider => {
+          provider.subscribe(this.onProviderChange);
+          this.onSearch(this.state.query);
+        });
+      }
     }
   }
 
@@ -81,25 +101,30 @@ export default class EmojiPicker extends PureComponent<Props, State> {
   }
 
   onCategorySelected = (categoryId: string) => {
-    const emojisInCategory = this.props.emojiService.all().emojis.filter(
-      emoji => emoji.category === categoryId
-    );
-
-    if (emojisInCategory) {
-      this.setState({
-        activeCategory: categoryId,
-        selectedCategory: categoryId,
-        selectedEmoji: emojisInCategory[0],
-      } as State);
-    }
+    this.props.emojiProvider.then(provider => {
+        provider.findInCategory(categoryId).then(emojisInCategory => {
+        if (emojisInCategory && emojisInCategory.length) {
+          this.setState({
+            activeCategory: categoryId,
+            selectedCategory: categoryId,
+            selectedEmoji: emojisInCategory[0],
+          } as State);
+        }
+      });
+    });
   }
 
-  onSearch = (query) => {
-    const searchResults = this.props.emojiService.search(query);
+  private onSearch = (query) => {
+    this.props.emojiProvider.then(provider => {
+      provider.filter(query);
+    });
+  }
 
+  private onSearchResult = (searchResults: EmojiSearchResult): void => {
     const filteredEmojis = searchResults.emojis;
     const firstResult = filteredEmojis[0];
     const availableCategories = searchResults.categories;
+    const query = searchResults.query;
 
     let selectedEmoji;
     let activeCategory;
@@ -114,17 +139,22 @@ export default class EmojiPicker extends PureComponent<Props, State> {
       activeCategory,
       availableCategories,
       query,
-    });
+      loaded: true,
+    } as State);
   }
 
-  onToneSelected = (toneValue?: number) => {
+  private onProviderChange: OnEmojiProviderChange = {
+    result: this.onSearchResult,
+  };
+
+  private onToneSelected = (toneValue?: number) => {
     this.setState({
       selectedTone: toneValue,
     } as State);
   }
 
   render() {
-    const { emojiService, target, position, zIndex, offsetX, offsetY, onSelection } = this.props;
+    const { target, position, zIndex, offsetX, offsetY, onSelection } = this.props;
     const { activeCategory, availableCategories } = this.state;
     const classes = [styles.emojiPicker];
 
@@ -143,11 +173,11 @@ export default class EmojiPicker extends PureComponent<Props, State> {
           onCategoryActivated={this.onCategoryActivated}
           onSearch={this.onSearch}
           selectedTone={this.state.selectedTone}
+          loading={!this.state.loaded}
         />
         <EmojiPickerFooter
           selectedEmoji={this.state.selectedEmoji}
           selectedTone={this.state.selectedTone}
-          emojis={emojiService.all().emojis}
           onToneSelected={this.onToneSelected}
         />
       </div>

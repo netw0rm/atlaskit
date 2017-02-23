@@ -2,11 +2,6 @@ import React, { PropTypes, PureComponent } from 'react';
 import Button from '@atlaskit/button';
 import { locals } from '../styles.less';
 
-/**
- * @description Item used to display an ellipsis when a Breadcrumbs component is collapsed.
- * @class EllipsisItem
- * @private
- */
 /* eslint-disable react/prefer-stateless-function */
 export default class EllipsisItem extends PureComponent {
   static propTypes = {

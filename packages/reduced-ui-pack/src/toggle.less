@@ -17,15 +17,9 @@
   display: inline-block;
   overflow: hidden;
   position: relative;
+  user-select: none;
 
-  input {
-    left: 0;
-    opacity: 0;
-    position: absolute;
-    top: 0;
-  }
-
-  label {
+  > label {
     background-clip: content-box;
     background-color: @toggle-bg-unchecked;
     background-image:
@@ -51,36 +45,43 @@
     }
   }
 
-  input:checked + label {
-    background-color: @toggle-bg-checked;
-  }
+  > input {
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
 
-  input:disabled + label {
-    background-color: @toggle-bg-unchecked-disabled;
-    background-image:
-      data-uri('image/svg+xml;charset=UTF-8', './internal/toggle/check-disabled.svg'),
-      data-uri('image/svg+xml;charset=UTF-8', './internal/toggle/cross-disabled.svg');
-    cursor: not-allowed;
+    &:checked + label {
+      background-color: @toggle-bg-checked;
+    }
 
-    &::before {
-      background-color: @toggle-slide-unchecked-disabled;
+    &:disabled + label {
+      background-color: @toggle-bg-unchecked-disabled;
+      background-image:
+        data-uri('image/svg+xml;charset=UTF-8', './internal/toggle/check-disabled.svg'),
+        data-uri('image/svg+xml;charset=UTF-8', './internal/toggle/cross-disabled.svg');
       cursor: not-allowed;
+
+      &::before {
+        background-color: @toggle-slide-unchecked-disabled;
+        cursor: not-allowed;
+      }
     }
-  }
 
-  input:checked:disabled + label {
-    background-color: @toggle-bg-checked-disabled;
+    &:checked:disabled + label {
+      background-color: @toggle-bg-checked-disabled;
 
-    &::before {
-      background-color: @toggle-slide-checked-disabled;
+      &::before {
+        background-color: @toggle-slide-checked-disabled;
+      }
     }
-  }
 
-  input:focus {
-    outline: none !important;
+    &:focus {
+      outline: none;
 
-    & + label {
-      border-color: @ak-color-B100;
+      & + label {
+        border-color: @ak-color-B100;
+      }
     }
   }
 }
@@ -90,8 +91,10 @@
   @toggle-inner-height: @height - (@toggle-padding * 2);
   @icon-height: @toggle-inner-height;
 
-  label {
-    background-position: (@toggle-padding * 2) (@toggle-padding * 2), (@width - @icon-height) (@toggle-padding * 2);
+  > label {
+    background-position:
+      (@toggle-padding * 2.5) (@toggle-padding * 2),
+      (@width - @icon-height - (@toggle-padding / 2)) (@toggle-padding * 2);
     background-size: @icon-height @icon-height, @icon-height @icon-height;
     border-radius: @height;
     height: @height;
@@ -111,7 +114,7 @@
     }
   }
 
-  input:checked + label::before {
+  > input:checked + label::before {
     transform: translate(@width - @toggle-inner-height - (@toggle-padding * 2), 0);
   }
 }

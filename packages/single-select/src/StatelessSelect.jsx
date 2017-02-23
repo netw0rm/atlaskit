@@ -154,10 +154,10 @@ export default class StatelessSelect extends PureComponent {
     return res;
   }
 
-  setNativeSearchCounter = () => setTimeout(() => {
+  clearNativeSearch = () => {
     this.nativeSearchKey = '';
     this.nativeSearchCounter = undefined;
-  }, 200)
+  }
 
   filterItems = (items) => {
     const value = this.props.filterValue;
@@ -210,7 +210,7 @@ export default class StatelessSelect extends PureComponent {
     }
 
     clearTimeout(this.nativeSearchCounter);
-    this.nativeSearchCounter = this.setNativeSearchCounter();
+    this.nativeSearchCounter = setTimeout(this.clearNativeSearch, 200);
     this.previousKey = eventKey;
     this.nativeSearchKey = nativeSearchKey;
   }

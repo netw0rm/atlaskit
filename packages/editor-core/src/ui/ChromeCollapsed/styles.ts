@@ -1,6 +1,6 @@
 import {
   akEditorSubtleAccent,
-} from 'ak-editor-shared-styles';
+} from '../../styles';
 import {
   akBorderRadius,
   akColorN50

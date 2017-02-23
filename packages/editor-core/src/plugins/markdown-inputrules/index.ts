@@ -8,13 +8,10 @@ import {
   ProseMirror,
   Schema,
   textblockTypeInputRule,
-  wrappingInputRule,
-  commands
+  wrappingInputRule
 } from '../../prosemirror';
-import Keymap from 'browserkeymap';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
-import { isCodeBlockNode } from '../../schema';
 
 // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
 // input rule will allow for a list to start at any given number, which isn't allowed in

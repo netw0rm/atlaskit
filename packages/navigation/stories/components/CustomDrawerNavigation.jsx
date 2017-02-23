@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { AtlassianIcon, ArrowleftIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowrightIcon } from '@atlaskit/icon';
-import { AkCustomDrawer, AkSearchDrawer, AkCreateDrawer, AkContainerItemGroup, AkContainerItem, AkDrawerItem } from '../../src/index';
+import { AtlassianIcon, ArrowleftIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowrightIcon, QuestionCircleIcon } from '@atlaskit/icon';
+import { AkCustomDrawer, AkSearchDrawer, AkCreateDrawer, AkContainerItemGroup, AkContainerItem, AkDrawerItem, AkGlobalItem } from '../../src/index';
 import BasicNavigation from './BasicNavigation';
 
 export default class CustomDrawerNavigation extends PureComponent {
@@ -144,6 +144,11 @@ export default class CustomDrawerNavigation extends PureComponent {
         onResize={(resizeState) => { this.resize(resizeState); }}
         onSearchDrawerOpen={() => this.setDrawer('search')}
         width={this.state.width}
+        globalHelpItem={
+          <AkGlobalItem onClick={() => { this.setDrawer('reports'); }}>
+            <QuestionCircleIcon label="Help icon" />
+          </AkGlobalItem>
+        }
       >
         <div>
           {this.state.isOpen ? queuesItemOpen : queuesItemCollapsed }

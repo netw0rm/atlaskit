@@ -10,8 +10,7 @@ export const FilmStripViewWrapper = styled.div`
   position: relative;
   padding: 3px 0;
   border-radius: 3px;
-  display: inline-flex;
-
+  
   &:hover .arrow{
     opacity: 1;
   }

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import {Component, DragEvent as ReactDragEvent, DragEventHandler, WheelEvent} from 'react';
 import {FilmStripViewWrapper, FilmStripListWrapper, FilmStripList, ArrowLeftWrapper, ArrowRightWrapper, ShadowLeft, ShadowRight} from './styled';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
@@ -63,6 +64,14 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     };
   }
 
+  componentDidMount() {
+    window.addEventListener('resize', this.onWindowResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onWindowResize);
+  }
+
   render() {
     const props = this.props;
     const defaultWidth = 'auto';
@@ -89,6 +98,14 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
              </FilmStripListWrapper>
              {this.state.showRight ? rightArrow : undefined}
            </FilmStripViewWrapper>;
+  }
+
+  private onWindowResize = (event) => {
+    const parent = ReactDOM.findDOMNode(this).parentElement;
+    if (!parent) { return; }
+
+    this.wrapperWidth = parent.getBoundingClientRect().width;
+    this._setNewPosition(this.state.position, this.state.showTransition);
   }
 
   private getDimensions = (element: HTMLElement) => {

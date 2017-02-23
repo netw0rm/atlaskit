@@ -109,8 +109,96 @@ storiesOf('FilmListView', {})
               width={550}
             />
            </div>;
-  }).add('Auto width', () => {
+  }).add('Auto width with few cards', () => {
     const items: Array<FilmStripViewItem> = [
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      }
+    ];
+    return (
+      <FilmStripView
+        items={items}
+        onClick={clickAction}
+        menuActions={menuActions}
+      />
+    );
+  }).add('Auto width with a lot of cards', () => {
+    const items: Array<FilmStripViewItem> = [
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
+      {
+        dataURI: tallImageDataUri,
+        mediaName: 'some image',
+        mediaType: 'image',
+        mediaSize: 8041
+      },
       {
         dataURI: tallImageDataUri,
         mediaName: 'some image',

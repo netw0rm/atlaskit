@@ -462,8 +462,8 @@ describe(name, () => {
     });
 
     describe('getNextFocusable', () => {
-      it('should return 0 if null is passed as a current focus', () => {
-        expect(instance.getNextFocusable(null, 2)).to.equal(0);
+      it('should return 0 if undefined is passed as a current focus', () => {
+        expect(instance.getNextFocusable(undefined, 2)).to.equal(0);
       });
 
       it('should return next item', () => {

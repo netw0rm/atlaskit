@@ -64,7 +64,6 @@ export default class StatelessSelect extends PureComponent {
 
   state = {
     isFocused: this.props.isOpen,
-    focusedItemIndex: null,
   }
 
   componentDidMount = () => {
@@ -108,7 +107,7 @@ export default class StatelessSelect extends PureComponent {
   getNextFocusable = (indexItem, length) => {
     let currentItem = indexItem;
 
-    if (currentItem === null) {
+    if (currentItem === undefined) {
       currentItem = 0;
     } else if (currentItem < length) {
       currentItem++;
@@ -167,7 +166,6 @@ export default class StatelessSelect extends PureComponent {
     const trimmedValue = value && value.toLowerCase().trim();
     const selectedItem = this.props.selectedItem;
     const unselectedItems = items.filter(item => selectedItem.value !== item.value);
-
     return trimmedValue &&
       (trimmedValue !== (selectedItem.content && selectedItem.content.toLowerCase())) ?
       unselectedItems.filter(item => (item.content.toLowerCase().indexOf(trimmedValue) > -1)) :
@@ -269,7 +267,7 @@ export default class StatelessSelect extends PureComponent {
         }
         break;
       case 'Enter':
-        if (isSelectOpen && this.state.focusedItemIndex !== null) {
+        if (isSelectOpen && this.state.focusedItemIndex !== undefined) {
           this.handleItemSelect(
             this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
           );
@@ -299,11 +297,11 @@ export default class StatelessSelect extends PureComponent {
   }
 
   handleItemSelect = (item, attrs) => {
-    if (!item.isDisabled) {
+    if (item && !item.isDisabled) {
       this.props.onOpenChange({ isOpen: false, event: attrs.event });
       this.props.onSelected(item);
       this.props.onFilterChange(item.content);
-      this.setState({ focusedItemIndex: null });
+      this.setState({ focusedItemIndex: undefined });
     }
   }
 

@@ -1,4 +1,15 @@
 import React from 'react';
+import ar from 'date-fns/locale/ar';
+import de from 'date-fns/locale/de';
+import el from 'date-fns/locale/el';
+import en from 'date-fns/locale/en';
+import eo from 'date-fns/locale/eo';
+import es from 'date-fns/locale/es';
+import fr from 'date-fns/locale/fr';
+import ko from 'date-fns/locale/ko';
+import ja from 'date-fns/locale/ja';
+import ru from 'date-fns/locale/ru';
+import zh_cn from 'date-fns/locale/zh_cn';  // eslint-disable-line camelcase
 import { storiesOf } from '@kadira/storybook';
 import { name } from '../package.json';
 import RelativeTime from '../src/';
@@ -9,17 +20,17 @@ storiesOf(name, module)
   ))
   .add('table', () => {
     const locales = [
-      'en',
-      'es',
-      'af',
-      'de',
-      'fr',
-      'ja',
-      'ko',
-      'ru',
-      'sv',
-      'sw',
-      'zh-cn',
+      { name: 'ar', locale: ar },
+      { name: 'de', locale: de },
+      { name: 'el', locale: el },
+      { name: 'en', locale: en },
+      { name: 'eo', locale: eo },
+      { name: 'es', locale: es },
+      { name: 'fr', locale: fr },
+      { name: 'ja', locale: ja },
+      { name: 'ko', locale: ko },
+      { name: 'ru', locale: ru },
+      { name: 'zh_cn', locale: zh_cn },
     ];
 
     const now = new Date().getTime();
@@ -52,26 +63,26 @@ storiesOf(name, module)
     return (
       <div>
         <table>
-          <tr>
-            <th>locale</th>
-            {times.map(time => (
-              <th>{time.name}</th>
-            ))}
-          </tr>
-          <tr>
-            <td />
-            {times.map(time => (
-              <td>{`${new Date(time.timestamp)}`}</td>
-            ))}
-          </tr>
-          {locales.map(locale => (
+          <thead>
             <tr>
-              <td><b>{locale}</b></td>
-              {times.map(time => (
-                <td><RelativeTime timestamp={time.timestamp} locale={locale} /></td>
+              <th>locale</th>
+              {times.map((time, index) => (
+                <th key={index}>{time.name}</th>
               ))}
             </tr>
-          ))}
+          </thead>
+          <tbody>
+            {locales.map((locale, index) => (
+              <tr key={index}>
+                <td><b>{locale.name}</b></td>
+                {times.map((time, i) => (
+                  <td key={i}>
+                    <RelativeTime timestamp={time.timestamp} locale={locale.locale} />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     );

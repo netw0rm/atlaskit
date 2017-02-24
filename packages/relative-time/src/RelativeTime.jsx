@@ -1,9 +1,9 @@
 import React, { PureComponent, PropTypes } from 'react';
-import moment from 'moment';
+import dateFns from 'date-fns';
 
 export default class RelativeTime extends PureComponent {
   static propTypes = {
-    locale: PropTypes.string,
+    locale: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     timestamp: PropTypes.number,
   }
 
@@ -13,10 +13,15 @@ export default class RelativeTime extends PureComponent {
   }
 
   render() {
-    const time = moment(this.props.timestamp);
     return (
       <span>
-        {time.locale(this.props.locale).fromNow()}
+        {dateFns.distanceInWordsToNow(
+          new Date(this.props.timestamp), {
+            addSuffix: true,
+            includeSeconds: true,
+            locale: this.props.locale,
+          }
+        )}
       </span>
     );
   }

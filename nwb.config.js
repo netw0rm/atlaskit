@@ -7,7 +7,7 @@ const { name } = require(path.join(process.cwd(), 'package.json'));
 const globalName = ucc(name);
 
 module.exports = {
-  type: 'web-module',
+  type: 'react-component',
   npm: {
     esModules: true,
     umd: {

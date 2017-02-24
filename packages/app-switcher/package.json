@@ -10,7 +10,8 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "prepublish": "nwb build-react-component"
+    "prepublish": "nwb build",
+    "test": "nwb test"
   },
   "files": [
     "dist"

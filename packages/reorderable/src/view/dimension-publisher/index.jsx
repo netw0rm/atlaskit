@@ -1,8 +1,7 @@
 // @flow
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import invariant from 'invariant';
-import styled from 'styled-components';
 import {
   publishDraggableDimension,
   publishDroppableDimension,
@@ -35,7 +34,7 @@ type Props = {|
     itemId: Id,
     // needs to always be a styled component
     // todo: add check
-    children: React$Element<any>,
+    children?: React$Element<any>,
     shouldPublish: boolean,
     publish: Function,
     outerRef?: ?Element

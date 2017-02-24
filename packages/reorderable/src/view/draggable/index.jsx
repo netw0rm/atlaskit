@@ -5,17 +5,15 @@ import styled from 'styled-components';
 import invariant from 'invariant';
 import memoizeOne from 'memoize-one';
 import { createSelector } from 'reselect';
-// import { createSelectorCreator, defaultMemoize } from 'reselect';
 import isShallowEqual from 'shallowequal';
 import type { DraggableId, TypeId } from '../../types';
 import type {
   Position,
-  State,
   DraggingInitial,
 } from '../../state/types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
-import type { Speed } from '../moveable/';
+import type { Speed } from '../moveable';
 import createDragHandle from './create-drag-handle';
 import getCenterPosition from '../get-center-position';
 import getScrollPosition from '../get-scroll-position';

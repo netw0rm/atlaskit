@@ -19,7 +19,6 @@ flow-typed
 ../../node_modules/styled-components/flow-typed/inline-style-prefixer_vx.x.x.js
 
 [options]
-emoji=true
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe
 
 # Grab libraries that are not included in this project as a dep or devDep

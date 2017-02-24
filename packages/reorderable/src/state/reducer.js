@@ -1,6 +1,6 @@
 // @flow
 import type { TypeId } from '../types';
-import type { Action, State, Dimension, DragImpact, Dragging, DragResult, CurrentDrag, DraggableLocation } from './types';
+import type { Action, State, Dimension, DragImpact, Dragging, DragResult, CurrentDrag, DraggableLocation, Position } from './types';
 import getDragImpact from './get-drag-impact';
 
 const initialState: State = {
@@ -35,11 +35,6 @@ export default (state: State = initialState, action: Action): State => {
 
   if (action.type === 'LIFT') {
     const { id, type, center, offset, scroll, selection } = action.payload;
-
-    // TODO: need source but do not have dimensions yet
-    // source: need to take into account offset
-    // current impact: do not need to take into account offset
-    // current center: do not need to consider offset
 
     const originCenter: Position = {
       x: center.x - offset.x,

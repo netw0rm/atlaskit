@@ -12,9 +12,11 @@ const noMovement: DragMovement = {
 
 type Direction = 1 | -1;
 
-const getDimensionList: Dimension[] = memoizeOne(
-  (map: DimensionMap): Dimension[] => Object.keys(map).map(key => map[key])
-);
+const getDimensionList = memoizeOne((map: DimensionMap): Dimension[] =>
+  Object.keys(map).map((key: string): Dimension => (map[key]: Dimension)));
+
+// const getDimensionList: Dimension[] = (map: DimensionMap): Dimension[] =>
+//   Object.keys(map).map((key: string): Dimension => (map[key]: Dimension));
 
 export default (target: Position,
   draggableId: DraggableId,
@@ -41,9 +43,9 @@ export default (target: Position,
   const isMovingForward: boolean = target.y - draggingDimension.center.y > 0;
 
     // get all draggables inside the draggable
-    // $FlowFixMe
   const insideDroppable: Dimension[] = getDimensionList(draggableDimensions)
-    .filter((dimension: Dimension): boolean => isInsideDimension(dimension.center, droppableDimension));
+    .filter((dimension: Dimension): boolean =>
+      isInsideDimension(dimension.center, droppableDimension));
 
   const moved: DraggableId[] = insideDroppable
     .filter((dimension: Dimension): boolean => {

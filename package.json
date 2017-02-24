@@ -79,6 +79,7 @@
     "minilog": "^3.0.1",
     "mocha": "^3.2.0",
     "npm-run-all": "^4.0.1",
+    "nwb": "^0.15.6",
     "package-json-validator": "^0.6.1",
     "pascal-case": "^2.0.0",
     "postcss-loader": "^1.0.0",
@@ -102,6 +103,7 @@
     "tslint": "^4.3.1",
     "tslint-react": "^2.2.0",
     "typescript": "2.2.0-dev.20170117",
+    "uppercamelcase": "^1.1.0",
     "url-loader": "^0.5.7",
     "validate-commit-message": "^3.0.1",
     "wait-on": "^2.0.0",
@@ -191,6 +193,5 @@
     "validate/tslint/fix": "./build/bin/lint.tslint.sh --fix",
     "validate/package.json": "pjv -q && ./node_modules/.bin/lerna exec -- pjv -q",
     "validate/typescript": "./build/bin/validate.typescript.sh"
-  },
-  "devDependencies": {}
+  }
 }

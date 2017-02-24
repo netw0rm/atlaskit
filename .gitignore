@@ -25,3 +25,8 @@ packages/**/**/CHANGELOG.md
 **/local-config.js
 packages/**/yarn.lock
 changed-packages
+
+# package bundle dirs
+es/
+lib/
+umd/

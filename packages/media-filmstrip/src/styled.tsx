@@ -1,9 +1,10 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
 import {
-  akColorB200,
+  akColorB400,
   akColorN20,
-  akColorN40
+  akColorN40,
+  akColorB50
 } from '@atlaskit/util-shared-styles';
 
 export const FilmStripViewWrapper = styled.div`
@@ -69,16 +70,25 @@ export const ArrowWrapper = styled.div`
   }
 
   &:active{
-    background-color: ${akColorB200};
+    color: ${akColorB400};
+    background-color: ${akColorB50};
   }
 `;
 
 export const ArrowLeftWrapper = styled(ArrowWrapper)`
   left: -14px;
+
+  svg {
+    padding-right: 2px;
+  }
 `;
 
 export const ArrowRightWrapper = styled(ArrowWrapper)`
   right: -14px;
+
+  svg {
+    padding-left: 1px;
+  }
 `;
 
 export const Shadow = styled.div`

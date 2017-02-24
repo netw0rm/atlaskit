@@ -47,11 +47,12 @@ const maxAnimationDuration = 1.0;
 const cardPadding = 4;
 const initialPadding = 10;
 
-export default class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmStripNavigatorState> {
+export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmStripNavigatorState> {
   private wrapperWidth: number;
   private listWidth: number;
   private numOfCards: number;
   private cardWidth: number;
+  private listElement: HTMLElement;
 
   constructor(props) {
     super(props);
@@ -100,6 +101,15 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
            </FilmStripViewWrapper>;
   }
 
+  componentDidUpdate() {
+    const newListWidth = this.listElement.getBoundingClientRect().width;
+
+    // Update dimensions if the list has grown
+    if (newListWidth !== this.listWidth) {
+      this.getDimensions();
+    }
+  }
+
   private onWindowResize = (event) => {
     const parent = ReactDOM.findDOMNode(this).parentElement;
     if (!parent) { return; }
@@ -108,11 +118,14 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     this.setNewPosition(this.state.position, this.state.showTransition);
   }
 
-  private getDimensions = (element: HTMLElement) => {
+  private getDimensions = (el?: HTMLElement) => {
+    const element = el || this.listElement;
+
     if (!element || !element.parentElement) {
       return;
     }
 
+    this.listElement = element;
     this.wrapperWidth = element.parentElement.getBoundingClientRect().width;
     this.listWidth = element.getBoundingClientRect().width;
     this.numOfCards = element.children.length;
@@ -238,3 +251,5 @@ export default class FilmStripNavigator extends Component<FilmstripNavigatorProp
     };
   }
 }
+
+export default FilmStripNavigator;

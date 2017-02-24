@@ -5,6 +5,8 @@ import {MediaType} from '@atlaskit/media-core';
 import {MediaItem} from '@atlaskit/media-core';
 import {ListAction, CardAction, ListEventHandler} from '@atlaskit/media-core';
 
+export * from './filmstrip-navigator';
+
 export interface FilmStripViewItem {
   id?: string;
   loading?: boolean;
@@ -52,8 +54,8 @@ function createCardActions(item: FilmStripViewItem, items: Array<FilmStripViewIt
 }
 
 export function FilmStripView(props: FilmStripViewProps): JSX.Element {
-  const itemEls = props.items.map((item) => (
-    <li key={item.id}>
+  const itemEls = props.items.map((item, k) => (
+    <li key={item.id || k}>
       <CardView
         loading={item.loading}
         selectable={false}

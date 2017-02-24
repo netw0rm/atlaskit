@@ -6,21 +6,21 @@
 @label-font-size: 12;
 @label-line-height: @label-inner-height / @label-font-size;
 
-@base-background-color-disabled: @ak-color-N20;
+@base-background-color-disabled: @ak-color-N40;
 @base-background-color-focused: @ak-color-N0;
-@base-background-color-hover: @ak-color-N20;
+@base-background-color-hover: @ak-color-N30;
 @base-background-color-subtle: transparent;
-@base-background-color: @ak-color-N10;
-@base-border-color-disabled: @ak-color-N20A;
+@base-background-color: @ak-color-N20;
+@base-border-color-disabled: @ak-color-N40;
 @base-border-color-focused: @ak-color-B100;
-@base-border-color-hover: @ak-color-N20;
-@base-border-color: @ak-color-N20;
+@base-border-color-hover: @ak-color-N40;
+@base-border-color: @ak-color-N40;
 @base-border-radius: 5px;
 @base-border-width-focused: 2;
 @base-border-width-subtle: 0;
 @base-border-width: 1;
-@base-color-disabled: @ak-color-N60;
-@base-color-invalid: @ak-color-R100;
+@base-color-disabled: @ak-color-N50;
+@base-color-invalid: @ak-color-R400;
 @base-font-size: 14;
 @base-height-compact: @ak-grid-size * 4;
 @base-height: @ak-grid-size * 5;
@@ -47,7 +47,7 @@
       font-weight: 600;
       line-height: 1;
       padding: 0;
-      margin-bottom: unit(@ak-grid-size / 2, px);
+      margin-bottom: 6px; // results in 8px gap taking into account the baseline
     }
     > legend {
       float: left;
@@ -101,9 +101,22 @@
     }
     &[disabled],
     &[disabled]:hover {
-      background-color: @base-background-color-disabled;
-      border-color: @base-border-color-disabled;
+      background-color: @base-background-color;
+      border-color: @ak-color-N20;
       color: @base-color-disabled;
+      cursor: not-allowed;
+    }
+    &::-webkit-input-placeholder { // Chrome/Opera/Safari
+      color: @ak-color-N100;
+    }
+    &::-moz-placeholder { // Firefox
+      color: @ak-color-N100;
+    }
+    &:-ms-input-placeholder { // IE
+      color: @ak-color-N100;
+    }
+    &:-moz-placeholder { // Firefox
+      color: @ak-color-N100;
     }
   }
 

@@ -137,7 +137,7 @@ const jsx = (<form onSubmit={e => e.preventDefault()}>
   </div>
   <div className="ak-field-group">
     <label htmlFor="url">Url</label>
-    <input type="url" className="ak-field-url" id="url" name="url" required />
+    <input type="url" className="ak-field-url" id="url" name="url" required value="asewrkjasdflkj" disabled />
   </div>
   <div className="ak-field-group">
     <label htmlFor="tel">Tel</label>

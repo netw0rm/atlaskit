@@ -36,7 +36,8 @@
     "akutil-common-test": "*"
   },
   "keywords": [
-    "atlaskit",
-    "ui"
+    "fabric",
+    "ui",
+    "private"
   ]
 }

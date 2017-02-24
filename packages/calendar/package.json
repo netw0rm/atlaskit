@@ -1,4 +1,4 @@
-{
+  {
   "name": "@atlaskit/calendar",
   "version": "2.0.2",
   "config": {
@@ -31,5 +31,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

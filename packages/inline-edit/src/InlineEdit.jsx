@@ -289,7 +289,7 @@ export default class InlineEdit extends PureComponent {
               isFitContainerWidthEnabled={this.props.isEditing}
               appearance={this.props.isEditing ? 'standard' : 'subtle'}
               isDisabled={this.shouldRenderSpinner()}
-              hasSpinner={this.shouldRenderSpinner()}
+              isLoading={this.shouldRenderSpinner()}
               shouldReset={this.shouldResetFieldBase}
             >
               {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}

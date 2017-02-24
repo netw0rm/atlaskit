@@ -200,9 +200,9 @@ describe('@atlaskit/inline-edit', () => {
 
   describe('isWaiting', () => {
     describe('when isEditing is false', () =>
-      it('FieldBase should not have hasSpinner prop', () => {
+      it('FieldBase should not have isLoading prop', () => {
         const wrapper = mount(<InlineEdit {...defaultProps} isWaiting />);
-        expect(wrapper.find(FieldBase).prop('hasSpinner')).to.equal(false);
+        expect(wrapper.find(FieldBase).prop('isLoading')).to.equal(false);
       })
     );
 
@@ -213,8 +213,8 @@ describe('@atlaskit/inline-edit', () => {
         wrapper = shallow(<InlineEdit {...defaultProps} isWaiting isEditing />)
       ));
 
-      it('FieldBase should have prop hasSpinner', () =>
-        expect(wrapper.find(FieldBase).prop('hasSpinner')).to.equal(true)
+      it('FieldBase should have prop isLoading', () =>
+        expect(wrapper.find(FieldBase).prop('isLoading')).to.equal(true)
       );
 
       it('should disable field base', () =>

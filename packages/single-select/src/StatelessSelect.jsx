@@ -230,8 +230,11 @@ export default class StatelessSelect extends PureComponent {
       this.state.focusedItemIndex :
       allItems.indexOf(selectedItem);
 
+    const allItemsWithoutSelected = (selectedItem && selectedItem.value) ?
+      allItems.filter(item => item.value !== selectedItem.value) : allItems;
+
     const matchingItem = this.getNextNativeSearchItem(
-      allItems,
+      allItemsWithoutSelected,
       nativeSearchKey,
       current,
     );

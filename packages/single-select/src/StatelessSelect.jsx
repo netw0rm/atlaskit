@@ -233,18 +233,20 @@ export default class StatelessSelect extends PureComponent {
     const allItemsWithoutSelected = (selectedItem && selectedItem.value) ?
       allItems.filter(item => item.value !== selectedItem.value) : allItems;
 
-    const matchingItem = this.getNextNativeSearchItem(
-      allItemsWithoutSelected,
-      nativeSearchKey,
-      current,
-    );
-
-    if (matchingItem) {
-      if (!this.props.isOpen) {
-        this.handleItemSelect(matchingItem, { event });
-      } else {
-        this.focusItem(matchingItem);
-      }
+    if (!this.props.isOpen) {
+      const matchingItem = this.getNextNativeSearchItem(
+        allItems,
+        nativeSearchKey,
+        current,
+      );
+      this.handleItemSelect(matchingItem, { event });
+    } else {
+      const matchingItem = this.getNextNativeSearchItem(
+        allItemsWithoutSelected,
+        nativeSearchKey,
+        current,
+      );
+      this.focusItem(matchingItem);
     }
 
     clearTimeout(this.nativeSearchCounter);

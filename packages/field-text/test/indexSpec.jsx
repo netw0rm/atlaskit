@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Base from 'ak-field-base';
+import Base from '@atlaskit/field-base';
 
-import { FieldText } from '../src';
+import FieldTextSmart, { FieldText } from '../src';
 
 describe('ak-field-text', () => {
   it('defaults', () => {
@@ -15,7 +15,6 @@ describe('ak-field-text', () => {
     [
       { disabled: true },
       { required: true },
-      { label: 'test' },
     ].forEach(prop =>
       it('FieldBase should have attribute defined', () => {
         const key = Object.keys(prop)[0];
@@ -53,6 +52,15 @@ describe('ak-field-text', () => {
     it('onChange should be called when input value changes', () => {
       const spy = sinon.spy();
       const wrapper = mount(<FieldText onChange={spy} />);
+      wrapper.find('input').simulate('change');
+      expect(spy.callCount).to.equal(1);
+    });
+  });
+
+  describe('smart FieldText', () => {
+    it('should call onChange when input value changes', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(<FieldTextSmart onChange={spy} />);
       wrapper.find('input').simulate('change');
       expect(spy.callCount).to.equal(1);
     });

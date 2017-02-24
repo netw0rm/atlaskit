@@ -1,9 +1,9 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { action } from '@kadira/storybook';
-import { AtlassianIcon, SearchIcon, HelpIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon, ArrowleftIcon } from 'ak-icon';
-import AkDropdownMenu from 'ak-dropdown-menu';
-import AkAvatar from 'ak-avatar';
-import Navigation, { AkContainerHeader, AkContainerItemGroup, AkContainerItem, AkDrawerItem, AkGlobalItem } from '../../src/index';
+import { AtlassianIcon, SearchIcon, QuestionCircleIcon, AddIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowleftIcon } from '@atlaskit/icon';
+import AkDropdownMenu from '@atlaskit/dropdown-menu';
+import AkAvatar from '@atlaskit/avatar';
+import Navigation, { AkContainerTitle, AkContainerItemGroup, AkContainerItem, AkDrawerItem, AkGlobalItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
 
@@ -12,7 +12,7 @@ export default class BasicNavigation extends PureComponent {
     children: PropTypes.node,
     isOpen: PropTypes.bool,
     width: PropTypes.number,
-    containerHeader: PropTypes.node,
+    containerHeaderComponent: PropTypes.func,
     openDrawer: PropTypes.string,
   }
 
@@ -27,12 +27,12 @@ export default class BasicNavigation extends PureComponent {
         text="Item B"
       />
       <AkContainerItem
-        icon={<ProjectsIcon label="Projects" />}
+        icon={<IssuesIcon label="Projects" />}
         text="Item C"
       />
     </div>),
-    containerHeader: (
-      <AkContainerHeader
+    containerHeaderComponent: () => (
+      <AkContainerTitle
         href="#foo"
         icon={
           <img alt="nucleus" src={nucleusLogo} />
@@ -89,7 +89,7 @@ export default class BasicNavigation extends PureComponent {
   render() {
     return (
       <Navigation
-        containerHeader={this.props.containerHeader}
+        containerHeaderComponent={this.props.containerHeaderComponent}
         drawerBackIcon={<ArrowleftIcon label="Back icon" size="medium" />}
         globalAccountItem={
           <AkDropdownMenu
@@ -114,7 +114,7 @@ export default class BasicNavigation extends PureComponent {
             </AkGlobalItem>
           </AkDropdownMenu>
         }
-        globalCreateIcon={<CreateIcon label="Create icon" />}
+        globalCreateIcon={<AddIcon size="small" label="Create icon" />}
         globalHelpItem={
           <AkDropdownMenu
             appearance="tall"
@@ -151,12 +151,12 @@ export default class BasicNavigation extends PureComponent {
             position="right bottom"
           >
             <AkGlobalItem>
-              <HelpIcon label="Help icon" />
+              <QuestionCircleIcon label="Help icon" />
             </AkGlobalItem>
           </AkDropdownMenu>
         }
         globalPrimaryIcon={<AtlassianIcon label="Atlassian icon" size="medium" />}
-        globalPrimaryItemHref="http://www.atlassian.com"
+        globalPrimaryItemHref="//www.atlassian.com"
         globalSearchIcon={<SearchIcon label="Search icon" />}
         hasBlanket
         isCreateDrawerOpen={this.state.openDrawer === 'create'}
@@ -166,6 +166,7 @@ export default class BasicNavigation extends PureComponent {
         onCreateDrawerClose={this.closeDrawer()}
         onCreateDrawerOpen={this.openDrawer('create')}
         onResize={this.resize}
+        onResizeStart={action('resizeStart')}
         onSearchDrawerClose={this.closeDrawer()}
         onSearchDrawerOpen={this.openDrawer('search')}
         position="right bottom"

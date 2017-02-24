@@ -16,6 +16,10 @@ describe(name, () => {
       // NOTE Please remember:
       // An addition is a feature
       // a removal or rename is a BREAKING CHANGE
+
+      // NOTE the reduced-ui-pack package uses the icons from this package, so if you change
+      // anything in the list below then you'll also need to update the tests in reduced-ui-pack.
+
       Object
         .keys(components)
         .should.be.deep.equal([
@@ -28,6 +32,7 @@ describe(name, () => {
           'arrowrightlong',
           'atlassian',
           'attachment',
+          'audio',
           'backlog',
           'bitbucket',
           'bitbucket/branches',
@@ -57,6 +62,7 @@ describe(name, () => {
           'decision',
           'detail-view',
           'discover',
+          'document',
           'edit',
           'editor/add',
           'editor/addon',
@@ -149,6 +155,9 @@ describe(name, () => {
           'hipchat/preferences',
           'hipchat/room-directory',
           'hipchat/room-menu',
+          'hipchat/upgrade-available-settings',
+          'hipchat/upgrade-available',
+          'hipchat/upgrade-min',
           'hipchat/video',
           'hipchat/warning-circle',
 
@@ -165,13 +174,16 @@ describe(name, () => {
           'light-bulb',
           'link',
           'list',
+          'lock',
           'mention',
           'more',
           'notification',
+          'office-building',
           'open',
           'page',
           'people',
           'person',
+          'play',
           'question-circle',
           'question',
           'quote',
@@ -192,7 +204,9 @@ describe(name, () => {
           'tray',
           'undo',
           'unlink',
+          'video',
           'warning',
+          'world',
         ]);
         // If you find yourself here and wonder why this list is not auto-generated, then bear in
         // mind that tests are supposed to tell you when a piece of software breaks.

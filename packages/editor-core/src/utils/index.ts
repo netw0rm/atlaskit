@@ -8,6 +8,7 @@ import {
   Selection,
   TextSelection
 } from '../prosemirror';
+import { isCodeBlockNode } from '../schema/nodes/code-block';
 
 function validateNode(node: Node): boolean {
   return false;
@@ -128,7 +129,7 @@ export function getGroupsInRange(pm: ProseMirror, $from: ResolvedPos, $to: Resol
  * Traverse the document until an "ancestor" is found. Any nestable block can be an ancestor.
  */
 export function findAncestorPosition(pm: ProseMirror, pos: ResolvedPos): ResolvedPos {
-  const nestableBlocks = ['blockquote', 'bullet_list', 'ordered_list'];
+  const nestableBlocks = ['blockquote', 'bullet_list', 'ordered_list', 'panel'];
 
   if (pos.depth === 1) {
     return pos;
@@ -196,5 +197,92 @@ export function liftSelection(pm: ProseMirror, $from: ResolvedPos, $to: Resolved
 
   tr.setSelection(new TextSelection(tr.doc.resolve(startPos), tr.doc.resolve(endPos)));
 
+  return tr;
+}
+
+/**
+ * Get resolved positions for start and end indexes of the parent.
+ */
+function getParentPositionRange(pm: EditorTransform): any {
+  const {$from, $to} = pm.selection;
+
+  if ($from.depth === 1) {
+    return;
+  }
+
+  return {
+    from: pm.doc.resolve($from.start($from.depth - 1)),
+    to: pm.doc.resolve($to.end($to.depth - 1))
+  };
+}
+
+/**
+ * Lift sibling nodes to document-level.
+ */
+export function liftSiblingNodes(pm: ProseMirror): EditorTransform {
+  const { tr } = pm;
+  const { from, to } = tr.selection;
+  const range = getParentPositionRange(tr);
+  if (range) {
+    let startPos = range.from.start(1);
+    let endPos = range.to.end(1);
+    tr.doc.nodesBetween(startPos, endPos, (node, pos) => {
+      if (
+        node.isText ||                          // Text node
+        (node.isTextblock && !node.textContent) // Empty paragraph
+      ) {
+        const res = tr.doc.resolve(tr.map(pos));
+        const sel = new NodeSelection(res);
+        const range = sel.$from.blockRange(sel.$to)!;
+        tr.lift(range, 0);
+      }
+    });
+    startPos = tr.map(from);
+    endPos = tr.map(to);
+    tr.setSelection(new TextSelection(tr.doc.resolve(startPos), tr.doc.resolve(endPos)));
+  }
+  return tr;
+}
+
+
+/**
+ * Lift sibling nodes to document-level and select them.
+ */
+export function liftAndSelectSiblingNodes(pm: ProseMirror): EditorTransform {
+  const { tr } = pm;
+  const range = getParentPositionRange(tr);
+  if (range) {
+    let startPos = range.from.start(1);
+    let endPos = range.to.end(1);
+    tr.doc.nodesBetween(startPos, endPos, (node, pos) => {
+      if (
+        node.isText ||                          // Text node
+        (node.isTextblock && !node.textContent) // Empty paragraph
+      ) {
+        const res = tr.doc.resolve(tr.map(pos));
+        const sel = new NodeSelection(res);
+        const range = sel.$from.blockRange(sel.$to)!;
+        tr.lift(range, 0);
+      }
+    });
+    startPos = tr.map(startPos) + 1;
+    endPos = tr.map(endPos) - 1;
+    tr.setSelection(new TextSelection(tr.doc.resolve(startPos), tr.doc.resolve(endPos)));
+  }
+  return tr;
+}
+
+/**
+ * Function will remove code-blocks from selection.
+ */
+export function removeCodeBlocksFromSelection(pm: ProseMirror): EditorTransform {
+  const { tr } = pm;
+  const { from, to } = tr.selection;
+  const paragraph = pm.schema.nodes.paragraph;
+  tr.doc.nodesBetween(from, to, (node, pos) => {
+    if (isCodeBlockNode(node)) {
+      tr.setNodeType(pos, paragraph, {});
+    }
+  });
   return tr;
 }

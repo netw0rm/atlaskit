@@ -8,11 +8,13 @@ import {
   MentionsPlugin,
   ProseMirror,
   TextSelection,
-} from 'ak-editor-core';
+  version as coreVersion,
+} from '@atlaskit/editor-core';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import schema from './schema';
+import { version } from './version';
 
 let debounced: number | null = null;
 
@@ -77,6 +79,8 @@ export interface State {
 }
 
 export default class Editor extends PureComponent<Props, State> {
+  version = `${version} (editor-core ${coreVersion})`;
+
   public static defaultProps: Props = {
     reverseMentionPicker: true
   };

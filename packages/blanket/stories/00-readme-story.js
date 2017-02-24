@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Readme, { Code, Props, Description } from 'akutil-readme';
+import Readme, { Code, Props, Description } from '@atlaskit/util-readme';
 
 /* eslint-disable import/first, import/no-duplicates */
 import BasicUsageExampleRaw from '!raw!./examples/basic-usage';
@@ -23,12 +23,13 @@ const BlanketDescription = (<Description>
 </Description>);
 
 const blanketPropDescriptions = {
+  canClickThrough: 'Whether mouse events can pierce the blanket. If true, onBlanketClicked will not be fired',
   isTinted: 'Whether the blanket has a tinted background color.',
   onBlanketClicked: 'Handler function to be called when the blanket is clicked',
 };
 
 storiesOf(name, module)
-  .add('Blanket Readme', () => (
+  .add('📖 Blanket readme', () => (
     <Readme
       component={name}
       description={BlanketDescription}

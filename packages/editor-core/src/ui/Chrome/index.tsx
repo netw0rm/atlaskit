@@ -8,6 +8,8 @@ import { ListsState } from '../../plugins/lists/index-future';
 import { MentionsPluginState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { EditorView } from '../../prosemirror/future';
+import { PanelState } from '../../plugins/panel';
+import { ProseMirror } from '../../prosemirror';
 import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
@@ -18,6 +20,9 @@ export interface Props {
   placeholder?: string;
   onCancel?: () => void;
   onSave?: () => void;
+  packageVersion?: string;
+  packageName?: string;
+  pm?: ProseMirror;
   feedbackFormUrl?: string;
   pluginStateBlockType?: BlockTypeState;
   pluginStateCodeBlock?: CodeBlockState;
@@ -26,6 +31,7 @@ export interface Props {
   pluginStateTextFormatting?: TextFormattingState;
   pluginStateImageUpload?: ImageUploadState;
   pluginStateMentions?: MentionsPluginState;
+  pluginStatePanel?: PanelState;
   mentionsResourceProvider?: any; // AbstractMentionResource
   onCollapsedChromeFocus: () => void;
 }
@@ -48,6 +54,9 @@ export default class Chrome extends PureComponent<Props, {}> {
           pluginStateMentions={props.pluginStateMentions}
           mentionsResourceProvider={props.mentionsResourceProvider}
           editorView={props.editorView}
+          pluginStatePanel={props.pluginStatePanel}
+          packageVersion={props.packageVersion}
+          packageName={props.packageName}
       >
         {props.children}
       </ChromeExpanded>

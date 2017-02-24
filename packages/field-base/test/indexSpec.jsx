@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import WarningIcon from 'ak-icon/glyph/warning';
-import { FieldBase } from '../src';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
+import FieldBaseSmart, { FieldBase } from '../src';
 import { compact, none, subtle } from '../src/internal/appearances';
 import { locals } from '../src/styles.less';
 
@@ -72,6 +72,15 @@ describe('ak-field-base', () => {
         )
       );
     });
+
+    describe('shouldReset', () =>
+      it('should call onBlur when set', () => {
+        const spy = sinon.spy();
+        const wrapper = mount(<FieldBase {...defaultProps} onBlur={spy} />);
+        wrapper.setProps({ shouldReset: true });
+        expect(spy.called).to.equal(true);
+      })
+    );
   });
 
   describe('focus behaviour', () => {
@@ -92,6 +101,22 @@ describe('ak-field-base', () => {
     it('should call onBlur', () => {
       const spy = sinon.spy();
       wrapper = mount(<FieldBase {...defaultProps} onBlur={spy} />);
+      wrapper.find(`.${contentClass}`).simulate('blur');
+      expect(spy.callCount).to.equal(1);
+    });
+  });
+
+  describe('smart component', () => {
+    it('should call onFocus hanlder', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(<FieldBaseSmart onFocus={spy} />);
+      wrapper.find(`.${contentClass}`).simulate('focus');
+      expect(spy.callCount).to.equal(1);
+    });
+
+    it('should call onBlur hanlder', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(<FieldBaseSmart onBlur={spy} />);
       wrapper.find(`.${contentClass}`).simulate('blur');
       expect(spy.callCount).to.equal(1);
     });

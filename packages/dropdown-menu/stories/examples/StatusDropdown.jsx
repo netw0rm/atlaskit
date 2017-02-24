@@ -1,7 +1,7 @@
 import React from 'react';
-import DropdownMenu from 'ak-dropdown-menu';
-import Arrow from 'ak-icon/glyph/arrowrightlong';
-import Lozenge from 'ak-lozenge';
+import DropdownMenu from '@atlaskit/dropdown-menu';
+import Arrow from '@atlaskit/icon/glyph/arrowrightlong';
+import Lozenge from '@atlaskit/lozenge';
 
 export default <DropdownMenu
   defaultOpen

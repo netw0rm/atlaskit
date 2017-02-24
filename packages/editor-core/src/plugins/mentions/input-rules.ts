@@ -2,7 +2,7 @@ import { InputRule, Mark, ProseMirror, Schema } from '../../prosemirror';
 
 function replaceWithMark(
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number,
   mark: string
 ): boolean {
@@ -26,8 +26,8 @@ function replaceWithMark(
   return true;
 }
 
-export const mentionQueryRule = new InputRule(/(^|[^\w])@$/, '@', (
+export const mentionQueryRule = new InputRule(/(^|[^\w\`])@$/, '@', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
 ) => replaceWithMark(pm, match, pos, 'mention_query'));

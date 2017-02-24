@@ -1,12 +1,12 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import uid from 'uid';
-import Input from 'ak-input';
-import Button from 'ak-button';
-import Avatar from 'ak-avatar';
-import ErrorIcon from 'ak-icon/glyph/error';
-import HelpIcon from 'ak-icon/glyph/help';
-import ExpandIcon from 'ak-icon/glyph/expand';
+import Input from '@atlaskit/input';
+import Button from '@atlaskit/button';
+import Avatar from '@atlaskit/avatar';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
+import HelpIcon from '@atlaskit/icon/glyph/help';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import BasicFieldBase from './BasicFieldBase';
 import RightGutterFieldBase from './RightGutterFieldBase';
 import { name } from '../package.json';
@@ -24,8 +24,21 @@ const formStyle = {
 storiesOf(name, module)
   .add('with label', () =>
     <BasicFieldBase
-      label="basic example"
+      label="basic example for form"
       id="fieldbase"
+    >
+      <Input
+        value="input children"
+        isEditing
+        id="fieldbase"
+      />
+    </BasicFieldBase>
+  )
+  .add('for inline edit', () =>
+    <BasicFieldBase
+      label="basic example for inline edit"
+      id="fieldbase"
+      labelAppearance="inline-edit"
     >
       <Input
         value="input children"
@@ -242,5 +255,55 @@ storiesOf(name, module)
         label="With only icon"
         rightGutter="important"
       />
+    </div>
+  )
+  .add('when it`s the first element of a form', () =>
+    <div
+      style={{
+        margin: '20px',
+        padding: '20px',
+        border: '1px solid #f0f0f0',
+        display: 'flex',
+        flexDirection: 'column',
+        background: '#fff',
+      }}
+    >
+      <BasicFieldBase
+        id="fieldbase"
+        isFirstChild
+        isFitContainerWidthEnabled
+        label="basic example for form"
+        disablePadding
+      >
+        <Input
+          value="input children"
+          isEditing
+          id="fieldbase"
+        />
+      </BasicFieldBase>
+      <BasicFieldBase
+        label="basic example for form"
+        id="fieldbase"
+        isFitContainerWidthEnabled
+        disablePadding
+      >
+        <Input
+          value="input children"
+          isEditing
+          id="fieldbase"
+        />
+      </BasicFieldBase>
+      <BasicFieldBase
+        label="basic example for form"
+        id="fieldbase"
+        isFitContainerWidthEnabled
+        disablePadding
+      >
+        <Input
+          value="input children"
+          isEditing
+          id="fieldbase"
+        />
+      </BasicFieldBase>
     </div>
   );

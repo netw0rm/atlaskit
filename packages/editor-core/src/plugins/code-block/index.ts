@@ -5,10 +5,10 @@ import * as keymaps from '../keymaps';
 import CodeBlockPasteListener from './code-block-paste-listener';
 
 export class CodeBlockState {
-  active: boolean = false;
-  content?: string;
   element?: HTMLElement;
-  language?: string;
+  language: string | undefined;
+  clicked: boolean = false;
+
   private pm: PM;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
   private activeCodeBlock?: Node;
@@ -29,6 +29,10 @@ export class CodeBlockState {
       pm.on.change,
     ], () => this.update());
 
+    pm.on.click.add(() => {
+      this.update(true);
+    });
+
     this.update();
   }
 
@@ -41,9 +45,9 @@ export class CodeBlockState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  updateLanguage(language: string): void {
+  updateLanguage(language?: string): void {
     if (this.activeCodeBlock) {
-      this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.activeCodeBlock.type, {language: language}).apply();
+      this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.activeCodeBlock.type, {language: language}).applyAndScroll();
     }
   }
 
@@ -53,41 +57,20 @@ export class CodeBlockState {
     const node = $from.parent;
 
     if (isCodeBlockNode(node)) {
-      if (!this.lastCharIsNewline(node) || !this.cursorIsAtTheEndOfLine()) {
         pm.tr.typeText('\n').applyAndScroll();
         return true;
-      } else {
-        this.deleteCharBefore();
-      }
     }
     return false;
   }
 
-  // Replaced the one from prosemirror. Because it was not working with IOS.
-  private deleteCharBefore() {
-    const { pm } = this;
-    const { $from } = pm.selection;
-    pm.tr.delete($from.pos - 1, $from.pos).applyAndScroll();
-  }
-
-  private lastCharIsNewline(node: Node): boolean {
-    return node.textContent.slice(-1) === '\n';
-  }
-
-  private cursorIsAtTheEndOfLine() {
-    const { $from, empty } = this.pm.selection;
-    return empty && $from.end() === $from.pos;
-  }
-
-  private update() {
+  private update(clicked = false) {
     const codeBlockNode = this.activeCodeBlockNode();
 
-    if (codeBlockNode !== this.activeCodeBlock) {
+    if (clicked && codeBlockNode || codeBlockNode !== this.activeCodeBlock) {
+      this.clicked = clicked;
       this.activeCodeBlock = codeBlockNode;
-      this.active = !!codeBlockNode;
-      this.language = codeBlockNode && codeBlockNode.attrs['language'];
-      this.content = codeBlockNode && codeBlockNode.textContent;
-      this.element = this.activeCodeBlockElement();
+      this.language = codeBlockNode && codeBlockNode.attrs['language'] || undefined;
+      this.element = codeBlockNode && this.activeCodeBlockElement();
       this.changeHandlers.forEach(changeHandler => changeHandler(this));
     }
   }

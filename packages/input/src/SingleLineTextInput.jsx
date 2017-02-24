@@ -1,6 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
+import keyCode from 'keycode';
 import { style } from 'glamor';
-import { akFontSizeDefault } from 'akutil-shared-styles';
+import { akFontSizeDefault } from '@atlaskit/util-shared-styles';
 
 const css = {
   common: style({
@@ -70,11 +71,25 @@ export default class SingleLineTextInput extends PureComponent {
      * @type {boolean}
      */
     isEditing: PropTypes.bool.isRequired,
+    /**
+     * @description Called when the user confirms input by pressing the enter key
+     * @memberof SingleLineTextInput
+     * @type {Function}
+     */
+    onConfirm: PropTypes.func,
+    /**
+     * @description Regular onKeyDown handler passed to the input
+     * @memberof SingleLineTextInput
+     * @type {Function}
+     */
+    onKeyDown: PropTypes.func,
   }
 
   static defaultProps = {
     style: {},
     isInitiallySelected: false,
+    onConfirm: () => {},
+    onKeyDown: () => {},
   }
 
   componentDidMount() {
@@ -87,14 +102,25 @@ export default class SingleLineTextInput extends PureComponent {
     }
   }
 
+  onKeyDown = (event) => {
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(event);
+    }
+    if (event.keyCode === keyCode('enter')) {
+      this.props.onConfirm(event);
+    }
+  }
+
   getInputProps = () => {
     const inputProps = {
       ...this.props,
       type: 'text',
+      onKeyDown: this.onKeyDown,
     };
     delete inputProps.style;
     delete inputProps.isEditing;
     delete inputProps.isInitiallySelected;
+    delete inputProps.onConfirm;
     return inputProps;
   }
 
@@ -104,21 +130,25 @@ export default class SingleLineTextInput extends PureComponent {
     }
   }
 
-  renderEditView = () => (
-    <input
-      {...style(css.common, css.editView, this.props.style)}
-      {...this.getInputProps()}
-      ref={(ref) => { this.inputRef = ref; }}
-    />
-  )
+  renderEditView() {
+    return (
+      <input
+        {...style(css.common, css.editView, this.props.style)}
+        {...this.getInputProps()}
+        ref={(ref) => { this.inputRef = ref; }}
+      />
+    );
+  }
 
-  renderReadView = () => (
-    <div {...style(css.common, css.readView, this.props.style)}>
-      {this.props.value}
-    </div>
-  )
+  renderReadView() {
+    return (
+      <div {...style(css.common, css.readView, this.props.style)}>
+        {this.props.value}
+      </div>
+    );
+  }
 
-  render = () => (
-    this.props.isEditing ? this.renderEditView() : this.renderReadView()
-  )
+  render() {
+    return this.props.isEditing ? this.renderEditView() : this.renderReadView();
+  }
 }

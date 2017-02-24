@@ -1,5 +1,5 @@
-import { Node } from 'ak-editor-core';
-import { chaiPlugin, markFactory, nodeFactory } from 'ak-editor-core/test-helper';
+import { Node } from '@atlaskit/editor-core';
+import { chaiPlugin, markFactory, nodeFactory } from '@atlaskit/editor-core/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { name } from '../package.json';
@@ -67,7 +67,7 @@ function check(description: string, html: string, node: Node) {
 describe(`${name} html:`, () => {
   describe('paragraphs:', () => {
     check('empty',
-      '&nbsp;',
+      '',
       doc(p('')));
 
     check('a paragraph with text',
@@ -92,6 +92,10 @@ describe(`${name} html:`, () => {
     check('a hard break in a paragraph',
       '<p>one<br />two</p>',
       doc(p('one', br, 'two')));
+
+    check('multiple hard break in a paragraph',
+      '<p>one<br /><br />two</p>',
+      doc(p('one', br, br, 'two')));
   });
 
   describe('marks formatting:', () => {
@@ -271,9 +275,13 @@ describe(`${name} html:`, () => {
   });
 
   describe('horizontal rule', () => {
-    check('<hr />',
+    check('single <hr />',
       '<hr />',
       doc(hr()));
+
+    check('multiple <hr />',
+      '<hr /><hr />',
+      doc(hr(), hr()));
   });
 });
 

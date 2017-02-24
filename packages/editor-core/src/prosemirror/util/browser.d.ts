@@ -1,5 +1,6 @@
 export const mac: boolean;
 export const ie: boolean;
-export const ie_version: boolean;
+// tslint:disable-next-line
+export const ie_version: number;
 export const gecko: boolean;
 export const ios: boolean;

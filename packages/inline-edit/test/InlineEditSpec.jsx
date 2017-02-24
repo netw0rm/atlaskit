@@ -1,9 +1,9 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import ConfirmIcon from 'ak-icon/glyph/confirm';
-import CancelIcon from 'ak-icon/glyph/cancel';
-import FieldBase, { Label } from 'ak-field-base'; // eslint-disable-line
-import Spinner from 'ak-spinner';
+import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
+import CancelIcon from '@atlaskit/icon/glyph/cancel';
+import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
+import Spinner from '@atlaskit/spinner';
 import InlineEdit from '../src/InlineEdit';
 
 const noop = () => {};
@@ -27,7 +27,7 @@ const defaultProps = {
   editView: <Input value="test" />,
 };
 
-describe('ak-inline-edit', () => {
+describe('@atlaskit/inline-edit', () => {
   it('should render read view inside FieldBase when in read mode', () => {
     const readView = <span>read</span>;
     const wrapper = mount(<InlineEdit {...defaultProps} readView={readView} />);
@@ -177,6 +177,24 @@ describe('ak-inline-edit', () => {
       onClickNode.simulate('click');
       expect(spy.called).to.equal(false);
     });
+  });
+
+  describe('shouldResetFieldBase', () => {
+    describe('when switching from isEditing=true to isEditing=false', () =>
+      it('should set shouldReset property on FieldBase', () => {
+        const wrapper = shallow(<InlineEdit {...defaultProps} isEditing />);
+        wrapper.setProps({ isEditing: false });
+        expect(wrapper.find(FieldBase).prop('shouldReset')).to.equal(true);
+      })
+    );
+
+    describe('when switching from isEditing=false to isEditing=true', () =>
+      it('should not set shouldReset property on FieldBase', () => {
+        const wrapper = shallow(<InlineEdit {...defaultProps} />);
+        wrapper.setProps({ isEditing: true });
+        expect(wrapper.find(FieldBase).prop('shouldReset')).to.equal(false);
+      })
+    );
   });
 
   describe('isWaiting', () => {

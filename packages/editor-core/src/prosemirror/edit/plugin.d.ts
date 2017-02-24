@@ -5,7 +5,7 @@ export interface PluginStateCtor<S> {
 }
 
 export class Plugin<S> {
-  constructor(State: PluginStateCtor<S>, options?: { [key: string]: any });
+  constructor(state: PluginStateCtor<S>, options?: { [key: string]: any });
 
   get(pm: ProseMirror): S | undefined;
   attach(pm: ProseMirror): any;

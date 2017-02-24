@@ -261,16 +261,16 @@ describe('hyperlink', () => {
       expect(spy.callCount).to.equal(2);
     });
 
-    it('sets canAddLink to false when in a context where links are not supported by the schema', () => {
+    it('sets linkable to false when in a context where links are not supported by the schema', () => {
       const { plugin } = editor(doc(unlinkable('{<}text{>}')));
 
-      expect(plugin.canAddLink).to.equal(false);
+      expect(plugin.linkable).to.equal(false);
     });
 
-    it('sets canAddLink to false when link is already in place', () => {
+    it('sets active to true when link is already in place', () => {
       const { plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
 
-      expect(plugin.canAddLink).to.equal(false);
+      expect(plugin.active).to.equal(true);
     });
 
     it('does not emit `change` multiple times when the selection moves within a link', () => {
@@ -367,7 +367,7 @@ describe('hyperlink', () => {
     it('should allow links to be added when the selection is empty', () => {
       const { plugin } = editor(doc(linkable('{<>}text')));
 
-      expect(plugin.canAddLink).to.equal(true);
+      expect(plugin.linkable).to.equal(true);
     });
 
     it('should not be able to unlink a node that has no link', () => {
@@ -408,6 +408,38 @@ describe('hyperlink', () => {
       plugin.updateLink({ href: 'http://example.com/foo' });
 
       expect(pm.doc).to.deep.equal(doc(linkable('text')));
+    });
+
+    it('should escape from link mark when typing at the beginning of the link', () => {
+      const { pm } = editor(doc(linkable(link({ href: 'http://example.com' })('text'))));
+
+      pm.input.insertText(1, 1, '1');
+
+      expect(pm.doc).to.deep.equal(doc(linkable('1', link({ href: 'http://example.com' })('text'))));
+    });
+
+    it('should not escape from link mark when typing at the middle of the link', () => {
+      const { pm } = editor(doc(linkable(link({ href: 'http://example.com' })('text'))));
+
+      pm.input.insertText(2, 2, '1');
+
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('t1ext'))));
+    });
+
+    it('should not escape from link mark when deliting second character', () => {
+      const { pm } = editor(doc(linkable(link({ href: 'http://example.com' })('t{<>}ext'))));
+
+      pm.input.dispatchKey('Delete');
+
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('txt'))));
+    });
+
+    it('should return referring DOM element', () => {
+      const { plugin } = editor(doc(
+        linkable(link({ href: 'http://www.atlassian.com' })('atlassian')),
+        linkable(link({ href: 'http://www.stypositive.ru' })('d{<>}sorin'))));
+
+      expect(plugin.element.text).to.eq('dsorin');
     });
   });
 });

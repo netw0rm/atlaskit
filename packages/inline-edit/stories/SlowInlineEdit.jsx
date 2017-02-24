@@ -1,6 +1,6 @@
 import { action } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
-import SingleLineTextInput from 'ak-input';
+import SingleLineTextInput from '@atlaskit/input';
 import { InlineEdit } from '../src';
 
 /* eslint-disable react/prop-types */

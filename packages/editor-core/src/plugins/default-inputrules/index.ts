@@ -1,11 +1,7 @@
 import {
-  closeDoubleQuote,
-  closeSingleQuote,
   ellipsis,
   InputRule,
   inputRules,
-  openDoubleQuote,
-  openSingleQuote,
   Plugin,
   ProseMirror,
 } from '../../prosemirror';
@@ -22,14 +18,13 @@ const emDash = new InputRule(/--\s$/, '', '— ');
 /**
  * Copied from https://github.com/ProseMirror/prosemirror-inputrules/blob/8be1881a1b905f34c503c8e1fee7903983e8b35c/src/rules.js
  */
-const smartQuotes = [openDoubleQuote, closeDoubleQuote, openSingleQuote, closeSingleQuote];
-const allInputRules = [emDash, ellipsis, ...smartQuotes];
+const allInputRules = [emDash, ellipsis];
 
 /**
  * ProseMirror plugin for adding default input rules.
  */
 export class DefaultInputRulesState {
-  inputRules: Array<InputRule>;
+  inputRules: InputRule[];
 
   constructor(pm: ProseMirror) {
     this.inputRules = [...allInputRules];

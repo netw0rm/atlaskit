@@ -3,8 +3,8 @@ import React from 'react';
 import styles from 'style!./story-styles.less';
 import Question from 'ak-icon/glyph/question';
 import Arrow from 'ak-icon/glyph/arrowrightlong';
-import Avatar from 'ak-avatar';
-import Lozenge from 'ak-lozenge';
+import Avatar from '@atlaskit/avatar';
+import Lozenge from '@atlaskit/lozenge';
 
 import Item, { SecondaryText } from '../src';
 import { name } from '../package.json';
@@ -12,15 +12,15 @@ import { name } from '../package.json';
 /* eslint-disable react/prop-types */
 const Icon = () => <Question label="test question" />;
 /* eslint-enable react/prop-types */
-const imports = [['React', 'react'], ['Item', 'ak-droplist-item']];
+const imports = [['React', 'react'], ['Item', '@atlaskit/droplist-item']];
 storiesOf(name, module)
   .addCodeExampleStory('simple item', () => (
     <div className={styles.storiesContainer}>
       <p>This is an example of simple droplist items with or without links</p>
       <div className={styles.itemsContainer}>
-        <Item href="http://atlassian.com">This link will reload this window</Item>
+        <Item href="//atlassian.com">This link will reload this window</Item>
         <Item isActive>This is just a highlighted item</Item>
-        <Item href="http://atlassian.com" target="_blank">This link will open in another tab</Item>
+        <Item href="//atlassian.com" target="_blank">This link will open in another tab</Item>
         <Item>This item has <SecondaryText>(secondary text)</SecondaryText></Item>
         <Item isFocused>Focused item</Item>
       </div>
@@ -68,7 +68,7 @@ storiesOf(name, module)
         <Item elemBefore={<Avatar size="small" />}>third item</Item>
       </div>
     </div>
-  ), { imports: [...imports, ['Avatar', 'ak-avatar']] })
+  ), { imports: [...imports, ['Avatar', '@atlaskit/avatar']] })
   .addCodeExampleStory('simple item with additional space', () => (
     <div className={styles.storiesContainer}>
       <p>This is an example of droplist items with additional space to the right</p>
@@ -89,7 +89,7 @@ storiesOf(name, module)
         >second item with very long text that is going to be cut off</Item>
       </div>
     </div>
-  ), { imports: [...imports, ['Lozenge', 'ak-lozenge'], ['t', 'ak-icon/glyph/arrowrightlong']] })
+  ), { imports: [...imports, ['Lozenge', '@atlaskit/lozenge'], ['t', 'ak-icon/glyph/arrowrightlong']] })
   .addCodeExampleStory('item with avatars and checkboxes', () => (
     <div className={styles.storiesContainer}>
       <p>This is an example of droplist items with avatars and checkboxes</p>
@@ -99,14 +99,14 @@ storiesOf(name, module)
         <Item elemBefore={<Avatar size="small" />} type="checkbox">third item</Item>
       </div>
     </div>
-  ), { imports: [...imports, ['Avatar', 'ak-avatar']] })
+  ), { imports: [...imports, ['Avatar', '@atlaskit/avatar']] })
   .addCodeExampleStory('disabled items', () => (
     <div className={styles.storiesContainer}>
       <p>This is an example of disabled droplist items</p>
       <div className={styles.itemsContainer}>
         <Item elemBefore={<Icon />} isDisabled>first item</Item>
         <Item type="radio" isDisabled>second item</Item>
-        <Item href="http://atlassian.com" target="_blank" isDisabled>This link will open in another tab</Item>
+        <Item href="//atlassian.com" target="_blank" isDisabled>This link will open in another tab</Item>
       </div>
     </div>
   ), { imports: [...imports, ['Icon', 'ak-icon/glyph/question']] })

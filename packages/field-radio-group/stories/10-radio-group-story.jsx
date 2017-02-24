@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Button from 'ak-button';
+import Button from '@atlaskit/button';
 
 import FieldRadioGroup, { AkFieldRadioGroup } from '../src';
 import { name } from '../package.json';
@@ -11,7 +11,7 @@ import {
   longSampleWithDefault,
 } from './_constants';
 
-const formTestUrl = 'http://www.w3schools.com/html/action_page.php';
+const formTestUrl = '//httpbin.org/get';
 
 function radioGroupSubmitStory(content) {
   return (

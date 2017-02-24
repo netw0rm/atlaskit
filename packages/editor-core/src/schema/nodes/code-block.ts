@@ -36,7 +36,8 @@ export class CodeBlockNodeType extends Block {
   }
 
   toDOM(node: CodeBlockNode): [string, any, number] {
-    return ['pre', { 'data-language': node.attrs.language }, 0];
+    const className = browser.ie && browser.ie_version <= 11 ? 'ie11' : '';
+    return ['pre', { 'data-language': node.attrs.language, 'class': className }, 0];
   }
 }
 
@@ -78,7 +79,6 @@ export interface CodeBlockNode extends Node {
 export function isCodeBlockNode(node: Node): node is CodeBlockNode {
   return node.type instanceof CodeBlockNodeType;
 }
-
 
 export const codeBlock: NodeSpec = {
   content: 'text*',

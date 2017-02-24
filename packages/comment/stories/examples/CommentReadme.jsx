@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import { Code, Chrome, Description, Heading, Props } from 'akutil-readme';
+import { Code, Chrome, Description, Heading, Props } from '@atlaskit/util-readme';
 import { name } from '../../package.json';
 
 export default class CommentReadme extends PureComponent {
@@ -8,7 +8,7 @@ export default class CommentReadme extends PureComponent {
     description: PropTypes.string,
     example: PropTypes.node,
     exampleRaw: PropTypes.node,
-    component: PropTypes.node,
+    component: PropTypes.func,
     propDescriptions: PropTypes.objectOf(PropTypes.string),
     propTypes: PropTypes.objectOf(PropTypes.string),
     children: PropTypes.node,

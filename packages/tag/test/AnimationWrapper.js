@@ -1,7 +1,7 @@
 /** @jsx vdom */
 
 import { vdom } from 'skatejs';
-import { getShadowRoot } from 'akutil-common-test';
+import { getShadowRoot } from '@atlaskit/util-common-test';
 
 import { createTemporary, removeTemporary } from './_helpers';
 import Root from '../src/Root';

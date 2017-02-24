@@ -9,13 +9,13 @@ export default function transformToCodeBlock(pm: ProseMirror): void {
   transformToCodeBlockAction(pm).applyAndScroll();
 }
 
-export function transformToCodeBlockAction(pm: ProseMirror): EditorTransform {
+export function transformToCodeBlockAction(pm: ProseMirror, attrs?: any): EditorTransform {
   const { $from } = pm.selection;
   const codeBlock = pm.schema.nodes.code_block;
 
   const where = $from.before($from.depth);
   const tr = clearMarkupFor(pm, where)
-    .setNodeType(where, codeBlock, {});
+    .setNodeType(where, codeBlock, attrs);
 
   return tr;
 }

@@ -76,7 +76,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   let pm: ProseMirror;
 
   beforeEach(() => {
-    const noop = () => {};
+    const noop = () => { };
     handler = sinon.spy();
 
     editor = mount(
@@ -101,7 +101,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
 
     // enzyme currently requires setting value manually and simulating "change" event
     // https://github.com/airbnb/enzyme/issues/76
-    const input = toolbar.find('Panel PanelTextInput input');
+    const input = toolbar.find('FloatingToolbar PanelTextInput input');
     (input.get(0) as any).value = 'http://atlassian.com';
     input.simulate('change');
     input.simulate('keydown', { which: 'enter', keyCode: 13 });
@@ -140,7 +140,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.format.em.autoformatting', () => {
-    pm.input.insertText(0, 0, '_text_');
+    pm.input.insertText(0, 0, '*text*');
     expect(handler.calledWith('atlassian.editor.format.em.autoformatting')).to.equal(true);
   });
 
@@ -200,6 +200,17 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
   });
 
   it('atlassian.editor.feedback.button', () => {
+    window.jQuery = { ajax() { } };
+    const noop = () => { };
+
+    editor = mount(
+      <Editor isExpandedByDefault onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,
+
+      // We need to attach the editor to DOM because ProseMirror depends on having
+      // focus on the content area (detached DOM elements can not receive focus)
+      { attachTo: fixture() }
+    );
+
     editor
       .find('ToolbarFeedback > ToolbarButton')
       .simulate('click');
@@ -225,10 +236,10 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     expect(handler.calledWith('atlassian.editor.stop.cancel')).to.equal(true);
   });
 
-  it('atlassian.editor.paste', function() {
+  it('atlassian.editor.paste', function () {
     if (!dispatchPasteEvent(pm, { plain: 'foo' })) {
-      this.skip('This environment does not support artificial paste events');
-      return;
+      // This environment does not support artificial paste events
+      return this.skip();
     }
 
     expect(handler.calledWith('atlassian.editor.paste')).to.equal(true);
@@ -244,7 +255,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     expect(handler.calledWith('atlassian.editor.image.button')).to.equal(true);
   });
 
-  it('atlassian.editor.image.paste', function() {
+  it('atlassian.editor.image.paste', function () {
     const contentArea: HTMLElement = (editor.get(0) as any).state.pm.content;
     const event = createEvent('paste');
 
@@ -257,7 +268,8 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
         }
       });
     } catch (e) {
-      return this.skip('This environment does not allow mocking paste events - ' + e);
+      // This environment does not allow mocking paste events
+      return this.skip();
     }
 
     contentArea.dispatchEvent(event);
@@ -274,8 +286,8 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
       dataTransfer: {
         value: {
           getData: (type: string) => '',
-          setData: () => {},
-          clearData: () => {},
+          setData: () => { },
+          clearData: () => { },
           types: ['Files'],
           files: [],
           items: [],
@@ -302,8 +314,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
         .find('Item')
         .filterWhere(n => n.key() === blockTypeName)
         .find('Element')
-        .simulate('click')
-      ;
+        .simulate('click');
 
       expect(handler.calledWith(`atlassian.editor.format.${blockTypeName}.button`)).to.equal(true);
     });
@@ -340,6 +351,7 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
 
   it('atlassian.editor.format.codeblock.autoformatting', () => {
     pm.input.insertText(0, 0, '```');
+    sendKeyToPm(pm, 'Enter');
     expect(handler.calledWith('atlassian.editor.format.codeblock.autoformatting')).to.equal(true);
   });
 

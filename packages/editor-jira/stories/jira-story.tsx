@@ -1,6 +1,8 @@
 import { action, storiesOf } from '@kadira/storybook';
+import { storyDecorator } from '@atlaskit/editor-core/test-helper';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { name, version } from '../package.json';
 import Editor from '../src';
 
 const CANCEL_ACTION = () => action('Cancel')();
@@ -13,7 +15,7 @@ class Demo extends PureComponent<Props, State> {
 
   render() {
     return (
-      <div style={{ padding: 20 }}>
+      <div>
         <Editor
           onCancel={CANCEL_ACTION}
           onChange={this.updateHTML}
@@ -33,6 +35,7 @@ class Demo extends PureComponent<Props, State> {
   }
 }
 
-storiesOf('ak-editor-jira', module)
+storiesOf(name, module)
+  .addDecorator(storyDecorator(version))
   .add('Editor', () => <Demo />)
   .add('Editor (allowLists)', () => <Demo allowLists />);

@@ -1,5 +1,5 @@
 import React from 'react';
-import Readme, { Props, Description, Code } from 'akutil-readme';
+import Readme, { Props, Description, Code } from '@atlaskit/util-readme';
 import { storiesOf } from '@kadira/storybook';
 
 import Navigation from '../src/index';
@@ -9,7 +9,7 @@ import { name, description } from '../package.json';
 const navigationPropDescriptions = {
   children: 'Content to go inside the Container Navigation',
   containerAppearance: 'The appearance of the container navigation',
-  containerHeader: 'The component to place in the container as the header – usually the logo and title of the container',
+  containerHeaderComponent: 'The component to be rendered in the container as the header – usually a product logo or a container title',
   createDrawerContent: 'Content to go inside the create drawer. See the "create drawer" docs for more details',
   drawerBackIcon: 'An icon that will be used as the close button for all drawers',
   globalAccountItem: 'Content that will be placed in the global navigation - the account item is usually an avatar, wrapped in a dropdown trigger',
@@ -29,6 +29,7 @@ const navigationPropDescriptions = {
   onCreateDrawerOpen: 'A handler to call when the navigation intends for the create drawer to be opened - called when the global create item is pressed',
   onSearchDrawerClose: 'A handler to call when the navigation intends for the search drawer to be closed - called when the back button is pressed',
   onSearchDrawerOpen: 'A handler to call when the navigation intends for the search drawer to be opened - called when the back button is pressed',
+  onResizeStart: 'A handler to call when the navigation starts resizing - called when the resizer starts dragging',
   searchDrawerContent: 'Content to go inside the search drawer. See the "search drawer" docs for more details',
   width: 'The width at which to render the navigation. This is only adhered to if Navigation.isOpen is true.',
 };

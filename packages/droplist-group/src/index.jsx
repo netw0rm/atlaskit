@@ -43,7 +43,7 @@ export default class Group extends PureComponent {
     return `${props.heading} ${elemAfter || ''}`;
   }
 
-  render = () => {
+  render() {
     const { props } = this;
 
     return (
@@ -54,8 +54,9 @@ export default class Group extends PureComponent {
       >
         {props.heading ?
           <div
-            className={styles.heading}
             aria-hidden="true"
+            className={styles.heading}
+            data-role="droplistGroupHeading"
           >
             <span className={styles.content}>{props.heading}</span>
             {props.elemAfter ? <span className={styles.elemAfter}>{props.elemAfter}</span> : null}

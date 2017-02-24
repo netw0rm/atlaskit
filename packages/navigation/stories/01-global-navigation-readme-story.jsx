@@ -1,5 +1,5 @@
 import React from 'react';
-import Readme, { Description, Props, Code } from 'akutil-readme';
+import Readme, { Description, Props, Code } from '@atlaskit/util-readme';
 import { storiesOf } from '@kadira/storybook';
 
 import { AkGlobalNavigation } from '../src/index';
@@ -26,7 +26,7 @@ storiesOf(name, module)
       description={description}
     >
       <Code>{`
-          import { AkGlobalNavigation } from 'ak-navigation';
+          import { AkGlobalNavigation } from '@atlaskit/navigation';
       `}</Code>
       <Description>
         The GlobalNavigation component represents the blue bar, and is a part of

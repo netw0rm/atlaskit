@@ -11,7 +11,6 @@ import {
 } from '../../prosemirror';
 import { LinkMark, LinkMarkType } from '../../schema';
 import hyperlinkRule from './input-rule';
-import pasteTransformer from './paste-transformer';
 
 export type StateChangeHandler = (state: HyperlinkState) => void;
 
@@ -20,7 +19,7 @@ export class HyperlinkState {
   href?: string;
   text?: string;
   active = false;
-  canAddLink = false;
+  linkable = false;
   element?: HTMLElement;
 
   private changeHandlers: StateChangeHandler[] = [];
@@ -33,8 +32,6 @@ export class HyperlinkState {
   constructor(pm: PM) {
     this.pm = pm;
 
-    pm.on.transformPasted.add(pasteTransformer.bind(pasteTransformer, pm));
-
     this.inputRules = [hyperlinkRule];
 
     const rules = inputRules.ensure(pm);
@@ -46,7 +43,11 @@ export class HyperlinkState {
       pm.on.activeMarkChange,
     ], () => this.update());
 
-    this.setup(this.getActiveLinkNodeInfo());
+    pm.updateScheduler([
+      pm.on.textInput,
+    ], () => this.escapeFromMark());
+
+    this.update(true);
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -59,7 +60,7 @@ export class HyperlinkState {
   }
 
   addLink(options: HyperlinkOptions) {
-    if (this.canAddLink) {
+    if (this.linkable && !this.active) {
       const { pm } = this;
       const { href } = options;
       const { empty, $from, $to } = pm.selection;
@@ -67,8 +68,8 @@ export class HyperlinkState {
       const tr = empty
         ? pm.tr.replaceWith($from.pos, $to.pos, pm.schema.text(href, [mark]))
         : pm.tr.addMark($from.pos, $to.pos, mark);
-
       tr.apply();
+      pm.focus();
     }
   }
 
@@ -103,27 +104,44 @@ export class HyperlinkState {
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
 
-  private update() {
+  private update(dirty = false) {
     const nodeInfo = this.getActiveLinkNodeInfo();
+    const canAddLink = this.isActiveNodeLinkable();
+
+    if (canAddLink !== this.linkable) {
+      this.linkable = canAddLink;
+      dirty = true;
+    }
 
     if ((nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
-      this.setup(nodeInfo);
+      this.activeLinkNode = nodeInfo && nodeInfo.node;
+      this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
+      this.activeLinkMark = nodeInfo && this.getActiveLinkMark(nodeInfo.node);
+      this.text = nodeInfo && nodeInfo.node.textContent;
+      this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
+      this.element = this.getDomElement();
+      this.active = !!nodeInfo;
+      dirty = true;
+    }
+
+    if (dirty) {
       this.changeHandlers.forEach(cb => cb(this));
     }
   }
 
-  private setup(nodeInfo: NodeInfo | undefined): void {
-    this.activeLinkNode = nodeInfo && nodeInfo.node;
-    this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
-    this.activeLinkMark = nodeInfo && this.getActiveLinkMark(nodeInfo.node);
-    this.text = nodeInfo && nodeInfo.node.textContent;
-    this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
-    this.element = this.getDomElement();
-    this.active = !!nodeInfo;
-    this.canAddLink = !this.active && this.isActiveNodeLinkable();
+  private escapeFromMark() {
+    const nodeInfo = this.getActiveLinkNodeInfo();
+    if (nodeInfo && this.isShouldEscapeFromMark(nodeInfo)) {
+      this.pm.tr.removeMark(nodeInfo.startPos, this.pm.selection.$from.pos, this.pm.schema.marks.link).apply();
+    }
   }
 
-  private getActiveLinkNodeInfo(): NodeInfo| undefined {
+  private isShouldEscapeFromMark(nodeInfo: NodeInfo | undefined) {
+    const parentOffset = this.pm.selection.$from.parentOffset;
+    return nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset;
+  }
+
+  private getActiveLinkNodeInfo(): NodeInfo | undefined {
     const {pm} = this;
     const {link} = pm.schema.marks;
     const {$from, empty} = pm.selection as TextSelection;
@@ -138,7 +156,10 @@ export class HyperlinkState {
       }
 
       if (node && node.isText && link.isInSet(node.marks)) {
-        return { node: node, startPos: offset + 1 };
+        return {
+          node,
+          startPos: offset + 1
+        };
       }
     }
   }
@@ -153,7 +174,11 @@ export class HyperlinkState {
 
   private getDomElement(): HTMLElement | undefined {
     if (this.activeLinkStartPos) {
-      const { node, offset } = DOMFromPos(this.pm, this.activeLinkStartPos, true);
+      const { node, offset } = DOMFromPos(
+        this.pm,
+        this.activeLinkStartPos + this.pm.selection.$from.start(this.pm.selection.$from.depth),
+        true
+      );
 
       if (node.childNodes.length === 0) {
         return node.parentNode as HTMLElement;

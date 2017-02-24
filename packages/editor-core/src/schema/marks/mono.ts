@@ -29,7 +29,8 @@ export class MonoMarkType extends MarkType {
 
   toDOM(): [string, any] {
     return ['span', {
-      style: 'font-family: monospace; white-space: pre-wrap;'
+      style: 'font-family: monospace; white-space: pre-wrap;',
+      class: 'mono'
     }];
   }
 }

@@ -141,9 +141,9 @@ export default class FieldBase extends PureComponent {
      * @memberof FieldBase
      * @type {boolean}
      * @default false
-     * @example <FieldBase hasSpinner />
+     * @example <FieldBase isLoading />
      */
-    hasSpinner: PropTypes.bool,
+    isLoading: PropTypes.bool,
     /**
      * @description The content that will be displayed within the field
      *
@@ -165,7 +165,7 @@ export default class FieldBase extends PureComponent {
     isRequired: false,
     isFitContainerWidthEnabled: false,
     shouldReset: false,
-    hasSpinner: false,
+    isLoading: false,
   }
 
   componentDidUpdate() {
@@ -185,7 +185,7 @@ export default class FieldBase extends PureComponent {
       return this.renderWarningIcon();
     }
 
-    return this.props.hasSpinner ? <Spinner /> : null;
+    return this.props.isLoading ? <Spinner /> : null;
   }
 
   render() {

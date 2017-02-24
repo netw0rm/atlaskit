@@ -87,14 +87,14 @@ storiesOf(name, module)
         <BasicFieldBase
           label="Spinner example"
           id="fieldbase"
-          hasSpinner
+          isLoading
         >
           {input}
         </BasicFieldBase>
         <BasicFieldBase
           label="Invalid over spinner example"
           id="fieldbase"
-          hasSpinner
+          isLoading
           isInvalid
         >
           {input}
@@ -103,14 +103,14 @@ storiesOf(name, module)
           label="Spinner + compact example"
           id="fieldbase"
           appearance="compact"
-          hasSpinner
+          isLoading
         >
           {input}
         </BasicFieldBase>
         <BasicFieldBase
           label="Spinner + compact + disabled example"
           id="fieldbase"
-          hasSpinner
+          isLoading
           appearance="compact"
           isDisabled
         >

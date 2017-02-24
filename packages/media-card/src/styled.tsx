@@ -12,6 +12,7 @@ export const Card = styled(Root)`
   cursor: pointer;
   line-height: normal;
   position: relative;
+  box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px 0 rgba(9, 30, 66, 0.24);
   
   .wrapper {
     background: #E5E8EC;

@@ -1,6 +1,6 @@
 // @flow
-import getDroppableOver from './get-droppable-over';
-import type { Action, State, Dimension, DragImpact, Dragging, DimensionMap, DragResult, CurrentDrag } from './types';
+import type { TypeId } from '../types';
+import type { Action, State, Dimension, DragImpact, Dragging, DragResult, CurrentDrag, DraggableLocation } from './types';
 import getDragImpact from './get-drag-impact';
 
 const initialState: State = {
@@ -53,7 +53,7 @@ export default (state: State = initialState, action: Action): State => {
       state.droppableDimensions
     );
 
-    const source: ?DragLocation = initialImpact.destination;
+    const source: ?DraggableLocation = initialImpact.destination;
 
     if (!source) {
       console.error('lifting a draggable that is not inside a droppable');

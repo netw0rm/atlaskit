@@ -1,18 +1,18 @@
 // @flow
-type Physics = {|
-  stiffness: number,
-  damping: number,
-  precision: number
-|}
+import type { SpringHelperConfig } from 'react-motion/lib/Types';
 
-export const standard: Physics = {
+const base = {
   // stiffness: 500,
   stiffness: 50,
   damping: 50,
   precision: 0.5,
 };
 
-export const fast: Physics = {
-  ...standard,
-  stiffness: standard.stiffness * 2,
+export const standard: SpringHelperConfig = {
+  ...base,
+};
+
+export const fast: SpringHelperConfig = {
+  ...base,
+  stiffness: base.stiffness * 2,
 };

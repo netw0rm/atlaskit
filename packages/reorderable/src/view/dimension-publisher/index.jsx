@@ -38,7 +38,7 @@ type Props = {|
     children: React$Element<any>,
     shouldPublish: boolean,
     publish: Function,
-    outerRef?: Element
+    outerRef?: ?Element
 |}
 
 export class DimensionPublisher extends PureComponent {

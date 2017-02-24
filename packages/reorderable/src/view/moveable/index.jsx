@@ -10,7 +10,7 @@ export type Speed = 'NONE' | 'STANDARD' | 'FAST';
 type Props = {|
   children?: React$Element<*>,
   // TODO: should this be optional?
-  destination: ?Position,
+  destination?: Position,
   speed: Speed,
   zIndex: string,
   onMoveEnd?: Function,
@@ -19,7 +19,7 @@ type Props = {|
 
 type DefaultProps = {|
   destination: Position,
-  innerRef: Function
+  innerRef: Function,
 |}
 
 // TODO: memoizeOne

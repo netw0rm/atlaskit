@@ -21,7 +21,7 @@ export type Dimension = {|
 
 export type DraggableLocation = {|
   droppableId: DroppableId,
-  order: number
+  index: number
 |};
 
 export type DimensionMap = { [key: Id]: Dimension };
@@ -45,11 +45,11 @@ export type DraggingInitial = {|
 |}
 
 export type Dragging = {|
-    id: DraggableId,
-    type: TypeId,
-    offset: Position,
-    center: Position,
-    initial: DraggingInitial,
+  id: DraggableId,
+  type: TypeId,
+  offset: Position,
+  center: Position,
+  initial: DraggingInitial,
 |}
 
 export type CurrentDrag = {|

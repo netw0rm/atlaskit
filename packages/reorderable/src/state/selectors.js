@@ -1,5 +1,4 @@
 // @flow
-import { createSelector } from 'reselect';
-import type { CurrentDrag, DragMovement } from './types';
+import type { CurrentDrag, State } from './types';
 
-export const currentDragSelector: ?CurrentDrag = state => state.currentDrag;
+export const currentDragSelector: ?CurrentDrag = (state: State) => state.currentDrag;

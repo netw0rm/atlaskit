@@ -1,6 +1,7 @@
 // @flow
 import memoizeOne from 'memoize-one';
-import type { DragMovement, Dragging, DimensionMap } from './types';
+import type { DraggableId, DroppableId } from '../types';
+import type { DragMovement, Dimension, DimensionMap, DragImpact, Position } from './types';
 import getDroppableOver from './get-droppable-over';
 import isInsideDimension from './is-inside-dimension';
 
@@ -40,10 +41,11 @@ export default (target: Position,
   const isMovingForward: boolean = target.y - draggingDimension.center.y > 0;
 
     // get all draggables inside the draggable
+    // $FlowFixMe
   const insideDroppable: Dimension[] = getDimensionList(draggableDimensions)
     .filter((dimension: Dimension): boolean => isInsideDimension(dimension.center, droppableDimension));
 
-  const moved: draggables[] = insideDroppable
+  const moved: DraggableId[] = insideDroppable
     .filter((dimension: Dimension): boolean => {
       // do not want to move the item that is dragging
       if (dimension === draggingDimension) {
@@ -83,7 +85,7 @@ export default (target: Position,
     return startIndex - moved.length;
   })();
 
-  console.log('current order', index);
+  console.log('current index', index);
 
   const amount = draggingDimension.height * -1 * direction;
   const movement: DragMovement = {
@@ -95,7 +97,7 @@ export default (target: Position,
     movement,
     destination: {
       droppableId,
-      order: index,
+      index,
     },
   };
 };

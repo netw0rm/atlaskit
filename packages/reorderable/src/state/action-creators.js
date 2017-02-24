@@ -1,9 +1,9 @@
 // @flow
 import type { DraggableId, TypeId } from '../types';
-import type { Dimension, Position } from './types';
+import type { Dimension, Position, Dispatch } from './types';
 
 export type RequestDimensionsAction = {|
-  type: 'REQUEST_DIMENSION',
+  type: 'REQUEST_DIMENSIONS',
   payload: TypeId
 |}
 
@@ -23,8 +23,6 @@ export type LiftAction = {|
     selection: Position,
   |}
 |}
-
-export type BeginLiftAction = LiftAction;
 
 const lift = (id: DraggableId,
   type: TypeId,
@@ -50,7 +48,7 @@ export const beginLift = (id: DraggableId,
   offset: Position,
   scroll: Position,
   selection: Position,
-) => (dispatch) => {
+) => (dispatch: Dispatch) => {
   dispatch(requestDimensions(type));
 
   // Dimensions will be requested synronously
@@ -130,8 +128,7 @@ export const cancel = (id: DraggableId): CancelAction => ({
   payload: id,
 });
 
-export type Action = BeginLiftAction |
-  LiftAction |
+export type Action = LiftAction |
   RequestDimensionsAction |
   PublishDraggableDimensionAction |
   PublishDroppableDimensionAction |

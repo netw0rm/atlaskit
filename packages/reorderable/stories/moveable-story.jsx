@@ -16,7 +16,7 @@ storiesOf('Moveable', module)
     const point: Position = { x: 0, y: 0 };
 
     return (
-      <Moveable destination={point} shouldAnimate={false}>
+      <Moveable destination={point} speed="NONE" zIndex="auto">
         <Box color="lightblue">
           offset: (x: {point.x}, y: {point.y})
         </Box>
@@ -27,7 +27,7 @@ storiesOf('Moveable', module)
     const point: Position = { x: 100, y: 100 };
 
     return (
-      <Moveable destination={point} shouldAnimate={false}>
+      <Moveable destination={point} speed="NONE" zIndex="auto">
         <Box color="lightgreen">
           offset: (x: {point.x}, y: {point.y})
         </Box>
@@ -40,7 +40,8 @@ storiesOf('Moveable', module)
     return (
       <Moveable
         destination={point}
-        shouldAnimate
+        speed="STANDARD"
+        zIndex="auto"
         onMoveEnd={action('onMoveEnd')}
       >
         <Box color="yellow">
@@ -78,9 +79,10 @@ storiesOf('Moveable', module)
         const { destination } = this.state;
         return (
           <Moveable
-            shouldAnimate
+            speed="STANDARD"
             destination={destination}
             onMoveEnd={this.onMoveEnd}
+            zIndex="auto"
           >
             <Box color="pink">
               offset: (x: {destination.x}, y: {destination.y})

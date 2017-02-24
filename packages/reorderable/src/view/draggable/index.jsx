@@ -11,7 +11,6 @@ import type { DraggableId, TypeId } from '../../types';
 import type {
   Position,
   State,
-  DraggableLocation,
   DraggingInitial,
 } from '../../state/types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';

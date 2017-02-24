@@ -17,11 +17,13 @@ storiesOf('dimension publisher', module)
   .add('basic', () => {
     class Playground extends PureComponent {
       state: {|
-        shouldPublish: boolean
+        shouldPublish: boolean,
+        ref: ?Element,
       |}
 
       state = {
         shouldPublish: false,
+        ref: null,
       }
 
       forcePublish = () => {
@@ -35,13 +37,20 @@ storiesOf('dimension publisher', module)
         });
       }
 
+      setRef = (ref: ?Element) => {
+        this.setState({
+          ref,
+        });
+      }
+
       render() {
         return (
-          <div>
+          <div ref={this.setRef}>
             <DimensionPublisher
               itemId="10"
               shouldPublish={this.state.shouldPublish}
               publish={publishDimensions}
+              outerRef={this.state.ref}
             >
               <Child>hello there</Child>
             </DimensionPublisher>

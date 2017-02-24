@@ -17,7 +17,6 @@ module.exports = {
   babel: {
     plugins: [
       'transform-flow-strip-types',
-      ['transform-react-jsx', { pragma: 'h' }],
     ],
   },
 };

@@ -1,7 +1,7 @@
 import Keymap from 'browserkeymap';
 import { ContextName } from '../../';
 import { analyticsService, trackAndInvoke } from '../../analytics';
-import * as keymaps from '../../keymaps';
+import * as keymaps from '../keymaps';
 import {
   commands,
   Fragment,
@@ -370,7 +370,7 @@ export class BlockTypeState {
     };
 
     groupedBlockTypes.forEach(blockTypes => blockTypes.forEach((blockType) => {
-      const shortcut = keymaps.findShorcutByDescription(blockType.title);
+      const shortcut = keymaps.findShortcutByDescription(blockType.title);
       if (shortcut) {
         const eventName = this.analyticsEventName('keyboard', blockType.name);
         bind(shortcut, trackAndInvoke(eventName, () => this.toggleBlockType(blockType.name)));

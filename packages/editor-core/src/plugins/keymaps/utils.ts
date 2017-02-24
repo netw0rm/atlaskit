@@ -58,10 +58,10 @@ export function findShortcutByDescription(description: string): string | undefin
 }
 
 const ALL = [toggleOrderedList, toggleBulletList, toggleBold, toggleItalic,
-  toggleUnderline, toggleStrikethrough, toggleMonospace,\
+  toggleUnderline, toggleStrikethrough, toggleMonospace,
   setNormalText, setHeading1, setHeading2, setHeading3, setHeading4, setHeading5,
   setBlockQuote, setCodeBlock, setPanel, insertNewLine, insertHorizontalRule,
-  splitCodeBlock, createCodeBlock, splitListItem, moveUp, moveDown];\
+  splitCodeBlock, createCodeBlock, splitListItem, moveUp, moveDown];
 
 function makeKeyMap(description: string, windows: string, mac: string, common?: string): Keymap {
   return {

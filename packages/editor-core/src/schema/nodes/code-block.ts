@@ -1,4 +1,4 @@
-import { Attribute, Block, dom, Node, Schema } from '../../prosemirror';
+import { Attribute, Block, browser, dom, Node, Schema } from '../../prosemirror';
 import { NodeSpec } from '../../prosemirror/future';
 
 export class CodeBlockNodeType extends Block {

@@ -96,6 +96,9 @@ export default class StatelessSelect extends PureComponent {
 
   onOpenChange = (attrs) => {
     this.props.onOpenChange(attrs);
+    this.setState({
+      focusedItemIndex: undefined,
+    });
 
     if (this.inputNode) {
       this.inputNode.focus();
@@ -171,20 +174,46 @@ export default class StatelessSelect extends PureComponent {
       unselectedItems;
   }
 
+  scrollToFocused = (index) => {
+    const scrollable = this.containerNode.querySelector('[data-role="droplistContent"]');
+    let item;
+
+    if (scrollable && index !== undefined) {
+      item = scrollable.querySelectorAll('[data-role="droplistItem"]')[index];
+    }
+
+    if (item && scrollable) {
+      scrollable.scrollTop = (item.offsetTop - scrollable.clientHeight) + item.clientHeight;
+    }
+  }
+
   focusNextItem = () => {
     const filteredItems = this.getAllVisibleItems(this.props.items);
     const length = filteredItems.length - 1;
+    const index = this.getNextFocusable(this.state.focusedItemIndex, length);
     this.setState({
-      focusedItemIndex: this.getNextFocusable(this.state.focusedItemIndex, length),
+      focusedItemIndex: index,
     });
+    this.scrollToFocused(index);
   }
 
   focusPreviousItem = () => {
     const filteredItems = this.getAllVisibleItems(this.props.items);
     const length = filteredItems.length - 1;
+    const index = this.getPrevFocusable(this.state.focusedItemIndex, length);
     this.setState({
-      focusedItemIndex: this.getPrevFocusable(this.state.focusedItemIndex, length),
+      focusedItemIndex: index,
     });
+    this.scrollToFocused(index);
+  }
+
+  focusItem = (item) => {
+    const filteredItems = this.getAllVisibleItems(this.props.items);
+    const index = filteredItems.indexOf(item);
+    this.setState({
+      focusedItemIndex: index,
+    });
+    this.scrollToFocused(index);
   }
 
   handleNativeSearch = (event) => {
@@ -199,14 +228,22 @@ export default class StatelessSelect extends PureComponent {
       nativeSearchKey += eventKey;
     }
 
+    const current = this.state.focusedItemIndex !== undefined ?
+      this.state.focusedItemIndex :
+      allItems.indexOf(selectedItem);
+
     const matchingItem = this.getNextNativeSearchItem(
       allItems,
       nativeSearchKey,
-      allItems.indexOf(selectedItem),
+      current,
     );
 
     if (matchingItem) {
-      this.handleItemSelect(matchingItem, { event });
+      if (!this.props.isOpen) {
+        this.handleItemSelect(matchingItem, { event });
+      } else {
+        this.focusItem(matchingItem);
+      }
     }
 
     clearTimeout(this.nativeSearchCounter);
@@ -341,6 +378,9 @@ export default class StatelessSelect extends PureComponent {
       <div
         className={classes}
         onKeyDown={this.handleKeyboardInteractions}
+        ref={(ref) => {
+          this.containerNode = ref;
+        }}
       >
         {this.renderSelect()}
         {this.props.label ? <Label

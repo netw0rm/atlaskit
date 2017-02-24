@@ -39,7 +39,7 @@ const html = `<form>
   </div>
   <div class="ak-field-group">
     <label for="tel">Tel</label>
-    <input type="tel" class="ak-field-tel" id="tel ak-field__width-small" name="tel" required>
+    <input type="tel" class="ak-field-tel ak-field__width-small" id="tel" name="tel" required>
   </div>
   <div class="ak-field-group">
     <label for="number">Number</label>
@@ -90,7 +90,7 @@ const jsx = (<form onSubmit={e => e.preventDefault()}>
   </div>
   <div className="ak-field-group">
     <label htmlFor="tel">Tel</label>
-    <input type="tel" className="ak-field-tel" id="tel ak-field__width-small" name="tel" required />
+    <input type="tel" className="ak-field-tel ak-field__width-small" id="tel" name="tel" required />
   </div>
   <div className="ak-field-group">
     <label htmlFor="number">Number</label>

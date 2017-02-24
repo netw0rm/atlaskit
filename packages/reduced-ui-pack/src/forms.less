@@ -1,3 +1,4 @@
+@import '../node_modules/@atlaskit/util-shared-styles/src/fonts.less';
 @import '../node_modules/@atlaskit/util-shared-styles/src/colors.less';
 @import '../node_modules/@atlaskit/util-shared-styles/src/grid.less';
 
@@ -27,6 +28,8 @@
 @base-inner-height: @ak-grid-size * 2.5;
 @base-line-height: @base-inner-height / @base-font-size;
 @base-transition-duration: 0.2s; // Transition speed
+@base-padding-y: 10px;
+@base-padding-x: 8px;
 
 .ak-field {
 
@@ -73,11 +76,11 @@
     box-sizing: border-box;
     color: @ak-color-N800;
     font-family: inherit;
-    font-size: 14px;
+    font-size: @ak-font-size-default;
     line-height: 20px;
     max-width: 100%;
     outline: none;
-    padding: 9px 7px;
+    padding: (@base-padding-y - @base-border-width) (@base-padding-x - @base-border-width);
     transition: background-color @base-transition-duration ease-in-out,
                 border-color @base-transition-duration ease-in-out;
     width: 100%;
@@ -90,7 +93,7 @@
       background-color: @base-background-color-focused;
       border-color: @base-border-color-focused;
       border-width: unit(@base-border-width-focused, px);
-      padding: 8px 6px;
+      padding: (@base-padding-y - @base-border-width-focused) (@base-padding-x - @base-border-width-focused);
     }
     &:focus:invalid,
     &:focus:out-of-range {
@@ -123,8 +126,8 @@
     border-radius: @base-border-radius;
     border: unit(@base-border-width, px) solid @base-border-color;
     box-sizing: border-box;
-    height: 40px;
-    padding: 7px 5px;
+    height: (@ak-grid-size * 5);
+    padding: 7px 5px; // special sizes just for color inputs
     transition: border-color @base-transition-duration ease-in-out;
 
     &:focus {
@@ -132,7 +135,7 @@
       background-color: @base-background-color-focused;
       border-color: @base-border-color-focused;
       border-width: unit(@base-border-width-focused, px);
-      padding: 6px 4px;
+      padding: 6px 4px; // special sizes just for color inputs
     }
     &:focus:invalid {
       border-color: @ak-color-R400;
@@ -146,7 +149,7 @@
 
     > optgroup[label] {
       color: @ak-color-N300;
-      font-size: 14px;
+      font-size: @ak-font-size-default;
       font-weight: normal;
       line-height: 1.428571428571429;
 
@@ -177,7 +180,7 @@
       > option {
         box-sizing: border-box;
         line-height: 1.428571428571429;
-        height: 24px;
+        height: (@ak-grid-size * 3);
         padding: 2px 6px;
 
         &:checked {
@@ -211,7 +214,7 @@
       position: absolute;
       outline: none;
       width: 12px;
-      margin: 0 8px;
+      margin: 0 @ak-grid-size;
       opacity: 0;
       left: 0;
       top: 50%;

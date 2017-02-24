@@ -2,13 +2,17 @@
 import React, { PureComponent } from 'react';
 import { Motion, spring } from 'react-motion';
 import styled from 'styled-components';
+import * as physics from './physics';
 import type { Position } from '../../state/types';
+
+export type Speed = 'NONE' | 'STANDARD' | 'FAST';
 
 type Props = {|
   children?: React$Element<*>,
   // TODO: should this be optional?
   destination: ?Position,
-  shouldAnimate: boolean,
+  speed: Speed,
+  zIndex: string,
   onMoveEnd?: Function,
   innerRef?: Function,
 |}
@@ -17,14 +21,6 @@ type DefaultProps = {|
   destination: Position,
   innerRef: Function
 |}
-
-// stiff physics from jira-frontend
-const physics = {
-  // stiffness: 500,
-  stiffness: 25,
-  damping: 50,
-  precision: 0.5,
-};
 
 // TODO: memoizeOne
 const getMovement = (point: Position): Object => {
@@ -39,7 +35,7 @@ const getMovement = (point: Position): Object => {
 
 const Canvas = styled.div`
   display: inline-block;
-  z-index: ${props => (props.isMoving ? '100' : 'auto')};
+  z-index: ${props => (props.zIndex)};
 `;
 
 const start: Position = {
@@ -72,30 +68,37 @@ export default class Movable extends PureComponent {
     setTimeout(onMoveEnd);
   }
 
-  render() {
-    const { destination, shouldAnimate } = this.props;
+  getFinal = () => {
+    const { destination, speed } = this.props;
 
-    const final = {
-      x: shouldAnimate ? spring(destination.x, physics) : destination.x,
-      y: shouldAnimate ? spring(destination.y, physics) : destination.y,
+    if (speed === 'NONE') {
+      return destination;
+    }
+
+    const selected = speed === 'FAST' ? physics.fast : physics.standard;
+
+    return {
+      x: spring(destination.x, selected),
+      y: spring(destination.y, selected),
     };
+  }
+
+  render() {
+    const final = this.getFinal();
 
     return (
       // https://github.com/chenglou/react-motion/issues/375
       // $FlowFixMe
       <Motion defaultStyle={start} style={final} onRest={this.onRest}>
-        {(current: Position) => {
-          const isMoving = current.x !== 0 || current.y !== 0;
-          return (
-            <Canvas
-              style={getMovement(current)}
-              isMoving={isMoving}
-              innerRef={this.props.innerRef}
-            >
-              {this.props.children}
-            </Canvas>
-          );
-        }}
+        {(current: Position) => (
+          <Canvas
+            style={getMovement(current)}
+            zIndex={this.props.zIndex}
+            innerRef={this.props.innerRef}
+          >
+            {this.props.children}
+          </Canvas>
+        )}
       </Motion>
     );
   }

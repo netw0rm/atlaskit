@@ -16,6 +16,7 @@ import type {
 } from '../../state/types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
+import type { Speed } from '../moveable/';
 import createDragHandle from './create-drag-handle';
 import getCenterPosition from '../get-center-position';
 import getScrollPosition from '../get-scroll-position';
@@ -75,8 +76,34 @@ type ComponentState = {|
 
   // user-select: ${props => (props.isDragging ? 'none' : 'auto')};
 const Container = styled.div`
-  user-select: 'none';
+  user-select: none;
 `;
+
+type Movement = {|
+  speed: Speed,
+  zIndex: string
+|}
+
+const getMovement = (isDragging: boolean, wasDragging: boolean) => {
+  if (isDragging) {
+    return {
+      speed: 'NONE',
+      zIndex: '100',
+    };
+  }
+
+  if (wasDragging) {
+    return {
+      speed: 'STANDARD',
+      zIndex: '50',
+    };
+  }
+
+  return {
+    speed: 'FAST',
+    zIndex: 'auto',
+  };
+};
 
 export default (type: TypeId,
   provide: Provide,
@@ -239,11 +266,12 @@ export default (type: TypeId,
 
         const { id: droppableId } = ownProps.provided;
 
-        console.info('rendering draggable', droppableId);
+        const movement: Movement = getMovement(ownProps.isDragging, this.state.wasDragging);
 
         return (
           <Moveable
-            shouldAnimate={this.state.wasDragging}
+            speed={movement.speed}
+            zIndex={movement.zIndex}
             destination={this.props.offset}
             onMoveEnd={this.onMoveEnd}
             innerRef={this.setRef}

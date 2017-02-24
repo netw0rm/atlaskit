@@ -4,8 +4,6 @@ import type { DroppableId, DimensionMap } from '../types';
 import isInsideDimension from './is-inside-dimension';
 
 export default (target: Position,
-// TODO: remove unused param
-draggableDimensions: DimensionMap,
 droppableDimensions: DimensionMap): ?DroppableId => {
   const maybeId: ?DroppableId = Object.keys(droppableDimensions)
     .find(key => isInsideDimension(target, droppableDimensions[key]));

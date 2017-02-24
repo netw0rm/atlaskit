@@ -15,21 +15,12 @@ const getDimensionList: Dimension[] = memoizeOne(
   (map: DimensionMap): Dimension[] => Object.keys(map).map(key => map[key])
 );
 
-const getDimensionsInDroppable: Dimension[] = memoizeOne((droppableId: DroppableId,
-  draggableDimensions: DimensionMap,
-  droppableDimension: Dimension) => {
-  const draggableDimensionList: Dimension[] = getDimensionList(draggableDimensions);
-
-  return draggableDimensionList.filter((dimension: Dimension): boolean => {
-
-  });
-});
-
-export default (currentDrag: Dragging,
+export default (target: Position,
+  draggableId: DraggableId,
   draggableDimensions: DimensionMap,
   droppableDimensions: DimensionMap): DragImpact => {
   const droppableId: ?DroppableId = getDroppableOver(
-    currentDrag.center, draggableDimensions, droppableDimensions
+    target, droppableDimensions
   );
 
   // to cut scope: assume in same list
@@ -40,25 +31,25 @@ export default (currentDrag: Dragging,
     };
   }
 
-  const draggingDimension: Dimension = draggableDimensions[currentDrag.id];
+  const draggingDimension: Dimension = draggableDimensions[draggableId];
   const droppableDimension: Dimension = droppableDimensions[droppableId];
 
   // positive = moving forwards
   // negative = moving backwards
-  const direction: Direction = currentDrag.center.y - draggingDimension.center.y > 0 ? 1 : -1;
-  const isMovingForward: boolean = currentDrag.center.y - draggingDimension.center.y > 0;
+  const direction: Direction = target.y - draggingDimension.center.y > 0 ? 1 : -1;
+  const isMovingForward: boolean = target.y - draggingDimension.center.y > 0;
 
-  const moved: draggables[] = Object.keys(draggableDimensions)
-    .map((key: DraggableId): Dimension => draggableDimensions[key])
     // get all draggables inside the draggable
+  const insideDroppable: Dimension[] = getDimensionList(draggableDimensions)
+    .filter((dimension: Dimension): boolean => isInsideDimension(dimension.center, droppableDimension));
+
+  const moved: draggables[] = insideDroppable
     .filter((dimension: Dimension): boolean => {
+      // do not want to move the item that is dragging
       if (dimension === draggingDimension) {
         return false;
       }
 
-      return isInsideDimension(dimension.center, droppableDimension);
-    })
-    .filter((dimension: Dimension): boolean => {
       if (isMovingForward) {
         // 1. item needs to start ahead of the moving item
         // 2. the dragging item has moved over it
@@ -66,7 +57,7 @@ export default (currentDrag: Dragging,
           return false;
         }
 
-        return currentDrag.center.y > dimension.center.y;
+        return target.y > dimension.center.y;
       }
       // moving backwards
       // 1. item needs to start behind the moving item
@@ -75,9 +66,24 @@ export default (currentDrag: Dragging,
         return false;
       }
 
-      return currentDrag.center.y < dimension.center.y;
+      return target.y < dimension.center.y;
     })
     .map((dimension: Dimension): DroppableId => dimension.id);
+
+  const startIndex = insideDroppable.indexOf(draggingDimension);
+
+  const index: number = (() => {
+    if (!moved.length) {
+      return startIndex;
+    }
+    if (isMovingForward) {
+      return startIndex + moved.length;
+    }
+    // is moving backwards
+    return startIndex - moved.length;
+  })();
+
+  console.log('current order', index);
 
   const amount = draggingDimension.height * -1 * direction;
   const movement: DragMovement = {
@@ -89,7 +95,7 @@ export default (currentDrag: Dragging,
     movement,
     destination: {
       droppableId,
-      order: null,
+      order: index,
     },
   };
 };

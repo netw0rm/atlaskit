@@ -46,18 +46,19 @@ export default (state: State = initialState, action: Action): State => {
       y: center.y - offset.y,
     };
 
-    const droppableId: ?DroppableId = getDroppableOver(originCenter, state.draggableDimensions, state.droppableDimensions);
+    const initialImpact: DragImpact = getDragImpact(
+      originCenter,
+      id,
+      state.draggableDimensions,
+      state.droppableDimensions
+    );
 
-    if (!droppableId) {
+    const source: ?DragLocation = initialImpact.destination;
+
+    if (!source) {
       console.error('lifting a draggable that is not inside a droppable');
       return state;
     }
-
-    const source: DragLocation = {
-      droppableId,
-      // TODO: correct order
-      order: 0,
-    };
 
     const dragging: Dragging = {
       id,
@@ -134,7 +135,12 @@ export default (state: State = initialState, action: Action): State => {
       offset,
     };
 
-    const impact: DragImpact = getDragImpact(dragging, state.draggableDimensions, state.droppableDimensions);
+    const impact: DragImpact = getDragImpact(
+      dragging.center,
+      dragging.id,
+      state.draggableDimensions,
+      state.droppableDimensions
+    );
 
     return {
       ...state,

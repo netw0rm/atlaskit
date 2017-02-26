@@ -39,6 +39,7 @@
   },
   "keywords": [
     "atlaskit",
-    "ui"
+    "ui",
+    "internal"
   ]
 }

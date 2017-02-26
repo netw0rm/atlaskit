@@ -1,7 +1,7 @@
 import React, { PropTypes, PureComponent } from 'react';
 import Button from '@atlaskit/button';
 import styles from 'style!../less/Flag.less';
-import CancelIcon from '@atlaskit/icon/glyph/cancel';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Flag extends PureComponent {
@@ -71,7 +71,7 @@ export default class Flag extends PureComponent {
                   className={styles.dismissIconButton}
                   onClick={this.flagDismissed}
                 >
-                  <CancelIcon label="Dismiss flag" />
+                  <CrossIcon label="Dismiss flag" />
                 </button>
               ) : null
             }

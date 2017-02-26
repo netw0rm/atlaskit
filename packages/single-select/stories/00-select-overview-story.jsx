@@ -21,6 +21,8 @@ import SelectWithAutocomplete from './examples/SelectWithAutocomplete';
 import SelectWithAutocompleteRaw from '!raw!./examples/SelectWithAutocomplete';
 import Appearances from './examples/Appearances';
 import AppearancesRaw from '!raw!./examples/Appearances';
+import SelectWithHeapsOfOptions from './examples/SelectWithHeapsOfOptions';
+import SelectWithHeapsOfOptionsRaw from '!raw!./examples/SelectWithHeapsOfOptions';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name } from '../package.json';
@@ -151,6 +153,15 @@ storiesOf(name, module)
       {Appearances}
       <Code>
         {AppearancesRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select with heaps of options to test dummy search', () => (
+    <Chrome title="Select with autocomplete">
+      {SelectWithHeapsOfOptions}
+      <Code>
+        {SelectWithHeapsOfOptionsRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

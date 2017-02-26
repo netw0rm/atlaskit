@@ -238,6 +238,7 @@ export default class DropdownList extends PureComponent {
           content={props.isOpen ?
             <div
               className={styles.dropContent}
+              data-role="droplistContent"
               ref={(ref) => {
                 if (ref) {
                   this.dropContentRef = ref;

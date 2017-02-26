@@ -2,6 +2,8 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Readme, { Code } from '@atlaskit/util-readme';
 
+import '!style-loader!css-loader!less-loader!../src/index.less';
+
 import { name, description, main } from '../package.json';
 
 const OverviewExample = `<!DOCTYPE html>

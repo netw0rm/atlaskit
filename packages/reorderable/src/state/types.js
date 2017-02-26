@@ -64,11 +64,17 @@ export type DragResult = {|
   destination: ?DraggableLocation
 |}
 
+export type DragComplete = {|
+  result: DragResult,
+  last: CurrentDrag,
+  isAnimationFinished: boolean,
+|}
+
 export type State = {
   draggableDimensions: DimensionMap,
   droppableDimensions: DimensionMap,
   currentDrag: ?CurrentDrag,
-  dragResult: ?DragResult,
+  complete: ?DragComplete,
   requestDimensions: ?TypeId
 };
 

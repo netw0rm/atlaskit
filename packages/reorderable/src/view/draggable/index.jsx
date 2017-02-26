@@ -10,6 +10,8 @@ import type { DraggableId, TypeId } from '../../types';
 import type {
   Position,
   DraggingInitial,
+  DragComplete,
+  CurrentDrag,
 } from '../../state/types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
@@ -19,7 +21,7 @@ import getCenterPosition from '../get-center-position';
 import getScrollPosition from '../get-scroll-position';
 import getOffset from '../get-offset';
 import getDisplayName from '../get-display-name';
-import { currentDragSelector } from '../../state/selectors';
+import { currentDragSelector, dragCompleteSelector } from '../../state/selectors';
 
 import {
   beginLift as beginLiftAction,
@@ -45,6 +47,11 @@ type Hooks = {|
   onDragStart: (id: DraggableId) => void,
   onDragEnd: (id: DraggableId) => void,
 |}
+
+const defaultHooks: Hooks = {
+  onDragStart: () => {},
+  onDragEnd: () => {},
+};
 
 const empty = {};
 const identity = x => x;
@@ -106,7 +113,7 @@ export default (type: TypeId,
   provide: Provide,
   map?: MapState = () => empty,
   // getDragHandle?: boolean = false,
-  hooks?: Hooks) =>
+  hooks?: Hooks = defaultHooks) =>
   (Component: any): any => {
     class Draggable extends PureComponent {
       static displayName = `Draggable(${getDisplayName(Component)})`
@@ -149,6 +156,7 @@ export default (type: TypeId,
 
         const { provided: { id }, dropFinished } = this.props;
 
+        // TODO: hook: onDragEnd(id);
         dropFinished(id);
       }
 
@@ -296,8 +304,40 @@ export default (type: TypeId,
       const getProvided = (state, ownProps) => memoizedProvide(ownProps);
 
       return createSelector(
-        [currentDragSelector, getProvided],
-        (currentDrag, provided) => {
+        [currentDragSelector, dragCompleteSelector, getProvided],
+        (currentDrag: ?CurrentDrag, complete: ?DragComplete, provided: NeedsProviding) => {
+          if (complete) {
+            // 1. was the draggable moving out of the way?
+            const last: CurrentDrag = complete.last;
+
+            if (last.impact.movement.draggables.includes(provided.id)) {
+              return {
+                provided,
+                isDragging: false,
+                offset: {
+                  x: 0,
+                  y: last.impact.movement.amount,
+                },
+              };
+            }
+
+            if (last.dragging.id === provided.id) {
+              return {
+                provided,
+                isDragging: false,
+                offset: {
+                  x: 0,
+                  y: -last.impact.movement.amount,
+                },
+              };
+            }
+
+            return {
+              provided,
+              isDragging: false,
+            };
+          }
+
           if (!currentDrag || !currentDrag.dragging) {
             return {
               provided,

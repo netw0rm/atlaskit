@@ -1,13 +1,13 @@
 // @flow
 import type { TypeId } from '../types';
-import type { Action, State, Dimension, DragImpact, Dragging, DragResult, CurrentDrag, DraggableLocation, Position } from './types';
+import type { Action, State, Dimension, DragImpact, Dragging, DragResult, CurrentDrag, DraggableLocation, Position, DragComplete } from './types';
 import getDragImpact from './get-drag-impact';
 
 const initialState: State = {
   draggableDimensions: {},
   droppableDimensions: {},
   currentDrag: null,
-  dragResult: null,
+  complete: null,
   requestDimensions: null,
 };
 
@@ -78,8 +78,8 @@ export default (state: State = initialState, action: Action): State => {
           destination: source,
         },
       },
-      // clearing any previous dragResult
-      dragResult: null,
+      // clearing any previous complete result
+      complete: null,
     };
   }
 
@@ -153,16 +153,41 @@ export default (state: State = initialState, action: Action): State => {
 
     const { impact, dragging } = state.currentDrag;
 
-    const dragResult: DragResult = {
+    const result: DragResult = {
       draggableId: dragging.id,
       source: dragging.initial.source,
       destination: impact.destination,
     };
 
+    const complete: DragComplete = {
+      result,
+      last: state.currentDrag,
+      isAnimationFinished: false,
+    };
+
     // clear the state and add a drag result
     return {
       ...initialState,
-      dragResult,
+      complete,
+    };
+  }
+
+  if (action.type === 'DROP_FINISHED') {
+    if (!state.complete) {
+      console.warn('not finishing drop as there is no longer a drop in the state');
+      return state;
+    }
+    // not using spread so that flow exact type works
+
+    const complete: DragComplete = {
+      result: state.complete.result,
+      last: state.complete.last,
+      isAnimationFinished: true,
+    };
+
+    return {
+      ...state,
+      complete,
     };
   }
 

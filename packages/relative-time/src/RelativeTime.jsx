@@ -1,9 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
-import IntlRelativeFormat from 'intl-relativeformat';
+import { FormattedRelative } from 'react-intl';
 
 export default class RelativeTime extends PureComponent {
   static propTypes = {
-    locale: PropTypes.string,
     timestamp: PropTypes.number,
   }
 
@@ -12,9 +11,11 @@ export default class RelativeTime extends PureComponent {
   }
 
   render() {
-    const rf = new IntlRelativeFormat(this.props.locale);
     return (
-      <time>{rf.format(this.props.timestamp)}</time>
+      <FormattedRelative
+        value={this.props.timestamp}
+        updateInterval={0}
+      />
     );
   }
 }

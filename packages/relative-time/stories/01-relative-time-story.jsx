@@ -1,11 +1,26 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
+import { IntlProvider, addLocaleData } from 'react-intl';
+
+import en from 'react-intl/locale-data/en';
+import es from 'react-intl/locale-data/es';
+import de from 'react-intl/locale-data/de';
+import fr from 'react-intl/locale-data/fr';
+import ja from 'react-intl/locale-data/ja';
+import ko from 'react-intl/locale-data/ko';
+import pt from 'react-intl/locale-data/pt';
+import ru from 'react-intl/locale-data/ru';
+
 import { name } from '../package.json';
 import RelativeTime from '../src/';
 
+addLocaleData([...en, ...es, ...de, ...fr, ...ja, ...ko, ...pt, ...ru]);
+
 storiesOf(name, module)
   .add('relative-time for 1 minute from now', () => (
-    <RelativeTime timestamp={new Date().getTime() + (1000 * 60)} />
+    <IntlProvider locale="en">
+      <RelativeTime timestamp={new Date().getTime() + (1000 * 60)} />
+    </IntlProvider>
   ))
   .add('relative-time with i18n', () => {
     const locales = [
@@ -51,23 +66,25 @@ storiesOf(name, module)
         <table>
           <thead>
             <tr>
-              <th>locale</th>
+              <th />
               {times.map((time, index) => (
                 <th key={index}>{time.name}</th>
-              ))}
+                ))}
             </tr>
           </thead>
           <tbody>
             {locales.map((locale, index) => (
-              <tr key={index}>
-                <td><b>{locale.name}</b></td>
-                {times.map((time, i) => (
-                  <td key={i}>
-                    <RelativeTime timestamp={time.timestamp} locale={locale.locale} />
-                  </td>
-                ))}
-              </tr>
-            ))}
+              <IntlProvider key={index} locale={locale.locale}>
+                <tr>
+                  <td><b>{locale.name}</b></td>
+                  {times.map((time, i) => (
+                    <td key={i}>
+                      <RelativeTime timestamp={time.timestamp} />
+                    </td>
+                    ))}
+                </tr>
+              </IntlProvider>
+              ))}
           </tbody>
         </table>
       </div>

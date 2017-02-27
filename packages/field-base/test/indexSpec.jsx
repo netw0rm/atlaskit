@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
+import Spinner from '@atlaskit/spinner';
 import FieldBaseSmart, { FieldBase } from '../src';
 import { compact, none, subtle } from '../src/internal/appearances';
 import { locals } from '../src/styles.less';
@@ -81,6 +82,22 @@ describe('ak-field-base', () => {
         expect(spy.called).to.equal(true);
       })
     );
+
+    describe('isLoading', () => {
+      it('should render Spinner', () => {
+        const wrapper = shallow(<FieldBase {...defaultProps} isLoading />);
+        expect(wrapper.find(Spinner).length).to.equals(1);
+        wrapper.setProps({ isLoading: false });
+        expect(wrapper.find(Spinner).length).to.equals(0);
+      });
+
+      describe('and isInvalid', () =>
+        it('should not render Spinner', () => {
+          const wrapper = shallow(<FieldBase {...defaultProps} isLoading isInvalid />);
+          expect(wrapper.find(Spinner).length).to.equals(0);
+        })
+      );
+    });
   });
 
   describe('focus behaviour', () => {

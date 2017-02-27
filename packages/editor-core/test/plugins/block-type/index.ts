@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { browser } from '../../../src';
-import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, img, makeEditor, mention, p, hr } from '../../../test-helper';
+import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, hr, li, img, makeEditor, mention, p, ul } from '../../../test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
 
@@ -425,7 +425,7 @@ describe('block-type', () => {
 
               pm.input.dispatchKey('Enter');
 
-              expect(pm.doc).to.deep.equal(doc(code_block({language: 'javascript'})('')));
+              expect(pm.doc).to.deep.equal(doc(code_block({ language: 'javascript' })('')));
             });
 
             it('trims the spaces', () => {
@@ -433,7 +433,7 @@ describe('block-type', () => {
 
               pm.input.dispatchKey('Enter');
 
-              expect(pm.doc).to.deep.equal(doc(code_block({language: 'javascript'})('   hello @bar1')));
+              expect(pm.doc).to.deep.equal(doc(code_block({ language: 'javascript' })('   hello @bar1')));
             });
           });
 
@@ -525,21 +525,33 @@ describe('block-type', () => {
             });
 
             context('when cursor is at the beginning of the whole content', () => {
-              it('creates a new paragraph above', () => {
-                const { pm } = editor(doc(code_block()('{<>}text')));
+              context('non list item', () => {
+                it('creates a new paragraph above', () => {
+                  const { pm } = editor(doc(code_block()('{<>}text')));
 
-                pm.input.dispatchKey('Up');
+                  pm.input.dispatchKey('Up');
 
-                expect(pm.doc).to.deep.equal(doc(p(''), code_block()('text')));
+                  expect(pm.doc).to.deep.equal(doc(p(''), code_block()('text')));
+                });
+
+                it('does not ignore @mention', () => {
+
+                  const { pm } = editor(doc(p(mention({ id: 'foo1', displayName: '@bar1' }))));
+
+                  pm.input.dispatchKey('Up');
+
+                  expect(pm.doc).to.deep.equal(doc(p(''), p(mention({ id: 'foo1', displayName: '@bar1' }))));
+                });
               });
 
-              it('does not ignore @mention', () => {
+              context('list item', () => {
+                it('creates a new paragraph below the ul', () => {
+                  const { pm } = editor(doc(ul(li(p('{<>}text')))));
 
-                const { pm } = editor(doc(p(mention({ id: 'foo1', displayName: '@bar1' }))));
+                  pm.input.dispatchKey('Up');
 
-                pm.input.dispatchKey('Up');
-
-                expect(pm.doc).to.deep.equal(doc(p(''), p(mention({ id: 'foo1', displayName: '@bar1' }))));
+                  expect(pm.doc).to.deep.equal(doc(p(''), ul(li(p('text')))));
+                });
               });
             });
           });
@@ -657,12 +669,24 @@ describe('block-type', () => {
             });
 
             context('when cursor is at the end of the whole content', () => {
-              it('creates a new paragraph below', () => {
-                const { pm } = editor(doc(code_block()('text{<>}')));
+              context('non list item', () => {
+                it('creates a new paragraph below', () => {
+                  const { pm } = editor(doc(code_block()('text{<>}')));
 
-                pm.input.dispatchKey('Down');
+                  pm.input.dispatchKey('Down');
 
-                expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
+                  expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
+                });
+              });
+
+              context('list item', () => {
+                it('creates a new paragraph below the ul', () => {
+                  const { pm } = editor(doc(ul(li(p('text{<>}')))));
+
+                  pm.input.dispatchKey('Down');
+
+                  expect(pm.doc).to.deep.equal(doc(ul(li(p('text'))), p('')));
+                });
               });
             });
           });

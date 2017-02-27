@@ -73,6 +73,52 @@ storiesOf(name, module)
       />
     </BasicFieldBase>
   )
+  .add('with spinner', () => {
+    const input = (
+      <Input
+        value="input children"
+        isEditing
+        id="fieldbase"
+      />
+    );
+
+    return (
+      <div style={{ display: 'flex', 'flex-direction': 'column' }}>
+        <BasicFieldBase
+          label="Spinner example"
+          id="fieldbase"
+          isLoading
+        >
+          {input}
+        </BasicFieldBase>
+        <BasicFieldBase
+          label="Invalid over spinner example"
+          id="fieldbase"
+          isLoading
+          isInvalid
+        >
+          {input}
+        </BasicFieldBase>
+        <BasicFieldBase
+          label="Spinner + compact example"
+          id="fieldbase"
+          appearance="compact"
+          isLoading
+        >
+          {input}
+        </BasicFieldBase>
+        <BasicFieldBase
+          label="Spinner + compact + disabled example"
+          id="fieldbase"
+          isLoading
+          appearance="compact"
+          isDisabled
+        >
+          {input}
+        </BasicFieldBase>
+      </div>
+    );
+  })
   .add('with required prop', () =>
     <form style={formStyle}>
       <BasicFieldBase
@@ -92,16 +138,40 @@ storiesOf(name, module)
     </form>
   )
   .add('with disabled prop', () =>
-    <BasicFieldBase
-      label="Disabled example"
-      id="fieldbase"
-      isDisabled
-    >
-      <Input
+    <div style={{ display: 'flex', 'flex-direction': 'column' }}>
+      <BasicFieldBase
+        label="Disabled example"
         id="fieldbase"
-        value="input children"
-      />
-    </BasicFieldBase>
+        isDisabled
+      >
+        <Input
+          id="fieldbase"
+          value="input children"
+        />
+      </BasicFieldBase>
+      <BasicFieldBase
+        label="Disabled  invalid example"
+        id="fieldbase"
+        isInvalid
+        isDisabled
+      >
+        <Input
+          id="fieldbase"
+          value="input children"
+        />
+      </BasicFieldBase>
+      <BasicFieldBase
+        label="Disabled  compact example"
+        id="fieldbase"
+        appearance="compact"
+        isDisabled
+      >
+        <Input
+          id="fieldbase"
+          value="input children"
+        />
+      </BasicFieldBase>
+    </div>
   )
   .add('with readOnly prop', () =>
     <BasicFieldBase

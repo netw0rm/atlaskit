@@ -1,29 +1,31 @@
 @import '~akutil-shared-styles/src/colors.less';
 @import '~akutil-shared-styles/src/grid.less';
-
-@grid: 4;
+@import '~akutil-shared-styles/src/z-indexes.less';
 
 .root {
-  margin-left: -@ak-grid-size;
   display: flex;
   flex-direction: column;
+  margin-left: -@ak-grid-size;
 }
 
 .read-view-wrapper {
-  max-width: 100%;
   display: inline-flex;
   flex: 0 1 auto;
+  max-width: 100%;
 }
 
 .content-wrapper {
+  align-items: flex-end;
   display: inline-flex;
-  align-items: center;
+  flex-direction: column;
   max-width: 100%;
+  position: relative;
 }
 
 .field-base-wrapper {
   flex: 1 1 auto;
   overflow: hidden;
+  width: 100%;
 
   &:hover .edit-button {
     opacity: 1;
@@ -31,11 +33,10 @@
 }
 
 .spinner-wrapper {
-  margin-left: unit(@grid, px);
-  // TODO: Remove this when updated to specs version 1.1
-  // field-base should stay the same width so we need to provide a
-  // min-width to cover action buttons width.
-  min-width: unit(@grid*3 + 32 + 32, px);
+  align-items: flex-end;
+  display: inline-flex;
+  margin-left: unit(@ak-grid-size / 2, px);
+  margin-top: unit(@ak-grid-size / 2, px);
 }
 
 .read-view-content-wrapper {
@@ -44,59 +45,37 @@
 }
 
 .buttons-wrapper {
-  margin-left: unit(@grid, px);
+  display: flex;
   flex-shrink: 0;
+  margin-top: unit(@ak-grid-size / 2, px);
+  position: absolute;
+  right: 0;
+  top: 100%;
 
-  button:last-child {
-    margin-left: unit(@grid, px);
+  .button-wrapper {
+    background-color: @ak-color-N0;
+    border-radius: unit(@ak-grid-size / 2 - 1, px);
+    box-shadow: 0 unit(@ak-grid-size / 2, px) @ak-grid-size unit(-(@ak-grid-size / 4), px) fade(@ak-color-N900, 28%),
+                0 0 1px fade(@ak-color-N900, 30%);
+    box-sizing: border-box;
+    z-index: 200;
+  }
+
+  .button-wrapper:last-child {
+    margin-left: unit(@ak-grid-size / 2, px);
   }
 }
 
-.button-wrapper-hidden {
-  visibility: hidden;
-}
-
-.edit-button-wrapper {
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.edit-icon-wrapper {
-  &.hidden {
-    display: none !important;
-  }
-}
-
-// the vendor prefixes here are deliberate. 'appearance' does not seem to get picked up by postcss,
-// eslint or even Chrome for some reason. :/
 .edit-button {
-  -webkit-appearance: none;
   -moz-appearance: none;
+  -webkit-appearance: none;
   appearance: none;
   background: transparent;
   border: 0;
-  color: @ak-color-N500;
   display: inline-flex;
-  flex-direction: row-reverse;
   line-height: 1;
   margin: 0;
+  padding: 0;
   opacity: 0;
   outline: 0;
-  padding: 0 0 0 unit(@grid * 2, px);
-  transition: opacity 0.2s ease-in-out;
-
-  &:focus {
-    opacity: 1;
-  }
-
-  &.hidden {
-    padding: 0 !important;
-  }
-
-  &::-moz-focus-inner {
-    border: 0;
-    margin: 0;
-    padding: 0;
-  }
 }

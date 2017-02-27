@@ -3,10 +3,8 @@ import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import Button from '@atlaskit/button';
-import Spinner from '@atlaskit/spinner';
 import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
-import EditIcon from '@atlaskit/icon/glyph/edit';
 import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
 
 export default class InlineEdit extends PureComponent {
@@ -209,12 +207,6 @@ export default class InlineEdit extends PureComponent {
       [styles.readViewWrapper]: !this.props.isEditing,
     })
 
-  getActionButtonClasses = () =>
-    classNames({
-      [styles.buttonsWrapper]: true,
-      [styles.buttonWrapperHidden]: !this.props.isEditing || this.props.areActionButtonsHidden,
-    })
-
   confirmIfUnfocused = () => {
     if (!this.state.wasFocusReceivedSinceLastBlur) {
       this.props.onConfirm();
@@ -232,50 +224,32 @@ export default class InlineEdit extends PureComponent {
   shouldRenderSpinner = () => this.props.isWaiting && this.props.isEditing;
 
   renderActionButtons = () => (
-    <div className={this.getActionButtonClasses()}>
-      <Button
-        appearance="subtle"
-        iconBefore={<ConfirmIcon label="confirm" />}
-        onClick={this.onConfirmClick}
-        ref={(ref) => { this.confirmButtonRef = ref; }}
-      />
-      <Button
-        appearance="subtle"
-        iconBefore={<CancelIcon label="cancel" />}
-        onClick={this.onCancelClick}
-        ref={(ref) => { this.cancelButtonRef = ref; }}
-      />
-    </div>
-  )
-
-  renderEditIcon = () => (
-    <div
-      className={classNames({
-        [styles.editButtonWrapper]: true,
-      })}
-    >
-      <button
-        className={classNames({
-          [styles.editButton]: true,
-          [styles.hidden]: !this.shouldRenderEditIcon(),
-        })}
-      >
-        <div
-          className={classNames({
-            [styles.editIconWrapper]: true,
-            [styles.hidden]: !this.shouldRenderEditIcon(),
-          })}
-        >
-          <EditIcon label="Edit" size="small" />
+    this.props.isEditing && !this.props.areActionButtonsHidden ?
+      <div className={styles.buttonsWrapper}>
+        <div className={styles.buttonWrapper}>
+          <Button
+            iconBefore={<ConfirmIcon label="confirm" />}
+            onClick={this.onConfirmClick}
+            ref={(ref) => { this.confirmButtonRef = ref; }}
+            className={styles.button}
+          />
         </div>
-      </button>
-    </div>
+        <div className={styles.buttonWrapper}>
+          <Button
+            iconBefore={<CancelIcon label="cancel" />}
+            onClick={this.onCancelClick}
+            ref={(ref) => { this.cancelButtonRef = ref; }}
+            className={styles.button}
+          />
+        </div>
+      </div> :
+      null
   )
 
   renderReadView = () => (
     <div className={styles.readViewContentWrapper}>
       {this.props.readView}
-      {this.renderEditIcon()}
+      <button className={styles.editButton} />
     </div>
   )
 
@@ -285,12 +259,6 @@ export default class InlineEdit extends PureComponent {
         onConfirm: this.props.onConfirm,
       }) :
       this.props.editView
-  )
-
-  renderSpinner = () => (
-    <div className={styles.spinnerWrapper}>
-      <Spinner />
-    </div>
   )
 
   render() {
@@ -321,12 +289,13 @@ export default class InlineEdit extends PureComponent {
               isFitContainerWidthEnabled={this.props.isEditing}
               appearance={this.props.isEditing ? 'standard' : 'subtle'}
               isDisabled={this.shouldRenderSpinner()}
+              isLoading={this.shouldRenderSpinner()}
               shouldReset={this.shouldResetFieldBase}
             >
               {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
             </FieldBase>
           </div>
-          {this.shouldRenderSpinner() ? this.renderSpinner() : this.renderActionButtons()}
+          {!this.shouldRenderSpinner() ? this.renderActionButtons() : null}
         </div>
       </div>
     );

@@ -57,8 +57,8 @@ export type Dragging = {|
 |}
 
 export type CurrentDrag = {|
-    dragging: Dragging,
-    impact: DragImpact
+  dragging: Dragging,
+  impact: DragImpact
 |}
 
 export type DragResult = {|
@@ -80,7 +80,7 @@ export type State = {
   droppableDimensions: DimensionMap,
   currentDrag: ?CurrentDrag,
   complete: ?DragComplete,
-  requestDimensions: ?TypeId
+  requestDimensions: ?TypeId,
 };
 
 export type Action = ActionCreators;

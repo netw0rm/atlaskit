@@ -24,11 +24,6 @@ type Provide = (ownProps: Object) => NeedsProviding;
 
 type MapState = (state: DroppableState, ownProps: Object) => Object;
 
-type Hooks = {|
-  onDrop: (id: DragResult) => void,
-  isDraggingOver: (id: DroppableId) => void,
-|}
-
 type Props = {|
   provided: NeedsProviding,
 |}
@@ -39,8 +34,7 @@ type ComponentState = {|
 
 export default (type: TypeId,
   provide: Provide,
-  map?: MapState = () => ({}),
-  hooks?: Hooks) =>
+  map?: MapState = () => ({})) =>
     // Component must be a styled-component
     (Component: any): any => {
       class Droppable extends PureComponent {

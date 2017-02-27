@@ -43,17 +43,6 @@ type DraggableState = {|
 
 type Provide = (ownProps: Object) => NeedsProviding;
 type MapState = (state: DraggableState, ownProps: Object, getDragHandle: Function) => Object;
-type Hooks = {|
-  // ? needs to fire before isDropEnabled checks
-  onDragStart: (id: DraggableId) => void,
-  onDragEnd: (id: DraggableId) => void,
-|}
-
-const defaultHooks: Hooks = {
-  onDragStart: () => {},
-  onDragEnd: () => {},
-};
-
 const empty = {};
 const identity = x => x;
 const nowhere: Position = { x: 0, y: 0 };
@@ -113,9 +102,7 @@ const getMovement = (isDragging: boolean, wasDragging: boolean) => {
 
 export default (type: TypeId,
   provide: Provide,
-  map?: MapState = () => empty,
-  // getDragHandle?: boolean = false,
-  hooks?: Hooks = defaultHooks) =>
+  map?: MapState = () => empty) =>
   (Component: any): any => {
     class Draggable extends PureComponent {
       static displayName = `Draggable(${getDisplayName(Component)})`
@@ -124,6 +111,7 @@ export default (type: TypeId,
       props: Props
       defaultProps: DefaultProps
       state: ComponentState
+      handle: Function
 
       state: ComponentState = {
         wasDragging: false,
@@ -236,15 +224,12 @@ export default (type: TypeId,
       onCancel = () => {
         console.log('cancelling drag');
       }
-
       setRef = (ref: ?Element) => {
         // need to trigger a child render when ref changes
         this.setState({
           ref,
         });
       }
-
-      handle: Function
 
       render() {
         const ownProps: Props = this.props;
@@ -305,7 +290,9 @@ export default (type: TypeId,
 
       return createSelector(
         [currentDragSelector, dragCompleteSelector, getProvided],
-        (currentDrag: ?CurrentDrag, complete: ?DragComplete, provided: NeedsProviding) => {
+        (currentDrag: ?CurrentDrag,
+        complete: ?DragComplete,
+        provided: NeedsProviding) => {
           if (complete) {
             // 1. was the draggable moving out of the way?
             const last: CurrentDrag = complete.last;

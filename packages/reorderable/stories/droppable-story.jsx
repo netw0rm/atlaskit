@@ -1,29 +1,57 @@
 // @flow
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action as storybookAction } from '@kadira/storybook';
+import { createStore } from 'redux';
 import draggable from '../src/view/draggable';
 import droppable from '../src/view/droppable/';
 import { dragDropContext } from '../src/';
-import type { DroppableId, TypeId } from '../src/types';
+import type { DragResult } from '../src/types';
 
-const ItemContainer = styled.div`
-  height: 80px;
-  padding: 8px;
-  margin-bottom: 8px;
-  background-color: ${props => (props.isDragging ? 'lightgreen' : 'lightblue')};
-`;
+type ItemData = {|
+  id: string,
+|}
 
-const ListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-  align-items: stretch;
-  margin: 8px;
-  background-color: ${props => (props.isDraggingOver ? 'gold' : 'deepskyblue')};
-`;
+type ItemDataMap = { [key: string ]: ItemData }
+
+type ListData = {|
+  id: string,
+  itemIds: string[]
+|}
+
+type ListDataMap = { [key: string ]: ListData }
+
+const lists: ListDataMap = {
+  foo: {
+    id: 'foo',
+    itemIds: ['item1', 'item2', 'item3'],
+  },
+  bar: {
+    id: 'bar',
+    itemIds: [],
+  },
+};
+
+const items: ItemDataMap = {
+  item1: {
+    id: 'item1',
+  },
+  item2: {
+    id: 'item2',
+  },
+  item3: {
+    id: 'item3',
+  },
+};
 
 const DraggableItem = (() => {
+  const ItemContainer = styled.div`
+    height: 80px;
+    padding: 8px;
+    margin-bottom: 8px;
+    background-color: ${props => (props.isDragging ? 'lightgreen' : 'lightblue')};
+  `;
+
   class Item extends PureComponent {
     props: {|
       itemId: string,
@@ -53,75 +81,178 @@ const DraggableItem = (() => {
   return draggable('ITEM', provide, mapStateToProps)(Item);
 })();
 
-type ItemData = {|
-  id: string,
-|}
+const DroppableList = (() => {
+  const ListContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    align-items: stretch;
+    margin: 8px;
+    background-color: ${props => (props.isDraggingOver ? 'gold' : 'deepskyblue')};
+  `;
 
-class List extends PureComponent {
-  props: {|
-    items: ItemData[],
-    isDraggingOver: boolean
-  |}
+  class List extends PureComponent {
+    props: {|
+      listId: string,
+      items: ItemData[],
+      isDraggingOver: boolean
+    |}
 
-  render() {
-    const { isDraggingOver } = this.props;
-    return (
-      <ListContainer isDraggingOver={isDraggingOver}>
-        <h3>Droppable {isDraggingOver ? '(is dragging over)' : '' }</h3>
-        {this.props.items.map((item: ItemData) => (
-          <DraggableItem
-            key={item.id}
-            itemId={item.id}
-          />
-        ))}
-      </ListContainer>
-    );
+    render() {
+      console.log('rendering list', this.props.items);
+      const { isDraggingOver } = this.props;
+      return (
+        <ListContainer isDraggingOver={isDraggingOver}>
+          <h3>{this.props.listId} {isDraggingOver ? '(is dragging over)' : '' }</h3>
+          {this.props.items.map((item: ItemData) => (
+            <DraggableItem
+              key={item.id}
+              itemId={item.id}
+            />
+          ))}
+        </ListContainer>
+      );
+    }
   }
-}
-
-const DroppableList = (id: DroppableId, type: TypeId) => {
-  const provide = () => ({
-    id,
+  const provide = ownProps => ({
+    id: ownProps.listId,
   });
 
   const map = state => ({
     isDraggingOver: state.isDraggingOver,
   });
 
-  return droppable(type, provide, map)(List);
-};
+  return droppable('ITEM', provide, map)(List);
+})();
 
-let id = 0;
-const getItem = (): ItemData => ({
-  id: `${++id}`,
-});
+const ConnectedApp = (() => {
+  const AppContainer = styled.div`
+    display: flex;
+    background-color: lightgrey;
+  `;
 
-const getItems = count => Array.from({ length: count }, () => getItem());
+  class App extends PureComponent {
+    props: {|
+      lists: ListDataMap
+    |}
 
-const List1 = DroppableList('1', 'ITEM');
-const List2 = DroppableList('2', 'ITEM');
-const List3 = DroppableList('3', 'ITEM');
-const List4 = DroppableList('4', 'BUS');
+    render() {
+      return (
+        <AppContainer>
+          {Object.keys(this.props.lists).map((key) => {
+            const list: ListData = this.props.lists[key];
+            console.log('list itemIds', list.itemIds);
+            const itemsInList = list.itemIds.map((id: string): ItemData => items[id]);
 
-const AppContainer = styled.div`
-  display: flex;
-  background-color: lightgrey;
-`;
-
-class App extends PureComponent {
-  render() {
-    return (
-      <AppContainer>
-        <List1 items={getItems(3)} />
-        <List2 items={getItems(3)} />
-        {/* <List3 items={[getItem(), getItem(), getItem()]} />
-        <List4 items={[]} />*/}
-      </AppContainer>
-    );
+            return (
+              <DroppableList
+                items={itemsInList}
+                listId={key}
+                key={key}
+              />
+            );
+          })}
+        </AppContainer>
+      );
+    }
   }
-}
 
-const ConnectedApp = dragDropContext(App);
+  type State = {|
+    lists: ListDataMap,
+  |};
+
+  const initialState = {
+    lists,
+  };
+
+  const updateLists = (newLists: ListDataMap) => ({
+    type: 'UPDATE_LISTS',
+    payload: newLists,
+  });
+
+  const reducer = (state: State = initialState, action): State => {
+    if (action.type === 'UPDATE_LISTS') {
+      return {
+        lists: action.payload,
+      };
+    }
+    return state;
+  };
+
+  const store = createStore(reducer);
+
+  class AppState extends PureComponent {
+
+    constructor(...rest) {
+      super(...rest);
+
+      this.state = store.getState();
+    }
+
+    state: State
+
+    componentDidMount() {
+      store.subscribe(() => {
+        this.setState(store.getState());
+      });
+    }
+
+    render() {
+      return (
+        <App lists={this.state.lists} />
+      );
+    }
+  }
+
+  const endAction = storybookAction('hook: drag finished');
+
+  const hooks = {
+    onDragStart: storybookAction('hook: drag started'),
+    onDragEnd: (result: DragResult) => {
+      endAction(result);
+      if (result.destination == null) {
+        return;
+      }
+
+    // moved nowhere
+      if (result.source.droppableId === result.destination.droppableId &&
+        result.source.index === result.destination.index) {
+        console.log('no movement');
+        return;
+      }
+
+      // assuming single list
+
+      // need to move an item from one place ot another
+
+      const newItemIds = [...lists[result.source.droppableId].itemIds];
+
+      // remove it from original position
+      newItemIds.splice(result.source.index, 1);
+      newItemIds.splice(result.destination.index, 0, result.draggableId);
+
+      const sourceList = {
+        ...lists[result.source.droppableId],
+        itemIds: newItemIds,
+      };
+
+      const newLists = {
+        ...lists,
+        [result.source.droppableId]: sourceList,
+      };
+
+      console.log({
+        oldItemIds: lists[result.source.droppableId].itemIds,
+        newItemIds,
+        newLists,
+      });
+
+      store.dispatch(updateLists(newLists));
+    },
+  };
+
+  return dragDropContext(hooks)(AppState);
+})();
 
 storiesOf('droppable', module)
   .add('basic', () => (

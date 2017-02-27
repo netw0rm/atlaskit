@@ -183,6 +183,15 @@ const iconIds = [
   'video',
   'warning',
   'world',
+  // Service Desk icons
+  'servicedesk/graph-bar',
+  'servicedesk/invite-team',
+  'servicedesk/issue-raise',
+  'servicedesk/knowledge-base',
+  'servicedesk/people-group',
+  'servicedesk/queues',
+  'servicedesk/screen',
+  'servicedesk/project-settings',
 ].map(id => `ak-icon-${id}`);
 
 export default iconIds;

@@ -2,9 +2,9 @@ import React from 'react';
 import Readme, { Description, Props } from '@atlaskit/util-readme';
 import { storiesOf } from '@kadira/storybook';
 
-import { AkContainerItemGroup } from '../src/index';
+import { AkContainerItemGroup } from '../../src/index';
 
-import { name, description } from '../package.json';
+import { name, description } from '../../package.json';
 
 const containerItemGroupPropDescriptions = {
   action: 'An action to place alongside the header of the container item group',

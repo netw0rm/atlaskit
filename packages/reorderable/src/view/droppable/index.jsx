@@ -32,6 +32,10 @@ type Props = {|
   provided: NeedsProviding,
 |}
 
+type ComponentState = {|
+  ref: ?Element,
+|}
+
 export default (type: TypeId,
   provide: Provide,
   map?: MapState = () => ({}),
@@ -42,14 +46,17 @@ export default (type: TypeId,
         static displayName = `Droppable(${getDisplayName(Component)})`
 
         props: Props
+        state: ComponentState
 
-        ref: ?Element
+        state: ComponentState = {
+          ref: null,
+        }
 
         setRef = (ref: ?Element) => {
-          if (ref !== this.ref) {
-            this.ref = ref;
-            this.forceUpdate();
-          }
+          // need to trigger a child render when ref changes
+          this.setState({
+            ref,
+          });
         }
 
         render() {
@@ -60,7 +67,7 @@ export default (type: TypeId,
               <DroppableDimensionPublisher
                 itemId={droppableId}
                 type={type}
-                outerRef={this.ref}
+                outerRef={this.state.ref}
               >
                 <Component {...this.props} />
               </DroppableDimensionPublisher>

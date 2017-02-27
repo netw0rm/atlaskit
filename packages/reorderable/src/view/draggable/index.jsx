@@ -75,7 +75,8 @@ type DefaultProps = {|
 |}
 
 type ComponentState = {|
-  wasDragging: boolean
+  wasDragging: boolean,
+  ref: ?Element
 |}
 
   // user-select: ${props => (props.isDragging ? 'none' : 'auto')};
@@ -122,10 +123,10 @@ export default (type: TypeId,
       props: Props
       defaultProps: DefaultProps
       state: ComponentState
-      ref: ?Element
 
-      state = {
+      state: ComponentState = {
         wasDragging: false,
+        ref: null,
       }
 
       static defaultProps = {
@@ -161,7 +162,7 @@ export default (type: TypeId,
       }
 
       onLift = (selection: Position) => {
-        invariant(this.ref, 'cannot move an item that is not in the DOM');
+        invariant(this.state.ref, 'cannot move an item that is not in the DOM');
 
         const { provided: { id, isDragEnabled }, beginLift } = this.props;
 
@@ -173,8 +174,8 @@ export default (type: TypeId,
         const scroll: Position = getScrollPosition();
 
         // $FlowFixMe
-        const offset: Position = getOffset(this.ref);
-        const center: Position = getCenterPosition(this.ref);
+        const offset: Position = getOffset(this.state.ref);
+        const center: Position = getCenterPosition(this.state.ref);
 
         // const originCenter: Position = {
         //   x: center.x - offset.x,
@@ -236,12 +237,10 @@ export default (type: TypeId,
       }
 
       setRef = (ref: ?Element) => {
-        if (ref !== this.ref) {
-          // need to pass ref to dimension-publisher
-          console.warn('force setting ref');
-          this.ref = ref;
-          this.forceUpdate();
-        }
+        // need to trigger a child render when ref changes
+        this.setState({
+          ref,
+        });
       }
 
       handle: Function
@@ -285,7 +284,7 @@ export default (type: TypeId,
               <DraggableDimensionPublisher
                 itemId={droppableId}
                 type={type}
-                outerRef={this.ref}
+                outerRef={this.state.ref}
               >
                 <Container
                   isDragging={ownProps.isDragging}
@@ -321,14 +320,12 @@ export default (type: TypeId,
               };
             }
 
+            // assuming no x movement :| (and no y differences between lists)
             if (last.dragging.id === provided.id) {
               return {
                 provided,
                 isDragging: false,
-                offset: {
-                  x: 0,
-                  y: -last.impact.movement.amount,
-                },
+                offset: complete.offset,
               };
             }
 

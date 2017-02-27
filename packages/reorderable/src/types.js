@@ -71,6 +71,7 @@ export type DragResult = {|
 export type DragComplete = {|
   result: DragResult,
   last: CurrentDrag,
+  offset: Position,
   isAnimationFinished: boolean,
 |}
 

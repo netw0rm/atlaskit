@@ -162,6 +162,14 @@ export default (state: State = initialState, action: Action): State => {
     }
 
     const { impact, dragging } = state.currentDrag;
+    const last: CurrentDrag = state.currentDrag;
+
+    // TODO: need to consider movement between two lists
+    // (could impact both x and y values)
+    const offset: Position = {
+      x: 0,
+      y: -(last.impact.movement.amount * last.impact.movement.draggables.length),
+    };
 
     const result: DragResult = {
       draggableId: dragging.id,
@@ -172,6 +180,7 @@ export default (state: State = initialState, action: Action): State => {
     const complete: DragComplete = {
       result,
       last: state.currentDrag,
+      offset,
       isAnimationFinished: false,
     };
 
@@ -192,6 +201,7 @@ export default (state: State = initialState, action: Action): State => {
     const complete: DragComplete = {
       result: state.complete.result,
       last: state.complete.last,
+      offset: state.complete.offset,
       isAnimationFinished: true,
     };
 

@@ -1,5 +1,5 @@
 // @flow
-import type { Position, Dimension } from './types';
+import type { Position, Dimension } from '../types';
 
 export default (target: Position, dimension: Dimension): boolean => {
   const { top, right, bottom, left } = dimension;

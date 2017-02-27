@@ -7,8 +7,7 @@ import {
   publishDroppableDimension,
 } from '../../state/action-creators';
 import getOffset from '../get-offset';
-import type { Id, TypeId } from '../../types';
-import type { Dimension, Position, State } from '../../state/types';
+import type { Id, TypeId, Dimension, Position, State } from '../../types';
 
 const getBounds = (ref: Element) => {
   const { top, right, bottom, left, width, height } = ref.getBoundingClientRect();

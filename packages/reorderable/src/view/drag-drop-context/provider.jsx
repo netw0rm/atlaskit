@@ -1,6 +1,6 @@
 // @flow
 import { PureComponent, PropTypes } from 'react';
-import type { Store } from '../../state/types';
+import type { Store } from '../../types';
 import createStore from '../../state/create-store';
 
 type Props = {

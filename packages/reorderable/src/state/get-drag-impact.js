@@ -1,7 +1,12 @@
 // @flow
 import memoizeOne from 'memoize-one';
-import type { DraggableId, DroppableId } from '../types';
-import type { DragMovement, Dimension, DimensionMap, DragImpact, Position } from './types';
+import type { DraggableId,
+  DroppableId,
+  DragMovement,
+  Dimension,
+  DimensionMap,
+  DragImpact,
+  Position } from '../types';
 import getDroppableOver from './get-droppable-over';
 import isInsideDimension from './is-inside-dimension';
 

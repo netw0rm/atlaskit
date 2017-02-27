@@ -1,5 +1,5 @@
 // @flow
-import type { Position } from '../state/types';
+import type { Position } from '../types';
 
 // Cross browser scroll position
 // it could simply become window.scrollX and window.scrollY if we did not support ie11

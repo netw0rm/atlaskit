@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { storiesOf, action } from '@kadira/storybook';
-import type { Position } from '../src/state/types';
+import type { Position } from '../src/types';
 import Moveable from '../src/view/moveable';
 
 const Box = styled.div`

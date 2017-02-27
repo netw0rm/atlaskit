@@ -6,13 +6,13 @@ import invariant from 'invariant';
 import memoizeOne from 'memoize-one';
 import { createSelector } from 'reselect';
 import isShallowEqual from 'shallowequal';
-import type { DraggableId, TypeId } from '../../types';
 import type {
+  DraggableId,
+  TypeId,
   Position,
   DraggingInitial,
   DragComplete,
-  CurrentDrag,
-} from '../../state/types';
+  CurrentDrag } from '../../types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
 import type { Speed } from '../moveable';

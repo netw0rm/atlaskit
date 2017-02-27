@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import invariant from 'invariant';
 import styled from 'styled-components';
-import type { Position } from '../../state/types';
+import type { Position } from '../../types';
 
 // declare function OnLift(point: Position): void;
 

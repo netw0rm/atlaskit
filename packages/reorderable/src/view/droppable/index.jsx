@@ -3,8 +3,12 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { DroppableDimensionPublisher } from '../dimension-publisher/';
 import getDisplayName from '../get-display-name';
-import type { TypeId, DroppableId } from '../../types';
-import type { DragResult, State, DraggableLocation } from '../../state/types';
+import type { TypeId,
+  DroppableId,
+  DragResult,
+  State,
+  DraggableLocation,
+} from '../../types';
 
 type DroppableState = {|
   isDraggingOver: boolean

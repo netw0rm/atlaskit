@@ -1,6 +1,5 @@
 // @flow
-import type { DroppableId } from '../types';
-import type { Position, DimensionMap } from './types';
+import type { DroppableId, Position, DimensionMap } from '../types';
 import isInsideDimension from './is-inside-dimension';
 
 export default (target: Position,

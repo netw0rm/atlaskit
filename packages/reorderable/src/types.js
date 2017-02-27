@@ -1,59 +1,87 @@
 // @flow
+import type { Store as ReduxStore, Dispatch as ReduxDispatch } from 'redux';
+import type { Action as ActionCreators } from './state/action-creators';
 
-import React from 'react';
-
-// generics
-export type ReactClass = typeof React.Component | typeof React.PureComponent | Function;
-export type HOC = (component: ReactClass) => ReactClass;
 export type Id = string;
 export type DraggableId = Id;
 export type DroppableId = Id;
 export type TypeId = Id;
 
-// HOC: DragDropContext: root that holds drag state
-export type DragDropContext = HOC;
+export type Position = {|
+  x: number,
+  y: number,
+|};
 
-// HOC: Draggable - an item that can be dragged
-type DraggableState = {|
-  isDragging: boolean,
-  getDragHandle: Function
+export type Dimension = {|
+  id: Id,
+  top: number,
+  right: number,
+  bottom: number,
+  left: number,
+  width: number,
+  height: number,
+  center: Position,
 |}
 
-type ProvidedDraggableState = {
+export type DraggableLocation = {|
+  droppableId: DroppableId,
+  index: number
+|};
+
+export type DimensionMap = { [key: Id]: Dimension };
+
+export type DragMovement = {|
+  draggables: DraggableId[],
+  amount: number,
+|}
+
+export type DragImpact = {|
+  movement: DragMovement,
+  destination: ?DraggableLocation
+|}
+
+export type DraggingInitial = {|
+  source: DraggableLocation,
+  center: Position,
+  offset: Position,
+  scroll: Position,
+  selection: Position,
+|}
+
+export type Dragging = {|
   id: DraggableId,
-  isDropEnabled?: boolean
-}
-
-type ProvideDraggableState = (props: Object) => $Shape<ProvidedDraggableState>;
-type MapDraggableStateToProps = (DraggableState) => Object;
-
-type DraggableHooks = {|
-  // ? needs to fire before isDropEnabled checks
-  onDragStart: (id: DraggableId) => void,
-  onDragEnd: (id: DraggableId) => void,
+  type: TypeId,
+  offset: Position,
+  center: Position,
+  initial: DraggingInitial,
 |}
 
-// type Draggable =
-//   (TypeId, ProvideDraggableState, MapDraggableStateToProps, DraggableHooks?) => HOC;
-
-type DroppableState = {|
-  draggingId: DraggableId,
-  isOver: boolean
+export type CurrentDrag = {|
+    dragging: Dragging,
+    impact: DragImpact
 |}
 
-type ProvidedDroppableState = {
-  id: DraggableId,
-  isDropEnabled?: boolean
-}
+export type DragResult = {|
+  draggableId: DraggableId,
+  source: DraggableLocation,
+  // may not have any destination (drag to nowhere)
+  destination: ?DraggableLocation
+|}
 
-type ProvideDroppableState =
-  (props: Object, draggingId: DraggableId) => $Shape<ProvidedDroppableState>;
-type MapDroppableStateToProps = (DroppableState) => Object;
+export type DragComplete = {|
+  result: DragResult,
+  last: CurrentDrag,
+  isAnimationFinished: boolean,
+|}
 
-type DroppableHooks = {
-  isOver: (id: DraggableId) => void,
-  onDrop: (id: DraggableId, newPosition: number, oldPosition: number) => void
-}
+export type State = {
+  draggableDimensions: DimensionMap,
+  droppableDimensions: DimensionMap,
+  currentDrag: ?CurrentDrag,
+  complete: ?DragComplete,
+  requestDimensions: ?TypeId
+};
 
-export type Droppable =
-  (TypeId, ProvideDroppableState, MapDroppableStateToProps, DroppableHooks) => HOC;
+export type Action = ActionCreators;
+export type Store = ReduxStore<State, Action>;
+export type Dispatch = ReduxDispatch<Action>;

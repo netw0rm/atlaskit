@@ -1,6 +1,11 @@
 // @flow
-import type { DraggableId, TypeId } from '../types';
-import type { Dimension, Position, Dispatch } from './types';
+import type {
+  DraggableId,
+  TypeId,
+  Dimension,
+  Position,
+  Dispatch,
+} from '../types';
 
 export type RequestDimensionsAction = {|
   type: 'REQUEST_DIMENSIONS',

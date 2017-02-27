@@ -1,7 +1,7 @@
 // @flow
 import invariant from 'invariant';
 import memoizeOne from 'memoize-one';
-import type { Position } from '../state/types';
+import type { Position } from '../types';
 
 // todo: check in FF and MS
 const getSupportMatrix = memoizeOne(() => ['DOMMatrix', 'WebKitCSSMatrix', 'MSCSSMatrix']

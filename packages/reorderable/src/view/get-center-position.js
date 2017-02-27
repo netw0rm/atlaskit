@@ -1,4 +1,4 @@
-import type { Position } from '../state/types';
+import type { Position } from '../types';
 
 export default (el: Element): Position => {
   const { top, right, bottom, left } = el.getBoundingClientRect();

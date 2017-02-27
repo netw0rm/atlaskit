@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { Motion, spring } from 'react-motion';
 import styled from 'styled-components';
 import * as physics from './physics';
-import type { Position } from '../../state/types';
+import type { Position } from '../../types';
 
 export type Speed = 'NONE' | 'STANDARD' | 'FAST';
 

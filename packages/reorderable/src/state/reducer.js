@@ -1,6 +1,16 @@
 // @flow
-import type { TypeId } from '../types';
-import type { Action, State, Dimension, DragImpact, Dragging, DragResult, CurrentDrag, DraggableLocation, Position, DragComplete } from './types';
+import type { TypeId,
+  Action,
+  State,
+  Dimension,
+  DragImpact,
+  Dragging,
+  DragResult,
+  CurrentDrag,
+  DraggableLocation,
+  Position,
+  DragComplete,
+} from '../types';
 import getDragImpact from './get-drag-impact';
 
 const initialState: State = {

@@ -3,6 +3,7 @@ import {Component} from 'react';
 import {storiesOf, action} from '@kadira/storybook';
 import {CardView} from '../src';
 import tallImageDataUri from './tall-image';
+import styles from './styles';
 
 const onClick = (event: Event) => {
   action('click')();
@@ -16,22 +17,6 @@ const menuActions = [
   {label: 'Open', handler: () => { action('open')(); }},
   {label: 'Close', handler: () => { action('close')(); }}
 ];
-
-const styles = {
-  statesWrapper: {
-    listStyle: 'none',
-    display: 'inline-block'
-  },
-  stateItem: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  stateTitle: {
-    textAlign: 'center',
-    padding: '5px'
-  }
-};
 
 storiesOf('CardView', {})
   .add('Media types', () => (

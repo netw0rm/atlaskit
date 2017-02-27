@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {storiesOf, action} from '@kadira/storybook';
 import {CardViewSmall} from '../src';
-import tallImageDataUri from './tall-image';
+import {tallImage, smallImage, smallTransparentImage, wideImage, wideTransparentImage} from './images';
+import StoryList from './story-list';
 
 const onClick = (event: Event) => {
   action('click')();
@@ -21,16 +22,67 @@ storiesOf('CardViewSmall', {})
       onClick={onClick}
     />
   ))
-  .add('Image', () => (
-    <CardViewSmall
-      loading={false}
-      mediaName="nature.png"
-      mediaType="image"
-      mediaSize={32831}
-      dataURI={tallImageDataUri}
-      onClick={onClick}
-    />
-  ))
+  .add('Images', () => {
+    const cards = [
+      {
+        title: 'Tall image',
+        content: <CardViewSmall
+                  loading={false}
+                  mediaName="nature.png"
+                  mediaType="image"
+                  mediaSize={32831}
+                  dataURI={tallImage}
+                  onClick={onClick}
+        />
+      },
+      {
+        title: 'Small image',
+        content: <CardViewSmall
+          loading={false}
+          mediaName="nature.png"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={smallImage}
+          onClick={onClick}
+        />
+      },
+      {
+        title: 'Small transparent image',
+        content: <CardViewSmall
+          loading={false}
+          mediaName="nature.png"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={smallTransparentImage}
+          onClick={onClick}
+        />
+      },
+      {
+        title: 'Wide image',
+        content: <CardViewSmall
+          loading={false}
+          mediaName="nature.png"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={wideImage}
+          onClick={onClick}
+        />
+      },
+      {
+        title: 'Wide transparent image',
+        content: <CardViewSmall
+          loading={false}
+          mediaName="nature.png"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={wideTransparentImage}
+          onClick={onClick}
+        />
+      }
+    ];
+
+    return <StoryList>{cards}</StoryList>;
+  })
   .add('Loading', () => (
     <CardViewSmall
       loading={true}

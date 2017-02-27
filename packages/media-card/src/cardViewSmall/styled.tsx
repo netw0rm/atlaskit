@@ -1,11 +1,13 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { Root, size } from '../styles/base';
+import { Root, size, center, centerX, antialiased, ellipsis } from '../styles/base';
 import {
   akColorN20,
   akColorN30,
   akColorN70
 } from '@atlaskit/util-shared-styles';
+
+const imageBackground = 'background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKAQMAAAC3/F3+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAABlBMVEXf39////8zI3BgAAAAEUlEQVQIW2Nk38mIjH5wICMAez4Iyz2C/F8AAAAASUVORK5CYII=") repeat;';
 
 export const SmallCard = styled(Root)`
   background-color: ${akColorN20};
@@ -32,81 +34,62 @@ export const SmallCard = styled(Root)`
 `;
 
 export const Retry = styled.div`
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  ${antialiased()}
+  ${ellipsis('calc(100%)')}
   font-weight: bold;
   color: #0065FF;
   font-size: 12px;
   line-height: 15px;
-  overflow: hidden;
-  max-width: calc(100%);
-  text-overflow: ellipsis;
-  white-space: nowrap;
   margin-top: 2px;
 `;
 
 export const ImgWrapper = styled.div`
+  ${center()}
   width: 32px;
   height: 100%;
   overflow: hidden;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   
   img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    max-height: 100%;
+    ${imageBackground}
     max-width: 100%;
-    display: block;
-    transform: translate(-50%, -50%);
+    max-height: 100%;   
   }
 `;
 
 export const Error = styled.div`
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  ${antialiased()}
+  ${ellipsis('calc(100%)')}
   font-weight: bold;
   color: ${akColorN70};
   font-size: 12px;
   line-height: 15px;
-  overflow: hidden;
-  max-width: calc(100%);
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 export const Title = styled.div`
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  ${antialiased()}
+  ${ellipsis('calc(100%)')}
   font-weight: bold;
   color: #091E42;
   font-size: 12px;
   line-height: 15px;
-  overflow: hidden;
-  max-width: calc(100%);
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 export const Size = styled.div`
+  ${ellipsis('calc(100%)')}
   color: ${akColorN70};
   font-size: 12px;
   line-height: 15px;
-  overflow: hidden;
-  max-width: calc(100%);
-  text-overflow: ellipsis;
-  white-space: nowrap;
   margin-top: 2px;
 `;
 
 export const RoundedBackground = styled.div`
+  ${centerX()}
   min-width: 32px;
   height: inherit;
   background-color: #FAFBFC;
   border-radius: 3px;
+  overflow: hidden;  
 `;
 
 export const InfoWrapper = styled.div`
@@ -118,19 +101,15 @@ export const InfoWrapper = styled.div`
 `;
 
 export const LoadingWrapper = styled.div`
+  ${center()}
   color: #cfd4db;
-  display: flex;
   height: 100%;
-  justify-content: center;
-  align-items: center;
 `;
 
 export const PlaceholderSmallWrapper = styled.div`
   ${size(32)}
+  ${center()}
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   
   .file-type-icon {
     position: absolute;

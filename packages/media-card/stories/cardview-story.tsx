@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Component} from 'react';
 import {storiesOf, action} from '@kadira/storybook';
 import {CardView} from '../src';
-import tallImageDataUri from './tall-image';
+import {tallImage} from './images';
 
 const onClick = (event: Event) => {
   action('click')();
@@ -45,7 +45,7 @@ storiesOf('CardView', {})
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -71,7 +71,7 @@ storiesOf('CardView', {})
           mediaName="this is my video.mpg"
           mediaType="video"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -84,7 +84,7 @@ storiesOf('CardView', {})
           mediaName="this is my doc.docx"
           mediaType="doc"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -97,7 +97,7 @@ storiesOf('CardView', {})
           mediaName="this is my audio file.mp3"
           mediaType="audio"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -110,7 +110,7 @@ storiesOf('CardView', {})
           mediaName="this is my unknown file.kpf"
           mediaType="unknown"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -127,7 +127,7 @@ storiesOf('CardView', {})
           mediaName="My awesome file.tsx"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -140,7 +140,7 @@ storiesOf('CardView', {})
           mediaName="Hey guys this is my awesome file.tsx"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -153,7 +153,7 @@ storiesOf('CardView', {})
           mediaName="Lorem ipsum Nulla veniam exercitation duis sit ut in sed consectetur dolore cupidatat ut pariatur.js"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -167,7 +167,7 @@ storiesOf('CardView', {})
           mediaName="Lorem ipsum nulla veniam exercitation duis sit ut in sed consectetur dolore cupidatat ut pariatur.json"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -181,7 +181,7 @@ storiesOf('CardView', {})
           mediaName="Lorem ipsum nulla veniam exercitation duis sit ut in sed consectetur dolore cupidatat sedconsectetur dolore cupidatat seddolore cupidatat sed sed consectetur dolore cupidatat ut pariatur.json"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -197,7 +197,7 @@ storiesOf('CardView', {})
       mediaName="some image"
       mediaType="image"
       mediaSize={32831}
-      dataURI={tallImageDataUri}
+      dataURI={tallImage}
       onClick={onClick}
     />
   ))
@@ -209,7 +209,7 @@ storiesOf('CardView', {})
       mediaName="with_progress.png"
       mediaType="image"
       mediaSize={32831}
-      dataURI={tallImageDataUri}
+      dataURI={tallImage}
       progress={0.5}
       onClick={onClick}
     />
@@ -237,7 +237,7 @@ storiesOf('CardView', {})
           mediaName="loading.png"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />;
       }
@@ -253,7 +253,7 @@ storiesOf('CardView', {})
           mediaName="loading.png"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>

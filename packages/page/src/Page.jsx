@@ -45,7 +45,7 @@ const PageContent = styled.div`
   flex-shrink: 0;
   flex-basis: auto;
   position: relative;
-  z-index: 1;
+  z-index: 3;
   width: calc(100% - ${props => props.navigationWidth}px);
 `;
 

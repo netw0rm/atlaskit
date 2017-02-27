@@ -39,6 +39,7 @@
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/button-group": "^1.0.0",
     "@atlaskit/comment": "^1.0.0",
+    "@atlaskit/modal-dialog": "^1.2.4",
     "@atlaskit/navigation": "^1.2.2",
     "@atlaskit/page": "*",
     "@atlaskit/toggle": "^1.0.1",

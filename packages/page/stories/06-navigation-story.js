@@ -2,6 +2,8 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Navigation from '@atlaskit/navigation';
 import Banner from '@atlaskit/banner';
+import Button from '@atlaskit/button';
+import Modal from '@atlaskit/modal-dialog';
 import AkToggle from '@atlaskit/toggle';
 import styled from 'styled-components';
 import Lorem from 'react-lorem-component';
@@ -16,7 +18,14 @@ const Dummy = styled.div`
 class ToggleBannerPage extends React.PureComponent {
   state = {
     isBannerOpen: false,
+    isModalOpen: false,
     navigationWidth: 284,
+  }
+
+  toggleModal = () => {
+    this.setState({
+      isModalOpen: !this.state.isModalOpen,
+    });
   }
 
   render() {
@@ -52,13 +61,30 @@ class ToggleBannerPage extends React.PureComponent {
           <GridColumn>
             <p>Toggle banner</p>
             <AkToggle
-              size="large"
               onChange={() => {
                 this.setState({
                   isBannerOpen: !this.state.isBannerOpen,
                 });
               }}
+              size="large"
             >Toggle banner</AkToggle>
+          </GridColumn>
+        </Grid>
+        <Grid>
+          <GridColumn>
+            <p>
+              Show the modal to make sure the blanket is displayed over the top of the navigation.
+            </p>
+            <p>
+              <Button onClick={this.toggleModal}>Show modal</Button>
+            </p>
+            <Modal
+              footer={
+                <Button onClick={this.toggleModal}>Close modal</Button>
+              }
+              header="Such modal"
+              isOpen={this.state.isModalOpen}
+            />
           </GridColumn>
         </Grid>
         <Grid>

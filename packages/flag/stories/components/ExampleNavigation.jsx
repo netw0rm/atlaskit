@@ -3,7 +3,6 @@ import Navigation, {
   AkContainerHeader,
   AkContainerItem,
 } from '@atlaskit/navigation';
-import { AtlassianIcon } from '@atlaskit/icon';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Flag extends PureComponent {
@@ -29,9 +28,6 @@ export default class Flag extends PureComponent {
                 text="AtlasCat"
               />
             </a>
-          }
-          globalPrimaryIcon={
-            <AtlassianIcon label="Atlassian" size="medium" />
           }
         >
           <a>

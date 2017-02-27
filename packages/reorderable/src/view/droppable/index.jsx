@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { DroppableDimensionPublisher } from '../dimension-publisher/';
 import getDisplayName from '../get-display-name';
+import storeKey from '../../state/get-store-key';
 import type { TypeId,
   DroppableId,
   DragResult,
@@ -104,5 +105,5 @@ export default (type: TypeId,
         };
       };
 
-      return connect(mapStateToProps, null, null, { storeKey: 'dragDropStore' })(Droppable);
+      return connect(mapStateToProps, null, null, { storeKey })(Droppable);
     };

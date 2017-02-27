@@ -2,19 +2,20 @@
 import { PureComponent, PropTypes } from 'react';
 import type { Store } from '../../types';
 import createStore from '../../state/create-store';
+import storeKey from '../../state/get-store-key';
 
 type Props = {
   children: React$Element<any>
 }
 
 type Context = {
-  dragDropStore: Store
+  [storeKey]: Store
 }
 
 export default class Provider extends PureComponent {
   // [need to declare childContextTypes without flow](https://github.com/brigand/babel-plugin-flow-react-proptypes/issues/22)
   static childContextTypes = {
-    dragDropStore: PropTypes.shape({
+    [storeKey]: PropTypes.shape({
       dispatch: PropTypes.func.isRequired,
       subscribe: PropTypes.func.isRequired,
       getState: PropTypes.func.isRequired,
@@ -29,7 +30,7 @@ export default class Provider extends PureComponent {
 
   getChildContext(): Context {
     return {
-      dragDropStore: this.store,
+      [storeKey]: this.store,
     };
   }
 

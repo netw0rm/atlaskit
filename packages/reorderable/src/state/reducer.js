@@ -180,7 +180,7 @@ export default (state: State = initialState, action: Action): State => {
     const complete: DragComplete = {
       result,
       last: state.currentDrag,
-      offset,
+      newHomeOffset: offset,
       isAnimationFinished: false,
     };
 
@@ -201,7 +201,7 @@ export default (state: State = initialState, action: Action): State => {
     const complete: DragComplete = {
       result: state.complete.result,
       last: state.complete.last,
-      offset: state.complete.offset,
+      newHomeOffset: state.complete.newHomeOffset,
       isAnimationFinished: true,
     };
 

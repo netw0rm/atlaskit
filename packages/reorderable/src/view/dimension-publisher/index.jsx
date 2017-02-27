@@ -8,6 +8,7 @@ import {
 } from '../../state/action-creators';
 import getOffset from '../get-offset';
 import type { Id, TypeId, Dimension, Position, State } from '../../types';
+import storeKey from '../../state/get-store-key.js';
 
 const getBounds = (ref: Element) => {
   const { top, right, bottom, left, width, height } = ref.getBoundingClientRect();
@@ -117,7 +118,7 @@ export const DraggableDimensionPublisher = (() => {
     publish: publishDraggableDimension,
   };
 
-  return connect(mapStateToProps, mapDispatchToProps, null, { storeKey: 'dragDropStore' })(DimensionPublisher);
+  return connect(mapStateToProps, mapDispatchToProps, null, { storeKey })(DimensionPublisher);
 })();
 
 export const DroppableDimensionPublisher = (() => {
@@ -125,5 +126,5 @@ export const DroppableDimensionPublisher = (() => {
     publish: publishDroppableDimension,
   };
 
-  return connect(mapStateToProps, mapDispatchToProps, null, { storeKey: 'dragDropStore' })(DimensionPublisher);
+  return connect(mapStateToProps, mapDispatchToProps, null, { storeKey })(DimensionPublisher);
 })();

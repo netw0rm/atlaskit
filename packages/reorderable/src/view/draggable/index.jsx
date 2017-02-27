@@ -21,6 +21,7 @@ import getCenterPosition from '../get-center-position';
 import getScrollPosition from '../get-scroll-position';
 import getOffset from '../get-offset';
 import getDisplayName from '../get-display-name';
+import storeKey from '../../state/get-store-key';
 import { currentDragSelector, dragCompleteSelector } from '../../state/selectors';
 
 import {
@@ -320,12 +321,11 @@ export default (type: TypeId,
               };
             }
 
-            // assuming no x movement :| (and no y differences between lists)
             if (last.dragging.id === provided.id) {
               return {
                 provided,
                 isDragging: false,
-                offset: complete.offset,
+                offset: complete.newHomeOffset,
               };
             }
 
@@ -393,5 +393,5 @@ export default (type: TypeId,
       cancel: cancelAction,
     };
 
-    return connect(makeMapStateToProps, mapDispatchToProps, null, { storeKey: 'dragDropStore' })(Draggable);
+    return connect(makeMapStateToProps, mapDispatchToProps, null, { storeKey })(Draggable);
   };

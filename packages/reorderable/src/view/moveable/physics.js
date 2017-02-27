@@ -2,8 +2,8 @@
 import type { SpringHelperConfig } from 'react-motion/lib/Types';
 
 const base = {
-  // stiffness: 500,
-  stiffness: 50,
+  stiffness: 500,
+  // stiffness: 50,
   damping: 50,
   precision: 0.5,
 };

@@ -8,11 +8,12 @@ import { createSelector } from 'reselect';
 import isShallowEqual from 'shallowequal';
 import type {
   DraggableId,
-  TypeId,
-  Position,
-  DraggingInitial,
-  DragComplete,
-  CurrentDrag } from '../../types';
+    TypeId,
+    Position,
+    DraggingInitial,
+    DragComplete,
+    CurrentDrag,
+} from '../../types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
 import type { Speed } from '../moveable';
@@ -25,7 +26,7 @@ import storeKey from '../../state/get-store-key';
 import { currentDragSelector, dragCompleteSelector } from '../../state/selectors';
 
 import {
-  beginLift as beginLiftAction,
+  lift as liftAction,
   move as moveAction,
   drop as dropAction,
   cancel as cancelAction,
@@ -34,12 +35,12 @@ import {
 
 type NeedsProviding = {|
   id: DraggableId,
-  isDragEnabled?: boolean,
+    isDragEnabled ?: boolean,
 |}
 
 type DraggableState = {|
   isDragging: boolean
-|}
+    |}
 
 type Provide = (ownProps: Object) => NeedsProviding;
 type MapState = (state: DraggableState, ownProps: Object, getDragHandle: Function) => Object;
@@ -48,36 +49,36 @@ const identity = x => x;
 const nowhere: Position = { x: 0, y: 0 };
 
 type Props = {|
-  beginLift: typeof beginLiftAction,
-  move: typeof moveAction,
-  drop: typeof dropAction,
-  dropFinished: typeof dropFinishedAction,
-  move: typeof moveAction,
-  cancel: typeof cancelAction,
-  provided: NeedsProviding,
-  isDragging: boolean,
-  offset: ?Position,
-  initial: ?DraggingInitial,
+  lift: typeof liftAction,
+    move: typeof moveAction,
+      drop: typeof dropAction,
+        dropFinished: typeof dropFinishedAction,
+          move: typeof moveAction,
+            cancel: typeof cancelAction,
+              provided: NeedsProviding,
+                isDragging: boolean,
+                  offset: ?Position,
+                    initial: ?DraggingInitial,
 |};
 
 type DefaultProps = {|
   offset: Position
-|}
+    |}
 
 type ComponentState = {|
   wasDragging: boolean,
-  ref: ?Element
-|}
+    ref: ?Element
+      |}
 
-  // user-select: ${props => (props.isDragging ? 'none' : 'auto')};
+// user-select: ${props => (props.isDragging ? 'none' : 'auto')};
 const Container = styled.div`
   user-select: none;
 `;
 
 type Movement = {|
   speed: Speed,
-  zIndex: string
-|}
+    zIndex: string
+      |}
 
 const getMovement = (isDragging: boolean, wasDragging: boolean) => {
   if (isDragging) {
@@ -153,7 +154,7 @@ export default (type: TypeId,
       onLift = (selection: Position) => {
         invariant(this.state.ref, 'cannot move an item that is not in the DOM');
 
-        const { provided: { id, isDragEnabled }, beginLift } = this.props;
+        const { provided: { id, isDragEnabled }, lift } = this.props;
 
         if (isDragEnabled === false) {
           return;
@@ -166,12 +167,7 @@ export default (type: TypeId,
         const offset: Position = getOffset(this.state.ref);
         const center: Position = getCenterPosition(this.state.ref);
 
-        // const originCenter: Position = {
-        //   x: center.x - offset.x,
-        //   y: center.x - offset.y,
-        // };
-
-        beginLift(id, type, center, offset, scroll, selection);
+        lift(id, type, center, offset, scroll, selection);
       }
 
       onMove = (point: Position) => {
@@ -229,6 +225,10 @@ export default (type: TypeId,
         this.setState({
           ref,
         });
+      }
+
+      componentWillUnmount() {
+        console.warn('unmounting draggable', this.props.provided.id);
       }
 
       render() {
@@ -291,8 +291,8 @@ export default (type: TypeId,
       return createSelector(
         [currentDragSelector, dragCompleteSelector, getProvided],
         (currentDrag: ?CurrentDrag,
-        complete: ?DragComplete,
-        provided: NeedsProviding) => {
+          complete: ?DragComplete,
+          provided: NeedsProviding) => {
           if (complete) {
             // 1. was the draggable moving out of the way?
             const last: CurrentDrag = complete.last;
@@ -373,7 +373,7 @@ export default (type: TypeId,
     };
 
     const mapDispatchToProps = {
-      beginLift: beginLiftAction,
+      lift: liftAction,
       move: moveAction,
       drop: dropAction,
       dropFinished: dropFinishedAction,

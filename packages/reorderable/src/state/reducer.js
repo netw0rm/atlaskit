@@ -33,6 +33,11 @@ const shout = (message) => {
 export default (state: State = initialState, action: Action): State => {
   shout(`reducing ${action.type}`);
 
+  if (action.type === 'BEGIN_LIFT') {
+    // clear out any current state including result
+    return initialState;
+  }
+
   if (action.type === 'REQUEST_DIMENSIONS') {
     const typeId: TypeId = action.payload;
 
@@ -43,7 +48,7 @@ export default (state: State = initialState, action: Action): State => {
     };
   }
 
-  if (action.type === 'LIFT') {
+  if (action.type === 'COMPLETE_LIFT') {
     const { id, type, center, offset, scroll, selection } = action.payload;
 
     const originCenter: Position = {
@@ -88,8 +93,6 @@ export default (state: State = initialState, action: Action): State => {
           destination: source,
         },
       },
-      // clearing any previous complete result
-      complete: null,
     };
   }
 

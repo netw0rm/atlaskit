@@ -17,8 +17,16 @@ export const requestDimensions = (type: TypeId): RequestDimensionsAction => ({
   payload: type,
 });
 
-export type LiftAction = {|
-  type: 'LIFT',
+export type BeginLiftAction = {|
+  type: 'BEGIN_LIFT'
+|}
+
+const beginLift = (): BeginLiftAction => ({
+  type: 'BEGIN_LIFT',
+});
+
+export type CompleteLiftAction = {|
+  type: 'COMPLETE_LIFT',
   payload: {|
     id: DraggableId,
     type: TypeId,
@@ -29,13 +37,13 @@ export type LiftAction = {|
   |}
 |}
 
-const lift = (id: DraggableId,
+const completeLift = (id: DraggableId,
   type: TypeId,
   center: Position,
   offset: Position,
   scroll: Position,
-  selection: Position): LiftAction => ({
-    type: 'LIFT',
+  selection: Position): CompleteLiftAction => ({
+    type: 'COMPLETE_LIFT',
     payload: {
       id,
       type,
@@ -47,13 +55,14 @@ const lift = (id: DraggableId,
   });
 
 // using redux-thunk
-export const beginLift = (id: DraggableId,
+export const lift = (id: DraggableId,
   type: TypeId,
   center: Position,
   offset: Position,
   scroll: Position,
   selection: Position,
 ) => (dispatch: Dispatch) => {
+  dispatch(beginLift());
   dispatch(requestDimensions(type));
 
   // Dimensions will be requested synronously
@@ -61,7 +70,7 @@ export const beginLift = (id: DraggableId,
   // Could improve this by explicitly waiting until all dimensions are published.
   // Could also allow a lift to occur before all the dimensions are published
   setTimeout(() => {
-    dispatch(lift(id, type, center, offset, scroll, selection));
+    dispatch(completeLift(id, type, center, offset, scroll, selection));
   });
 };
 
@@ -133,7 +142,8 @@ export const cancel = (id: DraggableId): CancelAction => ({
   payload: id,
 });
 
-export type Action = LiftAction |
+export type Action = BeginLiftAction |
+  CompleteLiftAction |
   RequestDimensionsAction |
   PublishDraggableDimensionAction |
   PublishDroppableDimensionAction |

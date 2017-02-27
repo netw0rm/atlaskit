@@ -131,6 +131,7 @@ export class HyperlinkState {
       this.text = nodeInfo && nodeInfo.node.textContent;
       this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
       this.element = this.getDomElement();
+      this.toolbarVisible = this.editorFocused && !!nodeInfo;
       this.active = !!nodeInfo;
       dirty = true;
     }

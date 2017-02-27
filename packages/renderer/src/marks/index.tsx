@@ -6,16 +6,12 @@ import Strike from './strike';
 import Strong from './strong';
 import SubSup from './subsup';
 import Underline from './underline';
-import { Node } from '../nodes';
+import { Renderable } from '../nodes';
 import { isText } from '../nodes/text';
 
 export interface Mark {
   type: string;
   attrs?: any;
-}
-
-export interface MarkNode extends Node {
-  content: Node[];
 }
 
 enum MarkType {
@@ -25,18 +21,8 @@ enum MarkType {
   strike,
   strong,
   subsup,
-  underline
+  underline,
 }
-
-const marks = {
-  [MarkType.em]: Em,
-  [MarkType.link]: Link,
-  [MarkType.mono]: Mono,
-  [MarkType.strike]: Strike,
-  [MarkType.strong]: Strong,
-  [MarkType.subsup]: SubSup,
-  [MarkType.underline]: Underline,
-};
 
 export const markOrder = [
   'link',
@@ -52,32 +38,48 @@ export const getMarksByOrder = (marks: Mark[]) => {
   return [...marks].sort((a, b) => markOrder.indexOf(a.type) - markOrder.indexOf(b.type));
 };
 
-const getKey = (mark: MarkNode, index: number) => {
-  const { type } = mark;
+const getKey = (node: Renderable, index: number) => {
+  const { type } = node;
   if (MarkType[type] === MarkType.subsup) {
-    return `${type}-${mark.attrs!['type']}-${index}`;
+    return `${type}-${node.attrs!['type']}-${index}`;
   }
 
   return `${type}-${index}`;
 };
 
-export const renderMark = (mark: MarkNode, index: number = 0) => {
+export const renderMark = (mark: Renderable, index: number = 0) => {
   const { type } = mark;
 
-  //tslint:disable-next-line
-  let Mark = marks[MarkType[type]] as any;
+  const content = (mark.content || []).map((child, index) => renderMark(child as Renderable, index));
+  const key = getKey(mark, index);
 
-  if (Mark) {
-    return (
-      <Mark {...mark} key={getKey(mark, index)}>
-        {(mark.content || []).map((child, index) => renderMark(child as MarkNode, index))}
-      </Mark>
-    );
-  } else if (isText(type)) {
-    return (mark as any).text;
+  switch (MarkType[type]) {
+    case MarkType.em:
+      return <Em key={key}>{content}</Em>;
+    case MarkType.link: {
+      const { url }  = mark.attrs as any;
+      return <Link key={key} url={url}>{content}</Link>;
+    }
+    case MarkType.mono:
+      return <Mono key={key}>{content}</Mono>;
+    case MarkType.strike:
+      return <Strike key={key}>{content}</Strike>;
+    case MarkType.strong:
+      return <Strong key={key}>{content}</Strong>;
+    case MarkType.subsup: {
+      const { type } = mark.attrs as any;
+      return <SubSup key={key} type={type}>{content}</SubSup>;
+    }
+    case MarkType.underline:
+      return <Underline>{content}</Underline>;
+    default: {
+      if (isText(mark.type)) {
+        return (mark as any).text;
+      }
+
+      return renderMark(mark.content![0] as Renderable);
+    }
   }
-
-  return renderMark(mark.content[0] as MarkNode);
 };
 
 export const isSameMark = (mark: Mark | null, otherMark: Mark | null) => {

@@ -1,8 +1,4 @@
-# AkUtilComponentTemplate
-
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
-
-![Example @NAME@](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/@NAME@/docs/screencast.gif)
+# Renderer
 
 ## Try it out
 
@@ -19,6 +15,6 @@ npm install @NAME@
 Use the component in your React app as follows:
 
 ```
-import AkUtilComponentTemplate from '@NAME@';
-ReactDOM.render(<AkUtilComponentTemplate />, container);
+import Renderer from '@NAME@';
+ReactDOM.render(<Renderer doc={DOCUMENT} />, container);
 ```

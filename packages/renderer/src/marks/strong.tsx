@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-export default class Strong extends PureComponent<React.Props<Strong>, {}> {
+export default class Strong extends PureComponent<{}, {}> {
   shouldComponentUpdate(): boolean {
     return false;
   }

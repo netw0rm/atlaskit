@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-export default class Underline extends PureComponent<React.Props<Underline>, {}> {
+export default class Underline extends PureComponent<{}, {}> {
   shouldComponentUpdate(): boolean {
     return false;
   }

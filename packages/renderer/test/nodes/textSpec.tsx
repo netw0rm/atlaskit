@@ -41,7 +41,7 @@ describe('Text', () => {
       expect(mergeTextNodes(input)).to.deep.equal([
         {
           type: 'textWrapper',
-          textNodes: [
+          content: [
             {
               type: 'text',
               text: 'hello '
@@ -61,7 +61,7 @@ describe('Text', () => {
         },
         {
           type: 'textWrapper',
-          textNodes: [
+          content: [
             {
               type: 'text',
               text: ' is my name!'

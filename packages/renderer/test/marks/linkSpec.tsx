@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import Link from '../../src/marks/link';
 
 describe('<Link />', () => {
-  const mark = shallow(<Link attrs={{url: 'https://www.atlassian.com'}}>This is a link</Link>);
+  const mark = shallow(<Link url="https://www.atlassian.com">This is a link</Link>);
 
   it('should wrap content with <a>-tag', () => {
     expect(mark.is('a')).to.equal(true);

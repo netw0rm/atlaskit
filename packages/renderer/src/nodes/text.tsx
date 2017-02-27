@@ -2,20 +2,19 @@ import {
   getMarksByOrder,
   isSameMark,
   Mark,
-  MarkNode,
   renderMark,
 } from '../marks';
 
 import {
-  Node,
+  Renderable,
 } from './';
 
-export interface TextNode extends Node {
+export interface TextNode extends Renderable {
   text: string;
   marks?: Mark[];
 }
 
-export interface TextWrapper extends Node {
+export interface TextWrapper extends Renderable {
   textNodes: TextNode[];
 }
 
@@ -61,27 +60,21 @@ export interface TextWrapper extends Node {
  *    }
  *  ]
  */
-export const mergeTextNodes = (nodes: Node[]) => {
-  let index = 0;
-  return nodes.reduce<(Node | TextWrapper)[]>((acc, current) => {
-    const isText = current.type === 'text';
-
-    if (!isText) {
+export const mergeTextNodes = (nodes: Renderable[]) => {
+  return nodes.reduce<(Renderable)[]>((acc, current) => {
+    if (!isText(current.type)) {
       acc.push(current);
-      index++;
       return acc;
     }
 
-    const previousNodeWasText = index > 0 && acc[index - 1].type === 'textWrapper';
-
-    if (previousNodeWasText) {
-      (acc[index - 1] as TextWrapper).textNodes.push(current as TextNode);
+    // Append node to previous node, if it was a text wrapper
+    if (acc.length > 0 && isTextWrapper(acc[acc.length - 1].type)) {
+      (acc[acc.length - 1]).content!.push(current as TextNode);
     } else {
       acc.push({
         type: 'textWrapper',
-        textNodes: [current]
-      } as TextWrapper);
-      index++;
+        content: [current]
+      });
     }
 
     return acc;
@@ -97,7 +90,7 @@ export const isText = (type: string): type is 'text' => {
 };
 
 export const renderTextNodes = (textNodes: TextNode[]) => {
-  let currentMarkNode: MarkNode | Node | null = null;
+  let currentMarkNode: Renderable;
   const content = textNodes.reduce((acc, node, index) => {
     if (!node.marks || !node.marks.length) {
       currentMarkNode = {
@@ -113,7 +106,6 @@ export const renderTextNodes = (textNodes: TextNode[]) => {
         if (index > 0 && isSameMark(mark, currentMarkNode as Mark)) {
           newMark = false;
         } else {
-
           if (newMark) {
             currentMarkNode = {
               type: mark.type,
@@ -128,20 +120,20 @@ export const renderTextNodes = (textNodes: TextNode[]) => {
               content: []
             };
 
-            (currentMarkNode as MarkNode).content.push(newMark);
+            currentMarkNode.content!.push(newMark);
             currentMarkNode = newMark;
           }
         }
       });
 
-      (currentMarkNode as MarkNode).content.push({
+      currentMarkNode.content!.push({
         type: 'text',
         text: node.text
       });
     }
 
     return acc;
-  }, [] as (MarkNode | Node)[]);
+  }, [] as Renderable[]);
 
-  return content.map((mark, index) => renderMark(mark as MarkNode, index));
+  return content.map((mark, index) => renderMark(mark, index));
 };

@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { Mention } from '@atlaskit/mention';
 import Doc from './doc';
-import Mention from './mention';
 import Paragraph from './paragraph';
 import {
   isText,
@@ -8,12 +8,11 @@ import {
   mergeTextNodes,
   renderTextNodes,
   TextNode,
-  TextWrapper,
 } from './text';
 
-export interface Node {
+export interface Renderable {
   type: string;
-  content?: Node[];
+  content?: Renderable[];
   text?: string;
   attrs?: {
     text?: string;
@@ -28,34 +27,48 @@ enum NodeType {
   textWrapper,
 }
 
-const nodes = {
-  [NodeType.doc]: Doc,
-  [NodeType.mention]: Mention,
-  [NodeType.paragraph]: Paragraph,
-};
-
-export const renderNode = (node: Node, index: number = 0) => {
-  const { type } = node;
-
-  //tslint:disable-next-line
-  const Node = nodes[NodeType[type]] as any;
+export const renderNode = (node: Renderable, index: number = 0) => {
   const nodeContent = mergeTextNodes(node.content || []);
+  const key = `${node.type}-${index}`;
 
-  if (Node) {
-    return (
-      <Node {...node} key={`${type}-${index}`}>
-        {nodeContent.map((node, index) => renderNode(node, index))}
-      </Node>
-    );
-  } else if (isTextWrapper(type)) {
-    return renderTextNodes((node as TextWrapper).textNodes);
-  } else if (isText(type)) {
-    return renderTextNodes([node as TextNode]);
+  switch (NodeType[node.type]) {
+    case NodeType.doc:
+      return <Doc key={key}>{nodeContent.map((child, index) => renderNode(child, index))}</Doc>;
+    case NodeType.paragraph:
+      return <Paragraph key={key}>{nodeContent.map((child, index) => renderNode(child, index))}</Paragraph>;
+    case NodeType.mention: {
+      const { text, attrs } = node;
+      let mentionText;
+
+      if (!text) {
+        if (attrs) {
+          mentionText = attrs.text || attrs['displayName'] || '@unknown';
+        } else {
+          mentionText = '@unknown';
+        }
+      } else {
+        mentionText = text;
+      }
+
+      const { id } = attrs as any || { id: 'unknown' };
+      return <Mention key={key} id={id} text={mentionText} />;
+    }
+    default: {
+      if (isTextWrapper(node.type)) {
+        return renderTextNodes(node.content as TextNode[]);
+      } else if (isText(node.type)) {
+        return renderTextNodes([node as TextNode]);
+      }
+
+      // Try render text of unkown node
+      if (node.attrs && node.attrs.text) {
+        return node.attrs.text;
+      } else if (node.text) {
+        return node.text;
+      }
+
+      // Node is unkown and can't be rendered
+      return `Unknown type: "${node.type}"`;
+    }
   }
-
-  if (node.attrs && node.attrs.text) {
-    return node.attrs.text;
-  }
-
-  return <span key={`unkown-${index}`}>Unkown type</span>;
 };

@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
+import { Mention } from '@atlaskit/mention';
 import * as React from 'react';
 import Renderer from '../src';
-import Mention from '../src/nodes/mention';
 import Paragraph from '../src/nodes/paragraph';
 import Em from '../src/marks/em';
 import Link from '../src/marks/link';
@@ -95,6 +95,7 @@ const doc = {
         {
           type: 'mention',
           attrs: {
+            id: 'ABCDE-ABCDE-ABCDE-ABCDE',
             displayName: '@oscar'
           }
         }
@@ -109,6 +110,9 @@ const doc = {
         },
         {
           type: 'mention',
+          attrs: {
+            id: 'ABCDE-ABCDE-ABCDE-ABCDE',
+          },
           text: '@oscar'
         }
       ]
@@ -225,7 +229,7 @@ storiesOf(name, module)
     <Em>This is italic</Em>
   ))
   .add('marks/link', () => (
-    <Link attrs={{ url: 'https://www.atlassian.com' }}>This is a link</Link>
+    <Link url="https://www.atlassian.com">This is a link</Link>
   ))
   .add('marks/mono', () => (
     <Mono>This is monospace</Mono>
@@ -238,15 +242,15 @@ storiesOf(name, module)
   ))
   .add('marks/subsup', () => (
     <div>
-      <Subsup attrs={{type: 'sub'}}>This is sub</Subsup>
-      <Subsup attrs={{type: 'sup'}}>This is sup</Subsup>
+      <Subsup type="sub">This is sub</Subsup>
+      <Subsup type="sup">This is sup</Subsup>
     </div>
   ))
   .add('marks/underline', () => (
     <Underline>This is underlined</Underline>
   ))
   .add('nodes/mention', () => (
-    <Mention attrs={{id: 'abcd-abcd-abcd', text: '@Oscar Wallhult'}} />
+    <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult" />
   ))
   .add('nodes/paragraph', () => (
     <Paragraph>This is a paragraph</Paragraph>

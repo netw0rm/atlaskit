@@ -3,10 +3,8 @@ import { PureComponent } from 'react';
 
 export type SubSupType = 'sub' | 'sup';
 
-export interface Props extends React.Props<SubSup> {
-  attrs: {
-    type: SubSupType
-  };
+export interface Props {
+  type: SubSupType;
 }
 
 const isSub = (type: SubSupType): type is 'sub' => {
@@ -20,9 +18,8 @@ export default class SubSup extends PureComponent<Props, {}> {
 
   render() {
     const { props } = this;
-    const { type } = props.attrs;
 
-    if (isSub(type)) {
+    if (isSub(props.type)) {
       return <sub>{props.children}</sub>;
     }
 

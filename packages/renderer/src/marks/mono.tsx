@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-export default class Mono extends PureComponent<React.Props<Mono>, {}> {
+export default class Mono extends PureComponent<{}, {}> {
   shouldComponentUpdate(): boolean {
     return false;
   }

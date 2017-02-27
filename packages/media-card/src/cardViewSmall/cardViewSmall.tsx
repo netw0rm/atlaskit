@@ -41,7 +41,7 @@ export class CardViewSmall extends Component<CardViewSmallProps, {}> {
         onRetry.handler(undefined, event.nativeEvent);
       };
       const retryComponent = (onRetry) ? (
-        <Retry>
+        <Retry className="retry">
           <span onClick={retryHandler}>{retryMessage}</span>
         </Retry>
       ) : null;
@@ -50,7 +50,7 @@ export class CardViewSmall extends Component<CardViewSmallProps, {}> {
         <ErrorIcon />
       ), (
         <div>
-          <Error>{error}</Error>
+          <Error className="error">{error}</Error>
           {retryComponent}
         </div>
       ));
@@ -67,8 +67,8 @@ export class CardViewSmall extends Component<CardViewSmallProps, {}> {
         </RoundedBackground>
       ), (
         <div>
-          <Title>{this.props.mediaName}</Title>
-          <Size>{fileSize}</Size>
+          <Title className="title">{this.props.mediaName}</Title>
+          <Size className="size">{fileSize}</Size>
         </div>
       ));
     }

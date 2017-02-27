@@ -4,7 +4,7 @@ import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
-import { ListsState } from '../../plugins/lists/index-future';
+import { ListsState } from '../../plugins/lists';
 import { MentionsPluginState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { EditorView } from '../../prosemirror/future';
@@ -15,7 +15,6 @@ import ChromeExpanded from '../ChromeExpanded';
 
 export interface Props {
   editorView?: EditorView;
-
   isExpanded?: boolean;
   placeholder?: string;
   onCancel?: () => void;

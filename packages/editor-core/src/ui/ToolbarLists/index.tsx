@@ -4,13 +4,13 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { toggleBulletList, toggleOrderedList, tooltip } from '../../plugins/keymaps';
-import { ListsState } from '../../plugins/lists/index-future';
+import { ListsState } from '../../plugins/lists';
 import ToolbarButton from '../ToolbarButton';
 import { EditorView } from '../../prosemirror/future';
 
 export interface Props {
+  editorView?: EditorView;
   pluginState: ListsState;
-  editorView: EditorView;
 }
 
 export interface State {
@@ -79,15 +79,15 @@ export default class ToolbarLists extends PureComponent<Props, State> {
 
   @analytics('atlassian.editor.format.list.bullet.button')
   private handleBulletListClick = () => {
-    if (!this.state.bulletListDisabled && this.props.editorView) {
-      this.props.pluginState.toggleBulletList(this.props.editorView);
+    if (!this.state.bulletListDisabled) {
+      this.props.pluginState.toggleBulletList();
     }
   }
 
   @analytics('atlassian.editor.format.list.numbered.button')
   private handleOrderedListClick = () => {
-    if (!this.state.orderedListDisabled && this.props.editorView) {
-      this.props.pluginState.toggleOrderedList(this.props.editorView);
+    if (!this.state.orderedListDisabled) {
+      this.props.pluginState.toggleOrderedList();
     }
   }
 };

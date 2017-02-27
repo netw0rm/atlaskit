@@ -8,7 +8,7 @@ import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
-import { ListsState } from '../../plugins/lists/index-future';
+import { ListsState } from '../../plugins/lists';
 import { MentionsPluginState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { PanelState } from '../../plugins/panel';
@@ -25,9 +25,10 @@ import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import ToolbarImage from '../ToolbarImage';
 import * as styles from './styles';
+import { EditorView } from '../../prosemirror/future';
 
 export interface Props {
-  editorView?: any;
+  editorView?: EditorView;
   feedbackFormUrl?: string;
   onCancel?: () => void;
   onInsertMention?: () => void;

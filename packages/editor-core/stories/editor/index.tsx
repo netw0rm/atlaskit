@@ -2,9 +2,9 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import {
   Chrome,
-  ContextName,
-  ListsPlugin
+  ContextName
 } from '../../';
+import listsPlugin from '../../src/plugins/lists/index-future';
 import { buildKeymap } from '../../src/plugins/keymaps';
 import buildMarkdownInputRules from '../../src/plugins/markdown-inputrules/input-future';
 import {
@@ -97,7 +97,7 @@ export default class Editor extends PureComponent<Props, State> {
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const { isExpanded, editorState, editorView } = this.state;
-    const listsState = editorState && ListsPlugin.plugin.getState(editorState);
+    const listsState = editorState && listsPlugin.plugin.getState(editorState);
 
     return (
       <Chrome
@@ -109,7 +109,6 @@ export default class Editor extends PureComponent<Props, State> {
         placeholder={this.props.placeholder}
         onCollapsedChromeFocus={this.expand}
         editorView={editorView}
-
         pluginStateLists={listsState}
       />
     );
@@ -140,7 +139,7 @@ export default class Editor extends PureComponent<Props, State> {
     if (place) {
       const editorState = EditorState.create(
         createEdiorConfig(schema, [
-          ListsPlugin,
+          listsPlugin,
           inputRules({ rules: buildMarkdownInputRules(schema) }),
           history(),
           keymap(buildKeymap(schema)),

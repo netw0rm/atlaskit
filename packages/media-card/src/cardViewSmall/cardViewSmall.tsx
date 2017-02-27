@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import * as bytes from 'bytes';
+import {toHumanReadableMediaSize} from '../utils/index';
 import {CardAction} from '@atlaskit/media-core';
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
 import {ErrorIcon} from '..';
@@ -55,7 +55,7 @@ export class CardViewSmall extends Component<CardViewSmallProps, {}> {
         </div>
       ));
     } else {
-      const fileSize = this.props.mediaSize && bytes.format(this.props.mediaSize, {unitSeparator: ' '});
+      const fileSize = this.props.mediaSize && toHumanReadableMediaSize(this.props.mediaSize);
 
       return this.formatCard((
         <RoundedBackground>

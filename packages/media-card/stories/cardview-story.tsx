@@ -201,6 +201,36 @@ storiesOf('CardView', {})
       onClick={onClick}
     />
   ))
+  .add('Different file sizes', () => (
+    <ul style={styles.statesWrapper}>
+      <li style={styles.stateItem}>
+        <div style={styles.stateTitle}>File size smaller than 1 MB</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="this is my image.png"
+          mediaType="image"
+          mediaSize={100000} // 97.66 kB
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+      <li style={styles.stateItem}>
+        <div style={styles.stateTitle}>File size greater than or equal to 1 MB</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="this is my image.png"
+          mediaType="image"
+          mediaSize={100000000} // 95.37 MB
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+    </ul>
+  ))
   .add('With Progress', () => (
     <CardView
       loading={false}

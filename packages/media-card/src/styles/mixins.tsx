@@ -1,6 +1,4 @@
 /* tslint:disable:variable-name */
-import styled from 'styled-components';
-
 export const ellipsis = maxWidth => `
   max-width: ${maxWidth};
   overflow: hidden;

@@ -38,7 +38,7 @@ export class CardViewSmall extends Component<CardViewSmallProps, {}> {
         // We need to prevent the card's onClick being called
         event.stopPropagation();
         event.preventDefault();
-        onRetry.handler(undefined, event.nativeEvent);
+        onRetry && onRetry.handler(undefined, event.nativeEvent);
       };
       const retryComponent = (onRetry) ? (
         <Retry className="retry">
@@ -61,7 +61,7 @@ export class CardViewSmall extends Component<CardViewSmallProps, {}> {
         <RoundedBackground>
           <CardContentSmall
             loading={this.props.loading}
-            mediaType={this.props.mediaType}
+            mediaType={this.props.mediaType || 'unknown'}
             dataURI={this.props.dataURI}
           />
         </RoundedBackground>
@@ -75,7 +75,7 @@ export class CardViewSmall extends Component<CardViewSmallProps, {}> {
   }
 
   onClick(event: MouseEvent<HTMLDivElement>) {
-    this.props.onClick(event.nativeEvent);
+    this.props.onClick && this.props.onClick(event.nativeEvent);
   }
 
   formatCard(left: JSX.Element, right: JSX.Element) {

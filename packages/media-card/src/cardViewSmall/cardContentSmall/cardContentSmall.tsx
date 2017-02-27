@@ -7,8 +7,8 @@ import {MediaType} from '@atlaskit/media-core';
 
 export interface CardContentProps {
   mediaType: MediaType;
-  dataURI: string;
-  loading: boolean;
+  dataURI?: string;
+  loading?: boolean;
 }
 
 export class CardContentSmall extends Component<CardContentProps, {}> {

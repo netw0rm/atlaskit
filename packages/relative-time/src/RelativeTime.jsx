@@ -1,9 +1,9 @@
 import React, { PureComponent, PropTypes } from 'react';
-import TimeAgo from 'react-timeago';
+import IntlRelativeFormat from 'intl-relativeformat';
 
 export default class RelativeTime extends PureComponent {
   static propTypes = {
-    formatter: PropTypes.func,
+    locale: PropTypes.string,
     timestamp: PropTypes.number,
   }
 
@@ -12,12 +12,9 @@ export default class RelativeTime extends PureComponent {
   }
 
   render() {
+    const rf = new IntlRelativeFormat(this.props.locale);
     return (
-      <TimeAgo
-        date={this.props.timestamp}
-        formatter={this.props.formatter}
-        live={false}
-      />
+      <time>{rf.format(this.props.timestamp)}</time>
     );
   }
 }

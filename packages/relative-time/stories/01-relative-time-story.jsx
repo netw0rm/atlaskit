@@ -1,17 +1,23 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import { name } from '../package.json';
-import RelativeTime, { Formatters } from '../src/';
+import RelativeTime from '../src/';
 
 storiesOf(name, module)
   .add('relative-time for 1 minute from now', () => (
     <RelativeTime timestamp={new Date().getTime() + (1000 * 60)} />
   ))
   .add('relative-time with i18n', () => {
-    const locales = Object.keys(Formatters).map(key => ({
-      name: key,
-      formatter: Formatters[key],
-    }));
+    const locales = [
+      { name: 'en', locale: 'en' },
+      { name: 'es', locale: 'es' },
+      { name: 'de', locale: 'de' },
+      { name: 'fr', locale: 'fr' },
+      { name: 'ja', locale: 'ja' },
+      { name: 'ko', locale: 'ko' },
+      { name: 'pt', locale: 'pt' },
+      { name: 'ru', locale: 'ru' },
+    ];
 
     const now = new Date().getTime();
     const times = [
@@ -57,7 +63,7 @@ storiesOf(name, module)
                 <td><b>{locale.name}</b></td>
                 {times.map((time, i) => (
                   <td key={i}>
-                    <RelativeTime timestamp={time.timestamp} formatter={locale.formatter} />
+                    <RelativeTime timestamp={time.timestamp} locale={locale.locale} />
                   </td>
                 ))}
               </tr>

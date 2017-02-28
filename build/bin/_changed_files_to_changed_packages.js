@@ -3,8 +3,6 @@
 // would return ['@atlaskit/foo', '@atlaskit/abc']
 function changedFilesToChangedPackages(changedFiles) {
   return changedFiles
-    // remove any empty strings
-    .filter(filePath => filePath.length > 0)
     // remove files not in /packages directory
     .filter(filePath => filePath.match(/^packages\//))
     // get packageNames from paths

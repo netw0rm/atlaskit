@@ -115,7 +115,7 @@ storiesOf('CardViewSmall', {})
           mediaName="nature.png"
           mediaType="image"
           mediaSize={100} // 100 B
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -126,7 +126,7 @@ storiesOf('CardViewSmall', {})
           mediaName="nature.png"
           mediaType="image"
           mediaSize={153600} // 150 kB
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -137,7 +137,7 @@ storiesOf('CardViewSmall', {})
           mediaName="nature.png"
           mediaType="image"
           mediaSize={12897490} // 12.3 MB
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -148,7 +148,7 @@ storiesOf('CardViewSmall', {})
           mediaName="nature.png"
           mediaType="image"
           mediaSize={1395864375} // 1.3 GB
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>

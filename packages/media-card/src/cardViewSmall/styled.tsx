@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { Root, size, center, centerX, antialiased, ellipsis } from '../styles/base';
+import { Root, cardShadow, size, center, centerX, antialiased, ellipsis, borderRadius } from '../styles/base';
 import {
   akColorN20,
   akColorN30,
@@ -10,8 +10,9 @@ import {
 const imageBackground = 'background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKAQMAAAC3/F3+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAABlBMVEXf39////8zI3BgAAAAEUlEQVQIW2Nk38mIjH5wICMAez4Iyz2C/F8AAAAASUVORK5CYII=") repeat;';
 
 export const SmallCard = styled(Root)`
+  ${cardShadow()}
+  ${borderRadius()}
   background-color: ${akColorN20};
-  border-radius: 3px;
   font-family: sans-serif;
   cursor: pointer;
   box-sizing: border-box;
@@ -85,10 +86,10 @@ export const Size = styled.div`
 
 export const RoundedBackground = styled.div`
   ${centerX()}
+  ${borderRadius()}
   min-width: 32px;
   height: inherit;
   background-color: #FAFBFC;
-  border-radius: 3px;
   overflow: hidden;  
 `;
 

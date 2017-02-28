@@ -19,7 +19,7 @@ const styles = {
   stateTitle: {
     textAlign: 'center',
     borderBottom: '1px solid #ccc',
-    padding: '1px',
+    padding: '0 10px',
     marginBottom: '7px'
   }
 };

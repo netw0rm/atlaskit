@@ -1,14 +1,15 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import {rgba, centerX} from '../styles/mixins';
-import { akColorN70, akColorN0, akColorN800, akColorN900 } from '@atlaskit/util-shared-styles';
+import {rgba, centerX, easeOutCubic, borderRadius, size} from '../styles/base';
+import { akColorN70, akColorN0, akColorN500, akColorN800, akColorN900, akColorB400 } from '@atlaskit/util-shared-styles';
 
 export const MoreBtn = styled.div`
-  display: none;
+  ${centerX()}
+  ${borderRadius()}
   float: right;
   width: 36px;
   height: 26px;
-  border-radius: 3px;
+  color: ${akColorN500};
 
   &:hover {
     background-color: rgba(9, 30, 66, 0.06);
@@ -24,11 +25,10 @@ export const MoreBtn = styled.div`
 `;
 
 export const DeleteBtn = styled.div`
+  ${borderRadius()}
+  ${size(26)}
   display: none;
   float: right;
-  width: 26px;
-  height: 26px;
-  border-radius: 3px;
   color: white;
   justify-content: center;
 
@@ -82,28 +82,24 @@ export const TickBox = styled.div`
 `;
 
 export const Overlay = styled.div`
+  ${borderRadius()}
   width: 100%;
   height: 100%;
   background: transparent;
   position: absolute;
   top: 0;
   left: 0;
-  border-radius: 3px;
   border: 2px solid transparent;
+  transition: .3s background ${easeOutCubic};
 
   &:hover, &.active {
     .top-row {
       .title {
-        color: #0065FF;
+        color: ${akColorB400};
       }
     }
 
     .bottom-row {
-      .more-btn {
-        display: flex;
-        justify-content: center;
-      }
-
       .delete-btn {
         display: flex;
       }
@@ -113,10 +109,18 @@ export const Overlay = styled.div`
   .file-type-icon {
     display: block;
   }
+  
+  &:not(.show-on-hover) {
+    &:hover {
+      background-color: ${rgba(akColorN900, 0.06)};
+    }
+  }
 
   &.show-on-hover {
     .top-row {
       .title {
+        transition: opacity .3s;
+        opacity: 0;
         color: white;
         font-size: 12px;
         visibility: hidden;
@@ -124,6 +128,10 @@ export const Overlay = styled.div`
     }
 
     .bottom-row {
+      opacity: 0;
+      transition: transform .2s, opacity .5s;
+      transform: translateY(100%);
+
       .file-type-icon {
         display: none;
       }
@@ -134,6 +142,7 @@ export const Overlay = styled.div`
       }
 
       .more-btn {
+        color: ${akColorN0};
         display: none;
 
         &:hover {
@@ -154,6 +163,7 @@ export const Overlay = styled.div`
       background-color: ${rgba(akColorN900, 0.5)};
 
       .title {
+        opacity: 1;
         visibility: visible;
       }
 
@@ -168,6 +178,11 @@ export const Overlay = styled.div`
 
       .delete-btn {
         display: flex;
+      }
+
+      .bottom-row {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
 
@@ -293,7 +308,7 @@ export const Retry = styled.div`
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: bold;
-  color: #0065FF;
+  color: ${akColorB400};
   font-size: 12px;
   line-height: 15px;
   overflow: hidden;
@@ -321,6 +336,7 @@ export const FileSize = styled.div`
   float: left;
   font-size: 12px;
   color: #5E6C84;
+  text-transform: lowercase;
 `;
 
 export const Metadata = styled.div`

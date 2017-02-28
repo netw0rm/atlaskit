@@ -122,7 +122,7 @@ storiesOf('CardView', {})
           loading={false}
           selectable={false}
           selected={false}
-          mediaName="No preview image"
+          mediaName="No preview video"
           mediaType="video"
           mediaSize={32831}
           dataURI={null}
@@ -134,11 +134,24 @@ storiesOf('CardView', {})
           loading={false}
           selectable={false}
           selected={false}
-          mediaName="No preview image"
+          mediaName="No preview audio"
           mediaType="audio"
           mediaSize={32831}
           dataURI={null}
           onClick={onClick}
+        />
+      }, {
+        title: 'Video + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="No preview audio"
+          mediaType="video"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+          menuActions={menuActions}
         />
       }]}
     </StoryList>
@@ -239,7 +252,7 @@ storiesOf('CardView', {})
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={100} // 100 B
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -252,7 +265,7 @@ storiesOf('CardView', {})
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={153600} // 150 kB
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -265,7 +278,7 @@ storiesOf('CardView', {})
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={12897490} // 12.3 MB
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -278,7 +291,7 @@ storiesOf('CardView', {})
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={1395864375} // 1.3 GB
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>

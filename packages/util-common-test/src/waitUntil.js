@@ -35,6 +35,7 @@
  *  waitUntil(elemRenderedImgTag, 1000, 10).then(() =>
  *  (expect(elemRenderedImgTag()).to.equal(true)));
  *  // this will check if the img was rendered every 10ms for up to a total of ~1 second.
+ * @ignore
  */
 function waitUntil(fn, timeout = 2000, step = 1) {
   let iteration = 0;

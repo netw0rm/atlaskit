@@ -2,9 +2,9 @@ const chai = require('chai');
 
 chai.should();
 
-const { changedFilesToChangedPackages, changedPackagesToLernaGlob } = require('../build/bin/_get_changed_packages');
+const changedFilesToChangedPackages = require('../build/bin/_changed_files_to_changed_packages');
 
-describe('_get_changed_packages.js', () => {
+describe('_changed_files_to_changed_packages.js', () => {
   describe('changedFilesToChangedPackages()', () => {
     it('should return a single package when a single file in a package changes', () => {
       const changedFiles = ['packages/foo/bar.js'];
@@ -49,26 +49,6 @@ describe('_get_changed_packages.js', () => {
       const changedFiles = ['Readme.md', 'bitbucket-pipelines.yml', 'test/getChangedPackages.js'];
       const changedPackages = changedFilesToChangedPackages(changedFiles);
       changedPackages.should.deep.equal([]);
-    });
-  });
-
-  describe('changedPackagesToLernaGlob', () => {
-    it('should return comma separated packages surrounded by braces', () => {
-      const changedPackages = ['@atlaskit/foo', '@atlaskit/bar'];
-      const lernaGlob = changedPackagesToLernaGlob(changedPackages);
-      lernaGlob.should.equal('{@atlaskit/foo,@atlaskit/bar}');
-    });
-
-    it('should return single package name if only one package passed (no braces)', () => {
-      const changedPackages = ['@atlaskit/foo'];
-      const lernaGlob = changedPackagesToLernaGlob(changedPackages);
-      lernaGlob.should.equal('@atlaskit/foo');
-    });
-
-    it('should return an empty string if an empty array is passed', () => {
-      const changedPackages = [];
-      const lernaGlob = changedPackagesToLernaGlob(changedPackages);
-      lernaGlob.should.equal('');
     });
   });
 });

@@ -127,16 +127,22 @@ export const lift = (id: DraggableId,
   center: Position,
   scroll: Position,
   selection: Position,
-) => (dispatch: Dispatch) => {
-  dispatch(beginLift());
-  dispatch(requestDimensions(type));
-
-  // Dimensions will be requested synronously
-  // after they are done - lift.
-  // Could improve this by explicitly waiting until all dimensions are published.
-  // Could also allow a lift to occur before all the dimensions are published
+) => (dispatch: Dispatch, getState: Function) => {
+  const state: State = getState();
+  if (state.complete && !state.complete.isAnimationFinished) {
+    dispatch(dropFinished(id));
+  }
   setTimeout(() => {
-    dispatch(completeLift(id, type, center, scroll, selection));
+    dispatch(beginLift());
+    dispatch(requestDimensions(type));
+
+    // Dimensions will be requested synronously
+    // after they are done - lift.
+    // Could improve this by explicitly waiting until all dimensions are published.
+    // Could also allow a lift to occur before all the dimensions are published
+    setTimeout(() => {
+      dispatch(completeLift(id, type, center, scroll, selection));
+    });
   });
 };
 

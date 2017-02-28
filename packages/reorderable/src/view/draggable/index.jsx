@@ -83,8 +83,8 @@ const Container = styled.div`
 `;
 
 type Movement = {|
-speed: Speed,
-zIndex: string
+  speed: Speed,
+  zIndex: string
 |}
 
 const getMovement = (isDragging: boolean,
@@ -229,7 +229,6 @@ export default (type: TypeId,
       }
       setRef = (ref: ?Element) => {
         // need to trigger a child render when ref changes
-        console.log('DRAGGABLE: new ref', ref);
         this.setState({
           ref,
         });
@@ -333,8 +332,7 @@ export default (type: TypeId,
             if (last.dragging.id === provided.id) {
               return {
                 id,
-                // cannot drag while returning to home
-                isDragEnabled: false,
+                isDragEnabled,
                 isDragging: false,
                 isAnimationEnabled: true,
                 offset: complete.newHomeOffset,

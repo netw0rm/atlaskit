@@ -42,6 +42,13 @@ export default {
     onDontShowAgainClick: PropTypes.func,
   }),
 
+  dropdownOptions: PropTypes.shape({
+    appearance: PropTypes.oneOf(['default', 'tall']),
+    isTriggerNotTabbable: PropTypes.bool,
+    position: PropTypes.string,
+    shouldFlip: PropTypes.bool,
+  }),
+
   applications,
   configureLink,
 };

@@ -25,6 +25,7 @@ const propDescriptions = {
   analytics: 'This function is called when the user performs certain actions in the app switcher. ' +
              'The function supplied should have the following signature: function analyics(eventName, payload) { ... }.',
   isDropdownOpenInitially: 'The initial state of the dropdown.',
+  dropdownOptions: 'Any additional options to pass into StatelessDropdown',
 };
 
 const recentContainerPropDescriptions = [

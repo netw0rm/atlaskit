@@ -1,11 +1,17 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
+import {
+  akColorN800,
+  akFontFamily,
+  akFontSizeDefault,
+} from '@atlaskit/util-shared-styles';
+import styled from 'styled-components';
 
-export default class Paragraph extends PureComponent<{}, {}> {
-  render() {
-    const { props } = this;
-    return (
-      <p>{props.children}</p>
-    );
-  }
-}
+//tslint:disable-next-line
+const Paragraph = styled.p`
+  color: ${akColorN800};
+  font-family: ${akFontFamily};
+  font-size: ${akFontSizeDefault};
+  font-weight: 400;
+  line-height: 24px;
+`;
+
+export default Paragraph;

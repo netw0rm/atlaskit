@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
@@ -169,8 +169,11 @@ describe('Text', () => {
         }
       ];
 
-      const output = shallow(<div>{renderTextNodes(textNodes)}</div>);
-      expect(output.html()).to.equal('<div><a href="https://www.atlassian.com">Hello <strong>World!</strong></a></div>');
+      const output = mount(<div>{renderTextNodes(textNodes)}</div>);
+      expect(output.find('a').length).to.equal(1);
+      expect(output.find('a').first().text()).to.equal('Hello World!');
+      expect(output.find('a').first().props()).to.have.property('href', 'https://www.atlassian.com');
+      expect(output.find('a').find('strong').first().text()).to.equal('World!');
     });
   });
 
@@ -202,8 +205,12 @@ describe('Text', () => {
         }
       ];
 
-      const output = shallow(<div>{renderTextNodes(textNodes)}</div>);
-      expect(output.html()).to.equal('<div><a href="https://www.atlassian.com">Hello</a><a href="https://www.hipchat.com">World!</a></div>');
+      const output = mount(<div>{renderTextNodes(textNodes)}</div>);
+      expect(output.find('a').length).to.equal(2);
+      expect(output.find('a').first().text()).to.equal('Hello');
+      expect(output.find('a').first().props()).to.have.property('href', 'https://www.atlassian.com');
+      expect(output.find('a').last().text()).to.equal('World!');
+      expect(output.find('a').last().props()).to.have.property('href', 'https://www.hipchat.com');
   });
 
   it('should not join nodes with same mark type if they are not adjecent', () => {
@@ -238,8 +245,12 @@ describe('Text', () => {
         }
       ];
 
-      const output = shallow(<div>{renderTextNodes(textNodes)}</div>);
-      expect(output.html()).to.equal('<div><a href="https://www.atlassian.com">Hello</a> <a href="https://www.atlassian.com">World!</a></div>');
+      const output = mount(<div>{renderTextNodes(textNodes)}</div>);
+      expect(output.find('a').length).to.equal(2);
+      expect(output.find('a').first().text()).to.equal('Hello');
+      expect(output.find('a').first().props()).to.have.property('href', 'https://www.atlassian.com');
+      expect(output.find('a').last().text()).to.equal('World!');
+      expect(output.find('a').last().props()).to.have.property('href', 'https://www.atlassian.com');
   });
 
 });

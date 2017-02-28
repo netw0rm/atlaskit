@@ -1,20 +1,17 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
 import Link from '../../src/marks/link';
 
 describe('<Link />', () => {
-  const mark = shallow(<Link url="https://www.atlassian.com">This is a link</Link>);
+  const mark = mount(<Link url="https://www.atlassian.com">This is a link</Link>);
 
   it('should wrap content with <a>-tag', () => {
-    expect(mark.is('a')).to.equal(true);
+    expect(mark.find('a').length).to.equal(1);
   });
 
   it('should set href to attrs.url', () => {
-    expect(mark.get(0).props).to.have.property('href', 'https://www.atlassian.com');
+    expect(mark.find('a').props()).to.have.property('href', 'https://www.atlassian.com');
   });
 
-  it('should output correct html', () => {
-    expect(mark.html()).to.equal('<a href="https://www.atlassian.com">This is a link</a>');
-  });
 });

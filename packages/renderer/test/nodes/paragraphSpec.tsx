@@ -10,7 +10,4 @@ describe('<Paragraph/>', () => {
     expect(paragraph.is('p')).to.equal(true);
   });
 
-  it('should output correct html', () => {
-    expect(paragraph.html()).to.equal('<p>This is a paragraph</p>');
-  });
 });

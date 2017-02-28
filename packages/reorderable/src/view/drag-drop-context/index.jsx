@@ -8,12 +8,10 @@ import createStore from '../../state/create-store';
 import type { Hooks } from './hooks';
 import type { Store } from '../../types';
 
-export default (hooks?: Hooks) => (Component: ReactClass<any>) => {
+export default (hooks?: Hooks = {}) => (Component: ReactClass<any>) => {
   const store: Store = createStore();
 
-  if (hooks) {
-    initialise(hooks, store);
-  }
+  initialise(hooks, store);
 
   return class DragDropContext extends PureComponent {
     static displayName = `DragDropContext(${getDisplayName(Component)})`

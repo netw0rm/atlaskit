@@ -28,7 +28,7 @@ const lists: ListDataMap = {
   },
   bar: {
     id: 'bar',
-    itemIds: [],
+    itemIds: ['item4', 'item5'],
   },
 };
 
@@ -41,6 +41,12 @@ const items: ItemDataMap = {
   },
   item3: {
     id: 'item3',
+  },
+  item4: {
+    id: 'item4',
+  },
+  item5: {
+    id: 'item5',
   },
 };
 
@@ -59,7 +65,7 @@ const DraggableItem = (() => {
     |}
 
     render() {
-      console.log('rendering', this.props.itemId);
+      // console.log('rendering', this.props.itemId);
       const { isDragging } = this.props;
       return (
         <ItemContainer isDragging={isDragging}>
@@ -99,7 +105,7 @@ const DroppableList = (() => {
     |}
 
     render() {
-      console.log('rendering list', this.props.items);
+      // console.log('rendering draggable list', this.props.items);
       const { isDraggingOver } = this.props;
       return (
         <ListContainer isDraggingOver={isDraggingOver}>
@@ -193,11 +199,13 @@ const ConnectedApp = (() => {
 
     componentDidMount() {
       store.subscribe(() => {
+        console.log('store updating');
         this.setState(store.getState());
       });
     }
 
     render() {
+      console.log('rendering app');
       return (
         <App lists={this.state.lists} />
       );
@@ -222,27 +230,29 @@ const ConnectedApp = (() => {
       }
 
       // assuming single list
+      console.info('calculating new list');
 
       // need to move an item from one place ot another
+      const state = store.getState();
 
-      const newItemIds = [...lists[result.source.droppableId].itemIds];
+      const newItemIds = [...state.lists[result.source.droppableId].itemIds];
 
       // remove it from original position
       newItemIds.splice(result.source.index, 1);
       newItemIds.splice(result.destination.index, 0, result.draggableId);
 
       const sourceList = {
-        ...lists[result.source.droppableId],
+        ...state.lists[result.source.droppableId],
         itemIds: newItemIds,
       };
 
       const newLists = {
-        ...lists,
+        ...state.lists,
         [result.source.droppableId]: sourceList,
       };
 
       console.log({
-        oldItemIds: lists[result.source.droppableId].itemIds,
+        oldItemIds: state.lists[result.source.droppableId].itemIds,
         newItemIds,
         newLists,
       });

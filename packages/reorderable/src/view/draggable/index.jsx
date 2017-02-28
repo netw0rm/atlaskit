@@ -50,15 +50,16 @@ const nowhere: Position = { x: 0, y: 0 };
 
 type Props = {|
   lift: typeof liftAction,
-    move: typeof moveAction,
-      drop: typeof dropAction,
-        dropFinished: typeof dropFinishedAction,
-          move: typeof moveAction,
-            cancel: typeof cancelAction,
-              provided: NeedsProviding,
-                isDragging: boolean,
-                  offset: ?Position,
-                    initial: ?DraggingInitial,
+  move: typeof moveAction,
+  drop: typeof dropAction,
+  dropFinished: typeof dropFinishedAction,
+  move: typeof moveAction,
+  cancel: typeof cancelAction,
+  provided: NeedsProviding,
+  isDragging: boolean,
+  isAnimationEnabled: boolean,
+  offset: ?Position,
+  initial: ?DraggingInitial,
 |};
 
 type DefaultProps = {|
@@ -76,11 +77,20 @@ const Container = styled.div`
 `;
 
 type Movement = {|
-  speed: Speed,
-    zIndex: string
-      |}
+speed: Speed,
+zIndex: string
+|}
 
-const getMovement = (isDragging: boolean, wasDragging: boolean) => {
+const getMovement = (isDragging: boolean,
+  wasDragging: boolean,
+  isAnimationEnabled: boolean) => {
+  if (!isAnimationEnabled) {
+    return {
+      speed: 'NONE',
+      zIndex: 'auto',
+    };
+  }
+
   if (isDragging) {
     return {
       speed: 'NONE',
@@ -222,6 +232,7 @@ export default (type: TypeId,
       }
       setRef = (ref: ?Element) => {
         // need to trigger a child render when ref changes
+        console.log('DRAGGABLE: new ref', ref);
         this.setState({
           ref,
         });
@@ -256,7 +267,9 @@ export default (type: TypeId,
 
         const { id: droppableId } = ownProps.provided;
 
-        const movement: Movement = getMovement(ownProps.isDragging, this.state.wasDragging);
+        const movement: Movement = getMovement(ownProps.isDragging, this.state.wasDragging, ownProps.isAnimationEnabled);
+
+        console.log('rendering with animation:', ownProps.isAnimationEnabled);
 
         return (
           <Moveable
@@ -294,6 +307,14 @@ export default (type: TypeId,
           complete: ?DragComplete,
           provided: NeedsProviding) => {
           if (complete) {
+            if (complete.requestPublish) {
+              return {
+                provided,
+                isDragging: false,
+                isAnimationEnabled: false,
+              };
+            }
+
             // 1. was the draggable moving out of the way?
             const last: CurrentDrag = complete.last;
 
@@ -305,6 +326,7 @@ export default (type: TypeId,
                   x: 0,
                   y: last.impact.movement.amount,
                 },
+                isAnimationEnabled: true,
               };
             }
 
@@ -313,12 +335,14 @@ export default (type: TypeId,
                 provided,
                 isDragging: false,
                 offset: complete.newHomeOffset,
+                isAnimationEnabled: true,
               };
             }
 
             return {
               provided,
               isDragging: false,
+              isAnimationEnabled: true,
             };
           }
 
@@ -326,6 +350,7 @@ export default (type: TypeId,
             return {
               provided,
               isDragging: false,
+              isAnimationEnabled: true,
             };
           }
 
@@ -338,6 +363,7 @@ export default (type: TypeId,
               isDragging: true,
               offset,
               initial,
+              isAnimationEnabled: true,
             };
           }
 
@@ -347,10 +373,10 @@ export default (type: TypeId,
             return {
               provided,
               isDragging: false,
+              isAnimationEnabled: true,
             };
           }
 
-          console.info('should be moving out of the way');
           return {
             provided,
             isDragging: false,
@@ -358,6 +384,7 @@ export default (type: TypeId,
               x: 0,
               y: currentDrag.impact.movement.amount,
             },
+            isAnimationEnabled: true,
           };
         }
       );

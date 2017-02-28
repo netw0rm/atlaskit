@@ -3,8 +3,10 @@ import type {
   DraggableId,
   TypeId,
   Dimension,
+  DragResult,
   Position,
   Dispatch,
+  State,
 } from '../types';
 
 export type RequestDimensionsAction = {|
@@ -53,26 +55,6 @@ const completeLift = (id: DraggableId,
       selection,
     },
   });
-
-// using redux-thunk
-export const lift = (id: DraggableId,
-  type: TypeId,
-  center: Position,
-  offset: Position,
-  scroll: Position,
-  selection: Position,
-) => (dispatch: Dispatch) => {
-  dispatch(beginLift());
-  dispatch(requestDimensions(type));
-
-  // Dimensions will be requested synronously
-  // after they are done - lift.
-  // Could improve this by explicitly waiting until all dimensions are published.
-  // Could also allow a lift to occur before all the dimensions are published
-  setTimeout(() => {
-    dispatch(completeLift(id, type, center, offset, scroll, selection));
-  });
-};
 
 type PublishDraggableDimensionAction = {|
   type: 'PUBLISH_DRAGGABLE_DIMENSION',
@@ -141,6 +123,33 @@ export const cancel = (id: DraggableId): CancelAction => ({
   type: 'CANCEL',
   payload: id,
 });
+
+// using redux-thunk
+export const lift = (id: DraggableId,
+  type: TypeId,
+  center: Position,
+  offset: Position,
+  scroll: Position,
+  selection: Position,
+) => (dispatch: Dispatch, getState: Function) => {
+  const state: State = getState();
+  if (state.complete && !state.complete.isPublished) {
+    dispatch(dropFinished(state.complete.result.draggableId));
+  }
+  // need to have at least one render cycle with dropFinished to kill the animations
+  setTimeout(() => {
+    dispatch(beginLift());
+    dispatch(requestDimensions(type));
+
+  // Dimensions will be requested synronously
+  // after they are done - lift.
+  // Could improve this by explicitly waiting until all dimensions are published.
+  // Could also allow a lift to occur before all the dimensions are published
+    setTimeout(() => {
+      dispatch(completeLift(id, type, center, offset, scroll, selection));
+    });
+  });
+};
 
 export type Action = BeginLiftAction |
   CompleteLiftAction |

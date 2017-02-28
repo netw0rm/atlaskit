@@ -17,6 +17,7 @@ const initialState: State = {
   draggableDimensions: {},
   droppableDimensions: {},
   currentDrag: null,
+  almostComplete: null,
   complete: null,
   requestDimensions: null,
 };
@@ -184,7 +185,7 @@ export default (state: State = initialState, action: Action): State => {
       result,
       last: state.currentDrag,
       newHomeOffset: offset,
-      isAnimationFinished: false,
+      requestPublish: false,
     };
 
     // clear the state and add a drag result
@@ -199,13 +200,12 @@ export default (state: State = initialState, action: Action): State => {
       console.warn('not finishing drop as there is no longer a drop in the state');
       return state;
     }
-    // not using spread so that flow exact type works
 
     const complete: DragComplete = {
       result: state.complete.result,
       last: state.complete.last,
       newHomeOffset: state.complete.newHomeOffset,
-      isAnimationFinished: true,
+      requestPublish: true,
     };
 
     return {
@@ -213,6 +213,30 @@ export default (state: State = initialState, action: Action): State => {
       complete,
     };
   }
+
+  // if (action.type === 'DROP_PUBLISHED') {
+  //   if (!state.complete) {
+  //     return state;
+  //   }
+
+  //   if (state.complete.isPublished) {
+  //     return state;
+  //   }
+
+  //   // not using spread so that flow exact type works
+  //   const complete: DragComplete = {
+  //     result: state.complete.result,
+  //     last: state.complete.last,
+  //     newHomeOffset: state.complete.newHomeOffset,
+  //     isAnimationFinished: true,
+  //     isPublished: true,
+  //   };
+
+  //   return {
+  //     ...state,
+  //     complete,
+  //   };
+  // }
 
   if (action.type === 'CANCEL') {
     return initialState;

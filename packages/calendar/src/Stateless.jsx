@@ -38,6 +38,7 @@ export default class StatelessCalendar extends PureComponent {
     onSelect: PropTypes.func,
     previouslySelected: PropTypes.arrayOf(PropTypes.string),
     selected: PropTypes.arrayOf(PropTypes.string),
+    today: PropTypes.string,
     year: PropTypes.number,
   }
 

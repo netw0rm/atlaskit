@@ -5,6 +5,7 @@ import getShadowRoot from './getShadowRoot';
 *
 * @param {Component} component The component to get the root node for
 * @return {Node} The root node of the passed component
+* @ignore
 */
 export default function getRootNode(component) {
   return getShadowRoot(component).firstChild;

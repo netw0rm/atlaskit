@@ -3,6 +3,7 @@ import React from 'react';
 import Navigation from '@atlaskit/navigation';
 import Banner from '@atlaskit/banner';
 import Button from '@atlaskit/button';
+import { SearchIcon } from '@atlaskit/icon';
 import Modal from '@atlaskit/modal-dialog';
 import AkToggle from '@atlaskit/toggle';
 import styled from 'styled-components';
@@ -18,6 +19,7 @@ const Dummy = styled.div`
 class ToggleBannerPage extends React.PureComponent {
   state = {
     isBannerOpen: false,
+    isDrawerOpen: false,
     isModalOpen: false,
     navigationWidth: 284,
   }
@@ -44,14 +46,18 @@ class ToggleBannerPage extends React.PureComponent {
         }
         navigation={
           <Navigation
-            width={this.state.navigationWidth}
+            globalSearchIcon={<SearchIcon label="Search icon" />}
             isOpen={this.state.isNavigationOpen}
+            isSearchDrawerOpen={this.state.isDrawerOpen}
             onResize={({ width, isOpen }) => {
               this.setState({
                 navigationWidth: width,
                 isNavigationOpen: isOpen,
               });
             }}
+            onSearchDrawerClose={() => this.setState({ isDrawerOpen: false })}
+            onSearchDrawerOpen={() => this.setState({ isDrawerOpen: true })}
+            width={this.state.navigationWidth}
           >
             Hello world
           </Navigation>

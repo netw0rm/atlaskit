@@ -23,16 +23,16 @@ export default {
   }),
 
   i18n: PropTypes.shape({
-    home: PropTypes.string.isRequired,
-    apps: PropTypes.string.isRequired,
-    configure: PropTypes.string.isRequired,
-    recent: PropTypes.string.isRequired,
-    'try.other.apps': PropTypes.string.isRequired,
-    "don't.show.this.again": PropTypes.string.isRequired,
-    'container.confluence-space': PropTypes.string.isRequired,
-    'container.jira-project': PropTypes.string.isRequired,
-    'suggested.application.description.confluence': PropTypes.string.isRequired,
-    'suggested.application.description.jira': PropTypes.string.isRequired,
+    home: PropTypes.node.isRequired,
+    apps: PropTypes.node.isRequired,
+    configure: PropTypes.node.isRequired,
+    recent: PropTypes.node.isRequired,
+    'try.other.apps': PropTypes.node.isRequired,
+    "don't.show.this.again": PropTypes.node.isRequired,
+    'container.confluence-space': PropTypes.node.isRequired,
+    'container.jira-project': PropTypes.node.isRequired,
+    'suggested.application.description.confluence': PropTypes.node.isRequired,
+    'suggested.application.description.jira': PropTypes.node.isRequired,
   }),
 
   suggestedApplication: PropTypes.shape({

@@ -20,5 +20,5 @@ if [ "$KILL_SWITCH" = true ] ; then
   # a pair of curly braces `--scope="{$PACKAGES}"`
   echo "**" > changed-packages
 else
-  $BASEDIR/_get_changed_packages.js > changed-packages
+  $BASEDIR/_get_changed_packages_pr.js > changed-packages
 fi

@@ -4,6 +4,7 @@ import {storiesOf, action} from '@kadira/storybook';
 import {CardView} from '../src';
 import {tallImage} from './images';
 import StoryList from './story-list';
+import styles from './styles';
 
 const onClick = (event: Event) => {
   action('click')();
@@ -17,22 +18,6 @@ const menuActions = [
   {label: 'Open', handler: () => { action('open')(); }},
   {label: 'Close', handler: () => { action('close')(); }}
 ];
-
-const styles = {
-  statesWrapper: {
-    listStyle: 'none',
-    display: 'inline-block'
-  },
-  stateItem: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  stateTitle: {
-    textAlign: 'center',
-    padding: '5px'
-  }
-};
 
 storiesOf('CardView', {})
   .add('Media types', () => (
@@ -242,6 +227,62 @@ storiesOf('CardView', {})
       dataURI={tallImage}
       onClick={onClick}
     />
+  ))
+  .add('Different file sizes', () => (
+    <ul style={styles.statesWrapper}>
+      <li style={styles.stateItem}>
+        <div style={styles.stateTitle}>File size: bytes</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="this is my image.png"
+          mediaType="image"
+          mediaSize={100} // 100 B
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+      <li style={styles.stateItem}>
+        <div style={styles.stateTitle}>File size: kB</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="this is my image.png"
+          mediaType="image"
+          mediaSize={153600} // 150 kB
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+      <li style={styles.stateItem}>
+        <div style={styles.stateTitle}>File size: MB</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="this is my image.png"
+          mediaType="image"
+          mediaSize={12897490} // 12.3 MB
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+      <li style={styles.stateItem}>
+        <div style={styles.stateTitle}>File size: GB</div>
+        <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="this is my image.png"
+          mediaType="image"
+          mediaSize={1395864375} // 1.3 GB
+          dataURI={tallImageDataUri}
+          onClick={onClick}
+        />
+      </li>
+    </ul>
   ))
   .add('With Progress', () => (
     <CardView

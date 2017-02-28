@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { Code } from '@atlaskit/util-readme';
+import { Chrome, Code } from '@atlaskit/util-readme';
 
 import { name } from '../package.json';
 
@@ -182,10 +182,9 @@ const jsx = (<form onSubmit={e => e.preventDefault()}>
 
 storiesOf(name, module)
   .add('Forms — validation', () => (
-    <div>
-      <h1>Example form</h1>
+    <Chrome title="Example form to test native HTML5 validation">
       <Code code={html}>
         {jsx}
       </Code>
-    </div>
+    </Chrome>
   ));

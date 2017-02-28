@@ -2,9 +2,9 @@ import React from 'react';
 import Readme, { Description, Props, Code } from '@atlaskit/util-readme';
 import { storiesOf } from '@kadira/storybook';
 
-import { AkContainerNavigation } from '../src/index';
+import { AkContainerNavigation } from '../../src/index';
 
-import { name, description } from '../package.json';
+import { name, description } from '../../package.json';
 
 const globalActionPropDescription = 'The same as the property to GlobalNavigation, used when the ContainerNavigation is in the collapsed state.';
 

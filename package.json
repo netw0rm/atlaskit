@@ -163,7 +163,6 @@
     "storybook/single": "./build/bin/storybook.single.sh",
     "storybook/static": "build-storybook -c ./build/storybook",
     "storybook/static/single": "./build/bin/storybook.static.single.sh",
-    "storybook/static/registry": "rm -rf ./stories && ./node_modules/.bin/lerna exec --concurrency=1 -- ../../build/bin/storybook.static.registry.sh",
     "test/base": "mocha --colors",
     "test/wc": "./build/bin/test.sh",
     "test/wc/browserstack": "./build/bin/test.browserstack.sh",

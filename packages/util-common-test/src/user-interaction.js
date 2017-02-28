@@ -17,6 +17,7 @@ function sendKeyEvent(key, { eventProperties, target }, type) {
  * @param options {Object} – options for the event.
  * @param options.target – a DOM element to trigger the event on. Default:triggered on the document.
  * @param options.eventProperties {Object} – properties to assign to the event (see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent)
+ * @ignore
  * */
 export function keydown(key, { eventProperties = {}, target = document } = {}) {
   sendKeyEvent(key, { eventProperties, target }, 'keydown');
@@ -28,6 +29,7 @@ export function keydown(key, { eventProperties = {}, target = document } = {}) {
  * @param options {Object} – options for the event.
  * @param options.target – a DOM element to trigger the event on. Default:triggered on the document.
  * @param options.eventProperties {Object} – properties to assign to the event (see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent)
+ * @ignore
  */
 export function keyup(key, { eventProperties = {}, target = document } = {}) {
   sendKeyEvent(key, { eventProperties, target }, 'keyup');
@@ -39,6 +41,7 @@ export function keyup(key, { eventProperties = {}, target = document } = {}) {
  * @param options {Object} – options for the event.
  * @param options.target – a DOM element to trigger the event on. Default:triggered on the document.
  * @param options.eventProperties {Object} – properties to assign to the event (see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent)
+ * @ignore
  */
 export function keypress(key, { eventProperties = {}, target = document } = {}) {
   sendKeyEvent(key, { eventProperties, target }, 'keypress');

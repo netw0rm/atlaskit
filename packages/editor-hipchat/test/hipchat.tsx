@@ -24,7 +24,7 @@ const defaultValue = [
   }
 ];
 
-describe('ak-editor-hipchat', () => {
+describe('@atlaskit/editor-hipchat', () => {
   let editor: Editor;
 
   describe('Keymap', () => {

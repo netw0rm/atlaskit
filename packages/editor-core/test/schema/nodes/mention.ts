@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 import { Schema, Text } from '../../../src';
 import { CodeBlockNodeType, DocNodeType, isMentionNode, MentionNode, MentionNodeType } from '../../../src';
-import { fromHTML as fromHTML_, toHTML } from '../../../test-helper';
+import { fromHTML as fromHTML_, toHTML } from '../../../src/test-helper';
 
 const schema = makeSchema();
 const fromHTML = (html: string) => fromHTML_(html, schema);
 
-describe('ak-editor-core/schema mention node', () => {
+describe('@atlaskit/editor-core/schema mention node', () => {
   it('throws an error if it is not named "mention"', () => {
     expect(() => {
       new Schema({

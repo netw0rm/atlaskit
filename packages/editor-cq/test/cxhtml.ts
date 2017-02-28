@@ -25,7 +25,7 @@ const checkBuilder = (fn: any, description: string, cxhtml: string, doc: DocNode
 const check = (description: string, cxhtml: string, doc: DocNode) =>
   checkBuilder(it, description, cxhtml, doc);
 
-describe('ak-editor-cq encode-cxml:', () => {
+describe('@atlaskit/editor-cq encode-cxml:', () => {
   describe('basic formatting:', () => {
     describe('text:', () => {
       check('basic text',

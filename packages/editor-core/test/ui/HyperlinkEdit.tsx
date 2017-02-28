@@ -3,10 +3,10 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import HyperlinkPlugin from '../../src/plugins/hyperlink';
 import HyperlinkEdit from '../../src/ui/HyperlinkEdit';
-import { makeEditor } from '../../test-helper';
+import { makeEditor } from '../../src/test-helper';
 import { doc, paragraph, link, linkable, schema } from '../_schema-builder';
 
-describe('ak-editor-core/ui/HyperlinkEdit', () => {
+describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   const editor = (doc: any) => {
     const { pm, plugin } = makeEditor({ doc, plugin: HyperlinkPlugin, schema });
     return { pm, plugin, sel: pm.doc.refs['<>'] };

@@ -21,6 +21,7 @@ export class HyperlinkState {
   active = false;
   linkable = false;
   element?: HTMLElement;
+  toolbarVisible: boolean = false;
 
   private changeHandlers: StateChangeHandler[] = [];
   private inputRules: InputRule[] = [];
@@ -28,6 +29,7 @@ export class HyperlinkState {
   private activeLinkNode?: Node;
   private activeLinkMark?: LinkMark;
   private activeLinkStartPos?: number;
+  private editorFocused: boolean = false;
 
   constructor(pm: PM) {
     this.pm = pm;
@@ -46,6 +48,15 @@ export class HyperlinkState {
     pm.updateScheduler([
       pm.on.textInput,
     ], () => this.escapeFromMark());
+
+    pm.on.focus.add(() => {
+      this.editorFocused = true;
+    });
+
+    pm.on.blur.add(() => {
+      this.editorFocused = false;
+      this.update(false, true);
+    });
 
     this.update(true);
   }
@@ -104,7 +115,7 @@ export class HyperlinkState {
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
 
-  private update(dirty = false) {
+  private update(dirty = false, domEvent = false) {
     const nodeInfo = this.getActiveLinkNodeInfo();
     const canAddLink = this.isActiveNodeLinkable();
 
@@ -113,13 +124,14 @@ export class HyperlinkState {
       dirty = true;
     }
 
-    if ((nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
+    if ((nodeInfo && domEvent) || (nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
       this.activeLinkNode = nodeInfo && nodeInfo.node;
       this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
       this.activeLinkMark = nodeInfo && this.getActiveLinkMark(nodeInfo.node);
       this.text = nodeInfo && nodeInfo.node.textContent;
       this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
       this.element = this.getDomElement();
+      this.toolbarVisible = this.editorFocused && !!nodeInfo;
       this.active = !!nodeInfo;
       dirty = true;
     }

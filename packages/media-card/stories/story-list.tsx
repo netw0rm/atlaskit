@@ -5,22 +5,22 @@ import {Component} from 'react';
 const styles = {
   statesWrapper: {
     listStyle: 'none',
-    display: 'inline-block',
-    border: '1px solid #ccc',
     padding: '10px',
     margin: '10px',
     borderRadius: '3px'
   },
   stateItem: {
-    display: 'flex',
+    display: 'inline-flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    borderRadius: '3px',
+    padding: '10px',
+    margin: '10px',
   },
   stateTitle: {
-    textAlign: 'center',
     borderBottom: '1px solid #ccc',
-    padding: '0 10px',
-    marginBottom: '7px'
+    marginBottom: '7px',
+    color: '#606369',
+    width: '100%'
   }
 };
 

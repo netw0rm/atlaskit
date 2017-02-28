@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
 import {rgba, centerX, easeOutCubic, borderRadius, size} from '../styles/base';
-import { akColorN70, akColorN0, akColorN500, akColorN800, akColorN900, akColorB400 } from '@atlaskit/util-shared-styles';
+import { akColorN70, akColorB200, akColorN0, akColorN500, akColorN800, akColorN900, akColorB400 } from '@atlaskit/util-shared-styles';
 
 export const MoreBtn = styled.div`
   ${centerX()}
@@ -70,15 +70,14 @@ export const FileTypeIcon = styled.div`
 `;
 
 export const TickBox = styled.div`
+  ${size(14)}
   position: absolute;
   top: 8px;
   right: 8px;
-  width: 14px;
-  height: 14px;
   border: 2px solid white;
   border-radius: 20px;
   z-index: 20;
-  display: none;
+  display: flex;
 `;
 
 export const Overlay = styled.div`
@@ -114,9 +113,26 @@ export const Overlay = styled.div`
     &:hover {
       background-color: ${rgba(akColorN900, 0.06)};
     }
+
+    &.selectable {
+      &.selected {
+        background-color: ${akColorB200};
+        
+        &:hover {
+          // Not working fine
+          background-color: ${rgba(akColorN900, 0.16)};
+        }
+
+        .title, .bottom-row, .file-size, .more-btn {
+          color: ${akColorN0};
+        }
+      }
+    }
   }
 
   &.show-on-hover {
+    overflow: hidden;
+    
     .top-row {
       .title {
         transition: opacity .3s;
@@ -188,17 +204,10 @@ export const Overlay = styled.div`
 
     /* Selectable */
     &.selectable {
-      &:hover, &.active {
-        .tickbox {
-          display: block;
-        }
-      }
-
       &.selected {
         border-color: #3384FF !important;
 
         .tickbox {
-          display: flex !important;
           background-color: #3384FF !important;
           border-color: #3384FF !important;
           color: white;

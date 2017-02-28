@@ -156,6 +156,138 @@ storiesOf('CardView', {})
       }]}
     </StoryList>
   ))
+  .add('Selectable', () => {
+    class SelectableWrapper extends Component<{}, {}> {
+      constructor(props) {
+        super(props);
+        this.state = {selected: false};
+      }
+
+      toggleSelection = () => {
+        this.setState({selected: !this.state.selected});
+      }
+
+      render() {
+        return <CardView
+          loading={false}
+          selectable={true}
+          selected={this.state.selected}
+          mediaName="No preview image"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={this.toggleSelection}
+        />;
+      }
+    }
+
+    return <StoryList>
+      {[{
+        title: 'Not selected',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={false}
+          mediaName="Select me please"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Selected',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={true}
+          mediaName="Im a selected card"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Selected + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={true}
+          mediaName="Selected with actions"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }, {
+        title: 'Not selected + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={false}
+          mediaName="Not selected with actions"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }, {
+        title: 'No URI selected',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={true}
+          mediaName="I have no URI :("
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }, {
+        title: 'No URI unselected',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={false}
+          mediaName="I have no URI :("
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }, {
+        title: 'No URI unselected + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={false}
+          mediaName="🌋 👽"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }, {
+        title: 'No URI selected + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={true}
+          mediaName="😵🤖"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }, {
+        title: 'Handle state change',
+        content: <SelectableWrapper />
+      }]}
+    </StoryList>;
+  })
   .add('Different name lengths', () => (
     <ul style={styles.statesWrapper}>
       <li style={styles.stateItem}>

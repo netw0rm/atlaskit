@@ -4,6 +4,7 @@ import styles from 'style!../less/ContainerNavigationNested.less';
 export default class ContainerNavigationNested extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
+    onAnimationEnd: PropTypes.func,
     animationDirection: PropTypes.oneOf(['left', 'right']),
   }
   constructor(props) {
@@ -18,6 +19,9 @@ export default class ContainerNavigationNested extends PureComponent {
       } else {
         this.animateContainer.classList.remove(styles.containerNavigationNestedRightAnimate);
         this.animateContainer.classList.add(styles.containerNavigationNestedRightAnimateEnd);
+      }
+      if (this.props.onAnimationEnd) {
+        this.props.onAnimationEnd();
       }
     };
     this.animateContainer.addEventListener('animationend', this.animationEndHandler);

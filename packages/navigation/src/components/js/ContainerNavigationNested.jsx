@@ -11,21 +11,6 @@ export default class ContainerNavigationNested extends PureComponent {
     super(props);
     this.state = {};
   }
-  componentDidMount() {
-    this.animationEndHandler = () => {
-      if (this.props.animationDirection === 'left') {
-        this.animateContainer.classList.remove(styles.containerNavigationNestedLeftAnimate);
-        this.animateContainer.classList.add(styles.containerNavigationNestedLeftAnimateEnd);
-      } else {
-        this.animateContainer.classList.remove(styles.containerNavigationNestedRightAnimate);
-        this.animateContainer.classList.add(styles.containerNavigationNestedRightAnimateEnd);
-      }
-      if (this.props.onAnimationEnd) {
-        this.props.onAnimationEnd();
-      }
-    };
-    this.animateContainer.addEventListener('animationend', this.animationEndHandler);
-  }
   componentWillUpdate(nextProps) {
     if (nextProps.children !== this.props.children) {
       this.setState({ prevChildren: this.props.children });
@@ -42,8 +27,17 @@ export default class ContainerNavigationNested extends PureComponent {
       this.animateContainer.classList.add(styles.containerNavigationNestedRightAnimate);
     }
   }
-  componentWillUnmount() {
-    this.animateContainer.removeEventListener('animationend', this.animationEndHandler);
+  animationEndHandler() {
+    if (this.props.animationDirection === 'left') {
+      this.animateContainer.classList.remove(styles.containerNavigationNestedLeftAnimate);
+      this.animateContainer.classList.add(styles.containerNavigationNestedLeftAnimateEnd);
+    } else {
+      this.animateContainer.classList.remove(styles.containerNavigationNestedRightAnimate);
+      this.animateContainer.classList.add(styles.containerNavigationNestedRightAnimateEnd);
+    }
+    if (this.props.onAnimationEnd) {
+      this.props.onAnimationEnd();
+    }
   }
   render() {
     const { children } = this.props;
@@ -53,6 +47,7 @@ export default class ContainerNavigationNested extends PureComponent {
     const content = this.props.animationDirection === 'left' ? [prevPane, activePane] : [activePane, prevPane];
     return (<div
       className={styles.containerNavigationNested}
+      onAnimationEnd={() => this.animationEndHandler()}
       ref={(el) => { this.animateContainer = el; }}
     >{content}</div>);
   }

@@ -4,7 +4,6 @@ import styles from 'style!../src/components/less/ContainerNavigationNested.less'
 import ContainerNavigationNested from '../src/components/js/ContainerNavigationNested';
 
 describe('<ContainerNavigationNested />', () => {
-
   describe('state', () => {
     it('should store previous children in state', () => {
       const previousPane = <h1>Previous Pane</h1>;
@@ -65,11 +64,7 @@ describe('<ContainerNavigationNested />', () => {
       </ContainerNavigationNested>);
       const newPane = <h1>New Pane</h1>;
       component.setProps({ children: newPane, animationDirection: 'left' });
-      const event = new Event('animationend', {
-        bubbles: true,
-        cancelable: false,
-      });
-      component.animateContainer.dispatchEvent(event);
+      component.simulate('animationEnd');
       expect(animationEventSpy.calledOnce).to.equal(true);
     });
   });

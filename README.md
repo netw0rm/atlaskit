@@ -61,7 +61,7 @@ yarn run bootstrap/single/with-deps @atlaskit/packageName
 Once you made some changes, stage them and then commit them using `yarn run commit` (This will use [Commitizen](https://github.com/commitizen/cz-cli) under the covers).
 
 # How do I...
-<section id="readme-help" title="Welcome to AtlasKit! What would you like to do?" prompt="How do I...">
+<section id="readme-help" intro="Welcome to AtlasKit! What would you like to do?" prompt="How do I...">
 
 ## Generate a new component skeleton
 ```

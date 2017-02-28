@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { Code } from '@atlaskit/util-readme';
+import { Chrome, Code } from '@atlaskit/util-readme';
 
 import '!style-loader!css-loader!less-loader!../src/index.less';
 import { name } from '../package.json';
@@ -20,9 +20,7 @@ const toggleExampleHTML = `<!-- replace 'default' with 'large' for large toggle 
 
 storiesOf(name, module)
   .add('Toggle', () => (
-    <div>
-      <h1>Toggle</h1>
-
+    <Chrome title="Toggle">
       <Code code={toggleExampleHTML}>
         <table>
           <thead>
@@ -72,5 +70,5 @@ storiesOf(name, module)
           </tbody>
         </table>
       </Code>
-    </div>
+    </Chrome>
   ));

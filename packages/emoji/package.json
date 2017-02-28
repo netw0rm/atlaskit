@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "9.0.1",
+  "version": "9.0.2",
   "config": {
     "access": "public"
   },
@@ -49,7 +49,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "keywords": [
-    "atlaskit",
+    "fabric",
     "ui"
   ]
 }

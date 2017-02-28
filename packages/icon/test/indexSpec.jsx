@@ -216,11 +216,8 @@ describe(name, () => {
         'search',
 
         'servicedesk/graph-bar',
-        'servicedesk/invite-team',
         'servicedesk/issue-raise',
-        'servicedesk/knowledge-base',
         'servicedesk/people-group',
-        'servicedesk/project-settings',
         'servicedesk/queues',
         'servicedesk/screen',
 

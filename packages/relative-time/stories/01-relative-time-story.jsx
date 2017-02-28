@@ -22,6 +22,9 @@ storiesOf(name, module)
       <RelativeTime timestamp={new Date().getTime() + (1000 * 60)} />
     </IntlProvider>
   ))
+  .add('relative-time for 1 minute before with no wrapper', () => (
+    <RelativeTime timestamp={new Date() - (1000 * 60)} />
+  ))
   .add('relative-time with i18n', () => {
     const locales = [
       { name: 'en', locale: 'en' },

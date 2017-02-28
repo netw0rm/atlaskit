@@ -3,6 +3,7 @@ import {Component} from 'react';
 import {storiesOf, action} from '@kadira/storybook';
 import {CardView} from '../src';
 import {tallImage} from './images';
+import StoryList from './story-list';
 
 const onClick = (event: Event) => {
   action('click')();
@@ -115,6 +116,47 @@ storiesOf('CardView', {})
         />
       </li>
     </ul>
+  ))
+  .add('No preview', () => (
+    <StoryList>
+      {[{
+        title: 'Image',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="No preview image"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Video',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="No preview image"
+          mediaType="video"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Audio',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="No preview image"
+          mediaType="audio"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }]}
+    </StoryList>
   ))
   .add('Different name lengths', () => (
     <ul style={styles.statesWrapper}>
@@ -263,6 +305,19 @@ storiesOf('CardView', {})
       </li>
     </ul>;
   })
+  .add('Menu action', () => (
+     <CardView
+      loading={false}
+      selectable={false}
+      selected={false}
+      mediaName="this is my image.png"
+      mediaType="image"
+      mediaSize={32831}
+      dataURI={tallImage}
+      onClick={onClick}
+      menuActions={menuActions}
+     />
+  ))
   .add('Error', () => (
     <CardView
       mediaName="with_progress.wav"

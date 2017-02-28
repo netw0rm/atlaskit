@@ -1,6 +1,7 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { akColorN70 } from '@atlaskit/util-shared-styles';
+import {rgba, centerX} from '../styles/mixins';
+import { akColorN70, akColorN0, akColorN800, akColorN900 } from '@atlaskit/util-shared-styles';
 
 export const MoreBtn = styled.div`
   display: none;
@@ -150,24 +151,19 @@ export const Overlay = styled.div`
     }
 
     &:hover, &.active {
-      background-color: rgba(9, 30, 66, 0.5);
+      background-color: ${rgba(akColorN900, 0.5)};
 
       .title {
         visibility: visible;
       }
 
-      .file-type-icon {
-        display: block;
-      }
-
-      .file-size {
+      .file-type-icon, .file-size {
         display: block;
       }
 
       .more-btn {
-        display: flex;
-        justify-content: center;
-        color: white;
+        ${centerX()}
+        color: ${akColorN0};
       }
 
       .delete-btn {
@@ -216,12 +212,15 @@ export const Overlay = styled.div`
     &:hover, &.active {
       .top-row {
         .title {
-          color: #091E42;
+          color: ${akColorN800};
         }
       }
     }
   }
-
+  
+  .ellipsed-text {
+    // color: ${akColorN0};
+  }
 `;
 
 export const ErrorLine = styled.div`
@@ -313,7 +312,7 @@ export const DropdownWrapper = styled.div`
 export const TitleWrapper = styled.div`
   box-sizing: border-box;
   word-wrap: break-word;
-  color: #091E42;
+  color: ${akColorN800};
   font-size: 12px;
   line-height: 18px;
 `;

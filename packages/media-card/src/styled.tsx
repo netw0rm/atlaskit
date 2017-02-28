@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Root } from './styles/base';
 import { easeInOutCubic } from './styles/easing';
 import { fadeIn } from './styles/animations';
+import { akColorN30 } from '@atlaskit/util-shared-styles';
 
 export const Card = styled(Root)`
   background: #fff;
@@ -15,7 +16,7 @@ export const Card = styled(Root)`
   box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px 0 rgba(9, 30, 66, 0.24);
   
   .wrapper {
-    background: #E5E8EC;
+    background: ${akColorN30};
     display: block;
     height: inherit;
     overflow: hidden;

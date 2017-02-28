@@ -24,7 +24,8 @@ export class CardContent extends Component<CardContentProps, {}> {
                <img alt="" src={this.props.dataURI} />
              </FadeinImage>;
     } else {
-      return <Placeholder mediaType={this.props.mediaType} />;
+      return null;
+      // return <Placeholder mediaType={this.props.mediaType} />;
     }
   }
 }

@@ -12,10 +12,6 @@ const isSub = (type: SubSupType): type is 'sub' => {
 };
 
 export default class SubSup extends PureComponent<Props, {}> {
-  shouldComponentUpdate(): boolean {
-    return false;
-  }
-
   render() {
     const { props } = this;
 

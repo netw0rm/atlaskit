@@ -21,10 +21,6 @@ export interface Props {
 }
 
 export default class Link extends PureComponent<Props, {}> {
-  shouldComponentUpdate(): boolean {
-    return false;
-  }
-
   render() {
     const { props } = this;
     return (

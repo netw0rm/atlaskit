@@ -97,7 +97,7 @@ export default class Editor extends PureComponent<Props, State> {
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const { isExpanded, editorState, editorView } = this.state;
-    const listsState = editorState && listsPlugin.plugin.getState(editorState);
+    const listsState = editorState && listsPlugin.getState(editorState);
 
     return (
       <Chrome
@@ -138,13 +138,16 @@ export default class Editor extends PureComponent<Props, State> {
   private handleRef = (place: Element | null) => {
     if (place) {
       const editorState = EditorState.create(
-        createEdiorConfig(schema, [
-          listsPlugin,
-          inputRules({ rules: buildMarkdownInputRules(schema) }),
-          history(),
-          keymap(buildKeymap(schema)),
-          keymap(baseKeymap) // should be last :(
-        ])
+        {
+          schema,
+          plugins: [
+            listsPlugin,
+            inputRules({ rules: buildMarkdownInputRules(schema) }),
+            history(),
+            keymap(buildKeymap(schema)),
+            keymap(baseKeymap) // should be last :(
+          ]
+        }
       );
       const editorView = new EditorView(place, {
         state: editorState,
@@ -163,22 +166,3 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 }
-
-const createEdiorConfig = (schema, plugins: any[] = []) => {
-  return {
-    schema,
-    plugins: plugins.reduce((acc: any, plugin: { plugin?: any, keymap?: any }) => {
-      if (!plugin.plugin) {
-        return acc.concat(plugin);
-      }
-
-      acc = acc.concat(plugin.plugin);
-
-      if (plugin.keymap) {
-        acc = acc.concat(keymap(plugin.keymap));
-      }
-
-      return acc;
-    }, [])
-  };
-};

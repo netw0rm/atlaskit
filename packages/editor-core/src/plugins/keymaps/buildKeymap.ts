@@ -3,13 +3,15 @@ import * as keymapShortcuts from './utils-future';
 
 import { redo, undo } from '../../prosemirror/future/prosemirror-history';
 
+const keymap = {};
+
+export function bind(shortcut, cmd) {
+  keymap[shortcut] = cmd;
+}
+
 export function buildKeymap(schema) {
-  const keymap = {};
 
-  function bind(shortcut, cmd) {
-    keymap[shortcut] = cmd;
-  }
-
+  // TODO keymaps related to text formatting need to move to text formatting plugin
   if (schema.marks.strong) {
     bind(keymapShortcuts.toggleBold.common, toggleMark(schema.marks.strong));
   }

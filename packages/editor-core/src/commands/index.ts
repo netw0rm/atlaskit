@@ -18,6 +18,24 @@ export function toggleCodeBlock() {
   };
 }
 
+export function toggleBulletList() {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    return toggleBlockquote()(state, dispatch);
+  };
+}
+
+export function toggleOrderedList() {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    return true;
+  };
+}
+
+export function splitListItem() {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    return true;
+  };
+}
+
 export function setNormalText() {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const {$from, $to} = state.selection;

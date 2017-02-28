@@ -3,11 +3,12 @@ import { shallow, mount } from 'enzyme';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import Spinner from '@atlaskit/spinner';
 import FieldBaseSmart, { FieldBase } from '../src';
-import { compact, none, subtle } from '../src/internal/appearances';
+import { none, subtle } from '../src/internal/appearances';
 import { locals } from '../src/styles.less';
 
 const {
   contentContainer: contentClass,
+  compact: isCompactClass,
   invalid: isInvalidClass,
   focused: isFocusedClass,
   readOnly: isReadOnlyClass,
@@ -64,8 +65,14 @@ describe('ak-field-base', () => {
       })
     );
 
+    describe('isCompact prop = true', () => {
+      it('should render the content with the .isCompact class', () =>
+        expect(shallow(<FieldBase {...defaultProps} isCompact />).find(`.${isCompactClass}`).length).to.be.above(0)
+      );
+    });
+
     describe('appearance', () => {
-      [compact, none, subtle].forEach(appearance =>
+      [none, subtle].forEach(appearance =>
         describe(appearance, () =>
           it(`should render the content with the .${appearance} class`, () =>
             expect(shallow(<FieldBase {...defaultProps} appearance={appearance} />).find(`.${locals[appearance]}`).length).to.be.above(0)

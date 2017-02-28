@@ -2,6 +2,7 @@ import { EditorProps, Mark, Node, Plugin, Schema, Selection, Transaction } from 
 
 export interface EditorStateCreateConfig<S> {
   schema: S;
+  doc?: any;
   selection?: Selection;
   plugins?: Plugin[];
 }
@@ -10,7 +11,7 @@ export class EditorState<S> {
   schema: S;
   storedMarks?: Mark[];
   selection: Selection;
-  doc: Node;
+  doc: any;
   plugins: Plugin[];
   apply(tr: Transaction): this;
   filterTransaction(tr: Transaction): Transaction | null;

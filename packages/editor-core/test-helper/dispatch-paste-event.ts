@@ -1,4 +1,4 @@
-import { ProseMirror } from '../';
+import { ProseMirror } from '../src/prosemirror';
 import createEvent from './create-event';
 
 function focusAndSelect(element: HTMLElement) {

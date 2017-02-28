@@ -2,8 +2,10 @@ import { OrderedMap } from '../orderedmap';
 import { Fragment, Mark, Node, ParseRule } from './';
 
 export class NodeType {
+  constructor(name: string, schema: Schema, spec: NodeSpec);
+  
   name: string;
-  schema: Schema<any, any>;
+  schema: Schema;
   spec: NodeSpec;
   isBlock: boolean;
   isText: boolean;
@@ -17,22 +19,38 @@ export class NodeType {
   compatibleContent(other: NodeType): boolean;
 }
 
+export class Block extends NodeType {}
+
+export class Inline extends NodeType {}
+
+export class Text extends Inline {}
+
+export interface Attributes {
+  [key: string]: AttributeSpec;
+}
+
+export class Attribute {
+  constructor(options?: { [key: string]: any });
+}
+
 export class MarkType {
+  constructor(name: string, rank: number, schema: Schema, spec: MarkSpec); // private
+
   name: string;
-  schema: Schema<any, any>;
+  schema: Schema;
   spec: MarkSpec;
   create(attrs?: { [key: string]: any }): Mark;
   removeFromSet(set: Mark[]): Mark[];
   isInSet(set: Mark[]): Mark | null;
 }
 
-export class Schema<N, M> {
-  constructor(spec: SchemaSpec<N, M>);
+export class Schema {
+  constructor(spec: SchemaSpec);
 
   nodeSpec: OrderedMap<NodeSpec>;
   markSpec: OrderedMap<MarkSpec>;
-  nodes: { [K in keyof N]: NodeType };
-  marks: { [K in keyof M]: MarkType };
+  nodes: any; // { [key: string]: NodeType };
+  marks: any; // { [key: string]: MarkType };
   cached: { [key: string]: any };
   node(type: string | NodeType, attrs?: { [key: string]: any }, content?: Fragment | Node | Node[], marks?: Mark[]): Node;
   text(text: string, marks?: Mark[]): Node;
@@ -66,7 +84,7 @@ export interface NodeSpec {
   parseDOM?: ParseRule[];
 }
 
-export interface SchemaSpec<N, M> {
-  nodes: { [K in keyof N]: NodeSpec } | OrderedMap<NodeSpec>;
-  marks?: { [K in keyof M]: MarkSpec } | OrderedMap<MarkSpec>;
+export interface SchemaSpec {
+  nodes: { [key: string]: NodeSpec } | OrderedMap<NodeSpec>;
+  marks?: { [key: string]: MarkSpec } | OrderedMap<MarkSpec>;
 }

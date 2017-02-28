@@ -1,29 +1,39 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
+
 import {
   a, blockquote, br, chaiPlugin, code_block, doc, em, h1, h2,
-  h3, hr, img, li, makeEditor, mono, ol, p, strike, strong, ul, mention
+  h3, hr, img, li, mono, ol, p, strike, strong, ul, mention, fixtures
 } from '../../../test-helper';
+import { makeEditor } from '../../../test-helper/future';
+import { schema } from '../../_schema-builder-future';
+
 chai.use(chaiPlugin);
 
-describe('markdown-inputrules', () => {
-  const editor = (doc: any) => {
-    const { pm, plugin } = makeEditor({ doc, plugin: MarkdownInputRulesPlugin });
-    return { pm, plugin, sel: pm.doc.refs['<>'] };
-  };
+const container = fixtures();
 
+const editor = (doc: any) => {
+  const { editorView, editorState } = makeEditor({
+    schema: schema,
+    place: container(),
+    doc: doc,
+    plugin: MarkdownInputRulesPlugin 
+  });
+  return { editorView, editorState, sel: editorState.doc.refs['<>'] };
+};
+
+describe('markdown-inputrules', () => {
   it('defines a name for use by the ProseMirror plugin registry ', () => {
     const plugin = MarkdownInputRulesPlugin as any; // .State is not public API.
     expect(plugin.State.name).is.be.a('string');
   });
 
   describe('strong rule', () => {
-    it('should convert "**text**" to strong', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '**text**');
-      expect(pm.doc).to.deep.equal(doc(p(strong('text'))));
+    it.only('should convert "**text**" to strong', () => {
+      const { editorState, sel } = editor(doc(p('text{<>}')));
+      editorState.tr.insertText('**text**', sel, sel);
+      expect(editorState.doc).to.deep.equal(doc(p(strong('text'))));
     });
   });
 

@@ -5,7 +5,8 @@ import {
   NodeType,
   ResolvedPos,
   Selection,
-  TextSelection
+  TextSelection,
+  keymap
 } from '../prosemirror/future';
 
 function validateNode(node: Node): boolean {
@@ -199,3 +200,19 @@ export function liftSelection(tr, doc, $from: ResolvedPos, $to: ResolvedPos) {
 
   return tr;
 }
+
+export function processEditorPlugins (plugins: any[] = []) {
+  return plugins.reduce((acc: any, plugin: { plugin?: any, keymap?: any }) => {
+    if (!plugin.plugin) {
+      return acc.concat(plugin);
+    }
+
+    acc = acc.concat(plugin.plugin);
+
+    if (plugin.keymap) {
+      acc = acc.concat(keymap(plugin.keymap));
+    }
+
+    return acc;
+  }, []);
+};

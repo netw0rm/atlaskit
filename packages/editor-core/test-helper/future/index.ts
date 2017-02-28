@@ -1,0 +1,1 @@
+export { default as makeEditor } from './make-editor';

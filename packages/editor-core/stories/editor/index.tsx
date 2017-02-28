@@ -18,6 +18,7 @@ import {
   TextSelection
 } from '../../src/prosemirror/future';
 import schema from './schema';
+import { processEditorPlugins } from '../../src/utils/index-future';
 
 export interface Props {
   context?: ContextName;
@@ -137,15 +138,17 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const editorState = EditorState.create(
-        createEdiorConfig(schema, [
+      const editorState = EditorState.create({
+        schema: schema,
+        plugins: processEditorPlugins([
           listsPlugin,
           inputRules({ rules: buildMarkdownInputRules(schema) }),
           history(),
           keymap(buildKeymap(schema)),
           keymap(baseKeymap) // should be last :(
         ])
-      );
+      });
+
       const editorView = new EditorView(place, {
         state: editorState,
         dispatchTransaction: (tr) => {
@@ -163,22 +166,3 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 }
-
-const createEdiorConfig = (schema, plugins: any[] = []) => {
-  return {
-    schema,
-    plugins: plugins.reduce((acc: any, plugin: { plugin?: any, keymap?: any }) => {
-      if (!plugin.plugin) {
-        return acc.concat(plugin);
-      }
-
-      acc = acc.concat(plugin.plugin);
-
-      if (plugin.keymap) {
-        acc = acc.concat(keymap(plugin.keymap));
-      }
-
-      return acc;
-    }, [])
-  };
-};

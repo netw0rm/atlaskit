@@ -1,4 +1,5 @@
 // @flow
+/* eslint-disable react/no-multi-comp */
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { storiesOf, action as storybookAction } from '@kadira/storybook';
@@ -182,6 +183,8 @@ const ConnectedApp = (() => {
   const store = createStore(reducer);
 
   class AppState extends PureComponent {
+    // eslint-disable-next-line react/sort-comp
+    state: State
 
     constructor(...rest) {
       super(...rest);
@@ -199,7 +202,6 @@ const ConnectedApp = (() => {
     }
 
     render() {
-      console.log('rendering app');
       return (
         <App lists={this.state.lists} />
       );

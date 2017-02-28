@@ -3,7 +3,6 @@ import type {
   DraggableId,
   TypeId,
   Dimension,
-  DragResult,
   Position,
   Dispatch,
   State,

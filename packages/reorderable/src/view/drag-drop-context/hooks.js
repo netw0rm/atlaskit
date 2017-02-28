@@ -8,10 +8,10 @@ import type {
   State,
 } from '../../types';
 
-export type Hooks = {|
+export type Hooks = {
   onDragStart?: (id: DraggableId, location: DraggableLocation) => void,
   onDragEnd?: (result: DragResult) => void,
-|}
+}
 
 export default (hooks: Hooks, store: Store) => {
   const { onDragStart, onDragEnd } = hooks;

@@ -158,15 +158,6 @@ export class Handle extends PureComponent {
         {this.props.children}
       </Container>
     );
-
-    // not creating any new nodes
-    // could use ref rather than adding handler directly
-    // return cloneElement(this.props.children, {
-    //   tabIndex: '0',
-    //   onMouseDown: this.onMouseDown,
-    //   // prevent html5 drag and drop
-    //   draggable: 'false',
-    // });
   }
 }
 

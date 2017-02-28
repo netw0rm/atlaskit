@@ -7,7 +7,7 @@ import {
   publishDroppableDimension,
 } from '../../state/action-creators';
 import type { Id, TypeId, Dimension, Position, State } from '../../types';
-import storeKey from '../../state/get-store-key.js';
+import storeKey from '../../state/get-store-key';
 
 const getBounds = (ref: Element) => {
   const { top, right, bottom, left, width, height } = ref.getBoundingClientRect();

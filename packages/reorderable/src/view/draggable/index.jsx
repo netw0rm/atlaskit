@@ -111,18 +111,18 @@ export default (type: TypeId,
   map?: MapState = () => empty) =>
   (Component: any): any => {
     class Draggable extends PureComponent {
-      static displayName = `Draggable(${getDisplayName(Component)})`
-
       /* eslint-disable react/sort-comp */
       props: Props
       defaultProps: DefaultProps
       state: ComponentState
-      handle: Function
+      getHandle: Function
 
       state: ComponentState = {
         wasDragging: false,
         ref: null,
       }
+
+      static displayName = `Draggable(${getDisplayName(Component)})`
 
       static defaultProps = {
         offset: nowhere,
@@ -132,7 +132,7 @@ export default (type: TypeId,
       constructor(props, context) {
         super(props, context);
 
-        this.handle = createDragHandle(this.onLift, this.onMove, this.onDrop, this.onCancel);
+        this.getHandle = createDragHandle(this.onLift, this.onMove, this.onDrop, this.onCancel);
       }
 
       componentWillReceiveProps(nextProps) {
@@ -228,7 +228,7 @@ export default (type: TypeId,
       }
 
       render() {
-        const handle = this.handle(this.props.isDragEnabled);
+        const handle = this.getHandle(this.props.isDragEnabled);
 
         const requestDragHandle = () => {
           requestDragHandle.wasCalled = true;
@@ -250,9 +250,11 @@ export default (type: TypeId,
         // if a drag handle was not request then the whole thing is the handle
         const wrap = requestDragHandle.wasCalled ? identity : handle;
 
-        const movement: Movement = getMovement(this.props.isDragging, this.state.wasDragging, this.props.isAnimationEnabled);
-
-        console.log('rendering with animation:', this.props.isAnimationEnabled);
+        const movement: Movement = getMovement(
+          this.props.isDragging,
+          this.state.wasDragging,
+          this.props.isAnimationEnabled
+        );
 
         return (
           <Moveable

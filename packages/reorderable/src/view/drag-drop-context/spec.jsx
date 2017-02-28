@@ -1,7 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { mount } from 'enzyme';
 import dragDropContext from './index';
-import storeKey from '../../state/get-store-key.js';
+import storeKey from '../../state/get-store-key';
 
 class App extends PureComponent {
   static contextTypes = {

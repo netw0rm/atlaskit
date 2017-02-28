@@ -5,6 +5,7 @@ import * as React from 'react';
 import {Tooltip} from '@atlaskit/tooltip';
 import TextFormattingPlugin from '../../src/plugins/text-formatting';
 import ToolbarAdvancedTextFormatting from '../../src/ui/ToolbarAdvancedTextFormatting';
+import ToolbarButton from '../../src/ui/ToolbarButton';
 import { makeEditor } from '../../test-helper';
 import { doc, p, schema } from '../_schema-builder';
 
@@ -26,7 +27,7 @@ describe('ak-editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     const { pm } = editor(doc(p('text')));
     const toolbarOption = mount(<ToolbarAdvancedTextFormatting pluginState={pm && TextFormattingPlugin.get(pm)}/>);
     expect(toolbarOption.state('isOpen')).to.be.false;
-    toolbarOption.find('svg').simulate('click');
+    toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.state('isOpen')).to.be.true;
   });
 
@@ -40,7 +41,7 @@ describe('ak-editor-core/ui/ToolbarAdvancedTextFormatting', () => {
   it('should trigger toggleMono of plugin when monospace option is clicked', () => {
     const { pm, plugin } = editor(doc(p('text')));
     const toolbarOption = mount(<ToolbarAdvancedTextFormatting pluginState={pm && TextFormattingPlugin.get(pm)}/>);
-    toolbarOption.find('svg').simulate('click');
+    toolbarOption.find(ToolbarButton).simulate('click');
     plugin.toggleMono = sinon.spy();
     const monospaceButton = toolbarOption.find(Tooltip).findWhere(wrapper => wrapper.html() === '<span>Monospace</span>');
     monospaceButton.simulate('click');
@@ -50,7 +51,7 @@ describe('ak-editor-core/ui/ToolbarAdvancedTextFormatting', () => {
   it('should trigger toggleStrike of plugin when strikethrough option is clicked', () => {
     const { pm, plugin } = editor(doc(p('text')));
     const toolbarOption = mount(<ToolbarAdvancedTextFormatting pluginState={pm && TextFormattingPlugin.get(pm)}/>);
-    toolbarOption.find('svg').simulate('click');
+    toolbarOption.find(ToolbarButton).simulate('click');
     plugin.toggleStrike = sinon.spy();
     const strikeButton = toolbarOption.find(Tooltip).findWhere(wrapper => wrapper.html() === '<span>Strikethrough</span>');
     strikeButton.simulate('click');

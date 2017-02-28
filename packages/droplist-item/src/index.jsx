@@ -8,10 +8,6 @@ import Element from './internal/Element';
 import SecondaryText from './internal/SecondaryText';
 
 /* eslint-disable react/no-unused-prop-types */
-/**
- * @description This is a basic building block of a dropdown's list.
- * @class Item
- */
 export default class Item extends PureComponent {
   static propTypes = {
     children: PropTypes.node,

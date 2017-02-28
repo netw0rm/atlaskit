@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "1.2.1",
+  "version": "1.5.0",
   "config": {
     "access": "public"
   },
@@ -44,7 +44,7 @@
     "akutil-common-test": "*"
   },
   "keywords": [
-    "atlaskit",
+    "media",
     "ui"
   ]
 }

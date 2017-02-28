@@ -9,12 +9,17 @@ const Centered = styled.div`
   align-items: center;
 `;
 
-const sizeRange = (Logo, isCollapsed) => (
+const sizes = ['small', 'medium', 'large', 'xlarge'];
+
+const sizeRange = (Logo, collapseTo) => (
   <Centered>
-    <Logo isCollapsed={isCollapsed} size="small" />
-    <Logo isCollapsed={isCollapsed} size="medium" />
-    <Logo isCollapsed={isCollapsed} size="large" />
-    <Logo isCollapsed={isCollapsed} size="xlarge" />
+    {
+      sizes.map(size => (
+        <LogoParent>
+          <Logo collapseTo={collapseTo} size={size} />
+        </LogoParent>
+      ))
+    }
   </Centered>
 );
 
@@ -22,17 +27,23 @@ const Coloured = styled.div`
   color: ${props => props.color};
 `;
 
+const LogoParent = styled.div`
+  border-left: 1px dotted ${akColorN800};
+  border-right: 1px dotted ${akColorN800};
+`;
+
 const colors = [akColorN800, akColorB400, akColorR500];
+const collapseToValues = [null, 'icon', 'type'];
 
 export default class InteractiveLogo extends PureComponent {
 
   state = {
-    isCollapsed: false,
+    collapseToIndex: 0,
     colorIndex: 0,
   };
 
   toggleCollapsed = () => {
-    this.setState({ isCollapsed: !this.state.isCollapsed });
+    this.setState({ collapseToIndex: (this.state.collapseToIndex + 1) % collapseToValues.length });
   }
 
   toggleColor = () => {
@@ -40,17 +51,19 @@ export default class InteractiveLogo extends PureComponent {
   }
 
   render() {
+    const collapseTo = collapseToValues[this.state.collapseToIndex];
+    console.log(collapseTo);
     return (
       <Coloured color={colors[this.state.colorIndex]}>
         <div>
           <Button onClick={this.toggleColor}>Change colour</Button>
-          <Button onClick={this.toggleCollapsed}>{this.state.isCollapsed ? 'Expand' : 'Collapse'}</Button>
+          <Button onClick={this.toggleCollapsed}>Change collapseTo</Button>
         </div>
-        {sizeRange(logos.AtlassianLogo, this.state.isCollapsed)}
-        {sizeRange(logos.BitbucketLogo, this.state.isCollapsed)}
-        {sizeRange(logos.ConfluenceLogo, this.state.isCollapsed)}
-        {sizeRange(logos.HipchatLogo, this.state.isCollapsed)}
-        {sizeRange(logos.JiraLogo, this.state.isCollapsed)}
+        {sizeRange(logos.AtlassianLogo, collapseTo)}
+        {sizeRange(logos.BitbucketLogo, collapseTo)}
+        {sizeRange(logos.ConfluenceLogo, collapseTo)}
+        {sizeRange(logos.HipchatLogo, collapseTo)}
+        {sizeRange(logos.JiraLogo, collapseTo)}
       </Coloured>);
   }
 }

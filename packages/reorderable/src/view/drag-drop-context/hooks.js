@@ -35,8 +35,8 @@ export default (hooks: Hooks, store: Store) => {
     if (onDragEnd &&
       previous.complete &&
       state.complete &&
-      !previous.complete.requestPublish &&
-      state.complete.requestPublish
+      !previous.complete.isAnimationFinished &&
+      state.complete.isAnimationFinished
     ) {
       onDragEnd(state.complete.result);
     }

@@ -6,13 +6,11 @@ import {
   publishDraggableDimension,
   publishDroppableDimension,
 } from '../../state/action-creators';
-import getOffset from '../get-offset';
 import type { Id, TypeId, Dimension, Position, State } from '../../types';
 import storeKey from '../../state/get-store-key.js';
 
 const getBounds = (ref: Element) => {
   const { top, right, bottom, left, width, height } = ref.getBoundingClientRect();
-  const offset: Position = getOffset(ref);
   const style = window.getComputedStyle(ref);
 
   const marginTop = parseInt(style.marginTop, 10);
@@ -21,12 +19,12 @@ const getBounds = (ref: Element) => {
   const marginLeft = parseInt(style.marginLeft, 10);
 
   return {
-    top: (top + marginTop) - offset.y,
-    right: (right + marginRight) - offset.x,
-    left: (left + marginLeft) - offset.x,
-    bottom: (bottom + marginBottom) - offset.y,
-    width: width + marginLeft + marginRight,
-    height: height + marginRight + marginLeft,
+    top: (top + marginTop),
+    right: (right + marginRight),
+    left: (left + marginLeft),
+    bottom: (bottom + marginBottom),
+    width: width + marginLeft,
+    height: height + marginRight,
   };
 };
 

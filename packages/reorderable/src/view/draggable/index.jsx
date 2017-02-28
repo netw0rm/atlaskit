@@ -35,12 +35,12 @@ import {
 
 type NeedsProviding = {|
   id: DraggableId,
-    isDragEnabled ?: boolean,
+  isDragEnabled?: boolean,
 |}
 
 type DraggableState = {|
   isDragging: boolean
-    |}
+|}
 
 type Provide = (ownProps: Object) => NeedsProviding;
 type MapState = (state: DraggableState, ownProps: Object, getDragHandle: Function) => Object;
@@ -48,28 +48,34 @@ const empty = {};
 const identity = x => x;
 const nowhere: Position = { x: 0, y: 0 };
 
-type Props = {|
+type MapProps = {|
+  id: DraggableId,
+  isDragEnabled: boolean,
+  isDragging: boolean,
+  isAnimationEnabled: boolean,
+  offset?: Position,
+  initial?: DraggingInitial,
+|}
+
+type DispatchProps = {|
   lift: typeof liftAction,
   move: typeof moveAction,
   drop: typeof dropAction,
   dropFinished: typeof dropFinishedAction,
   move: typeof moveAction,
   cancel: typeof cancelAction,
-  provided: NeedsProviding,
-  isDragging: boolean,
-  isAnimationEnabled: boolean,
-  offset: ?Position,
-  initial: ?DraggingInitial,
-|};
+|}
+
+type Props = MapProps & DispatchProps
 
 type DefaultProps = {|
   offset: Position
-    |}
+|}
 
 type ComponentState = {|
   wasDragging: boolean,
-    ref: ?Element
-      |}
+  ref: ?Element
+|}
 
 // user-select: ${props => (props.isDragging ? 'none' : 'auto')};
 const Container = styled.div`
@@ -155,7 +161,7 @@ export default (type: TypeId,
           return;
         }
 
-        const { provided: { id }, dropFinished } = this.props;
+        const { id, dropFinished } = this.props;
 
         // TODO: hook: onDragEnd(id);
         dropFinished(id);
@@ -164,24 +170,20 @@ export default (type: TypeId,
       onLift = (selection: Position) => {
         invariant(this.state.ref, 'cannot move an item that is not in the DOM');
 
-        const { provided: { id, isDragEnabled }, lift } = this.props;
+        const { id, isDragEnabled, lift } = this.props;
 
         if (isDragEnabled === false) {
           return;
         }
 
-        // const offset: Position = { x: 0, y: 0 };
         const scroll: Position = getScrollPosition();
-
-        // $FlowFixMe
-        const offset: Position = getOffset(this.state.ref);
         const center: Position = getCenterPosition(this.state.ref);
 
-        lift(id, type, center, offset, scroll, selection);
+        lift(id, type, center, scroll, selection);
       }
 
       onMove = (point: Position) => {
-        const { provided: { id, isDragEnabled }, initial, move } = this.props;
+        const { id, isDragEnabled, initial, move } = this.props;
 
         if (isDragEnabled === false) {
           throw new Error('need to cancel the current drag');
@@ -203,26 +205,21 @@ export default (type: TypeId,
           x: scroll.x - initial.scroll.x,
           y: scroll.y - initial.scroll.y,
         };
-        const diff: Position = {
+
+        const offset: Position = {
           x: mouseDiff.x + scrollDiff.x,
           y: mouseDiff.y + scrollDiff.y,
         };
-
-        // adjusted positions
-        const offset: Position = {
-          x: initial.offset.x + diff.x,
-          y: initial.offset.y + diff.y,
-        };
         const center: Position = {
-          x: initial.center.x + diff.x,
-          y: initial.center.y + diff.y,
+          x: initial.center.x + offset.x,
+          y: initial.center.y + offset.y,
         };
 
         move(id, offset, center);
       }
 
       onDrop = () => {
-        const { provided: { id }, drop } = this.props;
+        const { id, drop } = this.props;
 
         drop(id);
       }
@@ -239,37 +236,35 @@ export default (type: TypeId,
       }
 
       componentWillUnmount() {
-        console.warn('unmounting draggable', this.props.provided.id);
+        console.warn('unmounting draggable', this.props.id);
       }
 
       render() {
-        const ownProps: Props = this.props;
+        const handle = this.handle(this.props.isDragEnabled);
 
         const requestDragHandle = () => {
           requestDragHandle.wasCalled = true;
-          return this.handle;
+          return handle;
         };
 
         const snapshot: DraggableState = {
-          isDragging: ownProps.isDragging,
+          isDragging: this.props.isDragging,
         };
 
-        const additionalProps = map(snapshot, ownProps, requestDragHandle);
+        const additionalProps = map(snapshot, this.props, requestDragHandle);
 
         // TODO: clear draggable props
         const props = {
-          ...ownProps,
+          ...this.props,
           ...additionalProps,
         };
 
         // if a drag handle was not request then the whole thing is the handle
-        const wrap = requestDragHandle.wasCalled ? identity : this.handle;
+        const wrap = requestDragHandle.wasCalled ? identity : handle;
 
-        const { id: droppableId } = ownProps.provided;
+        const movement: Movement = getMovement(this.props.isDragging, this.state.wasDragging, this.props.isAnimationEnabled);
 
-        const movement: Movement = getMovement(ownProps.isDragging, this.state.wasDragging, ownProps.isAnimationEnabled);
-
-        console.log('rendering with animation:', ownProps.isAnimationEnabled);
+        console.log('rendering with animation:', this.props.isAnimationEnabled);
 
         return (
           <Moveable
@@ -281,12 +276,12 @@ export default (type: TypeId,
           >
             {wrap(
               <DraggableDimensionPublisher
-                itemId={droppableId}
+                itemId={this.props.id}
                 type={type}
                 outerRef={this.state.ref}
               >
                 <Container
-                  isDragging={ownProps.isDragging}
+                  isDragging={this.props.isDragging}
                 >
                   <Component {...props} />
                 </Container>
@@ -305,42 +300,51 @@ export default (type: TypeId,
         [currentDragSelector, dragCompleteSelector, getProvided],
         (currentDrag: ?CurrentDrag,
           complete: ?DragComplete,
-          provided: NeedsProviding) => {
+          provided: NeedsProviding): MapProps => {
+          const { id, isDragEnabled = true } = provided;
+
           if (complete) {
-            if (complete.requestPublish) {
+            const last: CurrentDrag = complete.last;
+
+            if (complete.isAnimationFinished) {
               return {
-                provided,
+                id,
+                isDragEnabled,
                 isDragging: false,
                 isAnimationEnabled: false,
               };
             }
 
             // 1. was the draggable moving out of the way?
-            const last: CurrentDrag = complete.last;
 
             if (last.impact.movement.draggables.includes(provided.id)) {
               return {
-                provided,
+                id,
+                isDragEnabled,
                 isDragging: false,
+                isAnimationEnabled: true,
                 offset: {
                   x: 0,
                   y: last.impact.movement.amount,
                 },
-                isAnimationEnabled: true,
               };
             }
 
             if (last.dragging.id === provided.id) {
               return {
-                provided,
+                id,
+                // cannot drag while returning to home
+                isDragEnabled: false,
                 isDragging: false,
-                offset: complete.newHomeOffset,
                 isAnimationEnabled: true,
+                offset: complete.newHomeOffset,
+                initial: last.initial,
               };
             }
 
             return {
-              provided,
+              id,
+              isDragEnabled,
               isDragging: false,
               isAnimationEnabled: true,
             };
@@ -348,18 +352,22 @@ export default (type: TypeId,
 
           if (!currentDrag || !currentDrag.dragging) {
             return {
-              provided,
+              id,
+              isDragEnabled,
               isDragging: false,
               isAnimationEnabled: true,
             };
           }
 
-          if (currentDrag.dragging.id === provided.id) {
+          if (currentDrag.dragging.id === id) {
             const offset = currentDrag.dragging.offset;
             const initial = currentDrag.dragging.initial;
 
+            invariant(isDragEnabled, 'drag cannot be disabled for the dragging item');
+
             return {
-              provided,
+              id,
+              isDragEnabled: true,
               isDragging: true,
               offset,
               initial,
@@ -369,21 +377,23 @@ export default (type: TypeId,
 
           // not the one being dragged - but might still be mvoing
 
-          if (!currentDrag.impact.movement.draggables.includes(provided.id)) {
+          if (currentDrag.impact.movement.draggables.includes(id)) {
             return {
-              provided,
+              id,
+              isDragEnabled,
               isDragging: false,
               isAnimationEnabled: true,
+              offset: {
+                x: 0,
+                y: currentDrag.impact.movement.amount,
+              },
             };
           }
 
           return {
-            provided,
+            id,
+            isDragEnabled,
             isDragging: false,
-            offset: {
-              x: 0,
-              y: currentDrag.impact.movement.amount,
-            },
             isAnimationEnabled: true,
           };
         }

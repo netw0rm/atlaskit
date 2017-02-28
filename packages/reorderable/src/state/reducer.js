@@ -50,15 +50,10 @@ export default (state: State = initialState, action: Action): State => {
   }
 
   if (action.type === 'COMPLETE_LIFT') {
-    const { id, type, center, offset, scroll, selection } = action.payload;
-
-    const originCenter: Position = {
-      x: center.x - offset.x,
-      y: center.y - offset.y,
-    };
+    const { id, type, center, scroll, selection } = action.payload;
 
     const initialImpact: DragImpact = getDragImpact(
-      originCenter,
+      center,
       id,
       state.draggableDimensions,
       state.droppableDimensions
@@ -74,12 +69,11 @@ export default (state: State = initialState, action: Action): State => {
     const dragging: Dragging = {
       id,
       type,
+      offset: { x: 0, y: 0 },
       center,
-      offset,
       initial: {
         source,
         center,
-        offset,
         scroll,
         selection,
       },
@@ -185,7 +179,7 @@ export default (state: State = initialState, action: Action): State => {
       result,
       last: state.currentDrag,
       newHomeOffset: offset,
-      requestPublish: false,
+      isAnimationFinished: false,
     };
 
     // clear the state and add a drag result
@@ -205,7 +199,7 @@ export default (state: State = initialState, action: Action): State => {
       result: state.complete.result,
       last: state.complete.last,
       newHomeOffset: state.complete.newHomeOffset,
-      requestPublish: true,
+      isAnimationFinished: true,
     };
 
     return {
@@ -213,30 +207,6 @@ export default (state: State = initialState, action: Action): State => {
       complete,
     };
   }
-
-  // if (action.type === 'DROP_PUBLISHED') {
-  //   if (!state.complete) {
-  //     return state;
-  //   }
-
-  //   if (state.complete.isPublished) {
-  //     return state;
-  //   }
-
-  //   // not using spread so that flow exact type works
-  //   const complete: DragComplete = {
-  //     result: state.complete.result,
-  //     last: state.complete.last,
-  //     newHomeOffset: state.complete.newHomeOffset,
-  //     isAnimationFinished: true,
-  //     isPublished: true,
-  //   };
-
-  //   return {
-  //     ...state,
-  //     complete,
-  //   };
-  // }
 
   if (action.type === 'CANCEL') {
     return initialState;

@@ -43,7 +43,6 @@ export type DragImpact = {|
 export type DraggingInitial = {|
   source: DraggableLocation,
   center: Position,
-  offset: Position,
   scroll: Position,
   selection: Position,
 |}
@@ -72,7 +71,7 @@ export type DragComplete = {|
   result: DragResult,
   last: CurrentDrag,
   newHomeOffset: Position,
-  requestPublish: boolean
+  isAnimationFinished: boolean
 |}
 
 export type State = {

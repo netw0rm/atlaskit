@@ -23,6 +23,7 @@ type Props = {
   onDrop: OnDrop,
   onCancel: OnCancel,
   children: React$Element<*>,
+  isEnabled: boolean,
 }
 
 const Container = styled.div`
@@ -61,6 +62,8 @@ export class Handle extends PureComponent {
   }
 
   onMouseMove = (event: SyntheticMouseEvent) => {
+    // TODO: cancel drag if enabled is changed while dragging
+
     const { button, clientX, clientY } = event;
 
     if (button !== primaryClick) {
@@ -95,6 +98,10 @@ export class Handle extends PureComponent {
   };
 
   onMouseDown = (event: SyntheticMouseEvent) => {
+    if (!this.props.isEnabled) {
+      return;
+    }
+
     const { button, clientX, clientY } = event;
 
     if (this.isDragging) {
@@ -167,7 +174,7 @@ export default (onLift: OnLift,
   onMove: OnMove,
   onDrop: OnDrop,
   onCancel: OnCancel
-) => (el: React$Element<*>) => (
+) => (isEnabled: boolean) => (el: React$Element<*>) => (
   // https://github.com/facebook/flow/issues/1964
   /* eslint-disable react/no-children-prop */
   <Handle
@@ -175,6 +182,7 @@ export default (onLift: OnLift,
     onMove={onMove}
     onDrop={onDrop}
     onCancel={onCancel}
+    isEnabled={isEnabled}
     children={el}
   />
 );

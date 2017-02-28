@@ -2,6 +2,7 @@ import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import React, { PureComponent, PropTypes } from 'react';
+import Spinner from '@atlaskit/spinner';
 import appearances, { standard, compact, none, subtle } from './internal/appearances';
 
  /* eslint-disable react/no-unused-prop-types */
@@ -18,6 +19,7 @@ export default class FieldBase extends PureComponent {
     onFocus: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
     shouldReset: PropTypes.bool,
+    isLoading: PropTypes.bool,
     children: PropTypes.node,
   }
 
@@ -32,6 +34,7 @@ export default class FieldBase extends PureComponent {
     isRequired: false,
     isFitContainerWidthEnabled: false,
     shouldReset: false,
+    isLoading: false,
   }
 
   componentDidUpdate() {
@@ -45,6 +48,14 @@ export default class FieldBase extends PureComponent {
       <WarningIcon label="warning" />
     </div>
   )
+
+  renderRightGutter = () => {
+    if (this.props.isInvalid) {
+      return this.renderWarningIcon();
+    }
+
+    return this.props.isLoading ? <Spinner /> : null;
+  }
 
   render() {
     const contentClasses = classNames(styles.contentContainer, {
@@ -61,6 +72,7 @@ export default class FieldBase extends PureComponent {
 
     const contentWrapperClasses = classNames(styles.contentWrapper, {
       [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
+      [styles.disabled]: this.props.isDisabled,
     });
 
     return (
@@ -71,7 +83,7 @@ export default class FieldBase extends PureComponent {
           onBlurCapture={this.props.onBlur}
         >
           {this.props.children}
-          {this.props.isInvalid ? this.renderWarningIcon() : null}
+          {this.renderRightGutter()}
         </div>
       </div>
     );

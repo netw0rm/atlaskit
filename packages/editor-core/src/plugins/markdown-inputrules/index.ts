@@ -11,10 +11,10 @@ import {
   wrappingInputRule,
   commands
 } from '../../prosemirror';
-import Keymap from 'browserkeymap';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 import { isCodeBlockNode } from '../../schema';
+import Keymap from 'browserkeymap';
 
 // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
 // input rule will allow for a list to start at any given number, which isn't allowed in
@@ -258,17 +258,18 @@ export class MarkdownInputRulesPlugin {
   }
 }
 
+// IE11 fix.
 function bindCmdZ (pm) {
   pm.addKeymap(new Keymap({ 'Cmd-Z': pm => {
     const { $from } = pm.selection;
     const node = $from.parent;
 
-    if (!isCodeBlockNode(node)) {
-      pm.input.dispatchKey('Backspace');
-    } else {
+    if (isCodeBlockNode(node)) {
       commands.undo(pm);
+      return true;
     }
-    return true;
+
+    return false;
   }}, { name: 'inputRules' }), 20);
 }
 

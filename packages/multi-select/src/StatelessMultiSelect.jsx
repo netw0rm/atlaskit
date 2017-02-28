@@ -11,6 +11,7 @@ import classNames from 'classnames';
 import styles from 'style!./styles.less';
 import Trigger from './internal/Trigger';
 import NothingWasFound from './internal/NothingWasFound';
+import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
 
 export const itemShape = PropTypes.shape({
   content: PropTypes.node,
@@ -23,6 +24,7 @@ export const itemShape = PropTypes.shape({
 
 export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {
+    appearance: PropTypes.oneOf(appearances.values),
     filterValue: PropTypes.string,
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
@@ -46,6 +48,7 @@ export default class StatelessMultiSelect extends PureComponent {
   }
 
   static defaultProps = {
+    appearance: appearances.default,
     filterValue: '',
     shouldFocus: false,
     isOpen: false,
@@ -331,6 +334,7 @@ export default class StatelessMultiSelect extends PureComponent {
           shouldFitContainer
           trigger={
             <FieldBase
+              appearance={mapAppearanceToFieldBase(this.props.appearance)}
               isDisabled={this.props.isDisabled}
               isFitContainerWidthEnabled
               isFocused={this.props.isOpen || this.state.isFocused}

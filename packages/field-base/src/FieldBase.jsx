@@ -3,38 +3,40 @@ import classNames from 'classnames';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import React, { PureComponent, PropTypes } from 'react';
 import Spinner from '@atlaskit/spinner';
-import appearances, { standard, compact, none, subtle } from './internal/appearances';
+import appearances, { standard, none, subtle } from './internal/appearances';
 
  /* eslint-disable react/no-unused-prop-types */
 export default class FieldBase extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(Object.keys(appearances)),
-    isInvalid: PropTypes.bool,
-    isFocused: PropTypes.bool,
-    isRequired: PropTypes.bool,
+    isCompact: PropTypes.bool,
     isDisabled: PropTypes.bool,
+    isFitContainerWidthEnabled: PropTypes.bool,
+    isFocused: PropTypes.bool,
+    isInvalid: PropTypes.bool,
+    isLoading: PropTypes.bool,
     isPaddingDisabled: PropTypes.bool,
     isReadOnly: PropTypes.bool,
-    isFitContainerWidthEnabled: PropTypes.bool,
+    isRequired: PropTypes.bool,
     onFocus: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
     shouldReset: PropTypes.bool,
-    isLoading: PropTypes.bool,
     children: PropTypes.node,
   }
 
   static defaultProps = {
     appearance: standard,
-    isLabelHidden: false,
-    isPaddingDisabled: false,
-    isInvalid: false,
-    isFocused: false,
+    isCompact: false,
     isDisabled: false,
+    isFitContainerWidthEnabled: false,
+    isFocused: false,
+    isInvalid: false,
+    isLabelHidden: false,
+    isLoading: false,
+    isPaddingDisabled: false,
     isReadOnly: false,
     isRequired: false,
-    isFitContainerWidthEnabled: false,
     shouldReset: false,
-    isLoading: false,
   }
 
   componentDidUpdate() {
@@ -59,9 +61,9 @@ export default class FieldBase extends PureComponent {
 
   render() {
     const contentClasses = classNames(styles.contentContainer, {
-      [styles.compact]: this.props.appearance === compact,
       [styles.none]: this.props.appearance === none,
       [styles.subtle]: this.props.appearance === subtle,
+      [styles.compact]: this.props.isCompact,
       [styles.disabled]: this.props.isDisabled,
       [styles.readOnly]: this.props.isReadOnly,
       [styles.paddingDisabled]: this.props.isPaddingDisabled,

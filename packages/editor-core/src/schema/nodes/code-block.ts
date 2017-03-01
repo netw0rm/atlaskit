@@ -57,7 +57,7 @@ const removeLastNewLine = (dom: HTMLElement): void => {
 };
 
 const getLanguageFromEditorStyle = (dom: HTMLElement): string => {
-  return dom.dataset['language'];
+  return dom.dataset['language'] || '';
 };
 
 const extractLanguageFromClass = (className: string): string | undefined => {

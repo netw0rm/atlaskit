@@ -7,6 +7,11 @@ export default class ContainerNavigationNested extends PureComponent {
     onAnimationEnd: PropTypes.func,
     animationDirection: PropTypes.oneOf(['left', 'right']),
   }
+
+  static defaultProps = {
+    onAnimationEnd: () => {},
+  }
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -27,7 +32,7 @@ export default class ContainerNavigationNested extends PureComponent {
       this.animateContainer.classList.add(styles.containerNavigationNestedRightAnimate);
     }
   }
-  animationEndHandler() {
+  animationEndHandler = () => {
     if (this.props.animationDirection === 'left') {
       this.animateContainer.classList.remove(styles.containerNavigationNestedLeftAnimate);
       this.animateContainer.classList.add(styles.containerNavigationNestedLeftAnimateEnd);
@@ -35,9 +40,7 @@ export default class ContainerNavigationNested extends PureComponent {
       this.animateContainer.classList.remove(styles.containerNavigationNestedRightAnimate);
       this.animateContainer.classList.add(styles.containerNavigationNestedRightAnimateEnd);
     }
-    if (this.props.onAnimationEnd) {
-      this.props.onAnimationEnd();
-    }
+    this.props.onAnimationEnd();
   }
   render() {
     const { children } = this.props;
@@ -47,7 +50,7 @@ export default class ContainerNavigationNested extends PureComponent {
     const content = this.props.animationDirection === 'left' ? [prevPane, activePane] : [activePane, prevPane];
     return (<div
       className={styles.containerNavigationNested}
-      onAnimationEnd={() => this.animationEndHandler()}
+      onAnimationEnd={this.animationEndHandler}
       ref={(el) => { this.animateContainer = el; }}
     >{content}</div>);
   }

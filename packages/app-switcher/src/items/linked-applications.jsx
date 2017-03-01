@@ -19,7 +19,7 @@ export default function (i18n, isAnonymousUser, linkedApplications) {
 
   if (linkedApplications.configureLink && !isAnonymousUser) {
     items.push({
-      content: (<Item><Link>Configure</Link></Item>),
+      content: (<Item><Link>{i18n.configure}</Link></Item>),
       href: linkedApplications.configureLink,
       analyticEvent: { key: 'appswitcher.configure.link.click' },
     });

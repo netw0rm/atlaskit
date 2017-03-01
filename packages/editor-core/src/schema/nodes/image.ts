@@ -8,9 +8,7 @@ export const image: NodeSpec = {
   },
   draggable: true,
   parseDOM: [{tag: 'img[src]', getAttrs(dom: HTMLElement) {
-    return {
-      src: dom.getAttribute('src')
-    }
+    return {src: dom.getAttribute('src')};
   }}],
-  toDOM(node: Node) { return ['img', node.attrs] }
+  toDOM(node: Node) { return ['img', node.attrs]; }
 };

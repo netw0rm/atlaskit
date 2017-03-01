@@ -19,7 +19,7 @@ export { orderedList } from './nodes/ordered-list';
 export { paragraph } from './nodes/paragraph';
 export { emoji } from './nodes/emoji';
 export { image } from './nodes/image';
+export { mention } from './nodes/mention';
 
-export { MentionNode, MentionNodeType, isMentionNode } from './nodes/mention';
 export { PanelNodeType, isPanelNode, PanelNode } from './nodes/panel';
 export { ListItemNode, ListItemNodeType, isListItemNode } from './nodes/list-item';

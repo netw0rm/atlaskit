@@ -7,7 +7,6 @@ import Strong from './strong';
 import SubSup from './subsup';
 import Underline from './underline';
 import { Renderable } from '../nodes';
-import { isText } from '../nodes/text';
 
 export interface Mark {
   type: string;
@@ -73,7 +72,7 @@ export const renderMark = (mark: Renderable, index: number = 0) => {
     case MarkType.underline:
       return <Underline>{content}</Underline>;
     default: {
-      if (isText(mark.type)) {
+      if (mark.type === 'text') {
         return (mark as any).text;
       }
 

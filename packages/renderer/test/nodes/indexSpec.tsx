@@ -44,6 +44,24 @@ describe('Nodes', () => {
         expect(mention.is(Mention)).to.equal(true);
         expect(mention.props()).to.have.property('text', '@unknown');
       });
+
+      it('should render a highlighted mention for @all', () => {
+        const mention = mount(renderNode({ type: 'mention', text: '@all', attrs: { id: 'all' } }));
+        expect(mention.is(Mention)).to.equal(true);
+        expect(mention.props()).to.have.property('isHighlighted', true);
+      });
+
+      it('should render a highlighted mention for @here', () => {
+        const mention = mount(renderNode({ type: 'mention', text: '@here', attrs: { id: 'here' } }));
+        expect(mention.is(Mention)).to.equal(true);
+        expect(mention.props()).to.have.property('isHighlighted', true);
+      });
+
+      it('should render a highlighted mention for the passed in userId', () => {
+        const mention = mount(renderNode({ type: 'mention', text: '@oscar', attrs: { id: 'abcd-abcd-abcd' } }, 'abcd-abcd-abcd'));
+        expect(mention.is(Mention)).to.equal(true);
+        expect(mention.props()).to.have.property('isHighlighted', true);
+      });
     });
   });
 });

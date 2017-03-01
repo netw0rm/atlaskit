@@ -27,15 +27,15 @@ enum NodeType {
   textWrapper,
 }
 
-export const renderNode = (node: Renderable, index: number = 0) => {
+export const renderNode = (node: Renderable, userId: string = '', index: number = 0) => {
   const nodeContent = mergeTextNodes(node.content || []);
   const key = `${node.type}-${index}`;
 
   switch (NodeType[node.type]) {
     case NodeType.doc:
-      return <Doc key={key}>{nodeContent.map((child, index) => renderNode(child, index))}</Doc>;
+      return <Doc key={key}>{nodeContent.map((child, index) => renderNode(child, userId, index))}</Doc>;
     case NodeType.paragraph:
-      return <Paragraph key={key}>{nodeContent.map((child, index) => renderNode(child, index))}</Paragraph>;
+      return <Paragraph key={key}>{nodeContent.map((child, index) => renderNode(child, userId, index))}</Paragraph>;
     case NodeType.mention: {
       const { text, attrs } = node;
       let mentionText;
@@ -51,7 +51,14 @@ export const renderNode = (node: Renderable, index: number = 0) => {
       }
 
       const { id } = attrs as any || { id: 'unknown' };
-      return <Mention key={key} id={id} text={mentionText} />;
+      const isHighlighted = [userId, 'all', 'here'].indexOf(id) > -1;
+
+      return <Mention
+        key={key}
+        id={id}
+        text={mentionText}
+        isHighlighted={isHighlighted}
+      />;
     }
     default: {
       if (isTextWrapper(node.type)) {

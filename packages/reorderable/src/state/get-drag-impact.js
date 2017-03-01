@@ -8,7 +8,7 @@ import type { DraggableId,
   DragImpact,
   Position } from '../types';
 import getDroppableOver from './get-droppable-over';
-import isInsideDimension from './is-inside-dimension';
+import getInsideDroppable from './get-inside-droppable';
 
 const noMovement: DragMovement = {
   draggables: [],
@@ -16,12 +16,6 @@ const noMovement: DragMovement = {
 };
 
 type Direction = 1 | -1;
-
-const getDimensionList = memoizeOne((map: DimensionMap): Dimension[] =>
-  Object.keys(map).map((key: string): Dimension => (map[key]: Dimension)));
-
-// const getDimensionList: Dimension[] = (map: DimensionMap): Dimension[] =>
-//   Object.keys(map).map((key: string): Dimension => (map[key]: Dimension));
 
 export default (target: Position,
   draggableId: DraggableId,
@@ -48,11 +42,7 @@ export default (target: Position,
   const isMovingForward: boolean = target.y - draggingDimension.center.y > 0;
 
     // get all draggables inside the draggable
-  const insideDroppable: Dimension[] = getDimensionList(draggableDimensions)
-    .filter((dimension: Dimension): boolean =>
-      isInsideDimension(dimension.center, droppableDimension))
-    // dimensions might not be sorted (which is true after a reorder)
-    .sort((a: Dimension, b: Dimension): number => a.center.y - b.center.y);
+  const insideDroppable: Dimension[] = getInsideDroppable(droppableDimension, draggableDimensions);
 
   const moved: DraggableId[] = insideDroppable
     .filter((dimension: Dimension): boolean => {
@@ -82,7 +72,6 @@ export default (target: Position,
     .map((dimension: Dimension): DroppableId => dimension.id);
 
   const startIndex = insideDroppable.indexOf(draggingDimension);
-
   const index: number = (() => {
     if (!moved.length) {
       return startIndex;

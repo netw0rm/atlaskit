@@ -12,14 +12,15 @@ import type { TypeId,
   DragComplete,
 } from '../types';
 import getDragImpact from './get-drag-impact';
+import moveForward from './get-move-forward';
 
 const initialState: State = {
   draggableDimensions: {},
   droppableDimensions: {},
   currentDrag: null,
-  almostComplete: null,
   complete: null,
   requestDimensions: null,
+  isProcessingLift: false,
 };
 
 const noMovement = {
@@ -31,15 +32,23 @@ const shout = (message) => {
   console.log(`%c ${message}`, 'color: green; font-size: 1.5em');
 };
 
+const cancel = () => initialState;
+
 export default (state: State = initialState, action: Action): State => {
   shout(`reducing ${action.type}`);
 
   if (action.type === 'BEGIN_LIFT') {
-    // clear out any current state including result
-    return initialState;
+    return {
+      ...initialState,
+      isProcessingLift: true,
+    };
   }
 
   if (action.type === 'REQUEST_DIMENSIONS') {
+    if (!state.isProcessingLift) {
+      return state;
+    }
+
     const typeId: TypeId = action.payload;
 
     console.log('about to request dimensions');
@@ -50,6 +59,10 @@ export default (state: State = initialState, action: Action): State => {
   }
 
   if (action.type === 'COMPLETE_LIFT') {
+    if (!state.isProcessingLift) {
+      return state;
+    }
+
     const { id, type, center, scroll, selection } = action.payload;
 
     const initialImpact: DragImpact = getDragImpact(
@@ -81,6 +94,7 @@ export default (state: State = initialState, action: Action): State => {
 
     return {
       ...state,
+      isProcessingLift: false,
       currentDrag: {
         dragging,
         impact: {
@@ -93,6 +107,11 @@ export default (state: State = initialState, action: Action): State => {
 
   if (action.type === 'PUBLISH_DRAGGABLE_DIMENSION') {
     const dimension: Dimension = action.payload;
+
+    if (!state.isProcessingLift) {
+      console.info('dimension rejected as no longer requesting dimensions', dimension);
+      return state;
+    }
 
     if (state.draggableDimensions[dimension.id]) {
       console.error(`dimension already exists for ${dimension.id}`);
@@ -160,12 +179,13 @@ export default (state: State = initialState, action: Action): State => {
       return state;
     }
 
-    return state;
+    return moveForward(state);
   }
 
   if (action.type === 'DROP') {
     if (state.currentDrag == null) {
-      return state;
+      console.log('not dropping as there is nothing dragging in the state');
+      return cancel();
     }
 
     const { impact, dragging } = state.currentDrag;
@@ -178,6 +198,12 @@ export default (state: State = initialState, action: Action): State => {
       y: -(last.impact.movement.amount * last.impact.movement.draggables.length),
     };
 
+    const isAnimationRequired = dragging.offset.x !== offset.x || dragging.offset.y !== offset.y;
+
+    if (!isAnimationRequired) {
+      console.log('animation is not required');
+    }
+
     const result: DragResult = {
       draggableId: dragging.id,
       source: dragging.initial.source,
@@ -188,7 +214,8 @@ export default (state: State = initialState, action: Action): State => {
       result,
       last: state.currentDrag,
       newHomeOffset: offset,
-      isAnimationFinished: false,
+      isAnimationFinished: !isAnimationRequired,
+      shouldPublish: !isAnimationRequired,
     };
 
     // clear the state and add a drag result
@@ -198,9 +225,14 @@ export default (state: State = initialState, action: Action): State => {
     };
   }
 
+  // TODO: drop animation finished
   if (action.type === 'DROP_FINISHED') {
     if (!state.complete) {
       console.warn('not finishing drop as there is no longer a drop in the state');
+      return state;
+    }
+
+    if (state.complete.shouldPublish) {
       return state;
     }
 
@@ -209,6 +241,7 @@ export default (state: State = initialState, action: Action): State => {
       last: state.complete.last,
       newHomeOffset: state.complete.newHomeOffset,
       isAnimationFinished: true,
+      shouldPublish: true,
     };
 
     return {
@@ -218,7 +251,7 @@ export default (state: State = initialState, action: Action): State => {
   }
 
   if (action.type === 'CANCEL') {
-    return initialState;
+    return cancel();
   }
 
   return state;

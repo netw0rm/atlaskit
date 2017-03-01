@@ -71,12 +71,14 @@ export type DragComplete = {|
   result: DragResult,
   last: CurrentDrag,
   newHomeOffset: Position,
-  isAnimationFinished: boolean
+  isAnimationFinished: boolean,
+  shouldPublish: boolean,
 |}
 
 export type State = {
   draggableDimensions: DimensionMap,
   droppableDimensions: DimensionMap,
+  isProcessingLift: boolean,
   currentDrag: ?CurrentDrag,
   complete: ?DragComplete,
   requestDimensions: ?TypeId,

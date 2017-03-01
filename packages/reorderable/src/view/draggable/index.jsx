@@ -24,6 +24,8 @@ import makeSelector from './make-selector';
 import {
   lift as liftAction,
   move as moveAction,
+  moveForward as moveForwardAction,
+  moveBackward as moveBackwardAction,
   drop as dropAction,
   cancel as cancelAction,
   dropFinished as dropFinishedAction,
@@ -53,6 +55,8 @@ type DispatchProps = {|
   drop: typeof dropAction,
   dropFinished: typeof dropFinishedAction,
   move: typeof moveAction,
+  moveForward: typeof moveForwardAction,
+  moveBackward: typeof moveBackwardAction,
   cancel: typeof cancelAction,
 |}
 
@@ -139,8 +143,8 @@ export default (type: TypeId,
           onDrop: this.onDrop,
           onCancel: this.onCancel,
           onKeyLift: this.onKeyLift,
-          onKeyUp: this.onMoveBackward,
-          onKeyDown: this.onKeyDown,
+          onMoveBackward: this.onMoveBackward,
+          onMoveForward: this.onMoveForward,
         });
       }
 
@@ -161,7 +165,7 @@ export default (type: TypeId,
 
         const { id, dropFinished } = this.props;
 
-        // TODO: hook: onDragEnd(id);
+        console.log('on move end!!');
         dropFinished(id);
       }
 
@@ -194,10 +198,6 @@ export default (type: TypeId,
 
         // using center position as selection
         lift(id, type, center, scroll, center);
-      }
-
-      onKeyDown = () => {
-        console.log('on key down');
       }
 
       onMove = (point: Position) => {
@@ -236,8 +236,16 @@ export default (type: TypeId,
         move(id, offset, center);
       }
 
+      onMoveForward = () => {
+        const { id, moveForward } = this.props;
+
+        moveForward(id);
+      }
+
       onMoveBackward = () => {
-        console.log('moving backwards');
+        const { id, moveBackward } = this.props;
+
+        moveBackward(id);
       }
 
       onDrop = () => {
@@ -321,6 +329,8 @@ export default (type: TypeId,
     const mapDispatchToProps = {
       lift: liftAction,
       move: moveAction,
+      moveBackward: moveBackwardAction,
+      moveForward: moveForwardAction,
       drop: dropAction,
       dropFinished: dropFinishedAction,
       cancel: cancelAction,

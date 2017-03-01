@@ -8,12 +8,12 @@ import type { Position } from '../../types';
 
 export type Callbacks = {
   onLift: (point: Position) => void,
+  onKeyLift: () => void,
   onMove: (point: Position) => void,
+  onMoveForward: () => void,
+  onMoveBackward: () => void,
   onDrop: () => void,
   onCancel: () => void,
-  onKeyLift: () => void,
-  onKeyUp: () => void,
-  onKeyDown: () => void,
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
@@ -159,6 +159,7 @@ export class Handle extends PureComponent {
     }
 
     if (event.key === 'Escape') {
+      event.preventDefault();
       this.setState({
         isDragging: false,
       });
@@ -166,11 +167,13 @@ export class Handle extends PureComponent {
     }
 
     if (event.key === 'ArrowDown') {
-      this.props.onKeyDown();
+      event.preventDefault();
+      this.props.onMoveForward();
     }
 
     if (event.key === 'ArrowUp') {
-      this.props.onKeyUp();
+      event.preventDefault();
+      this.props.onMoveBackward();
     }
   }
 

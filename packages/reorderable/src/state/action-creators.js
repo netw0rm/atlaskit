@@ -110,6 +110,16 @@ export const moveForward = (id: DraggableId): MoveForwardAction => ({
   payload: id,
 });
 
+type CancelAction = {
+  type: 'CANCEL',
+  payload: DraggableId
+}
+
+export const cancel = (id: DraggableId): CancelAction => ({
+  type: 'CANCEL',
+  payload: id,
+});
+
 type DropAction = {
   type: 'DROP',
   payload: DraggableId
@@ -119,6 +129,25 @@ export const drop = (id: DraggableId): DropAction => ({
   type: 'DROP',
   payload: id,
 });
+
+// export const drop = (id: DraggableId) => (dispatch: Dispatch, getState: Function) => {
+//   const state: State = getState();
+
+//   // trying to drop when there is not drag - reset the whole thing!
+//   if(!state.currentDrag) {
+//     dispatch(cancel(id));
+//   }
+
+//   if (state.currentDrag) {
+//     const action: DropAction = {
+//       type: 'DROP',
+//       payload: id,
+//     };
+//     dispatch(action);
+//     return;
+//   }
+
+// };
 
 type DropFinishedAction = {
   type: 'DROP_FINISHED',
@@ -130,16 +159,6 @@ export const dropFinished = (id: DraggableId): DropFinishedAction => ({
   payload: id,
 });
 
-type CancelAction = {
-  type: 'CANCEL',
-  payload: DraggableId
-}
-
-export const cancel = (id: DraggableId): CancelAction => ({
-  type: 'CANCEL',
-  payload: id,
-});
-
 // using redux-thunk
 export const lift = (id: DraggableId,
   type: TypeId,
@@ -148,7 +167,7 @@ export const lift = (id: DraggableId,
   selection: Position,
 ) => (dispatch: Dispatch, getState: Function) => {
   const state: State = getState();
-  if (state.complete && !state.complete.isAnimationFinished) {
+  if (state.complete && !state.complete.shouldPublish) {
     dispatch(dropFinished(id));
   }
   setTimeout(() => {

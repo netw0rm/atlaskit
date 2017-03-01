@@ -1,4 +1,10 @@
-import { MarkSpec } from '../../prosemirror';
+import { MarkSpec, Mark } from '../../prosemirror';
+
+export interface SubSupMark extends Mark {
+  attrs: {
+    type: string;
+  };
+}
 
 export const subsup: MarkSpec = {
   get inclusiveRight() {
@@ -9,5 +15,5 @@ export const subsup: MarkSpec = {
     {tag: 'sub', attrs: {type: 'sub'}},
     {tag: 'sup', attrs: {type: 'sup'}}
   ],
-  toDOM(node: any) { return [node.attrs.type]; }
+  toDOM(mark: SubSupMark) { return [mark.attrs.type]; }
 };

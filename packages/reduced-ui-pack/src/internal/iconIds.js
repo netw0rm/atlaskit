@@ -109,6 +109,7 @@ const iconIds = [
   'folder',
   'followers',
   'following',
+  'graph-bar',
 
   'hipchat/arrow-down',
   'hipchat/arrow-left',
@@ -143,6 +144,7 @@ const iconIds = [
   'image',
   'info',
   'invite-team',
+  'issue-raise',
   'issue',
   'issues',
   'jira',
@@ -157,17 +159,20 @@ const iconIds = [
   'office-building',
   'open',
   'page',
+  'people-group',
   'people',
   'person',
   'play',
   'question-circle',
   'question',
+  'queues',
   'quote',
 
   'radio',
   'recent',
   'redo',
   'refresh',
+  'screen',
   'search',
   'settings',
   'share',
@@ -183,12 +188,6 @@ const iconIds = [
   'video',
   'warning',
   'world',
-  // Service Desk icons
-  'servicedesk/graph-bar',
-  'servicedesk/issue-raise',
-  'servicedesk/people-group',
-  'servicedesk/queues',
-  'servicedesk/screen',
 ].map(id => `ak-icon-${id}`);
 
 export default iconIds;

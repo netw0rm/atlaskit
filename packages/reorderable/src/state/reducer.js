@@ -215,7 +215,6 @@ export default (state: State = initialState, action: Action): State => {
       last: state.currentDrag,
       newHomeOffset: offset,
       isAnimationFinished: !isAnimationRequired,
-      shouldPublish: !isAnimationRequired,
     };
 
     // clear the state and add a drag result
@@ -232,7 +231,7 @@ export default (state: State = initialState, action: Action): State => {
       return state;
     }
 
-    if (state.complete.shouldPublish) {
+    if (state.complete.isAnimationFinished) {
       return state;
     }
 
@@ -241,7 +240,6 @@ export default (state: State = initialState, action: Action): State => {
       last: state.complete.last,
       newHomeOffset: state.complete.newHomeOffset,
       isAnimationFinished: true,
-      shouldPublish: true,
     };
 
     return {

@@ -167,7 +167,7 @@ export const lift = (id: DraggableId,
   selection: Position,
 ) => (dispatch: Dispatch, getState: Function) => {
   const state: State = getState();
-  if (state.complete && !state.complete.shouldPublish) {
+  if (state.complete && !state.complete.isAnimationFinished) {
     dispatch(dropFinished(id));
   }
   setTimeout(() => {

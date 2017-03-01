@@ -72,7 +72,6 @@ export type DragComplete = {|
   last: CurrentDrag,
   newHomeOffset: Position,
   isAnimationFinished: boolean,
-  shouldPublish: boolean,
 |}
 
 export type State = {

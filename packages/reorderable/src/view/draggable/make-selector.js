@@ -20,7 +20,7 @@ export default (provide: Provide) => {
       if (complete) {
         const last: CurrentDrag = complete.last;
 
-        if (complete.isAnimationFinished || complete.shouldPublish) {
+        if (complete.isAnimationFinished) {
           return {
             id,
             isDragEnabled,

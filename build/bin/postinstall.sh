@@ -4,6 +4,7 @@ set -e
 BASEDIR=$(dirname $0)
 BIN_PATH=$(yarn bin)
 LERNA_LOC="$BIN_PATH/lerna"
+PSA="$BIN_PATH/psa"
 CHALK="$BIN_PATH/chalk"
 VALIDATE_LOC="$BIN_PATH/validate-commit-msg"
 
@@ -35,4 +36,6 @@ else
   $CHALK --no-stdin -t "{green \`yarn run bootstrap\` - Installs and links all packages}"
   $CHALK --no-stdin -t "{green \`yarn run bootstrap/single @atlaskit/packageName\` - Installs and links a single package}"
   $CHALK --no-stdin -t "{green \`yarn run bootstrap/single/with-deps @atlaskit/packageName\` - Installs and links a single package and all depdendencies of that package}"
+
+  $PSA
 fi

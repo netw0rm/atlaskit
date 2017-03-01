@@ -41,7 +41,7 @@ const makeCustomQuestions = () => [
       { value: 'stories',   name: 'stories:     📙 Additions, removals or changes to a story' },
       { value: 'build',     name: 'build:       👷 Changes that affect the build – component or AtlasKit' },
       { value: 'docs',      name: 'docs:        📖 Changes related to component documentation' },
-      { value: 'release',   name: 'release:     🚀 Commits related to releases. Note: this has special treatment in lerna-semantic-release' },
+      { value: 'dummy',     name: 'dummy:       🔧 A placeholder commit with no real changes - usually to re-release a package' },
       { value: 'typings',   name: 'typings:     ✅ TypeScript definition changes' },
     ],
   },

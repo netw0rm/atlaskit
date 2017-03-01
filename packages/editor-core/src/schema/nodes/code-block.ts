@@ -1,46 +1,8 @@
-import { Attribute, Block, browser, dom, Node, Schema } from '../../prosemirror';
-import { NodeSpec } from '../../prosemirror/future';
+import { NodeSpec, dom } from '../../prosemirror';
 
-export class CodeBlockNodeType extends Block {
-  constructor(name: string, schema: Schema) {
-    super(name, schema);
-    if (name !== 'code_block') {
-      throw new Error('CodeBlockNodeType must be named "code_block".');
-    }
-  }
-
-  get attrs() {
-    return {
-      language: new Attribute({ default: null })
-    };
-  }
-
-  get isCode() {
-    return true;
-  }
-
-  get matchDOMTag() {
-    return {
-      'pre': (dom: HTMLElement) => {
-        const language = getLanguageFromEditorStyle(dom) || getLanguageFromBitbucketStyle(dom);
-        return [
-          {
-            'language': language
-          },
-          {
-            preserveWhitespace: true
-          }
-        ] as any;
-      }
-    };
-  }
-
-  toDOM(node: CodeBlockNode): [string, any, number] {
-    const className = browser.ie && browser.ie_version <= 11 ? 'ie11' : '';
-    return ['pre', { 'data-language': node.attrs.language, 'class': className }, 0];
-  }
-}
-
+const getLanguageFromEditorStyle = (dom: HTMLElement): string => {
+  return dom.dataset['language'];
+};
 // example of BB style:
 // <div class="codehilite language-javascript"><pre><span>hello world</span><span>\n</span></pre></div>
 const getLanguageFromBitbucketStyle = (dom: HTMLElement): string | undefined => {
@@ -53,14 +15,6 @@ const getLanguageFromBitbucketStyle = (dom: HTMLElement): string | undefined => 
   }
 };
 
-const removeLastNewLine = (dom: HTMLElement): void => {
-  dom.textContent = dom.textContent!.replace(/\n$/, '');
-};
-
-const getLanguageFromEditorStyle = (dom: HTMLElement): string => {
-  return dom.dataset['language'];
-};
-
 const extractLanguageFromClass = (className: string): string | undefined => {
   const languageRegex = /(?:^|\s)language-([^\s]+)/;
   const result = languageRegex.exec(className);
@@ -69,16 +23,9 @@ const extractLanguageFromClass = (className: string): string | undefined => {
   }
 };
 
-export interface CodeBlockNode extends Node {
-  type: CodeBlockNodeType;
-  attrs: {
-    language: string;
-  };
-}
-
-export function isCodeBlockNode(node: Node): node is CodeBlockNode {
-  return node.type instanceof CodeBlockNodeType;
-}
+const removeLastNewLine = (dom: HTMLElement): void => {
+  dom.textContent = dom.textContent!.replace(/\n$/, '');
+};
 
 export const codeBlock: NodeSpec = {
   content: 'text*',

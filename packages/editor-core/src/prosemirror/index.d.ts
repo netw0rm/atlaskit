@@ -1,16 +1,11 @@
+export * from './prosemirror-commands';
+export * from './prosemirror-history';
+export * from './prosemirror-inputrules';
+export * from './prosemirror-keymap';
+export * from './prosemirror-model';
+export * from './prosemirror-schema-basic';
+export * from './prosemirror-state';
+export * from './prosemirror-transform';
+export * from './prosemirror-view';
 import * as dom from './dom';
-import * as browser from './util/browser';
-
-export * from './edit';
-export * from './inputrules';
-export * from './markdown';
-export * from './model';
-export * from './schema-basic';
-export * from './transform';
-export { browser }
 export { dom }
-export { OrderedMap } from './util/orderedmap';
-export { EditorTransform } from './edit/transform';
-export { DOMFromPos } from './edit/dompos';
-export { UpdateScheduler } from './edit/update';
-export { posFromDOM } from './edit/dompos';

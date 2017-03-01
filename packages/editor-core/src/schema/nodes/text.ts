@@ -1,4 +1,4 @@
-import { NodeSpec } from '../../prosemirror/future';
+import { NodeSpec } from '../../prosemirror';
 
 export const text: NodeSpec = {
   group: 'inline',

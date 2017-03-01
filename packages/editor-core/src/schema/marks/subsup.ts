@@ -1,44 +1,18 @@
-import { Attribute, Mark, MarkType, Schema } from '../../prosemirror';
+import { MarkSpec } from '../../prosemirror';
 
-export type TypeAttr = 'sub' | 'sup';
-
-export class SubSupMarkType extends MarkType {
-  constructor(name: string, rank: number, schema: Schema) {
-    if (name !== 'subsup') {
-      throw new Error('SubSupMarkType must be named "subsup".');
-    }
-    super(name, rank, schema);
-  }
-
-  create(attrs: { type: TypeAttr }) {
-    return super.create(attrs);
-  }
-
-  get attrs() {
-    return {
-      type: new Attribute(),
-    };
-  }
-
-  get matchDOMTag(): { [tag: string]: { type: TypeAttr } } {
-    return {
-      sub: { type: 'sub' },
-      sup: { type: 'sup' }
-    };
-  }
-
-  toDOM(mark: SubSupMark): [string] {
-    return [mark.attrs.type];
-  }
-}
-
-export interface SubSupMark extends Mark {
-  type: SubSupMarkType;
+export const subsup: MarkSpec = {
+  get inclusiveRight() {
+    return true;
+  },
   attrs: {
-    type: TypeAttr;
-  };
-}
-
-export function isSubSupMark(mark: Mark): mark is SubSupMark {
-  return mark.type instanceof SubSupMarkType;
-}
+    type: {default: 'sub'}
+  },
+  parseDOM: [
+    {tag: 'span', getAttrs: (dom: Element) => {
+      return {type: dom.getAttribute('type')}
+    }}
+  ],
+  toDOM(node) {
+    return ['span', node.attrs];
+  }
+};

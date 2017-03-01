@@ -1,7 +1,7 @@
-import { EditorState, Transaction } from '../prosemirror/future';
-import * as baseCommand from '../prosemirror/future/prosemirror-commands/commands';
+import { EditorState, Transaction } from '../prosemirror';
+import * as baseCommand from '../prosemirror/prosemirror-commands';
 
-export * from '../prosemirror/future/prosemirror-commands/commands';
+export * from '../prosemirror/prosemirror-commands';
 
 export function toggleCodeBlock() {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {

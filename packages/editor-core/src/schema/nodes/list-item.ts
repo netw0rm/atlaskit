@@ -1,7 +1,4 @@
-import { ListItem as ListItemNodeType, Node } from '../../prosemirror';
-import { NodeSpec } from '../../prosemirror/future';
-
-export { ListItemNodeType };
+import { NodeSpec } from '../../prosemirror';
 
 export const listItem: NodeSpec = {
   content: 'paragraph block*',
@@ -10,11 +7,3 @@ export const listItem: NodeSpec = {
     return ['li', 0];
   }
 };
-
-export interface ListItemNode extends Node {
-  type: ListItemNodeType;
-}
-
-export function isListItemNode(node: Node): node is ListItemNode {
-  return node.type instanceof ListItemNodeType;
-}

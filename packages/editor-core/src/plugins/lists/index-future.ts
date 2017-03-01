@@ -11,7 +11,7 @@ import {
   ReplaceAroundStep,
   Slice,
   Transaction,
-} from '../../prosemirror/future';
+} from '../../prosemirror';
 import {
   canJoinDown,
   canJoinUp,

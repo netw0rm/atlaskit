@@ -19,11 +19,13 @@ export default class AppSwitcher extends Component {
     trigger: PropTypes.func.isRequired,
     analytics: PropTypes.func,
     isDropdownOpenInitially: PropTypes.bool,
+    dropdownOptions: AppSwitcherPropTypes.dropdownOptions,
   };
 
   static defaultProps = {
     analytics: () => {},
     isDropdownOpenInitially: true,
+    dropdownOptions: {},
   };
 
   constructor(props) {
@@ -56,6 +58,7 @@ export default class AppSwitcher extends Component {
       linkedApplications,
       suggestedApplication,
       trigger,
+      dropdownOptions,
     } = this.props;
 
     const dropdownItems = [
@@ -75,6 +78,7 @@ export default class AppSwitcher extends Component {
         appearance="tall"
         position="bottom left"
         shouldFlip={false}
+        {...dropdownOptions}
       >
         {trigger(this.state.isDropdownOpen)}
       </StatelessDropdownMenu>

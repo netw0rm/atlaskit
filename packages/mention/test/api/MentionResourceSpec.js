@@ -264,4 +264,21 @@ describe('MentionResource', () => {
       });
     });
   });
+
+  describe('#shouldHighlightMention', () => {
+    it('should return false by default', () => {
+      const resource = new MentionResource(apiConfig);
+      expect(resource.shouldHighlightMention({ id: 'abcd-abcd-abcd' })).to.equal(false);
+    });
+
+    it('should use config if available', () => {
+      const resource = new MentionResource({
+        ...apiConfig,
+        shouldHighlightMention: mention => mention.id === 'abcd-abcd-abcd',
+      });
+
+      expect(resource.shouldHighlightMention({ id: 'abcd-abcd-abcd' })).to.equal(true);
+      expect(resource.shouldHighlightMention({ id: 'abcd-abcd' })).to.equal(false);
+    });
+  });
 });

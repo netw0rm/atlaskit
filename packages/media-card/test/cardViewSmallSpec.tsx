@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import {mount, ReactWrapper} from 'enzyme';
-import {CardViewSmall, CardViewSmallProps, FileIcon, ErrorIcon} from '../src';
+import { mount } from 'enzyme';
+import { CardViewSmall, CardViewSmallProps, FileIcon, ErrorIcon } from '../src';
 
 describe('CardViewSmall', () => {
   it('should display a file icon when loading', () => {

@@ -249,16 +249,19 @@ export class Card extends Component<CardProps, CardState> {
     return this.state.mediaItem;
   }
 
-  private _getFirstAction(type: CardActionType): CardAction {
+  private _getFirstAction(type: CardActionType): CardAction | null {
     const actions = this._getActionsByType(type);
     return (actions.length) ? actions[0] : null;
   }
 
   private _getMenuActions(): Array<CardAction> {
-    const actions = this.props.actions;
+    // redundant 'or' guarding to satisfy compiler
+    // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11640
+    const actions = this.props.actions || [];
     const nonMenuActions = [CardActionType.click];
 
-    return actions.filter(action => nonMenuActions.indexOf(action.type) === -1)
+    return actions
+      .filter(action => action.type && nonMenuActions.indexOf(action.type) === -1)
       .map((action: CardAction) => {
         return {
           label: action.label,
@@ -271,7 +274,9 @@ export class Card extends Component<CardProps, CardState> {
   }
 
   private _getActionsByType(type: CardActionType): Array<CardAction> {
-    const actions: Array<CardAction> = this.props.actions;
+    // redundant 'or' guarding to satisfy compiler
+    // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11640
+    const actions: Array<CardAction> = this.props.actions || [];
     return actions.filter(action => action.type === type);
   }
 

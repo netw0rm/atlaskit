@@ -19,4 +19,10 @@ module.exports = {
       'transform-flow-strip-types',
     ],
   },
+  webpack: {
+    compat: {
+      enzyme: true,
+      sinon: true,
+    },
+  },
 };

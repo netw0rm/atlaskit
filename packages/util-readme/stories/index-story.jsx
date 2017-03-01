@@ -30,7 +30,7 @@ import PropsExampleRaw from '!raw!./examples/props';
 
 storiesOf(name)
   .add('Overview', () => (
-    <Readme component={Readme} description={description}>
+    <Readme component={name} description={description}>
       <Code
         code={OverviewExampleRaw}
       >

@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.11.6",
-    "cz-lerna-changelog": "^1.2.0"
+    "cz-lerna-changelog": "^1.2.1"
   },
   "repository": {
     "type": "git",

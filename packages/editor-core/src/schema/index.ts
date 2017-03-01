@@ -17,9 +17,9 @@ export { heading } from './nodes/heading';
 export { horizontalRule } from './nodes/horizontal-rule';
 export { orderedList } from './nodes/ordered-list';
 export { paragraph } from './nodes/paragraph';
+export { emoji } from './nodes/emoji';
+export { image } from './nodes/image';
 
 export { MentionNode, MentionNodeType, isMentionNode } from './nodes/mention';
-export { EmojiNode, EmojiNodeType } from './nodes/emoji';
 export { PanelNodeType, isPanelNode, PanelNode } from './nodes/panel';
-export { ImageNode, ImageNodeType, isImageNode } from './nodes/image';
 export { ListItemNode, ListItemNodeType, isListItemNode } from './nodes/list-item';

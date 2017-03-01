@@ -23,7 +23,7 @@ const inlineMessagePropTypes = {
 };
 
 storiesOf(name, module)
-  .add('📖 Inline Message readme', () => (
+  .add('Overview', () => (
     <div>
       <Readme
         component={name}

@@ -6,6 +6,7 @@
  * @example @js const elem = document.querySelector('.fixture').firstChild;
  *  const elemIsHidden = hasClass(elem, 'hidden');
  *  const elemIsSelectedAndHidden = hasClass(elem, 'hidden', 'selected');
+ * @ignore
  */
 export default function hasClass(component, ...classes) {
   if (process.env.NODE_ENV === 'development') {

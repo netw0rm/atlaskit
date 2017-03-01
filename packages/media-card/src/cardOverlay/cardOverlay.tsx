@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {MouseEvent} from 'react';
 import {Component} from 'react';
-import * as bytes from 'bytes';
+import {toHumanReadableMediaSize} from '../utils/index';
 import {ProgressBar} from '../progressBar/progressBar';
 import {MediaType, CardAction, CardActionType, CardEventHandler} from '@atlaskit/media-core';
 import {Dropdown} from '../dropdown/dropdown';
@@ -166,7 +166,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
         </Retry>
       );
     } else {
-      const fileSize = this.props.mediaSize && bytes.format(this.props.mediaSize, {unitSeparator: ' '});
+      const fileSize = this.props.mediaSize && toHumanReadableMediaSize(this.props.mediaSize);
       const hasProgress = !!this.props.progress;
       const className = `metadata ${hasProgress ? 'has-progress' : ''}`;
 

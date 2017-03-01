@@ -4,6 +4,7 @@
  * @param {object} component The component that needs to be removed
  * @param {object} [target=document.body] The target element from which the component
  * needs to be removed
+ * @ignore
  */
 export default function tearDownComponent(component, target = document.body) {
   if (component && component.parentNode === target) {

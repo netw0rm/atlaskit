@@ -13,6 +13,7 @@ import getShadowRoot from './getShadowRoot';
 * should be appended
 * @return {Promise.<Component>} A promise resolving to a ready-to-use instance of the created
 * temporary SkateJS WebComponent.
+* @ignore
 */
 export default (define, definition, target = document.body) => {
   if (typeof define !== 'function') {

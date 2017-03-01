@@ -4,15 +4,10 @@ export const subsup: MarkSpec = {
   get inclusiveRight() {
     return true;
   },
-  attrs: {
-    type: {default: 'sub'}
-  },
+  attrs: {type: {default: 'sub'}},
   parseDOM: [
-    {tag: 'span', getAttrs: (dom: Element) => {
-      return {type: dom.getAttribute('type')};
-    }}
+    {tag: 'sub', attrs: {type: 'sub'}},
+    {tag: 'sup', attrs: {type: 'sup'}}
   ],
-  toDOM(node) {
-    return ['span', node.attrs];
-  }
+  toDOM(node: any) { return [node.attrs.type]; }
 };

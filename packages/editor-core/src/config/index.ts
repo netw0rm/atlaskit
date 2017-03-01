@@ -1,5 +1,5 @@
 import { MentionResource } from '@atlaskit/mention';
-import { EmojiResource } from 'ak-emoji';
+import { EmojiResource } from '@atlaskit/emoji';
 import { MediaResource } from '../media';
 
 export interface EditorServicesConfig {

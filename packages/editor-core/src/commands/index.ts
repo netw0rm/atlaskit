@@ -1,7 +1,32 @@
 import { EditorState, Transaction } from '../prosemirror/future';
 import * as baseCommand from '../prosemirror/future/prosemirror-commands/commands';
+import * as baseListCommand from '../prosemirror/future/prosemirror-schema-list';
 
 export * from '../prosemirror/future/prosemirror-commands/commands';
+
+export function toggleBulletList() {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    const {$from} = state.selection;
+    const grandgrandParent = $from.node(-2);
+    if (grandgrandParent && grandgrandParent.type === state.schema.nodes.bullet_list) {
+      return baseListCommand.liftListItem(state.schema.nodes.list_item)(state, dispatch);
+    } else {
+      return baseListCommand.wrapInList(state.schema.nodes.bullet_list)(state, dispatch);
+    }
+  };
+}
+
+export function splitListItem() {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    return baseListCommand.splitListItem(state.schema.nodes.list_item)(state, dispatch);
+  };
+}
+
+export function toggleOrderedList() {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    return baseListCommand.wrapInList(state.schema.nodes.ordered_list)(state, dispatch);
+  };
+}
 
 export function toggleCodeBlock() {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
@@ -14,24 +39,6 @@ export function toggleCodeBlock() {
       dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
     }
 
-    return true;
-  };
-}
-
-export function toggleBulletList() {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    return toggleBlockquote()(state, dispatch);
-  };
-}
-
-export function toggleOrderedList() {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    return true;
-  };
-}
-
-export function splitListItem() {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     return true;
   };
 }

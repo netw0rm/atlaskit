@@ -51,10 +51,6 @@ export class ListsState {
   orderedListDisabled = false;
   orderedListHidden = false;
 
-  active = false;
-  enabled = true;
-  type?: ListType;
-
   constructor(pm: PM) {
     this.pm = pm;
     this.changeHandlers = [];

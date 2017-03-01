@@ -28,6 +28,6 @@ export class Transform {
   wrap(range: NodeRange, wrappers: [{type: NodeType, attrs?: Object}]): this;
   setBlockType(from: number, to: number, type: NodeType, attrs?: Object): this;
   setNodeType(pos: number, type?: NodeType, attrs?: Object, marks?: Array<Mark>): this;
-  split(pos: number, depth?: number, typesAfter?: [{type: NodeType, attrs?: Object}]): this;
+  split(pos: number, depth?: number, typesAfter?: (null | {type: NodeType, attrs?: Object})[]): this;
   join(pos: number, depth?: number): this;
 }

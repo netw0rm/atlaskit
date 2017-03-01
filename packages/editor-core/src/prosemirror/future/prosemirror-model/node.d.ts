@@ -29,6 +29,7 @@ export class Node {
   childAfter(pos: number): { node?: Node, index: number, offset: number };
   childBefore(pos: number): { node?: Node, index: number, offset: number };
   resolve(pos: number): ResolvedPos;
+  resolveNoCache(pos: number): ResolvedPos;
   rangeHasMark(from: number | null, to: number | null, type: MarkType): boolean;
   isBlock: boolean;
   isTextblock: boolean;
@@ -41,6 +42,7 @@ export class Node {
   canReplaceWith(from: number, to: number, type: NodeType, attrs?: Mark[]): boolean;
   canAppend(other: Node): boolean;
   toJSON(): { [key: string]: any };
+  defaultContentType(at: number);
 
   static fromJSON(schema: Schema<any, any>, json: { [key: string]: any }): Node;
 }

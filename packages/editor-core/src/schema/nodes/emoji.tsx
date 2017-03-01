@@ -1,11 +1,9 @@
 import { Emoji } from 'ak-emoji';
-import {
-  akColorN50,
-} from '@atlaskit/util-shared-styles';
+import { akColorN50 } from '@atlaskit/util-shared-styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { style } from 'typestyle';
-import { Attribute, Inline, Node, Schema } from '../../prosemirror';
+import { NodeSpec, Node } from '../../prosemirror';
 
 const width = '20px';
 const height = '20px';
@@ -37,19 +35,20 @@ const emojiStyle = style({
   }
 });
 
-export class EmojiNodeType extends Inline {
-  constructor(name: string, schema: Schema) {
-    super(name, schema);
-    if (name !== 'emoji') {
-      throw new Error('EmojiNodeType must be named "emoji".');
-    }
-  }
+export interface EmojiNode extends Node {
+  attrs: {
+    id: string;
+    [key: string]: any;
+  };
+}
 
-  get attrs() {
-    return {
-      id: new Attribute({ default: '' }),
-      shortcut: new Attribute({ default: '' }),
-      representation: new Attribute({ default: {
+export const emoji: NodeSpec = {
+  group: 'inline',
+  attrs: {
+    id: { default: '' },
+    shortcut: { default: '' },
+    representation: {
+      default: {
         xIndex: 0,
         yIndex: 0,
         sprite: {
@@ -57,18 +56,15 @@ export class EmojiNodeType extends Inline {
           row: '',
           column: ''
         }
-      }})
-    };
-  }
-
-  get matchDOMTag() {
-    return {
-      'span[data-emoji-id]': (dom: Element) => ({
-        id: dom.getAttribute('data-emoji-id')!
-      })
-    };
-  }
-
+      }
+    }
+  },
+  parseDOM: [{
+    tag: 'span[data-emoji-id]',
+    getAttrs: (dom: Element) => ({
+      id: dom.getAttribute('data-emoji-id')!
+    })
+  }],
   toDOM(node: EmojiNode): any {
     const dom = document.createElement('span');
     dom.setAttribute('contenteditable', 'false');
@@ -77,16 +73,4 @@ export class EmojiNodeType extends Inline {
     ReactDOM.render(<Emoji {...node.attrs} />, dom);
     return dom;
   }
-}
-
-export interface EmojiNode extends Node {
-  type: EmojiNodeType;
-  attrs: {
-    id: string;
-    [key: string]: any;
-  };
-}
-
-export function isEmojiNode(node: Node): node is EmojiNode {
-  return node.type instanceof EmojiNodeType;
-}
+};

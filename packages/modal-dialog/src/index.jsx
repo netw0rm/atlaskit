@@ -8,61 +8,17 @@ const WIDTH_ENUM = {
   defaultValue: 'medium',
 };
 
-/**
- * @description A modal dialog which blankets the page
- * @class ModalDialog
- * @example @js import ModalDialog from 'ak-modal-dialog';
- * ReactDOM.render(<ModalDialog />, container);
- */
 export default class ModalDialog extends PureComponent {
   static propTypes = {
-    /**
-     * @description Whether the modal dialog is open/visible
-     * @memberof ModalDialog
-     * @instance
-     * @type {Boolean}
-     * @default false
-     */
     isOpen: PropTypes.bool,
-    /**
-     * @description Elements to be placed at top of modal dialog
-     * @memberof ModalDialog
-     * @type {element}
-     */
     header: PropTypes.node,
-    /**
-     * @description Content to be placed in the middle of the modal dialog
-     * @memberof ModalDialog
-     * @type {element}
-     */
     children: PropTypes.node,
-    /**
-     * @description Elements to be placed at bottom of modal dialog
-     * @memberof ModalDialog
-     * @type {element}
-     */
     footer: PropTypes.node,
-    /**
-     * @description The maximum width tier of the dialog
-     * Allowed values are: 'small' (400px), 'medium' (600px), 'large' (800px), 'x-large' (968px),
-     * or any integer value defining the pixel width (e.g. 300), or any string value defining the
-     * pixel or percentage width including unit (e.g. 300px, 75%).
-     * @memberof ModalDialog
-     * @instance
-     * @type {string}
-     * @default default
-     */
     width: PropTypes.oneOfType([
       PropTypes.number,
       PropTypes.string,
       PropTypes.oneOf(WIDTH_ENUM.values),
     ]),
-    /**
-     * @description Handler function to be called when the blanket is clicked
-     * @memberof ModalDialog
-     * @instance
-     * @type {function}
-     */
     onDialogDismissed: PropTypes.func,
   };
 

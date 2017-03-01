@@ -6,38 +6,10 @@ import { positionToPopperPosition, getAnimationClass } from './internal/helpers'
 
 /* eslint-disable react/no-unused-prop-types */
 
-/**
- * @description React component used to display floating tooltips next to a component.
- * @class Tooltip
- * @example @html <AKTooltip description="Foo!" position="right"><div>Foo</div></AKTooltip>
- */
 export default class StatelessTooltip extends PureComponent {
   static propTypes = {
-    /**
-     * @description The location of where the tooltip will appear, relative to the component it
-     * is bound to.
-     * Allowed values: top, bottom, left and right.
-     * @memberof Tooltip
-     * @instance
-     * @type {string}
-     * @default bottom
-    */
     position: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
-    /**
-     * @description The text to display in the tooltip when a user hovers over the element.
-     * @memberof Tooltip
-     * @instance
-     * @type {string}
-     * @default ''
-    */
     description: PropTypes.string,
-    /**
-     * @description Whether or not the tooltip is open and visible on the page.
-     * @memberof Tooltip
-     * @instance
-     * @type {boolean}
-     * @default false
-    */
     visible: PropTypes.bool,
     onMouseOver: PropTypes.func,
     onMouseOut: PropTypes.func,

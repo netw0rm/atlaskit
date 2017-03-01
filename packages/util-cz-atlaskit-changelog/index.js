@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, no-multi-spaces */
 const spawn = require('child_process').spawn;
 const czLernaChangelog = require('cz-lerna-changelog');
 
@@ -28,11 +28,30 @@ function getYN(yes = () => null, no = () => null) {
   stdin.addListener('data', doYN);
 }
 
+const makeCustomQuestions = () => [
+  {
+    type: 'autocomplete',
+    name: 'scope',
+    message: 'Denote the scope of this change:',
+    choices: [
+      { value: 'component', name: 'component:   🔘 Changes that affect component code and behaviour' },
+      { value: 'package',   name: 'package:     📦 Updated dependencies or changed package.json files' },
+      { value: 'merge',     name: 'merge:       🔀 Commits related to a merge conflict resolution' },
+      { value: 'refactor',  name: 'refactor:    🏡 Refactor a component' },
+      { value: 'stories',   name: 'stories:     📙 Additions, removals or changes to a story' },
+      { value: 'build',     name: 'build:       👷 Changes that affect the build – component or AtlasKit' },
+      { value: 'docs',      name: 'docs:        📖 Changes related to component documentation' },
+      { value: 'dummy',     name: 'dummy:       🔧 A placeholder commit with no real changes - usually to re-release a package' },
+      { value: 'typings',   name: 'typings:     ✅ TypeScript definition changes' },
+    ],
+  },
+];
+
 module.exports = {
   prompter(cz, commit) {
     check('validate/lint-changed', false, () => {
-      console.log('✓ Linting ok');
-      czLernaChangelog.prompter(cz, commit);
+      console.log('✓ Linting ok!');
+      czLernaChangelog.makePrompter(makeCustomQuestions)(cz, commit);
     }, () => {
       console.log('✗ Linting failed');
       console.log('Do you want to try fixing automatically? (y/n): ');

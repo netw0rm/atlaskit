@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-import {
+
+const {
   akColorB400,
   akColorN90,
   akColorN100,
-} from '@atlaskit/util-shared-styles';
+} = require('@atlaskit/util-shared-styles');
 
 const ellipsis = `
   overflow: hidden;

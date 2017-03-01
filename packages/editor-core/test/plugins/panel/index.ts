@@ -5,6 +5,7 @@ import { makeEditor } from '../../../test-helper';
 import { doc, panel, schema, paragraph } from '../../_schema-builder';
 
 describe('panel', () => {
+
   const editor = (doc: any) => {
     const { pm, plugin } = makeEditor({ doc, plugin: PanelPlugin, schema });
     return { pm, plugin, sel: pm.doc.refs['<>'] };
@@ -42,6 +43,39 @@ describe('panel', () => {
       plugin.subscribe(spy);
       pm.on.click.dispatch();
       expect(spy.callCount).to.equal(2);
+    });
+
+    it('should not call subscribers when another block in editor is clicked', () => {
+      const { plugin, pm } = editor(doc(paragraph('text')));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.click.dispatch();
+      expect(spy.callCount).to.equal(1);
+    });
+
+    it('should call subscribers when panel was focused when editor blur panel is blur', () => {
+      const { plugin, pm } = editor(doc(panel(paragraph('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      expect(spy.callCount).to.equal(2);
+    });
+
+    it('should call subscribers when another block was focused when editor blur panel is blur', () => {
+      const { plugin, pm } = editor(doc(paragraph('te{<>}xt'), panel(paragraph('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      expect(spy.callCount).to.equal(1);
+    });
+
+    it('should not call subscribers when another block in editor is focus', () => {
+      const { plugin, pm } = editor(doc(paragraph('te{<>}xt'), panel(paragraph('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      pm.on.focus.dispatch();
+      expect(spy.callCount).to.equal(1);
     });
 
     it('should be able to identify panel node', () => {
@@ -87,4 +121,35 @@ describe('panel', () => {
     });
 
   });
+
+  describe('toolbarVisible', () => {
+    context('when editor is blur', () => {
+      it('it is false', () => {
+        const { plugin, pm } = editor(doc(panel(paragraph('te{<>}xt'))));
+        pm.on.focus.dispatch();
+        pm.on.blur.dispatch();
+        expect(plugin.toolbarVisible).to.not.be.true;
+      });
+    });
+  });
+
+  describe('editorFocued', () => {
+  context('when editor is focused', () => {
+    it('it is true', () => {
+      const { plugin, pm } = editor(doc(panel(paragraph('te{<>}xt'))));
+      pm.on.blur.dispatch();
+      pm.on.focus.dispatch();
+      expect(plugin.editorFocused).to.be.true;
+    });
+  });
+
+  context('when editor is blur', () => {
+    it('it is false', () => {
+      const { plugin, pm } = editor(doc(panel(paragraph('te{<>}xt'))));
+      pm.on.blur.dispatch();
+      expect(plugin.editorFocused).not.to.be.true;
+    });
+  });
+});
+
 });

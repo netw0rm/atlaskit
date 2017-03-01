@@ -4,23 +4,17 @@ import styles from 'style!../less/ContainerNavigationNested.less';
 export default class ContainerNavigationNested extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
+    onAnimationEnd: PropTypes.func,
     animationDirection: PropTypes.oneOf(['left', 'right']),
   }
+
+  static defaultProps = {
+    onAnimationEnd: () => {},
+  }
+
   constructor(props) {
     super(props);
     this.state = {};
-  }
-  componentDidMount() {
-    this.animationEndHandler = () => {
-      if (this.props.animationDirection === 'left') {
-        this.animateContainer.classList.remove(styles.containerNavigationNestedLeftAnimate);
-        this.animateContainer.classList.add(styles.containerNavigationNestedLeftAnimateEnd);
-      } else {
-        this.animateContainer.classList.remove(styles.containerNavigationNestedRightAnimate);
-        this.animateContainer.classList.add(styles.containerNavigationNestedRightAnimateEnd);
-      }
-    };
-    this.animateContainer.addEventListener('animationend', this.animationEndHandler);
   }
   componentWillUpdate(nextProps) {
     if (nextProps.children !== this.props.children) {
@@ -38,8 +32,15 @@ export default class ContainerNavigationNested extends PureComponent {
       this.animateContainer.classList.add(styles.containerNavigationNestedRightAnimate);
     }
   }
-  componentWillUnmount() {
-    this.animateContainer.removeEventListener('animationend', this.animationEndHandler);
+  animationEndHandler = () => {
+    if (this.props.animationDirection === 'left') {
+      this.animateContainer.classList.remove(styles.containerNavigationNestedLeftAnimate);
+      this.animateContainer.classList.add(styles.containerNavigationNestedLeftAnimateEnd);
+    } else {
+      this.animateContainer.classList.remove(styles.containerNavigationNestedRightAnimate);
+      this.animateContainer.classList.add(styles.containerNavigationNestedRightAnimateEnd);
+    }
+    this.props.onAnimationEnd();
   }
   render() {
     const { children } = this.props;
@@ -49,6 +50,7 @@ export default class ContainerNavigationNested extends PureComponent {
     const content = this.props.animationDirection === 'left' ? [prevPane, activePane] : [activePane, prevPane];
     return (<div
       className={styles.containerNavigationNested}
+      onAnimationEnd={this.animationEndHandler}
       ref={(el) => { this.animateContainer = el; }}
     >{content}</div>);
   }

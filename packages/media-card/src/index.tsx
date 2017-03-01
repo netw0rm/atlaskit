@@ -12,6 +12,7 @@ export * from './generic/fileIcon/fileIcon';
 export * from './generic/errorIcon/errorIcon';
 export * from './generic/placeholder/placeholder';
 export * from './ellipsify';
+export * from './cardViewSmall/cardViewSmall';
 
 export interface CardViewProps {
   height?: number;

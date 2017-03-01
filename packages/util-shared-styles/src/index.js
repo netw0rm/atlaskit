@@ -3,9 +3,12 @@ const req = require.context('!less-vars-loader?camelCase&resolveVariables!./', f
 export default req.keys().reduce((prev, file) => {
   const vars = req(file);
   Object.assign(prev, vars);
-  Object.keys(vars).forEach((varName) => {
-    module.exports[varName] = vars[varName];
-  });
+
+  if (module && module.exports) {
+    Object.keys(vars).forEach((varName) => {
+      module.exports[varName] = vars[varName];
+    });
+  }
 
   return prev;
 }, {});

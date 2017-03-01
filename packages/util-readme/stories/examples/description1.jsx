@@ -1,5 +1,5 @@
 import React from 'react';
-import { Description } from 'akutil-readme';
+import { Description } from '@atlaskit/util-readme';
 
 export default (
   <div>

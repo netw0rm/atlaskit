@@ -8,7 +8,12 @@
   outline: none;
   width: 100%;
 
+  &::-ms-clear {
+    display: none;
+  }
+
   &:invalid {
     box-shadow: none;
   }
 }
+

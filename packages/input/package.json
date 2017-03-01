@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/input",
-  "version": "1.0.4",
+  "version": "1.0.9",
   "config": {
     "access": "public"
   },
@@ -35,6 +35,7 @@
   },
   "keywords": [
     "atlaskit",
-    "ui"
+    "ui",
+    "internal"
   ]
 }

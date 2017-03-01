@@ -1,4 +1,5 @@
-import { Emoji } from 'ak-emoji';
+import { Emoji } from '@atlaskit/emoji';
+import { EmojiDescription } from '@atlaskit/emoji/src/types';
 import {
   akColorN50,
 } from '@atlaskit/util-shared-styles';
@@ -48,15 +49,12 @@ export class EmojiNodeType extends Inline {
   get attrs() {
     return {
       id: new Attribute({ default: '' }),
-      shortcut: new Attribute({ default: '' }),
-      representation: new Attribute({ default: {
-        xIndex: 0,
-        yIndex: 0,
-        sprite: {
-          url: '',
-          row: '',
-          column: ''
-        }
+      emoji: new Attribute({ default: {
+        shortcut: '',
+        type: '',
+        category: '',
+        order: 0,
+        representation: {}
       }})
     };
   }
@@ -83,6 +81,7 @@ export interface EmojiNode extends Node {
   type: EmojiNodeType;
   attrs: {
     id: string;
+    emoji: EmojiDescription;
     [key: string]: any;
   };
 }

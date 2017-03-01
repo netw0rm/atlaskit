@@ -90,6 +90,26 @@ export const move = (id: DraggableId, offset: Position, center: Position): MoveA
   },
 });
 
+type MoveBackwardAction = {|
+  type: 'MOVE_BACKWARD',
+  payload: DraggableId
+|}
+
+export const moveBackward = (id: DraggableId): MoveBackwardAction => ({
+  type: 'MOVE_BACKWARD',
+  payload: id,
+});
+
+type MoveForwardAction = {|
+  type: 'MOVE_FORWARD',
+  payload: DraggableId
+|}
+
+export const moveForward = (id: DraggableId): MoveForwardAction => ({
+  type: 'MOVE_FORWARD',
+  payload: id,
+});
+
 type DropAction = {
   type: 'DROP',
   payload: DraggableId
@@ -151,6 +171,8 @@ export type Action = BeginLiftAction |
   PublishDraggableDimensionAction |
   PublishDroppableDimensionAction |
   MoveAction |
+  MoveBackwardAction |
+  MoveForwardAction |
   DropAction |
   DropFinishedAction |
   CancelAction;

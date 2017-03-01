@@ -154,6 +154,15 @@ export default (state: State = initialState, action: Action): State => {
     };
   }
 
+  if (action.type === 'MOVE_FORWARD') {
+    const previous: ?CurrentDrag = state.currentDrag;
+    if (previous == null) {
+      return state;
+    }
+
+    return state;
+  }
+
   if (action.type === 'DROP') {
     if (state.currentDrag == null) {
       return state;

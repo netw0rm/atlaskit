@@ -14,6 +14,7 @@ import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
 import type { Speed } from '../moveable';
 import createDragHandle from './create-drag-handle';
+import type { Callbacks } from './create-drag-handle';
 import getCenterPosition from '../get-center-position';
 import getScrollPosition from '../get-scroll-position';
 import getDisplayName from '../get-display-name';
@@ -132,7 +133,15 @@ export default (type: TypeId,
       constructor(props, context) {
         super(props, context);
 
-        this.getHandle = createDragHandle(this.onLift, this.onMove, this.onDrop, this.onCancel);
+        this.getHandle = createDragHandle({
+          onLift: this.onLift,
+          onMove: this.onMove,
+          onDrop: this.onDrop,
+          onCancel: this.onCancel,
+          onKeyLift: this.onKeyLift,
+          onKeyUp: this.onMoveBackward,
+          onKeyDown: this.onKeyDown,
+        });
       }
 
       componentWillReceiveProps(nextProps) {
@@ -171,6 +180,26 @@ export default (type: TypeId,
         lift(id, type, center, scroll, selection);
       }
 
+      onKeyLift = () => {
+        invariant(this.state.ref, 'cannot move an item that is not in the DOM');
+
+        const { id, isDragEnabled, lift } = this.props;
+
+        if (isDragEnabled === false) {
+          return;
+        }
+
+        const scroll: Position = getScrollPosition();
+        const center: Position = getCenterPosition(this.state.ref);
+
+        // using center position as selection
+        lift(id, type, center, scroll, center);
+      }
+
+      onKeyDown = () => {
+        console.log('on key down');
+      }
+
       onMove = (point: Position) => {
         const { id, isDragEnabled, initial, move } = this.props;
 
@@ -207,6 +236,10 @@ export default (type: TypeId,
         move(id, offset, center);
       }
 
+      onMoveBackward = () => {
+        console.log('moving backwards');
+      }
+
       onDrop = () => {
         const { id, drop } = this.props;
 
@@ -214,8 +247,11 @@ export default (type: TypeId,
       }
 
       onCancel = () => {
-        console.log('cancelling drag');
+        const { id, cancel } = this.props;
+
+        cancel(id);
       }
+
       setRef = (ref: ?Element) => {
         // need to trigger a child render when ref changes
         this.setState({

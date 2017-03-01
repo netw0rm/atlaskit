@@ -6,25 +6,25 @@ import type { Position } from '../../types';
 
 // declare function OnLift(point: Position): void;
 
-export type OnLift = (point: Position) => void;
-export type OnMove = (point: Position) => void;
-export type OnDrop = () => void;
-export type OnCancel = () => void;
+export type Callbacks = {
+  onLift: (point: Position) => void,
+  onMove: (point: Position) => void,
+  onDrop: () => void,
+  onCancel: () => void,
+  onKeyLift: () => void,
+  onKeyUp: () => void,
+  onKeyDown: () => void,
+}
 
 // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
-export const primaryClick = 0;
-
+const primaryClick = 0;
 // TODO: drag threshold
 // const threshold: number = 10;
 
 type Props = {
-  onLift: OnLift,
-  onMove: OnMove,
-  onDrop: OnDrop,
-  onCancel: OnCancel,
-  children: React$Element<*>,
+  children?: React$Element<*>,
   isEnabled: boolean,
-}
+} & Callbacks
 
 const Container = styled.div`
   cursor: ${props => (props.isDragging ? 'grabbing' : 'grab')};
@@ -56,7 +56,7 @@ export class Handle extends PureComponent {
       this.unbindWindowMouseEvents();
     }
 
-    if (this.isDragging) {
+    if (this.state.isDragging) {
       this.props.onCancel();
     }
   }
@@ -79,22 +79,23 @@ export class Handle extends PureComponent {
   };
 
   onMouseUp = (event: SyntheticMouseEvent): void => {
-    const { button, clientX, clientY } = event;
+    const { button } = event;
 
     if (button !== primaryClick) {
       return;
     }
 
-    const point: Position = {
-      x: clientX,
-      y: clientY,
-    };
-
     this.unbindWindowMouseEvents();
+
+    // drag might have been cancelled via keyboard
+    if (!this.state.isDragging) {
+      return;
+    }
+
     this.setState({
       isDragging: false,
     });
-    this.props.onDrop(point);
+    this.props.onDrop();
   };
 
   onMouseDown = (event: SyntheticMouseEvent) => {
@@ -125,6 +126,54 @@ export class Handle extends PureComponent {
     this.props.onLift(point);
   };
 
+  onKeyDown = (event: SyntheticKeyboardEvent) => {
+    if (!this.props.isEnabled) {
+      return;
+    }
+
+    // keeping it simple for now and not allowing keyboard while using the mouse
+    // if (this.areMouseEventsBound) {
+    //   return;
+    // }
+
+    // space bar
+    if (event.key === ' ') {
+      event.preventDefault();
+      // not allowing double lift
+      if (this.state.isDragging) {
+        this.setState({
+          isDragging: false,
+        });
+        this.props.onDrop();
+        return;
+      }
+
+      this.setState({
+        isDragging: true,
+      });
+      this.props.onKeyLift();
+    }
+
+    if (!this.state.isDragging) {
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      this.setState({
+        isDragging: false,
+      });
+      this.props.onCancel();
+    }
+
+    if (event.key === 'ArrowDown') {
+      this.props.onKeyDown();
+    }
+
+    if (event.key === 'ArrowUp') {
+      this.props.onKeyUp();
+    }
+  }
+
   bindWindowMouseEvents = () => {
     invariant(!this.areMouseEventsBound, 'mouse events are already bound');
     invariant(!this.isDragging, 'cannot bind mouse events - already dragging');
@@ -154,6 +203,7 @@ export class Handle extends PureComponent {
         tabIndex="0"
         draggable="false"
         onMouseDown={this.onMouseDown}
+        onKeyDown={this.onKeyDown}
       >
         {this.props.children}
       </Container>
@@ -161,20 +211,14 @@ export class Handle extends PureComponent {
   }
 }
 
-export default (onLift: OnLift,
-  onMove: OnMove,
-  onDrop: OnDrop,
-  onCancel: OnCancel
-) => (isEnabled: boolean) => (el: React$Element<*>) => (
+export default (callbacks: Callbacks) => (isEnabled: boolean) => (el: React$Element<*>) => (
   // https://github.com/facebook/flow/issues/1964
   /* eslint-disable react/no-children-prop */
   <Handle
-    onLift={onLift}
-    onMove={onMove}
-    onDrop={onDrop}
-    onCancel={onCancel}
+    {...callbacks}
     isEnabled={isEnabled}
-    children={el}
-  />
+  >
+    {el}
+  </Handle>
 );
 

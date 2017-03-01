@@ -68,7 +68,7 @@ export default (target: Position,
           return false;
         }
 
-        return target.y > dimension.center.y;
+        return target.y > dimension.top;
       }
       // moving backwards
       // 1. item needs to start behind the moving item
@@ -77,7 +77,7 @@ export default (target: Position,
         return false;
       }
 
-      return target.y < dimension.center.y;
+      return target.y < dimension.bottom;
     })
     .map((dimension: Dimension): DroppableId => dimension.id);
 

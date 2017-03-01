@@ -5,7 +5,7 @@
 [![yarn](https://img.shields.io/badge/yarn-0.18.1-brightgreen.svg)]()
 
 AtlasKit is the Design Platform's implementation of ADG3.
-It is a collection of reusable webcomponents that can be consumed independently (no more upgrade pains!).
+It is a collection of reusable components that can be consumed independently (no more upgrade pains!).
 Each component is independently versioned and published to npm, a list can be found in the [registry](https://aui-cdn.atlassian.com/atlaskit/registry/).
 
 # Reporting issues
@@ -61,6 +61,7 @@ yarn run bootstrap/single/with-deps @atlaskit/packageName
 Once you made some changes, stage them and then commit them using `yarn run commit` (This will use [Commitizen](https://github.com/commitizen/cz-cli) under the covers).
 
 # How do I...
+<section id="readme-help" intro="Welcome to AtlasKit! What would you like to do?" prompt="How do I...">
 
 ## Generate a new component skeleton
 ```
@@ -370,3 +371,4 @@ yarn run build/docker/image -- --no-cache
 ```
 
 **Note:** Make sure you also update the `bitbucket-pipelines.yml` file with the name of your new image!
+</section>

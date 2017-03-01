@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import AkPagination from '../../src';
+import AkPagination from '@atlaskit/pagination';
 
 export default class extends PureComponent {
   render() {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Component} from 'react';
 import {storiesOf, action} from '@kadira/storybook';
 import {CardViewSmall} from '../src';
 import {tallImage, smallImage, smallTransparentImage, wideImage, wideTransparentImage} from './images';
@@ -13,15 +14,61 @@ const onRetry = () => {
   action('try again')();
 };
 
+const menuActions = [
+  {label: 'Open', handler: () => { action('open')(); }},
+  {label: 'Close', handler: () => { action('close')(); }}
+];
+
 storiesOf('CardViewSmall', {})
-  .add('Document', () => (
-    <CardViewSmall
-      loading={false}
-      mediaName="sea_creatures.mp3"
-      mediaType="audio"
-      mediaSize={32831}
-      onClick={onClick}
-    />
+  .add('Media types', () => (
+    <StoryList>
+      {[{
+        title: 'audio',
+        content: <CardViewSmall
+          loading={false}
+          mediaName="sea_creatures.mp3"
+          mediaType="audio"
+          mediaSize={32831}
+          onClick={onClick}
+        />
+      }, {
+        title: 'document',
+        content: <CardViewSmall
+          loading={false}
+          mediaName="sea_creatures.mp3"
+          mediaType="doc"
+          mediaSize={32831}
+          onClick={onClick}
+        />
+      }, {
+        title: 'video',
+        content: <CardViewSmall
+          loading={false}
+          mediaName="sea_creatures.mp3"
+          mediaType="video"
+          mediaSize={32831}
+          onClick={onClick}
+        />
+      }, {
+        title: 'image',
+        content: <CardViewSmall
+          loading={false}
+          mediaName="sea_creatures.mp3"
+          mediaType="image"
+          mediaSize={32831}
+          onClick={onClick}
+        />
+      }, {
+        title: 'unknown',
+        content: <CardViewSmall
+          loading={false}
+          mediaName="sea_creatures.mp3"
+          mediaType="unknown"
+          mediaSize={32831}
+          onClick={onClick}
+        />
+      }]}
+    </StoryList>
   ))
   .add('Images', () => {
     const cards = [
@@ -84,14 +131,63 @@ storiesOf('CardViewSmall', {})
 
     return <StoryList>{cards}</StoryList>;
   })
-  .add('Loading', () => (
-    <CardViewSmall
-      loading={true}
-      mediaName="annual_report_2016_06_32.doc"
-      mediaType="doc"
-      mediaSize={32831}
-      onClick={onClick}
-    />
+  .add('Loading', () => {
+    class LoadingWrapper extends Component<{}, {}> {
+      constructor(props) {
+        super(props);
+        this.state = {loading: true};
+      }
+
+      componentDidMount() {
+        this.interval = setTimeout(() => this.setState({loading: false}), 100000);
+      }
+
+      componentWillUnmount() {
+        clearInterval(this.interval);
+      }
+
+      render() {
+        return <CardViewSmall
+          loading={this.state.loading}
+          mediaName="loading image"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={onClick}
+        />;
+      }
+    }
+
+    return <StoryList>
+      {[{
+        title: 'Infinite loading',
+        content: <CardViewSmall
+          loading={true}
+          mediaName="annual_report_2016_06_32.doc"
+          mediaType="doc"
+          mediaSize={32831}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Loading 1sec',
+        content: <LoadingWrapper />
+      }]}
+    </StoryList>;
+  })
+  .add('Menu actions', () => (
+    <StoryList>
+      {[{
+        title: 'Foo',
+        content: <CardViewSmall
+          loading={false}
+          mediaName="sea_creatures.mp3"
+          mediaType="audio"
+          mediaSize={32831}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }]}
+    </StoryList>
   ))
   .add('Error with handler', () => (
     <CardViewSmall

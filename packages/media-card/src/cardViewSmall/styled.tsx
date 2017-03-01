@@ -4,7 +4,8 @@ import { Root, cardShadow, size, center, centerX, antialiased, ellipsis, borderR
 import {
   akColorN20,
   akColorN30,
-  akColorN70
+  akColorN70,
+  akColorN900
 } from '@atlaskit/util-shared-styles';
 
 const imageBackground = 'background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKAQMAAAC3/F3+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAABlBMVEXf39////8zI3BgAAAAEUlEQVQIW2Nk38mIjH5wICMAez4Iyz2C/F8AAAAASUVORK5CYII=") repeat;';
@@ -26,6 +27,17 @@ export const SmallCard = styled(Root)`
 
     .title {
       color: #0065FF;
+    }
+  }
+  
+  &.loading {
+    background: transparent;
+    box-shadow: none;
+
+    .title, .size {
+      ${borderRadius()}
+      color: transparent;
+      background-color: ${akColorN30};
     }
   }
 
@@ -82,6 +94,7 @@ export const Size = styled.div`
   font-size: 12px;
   line-height: 15px;
   margin-top: 2px;
+  text-transform: lowercase;
 `;
 
 export const RoundedBackground = styled.div`
@@ -103,8 +116,9 @@ export const InfoWrapper = styled.div`
 
 export const LoadingWrapper = styled.div`
   ${center()}
+  ${size('100%')}
   color: #cfd4db;
-  height: 100%;
+  background-color: ${akColorN30};
 `;
 
 export const PlaceholderSmallWrapper = styled.div`

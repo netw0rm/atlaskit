@@ -8,10 +8,14 @@ export const ellipsis = maxWidth => `
   white-space: nowrap;
 `;
 
-export const size = value => `
-  width: ${value}px;
-  height: ${value}px;
-`;
+export const size = value => {
+  const unit = typeof value === 'number' ? 'px' : '';
+
+  return `
+    width: ${value}${unit};
+    height: ${value}${unit};
+  `;
+};
 
 export const centerX = () => `
   display: flex;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Component} from 'react';
 import {storiesOf, action} from '@kadira/storybook';
 import {CardView} from '../src';
-import {tallImage} from './images';
+import {tallImage, wideImage, wideTransparentImage, smallImage} from './images';
 import StoryList from './story-list';
 import styles from './styles';
 
@@ -175,7 +175,7 @@ storiesOf('CardView', {})
           mediaName="No preview image"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImage}
+          dataURI={wideImage}
           onClick={this.toggleSelection}
         />;
       }
@@ -203,7 +203,7 @@ storiesOf('CardView', {})
           mediaName="Im a selected card"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImage}
+          dataURI={wideImage}
           onClick={onClick}
         />
       }, {
@@ -215,7 +215,7 @@ storiesOf('CardView', {})
           mediaName="Selected with actions"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImage}
+          dataURI={wideTransparentImage}
           onClick={onClick}
           menuActions={menuActions}
         />
@@ -228,7 +228,7 @@ storiesOf('CardView', {})
           mediaName="Not selected with actions"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImage}
+          dataURI={smallImage}
           onClick={onClick}
           menuActions={menuActions}
         />

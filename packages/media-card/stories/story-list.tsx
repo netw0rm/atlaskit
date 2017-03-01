@@ -20,7 +20,8 @@ const styles = {
     borderBottom: '1px solid #ccc',
     marginBottom: '7px',
     color: '#606369',
-    width: '100%'
+    width: '100%',
+    textTransform: 'capitalize'
   }
 };
 

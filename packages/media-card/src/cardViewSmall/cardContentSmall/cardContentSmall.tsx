@@ -14,9 +14,7 @@ export interface CardContentProps {
 export class CardContentSmall extends Component<CardContentProps, {}> {
   render() {
     if (this.props.loading) {
-      return <LoadingWrapper>
-               <FileIcon label="loading"/>
-             </LoadingWrapper>;
+      return <LoadingWrapper />;
     }
 
     if (this.props.mediaType === 'image' && this.props.dataURI) {

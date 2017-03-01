@@ -3,6 +3,7 @@ import {Component, MouseEvent} from 'react';
 import {toHumanReadableMediaSize} from '../utils/index';
 import {CardAction} from '@atlaskit/media-core';
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
+import {Dropdown} from '../dropdown/dropdown';
 import {ErrorIcon} from '..';
 import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper} from './styled';
 
@@ -27,7 +28,19 @@ export interface CardViewSmallProps {
   onRetry?: CardAction;
 }
 
-export class CardViewSmall extends Component<CardViewSmallProps, {}> {
+export interface CardViewSmallState {
+  isMenuExpanded: boolean;
+}
+
+export class CardViewSmall extends Component<CardViewSmallProps, CardViewSmallState> {
+  constructor(props: CardViewSmallProps) {
+    super(props);
+
+    this.state = {
+      isMenuExpanded: false
+    };
+  }
+
   render() {
     const error = this.props.error;
 
@@ -69,9 +82,23 @@ export class CardViewSmall extends Component<CardViewSmallProps, {}> {
         <div>
           <Title className="title">{this.props.mediaName}</Title>
           <Size className="size">{fileSize}</Size>
+          {this.dropdown()}
         </div>
       ));
     }
+  }
+
+  dropdown() {
+    if (!this.state.isMenuExpanded) { return null; }
+
+    return <div onClick={this.dropdownClick}>
+      <Dropdown items={this.props.menuActions}/>
+    </div>;
+  }
+
+  dropdownClick(e: MouseEvent<HTMLDivElement>) {
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   onClick(event: MouseEvent<HTMLDivElement>) {
@@ -80,8 +107,10 @@ export class CardViewSmall extends Component<CardViewSmallProps, {}> {
 
   formatCard(left: JSX.Element, right: JSX.Element) {
     const cardStyle = this.props.width ? {width: `${this.props.width}px`} : {};
+    const className = this.props.loading ? 'loading' : '';
+
     return (
-      <SmallCard style={cardStyle} onClick={this.onClick.bind(this)}>
+      <SmallCard style={cardStyle} className={className} onClick={this.onClick.bind(this)}>
         <ImgWrapper>
           {left}
         </ImgWrapper>

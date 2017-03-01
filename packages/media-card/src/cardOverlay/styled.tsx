@@ -71,13 +71,14 @@ export const FileTypeIcon = styled.div`
 
 export const TickBox = styled.div`
   ${size(14)}
+  background-color: ${akColorN70};
   position: absolute;
   top: 8px;
   right: 8px;
-  border: 2px solid white;
   border-radius: 20px;
   z-index: 20;
   display: flex;
+  color: ${akColorN0};
 `;
 
 export const Overlay = styled.div`
@@ -205,11 +206,11 @@ export const Overlay = styled.div`
     /* Selectable */
     &.selectable {
       &.selected {
-        border-color: #3384FF !important;
+        border-color: ${akColorB200} !important;
 
         .tickbox {
-          background-color: #3384FF !important;
-          border-color: #3384FF !important;
+          background-color: ${akColorB200} !important;
+          border-color: ${akColorB200} !important;
           color: white;
         }
       }

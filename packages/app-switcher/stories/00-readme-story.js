@@ -25,6 +25,7 @@ const propDescriptions = {
   analytics: 'This function is called when the user performs certain actions in the app switcher. ' +
              'The function supplied should have the following signature: function analyics(eventName, payload) { ... }.',
   isDropdownOpenInitially: 'The initial state of the dropdown.',
+  dropdownOptions: 'Any additional options to pass into StatelessDropdown',
 };
 
 const recentContainerPropDescriptions = [
@@ -152,6 +153,31 @@ const i18nPropDescriptions = [
   },
 ];
 
+const dropdownOptionsPropDescriptions = [
+  {
+    name: 'appearance',
+    type: 'String',
+    description: "Controls the appearance of the dropdown. Available types: 'default', 'tall'. " +
+    'Default dropdown has scroll after its height exceeds the pre-defined amount. Tall dropdown has no restrictions.',
+  },
+  {
+    name: 'isTriggerNotTabbable',
+    type: 'Boolean',
+    description: 'Controls whether it is possible to tab to the trigger. This property should be set to true if ' +
+    'some interactive element is used inside trigger (links, buttons)',
+  },
+  {
+    name: 'position',
+    type: 'String',
+    description: 'Position of the menu. See the documentation of ak-layer for more details.',
+  },
+  {
+    name: 'shouldFlip',
+    type: 'Boolean',
+    description: 'Whether the dropdown should flip to fit on the screen.',
+  },
+];
+
 function propDescriptionList(descriptions) {
   const listItems = descriptions.map((item, index) => {
     const children = item.children ? propDescriptionList(item.children) : null;
@@ -206,6 +232,13 @@ storiesOf(name, module)
             contain translations for the following keys:
           </p>
           {propDescriptionList(i18nPropDescriptions)}
+
+          <Heading type="3">dropdownOptions</Heading>
+          <p>
+            The dropdownOptions is a map which is passed into StatelessDropdownMenu to allow
+            configuring the dropdown. It has the following format:
+          </p>
+          {propDescriptionList(dropdownOptionsPropDescriptions)}
         </Description>
       </Readme>
     </div>

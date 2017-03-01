@@ -20,6 +20,5 @@ export { paragraph } from './nodes/paragraph';
 export { emoji } from './nodes/emoji';
 export { image } from './nodes/image';
 export { mention } from './nodes/mention';
-
-export { PanelNodeType, isPanelNode, PanelNode } from './nodes/panel';
-export { ListItemNode, ListItemNodeType, isListItemNode } from './nodes/list-item';
+export { listItem } from './nodes/list-item';
+export { panel } from './nodes/panel';

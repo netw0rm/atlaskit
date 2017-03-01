@@ -9,7 +9,7 @@ export const subsup: MarkSpec = {
   },
   parseDOM: [
     {tag: 'span', getAttrs: (dom: Element) => {
-      return {type: dom.getAttribute('type')}
+      return {type: dom.getAttribute('type')};
     }}
   ],
   toDOM(node) {

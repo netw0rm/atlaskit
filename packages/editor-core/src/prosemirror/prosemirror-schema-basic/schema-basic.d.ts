@@ -1,6 +1,6 @@
 import { Schema } from '../';
 
-export const nodes: { 
+export const nodes: {
   doc: any,
   paragraph: any,
   blockquote: any,

@@ -12,7 +12,7 @@ export const emojiQuery: MarkSpec = {
   },
   parseDOM: [
     {tag: 'span[data-emoji-id]', getAttrs: (dom: Element) => {
-        return {id: dom.getAttribute('data-emoji-id')!}
+      return {id: dom.getAttribute('data-emoji-id')!};
     }}
   ],
   toDOM(): [string, any] {

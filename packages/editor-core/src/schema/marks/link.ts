@@ -10,8 +10,8 @@ export const link: MarkSpec = {
   },
   parseDOM: [
     {tag: 'a[href]', getAttrs: (dom: Element) => {
-      return {href: dom.getAttribute('href'), title: dom.getAttribute('title')}
+      return {href: dom.getAttribute('href'), title: dom.getAttribute('title')};
     }}
   ],
-  toDOM(node): [string, any] { return ['a', node.attrs] }
+  toDOM(node): [string, any] { return ['a', node.attrs]; }
 };

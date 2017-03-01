@@ -20,7 +20,9 @@ function releasedPackagesToScopeGlob() {
       // remove the version field
       .map(releasedPackage => releasedPackage.match(/^(.+?)@/)[1]);
     const lernaGlob = changedPackagesToLernaGlob(releasedPackages);
-    console.log(lernaGlob); // eslint-disable-line no-console
+    if (lernaGlob.length !== 0) {
+      console.log(lernaGlob); // eslint-disable-line no-console
+    }
   }
 }
 

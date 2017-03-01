@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {ProgressWrapper} from '../styled';
+import {ProgressWrapper} from './styled';
 
 export interface ProgressBarProps {
   progress?: number;

@@ -3,7 +3,7 @@ import {Component} from 'react';
 import {Placeholder} from '../generic/placeholder/placeholder';
 import {MediaType} from '@atlaskit/media-core';
 import FileIcon from '@atlaskit/icon/glyph/file';
-import {LoadingWrapper, FadeinImage} from '../styled';
+import {LoadingWrapper, FadeinImage} from './styled';
 
 export interface CardContentProps {
   mediaType?: MediaType;

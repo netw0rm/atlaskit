@@ -2,7 +2,6 @@ import { DOMSerializer, EditorState, Node, Slice, Transaction } from '../';
 import * as dom from '../dom';
 import { Decoration, DecorationSet } from './decoration';
 import { NodeView } from './viewdesc';
-
 export { Decoration, DecorationSet };
 
 export class EditorView {

@@ -1,5 +1,5 @@
 import { ResolvedPos, Slice } from '../';
-import * as dom from '../../dom';
+import * as dom from '../dom';
 import { EditorView } from './';
 
 export function toClipboard(view: EditorView, range: Selection, dataTransfer: dom.DataTransfer): Slice;

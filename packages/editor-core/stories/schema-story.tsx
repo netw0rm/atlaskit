@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+/*import { storiesOf } from '@kadira/storybook';
 import * as ajvModule from 'ajv';
 import { highlightBlock } from 'highlight.js';
 import * as React from 'react';
@@ -115,4 +115,4 @@ storiesOf(name, module)
         <Story />
       </div>
     );
-  });
+  });*/

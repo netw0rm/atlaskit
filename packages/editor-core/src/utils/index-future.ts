@@ -6,7 +6,7 @@ import {
   ResolvedPos,
   Selection,
   TextSelection
-} from '../prosemirror/future';
+} from '../prosemirror';
 
 function validateNode(node: Node): boolean {
   return false;

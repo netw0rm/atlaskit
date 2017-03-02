@@ -8,26 +8,26 @@ import { chaiPlugin, fixtures } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 
-const schema: Schema = new Schema({
-  nodes: schemaBasic.nodeSpec.append({
-    mention: { type: MentionNodeType, group: 'inline' }
-  }),
-  marks: {
-    mention_query: MentionQueryMarkType
-  }
-});
-
-const makeEditor = (container: Node) => {
-  return new ProseMirror({
-    schema: schema,
-    plugins: [ ListsPlugin, MentionsPlugin, BlockTypePlugin ],
-    place: container
-  });
-};
-
 const container = fixtures();
 
 describe('mentions', () => {
+  const schema: Schema = new Schema({
+    nodes: schemaBasic.nodeSpec.append({
+      mention: { type: MentionNodeType, group: 'inline' }
+    }),
+    marks: {
+      mention_query: MentionQueryMarkType
+    }
+  });
+
+  const makeEditor = (container: Node) => {
+    return new ProseMirror({
+      schema: schema,
+      plugins: [ ListsPlugin, MentionsPlugin, BlockTypePlugin ],
+      place: container
+    });
+  };
+
   it('defines a name for use by the ProseMirror plugin registry ', () => {
     const plugin = MentionsPlugin as any; // .State is not public API.
     expect(plugin.State.name).is.be.a('string');

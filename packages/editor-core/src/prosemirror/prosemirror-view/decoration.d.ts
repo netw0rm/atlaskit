@@ -1,5 +1,5 @@
 import { Mapping, Node } from '../';
-import * as dom from '../../dom';
+import * as dom from '../dom';
 import { EditorView } from './';
 
 export class Decoration {

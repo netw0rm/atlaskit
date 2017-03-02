@@ -16,7 +16,7 @@ import {
   keymap,
   Node,
   TextSelection
-} from '../../src/prosemirror/future';
+} from '../../src/prosemirror';
 import schema from './schema';
 
 export interface Props {

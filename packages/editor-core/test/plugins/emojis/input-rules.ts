@@ -12,21 +12,21 @@ import { chaiPlugin } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 
-const schema: Schema = new Schema({
-  nodes: schemaBasic.nodeSpec.append({
-    emoji: { type: EmojiNodeType, group: 'inline' }
-  }),
-  marks: {
-    emoji_query: EmojiQueryMarkType
-  }
-});
-
-const makeEditor = () => new ProseMirror({
-  schema: schema,
-  plugins: [EmojisPlugin],
-});
-
 describe('emojis - input rules', () => {
+  const schema: Schema = new Schema({
+    nodes: schemaBasic.nodeSpec.append({
+      emoji: { type: EmojiNodeType, group: 'inline' }
+    }),
+    marks: {
+      emoji_query: EmojiQueryMarkType
+    }
+  });
+
+  const makeEditor = () => new ProseMirror({
+    schema: schema,
+    plugins: [EmojisPlugin],
+  });
+
   it('should replace a standalone ":" with emoji-query-mark', () => {
     const pm = makeEditor();
     pm.input.insertText(0, 0, 'foo :');

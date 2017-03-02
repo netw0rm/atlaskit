@@ -1,5 +1,5 @@
 import { DOMSerializer, EditorState, Node, Slice, Transaction } from '../';
-import * as dom from '../../dom';
+import * as dom from '../dom';
 import { Decoration, DecorationSet } from './decoration';
 import { NodeView } from './viewdesc';
 

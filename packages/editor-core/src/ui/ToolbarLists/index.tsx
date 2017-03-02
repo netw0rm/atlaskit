@@ -6,7 +6,7 @@ import { analyticsDecorator as analytics } from '../../analytics';
 import { toggleBulletList, toggleOrderedList, tooltip } from '../../plugins/keymaps';
 import { ListsState } from '../../plugins/lists';
 import ToolbarButton from '../ToolbarButton';
-import { EditorView } from '../../prosemirror/future';
+import { EditorView } from '../../prosemirror';
 
 export interface Props {
   editorView?: EditorView;

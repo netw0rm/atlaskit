@@ -1,14 +1,18 @@
 import * as React from 'react';
-import { Mention } from '@atlaskit/mention';
+import { Mention, ResourcedMention } from '@atlaskit/mention';
+import { EventHandlers, ServicesConfig } from '../config';
 import Doc from './doc';
 import Paragraph from './paragraph';
 import {
-  isText,
-  isTextWrapper,
   mergeTextNodes,
   renderTextNodes,
   TextNode,
 } from './text';
+
+import {
+  isText,
+  isTextWrapper
+} from '../utils';
 
 export interface Renderable {
   type: string;
@@ -27,15 +31,15 @@ enum NodeType {
   textWrapper,
 }
 
-export const renderNode = (node: Renderable, index: number = 0) => {
+export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, eventHandlers?: EventHandlers, index: number = 0) => {
   const nodeContent = mergeTextNodes(node.content || []);
   const key = `${node.type}-${index}`;
 
   switch (NodeType[node.type]) {
     case NodeType.doc:
-      return <Doc key={key}>{nodeContent.map((child, index) => renderNode(child, index))}</Doc>;
+      return <Doc key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Doc>;
     case NodeType.paragraph:
-      return <Paragraph key={key}>{nodeContent.map((child, index) => renderNode(child, index))}</Paragraph>;
+      return <Paragraph key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Paragraph>;
     case NodeType.mention: {
       const { text, attrs } = node;
       let mentionText;
@@ -51,7 +55,30 @@ export const renderNode = (node: Renderable, index: number = 0) => {
       }
 
       const { id } = attrs as any || { id: 'unknown' };
-      return <Mention key={key} id={id} text={mentionText} />;
+      const { mention } = eventHandlers || { mention: {} };
+      const { onClick, onMouseEnter, onMouseLeave } = mention || { onClick: () => {}, onMouseEnter: () => {}, onMouseLeave: () => {}};
+      if (servicesConfig && servicesConfig.getMentionProvider) {
+        return (
+          <ResourcedMention
+            key={key}
+            id={id}
+            text={mentionText}
+            mentionProvider={servicesConfig.getMentionProvider()}
+            onClick={onClick}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+          />);
+      }
+
+      return (
+        <Mention
+          key={key}
+          id={id}
+          text={mentionText}
+          onClick={onClick}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        />);
     }
     default: {
       if (isTextWrapper(node.type)) {

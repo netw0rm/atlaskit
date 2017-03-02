@@ -1,5 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
+import AkButton from '@atlaskit/button';
 import styles from '../src/styles/profilecard.less';
 
 import { AkProfilecard } from '../src';
@@ -66,6 +68,16 @@ describe('Profilecard', () => {
           <AkProfilecard hasError />
         );
         expect(card.find(ErrorMessage).length).to.equal(1);
+      });
+
+      it('should render the ErrorMessage component with retry button if clientFetchProfile is provided', () => {
+        const card = mount(
+          <AkProfilecard hasError clientFetchProfile={() => {}} />
+        );
+        const errorComponent = card.find(ErrorMessage);
+        expect(errorComponent.length).to.equal(1);
+        expect(errorComponent.find(CrossCircleIcon).length).to.equal(1);
+        expect(errorComponent.find(AkButton).length).to.equal(1);
       });
     });
 

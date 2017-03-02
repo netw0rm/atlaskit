@@ -4,7 +4,7 @@ import * as React from 'react';
 import CodeBlockPlugin from '../../src/plugins/code-block';
 import FloatingToolbar from '../../src/ui/FloatingToolbar';
 import LanguagePicker from '../../src/ui/LanguagePicker';
-import { makeEditor } from '../../test-helper';
+import { makeEditor } from '../../src/test-helper';
 import { code_block, doc, p, schema } from '../_schema-builder';
 
 describe('LanguagePicker', () => {

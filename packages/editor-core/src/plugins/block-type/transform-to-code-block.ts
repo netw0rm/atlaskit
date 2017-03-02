@@ -1,5 +1,4 @@
 import { Transaction, Fragment, EditorState, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
-import { isCodeBlockNode, isHardBreakNode, isMentionNode } from '../../schema';
 
 export default function transformToCodeBlock(state: EditorState<any>): void {
   if (!isConvertableToCodeBlock(state)) {
@@ -11,7 +10,7 @@ export default function transformToCodeBlock(state: EditorState<any>): void {
 
 export function transformToCodeBlockAction(state: EditorState<any>, attrs?: any): Transaction {
   const { $from } = state.selection;
-  const codeBlock = state.schema.nodes.code_block;
+  const codeBlock = state.schema.nodes.codeBlock;
 
   const where = $from.before($from.depth);
   const tr = clearMarkupFor(state, where)
@@ -29,7 +28,7 @@ export function isConvertableToCodeBlock(state: EditorState<any>): boolean {
   const { $from } = state.selection;
   const node = $from.parent;
 
-  if (!node.isTextblock || isCodeBlockNode(node)) {
+  if (!node.isTextblock || node.type === state.schema.nodes.codeBlock) {
     return false;
   }
 
@@ -37,7 +36,7 @@ export function isConvertableToCodeBlock(state: EditorState<any>): boolean {
   const parentNode = $from.node(parentDepth);
   const index = $from.index(parentDepth);
 
-  return parentNode.canReplaceWith(index, index + 1, state.schema.nodes.code_block);
+  return parentNode.canReplaceWith(index, index + 1, state.schema.nodes.codeBlock);
 }
 
 function createSliceWithContent(content: string, state: EditorState<any>) {
@@ -47,7 +46,7 @@ function createSliceWithContent(content: string, state: EditorState<any>) {
 function clearMarkupFor(state: EditorState<any>, pos: number): Transaction {
   const tr = state.tr;
   const node = tr.doc.nodeAt(pos)!;
-  let match = state.schema.nodes.code_block.contentExpr.start();
+  let match = state.schema.nodes.codeBlock.contentExpr.start();
   const delSteps: Step[] = [];
 
   for (let i = 0, cur = pos + 1; i < node.childCount; i++) {
@@ -56,10 +55,10 @@ function clearMarkupFor(state: EditorState<any>, pos: number): Transaction {
 
     const allowed = match.matchType(child.type, child.attrs);
     if (!allowed) {
-      if (isMentionNode(child)) {
+      if (child.type === state.schema.nodes.mentions) {
         const content = child.attrs['displayName'];
         delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state), false));
-      } else if (isHardBreakNode(child)) {
+      } else if (child.type === state.schema.nodes.horizontalRule) {
         const content = '\n';
         delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state), false));
       } else {

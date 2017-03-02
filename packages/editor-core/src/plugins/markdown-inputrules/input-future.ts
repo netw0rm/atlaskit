@@ -1,7 +1,9 @@
-import { blockQuoteRule, codeBlockRule, Fragment, headingRule, InputRule, Mark, MarkType, Schema, Transaction } from '../../prosemirror';
+import { blockQuoteRule, Fragment, headingRule, InputRule, Mark, MarkType, Schema, Transaction } from '../../prosemirror';
+import { analyticsService} from '../../analytics';
+import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 
 function addMark(markType: MarkType, schema: Schema<any, any>): Function {
-  return (state, match, start, end) => {
+  return (state, match, start, end): Transaction => {
     const marks = [...state.doc.marksAt(start), markType.create()];
 
     // Because the match can start with space.
@@ -51,11 +53,24 @@ function buildMarkdownInputRules(schema: Schema<any, any>): Array<InputRule> {
     rules.push(blockQuoteRule(schema.nodes.blockquote));
   }
 
-  // TODO add back markdown inputRule for code block
-  // if (schema.nodes.codeBlock) {
-  //   // ``` for code block
-  //   rules.push(codeBlockRule(schema.nodes.codeBlock));
-  // }
+  if (schema.nodes.codeBlock) {
+    rules.push(new InputRule(/^```$/, (state, match, start, end): Transaction => {
+      const lengthOfDecorator = match[0].length;
+
+      // Because the node content is wrap by the node margin in prosemirror
+      // + 2 is the parent margin size. 1 in the front, and 1 at the end.
+      const convertedNodeHasContent = state.selection.$from.parent.nodeSize > lengthOfDecorator + 2;
+
+      if (isConvertableToCodeBlock(state) && convertedNodeHasContent) {
+        analyticsService.trackEvent(`atlassian.editor.format.codeblock.autoformatting`);
+        return transformToCodeBlockAction(state)
+          // remove markdown decorator ```
+          .delete(start, end)
+          .scrollIntoView();
+      }
+      return state.tr;
+    }));
+  }
 
   if (schema.nodes.horizontalRule) {
     // '---' for hr

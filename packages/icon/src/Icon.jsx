@@ -28,14 +28,14 @@ export default class Icon extends PureComponent {
   }
 
   render() {
-    const { color, fill } = this.props;
+    const { color, fill, label } = this.props;
     const Glyph = this.getGlyphTemplate();
     const iconBodyClasses = classnames([styles.iconBody, styles[this.props.size]]);
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <span className={iconBodyClasses} onClick={this.props.onClick}>
-        <div className={styles.svg} label={this.props.label} role="img">
-          <Glyph color={color} fill={fill} />
+        <div className={styles.svg} label={this.props.label} role="img" aria-labelledby={label}>
+          <Glyph color={color} fill={fill} label={label} />
         </div>
       </span>
     );

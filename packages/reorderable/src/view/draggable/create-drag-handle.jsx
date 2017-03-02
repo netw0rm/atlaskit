@@ -4,8 +4,6 @@ import invariant from 'invariant';
 import styled from 'styled-components';
 import type { Position } from '../../types';
 
-// declare function OnLift(point: Position): void;
-
 export type Callbacks = {
   onLift: (point: Position) => void,
   onKeyLift: () => void,
@@ -15,6 +13,8 @@ export type Callbacks = {
   onDrop: () => void,
   onCancel: () => void,
 }
+
+const noop = () => {};
 
 // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
 const primaryClick = 0;
@@ -30,39 +30,35 @@ const Container = styled.div`
   cursor: ${props => (props.isDragging ? 'grabbing' : 'grab')};
 `;
 
+type DragTypes = 'KEYBOARD' | 'MOUSE';
+
 // need a component so that we can kill events on unmount
 export class Handle extends PureComponent {
 
   /* eslint-disable react/sort-comp */
   props: Props
-  areMouseEventsBound: boolean;
   state: {|
-    isDragging: boolean
+    draggingWith: ?DragTypes;
   |}
 
   state = {
-    isDragging: false,
+    draggingWith: null,
   }
   /* eslint-enable react/sort-comp */
 
-  constructor(props: Props, context: any) {
-    super(props, context);
-
-    this.areMouseEventsBound = false;
-  }
-
   componentWillUnmount() {
-    if (this.areMouseEventsBound) {
-      this.unbindWindowMouseEvents();
+    if (!this.state.draggingWith) {
+      return;
     }
 
-    if (this.state.isDragging) {
-      this.props.onCancel();
-    }
+    this.unbindWindowEvents();
+    this.props.onCancel();
   }
 
-  onMouseMove = (event: SyntheticMouseEvent) => {
-    // TODO: cancel drag if enabled is changed while dragging
+  onWindowMouseMove = (event: SyntheticMouseEvent) => {
+    if (this.state.draggingWith === 'KEYBOARD') {
+      return;
+    }
 
     const { button, clientX, clientY } = event;
 
@@ -78,37 +74,37 @@ export class Handle extends PureComponent {
     this.props.onMove(point);
   };
 
-  onMouseUp = (event: SyntheticMouseEvent): void => {
-    const { button } = event;
+  onWindowMouseUp = (event: SyntheticMouseEvent): void => {
+    invariant(this.state.draggingWith, 'should not be listening to mouse up events when nothing is dragging');
 
-    if (button !== primaryClick) {
+    if (this.state.draggingWith === 'MOUSE' && event.button !== primaryClick) {
       return;
     }
 
-    this.unbindWindowMouseEvents();
-
-    // drag might have been cancelled via keyboard
-    if (!this.state.isDragging) {
-      return;
-    }
-
-    this.setState({
-      isDragging: false,
-    });
-    this.props.onDrop();
+    this.stopDragging(() => this.props.onDrop());
   };
 
+  onWindowMouseDown = (): void => {
+    if (this.state.draggingWith !== 'KEYBOARD') {
+      return;
+    }
+
+    this.stopDragging(() => this.props.onDrop());
+  }
+
   onMouseDown = (event: SyntheticMouseEvent) => {
+    if (this.state.draggingWith === 'KEYBOARD') {
+      this.stopDragging(() => this.props.onCancel());
+      return;
+    }
+
+    invariant(!this.state.draggingWith, 'mouse down will not start a drag as it is already dragging');
+
     if (!this.props.isEnabled) {
       return;
     }
 
     const { button, clientX, clientY } = event;
-
-    if (this.isDragging) {
-      console.warn('mouse down will not start a drag as it is already dragging');
-      return;
-    }
 
     if (button !== primaryClick) {
       return;
@@ -119,11 +115,7 @@ export class Handle extends PureComponent {
       y: clientY,
     };
 
-    this.bindWindowMouseEvents();
-    this.setState({
-      isDragging: true,
-    });
-    this.props.onLift(point);
+    this.startDragging('MOUSE', () => this.props.onLift(point));
   };
 
   onKeyDown = (event: SyntheticKeyboardEvent) => {
@@ -131,35 +123,25 @@ export class Handle extends PureComponent {
       return;
     }
 
-    // keeping it simple for now and not allowing keyboard while using the mouse
-    // if (this.areMouseEventsBound) {
-    //   return;
-    // }
-
     // space bar
     if (event.key === ' ') {
       event.preventDefault();
       // not allowing double lift
-      if (this.state.isDragging) {
-        this.stopDragging();
-        this.props.onDrop();
+      if (this.state.draggingWith) {
+        this.stopDragging(() => this.props.onDrop());
         return;
       }
 
-      this.setState({
-        isDragging: true,
-      });
-      this.props.onKeyLift();
+      this.startDragging('KEYBOARD', () => this.props.onKeyLift());
     }
 
-    if (!this.state.isDragging) {
+    if (!this.state.draggingWith) {
       return;
     }
 
     if (event.key === 'Escape') {
       event.preventDefault();
-      this.stopDragging();
-      this.props.onCancel();
+      this.stopDragging(() => this.props.onCancel());
     }
 
     // blocking tabbing while dragging
@@ -167,8 +149,8 @@ export class Handle extends PureComponent {
       event.preventDefault();
     }
 
-    // not allowing arrow movement while mouse is bound
-    if (this.areMouseEventsBound) {
+    // not allowing arrow keys while dragginw with mouse
+    if (this.state.draggingWith === 'MOUSE') {
       return;
     }
 
@@ -183,41 +165,62 @@ export class Handle extends PureComponent {
     }
   }
 
-  stopDragging = () => {
-    if (this.areMouseEventsBound) {
-      this.unbindWindowMouseEvents();
-    }
+  startDragging = (type: DragTypes, done?: Function = noop) => {
+    invariant(!this.state.draggingWith, 'cannot start dragging when already dragging');
+    this.bindWindowEvents();
     this.setState({
-      isDragging: false,
-    });
+      draggingWith: type,
+    }, done);
   }
 
-  bindWindowMouseEvents = () => {
-    invariant(!this.areMouseEventsBound, 'mouse events are already bound');
-    invariant(!this.isDragging, 'cannot bind mouse events - already dragging');
+  stopDragging = (done?: Function = noop) => {
+    invariant(this.state.draggingWith, 'cannot stop dragging when not dragging');
 
-    console.log('binding mouse events');
+    this.unbindWindowEvents();
+    this.setState({
+      draggingWith: null,
+    }, done);
+  }
 
-    window.addEventListener('mousemove', this.onMouseMove);
-    window.addEventListener('mouseup', this.onMouseUp);
-
-    this.areMouseEventsBound = true;
-  };
-
-  unbindWindowMouseEvents = () => {
-    invariant(this.areMouseEventsBound, 'there are no mouse events bound');
+  unbindWindowEvents = () => {
     console.log('unbinding mouse events');
+    window.removeEventListener('mousemove', this.onWindowMouseMove);
+    window.removeEventListener('mouseup', this.onWindowMouseUp);
+    window.removeEventListener('mousedown', this.onWindowMouseDown);
+  }
 
-    window.removeEventListener('mousemove', this.onMouseMove);
-    window.removeEventListener('mouseup', this.onMouseUp);
+  bindWindowEvents = () => {
+    window.addEventListener('mousemove', this.onWindowMouseMove);
+    window.addEventListener('mouseup', this.onWindowMouseUp);
+    window.addEventListener('mousedown', this.onWindowMouseDown);
+  }
 
-    this.areMouseEventsBound = false;
-  };
+  // bindMouseDragEvents = () => {
+  //   invariant(!this.areMouseEventsBound, 'mouse events are already bound');
+  //   invariant(!this.isDragging, 'cannot bind mouse events - already dragging');
+
+  //   console.log('binding mouse events');
+
+  //   window.addEventListener('mousemove', this.onWindowMouseMove);
+  //   window.addEventListener('mouseup', this.onWindowMouseUp);
+
+  //   this.areMouseEventsBound = true;
+  // };
+
+  // unbindMouseDragEvents = () => {
+  //   invariant(this.areMouseEventsBound, 'there are no mouse events bound');
+  //   console.log('unbinding mouse events');
+
+  //   window.removeEventListener('mousemove', this.onWindowMouseMove);
+  //   window.removeEventListener('mouseup', this.onWindowMouseUp);
+
+  //   this.areMouseEventsBound = false;
+  // };
 
   render() {
     return (
       <Container
-        isDragging={this.state.isDragging}
+        isDragging={Boolean(this.state.draggingWith)}
         tabIndex="0"
         draggable="false"
         onMouseDown={this.onMouseDown}

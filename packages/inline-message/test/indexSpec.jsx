@@ -10,6 +10,7 @@ import {
   akColorY300,
 } from '@atlaskit/util-shared-styles';
 import SuccessIcon from 'ak-icon/glyph/success';
+import InlineDialog from '@atlaskit/inline-dialog';
 import styles from 'style!../src/styles.less';
 import InlineMessage from '../src';
 import IconForType from '../src/internal/IconForType';
@@ -56,6 +57,15 @@ describe(name, () => {
       it('should be passed to IconForType component', () => {
         const wrapper = mount(<InlineMessage type="error" />);
         expect(wrapper.find(IconForType).prop('type')).to.equal('error');
+      });
+    });
+    describe('position', () => {
+      it('should default to "bottom left"', () => {
+        expect(mount(<InlineMessage />).prop('position')).to.equal('bottom left');
+      });
+      it('should be passed to InlineDialog component', () => {
+        const wrapper = mount(<InlineMessage position="right middle" />);
+        expect(wrapper.find(InlineDialog).prop('position')).to.equal('right middle');
       });
     });
   });

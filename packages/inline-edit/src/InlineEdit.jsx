@@ -45,7 +45,8 @@ export default class InlineEdit extends PureComponent {
   }
 
   componentDidUpdate() {
-    this.setState({ // eslint-disable-line react/no-did-update-set-state
+    // eslint-disable-next-line react/no-did-update-set-state
+    this.setState({
       shouldResetFieldBase: false,
     });
   }

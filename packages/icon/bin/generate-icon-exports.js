@@ -11,6 +11,8 @@ const minilog = require('minilog');
 const webpackConf = require('./webpack.config.js');
 const { glyphFolderName, tmpFolderName, fileEnding } = require('./constants');
 const workOnIcons = require('./workOnIcons');
+const babelCore = require('babel-core');
+const mkdirp = require('mkdirp');
 
 const log = minilog('ak-icon/gen-js');
 
@@ -27,6 +29,19 @@ const tmpFolder = path.join(rootFolder, 'src', tmpFolderName);
 const destFolder = path.join(rootFolder, glyphFolderName);
 
 async.waterfall([
+  function createIcon(cb) {
+    const entry = {
+      Icon: `${path.join(rootFolder, 'src')}/Icon.jsx`,
+    };
+    const compiler = webpack(webpackConf(path.join(rootFolder, 'lib'), entry));
+    compiler.run((err, stats) => {
+      if (err || stats.compilation.errors.length) {
+        cb(err || stats.compilation.errors);
+        return;
+      }
+      cb();
+    });
+  },
   function cleanTmpDir(cb) {
     log.debug('cleaning temp directory');
 
@@ -45,7 +60,10 @@ async.waterfall([
     }, cb);
   },
   workOnIcons(log, srcFolder, tmpFolder),
-
+  function createTargetDir(iconPaths, cb) {
+    log.debug('creating target directorie');
+    mkdirp(destFolder, () => cb(null, iconPaths));
+  },
   function webpackify(iconPaths, cb) {
     log.info('Transforming icons via webpack');
 
@@ -54,17 +72,21 @@ async.waterfall([
       prev[base] = path.join(tmpFolder, base);
       return prev;
     }, {});
-    const compiler = webpack(webpackConf(destFolder, entry));
-    compiler.run((err, stats) => {
-      if (err || stats.compilation.errors.length) {
-        cb(err || stats.compilation.errors);
-        return;
-      }
-      cb(null, { entry });
-    });
+
+    const tasks = Object.keys(entry).map(name => _cb =>
+      babelCore.transformFile(`${entry[name]}.jsx`, {}, (err, result) => {
+        if (err) {
+          log.error(err);
+        }
+        const fileName = path.join(destFolder, `${name}.js`);
+        mkdirp(path.dirname(fileName), () => fs.writeFile(fileName, result.code, _cb));
+      })
+    );
+
+    async.waterfall(tasks, () => cb(null, { entry }));
   },
   function writeTypeScriptDefinitions({ entry }, cb) {
-    log.debug('"Writing TypeScript definitions');
+    log.debug('Writing TypeScript definitions');
 
     const contents = `
 import { PureComponent } from 'react';
@@ -81,7 +103,7 @@ export default class extends PureComponent<Props, State> {}
     const tasks = Object
       .keys(entry)
       .map(item =>
-         cb_ => fs.writeFile(path.join(destFolder, `${item}.d.ts`), contents, cb_)
+        cb_ => fs.writeFile(path.join(destFolder, `${item}.d.ts`), contents, cb_)
       );
 
     async.waterfall(tasks, cb);

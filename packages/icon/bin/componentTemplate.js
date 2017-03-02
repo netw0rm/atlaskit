@@ -10,27 +10,15 @@ module.exports = ({
 }) => {
   const componentName = iconNameToComponentName(unprefixedIconName);
 
-  const srcPath = path.join(__dirname, '..', 'src');
+  const srcPath = path.join(__dirname, '..', 'tmp');
   const currentJsPath = path.join(srcPath, tmpFolderName, path.dirname(iconRelativePathToSrc));
   const relativePathToSrc = path.relative(currentJsPath, srcPath);
 
   /* eslint-disable max-len */
-  return `import React from 'react';
-import Icon from '${relativePathToSrc}/Icon';
-
-export default class extends Icon {
-  static displayName = ${JSON.stringify(componentName)};
-  getGlyphTemplate() {
-    return (props) => {
-      const { label: title } = props;
-      const iconProps = {...props};
-      delete iconProps.label;
-
-      // eslint-disable-next-line max-len, react/jsx-space-before-closing
-      return (${svgData});
-    };
-  }
-}
+  return `import { iconContructor } from '${relativePathToSrc}/lib/Icon';
+  /* eslint-disable max-len */
+export default iconContructor('${componentName}','${svgData}');
+  /* eslint-enable max-len */
 `;
-/* eslint-enable max-len */
+  /* eslint-enable max-len */
 };

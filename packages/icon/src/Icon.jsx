@@ -1,4 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
+import styled from 'styled-components';
 import classnames from 'classnames';
 
 import styles from 'style!./styles.less';
@@ -10,10 +11,15 @@ export default class Icon extends PureComponent {
     label: PropTypes.string.isRequired,
     size: PropTypes.oneOf(Object.keys(size).map(k => size[k])),
     onClick: PropTypes.func,
+    color: PropTypes.string,
+    fill: PropTypes.string,
   }
 
   static defaultProps = {
-    onClick() {},
+    onClick() {
+    },
+    size: 'small',
+    color: '#172b4d',
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -22,15 +28,42 @@ export default class Icon extends PureComponent {
   }
 
   render() {
+    const { color, fill } = this.props;
     const Glyph = this.getGlyphTemplate();
     const iconBodyClasses = classnames([styles.iconBody, styles[this.props.size]]);
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <span className={iconBodyClasses} onClick={this.props.onClick}>
-        <Glyph className={styles.svg} label={this.props.label} role="img" />
+        <div className={styles.svg} label={this.props.label} role="img">
+          <Glyph color={color} fill={fill} />
+        </div>
       </span>
     );
   }
 }
 
-export { NotImplementedError, size };
+const IconContent = styled.div`
+  background-image: url(${props => props.dataURI});
+  background-size: contain;
+  width: 100%;
+  height: 100%;
+`;
+
+const iconContructor = (componentName, svgBase) => (
+  class extends Icon {
+    static displayName = JSON.stringify(componentName);
+    /* eslint-disable class-methods-use-this */
+    getGlyphTemplate() {
+      return (props) => {
+        const placeHolders = Object.keys(props).map(key => `${key}="${props[key]}"`).join(' ');
+        const svgData = btoa(svgBase.replace(/iconProps/i, placeHolders));
+
+        const dataURI = `data:image/svg+xml;base64,${svgData}`;
+        return (<IconContent dataURI={dataURI} />);
+      };
+    }
+    /* eslint-enable class-methods-use-this */
+  }
+);
+
+export { NotImplementedError, iconContructor, size };

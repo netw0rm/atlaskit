@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { Schema, Text } from '../../../src';
 import { DocNodeType, isPanelNode, PanelNodeType, ParagraphNodeType } from '../../../src';
-import { fromHTML, toHTML } from '../../../test-helper';
+import { fromHTML, toHTML } from '../../../src/test-helper';
 
 const schema = makeSchema();
-describe('ak-editor-core/schema panel node', () => {
+describe('@atlaskit/editor-core/schema panel node', () => {
   it('throws an error if it is not named "panel"', () => {
     expect(() => {
       new Schema({

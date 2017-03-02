@@ -10,86 +10,22 @@ import ErrorMessage from './components/ErrorMessage';
 import IconLabel from './components/IconLabel';
 import presences from './internal/presences';
 
-/**
- * @description Create instances of the Profilecard component in a React context.
- * @class Profilecard
- *
- */
 export default class Profilecard extends PureComponent {
   static propTypes = {
-    /**
-     * @memberof Profilecard
-     * @instance
-     * @type {string}
-     */
     avatarUrl: PropTypes.string,
-    /**
-     * @memberof Profilecard
-     * @instance
-     * @type {string}
-     */
     fullName: PropTypes.string,
-    /**
-     * @memberof Profilecard
-     * @instance
-     * @type {string}
-     */
     meta: PropTypes.string,
-    /**
-     * @memberof Profilecard
-     * @instance
-     * @type {string}
-     */
     nickname: PropTypes.string,
-    /**
-     * @memberof Profilecard
-     * @instance
-     * @type {string}
-     */
     location: PropTypes.string,
-    /**
-     * @memberof Profilecard
-     * @instance
-     * @type {string}
-     */
     timestring: PropTypes.string,
-     /**
-      * @description Indicates the users online status by showing a small icon
-      * Allowed values: 'available', 'busy', 'unavailable' or 'none'
-      * @memberof Profilecard
-      * @instance
-      * @default none
-      * @type {string}
-      */
     presence: PropTypes.oneOf(Object.keys(presences)),
-    /**
-     * @description Defining the action buttons on the card.
-     * Array of one or more action objects with `label` and `callback` keys.
-     * `label` defines the button text while `callback` is invoked when
-     * the button is clicked.
-     * @memberof Profilecard
-     * @instance
-     * @type {array}
-     * @example [{label: 'Chat', callback: () => { ... }}, ... ]
-     */
     actions: React.PropTypes.arrayOf(React.PropTypes.shape({
       callback: React.PropTypes.function,
       label: React.PropTypes.string,
     })),
-    /**
-     * @description Indicates that the user info is being fetched
-     * @memberof Profilecard
-     * @instance
-     * @type {bool}
-     */
     isLoading: React.PropTypes.bool,
-    /**
-     * @description Indicates that the user info fetch request has failed
-     * @memberof Profilecard
-     * @instance
-     * @type {bool}
-     */
     hasError: React.PropTypes.bool,
+    clientFetchProfile: React.PropTypes.func,
 
   }
 
@@ -99,7 +35,7 @@ export default class Profilecard extends PureComponent {
 
   render() {
     if (this.props.hasError) {
-      return <ErrorMessage reload={this.clientFetchProfile} />;
+      return <ErrorMessage reload={this.props.clientFetchProfile} />;
     }
 
     if (this.props.isLoading) {

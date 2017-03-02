@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { browser, commands } from '../../../src';
 import ListsPlugin from '../../../src/plugins/lists';
-import { chaiPlugin, makeEditor } from '../../../test-helper';
+import { chaiPlugin, makeEditor } from '../../../src/test-helper';
 import { blockquote, doc, h1, li, ol, p, schema, ul } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
@@ -25,6 +25,8 @@ describe('lists', () => {
         pm.input.dispatchKey('Enter');
 
         expect(splitListItem.callCount).to.equal(1);
+
+        (commands.splitListItem as any).restore();
       });
     });
 

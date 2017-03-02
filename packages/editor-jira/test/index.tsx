@@ -10,7 +10,7 @@ chai.use(chaiPlugin);
 
 const expect = chai.expect;
 
-describe('ak-editor-jira/expand and collapse', () => {
+describe('@atlaskit/editor-jira expand and collapse', () => {
   it('should not render expanded chrome when collapsed by default', () => {
     expect(mount(<Editor />).find('ChromeCollapsed')).to.have.length.above(0);
     expect(mount(<Editor />).find('input[placeholder]')).to.have.length.above(0);

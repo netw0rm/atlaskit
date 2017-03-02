@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import CodeBlockPlugin from '../../../src/plugins/code-block';
-import { chaiPlugin, code_block, doc, makeEditor, p } from '../../../test-helper';
+import { chaiPlugin, code_block, doc, makeEditor, p } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 

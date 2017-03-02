@@ -87,6 +87,33 @@ storiesOf(name, module)
       </BasicFieldBase>
     </div>
   )
+  .add('with validity prop', () =>
+    <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
+      <BasicFieldBase
+        label="Invalid example"
+        id="fieldbase"
+        validity="foo bar"
+      >
+        <Input
+          value="input children"
+          isEditing
+          id="fieldbase"
+        />
+      </BasicFieldBase>
+      <BasicFieldBase
+        label="Invalid + compact example"
+        id="fieldbase"
+        isCompact
+        validity="foo bar"
+      >
+        <Input
+          id="fieldbase"
+          isEditing
+          value="input children"
+        />
+      </BasicFieldBase>
+    </div>
+  )
   .add('with spinner', () => {
     const input = (
       <Input

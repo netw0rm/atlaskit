@@ -1,8 +1,8 @@
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
-import WarningIcon from '@atlaskit/icon/glyph/warning';
 import React, { PureComponent, PropTypes } from 'react';
 import Spinner from '@atlaskit/spinner';
+import InlineMessage from '@atlaskit/inline-message';
 import appearances, { standard, none, subtle } from './internal/appearances';
 
  /* eslint-disable react/no-unused-prop-types */
@@ -22,6 +22,7 @@ export default class FieldBase extends PureComponent {
     onBlur: PropTypes.func.isRequired,
     shouldReset: PropTypes.bool,
     children: PropTypes.node,
+    validity: PropTypes.string,
   }
 
   static defaultProps = {
@@ -45,18 +46,20 @@ export default class FieldBase extends PureComponent {
     }
   }
 
-  renderWarningIcon = () => (
-    <div className={styles.warningIconWrapper}>
-      <WarningIcon label="warning" />
-    </div>
-  )
-
-  renderRightGutter = () => {
-    if (this.props.isInvalid) {
-      return this.renderWarningIcon();
+  renderRightGutter() {
+    if (this.props.isInvalid || this.props.validity) {
+      return (
+        <div className={styles.warningIconWrapper}>
+          <InlineMessage type="warning">{this.props.validity}</InlineMessage>
+        </div>
+      );
     }
 
-    return this.props.isLoading ? <Spinner /> : null;
+    if (this.props.isLoading) {
+      return <Spinner />;
+    }
+
+    return null;
   }
 
   render() {

@@ -26,6 +26,7 @@ export default props => (
       isPaddingDisabled={props.isPaddingDisabled}
       isFitContainerWidthEnabled={props.isFitContainerWidthEnabled}
       isLoading={props.isLoading}
+      validity={props.validity}
     >
       {props.children}
     </AkFieldBase>

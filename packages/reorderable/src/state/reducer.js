@@ -12,7 +12,7 @@ import type { TypeId,
   DragComplete,
 } from '../types';
 import getDragImpact from './get-drag-impact';
-import moveForward from './get-move-forward';
+import { moveForward, moveBackward } from './get-position-move';
 
 const initialState: State = {
   draggableDimensions: {},
@@ -180,6 +180,15 @@ export default (state: State = initialState, action: Action): State => {
     }
 
     return moveForward(state);
+  }
+
+  if (action.type === 'MOVE_BACKWARD') {
+    const previous: ?CurrentDrag = state.currentDrag;
+    if (previous == null) {
+      return state;
+    }
+
+    return moveBackward(state);
   }
 
   if (action.type === 'DROP') {

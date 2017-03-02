@@ -3,7 +3,7 @@ import type { Position, CurrentDrag, DragImpact, Dragging, Dimension, DimensionM
 import getInsideDroppable from './get-inside-droppable';
 import getDragImpact from './get-drag-impact';
 
-export default (state: State): State => {
+const positionMove = (isMovingFoward: boolean, state: State): State => {
   const previous: ?CurrentDrag = state.currentDrag;
   if (!previous) {
     console.warn('cannot move when there is no current drag');
@@ -31,19 +31,24 @@ export default (state: State): State => {
 
   const insideDroppable: Dimension[] = getInsideDroppable(droppableDimension, draggableDimensions);
 
-  const lastIndex: number = impact.destination.index;
+  const currentIndex: number = impact.destination.index;
 
-  if (lastIndex === insideDroppable.length - 1) {
+  if (isMovingFoward && currentIndex === insideDroppable.length - 1) {
     return state;
   }
 
-  const nextDimension: Dimension = insideDroppable[lastIndex + 1];
+  if (!isMovingFoward && currentIndex === 0) {
+    return state;
+  }
 
-  // how far to move it down?
+  const nextDimension: Dimension = insideDroppable[isMovingFoward ? currentIndex + 1 : currentIndex - 1];
+
   // move down 1/2 height of next dimension
+  const amount: number = (draggableDimension.height / 2) + (nextDimension.height / 2);
+
   const diff: Position = {
     x: 0,
-    y: (draggableDimension.height / 2) + (nextDimension.height / 2),
+    y: isMovingFoward ? amount : -amount,
   };
 
   const offset = {
@@ -76,3 +81,6 @@ export default (state: State): State => {
     },
   };
 };
+
+export const moveForward = positionMove.bind(null, true);
+export const moveBackward = positionMove.bind(null, false);

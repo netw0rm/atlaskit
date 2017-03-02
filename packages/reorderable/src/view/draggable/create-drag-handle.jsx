@@ -141,9 +141,7 @@ export class Handle extends PureComponent {
       event.preventDefault();
       // not allowing double lift
       if (this.state.isDragging) {
-        this.setState({
-          isDragging: false,
-        });
+        this.stopDragging();
         this.props.onDrop();
         return;
       }
@@ -160,10 +158,18 @@ export class Handle extends PureComponent {
 
     if (event.key === 'Escape') {
       event.preventDefault();
-      this.setState({
-        isDragging: false,
-      });
+      this.stopDragging();
       this.props.onCancel();
+    }
+
+    // blocking tabbing while dragging
+    if (event.key === 'Tab') {
+      event.preventDefault();
+    }
+
+    // not allowing arrow movement while mouse is bound
+    if (this.areMouseEventsBound) {
+      return;
     }
 
     if (event.key === 'ArrowDown') {
@@ -175,6 +181,15 @@ export class Handle extends PureComponent {
       event.preventDefault();
       this.props.onMoveBackward();
     }
+  }
+
+  stopDragging = () => {
+    if (this.areMouseEventsBound) {
+      this.unbindWindowMouseEvents();
+    }
+    this.setState({
+      isDragging: false,
+    });
   }
 
   bindWindowMouseEvents = () => {

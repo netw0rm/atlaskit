@@ -1,4 +1,4 @@
-import { EditorState, Transaction } from '../prosemirror/future';
+import { EditorState, liftTarget, Transaction } from '../prosemirror/future';
 import * as baseCommand from '../prosemirror/future/prosemirror-commands/commands';
 import * as baseListCommand from '../prosemirror/future/prosemirror-schema-list';
 
@@ -6,12 +6,24 @@ export * from '../prosemirror/future/prosemirror-commands/commands';
 
 export function toggleBulletList() {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const {$from} = state.selection;
+    const { $from } = state.selection;
     const grandgrandParent = $from.node(-2);
     if (grandgrandParent && grandgrandParent.type === state.schema.nodes.bullet_list) {
-      return baseListCommand.liftListItem(state.schema.nodes.list_item)(state, dispatch);
+      return liftListItem()(state, dispatch);
     } else {
       return baseListCommand.wrapInList(state.schema.nodes.bullet_list)(state, dispatch);
+    }
+  };
+}
+
+export function toggleOrderedList() {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    const { $from } = state.selection;
+    const grandgrandParent = $from.node(-2);
+    if (grandgrandParent && grandgrandParent.type === state.schema.nodes.ordered_list) {
+      return liftListItem()(state, dispatch);
+    } else {
+      return baseListCommand.wrapInList(state.schema.nodes.ordered_list)(state, dispatch);
     }
   };
 }
@@ -22,15 +34,36 @@ export function splitListItem() {
   };
 }
 
-export function toggleOrderedList() {
+export function liftListItem() {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    return baseListCommand.wrapInList(state.schema.nodes.ordered_list)(state, dispatch);
+    let { $from, $to } = state.selection;
+    let { list_item, paragraph } = state.schema.nodes;
+    let range = $from.blockRange($to, (node) => {
+      if (node && node.firstChild) {
+        return node.type === list_item && node.firstChild.type === paragraph;
+      }
+      return false;
+    });
+
+    if (!range) {
+      return false;
+    }
+
+    const target = range && liftTarget(range);
+
+    if (target === undefined) {
+      return false;
+    }
+
+    dispatch(state.tr.lift(range, target));
+
+    return true;
   };
 }
 
 export function toggleCodeBlock() {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const {$from, $to} = state.selection;
+    const { $from, $to } = state.selection;
     const currentBlock = $from.parent;
 
     if (currentBlock.type !== state.schema.nodes.codeBlock) {
@@ -45,7 +78,7 @@ export function toggleCodeBlock() {
 
 export function setNormalText() {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const {$from, $to} = state.selection;
+    const { $from, $to } = state.selection;
     const currentBlock = $from.parent;
 
     if (currentBlock.type !== state.schema.nodes.paragraph) {
@@ -59,7 +92,7 @@ export function setNormalText() {
 
 export function toggleBlockquote() {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const {$from} = state.selection;
+    const { $from } = state.selection;
     const potentialBlockquoteNode = $from.node($from.depth - 1);
 
     if (potentialBlockquoteNode && potentialBlockquoteNode.type === state.schema.nodes.blockquote) {
@@ -72,7 +105,7 @@ export function toggleBlockquote() {
 
 export function toggleHeading(level: number) {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const {$from, $to} = state.selection;
+    const { $from, $to } = state.selection;
     const currentBlock = $from.parent;
 
     if (currentBlock.type !== state.schema.nodes.heading || currentBlock.attrs['level'] !== level) {

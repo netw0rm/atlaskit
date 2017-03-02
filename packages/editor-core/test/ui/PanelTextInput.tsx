@@ -6,7 +6,7 @@ import * as sinon from 'sinon';
 import PanelTextInput from '../../src/ui/PanelTextInput';
 
 
-describe('ak-editor-core/ui/PanelTextInput', () => {
+describe('@atlaskit/editor-core/ui/PanelTextInput', () => {
   it('should call onSubmit when ENTER key is pressed', () => {
     const onSubmitHandler = sinon.stub();
     const panel = mount(<PanelTextInput onSubmit={onSubmitHandler} />);

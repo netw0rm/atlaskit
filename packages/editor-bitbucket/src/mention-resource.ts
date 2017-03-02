@@ -1,4 +1,4 @@
-import { AbstractMentionResource } from 'ak-mention';
+import { AbstractMentionResource } from '@atlaskit/mention';
 
 export interface MentionSource {
   query(query: string): void;

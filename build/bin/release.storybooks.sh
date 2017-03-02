@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-CHALK="`yarn bin`/chalk"
+BIN_PATH=$(yarn bin)
+LERNA="$BIN_PATH/lerna"
+CHALK="$BIN_PATH/chalk"
 CDN_PREFIX="stories"
 BASEDIR=$(dirname $0)
 . $BASEDIR/_build_status.sh
@@ -18,8 +20,15 @@ function storybooks_build_status() {
 }
 
 function build_storybooks() {
+  $CHALK --no-stdin -t "{blue getting released packages}"
+  # The .released-packages file is created by `lerna-semantic-release perform` and contains a list of all the released packages
+  RELEASED_PACKAGES_RAW=$(cat ./.released-packages)
+  # we pass that to get_released_packages_glob.js to get a glob we can pass to lerna
+  RELEASED_PACKAGES_GLOB=$($BASEDIR/get_released_packages_glob.js "$RELEASED_PACKAGES_RAW")
+
   $CHALK --no-stdin -t "{blue Building storybooks}"
-  yarn run storybook/static/registry
+  rm -rf ./stories
+  $LERNA exec --concurrency=1 --scope="$RELEASED_PACKAGES_GLOB" -- ../../build/bin/storybook.static.registry.sh
 }
 
 storybooks_build_status "INPROGRESS"

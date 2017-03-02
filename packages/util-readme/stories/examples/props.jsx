@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import { Props } from 'akutil-readme';
+import { Props } from '@atlaskit/util-readme';
 
 class MyComponent extends PureComponent {
   static propTypes = {

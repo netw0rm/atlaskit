@@ -2,8 +2,8 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
-import { chaiPlugin, insert, makeEditor } from '../../../test-helper';
-import { doc, link, linkable, schema, unlinkable } from '../../_schema-builder';
+import { chaiPlugin, insert, makeEditor } from '../../../src/test-helper';
+import { doc, paragraph, link, linkable, schema, unlinkable } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
 
@@ -434,12 +434,67 @@ describe('hyperlink', () => {
       expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('txt'))));
     });
 
+    it('should call subscribers when link was focused and then editor is blur', () => {
+      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      expect(spy.callCount).to.equal(2);
+    });
+
+    it('should not call subscribers if link was not focused when editor is blur', () => {
+      const { pm, plugin } = editor(doc(paragraph('te{<>}st'), linkable(link({ href: 'http://www.atlassian.com' })('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      expect(spy.callCount).to.equal(1);
+    });
+
+    it('should not call subscribers if editor is focused but link is not focused', () => {
+      const { pm, plugin } = editor(doc(paragraph('te{<>}st'), linkable(link({ href: 'http://www.atlassian.com' })('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      pm.on.focus.dispatch();
+      expect(spy.callCount).to.equal(1);
+    });
+
     it('should return referring DOM element', () => {
       const { plugin } = editor(doc(
         linkable(link({ href: 'http://www.atlassian.com' })('atlassian')),
         linkable(link({ href: 'http://www.stypositive.ru' })('d{<>}sorin'))));
 
       expect(plugin.element.text).to.eq('dsorin');
+    });
+  });
+
+  describe('toolbarVisible', () => {
+    context('when editor is blur', () => {
+      it('it is false', () => {
+        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+        pm.on.focus.dispatch();
+        pm.on.blur.dispatch();
+        expect(plugin.toolbarVisible).to.not.be.true;
+      });
+    });
+  });
+
+  describe('editorFocued', () => {
+    context('when editor is focused', () => {
+      it('it is true', () => {
+        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+        pm.on.blur.dispatch();
+        pm.on.focus.dispatch();
+        expect(plugin.editorFocused).to.be.true;
+      });
+    });
+
+    context('when editor is blur', () => {
+      it('it is false', () => {
+        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+        pm.on.blur.dispatch();
+        expect(plugin.editorFocused).not.to.be.true;
+      });
     });
   });
 });

@@ -3,6 +3,7 @@
  * @param {Node} component A node to pull the shadowRoot from.
  * @example @js const elem = document.querySelector('.fixture').firstChild;
  *  const sr = getShadowRoot(elem);
+ * @ignore
  */
 function getShadowRoot(component) {
   return component.shadowRoot;

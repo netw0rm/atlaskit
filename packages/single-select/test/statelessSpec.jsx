@@ -318,6 +318,31 @@ describe(name, () => {
         instance.handleKeyboardInteractions(event);
         expect(spy.called).to.equal(false);
       });
+
+      it('should NOT call handleNativeSearch when autocompelte is enabled', () => {
+        wrapper.setProps({ hasAutocomplete: true });
+        const spy = sinon.spy(instance, 'handleNativeSearch');
+        const event = { key: 'j' };
+        instance.handleKeyboardInteractions(event);
+        expect(spy.called).to.equal(false);
+      });
+
+      it('should NOT call handleNativeSearch when keyUp, keyDown or Enter are pressed', () => {
+        wrapper.setProps({ hasAutocomplete: true });
+        const spy = sinon.spy(instance, 'handleNativeSearch');
+        ['Enter', 'ArrowUp', 'ArrowDown'].forEach(() => {
+          const event = { key: 'Enter' };
+          instance.handleKeyboardInteractions(event);
+        });
+        expect(spy.called).to.equal(false);
+      });
+
+      it('should call handleNativeSearch when other keys are pressed and autocomplete is not enabled', () => {
+        const spy = sinon.spy(instance, 'handleNativeSearch');
+        const event = { key: 'j' };
+        instance.handleKeyboardInteractions(event);
+        expect(spy.calledOnce).to.equal(true);
+      });
     });
 
     describe('handleInputOnChange', () => {
@@ -437,8 +462,8 @@ describe(name, () => {
     });
 
     describe('getNextFocusable', () => {
-      it('should return 0 if null is passed as a current focus', () => {
-        expect(instance.getNextFocusable(null, 2)).to.equal(0);
+      it('should return 0 if undefined is passed as a current focus', () => {
+        expect(instance.getNextFocusable(undefined, 2)).to.equal(0);
       });
 
       it('should return next item', () => {
@@ -471,6 +496,44 @@ describe(name, () => {
 
         wrapper.setProps({ items: [{ heading: '', items }], filterValue: 'test', selectedItem: items[0] });
         expect(instance.getAllVisibleItems(wrapper.prop('items'))).to.deep.equal([items[1], items[2]]);
+      });
+    });
+
+    describe('getAllItems', () => {
+      it('should return all items', () => {
+        const items = [
+          { value: 1, content: 'Test1' },
+          { value: 2, content: 'Test 2' },
+          { value: 3, content: 'Third test' },
+          { value: 4, content: 'Something different' },
+        ];
+
+        wrapper.setProps({ items: [{ heading: '', items }], filterValue: 'test', selectedItem: items[0] });
+        expect(instance.getAllItems(wrapper.prop('items'))).to.deep.equal(items);
+      });
+    });
+
+    describe('getNextNativeSearchItem', () => {
+      const items = [
+        { content: 'some text' },
+        { content: 'another text' },
+        { content: 'test text 1' },
+        { content: 'test text 2' },
+        { content: 'test text 3' },
+        { content: 'again another text' },
+      ];
+
+      it('should return first matching item after given index', () => {
+        expect(instance.getNextNativeSearchItem(items, 't', 0)).to.equal(items[2]);
+        expect(instance.getNextNativeSearchItem(items, 't', 2)).to.equal(items[3]);
+      });
+
+      it('should return first matching item in the array if nothing is found after given index', () => {
+        expect(instance.getNextNativeSearchItem(items, 't', 4)).to.equal(items[2]);
+      });
+
+      it('should return undefined if nothing is found', () => {
+        expect(instance.getNextNativeSearchItem(items, 'y', 4)).to.equal(undefined);
       });
     });
   });

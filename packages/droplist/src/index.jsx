@@ -9,10 +9,6 @@ const halfFocusRing = 1;
 const numberOfVisibleItems = 9;
 
 /* eslint-disable react/no-unused-prop-types */
-/**
- * @description This is a basic building block of a dropdown's list.
- * @class Droplist
- */
 export default class DropdownList extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(['default', 'tall']),
@@ -238,6 +234,7 @@ export default class DropdownList extends PureComponent {
           content={props.isOpen ?
             <div
               className={styles.dropContent}
+              data-role="droplistContent"
               ref={(ref) => {
                 if (ref) {
                   this.dropContentRef = ref;

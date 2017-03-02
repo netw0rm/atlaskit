@@ -23,10 +23,16 @@ export interface State {
   unlinkable?: boolean;
   textInputPlaceholder?: string;
   textInputValue?: string;
+  toolbarVisible?: boolean;
+  inputActive?: boolean;
 }
 
 export default class HyperlinkEdit extends PureComponent<Props, State> {
-  state: State = { unlinkable: true };
+  state: State = {
+    unlinkable: true,
+    toolbarVisible: false,
+    inputActive: false,
+  };
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -36,10 +42,22 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
-  render() {
-    const { href, target, unlinkable } = this.state;
+  setInputActive = () => {
+    this.setState({
+      inputActive: true,
+    });
+  }
 
-    if (target) {
+  resetInputActive = () => {
+    this.setState({
+      inputActive: false,
+    });
+  }
+
+  render() {
+    const { href, target, unlinkable, toolbarVisible, inputActive } = this.state;
+
+    if (toolbarVisible || inputActive) {
       const showOpenButton = !!href;
       const showUnlinkButton = unlinkable;
       const showSeparator = showOpenButton || showUnlinkButton;
@@ -74,6 +92,8 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               defaultValue={href}
               onSubmit={this.updateHref}
               onChange={this.updateHref}
+              onMouseDown={this.setInputActive}
+              onBlur={this.resetInputActive}
               ref="textInput"
             />
           </div>
@@ -93,6 +113,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       target: pluginState.element,
       href: pluginState.href,
       textInputValue: pluginState.text,
+      toolbarVisible: pluginState.toolbarVisible,
     });
   }
 

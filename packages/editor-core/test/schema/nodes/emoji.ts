@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { Schema, Text } from '../../../src';
 import { DocNodeType, EmojiNodeType } from '../../../src';
 
-describe('ak-editor-core/schema emoji node', () => {
+describe('@atlaskit/editor-core/schema emoji node', () => {
   it('throws an error if it is not named "emoji"', () => {
     expect(() => {
       new Schema({

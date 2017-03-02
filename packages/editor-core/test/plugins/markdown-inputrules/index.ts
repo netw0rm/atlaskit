@@ -4,7 +4,7 @@ import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
 import {
   a, blockquote, br, chaiPlugin, code_block, doc, em, h1, h2,
   h3, hr, img, li, makeEditor, mono, ol, p, strike, strong, ul, mention
-} from '../../../test-helper';
+} from '../../../src/test-helper';
 chai.use(chaiPlugin);
 
 describe('markdown-inputrules', () => {
@@ -300,21 +300,6 @@ describe('markdown-inputrules', () => {
       expect(pm.doc).to.deep.equal(doc(p('~~', strong('text'))));
       pm.input.insertText(sel + 6, sel + 6, '~~');
       expect(pm.doc).to.deep.equal(doc(p(strike(strong('text')))));
-    });
-  });
-
-  describe('undo mark convertion', () => {
-    context('when hits Cmd+Z', () => {
-      it('should undo previously applied mark', () => {
-        const { pm, sel } = editor(doc(p('{<>}')));
-
-        pm.input.insertText(sel, sel, '~~text~~');
-        expect(pm.doc).to.deep.equal(doc(p(strike('text'))));
-
-        pm.input.dispatchKey('Cmd-Z');
-
-        expect(pm.doc).to.deep.equal(doc(p('~~text~~')));
-      });
     });
   });
 });

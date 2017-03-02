@@ -33,7 +33,7 @@ const data = `export const version = '${packageJson.version}';\nexport const nam
 fs.writeFile(`${cwd}/${destPath}`, data, (err) => {
   if (err) {
     console.error(`Error writing export file to "${destPath}"`, err);
-    console.exit(1);
+    process.exit(1);
   }
 
   console.info(`Wrote export file at "${destPath}" with name "${packageJson.name}" and version "${packageJson.version}"`);

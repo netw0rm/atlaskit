@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import { MentionNodeType, MentionQueryMarkType, MentionsPlugin,
           ProseMirror, Schema, schema as schemaBasic } from '../../../src';
-import { chaiPlugin } from '../../../test-helper';
+import { chaiPlugin } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 

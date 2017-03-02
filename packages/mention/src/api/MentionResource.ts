@@ -55,6 +55,7 @@ export interface MentionResourceConfig {
   securityProvider: SecurityProvider;
   containerId?: string;
   refreshedSecurityProvider?: RefreshSecurityProvider;
+  shouldHighlightMention?: (mention: Mention) => boolean;
 }
 
 export interface ResourceProvider<Result> {
@@ -65,6 +66,7 @@ export interface ResourceProvider<Result> {
 export interface MentionProvider extends ResourceProvider<Mention[]> {
   filter(query?: string): void;
   recordMentionSelection(mention: Mention): void;
+  shouldHighlightMention(mention: Mention): boolean;
 }
 
 export interface PresenceProvider extends ResourceProvider<PresenceUpdate> {
@@ -199,6 +201,10 @@ class AbstractPresenceResource extends AbstractResource<PresenceUpdate> {
 
 class AbstractMentionResource extends AbstractResource<Mention[]> implements MentionProvider {
 
+  shouldHighlightMention(mention: Mention): boolean {
+    return false;
+  }
+
   // eslint-disable-next-line class-methods-use-this
   filter(query?: string): void {
     throw new Error(`not yet implemented.\nParams: query=${query}`);
@@ -267,6 +273,14 @@ class MentionResource extends AbstractMentionResource {
 
     this.config = config;
     this.lastReturnedSearch = 0;
+  }
+
+  shouldHighlightMention(mention: Mention) {
+    if (this.config.shouldHighlightMention) {
+      return this.config.shouldHighlightMention(mention);
+    }
+
+    return false;
   }
 
   filter(query?: string): void {

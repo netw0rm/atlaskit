@@ -1,9 +1,10 @@
-import {MediaItemType} from './item';
+import { MediaItemType } from './item';
 
 export * from './item';
 export * from './actions';
 export * from './config';
 export * from './mediaTypes';
+export * from './context/context'
 
 export interface RemoteCollection {
   id: string;
@@ -32,3 +33,5 @@ export interface Metadata {
   processingStatus: string;
   size: number;
 }
+
+export type DataUri = string;

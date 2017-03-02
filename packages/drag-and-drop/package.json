@@ -1,5 +1,5 @@
 {
-  "name": "@atlaskit/reorderable",
+  "name": "@atlaskit/drag-and-drop",
   "version": "1.0.0",
   "config": {
     "access": "public"
@@ -9,7 +9,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/reorderable; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/drag-and-drop; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
     "dist"

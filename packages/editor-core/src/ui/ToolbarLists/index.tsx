@@ -1,5 +1,5 @@
-import BulletListIcon from 'ak-icon/glyph/editor/bullet-list';
-import NumberListIcon from 'ak-icon/glyph/editor/number-list';
+import BulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
+import NumberListIcon from '@atlaskit/icon/glyph/editor/number-list';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';

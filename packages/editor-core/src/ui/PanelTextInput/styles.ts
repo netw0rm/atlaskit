@@ -1,4 +1,4 @@
-import { akEditorPopupText } from 'ak-editor-shared-styles';
+import { akEditorPopupText } from '@atlaskit/editor-shared-styles';
 import { style } from 'typestyle';
 
 export const input = style({

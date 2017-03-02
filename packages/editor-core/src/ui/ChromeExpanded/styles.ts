@@ -1,4 +1,4 @@
-import { akEditorSubtleAccent } from 'ak-editor-shared-styles';
+import { akEditorSubtleAccent } from '@atlaskit/editor-shared-styles';
 import { akBorderRadius, akGridSize } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 

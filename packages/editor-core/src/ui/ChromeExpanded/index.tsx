@@ -1,6 +1,6 @@
-import AkButton from 'ak-button';
-import AkButtonGroup from 'ak-button-group';
-import MentionIcon from 'ak-icon/glyph/editor/mention';
+import AkButton from '@atlaskit/button';
+import AkButtonGroup from '@atlaskit/button-group';
+import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { PureComponent } from 'react';
 import * as React from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';

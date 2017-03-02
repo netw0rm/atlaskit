@@ -1,4 +1,4 @@
-import ImageIcon from 'ak-icon/glyph/editor/image';
+import ImageIcon from '@atlaskit/icon/glyph/editor/image';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';

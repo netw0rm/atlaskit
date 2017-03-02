@@ -1,7 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { Root, cardShadow, centerSelf, easeInOutCubic, borderRadius } from './styles/base';
-import { fadeIn } from './styles/animations';
+import { Root, cardShadow, centerSelf, borderRadius } from './styles/base';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
 
 export const Card = styled(Root)`
@@ -71,8 +70,4 @@ export const LoadingWrapper = styled.div`
   height: 100%;
   justify-content: center;
   align-items: center;
-`;
-
-export const FadeinImage = styled.div`
-  animation: ${fadeIn} .3s ${easeInOutCubic};
 `;

@@ -1,19 +1,15 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { Root, cardShadow, size, center, centerX, antialiased, ellipsis, borderRadius } from '../styles/base';
+import { Root, cardShadow, size, center, centerX, antialiased, ellipsis, borderRadius, spaceAround, easeInOutCubic, easeOutExpo, fadeIn } from '../styles/base';
 import {
-  akColorN20,
   akColorN30,
-  akColorN70,
-  akColorN900
+  akColorN70
 } from '@atlaskit/util-shared-styles';
 
 const imageBackground = 'background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKAQMAAAC3/F3+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAABlBMVEXf39////8zI3BgAAAAEUlEQVQIW2Nk38mIjH5wICMAez4Iyz2C/F8AAAAASUVORK5CYII=") repeat;';
 
 export const SmallCard = styled(Root)`
-  ${cardShadow()}
   ${borderRadius()}
-  background-color: ${akColorN20};
   font-family: sans-serif;
   cursor: pointer;
   box-sizing: border-box;
@@ -21,7 +17,8 @@ export const SmallCard = styled(Root)`
   padding: 5px;
   display: flex;
   align-items: center;
-  
+  transition: .8s background-color ${easeOutExpo};
+
   &:hover {
     background-color: ${akColorN30};
 
@@ -33,17 +30,37 @@ export const SmallCard = styled(Root)`
   &.loading {
     background: transparent;
     box-shadow: none;
+    cursor: default;
 
     .title, .size {
       ${borderRadius()}
       color: transparent;
       background-color: ${akColorN30};
+      height: 10px;
+    }
+  
+    .size {
+      width: 50%;
+    }
+
+    .info-wrapper {
+      ${size('100%')}
+    }
+
+    .img-wrapper {
+      box-shadow: none;
     }
   }
 
   .error-icon {
     height: 20px;
   }
+`;
+
+export const FileInfoWrapper = styled.div`
+  ${spaceAround()}
+  height: 100%;
+  padding: 3px 0;
 `;
 
 export const Retry = styled.div`
@@ -58,12 +75,18 @@ export const Retry = styled.div`
 
 export const ImgWrapper = styled.div`
   ${center()}
+  ${borderRadius()}
   width: 32px;
   height: 100%;
   overflow: hidden;
   position: relative;
-  
+    
+  &.shadow {
+    ${cardShadow()}
+  }
+
   img {
+    ${fadeIn()}
     ${imageBackground}
     max-width: 100%;
     max-height: 100%;   
@@ -86,6 +109,7 @@ export const Title = styled.div`
   color: #091E42;
   font-size: 12px;
   line-height: 15px;
+  transition: .4s color ${easeInOutCubic};
 `;
 
 export const Size = styled.div`
@@ -94,7 +118,8 @@ export const Size = styled.div`
   font-size: 12px;
   line-height: 15px;
   margin-top: 2px;
-  text-transform: lowercase;
+  text-transform: uppercase;
+  transition: .4s color ${easeInOutCubic};
 `;
 
 export const RoundedBackground = styled.div`
@@ -102,7 +127,6 @@ export const RoundedBackground = styled.div`
   ${borderRadius()}
   min-width: 32px;
   height: inherit;
-  background-color: #FAFBFC;
   overflow: hidden;  
 `;
 

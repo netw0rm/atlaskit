@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {LoadingWrapper} from '../styled';
-import FileIcon from '@atlaskit/icon/glyph/file';
 import {PlaceholderSmall} from '../placholderSmall/placeholderSmall';
 import {MediaType} from '@atlaskit/media-core';
 

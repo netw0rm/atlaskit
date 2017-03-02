@@ -5,7 +5,7 @@ import {CardAction} from '@atlaskit/media-core';
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
 import {Dropdown} from '../dropdown/dropdown';
 import {ErrorIcon} from '..';
-import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper} from './styled';
+import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper, FileInfoWrapper} from './styled';
 
 /* Child stateless components*/
 import {MediaType} from '@atlaskit/media-core';
@@ -79,11 +79,11 @@ export class CardViewSmall extends Component<CardViewSmallProps, CardViewSmallSt
           />
         </RoundedBackground>
       ), (
-        <div>
+        <FileInfoWrapper>
           <Title className="title">{this.props.mediaName}</Title>
           <Size className="size">{fileSize}</Size>
           {this.dropdown()}
-        </div>
+        </FileInfoWrapper>
       ));
     }
   }
@@ -108,13 +108,14 @@ export class CardViewSmall extends Component<CardViewSmallProps, CardViewSmallSt
   formatCard(left: JSX.Element, right: JSX.Element) {
     const cardStyle = this.props.width ? {width: `${this.props.width}px`} : {};
     const className = this.props.loading ? 'loading' : '';
+    const shadowClass = this.props.mediaType === 'image' && this.props.dataURI ? 'shadow' : null;
 
     return (
       <SmallCard style={cardStyle} className={className} onClick={this.onClick.bind(this)}>
-        <ImgWrapper>
+        <ImgWrapper className={`img-wrapper ${shadowClass}`}>
           {left}
         </ImgWrapper>
-        <InfoWrapper>
+        <InfoWrapper className="info-wrapper">
           {right}
         </InfoWrapper>
       </SmallCard>

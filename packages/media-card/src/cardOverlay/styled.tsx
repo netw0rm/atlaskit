@@ -120,8 +120,7 @@ export const Overlay = styled.div`
         background-color: ${akColorB200};
         
         &:hover {
-          // Not working fine
-          background-color: ${rgba(akColorN900, 0.16)};
+          // TODO: add new overlay with rgba(akColorN900, 0.16)
         }
 
         .title, .bottom-row, .file-size, .more-btn {
@@ -346,7 +345,7 @@ export const FileSize = styled.div`
   float: left;
   font-size: 12px;
   color: #5E6C84;
-  text-transform: lowercase;
+  text-transform: uppercase;
 `;
 
 export const Metadata = styled.div`

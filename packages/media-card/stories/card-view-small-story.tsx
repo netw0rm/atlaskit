@@ -19,54 +19,133 @@ const menuActions = [
   {label: 'Close', handler: () => { action('close')(); }}
 ];
 
+class DelayedLoadingCard extends Component<{}, {}> {
+  constructor(props) {
+    super(props);
+    this.state = {loading: true};
+  }
+
+  componentDidMount() {
+    const delay = this.props.delay || 500;
+    this.interval = setTimeout(() => this.setState({loading: false}), delay);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  render() {
+    const dataURI = this.props.dataURI || tallImage;
+
+    return <CardViewSmall
+      loading={this.state.loading}
+      mediaName="loading image"
+      mediaType="image"
+      mediaSize={32831}
+      dataURI={dataURI}
+      onClick={onClick}
+    />;
+  }
+}
+
 storiesOf('CardViewSmall', {})
   .add('Media types', () => (
     <StoryList>
       {[{
         title: 'audio',
-        content: <CardViewSmall
-          loading={false}
-          mediaName="sea_creatures.mp3"
-          mediaType="audio"
-          mediaSize={32831}
-          onClick={onClick}
-        />
+        content: <div>
+          <CardViewSmall
+            loading={false}
+            mediaName="sea_creatures.mp3"
+            mediaType="audio"
+            mediaSize={32831}
+            onClick={onClick}
+          />
+          <CardViewSmall
+            loading={false}
+            mediaName="sea_creatures.mp3"
+            mediaType="audio"
+            mediaSize={32831}
+            dataURI={smallImage}
+            onClick={onClick}
+          />
+        </div>
       }, {
         title: 'document',
-        content: <CardViewSmall
-          loading={false}
-          mediaName="sea_creatures.mp3"
-          mediaType="doc"
-          mediaSize={32831}
-          onClick={onClick}
-        />
+        content: <div>
+          <CardViewSmall
+            loading={false}
+            mediaName="sea_creatures.mp3"
+            mediaType="doc"
+            mediaSize={32831}
+            onClick={onClick}
+          />
+          <CardViewSmall
+            loading={false}
+            mediaName="sea_creatures.mp3"
+            mediaType="doc"
+            mediaSize={32831}
+            dataURI={smallImage}
+            onClick={onClick}
+          />
+        </div>
       }, {
         title: 'video',
-        content: <CardViewSmall
-          loading={false}
-          mediaName="sea_creatures.mp3"
-          mediaType="video"
-          mediaSize={32831}
-          onClick={onClick}
-        />
+        content: <div>
+          <CardViewSmall
+            loading={false}
+            mediaName="sea_creatures.mp3"
+            mediaType="video"
+            mediaSize={32831}
+            onClick={onClick}
+          />
+          <CardViewSmall
+            loading={false}
+            mediaName="sea_creatures.mp3"
+            mediaType="video"
+            mediaSize={32831}
+            dataURI={smallImage}
+            onClick={onClick}
+          />
+        </div>
       }, {
         title: 'image',
-        content: <CardViewSmall
-          loading={false}
-          mediaName="sea_creatures.mp3"
-          mediaType="image"
-          mediaSize={32831}
-          onClick={onClick}
-        />
+        content: <div>
+          <CardViewSmall
+            loading={false}
+            mediaName="sea_creatures.mp3"
+            mediaType="image"
+            mediaSize={32831}
+            onClick={onClick}
+          />
+          <CardViewSmall
+            loading={false}
+            mediaName="sea_creatures.mp3"
+            mediaType="image"
+            mediaSize={32831}
+            dataURI={smallImage}
+            onClick={onClick}
+          />
+        </div>
       }, {
         title: 'unknown',
-        content: <CardViewSmall
-          loading={false}
-          mediaName="sea_creatures.mp3"
-          mediaType="unknown"
-          mediaSize={32831}
-          onClick={onClick}
-        />
+        content: <div>
+          <CardViewSmall
+            loading={false}
+            mediaName="sea_creatures.mp3"
+            mediaType="unknown"
+            mediaSize={32831}
+            onClick={onClick}
+          />
+          <CardViewSmall
+            loading={false}
+            mediaName="sea_creatures.mp3"
+            mediaType="unknown"
+            mediaSize={32831}
+            dataURI={smallImage}
+            onClick={onClick}
+          />
+        </div>
       }]}
     </StoryList>
   ))
@@ -132,31 +211,10 @@ storiesOf('CardViewSmall', {})
     return <StoryList>{cards}</StoryList>;
   })
   .add('Loading', () => {
-    class LoadingWrapper extends Component<{}, {}> {
-      constructor(props) {
-        super(props);
-        this.state = {loading: true};
-      }
-
-      componentDidMount() {
-        this.interval = setTimeout(() => this.setState({loading: false}), 100000);
-      }
-
-      componentWillUnmount() {
-        clearInterval(this.interval);
-      }
-
-      render() {
-        return <CardViewSmall
-          loading={this.state.loading}
-          mediaName="loading image"
-          mediaType="image"
-          mediaSize={32831}
-          dataURI={tallImage}
-          onClick={onClick}
-        />;
-      }
-    }
+    const loadingCards = Array.apply(null, {length: 10}).map((k, i) => {
+      const delay = i * 100 + 1000;
+      return <DelayedLoadingCard delay={delay}/>;
+    });
 
     return <StoryList>
       {[{
@@ -170,7 +228,10 @@ storiesOf('CardViewSmall', {})
         />
       }, {
         title: 'Loading 1sec',
-        content: <LoadingWrapper />
+        content: <DelayedLoadingCard />
+      }, {
+        title: 'Multiple cards',
+        content: loadingCards
       }]}
     </StoryList>;
   })
@@ -249,4 +310,73 @@ storiesOf('CardViewSmall', {})
         />
       </li>
     </ul>
+  ))
+  .add('Mixed', () => (
+    <StoryList>
+      {[{
+        title: 'Mixed cards',
+        content: <div>
+          <CardViewSmall
+            loading={false}
+            mediaName="sea_creatures.mp3"
+            mediaType="audio"
+            mediaSize={32831}
+            onClick={onClick}
+          />
+          <CardViewSmall
+            loading={true}
+            mediaName="loading"
+            mediaType="doc"
+            mediaSize={32831}
+            onClick={onClick}
+          />
+          <CardViewSmall
+            loading={false}
+            mediaName="video.mp4"
+            mediaType="video"
+            mediaSize={32831}
+            onClick={onClick}
+          />
+          <CardViewSmall
+            loading={false}
+            mediaName="huge_image.png"
+            mediaType="image"
+            mediaSize={1395864375}
+            dataURI={tallImage}
+            onClick={onClick}
+          />
+          <CardViewSmall
+            loading={false}
+            mediaName="huge_image.png"
+            mediaType="image"
+            mediaSize={1395864375}
+            onClick={onClick}
+          />
+          <DelayedLoadingCard />
+          <CardViewSmall
+            loading={false}
+            mediaName="nature.png"
+            mediaType="image"
+            mediaSize={32831}
+            dataURI={smallTransparentImage}
+            onClick={onClick}
+          />
+          <DelayedLoadingCard delay={2500}/>
+          <CardViewSmall
+            loading={false}
+            mediaName="nature.png"
+            mediaType="image"
+            mediaSize={32831}
+            dataURI={wideImage}
+            onClick={onClick}
+          />
+          <DelayedLoadingCard delay={2800} dataURI={wideImage}/>
+          <CardViewSmall
+            onClick={onClick}
+            error={'Could not load file'}
+            onRetry={{handler: onRetry}}
+          />
+        </div>
+      }]}
+    </StoryList>
   ));

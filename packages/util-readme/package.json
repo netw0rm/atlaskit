@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-readme",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "config": {
     "access": "public"
   },
@@ -19,13 +19,13 @@
   "dependencies": {
     "decamelize": "^1.2.0",
     "react-syntax-highlighter": "^3.0.2",
-    "akutil-shared-styles": "^37.2.0"
+    "@atlaskit/util-shared-styles": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"
   },
   "devDependencies": {
-    "akutil-readme": "*"
+    "@atlaskit/util-readme": "*"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

@@ -302,19 +302,4 @@ describe('markdown-inputrules', () => {
       expect(pm.doc).to.deep.equal(doc(p(strike(strong('text')))));
     });
   });
-
-  describe('undo mark convertion', () => {
-    context('when hits Cmd+Z', () => {
-      it('should undo previously applied mark', () => {
-        const { pm, sel } = editor(doc(p('{<>}')));
-
-        pm.input.insertText(sel, sel, '~~text~~');
-        expect(pm.doc).to.deep.equal(doc(p(strike('text'))));
-
-        pm.input.dispatchKey('Cmd-Z');
-
-        expect(pm.doc).to.deep.equal(doc(p('~~text~~')));
-      });
-    });
-  });
 });

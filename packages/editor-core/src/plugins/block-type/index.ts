@@ -318,9 +318,21 @@ export class BlockTypeState {
     if (!append) {
       pos = $from.start($from.depth) - 1;
       pos = $from.depth > 1 ? pos - 1 : pos;
+
+      // Same theory as comment below.
+      if ($to.node($to.depth - 1).type === pm.schema.nodes['list_item']) {
+        pos = pos - 1;
+      }
     } else {
       pos = $to.end($to.depth) + 1;
       pos = $to.depth > 1 ? pos + 1 : pos;
+
+      // List is a special case. Because from user point of view, the whole list is a unit,
+      // which has 3 level deep (ul, li, p), all the other block types has maxium two levels as a unit.
+      // eg. block type (bq, p/other), code block (cb) and panel (panel, p/other).
+      if ($to.node($to.depth - 1).type === pm.schema.nodes['list_item']) {
+        pos = pos + 1;
+      }
     }
 
     return pos;

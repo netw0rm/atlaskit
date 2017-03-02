@@ -4,4 +4,4 @@ dist
 /build/tslint-rules
 packages/icon/glyph
 packages/icon/lib
-packages/icon/src/tmp
+packages/icon/tmp

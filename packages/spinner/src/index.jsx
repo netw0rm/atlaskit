@@ -30,10 +30,10 @@ export default class Spinner extends PureComponent {
     size: 'small',
   }
 
-  constructor(props) {
-    super(props);
+  state = { spinnerHiddenForDelay: false };
 
-    if (!props.isCompleting) {
+  componentDidMount() {
+    if (!this.props.isCompleting) {
       this.showSpinnerAfterDelay();
     }
   }
@@ -47,13 +47,11 @@ export default class Spinner extends PureComponent {
 
   showSpinnerAfterDelay = () => {
     setTimeout(this.handleSpinnerDelayEnd, SPINNER_DELAY);
-    this.state = {
-      hideSpinnerForDelay: true,
-    };
+    this.setState({ spinnerHiddenForDelay: true });
   }
 
   handleSpinnerDelayEnd = () => {
-    this.setState({ hideSpinnerForDelay: false });
+    this.setState({ spinnerHiddenForDelay: false });
   }
 
   handleTransitionEnd = (e) => {

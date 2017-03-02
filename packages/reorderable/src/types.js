@@ -53,6 +53,7 @@ export type Dragging = {|
   offset: Position,
   center: Position,
   initial: DraggingInitial,
+  shouldAnimate: boolean,
 |}
 
 export type CurrentDrag = {|

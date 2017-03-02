@@ -84,6 +84,7 @@ export default (state: State = initialState, action: Action): State => {
       type,
       offset: { x: 0, y: 0 },
       center,
+      shouldAnimate: false,
       initial: {
         source,
         center,

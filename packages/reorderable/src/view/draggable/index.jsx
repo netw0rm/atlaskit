@@ -4,12 +4,10 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import invariant from 'invariant';
 import type {
-  DraggableId,
     TypeId,
     Position,
-    DraggingInitial,
 } from '../../types';
-import type { Provide } from './types';
+import type { Provide, MapProps } from './types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
 import type { Speed } from '../moveable';
@@ -39,15 +37,6 @@ type MapState = (state: DraggableState, ownProps: Object, getDragHandle: Functio
 const empty = {};
 const identity = x => x;
 const nowhere: Position = { x: 0, y: 0 };
-
-type MapProps = {|
-  id: DraggableId,
-  isDragEnabled: boolean,
-  isDragging: boolean,
-  isAnimationEnabled: boolean,
-  offset?: Position,
-  initial?: DraggingInitial,
-|}
 
 type DispatchProps = {|
   lift: typeof liftAction,
@@ -83,18 +72,18 @@ type Movement = {|
 
 const getMovement = (isDragging: boolean,
   wasDragging: boolean,
-  isAnimationEnabled: boolean) => {
-  if (!isAnimationEnabled) {
+  canAnimate: boolean) => {
+  if (isDragging) {
     return {
-      speed: 'NONE',
-      zIndex: 'auto',
+      speed: canAnimate ? 'FAST' : 'NONE',
+      zIndex: '100',
     };
   }
 
-  if (isDragging) {
+  if (!canAnimate) {
     return {
       speed: 'NONE',
-      zIndex: '100',
+      zIndex: 'auto',
     };
   }
 
@@ -297,7 +286,7 @@ export default (type: TypeId,
         const movement: Movement = getMovement(
           this.props.isDragging,
           this.state.wasDragging,
-          this.props.isAnimationEnabled
+          this.props.canAnimate
         );
 
         return (

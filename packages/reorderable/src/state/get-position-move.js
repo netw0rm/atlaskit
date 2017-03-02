@@ -62,6 +62,7 @@ const positionMove = (isMovingFoward: boolean, state: State): State => {
 
   const dragging: Dragging = {
     ...previous.dragging,
+    shouldAnimate: true,
     center,
     offset,
   };

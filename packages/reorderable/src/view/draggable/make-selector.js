@@ -1,9 +1,10 @@
+// @flow
 import memoizeOne from 'memoize-one';
 import isShallowEqual from 'shallowequal';
 import { createSelector } from 'reselect';
 import invariant from 'invariant';
 import { currentDragSelector, dragCompleteSelector } from '../../state/selectors';
-import type { Provide, NeedsProviding } from './types';
+import type { Provide, NeedsProviding, MapProps } from './types';
 import type { DragComplete, CurrentDrag } from '../../types';
 
 export default (provide: Provide) => {
@@ -25,7 +26,7 @@ export default (provide: Provide) => {
             id,
             isDragEnabled,
             isDragging: false,
-            isAnimationEnabled: false,
+            canAnimate: false,
           };
         }
 
@@ -36,7 +37,7 @@ export default (provide: Provide) => {
             id,
             isDragEnabled,
             isDragging: false,
-            isAnimationEnabled: true,
+            canAnimate: true,
             offset: {
               x: 0,
               y: last.impact.movement.amount,
@@ -49,7 +50,7 @@ export default (provide: Provide) => {
             id,
             isDragEnabled,
             isDragging: false,
-            isAnimationEnabled: true,
+            canAnimate: true,
             offset: complete.newHomeOffset,
             initial: last.initial,
           };
@@ -59,7 +60,7 @@ export default (provide: Provide) => {
           id,
           isDragEnabled,
           isDragging: false,
-          isAnimationEnabled: true,
+          canAnimate: true,
         };
       }
 
@@ -68,13 +69,14 @@ export default (provide: Provide) => {
           id,
           isDragEnabled,
           isDragging: false,
-          isAnimationEnabled: true,
+          canAnimate: true,
         };
       }
 
       if (currentDrag.dragging.id === id) {
         const offset = currentDrag.dragging.offset;
         const initial = currentDrag.dragging.initial;
+        const canAnimate = currentDrag.dragging.shouldAnimate;
 
         invariant(isDragEnabled, 'drag cannot be disabled for the dragging item');
 
@@ -82,9 +84,9 @@ export default (provide: Provide) => {
           id,
           isDragEnabled: true,
           isDragging: true,
+          canAnimate,
           offset,
           initial,
-          isAnimationEnabled: true,
         };
       }
 
@@ -95,7 +97,7 @@ export default (provide: Provide) => {
           id,
           isDragEnabled,
           isDragging: false,
-          isAnimationEnabled: true,
+          canAnimate: true,
           offset: {
             x: 0,
             y: currentDrag.impact.movement.amount,
@@ -107,7 +109,7 @@ export default (provide: Provide) => {
         id,
         isDragEnabled,
         isDragging: false,
-        isAnimationEnabled: true,
+        canAnimate: true,
       };
     }
   );

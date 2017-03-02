@@ -43,6 +43,7 @@ describe(name, () => {
 
       // NOTE the reduced-ui-pack package uses the icons from this package, so if you change
       // anything in the list below then you'll also need to update the tests in reduced-ui-pack.
+      // A breaking change to this package is also a breaking change to the reduced-ui-pack package.
 
       // This list should be sorted alphabetically.
       const expected = [

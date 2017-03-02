@@ -14,6 +14,7 @@ const inlineMessagePropDescriptions = {
   type: 'Defines the icon and colour to be used for the message',
   secondaryText: 'Text to be shown in a more subtle color next to the main text',
   position: 'Position of inline dialog',
+  isDisabled: 'Option to disable inline message',
 };
 
 const inlineMessagePropTypes = {
@@ -22,6 +23,7 @@ const inlineMessagePropTypes = {
   type: 'oneOf(["connectivity", "confirmation", "info", "warning", "error"])',
   secondaryText: 'string',
   position: 'oneOf(["top left", "top center", "top right", "right top", "right middle", "right bottom", "bottom left", "bottom center", "bottom right", "left top", "left middle", "left bottom"])',
+  isDisabled: 'bool',
 };
 
 storiesOf(name, module)

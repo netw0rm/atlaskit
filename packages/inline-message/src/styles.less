@@ -6,9 +6,14 @@
 .root {
   display: inline-block;
 
-  &:hover .button-contents {
-    color: @ak-color-N600;
-    text-decoration: underline;
+  &:hover {
+    .button-contents {
+      color: @ak-color-N600;
+    }
+
+    button:not(:disabled) .button-contents {
+      text-decoration: underline;
+    }
   }
 
   &:active .button-contents {

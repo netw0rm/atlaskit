@@ -12,11 +12,13 @@ export default class InlineMessage extends PureComponent {
     type: PropTypes.oneOf(types),
     secondaryText: PropTypes.string,
     position: InlineDialog.propTypes.position,
+    isDisabled: PropTypes.bool,
   }
 
   static defaultProps = {
     type: defaultType,
     position: 'bottom left',
+    isDisabled: false,
   }
 
   state = {
@@ -39,9 +41,10 @@ export default class InlineMessage extends PureComponent {
           <Button
             appearance="subtle-link"
             onClick={this.toggleDialog}
+            isDisabled={this.props.isDisabled}
           >
             <div className={styles.buttonContents}>
-              <IconForType type={this.props.type} />
+              <IconForType type={this.props.type} isDisabled={this.props.isDisabled} />
               {
                 this.props.title ? (
                   <span className={styles.titleText}>

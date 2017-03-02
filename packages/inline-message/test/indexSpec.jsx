@@ -8,6 +8,7 @@ import {
   akColorP300,
   akColorR300,
   akColorY300,
+  akColorN60,
 } from '@atlaskit/util-shared-styles';
 import SuccessIcon from 'ak-icon/glyph/success';
 import InlineDialog from '@atlaskit/inline-dialog';
@@ -60,6 +61,17 @@ describe(name, () => {
         expect(shallow(<InlineMessage position="right middle" />).find(InlineDialog).prop('position')).to.equal('right middle');
       });
     });
+    describe('isDisabled', () => {
+      it('should default to "false"', () => {
+        expect(mount(<InlineMessage />).prop('isDisabled')).to.equal(false);
+      });
+      it('should be passed to Button component', () => {
+        expect(shallow(<InlineMessage isDisabled />).find(Button).prop('isDisabled')).to.equal(true);
+      });
+      it('should be passed to IconForType component', () => {
+        expect(shallow(<InlineMessage isDisabled />).find(IconForType).prop('isDisabled')).to.equal(true);
+      });
+    });
   });
 
   describe('IconForType component', () => {
@@ -91,6 +103,11 @@ describe(name, () => {
           const wrapper = shallow(<IconForType type="error" />);
           expect(wrapper.find(WarningIcon).length).to.be.above(0);
           expect(wrapper.find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorR300);
+        });
+      });
+      describe('isDisabled', () => {
+        it('isDisabled produces icon with disabled color', () => {
+          expect(shallow(<IconForType type="connectivity" isDisabled />).find(`.${styles.iconWrapper}`).prop('style').color).to.equal(akColorN60);
         });
       });
     });

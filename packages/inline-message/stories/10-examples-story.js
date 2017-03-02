@@ -59,4 +59,13 @@ storiesOf(name, module)
         position="right middle"
       />
     </Chrome>
+  ))
+  .add('Inline message — disabled', () => (
+    <Chrome title="Inline message — disabled">
+      <InlineMessage
+        title="JIRA Service Desk"
+        secondaryText="Authenticate to see more information"
+        isDisabled
+      />
+    </Chrome>
   ));

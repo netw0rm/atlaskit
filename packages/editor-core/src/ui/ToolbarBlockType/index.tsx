@@ -105,12 +105,12 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
   private handleSelectBlockType = (blockType: BlockType) => {
     this.props.pluginState.focus(this.props.editorView);
 
-    const { availableBlockTypes, currentBlockType } = this.state;
+    const { availableBlockTypes } = this.state;
     this.props.pluginState.toggleBlockType(blockType.name, this.props.editorView);
     this.setState({
       active: false,
       availableBlockTypes,
-      currentBlockType
+      currentBlockType: blockType
     });
 
     analytics.trackEvent(`atlassian.editor.format.${blockType.name}.button`);

@@ -51,10 +51,11 @@ function buildMarkdownInputRules(schema: Schema<any, any>): Array<InputRule> {
     rules.push(blockQuoteRule(schema.nodes.blockquote));
   }
 
-  if (schema.nodes.codeBlock) {
-    // ``` for code block
-    rules.push(codeBlockRule(schema.nodes.codeBlock));
-  }
+  // TODO add back markdown inputRule for code block
+  // if (schema.nodes.codeBlock) {
+  //   // ``` for code block
+  //   rules.push(codeBlockRule(schema.nodes.codeBlock));
+  // }
 
   if (schema.nodes.horizontalRule) {
     // '---' for hr

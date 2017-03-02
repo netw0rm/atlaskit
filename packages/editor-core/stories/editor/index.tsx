@@ -5,6 +5,7 @@ import {
   ContextName
 } from '../../';
 import listsPlugin from '../../src/plugins/lists/index-future';
+import blockTypePlugin from '../../src/plugins/block-type/index-future';
 import { buildKeymap } from '../../src/plugins/keymaps';
 import buildMarkdownInputRules from '../../src/plugins/markdown-inputrules/input-future';
 import {
@@ -98,6 +99,7 @@ export default class Editor extends PureComponent<Props, State> {
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const { isExpanded, editorState, editorView } = this.state;
     const listsState = editorState && listsPlugin.getState(editorState);
+    const blockTypeState = editorState && blockTypePlugin.getState(editorState);
 
     return (
       <Chrome
@@ -110,6 +112,7 @@ export default class Editor extends PureComponent<Props, State> {
         onCollapsedChromeFocus={this.expand}
         editorView={editorView}
         pluginStateLists={listsState}
+        pluginStateBlockType={blockTypeState}
       />
     );
   }
@@ -142,6 +145,7 @@ export default class Editor extends PureComponent<Props, State> {
           schema,
           plugins: [
             listsPlugin,
+            blockTypePlugin,
             inputRules({ rules: buildMarkdownInputRules(schema) }),
             history(),
             keymap(buildKeymap(schema)),

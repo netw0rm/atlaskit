@@ -103,6 +103,19 @@ export function toggleBlockquote() {
   };
 }
 
+export function togglePanel() {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    const { $from } = state.selection;
+    const potentialPanelNode = $from.node($from.depth - 1);
+
+    if (potentialPanelNode && potentialPanelNode.type === state.schema.nodes.blockquote) {
+      return baseCommand.lift(state, dispatch);
+    }
+
+    return baseCommand.wrapIn(state.schema.nodes.panel)(state, dispatch);
+  };
+}
+
 export function toggleHeading(level: number) {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from, $to } = state.selection;

@@ -6,11 +6,13 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 
 import { analyticsService as analytics } from '../../analytics';
-import { BlockType, BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
+import { BlockType, BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type/index-future';
 import { findKeymapByDescription, tooltip } from '../../plugins/keymaps';
 import * as styles from './styles';
+import { EditorView } from '../../prosemirror';
 
 export interface Props {
+  editorView: EditorView;
   pluginState: BlockTypeState;
 }
 
@@ -50,9 +52,9 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
           const { availableBlockTypes, currentBlockType } = this.state;
 
           if (attrs.isOpen) {
-            this.props.pluginState.blur();
+            this.props.pluginState.blur(this.props.editorView);
           } else {
-            this.props.pluginState.focus();
+            this.props.pluginState.focus(this.props.editorView);
           }
 
           this.setState({
@@ -101,10 +103,10 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
   }
 
   private handleSelectBlockType = (blockType: BlockType) => {
-    this.props.pluginState.focus();
+    this.props.pluginState.focus(this.props.editorView);
 
     const { availableBlockTypes, currentBlockType } = this.state;
-    this.props.pluginState.changeBlockType(blockType.name);
+    this.props.pluginState.toggleBlockType(blockType.name, this.props.editorView);
     this.setState({
       active: false,
       availableBlockTypes,

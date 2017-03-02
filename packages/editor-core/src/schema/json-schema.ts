@@ -1,4 +1,5 @@
-import { MarkType, NodeType as _NodeType, Schema, Text } from '../prosemirror';
+import { MarkType, NodeType as _NodeType, MarkSpec, NodeSpec, Schema} from '../prosemirror';
+import { text } from './nodes/text';
 
 type AnyObject = { [key: string]: any };
 
@@ -32,7 +33,7 @@ function isEmpty(properties: AnyObject | any[]): boolean {
   return size === 0;
 }
 
-function createMarkDef(schema: Schema, name: string) {
+function createMarkDef(schema: Schema<NodeSpec, MarkSpec>, name: string) {
   const mark = schema.marks[name];
   const definition: AnyObject = {
     type: 'object',
@@ -54,7 +55,7 @@ function createMarkDef(schema: Schema, name: string) {
   return definition;
 }
 
-const everHasMarks = (schema: Schema, nodeName: string) => Object
+const everHasMarks = (schema: Schema<NodeSpec, MarkSpec>, nodeName: string) => Object
   .keys(schema.nodes)
   .map(nodeName => schema.nodes[nodeName])
   .map(node => node.contentExpr.elements)
@@ -64,7 +65,7 @@ const everHasMarks = (schema: Schema, nodeName: string) => Object
   .map((contentElement: ContentElement) => contentElement.marks)
   .some(Boolean);
 
-function createTextNodeDef(schema: Schema, nodeName: string) {
+function createTextNodeDef(schema: Schema<NodeSpec, MarkSpec>, nodeName: string) {
   const definition: AnyObject = {
     properties: {
       text: {
@@ -84,7 +85,7 @@ function createTextNodeDef(schema: Schema, nodeName: string) {
   return definition;
 }
 
-function createBlockNodeDef(schema: Schema, nodeName: string) {
+function createBlockNodeDef(schema: Schema<NodeSpec, MarkSpec>, nodeName: string) {
   const { nodeType, elements } = schema.nodes[nodeName].contentExpr;
   assert(elements.length <= 2, 'JSON Schema can not express more than two sequenced elements.');
 
@@ -200,17 +201,17 @@ function createBlockNodeDef(schema: Schema, nodeName: string) {
   return definition;
 }
 
-function createNodeDef(schema: Schema, name: string) {
+function createNodeDef(schema: Schema<NodeSpec, MarkSpec>, name: string) {
   const { nodeType } = schema.nodes[name].contentExpr;
 
-  if (nodeType instanceof Text) {
+  if (nodeType === text) {
     return createTextNodeDef(schema, name);
   } else {
     return createBlockNodeDef(schema, name);
   }
 }
 
-export default function(schema: Schema) {
+export default function(schema: Schema<NodeSpec, MarkSpec>) {
   const nodeDefs: AnyObject = Object.keys(schema.nodes)
     .reduce((prev, name) => ({
       ...prev,

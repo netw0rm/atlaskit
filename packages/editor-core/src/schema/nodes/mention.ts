@@ -4,7 +4,7 @@ import {
   akColorN500
 } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
-import { Attribute, Inline, Node, Schema } from '../../prosemirror';
+import { NodeSpec, Node } from '../../prosemirror';
 
 const mentionStyle = style({
   background: akColorN30,
@@ -22,30 +22,26 @@ const mentionStyle = style({
   }
 });
 
-export class MentionNodeType extends Inline {
-  constructor(name: string, schema: Schema) {
-    super(name, schema);
-    if (name !== 'mention') {
-      throw new Error('MentionNodeType must be named "mention".');
-    }
-  }
+export interface MentionNode extends Node {
+  attrs: {
+    id: string;
+    displayName: string;
+  };
+}
 
-  get attrs() {
-    return {
-      id: new Attribute({ default: '' }),
-      displayName: new Attribute({ default: '' })
-    };
-  }
-
-  get matchDOMTag() {
-    return {
-      'span[mention-id]': (dom: Element) => ({
-        id: dom.getAttribute('mention-id')!,
-        displayName: dom.textContent!
-      })
-    };
-  }
-
+export const mention: NodeSpec = {
+  group: 'inline',
+  attrs: {
+    id: { default: '' },
+    displayName: { default: '' }
+  },
+  parseDOM: [{
+    tag: 'span[mention-id]',
+    getAttrs: (dom: Element) => ({
+      id: dom.getAttribute('mention-id')!,
+      displayName: dom.textContent!
+    })
+  }],
   toDOM(node: Node): [string, any, string] {
     const mentionNode = node as MentionNode;
     const attrs = {
@@ -55,16 +51,4 @@ export class MentionNodeType extends Inline {
     };
     return ['span', attrs, mentionNode.attrs.displayName];
   }
-}
-
-export interface MentionNode extends Node {
-  type: MentionNodeType;
-  attrs: {
-    id: string;
-    displayName: string;
-  };
-}
-
-export function isMentionNode(node: Node): node is MentionNode {
-  return node.type instanceof MentionNodeType;
-}
+};

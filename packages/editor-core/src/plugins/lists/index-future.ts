@@ -4,7 +4,7 @@ import {
   findWrapping,
   NodeSelection,
   Plugin,
-} from '../../prosemirror/future';
+} from '../../prosemirror';
 import {
   findAncestorPosition,
 } from '../../utils/index-future';

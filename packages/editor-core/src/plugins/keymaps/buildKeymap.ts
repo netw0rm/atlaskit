@@ -1,7 +1,7 @@
 import { setNormalText, toggleBlockquote, toggleHeading, toggleMark, toggleCodeBlock } from '../../commands';
 import * as keymapShortcuts from './utils-future';
 
-import { redo, undo } from '../../prosemirror/future/prosemirror-history';
+import { redo, undo } from '../../prosemirror/prosemirror-history';
 
 const keymap = {};
 

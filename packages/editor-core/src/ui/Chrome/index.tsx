@@ -7,7 +7,7 @@ import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
 import { MentionsPluginState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
-import { EditorView } from '../../prosemirror/future';
+import { EditorView } from '../../prosemirror';
 import { PanelState } from '../../plugins/panel';
 import { ProseMirror } from '../../prosemirror';
 import ChromeCollapsed from '../ChromeCollapsed';

@@ -1,3 +1,4 @@
+/*
 import {
   BlockQuoteNodeType,
   BulletListNodeType,
@@ -52,7 +53,50 @@ export const schema = new Schema({
     u: UnderlineMarkType,
   },
 });
+*/
+import { Schema } from '../src/prosemirror';
+import {
+  doc,
+  paragraph,
+  text,
+  em,
+  strong,
+  mono,
+  strike,
+  underline,
+  bulletList,
+  orderedList,
+  listItem,
+  heading,
+  blockquote,
+  codeBlock,
+  horizontalRule
+} from '../src/schema';
 
+const nodes = {
+  doc,
+  paragraph,
+  text,
+  bullet_list: bulletList,
+  ordered_list: orderedList,
+  list_item: listItem,
+  heading,
+  blockquote,
+  codeBlock,
+  horizontalRule
+};
+
+const marks = {
+  em,
+  strong,
+  mono,
+  strike,
+  underline
+};
+
+export const schema = new Schema<typeof nodes, typeof marks>({ nodes, marks });
+
+/*
 export const doc = nodeFactory(schema.nodes.doc);
 
 export const unlinkable = nodeFactory(schema.nodes.unlinkable);
@@ -85,3 +129,4 @@ export const sup = markFactory(schema.marks.subsup, { type: 'sup' });
 export const u = markFactory(schema.marks.u);
 // tslint:disable-next-line:variable-name
 export const code_block = (attrs: {} = {}) => nodeFactory(schema.nodes.code_block, attrs);
+*/

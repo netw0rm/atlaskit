@@ -1,29 +1,17 @@
-import {
-  LinkMark as BaseLinkMark,
-  Mark,
-  Schema,
-} from '../../prosemirror';
+import { MarkSpec } from '../../prosemirror';
 
-export class LinkMarkType extends BaseLinkMark {
-  constructor(name: string, rank: number, schema: Schema) {
-    if (name !== 'link') {
-      throw new Error('LinkMarkType must be named "link".');
-    }
-    super(name, rank, schema);
-  }
+export const link: MarkSpec = {
+  attrs: {
+    href: {},
+    title: {default: null}
+  },
   get inclusiveRight() {
     return false;
-  }
-}
-
-export interface LinkMark extends Mark {
-  type: LinkMarkType;
-  attrs: {
-    href: string;
-    title?: string;
-  };
-}
-
-export function isLinkMark(mark: Mark): mark is LinkMark {
-  return mark.type instanceof LinkMarkType;
-}
+  },
+  parseDOM: [
+    {tag: 'a[href]', getAttrs: (dom: Element) => {
+      return {href: dom.getAttribute('href'), title: dom.getAttribute('title')};
+    }}
+  ],
+  toDOM(node): [string, any] { return ['a', node.attrs]; }
+};

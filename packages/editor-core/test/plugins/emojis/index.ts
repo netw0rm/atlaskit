@@ -8,23 +8,6 @@ import { chaiPlugin, fixtures } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 
-const schema: Schema = new Schema({
-  nodes: schemaBasic.nodeSpec.append({
-    emoji: { type: EmojiNodeType, group: 'inline' }
-  }),
-  marks: {
-    emoji_query: EmojiQueryMarkType
-  }
-});
-
-const makeEditor = (container: Node) => {
-  return new ProseMirror({
-    schema: schema,
-    plugins: [EmojisPlugin, BlockTypePlugin],
-    place: container
-  });
-};
-
 const container = fixtures();
 
 const smileEmoji = {
@@ -41,6 +24,24 @@ const smileEmoji = {
 };
 
 describe('emojis', () => {
+  const schema: Schema = new Schema({
+    nodes: schemaBasic.nodeSpec.append({
+      emoji: { type: EmojiNodeType, group: 'inline' }
+    }),
+    marks: {
+      emoji_query: EmojiQueryMarkType
+    }
+  });
+
+  const makeEditor = (container: Node) => {
+    return new ProseMirror({
+      schema: schema,
+      plugins: [EmojisPlugin, BlockTypePlugin],
+      place: container
+    });
+  };
+
+
   it('defines a name for use by the ProseMirror plugin registry ', () => {
     const plugin = EmojisPlugin as any; // .State is not public API.
     expect(plugin.State.name).is.be.a('string');

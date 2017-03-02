@@ -16,7 +16,7 @@ import NoteIcon from 'ak-icon/glyph/editor/note';
 import WarningIcon from 'ak-icon/glyph/warning';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Attribute, Block, Node, Schema } from '../../prosemirror';
+import { NodeSpec, Node } from '../../prosemirror';
 
 const panelStyle = style({
   borderRadius: akBorderRadius,
@@ -77,35 +77,31 @@ const contentStyle = style({
   lineHeight: '1.7'
 });
 
+const getIconDom = function (panelType: string): HTMLElement {
+  const dom = document.createElement('span');
+  dom.setAttribute('contenteditable', 'false');
+  dom.setAttribute('class', `${iconStyle} ${iconColorStyle[panelType]}`);
+  // tslint:disable-next-line:variable-name
+  const Icon = panelIcons[panelType];
+  ReactDOM.render(<Icon label={panelType} />, dom);
+  return dom;
+};
+
 export interface DOMAttributes {
   [propName: string]: string;
 }
 
-export class PanelNodeType extends Block {
-  constructor(name: string, schema: Schema) {
-    super(name, schema);
-    if (name !== 'panel') {
-      throw new Error('PanelNodeType must be named "panel".');
-    }
-  }
-
-  get matchDOMTag() {
-    return {
-      'div[data-panel-type]': (dom: HTMLElement) => {
-        return [{
-          'panelType': dom.getAttribute('data-panel-type')
-        }] as any;
-      }
-    };
-  }
-
-  get attrs() {
-    return {
-      panelType: new Attribute({ default: 'info' }),
-    };
-  }
-
-  toDOM(node: PanelNode): [string, any] {
+export const panel: NodeSpec = {
+  attrs: {
+    panelType: { default: 'info' }
+  },
+  parseDOM: [{
+    tag: 'div[data-panel-type]',
+    getAttrs: (dom: Element) => ({
+      'panelType': dom.getAttribute('data-panel-type')!
+    })
+  }],
+  toDOM(node: Node): [string, any] {
     const panelType = node.attrs['panelType'];
     const attrs: DOMAttributes = {
       'class': `${panelStyle} ${panelColorStyle[panelType]}`,
@@ -114,26 +110,8 @@ export class PanelNodeType extends Block {
     return [
       'div',
       attrs,
-      this.getIconDom(panelType),
+      getIconDom(panelType),
       ['span', { class: contentStyle }, 0]
     ];
   }
-
-  private getIconDom(panelType: string): HTMLElement {
-    const dom = document.createElement('span');
-    dom.setAttribute('contenteditable', 'false');
-    dom.setAttribute('class', `${iconStyle} ${iconColorStyle[panelType]}`);
-    // tslint:disable-next-line:variable-name
-    const Icon = panelIcons[panelType];
-    ReactDOM.render(<Icon label={panelType} />, dom);
-    return dom;
-  }
-}
-
-export interface PanelNode extends Node {
-  type: PanelNodeType;
-}
-
-export function isPanelNode(node: Node): node is PanelNode {
-  return node.type instanceof PanelNodeType;
-}
+};

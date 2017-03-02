@@ -1,7 +1,4 @@
-import { Node as OrderedListNode, OrderedList as OrderedListNodeType } from '../../prosemirror';
-import { NodeSpec } from '../../prosemirror/future';
-
-export { OrderedListNodeType, OrderedListNode };
+import { NodeSpec } from '../../prosemirror';
 
 export const orderedList: NodeSpec = {
   group: 'block',
@@ -11,7 +8,3 @@ export const orderedList: NodeSpec = {
     return ['ol', 0];
   }
 };
-
-export function isOrderedListNode(node: OrderedListNode): node is OrderedListNode {
-  return node.type.name === 'ordered_list';
-}

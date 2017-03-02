@@ -1,8 +1,8 @@
-import { EditorState, liftTarget, Transaction } from '../prosemirror/future';
-import * as baseCommand from '../prosemirror/future/prosemirror-commands/commands';
-import * as baseListCommand from '../prosemirror/future/prosemirror-schema-list';
+import { EditorState, liftTarget, Transaction } from '../prosemirror';
+import * as baseCommand from '../prosemirror/prosemirror-commands';
+import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 
-export * from '../prosemirror/future/prosemirror-commands/commands';
+export * from '../prosemirror/prosemirror-commands';
 
 export function toggleBulletList() {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {

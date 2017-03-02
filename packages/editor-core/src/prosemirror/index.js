@@ -1,13 +1,9 @@
-Object.assign(exports, require('./edit'));
-Object.assign(exports, require('./inputrules'));
-Object.assign(exports, require('./markdown'));
-Object.assign(exports, require('./model'));
-Object.assign(exports, require('./schema-basic'));
-Object.assign(exports, require('./transform'));
-
-exports.browser = require('./util/browser');
-exports.OrderedMap = require('./util/orderedmap').OrderedMap;
-exports.EditorTransform = require('./edit/transform').EditorTransform;
-exports.DOMFromPos = require('./edit/dompos').DOMFromPos;
-exports.UpdateScheduler = require('./edit/update').UpdateScheduler;
-exports.posFromDOM = require('./edit/dompos').posFromDOM;
+Object.assign(exports, require('./prosemirror-commands'));
+Object.assign(exports, require('./prosemirror-history'));
+Object.assign(exports, require('./prosemirror-inputrules'));
+Object.assign(exports, require('./prosemirror-keymap'));
+Object.assign(exports, require('./prosemirror-model'));
+Object.assign(exports, require('./prosemirror-schema-basic'));
+Object.assign(exports, require('./prosemirror-state'));
+Object.assign(exports, require('./prosemirror-transform'));
+Object.assign(exports, require('./prosemirror-view'));

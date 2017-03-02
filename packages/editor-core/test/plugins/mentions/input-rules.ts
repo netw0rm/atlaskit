@@ -6,21 +6,21 @@ import { chaiPlugin } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 
-const schema: Schema = new Schema({
-  nodes: schemaBasic.nodeSpec.append({
-    mention: { type: MentionNodeType, group: 'inline' }
-  }),
-  marks: {
-    mention_query: MentionQueryMarkType
-  }
-});
-
-const makeEditor = () => new ProseMirror({
-  schema: schema,
-  plugins: [ MentionsPlugin ],
-});
-
 describe('mentions - input rules', () => {
+  const schema: Schema = new Schema({
+    nodes: schemaBasic.nodeSpec.append({
+      mention: { type: MentionNodeType, group: 'inline' }
+    }),
+    marks: {
+      mention_query: MentionQueryMarkType
+    }
+  });
+
+  const makeEditor = () => new ProseMirror({
+    schema: schema,
+    plugins: [ MentionsPlugin ],
+  });
+
   it('should replace a standalone "@" with mention-query-mark', () => {
     const pm = makeEditor();
     pm.input.insertText(0, 0, 'foo @');

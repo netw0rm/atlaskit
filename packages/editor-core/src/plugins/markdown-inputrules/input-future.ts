@@ -1,4 +1,4 @@
-import { blockQuoteRule, codeBlockRule, Fragment, headingRule, InputRule, Mark, MarkType, Schema, Transaction } from '../../prosemirror/future';
+import { blockQuoteRule, codeBlockRule, Fragment, headingRule, InputRule, Mark, MarkType, Schema, Transaction } from '../../prosemirror';
 
 function addMark(markType: MarkType, schema: Schema<any, any>): Function {
   return (state, match, start, end) => {

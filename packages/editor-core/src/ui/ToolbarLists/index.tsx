@@ -7,7 +7,7 @@ import { toggleBulletList, toggleOrderedList, tooltip } from '../../plugins/keym
 import { ListsState } from '../../plugins/lists';
 import { ListsState as FutureListsState } from '../../plugins/lists/index-future';
 import ToolbarButton from '../ToolbarButton';
-import { EditorView } from '../../prosemirror/future';
+import { EditorView } from '../../prosemirror';
 
 export interface Props {
   editorView?: EditorView;

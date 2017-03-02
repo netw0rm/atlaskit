@@ -1,25 +1,4 @@
-import { Heading, Node, Schema } from '../../prosemirror';
-import { NodeSpec } from '../../prosemirror/future';
-
-export class HeadingNodeType extends Heading {
-  constructor(name: string, schema: Schema) {
-    super(name, schema);
-    if (name !== 'heading') {
-      throw new Error('HeadingNodeType must be named "heading".');
-    }
-  }
-}
-
-export interface HeadingNode extends Node {
-  type: HeadingNodeType;
-  attrs: {
-    level: number;
-  };
-}
-
-export function isHeadingNode(node: Node): node is HeadingNode {
-  return node.type instanceof HeadingNodeType;
-}
+import { NodeSpec } from '../../prosemirror';
 
 export const heading: NodeSpec = {
   attrs: { level: { default: 1 } },

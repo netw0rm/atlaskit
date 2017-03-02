@@ -9,3 +9,4 @@ export * from './cardViewSmall/cardViewSmall';
 export * from './card/card';
 
 export default CardView;
+

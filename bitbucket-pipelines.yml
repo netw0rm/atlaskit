@@ -33,6 +33,7 @@ pipelines:
           - ./build/bin/generate.changed.packages.file.pr.sh
           - yarn run browserstack/tunnel/start
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
-          - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base" "test/wc/browserstack/pr"
+          - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base"
+          - yarn run "test/wc/browserstack/pr"
           - yarn run "pr/storybook"
           - yarn run browserstack/tunnel/stop

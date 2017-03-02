@@ -178,7 +178,7 @@ export class BlockTypeState {
         }
         break;
       case CODE_BLOCK.name:
-        if (nodes.code_block) {
+        if (nodes.codeBlock) {
           commands.toggleCodeBlock()(view.state, view.dispatch);
         }
         break;
@@ -503,7 +503,7 @@ export class BlockTypeState {
       case BLOCK_QUOTE:
         return !!state.schema.nodes.blockquote;
       case CODE_BLOCK:
-        return !!state.schema.nodes.code_block;
+        return !!state.schema.nodes.codeBlock;
       case PANEL:
         return !!state.schema.nodes.panel;
     }

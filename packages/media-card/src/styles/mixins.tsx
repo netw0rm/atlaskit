@@ -1,5 +1,6 @@
 /* tslint:disable:variable-name */
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
+import {defaultTransitionDuration} from './base';
 
 export const ellipsis = maxWidth => `
   max-width: ${maxWidth};
@@ -60,6 +61,10 @@ export const spaceAround = () => `
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+`;
+
+export const transition = (propertyName = 'all') => `
+  transition: ${propertyName} ${defaultTransitionDuration};
 `;
 
 export const hexToRgb = (hex) => {

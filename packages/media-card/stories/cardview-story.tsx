@@ -233,7 +233,7 @@ storiesOf('CardView', {})
           menuActions={menuActions}
         />
       }, {
-        title: 'No URI selected',
+        title: 'No URI + selected',
         content: <CardView
           loading={false}
           selectable={true}
@@ -245,7 +245,7 @@ storiesOf('CardView', {})
           onClick={onClick}
         />
       }, {
-        title: 'No URI unselected',
+        title: 'No URI + unselected',
         content: <CardView
           loading={false}
           selectable={true}
@@ -257,7 +257,7 @@ storiesOf('CardView', {})
           onClick={onClick}
         />
       }, {
-        title: 'No URI unselected + menu actions',
+        title: 'No URI + unselected + menu actions',
         content: <CardView
           loading={false}
           selectable={true}
@@ -270,7 +270,7 @@ storiesOf('CardView', {})
           menuActions={menuActions}
         />
       }, {
-        title: 'No URI selected + menu actions',
+        title: 'No URI + selected + menu actions',
         content: <CardView
           loading={false}
           selectable={true}
@@ -492,17 +492,22 @@ storiesOf('CardView', {})
     </ul>;
   })
   .add('Menu action', () => (
-     <CardView
-      loading={false}
-      selectable={false}
-      selected={false}
-      mediaName="this is my image.png"
-      mediaType="image"
-      mediaSize={32831}
-      dataURI={tallImage}
-      onClick={onClick}
-      menuActions={menuActions}
-     />
+    <StoryList>
+       {[{
+         title: 'Default',
+         content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="this is my image.png"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={onClick}
+          menuActions={menuActions}
+         />
+       }]}
+    </StoryList>
   ))
   .add('Error', () => (
     <CardView

@@ -108,7 +108,7 @@ export class CardViewSmall extends Component<CardViewSmallProps, CardViewSmallSt
   formatCard(left: JSX.Element, right: JSX.Element) {
     const cardStyle = this.props.width ? {width: `${this.props.width}px`} : {};
     const className = this.props.loading ? 'loading' : '';
-    const shadowClass = this.props.mediaType === 'image' && this.props.dataURI ? 'shadow' : null;
+    const shadowClass = this.props.mediaType === 'image' && this.props.dataURI ? 'shadow' : '';
 
     return (
       <SmallCard style={cardStyle} className={className} onClick={this.onClick.bind(this)}>

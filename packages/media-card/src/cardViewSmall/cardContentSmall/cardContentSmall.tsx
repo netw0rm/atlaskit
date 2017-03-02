@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {LoadingWrapper} from '../styled';
+import {LoadingWrapper, CardImage, transparentFallbackBackground} from '../styled';
 import {PlaceholderSmall} from '../placholderSmall/placeholderSmall';
 import {MediaType} from '@atlaskit/media-core';
 
@@ -17,7 +17,11 @@ export class CardContentSmall extends Component<CardContentProps, {}> {
     }
 
     if (this.props.mediaType === 'image' && this.props.dataURI) {
-      return <img alt="" src={this.props.dataURI} />;
+      const style = {
+        backgroundImage: `url(${this.props.dataURI}), ${transparentFallbackBackground}`
+      };
+
+      return <CardImage style={style} />;
     } else {
       return <PlaceholderSmall mediaType={this.props.mediaType} />;
     }

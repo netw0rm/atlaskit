@@ -56,7 +56,7 @@ storiesOf('CardViewSmall', {})
         content: <div>
           <CardViewSmall
             loading={false}
-            mediaName="sea_creatures.mp3"
+            mediaName="sea_creatures_foo.mp3"
             mediaType="audio"
             mediaSize={32831}
             onClick={onClick}
@@ -213,7 +213,8 @@ storiesOf('CardViewSmall', {})
   .add('Loading', () => {
     const loadingCards = Array.apply(null, {length: 10}).map((k, i) => {
       const delay = i * 100 + 1000;
-      return <DelayedLoadingCard delay={delay}/>;
+      const dataURI = i % 2 === 0 ? tallImage : smallTransparentImage;
+      return <DelayedLoadingCard dataURI={dataURI} delay={delay}/>;
     });
 
     return <StoryList>
@@ -238,7 +239,7 @@ storiesOf('CardViewSmall', {})
   .add('Menu actions', () => (
     <StoryList>
       {[{
-        title: 'Foo',
+        title: 'Default',
         content: <CardViewSmall
           loading={false}
           mediaName="sea_creatures.mp3"

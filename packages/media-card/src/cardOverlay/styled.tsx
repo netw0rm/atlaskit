@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import {rgba, centerX, easeOutCubic, borderRadius, size} from '../styles/base';
+import {rgba, centerX, easeOutCubic, borderRadius, size, transition} from '../styles/base';
 import { akColorN70, akColorB200, akColorN0, akColorN500, akColorN800, akColorN900, akColorB400 } from '@atlaskit/util-shared-styles';
 
 export const MoreBtn = styled.div`
@@ -71,14 +71,22 @@ export const FileTypeIcon = styled.div`
 
 export const TickBox = styled.div`
   ${size(14)}
-  background-color: ${akColorN70};
+  ${transition()}
+  background-color: ${rgba('#ffffff', 0.5)};
   position: absolute;
   top: 8px;
   right: 8px;
   border-radius: 20px;
   z-index: 20;
+  color: #798599; // TODO: Align color with new design
   display: flex;
-  color: ${akColorN0};
+  opacity: 0;
+
+  &.selected {
+    opacity: 1;
+    color: white;
+    background-color: #0052CC; // TODO: Align with tickbox icons
+  }
 `;
 
 export const Overlay = styled.div`
@@ -90,7 +98,7 @@ export const Overlay = styled.div`
   top: 0;
   left: 0;
   border: 2px solid transparent;
-  transition: .3s background ${easeOutCubic};
+  transition: .3s background ${easeOutCubic}, .3s border-color;
 
   &:hover, &.active {
     .top-row {
@@ -131,7 +139,9 @@ export const Overlay = styled.div`
   }
 
   &.show-on-hover {
-    overflow: hidden;
+    &:not(.active) {
+      overflow: hidden;
+    }
     
     .top-row {
       .title {
@@ -204,6 +214,12 @@ export const Overlay = styled.div`
 
     /* Selectable */
     &.selectable {
+      &:hover {
+        .tickbox {
+          opacity: 1;
+        }
+      }
+
       &.selected {
         border-color: ${akColorB200} !important;
 

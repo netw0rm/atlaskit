@@ -6,7 +6,7 @@ import {
   akColorN70
 } from '@atlaskit/util-shared-styles';
 
-const imageBackground = 'background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKAQMAAAC3/F3+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAABlBMVEXf39////8zI3BgAAAAEUlEQVQIW2Nk38mIjH5wICMAez4Iyz2C/F8AAAAASUVORK5CYII=") repeat;';
+export const transparentFallbackBackground = 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKAQMAAAC3/F3+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAABlBMVEXf39////8zI3BgAAAAEUlEQVQIW2Nk38mIjH5wICMAez4Iyz2C/F8AAAAASUVORK5CYII=")';
 
 export const SmallCard = styled(Root)`
   ${borderRadius()}
@@ -86,8 +86,6 @@ export const ImgWrapper = styled.div`
   }
 
   img {
-    ${fadeIn()}
-    ${imageBackground}
     max-width: 100%;
     max-height: 100%;   
   }
@@ -155,4 +153,12 @@ export const PlaceholderSmallWrapper = styled.div`
 
     span {${size(12)}}
   }
+`;
+
+export const CardImage = styled.div`
+  ${size('100%')}
+  ${fadeIn()}
+  background-repeat: no-repeat, repeat;
+  background-position: center, center;
+  background-size: cover, auto;
 `;

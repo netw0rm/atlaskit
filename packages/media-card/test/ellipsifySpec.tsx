@@ -50,7 +50,6 @@ describe.skip('Ellipsify', () => {
   it('Cut text where there is not enough lines', () => {
     const wrapper = mountEllipsis('This text should be bigger than two lines', 2, 50);
     const elementHeight = getElementHeight(wrapper, container);
-    const elementText = wrapper.find('.ellipsed-text').text();
 
     expect(Math.ceil(elementHeight)).to.equal(Math.ceil(lineHeight * 2));
   });

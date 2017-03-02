@@ -43,7 +43,7 @@ storiesOf('CardView', {})
           mediaName="image with no preview.png"
           mediaType="image"
           mediaSize={32831}
-          dataURI={null}
+          dataURI={undefined}
           onClick={onClick}
         />
       </li>
@@ -256,14 +256,20 @@ storiesOf('CardView', {})
     />
   ))
   .add('Loading states', () => {
-    class LoadingWrapper extends Component<{}, {}> {
+    interface LoadingWrapperState {
+      loading: boolean;
+    }
+
+    class LoadingWrapper extends Component<{}, LoadingWrapperState> {
+      interval: number;
+
       constructor(props) {
         super(props);
         this.state = {loading: true};
       }
 
       componentDidMount() {
-        this.interval = setTimeout(() => this.setState({loading: false}), 1000);
+        this.interval = window.setTimeout(() => this.setState({loading: false}), 1000);
       }
 
       componentWillUnmount() {

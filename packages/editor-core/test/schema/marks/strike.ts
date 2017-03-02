@@ -1,39 +1,11 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { DocNodeType, Schema, StrikeMarkType, Text } from '../../../src';
+import { Schema, doc, paragraph, text, strike } from '../../../src';
 import { chaiPlugin, fromHTML, toHTML } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 
 describe('ak-editor-core/schema strike mark', () => {
-  it('throws an error if it is not named "strike"', () => {
-    expect(() => {
-      new Schema({
-        nodes: {
-          doc: { type: DocNodeType, content: 'text*' },
-          text: { type: Text }
-        },
-        marks: {
-          foo: StrikeMarkType
-        }
-      });
-    }).to.throw(Error);
-  });
-
-  it('does not throw an error if it is named "strike"', () => {
-    expect(() => {
-      new Schema({
-        nodes: {
-          doc: { type: DocNodeType, content: 'text*' },
-          text: { type: Text }
-        },
-        marks: {
-          strike: StrikeMarkType
-        }
-      });
-    }).to.not.throw(Error);
-  });
-
   itMatches('<s>text</s>', 'text');
   itMatches('<strike>text</strike>', 'text');
   itMatches('<span style="text-decoration: line-through">text</span>', 'text');
@@ -41,36 +13,20 @@ describe('ak-editor-core/schema strike mark', () => {
   it('serializes to <s>', () => {
     const schema = makeSchema();
     const node = schema.text('foo', [ schema.marks.strike.create() ] );
-    expect(toHTML(node)).to.equal('<s>foo</s>');
+    expect(toHTML(node, schema)).to.equal('<s>foo</s>');
   });
 });
 
-function makeSchema() {
-  interface ISchema extends Schema{
-    nodes: {
-      doc: DocNodeType;
-      text: Text;
-    };
-    marks: {
-      strike: StrikeMarkType;
-    };
-  }
-
-  return new Schema({
-    nodes: {
-      doc: { type: DocNodeType, content: 'inline<_>*' },
-      text: { type: Text, group: 'inline' }
-    },
-    marks: {
-      strike: StrikeMarkType
-    }
-  }) as ISchema;
+function makeSchema () {
+  const nodes = {doc, paragraph, text};
+  const marks = {strike};
+  return new Schema<typeof nodes, typeof marks>({ nodes, marks });
 }
 
-function itMatches(html: string, expectedText: string) {
+function itMatches (html: string, expectedText: string) {
   it(`matches ${html}`, () => {
     const schema = makeSchema();
-    const doc = fromHTML(`${html}`, schema);
+    const doc = fromHTML(html, schema);
     const strike = schema.marks.strike.create();
 
     expect(doc).to.have.textWithMarks(expectedText, [ strike ]);

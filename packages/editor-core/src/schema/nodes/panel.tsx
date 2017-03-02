@@ -92,6 +92,7 @@ export interface DOMAttributes {
 }
 
 export const panel: NodeSpec = {
+  group: 'block',
   attrs: {
     panelType: { default: 'info' }
   },

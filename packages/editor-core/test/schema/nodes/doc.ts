@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { Schema, Text } from '../../../src';
 import { CodeBlockNodeType, DocNodeType } from '../../../src';
 
-describe('ak-editor-core/schema doc node', () => {
+describe('@atlaskit/editor-core/schema doc node', () => {
   it('throws an error if it is not named "doc"', () => {
     expect(() => {
       new Schema({

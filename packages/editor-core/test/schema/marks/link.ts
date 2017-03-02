@@ -1,11 +1,11 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { DocNodeType, LinkMarkType, Schema, Text } from '../../../src';
-import { chaiPlugin } from '../../../test-helper';
+import { chaiPlugin } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-core/schema link mark', () => {
+describe('@atlaskit/editor-core/schema link mark', () => {
   it('throws an error if it is not named "link"', () => {
     expect(() => {
       new Schema({

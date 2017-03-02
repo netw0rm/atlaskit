@@ -159,6 +159,7 @@ export default class InlineEdit extends PureComponent {
             onClick={this.onWrapperClick}
           >
             <FieldBase
+              isCompact
               isInvalid={this.props.isInvalid}
               isFocused={this.isReadOnly() ? false : undefined}
               isReadOnly={this.isReadOnly()}

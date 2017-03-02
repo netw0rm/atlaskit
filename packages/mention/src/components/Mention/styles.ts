@@ -10,6 +10,7 @@ export const mention = style({
   background: akColorN30,
   borderRadius: '20px',
   color: akColorN500,
+  cursor: 'pointer',
   padding: '0 4px 2px 3px',
   whiteSpace: 'nowrap'
 });

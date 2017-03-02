@@ -1,11 +1,11 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { DocNodeType, Schema, StrongMarkType, Text } from '../../../src';
-import { chaiPlugin } from '../../../test-helper';
+import { chaiPlugin } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-core/schema strong mark', () => {
+describe('@atlaskit/editor-core/schema strong mark', () => {
   it('throws an error if it is not named "strong"', () => {
     expect(() => {
       new Schema({

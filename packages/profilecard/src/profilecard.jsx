@@ -25,6 +25,7 @@ export default class Profilecard extends PureComponent {
     })),
     isLoading: React.PropTypes.bool,
     hasError: React.PropTypes.bool,
+    clientFetchProfile: React.PropTypes.func,
 
   }
 
@@ -34,7 +35,7 @@ export default class Profilecard extends PureComponent {
 
   render() {
     if (this.props.hasError) {
-      return <ErrorMessage reload={this.clientFetchProfile} />;
+      return <ErrorMessage reload={this.props.clientFetchProfile} />;
     }
 
     if (this.props.isLoading) {

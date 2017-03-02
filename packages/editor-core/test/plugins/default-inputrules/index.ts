@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import DefaultInputRulesPlugin from '../../../src/plugins/default-inputrules';
-import { chaiPlugin, doc, makeEditor, p } from '../../../test-helper';
+import { chaiPlugin, doc, makeEditor, p } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 

@@ -9,11 +9,6 @@ import {
   findAncestorPosition,
 } from '../../utils/index-future';
 
-import {
-  isBulletListNode,
-  isOrderedListNode
-} from '../../schema';
-
 import { bind as bindKeymap } from '../keymaps/buildKeymap';
 import * as keymaps from '../keymaps/utils-future';
 import * as commands from '../../commands';
@@ -75,13 +70,13 @@ export class ListsState {
 
     let dirty = false;
 
-    const newBulletListActive = isBulletListNode(rootNode);
+    const newBulletListActive = rootNode.type === newEditorState.schema.nodes.bullet_list;
     if (newBulletListActive !== this.bulletListActive) {
       this.bulletListActive = newBulletListActive;
       dirty = true;
     }
 
-    const newOrderedListActive = isOrderedListNode(rootNode);
+    const newOrderedListActive = rootNode.type === newEditorState.schema.nodes.ordered_list;
     if (newOrderedListActive !== this.orderedListActive) {
       this.orderedListActive = newOrderedListActive;
       dirty = true;

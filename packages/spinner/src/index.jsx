@@ -30,7 +30,10 @@ export default class Spinner extends PureComponent {
     size: 'small',
   }
 
-  state = { spinnerHiddenForDelay: false };
+  state = {
+    spinnerHiddenForDelay: true,
+    spinnerDelayTimeout: null,
+  };
 
   componentDidMount() {
     if (!this.props.isCompleting) {
@@ -46,8 +49,13 @@ export default class Spinner extends PureComponent {
   }
 
   showSpinnerAfterDelay = () => {
-    setTimeout(this.handleSpinnerDelayEnd, SPINNER_DELAY);
-    this.setState({ spinnerHiddenForDelay: true });
+    if (this.state.spinnerDelayTimeout) {
+      clearTimeout(this.state.spinnerDelayTimeout);
+    }
+    this.setState({
+      spinnerDelayTimeout: setTimeout(this.handleSpinnerDelayEnd, SPINNER_DELAY),
+      spinnerHiddenForDelay: true,
+    });
   }
 
   handleSpinnerDelayEnd = () => {
@@ -72,7 +80,8 @@ export default class Spinner extends PureComponent {
     }
 
     const spinnerStyles = {
-      [styles.spinner]: !this.state.hideSpinnerForDelay,
+      [styles.spinner]: true,
+      [styles.hidden]: this.state.spinnerHiddenForDelay,
       [styles.active]: !this.props.isCompleting,
     };
     const strokeWidth = Math.round(spinnerSize / 10);

@@ -1,13 +1,18 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import styles from '../src/styles.less';
+import { waitUntil } from '@atlaskit/util-common-test';
 
+import styles from '../src/styles.less';
 import Spinner from '../src';
 
 const {
   spinner: spinnerClass,
+  hidden: hiddenClass,
   active: activeClass,
 } = styles.locals;
+
+// we use this to know when the spinner is visible (because it has a time out before showing now)
+const spinnerIsVisible = elem => (elem.find(`.${hiddenClass}`).length === 0);
 
 describe('Spinner', () => {
   it('should be possible to create a component', () => {
@@ -15,7 +20,7 @@ describe('Spinner', () => {
     expect(wrapper).not.to.equal(undefined);
   });
 
-  it('should render a spinner element', () => {
+  it('should apply spinner class', () => {
     const wrapper = shallow(<Spinner />);
     expect(wrapper.find(`.${spinnerClass}`)).to.have.length.above(0);
   });
@@ -23,6 +28,17 @@ describe('Spinner', () => {
   it('should apply active class by default', () => {
     const wrapper = shallow(<Spinner />);
     expect(wrapper.find(`.${activeClass}`)).to.have.length.above(0);
+  });
+
+  it('should apply .hidden class by default', () => {
+    const wrapper = shallow(<Spinner />);
+    expect(wrapper.find(`.${hiddenClass}`)).to.have.length.above(0);
+  });
+
+  it('should remove the .hidden class after some time', () => {
+    const wrapper = shallow(<Spinner />);
+
+    return waitUntil(() => !spinnerIsVisible(wrapper));
   });
 
   describe('isCompleting prop', () => {
@@ -38,20 +54,28 @@ describe('Spinner', () => {
          get fired. The best we can do manually fire the event and check that function gets called
       */
       const spy = sinon.spy();
-      const wrapper = mount(<Spinner onComplete={spy} isCompleting />);
-      wrapper.find(`.${spinnerClass}`)
-        .simulate('transitionEnd', { propertyName: 'stroke-dashoffset' });
+      // we render without the isCompleting set first to get past the delay
+      const wrapper = mount(<Spinner onComplete={spy} />);
 
-      expect(spy.callCount).to.equal(1);
+      return waitUntil(() => spinnerIsVisible(wrapper)).then(() => {
+        wrapper.setProps({ isCompleting: true });
+        wrapper.find(`.${spinnerClass}`)
+          .simulate('transitionEnd', { propertyName: 'stroke-dashoffset' });
+
+        expect(spy.callCount).to.equal(1);
+      });
     });
 
     it('should not be called if isCompleting is not set', () => {
       const spy = sinon.spy();
       const wrapper = mount(<Spinner onComplete={spy} />);
-      wrapper.find(`.${spinnerClass}`)
-        .simulate('transitionEnd', { propertyName: 'stroke-dashoffset' });
 
-      expect(spy.callCount).to.not.equal(1);
+      return waitUntil(() => spinnerIsVisible(wrapper)).then(() => {
+        wrapper.find(`.${spinnerClass}`)
+          .simulate('transitionEnd', { propertyName: 'stroke-dashoffset' });
+
+        expect(spy.callCount).to.not.equal(1);
+      });
     });
   });
 

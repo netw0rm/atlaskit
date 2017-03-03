@@ -112,7 +112,7 @@ export const panel: NodeSpec = {
       'div',
       attrs,
       getIconDom(panelType),
-      ['span', { class: contentStyle }, 0]
+      ['span', { class: contentStyle }]
     ];
   }
 };

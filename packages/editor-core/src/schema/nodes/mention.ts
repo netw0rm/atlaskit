@@ -22,14 +22,8 @@ const mentionStyle = style({
   }
 });
 
-export interface MentionNode extends Node {
-  attrs: {
-    id: string;
-    displayName: string;
-  };
-}
-
 export const mention: NodeSpec = {
+  inline: true,
   group: 'inline',
   attrs: {
     id: { default: '' },
@@ -43,12 +37,11 @@ export const mention: NodeSpec = {
     })
   }],
   toDOM(node: Node): [string, any, string] {
-    const mentionNode = node as MentionNode;
     const attrs = {
       'class': mentionStyle,
-      'mention-id': mentionNode.attrs.id,
+      'mention-id': node.attrs.id,
       'contenteditable': 'false',
     };
-    return ['span', attrs, mentionNode.attrs.displayName];
+    return ['span', attrs, node.attrs.displayName];
   }
 };

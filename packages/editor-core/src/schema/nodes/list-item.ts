@@ -1,10 +1,3 @@
-import { NodeSpec } from '../../prosemirror';
+import { NodeSpec, listItem as listItemSpec } from '../../prosemirror';
 
-export const listItem: NodeSpec = {
-  group: 'block',
-  content: 'paragraph block*',
-  parseDOM: [{ tag: 'li' }],
-  toDOM() {
-    return ['li', 0];
-  }
-};
+export const listItem: NodeSpec = listItemSpec;

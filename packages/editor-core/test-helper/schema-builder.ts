@@ -77,7 +77,7 @@ export interface RefsNode extends Node {
  * declaratively describe a position within some text, and then access the
  * position in the resulting node.
  */
-export function text(value: string, schema: Schema<NodeSpec, MarkSpec> = sampleSchema): RefsContentItem {
+export function text(value: string, schema: Schema<NodeSpec, MarkSpec>): RefsContentItem {
   let stripped = '';
   let textIndex = 0;
   const refs: Refs = {};

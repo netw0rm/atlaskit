@@ -7,24 +7,32 @@ import type { Position } from '../../types';
 
 export type Speed = 'NONE' | 'STANDARD' | 'FAST';
 
+type PositionLike = {|
+  x: any,
+    y: any,
+|};
+
+const isAtOrigin = (point: PositionLike): boolean =>
+  point.x === 0 && point.y === 0;
+
 type Props = {|
   children?: React$Element<*>,
-  // TODO: should this be optional?
-  destination: Position,
-  speed: Speed,
-  zIndex: string,
-  onMoveEnd?: Function,
-  innerRef?: Function,
+    // TODO: should this be optional?
+    destination: Position,
+      speed: Speed,
+        zIndex: string,
+          onMoveEnd ?: Function,
+          innerRef ?: Function,
 |}
 
 type DefaultProps = {|
   destination: Position,
-  innerRef: Function,
+    innerRef: Function,
 |}
 
 // TODO: memoizeOne
 const getMovement = (point: Position): Object => {
-  if (point.x === 0 && point.y === 0) {
+  if (isAtOrigin(point)) {
     return {};
   }
   // todo: support different vendors
@@ -49,7 +57,7 @@ export default class Movable extends PureComponent {
   defaultProps: DefaultProps
 
   static defaultProps: DefaultProps = {
-    innerRef: () => {},
+    innerRef: () => { },
     destination: start,
   }
   /* eslint-enable */
@@ -65,7 +73,7 @@ export default class Movable extends PureComponent {
     // offset or start change
 
     // could check to see if another move has started and abort the previous onMoveEnd
-    setTimeout(onMoveEnd);
+    setTimeout(() => onMoveEnd());
   }
 
   getFinal = () => {
@@ -86,13 +94,18 @@ export default class Movable extends PureComponent {
   render() {
     const final = this.getFinal();
 
+    // bug with react-motion: https://github.com/chenglou/react-motion/issues/437
+    // even if both defaultStyle and style are {x: 0, y: 0 } if there was
+    // a previous animation it uses the last value rather than the final value
+    const isNotMoving: boolean = isAtOrigin(start) && isAtOrigin(final);
+
     return (
       // https://github.com/chenglou/react-motion/issues/375
       // $FlowFixMe
       <Motion defaultStyle={start} style={final} onRest={this.onRest}>
         {(current: Position) => (
           <Canvas
-            style={getMovement(current)}
+            style={isNotMoving ? {} : getMovement(current)}
             zIndex={this.props.zIndex}
             innerRef={this.props.innerRef}
           >

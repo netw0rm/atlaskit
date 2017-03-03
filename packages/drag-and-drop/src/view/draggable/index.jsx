@@ -261,6 +261,7 @@ export default (type: TypeId,
       }
 
       render() {
+        console.log('rendering draggable', this.props.id);
         const handle = this.getHandle(this.props.isDragEnabled);
 
         const requestDragHandle = () => {

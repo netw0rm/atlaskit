@@ -38,10 +38,10 @@ const lists: ListDataMap = {
     id: 'foo',
     itemIds: itemKeys.slice(0, itemKeys.length / 2),
   },
-  bar: {
-    id: 'bar',
-    itemIds: itemKeys.slice((itemKeys.length / 2), itemKeys.length),
-  },
+  // bar: {
+  //   id: 'bar',
+  //   itemIds: itemKeys.slice((itemKeys.length / 2), itemKeys.length),
+  // },
 };
 
 const DraggableItem = (() => {
@@ -58,8 +58,11 @@ const DraggableItem = (() => {
       isDragging: boolean,
     |}
 
+    componentWillUnmount() {
+      console.warn('unmounting item', this.props.itemId);
+    }
+
     render() {
-      // console.log('rendering', this.props.itemId);
       const { isDragging } = this.props;
       return (
         <ItemContainer isDragging={isDragging}>

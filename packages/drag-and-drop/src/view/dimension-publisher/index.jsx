@@ -1,6 +1,7 @@
 // @flow
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import invariant from 'invariant';
 import {
   publishDraggableDimension,
@@ -91,32 +92,34 @@ export class DimensionPublisher extends PureComponent {
   }
 }
 
-const mapStateToProps = (state: State, ownProps: Object) => {
-  if (!state.requestDimensions) {
-    return {
-      shouldPublish: false,
-    };
-  }
+const requestDimensionSelector =
+  (state: State): ?TypeId => state.requestDimensions;
 
-  const type: TypeId = state.requestDimensions;
+const getOwnType = (state, props): TypeId => props.type;
 
-  if (type !== ownProps.type) {
-    return {
-      shouldPublish: false,
-    };
-  }
+const makeSelector = () => createSelector(
+    [requestDimensionSelector, getOwnType],
+    (type: ?TypeId, ownType: TypeId): { shouldPublish: boolean } => {
+      if (!type) {
+        return {
+          shouldPublish: false,
+        };
+      }
 
-  return {
-    shouldPublish: true,
-  };
-};
+      return {
+        shouldPublish: type === ownType,
+      };
+    }
+  );
+
+const makeMapStateToProps = () => makeSelector();
 
 export const DraggableDimensionPublisher = (() => {
   const mapDispatchToProps = {
     publish: publishDraggableDimension,
   };
 
-  return connect(mapStateToProps, mapDispatchToProps, null, { storeKey })(DimensionPublisher);
+  return connect(makeMapStateToProps, mapDispatchToProps, null, { storeKey })(DimensionPublisher);
 })();
 
 export const DroppableDimensionPublisher = (() => {
@@ -124,5 +127,5 @@ export const DroppableDimensionPublisher = (() => {
     publish: publishDroppableDimension,
   };
 
-  return connect(mapStateToProps, mapDispatchToProps, null, { storeKey })(DimensionPublisher);
+  return connect(makeMapStateToProps, mapDispatchToProps, null, { storeKey })(DimensionPublisher);
 })();

@@ -27,6 +27,7 @@ export default (provide: Provide) => {
             isDragEnabled,
             isDragging: false,
             canAnimate: false,
+            offset: { x: 0, y: 0 },
           };
         }
 

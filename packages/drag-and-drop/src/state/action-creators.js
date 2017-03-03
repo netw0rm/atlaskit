@@ -130,25 +130,6 @@ export const drop = (id: DraggableId): DropAction => ({
   payload: id,
 });
 
-// export const drop = (id: DraggableId) => (dispatch: Dispatch, getState: Function) => {
-//   const state: State = getState();
-
-//   // trying to drop when there is not drag - reset the whole thing!
-//   if(!state.currentDrag) {
-//     dispatch(cancel(id));
-//   }
-
-//   if (state.currentDrag) {
-//     const action: DropAction = {
-//       type: 'DROP',
-//       payload: id,
-//     };
-//     dispatch(action);
-//     return;
-//   }
-
-// };
-
 type DropFinishedAction = {
   type: 'DROP_FINISHED',
   payload: DraggableId
@@ -170,6 +151,8 @@ export const lift = (id: DraggableId,
   if (state.complete && !state.complete.isAnimationFinished) {
     dispatch(dropFinished(id));
   }
+  // https://github.com/chenglou/react-motion/issues/437
+  // need to allow a flush of react-motion
   setTimeout(() => {
     dispatch(beginLift());
     dispatch(requestDimensions(type));

@@ -1,8 +1,8 @@
 import { DOMSerializer, EditorState, Node, Slice, Transaction } from '../';
 import * as dom from '../dom';
 import { Decoration, DecorationSet } from './decoration';
-import { NodeView } from './viewdesc';
-export { Decoration, DecorationSet };
+import { NodeViewDesc } from './viewdesc';
+export { Decoration, DecorationSet, NodeViewDesc };
 
 export class EditorView {
   constructor(place: dom.Node | ((_0: dom.Node) => void) | null, props: EditorProps);
@@ -10,6 +10,7 @@ export class EditorView {
   props: EditorProps;
   state: EditorState<any>;
   content: dom.Element;
+  docView: NodeViewDesc;
   update(props: EditorProps): void;
   updateState(state: EditorState<any>): void;
   hasFocus(): boolean;

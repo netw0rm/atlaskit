@@ -1,39 +1,30 @@
-import Keymap from 'browserkeymap';
-import { DOMFromPos, Node, Plugin, ProseMirror, Schema } from '../../prosemirror';
-import { CodeBlockNodeType, isCodeBlockNode } from '../../schema';
+import {
+  EditorState,
+  EditorView,
+  Node,
+  Plugin,
+  PluginKey,
+  NodeViewDesc,
+} from '../../prosemirror';
 import * as keymaps from '../keymaps';
-import CodeBlockPasteListener from './code-block-paste-listener';
+import { bind as bindKeymap } from '../keymaps/buildKeymap';
+import * as commands from '../../commands';
+
+export type CodeBlockStateSubscriber = (state: CodeBlockState) => any;
+export type StateChangeHandler = (state: CodeBlockState) => any;
 
 export class CodeBlockState {
   element?: HTMLElement;
   language: string | undefined;
   clicked: boolean = false;
 
-  private pm: PM;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
   private activeCodeBlock?: Node;
+  private state: EditorState<any>;
 
-  constructor(pm: PM) {
-    this.pm = pm;
-
-    // add paste listener to overwrite the prosemirror's
-    // see https://discuss.prosemirror.net/t/handle-paste-inside-code-block/372/5?u=bradleyayers
-    pm.root.addEventListener('paste', new CodeBlockPasteListener(pm), true);
-
-    pm.addKeymap(new Keymap({
-      [keymaps.splitCodeBlock.common!]: () => this.splitCodeBlock(),
-    }));
-
-    pm.updateScheduler([
-      pm.on.selectionChange,
-      pm.on.change,
-    ], () => this.update());
-
-    pm.on.click.add(() => {
-      this.update(true);
-    });
-
-    this.update();
+  constructor(state: EditorState<any>) {
+    this.changeHandlers = [];
+    this.state = state;
   }
 
   subscribe(cb: CodeBlockStateSubscriber) {
@@ -45,70 +36,83 @@ export class CodeBlockState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  updateLanguage(language?: string): void {
+  updateLanguage(language: string| undefined, view: EditorView): void {
     if (this.activeCodeBlock) {
-      this.pm.tr.setNodeType(this.nodeStartPos() - 1, this.activeCodeBlock.type, {language: language}).applyAndScroll();
+      commands.setBlockType(view.state.schema.nodes.codeBlock, { language: language })(view.state, view.dispatch);
     }
   }
 
-  splitCodeBlock(): boolean {
-    const { pm } = this;
-    const { $from } = pm.selection;
-    const node = $from.parent;
-
-    if (isCodeBlockNode(node)) {
-        pm.tr.typeText('\n').applyAndScroll();
-        return true;
-    }
-    return false;
-  }
-
-  private update(clicked = false) {
+  update(state: EditorState<any>, docView: NodeViewDesc, clicked: boolean = false) {
+    this.state = state;
     const codeBlockNode = this.activeCodeBlockNode();
 
     if (clicked && codeBlockNode || codeBlockNode !== this.activeCodeBlock) {
       this.clicked = clicked;
       this.activeCodeBlock = codeBlockNode;
       this.language = codeBlockNode && codeBlockNode.attrs['language'] || undefined;
-      this.element = codeBlockNode && this.activeCodeBlockElement();
-      this.changeHandlers.forEach(changeHandler => changeHandler(this));
+      this.element = codeBlockNode && this.activeCodeBlockElement(docView);
+      this.triggerOnChange();
     }
   }
 
-  private activeCodeBlockElement(): HTMLElement {
-    const offset =  this.nodeStartPos();
-    const { node } = DOMFromPos(this.pm, offset, true);
+  private triggerOnChange() {
+    this.changeHandlers.forEach(cb => cb(this));
+  }
+
+  private activeCodeBlockElement(docView: NodeViewDesc): HTMLElement {
+    const offset = this.nodeStartPos();
+    const { node } = docView.domFromPos(offset, 1);
 
     return node as HTMLElement;
   }
 
   private nodeStartPos(): number {
-    const { $from } = this.pm.selection;
+    const { $from } = this.state.selection;
     return $from.start($from.depth);
   }
 
   private activeCodeBlockNode(): Node | undefined {
-    const { pm } = this;
-    const { $from } = pm.selection;
+    const { state } = this;
+    const { $from } = state.selection;
     const node = $from.parent;
-    if (isCodeBlockNode(node)) {
+    if (node.type === state.schema.nodes.codeBlock) {
       return node;
     }
 
     return undefined;
   }
 }
+const stateKey = new PluginKey('codeBlockPlugin');
 
-export interface S extends Schema {
-  nodes: {
-    code_block?: CodeBlockNodeType;
-  };
-}
+bindKeymap(keymaps.splitCodeBlock.common, commands.newlineInCode);
 
-export interface PM extends ProseMirror {
-  schema: S;
-}
+const plugin = new Plugin({
+  state: {
+    init(config, state: EditorState<any>) {
+      return new CodeBlockState(state);
+    },
+    apply(tr, pluginState: CodeBlockState, oldState, newState) {
+      const stored = tr.getMeta(stateKey);
+      if (stored) {
+        pluginState.update(newState, stored.docView, stored.clicked);
+      }
+      return pluginState;
+    }
+  },
+  key: stateKey,
+  view: (editorView: EditorView) => {
+    return {
+      update: (view: EditorView, prevState: EditorState<any>) => {
+        stateKey.getState(view.state).update(view.state, view.docView);
+      }
+    };
+  },
+  props: {
+    handleClick(view, event) {
+      view.dispatch(view.state.tr.setMeta(stateKey, { docView: view.docView, clicked: true }));
+      return false;
+    }
+  }
+});
 
-export type CodeBlockStateSubscriber = (state: CodeBlockState) => any;
-
-export default new Plugin(CodeBlockState);
+export default plugin;

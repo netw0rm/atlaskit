@@ -14,7 +14,7 @@ import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
 export interface Props {
-  editorView?: EditorView;
+  editorView: EditorView;
   isExpanded?: boolean;
   placeholder?: string;
   onCancel?: () => void;

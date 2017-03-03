@@ -66,7 +66,7 @@ const ALL = [toggleOrderedList, toggleBulletList, toggleBold, toggleItalic,
   toggleUnderline, toggleStrikethrough, toggleMonospace,
   setNormalText, toggleHeading1, toggleHeading2, toggleHeading3, toggleHeading4, toggleHeading5,
   toggleBlockQuote, toggleCodeBlock, insertNewLine, insertHorizontalRule,
-  splitCodeBlock, splitListItem, redo, undo, createCodeBlock, moveUp, moveDown];
+  splitCodeBlock, splitListItem, redo, undo];
 
 function makeKeyMap(description: string, windows: string, mac: string, common?: string): Keymap {
   return {

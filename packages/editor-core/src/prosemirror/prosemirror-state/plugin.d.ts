@@ -6,7 +6,7 @@ export interface PluginOptions {
   state?: StateField<any>;
   key?: PluginKey;
   view?: (editorView: EditorView) => {
-    update?: (editorView: EditorView) => void;
+    update?: (editorView: EditorView, prevState: EditorState<any>) => void;
     destroy?: () => void;
   };
   filterTransaction?: (transaction: Transaction, editorState: EditorState<any>) => boolean;

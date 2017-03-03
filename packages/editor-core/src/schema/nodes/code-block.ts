@@ -1,6 +1,6 @@
 import { NodeSpec, dom } from '../../prosemirror';
 
-const getLanguageFromEditorStyle = (dom: HTMLElement): string => {
+const getLanguageFromEditorStyle = (dom: HTMLElement): string | undefined => {
   return dom.dataset['language'];
 };
 // example of BB style:
@@ -28,6 +28,7 @@ const removeLastNewLine = (dom: HTMLElement): void => {
 };
 
 export const codeBlock: NodeSpec = {
+  attrs: { language: { default: null } },
   content: 'text*',
   group: 'block',
   code: true,

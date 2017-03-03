@@ -4,7 +4,7 @@ import MentionIcon from 'ak-icon/glyph/editor/mention';
 import { PureComponent } from 'react';
 import * as React from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
-import { BlockTypeState } from '../../plugins/block-type/index-future';
+import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
@@ -65,7 +65,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
         <div className={styles.content}>
           {props.children}
           {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} /> : null}
-          {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} /> : null}
+          {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} editorView={props.editorView} /> : null}
           {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} /> : null}
           {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} /> : null}
         </div>

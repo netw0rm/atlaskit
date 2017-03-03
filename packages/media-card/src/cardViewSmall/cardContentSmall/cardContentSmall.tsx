@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {LoadingWrapper} from '../styled';
-import FileIcon from '@atlaskit/icon/glyph/file';
+import {LoadingWrapper, CardImage, transparentFallbackBackground} from '../styled';
 import {PlaceholderSmall} from '../placholderSmall/placeholderSmall';
 import {MediaType} from '@atlaskit/media-core';
 
@@ -14,13 +13,15 @@ export interface CardContentProps {
 export class CardContentSmall extends Component<CardContentProps, {}> {
   render() {
     if (this.props.loading) {
-      return <LoadingWrapper>
-               <FileIcon label="loading"/>
-             </LoadingWrapper>;
+      return <LoadingWrapper />;
     }
 
     if (this.props.mediaType === 'image' && this.props.dataURI) {
-      return <img alt="" src={this.props.dataURI} />;
+      const style = {
+        backgroundImage: `url(${this.props.dataURI}), ${transparentFallbackBackground}`
+      };
+
+      return <CardImage className="card-img" style={style} />;
     } else {
       return <PlaceholderSmall mediaType={this.props.mediaType} />;
     }

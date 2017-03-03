@@ -1,7 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
 import keyCode from 'keycode';
-import styles from 'style!./styles.less';
 import classNames from 'classnames';
+
+import { locals as styles } from '../styles.less';
 
 /* eslint-disable react/no-unused-prop-types */
 export default class Trigger extends PureComponent {
@@ -70,7 +71,7 @@ export default class Trigger extends PureComponent {
         onClick={this.handleClick}
         onKeyDown={this.handleKeyDown}
         className={classNames(styles.triggerContainer, props.className, {
-          [styles.fitContainer]: props.shouldFitContainer,
+          [styles.triggerFitContainer]: props.shouldFitContainer,
         })}
         style={props.style}
         ref={ref => (this.ref = ref)}

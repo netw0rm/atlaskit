@@ -4,9 +4,9 @@ import { shallow, mount } from 'enzyme';
 import { name } from '../package.json';
 import { locals as styles } from '../src/styles.less';
 
-import Item, { SecondaryText } from '../src';
+import { SecondaryText, Item } from '../src';
 
-describe(name, () => {
+describe(`${name} - item`, () => {
   it('should be possible to create a component', () => {
     expect(shallow(<Item />)).not.to.equal(undefined);
   });

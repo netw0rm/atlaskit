@@ -1,9 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Item from 'ak-droplist-item';
 import styles from 'style!./story-styles.less';
 
-import Group from '../src';
+import { Group, Item } from '../src';
 import { name } from '../package.json';
 
 /* eslint-disable react/prop-types */
@@ -11,7 +10,7 @@ const GroupsWrapper = props => <div className={styles.storyesContainer}>{props.c
 const DropImitation = props => <div className={styles.itemsContainer}>{props.children}</div>;
 /* eslint-enable react/prop-types */
 
-storiesOf(name, module)
+storiesOf(`${name} - groups`, module)
   .add('simple groups with headings', () => (
     <GroupsWrapper>
       <DropImitation>

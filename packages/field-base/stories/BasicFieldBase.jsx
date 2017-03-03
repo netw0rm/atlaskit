@@ -18,6 +18,7 @@ export default props => (
       isFirstChild={props.isFirstChild}
     />
     <AkFieldBase
+      isCompact={props.isCompact}
       isInvalid={props.isInvalid}
       isDisabled={props.isDisabled}
       isReadOnly={props.isReadOnly}

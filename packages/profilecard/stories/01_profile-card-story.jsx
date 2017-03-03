@@ -57,6 +57,13 @@ storiesOf(`${name}`, module)
       </div>
     </div>
   ))
+  .add('error state without reload option', () => (
+    <div style={canvasStyle}>
+      <div className={styles.profilecardResourced}>
+        <ErrorMessage />
+      </div>
+    </div>
+  ))
   .add('worst case card', () => {
     const data = fakeData({
       avatarUrl: null,

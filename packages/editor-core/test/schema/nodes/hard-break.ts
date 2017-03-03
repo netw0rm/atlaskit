@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { Schema, Text } from '../../../src';
 import { DocNodeType, HardBreakNodeType } from '../../../src';
 
-describe('ak-editor-core/schema hard_break node', () => {
+describe('@atlaskit/editor-core/schema hard_break node', () => {
   it('throws an error if it is not named "hard_break"', () => {
     expect(() => {
       new Schema({

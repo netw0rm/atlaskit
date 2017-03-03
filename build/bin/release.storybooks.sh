@@ -23,8 +23,8 @@ function build_storybooks() {
   $CHALK --no-stdin -t "{blue getting released packages}"
   # The .released-packages file is created by `lerna-semantic-release perform` and contains a list of all the released packages
   RELEASED_PACKAGES_RAW=$(cat ./.released-packages)
-  # we pass that to _get_released_packages_glob.js to get a glob we can pass to lerna
-  RELEASED_PACKAGES_GLOB=$($BASEDIR/_get_released_packages_glob.js "$RELEASED_PACKAGES_RAW")
+  # we pass that to get_released_packages_glob.js to get a glob we can pass to lerna
+  RELEASED_PACKAGES_GLOB=$($BASEDIR/get_released_packages_glob.js "$RELEASED_PACKAGES_RAW")
 
   $CHALK --no-stdin -t "{blue Building storybooks}"
   rm -rf ./stories

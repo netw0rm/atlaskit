@@ -81,7 +81,7 @@ export const document = {
         {
           type: 'mention',
           attrs: {
-            id: 'ABCDE-ABCDE-ABCDE-ABCDE',
+            id: 'ABCDE-ABCDE-ABCDE-FGHI',
             displayName: '@oscar'
           }
         }
@@ -97,7 +97,7 @@ export const document = {
         {
           type: 'mention',
           attrs: {
-            id: 'ABCDE-ABCDE-ABCDE-ABCDE',
+            id: 'ABCDE-ABCDE-ABCDE-FGHI',
           },
           text: '@oscar'
         }

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { Schema, Text } from '../../../src';
 import { DocNodeType, OrderedListNodeType } from '../../../src';
 
-describe('ak-editor-core/schema ordered_list node', () => {
+describe('@atlaskit/editor-core/schema ordered_list node', () => {
   it('throws an error if it is not named "ordered_list"', () => {
     expect(() => {
       new Schema({

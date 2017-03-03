@@ -20,7 +20,7 @@ import {
   Text,
   UnderlineMarkType
 } from '../src';
-import { markFactory, nodeFactory } from '../test-helper';
+import { markFactory, nodeFactory } from '../src/test-helper';
 
 export const schema = new Schema({
   nodes: {

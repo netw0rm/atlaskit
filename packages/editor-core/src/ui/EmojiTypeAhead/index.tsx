@@ -1,4 +1,4 @@
-import { EmojiTypeAhead as AkEmojiTypeAhead } from 'ak-emoji';
+import { EmojiTypeAhead as AkEmojiTypeAhead } from '@atlaskit/emoji';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { EmojisPluginState } from '../../plugins/emojis';

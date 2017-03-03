@@ -2,7 +2,8 @@ import * as React from 'react';
 import {Component} from 'react';
 import {storiesOf, action} from '@kadira/storybook';
 import {CardView} from '../src';
-import tallImageDataUri from './tall-image';
+import {tallImage, wideImage, wideTransparentImage, smallImage} from './images';
+import StoryList from './story-list';
 import styles from './styles';
 
 const onClick = (event: Event) => {
@@ -30,7 +31,7 @@ storiesOf('CardView', {})
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -56,7 +57,7 @@ storiesOf('CardView', {})
           mediaName="this is my video.mpg"
           mediaType="video"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -69,7 +70,7 @@ storiesOf('CardView', {})
           mediaName="this is my doc.docx"
           mediaType="doc"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -82,7 +83,7 @@ storiesOf('CardView', {})
           mediaName="this is my audio file.mp3"
           mediaType="audio"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -95,12 +96,198 @@ storiesOf('CardView', {})
           mediaName="this is my unknown file.kpf"
           mediaType="unknown"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
     </ul>
   ))
+  .add('No preview', () => (
+    <StoryList>
+      {[{
+        title: 'Image',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="No preview image"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Video',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="No preview video"
+          mediaType="video"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Audio',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="No preview audio"
+          mediaType="audio"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Video + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="No preview audio"
+          mediaType="video"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }]}
+    </StoryList>
+  ))
+  .add('Selectable', () => {
+    class SelectableWrapper extends Component<{}, {}> {
+      constructor(props) {
+        super(props);
+        this.state = {selected: false};
+      }
+
+      toggleSelection = () => {
+        this.setState({selected: !this.state.selected});
+      }
+
+      render() {
+        return <CardView
+          loading={false}
+          selectable={true}
+          selected={this.state.selected}
+          mediaName="No preview image"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={wideImage}
+          onClick={this.toggleSelection}
+        />;
+      }
+    }
+
+    return <StoryList>
+      {[{
+        title: 'Not selected',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={false}
+          mediaName="Select me please"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Selected',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={true}
+          mediaName="Im a selected card"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={wideImage}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Selected + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={true}
+          mediaName="Selected with actions"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={wideTransparentImage}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }, {
+        title: 'Not selected + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={false}
+          mediaName="Not selected with actions"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={smallImage}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }, {
+        title: 'No URI + selected',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={true}
+          mediaName="I have no URI :("
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }, {
+        title: 'No URI + unselected',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={false}
+          mediaName="I have no URI :("
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }, {
+        title: 'No URI + unselected + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={false}
+          mediaName="🌋 👽"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }, {
+        title: 'No URI + selected + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={true}
+          mediaName="😵🤖"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }, {
+        title: 'Handle state change',
+        content: <SelectableWrapper />
+      }]}
+    </StoryList>;
+  })
   .add('Different name lengths', () => (
     <ul style={styles.statesWrapper}>
       <li style={styles.stateItem}>
@@ -112,7 +299,7 @@ storiesOf('CardView', {})
           mediaName="My awesome file.tsx"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -125,7 +312,7 @@ storiesOf('CardView', {})
           mediaName="Hey guys this is my awesome file.tsx"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -138,7 +325,7 @@ storiesOf('CardView', {})
           mediaName="Lorem ipsum Nulla veniam exercitation duis sit ut in sed consectetur dolore cupidatat ut pariatur.js"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -152,7 +339,7 @@ storiesOf('CardView', {})
           mediaName="Lorem ipsum nulla veniam exercitation duis sit ut in sed consectetur dolore cupidatat ut pariatur.json"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -166,7 +353,7 @@ storiesOf('CardView', {})
           mediaName="Lorem ipsum nulla veniam exercitation duis sit ut in sed consectetur dolore cupidatat sedconsectetur dolore cupidatat seddolore cupidatat sed sed consectetur dolore cupidatat ut pariatur.json"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -182,7 +369,7 @@ storiesOf('CardView', {})
       mediaName="some image"
       mediaType="image"
       mediaSize={32831}
-      dataURI={tallImageDataUri}
+      dataURI={tallImage}
       onClick={onClick}
     />
   ))
@@ -197,7 +384,7 @@ storiesOf('CardView', {})
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={100} // 100 B
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -210,7 +397,7 @@ storiesOf('CardView', {})
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={153600} // 150 kB
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -223,7 +410,7 @@ storiesOf('CardView', {})
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={12897490} // 12.3 MB
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -236,7 +423,7 @@ storiesOf('CardView', {})
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={1395864375} // 1.3 GB
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -250,7 +437,7 @@ storiesOf('CardView', {})
       mediaName="with_progress.png"
       mediaType="image"
       mediaSize={32831}
-      dataURI={tallImageDataUri}
+      dataURI={tallImage}
       progress={0.5}
       onClick={onClick}
     />
@@ -284,7 +471,7 @@ storiesOf('CardView', {})
           mediaName="loading.png"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />;
       }
@@ -300,7 +487,7 @@ storiesOf('CardView', {})
           mediaName="loading.png"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
       </li>
@@ -310,6 +497,24 @@ storiesOf('CardView', {})
       </li>
     </ul>;
   })
+  .add('Menu action', () => (
+    <StoryList>
+       {[{
+         title: 'Default',
+         content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="this is my image.png"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={onClick}
+          menuActions={menuActions}
+         />
+       }]}
+    </StoryList>
+  ))
   .add('Error', () => (
     <CardView
       mediaName="with_progress.wav"

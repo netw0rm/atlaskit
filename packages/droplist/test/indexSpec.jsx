@@ -1,20 +1,17 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Group from '@atlaskit/droplist-group';
-import Trigger from '@atlaskit/droplist-trigger';
-import Item from '@atlaskit/droplist-item';
 import Layer from '@atlaskit/layer';
 
 import { name } from '../package.json';
 import { locals as styles } from '../src/styles.less';
 
-import Droplist from '../src';
+import Droplist, { Item, Trigger, Group } from '../src';
 
 const itemsList = (<Group heading="test1">
   <Item>Some text</Item>
 </Group>);
 
-describe(name, () => {
+describe(`${name} - core`, () => {
   it('should be possible to create a component', () => {
     expect(shallow(<Droplist>test</Droplist>)).not.to.equal(undefined);
   });

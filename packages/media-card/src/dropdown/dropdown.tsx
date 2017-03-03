@@ -3,11 +3,8 @@ import * as React from 'react';
 import {Component} from 'react';
 import {DropdownWrapper} from './styled';
 
-import {CardAction} from '@atlaskit/media-core';
-
-import * as DropdownItem from '@atlaskit/droplist-item';
-import * as DropdownGroup from '@atlaskit/droplist-group';
-import {CardEventHandler} from '@atlaskit/media-core';
+import {CardAction, CardEventHandler} from '@atlaskit/media-core';
+import {Group, Item} from '@atlaskit/droplist';
 
 export interface DropdownProps {
   items?: Array<CardAction>;
@@ -15,8 +12,6 @@ export interface DropdownProps {
 
 export class Dropdown extends Component<DropdownProps, {}> {
   render() {
-    const Group: any = (DropdownGroup as any).default;
-
     const items = this.props.items ? this.props.items.map(item => this._itemElement(item.label, item.handler)) : null;
 
     return (
@@ -29,8 +24,6 @@ export class Dropdown extends Component<DropdownProps, {}> {
   }
 
   private _itemElement(name: string | undefined, handler: CardEventHandler) {
-    const Item: any = (DropdownItem as any).default;
-
     return (
       <Item onActivate={handler} key={name}>{name}</Item>
     );

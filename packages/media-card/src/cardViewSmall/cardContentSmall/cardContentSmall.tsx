@@ -21,7 +21,7 @@ export class CardContentSmall extends Component<CardContentProps, {}> {
         backgroundImage: `url(${this.props.dataURI}), ${transparentFallbackBackground}`
       };
 
-      return <CardImage style={style} />;
+      return <CardImage className="card-img" style={style} />;
     } else {
       return <PlaceholderSmall mediaType={this.props.mediaType} />;
     }

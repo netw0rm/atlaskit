@@ -78,14 +78,14 @@ export const TickBox = styled.div`
   right: 8px;
   border-radius: 20px;
   z-index: 20;
-  color: #798599; // TODO: Align color with new design
+  color: #798599; // TODO FIL-3884: Align color with new design
   display: flex;
   opacity: 0;
 
   &.selected {
     opacity: 1;
     color: white;
-    background-color: #0052CC; // TODO: Align with tickbox icons
+    background-color: #0052CC; // TODO FIL-3884: Align with tickbox icons
   }
 `;
 
@@ -118,7 +118,7 @@ export const Overlay = styled.div`
     display: block;
   }
   
-  &:not(.show-on-hover) {
+  &:not(.persistent) {
     &:hover {
       background-color: ${rgba(akColorN900, 0.06)};
     }
@@ -128,7 +128,7 @@ export const Overlay = styled.div`
         background-color: ${akColorB200};
         
         &:hover {
-          // TODO: add new overlay with rgba(akColorN900, 0.16)
+          // TODO FIL-3884 add new overlay with rgba(akColorN900, 0.16)
         }
 
         .title, .bottom-row, .file-size, .more-btn {
@@ -138,7 +138,7 @@ export const Overlay = styled.div`
     }
   }
 
-  &.show-on-hover {
+  &.persistent {
     &:not(.active) {
       overflow: hidden;
     }
@@ -256,10 +256,6 @@ export const Overlay = styled.div`
         }
       }
     }
-  }
-  
-  .ellipsed-text {
-    // color: ${akColorN0};
   }
 `;
 

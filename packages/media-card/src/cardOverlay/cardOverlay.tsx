@@ -96,7 +96,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       }
 
       if (!this.props.persistent) {
-        classNames.push('show-on-hover');
+        classNames.push('persistent');
       }
 
     }

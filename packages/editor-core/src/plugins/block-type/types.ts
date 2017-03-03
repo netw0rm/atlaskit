@@ -3,20 +3,19 @@
 //
 // Rather than half-match half-not, this plugin introduces its own
 // nomenclature for what 'block type' is active.
-export const NORMAL_TEXT = makeBlockType('normal', 'Normal text');
-export const HEADING_1 = makeBlockType('heading1', 'Heading 1');
-export const HEADING_2 = makeBlockType('heading2', 'Heading 2');
-export const HEADING_3 = makeBlockType('heading3', 'Heading 3');
-export const HEADING_4 = makeBlockType('heading4', 'Heading 4');
-export const HEADING_5 = makeBlockType('heading5', 'Heading 5');
-export const BLOCK_QUOTE = makeBlockType('blockquote', 'Block quote');
-export const CODE_BLOCK = makeBlockType('codeblock', 'Code block');
-export const PANEL = makeBlockType('panel', 'Panel');
-export const OTHER = makeBlockType('other', 'Other…');
+export const NORMAL_TEXT = { name: 'normal', title: 'Normal text' };
+export const HEADING_1 = { name: 'heading1', title: 'Heading 1' };
+export const HEADING_2 = { name: 'heading2', title: 'Heading 2' };
+export const HEADING_3 = { name: 'heading3', title: 'Heading 3' };
+export const HEADING_4 = { name: 'heading4', title: 'Heading 4' };
+export const HEADING_5 = { name: 'heading5', title: 'Heading 5' };
+export const BLOCK_QUOTE = { name: 'blockquote', title: 'Block quote' };
+export const CODE_BLOCK = { name: 'codeblock', title: 'Code block' };
+export const PANEL = { name: 'panel', title: 'Panel' };
+export const OTHER = { name: 'other', title: 'Other…' };
 
-function makeBlockType(name: BlockTypeName, title: string): BlockType {
-  return { name, title };
-}
+export const ALL_BLOCK_TYPES = [NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5,
+  BLOCK_QUOTE, CODE_BLOCK, PANEL];
 
 export type BlockTypeName =
   'normal' |

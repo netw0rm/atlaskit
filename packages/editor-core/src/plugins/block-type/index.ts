@@ -11,7 +11,7 @@ import {
 
 import {
   NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5,
-  BLOCK_QUOTE, CODE_BLOCK, PANEL, OTHER
+  BLOCK_QUOTE, CODE_BLOCK, PANEL, OTHER, ALL_BLOCK_TYPES
 } from './types';
 
 import { bind as bindKeymap } from '../keymaps/buildKeymap';
@@ -21,9 +21,6 @@ import * as commands from '../../commands';
 export type StateChangeHandler = (state: BlockTypeState) => any;
 export type GroupedBlockTypes = BlockType[][];
 export type BlockTypeStateSubscriber = (state: BlockTypeState) => any;
-
-const ALL_BLOCK_TYPES = [NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5,
-  BLOCK_QUOTE, CODE_BLOCK, PANEL];
 
 export type BlockTypeName =
   'normal' |

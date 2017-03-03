@@ -43,6 +43,9 @@ describe(name, () => {
 
       // NOTE the reduced-ui-pack package uses the icons from this package, so if you change
       // anything in the list below then you'll also need to update the tests in reduced-ui-pack.
+      // A breaking change to this package is also a breaking change to the reduced-ui-pack package.
+
+      // This list should be sorted alphabetically.
       const expected = [
         'activity',
         'add-item',
@@ -154,6 +157,7 @@ describe(name, () => {
         'folder',
         'followers',
         'following',
+        'graph-bar',
 
         'hipchat/arrow-down',
         'hipchat/arrow-left',
@@ -188,6 +192,7 @@ describe(name, () => {
         'image',
         'info',
         'invite-team',
+        'issue-raise',
         'issue',
         'issues',
         'jira',
@@ -202,25 +207,21 @@ describe(name, () => {
         'office-building',
         'open',
         'page',
+        'people-group',
         'people',
         'person',
         'play',
         'question-circle',
         'question',
+        'queues',
         'quote',
 
         'radio',
         'recent',
         'redo',
         'refresh',
+        'screen',
         'search',
-
-        'servicedesk/graph-bar',
-        'servicedesk/issue-raise',
-        'servicedesk/people-group',
-        'servicedesk/queues',
-        'servicedesk/screen',
-
         'settings',
         'share',
         'ship',

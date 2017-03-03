@@ -1,5 +1,5 @@
 import Keymap from 'browserkeymap';
-import * as keymaps from '../../keymaps';
+import { findKeyMapForBrowser, undo, redo, redoBarredOnMac } from '../../keymaps';
 import { trackAndInvoke } from '../../analytics';
 import {
   commands,
@@ -15,9 +15,9 @@ export class DefaultKeymapsState {
     this.pm = pm;
 
     this.pm.addKeymap(new Keymap({
-      [keymaps.redoBarred.common!]: this.preventDefault,
-      [keymaps.undo.common!]: trackAndInvoke('atlassian.editor.undo.keyboard', this.undo),
-      [keymaps.redo.common!]: trackAndInvoke('atlassian.editor.redo.keyboard', this.redo),
+      [findKeyMapForBrowser(redoBarredOnMac)!]: this.preventDefault,
+      [undo.common!]: trackAndInvoke('atlassian.editor.undo.keyboard', this.undo),
+      [findKeyMapForBrowser(redo)!]: trackAndInvoke('atlassian.editor.redo.keyboard', this.redo),
     }));
   }
 

@@ -1,2 +1,3 @@
-export default from './stateful';
-export { default as ServiceHeader } from './stateless';
+import ServiceHeader from './ServiceHeader';
+
+export default ServiceHeader;

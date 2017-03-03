@@ -32,22 +32,6 @@ import {
 import transformToCodeBlock from './transform-to-code-block';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from './transform-to-code-block';
 
-// The names of the blocks don't map precisely to schema nodes, because
-// of concepts like "paragraph" <-> "Normal text" and "Unknown".
-//
-// Rather than half-match half-not, this plugin introduces its own
-// nomenclature for what 'block type' is active.
-const NORMAL_TEXT = makeBlockType('normal', 'Normal text');
-const HEADING_1 = makeBlockType('heading1', 'Heading 1');
-const HEADING_2 = makeBlockType('heading2', 'Heading 2');
-const HEADING_3 = makeBlockType('heading3', 'Heading 3');
-const HEADING_4 = makeBlockType('heading4', 'Heading 4');
-const HEADING_5 = makeBlockType('heading5', 'Heading 5');
-const BLOCK_QUOTE = makeBlockType('blockquote', 'Block quote');
-const CODE_BLOCK = makeBlockType('codeblock', 'Code block');
-const PANEL = makeBlockType('panel', 'Panel');
-const OTHER = makeBlockType('other', 'Other…');
-
 export type GroupedBlockTypes = BlockType[][];
 export class BlockTypeState {
   private pm: PM;
@@ -560,25 +544,6 @@ Object.defineProperty(BlockTypeState, 'name', { value: 'BlockTypeState' });
 export default new Plugin(BlockTypeState);
 
 export type BlockTypeStateSubscriber = (state: BlockTypeState) => any;
-
-export type BlockTypeName =
-  'normal' |
-  'heading1' |
-  'heading2' |
-  'heading3' |
-  'heading4' |
-  'heading5' |
-  'blockquote' |
-  'codeblock' |
-  'panel' |
-  'other';
-
-export interface BlockType {
-  name: BlockTypeName;
-  title: string;
-  shortcut?: string;
-}
-
 
 interface Context {
   name: ContextName;

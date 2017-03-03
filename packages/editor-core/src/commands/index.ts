@@ -1,8 +1,64 @@
-import { EditorState, liftTarget, Transaction } from '../prosemirror';
+import { EditorState, Fragment, liftTarget, TextSelection, Transaction } from '../prosemirror';
 import * as baseCommand from '../prosemirror/prosemirror-commands';
 import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
-
 export * from '../prosemirror/prosemirror-commands';
+import * as blockTypes from '../plugins/block-type/types';
+import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
+
+export function toggleBlockType(name: string) {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    const { nodes } = state.schema;
+
+    switch (name) {
+      case blockTypes.NORMAL_TEXT.name:
+        if (nodes.paragraph) {
+          return setNormalText()(state, dispatch);
+        }
+        break;
+      case blockTypes.HEADING_1.name:
+        if (nodes.heading) {
+          return toggleHeading(1)(state, dispatch);
+        }
+        break;
+      case blockTypes.HEADING_2.name:
+        if (nodes.heading) {
+          return toggleHeading(2)(state, dispatch);
+        }
+        break;
+      case blockTypes.HEADING_3.name:
+        if (nodes.heading) {
+          return toggleHeading(3)(state, dispatch);
+        }
+        break;
+      case blockTypes.HEADING_4.name:
+        if (nodes.heading) {
+          return toggleHeading(4)(state, dispatch);
+        }
+        break;
+      case blockTypes.HEADING_5.name:
+        if (nodes.heading) {
+          return toggleHeading(5)(state, dispatch);
+        }
+        break;
+      case blockTypes.BLOCK_QUOTE.name:
+        if (nodes.paragraph && nodes.blockquote) {
+          return toggleBlockquote()(state, dispatch);
+        }
+        break;
+      case blockTypes.CODE_BLOCK.name:
+        if (nodes.codeBlock) {
+          return toggleCodeBlock()(state, dispatch);
+        }
+        break;
+      case blockTypes.PANEL.name:
+        if (nodes.panel && nodes.paragraph) {
+          return togglePanel()(state, dispatch);
+        }
+        break;
+    }
+    return false;
+  };
+}
 
 export function toggleBulletList() {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
@@ -129,4 +185,176 @@ export function toggleHeading(level: number) {
 
     return true;
   };
+}
+
+export function createCodeBlockFromFenceFormat() {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    const { $from } = state.selection;
+    const parentBlock = $from.parent;
+    if (!parentBlock.isTextblock) {
+      return false;
+    }
+    const startPos = $from.start($from.depth);
+
+    let textOnly = true;
+
+    state.doc.nodesBetween(startPos, $from.pos, (node) => {
+      if (node.childCount === 0 && !node.isText && !node.isTextblock) {
+        textOnly = false;
+      }
+    });
+
+    if (!textOnly) {
+      return false;
+    }
+
+    if (!state.schema.nodes.codeBlock) {
+      return false;
+    }
+
+    const fencePart = parentBlock.textContent.slice(0, $from.pos - startPos).trim();
+
+    const matches = /^```([^\s]+)?/.exec(fencePart);
+
+    if (matches) {
+      if (isConvertableToCodeBlock(state)) {
+        dispatch(transformToCodeBlockAction(state, { language: matches[1] }).delete(startPos, $from.pos));
+        return true;
+      }
+    }
+
+    return false;
+  };
+}
+
+export function insertNewLine() {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    const { $from } = state.selection;
+    const node = $from.parent;
+    const { hard_break } = state.schema.nodes;
+
+    if (hard_break) {
+      const hardBreakNode = hard_break.create();
+
+      if (node.type.validContent(Fragment.from(hardBreakNode))) {
+        dispatch(state.tr.replaceSelection(hardBreakNode));
+        return true;
+      }
+    }
+
+    dispatch(state.tr.insertText('\n'));
+    return true;
+  };
+}
+
+export function createNewParagraphAbove() {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    const append = false;
+
+    if (!canMoveUp(state)) {
+      createParagraphNear(state, dispatch, append);
+      return true;
+    }
+
+    return false;
+  };
+}
+
+export function createNewParagraphBelow() {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    const append = true;
+
+    if (!canMoveDown(state)) {
+      createParagraphNear(state, dispatch, append);
+      return true;
+    }
+
+    return false;
+  };
+}
+
+function canMoveUp(state: EditorState<any>): boolean {
+  const { selection } = state;
+  if (selection instanceof TextSelection) {
+    if (!selection.empty) {
+      return true;
+    }
+  }
+
+  return selection.$from.pos !== selection.$from.depth;
+}
+
+function canMoveDown(state: EditorState<any>): boolean {
+  const { selection, doc } = state;
+  if (selection instanceof TextSelection) {
+    if (!selection.empty) {
+      return true;
+    }
+  }
+
+  return doc.nodeSize - selection.$to.pos - 2 !== selection.$to.depth;
+}
+
+function createParagraphNear(state: EditorState<any>, dispatch: (tr: Transaction) => void, append: boolean = true): void {
+  const paragraph = state.schema.nodes.paragraph;
+
+  if (!paragraph) {
+    return;
+  }
+
+  let insertPos;
+
+  if (state.selection instanceof TextSelection) {
+    if (topLevelNodeIsEmptyTextBlock(state)) {
+      return;
+    }
+    insertPos = getInsertPosFromTextBlock(state, append);
+  } else {
+    insertPos = getInsertPosFromNonTextBlock(state, append);
+  }
+
+  if (append) {
+    const next = new TextSelection(state.doc.resolve(insertPos));
+    dispatch(state.tr.setSelection(next).insert(insertPos, paragraph.create()));
+  } else {
+    const next = new TextSelection(state.doc.resolve(insertPos + 1));
+    dispatch(state.tr.insert(insertPos, paragraph.create()).setSelection(next));
+  }
+}
+
+function getInsertPosFromTextBlock(state: EditorState<any>, append: boolean): void {
+  const { $from, $to } = state.selection;
+  let pos;
+
+  if (!append) {
+    pos = $from.start($from.depth) - 1;
+    pos = $from.depth > 1 ? pos - 1 : pos;
+  } else {
+    pos = $to.end($to.depth) + 1;
+    pos = $to.depth > 1 ? pos + 1 : pos;
+  }
+
+  return pos;
+}
+
+function getInsertPosFromNonTextBlock(state: EditorState<any>, append: boolean): void {
+  const { $from, $to } = state.selection;
+  let pos;
+
+  if (!append) {
+    // The start position is different with text block because it starts from 0
+    pos = $from.start($from.depth);
+    // The depth is different with text block because it starts from 0
+    pos = $from.depth > 0 ? pos - 1 : pos;
+  } else {
+    pos = $to.end($to.depth);
+    pos = $to.depth > 0 ? pos + 1 : pos;
+  }
+
+  return pos;
+}
+
+function topLevelNodeIsEmptyTextBlock(state): boolean {
+  const topLevelNode = state.selection.$from.node(1);
+  return topLevelNode.isTextblock && topLevelNode.type !== state.schema.nodes.codeBlock && topLevelNode.nodeSize === 2;
 }

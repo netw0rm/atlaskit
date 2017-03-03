@@ -4,7 +4,7 @@ import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-t
 
 function addMark(markType: MarkType, schema: Schema<any, any>): Function {
   return (state, match, start, end): Transaction => {
-    const marks = [...state.doc.marksAt(start), markType.create()];
+    const marks = [...state.doc.resolve(start).marks(false), markType.create()];
 
     // Because the match can start with space.
     // Preserve the space if there is one.
@@ -54,7 +54,7 @@ function buildMarkdownInputRules(schema: Schema<any, any>): Array<InputRule> {
   }
 
   if (schema.nodes.codeBlock) {
-    rules.push(new InputRule(/^```$/, (state, match, start, end): Transaction => {
+    rules.push(new InputRule(/^```$/, (state, match, start, end): Transaction | undefined => {
       const lengthOfDecorator = match[0].length;
 
       // Because the node content is wrap by the node margin in prosemirror
@@ -68,7 +68,6 @@ function buildMarkdownInputRules(schema: Schema<any, any>): Array<InputRule> {
           .delete(start, end)
           .scrollIntoView();
       }
-      return state.tr;
     }));
   }
 

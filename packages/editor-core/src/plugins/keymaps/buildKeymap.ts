@@ -1,4 +1,4 @@
-import { setNormalText, toggleBlockquote, toggleHeading, toggleMark, toggleCodeBlock } from '../../commands';
+import { toggleMark } from '../../commands';
 import * as keymapShortcuts from './utils-future';
 
 import { redo, undo } from '../../prosemirror/prosemirror-history';
@@ -30,26 +30,6 @@ export function buildKeymap(schema) {
 
   if (schema.marks.underline) {
     bind(keymapShortcuts.toggleUnderline.common, toggleMark(schema.marks.underline));
-  }
-
-  if (schema.nodes.codeBlock) {
-    bind(keymapShortcuts.findShortcutByKeymap(keymapShortcuts.toggleCodeBlock), toggleCodeBlock());
-  }
-
-  if (schema.nodes.blockquote) {
-    bind(keymapShortcuts.findShortcutByKeymap(keymapShortcuts.toggleBlockQuote), toggleBlockquote());
-  }
-
-  if (schema.nodes.heading) {
-    bind(keymapShortcuts.findShortcutByKeymap(keymapShortcuts.toggleHeading1), toggleHeading(1));
-    bind(keymapShortcuts.findShortcutByKeymap(keymapShortcuts.toggleHeading2), toggleHeading(2));
-    bind(keymapShortcuts.findShortcutByKeymap(keymapShortcuts.toggleHeading3), toggleHeading(3));
-    bind(keymapShortcuts.findShortcutByKeymap(keymapShortcuts.toggleHeading4), toggleHeading(4));
-    bind(keymapShortcuts.findShortcutByKeymap(keymapShortcuts.toggleHeading5), toggleHeading(5));
-  }
-
-  if (schema.nodes.paragraph) {
-    bind(keymapShortcuts.findShortcutByKeymap(keymapShortcuts.setNormalText), setNormalText());
   }
 
   bind(keymapShortcuts.redo.common, redo);

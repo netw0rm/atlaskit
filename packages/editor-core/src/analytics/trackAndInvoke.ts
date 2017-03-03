@@ -13,7 +13,10 @@ import service from './service';
  */
 export default function trackAndInvoke(analyticsEventName: string, fn: (...args: any[]) => any) {
   return (...args: any[]) => {
-    service.trackEvent(analyticsEventName);
-    return fn(...args);
+    const result = fn(...args);
+    if (result) {
+      service.trackEvent(analyticsEventName);
+    }
+    return result;
   };
 }

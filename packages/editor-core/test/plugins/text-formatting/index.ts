@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { browser, TextFormattingPlugin } from '../../../src';
-import { chaiPlugin, makeEditor } from '../../../test-helper';
+import { chaiPlugin, makeEditor } from '../../../src/test-helper';
 import { doc, em, mono, p, plain, schema, strike, strong, sub, sup, u } from '../../_schema-builder';
 
 chai.use(chaiPlugin);

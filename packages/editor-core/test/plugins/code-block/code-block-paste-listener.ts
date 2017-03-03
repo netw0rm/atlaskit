@@ -2,8 +2,8 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import { ProseMirror } from '../../../src';
 import CodeBlockPlugin from '../../../src/plugins/code-block';
-import { blockquote, chaiPlugin, code_block, dispatchPasteEvent, doc, fixtures, makeEditor, p } from '../../../test-helper';
-import { PasteContent } from '../../../test-helper/dispatch-paste-event';
+import { blockquote, chaiPlugin, code_block, dispatchPasteEvent, doc, fixtures, makeEditor, p } from '../../../src/test-helper';
+import { PasteContent } from '../../../src/test-helper/dispatch-paste-event';
 
 chai.use(chaiPlugin);
 

@@ -89,6 +89,7 @@ export default class ProfilecardResourced extends PureComponent {
     const newProps = Object.assign(this.state.data, {
       isLoading: this.state.isLoading,
       hasError: this.state.hasError,
+      clientFetchProfile: this.clientFetchProfile,
     });
     return (
       <AkProfilecardStatic {...newProps} actions={this.props.actions} />

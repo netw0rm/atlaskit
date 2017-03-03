@@ -4,7 +4,7 @@ import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
 import {
   a, blockquote, br, chaiPlugin, code_block, doc, em, h1, h2,
   h3, hr, img, li, makeEditor, mono, ol, p, strike, strong, ul, mention
-} from '../../../test-helper';
+} from '../../../src/test-helper';
 chai.use(chaiPlugin);
 
 describe('markdown-inputrules', () => {

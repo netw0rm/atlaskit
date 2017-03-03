@@ -1,3 +1,4 @@
+/* tslint:disable:variable-name */
 import {MediaItem, FileDetails} from './item';
 
 export type CardEventHandler = (item?: MediaItem, event?: Event) => void;
@@ -21,3 +22,33 @@ export interface ListAction {
 
 export type CardActionCreator = (eventHandler: CardEventHandler) => CardAction;
 export type ListActionCreator = (eventHandler: ListEventHandler) => ListAction;
+
+export const CardClick: CardActionCreator = (eventHander: CardEventHandler) => {
+  return {
+    type: CardActionType.click,
+    handler: eventHander
+  };
+};
+
+export const CardDelete: CardActionCreator = (eventHander: CardEventHandler) => {
+  return {
+    label: 'Delete',
+    type: CardActionType.delete,
+    handler: eventHander
+  };
+};
+
+export const ListCardClick: ListActionCreator = (eventHander: ListEventHandler) => {
+  return {
+    type: CardActionType.click,
+    handler: eventHander
+  };
+};
+
+export const ListCardDelete: ListActionCreator = (eventHander: ListEventHandler) => {
+  return {
+    label: 'Delete',
+    type: CardActionType.delete,
+    handler: eventHander
+  };
+};

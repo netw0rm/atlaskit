@@ -21,22 +21,6 @@ pipelines:
       - step:
           script:
             - ./build/bin/cloudfront_invalidate.sh
-    # This build will run the browserstack tests. The expected workflow is the dev on a normal branch
-    # Then move the a branch that starts with `browserstack-` to run the browserstack tests
-    browserstack-*:
-      - step:
-          script:
-            - echo "Running on a browserstack branch"
-            - ./build/bin/setup.sh
-            - ./build/bin/prep_for_release.sh
-            # We merge latest master because we dont run the bs tests in master.
-            - git fetch && git merge origin/master
-            - yarn
-            # we could remove this step if we feel its not required/it is using too much memory
-            - run-p -ln "validate/package.json" "validate/typescript" "lint" "test"
-            - yarn run browserstack/tunnel/start
-            - yarn run "test/wc/browserstack/pr"
-            - yarn run browserstack/tunnel/stop
   default:
     - step:
         script:

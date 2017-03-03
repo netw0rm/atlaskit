@@ -1,4 +1,10 @@
 const browserStackBrowsers = {
+  // One with native WC support
+  chrome_latest_osx: {
+    browser: 'chrome',
+    os: 'OS X',
+    os_version: 'El Capitan',
+  },
   // iOS
   iphone: {
     os: 'ios',

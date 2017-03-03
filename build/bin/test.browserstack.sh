@@ -7,7 +7,7 @@ CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 CHALK="`yarn bin`/chalk"
 
 # Run the Browserstack tests
-for STAGE in 1 2 3
+for STAGE in 1 2 3 4
 do
   echo
   $CHALK --no-stdin -t "{blue Running browserstack test of stage $STAGE}"

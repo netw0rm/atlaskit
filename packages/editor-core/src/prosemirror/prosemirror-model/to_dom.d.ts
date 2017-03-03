@@ -8,6 +8,7 @@ export class DOMSerializer {
   marks: { [key: string]: (mark: Mark) => {} };
   serializeFragment(fragment: Fragment, options?: { [key: string]: any }): dom.DocumentFragment;
   serializeNode(node: Node, options?: { [key: string]: any }): dom.Node;
+  serializeNodeAndMarks(node: Node, options?: { [key: string]: any }): dom.Node;
 
   static renderSpec(doc: dom.Document, structure: {}): { dom: dom.Node, contentDOM?: dom.Node };
   static fromSchema(schema: Schema<any, any>): DOMSerializer;

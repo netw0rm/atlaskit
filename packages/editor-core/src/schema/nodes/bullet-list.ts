@@ -1,10 +1,3 @@
-import { NodeSpec } from '../../prosemirror';
+import { NodeSpec, bulletList as bulletListSpec} from '../../prosemirror';
 
-export const bulletList: NodeSpec = {
-  group: 'block',
-  content: 'list_item+',
-  parseDOM: [{ tag: 'ul' }],
-  toDOM() {
-    return ['ul', 0];
-  }
-};
+export const bulletList: NodeSpec = bulletListSpec;

@@ -1,30 +1,24 @@
 import { expect } from 'chai';
-import { Schema, Text } from '../../../src';
-import { DocNodeType, HeadingNodeType } from '../../../src';
+import { Schema, doc, paragraph, text, heading } from '../../../src';
+import { fromHTML, toHTML } from '../../../test-helper';
+
+const schema = makeSchema();
 
 describe('ak-editor-core/schema heading node', () => {
-  it('throws an error if it is not named "heading{1..5}"', () => {
-    expect(() => {
-      new Schema({
-        nodes: {
-          doc: { type: DocNodeType, content: 'text*' },
-          foo: { type: HeadingNodeType, content: 'text*' },
-          text: { type: Text }
-        }
-      });
-    }).to.throw(Error);
+  it('serializes to <h4>', () => {
+    const html = toHTML(schema.nodes.heading.create({level: 4}), schema);
+    expect(html).to.have.string('<h4>');
   });
 
-  it(`does not throw an error if it is named "heading"`, () => {
-    expect(() => {
-      new Schema({
-        nodes: {
-          doc: { type: DocNodeType, content: 'text*' },
-          heading: { type: HeadingNodeType, content: 'text*' },
-          text: { type: Text }
-        }
-      });
-    }).to.not.throw(Error);
+  it('matches <h3>', () => {
+    const doc = fromHTML('<h3>', schema);
+    const h3 = doc.firstChild!;
+    expect(h3.type.name).to.equal('heading');
   });
-
 });
+
+function makeSchema () {
+  const nodes = {doc, paragraph, heading, text};
+  const marks = {};
+  return new Schema<typeof nodes, typeof marks>({ nodes, marks });
+}

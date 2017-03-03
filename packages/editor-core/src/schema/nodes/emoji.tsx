@@ -43,6 +43,7 @@ export interface EmojiNode extends Node {
 }
 
 export const emoji: NodeSpec = {
+  inline: true,
   group: 'inline',
   attrs: {
     id: { default: '' },

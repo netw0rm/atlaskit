@@ -3,15 +3,13 @@ import { NodeSpec, dom } from '../../prosemirror';
 const getLanguageFromEditorStyle = (dom: HTMLElement): string | undefined => {
   return dom.dataset['language'];
 };
+
 // example of BB style:
 // <div class="codehilite language-javascript"><pre><span>hello world</span><span>\n</span></pre></div>
 const getLanguageFromBitbucketStyle = (dom: HTMLElement): string | undefined => {
-  const parent = dom.parentElement;
-
-  if (parent && parent.classList.contains('codehilite')) {
+  if (dom && dom.classList.contains('codehilite')) {
     // code block html from Bitbucket always contains an extra new line
-    removeLastNewLine(dom);
-    return extractLanguageFromClass(parent.className);
+    return extractLanguageFromClass(dom.className);
   }
 };
 
@@ -23,8 +21,12 @@ const extractLanguageFromClass = (className: string): string | undefined => {
   }
 };
 
-const removeLastNewLine = (dom: HTMLElement): void => {
-  dom.textContent = dom.textContent!.replace(/\n$/, '');
+const removeLastNewLine = (dom: HTMLElement): HTMLElement => {
+  const parent = dom && dom.parentElement;
+  if (parent && parent.classList.contains('codehilite')) {
+    dom.textContent = dom.textContent!.replace(/\n$/, '');
+  }
+  return dom;
 };
 
 export const codeBlock: NodeSpec = {
@@ -33,18 +35,21 @@ export const codeBlock: NodeSpec = {
   group: 'block',
   code: true,
   defining: true,
+  attrs: {
+    language: { default: null }
+  },
   parseDOM: [{
-    tag: 'pre', getAttrs: node => {
-      const language = getLanguageFromEditorStyle((node as dom.Node).parentElement!) || getLanguageFromBitbucketStyle((node as dom.Node).parentElement!);
-      return [
-        {
-          'language': language
-        },
-        {
-          preserveWhitespace: true
-        }
-      ] as any;
+    tag: 'pre', preserveWhitespace: true, getAttrs: (dom: Element) => {
+      const language = (
+        getLanguageFromBitbucketStyle((dom as dom.Node).parentElement!) ||
+        getLanguageFromEditorStyle((dom as dom.Node).parentElement!) ||
+        dom.getAttribute('data-language')!
+      );
+      dom = removeLastNewLine(dom as HTMLElement);
+      return {language, preserveWhitespace: true};
     }
   }],
-  toDOM(node) { return ['pre', { 'data-language': node.attrs['language'] }, 0]; }
+  toDOM(node) {
+    return ['pre', { 'data-language': node.attrs['language'] }, 0];
+  }
 };

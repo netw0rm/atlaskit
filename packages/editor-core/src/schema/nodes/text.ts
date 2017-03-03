@@ -1,8 +1,3 @@
-import { NodeSpec } from '../../prosemirror';
+import { NodeSpec, nodes } from '../../prosemirror';
 
-export const text: NodeSpec = {
-  group: 'inline',
-  toDOM(node) {
-    return node.text!;
-  }
-};
+export const text: NodeSpec = nodes.text;

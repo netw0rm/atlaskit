@@ -1,6 +1,7 @@
 import { Fragment, MarkType, Node, NodeType, Schema, Slice } from '../';
+import { NodeSpec, MarkSpec } from '../src/prosemirror';
 import matches from './matches';
-import { schema as sampleSchema } from './schema';
+import sampleSchema from './schema';
 
 /**
  * Represents a ProseMirror "position" in a document.
@@ -76,7 +77,7 @@ export interface RefsNode extends Node {
  * declaratively describe a position within some text, and then access the
  * position in the resulting node.
  */
-export function text(value: string, schema: Schema = sampleSchema): RefsContentItem {
+export function text(value: string, schema: Schema<NodeSpec, MarkSpec>): RefsContentItem {
   let stripped = '';
   let textIndex = 0;
   const refs: Refs = {};
@@ -155,7 +156,7 @@ export function flatten<T>(deep: (T | T[])[]): T[] {
 /**
  * Coerce builder content into ref nodes.
  */
-export function coerce(content: BuilderContent[], schema: Schema) {
+export function coerce(content: BuilderContent[], schema: Schema<NodeSpec, MarkSpec>) {
   const refsContent = content
     .map(item => typeof item === 'string'
       ? text(item, schema)
@@ -204,16 +205,16 @@ export const h3 = nodeFactory(sampleSchema.nodes.heading, {level: 3});
 export const h4 = nodeFactory(sampleSchema.nodes.heading, {level: 4});
 export const h5 = nodeFactory(sampleSchema.nodes.heading, {level: 5});
 export const h6 = nodeFactory(sampleSchema.nodes.heading, {level: 6});
-export const li = nodeFactory(sampleSchema.nodes.list_item, {});
-export const ul = nodeFactory(sampleSchema.nodes.bullet_list, {});
-export const ol = nodeFactory(sampleSchema.nodes.ordered_list, {});
-export const br = sampleSchema.nodes.hard_break.createChecked();
+export const li = nodeFactory(sampleSchema.nodes.listItem, {});
+export const ul = nodeFactory(sampleSchema.nodes.bulletList, {});
+export const ol = nodeFactory(sampleSchema.nodes.orderedList, {});
+export const br = sampleSchema.nodes.hardBreak.createChecked();
 // tslint:disable-next-line:variable-name
-export const code_block = (attrs: {} = {}) => nodeFactory(sampleSchema.nodes.code_block, attrs);
+export const code_block = (attrs: {} = {}) => nodeFactory(sampleSchema.nodes.codeBlock, attrs);
 export const img = (attrs: { src: string, alt?: string, title?: string }) => sampleSchema.nodes.image.createChecked(attrs);
 export const emoji = (attrs: { id: string }) => sampleSchema.nodes.emoji.createChecked(attrs);
 export const mention = (attrs: { id: string, displayName?: string }) => sampleSchema.nodes.mention.createChecked(attrs);
-export const hr = sampleSchema.nodes.horizontal_rule.createChecked();
+export const hr = sampleSchema.nodes.horizontalRule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});
 export const strong = markFactory(sampleSchema.marks.strong, {});
 export const mono = markFactory(sampleSchema.marks.mono, {});

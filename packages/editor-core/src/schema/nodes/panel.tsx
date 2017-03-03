@@ -92,6 +92,7 @@ export interface DOMAttributes {
 }
 
 export const panel: NodeSpec = {
+  group: 'block',
   attrs: {
     panelType: { default: 'info' }
   },
@@ -111,7 +112,7 @@ export const panel: NodeSpec = {
       'div',
       attrs,
       getIconDom(panelType),
-      ['span', { class: contentStyle }, 0]
+      ['span', { class: contentStyle }]
     ];
   }
 };

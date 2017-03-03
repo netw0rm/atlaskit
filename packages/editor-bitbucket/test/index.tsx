@@ -6,14 +6,14 @@ import { SinonSpy } from 'sinon';
 import { doc, h1, mention, p, strong, code_block } from './_schema-builder';
 
 import { ProseMirror } from '@atlaskit/editor-core';
-import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from '@atlaskit/editor-core/test-helper';
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from '@atlaskit/editor-core/src/test-helper';
 import Editor from '../src/index';
 
 chai.use(chaiPlugin);
 
 const expect = chai.expect;
 
-describe('ak-editor-bitbucket/expand and collapse', () => {
+describe('@atlaskit/editor-bitbucket/expand and collapse', () => {
   it('should not render expanded chrome when collapsed by default', () => {
     expect(mount(<Editor />).find('ChromeCollapsed')).to.have.length.above(0);
     expect(mount(<Editor />).find('input[placeholder]')).to.have.length.above(0);

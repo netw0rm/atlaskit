@@ -164,7 +164,7 @@ storiesOf(name, module)
         />
       </BasicFieldBase>
       <BasicFieldBase
-        label="Disabled + invalid example"
+        label="Disabled + invalid example (should not show an icon)"
         id="fieldbase"
         isInvalid
         isDisabled

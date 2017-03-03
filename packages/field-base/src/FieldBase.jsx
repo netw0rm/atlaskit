@@ -52,7 +52,7 @@ export default class FieldBase extends PureComponent {
   )
 
   renderRightGutter = () => {
-    if (this.props.isInvalid) {
+    if (!this.props.isDisabled && this.props.isInvalid) {
       return this.renderWarningIcon();
     }
 

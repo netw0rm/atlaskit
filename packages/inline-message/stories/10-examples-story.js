@@ -50,4 +50,13 @@ storiesOf(name, module)
         />
       </p>
     </Chrome>
+  ))
+  .add('Inline message — with dialog on the right', () => (
+    <Chrome title="Inline message — with dialog on the right">
+      <InlineMessage
+        title="JIRA Service Desk"
+        secondaryText="Authenticate to see more information"
+        position="right middle"
+      />
+    </Chrome>
   ));

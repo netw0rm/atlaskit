@@ -33,8 +33,7 @@ pipelines:
           # we have to run this after `yarn` to have access to child-process-promise
           - ./build/bin/generate.changed.packages.file.pr.sh
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
-          - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base"
-          #- yarn run browserstack/tunnel/start
-          #- yarn run "test/wc/browserstack/pr"
-          #- yarn run browserstack/tunnel/stop
+          - run-p -ln "validate/package.json" "validate/typescript" "validate/tslint" "validate/eslint"
+          - run-p -ln "test" "test/base" "test/wc/browserstack"
+          - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"

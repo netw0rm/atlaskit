@@ -1,12 +1,20 @@
 import { toggleMark } from '../../commands';
 import * as keymapShortcuts from './utils-future';
 
+import { EditorState, Transaction } from '../../prosemirror';
 import { redo, undo } from '../../prosemirror/prosemirror-history';
 
 const keymap = {};
 
 export function bind(shortcut, cmd) {
-  keymap[shortcut] = cmd;
+  const oldCmd = keymap[shortcut];
+  let newCmd = cmd;
+  if (keymap[shortcut]) {
+    newCmd = (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+      return oldCmd(state, dispatch) || cmd(state, dispatch);
+    };
+  }
+  keymap[shortcut] = newCmd;
 }
 
 export function buildKeymap(schema) {

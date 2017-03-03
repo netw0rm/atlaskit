@@ -1,35 +1,34 @@
-import { EditorTransform, Fragment, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
-import { isCodeBlockNode, isHardBreakNode, isMentionNode } from '../../schema';
+import { Transaction, Fragment, EditorState, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
 
-export default function transformToCodeBlock(pm: ProseMirror): void {
-  if (!isConvertableToCodeBlock(pm)) {
+export default function transformToCodeBlock(state: EditorState<any>): void {
+  if (!isConvertableToCodeBlock(state)) {
     return;
   }
 
-  transformToCodeBlockAction(pm).applyAndScroll();
+  transformToCodeBlockAction(state).scrollIntoView();
 }
 
-export function transformToCodeBlockAction(pm: ProseMirror, attrs?: any): EditorTransform {
-  const { $from } = pm.selection;
-  const codeBlock = pm.schema.nodes.code_block;
+export function transformToCodeBlockAction(state: EditorState<any>, attrs?: any): Transaction {
+  const { $from } = state.selection;
+  const codeBlock = state.schema.nodes.codeBlock;
 
   const where = $from.before($from.depth);
-  const tr = clearMarkupFor(pm, where)
+  const tr = clearMarkupFor(state, where)
     .setNodeType(where, codeBlock, attrs);
 
   return tr;
 }
 
-export function isConvertableToCodeBlock(pm: ProseMirror): boolean {
+export function isConvertableToCodeBlock(state: EditorState<any>): boolean {
   // Before a document is loaded, there is no selection.
-  if (!pm.selection) {
+  if (!state.selection) {
     return false;
   }
 
-  const { $from } = pm.selection;
+  const { $from } = state.selection;
   const node = $from.parent;
 
-  if (!node.isTextblock || isCodeBlockNode(node)) {
+  if (!node.isTextblock || node.type === state.schema.nodes.codeBlock) {
     return false;
   }
 
@@ -37,17 +36,17 @@ export function isConvertableToCodeBlock(pm: ProseMirror): boolean {
   const parentNode = $from.node(parentDepth);
   const index = $from.index(parentDepth);
 
-  return parentNode.canReplaceWith(index, index + 1, pm.schema.nodes.code_block);
+  return parentNode.canReplaceWith(index, index + 1, state.schema.nodes.codeBlock);
 }
 
-function createSliceWithContent(content: string, pm: ProseMirror) {
- return new Slice(Fragment.from(pm.schema.nodes.text.create(null, content)), 0, 0);
+function createSliceWithContent(content: string, state: EditorState<any>) {
+  return new Slice(Fragment.from(state.schema.nodes.text.create(null, content)), 0, 0);
 }
 
-function clearMarkupFor(pm: ProseMirror, pos: number) {
-  const tr = pm.tr;
+function clearMarkupFor(state: EditorState<any>, pos: number): Transaction {
+  const tr = state.tr;
   const node = tr.doc.nodeAt(pos)!;
-  let match = pm.schema.nodes.code_block.contentExpr.start();
+  let match = state.schema.nodes.codeBlock.contentExpr.start();
   const delSteps: Step[] = [];
 
   for (let i = 0, cur = pos + 1; i < node.childCount; i++) {
@@ -56,14 +55,14 @@ function clearMarkupFor(pm: ProseMirror, pos: number) {
 
     const allowed = match.matchType(child.type, child.attrs);
     if (!allowed) {
-      if (isMentionNode(child)) {
+      if (child.type === state.schema.nodes.mentions) {
         const content = child.attrs['displayName'];
-        delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, pm)));
-      } else if (isHardBreakNode(child)) {
+        delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state), false));
+      } else if (child.type === state.schema.nodes.horizontalRule) {
         const content = '\n';
-        delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, pm)));
+        delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state), false));
       } else {
-        delSteps.push(new ReplaceStep(cur, end, Slice.empty));
+        delSteps.push(new ReplaceStep(cur, end, Slice.empty, false));
       }
     } else {
       match = allowed;

@@ -4,7 +4,7 @@ import MentionIcon from 'ak-icon/glyph/editor/mention';
 import { PureComponent } from 'react';
 import * as React from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
-import { BlockTypeState } from '../../plugins/block-type';
+import { BlockTypeState } from '../../plugins/block-type/index-future';
 import { CodeBlockState } from '../../plugins/code-block';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
@@ -28,7 +28,7 @@ import * as styles from './styles';
 import { EditorView } from '../../prosemirror';
 
 export interface Props {
-  editorView?: EditorView;
+  editorView: EditorView;
   feedbackFormUrl?: string;
   onCancel?: () => void;
   onInsertMention?: () => void;
@@ -54,7 +54,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
     return (
       <div className={styles.container} data-editor-chrome>
         <div className={styles.toolbar}>
-          {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} /> : null}
+          {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarAdvancedTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
           {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} editorView={props.editorView} /> : null}

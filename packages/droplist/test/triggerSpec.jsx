@@ -5,9 +5,9 @@ import keyCode from 'keycode';
 import { name } from '../package.json';
 import styles from '../src/styles.less';
 
-import Trigger from '../src';
+import { Trigger } from '../src';
 
-describe(name, () => {
+describe(`${name} - trigger`, () => {
   it('should be possible to create a component', () => {
     expect(shallow(<Trigger />)).not.to.equal(undefined);
   });

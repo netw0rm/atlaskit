@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import styles from 'style!./styles.less';
+import { locals as styles } from '../styles.less';
 
 /* eslint-disable react/no-unused-prop-types */
 export default class Group extends PureComponent {
@@ -38,7 +38,7 @@ export default class Group extends PureComponent {
     const elemAfter = props.elemAfter &&
       (typeof props.elemAfter === 'string' ?
         props.elemAfter :
-        ReactDOM.findDOMNode(this).querySelector(`.${styles.elemAfter}`).textContent); // eslint-disable-line react/no-find-dom-node, max-len
+        ReactDOM.findDOMNode(this).querySelector(`.${styles.groupElemAfter}`).textContent); // eslint-disable-line react/no-find-dom-node, max-len
 
     return `${props.heading} ${elemAfter || ''}`;
   }
@@ -59,7 +59,8 @@ export default class Group extends PureComponent {
             data-role="droplistGroupHeading"
           >
             <span className={styles.content}>{props.heading}</span>
-            {props.elemAfter ? <span className={styles.elemAfter}>{props.elemAfter}</span> : null}
+            {props.elemAfter ?
+              <span className={styles.groupElemAfter}>{props.elemAfter}</span> : null}
           </div> : null}
         {props.children}
       </div>

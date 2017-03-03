@@ -5,10 +5,10 @@ import Avatar from '@atlaskit/avatar';
 import { akColorN800 } from '@atlaskit/util-shared-styles';
 import Button from '@atlaskit/button';
 
-import Trigger from '../src';
+import { Trigger } from '../src';
 import { name } from '../package.json';
 
-storiesOf(name, module)
+storiesOf(`${name} - trigger`, module)
   .addCodeExampleStory('simple trigger story', () => (
     <div className={styles.storiesContainer}>
       <h2>Triggers for droplist</h2>

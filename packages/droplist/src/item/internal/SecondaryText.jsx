@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { locals as styles } from '../styles.less';
+import { locals as styles } from '../../styles.less';
 
 export default class SecondaryText extends PureComponent {
   static propTypes = {

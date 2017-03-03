@@ -1,19 +1,19 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import styles from 'style!./story-styles.less';
-import Question from 'ak-icon/glyph/question';
-import Arrow from 'ak-icon/glyph/arrowrightlong';
+import Question from '@atlaskit/icon/glyph/question';
+import Arrow from '@atlaskit/icon/glyph/arrowrightlong';
 import Avatar from '@atlaskit/avatar';
 import Lozenge from '@atlaskit/lozenge';
 
-import Item, { SecondaryText } from '../src';
+import { Item, SecondaryText } from '../src';
 import { name } from '../package.json';
 
 /* eslint-disable react/prop-types */
 const Icon = () => <Question label="test question" />;
 /* eslint-enable react/prop-types */
 const imports = [['React', 'react'], ['Item', '@atlaskit/droplist-item']];
-storiesOf(name, module)
+storiesOf(`${name} - item`, module)
   .addCodeExampleStory('simple item', () => (
     <div className={styles.storiesContainer}>
       <p>This is an example of simple droplist items with or without links</p>
@@ -58,7 +58,7 @@ storiesOf(name, module)
         <Item elemBefore={<Icon />}>Item with<SecondaryText>(secondary text)</SecondaryText></Item>
       </div>
     </div>
-  ), { imports: [...imports, ['Icon', 'ak-icon/glyph/question']] })
+  ), { imports: [...imports, ['Icon', '@atlaskit/icon/glyph/question']] })
   .addCodeExampleStory('simple item with avatars', () => (
     <div className={styles.storiesContainer}>
       <p>This is an example of droplist items with avatars</p>
@@ -89,7 +89,7 @@ storiesOf(name, module)
         >second item with very long text that is going to be cut off</Item>
       </div>
     </div>
-  ), { imports: [...imports, ['Lozenge', '@atlaskit/lozenge'], ['t', 'ak-icon/glyph/arrowrightlong']] })
+  ), { imports: [...imports, ['Lozenge', '@atlaskit/lozenge'], ['t', '@atlaskit/icon/glyph/arrowrightlong']] })
   .addCodeExampleStory('item with avatars and checkboxes', () => (
     <div className={styles.storiesContainer}>
       <p>This is an example of droplist items with avatars and checkboxes</p>
@@ -109,7 +109,7 @@ storiesOf(name, module)
         <Item href="//atlassian.com" target="_blank" isDisabled>This link will open in another tab</Item>
       </div>
     </div>
-  ), { imports: [...imports, ['Icon', 'ak-icon/glyph/question']] })
+  ), { imports: [...imports, ['Icon', '@atlaskit/icon/glyph/question']] })
   .addCodeExampleStory('items and handlers', () => (
     <div className={styles.storiesContainer}>
       <p>Items have a handler to help them communicate with the outside world.</p>

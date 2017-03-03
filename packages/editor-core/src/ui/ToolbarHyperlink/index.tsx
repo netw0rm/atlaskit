@@ -15,6 +15,7 @@ export interface Props {
 export interface State {
   adding?: boolean;
   disabled?: boolean;
+  showToolbarPanel?: boolean;
 }
 
 export default class ToolbarHyperlink extends PureComponent<Props, State> {
@@ -29,7 +30,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
   }
 
   render() {
-    const { adding, disabled } = this.state;
+    const { adding, disabled, showToolbarPanel } = this.state;
 
     return (
       <span className={styles.outerContainer}>
@@ -39,7 +40,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
           selected={adding}
           iconBefore={<LinkIcon label="Link" />}
         />
-        {!adding ? null :
+        {!showToolbarPanel ? null :
           <FloatingToolbar align="center" onOutsideClick={this.closeLinkPanel}>
             <div className={styles.textInputContainer}>
               <TextInput
@@ -56,7 +57,8 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
   }
 
   private openLinkPanel = () => {
-    this.setState({ adding: true });
+    const { pluginState } = this.props;
+    pluginState.showLinkPanel();
   }
 
   private closeLinkPanel = () => {
@@ -65,7 +67,8 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
 
   private handlePluginStateChange = (pluginState: HyperlinkState) => {
     this.setState({
-      disabled: !pluginState.linkable || pluginState.active
+      disabled: !pluginState.linkable || pluginState.active,
+      showToolbarPanel: pluginState.showToolbarPanel,
     });
   }
 

@@ -22,6 +22,8 @@ export class HyperlinkState {
   linkable = false;
   element?: HTMLElement;
   toolbarVisible: boolean = false;
+  showToolbarPanel: boolean = false;
+  showFloatingPanel: boolean = false;
 
   private changeHandlers: StateChangeHandler[] = [];
   private inputRules: InputRule[] = [];
@@ -108,6 +110,17 @@ export class HyperlinkState {
         .addMark(from, to, pm.schema.mark('link', { href: options.href }))
         .apply();
     }
+  }
+
+  showLinkPanel() {
+    const { pm } = this;
+    const { selection } = pm;
+    if (selection.empty) {
+      this.showToolbarPanel = !this.showToolbarPanel;
+    } else {
+      this.showFloatingPanel = true;
+    }
+    this.changeHandlers.forEach(cb => cb(this));
   }
 
   detach(pm: ProseMirror) {

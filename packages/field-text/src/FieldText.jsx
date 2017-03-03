@@ -16,6 +16,7 @@ export default class FieldText extends PureComponent {
     id: PropTypes.string,
     isLabelHidden: PropTypes.bool,
     shouldFitContainer: PropTypes.bool,
+    autoFocus: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -50,6 +51,7 @@ export default class FieldText extends PureComponent {
             required={this.props.required}
             onChange={this.props.onChange}
             id={this.props.id}
+            autoFocus={this.props.autoFocus}
           />
         </Base>
       </div>

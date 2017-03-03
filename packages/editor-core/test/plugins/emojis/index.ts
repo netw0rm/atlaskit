@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import { EmojiNodeType, EmojiQueryMarkType, ProseMirror, Schema, schema as schemaBasic } from '../../../src';
 import BlockTypePlugin from '../../../src/plugins/block-type';
 import EmojisPlugin from '../../../src/plugins/emojis';
-import { chaiPlugin, fixtures } from '../../../test-helper';
+import { chaiPlugin, fixtures } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 

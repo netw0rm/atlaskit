@@ -9,6 +9,11 @@ import {
   Renderable,
 } from './';
 
+import {
+  isText,
+  isTextWrapper
+} from '../utils';
+
 export interface TextNode extends Renderable {
   text: string;
   marks?: Mark[];
@@ -79,14 +84,6 @@ export const mergeTextNodes = (nodes: Renderable[]) => {
 
     return acc;
   }, []);
-};
-
-export const isTextWrapper = (type: string): type is 'textWrapper' => {
-  return type === 'textWrapper';
-};
-
-export const isText = (type: string): type is 'text' => {
-  return type === 'text';
 };
 
 export const renderTextNodes = (textNodes: TextNode[]) => {

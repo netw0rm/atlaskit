@@ -12,7 +12,7 @@ import Editor from '../src/index';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-bitbucket/analytics/start-event', () => {
+describe('@atlaskit/editor-bitbucket/analytics/start-event', () => {
   it('atlassian.editor.start', () => {
     const handler = sinon.spy();
     analyticsService.handler = handler;
@@ -56,7 +56,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
   });
 });
 
-describe('ak-editor-bitbucket/analytics/analyticsHandler', () => {
+describe('@atlaskit/editor-bitbucket/analytics/analyticsHandler', () => {
   it('updates analytics handler when provided via property', () => {
     const handler = sinon.spy();
     mount(<Editor analyticsHandler={handler} />);
@@ -68,7 +68,7 @@ describe('ak-editor-bitbucket/analytics/analyticsHandler', () => {
   });
 });
 
-describe('ak-editor-bitbucket/analytics/formatting', () => {
+describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   const fixture = fixtures();
   let handler;
   let editor: ReactWrapper<any, any>;

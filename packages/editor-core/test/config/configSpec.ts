@@ -2,7 +2,7 @@ import { EditorServicesConfig, MediaResource, MediaViewContextScope } from '../.
 import { JwtTokenProvider } from '@atlaskit/media-core';
 import { MentionResource } from '@atlaskit/mention';
 import { name } from '../../package.json';
-import { EmojiResource } from 'ak-emoji';
+import { EmojiResource } from '@atlaskit/emoji';
 import * as chai from 'chai';
 const { expect } = chai;
 

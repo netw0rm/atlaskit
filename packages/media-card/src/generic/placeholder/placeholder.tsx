@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
 import {Component} from 'react';
-import {PlaceholderWrapper} from '../../styled';
+import {PlaceholderWrapper} from './styled';
 import {MediaType} from '@atlaskit/media-core';
 import Icon from '@atlaskit/icon/glyph/file';
 

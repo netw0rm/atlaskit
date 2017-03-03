@@ -130,8 +130,8 @@ as they can enable tree shaking with webpack 2.
 
 ### Test helpers
 
-**Source location:** `src/ui/`  
-**Import:** `import { … } from '@NAME@/test-helper'`
+**Source location:** `src/test-helper/`  
+**Import:** `import { … } from '@NAME@/src/test-helper'`
 
 A set of testing utilities are provided that making testing the editor easier, these include:
 

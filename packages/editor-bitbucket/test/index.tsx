@@ -73,7 +73,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
   });
 });
 
-describe('ak-editor-bitbucket/setFromHtml', () => {
+describe('@atlaskit/editor-bitbucket/setFromHtml', () => {
   let editor: Editor;
 
   beforeEach(() => {
@@ -97,7 +97,7 @@ describe('ak-editor-bitbucket/setFromHtml', () => {
   });
 });
 
-describe('ak-editor-bitbucket/imageUploadHandler', () => {
+describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
   let editor: ReactWrapper<any, any>;
   let spy: SinonSpy;
 
@@ -169,7 +169,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
   });
 });
 
-describe('ak-editor-bitbucket/multiple editors as children', () => {
+describe('@atlaskit/editor-bitbucket/multiple editors as children', () => {
   const fixture = fixtures();
   type Props = {};
   type State = {};
@@ -211,7 +211,7 @@ describe('ak-editor-bitbucket/multiple editors as children', () => {
   });
 });
 
-describe('ak-editor-bitbucket/toolbar', () => {
+describe('@atlaskit/editor-bitbucket/toolbar', () => {
   let editor: ReactWrapper<any, any>;
 
   beforeEach(() => {
@@ -232,7 +232,7 @@ describe('ak-editor-bitbucket/toolbar', () => {
   });
 });
 
-describe('ak-editor-bitbucket/pasting', () => {
+describe('@atlaskit/editor-bitbucket/pasting', () => {
   const fixture = fixtures();
   let editor: Editor;
   let pm: ProseMirror;
@@ -269,7 +269,7 @@ describe('ak-editor-bitbucket/pasting', () => {
   });
 });
 
-describe('ak-editor-bitbucket/keymaps', () => {
+describe('@atlaskit/editor-bitbucket/keymaps', () => {
   const fixture = fixtures();
   let editor: Editor;
   let pm: ProseMirror;

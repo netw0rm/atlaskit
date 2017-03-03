@@ -9,10 +9,10 @@ pipelines:
             - ./build/bin/prep_for_release.sh
             - yarn
             - run-p -ln "validate/package.json" "validate/typescript"
-            - run-p -ln "lint" "test"
-            - run-p -ln "test/base"
+            - run-p -ln "validate/tslint" "validate/eslint"
+            - run-p -ln "test" "test/base"
             - yarn run browserstack/tunnel/start
-            - run-p -ln "test/wc/browserstack"
+            - yarn run test/wc/browserstack
             - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
@@ -36,9 +36,9 @@ pipelines:
           - ./build/bin/generate.changed.packages.file.pr.sh
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
           - run-p -ln "validate/package.json" "validate/typescript"
-          - run-p -ln "lint" "test"
-          - run-p -ln "test/base"
+          - run-p -ln "validate/tslint" "validate/eslint"
+          - run-p -ln "test" "test/base"
           - yarn run browserstack/tunnel/start
-          - yarn run test/wc/browserstack/pr
+          - yarn run test/wc/browserstack
           - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"

@@ -5,7 +5,7 @@ import {
   ContextName
 } from '../../';
 import listsPlugin from '../../src/plugins/lists/index-future';
-import blockTypePlugin from '../../src/plugins/block-type/index-future';
+import blockTypePlugin from '../../src/plugins/block-type';
 import { buildKeymap } from '../../src/plugins/keymaps';
 import buildMarkdownInputRules from '../../src/plugins/markdown-inputrules/input-future';
 import {

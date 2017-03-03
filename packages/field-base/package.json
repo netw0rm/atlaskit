@@ -19,7 +19,9 @@
     "react": "^15.3.2"
   },
   "dependencies": {
-    "@atlaskit/inline-message": "^1.0.2",
+    "@atlaskit/icon": "^1.0.0",
+    "@atlaskit/inline-dialog": "^1.0.0",
+    "@atlaskit/inline-message": "^1.1.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/util-shared-styles": "^1.0.1",
     "babel-runtime": "^6.11.6",
@@ -28,7 +30,6 @@
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/icon": "^1.0.0",
     "@atlaskit/input": "^1.0.0",
     "uid": "0.0.2"
   },

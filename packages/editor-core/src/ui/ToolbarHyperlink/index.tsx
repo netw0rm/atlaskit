@@ -36,18 +36,18 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
       <span className={styles.outerContainer}>
         <ToolbarButton
           disabled={disabled}
-          onClick={this.openLinkPanel}
+          onClick={this.toggleLinkPanel}
           selected={adding}
           iconBefore={<LinkIcon label="Link" />}
         />
         {!showToolbarPanel ? null :
-          <FloatingToolbar align="center" onOutsideClick={this.closeLinkPanel}>
+          <FloatingToolbar align="center" onOutsideClick={this.toggleLinkPanel}>
             <div className={styles.textInputContainer}>
               <TextInput
                 autoFocus
                 placeholder="Paste link"
                 onSubmit={this.handleSubmit}
-                onCancel={this.closeLinkPanel}
+                onCancel={this.toggleLinkPanel}
               />
             </div>
           </FloatingToolbar>
@@ -56,13 +56,9 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
     );
   }
 
-  private openLinkPanel = () => {
+  private toggleLinkPanel = () => {
     const { pluginState } = this.props;
     pluginState.showLinkPanel();
-  }
-
-  private closeLinkPanel = () => {
-    this.setState({ adding: false });
   }
 
   private handlePluginStateChange = (pluginState: HyperlinkState) => {
@@ -75,6 +71,6 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
   @analytics('atlassian.editor.format.hyperlink.button')
   private handleSubmit = (value: string) => {
     this.props.pluginState.addLink({ href: value });
-    this.closeLinkPanel();
+    this.toggleLinkPanel();
   }
 }

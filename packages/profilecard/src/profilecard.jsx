@@ -31,6 +31,7 @@ export default class Profilecard extends PureComponent {
 
   static defaultProps = {
     presence: 'none',
+    actions: [],
   }
 
   render() {
@@ -42,7 +43,7 @@ export default class Profilecard extends PureComponent {
       return <LoadingMessage />;
     }
 
-    const actions = (this.props.actions || []).map((action, idx) => (
+    const actions = (this.props.actions).map((action, idx) => (
       <AkButton
         appearance={idx === 0 ? 'default' : 'subtle'}
         compact

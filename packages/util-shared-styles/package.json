@@ -37,7 +37,9 @@
     "wcag-contrast": "^0.1.0"
   },
   "dependencies": {
-    "babel-runtime": "^6.11.6",
+    "babel-runtime": "^6.11.6"
+  },
+  "peerDependencies": {
     "styled-components": "^1.4.4"
   },
   "keywords": [

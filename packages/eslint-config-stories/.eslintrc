@@ -1,16 +1,15 @@
 {
   "name": "@atlaskit/eslint-config-stories",
   "extends": "@atlaskit/eslint-config-base",
-  "plugins": [
-    "react"
-  ],
-  "settings": {
-    "react": {
-      "pragma": "React"
-    }
-  },
   "rules": {
-    "no-console": 0,
-    "import/no-extraneous-dependencies": 0
+    // http://eslint.org/docs/rules/no-console
+    // Allowing the use of `console.*` in stories
+    "no-console": "off",
+
+    // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md
+    // Allowing the use of dependencies that are not defined in package.json
+    // We do this because packages can use dependencies from the root as well
+    // as from other rolled up packages such eslint-config-base.
+    "import/no-extraneous-dependencies": "off"
   }
 }

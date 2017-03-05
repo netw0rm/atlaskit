@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Button from 'ak-button';
+import Button from '@atlaskit/button';
 import WarningIcon from 'ak-icon/glyph/warning';
 import {
   akColorB400,
@@ -8,8 +8,9 @@ import {
   akColorP300,
   akColorR300,
   akColorY300,
-} from 'akutil-shared-styles';
+} from '@atlaskit/util-shared-styles';
 import SuccessIcon from 'ak-icon/glyph/success';
+import InlineDialog from '@atlaskit/inline-dialog';
 import styles from 'style!../src/styles.less';
 import InlineMessage from '../src';
 import IconForType from '../src/internal/IconForType';
@@ -17,36 +18,30 @@ import IconForType from '../src/internal/IconForType';
 import { name } from '../package.json';
 
 describe(name, () => {
-  it('basic sanity check', () =>
-    expect(shallow(
-      <InlineMessage />
-    )).not.to.equal(undefined)
-  );
+  it('basic sanity check', () => {
+    expect(shallow(<InlineMessage />)).not.to.equal(undefined);
+  });
 
   describe('isOpen state', () => {
     it('should default to false', () => {
-      expect((shallow(<InlineMessage />)).state('isOpen')).to.equal(false);
+      expect(shallow(<InlineMessage />).state('isOpen')).to.equal(false);
     });
     it('should toggle when the button is clicked', () => {
       const wrapper = shallow(<InlineMessage />);
       wrapper.find(Button).simulate('click');
-      expect((wrapper).state('isOpen')).to.equal(true);
+      expect(wrapper.state('isOpen')).to.equal(true);
     });
   });
 
   describe('props', () => {
     describe('title', () => {
       it('supplied title should be rendered', () => {
-        expect(shallow(
-          <InlineMessage title="Title goes here" />
-        ).find(`.${styles.titleText}`).text()).to.equal('Title goes here');
+        expect(shallow(<InlineMessage title="Title goes here" />).find(`.${styles.titleText}`).text()).to.equal('Title goes here');
       });
     });
     describe('secondaryText', () => {
       it('supplied secondary text should be rendered', () => {
-        expect(shallow(
-          <InlineMessage secondaryText="Secondary goes here" />
-        ).find(`.${styles.secondaryText}`).text()).to.equal('Secondary goes here');
+        expect(shallow(<InlineMessage secondaryText="Secondary goes here" />).find(`.${styles.secondaryText}`).text()).to.equal('Secondary goes here');
       });
     });
     describe('type', () => {
@@ -54,8 +49,15 @@ describe(name, () => {
         expect(mount(<InlineMessage />).prop('type')).to.equal('connectivity');
       });
       it('should be passed to IconForType component', () => {
-        const wrapper = mount(<InlineMessage type="error" />);
-        expect(wrapper.find(IconForType).prop('type')).to.equal('error');
+        expect(shallow(<InlineMessage type="error" />).find(IconForType).prop('type')).to.equal('error');
+      });
+    });
+    describe('position', () => {
+      it('should default to "bottom left"', () => {
+        expect(mount(<InlineMessage />).prop('position')).to.equal('bottom left');
+      });
+      it('should be passed to InlineDialog component', () => {
+        expect(shallow(<InlineMessage position="right middle" />).find(InlineDialog).prop('position')).to.equal('right middle');
       });
     });
   });

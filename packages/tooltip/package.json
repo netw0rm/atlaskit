@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/tooltip",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "This component is used to display extra information to a user about an element by displaying a floating description.",
   "main": "dist/bundle.js",
@@ -11,13 +11,14 @@
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/tooltip; } || ../../node_modules/.bin/not-in-publish"
   },
+  "types": "src/index.d.ts",
   "files": [
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^37.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
-    "ak-layer": "^62.0.2"
+    "@atlaskit/layer": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

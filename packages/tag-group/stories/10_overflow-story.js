@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Tag from 'ak-tag';
+import Tag from '@atlaskit/tag';
 
 import Group from '../src';
 import { name } from '../package.json';
@@ -9,8 +9,8 @@ import tagNames from './tagNames';
 
 const imports = [
   ['React', 'react'],
-  ['TagGroup', 'ak-tag-group'],
-  ['Tag', 'ak-tag'],
+  ['TagGroup', '@atlaskit/tag-group'],
+  ['Tag', '@atlaskit/tag'],
 ];
 
 storiesOf(name, module)

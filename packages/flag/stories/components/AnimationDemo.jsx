@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { action } from '@kadira/storybook';
-import Button from 'ak-button';
+import Button from '@atlaskit/button';
 import Flag, { FlagGroup } from '../../src';
 import ExampleNavigation from './ExampleNavigation';
 import GreenSuccessIcon from './GreenSuccessIcon';

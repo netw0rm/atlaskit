@@ -1,18 +1,18 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Avatar from 'ak-avatar';
-import Question from 'ak-icon/glyph/question';
-import { Code, Chrome, Description } from 'akutil-readme';
+import Avatar from '@atlaskit/avatar';
+import Question from '@atlaskit/icon/glyph/question';
+import { Code, Chrome, Description } from '@atlaskit/util-readme';
 
 import DropdownMenu from '../src';
 import { name } from '../package.json';
-import DropdownWithButtonExample from './DropdownWithButtonExample'; // eslint-disable-line
 import DropdownLoadItemsExample from './DropdownLoadItemsExample'; // eslint-disable-line
 import StatusDropdown from './examples/StatusDropdown'; // eslint-disable-line
+import DropdownWithTriggerOptions from './DropdownWithTriggerOptions'; // eslint-disable-line
 
 /* eslint-disable import/first, import/no-duplicates */
-import DropdownWithButtonExampleRaw from '!raw!./DropdownWithButtonExample';
 import DropdownLoadItemsExampleRaw from '!raw!./DropdownLoadItemsExample';
+import DropdownWithTriggerOptionsRaw from '!raw!./DropdownWithTriggerOptions';
 import StatusDropdownRaw from '!raw!./examples/StatusDropdown';
 /* eslint-enable import/first, import/no-duplicates */
 
@@ -129,20 +129,12 @@ storiesOf(name, module)
       </div>
     </div>
   ), {
-    imports: [...imports, ['t', 'ak-icon/glyph/question']],
+    imports: [...imports, ['t', '@atlaskit/icon/glyph/question']],
     overrides: {
       items: 'simpleDropdownItems',
     },
     scripts: [
       itemsOverride,
-    ],
-  })
-  .addCodeExampleStory('Basic Dropdown menu with a custom button', () => (
-    <DropdownWithButtonExample />
-  ),
-  {
-    scripts: [
-      DropdownWithButtonExampleRaw,
     ],
   })
   .addCodeExampleStory('Different appearances of the dropdown menu: default, tall', () => (
@@ -189,6 +181,14 @@ storiesOf(name, module)
   ), {
     scripts: [
       DropdownLoadItemsExampleRaw,
+    ],
+  })
+  .addCodeExampleStory('Basic Dropdown menu with customized trigger button', () => (
+    <DropdownWithTriggerOptions />
+  ),
+  {
+    scripts: [
+      DropdownWithTriggerOptionsRaw,
     ],
   })
   .add('Status Dropdown (special for JIRA)', () => (

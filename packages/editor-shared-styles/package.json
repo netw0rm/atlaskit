@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/editor-shared-styles",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "Shared styles for Atlassian Editor components",
   "main": "dist/es5/index.js",
@@ -34,7 +34,7 @@
     "akutil-shared-styles": "^37.3.0"
   },
   "keywords": [
-    "atlaskit",
+    "fabric",
     "ui"
   ]
 }

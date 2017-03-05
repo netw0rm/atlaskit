@@ -1,11 +1,15 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
+import AkButton from '@atlaskit/button';
 import styles from '../src/styles/profilecard.less';
 
 import { AkProfilecard } from '../src';
+import LoadingMessage from '../src/components/LoadingMessage';
+import ErrorMessage from '../src/components/ErrorMessage';
 import presences from '../src/internal/presences';
 
-describe('ak-profilecard', () => {
+describe('Profilecard', () => {
   describe('AkProfilecard', () => {
     it('should be possible to create a component', () => {
       const card = shallow(<AkProfilecard />);
@@ -46,6 +50,34 @@ describe('ak-profilecard', () => {
         const card = mount(<AkProfilecard />);
         const el = card.find(`.${styles.locals.presence}`);
         expect(el.isEmpty()).to.equal(true);
+      });
+    });
+
+    describe('isLoading property', () => {
+      it('should render the LoadingMessage component', () => {
+        const card = mount(
+          <AkProfilecard isLoading />
+        );
+        expect(card.find(LoadingMessage).length).to.equal(1);
+      });
+    });
+
+    describe('hasError property', () => {
+      it('should render the ErrorMessage component', () => {
+        const card = mount(
+          <AkProfilecard hasError />
+        );
+        expect(card.find(ErrorMessage).length).to.equal(1);
+      });
+
+      it('should render the ErrorMessage component with retry button if clientFetchProfile is provided', () => {
+        const card = mount(
+          <AkProfilecard hasError clientFetchProfile={() => {}} />
+        );
+        const errorComponent = card.find(ErrorMessage);
+        expect(errorComponent.length).to.equal(1);
+        expect(errorComponent.find(CrossCircleIcon).length).to.equal(1);
+        expect(errorComponent.find(AkButton).length).to.equal(1);
       });
     });
 

@@ -2,7 +2,7 @@
 
 Spinners are used for showing a system process of unknown length going on that ends with the system displaying results to the user.
 
-![Example spinner](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/ak-spinner/docs/spinnerExample.png)
+![Example spinner](https://i.imgur.com/jd0JSly.gif)
 
 ## Try it out
 

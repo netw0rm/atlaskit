@@ -1,7 +1,9 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Droplist from 'ak-droplist';
-import Button from 'ak-button';
+import Droplist from '@atlaskit/droplist';
+import Button from '@atlaskit/button';
+import MoreIcon from '@atlaskit/icon/glyph/more';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 import { name } from '../package.json';
 
@@ -69,6 +71,51 @@ describe(name, () => {
         expect(button.prop('ariaExpanded')).to.equal(menu.props().defaultOpen);
         expect(button.prop('ariaControls')).to.not.equal(undefined);
       });
+    });
+
+    it('should default to button with expand icon for triggerType=button with no overrides', () => {
+      const text = 'text';
+      const menu = mount(<Menu items={itemsList} triggerType="button">{ text }</Menu>);
+      const trigger = menu.find(Button);
+      expect(trigger.prop('iconBefore')).to.equal(undefined);
+      expect(trigger.prop('iconAfter')).not.to.equal(undefined);
+      expect(trigger.prop('children')).to.equal(text);
+      expect(menu.find(ExpandIcon).length).to.equal(1);
+    });
+
+    it('should pass through triggerButtonProps to the trigger for triggerType=button', () => {
+      const triggerProps = {
+        appearance: 'subtle',
+        id: 'button-123',
+        theme: 'dark',
+      };
+      const menu = mount(<Menu items={itemsList} triggerType="button" triggerButtonProps={triggerProps} />);
+      const trigger = menu.find(Button);
+      expect(trigger.prop('appearance')).to.equal(triggerProps.appearance);
+      expect(trigger.prop('id')).to.equal(triggerProps.id);
+      expect(trigger.prop('theme')).to.equal(triggerProps.theme);
+    });
+
+    it('should render provided iconAfter in trigger instead of default expand icon if provided', () => {
+      const triggerProps = {
+        iconAfter: <MoreIcon label="more" />,
+      };
+      const menu = mount(<Menu items={itemsList} triggerType="button" triggerButtonProps={triggerProps} />);
+      const trigger = menu.find(Button);
+      expect(trigger.prop('iconBefore')).to.equal(undefined);
+      expect(trigger.prop('iconAfter')).to.equal(triggerProps.iconAfter);
+      expect(menu.find(MoreIcon).length).to.equal(1);
+    });
+
+    it('should render provided iconBefore in trigger instead of default expand icon if provided', () => {
+      const triggerProps = {
+        iconBefore: <MoreIcon label="more" />,
+      };
+      const menu = mount(<Menu items={itemsList} triggerType="button" triggerButtonProps={triggerProps} />);
+      const trigger = menu.find(Button);
+      expect(trigger.prop('iconBefore')).to.equal(triggerProps.iconBefore);
+      expect(trigger.prop('iconAfter')).to.equal(undefined);
+      expect(menu.find(MoreIcon).length).to.equal(1);
     });
   });
 

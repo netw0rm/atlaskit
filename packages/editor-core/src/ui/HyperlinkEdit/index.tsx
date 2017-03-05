@@ -3,7 +3,7 @@ import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { HyperlinkState } from '../../plugins/hyperlink';
-import Panel from '../Panel';
+import FloatingToolbar from '../FloatingToolbar';
 import PanelTextInput from '../PanelTextInput';
 import ToolbarButton from '../ToolbarButton';
 import * as styles from './styles';
@@ -23,10 +23,16 @@ export interface State {
   unlinkable?: boolean;
   textInputPlaceholder?: string;
   textInputValue?: string;
+  toolbarVisible?: boolean;
+  inputActive?: boolean;
 }
 
 export default class HyperlinkEdit extends PureComponent<Props, State> {
-  state: State = { unlinkable: true };
+  state: State = {
+    unlinkable: true,
+    toolbarVisible: false,
+    inputActive: false,
+  };
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -36,22 +42,35 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
-  render() {
-    const { href, target, unlinkable } = this.state;
+  setInputActive = () => {
+    this.setState({
+      inputActive: true,
+    });
+  }
 
-    if (target) {
+  resetInputActive = () => {
+    this.setState({
+      inputActive: false,
+    });
+  }
+
+  render() {
+    const { href, target, unlinkable, toolbarVisible, inputActive } = this.state;
+
+    if (toolbarVisible || inputActive) {
       const showOpenButton = !!href;
       const showUnlinkButton = unlinkable;
       const showSeparator = showOpenButton || showUnlinkButton;
 
       return (
-        <Panel target={target} align="left" autoPosition>
+        <FloatingToolbar target={target} align="left" autoPosition>
           <div className={styles.container}>
             {!showOpenButton ? null :
             <ToolbarButton
               href={href}
               target="_blank"
               theme="dark"
+              title="Open link in new tab"
             >
               <OpenIcon label="Open" />
             </ToolbarButton>
@@ -59,6 +78,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
             {!showUnlinkButton ? null :
             <ToolbarButton
               theme="dark"
+              title="Unlink"
               onClick={this.handleUnlink}
             >
               <UnlinkIcon label="Unlink" />
@@ -72,10 +92,12 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               defaultValue={href}
               onSubmit={this.updateHref}
               onChange={this.updateHref}
+              onMouseDown={this.setInputActive}
+              onBlur={this.resetInputActive}
               ref="textInput"
             />
           </div>
-        </Panel>
+        </FloatingToolbar>
       );
     } else {
       return null;
@@ -91,6 +113,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
       target: pluginState.element,
       href: pluginState.href,
       textInputValue: pluginState.text,
+      toolbarVisible: pluginState.toolbarVisible,
     });
   }
 

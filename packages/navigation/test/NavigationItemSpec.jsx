@@ -23,11 +23,24 @@ describe('<NavigationItem />', () => {
     it('isCompact=true should render with the isCompact class', () => {
       expect((mount(<NavigationItem isCompact />).find(`.${navigationItemOuter}`)).hasClass((isCompact))).to.equal(true);
     });
-    it('href should render onto the link', () => {
+    it('with a href should render onto the link', () => {
       expect(mount(<NavigationItem href="foo" />).find(`.${link}`).props().href).to.equal('foo');
     });
     it('with no href should not render a link', () => {
       expect(mount(<NavigationItem />).find('a').length).to.equal(0);
+    });
+    it('with an onClick should call the onClick', () => {
+      const spy = sinon.spy();
+      const navigation = mount(<NavigationItem onClick={spy} />);
+      navigation.find('button').simulate('click');
+      expect(spy.calledOnce).to.equal(true);
+    });
+    it('with an onClick and href should render the href on a link, and bind the onClick to it', () => {
+      const spy = sinon.spy();
+      const navigation = mount(<NavigationItem href="foo" onClick={spy} />);
+      navigation.find('a').simulate('click');
+      expect(spy.calledOnce).to.equal(true);
+      expect(navigation.find('a').props().href).to.equal('foo');
     });
     it('linkComponent should render a custom link component', () => {
       const customLink = mount(
@@ -46,7 +59,7 @@ describe('<NavigationItem />', () => {
       expect(mount(<NavigationItem textAfter={<span className="TEXTAFTER" />} />).find('.TEXTAFTER')).to.have.length.above(0);
     });
     it('textAfter should not render if the prop is not set', () => {
-      expect(mount(<NavigationItem />).find('TextAfter')).to.not.be.present();
+      expect(mount(<NavigationItem />).find('TextAfter').length).to.equal(0);
     });
     it('action should not render if the prop is not set', () => {
       expect(mount(<NavigationItem />).find(`.${action}`).length).to.equal(0);
@@ -64,8 +77,8 @@ describe('<NavigationItem />', () => {
     it('subText should render in the navigation item', () => {
       expect(mount(<NavigationItem subText="SUBTEXT" />).html()).to.contain('SUBTEXT');
     });
-    it('subText should not render in the navigation item when it is compact', () => {
-      expect(mount(<NavigationItem isCompact subText="SUBTEXT" />).html()).to.not.contain('SUBTEXT');
+    it('subText should render in the navigation item when it is compact', () => {
+      expect(mount(<NavigationItem isCompact subText="SUBTEXT" />).html()).to.contain('SUBTEXT');
     });
   });
   describe('behaviour', () => {

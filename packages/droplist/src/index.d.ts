@@ -1,16 +1,11 @@
-import { Component, ReactNode } from 'react';
+import DropdownList from './droplist';
+import Item from './item';
+import Group from './group';
+import Trigger from './trigger';
 
-interface Props {
-  appearance?: 'default' | 'tall';
-  isOpen?: boolean;
-  isTriggerNotTabbable?: boolean;
-  listContext?: 'menu';
-  onOpenChange?: ({ isOpen: boolean }) => void;
-  position?: string;
-  trigger?: ReactNode;
-  shouldFitContainer?: boolean;
+export {
+  Item,
+  Group,
+  Trigger
 }
-
-interface State {}
-
-export default class DropdownList extends Component<Props, State> {}
+export default DropdownList;

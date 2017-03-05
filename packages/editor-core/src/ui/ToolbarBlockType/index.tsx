@@ -48,6 +48,13 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
         isOpen={this.state.active}
         onOpenChange={(attrs: any) => {
           const { availableBlockTypes, currentBlockType } = this.state;
+
+          if (attrs.isOpen) {
+            this.props.pluginState.blur();
+          } else {
+            this.props.pluginState.focus();
+          }
+
           this.setState({
             active: attrs.isOpen,
             availableBlockTypes,
@@ -74,7 +81,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
             isActive={currentBlockType === blockType}
             onActivate={() => { this.handleSelectBlockType(blockType); }}
           >
-            <span className={`${this.blockTypeItemClass(blockType)}`} title={tooltip(findKeymapByDescription(blockType.title))}>
+            <span title={tooltip(findKeymapByDescription(blockType.title))}>
               {blockType.title}
             </span>
           </Item>
@@ -94,6 +101,8 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
   }
 
   private handleSelectBlockType = (blockType: BlockType) => {
+    this.props.pluginState.focus();
+
     const { availableBlockTypes, currentBlockType } = this.state;
     this.props.pluginState.changeBlockType(blockType.name);
     this.setState({
@@ -103,16 +112,5 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
     });
 
     analytics.trackEvent(`atlassian.editor.format.${blockType.name}.button`);
-  }
-
-  private blockTypeItemClass(blockType: BlockType): string | undefined {
-    switch (blockType.name) {
-      case 'normal': return styles.blockTypeNormal;
-      case 'heading1': return styles.blockTypeHeading1;
-      case 'heading2': return styles.blockTypeHeading2;
-      case 'heading3': return styles.blockTypeHeading3;
-      case 'codeblock': return styles.blockTypeCode;
-      case 'blockquote': return styles.blockTypeQuote;
-    }
   }
 }

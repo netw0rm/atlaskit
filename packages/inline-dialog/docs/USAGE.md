@@ -16,7 +16,7 @@ npm install @NAME@
 
 ## Using the component
 
-`ak-inline-dialog` is a React component that can wrap content and then toggle the display of an aligned dialog box.
+`@NAME@` is a React component that can wrap content and then toggle the display of an aligned dialog box.
 
 Example usage:
 
@@ -40,15 +40,17 @@ class ButtonActivatedDialog extends PureComponent {
     });
   }
 
-  render = () => (
-    <AKInlineDialog
-      content={this.props.content}
-      position={this.props.position}
-      isOpen={this.state.isOpen}
-    >
+  render() {
+    return (
+      <AKInlineDialog
+        content={this.props.content}
+        position={this.props.position}
+        isOpen={this.state.isOpen}
+      >
       <button onClick={this.handleClick} />
     </AKInlineDialog>
-  )
+    );
+  }
 }
 ```
 

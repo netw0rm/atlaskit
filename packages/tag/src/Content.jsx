@@ -10,7 +10,7 @@ export default class Content extends PureComponent {
     children: PropTypes.node.isRequired,
   }
 
-  render = () => {
+  render() {
     if (this.props.href) {
       return (
         <Link

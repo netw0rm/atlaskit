@@ -1,7 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Readme, { Code } from 'akutil-readme';
-import Page from 'ak-page';
+import Readme, { Code } from '@atlaskit/util-readme';
 
 import { name, description } from '../package.json';
 
@@ -13,7 +12,7 @@ import OverviewExampleRaw from '!raw!./examples/overview';
 
 storiesOf(name, module)
   .add('Overview', () => (
-    <Readme component={Page} description={description}>
+    <Readme component={name} description={description}>
       <Code code={OverviewExampleRaw}>
         {OverviewExample}
       </Code>

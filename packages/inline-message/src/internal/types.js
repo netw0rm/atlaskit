@@ -9,7 +9,7 @@ import {
   akColorP300,
   akColorR300,
   akColorY300,
-} from 'akutil-shared-styles';
+} from '@atlaskit/util-shared-styles';
 
 const typesMapping = {
   connectivity: {

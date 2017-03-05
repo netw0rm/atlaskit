@@ -15,14 +15,18 @@ import {
   MentionsPlugin,
   Node,
   ProseMirror,
-  TextFormattingPlugin
-} from 'ak-editor-core';
+  TextFormattingPlugin,
+  version as coreVersion
+} from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 
 import markdownSerializer from './markdown-serializer';
 import { MentionResource, MentionSource } from './mention-resource';
 import { parseHtml, transformHtml } from './parse-html';
+import { version, name } from './version';
+
+export { version };
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
@@ -48,6 +52,7 @@ export interface State {
 export default class Editor extends PureComponent<Props, State> {
   state: State;
   mentionsResourceProvider: MentionResource;
+  version = `${version} (editor-core ${coreVersion})`;
 
   constructor(props: Props) {
     super(props);
@@ -156,7 +161,7 @@ export default class Editor extends PureComponent<Props, State> {
       <Chrome
         children={<div ref={this.handleRef} />}
         isExpanded={isExpanded}
-        feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
+        feedbackFormUrl="yes"
         onCancel={handleCancel}
         onSave={handleSave}
         placeholder={this.props.placeholder}
@@ -169,6 +174,8 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateImageUpload={pm && ImageUploadPlugin.get(pm)}
         pluginStateMentions={pm && this.mentionsResourceProvider && MentionsPlugin.get(pm)!}
         mentionsResourceProvider={this.mentionsResourceProvider}
+        packageVersion={version}
+        packageName={name}
       />
     );
   }

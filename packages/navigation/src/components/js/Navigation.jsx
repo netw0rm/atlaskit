@@ -1,10 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
-import AkBlanket from 'ak-blanket';
 import styles from 'style!../less/Navigation.less';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import DefaultLinkComponent from './DefaultLinkComponent';
-import Drawer from './Drawer';
 import Resizer from './Resizer';
 import Spacer from './Spacer';
 import {
@@ -12,7 +10,6 @@ import {
   globalOpenWidth,
   navigationOpenWidth,
   resizeClosedBreakpoint,
-  resizeExpandedBreakpoint,
 } from '../../shared-variables';
 import getContainerWidth from '../../utils/collapse';
 
@@ -20,34 +17,28 @@ export default class Navigation extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     containerAppearance: PropTypes.string,
-    containerHeader: PropTypes.node,
-    createDrawerContent: PropTypes.node,
-    drawerBackIcon: PropTypes.node,
+    containerHeaderComponent: PropTypes.func,
+    drawers: PropTypes.arrayOf(PropTypes.node),
     globalAccountItem: PropTypes.node,
     globalCreateIcon: PropTypes.node,
     globalHelpItem: PropTypes.node,
     globalPrimaryIcon: PropTypes.node,
     globalPrimaryItemHref: PropTypes.string,
     globalSearchIcon: PropTypes.node,
-    hasBlanket: PropTypes.bool,
     isCollapsible: PropTypes.bool,
-    isCreateDrawerOpen: PropTypes.bool,
     isOpen: PropTypes.bool,
     isResizeable: PropTypes.bool,
-    isSearchDrawerOpen: PropTypes.bool,
     linkComponent: PropTypes.func,
-    onBlanketClicked: PropTypes.func,
-    onCreateDrawerClose: PropTypes.func,
     onCreateDrawerOpen: PropTypes.func,
     onResize: PropTypes.func,
-    onSearchDrawerClose: PropTypes.func,
+    onResizeStart: PropTypes.func,
     onSearchDrawerOpen: PropTypes.func,
-    searchDrawerContent: PropTypes.node,
     width: PropTypes.number,
   };
 
   static defaultProps = {
     containerAppearance: 'default',
+    drawers: [],
     globalAccountDropdownComponent: ({ children }) => children,
     globalHelpDropdownComponent: ({ children }) => children,
     isCollapsible: true,
@@ -56,11 +47,9 @@ export default class Navigation extends PureComponent {
     isResizeable: true,
     isSearchDrawerOpen: false,
     linkComponent: DefaultLinkComponent,
-    onBlanketClicked: () => {},
-    onCreateDrawerClose: () => {},
     onCreateDrawerOpen: () => {},
     onResize: () => {},
-    onSearchDrawerClose: () => {},
+    onResizeStart: () => {},
     onSearchDrawerOpen: () => {},
     width: navigationOpenWidth,
   };
@@ -87,12 +76,22 @@ export default class Navigation extends PureComponent {
 
   triggerResizeHandler = () => {
     const width = this.getRenderedWidth();
+
+    const snappedWidth = (() => {
+      if (width > navigationOpenWidth) {
+        return width;
+      }
+      if (width < resizeClosedBreakpoint) {
+        return containerClosedWidth;
+      }
+      return navigationOpenWidth;
+    })();
+
     const resizeState = {
-      isOpen: (width > resizeClosedBreakpoint),
+      isOpen: (width >= resizeClosedBreakpoint),
+      width: snappedWidth,
     };
-    if (width > resizeExpandedBreakpoint) {
-      resizeState.width = width;
-    }
+
     this.setState({
       resizeDelta: 0,
     }, function callOnResizeAfterSetState() {
@@ -104,43 +103,27 @@ export default class Navigation extends PureComponent {
     const {
       children,
       containerAppearance,
-      containerHeader,
-      createDrawerContent,
-      drawerBackIcon,
+      containerHeaderComponent,
+      drawers,
       globalAccountItem,
       globalCreateIcon,
       globalHelpItem,
       globalPrimaryIcon,
       globalPrimaryItemHref,
       globalSearchIcon,
-      hasBlanket,
-      isCreateDrawerOpen,
       isOpen,
       isResizeable,
-      isSearchDrawerOpen,
       linkComponent,
-      onBlanketClicked,
-      onCreateDrawerClose,
       onCreateDrawerOpen,
-      onSearchDrawerClose,
+      onResizeStart,
       onSearchDrawerOpen,
-      searchDrawerContent,
     } = this.props;
 
     const shouldAnimate = this.state.resizeDelta === 0;
     const renderedWidth = this.getRenderedWidth();
     const isPartiallyCollapsed = renderedWidth < globalOpenWidth + containerClosedWidth;
-    const onSearchDrawerTrigger = isSearchDrawerOpen ? onSearchDrawerClose : onSearchDrawerOpen;
-    const onCreateDrawerTrigger = isCreateDrawerOpen ? onCreateDrawerClose : onCreateDrawerOpen;
     return (
       <div className={styles.navigation}>
-        {
-          hasBlanket && (isSearchDrawerOpen || isCreateDrawerOpen) ?
-          (
-            <AkBlanket isTinted onBlanketClicked={onBlanketClicked} />
-          )
-          : null
-        }
         <Spacer
           shouldAnimate={shouldAnimate}
           width={renderedWidth}
@@ -152,8 +135,8 @@ export default class Navigation extends PureComponent {
               createIcon={globalCreateIcon}
               helpItem={globalHelpItem}
               linkComponent={linkComponent}
-              onCreateActivate={onCreateDrawerTrigger}
-              onSearchActivate={onSearchDrawerTrigger}
+              onCreateActivate={onCreateDrawerOpen}
+              onSearchActivate={onSearchDrawerOpen}
               primaryIcon={globalPrimaryIcon}
               primaryItemHref={globalPrimaryItemHref}
               searchIcon={globalSearchIcon}
@@ -161,26 +144,7 @@ export default class Navigation extends PureComponent {
             />
           </div>
           <div style={{ zIndex: 2 }}>
-            <Drawer
-              backIcon={drawerBackIcon}
-              backIconPosition="search"
-              isOpen={isSearchDrawerOpen}
-              isWide
-              onBackButton={onSearchDrawerClose}
-              primaryIcon={globalPrimaryIcon}
-            >
-              {searchDrawerContent}
-            </Drawer>
-            <Drawer
-              backIcon={drawerBackIcon}
-              backIconPosition="create"
-              header={containerHeader}
-              isOpen={isCreateDrawerOpen}
-              onBackButton={onCreateDrawerClose}
-              primaryIcon={globalPrimaryIcon}
-            >
-              {createDrawerContent}
-            </Drawer>
+            {drawers}
           </div>
           <div>
             <ContainerNavigation
@@ -190,11 +154,11 @@ export default class Navigation extends PureComponent {
               globalPrimaryIcon={globalPrimaryIcon}
               globalPrimaryItemHref={globalPrimaryItemHref}
               globalSearchIcon={globalSearchIcon}
-              header={containerHeader}
+              headerComponent={containerHeaderComponent}
               linkComponent={linkComponent}
               offsetX={Math.min(renderedWidth - (globalOpenWidth + containerClosedWidth), 0)}
-              onGlobalCreateActivate={onCreateDrawerTrigger}
-              onGlobalSearchActivate={onSearchDrawerTrigger}
+              onGlobalCreateActivate={onCreateDrawerOpen}
+              onGlobalSearchActivate={onSearchDrawerOpen}
               shouldAnimate={shouldAnimate}
               width={getContainerWidth(renderedWidth)}
             >
@@ -205,6 +169,7 @@ export default class Navigation extends PureComponent {
             isResizeable
             ? <Resizer
               onResize={this.onResize}
+              onResizeStart={onResizeStart}
               onResizeEnd={this.triggerResizeHandler}
             />
             : null

@@ -8,6 +8,7 @@ import {
   ListsPlugin,
   MentionsPlugin,
   Node,
+  PanelPlugin,
   ProseMirror,
   TextFormattingPlugin
 } from '../../';
@@ -100,6 +101,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
+        pluginStatePanel={pm && PanelPlugin.get(pm)}
       />
     );
   }
@@ -144,6 +146,7 @@ export default class Editor extends PureComponent<Props, State> {
           ListsPlugin,
           TextFormattingPlugin,
           MentionsPlugin,
+          PanelPlugin
         ],
       });
 

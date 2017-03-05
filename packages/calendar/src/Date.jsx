@@ -1,6 +1,7 @@
-import React, { PureComponent, PropTypes } from 'react';
+/* eslint no-confusing-arrow: 0 */
 
-import styles from './Date.style';
+import React, { PureComponent, PropTypes } from 'react';
+import { DateDiv, DateTd } from './styled';
 
 export default class extends PureComponent {
   static propTypes = {
@@ -42,17 +43,16 @@ export default class extends PureComponent {
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <td
-        onClick={this.handleClick}
-        role="gridcell"
+      <DateTd
         aria-live={focused ? 'polite' : ''}
         aria-selected={selected ? 'true' : 'false'}
-        style={{ border: 0, padding: 0 }}
+        onClick={this.handleClick}
+        role="gridcell"
       >
-        <div {...styles(this.props)}>
+        <DateDiv {...this.props}>
           {children}
-        </div>
-      </td>
+        </DateDiv>
+      </DateTd>
     );
   }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41 (35326) - http://www.bohemiancoding.com/sketch -->
+    <title>Discover</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Fabric" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="fabric/discover">
+            <g id="discover" transform="translate(3.000000, 3.000000)">
+                <path d="M9,18 C13.9705627,18 18,13.9705627 18,9 C18,4.02943725 13.9705627,0 9,0 C4.02943725,0 0,4.02943725 0,9 C0,13.9705627 4.02943725,18 9,18 Z M6.4498752,12.4295525 C5.46195423,12.931779 5.0677531,12.5389662 5.57044749,11.5501248 L7.58578644,7.58578644 L10.4142136,10.4142136 L6.4498752,12.4295525 Z M11.5501248,5.57044749 C12.5380458,5.06822103 12.9322469,5.46103377 12.4295525,6.4498752 L10.4142136,10.4142136 L7.58578644,7.58578644 L11.5501248,5.57044749 Z" id="Combined-Shape" fill="currentColor"></path>
+                <g id="Group-2" transform="translate(10.717514, 7.181981) rotate(45.000000) translate(-10.717514, -7.181981) translate(8.717514, 4.681981)"></g>
+                <circle id="Oval-5" fill="currentColor" cx="9" cy="9" r="1"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -22,7 +22,7 @@ module.exports = (config) => {
       'application/javascript': ['ts', 'tsx'],
     },
 
-    reporters: ['progress'],
+    reporters: ['spec'],
 
     port: 9876,
 
@@ -43,7 +43,7 @@ module.exports = (config) => {
     // all the packages together. When lerna linking is not applied (for whatever reason)
     // deduping is not implicit, and bundle sizes are huge, which can take a significant amount
     // of time in CI.
-    browserNoActivityTimeout: 30000,
+    browserNoActivityTimeout: 100000,
 
     singleRun: true,
 

@@ -18,6 +18,7 @@ const createSingleLineTextInput = props => (
   <SingleLineTextInput
     value="Lorem ipsum dolor sit amet"
     onChange={action('onChange')}
+    onConfirm={action('onConfirm')}
     isEditing={false}
     {...props}
   />

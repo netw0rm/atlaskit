@@ -3,7 +3,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 
 import { CodeBlockState } from '../../plugins/code-block';
-import Panel from '../Panel';
+import FloatingToolbar from '../FloatingToolbar';
 import languageList, { findMatchedLanguage, NO_LANGUAGE } from './languageList';
 import * as styles from './styles';
 
@@ -15,7 +15,7 @@ export interface State {
   active?: boolean;
   element?: HTMLElement;
   language: string;
-  content?: string;
+  toolbarVisible?: boolean;
 }
 
 const items = [{
@@ -25,7 +25,7 @@ const items = [{
 }];
 
 export default class LanguagePicker extends PureComponent<Props, State> {
-  state: State = { language: NO_LANGUAGE };
+  state: State = { language: NO_LANGUAGE, toolbarVisible: false };
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -36,17 +36,17 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { active, language, element } = this.state;
+    const { language, element, toolbarVisible } = this.state;
 
-    if (active) {
+    if (toolbarVisible) {
       return (
-        <Panel target={element} align="left" autoPosition>
+        <FloatingToolbar target={element} align="left" autoPosition>
           <div className={styles.container}>
             <DropdownMenu triggerType="button" items={items} onItemActivated={this.handleLanguageChange}>
               {language}
             </DropdownMenu>
           </div>
-        </Panel>
+        </FloatingToolbar>
       );
     }
 
@@ -54,19 +54,28 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: CodeBlockState) => {
-    const {active, element, language, content} = pluginState;
+    const { element, language, toolbarVisible} = pluginState;
+
+    const matchedLanguage = findMatchedLanguage(language);
+    const updatedlanguage = this.optionToLanguage(matchedLanguage);
+
+    if (language !== updatedlanguage) {
+      this.props.pluginState.updateLanguage(updatedlanguage);
+    }
 
     this.setState({
-      active: active,
-      language: findMatchedLanguage(language),
-      element: element,
-      content: content
+      language: matchedLanguage,
+      element,
+      toolbarVisible
     });
   }
 
   private handleLanguageChange = (activeItem: any) => {
-    const selectedLanguage = activeItem.item.content;
-    const language = selectedLanguage.toLowerCase() === NO_LANGUAGE.toLowerCase() ? undefined : selectedLanguage;
+    const language = this.optionToLanguage(activeItem.item.content);
     this.props.pluginState.updateLanguage(language);
+  }
+
+  private optionToLanguage(languageOption: string): string | undefined {
+    return languageOption.toLowerCase() === NO_LANGUAGE.toLowerCase() ? undefined : languageOption;
   }
 }

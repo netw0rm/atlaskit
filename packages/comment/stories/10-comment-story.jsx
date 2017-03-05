@@ -1,6 +1,6 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
-import Avatar from 'ak-avatar';
+import Avatar from '@atlaskit/avatar';
 
 import Comment, { CommentAction, CommentAuthor, CommentTime } from '../src';
 import { name } from '../package.json';
@@ -16,7 +16,7 @@ storiesOf(name, module)
       avatar={sampleAvatar}
       time={<CommentTime>30, August 2016</CommentTime>}
       type="Author"
-      content={[<p>{sampleText}</p>, <p>{sampleText}</p>]}
+      content={<div><p>{sampleText}</p><p>{sampleText}</p></div>}
       actions={[
         <CommentAction onClick={clickHandler}>Reply</CommentAction>,
         <CommentAction onClick={clickHandler}>Edit</CommentAction>,
@@ -34,7 +34,7 @@ storiesOf(name, module)
       avatar={sampleAvatar}
       time={<CommentTime href="#">30, August 2016</CommentTime>}
       type="Author"
-      content={[<p>{sampleText}</p>, <p>{sampleText}</p>]}
+      content={<div><p>{sampleText}</p><p>{sampleText}</p></div>}
       actions={[
         <CommentAction onClick={clickHandler}>Reply</CommentAction>,
         <CommentAction onClick={clickHandler}>Edit</CommentAction>,
@@ -56,7 +56,7 @@ storiesOf(name, module)
           30, August 2016 (click or hover)
         </CommentTime>}
         type="Author"
-        content={[<p>{sampleText}</p>, <p>{sampleText}</p>]}
+        content={<div><p>{sampleText}</p><p>{sampleText}</p></div>}
         actions={[
           <CommentAction onClick={clickHandler}>Click</CommentAction>,
           <CommentAction onMouseOver={mouseOverHandler}>Hover</CommentAction>,
@@ -68,14 +68,17 @@ storiesOf(name, module)
   .add('ak-comment with different avatar sizes', () => {
     const avatarWithSize = size => (
       <Comment
+        key={size}
         author={<CommentAuthor>John Smith</CommentAuthor>}
         avatar={<Avatar src={sampleAvatarImg} label="User avatar" size={size} />}
         type="Author"
         time={<CommentTime>30, August 2016</CommentTime>}
-        content={<div>
-          <p>{size} avatar</p>
-          <p>{sampleText}</p>
-        </div>}
+        content={
+          <div>
+            <p>{size} avatar</p>
+            <p>{sampleText}</p>
+          </div>
+        }
         actions={[
           <CommentAction onClick={clickHandler}>Reply</CommentAction>,
           <CommentAction onClick={clickHandler}>Edit</CommentAction>,
@@ -94,6 +97,6 @@ storiesOf(name, module)
     <Comment
       author={<CommentAuthor>John Smith</CommentAuthor>}
       avatar={<img src={sampleAvatarImg} alt="img avatar" height="40" width="40" />}
-      content={(<p>{sampleText}</p>)}
+      content={<p>{sampleText}</p>}
     />
   ));

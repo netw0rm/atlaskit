@@ -7,6 +7,7 @@ import keyCode from 'keycode';
 import { createTemporary, removeTemporary, getRootNode } from './_helpers';
 import Chrome from '../src/Chrome';
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('ak-tag', () => {
   describe('Chrome', () => {
     let component;

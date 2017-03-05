@@ -1,5 +1,5 @@
 import Keymap from 'browserkeymap';
-import { inputRules, Plugin, ProseMirror, Schema } from '../../prosemirror';
+import { inputRules, Fragment, Plugin, ProseMirror, Schema, Text } from '../../prosemirror';
 
 import {
   MentionNodeType,
@@ -22,6 +22,7 @@ export class MentionsPluginState {
   onSelectPrevious = () => {};
   onSelectNext =  () => {};
   onSelectCurrent = () => {};
+  onTrySelectCurrent = (): boolean => { return false; };
 
   constructor(pm: PM) {
     this.pm = pm;
@@ -30,6 +31,8 @@ export class MentionsPluginState {
       Up: () => this.onSelectPrevious(),
       Down: () => this.onSelectNext(),
       Enter: () => this.onSelectCurrent(),
+      Tab: () => this.onSelectCurrent(),
+      Space: () => this.onTrySelectCurrent(),
       Esc: () => this.dismiss(),
     }, {
       name: 'mentions-plugin-keymap'
@@ -121,7 +124,10 @@ export class MentionsPluginState {
     let end = start;
 
     if (node && this.pm.schema.marks.mention_query.isInSet(node.marks)) {
-      start = this.pm.doc.resolve(start).start(2) - 1;
+      const resolvedPos = this.pm.doc.resolve(start);
+      // -1 is to include @ in replacement
+      // resolvedPos.depth + 1 to make mentions work inside other blocks e.g. "list item" or "blockquote"
+      start = resolvedPos.start(resolvedPos.depth + 1) - 1;
       end = start + node.nodeSize;
     }
 
@@ -129,12 +135,14 @@ export class MentionsPluginState {
   }
 
   insertMention(mentionData?: Mention) {
-    const { mention } = this.pm.schema.nodes;
+    const { mention, text } = this.pm.schema.nodes;
 
     if (mention && mentionData) {
       const { start, end } = this.findMentionQueryMark();
       const node = mention.create({ displayName: `@${mentionData.name}`, id: mentionData.id });
-      this.pm.tr.delete(start, end).insert(start, node).apply();
+      const textNode = text.create({}, ' ');
+      const fragment = new Fragment([node, textNode], node.nodeSize + textNode.nodeSize);
+      this.pm.tr.delete(start, end).insert(start, fragment).apply();
     } else {
       this.dismiss();
     }
@@ -164,6 +172,7 @@ export interface Mention {
 export interface S extends Schema {
   nodes: {
     mention?: MentionNodeType
+    text: Text;
   };
 
   marks: {

@@ -1,4 +1,4 @@
-import { akColorB400 } from 'akutil-shared-styles';
+import { akColorB400 } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 import { Mark, MarkType, Schema } from '../../prosemirror';
 

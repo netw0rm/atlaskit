@@ -1,5 +1,5 @@
 {
-  "extends": "../../../../tsconfig",
+  "extends": "../../tsconfig",
   "compilerOptions": {
     "outDir": "../../dist/es2015",
     "target": "es2015"

@@ -1,6 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { akColorG300 } from 'akutil-shared-styles';
+import Button from '@atlaskit/button';
+import { akColorG300 } from '@atlaskit/util-shared-styles';
 
 import InlineDialog from '../src';
 import { name } from '../package.json';
@@ -47,4 +48,31 @@ storiesOf(name, module)
           <div style={targetStyles}>I am the target</div>
         </InlineDialog>
       </div>);
-  }, { overrides: codeExampleOverrrides });
+  }, { overrides: codeExampleOverrrides })
+  .addCodeExampleStory('Dialog with trigger that takes full width', () => (
+    <div
+      style={{
+        border: '1px dashed orange',
+        margin: '32px auto',
+        width: 400,
+      }}
+    >
+      <style>{`
+          .inline-dialog-story-button {
+            display: block;
+            width: 100%;
+          }
+      `}</style>
+      <InlineDialog
+        content="The button should fill the dashed orange container"
+        isOpen
+        position="bottom left"
+        shouldFlip
+      >
+        <Button
+          className="inline-dialog-story-button"
+          isSelected
+        >I take full width</Button>
+      </InlineDialog>
+    </div>
+  ), { overrides: codeExampleOverrrides });

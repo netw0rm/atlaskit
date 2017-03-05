@@ -1,6 +1,6 @@
 import React from 'react';
-import Flag, { FlagGroup } from 'ak-flag';
-import { SuccessIcon } from 'ak-icon';
+import Flag, { FlagGroup } from '@atlaskit/flag';
+import { SuccessIcon } from '@atlaskit/icon';
 
 export default (
   <FlagGroup

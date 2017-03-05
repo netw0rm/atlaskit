@@ -13,8 +13,9 @@ import {
   text,
   textAfter,
 } from 'style!../less/NavigationItem.less';
-import className from 'classnames';
+import classNames from 'classnames';
 import DefaultLinkComponent from './DefaultLinkComponent';
+import InteractiveWrapper from './InteractiveWrapper';
 
 export default class NavigationItem extends PureComponent {
   static propTypes = {
@@ -24,6 +25,7 @@ export default class NavigationItem extends PureComponent {
     isCompact: PropTypes.bool,
     isSelected: PropTypes.bool,
     linkComponent: PropTypes.func,
+    onClick: PropTypes.func,
     subText: PropTypes.string,
     text: PropTypes.node,
     textAfter: PropTypes.node,
@@ -40,9 +42,7 @@ export default class NavigationItem extends PureComponent {
   }
 
   render() {
-    const Link = this.props.linkComponent;
     const Icon = () => (this.props.icon ? <div className={icon}>{this.props.icon}</div> : null);
-
     const TextAfter = () => (this.props.textAfter ?
       <div className={textAfter}>
         {this.props.textAfter}
@@ -69,15 +69,17 @@ export default class NavigationItem extends PureComponent {
 
     return (
       <div
-        className={className(navigationItemOuter, {
+        className={classNames(navigationItemOuter, {
           [isSelected]: this.props.isSelected,
           [isCompact]: this.props.isCompact,
         })}
       >
-        <Link
+        <InteractiveWrapper
           className={link}
           href={this.props.href}
           onMouseDown={this.onMouseDown}
+          onClick={this.props.onClick}
+          linkComponent={this.props.linkComponent}
         >
           <div
             className={navigationItemInner}
@@ -93,7 +95,7 @@ export default class NavigationItem extends PureComponent {
               <TextAfter />
             </After>
           </div>
-        </Link>
+        </InteractiveWrapper>
         <Action />
       </div>
     );

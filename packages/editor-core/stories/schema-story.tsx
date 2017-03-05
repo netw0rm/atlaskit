@@ -5,8 +5,9 @@ import * as React from 'react';
 import Thenable from 'thenable';
 import { OrderedMap } from '../src/prosemirror';
 import makeJsonSchema from '../src/schema/json-schema';
-import { schema } from '../test-helper/schema';
+import { schema } from '../src/test-helper/schema';
 import Editor from './editor';
+import { name } from '../package.json';
 
 // import 'style!css!highlight.js/styles/tomorrow.css';
 
@@ -24,7 +25,7 @@ function toJS(map: OrderedMap<any>, transform: (value: any) => any) {
 
 const jsonPretty = (obj: any) => JSON.stringify(obj, null, 2);
 
-storiesOf('ak-editor-core', module)
+storiesOf(name, module)
   .add('JSON Schema', () => {
     interface State {
       docJson?: any;
@@ -32,7 +33,10 @@ storiesOf('ak-editor-core', module)
     }
 
     class Story extends React.PureComponent<{}, State> {
-      state: State = { isValid: true };
+      state: State = {
+        isValid: true
+      };
+
       container?: HTMLDivElement;
       editor?: Element;
 
@@ -44,6 +48,7 @@ storiesOf('ak-editor-core', module)
             highlightBlock(codes[i]);
           }
         }
+
         this.fetchEditorState();
       }
 
@@ -94,7 +99,9 @@ storiesOf('ak-editor-core', module)
           const { doc } = editor;
           if (doc) {
             const docJson = doc.toJSON();
+
             this.setState({
+              ...this.state,
               docJson,
               isValid: validate(docJson),
             });

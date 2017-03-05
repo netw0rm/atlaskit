@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/util-shared-styles",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "Shared styles for AtlasKit components",
   "main": "dist/bundle.js",
@@ -41,6 +41,7 @@
   },
   "keywords": [
     "atlaskit",
-    "ui"
+    "ui",
+    "internal"
   ]
 }

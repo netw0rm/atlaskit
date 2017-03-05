@@ -1,6 +1,6 @@
 import { action } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
-import SingleLineTextInput from 'ak-input';
+import SingleLineTextInput from '@atlaskit/input';
 import uid from 'uid';
 import AkInlineEdit from '../src';
 

@@ -1,11 +1,12 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { DocNodeType, MonoMarkType, Schema, Text } from '../../../src';
-import { chaiPlugin, fromHTML, toHTML } from '../../../test-helper';
+import { DOMNode } from '../../../src/prosemirror/dom';
+import { chaiPlugin, fromHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-core/schema mono mark', () => {
+describe('@atlaskit/editor-core/schema mono mark', () => {
   it('throws an error if it is not named "mono"', () => {
     expect(() => {
       new Schema({
@@ -46,10 +47,16 @@ describe('ak-editor-core/schema mono mark', () => {
   itMatches('<span style="font-family: monospace; white-space: pre-wrap">text</span>', 'text');
   itMatches('<span style="font-family: monospace; white-space: pre-line">text</span>', 'text');
 
-  it('serializes to <span style="font-family: monospace; white-space: pre-wrap">', () => {
+  it('serializes to <span style="font-family: monospace; white-space: pre-wrap" class="mono">', () => {
     const schema = makeSchema();
     const node = schema.text('foo', [ schema.marks.mono.create() ] );
-    expect(toHTML(node)).to.equal('<span style="font-family: monospace; white-space: pre-wrap;">foo</span>');
+
+    // at this moment DOMNode doesn't have getAttribute/classList
+    const domNode: DOMNode = node.toDOM();
+    const domNodeAttributes = domNode.attributes;
+
+    expect(domNodeAttributes.getNamedItem('style').value).to.equal('font-family: monospace; white-space: pre-wrap;');
+    expect(domNodeAttributes.getNamedItem('class').value).to.equal('mono');
   });
 });
 

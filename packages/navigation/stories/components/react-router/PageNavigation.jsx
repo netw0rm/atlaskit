@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { AtlassianIcon } from 'ak-icon';
+import { AtlassianIcon } from '@atlaskit/icon';
 import Navigation from '../../../src/index';
 import RouterHeader from './RouterHeader';
 import RouterLinkComponent from './RouterLinkComponent';
@@ -9,10 +9,10 @@ export default class PageNavigation extends PureComponent {
   render() {
     return (
       <Navigation
-        containerHeader={
-          <RouterHeader
+        containerHeaderComponent={() =>
+          (<RouterHeader
             to="/iframe.html"
-          />
+          />)
         }
         globalPrimaryIcon={<AtlassianIcon label="Home" size="medium" />}
         globalPrimaryItemHref="/iframe.html"

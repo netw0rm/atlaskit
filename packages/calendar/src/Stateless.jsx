@@ -1,6 +1,6 @@
 import { Calendar } from 'calendar-base';
-import ArrowleftIcon from 'ak-icon/glyph/arrowleft';
-import ArrowrightIcon from 'ak-icon/glyph/arrowright';
+import ArrowleftIcon from '@atlaskit/icon/glyph/arrowleft';
+import ArrowrightIcon from '@atlaskit/icon/glyph/arrowright';
 import keycode from 'keycode';
 import React, { PureComponent, PropTypes } from 'react';
 
@@ -10,87 +10,35 @@ import {
   getMonthName,
   makeArrayFromNumber,
 } from './util';
-import AnnouncerFn from './Announcer';
 import Btn from './Btn';
-import DateFn from './Date';
-import styles from './style';
+import DateComponent from './Date';
+
+import {
+  Announcer,
+  CalendarTable,
+  CalendarTbody,
+  CalendarTh,
+  CalendarThead,
+  Heading,
+  MonthAndYear,
+  Wrapper,
+} from './styled';
 
 const arrowKeys = [keycode('down'), keycode('left'), keycode('right'), keycode('up')];
-const css = styles();
 const daysPerWeek = 7;
 const monthsPerYear = 12;
 
 export default class StatelessCalendar extends PureComponent {
   static propTypes = {
-    /**
-     * @description The ISO date that represents today.
-     * @default current ISO date
-     * @type {number}
-     */
-    today: PropTypes.string,
-
-    /**
-     * @description The ISO dates that are disabled.
-     * @default []
-     * @type {array.<string>}
-     */
     disabled: PropTypes.arrayOf(PropTypes.string),
-
-    /**
-     * @description The day number that is currently focused.
-     * @default 0
-     * @type {number}
-     */
     focused: PropTypes.number,
-
-    /**
-     * @description The month to display (1 - 12).
-     * @default current month
-     * @type {number}
-     */
     month: PropTypes.number,
-
-    /**
-     * @description Function called when the calendar is un-focused.
-     * @default function(){}
-     * @type {func}
-     */
     onBlur: PropTypes.func,
-
-    /**
-     * @description Function called when the focused date changes.
-     * @default function(){}
-     * @type {func}
-     */
     onChange: PropTypes.func,
-
-    /**
-     * @description Function called when a date on the calendar is selected via the keyboard or
-     *   mouse.
-     * @default function(){}
-     * @type {func}
-     */
     onSelect: PropTypes.func,
-
-    /**
-     * @description The ISO dates that were previously selected.
-     * @default []
-     * @type {array.<string>}
-     */
     previouslySelected: PropTypes.arrayOf(PropTypes.string),
-
-    /**
-     * @description The ISO dates that currently selected.
-     * @default []
-     * @type {array.<string>}
-     */
     selected: PropTypes.arrayOf(PropTypes.string),
-
-    /**
-     * @description The full year to display.
-     * @default current year
-     * @type {number}
-     */
+    today: PropTypes.string,
     year: PropTypes.number,
   }
 
@@ -262,18 +210,18 @@ export default class StatelessCalendar extends PureComponent {
       const isToday = today === dateAsString;
 
       week.push(
-        <DateFn
+        <DateComponent
           disabled={isDisabled}
           focused={isFocused}
-          key={dateAsString}
           isToday={isToday}
+          key={dateAsString}
           month={date.month + 1}
           onClick={this.handleClickDay}
           previouslySelected={isPreviouslySelected}
           selected={isSelected}
           sibling={isSiblingMonth}
           year={date.year}
-        >{date.day}</DateFn>
+        >{date.day}</DateComponent>
       );
     });
 
@@ -286,45 +234,42 @@ export default class StatelessCalendar extends PureComponent {
         onBlur={this.props.onBlur}
         onKeyDown={this.handleKeyDown}
       >
-        <AnnouncerFn>{new Date(year, month, focused).toString()}</AnnouncerFn>
-        <div
+        <Announcer aria-live="assertive" aria-relevant="text">
+          {new Date(year, month, focused).toString()}
+        </Announcer>
+        <Wrapper
           aria-label="calendar"
           role="grid"
           tabIndex={0}
-          {...css.wrapper}
         >
-          <div {...css.heading}>
-            <div onClick={this.handleClickPrev} aria-hidden="true">
+          <Heading>
+            <div aria-hidden="true" onClick={this.handleClickPrev}>
               <Btn>
                 <ArrowleftIcon label="Last month" />
               </Btn>
             </div>
-            <div {...css.monthAndYear}>
+            <MonthAndYear>
               {`${getMonthName(month)} ${year}`}
-            </div>
-            <div onClick={this.handleClickNext} aria-hidden="true">
+            </MonthAndYear>
+            <div aria-hidden="true" onClick={this.handleClickNext}>
               <Btn>
                 <ArrowrightIcon label="Next month" />
               </Btn>
             </div>
-          </div>
-          <table {...css.calendar} role="presentation">
-            <thead style={{ border: 0 }}>
+          </Heading>
+          <CalendarTable role="presentation">
+            <CalendarThead>
               <tr>
                 {makeArrayFromNumber(daysPerWeek).map(i =>
-                  <th
-                    {...css.dayOfWeek}
-                    key={i}
-                    style={{ border: 0, padding: '2px 5px' }}
-                  >{getDayName(i)}</th>
+                  <CalendarTh key={i}>{getDayName(i)}</CalendarTh>
                 )}
               </tr>
-            </thead>
-            <tbody style={{ border: 0 }}>
+            </CalendarThead>
+            <CalendarTbody style={{ border: 0 }}>
               {weeks.map((week, i) => <tr key={i}>{week}</tr>)}
-            </tbody>
-          </table>
-        </div>
+            </CalendarTbody>
+          </CalendarTable>
+        </Wrapper>
       </div>
     );
   }

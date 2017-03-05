@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import Avatar from 'ak-avatar';
-import Comment, { CommentAction, CommentAuthor, CommentTime } from 'ak-comment';
+import Avatar from '@atlaskit/avatar';
+import Comment, { CommentAction, CommentAuthor, CommentTime } from '@atlaskit/comment';
 
 import sampleAvatarImg from './sample-avatar.png';
 

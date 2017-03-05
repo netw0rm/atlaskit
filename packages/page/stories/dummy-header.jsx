@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import Button from 'ak-button';
-import ButtonGroup from 'ak-button-group';
+import Button from '@atlaskit/button';
+import ButtonGroup from '@atlaskit/button-group';
 import styled from 'styled-components';
 
 import { Grid, GridColumn } from '../src';
@@ -17,22 +17,24 @@ const RightButtons = styled.div`
 `;
 
 export default class Dummy extends PureComponent {
-  render = () => (
-    <Grid spacing="comfortable">
-      <GridColumn>
-        <CommentHeader>
-          <h1>Commit</h1>
-        </CommentHeader>
-      </GridColumn>
-      <GridColumn>
-        <RightButtons>
-          <ButtonGroup>
-            <Button>Approve</Button>
-            <Button>Decline</Button>
-            <Button>Edit</Button>
-          </ButtonGroup>
-        </RightButtons>
-      </GridColumn>
-    </Grid>
-  );
+  render() {
+    return (
+      <Grid spacing="comfortable">
+        <GridColumn>
+          <CommentHeader>
+            <h1>Commit</h1>
+          </CommentHeader>
+        </GridColumn>
+        <GridColumn>
+          <RightButtons>
+            <ButtonGroup>
+              <Button>Approve</Button>
+              <Button>Decline</Button>
+              <Button>Edit</Button>
+            </ButtonGroup>
+          </RightButtons>
+        </GridColumn>
+      </Grid>
+    );
+  }
 }

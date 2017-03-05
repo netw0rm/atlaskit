@@ -111,7 +111,9 @@ describe('exports', () => {
       'akFontSizeDefault',
       'akGridSize',
       'akZIndexBlanket',
+      'akZIndexFlag',
       'akZIndexLayer',
+      'akZIndexNavigation',
       'default',
     ]);
   });

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
-import Avatar from 'ak-avatar';
-import Lozenge from 'ak-lozenge';
+import Avatar from '@atlaskit/avatar';
+import Lozenge from '@atlaskit/lozenge';
 
 import Comment, { CommentAction, CommentAuthor, CommentTime, CommentLayout } from '../src/';
 import styles from '../src/styles.less';

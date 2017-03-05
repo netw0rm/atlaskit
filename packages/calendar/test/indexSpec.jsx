@@ -1,11 +1,11 @@
 import 'akutil-polyfills';
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { getMonthName } from '../src/util';
 
 import { name } from '../package.json';
 import { AkCalendar } from '../src';
-import Announcer from '../src/Announcer';
+import { Announcer, MonthAndYear } from '../src/styled';
 import DateComponent from '../src/Date';
 
 const now = new Date();
@@ -21,8 +21,8 @@ describe(name, () => {
   });
 
   it('should highlight current date', () => {
-    const wrapper = shallow(<AkCalendar />);
-    expect(wrapper.find('div[aria-label="calendar"]').at(0).text().includes(`${getMonthName(nowMonth)} ${nowYear}`))
+    const wrapper = mount(<AkCalendar />);
+    expect(wrapper.find(MonthAndYear).at(0).text().includes(`${getMonthName(nowMonth)} ${nowYear}`))
       .to.equal(true);
   });
 
@@ -38,15 +38,18 @@ describe(name, () => {
         done();
       }}
     />);
-    wrapper.find({ children: 1, sibling: false }).simulate('click', {
+    wrapper.find(DateComponent).find({
+      children: 1,
+      sibling: false,
+    }).simulate('click', {
       day: 1,
       month: 1,
       year: 2016,
     });
   });
 
-  it('specifying selected days should selecte the specified days', () => {
-    const wrapper = shallow(<AkCalendar
+  it('specifying selected days should select the specified days', () => {
+    const wrapper = mount(<AkCalendar
       month={1}
       year={2016}
       selected={['2016-01-01', '2016-01-02']}
@@ -55,13 +58,11 @@ describe(name, () => {
     expect(wrapper.find({
       children: 1,
       selected: true,
-      sibling: false,
     })).to.have.lengthOf(1);
 
     expect(wrapper.find({
       children: 2,
       selected: true,
-      sibling: false,
     })).to.have.lengthOf(1);
   });
 });

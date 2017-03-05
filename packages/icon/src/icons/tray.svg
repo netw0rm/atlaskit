@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41 (35326) - http://www.bohemiancoding.com/sketch -->
+    <title>Your work</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="18" height="18" rx="2"></rect>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="18" height="18" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+    </defs>
+    <g id="Fabric" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="fabric/your-work">
+            <g id="your-work" transform="translate(3.000000, 3.000000)">
+                <use id="Rectangle-2" stroke="#253858" mask="url(#mask-2)" stroke-width="4" xlink:href="#path-1"></use>
+                <path d="M6.17070571,14 L1,14 L1,15.5 C1,16.3342028 1.67391942,17 2.50524116,17 L15.4947588,17 C16.3328702,17 17,16.3284271 17,15.5 L17,14 L11.8292943,14 C11.4174579,15.1651924 10.3062188,16 9,16 C7.69378117,16 6.58254212,15.1651924 6.17070571,14 Z" id="Combined-Shape" fill="currentColor"></path>
+                <rect id="Rectangle-8-Copy-3" fill="currentColor" x="4" y="9" width="10" height="2"></rect>
+                <rect id="Rectangle-8-Copy-4" fill="currentColor" x="4" y="5" width="10" height="2"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

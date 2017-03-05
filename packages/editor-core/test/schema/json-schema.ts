@@ -4,7 +4,7 @@ import jsonSchema from '../../src/schema/json-schema';
 
 const { expect } = chai;
 
-describe('ak-editor-core: json-schema', () => {
+describe('@atlaskit/editor-core: json-schema', () => {
   class Image extends Inline {
     get attrs() {
       return {

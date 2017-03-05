@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
-import Button from 'ak-button';
-import Group from 'ak-droplist-group';
-import Item from 'ak-droplist-item';
-
-import DropdownList from '../../src';
+import Button from '@atlaskit/button';
+import DropdownList, { Group, Item } from '@atlaskit/droplist';
 
 const DroplistOverview = class extends Component {
   constructor(props) {
@@ -27,7 +24,7 @@ const DroplistOverview = class extends Component {
       trigger={<Button isSelected={this.state.isDropdownOpen}>...</Button>}
     >
       <Group heading="Australia">
-        <Item href="http://atlassian.com" target="_blank">Sydney</Item>
+        <Item href="//atlassian.com" target="_blank">Sydney</Item>
         <Item isHidden>Hidden item</Item>
         <Item>Canberra</Item>
         <Item

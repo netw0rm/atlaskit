@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "profilecard component",
   "main": "dist/bundle.js",
@@ -15,12 +15,12 @@
     "dist"
   ],
   "dependencies": {
-    "ak-avatar": "^5.0.4",
-    "ak-spinner": "^1.0.0",
-    "ak-button": "^4.1.1",
-    "ak-icon": "^14.0.0",
-    "akutil-common": "^5.0.0",
-    "akutil-shared-styles": "^37.0.0",
+    "@atlaskit/avatar": "^1.0.0",
+    "@atlaskit/spinner": "^1.0.0",
+    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/icon": "^2.5.6",
+    "@atlaskit/util-common": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "es6-promise": "^4.0.5",
@@ -30,8 +30,7 @@
     "react": "^15.3.2"
   },
   "devDependencies": {
-    "akutil-common-test": "*",
-    "akutil-react": "*",
+    "@atlaskit/util-common-test": "*",
     "loader-utils": "^0.2.16",
     "uid": "^0.0.2",
     "lodash.sample": "^4.2.1"
@@ -41,7 +40,6 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "keywords": [
-    "atlaskit",
     "ui",
     "profilecard",
     "fabric"

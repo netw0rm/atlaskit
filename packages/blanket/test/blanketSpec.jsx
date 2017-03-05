@@ -30,6 +30,18 @@ describe('ak-blanket', () => {
       });
     });
 
+    describe('canClickThrough', () => {
+      it('should be false by default', () => {
+        shallow(<Blanket />).find('div').hasClass(styles.locals.canClickThrough).should.equal(false);
+      });
+      it('when canClickThrough is true, onBlanketClicked should not be triggered', () => {
+        const spy = sinon.spy();
+        const wrapper = mount(<Blanket canClickThrough onBlanketClicked={spy} />);
+        wrapper.find(`.${styles.locals.blanket}`).simulate('click');
+        expect(spy.callCount).to.equal(0);
+      });
+    });
+
     describe('onBlanketClicked', () => {
       it('should trigger when blanket clicked', () => {
         const spy = sinon.spy();

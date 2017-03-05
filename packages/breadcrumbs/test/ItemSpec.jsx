@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
-import Button from 'ak-button';
+import Button from '@atlaskit/button';
 import AtlassianIcon from 'ak-icon/glyph/atlassian';
 
 import Item from '../src/BreadcrumbsItem';

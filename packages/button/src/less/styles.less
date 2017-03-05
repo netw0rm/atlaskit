@@ -1,5 +1,5 @@
-@import '~akutil-shared-styles/src/colors.less';
-@import '~akutil-shared-styles/src/borders.less';
+@import '~@atlaskit/util-shared-styles/src/colors.less';
+@import '~@atlaskit/util-shared-styles/src/borders.less';
 @import 'theme-default.less';
 @import 'theme-dark.less';
 @import 'button-mixin.less';
@@ -46,7 +46,7 @@
   // This rule aims to remove any margin when there is only 1 icon inside the Button.
   // To achieve that, we check if the first child and the last child are the same.
   &:first-child:nth-last-child(1) {
-    margin:0;
+    margin: 0 unit(-(@grid/4), px);
   }
 
   & + .buttonContent {

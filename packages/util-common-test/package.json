@@ -1,10 +1,10 @@
 {
   "name": "@atlaskit/util-common-test",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
-  "description": "Shared tests used by AtlasKit components",
+  "description": "Shared test helpers used by AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
@@ -36,6 +36,7 @@
   },
   "keywords": [
     "atlaskit",
-    "ui"
+    "ui",
+    "internal"
   ]
 }

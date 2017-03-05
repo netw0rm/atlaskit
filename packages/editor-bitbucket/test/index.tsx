@@ -3,17 +3,17 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { SinonSpy } from 'sinon';
-import { doc, h1, mention, p, strong } from './_schema-builder';
+import { doc, h1, mention, p, strong, code_block } from './_schema-builder';
 
-import { ProseMirror } from 'ak-editor-core';
-import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from 'ak-editor-core/test-helper';
+import { ProseMirror } from '@atlaskit/editor-core';
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from '@atlaskit/editor-core/src/test-helper';
 import Editor from '../src/index';
 
 chai.use(chaiPlugin);
 
 const expect = chai.expect;
 
-describe('ak-editor-bitbucket/expand and collapse', () => {
+describe('@atlaskit/editor-bitbucket/expand and collapse', () => {
   it('should not render expanded chrome when collapsed by default', () => {
     expect(mount(<Editor />).find('ChromeCollapsed')).to.have.length.above(0);
     expect(mount(<Editor />).find('input[placeholder]')).to.have.length.above(0);
@@ -73,7 +73,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
   });
 });
 
-describe('ak-editor-bitbucket/setFromHtml', () => {
+describe('@atlaskit/editor-bitbucket/setFromHtml', () => {
   let editor: Editor;
 
   beforeEach(() => {
@@ -97,7 +97,7 @@ describe('ak-editor-bitbucket/setFromHtml', () => {
   });
 });
 
-describe('ak-editor-bitbucket/imageUploadHandler', () => {
+describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
   let editor: ReactWrapper<any, any>;
   let spy: SinonSpy;
 
@@ -131,7 +131,8 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
         }
       });
     } catch (e) {
-      return this.skip('This environment does not allow mocking paste events - ' + e);
+      // This environment does not allow mocking paste events
+      return this.skip();
     }
 
     contentArea.dispatchEvent(event);
@@ -168,7 +169,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
   });
 });
 
-describe('ak-editor-bitbucket/multiple editors as children', () => {
+describe('@atlaskit/editor-bitbucket/multiple editors as children', () => {
   const fixture = fixtures();
   type Props = {};
   type State = {};
@@ -210,7 +211,7 @@ describe('ak-editor-bitbucket/multiple editors as children', () => {
   });
 });
 
-describe('ak-editor-bitbucket/toolbar', () => {
+describe('@atlaskit/editor-bitbucket/toolbar', () => {
   let editor: ReactWrapper<any, any>;
 
   beforeEach(() => {
@@ -231,7 +232,7 @@ describe('ak-editor-bitbucket/toolbar', () => {
   });
 });
 
-describe('ak-editor-bitbucket/pasting', () => {
+describe('@atlaskit/editor-bitbucket/pasting', () => {
   const fixture = fixtures();
   let editor: Editor;
   let pm: ProseMirror;
@@ -247,7 +248,8 @@ describe('ak-editor-bitbucket/pasting', () => {
     };
 
     if (!dispatchPasteEvent(pm, content)) {
-      return this.skip('This environment does not support artificial paste events');
+      // This environment does not allow mocking paste events
+      return this.skip();
     }
 
     expect(editor.doc).to.deep.equal(doc(p('Nice! :+1:')));
@@ -259,9 +261,33 @@ describe('ak-editor-bitbucket/pasting', () => {
     };
 
     if (!dispatchPasteEvent(pm, content)) {
-      return this.skip('This environment does not support artificial paste events');
+      // This environment does not allow mocking paste events
+      return this.skip();
     }
 
     expect(editor.doc).to.deep.equal(doc(p(mention({ id: 'mention', displayName: '@Mention' }), ' some mention.')));
+  });
+});
+
+describe('@atlaskit/editor-bitbucket/keymaps', () => {
+  const fixture = fixtures();
+  let editor: Editor;
+  let pm: ProseMirror;
+
+  beforeEach(() => {
+    editor = mount(<Editor isExpandedByDefault />, { attachTo: fixture() }).get(0) as any;
+    pm = editor!.state!.pm as ProseMirror;
+  });
+
+  it('should undo code block with Cmd+Z', function() {
+    editor.setFromHtml('<p></p>');
+    pm.input.insertText(1, 1, '```');
+    pm.input.dispatchKey('Enter');
+
+    expect(pm.doc).to.deep.equal(doc(code_block()('')));
+
+    pm.input.dispatchKey('Cmd-Z');
+
+    expect(pm.doc).to.deep.equal(doc(p()));
   });
 });

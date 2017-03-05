@@ -20,7 +20,7 @@ into product integrations. Transport is left as the responsibility for the produ
 **Source location:** `src/plugins/`
 **Import:** `import { … } from '@NAME@'`
 
-Plugins (and "plugin states") are the mechanisms by which functionality is added to the editor. 
+Plugins (and "plugin states") are the mechanisms by which functionality is added to the editor.
 
 **Plugin principles:**
 
@@ -90,9 +90,9 @@ types are responsible for:
 
 Some complex node and mark types (to use as examples):
 
-- [`MentionQueryMarkType`](https://bitbucket.org/atlassian/atlaskit/src/master/packages/ak-editor-core/src/schema/marks/mention-query.ts) -- used to indicate a new editing context where typed characters perform a
+- [`MentionQueryMarkType`](https://bitbucket.org/atlassian/atlaskit/src/master/packages/editor-core/src/schema/marks/mention-query.ts) -- used to indicate a new editing context where typed characters perform a
   user-search, and arrow keys and enter are used to navigate a user-picker.
-- [`MentionNodeType`](https://bitbucket.org/atlassian/atlaskit/src/master/packages/ak-editor-core/src/schema/nodes/mention.ts) -- an immutable node that represents a user.
+- [`MentionNodeType`](https://bitbucket.org/atlassian/atlaskit/src/master/packages/editor-core/src/schema/nodes/mention.ts) -- an immutable node that represents a user.
 
 ### UI
 
@@ -108,7 +108,7 @@ example:
   buttons, surrounding borders, etc.
 - `src/ui/Chrome` -- An encapsulation of `ChromeCollapsed` and `ChromeExpanded`, providing "click to
   expand" behaviour.
-- `src/ui/Panel` -- A floating popup that can be used as the base for a floating toolbar (e.g.
+- `src/ui/FloatingToolbar` -- A floating popup that can be used as the base for a floating toolbar (e.g.
   `HyperlinkEdit`).
 - `src/ui/Toolbar*` -- A collection of button-groups that are suitable for placing in the fixed
   toolbar.
@@ -130,8 +130,8 @@ as they can enable tree shaking with webpack 2.
 
 ### Test helpers
 
-**Source location:** `src/ui/`  
-**Import:** `import { … } from '@NAME@/test-helper'`
+**Source location:** `src/test-helper/`  
+**Import:** `import { … } from '@NAME@/src/test-helper'`
 
 A set of testing utilities are provided that making testing the editor easier, these include:
 
@@ -167,10 +167,10 @@ If you're using webpack, adjust your [`resolve.packageMains`](https://webpack.gi
 
 Unless you're developing a new editor for a product, you've probably arrived at the wrong package. Consider using:
 
-- [ak-editor-bitbucket](https://npmjs.com/package/ak-editor-bitbucket)
-- [ak-editor-cq](https://npmjs.com/package/ak-editor-cq)
-- [ak-editor-hipchat](https://npmjs.com/package/ak-editor-hipchat)
-- [ak-editor-jira](https://npmjs.com/package/ak-editor-jira)
+- [editor-bitbucket](https://npmjs.com/package/@atlaskit/editor-bitbucket)
+- [editor-cq](https://npmjs.com/package/@atlaskit/editor-cq)
+- [editor-hipchat](https://npmjs.com/package/@atlaskit/editor-hipchat)
+- [editor-jira](https://npmjs.com/package/@atlaskit/editor-jira)
 
 If you're sure you want to consume this package, refer to one of the packages above for an example
 of how to use it.

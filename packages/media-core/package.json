@@ -1,0 +1,42 @@
+{
+  "name": "@atlaskit/media-core",
+  "version": "1.2.0",
+  "config": {
+    "access": "public"
+  },
+  "description": "TypeScript component template",
+  "main": "dist/es5/index.js",
+  "jsnext:main": "dist/es2015/index.js",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
+    "build": "npm run build/es5 && npm run build/es2015",
+    "build/es5": "../../node_modules/.bin/tsc -p build/es5",
+    "build/es2015": "../../node_modules/.bin/tsc -p build/es2015"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "author": "Atlassian Pty. Ltd",
+  "license": "Apache-2.0",
+  "keywords": [
+    "media",
+    "ui"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  },
+  "peerDependencies": {
+    "react": "^15.3.2",
+    "rxjs": "^5.1.0"
+  },
+  "dependencies": {
+    "tslib": "^1.2.0",
+    "lru-fast": "^0.2.2"
+  },
+  "devDependencies": {
+    "axios": "^0.15.3"
+  }
+}

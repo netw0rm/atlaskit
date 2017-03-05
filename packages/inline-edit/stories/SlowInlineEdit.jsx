@@ -1,6 +1,6 @@
 import { action } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
-import SingleLineTextInput from 'ak-input';
+import SingleLineTextInput from '@atlaskit/input';
 import { InlineEdit } from '../src';
 
 /* eslint-disable react/prop-types */
@@ -17,10 +17,10 @@ export default class extends PureComponent {
   }
 
   onConfirm = () => {
-    action('onConfirm slow')();
     this.setState({ isWaiting: true, isEditing: true });
     setTimeout(() => {
       this.setState({ isWaiting: false, isEditing: false });
+      action('onConfirm slow')();
     }, 3000);
   }
 

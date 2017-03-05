@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import Lorem from 'react-lorem-component';
-import { ArrowleftIcon, ArrowrightIcon } from 'ak-icon';
+import { ArrowleftIcon, ArrowrightIcon } from '@atlaskit/icon';
 import { AkContainerNavigationNested, AkContainerItem } from '../../../src/index';
 
 const pageStyle = {

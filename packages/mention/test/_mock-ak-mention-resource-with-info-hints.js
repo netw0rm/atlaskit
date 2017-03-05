@@ -1,7 +1,7 @@
 import { Search } from 'js-search';
 
 import debug from '../src/util/logger';
-import { AbstractMentionResource } from '../src/api/ak-mention-resource';
+import { AbstractMentionResource } from '../src/api/MentionResource';
 import mentionData from './_mention-data';
 
 const search = new Search('id');

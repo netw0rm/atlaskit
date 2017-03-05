@@ -7,24 +7,38 @@ export { FieldBase, Label };
 export default class extends PureComponent {
   static propTypes = {
     isFocused: PropTypes.bool,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
   }
 
   static defaultProps = {
     isFocused: false,
+    onFocus: () => {},
+    onBlur: () => {},
   }
 
   state = {
     isFocused: this.props.isFocused,
   }
 
-  onFocus = () => this.setState({ isFocused: true })
-  onBlur = () => this.setState({ isFocused: false })
+  onFocus = (e) => {
+    this.setState({ isFocused: true });
+    this.props.onFocus(e);
+  }
 
-  render = () =>
-    <FieldBase
-      {...this.props}
-      isFocused={this.state.isFocused}
-      onFocus={this.onFocus}
-      onBlur={this.onBlur}
-    />
+  onBlur = (e) => {
+    this.setState({ isFocused: false });
+    this.props.onBlur(e);
+  }
+
+  render() {
+    return (
+      <FieldBase
+        {...this.props}
+        isFocused={this.state.isFocused}
+        onBlur={this.onBlur}
+        onFocus={this.onFocus}
+      />
+    );
+  }
 }

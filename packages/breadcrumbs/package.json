@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/breadcrumbs",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "A React component that allows users to know their location",
   "main": "dist/bundle.js",
@@ -15,9 +15,9 @@
     "dist"
   ],
   "dependencies": {
-    "ak-button": "^5.1.2",
-    "ak-tooltip": "^6.0.3",
-    "akutil-shared-styles": "^37.0.0",
+    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/tooltip": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
   },

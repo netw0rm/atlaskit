@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import { MentionNodeType, MentionQueryMarkType, MentionsPlugin,
           ProseMirror, Schema, schema as schemaBasic } from '../../../src';
-import { chaiPlugin } from '../../../test-helper';
+import { chaiPlugin } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
@@ -32,6 +32,14 @@ describe('mentions - input rules', () => {
   it('should not replace a "@" thats part of a word', () => {
     const pm = makeEditor();
     pm.input.insertText(0, 0, 'foo@');
+
+    const cursorFocus = pm.selection.$to;
+    expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.equal(undefined);
+  });
+
+  it('should not replace a "@" after the "`"', () => {
+    const pm = makeEditor();
+    pm.input.insertText(0, 0, '`@');
 
     const cursorFocus = pm.selection.$to;
     expect(pm.schema.marks['mention_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.equal(undefined);

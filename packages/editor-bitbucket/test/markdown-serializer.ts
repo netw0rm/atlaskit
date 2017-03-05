@@ -64,9 +64,39 @@ describe('Bitbucket markdown serializer: ', () => {
   });
 
   it('should serialize mentions', () => {
-    const baban = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
-    const test1 = markdownSerializer.serialize(baban);
-    expect(test1).to.eq('@oscar');
+    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
+    const test = markdownSerializer.serialize(node);
+    expect(test).to.eq('@oscar');
+  });
+
+  it('should divide serialized mentions and text with one blank space', () => {
+    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), 'text'));
+    const test = markdownSerializer.serialize(node);
+    expect(test).to.eq('@oscar text');
+  });
+
+  it('should not add a blank space in the end of the string for mentions', () => {
+    const node = doc(p('text ', mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
+    const test = markdownSerializer.serialize(node);
+    expect(test).to.eq('text @oscar');
+  });
+
+  it('should not divide mention and text with additional space if text starts with the space', () => {
+    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), ' text'));
+    const test = markdownSerializer.serialize(node);
+    expect(test).to.eq('@oscar text');
+  });
+
+  it('should divide mention and text with only one additional space if text starts with the spaces', () => {
+    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), '  text'));
+    const test = markdownSerializer.serialize(node);
+    expect(test).to.eq('@oscar  text');
+  });
+
+  it('should not divide mention and italic text node with additional space if text starts with the space', () => {
+    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), em(' text')));
+    const test = markdownSerializer.serialize(node);
+    expect(test).to.eq('@oscar *text*');
   });
 
   describe('code block', () => {
@@ -191,7 +221,7 @@ describe('Bitbucket markdown serializer: ', () => {
             pre('code\nblock'),
           )
         )
-      ))).to.eq('* item\n\n      code\n      block');
+      ))).to.eq('* item\n\n        code\n        block');
     });
 
     it('with one empty element is preserved', () => {
@@ -220,10 +250,10 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '* foo 1\n' +
-        '  * bar 1\n' +
-        '    * baz 1\n' +
-        '    * baz 2\n' +
-        '  * bar 2\n' +
+        '    * bar 1\n' +
+        '        * baz 1\n' +
+        '        * baz 2\n' +
+        '    * bar 2\n' +
         '* foo 2'
       );
     });
@@ -272,7 +302,7 @@ describe('Bitbucket markdown serializer: ', () => {
             pre('code\nblock'),
           )
         )
-      ))).to.eq('1. item\n\n       code\n       block');
+      ))).to.eq('1. item\n\n        code\n        block');
     });
 
     it('with one empty element is preserved', () => {
@@ -301,10 +331,10 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '1. foo 1\n' +
-        '   1. bar 1\n' +
-        '      1. baz 1\n' +
-        '      2. baz 2\n' +
-        '   2. bar 2\n' +
+        '    1. bar 1\n' +
+        '        1. baz 1\n' +
+        '        2. baz 2\n' +
+        '    2. bar 2\n' +
         '2. foo 2'
       );
     });
@@ -338,11 +368,11 @@ describe('Bitbucket markdown serializer: ', () => {
         )
       ))).to.eq(
         '1. foo 1\n' +
-        '   * bar 1\n' +
-        '     1. baz 1\n' +
-        '     2. baz 2\n' +
-        '        * banana\n' +
-        '   * bar 2\n' +
+        '    * bar 1\n' +
+        '        1. baz 1\n' +
+        '        2. baz 2\n' +
+        '            * banana\n' +
+        '    * bar 2\n' +
         '2. foo 2'
       );
     });
@@ -733,6 +763,14 @@ describe('Bitbucket markdown serializer: ', () => {
           expect(markdownSerializer.serialize(doc(p(
             mono('__bar_baz__'),
           )))).to.eq('`__bar_baz__`');
+        });
+      });
+
+      describe('tilde ~', () => {
+        it('should not escape tilde ~', () => {
+          expect(markdownSerializer.serialize(doc(p(
+            '~',
+          )))).to.eq('~');
         });
       });
     });

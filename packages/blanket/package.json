@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/blanket",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "A React component that covers the underlying UI for a layered component.",
   "main": "dist/bundle.js",
@@ -15,13 +15,13 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^37.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
   },
   "devDependencies": {
-    "ak-blanket": "*",
-    "akutil-readme": "^1.1.0"
+    "@atlaskit/blanket": "*",
+    "@atlaskit/util-readme": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

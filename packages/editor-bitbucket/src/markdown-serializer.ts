@@ -4,8 +4,13 @@ import {
   MarkdownSerializer as PMMarkdownSerializer,
   MarkdownSerializerState as PMMarkdownSerializerState,
   Node
-} from 'ak-editor-core';
+} from '@atlaskit/editor-core';
 import stringRepeat from './util/string-repeat';
+
+interface NodeRendererOption {
+  readonly isLastNode: boolean;
+  readonly trimTrailingWhitespace: boolean;
+};
 
 /**
  * This function escapes all plain-text sequences that might get converted into markdown
@@ -13,7 +18,7 @@ import stringRepeat from './util/string-repeat';
  * @see MarkdownSerializerState.esc()
  */
 function escapeMarkdown(str: string, startOfLine?: boolean): string {
-  str = str.replace(/[`*\\~+\[\]_]/g, '\\$&');
+  str = str.replace(/[`*\\+\[\]_]/g, '\\$&');
   if (startOfLine) {
     str = str.replace(/^[#-*]/, '\\$&').replace(/^(\d+)\./, '$1\\.');
   }
@@ -40,10 +45,10 @@ const generateOuterBacktickChain: (text: string, minLength?: number) => string =
 })();
 
 const nodes = {
-  blockquote(state: MarkdownSerializerState, node: Node) {
+  blockquote(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     state.wrapBlock('> ', null, node, () => state.renderContent(node));
   },
-  code_block(state: MarkdownSerializerState, node: Node) {
+  code_block(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     if (!node.attrs['language']) {
       state.wrapBlock('    ', null, node, () => state.text(node.textContent ? node.textContent : '\u200c', false));
     } else {
@@ -55,37 +60,45 @@ const nodes = {
       state.closeBlock(node);
     }
   },
-  heading(state: MarkdownSerializerState, node: Node) {
+  heading(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
+    const isLastNode = opts && opts.isLastNode;
+
     state.write(state.repeat('#', node.attrs['level']) + ' ');
-    state.renderInline(node);
+    state.renderInline(node, isLastNode);
     state.closeBlock(node);
   },
-  horizontal_rule(state: MarkdownSerializerState, node: Node) {
+  horizontal_rule(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     state.write(node.attrs['markup'] || '---');
     state.closeBlock(node);
   },
-  bullet_list(state: MarkdownSerializerState, node: Node) {
+  bullet_list(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     node.attrs['tight'] = true;
-    state.renderList(node, '  ', () => (node.attrs['bullet'] || '*') + ' ');
+    state.renderList(node, '    ', () => (node.attrs['bullet'] || '*') + ' ');
   },
-  ordered_list(state: MarkdownSerializerState, node: Node) {
+  ordered_list(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     node.attrs['tight'] = true;
     const start = node.attrs['order'] || 1;
     const maxW = String(start + node.childCount - 1).length;
-    const space = state.repeat(' ', maxW + 2);
+    // The reason that this is 3 is because maxW is always max list number's length.
+    // For example, if max list number is 8, then the space for the next list item should be '8'.length + 3, which is 4 spaces.
+    // It is consistent with bullet list that has 4 spaces in front of list item.
+    // If the max nubmer is 10, then the space for the next list item should be '10'.length + 3, which is 5 spaces.
+    // So that they are well aligned.
+    const space = state.repeat(' ', maxW + 3);
     state.renderList(node, space, (i: number) => {
       const nStr = String(start + i);
       return state.repeat(' ', maxW - nStr.length) + nStr + '. ';
     });
   },
-  list_item(state: MarkdownSerializerState, node: Node) {
+  list_item(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     state.renderContent(node);
   },
-  paragraph(state: MarkdownSerializerState, node: Node) {
-    state.renderInline(node);
+  paragraph(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
+    const isLastNode = opts && opts.isLastNode;
+    state.renderInline(node, isLastNode);
     state.closeBlock(node);
   },
-  image(state: MarkdownSerializerState, node: Node) {
+  image(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     // Note: the 'title' is not escaped in this flavor of markdown.
     state.write('![' + state.esc(node.attrs['alt'] || '') + '](' + state.esc(node.attrs['src']) +
                 (node.attrs['title'] ? ` '${node.attrs['title']}'` : '') + ')');
@@ -93,8 +106,12 @@ const nodes = {
   hard_break(state: any) {
     state.write('  \n');
   },
-  text(state: MarkdownSerializerState, node: any) {
-    const lines = node.text.split('\n');
+  text(state: MarkdownSerializerState, node: any, opts?: NodeRendererOption) {
+    const text = (opts && opts.trimTrailingWhitespace)
+      ? node.text.replace(' ', '') // only first blank space occurrence is replaced
+      : node.text;
+
+    const lines = text.split('\n');
     for (let i = 0; i < lines.length; i++) {
       const startOfLine = state.atBlank() || !!state.closed;
       state.write();
@@ -104,12 +121,15 @@ const nodes = {
       }
     }
   },
-  empty_line(state: MarkdownSerializerState, node: Node) {
+  empty_line(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     state.write('\u200c'); // zero-width-non-joiner
     state.closeBlock(node);
   },
-  mention(state: MarkdownSerializerState, node: Node) {
-    state.write(`@${node.attrs['id']}`);
+  mention(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
+    const isLastNode = opts && opts.isLastNode;
+    const delimiter = isLastNode ? '' : ' ';
+
+    state.write(`@${node.attrs['id']}${delimiter}`);
   }
 };
 
@@ -139,8 +159,14 @@ export class MarkdownSerializer extends PMMarkdownSerializer {
 
 export class MarkdownSerializerState extends PMMarkdownSerializerState {
 
+  /**
+   * If mention was followed with blank whitespace check the next node.
+   * If it starts with a blank space, trim this blank whitespace from the left
+   */
+  markNextNodeForTrim: boolean;
+
   renderContent(parent: Node): void {
-    parent.forEach((child: Node) => {
+    parent.forEach((child: Node, offset: number, index: number) => {
       if (
         // If child is an empty Textblock we need to insert a zwnj-character in order to preserve that line in markdown
         (child.isTextblock && !child.textContent) &&
@@ -150,7 +176,9 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
       ) {
         return nodes.empty_line(this, child);
       }
-      return this.render(child);
+
+      const isLastNode = (index + 1 === parent.childCount);
+      return this.render(child, isLastNode);
     });
   }
 
@@ -162,10 +190,10 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
    * @see node_modules/prosemirror/src/markdown/to_markdown.js
    * @see MarkdownSerializerState.renderInline()
    */
-  renderInline(parent: Node): void {
+  renderInline(parent: Node, isLastNode?: boolean): void {
     const active: Mark[] = [];
 
-    const progress = (node: Node | null) => {
+    const progress = (node: Node | null, isLastChildNode?: boolean) => {
       let marks = node ? node.marks : [];
       const code = marks.length && marks[marks.length - 1].type.isCode && marks[marks.length - 1];
       const len = marks.length - (code ? 1 : 0);
@@ -215,7 +243,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
 
       if (node) {
         if (!code || !node.isText) {
-          this.render(node);
+          this.render(node, isLastNode && isLastChildNode);
         } else if (node.text) {
           // Generate valid monospace, fenced with series of backticks longer that backtick series inside it.
           let text = node.text;
@@ -235,8 +263,29 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
       }
     };
 
-    parent.forEach(progress);
+    parent.forEach((child: Node, offset: number, index: number) => {
+      const isLastChildNode = (index + 1 === parent.childCount);
+      progress(child, isLastChildNode);
+    });
+
     progress(null);
+  }
+
+  /**
+   * Render the given node as a block.
+   * Overrides prosemirror native behaviour
+   */
+  render(node: Node, isLastNode?: boolean) {
+    const trimTrailingWhitespace = (
+      this.markNextNodeForTrim &&
+      node.isText &&
+      (node.text && node.text.indexOf(' ') === 0)
+    );
+
+    // if current node is mention and it's not the last child mark it for next node processing
+    this.markNextNodeForTrim = (node.type.name === 'mention' && !isLastNode);
+
+    nodes[node.type.name](this, node, { isLastNode, trimTrailingWhitespace });
   }
 }
 

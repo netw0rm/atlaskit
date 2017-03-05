@@ -1,10 +1,9 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Lorem from 'react-lorem-component';
-import { SearchIcon, HelpIcon, CreateIcon, DashboardIcon, SettingsIcon, ProjectsIcon, EmojiCustomIcon } from 'ak-icon';
-import AkButton from 'ak-button';
+import { SearchIcon, AddIcon, DashboardIcon, SettingsIcon, IssuesIcon, EmojiCustomIcon } from '@atlaskit/icon';
+import AkButton from '@atlaskit/button';
 import { name } from '../package.json';
-import Page from './components/Page';
+import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import { AkContainerItem, AkContainerItemGroup } from '../src/index';
 
@@ -13,7 +12,6 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation>
         <AkContainerItem
-          href="#1"
           icon={<SearchIcon label="Search" />}
           isCompact
           text="Search"
@@ -29,20 +27,16 @@ storiesOf(name, module)
           title="Rooms"
         >
           <AkContainerItem
-            href="#1"
-            icon={<HelpIcon label="Help" />}
+            icon={<IssuesIcon label="Issues" />}
             isCompact
-            text="Help"
+            text="Issues"
           />
-
           <AkContainerItem
-            href="#2"
-            icon={<CreateIcon label="Create" />}
+            icon={<AddIcon label="Create" />}
             isCompact
             text="Create"
           />
           <AkContainerItem
-            href="#3"
             icon={<DashboardIcon label="Dashboard" />}
             isCompact
             text="Nucleus"
@@ -50,21 +44,16 @@ storiesOf(name, module)
         </AkContainerItemGroup>
         <AkContainerItemGroup title="People">
           <AkContainerItem
-            href="#4"
             icon={<SettingsIcon label="Settings" />}
             isCompact
             text="Settings"
           />
           <AkContainerItem
-            href="#5"
-            icon={<ProjectsIcon label="Projects" />}
+            icon={<IssuesIcon label="Issues" />}
             isCompact
-            text="Projects"
+            text="Issues"
           />
         </AkContainerItemGroup>
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ));

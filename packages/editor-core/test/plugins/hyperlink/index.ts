@@ -2,8 +2,8 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
-import { chaiPlugin, insert, makeEditor } from '../../../test-helper';
-import { doc, link, linkable, schema, unlinkable } from '../../_schema-builder';
+import { chaiPlugin, insert, makeEditor } from '../../../src/test-helper';
+import { doc, paragraph, link, linkable, schema, unlinkable } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
 
@@ -261,16 +261,16 @@ describe('hyperlink', () => {
       expect(spy.callCount).to.equal(2);
     });
 
-    it('sets canAddLink to false when in a context where links are not supported by the schema', () => {
+    it('sets linkable to false when in a context where links are not supported by the schema', () => {
       const { plugin } = editor(doc(unlinkable('{<}text{>}')));
 
-      expect(plugin.canAddLink).to.equal(false);
+      expect(plugin.linkable).to.equal(false);
     });
 
-    it('sets canAddLink to false when link is already in place', () => {
+    it('sets active to true when link is already in place', () => {
       const { plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
 
-      expect(plugin.canAddLink).to.equal(false);
+      expect(plugin.active).to.equal(true);
     });
 
     it('does not emit `change` multiple times when the selection moves within a link', () => {
@@ -367,7 +367,7 @@ describe('hyperlink', () => {
     it('should allow links to be added when the selection is empty', () => {
       const { plugin } = editor(doc(linkable('{<>}text')));
 
-      expect(plugin.canAddLink).to.equal(true);
+      expect(plugin.linkable).to.equal(true);
     });
 
     it('should not be able to unlink a node that has no link', () => {
@@ -408,6 +408,93 @@ describe('hyperlink', () => {
       plugin.updateLink({ href: 'http://example.com/foo' });
 
       expect(pm.doc).to.deep.equal(doc(linkable('text')));
+    });
+
+    it('should escape from link mark when typing at the beginning of the link', () => {
+      const { pm } = editor(doc(linkable(link({ href: 'http://example.com' })('text'))));
+
+      pm.input.insertText(1, 1, '1');
+
+      expect(pm.doc).to.deep.equal(doc(linkable('1', link({ href: 'http://example.com' })('text'))));
+    });
+
+    it('should not escape from link mark when typing at the middle of the link', () => {
+      const { pm } = editor(doc(linkable(link({ href: 'http://example.com' })('text'))));
+
+      pm.input.insertText(2, 2, '1');
+
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('t1ext'))));
+    });
+
+    it('should not escape from link mark when deliting second character', () => {
+      const { pm } = editor(doc(linkable(link({ href: 'http://example.com' })('t{<>}ext'))));
+
+      pm.input.dispatchKey('Delete');
+
+      expect(pm.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('txt'))));
+    });
+
+    it('should call subscribers when link was focused and then editor is blur', () => {
+      const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      expect(spy.callCount).to.equal(2);
+    });
+
+    it('should not call subscribers if link was not focused when editor is blur', () => {
+      const { pm, plugin } = editor(doc(paragraph('te{<>}st'), linkable(link({ href: 'http://www.atlassian.com' })('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      expect(spy.callCount).to.equal(1);
+    });
+
+    it('should not call subscribers if editor is focused but link is not focused', () => {
+      const { pm, plugin } = editor(doc(paragraph('te{<>}st'), linkable(link({ href: 'http://www.atlassian.com' })('text'))));
+      const spy = sinon.spy();
+      plugin.subscribe(spy);
+      pm.on.blur.dispatch();
+      pm.on.focus.dispatch();
+      expect(spy.callCount).to.equal(1);
+    });
+
+    it('should return referring DOM element', () => {
+      const { plugin } = editor(doc(
+        linkable(link({ href: 'http://www.atlassian.com' })('atlassian')),
+        linkable(link({ href: 'http://www.stypositive.ru' })('d{<>}sorin'))));
+
+      expect(plugin.element.text).to.eq('dsorin');
+    });
+  });
+
+  describe('toolbarVisible', () => {
+    context('when editor is blur', () => {
+      it('it is false', () => {
+        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+        pm.on.focus.dispatch();
+        pm.on.blur.dispatch();
+        expect(plugin.toolbarVisible).to.not.be.true;
+      });
+    });
+  });
+
+  describe('editorFocued', () => {
+    context('when editor is focused', () => {
+      it('it is true', () => {
+        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+        pm.on.blur.dispatch();
+        pm.on.focus.dispatch();
+        expect(plugin.editorFocused).to.be.true;
+      });
+    });
+
+    context('when editor is blur', () => {
+      it('it is false', () => {
+        const { pm, plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+        pm.on.blur.dispatch();
+        expect(plugin.editorFocused).not.to.be.true;
+      });
     });
   });
 });

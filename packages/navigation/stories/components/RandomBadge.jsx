@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import AkBadge from 'ak-badge';
+import AkBadge from '@atlaskit/badge';
 
 export default class RandomBadge extends PureComponent {
   static propTypes = {

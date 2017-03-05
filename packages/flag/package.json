@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/flag",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "Flags are used for confirmations, alerts, and acknowledgments that require minimal user interaction",
   "main": "dist/bundle.js",
@@ -15,18 +15,19 @@
     "dist"
   ],
   "dependencies": {
-    "ak-button": "^5.1.12",
-    "ak-icon": "^12.2.0",
-    "akutil-shared-styles": "^37.2.0",
+    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/icon": "^2.5.0",
+    "@atlaskit/modal-dialog": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-flag": "*",
-    "ak-navigation": "^16.1.0",
-    "akutil-readme": "^1.2.0"
+    "@atlaskit/flag": "*",
+    "@atlaskit/navigation": "^1.0.0",
+    "@atlaskit/util-readme": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

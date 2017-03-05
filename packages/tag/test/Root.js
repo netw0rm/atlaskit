@@ -5,6 +5,7 @@ import { vdom } from 'skatejs';
 import { createTemporary, removeTemporary, getRootNode } from './_helpers';
 import Root from '../src/Root';
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('ak-tag', () => {
   describe('Root', () => {
     let component;

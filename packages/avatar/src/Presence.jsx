@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { akColorPrimary3 } from 'akutil-shared-styles';
+import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
 import presences from './internal/icons';
 import values from './internal/presences';
 import styles from './styles.less';

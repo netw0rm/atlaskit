@@ -1,11 +1,10 @@
 import { storiesOf } from '@kadira/storybook';
 import React, { PropTypes } from 'react';
-import Lorem from 'react-lorem-component';
-import { EmojiCustomIcon, DashboardIcon, CancelIcon } from 'ak-icon';
-import AkAvatar from 'ak-avatar';
-import AkButton from 'ak-button';
+import { EmojiCustomIcon, DashboardIcon, CrossIcon } from '@atlaskit/icon';
+import AkAvatar from '@atlaskit/avatar';
+import AkButton from '@atlaskit/button';
 import { name } from '../package.json';
-import Page from './components/Page';
+import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import { AkContainerItem, AkContainerItemGroup } from '../src/index';
 import RandomBadge from './components/RandomBadge';
@@ -18,11 +17,12 @@ const RandomAvatar = props => <AkAvatar
 
 const CompactItem = ({ children }) => (
   <AkContainerItem
-    action={<CancelIcon />}
+    action={<CrossIcon />}
     icon={<RandomAvatar />}
     isCompact
     text={children}
     textAfter={<RandomBadge />}
+    subText={Math.random() > 0.5 && 'This is some really long sub text'}
   />
 );
 
@@ -33,15 +33,13 @@ CompactItem.propTypes = {
 storiesOf(name, module)
   .add('with compact items', () => (
     <Page>
-      <BasicNavigation containerHeader={null}>
+      <BasicNavigation containerHeaderComponent={null}>
         <AkContainerItem
-          href="#1"
           icon={<RandomAvatar presence="online" />}
           isCompact
           text="Available"
         />
         <AkContainerItem
-          href="#2"
           icon={<DashboardIcon label="Lobby" />}
           isCompact
           text="Lobby"
@@ -60,13 +58,15 @@ storiesOf(name, module)
           <CompactItem href="#2">Parents anonymous</CompactItem>
           <CompactItem href="#3">Gone fishing</CompactItem>
         </AkContainerItemGroup>
+        <AkContainerItemGroup title="Rooms">
+          <CompactItem>Front deskers</CompactItem>
+          <CompactItem>Parents anonymous</CompactItem>
+          <CompactItem>Gone fishing</CompactItem>
+        </AkContainerItemGroup>
         <AkContainerItemGroup title="People">
-          <CompactItem href="#4">John Lennon</CompactItem>
-          <CompactItem href="#5">George Harrison</CompactItem>
+          <CompactItem>John Lennon</CompactItem>
+          <CompactItem>George Harrison</CompactItem>
         </AkContainerItemGroup>
       </BasicNavigation>
-      <div>
-        <Lorem count="30" />
-      </div>
     </Page>
   ));

@@ -15,10 +15,50 @@ import {
   SubSupMarkType,
   Text,
   UnderlineMarkType
-} from 'ak-editor-core';
+} from '@atlaskit/editor-core';
 
-export default new Schema({
-  nodes: {
+export interface BaseSchemaNodes {
+  doc: DocNodeType;
+  paragraph: ParagraphNodeType;
+  heading: HeadingNodeType;
+  text: Text;
+  hard_break: HardBreakNodeType;
+  horizontal_rule: HorizontalRuleNodeType;
+}
+
+export interface ListsSchemaNodes {
+  ordered_list: OrderedListNodeType;
+  bullet_list: BulletListNodeType;
+  list_item: ListItemNodeType;
+}
+
+export interface BaseSchemaMarks {
+  strong: StrongMarkType;
+  em: EmMarkType;
+  strike: StrikeMarkType;
+  subsup: SubSupMarkType;
+  u: UnderlineMarkType;
+  mono: MonoMarkType;
+}
+
+export interface JIRASchema extends Schema {
+  nodes: BaseSchemaNodes;
+  marks: BaseSchemaMarks;
+}
+
+export interface JIRASchemaWithLists extends Schema {
+  nodes: BaseSchemaNodes & ListsSchemaNodes;
+  marks: BaseSchemaMarks;
+}
+
+export type SupportedSchema = JIRASchema | JIRASchemaWithLists;
+
+export function isSchemaWithLists(schema: SupportedSchema): schema is JIRASchemaWithLists {
+  return !!schema.nodes['bullet_list'];
+}
+
+export function makeSchema(allowLists: boolean): SupportedSchema {
+  const nodes = {
     doc: { type: DocNodeType, content: 'block+' },
     paragraph: { type: ParagraphNodeType, content: 'inline<_>*', group: 'block' },
     ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
@@ -28,38 +68,22 @@ export default new Schema({
     text: { type: Text, group: 'inline' },
     hard_break: { type: HardBreakNodeType, group: 'inline' },
     horizontal_rule: { type: HorizontalRuleNodeType, group: 'block' },
-  },
+  };
 
-  // Note: Marks are applied in the order they are defined.
-  marks: {
+  const marks = {
     strong: StrongMarkType,
     em: EmMarkType,
     strike: StrikeMarkType,
     subsup: SubSupMarkType,
     u: UnderlineMarkType,
     mono: MonoMarkType,
-  },
-}) as JIRASchema;
-
-export interface JIRASchema extends Schema {
-  nodes: {
-    doc: DocNodeType;
-    paragraph: ParagraphNodeType;
-    ordered_list: OrderedListNodeType;
-    bullet_list: BulletListNodeType;
-    heading: HeadingNodeType;
-    list_item: ListItemNodeType;
-    text: Text;
-    hard_break: HardBreakNodeType;
-    horizontal_rule: HorizontalRuleNodeType;
   };
 
-  marks: {
-    strong: StrongMarkType;
-    em: EmMarkType;
-    strike: StrikeMarkType;
-    subsup: SubSupMarkType;
-    u: UnderlineMarkType;
-    mono: MonoMarkType;
-  };
+  if (!allowLists) {
+    delete nodes.ordered_list;
+    delete nodes.bullet_list;
+    delete nodes.list_item;
+  }
+
+  return new Schema({ nodes, marks });
 }

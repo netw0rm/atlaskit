@@ -1,4 +1,4 @@
-# CssReset
+# CSS Reset
 
 This package exports a CSS file which provides a minimal reset along with base styles for many HTML elements. It is meant to be used as a basis for all styling to be built upon.
 
@@ -16,12 +16,12 @@ npm install @NAME@
 
 ### Importing
 
-The `ak-css-reset` package can be consumed via the dist, or in Webpack.
+The `@NAME@` package can be consumed via the dist, or in Webpack.
 
 #### Importing in Webpack
 
 ```js
-import 'ak-css-reset';
+import '@NAME@';
 ```
 
 The Webpack style loader should then place the CSS within the HEAD of your HTML element.
@@ -31,7 +31,7 @@ The Webpack style loader should then place the CSS within the HEAD of your HTML 
 ```html
 <html>
   <head>
-    <link rel="stylesheet" href="node_modules/ak-css-reset/dist/bundle.css" />
+    <link rel="stylesheet" href="node_modules/@NAME@/dist/bundle.css" />
   </head>
   <body>
     <!-- ... -->

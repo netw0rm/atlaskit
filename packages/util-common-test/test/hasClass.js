@@ -1,6 +1,7 @@
 
 import { hasClass } from '../src';
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('hasClass', () => {
   let component;
   beforeEach(() => {

@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/util-common",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "Utilities shared by AtlasKit components",
   "main": "dist/bundle.js",
@@ -22,9 +22,8 @@
     "keycode": "^2.1.2"
   },
   "devDependencies": {
-    "akutil-common-test": "*",
-    "custom-event-polyfill": "^0.3.0",
-    "skatejs": "^4.0.6"
+    "@atlaskit/util-common-test": "*",
+    "custom-event-polyfill": "^0.3.0"
   },
   "repository": {
     "type": "git",
@@ -32,6 +31,7 @@
   },
   "keywords": [
     "atlaskit",
-    "ui"
+    "ui",
+    "internal"
   ]
 }

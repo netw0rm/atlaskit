@@ -39,4 +39,12 @@ describe('hyperlink regex', () => {
     expect('tcp://173.123.21.12').to.not.match(URL);
     expect('javascript:alert(1);').to.not.match(URL);
   });
+
+  it('should not match special characters', () => {
+    const match = (url: string) => (url.match(URL) as any)[1];
+    expect(match('[www.atlassian.com?hello=there]')).to.equal('www.atlassian.com?hello=there');
+    expect(match('(www.atlassian.com#hello)')).to.equal('www.atlassian.com#hello');
+    expect(match('(www.atlassian.com/hello)')).to.equal('www.atlassian.com/hello');
+    expect(match('(www.atlassian.com/hello?foo=bar^)')).to.equal('www.atlassian.com/hello?foo=bar');
+  });
 });

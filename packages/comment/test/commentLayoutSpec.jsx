@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
-import Avatar from 'ak-avatar';
+import Avatar from '@atlaskit/avatar';
 
 import { CommentLayout } from '../src/';
 import styles from '../src/styles.less';

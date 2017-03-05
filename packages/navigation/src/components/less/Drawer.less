@@ -1,7 +1,6 @@
-@import '~akutil-shared-styles/src/colors.less';
+@import '~@atlaskit/util-shared-styles/src/colors.less';
 @import '../../shared-variables.less';
-@import '~akutil-shared-styles/src/grid.less';
-@import '~akutil-shared-styles/src/z-indexes.less';
+@import '~@atlaskit/util-shared-styles/src/grid.less';
 
 @width: 45 * @ak-grid-size;
 @wide-width: 75 * @ak-grid-size;
@@ -27,7 +26,6 @@
   transform: translateX(-@off-screen-translate-x);
   transition: @transform-transition;
   width: @width;
-  z-index: @ak-z-index-blanket + 10;
   &:not(.open) {
     box-shadow: none;
   }
@@ -56,12 +54,8 @@
     width: @drawer-back-icon-size;
   }
 
-  .isBackIconPositionCreate {
-    padding-top: @drawer-back-icon-size;
-  }
-
   .backIconOuter {
-    margin-top: @ak-grid-size * 1.5;
+     position: absolute,
   }
 }
 

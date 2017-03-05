@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Readme, { Code, Props } from 'akutil-readme';
+import Readme, { Code, Props } from '@atlaskit/util-readme';
 
 import FlagExample from './examples/FlagExample'; // eslint-disable-line import/no-duplicates
 import FlagExampleRaw from '!raw!./examples/FlagExample'; // eslint-disable-line import/first, import/no-duplicates

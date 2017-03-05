@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/avatar",
-  "version": "1.0.0",
+  "version": "2.0.2",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "A React component that represents users within the same application",
   "main": "dist/bundle.js",
@@ -20,13 +20,13 @@
     "react": "^15.3.2"
   },
   "dependencies": {
-    "akutil-shared-styles": "^37.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
   },
   "devDependencies": {
-    "ak-avatar": "*",
-    "akutil-readme": "^1.1.0"
+    "@atlaskit/avatar": "*",
+    "@atlaskit/util-readme": "^1.0.0"
   },
   "repository": {
     "type": "git",

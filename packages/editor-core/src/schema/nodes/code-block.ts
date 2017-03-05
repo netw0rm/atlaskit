@@ -1,4 +1,4 @@
-import { Attribute, Block, Node, Schema } from '../../prosemirror';
+import { Attribute, Block, browser, Node, Schema } from '../../prosemirror';
 
 export class CodeBlockNodeType extends Block {
   constructor(name: string, schema: Schema) {
@@ -35,7 +35,8 @@ export class CodeBlockNodeType extends Block {
   }
 
   toDOM(node: CodeBlockNode): [string, any, number] {
-    return ['pre', { 'data-language': node.attrs.language }, 0];
+    const className = browser.ie && browser.ie_version <= 11 ? 'ie11' : '';
+    return ['pre', { 'data-language': node.attrs.language, 'class': className }, 0];
   }
 }
 
@@ -56,7 +57,7 @@ const removeLastNewLine = (dom: HTMLElement): void => {
 };
 
 const getLanguageFromEditorStyle = (dom: HTMLElement): string => {
-  return dom.dataset['language'];
+  return dom.dataset['language'] || '';
 };
 
 const extractLanguageFromClass = (className: string): string | undefined => {

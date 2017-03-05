@@ -7,7 +7,7 @@ export default class SelectedIconForType extends PureComponent {
     type: PropTypes.oneOf(types).isRequired,
   }
 
-  render = () => {
+  render() {
     const {
       [this.props.type]: {
         icon: SelectedIcon,

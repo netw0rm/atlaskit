@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/inline-message",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "A React component for displaying a clickable message which triggers an inline dialog",
   "main": "dist/bundle.js",
@@ -15,16 +15,16 @@
     "dist"
   ],
   "dependencies": {
-    "ak-button": "^5.1.11",
+    "@atlaskit/button": "^1.0.0",
     "ak-icon": "^12.2.0",
-    "ak-inline-dialog": "^74.0.0",
-    "akutil-shared-styles": "^37.0.0",
+    "@atlaskit/inline-dialog": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
   },
   "devDependencies": {
-    "ak-inline-message": "*",
-    "akutil-readme": "^1.2.1"
+    "@atlaskit/inline-message": "*",
+    "@atlaskit/util-readme": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

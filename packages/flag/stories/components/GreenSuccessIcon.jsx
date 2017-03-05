@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { SuccessIcon } from 'ak-icon';
-import { akColorG300 } from 'akutil-shared-styles';
+import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
+import { akColorG300 } from '@atlaskit/util-shared-styles';
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class GreenSuccessIcon extends PureComponent {

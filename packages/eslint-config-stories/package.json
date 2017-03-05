@@ -1,18 +1,17 @@
 {
   "name": "@atlaskit/eslint-config-stories",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "author": "Atlassian Pty Ltd",
   "description": "The react-storybook story eslint configuration for AtlasKit components",
   "license": "Apache-2.0",
   "main": ".eslintrc",
   "dependencies": {
-    "babel-runtime": "^6.11.6",
-    "eslint": "^3.7.1",
     "@atlaskit/eslint-config-base": "*",
-    "eslint-plugin-react": "^6.4.1"
+    "babel-runtime": "^6.11.6",
+    "eslint": "^3.7.1"
   },
   "repository": {
     "type": "git",
@@ -20,6 +19,6 @@
   },
   "keywords": [
     "atlaskit",
-    "ui"
+    "internal"
   ]
 }

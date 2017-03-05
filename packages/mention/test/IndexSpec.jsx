@@ -12,9 +12,12 @@ describe(name, () => {
         'MentionResource',
         'AbstractMentionResource',
         'AbstractPresenceResource',
+        'MentionItem',
         'MentionList',
         'ResourcedMentionList',
         'MentionPicker',
+        'Mention',
+        'ResourcedMention',
         'default',
       ]);
 

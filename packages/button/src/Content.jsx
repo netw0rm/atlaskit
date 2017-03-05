@@ -11,5 +11,7 @@ export default class Content extends PureComponent {
     children: null,
   }
 
-  render = () => (<span className={styles.locals.buttonContent}>{this.props.children}</span>)
+  render() {
+    return (<span className={styles.locals.buttonContent}>{this.props.children}</span>);
+  }
 }

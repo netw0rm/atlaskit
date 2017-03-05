@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import Tag from 'ak-tag';
+import Tag from '@atlaskit/tag';
 import TagGroup from '../src';
 import styles from '../src/styles.less';
 
-describe('ak-tag-group', () => {
+describe('Tag-group', () => {
   it('should export a base component', () => {
     shallow(<TagGroup><Tag text="test" /></TagGroup>).should.be.an.instanceof(Object);
   });

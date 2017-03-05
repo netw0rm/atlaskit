@@ -12,6 +12,7 @@ function registerFooComponent() {
   });
 }
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('locateWebComponent', () => {
   let component;
   let container;

@@ -1,15 +1,11 @@
-import { Fragment, Mark, Node as PMNode } from 'ak-editor-core';
-import schema from '../schema';
+import { Fragment, Mark, Node as PMNode } from '@atlaskit/editor-core';
+import { isSchemaWithLists, SupportedSchema } from '../schema';
 import parseHtml from './parse-html';
 import WeakMap from './weak-map';
 
 const convertedNodes = new WeakMap();
 
-export interface Converter {
-  (content: Fragment, node: Node): Fragment | PMNode | null | undefined;
-}
-
-export default function(html: string) {
+export default function parse(html: string, schema: SupportedSchema) {
   const dom = parseHtml(html).querySelector('body')!;
   const nodes = bfsOrder(dom);
 
@@ -22,12 +18,9 @@ export default function(html: string) {
   for (let i = nodes.length - 1; i >= 0; i--) {
     const node = nodes[i];
     const content = getContent(node);
-    for (const converter of converters) {
-      const candidate = converter(content, node);
-      if (typeof candidate !== 'undefined') {
-        convertedNodes.set(node, candidate);
-        break;
-      }
+    const candidate = convert(content, node, schema);
+    if (typeof candidate !== 'undefined') {
+      convertedNodes.set(node, candidate);
     }
   }
 
@@ -37,8 +30,108 @@ export default function(html: string) {
   // we attempt to wrap in a paragraph.
   const compatibleContent = schema.nodes.doc.validContent(content)
     ? content
-    : ensureBlocks(content);
+    : ensureBlocks(content, schema);
   return schema.nodes.doc.createChecked({}, compatibleContent);
+}
+
+/**
+ * Ensure that each node in the fragment is a block, wrapping
+ * in a block node if necessary.
+ */
+function ensureBlocks(fragment: Fragment, schema: SupportedSchema): Fragment {
+  // If all the nodes are inline, we want to wrap in a single paragraph.
+  if (schema.nodes.paragraph.validContent(fragment)) {
+    return Fragment.fromArray([schema.nodes.paragraph.createChecked({}, fragment)]);
+  }
+
+  // Either all the nodes are blocks, or a mix of inline and blocks.
+  // We convert each (if any) inline nodes to blocks.
+  const blockNodes: PMNode[] = [];
+
+  fragment.forEach(child => {
+    if (child.isBlock) {
+      blockNodes.push(child);
+    } else {
+      blockNodes.push(schema.nodes.paragraph.createChecked({}, child));
+    }
+  });
+
+  return Fragment.fromArray(blockNodes);
+}
+
+function convert(content: Fragment, node: Node, schema: SupportedSchema): Fragment | PMNode | null | undefined {
+  // text
+  if (node.nodeType === Node.TEXT_NODE) {
+    const text = node.textContent;
+    return text ? schema.text(text) : null;
+  }
+
+  // marks and nodes
+  if (node instanceof HTMLElement) {
+    const tag = node.tagName.toUpperCase();
+    switch (tag) {
+      // Marks
+      case 'DEL':
+        return content ? addMarks(content, [schema.marks.strike.create()]) : null;
+      case 'B':
+        return content ? addMarks(content, [schema.marks.strong.create()]) : null;
+      case 'EM':
+        return content ? addMarks(content, [schema.marks.em.create()]) : null;
+      case 'TT':
+        return content ? addMarks(content, [schema.marks.mono.create()]) : null;
+      case 'SUB':
+      case 'SUP':
+        const type = tag === 'SUB' ? 'sub' : 'sup';
+        return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
+      case 'INS':
+        return content ? addMarks(content, [schema.marks.u.create()]) : null;
+      // Nodes
+      case 'A':
+        const isAnchor = node.attributes.getNamedItem('href') === null;
+        if (isAnchor) {
+          return null;
+        }
+        return;
+      // case 'SPAN':
+      //   return addMarks(content, marksFromStyle(node.style));
+      case 'H1':
+      case 'H2':
+      case 'H3':
+      case 'H4':
+      case 'H5':
+      case 'H6':
+        const level = Number(tag.charAt(1));
+        return schema.nodes.heading.createChecked({ level }, content);
+      case 'BR':
+        return schema.nodes.hard_break.createChecked();
+      case 'HR':
+        return schema.nodes.horizontal_rule.createChecked();
+      case 'P':
+        return schema.nodes.paragraph.createChecked({}, content);
+    }
+
+    // lists
+    if (isSchemaWithLists(schema)) {
+      switch (tag) {
+        case 'UL':
+          return schema.nodes.bullet_list.createChecked({}, content);
+        case 'OL':
+          return schema.nodes.ordered_list.createChecked({}, content);
+        case 'LI':
+          const compatibleContent = schema.nodes.list_item.validContent(content)
+            ? content
+            : ensureBlocks(content, schema);
+          return schema.nodes.list_item.createChecked({}, compatibleContent);
+      }
+    }
+  }
+
+  // debug
+  let repr = node.toString();
+  if (node instanceof HTMLElement) {
+    repr = (node.cloneNode(false) as HTMLElement).outerHTML;
+  }
+  throw new Error(`Unable to handle node ${repr}`);
 }
 
 /*
@@ -99,134 +192,3 @@ function addMarks(fragment: Fragment, marks: Mark[]): Fragment {
   }
   return result;
 }
-
-
-/**
- * Ensure that each node in the fragment is a block, wrapping
- * in a block node if necessary.
- */
-function ensureBlocks(fragment: Fragment): Fragment {
-  // If all the nodes are inline, we want to wrap in a single paragraph.
-  if (schema.nodes.paragraph.validContent(fragment)) {
-    return Fragment.fromArray([schema.nodes.paragraph.createChecked({}, fragment)]);
-  }
-
-  // Either all the nodes are blocks, or a mix of inline and blocks.
-  // We convert each (if any) inline nodes to blocks.
-  const blockNodes: PMNode[] = [];
-
-  fragment.forEach(child => {
-    if (child.isBlock) {
-      blockNodes.push(child);
-    } else {
-      blockNodes.push(schema.nodes.paragraph.createChecked({}, child));
-    }
-  });
-
-  return Fragment.fromArray(blockNodes);
-}
-
-// /**
-//  * Deduce a set of marks from a style declaration.
-//  */
-// function marksFromStyle(style: CSSStyleDeclaration): Mark[] {
-//   let marks: Mark[] = [];
-
-//   styles: for (let i = 0; i < style.length; i++) {
-//     const name = style.item(i);
-//     const value = style.getPropertyValue(name);
-
-//     switch (name) {
-//       case 'text-decoration-color':
-//       case 'text-decoration-style':
-//         continue styles;
-//       case 'text-decoration-line':
-//       case 'text-decoration':
-//         switch (value) {
-//           case 'line-through':
-//             marks = schema.marks.strike.create().addToSet(marks);
-//             continue styles;
-//         }
-//         break;
-//     }
-
-//     throw new Error(`Unable to derive a mark for CSS ${name}: ${value}`);
-//   }
-
-//   return marks;
-// }
-
-const converters = [
-  function text(content, node) {
-    if (node.nodeType === Node.TEXT_NODE) {
-      const text = node.textContent;
-      return text ? schema.text(text) : null;
-    }
-  },
-  function marksAndNodes(content, node) {
-    if (node instanceof HTMLElement) {
-      const tag = node.tagName.toUpperCase();
-      switch (tag) {
-        // Marks
-        case 'DEL':
-          return content ? addMarks(content, [schema.marks.strike.create()]) : null;
-        case 'B':
-          return content ? addMarks(content, [schema.marks.strong.create()]) : null;
-        case 'EM':
-          return content ? addMarks(content, [schema.marks.em.create()]) : null;
-        case 'TT':
-          return content ? addMarks(content, [schema.marks.mono.create()]) : null;
-        case 'SUB':
-        case 'SUP':
-          const type = tag === 'SUB' ? 'sub' : 'sup';
-          return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
-        case 'INS':
-          return content ? addMarks(content, [schema.marks.u.create()]) : null;
-        // Nodes
-        case 'A':
-          const isAnchor = node.attributes.getNamedItem('href') === null;
-          if (isAnchor) {
-            return null;
-          }
-          return;
-        // case 'SPAN':
-        //   return addMarks(content, marksFromStyle(node.style));
-        case 'H1':
-        case 'H2':
-        case 'H3':
-        case 'H4':
-        case 'H5':
-        case 'H6':
-          const level = Number(tag.charAt(1));
-          return schema.nodes.heading.createChecked({ level }, content);
-        case 'BR':
-          return schema.nodes.hard_break.createChecked();
-        case 'HR':
-          return schema.nodes.horizontal_rule.createChecked();
-        case 'UL':
-          return schema.nodes.bullet_list.createChecked({}, content);
-        case 'OL':
-          return schema.nodes.ordered_list.createChecked({}, content);
-        case 'LI':
-          const compatibleContent = schema.nodes.list_item.validContent(content)
-            ? content
-            : ensureBlocks(content);
-          return schema.nodes.list_item.createChecked({}, compatibleContent);
-        case 'P':
-          return schema.nodes.paragraph.createChecked({}, content);
-      }
-    }
-  },
-
-  // This is a catch all converter that will throw an error to indicate the node cannot be converted
-  // to a prosemirror node
-  function debugFallback(content, node) {
-    let repr = node.toString();
-
-    if (node instanceof HTMLElement) {
-      repr = (node.cloneNode(false) as HTMLElement).outerHTML;
-    }
-
-    throw new Error(`Unable to handle node ${repr}`);
-  }
-] as Converter[];

@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-import MentionResource from '../src/api/ak-mention-resource';
+import MentionResource from '../src/api/MentionResource';
 
 // FIXME FAB-1732 - extract or replace with third-party implementation
 const toJavascriptString = (obj) => {

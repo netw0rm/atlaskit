@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41 (35326) - http://www.bohemiancoding.com/sketch -->
+    <title>Releases</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="releases">
+            <g id="releases_icon_24x24">
+                <g id="icon_container_transparent">
+                    <rect x="0" y="0" width="24" height="24"></rect>
+                </g>
+                <path d="M5.49704709,17 L17.2224459,17 L18.5760153,14 L5.04585727,14 L5.49704709,17 Z M3.02143879,13.987195 C2.85637889,12.8896975 3.61115096,12 4.71473403,12 L19.6803812,12 C20.7806222,12 21.3040621,12.8166887 20.8509749,13.8208942 L18.9271114,18.0848722 C18.699075,18.5902833 18.056948,19 17.5127404,19 L4.77682235,19 C4.22372314,19 3.70949177,18.5621186 3.6267434,18.0119176 L3.02143879,13.987195 Z" id="Rectangle-14" fill="currentColor"></path>
+                <path d="M7,12 L15,12 L15,10 L7,10 L7,12 Z M5,8.99077797 C5,8.44358641 5.45576096,8 6.00247329,8 L15.9975267,8 C16.5511774,8 17,8.45097518 17,8.99077797 L17,14 L5,14 L5,8.99077797 Z" id="Rectangle-16" fill="currentColor"></path>
+                <path d="M7,7.0048815 C7,5.89761602 7.89826062,5 8.99791312,5 L11.0020869,5 C12.1055038,5 13,5.8938998 13,7.0048815 L13,10 L7,10 L7,7.0048815 Z M11,7.0048815 L11,8 L9,8 L9,7.0048815 C9,7.00251316 9.00250768,7 8.99791312,7 L11.0008994,7 C11.0003981,7.00030191 11,7.00140179 11,7.0048815 Z" id="Combined-Shape" fill="currentColor"></path>
+            </g>
+        </g>
+    </g>
+</svg>

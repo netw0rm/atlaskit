@@ -2,6 +2,7 @@ import Button from 'ak-button';
 
 import { getShadowRoot, waitUntil } from '../src';
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('getShadowRoot', () => {
   let component;
   beforeEach(() => {

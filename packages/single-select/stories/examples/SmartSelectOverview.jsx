@@ -1,5 +1,5 @@
 import React from 'react';
-import Select from 'ak-single-select';
+import Select from '@atlaskit/single-select';
 
 const selectItems = [
   {
@@ -16,7 +16,6 @@ const selectItems = [
 export default (
   <Select
     items={selectItems}
-    placeholder="Select all!"
     label="Choose your favourite"
     onSelected={(item) => {
       console.log(item);

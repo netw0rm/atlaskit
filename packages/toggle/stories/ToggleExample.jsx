@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import { Toggle } from 'ak-toggle';
+import { Toggle } from '@atlaskit/toggle';
 
 class SmartToggle extends PureComponent {
   static propTypes = {
@@ -14,13 +14,19 @@ class SmartToggle extends PureComponent {
     isChecked: this.props.isDefaultChecked,
   }
 
-  render = () => (
-    <Toggle
-      {...this.props}
-      isChecked={this.state.isChecked}
-      onChange={() => this.setState({ isChecked: !this.state.isChecked })}
-    />
-  )
+  onChange = () => {
+    this.setState({ isChecked: !this.state.isChecked });
+  }
+
+  render() {
+    return (
+      <Toggle
+        {...this.props}
+        isChecked={this.state.isChecked}
+        onChange={this.onChange}
+      />
+    );
+  }
 }
 
 export default (

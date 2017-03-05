@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/spinner",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "A React component that displays a spinning icon to show a loading state",
   "main": "dist/bundle.js",
@@ -11,6 +11,7 @@
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/spinner"
   },
+  "types": "src/index.d.ts",
   "files": [
     "dist"
   ],
@@ -24,8 +25,10 @@
     "classnames": "^2.2.5"
   },
   "devDependencies": {
-    "ak-button": "^5.0.2",
-    "akutil-readme": "^1.0.0"
+    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/util-readme": "^1.0.0",
+    "@atlaskit/spinner": "^1.0.0",
+    "@atlaskit/util-common-test": "^1.0.0"
   },
   "repository": {
     "type": "git",

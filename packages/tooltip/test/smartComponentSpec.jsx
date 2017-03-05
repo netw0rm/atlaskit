@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 // Testing the smart component
 import AKTooltip from '../src';
 
-describe('ak-tooltip (smart)', () => {
+describe('Tooltip (smart)', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<AKTooltip><div>foo</div></AKTooltip>);
     expect(wrapper).not.to.equal(undefined);

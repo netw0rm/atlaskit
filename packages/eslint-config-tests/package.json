@@ -1,17 +1,18 @@
 {
   "name": "@atlaskit/eslint-config-tests",
-  "version": "1.0.0",
+  "version": "2.1.1",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "author": "Atlassian Pty Ltd",
   "description": "The test file eslint configuration for AtlasKit components",
   "license": "Apache-2.0",
   "main": ".eslintrc",
   "dependencies": {
+    "@atlaskit/eslint-config-base": "*",
     "babel-runtime": "^6.11.6",
     "eslint": "^3.7.1",
-    "@atlaskit/eslint-config-base": "*",
+    "eslint-plugin-chai-expect": "^1.1.1",
     "eslint-plugin-mocha": "^4.6.0"
   },
   "repository": {
@@ -20,6 +21,6 @@
   },
   "keywords": [
     "atlaskit",
-    "ui"
+    "internal"
   ]
 }

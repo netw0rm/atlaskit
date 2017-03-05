@@ -10,16 +10,17 @@ import NavigationItem from './NavigationItem';
 
 export default class ContainerItem extends PureComponent {
   static propTypes = {
+    action: PropTypes.node,
     appearance: PropTypes.string,
+    href: PropTypes.string,
     icon: PropTypes.node,
     isCompact: PropTypes.bool,
     isSelected: PropTypes.bool,
+    linkComponent: PropTypes.func,
+    onClick: PropTypes.func,
     subText: PropTypes.string,
     text: PropTypes.node,
     textAfter: PropTypes.node,
-    action: PropTypes.node,
-    href: PropTypes.string,
-    linkComponent: PropTypes.func,
   }
 
   static defaultProps = {
@@ -43,6 +44,7 @@ export default class ContainerItem extends PureComponent {
           isCompact={this.props.isCompact}
           isSelected={this.props.isSelected}
           linkComponent={this.props.linkComponent}
+          onClick={this.props.onClick}
           subText={this.props.subText}
           text={this.props.text}
           textAfter={this.props.textAfter}

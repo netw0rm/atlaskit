@@ -7,7 +7,8 @@
   },
   "plugins": [
     "react",
-    "prefer-object-spread"
+    "prefer-object-spread",
+    "compat"
   ],
   "rules": {
     // http://eslint.org/docs/rules/comma-dangle
@@ -47,7 +48,8 @@
 
     // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-sort-props.md
     // JSX props must be in alphabetical order
-    "react/jsx-sort-props": "warn",
+    // Disabled as this is creating too much noise in logs and is not being actively addressed
+    "react/jsx-sort-props": "off",
 
     // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-unknown-property.md
     // This was turned off for wc - but should be re-enabled eventually
@@ -67,6 +69,7 @@
 
     // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md
     // Opt out of preferring stateless functions
+    // Rationale: https://extranet.atlassian.com/display/AtlasKit/React+component+conventions
     "react/prefer-stateless-function": "off",
 
     // https://github.com/bryanrsmith/eslint-plugin-prefer-object-spread
@@ -74,11 +77,23 @@
     "prefer-object-spread/prefer-object-spread": "error",
 
     // http://eslint.org/docs/rules/no-restricted-properties
-    // Disabling the use of React.Component
-    "no-restricted-properties": ["error", {
-        "object": "React",
-        "property": "Component",
-        "message": "Please use PureComponent instead."
-    }]
+    "no-restricted-properties": ["error",
+      {
+          // Disabling the use of React.Component
+          // Rationale: https://extranet.atlassian.com/display/AtlasKit/React+component+conventions
+          "object": "React",
+          "property": "Component",
+          "message": "Please use PureComponent instead."
+      }
+    ],
+
+    // https://github.com/amilajack/eslint-plugin-compat
+    // Error when violating browser compatibility
+    "compat/compat": "error",
+
+    // Disallowing the use of variables starting with `_` unless it called on `this`.
+    // Allowed: `this._secret = Symbol()`
+    // Not allowed: `const _secret = Symbol()`
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }]
   }
 }

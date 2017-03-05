@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/button-group",
-  "version": "1.0.0",
+  "version": "1.0.7",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "A React component that groups related buttons",
   "main": "dist/bundle.js",
@@ -17,17 +17,17 @@
     "src/index.d.ts"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^37.0.0"
+    "@atlaskit/util-shared-styles": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-button": "^5.1.2",
-    "ak-button-group": "*",
-    "ak-dropdown-menu": "^2.2.0",
+    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/button-group": "*",
+    "@atlaskit/dropdown-menu": "^1.0.0",
     "ak-icon": "^12.1.2",
     "akutil-react": "*",
-    "akutil-readme": "^1.2.0"
+    "@atlaskit/util-readme": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

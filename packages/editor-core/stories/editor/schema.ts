@@ -14,6 +14,7 @@ import {
   MentionNodeType,
   MonoMarkType,
   OrderedListNodeType,
+  PanelNodeType,
   ParagraphNodeType,
   Schema,
   StrikeMarkType,
@@ -41,6 +42,7 @@ export default new Schema({
     code_block: { type: CodeBlockNodeType, content: 'text*', group: 'block' },
     mention: { type: MentionNodeType, group: 'inline' },
     emoji: { type: EmojiNodeType, group: 'inline' },
+    panel: { type: PanelNodeType, content: 'block+', group: 'block' }
   },
 
   // Note: Marks are applied in the order they are defined.
@@ -73,6 +75,7 @@ export interface BitbucketSchema extends Schema {
     code_block: CodeBlockNodeType;
     mention: MentionNodeType;
     emoji: EmojiNodeType;
+    panel: PanelNodeType;
   };
 
   marks: {

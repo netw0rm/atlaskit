@@ -1,5 +1,5 @@
-import { DocNode } from 'ak-editor-core';
-import { chaiPlugin } from 'ak-editor-core/test-helper';
+import { DocNode } from '@atlaskit/editor-core';
+import { chaiPlugin } from '@atlaskit/editor-core/src/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { encode, parse } from '../src/cxhtml';
@@ -25,7 +25,7 @@ const checkBuilder = (fn: any, description: string, cxhtml: string, doc: DocNode
 const check = (description: string, cxhtml: string, doc: DocNode) =>
   checkBuilder(it, description, cxhtml, doc);
 
-describe('ak-editor-cq encode-cxml:', () => {
+describe('@atlaskit/editor-cq encode-cxml:', () => {
   describe('basic formatting:', () => {
     describe('text:', () => {
       check('basic text',

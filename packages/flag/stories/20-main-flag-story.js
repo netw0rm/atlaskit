@@ -1,9 +1,10 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
+import Modal from '@atlaskit/modal-dialog';
 
 import AnimationDemo from './components/AnimationDemo';
 import { name } from '../package.json';
-import Flag from '../src';
+import Flag, { FlagGroup } from '../src';
 import GreenSuccessIcon from './components/GreenSuccessIcon';
 
 storiesOf(name, module)
@@ -29,5 +30,21 @@ storiesOf(name, module)
           title="Welcome to the jungle"
         />
       </p>
+    </div>
+  ))
+  .add('Flag on top of Modal', () => (
+    <div style={{ padding: 24 }}>
+      <Modal header="Modal" isOpen>
+        I am a modal, flag should be visible above me
+      </Modal>
+      <FlagGroup>
+        <Flag
+          description="I should be above the modal dialog"
+          icon={<GreenSuccessIcon />}
+          id="1"
+          key="1"
+          title="I am a Flag"
+        />
+      </FlagGroup>
     </div>
   ));

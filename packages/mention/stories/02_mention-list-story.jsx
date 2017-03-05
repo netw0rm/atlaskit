@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 
 import { name } from '../package.json';
-import MentionList from '../src/components/ak-mention-list';
+import MentionList from '../src/components/MentionList';
 import { mentions } from './story-data';
 
 function randomMentions() {

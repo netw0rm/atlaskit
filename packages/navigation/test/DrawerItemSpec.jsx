@@ -16,6 +16,7 @@ describe('<DrawerItem />', () => {
       { prop: 'href', value: 'foo' },
       { prop: 'isCompact', value: false },
       { prop: 'linkComponent', value: () => null },
+      { prop: 'onClick', value: () => null },
       { prop: 'subText', value: 'foo' },
       { prop: 'text', value: 'foo' },
       { prop: 'textAfter', value: 'foo' },

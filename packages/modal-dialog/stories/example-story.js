@@ -1,11 +1,12 @@
 import { storiesOf } from '@kadira/storybook';
-import Button from 'ak-button';
-import Layer from 'ak-layer';
-import Navigation from 'ak-navigation';
-import DropdownMenu from 'ak-dropdown-menu';
+import Button from '@atlaskit/button';
+import Layer from '@atlaskit/layer';
+import Navigation from '@atlaskit/navigation';
+import DropdownMenu from '@atlaskit/dropdown-menu';
 import React from 'react';
 import Lorem from 'react-lorem-component';
 import { name } from '../package.json';
+import ModalDialog from '../src';
 import ModalDemo from './ModalDemo';
 import SubmitDemo from './SubmitDemo';
 
@@ -52,6 +53,24 @@ storiesOf(name, module)
       </div>
     </ModalDemo>
   ))
+  .add('width={300}', () => (
+    <div>
+      <p>Width should be 100 px smaller than width=small</p>
+      <ModalDemo width={300} />
+    </div>
+  ))
+  .add('width="300px"', () => (
+    <div>
+      <p>Width should be 100 px smaller than width=small</p>
+      <ModalDemo width="300px" />
+    </div>
+  ))
+  .add('width="75%"', () => (
+    <div>
+      <p>Width should be 75% of the viewport width</p>
+      <ModalDemo width="75%" />
+    </div>
+  ))
   .add('width="small"', () => (
     <ModalDemo width="small" />
   ))
@@ -65,48 +84,60 @@ storiesOf(name, module)
     <ModalDemo width="x-large" />
   ))
   .add('z-index test', () => (
-    <div
-      style={{
-        display: 'flex',
-        height: '100vh',
-        overflowY: 'scroll',
-        padding: 32,
-        boxSizing: 'border-box',
-      }}
-    >
+    <div>
       <style>{'body { margin: 0 }'}</style>
-      <ModalDemo>
-        <p>Open the dropdown to make sure that looks ok too:</p>
-        <p>
-          <DropdownMenu
-            appearance="default"
-            items={[
-              {
-                heading: 'Cities',
-                items: [
-                  { content: 'Sydney', type: 'radio' },
-                  { content: 'Canberra', type: 'radio' },
-                  { content: 'Melbourne', type: 'radio' },
-                  { content: 'Perth', type: 'radio' },
-                ],
-              },
-            ]}
-            position="right middle"
-            triggerType="button"
-          >
-            Choose
-          </DropdownMenu>
-        </p>
-      </ModalDemo>
-      <Navigation />
-      <Layer
-        content={
-          <span>I am the popup content</span>
-        }
+      <div
+        style={{
+          display: 'flex',
+          height: '100vh',
+          overflowY: 'scroll',
+          padding: 32,
+          boxSizing: 'border-box',
+        }}
       >
-        <p style={{ border: '1px solid yellow' }}>
-          There should be a popup attached to this
-        </p>
-      </Layer>
+        <Navigation />
+        <div style={{ flexGrow: 1 }}>
+          <Layer
+            content={
+              <span>I am the popup content</span>
+            }
+          >
+            <p style={{ border: '1px solid yellow' }}>
+              There should be a popup attached to this
+            </p>
+          </Layer>
+        </div>
+      </div>
+      <div>
+        <ModalDialog
+          footer={
+            <Button appearance="primary">Create issue</Button>
+          }
+          header={<span>New issue</span>}
+          isOpen
+          width="medium"
+        >
+          <p>
+            <DropdownMenu
+              appearance="default"
+              items={[
+                {
+                  heading: 'Cities',
+                  items: [
+                    { content: 'Sydney', type: 'radio' },
+                    { content: 'Canberra', type: 'radio' },
+                    { content: 'Melbourne', type: 'radio' },
+                    { content: 'Perth', type: 'radio' },
+                  ],
+                },
+              ]}
+              position="right middle"
+              triggerType="button"
+            >
+              Choose
+            </DropdownMenu>
+          </p>
+        </ModalDialog>
+      </div>
     </div>
   ));

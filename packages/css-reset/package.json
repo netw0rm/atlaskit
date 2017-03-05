@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/css-reset",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "ak-css-reset webcomponent",
   "main": "dist/bundle.css",
@@ -13,7 +13,7 @@
     "dist"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^37.1.0"
+    "@atlaskit/util-shared-styles": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

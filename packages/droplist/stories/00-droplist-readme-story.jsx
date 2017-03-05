@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { Code, Props, Description, Chrome } from 'akutil-readme';
+import { Code, Props, Description, Chrome } from '@atlaskit/util-readme';
 
 import DropList from '../src';
 
@@ -18,6 +18,7 @@ const droplistPropDescriptions = {
   Default dropdown has scroll after its height exceeds the pre-defined amount. Tall dropdown has no
   restrictions.`,
   position: 'Position of the menu. See the documentation of ak-layer for more details.',
+  isTriggerDisabled: 'Disables all trigger`s handlers and eventListeners',
   isTriggerNotTabbable: `Controls whether it is possible to tab to the trigger. This property should
    be set to true if some interactive element is used inside trigger (links, buttons)`,
   isOpen: 'Controls the open state of the dropdown',
@@ -29,12 +30,14 @@ const droplistPropDescriptions = {
   the accessibility point of view. Only 'menu' value is available at the moment.`,
   children: 'Content of the droplist.',
   trigger: 'Content that will be rendered inside the trigger element.',
+  isKeyboardInteractionDisabled: 'Disables all keyboard interactions',
 };
 
 const droplistPropTypes = {
   appearance: 'oneOf([default, tall])',
   position: 'string',
   isTriggerNotTabbable: 'bool',
+  isTriggerDisabled: 'bool',
   isOpen: 'bool',
   onItemActivated: 'func',
   onOpenChange: 'func',
@@ -48,7 +51,7 @@ storiesOf(name, module)
     <Chrome title={name}>
       <Description>
         <p>This is a `base` component on which such components as ak-dropdow-menu,
-          ak-single-select (TBD), ak-multi-select (TBD) are built. They should
+          ak-single-select and ak-multi-select are built. They should
           satisfy most of the requirements and use cases and recommended to use instead.</p>
       </Description>
       <Code code={DroplistOverviewExampleRaw}>

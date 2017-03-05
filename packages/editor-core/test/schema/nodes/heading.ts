@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { Schema, Text } from '../../../src';
 import { DocNodeType, HeadingNodeType } from '../../../src';
 
-describe('ak-editor-core/schema heading node', () => {
+describe('@atlaskit/editor-core/schema heading node', () => {
   it('throws an error if it is not named "heading{1..5}"', () => {
     expect(() => {
       new Schema({

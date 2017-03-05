@@ -21,3 +21,4 @@ export { OrderedListNode, OrderedListNodeType, isOrderedListNode } from './nodes
 export { ParagraphNode, ParagraphNodeType, isParagraphNode } from './nodes/paragraph';
 export { MentionNode, MentionNodeType, isMentionNode } from './nodes/mention';
 export { EmojiNode, EmojiNodeType } from './nodes/emoji';
+export { PanelNodeType, isPanelNode, PanelNode } from './nodes/panel';

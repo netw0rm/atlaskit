@@ -1,6 +1,6 @@
 {
   "rulesDirectory": ["build/tslint-rules"],
-  "extends": ["tslint:latest", "tslint-react"],
+  "extends": ["tslint:recommended", "tslint-react"],
   "rules": {
     "array-type": [],
     "arrow-parens": false,
@@ -29,6 +29,7 @@
     "no-conditional-assignment": false,
     "no-consecutive-blank-lines": [true, 2],
     "no-empty": false,
+    "no-empty-interface": false,
     "no-reference": false,
     "no-shadowed-variable": false,
     "no-string-literal": false,
@@ -40,7 +41,7 @@
     "object-literal-sort-keys": false,
     "one-line": [],
     "only-arrow-functions": [],
-    "ordered-imports": [true],
+    "ordered-imports": [],
     "prefer-for-of": false,
     "semicolon": [true],
     "switch-default": false,

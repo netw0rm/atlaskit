@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import Group from '@atlaskit/droplist-group';
-import Item from '@atlaskit/droplist-item';
-
-import DropdownList from '../../src';
+import DropdownList, { Group, Item } from '@atlaskit/droplist';
 
 const DroplistOverview = class extends Component {
   constructor(props) {

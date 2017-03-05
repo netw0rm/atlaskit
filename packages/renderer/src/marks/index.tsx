@@ -7,7 +7,7 @@ import Strong from './strong';
 import SubSup from './subsup';
 import Underline from './underline';
 import { Renderable } from '../nodes';
-import { isText } from '../nodes/text';
+import { isText } from '../utils';
 
 export interface Mark {
   type: string;

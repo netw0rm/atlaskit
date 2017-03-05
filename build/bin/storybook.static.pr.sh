@@ -19,6 +19,9 @@ BUILD_SPECIFIC_URL_PART="pr/$BITBUCKET_COMMIT/$CURRENT_BUILD_TIME/storybook"
 # get list of changed packages which should have been outputted by generate.changed.packages.file.sh
 CHANGED_PACKAGES=$(cat changed-packages)
 
+$CHALK --no-stdin -t "{green -- Changed Packages --}"
+echo "$CHANGED_PACKAGES"
+
 function storybook_build_status() {
   build_status \
     "STORYBOOK" \

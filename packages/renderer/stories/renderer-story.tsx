@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { action, storiesOf } from '@kadira/storybook';
 import { Mention } from '@atlaskit/mention';
 import * as React from 'react';
 import Renderer from '../src';
@@ -13,9 +13,25 @@ import Underline from '../src/marks/underline';
 import { name } from '../package.json';
 import { document } from './story-data';
 
+const mentionProvider = Promise.resolve({
+  shouldHighlightMention(mention) {
+    return mention.id === 'ABCDE-ABCDE-ABCDE-ABCDE';
+  }
+});
+
 storiesOf(name, module)
   .add('renderer', () => (
-    <Renderer document={document} />
+    <Renderer
+      document={document}
+      mentionProvider={mentionProvider}
+      eventHandlers={{
+        mention: {
+          onClick: action('onClick'),
+          onMouseEnter: action('onMouseEnter'),
+          onMouseLeave: action('onMouseLeave')
+        }
+      }}
+    />
   ))
   .add('marks/em', () => (
     <Em>This is italic</Em>

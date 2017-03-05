@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import PanelPlugin from '../../../src/plugins/panel';
-import { makeEditor } from '../../../test-helper';
+import { makeEditor } from '../../../src/test-helper';
 import { doc, panel, schema, paragraph } from '../../_schema-builder';
 
 describe('panel', () => {

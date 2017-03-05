@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
-import { chaiPlugin } from '@atlaskit/editor-core/test-helper';
+import { chaiPlugin } from '@atlaskit/editor-core/src/test-helper';
 import { mount } from 'enzyme';
 import Editor from '../src';
 
@@ -24,7 +24,7 @@ const defaultValue = [
   }
 ];
 
-describe('ak-editor-hipchat', () => {
+describe('@atlaskit/editor-hipchat', () => {
   let editor: Editor;
 
   describe('Keymap', () => {

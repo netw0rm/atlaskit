@@ -7,18 +7,18 @@ const gridUnit = parseInt(akGridSize, 10);
 const baselineUnit = gridUnit / 2;
 
 const truncateStyle = ({ width, isFixedSize, shouldTruncate }) => css`
-    ${width ? css`width: ${width}%;` : ''}
-    ${isFixedSize ? css`overflow: hidden;` : ''};
-    ${isFixedSize && shouldTruncate ? css`
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    ` : ''}
+  ${width ? css`width: ${width}%;` : ''}
+  ${isFixedSize ? css`overflow: hidden;` : ''};
+  ${isFixedSize && shouldTruncate ? css`
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  ` : ''}
 `;
 
 const onClickStyle = ({ onClick }) => onClick && css`
-    &:hover {
-        cursor: pointer;
-    }
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const arrowsStyle = ({ isSortable, sortOrder }) => {
@@ -35,31 +35,30 @@ const arrowsStyle = ({ isSortable, sortOrder }) => {
   `;
 
   return css`
-        & > span {
-            position: relative;
-            &:before {
-                ${pseudoBase};
-                content: ' ';
-                bottom: 8px;
-                border-bottom: 3px solid ${sortOrder === ASC ? akColorN300 : akColorN40}; 
-            };
-            &:after {
-                ${pseudoBase};
-                content: ' ';
-                bottom: 0;  
-                border-top: 3px solid ${sortOrder === DESC ? akColorN300 : akColorN40}; 
-                
-            };
-        }
+    & > span {
+      position: relative;
+        &:before {
+          ${pseudoBase};
+            content: ' ';
+            bottom: 8px;
+            border-bottom: 3px solid ${sortOrder === ASC ? akColorN300 : akColorN40}; 
+          };
+        &:after {
+          ${pseudoBase};
+          content: ' ';
+          bottom: 0;  
+          border-top: 3px solid ${sortOrder === DESC ? akColorN300 : akColorN40};       
+        };
+      }
         
-        &:hover > span {
-            &:before {
-                border-bottom: 3px solid ${sortOrder === ASC ? akColorN300 : akColorN60}; 
-            }
-            &:after {
-                border-top: 3px solid ${sortOrder === DESC ? akColorN300 : akColorN60}; 
-            }
+      &:hover > span {
+        &:before {
+          border-bottom: 3px solid ${sortOrder === ASC ? akColorN300 : akColorN60}; 
         }
+        &:after {
+          border-top: 3px solid ${sortOrder === DESC ? akColorN300 : akColorN60}; 
+        }
+      }
     `;
 };
 
@@ -68,17 +67,17 @@ const cellStyle = css`
     border: none;
     text-align: left;    
     &:first-child {
-        padding-left: 0;
+      padding-left: 0;
     }
     &:last-child {
-        padding-right: 0;
+      padding-right: 0;
     }
 `;
 
 export const Table = styled.table`
-    ${({ isFixedSize }) => (isFixedSize && css`table-layout: fixed;`)};
-    width: 100%;
-    border-collapse: collapse;
+  ${({ isFixedSize }) => (isFixedSize && css`table-layout: fixed;`)};
+  width: 100%;
+  border-collapse: collapse;
 `;
 
 export const Caption = styled.caption`
@@ -93,32 +92,32 @@ export const Caption = styled.caption`
 `;
 
 export const TableHead = styled.thead`
-    border-bottom: 2px solid #DFE1E6;
+  border-bottom: 2px solid #DFE1E6;
 `;
 
 export const TableHeadCell = styled.th`
-    ${props => onClickStyle(props)}
-    ${props => truncateStyle(props)}
-    ${props => arrowsStyle(props)}
-    ${() => cellStyle}
-    position: relative;
-    vertical-align: top;
-    text-align: left;
-    border: none;
-    font-size: 12px;
-    color: ${akColorN300};
-    fontWeight: 600;
+  ${props => onClickStyle(props)}
+  ${props => truncateStyle(props)}
+  ${props => arrowsStyle(props)}
+  ${() => cellStyle}
+  position: relative;
+  vertical-align: top;
+  text-align: left;
+  border: none;
+  font-size: 12px;
+  color: ${akColorN300};
+  fontWeight: 600;
 `;
 
 export const TableBodyRow = styled.tr`
-    ${props => onClickStyle(props)}
-    &:hover {
-        background: ${akColorN10};
-    }
+  ${props => onClickStyle(props)}
+  &:hover {
+    background: ${akColorN10};
+  }
 `;
 
 export const TableBodyCell = styled.td`
-    ${props => onClickStyle(props)}
-    ${props => truncateStyle(props)}
-    ${() => cellStyle}  
+  ${props => onClickStyle(props)}
+  ${props => truncateStyle(props)}
+  ${() => cellStyle}  
 `;

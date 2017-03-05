@@ -3,9 +3,9 @@ import { ASC, DESC } from './constants';
 
 function createError(propName, componentName, message) {
   return new Error(
-        `Invalid prop \`${propName}\` supplied to` +
-        ` \`${componentName}\`. ${message}`
-    );
+    `Invalid prop \`${propName}\` supplied to` +
+    ` \`${componentName}\`. ${message}`
+  );
 }
 
 function isInteger(props, propName, componentName) {
@@ -39,7 +39,7 @@ function rowCells(props, propName, componentName, ...rest) {
 
   const headLength = props.head && props.head.cells.length;
   const isAllRowsSameLength = props[propName].reduce((result, row) =>
-        result && row.length === headLength, true);
+    result && row.length === headLength, true);
   if (!isAllRowsSameLength) {
     return createError(propName, componentName, 'One of the rows has different cell-count compared to head.');
   }
@@ -76,8 +76,8 @@ const rows = PropTypes.arrayOf(PropTypes.shape({
 function sortKey(props, propName, componentName) {
   if (!props[propName]) return null;
   const headHasKey = props.head.cells
-        .map(cell => cell.key)
-        .includes(props[propName]);
+    .map(cell => cell.key)
+    .includes(props[propName]);
 
   if (!headHasKey) {
     return createError(propName, componentName, `Cell with ${props[propName]} key not found in head.`);

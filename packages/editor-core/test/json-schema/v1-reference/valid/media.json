@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "mediaGroup",
+      "content": [
+        {
+          "type": "media",
+          "attrs": {
+            "mediaType": "file",
+            "mediaId": "1234"
+          }
+        }
+      ]
+    }
+  ]
+}

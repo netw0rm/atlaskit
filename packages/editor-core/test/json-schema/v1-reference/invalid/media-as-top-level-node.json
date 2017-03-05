@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "type": "doc",
+  "content": [
+    {
+      "type": "media",
+      "attrs": {
+        "mediaId": "1234",
+        "mediaType": "file"
+      }
+    }
+  ]
+}

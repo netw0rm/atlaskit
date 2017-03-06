@@ -4,7 +4,6 @@ import {CardAction} from '@atlaskit/media-core';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 
 import {Ellipsify} from '..';
-import {MoreBtn} from '../cardOverlay/styled';
 import {Dropdown} from '../dropdown/dropdown';
 import {
   Wrapper,
@@ -15,6 +14,7 @@ import {
   Footer,
   Link,
   Menu,
+  MenuButton,
   DropdownWrapper
 } from './styled';
 
@@ -107,25 +107,24 @@ export class LinkCardViewHorizontal extends Component<LinkCardViewHorizontalProp
 
   moreBtn() {
     const actions = this.props.menuActions || [];
-    const {isMenuExpanded} = this.state;
 
     if (!actions.length) {
       return null;
     }
 
+    const {isMenuExpanded} = this.state;
     const moreBtnClasses = ['more-btn'];
     if (isMenuExpanded) {
       moreBtnClasses.push('active');
     }
 
     return (
-      <MoreBtn
-        style={{cursor: 'pointer'}}
+      <MenuButton
         className={moreBtnClasses.join(' ')}
         onClick={this.moreBtnClick.bind(this)}
       >
         <MoreIcon label="more"/>
-      </MoreBtn>
+      </MenuButton>
     );
   }
 

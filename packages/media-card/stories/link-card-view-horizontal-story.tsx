@@ -4,7 +4,6 @@ import {storiesOf, action} from '@kadira/storybook';
 import {LinkCardViewHorizontal} from '../src';
 import {tallImage, wideImage, wideTransparentImage, smallImage} from './images';
 import StoryList from './story-list';
-import styles from './styles';
 
 const onClick = (event: Event) => {
   action('click')();

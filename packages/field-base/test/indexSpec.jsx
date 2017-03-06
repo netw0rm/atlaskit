@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import InlineDialog from '@atlaskit/inline-dialog';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import Spinner from '@atlaskit/spinner';
 import FieldBaseSmart, { FieldBase } from '../src';
@@ -18,9 +19,20 @@ const {
 const defaultProps = {
   onFocus: () => {},
   onBlur: () => {},
+  onIconClick: () => {},
 };
 
 describe('ak-field-base', () => {
+  // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't error when accessing it.
+  const animStub = window.cancelAnimationFrame;
+  beforeEach(() => {
+    window.cancelAnimationFrame = () => {};
+  });
+
+  afterEach(() => {
+    window.cancelAnimationFrame = animStub;
+  });
+
   describe('properties', () => {
     describe('by default', () =>
       it('should render a content', () =>
@@ -64,6 +76,14 @@ describe('ak-field-base', () => {
       );
     });
 
+    describe('invalidMessage prop', () => {
+      it('should be reflected to the inline dialog content', () => {
+        const stringContent = 'invalid msg content';
+        expect(shallow(<FieldBase {...defaultProps} invalidMessage={stringContent} />)
+          .find(InlineDialog).props().content).to.equal(stringContent);
+      });
+    });
+
     describe('isFocused prop = true AND isInvalid prop = true', () =>
       it('should render with the isFocused styles and not the isInvalid styles', () => {
         const wrapper = shallow(<FieldBase {...defaultProps} isFocused isInvalid />);
@@ -76,6 +96,18 @@ describe('ak-field-base', () => {
       it('should render the content with the .isCompact class', () =>
         expect(shallow(<FieldBase {...defaultProps} isCompact />).find(`.${isCompactClass}`).length).to.be.above(0)
       );
+    });
+
+    describe('isDialogOpen prop', () => {
+      it('reflects value to InlineDialog isOpen if invalidMessage prop is provided', () => {
+        const wrapper = shallow(<FieldBase {...defaultProps} isDialogOpen invalidMessage="test" />);
+        expect(wrapper.find(InlineDialog).props().isOpen).to.equal(true);
+      });
+
+      it('reflects value to InlineDialog isOpen if invalidMessage prop is not provided', () => {
+        const wrapper = shallow(<FieldBase {...defaultProps} isDialogOpen />);
+        expect(wrapper.find(InlineDialog).props().isOpen).to.equal(false);
+      });
     });
 
     describe('appearance', () => {
@@ -149,6 +181,13 @@ describe('ak-field-base', () => {
       const spy = sinon.spy();
       const wrapper = mount(<FieldBaseSmart onBlur={spy} />);
       wrapper.find(`.${contentClass}`).simulate('blur');
+      expect(spy.callCount).to.equal(1);
+    });
+
+    it('should call onIconClick handler when icon clicked', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(<FieldBaseSmart isInvalid onIconClick={spy} />);
+      wrapper.find(WarningIcon).simulate('click');
       expect(spy.callCount).to.equal(1);
     });
   });

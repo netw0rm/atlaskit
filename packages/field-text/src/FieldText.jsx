@@ -8,6 +8,7 @@ export default class FieldText extends PureComponent {
     type: PropTypes.string,
     disabled: PropTypes.bool,
     required: PropTypes.bool,
+    isInvalid: PropTypes.bool,
     label: PropTypes.string,
     name: PropTypes.string,
     placeholder: PropTypes.string,
@@ -15,6 +16,7 @@ export default class FieldText extends PureComponent {
     onChange: PropTypes.func.isRequired,
     id: PropTypes.string,
     isLabelHidden: PropTypes.bool,
+    invalidMessage: PropTypes.node,
     shouldFitContainer: PropTypes.bool,
   }
 
@@ -22,6 +24,7 @@ export default class FieldText extends PureComponent {
     compact: false,
     disabled: false,
     required: false,
+    isInvalid: false,
     type: 'text',
   }
 
@@ -35,9 +38,11 @@ export default class FieldText extends PureComponent {
           isRequired={this.props.required}
         />
         <Base
-          appearance={this.props.compact ? 'compact' : 'standard'}
+          isCompact={this.props.compact}
           disabled={this.props.disabled}
           required={this.props.required}
+          isInvalid={this.props.isInvalid}
+          invalidMessage={this.props.invalidMessage}
           isFitContainerWidthEnabled={this.props.shouldFitContainer}
         >
           <input

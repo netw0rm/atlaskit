@@ -81,6 +81,16 @@ storiesOf(name, module)
   .add('compact ak-field-text', () => (
     generateFormWithInput({ compact: true, placeholder: 'Oh wow, such input' })
   ))
+  .add('invalid ak-field-text', () => (
+    generateFormWithInput({ isInvalid: true, value: 'Invalid value' })
+  ))
+  .add('invalid ak-field-text with message', () => (
+    generateFormWithInput({
+      isInvalid: true,
+      invalidMessage: 'The value is invalid',
+      value: 'Invalid value with warning message',
+    })
+  ))
   .add('ak-field-text with all options', () => (
     generateFormWithInput({
       compact: true,

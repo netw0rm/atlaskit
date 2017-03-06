@@ -35,7 +35,6 @@ export default class Icon extends PureComponent {
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <span className={iconBodyClasses} onClick={this.props.onClick}>
         <div className={styles.svg} label={this.props.label} role="img" aria-label={label}>
-          <span className={styles.label}>{label}</span>
           <Glyph color={color} fill={fill} label={label} />
         </div>
       </span>
@@ -53,17 +52,29 @@ const IconContent = styled.div`
 const iconContructor = (componentName, svgBase) => (
   class extends Icon {
     static displayName = JSON.stringify(componentName);
+    static propTypes = {
+      label: PropTypes.string.isRequired,
+      color: PropTypes.string,
+      fill: PropTypes.string,
+    }
     /* eslint-disable class-methods-use-this */
+    /* eslint-disable react/prop-types */
     getGlyphTemplate() {
       return (props) => {
+        const { label } = props;
         const placeHolders = Object.keys(props).map(key => `${key}="${props[key]}"`).join(' ');
         const svgData = btoa(svgBase.replace(/iconProps/i, placeHolders));
 
         const dataURI = `data:image/svg+xml;base64,${svgData}`;
-        return (<IconContent dataURI={dataURI} />);
+        return (
+          <div>
+            <span className={styles.label}>{label}</span>
+            <IconContent dataURI={dataURI} />
+          </div>
+        );
       };
     }
-
+    /* eslint-enable react/prop-types */
     /* eslint-enable class-methods-use-this */
   }
 );

@@ -87,12 +87,13 @@ storiesOf(name, module)
       </BasicFieldBase>
     </div>
   )
-  .add('with validity prop', () =>
+  .add('with invalidMessage prop', () =>
     <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
       <BasicFieldBase
-        label="Invalid example"
+        label="Click the warning icon to display the message"
         id="fieldbase"
-        validity="foo bar"
+        isInvalid
+        invalidMessage="foo bar"
       >
         <Input
           value="input children"
@@ -101,10 +102,11 @@ storiesOf(name, module)
         />
       </BasicFieldBase>
       <BasicFieldBase
-        label="Invalid + compact example"
+        label="Click the warning icon to display the message"
         id="fieldbase"
         isCompact
-        validity="foo bar"
+        isInvalid
+        invalidMessage="foo bar"
       >
         <Input
           id="fieldbase"

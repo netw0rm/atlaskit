@@ -2,14 +2,17 @@ import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
 import Spinner from '@atlaskit/spinner';
-import InlineMessage from '@atlaskit/inline-message';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
+import InlineDialog from '@atlaskit/inline-dialog';
 import appearances, { standard, none, subtle } from './internal/appearances';
 
  /* eslint-disable react/no-unused-prop-types */
 export default class FieldBase extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(Object.keys(appearances)),
+    invalidMessage: PropTypes.node,
     isCompact: PropTypes.bool,
+    isDialogOpen: PropTypes.bool,
     isDisabled: PropTypes.bool,
     isFitContainerWidthEnabled: PropTypes.bool,
     isFocused: PropTypes.bool,
@@ -20,14 +23,16 @@ export default class FieldBase extends PureComponent {
     isRequired: PropTypes.bool,
     onFocus: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
+    onIconClick: PropTypes.func.isRequired,
     shouldReset: PropTypes.bool,
     children: PropTypes.node,
-    validity: PropTypes.string,
   }
 
   static defaultProps = {
     appearance: standard,
+    invalidMessage: '',
     isCompact: false,
+    isDialogOpen: false,
     isDisabled: false,
     isFitContainerWidthEnabled: false,
     isFocused: false,
@@ -47,19 +52,18 @@ export default class FieldBase extends PureComponent {
   }
 
   renderRightGutter() {
-    if (this.props.isInvalid || this.props.validity) {
+    if (!this.props.isDisabled && this.props.isInvalid) {
       return (
         <div className={styles.warningIconWrapper}>
-          <InlineMessage type="warning">{this.props.validity}</InlineMessage>
+          <WarningIcon
+            label="warning"
+            onClick={this.props.onIconClick}
+          />
         </div>
       );
     }
 
-    if (this.props.isLoading) {
-      return <Spinner />;
-    }
-
-    return null;
+    return this.props.isLoading ? <Spinner /> : null;
   }
 
   render() {
@@ -82,14 +86,20 @@ export default class FieldBase extends PureComponent {
 
     return (
       <div className={contentWrapperClasses}>
-        <div
-          className={contentClasses}
-          onFocusCapture={this.props.onFocus}
-          onBlurCapture={this.props.onBlur}
+        <InlineDialog
+          content={this.props.invalidMessage}
+          isOpen={this.props.isDialogOpen && !!this.props.invalidMessage}
+          position="right middle"
         >
-          {this.props.children}
-          {this.renderRightGutter()}
-        </div>
+          <div
+            className={contentClasses}
+            onFocusCapture={this.props.onFocus}
+            onBlurCapture={this.props.onBlur}
+          >
+            {this.props.children}
+            {this.renderRightGutter()}
+          </div>
+        </InlineDialog>
       </div>
     );
   }

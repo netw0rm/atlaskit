@@ -18,6 +18,7 @@ export default props => (
       isFirstChild={props.isFirstChild}
     />
     <AkFieldBase
+      invalidMessage={props.invalidMessage}
       isCompact={props.isCompact}
       isInvalid={props.isInvalid}
       isDisabled={props.isDisabled}

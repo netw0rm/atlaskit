@@ -8,12 +8,12 @@ export default class ElemBefore extends PureComponent {
   }
 
   render() {
-    return (
+    return this.props.children ? (
       <span
         className={styles.elemBefore}
       >
         {this.props.children}
       </span>
-    );
+    ) : null;
   }
 }

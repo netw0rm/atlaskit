@@ -54,6 +54,7 @@ export interface MentionResourceConfig {
   url: string;
   securityProvider: SecurityProvider;
   containerId?: string;
+  productId?: string;
   refreshedSecurityProvider?: RefreshSecurityProvider;
   shouldHighlightMention?: (mention: Mention) => boolean;
 }
@@ -131,6 +132,7 @@ const requestService = <T>(baseUrl: string, path: string | undefined, data: KeyV
   const options = {
     ...opts,
     ...{ headers },
+    credentials: 'include' as RequestCredentials,
   };
   return fetch(new Request(url, options))
     .then((response: Response) => {
@@ -267,12 +269,17 @@ class MentionResource extends AbstractMentionResource {
     if (!config.url) {
       throw new Error('config.url is a required parameter');
     }
-    if (!config.securityProvider) {
-      throw new Error('config.securityProvider is a required parameter');
-    }
 
     this.config = config;
     this.lastReturnedSearch = 0;
+
+    // Create a default 'no-headers' security provider if none is provided
+    if (!this.config.securityProvider) {
+      this.config.securityProvider = () => ({
+        params: {},
+        headers: {}
+      });
+    }
   }
 
   shouldHighlightMention(mention: Mention) {
@@ -322,7 +329,12 @@ class MentionResource extends AbstractMentionResource {
     if (this.config.containerId) {
       data['containerId'] = this.config.containerId;
     }
-    return requestService<MentionsResult>(this.config.url, 'mentions/bootstrap', data, options, secOptions, refreshedSecurityProvider);
+
+    if (this.config.productId) {
+      data['productIdentifier'] = this.config.productId;
+    }
+
+    return requestService<MentionsResult>(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider);
   }
 
   private search(query: string): Promise<MentionsResult> {
@@ -335,7 +347,12 @@ class MentionResource extends AbstractMentionResource {
     if (this.config.containerId) {
       data['containerId'] = this.config.containerId;
     }
-    return requestService<MentionsResult>(this.config.url, 'mentions/search', data, options, secOptions, refreshedSecurityProvider);
+
+    if (this.config.productId) {
+      data['productIdentifier'] = this.config.productId;
+    }
+
+    return requestService<MentionsResult>(this.config.url, 'search', data, options, secOptions, refreshedSecurityProvider);
   }
 
   private recordSelection(mention: Mention): Promise<void> {
@@ -347,7 +364,12 @@ class MentionResource extends AbstractMentionResource {
     const options = {
       method: 'POST',
     };
-    return requestService<void>(this.config.url, 'mentions/record', data, options, secOptions, refreshedSecurityProvider);
+
+    if (this.config.productId) {
+      data['productIdentifier'] = this.config.productId;
+    }
+
+    return requestService<void>(this.config.url, 'record', data, options, secOptions, refreshedSecurityProvider);
   }
 }
 

@@ -1,6 +1,13 @@
 import React, { PureComponent, PropTypes } from 'react';
+import styled from 'styled-components';
 import Drawer from '../Drawer';
 import { createIconOffset } from '../../../shared-variables';
+
+const ContentArea = styled.div`
+  position: absolute;
+  top: ${createIconOffset}px;
+  width: calc(100% - 16px);
+`;
 
 export default class CreateDrawer extends PureComponent {
   static propTypes = {
@@ -33,7 +40,9 @@ export default class CreateDrawer extends PureComponent {
         primaryIcon={primaryIcon}
         backIconOffset={createIconOffset}
       >
-        {children}
+        <ContentArea>
+          {children}
+        </ContentArea>
       </Drawer>
     );
   }

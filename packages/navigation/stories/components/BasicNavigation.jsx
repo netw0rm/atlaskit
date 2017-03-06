@@ -94,7 +94,7 @@ export default class BasicNavigation extends PureComponent {
   render() {
     const backIcon = <ArrowleftIcon label="Back icon" size="medium" />;
     const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="medium" />;
-    const ContainerHeader = this.props.containerHeaderComponent;
+    const ContainerHeader = this.props.containerHeaderComponent || (() => null);
     return (
       <Navigation
         backIconOffset={this.state.backIconOffset}
@@ -102,7 +102,6 @@ export default class BasicNavigation extends PureComponent {
         drawers={[
           (<AkSearchDrawer
             backIcon={backIcon}
-            header={<ContainerHeader />}
             isOpen={this.state.openDrawer === 'search'}
             key="search"
             onBackButton={this.closeDrawer}

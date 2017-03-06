@@ -17,7 +17,7 @@ const RandomAvatar = props => <AkAvatar
 
 const CompactItem = ({ children }) => (
   <AkContainerItem
-    action={<CrossIcon />}
+    action={<CrossIcon label="close" />}
     icon={<RandomAvatar />}
     isCompact
     text={children}
@@ -48,7 +48,7 @@ storiesOf(name, module)
           action={
             <AkButton
               appearance="subtle"
-              iconBefore={<EmojiCustomIcon size="small" />}
+              iconBefore={<EmojiCustomIcon label="add" size="small" />}
               spacing="none"
             />
           }

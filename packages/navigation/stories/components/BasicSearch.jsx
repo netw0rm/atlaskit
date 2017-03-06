@@ -85,8 +85,8 @@ function search(query) {
       }))
     )
   ).reduce((a, b) => a.concat(b));
-  return results.map(({ item, group }) => (
-    <AkContainerItem href="#foo" icon={icons[group]} subText={group} text={item} />
+  return results.map(({ item, group }, idx) => (
+    <AkContainerItem href="#foo" icon={icons[group]} subText={group} text={item} key={idx} />
   ));
 }
 
@@ -100,7 +100,7 @@ export default class BasicSearch extends PureComponent {
   render() {
     return (
       <AkSearch
-        clearIcon={<CrossIcon size="medium" />}
+        clearIcon={<CrossIcon label="clear" size="medium" />}
         onChange={({ target }) => { this.setState({ query: target.value }); }}
         onSearchClear={() => { this.setState({ query: '' }); }}
         value={this.state.query}

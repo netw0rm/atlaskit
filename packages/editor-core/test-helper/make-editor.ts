@@ -34,24 +34,14 @@ export default (options: Options) => {
     ]
   }) as ProseMirrorWithRefs;
   const editorView = new EditorView(options.place || document.body, {
-    state: editorState,
-    dispatchTransaction: (tr) => {
-      const newState = editorView.state.apply(tr);
-      editorView.updateState(newState);
-      this.handleChange();
-    }
+    state: editorState
   });
 
   const { refs } = editorState.doc;
 
-  const setTextSelection = function (anchor: number, head?: number) {
-    const tr = editorState.tr.setSelection(TextSelection.create(editorState.doc, anchor, head));
-    editorView.dispatch(tr);
-  };
-
   // Collapsed selection.
   if ('<>' in refs) {
-    setTextSelection(refs['<>']);
+    setTextSelection(editorView, refs['<>']);
   // Expanded selection
   } else if ('<' in refs || '>' in refs) {
     if ('<' in refs === false) {
@@ -60,13 +50,13 @@ export default (options: Options) => {
     if ('>' in refs === false) {
       throw new Error('A `>` ref must complement a `<` ref.');
     }
-    setTextSelection(refs['<'], refs['>']);
+    setTextSelection(editorView, refs['<'], refs['>']);
   }
 
   return {
     editorState,
     editorView,
-    setTextSelection,
+    setTextSelection: (anchor: number, head?: number) => setTextSelection(editorView, anchor, head),
     pluginState: options.plugin.getState(editorState)
   };
 };
@@ -74,3 +64,9 @@ export default (options: Options) => {
 export interface ProseMirrorWithRefs extends EditorState<Schema<any, any>> {
   doc: RefsNode;
 }
+
+function setTextSelection (view: EditorView, anchor: number, head?: number) {
+  const { state } = view;
+  const tr = state.tr.setSelection(TextSelection.create(state.doc, anchor, head));
+  view.dispatch(tr);
+};

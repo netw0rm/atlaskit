@@ -10,6 +10,7 @@ export class EditorView {
   props: EditorProps;
   state: EditorState<any>;
   content: dom.Element;
+  dom: dom.Element;
   docView: NodeViewDesc;
   update(props: EditorProps): void;
   updateState(state: EditorState<any>): void;

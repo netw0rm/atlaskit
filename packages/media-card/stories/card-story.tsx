@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { MediaItem, ContextFactory, CardDelete, CardClick } from '@atlaskit/media-core';
-import { StoryBookTokenProvider } from './tokenProvider';
+import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers';
 import { Card } from '../src';
 
 const collectionName = 'MediaServicesSample';

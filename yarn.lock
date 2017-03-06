@@ -137,10 +137,15 @@
   version "3.4.34"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-3.4.34.tgz#d5335792823bb09cddd5e38c3d211b709183854d"
 
-"@types/enzyme@^2.5.39":
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-2.7.0.tgz#89e5329f212dc62ddbcb5d9ef91f0ec02cce1e9d"
+"@types/cheerio@*":
+  version "0.17.31"
+  resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.17.31.tgz#bfeda3e3e8647a6e49b2998d137c81d5d8ab52d0"
+
+"@types/enzyme@^2.7.5":
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-2.7.5.tgz#a7c52a444cfa7711b16096681d134f4718df8a86"
   dependencies:
+    "@types/cheerio" "*"
     "@types/react" "*"
 
 "@types/es6-promise@^0.0.32":
@@ -189,11 +194,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*":
-  version "0.14.54"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-0.14.54.tgz#0fb0dadad895febeb468a885d0fa2284d5bbefae"
-
-"@types/react@^15.0.14":
+"@types/react@*", "@types/react@^15.0.14":
   version "15.0.14"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.14.tgz#07a739b20b0d4cf946f52444d3c40a94d4a234b1"
 

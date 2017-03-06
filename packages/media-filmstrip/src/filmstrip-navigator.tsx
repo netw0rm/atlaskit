@@ -12,8 +12,8 @@ export interface FilmstripNavigatorProps {
   width?: number;
 }
 
-function onDragEvent(dragEventHandler?: (event: DragEvent) => void): DragEventHandler<HTMLUListElement> {
-  return (event: ReactDragEvent<HTMLUListElement>) => {
+function onDragEvent(dragEventHandler?: (event: DragEvent) => void): DragEventHandler<HTMLDivElement> {
+  return (event: ReactDragEvent<HTMLDivElement>) => {
     if (!dragEventHandler) {
       return;
     }

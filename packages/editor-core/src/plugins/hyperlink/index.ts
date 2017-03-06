@@ -160,7 +160,7 @@ export class HyperlinkState {
 
     if (link && $from) {
       const {node, offset} = $from.parent.childAfter($from.parentOffset);
-      const parentNodeOffset = $from.start($from.depth);
+      const parentNodeStartPos = $from.start($from.depth);
 
       // offset is the end postion of previous node
       // This is to check whether the cursor is at the beginning of current node
@@ -171,7 +171,7 @@ export class HyperlinkState {
       if (node && node.isText && link.isInSet(node.marks)) {
         return {
           node,
-          startPos: parentNodeOffset + offset
+          startPos: parentNodeStartPos + offset
         };
       }
     }

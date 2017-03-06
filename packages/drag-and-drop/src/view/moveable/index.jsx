@@ -42,7 +42,6 @@ const getMovement = (point: Position): Object => {
 };
 
 const Canvas = styled.div`
-  display: inline-block;
   z-index: ${props => (props.zIndex)};
 `;
 

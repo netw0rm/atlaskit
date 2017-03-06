@@ -363,11 +363,5 @@ export default (type: TypeId,
       return mapStateToProps;
     };
 
-    return connect(makeMapStateToProps, mapDispatchToProps, null, {
-      storeKey,
-      // areMergedPropsEqual(nextProps, props) {
-      //   console.log('comparing props equality');
-      //   return isShallowEqual(nextProps, props);
-      // },
-    })(Draggable);
+    return connect(makeMapStateToProps, mapDispatchToProps, null, { storeKey })(Draggable);
   };

@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 import { DroppableDimensionPublisher } from '../dimension-publisher/';
 import getDisplayName from '../get-display-name';
 import storeKey from '../../state/get-store-key';
@@ -26,11 +27,16 @@ type MapState = (state: DroppableState, ownProps: Object) => Object;
 
 type Props = {|
   provided: NeedsProviding,
+  isDraggingOver: boolean,
 |}
 
 type ComponentState = {|
   ref: ?Element,
 |}
+
+const Container = styled.div`
+  user-select: ${props => props.isDraggingOver ? 'none' : 'auto' };
+`
 
 export default (type: TypeId,
   provide: Provide,
@@ -58,7 +64,10 @@ export default (type: TypeId,
           const { id: droppableId } = this.props.provided;
 
           return (
-            <div ref={this.setRef}>
+            <Container
+              isDraggingOver={this.props.isDraggingOver}
+              innerRef={this.setRef}
+            >
               <DroppableDimensionPublisher
                 itemId={droppableId}
                 type={type}
@@ -66,7 +75,7 @@ export default (type: TypeId,
               >
                 <Component {...this.props} />
               </DroppableDimensionPublisher>
-            </div>
+            </Container>
           );
         }
       }

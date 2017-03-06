@@ -6,7 +6,7 @@ export { FieldBase, Label };
 
 export default class extends PureComponent {
   static propTypes = {
-    isDialogOpen: PropTypes.bool,
+    defaultIsDialogOpen: PropTypes.bool,
     isFocused: PropTypes.bool,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
@@ -14,7 +14,7 @@ export default class extends PureComponent {
   }
 
   static defaultProps = {
-    isDialogOpen: false,
+    defaultIsDialogOpen: false,
     isFocused: false,
     onFocus: () => {},
     onBlur: () => {},
@@ -22,7 +22,7 @@ export default class extends PureComponent {
   }
 
   state = {
-    isDialogOpen: this.props.isDialogOpen,
+    isDialogOpen: this.props.defaultIsDialogOpen,
     isFocused: this.props.isFocused,
   }
 

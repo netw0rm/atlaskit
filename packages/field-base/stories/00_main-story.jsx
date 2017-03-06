@@ -94,7 +94,7 @@ storiesOf(name, module)
         id="fieldbase"
         isInvalid
         invalidMessage="This warning dialog should be open by default"
-        isDialogOpen
+        defaultIsDialogOpen
       >
         <Input
           value="input children"

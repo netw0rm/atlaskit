@@ -184,7 +184,7 @@ describe('ak-field-base', () => {
       expect(spy.callCount).to.equal(1);
     });
 
-    it('should call onIconClick handler', () => {
+    it('should call onIconClick handler when icon clicked', () => {
       const spy = sinon.spy();
       const wrapper = mount(<FieldBaseSmart isInvalid onIconClick={spy} />);
       wrapper.find(WarningIcon).simulate('click');

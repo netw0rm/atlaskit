@@ -55,6 +55,7 @@ export interface MentionResourceConfig {
   securityProvider: SecurityProvider;
   containerId?: string;
   refreshedSecurityProvider?: RefreshSecurityProvider;
+  shouldHighlightMention?: (mention: Mention) => boolean;
 }
 
 export interface ResourceProvider<Result> {
@@ -63,8 +64,9 @@ export interface ResourceProvider<Result> {
 }
 
 export interface MentionProvider extends ResourceProvider<Mention[]> {
-  filter(query: string): void;
+  filter(query?: string): void;
   recordMentionSelection(mention: Mention): void;
+  shouldHighlightMention(mention: Mention): boolean;
 }
 
 export interface PresenceProvider extends ResourceProvider<PresenceUpdate> {
@@ -122,8 +124,8 @@ const buildHeaders = (secOptions: SecurityOptions) => {
 /**
  * @returns Promise containing the json response
  */
-const requestService = (baseUrl: string, path: string | undefined, data: KeyValues, opts: KeyValues,
-                        secOptions: SecurityOptions, refreshedSecurityProvider?: RefreshSecurityProvider) : Promise<any> => {
+const requestService = <T>(baseUrl: string, path: string | undefined, data: KeyValues, opts: KeyValues,
+                        secOptions: SecurityOptions, refreshedSecurityProvider?: RefreshSecurityProvider): Promise<T> => {
   const url = buildUrl(baseUrl, path, data, secOptions);
   const headers = buildHeaders(secOptions);
   const options = {
@@ -131,17 +133,17 @@ const requestService = (baseUrl: string, path: string | undefined, data: KeyValu
     ...{ headers },
   };
   return fetch(new Request(url, options))
-    .then((response) => {
+    .then((response: Response) => {
       if (response.ok) {
-        return response.json();
+        return response.json<T>();
       } else if (response.status === 401 && refreshedSecurityProvider) {
         // auth issue - try once
         debug('401 attempting a forced refresh from securityProvider');
         return refreshedSecurityProvider().then(newSecOptions => (
-          requestService(baseUrl, path, data, opts, newSecOptions)
+          requestService<T>(baseUrl, path, data, opts, newSecOptions)
         ));
       }
-      return Promise.reject({
+      return Promise.reject<T>({
         code: response.status,
         reason: response.statusText,
       });
@@ -199,8 +201,12 @@ class AbstractPresenceResource extends AbstractResource<PresenceUpdate> {
 
 class AbstractMentionResource extends AbstractResource<Mention[]> implements MentionProvider {
 
+  shouldHighlightMention(mention: Mention): boolean {
+    return false;
+  }
+
   // eslint-disable-next-line class-methods-use-this
-  filter(query: string): void {
+  filter(query?: string): void {
     throw new Error(`not yet implemented.\nParams: query=${query}`);
   }
 
@@ -269,9 +275,17 @@ class MentionResource extends AbstractMentionResource {
     this.lastReturnedSearch = 0;
   }
 
-  filter(query: string): void {
+  shouldHighlightMention(mention: Mention) {
+    if (this.config.shouldHighlightMention) {
+      return this.config.shouldHighlightMention(mention);
+    }
+
+    return false;
+  }
+
+  filter(query?: string): void {
     const searchTime = Date.now();
-    const notify = (mentionResult) => {
+    const notify = (mentionResult: MentionsResult) => {
       if (searchTime > this.lastReturnedSearch) {
         this.lastReturnedSearch = searchTime;
         this._notifyListeners(mentionResult);
@@ -299,7 +313,7 @@ class MentionResource extends AbstractMentionResource {
    * @param containerId
    * @returns Promise
    */
-  private initialState(): Promise<Response> {
+  private initialState(): Promise<MentionsResult> {
     const secOptions = this.config.securityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data: KeyValues = {};
@@ -308,10 +322,10 @@ class MentionResource extends AbstractMentionResource {
     if (this.config.containerId) {
       data['containerId'] = this.config.containerId;
     }
-    return requestService(this.config.url, 'mentions/bootstrap', data, options, secOptions, refreshedSecurityProvider);
+    return requestService<MentionsResult>(this.config.url, 'mentions/bootstrap', data, options, secOptions, refreshedSecurityProvider);
   }
 
-  private search(query: string): Promise<Response> {
+  private search(query: string): Promise<MentionsResult> {
     const secOptions = this.config.securityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data = {
@@ -321,10 +335,10 @@ class MentionResource extends AbstractMentionResource {
     if (this.config.containerId) {
       data['containerId'] = this.config.containerId;
     }
-    return requestService(this.config.url, 'mentions/search', data, options, secOptions, refreshedSecurityProvider);
+    return requestService<MentionsResult>(this.config.url, 'mentions/search', data, options, secOptions, refreshedSecurityProvider);
   }
 
-  private recordSelection(mention: Mention): Promise<Response> {
+  private recordSelection(mention: Mention): Promise<void> {
     const secOptions = this.config.securityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data = {
@@ -333,7 +347,7 @@ class MentionResource extends AbstractMentionResource {
     const options = {
       method: 'POST',
     };
-    return requestService(this.config.url, 'mentions/record', data, options, secOptions, refreshedSecurityProvider);
+    return requestService<void>(this.config.url, 'mentions/record', data, options, secOptions, refreshedSecurityProvider);
   }
 }
 

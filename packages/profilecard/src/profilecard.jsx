@@ -4,76 +4,29 @@ import AkAvatar from '@atlaskit/avatar';
 import AkButton from '@atlaskit/button';
 
 import styles from 'style!./styles/profilecard.less';
+import LoadingMessage from './components/LoadingMessage';
+import ErrorMessage from './components/ErrorMessage';
 
 import IconLabel from './components/IconLabel';
 import presences from './internal/presences';
 
-/**
- * @description Create instances of the Profilecard component in a React context.
- * @class Profilecard
- *
- */
 export default class Profilecard extends PureComponent {
   static propTypes = {
-    /**
-     * @memberof Profilecard
-     * @instance
-     * @type {string}
-     */
     avatarUrl: PropTypes.string,
-    /**
-     * @memberof Profilecard
-     * @instance
-     * @type {string}
-     */
     fullName: PropTypes.string,
-    /**
-     * @memberof Profilecard
-     * @instance
-     * @type {string}
-     */
     meta: PropTypes.string,
-    /**
-     * @memberof Profilecard
-     * @instance
-     * @type {string}
-     */
     nickname: PropTypes.string,
-    /**
-     * @memberof Profilecard
-     * @instance
-     * @type {string}
-     */
     location: PropTypes.string,
-    /**
-     * @memberof Profilecard
-     * @instance
-     * @type {string}
-     */
     timestring: PropTypes.string,
-     /**
-      * @description Indicates the users online status by showing a small icon
-      * Allowed values: 'available', 'busy', 'unavailable' or 'none'
-      * @memberof Profilecard
-      * @instance
-      * @default none
-      * @type {string}
-      */
     presence: PropTypes.oneOf(Object.keys(presences)),
-    /**
-     * @description Defining the action buttons on the card.
-     * Array of one or more action objects with `label` and `callback` keys.
-     * `label` defines the button text while `callback` is invoked when
-     * the button is clicked.
-     * @memberof Profilecard
-     * @instance
-     * @type {array}
-     * @example [{label: 'Chat', callback: () => { ... }}, ... ]
-     */
     actions: React.PropTypes.arrayOf(React.PropTypes.shape({
       callback: React.PropTypes.function,
       label: React.PropTypes.string,
     })),
+    isLoading: React.PropTypes.bool,
+    hasError: React.PropTypes.bool,
+    clientFetchProfile: React.PropTypes.func,
+
   }
 
   static defaultProps = {
@@ -81,6 +34,13 @@ export default class Profilecard extends PureComponent {
   }
 
   render() {
+    if (this.props.hasError) {
+      return <ErrorMessage reload={this.props.clientFetchProfile} />;
+    }
+
+    if (this.props.isLoading) {
+      return <LoadingMessage />;
+    }
     const actions = (this.props.actions || []).map(action => (
       <AkButton
         appearance="link"

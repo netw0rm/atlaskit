@@ -2,8 +2,8 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Droplist from '@atlaskit/droplist';
 import Button from '@atlaskit/button';
-import MoreIcon from 'ak-icon/glyph/moreoptions';
-import ExpandIcon from 'ak-icon/glyph/expand';
+import MoreIcon from '@atlaskit/icon/glyph/more';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 import { name } from '../package.json';
 

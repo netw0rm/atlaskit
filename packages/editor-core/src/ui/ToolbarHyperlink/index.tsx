@@ -1,4 +1,4 @@
-import LinkIcon from 'ak-icon/glyph/editor/link';
+import LinkIcon from '@atlaskit/icon/glyph/editor/link';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
@@ -13,7 +13,6 @@ export interface Props {
 }
 
 export interface State {
-  active?: boolean;
   adding?: boolean;
   disabled?: boolean;
 }
@@ -30,27 +29,27 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
   }
 
   render() {
-    const { active, adding, disabled } = this.state;
+    const { adding, disabled } = this.state;
 
     return (
       <span className={styles.outerContainer}>
         <ToolbarButton
-          disabled={disabled || active}
+          disabled={disabled}
           onClick={this.openLinkPanel}
           selected={adding}
           iconBefore={<LinkIcon label="Link" />}
         />
         {!adding ? null :
-        <FloatingToolbar align="center" onOutsideClick={this.closeLinkPanel}>
-          <div className={styles.textInputContainer}>
-            <TextInput
-              autoFocus
-              placeholder="Paste link"
-              onSubmit={this.handleSubmit}
-              onCancel={this.closeLinkPanel}
-            />
-          </div>
-        </FloatingToolbar>
+          <FloatingToolbar align="center" onOutsideClick={this.closeLinkPanel}>
+            <div className={styles.textInputContainer}>
+              <TextInput
+                autoFocus
+                placeholder="Paste link"
+                onSubmit={this.handleSubmit}
+                onCancel={this.closeLinkPanel}
+              />
+            </div>
+          </FloatingToolbar>
         }
       </span>
     );
@@ -66,8 +65,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
 
   private handlePluginStateChange = (pluginState: HyperlinkState) => {
     this.setState({
-      active: pluginState.active,
-      disabled: !pluginState.canAddLink
+      disabled: !pluginState.linkable || pluginState.active
     });
   }
 

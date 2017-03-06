@@ -1,7 +1,7 @@
 import * as ajvModule from 'ajv';
 import * as chai from 'chai';
 import jsonSchema from '../../src/schema/json-schema';
-import { schema } from '../../test-helper/schema';
+import { schema } from '../../src/test-helper/schema';
 
 const { expect } = chai;
 // tslint:disable-next-line:variable-name
@@ -9,7 +9,7 @@ const Ajv = ((ajvModule as any).default || ajvModule);
 const ajv = new Ajv();
 const validate = ajv.compile(jsonSchema(schema));
 
-describe('ak-editor-core: schema as JSON Schema', () => {
+describe('@atlaskit/editor-core: schema as JSON Schema', () => {
   it('permits a paragraph with text', () => {
     expect(validate({
       'type': 'doc',

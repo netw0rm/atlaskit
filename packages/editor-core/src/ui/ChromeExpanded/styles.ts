@@ -1,4 +1,4 @@
-import { akEditorSubtleAccent } from 'ak-editor-shared-styles';
+import { akEditorSubtleAccent } from '@atlaskit/editor-shared-styles';
 import { akBorderRadius, akGridSize } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 
@@ -20,6 +20,10 @@ export const content = style({
       outline: 'none',
       whiteSpace: 'pre-wrap',
       padding: '12px 20px',
+    },
+    '& .ie11': {
+      overflow: 'visible',
+      wordWrap: 'break-word'
     }
   }
 });

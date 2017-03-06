@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
-import Question from 'ak-icon/glyph/question';
+import Question from '@atlaskit/icon/glyph/question';
 import { Code, Chrome, Description } from '@atlaskit/util-readme';
 
 import DropdownMenu from '../src';
@@ -129,7 +129,7 @@ storiesOf(name, module)
       </div>
     </div>
   ), {
-    imports: [...imports, ['t', 'ak-icon/glyph/question']],
+    imports: [...imports, ['t', '@atlaskit/icon/glyph/question']],
     overrides: {
       items: 'simpleDropdownItems',
     },

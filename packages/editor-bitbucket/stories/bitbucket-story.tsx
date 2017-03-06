@@ -1,9 +1,9 @@
 import '!style!css!less!./bitbucket-styles.less';
-import { base64fileconverter } from '@atlaskit/editor-core/test-helper';
+import { base64fileconverter, storyDecorator } from '@atlaskit/editor-core/src/test-helper';
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import Editor from '../src';
+import { default as Editor, version as editorVersion } from '../src';
 import { MockMentionSource } from './_mock-mentionsource';
 import exampleHTML from './exampleHTML';
 
@@ -32,49 +32,42 @@ const imageUploadHandler = (e: any, fn: any) => {
 const mentionSource = new MockMentionSource();
 
 storiesOf(name, module)
+  .addDecorator(storyDecorator(editorVersion))
   .add('Empty', () => (
-    <div style={{ padding: 20 }}>
-      <Editor
-        onCancel={CANCEL_ACTION}
-        onChange={CHANGE_ACTION}
-        onSave={SAVE_ACTION}
-      />
-    </div>
+    <Editor
+      onCancel={CANCEL_ACTION}
+      onChange={CHANGE_ACTION}
+      onSave={SAVE_ACTION}
+    />
   ))
   .add('With placeholder', () =>
-    <div style={{ padding: 20 }}>
-      <Editor
-        placeholder="What do you want to say?"
-        onCancel={CANCEL_ACTION}
-        onChange={CHANGE_ACTION}
-        onSave={SAVE_ACTION}
-      />
-    </div>
+    <Editor
+      placeholder="What do you want to say?"
+      onCancel={CANCEL_ACTION}
+      onChange={CHANGE_ACTION}
+      onSave={SAVE_ACTION}
+    />
   )
   .add('With mentions', () =>
-    <div style={{ padding: 20 }}>
-      <Editor
-        onCancel={CANCEL_ACTION}
-        onChange={CHANGE_ACTION}
-        onSave={SAVE_ACTION}
-        mentionSource={mentionSource}
-      />
-    </div>
+    <Editor
+      onCancel={CANCEL_ACTION}
+      onChange={CHANGE_ACTION}
+      onSave={SAVE_ACTION}
+      mentionSource={mentionSource}
+    />
   )
   .add('With imageUploadHandler', () =>
-    <div style={{ padding: 20 }}>
-      <Editor
-        isExpandedByDefault
-        imageUploadHandler={imageUploadHandler}
-        onCancel={CANCEL_ACTION}
-        onChange={CHANGE_ACTION}
-        onSave={SAVE_ACTION}
-      />
-    </div>
+    <Editor
+      isExpandedByDefault
+      imageUploadHandler={imageUploadHandler}
+      onCancel={CANCEL_ACTION}
+      onChange={CHANGE_ACTION}
+      onSave={SAVE_ACTION}
+    />
   )
   .add('Analytics events', () => {
     return (
-      <div style={{ padding: 20 }}>
+      <div>
         <h5 style={{ marginBottom: 20 }}>Interact with the editor and observe analytics events in the Action Logger below</h5>
         <Editor
           placeholder="Click me to expand ..."
@@ -115,9 +108,7 @@ storiesOf(name, module)
     }
 
     return (
-      <div style={{ padding: 20 }}>
-        <Demo />
-      </div>
+      <Demo />
     );
   })
   .add('Set from HTML', () => {
@@ -202,4 +193,48 @@ storiesOf(name, module)
     return (
       <Demo />
     );
-  });
+  })
+  .add('With feedback button', () => {
+    class EditorWithFeedback extends PureComponent<{}, { hasJquery?: boolean }> {
+      state = {
+        hasJquery: false
+      };
+
+      componentDidMount() {
+        delete window.jQuery;
+        this.loadJquery();
+      }
+
+      render() {
+        if (!this.state.hasJquery) {
+          return <h3>Please wait, loading jQuery ...</h3>;
+        }
+
+        return (
+          <Editor
+            onCancel={CANCEL_ACTION}
+            onChange={CHANGE_ACTION}
+            onSave={SAVE_ACTION}
+          />
+        );
+      }
+
+      private loadJquery = () => {
+        const scriptElem = document.createElement('script');
+        scriptElem.type = 'text/javascript';
+        scriptElem.src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js';
+
+        scriptElem.onload = () => {
+          this.setState({
+            ...this.state,
+            hasJquery: true
+          });
+        };
+
+        document.body.appendChild(scriptElem);
+      }
+    }
+
+    return <EditorWithFeedback />;
+  })
+;

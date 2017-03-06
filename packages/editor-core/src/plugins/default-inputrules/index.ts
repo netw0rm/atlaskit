@@ -24,7 +24,7 @@ const allInputRules = [emDash, ellipsis];
  * ProseMirror plugin for adding default input rules.
  */
 export class DefaultInputRulesState {
-  inputRules: Array<InputRule>;
+  inputRules: InputRule[];
 
   constructor(pm: ProseMirror) {
     this.inputRules = [...allInputRules];

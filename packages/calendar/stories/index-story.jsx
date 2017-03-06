@@ -22,7 +22,7 @@ function getDates() {
   return [getDate(), getDate(3), getDate(20)];
 }
 
-const imports = [['React', 'react'], ['Calendar, { StatelessCalendar }', 'ak-calendar']];
+const imports = [['React', 'react'], ['Calendar, { StatelessCalendar }', '@atlaskit/calendar']];
 
 storiesOf(name, module)
   .addCodeExampleStory('smart', () => (

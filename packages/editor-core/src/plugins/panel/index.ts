@@ -27,11 +27,14 @@ export const availablePanelType = [
 
 export class PanelState {
   private pm: PM;
+  private editorFocused: boolean = false;
+  private activeNode: PanelNode | undefined;
   private changeHandlers: PanelStateSubscriber[] = [];
   private inputRules: InputRule[] = [];
 
+  toolbarVisible: boolean = false;
   element?: HTMLElement | undefined;
-  activePanel?: PanelNode | undefined;
+  activePanelType?: string | undefined;
 
   constructor(pm: PM) {
     this.pm = pm;
@@ -48,6 +51,19 @@ export class PanelState {
       pm.on.selectionChange,
       pm.on.change,
     ], () => this.update());
+
+    pm.on.click.add(() => {
+      this.update(true);
+    });
+
+    pm.on.focus.add(() => {
+      this.editorFocused = true;
+    });
+
+    pm.on.blur.add(() => {
+      this.editorFocused = false;
+      this.update(true);
+    });
 
     this.update();
   }
@@ -93,12 +109,14 @@ export class PanelState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  private update() {
+  private update(domEvent = false) {
     const newPanel = this.getActivePanel();
-    const newElement = this.getDomElement();
-    if (this.activePanel !== newPanel) {
-      this.activePanel = newPanel;
+    if ((domEvent && newPanel) || this.activeNode !== newPanel) {
+      const newElement = newPanel && this.getDomElement();
+      this.activeNode = newPanel;
+      this.toolbarVisible = this.editorFocused && !!newPanel && (domEvent || this.element !== newElement);
       this.element = newElement;
+      this.activePanelType = newPanel && newPanel.attrs['panelType'];
       this.changeHandlers.forEach(cb => cb(this));
     }
   }

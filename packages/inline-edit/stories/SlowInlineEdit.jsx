@@ -17,10 +17,10 @@ export default class extends PureComponent {
   }
 
   onConfirm = () => {
-    action('onConfirm slow')();
     this.setState({ isWaiting: true, isEditing: true });
     setTimeout(() => {
       this.setState({ isWaiting: false, isEditing: false });
+      action('onConfirm slow')();
     }, 3000);
   }
 

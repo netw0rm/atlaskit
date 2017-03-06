@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-component-ts-template",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "config": {
     "access": "public"
   },
@@ -36,7 +36,8 @@
     "akutil-common-test": "*"
   },
   "keywords": [
-    "atlaskit",
-    "ui"
+    "fabric",
+    "ui",
+    "private"
   ]
 }

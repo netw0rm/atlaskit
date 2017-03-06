@@ -1,6 +1,7 @@
 import {
   BlockQuoteNodeType,
   BulletListNodeType,
+  CodeBlockNodeType,
   DocNodeType,
   EmMarkType,
   HeadingNodeType,
@@ -19,7 +20,7 @@ import {
   Text,
   UnderlineMarkType
 } from '../src';
-import { markFactory, nodeFactory } from '../test-helper';
+import { markFactory, nodeFactory } from '../src/test-helper';
 
 export const schema = new Schema({
   nodes: {
@@ -37,7 +38,8 @@ export const schema = new Schema({
     blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
     panel: { type: PanelNodeType, content: 'block+', group: 'block' },
     plain: { type: ParagraphNodeType, content: 'text' },
-    horizontal_rule: {type: HorizontalRuleNodeType, group: 'block' }
+    horizontal_rule: {type: HorizontalRuleNodeType, group: 'block' },
+    code_block: { type: CodeBlockNodeType, content: 'text*', group: 'block' },
   },
 
   marks: {
@@ -81,3 +83,5 @@ export const strong = markFactory(schema.marks.strong);
 export const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 export const sup = markFactory(schema.marks.subsup, { type: 'sup' });
 export const u = markFactory(schema.marks.u);
+// tslint:disable-next-line:variable-name
+export const code_block = (attrs: {} = {}) => nodeFactory(schema.nodes.code_block, attrs);

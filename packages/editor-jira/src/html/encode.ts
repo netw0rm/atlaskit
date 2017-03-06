@@ -14,7 +14,7 @@ import {
   Node as PMNode,
   OrderedListNode,
   ParagraphNode
-} from 'ak-editor-core';
+} from '@atlaskit/editor-core';
 import { isSchemaWithLists, SupportedSchema } from '../schema';
 
 export default function encode(node: DocNode, schema: SupportedSchema) {

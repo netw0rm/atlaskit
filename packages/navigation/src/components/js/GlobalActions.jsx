@@ -54,16 +54,20 @@ export default class GlobalActions extends PureComponent {
           </div>
         : null}
         <div className={styles.actions}>
-          <DrawerTrigger onActivate={onSearchActivate}>
-            <GlobalItem appearance={appearance} size="medium">
-              {searchIcon}
-            </GlobalItem>
-          </DrawerTrigger>
-          <DrawerTrigger onActivate={onCreateActivate}>
-            <GlobalItem appearance={appearance} size="medium">
-              {createIcon}
-            </GlobalItem>
-          </DrawerTrigger>
+          {searchIcon ?
+            <DrawerTrigger onActivate={onSearchActivate}>
+              <GlobalItem appearance={appearance} size="medium">
+                {searchIcon}
+              </GlobalItem>
+            </DrawerTrigger>
+          : null}
+          {createIcon ?
+            <DrawerTrigger onActivate={onCreateActivate}>
+              <GlobalItem appearance={appearance} size="medium">
+                {createIcon}
+              </GlobalItem>
+            </DrawerTrigger>
+          : null}
         </div>
       </div>
     );

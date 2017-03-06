@@ -7,7 +7,7 @@ They must be used singly after a single item name, and have only numbers.
 * Use labels to call out tags and high-visibility attributes.
 * Use a tooltip if you want to indicate units.
 
-![Example badge](http://i.imgur.com/ZQHLeGg.png)
+![Example badge](//i.imgur.com/ZQHLeGg.png)
 
 ## Try it out
 

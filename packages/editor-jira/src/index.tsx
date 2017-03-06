@@ -9,12 +9,16 @@ import {
   Keymap,
   ListsPlugin,
   ProseMirror,
-  TextFormattingPlugin
-} from 'ak-editor-core';
+  TextFormattingPlugin,
+  version as coreVersion
+} from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { encode, parse } from './html';
 import { makeSchema, SupportedSchema } from './schema';
+import { version, name } from './version';
+
+export { version };
 
 export interface Props {
   context?: ContextName;
@@ -23,6 +27,7 @@ export interface Props {
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
+  onExpanded?: (editor?: Editor) => void;
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
   allowLists?: boolean;
@@ -36,6 +41,7 @@ export interface State {
 
 export default class Editor extends PureComponent<Props, State> {
   state: State;
+  version = `${version} (editor-core ${coreVersion})`;
 
   constructor(props: Props) {
     super(props);
@@ -55,6 +61,29 @@ export default class Editor extends PureComponent<Props, State> {
     if (pm) {
       pm.focus();
     }
+  }
+
+  /**
+   * Expand the editor chrome
+   */
+  expand = () => {
+    const { onExpanded } = this.props;
+    const { schema } = this.state;
+
+    this.setState({ isExpanded: true, schema });
+
+    if (onExpanded) {
+      onExpanded(this);
+    }
+  }
+
+  /**
+   * Collapse the editor chrome
+   */
+  collapse = () => {
+    const { schema } = this.state;
+
+    this.setState({ isExpanded: false, schema });
   }
 
   /**
@@ -89,7 +118,7 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
-    const { pm, isExpanded, schema } = this.state;
+    const { pm, isExpanded } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
 
@@ -99,11 +128,13 @@ export default class Editor extends PureComponent<Props, State> {
         isExpanded={isExpanded}
         onCancel={handleCancel}
         onSave={handleSave}
-        onCollapsedChromeFocus={() => this.setState({ isExpanded: true, schema })}
+        onCollapsedChromeFocus={this.expand}
         placeholder={this.props.placeholder}
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
+        packageVersion={version}
+        packageName={name}
       />
     );
   }

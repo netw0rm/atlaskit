@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/spinner",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "config": {
     "access": "public"
   },
@@ -11,6 +11,7 @@
   "scripts": {
     "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/spinner"
   },
+  "types": "src/index.d.ts",
   "files": [
     "dist"
   ],
@@ -25,7 +26,9 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/util-readme": "^1.0.0"
+    "@atlaskit/util-readme": "^1.0.0",
+    "@atlaskit/spinner": "^1.0.0",
+    "@atlaskit/util-common-test": "^1.0.0"
   },
   "repository": {
     "type": "git",

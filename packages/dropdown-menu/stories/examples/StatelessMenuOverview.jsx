@@ -5,7 +5,7 @@ const simpleDropdownItems = [
   {
     heading: 'Cities',
     items: [
-      { content: 'Sydney', href: 'http://atlassian.com', target: '_blank' },
+      { content: 'Sydney', href: '//atlassian.com', target: '_blank' },
       { content: 'Canberra' },
       { content: 'Melbourne' },
       { content: 'Perth' },

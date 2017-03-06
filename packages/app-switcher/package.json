@@ -1,0 +1,41 @@
+{
+  "name": "@atlaskit/app-switcher",
+  "version": "2.1.1",
+  "config": {
+    "access": "public"
+  },
+  "description": "akapp-switcher React component",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.jsx",
+  "scripts": {
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/app-switcher; } || ../../node_modules/.bin/not-in-publish"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/dropdown-menu": "^1.1.2",
+    "@atlaskit/droplist": "^1.0.0",
+    "@atlaskit/logo": "^2.0.0",
+    "@atlaskit/util-readme": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
+    "babel-runtime": "^6.11.6",
+    "classnames": "^2.2.5"
+  },
+  "peerDependencies": {
+    "react": "^15.3.2",
+    "styled-components": "^1.3.0"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  },
+  "keywords": [
+    "fabric",
+    "ui"
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tooltip",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "config": {
     "access": "public"
   },
@@ -11,6 +11,7 @@
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/tooltip; } || ../../node_modules/.bin/not-in-publish"
   },
+  "types": "src/index.d.ts",
   "files": [
     "dist"
   ],

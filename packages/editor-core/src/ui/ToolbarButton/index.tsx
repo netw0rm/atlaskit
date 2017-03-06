@@ -1,4 +1,4 @@
-import AkButton from 'ak-button';
+import AkButton from '@atlaskit/button';
 import * as React from 'react';
 import { MouseEvent, PureComponent, ReactElement } from 'react';
 import * as styles from './styles';

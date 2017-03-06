@@ -274,10 +274,10 @@ describe(`${name} - stateless`, () => {
       expect(onRemovedSpy.calledWith(selectedItems[0])).to.equal(true);
     });
 
-    describe('handleKeyUpInInput', () => {
+    describe('handleKeyboardInteractions', () => {
       it('should call onOpenChange when there was no value and Backspace was pressed', () => {
         const event = { key: 'Backspace', target: { value: '' } };
-        instance.handleKeyUpInInput(event);
+        instance.handleKeyboardInteractions(event);
         expect(onOpenChangeSpy.calledOnce).to.equal(true);
         expect(onOpenChangeSpy.calledWith({ event, isOpen: true })).to.equal(true);
       });
@@ -285,8 +285,80 @@ describe(`${name} - stateless`, () => {
       it('should call removeLatestItem when there was no value and Backspace was pressed', () => {
         const spy = sinon.spy(instance, 'removeLatestItem');
         const event = { key: 'Backspace', target: { value: '' } };
-        instance.handleKeyUpInInput(event);
+        instance.handleKeyboardInteractions(event);
         expect(spy.calledOnce).to.equal(true);
+      });
+
+      it('should call focusNextItem when ArrowDown is pressed and Select is open', () => {
+        const spy = sinon.spy(instance, 'focusNextItem');
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowDown', preventDefault: preventDefaultSpy };
+        instance.handleKeyboardInteractions(event);
+        expect(spy.calledOnce).to.equal(true);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
+      });
+
+      it('should call focusNextItem when ArrowDown is pressed and Select is closed', () => {
+        wrapper.setProps({ isOpen: false });
+        const spy = sinon.spy(instance, 'focusNextItem');
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowDown', preventDefault: preventDefaultSpy };
+        instance.handleKeyboardInteractions(event);
+        expect(spy.calledOnce).to.equal(true);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
+      });
+
+      it('should call onOpenChange when ArrowDown is pressed and Select is closed', () => {
+        wrapper.setProps({ isOpen: false });
+        const spy = sinon.spy(instance, 'onOpenChange');
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowDown', preventDefault: preventDefaultSpy };
+        instance.handleKeyboardInteractions(event);
+        expect(spy.calledOnce).to.equal(true);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
+      });
+
+      it('should call focusPreviousItem when ArrowUp is pressed and Select is open', () => {
+        const spy = sinon.spy(instance, 'focusPreviousItem');
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowUp', preventDefault: preventDefaultSpy };
+        instance.handleKeyboardInteractions(event);
+        expect(spy.calledOnce).to.equal(true);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
+      });
+
+      it('should NOT call focusPreviousItem when ArrowUp is pressed and Select is closed', () => {
+        wrapper.setProps({ isOpen: false });
+        const spy = sinon.spy(instance, 'focusPreviousItem');
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'ArrowUp', preventDefault: preventDefaultSpy };
+        instance.handleKeyboardInteractions(event);
+        expect(spy.called).to.equal(false);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
+      });
+
+      it('should call handleItemSelect when Enter is pressed and an item is focused and Select is open', () => {
+        wrapper.setState({ focusedItemIndex: 0 });
+        const spy = sinon.spy(instance, 'handleItemSelect');
+        const event = { key: 'Enter' };
+        instance.handleKeyboardInteractions(event);
+        expect(spy.calledOnce).to.equal(true);
+      });
+
+      it('should NOT call handleItemSelect when Enter is pressed and no item is focused and Select is open', () => {
+        const spy = sinon.spy(instance, 'handleItemSelect');
+        const event = { key: 'Enter' };
+        instance.handleKeyboardInteractions(event);
+        expect(spy.called).to.equal(false);
+      });
+
+      it('should NOT call handleItemSelect when Enter is pressed and Select is closed', () => {
+        wrapper.setProps({ isOpen: false });
+        wrapper.setState({ focusedItemIndex: 0 });
+        const spy = sinon.spy(instance, 'handleItemSelect');
+        const event = { key: 'Enter' };
+        instance.handleKeyboardInteractions(event);
+        expect(spy.called).to.equal(false);
       });
     });
 
@@ -445,10 +517,43 @@ describe(`${name} - stateless`, () => {
         expect(onFilterChangeSpy.callCount).to.equal(1);
         expect(onFilterChangeSpy.calledWith('')).to.equal(true);
       });
+    });
 
-      it('should clear the oldFilterValue state when called', () => {
-        instance.handleItemSelect(item, attrs);
-        expect(wrapper.state().oldFilterValue).to.equal('');
+    describe('getNextFocusable', () => {
+      it('should return 0 if null is passed as a current focus', () => {
+        expect(instance.getNextFocusable(null, 2)).to.equal(0);
+      });
+
+      it('should return next item', () => {
+        expect(instance.getNextFocusable(0, 2)).to.equal(1);
+      });
+
+      it('should return 0 if focus is on the last item', () => {
+        expect(instance.getNextFocusable(2, 2)).to.equal(0);
+      });
+    });
+
+    describe('getPrevFocusable', () => {
+      it('should return previous item', () => {
+        expect(instance.getPrevFocusable(1, 2)).to.equal(0);
+      });
+
+      it('should return length if focus is on the first item', () => {
+        expect(instance.getPrevFocusable(0, 2)).to.equal(2);
+      });
+    });
+
+    describe('getAllVisibleItems', () => {
+      it('should return all visible items', () => {
+        const items = [
+          { value: 1, content: 'Test1' },
+          { value: 2, content: 'Test 2' },
+          { value: 3, content: 'Third test' },
+          { value: 4, content: 'Something different' },
+        ];
+
+        wrapper.setProps({ items: [{ heading: '', items }], filterValue: 'test', selectedItems: [items[0]] });
+        expect(instance.getAllVisibleItems(wrapper.prop('items'))).to.deep.equal([items[1], items[2]]);
       });
     });
   });
@@ -469,6 +574,7 @@ describe(`${name} - stateless`, () => {
 
     beforeEach(() => {
       wrapper = mount(<StatelessMultiSelect
+        appearance="subtle"
         isDisabled
         items={selectItems}
         selectedItems={selectedItems}
@@ -477,6 +583,10 @@ describe(`${name} - stateless`, () => {
 
     it('native select should be "disabled"', () => {
       expect(wrapper.find('select[disabled]').length).to.equal(1);
+    });
+
+    it('should pass appearance property to field base', () => {
+      expect(wrapper.find(FieldBase).prop('appearance')).to.equal('subtle');
     });
 
     it('should pass isDisabled property to field base', () => {
@@ -489,6 +599,22 @@ describe(`${name} - stateless`, () => {
 
     it('should not render input if disabled', () => {
       expect(wrapper.find('input[disabled]').length).to.equal(0);
+    });
+  });
+
+  describe('appearance variations', () => {
+    it('should have appearance prop by default', () => {
+      const wrapper = mount(<StatelessMultiSelect />);
+      expect(wrapper.prop('appearance')).to.equal('default');
+    });
+
+    it('should correctly map appearance prop to FieldBase', () => {
+      const defaultMultiSelect = mount(<StatelessMultiSelect />);
+      const standardFieldBase = defaultMultiSelect.find(FieldBase);
+      const subtleMultiSelect = mount(<StatelessMultiSelect appearance="subtle" />);
+      const subtleFieldBase = subtleMultiSelect.find(FieldBase);
+      expect(standardFieldBase.prop('appearance')).to.equal('standard');
+      expect(subtleFieldBase.prop('appearance')).to.equal('subtle');
     });
   });
 });

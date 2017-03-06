@@ -1,4 +1,4 @@
-import { AbstractMentionResource } from 'ak-mention';
+import { AbstractMentionResource } from '@atlaskit/mention';
 import { Search } from 'js-search';
 import mentionData from './_mention-data';
 

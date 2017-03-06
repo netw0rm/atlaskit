@@ -5,7 +5,6 @@ import {
   Plugin,
   ProseMirror,
   Schema,
-  TextSelection
 } from '../../prosemirror';
 import { ImageNodeType } from '../../schema';
 import DropAdapter from './drop-adapter';
@@ -13,7 +12,7 @@ import PasteAdapter from './paste-adapter';
 
 export interface ImageUploadPluginOptions {
   defaultHandlersEnabled?: boolean;
-  supportedImageTypes?: Array<string>;
+  supportedImageTypes?: string[];
   maxFileSizeInBytes: number;
 }
 
@@ -71,6 +70,8 @@ export class ImageUploadState {
 
     this.dropAdapter.add(this.handleImageUpload);
     this.pasteAdapter.add(this.handleImageUpload);
+
+    this.update(true);
   }
 
   handleImageUpload = (_?: any, e?: any): boolean => {
@@ -90,14 +91,18 @@ export class ImageUploadState {
     cb(this);
   }
 
+  unsubscribe(cb: StateChangeHandler) {
+    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
+  }
+
   /**
    * Insert an image at the current selection.
    */
   addImage = (options: { src?: string }): void => {
     const { pm } = this;
     const { image } = pm.schema.nodes;
-    if (this.enabled && image && pm.selection instanceof TextSelection) {
-      pm.tr.insert(pm.selection.$head.pos, image.create(options)).apply();
+    if (this.enabled && image) {
+      pm.tr.insert(pm.selection.$to.pos, image.create(options)).apply();
     }
   }
 
@@ -129,8 +134,7 @@ export class ImageUploadState {
       && selection.node.type instanceof ImageNodeType;
   }
 
-  private update(): void {
-    let dirty = false;
+  private update(dirty = false): void {
 
     const newActive = this.isImageSelected();
     if (newActive !== this.active) {
@@ -171,11 +175,10 @@ export class ImageUploadState {
   private canInsertImage(): boolean {
     const { pm } = this;
     const { image } = pm.schema.nodes;
-    const { $from, $to, empty } = pm.selection;
+    const { $to} = pm.selection;
 
     return !!image
-      && empty
-      && $from.parent.canReplaceWith($from.parentOffset, $to.parentOffset, image);
+      && $to.parent.canReplaceWith($to.parentOffset, $to.parentOffset, image);
   }
 }
 

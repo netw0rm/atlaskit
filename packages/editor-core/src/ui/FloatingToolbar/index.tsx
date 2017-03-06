@@ -98,7 +98,7 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
       <OutsideClickable onClick={this.props.onOutsideClick}>
         <div
           ref="content"
-          style={{ top: 0, left: 0, position, transform, padding }}
+          style={{ top: 0, left: 0, position, transform, padding, zIndex: 10 }}
           className={styles.container}
         >
           {this.props.children}

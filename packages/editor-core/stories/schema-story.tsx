@@ -5,7 +5,7 @@ import * as React from 'react';
 import Thenable from 'thenable';
 import { OrderedMap } from '../src/prosemirror';
 import makeJsonSchema from '../src/schema/json-schema';
-import { schema } from '../test-helper/schema';
+import { schema } from '../src/test-helper/schema';
 import Editor from './editor';
 import { name } from '../package.json';
 
@@ -33,7 +33,10 @@ storiesOf(name, module)
     }
 
     class Story extends React.PureComponent<{}, State> {
-      state: State = { isValid: true };
+      state: State = {
+        isValid: true
+      };
+
       container?: HTMLDivElement;
       editor?: Element;
 
@@ -45,6 +48,7 @@ storiesOf(name, module)
             highlightBlock(codes[i]);
           }
         }
+
         this.fetchEditorState();
       }
 
@@ -95,7 +99,9 @@ storiesOf(name, module)
           const { doc } = editor;
           if (doc) {
             const docJson = doc.toJSON();
+
             this.setState({
+              ...this.state,
               docJson,
               isValid: validate(docJson),
             });

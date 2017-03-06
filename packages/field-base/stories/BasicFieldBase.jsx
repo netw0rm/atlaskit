@@ -18,12 +18,14 @@ export default props => (
       isFirstChild={props.isFirstChild}
     />
     <AkFieldBase
+      isCompact={props.isCompact}
       isInvalid={props.isInvalid}
       isDisabled={props.isDisabled}
       isReadOnly={props.isReadOnly}
       appearance={props.appearance}
       isPaddingDisabled={props.isPaddingDisabled}
       isFitContainerWidthEnabled={props.isFitContainerWidthEnabled}
+      isLoading={props.isLoading}
     >
       {props.children}
     </AkFieldBase>

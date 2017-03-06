@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-hipchat",
-  "version": "1.0.1",
+  "version": "1.2.3",
   "config": {
     "access": "public"
   },
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
-    "build": "npm run build/es5 && npm run build/es2015",
+    "build": "../../build/bin/generate.version.export.js ./package.json src/version.ts && npm run build/es5 && npm run build/es2015",
     "build/es5": "../../node_modules/.bin/tsc -p build/es5",
     "build/es2015": "../../node_modules/.bin/tsc -p build/es2015"
   },
@@ -21,7 +21,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "ak-editor-core": "^3.10.8",
+    "@atlaskit/editor-core": "^3.0.0",
     "classnames": "^2.2.5",
     "tslib": "^1.2.0"
   },
@@ -29,13 +29,17 @@
     "react": "^15.3.2"
   },
   "devDependencies": {
-    "ak-editor-hipchat": "^2.10.0",
-    "ak-mention": "*",
+    "@atlaskit/editor-hipchat": "*",
+    "@atlaskit/mention": "*",
     "akutil-readme": "^1.2.0",
     "js-search": "^1.3.3"
   },
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "fabric",
+    "ui"
+  ]
 }

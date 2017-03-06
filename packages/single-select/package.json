@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/single-select",
-  "version": "1.0.4",
+  "version": "1.4.0",
   "config": {
     "access": "public"
   },
@@ -18,7 +18,7 @@
     "@atlaskit/util-shared-styles": "^1.0.0",
     "@atlaskit/droplist": "^1.0.0",
     "@atlaskit/droplist-group": "^1.0.0",
-    "@atlaskit/droplist-item": "^1.0.0",
+    "@atlaskit/droplist-item": "^2.0.0",
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/icon": "^1.0.0",
     "@atlaskit/field-base": "^2.0.0",

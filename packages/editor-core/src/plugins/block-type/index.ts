@@ -1,6 +1,6 @@
 import Keymap from 'browserkeymap';
 import { ContextName } from '../../';
-import { trackAndInvoke } from '../../analytics';
+import { analyticsService, trackAndInvoke } from '../../analytics';
 import * as keymaps from '../../keymaps';
 import {
   commands,
@@ -30,6 +30,7 @@ import {
   removeCodeBlocksFromSelection
 } from '../../utils';
 import transformToCodeBlock from './transform-to-code-block';
+import { isConvertableToCodeBlock, transformToCodeBlockAction } from './transform-to-code-block';
 
 // The names of the blocks don't map precisely to schema nodes, because
 // of concepts like "paragraph" <-> "Normal text" and "Unknown".
@@ -48,7 +49,6 @@ const PANEL = makeBlockType('panel', 'Panel');
 const OTHER = makeBlockType('other', 'Other…');
 
 export type GroupedBlockTypes = BlockType[][];
-
 export class BlockTypeState {
   private pm: PM;
   private changeHandlers: BlockTypeStateSubscriber[] = [];
@@ -116,7 +116,6 @@ export class BlockTypeState {
         return this.changeBlockTypeAtSelection(name, pm.selection.$from, pm.selection.$to, true);
       }
     }
-
     if (name === PANEL.name && nodes.panel) {
       if (commands.wrapIn(nodes.panel)(pm, false)) {
         return this.changeBlockTypeAtSelection(name, pm.selection.$from, pm.selection.$to, true);
@@ -221,6 +220,13 @@ export class BlockTypeState {
     return true;
   }
 
+  focus(): void {
+    this.pm.content.focus();
+  }
+
+  blur(): void {
+    this.pm.content.blur();
+  }
 
   toggleBlockType(name: BlockTypeName): void {
     const blockNodes = this.blockNodesBetweenSelection();
@@ -232,6 +238,128 @@ export class BlockTypeState {
     } else {
       commands.lift(this.pm);
     }
+  }
+
+  private createNewParagraphAbove() {
+    const append = false;
+
+    if (!this.canMoveUp()) {
+      this.createParagraphNear(append);
+      return true;
+    }
+
+    return false;
+  }
+
+  private canMoveUp(): boolean {
+    const {selection} = this.pm;
+    if (selection instanceof TextSelection) {
+      if (!selection.empty) {
+        return true;
+      }
+    }
+
+    return selection.$from.pos !== selection.$from.depth;
+  }
+
+  private createNewParagraphBelow() {
+    const append = true;
+
+    if (!this.canMoveDown()) {
+      this.createParagraphNear(append);
+      return true;
+    }
+
+    return false;
+  }
+
+  private canMoveDown(): boolean {
+    const {selection, doc} = this.pm;
+    if (selection instanceof TextSelection) {
+      if (!selection.empty) {
+        return true;
+      }
+    }
+
+    return doc.nodeSize - selection.$to.pos - 2 !== selection.$to.depth;
+  }
+
+  private createParagraphNear(append: boolean = true): void {
+    const {pm} = this;
+    const paragraph = pm.schema.nodes.paragraph;
+
+    if (!paragraph) {
+      return;
+    }
+
+    let insertPos;
+
+    if (pm.selection instanceof TextSelection) {
+      if (this.topLevelNodeIsEmptyTextBlock()) {
+        return;
+      }
+      insertPos = this.getInsertPosFromTextBlock(append);
+    } else {
+      insertPos = this.getInsertPosFromNonTextBlock(append);
+    }
+
+    pm.tr.insert(insertPos, paragraph.create()).applyAndScroll();
+
+    const next = new TextSelection(pm.doc.resolve(insertPos + 1));
+    pm.setSelection(next);
+  }
+
+  private getInsertPosFromTextBlock(append: boolean): void {
+    const {pm} = this;
+
+    const {$from, $to} = pm.selection;
+    let pos;
+
+    if (!append) {
+      pos = $from.start($from.depth) - 1;
+      pos = $from.depth > 1 ? pos - 1 : pos;
+
+      // Same theory as comment below.
+      if ($to.node($to.depth - 1).type === pm.schema.nodes['list_item']) {
+        pos = pos - 1;
+      }
+    } else {
+      pos = $to.end($to.depth) + 1;
+      pos = $to.depth > 1 ? pos + 1 : pos;
+
+      // List is a special case. Because from user point of view, the whole list is a unit,
+      // which has 3 level deep (ul, li, p), all the other block types has maxium two levels as a unit.
+      // eg. block type (bq, p/other), code block (cb) and panel (panel, p/other).
+      if ($to.node($to.depth - 1).type === pm.schema.nodes['list_item']) {
+        pos = pos + 1;
+      }
+    }
+
+    return pos;
+  }
+
+  private getInsertPosFromNonTextBlock(append: boolean): void {
+    const {pm} = this;
+
+    const {$from, $to} = pm.selection;
+    let pos;
+
+    if (!append) {
+      // The start position is different with text block because it starts from 0
+      pos = $from.start($from.depth);
+      // The depth is different with text block because it starts from 0
+      pos = $from.depth > 0 ? pos - 1 : pos;
+    } else {
+      pos = $to.end($to.depth);
+      pos = $to.depth > 0 ? pos + 1 : pos;
+    }
+
+    return pos;
+  }
+
+  private topLevelNodeIsEmptyTextBlock(): boolean {
+    const topLevelNode = this.pm.selection.$from.node(1);
+    return topLevelNode.isTextblock && !isCodeBlockNode(topLevelNode) && topLevelNode.nodeSize === 2;
   }
 
   private updateBlockTypeKeymap(context: Context) {
@@ -268,8 +396,52 @@ export class BlockTypeState {
     const baseKeymap = this.pm.input.keymaps.filter(k => (k as any).priority === -100)[0];
     this.pm.addKeymap(new Keymap({
       [keymaps.insertNewLine.common!]: trackAndInvoke('atlassian.editor.newline.keyboard', () => this.insertNewLine()),
-      [keymaps.shiftBackspace.common!]: (baseKeymap as any).map.lookup('Backspace')
+      [keymaps.moveUp.common!]: trackAndInvoke('atlassian.editor.moveup.keyboard', () => this.createNewParagraphAbove()),
+      [keymaps.moveDown.common!]: trackAndInvoke('atlassian.editor.movedown.keyboard', () => this.createNewParagraphBelow()),
+      [keymaps.shiftBackspace.common!]: (baseKeymap as any).map.lookup('Backspace'),
+      [keymaps.createCodeBlock.common!]: () => this.createCodeBlock()
     }));
+  }
+
+  private createCodeBlock(): boolean {
+    const {$from} = this.pm.selection;
+    const parentBlock = $from.parent;
+    if (!parentBlock.isTextblock) {
+      return false;
+    }
+    const startPos = $from.start($from.depth);
+
+    let textOnly = true;
+
+    this.pm.doc.nodesBetween(startPos, $from.pos, (node) => {
+      if (node.childCount === 0 && !node.isText && !node.isTextblock) {
+        textOnly = false;
+      }
+    });
+
+    if (!textOnly) {
+      return false;
+    }
+
+    if (!this.pm.schema.nodes.code_block) {
+      return false;
+    }
+
+    const fencePart = parentBlock.textContent.slice(0, $from.pos - startPos).trim();
+
+    const matches = /^```([^\s]+)?/.exec(fencePart);
+
+    if (matches) {
+      if (isConvertableToCodeBlock(this.pm)) {
+        const eventName = this.analyticsEventName('autoformatting', 'codeblock');
+        analyticsService.trackEvent(eventName);
+
+        transformToCodeBlockAction(this.pm, { language: matches[1] }).delete(startPos, $from.pos).applyAndScroll();
+        return true;
+      }
+    }
+
+    return false;
   }
 
   private blockNodesBetweenSelection(): Node[] {
@@ -307,7 +479,6 @@ export class BlockTypeState {
     }
 
     const { $from } = pm.selection;
-
     for (let depth = 0; depth <= $from.depth; depth++) {
       const node = $from.node(depth)!;
       const blocktype = this.nodeBlockType(node);

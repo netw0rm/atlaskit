@@ -39,7 +39,7 @@ function extractPresences(mentions: Mention[]) {
 export interface Props {
   resourceProvider: MentionProvider;
   presenceProvider?: PresenceProvider;
-  query: string;
+  query?: string;
   onSelection?: OnSelection;
 }
 

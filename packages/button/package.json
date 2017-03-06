@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/button",
-  "version": "1.0.3",
+  "version": "1.0.10",
   "config": {
     "access": "public"
   },
@@ -27,7 +27,7 @@
     "@atlaskit/icon": "^1.0.0",
     "@atlaskit/button": "*",
     "uid": "^0.0.2",
-    "@atlaskit/util-readme": "1.0.0"
+    "@atlaskit/util-readme": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"

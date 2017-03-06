@@ -1,15 +1,14 @@
-import TipIcon from 'ak-icon/glyph/editor/hint';
-import InfoIcon from 'ak-icon/glyph/editor/info';
-import NoteIcon from 'ak-icon/glyph/editor/note';
-import RemoveIcon from 'ak-icon/glyph/editor/remove';
-import WarningIcon from 'ak-icon/glyph/editor/warning';
+import TipIcon from '@atlaskit/icon/glyph/editor/hint';
+import InfoIcon from '@atlaskit/icon/glyph/editor/info';
+import NoteIcon from '@atlaskit/icon/glyph/editor/note';
+import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
+import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import FloatingToolbar from '../FloatingToolbar';
 import ToolbarButton from '../ToolbarButton';
 
 import { availablePanelType, PanelState, PanelType } from '../../plugins/panel';
-import { PanelNode } from '../../schema';
 import * as styles from './styles';
 
 const icons = {
@@ -24,12 +23,13 @@ export interface Props {
 }
 
 export interface State {
+  toolbarVisible: boolean;
   target?: HTMLElement | undefined;
-  activePanel?: PanelNode | undefined;
+  activePanelType?: string | undefined;
 }
 
 export default class PanelEdit extends PureComponent<Props, State> {
-  state: State = { };
+  state: State = { toolbarVisible: false };
 
   constructor(props: Props) {
     super(props);
@@ -44,9 +44,8 @@ export default class PanelEdit extends PureComponent<Props, State> {
   }
 
   render() {
-    const { target, activePanel } = this.state;
-    const activePanelType =  activePanel && activePanel.attrs['panelType'];
-    if (target) {
+    const { target, activePanelType, toolbarVisible } = this.state;
+    if (toolbarVisible) {
       return (
         <FloatingToolbar target={target} align="left">
           {availablePanelType.map((panelType, index) => {
@@ -80,9 +79,11 @@ export default class PanelEdit extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: PanelState) => {
+    const { element: target, activePanelType, toolbarVisible } = pluginState;
     this.setState({
-      target: pluginState.element,
-      activePanel: pluginState.activePanel,
+      toolbarVisible,
+      target,
+      activePanelType,
     });
   }
 

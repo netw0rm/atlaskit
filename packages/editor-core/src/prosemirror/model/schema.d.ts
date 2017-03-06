@@ -17,7 +17,7 @@ export class NodeType {
   isLeaf: boolean;
   selectable: boolean;
   draggable: boolean;
-  create(attrs?: { [key: string]: any }, content?: Fragment | Node | Node[], marks?: Mark[]): Node;
+  create(attrs?: { [key: string]: any }, content?: Fragment | Node | Node[] | string, marks?: Mark[]): Node;
   createChecked(attrs?: { [key: string]: any }, content?: Fragment | Node | Node[], marks?: Mark[]): Node;
   createAndFill(attrs?: { [key: string]: any }, content?: Fragment | Node | Node[], marks?: Mark[]): Node | null;
   validContent(content: Fragment, attrs?: { [key: string]: any }): boolean;

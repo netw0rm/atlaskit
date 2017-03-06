@@ -181,14 +181,14 @@ const buildStory = props => (
         </div>
 
         <div className="sample">
-          <AkButton {...props} href="http://www.atlassian.com">
+          <AkButton {...props} href="//www.atlassian.com">
             Create Issue
           </AkButton>
           <span>with href attribute</span>
         </div>
 
         <div className="sample">
-          <AkButton {...props} href="http://www.atlassian.com">
+          <AkButton {...props} href="//www.atlassian.com">
             Create Issue
           </AkButton>
           <span>with href attribute + no target</span>
@@ -217,7 +217,7 @@ const buildStory = props => (
             {...props}
             isDisabled
             onClick={action('clicking the Component')}
-            href="http://www.atlassian.com"
+            href="//www.atlassian.com"
             target="_blank"
           >
             Go to Site
@@ -285,7 +285,7 @@ const buildStory = props => (
         <div className="sample">
           <AkButton
             {...props}
-            href="http://www.atlassian.com"
+            href="//www.atlassian.com"
             iconBefore={<Page label="page icon" />}
           />
           <span>button with Page icon + href</span>
@@ -294,7 +294,7 @@ const buildStory = props => (
         <div className="sample">
           <AkButton
             {...props}
-            href="http://www.atlassian.com"
+            href="//www.atlassian.com"
             target="_blank"
             iconBefore={<Expand label="expand icon" />}
           />

@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { Schema, Text } from '../../../src';
 import { BulletListNodeType, DocNodeType } from '../../../src';
 
-describe('ak-editor-core/schema bullet_list node', () => {
+describe('@atlaskit/editor-core/schema bullet_list node', () => {
   it('throws an error if it is not named "bullet_list"', () => {
     expect(() => {
       new Schema({

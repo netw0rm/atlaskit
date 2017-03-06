@@ -1,4 +1,4 @@
-import { Fragment, Mark, Node as PMNode } from 'ak-editor-core';
+import { Fragment, Mark, Node as PMNode } from '@atlaskit/editor-core';
 import { isSchemaWithLists, SupportedSchema } from '../schema';
 import parseHtml from './parse-html';
 import WeakMap from './weak-map';

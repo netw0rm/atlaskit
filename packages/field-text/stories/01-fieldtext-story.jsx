@@ -5,7 +5,7 @@ import React from 'react';
 import AkFieldText from '../src';
 import { name } from '../package.json';
 
-const formTestUrl = 'http://www.w3schools.com/html/action_page.php';
+const formTestUrl = '//httpbin.org/get';
 
 function generateInput(opts) {
   const props = { label: 'Example label', ...opts };

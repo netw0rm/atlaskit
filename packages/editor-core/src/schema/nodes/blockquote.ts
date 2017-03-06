@@ -8,6 +8,10 @@ export class BlockQuoteNodeType extends Block {
     }
   }
 
+  get selectable(): boolean {
+    return false;
+  }
+
   get matchDOMTag() {
     return {
       blockquote: null

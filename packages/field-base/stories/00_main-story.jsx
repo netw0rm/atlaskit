@@ -11,7 +11,7 @@ import BasicFieldBase from './BasicFieldBase';
 import RightGutterFieldBase from './RightGutterFieldBase';
 import { name } from '../package.json';
 import AkFieldBase, { Label } from '../src';
-import { compact, none, subtle } from '../src/internal/appearances';
+import { none, subtle } from '../src/internal/appearances';
 
 const formStyle = {
   padding: '20px',
@@ -61,18 +61,78 @@ storiesOf(name, module)
     </BasicFieldBase>
   ))
   .add('with invalid prop', () =>
-    <BasicFieldBase
-      label="Invalid example"
-      id="fieldbase"
-      isInvalid
-    >
+    <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
+      <BasicFieldBase
+        label="Invalid example"
+        id="fieldbase"
+        isInvalid
+      >
+        <Input
+          value="input children"
+          isEditing
+          id="fieldbase"
+        />
+      </BasicFieldBase>
+      <BasicFieldBase
+        label="Invalid + compact example"
+        id="fieldbase"
+        isCompact
+        isInvalid
+      >
+        <Input
+          id="fieldbase"
+          isEditing
+          value="input children"
+        />
+      </BasicFieldBase>
+    </div>
+  )
+  .add('with spinner', () => {
+    const input = (
       <Input
         value="input children"
         isEditing
         id="fieldbase"
       />
-    </BasicFieldBase>
-  )
+    );
+
+    return (
+      <div style={{ display: 'flex', 'flex-direction': 'column' }}>
+        <BasicFieldBase
+          label="Spinner example"
+          id="fieldbase"
+          isLoading
+        >
+          {input}
+        </BasicFieldBase>
+        <BasicFieldBase
+          label="Invalid over spinner example"
+          id="fieldbase"
+          isLoading
+          isInvalid
+        >
+          {input}
+        </BasicFieldBase>
+        <BasicFieldBase
+          label="Spinner + compact example"
+          id="fieldbase"
+          isCompact
+          isLoading
+        >
+          {input}
+        </BasicFieldBase>
+        <BasicFieldBase
+          label="Spinner + compact + disabled example"
+          id="fieldbase"
+          isLoading
+          isCompact
+          isDisabled
+        >
+          {input}
+        </BasicFieldBase>
+      </div>
+    );
+  })
   .add('with required prop', () =>
     <form style={formStyle}>
       <BasicFieldBase
@@ -92,16 +152,40 @@ storiesOf(name, module)
     </form>
   )
   .add('with disabled prop', () =>
-    <BasicFieldBase
-      label="Disabled example"
-      id="fieldbase"
-      isDisabled
-    >
-      <Input
+    <div style={{ display: 'flex', 'flex-direction': 'column' }}>
+      <BasicFieldBase
+        label="Disabled example"
         id="fieldbase"
-        value="input children"
-      />
-    </BasicFieldBase>
+        isDisabled
+      >
+        <Input
+          id="fieldbase"
+          value="input children"
+        />
+      </BasicFieldBase>
+      <BasicFieldBase
+        label="Disabled + invalid example (should not show an icon)"
+        id="fieldbase"
+        isInvalid
+        isDisabled
+      >
+        <Input
+          id="fieldbase"
+          value="input children"
+        />
+      </BasicFieldBase>
+      <BasicFieldBase
+        label="Disabled + compact example"
+        id="fieldbase"
+        isCompact
+        isDisabled
+      >
+        <Input
+          id="fieldbase"
+          value="input children"
+        />
+      </BasicFieldBase>
+    </div>
   )
   .add('with readOnly prop', () =>
     <BasicFieldBase
@@ -115,11 +199,46 @@ storiesOf(name, module)
       />
     </BasicFieldBase>
   )
+  .add('with compact prop', () =>
+    <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
+      <BasicFieldBase
+        label="Compact example"
+        id="fieldbase"
+        isCompact
+      >
+        <Input
+          id="fieldbase"
+          value="input children"
+        />
+      </BasicFieldBase>
+      <BasicFieldBase
+        label="Compact + subtle example"
+        id="fieldbase"
+        isCompact
+        appearance="subtle"
+      >
+        <Input
+          id="fieldbase"
+          value="input children"
+        />
+      </BasicFieldBase>
+      <BasicFieldBase
+        label="Compact + none example"
+        id="fieldbase"
+        isCompact
+        appearance="none"
+      >
+        <Input
+          id="fieldbase"
+          value="input children"
+        />
+      </BasicFieldBase>
+    </div>
+  )
   .add('with different appearances', () =>
     <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
       {
         [
-          compact,
           subtle,
           none,
         ].map((appearance) => {

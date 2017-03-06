@@ -15,7 +15,7 @@ describe('<ContainerItemGroup />', () => {
       expect(mount(<ContainerItemGroup action={<div className="create">Create button</div>} />).find('.create').length).to.be.above(0);
     });
     it('with no action specified, no action should be rendered', () => {
-      expect(mount(<ContainerItemGroup />).find(`.${action}`).isEmpty()).to.equal(true);
+      expect(mount(<ContainerItemGroup />).find(`.${action}`).length).to.equal(0);
     });
   });
 });

@@ -5,7 +5,6 @@ import Trigger from './trigger';
 
 export {
   Item,
-  Group,
-  Trigger
+  Group
 }
 export default DropdownList;

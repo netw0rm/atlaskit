@@ -1,25 +1,26 @@
 import profiles from './profile-data';
-import { modifyResponse } from '../src/api/profile-client';
+import ProfileClient, { modifyResponse } from '../src/api/profile-client';
 import { random, getWeekday, getTimeString } from './util';
 
 if (!window.Promise) {
   window.Promise = Promise;
 }
 
-const requestService = (fail) => {
-  const timeout = random(500) + 500;
+const requestService = (options) => {
+  const timeout = random(1500) + 500;
 
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (fail) {
+      const profile = profiles[options.userId];
+
+      if (!profile) {
         reject(new Error('Not Found'));
         return;
       }
 
-      const id = random(10);
       const weekday = getWeekday();
 
-      const data = { ...profiles[id] };
+      const data = { ...profile };
 
       data.remoteTimeString = getTimeString();
       data.remoteWeekdayIndex = weekday.index;
@@ -30,18 +31,13 @@ const requestService = (fail) => {
   });
 };
 
-class MockProfileClient {
-  constructor(config) {
-    this.config = config;
-  }
-
-  fetch(options) {
-    let fail = !(options.userId && options.cloudId);
-    if (options.userId === '404') {
-      fail = true;
-    }
-    return requestService(fail, this.config);
+class MockProfileClient extends ProfileClient {
+  // eslint-disable-next-line class-methods-use-this
+  request(options) {
+    return requestService(options);
   }
 }
 
-export default new MockProfileClient({});
+export default new MockProfileClient({
+  cacheSize: 10,
+});

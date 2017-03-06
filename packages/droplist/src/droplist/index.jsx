@@ -14,13 +14,13 @@ export default class DropdownList extends PureComponent {
     appearance: PropTypes.oneOf(['default', 'tall']),
     children: PropTypes.node,
     isOpen: PropTypes.bool,
-    shouldFitContainer: PropTypes.bool,
     onClick: PropTypes.func,
     onKeyDown: PropTypes.func,
     onOpenChange: PropTypes.func,
     position: PropTypes.string,
-    trigger: PropTypes.node,
+    shouldFitContainer: PropTypes.bool,
     shouldFlip: PropTypes.bool,
+    trigger: PropTypes.node,
   }
 
   static defaultProps = {

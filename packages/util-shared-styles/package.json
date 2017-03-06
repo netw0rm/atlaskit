@@ -23,6 +23,8 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
+    "@atlaskit/util-readme": "^1.0.0",
+    "@atlaskit/util-shared-styles": "*",
     "ak-tooltip": "^5.0.0",
     "akutil-react": "*",
     "camelcase": "^3.0.0",

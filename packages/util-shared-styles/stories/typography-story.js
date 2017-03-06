@@ -1,8 +1,13 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
-
+import { Chrome, Code, Description } from '@atlaskit/util-readme';
 import storyStyles from 'style-loader!./typography/typography-story.less';
 import { name } from '../package.json';
+
+/* eslint-disable import/first, import/no-duplicates */
+import HeadingsExample from './examples/headings';
+import HeadingsExampleRaw from '!raw!./examples/headings';
+/* eslint-enable import/first, import/no-duplicates */
 
 /* eslint-disable max-len,  */
 
@@ -20,4 +25,16 @@ storiesOf(name, module)
       <p className={storyStyles.h200}>This is a {'<p>'} styled as h200</p>
       <p className={storyStyles.h100}>This is a {'<p>'} styled as h100</p>
     </div>
+  ))
+  .add('Mixin: heading sizes for tagged template literals', () => (
+    <Chrome>
+      <Description>
+        The heading mixins are also available for use in styled-components tagged template literals.
+      </Description>
+      <Code
+        code={HeadingsExampleRaw}
+      >
+        {HeadingsExample}
+      </Code>
+    </Chrome>
   ));

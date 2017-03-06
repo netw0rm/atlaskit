@@ -6,14 +6,14 @@ import { SinonSpy } from 'sinon';
 import { doc, h1, mention, p, strong, code_block } from './_schema-builder';
 
 import { ProseMirror } from '@atlaskit/editor-core';
-import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from '@atlaskit/editor-core/test-helper';
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from '@atlaskit/editor-core/src/test-helper';
 import Editor from '../src/index';
 
 chai.use(chaiPlugin);
 
 const expect = chai.expect;
 
-describe('ak-editor-bitbucket/expand and collapse', () => {
+describe('@atlaskit/editor-bitbucket/expand and collapse', () => {
   it('should not render expanded chrome when collapsed by default', () => {
     expect(mount(<Editor />).find('ChromeCollapsed')).to.have.length.above(0);
     expect(mount(<Editor />).find('input[placeholder]')).to.have.length.above(0);
@@ -73,7 +73,7 @@ describe('ak-editor-bitbucket/expand and collapse', () => {
   });
 });
 
-describe('ak-editor-bitbucket/setFromHtml', () => {
+describe('@atlaskit/editor-bitbucket/setFromHtml', () => {
   let editor: Editor;
 
   beforeEach(() => {
@@ -97,7 +97,7 @@ describe('ak-editor-bitbucket/setFromHtml', () => {
   });
 });
 
-describe('ak-editor-bitbucket/imageUploadHandler', () => {
+describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
   let editor: ReactWrapper<any, any>;
   let spy: SinonSpy;
 
@@ -169,7 +169,7 @@ describe('ak-editor-bitbucket/imageUploadHandler', () => {
   });
 });
 
-describe('ak-editor-bitbucket/multiple editors as children', () => {
+describe('@atlaskit/editor-bitbucket/multiple editors as children', () => {
   const fixture = fixtures();
   type Props = {};
   type State = {};
@@ -211,7 +211,7 @@ describe('ak-editor-bitbucket/multiple editors as children', () => {
   });
 });
 
-describe('ak-editor-bitbucket/toolbar', () => {
+describe('@atlaskit/editor-bitbucket/toolbar', () => {
   let editor: ReactWrapper<any, any>;
 
   beforeEach(() => {
@@ -232,7 +232,7 @@ describe('ak-editor-bitbucket/toolbar', () => {
   });
 });
 
-describe('ak-editor-bitbucket/pasting', () => {
+describe('@atlaskit/editor-bitbucket/pasting', () => {
   const fixture = fixtures();
   let editor: Editor;
   let pm: ProseMirror;
@@ -269,7 +269,7 @@ describe('ak-editor-bitbucket/pasting', () => {
   });
 });
 
-describe('ak-editor-bitbucket/keymaps', () => {
+describe('@atlaskit/editor-bitbucket/keymaps', () => {
   const fixture = fixtures();
   let editor: Editor;
   let pm: ProseMirror;

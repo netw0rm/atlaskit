@@ -17,6 +17,7 @@ describe(name, () => {
         'ResourcedMentionList',
         'MentionPicker',
         'Mention',
+        'ResourcedMention',
         'default',
       ]);
 

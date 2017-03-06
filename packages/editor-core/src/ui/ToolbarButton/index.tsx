@@ -1,5 +1,5 @@
-import AkButton from 'ak-button';
-import {Tooltip} from '@atlaskit/tooltip';
+import AkButton from '@atlaskit/button';
+import { Tooltip } from '@atlaskit/tooltip';
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import * as styles from './styles';

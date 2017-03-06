@@ -3,6 +3,7 @@ import { action } from '@kadira/storybook';
 import { AtlassianIcon, SearchIcon, QuestionCircleIcon, AddIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowleftIcon } from '@atlaskit/icon';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import AkAvatar from '@atlaskit/avatar';
+import BasicSearch from './BasicSearch';
 import Navigation, { AkContainerTitle, AkContainerItemGroup, AkContainerItem, AkDrawerItem, AkSearchDrawer, AkCreateDrawer, AkGlobalItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
@@ -41,6 +42,7 @@ export default class BasicNavigation extends PureComponent {
         }
         text="AtlasKit"
       />),
+    searchDrawerContent: (<BasicSearch />),
     createDrawerContent: (
       <div>
         <AkDrawerItem
@@ -92,7 +94,7 @@ export default class BasicNavigation extends PureComponent {
   render() {
     const backIcon = <ArrowleftIcon label="Back icon" size="medium" />;
     const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="medium" />;
-    const ContainerHeader = this.props.containerHeaderComponent;
+    const ContainerHeader = this.props.containerHeaderComponent || (() => null);
     return (
       <Navigation
         backIconOffset={this.state.backIconOffset}
@@ -100,7 +102,6 @@ export default class BasicNavigation extends PureComponent {
         drawers={[
           (<AkSearchDrawer
             backIcon={backIcon}
-            header={<ContainerHeader />}
             isOpen={this.state.openDrawer === 'search'}
             key="search"
             onBackButton={this.closeDrawer}

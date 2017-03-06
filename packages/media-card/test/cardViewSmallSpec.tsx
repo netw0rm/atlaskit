@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import {mount, ReactWrapper} from 'enzyme';
-import {CardViewSmall, CardViewSmallProps, FileIcon, ErrorIcon} from '../src';
+import { mount } from 'enzyme';
+import { CardViewSmall, CardViewSmallProps, FileIcon, ErrorIcon } from '../src';
 
 describe('CardViewSmall', () => {
   it('should display a file icon when loading', () => {
@@ -10,8 +10,7 @@ describe('CardViewSmall', () => {
       <CardViewSmall
         loading={true}
       />);
-
-    expect(cardView.find('FileIcon').first().props().label).to.equal('loading');
+    expect(cardView.find('.loading')).to.have.lengthOf(1);
   });
 
   it('should display image when image loaded', () => {
@@ -23,7 +22,7 @@ describe('CardViewSmall', () => {
         dataURI={'some-data-uri'}
       />);
 
-    expect(cardView.find('img').first().props().src).to.equal('some-data-uri');
+    expect(cardView.find('.card-img').first().props().style.backgroundImage).to.contain('some-data-uri');
     expect(cardView.find('.title').first().text()).to.equal('some-name');
     expect(cardView.find('.size').first().text()).to.equal('1 kB');
   });

@@ -5,7 +5,7 @@ import * as React from 'react';
 import Thenable from 'thenable';
 import { OrderedMap } from '../src/prosemirror';
 import makeJsonSchema from '../src/schema/json-schema';
-import { schema } from '../test-helper/schema';
+import { schema } from '../src/test-helper/schema';
 import Editor from './editor';
 import { name } from '../package.json';
 

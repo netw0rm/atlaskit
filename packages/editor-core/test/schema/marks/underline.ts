@@ -1,11 +1,11 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { DocNodeType, Schema, Text, UnderlineMarkType } from '../../../src';
-import { chaiPlugin, fromHTML, toHTML } from '../../../test-helper';
+import { chaiPlugin, fromHTML, toHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-core/schema underline mark', () => {
+describe('@atlaskit/editor-core/schema underline mark', () => {
   it('throws an error if it is not named "u"', () => {
     expect(() => {
       new Schema({

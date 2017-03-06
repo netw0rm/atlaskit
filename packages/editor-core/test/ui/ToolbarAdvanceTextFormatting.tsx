@@ -6,10 +6,10 @@ import {Tooltip} from '@atlaskit/tooltip';
 import TextFormattingPlugin from '../../src/plugins/text-formatting';
 import ToolbarAdvancedTextFormatting from '../../src/ui/ToolbarAdvancedTextFormatting';
 import ToolbarButton from '../../src/ui/ToolbarButton';
-import { makeEditor } from '../../test-helper';
+import { makeEditor } from '../../src/test-helper';
 import { doc, p, schema } from '../_schema-builder';
 
-describe('ak-editor-core/ui/ToolbarAdvancedTextFormatting', () => {
+describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
   const editor = (doc: any) => {
     const { pm, plugin } = makeEditor({ doc, plugin: TextFormattingPlugin, schema });
     return { pm, plugin, sel: pm.doc.refs['<>'] };

@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
-import { chaiPlugin, insert, makeEditor } from '../../../test-helper';
+import { chaiPlugin, insert, makeEditor } from '../../../src/test-helper';
 import { doc, paragraph, link, linkable, schema, unlinkable } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
@@ -384,6 +384,16 @@ describe('hyperlink', () => {
       plugin.removeLink();
 
       expect(pm.doc).to.deep.equal(doc(linkable('text')));
+    });
+
+    context('when a link is in the second paragraph', () => {
+      it('should be able to unlink that link', () => {
+        const { pm, plugin } = editor(doc(paragraph('hello'), linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
+
+        plugin.removeLink();
+
+        expect(pm.doc).to.deep.equal(doc(paragraph('hello'), linkable('text')));
+      });
     });
 
     it('should be able to update existing links with href', () => {

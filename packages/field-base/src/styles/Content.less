@@ -14,7 +14,7 @@
 @base-border-width-subtle: 0;
 @base-border-width: 1;
 @base-color-disabled: @ak-color-N60;
-@base-color-invalid: @ak-color-R100;
+@base-color-invalid: @ak-color-Y300;
 @base-font-size: 14;
 @base-height-compact: @grid * 8;
 @base-height: @grid * 10;
@@ -66,6 +66,9 @@
     .borders-and-padding(@base-border-width, @base-horizontal-padding, @base-height-compact);
     .disabled {
       .disabled-styles()
+    }
+    &.subtle {
+    .borders-and-padding(@base-border-width-subtle, @base-horizontal-padding, @base-height-compact);
     }
   }
   &.subtle {
@@ -149,6 +152,5 @@
   align-items: center;
   color: @base-color-invalid;
   display: flex;
-  padding-left: unit(2 * @grid, px);
-  padding-right: unit(@grid, px);
+  height: unit(@base-inner-height, px);
 }

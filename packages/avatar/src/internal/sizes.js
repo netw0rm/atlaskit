@@ -1,1 +1,1 @@
-export default ['small', 'medium', 'large', 'xlarge'];
+export default ['xsmall', 'small', 'medium', 'large', 'xlarge'];

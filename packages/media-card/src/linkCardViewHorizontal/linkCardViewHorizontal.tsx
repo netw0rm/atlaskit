@@ -3,10 +3,20 @@ import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 
-import {Wrapper, Thumbnail, Details, Title, Description, Footer, Link} from './styled';
 import {Ellipsify} from '..';
-import {MoreBtn, DropdownWrapper} from '../cardOverlay/styled';
+import {MoreBtn} from '../cardOverlay/styled';
 import {Dropdown} from '../dropdown/dropdown';
+import {
+  Wrapper,
+  Thumbnail,
+  Details,
+  Title,
+  Description,
+  Footer,
+  Link,
+  Menu,
+  DropdownWrapper
+} from './styled';
 
 export interface LinkCardViewHorizontalProps {
   height?: number;
@@ -81,8 +91,10 @@ export class LinkCardViewHorizontal extends Component<LinkCardViewHorizontalProp
                 {linkUrl}
               </a>
             </Link>
-            {this.moreBtn()}
-            {this.dropdown()}
+            <Menu>
+              {this.moreBtn()}
+              {this.dropdown()}
+            </Menu>
           </Footer>
         </Details>
       </Wrapper>
@@ -107,7 +119,11 @@ export class LinkCardViewHorizontal extends Component<LinkCardViewHorizontalProp
     }
 
     return (
-      <MoreBtn className={moreBtnClasses.join(' ')} onClick={this.moreBtnClick.bind(this)}>
+      <MoreBtn
+        style={{cursor: 'pointer'}}
+        className={moreBtnClasses.join(' ')}
+        onClick={this.moreBtnClick.bind(this)}
+      >
         <MoreIcon label="more"/>
       </MoreBtn>
     );

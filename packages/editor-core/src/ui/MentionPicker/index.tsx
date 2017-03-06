@@ -6,7 +6,8 @@ import { MentionsPluginState } from '../../plugins/mentions';
 
 export interface Props {
   pluginState: MentionsPluginState;
-  resourceProvider: any; // AbstractMentionResource;
+  resourceProvider: any; // AbstractMentionResource
+  presenceProvider?: any; // AbstractPresenceResource
   reversePosition?: boolean;
 }
 
@@ -75,6 +76,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
     const picker = (
       <AkMentionPicker
         resourceProvider={this.props.resourceProvider}
+        presenceProvider={this.props.presenceProvider}
         onSelection={this.handleSelectedMention}
         query={query}
         ref="picker"

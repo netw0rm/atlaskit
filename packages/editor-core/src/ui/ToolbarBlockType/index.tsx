@@ -1,7 +1,7 @@
-import AkButton from 'ak-button';
-import DropdownList from 'ak-droplist';
-import Group from 'ak-droplist-group';
-import Item from 'ak-droplist-item';
+import AkButton from '@atlaskit/button';
+import DropdownList from '@atlaskit/droplist';
+import Group from '@atlaskit/droplist-group';
+import Item from '@atlaskit/droplist-item';
 import * as React from 'react';
 import { PureComponent } from 'react';
 

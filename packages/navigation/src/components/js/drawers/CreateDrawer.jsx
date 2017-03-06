@@ -30,6 +30,7 @@ export default class CreateDrawer extends PureComponent {
       onBackButton,
       primaryIcon,
     } = this.props;
+
     return (
       <Drawer
         backIcon={backIcon}

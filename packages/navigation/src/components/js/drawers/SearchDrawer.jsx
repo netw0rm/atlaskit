@@ -9,7 +9,7 @@ const ContentArea = styled.div`
   width: calc(100% - 16px);
 `;
 
-export default class CreateDrawer extends PureComponent {
+export default class SearchDrawer extends PureComponent {
   static propTypes = {
     backIcon: PropTypes.node,
     children: PropTypes.node,

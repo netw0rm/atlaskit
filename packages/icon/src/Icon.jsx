@@ -34,7 +34,8 @@ export default class Icon extends PureComponent {
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <span className={iconBodyClasses} onClick={this.props.onClick}>
-        <div className={styles.svg} label={this.props.label} role="img" aria-labelledby={label}>
+        <div className={styles.svg} label={this.props.label} role="img" aria-label={label}>
+          <span className={styles.label}>{label}</span>
           <Glyph color={color} fill={fill} label={label} />
         </div>
       </span>
@@ -62,6 +63,7 @@ const iconContructor = (componentName, svgBase) => (
         return (<IconContent dataURI={dataURI} />);
       };
     }
+
     /* eslint-enable class-methods-use-this */
   }
 );

@@ -3,7 +3,7 @@ import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 
-import {Wrapper, Image, Details, Title, Description, Footer, Link} from './styled';
+import {Wrapper, Thumbnail, Details, Title, Description, Footer, Link} from './styled';
 import {Ellipsify} from '..';
 import {MoreBtn, DropdownWrapper} from '../cardOverlay/styled';
 import {Dropdown} from '../dropdown/dropdown';
@@ -12,9 +12,9 @@ export interface LinkCardViewHorizontalProps {
   height?: number;
   width?: number;
 
-  title?: string;
+  linkUrl: string;
+  title: string;
   description?: string;
-  linkUrl?: string;
   thumbnailUrl?: string;
   iconUrl?: string;
 
@@ -56,24 +56,27 @@ export class LinkCardViewHorizontal extends Component<LinkCardViewHorizontalProp
   }
 
   render() {
-    const {width, height, title, description, linkUrl, thumbnailUrl, iconUrl} = this.props;
+    const {width, height, linkUrl, title, description, thumbnailUrl, iconUrl} = this.props;
     const cardStyle = {height: `${height}px`, width: `${width}px`};
 
+    const thumbnail = thumbnailUrl ? <Thumbnail src={thumbnailUrl} alt={title} /> : null;
+    const icon = iconUrl ? <img src={iconUrl} alt={title} /> : null;
+
     return (
-      <Wrapper style={cardStyle} >
-        <Image src={thumbnailUrl} alt={title} />
+      <Wrapper style={cardStyle} onClick={this.onClick.bind(this)}>
+        {thumbnail}
 
         <Details>
           <Title>
-            <Ellipsify text={title} lines={1} endLength={0} />
+            <Ellipsify text={title || ''} lines={1} endLength={0} />
           </Title>
           <Description>
-            <Ellipsify text={description} lines={2} endLength={0} />
+            <Ellipsify text={description || ''} lines={2} endLength={0} />
           </Description>
 
           <Footer>
             <Link>
-              <img src={iconUrl} alt={iconUrl} />
+              {icon}
               <a href={linkUrl} rel="noopener">
                 {linkUrl}
               </a>
@@ -86,8 +89,12 @@ export class LinkCardViewHorizontal extends Component<LinkCardViewHorizontalProp
     );
   }
 
+  onClick(event: MouseEvent<HTMLDivElement>) {
+    this.props.onClick && this.props.onClick(event.nativeEvent);
+  }
+
   moreBtn() {
-    const actions = this.props.menuActions;
+    const actions = this.props.menuActions || [];
     const {isMenuExpanded} = this.state;
 
     if (!actions.length) {

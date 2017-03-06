@@ -2,7 +2,6 @@
 import styled from 'styled-components';
 import { akColorN30, akColorN300 } from '@atlaskit/util-shared-styles';
 import { Root } from '../styles/base';
-// import {rgba, centerX, easeOutCubic, borderRadius, size, transition} from '../styles/base';
 
 export const Wrapper = styled(Root)`
   display: flex;
@@ -11,7 +10,7 @@ export const Wrapper = styled(Root)`
   box-shadow: 0 1px 1px rgba(9, 30, 66, 0.2), 0 0 1px 0 rgba(9, 30, 66, 0.24);
 `;
 
-export const Image = styled.img`
+export const Thumbnail = styled.img`
   flex-shrink: 0;
 
   width: 116px;

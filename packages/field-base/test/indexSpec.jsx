@@ -23,7 +23,7 @@ const defaultProps = {
 };
 
 describe('ak-field-base', () => {
-  // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't choke when accessing it.
+  // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't error when accessing it.
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {
     window.cancelAnimationFrame = () => {};
@@ -99,12 +99,12 @@ describe('ak-field-base', () => {
     });
 
     describe('isDialogOpen prop', () => {
-      it('sets InlineDialog isOpen to true if invalidMessage prop is provided', () => {
+      it('reflects value to InlineDialog isOpen if invalidMessage prop is provided', () => {
         const wrapper = shallow(<FieldBase {...defaultProps} isDialogOpen invalidMessage="test" />);
         expect(wrapper.find(InlineDialog).props().isOpen).to.equal(true);
       });
 
-      it('sets InlineDialog isOpen to false if invalidMessage prop is not provided', () => {
+      it('reflects value to InlineDialog isOpen if invalidMessage prop is not provided', () => {
         const wrapper = shallow(<FieldBase {...defaultProps} isDialogOpen />);
         expect(wrapper.find(InlineDialog).props().isOpen).to.equal(false);
       });

@@ -20,6 +20,8 @@ export default props => (
     <AkFieldBase
       invalidMessage={props.invalidMessage}
       isCompact={props.isCompact}
+      isDialogOpen={props.isDialogOpen}
+      isFocused={props.isFocused}
       isInvalid={props.isInvalid}
       isDisabled={props.isDisabled}
       isReadOnly={props.isReadOnly}
@@ -27,7 +29,6 @@ export default props => (
       isPaddingDisabled={props.isPaddingDisabled}
       isFitContainerWidthEnabled={props.isFitContainerWidthEnabled}
       isLoading={props.isLoading}
-      validity={props.validity}
     >
       {props.children}
     </AkFieldBase>

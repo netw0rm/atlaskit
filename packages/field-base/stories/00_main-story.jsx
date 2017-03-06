@@ -93,7 +93,8 @@ storiesOf(name, module)
         label="Click the warning icon to display the message"
         id="fieldbase"
         isInvalid
-        invalidMessage="foo bar"
+        invalidMessage="This warning dialog should be open by default"
+        isDialogOpen
       >
         <Input
           value="input children"
@@ -106,7 +107,7 @@ storiesOf(name, module)
         id="fieldbase"
         isCompact
         isInvalid
-        invalidMessage="foo bar"
+        invalidMessage="This warning dialog should open when the icon is clicked"
       >
         <Input
           id="fieldbase"

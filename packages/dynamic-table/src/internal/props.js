@@ -37,9 +37,8 @@ function rowCells(props, propName, componentName, ...rest) {
 
   if (!props.head || !props.head.cells) return null;
 
-  const headLength = props.head && props.head.cells.length;
   const isAllRowsSameLength = props[propName].reduce((result, row) =>
-    result && row.length === headLength, true);
+    result && row.length === props.head.cells.length, true);
   if (!isAllRowsSameLength) {
     return createError(propName, componentName, 'One of the rows has different cell-count compared to head.');
   }

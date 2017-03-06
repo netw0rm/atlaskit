@@ -135,8 +135,5 @@ export default (
     <p><strong>type</strong>: int</p>
     <p><strong>default</strong>: <code>1</code></p>
     <p>Current page.</p>
-
-    <h3>(extra props)</h3>
-    <p>passed down to {'<table>'} tag</p>
   </div>
 );

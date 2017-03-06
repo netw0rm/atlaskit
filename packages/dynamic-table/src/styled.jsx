@@ -25,7 +25,6 @@ const arrowsStyle = ({ isSortable, sortOrder }) => {
   if (!isSortable) return '';
 
   const pseudoBase = css`
-    font-size: 15px;
     position: absolute;
     display: block;
     width: 0;

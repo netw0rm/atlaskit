@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Pagination } from '@atlaskit/pagination';
-import omit from 'lodash.omit';
 
 import { ASC, DESC } from './internal/constants';
 import { statelessPropTypes, statelessDefaultProps } from './internal/props';
@@ -141,12 +140,11 @@ export default class DynamicTable extends Component {
 
   render() {
     const { rows, isFixedSize, rowsPerPage, emptyView, page } = this.props;
-    const extraProps = omit(this.props, Object.keys(DynamicTable.propTypes));
     const totalPages = rows ? Math.ceil(rows.length / rowsPerPage) : 0;
 
     return !(rows && rows.length) ? emptyView : (
       <div>
-        <Table isFixedSize={isFixedSize} {...extraProps}>
+        <Table isFixedSize={isFixedSize}>
           { this.renderCaption() }
           { this.renderHead() }
           { this.renderBody() }

@@ -1,4 +1,4 @@
-import LinkIcon from 'ak-icon/glyph/editor/link';
+import LinkIcon from '@atlaskit/icon/glyph/editor/link';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
@@ -37,6 +37,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
           disabled={disabled}
           onClick={this.openLinkPanel}
           selected={adding}
+          title="Hyperlink"
           iconBefore={<LinkIcon label="Link" />}
         />
         {!adding ? null :

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "config": {
     "access": "public"
   },
@@ -25,6 +25,7 @@
     "@atlaskit/media-core": "^1.1.1",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "@types/bytes": "^2.4.33",
+    "axios": "^0.15.3",
     "babel-runtime": "^6.11.6",
     "bytes": "^2.4.0",
     "classnames": "^2.2.5",
@@ -42,8 +43,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "akutil-common-test": "*",
-    "axios": "^0.15.3"
+    "akutil-common-test": "*"
   },
   "keywords": [
     "media",

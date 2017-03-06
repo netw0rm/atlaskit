@@ -5,7 +5,6 @@ interface Props {
   isOpen?: boolean;
   isTriggerDisabled?: boolean;
   isTriggerNotTabbable?: boolean;
-  listContext?: 'menu';
   onOpenChange?: ({ isOpen: boolean }) => void;
   position?: string;
   trigger?: ReactNode;

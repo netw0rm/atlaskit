@@ -67,6 +67,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   }
 
   componentDidMount() {
+    this.unmounted = false;
     window.addEventListener('resize', this.onWindowResize);
   }
 

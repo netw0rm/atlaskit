@@ -5,7 +5,7 @@ import { Tooltip } from '@atlaskit/tooltip';
 import AkButton from 'ak-button';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 
-describe('ak-editor-core/ui/ToolbarButton', () => {
+describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
   it('should not render tooltip if title is not set', () => {
     const toolbarButtonElem = mount(<ToolbarButton
       onClick={() => {}}

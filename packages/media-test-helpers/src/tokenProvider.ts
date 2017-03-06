@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {JwtToken} from '@atlaskit/media-core';
+export type JwtToken = string;
 
 let tokenRequest: Promise<JwtToken>;
 

@@ -5,11 +5,17 @@ import { createSelector } from 'reselect';
 import invariant from 'invariant';
 import { currentDragSelector, dragCompleteSelector } from '../../state/selectors';
 import type { Provide, NeedsProviding, MapProps } from './types';
-import type { DragComplete, CurrentDrag } from '../../types';
+import type { DragComplete, CurrentDrag, Position } from '../../types';
 
 export default (provide: Provide) => {
   const memoizedProvide = memoizeOne(provide, isShallowEqual);
   const getProvided = (state, ownProps) => memoizedProvide(ownProps);
+  const memoizedOffset = memoizeOne(
+    (x: number, y: number): Position => {
+      console.log('recalculated offset');
+      return { x, y };
+    }
+  );
 
   return createSelector(
     [currentDragSelector, dragCompleteSelector, getProvided],
@@ -27,7 +33,7 @@ export default (provide: Provide) => {
             isDragEnabled,
             isDragging: false,
             canAnimate: false,
-            offset: { x: 0, y: 0 },
+            offset: memoizedOffset(0, 0),
           };
         }
 
@@ -39,10 +45,7 @@ export default (provide: Provide) => {
             isDragEnabled,
             isDragging: false,
             canAnimate: true,
-            offset: {
-              x: 0,
-              y: last.impact.movement.amount,
-            },
+            offset: memoizedOffset(0, last.impact.movement.amount),
           };
         }
 
@@ -99,10 +102,7 @@ export default (provide: Provide) => {
           isDragEnabled,
           isDragging: false,
           canAnimate: true,
-          offset: {
-            x: 0,
-            y: currentDrag.impact.movement.amount,
-          },
+          offset: memoizedOffset(0, currentDrag.impact.movement.amount),
         };
       }
 

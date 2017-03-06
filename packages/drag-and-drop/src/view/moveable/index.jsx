@@ -19,15 +19,15 @@ type Props = {|
   children?: React$Element<*>,
     // TODO: should this be optional?
     destination: Position,
-      speed: Speed,
-        zIndex: string,
-          onMoveEnd ?: Function,
-          innerRef ?: Function,
+    speed: Speed,
+    zIndex: string,
+    onMoveEnd?: Function,
+    innerRef?: Function,
 |}
 
 type DefaultProps = {|
   destination: Position,
-    innerRef: Function,
+  innerRef: Function,
 |}
 
 // TODO: memoizeOne

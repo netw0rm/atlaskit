@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import invariant from 'invariant';
 import type {
-    TypeId,
-    Position,
+  TypeId,
+  Position,
 } from '../../types';
 import type { Provide, MapProps } from './types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
+import ScrollTo from '../scroll-to';
 import type { Speed } from '../moveable';
 import createDragHandle from './create-drag-handle';
 import type { Callbacks } from './create-drag-handle';
@@ -18,6 +19,7 @@ import getScrollPosition from '../get-scroll-position';
 import getDisplayName from '../get-display-name';
 import storeKey from '../../state/get-store-key';
 import makeSelector from './make-selector';
+import isShallowEqual from 'shallowequal';
 
 import {
   lift as liftAction,
@@ -53,10 +55,11 @@ type Props = MapProps & DispatchProps
 
 type DefaultProps = {|
   offset: Position
-|}
+    |}
 
 type ComponentState = {|
   wasDragging: boolean,
+  shouldScrollTo: boolean,
   ref: ?Element
 |}
 
@@ -67,8 +70,8 @@ const Container = styled.div`
 
 type Movement = {|
   speed: Speed,
-  zIndex: string
-|}
+    zIndex: string
+      |}
 
 const getMovement = (isDragging: boolean,
   wasDragging: boolean,
@@ -113,6 +116,7 @@ export default (type: TypeId,
 
       state: ComponentState = {
         wasDragging: false,
+        shouldScrollTo: false,
         ref: null,
       }
 
@@ -145,17 +149,34 @@ export default (type: TypeId,
             wasDragging,
           });
         }
+
+        if (this.state.shouldScrollTo) {
+          this.setState({
+            shouldScrollTo: false,
+          });
+        }
       }
 
       onMoveEnd = () => {
-        if (!this.state.wasDragging) {
+        if (!this.props.isDragging && !this.state.wasDragging) {
           return;
         }
 
-        const { id, dropFinished } = this.props;
+        if (this.state.wasDragging) {
+          const { id, dropFinished } = this.props;
+          dropFinished(id);
+          console.warn('not moving scroll on drop');
+          return;
+        }
 
-        console.log('on move end!!');
-        dropFinished(id);
+        const shouldScrollTo = this.props.canAnimate;
+        console.log('about to scroll:', shouldScrollTo);
+
+        if (shouldScrollTo) {
+          this.setState({
+            shouldScrollTo: true,
+          });
+        }
       }
 
       onLift = (selection: Position) => {
@@ -290,6 +311,8 @@ export default (type: TypeId,
           this.props.canAnimate
         );
 
+        // console.log('shouldScrollTo (render)', this.state.shouldScrollTo);
+
         return (
           <Moveable
             speed={movement.speed}
@@ -304,11 +327,16 @@ export default (type: TypeId,
                 type={type}
                 outerRef={this.state.ref}
               >
-                <Container
-                  isDragging={this.props.isDragging}
+                <ScrollTo
+                  shouldScroll={this.state.shouldScrollTo}
+                  outerRef={this.state.ref}
                 >
-                  <Component {...props} />
-                </Container>
+                  <Container
+                    isDragging={this.props.isDragging}
+                  >
+                    <Component {...props} />
+                  </Container>
+                </ScrollTo>
               </DraggableDimensionPublisher>
             )}
           </Moveable>
@@ -335,5 +363,11 @@ export default (type: TypeId,
       return mapStateToProps;
     };
 
-    return connect(makeMapStateToProps, mapDispatchToProps, null, { storeKey })(Draggable);
+    return connect(makeMapStateToProps, mapDispatchToProps, null, {
+      storeKey,
+      // areMergedPropsEqual(nextProps, props) {
+      //   console.log('comparing props equality');
+      //   return isShallowEqual(nextProps, props);
+      // },
+    })(Draggable);
   };

@@ -22,7 +22,7 @@ type ListData = {|
 
 type ListDataMap = { [key: string ]: ListData }
 
-const itemKeys: string[] = Array.from({ length: 8 }, (k, v) => `item${v}`);
+const itemKeys: string[] = Array.from({ length: 80 }, (k, v) => `item${v}`);
 const items: ItemDataMap = itemKeys
     .reduce((acc: ItemDataMap, key: string) => {
       console.log('key', key);

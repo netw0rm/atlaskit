@@ -8,6 +8,7 @@ import {
   MentionsPlugin,
   ProseMirror,
   TextSelection,
+  TextFormattingPlugin,
   version as coreVersion,
 } from '@atlaskit/editor-core';
 import * as cx from 'classnames';
@@ -41,6 +42,12 @@ const hipchatSerializer = (doc: any) => {
               }
             };
           }
+
+          if (mark._ === 'u') {
+            mark._ = 'underline';
+          }
+
+          mark.type = mark._;
           return mark;
         });
         break;
@@ -129,6 +136,7 @@ export default class Editor extends PureComponent<Props, State> {
       plugins: [
         BlockTypePlugin,
         HyperlinkPlugin,
+        TextFormattingPlugin,
         ...(this.props.mentionResourceProvider ? [MentionsPlugin] : [])
       ],
     });

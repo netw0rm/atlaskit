@@ -4,7 +4,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = (config) => {
-  const testDirectory = `${process.cwd()}/test/schema`;
+  const testDirectory = `${process.cwd()}/test/plugins/code-block`;
   const entry = path.join(__dirname, 'single.entry.js');
 
   allConf(config);

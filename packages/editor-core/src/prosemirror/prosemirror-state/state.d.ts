@@ -1,6 +1,7 @@
 import { EditorProps, Mark, Node, Plugin, Schema, Selection, Transaction } from '../';
 
 export interface EditorStateCreateConfig<S> {
+  doc: any;
   schema: S;
   selection?: Selection;
   plugins?: Plugin[];

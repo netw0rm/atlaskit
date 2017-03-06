@@ -1,13 +1,19 @@
-import { Plugin, ProseMirror, Schema } from '../';
-import { schema } from './schema';
+import {
+  Plugin,
+  Schema,
+  EditorState,
+  EditorView,
+  TextSelection
+} from '../';
+import { default as schema } from './schema';
 import { RefsNode } from './schema-builder';
 import SyncPlugin from './sync-plugin';
 
 export interface Options {
   doc: RefsNode;
-  plugin: Plugin<any>;
+  plugin: Plugin;
   place?: HTMLElement;
-  schema?: Schema;
+  schema?: Schema<any, any>;
 }
 
 /**
@@ -19,21 +25,33 @@ export interface Options {
  * - `<` and `>` -- a range text selection (`<` is from, `>` is to).
  */
 export default (options: Options) => {
-  const pm = new ProseMirror({
+  const editorState = EditorState.create({
     doc: options.doc,
-    place: options.place,
-    schema: options.schema || schema,
+    schema,
     plugins: [
       options.plugin,
-      SyncPlugin,
+      SyncPlugin
     ]
   }) as ProseMirrorWithRefs;
+  const editorView = new EditorView(options.place || document.body, {
+    state: editorState,
+    dispatchTransaction: (tr) => {
+      const newState = editorView.state.apply(tr);
+      editorView.updateState(newState);
+      this.handleChange();
+    }
+  });
 
-  const { refs } = pm.doc;
+  const { refs } = editorState.doc;
+
+  const setTextSelection = function (anchor: number, head?: number) {
+    const tr = editorState.tr.setSelection(TextSelection.create(editorState.doc, anchor, head));
+    editorView.dispatch(tr);
+  };
 
   // Collapsed selection.
   if ('<>' in refs) {
-    pm.setTextSelection(refs['<>']);
+    setTextSelection(refs['<>']);
   // Expanded selection
   } else if ('<' in refs || '>' in refs) {
     if ('<' in refs === false) {
@@ -42,12 +60,17 @@ export default (options: Options) => {
     if ('>' in refs === false) {
       throw new Error('A `>` ref must complement a `<` ref.');
     }
-    pm.setTextSelection(refs['<'], refs['>']);
+    setTextSelection(refs['<'], refs['>']);
   }
 
-  return { pm, plugin: options.plugin.get(pm) };
+  return {
+    editorState,
+    editorView,
+    setTextSelection,
+    pluginState: options.plugin.getState(editorState)
+  };
 };
 
-export interface ProseMirrorWithRefs extends ProseMirror {
+export interface ProseMirrorWithRefs extends EditorState<Schema<any, any>> {
   doc: RefsNode;
 }

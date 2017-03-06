@@ -1,4 +1,4 @@
-import { ProseMirror } from '../';
+import { EditorView } from '../';
 import createEvent from './create-event';
 
 function focusAndSelect(element: HTMLElement) {
@@ -25,7 +25,7 @@ export interface PasteContent {
  *         plain: 'copied text'
  *     });
  */
-export default (pm: ProseMirror, content: PasteContent) => {
+export default (editorView: EditorView, content: PasteContent) => {
   const event = createEvent('paste');
 
   const clipboardData = {
@@ -49,8 +49,8 @@ export default (pm: ProseMirror, content: PasteContent) => {
   }
 
   // ProseMirror must be focused, else it does not attempt to handle pasted content.
-  focusAndSelect(pm.content);
+  focusAndSelect(editorView.content);
 
-  pm.content.dispatchEvent(event);
+  editorView.dispatchEvent(event);
   return true;
 };

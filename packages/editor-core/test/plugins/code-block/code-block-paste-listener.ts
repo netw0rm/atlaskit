@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { ProseMirror } from '../../../src';
+import { EditorState, EditorView } from '../../../src/';
 import CodeBlockPlugin from '../../../src/plugins/code-block';
 import { blockquote, chaiPlugin, code_block, dispatchPasteEvent, doc, fixtures, makeEditor, p } from '../../../test-helper';
 import { PasteContent } from '../../../test-helper/dispatch-paste-event';
@@ -15,8 +15,8 @@ describe('block-type paste listener', () => {
     place: fixture(),
   });
 
-  function maybeDispatchPasteEvent(pm: ProseMirror, content: PasteContent, test: { skip: Function }) {
-    if (!dispatchPasteEvent(pm, content)) {
+  function maybeDispatchPasteEvent(editorView: EditorView, content: PasteContent, test: { skip: Function }) {
+    if (!dispatchPasteEvent(editorView, content)) {
       console.warn('Synthetic event unsupported');
       test.skip();
     }
@@ -24,10 +24,10 @@ describe('block-type paste listener', () => {
 
   describe('non-empty code block', () => {
     it('should preserve existing code block content when pasting', function() {
-      const { pm } = editor('foo{<>}');
-      maybeDispatchPasteEvent(pm, { plain: 'bar' }, this);
+      const { editorState, editorView } = editor('foo{<>}');
+      maybeDispatchPasteEvent(editorView, { plain: 'bar' }, this);
       const expected = doc(code_block()('foobar'));
-      expect(pm.doc).to.deep.equal(expected);
+      expect(editorState.doc).to.deep.equal(expected);
     });
 
     it('should preserve existing code block content when pasting two lines', function() {

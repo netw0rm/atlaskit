@@ -16,15 +16,15 @@ export const HomeIconContainer = styled.div`
 `;
 
 export const Item = styled.div`
-  max-width: 350px;
+  max-width: 225px;
   min-width: 150px;
   
   ${ellipsis}
 `;
 
 export const ItemWithIcon = styled.div`
-  max-width: 300px;
-  min-width: 150px;
+  max-width: 175px;
+  min-width: 100px;
   
   ${ellipsis}
 `;

@@ -44,7 +44,7 @@ export class MediaFileService implements FileService {
                   artifacts: fileDetails.artifacts
                 }
               };
-              if (fileDetails.processingStatus === 'processed') {
+              if (fileDetails.processingStatus === 'succeeded') {
                 this.cache.set(cacheKey, fileItem);
               }
               return fileItem;

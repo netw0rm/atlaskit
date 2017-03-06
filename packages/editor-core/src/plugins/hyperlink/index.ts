@@ -21,7 +21,7 @@ export class HyperlinkState {
   active = false;
   linkable = false;
   element?: HTMLElement;
-  toolbarVisible: boolean = false;
+  editorFocused: boolean = false;
   showToolbarPanel: boolean = false;
 
   private changeHandlers: StateChangeHandler[] = [];
@@ -30,7 +30,6 @@ export class HyperlinkState {
   private activeLinkNode?: Node;
   private activeLinkMark?: LinkMark;
   private activeLinkStartPos?: number;
-  private editorFocused: boolean = false;
 
   constructor(pm: PM) {
     this.pm = pm;
@@ -143,7 +142,7 @@ export class HyperlinkState {
       this.text = nodeInfo && nodeInfo.node.textContent;
       this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
       this.element = this.getDomElement();
-      this.toolbarVisible = this.editorFocused && !!nodeInfo;
+      this.editorFocused = this.editorFocused;
       this.active = !!nodeInfo;
       dirty = true;
     }

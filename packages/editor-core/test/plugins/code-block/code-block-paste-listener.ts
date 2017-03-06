@@ -53,12 +53,11 @@ describe('block-type paste listener', () => {
 
     it('should be at the right position after pasting', function() {
       const { editorView } = editor('foo{<}bar{>}');
-      const { state } = editorView;
       maybeDispatchPasteEvent(editorView, { plain: 'barbaz' }, this);
       const expected = doc(code_block()('foobarbaz'));
-      expect(state.doc).to.deep.equal(expected);
-      expect(state.selection.$from.pos).to.deep.equal(10);
-      expect(state.selection.$to.pos).to.deep.equal(10);
+      expect(editorView.state.doc).to.deep.equal(expected);
+      expect(editorView.state.selection.$from.pos).to.deep.equal(10);
+      expect(editorView.state.selection.$to.pos).to.deep.equal(10);
     });
 
     it('should use our custom paste listener if the selected text block is inside of a blockquote', function() {
@@ -67,13 +66,11 @@ describe('block-type paste listener', () => {
         plugin: CodeBlockPlugin,
         place: fixture(),
       });
-      const { state } = editorView;
-
       maybeDispatchPasteEvent(editorView, { plain: 'baz' }, this);
       const expected = doc(blockquote(p('p'), code_block()('foobaz')));
       expect(editorView.state.doc).to.deep.equal(expected);
-      expect(state.selection.$from.pos).to.deep.equal(11);
-      expect(state.selection.$to.pos).to.deep.equal(11);
+      expect(editorView.state.selection.$from.pos).to.deep.equal(11);
+      expect(editorView.state.selection.$to.pos).to.deep.equal(11);
     });
   });
 

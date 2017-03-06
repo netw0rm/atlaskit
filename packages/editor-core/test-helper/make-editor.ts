@@ -54,7 +54,6 @@ export default (options: Options) => {
   }
 
   return {
-    editorState,
     editorView,
     setTextSelection: (anchor: number, head?: number) => setTextSelection(editorView, anchor, head),
     pluginState: options.plugin.getState(editorState)

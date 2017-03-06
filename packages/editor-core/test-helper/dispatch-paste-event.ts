@@ -48,9 +48,6 @@ export default (editorView: EditorView, content: PasteContent) => {
     return false;
   }
 
-  // ProseMirror must be focused, else it does not attempt to handle pasted content.
-  focusAndSelect(editorView.dom);
-
   editorView.dispatchEvent(event);
   return true;
 };

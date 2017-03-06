@@ -1,8 +1,7 @@
 import { css } from 'styled-components';
-
-const colors = require('!less-vars-loader?camelCase&resolveVariables!./colors.less');
-const fonts = require('!less-vars-loader?camelCase&resolveVariables!./fonts.less');
-const grid = require('!less-vars-loader?camelCase&resolveVariables!./grid.less');
+import colors from '!less-vars-loader?camelCase&resolveVariables!./colors.less';
+import fonts from '!less-vars-loader?camelCase&resolveVariables!./fonts.less';
+import grid from '!less-vars-loader?camelCase&resolveVariables!./grid.less';
 
 const fontSizeDefault = parseInt(fonts.akFontSizeDefault, 10);
 const gridSize = parseInt(grid.akGridSize, 10);

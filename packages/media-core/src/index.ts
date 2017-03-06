@@ -1,5 +1,3 @@
-import { MediaItemType } from './item';
-
 export * from './item';
 export * from './actions';
 export * from './config';

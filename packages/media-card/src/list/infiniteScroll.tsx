@@ -53,7 +53,7 @@ export class InfiniteScroll extends Component<InfiniteScrollProps, InfiniteScrol
 
   private checkThreshold = (event: UIEvent<HTMLDivElement>) => {
     const target = event.currentTarget;
-    const threshold = this.props.threshold;
+    const threshold = this.props.threshold || 0;
     const position = target.scrollTop + target.offsetHeight;
     const thresholdModifier = 0.1;
     const adjustedThreshold = Math.min(threshold, target.scrollHeight * thresholdModifier);

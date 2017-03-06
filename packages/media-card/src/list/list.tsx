@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Component, EventHandler, MouseEventHandler } from 'react';
+import { Component } from 'react';
 import { Card, DEFAULT_CARD_DIMENSIONS  } from '..';
-import { MediaItem, MediaCollection, MediaCollectionItem, Context, CardAction, ListAction, CardActionType } from '@atlaskit/media-core';
+import { MediaItem, MediaCollection, MediaCollectionItem, Context, CardAction, ListAction } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs/Subscription';
 import {CardListWrapper, Spinner, LoadMoreButtonContainer} from './styled';
 import Button from '@atlaskit/button';
@@ -225,22 +225,12 @@ export class CardList extends Component<CardListProps, CardListState> {
     }
   }
 
-  private onLoadMoreButtonClick = (event: MouseEvent) => {
+  private onLoadMoreButtonClick = () => {
     this.loadNextPage();
   }
 
   private loadNextPage(): void {
     this.setState({ loading: true });
     this.state.loadNextPage();
-  }
-
-  private getFirstAction(type: CardActionType): ListAction {
-    const actions = this.getActionsByType(type);
-    return (actions.length) ? actions[0] : null;
-  }
-
-  private getActionsByType(type: CardActionType): Array<ListAction> {
-    const actions: Array<ListAction> = this.props.actions || [];
-    return actions.filter(action => action.type === type);
   }
 }

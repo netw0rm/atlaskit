@@ -96,7 +96,9 @@ storiesOf(name, module)
       compact: true,
       disabled: true,
       required: true,
+      isInvalid: true,
       placeholder: 'Such input, very uneditable',
+      invalidMessage: 'This message should not be shown',
     })
   ))
   .add('ak-field-text with really long label', () => (

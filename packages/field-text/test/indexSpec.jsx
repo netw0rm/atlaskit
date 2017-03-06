@@ -5,6 +5,16 @@ import Base from '@atlaskit/field-base';
 import FieldTextSmart, { FieldText } from '../src';
 
 describe('ak-field-text', () => {
+  // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't error when accessing it.
+  const animStub = window.cancelAnimationFrame;
+  beforeEach(() => {
+    window.cancelAnimationFrame = () => {};
+  });
+
+  afterEach(() => {
+    window.cancelAnimationFrame = animStub;
+  });
+
   it('defaults', () => {
     const wrapper = shallow(<FieldText />);
     expect(wrapper.find(Base).length).to.equal(1);
@@ -12,21 +22,35 @@ describe('ak-field-text', () => {
   });
 
   describe('properties', () => {
-    [
-      { disabled: true },
-      { required: true },
-    ].forEach(prop =>
-      it('FieldBase should have attribute defined', () => {
-        const key = Object.keys(prop)[0];
-        const value = prop[key];
-        expect(shallow(<FieldText {...prop} />).find(Base).prop(key)).to.equal(value);
-      })
-    );
+    describe('compact prop', () => {
+      it('should reflect its value to the FieldBase', () => {
+        expect(shallow(<FieldText compact />).find(Base).props().isCompact).to.equal(true);
+      });
+    });
 
-    it('FieldBase should have appearance="compact"', () =>
-      expect(shallow(<FieldText compact />).find(Base).prop('appearance'))
-        .to.equal('compact')
-    );
+    describe('disabled prop', () => {
+      it('should reflect its value to the FieldBase', () => {
+        expect(shallow(<FieldText disabled />).find(Base).props().isDisabled).to.equal(true);
+      });
+    });
+
+    describe('required prop', () => {
+      it('should reflect its value to the FieldBase', () => {
+        expect(shallow(<FieldText required />).find(Base).props().isRequired).to.equal(true);
+      });
+    });
+
+    describe('isInvalid prop', () => {
+      it('should reflect its value to the FieldBase', () => {
+        expect(shallow(<FieldText isInvalid />).find(Base).props().isInvalid).to.equal(true);
+      });
+    });
+
+    describe('invalidMessage prop', () => {
+      it('should reflect its value to the FieldBase', () => {
+        expect(shallow(<FieldText invalidMessage="test" />).find(Base).props().invalidMessage).to.equal('test');
+      });
+    });
 
     [
       { type: 'search' },

@@ -39,9 +39,9 @@ export default class FieldText extends PureComponent {
         />
         <Base
           isCompact={this.props.compact}
-          disabled={this.props.disabled}
-          required={this.props.required}
+          isDisabled={this.props.disabled}
           isInvalid={this.props.isInvalid}
+          isRequired={this.props.required}
           invalidMessage={this.props.invalidMessage}
           isFitContainerWidthEnabled={this.props.shouldFitContainer}
         >

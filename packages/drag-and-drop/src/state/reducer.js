@@ -38,6 +38,11 @@ export default (state: State = initialState, action: Action): State => {
   shout(`reducing ${action.type}`);
 
   if (action.type === 'BEGIN_LIFT') {
+    if (state.isProcessingLift) {
+      console.warn('trying to start another lift while processing the first');
+      return state;
+    }
+
     return {
       ...initialState,
       isProcessingLift: true,

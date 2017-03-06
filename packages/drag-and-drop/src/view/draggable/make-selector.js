@@ -5,17 +5,33 @@ import { createSelector } from 'reselect';
 import invariant from 'invariant';
 import { currentDragSelector, dragCompleteSelector } from '../../state/selectors';
 import type { Provide, NeedsProviding, MapProps } from './types';
-import type { DragComplete, CurrentDrag, Position } from '../../types';
+import type { DraggableId, DragComplete, CurrentDrag, Position } from '../../types';
 
 export default (provide: Provide) => {
   const memoizedProvide = memoizeOne(provide, isShallowEqual);
   const getProvided = (state, ownProps) => memoizedProvide(ownProps);
   const memoizedOffset = memoizeOne(
-    (x: number, y: number): Position => {
-      console.log('recalculated offset');
-      return { x, y };
-    }
+    (x: number, y: number): Position => ({
+      x, y
+    })
   );
+
+  // Technically memoization is not needed for `getDefaultProps`
+  // or `cutOffAnimation` : but it will make any shallow equality
+  // checks faster as it can just compare the root
+  const getDefaultProps = memoizeOne((id: DraggableId, isDragEnabled: boolean): MapProps => ({
+    id,
+    isDragEnabled,
+    isDragging: false,
+    canAnimate: true,
+  }));
+
+  const cutOffAnimation = memoizeOne((id: DraggableId, isDragEnabled: boolean): MapProps => ({
+    id,
+    isDragEnabled,
+    isDragging: false,
+    canAnimate: false,
+  }));
 
   return createSelector(
     [currentDragSelector, dragCompleteSelector, getProvided],
@@ -27,54 +43,35 @@ export default (provide: Provide) => {
       if (complete) {
         const last: CurrentDrag = complete.last;
 
-        if (complete.isAnimationFinished) {
+        if (last.dragging.id === provided.id) {
+          if (complete.isAnimationFinished) {
+            return cutOffAnimation(id, isDragEnabled);
+          }
+
           return {
-            id,
-            isDragEnabled,
-            isDragging: false,
-            canAnimate: false,
-            offset: memoizedOffset(0, 0),
+            ...getDefaultProps(id, isDragEnabled),
+            offset: complete.newHomeOffset,
+            // TODO: is this needed?
+            initial: last.dragging.initial,
           };
         }
 
-        // 1. was the draggable moving out of the way?
-
         if (last.impact.movement.draggables.includes(provided.id)) {
+          if (complete.isAnimationFinished) {
+            return cutOffAnimation(id, isDragEnabled);
+          }
+
           return {
-            id,
-            isDragEnabled,
-            isDragging: false,
-            canAnimate: true,
+            ...getDefaultProps(id, isDragEnabled),
             offset: memoizedOffset(0, last.impact.movement.amount),
           };
         }
 
-        if (last.dragging.id === provided.id) {
-          return {
-            id,
-            isDragEnabled,
-            isDragging: false,
-            canAnimate: true,
-            offset: complete.newHomeOffset,
-            initial: last.initial,
-          };
-        }
-
-        return {
-          id,
-          isDragEnabled,
-          isDragging: false,
-          canAnimate: true,
-        };
+        return getDefaultProps(id, isDragEnabled);
       }
 
       if (!currentDrag || !currentDrag.dragging) {
-        return {
-          id,
-          isDragEnabled,
-          isDragging: false,
-          canAnimate: true,
-        };
+        return getDefaultProps(id, isDragEnabled)
       }
 
       if (currentDrag.dragging.id === id) {
@@ -94,24 +91,14 @@ export default (provide: Provide) => {
         };
       }
 
-      // not the one being dragged - but might still be mvoing
-
       if (currentDrag.impact.movement.draggables.includes(id)) {
         return {
-          id,
-          isDragEnabled,
-          isDragging: false,
-          canAnimate: true,
+          ...getDefaultProps(id, isDragEnabled),
           offset: memoizedOffset(0, currentDrag.impact.movement.amount),
         };
       }
 
-      return {
-        id,
-        isDragEnabled,
-        isDragging: false,
-        canAnimate: true,
-      };
+      return getDefaultProps(id, isDragEnabled);
     }
   );
 };

@@ -15,14 +15,21 @@ export interface State {
   emoji: OptionalEmojiDescription;
 }
 
-// tslint:disable-next-line:variable-name
-const EmojiPlaceholder = (props) => (
-  <svg className={missingEmoji} viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" >
-    <circle cx="16" cy="16" r="12">
-      <title>{`Unknown Emoji (${props.title})`}</title>
-    </circle>
-  </svg>
-);
+export interface PlaceholderProps {
+  title: string;
+}
+
+export class EmojiPlaceholder extends PureComponent<PlaceholderProps, undefined> {
+  render() {
+    return (
+      <svg className={missingEmoji} viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" >
+        <circle cx="16" cy="16" r="12">
+          <title>{`Unknown Emoji (${this.props.title})`}</title>
+        </circle>
+      </svg>
+    );
+  }
+}
 
 export default class ResourcedEmoji extends PureComponent<Props, State> {
 
@@ -34,10 +41,10 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
     };
   }
 
-  private refreshEmoji(emojiProviderPromise: Promise<EmojiProvider>) {
+  private refreshEmoji(emojiProviderPromise: Promise<EmojiProvider>, id: EmojiId) {
     if (emojiProviderPromise) {
       emojiProviderPromise.then(emojiProvider => {
-        emojiProvider.findById(this.props.id).then(emoji => {
+        emojiProvider.findById(id).then(emoji => {
           this.setState({
             emoji,
           });
@@ -48,13 +55,13 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
 
   componentWillMount() {
     if (!this.state.emoji) {
-      this.refreshEmoji(this.props.emojiProvider);
+      this.refreshEmoji(this.props.emojiProvider, this.props.id);
     }
   }
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.emojiProvider !== this.props.emojiProvider || nextProps.id !== this.props.id) {
-      this.refreshEmoji(nextProps.emojiProvider);
+      this.refreshEmoji(nextProps.emojiProvider, nextProps.id);
     }
   }
 

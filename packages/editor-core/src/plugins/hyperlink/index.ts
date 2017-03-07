@@ -23,43 +23,6 @@ interface NodeInfo {
   startPos: number;
 }
 
-function autoformattingLink(view: EditorView, text: string) {
-  const urlAtEndOfLine = new RegExp(`${URL.source}$`);
-  const { $from, $to } = view.state.selection;
-  let textBefore = $from.parent.textBetween(0, $from.parentOffset, undefined, '\ufffc') + text;
-  let match = urlAtEndOfLine.exec(textBefore);
-
-  if (match) {
-    const { schema } = view.state;
-    const start = $from.pos - match[1].length;
-    const end = $to.pos;
-    const url = match[3] ? match[1] : `http://${match[1]}`;
-
-    const markType = schema.mark(
-      'link',
-      {
-        href: url,
-      }
-    );
-
-    view.dispatch(view.state.tr.replaceWith(
-      start,
-      end,
-      schema.text(
-        match[1],
-        [markType]
-      )
-    ));
-
-    // view.dispatch(view.state.tr.removeMark(
-    //   to + 1,
-    //   to + 1,
-    //   markType
-    // ));
-
-  }
-
-}
 
 export class HyperlinkState {
   // public state
@@ -167,6 +130,42 @@ export class HyperlinkState {
     }
   }
 
+  autoformattingLink(view: EditorView, text: string): boolean {
+    const urlAtEndOfLine = new RegExp(`${URL.source}$`);
+    const { $from, $to } = view.state.selection;
+    let textBefore = $from.parent.textBetween(0, $from.parentOffset, undefined, '\ufffc') + text;
+    let match = urlAtEndOfLine.exec(textBefore);
+
+    if (match) {
+      const { schema } = view.state;
+      const start = $from.pos - match[1].length;
+      const end = $to.pos;
+      const url = match[3] ? match[1] : `http://${match[1]}`;
+
+      const markType = schema.mark(
+        'link',
+        {
+          href: url,
+        }
+      );
+
+      view.dispatch(view.state.tr.replaceWith(
+        start,
+        end,
+        schema.text(
+          match[1],
+          [markType]
+        )
+      ));
+
+      return true;
+
+    }
+
+    return false;
+
+  }
+
   private isShouldEscapeFromMark(nodeInfo: NodeInfo | undefined) {
     const parentOffset = this.state.selection.$from.parentOffset;
     return nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset;
@@ -239,16 +238,15 @@ const plugin = new Plugin({
     stateKey.getState(view.state).update(view.state, view.docView, true);
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
-        stateKey.getState(view.state).update(view.state, view.docView);
+        const pluginState = stateKey.getState(view.state);
+        pluginState.update(view.state, view.docView);
+        pluginState.escapeFromMark(view.dispatch);
       }
     };
   },
   props: {
     handleTextInput(view, from, to, text) {
-      stateKey.getState(view.state).escapeFromMark(view.dispatch);
-      autoformattingLink(view, text);
-
-      return false;
+      return stateKey.getState(view.state).autoformattingLink(view, text);
     }
   }
 });

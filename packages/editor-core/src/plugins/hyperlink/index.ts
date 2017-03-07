@@ -55,7 +55,6 @@ export class HyperlinkState {
 
     pm.on.blur.add(() => {
       this.editorFocused = false;
-      this.toolbarVisible = false;
       this.active && this.changeHandlers.forEach(cb => cb(this));
     });
 

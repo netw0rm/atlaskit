@@ -23,7 +23,7 @@ export default class FieldBase extends PureComponent {
     isRequired: PropTypes.bool,
     onFocus: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
-    onIconClick: PropTypes.func.isRequired,
+    onIconMouseDown: PropTypes.func.isRequired,
     shouldReset: PropTypes.bool,
     children: PropTypes.node,
   }
@@ -54,11 +54,11 @@ export default class FieldBase extends PureComponent {
   renderRightGutter() {
     if (!this.props.isDisabled && this.props.isInvalid) {
       return (
-        <div className={styles.warningIconWrapper}>
-          <WarningIcon
-            label="warning"
-            onClick={this.props.onIconClick}
-          />
+        <div
+          className={styles.warningIconWrapper}
+          onMouseDown={this.props.onIconMouseDown}
+        >
+          <WarningIcon label="warning" />
         </div>
       );
     }
@@ -79,6 +79,10 @@ export default class FieldBase extends PureComponent {
       [styles.invalid]: this.props.isInvalid && !this.props.isFocused,
     });
 
+    const dialogWrapperClasses = classNames({
+      [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
+    });
+
     const contentWrapperClasses = classNames(styles.contentWrapper, {
       [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
       [styles.disabled]: this.props.isDisabled,
@@ -86,20 +90,22 @@ export default class FieldBase extends PureComponent {
 
     return (
       <div className={contentWrapperClasses}>
-        <InlineDialog
-          content={this.props.invalidMessage}
-          isOpen={this.props.isDialogOpen && !!this.props.invalidMessage}
-          position="right middle"
-        >
-          <div
-            className={contentClasses}
-            onFocusCapture={this.props.onFocus}
-            onBlurCapture={this.props.onBlur}
+        <div className={dialogWrapperClasses}>
+          <InlineDialog
+            content={this.props.invalidMessage}
+            isOpen={this.props.isDialogOpen && !!this.props.invalidMessage}
+            position="right middle"
           >
-            {this.props.children}
-            {this.renderRightGutter()}
-          </div>
-        </InlineDialog>
+            <div
+              className={contentClasses}
+              onFocusCapture={this.props.onFocus}
+              onBlurCapture={this.props.onBlur}
+            >
+              {this.props.children}
+              {this.renderRightGutter()}
+            </div>
+          </InlineDialog>
+        </div>
       </div>
     );
   }

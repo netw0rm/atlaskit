@@ -184,10 +184,10 @@ describe('ak-field-base', () => {
       expect(spy.callCount).to.equal(1);
     });
 
-    it('should call onIconClick handler when icon clicked', () => {
+    it('should call onIconMouseDown handler on icon mouse down', () => {
       const spy = sinon.spy();
-      const wrapper = mount(<FieldBaseSmart isInvalid onIconClick={spy} />);
-      wrapper.find(WarningIcon).simulate('click');
+      const wrapper = mount(<FieldBaseSmart isInvalid onIconMouseDown={spy} />);
+      wrapper.find(WarningIcon).simulate('mouseDown');
       expect(spy.callCount).to.equal(1);
     });
   });

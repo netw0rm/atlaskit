@@ -19,15 +19,22 @@ import SmartSelectFocus from './examples/SmartSelectFocus';
 import SmartSelectFocusRaw from '!raw!./examples/SmartSelectFocus';
 import SmartSelectAppearances from './examples/SmartSelectAppearances';
 import SmartSelectAppearancesRaw from '!raw!./examples/SmartSelectAppearances';
+import SmartSelectElemBefore from './examples/SmartSelectElemBefore';
+import SmartSelectElemBeforeRaw from '!raw!./examples/SmartSelectElemBefore';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name, description } from '../package.json';
 
 storiesOf(name, module)
-  .add('Multi select (smart) - overview', () => (
+  .add('📖 Multi select (smart) - readme', () => (
     <Chrome title="Multi select (smart) - overview">
       <Description>
         <p>{description}</p>
+        <p>
+          The &ldquo;smart&rdquo; multi-select component will handle it&apos;s own state for you
+          (you won&apos;t need to/be able to update the list of <code>selected</code> items). If
+          you require this funcitonality, use the <code>stateless</code> version instead.
+        </p>
       </Description>
       {SmartSelectOverview}
       <Code>
@@ -35,11 +42,30 @@ storiesOf(name, module)
       </Code>
     </Chrome>
   ))
+  /* 📖 Multi select (stateless) - readme */
+  /* 📖 Multi select Item - readme */
   .add('Multi select is submittable', () => (
     <Chrome title="Multi select in forms">
       {SelectInForm}
       <Code>
         {SelectInFormRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Multi select with elemBefore (Avatars)', () => (
+    <Chrome title="Multi select with Avatars">
+      <Description>
+        <p>You can pass content to be displayed in front of the dropdown items and also the tags by
+          using the <code>elemBefore</code> and <code>tagElemBefore</code> props
+          respectively.
+        </p>
+        <p>The most common use case for this would be for things like <code>@atlaskit/icon</code>
+          &apos;s and <code>@atlaskit/avatar</code>&apos;s
+        </p>
+      </Description>
+      {SmartSelectElemBefore}
+      <Code>
+        {SmartSelectElemBeforeRaw}
       </Code>
     </Chrome>
   ))

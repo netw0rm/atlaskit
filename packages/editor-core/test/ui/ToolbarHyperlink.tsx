@@ -9,7 +9,7 @@ import ToolbarButton from '../../src/ui/ToolbarButton';
 import { makeEditor } from '../../src/test-helper';
 import { doc, schema, p } from '../_schema-builder';
 
-describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
+describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
   const editor = (doc: any) => {
     const { pm, plugin } = makeEditor({ doc, plugin: HyperlinkPlugin, schema });
     return { pm, plugin, sel: pm.doc.refs['<>'] };

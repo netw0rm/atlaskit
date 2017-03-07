@@ -1,19 +1,18 @@
 import * as React from 'react';
-import {Component, MouseEvent} from 'react';
-import {Observable} from 'rxjs/Observable';
+import {Component} from 'react';
 import {Subscription} from 'rxjs/Subscription';
-import {Context, CardAction, CardActionType, MediaItemType, LinkItem, LinkDetails} from '@atlaskit/media-core';
-import MoreIcon from '@atlaskit/icon/glyph/more';
+import {Context, CardAction, LinkItem, LinkDetails} from '@atlaskit/media-core';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/observable/fromPromise';
 
 import {LinkCardViewHorizontal} from '..';
-import {Dropdown} from '../dropdown/dropdown';
 
 export interface LinkCardProps {
   // TODO add link id to interface and use link data provider when supplied else use url preview provider
   // this implies that linkUrl will be optional
   readonly context: Context;
   readonly linkUrl: string;
-  readonly title: string;
 
   readonly height?: number;
   readonly width?: number;
@@ -22,8 +21,6 @@ export interface LinkCardProps {
 
   readonly type?: 'normal' | 'small';
   readonly onClick?: (event: Event, item: LinkItem) => void;
-  readonly onHover?: (event: any) => void;
-  readonly onError?: (error: Error) => void;
 }
 
 export interface LinkCardState {
@@ -35,17 +32,11 @@ export interface LinkCardState {
 }
 
 export class LinkCard extends Component <LinkCardProps, LinkCardState> {
-  private clickDetector: (e: Event) => void;
-
-  static get defaultProps() {
-    const menuActions: Array<CardAction> = [];
-
-    return {
-      width: 435,
-      height: 116,
-      menuActions
-    };
-  }
+  static defaultProps: Partial<LinkCardProps> = {
+    width: 435,
+    height: 116,
+    menuActions: []
+  };
 
   constructor(props: LinkCardProps) {
     super(props);
@@ -119,41 +110,43 @@ export class LinkCard extends Component <LinkCardProps, LinkCardState> {
   }
 
   render() {
-    if (this.state) {
-      const {linkItem} = this.state;
-
-      if (linkItem) {
-        return this.renderLink(linkItem.details);
-      } else {
-        return this.renderNoLinkItem();
-      }
+    const {state} = this;
+    if (state && state.linkItem) {
+      return this.renderLink(state.linkItem.details);
     } else {
-      // TODO remove text in div
-      return <div>This an empty state</div>;
+      return this.renderNoLinkItem();
     }
   }
 
   renderLink(linkDetails: LinkDetails): JSX.Element {
-    // TODO pass through other linkDetails to LinkCardViewHorizontal
-    const {url, title} = linkDetails;
+    const {url, title, description, resources} = linkDetails;
+    const {icon, thumbnail} = resources;
 
-    const {height, width} = this.props;
+    const {height, width, menuActions} = this.props;
     const {loading} = this.state;
 
     return <LinkCardViewHorizontal
       linkUrl={url}
-      title={title}
+      // fix URLPreview type to make title required
+      title={title || ''}
+
+      description={description}
+      thumbnailUrl={thumbnail && thumbnail.url}
+      iconUrl={icon && icon.url}
 
       height={height}
       width={width}
+
       loading={loading}
+      menuActions={menuActions}
     />;
   }
 
   private renderNoLinkItem() {
-    // TODO render error state 
-    return <div />;
+    // TODO FIL-3892 FIL-3893 render loading/error state 
+    return <div>This is the loading/error state</div>;
   }
 };
 
 export default LinkCard;
+;

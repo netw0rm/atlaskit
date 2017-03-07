@@ -20,8 +20,8 @@ export default props => (
     <AkFieldBase
       invalidMessage={props.invalidMessage}
       isCompact={props.isCompact}
-      isDialogOpen={props.isDialogOpen}
-      isFocused={props.isFocused}
+      defaultIsDialogOpen={props.defaultIsDialogOpen}
+      defaultIsFocused={props.defaultIsFocused}
       isInvalid={props.isInvalid}
       isDisabled={props.isDisabled}
       isReadOnly={props.isReadOnly}

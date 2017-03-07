@@ -26,7 +26,7 @@ export interface ResolveReject<T> {
 
 export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, undefined> {
   /**
-   * Returns the first matching emoji matching the id, or null if none found.
+   * Returns the first matching emoji matching the shortcut, or null if none found.
    */
   findByShortcut(shortcut: string): Promise<OptionalEmojiDescription>;
 

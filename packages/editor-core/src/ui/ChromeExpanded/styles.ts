@@ -66,7 +66,7 @@ export const toolbar = style({
     '& > *': {
       alignItems: 'center',
       display: 'flex',
-      marginLeft: '10px',
+      marginLeft: 4,
 
       $nest: {
         '&:first-child': {

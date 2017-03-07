@@ -20,8 +20,8 @@ describe(name, () => {
     });
     it('passes down props to the underlying Logo component', () => {
       Object.values(logos).forEach((ProductLogo) => {
-        const wrapper = shallow(<ProductLogo isCollapsed size="small" />);
-        expect(wrapper.find('Logo').props().isCollapsed).to.equal(true);
+        const wrapper = shallow(<ProductLogo collapseTo="type" size="small" />);
+        expect(wrapper.find('Logo').props().collapseTo).to.equal('type');
         expect(wrapper.find('Logo').props().size).to.equal('small');
       });
     });

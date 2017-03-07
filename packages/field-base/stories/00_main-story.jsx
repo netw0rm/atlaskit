@@ -87,6 +87,36 @@ storiesOf(name, module)
       </BasicFieldBase>
     </div>
   )
+  .add('with invalidMessage prop', () =>
+    <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
+      <BasicFieldBase
+        label="Click the warning icon to display the message"
+        id="fieldbase"
+        isInvalid
+        invalidMessage="This warning dialog should be open by default"
+        defaultIsDialogOpen
+      >
+        <Input
+          value="input children"
+          isEditing
+          id="fieldbase"
+        />
+      </BasicFieldBase>
+      <BasicFieldBase
+        label="Click the warning icon to display the message"
+        id="fieldbase"
+        isCompact
+        isInvalid
+        invalidMessage="This warning dialog should open when the icon is clicked"
+      >
+        <Input
+          id="fieldbase"
+          isEditing
+          value="input children"
+        />
+      </BasicFieldBase>
+    </div>
+  )
   .add('with spinner', () => {
     const input = (
       <Input
@@ -164,7 +194,7 @@ storiesOf(name, module)
         />
       </BasicFieldBase>
       <BasicFieldBase
-        label="Disabled + invalid example"
+        label="Disabled + invalid example (should not show an icon)"
         id="fieldbase"
         isInvalid
         isDisabled

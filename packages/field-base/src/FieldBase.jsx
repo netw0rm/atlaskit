@@ -1,15 +1,18 @@
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
-import WarningIcon from '@atlaskit/icon/glyph/warning';
 import React, { PureComponent, PropTypes } from 'react';
 import Spinner from '@atlaskit/spinner';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
+import InlineDialog from '@atlaskit/inline-dialog';
 import appearances, { standard, none, subtle } from './internal/appearances';
 
  /* eslint-disable react/no-unused-prop-types */
 export default class FieldBase extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(Object.keys(appearances)),
+    invalidMessage: PropTypes.node,
     isCompact: PropTypes.bool,
+    isDialogOpen: PropTypes.bool,
     isDisabled: PropTypes.bool,
     isFitContainerWidthEnabled: PropTypes.bool,
     isFocused: PropTypes.bool,
@@ -20,13 +23,16 @@ export default class FieldBase extends PureComponent {
     isRequired: PropTypes.bool,
     onFocus: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
+    onIconClick: PropTypes.func.isRequired,
     shouldReset: PropTypes.bool,
     children: PropTypes.node,
   }
 
   static defaultProps = {
     appearance: standard,
+    invalidMessage: '',
     isCompact: false,
+    isDialogOpen: false,
     isDisabled: false,
     isFitContainerWidthEnabled: false,
     isFocused: false,
@@ -45,15 +51,16 @@ export default class FieldBase extends PureComponent {
     }
   }
 
-  renderWarningIcon = () => (
-    <div className={styles.warningIconWrapper}>
-      <WarningIcon label="warning" />
-    </div>
-  )
-
-  renderRightGutter = () => {
-    if (this.props.isInvalid) {
-      return this.renderWarningIcon();
+  renderRightGutter() {
+    if (!this.props.isDisabled && this.props.isInvalid) {
+      return (
+        <div className={styles.warningIconWrapper}>
+          <WarningIcon
+            label="warning"
+            onClick={this.props.onIconClick}
+          />
+        </div>
+      );
     }
 
     return this.props.isLoading ? <Spinner /> : null;
@@ -79,14 +86,20 @@ export default class FieldBase extends PureComponent {
 
     return (
       <div className={contentWrapperClasses}>
-        <div
-          className={contentClasses}
-          onFocusCapture={this.props.onFocus}
-          onBlurCapture={this.props.onBlur}
+        <InlineDialog
+          content={this.props.invalidMessage}
+          isOpen={this.props.isDialogOpen && !!this.props.invalidMessage}
+          position="right middle"
         >
-          {this.props.children}
-          {this.renderRightGutter()}
-        </div>
+          <div
+            className={contentClasses}
+            onFocusCapture={this.props.onFocus}
+            onBlurCapture={this.props.onBlur}
+          >
+            {this.props.children}
+            {this.renderRightGutter()}
+          </div>
+        </InlineDialog>
       </div>
     );
   }

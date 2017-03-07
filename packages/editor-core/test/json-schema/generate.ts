@@ -1,6 +1,6 @@
 import * as chai from 'chai';
-import { Attribute, Block, EmMarkType, Inline, MarkType, Schema, StrongMarkType, Text } from '../../src';
-import jsonSchema from '../../src/schema/json-schema';
+import { Attribute, Block, EmMarkType, Inline, MarkType, Schema, StrongMarkType, Text } from '../..';
+import jsonSchema from '../../stories/schema/generate';
 
 const { expect } = chai;
 
@@ -437,18 +437,18 @@ describe('@atlaskit/editor-core: json-schema', () => {
     expect(em_mark).to.deep.equal({
       type: 'object',
       properties: {
-        _: { enum: ['em'] },
+        type: { enum: ['em'] },
       },
-      required: ['_'],
+      required: ['type'],
       additionalProperties: false,
     });
 
     expect(strong_mark).to.deep.equal({
       type: 'object',
       properties: {
-        _: { enum: ['strong'] },
+        type: { enum: ['strong'] },
       },
-      required: ['_'],
+      required: ['type'],
       additionalProperties: false,
     });
   });
@@ -475,7 +475,7 @@ describe('@atlaskit/editor-core: json-schema', () => {
     expect(link_mark).to.deep.equal({
       type: 'object',
       properties: {
-        _: { enum: ['link'] },
+        type: { enum: ['link'] },
         href: {
           type: 'string',
         },
@@ -483,7 +483,7 @@ describe('@atlaskit/editor-core: json-schema', () => {
           type: 'string',
         },
       },
-      required: ['_', 'href'],
+      required: ['type', 'href'],
       additionalProperties: false,
     });
   });

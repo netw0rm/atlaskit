@@ -291,7 +291,7 @@ storiesOf('CardView', {})
   .add('Different name lengths', () => (
     <ul style={styles.statesWrapper}>
       <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Sort name</div>
+        <div style={styles.stateTitle}>Short name</div>
         <CardView
           loading={false}
           selectable={false}

@@ -139,4 +139,7 @@ storiesOf(name, module)
   ))
   .add('field-text submission test (ak-button submit button)', () => (
     submitTestForm(false)
+  ))
+  .add('ak-field-text with autofocus', () => (
+    generateFormWithInput({ autoFocus: true })
   ));

@@ -39,6 +39,11 @@
 .detailsWrapper {
   display: flex;
   flex-direction: column;
+}
+
+.detailsGroup {
+  display: flex;
+  flex-direction: column;
   margin-left: @ak-grid-size * 14;
   width: @ak-grid-size * 25;
 }
@@ -124,8 +129,12 @@
   margin: (@ak-grid-size * 2) 0 0 0;
   text-align: right;
 
-  ak-button {
-    display: inline-block;
+  button {
+    margin-left: 8px;
+
+    &:first-child {
+      margin-left: 0;
+    }
   }
 }
 

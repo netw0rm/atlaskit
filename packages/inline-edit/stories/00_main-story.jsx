@@ -13,7 +13,6 @@ import { name } from '../package.json';
 const containerStyle = {
   padding: 20,
   backgroundColor: 'white',
-  width: 400,
 };
 
 storiesOf(name, module)

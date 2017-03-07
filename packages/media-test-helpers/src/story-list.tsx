@@ -50,8 +50,8 @@ const styles = {
 };
 
 export interface StoryListProps {
-  display?: 'row' | 'column'
-  children?: any
+  display?: 'row' | 'column';
+  children?: any;
 }
 
 export default class StoryList extends Component<StoryListProps, {}> {

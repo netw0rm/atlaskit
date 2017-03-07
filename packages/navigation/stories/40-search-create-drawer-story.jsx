@@ -1,6 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import { BitbucketBranchesIcon, PageIcon, FeedbackIcon, IssuesIcon, EmojiObjectsIcon, EmojiNatureIcon, EmojiTravelIcon, ExpandIcon } from '@atlaskit/icon';
+import searchStencil from 'url-loader!./stencils/search.svg';
 import { AkDrawerItem, AkContainerItemGroup } from '../src/index';
 import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
@@ -121,4 +122,9 @@ storiesOf(name, module)
         openDrawer="create"
       />
     </Page>
-  ));
+  ))
+  .addStencilStory('with a stencil when the search drawer is open', () => (
+    <Page>
+      <BasicNavigation openDrawer="search" />
+    </Page>
+  ), { image: searchStencil });

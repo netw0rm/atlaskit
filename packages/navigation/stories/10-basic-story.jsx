@@ -2,6 +2,7 @@ import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
 import { DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
 import { AtlassianLogo } from '@atlaskit/logo';
+import navigationStencil from 'url-loader!./stencils/navigation.svg';
 import { AkContainerItem } from '../src/index';
 import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
@@ -73,6 +74,11 @@ storiesOf(name, module)
       </BasicNavigation>
     </Page>
   ))
+  .addStencilStory('with a stencil in the open state', () => (
+    <Page>
+      <BasicNavigation />
+    </Page>
+  ), { image: navigationStencil })
   .add('with global appearance', () => (
     <Page>
       <BasicNavigation

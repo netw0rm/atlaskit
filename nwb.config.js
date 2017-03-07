@@ -4,8 +4,10 @@
 const ucc = require('uppercamelcase');
 const path = require('path');
 
-const { name } = require(path.join(process.cwd(), 'package.json'));
-const globalName = ucc(name);
+const { name: localPackageName } = require(path.join(process.cwd(), 'package.json'));
+const { name: mainPackageName } = require('./package.json');
+
+const globalName = `${ucc(mainPackageName)}${ucc(localPackageName)}`;
 
 module.exports = {
   type: 'react-component',

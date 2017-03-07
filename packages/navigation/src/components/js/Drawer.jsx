@@ -75,10 +75,10 @@ export default class Drawer extends PureComponent {
             </div>
           </div>
           <div className={classNames(styles.main)}>
-            <div className={classNames(styles.fixed)}>
+            <div className={classNames(styles.fixed, styles.header)}>
               <ContainerHeader>{header}</ContainerHeader>
             </div>
-            <div>
+            <div className={classNames(styles.content)}>
               {this.props.children}
             </div>
           </div>

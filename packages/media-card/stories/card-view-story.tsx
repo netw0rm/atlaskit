@@ -285,7 +285,7 @@ storiesOf('CardView', {})
   })
   .add('Different name lengths', () => (
     <StoryList>
-      {[
+      {[{
         title: 'Sort name',
         content: <CardView
           loading={false}
@@ -366,7 +366,7 @@ storiesOf('CardView', {})
   ))
   .add('Different file sizes', () => (
     <StoryList>
-      {[
+      {[{
         title: 'File size: bytes',
         content: <CardView
           loading={false}
@@ -465,10 +465,10 @@ storiesOf('CardView', {})
       }
     }
 
-    return <ul style={styles.statesWrapper}>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Infinite loading</div>
-        <CardView
+    return <StoryList>
+      {[{
+        title: 'Infinite loading',
+        content: <CardView
           loading={true}
           selectable={false}
           selected={false}
@@ -478,12 +478,11 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Loading 1sec</div>
-        <LoadingWrapper />
-      </li>
-    </ul>;
+      }, {
+        title: 'Loading 1sec',
+        content: <LoadingWrapper />
+      }]}
+    </StoryList>;
   })
   .add('Menu action', () => (
     <StoryList>

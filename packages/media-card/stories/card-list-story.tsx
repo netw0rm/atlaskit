@@ -3,6 +3,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import { MediaItem, ContextFactory, ListCardDelete, ListCardClick } from '@atlaskit/media-core';
 import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers';
 import { CardList } from '../src';
+import {StoryList} from '@atlaskit/media-test-helpers';
 
 const collectionName = 'MediaServicesSample';
 const wrongCollection = 'adfasdf';
@@ -30,21 +31,6 @@ const cardsActions = [deleteAction, clickAction, annotateAction];
 const context = ContextFactory.create({ clientId, serviceHost, tokenProvider });
 const wrongContext = ContextFactory.create({ clientId: wrongClientId, serviceHost, tokenProvider });
 
-const styles = {
-  statesWrapper: {
-    listStyle: 'none',
-    display: 'inline-block'
-  },
-  stateTitle: {
-    textAlign: 'center',
-    padding: '5px'
-  },
-  li: {
-    float: 'left',
-    marginLeft: '5px'
-  }
-};
-
 storiesOf('CardList', {})
   .add('Normal cards', () => (
     <CardList
@@ -54,65 +40,61 @@ storiesOf('CardList', {})
     />
   ))
   .add('Caching', () => (
-    <ul style={styles.statesWrapper}>
-      <li style={styles.li}>
-        <div style={styles.stateTitle}>Normal card</div>
-        <CardList
+    <StoryList>
+      {[{
+        title: 'Normal card',
+        content: <CardList
           context={context}
           collectionName={collectionName}
           actions={[clickAction]}
           pageSize={30}
           cardType={'small'}
         />
-      </li>
-      <li style={styles.li}>
-        <div style={styles.stateTitle}>Small card</div>
-        <CardList
+      }, {
+        title: 'Small card',
+        content: <CardList
           context={context}
           collectionName={collectionName}
           actions={[clickAction]}
           pageSize={30}
           cardType={'small'}
         />
-      </li>
-      <li style={styles.li}>
-        <div style={styles.stateTitle}>Small card</div>
-        <CardList
+      }, {
+        title: 'Small card',
+        content: <CardList
           context={context}
           collectionName={collectionName}
           actions={[clickAction]}
           pageSize={30}
           cardType={'small'}
         />
-      </li>
-      <li style={styles.li}>
-        <div style={styles.stateTitle}>Small card</div>
-        <CardList
+      }, {
+        title: 'Small card',
+        content: <CardList
           context={context}
           collectionName={collectionName}
           actions={[clickAction]}
           pageSize={30}
         />
-      </li>
-      <li style={styles.li}>
-        <div style={styles.stateTitle}>Small card</div>
-        <CardList
+      }, {
+        title: 'Small card',
+        content: <CardList
           context={context}
           collectionName={collectionName}
           actions={[clickAction]}
           pageSize={30}
         />
-      </li>
-      <li style={styles.li}>
-        <div style={styles.stateTitle}>Small card</div>
-        <CardList
+      }, {
+        title: 'Small card',
+        content: <CardList
           context={context}
           collectionName={collectionName}
           actions={[clickAction]}
           pageSize={30}
         />
-      </li>
-    </ul>
+      }
+      }]}
+    </StoryList>
   ))
   .add('Small cards', () => (
     <CardList

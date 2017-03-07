@@ -54,7 +54,7 @@ export interface StoryListProps {
   children?: any;
 }
 
-export default class StoryList extends Component<StoryListProps, {}> {
+export class StoryList extends Component<StoryListProps, {}> {
   render() {
     const display = this.props.display ? this.props.display : 'row';
     const listStyles = display === 'column' ? styles.column : styles.row;

@@ -8,6 +8,7 @@ import {
   MentionsPlugin,
   ProseMirror,
   TextSelection,
+  DefaultKeymapsPlugin,
   version as coreVersion,
 } from '@atlaskit/editor-core';
 import * as cx from 'classnames';
@@ -129,6 +130,7 @@ export default class Editor extends PureComponent<Props, State> {
       plugins: [
         BlockTypePlugin,
         HyperlinkPlugin,
+        DefaultKeymapsPlugin,
         ...(this.props.mentionResourceProvider ? [MentionsPlugin] : [])
       ],
     });

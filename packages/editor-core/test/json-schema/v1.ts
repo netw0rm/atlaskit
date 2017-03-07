@@ -6,7 +6,7 @@ import * as Ajv from 'ajv';
 const ajv = new Ajv();
 const validate = ajv.compile(v1schema);
 
-describe.only(`${name} json-schema v1`, () => {
+describe(`${name} json-schema v1`, () => {
   const validReq = require.context('./v1-reference/valid', false, /\.json$/);
   for (const name of validReq.keys()) {
     it(`validates '${name}'`, () => {

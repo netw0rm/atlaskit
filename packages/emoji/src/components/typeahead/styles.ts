@@ -3,11 +3,11 @@ import { akBorderRadius } from '@atlaskit/util-shared-styles';
 
 import {
   emojiPreviewSelectedColor,
+  emojiTypeAheadMaxHeight,
   emojiTypeAheadWidth,
   noDialogContainerBorderColor,
   noDialogContainerBorderRadius,
   noDialogContainerBoxShadow,
-  scrollableMaxHeight,
 } from '../../shared-styles';
 
 export const selected = 'selected';
@@ -18,7 +18,7 @@ export const emojiScrollable = style({
   borderRadius: akBorderRadius,
   display: 'block',
   margin: '0',
-  maxHeight: scrollableMaxHeight,
+  maxHeight: `${emojiTypeAheadMaxHeight}px`,
   overflowX: 'hidden',
   overflowY: 'auto',
   padding: '0',
@@ -58,4 +58,15 @@ export const typeAheadItemRow = style({
   flexDirection: 'row',
   flexWrap: 'wrap',
   verticalAlign: 'middle',
+});
+
+export const emojiTypeAheadSpinnerContainer = style({
+  position: 'relative',
+  height: `${emojiTypeAheadMaxHeight}px`,
+  paddingTop: `${((emojiTypeAheadMaxHeight - 30) / 2).toFixed()}px`,
+  boxSizing: 'border-box',
+});
+
+export const emojiTypeAheadSpinner = style({
+  textAlign: 'center',
 });

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "1.9.1",
+  "version": "1.11.0",
   "config": {
     "access": "public"
   },
@@ -19,6 +19,7 @@
     "src"
   ],
   "dependencies": {
+    "@atlaskit/button": "^1.0.0",
     "@atlaskit/droplist-group": "^1.0.0",
     "@atlaskit/droplist-item": "^1.0.0",
     "@atlaskit/icon": "^2.4.0",
@@ -43,6 +44,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
+    "@atlaskit/media-test-helpers": "^1.0.0",
     "akutil-common-test": "*"
   },
   "keywords": [

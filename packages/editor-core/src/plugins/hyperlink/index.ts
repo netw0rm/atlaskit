@@ -21,7 +21,8 @@ export class HyperlinkState {
   active = false;
   linkable = false;
   element?: HTMLElement;
-  toolbarVisible: boolean = false;
+  editorFocused: boolean = false;
+  showToolbarPanel: boolean = false;
 
   private changeHandlers: StateChangeHandler[] = [];
   private inputRules: InputRule[] = [];
@@ -29,7 +30,6 @@ export class HyperlinkState {
   private activeLinkNode?: Node;
   private activeLinkMark?: LinkMark;
   private activeLinkStartPos?: number;
-  private editorFocused: boolean = false;
 
   constructor(pm: PM) {
     this.pm = pm;
@@ -55,7 +55,7 @@ export class HyperlinkState {
 
     pm.on.blur.add(() => {
       this.editorFocused = false;
-      this.update(false, true);
+      this.active && this.changeHandlers.forEach(cb => cb(this));
     });
 
     this.update(true);
@@ -110,6 +110,17 @@ export class HyperlinkState {
     }
   }
 
+  showLinkPanel() {
+    const { pm } = this;
+    const { selection } = pm;
+    if (selection.empty) {
+      this.showToolbarPanel = !this.showToolbarPanel;
+      this.changeHandlers.forEach(cb => cb(this));
+    } else {
+      this.addLink({ href: '' });
+    }
+  }
+
   detach(pm: ProseMirror) {
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
@@ -131,7 +142,7 @@ export class HyperlinkState {
       this.text = nodeInfo && nodeInfo.node.textContent;
       this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
       this.element = this.getDomElement();
-      this.toolbarVisible = this.editorFocused && !!nodeInfo;
+      this.editorFocused = this.editorFocused;
       this.active = !!nodeInfo;
       dirty = true;
     }

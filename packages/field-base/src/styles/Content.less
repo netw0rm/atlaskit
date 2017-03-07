@@ -59,9 +59,6 @@
     pointer-events: none;
   }
 
-  &.fit-container-width {
-    flex: 1 1 auto;
-  }
   &.compact {
     .borders-and-padding(@base-border-width, @base-horizontal-padding, @base-height-compact);
     .disabled {
@@ -140,9 +137,6 @@
   display: flex;
   max-width: 100%;
 
-  &.fit-container-width {
-    flex: 1 1 auto;
-  }
   &.disabled {
     cursor: not-allowed;
   }
@@ -153,4 +147,8 @@
   color: @base-color-invalid;
   display: flex;
   height: unit(@base-inner-height, px);
+}
+
+.fit-container-width {
+  flex: 1 1 auto;
 }

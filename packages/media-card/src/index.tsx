@@ -8,6 +8,7 @@ export * from './ellipsify';
 export * from './cardView/cardView';
 export * from './cardViewSmall/cardViewSmall';
 export * from './card/card';
+export * from './list';
 
 export * from './linkCardViewHorizontal/linkCardViewHorizontal';
 export * from './linkCard/linkCard';

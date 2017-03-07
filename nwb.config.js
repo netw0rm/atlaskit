@@ -1,22 +1,8 @@
 /* eslint import/no-dynamic-require: 0 */
 /* eslint global-require: 0 */
 
-const ucc = require('uppercamelcase');
-const path = require('path');
-
-const { name: localPackageName } = require(path.join(process.cwd(), 'package.json'));
-const { name: mainPackageName } = require('./package.json');
-
-const globalName = `${ucc(mainPackageName)}${ucc(localPackageName)}`;
-
 module.exports = {
   type: 'react-component',
-  npm: {
-    esModules: true,
-    umd: {
-      global: globalName,
-    },
-  },
   babel: {
     plugins: [
       'transform-flow-strip-types',

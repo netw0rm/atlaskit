@@ -2,7 +2,8 @@ import * as React from 'react';
 import {Component} from 'react';
 import {PlaceholderSmallWrapper} from '../styled';
 import {MediaType} from '@atlaskit/media-core';
-import {FileIcon, Placeholder} from '../..';
+import {FileIcon} from '../../generic/fileIcon/fileIcon';
+import {Placeholder} from '../../generic/placeholder/placeholder';
 
 export interface PlaceholderProps {
   mediaType: MediaType;

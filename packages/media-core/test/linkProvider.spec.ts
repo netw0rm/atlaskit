@@ -66,17 +66,24 @@ describe('LinkProvider', () => {
 
 class Mocks {
   public static linkServiceResolves() {
-    const stub = sinon.stub();
-    stub.onCall(0).returns(Promise.resolve(someLinkItem));
+    const getLinkStub = sinon.stub();
+    getLinkStub.onCall(0).returns(Promise.resolve(someLinkItem));
+
+    const addLinkStub = sinon.stub();
+    addLinkStub.onCall(0).returns(Promise.resolve(linkId));
+
     return {
-      getLinkItem: stub
+      getLinkItem: getLinkStub,
+      addLinkItem: addLinkStub
     };
   }
 
   public static linkServiceError() {
+    const stub = sinon.stub().returns(Promise.reject(new Error('mock-error')));
+
     return {
-      getLinkItem: sinon.stub()
-        .returns(Promise.reject(new Error('mock-error')))
+      getLinkItem: stub,
+      addLinkItem: stub
     };
   }
 }

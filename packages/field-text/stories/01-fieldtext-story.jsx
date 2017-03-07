@@ -63,42 +63,59 @@ function submitTestForm(useNativeSubmitBtn) {
 }
 
 storiesOf(name, module)
-  .add('standard ak-field-text', () => (
+  .add('standard field-text', () => (
     generateFormWithInput({ placeholder: 'Oh wow, such input' })
   ))
-  .add('standard ak-field-text that fits container width', () => (
+  .add('standard field-text that fits container width', () => (
     generateFormWithInput({ placeholder: 'Oh wow, such input', shouldFitContainer: true })
   ))
-  .add('standard ak-field-text [type=email]', () => (
+  .add('standard field-text [type=email]', () => (
     generateFormWithInput({ type: 'email', placeholder: 'Enter your email' })
   ))
-  .add('required password ak-field-text', () => (
+  .add('required password field-text', () => (
     generateFormWithInput({ type: 'password', required: true })
   ))
-  .add('disabled ak-field-text with placeholder', () => (
+  .add('disabled field-text with placeholder', () => (
     generateFormWithInput({ disabled: true, placeholder: 'Such input, very uneditable' })
   ))
-  .add('compact ak-field-text', () => (
+  .add('compact field-text', () => (
     generateFormWithInput({ compact: true, placeholder: 'Oh wow, such input' })
   ))
-  .add('ak-field-text with all options', () => (
+  .add('invalid field-text', () => (
+    <div>
+      {generateFormWithInput({
+        label: 'A field-text with `isInvalid` set will display a warning icon',
+        isInvalid: true,
+        value: 'Icon only',
+      })}
+      {generateFormWithInput({
+        label: 'A field-text with both `isInvalid` and `invalidMessage` set will display a warning icon and a message in an inline-dialog when the icon is clicked',
+        isInvalid: true,
+        invalidMessage: 'The value is invalid',
+        value: 'Icon and message',
+      })}
+    </div>
+  ))
+  .add('field-text with all options', () => (
     generateFormWithInput({
       compact: true,
       disabled: true,
       required: true,
-      placeholder: 'Such input, very uneditable',
+      isInvalid: true,
+      placeholder: 'This field-text has all the options set on it',
+      invalidMessage: 'This message should not be shown',
     })
   ))
-  .add('ak-field-text with really long label', () => (
+  .add('field-text with really long label', () => (
     generateFormWithInput({ label: 'Example label with a realllly reallly reallly reallly reallly long label that goes past the edge of the input!' }) // eslint-disable-line max-len
   ))
-  .add('ak-field-text with multiline label string', () => (
+  .add('field-text with multiline label string', () => (
     generateFormWithInput({ label: 'Example\nlabel' })
   ))
-  .add('ak-field-text with label string containing HTML', () => (
+  .add('field-text with label string containing HTML', () => (
     generateFormWithInput({ label: 'Example <marquee>label</marquee>' })
   ))
-  .add('ak-field-text for autofill test', () => (
+  .add('field-text for autofill test', () => (
     <form
       action={formTestUrl}
       method="get"
@@ -117,9 +134,12 @@ storiesOf(name, module)
       </p>
     </form>
   ))
-  .add('ak-field-text submission test (native submit button)', () => (
+  .add('field-text submission test (native submit button)', () => (
     submitTestForm(true)
   ))
-  .add('ak-field-text submission test (ak-button submit button)', () => (
+  .add('field-text submission test (ak-button submit button)', () => (
     submitTestForm(false)
+  ))
+  .add('ak-field-text with autofocus', () => (
+    generateFormWithInput({ autoFocus: true })
   ));

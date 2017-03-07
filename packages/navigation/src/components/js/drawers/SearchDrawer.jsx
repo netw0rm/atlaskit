@@ -1,8 +1,15 @@
 import React, { PureComponent, PropTypes } from 'react';
+import styled from 'styled-components';
 import Drawer from '../Drawer';
 import { searchIconOffset } from '../../../shared-variables';
 
-export default class CreateDrawer extends PureComponent {
+const ContentArea = styled.div`
+  position: absolute;
+  top: ${searchIconOffset}px;
+  width: calc(100% - 16px);
+`;
+
+export default class SearchDrawer extends PureComponent {
   static propTypes = {
     backIcon: PropTypes.node,
     children: PropTypes.node,
@@ -37,7 +44,9 @@ export default class CreateDrawer extends PureComponent {
         primaryIcon={primaryIcon}
         backIconOffset={searchIconOffset}
       >
-        {children}
+        <ContentArea>
+          {children}
+        </ContentArea>
       </Drawer>
     );
   }

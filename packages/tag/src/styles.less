@@ -1,6 +1,8 @@
 @import 'shared-variables.less';
 @import '~@atlaskit/util-shared-styles/src/mixins/focus-ring.less';
 @import '~@atlaskit/util-shared-styles/src/mixins/animations.less';
+// There is an outdated grid value in shared-variables.less which wont conflict with this (different name)
+@import '~@atlaskit/util-shared-styles/src/grid.less';
 
 // Attention: The animation name removeAnimation is referenced in the JS AnimationWrapper
 .createBoldAnimation(@remove-animation, 'removeAnimation');
@@ -114,4 +116,11 @@
   &:hover {
     color: @ak-color-R500;
   }
+}
+
+.elemBefore {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: @ak-grid-size * 0.5;
 }

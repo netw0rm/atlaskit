@@ -30,6 +30,7 @@ export interface Props {
   pluginStateMentions?: MentionsPluginState;
   pluginStatePanel?: PanelState;
   mentionsResourceProvider?: any; // AbstractMentionResource
+  presenceResourceProvider?: any; // AbstractPresenceResource
   onCollapsedChromeFocus: () => void;
 }
 
@@ -50,6 +51,7 @@ export default class Chrome extends PureComponent<Props, {}> {
           pluginStateImageUpload={props.pluginStateImageUpload}
           pluginStateMentions={props.pluginStateMentions}
           mentionsResourceProvider={props.mentionsResourceProvider}
+          presenceResourceProvider={props.presenceResourceProvider}
           pluginStatePanel={props.pluginStatePanel}
           packageVersion={props.packageVersion}
           packageName={props.packageName}

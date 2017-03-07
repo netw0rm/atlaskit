@@ -55,7 +55,8 @@ export class HyperlinkState {
 
     pm.on.blur.add(() => {
       this.editorFocused = false;
-      this.update(false, true);
+      this.toolbarVisible = false;
+      this.active && this.changeHandlers.forEach(cb => cb(this));
     });
 
     this.update(true);
@@ -160,6 +161,7 @@ export class HyperlinkState {
 
     if (link && $from) {
       const {node, offset} = $from.parent.childAfter($from.parentOffset);
+      const parentNodeStartPos = $from.start($from.depth);
 
       // offset is the end postion of previous node
       // This is to check whether the cursor is at the beginning of current node
@@ -170,7 +172,7 @@ export class HyperlinkState {
       if (node && node.isText && link.isInSet(node.marks)) {
         return {
           node,
-          startPos: offset + 1
+          startPos: parentNodeStartPos + offset
         };
       }
     }
@@ -188,7 +190,7 @@ export class HyperlinkState {
     if (this.activeLinkStartPos) {
       const { node, offset } = DOMFromPos(
         this.pm,
-        this.activeLinkStartPos + this.pm.selection.$from.start(this.pm.selection.$from.depth),
+        this.activeLinkStartPos,
         true
       );
 

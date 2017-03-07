@@ -16,7 +16,7 @@ describe('<ContainerItemGroup />', () => {
       expect(mount(<ContainerItemGroup action={<div className="create">Create button</div>} />).find('.create').length).to.be.above(0);
     });
     it('separator should render in the container item group', () => {
-      expect(mount(<ContainerItemGroup separator />).find(`.${separator}`).length).to.equal(0);
+      expect(mount(<ContainerItemGroup separator />).find(`.${separator}`).length).to.equal(1);
     });
     it('with no action specified, no action should be rendered', () => {
       expect(mount(<ContainerItemGroup />).find(`.${action}`).length).to.equal(0);

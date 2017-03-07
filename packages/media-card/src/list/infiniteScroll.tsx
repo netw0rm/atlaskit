@@ -5,7 +5,7 @@ import { debounce } from 'lodash';
 export type ThresholdReachedEventHandler = () => void;
 
 export interface InfiniteScrollProps {
-  readonly height: number;
+  readonly height?: number;
 
   readonly width?: string;
   readonly delay?: number;

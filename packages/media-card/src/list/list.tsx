@@ -1,3 +1,4 @@
+/* tslint:disable:variable-name */
 import * as React from 'react';
 import { Component } from 'react';
 import { Card, DEFAULT_CARD_DIMENSIONS  } from '..';
@@ -43,15 +44,19 @@ export interface CardListState {
   error?: AxiosError;
 }
 
+const LoadingComponent = <Spinner className="spinner" style={{ width: '100%', height: '100%' }}>loading...</Spinner>;
+const EmptyComponent = <div>No items</div>;
+const ErrorComponent = <div>ERROR</div>;
+
 export class CardList extends Component<CardListProps, CardListState> {
   static defaultProps = {
     pageSize: 10,
     cardWidth: DEFAULT_CARD_DIMENSIONS.WIDTH,
     cardHeight: DEFAULT_CARD_DIMENSIONS.HEIGHT,
-    loadingComponent: <Spinner className="spinner" style={{ width: '100%', height: '100%' }}>loading...</Spinner>,
+    loadingComponent: LoadingComponent,
     useInfiniteScroll: true,
-    emptyComponent: <div>No items</div>,
-    errorComponent: <div>ERROR</div>
+    emptyComponent: EmptyComponent,
+    errorComponent: ErrorComponent
   };
 
   private shouldUpdateState(nextProps: CardListProps): boolean {
@@ -61,7 +66,7 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private updateState(nextProps: CardListProps): void {
-    const provider = nextProps.context.getMediaCollectionProvider(nextProps.collectionName, nextProps.pageSize);
+    const provider = nextProps.context.getMediaCollectionProvider(nextProps.collectionName, nextProps.pageSize || 10);
 
     if (this.state && this.state.subscription) {
       this.state.subscription.unsubscribe();
@@ -120,15 +125,19 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   render(): JSX.Element {
+    const emptyComponent = this.props.emptyComponent || EmptyComponent;
+    const loadingComponent = this.props.loadingComponent || LoadingComponent;
+    const errorComponent = this.props.errorComponent || ErrorComponent;
+
     if (this.state) {
       if (this.state.error) {
         if (this.state.error.response && this.state.error.response.status === 404) {
-          return this.props.emptyComponent;
+          return emptyComponent;
         }
 
-        return this.props.errorComponent;
+        return errorComponent;
       } else if (!this.state.collection) {
-        return this.props.loadingComponent;
+        return loadingComponent;
       } else {
         if (this.useInfiniteScroll) {
           return (
@@ -152,7 +161,7 @@ export class CardList extends Component<CardListProps, CardListState> {
         }
       }
     } else {
-      return this.props.loadingComponent;
+      return loadingComponent;
     }
   }
 
@@ -162,6 +171,8 @@ export class CardList extends Component<CardListProps, CardListState> {
         label: action.label,
         type: action.type,
         handler: (item: MediaItem, event: Event) => {
+          if (!this.state.collection) { return; }
+
           const fileIds = this.state.collection.items.map(cItem => ({
             id: cItem.id,
             mediaItemType: cItem.mediaItemType
@@ -171,7 +182,7 @@ export class CardList extends Component<CardListProps, CardListState> {
       };
     });
 
-    const cards = this.state.collection.items.map((item: MediaCollectionItem, index: number) => {
+    const cards = this.state.collection ? this.state.collection.items.map((item: MediaCollectionItem, index: number) => {
       return <li key={`${index}-${item.id}`}>
         <Card
           context={this.props.context}
@@ -184,7 +195,7 @@ export class CardList extends Component<CardListProps, CardListState> {
           actions={cardActions}
         />
       </li>;
-    });
+    }) : null;
 
     return (
       <ul>
@@ -194,7 +205,7 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private get useInfiniteScroll(): boolean {
-    return this.props.useInfiniteScroll && !this.isNullOrUndefined(this.props.height);
+    return this.props.useInfiniteScroll ? true : !this.isNullOrUndefined(this.props.height);
   }
 
   private isNullOrUndefined(value: any): boolean {

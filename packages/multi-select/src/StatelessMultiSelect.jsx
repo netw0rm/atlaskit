@@ -13,13 +13,15 @@ import Trigger from './internal/Trigger';
 import NothingWasFound from './internal/NothingWasFound';
 import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
 
+// This is the shape of the item object passed to the `items` prop and does not necessarily reflect
+// exactly what is passed to the dropdown-items
 export const itemShape = PropTypes.shape({
   content: PropTypes.node,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   isDisabled: PropTypes.bool,
   isSelected: PropTypes.bool,
   elemBefore: PropTypes.node,
-  elemAfter: PropTypes.node,
+  tagElemBefore: PropTypes.node,
 });
 
 export default class StatelessMultiSelect extends PureComponent {
@@ -256,6 +258,7 @@ export default class StatelessMultiSelect extends PureComponent {
     if (filteredItems.length) {
       return filteredItems.map((item, itemIndex) => (<Item
         {...item}
+        elemBefore={item.elemBefore}
         isFocused={itemIndex === this.state.focusedItemIndex}
         key={itemIndex}
         onActivate={(attrs) => {
@@ -351,6 +354,7 @@ export default class StatelessMultiSelect extends PureComponent {
                 <TagGroup ref={ref => (this.tagGroup = ref)}>
                   {this.props.selectedItems.map(item =>
                     <Tag
+                      elemBefore={item.tagElemBefore}
                       key={item.value}
                       onAfterRemoveAction={() => {
                         this.handleItemRemove(item);

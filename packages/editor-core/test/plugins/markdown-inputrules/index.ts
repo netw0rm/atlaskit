@@ -1,13 +1,13 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
+import MarkdownInputRulesPlugin from '../../../src/plugins/inputrules';
 import {
   a, blockquote, br, chaiPlugin, code_block, doc, em, h1, h2,
   h3, hr, img, li, makeEditor, mono, ol, p, strike, strong, ul, mention
 } from '../../../test-helper';
 chai.use(chaiPlugin);
 
-describe('markdown-inputrules', () => {
+describe('inputrules', () => {
   const editor = (doc: any) => {
     const { pm, plugin } = makeEditor({ doc, plugin: MarkdownInputRulesPlugin });
     return { pm, plugin, sel: pm.doc.refs['<>'] };

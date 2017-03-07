@@ -9,7 +9,7 @@ import blockTypePlugin from '../../src/plugins/block-type';
 import codeBlockPlugin from '../../src/plugins/code-block';
 import hyperlinkPlugin from '../../src/plugins/hyperlink';
 import { buildKeymap } from '../../src/plugins/keymaps';
-import buildMarkdownInputRules from '../../src/plugins/markdown-inputrules/input-future';
+import buildInputRules from '../../src/plugins/inputrules/input-future';
 import {
   baseKeymap,
   EditorState,
@@ -154,7 +154,7 @@ export default class Editor extends PureComponent<Props, State> {
             blockTypePlugin,
             codeBlockPlugin,
             hyperlinkPlugin,
-            inputRules({ rules: buildMarkdownInputRules(schema) }),
+            inputRules({ rules: buildInputRules(schema) }),
             history(),
             keymap(buildKeymap(schema)),
             keymap(baseKeymap) // should be last :(

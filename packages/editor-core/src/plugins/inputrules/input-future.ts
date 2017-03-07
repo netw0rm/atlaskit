@@ -17,7 +17,7 @@ function replaceWithText(start: number, end: number, content: string, marks: Arr
   return tr.replaceWith(start, end, Fragment.from(schema.text(content, marks)));
 }
 
-function buildMarkdownInputRules(schema: Schema<any, any>): Array<InputRule> {
+function buildInputRules(schema: Schema<any, any>): Array<InputRule> {
   const rules: Array<InputRule> = [];
   if (schema.marks.strong) {
     // **string** and __string__ should bold the text
@@ -81,4 +81,4 @@ function buildMarkdownInputRules(schema: Schema<any, any>): Array<InputRule> {
   return rules;
 }
 
-export default buildMarkdownInputRules;
+export default buildInputRules;

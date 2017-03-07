@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import Tooltip from '@atlaskit/tooltip';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import DropdownList from '@atlaskit/droplist';
@@ -72,24 +73,24 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
           }
         >
           <Group>
-            <Item
-              isActive={monoActive}
-              isDisabled={monoDisabled}
-              onActivate={this.handleMonoClick}
-            >
-              <span title={tooltip(toggleMonospace)}>
-                Monospace
-              </span>
-            </Item>
-            <Item
-              isActive={strikeActive}
-              isDisabled={strikeDisabled}
-              onActivate={this.handleStrikeClick}
-            >
-              <span title={tooltip(toggleStrikethrough)}>
-                Strikethrough
-              </span>
-            </Item>
+            <Tooltip position="right" description={tooltip(toggleMonospace)}>
+              <Item
+                isActive={monoActive}
+                isDisabled={monoDisabled}
+                onActivate={this.handleMonoClick}
+              >
+                <span>Monospace</span>
+              </Item>
+            </Tooltip>
+            <Tooltip position="right" description={tooltip(toggleStrikethrough)}>
+              <Item
+                isActive={strikeActive}
+                isDisabled={strikeDisabled}
+                onActivate={this.handleStrikeClick}
+              >
+                <span>Strikethrough</span>
+              </Item>
+            </Tooltip>
           </Group>
         </DropdownList>
       );

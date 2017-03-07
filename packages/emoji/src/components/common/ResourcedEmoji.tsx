@@ -7,7 +7,7 @@ import EmojiProvider from '../../api/EmojiResource';
 import { missingEmoji } from './styles';
 
 export interface Props {
-  id: EmojiId;
+  emojiId: EmojiId;
   emojiProvider: Promise<EmojiProvider>;
 }
 
@@ -55,13 +55,13 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
 
   componentWillMount() {
     if (!this.state.emoji) {
-      this.refreshEmoji(this.props.emojiProvider, this.props.id);
+      this.refreshEmoji(this.props.emojiProvider, this.props.emojiId);
     }
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.emojiProvider !== this.props.emojiProvider || nextProps.id !== this.props.id) {
-      this.refreshEmoji(nextProps.emojiProvider, nextProps.id);
+    if (nextProps.emojiProvider !== this.props.emojiProvider || nextProps.emojiId !== this.props.emojiId) {
+      this.refreshEmoji(nextProps.emojiProvider, nextProps.emojiId);
     }
   }
 
@@ -71,6 +71,6 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
       return (<Emoji emoji={emoji} />);
     }
 
-    return <EmojiPlaceholder title={this.props.id.id} />;
+    return <EmojiPlaceholder title={this.props.emojiId.id} />;
   }
 }

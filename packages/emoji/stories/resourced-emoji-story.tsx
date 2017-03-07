@@ -17,15 +17,15 @@ interface SampleEmojiProps {
 const SampleEmojis = (props: SampleEmojiProps) => (
   <span>
     <ResourcedEmoji
-      id={{id: '1f62c'/* grimacing */}}
+      emojiId={{id: '1f62c'/* grimacing */}}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
     />
     <ResourcedEmoji
-      id={{id: 'atlassian-awthanks'}}
+      emojiId={{id: 'atlassian-awthanks'}}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
     />
     <ResourcedEmoji
-      id={{id: 'not-an-emoji'}}
+      emojiId={{id: 'not-an-emoji'}}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
     />
   </span>

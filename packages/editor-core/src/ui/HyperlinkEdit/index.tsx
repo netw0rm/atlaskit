@@ -7,9 +7,11 @@ import FloatingToolbar from '../FloatingToolbar';
 import PanelTextInput from '../PanelTextInput';
 import ToolbarButton from '../ToolbarButton';
 import * as styles from './styles';
+import { EditorView } from '../../prosemirror';
 
 export interface Props {
   pluginState: HyperlinkState;
+  editorView: EditorView;
 }
 
 export interface State {
@@ -85,7 +87,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   }
 
   private handleUnlink = () => {
-    this.props.pluginState.removeLink();
+    this.props.pluginState.removeLink(this.props.editorView);
   }
 
   private handlePluginStateChange = (pluginState: HyperlinkState) => {
@@ -97,6 +99,6 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   }
 
   private updateHref = (href: string) => {
-    this.props.pluginState.updateLink({ href });
+    this.props.pluginState.updateLink({ href }, this.props.editorView);
   }
 };

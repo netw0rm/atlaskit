@@ -7,6 +7,7 @@ import {
 import listsPlugin from '../../src/plugins/lists/index-future';
 import blockTypePlugin from '../../src/plugins/block-type';
 import codeBlockPlugin from '../../src/plugins/code-block';
+import hyperlinkPlugin from '../../src/plugins/hyperlink';
 import { buildKeymap } from '../../src/plugins/keymaps';
 import buildMarkdownInputRules from '../../src/plugins/markdown-inputrules/input-future';
 import {
@@ -102,6 +103,7 @@ export default class Editor extends PureComponent<Props, State> {
     const listsState = editorState && listsPlugin.getState(editorState);
     const blockTypeState = editorState && blockTypePlugin.getState(editorState);
     const codeBlockState = editorState && codeBlockPlugin.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkPlugin.getState(editorState);
 
     return (
       <Chrome
@@ -116,6 +118,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateLists={listsState}
         pluginStateBlockType={blockTypeState}
         pluginStateCodeBlock={codeBlockState}
+        pluginStateHyperlink={hyperlinkState}
       />
     );
   }
@@ -150,6 +153,7 @@ export default class Editor extends PureComponent<Props, State> {
             listsPlugin,
             blockTypePlugin,
             codeBlockPlugin,
+            hyperlinkPlugin,
             inputRules({ rules: buildMarkdownInputRules(schema) }),
             history(),
             keymap(buildKeymap(schema)),

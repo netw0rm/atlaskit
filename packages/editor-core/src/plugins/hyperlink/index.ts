@@ -1,18 +1,65 @@
 import {
-  commands,
-  DOMFromPos,
-  InputRule,
-  inputRules,
+  EditorState,
+  EditorView,
+  Mark,
   Node,
   Plugin,
-  ProseMirror,
-  Schema,
-  TextSelection
+  PluginKey,
+  NodeViewDesc,
+  TextSelection,
+  Transaction
 } from '../../prosemirror';
-import { LinkMark, LinkMarkType } from '../../schema';
-import hyperlinkRule from './input-rule';
+import { URL } from './regex';
+import * as commands from '../../commands';
 
-export type StateChangeHandler = (state: HyperlinkState) => void;
+export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
+export type StateChangeHandler = (state: HyperlinkState) => any;
+export interface HyperlinkOptions {
+  href: string;
+}
+
+interface NodeInfo {
+  node: Node;
+  startPos: number;
+}
+
+function autoformattingLink(view: EditorView, text: string) {
+  const urlAtEndOfLine = new RegExp(`${URL.source}$`);
+  const { $from, $to } = view.state.selection;
+  let textBefore = $from.parent.textBetween(0, $from.parentOffset, undefined, '\ufffc') + text;
+  let match = urlAtEndOfLine.exec(textBefore);
+
+  if (match) {
+    const { schema } = view.state;
+    const start = $from.pos - match[1].length;
+    const end = $to.pos;
+    const url = match[3] ? match[1] : `http://${match[1]}`;
+
+    const markType = schema.mark(
+      'link',
+      {
+        href: url,
+      }
+    );
+
+    view.dispatch(view.state.tr.replaceWith(
+      start,
+      end,
+      schema.text(
+        match[1],
+        [markType]
+      )
+    ));
+
+    // view.dispatch(view.state.tr.removeMark(
+    //   to + 1,
+    //   to + 1,
+    //   markType
+    // ));
+
+  }
+
+}
 
 export class HyperlinkState {
   // public state
@@ -23,88 +70,68 @@ export class HyperlinkState {
   element?: HTMLElement;
 
   private changeHandlers: StateChangeHandler[] = [];
-  private inputRules: InputRule[] = [];
-  private pm: PM;
+  // private inputRules: InputRule[] = [];
+  private state: EditorState<any>;
   private activeLinkNode?: Node;
-  private activeLinkMark?: LinkMark;
+  private activeLinkMark?: Mark;
   private activeLinkStartPos?: number;
 
-  constructor(pm: PM) {
-    this.pm = pm;
+  constructor(state: EditorState<any>) {
+    this.changeHandlers = [];
+    this.state = state;
 
-    this.inputRules = [hyperlinkRule];
+    // this.inputRules = [hyperlinkRule];
 
-    const rules = inputRules.ensure(pm);
-    this.inputRules.forEach(rule => rules.addRule(rule));
-
-    pm.updateScheduler([
-      pm.on.selectionChange,
-      pm.on.change,
-      pm.on.activeMarkChange,
-    ], () => this.update());
-
-    pm.updateScheduler([
-      pm.on.textInput,
-    ], () => this.escapeFromMark());
-
-    this.update(true);
+    // const rules = inputRules.ensure(state);
+    // this.inputRules.forEach(rule => rules.addRule(rule));
   }
 
-  subscribe(cb: StateChangeHandler) {
+  subscribe(cb: HyperlinkStateSubscriber) {
     this.changeHandlers.push(cb);
     cb(this);
   }
 
-  unsubscribe(cb: StateChangeHandler) {
+  unsubscribe(cb: HyperlinkStateSubscriber) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  addLink(options: HyperlinkOptions) {
+  addLink(options: HyperlinkOptions, view: EditorView) {
     if (this.linkable && !this.active) {
-      const { pm } = this;
+      const { state } = this;
       const { href } = options;
-      const { empty, $from, $to } = pm.selection;
-      const mark = pm.schema.mark('link', { href });
+      const { empty, $from, $to } = state.selection;
+      const mark = state.schema.mark('link', { href });
       const tr = empty
-        ? pm.tr.replaceWith($from.pos, $to.pos, pm.schema.text(href, [mark]))
-        : pm.tr.addMark($from.pos, $to.pos, mark);
-      tr.apply();
-      pm.focus();
+        ? state.tr.replaceWith($from.pos, $to.pos, state.schema.text(href, [mark]))
+        : state.tr.addMark($from.pos, $to.pos, mark);
+      view.dispatch(tr);
+      view.focus();
     }
   }
 
-  removeLink(forceTextSelection = false) {
+  removeLink(view: EditorView) {
     if (this.activeLinkStartPos) {
-      const { pm } = this;
+      const { state } = this;
       const from = this.activeLinkStartPos;
       const to = this.activeLinkStartPos + this.text!.length;
-      pm.tr.removeMark(from, to, this.activeLinkMark).apply();
-
-      if (forceTextSelection) {
-        pm.setTextSelection(from, to);
-        pm.focus();
-      }
+      view.dispatch(state.tr.removeMark(from, to, this.activeLinkMark));
     }
   }
 
-  updateLink(options: HyperlinkOptions) {
+  updateLink(options: HyperlinkOptions, view: EditorView) {
     if (this.activeLinkStartPos) {
-      const { pm } = this;
+      const { state } = this;
       const from = this.activeLinkStartPos;
       const to = this.activeLinkStartPos + this.text!.length;
-      pm.tr
+      view.dispatch(state.tr
         .removeMark(from, to, this.activeLinkMark)
-        .addMark(from, to, pm.schema.mark('link', { href: options.href }))
-        .apply();
+        .addMark(from, to, state.schema.mark('link', { href: options.href })));
     }
   }
 
-  detach(pm: ProseMirror) {
-    const rules = inputRules.ensure(pm);
-    this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
-  }
+  update(state: EditorState<any>, docView: NodeViewDesc, dirty: boolean = false) {
+    this.state = state;
 
-  private update(dirty = false) {
     const nodeInfo = this.getActiveLinkNodeInfo();
     const canAddLink = this.isActiveNodeLinkable();
 
@@ -119,35 +146,39 @@ export class HyperlinkState {
       this.activeLinkMark = nodeInfo && this.getActiveLinkMark(nodeInfo.node);
       this.text = nodeInfo && nodeInfo.node.textContent;
       this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
-      this.element = this.getDomElement();
+      this.element = this.getDomElement(docView);
       this.active = !!nodeInfo;
       dirty = true;
     }
 
     if (dirty) {
-      this.changeHandlers.forEach(cb => cb(this));
+      this.triggerOnChange();
     }
   }
 
-  private escapeFromMark() {
+  private triggerOnChange() {
+    this.changeHandlers.forEach(cb => cb(this));
+  }
+
+  escapeFromMark(dispatch: (tr: Transaction) => void) {
     const nodeInfo = this.getActiveLinkNodeInfo();
     if (nodeInfo && this.isShouldEscapeFromMark(nodeInfo)) {
-      this.pm.tr.removeMark(nodeInfo.startPos, this.pm.selection.$from.pos, this.pm.schema.marks.link).apply();
+      dispatch(this.state.tr.removeMark(nodeInfo.startPos, this.state.selection.$from.pos, this.state.schema.marks.link));
     }
   }
 
   private isShouldEscapeFromMark(nodeInfo: NodeInfo | undefined) {
-    const parentOffset = this.pm.selection.$from.parentOffset;
+    const parentOffset = this.state.selection.$from.parentOffset;
     return nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset;
   }
 
   private getActiveLinkNodeInfo(): NodeInfo | undefined {
-    const {pm} = this;
-    const {link} = pm.schema.marks;
-    const {$from, empty} = pm.selection as TextSelection;
+    const { state } = this;
+    const { link } = state.schema.marks;
+    const { $from, empty } = state.selection as TextSelection;
 
     if (link && $from) {
-      const {node, offset} = $from.parent.childAfter($from.parentOffset);
+      const { node, offset } = $from.parent.childAfter($from.parentOffset);
 
       // offset is the end postion of previous node
       // This is to check whether the cursor is at the beginning of current node
@@ -164,20 +195,19 @@ export class HyperlinkState {
     }
   }
 
-  private getActiveLinkMark(activeLinkNode: Node): LinkMark | undefined {
+  private getActiveLinkMark(activeLinkNode: Node): Mark | undefined {
     const linkMarks = activeLinkNode.marks.filter((mark) => {
-      return mark.type instanceof LinkMarkType;
+      return mark.type === this.state.schema.marks.link;
     });
 
-    return (linkMarks as LinkMark[])[0];
+    return (linkMarks as Mark[])[0];
   }
 
-  private getDomElement(): HTMLElement | undefined {
+  private getDomElement(docView: NodeViewDesc): HTMLElement | undefined {
     if (this.activeLinkStartPos) {
-      const { node, offset } = DOMFromPos(
-        this.pm,
-        this.activeLinkStartPos + this.pm.selection.$from.start(this.pm.selection.$from.depth),
-        true
+      const { node, offset } = docView.domFromPos(
+        this.activeLinkStartPos + this.state.selection.$from.start(this.state.selection.$from.depth),
+        1
       );
 
       if (node.childNodes.length === 0) {
@@ -189,31 +219,38 @@ export class HyperlinkState {
   }
 
   private isActiveNodeLinkable(): boolean {
-    const { link } = this.pm.schema.marks;
-    return !!link && commands.toggleMark(link)(this.pm, false);
+    const { link } = this.state.schema.marks;
+    return !!link && commands.toggleMark(link)(this.state);
   }
 }
+const stateKey = new PluginKey('hypelinkPlugin');
 
-// IE11 + multiple prosemirror fix.
-Object.defineProperty(HyperlinkState, 'name', { value: 'HyperlinkState' });
+const plugin = new Plugin({
+  state: {
+    init(config, state: EditorState<any>) {
+      return new HyperlinkState(state);
+    },
+    apply(tr, pluginState: HyperlinkState, oldState, newState) {
+      return pluginState;
+    }
+  },
+  key: stateKey,
+  view: (view: EditorView) => {
+    stateKey.getState(view.state).update(view.state, view.docView, true);
+    return {
+      update: (view: EditorView, prevState: EditorState<any>) => {
+        stateKey.getState(view.state).update(view.state, view.docView);
+      }
+    };
+  },
+  props: {
+    handleTextInput(view, from, to, text) {
+      stateKey.getState(view.state).escapeFromMark(view.dispatch);
+      autoformattingLink(view, text);
 
-export default new Plugin(HyperlinkState);
+      return false;
+    }
+  }
+});
 
-export interface S extends Schema {
-  marks: {
-    link?: LinkMarkType;
-  };
-}
-
-export interface PM extends ProseMirror {
-  schema: S;
-}
-
-export interface HyperlinkOptions {
-  href: string;
-}
-
-interface NodeInfo {
-  node: Node;
-  startPos: number;
-}
+export default plugin;

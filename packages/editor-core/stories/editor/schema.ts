@@ -7,6 +7,7 @@ import {
   strong,
   mono,
   strike,
+  link,
   underline,
   bulletList,
   orderedList,
@@ -35,7 +36,8 @@ const marks = {
   strong,
   mono,
   strike,
-  underline
+  underline,
+  link
 };
 
 export default new Schema<typeof nodes, typeof marks>({ nodes, marks });

@@ -38,11 +38,17 @@
   }
 }
 
+.header {
+  min-height: @ak-grid-size * 7;
+  padding-top: @ak-grid-size;
+}
+
 .side {
   align-items: center;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  flex: 1 0 auto; 
   padding: @global-vertical-padding 0;
   width: @global-open-width;
 
@@ -61,10 +67,17 @@
 
 .main {
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   overflow-y: auto;
-  padding: (@ak-grid-size * 2) @ak-grid-size 0 @ak-grid-size;
-  width: calc(~"100% -" @global-open-width)
+  padding: @ak-grid-size @ak-grid-size 0 @ak-grid-size;
+  position: relative;
+  width: 100%;
+}
+
+.content {
+  width: 100%;
 }
 
 .fixed {

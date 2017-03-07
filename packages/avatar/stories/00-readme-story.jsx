@@ -16,7 +16,7 @@ import Avatar, { Presence } from '../src';
 const avatarPropDescriptions = {
   presenceBorderColor: 'Used to override the default border color of the presence indicator. Accepts any color argument that the border-color CSS property accepts.',
   presence: 'Indicates a user\'s online status by showing a small icon on the avatar itself. Allowed values: \'online\', \'offline\', \'busy\' or \'none\'',
-  size: 'Defines the size of the avatar. Allowed values: \'small\', \'medium\', \'large\', \'xlarge\'.',
+  size: 'Defines the size of the avatar. Allowed values: \'xsmall\', \'small\', \'medium\', \'large\', \'xlarge\'.',
   src: 'A url to load an image from (this can also be a base64 encoded image)',
   label: 'Defines the label for the Avatar used by screen readers as fallback content if the image fails to load.',
   children: 'Content to use as a custom presence indicator. Accepts any html content. For best results, it is recommended to use square content with height and width of 100%',

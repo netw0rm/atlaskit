@@ -18,7 +18,7 @@ const fileDetails = {
   mediaType: 'some-media-type',
   mimeType: 'some-mime-type',
   name: 'some-name',
-  processingStatus: 'processed',
+  processingStatus: 'succeeded',
   size: 12345,
   artifacts: {
     'document.pdf': { href: `/file/${fileId}/artifact/document.pdf` },

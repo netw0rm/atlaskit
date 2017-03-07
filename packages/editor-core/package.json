@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "config": {
     "access": "public"
   },
@@ -34,7 +34,17 @@
     "@atlaskit/mention": "^2.1.0",
     "@atlaskit/modal-dialog": "^1.2.9",
     "@atlaskit/spinner": "^1.0.1",
+    "@atlaskit/tooltip": "^1.0.3",
     "@atlaskit/util-shared-styles": "^1.0.3",
+    "ak-button": "^5.0.0",
+    "ak-button-group": "^3.0.2",
+    "ak-droplist": "^4.1.0",
+    "ak-droplist-item": "^4.0.0",
+    "ak-droplist-group": "^2.1.0",
+    "ak-dropdown-menu": "^2.1.0",
+    "ak-editor-shared-styles": "^3.2.0",
+    "ak-emoji": "^0.7.0",
+    "ak-icon": "^14.0.0",
     "browserkeymap": "git://github.com/bradleyayers/browserkeymap#es6-modules-compat-with-types",
     "popper.js": "^1.0.1",
     "prosemirror": "git+https://bitbucket.org/atlassian/prosemirror.git#backport-fixes-from-future",

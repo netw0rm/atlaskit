@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { MediaItem, ContextFactory, CardDelete, CardClick } from '@atlaskit/media-core';
-import { StoryBookTokenProvider } from './tokenProvider';
+import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers';
 import { Card } from '../src';
+import {StoryList} from '@atlaskit/media-test-helpers';
 
 const collectionName = 'MediaServicesSample';
 const wrongFileId = 'wrong-file-id';
@@ -28,69 +29,56 @@ const annotateAction = {
   }
 };
 
-const styles = {
-  statesWrapper: {
-    listStyle: 'none',
-    display: 'inline-block'
-  },
-  stateTitle: {
-    textAlign: 'center',
-    padding: '5px'
-  }
-};
-
 storiesOf('Card with File', {})
   .add('single card', () => (
-    <ul style={styles.statesWrapper}>
-      <li>
-        <div style={styles.stateTitle}>Normal card</div>
-        <Card
+    <StoryList>
+      {[{
+        title: 'Normal card',
+        content: <Card
           id={successfulFileId}
           mediaItemType={'file'}
           collectionName={collectionName}
           context={context}
         />
-      </li>
-      <li>
-        <div style={styles.stateTitle}>Small card</div>
-        <Card
+      }, {
+        title: 'Small card',
+        content: <Card
           id={successfulFileId}
           mediaItemType={'file'}
           collectionName={collectionName}
           context={context}
           type={'small'}
         />
-      </li>
-    </ul>
+      }]}
+    </StoryList>
   ))
   .add('thumbnail not available', () => (
-    <ul style={styles.statesWrapper}>
-      <li>
-        <div style={styles.stateTitle}>Normal card</div>
-        <Card
+    <StoryList>
+      {[{
+        title: 'Normal card',
+        content: <Card
           id={thumbnailNotAvailableId}
           mediaItemType={'file'}
           collectionName={collectionName}
           context={context}
         />
-      </li>
-      <li>
-        <div style={styles.stateTitle}>Small card</div>
-        <Card
+      }, {
+        title: 'Small card',
+        content: <Card
           id={thumbnailNotAvailableId}
           mediaItemType={'file'}
           collectionName={collectionName}
           context={context}
           type={'small'}
         />
-      </li>
-    </ul>
+      }]}
+    </StoryList>
   ))
   .add('selectable card', () => (
-    <ul style={styles.statesWrapper}>
-      <li>
-        <div style={styles.stateTitle}>Not selected</div>
-        <Card
+    <StoryList>
+      {[{
+        title: 'Not selected',
+        content: <Card
           id={successfulFileId}
           mediaItemType={'file'}
           collectionName={collectionName}
@@ -98,10 +86,9 @@ storiesOf('Card with File', {})
           selectable={true}
           selected={false}
         />
-      </li>
-      <li>
-        <div style={styles.stateTitle}>Selected</div>
-        <Card
+      }, {
+        title: 'Selected',
+        content: <Card
           id={successfulFileId}
           mediaItemType={'file'}
           collectionName={collectionName}
@@ -109,14 +96,14 @@ storiesOf('Card with File', {})
           selectable={true}
           selected={true}
         />
-      </li>
-    </ul>
+      }]}
+    </StoryList>
   ))
   .add('non recoverable error', () => (
-    <ul style={styles.statesWrapper}>
-      <li>
-        <div style={styles.stateTitle}>Normal card</div>
-        <Card
+    <StoryList>
+      {[{
+        title: 'Normal card',
+        content: <Card
           id={wrongFileId}
           mediaItemType={'file'}
           collectionName={collectionName}
@@ -124,10 +111,9 @@ storiesOf('Card with File', {})
           selectable={true}
           selected={false}
         />
-      </li>
-      <li>
-        <div style={styles.stateTitle}>Small card</div>
-        <Card
+      }, {
+        title: 'Small card',
+        content: <Card
           id={wrongFileId}
           mediaItemType={'file'}
           collectionName={collectionName}
@@ -137,8 +123,8 @@ storiesOf('Card with File', {})
           type={'small'}
           width={200}
         />
-      </li>
-    </ul>
+      }]}
+    </StoryList>
   ))
   .add('multiple cards, same id and context', () => (
     <table>

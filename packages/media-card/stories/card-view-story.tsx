@@ -3,8 +3,7 @@ import {Component} from 'react';
 import {storiesOf, action} from '@kadira/storybook';
 import {CardView} from '../src';
 import {tallImage, wideImage, wideTransparentImage, smallImage} from './images';
-import StoryList from './story-list';
-import styles from './styles';
+import {StoryList} from '@atlaskit/media-test-helpers';
 
 const onClick = (event: Event) => {
   action('click')();
@@ -21,10 +20,10 @@ const menuActions = [
 
 storiesOf('CardView', {})
   .add('Media types', () => (
-    <ul style={styles.statesWrapper}>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Image type</div>
-        <CardView
+    <StoryList>
+      {[{
+        title: 'Image type',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
@@ -34,10 +33,9 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Image type, no preview</div>
-        <CardView
+      }, {
+        title: 'Image type, no preview',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
@@ -47,10 +45,9 @@ storiesOf('CardView', {})
           dataURI={undefined}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Video type</div>
-        <CardView
+      }, {
+        title: 'Video type',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
@@ -60,10 +57,9 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Doc type</div>
-        <CardView
+      }, {
+        title: 'Doc type',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
@@ -73,10 +69,9 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Audio type</div>
-        <CardView
+      }, {
+        title: 'Audio type',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
@@ -86,10 +81,9 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Unknown type</div>
-        <CardView
+      }, {
+        title: 'Unknown type',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
@@ -99,8 +93,9 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-    </ul>
+      }, {
+      }]}
+    </StoryList>
   ))
   .add('No preview', () => (
     <StoryList>
@@ -289,10 +284,10 @@ storiesOf('CardView', {})
     </StoryList>;
   })
   .add('Different name lengths', () => (
-    <ul style={styles.statesWrapper}>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Short name</div>
-        <CardView
+    <StoryList>
+      {[{
+        title: 'Short name',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
@@ -302,10 +297,9 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>2 lines name</div>
-        <CardView
+      }, {
+        title: '2 lines name',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
@@ -315,10 +309,9 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Long name</div>
-        <CardView
+      }, {
+        title: 'Long name',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
@@ -328,10 +321,9 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Large width</div>
-        <CardView
+      }, {
+        title: 'Large width',
+        content: <CardView
           width={380}
           loading={false}
           selectable={false}
@@ -342,10 +334,9 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Long name with large width</div>
-        <CardView
+      }, {
+        title: 'Long name with large width',
+        content: <CardView
           width={380}
           loading={false}
           selectable={false}
@@ -356,8 +347,8 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-    </ul>
+      }]}
+    </StoryList>
   ))
   .add('Custom sized', () => (
     <CardView
@@ -374,10 +365,10 @@ storiesOf('CardView', {})
     />
   ))
   .add('Different file sizes', () => (
-    <ul style={styles.statesWrapper}>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>File size: bytes</div>
-        <CardView
+    <StoryList>
+      {[{
+        title: 'File size: bytes',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
@@ -387,10 +378,9 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>File size: kB</div>
-        <CardView
+      }, {
+        title: 'File size: kB',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
@@ -400,10 +390,9 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>File size: MB</div>
-        <CardView
+      }, {
+        title: 'File size: MB',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
@@ -413,10 +402,9 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>File size: GB</div>
-        <CardView
+      }, {
+        title: 'File size: GB',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
@@ -426,8 +414,8 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-    </ul>
+      }]}
+    </StoryList>
   ))
   .add('With Progress', () => (
     <CardView
@@ -477,10 +465,10 @@ storiesOf('CardView', {})
       }
     }
 
-    return <ul style={styles.statesWrapper}>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Infinite loading</div>
-        <CardView
+    return <StoryList>
+      {[{
+        title: 'Infinite loading',
+        content: <CardView
           loading={true}
           selectable={false}
           selected={false}
@@ -490,12 +478,11 @@ storiesOf('CardView', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Loading 1sec</div>
-        <LoadingWrapper />
-      </li>
-    </ul>;
+      }, {
+        title: 'Loading 1sec',
+        content: <LoadingWrapper />
+      }]}
+    </StoryList>;
   })
   .add('Menu action', () => (
     <StoryList>

@@ -1,7 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
-import styles from 'style!../src/styles/profilecard-resourced.less';
+import styles from 'style!../src/styles/profilecard.less';
 
 import LoadingMessage from '../src/components/LoadingMessage';
 import ErrorMessage from '../src/components/ErrorMessage';

@@ -26,7 +26,6 @@ export default class Profilecard extends PureComponent {
     isLoading: React.PropTypes.bool,
     hasError: React.PropTypes.bool,
     clientFetchProfile: React.PropTypes.func,
-
   }
 
   static defaultProps = {
@@ -34,36 +33,52 @@ export default class Profilecard extends PureComponent {
     actions: [],
   }
 
+  constructor() {
+    super();
+
+    this.state = {
+      height: 'auto',
+    };
+  }
+
+  componentDidUpdate() {
+    this.getRefHeight();
+  }
+
+  getRefHeight() {
+    this.setState({
+      height: this.ref ? this.ref.children[0].offsetHeight : 'auto',
+    });
+  }
+
   render() {
+    let profilecard = null;
+
     if (this.props.hasError) {
-      return <ErrorMessage reload={this.props.clientFetchProfile} />;
-    }
+      profilecard = <ErrorMessage reload={this.props.clientFetchProfile} />;
+    } else if (this.props.isLoading) {
+      profilecard = <LoadingMessage />;
+    } else {
+      const actions = (this.props.actions).map((action, idx) => (
+        <AkButton
+          appearance={idx === 0 ? 'default' : 'subtle'}
+          compact
+          key={action.label}
+          onClick={action.callback}
+        >{action.label}</AkButton>
+      ));
 
-    if (this.props.isLoading) {
-      return <LoadingMessage />;
-    }
+      const cardClasses = classNames([
+        styles.profilecard,
+        { [styles.noDetailsMeta]: !this.props.meta },
+      ]);
 
-    const actions = (this.props.actions).map((action, idx) => (
-      <AkButton
-        appearance={idx === 0 ? 'default' : 'subtle'}
-        compact
-        key={action.label}
-        onClick={action.callback}
-      >{action.label}</AkButton>
-    ));
-
-    const cardClasses = classNames([
-      styles.profilecard,
-      { [styles.noDetailsMeta]: !this.props.meta },
-    ]);
-
-    return (
-      <div className={cardClasses}>
-        <div className={styles.avatarWrapper}>
-          <AkAvatar size="xlarge" src={this.props.avatarUrl} />
-        </div>
-        <div className={styles.detailsWrapper}>
-          <div className={styles.detailsGroup}>
+      profilecard = (
+        <div className={cardClasses}>
+          <div className={styles.avatarWrapper}>
+            <AkAvatar size="xlarge" src={this.props.avatarUrl} />
+          </div>
+          <div className={styles.detailsWrapper}>
             <span className={styles.detailsFullname}>{this.props.fullName}</span>
             { this.props.meta && (<span className={styles.detailsMeta}>{this.props.meta}</span>) }
             <IconLabel className={styles.presence} icon={this.props.presence}>
@@ -72,12 +87,26 @@ export default class Profilecard extends PureComponent {
             <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
             <IconLabel icon="time">{this.props.timestring}</IconLabel>
             <IconLabel icon="location">{this.props.location}</IconLabel>
-          </div>
-          <div className={styles.actionsFlexSpacer} />
-          <div className={styles.actionsWrapper}>
-            {actions}
+            <div className={styles.actionsFlexSpacer} />
+            <div className={styles.actionsWrapper}>
+              {actions}
+            </div>
           </div>
         </div>
+      );
+    }
+
+    const inlineStyles = {
+      height: this.state.height,
+    };
+
+    return (
+      <div
+        className={styles.cardAnimationWrapper}
+        style={inlineStyles}
+        ref={ref => (this.ref = ref)}
+      >
+        {profilecard}
       </div>
     );
   }

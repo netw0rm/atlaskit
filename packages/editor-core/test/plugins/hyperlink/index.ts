@@ -304,7 +304,7 @@ describe('hyperlink', () => {
       const { editorView, pluginState } = editor(doc(linkable('{<>}')));
       const href = 'http://www.atlassian.com';
 
-      pluginState.addLink({ href });
+      pluginState.addLink({ href }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href })(href))));
     });
@@ -312,7 +312,7 @@ describe('hyperlink', () => {
     it('does not permit adding a link to an existing link', () => {
       const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}link{>}'))));
 
-      pluginState.addLink({ href: 'http://www.example.com' });
+      pluginState.addLink({ href: 'http://www.example.com' }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://www.atlassian.com' })('link'))));
     });
@@ -320,7 +320,7 @@ describe('hyperlink', () => {
     it('does not permit adding a link when not supported by the schema', () => {
       const { editorView, pluginState } = editor(doc(unlinkable('{<}text{>}')));
 
-      pluginState.addLink({ href: 'http://www.atlassian.com' });
+      pluginState.addLink({ href: 'http://www.atlassian.com' }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(unlinkable('text')));
     });
@@ -328,7 +328,7 @@ describe('hyperlink', () => {
     it('requires href when adding a link', () => {
       const { editorView, pluginState } = editor(doc(linkable('{<}text{>}')));
 
-      pluginState.addLink({ href: 'http://example.com' });
+      pluginState.addLink({ href: 'http://example.com' }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('text'))));
     });
@@ -338,7 +338,7 @@ describe('hyperlink', () => {
       const { before } = refs;
       const href = 'http://example.com';
 
-      pluginState.addLink({ href });
+      pluginState.addLink({ href }, editorView);
       insertText('bar', before);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(`abar`, link({ href })('text'))));
@@ -349,7 +349,7 @@ describe('hyperlink', () => {
       const { middle } = refs;
       const href = 'http://example.com';
 
-      pluginState.addLink({ href });
+      pluginState.addLink({ href }, editorView);
       insertText('bar', middle);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href })('tebarxt'))));
@@ -360,7 +360,7 @@ describe('hyperlink', () => {
       const { end } = refs;
       const href = 'http://example.com';
 
-      pluginState.addLink({ href });
+      pluginState.addLink({ href }, editorView);
       insertText('bar', end);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href })('text'), 'bar')));
@@ -375,7 +375,7 @@ describe('hyperlink', () => {
     it('should not be able to unlink a node that has no link', () => {
       const { editorView, pluginState } = editor(doc(linkable('{<}text{>}')));
 
-      pluginState.removeLink();
+      pluginState.removeLink(editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable('text')));
     });
@@ -383,7 +383,7 @@ describe('hyperlink', () => {
     it('should be able to unlink an existing link', () => {
       const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
 
-      pluginState.removeLink();
+      pluginState.removeLink(editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable('text')));
     });
@@ -391,7 +391,7 @@ describe('hyperlink', () => {
     it('should be able to update existing links with href', () => {
       const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
 
-      pluginState.updateLink({ href: 'http://example.com' });
+      pluginState.updateLink({ href: 'http://example.com' }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('text'))));
     });
@@ -399,7 +399,7 @@ describe('hyperlink', () => {
     it('should allow updating a link if new href is empty', () => {
       const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://example.com' })('{<}text{>}'))));
 
-      pluginState.updateLink({ href: '' });
+      pluginState.updateLink({ href: '' }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: '' })('text'))));
     });
@@ -407,7 +407,7 @@ describe('hyperlink', () => {
     it('should not be able to update when not in a link', () => {
       const { editorView, pluginState } = editor(doc(linkable('{<}text{>}')));
 
-      pluginState.updateLink({ href: 'http://example.com/foo' });
+      pluginState.updateLink({ href: 'http://example.com/foo' }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable('text')));
     });

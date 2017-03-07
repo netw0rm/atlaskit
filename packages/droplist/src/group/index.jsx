@@ -34,7 +34,6 @@ export default class Group extends PureComponent {
 
   getAriaLabel = () => {
     const { props } = this;
-    // debugger;
     const elemAfter = props.elemAfter &&
       (typeof props.elemAfter === 'string' ?
         props.elemAfter :
@@ -48,9 +47,9 @@ export default class Group extends PureComponent {
 
     return (
       <div
+        aria-label={this.state.ariaLabel}
         className={styles.group}
         role="group"
-        aria-label={this.state.ariaLabel}
       >
         {props.heading ?
           <div

@@ -18,30 +18,30 @@ const setEllipsis = (props: EllipsifyProps) => (element: HTMLElement) => {
 
   const maximumLines = props.lines;
   const height = element.getBoundingClientRect().height;
-  const text = element.innerHTML;
-  element.innerText = 'a';
+  const text = element.textContent as string;
+  element.textContent = 'a';
   const lineHeight = element.getBoundingClientRect().height;
   const lineCount = height / lineHeight;
   const maximumHeight = lineHeight * maximumLines;
 
   if (lineCount <= maximumLines) {
-    element.innerText = text;
+    element.textContent = text;
     return;
   }
 
-  let innerText = text;
+  let textContent = text;
   const endLength = typeof props.endLength === 'number' && props.endLength >= 0 ? props.endLength : 8;
   const beginningText = text.substr(0, text.length * maximumLines / lineCount - endLength);
   const endText = text.substr(text.length - endLength, endLength);
-  element.innerText = innerText = `${beginningText}...${endText}`;
+  element.textContent = textContent = `${beginningText}...${endText}`;
   const finalHeight = element.getBoundingClientRect().height;
 
   if (finalHeight > maximumHeight) {
     const adjustedBeginningText = beginningText.substr(0, beginningText.length - ((beginningText.length / maximumLines) * 0.25));
-    innerText = `${adjustedBeginningText}...${endText}`;
+    textContent = `${adjustedBeginningText}...${endText}`;
   }
 
-  delayRun(() => element.innerText = innerText);
+  delayRun(() => element.textContent = textContent);
 };
 
 const timeout = (fn) => window.setTimeout(fn, 1);

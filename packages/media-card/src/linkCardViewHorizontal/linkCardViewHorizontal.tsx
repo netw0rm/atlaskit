@@ -19,14 +19,15 @@ import {
 } from './styled';
 
 export interface LinkCardViewHorizontalProps {
-  height?: number;
-  width?: number;
-
   linkUrl: string;
   title: string;
+
   description?: string;
   thumbnailUrl?: string;
   iconUrl?: string;
+
+  height?: number;
+  width?: number;
 
   // TODO FIL-3892 implement visual designs for loading state
   loading?: boolean;

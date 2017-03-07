@@ -144,15 +144,12 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [],
       };
-      const resource = new EmojiResource(config);
-      const onChange = new MockOnProviderChange();
-      const filteredPromise = onChange.waitForAnyCall().then(() => {
-        expect(onChange.resultCalls.length, 'Result called').to.equal(1);
-        expect(onChange.resultCalls[0].emojis.length, 'Result called').to.equal(0);
-      });
-      resource.subscribe(onChange);
-      resource.filter('cheese');
-      return filteredPromise;
+      try {
+        new EmojiResource(config);
+        expect(true, 'EmojiResource construction should throw error').to.equal(false);
+      } catch (e) {
+        expect(true, 'EmojiResource threw error due to no providers').to.equal(true);
+      }
     });
 
     it('single provider all emoji', () => {
@@ -336,12 +333,12 @@ describe('EmojiResource', () => {
           body: '',
         },
         method: 'POST',
+      }).mock({
+        matcher: `begin:${provider1.url}`,
+        response: fetchResponse(providerData1),
       });
 
-      const resource = new EmojiResource({
-        ...defaultApiConfig,
-        providers: [],
-      });
+      const resource = new EmojiResource(defaultApiConfig);
 
       return resource.recordSelection({ id: ':bacon:' }).then(() => {
         expect(fetchMock.called('record')).to.equal(true);

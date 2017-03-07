@@ -82,7 +82,7 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
     });
 
     if (config.providers.length === 0) {
-      this.initEmojiService([]);
+      throw new Error('No providers specified');
     }
   }
 

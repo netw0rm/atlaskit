@@ -1,24 +1,34 @@
 # AkMediaTestHelpers
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
-
-![Example @NAME@](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/@NAME@/docs/screencast.gif)
-
-## Try it out
-
-Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
-
-## Installation
-
-```sh
-npm install @NAME@
-```
+Contains all utilities related with stories and specs that affect media-* components
 
 ## Using the component
 
 Use the component in your React app as follows:
 
 ```
-import AkMediaTestHelpers from '@NAME@';
-ReactDOM.render(<AkMediaTestHelpers />, container);
+import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers';
+
+const tokenProvider = StoryBookTokenProvider.tokenProvider;
+const context = ContextFactory.create({ 'clientId', 'serviceHost', tokenProvider });
+```
+
+```javascript
+import {StoryList} from '@atlaskit/media-test-helpers';
+
+storiesOf('My story', {})
+  .add('Examples', () => (
+    <StoryList>
+      {[{
+          title: 'Example 1',
+          content: <div>One</div>
+        },
+        {
+          title: 'Example 2',
+          content: <div>Two</div>
+        }
+      ]}
+    </StoryList>
+  )
+
 ```

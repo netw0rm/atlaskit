@@ -49,10 +49,15 @@ const styles = {
   }
 };
 
+export interface StoryListProps {
+  display?: 'row' | 'column'
+  children?: any
+}
 
-export default class StoryList extends Component<{}, {}> {
+export default class StoryList extends Component<StoryListProps, {}> {
   render() {
-    const listStyles = this.props.display === 'column' ? styles.column : styles.row;
+    const display = this.props.display ? this.props.display : 'row';
+    const listStyles = display === 'column' ? styles.column : styles.row;
     const listContent = this.props.children.map(c => {
       return <li style={listStyles.stateItem}>
         <div style={listStyles.stateTitle}>{c.title}</div>

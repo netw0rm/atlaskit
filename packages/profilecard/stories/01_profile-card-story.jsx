@@ -43,25 +43,17 @@ const canvasStyle = { padding: '30px' };
 storiesOf(`${name}`, module)
   .add('loading state', () => (
     <div style={canvasStyle}>
-      <div className={styles.profilecardResourced}>
-        <LoadingMessage />
-      </div>
+      <AkProfilecard isLoading />
     </div>
   ))
   .add('error state', () => (
     <div style={canvasStyle}>
-      <div className={styles.profilecardResourced}>
-        <ErrorMessage
-          reload={handleActionClick('Retry')}
-        />
-      </div>
+      <AkProfilecard hasError clientFetchProfile={handleActionClick('Retry')} />
     </div>
   ))
   .add('error state without reload option', () => (
     <div style={canvasStyle}>
-      <div className={styles.profilecardResourced}>
-        <ErrorMessage />
-      </div>
+      <AkProfilecard hasError />
     </div>
   ))
   .add('worst case card', () => {

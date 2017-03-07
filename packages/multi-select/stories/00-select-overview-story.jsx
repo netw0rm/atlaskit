@@ -42,6 +42,8 @@ storiesOf(name, module)
       </Code>
     </Chrome>
   ))
+  /* 📖 Multi select (stateless) - readme */
+  /* 📖 Multi select Item - readme */
   .add('Multi select is submittable', () => (
     <Chrome title="Multi select in forms">
       {SelectInForm}

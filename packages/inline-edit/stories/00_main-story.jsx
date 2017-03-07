@@ -13,7 +13,6 @@ import { name } from '../package.json';
 const containerStyle = {
   padding: 20,
   backgroundColor: 'white',
-  width: 400,
 };
 
 storiesOf(name, module)
@@ -29,7 +28,15 @@ storiesOf(name, module)
   ))
   .add('with invalid input', () => (
     <div style={containerStyle}>
-      <TextInlineEdit isInvalid />
+      <TextInlineEdit
+        label="This field will show a warning icon, but no error message"
+        isInvalid
+      />
+      <TextInlineEdit
+        label="This field will show an error message when the icon is clicked"
+        isInvalid
+        invalidMessage="This error message is shown when the icon is clicked"
+      />
     </div>
   ))
   .add('with lots of text', () => (

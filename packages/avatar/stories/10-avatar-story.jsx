@@ -19,6 +19,7 @@ const DefaultAvatar = props => (
 
 const AllAvatarSizes = props => (
   <div className={avatarRowClass}>
+    <DefaultAvatar size="xsmall" {...props} />
     <DefaultAvatar size="small" {...props} />
     <DefaultAvatar size="medium" {...props} />
     <DefaultAvatar size="large" {...props} />
@@ -83,6 +84,7 @@ storiesOf(name, module)
       <div>Presence icons should be allowed to be shown at any size,
         but are recommended only for <strong>medium</strong>
       </div>
+      <div><b>Edit:</b> Presence icons should not be shown for the xsmall size</div>
       <AllAvatarSizes presence="online" />
     </div>
   ))

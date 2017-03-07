@@ -198,6 +198,8 @@ export function markFactory(type: MarkType, attrs = {}) {
 
 export const doc = nodeFactory(sampleSchema.nodes.doc, {});
 export const p = nodeFactory(sampleSchema.nodes.paragraph, {});
+export const linkable = nodeFactory(sampleSchema.nodes.linkable, {});
+export const unlinkable = nodeFactory(sampleSchema.nodes.unlinkable, {});
 export const blockquote = nodeFactory(sampleSchema.nodes.blockquote, {});
 export const h1 = nodeFactory(sampleSchema.nodes.heading, {level: 1});
 export const h2 = nodeFactory(sampleSchema.nodes.heading, {level: 2});
@@ -222,3 +224,4 @@ export const strike = markFactory(sampleSchema.marks.strike, {});
 export const a = (attrs: { href: string, title?: string }) => markFactory(sampleSchema.marks.link, attrs);
 export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
 export const slice = (...content: BuilderContent[]) => new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
+

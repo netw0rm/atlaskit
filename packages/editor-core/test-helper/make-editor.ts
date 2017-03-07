@@ -2,20 +2,13 @@ import {
   Plugin,
   Schema,
   EditorState,
-  EditorView,
-  TextSelection
+  EditorView
 } from '../';
 import { default as defaultSchema } from './schema';
-import { RefsNode, Refs } from './schema-builder';
+import { RefsNode, Refs, BuilderContent } from './schema-builder';
 import SyncPlugin from './sync-plugin';
 import sendKeyToPm from './send-key-to-pm';
-
-export interface Options {
-  doc: RefsNode;
-  plugin: Plugin;
-  place?: HTMLElement;
-  schema?: Schema<any, any>;
-}
+import { insert, insertText, setTextSelection } from './transactions';
 
 /**
  * Build a ProseMirror instance.
@@ -61,12 +54,21 @@ export default (options: Options) : EditorInstance => {
     refs,
     sel: refs['<>'],
     setTextSelection: (anchor: number, head?: number) => setTextSelection(editorView, anchor, head),
-    sendKeyToPm: (key: string) => sendKeyToPm(editorView, key)
+    sendKeyToPm: (key: string) => sendKeyToPm(editorView, key),
+    insertText: (text: string, from?: number, to?: number) => insertText(editorView, text, from, to),
+    insert: (content: BuilderContent[]) => insert(editorView, content)
   };
 };
 
 export interface ProseMirrorWithRefs extends EditorState<Schema<any, any>> {
   doc: RefsNode;
+}
+
+export interface Options {
+  doc: RefsNode;
+  plugin: Plugin;
+  place?: HTMLElement;
+  schema?: Schema<any, any>;
 }
 
 export interface EditorInstance {
@@ -77,10 +79,6 @@ export interface EditorInstance {
   sel: number;
   setTextSelection: (anchor: number, head?: number) => void;
   sendKeyToPm: (key: string) => void;
+  insertText: (text: string, from?: number, to?: number) => void;
+  insert: (content: BuilderContent[]) => Refs;
 }
-
-function setTextSelection (view: EditorView, anchor: number, head?: number) {
-  const { state } = view;
-  const tr = state.tr.setSelection(TextSelection.create(state.doc, anchor, head));
-  view.dispatch(tr);
-};

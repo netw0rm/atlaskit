@@ -37,7 +37,9 @@ const nodes = {
   hardBreak,
   mention,
   emoji,
-  image
+  image,
+  linkable: {...paragraph, content: 'text<link>*'},
+  unlinkable: {...paragraph, content: 'text*'}
 };
 
 const marks = {

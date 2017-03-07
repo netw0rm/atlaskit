@@ -23,7 +23,7 @@ export default class FieldBase extends PureComponent {
     isRequired: PropTypes.bool,
     onFocus: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
-    onIconClick: PropTypes.func.isRequired,
+    onIconMouseDown: PropTypes.func.isRequired,
     shouldReset: PropTypes.bool,
     children: PropTypes.node,
   }
@@ -54,11 +54,11 @@ export default class FieldBase extends PureComponent {
   renderRightGutter() {
     if (!this.props.isDisabled && this.props.isInvalid) {
       return (
-        <div className={styles.warningIconWrapper}>
-          <WarningIcon
-            label="warning"
-            onClick={this.props.onIconClick}
-          />
+        <div
+          className={styles.warningIconWrapper}
+          onMouseDown={this.props.onIconMouseDown}
+        >
+          <WarningIcon label="warning" />
         </div>
       );
     }

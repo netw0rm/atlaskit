@@ -3,7 +3,7 @@ import {Component} from 'react';
 import {storiesOf, action} from '@kadira/storybook';
 import {LinkCardViewHorizontal} from '../src';
 import {tallImage, wideImage, wideTransparentImage, smallImage} from './images';
-import StoryList from './story-list';
+import {StoryList} from '@atlaskit/media-test-helpers';
 
 const onClick = (event: Event) => {
   action('click')();

@@ -2,10 +2,17 @@ import sinon from 'sinon';
 import styles from 'style!../src/styles.less';
 import React from 'react';
 import { mount } from 'enzyme';
+import Avatar from '@atlaskit/avatar';
 
 import Tag from '../src/index';
 import RemoveButton from '../src/RemoveButton';
 import AnimationWrapper from '../src/AnimationWrapper';
+
+// TODO: Revist all these tests.
+// Large parts of the API are not tested (hrefs should render anchors, truncation should occur, etc)
+// Most of these tests are testing React behaviour (setting props) where they should be testing
+// props + state => expectedRenderedOutput
+// They also don't follow the normal naming standards for describe and it blocks
 
 describe('<Tag/> component tests', () => {
   const atlassianUrl = 'https://www.atlassian.com/';
@@ -89,6 +96,7 @@ describe('<Tag/> component tests', () => {
     `<div class="${styles.rootWrapper}">` +
       `<div class="${styles.animationWrapper}">` +
         `<span role="link" tabindex="0" class="${styles.chrome}">` +
+          '<!-- react-empty: 5 -->' + // This is created because of the elemBefore element
           `<a tabindex="-1" class="${styles.href}"` +
               ` href="${atlassianUrl}">${atlassianlinkText
           }</a>` +
@@ -104,6 +112,7 @@ describe('<Tag/> component tests', () => {
     `<div class="${styles.rootWrapper}">` +
       `<div class="${styles.animationWrapper}">` +
         `<span tabindex="-1" class="${styles.chrome}">` +
+          '<!-- react-empty: 5 -->' + // This is created because of the elemBefore element
           `<span class="${styles.text}">Atlassian</span>` +
         '</span>' +
       '</div>' +
@@ -111,18 +120,17 @@ describe('<Tag/> component tests', () => {
     expect(wrapper.find('Tag').html()).to.equal(renderedHtml);
   });
 
-  /*
-  1. <Tag text="hello"/>
-    validate structure - dom and attributes
-    validate events
-  2. <Tag text="hello" href="a link"/>
-    validate structure - dom and attributes
-    validate events
-  3. <Tag text="hello" href="a link" removeButtonText="Remove Me"/>
-    validate structure - dom and attributes
-    validate events
-  4. Test all 3 apis
-  5. Test hover styles
-  6. Test keyboard enter and space events
-  */
+  describe('elemBefore props', () => {
+    it('should render anything passed to it', () => {
+      const wrapper = mount(<Tag
+        elemBefore={<Avatar size="xsmall" />}
+      />);
+      expect(wrapper.find(Avatar).length).to.equal(1);
+    });
+
+    it('should not render a .elemBefore block if not elemBefore passed in', () => {
+      const wrapper = mount(<Tag text="foo" />);
+      expect(wrapper.find(`.${styles.elemBefore}`).length).to.equal(0);
+    });
+  });
 });

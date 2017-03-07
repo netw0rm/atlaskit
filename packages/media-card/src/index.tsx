@@ -8,6 +8,7 @@ export * from './cardView/cardView';
 export * from './linkCardViewHorizontal/linkCardViewHorizontal';
 export * from './cardViewSmall/cardViewSmall';
 export * from './card/card';
+export * from './list';
 
 export default CardView;
 

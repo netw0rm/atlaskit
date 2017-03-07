@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "3.2.5",
+  "version": "3.3.0",
   "config": {
     "access": "public"
   },
@@ -56,7 +56,7 @@
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
-    "ajv": "^4.7.2",
+    "ajv": "^4.11.3",
     "highlight.js": "^9.6.0",
     "sinon": "^1.17.6",
     "string.prototype.repeat": "^0.2.0",

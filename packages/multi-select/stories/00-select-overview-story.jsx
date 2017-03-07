@@ -43,6 +43,23 @@ storiesOf(name, module)
       </Code>
     </Chrome>
   ))
+  .add('Multi select with elemBefore (Avatars)', () => (
+    <Chrome title="Multi select with Avatars">
+      <Description>
+        <p>You can pass content to be displayed in front of the dropdown items and also the tags by
+          using the <code>elemBefore</code> and <code>tagElemBefore</code> props
+          respectively.
+        </p>
+        <p>The most common use case for this would be for things like <code>@atlaskit/icon</code>
+          &apos;s and <code>@atlaskit/avatar</code>&apos;s
+        </p>
+      </Description>
+      {SmartSelectElemBefore}
+      <Code>
+        {SmartSelectElemBeforeRaw}
+      </Code>
+    </Chrome>
+  ))
   .add('Multi select with default selected items', () => (
     <Chrome title="Multi select (smart) - overview">
       {SmartSelectDefaultSelectedItems}

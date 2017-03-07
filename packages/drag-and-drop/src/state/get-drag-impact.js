@@ -36,7 +36,7 @@ export default (target: Position,
   const draggingDimension: Dimension = draggableDimensions[draggableId];
   const droppableDimension: Dimension = droppableDimensions[droppableId];
 
-  // positive = moving forwards
+  // positive = moving forwards (TODO! currently this is backwards)
   // negative = moving backwards
   const direction: Direction = target.y - draggingDimension.center.y > 0 ? 1 : -1;
   const isMovingForward: boolean = target.y - draggingDimension.center.y > 0;

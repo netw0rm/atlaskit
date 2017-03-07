@@ -55,11 +55,10 @@ type Props = MapProps & DispatchProps
 
 type DefaultProps = {|
   offset: Position
-    |}
+|}
 
 type ComponentState = {|
   wasDragging: boolean,
-  shouldScrollTo: boolean,
   ref: ?Element
 |}
 
@@ -116,7 +115,6 @@ export default (type: TypeId,
 
       state: ComponentState = {
         wasDragging: false,
-        shouldScrollTo: false,
         ref: null,
       }
 
@@ -149,34 +147,15 @@ export default (type: TypeId,
             wasDragging,
           });
         }
-
-        if (this.state.shouldScrollTo) {
-          this.setState({
-            shouldScrollTo: false,
-          });
-        }
       }
 
       onMoveEnd = () => {
-        if (!this.props.isDragging && !this.state.wasDragging) {
+        if (!this.state.wasDragging) {
           return;
         }
 
-        if (this.state.wasDragging) {
-          const { id, dropFinished } = this.props;
-          dropFinished(id);
-          console.warn('not moving scroll on drop');
-          return;
-        }
-
-        const shouldScrollTo = this.props.canAnimate;
-        console.log('about to scroll:', shouldScrollTo);
-
-        if (shouldScrollTo) {
-          this.setState({
-            shouldScrollTo: true,
-          });
-        }
+        const { id, dropFinished } = this.props;
+        dropFinished(id);
       }
 
       onLift = (selection: Position) => {
@@ -311,8 +290,6 @@ export default (type: TypeId,
           this.props.canAnimate
         );
 
-        // console.log('shouldScrollTo (render)', this.state.shouldScrollTo);
-
         return (
           <Moveable
             speed={movement.speed}
@@ -327,10 +304,7 @@ export default (type: TypeId,
                 type={type}
                 outerRef={this.state.ref}
               >
-                <ScrollTo
-                  shouldScroll={this.state.shouldScrollTo}
-                  outerRef={this.state.ref}
-                >
+                <ScrollTo itemId={this.props.id}>
                   <Container
                     isDragging={this.props.isDragging}
                   >

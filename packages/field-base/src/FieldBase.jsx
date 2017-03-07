@@ -79,6 +79,10 @@ export default class FieldBase extends PureComponent {
       [styles.invalid]: this.props.isInvalid && !this.props.isFocused,
     });
 
+    const dialogWrapperClasses = classNames({
+      [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
+    });
+
     const contentWrapperClasses = classNames(styles.contentWrapper, {
       [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
       [styles.disabled]: this.props.isDisabled,
@@ -86,20 +90,22 @@ export default class FieldBase extends PureComponent {
 
     return (
       <div className={contentWrapperClasses}>
-        <InlineDialog
-          content={this.props.invalidMessage}
-          isOpen={this.props.isDialogOpen && !!this.props.invalidMessage}
-          position="right middle"
-        >
-          <div
-            className={contentClasses}
-            onFocusCapture={this.props.onFocus}
-            onBlurCapture={this.props.onBlur}
+        <div className={dialogWrapperClasses}>
+          <InlineDialog
+            content={this.props.invalidMessage}
+            isOpen={this.props.isDialogOpen && !!this.props.invalidMessage}
+            position="right middle"
           >
-            {this.props.children}
-            {this.renderRightGutter()}
-          </div>
-        </InlineDialog>
+            <div
+              className={contentClasses}
+              onFocusCapture={this.props.onFocus}
+              onBlurCapture={this.props.onBlur}
+            >
+              {this.props.children}
+              {this.renderRightGutter()}
+            </div>
+          </InlineDialog>
+        </div>
       </div>
     );
   }

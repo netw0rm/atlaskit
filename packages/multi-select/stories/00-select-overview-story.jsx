@@ -19,15 +19,22 @@ import SmartSelectFocus from './examples/SmartSelectFocus';
 import SmartSelectFocusRaw from '!raw!./examples/SmartSelectFocus';
 import SmartSelectAppearances from './examples/SmartSelectAppearances';
 import SmartSelectAppearancesRaw from '!raw!./examples/SmartSelectAppearances';
+import SmartSelectElemBefore from './examples/SmartSelectElemBefore';
+import SmartSelectElemBeforeRaw from '!raw!./examples/SmartSelectElemBefore';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name, description } from '../package.json';
 
 storiesOf(name, module)
-  .add('Multi select (smart) - overview', () => (
+  .add('📖 Multi select (smart) - readme', () => (
     <Chrome title="Multi select (smart) - overview">
       <Description>
         <p>{description}</p>
+        <p>
+          The &ldquo;smart&rdquo; multi-select component will handle it&apos;s own state for you
+          (you won&apos;t need to/be able to update the list of <code>selected</code> items). If
+          you require this funcitonality, use the <code>stateless</code> version instead.
+        </p>
       </Description>
       {SmartSelectOverview}
       <Code>

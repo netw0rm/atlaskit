@@ -14,6 +14,7 @@ const manyContainerItems = () => {
   for (let i = 0; i < 40; i++) {
     items.push(
       <AkContainerItem
+        href={`#${i}`}
         key={i}
         text="Test page"
       />
@@ -28,14 +29,23 @@ storiesOf(name, module)
       <BasicNavigation>
         <AkContainerItem
           text="Test page"
+          href="#1"
         />
         <AkContainerItem
-          icon={<img alt="icon" src={nucleus} />}
+          icon={<img src={nucleus} alt="icon" />}
           text="Item with an icon"
+          href="#2"
         />
         <AkContainerItem
-          icon={<img alt="icon" src={nucleus} />}
+          icon={<img src={nucleus} alt="icon" />}
+          text="Item with two lines"
+          subText="Another line of text, which could possibly be long"
+          href="#3"
+        />
+        <AkContainerItem
+          icon={<img src={nucleus} alt="icon" />}
           text="A really, really, quite long, actually super long container name"
+          href="#4"
         />
       </BasicNavigation>
     </Page>

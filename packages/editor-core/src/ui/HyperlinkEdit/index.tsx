@@ -1,5 +1,5 @@
-import OpenIcon from 'ak-icon/glyph/editor/open';
-import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
+import OpenIcon from '@atlaskit/icon/glyph/editor/open';
+import UnlinkIcon from '@atlaskit/icon/glyph/editor/unlink';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { HyperlinkState } from '../../plugins/hyperlink';

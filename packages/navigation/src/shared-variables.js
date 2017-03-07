@@ -6,5 +6,5 @@ export const navigationOpenWidth = globalOpenWidth + containerOpenWidth;
 export const resizeClosedBreakpoint = globalOpenWidth + (containerOpenWidth / 2);
 export const collapseBreakpoint = globalOpenWidth + containerClosedWidth;
 export const containerNavigationNestedPageSpacing = 8;
-export const searchIconOffset = 68 + 12;
-export const createIconOffset = 108 + 12;
+export const searchIconOffset = 80;
+export const createIconOffset = 120;

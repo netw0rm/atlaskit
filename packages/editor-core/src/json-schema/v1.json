@@ -345,25 +345,19 @@
         "attrs": {
           "type": "object",
           "properties": {
-            "mediaId": {
+            "id": {
               "minLength": 1,
               "type": "string"
             },
-            "mediaType": {
+            "type": {
               "enum": [
                 "file",
                 "link"
               ]
             },
-            "mediaCollectionId": {
+            "collectionId": {
               "minLength": 1,
               "type": "string"
-            },
-            "fileName": {
-              "type": "string"
-            },
-            "fileSize": {
-              "type": "number"
             },
             "text": {
               "type": "string"
@@ -373,8 +367,8 @@
             }
           },
           "required": [
-            "mediaId",
-            "mediaType"
+            "id",
+            "type"
           ],
           "additionalProperties": false
         }

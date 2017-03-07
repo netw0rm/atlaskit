@@ -8,7 +8,7 @@
         {
           "type": "media",
           "attrs": {
-            "mediaType": "file"
+            "id": "1234"
           }
         }
       ]

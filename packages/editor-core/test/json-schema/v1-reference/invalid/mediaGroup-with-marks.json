@@ -8,8 +8,8 @@
         {
           "type": "media",
           "attrs": {
-            "mediaType": "file",
-            "mediaId": "1234"
+            "type": "file",
+            "id": "1234"
           }
         }
       ],

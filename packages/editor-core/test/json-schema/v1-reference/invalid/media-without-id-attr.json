@@ -8,9 +8,7 @@
         {
           "type": "media",
           "attrs": {
-            "mediaType": "file",
-            "mediaId": "1234",
-            "fileName": "Foo.txt"
+            "type": "file"
           }
         }
       ]

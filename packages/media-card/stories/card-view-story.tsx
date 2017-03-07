@@ -286,7 +286,7 @@ storiesOf('CardView', {})
   .add('Different name lengths', () => (
     <StoryList>
       {[{
-        title: 'Sort name',
+        title: 'Short name',
         content: <CardView
           loading={false}
           selectable={false}

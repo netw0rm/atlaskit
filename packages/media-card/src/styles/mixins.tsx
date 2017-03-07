@@ -2,12 +2,16 @@
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import {defaultTransitionDuration} from './base';
 
-export const ellipsis = maxWidth => `
-  max-width: ${maxWidth};
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
+export const ellipsis = maxWidth => {
+  const unit = typeof maxWidth === 'number' ? 'px' : '';
+
+  return `
+    max-width: ${maxWidth}${unit};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  `;
+};
 
 export const size = value => {
   const unit = typeof value === 'number' ? 'px' : '';
@@ -55,6 +59,11 @@ export const centerSelf = () => `
 
 export const borderRadius = () => `
   border-radius: ${akBorderRadius};
+`;
+
+export const borderRadiusLeft = () => `
+  border-top-left-radius: ${akBorderRadius};
+  border-bottom-left-radius: ${akBorderRadius};
 `;
 
 export const spaceAround = () => `

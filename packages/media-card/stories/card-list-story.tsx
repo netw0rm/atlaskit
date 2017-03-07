@@ -92,7 +92,6 @@ storiesOf('CardList', {})
           actions={[clickAction]}
           pageSize={30}
         />
-      }
       }]}
     </StoryList>
   ))

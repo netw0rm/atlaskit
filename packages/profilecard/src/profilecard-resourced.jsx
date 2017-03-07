@@ -18,7 +18,9 @@ export default class ProfilecardResourced extends PureComponent {
     }),
   }
 
-  static defaultProps = {}
+  static defaultProps = {
+    actions: [],
+  }
 
   constructor(props) {
     super(props);

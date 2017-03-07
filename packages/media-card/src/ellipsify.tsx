@@ -30,7 +30,7 @@ const setEllipsis = (props: EllipsifyProps) => (element: HTMLElement) => {
   }
 
   let innerText = text;
-  const endLength = props.endLength || 8;
+  const endLength = typeof props.endLength === 'number' && props.endLength >= 0 ? props.endLength : 8;
   const beginningText = text.substr(0, text.length * maximumLines / lineCount - endLength);
   const endText = text.substr(text.length - endLength, endLength);
   element.innerText = innerText = `${beginningText}...${endText}`;

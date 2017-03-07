@@ -1,3 +1,4 @@
+import { SecurityProvider, RefreshSecurityProvider } from './api/SharedResourceUtils';
 import { SyntheticEvent } from 'react';
 
 export type RelativePosition = 'above' | 'below' | 'auto';
@@ -67,6 +68,8 @@ export interface EmojiDescription extends EmojiId {
   representation: EmojiRepresentation;
   skinVariations?: EmojiRepresentation[];
 };
+
+export type OptionalEmojiDescription = EmojiDescription | undefined;
 
 export type EmojiServiceRepresentation = SpriteServiceRepresentation | ImageRepresentation;
 
@@ -141,3 +144,10 @@ export interface OnEmojiEvent {
 export interface OnCategory {
   (categoryId: string): void;
 }
+
+export interface EmojiResourceItemConfig {
+  url: string; /* url for this specific emoji configuration */
+  securityProvider?: SecurityProvider;
+  refreshedSecurityProvider?: RefreshSecurityProvider;
+}
+

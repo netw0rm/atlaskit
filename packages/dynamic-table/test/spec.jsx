@@ -61,7 +61,7 @@ describe(name, () => {
     it('should display empty view when items length is 0', () => {
       const EmptyView = <div>empty view</div>;
       const wrapper = mount(<DynamicTable emptyView={EmptyView} />);
-      expect(wrapper.html()).to.equal('<div>empty view</div>');
+      expect(wrapper.html()).to.equal(mount(EmptyView).html());
     });
 
     it('should display paginated data', () => {

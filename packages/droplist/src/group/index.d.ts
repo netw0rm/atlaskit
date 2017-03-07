@@ -1,7 +1,8 @@
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 
 interface Props {
   heading?: string;
+  elemAfter?: string | ReactNode;
 }
 
 interface State {}

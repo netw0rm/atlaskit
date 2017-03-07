@@ -1,276 +1,177 @@
-import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
-import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
-import 'whatwg-fetch';
-
-import debug from '../util/logger';
-
-import {
-  EmojiDescription,
-  EmojiId,
-  EmojiMeta,
-  EmojiRepresentation,
-  EmojiResponse,
-  EmojiServiceDescription,
-  EmojiServiceRepresentation,
-  EmojiServiceResponse,
-  ImageRepresentation,
-  isImageRepresentation,
-  isSpriteServiceRepresentation,
-  MediaApiToken,
-  SpriteServiceRepresentation,
-} from '../types';
-
-export interface KeyValues {
-  [index: string]: any;
-}
-
-export interface SecurityOptions {
-  params?: KeyValues;
-  headers?: KeyValues;
-}
-
-/**
- * Returns a promise to a SecurityOptions that has just been forcibly refreshed with a
- * new token. Will be used for single retry per request if a 401 is returned.
- */
-export interface RefreshSecurityProvider {
-  (): Promise<SecurityOptions>;
-}
-
-/**
- * Returns the current SecurityOptions for the mentions service.
- */
-export interface SecurityProvider {
-  (): SecurityOptions;
-}
-
-export interface EmojiProviderConfig {
-  url: string; /* url for this specific emoji configuration */
-  securityProvider?: SecurityProvider;
-  refreshedSecurityProvider?: RefreshSecurityProvider;
-}
+import { EmojiDescription, EmojiId, EmojiResponse, OptionalEmojiDescription } from '../types';
+import EmojiLoader, {  } from './EmojiLoader';
+import EmojiService, { EmojiSearchResult } from './EmojiService';
+import { requestService, ServiceConfig } from './SharedResourceUtils';
+import { AbstractResource, OnProviderChange, Provider } from './SharedResources';
 
 export interface EmojiResourceConfig {
-  /** the base url of the emoji service */
-  url: string;
-  securityProvider?: SecurityProvider;
-  refreshedSecurityProvider?: RefreshSecurityProvider;
-
-  providers: EmojiProviderConfig[];
+  /**
+   * The service configuration for recording emoji selections.
+   * A post will be performed to this URL with the EmojiId as the body.
+   */
+  recordConfig?: ServiceConfig;
+  providers: ServiceConfig[];
 }
 
-const buildUrl = (baseUrl: string, path: string | undefined, data: KeyValues, secOptions: SecurityOptions | undefined) => {
-  const searchParam = new URLSearchParams();
-  for (const key in data) { // eslint-disable-line no-restricted-syntax
-    if ({}.hasOwnProperty.call(data, key)) {
-      searchParam.append(key, data[key]);
-    }
-  }
-  if (secOptions && secOptions.params) {
-    for (const key in secOptions.params) { // eslint-disable-line no-restricted-syntax
-      if ({}.hasOwnProperty.call(secOptions.params, key)) {
-        const values = secOptions.params[key];
-        if (Array.isArray(values)) {
-          for (let i = 0; i < values.length; i++) {
-            searchParam.append(key, values[i]);
-          }
-        } else {
-          searchParam.append(key, values);
-        }
-      }
-    }
-  }
-  let seperator = '';
-  if (path && baseUrl.substr(-1) !== '/') {
-    seperator = '/';
-  }
-  return `${baseUrl}${seperator}${path}?${searchParam.toString()}`;
-};
+export interface OnEmojiProviderChange extends OnProviderChange<EmojiSearchResult, any, void> {};
 
-const buildHeaders = (secOptions?: SecurityOptions) => {
-  const headers = new Headers();
-  if (secOptions && secOptions.headers) {
-    for (const key in secOptions.headers) { // eslint-disable-line no-restricted-syntax
-      if ({}.hasOwnProperty.call(secOptions.headers, key)) {
-        const values = secOptions.headers[key];
-        if (Array.isArray(values)) {
-          for (let i = 0; i < values.length; i++) {
-            headers.append(key, values[i]);
-          }
-        } else {
-          headers.append(key, values);
-        }
-      }
-    }
-  }
+export interface Retry<T> {
+  (): Promise<T>;
+}
 
-  return headers;
-};
+export interface ResolveReject<T> {
+  resolve(result: T): void;
+  reject(reason?: any): void;
+}
 
-/**
- * @returns Promise containing the json response
- */
-const requestService = (baseUrl: string, path: string | undefined, data: KeyValues, opts: KeyValues,
-                        secOptions: SecurityOptions | undefined, refreshedSecurityProvider?: RefreshSecurityProvider) : Promise<any> => {
-  const url = buildUrl(baseUrl, path, data, secOptions);
-  const headers = buildHeaders(secOptions);
-  const options = {
-    ...opts,
-    ...{ headers },
-  };
-  return fetch(new Request(url, options))
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else if (response.status === 401 && refreshedSecurityProvider) {
-        // auth issue - try once
-        debug('401 attempting a forced refresh from securityProvider');
-        return refreshedSecurityProvider().then(newSecOptions => (
-          requestService(baseUrl, path, data, opts, newSecOptions)
-        ));
-      }
-      return Promise.reject({
-        code: response.status,
-        reason: response.statusText,
-      });
-    });
-};
-
-const nonRejectingPromise = (promise: Promise<any>, rejectValue: any): Promise<any> => (
-  promise.catch((err) => {
-    debug('Promise failed, resolving with default value instead. Err:', err);
-    return Promise.resolve(rejectValue);
-  })
-);
-
-const emojiRequest = (provider: EmojiProviderConfig): Promise<EmojiServiceResponse> => {
-  const { url, securityProvider, refreshedSecurityProvider } = provider;
-  const secOptions = securityProvider && securityProvider();
-  const emojiPromise = requestService(url, '', {}, {}, secOptions, refreshedSecurityProvider);
-  return nonRejectingPromise(emojiPromise, { emojis: [] });
-};
-
-export const isMediaApi = (url: string, meta?: EmojiMeta): boolean =>
-  !!(meta && meta.mediaApiToken && url.indexOf(meta.mediaApiToken.url) === 0);
-
-export const denormaliseServiceRepresentation = (representation: EmojiServiceRepresentation, meta?: EmojiMeta): EmojiRepresentation => {
-  if (isSpriteServiceRepresentation(representation) && meta && meta.spriteSheets) {
-    const { height, width, x, y, xIndex, yIndex, spriteRef } = representation as SpriteServiceRepresentation;
-    const spriteSheet = meta.spriteSheets[spriteRef];
-    const mediaApi = isMediaApi(spriteSheet.url, meta);
-    if (spriteSheet) {
-      return {
-        sprite: spriteSheet,
-        height,
-        width,
-        x,
-        y,
-        xIndex,
-        yIndex,
-        mediaApi,
-      };
-    }
-  } else if (isImageRepresentation(representation)) {
-    const { height, width, imagePath } = representation as ImageRepresentation;
-    const mediaApi = isMediaApi(imagePath, meta);
-    return {
-      height,
-      width,
-      imagePath,
-      mediaApi,
-    };
-  }
-
-  debug('failed conversation for representation', representation, meta);
-
-  return undefined;
-};
-
-export const denormaliseSkinServiceRepresentation = (skins?: EmojiServiceRepresentation[], meta?: EmojiMeta): EmojiRepresentation[] => {
-  if (!skins) {
-    return [];
-  }
-  return skins.map(skin => denormaliseServiceRepresentation(skin, meta));
-};
-
-/**
- * Denormalised an emoji response (emojis + sprite references) into an array of
- * emoji will local sprite definitions.
- */
-export const denormaliseEmojis = (emojiData: EmojiServiceResponse): EmojiResponse  => {
-  const emojis: EmojiDescription[] = emojiData.emojis.map((emoji: EmojiServiceDescription): EmojiDescription => {
-    const { id, name, shortcut, type, category, order } = emoji;
-    const representation = denormaliseServiceRepresentation(emoji.representation, emojiData.meta);
-    const skinVariations = denormaliseSkinServiceRepresentation(emoji.skinVariations, emojiData.meta);
-
-    return {
-      id,
-      name,
-      shortcut,
-      type,
-      category,
-      order,
-      representation,
-      skinVariations,
-    };
-  });
-
-  const mediaApiToken = emojiData.meta && emojiData.meta.mediaApiToken;
-
-  return {
-    emojis,
-    mediaApiToken,
-  };
-};
-
-/**
- * Emoji providers should return JSON in the format defined by EmojiServiceResponse.
- */
-export default class EmojiResource {
-
-  private config: EmojiResourceConfig;
-
-  constructor(config: EmojiResourceConfig) {
-    this.config = config;
-  }
+export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, undefined> {
+  /**
+   * Returns the first matching emoji matching the shortcut, or null if none found.
+   */
+  findByShortcut(shortcut: string): Promise<OptionalEmojiDescription>;
 
   /**
-   * Returns a promise with an array of Emoji from all providers.
+   * Returns the first matching emoji matching the id, or null if none found.
    */
-  loadAllEmoji(): Promise<EmojiResponse> {
-    const emojiPromises: Promise<EmojiServiceResponse>[] = [];
-    if (this.config.providers) {
-      this.config.providers.forEach((provider) => {
-        emojiPromises.push(emojiRequest(provider));
+  findById(id: EmojiId): Promise<OptionalEmojiDescription>;
+
+  /**
+   * Finds emojis belonging to specified category.
+   */
+  findInCategory(categoryId: string): Promise<EmojiDescription[]>;
+
+  /**
+   * Records an emoji selection, for example for using in tracking recent emoji.
+   *
+   * Optional.
+   */
+  recordSelection?(id: EmojiId): Promise<any>;
+}
+
+export default class EmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined> implements EmojiProvider {
+  private recordConfig?: ServiceConfig;
+  private emojiService: EmojiService;
+  private lastQuery: string;
+  private activeLoaders: number = 0;
+  private retries: Map<Retry<any>, ResolveReject<any>> = new Map();
+
+  // private mediaApiToken?: MediaApiToken;
+
+  constructor(config: EmojiResourceConfig) {
+    super();
+    this.recordConfig = config.recordConfig;
+
+    // Ensure order is retained by tracking until all done.
+    const emojiResponses: EmojiResponse[] = [];
+
+    this.activeLoaders = config.providers.length;
+
+    config.providers.forEach((provider, index) => {
+      const loader = new EmojiLoader(provider);
+      const emojis = loader.loadEmoji();
+      emojis.then((emojiResponse) => {
+        this.activeLoaders--;
+        emojiResponses[index] = emojiResponse;
+        this.initEmojiService(emojiResponses);
+        this.performRetries();
+        this.refreshLastFilter();
+      }).catch((reason) => {
+        this.activeLoaders--;
+        this.notifyError(reason);
       });
+    });
+
+    if (config.providers.length === 0) {
+      throw new Error('No providers specified');
     }
-    debug('EmojiResource.loadAllEmoji waiting for', emojiPromises.length, 'promises');
-    return Promise.all(emojiPromises).then((emojiSets) => {
-      let allEmoji: EmojiDescription[] = [];
-      let mediaApiToken: MediaApiToken | undefined;
-      emojiSets.forEach((emojiServiceResponse) => {
-        const emojiResponse: EmojiResponse = denormaliseEmojis(emojiServiceResponse);
-        allEmoji = allEmoji.concat(emojiResponse.emojis);
-        if (emojiResponse.mediaApiToken) {
-          mediaApiToken = emojiResponse.mediaApiToken;
-        }
-      });
-      return Promise.resolve({
-        emojis: allEmoji,
-        mediaApiToken,
+  }
+
+  private initEmojiService(emojiResponses: EmojiResponse[]): void {
+    let emojis: EmojiDescription[] = [];
+    emojiResponses.forEach(emojiResponse => {
+      emojis = emojis.concat(emojiResponse.emojis);
+    });
+    this.emojiService = new EmojiService(emojis);
+  }
+
+  private performRetries(): void {
+    const currentRetries = this.retries;
+    this.retries = new Map();
+    currentRetries.forEach((resolveReject, retry) => {
+      retry().then(response => {
+        resolveReject.resolve(response);
+      })
+      .catch(reason => {
+        resolveReject.reject(reason);
       });
     });
   }
 
-  recordEmojiSelection(id: EmojiId) {
-    const { securityProvider, refreshedSecurityProvider } = this.config;
-    const secOptions = securityProvider && securityProvider();
-    const data = {
-      emoji: id,
-    };
-    const options = {
-      method: 'POST',
-    };
-    return requestService(this.config.url, 'record', data, options, secOptions, refreshedSecurityProvider);
+  private refreshLastFilter(): void {
+    if (typeof this.lastQuery !== undefined) {
+      this.filter(this.lastQuery);
+    }
+  }
+
+  private retryIfLoading<T>(retry: Retry<T>, defaultResponse?: T): Promise<T | undefined> {
+    if (this.activeLoaders) {
+      return new Promise<T>((resolve, reject) => {
+        this.retries.set(retry, { resolve, reject });
+      });
+    }
+    return Promise.resolve<T | undefined>(defaultResponse);
+  }
+
+  filter(query?: string): void {
+    this.lastQuery = query || '';
+    if (this.emojiService) {
+      const searchResult = this.emojiService.search(query);
+      this.notifyResult(searchResult);
+    } else {
+      // not ready
+      this.notifyNotReady();
+    }
+  }
+
+  findByShortcut(shortcut): Promise<OptionalEmojiDescription> {
+    if (this.emojiService) {
+      const emoji = this.emojiService.findByShortcut(shortcut);
+      if (emoji) {
+        return Promise.resolve(emoji);
+      }
+    }
+    return this.retryIfLoading(() => this.findByShortcut(shortcut), undefined);
+  }
+
+  findById(id: EmojiId): Promise<OptionalEmojiDescription> {
+    if (this.emojiService) {
+      const emoji = this.emojiService.findById(id);
+      if (emoji) {
+        return Promise.resolve(emoji);
+      }
+    }
+    return this.retryIfLoading(() => this.findById(id), undefined);
+  }
+
+  findInCategory(categoryId: string): Promise<EmojiDescription[]> {
+    if (this.emojiService) {
+      return Promise.resolve(this.emojiService.findInCategory(categoryId));
+    }
+    return this.retryIfLoading(() => this.findInCategory(categoryId), []);
+  }
+
+  recordSelection(id: EmojiId): Promise<any> {
+    if (this.recordConfig) {
+      const { refreshedSecurityProvider, securityProvider, url } = this.recordConfig;
+      const secOptions = securityProvider && securityProvider();
+      const data = {
+        emoji: id,
+      };
+      const options = {
+        method: 'POST',
+      };
+      return requestService(url, undefined, data, options, secOptions, refreshedSecurityProvider);
+    }
+    return Promise.reject('Resource does not support recordSelection');
   }
 }

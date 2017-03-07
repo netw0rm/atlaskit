@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 
-import EmojiResource, { EmojiResourceConfig } from '../src/api/EmojiResource';
+import { ServiceConfig } from '../src/api/SharedResourceUtils';
+import EmojiLoader from '../src/api/EmojiLoader';
 import EmojiService from '../src/api/EmojiService';
 
 // FIXME FAB-1732 - extract or replace with third-party implementation
@@ -29,7 +30,7 @@ const toJavascriptString = (obj: any): string => {
 
 export interface Props {
   children: ReactElement<any>;
-  emojiConfig: EmojiResourceConfig;
+  emojiConfig: ServiceConfig;
 }
 
 export interface State {
@@ -49,9 +50,9 @@ export default class ResourcedEmojiControl extends PureComponent<Props, State> {
     this.refreshEmoji(nextProps.emojiConfig);
   }
 
-  refreshEmoji(emojiConfig) {
-    const resource = new EmojiResource(emojiConfig);
-    resource.loadAllEmoji().then((emojiResponse) => {
+  refreshEmoji(emojiConfig: ServiceConfig) {
+    const resource = new EmojiLoader(emojiConfig);
+    resource.loadEmoji().then((emojiResponse) => {
       this.setState({
         emojiService: new EmojiService(emojiResponse.emojis),
       });
@@ -71,7 +72,7 @@ export default class ResourcedEmojiControl extends PureComponent<Props, State> {
       <div style={{ padding: '10px' }} >
         {React.cloneElement(this.props.children, { emojiService })}
         <p>
-          <label htmlFor="emoji-urls">EmojiResource config</label>
+          <label htmlFor="emoji-urls">EmojiLoader config</label>
         </p>
         <p>
           <textarea

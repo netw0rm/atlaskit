@@ -67,6 +67,10 @@ storiesOf(name, module)
           <CompactItem>John Lennon</CompactItem>
           <CompactItem>George Harrison</CompactItem>
         </AkContainerItemGroup>
+        <AkContainerItemGroup separator>
+          <CompactItem isSelected >Mick Jagger </CompactItem>
+          <CompactItem>Ronnie Wood</CompactItem>
+        </AkContainerItemGroup>
       </BasicNavigation>
     </Page>
   ));

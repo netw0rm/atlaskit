@@ -3,6 +3,7 @@ import React from 'react';
 import {
   action,
   title,
+  separator,
 } from 'style!../src/components/less/ContainerItemGroup.less';
 import ContainerItemGroup from '../src/components/js/ContainerItemGroup';
 
@@ -14,8 +15,14 @@ describe('<ContainerItemGroup />', () => {
     it('action should render in the container item group', () => {
       expect(mount(<ContainerItemGroup action={<div className="create">Create button</div>} />).find('.create').length).to.be.above(0);
     });
+    it('separator should render in the container item group', () => {
+      expect(mount(<ContainerItemGroup separator />).find(`.${separator}`).length).to.equal(0);
+    });
     it('with no action specified, no action should be rendered', () => {
       expect(mount(<ContainerItemGroup />).find(`.${action}`).length).to.equal(0);
+    });
+    it('with no separator specified, no separator should be rendered', () => {
+      expect(mount(<ContainerItemGroup />).find(`.${separator}`).length).to.equal(0);
     });
   });
 });

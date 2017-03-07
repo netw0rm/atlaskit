@@ -21,6 +21,9 @@
 
 .noHeaderContent {
   margin-top: @ak-grid-size * 3;
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 .title {
@@ -34,4 +37,15 @@
 
 .action {
   margin-right: @ak-grid-size;
+}
+
+.separator {
+  margin-top: @ak-grid-size * 2.25;
+  margin-bottom: @ak-grid-size * 2.25;
+  height: 2px;
+  background: @ak-color-N20A;
+
+  &.hasGlobalAppearance {
+    background: @ak-color-N50A;
+  }
 }

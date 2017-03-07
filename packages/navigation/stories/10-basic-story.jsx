@@ -1,8 +1,8 @@
 import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
+import { CalendarIcon, DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
 import { AtlassianLogo } from '@atlaskit/logo';
-import { AkContainerItem } from '../src/index';
+import { AkContainerItem, AkContainerItemGroup } from '../src/index';
 import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import nucleus from './nucleus.png';
@@ -96,8 +96,64 @@ storiesOf(name, module)
           appearance="global"
           icon={<TrayIcon label="Tray" />}
           text="Item C"
+          isSelected
           textAfter={<RandomBadge theme="dark" />}
         />
+        <AkContainerItemGroup separator appearance="global">
+          <AkContainerItem
+            appearance="global"
+            isSelected
+            icon={<CalendarIcon label="Calendar" />}
+            subText="And a very long second line of text"
+            text="A very long first line of text"
+            textAfter={<RandomBadge />}
+          />
+        </AkContainerItemGroup>
+      </BasicNavigation>
+    </Page>
+  ))
+  .add('with multiple groups', () => (
+    <Page>
+      <BasicNavigation
+        containerAppearance="global"
+        containerHeaderComponent={AtlassianLogo}
+      >
+        <AkContainerItemGroup>
+          <AkContainerItem
+            appearance="global"
+            icon={<DashboardIcon label="Dashboard" />}
+            isSelected
+            text="Selected"
+            textAfter={<RandomBadge theme="dark" />}
+          />
+        </AkContainerItemGroup>
+        <AkContainerItemGroup>
+          <AkContainerItem
+            appearance="global"
+            icon={<SettingsIcon label="Settings" />}
+            text="Item B"
+            textAfter={<RandomBadge theme="dark" />}
+          />
+        </AkContainerItemGroup>
+        <AkContainerItemGroup title="one section">
+          <AkContainerItem
+            appearance="global"
+            icon={<TrayIcon label="Tray" />}
+            text="Item C"
+            isSelected
+            textAfter={<RandomBadge theme="dark" />}
+          />
+        </AkContainerItemGroup>
+        <AkContainerItemGroup separator appearance="global">
+          <AkContainerItem
+            appearance="global"
+            isSelected
+            icon={<CalendarIcon label="Calendar" />}
+            subText="And a very long second line of text"
+            text="A very long first line of text"
+            textAfter={<RandomBadge />}
+          />
+        </AkContainerItemGroup>
       </BasicNavigation>
     </Page>
   ))

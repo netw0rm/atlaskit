@@ -305,7 +305,7 @@ export class BlockTypeState {
 
     pm.tr.insert(insertPos, paragraph.create()).applyAndScroll();
 
-    const next = new TextSelection(pm.doc.resolve(insertPos + 1));
+    const next = new TextSelection(pm.doc.resolve( Math.min(insertPos + 1, pm.doc.nodeSize - 3)));
     pm.setSelection(next);
   }
 
@@ -404,13 +404,18 @@ export class BlockTypeState {
   }
 
   private createCodeBlock(): boolean {
+    if (!this.pm.schema.nodes.code_block) {
+      return false;
+    }
+
     const {$from} = this.pm.selection;
     const parentBlock = $from.parent;
+
     if (!parentBlock.isTextblock) {
       return false;
     }
-    const startPos = $from.start($from.depth);
 
+    const startPos = $from.start($from.depth);
     let textOnly = true;
 
     this.pm.doc.nodesBetween(startPos, $from.pos, (node) => {
@@ -423,12 +428,7 @@ export class BlockTypeState {
       return false;
     }
 
-    if (!this.pm.schema.nodes.code_block) {
-      return false;
-    }
-
     const fencePart = parentBlock.textContent.slice(0, $from.pos - startPos).trim();
-
     const matches = /^```([^\s]+)?/.exec(fencePart);
 
     if (matches) {

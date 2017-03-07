@@ -21,7 +21,8 @@ export class HyperlinkState {
   active = false;
   linkable = false;
   element?: HTMLElement;
-  toolbarVisible: boolean = false;
+  editorFocused: boolean = false;
+  showToolbarPanel: boolean = false;
 
   private changeHandlers: StateChangeHandler[] = [];
   private inputRules: InputRule[] = [];
@@ -29,7 +30,6 @@ export class HyperlinkState {
   private activeLinkNode?: Node;
   private activeLinkMark?: LinkMark;
   private activeLinkStartPos?: number;
-  private editorFocused: boolean = false;
 
   constructor(pm: PM) {
     this.pm = pm;
@@ -55,7 +55,8 @@ export class HyperlinkState {
 
     pm.on.blur.add(() => {
       this.editorFocused = false;
-      this.update(false, true);
+      this.toolbarVisible = false;
+      this.active && this.changeHandlers.forEach(cb => cb(this));
     });
 
     this.update(true);
@@ -110,6 +111,17 @@ export class HyperlinkState {
     }
   }
 
+  showLinkPanel() {
+    const { pm } = this;
+    const { selection } = pm;
+    if (selection.empty) {
+      this.showToolbarPanel = !this.showToolbarPanel;
+      this.changeHandlers.forEach(cb => cb(this));
+    } else {
+      this.addLink({ href: '' });
+    }
+  }
+
   detach(pm: ProseMirror) {
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
@@ -131,7 +143,7 @@ export class HyperlinkState {
       this.text = nodeInfo && nodeInfo.node.textContent;
       this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
       this.element = this.getDomElement();
-      this.toolbarVisible = this.editorFocused && !!nodeInfo;
+      this.editorFocused = this.editorFocused;
       this.active = !!nodeInfo;
       dirty = true;
     }
@@ -160,6 +172,7 @@ export class HyperlinkState {
 
     if (link && $from) {
       const {node, offset} = $from.parent.childAfter($from.parentOffset);
+      const parentNodeStartPos = $from.start($from.depth);
 
       // offset is the end postion of previous node
       // This is to check whether the cursor is at the beginning of current node
@@ -170,7 +183,7 @@ export class HyperlinkState {
       if (node && node.isText && link.isInSet(node.marks)) {
         return {
           node,
-          startPos: offset + 1
+          startPos: parentNodeStartPos + offset
         };
       }
     }
@@ -188,7 +201,7 @@ export class HyperlinkState {
     if (this.activeLinkStartPos) {
       const { node, offset } = DOMFromPos(
         this.pm,
-        this.activeLinkStartPos + this.pm.selection.$from.start(this.pm.selection.$from.depth),
+        this.activeLinkStartPos,
         true
       );
 

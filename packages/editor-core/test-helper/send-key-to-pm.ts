@@ -1,10 +1,11 @@
-import { browser, ProseMirror } from '../';
+import { EditorView, browser } from '../';
+import focusAndSelect from './focusAndSelect';
 
 /**
  * Sends a key to ProseMirror content area, simulating user key press.
  * Accepts key descriptions similar to Keymap, i.e. 'Shift-Ctrl-L'
  */
-export default function sendKeyToPm(pm: ProseMirror, keys: string) {
+export default function sendKeyToPm(editorView: EditorView, keys: string) {
   const parts = keys.split(/-(?!'?$)/);
   const modKey = parts.indexOf('Mod') !== -1;
   const cmdKey = parts.indexOf('Cmd') !== -1;
@@ -29,13 +30,8 @@ export default function sendKeyToPm(pm: ProseMirror, keys: string) {
   (event as any).view = window;
 
   // The PM content area must be selected and focused in order for key events to be recognized
-  const range = document.createRange();
-  const selection = window.getSelection();
-  range.selectNodeContents(pm.content);
-  selection.removeAllRanges();
-  selection.addRange(range);
-  pm.content.focus();
-  pm.content.dispatchEvent(event);
+  focusAndSelect(editorView.dom);
+  editorView.dispatchEvent(event);
 }
 
 const dictionary: { [key: string]: number } = {

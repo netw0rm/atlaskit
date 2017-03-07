@@ -5,9 +5,10 @@ import {
   EditorView,
   TextSelection
 } from '../';
-import { default as schema } from './schema';
-import { RefsNode } from './schema-builder';
+import { default as defaultSchema } from './schema';
+import { RefsNode, Refs } from './schema-builder';
 import SyncPlugin from './sync-plugin';
+import sendKeyToPm from './send-key-to-pm';
 
 export interface Options {
   doc: RefsNode;
@@ -24,10 +25,10 @@ export interface Options {
  * - `<>` -- a collapsed text selection
  * - `<` and `>` -- a range text selection (`<` is from, `>` is to).
  */
-export default (options: Options) => {
+export default (options: Options) : EditorInstance => {
   const editorState = EditorState.create({
     doc: options.doc,
-    schema,
+    schema: options.schema || defaultSchema,
     plugins: [
       options.plugin,
       SyncPlugin
@@ -55,13 +56,27 @@ export default (options: Options) => {
 
   return {
     editorView,
+    pluginState: options.plugin.getState(editorState),
+    plugin: options.plugin,
+    refs,
+    sel: refs['<>'],
     setTextSelection: (anchor: number, head?: number) => setTextSelection(editorView, anchor, head),
-    pluginState: options.plugin.getState(editorState)
+    sendKeyToPm: (key: string) => sendKeyToPm(editorView, key)
   };
 };
 
 export interface ProseMirrorWithRefs extends EditorState<Schema<any, any>> {
   doc: RefsNode;
+}
+
+export interface EditorInstance {
+  editorView: EditorView;
+  pluginState: any;
+  plugin: any;
+  refs: Refs;
+  sel: number;
+  setTextSelection: (anchor: number, head?: number) => void;
+  sendKeyToPm: (key: string) => void;
 }
 
 function setTextSelection (view: EditorView, anchor: number, head?: number) {

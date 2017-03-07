@@ -1,17 +1,6 @@
 import { EditorView } from '../';
 import createEvent from './create-event';
 
-function focusAndSelect(element: HTMLElement) {
-  const range = document.createRange();
-  const selection = window.getSelection();
-
-  range.selectNodeContents(element);
-  selection.removeAllRanges();
-  selection.addRange(range);
-
-  element.focus();
-}
-
 export interface PasteContent {
   plain?: string;
   html?: string;

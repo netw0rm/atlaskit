@@ -3,6 +3,9 @@ import * as dom from '../dom';
 import { Decoration, DecorationSet } from './decoration';
 import { NodeViewDesc } from './viewdesc';
 export { Decoration, DecorationSet, NodeViewDesc };
+import * as browser from './browser';
+
+export { browser };
 
 export class EditorView {
   constructor(place: dom.Node | ((_0: dom.Node) => void) | null, props: EditorProps);
@@ -23,7 +26,7 @@ export class EditorView {
   endOfTextblock(dir: 'up' | 'down' | 'left' | 'right' | 'forward' | 'backward', state?: EditorState<any>): boolean;
   destroy(): void;
   dispatch(tr: Transaction): void;
-  dispatchEvent(event: string);
+  dispatchEvent(event: string | CustomEvent);
 }
 
 export interface PluginProps {

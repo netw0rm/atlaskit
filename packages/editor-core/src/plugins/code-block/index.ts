@@ -82,7 +82,7 @@ export class CodeBlockState {
     return undefined;
   }
 }
-const stateKey = new PluginKey('codeBlockPlugin');
+export const stateKey = new PluginKey('codeBlockPlugin');
 
 bindKeymap(keymaps.splitCodeBlock.common, commands.newlineInCode);
 

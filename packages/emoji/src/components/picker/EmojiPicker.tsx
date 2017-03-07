@@ -33,7 +33,7 @@ export interface State {
   availableCategories?: AvailableCategories;
   query: string;
   // the picker is considered loaded when at least 1 set of emojis have loaded
-  loaded: boolean;
+  loading: boolean;
 }
 
 export default class EmojiPicker extends PureComponent<Props, State> {
@@ -48,7 +48,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
     this.state = {
       filteredEmojis: [],
       query: '',
-      loaded: false,
+      loading: true,
     };
 
   }
@@ -139,7 +139,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
       activeCategory,
       availableCategories,
       query,
-      loaded: true,
+      loading: false,
     } as State);
   }
 
@@ -173,7 +173,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
           onCategoryActivated={this.onCategoryActivated}
           onSearch={this.onSearch}
           selectedTone={this.state.selectedTone}
-          loading={!this.state.loaded}
+          loading={this.state.loading}
         />
         <EmojiPickerFooter
           selectedEmoji={this.state.selectedEmoji}

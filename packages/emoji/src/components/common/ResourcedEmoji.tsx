@@ -64,7 +64,6 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
       return (<Emoji emoji={emoji} />);
     }
 
-    // return (<div className={missingEmoji} ><span /></div>);
     return <EmojiPlaceholder title={this.props.id.id} />;
   }
 }

@@ -10,14 +10,16 @@ import {
   isListItemNode,
   isOrderedListNode,
   isParagraphNode,
+  isMentionNode,
   ListItemNode,
+  MentionNode,
   Node as PMNode,
   OrderedListNode,
   ParagraphNode
 } from '@atlaskit/editor-core';
-import { isSchemaWithLists, SupportedSchema } from '../schema';
+import { isSchemaWithLists, isSchemaWithMentions, JIRASchema } from '../schema';
 
-export default function encode(node: DocNode, schema: SupportedSchema) {
+export default function encode(node: DocNode, schema: JIRASchema) {
   const doc = makeDocument();
   doc.body.appendChild(encodeFragment(node.content));
   const html = doc.body.innerHTML;
@@ -54,6 +56,12 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
         return encodeOrderedList(node);
       } else if (isListItemNode(node)) {
         return encodeListItem(node);
+      }
+    }
+
+    if (isSchemaWithMentions(schema)) {
+      if (isMentionNode(node)) {
+        return encodeMention(node);
       }
     }
 
@@ -120,6 +128,8 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
           case schema.marks.subsup:
             elem = elem.appendChild(doc.createElement(mark.attrs['type']));
             break;
+          case schema.marks.mention_query:
+            break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);
         }
@@ -161,6 +171,15 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
       const paragraph = node.content.child(0) as ParagraphNode;
       elem.appendChild(encodeFragment(paragraph.content));
     }
+    return elem;
+  }
+
+  function encodeMention(node: MentionNode) {
+    const elem = doc.createElement('a');
+    elem.setAttribute('class', 'user-hover');
+    elem.setAttribute('href', `/secure/ViewProfile?name=${node.attrs.id}`);
+    elem.setAttribute('rel', node.attrs.id);
+    elem.innerText = node.attrs.displayName;
     return elem;
   }
 }

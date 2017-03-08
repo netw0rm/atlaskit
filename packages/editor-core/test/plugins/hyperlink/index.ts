@@ -428,7 +428,7 @@ describe('hyperlink', () => {
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('t1ext'))));
     });
 
-    it('should not escape from link mark when deliting second character', () => {
+    it('should not escape from link mark when deleting second character', () => {
       const { editorView, sendKeyToPm } = editor(doc(linkable(link({ href: 'http://example.com' })('t{<>}ext'))));
 
       sendKeyToPm('Delete');

@@ -8,8 +8,13 @@ model.ResolvedPos.prototype.marks = function getMarks(after) {
   if (parent.content.size === 0) {
     return model.Mark.none;
   }
-  // When inside a text node or at the start of the parent node, return the node's marks
-  if ((after && index < parent.childCount) || index === 0 || this.textOffset) {
+
+  // When at the start of the parent node, return the node's marks
+  if ((after && this.textOffset && index < parent.childCount) || this.textOffset) {
+    return parent.child(index).marks;
+  }
+  // When inside a text node, return the node's marks, factoring inclusiveLeft property of the marks
+  if (index === 0) {
     return parent.child(index).marks.filter(mark => !!mark.type.spec.inclusiveLeft);
   }
 

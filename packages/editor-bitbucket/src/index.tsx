@@ -15,6 +15,7 @@ import {
   MentionsPlugin,
   Node,
   ProseMirror,
+  DefaultKeymapsPlugin,
   TextFormattingPlugin,
   version as coreVersion
 } from '@atlaskit/editor-core';
@@ -218,6 +219,7 @@ export default class Editor extends PureComponent<Props, State> {
           ListsPlugin,
           TextFormattingPlugin,
           HorizontalRulePlugin,
+          DefaultKeymapsPlugin,
           ...( this.mentionsResourceProvider ? [ MentionsPlugin ] : [] ),
           DefaultInputRulesPlugin,
           ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )

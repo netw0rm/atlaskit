@@ -5,16 +5,20 @@
     "access": "public"
   },
   "description": "React building block of a dropdown.",
-  "main": "dist/bundle.js",
+  "main": "lib/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/droplist-item; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "nwb build",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "test": "nwb test",
+    "test:watch": "nwb test --server"
   },
   "files": [
-    "dist",
-    "src/index.d.ts"
+    "es",
+    "lib",
+    "umd"
   ],
   "dependencies": {
     "ak-icon": "^12.1.3",
@@ -39,5 +43,6 @@
     "atlaskit",
     "ui",
     "internal"
-  ]
+  ],
+  "module": "es/index.js"
 }

@@ -5,16 +5,20 @@
     "access": "public"
   },
   "description": "A suite of components for building readme-style docs into your stories.",
-  "main": "dist/bundle.js",
+  "main": "lib/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/util-readme; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "nwb build",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "test": "nwb test",
+    "test:watch": "nwb test --server"
   },
   "files": [
-    "dist",
-    "**/*.d.ts"
+    "es",
+    "lib",
+    "umd"
   ],
   "dependencies": {
     "decamelize": "^1.2.0",
@@ -36,5 +40,6 @@
   "keywords": [
     "atlaskit",
     "internal"
-  ]
+  ],
+  "module": "es/index.js"
 }

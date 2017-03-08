@@ -5,18 +5,19 @@
     "access": "public"
   },
   "description": "A React component used to display user profiles in a list for 'Mention' functionality",
-  "main": "dist/es5/index.js",
+  "main": "lib/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
-    "build": "npm run build/es5 && npm run build/es2015",
-    "build/es5": "../../node_modules/.bin/tsc -p build/es5",
-    "build/es2015": "../../node_modules/.bin/tsc -p build/es2015"
+    "prepublish": "nwb build",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "test": "nwb test",
+    "test:watch": "nwb test --server"
   },
   "files": [
-    "dist",
-    "src"
+    "es",
+    "lib",
+    "umd"
   ],
   "dependencies": {
     "@atlaskit/avatar": "^1.0.0",
@@ -51,5 +52,6 @@
     "ui",
     "mention",
     "fabric"
-  ]
+  ],
+  "module": "es/index.js"
 }

@@ -5,15 +5,20 @@
     "access": "public"
   },
   "description": "A React presentational component that wraps fields and provides styles for focus/hover states",
-  "main": "dist/bundle.js",
+  "main": "lib/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/field-base; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "nwb build",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "test": "nwb test",
+    "test:watch": "nwb test --server"
   },
   "files": [
-    "dist"
+    "es",
+    "lib",
+    "umd"
   ],
   "peerDependencies": {
     "react": "^15.3.2"
@@ -41,5 +46,6 @@
     "atlaskit",
     "ui",
     "internal"
-  ]
+  ],
+  "module": "es/index.js"
 }

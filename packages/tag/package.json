@@ -5,14 +5,19 @@
     "access": "public"
   },
   "description": "This component displays as a tag with an optional link and/or button to remove the given tag.",
-  "main": "dist/bundle.js",
+  "main": "lib/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/tag; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "nwb build",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "test": "nwb test",
+    "test:watch": "nwb test --server"
   },
   "files": [
-    "dist"
+    "es",
+    "lib",
+    "umd"
   ],
   "dependencies": {
     "@atlaskit/util-common": "^1.0.0",
@@ -39,5 +44,6 @@
     "ui",
     "tag",
     "react"
-  ]
+  ],
+  "module": "es/index.js"
 }

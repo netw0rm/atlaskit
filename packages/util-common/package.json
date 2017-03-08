@@ -5,14 +5,19 @@
     "access": "public"
   },
   "description": "Utilities shared by AtlasKit components",
-  "main": "dist/bundle.js",
+  "main": "lib/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/util-common; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "nwb build",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "test": "nwb test",
+    "test:watch": "nwb test --server"
   },
   "files": [
-    "dist"
+    "es",
+    "lib",
+    "umd"
   ],
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
@@ -33,5 +38,6 @@
     "atlaskit",
     "ui",
     "internal"
-  ]
+  ],
+  "module": "es/index.js"
 }

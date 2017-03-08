@@ -5,16 +5,19 @@
     "access": "public"
   },
   "description": "Shared styles for AtlasKit components",
-  "main": "dist/bundle.js",
+  "main": "lib/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/util-shared-styles; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "nwb build",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "test": "nwb test",
+    "test:watch": "nwb test --server"
   },
   "files": [
-    "dist",
-    "src",
-    "index.d.ts"
+    "es",
+    "lib",
+    "umd"
   ],
   "author": "Atlassian Pty Ltd",
   "license": "SEE LICENSE IN LICENSE",
@@ -43,5 +46,6 @@
     "atlaskit",
     "ui",
     "internal"
-  ]
+  ],
+  "module": "es/index.js"
 }

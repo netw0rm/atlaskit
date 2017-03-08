@@ -16,7 +16,9 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "dist"
+    "es",
+    "lib",
+    "umd"
   ],
   "dependencies": {
     "@atlaskit/button": "^1.0.0",

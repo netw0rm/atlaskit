@@ -5,14 +5,19 @@
     "access": "public"
   },
   "description": "An inline dialog React component for secondary content and controls that are displayed on user request",
-  "main": "dist/bundle.js",
+  "main": "lib/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/inline-dialog; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "nwb build",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "test": "nwb test",
+    "test:watch": "nwb test --server"
   },
   "files": [
-    "dist"
+    "es",
+    "lib",
+    "umd"
   ],
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
@@ -36,5 +41,6 @@
   "keywords": [
     "atlaskit",
     "ui"
-  ]
+  ],
+  "module": "es/index.js"
 }

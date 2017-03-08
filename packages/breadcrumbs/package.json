@@ -5,14 +5,19 @@
     "access": "public"
   },
   "description": "A React component that allows users to know their location",
-  "main": "dist/bundle.js",
+  "main": "lib/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/breadcrumbs; } || ../../node_modules/.bin/not-in-publish"
+    "prepublish": "nwb build",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "test": "nwb test",
+    "test:watch": "nwb test --server"
   },
   "files": [
-    "dist"
+    "es",
+    "lib",
+    "umd"
   ],
   "dependencies": {
     "@atlaskit/button": "^1.0.0",
@@ -37,5 +42,6 @@
   "keywords": [
     "atlaskit",
     "ui"
-  ]
+  ],
+  "module": "es/index.js"
 }

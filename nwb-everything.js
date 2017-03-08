@@ -46,7 +46,11 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   pkgJson.scripts.test = 'nwb test';
   pkgJson.scripts['test:watch'] = 'nwb test --server';
 
-  fs.renameSync(path.join(dir, 'test'), path.join(dir, 'tests'));
+  const testDir = path.join(dir, 'test');
+  if (fs.existsSync(testDir)) {
+    fs.renameSync(path.join(dir, 'test'), path.join(dir, 'tests'));
+  }
+
   fs.writeFileSync(pkg, JSON.stringify(pkgJson, null, 2));
   fs.writeFileSync(nwbFile, 'module.exports = require(\'../../nwb.config\');\n');
 

@@ -27,11 +27,6 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
     return;
   }
 
-  // TypeScript packages.
-  if (fs.existsSync(tsFile)) {
-    return;
-  }
-
   const pkg = path.join(dir, 'package.json');
   const pkgJson = require(pkg);
 
@@ -48,7 +43,7 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
 
   const testDir = path.join(dir, 'test');
   if (fs.existsSync(testDir)) {
-    fs.renameSync(path.join(dir, 'test'), path.join(dir, 'tests'));
+    fs.renameSync(tsFile, path.join(dir, 'tests'));
   }
 
   fs.writeFileSync(pkg, JSON.stringify(pkgJson, null, 2));

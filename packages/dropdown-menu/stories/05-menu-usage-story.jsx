@@ -118,13 +118,13 @@ storiesOf(name, module)
         }}
       >
         <DropdownMenu items={simpleDropdownItems}>
-          click me
+          <span tabIndex="0">click me</span>
         </DropdownMenu>
         <DropdownMenu items={simpleDropdownItems}>
-          <Avatar />
+          <span tabIndex="0"><Avatar /></span>
         </DropdownMenu>
         <DropdownMenu items={simpleDropdownItems}>
-          <Question label="dropdown`s trigger" />
+          <span tabIndex="0"><Question label="dropdown`s trigger" /></span>
         </DropdownMenu>
       </div>
     </div>

@@ -155,80 +155,117 @@ describe('Text', () => {
     });
   });
 
-  it('should not join adjecent nodes with same mark type when attributes are not the same', () => {
-      const textNodes = [
-        {
-          type: 'text',
-          text: 'Hello',
-          marks: [
-            {
-              type: 'link',
-              attrs: {
-                url: 'https://www.atlassian.com'
-              }
-            }
-          ]
-        },
-        {
-          type: 'text',
-          text: 'World!',
-          marks: [
-            {
-              type: 'link',
-              attrs: {
-                url: 'https://www.hipchat.com'
-              }
-            }
-          ]
-        }
-      ];
+  it('should be able to render text nodes with multiple marks', () => {
+    const textNodes = [
+      {
+        type: 'text',
+        text: 'Hello ',
+        marks: [
+          {
+            type: 'strong',
+          }
+        ]
+      },
+      {
+        type: 'text',
+        text: 'World!',
+        marks: [
+          {
+            type: 'strong'
+          },
+          {
+            type: 'em'
+          },
+          {
+            type: 'underline'
+          }
+        ]
+      }
+    ];
 
-      const output = mount(<div>{renderTextNodes(textNodes)}</div>);
-      expect(output.find('a').length).to.equal(2);
-      expect(output.find('a').first().text()).to.equal('Hello');
-      expect(output.find('a').first().props()).to.have.property('href', 'https://www.atlassian.com');
-      expect(output.find('a').last().text()).to.equal('World!');
-      expect(output.find('a').last().props()).to.have.property('href', 'https://www.hipchat.com');
+    const output = mount(<div>{renderTextNodes(textNodes)}</div>);
+    expect(output.childAt(0).is('Strong')).to.equal(true);
+    expect(output.childAt(0).text()).to.equal('Hello ');
+    expect(output.childAt(1).is('Em')).to.equal(true);
+    expect(output.childAt(1).childAt(0).is('Strong')).to.equal(true);
+    expect(output.childAt(1).childAt(0).childAt(0).is('Underline')).to.equal(true);
+    expect(output.childAt(1).text()).to.equal('World!');
+  });
+
+  it('should not join adjecent nodes with same mark type when attributes are not the same', () => {
+    const textNodes = [
+      {
+        type: 'text',
+        text: 'Hello',
+        marks: [
+          {
+            type: 'link',
+            attrs: {
+              url: 'https://www.atlassian.com'
+            }
+          }
+        ]
+      },
+      {
+        type: 'text',
+        text: 'World!',
+        marks: [
+          {
+            type: 'link',
+            attrs: {
+              url: 'https://www.hipchat.com'
+            }
+          }
+        ]
+      }
+    ];
+
+    const output = mount(<div>{renderTextNodes(textNodes)}</div>);
+    expect(output.find('a').length).to.equal(2);
+    expect(output.find('a').first().text()).to.equal('Hello');
+    expect(output.find('a').first().props()).to.have.property('href', 'https://www.atlassian.com');
+    expect(output.find('a').last().text()).to.equal('World!');
+    expect(output.find('a').last().props()).to.have.property('href', 'https://www.hipchat.com');
   });
 
   it('should not join nodes with same mark type if they are not adjecent', () => {
-      const textNodes = [
-        {
-          type: 'text',
-          text: 'Hello',
-          marks: [
-            {
-              type: 'link',
-              attrs: {
-                url: 'https://www.atlassian.com'
-              }
+    const textNodes = [
+      {
+        type: 'text',
+        text: 'Hello',
+        marks: [
+          {
+            type: 'link',
+            attrs: {
+              url: 'https://www.atlassian.com'
             }
-          ]
-        },
-        {
-          type: 'text',
-          text: ' '
-        },
-        {
-          type: 'text',
-          text: 'World!',
-          marks: [
-            {
-              type: 'link',
-              attrs: {
-                url: 'https://www.atlassian.com'
-              }
+          }
+        ]
+      },
+      {
+        type: 'text',
+        text: ' '
+      },
+      {
+        type: 'text',
+        text: 'World!',
+        marks: [
+          {
+            type: 'link',
+            attrs: {
+              url: 'https://www.atlassian.com'
             }
-          ]
-        }
-      ];
+          }
+        ]
+      }
+    ];
 
-      const output = mount(<div>{renderTextNodes(textNodes)}</div>);
-      expect(output.find('a').length).to.equal(2);
-      expect(output.find('a').first().text()).to.equal('Hello');
-      expect(output.find('a').first().props()).to.have.property('href', 'https://www.atlassian.com');
-      expect(output.find('a').last().text()).to.equal('World!');
-      expect(output.find('a').last().props()).to.have.property('href', 'https://www.atlassian.com');
+    const output = mount(<div>{renderTextNodes(textNodes)}</div>);
+    expect(output.find('a').length).to.equal(2);
+    expect(output.find('a').first().text()).to.equal('Hello');
+    expect(output.find('a').first().props()).to.have.property('href', 'https://www.atlassian.com');
+    expect(output.find('a').last().text()).to.equal('World!');
+    expect(output.find('a').last().props()).to.have.property('href', 'https://www.atlassian.com');
   });
 
 });

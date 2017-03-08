@@ -213,7 +213,7 @@ export class CardList extends Component<CardListProps, CardListState> {
 
     const useDefaultWidth = this.props.cardType === 'normal';
 
-    return useDefaultWidth ? DEFAULT_CARD_DIMENSIONS.WIDTH : null;
+    return useDefaultWidth ? DEFAULT_CARD_DIMENSIONS.WIDTH : undefined;
   }
 
   private get useInfiniteScroll(): boolean {

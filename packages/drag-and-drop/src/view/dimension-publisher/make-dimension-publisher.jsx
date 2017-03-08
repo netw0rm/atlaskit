@@ -1,14 +1,11 @@
 // @flow
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 import invariant from 'invariant';
-import {
-  publishDraggableDimension,
-  publishDroppableDimension,
-} from '../../state/action-creators';
-import type { Id, TypeId, Dimension, Position, State } from '../../types';
+import type { Dimension, Position, Action } from '../../types';
+import type { Props, DispatchProps } from './dimension-publisher-types';
 import storeKey from '../../state/get-store-key';
+import makeSelector from './make-dimension-publisher-selector';
 
 const getBounds = (ref: Element) => {
   const { top, right, bottom, left, width, height } = ref.getBoundingClientRect();
@@ -29,22 +26,11 @@ const getBounds = (ref: Element) => {
   };
 };
 
-type Props = {|
-    itemId: Id,
-    // needs to always be a styled component
-    // todo: add check
-    children?: React$Element<any>,
-    shouldPublish: boolean,
-    publish: Function,
-    outerRef?: ?Element
-|}
-
 export class DimensionPublisher extends PureComponent {
   /* eslint-disable react/sort-comp */
   props: Props
+  /* eslint-enable */
 
-  ref: ?Element
-/* eslint-enable */
   getDimension = (): Dimension => {
     const ref = this.props.outerRef;
     invariant(ref, 'cannot get dimensions when not attached');
@@ -70,12 +56,12 @@ export class DimensionPublisher extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps: Props) {
-  // no request - publish not needed
+    // no request - publish not needed
     if (!nextProps.shouldPublish) {
       return;
     }
 
-  // no change - publish not needed
+    // no change - publish not needed
     if (this.props.shouldPublish === nextProps.shouldPublish) {
       return;
     }
@@ -83,49 +69,16 @@ export class DimensionPublisher extends PureComponent {
     this.props.publish(this.getDimension());
   }
 
-  setRef = (ref: ?any) => {
-    this.ref = ref;
-  }
-
   render() {
     return this.props.children;
   }
 }
 
-const requestDimensionSelector =
-  (state: State): ?TypeId => state.requestDimensions;
-
-const getOwnType = (state, props): TypeId => props.type;
-
-const makeSelector = () => createSelector(
-    [requestDimensionSelector, getOwnType],
-    (type: ?TypeId, ownType: TypeId): { shouldPublish: boolean } => {
-      if (!type) {
-        return {
-          shouldPublish: false,
-        };
-      }
-
-      return {
-        shouldPublish: type === ownType,
-      };
-    }
-  );
-
 const makeMapStateToProps = () => makeSelector();
 
-export const DraggableDimensionPublisher = (() => {
-  const mapDispatchToProps = {
-    publish: publishDraggableDimension,
+export default (publish: Action) => {
+  const mapDispatchToProps: DispatchProps = {
+    publish,
   };
-
   return connect(makeMapStateToProps, mapDispatchToProps, null, { storeKey })(DimensionPublisher);
-})();
-
-export const DroppableDimensionPublisher = (() => {
-  const mapDispatchToProps = {
-    publish: publishDroppableDimension,
-  };
-
-  return connect(makeMapStateToProps, mapDispatchToProps, null, { storeKey })(DimensionPublisher);
-})();
+};

@@ -91,9 +91,6 @@ const DroppableList = (() => {
     width: 300px;
     align-items: stretch;
     margin: 8px;
-    height: 500px;
-    overflow-y: scroll;
-    overflow-x: none;
     background-color: ${props => (props.isDraggingOver ? 'gold' : 'deepskyblue')};
   `;
 
@@ -128,7 +125,7 @@ const DroppableList = (() => {
     isDraggingOver: state.isDraggingOver,
   });
 
-  return droppable('ITEM', provide, map)(List);
+  return droppable('ITEM', 'vertical', provide, map)(List);
 })();
 
 const ConnectedApp = (() => {

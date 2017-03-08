@@ -7,7 +7,7 @@ import getDisplayName from '../get-display-name';
 import storeKey from '../../state/get-store-key';
 import type { TypeId,
   DroppableId,
-  DragResult,
+  Direction,
   State,
   DraggableLocation,
 } from '../../types';
@@ -39,6 +39,7 @@ const Container = styled.div`
 `;
 
 export default (type: TypeId,
+  direction: Direction,
   provide: Provide,
   map?: MapState = () => ({})) =>
     // Component must be a styled-component
@@ -100,7 +101,6 @@ export default (type: TypeId,
         const destination: ?DraggableLocation = currentDrag.impact.destination;
 
         const isDraggingOver = Boolean(destination && destination.droppableId === provided.id);
-        // console.log({ destination, isDraggingOver });
 
         return {
           isDraggingOver,

@@ -31,7 +31,7 @@ const Context = dragDropContext(Container);
 const provide = ownProps => ({
   id: '1',
 });
-const Droppable = dragDropContext(droppable('TYPE', provide)(Container));
+const Droppable = dragDropContext(droppable('TYPE', 'vertical', provide)(Container));
 
 storiesOf('draggable', module)
   .add('basic', () => {

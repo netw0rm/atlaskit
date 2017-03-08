@@ -1,9 +1,10 @@
 // @flow
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
-import type { State, CurrentDrag, Position, DraggableId, Dimension, DimensionMap } from '../../types';
-import { currentDragSelector, draggableDimensionsSelector } from '../../state/selectors';
+import type { ConnectedProps, MapProps } from './keep-visible-types';
+import type { State, Position } from '../../types';
+import makeSelector from './make-keep-visible-selector';
+
 import getScrollPosition from '../get-scroll-position';
 import getVisibilityOffset from '../is-visible';
 import storeKey from '../../state/get-store-key';
@@ -11,22 +12,13 @@ import storeKey from '../../state/get-store-key';
 const isEmpty = (point: Position): boolean =>
   point.x === 0 && point.y === 0;
 
-type ConnectedProps = {|
-  itemId: DraggableId,
-|}
-
-type MapProps = {|
-  dimension: ?Dimension,
-  currentDrag: ?CurrentDrag,
-|}
-
 type Props = {
   children?: React$Element<any>,
 } & ConnectedProps & MapProps;
 
 const additionalScrollMultiplier = 2;
 
-class KeepVisible extends PureComponent {
+export class KeepVisible extends PureComponent {
   /* eslint-disable react/sort-comp */
   props: Props
   /* eslint-enable */
@@ -62,42 +54,8 @@ class KeepVisible extends PureComponent {
   }
 }
 
-const idSelector = (state: State, props: ConnectedProps): DraggableId => props.itemId;
-
-const dimensionSelector = createSelector(
-  [draggableDimensionsSelector, idSelector],
-  (dimensions: ?DimensionMap, id: DraggableId): ?Dimension => {
-    if (!dimensions) {
-      return null;
-    }
-    return dimensions[id];
-  }
-);
-
-const empty: MapProps = {
-  dimension: null,
-  currentDrag: null,
-};
-
-const makeResultSelector = () => createSelector(
-  [dimensionSelector, currentDragSelector, idSelector],
-  (dimension: ?Dimension, currentDrag: ?CurrentDrag, id: DraggableId): MapProps => {
-    if (!currentDrag ||
-      !currentDrag.dragging ||
-      currentDrag.dragging.id !== id ||
-      !currentDrag.dragging.shouldAnimate) {
-      return empty;
-    }
-
-    return {
-      dimension,
-      currentDrag,
-    };
-  }
-);
-
 const makeMapStateToProps = () => {
-  const resultSelector = makeResultSelector();
+  const resultSelector = makeSelector();
   const mapStateToProps = (state: State, props: ConnectedProps): MapProps =>
     resultSelector(state, props);
   return mapStateToProps;

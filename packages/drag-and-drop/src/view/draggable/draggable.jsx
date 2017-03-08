@@ -7,19 +7,17 @@ import type {
   TypeId,
   Position,
 } from '../../types';
-import type { Provide, MapProps } from './types';
+import type { Provide, MapProps } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
-import ScrollTo from '../scroll-to';
+import KeepVisible from '../keep-visible';
 import type { Speed } from '../moveable';
 import createDragHandle from './create-drag-handle';
-import type { Callbacks } from './create-drag-handle';
 import getCenterPosition from '../get-center-position';
 import getScrollPosition from '../get-scroll-position';
 import getDisplayName from '../get-display-name';
 import storeKey from '../../state/get-store-key';
-import makeSelector from './make-selector';
-import isShallowEqual from 'shallowequal';
+import makeSelector from './make-draggable-selector';
 
 import {
   lift as liftAction,
@@ -68,8 +66,8 @@ const Container = styled.div`
 
 type Movement = {|
   speed: Speed,
-    zIndex: string
-      |}
+  zIndex: string
+|}
 
 const getMovement = (isDragging: boolean,
   wasDragging: boolean,
@@ -146,6 +144,10 @@ export default (type: TypeId,
             wasDragging,
           });
         }
+      }
+
+      componentWillUnmount() {
+        console.warn('unmounting draggable', this.props.id);
       }
 
       onMoveEnd = () => {
@@ -255,10 +257,6 @@ export default (type: TypeId,
         });
       }
 
-      componentWillUnmount() {
-        console.warn('unmounting draggable', this.props.id);
-      }
-
       render() {
         console.log('rendering draggable', this.props.id);
         const handle = this.getHandle(this.props.isDragEnabled);
@@ -303,13 +301,13 @@ export default (type: TypeId,
                 type={type}
                 outerRef={this.state.ref}
               >
-                <ScrollTo itemId={this.props.id}>
+                <KeepVisible itemId={this.props.id}>
                   <Container
                     isDragging={this.props.isDragging}
                   >
                     <Component {...props} />
                   </Container>
-                </ScrollTo>
+                </KeepVisible>
               </DraggableDimensionPublisher>
             )}
           </Moveable>

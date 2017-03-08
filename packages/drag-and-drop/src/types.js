@@ -76,6 +76,8 @@ export type DragComplete = {|
   isAnimationFinished: boolean,
 |}
 
+export type Direction = 'vertical'; // | horiztonal - currently not supported
+
 export type State = {
   draggableDimensions: DimensionMap,
   droppableDimensions: DimensionMap,

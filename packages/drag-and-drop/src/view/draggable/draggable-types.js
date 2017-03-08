@@ -6,7 +6,9 @@ export type NeedsProviding = {|
   isDragEnabled?: boolean,
 |}
 
-export type Provide = (ownProps: Object) => NeedsProviding;
+export type OwnProps = Object;
+
+export type Provide = (ownProps: OwnProps) => NeedsProviding;
 
 export type MapProps = {|
   id: DraggableId,

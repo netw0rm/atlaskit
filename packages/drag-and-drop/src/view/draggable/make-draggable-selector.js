@@ -4,12 +4,12 @@ import isShallowEqual from 'shallowequal';
 import { createSelector } from 'reselect';
 import invariant from 'invariant';
 import { currentDragSelector, dragCompleteSelector } from '../../state/selectors';
-import type { Provide, NeedsProviding, MapProps } from './draggable-types';
-import type { DraggableId, DragComplete, CurrentDrag, Position } from '../../types';
+import type { Provide, NeedsProviding, MapProps, OwnProps } from './draggable-types';
+import type { DraggableId, DragComplete, CurrentDrag, Position, State } from '../../types';
 
 export default (provide: Provide) => {
   const memoizedProvide = memoizeOne(provide, isShallowEqual);
-  const getProvided = (state, ownProps) => memoizedProvide(ownProps);
+  const getProvided = (state: State, ownProps: OwnProps) => memoizedProvide(ownProps);
   const memoizedOffset = memoizeOne(
     (x: number, y: number): Position => ({
       x, y,

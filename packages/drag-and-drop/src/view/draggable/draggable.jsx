@@ -7,7 +7,7 @@ import type {
   TypeId,
     Position,
 } from '../../types';
-import type { Provide, MapProps } from './draggable-types';
+import type { Provide, MapProps, OwnProps } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
 import KeepVisible from '../keep-visible';
@@ -31,9 +31,9 @@ import {
 
 type DraggableState = {|
   isDragging: boolean
-    |}
+|}
 
-type MapState = (state: DraggableState, ownProps: Object, getDragHandle: Function) => Object;
+type MapState = (state: DraggableState, ownProps: OwnProps, getDragHandle: Function) => Object;
 const empty = {};
 const identity = x => x;
 const noWhere: Position = { x: 0, y: 0 };
@@ -52,7 +52,7 @@ type DispatchProps = {|
 type Props = {
   mapProps: MapProps,
   dispatchProps: DispatchProps,
-  ownProps: any,
+  ownProps: OwnProps,
 }
 
 type ComponentState = {|
@@ -360,7 +360,7 @@ export default (type: TypeId,
 
     const mergeProps = (mapProps: MapProps,
       dispatchProps: DispatchProps,
-      ownProps: any): Props => ({
+      ownProps: OwnProps): Props => ({
         mapProps,
         dispatchProps,
         ownProps,

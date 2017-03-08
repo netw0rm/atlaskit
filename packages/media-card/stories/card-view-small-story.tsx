@@ -3,8 +3,7 @@ import {Component} from 'react';
 import {storiesOf, action} from '@kadira/storybook';
 import {CardViewSmall} from '../src';
 import {tallImage, smallImage, smallTransparentImage, wideImage, wideTransparentImage} from './images';
-import StoryList from './story-list';
-import styles from './styles';
+import {StoryList} from '@atlaskit/media-test-helpers';
 
 const onClick = (event: Event) => {
   action('click')();
@@ -265,10 +264,10 @@ storiesOf('CardViewSmall', {})
     />
   ))
   .add('Different file sizes', () => (
-    <ul style={styles.statesWrapper}>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>File size: B</div>
-        <CardViewSmall
+    <StoryList>
+      {[{
+        title: 'File size: B',
+        content: <CardViewSmall
           loading={false}
           mediaName="nature.png"
           mediaType="image"
@@ -276,10 +275,9 @@ storiesOf('CardViewSmall', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>File size: kB</div>
-        <CardViewSmall
+      }, {
+        title: 'File size: kB',
+        content: <CardViewSmall
           loading={false}
           mediaName="nature.png"
           mediaType="image"
@@ -287,10 +285,9 @@ storiesOf('CardViewSmall', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>File size: MB</div>
-        <CardViewSmall
+      }, {
+        title: 'File size: MB',
+        content: <CardViewSmall
           loading={false}
           mediaName="nature.png"
           mediaType="image"
@@ -298,10 +295,9 @@ storiesOf('CardViewSmall', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>File size: GB</div>
-        <CardViewSmall
+      }, {
+        title: 'File size: GB',
+        content: <CardViewSmall
           loading={false}
           mediaName="nature.png"
           mediaType="image"
@@ -309,8 +305,8 @@ storiesOf('CardViewSmall', {})
           dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-    </ul>
+      }]}
+    </StoryList>
   ))
   .add('Mixed', () => (
     <StoryList>

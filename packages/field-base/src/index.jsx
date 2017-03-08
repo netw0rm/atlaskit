@@ -7,23 +7,23 @@ export { FieldBase, Label };
 export default class extends PureComponent {
   static propTypes = {
     defaultIsDialogOpen: PropTypes.bool,
-    isFocused: PropTypes.bool,
+    defaultIsFocused: PropTypes.bool,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
-    onIconClick: PropTypes.func,
+    onIconMouseDown: PropTypes.func,
   }
 
   static defaultProps = {
     defaultIsDialogOpen: false,
-    isFocused: false,
+    defaultIsFocused: false,
     onFocus: () => {},
     onBlur: () => {},
-    onIconClick: () => {},
+    onIconMouseDown: () => {},
   }
 
   state = {
     isDialogOpen: this.props.defaultIsDialogOpen,
-    isFocused: this.props.isFocused,
+    isFocused: this.props.defaultIsFocused,
   }
 
   onFocus = (e) => {
@@ -36,9 +36,9 @@ export default class extends PureComponent {
     this.props.onBlur(e);
   }
 
-  onIconClick = (e) => {
+  onIconMouseDown = (e) => {
     this.setState({ isDialogOpen: !this.state.isDialogOpen });
-    this.props.onIconClick(e);
+    this.props.onIconMouseDown(e);
   }
 
   render() {
@@ -49,7 +49,7 @@ export default class extends PureComponent {
         isFocused={this.state.isFocused}
         onBlur={this.onBlur}
         onFocus={this.onFocus}
-        onIconClick={this.onIconClick}
+        onIconMouseDown={this.onIconMouseDown}
       />
     );
   }

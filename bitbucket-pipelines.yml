@@ -8,10 +8,12 @@ pipelines:
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             - yarn
-            - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base"
-            #- yarn run browserstack/tunnel/start
-            #- yarn run "test/wc/browserstack"
-            #- yarn run browserstack/tunnel/stop
+            - run-p -ln "validate/package.json" "validate/typescript"
+            - run-p -ln "validate/tslint" "validate/eslint"
+            - run-p -ln "test" "test/base"
+            - yarn run browserstack/tunnel/start
+            - yarn run test/wc/browserstack
+            - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
             - npm run release
@@ -33,8 +35,10 @@ pipelines:
           # we have to run this after `yarn` to have access to child-process-promise
           - ./build/bin/generate.changed.packages.file.pr.sh
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
-          - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base"
-          #- yarn run browserstack/tunnel/start
-          #- yarn run "test/wc/browserstack/pr"
-          #- yarn run browserstack/tunnel/stop
+          - run-p -ln "validate/package.json" "validate/typescript"
+          - run-p -ln "validate/tslint" "validate/eslint"
+          - run-p -ln "test" "test/base"
+          - yarn run browserstack/tunnel/start
+          - yarn run test/wc/browserstack
+          - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"

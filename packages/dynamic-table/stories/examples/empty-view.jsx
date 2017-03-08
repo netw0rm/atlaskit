@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { DynamicTable } from '../../src';
+import { DynamicTable } from '@atlaskit/dynamic-table';
 
 export default class extends PureComponent {
   render() {

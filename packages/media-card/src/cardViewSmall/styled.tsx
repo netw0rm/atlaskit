@@ -6,6 +6,8 @@ import {
   akColorN70
 } from '@atlaskit/util-shared-styles';
 
+const imgSize = 32;
+
 export const transparentFallbackBackground = 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKAQMAAAC3/F3+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAABlBMVEXf39////8zI3BgAAAAEUlEQVQIW2Nk38mIjH5wICMAez4Iyz2C/F8AAAAASUVORK5CYII=")';
 
 export const SmallCard = styled(Root)`
@@ -44,7 +46,7 @@ export const SmallCard = styled(Root)`
     }
 
     .info-wrapper {
-      ${size('100%')}
+      height: 100%;
     }
 
     .img-wrapper {
@@ -76,11 +78,12 @@ export const Retry = styled.div`
 export const ImgWrapper = styled.div`
   ${center()}
   ${borderRadius()}
-  width: 32px;
+  width: ${imgSize}px;
   height: 100%;
   overflow: hidden;
   position: relative;
-    
+  float: left;
+
   &.shadow {
     ${cardShadow()}
   }
@@ -93,7 +96,7 @@ export const ImgWrapper = styled.div`
 
 export const Error = styled.div`
   ${antialiased()}
-  ${ellipsis('calc(100%)')}
+  ${ellipsis('100%')}
   font-weight: bold;
   color: ${akColorN70};
   font-size: 12px;
@@ -102,7 +105,7 @@ export const Error = styled.div`
 
 export const Title = styled.div`
   ${antialiased()}
-  ${ellipsis('calc(100%)')}
+  ${ellipsis('100%')}
   font-weight: bold;
   color: #091E42;
   font-size: 12px;
@@ -123,7 +126,7 @@ export const Size = styled.div`
 export const RoundedBackground = styled.div`
   ${centerX()}
   ${borderRadius()}
-  min-width: 32px;
+  min-width: ${imgSize}px;
   height: inherit;
   overflow: hidden;  
 `;
@@ -132,8 +135,7 @@ export const InfoWrapper = styled.div`
   display: inline-block;
   padding-left: 8px;
   position: relative;
-  max-width: calc(100% - 40px);
-  vertical-align: middle;
+  width: calc(100% - ${imgSize}px);
 `;
 
 export const LoadingWrapper = styled.div`
@@ -144,7 +146,7 @@ export const LoadingWrapper = styled.div`
 `;
 
 export const PlaceholderSmallWrapper = styled.div`
-  ${size(32)}
+  ${size(imgSize)}
   ${center()}
   position: relative;
   

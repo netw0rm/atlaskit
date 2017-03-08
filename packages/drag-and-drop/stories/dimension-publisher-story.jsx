@@ -2,9 +2,11 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { storiesOf, action } from '@kadira/storybook';
-import { DimensionPublisher } from '../src/view/dimension-publisher/';
+import makePublisher from '../src/view/dimension-publisher/make-dimension-publisher';
 
 const publishDimensions = action('publish');
+
+const DimensionPublisher = makePublisher(publishDimensions);
 
 const Child = styled.div`
   width: 100px;

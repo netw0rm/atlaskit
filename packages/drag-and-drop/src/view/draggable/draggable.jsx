@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import invariant from 'invariant';
 import type {
   TypeId,
-  Position,
+    Position,
 } from '../../types';
 import type { Provide, MapProps } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
@@ -31,12 +31,12 @@ import {
 
 type DraggableState = {|
   isDragging: boolean
-|}
+    |}
 
 type MapState = (state: DraggableState, ownProps: Object, getDragHandle: Function) => Object;
 const empty = {};
 const identity = x => x;
-const nowhere: Position = { x: 0, y: 0 };
+const noWhere: Position = { x: 0, y: 0 };
 
 type DispatchProps = {|
   lift: typeof liftAction,
@@ -49,11 +49,11 @@ type DispatchProps = {|
   cancel: typeof cancelAction,
 |}
 
-type Props = MapProps & DispatchProps
-
-type DefaultProps = {|
-  offset: Position
-|}
+type Props = {
+  mapProps: MapProps,
+  dispatchProps: DispatchProps,
+  ownProps: any,
+}
 
 type ComponentState = {|
   wasDragging: boolean,
@@ -106,7 +106,6 @@ export default (type: TypeId,
     class Draggable extends PureComponent {
       /* eslint-disable react/sort-comp */
       props: Props
-      defaultProps: DefaultProps
       state: ComponentState
       getHandle: Function
 
@@ -118,7 +117,7 @@ export default (type: TypeId,
       static displayName = `Draggable(${getDisplayName(Component)})`
 
       static defaultProps = {
-        offset: nowhere,
+        offset: noWhere,
       }
       /* eslint-enable */
 
@@ -137,7 +136,8 @@ export default (type: TypeId,
       }
 
       componentWillReceiveProps(nextProps) {
-        const wasDragging = this.props.isDragging && !nextProps.isDragging;
+        const wasDragging = this.props.mapProps.isDragging &&
+          !nextProps.mapProps.isDragging;
 
         if (this.state.wasDragging !== wasDragging) {
           this.setState({
@@ -147,7 +147,7 @@ export default (type: TypeId,
       }
 
       componentWillUnmount() {
-        console.warn('unmounting draggable', this.props.id);
+        // console.warn('unmounting draggable', this.props.id);
       }
 
       onMoveEnd = () => {
@@ -155,14 +155,18 @@ export default (type: TypeId,
           return;
         }
 
-        const { id, dropFinished } = this.props;
+        const { mapProps: { id }, dispatchProps: { dropFinished } } = this.props;
+
         dropFinished(id);
       }
 
       onLift = (selection: Position) => {
         invariant(this.state.ref, 'cannot move an item that is not in the DOM');
 
-        const { id, isDragEnabled, lift } = this.props;
+        const {
+          mapProps: { id, isDragEnabled },
+          dispatchProps: { lift },
+        } = this.props;
 
         if (isDragEnabled === false) {
           return;
@@ -177,7 +181,10 @@ export default (type: TypeId,
       onKeyLift = () => {
         invariant(this.state.ref, 'cannot move an item that is not in the DOM');
 
-        const { id, isDragEnabled, lift } = this.props;
+        const {
+          mapProps: { id, isDragEnabled },
+          dispatchProps: { lift },
+        } = this.props;
 
         if (isDragEnabled === false) {
           return;
@@ -191,7 +198,10 @@ export default (type: TypeId,
       }
 
       onMove = (point: Position) => {
-        const { id, isDragEnabled, initial, move } = this.props;
+        const {
+          mapProps: { id, isDragEnabled, initial },
+          dispatchProps: { move },
+        } = this.props;
 
         if (isDragEnabled === false) {
           throw new Error('need to cancel the current drag');
@@ -227,25 +237,37 @@ export default (type: TypeId,
       }
 
       onMoveForward = () => {
-        const { id, moveForward } = this.props;
+        const {
+          mapProps: { id },
+          dispatchProps: { moveForward },
+        } = this.props;
 
         moveForward(id);
       }
 
       onMoveBackward = () => {
-        const { id, moveBackward } = this.props;
+        const {
+          mapProps: { id },
+          dispatchProps: { moveBackward },
+         } = this.props;
 
         moveBackward(id);
       }
 
       onDrop = () => {
-        const { id, drop } = this.props;
+        const {
+          mapProps: { id },
+          dispatchProps: { drop },
+         } = this.props;
 
         drop(id);
       }
 
       onCancel = () => {
-        const { id, cancel } = this.props;
+        const {
+          mapProps: { id },
+          dispatchProps: { cancel },
+         } = this.props;
 
         cancel(id);
       }
@@ -258,8 +280,17 @@ export default (type: TypeId,
       }
 
       render() {
-        console.log('rendering draggable', this.props.id);
-        const handle = this.getHandle(this.props.isDragEnabled);
+        const { mapProps, ownProps } = this.props;
+
+        console.log('rendering draggable', mapProps.id);
+
+        const movement: Movement = getMovement(
+          mapProps.isDragging,
+          this.state.wasDragging,
+          mapProps.canAnimate
+        );
+
+        const handle = this.getHandle(mapProps.isDragEnabled);
 
         const requestDragHandle = () => {
           requestDragHandle.wasCalled = true;
@@ -267,45 +298,38 @@ export default (type: TypeId,
         };
 
         const snapshot: DraggableState = {
-          isDragging: this.props.isDragging,
+          isDragging: mapProps.isDragging,
         };
 
-        const additionalProps = map(snapshot, this.props, requestDragHandle);
+        const additionalProps = map(snapshot, ownProps, requestDragHandle);
 
-        // TODO: clear draggable props
-        const props = {
-          ...this.props,
+        const enhancedOwnProps = {
+          ...ownProps,
           ...additionalProps,
         };
 
         // if a drag handle was not request then the whole thing is the handle
         const wrap = requestDragHandle.wasCalled ? identity : handle;
 
-        const movement: Movement = getMovement(
-          this.props.isDragging,
-          this.state.wasDragging,
-          this.props.canAnimate
-        );
-
         return (
           <Moveable
             speed={movement.speed}
             zIndex={movement.zIndex}
-            destination={this.props.offset}
+            destination={mapProps.offset}
             onMoveEnd={this.onMoveEnd}
             innerRef={this.setRef}
           >
             {wrap(
               <DraggableDimensionPublisher
-                itemId={this.props.id}
+                itemId={mapProps.id}
                 type={type}
                 outerRef={this.state.ref}
               >
-                <KeepVisible itemId={this.props.id}>
+                <KeepVisible itemId={mapProps.id}>
                   <Container
-                    isDragging={this.props.isDragging}
+                    isDragging={mapProps.isDragging}
                   >
-                    <Component {...props} />
+                    <Component {...enhancedOwnProps} />
                   </Container>
                 </KeepVisible>
               </DraggableDimensionPublisher>
@@ -334,5 +358,13 @@ export default (type: TypeId,
       return mapStateToProps;
     };
 
-    return connect(makeMapStateToProps, mapDispatchToProps, null, { storeKey })(Draggable);
+    const mergeProps = (mapProps: MapProps,
+      dispatchProps: DispatchProps,
+      ownProps: any): Props => ({
+        mapProps,
+        dispatchProps,
+        ownProps,
+      });
+
+    return connect(makeMapStateToProps, mapDispatchToProps, mergeProps, { storeKey })(Draggable);
   };

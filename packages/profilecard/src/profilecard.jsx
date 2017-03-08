@@ -7,6 +7,8 @@ import styles from 'style!./styles/profilecard.less';
 import LoadingMessage from './components/LoadingMessage';
 import ErrorMessage from './components/ErrorMessage';
 
+import HeightTransition from './components/HeightAnimationWrapper';
+
 import IconLabel from './components/IconLabel';
 import presences from './internal/presences';
 
@@ -31,24 +33,6 @@ export default class Profilecard extends PureComponent {
   static defaultProps = {
     presence: 'none',
     actions: [],
-  }
-
-  constructor() {
-    super();
-
-    this.state = {
-      height: 'auto',
-    };
-  }
-
-  componentDidUpdate() {
-    this.getRefHeight();
-  }
-
-  getRefHeight() {
-    this.setState({
-      height: this.ref ? this.ref.children[0].offsetHeight : 'auto',
-    });
   }
 
   render() {
@@ -79,14 +63,16 @@ export default class Profilecard extends PureComponent {
             <AkAvatar size="xlarge" src={this.props.avatarUrl} />
           </div>
           <div className={styles.detailsWrapper}>
-            <span className={styles.detailsFullname}>{this.props.fullName}</span>
-            { this.props.meta && (<span className={styles.detailsMeta}>{this.props.meta}</span>) }
-            <IconLabel className={styles.presence} icon={this.props.presence}>
-              {presences[this.props.presence]}
-            </IconLabel>
-            <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
-            <IconLabel icon="time">{this.props.timestring}</IconLabel>
-            <IconLabel icon="location">{this.props.location}</IconLabel>
+            <div className={styles.detailsGroup}>
+              <span className={styles.detailsFullname}>{this.props.fullName}</span>
+              { this.props.meta && (<span className={styles.detailsMeta}>{this.props.meta}</span>) }
+              <IconLabel className={styles.presence} icon={this.props.presence}>
+                {presences[this.props.presence]}
+              </IconLabel>
+              <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
+              <IconLabel icon="time">{this.props.timestring}</IconLabel>
+              <IconLabel icon="location">{this.props.location}</IconLabel>
+            </div>
             <div className={styles.actionsFlexSpacer} />
             <div className={styles.actionsWrapper}>
               {actions}
@@ -96,18 +82,10 @@ export default class Profilecard extends PureComponent {
       );
     }
 
-    const inlineStyles = {
-      height: this.state.height,
-    };
-
     return (
-      <div
-        className={styles.cardAnimationWrapper}
-        style={inlineStyles}
-        ref={ref => (this.ref = ref)}
-      >
+      <HeightTransition>
         {profilecard}
-      </div>
+      </HeightTransition>
     );
   }
 }

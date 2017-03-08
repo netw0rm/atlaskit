@@ -9,18 +9,17 @@ import {
   TextSelection,
 } from '../../prosemirror';
 import * as commands from '../../commands';
+import inputRule from './input-rule';
 
 export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
 export type StateChangeHandler = (state: HyperlinkState) => any;
 export interface HyperlinkOptions {
   href: string;
 }
-
 interface NodeInfo {
   node: Node;
   startPos: number;
 }
-
 
 export class HyperlinkState {
   // public state
@@ -168,6 +167,17 @@ export class HyperlinkState {
 }
 const stateKey = new PluginKey('hypelinkPlugin');
 
+function reconfigure(view: EditorView): void {
+  const { state } = view;
+  const plugins = state.plugins.concat([inputRule]);
+  const newState = state.reconfigure({
+    schema: state.schema,
+    plugins: plugins
+  });
+
+  view.updateState(newState);
+}
+
 const plugin = new Plugin({
   state: {
     init(config, state: EditorState<any>) {
@@ -180,6 +190,11 @@ const plugin = new Plugin({
   key: stateKey,
   view: (view: EditorView) => {
     stateKey.getState(view.state).update(view.state, view.docView, true);
+    const plugins = view.state.plugins;
+    if (plugins.indexOf(inputRule) === -1) {
+      reconfigure(view);
+    }
+
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
         const pluginState = stateKey.getState(view.state);

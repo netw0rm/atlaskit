@@ -1,15 +1,10 @@
-import { InputRule, ProseMirror } from '../../prosemirror';
-import { URL } from './regex';
+import { URL_REGEX } from './url-regex';
+import { InputRule, inputRules} from '../../prosemirror';
 
-const urlAtEndOfLine = new RegExp(`${URL.source}$`);
+const urlAtEndOfLine = new RegExp(`${URL_REGEX.source}$`);
 
-export default new InputRule(urlAtEndOfLine, '', (
-  pm: ProseMirror,
-  match: string[],
-  to: number
-) : boolean => {
-  const { schema } = pm;
-  const from = to - match[1].length;
+const inputRule = new InputRule(urlAtEndOfLine, (state, match, start, end) => {
+  const { schema } = state;
   const url = match[3] ? match[1] : `http://${match[1]}`;
 
   const markType = schema.mark(
@@ -19,16 +14,14 @@ export default new InputRule(urlAtEndOfLine, '', (
     }
   );
 
-  pm.tr.replaceWith(
-    from,
-    to,
+  return state.tr.replaceWith(
+    start,
+    end,
     schema.text(
       match[1],
       [markType]
     )
-  ).apply();
-
-  pm.removeActiveMark(markType.type);
-
-  return true;
+  );
 });
+
+export default inputRules({ rules: [inputRule] });

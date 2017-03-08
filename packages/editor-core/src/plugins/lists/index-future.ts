@@ -4,6 +4,7 @@ import {
   findWrapping,
   NodeSelection,
   Plugin,
+  PluginKey,
 } from '../../prosemirror';
 import {
   findAncestorPosition,
@@ -119,6 +120,8 @@ bindKeymap([keymaps.splitListItem.common!], commands.splitListItem());
 bindKeymap([keymaps.findShortcutByKeymap(keymaps.toggleOrderedList) !], commands.toggleOrderedList());
 bindKeymap([keymaps.findShortcutByKeymap(keymaps.toggleBulletList) !], commands.toggleBulletList());
 
+export const stateKey = new PluginKey('listsPlugin');
+
 const plugin = new Plugin({
   state: {
     init(config, state: EditorState<any>) {
@@ -128,7 +131,8 @@ const plugin = new Plugin({
       pluginState.update(newState);
       return pluginState;
     }
-  }
+  },
+  key: stateKey,
 });
 
 export default plugin;

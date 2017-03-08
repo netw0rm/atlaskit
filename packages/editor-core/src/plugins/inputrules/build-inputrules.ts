@@ -17,9 +17,9 @@ function replaceWithText(start: number, end: number, content: string, marks: Arr
   return tr.replaceWith(start, end, Fragment.from(schema.text(content, marks)));
 }
 
-const rules: Array<InputRule> = [];
-
 function buildInputRules(schema: Schema<any, any>): Array<InputRule> {
+  const rules: Array<InputRule> = [];
+
   if (schema.marks.strong) {
     // **string** and __string__ should bold the text
     rules.push(new InputRule(/(?:^|\s)(?:\*\*([^\*]+)\*\*)$/, addMark(schema.marks.strong, schema)));
@@ -76,31 +76,6 @@ function buildInputRules(schema: Schema<any, any>): Array<InputRule> {
     // '---' for hr
     rules.push(new InputRule(/^\-\-\-$/, (state, match, start, end) => {
       return state.tr.replaceWith(start, end, Fragment.from(schema.nodes.horizontalRule.create()));
-    }));
-  }
-
-
-  if (schema.marks.link) {
-    const urlAtEndOfLine = new RegExp(`${URL_REGEX.source}$`);
-    rules.push(new InputRule(urlAtEndOfLine, (state, match, start, end) => {
-      const { schema } = state;
-      const url = match[3] ? match[1] : `http://${match[1]}`;
-
-      const markType = schema.mark(
-        'link',
-        {
-          href: url,
-        }
-      );
-
-      return state.tr.replaceWith(
-        start,
-        end,
-        schema.text(
-          match[1],
-          [markType]
-        )
-      );
     }));
   }
 

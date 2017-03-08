@@ -3,6 +3,7 @@ import {
   EditorView,
   Node,
   Plugin,
+  PluginKey,
 } from '../../prosemirror';
 import { ContextName } from '../../';
 import {
@@ -226,6 +227,8 @@ ALL_BLOCK_TYPES.forEach((blockType) => {
   }
 });
 
+export const stateKey = new PluginKey('blockTypePlugin');
+
 const plugin = new Plugin({
   state: {
     init(config, state: EditorState<any>) {
@@ -235,7 +238,8 @@ const plugin = new Plugin({
       pluginState.update(newState);
       return pluginState;
     }
-  }
+  },
+  key: stateKey
 });
 
 export default plugin;

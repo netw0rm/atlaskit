@@ -1,4 +1,4 @@
-import { MarkType, NodeType as _NodeType, Schema, Text } from '../prosemirror';
+import { MarkType, NodeType as _NodeType, Schema, Text } from '../../';
 
 type AnyObject = { [key: string]: any };
 
@@ -37,9 +37,9 @@ function createMarkDef(schema: Schema, name: string) {
   const definition: AnyObject = {
     type: 'object',
     properties: {
-      _: { 'enum': [name] },
+      type: { 'enum': [name] },
     },
-    required: ['_'],
+    required: ['type'],
     additionalProperties: false,
   };
 

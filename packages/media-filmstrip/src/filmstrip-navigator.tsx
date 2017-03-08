@@ -53,6 +53,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   private numOfCards: number;
   private cardWidth: number;
   private listElement: HTMLElement;
+  private unmounted: boolean;
 
   constructor(props) {
     super(props);
@@ -60,16 +61,18 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
       showLeft: false,
       showRight: false,
       position: 0,
-      showTransition: true,
+      showTransition: false,
       transitionDuration: 0
     };
   }
 
   componentDidMount() {
+    this.unmounted = false;
     window.addEventListener('resize', this.onWindowResize);
   }
 
   componentWillUnmount() {
+    this.unmounted = true;
     window.removeEventListener('resize', this.onWindowResize);
   }
 
@@ -138,7 +141,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
       this.cardWidth = 0;
     }
 
-    this.setNewPosition(0, this.state.showTransition);
+    !this.unmounted && this.setNewPosition(0, this.state.showTransition);
   }
 
   private onScroll = (e: WheelEvent<HTMLDivElement>) => {

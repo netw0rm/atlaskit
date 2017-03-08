@@ -8,11 +8,14 @@ import 'rxjs/add/observable/fromPromise';
 
 import {LinkCardViewHorizontal} from '..';
 
+interface LinkFromId {
+  readonly id: string;
+  readonly collection: string;
+}
+
 export interface LinkCardProps {
-  // TODO add link id to interface and use link data provider when supplied else use url preview provider
-  // this implies that linkUrl will be optional
   readonly context: Context;
-  readonly linkUrl: string;
+  readonly link: string | LinkFromId;
 
   readonly height?: number;
   readonly width?: number;
@@ -61,39 +64,29 @@ export class LinkCard extends Component <LinkCardProps, LinkCardState> {
   }
 
   private updateState(props: LinkCardProps): void {
+    const isLinkFromId = (link) => (link as LinkFromId).id !== undefined;
+    const isLinkItem = (item) => (item as LinkItem).details !== undefined;
+
     this.unsubscribe();
 
-    const {context, linkUrl} = this.props;
-
-    const urlPreviewProvider = context.getUrlPreviewProvider(linkUrl);
-    const provider = urlPreviewProvider.observable();
+    const {context, link} = this.props;
+    const provider: {subscribe: Function} = isLinkFromId(link)
+      ? context.getMediaItemProvider((link as LinkFromId).id, 'link', (link as LinkFromId).collection).observable()
+      : context.getUrlPreviewProvider(link as string).observable();
 
     this.setPartialState({loading: true});
 
     this.setPartialState({
       subscription: provider.subscribe({
-        next: (urlPreview) => {
-          const linkItem: LinkItem = {
-            type: 'link',
-            details: {id: '', ...urlPreview}
-          };
-
-          this.setPartialState({
-            linkItem: linkItem,
-            error: undefined,
-            loading: false
-          });
+        next: (result) => {
+          const linkItem: LinkItem = isLinkItem(result) ? result : {type: 'link', details: {...result}};
+          this.setPartialState({linkItem: linkItem, error: undefined, loading: false});
         },
         complete: () => {
-          this.setPartialState({
-            loading: false
-          });
+          this.setPartialState({loading: false});
         },
         error: (error) => {
-          this.setPartialState({
-            error: error,
-            loading: false
-          });
+          this.setPartialState({error, loading: false});
         }
       })
     });
@@ -120,15 +113,15 @@ export class LinkCard extends Component <LinkCardProps, LinkCardState> {
 
   renderLink(linkDetails: LinkDetails): JSX.Element {
     const {url, title, description, resources} = linkDetails;
-    const {icon, thumbnail} = resources;
+    const icon = resources ? resources.icon : undefined;
+    const thumbnail = resources ? resources.icon : undefined;
 
     const {height, width, menuActions} = this.props;
     const {loading} = this.state;
 
     return <LinkCardViewHorizontal
       linkUrl={url}
-      // fix URLPreview type to make title required
-      title={title || ''}
+      title={title}
 
       description={description}
       thumbnailUrl={thumbnail && thumbnail.url}

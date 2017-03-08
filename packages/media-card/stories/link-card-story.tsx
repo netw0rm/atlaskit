@@ -26,14 +26,31 @@ const annotateAction = {
 };
 
 storiesOf('LinkCard', {})
-  .add('Card', () => {
+  .add('From url string', () => {
     const linkCardViewHorizontals = [
       {
         title: 'Only required props',
         content: (
           <LinkCard
             context={context}
-            linkUrl="https://atlassian.com"
+            link="https://atlassian.com"
+          />
+        )
+      }
+    ];
+
+    return <StoryList>{linkCardViewHorizontals}</StoryList>;
+  })
+  .add('From link and collection id', () => {
+    const linkFromId = {id: 'e2365f30-1e08-4259-9372-56247303d1ec', collection: 'MediaServicesSample'};
+
+    const linkCardViewHorizontals = [
+      {
+        title: 'Only required props',
+        content: (
+          <LinkCard
+            context={context}
+            link={linkFromId}
           />
         )
       }

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-core",
-  "version": "1.2.0",
+  "version": "1.9.0",
   "config": {
     "access": "public"
   },
@@ -33,10 +33,11 @@
     "rxjs": "^5.1.0"
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "tslib": "^1.2.0",
     "lru-fast": "^0.2.2"
   },
   "devDependencies": {
-    "axios": "^0.15.3"
+    "@atlaskit/media-test-helpers": "^1.0.0"
   }
 }

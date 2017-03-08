@@ -6,19 +6,24 @@ export { FieldBase, Label };
 
 export default class extends PureComponent {
   static propTypes = {
-    isFocused: PropTypes.bool,
+    defaultIsDialogOpen: PropTypes.bool,
+    defaultIsFocused: PropTypes.bool,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
+    onIconMouseDown: PropTypes.func,
   }
 
   static defaultProps = {
-    isFocused: false,
+    defaultIsDialogOpen: false,
+    defaultIsFocused: false,
     onFocus: () => {},
     onBlur: () => {},
+    onIconMouseDown: () => {},
   }
 
   state = {
-    isFocused: this.props.isFocused,
+    isDialogOpen: this.props.defaultIsDialogOpen,
+    isFocused: this.props.defaultIsFocused,
   }
 
   onFocus = (e) => {
@@ -31,13 +36,20 @@ export default class extends PureComponent {
     this.props.onBlur(e);
   }
 
+  onIconMouseDown = (e) => {
+    this.setState({ isDialogOpen: !this.state.isDialogOpen });
+    this.props.onIconMouseDown(e);
+  }
+
   render() {
     return (
       <FieldBase
         {...this.props}
+        isDialogOpen={this.state.isDialogOpen}
         isFocused={this.state.isFocused}
         onBlur={this.onBlur}
         onFocus={this.onFocus}
+        onIconMouseDown={this.onIconMouseDown}
       />
     );
   }

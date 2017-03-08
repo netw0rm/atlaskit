@@ -1,4 +1,4 @@
-import { akEditorPopupBackground } from 'ak-editor-shared-styles';
+import { akEditorPopupBackground } from '@atlaskit/editor-shared-styles';
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 

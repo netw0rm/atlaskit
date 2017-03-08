@@ -16,15 +16,16 @@ export const HomeIconContainer = styled.div`
 `;
 
 export const Item = styled.div`
-  max-width: 350px;
-  min-width: 150px;
+  line-height: 1.2;
+  max-width: 225px;
+  min-width: 208px;
   
   ${ellipsis}
 `;
 
 export const ItemWithIcon = styled.div`
-  max-width: 300px;
-  min-width: 150px;
+  max-width: 177px;
+  min-width: 160px;
   
   ${ellipsis}
 `;
@@ -47,10 +48,11 @@ export const RecentContainerType = styled.div`
   color: ${akColorN100}
   font-size: 10px;
   line-height: 1.6;
-  padding-top: 2px;
 `;
 
 export const RecentContainerName = styled.div`
+  line-height: 1.2;
+
   ${ellipsis}
 `;
 

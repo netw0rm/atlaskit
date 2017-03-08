@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {Placeholder} from '../generic/placeholder/placeholder';
 import {MediaType} from '@atlaskit/media-core';
 import FileIcon from '@atlaskit/icon/glyph/file';
-import {LoadingWrapper, FadeinImage} from './styled';
+import {LoadingWrapper} from './styled';
+import {FadeinImage} from '../styles/base';
 
 export interface CardContentProps {
   mediaType?: MediaType;
@@ -24,7 +24,7 @@ export class CardContent extends Component<CardContentProps, {}> {
                <img alt="" src={this.props.dataURI} />
              </FadeinImage>;
     } else {
-      return <Placeholder mediaType={this.props.mediaType} />;
+      return null;
     }
   }
 }

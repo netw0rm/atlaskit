@@ -1,4 +1,4 @@
-import { markFactory, nodeFactory } from '@atlaskit/editor-core/test-helper';
+import { markFactory, nodeFactory } from '@atlaskit/editor-core/src/test-helper';
 import { Node } from '@atlaskit/editor-core';
 import { JIRASchemaWithLists, makeSchema } from '../../src/schema';
 import { encode } from '../../src/html';

@@ -1,6 +1,6 @@
 import {
   akEditorSubtleAccent,
-} from 'ak-editor-shared-styles';
+} from '@atlaskit/editor-shared-styles';
 import {
   akBorderRadius,
   akColorN50

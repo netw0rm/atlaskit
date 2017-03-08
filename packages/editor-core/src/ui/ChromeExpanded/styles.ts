@@ -1,4 +1,4 @@
-import { akEditorSubtleAccent } from 'ak-editor-shared-styles';
+import { akEditorSubtleAccent } from '@atlaskit/editor-shared-styles';
 import { akBorderRadius, akGridSize } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 
@@ -66,7 +66,7 @@ export const toolbar = style({
     '& > *': {
       alignItems: 'center',
       display: 'flex',
-      marginLeft: '10px',
+      marginLeft: 4,
 
       $nest: {
         '&:first-child': {

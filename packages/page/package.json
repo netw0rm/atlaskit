@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/page",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "config": {
     "access": "public"
   },
@@ -39,7 +39,7 @@
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/button-group": "^1.0.0",
     "@atlaskit/comment": "^1.0.0",
-    "@atlaskit/navigation": "^1.2.2",
+    "@atlaskit/navigation": "^4.1.0",
     "@atlaskit/page": "*",
     "@atlaskit/toggle": "^1.0.1",
     "@atlaskit/util-readme": "^1.0.0",

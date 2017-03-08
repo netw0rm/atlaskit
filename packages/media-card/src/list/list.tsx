@@ -1,7 +1,8 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
 import { Component } from 'react';
-import { Card, DEFAULT_CARD_DIMENSIONS  } from '..';
+import { Card } from '../card/card';
+import { DEFAULT_CARD_DIMENSIONS } from '../cardView/cardView';
 import { MediaItem, MediaCollection, MediaCollectionItem, Context, CardAction, ListAction } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs/Subscription';
 import {CardListWrapper, Spinner, LoadMoreButtonContainer} from './styled';

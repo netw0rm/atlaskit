@@ -1,5 +1,5 @@
 import { blockQuoteRule, Fragment, headingRule, InputRule, Mark, MarkType, Schema, Transaction } from '../../prosemirror';
-import { analyticsService} from '../../analytics';
+import { analyticsService } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 
 function addMark(markType: MarkType, schema: Schema<any, any>): Function {
@@ -78,7 +78,34 @@ function buildInputRules(schema: Schema<any, any>): Array<InputRule> {
     }));
   }
 
+
+  if (schema.marks.link) {
+    const urlAtEndOfLine = new RegExp(`${URL_REGEX.source}$`);
+    rules.push(new InputRule(urlAtEndOfLine, (state, match, start, end) => {
+      const { schema } = state;
+      const url = match[3] ? match[1] : `http://${match[1]}`;
+
+      const markType = schema.mark(
+        'link',
+        {
+          href: url,
+        }
+      );
+
+      return state.tr.replaceWith(
+        start,
+        end,
+        schema.text(
+          match[1],
+          [markType]
+        )
+      );
+    }));
+  }
+
   return rules;
 }
+
+export const URL_REGEX = /\b(((https?|ftp):\/\/|(www\.))[a-zA-Z\u00a1-\uffff0-9\.\$\-_\+!\*',\/\?:@=&%#~;]+)/;
 
 export default buildInputRules;

@@ -52,7 +52,7 @@ export interface MentionsResult {
 export interface MentionResourceConfig {
   /** the base url of the mentions service */
   url: string;
-  securityProvider: SecurityProvider;
+  securityProvider?: SecurityProvider;
   containerId?: string;
   productId?: string;
   refreshedSecurityProvider?: RefreshSecurityProvider;
@@ -73,6 +73,13 @@ export interface MentionProvider extends ResourceProvider<Mention[]> {
 export interface PresenceProvider extends ResourceProvider<PresenceUpdate> {
   refreshPresence(arrayOfIds: string[]): void;
 }
+
+const emptySecurityProvider = () => {
+  return {
+    params: {},
+    headers: {},
+  };
+};
 
 const buildUrl = (baseUrl: string, path: string | undefined, data: KeyValues, secOptions: SecurityOptions) => {
   const searchParam = new URLSearchParams();
@@ -272,14 +279,6 @@ class MentionResource extends AbstractMentionResource {
 
     this.config = config;
     this.lastReturnedSearch = 0;
-
-    // Create a default 'no-headers' security provider if none is provided
-    if (!this.config.securityProvider) {
-      this.config.securityProvider = () => ({
-        params: {},
-        headers: {}
-      });
-    }
   }
 
   shouldHighlightMention(mention: Mention) {
@@ -321,7 +320,7 @@ class MentionResource extends AbstractMentionResource {
    * @returns Promise
    */
   private initialState(): Promise<MentionsResult> {
-    const secOptions = this.config.securityProvider();
+    const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data: KeyValues = {};
     const options: KeyValues = {};
@@ -338,7 +337,7 @@ class MentionResource extends AbstractMentionResource {
   }
 
   private search(query: string): Promise<MentionsResult> {
-    const secOptions = this.config.securityProvider();
+    const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data = {
       query,
@@ -356,7 +355,7 @@ class MentionResource extends AbstractMentionResource {
   }
 
   private recordSelection(mention: Mention): Promise<void> {
-    const secOptions = this.config.securityProvider();
+    const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data = {
       selectedUserId: mention.id,

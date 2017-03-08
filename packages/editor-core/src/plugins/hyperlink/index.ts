@@ -7,9 +7,7 @@ import {
   PluginKey,
   NodeViewDesc,
   TextSelection,
-  Transaction
 } from '../../prosemirror';
-import { URL } from './regex';
 import * as commands from '../../commands';
 
 export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
@@ -33,7 +31,6 @@ export class HyperlinkState {
   element?: HTMLElement;
 
   private changeHandlers: StateChangeHandler[] = [];
-  // private inputRules: InputRule[] = [];
   private state: EditorState<any>;
   private activeLinkNode?: Node;
   private activeLinkMark?: Mark;
@@ -42,11 +39,6 @@ export class HyperlinkState {
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
     this.state = state;
-
-    // this.inputRules = [hyperlinkRule];
-
-    // const rules = inputRules.ensure(state);
-    // this.inputRules.forEach(rule => rules.addRule(rule));
   }
 
   subscribe(cb: HyperlinkStateSubscriber) {
@@ -123,42 +115,6 @@ export class HyperlinkState {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
-  autoformattingLink(view: EditorView, text: string): boolean {
-    const urlAtEndOfLine = new RegExp(`${URL.source}$`);
-    const { $from, $to } = view.state.selection;
-    let textBefore = $from.parent.textBetween(0, $from.parentOffset, undefined, '\ufffc') + text;
-    let match = urlAtEndOfLine.exec(textBefore);
-
-    if (match) {
-      const { schema } = view.state;
-      const start = $from.pos - match[1].length;
-      const end = $to.pos;
-      const url = match[3] ? match[1] : `http://${match[1]}`;
-
-      const markType = schema.mark(
-        'link',
-        {
-          href: url,
-        }
-      );
-
-      view.dispatch(view.state.tr.replaceWith(
-        start,
-        end,
-        schema.text(
-          match[1],
-          [markType]
-        )
-      ));
-
-      return true;
-
-    }
-
-    return false;
-
-  }
-
   private getActiveLinkNodeInfo(): NodeInfo | undefined {
     const { state } = this;
     const { link } = state.schema.marks;
@@ -230,11 +186,6 @@ const plugin = new Plugin({
         pluginState.update(view.state, view.docView);
       }
     };
-  },
-  props: {
-    handleTextInput(view, from, to, text) {
-      return stateKey.getState(view.state).autoformattingLink(view, text);
-    }
   }
 });
 

@@ -99,7 +99,7 @@ storiesOf(name, module)
           isSelected
           textAfter={<RandomBadge theme="dark" />}
         />
-        <AkContainerItemGroup separator appearance="global">
+        <AkContainerItemGroup hasSeparator appearance="global">
           <AkContainerItem
             appearance="global"
             isSelected
@@ -140,14 +140,12 @@ storiesOf(name, module)
             appearance="global"
             icon={<TrayIcon label="Tray" />}
             text="Item C"
-            isSelected
             textAfter={<RandomBadge theme="dark" />}
           />
         </AkContainerItemGroup>
-        <AkContainerItemGroup separator appearance="global">
+        <AkContainerItemGroup hasSeparator appearance="global">
           <AkContainerItem
             appearance="global"
-            isSelected
             icon={<CalendarIcon label="Calendar" />}
             subText="And a very long second line of text"
             text="A very long first line of text"

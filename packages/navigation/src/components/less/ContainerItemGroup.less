@@ -2,6 +2,9 @@
 @import '~@atlaskit/util-shared-styles/src/mixins/focus-ring.less';
 @import '../../shared-variables.less';
 
+@divider-line-height: 2px;
+@divider-total-height: @ak-grid-size * 5;
+
 .header {
   display: flex;
   margin-bottom: @ak-grid-size;
@@ -40,9 +43,9 @@
 }
 
 .separator {
-  margin-top: @ak-grid-size * 2.25;
-  margin-bottom: @ak-grid-size * 2.25;
-  height: 2px;
+  margin-top: (@divider-total-height - @divider-line-height) / 2;
+  margin-bottom: (@divider-total-height - @divider-line-height) / 2;
+  height: @divider-line-height;
   background: @ak-color-N20A;
 
   &.hasGlobalAppearance {

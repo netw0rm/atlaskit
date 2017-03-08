@@ -198,6 +198,8 @@ export default (type: TypeId,
       }
 
       onMove = (point: Position) => {
+        invariant(this.state.ref, 'cannot move when there is no ref');
+
         const {
           mapProps: { id, isDragEnabled, initial },
           dispatchProps: { move },

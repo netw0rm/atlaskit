@@ -15,17 +15,16 @@ export default (dimension: Dimension,
     bottom: (dimension.bottom + offset.y + initialScroll.y),
     left: (dimension.left + offset.x + initialScroll.x),
     right: (dimension.right + offset.x + initialScroll.x),
-  }
+  };
 
   const viewport = {
     top: window.pageYOffset,
     bottom: window.innerHeight + window.pageYOffset,
     left: window.pageXOffset,
-    right: window.innerWidth + window.pageXOffset
-  }
+    right: window.innerWidth + window.pageXOffset,
+  };
 
   // how invisible?
-
 
   const isVisible = node.top > viewport.top &&
     node.bottom < viewport.bottom &&
@@ -49,10 +48,10 @@ export default (dimension: Dimension,
     }
 
     return 0;
-  })()
+  })();
 
   return {
     x: 0,
-    y
-  }
-}
+    y,
+  };
+};

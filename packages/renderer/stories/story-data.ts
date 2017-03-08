@@ -37,10 +37,37 @@ export const document = {
         },
         {
           type: 'text',
-          text: 'italic text!',
+          text: 'italic ',
           marks: [
             {
               type: 'em'
+            }
+          ]
+        },
+        {
+          type: 'text',
+          text: ', strong ',
+          marks: [
+            {
+              type: 'em'
+            },
+            {
+              type: 'strong'
+            }
+          ]
+        },
+        {
+          type: 'text',
+          text: 'and underlined text!',
+          marks: [
+            {
+              type: 'em'
+            },
+            {
+              type: 'strong'
+            },
+            {
+              type: 'underline'
             }
           ]
         }

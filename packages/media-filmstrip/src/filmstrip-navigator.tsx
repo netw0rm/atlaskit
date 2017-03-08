@@ -145,10 +145,10 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   }
 
   private onScroll = (e: WheelEvent<HTMLDivElement>) => {
-    e.preventDefault();
     const isHorizontalScroll = Math.abs(e.deltaX) > Math.abs(e.deltaY);
     if (!isHorizontalScroll) { return; }
 
+    e.preventDefault();
     const showTransition = false;
     this.updateState({showTransition});
     this.setNewPosition(this.state.position + e.deltaX, showTransition);

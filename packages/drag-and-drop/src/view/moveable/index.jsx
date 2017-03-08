@@ -9,7 +9,7 @@ export type Speed = 'NONE' | 'STANDARD' | 'FAST';
 
 type PositionLike = {|
   x: any,
-    y: any,
+  y: any,
 |};
 
 const isAtOrigin = (point: PositionLike): boolean =>

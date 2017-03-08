@@ -41,7 +41,8 @@ const positionMove = (isMovingFoward: boolean, state: State): State => {
     return state;
   }
 
-  const nextDimension: Dimension = insideDroppable[isMovingFoward ? currentIndex + 1 : currentIndex - 1];
+  const nextDimension: Dimension =
+    insideDroppable[isMovingFoward ? currentIndex + 1 : currentIndex - 1];
 
   // move down 1/2 height of next dimension
   const amount: number = (draggableDimension.height / 2) + (nextDimension.height / 2);
@@ -60,6 +61,7 @@ const positionMove = (isMovingFoward: boolean, state: State): State => {
     y: previous.dragging.initial.center.y + offset.y,
   };
 
+  // $FlowFixMe
   const dragging: Dragging = {
     ...previous.dragging,
     shouldAnimate: true,

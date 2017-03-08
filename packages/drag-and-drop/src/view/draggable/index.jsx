@@ -62,7 +62,6 @@ type ComponentState = {|
   ref: ?Element
 |}
 
-// user-select: ${props => (props.isDragging ? 'none' : 'auto')};
 const Container = styled.div`
   user-select: none;
 `;

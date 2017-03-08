@@ -35,8 +35,8 @@ type ComponentState = {|
 |}
 
 const Container = styled.div`
-  user-select: ${props => props.isDraggingOver ? 'none' : 'auto' };
-`
+  user-select: ${props => props.isDraggingOver ? 'none' : 'auto'};
+`;
 
 export default (type: TypeId,
   provide: Provide,

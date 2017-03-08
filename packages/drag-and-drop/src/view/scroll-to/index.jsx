@@ -1,13 +1,15 @@
 // @flow
-import React, { PureComponent } from 'react';
-import invariant from 'invariant';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import type { State, CurrentDrag, Position, DraggableId, Dimension, DimensionMap } from '../../types';
 import { currentDragSelector, draggableDimensionsSelector } from '../../state/selectors';
 import getScrollPosition from '../get-scroll-position';
-import isVisible from '../is-visible';
+import getVisibilityOffset from '../is-visible';
 import storeKey from '../../state/get-store-key';
+
+const isEmpty = (point: Position): boolean =>
+  point.x === 0 && point.y === 0;
 
 type ConnectedProps = {|
   itemId: DraggableId,
@@ -22,14 +24,14 @@ type Props = {
   children?: React$Element<any>,
 } & ConnectedProps & MapProps;
 
-const scrollBy = 2.5;
+const additionalScrollMultiplier = 2;
 
-class ScrollTo extends PureComponent {
+class KeepVisible extends PureComponent {
   /* eslint-disable react/sort-comp */
   props: Props
   /* eslint-enable */
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate() {
     const { dimension, currentDrag } = this.props;
     if (!dimension || !currentDrag) {
       return;
@@ -38,29 +40,21 @@ class ScrollTo extends PureComponent {
     const initialScroll: Position = currentDrag.dragging.initial.scroll;
     const offset: Position = currentDrag.dragging.offset;
 
-    if (isVisible(dimension, offset, initialScroll)) {
+    const visibilityOffset: Position = getVisibilityOffset(dimension, offset, initialScroll);
+
+    if (isEmpty(visibilityOffset)) {
       return;
     }
 
-    const isMovingForward = ((): boolean => {
-      // first movement
-      if (prevProps.currentDrag == null) {
-        return currentDrag.impact.movement.isMovingForward;
-      }
+    const scroll = getScrollPosition();
 
-      // subsequent movements
-      // might be moving a backwards after moving forwards,
-      // but not past the start point
-      return offset.y - prevProps.currentDrag.dragging.offset.y > 1;
-    })();
-
-
-    console.log('not visible:', this.props.itemId, 'is moving forward', isMovingForward);
-
-    const newY = window.pageYOffset + (dimension.height * scrollBy * (isMovingForward ? 1 : -1))
+    const toBeVisible = visibilityOffset.y + scroll.y;
+    const additionalBuffer = dimension.height * additionalScrollMultiplier *
+      (visibilityOffset.y > 0 ? 1 : -1);
+    const newY = toBeVisible + additionalBuffer;
     requestAnimationFrame(() => {
       window.scroll(0, newY);
-    })
+    });
   }
 
   render() {
@@ -78,12 +72,12 @@ const dimensionSelector = createSelector(
     }
     return dimensions[id];
   }
-)
+);
 
 const empty: MapProps = {
   dimension: null,
   currentDrag: null,
-}
+};
 
 const makeResultSelector = () => createSelector(
   [dimensionSelector, currentDragSelector, idSelector],
@@ -98,7 +92,7 @@ const makeResultSelector = () => createSelector(
     return {
       dimension,
       currentDrag,
-    }
+    };
   }
 );
 
@@ -107,7 +101,7 @@ const makeMapStateToProps = () => {
   const mapStateToProps = (state: State, props: ConnectedProps): MapProps =>
     resultSelector(state, props);
   return mapStateToProps;
-}
+};
 
-export default connect(makeMapStateToProps, null, null, { storeKey })(ScrollTo)
+export default connect(makeMapStateToProps, null, null, { storeKey })(KeepVisible);
 

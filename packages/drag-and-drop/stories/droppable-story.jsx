@@ -38,10 +38,10 @@ const lists: ListDataMap = {
     id: 'foo',
     itemIds: itemKeys.slice(0, itemKeys.length / 2),
   },
-  // bar: {
-  //   id: 'bar',
-  //   itemIds: itemKeys.slice((itemKeys.length / 2), itemKeys.length),
-  // },
+  bar: {
+    id: 'bar',
+    itemIds: itemKeys.slice((itemKeys.length / 2), itemKeys.length),
+  },
 };
 
 const DraggableItem = (() => {
@@ -91,6 +91,9 @@ const DroppableList = (() => {
     width: 300px;
     align-items: stretch;
     margin: 8px;
+    height: 500px;
+    overflow-y: scroll;
+    overflow-x: none;
     background-color: ${props => (props.isDraggingOver ? 'gold' : 'deepskyblue')};
   `;
 

@@ -76,6 +76,7 @@ export interface Props {
   onSubmit?: (doc: Doc) => void;
   onChange?: () => void;
   mentionResourceProvider?: any;
+  presenceResourceProvider?: any;
   reverseMentionPicker?: boolean;
 }
 
@@ -117,7 +118,12 @@ export default class Editor extends PureComponent<Props, State> {
             <HyperlinkEdit pluginState={pluginStateHyperlink} />
           }
           {!pluginStateMentions ? null :
-            <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reverseMentionPicker} />
+            <MentionPicker
+              resourceProvider={props.mentionResourceProvider}
+              presenceProvider={props.presenceResourceProvider}
+              pluginState={pluginStateMentions}
+              reversePosition={props.reverseMentionPicker}
+            />
           }
         </div>
       </div>

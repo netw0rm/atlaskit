@@ -1,6 +1,7 @@
 import { MediaItemProvider, MediaCollectionProvider, MediaUrlPreviewProvider } from '../providers/';
-import { JwtTokenProvider, MediaItemType, MediaItem } from '../';
+import { JwtTokenProvider, MediaItemType, MediaItem, UrlPreview } from '../';
 import { MediaDataUriService, DataUriService } from '../services/dataUriService';
+import { MediaLinkService } from '../services/linkService';
 import { LRUCache } from 'lru-fast';
 
 const DEFAULT_CACHE_SIZE = 200;
@@ -49,6 +50,11 @@ class ContextImpl implements Context {
 
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider {
     return MediaUrlPreviewProvider.fromPool(this.urlPreviewPool, this.apiConfig, url, this.config.clientId);
+  }
+
+  addLinkItem(url: string, collectionName: string, metadata?: UrlPreview) {
+    const linkService = new MediaLinkService(this.apiConfig);
+    return linkService.addLinkItem(url, this.config.clientId, collectionName, metadata);
   }
 
   private get apiConfig() {

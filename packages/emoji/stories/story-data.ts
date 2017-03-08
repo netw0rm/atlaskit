@@ -1,5 +1,6 @@
-import { denormaliseEmojis } from '../src/api/EmojiResource';
+import { denormaliseEmojis } from '../src/api/EmojiLoader';
 import EmojiService from '../src/api/EmojiService';
+import { mockEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig } from '../test/MockEmojiResource';
 import { EmojiDescription, EmojiServiceResponse } from '../src/types';
 
 declare var require: {
@@ -8,12 +9,13 @@ declare var require: {
 
 let emojisSets: Map<string, EmojiDescription[]>;
 
+export const getStandardEmojiData = (): EmojiServiceResponse => require('./service-data-standard.json') as EmojiServiceResponse;
+export const getAtlassianEmojiData = (): EmojiServiceResponse => require('./service-data-atlassian.json') as EmojiServiceResponse;
+
 const getEmojiSet = (name: string): EmojiDescription[] => {
   if (!emojisSets) {
-    // tslint:disable-next-line:no-var-requires
-    const standardEmojiData: EmojiServiceResponse = require('./service-data-standard.json') as EmojiServiceResponse;
-    // tslint:disable-next-line:no-var-requires
-    const atlassianEmojiData: EmojiServiceResponse = require('./service-data-atlassian.json') as EmojiServiceResponse;
+    const standardEmojiData: EmojiServiceResponse = getStandardEmojiData();
+    const atlassianEmojiData: EmojiServiceResponse = getAtlassianEmojiData();
 
     const emojis = denormaliseEmojis({
       emojis: [
@@ -53,4 +55,5 @@ a semper massa dignissim nec.
 `;
 
 export const getEmojiService = (): EmojiService => new EmojiService(getEmojis());
-export default getEmojiService;
+
+export const getEmojiResource = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(getEmojiService(), config);

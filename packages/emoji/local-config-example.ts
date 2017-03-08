@@ -2,7 +2,9 @@ import { EmojiResourceConfig } from './src/api/EmojiResource';
 
 // Copy this file to local-config.js and customise.
 const sampleConfig: EmojiResourceConfig = {
-  url: 'https://emoji-example/',
+  recordConfig: {
+    url: 'https://emoji-example/',
+  },
   providers: [
     {
       url: 'https://emoji-example/standard',

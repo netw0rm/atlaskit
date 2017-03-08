@@ -1,6 +1,6 @@
 const model = require('prosemirror-model');
 
-model.ResolvedPos.prototype.marks = (after) => {
+model.ResolvedPos.prototype.marks = function getMarks(after) {
   const parent = this.parent;
   const index = this.index();
 

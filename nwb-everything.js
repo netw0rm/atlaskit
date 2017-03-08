@@ -37,9 +37,12 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   pkgJson.files = ['es', 'lib', 'umd'];
   pkgJson.main = 'lib/index.js';
   pkgJson.module = 'es/index.js';
-  pkgJson.scripts.prepublish = 'nwb build-web-module';
-  pkgJson.scripts.test = 'nwb test';
-  pkgJson.scripts['test:watch'] = 'nwb test --server';
+  pkgJson.scripts = {
+    prepublish: 'nwb build',
+    storybook: '../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001',
+    test: 'nwb test',
+    'test:watch': 'nwb test --server',
+  };
 
   const testDir = path.join(dir, 'test');
   if (fs.existsSync(testDir)) {

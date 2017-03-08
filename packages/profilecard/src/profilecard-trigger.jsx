@@ -4,6 +4,7 @@ import AkLayer from '@atlaskit/layer';
 
 import { getAnimationClass } from './internal/helper';
 import AkProfilecard from './profilecard';
+import DirectionWrapper from './components/DirectionWrapper';
 // import AkProfilecardResourced from './profilecard-resourced';
 
 const allowedPositions = [
@@ -73,32 +74,40 @@ export default class ProfilecardTrigger extends PureComponent {
     const mainPosition = this.props.position.split(' ')[0];
     const animationClass = getAnimationClass(mainPosition, this.state.isFlipped);
 
+    const profileData = {
+      fullName: 'Kramer Hatfield',
+      nickname: 'khatfield',
+      email: 'khatfield@gluid.com',
+      location: 'Vienna, Austria',
+      meta: 'Manager',
+      presence: 'available',
+    };
+
     return (
-      <div className={animationClass}>
-        <AkProfilecard
-          isLoading={this.props.isLoading}
-          hasError={this.props.hasError}
-          fullName="Thorsten Basse"
-          meta="Senior Developer"
-          location="Sydney, Australia"
-          nickname="tgdb"
-          actions={[
-            {
-              label: 'View profile',
-              callback: () => {
-                window.open('https://local.atlassian.io:10124/c/CLOUDID/people/655363:7c218e11-d210-43fd-9830-bcc1874e4736/FULLNAME', '_blank');
+      <DirectionWrapper direction={mainPosition}>
+        <div className={animationClass}>
+          <AkProfilecard
+            isLoading={this.props.isLoading}
+            hasError={this.props.hasError}
+            {...profileData}
+            actions={[
+              {
+                label: 'View profile',
+                callback: () => {
+                  window.open('https://local.atlassian.io:10124/c/CLOUDID/people/655363:7c218e11-d210-43fd-9830-bcc1874e4736/FULLNAME', '_blank');
+                },
               },
-            },
-          ]}
-        />
-      </div>
+            ]}
+          />
+        </div>
+      </DirectionWrapper>
     );
   }
 
   render() {
     return (
       <div
-        style={{ display: 'inline-block' }}
+
         onMouseEnter={this.showProfilecard}
         onMouseLeave={this.hideProfilecard}
       >

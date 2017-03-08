@@ -19,6 +19,35 @@ const menuActions = [
 ];
 
 storiesOf('CardView', {})
+  .add('Ellipsify', () => (
+    <StoryList>
+      {[{
+        title: 'ellipsis on long title',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet pellentesque tellus, a malesuada mauris laoreet sit amet. Donec vel purus odio. Aliquam pretium nulla non tellus viverra, eu commodo risus ornare. Curabitur rhoncus neque vitae volutpat pretium. Aliquam eu sollicitudin lorem. Sed vitae ante eu magna egestas venenatis dignissim."
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={onClick}
+        />
+      }, {
+        title: 'html entity escaping',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="<script>alert('foo');</script>"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={onClick}
+        />
+      }]}
+    </StoryList>
+  ))
   .add('Media types', () => (
     <StoryList>
       {[{

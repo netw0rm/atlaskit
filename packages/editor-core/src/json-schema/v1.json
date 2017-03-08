@@ -44,9 +44,6 @@
           "$ref": "#/definitions/text_node"
         },
         {
-          "$ref": "#/definitions/image_node"
-        },
-        {
           "$ref": "#/definitions/hardBreak_node"
         },
         {
@@ -413,20 +410,6 @@
       },
       "required": [
         "text",
-        "type"
-      ],
-      "additionalProperties": false
-    },
-    "image_node": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "image"
-          ]
-        }
-      },
-      "required": [
         "type"
       ],
       "additionalProperties": false

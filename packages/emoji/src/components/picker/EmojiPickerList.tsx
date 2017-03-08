@@ -2,6 +2,7 @@ import * as React from 'react';
 import { MouseEvent, PureComponent } from 'react';
 import * as classNames from 'classnames';
 import { List } from 'react-virtualized';
+import Spinner from '@atlaskit/spinner';
 
 import * as styles from './styles';
 import EmojiPickerListCategory from './EmojiPickerListCategory';
@@ -25,6 +26,7 @@ export interface Props {
   selectedCategory?: string;
   selectedTone?: number;
   onSearch?: OnSearch;
+  loading?: boolean;
 }
 
 export interface State {
@@ -110,7 +112,8 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
 
   componentWillUpdate = (nextProps) => {
     if (this.props.emojis !== nextProps.emojis ||
-      this.props.selectedTone !== nextProps.selectedTone) {
+      this.props.selectedTone !== nextProps.selectedTone ||
+      this.props.loading !== nextProps.loading) {
       this.groupedItems = this.buildList(nextProps.emojis, nextProps.selectedTone);
     }
   }
@@ -153,15 +156,7 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
 
   private getItemSize = ({ index }) => {
     const item = this.groupedItems[index];
-    if (item.type === 'emoji') {
-      return 40;
-    } else if (item.type === 'search') {
-      return 50;
-    } else if (item.type === 'category') {
-      return 25;
-    }
-
-    return 20;
+    return styles.listSizes[item.type] || styles.listSizes.default;
   }
 
   private buildList = (emojis: EmojiDescription[], selectedTone: number): ListItem[] => {
@@ -172,6 +167,7 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
       type: 'search',
       category: '',
     }];
+
     for (let i = 0; i < emojis.length; i++) {
       let emoji = emojis[i];
 
@@ -257,18 +253,26 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
         />
       );
     }
-
     return null;
   }
 
   render() {
     const classes = [styles.emojiPickerList];
 
+    const loadingSpinner = !this.props.loading ? null : (
+      <div className={styles.emojiPickerSpinnerContainer}>
+        <div className={styles.emojiPickerSpinner}>
+          <Spinner size="medium" />
+        </div>
+      </div>
+    );
+
     return (
       <div
         className={classNames(classes)}
         onMouseLeave={this.onMouseLeave}
       >
+        {loadingSpinner}
         <List
           rowRenderer={this.renderItem}
           rowCount={this.groupedItems.length}

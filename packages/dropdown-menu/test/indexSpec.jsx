@@ -7,7 +7,7 @@ import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 import { name } from '../package.json';
 
-import Menu from '../src';
+import Menu, { StatelessDropdownMenu as StatelessMenu } from '../src';
 
 const itemsList = [
   {
@@ -53,7 +53,6 @@ describe(name, () => {
       const droplist = wrapper.find(Droplist);
       expect(droplist.prop('position')).to.equal(wrapper.props().position);
       expect(droplist.prop('appearance')).to.equal(wrapper.props().appearance);
-      expect(droplist.prop('isTriggerNotTabbable')).to.equal(wrapper.props().isTriggerNotTabbable);
       expect(droplist.prop('shouldFlip')).to.equal(wrapper.props().shouldFlip);
       expect(droplist.prop('isOpen')).to.equal(wrapper.state().isOpen);
       expect(droplist.prop('trigger')).to.equal('text');
@@ -295,6 +294,145 @@ describe(name, () => {
         handler({ item: item2 });
         expect(stateItems[0].items[0].isChecked).to.equal(true);
         expect(stateItems[0].items[1].isChecked).to.equal(true);
+      });
+    });
+  });
+
+  describe('focus', () => {
+    describe('getPrevFocusable', () => {
+      it('should return previous item when passed an item', () => {
+        const Items = [{
+          heading: 'group',
+          items: [
+            { content: 0 }, { content: 1 }, { content: 2 },
+          ],
+        }];
+
+        const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
+
+        expect(wrapper.instance().getPrevFocusable(1)).to.equal(0);
+      });
+
+      it('should skip hidden items', () => {
+        const Items = [{
+          heading: 'group',
+          items: [
+            { content: 0 }, { content: 1 }, { content: 2, isHidden: true },
+            { content: 3, isHidden: true }, { content: 4 },
+          ],
+        }];
+
+        const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
+
+        expect(wrapper.instance().getPrevFocusable(4)).to.equal(1);
+      });
+
+      it('should return the first item if there is nothing before', () => {
+        const Items = [{
+          heading: 'group',
+          items: [
+            { content: 0 }, { content: 1 }, { content: 2 },
+          ],
+        }];
+
+        const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
+
+        expect(wrapper.instance().getPrevFocusable(0)).to.equal(0);
+      });
+
+      it('should return the first non-hidden item if the first item is hidden', () => {
+        const Items = [{
+          heading: 'group',
+          items: [
+            { content: 0, isHidden: true }, { content: 1, isHidden: true }, { content: 2 },
+          ],
+        }];
+
+        const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
+
+        expect(wrapper.instance().getPrevFocusable(2)).to.equal(2);
+      });
+    });
+
+    describe('getNextFocusable', () => {
+      it('should return the first item when called without an argument', () => {
+        const Items = [{
+          heading: 'group',
+          items: [
+            { content: 0 }, { content: 1 },
+          ],
+        }];
+
+        const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
+
+        expect(wrapper.instance().getNextFocusable()).to.equal(0);
+      });
+
+      it('if the first item is hidden it should return next available item', () => {
+        const Items = [{
+          heading: 'group',
+          items: [
+            { content: 0, isHidden: true }, { content: 1, isHidden: true }, { content: 2 },
+          ],
+        }];
+
+        const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
+
+        expect(wrapper.instance().getNextFocusable()).to.equal(2);
+      });
+
+      it('should return next item when passed an item', () => {
+        const Items = [{
+          heading: 'group',
+          items: [
+            { content: 0 }, { content: 1 }, { content: 2 },
+          ],
+        }];
+
+        const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
+
+        expect(wrapper.instance().getNextFocusable(1)).to.equal(2);
+      });
+
+      it('should skip hidden items', () => {
+        const Items = [{
+          heading: 'group',
+          items: [
+            { content: 0 }, { content: 1, isHidden: true }, { content: 2, isHidden: true },
+            { content: 3, isHidden: true }, { content: 4 },
+          ],
+        }];
+
+        const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
+
+        expect(wrapper.instance().getNextFocusable(1)).to.equal(4);
+      });
+
+      it('should return the latest item if there is nothing beyond', () => {
+        const Items = [{
+          heading: 'group',
+          items: [
+            { content: 0 }, { content: 1 }, { content: 2 },
+          ],
+        }];
+
+        const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
+
+        expect(wrapper.instance().getNextFocusable(2)).to.equal(2);
+      });
+
+      it('should return the latest non-hidden item if the latest item is hidden', () => {
+        const Items = [{
+          heading: 'group',
+          items: [
+            { content: 0 }, { content: 1 }, { content: 2 }, { content: 3, isHidden: true },
+            { content: 4, isHidden: true },
+          ],
+        }];
+
+        const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
+
+        expect(wrapper.instance().getNextFocusable(2)).to.equal(2);
       });
     });
   });

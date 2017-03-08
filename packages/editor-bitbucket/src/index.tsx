@@ -106,6 +106,9 @@ export default class Editor extends PureComponent<Props, State> {
     const { pm } = this.state;
     if (pm) {
       pm.tr.delete(0, pm.doc.nodeSize - 2).apply();
+
+      // We need flush for bitbucket, otherwise editor becomes broken after detaching/attaching parent DOM node
+      pm.flush();
     }
   }
 

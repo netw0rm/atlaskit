@@ -6,7 +6,7 @@ import { assert } from 'chai';
 import MentionResource from '../../src/api/MentionResource';
 import { resultC, resultCraig } from '../_mention-data';
 
-const baseUrl = 'https://bogus/';
+const baseUrl = 'https://bogus/mentions';
 
 const defaultSecurityHeader = 'X-Bogus';
 

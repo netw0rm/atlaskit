@@ -18,7 +18,6 @@ const exclude = [
 fs.readdirSync(pathPackages).forEach((pathPackage) => {
   const dir = path.join(pathPackages, pathPackage);
   const nwbFile = path.join(dir, 'nwb.config.js');
-  const tsFile = path.join(dir, 'tsconfig.js');
 
   if (!fs.statSync(dir).isDirectory()) {
     return;
@@ -52,7 +51,7 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
 
   const testDir = path.join(dir, 'test');
   if (fs.existsSync(testDir)) {
-    fs.renameSync(tsFile, path.join(dir, 'tests'));
+    fs.renameSync(testDir, path.join(dir, 'tests'));
   }
 
   fs.writeFileSync(pkg, JSON.stringify(pkgJson, null, 2));

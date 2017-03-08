@@ -56,8 +56,15 @@ export default class FieldBase extends PureComponent {
 
   renderRightGutter() {
     if (!this.props.isDisabled && this.props.isInvalid) {
+      const iconWrapperClasses = classNames(styles.warningIconWrapper, {
+        [styles.noPointerEvents]: !this.props.invalidMessage,
+      });
+
       return (
-        <div className={styles.warningIconWrapper}>
+        <div
+          className={iconWrapperClasses}
+          onMouseDown={this.props.onIconMouseDown}
+        >
           <WarningIcon label="warning" />
         </div>
       );

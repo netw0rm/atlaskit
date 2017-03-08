@@ -18,7 +18,7 @@ try {
 
 const asapConfig = config.asap;
 const sessionServiceConfig = config.sessionservice;
-const cookieConfig = sessionServiceConfig;
+const cookieConfig = { ...sessionServiceConfig };
 delete cookieConfig.securityProvider;
 
 storiesOf(`${name}/MentionPicker-external`, module)

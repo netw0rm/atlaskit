@@ -8,6 +8,7 @@ import {
   MentionsPlugin,
   ProseMirror,
   TextSelection,
+  TextFormattingPlugin,
   version as coreVersion,
 } from '@atlaskit/editor-core';
 import * as cx from 'classnames';
@@ -41,6 +42,12 @@ const hipchatSerializer = (doc: any) => {
               }
             };
           }
+
+          if (mark._ === 'u') {
+            mark._ = 'underline';
+          }
+
+          mark.type = mark._;
           return mark;
         });
         break;
@@ -69,6 +76,7 @@ export interface Props {
   onSubmit?: (doc: Doc) => void;
   onChange?: () => void;
   mentionResourceProvider?: any;
+  presenceResourceProvider?: any;
   reverseMentionPicker?: boolean;
 }
 
@@ -110,7 +118,12 @@ export default class Editor extends PureComponent<Props, State> {
             <HyperlinkEdit pluginState={pluginStateHyperlink} />
           }
           {!pluginStateMentions ? null :
-            <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reverseMentionPicker} />
+            <MentionPicker
+              resourceProvider={props.mentionResourceProvider}
+              presenceProvider={props.presenceResourceProvider}
+              pluginState={pluginStateMentions}
+              reversePosition={props.reverseMentionPicker}
+            />
           }
         </div>
       </div>
@@ -129,6 +142,7 @@ export default class Editor extends PureComponent<Props, State> {
       plugins: [
         BlockTypePlugin,
         HyperlinkPlugin,
+        TextFormattingPlugin,
         ...(this.props.mentionResourceProvider ? [MentionsPlugin] : [])
       ],
     });

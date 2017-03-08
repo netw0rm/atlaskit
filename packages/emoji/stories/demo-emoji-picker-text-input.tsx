@@ -1,18 +1,16 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import EmojiService from '../src/api/EmojiService';
+import { EmojiProvider } from '../src/api/EmojiResource';
 import EmojiPicker from '../src/components/picker/EmojiPicker';
 import { OnEmojiEvent, RelativePosition } from '../src/types';
 import { lorem } from './story-data';
 
 export interface Props {
   onSelection?: OnEmojiEvent;
-  emojiService?: EmojiService;
+  emojiProvider: Promise<EmojiProvider>;
   position?: RelativePosition;
 }
-
-const defaultEmojiService = new EmojiService([]);
 
 export default class EmojiPickerTextInput extends PureComponent<Props, undefined> {
   static defaultProps = {
@@ -20,7 +18,7 @@ export default class EmojiPickerTextInput extends PureComponent<Props, undefined
   };
 
   render() {
-    const { emojiService, position, onSelection } = this.props;
+    const { emojiProvider, position, onSelection } = this.props;
 
     return (
       <div style={{ padding: '10px' }} >
@@ -36,7 +34,7 @@ export default class EmojiPickerTextInput extends PureComponent<Props, undefined
           onSelection={onSelection}
           position={position}
           target="#picker-input"
-          emojiService={emojiService || defaultEmojiService}
+          emojiProvider={emojiProvider}
         />
       </div>
     );

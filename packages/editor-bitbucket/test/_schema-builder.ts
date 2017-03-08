@@ -1,4 +1,4 @@
-import { markFactory, nodeFactory } from '@atlaskit/editor-core/test-helper';
+import { markFactory, nodeFactory } from '@atlaskit/editor-core/src/test-helper';
 import schema from '../src/schema';
 
 // Nodes

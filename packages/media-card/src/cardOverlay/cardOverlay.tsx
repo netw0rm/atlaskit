@@ -96,7 +96,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       }
 
       if (!this.props.persistent) {
-        classNames.push('show-on-hover');
+        classNames.push('persistent');
       }
 
     }
@@ -140,9 +140,10 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   tickBox() {
-    const tick = this.props.selected ? <TickIcon label="tick" /> : null;
+    const selectedClass = this.props.selected ? 'selected' : null;
+    const tick = <TickIcon label="tick" />;
 
-    return this.props.selectable && (<TickBox className={'tickbox'}> {tick} </TickBox>);
+    return this.props.selectable && (<TickBox className={`tickbox ${selectedClass}`}> {tick} </TickBox>);
   }
 
   bottomLeftColumn() {

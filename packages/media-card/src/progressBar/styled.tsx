@@ -1,10 +1,10 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
+import { borderRadius } from '../styles/base';
 
 export const ProgressWrapper = styled.div`
-  border-radius: 3px;
+  ${borderRadius()}
   z-index: 30;
-
   overflow: hidden;
   background-color: rgba(255,255,255,0.3);
 

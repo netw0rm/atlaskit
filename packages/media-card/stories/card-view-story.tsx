@@ -2,8 +2,8 @@ import * as React from 'react';
 import {Component} from 'react';
 import {storiesOf, action} from '@kadira/storybook';
 import {CardView} from '../src';
-import tallImageDataUri from './tall-image';
-import styles from './styles';
+import {tallImage, wideImage, wideTransparentImage, smallImage} from './images';
+import {StoryList} from '@atlaskit/media-test-helpers';
 
 const onClick = (event: Event) => {
   action('click')();
@@ -19,24 +19,52 @@ const menuActions = [
 ];
 
 storiesOf('CardView', {})
+  .add('Ellipsify', () => (
+    <StoryList>
+      {[{
+        title: 'ellipsis on long title',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum laoreet pellentesque tellus, a malesuada mauris laoreet sit amet. Donec vel purus odio. Aliquam pretium nulla non tellus viverra, eu commodo risus ornare. Curabitur rhoncus neque vitae volutpat pretium. Aliquam eu sollicitudin lorem. Sed vitae ante eu magna egestas venenatis dignissim."
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={onClick}
+        />
+      }, {
+        title: 'html entity escaping',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="<script>alert('foo');</script>"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={onClick}
+        />
+      }]}
+    </StoryList>
+  ))
   .add('Media types', () => (
-    <ul style={styles.statesWrapper}>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Image type</div>
-        <CardView
+    <StoryList>
+      {[{
+        title: 'Image type',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Image type, no preview</div>
-        <CardView
+      }, {
+        title: 'Image type, no preview',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
@@ -46,105 +74,285 @@ storiesOf('CardView', {})
           dataURI={undefined}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Video type</div>
-        <CardView
+      }, {
+        title: 'Video type',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
           mediaName="this is my video.mpg"
           mediaType="video"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Doc type</div>
-        <CardView
+      }, {
+        title: 'Doc type',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
           mediaName="this is my doc.docx"
           mediaType="doc"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Audio type</div>
-        <CardView
+      }, {
+        title: 'Audio type',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
           mediaName="this is my audio file.mp3"
           mediaType="audio"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Unknown type</div>
-        <CardView
+      }, {
+        title: 'Unknown type',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
           mediaName="this is my unknown file.kpf"
           mediaType="unknown"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-    </ul>
+      }, {
+      }]}
+    </StoryList>
   ))
+  .add('No preview', () => (
+    <StoryList>
+      {[{
+        title: 'Image',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="No preview image"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Video',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="No preview video"
+          mediaType="video"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Audio',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="No preview audio"
+          mediaType="audio"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Video + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="No preview audio"
+          mediaType="video"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }]}
+    </StoryList>
+  ))
+  .add('Selectable', () => {
+    class SelectableWrapper extends Component<{}, {}> {
+      constructor(props) {
+        super(props);
+        this.state = {selected: false};
+      }
+
+      toggleSelection = () => {
+        this.setState({selected: !this.state.selected});
+      }
+
+      render() {
+        return <CardView
+          loading={false}
+          selectable={true}
+          selected={this.state.selected}
+          mediaName="No preview image"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={wideImage}
+          onClick={this.toggleSelection}
+        />;
+      }
+    }
+
+    return <StoryList>
+      {[{
+        title: 'Not selected',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={false}
+          mediaName="Select me please"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Selected',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={true}
+          mediaName="Im a selected card"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={wideImage}
+          onClick={onClick}
+        />
+      }, {
+        title: 'Selected + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={true}
+          mediaName="Selected with actions"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={wideTransparentImage}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }, {
+        title: 'Not selected + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={false}
+          mediaName="Not selected with actions"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={smallImage}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }, {
+        title: 'No URI + selected',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={true}
+          mediaName="I have no URI :("
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }, {
+        title: 'No URI + unselected',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={false}
+          mediaName="I have no URI :("
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+        />
+      }, {
+        title: 'No URI + unselected + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={false}
+          mediaName="🌋 👽"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }, {
+        title: 'No URI + selected + menu actions',
+        content: <CardView
+          loading={false}
+          selectable={true}
+          selected={true}
+          mediaName="😵🤖"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={null}
+          onClick={onClick}
+          menuActions={menuActions}
+        />
+      }, {
+        title: 'Handle state change',
+        content: <SelectableWrapper />
+      }]}
+    </StoryList>;
+  })
   .add('Different name lengths', () => (
-    <ul style={styles.statesWrapper}>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Sort name</div>
-        <CardView
+    <StoryList>
+      {[{
+        title: 'Short name',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
           mediaName="My awesome file.tsx"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>2 lines name</div>
-        <CardView
+      }, {
+        title: '2 lines name',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
           mediaName="Hey guys this is my awesome file.tsx"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Long name</div>
-        <CardView
+      }, {
+        title: 'Long name',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
           mediaName="Lorem ipsum Nulla veniam exercitation duis sit ut in sed consectetur dolore cupidatat ut pariatur.js"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Large width</div>
-        <CardView
+      }, {
+        title: 'Large width',
+        content: <CardView
           width={380}
           loading={false}
           selectable={false}
@@ -152,13 +360,12 @@ storiesOf('CardView', {})
           mediaName="Lorem ipsum nulla veniam exercitation duis sit ut in sed consectetur dolore cupidatat ut pariatur.json"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Long name with large width</div>
-        <CardView
+      }, {
+        title: 'Long name with large width',
+        content: <CardView
           width={380}
           loading={false}
           selectable={false}
@@ -166,11 +373,11 @@ storiesOf('CardView', {})
           mediaName="Lorem ipsum nulla veniam exercitation duis sit ut in sed consectetur dolore cupidatat sedconsectetur dolore cupidatat seddolore cupidatat sed sed consectetur dolore cupidatat ut pariatur.json"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-    </ul>
+      }]}
+    </StoryList>
   ))
   .add('Custom sized', () => (
     <CardView
@@ -182,65 +389,62 @@ storiesOf('CardView', {})
       mediaName="some image"
       mediaType="image"
       mediaSize={32831}
-      dataURI={tallImageDataUri}
+      dataURI={tallImage}
       onClick={onClick}
     />
   ))
   .add('Different file sizes', () => (
-    <ul style={styles.statesWrapper}>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>File size: bytes</div>
-        <CardView
+    <StoryList>
+      {[{
+        title: 'File size: bytes',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={100} // 100 B
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>File size: kB</div>
-        <CardView
+      }, {
+        title: 'File size: kB',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={153600} // 150 kB
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>File size: MB</div>
-        <CardView
+      }, {
+        title: 'File size: MB',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={12897490} // 12.3 MB
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>File size: GB</div>
-        <CardView
+      }, {
+        title: 'File size: GB',
+        content: <CardView
           loading={false}
           selectable={false}
           selected={false}
           mediaName="this is my image.png"
           mediaType="image"
           mediaSize={1395864375} // 1.3 GB
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-    </ul>
+      }]}
+    </StoryList>
   ))
   .add('With Progress', () => (
     <CardView
@@ -250,7 +454,7 @@ storiesOf('CardView', {})
       mediaName="with_progress.png"
       mediaType="image"
       mediaSize={32831}
-      dataURI={tallImageDataUri}
+      dataURI={tallImage}
       progress={0.5}
       onClick={onClick}
     />
@@ -284,32 +488,49 @@ storiesOf('CardView', {})
           mediaName="loading.png"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />;
       }
     }
 
-    return <ul style={styles.statesWrapper}>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Infinite loading</div>
-        <CardView
+    return <StoryList>
+      {[{
+        title: 'Infinite loading',
+        content: <CardView
           loading={true}
           selectable={false}
           selected={false}
           mediaName="loading.png"
           mediaType="image"
           mediaSize={32831}
-          dataURI={tallImageDataUri}
+          dataURI={tallImage}
           onClick={onClick}
         />
-      </li>
-      <li style={styles.stateItem}>
-        <div style={styles.stateTitle}>Loading 1sec</div>
-        <LoadingWrapper />
-      </li>
-    </ul>;
+      }, {
+        title: 'Loading 1sec',
+        content: <LoadingWrapper />
+      }]}
+    </StoryList>;
   })
+  .add('Menu action', () => (
+    <StoryList>
+       {[{
+         title: 'Default',
+         content: <CardView
+          loading={false}
+          selectable={false}
+          selected={false}
+          mediaName="this is my image.png"
+          mediaType="image"
+          mediaSize={32831}
+          dataURI={tallImage}
+          onClick={onClick}
+          menuActions={menuActions}
+         />
+       }]}
+    </StoryList>
+  ))
   .add('Error', () => (
     <CardView
       mediaName="with_progress.wav"

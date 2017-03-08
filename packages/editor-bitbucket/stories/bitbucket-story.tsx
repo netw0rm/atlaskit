@@ -1,5 +1,5 @@
 import '!style!css!less!./bitbucket-styles.less';
-import { base64fileconverter, storyDecorator } from '@atlaskit/editor-core/test-helper';
+import { base64fileconverter, storyDecorator } from '@atlaskit/editor-core/src/test-helper';
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -65,6 +65,33 @@ storiesOf(name, module)
       onSave={SAVE_ACTION}
     />
   )
+  .add('With attaching/detaching', () => {
+    let ref: Node;
+    let editor;
+    return (
+      <div>
+        <div id="editor">
+          <div ref={(elem) => ref = elem as Node}>
+            <Editor
+              ref={(e) => editor = e}
+              onCancel={() => (ref.parentNode as Node).removeChild(ref)}
+              onChange={CHANGE_ACTION}
+              onSave={SAVE_ACTION}
+              isExpandedByDefault
+            />
+          </div>
+        </div>
+        <button
+          onClick={() => {
+            (document.getElementById('editor') as Node).appendChild(ref);
+            editor && editor.clear();
+          }}
+        >
+          Attach
+        </button>
+      </div>
+    );
+  })
   .add('Analytics events', () => {
     return (
       <div>

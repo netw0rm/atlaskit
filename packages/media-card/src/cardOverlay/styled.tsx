@@ -1,13 +1,15 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { akColorN70 } from '@atlaskit/util-shared-styles';
+import {rgba, centerX, easeOutCubic, borderRadius, size, transition} from '../styles/base';
+import { akColorN70, akColorB200, akColorN0, akColorN500, akColorN800, akColorN900, akColorB400 } from '@atlaskit/util-shared-styles';
 
 export const MoreBtn = styled.div`
-  display: none;
+  ${centerX()}
+  ${borderRadius()}
   float: right;
   width: 36px;
   height: 26px;
-  border-radius: 3px;
+  color: ${akColorN500};
 
   &:hover {
     background-color: rgba(9, 30, 66, 0.06);
@@ -23,11 +25,10 @@ export const MoreBtn = styled.div`
 `;
 
 export const DeleteBtn = styled.div`
+  ${borderRadius()}
+  ${size(26)}
   display: none;
   float: right;
-  width: 26px;
-  height: 26px;
-  border-radius: 3px;
   color: white;
   justify-content: center;
 
@@ -69,40 +70,44 @@ export const FileTypeIcon = styled.div`
 `;
 
 export const TickBox = styled.div`
+  ${size(14)}
+  ${transition()}
+  background-color: ${rgba('#ffffff', 0.5)};
   position: absolute;
   top: 8px;
   right: 8px;
-  width: 14px;
-  height: 14px;
-  border: 2px solid white;
   border-radius: 20px;
   z-index: 20;
-  display: none;
+  color: #798599; // TODO FIL-3884: Align color with new design
+  display: flex;
+  opacity: 0;
+
+  &.selected {
+    opacity: 1;
+    color: white;
+    background-color: #0052CC; // TODO FIL-3884: Align with tickbox icons
+  }
 `;
 
 export const Overlay = styled.div`
+  ${borderRadius()}
   width: 100%;
   height: 100%;
   background: transparent;
   position: absolute;
   top: 0;
   left: 0;
-  border-radius: 3px;
   border: 2px solid transparent;
+  transition: .3s background ${easeOutCubic}, .3s border-color;
 
   &:hover, &.active {
     .top-row {
       .title {
-        color: #0065FF;
+        color: ${akColorB400};
       }
     }
 
     .bottom-row {
-      .more-btn {
-        display: flex;
-        justify-content: center;
-      }
-
       .delete-btn {
         display: flex;
       }
@@ -112,10 +117,36 @@ export const Overlay = styled.div`
   .file-type-icon {
     display: block;
   }
+  
+  &:not(.persistent) {
+    &:hover {
+      background-color: ${rgba(akColorN900, 0.06)};
+    }
 
-  &.show-on-hover {
+    &.selectable {
+      &.selected {
+        background-color: ${akColorB200};
+        
+        &:hover {
+          // TODO FIL-3884 add new overlay with rgba(akColorN900, 0.16)
+        }
+
+        .title, .bottom-row, .file-size, .more-btn {
+          color: ${akColorN0};
+        }
+      }
+    }
+  }
+
+  &.persistent {
+    &:not(.active) {
+      overflow: hidden;
+    }
+    
     .top-row {
       .title {
+        transition: opacity .3s;
+        opacity: 0;
         color: white;
         font-size: 12px;
         visibility: hidden;
@@ -123,6 +154,10 @@ export const Overlay = styled.div`
     }
 
     .bottom-row {
+      opacity: 0;
+      transition: transform .2s, opacity .5s;
+      transform: translateY(100%);
+
       .file-type-icon {
         display: none;
       }
@@ -133,6 +168,7 @@ export const Overlay = styled.div`
       }
 
       .more-btn {
+        color: ${akColorN0};
         display: none;
 
         &:hover {
@@ -150,46 +186,46 @@ export const Overlay = styled.div`
     }
 
     &:hover, &.active {
-      background-color: rgba(9, 30, 66, 0.5);
+      background-color: ${rgba(akColorN900, 0.5)};
 
       .title {
+        opacity: 1;
         visibility: visible;
       }
 
-      .file-type-icon {
-        display: block;
-      }
-
-      .file-size {
+      .file-type-icon, .file-size {
         display: block;
       }
 
       .more-btn {
-        display: flex;
-        justify-content: center;
-        color: white;
+        ${centerX()}
+        color: ${akColorN0};
       }
 
       .delete-btn {
         display: flex;
       }
+
+      .bottom-row {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* Selectable */
     &.selectable {
-      &:hover, &.active {
+      &:hover {
         .tickbox {
-          display: block;
+          opacity: 1;
         }
       }
 
       &.selected {
-        border-color: #3384FF !important;
+        border-color: ${akColorB200} !important;
 
         .tickbox {
-          display: flex !important;
-          background-color: #3384FF !important;
-          border-color: #3384FF !important;
+          background-color: ${akColorB200} !important;
+          border-color: ${akColorB200} !important;
           color: white;
         }
       }
@@ -216,12 +252,11 @@ export const Overlay = styled.div`
     &:hover, &.active {
       .top-row {
         .title {
-          color: #091E42;
+          color: ${akColorN800};
         }
       }
     }
   }
-
 `;
 
 export const ErrorLine = styled.div`
@@ -294,7 +329,7 @@ export const Retry = styled.div`
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: bold;
-  color: #0065FF;
+  color: ${akColorB400};
   font-size: 12px;
   line-height: 15px;
   overflow: hidden;
@@ -313,7 +348,7 @@ export const DropdownWrapper = styled.div`
 export const TitleWrapper = styled.div`
   box-sizing: border-box;
   word-wrap: break-word;
-  color: #091E42;
+  color: ${akColorN800};
   font-size: 12px;
   line-height: 18px;
 `;
@@ -322,6 +357,7 @@ export const FileSize = styled.div`
   float: left;
   font-size: 12px;
   color: #5E6C84;
+  text-transform: uppercase;
 `;
 
 export const Metadata = styled.div`

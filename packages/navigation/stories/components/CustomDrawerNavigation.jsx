@@ -62,22 +62,18 @@ export default class CustomDrawerNavigation extends PureComponent {
       onBackButton={() => this.setDrawer(null)}
       primaryIcon={this.getPrimaryIcon()}
     >
-      <div>
-        <AkContainerItemGroup>
-          <AkDrawerItem
-            icon={<DashboardIcon label="Blockers" />}
-            text="Blockers"
-          />
-          <AkDrawerItem
-            icon={<DashboardIcon label="Urgent SLA" />}
-            text="Urgent SLA"
-          />
-          <AkDrawerItem
-            icon={<DashboardIcon label="All open issues" />}
-            text="All open issues"
-          />
-        </AkContainerItemGroup>
-      </div>
+      <AkDrawerItem
+        icon={<DashboardIcon label="Blockers" />}
+        text="Blockers"
+      />
+      <AkDrawerItem
+        icon={<DashboardIcon label="Urgent SLA" />}
+        text="Urgent SLA"
+      />
+      <AkDrawerItem
+        icon={<DashboardIcon label="All open issues" />}
+        text="All open issues"
+      />
     </AkCustomDrawer>
   );
 

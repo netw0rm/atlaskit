@@ -86,7 +86,6 @@ storiesOf(`${name}/Internal components`, module)
   .add('picker footer', () => (
     <EmojiPickerFooter
       selectedEmoji={emojis[0]}
-      emojis={emojis}
     />
     ))
   .add('tone selector', () => (

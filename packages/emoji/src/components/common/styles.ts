@@ -52,11 +52,10 @@ export const emojiContainer = style({
 });
 
 export const missingEmoji = style({
-  height: '100%',
-  width: '100%',
-  backgroundColor: '#eee',
-  borderRadius: '50%',
+  height: '32px',
+  width: '32px',
   display: 'inline-block',
+  fill: '#f7f7f7',
 });
 
 export const emojiButton = style({

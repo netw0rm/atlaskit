@@ -49,11 +49,6 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
     'test:watch': 'nwb test --server',
   };
 
-  const testDir = path.join(dir, 'test');
-  if (fs.existsSync(testDir)) {
-    fs.renameSync(testDir, path.join(dir, 'tests'));
-  }
-
   fs.writeFileSync(pkg, JSON.stringify(pkgJson, null, 2));
   fs.writeFileSync(nwbFile, 'module.exports = require(\'../../nwb.config\');\n');
 

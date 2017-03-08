@@ -9,7 +9,6 @@ import { MentionsPluginState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { EditorView } from '../../prosemirror';
 import { PanelState } from '../../plugins/panel';
-import { ProseMirror } from '../../prosemirror';
 import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
@@ -21,7 +20,6 @@ export interface Props {
   onSave?: () => void;
   packageVersion?: string;
   packageName?: string;
-  pm?: ProseMirror;
   feedbackFormUrl?: string;
   pluginStateBlockType?: BlockTypeState;
   pluginStateCodeBlock?: CodeBlockState;

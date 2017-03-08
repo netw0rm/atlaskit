@@ -17,8 +17,9 @@ function replaceWithText(start: number, end: number, content: string, marks: Arr
   return tr.replaceWith(start, end, Fragment.from(schema.text(content, marks)));
 }
 
+const rules: Array<InputRule> = [];
+
 function buildInputRules(schema: Schema<any, any>): Array<InputRule> {
-  const rules: Array<InputRule> = [];
   if (schema.marks.strong) {
     // **string** and __string__ should bold the text
     rules.push(new InputRule(/(?:^|\s)(?:\*\*([^\*]+)\*\*)$/, addMark(schema.marks.strong, schema)));

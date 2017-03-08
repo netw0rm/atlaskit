@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { URL_REGEX } from '../../../src/plugins/inputrules/input-future';
+import { URL_REGEX } from '../../../src/plugins/inputrules/build-inputrules';
 
 // TODO move to innputrules test
 describe('hyperlink regex', () => {

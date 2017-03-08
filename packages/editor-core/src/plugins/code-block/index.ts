@@ -7,7 +7,7 @@ import {
   NodeViewDesc,
 } from '../../prosemirror';
 import * as keymaps from '../keymaps';
-import { bind as bindKeymap } from '../keymaps/buildKeymap';
+import { bind as bindKeymap } from '../keymaps/build-keymaps';
 import * as commands from '../../commands';
 
 export type CodeBlockStateSubscriber = (state: CodeBlockState) => any;

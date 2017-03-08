@@ -9,7 +9,7 @@ import {
   findAncestorPosition,
 } from '../../utils/index-future';
 
-import { bind as bindKeymap } from '../keymaps/buildKeymap';
+import { bind as bindKeymap } from '../keymaps/build-keymaps';
 import * as keymaps from '../keymaps/utils-future';
 import * as commands from '../../commands';
 

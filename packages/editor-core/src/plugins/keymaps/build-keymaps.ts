@@ -17,7 +17,7 @@ export function bind(shortcut, cmd) {
   keymap[shortcut] = newCmd;
 }
 
-export function buildKeymap(schema) {
+function buildKeymaps(schema) {
 
   // TODO keymaps related to text formatting need to move to text formatting plugin
   if (schema.marks.strong) {
@@ -45,3 +45,5 @@ export function buildKeymap(schema) {
 
   return keymap;
 }
+
+export default buildKeymaps;

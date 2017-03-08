@@ -8,8 +8,8 @@ import listsPlugin from '../../src/plugins/lists/index-future';
 import blockTypePlugin from '../../src/plugins/block-type';
 import codeBlockPlugin from '../../src/plugins/code-block';
 import hyperlinkPlugin from '../../src/plugins/hyperlink';
-import { buildKeymap } from '../../src/plugins/keymaps';
-import buildInputRules from '../../src/plugins/inputrules/input-future';
+import buildKeymaps from '../../src/plugins/keymaps/build-keymaps';
+import buildInputRules from '../../src/plugins/inputrules/build-inputrules';
 import {
   baseKeymap,
   EditorState,
@@ -114,7 +114,7 @@ export default class Editor extends PureComponent<Props, State> {
         onSave={handleSave}
         placeholder={this.props.placeholder}
         onCollapsedChromeFocus={this.expand}
-        editorView={editorView}
+        editorView={editorView!}
         pluginStateLists={listsState}
         pluginStateBlockType={blockTypeState}
         pluginStateCodeBlock={codeBlockState}
@@ -156,7 +156,7 @@ export default class Editor extends PureComponent<Props, State> {
             hyperlinkPlugin,
             inputRules({ rules: buildInputRules(schema) }),
             history(),
-            keymap(buildKeymap(schema)),
+            keymap(buildKeymaps(schema)),
             keymap(baseKeymap) // should be last :(
           ]
         }

@@ -14,7 +14,7 @@ import {
   BLOCK_QUOTE, CODE_BLOCK, PANEL, OTHER, ALL_BLOCK_TYPES, BlockType
 } from './types';
 
-import { bind as bindKeymap } from '../keymaps/buildKeymap';
+import { bind as bindKeymap } from '../keymaps/build-keymaps';
 import * as keymaps from '../keymaps/utils-future';
 import * as commands from '../../commands';
 

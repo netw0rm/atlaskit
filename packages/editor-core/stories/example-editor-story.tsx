@@ -10,5 +10,9 @@ storiesOf('ak-editor-core', module)
         onChange={this.fetchEditorState}
         isExpandedByDefault
       />
+      <Editor
+        onChange={this.fetchEditorState}
+        isExpandedByDefault
+      />
     </div>
   ));

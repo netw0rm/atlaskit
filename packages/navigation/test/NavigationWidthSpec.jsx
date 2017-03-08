@@ -5,7 +5,7 @@ import Navigation from '../src/components/js/Navigation';
 /**
  *  Note: these are duplicated from the Navigation code
  * to ensure that tests fail when the variable is changed */
-const navigationOpenWidth = 284;
+const navigationOpenWidth = 304;
 const navigationClosedWidth = 64;
 const navigationSnapOpenBreakpoint = 174;
 

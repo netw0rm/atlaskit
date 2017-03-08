@@ -1,27 +1,43 @@
 import { URL_REGEX } from './url-regex';
-import { InputRule, inputRules} from '../../prosemirror';
+import { Schema, InputRule, inputRules, Plugin } from '../../prosemirror';
 
 const urlAtEndOfLine = new RegExp(`${URL_REGEX.source}$`);
 
-const inputRule = new InputRule(urlAtEndOfLine, (state, match, start, end) => {
-  const { schema } = state;
-  const url = match[3] ? match[1] : `http://${match[1]}`;
+let plugin: Plugin | undefined;
 
-  const markType = schema.mark(
-    'link',
-    {
-      href: url,
-    }
-  );
+export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+  if (!schema.marks.link) {
+    return;
+  }
 
-  return state.tr.replaceWith(
-    start,
-    end,
-    schema.text(
-      match[1],
-      [markType]
-    )
-  );
-});
+  if (plugin) {
+    return plugin;
+  }
 
-export default inputRules({ rules: [inputRule] });
+  const inputRule = new InputRule(urlAtEndOfLine, (state, match, start, end) => {
+    const { schema } = state;
+    const url = match[3] ? match[1] : `http://${match[1]}`;
+
+    const markType = schema.mark(
+      'link',
+      {
+        href: url,
+      }
+    );
+
+    return state.tr.replaceWith(
+      start,
+      end,
+      schema.text(
+        match[1],
+        [markType]
+      )
+    );
+  });
+
+  plugin = inputRules({ rules: [inputRule] });
+
+  return plugin;
+};
+
+export default inputRulePlugin;

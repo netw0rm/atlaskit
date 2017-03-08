@@ -9,7 +9,7 @@ import {
   TextSelection,
 } from '../../prosemirror';
 import * as commands from '../../commands';
-import inputRule from './input-rule';
+import inputRulePlugin from './input-rule';
 
 export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
 export type StateChangeHandler = (state: HyperlinkState) => any;
@@ -167,9 +167,16 @@ export class HyperlinkState {
 }
 const stateKey = new PluginKey('hypelinkPlugin');
 
-function reconfigure(view: EditorView): void {
+function reconfigure(view: EditorView, plugins: (Plugin | undefined)[]): void {
   const { state } = view;
-  const plugins = state.plugins.concat([inputRule]);
+  const existingPlugins = state.plugins;
+  plugins = plugins.filter((plugin) => (plugin && existingPlugins.indexOf(plugin) === -1));
+
+  if (plugins.length === 0) {
+    return;
+  }
+
+  plugins = existingPlugins.concat(plugins as Plugin[]);
   const newState = state.reconfigure({
     schema: state.schema,
     plugins: plugins
@@ -190,10 +197,7 @@ const plugin = new Plugin({
   key: stateKey,
   view: (view: EditorView) => {
     stateKey.getState(view.state).update(view.state, view.docView, true);
-    const plugins = view.state.plugins;
-    if (plugins.indexOf(inputRule) === -1) {
-      reconfigure(view);
-    }
+    reconfigure(view, [inputRulePlugin(view.state.schema)]);
 
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {

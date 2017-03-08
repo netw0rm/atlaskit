@@ -12,7 +12,8 @@
   "scripts": {
     "prepublish": "nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
-    "test": "nwb test"
+    "test": "nwb test",
+    "test:watch": "nwb test --server"
   },
   "files": [
     "dist"

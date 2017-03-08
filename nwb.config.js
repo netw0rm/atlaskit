@@ -19,11 +19,13 @@ module.exports = {
       sinon: true,
     },
     extra: {
-      resolve: {
-        // TODO revisit when done converting to NWB.
-        extensions: ['.webpack.js', '.web.js', '.js', '.json', '.jsx', '.ts', '.tsx'],
-        // TODO remove once everything is converted to NWB.
-        mainFields: ['ak:webpack:raw', 'module', 'main', 'webpack'],
+      module: {
+        rules: [
+          {
+            test: /\.json$/,
+            use: 'json-loader',
+          },
+        ],
       },
     },
     // TODO remove once NWB is fully integrated.

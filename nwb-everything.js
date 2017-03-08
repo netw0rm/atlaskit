@@ -44,6 +44,7 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   pkgJson.module = 'es/index.js';
   pkgJson.scripts.prepublish = 'nwb build-web-module';
   pkgJson.scripts.test = 'nwb test';
+  pkgJson.scripts['test:watch'] = 'nwb test --server';
 
   fs.renameSync(path.join(dir, 'test'), path.join(dir, 'tests'));
   fs.writeFileSync(pkg, JSON.stringify(pkgJson, null, 2));

@@ -68,4 +68,33 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
 
     expect(spy.callCount).to.equal(1);
   });
+
+  describe('feature flags', () => {
+    it('should enable mentions if mentionProvider exists', () => {
+      const editorWrapper = mount(<Editor mentionProvider={(): Promise<any> => Promise.resolve({})}/>);
+      const editor: Editor = editorWrapper.get(0) as any;
+      expect(editor.state.schema.nodes.mention).to.exist;
+      expect(editor.state.schema.marks.mention_query).to.exist;
+    });
+
+    it('should not enable mentions if mentionProvider doesn`t exist', () => {
+      const editorWrapper = mount(<Editor/>);
+      const editor: Editor = editorWrapper.get(0) as any;
+      expect(editor.state.schema.nodes.mention).to.not.exist;
+      expect(editor.state.schema.marks.mention_query).to.not.exist;
+    });
+
+    it('allowLists=true prop should enable lists', () => {
+      const editorWrapper = mount(<Editor allowLists={true}/>);
+      const editor: Editor = editorWrapper.get(0) as any;
+      expect(editor.state.schema.nodes.bullet_list).to.exist;
+    });
+
+    it('lists should be disabled without allowLists prop', () => {
+      const editorWrapper = mount(<Editor/>);
+      const editor: Editor = editorWrapper.get(0) as any;
+      expect(editor.state.schema.nodes.bullet_list).to.not.exist;
+    });
+  });
+
 });

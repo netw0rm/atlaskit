@@ -33,6 +33,7 @@ export type DimensionMap = { [key: Id]: Dimension };
 export type DragMovement = {|
   draggables: DraggableId[],
   amount: number,
+  isMovingForward: boolean,
 |}
 
 export type DragImpact = {|

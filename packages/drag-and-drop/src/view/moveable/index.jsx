@@ -35,7 +35,6 @@ const getMovement = (point: Position): Object => {
   if (isAtOrigin(point)) {
     return {};
   }
-  // todo: support different vendors
   return {
     transform: `translate(${point.x}px, ${point.y}px)`,
   };

@@ -45,7 +45,7 @@ class ScrollTo extends PureComponent {
     const isMovingForward = ((): boolean => {
       // first movement
       if (prevProps.currentDrag == null) {
-        return currentDrag.impact.movement.amount < 1;
+        return currentDrag.impact.movement.isMovingForward;
       }
 
       // subsequent movements

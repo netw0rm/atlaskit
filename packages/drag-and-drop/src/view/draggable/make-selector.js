@@ -56,14 +56,19 @@ export default (provide: Provide) => {
           };
         }
 
-        if (last.impact.movement.draggables.includes(provided.id)) {
+        const { impact: { movement } } = last;
+
+        if (movement.draggables.includes(provided.id)) {
           if (complete.isAnimationFinished) {
             return cutOffAnimation(id, isDragEnabled);
           }
 
+          const amount = movement.isMovingForward ?
+            -movement.amount : movement.amount;
+
           return {
             ...getDefaultProps(id, isDragEnabled),
-            offset: memoizedOffset(0, last.impact.movement.amount),
+            offset: memoizedOffset(0, amount),
           };
         }
 
@@ -91,10 +96,15 @@ export default (provide: Provide) => {
         };
       }
 
-      if (currentDrag.impact.movement.draggables.includes(id)) {
+      const { impact: { movement } } = currentDrag;
+
+      if (movement.draggables.includes(id)) {
+        const amount = movement.isMovingForward ?
+          -movement.amount : movement.amount;
+
         return {
           ...getDefaultProps(id, isDragEnabled),
-          offset: memoizedOffset(0, currentDrag.impact.movement.amount),
+          offset: memoizedOffset(0, amount),
         };
       }
 

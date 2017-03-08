@@ -26,6 +26,7 @@ const initialState: State = {
 const noMovement = {
   draggables: [],
   amount: 0,
+  isMovingForward: false,
 };
 
 const shout = (message) => {
@@ -208,9 +209,12 @@ export default (state: State = initialState, action: Action): State => {
 
     // TODO: need to consider movement between two lists
     // (could impact both x and y values)
+    const amount = last.impact.movement.isMovingForward ?
+      last.impact.movement.amount : -last.impact.movement.amount;
+
     const offset: Position = {
       x: 0,
-      y: -(last.impact.movement.amount * last.impact.movement.draggables.length),
+      y: (amount * last.impact.movement.draggables.length),
     };
 
     const isAnimationRequired = dragging.offset.x !== offset.x || dragging.offset.y !== offset.y;

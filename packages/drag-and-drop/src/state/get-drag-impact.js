@@ -13,14 +13,14 @@ import getInsideDroppable from './get-inside-droppable';
 const noMovement: DragMovement = {
   draggables: [],
   amount: 0,
+  isMovingForward: false,
 };
-
-type Direction = 1 | -1;
 
 export default (target: Position,
   draggableId: DraggableId,
   draggableDimensions: DimensionMap,
   droppableDimensions: DimensionMap): DragImpact => {
+
   const droppableId: ?DroppableId = getDroppableOver(
     target, droppableDimensions
   );
@@ -36,12 +36,10 @@ export default (target: Position,
   const draggingDimension: Dimension = draggableDimensions[draggableId];
   const droppableDimension: Dimension = droppableDimensions[droppableId];
 
-  // positive = moving forwards (TODO! currently this is backwards)
-  // negative = moving backwards
-  const direction: Direction = target.y - draggingDimension.center.y > 0 ? 1 : -1;
   const isMovingForward: boolean = target.y - draggingDimension.center.y > 0;
+  console.log('impact - isMovingForward', isMovingForward);
 
-    // get all draggables inside the draggable
+  // get all draggables inside the draggable
   const insideDroppable: Dimension[] = getInsideDroppable(droppableDimension, draggableDimensions);
 
   const moved: DraggableId[] = insideDroppable
@@ -85,10 +83,11 @@ export default (target: Position,
 
   console.log('current index', index);
 
-  const amount = draggingDimension.height * -1 * direction;
+  const amount = draggingDimension.height;
   const movement: DragMovement = {
     amount,
     draggables: moved,
+    isMovingForward,
   };
 
   return {

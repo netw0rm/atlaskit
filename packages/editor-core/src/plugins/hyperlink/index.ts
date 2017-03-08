@@ -123,13 +123,6 @@ export class HyperlinkState {
     this.changeHandlers.forEach(cb => cb(this));
   }
 
-  escapeFromMark(dispatch: (tr: Transaction) => void) {
-    const nodeInfo = this.getActiveLinkNodeInfo();
-    if (nodeInfo && this.isShouldEscapeFromMark(nodeInfo)) {
-      dispatch(this.state.tr.removeMark(nodeInfo.startPos, this.state.selection.$from.pos, this.state.schema.marks.link));
-    }
-  }
-
   autoformattingLink(view: EditorView, text: string): boolean {
     const urlAtEndOfLine = new RegExp(`${URL.source}$`);
     const { $from, $to } = view.state.selection;
@@ -164,11 +157,6 @@ export class HyperlinkState {
 
     return false;
 
-  }
-
-  private isShouldEscapeFromMark(nodeInfo: NodeInfo | undefined) {
-    const parentOffset = this.state.selection.$from.parentOffset;
-    return nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset;
   }
 
   private getActiveLinkNodeInfo(): NodeInfo | undefined {
@@ -240,7 +228,6 @@ const plugin = new Plugin({
       update: (view: EditorView, prevState: EditorState<any>) => {
         const pluginState = stateKey.getState(view.state);
         pluginState.update(view.state, view.docView);
-        pluginState.escapeFromMark(view.dispatch);
       }
     };
   },

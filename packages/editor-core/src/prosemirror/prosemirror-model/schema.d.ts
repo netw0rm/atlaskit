@@ -49,6 +49,7 @@ export interface AttributeSpec {
 export interface MarkSpec {
   attrs?: { [key: string]: AttributeSpec };
   inclusiveRight?: boolean;
+  inclusiveLeft?: boolean;
   toDOM?: (mark: Mark) => {};
   parseDOM?: ParseRule[];
 }

@@ -7,7 +7,7 @@ const path = require('path');
 const cwd = process.cwd();
 const pathPackages = path.join(cwd, 'packages');
 
-const exclude = ['icon', 'reduced-ui-pack'];
+const exclude = ['css-reset', 'icon', 'reduced-ui-pack'];
 
 fs.readdirSync(pathPackages).forEach((pathPackage) => {
   const dir = path.join(pathPackages, pathPackage);

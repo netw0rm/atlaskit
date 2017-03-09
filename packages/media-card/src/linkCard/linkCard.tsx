@@ -6,7 +6,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/observable/fromPromise';
 
-import {LinkCardViewHorizontal} from '..';
+import {LinkCardViewHorizontal} from '../linkCardViewHorizontal/linkCardViewHorizontal';
 
 export interface LinkFromId {
   readonly id: string;

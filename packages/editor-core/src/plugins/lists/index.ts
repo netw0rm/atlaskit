@@ -108,7 +108,9 @@ export class ListsState {
     pm.addKeymap(new Keymap({
       [keymaps.splitListItem.common!]: () => commands.splitListItem(list_item)(pm),
       [keymaps.toggleOrderedList.common!]: trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', () => this.toggleOrderedList()),
-      [keymaps.toggleBulletList.common!]: trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', () => this.toggleBulletList())
+      [keymaps.toggleBulletList.common!]: trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', () => this.toggleBulletList()),
+      ['Tab']: this.nestList,
+      ['Shift-Tab']: this.liftList
     }));
   }
 
@@ -189,6 +191,36 @@ export class ListsState {
       }
 
       this.resetSelection();
+    }
+  }
+
+  nestList = () => {
+    if (this.bulletListActive || this.orderedListActive) {
+      const { pm } = this;
+      const { bullet_list, ordered_list } = pm.schema.nodes;
+      const nodeType = this.bulletListActive ? bullet_list : ordered_list;
+      if (nodeType) {
+        commands.wrapInList(nodeType)(pm);
+        return true;
+      }
+    }
+  }
+
+  liftList = () => {
+    if (this.bulletListActive || this.orderedListActive) {
+      const { pm } = this;
+      const { bullet_list, ordered_list } = pm.schema.nodes;
+      const nodeType = this.bulletListActive ? bullet_list : ordered_list;
+      if (nodeType) {
+        commands.lift(pm, true);
+        if (canJoinUp(pm, pm.selection, pm.doc, nodeType)) {
+          commands.joinUp(pm, true);
+        }
+        if (canJoinDown(pm, pm.selection, pm.doc, nodeType)) {
+          commands.joinDown(pm, true);
+        }
+        return true;
+      }
     }
   }
 

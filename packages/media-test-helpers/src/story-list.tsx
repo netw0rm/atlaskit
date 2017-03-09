@@ -58,8 +58,8 @@ export class StoryList extends Component<StoryListProps, {}> {
   render() {
     const display = this.props.display ? this.props.display : 'row';
     const listStyles = display === 'column' ? styles.column : styles.row;
-    const listContent = this.props.children.map(c => {
-      return <li style={listStyles.stateItem}>
+    const listContent = this.props.children.map((c, i) => {
+      return <li style={listStyles.stateItem} key={i}>
         <div style={listStyles.stateTitle}>{c.title}</div>
         {c.content}
       </li>;

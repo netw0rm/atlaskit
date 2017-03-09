@@ -26,7 +26,7 @@ storiesOf('LinkCardTrelloCardView', {})
           linkUrl="https://trello.com/b/hlo7gRqs/shpxxxviii-60"
           thumbnailUrl={defaultThumbnailUrl}
           iconUrl={defaultIconUrl}
-          listName='Doing'
+          listName="Doing"
           card={{
             name: 'Design + Product (allthethings)',
             url: 'https://trello.com/c/sh1Qhm1D/11-design-product-allthethings'

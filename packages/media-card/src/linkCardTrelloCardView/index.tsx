@@ -33,12 +33,12 @@ export type TrelloList = {
 export type TrelloCard = {
     name: string,
     url: string
-}
+};
 
 export type TrelloBoard = {
     name: string,
     url: string
-}
+};
 
 export interface LinkCardTrelloCardViewProps {
     linkUrl: string;
@@ -67,7 +67,7 @@ export class LinkCardTrelloCardView extends Component<LinkCardTrelloCardViewProp
                 <span>on </span>
                 <span><a href={this.props.board.url}>{this.props.board.name}</a></span>
             </div>
-        )
+        );
     }
 
     render(): JSX.Element {
@@ -96,15 +96,16 @@ export class LinkCardTrelloCardView extends Component<LinkCardTrelloCardViewProp
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <ClockIcon
-                                label='due'
-                                size='small'
+                                label="due"
+                                size="small"
                             />
                             <span>Today</span>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <AttachmentIcon
-                                label='attachments'
-                                size="small" />
+                                label="attachments"
+                                size="small"
+                            />
                             <span>2</span>
                         </div>
                     </div>

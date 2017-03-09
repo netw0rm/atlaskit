@@ -116,7 +116,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     return (
       <LinkCard
         context={viewContext}
-        menuActions={[ CardDelete(onDelete) ]}
+        menuActions={[ CardDelete(onDelete!) ]}
         link={id ? { id: id!, collection: (collectionId ? collectionId : '')} : url!}
       />
     );

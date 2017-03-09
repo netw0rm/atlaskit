@@ -1,4 +1,4 @@
-import { MediaNode } from './../../schema/nodes/media';
+// import { MediaNode } from './../../schema/nodes/media';
 import {  Plugin, ProseMirror, Schema, inputRules } from '../../prosemirror';
 
 import {

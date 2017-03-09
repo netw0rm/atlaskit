@@ -11,9 +11,7 @@ import {
   DefaultKeymapsPlugin,
   TextFormattingPlugin,
   version as coreVersion,
-  MediaPlugin,
   MediaPluginFactory,
-  MediaNodeType,
   MediaProvider
 } from '@atlaskit/editor-core';
 import * as cx from 'classnames';
@@ -134,15 +132,6 @@ export default class Editor extends PureComponent<Props, State> {
         </div>
       </div>
     );
-  }
-
-  public componentWillReceiveProps(newProps) {
-    const { props } = this;
-    const { pm } = this.state;
-
-    if (props.mediaProvider !== newProps.mediaProvider) {
-      (pm!.schema.nodes['media'] as MediaNodeType).setMediaProvider(newProps.mediaProvider);
-    }
   }
 
   private handleRef = (place: Element | null) => {

@@ -5,7 +5,7 @@ import * as sinon from 'sinon';
 import { mount } from 'enzyme';
 import { Reactions } from '../src';
 import Reaction from '../src/internal/reaction';
-import { emojiService } from '../stories/examples/emoji-service';
+import { getEmojiResource } from '../stories/examples/emoji-provider';
 import { reactionsProvider } from '../stories/examples/reactions-provider';
 
 const { expect } = chai;
@@ -20,7 +20,7 @@ sinon.stub(reactionsProvider, 'subscribe', (ari: string, handler: Function) => {
 });
 
 const renderReactions = (onClick: Function = () => { }) => {
-  return <Reactions ari={demoAri} reactionsProvider={reactionsProvider} emojiService={emojiService} onReactionClick={onClick} />;
+  return <Reactions ari={demoAri} reactionsProvider={reactionsProvider} emojiProvider={getEmojiResource()} onReactionClick={onClick} />;
 };
 
 const getSortedReactions = () => {

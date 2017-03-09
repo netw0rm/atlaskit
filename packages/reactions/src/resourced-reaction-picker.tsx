@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { EmojiProvider } from '@atlaskit/emoji';
+
 import { ReactionsProvider } from './reactions-resource';
 import ReactionPicker from './reaction-picker';
 
 export interface Props {
   ari: string;
   reactionsProvider: Promise<ReactionsProvider>;
-  emojiService: any;
+  emojiProvider: Promise<EmojiProvider>;
   miniMode?: boolean;
   boundariesElement?: string;
 }
@@ -54,11 +56,11 @@ export default class ResourcedReactionPicker extends PureComponent<Props, State>
       return null;
     }
 
-    const { ari, boundariesElement, emojiService, miniMode } = this.props;
+    const { ari, boundariesElement, emojiProvider, miniMode } = this.props;
 
     return (
       <ReactionPicker
-        emojiService={emojiService}
+        emojiProvider={emojiProvider}
         onSelection={(emojiId) => reactionsProvider.toggleReaction(ari, emojiId)}
         miniMode={miniMode}
         boundariesElement={boundariesElement}

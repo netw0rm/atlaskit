@@ -9,12 +9,12 @@ import { ReactionPicker } from '../src';
 import EmojiButton from '../src/internal/emoji-button';
 import Selector from '../src/internal/selector';
 import Trigger from '../src/internal/trigger';
-import { emojiService } from '../stories/examples/emoji-service';
+import { getEmojiResource } from '../stories/examples/emoji-provider';
 
 const { expect } = chai;
 
 const renderPicker = (onSelection: Function = () => {}) => {
-  return <ReactionPicker emojiService={emojiService} onSelection={onSelection} />;
+  return <ReactionPicker emojiProvider={getEmojiResource()} onSelection={onSelection} />;
 };
 
 describe('@atlaskit/reactions/reaction-picker', () => {

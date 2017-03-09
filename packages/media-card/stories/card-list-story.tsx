@@ -96,12 +96,37 @@ storiesOf('CardList', {})
     </StoryList>
   ))
   .add('Small cards', () => (
-    <CardList
-      context={context}
-      collectionName={collectionName}
-      actions={[clickAction]}
-      cardType={'small'}
-    />
+    <StoryList>
+      {[{
+        title: 'Adapt parent width',
+        content: <div style={{border: '1px solid', width: '200px', overflow: 'hidden'}}>
+          <CardList
+            context={context}
+            collectionName={collectionName}
+            actions={[clickAction]}
+            cardType={'small'}
+          />
+        </div>
+      }, {
+        title: 'Small parent width',
+        content: <div style={{border: '1px solid', width: '100px', overflow: 'hidden'}}>
+          <CardList
+            context={context}
+            collectionName={collectionName}
+            actions={[clickAction]}
+            cardType={'small'}
+          />
+        </div>
+      }, {
+        title: 'Default',
+        content: <CardList
+          context={context}
+          collectionName={collectionName}
+          actions={[clickAction]}
+          cardType={'small'}
+        />
+      }]}
+    </StoryList>
   ))
   .add('Custom actions dropdown', () => (
     <CardList
@@ -160,23 +185,27 @@ storiesOf('CardList', {})
     />;
   })
   .add('With infinite scroll', () => {
-    return <CardList
-      context={context}
-      collectionName={collectionName}
-      actions={cardsActions}
-      pageSize={10}
-      height={500}
-    />;
+    return <div style={{display: 'inline-block'}}>
+      <CardList
+        context={context}
+        collectionName={collectionName}
+        actions={cardsActions}
+        pageSize={10}
+        height={500}
+      />
+    </div>;
   })
   .add('With infinite scroll with small cards', () => {
-    return <CardList
-      context={context}
-      collectionName={collectionName}
-      actions={cardsActions}
-      cardType={'small'}
-      pageSize={20}
-      height={500}
-    />;
+    return <div style={{display: 'inline-block'}}>
+      <CardList
+        context={context}
+        collectionName={collectionName}
+        actions={cardsActions}
+        cardType={'small'}
+        pageSize={20}
+        height={500}
+      />
+    </div>;
   })
   .add('With infinite scroll and card width', () => {
     return <CardList

@@ -83,11 +83,7 @@ export interface Props {
   onClick: Function;
 }
 
-export interface State {
-
-}
-
-export default class Reaction extends PureComponent<Props, State> {
+export default class Reaction extends PureComponent<Props, {}> {
 
   private handleMouseDown = (event) => {
     event.preventDefault();

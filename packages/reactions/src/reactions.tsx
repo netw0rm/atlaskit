@@ -3,12 +3,12 @@ import { Component } from 'react';
 import { style } from 'typestyle';
 import Reaction from './internal/reaction';
 import ReactionPicker from './reaction-picker';
-import AbstractReactionsService from './reactions-service';
-import { ReactionSummary } from './reactions-service';
+// import AbstractReactionsProvider from './reactions-resource';
+import { ReactionsProvider, ReactionSummary } from './reactions-resource';
 
 export interface Props {
   ari: string;
-  reactionsService: AbstractReactionsService;
+  reactionsProvider: ReactionsProvider;
   emojiService: any; // EmojiService
   onReactionClick: Function;
   boundariesElement?: string;
@@ -47,13 +47,13 @@ export default class Reactions extends Component<Props, State> {
   }
 
   componentWillMount() {
-    const { ari, reactionsService } = this.props;
-    reactionsService.subscribe(ari, this.updateState);
+    const { ari, reactionsProvider } = this.props;
+    reactionsProvider.subscribe(ari, this.updateState);
   }
 
   componentWillUnmount() {
-    const { ari, reactionsService } = this.props;
-    reactionsService.unsubscribe(ari, this.updateState);
+    const { ari, reactionsProvider } = this.props;
+    reactionsProvider.unsubscribe(ari, this.updateState);
   }
 
   private updateState = (state) => {

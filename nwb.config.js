@@ -1,8 +1,36 @@
 /* eslint import/no-dynamic-require: 0 */
 /* eslint global-require: 0 */
+/* eslint prefer-object-spread/prefer-object-spread: 0 */
+
+/*
+
+NWB TODO
+
+- Turn off "lib" build
+
+*/
+
+const path = require('path');
+const camelcase = require('camelcase');
+
+const pack = require(path.join(process.cwd(), 'package.json'));
 
 module.exports = {
   type: 'react-component',
+  npm: {
+    esModules: false,
+    umd: {
+      global: camelcase(pack.name),
+      externals: Object.keys(Object.assign(
+        {},
+        pack.dependencies,
+        pack.peerDependencies
+      )).reduce((prev, curr) => {
+        prev[curr] = curr;
+        return prev;
+      }),
+    },
+  },
   babel: {
     plugins: [
       'transform-flow-strip-types',
@@ -13,13 +41,16 @@ module.exports = {
     frameworks: ['mocha', 'chai'],
     plugins: [require('karma-chai')],
 
-    // TODO remove this when following the default covention.
+    // TODO remove this when following the default convention.
     testFiles: [
       // This is our current convention.
       'test/**Spec.jsx',
 
       // This is the default NWB convention.
       '@(src|test|tests)/**@(.|-)@(spec|test).js',
+
+      // Some follow this convention.
+      '@(src|test|tests)/**!(_)*.js',
     ],
   },
   webpack: {
@@ -28,21 +59,6 @@ module.exports = {
       sinon: true,
     },
     extra: {
-      module: {
-        rules: [
-          {
-            test: /\.json$/,
-            use: 'json-loader',
-          }, {
-            test: /\.less$/,
-            use: [
-              { loader: 'css-loader', options: { modules: true } },
-              'less-loader',
-            ],
-          },
-        ],
-      },
-
       // TODO remove this when not using .jsx anymore.
       resolve: {
         extensions: ['.js', '.json', '.jsx'],

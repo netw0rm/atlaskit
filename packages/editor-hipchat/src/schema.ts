@@ -16,7 +16,7 @@ import {
 export default new Schema({
   nodes: {
     // The top level node for a document.
-    doc: { type: DocNodeType, content: 'block+' },
+    doc: { type: DocNodeType, content: 'paragraph' },
 
     // A paragraph node.
     paragraph: { type: ParagraphNodeType, content: 'inline<_>*', group: 'block' },

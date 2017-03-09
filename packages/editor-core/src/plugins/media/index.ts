@@ -7,8 +7,9 @@ import {
 } from '../../schema';
 
 import inputRule from './input-rule';
+import { URL } from '../hyperlink/regex';
 
-import { MediaProvider } from '../../media';
+// import { MediaProvider } from '../../media';
 // import { MediaPicker } from '@atlassian/mediapicker';
 // import { StorybookTokenProvider } from '@atlaskit/media-test-helper';
 
@@ -19,20 +20,41 @@ export type StateChangeHandler = (state: MediaPluginState) => any;
 
 export class MediaPluginState {
   private pm: PM;
-  private mediaProvider: MediaProvider;
   public picker: any;
 
-  constructor(pm: PM, options: { mediaProvider: MediaProvider }) {
+  constructor(pm: PM) {
     this.pm = pm;
-    this.mediaProvider = options.mediaProvider;
 
     const rules = inputRules.ensure(pm);
     rules.addRule(inputRule);
 
     pm.content.addEventListener('pm-node-delete', (e: CustomEvent) => {
-      const node = e.detail.node as MediaNode;
+      // const node = e.detail.node as MediaNode;
       // TODO: Remove the node
       // debugger;
+    });
+
+    const urlRegex = new RegExp(`${URL.source}`);
+    pm.on.domPaste.add((event: ClipboardEvent) => {
+      const text = event.clipboardData.getData('text/plain');
+      if (!text) {
+        return;
+      }
+
+      const match = urlRegex.exec(text);
+
+      if (!match || !match.length) {
+        return;
+      }
+
+      const url = match[3] ? match[1] : `http://${match[1]}`;
+      pm.content.dispatchEvent(new CustomEvent('shipit-link-added', {
+        bubbles: true,
+        cancelable: true,
+        detail: {
+          url: url
+        }
+      }));
     });
 
     // StorybookTokenProvider.tokenProvider().then(token => {
@@ -78,8 +100,8 @@ export class MediaPluginState {
 // IE11 + multiple prosemirror fix.
 Object.defineProperty(MediaPluginState, 'name', { value: 'MediaPluginState' });
 
-export default function MediaPluginFactory (mediaProvider: MediaProvider) {
-  return new Plugin(MediaPluginState, { mediaProvider });
+export default function MediaPluginFactory () {
+  return new Plugin(MediaPluginState);
 };
 
 export interface MediaPlugin extends Plugin<MediaPluginState> {};

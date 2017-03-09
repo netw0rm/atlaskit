@@ -1,4 +1,4 @@
-import { Emoji } from '@atlaskit/emoji';
+import { ResourcedEmoji } from '@atlaskit/emoji';
 import { EmojiDescription } from '@atlaskit/emoji/src/types';
 import {
   akColorN50,
@@ -11,6 +11,7 @@ import { Attribute, Inline, Node, Schema } from '../../prosemirror';
 const width = '20px';
 const height = '20px';
 
+// FIXME this should be able to be removed when moved into emoji
 const emojiStyle = style({
   display: 'inline-block',
   width: width,
@@ -20,20 +21,22 @@ const emojiStyle = style({
 
   $nest: {
     '&.ProseMirror-selectednode': {
-      background: akColorN50,
-      outline: 'none'
+      backgroundColor: akColorN50,
+      outline: 'none',
     },
-    '&&> div': {
+    // sprite
+    '.emoji-sprite': {
+      margin: '0',
       width: width,
       height: height,
+    },
 
-      $nest: {
-        '> span': {
-          margin: '0',
-          width: width,
-          height: height,
-        }
-      }
+    // image
+    '> span': {
+      margin: '0',
+      width: width,
+      height: height,
+      backgroundSize: `${width} ${height}`,
     }
   }
 });
@@ -49,13 +52,9 @@ export class EmojiNodeType extends Inline {
   get attrs() {
     return {
       id: new Attribute({ default: '' }),
-      emoji: new Attribute({ default: {
-        shortcut: '',
-        type: '',
-        category: '',
-        order: 0,
-        representation: {}
-      }})
+      variation: new Attribute({ default: 0 }),
+      shortcut: new Attribute({ default: '' }),
+      emojiProvider: new Attribute({ default: null }), // Promise<EmojiProvider>
     };
   }
 
@@ -72,7 +71,9 @@ export class EmojiNodeType extends Inline {
     dom.setAttribute('contenteditable', 'false');
     dom.setAttribute('data-emoji-id', node.attrs.id);
     dom.classList.add(emojiStyle);
-    ReactDOM.render(<Emoji {...node.attrs} />, dom);
+    const { id, variation, emojiProvider } = node.attrs;
+    const emojiId = { id, variation };
+    ReactDOM.render(<ResourcedEmoji emojiId={emojiId} emojiProvider={emojiProvider} />, dom);
     return dom;
   }
 }

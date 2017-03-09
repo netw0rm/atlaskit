@@ -69,7 +69,7 @@ export const denormaliseSkinServiceRepresentation = (skins?: EmojiServiceReprese
 
 /**
  * Denormalised an emoji response (emojis + sprite references) into an array of
- * emoji will local sprite definitions.
+ * emoji with local sprite definitions.
  */
 export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse): EmojiResponse  => {
   const emojis: EmojiDescription[] = emojiData.emojis.map((emoji: EmojiServiceDescription): EmojiDescription => {

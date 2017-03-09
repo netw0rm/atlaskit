@@ -39,7 +39,9 @@ export interface LinkCardViewHorizontalProps {
 }
 
 export interface LinkCardViewHorizontalState {
-  isMenuExpanded: boolean;
+  isMenuExpanded?: boolean;
+  thumbnailError?: boolean;
+  iconError?: boolean;
 }
 
 export class LinkCardViewHorizontal extends Component<LinkCardViewHorizontalProps, LinkCardViewHorizontalState> {
@@ -61,16 +63,43 @@ export class LinkCardViewHorizontal extends Component<LinkCardViewHorizontalProp
     super(props);
 
     this.state = {
-      isMenuExpanded: false
+      isMenuExpanded: false,
+      thumbnailError: false,
+      iconError: false
     };
+
+    this.thumbnailError = this.thumbnailError.bind(this);
+    this.iconError = this.iconError.bind(this);
+  }
+
+  thumbnailError() {
+    this.setState({
+      thumbnailError: true,
+    });
+  }
+
+  iconError() {
+    this.setState({
+      iconError: true,
+    });
   }
 
   render() {
     const {width, height, linkUrl, title, description, thumbnailUrl, iconUrl} = this.props;
     const cardStyle = {height: `${height}px`, width: `${width}px`};
 
-    const thumbnail = thumbnailUrl ? <Thumbnail src={thumbnailUrl} alt={title} /> : null;
-    const icon = iconUrl ? <img src={iconUrl} alt={title} /> : null;
+    const thumbnail = (thumbnailUrl && !this.state.thumbnailError) ?
+      <Thumbnail
+        src={thumbnailUrl}
+        alt={title}
+        onError={this.thumbnailError}
+      /> : null;
+    const icon = (iconUrl && !this.state.iconError) ?
+      <img
+        src={iconUrl}
+        alt={title}
+        onError={this.iconError}
+      /> : null;
 
     return (
       <Wrapper style={cardStyle} onClick={this.onClick.bind(this)}>

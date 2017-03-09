@@ -55,6 +55,7 @@ const DraggableItem = (() => {
   class Item extends PureComponent {
     props: {|
       itemId: string,
+      listId: string,
       isDragging: boolean,
     |}
 
@@ -75,6 +76,7 @@ const DraggableItem = (() => {
 
   const provide = ownProps => ({
     id: ownProps.itemId,
+    droppableId: ownProps.listId,
   });
 
   const mapStateToProps = state => ({
@@ -91,6 +93,8 @@ const DroppableList = (() => {
     width: 300px;
     align-items: stretch;
     margin: 8px;
+    height: 500px;
+    overflow-y: scroll;
     background-color: ${props => (props.isDraggingOver ? 'gold' : 'deepskyblue')};
   `;
 
@@ -111,6 +115,7 @@ const DroppableList = (() => {
             <DraggableItem
               key={item.id}
               itemId={item.id}
+              listId={this.props.listId}
             />
           ))}
         </ListContainer>

@@ -324,6 +324,7 @@ export default (type: TypeId,
             {wrap(
               <DraggableDimensionPublisher
                 itemId={mapProps.id}
+                droppableId={mapProps.droppableId}
                 type={type}
                 outerRef={this.state.ref}
               >

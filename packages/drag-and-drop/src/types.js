@@ -14,6 +14,7 @@ export type Position = {|
 
 export type Dimension = {|
   id: Id,
+  droppableId: ?DroppableId,
   top: number,
   right: number,
   bottom: number,

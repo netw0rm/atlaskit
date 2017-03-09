@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 import invariant from 'invariant';
 import { currentDragSelector, dragCompleteSelector } from '../../state/selectors';
 import type { Provide, NeedsProviding, MapProps, OwnProps } from './draggable-types';
-import type { DraggableId, DragComplete, CurrentDrag, Position, State } from '../../types';
+import type { DraggableId, DroppableId, DragComplete, CurrentDrag, Position, State } from '../../types';
 
 export default (provide: Provide) => {
   const memoizedProvide = memoizeOne(provide, isShallowEqual);
@@ -19,37 +19,41 @@ export default (provide: Provide) => {
   // Technically memoization is not needed for `getDefaultProps`
   // or `cutOffAnimation` : but it will make any shallow equality
   // checks faster as it can just compare the root
-  const getDefaultProps = memoizeOne((id: DraggableId, isDragEnabled: boolean): MapProps => ({
-    id,
-    isDragEnabled,
-    isDragging: false,
-    canAnimate: true,
-  }));
+  const getDefaultProps = memoizeOne(
+    (id: DraggableId, droppableId: DroppableId, isDragEnabled: boolean): MapProps => ({
+      id,
+      isDragEnabled,
+      droppableId,
+      isDragging: false,
+      canAnimate: true,
+    }));
 
-  const cutOffAnimation = memoizeOne((id: DraggableId, isDragEnabled: boolean): MapProps => ({
-    id,
-    isDragEnabled,
-    isDragging: false,
-    canAnimate: false,
-  }));
+  const cutOffAnimation = memoizeOne(
+    (id: DraggableId, droppableId: DroppableId, isDragEnabled: boolean): MapProps => ({
+      id,
+      isDragEnabled,
+      droppableId,
+      isDragging: false,
+      canAnimate: false,
+    }));
 
   return createSelector(
     [currentDragSelector, dragCompleteSelector, getProvided],
     (currentDrag: ?CurrentDrag,
       complete: ?DragComplete,
       provided: NeedsProviding): MapProps => {
-      const { id, isDragEnabled = true } = provided;
+      const { id, droppableId, isDragEnabled = true } = provided;
 
       if (complete) {
         const last: CurrentDrag = complete.last;
 
         if (last.dragging.id === provided.id) {
           if (complete.isAnimationFinished) {
-            return cutOffAnimation(id, isDragEnabled);
+            return cutOffAnimation(id, droppableId, isDragEnabled);
           }
 
           return {
-            ...getDefaultProps(id, isDragEnabled),
+            ...getDefaultProps(id, droppableId, isDragEnabled),
             offset: complete.newHomeOffset,
             // TODO: is this needed?
             initial: last.dragging.initial,
@@ -60,23 +64,23 @@ export default (provide: Provide) => {
 
         if (movement.draggables.includes(provided.id)) {
           if (complete.isAnimationFinished) {
-            return cutOffAnimation(id, isDragEnabled);
+            return cutOffAnimation(id, droppableId, isDragEnabled);
           }
 
           const amount = movement.isMovingForward ?
             -movement.amount : movement.amount;
 
           return {
-            ...getDefaultProps(id, isDragEnabled),
+            ...getDefaultProps(id, droppableId, isDragEnabled),
             offset: memoizedOffset(0, amount),
           };
         }
 
-        return getDefaultProps(id, isDragEnabled);
+        return getDefaultProps(id, droppableId, isDragEnabled);
       }
 
       if (!currentDrag || !currentDrag.dragging) {
-        return getDefaultProps(id, isDragEnabled);
+        return getDefaultProps(id, droppableId, isDragEnabled);
       }
 
       if (currentDrag.dragging.id === id) {
@@ -88,6 +92,7 @@ export default (provide: Provide) => {
 
         return {
           id,
+          droppableId,
           isDragEnabled: true,
           isDragging: true,
           canAnimate,
@@ -103,12 +108,12 @@ export default (provide: Provide) => {
           -movement.amount : movement.amount;
 
         return {
-          ...getDefaultProps(id, isDragEnabled),
+          ...getDefaultProps(id, droppableId, isDragEnabled),
           offset: memoizedOffset(0, amount),
         };
       }
 
-      return getDefaultProps(id, isDragEnabled);
+      return getDefaultProps(id, droppableId, isDragEnabled);
     }
   );
 };

@@ -43,6 +43,7 @@ export class DimensionPublisher extends PureComponent {
 
     const dimension: Dimension = {
       id: this.props.itemId,
+      droppableId: this.props.droppableId,
       top,
       right,
       bottom,

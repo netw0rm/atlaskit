@@ -1,14 +1,10 @@
-import { MediaCollectionItem, MediaApiConfig } from '@atlaskit/media-core';
+import { MediaCollectionItem, ContextConfig } from '@atlaskit/media-core';
 
 export type MediaItemId = string;
 export type MediaCollectionId = string;
 export type MediaViewContextScope = MediaCollectionItem[] | MediaCollectionId;
 
-export type IsScopedToCloudClientId = {
-  clientId: string;
-};
-
-export interface MediaResource {
+export interface MediaProvider {
   /**
    * Resolve to a Media Context Config for uploading new media items, i.e.:
    *
@@ -18,7 +14,7 @@ export interface MediaResource {
    *     tokenProvider: tokenProvidingFunction
    *   });
    */
-  getUploadContext(): Promise<MediaApiConfig & IsScopedToCloudClientId>;
+  // getUploadContext(): Promise<ContextConfig>;
 
   /**
    * Resolve to Media Context that allows downloading Media. Optionally accepts a list of media items or
@@ -30,7 +26,9 @@ export interface MediaResource {
    *     tokenProvider: tokenProvidingFunction
    *   });
    */
-  getViewContext(scope?: MediaViewContextScope): Promise<MediaApiConfig & IsScopedToCloudClientId>;
+  getViewContext(scope?: MediaViewContextScope): Promise<ContextConfig>;
 };
 
-export default MediaResource;
+export { ContextConfig as MediaContextConfig };
+
+export default MediaProvider;

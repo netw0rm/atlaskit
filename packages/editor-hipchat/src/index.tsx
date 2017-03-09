@@ -11,6 +11,10 @@ import {
   DefaultKeymapsPlugin,
   TextFormattingPlugin,
   version as coreVersion,
+  MediaPlugin,
+  MediaPluginFactory,
+  MediaNodeType,
+  MediaProvider
 } from '@atlaskit/editor-core';
 import * as cx from 'classnames';
 import * as React from 'react';
@@ -79,6 +83,7 @@ export interface Props {
   mentionResourceProvider?: any;
   presenceResourceProvider?: any;
   reverseMentionPicker?: boolean;
+  mediaProvider?: Promise<MediaProvider>;
 }
 
 export interface State {
@@ -131,12 +136,23 @@ export default class Editor extends PureComponent<Props, State> {
     );
   }
 
+  public componentWillReceiveProps(newProps) {
+    const { props } = this;
+    const { pm } = this.state;
+
+    if (props.mediaProvider !== newProps.mediaProvider) {
+      (pm!.schema.nodes['media'] as MediaNodeType).setMediaProvider(newProps.mediaProvider);
+    }
+  }
+
   private handleRef = (place: Element | null) => {
     if (!place) {
       return this.setState({ pm: undefined });
     }
 
     const { props } = this;
+    const { mediaProvider } = props;
+
     const pm = new ProseMirror({
       place,
       doc: schema.nodes.doc.createAndFill(),
@@ -145,9 +161,14 @@ export default class Editor extends PureComponent<Props, State> {
         HyperlinkPlugin,
         DefaultKeymapsPlugin,
         TextFormattingPlugin,
-        ...(this.props.mentionResourceProvider ? [MentionsPlugin] : [])
+        ...(this.props.mentionResourceProvider ? [MentionsPlugin] : []),
+        ...(mediaProvider ? [MediaPluginFactory(mediaProvider)] : []),
       ],
     });
+
+    if (mediaProvider) {
+      (pm.schema.nodes['media'] as MediaNodeType).setMediaProvider(mediaProvider);
+    }
 
     if (place instanceof HTMLElement) {
       const content = place.querySelector('[contenteditable]');

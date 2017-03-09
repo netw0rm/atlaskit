@@ -22,3 +22,4 @@ export { ParagraphNode, ParagraphNodeType, isParagraphNode } from './nodes/parag
 export { MentionNode, MentionNodeType, isMentionNode } from './nodes/mention';
 export { EmojiNode, EmojiNodeType } from './nodes/emoji';
 export { PanelNodeType, isPanelNode, PanelNode } from './nodes/panel';
+export { MediaNodeType, MediaNode, MediaType } from './nodes/media';

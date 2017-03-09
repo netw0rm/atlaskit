@@ -5,7 +5,6 @@ import {
   Node,
   NodeType,
   Plugin,
-  Fragment,
   ProseMirror,
   Schema,
   textblockTypeInputRule,

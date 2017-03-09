@@ -18,11 +18,24 @@ storiesOf(name, module)
     );
   })
   .add('With Media Support', () => {
+    const pasteAction = action('shipit-link-added');
+    const handleRef = (e: HTMLDivElement) => {
+      if (!e) {
+        return;
+      }
+
+      e.addEventListener('shipit-link-added', (e: CustomEvent) => {
+        pasteAction(e.detail.url);
+      });
+    };
+
     return (
-      <Editor
-        onSubmit={action('submit')}
-        mediaProvider={mediaProvider}
-      />
+      <div ref={handleRef}>
+        <Editor
+          onSubmit={action('submit')}
+          mediaProvider={mediaProvider}
+        />
+      </div>
     );
   })
   .add('With maxContentSize', () => <Editor maxContentSize={100}/>)

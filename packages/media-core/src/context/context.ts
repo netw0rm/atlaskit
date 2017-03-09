@@ -11,6 +11,7 @@ export interface Context {
   getMediaCollectionProvider(collectionName: string, pageSize: number): MediaCollectionProvider;
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider;
   getDataUriService(collectionName?: string): DataUriService;
+  addLinkItem(url: string, collectionName: string, metadata?: UrlPreview): Promise<string>;
 }
 
 export interface ContextConfig {
@@ -52,7 +53,7 @@ class ContextImpl implements Context {
     return MediaUrlPreviewProvider.fromPool(this.urlPreviewPool, this.apiConfig, url, this.config.clientId);
   }
 
-  addLinkItem(url: string, collectionName: string, metadata?: UrlPreview) {
+  addLinkItem(url: string, collectionName: string, metadata?: UrlPreview): Promise<string> {
     const linkService = new MediaLinkService(this.apiConfig);
     return linkService.addLinkItem(url, this.config.clientId, collectionName, metadata);
   }

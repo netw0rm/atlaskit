@@ -9,7 +9,7 @@ import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from './emoji
 
 import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../src/components/typeahead/EmojiTypeAhead';
 import EmojiTypeAheadItem from '../src/components/typeahead/EmojiTypeAheadItem';
-import { EmojiDescription } from '../src/types';
+import { OptionalEmojiDescription } from '../src/types';
 import { EmojiProvider } from '../src/api/EmojiResource';
 import { Props as TypeAheadProps, State as TypeAheadState } from '../src/components/typeahead/EmojiTypeAhead';
 
@@ -89,7 +89,7 @@ describe('EmojiTypeAhead', () => {
   });
 
   it('should choose current selection when chooseCurrentSelection called', () => {
-    let choseEmoji: EmojiDescription;
+    let choseEmoji: OptionalEmojiDescription;
 
     const component = setupPicker({
       onSelection: (emojiId, emoji) => { choseEmoji = emoji; },
@@ -111,7 +111,7 @@ describe('EmojiTypeAhead', () => {
   });
 
   it('should choose clicked selection when item clicked', () => {
-    let choseEmoji: EmojiDescription;
+    let choseEmoji: OptionalEmojiDescription;
 
     const component = setupPicker({
       onSelection: (emojiId, emoji) => { choseEmoji = emoji; },

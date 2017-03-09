@@ -2,10 +2,12 @@ import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 import MoreIcon from '@atlaskit/icon/glyph/more';
-
+import AkBadge from '@atlaskit/badge';
 import {Ellipsify} from '../ellipsify';
-import {Dropdown} from '../dropdown/dropdown';
 import {
+  Lists,
+  MemberAvatar,
+  Avatars,
   Wrapper,
   HorizontalThumbnail,
   SquareThumbnail,
@@ -16,7 +18,7 @@ import {
   Link,
   Menu,
   MenuButton,
-  DropdownWrapper
+  Header
 } from './styled';
 
 export interface LinkCardTrelloViewProps {
@@ -26,14 +28,10 @@ export interface LinkCardTrelloViewProps {
   iconUrl?: string;
   height?: number;
   width?: number;
-  lists: Array<{name: string, cardsCount: number}>;
-  members: Array;
+  lists: Array<{name: string, count: number}>;
+  members: Array<{avatarUrl: string, username: string}>;
   // TODO FIL-3892 implement visual designs for loading state
   loading?: boolean;
-
-  menuActions?: Array<CardAction>;
-  onClick?: (event: Event) => void;
-
   // TODO FIL-3893 implement visual designs for error state
   error?: string;
 }
@@ -50,6 +48,8 @@ export class LinkCardTrelloView extends Component<LinkCardTrelloViewProps, LinkC
 
     return {
       title: '',
+      width: 435,
+      height: 116,
       menuActions
     };
   }
@@ -62,42 +62,33 @@ export class LinkCardTrelloView extends Component<LinkCardTrelloViewProps, LinkC
     };
   }
 
-  private get width() {
-    return this.props.width ? this.props.width : (
-      this.props.display === 'horizontal' ? 435 : 300
-    );
-  }
-
-  private get height() {
-    return this.props.height ? this.props.height : (
-      this.props.display === 'horizontal' ? 116 : 300
-    );
-  }
-
-  private get isHorizontal() {
-    return this.props.display === 'horizontal';
-  }
-
   render() {
-    const {linkUrl, title, description, thumbnailUrl, iconUrl} = this.props;
-    const cardStyle = {height: `${this.height}px`, width: `${this.width}px`};
-    const thumbnail = thumbnailUrl ? (this.isHorizontal ?
-      <HorizontalThumbnail src={thumbnailUrl} alt={title}/> :
-      <SquareThumbnail className="square-img" style={{backgroundImage: `url(${thumbnailUrl})`}} />) : null;
+    const {linkUrl, title, thumbnailUrl, iconUrl} = this.props;
+    const cardStyle = {height: `${this.props.height}px`, width: `${this.props.width}px`};
+    const thumbnail = thumbnailUrl ? <SquareThumbnail className="square-img" style={{backgroundImage: `url(${thumbnailUrl})`}} /> : null;
     const icon = iconUrl ? <img src={iconUrl} alt={title} /> : null;
+    const memberAvatars = this.props.members.slice(0, 3).map((m, i) => (
+      <MemberAvatar src={m.avatarUrl} style={{right: `${i * 17 + 25}px`}}/>
+    ));
+    const membersOffset = this.props.members.length - 3 > 0 ? `+ ${this.props.members.length - 3}` : null;
+    const lists = this.props.lists.slice(0, 3).map(l => (
+      <li>{l.name} <AkBadge value={l.count} appearance="added"/></li>
+    ));
 
     return (
-      <Wrapper style={cardStyle} className={this.props.display} onClick={this.onClick.bind(this)}>
+      <Wrapper style={cardStyle}>
         {thumbnail}
-
         <Details className="details">
-          <Title>
-            <Ellipsify text={title || ''} lines={1} endLength={0} />
-          </Title>
-          <Description>
-            <Ellipsify text={description || ''} lines={2} endLength={0} />
-          </Description>
-
+          <Header>
+            {this.props.title}
+            <Avatars>
+              {memberAvatars}
+              {membersOffset}
+            </Avatars>
+          </Header>
+          <Lists>
+            Lists: <ul>{lists}</ul>
+          </Lists>
           <Footer>
             <Link>
               {icon}
@@ -105,85 +96,11 @@ export class LinkCardTrelloView extends Component<LinkCardTrelloViewProps, LinkC
                 {linkUrl}
               </a>
             </Link>
-            <Menu>
-              {this.moreBtn()}
-              {this.dropdown()}
-            </Menu>
           </Footer>
         </Details>
       </Wrapper>
     );
   }
-
-  onClick(event: MouseEvent<HTMLDivElement>) {
-    this.props.onClick && this.props.onClick(event.nativeEvent);
-  }
-
-  moreBtn() {
-    const actions = this.props.menuActions || [];
-
-    if (!actions.length) {
-      return null;
-    }
-
-    const {isMenuExpanded} = this.state;
-    const moreBtnClasses = ['more-btn'];
-    if (isMenuExpanded) {
-      moreBtnClasses.push('active');
-    }
-
-    return (
-      <MenuButton
-        className={moreBtnClasses.join(' ')}
-        onClick={this.moreBtnClick.bind(this)}
-      >
-        <MoreIcon label="more"/>
-      </MenuButton>
-    );
-  }
-
-  moreBtnClick(e: MouseEvent<HTMLDivElement>) {
-    e.preventDefault();
-
-    const {isMenuExpanded} = this.state;
-
-    if (isMenuExpanded) {    // we should remove handlers
-      document.removeEventListener('click', this.clickDetector);
-    } else {    // we should add handlers on clicking outside of element
-      this.clickDetector = this.newClickDetector.bind(this);
-      document.addEventListener('click', this.clickDetector);
-    }
-
-    this.setState({
-      isMenuExpanded: !isMenuExpanded
-    });
-  }
-
-  newClickDetector(e: Event) {
-    this.setState({
-      isMenuExpanded: false
-    });
-
-    document.removeEventListener('click', this.clickDetector);
-  }
-
-  dropdown() {
-    const {isMenuExpanded} = this.state;
-
-    if (!isMenuExpanded) {
-      return null;
-    }
-
-    return (
-      <DropdownWrapper onClick={this.dropdownClick}>
-        <Dropdown items={this.props.menuActions}/>
-      </DropdownWrapper>
-    );
-  }
-
-  dropdownClick(e: MouseEvent<HTMLDivElement>) {
-    e.preventDefault();
-  }
 }
 
-export default LinkCardViewHorizontal;
+export default LinkCardTrelloView;

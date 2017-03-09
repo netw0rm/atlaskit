@@ -13,6 +13,7 @@ export * from './list';
 export * from './linkCardViewHorizontal/linkCardViewHorizontal';
 export * from './linkCard/linkCard';
 export * from './linkCardPlayer';
+export * from './LinkCardTrelloView';
 
 export default CardView;
 

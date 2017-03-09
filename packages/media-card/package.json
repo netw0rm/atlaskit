@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "1.17.0",
+  "version": "1.19.0",
   "config": {
     "access": "public"
   },

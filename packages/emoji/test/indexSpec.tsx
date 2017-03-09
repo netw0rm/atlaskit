@@ -16,7 +16,10 @@ describe(name, () => {
         'EmojiPicker',
         'EmojiTypeAhead',
         'EmojiResource',
+        'AbstractResource',
         'EmojiService',
+        'EmojiLoader',
+        'denormaliseEmojiServiceResponse',
         'default',
       ]);
     });

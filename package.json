@@ -12,7 +12,8 @@
     "@atlaskit/eslint-config-stories": "*",
     "@atlaskit/eslint-config-tests": "*",
     "@kadira/react-split-pane": "^1.4.7",
-    "@kadira/storybook": "^2.24.0",
+    "@kadira/storybook": "git://github.com/gconaty/react-storybook.git",
+    "@kadira/storybook-addons": "^1.6.1",
     "@types/ajv": "0.0.5",
     "@types/chai": "^3.4.34",
     "@types/enzyme": "^2.5.39",
@@ -43,7 +44,6 @@
     "chalk-cli": "^3.0.0",
     "child-process-promise": "^2.2.0",
     "commitizen": "^2.8.6",
-    "css-loader": "^0.25.0",
     "enzyme": "^2.7.1",
     "eslint": "^3.7.1",
     "eslint-friendly-formatter": "^2.0.6",
@@ -107,9 +107,7 @@
     "typescript": "2.2.0-dev.20170117",
     "url-loader": "^0.5.7",
     "validate-commit-message": "^3.0.1",
-    "wait-on": "^2.0.0",
-    "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.2"
+    "wait-on": "^2.0.0"
   },
   "engines": {
     "npm": ">=3.8",

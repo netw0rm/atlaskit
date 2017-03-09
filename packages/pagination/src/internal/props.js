@@ -1,11 +1,5 @@
 import { PropTypes } from 'react';
-
-function createError(propName, componentName, message) {
-  return new Error(
-        `Invalid prop \`${propName}\` supplied to` +
-        ` \`${componentName}\`. ${message}`
-    );
-}
+import { createError } from '@atlaskit/util-common';
 
 function isFinitePositiveInteger(value) {
   return typeof value === 'number' && isFinite(value) && Math.floor(value) === value && value >= 0;

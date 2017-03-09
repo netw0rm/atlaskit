@@ -1,12 +1,6 @@
 import { PropTypes } from 'react';
+import { createError } from '@atlaskit/util-common';
 import { ASC, DESC } from './constants';
-
-function createError(propName, componentName, message) {
-  return new Error(
-    `Invalid prop \`${propName}\` supplied to` +
-    ` \`${componentName}\`. ${message}`
-  );
-}
 
 function isInteger(props, propName, componentName) {
   if (props[propName] === undefined) return null;

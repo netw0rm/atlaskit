@@ -3,7 +3,7 @@ import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 
-import {Ellipsify} from '..';
+import {Ellipsify} from '../ellipsify';
 import {Dropdown} from '../dropdown/dropdown';
 import {
   Wrapper,

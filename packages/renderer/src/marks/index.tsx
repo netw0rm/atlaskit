@@ -71,7 +71,7 @@ export const renderMark = (mark: Renderable, index: number = 0) => {
       return <SubSup key={key} type={type}>{content}</SubSup>;
     }
     case MarkType.underline:
-      return <Underline>{content}</Underline>;
+      return <Underline key={key}>{content}</Underline>;
     default: {
       if (isText(mark.type)) {
         return (mark as any).text;
@@ -100,5 +100,5 @@ export const isSameMark = (mark: Mark | null, otherMark: Mark | null) => {
   }
 
   // TODO: Use some deep-equal function instead
-  return !Object.keys(mark.attrs!).some(attr => mark.attrs![attr] !== otherMark.attrs![attr]);
+  return !Object.keys(mark.attrs || {}).some(attr => mark.attrs![attr] !== otherMark.attrs![attr]);
 };

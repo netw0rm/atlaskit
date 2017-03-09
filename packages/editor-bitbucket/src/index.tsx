@@ -15,6 +15,7 @@ import {
   MentionsPlugin,
   Node,
   ProseMirror,
+  DefaultKeymapsPlugin,
   TextFormattingPlugin,
   version as coreVersion
 } from '@atlaskit/editor-core';
@@ -105,6 +106,9 @@ export default class Editor extends PureComponent<Props, State> {
     const { pm } = this.state;
     if (pm) {
       pm.tr.delete(0, pm.doc.nodeSize - 2).apply();
+
+      // We need flush for bitbucket, otherwise editor becomes broken after detaching/attaching parent DOM node
+      pm.flush();
     }
   }
 
@@ -215,6 +219,7 @@ export default class Editor extends PureComponent<Props, State> {
           ListsPlugin,
           TextFormattingPlugin,
           HorizontalRulePlugin,
+          DefaultKeymapsPlugin,
           ...( this.mentionsResourceProvider ? [ MentionsPlugin ] : [] ),
           DefaultInputRulesPlugin,
           ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )

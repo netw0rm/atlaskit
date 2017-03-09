@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
-import {defaultTransitionDuration} from './base';
+import {defaultTransitionDuration} from './config';
 
 export const ellipsis = maxWidth => {
   const unit = typeof maxWidth === 'number' ? 'px' : '';

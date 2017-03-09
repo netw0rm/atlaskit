@@ -52,8 +52,9 @@ export interface MentionsResult {
 export interface MentionResourceConfig {
   /** the base url of the mentions service */
   url: string;
-  securityProvider: SecurityProvider;
+  securityProvider?: SecurityProvider;
   containerId?: string;
+  productId?: string;
   refreshedSecurityProvider?: RefreshSecurityProvider;
   shouldHighlightMention?: (mention: Mention) => boolean;
 }
@@ -72,6 +73,13 @@ export interface MentionProvider extends ResourceProvider<Mention[]> {
 export interface PresenceProvider extends ResourceProvider<PresenceUpdate> {
   refreshPresence(arrayOfIds: string[]): void;
 }
+
+const emptySecurityProvider = () => {
+  return {
+    params: {},
+    headers: {},
+  };
+};
 
 const buildUrl = (baseUrl: string, path: string | undefined, data: KeyValues, secOptions: SecurityOptions) => {
   const searchParam = new URLSearchParams();
@@ -131,6 +139,7 @@ const requestService = <T>(baseUrl: string, path: string | undefined, data: KeyV
   const options = {
     ...opts,
     ...{ headers },
+    credentials: 'include' as RequestCredentials,
   };
   return fetch(new Request(url, options))
     .then((response: Response) => {
@@ -267,9 +276,6 @@ class MentionResource extends AbstractMentionResource {
     if (!config.url) {
       throw new Error('config.url is a required parameter');
     }
-    if (!config.securityProvider) {
-      throw new Error('config.securityProvider is a required parameter');
-    }
 
     this.config = config;
     this.lastReturnedSearch = 0;
@@ -314,7 +320,7 @@ class MentionResource extends AbstractMentionResource {
    * @returns Promise
    */
   private initialState(): Promise<MentionsResult> {
-    const secOptions = this.config.securityProvider();
+    const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data: KeyValues = {};
     const options: KeyValues = {};
@@ -322,11 +328,16 @@ class MentionResource extends AbstractMentionResource {
     if (this.config.containerId) {
       data['containerId'] = this.config.containerId;
     }
-    return requestService<MentionsResult>(this.config.url, 'mentions/bootstrap', data, options, secOptions, refreshedSecurityProvider);
+
+    if (this.config.productId) {
+      data['productIdentifier'] = this.config.productId;
+    }
+
+    return requestService<MentionsResult>(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider);
   }
 
   private search(query: string): Promise<MentionsResult> {
-    const secOptions = this.config.securityProvider();
+    const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data = {
       query,
@@ -335,11 +346,16 @@ class MentionResource extends AbstractMentionResource {
     if (this.config.containerId) {
       data['containerId'] = this.config.containerId;
     }
-    return requestService<MentionsResult>(this.config.url, 'mentions/search', data, options, secOptions, refreshedSecurityProvider);
+
+    if (this.config.productId) {
+      data['productIdentifier'] = this.config.productId;
+    }
+
+    return requestService<MentionsResult>(this.config.url, 'search', data, options, secOptions, refreshedSecurityProvider);
   }
 
   private recordSelection(mention: Mention): Promise<void> {
-    const secOptions = this.config.securityProvider();
+    const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data = {
       selectedUserId: mention.id,
@@ -347,7 +363,12 @@ class MentionResource extends AbstractMentionResource {
     const options = {
       method: 'POST',
     };
-    return requestService<void>(this.config.url, 'mentions/record', data, options, secOptions, refreshedSecurityProvider);
+
+    if (this.config.productId) {
+      data['productIdentifier'] = this.config.productId;
+    }
+
+    return requestService<void>(this.config.url, 'record', data, options, secOptions, refreshedSecurityProvider);
   }
 }
 

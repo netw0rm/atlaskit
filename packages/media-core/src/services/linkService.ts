@@ -1,8 +1,9 @@
 import axios from 'axios';
-import {LinkItem, MediaApiConfig} from '../';
+import {LinkItem, MediaApiConfig, UrlPreview} from '../';
 
 export interface LinkService {
   getLinkItem(linkId: string, clientId: string, collection?: string): Promise<LinkItem>;
+  addLinkItem(url: string, clientId: string, collection: string, metadata?: UrlPreview): Promise<string>;
 }
 
 export class MediaLinkService implements LinkService {
@@ -40,5 +41,23 @@ export class MediaLinkService implements LinkService {
             };
           });
       });
+  }
+
+  addLinkItem(url: string, clientId: string, collectionName: string, metadata?: UrlPreview): Promise<string> {
+    return this.config.tokenProvider(collectionName)
+      .then(token => {
+        const data = {url, metadata};
+        const params = {collection: collectionName};
+
+        return axios.post('/link', data, {
+          baseURL: this.config.serviceHost,
+          headers: {
+            'X-Client-Id': clientId,
+            'Authorization': `Bearer ${token}`
+          },
+          params
+        });
+      })
+      .then(response => response.data.data.id);
   }
 }

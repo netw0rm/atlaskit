@@ -22,7 +22,7 @@ const toJavascriptString = (obj) => {
   } else if (typeof obj === 'string') {
     return `'${obj}'`;
   }
-  return obj.toString();
+  return obj && obj.toString();
 };
 
 export default class ConfigurableMentionPicker extends Component {

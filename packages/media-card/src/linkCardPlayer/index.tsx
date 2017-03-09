@@ -31,6 +31,10 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
   render() {
     if (this.state.isPlayed) {
       return this.renderPlayer();
+      // return <div>
+      //   {this.renderPlayer()}
+      //   {this.renderLinkCard()}
+      //  </div>
     } else {
       return this.renderLinkCard();
     }
@@ -38,8 +42,11 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
 
   private renderPlayer(): JSX.Element {
     return <Wrapper className={'is-played'}>
-      <iframe src={`${this.props.playerUrl}&autoplay=1`}/>
+      <iframe src={`${this.props.playerUrl}&autoplay=1`} onLoad={this.onIframeLoad}/>
     </Wrapper>;
+  }
+
+  onIframeLoad = () => {
   }
 
   private renderLinkCard(): JSX.Element {

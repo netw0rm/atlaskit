@@ -8,7 +8,7 @@ import 'rxjs/add/observable/fromPromise';
 
 import {LinkCardViewHorizontal} from '..';
 
-interface LinkFromId {
+export interface LinkFromId {
   readonly id: string;
   readonly collection: string;
 }

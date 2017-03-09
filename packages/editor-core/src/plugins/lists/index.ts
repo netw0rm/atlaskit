@@ -9,6 +9,10 @@ import {
   Schema,
   Selection,
   TextSelection,
+  liftTarget,
+  Slice,
+  Fragment,
+  ReplaceAroundStep,
 } from '../../prosemirror';
 
 import {
@@ -109,8 +113,8 @@ export class ListsState {
       [keymaps.splitListItem.common!]: () => commands.splitListItem(list_item)(pm),
       [keymaps.toggleOrderedList.common!]: trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', () => this.toggleOrderedList()),
       [keymaps.toggleBulletList.common!]: trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', () => this.toggleBulletList()),
-      ['Tab']: this.nestList,
-      ['Shift-Tab']: this.liftList
+      [keymaps.nestList.common!]: this.nestListItem,
+      [keymaps.liftList.common!]: this.liftListItem
     }));
   }
 
@@ -194,33 +198,21 @@ export class ListsState {
     }
   }
 
-  nestList = () => {
+  nestListItem = () => {
     if (this.bulletListActive || this.orderedListActive) {
       const { pm } = this;
-      const { bullet_list, ordered_list } = pm.schema.nodes;
-      const nodeType = this.bulletListActive ? bullet_list : ordered_list;
-      if (nodeType) {
-        commands.wrapInList(nodeType)(pm);
-        return true;
-      }
+      const { list_item } = pm.schema.nodes;
+      commands.sinkListItem(list_item)(pm, true);
+      return true;
     }
   }
 
-  liftList = () => {
+  liftListItem = () => {
     if (this.bulletListActive || this.orderedListActive) {
       const { pm } = this;
-      const { bullet_list, ordered_list } = pm.schema.nodes;
-      const nodeType = this.bulletListActive ? bullet_list : ordered_list;
-      if (nodeType) {
-        commands.lift(pm, true);
-        if (canJoinUp(pm, pm.selection, pm.doc, nodeType)) {
-          commands.joinUp(pm, true);
-        }
-        if (canJoinDown(pm, pm.selection, pm.doc, nodeType)) {
-          commands.joinDown(pm, true);
-        }
-        return true;
-      }
+      const { list_item } = pm.schema.nodes;
+      commands.liftListItem(list_item)(pm, true);
+      return true;
     }
   }
 

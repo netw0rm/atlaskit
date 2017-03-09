@@ -7,7 +7,7 @@ import { PureComponent } from 'react';
 
 import { analyticsService as analytics } from '../../analytics';
 import { BlockType, BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
-import { findKeymapByDescription, tooltip } from '../../plugins/keymaps';
+import { findKeymapByDescription, tooltip } from '../../keymaps';
 import * as styles from './styles';
 import { EditorView } from '../../prosemirror';
 

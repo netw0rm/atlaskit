@@ -1,4 +1,4 @@
-import { blockQuoteRule, Fragment, headingRule, InputRule, Mark, MarkType, Schema, Transaction } from '../../prosemirror';
+import { blockQuoteRule, Fragment, headingRule, InputRule, inputRules, Plugin, Schema, Transaction, MarkType, Mark } from '../../prosemirror';
 import { analyticsService } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 
@@ -17,32 +17,14 @@ function replaceWithText(start: number, end: number, content: string, marks: Arr
   return tr.replaceWith(start, end, Fragment.from(schema.text(content, marks)));
 }
 
-function buildInputRules(schema: Schema<any, any>): Array<InputRule> {
+let plugin: Plugin | undefined;
+
+export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+  if (plugin) {
+    return plugin;
+  }
+
   const rules: Array<InputRule> = [];
-
-  if (schema.marks.strong) {
-    // **string** and __string__ should bold the text
-    rules.push(new InputRule(/(?:^|\s)(?:\*\*([^\*]+)\*\*)$/, addMark(schema.marks.strong, schema)));
-  }
-
-  if (schema.marks.underline) {
-    rules.push(new InputRule(/(?:^|\s)(?:__([^\_]+)__)$/, addMark(schema.marks.underline, schema)));
-  }
-
-  if (schema.marks.em) {
-    // *string* and _string_ should italic the text
-    rules.push(new InputRule(/(?:^|\s)(?:\*([^\*]+)\*)$/, addMark(schema.marks.em, schema)));
-  }
-
-  if (schema.marks.strike) {
-    // ~~string~~ should strikethrough the text
-    rules.push(new InputRule(/(?:^|\s)(?:~~([^~]+)~~)$/, addMark(schema.marks.strike, schema)));
-  }
-
-  if (schema.marks.mono) {
-    // `string` should monospace the text
-    rules.push(new InputRule(/(?:^|\s)(?:`([^`]+)`)$/, addMark(schema.marks.mono, schema)));
-  }
 
   if (schema.nodes.heading) {
     // '# ' for h1, '## ' for h2 and etc
@@ -79,9 +61,33 @@ function buildInputRules(schema: Schema<any, any>): Array<InputRule> {
     }));
   }
 
-  return rules;
-}
+  // TODO move those to text formatting plugin
+  if (schema.marks.strong) {
+    // **string** and __string__ should bold the text
+    rules.push(new InputRule(/(?:^|\s)(?:\*\*([^\*]+)\*\*)$/, addMark(schema.marks.strong, schema)));
+  }
 
-export const URL_REGEX = /\b(((https?|ftp):\/\/|(www\.))[a-zA-Z\u00a1-\uffff0-9\.\$\-_\+!\*',\/\?:@=&%#~;]+)/;
+  if (schema.marks.underline) {
+    rules.push(new InputRule(/(?:^|\s)(?:__([^\_]+)__)$/, addMark(schema.marks.underline, schema)));
+  }
 
-export default buildInputRules;
+  if (schema.marks.em) {
+    // *string* and _string_ should italic the text
+    rules.push(new InputRule(/(?:^|\s)(?:\*([^\*]+)\*)$/, addMark(schema.marks.em, schema)));
+  }
+
+  if (schema.marks.strike) {
+    // ~~string~~ should strikethrough the text
+    rules.push(new InputRule(/(?:^|\s)(?:~~([^~]+)~~)$/, addMark(schema.marks.strike, schema)));
+  }
+
+  if (schema.marks.mono) {
+    // `string` should monospace the text
+    rules.push(new InputRule(/(?:^|\s)(?:`([^`]+)`)$/, addMark(schema.marks.mono, schema)));
+  }
+  plugin = inputRules({ rules });
+
+  return plugin;
+};
+
+export default inputRulePlugin;

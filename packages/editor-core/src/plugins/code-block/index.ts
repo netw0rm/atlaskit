@@ -6,8 +6,6 @@ import {
   PluginKey,
   NodeViewDesc,
 } from '../../prosemirror';
-import * as keymaps from '../keymaps';
-import { bind as bindKeymap } from '../keymaps/build-keymaps';
 import * as commands from '../../commands';
 
 export type CodeBlockStateSubscriber = (state: CodeBlockState) => any;
@@ -84,7 +82,6 @@ export class CodeBlockState {
 }
 export const stateKey = new PluginKey('codeBlockPlugin');
 
-bindKeymap(keymaps.splitCodeBlock.common, commands.newlineInCode);
 
 const plugin = new Plugin({
   state: {

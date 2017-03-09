@@ -8,14 +8,11 @@ import listsPlugin from '../../src/plugins/lists/index-future';
 import blockTypePlugin from '../../src/plugins/block-type';
 import codeBlockPlugin from '../../src/plugins/code-block';
 import hyperlinkPlugin from '../../src/plugins/hyperlink';
-import buildKeymaps from '../../src/plugins/keymaps/build-keymaps';
-import buildInputRules from '../../src/plugins/inputrules/build-inputrules';
 import {
   baseKeymap,
   EditorState,
   EditorView,
   history,
-  inputRules,
   keymap,
   Node,
   TextSelection
@@ -154,9 +151,7 @@ export default class Editor extends PureComponent<Props, State> {
             blockTypePlugin,
             codeBlockPlugin,
             hyperlinkPlugin,
-            inputRules({ rules: buildInputRules(schema) }),
             history(),
-            keymap(buildKeymaps(schema)),
             keymap(baseKeymap) // should be last :(
           ]
         }

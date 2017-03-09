@@ -8,7 +8,7 @@ import {
 } from '../../schema';
 
 import { trackAndInvoke } from '../../analytics';
-import * as keymaps from '../keymaps';
+import * as keymaps from '../../keymaps';
 
 export type StateChangeHandler = (state: HorizontalRuleState) => any;
 

@@ -5,7 +5,7 @@ export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
 
-export function toggleBlockType(name: string) {
+export function toggleBlockType(name: string): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { nodes } = state.schema;
 
@@ -60,7 +60,7 @@ export function toggleBlockType(name: string) {
   };
 }
 
-export function toggleBulletList() {
+export function toggleBulletList(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from } = state.selection;
     const grandgrandParent = $from.node(-2);
@@ -72,7 +72,7 @@ export function toggleBulletList() {
   };
 }
 
-export function toggleOrderedList() {
+export function toggleOrderedList(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from } = state.selection;
     const grandgrandParent = $from.node(-2);
@@ -84,13 +84,13 @@ export function toggleOrderedList() {
   };
 }
 
-export function splitListItem() {
+export function splitListItem(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     return baseListCommand.splitListItem(state.schema.nodes.list_item)(state, dispatch);
   };
 }
 
-export function liftListItem() {
+export function liftListItem(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     let { $from, $to } = state.selection;
     let { list_item, paragraph } = state.schema.nodes;
@@ -117,7 +117,7 @@ export function liftListItem() {
   };
 }
 
-export function toggleCodeBlock() {
+export function toggleCodeBlock(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from, $to } = state.selection;
     const currentBlock = $from.parent;
@@ -132,7 +132,7 @@ export function toggleCodeBlock() {
   };
 }
 
-export function setNormalText() {
+export function setNormalText(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from, $to } = state.selection;
     const currentBlock = $from.parent;
@@ -146,7 +146,7 @@ export function setNormalText() {
   };
 }
 
-export function toggleBlockquote() {
+export function toggleBlockquote(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from } = state.selection;
     const potentialBlockquoteNode = $from.node($from.depth - 1);
@@ -159,7 +159,7 @@ export function toggleBlockquote() {
   };
 }
 
-export function togglePanel() {
+export function togglePanel(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from } = state.selection;
     const potentialPanelNode = $from.node($from.depth - 1);
@@ -172,7 +172,7 @@ export function togglePanel() {
   };
 }
 
-export function toggleHeading(level: number) {
+export function toggleHeading(level: number): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from, $to } = state.selection;
     const currentBlock = $from.parent;
@@ -187,7 +187,7 @@ export function toggleHeading(level: number) {
   };
 }
 
-export function createCodeBlockFromFenceFormat() {
+export function createCodeBlockFromFenceFormat(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from } = state.selection;
     const parentBlock = $from.parent;
@@ -227,7 +227,7 @@ export function createCodeBlockFromFenceFormat() {
   };
 }
 
-export function insertNewLine() {
+export function insertNewLine(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from } = state.selection;
     const node = $from.parent;
@@ -247,7 +247,7 @@ export function insertNewLine() {
   };
 }
 
-export function createNewParagraphAbove() {
+export function createNewParagraphAbove(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const append = false;
 
@@ -260,7 +260,7 @@ export function createNewParagraphAbove() {
   };
 }
 
-export function createNewParagraphBelow() {
+export function createNewParagraphBelow(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const append = true;
 
@@ -357,4 +357,8 @@ function getInsertPosFromNonTextBlock(state: EditorState<any>, append: boolean):
 function topLevelNodeIsEmptyTextBlock(state): boolean {
   const topLevelNode = state.selection.$from.node(1);
   return topLevelNode.isTextblock && topLevelNode.type !== state.schema.nodes.codeBlock && topLevelNode.nodeSize === 2;
+}
+
+export interface Command {
+  (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
 }

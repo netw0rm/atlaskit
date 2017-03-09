@@ -4,7 +4,7 @@ import UnderlineIcon from 'ak-icon/glyph/editor/underline';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
-import { toggleBold, toggleItalic, toggleUnderline, tooltip } from '../../plugins/keymaps';
+import { toggleBold, toggleItalic, toggleUnderline, tooltip } from '../../keymaps';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import ToolbarButton from '../ToolbarButton';
 

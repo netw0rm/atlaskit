@@ -6,18 +6,16 @@ import {
   PluginKey,
 } from '../../prosemirror';
 import { ContextName } from '../../';
-import {
-  trackAndInvoke
-} from '../../analytics';
 
 import {
   NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5,
-  BLOCK_QUOTE, CODE_BLOCK, PANEL, OTHER, ALL_BLOCK_TYPES, BlockType
+  BLOCK_QUOTE, CODE_BLOCK, PANEL, OTHER, BlockType
 } from './types';
 
-import { bind as bindKeymap } from '../keymaps/build-keymaps';
-import * as keymaps from '../keymaps/utils-future';
 import * as commands from '../../commands';
+import keymapPlugin from './keymap';
+import inputRulePlugin from './input-rule';
+import { reconfigure } from '../utils';
 
 export type StateChangeHandler = (state: BlockTypeState) => any;
 export type GroupedBlockTypes = BlockType[][];
@@ -209,24 +207,6 @@ export class BlockTypeState {
   }
 };
 
-function analyticsEventName(eventSource: string, blockTypeName: string): string {
-  return `atlassian.editor.format.${blockTypeName}.${eventSource}`;
-}
-
-bindKeymap(keymaps.insertNewLine.common, trackAndInvoke('atlassian.editor.newline.keyboard', commands.insertNewLine()));
-bindKeymap(keymaps.moveUp.common, trackAndInvoke('atlassian.editor.moveup.keyboard', commands.createNewParagraphAbove()));
-bindKeymap(keymaps.moveDown.common, trackAndInvoke('atlassian.editor.movedown.keyboard', commands.createNewParagraphBelow()));
-bindKeymap(keymaps.shiftBackspace.common, commands.baseKeymap['Backspace']);
-bindKeymap(keymaps.createCodeBlock.common, trackAndInvoke(analyticsEventName('autoformatting', 'codeblock'), commands.createCodeBlockFromFenceFormat()));
-
-ALL_BLOCK_TYPES.forEach((blockType) => {
-  const shortcut = keymaps.findShortcutByDescription(blockType.title);
-  if (shortcut) {
-    const eventName = analyticsEventName('keyboard', blockType.name);
-    bindKeymap(shortcut, trackAndInvoke(eventName, commands.toggleBlockType(blockType.name)));
-  }
-});
-
 export const stateKey = new PluginKey('blockTypePlugin');
 
 const plugin = new Plugin({
@@ -239,7 +219,11 @@ const plugin = new Plugin({
       return pluginState;
     }
   },
-  key: stateKey
+  key: stateKey,
+  view: (view: EditorView) => {
+    reconfigure(view, [keymapPlugin(view.state.schema), inputRulePlugin(view.state.schema)]);
+    return {};
+  }
 });
 
 export default plugin;

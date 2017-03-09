@@ -16,7 +16,7 @@ import {
   SubSupMarkType,
   UnderlineMarkType
 } from '../../schema';
-import * as keymaps from '../keymaps';
+import * as keymaps from '../../keymaps';
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 

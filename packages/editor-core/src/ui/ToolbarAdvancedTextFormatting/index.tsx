@@ -7,7 +7,7 @@ import Group from 'ak-droplist-group';
 import Item from 'ak-droplist-item';
 import ToolbarButton from '../ToolbarButton';
 import AdvancedIcon from 'ak-icon/glyph/editor/advanced';
-import { toggleMonospace, toggleStrikethrough, tooltip } from '../../plugins/keymaps';
+import { toggleMonospace, toggleStrikethrough, tooltip } from '../../keymaps';
 
 export interface Props {
   pluginState: TextFormattingState | undefined;

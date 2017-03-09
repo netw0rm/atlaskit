@@ -10,9 +10,9 @@ import {
   findAncestorPosition,
 } from '../../utils/index-future';
 
-import { bind as bindKeymap } from '../keymaps/build-keymaps';
-import * as keymaps from '../keymaps/utils-future';
 import * as commands from '../../commands';
+import keymapPlugin from './keymap';
+import { reconfigure } from '../utils';
 
 export type StateChangeHandler = (state: ListsState) => any;
 
@@ -116,10 +116,6 @@ export class ListsState {
   }
 };
 
-bindKeymap([keymaps.splitListItem.common!], commands.splitListItem());
-bindKeymap([keymaps.findShortcutByKeymap(keymaps.toggleOrderedList) !], commands.toggleOrderedList());
-bindKeymap([keymaps.findShortcutByKeymap(keymaps.toggleBulletList) !], commands.toggleBulletList());
-
 export const stateKey = new PluginKey('listsPlugin');
 
 const plugin = new Plugin({
@@ -133,6 +129,10 @@ const plugin = new Plugin({
     }
   },
   key: stateKey,
+  view: (view: EditorView) => {
+    reconfigure(view, [keymapPlugin(view.state.schema)]);
+    return {};
+  }
 });
 
 export default plugin;

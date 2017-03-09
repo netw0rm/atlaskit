@@ -4,7 +4,6 @@ export { default as EmojisPlugin } from './emojis';
 export { default as HyperlinkPlugin } from './hyperlink';
 export { default as ImageUploadPlugin } from './image-upload';
 export { default as ListsPlugin } from './lists';
-export { default as MarkdownInputRulesPlugin } from './inputrules';
 export { default as MentionsPlugin } from './mentions';
 export { default as TextFormattingPlugin } from './text-formatting';
 export { default as HorizontalRulePlugin } from './horizontal-rule';

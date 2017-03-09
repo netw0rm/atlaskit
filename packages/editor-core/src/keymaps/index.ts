@@ -1,4 +1,4 @@
-import { browser } from '../../prosemirror';
+import { browser, EditorState, Transaction } from '../prosemirror';
 
 export const toggleOrderedList = makeKeyMapWithCommon('Toggle ordered list', 'Mod-Shift-l');
 export const toggleBulletList = makeKeyMapWithCommon('Toggle bullet list', 'Mod-Shift-b');
@@ -7,14 +7,14 @@ export const toggleItalic = makeKeyMapWithCommon('Toggle italic', 'Mod-i');
 export const toggleUnderline = makeKeyMapWithCommon('Toggle underline', 'Mod-u');
 export const toggleStrikethrough = makeKeyMapWithCommon('Toggle strikethrough', 'Mod-Shift-s');
 export const toggleMonospace = makeKeyMapWithCommon('Toggle monospace', 'Mod-Shift-m');
-export const setNormalText = makeKeyMap('Normal text', 'Ctrl-0', 'Cmd-Alt-0');
-export const toggleHeading1 = makeKeyMap('Heading 1', 'Ctrl-1', 'Cmd-Alt-1');
-export const toggleHeading2 = makeKeyMap('Heading 2', 'Ctrl-2', 'Cmd-Alt-2');
-export const toggleHeading3 = makeKeyMap('Heading 3', 'Ctrl-3', 'Cmd-Alt-3');
-export const toggleHeading4 = makeKeyMap('Heading 4', 'Ctrl-4', 'Cmd-Alt-4');
-export const toggleHeading5 = makeKeyMap('Heading 5', 'Ctrl-5', 'Cmd-Alt-5');
-export const toggleBlockQuote = makeKeyMap('Block quote', 'Ctrl-7', 'Cmd-Alt-7');
-export const toggleCodeBlock = makeKeyMap('Code block', 'Ctrl-8', 'Cmd-Alt-8');
+export const setNormalText = makeKeymap('Normal text', 'Ctrl-0', 'Cmd-Alt-0');
+export const toggleHeading1 = makeKeymap('Heading 1', 'Ctrl-1', 'Cmd-Alt-1');
+export const toggleHeading2 = makeKeymap('Heading 2', 'Ctrl-2', 'Cmd-Alt-2');
+export const toggleHeading3 = makeKeymap('Heading 3', 'Ctrl-3', 'Cmd-Alt-3');
+export const toggleHeading4 = makeKeymap('Heading 4', 'Ctrl-4', 'Cmd-Alt-4');
+export const toggleHeading5 = makeKeymap('Heading 5', 'Ctrl-5', 'Cmd-Alt-5');
+export const toggleBlockQuote = makeKeymap('Block quote', 'Ctrl-7', 'Cmd-Alt-7');
+export const toggleCodeBlock = makeKeymap('Code block', 'Ctrl-8', 'Cmd-Alt-8');
 export const insertNewLine = makeKeyMapWithCommon('Insert new line', 'Shift-Enter');
 export const shiftBackspace = makeKeyMapWithCommon('Shift Backspace', 'Shift-Backspace');
 export const splitCodeBlock = makeKeyMapWithCommon('Split code block', 'Enter');
@@ -68,7 +68,7 @@ const ALL = [toggleOrderedList, toggleBulletList, toggleBold, toggleItalic,
   toggleBlockQuote, toggleCodeBlock, insertNewLine, insertHorizontalRule,
   splitCodeBlock, splitListItem, redo, undo];
 
-function makeKeyMap(description: string, windows: string, mac: string, common?: string): Keymap {
+function makeKeymap(description: string, windows: string, mac: string, common?: string): Keymap {
   return {
     description: description,
     windows: windows,
@@ -80,7 +80,7 @@ function makeKeyMap(description: string, windows: string, mac: string, common?: 
 function makeKeyMapWithCommon(description: string, common: string): Keymap {
   const windows = common.replace(/Mod/i, 'Ctrl');
   const mac = common.replace(/Mod/i, 'Cmd');
-  return makeKeyMap(description, windows, mac, common);
+  return makeKeymap(description, windows, mac, common);
 }
 
 export interface Keymap {
@@ -88,4 +88,15 @@ export interface Keymap {
   windows: string;
   mac: string;
   common?: string;
+}
+
+export function bindKeymapWithCommand(shortcut: string, cmd: (state: EditorState<any>, dispatch: (tr: Transaction) => void) => boolean, keymap: {[key: string]: Function}) {
+  const oldCmd = keymap[shortcut];
+  let newCmd = cmd;
+  if (keymap[shortcut]) {
+    newCmd = (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+      return oldCmd(state, dispatch) || cmd(state, dispatch);
+    };
+  }
+  keymap[shortcut] = newCmd;
 }

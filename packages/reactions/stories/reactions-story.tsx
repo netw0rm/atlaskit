@@ -2,9 +2,9 @@ import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { ReactionPicker, Reactions, ResourcedReactions, ResourcedReactionPicker } from '../src';
 import Reaction from '../src/internal/reaction';
-import Selector from '../src/internal/selector';
+import Selector, { defaultReactionsByShortcut } from '../src/internal/selector';
 import Trigger from '../src/internal/trigger';
-import { emojiService } from './examples/emoji-service';
+import { getEmojiResource } from './examples/emoji-provider';
 import { reactionsProvider, reactionsProviderPromise } from './examples/reactions-provider';
 
 import { name } from '../package.json';
@@ -17,14 +17,14 @@ storiesOf(name, module)
       <div style={{display: 'flex'}}>
         <p>Lorem ipsum dolor sit amet...</p>
         <ReactionPicker
-          emojiService={emojiService}
+          emojiProvider={getEmojiResource()}
           onSelection={(emojiId) => reactionsProvider.toggleReaction(demoAri, emojiId)}
         />
       </div>
       <hr />
       <Reactions
         ari={demoAri}
-        emojiService={emojiService}
+        emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProvider}
         onReactionClick={(emojiId) => reactionsProvider.toggleReaction(demoAri, emojiId)}
       />
@@ -32,7 +32,7 @@ storiesOf(name, module)
   ))
   .add('Picker', () => (
     <ReactionPicker
-      emojiService={emojiService}
+      emojiProvider={getEmojiResource()}
       onSelection={action('reaction selected')}
     />
   ))
@@ -41,7 +41,7 @@ storiesOf(name, module)
       <p>This is a message with some reactions</p>
       <Reactions
         ari={demoAri}
-        emojiService={emojiService}
+        emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProvider}
         onReactionClick={action('reaction clicked')}
       />
@@ -56,14 +56,14 @@ storiesOf(`${name}/Resourced Components`, module)
         <p>Lorem ipsum dolor sit amet...</p>
         <ResourcedReactionPicker
           ari={demoAri}
-          emojiService={emojiService}
+          emojiProvider={getEmojiResource()}
           reactionsProvider={reactionsProviderPromise}
         />
       </div>
       <hr />
       <ResourcedReactions
         ari={demoAri}
-        emojiService={emojiService}
+        emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProviderPromise}
       />
     </div>
@@ -71,7 +71,7 @@ storiesOf(`${name}/Resourced Components`, module)
   .add('Resourced Reaction Picker', () => (
     <ResourcedReactionPicker
       ari={demoAri}
-      emojiService={emojiService}
+      emojiProvider={getEmojiResource()}
       reactionsProvider={reactionsProviderPromise}
     />
   ))
@@ -80,7 +80,7 @@ storiesOf(`${name}/Resourced Components`, module)
       <p>This is a message with some reactions</p>
       <ResourcedReactions
         ari={demoAri}
-        emojiService={emojiService}
+        emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProviderPromise}
       />
     </div>
@@ -90,21 +90,21 @@ storiesOf(`${name}/Resourced Components`, module)
 storiesOf(`${name}/Internal Components`, module)
   .add('Reaction', () => (
     <Reaction
-      reaction={{ emojiId: 'smiley', count: 1, reacted: false, ari: demoAri }}
-      emojiService={emojiService}
+      reaction={{ emojiId: defaultReactionsByShortcut.get('smiley') as string, count: 1, reacted: false, ari: demoAri }}
+      emojiProvider={getEmojiResource()}
       onClick={action('reaction clicked')}
     />
   ))
   .add('Reaction - reacted', () => (
     <Reaction
-      reaction={{ emojiId: 'smiley', count: 1, reacted: true, ari: demoAri }}
-      emojiService={emojiService}
+      reaction={{ emojiId: defaultReactionsByShortcut.get('smiley') as string, count: 1, reacted: true, ari: demoAri }}
+      emojiProvider={getEmojiResource()}
       onClick={action('reaction clicked')}
     />
   ))
   .add('Selector', () => (
     <Selector
-      emojiService={emojiService}
+      emojiProvider={getEmojiResource()}
       onSelection={action('reaction selected')}
     />
   ))

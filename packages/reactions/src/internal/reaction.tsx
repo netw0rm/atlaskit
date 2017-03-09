@@ -1,4 +1,4 @@
-import { Emoji } from '@atlaskit/emoji';
+import { EmojiProvider, ResourcedEmoji } from '@atlaskit/emoji';
 import {
   akBorderRadius,
   akColorN30A,
@@ -79,11 +79,15 @@ const reactionStyle = style({
 
 export interface Props {
   reaction: ReactionSummary;
-  emojiService: any; // emojiService
+  emojiProvider: Promise<EmojiProvider>;
   onClick: Function;
 }
 
-export default class Reaction extends PureComponent<Props, {}> {
+export interface State {
+
+}
+
+export default class Reaction extends PureComponent<Props, State> {
 
   private handleMouseDown = (event) => {
     event.preventDefault();
@@ -93,12 +97,7 @@ export default class Reaction extends PureComponent<Props, {}> {
   }
 
   render() {
-    const { emojiService, reaction } = this.props;
-    const emoji = emojiService.all().emojis.filter(e => e.id === reaction.emojiId)[0];
-
-    if (!emoji) {
-      return null;
-    }
+    const { emojiProvider, reaction } = this.props;
 
     const classNames = cx(reactionStyle, {
       'reacted': reaction.reacted
@@ -109,7 +108,7 @@ export default class Reaction extends PureComponent<Props, {}> {
         className={classNames}
         onMouseUp={this.handleMouseDown}
       >
-        <span className={emojiStyle}><Emoji {...emoji} /></span>
+        <span className={emojiStyle}><ResourcedEmoji emojiProvider={emojiProvider} emojiId={{ id: reaction.emojiId }} /></span>
         <span className={countStyle}>
           {reaction.count < 100 ? reaction.count : '99+'}
         </span>

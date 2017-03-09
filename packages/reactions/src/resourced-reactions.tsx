@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { EmojiProvider } from '@atlaskit/emoji';
+
 import { ReactionsProvider } from './reactions-resource';
 import Reactions from './reactions';
 
 export interface Props {
   ari: string;
   reactionsProvider: Promise<ReactionsProvider>;
-  emojiService: any; // EmojiService
+  emojiProvider: Promise<EmojiProvider>;
   boundariesElement?: string;
 };
 
@@ -52,12 +54,12 @@ export default class ResourcedReactions extends PureComponent<Props, State> {
       return null;
     }
 
-    const { ari, boundariesElement, emojiService } = this.props;
+    const { ari, boundariesElement, emojiProvider } = this.props;
 
     return (
       <Reactions
         ari={ari}
-        emojiService={emojiService}
+        emojiProvider={emojiProvider}
         reactionsProvider={reactionsProvider}
         onReactionClick={(emojiId) => reactionsProvider.toggleReaction(ari, emojiId)}
         boundariesElement={boundariesElement}

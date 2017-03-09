@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Component} from 'react';
 import PlayButton from '@atlaskit/icon/glyph/play';
 import {CardAction} from '@atlaskit/media-core';
-import {Wrapper, PlayButtonWrapper} from './styled';
+import {Wrapper, PlayButtonWrapper, Circle} from './styled';
 import {LinkCardViewHorizontal} from '../linkCardViewHorizontal/linkCardViewHorizontal';
 
 export interface LinkCardPlayerProps {
@@ -38,13 +38,14 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
 
   private renderPlayer(): JSX.Element {
     return <Wrapper className={'is-played'}>
-      <iframe src={this.props.playerUrl}/>
+      <iframe src={`${this.props.playerUrl}&autoplay=1`}/>
     </Wrapper>;
   }
 
   private renderLinkCard(): JSX.Element {
     return <Wrapper>
       <PlayButtonWrapper onClick={this.onClick}>
+        <Circle className="circle"/>
         <PlayButton label="play" />
       </PlayButtonWrapper>
       <LinkCardViewHorizontal

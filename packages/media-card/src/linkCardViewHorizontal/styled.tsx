@@ -86,7 +86,7 @@ export const Link = styled.div`
     font-size: 12px;
     color: ${akColorN300};
 
-    ${ellipsis('100%')}
+    ${ellipsis(230)}
   }
 `;
 

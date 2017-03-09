@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import {size} from '../styles/base';
+import {size, centerSelf, easeInOutCubic, rgba} from '../styles/base';
 
 export const Wrapper = styled.div`
   position: relative;
@@ -32,22 +32,38 @@ export const PlayButtonWrapper = styled.div`
   cursor: pointer;
 
   &:hover {
-    > span {
+    .circle {
       width: 300px;
       height: 184px;
       border-radius: 0;
     }
+
+    span {
+      border-color: white;
+    }
   }
 
   > span {
-    position: absolute;
-    top: 50%;
-    left: 50%
-    transform: translate(-50%, -50%);
-    background: rgba(23, 43, 77, 0.75);
+    ${size(40)}
+    ${centerSelf()}
+    margin-left: 1px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
     border-radius: 100%;
-    width: 40px;
-    height: 40px;
     transition: all .3s;
+
+    &:hover {
+      color: ${rgba('#ffffff', 0.5)};
+      box-shadow: 0px 0px 14px -1px black inset;
+    }
   }
+`;
+
+export const Circle = styled.div`
+  ${size(40)}
+  ${centerSelf()}
+  background: rgba(23, 43, 77, 0.75);
+  border-radius: 100%;
+  transition: all .3s ${easeInOutCubic};
 `;

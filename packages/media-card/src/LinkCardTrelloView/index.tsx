@@ -3,6 +3,7 @@ import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 import AkBadge from '@atlaskit/badge';
+import Button from '@atlaskit/button';
 import {Ellipsify} from '../ellipsify';
 import {
   Lists,
@@ -93,9 +94,10 @@ export class LinkCardTrelloView extends Component<LinkCardTrelloViewProps, LinkC
             <Link>
               {icon}
               <a href={linkUrl} rel="noopener">
-                {linkUrl}
+                Trello - Board
               </a>
             </Link>
+            <Button>Open board</Button>
           </Footer>
         </Details>
       </Wrapper>

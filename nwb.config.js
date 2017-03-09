@@ -1,6 +1,8 @@
 /* eslint import/no-dynamic-require: 0 */
 /* eslint global-require: 0 */
+/* eslint no-unused-vars: 0 */
 /* eslint prefer-object-spread/prefer-object-spread: 0 */
+/* eslint quotes: 0 */
 
 /*
 
@@ -10,10 +12,15 @@ NWB TODO
 
 */
 
+const fs = require('fs');
 const path = require('path');
 const camelcase = require('camelcase');
 
-const pack = require(path.join(process.cwd(), 'package.json'));
+const cwd = process.cwd();
+const entryPath = path.join(cwd, 'src', 'index');
+const entryJs = `${entryPath}.js`;
+const entryJsx = `${entryJs}x`;
+const pack = require(path.join(cwd, 'package.json'));
 
 module.exports = {
   type: 'react-component',
@@ -28,7 +35,7 @@ module.exports = {
       )).reduce((prev, curr) => {
         prev[curr] = curr;
         return prev;
-      }),
+      }, {}),
     },
   },
   babel: {
@@ -59,6 +66,9 @@ module.exports = {
       sinon: true,
     },
     extra: {
+      // Some use .js, some use .jsx. Yeah.
+      entry: fs.existsSync(entryJsx) ? entryJsx : entryJs,
+
       // TODO remove this when not using .jsx anymore.
       resolve: {
         extensions: ['.js', '.json', '.jsx'],

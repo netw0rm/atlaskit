@@ -40,7 +40,7 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   }
 
   pkgJson.files = ['umd'];
-  pkgJson.main = `umd/${pkg.name}.js`;
+  pkgJson.main = `umd/${pkgJson.name}.js`;
   pkgJson.scripts = {
     prepublish: 'nwb build',
     storybook: '../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001',

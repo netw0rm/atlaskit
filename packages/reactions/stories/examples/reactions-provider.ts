@@ -1,5 +1,4 @@
 import { Promise } from 'es6-promise';
-import { EmojiId } from '@atlaskit/emoji';
 import { findIndex } from '../../src/internal/helpers';
 import { default as AbstractReactionsProvider } from '../../src/reactions-resource';
 import { Reactions, ReactionSummary } from '../../src/reactions-resource';
@@ -11,19 +10,19 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     'ari:cloud:demo:123:123': [
       {
         ari: 'ari:cloud:demo:123:123',
-        emojiId: defaultReactionsByShortcut.get('grinning') as EmojiId,
+        emojiId: defaultReactionsByShortcut.get('grinning') as string,
         count: 1,
         reacted: true
       },
       {
         ari: 'ari:cloud:demo:123:123',
-        emojiId: defaultReactionsByShortcut.get('thumbsup') as EmojiId,
+        emojiId: defaultReactionsByShortcut.get('thumbsup') as string,
         count: 5,
         reacted: false
       },
       {
         ari: 'ari:cloud:demo:123:123',
-        emojiId: defaultReactionsByShortcut.get('grin') as EmojiId,
+        emojiId: defaultReactionsByShortcut.get('grin') as string,
         count: 100,
         reacted: false
       }
@@ -36,7 +35,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     });
   }
 
-  toggleReaction(ari: string, emojiId: EmojiId) {
+  toggleReaction(ari: string, emojiId: string) {
     if (!this.cachedReactions[ari]) {
       this.cachedReactions[ari] = [];
     }
@@ -57,7 +56,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     }
   }
 
-  addReaction(ari: string, emojiId: EmojiId): Promise<ReactionSummary[]> {
+  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       const index = findIndex(this.cachedReactions[ari], reaction => reaction.emojiId === emojiId);
 
@@ -78,7 +77,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
     });
   }
 
-  deleteReaction(ari: string, emojiId: EmojiId): Promise<ReactionSummary[]> {
+  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       const index = findIndex(this.cachedReactions[ari], reaction => reaction.emojiId === emojiId);
       const reaction = this.cachedReactions[ari][index];

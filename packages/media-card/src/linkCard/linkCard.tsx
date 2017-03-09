@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
-import { Context, CardAction, LinkItem, LinkDetails } from '@atlaskit/media-core';
+import { Context, CardAction, LinkItem } from '@atlaskit/media-core';
 import { Observable } from 'rxjs/Observable';
 import { UrlPreview } from '@atlaskit/media-core';
 import 'rxjs/add/observable/of';
@@ -81,7 +81,16 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
   }
 
   private updateState(props: LinkCardProps): void {
-    const { context, link } = this.props;
+    // const { context, link } = this.props;
+    // const isLinkFromId = (link) => (link as LinkFromId).id !== undefined;
+    // const isLinkItem = (item) => (item as LinkItem).details !== undefined;
+
+    this.unsubscribe();
+
+    // const { context, link } = this.props;
+    // const provider: { subscribe: Function } = isLinkFromId(link)
+    //   ? context.getMediaItemProvider((link as LinkFromId).id, 'link', (link as LinkFromId).collection).observable()
+    //   : context.getUrlPreviewProvider(link as string).observable();
 
     this.unsubscribe();
     this.setPartialState({ loading: true });
@@ -181,10 +190,10 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
     />;
   }
 
-  private renderNoLinkItem() {
-    // TODO FIL-3892 FIL-3893 render loading/error state 
-    return <div>This is the loading/error state</div>;
-  }
+  // private renderNoLinkItem() {
+  //   // TODO FIL-3892 FIL-3893 render loading/error state 
+  //   return <div>This is the loading/error state</div>;
+  // }
 };
 
 export default LinkCard;

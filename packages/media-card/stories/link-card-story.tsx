@@ -57,4 +57,7 @@ storiesOf('LinkCard', {})
     ];
 
     return <StoryList>{linkCardViewHorizontals}</StoryList>;
+  })
+  .add('Embeds', () => {
+
   });

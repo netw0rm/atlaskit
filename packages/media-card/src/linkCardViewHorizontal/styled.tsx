@@ -10,12 +10,29 @@ export const Wrapper = styled(Root)`
 
   ${borderRadius()}
   ${cardShadow()}
+
+  &.square {
+    flex-direction: column;
+
+    .details {
+      height: 116px;
+      flex-grow: 0;
+    }
+  }
 `;
 
-export const Thumbnail = styled.img`
+export const HorizontalThumbnail = styled.img`
   flex-shrink: 0;
   ${size(116)}
   ${borderRadiusLeft()}
+`;
+
+export const SquareThumbnail = styled.div`
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  flex: 1;
+  width: 100%;
 `;
 
  // min-width required in Details to get proper text wrapping in IE11

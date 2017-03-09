@@ -9,7 +9,7 @@ import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { style } from 'typestyle';
-import { ReactionSummary } from '../reactions-service';
+import { ReactionSummary } from '../reactions-resource';
 import { isLeftClick } from './helpers';
 
 const emojiStyle = style({

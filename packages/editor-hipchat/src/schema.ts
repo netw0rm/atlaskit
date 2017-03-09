@@ -10,15 +10,16 @@ import {
   StrongMarkType,
   Text,
   UnderlineMarkType,
+  MediaNodeType,
 } from '@atlaskit/editor-core';
 
 export default new Schema({
   nodes: {
     // The top level node for a document.
-    doc: { type: DocNodeType, content: 'paragraph' },
+    doc: { type: DocNodeType, content: 'block+' },
 
     // A paragraph node.
-    paragraph: { type: ParagraphNodeType, content: 'inline<_>*' },
+    paragraph: { type: ParagraphNodeType, content: 'inline<_>*', group: 'block' },
 
     // Text node.
     text: { type: Text, group: 'inline' },
@@ -30,7 +31,9 @@ export default new Schema({
     hard_break: { type: HardBreakNodeType, group: 'inline' },
 
     // An @-mention.
-    mention: { type: MentionNodeType, group: 'inline' }
+    mention: { type: MentionNodeType, group: 'inline' },
+
+    media: { type: MediaNodeType, group: 'block' },
   },
   marks: {
     // Represents a hyperlink to a URL.

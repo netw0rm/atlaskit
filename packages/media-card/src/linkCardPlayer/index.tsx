@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import PlayButton from '@atlaskit/icon/glyph/play';
+import {CardAction} from '@atlaskit/media-core';
 import {Wrapper, PlayButtonWrapper} from './styled';
 import {LinkCardViewHorizontal} from '../linkCardViewHorizontal/linkCardViewHorizontal';
 
@@ -37,7 +38,7 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
 
   private renderPlayer(): JSX.Element {
     return <Wrapper className={'is-played'}>
-      <iframe src={this.props.playerUrl}></iframe>
+      <iframe src={this.props.playerUrl}/>
     </Wrapper>;
   }
 
@@ -54,7 +55,7 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
         thumbnailUrl={this.props.thumbnailUrl}
         iconUrl={this.props.iconUrl}
         menuActions={this.props.menuActions}
-      />      
+      />
     </Wrapper>;
   }
 

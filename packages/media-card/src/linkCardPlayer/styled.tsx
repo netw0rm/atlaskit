@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import {size, rgba, center, easeOutExpo} from '../styles/base';
+import {size} from '../styles/base';
 
 export const Wrapper = styled.div`
   position: relative;

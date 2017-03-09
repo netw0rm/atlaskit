@@ -1,4 +1,5 @@
-import {MediaType} from './mediaTypes';
+import { MediaType } from './mediaTypes';
+import { TrelloBoardLinkApp } from './trello';
 
 export type MediaItemType = 'file' | 'link';
 
@@ -24,6 +25,8 @@ export interface LinkItem {
   type: 'link';
   details: LinkDetails;
 }
+
+export type LinkApp = TrelloBoardLinkApp;
 
 export interface Resources {
   icon?: Resource;
@@ -56,8 +59,8 @@ export interface UrlPreview {
   author?: UrlAuthorDetails;
   date?: number;
   resources: Resources;
+  app?: LinkApp;
 }
-
 
 export interface LinkDetails extends UrlPreview {
   id: string;

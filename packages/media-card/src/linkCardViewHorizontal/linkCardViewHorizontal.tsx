@@ -87,7 +87,7 @@ export class LinkCardViewHorizontal extends Component<LinkCardViewHorizontalProp
     const cardStyle = {height: `${this.height}px`, width: `${this.width}px`};
     const thumbnail = thumbnailUrl ? (this.isHorizontal ?
       <HorizontalThumbnail src={thumbnailUrl} alt={title}/> :
-      <SquareThumbnail style={{backgroundImage: `url(${thumbnailUrl})`}} />) : null;
+      <SquareThumbnail className="square-img" style={{backgroundImage: `url(${thumbnailUrl})`}} />) : null;
     const icon = iconUrl ? <img src={iconUrl} alt={title} /> : null;
 
     return (

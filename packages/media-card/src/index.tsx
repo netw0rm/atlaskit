@@ -12,6 +12,7 @@ export * from './list';
 
 export * from './linkCardViewHorizontal/linkCardViewHorizontal';
 export * from './linkCard/linkCard';
+export * from './linkCardPlayer';
 
 export default CardView;
 

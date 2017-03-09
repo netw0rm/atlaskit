@@ -5,10 +5,24 @@ import { findIndex } from './internal/helpers';
 let debounced: number | null = null;
 
 export interface ReactionSummary {
+  id?: string;
   ari: string;
   emojiId: string;
   count: number;
   reacted: boolean;
+}
+
+export interface Reaction {
+  id: string;
+  ari: string;
+  emojiId: string;
+  count: number;
+  users: User[];
+}
+
+export interface User {
+  displayName: string;
+  id: string;
 }
 
 export interface Listener {
@@ -233,6 +247,10 @@ export interface ReactionsProviderConfig {
   sessionToken?: string;
   baseUrl: string;
   autoPoll?: number;
+
+  synchronyBaseUrl?: string;
+  cloudId?: string;
+  containerAris?: string[];
 }
 
 const requestService = <T>(baseUrl: string, path: string, opts?: {}) => {
@@ -258,7 +276,7 @@ const requestService = <T>(baseUrl: string, path: string, opts?: {}) => {
 
 export class ReactionsResource extends AbstractReactionsResource implements ReactionsProvider {
 
-  constructor(private config: ReactionsProviderConfig) {
+  constructor(protected config: ReactionsProviderConfig) {
     super();
 
     if (config.autoPoll) {
@@ -266,7 +284,7 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
     }
   }
 
-  private getHeaders(): Headers {
+  protected getHeaders(): Headers {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-Type', 'application/json');
@@ -338,5 +356,94 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
         resolve(this.cachedReactions[ari]);
       }).catch(() => reject());
     });
+  }
+}
+
+export interface RealTimeReactionsProviderConfig extends ReactionsProviderConfig {
+  synchronyBaseUrl: string;
+  cloudId: string;
+  containerAris: string[];
+}
+
+interface RealTimeReactionEvent {
+  data: Reaction;
+}
+
+export class RealTimeReactionsResource extends ReactionsResource implements ReactionsProvider {
+  private token: string;
+  private channels: Map<string, Object>;
+
+  constructor(config: RealTimeReactionsProviderConfig) {
+    super(config);
+
+    this.init(config);
+  }
+
+  init(config: ReactionsProviderConfig) {
+    this.channels = new Map<string, Object>();
+
+    // get JWT
+    requestService<string>(this.config.baseUrl, 'reactions/realtime/token', {
+        'method': 'POST',
+        'headers': this.getHeaders(),
+        'body': JSON.stringify({
+          cloudId: config.cloudId,
+
+        }),
+        'credentials': 'include'
+      }).then(token => {
+        this.token = token;
+
+        if (this.config.containerAris !== undefined) {
+          for (let containerAri of this.config.containerAris) {
+            this.joinContainer(containerAri);
+          }
+        }
+
+      });
+  }
+
+  joinContainer(containerAri: string) {
+    let channel = Synchrony.channel({
+      url: this.config.synchronyBaseUrl,
+      topic: `pf-reactions-service/${this.config.cloudId}/${containerAri}`,
+      jwt: this.token
+    });
+
+    channel.on('message', (event: RealTimeReactionEvent) => {
+      this.updateReaction(event.data);
+    });
+
+    this.channels.set(containerAri, channel);
+  }
+
+  leaveContainer(containerAri: string) {
+    // No way to leave a channel in Synchrony...
+  }
+
+  updateReaction(reaction: Reaction) {
+    // TODO: What happen when the reaction dissapear?
+
+    let ari = reaction.ari;
+    if (!this.cachedReactions[ari]) {
+      this.cachedReactions[ari] = [];
+    }
+
+    const index = findIndex(this.cachedReactions[ari], reaction => reaction.emojiId === reaction.emojiId);
+
+    if (index !== -1) {
+      const oldReaction = this.cachedReactions[ari][index];
+      oldReaction.count = reaction.count;
+    } else {
+      this.cachedReactions[ari].push({
+        id: reaction.id,
+        ari: ari,
+        emojiId: reaction.emojiId,
+        count: reaction.count,
+        reacted: false
+      });
+    }
+
+    this.notifyUpdated(ari, this.cachedReactions[ari]);
   }
 }

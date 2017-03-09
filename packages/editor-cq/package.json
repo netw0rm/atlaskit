@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "Atlassian Editor component for Confluence Questions",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/editor-cq.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "license": "Apache-2.0",

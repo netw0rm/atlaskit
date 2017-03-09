@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "ak-emoji react component",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/emoji.js",
   "jsnext:main": "dist/es2015/index.js",
   "scripts": {
     "prepublish": "nwb build",
@@ -14,8 +14,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "dependencies": {

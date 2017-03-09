@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "React component which allows selection of a single item from a dropdown list. Substitute for the native select element",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/single-select.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "dependencies": {

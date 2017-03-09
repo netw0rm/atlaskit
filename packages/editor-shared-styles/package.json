@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "Shared styles for Atlassian Editor components",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/editor-shared-styles.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "author": "Atlassian Pty Ltd",

@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "A base component used to build inline-editable components that match the Atlassian Design Guidelines",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/inline-edit.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "peerDependencies": {

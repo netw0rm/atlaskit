@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "A package contains Atlassian editor core functionality",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/editor-core.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "src/index.d.ts",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "license": "Apache-2.0",

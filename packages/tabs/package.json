@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "A React component for displaying multiple panels within a single window",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/tabs.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "author": "Atlassian Pty Ltd",

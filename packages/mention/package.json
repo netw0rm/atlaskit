@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "A React component used to display user profiles in a list for 'Mention' functionality",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/mention.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "dependencies": {

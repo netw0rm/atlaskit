@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "Field Text Component",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/field-text.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
@@ -16,8 +16,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "peerDependencies": {

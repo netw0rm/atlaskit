@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "This component is used to display extra information to a user about an element by displaying a floating description.",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/tooltip.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
@@ -16,8 +16,6 @@
   },
   "types": "src/index.d.ts",
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "dependencies": {

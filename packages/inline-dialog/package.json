@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "An inline dialog React component for secondary content and controls that are displayed on user request",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/inline-dialog.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "author": "Atlassian Pty Ltd",

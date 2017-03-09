@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "A React component that displays a spinning icon to show a loading state",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/spinner.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
@@ -16,8 +16,6 @@
   },
   "types": "src/index.d.ts",
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "author": "Atlassian Pty Ltd",

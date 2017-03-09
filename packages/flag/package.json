@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "Flags are used for confirmations, alerts, and acknowledgments that require minimal user interaction",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/flag.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "dependencies": {

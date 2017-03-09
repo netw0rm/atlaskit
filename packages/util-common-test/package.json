@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "Shared test helpers used by AtlasKit components",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/util-common-test.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "author": "Atlassian Pty Ltd",

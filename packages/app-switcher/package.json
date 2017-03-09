@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "akapp-switcher React component",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/app-switcher.js",
   "module": "es/index.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
@@ -16,8 +16,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "dependencies": {

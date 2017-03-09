@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "Includes all media card related components, CardView, CardViewSmall, Card...",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/media-card.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "dependencies": {

@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "An Atlassian Editor component specially crafted for JIRA.",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/editor-jira.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "license": "Apache-2.0",

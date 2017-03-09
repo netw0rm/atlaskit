@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "A component to display Atlassian branded product logo lockups",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/logo.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "dependencies": {

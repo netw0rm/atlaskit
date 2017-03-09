@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "A React component that groups related buttons",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/button-group.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
@@ -16,8 +16,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "dependencies": {

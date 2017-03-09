@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "A React component for displaying a clickable message which triggers an inline dialog",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/inline-message.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "dependencies": {

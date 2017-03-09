@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "This component displays as a tag with an optional link and/or button to remove the given tag.",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/tag.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "dependencies": {

@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/input.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "peerDependencies": {

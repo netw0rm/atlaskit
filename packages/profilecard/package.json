@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "profilecard component",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/profilecard.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "dependencies": {

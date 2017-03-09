@@ -5,7 +5,7 @@
     "access": "public"
   },
   "description": "A component for building page layouts. Also includes the Grid and GridColumn components.",
-  "main": "lib/index.js",
+  "main": "umd/@atlaskit/page.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
@@ -15,8 +15,6 @@
     "test:watch": "nwb test --server"
   },
   "files": [
-    "es",
-    "lib",
     "umd"
   ],
   "dependencies": {

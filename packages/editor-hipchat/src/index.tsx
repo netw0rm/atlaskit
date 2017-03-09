@@ -151,7 +151,6 @@ export default class Editor extends PureComponent<Props, State> {
     }
 
     const { props } = this;
-    const { mediaProvider } = props;
 
     const pm = new ProseMirror({
       place,
@@ -162,13 +161,10 @@ export default class Editor extends PureComponent<Props, State> {
         DefaultKeymapsPlugin,
         TextFormattingPlugin,
         ...(this.props.mentionResourceProvider ? [MentionsPlugin] : []),
-        ...(mediaProvider ? [MediaPluginFactory(mediaProvider)] : []),
+        MediaPluginFactory()
+        // ...(mediaProvider ? [MediaPluginFactory(mediaProvider)] : []),
       ],
     });
-
-    if (mediaProvider) {
-      (pm.schema.nodes['media'] as MediaNodeType).setMediaProvider(mediaProvider);
-    }
 
     if (place instanceof HTMLElement) {
       const content = place.querySelector('[contenteditable]');

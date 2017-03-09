@@ -32,8 +32,6 @@ export default new Schema({
 
     // An @-mention.
     mention: { type: MentionNodeType, group: 'inline' },
-
-    media: { type: MediaNodeType, group: 'block' },
   },
   marks: {
     // Represents a hyperlink to a URL.

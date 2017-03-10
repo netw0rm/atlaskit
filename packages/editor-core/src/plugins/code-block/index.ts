@@ -34,7 +34,7 @@ export class CodeBlockState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  updateLanguage(language: string| undefined, view: EditorView): void {
+  updateLanguage(language: string | undefined, view: EditorView): void {
     if (this.activeCodeBlock) {
       commands.setBlockType(view.state.schema.nodes.codeBlock, { language: language })(view.state, view.dispatch);
     }

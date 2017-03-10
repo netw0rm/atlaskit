@@ -62,16 +62,15 @@ export default class LanguagePicker extends PureComponent<Props, State> {
 
     const matchedLanguage = findMatchedLanguage(language);
     const updatedlanguage = this.optionToLanguage(matchedLanguage);
-
-    if (language !== updatedlanguage) {
-      this.props.pluginState.updateLanguage(updatedlanguage, this.props.editorView);
-    }
-
     this.setState({
       language: matchedLanguage,
       element,
       showToolbar
     });
+
+    if (language !== updatedlanguage) {
+      this.props.pluginState.updateLanguage(updatedlanguage, this.props.editorView);
+    }
   }
 
   private handleLanguageChange = (activeItem: any) => {

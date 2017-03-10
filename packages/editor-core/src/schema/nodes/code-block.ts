@@ -35,9 +35,6 @@ export const codeBlock: NodeSpec = {
   group: 'block',
   code: true,
   defining: true,
-  attrs: {
-    language: { default: null }
-  },
   parseDOM: [{
     tag: 'pre', preserveWhitespace: true, getAttrs: (dom: Element) => {
       const language = (

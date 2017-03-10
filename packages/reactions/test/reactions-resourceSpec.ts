@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import * as fetchMock from 'fetch-mock';
 import * as sinon from 'sinon';
 
-import { ReactionsService } from '../src';
+import { ReactionsResource } from '../src';
 
 const { expect } = chai;
 
@@ -59,11 +59,11 @@ const fetchDeleteReaction = () => {
   };
 };
 
-const populateCache = (reactionsService: ReactionsService) => {
-  (reactionsService as any).cachedReactions = fetchGetReactions();
+const populateCache = (reactionsProvider: ReactionsResource) => {
+  (reactionsProvider as any).cachedReactions = fetchGetReactions();
 };
 
-describe('@atlaskit/reactions/reactions-service', () => {
+describe('@atlaskit/reactions/reactions-provider', () => {
 
   afterEach(() => {
     fetchMock.restore();
@@ -80,23 +80,23 @@ describe('@atlaskit/reactions/reactions-service', () => {
       });
     });
 
-    const reactionsService = new ReactionsService({baseUrl});
+    const reactionsProvider = new ReactionsResource({baseUrl});
     it('should return reaction data', () => {
-      return reactionsService.getReactions([ari])
+      return reactionsProvider.getReactions([ari])
         .then(reactions => {
           expect(reactions).to.deep.equal(fetchGetReactions());
         });
     });
 
     it('should set cached reactions', () => {
-      return reactionsService.getReactions([ari])
+      return reactionsProvider.getReactions([ari])
         .then(reactions => {
-          expect((reactionsService as any).cachedReactions).to.deep.equal(reactions);
+          expect((reactionsProvider as any).cachedReactions).to.deep.equal(reactions);
         });
     });
 
     it('should not overwrite cache for excluded aris', () => {
-      populateCache(reactionsService);
+      populateCache(reactionsProvider);
       const anotherAri = 'another:ari:123';
       const anotherAriData = [
         {
@@ -107,20 +107,20 @@ describe('@atlaskit/reactions/reactions-service', () => {
         }
       ];
 
-      (reactionsService as any).cachedReactions[anotherAri] = anotherAriData;
+      (reactionsProvider as any).cachedReactions[anotherAri] = anotherAriData;
 
-      return reactionsService.getReactions([ari])
+      return reactionsProvider.getReactions([ari])
         .then(reactions => {
-          expect((reactionsService as any).cachedReactions).not.to.deep.equal(reactions);
-          expect((reactionsService as any).cachedReactions[ari]).to.deep.equal(reactions[ari]);
-          expect((reactionsService as any).cachedReactions[anotherAri]).to.deep.equal(anotherAriData);
+          expect((reactionsProvider as any).cachedReactions).not.to.deep.equal(reactions);
+          expect((reactionsProvider as any).cachedReactions[ari]).to.deep.equal(reactions[ari]);
+          expect((reactionsProvider as any).cachedReactions[anotherAri]).to.deep.equal(anotherAriData);
         });
     });
   });
 
   describe('addReaction', () => {
-    const reactionsService = new ReactionsService({baseUrl});
-    populateCache(reactionsService);
+    const reactionsProvider = new ReactionsResource({baseUrl});
+    populateCache(reactionsProvider);
 
     it('should optimistically add reaction', () => {
       fetchMock.mock({
@@ -130,20 +130,20 @@ describe('@atlaskit/reactions/reactions-service', () => {
         matcher: 'end:reactions',
         response: fetchAddReaction()
       });
-      const spy = sinon.spy(reactionsService, 'notifyUpdated');
+      const spy = sinon.spy(reactionsProvider, 'notifyUpdated');
 
-      return reactionsService.addReaction(ari, 'smiley')
+      return reactionsProvider.addReaction(ari, 'smiley')
         .then(state => {
           expect(spy.called).to.equal(true);
-          expect((reactionsService as any).cachedReactions[ari]).to.deep.equal(state);
+          expect((reactionsProvider as any).cachedReactions[ari]).to.deep.equal(state);
           expect(state.length).to.equal(fetchGetReactions()[ari].length + 1);
         });
     });
   });
 
   describe('deleteReaction', () => {
-    const reactionsService = new ReactionsService({baseUrl});
-    populateCache(reactionsService);
+    const reactionsProvider = new ReactionsResource({baseUrl});
+    populateCache(reactionsProvider);
 
     it('should optimistically delete reaction', () => {
       fetchMock.mock({
@@ -153,12 +153,12 @@ describe('@atlaskit/reactions/reactions-service', () => {
         matcher: `begin:${baseUrl}/reactions?ari=${ari}`,
         response: fetchDeleteReaction()
       });
-      const spy = sinon.spy(reactionsService, 'notifyUpdated');
+      const spy = sinon.spy(reactionsProvider, 'notifyUpdated');
 
-      return reactionsService.deleteReaction(ari, 'grinning')
+      return reactionsProvider.deleteReaction(ari, 'grinning')
         .then(state => {
           expect(spy.called).to.equal(true);
-          expect((reactionsService as any).cachedReactions[ari]).to.deep.equal(state);
+          expect((reactionsProvider as any).cachedReactions[ari]).to.deep.equal(state);
           expect(state.length).to.equal(fetchGetReactions()[ari].length - 1);
         });
     });
@@ -166,65 +166,65 @@ describe('@atlaskit/reactions/reactions-service', () => {
 
   describe('toggleReaction', () => {
     it('should optimistically add reaction if not in cache or if user have not reacted and call service', () => {
-      const reactionsService = new ReactionsService({baseUrl});
-      populateCache(reactionsService);
+      const reactionsProvider = new ReactionsResource({baseUrl});
+      populateCache(reactionsProvider);
 
-      const optimisticSpy = sinon.spy(reactionsService, 'optimisticAddReaction');
-      const addSpy = sinon.spy(reactionsService, 'addReaction');
+      const optimisticSpy = sinon.spy(reactionsProvider, 'optimisticAddReaction');
+      const addSpy = sinon.spy(reactionsProvider, 'addReaction');
 
-      reactionsService.toggleReaction(ari, 'smiley');
+      reactionsProvider.toggleReaction(ari, 'smiley');
       expect(optimisticSpy.called).to.equal(true);
       expect(addSpy.called).to.equal(true);
     });
 
     it('should optimistically delete reaction if in cache and call service', () => {
-      const reactionsService = new ReactionsService({baseUrl});
-      populateCache(reactionsService);
+      const reactionsProvider = new ReactionsResource({baseUrl});
+      populateCache(reactionsProvider);
 
-      const optimisticSpy = sinon.spy(reactionsService, 'optimisticDeleteReaction');
-      const deleteSpy = sinon.spy(reactionsService, 'deleteReaction');
+      const optimisticSpy = sinon.spy(reactionsProvider, 'optimisticDeleteReaction');
+      const deleteSpy = sinon.spy(reactionsProvider, 'deleteReaction');
 
-      reactionsService.toggleReaction(ari, 'grinning');
+      reactionsProvider.toggleReaction(ari, 'grinning');
       expect(optimisticSpy.called).to.equal(true);
       expect(deleteSpy.called).to.equal(true);
     });
 
     it('should optimistically increase counter on reaction if user have not already reacted', () => {
-      const reactionsService = new ReactionsService({baseUrl});
-      populateCache(reactionsService);
+      const reactionsProvider = new ReactionsResource({baseUrl});
+      populateCache(reactionsProvider);
 
-      const addSpy = sinon.spy(reactionsService, 'addReaction');
-      reactionsService.toggleReaction(ari, 'thumbsup');
+      const addSpy = sinon.spy(reactionsProvider, 'addReaction');
+      reactionsProvider.toggleReaction(ari, 'thumbsup');
       expect(addSpy.called).to.equal(true);
 
-      const reaction = (reactionsService as any).cachedReactions[ari].filter(r => r.emojiId === 'thumbsup')[0];
+      const reaction = (reactionsProvider as any).cachedReactions[ari].filter(r => r.emojiId === 'thumbsup')[0];
       expect(reaction.count).to.equal(6);
       expect(reaction.reacted).to.equal(true);
     });
 
     it('should optimistically decrease counter on reaction if user have already reacted', () => {
-      const reactionsService = new ReactionsService({baseUrl});
-      populateCache(reactionsService);
+      const reactionsProvider = new ReactionsResource({baseUrl});
+      populateCache(reactionsProvider);
 
-      const deleteSpy = sinon.spy(reactionsService, 'deleteReaction');
-      reactionsService.toggleReaction(ari, 'laughing');
+      const deleteSpy = sinon.spy(reactionsProvider, 'deleteReaction');
+      reactionsProvider.toggleReaction(ari, 'laughing');
       expect(deleteSpy.called).to.equal(true);
 
-      const reaction = (reactionsService as any).cachedReactions[ari].filter(r => r.emojiId === 'laughing')[0];
+      const reaction = (reactionsProvider as any).cachedReactions[ari].filter(r => r.emojiId === 'laughing')[0];
       expect(reaction.count).to.equal(1);
       expect(reaction.reacted).to.equal(false);
     });
 
     it('should delete reaction if count is less than 1', () => {
-      const reactionsService = new ReactionsService({baseUrl});
-      populateCache(reactionsService);
+      const reactionsProvider = new ReactionsResource({baseUrl});
+      populateCache(reactionsProvider);
 
-      const deleteSpy = sinon.spy(reactionsService, 'deleteReaction');
-      reactionsService.toggleReaction(ari, 'grinning');
+      const deleteSpy = sinon.spy(reactionsProvider, 'deleteReaction');
+      reactionsProvider.toggleReaction(ari, 'grinning');
       expect(deleteSpy.called).to.equal(true);
 
-      expect((reactionsService as any).cachedReactions[ari].filter(r => r.emojiId === 'grinning').length).to.equal(0);
-      expect((reactionsService as any).cachedReactions[ari].length).to.equal(fetchGetReactions()[ari].length - 1);
+      expect((reactionsProvider as any).cachedReactions[ari].filter(r => r.emojiId === 'grinning').length).to.equal(0);
+      expect((reactionsProvider as any).cachedReactions[ari].length).to.equal(fetchGetReactions()[ari].length - 1);
     });
   });
 

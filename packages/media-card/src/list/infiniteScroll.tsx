@@ -19,7 +19,7 @@ export interface InfiniteScrollState {
 
 export class InfiniteScroll extends Component<InfiniteScrollProps, InfiniteScrollState> {
   static defaultProps = {
-    width: 'auto',
+    width: '100%',
     delay: 1000,
     threshold: 100
   };

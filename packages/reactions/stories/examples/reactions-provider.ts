@@ -1,27 +1,28 @@
 import { Promise } from 'es6-promise';
 import { findIndex } from '../../src/internal/helpers';
-import { default as AbstractReactionsService } from '../../src/reactions-service';
-import { Reactions, ReactionSummary } from '../../src/reactions-service';
+import { default as AbstractReactionsProvider } from '../../src/reactions-resource';
+import { Reactions, ReactionSummary } from '../../src/reactions-resource';
+import { defaultReactionsByShortcut } from '../../src/internal/selector';
 
-export default class MockReactionsService extends AbstractReactionsService {
+export default class MockReactionsProvider extends AbstractReactionsProvider {
 
   protected cachedReactions = {
     'ari:cloud:demo:123:123': [
       {
         ari: 'ari:cloud:demo:123:123',
-        emojiId: 'grinning',
+        emojiId: defaultReactionsByShortcut.get('grinning') as string,
         count: 1,
         reacted: true
       },
       {
         ari: 'ari:cloud:demo:123:123',
-        emojiId: 'thumbsup',
+        emojiId: defaultReactionsByShortcut.get('thumbsup') as string,
         count: 5,
         reacted: false
       },
       {
         ari: 'ari:cloud:demo:123:123',
-        emojiId: 'grin',
+        emojiId: defaultReactionsByShortcut.get('grin') as string,
         count: 100,
         reacted: false
       }
@@ -94,4 +95,5 @@ export default class MockReactionsService extends AbstractReactionsService {
 
 }
 
-export const reactionsService = new MockReactionsService() as any; // This need to be any in order for the overview story to work.
+export const reactionsProvider = new MockReactionsProvider() as any; // This need to be any in order for the overview story to work.
+export const reactionsProviderPromise = Promise.resolve(reactionsProvider) as any;

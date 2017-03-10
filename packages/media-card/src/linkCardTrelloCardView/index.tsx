@@ -1,27 +1,15 @@
 import * as React from 'react';
-import { Component, MouseEvent } from 'react';
-import { CardAction } from '@atlaskit/media-core';
-import MoreIcon from '@atlaskit/icon/glyph/more';
-import AkBadge from '@atlaskit/badge';
+import { Component } from 'react';
 import ClockIcon from '@atlaskit/icon/glyph/recent';
 import AttachmentIcon from '@atlaskit/icon/glyph/attachment';
 
-import { Ellipsify } from '../ellipsify';
-import { Dropdown } from '../dropdown/dropdown';
 import {
     Lists,
     MemberAvatar,
     Avatars,
     Wrapper,
     HorizontalThumbnail,
-    SquareThumbnail,
     Details,
-    Title,
-    Description,
-    Footer,
-    Link,
-    Menu,
-    MenuButton,
     Header
 } from './styled';
 
@@ -71,9 +59,8 @@ export class LinkCardTrelloCardView extends Component<LinkCardTrelloCardViewProp
     }
 
     render(): JSX.Element {
-        const { linkUrl, card, board, thumbnailUrl, iconUrl } = this.props;
+        const { card, thumbnailUrl } = this.props;
         const cardStyle = { width: '435px', height: '116px' };
-        const icon = iconUrl ? <img src={iconUrl} alt={card.name} /> : null;
         const memberAvatars = this.props.members.slice(0, 3).map((m, i) => (
             <MemberAvatar src={m.avatarUrl} style={{ right: `${i * 17 + 25}px` }} />
         ));

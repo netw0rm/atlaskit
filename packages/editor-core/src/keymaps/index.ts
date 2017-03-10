@@ -90,7 +90,7 @@ export interface Keymap {
   common?: string;
 }
 
-export function bindKeymapWithCommand(shortcut: string, cmd: (state: EditorState<any>, dispatch: (tr: Transaction) => void) => boolean, keymap: {[key: string]: Function}) {
+export function bindKeymapWithCommand(shortcut: string, cmd: (state: EditorState<any>, dispatch: (tr: Transaction) => void) => boolean, keymap: { [key: string]: Function }) {
   const oldCmd = keymap[shortcut];
   let newCmd = cmd;
   if (keymap[shortcut]) {

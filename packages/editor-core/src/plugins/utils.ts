@@ -9,7 +9,7 @@ export function reconfigure(view: EditorView, plugins: (Plugin | undefined)[]): 
     return;
   }
 
-  plugins = existingPlugins.concat(plugins as Plugin[]);
+  plugins = (plugins as Plugin[]).concat(existingPlugins);
   const newState = state.reconfigure({
     schema: state.schema,
     plugins: plugins

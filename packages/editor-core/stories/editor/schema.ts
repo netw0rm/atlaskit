@@ -15,7 +15,8 @@ import {
   heading,
   blockquote,
   codeBlock,
-  horizontalRule
+  horizontalRule,
+  image,
 } from '../../src/schema';
 
 const nodes = {
@@ -28,7 +29,8 @@ const nodes = {
   heading,
   blockquote,
   codeBlock,
-  horizontalRule
+  horizontalRule,
+  image,
 };
 
 const marks = {

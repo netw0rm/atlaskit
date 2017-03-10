@@ -7,6 +7,7 @@ import {
 import listsPlugin from '../../src/plugins/lists/index-future';
 import blockTypePlugin from '../../src/plugins/block-type';
 import codeBlockPlugin from '../../src/plugins/code-block';
+import textFormattingPlugin from '../../src/plugins/text-formatting';
 import hyperlinkPlugin from '../../src/plugins/hyperlink';
 import {
   baseKeymap,
@@ -100,6 +101,7 @@ export default class Editor extends PureComponent<Props, State> {
     const listsState = editorState && listsPlugin.getState(editorState);
     const blockTypeState = editorState && blockTypePlugin.getState(editorState);
     const codeBlockState = editorState && codeBlockPlugin.getState(editorState);
+    const textFormattingState = editorState && textFormattingPlugin.getState(editorState);
     const hyperlinkState = editorState && hyperlinkPlugin.getState(editorState);
 
     return (
@@ -115,6 +117,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateLists={listsState}
         pluginStateBlockType={blockTypeState}
         pluginStateCodeBlock={codeBlockState}
+        pluginStateTextFormatting={textFormattingState}
         pluginStateHyperlink={hyperlinkState}
       />
     );
@@ -150,6 +153,7 @@ export default class Editor extends PureComponent<Props, State> {
             listsPlugin,
             blockTypePlugin,
             codeBlockPlugin,
+            textFormattingPlugin,
             hyperlinkPlugin,
             history(),
             keymap(baseKeymap) // should be last :(

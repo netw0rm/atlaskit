@@ -1,6 +1,7 @@
 import BoldIcon from 'ak-icon/glyph/editor/bold';
 import ItalicIcon from 'ak-icon/glyph/editor/italic';
 import UnderlineIcon from 'ak-icon/glyph/editor/underline';
+import { EditorView } from '../../prosemirror';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
@@ -9,6 +10,7 @@ import { TextFormattingState } from '../../plugins/text-formatting';
 import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
+  editorView: EditorView;
   pluginState: TextFormattingState;
 }
 
@@ -88,21 +90,21 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
   @analytics('atlassian.editor.format.strong.button')
   private handleBoldClick = () => {
     if (!this.state.boldDisabled) {
-      this.props.pluginState.toggleStrong();
+      this.props.pluginState.toggleStrong(this.props.editorView);
     }
   }
 
   @analytics('atlassian.editor.format.em.button')
   private handleItalicClick = () => {
     if (!this.state.italicDisabled) {
-      this.props.pluginState.toggleEm();
+      this.props.pluginState.toggleEm(this.props.editorView);
     }
   }
 
   @analytics('atlassian.editor.format.u.button')
   private handleUnderlineClick = () => {
     if (!this.state.underlineDisabled) {
-      this.props.pluginState.toggleUnderline();
+      this.props.pluginState.toggleUnderline(this.props.editorView);
     }
   }
 };

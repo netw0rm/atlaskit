@@ -65,10 +65,6 @@ export class BlockTypeState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  triggerOnChange() {
-    this.changeHandlers.forEach(cb => cb(this));
-  }
-
   toggleBlockType(name: string, view: EditorView): boolean {
     return commands.toggleBlockType(name)(view.state, view.dispatch);
   }
@@ -109,6 +105,10 @@ export class BlockTypeState {
 
   blur(view): void {
     view.dom.focus();
+  }
+
+  private triggerOnChange() {
+    this.changeHandlers.forEach(cb => cb(this));
   }
 
   private detectBlockType(): BlockType {

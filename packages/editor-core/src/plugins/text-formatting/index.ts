@@ -1,22 +1,16 @@
-import Keymap from 'browserkeymap';
-import { trackAndInvoke } from '../../analytics';
 import {
-  commands,
   Mark,
   MarkType,
   Plugin,
-  ProseMirror,
-  Schema,
+  PluginKey,
+  EditorState,
+  EditorView,
 } from '../../prosemirror';
-import {
-  EmMarkType,
-  MonoMarkType,
-  StrikeMarkType,
-  StrongMarkType,
-  SubSupMarkType,
-  UnderlineMarkType
-} from '../../schema';
-import * as keymaps from '../../keymaps';
+
+import * as commands from '../../commands';
+import keymapPlugin from './keymap';
+import inputRulePlugin from './input-rule';
+import { reconfigure } from '../utils';
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 
@@ -24,7 +18,7 @@ export type BlockTypeStateSubscriber = (state: TextFormattingState) => void;
 
 export class TextFormattingState {
   private changeHandlers: StateChangeHandler[] = [];
-  private pm: PM;
+  private state: EditorState<any>;
 
   // public state
   emActive = false;
@@ -49,83 +43,76 @@ export class TextFormattingState {
   subscriptDisabled = false;
   subscriptHidden = false;
 
-  constructor(pm: PM) {
-    this.pm = pm;
+  constructor(state: EditorState<any>) {
+    this.state = state;
 
-    this.emHidden = !pm.schema.marks.em;
-    this.strongHidden = !pm.schema.marks.strong;
-    this.underlineHidden = !pm.schema.marks.u;
-    this.monoHidden = !pm.schema.marks.mono;
-    this.superscriptHidden = !pm.schema.marks.subsup;
-    this.subscriptHidden = !pm.schema.marks.subsup;
-    this.strikeHidden = !pm.schema.marks.strike;
+    this.emHidden = !state.schema.marks.em;
+    this.strongHidden = !state.schema.marks.strong;
+    this.underlineHidden = !state.schema.marks.u;
+    this.monoHidden = !state.schema.marks.mono;
+    this.superscriptHidden = !state.schema.marks.subsup;
+    this.subscriptHidden = !state.schema.marks.subsup;
+    this.strikeHidden = !state.schema.marks.strike;
 
-    pm.updateScheduler([
-      pm.on.selectionChange,
-      pm.on.change,
-      pm.on.activeMarkChange,
-    ], () => this.update());
-
-    this.addKeymap();
-    this.update();
+    this.update(state);
   }
 
-  toggleEm() {
-    const { em } = this.pm.schema.marks;
+  toggleEm(view: EditorView) {
+    const { em } = this.state.schema.marks;
     if (em) {
-      this.toggleMark(em);
+      commands.toggleMark(em)(view.state, view.dispatch);
     }
   }
 
-  toggleMono() {
-    const { mono } = this.pm.schema.marks;
+  toggleMono(view: EditorView) {
+    const { mono } = this.state.schema.marks;
     if (mono) {
-      this.toggleMark(mono);
+      commands.toggleMark(mono)(view.state, view.dispatch);
     }
   }
 
-  toggleStrike() {
-    const { strike } = this.pm.schema.marks;
+  toggleStrike(view: EditorView) {
+    const { strike } = this.state.schema.marks;
     if (strike) {
-      this.toggleMark(strike);
+      commands.toggleMark(strike)(view.state, view.dispatch);
     }
   }
 
-  toggleStrong() {
-    const { strong } = this.pm.schema.marks;
+  toggleStrong(view: EditorView) {
+    const { strong } = this.state.schema.marks;
     if (strong) {
-      this.toggleMark(strong);
+      commands.toggleMark(strong)(view.state, view.dispatch);
     }
   }
 
-  toggleSuperscript() {
-    const { subsup } = this.pm.schema.marks;
+  toggleSuperscript(view: EditorView) {
+    const { subsup } = this.state.schema.marks;
     if (subsup) {
       if (this.subscriptActive) {
         // If subscript is enabled, turn it off first.
-        this.toggleMark(subsup);
+        commands.toggleMark(subsup)(view.state, view.dispatch);
       }
 
-      this.toggleMark(subsup, { type: 'sup' });
+      commands.toggleMark(subsup, { type: 'sup' })(view.state, view.dispatch);
     }
   }
 
-  toggleSubscript() {
-    const { subsup } = this.pm.schema.marks;
+  toggleSubscript(view: EditorView) {
+    const { subsup } = this.state.schema.marks;
     if (subsup) {
       if (this.superscriptActive) {
         // If superscript is enabled, turn it off first.
-        this.toggleMark(subsup);
+        commands.toggleMark(subsup)(view.state, view.dispatch);
       }
 
-      this.toggleMark(subsup, { type: 'sub' });
+      commands.toggleMark(subsup, { type: 'sub' })(view.state, view.dispatch);
     }
   }
 
-  toggleUnderline() {
-    const { u } = this.pm.schema.marks;
+  toggleUnderline(view: EditorView) {
+    const { u } = this.state.schema.marks;
     if (u) {
-      this.toggleMark(u);
+      commands.toggleMark(u)(view.state, view.dispatch);
     }
   }
 
@@ -138,9 +125,11 @@ export class TextFormattingState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  private update() {
-    const { pm } = this;
-    const { em, mono, strike, strong, subsup, u } = pm.schema.marks;
+  update(newEditorState: EditorState<any>) {
+    this.state = newEditorState;
+
+    const { state } = this;
+    const { em, mono, strike, strong, subsup, u } = state.schema.marks;
     let dirty = false;
 
     if (em) {
@@ -150,7 +139,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newEmDisabled = !commands.toggleMark(em)(this.pm, false);
+      const newEmDisabled = !commands.toggleMark(em)(this.state);
       if (newEmDisabled !== this.emDisabled) {
         this.emDisabled = newEmDisabled;
         dirty = true;
@@ -164,7 +153,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newMonoDisabled = !commands.toggleMark(mono)(this.pm, false);
+      const newMonoDisabled = !commands.toggleMark(mono)(this.state);
       if (newMonoDisabled !== this.monoDisabled) {
         this.monoDisabled = newMonoDisabled;
         dirty = true;
@@ -178,7 +167,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newStrikeDisabled = !commands.toggleMark(strike)(this.pm, false);
+      const newStrikeDisabled = !commands.toggleMark(strike)(this.state);
       if (newStrikeDisabled !== this.strikeDisabled) {
         this.strikeDisabled = newStrikeDisabled;
         dirty = true;
@@ -192,7 +181,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newStrongDisabled = !commands.toggleMark(strong)(this.pm, false);
+      const newStrongDisabled = !commands.toggleMark(strong)(this.state);
       if (newStrongDisabled !== this.strongDisabled) {
         this.strongDisabled = newStrongDisabled;
         dirty = true;
@@ -209,7 +198,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newSubscriptDisabled = !commands.toggleMark(subsup, { type: 'sub' })(this.pm, false);
+      const newSubscriptDisabled = !commands.toggleMark(subsup, { type: 'sub' })(this.state);
       if (newSubscriptDisabled !== this.subscriptDisabled) {
         this.subscriptDisabled = newSubscriptDisabled;
         dirty = true;
@@ -221,7 +210,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newSuperscriptDisabled = !commands.toggleMark(subsup, { type: 'sup' })(this.pm, false);
+      const newSuperscriptDisabled = !commands.toggleMark(subsup, { type: 'sup' })(this.state);
       if (newSuperscriptDisabled !== this.superscriptDisabled) {
         this.superscriptDisabled = newSuperscriptDisabled;
         dirty = true;
@@ -235,7 +224,7 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newUnderlineDisabled = !commands.toggleMark(u)(this.pm, false);
+      const newUnderlineDisabled = !commands.toggleMark(u)(this.state);
       if (newUnderlineDisabled !== this.underlineDisabled) {
         this.underlineDisabled = newUnderlineDisabled;
         dirty = true;
@@ -243,75 +232,65 @@ export class TextFormattingState {
     }
 
     if (dirty) {
-      this.changeHandlers.forEach(cb => cb(this));
+      this.triggerOnChange();
     }
   }
 
-  private addKeymap(): void {
-    this.pm.addKeymap(new Keymap({
-      [keymaps.toggleBold.common!]: trackAndInvoke('atlassian.editor.format.strong.keyboard', () => this.toggleStrong()),
-      [keymaps.toggleItalic.common!]: trackAndInvoke('atlassian.editor.format.em.keyboard', () => this.toggleEm()),
-      [keymaps.toggleUnderline.common!]: trackAndInvoke('atlassian.editor.format.u.keyboard', () => this.toggleUnderline()),
-      [keymaps.toggleStrikethrough.common!]: trackAndInvoke('atlassian.editor.format.strike.keyboard', () => this.toggleStrike()),
-      [keymaps.toggleMonospace.common!]: trackAndInvoke('atlassian.editor.format.mono.keyboard', () => this.toggleMono()),
-    }));
+  private triggerOnChange() {
+    this.changeHandlers.forEach(cb => cb(this));
   }
 
   /**
    * Determine if a mark of a specific type exists anywhere in the selection.
    */
   private anyMarkActive(markType: MarkType): boolean {
-    const { pm } = this;
-    const { from, to, empty } = pm.selection;
+    const { state } = this;
+    const { from, to, empty } = state.selection;
     if (empty) {
-      return !!markType.isInSet(pm.activeMarks());
+      return !!markType.isInSet(state.selection.$from.marks());
     }
-    return pm.doc.rangeHasMark(from, to, markType);
+    return state.doc.rangeHasMark(from, to, markType);
   }
 
   /**
    * Determine if a mark (with specific attribute values) exists anywhere in the selection.
    */
   private markActive(mark: Mark): boolean {
-    const { pm } = this;
-    const { from, to, empty } = pm.selection;
+    const { state } = this;
+    const { from, to, empty } = state.selection;
 
     // When the selection is empty, only the active marks apply.
     if (empty) {
-      return !!mark.isInSet(pm.activeMarks());
+      return !!mark.isInSet(state.selection.$from.marks());
     }
 
     // For a non-collapsed selection, the marks on the nodes matter.
     let found = false;
-    pm.doc.nodesBetween(from, to, node => {
+    state.doc.nodesBetween(from, to, node => {
       found = found || mark.isInSet(node.marks);
     });
 
     return found;
   }
+}
 
-  private toggleMark(markType: MarkType, attrs?: any) {
-    this.pm.on.interaction.dispatch();
-    commands.toggleMark(markType, attrs)(this.pm);
+const stateKey = new PluginKey('hypelinkPlugin');
+
+const plugin = new Plugin({
+  state: {
+    init(config, state: EditorState<any>) {
+      return new TextFormattingState(state);
+    },
+    apply(tr, pluginState: TextFormattingState, oldState, newState) {
+      pluginState.update(newState);
+      return pluginState;
+    }
+  },
+  key: stateKey,
+  view: (view: EditorView) => {
+    reconfigure(view, [keymapPlugin(view.state.schema), inputRulePlugin(view.state.schema)]);
+    return {};
   }
-}
+});
 
-// IE11 + multiple prosemirror fix.
-Object.defineProperty(TextFormattingState, 'name', { value: 'TextFormattingState' });
-
-export default new Plugin(TextFormattingState);
-
-export interface S extends Schema {
-  marks: {
-    em?: EmMarkType;
-    mono?: MonoMarkType;
-    strike?: StrikeMarkType;
-    strong?: StrongMarkType;
-    subsup?: SubSupMarkType;
-    u?: UnderlineMarkType;
-  };
-}
-
-export interface PM extends ProseMirror {
-  schema: S;
-}
+export default plugin;

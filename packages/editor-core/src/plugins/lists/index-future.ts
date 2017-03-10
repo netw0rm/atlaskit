@@ -50,10 +50,6 @@ export class ListsState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  triggerOnChange() {
-    this.changeHandlers.forEach(cb => cb(this));
-  }
-
   toggleBulletList(view: EditorView) {
     commands.toggleBulletList()(view.state, view.dispatch);
   }
@@ -100,6 +96,10 @@ export class ListsState {
     if (dirty) {
       this.triggerOnChange();
     }
+  }
+
+  private triggerOnChange() {
+    this.changeHandlers.forEach(cb => cb(this));
   }
 
   private isWrappingPossible(nodeType, state) {

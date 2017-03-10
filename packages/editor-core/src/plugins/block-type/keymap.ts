@@ -18,45 +18,23 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
   keymaps.bindKeymapWithCommand(keymaps.moveUp.common!, trackAndInvoke('atlassian.editor.moveup.keyboard', commands.createNewParagraphAbove()), list);
   keymaps.bindKeymapWithCommand(keymaps.moveDown.common!, trackAndInvoke('atlassian.editor.movedown.keyboard', commands.createNewParagraphBelow()), list);
   keymaps.bindKeymapWithCommand(keymaps.shiftBackspace.common!, commands.baseKeymap['Backspace'], list);
-  keymaps.bindKeymapWithCommand(keymaps.createCodeBlock.common!, trackAndInvoke(analyticsEventName('autoformatting', 'codeblock'), commands.createCodeBlockFromFenceFormat()), list);
+  keymaps.bindKeymapWithCommand(keymaps.createCodeBlock.common!, trackAndInvoke(analyticsEventName('codeblock', 'autoformatting'), commands.createCodeBlockFromFenceFormat()), list);
   keymaps.bindKeymapWithCommand(keymaps.redo.common!, redo, list);
   keymaps.bindKeymapWithCommand(keymaps!.undo.common!, undo, list);
 
   ALL_BLOCK_TYPES.forEach((blockType) => {
     const shortcut = keymaps.findShortcutByDescription(blockType.title);
     if (shortcut) {
-      const eventName = analyticsEventName('keyboard', blockType.name);
+      const eventName = analyticsEventName(blockType.name, 'keyboard');
       keymaps.bindKeymapWithCommand(shortcut, trackAndInvoke(eventName, commands.toggleBlockType(blockType.name)), list);
     }
   });
-
-  // TODO keymaps related to text formatting need to move to text formatting plugin
-  if (schema.marks.strong) {
-    keymaps.bindKeymapWithCommand(keymaps.toggleBold.common!, commands.toggleMark(schema.marks.strong), list);
-  }
-
-  if (schema.marks.em) {
-    keymaps.bindKeymapWithCommand(keymaps.toggleItalic.common!, commands.toggleMark(schema.marks.em), list);
-  }
-
-  if (schema.marks.mono) {
-    keymaps.bindKeymapWithCommand(keymaps.toggleMonospace.common!, commands.toggleMark(schema.marks.mono), list);
-  }
-
-  if (schema.marks.strike) {
-    keymaps.bindKeymapWithCommand(keymaps.toggleStrikethrough.common!, commands.toggleMark(schema.marks.strike), list);
-  }
-
-  if (schema.marks.underline) {
-    keymaps.bindKeymapWithCommand(keymaps.toggleUnderline.common!, commands.toggleMark(schema.marks.underline), list);
-  }
-
 
   plugin = keymap(list);
   return plugin;
 }
 
-function analyticsEventName(eventSource: string, blockTypeName: string): string {
+function analyticsEventName(blockTypeName: string, eventSource: string): string {
   return `atlassian.editor.format.${blockTypeName}.${eventSource}`;
 }
 

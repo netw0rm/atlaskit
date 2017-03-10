@@ -72,7 +72,7 @@ export class LinkCardTrelloView extends Component<LinkCardTrelloViewProps, LinkC
         {thumbnail}
         <Details className="details">
           <Header>
-            {this.props.title}
+            <a href={this.props.linkUrl} target='_blank'>{this.props.title}</a>
             <Avatars>
               {memberAvatars}
               {membersOffset}
@@ -88,7 +88,7 @@ export class LinkCardTrelloView extends Component<LinkCardTrelloViewProps, LinkC
                 Trello - Board
               </a>
             </Link>
-            <Button>Open board</Button>
+            <Button onClick={() => open(this.props.linkUrl, '_blank')}>Open board</Button>
           </Footer>
         </Details>
       </Wrapper>

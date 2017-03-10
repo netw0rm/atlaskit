@@ -34,6 +34,7 @@ export interface Resources {
   image?: Resource;
   file?: Resource;
   player?: Resource;
+  app?: LinkApp;
 }
 
 export interface Resource {
@@ -59,7 +60,6 @@ export interface UrlPreview {
   author?: UrlAuthorDetails;
   date?: number;
   resources: Resources;
-  app?: LinkApp;
 }
 
 export interface LinkDetails extends UrlPreview {

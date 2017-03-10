@@ -125,16 +125,19 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
 
     if (state && state.urlPreview) {
       const { urlPreview } = state;
+      const { resources } = urlPreview;
 
-      if (urlPreview.app) {
-        const { app } = urlPreview;
+      if (resources) {
+        if (resources.app) {
+          const { app } = resources;
 
-        switch (app.type) {
-          case 'trello_board':
-            return this.renderTrelloBoard(app);
+          switch (app.type) {
+            case 'trello_board':
+              return this.renderTrelloBoard(app, resources.icon ? resources.icon.url : undefined);
+          }
+        } else if (resources.player) {
+          return this.renderPlayer(urlPreview);
         }
-      } else if (urlPreview.resources && urlPreview.resources.player) {
-        return this.renderPlayer(urlPreview);
       }
 
       return this.renderLink(urlPreview);
@@ -143,11 +146,12 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
     }
   }
 
-  private renderTrelloBoard(app: TrelloBoardLinkApp): JSX.Element {
+  private renderTrelloBoard(app: TrelloBoardLinkApp, iconUrl?: string): JSX.Element {
     return <LinkCardTrelloView
       linkUrl={app.url}
       title={app.name}
       thumbnailUrl={app.background}
+      iconUrl={iconUrl}
       lists={app.lists}
       members={app.member}
     />;

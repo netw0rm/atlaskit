@@ -105,6 +105,7 @@ export const Avatars = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+  min-height: 20px;
 `;
 
 export const MemberAvatar = styled.img`
@@ -122,6 +123,10 @@ export const Lists = styled.div`
     list-style: none;
     margin: 0;
     padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
   }
 
   li {

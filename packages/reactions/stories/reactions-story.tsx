@@ -6,10 +6,10 @@ import Selector, { defaultReactionsByShortcut } from '../src/internal/selector';
 import Trigger from '../src/internal/trigger';
 import { getEmojiResource } from './examples/emoji-provider';
 import { reactionsProvider, reactionsProviderPromise } from './examples/reactions-provider';
-
 import { name } from '../package.json';
 
-const demoAri = 'ari:cloud:demo:123:123';
+const demoAri = 'ari:cloud:owner:demo-cloud-id:message/1';
+const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 
 storiesOf(name, module)
   .add('Picker and Reactions', () => (
@@ -18,7 +18,7 @@ storiesOf(name, module)
         <p>Lorem ipsum dolor sit amet...</p>
         <ReactionPicker
           emojiProvider={getEmojiResource()}
-          onSelection={(emojiId) => reactionsProvider.toggleReaction(demoAri, emojiId)}
+          onSelection={(emojiId) => reactionsProvider.toggleReaction(containerAri, demoAri, emojiId)}
         />
       </div>
       <hr />
@@ -26,7 +26,7 @@ storiesOf(name, module)
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProvider}
-        onReactionClick={(emojiId) => reactionsProvider.toggleReaction(demoAri, emojiId)}
+        onReactionClick={(emojiId) => reactionsProvider.toggleReaction(containerAri, demoAri, emojiId)}
       />
     </div>
   ))
@@ -55,6 +55,7 @@ storiesOf(`${name}/Resourced Components`, module)
       <div style={{display: 'flex'}}>
         <p>Lorem ipsum dolor sit amet...</p>
         <ResourcedReactionPicker
+          containerAri={containerAri}
           ari={demoAri}
           emojiProvider={getEmojiResource()}
           reactionsProvider={reactionsProviderPromise}
@@ -62,6 +63,7 @@ storiesOf(`${name}/Resourced Components`, module)
       </div>
       <hr />
       <ResourcedReactions
+        containerAri={containerAri}
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProviderPromise}
@@ -70,6 +72,7 @@ storiesOf(`${name}/Resourced Components`, module)
   ))
   .add('Resourced Reaction Picker', () => (
     <ResourcedReactionPicker
+      containerAri={containerAri}
       ari={demoAri}
       emojiProvider={getEmojiResource()}
       reactionsProvider={reactionsProviderPromise}
@@ -79,6 +82,7 @@ storiesOf(`${name}/Resourced Components`, module)
     <div>
       <p>This is a message with some reactions</p>
       <ResourcedReactions
+        containerAri={containerAri}
         ari={demoAri}
         emojiProvider={getEmojiResource()}
         reactionsProvider={reactionsProviderPromise}

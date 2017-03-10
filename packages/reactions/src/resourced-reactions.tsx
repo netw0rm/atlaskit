@@ -6,6 +6,7 @@ import { ReactionsProvider } from './reactions-resource';
 import Reactions from './reactions';
 
 export interface Props {
+  containerAri: string;
   ari: string;
   reactionsProvider: Promise<ReactionsProvider>;
   emojiProvider: Promise<EmojiProvider>;
@@ -54,14 +55,14 @@ export default class ResourcedReactions extends PureComponent<Props, State> {
       return null;
     }
 
-    const { ari, boundariesElement, emojiProvider } = this.props;
+    const { containerAri, ari, boundariesElement, emojiProvider } = this.props;
 
     return (
       <Reactions
         ari={ari}
         emojiProvider={emojiProvider}
         reactionsProvider={reactionsProvider}
-        onReactionClick={(emojiId) => reactionsProvider.toggleReaction(ari, emojiId)}
+        onReactionClick={(emojiId) => reactionsProvider.toggleReaction(containerAri, ari, emojiId)}
         boundariesElement={boundariesElement}
       />
     );

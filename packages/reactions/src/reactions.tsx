@@ -86,10 +86,11 @@ export default class Reactions extends Component<Props, State> {
 
     return (
       <div className={reactionsStyle}>
-        {reactions.sort((a, b) => a.emojiId > b.emojiId ? 1 : 0).map(reaction => {
+        {[...reactions].sort((a, b) => a.emojiId > b.emojiId ? 1 : -1).map(reaction => {
           return (
             <div style={{ display: 'inline-block' }} key={reaction.emojiId}>
               <Reaction
+                key={`reaction-${reaction.emojiId}`}
                 reaction={reaction}
                 emojiProvider={emojiProvider}
                 onClick={() => this.onEmojiClick(reaction.emojiId)}

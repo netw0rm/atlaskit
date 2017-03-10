@@ -1,5 +1,6 @@
 import { Promise } from 'es6-promise';
 import 'whatwg-fetch';
+import * as Faye from 'faye';
 import { findIndex } from './internal/helpers';
 
 let debounced: number | null = null;
@@ -35,9 +36,9 @@ export interface Reactions {
 
 export interface ReactionsProvider {
   getReactions(aris: string[]): Promise<Reactions>;
-  toggleReaction(ari: string, emojiId: string);
-  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]>;
-  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]>;
+  toggleReaction(containerAri: string, ari: string, emojiId: string);
+  addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]>;
+  deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]>;
   notifyUpdated(ari: string, state: ReactionSummary[]): void;
   subscribe(ari: string, handler: Function): void;
   unsubscribe(ari: string, handler: Function): void;
@@ -82,7 +83,7 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     });
   }
 
-  toggleReaction(ari: string, emojiId: string) {
+  toggleReaction(containerAri: string, ari: string, emojiId: string) {
     if (!this.cachedReactions[ari]) {
       this.cachedReactions[ari] = [];
     }
@@ -91,7 +92,7 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     const hasReacted = hasReaction && hasReaction.length !== 0 && hasReaction[0].reacted;
 
     if (hasReacted) {
-      this.deleteReaction(ari, emojiId)
+      this.deleteReaction(containerAri, ari, emojiId)
         .then(state => {
           this.notifyUpdated(ari, state);
         })
@@ -100,7 +101,7 @@ export default class AbstractReactionsResource implements ReactionsProvider {
           this.notifyUpdated(ari, this.cachedReactions[ari]);
         });
     } else {
-      this.addReaction(ari, emojiId)
+      this.addReaction(containerAri, ari, emojiId)
         .then(state => {
           this.notifyUpdated(ari, state);
         })
@@ -111,13 +112,13 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     }
   }
 
-  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
   }
 
-  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     return new Promise<ReactionSummary[]>((resolve, reject) => {
       resolve([]);
     });
@@ -139,6 +140,12 @@ export default class AbstractReactionsResource implements ReactionsProvider {
     }
 
     this.subscribers[ari].push({ handler });
+
+    // Do not fetch from server if ARI is already in cache
+    if (this.cachedReactions[ari]) {
+      this.notifyUpdated(ari, this.cachedReactions[ari]);
+      return;
+    }
 
     if (debounced) {
       clearTimeout(debounced);
@@ -311,7 +318,7 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
     });
   }
 
-  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  addReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     this.optimisticAddReaction(ari, emojiId);
 
     const timestamp = Date.now();
@@ -321,7 +328,7 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
       requestService<{ ari: string, reactions: ReactionSummary[] }>(this.config.baseUrl, 'reactions', {
         'method': 'POST',
         'headers': this.getHeaders(),
-        'body': JSON.stringify({ emojiId, ari }),
+        'body': JSON.stringify({ emojiId, ari, containerAri }),
         'credentials': 'include'
       }).then(reactions => {
 
@@ -335,14 +342,14 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
     });
   }
 
-  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]> {
+  deleteReaction(containerAri: string, ari: string, emojiId: string): Promise<ReactionSummary[]> {
     this.optimisticDeleteReaction(ari, emojiId);
 
     const timestamp = Date.now();
     this.lastActionForAri[ari] = timestamp;
 
     return new Promise<ReactionSummary[]>((resolve, reject) => {
-      requestService<{ ari: string, reactions: ReactionSummary[] }>(this.config.baseUrl, `reactions?ari=${ari}&emojiId=${emojiId}`, {
+      requestService<{ ari: string, reactions: ReactionSummary[] }>(this.config.baseUrl, `reactions?ari=${ari}&emojiId=${emojiId}&containerAri=${containerAri}`, {
         'method': 'DELETE',
         'headers': this.getHeaders(),
         'credentials': 'include'
@@ -361,17 +368,95 @@ export class ReactionsResource extends AbstractReactionsResource implements Reac
 
 export interface RealTimeReactionsProviderConfig extends ReactionsProviderConfig {
   synchronyBaseUrl: string;
-  cloudId: string;
   containerAris: string[];
 }
 
-interface RealTimeReactionEvent {
-  data: Reaction;
+class JwtExtension {
+  constructor(private jwt: string) { }
+
+  incoming(message: any, cb: Function) {
+    cb(message);
+  }
+
+  outgoing(message: any, cb: Function) {
+    if (message.channel === '/meta/handshake') {
+      message.ext = message.ext || {};
+      message.ext.jwt = this.jwt;
+    }
+    cb(message);
+  }
 }
 
+export class FabricRealTimeClient {
+  private channels = new Map<string, Object>();
+  private clientPromise: Promise<any>;
+
+  constructor(private config: { cloudId: string, synchronyBaseUrl: string, baseUrl: string, sessionToken?: string }, private cloudId: string) {
+    this.clientPromise = this.getToken().then(jwt => {
+      const client = new Faye.Client(config.synchronyBaseUrl);
+      client.addExtension(new JwtExtension(jwt));
+      return client;
+    });
+  }
+
+  public subscribeAll(containerAri: string[], callback: (data: any) => void) {
+    return this.clientPromise.then(client => {
+      containerAri.forEach(containerAri => {
+        this.subscribe(containerAri, callback);
+      });
+    });
+  }
+
+  public subscribe(containerAri, callback: (data: any) => void) {
+    return this.clientPromise.then(client => {
+      const channelBase = `/pf-reactions-service/${this.cloudId}`;
+      const channel = client.subscribe(`${channelBase}/${containerAri.replace(/\:/g, '-')}`, (data) => callback(data));
+      this.channels.set(containerAri, channel);
+    });
+  }
+
+  public unsubscribe(containerAri) {
+    const channel = this.channels.get(containerAri);
+    if (channel) {
+      (channel as any).cancel();
+      this.channels.delete(containerAri);
+    }
+  }
+
+  private getToken(): Promise<string> {
+    const { config } = this;
+    return requestService<string>(config.baseUrl, 'reactions/realtime/token', {
+      'method': 'POST',
+      'headers': this.getHeaders(),
+      'body': JSON.stringify({
+        cloudId: this.cloudId,
+
+      }),
+      'credentials': 'include'
+    });
+  }
+
+  private getHeaders(): Headers {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-Type', 'application/json');
+
+    if (this.config.sessionToken) {
+      headers.append('Authorization', this.config.sessionToken);
+    }
+    return headers;
+  }
+}
+
+// export class FabricRealTimeClientManger {
+//   constructor(private config: { cloudId: string, synchronyBaseUrl: string, baseUrl: string, sessionToken?: string }, private cloudId: string) {
+//   }
+// }
+
 export class RealTimeReactionsResource extends ReactionsResource implements ReactionsProvider {
-  private token: string;
+  // private token: string;
   private channels: Map<string, Object>;
+  private client: any;
 
   constructor(config: RealTimeReactionsProviderConfig) {
     super(config);
@@ -379,69 +464,79 @@ export class RealTimeReactionsResource extends ReactionsResource implements Reac
     this.init(config);
   }
 
-  init(config: ReactionsProviderConfig) {
+  init(config: RealTimeReactionsProviderConfig) {
     this.channels = new Map<string, Object>();
 
-    // get JWT
-    requestService<string>(this.config.baseUrl, 'reactions/realtime/token', {
-        'method': 'POST',
-        'headers': this.getHeaders(),
-        'body': JSON.stringify({
-          cloudId: config.cloudId,
+    const jwt = 'NO WAY!';
+    this.client = new Faye.Client(config.synchronyBaseUrl);
+    this.client.addExtension(new JwtExtension(jwt));
 
-        }),
-        'credentials': 'include'
-      }).then(token => {
-        this.token = token;
+    if (this.config.containerAris) {
+      this.joinContainers(this.config.containerAris);
+    }
 
-        if (this.config.containerAris !== undefined) {
-          for (let containerAri of this.config.containerAris) {
-            this.joinContainer(containerAri);
-          }
-        }
+  }
 
-      });
+  joinContainers(containerAris: string[]) {
+    // let client = new FabricRealTimeClient(this.config, cloudId);
+    // client.subscribeAll(containerAris, this.updateReactions);
+
+    // client.subscribe(containerAri)
+
+    containerAris.forEach(containerAri => this.joinContainer(containerAri));
+  }
+
+  getCloudId(containerAri: string) {
+    return containerAri.split(':')[3];
   }
 
   joinContainer(containerAri: string) {
-    let channel = Synchrony.channel({
-      url: this.config.synchronyBaseUrl,
-      topic: `pf-reactions-service/${this.config.cloudId}/${containerAri}`,
-      jwt: this.token
-    });
-
-    channel.on('message', (event: RealTimeReactionEvent) => {
-      this.updateReaction(event.data);
-    });
-
+    const channelBase = `/pf-reactions-service/${this.getCloudId(containerAri)}`;
+    // const channel = this.client.subscribe(`${channelBase}/test`, (reactions) => this.updateReactions(reactions));
+    const channel = this.client.subscribe(`${channelBase}/${containerAri.replace(/\:/g, '-')}`, (reactions) => this.updateReactions(reactions));
     this.channels.set(containerAri, channel);
   }
 
-  leaveContainer(containerAri: string) {
-    // No way to leave a channel in Synchrony...
+  leaveContainer(ari: string) {
+    const channel = this.channels.get(ari);
+    if (channel) {
+      (channel as any).cancel();
+      this.channels.delete(ari);
+    }
   }
 
-  updateReaction(reaction: Reaction) {
-    // TODO: What happen when the reaction dissapear?
+  mapReactionToReactionSummary(reaction: Reaction) {
+    return {
+      id: reaction.id,
+      emojiId: reaction.emojiId,
+      ari: reaction.ari,
+      reacted: false,
+      count: reaction.count
+    };
+  }
 
-    let ari = reaction.ari;
-    if (!this.cachedReactions[ari]) {
-      this.cachedReactions[ari] = [];
+  updateReactions(data: { ari: string; reactions: Reaction[] }) {
+    if (!data) {
+      return;
     }
 
-    const index = findIndex(this.cachedReactions[ari], reaction => reaction.emojiId === reaction.emojiId);
+    const { ari, reactions } = data;
 
-    if (index !== -1) {
-      const oldReaction = this.cachedReactions[ari][index];
-      oldReaction.count = reaction.count;
+    if (!this.cachedReactions[ari]) {
+      this.cachedReactions[ari] = reactions.map(reaction => this.mapReactionToReactionSummary(reaction));
     } else {
-      this.cachedReactions[ari].push({
-        id: reaction.id,
-        ari: ari,
-        emojiId: reaction.emojiId,
-        count: reaction.count,
-        reacted: false
+      const newReactions: ReactionSummary[] = [];
+      reactions.forEach(reaction => {
+        const index = findIndex(this.cachedReactions[ari], r => r.emojiId === reaction.emojiId);
+        if (index !== -1) {
+          const oldReaction = this.cachedReactions[ari][index];
+          newReactions.push({ ...oldReaction, count: reaction.count });
+        } else {
+          newReactions.push(this.mapReactionToReactionSummary(reaction));
+        }
       });
+
+      this.cachedReactions[ari] = newReactions;
     }
 
     this.notifyUpdated(ari, this.cachedReactions[ari]);

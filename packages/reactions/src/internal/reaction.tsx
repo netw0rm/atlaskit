@@ -28,12 +28,12 @@ const emojiStyle = style({
         }
       }
     },
-    '&&> span': {
+    '&&> span, &&> svg': {
       flex: 'auto',
       width: '24px',
       height: '20px',
       backgroundSize: '16px 16px'
-    }
+    },
   }
 });
 

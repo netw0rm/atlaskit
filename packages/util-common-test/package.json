@@ -6,8 +6,6 @@
   },
   "description": "Shared test helpers used by AtlasKit components",
   "main": "umd/@atlaskit/util-common-test.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.js",
   "scripts": {
     "prepublish": "nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
@@ -40,6 +38,5 @@
     "atlaskit",
     "ui",
     "internal"
-  ],
-  "module": "es/index.js"
+  ]
 }

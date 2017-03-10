@@ -6,8 +6,6 @@
   },
   "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
   "main": "umd/@atlaskit/input.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
@@ -40,6 +38,5 @@
     "atlaskit",
     "ui",
     "internal"
-  ],
-  "module": "es/index.js"
+  ]
 }

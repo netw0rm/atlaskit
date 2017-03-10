@@ -6,8 +6,6 @@
   },
   "description": "React component which allows selection of a single item from a dropdown list. Substitute for the native select element",
   "main": "umd/@atlaskit/single-select.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
@@ -44,6 +42,5 @@
   "keywords": [
     "atlaskit",
     "ui"
-  ],
-  "module": "es/index.js"
+  ]
 }

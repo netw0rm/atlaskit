@@ -6,8 +6,6 @@
   },
   "description": "A React component that highlights status for quick recognition ",
   "main": "umd/@atlaskit/lozenge.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "nwb build",
@@ -35,6 +33,5 @@
   "keywords": [
     "atlaskit",
     "ui"
-  ],
-  "module": "es/index.js"
+  ]
 }

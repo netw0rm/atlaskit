@@ -6,8 +6,6 @@
   },
   "description": "A base component used to build inline-editable components that match the Atlassian Design Guidelines",
   "main": "umd/@atlaskit/inline-edit.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
@@ -46,6 +44,5 @@
   "keywords": [
     "atlaskit",
     "ui"
-  ],
-  "module": "es/index.js"
+  ]
 }

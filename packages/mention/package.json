@@ -50,6 +50,5 @@
     "ui",
     "mention",
     "fabric"
-  ],
-  "module": "es/index.js"
+  ]
 }

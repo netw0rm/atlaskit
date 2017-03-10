@@ -37,6 +37,5 @@
     "axios": "^0.15.3",
     "lru-fast": "^0.2.2",
     "rxjs": "^5.1.0"
-  },
-  "module": "es/index.js"
+  }
 }

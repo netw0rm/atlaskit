@@ -48,6 +48,11 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
     'test:watch': 'nwb test --server',
   };
 
+  // Remove old fields.
+  delete pkgJson.module;
+  delete pkgJson.webpack;
+  delete pkgJson['ak:webpack:raw'];
+
   fs.writeFileSync(pkg, JSON.stringify(pkgJson, null, 2));
   fs.writeFileSync(nwbFile, 'module.exports = require(\'../../nwb.config\');\n');
 

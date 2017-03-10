@@ -6,8 +6,6 @@
   },
   "description": "A React component that represents users within the same application",
   "main": "umd/@atlaskit/avatar.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
@@ -38,6 +36,5 @@
   "keywords": [
     "atlaskit",
     "ui"
-  ],
-  "module": "es/index.js"
+  ]
 }

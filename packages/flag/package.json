@@ -6,8 +6,6 @@
   },
   "description": "Flags are used for confirmations, alerts, and acknowledgments that require minimal user interaction",
   "main": "umd/@atlaskit/flag.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
@@ -42,6 +40,5 @@
   "keywords": [
     "atlaskit",
     "ui"
-  ],
-  "module": "es/index.js"
+  ]
 }

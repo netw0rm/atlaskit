@@ -6,8 +6,6 @@
   },
   "description": "Component used to grouping droplist-items within droplist-menus",
   "main": "umd/@atlaskit/droplist-group.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "nwb build",
@@ -40,6 +38,5 @@
     "atlaskit",
     "ui",
     "internal"
-  ],
-  "module": "es/index.js"
+  ]
 }

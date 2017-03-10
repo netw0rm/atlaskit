@@ -6,8 +6,6 @@
   },
   "description": "A React component that is used to trigger events.",
   "main": "umd/@atlaskit/button.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "nwb build",
@@ -41,6 +39,5 @@
   "keywords": [
     "atlaskit",
     "ui"
-  ],
-  "module": "es/index.js"
+  ]
 }

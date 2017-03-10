@@ -6,8 +6,6 @@
   },
   "description": "profilecard component",
   "main": "umd/@atlaskit/profilecard.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
@@ -48,6 +46,5 @@
     "fabric"
   ],
   "author": "Atlassian Pty Ltd",
-  "license": "Apache-2.0",
-  "module": "es/index.js"
+  "license": "Apache-2.0"
 }

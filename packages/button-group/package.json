@@ -6,8 +6,6 @@
   },
   "description": "A React component that groups related buttons",
   "main": "umd/@atlaskit/button-group.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "nwb build",
@@ -41,6 +39,5 @@
   "keywords": [
     "atlaskit",
     "ui"
-  ],
-  "module": "es/index.js"
+  ]
 }

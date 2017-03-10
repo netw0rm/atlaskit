@@ -6,8 +6,6 @@
   },
   "description": "A React component that displays content in a layer blocking the interaction with the page.",
   "main": "umd/@atlaskit/modal-dialog.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "nwb build",
@@ -44,6 +42,5 @@
   "keywords": [
     "ui",
     "atlaskit"
-  ],
-  "module": "es/index.js"
+  ]
 }

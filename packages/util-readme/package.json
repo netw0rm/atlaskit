@@ -6,8 +6,6 @@
   },
   "description": "A suite of components for building readme-style docs into your stories.",
   "main": "umd/@atlaskit/util-readme.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "nwb build",
@@ -38,6 +36,5 @@
   "keywords": [
     "atlaskit",
     "internal"
-  ],
-  "module": "es/index.js"
+  ]
 }

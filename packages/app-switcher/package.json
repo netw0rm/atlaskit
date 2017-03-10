@@ -6,9 +6,6 @@
   },
   "description": "akapp-switcher React component",
   "main": "umd/@atlaskit/app-switcher.js",
-  "module": "es/index.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",

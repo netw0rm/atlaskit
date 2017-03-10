@@ -6,8 +6,6 @@
   },
   "description": "A React layer component responsible for the position of an element on a page",
   "main": "umd/@atlaskit/layer.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
@@ -35,6 +33,5 @@
     "atlaskit",
     "ui",
     "internal"
-  ],
-  "module": "es/index.js"
+  ]
 }

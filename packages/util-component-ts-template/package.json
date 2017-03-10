@@ -38,6 +38,5 @@
     "fabric",
     "ui",
     "private"
-  ],
-  "module": "es/index.js"
+  ]
 }

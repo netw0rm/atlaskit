@@ -20,18 +20,18 @@ const cwd = process.cwd();
 const entryPath = path.join(cwd, 'src', 'index');
 const entryJs = `${entryPath}.js`;
 const entryJsx = `${entryJs}x`;
-const pack = require(path.join(cwd, 'package.json'));
+const pkg = require(path.join(cwd, 'package.json'));
 
 module.exports = {
   type: 'react-component',
   npm: {
     esModules: false,
     umd: {
-      global: camelcase(pack.name),
+      global: camelcase(pkg.name),
       externals: Object.keys(Object.assign(
         {},
-        pack.dependencies,
-        pack.peerDependencies
+        pkg.dependencies,
+        pkg.peerDependencies
       )).reduce((prev, curr) => {
         prev[curr] = curr;
         return prev;
@@ -68,6 +68,25 @@ module.exports = {
     extra: {
       // Some use .js, some use .jsx. Yeah.
       entry: fs.existsSync(entryJsx) ? entryJsx : entryJs,
+
+      module: {
+        rules: [{
+          test: /\.json$/,
+          use: 'json-loader',
+        }, {
+          test: /\.less$/,
+          use: [{
+            loader: 'css-loader',
+            options: {
+              camelCase: true,
+              hashPrefix: `${pkg.name}${pkg.version}`,  // Avoid hash collisions
+              importLoaders: 1,
+              mergeRules: false,
+              modules: true,
+            },
+          }, 'less-loader'],
+        }],
+      },
 
       // TODO remove this when not using .jsx anymore.
       resolve: {

@@ -6,8 +6,6 @@
   },
   "description": "A component for building page layouts. Also includes the Grid and GridColumn components.",
   "main": "umd/@atlaskit/page.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "scripts": {
     "prepublish": "nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
@@ -48,6 +46,5 @@
     "@atlaskit/util-readme": "^1.0.0",
     "react-lorem-component": "^0.11.0",
     "react-syntax-highlighter": "^4.0.1"
-  },
-  "module": "es/index.js"
+  }
 }

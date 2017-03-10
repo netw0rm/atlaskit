@@ -6,8 +6,6 @@
   },
   "description": "A React presentational component that wraps fields and provides styles for focus/hover states",
   "main": "umd/@atlaskit/field-base.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "nwb build",
@@ -44,6 +42,5 @@
     "atlaskit",
     "ui",
     "internal"
-  ],
-  "module": "es/index.js"
+  ]
 }

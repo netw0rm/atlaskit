@@ -8,10 +8,6 @@ const relativePathToIcon = path.join('..', 'src', 'Icon');
 const pathToIcon = path.join(__dirname, relativePathToIcon);
 
 const isDevelopment = process.env.NODE_ENV === 'development';
-let cssOptions = '?camelCase=true&modules=true&mergeRules=false';
-if (isDevelopment) {
-  cssOptions += '&-minimize';
-}
 
 module.exports = (tmpFolder, entry) => ({
   entry: Object.assign({
@@ -36,23 +32,33 @@ module.exports = (tmpFolder, entry) => ({
     /^[a-z\-0-9]+$/,
   ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.less$/,
-        loader: `css${cssOptions}!less`,
+        use: [{
+          loader: 'css-loader',
+          options: {
+            camelCase: true,
+            mergeRules: false,
+            minimize: !isDevelopment,
+            modules: true,
+          },
+        }, 'less-loader'],
       },
       {
         test: /\.jsx?$/,
-        loader: 'babel-loader',
+        use: [{
+          loader: 'babel-loader',
+          options: {
+            babelrc: false,
+            presets: [
+              'es2015',
+              'react',
+              'stage-0',
+            ],
+          },
+        }],
         exclude: /node_modules/,
-        query: {
-          babelrc: false,
-          presets: [
-            'es2015',
-            'react',
-            'stage-0',
-          ],
-        },
       },
     ],
   },
@@ -60,6 +66,11 @@ module.exports = (tmpFolder, entry) => ({
     new webpack.optimize.UglifyJsPlugin(),
   ],
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['.js', '.jsx'],
+  },
+
+  // TODO remove this when going back to using the -loader suffix.
+  resolveLoader: {
+    moduleExtensions: ['-loader'],
   },
 });

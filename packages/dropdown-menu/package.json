@@ -6,8 +6,6 @@
   },
   "description": "ak-dropdown-menu React component",
   "main": "umd/@atlaskit/dropdown-menu.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index.jsx",
   "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "nwb build",
@@ -50,6 +48,5 @@
   "keywords": [
     "atlaskit",
     "ui"
-  ],
-  "module": "es/index.js"
+  ]
 }

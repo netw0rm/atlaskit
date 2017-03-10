@@ -44,6 +44,5 @@
   "keywords": [
     "fabric",
     "ui"
-  ],
-  "module": "es/index.js"
+  ]
 }

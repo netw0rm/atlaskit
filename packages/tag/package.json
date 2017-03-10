@@ -6,8 +6,6 @@
   },
   "description": "This component displays as a tag with an optional link and/or button to remove the given tag.",
   "main": "umd/@atlaskit/tag.js",
-  "webpack": "dist/bundle-cjs.js",
-  "ak:webpack:raw": "src/index",
   "scripts": {
     "prepublish": "nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
@@ -42,6 +40,5 @@
     "ui",
     "tag",
     "react"
-  ],
-  "module": "es/index.js"
+  ]
 }

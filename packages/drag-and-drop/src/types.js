@@ -47,6 +47,7 @@ export type DraggingInitial = {|
   center: Position,
   scroll: Position,
   selection: Position,
+  dimension: Dimension,
 |}
 
 export type Dragging = {|

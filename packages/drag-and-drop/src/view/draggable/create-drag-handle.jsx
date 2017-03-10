@@ -62,6 +62,8 @@ export class Handle extends PureComponent {
 
     const { button, clientX, clientY } = event;
 
+    console.log('on mouse down, button: ', button);
+
     if (button !== primaryClick) {
       return;
     }
@@ -195,28 +197,6 @@ export class Handle extends PureComponent {
     window.addEventListener('mousedown', this.onWindowMouseDown);
   }
 
-  // bindMouseDragEvents = () => {
-  //   invariant(!this.areMouseEventsBound, 'mouse events are already bound');
-  //   invariant(!this.isDragging, 'cannot bind mouse events - already dragging');
-
-  //   console.log('binding mouse events');
-
-  //   window.addEventListener('mousemove', this.onWindowMouseMove);
-  //   window.addEventListener('mouseup', this.onWindowMouseUp);
-
-  //   this.areMouseEventsBound = true;
-  // };
-
-  // unbindMouseDragEvents = () => {
-  //   invariant(this.areMouseEventsBound, 'there are no mouse events bound');
-  //   console.log('unbinding mouse events');
-
-  //   window.removeEventListener('mousemove', this.onWindowMouseMove);
-  //   window.removeEventListener('mouseup', this.onWindowMouseUp);
-
-  //   this.areMouseEventsBound = false;
-  // };
-
   render() {
     return (
       <Container
@@ -233,8 +213,6 @@ export class Handle extends PureComponent {
 }
 
 export default (callbacks: Callbacks) => (isEnabled: boolean) => (el: React$Element<*>) => (
-  // https://github.com/facebook/flow/issues/1964
-  /* eslint-disable react/no-children-prop */
   <Handle
     {...callbacks}
     isEnabled={isEnabled}

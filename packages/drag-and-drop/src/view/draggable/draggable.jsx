@@ -108,6 +108,8 @@ export default (type: TypeId,
       props: Props
       state: ComponentState
       getHandle: Function
+      containerRef: ?Element
+      isRefMoved: boolean
 
       state: ComponentState = {
         wasDragging: false,
@@ -133,6 +135,8 @@ export default (type: TypeId,
           onMoveBackward: this.onMoveBackward,
           onMoveForward: this.onMoveForward,
         });
+
+        this.isRefMoved = false;
       }
 
       componentWillReceiveProps(nextProps) {
@@ -143,6 +147,22 @@ export default (type: TypeId,
           this.setState({
             wasDragging,
           });
+        }
+      }
+
+      componentWillUpdate(nextProps: Props, nextState: ComponentState) {
+        // drag starting
+        if (!this.props.mapProps.isDragging && nextProps.mapProps.isDragging) {
+          invariant(!this.isRefMoved, 'ref cannot already be moved');
+          invariant(this.containerRef && this.state.ref, 'refs must be available');
+          document.body.appendChild(this.state.ref);
+          this.isRefMoved = true;
+        }
+
+        // drag ending (TODO: skipping was dragging)
+        if (this.state.wasDragging && !nextState.wasDragging && this.isRefMoved) {
+          this.containerRef.appendChild(this.state.ref);
+          this.isRefMoved = false;
         }
       }
 
@@ -158,6 +178,10 @@ export default (type: TypeId,
         const { mapProps: { id }, dispatchProps: { dropFinished } } = this.props;
 
         dropFinished(id);
+
+        this.setState({
+          wasDragging: false,
+        });
       }
 
       onLift = (selection: Position) => {
@@ -274,11 +298,29 @@ export default (type: TypeId,
         cancel(id);
       }
 
+      setContainerRef = (ref: ?Element) => {
+        this.containerRef = ref;
+      }
+
       setRef = (ref: ?Element) => {
         // need to trigger a child render when ref changes
         this.setState({
           ref,
         });
+      }
+
+      getPlaceholder() {
+        invariant(this.props.mapProps.initial, 'cannot get a drag placeholder when not dragging');
+        const dimension = this.props.mapProps.initial.dimension;
+        const style = {
+          width: dimension.width,
+          height: dimension.height,
+          backgroundColor: 'pink',
+        };
+
+        return (
+          <div style={style} />
+        );
       }
 
       render() {
@@ -313,31 +355,51 @@ export default (type: TypeId,
         // if a drag handle was not request then the whole thing is the handle
         const wrap = requestDragHandle.wasCalled ? identity : handle;
 
+        const isMoving = mapProps.isDragging || this.state.wasDragging;
+
+        const moveableStyle = (() => {
+          if (!isMoving) {
+            return {};
+          }
+          const dimension = mapProps.initial.dimension;
+          return {
+            position: 'absolute',
+            width: dimension.width,
+            height: dimension.height,
+            top: dimension.top,
+            left: dimension.left,
+          };
+        })();
+
         return (
-          <Moveable
-            speed={movement.speed}
-            zIndex={movement.zIndex}
-            destination={mapProps.offset}
-            onMoveEnd={this.onMoveEnd}
-            innerRef={this.setRef}
-          >
-            {wrap(
-              <DraggableDimensionPublisher
-                itemId={mapProps.id}
-                droppableId={mapProps.droppableId}
-                type={type}
-                outerRef={this.state.ref}
-              >
-                <KeepVisible itemId={mapProps.id}>
-                  <Container
-                    isDragging={mapProps.isDragging}
-                  >
-                    <Component {...enhancedOwnProps} />
-                  </Container>
-                </KeepVisible>
-              </DraggableDimensionPublisher>
-            )}
-          </Moveable>
+          <div ref={this.setContainerRef}>
+            <Moveable
+              speed={movement.speed}
+              zIndex={movement.zIndex}
+              destination={mapProps.offset}
+              onMoveEnd={this.onMoveEnd}
+              innerRef={this.setRef}
+              style={moveableStyle}
+            >
+              {wrap(
+                <DraggableDimensionPublisher
+                  itemId={mapProps.id}
+                  droppableId={mapProps.droppableId}
+                  type={type}
+                  outerRef={this.state.ref}
+                >
+                  <KeepVisible itemId={mapProps.id}>
+                    <Container
+                      isDragging={mapProps.isDragging}
+                    >
+                      <Component {...enhancedOwnProps} />
+                    </Container>
+                  </KeepVisible>
+                </DraggableDimensionPublisher>
+              )}
+            </Moveable>
+            {isMoving ? this.getPlaceholder() : null}
+          </div>
         );
       }
     }

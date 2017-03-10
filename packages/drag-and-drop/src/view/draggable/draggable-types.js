@@ -1,5 +1,5 @@
 // @flow
-import type { DraggableId, DroppableId, DraggingInitial, Position } from '../../types';
+import type { DraggableId, DroppableId, DraggingInitial, Dimension, Position } from '../../types';
 
 export type NeedsProviding = {|
   id: DraggableId,

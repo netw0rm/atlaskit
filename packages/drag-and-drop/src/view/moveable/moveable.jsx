@@ -23,11 +23,13 @@ type Props = {|
     zIndex: string,
     onMoveEnd?: Function,
     innerRef?: Function,
+    style?: Object,
 |}
 
 type DefaultProps = {|
   destination: Position,
   innerRef: Function,
+  style: Object,
 |}
 
 // TODO: memoizeOne
@@ -57,6 +59,7 @@ export default class Movable extends PureComponent {
   static defaultProps: DefaultProps = {
     innerRef: () => { },
     destination: start,
+    style: {},
   }
   /* eslint-enable */
 
@@ -101,15 +104,21 @@ export default class Movable extends PureComponent {
       // https://github.com/chenglou/react-motion/issues/375
       // $FlowFixMe
       <Motion defaultStyle={start} style={final} onRest={this.onRest}>
-        {(current: Position) => (
-          <Canvas
-            style={isNotMoving ? {} : getMovement(current)}
-            zIndex={this.props.zIndex}
-            innerRef={this.props.innerRef}
-          >
-            {this.props.children}
-          </Canvas>
-        )}
+        {(current: Position) => {
+          const style = {
+            ...(isNotMoving ? {} : getMovement(current)),
+            ...this.props.style,
+          };
+          return (
+            <Canvas
+              style={style}
+              zIndex={this.props.zIndex}
+              innerRef={this.props.innerRef}
+            >
+              {this.props.children}
+            </Canvas>
+          );
+        }}
       </Motion>
     );
   }

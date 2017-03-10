@@ -92,9 +92,9 @@ const DroppableList = (() => {
     flex-direction: column;
     width: 300px;
     align-items: stretch;
-    margin: 8px;
-    height: 500px;
-    overflow-y: scroll;
+    padding: 8px;
+    height: ${props => (props.withOverflow ? '500px' : 'auto')}
+    overflow-y: ${props => (props.withOverflow ? 'scroll' : 'visible')};
     background-color: ${props => (props.isDraggingOver ? 'gold' : 'deepskyblue')};
   `;
 
@@ -102,14 +102,18 @@ const DroppableList = (() => {
     props: {|
       listId: string,
       items: ItemData[],
-      isDraggingOver: boolean
+      isDraggingOver: boolean,
+      withOverflow: boolean,
     |}
 
     render() {
       // console.log('rendering draggable list', this.props.items);
       const { isDraggingOver } = this.props;
       return (
-        <ListContainer isDraggingOver={isDraggingOver}>
+        <ListContainer
+          withOverflow={this.props.withOverflow}
+          isDraggingOver={isDraggingOver}
+        >
           <h3>{this.props.listId} {isDraggingOver ? '(is dragging over)' : '' }</h3>
           {this.props.items.map((item: ItemData) => (
             <DraggableItem
@@ -137,6 +141,7 @@ const ConnectedApp = (() => {
   const AppContainer = styled.div`
     display: flex;
     background-color: lightgrey;
+    padding-bottom: 100px;
   `;
 
   class App extends PureComponent {
@@ -157,6 +162,7 @@ const ConnectedApp = (() => {
                 items={itemsInList}
                 listId={key}
                 key={key}
+                withOverflow
               />
             );
           })}

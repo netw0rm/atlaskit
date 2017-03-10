@@ -96,6 +96,7 @@ export default (state: State = initialState, action: Action): State => {
         center,
         scroll,
         selection,
+        dimension: state.draggableDimensions[id],
       },
     };
 

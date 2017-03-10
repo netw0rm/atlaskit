@@ -1,24 +1,17 @@
 import * as React from 'react';
-import {Component, MouseEvent} from 'react';
+import {Component} from 'react';
 import {CardAction} from '@atlaskit/media-core';
-import MoreIcon from '@atlaskit/icon/glyph/more';
 import AkBadge from '@atlaskit/badge';
 import Button from '@atlaskit/button';
-import {Ellipsify} from '../ellipsify';
 import {
   Lists,
   MemberAvatar,
   Avatars,
   Wrapper,
-  HorizontalThumbnail,
   SquareThumbnail,
   Details,
-  Title,
-  Description,
   Footer,
   Link,
-  Menu,
-  MenuButton,
   Header
 } from './styled';
 
@@ -42,8 +35,6 @@ export interface LinkCardTrelloViewState {
 }
 
 export class LinkCardTrelloView extends Component<LinkCardTrelloViewProps, LinkCardTrelloViewState> {
-  private clickDetector: (e: Event) => void;
-
   static get defaultProps() {
     const menuActions: Array<CardAction> = [];
 

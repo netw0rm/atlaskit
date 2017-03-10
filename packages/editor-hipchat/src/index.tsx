@@ -11,6 +11,8 @@ import {
   DefaultKeymapsPlugin,
   TextFormattingPlugin,
   version as coreVersion,
+  MediaPluginFactory,
+  MediaProvider
 } from '@atlaskit/editor-core';
 import * as cx from 'classnames';
 import * as React from 'react';
@@ -79,6 +81,7 @@ export interface Props {
   mentionResourceProvider?: any;
   presenceResourceProvider?: any;
   reverseMentionPicker?: boolean;
+  mediaProvider?: Promise<MediaProvider>;
 }
 
 export interface State {
@@ -137,6 +140,7 @@ export default class Editor extends PureComponent<Props, State> {
     }
 
     const { props } = this;
+
     const pm = new ProseMirror({
       place,
       doc: schema.nodes.doc.createAndFill(),
@@ -145,7 +149,9 @@ export default class Editor extends PureComponent<Props, State> {
         HyperlinkPlugin,
         DefaultKeymapsPlugin,
         TextFormattingPlugin,
-        ...(this.props.mentionResourceProvider ? [MentionsPlugin] : [])
+        ...(this.props.mentionResourceProvider ? [MentionsPlugin] : []),
+        MediaPluginFactory()
+        // ...(mediaProvider ? [MediaPluginFactory(mediaProvider)] : []),
       ],
     });
 

@@ -216,7 +216,7 @@ export const code_block = (attrs: {} = {}) => nodeFactory(sampleSchema.nodes.cod
 export const img = (attrs: { src: string, alt?: string, title?: string }) => sampleSchema.nodes.image.createChecked(attrs);
 export const emoji = (attrs: { id: string }) => sampleSchema.nodes.emoji.createChecked(attrs);
 export const mention = (attrs: { id: string, displayName?: string }) => sampleSchema.nodes.mention.createChecked(attrs);
-export const hr = sampleSchema.nodes.horizontalRule.createChecked();
+export const hr = sampleSchema.nodes.rule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});
 export const strong = markFactory(sampleSchema.marks.strong, {});
 export const mono = markFactory(sampleSchema.marks.mono, {});

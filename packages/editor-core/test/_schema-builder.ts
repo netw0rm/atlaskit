@@ -6,7 +6,7 @@ import {
   DocNodeType,
   EmMarkType,
   HeadingNodeType,
-  HorizontalRuleNodeType,
+  RuleNodeType,
   ImageNodeType,
   LinkMarkType,
   ListItemNodeType,
@@ -39,7 +39,7 @@ export const schema = new Schema({
     blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
     panel: { type: PanelNodeType, content: 'block+', group: 'block' },
     plain: { type: ParagraphNodeType, content: 'text' },
-    horizontal_rule: {type: HorizontalRuleNodeType, group: 'block' },
+    rule: {type: RuleNodeType, group: 'block' },
     code_block: { type: CodeBlockNodeType, content: 'text*', group: 'block' },
   },
 
@@ -70,7 +70,7 @@ import {
   heading,
   blockquote,
   codeBlock,
-  horizontalRule
+  rule
 } from '../src/schema';
 
 const nodes = {
@@ -83,7 +83,7 @@ const nodes = {
   heading,
   blockquote,
   codeBlock,
-  horizontalRule
+  rule
 };
 
 const marks = {
@@ -117,7 +117,7 @@ export const panel = nodeFactory(schema.nodes.panel, { panelType: 'info' });
 export const paragraph = nodeFactory(schema.nodes.paragraph);
 
 // tslint:disable-next-line:variable-name
-export const horizontal_rule = nodeFactory(schema.nodes.horizontal_rule);
+export const rule = nodeFactory(schema.nodes.rule);
 
 export const plain = nodeFactory(schema.nodes.plain);
 export const em = markFactory(schema.marks.em);

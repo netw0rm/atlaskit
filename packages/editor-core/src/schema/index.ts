@@ -14,7 +14,7 @@ export { bulletList } from './nodes/bullet-list';
 export { codeBlock } from './nodes/code-block';
 export { hardBreak } from './nodes/hard-break';
 export { heading } from './nodes/heading';
-export { horizontalRule } from './nodes/horizontal-rule';
+export { rule } from './nodes/rule';
 export { orderedList } from './nodes/ordered-list';
 export { paragraph } from './nodes/paragraph';
 export { emoji } from './nodes/emoji';

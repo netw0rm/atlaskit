@@ -6,5 +6,5 @@ export { default as ImageUploadPlugin } from './image-upload';
 export { default as ListsPlugin } from './lists';
 export { default as MentionsPlugin } from './mentions';
 export { default as TextFormattingPlugin } from './text-formatting';
-export { default as HorizontalRulePlugin } from './horizontal-rule';
+export { default as RulePlugin } from './rule';
 export { default as PanelPlugin } from './panel';

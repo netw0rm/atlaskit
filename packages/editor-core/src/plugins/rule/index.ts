@@ -4,15 +4,15 @@ import {
 } from '../../prosemirror';
 
 import {
-  HorizontalRuleNodeType
+  RuleNodeType
 } from '../../schema';
 
 import { trackAndInvoke } from '../../analytics';
 import * as keymaps from '../../keymaps';
 
-export type StateChangeHandler = (state: HorizontalRuleState) => any;
+export type StateChangeHandler = (state: RuleState) => any;
 
-export class HorizontalRuleState {
+export class RuleState {
   private changeHandlers: StateChangeHandler[] = [];
   private pm: PM;
 
@@ -24,16 +24,16 @@ export class HorizontalRuleState {
   }
 
   addKeymap(pm) {
-    const {horizontal_rule} = pm.schema.nodes;
-    if (horizontal_rule) {
+    const {rule} = pm.schema.nodes;
+    if (rule) {
       pm.addKeymap(new Keymap({
-        [keymaps.insertHorizontalRule.common!]: trackAndInvoke('atlassian.editor.format.horizontalrule.keyboard', () => pm.tr.replaceSelection(horizontal_rule.create()).applyAndScroll())
+        [keymaps.insertRule.common!]: trackAndInvoke('atlassian.editor.format.horizontalrule.keyboard', () => pm.tr.replaceSelection(rule.create()).applyAndScroll())
       }));
     }
   }
 }
 
-export default new Plugin(HorizontalRuleState);
+export default new Plugin(RuleState);
 
 export interface PM extends ProseMirror {
   schema: S;
@@ -41,7 +41,7 @@ export interface PM extends ProseMirror {
 
 export interface S extends Schema {
   nodes: {
-    horizontal_rule: HorizontalRuleNodeType
+    rule: RuleNodeType
   };
 }
 

@@ -1,10 +1,13 @@
 import { waitUntil } from '@atlaskit/util-common-test';
-import React from 'react';
-import { mount } from 'enzyme';
+import * as React from 'react';
+import { mount, ReactWrapper } from 'enzyme';
+import { expect } from 'chai';
+import * as sinon from 'sinon';
 
+import { Mention } from '../../src/types';
 import mentionData, { mentionDataSize } from '../_mention-data';
 import MentionResource from '../_mock-ak-mention-resource';
-import MentionPicker from '../../src/components/MentionPicker';
+import MentionPicker, { OnClose, OnOpen, Props, State } from '../../src/components/MentionPicker';
 import MentionList from '../../src/components/MentionList';
 import MentionListError from '../../src/components/MentionListError';
 import MentionItem from '../../src/components/MentionItem';
@@ -12,12 +15,14 @@ import { isMentionItemSelected, getMentionItemById } from '../_ak-selectors';
 
 const mentions = mentionData.mentions;
 
-function setupPicker(props) {
+function setupPicker(props?: Props): ReactWrapper<Props, State> {
   const resourceProvider = new MentionResource({
     minWait: 0,
     maxWait: 0,
   });
-  return mount(<MentionPicker resourceProvider={resourceProvider} query="" {...props} />);
+  return mount(
+    <MentionPicker resourceProvider={resourceProvider} query="" {...props} />
+  ) as ReactWrapper<Props, State>;
 }
 
 const leftClick = {
@@ -34,7 +39,7 @@ describe('MentionPicker', () => {
   it('should accept limit result to starting with s', () => {
     const component = setupPicker({
       query: 's',
-    });
+    } as Props);
     const hasExpectedItems = () => component.find(MentionItem).length === 4;
     return waitUntil(hasExpectedItems);
   });
@@ -42,7 +47,7 @@ describe('MentionPicker', () => {
   it('should accept limit result to starting with shae', () => {
     const component = setupPicker({
       query: 'shae',
-    });
+    } as Props);
     const hasExpectedItems = () => component.find(MentionItem).length === 1;
     return waitUntil(hasExpectedItems);
   });
@@ -87,7 +92,8 @@ describe('MentionPicker', () => {
 
     return waitUntil(defaultMentionItemsShow)
       .then(() => {
-        component.instance().selectNext();
+        const mentionPicker = component.instance() as MentionPicker;
+        mentionPicker.selectNext();
         return waitUntil(secondItemSelected);
       });
   });
@@ -99,7 +105,8 @@ describe('MentionPicker', () => {
 
     return waitUntil(defaultMentionItemsShow)
       .then(() => {
-        component.instance().selectIndex(2);
+        const mentionPicker = component.instance() as MentionPicker;
+        mentionPicker.selectIndex(2);
         return waitUntil(thirdItemSelected);
       });
   });
@@ -111,7 +118,8 @@ describe('MentionPicker', () => {
 
     return waitUntil(defaultMentionItemsShow)
       .then(() => {
-        component.instance().selectId(mentions[2].id);
+        const mentionPicker = component.instance() as MentionPicker;
+        mentionPicker.selectId(mentions[2].id);
         return waitUntil(thirdItemSelected);
       });
   });
@@ -124,40 +132,43 @@ describe('MentionPicker', () => {
 
     return waitUntil(defaultMentionItemsShow)
       .then(() => {
-        component.instance().selectPrevious();
+        const mentionPicker = component.instance() as MentionPicker;
+        mentionPicker.selectPrevious();
         return waitUntil(lastItemSelected);
       });
   });
 
   it('should choose current selection when chooseCurrentSelection called', () => {
-    let chosenMention = null;
+    let chosenMention: Mention;
 
     const component = setupPicker({
       onSelection: (mention) => { chosenMention = mention; },
-    });
+    } as Props);
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const secondItemSelected = () => isMentionItemSelected(component, mentions[1].id);
     const chooseSecondItem = () => (chosenMention && chosenMention.id === mentions[1].id);
 
     return waitUntil(defaultMentionItemsShow)
       .then(() => {
-        component.instance().selectNext();
+        const mentionPicker = component.instance() as MentionPicker;
+        mentionPicker.selectNext();
         return waitUntil(secondItemSelected);
       })
       .then(() => {
-        component.instance().chooseCurrentSelection();
+        const mentionPicker = component.instance() as MentionPicker;
+        mentionPicker.chooseCurrentSelection();
         return waitUntil(chooseSecondItem);
       });
   });
 
   it('should choose clicked selection when item clicked', () => {
-    let chosenMention = null;
+    let chosenMention: Mention;
 
     const component = setupPicker({
       onSelection: (mention) => {
         chosenMention = mention;
       },
-    });
+    } as Props);
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const chooseThirdItem = () => (chosenMention && chosenMention.id === mentions[2].id);
 
@@ -174,9 +185,9 @@ describe('MentionPicker', () => {
     const onClose = sinon.spy();
 
     const component = setupPicker({
-      onOpen,
-      onClose,
-    });
+      onOpen: onOpen as OnOpen,
+      onClose: onClose as OnClose,
+    } as Props);
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
 
     return waitUntil(defaultMentionItemsShow)
@@ -191,9 +202,9 @@ describe('MentionPicker', () => {
     const onClose = sinon.spy();
 
     const component = setupPicker({
-      onOpen,
-      onClose,
-    });
+      onOpen: onOpen as OnOpen,
+      onClose: onClose as OnClose,
+    } as Props);
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const noMentionItemsShown = () => component.find(MentionItem).length === 0;
 
@@ -216,7 +227,8 @@ describe('MentionPicker', () => {
 
     return waitUntil(defaultMentionItemsShow)
       .then(() => {
-        expect(component.instance().mentionsCount()).to.equal(mentionDataSize);
+        const mentionPicker = component.instance() as MentionPicker;
+        expect(mentionPicker.mentionsCount()).to.equal(mentionDataSize);
       });
   });
 });

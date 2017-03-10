@@ -1,19 +1,26 @@
 import { storiesOf, action } from '@kadira/storybook';
-import React from 'react';
+import * as React from 'react';
 
 import { name } from '../package.json';
 import MentionTextInput from './demo-mention-text-input';
 import ConfigurableMentionPicker from './demo-configurable-mention-picker';
 
-import sampleConfig from '../local-config-example';
-
 let config;
+
+declare var require: {
+    <T>(path: string): T;
+};
+
+interface DefaultExport {
+  default: any;
+}
 
 try {
   // eslint-disable-next-line import/no-unresolved, global-require
-  config = require('../local-config').default;
+  config = (require('../local-config') as DefaultExport).default;
 } catch (e) {
-  config = sampleConfig;
+  // eslint-disable-next-line import/no-unresolved, global-require
+  config = (require('../local-config-example') as DefaultExport).default;
 }
 
 const asapConfig = config.asap;

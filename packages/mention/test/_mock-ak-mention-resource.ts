@@ -1,5 +1,6 @@
 import { Search } from 'js-search';
 
+import { Mention } from '../src/types';
 import debug from '../src/util/logger';
 import { AbstractMentionResource } from '../src/api/MentionResource';
 import mentionData from './_mention-data';
@@ -10,53 +11,53 @@ search.addIndex('mentionName');
 
 search.addDocuments(mentionData.mentions);
 
-class MentionResourceWithInfoHints extends AbstractMentionResource {
+export interface MockMentionConfig {
+  minWait?: number;
+  maxWait?: number;
+}
 
-  constructor(config) {
+export default class MockMentionResource extends AbstractMentionResource {
+  private config: MockMentionConfig;
+  private lastReturnedSearch: number;
+
+  constructor(config: MockMentionConfig) {
     super();
 
-    this._config = config;
-    this._lastReturnedSearch = 0;
+    this.config = config;
+    this.lastReturnedSearch = 0;
   }
 
-  filter(query) {
+  filter(query: string): void {
     debug('_mock-ak-mention-resource filter', query);
     const searchTime = Date.now();
     const notify = (mentions) => {
-      if (searchTime >= this._lastReturnedSearch) {
-        this._lastReturnedSearch = searchTime;
+      if (searchTime >= this.lastReturnedSearch) {
+        this.lastReturnedSearch = searchTime;
         this._notifyListeners(mentions);
       } else {
         const date = new Date(searchTime).toISOString().substr(17, 6);
         debug('Stale search result, skipping', date, query); // eslint-disable-line no-console, max-len
       }
     };
-    const notifyInfo = (info) => {
-      this._notifyInfoListeners(info);
-    };
 
     const notifyErrors = (error) => {
       this._notifyErrorListeners(error);
     };
 
-    const minWait = this._config.minWait || 0;
-    const randomTime = (this._config.maxWait || 0) - minWait;
+    const minWait = this.config.minWait || 0;
+    const randomTime = (this.config.maxWait || 0) - minWait;
     const waitTime = (Math.random() * randomTime) + minWait;
     setTimeout(() => {
-      let mentions = [];
+      let mentions;
       if (query === 'error') {
         notifyErrors('mock-error');
         return;
-      } else if (query && query.length >= 3) {
+      } else if (query) {
         debug('_doing search', query);
         mentions = search.search(query);
         debug('_results', mentions.length);
-
-        if (!mentions.length) {
-          notifyInfo(`Found no matches for ${query}`);
-        }
       } else {
-        notifyInfo('Continue typing to search for a user');
+        mentions = mentionData.mentions;
       }
       notify({
         mentions,
@@ -65,9 +66,7 @@ class MentionResourceWithInfoHints extends AbstractMentionResource {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  recordMentionSelection(mention) {
+  recordMentionSelection(mention: Mention): void {
     debug(`Record mention selection ${mention.id}`);
   }
 }
-
-export default MentionResourceWithInfoHints;

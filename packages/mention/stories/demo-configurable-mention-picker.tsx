@@ -1,6 +1,7 @@
-import React, { PropTypes, Component } from 'react';
+import * as React from 'react';
+import { Component } from 'react';
 
-import MentionResource from '../src/api/MentionResource';
+import MentionResource, { MentionResourceConfig } from '../src/api/MentionResource';
 
 // FIXME FAB-1732 - extract or replace with third-party implementation
 const toJavascriptString = (obj) => {
@@ -25,15 +26,16 @@ const toJavascriptString = (obj) => {
   return obj && obj.toString();
 };
 
-export default class ConfigurableMentionPicker extends Component {
-  static propTypes = {
-    children: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.arrayOf(PropTypes.node),
-    ]),
-    // eslint-disable-next-line react/forbid-prop-types
-    config: PropTypes.object,
-  }
+export interface Props {
+  children?: any;
+  config: MentionResourceConfig;
+}
+
+export interface State {
+  resourceProvider: MentionResource;
+}
+
+export default class ConfigurableMentionPicker extends Component<Props, State> {
 
   constructor(props) {
     super(props);
@@ -53,7 +55,7 @@ export default class ConfigurableMentionPicker extends Component {
   }
 
   mentionConfigChange = (event) => {
-    // eslint-disable-next-line no-eval
+    // tslint:disable:next-line no-eval
     const config = eval(`( () => (${event.target.value}) )()`);
     this.refreshMentions(config);
   }
@@ -70,7 +72,7 @@ export default class ConfigurableMentionPicker extends Component {
         <p>
           <textarea
             id="emoji-urls"
-            rows="15"
+            rows={15}
             style={{ width: '400px' }}
             onChange={this.mentionConfigChange}
             defaultValue={toJavascriptString(this.props.config)}

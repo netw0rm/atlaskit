@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
+import { ChangeEventHandler, Component, FocusEventHandler } from 'react';
 
 import uid from 'uid';
 
@@ -6,24 +7,34 @@ function noModifiers(event) {
   return !event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey;
 }
 
-class SearchTextInput extends Component {
-  static propTypes = {
-    inputId: PropTypes.string,
-    onUp: PropTypes.func,
-    onDown: PropTypes.func,
-    onEnter: PropTypes.func,
-    onEscape: PropTypes.func,
-    onChange: PropTypes.func,
-    inputRef: PropTypes.func,
-    label: PropTypes.string,
-  }
+export interface OnAction {
+  (): void;
+}
+
+export interface OnInputRef {
+  (ref: HTMLInputElement): void;
+}
+
+export interface Props {
+  inputId: string;
+  inputRef?: OnInputRef;
+  label: string;
+  onBlur?: FocusEventHandler<any>;
+  onChange?: ChangeEventHandler<any>;
+  onDown?: OnAction;
+  onEnter?: OnAction;
+  onEscape?: OnAction;
+  onFocus?: FocusEventHandler<any>;
+  onUp?: OnAction;
+}
+
+class SearchTextInput extends Component<Props, undefined> {
 
   constructor(props) {
     super(props);
-    this._handleKeyDown = this._handleKeyDown.bind(this);
   }
 
-  _handleKeyDown(event) {
+  private handleKeyDown = (event) => {
     if (noModifiers(event)) {
       let notify;
       switch (event.keyCode) { /* eslint default-case: 0 */
@@ -46,18 +57,18 @@ class SearchTextInput extends Component {
         notify();
       }
     }
-    // switch(event.keyCode)//
   }
 
-  _inputRefUpdate(ref) {
+  private inputRefUpdate = (ref: HTMLInputElement) => {
     if (this.props.inputRef) {
       this.props.inputRef(ref);
     }
   }
 
   render() {
-    /* eslint no-unused-vars: 0 */
-    const { onUp, onDown, onEnter, onEscape, label, inputRef, inputId, ...other } = this.props;
+    // /* eslint no-unused-vars: 0 */
+    // const { onUp, onDown, onEnter, onEscape, label, inputRef, inputId, ...other } = this.props;
+    const { label, inputId, onBlur, onChange, onFocus } = this.props;
     let labelComponent;
     const id = inputId || uid();
     if (label) {
@@ -67,11 +78,13 @@ class SearchTextInput extends Component {
       <div id="search-text" className="pf-search-text-input">
         {labelComponent}
         <input
-          {...other}
           id={id}
           type="text"
-          onKeyDown={this._handleKeyDown}
-          ref={ref => this._inputRefUpdate(ref)}
+          onBlur={onBlur}
+          onChange={onChange}
+          onFocus={onFocus}
+          onKeyDown={this.handleKeyDown}
+          ref={this.inputRefUpdate}
           style={{
             height: '20px',
             marginLeft: '10px',

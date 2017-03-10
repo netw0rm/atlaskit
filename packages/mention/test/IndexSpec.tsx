@@ -1,3 +1,5 @@
+import { expect } from 'chai';
+
 import Picker, * as other from '../src';
 import { name } from '../package.json';
 

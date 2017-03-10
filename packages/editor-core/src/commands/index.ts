@@ -64,10 +64,10 @@ export function toggleBulletList(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from } = state.selection;
     const grandgrandParent = $from.node(-2);
-    if (grandgrandParent && grandgrandParent.type === state.schema.nodes.bullet_list) {
+    if (grandgrandParent && grandgrandParent.type === state.schema.nodes.bulletList) {
       return liftListItem()(state, dispatch);
     } else {
-      return baseListCommand.wrapInList(state.schema.nodes.bullet_list)(state, dispatch);
+      return baseListCommand.wrapInList(state.schema.nodes.bulletList)(state, dispatch);
     }
   };
 }
@@ -76,27 +76,27 @@ export function toggleOrderedList(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from } = state.selection;
     const grandgrandParent = $from.node(-2);
-    if (grandgrandParent && grandgrandParent.type === state.schema.nodes.ordered_list) {
+    if (grandgrandParent && grandgrandParent.type === state.schema.nodes.orderedList) {
       return liftListItem()(state, dispatch);
     } else {
-      return baseListCommand.wrapInList(state.schema.nodes.ordered_list)(state, dispatch);
+      return baseListCommand.wrapInList(state.schema.nodes.orderedList)(state, dispatch);
     }
   };
 }
 
 export function splitListItem(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    return baseListCommand.splitListItem(state.schema.nodes.list_item)(state, dispatch);
+    return baseListCommand.splitListItem(state.schema.nodes.listItem)(state, dispatch);
   };
 }
 
 export function liftListItem(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     let { $from, $to } = state.selection;
-    let { list_item, paragraph } = state.schema.nodes;
+    let { listItem, paragraph } = state.schema.nodes;
     let range = $from.blockRange($to, (node) => {
       if (node && node.firstChild) {
-        return node.type === list_item && node.firstChild.type === paragraph;
+        return node.type === listItem && node.firstChild.type === paragraph;
       }
       return false;
     });

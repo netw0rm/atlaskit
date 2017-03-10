@@ -24,7 +24,7 @@ export function isRangeOfType(pm: ProseMirror, $from: ResolvedPos, $to: Resolved
 
 /**
  * Determines if content inside a selection can be joined with the next block.
- * We need this check since the built-in method for "joinDown" will join a ordered_list with bullet_list.
+ * We need this check since the built-in method for "joinDown" will join a orderedList with bulletList.
  */
 export function canJoinDown(pm: ProseMirror, selection: Selection, doc: any, nodeType: NodeType): boolean {
   const res = doc.resolve(selection.$to.after(findAncestorPosition(pm, selection.$to).depth));
@@ -33,7 +33,7 @@ export function canJoinDown(pm: ProseMirror, selection: Selection, doc: any, nod
 
 /**
  * Determines if content inside a selection can be joined with the previous block.
- * We need this check since the built-in method for "joinUp" will join a ordered_list with bullet_list.
+ * We need this check since the built-in method for "joinUp" will join a orderedList with bulletList.
  */
 export function canJoinUp(pm: ProseMirror, selection: Selection, doc: any, nodeType: NodeType): boolean {
   const res = doc.resolve(selection.$from.before(findAncestorPosition(pm, selection.$from).depth));
@@ -129,7 +129,7 @@ export function getGroupsInRange(pm: ProseMirror, $from: ResolvedPos, $to: Resol
  * Traverse the document until an "ancestor" is found. Any nestable block can be an ancestor.
  */
 export function findAncestorPosition(pm: ProseMirror, pos: ResolvedPos): ResolvedPos {
-  const nestableBlocks = ['blockquote', 'bullet_list', 'ordered_list', 'panel'];
+  const nestableBlocks = ['blockquote', 'bulletList', 'orderedList', 'panel'];
 
   if (pos.depth === 1) {
     return pos;

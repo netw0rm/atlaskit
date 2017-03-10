@@ -32,10 +32,10 @@ export const schema = new Schema({
     text: { type: Text },
     images: { type: ParagraphNodeType, content: '(text | image)*', group: 'block' },
     image: { type: ImageNodeType },
-    bullet_list: { type: BulletListNodeType, content: 'list_item+', group: 'block' },
+    bulletList: { type: BulletListNodeType, content: 'listItem+', group: 'block' },
     heading: { type: HeadingNodeType, content: 'text<_>*', group: 'block' },
-    list_item: { type: ListItemNodeType, content: 'paragraph+' },
-    ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
+    listItem: { type: ListItemNodeType, content: 'paragraph+' },
+    orderedList: { type: OrderedListNodeType, content: 'listItem+', group: 'block' },
     blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
     panel: { type: PanelNodeType, content: 'block+', group: 'block' },
     plain: { type: ParagraphNodeType, content: 'text' },
@@ -77,9 +77,9 @@ const nodes = {
   doc,
   paragraph,
   text,
-  bullet_list: bulletList,
-  ordered_list: orderedList,
-  list_item: listItem,
+  bulletList: bulletList,
+  orderedList: orderedList,
+  listItem: listItem,
   heading,
   blockquote,
   codeBlock,
@@ -108,10 +108,10 @@ export const images = nodeFactory(schema.nodes.images);
 export const image = (attrs: { src: string }) => nodeFactory(schema.nodes.image, attrs)();
 
 export const h1 = nodeFactory(schema.nodes.heading, { level: 1 });
-export const li = nodeFactory(schema.nodes.list_item);
-export const ol = nodeFactory(schema.nodes.ordered_list);
+export const li = nodeFactory(schema.nodes.listItem);
+export const ol = nodeFactory(schema.nodes.orderedList);
 export const p = nodeFactory(schema.nodes.paragraph);
-export const ul = nodeFactory(schema.nodes.bullet_list);
+export const ul = nodeFactory(schema.nodes.bulletList);
 export const blockquote = nodeFactory(schema.nodes.blockquote);
 export const panel = nodeFactory(schema.nodes.panel, { panelType: 'info' });
 export const paragraph = nodeFactory(schema.nodes.paragraph);

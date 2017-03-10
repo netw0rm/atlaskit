@@ -36,9 +36,9 @@ export class ListsState {
     this.changeHandlers = [];
 
     // Checks what types of lists schema supports.
-    const { bullet_list, ordered_list } = state.schema.nodes;
-    this.bulletListHidden = !bullet_list;
-    this.orderedListHidden = !ordered_list;
+    const { bulletList, orderedList } = state.schema.nodes;
+    this.bulletListHidden = !bulletList;
+    this.orderedListHidden = !orderedList;
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -67,13 +67,13 @@ export class ListsState {
 
     let dirty = false;
 
-    const newBulletListActive = rootNode.type === newEditorState.schema.nodes.bullet_list;
+    const newBulletListActive = rootNode.type === newEditorState.schema.nodes.bulletList;
     if (newBulletListActive !== this.bulletListActive) {
       this.bulletListActive = newBulletListActive;
       dirty = true;
     }
 
-    const newOrderedListActive = rootNode.type === newEditorState.schema.nodes.ordered_list;
+    const newOrderedListActive = rootNode.type === newEditorState.schema.nodes.orderedList;
     if (newOrderedListActive !== this.orderedListActive) {
       this.orderedListActive = newOrderedListActive;
       dirty = true;
@@ -81,13 +81,13 @@ export class ListsState {
 
     const anyListActive = newBulletListActive || newOrderedListActive;
 
-    const newBulletListDisabled = !(anyListActive || this.isWrappingPossible(newEditorState.schema.nodes.bullet_list, newEditorState));
+    const newBulletListDisabled = !(anyListActive || this.isWrappingPossible(newEditorState.schema.nodes.bulletList, newEditorState));
     if (newBulletListDisabled !== this.bulletListDisabled) {
       this.bulletListDisabled = newBulletListDisabled;
       dirty = true;
     }
 
-    const newOrderedListDisabled = !(anyListActive || this.isWrappingPossible(newEditorState.schema.nodes.ordered_list, newEditorState));
+    const newOrderedListDisabled = !(anyListActive || this.isWrappingPossible(newEditorState.schema.nodes.orderedList, newEditorState));
     if (newOrderedListDisabled !== this.orderedListDisabled) {
       this.orderedListDisabled = newOrderedListDisabled;
       dirty = true;

@@ -28,7 +28,7 @@ import {
   liftSelection,
 } from '../../utils';
 
-export type ListType = 'bullet_list' | 'ordered_list' | null;
+export type ListType = 'bulletList' | 'orderedList' | null;
 
 export interface ListsOptions {
   type?: ListType;
@@ -53,12 +53,12 @@ export class ListsState {
   constructor(pm: PM) {
     this.pm = pm;
     this.changeHandlers = [];
-    const { bullet_list, ordered_list } = pm.schema.nodes;
+    const { bulletList, orderedList } = pm.schema.nodes;
 
-    this.bulletListHidden = !bullet_list;
-    this.orderedListHidden = !ordered_list;
-    this.wrapInBulletList = !!bullet_list ? commands.wrapInList(bullet_list) : noop;
-    this.wrapInOrderedList = !!ordered_list ? commands.wrapInList(ordered_list) : noop;
+    this.bulletListHidden = !bulletList;
+    this.orderedListHidden = !orderedList;
+    this.wrapInBulletList = !!bulletList ? commands.wrapInList(bulletList) : noop;
+    this.wrapInOrderedList = !!orderedList ? commands.wrapInList(orderedList) : noop;
 
     this.addKeymap(pm);
 
@@ -80,21 +80,21 @@ export class ListsState {
   }
 
   toggleOrderedList(): void {
-    const { ordered_list } = this.pm.schema.nodes;
-    if (ordered_list) {
-      this.toggleList(ordered_list);
+    const { orderedList } = this.pm.schema.nodes;
+    if (orderedList) {
+      this.toggleList(orderedList);
     }
   }
 
   toggleBulletList(): void {
-    const { bullet_list } = this.pm.schema.nodes;
-    if (bullet_list) {
-      this.toggleList(bullet_list);
+    const { bulletList } = this.pm.schema.nodes;
+    if (bulletList) {
+      this.toggleList(bulletList);
     }
   }
 
   private addKeymap(pm: PM): void {
-    const { list_item } = pm.schema.nodes;
+    const { listItem } = pm.schema.nodes;
   }
 
   /**
@@ -219,7 +219,7 @@ export class ListsState {
 
   /**
    * Step through block-nodes between $from and $to and return true if a node is a
-   * bullet_list or ordered_list
+   * bulletList or orderedList
    */
   private rangeContainsList(pm: ProseMirror, $from: ResolvedPos, $to: ResolvedPos): boolean {
     return getAncestorNodesBetween(pm, $from, $to).some(isListNode);
@@ -313,9 +313,9 @@ export default new Plugin(ListsState);
 
 export interface S extends Schema {
   nodes: {
-    bullet_list?: BulletListNodeType,
-    list_item: ListItemNodeType,
-    ordered_list?: OrderedListNodeType
+    bulletList?: BulletListNodeType,
+    listItem: ListItemNodeType,
+    orderedList?: OrderedListNodeType
   };
 }
 

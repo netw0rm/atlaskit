@@ -49,19 +49,19 @@ export type MediaType = 'file' | 'link';
 
 export interface MediaNodeType extends Block {};
 
-interface Attributes {
+export interface Attributes {
   id: string;
   type: MediaType;
   collectionId?: MediaCollectionId;
   url?: string;
 };
 
-interface Props extends Attributes {
+export interface Props extends Attributes {
   mediaProvider?: Promise<MediaProvider>;
   onDelete?: () => void;
 };
 
-interface State {
+export interface State {
   mediaProvider?: MediaProvider;
   viewContext?: Context;
 }

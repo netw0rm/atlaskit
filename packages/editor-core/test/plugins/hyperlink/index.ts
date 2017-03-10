@@ -528,11 +528,43 @@ describe('hyperlink', () => {
       });
     });
 
+    context('when called with cursor in a link', () => {
+      it('should not call subscribers', () => {
+        const { plugin } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+        const spy = sinon.spy();
+        plugin.subscribe(spy);
+        plugin.showLinkPanel();
+        expect(spy.callCount).to.equal(1);
+      });
+    });
+
     context('when called with a selection in the editor', () => {
       it('should create a link node', () => {
         const { pm, plugin } = editor(doc(paragraph('testing')));
         pm.setSelection(new TextSelection(pm.doc.resolve(4), pm.doc.resolve(7)));
         plugin.showLinkPanel();
+        expect(plugin.activeLinkNode).not.to.be.undefined;
+        expect(plugin.text).not.to.be.undefined;
+      });
+    });
+  });
+
+  describe('Key Press Cmd-K', () => {
+    context('when called without any selection in the editor', () => {
+      it('should call subscribers', () => {
+        const { pm, plugin } = editor(doc(paragraph('testing')));
+        const spy = sinon.spy();
+        plugin.subscribe(spy);
+        pm.input.dispatchKey('Cmd-K');
+        expect(spy.callCount).to.equal(2);
+      });
+    });
+
+    context('when called with a selection in the editor', () => {
+      it('should create a link node', () => {
+        const { pm, plugin } = editor(doc(paragraph('testing')));
+        pm.setSelection(new TextSelection(pm.doc.resolve(4), pm.doc.resolve(7)));
+        pm.input.dispatchKey('Cmd-K');
         expect(plugin.activeLinkNode).not.to.be.undefined;
         expect(plugin.text).not.to.be.undefined;
       });

@@ -2,7 +2,6 @@
 /* eslint global-require: 0 */
 /* eslint no-unused-vars: 0 */
 /* eslint prefer-object-spread/prefer-object-spread: 0 */
-/* eslint quotes: 0 */
 
 /*
 

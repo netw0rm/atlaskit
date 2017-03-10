@@ -1,9 +1,10 @@
 import * as React from 'react';
 import {Component} from 'react';
-import PlayButton from '@atlaskit/icon/glyph/play';
+import * as cx from 'classnames';
 import {CardAction} from '@atlaskit/media-core';
-import {Wrapper, PlayButtonWrapper, Circle} from './styled';
+import {Wrapper, AnimatedButton, PlayButtonWrapper, Circle} from './styled';
 import {LinkCardViewHorizontal} from '../linkCardViewHorizontal/linkCardViewHorizontal';
+import PlayButton from './play-button';
 
 export interface LinkCardPlayerProps {
   linkUrl: string;
@@ -17,6 +18,8 @@ export interface LinkCardPlayerProps {
 
 export interface LinkCardPlayerState {
   isPlayed: boolean;
+  iframeLoaded: boolean;
+  isLoading: boolean;
 }
 
 export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlayerState> {
@@ -24,36 +27,39 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
     super(props);
 
     this.state = {
-       isPlayed: false
+       isPlayed: false,
+       iframeLoaded: false,
+       isLoading: false
     };
   }
 
   render() {
-    if (this.state.isPlayed) {
-      return this.renderPlayer();
-      // return <div>
-      //   {this.renderPlayer()}
-      //   {this.renderLinkCard()}
-      //  </div>
-    } else {
-      return this.renderLinkCard();
-    }
-  }
+    const className = cx({
+      'is-played': this.state.iframeLoaded,
+      'is-loading': this.state.isLoading
+    });
 
-  private renderPlayer(): JSX.Element {
-    return <Wrapper className={'is-played'}>
-      <iframe src={`${this.props.playerUrl}&autoplay=1`} onLoad={this.onIframeLoad}/>
+    return <Wrapper className={className}>
+      {this.renderPlayer()}
+      {this.renderLinkCard()}
     </Wrapper>;
   }
 
+  private renderPlayer(): JSX.Element {
+    const src = this.state.isPlayed ? `${this.props.playerUrl}&autoplay=1` : '';
+
+    return <iframe src={src} onLoad={this.onIframeLoad}/>;
+  }
+
   onIframeLoad = () => {
+    this.setState({iframeLoaded: true, isLoading: false});
   }
 
   private renderLinkCard(): JSX.Element {
-    return <Wrapper>
+    return <div className="link-info">
       <PlayButtonWrapper onClick={this.onClick}>
         <Circle className="circle"/>
-        <PlayButton label="play" />
+        <AnimatedButton dangerouslySetInnerHTML={{__html: PlayButton}} />
       </PlayButtonWrapper>
       <LinkCardViewHorizontal
         display="square"
@@ -64,10 +70,10 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
         iconUrl={this.props.iconUrl}
         menuActions={this.props.menuActions}
       />
-    </Wrapper>;
+    </div>;
   }
 
   onClick = () => {
-    this.setState({isPlayed: true});
+    this.setState({isPlayed: true, isLoading: true});
   }
 }

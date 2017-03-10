@@ -41,6 +41,7 @@
     "chai": "^3.5.0",
     "chalk-cli": "^3.0.0",
     "child-process-promise": "^2.2.0",
+    "classnames": "^2.2.5",
     "commitizen": "^2.8.6",
     "css-loader": "^0.25.0",
     "enzyme": "^2.7.1",

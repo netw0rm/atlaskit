@@ -9,8 +9,7 @@ import {
   Schema,
   StrongMarkType,
   Text,
-  UnderlineMarkType,
-  MediaNodeType,
+  UnderlineMarkType
 } from '@atlaskit/editor-core';
 
 export default new Schema({

@@ -434,6 +434,7 @@ describe('lists', () => {
 
       it('should lift the list item when Shift-Tab key press', () => {
         const { pm } = editor(doc(ol(li(p('text'), ol(li(p('te{<>}xt')))), li(p('text')))));
+
         pm.input.dispatchKey('Shift-Tab');
         expect(pm.doc).to.deep.equal(doc(ol(li(p('text')), li(p('te{<>}xt')), li(p('text')))));
       });

@@ -1,18 +1,7 @@
 import * as React from 'react';
-import { Component } from 'react';
-import { storiesOf, action } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 import { LinkCardTrelloCardView } from '../src/linkCardTrelloCardView';
-import { tallImage, wideImage, wideTransparentImage, smallImage } from './images';
 import { StoryList } from '@atlaskit/media-test-helpers';
-
-const onClick = (event: Event) => {
-  action('click')();
-};
-
-const menuActions = [
-  { label: 'Open', handler: () => { action('open')(); } },
-  { label: 'Close', handler: () => { action('close')(); } }
-];
 
 const defaultThumbnailUrl = 'https://wac-cdn.atlassian.com/dam/jcr:51be4df5-1ffb-4a4d-9f44-0b84dad9de5e/hero-collaboration-partial.png';
 const defaultIconUrl = 'https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/apple-touch-icon-152x152.png';

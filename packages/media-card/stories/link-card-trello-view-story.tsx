@@ -1,9 +1,6 @@
 import * as React from 'react';
-import {Component} from 'react';
-import {storiesOf, action} from '@kadira/storybook';
+import {storiesOf} from '@kadira/storybook';
 import {LinkCardTrelloView} from '../src';
-import {tallImage, wideImage, wideTransparentImage, smallImage} from './images';
-import {StoryList} from '@atlaskit/media-test-helpers';
 
 storiesOf('LinkCardTrelloView', {})
   .add('Default', () => (

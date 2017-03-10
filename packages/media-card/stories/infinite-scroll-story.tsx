@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { storiesOf, action } from '@kadira/storybook';
-import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers';
+import { storiesOf } from '@kadira/storybook';
 import { InfiniteScroll, CardView } from '../src';
 import { List } from './list';
 import { Subject } from 'rxjs/Subject';

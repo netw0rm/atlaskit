@@ -113,8 +113,8 @@ export class ListsState {
       [keymaps.splitListItem.common!]: () => commands.splitListItem(list_item)(pm),
       [keymaps.toggleOrderedList.common!]: trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', () => this.toggleOrderedList()),
       [keymaps.toggleBulletList.common!]: trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', () => this.toggleBulletList()),
-      [keymaps.nestList.common!]: this.nestListItem,
-      [keymaps.liftList.common!]: this.liftListItem
+      [keymaps.nestList.common!]: trackAndInvoke('atlassian.editor.format.list.nest.keyboard', this.nestListItem),
+      [keymaps.liftList.common!]: trackAndInvoke('atlassian.editor.format.list.list.keyboard', this.liftListItem)
     }));
   }
 

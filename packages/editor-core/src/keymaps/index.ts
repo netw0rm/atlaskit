@@ -27,8 +27,8 @@ export const moveDown = makeKeyMapWithCommon('Move down', 'Down');
 export const undo = makeKeyMapWithCommon('Undo', 'Mod-Z');
 export const redo = makeKeyMap('Redo', 'Ctrl-Y', 'Cmd-Shift-Y');
 export const redoBarred = makeKeyMap('Redo Barred', 'Ctrl-Shift-Y', 'Cmd-Y');
-export const nestList = makeKeyMapWithCommon('Nest List', 'Tab');
-export const liftList = makeKeyMapWithCommon('Lift List', 'Shift-Tab');
+export const indentList = makeKeyMapWithCommon('Indent List', 'Tab');
+export const outdentList = makeKeyMapWithCommon('Outdent List', 'Shift-Tab');
 
 export function tooltip(keymap: Keymap | undefined): string | undefined {
   if (keymap) {

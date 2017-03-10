@@ -9,8 +9,8 @@ import { configure } from '@kadira/storybook';
 
 // export default function loadStoriesForPackage(packageName) {
 configure(() => {
-  require('../../packages/avatar/stories/index.js');
-}, module);
+    require('../../packages/avatar/stories/index.js');
+  }, module);
 // }
 
 /* Old config.js

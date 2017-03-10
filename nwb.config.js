@@ -85,6 +85,10 @@ module.exports = {
               modules: true,
             },
           }, 'less-loader'],
+        }, {
+          test: /\.jsx$/,
+          loader: 'babel-loader',
+          exclude: /node_modules/,
         }],
       },
 
@@ -102,7 +106,7 @@ module.exports = {
     // TODO remove once NWB is fully integrated.
     rules: {
       babel: {
-        test: /\.jsx?/,
+        test: /\.jsx/,
       },
     },
   },

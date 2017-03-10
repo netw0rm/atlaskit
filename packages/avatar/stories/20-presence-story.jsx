@@ -14,7 +14,7 @@ const presenceWrapperStyles = {
 };
 
 storiesOf(name, module)
-  .addCodeExampleStory('Presence: default', () => (
+  .add('Presence: default', () => (
     <div style={{ padding: '20px' }}>
       <p>
         By default presences will stretch to fill their parents (Try resizing the code window on the
@@ -29,7 +29,7 @@ storiesOf(name, module)
       </div>
     </div>
   ))
-  .addCodeExampleStory('Presence: custom presences', () => (<div style={{ padding: '20px' }}>
+  .add('Presence: custom presences', () => (<div style={{ padding: '20px' }}>
     <p>
       Aside from the default supported presences, you can also create custom presences by passing
       arbitrary HTML to the Presence component. This could be anything from an image, an svg or
@@ -56,7 +56,7 @@ storiesOf(name, module)
     </div>
   </div>
   ))
-  .addCodeExampleStory('Presence: borderColors', () => (
+  .add('Presence: borderColors', () => (
     <div style={{ padding: '20px' }}>
       <p>
         By default presences will display a white border (2px). This can be overridden with the

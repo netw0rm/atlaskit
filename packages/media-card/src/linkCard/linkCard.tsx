@@ -10,6 +10,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/fromPromise';
 import { TrelloBoardLinkApp } from '@atlaskit/media-core';
 import { LinkCardTrelloView } from '../LinkCardTrelloView';
+import { LinkCardPlayer } from '../linkCardPlayer';
 
 import { LinkCardViewHorizontal } from '../linkCardViewHorizontal/linkCardViewHorizontal';
 
@@ -80,16 +81,9 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
   }
 
   private updateState(props: LinkCardProps): void {
-    const isLinkFromId = (link) => (link as LinkFromId).id !== undefined;
-    const isLinkItem = (item) => (item as LinkItem).details !== undefined;
+    const { context, link } = this.props;
 
     this.unsubscribe();
-
-    const { context, link } = this.props;
-    // const provider: { subscribe: Function } = isLinkFromId(link)
-    //   ? context.getMediaItemProvider((link as LinkFromId).id, 'link', (link as LinkFromId).collection).observable()
-    //   : context.getUrlPreviewProvider(link as string).observable();
-
     this.setPartialState({ loading: true });
 
     this.setPartialState({
@@ -121,14 +115,20 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
     const { state } = this;
 
     if (state && state.urlPreview) {
-      if (state.urlPreview.app) {
-        switch (state.urlPreview.app.type) {
+      const { urlPreview } = state;
+
+      if (urlPreview.app) {
+        const { app } = urlPreview;
+
+        switch (app.type) {
           case 'trello_board':
-            return this.renderTrelloBoard(state.urlPreview.app);
+            return this.renderTrelloBoard(app);
         }
+      } else if (urlPreview.resources && urlPreview.resources.player) {
+        return this.renderPlayer(urlPreview);
       }
 
-      return this.renderLink(state.urlPreview);
+      return this.renderLink(urlPreview);
     } else {
       return null;
     }
@@ -141,6 +141,19 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
       thumbnailUrl={app.background}
       lists={app.lists}
       members={app.member}
+    />;
+  }
+
+  private renderPlayer(urlPreview: UrlPreview): JSX.Element {
+    const { thumbnail, icon, player } = urlPreview.resources;
+
+    return <LinkCardPlayer
+      linkUrl={player.url}
+      title={urlPreview.title}
+      description={urlPreview.description}
+      thumbnailUrl={thumbnail ? thumbnail.url : undefined}
+      iconUrl={icon ? icon.url : undefined}
+      playerUrl={player.url}
     />;
   }
 

@@ -88,4 +88,26 @@ storiesOf('LinkCard', {})
         )
       }
     ]}</StoryList>;
+  })
+  .add('From trello board url', () => {
+    return <StoryList>{[
+      {
+        title: 'Public Board',
+        content: (
+          <LinkCard
+            context={context}
+            link="https://trello.com/b/rq2mYJNn/public-trello-boards"
+          />
+        )
+      },
+      {
+        title: 'Private Board',
+        content: (
+          <LinkCard
+            context={context}
+            link="https://trello.com/b/hlo7gRqs/shpxxxviii-60"
+          />
+        )
+      }
+    ]}</StoryList>;
   });

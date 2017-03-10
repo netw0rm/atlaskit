@@ -17,7 +17,8 @@ type ItemDataMap = { [key: string ]: ItemData }
 
 type ListData = {|
   id: string,
-  itemIds: string[]
+  itemIds: string[],
+  height: number,
 |}
 
 type ListDataMap = { [key: string ]: ListData }
@@ -37,10 +38,12 @@ const lists: ListDataMap = {
   foo: {
     id: 'foo',
     itemIds: itemKeys.slice(0, itemKeys.length / 2),
+    height: 800,
   },
   bar: {
     id: 'bar',
     itemIds: itemKeys.slice((itemKeys.length / 2), itemKeys.length),
+    height: 500,
   },
 };
 
@@ -93,7 +96,7 @@ const DroppableList = (() => {
     width: 300px;
     align-items: stretch;
     padding: 8px;
-    height: ${props => (props.withOverflow ? '500px' : 'auto')}
+    max-height: ${props => (props.withOverflow && props.height ? `${props.height}px` : 'auto')}
     overflow-y: ${props => (props.withOverflow ? 'scroll' : 'visible')};
     background-color: ${props => (props.isDraggingOver ? 'gold' : 'deepskyblue')};
   `;
@@ -104,6 +107,7 @@ const DroppableList = (() => {
       items: ItemData[],
       isDraggingOver: boolean,
       withOverflow: boolean,
+      height: number,
     |}
 
     render() {
@@ -113,6 +117,7 @@ const DroppableList = (() => {
         <ListContainer
           withOverflow={this.props.withOverflow}
           isDraggingOver={isDraggingOver}
+          height={this.props.height}
         >
           <h3>{this.props.listId} {isDraggingOver ? '(is dragging over)' : '' }</h3>
           {this.props.items.map((item: ItemData) => (
@@ -162,7 +167,8 @@ const ConnectedApp = (() => {
                 items={itemsInList}
                 listId={key}
                 key={key}
-                withOverflow
+                withOverflow={false}
+                height={list.height}
               />
             );
           })}

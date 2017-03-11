@@ -17,7 +17,7 @@ export interface State {
   active?: boolean;
   element?: HTMLElement;
   language: string;
-  showToolbar?: boolean;
+  toolbarVisible?: boolean;
 }
 
 const items = [{
@@ -27,7 +27,7 @@ const items = [{
 }];
 
 export default class LanguagePicker extends PureComponent<Props, State> {
-  state: State = { language: NO_LANGUAGE };
+  state: State = { language: NO_LANGUAGE, toolbarVisible: false };
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -38,9 +38,9 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { language, element, showToolbar } = this.state;
+    const { language, element, toolbarVisible } = this.state;
 
-    if (showToolbar) {
+    if (toolbarVisible) {
       return (
         <FloatingToolbar target={element} align="left" autoPosition>
           <div className={styles.container}>
@@ -56,20 +56,19 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: CodeBlockState) => {
-    const { element, language, clicked } = pluginState;
-    const currentElement = this.state.element;
-    const showToolbar = !!element && (clicked || currentElement !== element);
+    const { element, language, toolbarVisible } = pluginState;
 
     const matchedLanguage = findMatchedLanguage(language);
-    const updatedlanguage = this.optionToLanguage(matchedLanguage);
+    const updatedLanguage = this.optionToLanguage(matchedLanguage);
+
     this.setState({
       language: matchedLanguage,
       element,
-      showToolbar
+      toolbarVisible
     });
 
-    if (language !== updatedlanguage) {
-      this.props.pluginState.updateLanguage(updatedlanguage, this.props.editorView);
+    if (language !== updatedLanguage) {
+      this.props.pluginState.updateLanguage(updatedLanguage, this.props.editorView);
     }
   }
 

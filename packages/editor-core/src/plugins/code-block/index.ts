@@ -14,11 +14,12 @@ export type StateChangeHandler = (state: CodeBlockState) => any;
 export class CodeBlockState {
   element?: HTMLElement;
   language: string | undefined;
-  clicked: boolean = false;
+  toolbarVisible: boolean = false;
 
+  private state: EditorState<any>;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
   private activeCodeBlock?: Node;
-  private state: EditorState<any>;
+  private editorFocused: boolean = false;
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
@@ -40,15 +41,21 @@ export class CodeBlockState {
     }
   }
 
-  update(state: EditorState<any>, docView: NodeViewDesc, clicked: boolean = false) {
+  updateEditorFocused(editorFocused: boolean) {
+    this.editorFocused = editorFocused;
+  }
+
+  update(state: EditorState<any>, docView: NodeViewDesc, domEvent: boolean = false) {
     this.state = state;
     const codeBlockNode = this.activeCodeBlockNode();
 
-    if (clicked && codeBlockNode || codeBlockNode !== this.activeCodeBlock) {
-      this.clicked = clicked;
+    if (domEvent && codeBlockNode || codeBlockNode !== this.activeCodeBlock) {
+      const newElement = codeBlockNode && this.activeCodeBlockElement(docView);
+      this.toolbarVisible = this.editorFocused && !!codeBlockNode && (domEvent || this.element !== newElement);
       this.activeCodeBlock = codeBlockNode;
       this.language = codeBlockNode && codeBlockNode.attrs['language'] || undefined;
-      this.element = codeBlockNode && this.activeCodeBlockElement(docView);
+      this.element = newElement;
+      this.changeHandlers.forEach(changeHandler => changeHandler(this));
       this.triggerOnChange();
     }
   }
@@ -105,10 +112,17 @@ const plugin = new Plugin({
     };
   },
   props: {
-    handleClick(view, event) {
-      view.dispatch(view.state.tr.setMeta(stateKey, { docView: view.docView, clicked: true }));
+    handleClick(view: EditorView, event) {
+      view.dispatch(view.state.tr.setMeta(stateKey, { docView: view.docView, domEvent: true }));
       return false;
-    }
+    },
+    onFocus(view: EditorView, event) {
+      stateKey.getState(view.state).updateEditorFocused(true);
+    },
+    onBlur(view: EditorView, event) {
+      stateKey.getState(view.state).updateEditorFocused(false);
+      view.dispatch(view.state.tr.setMeta(stateKey, { docView: view.docView, domEvent: true }));
+    },
   }
 });
 

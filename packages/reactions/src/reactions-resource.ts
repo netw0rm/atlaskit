@@ -387,15 +387,19 @@ class JwtExtension {
   }
 }
 
-export class FabricRealTimeClient {
+class FabricRealTimeSiteClient {
   private channels = new Map<string, Object>();
   private clientPromise: Promise<any>;
 
-  constructor(private config: { cloudId: string, synchronyBaseUrl: string, baseUrl: string, sessionToken?: string }, private cloudId: string) {
+  constructor(private config: { cloudId: string, synchronyBaseUrl: string, realTimeServiceBaseUrl: string, sessionToken?: string }) {
     this.clientPromise = this.getToken().then(jwt => {
       const client = new Faye.Client(config.synchronyBaseUrl);
       client.addExtension(new JwtExtension(jwt));
-      return client;
+      return {
+        client: client
+      };
+    }).catch((error) => {
+      console.log(error)
     });
   }
 
@@ -408,9 +412,9 @@ export class FabricRealTimeClient {
   }
 
   public subscribe(containerAri, callback: (data: any) => void) {
-    return this.clientPromise.then(client => {
-      const channelBase = `/pf-reactions-service/${this.cloudId}`;
-      const channel = client.subscribe(`${channelBase}/${containerAri.replace(/\:/g, '-')}`, (data) => callback(data));
+    return this.clientPromise.then(data => {
+      const channelBase = `/pf-reactions-service/${this.config.cloudId}`;
+      const channel = data.client.subscribe(`${channelBase}/${containerAri.replace(/\:/g, '-')}`, (data) => callback(data));
       this.channels.set(containerAri, channel);
     });
   }
@@ -425,15 +429,12 @@ export class FabricRealTimeClient {
 
   private getToken(): Promise<string> {
     const { config } = this;
-    return requestService<string>(config.baseUrl, 'reactions/realtime/token', {
+    return requestService<string>(config.realTimeServiceBaseUrl, `reactions/realtime/token?cloudId=${this.config.cloudId}`, {
       'method': 'POST',
       'headers': this.getHeaders(),
-      'body': JSON.stringify({
-        cloudId: this.cloudId,
-
-      }),
+      'body': JSON.stringify({}),
       'credentials': 'include'
-    });
+    }).then((data: any) => data.token);
   }
 
   private getHeaders(): Headers {
@@ -448,61 +449,93 @@ export class FabricRealTimeClient {
   }
 }
 
-// export class FabricRealTimeClientManger {
-//   constructor(private config: { cloudId: string, synchronyBaseUrl: string, baseUrl: string, sessionToken?: string }, private cloudId: string) {
-//   }
-// }
+export interface RealTimeClient {
+  on(eventType: string, callback): void;
+  off(eventType: string, callback): void;
+}
 
-export class RealTimeReactionsResource extends ReactionsResource implements ReactionsProvider {
-  // private token: string;
-  private channels: Map<string, Object>;
-  private client: any;
+interface EventHandler {
+  (data: any): void
+}
 
-  constructor(config: RealTimeReactionsProviderConfig) {
-    super(config);
+export class FabricRealTimeClient implements RealTimeClient {
+  private clients = new Map<string, FabricRealTimeSiteClient>();
+  private mapping = new Map<string, EventHandler[]>();
 
-    this.init(config);
+  constructor(private config: { synchronyBaseUrl: string, realTimeServiceBaseUrl: string, sessionToken?: string }) {
   }
 
-  init(config: RealTimeReactionsProviderConfig) {
-    this.channels = new Map<string, Object>();
-
-    const jwt = 'NO WAY!';
-    this.client = new Faye.Client(config.synchronyBaseUrl);
-    this.client.addExtension(new JwtExtension(jwt));
-
-    if (this.config.containerAris) {
-      this.joinContainers(this.config.containerAris);
+  public on(eventType: string, callback) {
+    let handlers = this.mapping.get(eventType);
+    if (handlers === undefined) {
+      handlers = [];
+      this.mapping.set(eventType, handlers);
     }
 
+    handlers.push(callback);
   }
 
-  joinContainers(containerAris: string[]) {
-    // let client = new FabricRealTimeClient(this.config, cloudId);
-    // client.subscribeAll(containerAris, this.updateReactions);
-
-    // client.subscribe(containerAri)
-
-    containerAris.forEach(containerAri => this.joinContainer(containerAri));
+  public off(eventType: string, callback) {
+    let handlers = this.mapping.get(eventType);
+    if (handlers !== undefined) {
+      for (let i = 0; i < handlers.length; i++) {
+        if (handlers[i] === callback) {
+          handlers.splice(i, 1);
+          return;
+        }
+      }
+    }
   }
 
-  getCloudId(containerAri: string) {
+  private dispatchEvent(event: any) {
+    if (event && event.eventType) {
+      const handlers = this.mapping.get(event.eventType);
+      if (handlers) {
+        for (let handler of handlers) {
+          try {
+            handler(event.data);
+          } catch (error) {
+            // TODO: log error
+          }
+        }
+      }
+    }
+  }
+
+  public subscribe(containerAri) {
+    const siteId = this.getSiteId(containerAri);
+    let siteClient = this.clients.get(siteId);
+    if (siteClient === undefined) {
+      siteClient = new FabricRealTimeSiteClient({ ...this.config, cloudId: siteId });
+      this.clients.set(siteId, siteClient);
+    }
+    
+    return siteClient.subscribe(containerAri, (data) => this.dispatchEvent(data));
+  }
+
+  public subscribeAll(containerAri: string[], callback: (data: any) => void) {
+    return Promise.all(containerAri.map(containerAri => this.subscribe(containerAri)));
+  }
+
+  public unsubscribe(containerAri) {
+    const siteId = this.getSiteId(containerAri);
+    let siteClient = this.clients.get(siteId);
+    if (siteClient) {
+      this.clients.delete(siteId);
+      return siteClient.unsubscribe(containerAri);
+    }
+  }
+
+  private getSiteId(containerAri: string) {
     return containerAri.split(':')[3];
   }
+}
 
-  joinContainer(containerAri: string) {
-    const channelBase = `/pf-reactions-service/${this.getCloudId(containerAri)}`;
-    // const channel = this.client.subscribe(`${channelBase}/test`, (reactions) => this.updateReactions(reactions));
-    const channel = this.client.subscribe(`${channelBase}/${containerAri.replace(/\:/g, '-')}`, (reactions) => this.updateReactions(reactions));
-    this.channels.set(containerAri, channel);
-  }
+export class RealTimeReactionsResource extends ReactionsResource implements ReactionsProvider {
+  constructor(config: ReactionsProviderConfig, private realTimeClient: FabricRealTimeClient) {
+    super(config);
 
-  leaveContainer(ari: string) {
-    const channel = this.channels.get(ari);
-    if (channel) {
-      (channel as any).cancel();
-      this.channels.delete(ari);
-    }
+    this.realTimeClient.on("reactions_update", (data) => this.updateReactions(data));
   }
 
   mapReactionToReactionSummary(reaction: Reaction) {

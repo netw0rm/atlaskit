@@ -13,7 +13,7 @@ export type ConnectedProps = {|
   itemId: Id,
   droppableId?: DroppableId,
   children?: React$Element<any>,
-  outerRef: ?Element
+  targetRef: ?Element
 |}
 
 export type Props = ConnectedProps & MapProps & DispatchProps;

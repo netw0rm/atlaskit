@@ -10,7 +10,7 @@ import type { Provide, MapState, Props, OwnProps, MapProps, DroppableState } fro
 import type { Direction, TypeId, State } from '../../types';
 
 const Container = styled.div`
-  user-select: ${props => (props.isDraggingOver ? 'none' : 'auto')};
+  user-select: none;
 `;
 
 type ComponentState = {|
@@ -65,7 +65,7 @@ export default (type: TypeId,
             <DroppableDimensionPublisher
               itemId={mapProps.id}
               type={type}
-              outerRef={this.state.ref}
+              targetRef={this.state.ref}
             >
               <Component {...enhancedProps} />
             </DroppableDimensionPublisher>

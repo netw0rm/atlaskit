@@ -21,8 +21,8 @@ const getBounds = (ref: Element) => {
     right: (right + marginRight),
     left: (left + marginLeft),
     bottom: (bottom + marginBottom),
-    width: width + marginLeft,
-    height: height + marginRight,
+    width: width + marginLeft + marginRight,
+    height: height + marginBottom + marginTop,
   };
 };
 
@@ -32,7 +32,7 @@ export class DimensionPublisher extends PureComponent {
   /* eslint-enable */
 
   getDimension = (): Dimension => {
-    const ref = this.props.outerRef;
+    const ref = this.props.targetRef;
     invariant(ref, 'cannot get dimensions when not attached');
 
     const { top, right, bottom, left, width, height } = getBounds(ref);

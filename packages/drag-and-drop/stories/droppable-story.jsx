@@ -60,6 +60,7 @@ const DraggableItem = (() => {
       itemId: string,
       listId: string,
       isDragging: boolean,
+      innerRef: Function,
     |}
 
     componentWillUnmount() {
@@ -69,7 +70,7 @@ const DraggableItem = (() => {
     render() {
       const { isDragging } = this.props;
       return (
-        <ItemContainer isDragging={isDragging}>
+        <ItemContainer isDragging={isDragging} innerRef={ref => this.props.innerRef(ref)}>
           <h4>Draggable {isDragging ? '(is dragging)' : '' }</h4>
           Id: {this.props.itemId}
         </ItemContainer>
@@ -96,7 +97,7 @@ const DroppableList = (() => {
     width: 300px;
     align-items: stretch;
     padding: 8px;
-    max-height: ${props => (props.withOverflow && props.height ? `${props.height}px` : 'auto')}
+    height: ${props => (props.withOverflow && props.height ? `${props.height}px` : 'auto')}
     overflow-y: ${props => (props.withOverflow ? 'scroll' : 'visible')};
     background-color: ${props => (props.isDraggingOver ? 'gold' : 'deepskyblue')};
   `;
@@ -167,7 +168,7 @@ const ConnectedApp = (() => {
                 items={itemsInList}
                 listId={key}
                 key={key}
-                withOverflow={false}
+                withOverflow
                 height={list.height}
               />
             );

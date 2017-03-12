@@ -57,7 +57,8 @@ type Props = {
 
 type ComponentState = {|
   wasDragging: boolean,
-  ref: ?Element
+  ref: ?Element,
+  childRef: ?Element,
 |}
 
 const Container = styled.div`
@@ -309,6 +310,12 @@ export default (type: TypeId,
         });
       }
 
+      setChildRef = (el: ?Element) => {
+        this.setState({
+          childRef: el,
+        });
+      }
+
       getPlaceholder() {
         invariant(this.props.mapProps.initial, 'cannot get a drag placeholder when not dragging');
         const dimension = this.props.mapProps.initial.dimension;
@@ -368,9 +375,11 @@ export default (type: TypeId,
             height: dimension.height,
             top: dimension.top,
             left: dimension.left,
+            //TODO: Cursor..
           };
         })();
 
+        // TODO: remove `Container` and pass cursor style to `Moveable`
         return (
           <div ref={this.setContainerRef}>
             <Moveable
@@ -386,13 +395,11 @@ export default (type: TypeId,
                   itemId={mapProps.id}
                   droppableId={mapProps.droppableId}
                   type={type}
-                  outerRef={this.state.ref}
+                  targetRef={this.state.childRef || this.state.ref}
                 >
                   <KeepVisible itemId={mapProps.id}>
-                    <Container
-                      isDragging={mapProps.isDragging}
-                    >
-                      <Component {...enhancedOwnProps} />
+                    <Container thisShouldBeRemovedAndStyleDoneElsewhere>
+                      <Component {...enhancedOwnProps} innerRef={this.setChildRef} />
                     </Container>
                   </KeepVisible>
                 </DraggableDimensionPublisher>

@@ -58,11 +58,6 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
     rules.push(new InputRule(/(`([^`]+)`)$/, addMark(schema.marks.code, schema, '`')));
   }
 
-  if (schema.marks.rule) {
-    // --- should create a horizontal rule
-    rules.push(new InputRule(/^\-\-\-$/, addMark(schema.marks.rule, schema, '-')));
-  }
-
   plugin = inputRules({ rules });
 
   return plugin;

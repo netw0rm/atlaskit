@@ -45,7 +45,7 @@ const lists: ListDataMap = {
   bar: {
     id: 'bar',
     itemIds: itemKeys.slice((itemKeys.length / 2), itemKeys.length),
-    height: '100vh',
+    height: '500px',
     withOverflow: true,
   },
 };

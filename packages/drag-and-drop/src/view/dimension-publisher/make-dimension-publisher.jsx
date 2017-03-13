@@ -52,7 +52,9 @@ export class DimensionPublisher extends PureComponent {
       height,
       center,
       scrollTop: ref.scrollTop,
+      scrollLeft: ref.scrollLeft,
       scrollHeight: ref.scrollHeight,
+      scrollWidth: ref.scrollWidth,
     };
 
     return dimension;

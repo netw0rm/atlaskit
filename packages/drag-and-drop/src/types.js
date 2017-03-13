@@ -23,7 +23,9 @@ export type Dimension = {|
   height: number,
   center: Position,
   scrollHeight: number,
+  scrollWidth: number,
   scrollTop: number,
+  scrollLeft: number,
 |}
 
 export type DraggableLocation = {|

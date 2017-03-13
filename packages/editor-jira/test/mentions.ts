@@ -18,19 +18,21 @@ const p = nodeFactory(schema.nodes.paragraph);
 // Marks
 const mentionQuery = markFactory(schema.marks.mention_query!);
 
-function check(description: string, html: string, node: Node) {
+const mentionEncoder = (userId: string) => `/secure/ViewProfile?name=${userId}`;
+
+function check(description: string, html: string, node: Node, customEncoders) {
   it(`parses HTML: ${description}`, () => {
     const actual = parse(html, schema);
     expect(actual).to.deep.equal(node);
   });
 
   it(`encodes HTML: ${description}`, () => {
-    const encoded = encode(node, schema);
+    const encoded = encode(node, schema, customEncoders);
     expect(html).to.deep.equal(encoded);
   });
 
   it(`round-trips HTML: ${description}`, () => {
-    const roundTripped = parse(encode(node, schema), schema);
+    const roundTripped = parse(encode(node, schema, customEncoders), schema);
     expect(roundTripped).to.deep.equal(node);
   });
 };
@@ -38,13 +40,14 @@ function check(description: string, html: string, node: Node) {
 describe(name, () => {
   describe('mentions', () => {
     it(`encodes HTML: mention_query mark`, () => {
-      const encoded = encode(doc(p(mentionQuery('@star'))), schema);
+      const encoded = encode(doc(p(mentionQuery('@star'))), schema, { mention: mentionEncoder });
       expect('<p>@star</p>').to.equal(encoded);
     });
 
     check('mention node',
       `<p>Text <a class="user-hover" href="/secure/ViewProfile?name=Starr" rel="Starr">@Cheryll Maust</a> text</p>`,
-      doc(p('Text ', mention({ id: 'Starr', displayName: '@Cheryll Maust' }), ' text'))
+      doc(p('Text ', mention({ id: 'Starr', displayName: '@Cheryll Maust' }), ' text')),
+      { mention: mentionEncoder }
     );
   });
 });

@@ -35,6 +35,7 @@ export interface Props {
   analyticsHandler?: AnalyticsHandler;
   allowLists?: boolean;
   mentionProvider?: Promise<MentionProvider>;
+  mentionEncoder?: (userId: string) => string;
 }
 
 export interface State {
@@ -129,7 +130,7 @@ export default class Editor extends PureComponent<Props, State> {
   get value(): string | undefined {
     const { pm, schema } = this.state;
     return pm
-      ? encode(pm.doc, schema)
+      ? encode(pm.doc, schema, { mention: this.props.mentionEncoder })
       : this.props.defaultValue;
   }
 

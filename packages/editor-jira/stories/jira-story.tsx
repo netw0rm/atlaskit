@@ -9,7 +9,7 @@ import MentionResource from './mentions/mention-resource';
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
 
-type Props = { allowLists?: boolean, mentionProvider?: any };
+type Props = { allowLists?: boolean, mentionProvider?: any, mentionEncoder?: any };
 type State = { html?: string };
 class Demo extends PureComponent<Props, State> {
   state = {} as State;
@@ -23,6 +23,7 @@ class Demo extends PureComponent<Props, State> {
           onSave={SAVE_ACTION}
           allowLists={this.props.allowLists}
           mentionProvider={this.props.mentionProvider}
+          mentionEncoder={this.props.mentionEncoder}
         />
         <fieldset style={{ marginTop: 20 }}>
           <legend>HTML</legend>
@@ -42,4 +43,8 @@ storiesOf(name, module)
   .add('Editor', () => <Demo />)
   .add('Editor (allowLists)', () => <Demo allowLists />)
   .add('Editor (Mentions)', () =>
-    <Demo mentionProvider={Promise.resolve(new MentionResource())} />);
+    <Demo
+      mentionProvider={Promise.resolve(new MentionResource())}
+      mentionEncoder={(userId: string) => `/secure/ViewProfile?name=${userId}`}
+    />
+  );

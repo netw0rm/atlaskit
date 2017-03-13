@@ -19,7 +19,11 @@ import {
 } from '@atlaskit/editor-core';
 import { isSchemaWithLists, isSchemaWithMentions, JIRASchema } from '../schema';
 
-export default function encode(node: DocNode, schema: JIRASchema) {
+export interface JIRACustomEncoders {
+  mention?: (userId: string) => string;
+}
+
+export default function encode(node: DocNode, schema: JIRASchema, customEncoders: JIRACustomEncoders = {}) {
   const doc = makeDocument();
   doc.body.appendChild(encodeFragment(node.content));
   const html = doc.body.innerHTML;
@@ -61,7 +65,7 @@ export default function encode(node: DocNode, schema: JIRASchema) {
 
     if (isSchemaWithMentions(schema)) {
       if (isMentionNode(node)) {
-        return encodeMention(node);
+        return encodeMention(node, customEncoders.mention);
       }
     }
 
@@ -174,10 +178,10 @@ export default function encode(node: DocNode, schema: JIRASchema) {
     return elem;
   }
 
-  function encodeMention(node: MentionNode) {
+  function encodeMention(node: MentionNode, encoder?: (userId: string) => string) {
     const elem = doc.createElement('a');
     elem.setAttribute('class', 'user-hover');
-    elem.setAttribute('href', `/secure/ViewProfile?name=${node.attrs.id}`);
+    elem.setAttribute('href', encoder ? encoder(node.attrs.id) : node.attrs.id);
     elem.setAttribute('rel', node.attrs.id);
     elem.innerText = node.attrs.displayName;
     return elem;

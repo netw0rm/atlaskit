@@ -217,13 +217,13 @@ const strikeRule = new InputRule(/(\~\~([^\*]+)\~\~)$/, '~', (
   pos: number
 ) => replaceWithMark(pm, match, pos, 'strike', '~~'));
 
-// `string` should change the current text to monospace
-const monoRule = new InputRule(/(`([^`]+)`)$/, '`', (
+// `string` should change the current text to code
+const codeRule = new InputRule(/(`([^`]+)`)$/, '`', (
   pm: ProseMirror,
   match: string[],
   pos: number
 ) => {
-  replaceWithMark(pm, match, pos, 'mono', '`');
+  replaceWithMark(pm, match, pos, 'code', '`');
   const tr = insertBlankSpace(pm);
   tr && tr.apply();
 });
@@ -244,7 +244,7 @@ export class MarkdownInputRulesPlugin {
       strongRule,
       emRule,
       strikeRule,
-      monoRule,
+      codeRule,
       imgRule,
       linkRule,
       hrRule,

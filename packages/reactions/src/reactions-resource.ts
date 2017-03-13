@@ -19,7 +19,17 @@ export interface Reactions {
   [key: string]: ReactionSummary[];
 }
 
-export default class AbstractReactionsService {
+export interface ReactionsProvider {
+  getReactions(aris: string[]): Promise<Reactions>;
+  toggleReaction(ari: string, emojiId: string);
+  addReaction(ari: string, emojiId: string): Promise<ReactionSummary[]>;
+  deleteReaction(ari: string, emojiId: string): Promise<ReactionSummary[]>;
+  notifyUpdated(ari: string, state: ReactionSummary[]): void;
+  subscribe(ari: string, handler: Function): void;
+  unsubscribe(ari: string, handler: Function): void;
+}
+
+export default class AbstractReactionsResource implements ReactionsProvider {
 
   protected excludeArisFromAutoPoll: string[] = [];
   protected cachedReactions: Reactions = {};
@@ -219,7 +229,7 @@ export default class AbstractReactionsService {
   }
 }
 
-export interface ReactionsServiceConfig {
+export interface ReactionsProviderConfig {
   sessionToken?: string;
   baseUrl: string;
   autoPoll?: number;
@@ -246,9 +256,9 @@ const requestService = <T>(baseUrl: string, path: string, opts?: {}) => {
   });
 };
 
-export class ReactionsService extends AbstractReactionsService {
+export class ReactionsResource extends AbstractReactionsResource implements ReactionsProvider {
 
-  constructor(private config: ReactionsServiceConfig) {
+  constructor(private config: ReactionsProviderConfig) {
     super();
 
     if (config.autoPoll) {

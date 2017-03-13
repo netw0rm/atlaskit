@@ -37,7 +37,7 @@ storiesOf(name, module)
     <Em>This is italic</Em>
   ))
   .add('marks/link', () => (
-    <Link url="https://www.atlassian.com">This is a link</Link>
+    <Link href="https://www.atlassian.com">This is a link</Link>
   ))
   .add('marks/mono', () => (
     <Mono>This is monospace</Mono>

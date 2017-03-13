@@ -11,7 +11,7 @@ export const document = {
             {
               type: 'link',
               attrs: {
-                url: 'https://www.atlassian.com'
+                href: 'https://www.atlassian.com'
               }
             }
           ]
@@ -26,7 +26,7 @@ export const document = {
             {
               type: 'link',
               attrs: {
-                url: 'https://www.atlassian.com'
+                href: 'https://www.atlassian.com'
               }
             }
           ]
@@ -149,7 +149,7 @@ export const document = {
             {
               type: 'link',
               attrs: {
-                url: 'https://www.atlassian.com'
+                href: 'https://www.atlassian.com'
               }
             }
           ]

@@ -57,8 +57,8 @@ export const renderMark = (mark: Renderable, index: number = 0) => {
     case MarkType.em:
       return <Em key={key}>{content}</Em>;
     case MarkType.link: {
-      const { url }  = mark.attrs as any;
-      return <Link key={key} url={url}>{content}</Link>;
+      const { href, url }  = mark.attrs as any;
+      return <Link key={key} href={href || url}>{content}</Link>;
     }
     case MarkType.mono:
       return <Mono key={key}>{content}</Mono>;

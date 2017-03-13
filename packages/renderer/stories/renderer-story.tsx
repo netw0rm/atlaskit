@@ -3,6 +3,7 @@ import { Mention } from '@atlaskit/mention';
 import * as React from 'react';
 import Renderer from '../src';
 import Paragraph from '../src/nodes/paragraph';
+import HardBreak from '../src/nodes/hardBreak';
 import Em from '../src/marks/em';
 import Link from '../src/marks/link';
 import Mono from '../src/marks/mono';
@@ -56,6 +57,9 @@ storiesOf(name, module)
   ))
   .add('marks/underline', () => (
     <Underline>This is underlined</Underline>
+  ))
+  .add('nodes/hardBreak', () => (
+    <div>Some text with that<HardBreak />breaks on multiple lines</div>
   ))
   .add('nodes/mention', () => (
     <Mention id="abcd-abcd-abcd" text="@Oscar Wallhult" />

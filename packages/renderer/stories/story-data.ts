@@ -229,6 +229,22 @@ export const document = {
           type: 'very unkown'
         }
       ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'This is a line with '
+         },
+         {
+          type: 'hardBreak'
+         },
+         {
+           type: 'text',
+           text: 'a hardbreak in it.'
+        }
+      ]
     }
   ]
 };

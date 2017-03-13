@@ -5,6 +5,10 @@ const HAS_BASE64_FILE_SUPPORT =
   typeof Blob !== 'undefined';
 
 const getPasteFiles = (clipboardData: DataTransfer) => {
+  if (!clipboardData) {
+    return [];
+  }
+
   const items = Array.prototype.reduce.call(clipboardData.items || [], (filesArr: File[], item: DataTransferItem) => {
     if (item.kind === 'file') {
       filesArr.push(item.getAsFile() as File);
@@ -15,7 +19,7 @@ const getPasteFiles = (clipboardData: DataTransfer) => {
 
   return [
     ...items,
-    ...Array.prototype.slice.call(clipboardData.files, 0)
+    ...Array.prototype.slice.call(clipboardData.files || [], 0)
   ];
 };
 

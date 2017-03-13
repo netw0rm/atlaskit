@@ -27,7 +27,7 @@ export const moveDown = makeKeyMapWithCommon('Move down', 'Down');
 export const undo = makeKeyMapWithCommon('Undo', 'Mod-Z');
 export const redo = makeKeyMap('Redo', 'Ctrl-Y', 'Cmd-Shift-Y');
 export const redoBarred = makeKeyMap('Redo Barred', 'Ctrl-Shift-Y', 'Cmd-Y');
-export const showLinkPanel = makeKeyMapWithCommon('Show Link Panel', 'Mod-K');
+export const addLink = makeKeyMapWithCommon('Add Link', 'Mod-K');
 
 export function tooltip(keymap: Keymap | undefined): string | undefined {
   if (keymap) {

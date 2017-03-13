@@ -62,7 +62,7 @@ export class HyperlinkState {
     });
 
     pm.addKeymap(new Keymap({
-      [keymaps.showLinkPanel.common!]: trackAndInvoke('atlassian.editor.format.link.keyboard', this.showLinkPanel),
+      [keymaps.addLink.common!]: trackAndInvoke('atlassian.editor.format.link.keyboard', this.showLinkPanel),
     }));
 
     this.update(true);

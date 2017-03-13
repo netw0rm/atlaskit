@@ -51,6 +51,8 @@ export class DimensionPublisher extends PureComponent {
       width,
       height,
       center,
+      scrollTop: ref.scrollTop,
+      scrollHeight: ref.scrollHeight,
     };
 
     return dimension;
@@ -66,6 +68,11 @@ export class DimensionPublisher extends PureComponent {
     if (this.props.shouldPublish === nextProps.shouldPublish) {
       return;
     }
+
+    // TODO:
+    // - get ref of child similar to draggable
+    // - use MutationObserver rather than interval
+    // - make this chore its own component
 
     this.props.publish(this.getDimension());
   }

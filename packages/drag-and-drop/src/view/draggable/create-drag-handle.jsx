@@ -62,11 +62,11 @@ export class Handle extends PureComponent {
 
     const { button, clientX, clientY } = event;
 
-    console.log('on mouse down, button: ', button);
-
     if (button !== primaryClick) {
       return;
     }
+
+    // 'clientY,offsetY,pageY,screenY,movementY'.split(',').forEach(property => console.log(property, event[property]));
 
     const point: Position = {
       x: clientX,

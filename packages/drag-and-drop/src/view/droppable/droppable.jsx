@@ -8,6 +8,7 @@ import storeKey from '../../state/get-store-key';
 import makeSelector from './make-droppable-selector';
 import type { Provide, MapState, Props, OwnProps, MapProps, DroppableState } from './droppable-types';
 import type { Direction, TypeId, State } from '../../types';
+import ScrollTopWatcher from '../scroll-top-watcher/';
 
 const Container = styled.div`
   user-select: none;
@@ -58,16 +59,19 @@ export default (type: TypeId,
         };
 
         return (
-          <Container
-            isDraggingOver={mapProps.isDraggingOver}
-            innerRef={this.setRef}
-          >
+          <Container isDraggingOver={mapProps.isDraggingOver} >
             <DroppableDimensionPublisher
               itemId={mapProps.id}
               type={type}
               targetRef={this.state.ref}
             >
-              <Component {...enhancedProps} />
+              <ScrollTopWatcher
+                shouldPublish={mapProps.isDraggingOver}
+                droppableId={mapProps.id}
+                targetRef={this.state.ref}
+              >
+                <Component {...enhancedProps} innerRef={this.setRef} />
+              </ScrollTopWatcher>
             </DroppableDimensionPublisher>
           </Container>
         );

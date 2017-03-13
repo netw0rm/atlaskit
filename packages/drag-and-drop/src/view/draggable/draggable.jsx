@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import invariant from 'invariant';
 import type {
   TypeId,
-    Position,
+  Position,
 } from '../../types';
 import type { Provide, MapProps, OwnProps } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
@@ -18,7 +18,6 @@ import getScrollPosition from '../get-scroll-position';
 import getDisplayName from '../get-display-name';
 import storeKey from '../../state/get-store-key';
 import makeSelector from './make-draggable-selector';
-
 import {
   lift as liftAction,
   move as moveAction,
@@ -38,16 +37,15 @@ const empty = {};
 const identity = x => x;
 const noWhere: Position = { x: 0, y: 0 };
 
-type DispatchProps = {|
+type DispatchProps = {
   lift: typeof liftAction,
-  move: typeof moveAction,
-  drop: typeof dropAction,
-  dropFinished: typeof dropFinishedAction,
   move: typeof moveAction,
   moveForward: typeof moveForwardAction,
   moveBackward: typeof moveBackwardAction,
+  drop: typeof dropAction,
   cancel: typeof cancelAction,
-|}
+  dropFinished: typeof dropFinishedAction,
+}
 
 type Props = {
   mapProps: MapProps,
@@ -115,6 +113,7 @@ export default (type: TypeId,
       state: ComponentState = {
         wasDragging: false,
         ref: null,
+        childRef: null,
       }
 
       static displayName = `Draggable(${getDisplayName(Component)})`
@@ -395,13 +394,13 @@ export default (type: TypeId,
                   itemId={mapProps.id}
                   droppableId={mapProps.droppableId}
                   type={type}
-                  targetRef={this.state.childRef || this.state.ref}
+                  targetRef={this.state.childRef}
                 >
-                  <KeepVisible itemId={mapProps.id}>
-                    <Container thisShouldBeRemovedAndStyleDoneElsewhere>
-                      <Component {...enhancedOwnProps} innerRef={this.setChildRef} />
-                    </Container>
-                  </KeepVisible>
+                  {/* <KeepVisible itemId={mapProps.id}>*/}
+                  <Container thisShouldBeRemovedAndStyleDoneElsewhere>
+                    <Component {...enhancedOwnProps} innerRef={this.setChildRef} />
+                  </Container>
+                  {/* </KeepVisible>*/}
                 </DraggableDimensionPublisher>
               )}
             </Moveable>
@@ -411,7 +410,7 @@ export default (type: TypeId,
       }
     }
 
-    const mapDispatchToProps = {
+    const mapDispatchToProps: DispatchProps = {
       lift: liftAction,
       move: moveAction,
       moveBackward: moveBackwardAction,

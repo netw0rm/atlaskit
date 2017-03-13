@@ -20,7 +20,6 @@ export default (target: Position,
   draggableId: DraggableId,
   draggableDimensions: DimensionMap,
   droppableDimensions: DimensionMap): DragImpact => {
-
   const droppableId: ?DroppableId = getDroppableOver(
     target, droppableDimensions
   );

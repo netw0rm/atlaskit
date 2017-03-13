@@ -1,5 +1,6 @@
 // @flow
 import type {
+  Id,
   DraggableId,
   TypeId,
   Dimension,
@@ -52,7 +53,7 @@ const completeLift = (id: DraggableId,
     },
   });
 
-type PublishDraggableDimensionAction = {|
+export type PublishDraggableDimensionAction = {|
   type: 'PUBLISH_DRAGGABLE_DIMENSION',
   payload: Dimension
 |}
@@ -62,7 +63,7 @@ export const publishDraggableDimension = (dimension: Dimension): PublishDraggabl
   payload: dimension,
 });
 
-type PublishDroppableDimensionAction = {|
+export type PublishDroppableDimensionAction = {|
   type: 'PUBLISH_DROPPABLE_DIMENSION',
   payload: Dimension
 |}
@@ -72,7 +73,7 @@ export const publishDroppableDimension = (dimension: Dimension): PublishDroppabl
   payload: dimension,
 });
 
-type MoveAction = {|
+export type MoveAction = {|
   type: 'MOVE',
   payload: {|
     id: DraggableId,
@@ -90,7 +91,7 @@ export const move = (id: DraggableId, offset: Position, center: Position): MoveA
   },
 });
 
-type MoveBackwardAction = {|
+export type MoveBackwardAction = {|
   type: 'MOVE_BACKWARD',
   payload: DraggableId
 |}
@@ -100,7 +101,7 @@ export const moveBackward = (id: DraggableId): MoveBackwardAction => ({
   payload: id,
 });
 
-type MoveForwardAction = {|
+export type MoveForwardAction = {|
   type: 'MOVE_FORWARD',
   payload: DraggableId
 |}
@@ -110,7 +111,7 @@ export const moveForward = (id: DraggableId): MoveForwardAction => ({
   payload: id,
 });
 
-type CancelAction = {
+export type CancelAction = {
   type: 'CANCEL',
   payload: DraggableId
 }
@@ -120,7 +121,7 @@ export const cancel = (id: DraggableId): CancelAction => ({
   payload: id,
 });
 
-type DropAction = {
+export type DropAction = {
   type: 'DROP',
   payload: DraggableId
 }
@@ -130,7 +131,7 @@ export const drop = (id: DraggableId): DropAction => ({
   payload: id,
 });
 
-type DropFinishedAction = {
+export type DropFinishedAction = {
   type: 'DROP_FINISHED',
   payload: DraggableId
 }
@@ -139,6 +140,17 @@ export const dropFinished = (id: DraggableId): DropFinishedAction => ({
   type: 'DROP_FINISHED',
   payload: id,
 });
+
+export type LiftAction = {|
+  type: 'LIFT',
+  payload: {|
+    id: DraggableId,
+    type: TypeId,
+    center: Position,
+    scroll: Position,
+    selection: Position,
+  |}
+|}
 
 // using redux-thunk
 export const lift = (id: DraggableId,
@@ -167,6 +179,23 @@ export const lift = (id: DraggableId,
   });
 };
 
+export type UpdateDimensionScrollTopAction = {
+  type: 'UPDATE_DIMENSION_SCROLL_TOP',
+  payload: {|
+    id: Id,
+    scrollTop: number,
+  |}
+}
+
+export const updateDimensionScrollTop =
+  (id: Id, scrollTop: number): UpdateDimensionScrollTopAction => ({
+    type: 'UPDATE_DIMENSION_SCROLL_TOP',
+    payload: {
+      id,
+      scrollTop,
+    },
+  });
+
 export type Action = BeginLiftAction |
   CompleteLiftAction |
   RequestDimensionsAction |
@@ -177,4 +206,5 @@ export type Action = BeginLiftAction |
   MoveForwardAction |
   DropAction |
   DropFinishedAction |
-  CancelAction;
+  CancelAction |
+  UpdateDimensionScrollTopAction;

@@ -29,14 +29,16 @@ const noMovement = {
   isMovingForward: false,
 };
 
-const shout = (message) => {
-  console.log(`%c ${message}`, 'color: green; font-size: 1.5em');
+const shout = (message, ...rest) => {
+  const key = `%c ${message}`;
+  console.log(key, 'color: green; font-size: 1.5em');
+  console.log('payload:', ...rest);
 };
 
 const cancel = () => initialState;
 
 export default (state: State = initialState, action: Action): State => {
-  shout(`reducing ${action.type}`);
+  shout(`reducing ${action.type}`, action.payload);
 
   if (action.type === 'BEGIN_LIFT') {
     if (state.isProcessingLift) {
@@ -148,6 +150,37 @@ export default (state: State = initialState, action: Action): State => {
       droppableDimensions: {
         ...state.droppableDimensions,
         [dimension.id]: dimension,
+      },
+    };
+  }
+
+  if (action.type === 'UPDATE_DIMENSION_SCROLL_TOP') {
+    const { id, scrollTop } = action.payload;
+    const dimension = state.droppableDimensions[id];
+
+    if (!dimension || !state.currentDrag || dimension.scrollTop === scrollTop) {
+      return state;
+    }
+
+    const impact: DragImpact = getDragImpact(
+      state.currentDrag.dragging.center,
+      state.currentDrag.dragging.id,
+      state.draggableDimensions,
+      state.droppableDimensions
+    );
+
+    return {
+      ...state,
+      droppableDimensions: {
+        ...state.droppableDimensions,
+        [id]: {
+          ...dimension,
+          scrollTop,
+        },
+      },
+      currentDrag: {
+        ...state.currentDrag,
+        impact,
       },
     };
   }

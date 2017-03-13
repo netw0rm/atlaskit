@@ -18,7 +18,8 @@ type ItemDataMap = { [key: string ]: ItemData }
 type ListData = {|
   id: string,
   itemIds: string[],
-  height: number,
+  height: string,
+  withOverflow: boolean,
 |}
 
 type ListDataMap = { [key: string ]: ListData }
@@ -38,12 +39,14 @@ const lists: ListDataMap = {
   foo: {
     id: 'foo',
     itemIds: itemKeys.slice(0, itemKeys.length / 2),
-    height: 800,
+    height: '800px',
+    withOverflow: false,
   },
   bar: {
     id: 'bar',
     itemIds: itemKeys.slice((itemKeys.length / 2), itemKeys.length),
-    height: 500,
+    height: '100vh',
+    withOverflow: true,
   },
 };
 
@@ -97,7 +100,7 @@ const DroppableList = (() => {
     width: 300px;
     align-items: stretch;
     padding: 8px;
-    height: ${props => (props.withOverflow && props.height ? `${props.height}px` : 'auto')}
+    height: ${props => (props.withOverflow && props.height ? props.height : 'auto')}
     overflow-y: ${props => (props.withOverflow ? 'scroll' : 'visible')};
     background-color: ${props => (props.isDraggingOver ? 'gold' : 'deepskyblue')};
   `;
@@ -109,6 +112,7 @@ const DroppableList = (() => {
       isDraggingOver: boolean,
       withOverflow: boolean,
       height: number,
+      innerRef: Function,
     |}
 
     render() {
@@ -119,6 +123,7 @@ const DroppableList = (() => {
           withOverflow={this.props.withOverflow}
           isDraggingOver={isDraggingOver}
           height={this.props.height}
+          innerRef={ref => this.props.innerRef(ref)}
         >
           <h3>{this.props.listId} {isDraggingOver ? '(is dragging over)' : '' }</h3>
           {this.props.items.map((item: ItemData) => (
@@ -168,7 +173,7 @@ const ConnectedApp = (() => {
                 items={itemsInList}
                 listId={key}
                 key={key}
-                withOverflow
+                withOverflow={list.withOverflow}
                 height={list.height}
               />
             );

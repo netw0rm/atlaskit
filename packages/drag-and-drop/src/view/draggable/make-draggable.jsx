@@ -331,7 +331,6 @@ export default (type: TypeId, map: MapState): Function =>
               {wrap(
                 <DraggableDimensionPublisher
                   itemId={mapProps.id}
-                  droppableId={mapProps.droppableId}
                   type={type}
                   targetRef={this.state.childRef}
                 >

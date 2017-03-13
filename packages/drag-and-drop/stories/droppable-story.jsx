@@ -61,7 +61,6 @@ const DraggableItem = (() => {
   class Item extends PureComponent {
     props: {|
       itemId: string,
-      listId: string,
       isDragging: boolean,
       innerRef: Function,
     |}
@@ -130,7 +129,6 @@ const DroppableList = (() => {
             <DraggableItem
               key={item.id}
               itemId={item.id}
-              listId={this.props.listId}
             />
           ))}
         </ListContainer>

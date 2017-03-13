@@ -20,7 +20,6 @@ import type {
   TypeId,
   State,
   Position,
-  DroppableId,
   DraggableId,
   DragComplete,
   CurrentDrag,
@@ -50,19 +49,17 @@ const makeSelector = (provide: Provide) => {
   // or `cutOffAnimation` : but it will make any shallow equality
   // checks faster as it can just compare the root
   const getDefaultProps = memoizeOne(
-    (id: DraggableId, droppableId: DroppableId, isDragEnabled: boolean): MapProps => ({
+    (id: DraggableId, isDragEnabled: boolean): MapProps => ({
       id,
       isDragEnabled,
-      droppableId,
       isDragging: false,
       canAnimate: true,
     }));
 
   const cutOffAnimation = memoizeOne(
-    (id: DraggableId, droppableId: DroppableId, isDragEnabled: boolean): MapProps => ({
+    (id: DraggableId, isDragEnabled: boolean): MapProps => ({
       id,
       isDragEnabled,
-      droppableId,
       isDragging: false,
       canAnimate: false,
     }));
@@ -72,18 +69,18 @@ const makeSelector = (provide: Provide) => {
     (currentDrag: ?CurrentDrag,
       complete: ?DragComplete,
       provided: NeedsProviding): MapProps => {
-      const { id, droppableId, isDragEnabled = true } = provided;
+      const { id, isDragEnabled = true } = provided;
 
       if (complete) {
         const last: CurrentDrag = complete.last;
 
         if (last.dragging.id === provided.id) {
           if (complete.isAnimationFinished) {
-            return cutOffAnimation(id, droppableId, isDragEnabled);
+            return cutOffAnimation(id, isDragEnabled);
           }
 
           return {
-            ...getDefaultProps(id, droppableId, isDragEnabled),
+            ...getDefaultProps(id, isDragEnabled),
             offset: complete.newHomeOffset,
             // TODO: is this needed?
             initial: last.dragging.initial,
@@ -94,23 +91,23 @@ const makeSelector = (provide: Provide) => {
 
         if (movement.draggables.includes(provided.id)) {
           if (complete.isAnimationFinished) {
-            return cutOffAnimation(id, droppableId, isDragEnabled);
+            return cutOffAnimation(id, isDragEnabled);
           }
 
           const amount = movement.isMovingForward ?
             -movement.amount : movement.amount;
 
           return {
-            ...getDefaultProps(id, droppableId, isDragEnabled),
+            ...getDefaultProps(id, isDragEnabled),
             offset: memoizedOffset(0, amount),
           };
         }
 
-        return getDefaultProps(id, droppableId, isDragEnabled);
+        return getDefaultProps(id, isDragEnabled);
       }
 
       if (!currentDrag || !currentDrag.dragging) {
-        return getDefaultProps(id, droppableId, isDragEnabled);
+        return getDefaultProps(id, isDragEnabled);
       }
 
       if (currentDrag.dragging.id === id) {
@@ -122,7 +119,6 @@ const makeSelector = (provide: Provide) => {
 
         return {
           id,
-          droppableId,
           isDragEnabled: true,
           isDragging: true,
           canAnimate,
@@ -138,12 +134,12 @@ const makeSelector = (provide: Provide) => {
           -movement.amount : movement.amount;
 
         return {
-          ...getDefaultProps(id, droppableId, isDragEnabled),
+          ...getDefaultProps(id, isDragEnabled),
           offset: memoizedOffset(0, amount),
         };
       }
 
-      return getDefaultProps(id, droppableId, isDragEnabled);
+      return getDefaultProps(id, isDragEnabled);
     }
   );
 };

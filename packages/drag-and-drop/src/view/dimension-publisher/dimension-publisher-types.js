@@ -1,5 +1,5 @@
 // @flow
-import type { Id, DroppableId, Action } from '../../types';
+import type { Id, Action } from '../../types';
 
 export type MapProps = {|
   shouldPublish: boolean,
@@ -11,7 +11,6 @@ export type DispatchProps = {|
 
 export type ConnectedProps = {|
   itemId: Id,
-  droppableId?: DroppableId,
   children?: React$Element<any>,
   targetRef: ?Element
 |}

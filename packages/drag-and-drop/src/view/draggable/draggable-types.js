@@ -1,7 +1,6 @@
 // @flow
 import type {
   DraggableId,
-  DroppableId,
   DraggingInitial,
   Position,
 } from '../../types';
@@ -17,7 +16,6 @@ import {
 
 export type NeedsProviding = {|
   id: DraggableId,
-  droppableId: DroppableId,
   isDragEnabled?: boolean,
 |}
 
@@ -37,12 +35,11 @@ export type DispatchProps = {
 
 export type MapProps = {|
   id: DraggableId,
-    droppableId: DroppableId,
-      isDragEnabled: boolean,
-        isDragging: boolean,
-          canAnimate: boolean,
-            offset ?: Position,
-            initial ?: DraggingInitial,
+  isDragEnabled: boolean,
+  isDragging: boolean,
+  canAnimate: boolean,
+  offset ?: Position,
+  initial ?: DraggingInitial,
 |}
 
 export type Props = {

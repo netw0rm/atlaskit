@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
-import { chaiPlugin, fixtures, makeEditor, doc, a as link, linkable, unlinkable } from '../../../test-helper';
+import { insert, insertText, setTextSelection, chaiPlugin, fixtures, makeEditor, doc, a as link, linkable, unlinkable } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 
@@ -15,74 +15,17 @@ describe('hyperlink', () => {
   });
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = HyperlinkPlugin as any; // .State is not public API.
-    expect(plugin.spec.name).is.be.a('string');
-  });
-
-  describe('input rules', () => {
-    it('should convert "www.atlassian.com" to hyperlink', () => {
-      const { insertText, editorView, sel } = editor(doc(linkable('{<>}')));
-      insertText('www.atlassian.com', sel, sel);
-
-      const a = link({ href: 'http://www.atlassian.com' })('www.atlassian.com');
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(a)));
-    });
-
-    it('should convert "www.atlassian.com/" to hyperlink', () => {
-      const { insertText, editorView, sel } = editor(doc(linkable('{<>}')));
-      insertText('www.atlassian.com/', sel, sel);
-
-      const a = link({ href: 'http://www.atlassian.com/' })('www.atlassian.com/');
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(a)));
-    });
-
-    it('should convert "http://www.atlassian.com/" to hyperlink', () => {
-      const { editorView, insertText, sel } = editor(doc(linkable('{<>}')));
-      insertText('http://www.atlassian.com/', sel, sel);
-
-      const a = link({ href: 'http://www.atlassian.com/' })('http://www.atlassian.com/');
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(a)));
-    });
-
-    it('should convert "http://www.atlassian.com" to hyperlink', () => {
-      const { editorView, insertText, sel } = editor(doc(linkable('{<>}')));
-      insertText('http://www.atlassian.com', sel, sel);
-
-      const a = link({ href: 'http://www.atlassian.com' })('http://www.atlassian.com');
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(a)));
-    });
-
-    it('should convert "https://www.atlassian.com/" to hyperlink', () => {
-      const { editorView, insertText, sel } = editor(doc(linkable('{<>}')));
-      insertText('https://www.atlassian.com/', sel, sel);
-
-      const a = link({ href: 'https://www.atlassian.com/' })('https://www.atlassian.com/');
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(a)));
-    });
-
-    it('should convert "https://www.atlassian.com" to hyperlink', () => {
-      const { editorView, insertText, sel } = editor(doc(linkable('{<>}')));
-      insertText('https://www.atlassian.com', sel, sel);
-
-      const a = link({ href: 'https://www.atlassian.com' })('https://www.atlassian.com');
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(a)));
-    });
-
-    it('should not convert "javascript://alert(1) " to hyperlink', () => {
-      const { insertText, editorView, sel } = editor(doc(linkable('{<>}')));
-      insertText('javascript://alert(1);', sel, sel);
-      expect(editorView.state.doc).to.deep.equal(doc(linkable('javascript://alert(1);')));
-    });
+    const plugin = HyperlinkPlugin as any;
+    expect(plugin.key).is.be.a('string');
   });
 
   describe('active', () => {
     context('when select the whole hyperlink text from start to end', () => {
       it('is active', () => {
-        const { setTextSelection, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
+        const { editorView, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
         const { pos1, pos2 } = refs;
 
-        setTextSelection(pos1, pos2);
+        setTextSelection(editorView, pos1, pos2);
 
         expect(pluginState.active).to.be.true;
       });
@@ -90,10 +33,10 @@ describe('hyperlink', () => {
 
     context('when select the whole hyperlink text from end to start', () => {
       it('is active', () => {
-        const { setTextSelection, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
+        const { editorView, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
         const { pos1, pos2 } = refs;
 
-        setTextSelection(pos2, pos1);
+        setTextSelection(editorView, pos2, pos1);
 
         expect(pluginState.active).to.be.true;
       });
@@ -101,10 +44,10 @@ describe('hyperlink', () => {
 
     context('when select part of the hyperlink text from the end', () => {
       it('is active', () => {
-        const { setTextSelection, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'), 'after')));
+        const { editorView, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'), 'after')));
         const { pos1, pos2 } = refs;
 
-        setTextSelection(pos2, pos1);
+        setTextSelection(editorView, pos2, pos1);
 
         expect(pluginState.active).to.be.true;
       });
@@ -112,10 +55,10 @@ describe('hyperlink', () => {
 
     context('when select part of the hyperlink text from the start', () => {
       it('is active', () => {
-        const { setTextSelection, pluginState, refs } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}t{pos2}ext'), 'after')));
+        const { editorView, pluginState, refs } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}t{pos2}ext'), 'after')));
         const { pos1, pos2 } = refs;
 
-        setTextSelection(pos1, pos2);
+        setTextSelection(editorView, pos1, pos2);
 
         expect(pluginState.active).to.be.true;
       });
@@ -123,10 +66,10 @@ describe('hyperlink', () => {
 
     context('when select part of the hyperlink text in the middle', () => {
       it('is active', () => {
-        const { setTextSelection, pluginState, refs } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ex{pos2}t'), 'after')));
+        const { editorView, pluginState, refs } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ex{pos2}t'), 'after')));
         const { pos1, pos2 } = refs;
 
-        setTextSelection(pos1, pos2);
+        setTextSelection(editorView, pos1, pos2);
 
         expect(pluginState.active).to.be.true;
       });
@@ -160,10 +103,10 @@ describe('hyperlink', () => {
   describe('element', () => {
     context('when select the whole hyperlink text from start to end', () => {
       it('returns link element', () => {
-        const { setTextSelection, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
+        const { editorView, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
         const { pos1, pos2 } = refs;
 
-        setTextSelection(pos1, pos2);
+        setTextSelection(editorView, pos1, pos2);
 
         expect(pluginState.element.tagName).to.eq('A');
       });
@@ -171,10 +114,10 @@ describe('hyperlink', () => {
 
     context('when select the whole hyperlink text from end to start', () => {
       it('returns link element', () => {
-        const { setTextSelection, pluginState, refs } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
+        const { editorView, pluginState, refs } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
         const { pos1, pos2 } = refs;
 
-        setTextSelection(pos2, pos1);
+        setTextSelection(editorView, pos2, pos1);
 
         expect(pluginState.element.tagName).to.eq('A');
       });
@@ -182,10 +125,10 @@ describe('hyperlink', () => {
 
     context('when select part of the hyperlink text from the end', () => {
       it('returns link element', () => {
-        const { setTextSelection, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'), 'after')));
+        const { editorView, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'), 'after')));
         const { pos1, pos2 } = refs;
 
-        setTextSelection(pos2, pos1);
+        setTextSelection(editorView, pos2, pos1);
 
         expect(pluginState.element.tagName).to.eq('A');
       });
@@ -193,10 +136,10 @@ describe('hyperlink', () => {
 
     context('when select part of the hyperlink text from the start', () => {
       it('returns link element', () => {
-        const { setTextSelection, pluginState, refs } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}t{pos2}ext'), 'after')));
+        const { editorView, pluginState, refs } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}t{pos2}ext'), 'after')));
         const { pos1, pos2 } = refs;
 
-        setTextSelection(pos1, pos2);
+        setTextSelection(editorView, pos1, pos2);
 
         expect(pluginState.element.tagName).to.eq('A');
       });
@@ -204,10 +147,10 @@ describe('hyperlink', () => {
 
     context('when select part of the hyperlink text in the middle', () => {
       it('returns link element', () => {
-        const { setTextSelection, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ex{pos2}t'), 'after')));
+        const { editorView, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ex{pos2}t'), 'after')));
         const { pos1, pos2 } = refs;
 
-        setTextSelection(pos1, pos2);
+        setTextSelection(editorView, pos1, pos2);
 
         expect(pluginState.element.tagName).to.eq('A');
       });
@@ -254,11 +197,11 @@ describe('hyperlink', () => {
     });
 
     it('should be able to register handlers for state change events', () => {
-      const { setTextSelection, refs, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{pos}xt'))));
+      const { editorView, refs, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{pos}xt'))));
       const spy = sinon.spy();
       pluginState.subscribe(spy);
 
-      setTextSelection(refs['pos']);
+      setTextSelection(editorView, refs['pos']);
 
       expect(spy.callCount).to.equal(2);
     });
@@ -276,26 +219,26 @@ describe('hyperlink', () => {
     });
 
     it('does not emit `change` multiple times when the selection moves within a link', () => {
-      const { refs, setTextSelection, pluginState } = editor(doc(linkable('{<>}text', link({ href: 'http://www.atlassian.com' })('l{pos1}i{pos2}nk'))));
+      const { editorView, refs, pluginState } = editor(doc(linkable('{<>}text', link({ href: 'http://www.atlassian.com' })('l{pos1}i{pos2}nk'))));
       const spy = sinon.spy();
       const { pos1, pos2 } = refs;
       pluginState.subscribe(spy);
 
-      setTextSelection(pos1);
-      setTextSelection(pos2);
+      setTextSelection(editorView, pos1);
+      setTextSelection(editorView, pos2);
 
       expect(spy.callCount).to.equal(2);
     });
 
     it('emits change when the selection leaves a link', () => {
-      const { refs, setTextSelection, insert, pluginState } = editor(doc(linkable('te{textPos}xt {<>}')));
+      const { editorView, refs, pluginState } = editor(doc(linkable('te{textPos}xt {<>}')));
       const { textPos } = refs;
       const spy = sinon.spy();
-      const { linkPos } = insert(link({ href: 'http://www.atlassian.com' })('li{linkPos}nk'));
-      setTextSelection(linkPos);
+      const { linkPos } = insert(editorView, link({ href: 'http://www.atlassian.com' })('li{linkPos}nk'));
+      setTextSelection(editorView, linkPos);
 
       pluginState.subscribe(spy);
-      setTextSelection(textPos);
+      setTextSelection(editorView, textPos);
 
       expect(spy.callCount).to.equal(2);
     });
@@ -334,34 +277,34 @@ describe('hyperlink', () => {
     });
 
     it('should not be a part of the link when typing before it', () => {
-      const { insertText, editorView, refs, pluginState } = editor(doc(linkable('a{before}{<}text{>}')));
+      const { editorView, refs, pluginState } = editor(doc(linkable('a{before}{<}text{>}')));
       const { before } = refs;
       const href = 'http://example.com';
 
       pluginState.addLink({ href }, editorView);
-      insertText('bar', before);
+      insertText(editorView, 'bar', before);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(`abar`, link({ href })('text'))));
     });
 
     it('should be a part of the link when typing in it', () => {
-      const { editorView, insertText, refs, pluginState } = editor(doc(linkable('{<}te{middle}xt{>}')));
+      const { editorView, refs, pluginState } = editor(doc(linkable('{<}te{middle}xt{>}')));
       const { middle } = refs;
       const href = 'http://example.com';
 
       pluginState.addLink({ href }, editorView);
-      insertText('bar', middle);
+      insertText(editorView, 'bar', middle);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href })('tebarxt'))));
     });
 
     it('should not be a part of the link when typing after it', () => {
-      const { refs, editorView, insertText, pluginState } = editor(doc(linkable('{<}text{>}{end}')));
+      const { refs, editorView, pluginState } = editor(doc(linkable('{<}text{>}{end}')));
       const { end } = refs;
       const href = 'http://example.com';
 
       pluginState.addLink({ href }, editorView);
-      insertText('bar', end);
+      insertText(editorView, 'bar', end);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href })('text'), 'bar')));
     });
@@ -413,33 +356,26 @@ describe('hyperlink', () => {
     });
 
     it('should escape from link mark when typing at the beginning of the link', () => {
-      const { editorView, insertText } = editor(doc(linkable(link({ href: 'http://example.com' })('text'))));
+      const { editorView } = editor(doc(linkable(link({ href: 'http://example.com' })('text'))));
 
-      insertText('1', 1, 1);
+      insertText(editorView, '1', 1, 1);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable('1', link({ href: 'http://example.com' })('text'))));
     });
 
     it('should not escape from link mark when typing at the middle of the link', () => {
-      const { editorView, insertText } = editor(doc(linkable(link({ href: 'http://example.com' })('text'))));
+      const { editorView } = editor(doc(linkable(link({ href: 'http://example.com' })('text'))));
 
-      insertText('1', 2, 2);
+      insertText(editorView, '1', 2, 2);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('t1ext'))));
-    });
-
-    it('should not escape from link mark when deleting second character', () => {
-      const { editorView, sendKeyToPm } = editor(doc(linkable(link({ href: 'http://example.com' })('t{<>}ext'))));
-
-      sendKeyToPm('Delete');
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('txt'))));
     });
 
     it('should return referring DOM element', () => {
       const { pluginState } = editor(doc(
         linkable(link({ href: 'http://www.atlassian.com' })('atlassian')),
-        linkable(link({ href: 'http://www.stypositive.ru' })('d{<>}sorin'))));
+        linkable(link({ href: 'http://www.stypositive.ru' })('d{<>}sorin')))
+      );
 
       expect(pluginState.element.text).to.eq('dsorin');
     });

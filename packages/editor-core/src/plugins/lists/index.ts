@@ -9,10 +9,6 @@ import {
   Schema,
   Selection,
   TextSelection,
-  liftTarget,
-  Slice,
-  Fragment,
-  ReplaceAroundStep,
 } from '../../prosemirror';
 
 import {

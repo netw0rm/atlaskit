@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { TextSelection } from '../../../src/prosemirror';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
-import { chaiPlugin, insert, makeEditor } from '../../../src/test-helper';
+import { chaiPlugin, insert, makeEditor, dispatchKeypressEvent } from '../../../src/test-helper';
 import { doc, paragraph, link, linkable, schema, unlinkable } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
@@ -555,7 +555,7 @@ describe('hyperlink', () => {
         const { pm, plugin } = editor(doc(paragraph('testing')));
         const spy = sinon.spy();
         plugin.subscribe(spy);
-        pm.input.dispatchKey('Cmd-K');
+        dispatchKeypressEvent(pm, 'Mod-K');
         expect(spy.callCount).to.equal(2);
       });
     });
@@ -564,7 +564,7 @@ describe('hyperlink', () => {
       it('should create a link node', () => {
         const { pm, plugin } = editor(doc(paragraph('testing')));
         pm.setSelection(new TextSelection(pm.doc.resolve(4), pm.doc.resolve(7)));
-        pm.input.dispatchKey('Cmd-K');
+        dispatchKeypressEvent(pm, 'Mod-K');
         expect(plugin.activeLinkNode).not.to.be.undefined;
         expect(plugin.text).not.to.be.undefined;
       });

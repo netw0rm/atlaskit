@@ -1,5 +1,5 @@
 import { Fragment, Mark, Node as PMNode } from '@atlaskit/editor-core';
-import { isSchemaWithLists, isSchemaWithMentions, JIRASchema } from '../schema';
+import { isSchemaWithLists, isSchemaWithMentions, isSchemaWithLinks, JIRASchema } from '../schema';
 import parseHtml from './parse-html';
 import WeakMap from './weak-map';
 
@@ -100,7 +100,15 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
           return null;
         }
 
-        return;
+        return content && isSchemaWithLinks(schema)
+          ? addMarks(
+              content,
+              [schema.marks.link.create({
+                href: node.getAttribute('href'),
+                title: node.getAttribute('title')
+              })]
+            )
+          : null;
       // case 'SPAN':
       //   return addMarks(content, marksFromStyle(node.style));
       case 'H1':

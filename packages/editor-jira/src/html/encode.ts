@@ -128,6 +128,13 @@ export default function encode(node: DocNode, schema: JIRASchema) {
           case schema.marks.subsup:
             elem = elem.appendChild(doc.createElement(mark.attrs['type']));
             break;
+          case schema.marks.link:
+            elem = elem.appendChild(doc.createElement('a'));
+            elem.setAttribute('href', mark.attrs.href);
+            if (mark.attrs.title) {
+              elem.setAttribute('title', mark.attrs.title);
+            }
+            break;
           case schema.marks.mention_query:
             break;
           default:

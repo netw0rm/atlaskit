@@ -11,6 +11,7 @@ import {
   PanelPlugin,
   ProseMirror,
   TextFormattingPlugin,
+  ClearFormattingPlugin,
   DefaultKeymapsPlugin,
 } from '../../';
 import schema from './schema';
@@ -102,6 +103,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
+        pluginStateClearFormatting={pm && ClearFormattingPlugin.get(pm)}
         pluginStatePanel={pm && PanelPlugin.get(pm)}
       />
     );
@@ -146,6 +148,7 @@ export default class Editor extends PureComponent<Props, State> {
           BlockTypePlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          ClearFormattingPlugin,
           MentionsPlugin,
           PanelPlugin,
           DefaultKeymapsPlugin,

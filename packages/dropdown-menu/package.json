@@ -21,7 +21,7 @@
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "@atlaskit/layer": "^1.0.0",
-    "@atlaskit/droplist": "^3.0.0",
+    "@atlaskit/droplist": "^3.0.1",
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/icon": "^3.0.0",
     "uid": "0.0.2"

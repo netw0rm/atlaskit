@@ -11,6 +11,7 @@ import {
   wrappingInputRule,
   commands
 } from '../../prosemirror';
+import { insertBlankSpace } from '../../utils';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 import { isCodeBlockNode } from '../../schema';
@@ -221,7 +222,11 @@ const monoRule = new InputRule(/(`([^`]+)`)$/, '`', (
   pm: ProseMirror,
   match: string[],
   pos: number
-) => replaceWithMark(pm, match, pos, 'mono', '`'));
+) => {
+  replaceWithMark(pm, match, pos, 'mono', '`');
+  const tr = insertBlankSpace(pm);
+  tr && tr.apply();
+});
 
 const hrRule = new InputRule(/^\-\-\-$/, '-', (
   pm: ProseMirror,

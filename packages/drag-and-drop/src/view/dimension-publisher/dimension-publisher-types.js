@@ -1,5 +1,5 @@
 // @flow
-import type { Id, Action } from '../../types';
+import type { Id, TypeId, Action } from '../../types';
 
 export type MapProps = {|
   shouldPublish: boolean,
@@ -11,6 +11,7 @@ export type DispatchProps = {|
 
 export type ConnectedProps = {|
   itemId: Id,
+  type: TypeId,
   children?: React$Element<any>,
   targetRef: ?Element
 |}

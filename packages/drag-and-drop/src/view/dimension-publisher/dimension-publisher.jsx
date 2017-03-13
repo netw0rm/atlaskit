@@ -1,11 +1,8 @@
 // @flow
 import { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import invariant from 'invariant';
-import type { Dimension, Position, Action } from '../../types';
-import type { Props, DispatchProps } from './dimension-publisher-types';
-import storeKey from '../../state/get-store-key';
-import makeSelector from './make-dimension-publisher-selector';
+import type { Dimension, Position } from '../../types';
+import type { Props } from './dimension-publisher-types';
 
 const getBounds = (ref: Element) => {
   const { top, right, bottom, left, width, height } = ref.getBoundingClientRect();
@@ -26,7 +23,7 @@ const getBounds = (ref: Element) => {
   };
 };
 
-export class DimensionPublisher extends PureComponent {
+export default class DimensionPublisher extends PureComponent {
   /* eslint-disable react/sort-comp */
   props: Props
   /* eslint-enable */
@@ -82,12 +79,3 @@ export class DimensionPublisher extends PureComponent {
     return this.props.children;
   }
 }
-
-const makeMapStateToProps = () => makeSelector();
-
-export default (publish: Action) => {
-  const mapDispatchToProps: DispatchProps = {
-    publish,
-  };
-  return connect(makeMapStateToProps, mapDispatchToProps, null, { storeKey })(DimensionPublisher);
-};

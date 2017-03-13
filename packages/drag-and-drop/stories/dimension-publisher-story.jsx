@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { storiesOf, action } from '@kadira/storybook';
-import makePublisher from '../src/view/dimension-publisher/make-dimension-publisher';
+import makePublisher from '../src/view/dimension-publisher/make-connected-dimension-publisher';
 
 const publishDimensions = action('publish');
 

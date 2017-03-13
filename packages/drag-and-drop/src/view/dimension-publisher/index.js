@@ -1,4 +1,4 @@
-import makePublisher from './make-dimension-publisher';
+import makePublisher from './make-connected-dimension-publisher';
 import {
   publishDraggableDimension,
   publishDroppableDimension,

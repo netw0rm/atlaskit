@@ -50,7 +50,7 @@ export type Props = {
 
 export type DraggableState = {|
   isDragging: boolean
-    |}
+|}
 
 export type MapState =
   (state: DraggableState, ownProps: OwnProps, getDragHandle: Function) => Object;

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { TextFormattingState } from '../../plugins/text-formatting';
+import { EditorView } from '../../prosemirror';
 import DropdownList from 'ak-droplist';
 import Group from 'ak-droplist-group';
 import Item from 'ak-droplist-item';
@@ -10,6 +11,7 @@ import AdvancedIcon from 'ak-icon/glyph/editor/advanced';
 import { toggleCode, toggleStrikethrough, tooltip } from '../../keymaps';
 
 export interface Props {
+  editorView: EditorView;
   pluginState: TextFormattingState | undefined;
 }
 
@@ -111,7 +113,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private handleStrikeClick = () => {
     if (!this.state.codeDisabled) {
       const { pluginState } = this.props;
-      pluginState && pluginState.toggleStrike();
+      pluginState && pluginState.toggleStrike(this.props.editorView);
       this.toggleOpen();
     }
   }
@@ -120,7 +122,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private handleCodeClick = () => {
     if (!this.state.codeDisabled) {
       const { pluginState } = this.props;
-      pluginState && pluginState.toggleCode();
+      pluginState && pluginState.toggleCode(this.props.editorView);
       this.toggleOpen();
     }
   }

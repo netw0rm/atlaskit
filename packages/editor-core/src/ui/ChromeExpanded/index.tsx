@@ -56,7 +56,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
         <div className={styles.toolbar}>
           {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} editorView={props.editorView} /> : null}
-          {props.pluginStateTextFormatting ? <ToolbarAdvancedTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
+          {props.pluginStateTextFormatting ? <ToolbarAdvancedTextFormatting pluginState={props.pluginStateTextFormatting} editorView={props.editorView} /> : null}
           {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} editorView={props.editorView} /> : null}
           {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
           <span style={{ flexGrow: 1 }} />

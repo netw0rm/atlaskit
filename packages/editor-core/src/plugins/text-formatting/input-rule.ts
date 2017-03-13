@@ -1,22 +1,33 @@
-import { Fragment, InputRule, inputRules, Plugin, Schema, Transaction, MarkType, Mark } from '../../prosemirror';
+import { InputRule, inputRules, Plugin, Schema, Transaction, MarkType, Node } from '../../prosemirror';
 import { analyticsService } from '../../analytics';
 
-function addMark(markType: MarkType, schema: Schema<any, any>): Function {
-  return (state, match, start, end): Transaction => {
-    const marks = [...state.doc.resolve(start).marks(false), markType.create()];
+function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: string): Function {
+  return (state, match, start, end): Transaction | null => {
+    const from = start;
+    const to = from + match[0].length;
+    const charSize = specialChar.length;
+    const nodes: Node[] = [];
+
+    state.doc.nodesBetween(start, end, (node) => {
+      if (node.isText) {
+        nodes.push(node);
+      }
+    });
+
+    // treat special characters inside marks as plaint text
+    if (nodes.length > 1 && nodes[0].marks.length && (nodes[0].text || '').indexOf(specialChar) > -1) {
+      return null;
+    }
 
     analyticsService.trackEvent(`atlassian.editor.format.${markType.name}.autoformatting`);
 
-    // Because the match can start with space.
-    // Preserve the space if there is one.
-    const content = match[0].indexOf(' ') === 0 ? ` ${match[1]}` : match[1];
-    return replaceWithText(start, end, content, marks, schema, state.tr);
+    return state.tr
+      .addMark(from, to, markType.create())
+      .delete(from, from + charSize)
+      .delete(to - charSize * 2, to - charSize)
+      .removeStoredMark(markType);
   };
 };
-
-function replaceWithText(start: number, end: number, content: string, marks: Array<Mark>, schema: Schema<any, any>, tr: Transaction): Transaction {
-  return tr.replaceWith(start, end, Fragment.from(schema.text(content, marks)));
-}
 
 let plugin: Plugin | undefined;
 
@@ -28,28 +39,30 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   const rules: Array<InputRule> = [];
 
   if (schema.marks.strong) {
-    // **string** and __string__ should bold the text
-    rules.push(new InputRule(/(?:^|\s)(?:\*\*([^\*]+)\*\*)$/, addMark(schema.marks.strong, schema)));
-  }
-
-  if (schema.marks.underline) {
-    rules.push(new InputRule(/(?:^|\s)(?:__([^\_]+)__)$/, addMark(schema.marks.underline, schema)));
+    // **string** should bold the text
+    rules.push(new InputRule(/(\*\*([^\*]+)\*\*)$/, addMark(schema.marks.strong, schema, '**')));
   }
 
   if (schema.marks.em) {
-    // *string* and _string_ should italic the text
-    rules.push(new InputRule(/(?:^|\s)(?:\*([^\*]+)\*)$/, addMark(schema.marks.em, schema)));
+    // *string* should italic the text
+    rules.push(new InputRule(/(?:[^\*]+)(\*([^\*]+?)\*)$|^(\*([^\*]+)\*)$/, addMark(schema.marks.em, schema, '*')));
   }
 
   if (schema.marks.strike) {
     // ~~string~~ should strikethrough the text
-    rules.push(new InputRule(/(?:^|\s)(?:~~([^~]+)~~)$/, addMark(schema.marks.strike, schema)));
+    rules.push(new InputRule(/(\~\~([^\*]+)\~\~)$/, addMark(schema.marks.strike, schema, '~~')));
   }
 
   if (schema.marks.code) {
     // `string` should monospace the text
-    rules.push(new InputRule(/(?:^|\s)(?:`([^`]+)`)$/, addMark(schema.marks.code, schema)));
+    rules.push(new InputRule(/(`([^`]+)`)$/, addMark(schema.marks.code, schema, '`')));
   }
+
+  if (schema.marks.rule) {
+    // --- should create a horizontal rule
+    rules.push(new InputRule(/^\-\-\-$/, addMark(schema.marks.rule, schema, '-')));
+  }
+
   plugin = inputRules({ rules });
 
   return plugin;

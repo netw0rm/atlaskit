@@ -3,7 +3,7 @@ import { Node } from '@atlaskit/editor-core';
 import { makeSchema } from '../../src/schema';
 import { encode } from '../../src/html';
 
-const schema = makeSchema({ allowLists: true });
+const schema = makeSchema({ allowLists: true, allowMentions: true });
 
 // Nodes
 const br = nodeFactory(schema.nodes.hard_break);
@@ -18,6 +18,7 @@ const p = nodeFactory(schema.nodes.paragraph);
 const li = nodeFactory(schema.nodes.list_item!);
 const ol = nodeFactory(schema.nodes.ordered_list!);
 const ul = nodeFactory(schema.nodes.bullet_list!);
+const mention = (attrs: { id: string, displayName?: string }) => schema.nodes.mention!.createChecked(attrs);
 
 // Marks
 const strong = markFactory(schema.marks.strong);
@@ -125,6 +126,10 @@ const seeds: ExampleSeed[] = [
   {
     description: 'Ordered list (3)',
     doc: doc(ol(li(p('Item 1')), li(p('Item 2')))),
+  },
+  {
+    description: 'Mention (by providing `mentionEncoder` it\'s possible to change how `href` attribiute is generated)',
+    doc: doc(p(mention({ id: 'ssysoev', displayName: 'Stanislav Sysoev' }))),
   }
 ];
 

@@ -56,7 +56,7 @@ export const Footer = styled.div`
 export const Link = styled.div`
   display: flex;
   align-items: center;
-  width: calc(100% - 10px);
+  width: calc(100% - 40px);
 
   img {
     ${size(16)}

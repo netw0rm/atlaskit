@@ -3,7 +3,7 @@ import { Node } from '@atlaskit/editor-core';
 import { makeSchema } from '../../src/schema';
 import { encode } from '../../src/html';
 
-const schema = makeSchema({ allowLists: true, allowMentions: true });
+const schema = makeSchema({ allowLists: true, allowMentions: true, allowLinks: true });
 
 // Nodes
 const br = nodeFactory(schema.nodes.hard_break);
@@ -21,6 +21,7 @@ const ul = nodeFactory(schema.nodes.bullet_list!);
 const mention = (attrs: { id: string, displayName?: string }) => schema.nodes.mention!.createChecked(attrs);
 
 // Marks
+const link = (attrs) => markFactory(schema.marks.link!, attrs);
 const strong = markFactory(schema.marks.strong);
 const em = markFactory(schema.marks.em);
 const mono = markFactory(schema.marks.mono);
@@ -130,6 +131,18 @@ const seeds: ExampleSeed[] = [
   {
     description: 'Mention (by providing `mentionEncoder` it\'s possible to change how `href` attribiute is generated)',
     doc: doc(p(mention({ id: 'ssysoev', displayName: 'Stanislav Sysoev' }))),
+  },
+  {
+    description: 'External link',
+    doc: doc(p(link({ href: 'https://atlassian.com'})('atlassian.com'))),
+  },
+  {
+    description: 'Anchor link',
+    doc: doc(p(link({ href: '#hash'})('#hash'))),
+  },
+  {
+    description: 'Mailto link',
+    doc: doc(p(link({ href: 'mailto:me@atlassian.com'})('mailto:me@atlassian.com'))),
   }
 ];
 

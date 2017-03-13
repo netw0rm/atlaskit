@@ -39,13 +39,6 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
     }));
   }
 
-  if (schema.nodes.rule) {
-    // '---' for hr
-    rules.push(new InputRule(/^\-\-\-$/, (state, match, start, end) => {
-      return state.tr.replaceWith(start, end, Fragment.from(schema.nodes.rule.create()));
-    }));
-  }
-
   plugin = inputRules({ rules });
 
   return plugin;

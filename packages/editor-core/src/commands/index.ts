@@ -247,6 +247,19 @@ export function insertNewLine(): Command {
   };
 }
 
+export function insertRule(): Command {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    const { to } = state.selection;
+    const { rule } = state.schema.nodes;
+    if (rule) {
+      const ruleNode = rule.create();
+      dispatch(state.tr.insert(to, ruleNode));
+      return true;
+    }
+    return false;
+  };
+}
+
 export function createNewParagraphAbove(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const append = false;

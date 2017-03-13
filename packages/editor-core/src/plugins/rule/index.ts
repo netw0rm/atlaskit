@@ -1,47 +1,43 @@
-import Keymap from 'browserkeymap';
 import {
-  Plugin, ProseMirror, Schema
+  EditorState,
+  EditorView,
+  Plugin,
+  PluginKey,
 } from '../../prosemirror';
 
-import {
-  RuleNodeType
-} from '../../schema';
-
-import { trackAndInvoke } from '../../analytics';
-import * as keymaps from '../../keymaps';
+import keymapPlugin from './keymap';
+import inputRulePlugin from './input-rule';
+import { reconfigure } from '../utils';
 
 export type StateChangeHandler = (state: RuleState) => any;
 
 export class RuleState {
   private changeHandlers: StateChangeHandler[] = [];
-  private pm: PM;
+  private state: EditorState<any>;
 
-  constructor(pm: PM) {
-    this.pm = pm;
+  constructor(state: EditorState<any>) {
     this.changeHandlers = [];
-
-    this.addKeymap(pm);
+    this.state = state;
   }
+}
 
-  addKeymap(pm) {
-    const {rule} = pm.schema.nodes;
-    if (rule) {
-      pm.addKeymap(new Keymap({
-        [keymaps.insertRule.common!]: trackAndInvoke('atlassian.editor.format.horizontalrule.keyboard', () => pm.tr.replaceSelection(rule.create()).applyAndScroll())
-      }));
+export const stateKey = new PluginKey('rulePlugin');
+
+const plugin = new Plugin({
+  state: {
+    init(config, state: EditorState<any>) {
+      return new RuleState(state);
+    },
+    apply(tr, pluginState: RuleState, oldState, newState) {
+      return pluginState;
     }
+  },
+  key: stateKey,
+  view: (view: EditorView) => {
+    reconfigure(view, [keymapPlugin(view.state.schema), inputRulePlugin(view.state.schema)]);
+    return {};
   }
-}
+});
 
-export default new Plugin(RuleState);
-
-export interface PM extends ProseMirror {
-  schema: S;
-}
-
-export interface S extends Schema {
-  nodes: {
-    rule: RuleNodeType
-  };
-}
+export default plugin;
 

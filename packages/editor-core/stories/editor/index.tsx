@@ -9,6 +9,7 @@ import blockTypePlugin from '../../src/plugins/block-type';
 import codeBlockPlugin from '../../src/plugins/code-block';
 import textFormattingPlugin from '../../src/plugins/text-formatting';
 import hyperlinkPlugin from '../../src/plugins/hyperlink';
+import rulePlugin from '../../src/plugins/rule';
 import {
   baseKeymap,
   EditorState,
@@ -155,6 +156,7 @@ export default class Editor extends PureComponent<Props, State> {
             codeBlockPlugin,
             textFormattingPlugin,
             hyperlinkPlugin,
+            rulePlugin,
             history(),
             keymap(baseKeymap) // should be last :(
           ]

@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 
 import { name } from '../package.json';
+import { Mention } from '../src/types';
 import MentionList from '../src/components/MentionList';
 import { mentions } from './story-data';
 
@@ -9,36 +11,38 @@ function randomMentions() {
   return mentions.filter(() => Math.random() < 0.7);
 }
 
-class RefreshableMentionList extends Component {
-  static propTypes = {
-  }
+export interface Props {}
+
+export interface State {
+  mentions: Mention[];
+}
+
+class RefreshableMentionList extends Component<Props, State> {
+  private mentionListRef: MentionList;
 
   constructor(props) {
     super(props);
-    this._updateData = this._updateData.bind(this);
-    this._moveUp = this._moveUp.bind(this);
-    this._moveDown = this._moveDown.bind(this);
     this.state = {
       mentions: randomMentions(),
     };
   }
 
-  _updateData() {
+  private updateData = () => {
     this.setState({
       mentions: randomMentions(),
     });
   }
 
-  _moveUp() {
-    if (this._mentionList) {
+  private moveUp = () => {
+    if (this.mentionListRef) {
       // FIXME reactify should expose prototype methods from a wc
-      this._mentionList.selectPrevious();
+      this.mentionListRef.selectPrevious();
     }
   }
 
-  _moveDown() {
-    if (this._mentionList) {
-      this._mentionList.selectNext();
+  private moveDown = () => {
+    if (this.mentionListRef) {
+      this.mentionListRef.selectNext();
     }
   }
 
@@ -47,16 +51,16 @@ class RefreshableMentionList extends Component {
       <MentionList
         mentions={this.state.mentions}
         onSelection={action('onSelection')}
-        ref={(ref) => { this._mentionList = ref; }}
+        ref={(ref) => { this.mentionListRef = ref; }}
       />
     );
 
     return (
       <div>
         <div style={{ paddingBottom: '10px' }}>
-          <button onClick={this._updateData} style={{ height: '30px', marginRight: '10px' }}>Random refresh</button>
-          <button onClick={this._moveUp} style={{ height: '30px', marginRight: '10px' }}>Up</button>
-          <button onClick={this._moveDown} style={{ height: '30px', marginRight: '10px' }}>Down</button>
+          <button onClick={this.updateData} style={{ height: '30px', marginRight: '10px' }}>Random refresh</button>
+          <button onClick={this.moveUp} style={{ height: '30px', marginRight: '10px' }}>Up</button>
+          <button onClick={this.moveDown} style={{ height: '30px', marginRight: '10px' }}>Down</button>
         </div>
         {mentionList}
       </div>

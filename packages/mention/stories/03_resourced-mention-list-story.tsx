@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import * as React from 'react';
+import { Component, SyntheticEvent } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 
 import { name } from '../package.json';
@@ -6,19 +7,24 @@ import ResourcedMentionList from '../src/components/ResourcedMentionList';
 import SearchTextInput from './demo-search-text-input';
 import { resourceProvider } from './story-data';
 
-class ResourcedMentionListStoryDemo extends Component {
+export interface State {
+  query: string;
+}
+
+class ResourcedMentionListStoryDemo extends Component<undefined, State> {
+  private resourcedMentionListRef: ResourcedMentionList;
 
   constructor(props) {
     super(props);
-    this._updateQuery = this._updateQuery.bind(this);
     this.state = {
       query: '',
     };
   }
 
-  _updateQuery(query) {
+  private updateQuery = (event: SyntheticEvent<any>): void => {
+    const target = event.target as HTMLInputElement;
     this.setState({
-      query,
+      query: target.value,
     });
   }
 
@@ -28,18 +34,19 @@ class ResourcedMentionListStoryDemo extends Component {
         onSelection={action('mention selected')}
         resourceProvider={resourceProvider}
         query={this.state.query}
-        ref={(ref) => { this._resourcedMentionListRef = ref; }}
+        ref={(ref) => { this.resourcedMentionListRef = ref; }}
       />
     );
 
     return (
       <div style={{ width: '400px', padding: '10px' }}>
         <SearchTextInput
+          inputId="mention-input"
           label="User search"
-          onChange={(event) => { this._updateQuery(event.target.value); }}
-          onUp={() => this._resourcedMentionListRef.selectPrevious()}
-          onDown={() => this._resourcedMentionListRef.selectNext()}
-          onEnter={() => this._resourcedMentionListRef.chooseCurrentSelection()}
+          onChange={this.updateQuery}
+          onUp={() => { this.resourcedMentionListRef.selectPrevious; }}
+          onDown={() => { this.resourcedMentionListRef.selectNext; }}
+          onEnter={() => { this.resourcedMentionListRef.chooseCurrentSelection; }}
         />
         {mentionList}
       </div>

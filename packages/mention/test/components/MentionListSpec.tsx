@@ -1,27 +1,30 @@
 import { waitUntil } from '@atlaskit/util-common-test';
-import React from 'react';
-import { mount } from 'enzyme';
+import * as React from 'react';
+import { mount, ReactWrapper } from 'enzyme';
+import { expect } from 'chai';
 
 import mentionData, { mentionDataSize } from '../_mention-data';
-import MentionList from '../../src/components/MentionList';
+import MentionList, { Props, State } from '../../src/components/MentionList';
 import MentionItem from '../../src/components/MentionItem';
 import { isMentionItemSelected } from '../_ak-selectors';
 
 const mentions = mentionData.mentions;
 
-function setupList(props) {
+function setupList(props?: Props): ReactWrapper<Props, State> {
   return mount(
     <MentionList
       mentions={mentions}
       {...props}
     />
-  );
+  ) as ReactWrapper<Props, State>;
 }
 
 describe('MentionList', () => {
   it('should have first item selected by default', () => {
     const component = setupList();
-    const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
+    const defaultMentionItemsShow = () => {
+      return component.find(MentionItem).length === mentionDataSize;
+    };
     const firstItemSelected = () => isMentionItemSelected(component, mentions[0].id);
 
     return waitUntil(defaultMentionItemsShow)
@@ -35,7 +38,8 @@ describe('MentionList', () => {
 
     return waitUntil(defaultMentionItemsShow)
       .then(() => {
-        component.instance().selectIndex(2);
+        const mentionList = component.instance() as MentionList;
+        mentionList.selectIndex(2);
         return waitUntil(thirdItemSelected);
       });
   });
@@ -47,7 +51,8 @@ describe('MentionList', () => {
 
     return waitUntil(defaultMentionItemsShow)
       .then(() => {
-        component.instance().selectId(mentions[2].id);
+        const mentionList = component.instance() as MentionList;
+        mentionList.selectId(mentions[2].id);
         return waitUntil(thirdItemSelected);
       });
   });
@@ -58,7 +63,8 @@ describe('MentionList', () => {
 
     return waitUntil(defaultMentionItemsShow)
       .then(() => {
-        expect(component.instance().mentionsCount()).to.equal(mentionDataSize);
+        const mentionList = component.instance() as MentionList;
+        expect(mentionList.mentionsCount()).to.equal(mentionDataSize);
       });
   });
 });

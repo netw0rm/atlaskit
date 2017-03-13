@@ -2,31 +2,33 @@ import { AbstractPresenceResource } from '../src/api/MentionResource';
 import debug from '../src/util/logger';
 
 export default class MockPresenceProvider extends AbstractPresenceResource {
+  private minTimeout: number;
+  private maxTimeout: number;
+  private statuses: (string | undefined)[];
 
-  constructor(minTimeout, maxTimeout) {
+  constructor(minTimeout?: number, maxTimeout?: number) {
     super();
-    this._minTimeout = minTimeout || 0;
-    this._maxTimeout = maxTimeout || 0;
-    this._statuses = [
+    this.minTimeout = minTimeout || 0;
+    this.maxTimeout = maxTimeout || 0;
+    this.statuses = [
       'online',
       'offline',
       'busy',
       'none',
       undefined,
     ];
-    this._listeners = new Map();
   }
 
-  _getTimeout() {
-    return this._minTimeout + ((this._maxTimeout - this._minTimeout) * Math.random());
+  private getTimeout() {
+    return this.minTimeout + ((this.maxTimeout - this.minTimeout) * Math.random());
   }
 
-  _getStatus() {
-    return this._statuses[Math.floor(Math.random() * this._statuses.length)];
+  private getStatus() {
+    return this.statuses[Math.floor(Math.random() * this.statuses.length)];
   }
 
   // eslint-disable-next-line class-methods-use-this
-  _getTime() {
+  private getTime() {
     const minFormat = new Intl.NumberFormat('us-EN', { minimumIntegerDigits: 2 });
     let time;
     if (Math.random() > 0.5) {
@@ -43,8 +45,8 @@ export default class MockPresenceProvider extends AbstractPresenceResource {
     const presences = {};
     for (let i = 0; i < ids.length; i++) {
       const id = ids[i];
-      const status = this._getStatus();
-      const time = this._getTime();
+      const status = this.getStatus();
+      const time = this.getTime();
 
       if (status || time) {
         presences[id] = {
@@ -54,7 +56,7 @@ export default class MockPresenceProvider extends AbstractPresenceResource {
       }
     }
     setTimeout(() => {
-      this._notifyListeners(presences);
-    }, this._getTimeout());
+      this.notifyListeners(presences);
+    }, this.getTimeout());
   }
 }

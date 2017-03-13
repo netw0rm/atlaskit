@@ -1,5 +1,5 @@
 import { storiesOf, action } from '@kadira/storybook';
-import React from 'react';
+import * as React from 'react';
 
 import { name } from '../package.json';
 import MentionItem from '../src/components/MentionItem';
@@ -25,7 +25,7 @@ storiesOf(`${name}/MentionItem`, module)
     };
 
     return renderSingleMention(
-      <MentionItem {...mention} onSelection={action('onSelection')} />
+      <MentionItem mention={mention} onSelection={action('onSelection')} />
     );
   })
   .add('simple mention no avatar', () => {
@@ -36,7 +36,7 @@ storiesOf(`${name}/MentionItem`, module)
     };
 
     return renderSingleMention(
-      <MentionItem {...mention} onSelection={action('onSelection')} />
+      <MentionItem mention={mention} onSelection={action('onSelection')} />
     );
   })
   .add('simple mention unassigned user', () => {
@@ -46,7 +46,7 @@ storiesOf(`${name}/MentionItem`, module)
     };
 
     return renderSingleMention(
-      <MentionItem {...mention} onSelection={action('onSelection')} />
+      <MentionItem mention={mention} onSelection={action('onSelection')} />
     );
   })
   .add('simple mention selected', () => {
@@ -59,7 +59,7 @@ storiesOf(`${name}/MentionItem`, module)
     };
 
     return renderSingleMention(
-      <MentionItem {...mention} onSelection={action('onSelection')} />
+      <MentionItem mention={mention} onSelection={action('onSelection')} />
     );
   })
   .add('mention with the lot', () => {
@@ -88,7 +88,7 @@ storiesOf(`${name}/MentionItem`, module)
     };
 
     return renderSingleMention(
-      <MentionItem {...mention} onSelection={action('onSelection')} />
+      <MentionItem mention={mention} onSelection={action('onSelection')} />
     );
   })
   .add('mention with lozenge', () => {
@@ -101,7 +101,7 @@ storiesOf(`${name}/MentionItem`, module)
     };
 
     return renderSingleMention(
-      <MentionItem {...mention} onSelection={action('onSelection')} />
+      <MentionItem mention={mention} onSelection={action('onSelection')} />
     );
   })
   .add('mention with lozenge and presence', () => {
@@ -116,7 +116,7 @@ storiesOf(`${name}/MentionItem`, module)
     };
 
     return renderSingleMention(
-      <MentionItem {...mention} onSelection={action('onSelection')} />
+      <MentionItem mention={mention} onSelection={action('onSelection')} />
     );
   })
 ;

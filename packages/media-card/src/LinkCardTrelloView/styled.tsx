@@ -35,8 +35,7 @@ export const SquareThumbnail = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  flex: 1;
-  width: 100%;
+  width: 116px;
 `;
 
  // min-width required in Details to get proper text wrapping in IE11
@@ -73,7 +72,7 @@ export const Footer = styled.div`
 export const Link = styled.div`
   display: flex;
   align-items: center;
-  width: calc(100% - 40px);
+  width: calc(100% - 10px);
 
   img {
     ${size(16)}
@@ -86,7 +85,7 @@ export const Link = styled.div`
     font-size: 12px;
     color: ${akColorN300};
 
-    ${ellipsis(230)}
+    ${ellipsis('100%')}
   }
 `;
 
@@ -98,13 +97,41 @@ export const MenuButton = styled(CardOverlayMoreBtn)`
   cursor: pointer;
 `;
 
-export const DropdownWrapper = styled.div`;
-  display: block;
-  position: absolute;
-  left: calc(100% - 37px);
-  top: 105%;
+export const Header = styled.div`
 
-  z-index: 100;
+`;
+export const Avatars = styled.div`
+  float: right;
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-height: 20px;
 `;
 
-;
+export const MemberAvatar = styled.img`
+  height: 24px;
+  width: 24px;
+  border-radius: 100%;
+  border: 2px solid ${akColorN30};
+  position: absolute;
+  background: #607d8b;
+`;
+
+export const Lists = styled.div`
+  ul {
+    display: inline-block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+
+  li {
+    display: inline-block;
+    margin: 0 5px;
+    text-transform: capitalize;
+  }
+`;

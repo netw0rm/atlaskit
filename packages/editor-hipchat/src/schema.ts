@@ -9,7 +9,7 @@ import {
   Schema,
   StrongMarkType,
   Text,
-  UnderlineMarkType,
+  UnderlineMarkType
 } from '@atlaskit/editor-core';
 
 export default new Schema({
@@ -18,7 +18,7 @@ export default new Schema({
     doc: { type: DocNodeType, content: 'paragraph' },
 
     // A paragraph node.
-    paragraph: { type: ParagraphNodeType, content: 'inline<_>*' },
+    paragraph: { type: ParagraphNodeType, content: 'inline<_>*', group: 'block' },
 
     // Text node.
     text: { type: Text, group: 'inline' },
@@ -30,7 +30,7 @@ export default new Schema({
     hard_break: { type: HardBreakNodeType, group: 'inline' },
 
     // An @-mention.
-    mention: { type: MentionNodeType, group: 'inline' }
+    mention: { type: MentionNodeType, group: 'inline' },
   },
   marks: {
     // Represents a hyperlink to a URL.

@@ -7,7 +7,8 @@ import {Ellipsify} from '../ellipsify';
 import {Dropdown} from '../dropdown/dropdown';
 import {
   Wrapper,
-  Thumbnail,
+  HorizontalThumbnail,
+  SquareThumbnail,
   Details,
   Title,
   Description,
@@ -21,7 +22,7 @@ import {
 export interface LinkCardViewHorizontalProps {
   linkUrl: string;
   title: string;
-
+  display?: 'horizontal' | 'square';
   description?: string;
   thumbnailUrl?: string;
   iconUrl?: string;
@@ -54,9 +55,8 @@ export class LinkCardViewHorizontal extends Component<LinkCardViewHorizontalProp
     return {
       title: '',
       description: '',
-      width: 435,
-      height: 116,
-      menuActions
+      menuActions,
+      display: 'horizontal'
     };
   }
 
@@ -85,16 +85,28 @@ export class LinkCardViewHorizontal extends Component<LinkCardViewHorizontalProp
     });
   }
 
-  render() {
-    const {width, height, linkUrl, title, description, thumbnailUrl, iconUrl} = this.props;
-    const cardStyle = {height: `${height}px`, width: `${width}px`};
+  private get width() {
+    return this.props.width ? this.props.width : (
+      this.props.display === 'horizontal' ? 435 : 300
+    );
+  }
 
-    const thumbnail = (thumbnailUrl && !this.state.thumbnailError) ?
-      <Thumbnail
-        src={thumbnailUrl}
-        alt={title}
-        onError={this.thumbnailError}
-      /> : null;
+  private get height() {
+    return this.props.height ? this.props.height : (
+      this.props.display === 'horizontal' ? 116 : 300
+    );
+  }
+
+  private get isHorizontal() {
+    return this.props.display === 'horizontal';
+  }
+
+  render() {
+    const {linkUrl, title, description, thumbnailUrl, iconUrl} = this.props;
+    const cardStyle = {height: `${this.height}px`, width: `${this.width}px`};
+    const thumbnail = thumbnailUrl && !this.state.thumbnailError ? (this.isHorizontal ?
+      <HorizontalThumbnail src={thumbnailUrl} alt={title} onError={this.thumbnailError}/> :
+      <SquareThumbnail className="square-img" style={{backgroundImage: `url(${thumbnailUrl})`}} />) : null;
     const icon = (iconUrl && !this.state.iconError) ?
       <img
         src={iconUrl}
@@ -103,10 +115,10 @@ export class LinkCardViewHorizontal extends Component<LinkCardViewHorizontalProp
       /> : null;
 
     return (
-      <Wrapper style={cardStyle} onClick={this.onClick.bind(this)}>
+      <Wrapper style={cardStyle} className={this.props.display} onClick={this.onClick.bind(this)}>
         {thumbnail}
 
-        <Details>
+        <Details className="details">
           <Title>
             <Ellipsify text={title || ''} lines={1} endLength={0} />
           </Title>

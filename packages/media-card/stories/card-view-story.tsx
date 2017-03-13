@@ -181,7 +181,11 @@ storiesOf('CardView', {})
     </StoryList>
   ))
   .add('Selectable', () => {
-    class SelectableWrapper extends Component<{}, {}> {
+    interface SelectableWrapperState {
+      selected: boolean;
+    }
+
+    class SelectableWrapper extends Component<{}, SelectableWrapperState> {
       constructor(props) {
         super(props);
         this.state = {selected: false};

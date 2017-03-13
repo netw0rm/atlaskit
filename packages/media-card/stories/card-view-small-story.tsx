@@ -18,7 +18,18 @@ const menuActions = [
   {label: 'Close', handler: () => { action('close')(); }}
 ];
 
-class DelayedLoadingCard extends Component<{}, {}> {
+interface DelayedLoadingCardProps {
+  delay?: number;
+  dataURI?: string;
+}
+
+interface DelayedLoadingCardState {
+  loading: boolean;
+}
+
+class DelayedLoadingCard extends Component<DelayedLoadingCardProps, DelayedLoadingCardState> {
+  private interval: number;
+
   constructor(props) {
     super(props);
     this.state = {loading: true};
@@ -26,7 +37,7 @@ class DelayedLoadingCard extends Component<{}, {}> {
 
   componentDidMount() {
     const delay = this.props.delay || 500;
-    this.interval = setTimeout(() => this.setState({loading: false}), delay);
+    this.interval = window.setTimeout(() => this.setState({loading: false}), delay);
   }
 
   componentWillUnmount() {

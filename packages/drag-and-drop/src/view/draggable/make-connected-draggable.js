@@ -18,12 +18,12 @@ import {
 } from '../../state/action-creators';
 import type {
   TypeId,
-    State,
-    Position,
-    DroppableId,
-    DraggableId,
-    DragComplete,
-    CurrentDrag,
+  State,
+  Position,
+  DroppableId,
+  DraggableId,
+  DragComplete,
+  CurrentDrag,
 } from '../../types';
 import type {
   Provide,
@@ -175,7 +175,7 @@ export default (type: TypeId,
   provide: Provide,
   map?: MapState = () => empty) =>
   (Component: any) => {
-    const Draggable = makeDraggable(type, provide, map)(Component);
+    const Draggable = makeDraggable(type, map)(Component);
     return connect(
       makeMapStateToProps(provide),
       mapDispatchToProps,

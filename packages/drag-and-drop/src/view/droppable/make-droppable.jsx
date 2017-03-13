@@ -1,13 +1,10 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import styled from 'styled-components';
+import type { MapState, Props, DroppableState } from './droppable-types';
+import type { TypeId } from '../../types';
 import { DroppableDimensionPublisher } from '../dimension-publisher/';
 import getDisplayName from '../get-display-name';
-import storeKey from '../../state/get-store-key';
-import makeSelector from './make-droppable-selector';
-import type { Provide, MapState, Props, OwnProps, MapProps, DroppableState } from './droppable-types';
-import type { Direction, TypeId, State } from '../../types';
 import ScrollTopWatcher from '../scroll-top-watcher/';
 
 const Container = styled.div`
@@ -18,12 +15,9 @@ type ComponentState = {|
   ref: ?Element,
 |}
 
-export default (type: TypeId,
-  direction: Direction,
-  provide: Provide,
-  map?: MapState = () => ({})) =>
+export default (type: TypeId, map: MapState): Function =>
   // Component must be a styled-component
-  (Component: any): any => {
+  (Component: ReactClass<any>): ReactClass<any> =>
     class Droppable extends PureComponent {
       static displayName = `Droppable(${getDisplayName(Component)})`
 
@@ -76,23 +70,4 @@ export default (type: TypeId,
           </Container>
         );
       }
-    }
-
-    const makeMapStateToProps = () => {
-      const selector = makeSelector(provide);
-
-      const mapStateToProps = (state: State, props: OwnProps) =>
-        selector(state, props);
-
-      return mapStateToProps;
-    };
-
-    const mergeProps = (mapProps: MapProps,
-      dispatchProps: void,
-      ownProps: OwnProps): Props => ({
-        mapProps,
-        ownProps,
-      });
-
-    return connect(makeMapStateToProps, null, mergeProps, { storeKey })(Droppable);
   };

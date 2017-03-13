@@ -38,7 +38,7 @@ const shout = (message, ...rest) => {
 const cancel = () => initialState;
 
 export default (state: State = initialState, action: Action): State => {
-  shout(`reducing ${action.type}`, action.payload);
+  shout(`reducing ${action.type}`, action.payload ? action.payload : 'no payload');
 
   if (action.type === 'BEGIN_LIFT') {
     if (state.isProcessingLift) {

@@ -148,7 +148,7 @@ const DroppableList = (() => {
   return droppable('ITEM', 'vertical', provide, map)(List);
 })();
 
-const ConnectedApp = (() => {
+const ConnectedApp: ReactClass<any> = (() => {
   const AppContainer = styled.div`
     display: flex;
     background-color: lightgrey;

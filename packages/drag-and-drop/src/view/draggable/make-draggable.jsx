@@ -6,7 +6,7 @@ import type {
   TypeId,
   Position,
 } from '../../types';
-import type { Provide, Props, MapState, DraggableState } from './draggable-types';
+import type { Props, MapState, DraggableState } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
 import type { Speed } from '../moveable';
@@ -63,10 +63,8 @@ const getMovement = (isDragging: boolean,
   };
 };
 
-export default (type: TypeId,
-  provide: Provide,
-  map: MapState) =>
-  (Component: any): any =>
+export default (type: TypeId, map: MapState): Function =>
+  (Component: ReactClass<any>): ReactClass<any> =>
     class Draggable extends PureComponent {
       /* eslint-disable react/sort-comp */
       props: Props

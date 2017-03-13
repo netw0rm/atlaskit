@@ -66,8 +66,6 @@ export class Handle extends PureComponent {
       return;
     }
 
-    // 'clientY,offsetY,pageY,screenY,movementY'.split(',').forEach(property => console.log(property, event[property]));
-
     const point: Position = {
       x: clientX,
       y: clientY,

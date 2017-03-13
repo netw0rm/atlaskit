@@ -1,57 +1,22 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import styled from 'styled-components';
 import invariant from 'invariant';
 import type {
   TypeId,
   Position,
 } from '../../types';
-import type { Provide, MapProps, OwnProps } from './draggable-types';
+import type { Provide, Props, MapState, DraggableState } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
-import KeepVisible from '../keep-visible';
 import type { Speed } from '../moveable';
 import createDragHandle from './create-drag-handle';
 import getCenterPosition from '../get-center-position';
 import getScrollPosition from '../get-scroll-position';
 import getDisplayName from '../get-display-name';
-import storeKey from '../../state/get-store-key';
-import makeSelector from './make-draggable-selector';
-import {
-  lift as liftAction,
-  move as moveAction,
-  moveForward as moveForwardAction,
-  moveBackward as moveBackwardAction,
-  drop as dropAction,
-  cancel as cancelAction,
-  dropFinished as dropFinishedAction,
-} from '../../state/action-creators';
 
-type DraggableState = {|
-  isDragging: boolean
-|}
-
-type MapState = (state: DraggableState, ownProps: OwnProps, getDragHandle: Function) => Object;
-const empty = {};
 const identity = x => x;
 const noWhere: Position = { x: 0, y: 0 };
-
-type DispatchProps = {
-  lift: typeof liftAction,
-  move: typeof moveAction,
-  moveForward: typeof moveForwardAction,
-  moveBackward: typeof moveBackwardAction,
-  drop: typeof dropAction,
-  cancel: typeof cancelAction,
-  dropFinished: typeof dropFinishedAction,
-}
-
-type Props = {
-  mapProps: MapProps,
-  dispatchProps: DispatchProps,
-  ownProps: OwnProps,
-}
 
 type ComponentState = {|
   wasDragging: boolean,
@@ -100,15 +65,13 @@ const getMovement = (isDragging: boolean,
 
 export default (type: TypeId,
   provide: Provide,
-  map?: MapState = () => empty) =>
-  (Component: any): any => {
+  map: MapState) =>
+  (Component: any): any =>
     class Draggable extends PureComponent {
       /* eslint-disable react/sort-comp */
       props: Props
       state: ComponentState
       getHandle: Function
-      containerRef: ?Element
-      isRefMoved: boolean
 
       state: ComponentState = {
         wasDragging: false,
@@ -135,8 +98,6 @@ export default (type: TypeId,
           onMoveBackward: this.onMoveBackward,
           onMoveForward: this.onMoveForward,
         });
-
-        this.isRefMoved = false;
       }
 
       componentWillReceiveProps(nextProps) {
@@ -147,22 +108,6 @@ export default (type: TypeId,
           this.setState({
             wasDragging,
           });
-        }
-      }
-
-      componentWillUpdate(nextProps: Props, nextState: ComponentState) {
-        // drag starting
-        if (!this.props.mapProps.isDragging && nextProps.mapProps.isDragging) {
-          invariant(!this.isRefMoved, 'ref cannot already be moved');
-          invariant(this.containerRef && this.state.ref, 'refs must be available');
-          document.body.appendChild(this.state.ref);
-          this.isRefMoved = true;
-        }
-
-        // drag ending (TODO: skipping was dragging)
-        if (this.state.wasDragging && !nextState.wasDragging && this.isRefMoved) {
-          this.containerRef.appendChild(this.state.ref);
-          this.isRefMoved = false;
         }
       }
 
@@ -298,10 +243,6 @@ export default (type: TypeId,
         cancel(id);
       }
 
-      setContainerRef = (ref: ?Element) => {
-        this.containerRef = ref;
-      }
-
       setRef = (ref: ?Element) => {
         // need to trigger a child render when ref changes
         this.setState({
@@ -380,7 +321,7 @@ export default (type: TypeId,
 
         // TODO: remove `Container` and pass cursor style to `Moveable`
         return (
-          <div ref={this.setContainerRef}>
+          <div>
             <Moveable
               speed={movement.speed}
               zIndex={movement.zIndex}
@@ -396,11 +337,9 @@ export default (type: TypeId,
                   type={type}
                   targetRef={this.state.childRef}
                 >
-                  {/* <KeepVisible itemId={mapProps.id}>*/}
                   <Container thisShouldBeRemovedAndStyleDoneElsewhere>
                     <Component {...enhancedOwnProps} innerRef={this.setChildRef} />
                   </Container>
-                  {/* </KeepVisible>*/}
                 </DraggableDimensionPublisher>
               )}
             </Moveable>
@@ -408,34 +347,4 @@ export default (type: TypeId,
           </div>
         );
       }
-    }
-
-    const mapDispatchToProps: DispatchProps = {
-      lift: liftAction,
-      move: moveAction,
-      moveBackward: moveBackwardAction,
-      moveForward: moveForwardAction,
-      drop: dropAction,
-      dropFinished: dropFinishedAction,
-      cancel: cancelAction,
     };
-
-    const makeMapStateToProps = () => {
-      const selector = makeSelector(provide);
-
-      const mapStateToProps = (state, props) =>
-        selector(state, props);
-
-      return mapStateToProps;
-    };
-
-    const mergeProps = (mapProps: MapProps,
-      dispatchProps: DispatchProps,
-      ownProps: OwnProps): Props => ({
-        mapProps,
-        dispatchProps,
-        ownProps,
-      });
-
-    return connect(makeMapStateToProps, mapDispatchToProps, mergeProps, { storeKey })(Draggable);
-  };

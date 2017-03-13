@@ -1,13 +1,43 @@
 // @flow
 import memoizeOne from 'memoize-one';
 import isShallowEqual from 'shallowequal';
-import { createSelector } from 'reselect';
+import { connect } from 'react-redux';
 import invariant from 'invariant';
+import { createSelector } from 'reselect';
 import { currentDragSelector, dragCompleteSelector } from '../../state/selectors';
-import type { Provide, NeedsProviding, MapProps, OwnProps } from './draggable-types';
-import type { DraggableId, DroppableId, DragComplete, CurrentDrag, Position, State } from '../../types';
+import makeDraggable from './make-draggable';
+import storeKey from '../../state/get-store-key';
+import {
+  lift as liftAction,
+  move as moveAction,
+  moveForward as moveForwardAction,
+  moveBackward as moveBackwardAction,
+  drop as dropAction,
+  cancel as cancelAction,
+  dropFinished as dropFinishedAction,
+} from '../../state/action-creators';
+import type {
+  TypeId,
+    State,
+    Position,
+    DroppableId,
+    DraggableId,
+    DragComplete,
+    CurrentDrag,
+} from '../../types';
+import type {
+  Provide,
+    MapProps,
+    OwnProps,
+    DispatchProps,
+    Props,
+    MapState,
+    NeedsProviding,
+} from './draggable-types';
 
-export default (provide: Provide) => {
+const empty = {};
+
+const makeSelector = (provide: Provide) => {
   const memoizedProvide = memoizeOne(provide, isShallowEqual);
   const getProvided = (state: State, ownProps: OwnProps) => memoizedProvide(ownProps);
   const memoizedOffset = memoizeOne(
@@ -117,3 +147,40 @@ export default (provide: Provide) => {
     }
   );
 };
+
+const makeMapStateToProps = (provide: Provide) => {
+  const selector = makeSelector(provide);
+  return (state: State, props: OwnProps) => selector(state, props);
+};
+
+const mapDispatchToProps: DispatchProps = {
+  lift: liftAction,
+  move: moveAction,
+  moveBackward: moveBackwardAction,
+  moveForward: moveForwardAction,
+  drop: dropAction,
+  dropFinished: dropFinishedAction,
+  cancel: cancelAction,
+};
+
+const mergeProps = (mapProps: MapProps,
+  dispatchProps: DispatchProps,
+  ownProps: OwnProps): Props => ({
+    mapProps,
+    dispatchProps,
+    ownProps,
+  });
+
+export default (type: TypeId,
+  provide: Provide,
+  map?: MapState = () => empty) =>
+  (Component: any) => {
+    const Draggable = makeDraggable(type, provide, map)(Component);
+    return connect(
+      makeMapStateToProps(provide),
+      mapDispatchToProps,
+      mergeProps,
+      { storeKey }
+    )(Draggable);
+  };
+

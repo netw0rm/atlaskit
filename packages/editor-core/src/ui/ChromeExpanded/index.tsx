@@ -26,6 +26,7 @@ import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import ToolbarImage from '../ToolbarImage';
 import * as styles from './styles';
 import { EditorView } from '../../prosemirror';
+import 'css-loader!prosemirror-view/style/prosemirror.css';
 
 export interface Props {
   editorView: EditorView;

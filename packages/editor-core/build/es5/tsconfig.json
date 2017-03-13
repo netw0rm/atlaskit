@@ -2,9 +2,10 @@
   "extends": "../../tsconfig",
   "compilerOptions": {
     "outDir": "../../dist/es5",
-    "declaration": true,
     "lib": ["dom", "es6"],
-    "target": "es5"
+    "target": "es5",
+    "declaration": true,
+    "declarationDir": "../../dist/types"
   },
   "include": [
     "../../src/**/*.ts",

@@ -7,15 +7,11 @@ import ResourcedMentionList from '../src/components/ResourcedMentionList';
 import SearchTextInput from './demo-search-text-input';
 import { resourceProvider } from './story-data';
 
-export interface Props {
-
-}
-
 export interface State {
   query: string;
 }
 
-class ResourcedMentionListStoryDemo extends Component<Props, State> {
+class ResourcedMentionListStoryDemo extends Component<undefined, State> {
   private resourcedMentionListRef: ResourcedMentionList;
 
   constructor(props) {

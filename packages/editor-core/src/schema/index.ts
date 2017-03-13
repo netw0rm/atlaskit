@@ -1,5 +1,5 @@
 export { em } from './marks/em';
-export { mono } from './marks/mono';
+export { code } from './marks/code';
 export { strike } from './marks/strike';
 export { strong } from './marks/strong';
 export { underline } from './marks/underline';

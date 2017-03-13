@@ -17,7 +17,7 @@ describe('ak-editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     const { pm } = editor(doc(p('text')));
     const toolbarOption = shallow(<ToolbarAdvancedTextFormatting pluginState={pm && TextFormattingPlugin.get(pm)}/>);
     expect(toolbarOption.html()).to.not.equal(null);
-    toolbarOption.setState({ strikeHidden: true, monoHidden: true });
+    toolbarOption.setState({ strikeHidden: true, codeHidden: true });
     expect(toolbarOption.html()).to.equal(null);
   });
 
@@ -36,14 +36,14 @@ describe('ak-editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     expect(toolbarOption.find('[title]').length).to.equal(2);
   });
 
-  it('should trigger toggleMono of plugin when monospace option is clicked', () => {
+  it('should trigger toggleCode of plugin when monospace option is clicked', () => {
     const { pm, plugin } = editor(doc(p('text')));
     const toolbarOption = mount(<ToolbarAdvancedTextFormatting pluginState={pm && TextFormattingPlugin.get(pm)}/>);
     toolbarOption.find('svg').simulate('click');
-    plugin.toggleMono = sinon.spy();
-    const monospaceButton = toolbarOption.find('[title]').findWhere(wrapper => wrapper.text() === 'Monospace');
-    monospaceButton.simulate('click');
-    expect(plugin.toggleMono.callCount).to.equal(1);
+    plugin.toggleCode = sinon.spy();
+    const codeButton = toolbarOption.find('[title]').findWhere(wrapper => wrapper.text() === 'Monospace');
+    codeButton.simulate('click');
+    expect(plugin.toggleCode.callCount).to.equal(1);
   });
 
   it('should trigger toggleStrike of plugin when strikethrough option is clicked', () => {
@@ -56,11 +56,11 @@ describe('ak-editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     expect(plugin.toggleStrike.callCount).to.equal(1);
   });
 
-  it('should be disabled if both monoDisabled and strikeDisabled are true', () => {
+  it('should be disabled if both codeDisabled and strikeDisabled are true', () => {
     const { pm } = editor(doc(p('text')));
     const pluginState = pm && TextFormattingPlugin.get(pm);
     if (pluginState) {
-      pluginState.monoDisabled = true;
+      pluginState.codeDisabled = true;
       pluginState.strikeDisabled = true;
     }
     const toolbarOption = mount(<ToolbarAdvancedTextFormatting pluginState={pluginState}/>);

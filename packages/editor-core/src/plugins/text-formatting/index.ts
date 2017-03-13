@@ -24,9 +24,9 @@ export class TextFormattingState {
   emActive = false;
   emDisabled = false;
   emHidden = false;
-  monoActive = false;
-  monoDisabled = false;
-  monoHidden = false;
+  codeActive = false;
+  codeDisabled = false;
+  codeHidden = false;
   underlineActive = false;
   underlineDisabled = false;
   underlineHidden = false;
@@ -49,7 +49,7 @@ export class TextFormattingState {
     this.emHidden = !state.schema.marks.em;
     this.strongHidden = !state.schema.marks.strong;
     this.underlineHidden = !state.schema.marks.u;
-    this.monoHidden = !state.schema.marks.mono;
+    this.codeHidden = !state.schema.marks.code;
     this.superscriptHidden = !state.schema.marks.subsup;
     this.subscriptHidden = !state.schema.marks.subsup;
     this.strikeHidden = !state.schema.marks.strike;
@@ -64,10 +64,10 @@ export class TextFormattingState {
     }
   }
 
-  toggleMono(view: EditorView) {
-    const { mono } = this.state.schema.marks;
-    if (mono) {
-      commands.toggleMark(mono)(view.state, view.dispatch);
+  toggleCode(view: EditorView) {
+    const { code } = this.state.schema.marks;
+    if (code) {
+      commands.toggleMark(code)(view.state, view.dispatch);
     }
   }
 
@@ -129,7 +129,7 @@ export class TextFormattingState {
     this.state = newEditorState;
 
     const { state } = this;
-    const { em, mono, strike, strong, subsup, u } = state.schema.marks;
+    const { em, code, strike, strong, subsup, u } = state.schema.marks;
     let dirty = false;
 
     if (em) {
@@ -146,16 +146,16 @@ export class TextFormattingState {
       }
     }
 
-    if (mono) {
-      const newMonoActive = this.anyMarkActive(mono);
-      if (newMonoActive !== this.monoActive) {
-        this.monoActive = newMonoActive;
+    if (code) {
+      const newCodeActive = this.anyMarkActive(code);
+      if (newCodeActive !== this.codeActive) {
+        this.codeActive = newCodeActive;
         dirty = true;
       }
 
-      const newMonoDisabled = !commands.toggleMark(mono)(this.state);
-      if (newMonoDisabled !== this.monoDisabled) {
-        this.monoDisabled = newMonoDisabled;
+      const newCodeDisabled = !commands.toggleMark(code)(this.state);
+      if (newCodeDisabled !== this.codeDisabled) {
+        this.codeDisabled = newCodeDisabled;
         dirty = true;
       }
     }

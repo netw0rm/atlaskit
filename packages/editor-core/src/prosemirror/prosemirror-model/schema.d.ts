@@ -47,6 +47,7 @@ export interface AttributeSpec {
 }
 
 export interface MarkSpec {
+  excludes?: string;
   attrs?: { [key: string]: AttributeSpec };
   inclusiveRight?: boolean;
   inclusiveLeft?: boolean;

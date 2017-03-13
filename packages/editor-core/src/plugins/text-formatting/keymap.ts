@@ -22,9 +22,9 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
     keymaps.bindKeymapWithCommand(keymaps.toggleItalic.common!, trackAndInvoke(eventName, commands.toggleMark(schema.marks.em)), list);
   }
 
-  if (schema.marks.mono) {
+  if (schema.marks.code) {
     const eventName = analyticsEventName(schema.marks.strong);
-    keymaps.bindKeymapWithCommand(keymaps.toggleMonospace.common!, trackAndInvoke(eventName, commands.toggleMark(schema.marks.mono)), list);
+    keymaps.bindKeymapWithCommand(keymaps.toggleCode.common!, trackAndInvoke(eventName, commands.toggleMark(schema.marks.code)), list);
   }
 
   if (schema.marks.strike) {

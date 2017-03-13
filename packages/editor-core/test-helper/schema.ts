@@ -5,7 +5,7 @@ import {
   text,
   em,
   strong,
-  mono,
+  code,
   strike,
   underline,
   bulletList,
@@ -45,7 +45,7 @@ const nodes = {
 const marks = {
   em,
   strong,
-  mono,
+  code,
   strike,
   underline,
   link,

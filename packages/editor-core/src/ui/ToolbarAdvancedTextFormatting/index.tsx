@@ -7,7 +7,7 @@ import Group from 'ak-droplist-group';
 import Item from 'ak-droplist-item';
 import ToolbarButton from '../ToolbarButton';
 import AdvancedIcon from 'ak-icon/glyph/editor/advanced';
-import { toggleMonospace, toggleStrikethrough, tooltip } from '../../keymaps';
+import { toggleCode, toggleStrikethrough, tooltip } from '../../keymaps';
 
 export interface Props {
   pluginState: TextFormattingState | undefined;
@@ -15,9 +15,9 @@ export interface Props {
 
 export interface State {
   isOpen?: boolean;
-  monoActive?: boolean;
-  monoDisabled?: boolean;
-  monoHidden?: boolean;
+  codeActive?: boolean;
+  codeDisabled?: boolean;
+  codeHidden?: boolean;
   strikeActive?: boolean;
   strikeDisabled?: boolean;
   strikeHidden?: boolean;
@@ -41,14 +41,14 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   render() {
     const {
       isOpen,
-      monoActive,
+      codeActive,
       strikeActive,
-      monoHidden,
+      codeHidden,
       strikeHidden,
-      monoDisabled,
+      codeDisabled,
       strikeDisabled,
     } = this.state;
-    if (!monoHidden && !strikeHidden) {
+    if (!codeHidden && !strikeHidden) {
       return (
         <DropdownList
           isOpen={isOpen}
@@ -58,19 +58,19 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
           trigger={
             <ToolbarButton
               selected={isOpen}
-              disabled={monoDisabled && strikeDisabled}
+              disabled={codeDisabled && strikeDisabled}
               iconBefore={<AdvancedIcon label="text-formatting" />}
             />
           }
         >
           <Group>
             <Item
-              isActive={monoActive}
-              isDisabled={monoDisabled}
-              onActivate={this.handleMonoClick}
+              isActive={codeActive}
+              isDisabled={codeDisabled}
+              onActivate={this.handleCodeClick}
             >
-              <span title={tooltip(toggleMonospace)}>
-                Monospace
+              <span title={tooltip(toggleCode)}>
+                Code
               </span>
             </Item>
             <Item
@@ -98,18 +98,18 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
 
   private handlePluginStateChange = (pluginState: TextFormattingState) => {
     this.setState({
-      monoActive: pluginState.monoActive,
-      monoDisabled: pluginState.monoDisabled,
-      monoHidden: pluginState.monoHidden,
+      codeActive: pluginState.codeActive,
+      codeDisabled: pluginState.codeDisabled,
+      codeHidden: pluginState.codeHidden,
       strikeActive: pluginState.strikeActive,
       strikeDisabled: pluginState.strikeDisabled,
       strikeHidden: pluginState.strikeHidden,
     });
   }
 
-  @analytics('atlassian.editor.format.monospace.button')
+  @analytics('atlassian.editor.format.code.button')
   private handleStrikeClick = () => {
-    if (!this.state.monoDisabled) {
+    if (!this.state.codeDisabled) {
       const { pluginState } = this.props;
       pluginState && pluginState.toggleStrike();
       this.toggleOpen();
@@ -117,10 +117,10 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   }
 
   @analytics('atlassian.editor.format.strikethrough.button')
-  private handleMonoClick = () => {
-    if (!this.state.monoDisabled) {
+  private handleCodeClick = () => {
+    if (!this.state.codeDisabled) {
       const { pluginState } = this.props;
-      pluginState && pluginState.toggleMono();
+      pluginState && pluginState.toggleCode();
       this.toggleOpen();
     }
   }

@@ -46,9 +46,9 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
     rules.push(new InputRule(/(?:^|\s)(?:~~([^~]+)~~)$/, addMark(schema.marks.strike, schema)));
   }
 
-  if (schema.marks.mono) {
+  if (schema.marks.code) {
     // `string` should monospace the text
-    rules.push(new InputRule(/(?:^|\s)(?:`([^`]+)`)$/, addMark(schema.marks.mono, schema)));
+    rules.push(new InputRule(/(?:^|\s)(?:`([^`]+)`)$/, addMark(schema.marks.code, schema)));
   }
   plugin = inputRules({ rules });
 

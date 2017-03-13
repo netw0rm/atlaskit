@@ -4,6 +4,21 @@ const HAS_BASE64_FILE_SUPPORT =
   typeof FileList !== 'undefined' &&
   typeof Blob !== 'undefined';
 
+const getPasteFiles = (clipboardData: DataTransfer) => {
+  const items = Array.prototype.reduce.call(clipboardData.items || [], (filesArr: File[], item: DataTransferItem) => {
+    if (item.kind === 'file') {
+      filesArr.push(item.getAsFile() as File);
+    }
+
+    return filesArr;
+  }, []);
+
+  return [
+    ...items,
+    ...Array.prototype.slice.call(clipboardData.files, 0)
+  ];
+};
+
 export class Converter {
   HAS_BASE64_FILE_SUPPORT = HAS_BASE64_FILE_SUPPORT;
   supportedTypes: string[];
@@ -35,14 +50,26 @@ export class Converter {
         }
 
         const reader = new FileReader();
-        reader.onload = (
-          // tslint:disable-next-line
-          readerEvt: any
-        ) => {
+        reader.onerror = (e: Event) => {
+          errFn(file);
+        };
+
+        const onLoadBinaryString = (readerEvt) => {
           const binarySrc: string = btoa(readerEvt.target.result);
           fn(`data:${mimeType};base64,${binarySrc}`);
         };
-        reader.readAsBinaryString(file);
+
+        const onLoadDataUrl = (readerEvt) => {
+          fn(readerEvt.target.result);
+        };
+
+        if ('readAsDataURL' in reader) {
+          reader.onload = onLoadDataUrl;
+          reader.readAsDataURL(file);
+        } else {
+          reader.onload = onLoadBinaryString;
+          reader.readAsBinaryString(file);
+        }
       });
     }
   }
@@ -78,32 +105,19 @@ export function pasteHandler(
   e: ClipboardEvent,
   fn: convertedHandlerCallback
 ): boolean {
+  const pastedFiles = getPasteFiles(e.clipboardData);
+
   if (
     !converter.HAS_BASE64_FILE_SUPPORT ||
-    !(
-      e.clipboardData &&
-      e.clipboardData.items &&
-      e.clipboardData.items.length
-    )
+    !pastedFiles.length
   ) {
     return false;
   }
 
-  const items = e.clipboardData.items;
-  const files = (Array.prototype.slice.call(items)).reduce((
-    filesArr: File[],
-    item: DataTransferItem
-  ) => {
-    if (item.kind === 'file') {
-      filesArr.push(item.getAsFile() as File);
-    }
-    return filesArr;
-  }, []);
-
-  if (files.length) {
-    converter.convert(files, (
+  if (pastedFiles.length) {
+    converter.convert(pastedFiles, (
       src: string
-    ) => fn({ src }));
+    ) => { fn({ src }); });
 
     return true;
   }

@@ -23,7 +23,6 @@
   "dependencies": {
     "@atlaskit/editor-core": "^3.0.0",
     "@atlaskit/mention": "^2.1.0",
-    "ak-editor-shared-styles": "^3.0.0",
     "akutil-shared-styles": "^37.0.1",
     "collapse-whitespace": "^1.1.4",
     "tslib": "^1.2.0"

@@ -9,7 +9,7 @@ import {
   akColorN500,
   akColorN700,
   akColorN900,
-} from 'akutil-shared-styles';
+} from '@atlaskit/util-shared-styles';
 
 export const akEditorCodeFontFamily = akCodeFontFamily;
 export const akEditorInactiveForeground = akColorN500;

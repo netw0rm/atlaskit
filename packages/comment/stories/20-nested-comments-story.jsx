@@ -37,7 +37,7 @@ class NestedComment extends PureComponent {
 }
 
 storiesOf(name, module)
-  .add('ak-comment with nested comments', () => (
+  .add('nested comments', () => (
     <div>
       <NestedComment content="Root-level comment" nestedLevel="0">
         <NestedComment content="1st-level comment 1" nestedLevel="1">

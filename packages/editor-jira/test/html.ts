@@ -8,7 +8,7 @@ import { JIRASchema, makeSchema } from '../src/schema';
 
 chai.use(chaiPlugin);
 
-export const schema = makeSchema(false) as JIRASchema;
+export const schema = makeSchema({ allowLists: false }) as JIRASchema;
 
 // Nodes
 const doc = nodeFactory(schema.nodes.doc);

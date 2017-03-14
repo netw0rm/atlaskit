@@ -2,7 +2,9 @@
   "extends": "../../tsconfig",
   "compilerOptions": {
     "outDir": "../../dist/es2015",
-    "target": "es2015"
+    "target": "es2015",
+    "declaration": true,
+    "declarationDir": "../../dist/types"
   },
   "include": [
     "../../src/**/*.ts",

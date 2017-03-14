@@ -21,7 +21,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "@atlaskit/editor-core": "^3.0.0",
+    "@atlaskit/editor-core": "^3.7.0",
     "@atlaskit/mention": "^2.1.0",
     "akutil-shared-styles": "^37.0.1",
     "collapse-whitespace": "^1.1.4",

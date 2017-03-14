@@ -1,5 +1,6 @@
 import { EditorState, Fragment, liftTarget, TextSelection, Transaction } from '../prosemirror';
 import * as baseCommand from '../prosemirror/prosemirror-commands';
+import { findWrapping } from '../prosemirror/prosemirror-transform';
 import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
@@ -148,14 +149,26 @@ export function setNormalText(): Command {
 
 export function toggleBlockquote(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from } = state.selection;
+    const { $from, $to  } = state.selection;
     const potentialBlockquoteNode = $from.node($from.depth - 1);
 
     if (potentialBlockquoteNode && potentialBlockquoteNode.type === state.schema.nodes.blockquote) {
       return baseCommand.lift(state, dispatch);
     }
 
-    return baseCommand.wrapIn(state.schema.nodes.blockquote)(state, dispatch);
+    // convert node to paragraph
+    let tr = state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph);
+
+    // apply 'wrapIn'
+    let range = $from.blockRange($to);
+    let wrapping = range && findWrapping(range, state.schema.nodes.blockquote);
+    if (!wrapping) {
+      dispatch(tr);
+      return false;
+    } else {
+      dispatch(tr.wrap(range, wrapping).scrollIntoView());
+      return true;
+    }
   };
 }
 

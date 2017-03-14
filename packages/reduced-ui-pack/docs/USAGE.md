@@ -14,6 +14,12 @@ Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.co
 npm install @NAME@
 ```
 
+Make sure you're also including the `css-reset` stylesheet before these styles. The `css-reset` stylesheet provides the core typography rules which `reduced-ui-pack` builds upon. Install it with:
+
+```sh
+npm install @atlaskit/css-reset
+```
+
 ## Using the component
 
 ### Importing
@@ -33,6 +39,7 @@ The Webpack style loader should then place the CSS within the HEAD of your HTML 
 ```html
 <html>
   <head>
+    <link rel="stylesheet" href="node_modules/@atlaskit/css-reset/dist/bundle.css" />
     <link rel="stylesheet" href="node_modules/@NAME@/dist/bundle.css" />
   </head>
   <body>

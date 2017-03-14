@@ -105,7 +105,7 @@ describe('markdown-inputrules', () => {
       const { pm, sel } = editor(doc(p('{<>}')));
 
       pm.input.insertText(sel, sel, '`text`');
-      expect(pm.doc).to.deep.equal(doc(p(mono('text'))));
+      expect(pm.doc).to.deep.equal(doc(p(mono('text'), ' ')));
     });
 
     it('should be able to preserve mention inside mono text', () => {
@@ -117,7 +117,7 @@ describe('markdown-inputrules', () => {
           'there'
         )));
       pm.input.insertText(15, 15, '`');
-      expect(pm.doc).to.deep.equal(doc(p(mono('hello, '), mono(mentionNode), mono('there'))));
+      expect(pm.doc).to.deep.equal(doc(p(mono('hello, '), mono(mentionNode), mono('there'), ' ')));
     });
   });
 
@@ -288,9 +288,9 @@ describe('markdown-inputrules', () => {
       const { pm, sel } = editor(doc(p('{<>}')));
 
       pm.input.insertText(sel, sel, '*`text`');
-      expect(pm.doc).to.deep.equal(doc(p('*', mono('text'))));
-      pm.input.insertText(sel + 5, sel + 5, '*');
-      expect(pm.doc).to.deep.equal(doc(p(em(mono('text')))));
+      expect(pm.doc).to.deep.equal(doc(p('*', mono('text'), ' ')));
+      pm.input.insertText(sel + 6, sel + 6, '*');
+      expect(pm.doc).to.deep.equal(doc(p(em(mono('text')), em(' '))));
     });
 
     it('should convert "~~**text**~~" to strike strong', () => {
@@ -302,4 +302,5 @@ describe('markdown-inputrules', () => {
       expect(pm.doc).to.deep.equal(doc(p(strike(strong('text')))));
     });
   });
+
 });

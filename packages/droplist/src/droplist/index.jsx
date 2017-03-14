@@ -2,11 +2,13 @@ import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import Layer from '@atlaskit/layer';
 import classnames from 'classnames';
+import { akGridSize } from '@atlaskit/util-shared-styles';
 
 import { locals as styles } from '../styles.less';
 
 const halfFocusRing = 1;
 const numberOfVisibleItems = 9;
+const dropOffset = `0 ${akGridSize}`;
 
 /* eslint-disable react/no-unused-prop-types */
 export default class DropdownList extends PureComponent {
@@ -133,7 +135,7 @@ export default class DropdownList extends PureComponent {
             </div> :
             null
           }
-          offset="0 4"
+          offset={dropOffset}
           position={props.position}
         >
           <div

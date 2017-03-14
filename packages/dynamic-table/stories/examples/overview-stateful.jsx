@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { action } from '@kadira/storybook';
-import AkDynamicTable from '../../src/';
+import AkDynamicTable from '@atlaskit/dynamic-table';
 import { caption, head, rows } from './sample-data';
 
 const Wrapper = styled.div`

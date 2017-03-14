@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-jira",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "config": {
     "access": "public"
   },
@@ -22,6 +22,7 @@
   "author": "Atlassian Pty Ltd",
   "dependencies": {
     "@atlaskit/editor-core": "^3.0.0",
+    "@atlaskit/mention": "^2.1.0",
     "ak-editor-shared-styles": "^3.0.0",
     "akutil-shared-styles": "^37.0.1",
     "collapse-whitespace": "^1.1.4",
@@ -33,7 +34,8 @@
   "devDependencies": {
     "@atlaskit/editor-jira": "*",
     "@atlaskit/util-readme": "^1.0.0",
-    "akutil-common-test": "*"
+    "akutil-common-test": "*",
+    "js-search": "^1.3.7"
   },
   "repository": {
     "type": "git",

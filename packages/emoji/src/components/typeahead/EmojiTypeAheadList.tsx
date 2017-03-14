@@ -1,6 +1,7 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { MouseEvent, PureComponent } from 'react';
+import Spinner from '@atlaskit/spinner';
 
 import * as styles from './styles';
 import EmojiItem from './EmojiTypeAheadItem';
@@ -26,6 +27,7 @@ function getKey(emojis: EmojiDescription[], index: number): string {
 export interface Props {
   emojis: EmojiDescription[];
   onEmojiSelected?: OnEmojiEvent;
+  loading?: boolean;
 }
 
 export interface State {
@@ -191,15 +193,29 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
   }
 
   render() {
-    const { emojis } = this.props;
+    const { emojis, loading } = this.props;
 
     const hasEmoji = emojis && emojis.length;
 
     const classes = classNames({
       'ak-emoji-typeahead-list': true,
       [styles.typeAheadList]: true,
-      [styles.typeAheadEmpty]: !hasEmoji,
+      [styles.typeAheadEmpty]: !hasEmoji && !loading,
     });
+
+    let listBody;
+    if (loading) {
+      listBody = (
+        <div className={styles.emojiTypeAheadSpinnerContainer}>
+          <div className={styles.emojiTypeAheadSpinner}>
+            <Spinner size="medium" />
+          </div>
+        </div>
+
+      );
+    } else {
+      listBody = this.renderItems(emojis);
+    }
 
     return (
       <div className={styles.typeAheadListContainer}>
@@ -207,7 +223,7 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
           <Scrollable
             ref={(ref) => { this.scrollable = ref; }}
           >
-            {this.renderItems(emojis)}
+            {listBody}
           </Scrollable>
         </div>
       </div>

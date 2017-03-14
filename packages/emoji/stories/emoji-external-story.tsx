@@ -3,9 +3,9 @@ import * as React from 'react';
 
 import { name } from '../package.json';
 import ResourcedEmojiControl from './demo-resource-control';
-
 import EmojiPickerTextInput from './demo-emoji-picker-text-input';
 import EmojiTypeAheadTextInput from './demo-emoji-typeahead-text-input';
+import { getEmojiResource } from './story-data';
 
 import sampleEmojiConfig from '../local-config-example';
 
@@ -21,12 +21,15 @@ try {
   emojiConfig = sampleEmojiConfig;
 }
 
+const defaultEmojiProvider = Promise.resolve(getEmojiResource());
+
 storiesOf(`${name}/external-emoji`, module)
   .add('resourced picker', () => {
     const picker = (
       <EmojiPickerTextInput
         onSelection={action('emoji selected')}
         position="below"
+        emojiProvider={defaultEmojiProvider}
       />
     );
     return (
@@ -43,6 +46,7 @@ storiesOf(`${name}/external-emoji`, module)
         onSelection={action('emoji selected')}
         position="below"
         afterContent
+        emojiProvider={defaultEmojiProvider}
       />
     );
     return (

@@ -6,6 +6,8 @@ import {
   HeadingNodeType,
   HorizontalRuleNodeType,
   ListItemNodeType,
+  MentionNodeType,
+  MentionQueryMarkType,
   MonoMarkType,
   OrderedListNodeType,
   ParagraphNodeType,
@@ -24,12 +26,10 @@ export interface BaseSchemaNodes {
   text: Text;
   hard_break: HardBreakNodeType;
   horizontal_rule: HorizontalRuleNodeType;
-}
-
-export interface ListsSchemaNodes {
-  ordered_list: OrderedListNodeType;
-  bullet_list: BulletListNodeType;
-  list_item: ListItemNodeType;
+  ordered_list?: OrderedListNodeType;
+  bullet_list?: BulletListNodeType;
+  list_item?: ListItemNodeType;
+  mention?: MentionNodeType;
 }
 
 export interface BaseSchemaMarks {
@@ -39,6 +39,12 @@ export interface BaseSchemaMarks {
   subsup: SubSupMarkType;
   u: UnderlineMarkType;
   mono: MonoMarkType;
+  mention_query?: MentionQueryMarkType;
+}
+
+export interface JIRASchemaConfig {
+  allowLists?: boolean;
+  allowMentions?: boolean;
 }
 
 export interface JIRASchema extends Schema {
@@ -46,18 +52,15 @@ export interface JIRASchema extends Schema {
   marks: BaseSchemaMarks;
 }
 
-export interface JIRASchemaWithLists extends Schema {
-  nodes: BaseSchemaNodes & ListsSchemaNodes;
-  marks: BaseSchemaMarks;
+export function isSchemaWithLists(schema: JIRASchema): boolean {
+  return !!schema.nodes.bullet_list;
 }
 
-export type SupportedSchema = JIRASchema | JIRASchemaWithLists;
-
-export function isSchemaWithLists(schema: SupportedSchema): schema is JIRASchemaWithLists {
-  return !!schema.nodes['bullet_list'];
+export function isSchemaWithMentions(schema: JIRASchema): boolean {
+  return !!schema.nodes.mention;
 }
 
-export function makeSchema(allowLists: boolean): SupportedSchema {
+export function makeSchema(config: JIRASchemaConfig): JIRASchema {
   const nodes = {
     doc: { type: DocNodeType, content: 'block+' },
     paragraph: { type: ParagraphNodeType, content: 'inline<_>*', group: 'block' },
@@ -68,6 +71,7 @@ export function makeSchema(allowLists: boolean): SupportedSchema {
     text: { type: Text, group: 'inline' },
     hard_break: { type: HardBreakNodeType, group: 'inline' },
     horizontal_rule: { type: HorizontalRuleNodeType, group: 'block' },
+    mention: { type: MentionNodeType, group: 'inline' },
   };
 
   const marks = {
@@ -77,12 +81,18 @@ export function makeSchema(allowLists: boolean): SupportedSchema {
     subsup: SubSupMarkType,
     u: UnderlineMarkType,
     mono: MonoMarkType,
+    mention_query: MentionQueryMarkType,
   };
 
-  if (!allowLists) {
+  if (!config.allowLists) {
     delete nodes.ordered_list;
     delete nodes.bullet_list;
     delete nodes.list_item;
+  }
+
+  if (!config.allowMentions) {
+    delete nodes.mention;
+    delete marks.mention_query;
   }
 
   return new Schema({ nodes, marks });

@@ -4,7 +4,7 @@ import {toHumanReadableMediaSize} from '../utils/index';
 import {CardAction} from '@atlaskit/media-core';
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
 import {Dropdown} from '../dropdown/dropdown';
-import {ErrorIcon} from '..';
+import {ErrorIcon} from '../generic/errorIcon/errorIcon';
 import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper, FileInfoWrapper} from './styled';
 
 /* Child stateless components*/

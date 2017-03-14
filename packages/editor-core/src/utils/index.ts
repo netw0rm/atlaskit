@@ -6,7 +6,8 @@ import {
   ProseMirror,
   ResolvedPos,
   Selection,
-  TextSelection
+  TextSelection,
+  Fragment,
 } from '../prosemirror';
 import { isCodeBlockNode } from '../schema/nodes/code-block';
 
@@ -285,4 +286,18 @@ export function removeCodeBlocksFromSelection(pm: ProseMirror): EditorTransform 
     }
   });
   return tr;
+}
+
+/**
+ * Function will insert a blank space atthe end of current selection.
+ * @param pm
+ */
+export function insertBlankSpace(pm: ProseMirror): EditorTransform | undefined {
+  const { text } = pm.schema.nodes;
+  const { to } = pm.selection;
+  if (text && to) {
+    const textNode = text.create({}, ' ');
+    const fragment = new Fragment([textNode], textNode.nodeSize);
+    return pm.tr.insert(to, fragment);
+  }
 }

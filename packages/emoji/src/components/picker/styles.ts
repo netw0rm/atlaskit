@@ -154,3 +154,24 @@ export const emojiPicker = style({
   height: `${emojiPickerHeight}px`,
   width: `${emojiPickerWidth}px`,
 });
+
+const spinnerSize = 30;
+
+export const listSizes = {
+  emoji: 40,
+  search: 50,
+  category: 25,
+  default: 20,
+};
+
+export const emojiPickerSpinnerContainer = style({
+  position: 'relative',
+  zIndex: 1,
+});
+
+export const emojiPickerSpinner = style({
+  position: 'absolute',
+  left: `${((emojiPickerWidth - spinnerSize) / 2).toFixed()}px`,
+  top: `${((emojiPickerListHeight - spinnerSize + listSizes.search) / 2).toFixed()}px`,
+});
+

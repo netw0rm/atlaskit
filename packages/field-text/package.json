@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-text",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "config": {
     "access": "public"
   },
@@ -20,7 +20,7 @@
     "react": "^15.3.2"
   },
   "dependencies": {
-    "@atlaskit/field-base": "^4.0.0",
+    "@atlaskit/field-base": "^5.0.0",
     "babel-runtime": "^6.11.6"
   },
   "author": "Atlassian Pty Ltd",

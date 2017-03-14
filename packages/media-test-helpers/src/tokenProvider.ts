@@ -5,7 +5,7 @@ let tokenRequest: Promise<JwtToken>;
 
 export class StoryBookTokenProvider {
   static tokenProvider(collectionName: string): Promise<JwtToken> {
-    const params = {collection: collectionName};
+    const params = {collection: collectionName || 'MediaServicesSample'};
     if (tokenRequest) {
       return tokenRequest;
     }

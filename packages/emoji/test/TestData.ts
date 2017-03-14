@@ -1,5 +1,6 @@
 import EmojiService from '../src/api/EmojiService';
 import { EmojiDescription } from '../src/types';
+import { mockEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig } from './MockEmojiResource';
 
 export const spriteEmoji: EmojiDescription = {
   id: 'grimacing',
@@ -46,4 +47,12 @@ declare var require: {
 // tslint:disable-next-line:no-var-requires
 export const emojis: EmojiDescription[] = require('./test-emoji.json') as EmojiDescription[];
 
+export const standardEmojis: EmojiDescription[] = emojis.filter(emoji => emoji.category !== 'ATLASSIAN');
+export const atlassianEmojis: EmojiDescription[] = emojis.filter(emoji => emoji.category === 'ATLASSIAN');
+
 export const emojiService = new EmojiService(emojis);
+
+export const grinEmoji = emojiService.findByShortcut('grin') as EmojiDescription;
+export const areyoukiddingmeEmoji = emojiService.findByShortcut('areyoukiddingme') as EmojiDescription;
+
+export const getEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(emojiService, config);

@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 import { fadeIn } from './animations';
 
+export * from './config';
 export * from './mixins';
 export * from './easing';
 export * from './animations';
@@ -21,7 +22,5 @@ export const cardShadow = () => `
 export const FadeinImage = styled.div`
   ${fadeIn()}
 `;
-
-export const defaultTransitionDuration = '.3s';
 
 export default Root;

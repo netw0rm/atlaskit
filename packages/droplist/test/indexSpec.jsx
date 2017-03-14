@@ -34,7 +34,7 @@ describe(`${name} - core`, () => {
 
     it('should pass required properties to Layer', () => {
       const layer = wrapper.find(`.${styles.dropWrapper}`).children().first();
-      expect(layer.prop('offset')).to.equal('0 4');
+      expect(layer.prop('offset')).to.equal('0 8px');
       expect(layer.prop('position')).to.equal('bottom left');
       expect(layer.prop('autoPosition')).to.equal(wrapper.props().shouldFlip);
       expect(layer.prop('content')).to.not.equal(undefined);

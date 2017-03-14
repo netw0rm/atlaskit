@@ -6,6 +6,7 @@ export { base64fileconverter };
 export { default as sendKeyToPm } from './send-key-to-pm';
 export { default as chaiPlugin } from './chai';
 export { default as createEvent } from './create-event';
+export { default as dispatchKeypressEvent } from './dispatch-keypress-event';
 export { default as dispatchPasteEvent } from './dispatch-paste-event';
 export { default as SyncPlugin } from './sync-plugin';
 export { default as makeEditor } from './make-editor';

@@ -7,18 +7,13 @@ CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 CHALK="`yarn bin`/chalk"
 
 # Run the Browserstack tests
-for STAGE in 1 2 3
-do
-  echo
-  $CHALK --no-stdin -t "{blue Running browserstack test of stage $STAGE}"
-  echo
-
-  GITHEAD_SHORT="$GITHEAD_SHORT" \
-  CURRENT_BRANCH="$CURRENT_BRANCH" \
-  BROWSERSTACK_STAGE=$STAGE \
-  retry \
-  --retries=$MAX_RETRIES \
-  -- \
-  karma start \
-  ./build/karma/wc/browserstack.js
-done
+echo
+$CHALK --no-stdin -t "{blue Running browserstack test with all stages}"
+echo
+GITHEAD_SHORT="$GITHEAD_SHORT" \
+CURRENT_BRANCH="$CURRENT_BRANCH" \
+retry \
+--retries=$MAX_RETRIES \
+-- \
+karma start \
+./build/karma/wc/browserstackAll.js

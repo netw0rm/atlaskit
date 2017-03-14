@@ -10,7 +10,8 @@ import {
   Node,
   PanelPlugin,
   ProseMirror,
-  TextFormattingPlugin
+  TextFormattingPlugin,
+  DefaultKeymapsPlugin,
 } from '../../';
 import schema from './schema';
 
@@ -146,7 +147,8 @@ export default class Editor extends PureComponent<Props, State> {
           ListsPlugin,
           TextFormattingPlugin,
           MentionsPlugin,
-          PanelPlugin
+          PanelPlugin,
+          DefaultKeymapsPlugin,
         ],
       });
 

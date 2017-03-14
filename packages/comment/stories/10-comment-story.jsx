@@ -10,7 +10,7 @@ import sampleAvatarImg from './sample-avatar.png';
 const sampleAvatar = <Avatar src={sampleAvatarImg} label="User avatar" />;
 
 storiesOf(name, module)
-  .add('simple ak-comment', () => (
+  .add('simple comment', () => (
     <Comment
       author={<CommentAuthor>John Smith</CommentAuthor>}
       avatar={sampleAvatar}
@@ -25,10 +25,10 @@ storiesOf(name, module)
       ]}
     />
   ))
-  .add('ak-comment with no top and bottom bars', () => (
+  .add('comment with no top and bottom bars', () => (
     <Comment avatar={sampleAvatar} content={<p>{sampleText}</p>} />
   ))
-  .add('ak-comment with links for author and time', () => (
+  .add('comment with links for author and time', () => (
     <Comment
       author={<CommentAuthor href="#">John Smith</CommentAuthor>}
       avatar={sampleAvatar}
@@ -43,7 +43,7 @@ storiesOf(name, module)
       ]}
     />
   ))
-  .add('ak-comment with different mouse event handlers', () => {
+  .add('comment with different mouse event handlers', () => {
     const mouseOverHandler = event => action(`${event.target.textContent} button got mouseOver.`)();
     const focusHandler = event => action(`${event.target.textContent} button got focus.`)();
     return (
@@ -65,7 +65,7 @@ storiesOf(name, module)
       />
     );
   })
-  .add('ak-comment with different avatar sizes', () => {
+  .add('comment with different avatar sizes', () => {
     const avatarWithSize = size => (
       <Comment
         key={size}
@@ -93,10 +93,10 @@ storiesOf(name, module)
       </div>
     );
   })
-  .add('ak-comment with img avatar', () => (
+  .add('comment with img avatar', () => (
     <Comment
       author={<CommentAuthor>John Smith</CommentAuthor>}
       avatar={<img src={sampleAvatarImg} alt="img avatar" height="40" width="40" />}
       content={<p>{sampleText}</p>}
     />
-  ));
+));

@@ -1,9 +1,5 @@
 {
   "extends": "../../build/types/tsconfig.base",
-  "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "dist/types"
-  },
   "include": [
     "**/*"
   ]

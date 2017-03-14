@@ -173,7 +173,7 @@ The `packages/util-component-ts-template` component should serve as a reference 
 [TSLint](https://palantir.github.io/tslint/) is used (instead of ESLint) to lint TypeScript files (`.d.ts`, `.ts`, `.tsx`). TSLint also supports linting JavaScript files (`.js`) but this is disabled in favour of ESLint.
 
 * To run TSLint (without ESLint) across all components: `yarn run lint/ts`
-* To automatically fix TSLint vilations: `yarn run lint/ts/fix`
+* To automatically fix TSLint violations: `yarn run lint/ts/fix`
 * To lint in VS Code, install the TSLint extension and set the `"tslint.ignoreDefinitionFiles": false` workspace setting.
 
 All packages should use a consistent set of TSLint rules (found in `tslint.json`).
@@ -229,6 +229,14 @@ For example if a component requires an ES2015 global like `Promise`, it needs to
 This configuration would compile the package using only the listed ES2015 declarations.
 
 It is the responsibility of each package to document their environment requirements (e.g. presence of `window.Promise`).
+
+### Using `test-helper`
+
+Use the `test-helper` like below. Please don't directly import from `src`;
+
+```js
+import { exportName } from '@atlaskit/editor-core/dist/es5/test-helper';
+```
 
 ### Using `@types/` declarations
 

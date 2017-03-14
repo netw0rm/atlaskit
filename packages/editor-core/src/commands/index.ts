@@ -167,7 +167,7 @@ export function togglePanel(): Command {
       return baseCommand.lift(state, dispatch);
     }
 
-    return baseCommand.wrapIn(state.schema.nodes.panel, { panelType: 'info' })(state, dispatch);
+    return baseCommand.wrapIn(state.schema.nodes.panel)(state, dispatch);
   };
 }
 

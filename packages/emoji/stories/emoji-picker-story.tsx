@@ -4,8 +4,11 @@ import * as React from 'react';
 import EmojiPicker from '../src/components/picker/EmojiPicker';
 
 import { name } from '../package.json';
-import { getEmojiResource, lorem } from './story-data';
 import TriggeredEmojiResource from './TriggeredEmojiResource';
+
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojiResource, lorem } = emojiTestData.emojiStoryData;
 
 storiesOf(`${name}/EmojiPicker`, module)
   .add('picker popup', () => (

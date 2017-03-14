@@ -9,7 +9,9 @@ import ResourcedEmoji, { EmojiPlaceholder } from '../src/components/common/Resou
 import { EmojiProvider } from '../src/api/EmojiResource';
 
 import { MockEmojiResourceConfig } from './MockEmojiResource';
-import { areyoukiddingmeEmoji, grinEmoji, getEmojiResourcePromise } from './TestData';
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { areyoukiddingmeEmoji, grinEmoji, getEmojiResourcePromise }  = emojiTestData.emojiTestData;
 
 const findEmoji = component => component.find(Emoji);
 const emojiVisible = (component) => findEmoji(component).length === 1;
@@ -18,30 +20,33 @@ const emojiPlaceHolderVisible = (component) => component.find(EmojiPlaceholder).
 
 describe('<ResourcedEmoji />', () => {
   it('should render emoji', () => {
+    const grinEmojiDesc = grinEmoji();
     const component = mount(<ResourcedEmoji
       emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
-      emojiId={{ id: grinEmoji.id }}
+      emojiId={{ id: grinEmojiDesc.id }}
     />);
 
     return waitUntil(() => emojiVisible(component)).then(() => {
-      expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(grinEmoji.id);
+      expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(grinEmojiDesc.id);
     });
   });
 
   it('should update emoji on id change', () => {
+    const grinEmojiDesc = grinEmoji();
+    const areyoukiddingmeEmojiDesc = areyoukiddingmeEmoji();
     const component = mount(<ResourcedEmoji
       emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
-      emojiId={{ id: grinEmoji.id }}
+      emojiId={{ id: grinEmojiDesc.id }}
     />);
 
     return waitUntil(() => emojiVisible(component)).then(() => {
-      expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(grinEmoji.id);
+      expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(grinEmojiDesc.id);
       component.setProps({
-        emojiId: { id: areyoukiddingmeEmoji.id },
+        emojiId: { id: areyoukiddingmeEmojiDesc.id },
       });
 
-      return waitUntil(() => emojiVisibleById(component, areyoukiddingmeEmoji.id)).then(() => {
-        expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(areyoukiddingmeEmoji.id);
+      return waitUntil(() => emojiVisibleById(component, areyoukiddingmeEmojiDesc.id)).then(() => {
+        expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(areyoukiddingmeEmojiDesc.id);
       });
     });
   });
@@ -69,6 +74,7 @@ describe('<ResourcedEmoji />', () => {
   });
 
   it('placeholder while loading emoji', () => {
+    const grinEmojiDesc = grinEmoji();
     let resolver;
     let resolverResult;
     const config: MockEmojiResourceConfig = {
@@ -79,14 +85,14 @@ describe('<ResourcedEmoji />', () => {
     };
     const component = mount(<ResourcedEmoji
       emojiProvider={getEmojiResourcePromise(config) as Promise<EmojiProvider>}
-      emojiId={{ id: grinEmoji.id }}
+      emojiId={{ id: grinEmojiDesc.id }}
     />);
 
     return waitUntil(() => !!resolver).then(() => {
       return waitUntil(() => emojiPlaceHolderVisible(component)).then(() => {
         resolver(resolverResult);
         return waitUntil(() => emojiVisible(component)).then(() => {
-          expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(grinEmoji.id);
+          expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(grinEmojiDesc.id);
         });
       });
     });

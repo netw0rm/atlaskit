@@ -7,7 +7,10 @@ import EmojiPreview from '../src/components/common/EmojiPreview';
 import ToneSelector from '../src/components/common/ToneSelector';
 import Emoji from '../src/components/common/Emoji';
 import { EmojiDescription } from '../src/types';
-import { imageEmoji } from './TestData';
+
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { imageEmoji } = emojiTestData.emojiTestData;
 
 function skinVariation(id) {
   return {

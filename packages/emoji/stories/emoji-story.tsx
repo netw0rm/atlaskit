@@ -3,7 +3,10 @@ import * as React from 'react';
 
 import { name } from '../package.json';
 import Emoji from '../src/components/common/Emoji';
-import { getEmojiService } from './story-data';
+
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojiService } = emojiTestData.emojiStoryData;
 
 const emojiService = getEmojiService();
 

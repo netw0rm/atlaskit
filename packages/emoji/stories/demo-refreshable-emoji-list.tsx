@@ -4,7 +4,9 @@ import { action } from '@kadira/storybook';
 
 import EmojiTypeAheadList from '../src/components/typeahead/EmojiTypeAheadList';
 import { EmojiDescription } from '../src/types';
-import { getEmojis } from './story-data';
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojis } = emojiTestData.emojiStoryData;
 
 function randomEmojis(): EmojiDescription[] {
   return getEmojis().filter(() => Math.random() < 0.02).slice(0, 50);

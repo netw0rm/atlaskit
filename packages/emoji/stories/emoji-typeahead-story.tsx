@@ -3,8 +3,11 @@ import * as React from 'react';
 
 import { name } from '../package.json';
 import EmojiTextInput from './demo-emoji-typeahead-text-input';
-import { getEmojiResource } from './story-data';
 import TriggeredEmojiResource from './TriggeredEmojiResource';
+
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojiResource } = emojiTestData.emojiStoryData;
 
 const bottomStyle = {
   position: 'absolute',

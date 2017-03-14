@@ -6,7 +6,10 @@ import { expect } from 'chai';
 import ToneSelector from '../src/components/common/ToneSelector';
 import EmojiButton from '../src/components/common/EmojiButton';
 import { EmojiDescription, EmojiRepresentation } from '../src/types';
-import { imageEmoji } from './TestData';
+
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { imageEmoji } = emojiTestData.emojiTestData;
 
 function skinVariation(id): EmojiRepresentation {
   return {

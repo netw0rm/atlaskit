@@ -4,7 +4,9 @@ import { PureComponent } from 'react';
 import { EmojiProvider } from '../src/api/EmojiResource';
 import EmojiPicker from '../src/components/picker/EmojiPicker';
 import { OnEmojiEvent, RelativePosition } from '../src/types';
-import { lorem } from './story-data';
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { lorem } = emojiTestData.emojiStoryData;
 
 export interface Props {
   onSelection?: OnEmojiEvent;

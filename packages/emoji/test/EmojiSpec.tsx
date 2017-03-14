@@ -4,7 +4,10 @@ import { expect } from 'chai';
 
 import * as styles from '../src/components/common/styles';
 import Emoji from '../src/components/common/Emoji';
-import { spriteEmoji, imageEmoji } from './TestData';
+
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { spriteEmoji, imageEmoji } = emojiTestData.emojiTestData;
 
 describe('<Emoji />', () => {
   describe('as sprite', () => {

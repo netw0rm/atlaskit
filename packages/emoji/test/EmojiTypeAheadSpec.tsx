@@ -4,7 +4,6 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiService, getEmojiResourcePromise } from './TestData';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from './emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../src/components/typeahead/EmojiTypeAhead';
@@ -12,6 +11,10 @@ import EmojiTypeAheadItem from '../src/components/typeahead/EmojiTypeAheadItem';
 import { OptionalEmojiDescription } from '../src/types';
 import { EmojiProvider } from '../src/api/EmojiResource';
 import { Props as TypeAheadProps, State as TypeAheadState } from '../src/components/typeahead/EmojiTypeAhead';
+
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojiService, getEmojiResourcePromise } = emojiTestData.emojiTestData;
 
 function setupPicker(props?: Props): ReactWrapper<any, any> {
   return mount(
@@ -23,8 +26,6 @@ function setupPicker(props?: Props): ReactWrapper<any, any> {
   );
 }
 
-const allEmojis = emojiService.all().emojis;
-
 const leftClick = {
   button: 0,
 };
@@ -33,7 +34,17 @@ const findEmojiItems = (component) => component.find(EmojiTypeAheadItem);
 const itemsVisible = (component) => findEmojiItems(component).length > 0;
 const doneLoading = (component: ReactWrapper<TypeAheadProps, TypeAheadState>) => !component.state('loading');
 
+let allEmojis;
+
 describe('EmojiTypeAhead', () => {
+  beforeEach(() => {
+    allEmojis = getEmojiService().all().emojis;
+  });
+
+  afterEach(() => {
+    allEmojis = undefined;
+  });
+
   it('should display max emoji by default', () => {
     const component = setupPicker();
     return waitUntil(() => doneLoading(component)).then(() => {

@@ -1,7 +1,10 @@
-import { getAtlassianEmojiData, getStandardEmojiData/* lorem */ } from './story-data';
 import * as fetchMock from 'fetch-mock';
 
 import EmojiResource, { EmojiResourceConfig } from '../src/api/EmojiResource';
+
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getAtlassianEmojiData, getStandardEmojiData } = emojiTestData.emojiStoryData;
 
 let resourceCount = 0;
 

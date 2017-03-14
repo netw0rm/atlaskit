@@ -4,7 +4,9 @@ import { expect } from 'chai';
 
 import * as styles from '../src/components/picker/styles';
 import EmojiList from '../src/components/picker/EmojiPickerList';
-import { imageEmoji } from './TestData';
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { imageEmoji } = emojiTestData.emojiTestData;
 
 const emojis = [ imageEmoji ];
 

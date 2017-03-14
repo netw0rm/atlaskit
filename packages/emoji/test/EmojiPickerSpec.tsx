@@ -3,8 +3,6 @@ import { mount, ReactWrapper } from 'enzyme';
 import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiService, getEmojiResourcePromise } from './TestData';
-
 import CategorySelector from '../src/components/picker/CategorySelector';
 import Emoji from '../src/components/common/Emoji';
 import EmojiButton from '../src/components/common/EmojiButton';
@@ -15,6 +13,10 @@ import EmojiPickerListCategory from '../src/components/picker/EmojiPickerListCat
 import { EmojiProvider } from '../src/api/EmojiResource';
 // import EmojiPickerListSearch from '../src/components/picker/EmojiPickerListSearch';
 // import { EmojiDescription } from '../src/types';
+
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojiService, getEmojiResourcePromise } = emojiTestData.emojiTestData;
 
 function setupPicker(props?: Props): ReactWrapper<any, any> {
   return mount(
@@ -29,12 +31,20 @@ const leftClick = {
   button: 0,
 };
 
-const allEmojis = emojiService.all().emojis;
+let allEmojis;
 
 const findEmoji = list => list.find(Emoji);
 const emojisVisible = (list) => findEmoji(list).length > 0;
 
 describe('<EmojiPicker />', () => {
+  beforeEach(() => {
+    allEmojis = getEmojiService().all().emojis;
+  });
+
+  afterEach(() => {
+    allEmojis = undefined;
+  });
+
   it('should display first set of emoji in viewport by default', () => {
     const component = setupPicker();
     const list = component.find(EmojiPickerList);

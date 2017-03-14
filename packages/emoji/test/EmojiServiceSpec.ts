@@ -4,7 +4,10 @@ import { expect } from 'chai';
 import { EmojiDescription } from '../src/types';
 import EmojiService from '../src/api/EmojiService';
 
-import { emojis as allEmojis, emojiService } from './TestData';
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojiService } = emojiTestData.emojiTestData;
+const getAllEmojis = emojiTestData.emojiTestData.emojis;
 
 function checkOrder(expected, actual) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
@@ -41,6 +44,7 @@ const cowboy: EmojiDescription = {
 describe('EmojiService', () => {
   describe('#search', () => {
     it('all', () => {
+      const allEmojis = getAllEmojis();
       const splitCategoryEmojis = [
         ...allEmojis.slice(0, 88), // upto flag,
         cowboy,
@@ -56,14 +60,14 @@ describe('EmojiService', () => {
       checkOrder(expectedEmoji, emojis);
     });
     it('search retains order', () => {
-      const emojis = emojiService.search('flag').emojis;
-      const flagEmojis = allEmojis.filter(emoji =>
+      const emojis = getEmojiService().search('flag').emojis;
+      const flagEmojis = getAllEmojis().filter(emoji =>
         emoji.shortcut.indexOf('flag') === 0 || emoji.name && emoji.name.indexOf('flag') === 0
       );
       checkOrder(flagEmojis, emojis);
     });
     it('no categories repeat', () => {
-      const emojis = emojiService.all().emojis;
+      const emojis = getEmojiService().all().emojis;
       const foundCategories = new Set<string>();
       let lastCategory: string;
 

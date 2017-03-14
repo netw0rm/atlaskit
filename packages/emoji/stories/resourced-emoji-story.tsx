@@ -5,9 +5,11 @@ import { name } from '../package.json';
 import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
 import { EmojiProvider } from '../src/api/EmojiResource';
 
-// import { MockEmojiResourceConfig } from '../test/MockEmojiResource';
-import { getEmojiResource, lorem } from './story-data';
 import TriggeredEmojiResource from './TriggeredEmojiResource';
+
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojiResource, lorem } = emojiTestData.emojiStoryData;
 
 interface SampleEmojiProps {
   emojiProvider?: Promise<EmojiProvider>;

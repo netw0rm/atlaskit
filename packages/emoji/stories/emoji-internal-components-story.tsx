@@ -2,7 +2,6 @@ import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 
 import { name } from '../package.json';
-import { getEmojis } from './story-data';
 
 import CategorySelector from '../src/components/picker/CategorySelector';
 import EmojiPickerFooter from '../src/components/picker/EmojiPickerFooter';
@@ -14,6 +13,10 @@ import { emojiPickerWidth } from '../src/shared-styles';
 import filters from '../src/util/filters';
 
 import RefreshableEmojiList from './demo-refreshable-emoji-list';
+
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojis } = emojiTestData.emojiStoryData;
 
 const emoji = {
   id: '118608',

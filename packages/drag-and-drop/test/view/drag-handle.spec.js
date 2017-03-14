@@ -171,7 +171,20 @@ describe('Drag handle', () => {
     });
 
     describe('drop', () => {
+      it('should lift if the item is not dragging when pressing spacebar', () => {
+
+      });
       it('should drop on a spacebar press after a lift', () => {
+
+      });
+    });
+
+    describe('cancel', () => {
+      it('should not do anything if not dragging', () => {
+
+      });
+
+      it('should cancel when the user presses escape', () => {
 
       });
     });

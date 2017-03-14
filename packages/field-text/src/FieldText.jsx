@@ -61,7 +61,7 @@ export default class FieldText extends PureComponent {
             onChange={this.props.onChange}
             id={this.props.id}
             autoFocus={this.props.autoFocus}
-            ref={(input) => {this.input = input;}}
+            ref={(input) => { this.input = input; }}
           />
         </Base>
       </div>

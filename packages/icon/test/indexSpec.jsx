@@ -284,7 +284,7 @@ describe(name, () => {
     it('should have role="img"', () => {
       const { AtlassianIcon } = bundle;
       const wrapper = mount(<AtlassianIcon label="My label" />);
-      expect(wrapper.find('[role="img"]')).not.to.equal(undefined);
+      expect(wrapper.find('[role="img"]')).to.have.length(1);
     });
 
     it('should be possible to create the components', () => {
@@ -302,7 +302,7 @@ describe(name, () => {
         const { AtlassianIcon } = bundle;
         const label = 'my label';
         const wrapper = mount(<AtlassianIcon label={label} />);
-        expect(wrapper.find('[aria-labelledby="my label"]')).not.to.equal(undefined);
+        expect(wrapper.find('[aria-label="my label"]')).to.have.length(1);
       });
     });
   });

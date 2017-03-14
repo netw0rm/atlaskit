@@ -36,6 +36,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/util-common-test": "1.0.2",
+    "@atlaskit/util-data-test": "1.0.0",
     "@atlaskit/util-readme": "^1.0.0",
     "fetch-mock": "^5.8.0"
   },

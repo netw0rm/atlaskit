@@ -7,7 +7,9 @@ import { mount, shallow } from 'enzyme';
 
 import { emojiVisible } from './test-utils';
 import EmojiButton from '../src/internal/emoji-button';
-import { getEmojiResource, getEmojiService } from '../stories/examples/emoji-provider';
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojiResourcePromise, getEmojiService } = emojiTestData.emojiTestData;
 
 const { expect } = chai;
 
@@ -16,7 +18,7 @@ const smiley: EmojiDescription = getEmojiService().findByShortcut('smiley') as E
 const emojiId: EmojiId = { id: smiley.id };
 
 const renderEmojiButton = (onClick: OnEmojiEvent = () => {} ) => {
-  return <EmojiButton onClick={onClick} emojiId={emojiId} emojiProvider={getEmojiResource()} />;
+  return <EmojiButton onClick={onClick} emojiId={emojiId} emojiProvider={getEmojiResourcePromise()} />;
 };
 
 describe('@atlaskit/reactions/emoji-button', () => {

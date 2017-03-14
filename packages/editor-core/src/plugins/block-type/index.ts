@@ -147,7 +147,7 @@ export class BlockTypeState {
       }
     } else if (node.type === this.state.schema.nodes.codeBlock) {
       return CODE_BLOCK;
-    } else if (node.type === this.state.schema.nodes.blockQuote) {
+    } else if (node.type === this.state.schema.nodes.blockquote) {
       return BLOCK_QUOTE;
     } else if (node.type === this.state.schema.nodes.panel) {
       return PANEL;

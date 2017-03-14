@@ -51,11 +51,11 @@ export class ListsState {
   }
 
   toggleBulletList(view: EditorView) {
-    commands.toggleBulletList()(view.state, view.dispatch);
+    commands.toggleBulletList()(view.state, view.dispatch, view);
   }
 
   toggleOrderedList(view: EditorView) {
-    commands.toggleOrderedList()(view.state, view.dispatch);
+    commands.toggleOrderedList()(view.state, view.dispatch, view);
   }
 
   update(newEditorState) {
@@ -136,7 +136,3 @@ const plugin = new Plugin({
 });
 
 export default plugin;
-
-// TODO: Toggle multiple blocks (!!!)
-// TODO: Adjust Selection (?)
-// TODO: Tests

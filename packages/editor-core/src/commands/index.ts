@@ -1,10 +1,11 @@
-import { EditorState, NodeType, Fragment, liftTarget, TextSelection, Transaction, NodeSelection } from '../prosemirror';
+import { EditorState, EditorView, Fragment, liftTarget, NodeSelection, NodeType, TextSelection, Transaction } from '../prosemirror';
 import * as baseCommand from '../prosemirror/prosemirror-commands';
 import { findWrapping } from '../prosemirror/prosemirror-transform';
 import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
+import { isRangeOfType } from '../utils/index-future';
 
 export function toggleBlockType(name: string): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
@@ -61,27 +62,39 @@ export function toggleBlockType(name: string): Command {
   };
 }
 
-export function toggleBulletList(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from } = state.selection;
+export function toggleList(listType: 'bulletList' | 'orderedList'): Command {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean {
+    const { $from, $to } = state.selection;
     const grandgrandParent = $from.node(-2);
-    if (grandgrandParent && grandgrandParent.type === state.schema.nodes.bulletList) {
-      return liftListItem()(state, dispatch);
+    const isRangeOfSingleType = isRangeOfType(state.doc, $from, $to, state.schema.nodes[listType]);
+
+    if (grandgrandParent && grandgrandParent.type === state.schema.nodes[listType] && isRangeOfSingleType) {
+      // Untoggles list
+      return liftListItems()(state, dispatch);
     } else {
-      return baseListCommand.wrapInList(state.schema.nodes.bulletList)(state, dispatch);
+      // Wraps selection in list and converts list type e.g. bullet_list -> ordered_list if needed
+      if (!isRangeOfSingleType) {
+        liftListItems()(view.state, view.dispatch);
+      }
+      return wrapInList(state.schema.nodes[listType])(view.state, view.dispatch, view);
     }
   };
 }
 
+export function toggleBulletList(): Command {
+  return toggleList('bulletList');
+}
+
 export function toggleOrderedList(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from } = state.selection;
-    const grandgrandParent = $from.node(-2);
-    if (grandgrandParent && grandgrandParent.type === state.schema.nodes.orderedList) {
-      return liftListItem()(state, dispatch);
-    } else {
-      return baseListCommand.wrapInList(state.schema.nodes.orderedList)(state, dispatch);
-    }
+  return toggleList('orderedList');
+}
+
+export function wrapInList(nodeType): Command {
+  return (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean  => {
+    return baseCommand.autoJoin(
+      baseListCommand.wrapInList(nodeType) as any,
+      (before, after) => before.type === after.type && before.type === nodeType
+    )(view.state, view.dispatch);
   };
 }
 
@@ -91,28 +104,32 @@ export function splitListItem(): Command {
   };
 }
 
-export function liftListItem(): Command {
+export function liftListItems(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    let { $from, $to } = state.selection;
-    let { listItem, paragraph } = state.schema.nodes;
-    let range = $from.blockRange($to, (node) => {
-      if (node && node.firstChild) {
-        return node.type === listItem && node.firstChild.type === paragraph;
+    const { tr } = state;
+    const { $from, $to } = state.selection;
+    const { paragraph } = state.schema.nodes;
+
+    tr.doc.nodesBetween($from.pos, $to.pos, (node, pos) => {
+      if (node.type === paragraph) {
+        const sel = new NodeSelection(tr.doc.resolve(tr.mapping.map(pos)));
+        const range = sel.$from.blockRange(sel.$to);
+
+        if (!range) {
+          return false;
+        }
+
+        const target = range && liftTarget(range);
+
+        if (target === undefined) {
+          return false;
+        }
+
+        tr.lift(range, target);
       }
-      return false;
     });
 
-    if (!range) {
-      return false;
-    }
-
-    const target = range && liftTarget(range);
-
-    if (target === undefined) {
-      return false;
-    }
-
-    dispatch(state.tr.lift(range, target));
+    dispatch(tr);
 
     return true;
   };
@@ -441,5 +458,5 @@ function wrap(state: EditorState<any>, nodeType: NodeType, tr: Transaction): Tra
 }
 
 export interface Command {
-  (state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
+  (state: EditorState<any>, dispatch?: (tr: Transaction) => void, view?: EditorView): boolean;
 }

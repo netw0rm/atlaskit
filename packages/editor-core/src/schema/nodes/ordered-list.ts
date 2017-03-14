@@ -1,3 +1,10 @@
-import { NodeSpec, orderedList as orderedListSpec} from '../../prosemirror';
+import { NodeSpec } from '../../prosemirror';
 
-export const orderedList: NodeSpec = orderedListSpec;
+export const orderedList: NodeSpec = {
+  group: 'block',
+  content: 'listItem+',
+  parseDOM: [{ tag: 'ol' }],
+  toDOM() {
+    return ['ol', 0];
+  }
+};

@@ -5,7 +5,8 @@ import SyncPlugin from './sync-plugin';
 
 export interface Options {
   doc: RefsNode;
-  plugin: Plugin<any>;
+  plugin?: Plugin<any>;
+  plugins?: Plugin<any>[];
   place?: HTMLElement;
   schema?: Schema;
 }
@@ -19,14 +20,19 @@ export interface Options {
  * - `<` and `>` -- a range text selection (`<` is from, `>` is to).
  */
 export default (options: Options) => {
+  let plugins: Plugin<any>[] = [];
+  if (options.plugin) {
+    plugins.push(options.plugin);
+  }
+  if (options.plugins) {
+    plugins.push(...options.plugins);
+  }
+  plugins.push(SyncPlugin);
   const pm = new ProseMirror({
     doc: options.doc,
     place: options.place,
     schema: options.schema || schema,
-    plugins: [
-      options.plugin,
-      SyncPlugin,
-    ]
+    plugins,
   }) as ProseMirrorWithRefs;
 
   const { refs } = pm.doc;
@@ -45,7 +51,7 @@ export default (options: Options) => {
     pm.setTextSelection(refs['<'], refs['>']);
   }
 
-  return { pm, plugin: options.plugin.get(pm) };
+  return { pm, plugin: plugins[0].get(pm), plugins: plugins.map(plugin => plugin.get(pm)) };
 };
 
 export interface ProseMirrorWithRefs extends ProseMirror {

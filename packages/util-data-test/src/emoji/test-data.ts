@@ -44,14 +44,14 @@ declare var require: {
 };
 
 // tslint:disable-next-line:no-var-requires
-export const emojis: EmojiDescription[] = require('./test-data.json') as EmojiDescription[];
+export const emojis = (): EmojiDescription[] => require('./test-data.json') as EmojiDescription[];
 
-export const standardEmojis: EmojiDescription[] = emojis.filter(emoji => emoji.category !== 'ATLASSIAN');
-export const atlassianEmojis: EmojiDescription[] = emojis.filter(emoji => emoji.category === 'ATLASSIAN');
+export const standardEmojis = (): EmojiDescription[] => emojis().filter(emoji => emoji.category !== 'ATLASSIAN');
+export const atlassianEmojis = (): EmojiDescription[] => emojis().filter(emoji => emoji.category === 'ATLASSIAN');
 
-export const emojiService = new EmojiService(emojis);
+export const getEmojiService = () => new EmojiService(emojis());
 
-export const grinEmoji = emojiService.findByShortcut('grin') as EmojiDescription;
-export const areyoukiddingmeEmoji = emojiService.findByShortcut('areyoukiddingme') as EmojiDescription;
+export const grinEmoji = () => getEmojiService().findByShortcut('grin') as EmojiDescription;
+export const areyoukiddingmeEmoji = () => getEmojiService().findByShortcut('areyoukiddingme') as EmojiDescription;
 
-export const getEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(emojiService, config);
+export const getEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(getEmojiService(), config);

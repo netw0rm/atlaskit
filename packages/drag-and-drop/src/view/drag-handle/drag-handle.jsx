@@ -21,19 +21,33 @@ const primaryClick = 0;
 // TODO: drag threshold
 // const threshold: number = 10;
 
+const allowDragProps = {
+  tabIndex: '0',
+};
+
+const empty = {};
+
 type Props = {
   children?: React$Element<*>,
   isEnabled: boolean,
 } & Callbacks
 
-const Container = styled.div`
-  cursor: ${props => (props.isDragging ? 'grabbing' : 'grab')};
-`;
-
 type DragTypes = 'KEYBOARD' | 'MOUSE';
 
+// exporting for testing
+export const getCursor = (isEnabled: boolean, isDragging: boolean) => {
+  if (!isEnabled) {
+    return 'auto';
+  }
+  return isDragging ? 'grabbing' : 'grab';
+};
+
+const Container = styled.div`
+  cursor: ${props => getCursor(props.isEnabled, props.isDragging)};
+`;
+
 // need a component so that we can kill events on unmount
-export class Handle extends PureComponent {
+export default class Handle extends PureComponent {
 
   /* eslint-disable react/sort-comp */
   props: Props
@@ -55,6 +69,12 @@ export class Handle extends PureComponent {
     this.props.onCancel();
   }
 
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.state.draggingWith && !nextProps.isEnabled) {
+      this.stopDragging(() => this.props.onCancel());
+    }
+  }
+
   onWindowMouseMove = (event: SyntheticMouseEvent) => {
     if (this.state.draggingWith === 'KEYBOARD') {
       return;
@@ -74,31 +94,42 @@ export class Handle extends PureComponent {
     this.props.onMove(point);
   };
 
-  onWindowMouseUp = (event: SyntheticMouseEvent): void => {
-    invariant(this.state.draggingWith, 'should not be listening to mouse up events when nothing is dragging');
+  onWindowMouseUp = (): void => {
+    invariant(
+      this.state.draggingWith,
+      'should not be listening to mouse up events when nothing is dragging'
+    );
 
-    if (this.state.draggingWith === 'MOUSE' && event.button !== primaryClick) {
+    if (this.state.draggingWith === 'MOUSE') {
       return;
     }
 
+    // Allowing any event.button type to drop. Otherwise you
+    // might not get a corresponding mouseup with a mousedown.
+    // We could do a`cancel` if the button is not the primary.
     this.stopDragging(() => this.props.onDrop());
   };
 
   onWindowMouseDown = (): void => {
-    if (this.state.draggingWith !== 'KEYBOARD') {
-      return;
-    }
+    invariant(
+      this.state.draggingWith === 'KEYBOARD',
+      'should not be able to trigger a mouse down while a MOUSE drag is occuring'
+    );
 
     this.stopDragging(() => this.props.onDrop());
   }
 
   onMouseDown = (event: SyntheticMouseEvent) => {
     if (this.state.draggingWith === 'KEYBOARD') {
+      // allowing any type of mouse down to cancel
       this.stopDragging(() => this.props.onCancel());
       return;
     }
 
-    invariant(!this.state.draggingWith, 'mouse down will not start a drag as it is already dragging');
+    invariant(
+      !this.state.draggingWith,
+      'mouse down will not start a drag as it is already dragging'
+    );
 
     if (!this.props.isEnabled) {
       return;
@@ -126,7 +157,7 @@ export class Handle extends PureComponent {
     // space bar
     if (event.key === ' ') {
       event.preventDefault();
-      // not allowing double lift
+      // space bar to drop when dragging with keyboard or mouse
       if (this.state.draggingWith) {
         this.stopDragging(() => this.props.onDrop());
         return;
@@ -183,7 +214,6 @@ export class Handle extends PureComponent {
   }
 
   unbindWindowEvents = () => {
-    console.log('unbinding mouse events');
     window.removeEventListener('mousemove', this.onWindowMouseMove);
     window.removeEventListener('mouseup', this.onWindowMouseUp);
     window.removeEventListener('mousedown', this.onWindowMouseDown);
@@ -196,26 +226,20 @@ export class Handle extends PureComponent {
   }
 
   render() {
+    const { isEnabled } = this.props;
+    const extraProps = isEnabled ? allowDragProps : {};
+
     return (
       <Container
         isDragging={Boolean(this.state.draggingWith)}
-        tabIndex="0"
-        draggable="false"
+        isEnabled={isEnabled}
         onMouseDown={this.onMouseDown}
         onKeyDown={this.onKeyDown}
+        draggable="false"
+        {...extraProps}
       >
         {this.props.children}
       </Container>
     );
   }
 }
-
-export default (callbacks: Callbacks) => (isEnabled: boolean) => (el: React$Element<*>) => (
-  <Handle
-    {...callbacks}
-    isEnabled={isEnabled}
-  >
-    {el}
-  </Handle>
-);
-

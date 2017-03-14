@@ -10,7 +10,7 @@ import type { Props, MapState, DraggableState } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
 import type { Speed } from '../moveable';
-import createDragHandle from './create-drag-handle';
+import createDragHandle from '../drag-handle';
 import getCenterPosition from '../get-center-position';
 import getScrollPosition from '../get-scroll-position';
 import getDisplayName from '../get-display-name';

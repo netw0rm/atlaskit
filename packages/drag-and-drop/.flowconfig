@@ -9,6 +9,8 @@
 ../../node_modules/chai/package.json
 ../../node_modules/sinon/package.json
 ../../node_modules/mocha/package.json
+../../node_modules/enzyme/package.json
+../../node_modules/react-addons-test-utils/package.json
 
 [libs]
 flow-typed
@@ -27,4 +29,9 @@ module.name_mapper='styled-components' -> '<PROJECT_ROOT>/../../node_modules/sty
 module.name_mapper='mocha' -> '<PROJECT_ROOT>/../../node_modules/mocha/package.json'
 module.name_mapper='sinon' -> '<PROJECT_ROOT>/../../node_modules/sinon/package.json'
 module.name_mapper='chai' -> '<PROJECT_ROOT>/../../node_modules/chai/package.json'
+module.name_mapper='enzyme' -> '<PROJECT_ROOT>/../../node_modules/enzyme/package.json'
+module.name_mapper='react-addons-test-utils' -> '<PROJECT_ROOT>/../../node_modules/react-addons-test-utils/package.json'
 module.name_mapper='@kadira/storybook' -> '<PROJECT_ROOT>/../../node_modules/@kadira/storybook/package.json'
+
+[version]
+0.41.0

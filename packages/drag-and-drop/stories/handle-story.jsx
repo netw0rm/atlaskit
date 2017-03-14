@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { storiesOf } from '@kadira/storybook';
-import createDragHandle from '../src/view/draggable/create-drag-handle';
+import createDragHandle from '../src/view/drag-handle';
 
 const handle = createDragHandle(() => {});
 

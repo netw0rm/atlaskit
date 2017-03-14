@@ -25,7 +25,7 @@ const style = {
 };
 
 export default class extends PureComponent {
-  static displayName = 'AkutilReadmeHeading'
+  static displayName = 'utilReadmeHeading'
   static propTypes = {
     children: PropTypes.node.isRequired,
     type: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

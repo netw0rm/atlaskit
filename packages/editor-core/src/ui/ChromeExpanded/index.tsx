@@ -1,6 +1,6 @@
-import AkButton from 'ak-button';
-import AkButtonGroup from 'ak-button-group';
-import MentionIcon from 'ak-icon/glyph/editor/mention';
+import AkButton from '@atlaskit/button';
+import AkButtonGroup from '@atlaskit/button-group';
+import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { PureComponent } from 'react';
 import * as React from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
@@ -42,6 +42,7 @@ export interface Props {
   pluginStateImageUpload?: ImageUploadState;
   pluginStateMentions?: MentionsPluginState;
   mentionsResourceProvider?: any; // AbstractMentionResource
+  presenceResourceProvider?: any; // AbstractPresenceResource
   pluginStatePanel?: PanelState;
 }
 
@@ -64,7 +65,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           {props.children}
           {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} /> : null}
           {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} /> : null}
-          {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} /> : null}
+          {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} presenceProvider={props.presenceResourceProvider} /> : null}
           {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} /> : null}
         </div>
         <div className={styles.footer}>

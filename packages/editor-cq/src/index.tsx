@@ -12,6 +12,7 @@ import {
   MarkdownInputRulesPlugin,
   ProseMirror,
   TextFormattingPlugin,
+  DefaultKeymapsPlugin,
   version as coreVersion
 } from '@atlaskit/editor-core';
 import * as React from 'react';
@@ -147,7 +148,8 @@ export default class Editor extends PureComponent<Props, State> {
           ListsPlugin,
           TextFormattingPlugin,
           HorizontalRulePlugin,
-          DefaultInputRulesPlugin
+          DefaultInputRulesPlugin,
+          DefaultKeymapsPlugin,
         ],
       });
 

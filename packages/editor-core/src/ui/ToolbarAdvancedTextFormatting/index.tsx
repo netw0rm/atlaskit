@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import Tooltip from '@atlaskit/tooltip';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { TextFormattingState } from '../../plugins/text-formatting';
-import DropdownList from 'ak-droplist';
-import Group from 'ak-droplist-group';
-import Item from 'ak-droplist-item';
+import DropdownList from '@atlaskit/droplist';
+import Group from '@atlaskit/droplist-group';
+import Item from '@atlaskit/droplist-item';
 import ToolbarButton from '../ToolbarButton';
-import AdvancedIcon from 'ak-icon/glyph/editor/advanced';
+import AdvancedIcon from '@atlaskit/icon/glyph/editor/advanced';
+import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
 import { toggleMonospace, toggleStrikethrough, tooltip } from '../../keymaps';
+import * as styles from './styles';
 
 export interface Props {
   pluginState: TextFormattingState | undefined;
@@ -59,29 +62,35 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
             <ToolbarButton
               selected={isOpen}
               disabled={monoDisabled && strikeDisabled}
-              iconBefore={<AdvancedIcon label="text-formatting" />}
+              iconBefore={
+                <div className={styles.triggerWrapper}>
+                  <AdvancedIcon label="text-formatting" />
+                  <div className={styles.expandIcon}>
+                    <ExpandIcon label="expand-dropdown-menu" />
+                  </div>
+                </div>}
             />
           }
         >
           <Group>
-            <Item
-              isActive={monoActive}
-              isDisabled={monoDisabled}
-              onActivate={this.handleMonoClick}
-            >
-              <span title={tooltip(toggleMonospace)}>
-                Monospace
-              </span>
-            </Item>
-            <Item
-              isActive={strikeActive}
-              isDisabled={strikeDisabled}
-              onActivate={this.handleStrikeClick}
-            >
-              <span title={tooltip(toggleStrikethrough)}>
-                Strikethrough
-              </span>
-            </Item>
+            <Tooltip position="right" description={tooltip(toggleMonospace)}>
+              <Item
+                isActive={monoActive}
+                isDisabled={monoDisabled}
+                onActivate={this.handleMonoClick}
+              >
+                <span>Monospace</span>
+              </Item>
+            </Tooltip>
+            <Tooltip position="right" description={tooltip(toggleStrikethrough)}>
+              <Item
+                isActive={strikeActive}
+                isDisabled={strikeDisabled}
+                onActivate={this.handleStrikeClick}
+              >
+                <span>Strikethrough</span>
+              </Item>
+            </Tooltip>
           </Group>
         </DropdownList>
       );

@@ -1,4 +1,5 @@
 import {
+  EmMarkType,
   DocNodeType,
   HardBreakNodeType,
   LinkMarkType,
@@ -6,7 +7,9 @@ import {
   MentionQueryMarkType,
   ParagraphNodeType,
   Schema,
+  StrongMarkType,
   Text,
+  UnderlineMarkType,
 } from '@atlaskit/editor-core';
 
 export default new Schema({
@@ -33,12 +36,21 @@ export default new Schema({
     // Represents a hyperlink to a URL.
     link: LinkMarkType,
 
+    // Represents an italic text
+    em: EmMarkType,
+
+    // Represents bolded text
+    strong: StrongMarkType,
+
+    // Represents underlined text
+    u: UnderlineMarkType,
+
     // Represents a "mention query". A mention query is created by typing the @ symbol. The text
     // within a mention query is used to search for a mention.
     //
     // This mark is used internally, and is stripped from documents before they are exposed through
     // the editor getter APIs.
-    mention_query: MentionQueryMarkType
+    mention_query: MentionQueryMarkType,
   },
 }) as HipChatSchema;
 
@@ -52,6 +64,9 @@ export interface HipChatSchema extends Schema {
   };
   marks: {
     link: LinkMarkType;
+    em: EmMarkType;
+    strong: StrongMarkType;
+    u: UnderlineMarkType;
     mention_query: MentionQueryMarkType;
   };
 }

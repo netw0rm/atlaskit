@@ -9,6 +9,8 @@ export interface Props {
   onSubmit?: (value: string) => void;
   onCancel?: () => void;
   placeholder?: string;
+  onMouseDown?: Function;
+  onBlur?: Function;
 }
 
 export interface State {
@@ -32,6 +34,20 @@ export default class PanelTextInput extends PureComponent<Props, State> {
     });
   }
 
+  onMouseDown = () => {
+    const { onMouseDown } = this.props;
+    if (onMouseDown) {
+      onMouseDown();
+    }
+  }
+
+  onBlur = () => {
+    const { onBlur } = this.props;
+    if (onBlur) {
+      onBlur();
+    }
+  }
+
   render() {
     const { placeholder } = this.props;
     const { value } = this.state;
@@ -43,6 +59,8 @@ export default class PanelTextInput extends PureComponent<Props, State> {
         value={value}
         onChange={this.handleChange}
         onKeyDown={this.handleKeydown}
+        onMouseDown={this.onMouseDown}
+        onBlur={this.onBlur}
         ref={this.handleRef}
       />
     );

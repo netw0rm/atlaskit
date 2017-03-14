@@ -1,5 +1,5 @@
 import { Node } from '@atlaskit/editor-core';
-import { chaiPlugin, markFactory, nodeFactory } from '@atlaskit/editor-core/test-helper';
+import { chaiPlugin, markFactory, nodeFactory } from '@atlaskit/editor-core/src/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { name } from '../package.json';
@@ -8,7 +8,7 @@ import { JIRASchema, makeSchema } from '../src/schema';
 
 chai.use(chaiPlugin);
 
-export const schema = makeSchema(false) as JIRASchema;
+export const schema = makeSchema({ allowLists: false }) as JIRASchema;
 
 // Nodes
 const doc = nodeFactory(schema.nodes.doc);

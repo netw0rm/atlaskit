@@ -18,6 +18,10 @@ export default props => (
       isFirstChild={props.isFirstChild}
     />
     <AkFieldBase
+      invalidMessage={props.invalidMessage}
+      isCompact={props.isCompact}
+      defaultIsDialogOpen={props.defaultIsDialogOpen}
+      defaultIsFocused={props.defaultIsFocused}
       isInvalid={props.isInvalid}
       isDisabled={props.isDisabled}
       isReadOnly={props.isReadOnly}

@@ -1,15 +1,17 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { Root, size } from '../styles/base';
+import { Root, cardShadow, size, center, centerX, antialiased, ellipsis, borderRadius, spaceAround, easeInOutCubic, easeOutExpo, fadeIn } from '../styles/base';
 import {
-  akColorN20,
   akColorN30,
   akColorN70
 } from '@atlaskit/util-shared-styles';
 
+const imgSize = 32;
+
+export const transparentFallbackBackground = 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKAQMAAAC3/F3+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAABlBMVEXf39////8zI3BgAAAAEUlEQVQIW2Nk38mIjH5wICMAez4Iyz2C/F8AAAAASUVORK5CYII=")';
+
 export const SmallCard = styled(Root)`
-  background-color: ${akColorN20};
-  border-radius: 3px;
+  ${borderRadius()}
   font-family: sans-serif;
   cursor: pointer;
   box-sizing: border-box;
@@ -17,12 +19,38 @@ export const SmallCard = styled(Root)`
   padding: 5px;
   display: flex;
   align-items: center;
-  
+  transition: .8s background-color ${easeOutExpo};
+
   &:hover {
     background-color: ${akColorN30};
 
     .title {
       color: #0065FF;
+    }
+  }
+  
+  &.loading {
+    background: transparent;
+    box-shadow: none;
+    cursor: default;
+
+    .title, .size {
+      ${borderRadius()}
+      color: transparent;
+      background-color: ${akColorN30};
+      height: 10px;
+    }
+  
+    .size {
+      width: 50%;
+    }
+
+    .info-wrapper {
+      height: 100%;
+    }
+
+    .img-wrapper {
+      box-shadow: none;
     }
   }
 
@@ -31,110 +59,108 @@ export const SmallCard = styled(Root)`
   }
 `;
 
+export const FileInfoWrapper = styled.div`
+  ${spaceAround()}
+  height: 100%;
+  padding: 3px 0;
+`;
+
 export const Retry = styled.div`
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  ${antialiased()}
+  ${ellipsis('calc(100%)')}
   font-weight: bold;
   color: #0065FF;
   font-size: 12px;
   line-height: 15px;
-  overflow: hidden;
-  max-width: calc(100%);
-  text-overflow: ellipsis;
-  white-space: nowrap;
   margin-top: 2px;
 `;
 
 export const ImgWrapper = styled.div`
-  width: 32px;
+  ${center()}
+  ${borderRadius()}
+  width: ${imgSize}px;
   height: 100%;
   overflow: hidden;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
+  float: left;
+
+  &.shadow {
+    ${cardShadow()}
+  }
+
   img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    max-height: 100%;
     max-width: 100%;
-    display: block;
-    transform: translate(-50%, -50%);
+    max-height: 100%;   
   }
 `;
 
 export const Error = styled.div`
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  ${antialiased()}
+  ${ellipsis('100%')}
   font-weight: bold;
   color: ${akColorN70};
   font-size: 12px;
   line-height: 15px;
-  overflow: hidden;
-  max-width: calc(100%);
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 export const Title = styled.div`
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  ${antialiased()}
+  ${ellipsis('100%')}
   font-weight: bold;
   color: #091E42;
   font-size: 12px;
   line-height: 15px;
-  overflow: hidden;
-  max-width: calc(100%);
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  transition: .4s color ${easeInOutCubic};
 `;
 
 export const Size = styled.div`
+  ${ellipsis('calc(100%)')}
   color: ${akColorN70};
   font-size: 12px;
   line-height: 15px;
-  overflow: hidden;
-  max-width: calc(100%);
-  text-overflow: ellipsis;
-  white-space: nowrap;
   margin-top: 2px;
+  text-transform: uppercase;
+  transition: .4s color ${easeInOutCubic};
 `;
 
 export const RoundedBackground = styled.div`
-  min-width: 32px;
+  ${centerX()}
+  ${borderRadius()}
+  min-width: ${imgSize}px;
   height: inherit;
-  background-color: #FAFBFC;
-  border-radius: 3px;
+  overflow: hidden;  
 `;
 
 export const InfoWrapper = styled.div`
   display: inline-block;
   padding-left: 8px;
   position: relative;
-  max-width: calc(100% - 40px);
-  vertical-align: middle;
+  width: calc(100% - ${imgSize}px);
 `;
 
 export const LoadingWrapper = styled.div`
+  ${center()}
+  ${size('100%')}
   color: #cfd4db;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
+  background-color: ${akColorN30};
 `;
 
 export const PlaceholderSmallWrapper = styled.div`
-  ${size(32)}
+  ${size(imgSize)}
+  ${center()}
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   
   .file-type-icon {
     position: absolute;
 
     span {${size(12)}}
   }
+`;
+
+export const CardImage = styled.div`
+  ${size('100%')}
+  ${fadeIn()}
+  background-repeat: no-repeat, repeat;
+  background-position: center, center;
+  background-size: cover, auto;
 `;

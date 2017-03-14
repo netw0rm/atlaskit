@@ -1,21 +1,21 @@
 import { Node } from '@atlaskit/editor-core';
-import { chaiPlugin, markFactory, nodeFactory } from '@atlaskit/editor-core/test-helper';
+import { chaiPlugin, markFactory, nodeFactory } from '@atlaskit/editor-core/src/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { name } from '../package.json';
 import { encode, parse } from '../src/html';
-import { JIRASchemaWithLists, makeSchema } from '../src/schema';
+import { JIRASchema, makeSchema } from '../src/schema';
 
 chai.use(chaiPlugin);
 
-const schema = makeSchema(true) as JIRASchemaWithLists;
+const schema = makeSchema({ allowLists: true }) as JIRASchema;
 
 // Nodes
-const ul = nodeFactory(schema.nodes.bullet_list);
+const ul = nodeFactory(schema.nodes.bullet_list!);
 const doc = nodeFactory(schema.nodes.doc);
 const p = nodeFactory(schema.nodes.paragraph);
-const li = nodeFactory(schema.nodes.list_item);
-const ol = nodeFactory(schema.nodes.ordered_list);
+const li = nodeFactory(schema.nodes.list_item!);
+const ol = nodeFactory(schema.nodes.ordered_list!);
 
 // Marks
 const strong = markFactory(schema.marks.strong);

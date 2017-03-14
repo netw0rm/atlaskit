@@ -40,6 +40,7 @@ export default class StatefulSpinner extends PureComponent {
           <Spinner isCompleting={!this.state.active} onComplete={this.handleOnComplete} />
         </div>
         <div>Click the spinner to see it&#39;s fade in and out animations.</div>
+        <div>There should be a 100ms delay between clicking it and the spinner showing</div>
         <div>
           <code>isCompleting</code> is currently set to <code>{`${!this.state.active}`}</code>
         </div>

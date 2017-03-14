@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import * as bytes from 'bytes';
+import {toHumanReadableMediaSize} from '../utils/index';
 import {CardAction} from '@atlaskit/media-core';
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
-import {ErrorIcon} from '..';
-import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper} from './styled';
+import {Dropdown} from '../dropdown/dropdown';
+import {ErrorIcon} from '../generic/errorIcon/errorIcon';
+import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper, FileInfoWrapper} from './styled';
 
 /* Child stateless components*/
 import {MediaType} from '@atlaskit/media-core';
@@ -27,7 +28,19 @@ export interface CardViewSmallProps {
   onRetry?: CardAction;
 }
 
-export class CardViewSmall extends Component<CardViewSmallProps, {}> {
+export interface CardViewSmallState {
+  isMenuExpanded: boolean;
+}
+
+export class CardViewSmall extends Component<CardViewSmallProps, CardViewSmallState> {
+  constructor(props: CardViewSmallProps) {
+    super(props);
+
+    this.state = {
+      isMenuExpanded: false
+    };
+  }
+
   render() {
     const error = this.props.error;
 
@@ -55,7 +68,7 @@ export class CardViewSmall extends Component<CardViewSmallProps, {}> {
         </div>
       ));
     } else {
-      const fileSize = this.props.mediaSize && bytes.format(this.props.mediaSize, {unitSeparator: ' '});
+      const fileSize = this.props.mediaSize && toHumanReadableMediaSize(this.props.mediaSize);
 
       return this.formatCard((
         <RoundedBackground>
@@ -66,12 +79,26 @@ export class CardViewSmall extends Component<CardViewSmallProps, {}> {
           />
         </RoundedBackground>
       ), (
-        <div>
+        <FileInfoWrapper>
           <Title className="title">{this.props.mediaName}</Title>
           <Size className="size">{fileSize}</Size>
-        </div>
+          {this.dropdown()}
+        </FileInfoWrapper>
       ));
     }
+  }
+
+  dropdown() {
+    if (!this.state.isMenuExpanded) { return null; }
+
+    return <div onClick={this.dropdownClick}>
+      <Dropdown items={this.props.menuActions}/>
+    </div>;
+  }
+
+  dropdownClick(e: MouseEvent<HTMLDivElement>) {
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   onClick(event: MouseEvent<HTMLDivElement>) {
@@ -80,12 +107,15 @@ export class CardViewSmall extends Component<CardViewSmallProps, {}> {
 
   formatCard(left: JSX.Element, right: JSX.Element) {
     const cardStyle = this.props.width ? {width: `${this.props.width}px`} : {};
+    const className = this.props.loading ? 'loading' : '';
+    const shadowClass = this.props.mediaType === 'image' && this.props.dataURI ? 'shadow' : '';
+
     return (
-      <SmallCard style={cardStyle} onClick={this.onClick.bind(this)}>
-        <ImgWrapper>
+      <SmallCard style={cardStyle} className={className} onClick={this.onClick.bind(this)}>
+        <ImgWrapper className={`img-wrapper ${shadowClass}`}>
           {left}
         </ImgWrapper>
-        <InfoWrapper>
+        <InfoWrapper className="info-wrapper">
           {right}
         </InfoWrapper>
       </SmallCard>

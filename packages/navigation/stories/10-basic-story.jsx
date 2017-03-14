@@ -1,8 +1,8 @@
 import { action, storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
+import { CalendarIcon, DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
 import { AtlassianLogo } from '@atlaskit/logo';
-import { AkContainerItem } from '../src/index';
+import { AkContainerItem, AkContainerItemGroup } from '../src/index';
 import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import nucleus from './nucleus.png';
@@ -14,6 +14,7 @@ const manyContainerItems = () => {
   for (let i = 0; i < 40; i++) {
     items.push(
       <AkContainerItem
+        href={`#${i}`}
         key={i}
         text="Test page"
       />
@@ -28,14 +29,23 @@ storiesOf(name, module)
       <BasicNavigation>
         <AkContainerItem
           text="Test page"
+          href="#1"
         />
         <AkContainerItem
-          icon={<img alt="icon" src={nucleus} />}
+          icon={<img src={nucleus} alt="icon" />}
           text="Item with an icon"
+          href="#2"
         />
         <AkContainerItem
-          icon={<img alt="icon" src={nucleus} />}
+          icon={<img src={nucleus} alt="icon" />}
+          text="Item with two lines"
+          subText="Another line of text, which could possibly be long"
+          href="#3"
+        />
+        <AkContainerItem
+          icon={<img src={nucleus} alt="icon" />}
           text="A really, really, quite long, actually super long container name"
+          href="#4"
         />
       </BasicNavigation>
     </Page>
@@ -86,8 +96,62 @@ storiesOf(name, module)
           appearance="global"
           icon={<TrayIcon label="Tray" />}
           text="Item C"
+          isSelected
           textAfter={<RandomBadge theme="dark" />}
         />
+        <AkContainerItemGroup hasSeparator appearance="global">
+          <AkContainerItem
+            appearance="global"
+            isSelected
+            icon={<CalendarIcon label="Calendar" />}
+            subText="And a very long second line of text"
+            text="A very long first line of text"
+            textAfter={<RandomBadge />}
+          />
+        </AkContainerItemGroup>
+      </BasicNavigation>
+    </Page>
+  ))
+  .add('with multiple groups', () => (
+    <Page>
+      <BasicNavigation
+        containerAppearance="global"
+        containerHeaderComponent={AtlassianLogo}
+      >
+        <AkContainerItemGroup>
+          <AkContainerItem
+            appearance="global"
+            icon={<DashboardIcon label="Dashboard" />}
+            isSelected
+            text="Selected"
+            textAfter={<RandomBadge theme="dark" />}
+          />
+        </AkContainerItemGroup>
+        <AkContainerItemGroup>
+          <AkContainerItem
+            appearance="global"
+            icon={<SettingsIcon label="Settings" />}
+            text="Item B"
+            textAfter={<RandomBadge theme="dark" />}
+          />
+        </AkContainerItemGroup>
+        <AkContainerItemGroup title="one section">
+          <AkContainerItem
+            appearance="global"
+            icon={<TrayIcon label="Tray" />}
+            text="Item C"
+            textAfter={<RandomBadge theme="dark" />}
+          />
+        </AkContainerItemGroup>
+        <AkContainerItemGroup hasSeparator appearance="global">
+          <AkContainerItem
+            appearance="global"
+            icon={<CalendarIcon label="Calendar" />}
+            subText="And a very long second line of text"
+            text="A very long first line of text"
+            textAfter={<RandomBadge />}
+          />
+        </AkContainerItemGroup>
       </BasicNavigation>
     </Page>
   ))

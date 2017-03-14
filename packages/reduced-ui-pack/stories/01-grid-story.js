@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { Code } from '@atlaskit/util-readme';
+import { Chrome, Code } from '@atlaskit/util-readme';
 
 import { name } from '../package.json';
 
@@ -44,7 +44,9 @@ const gridJSX = (<ak-grid is>
 
 storiesOf(name, module)
   .add('Grid layout', () => (
-    <Code code={gridHTML}>
-      {gridJSX}
-    </Code>
+    <Chrome title="Grid layout">
+      <Code code={gridHTML}>
+        {gridJSX}
+      </Code>
+    </Chrome>
   ));

@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { Code } from '@atlaskit/util-readme';
+import { Chrome, Code } from '@atlaskit/util-readme';
 
 import { name } from '../package.json';
 
@@ -33,8 +33,7 @@ const subtleLinkButtonDisabledJSX = <button type="button" className="ak-button a
 
 storiesOf(name, module)
   .add('Buttons', () => (
-    <div>
-      <h1>Buttons</h1>
+    <Chrome title="Buttons">
       <h2>default appearance</h2>
       <Code code={defaultButtonHTML}>
         {defaultButtonJSX}
@@ -55,11 +54,10 @@ storiesOf(name, module)
       <Code code={subtleLinkButtonHTML}>
         {subtleLinkButtonJSX}
       </Code>
-    </div>
+    </Chrome>
   ))
   .add('Buttons — disabled', () => (
-    <div>
-      <h1>Disabled buttons</h1>
+    <Chrome title="Buttons — disabled">
       <h2>default appearance</h2>
       <Code code={defaultButtonDisabledHTML}>
         {defaultButtonDisabledJSX}
@@ -80,5 +78,5 @@ storiesOf(name, module)
       <Code code={subtleLinkButtonDisabledHTML}>
         {subtleLinkButtonDisabledJSX}
       </Code>
-    </div>
+    </Chrome>
   ));

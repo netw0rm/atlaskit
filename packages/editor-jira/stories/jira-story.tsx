@@ -1,14 +1,15 @@
 import { action, storiesOf } from '@kadira/storybook';
-import { storyDecorator } from '@atlaskit/editor-core/test-helper';
+import { storyDecorator } from '@atlaskit/editor-core/src/test-helper';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { name, version } from '../package.json';
 import Editor from '../src';
+import MentionResource from './mentions/mention-resource';
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
 
-type Props = { allowLists?: boolean };
+type Props = { allowLists?: boolean, mentionProvider?: any, mentionEncoder?: any };
 type State = { html?: string };
 class Demo extends PureComponent<Props, State> {
   state = {} as State;
@@ -21,6 +22,8 @@ class Demo extends PureComponent<Props, State> {
           onChange={this.updateHTML}
           onSave={SAVE_ACTION}
           allowLists={this.props.allowLists}
+          mentionProvider={this.props.mentionProvider}
+          mentionEncoder={this.props.mentionEncoder}
         />
         <fieldset style={{ marginTop: 20 }}>
           <legend>HTML</legend>
@@ -38,4 +41,10 @@ class Demo extends PureComponent<Props, State> {
 storiesOf(name, module)
   .addDecorator(storyDecorator(version))
   .add('Editor', () => <Demo />)
-  .add('Editor (allowLists)', () => <Demo allowLists />);
+  .add('Editor (allowLists)', () => <Demo allowLists />)
+  .add('Editor (Mentions)', () =>
+    <Demo
+      mentionProvider={Promise.resolve(new MentionResource())}
+      mentionEncoder={(userId: string) => `/secure/ViewProfile?name=${userId}`}
+    />
+  );

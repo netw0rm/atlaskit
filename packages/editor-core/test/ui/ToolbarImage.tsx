@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import ImageUploadPlugin from '../../src/plugins/image-upload';
 import ToolbarImage from '../../src/ui/ToolbarImage';
-import { makeEditor } from '../../test-helper';
+import { makeEditor } from '../../src/test-helper';
 import { code_block, doc, images, schema } from '../_schema-builder';
 
 describe('ToolbarImage', () => {

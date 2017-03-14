@@ -2,11 +2,11 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import { DocNodeType, MonoMarkType, Schema, Text } from '../../../src';
 import { DOMNode } from '../../../src/prosemirror/dom';
-import { chaiPlugin, fromHTML } from '../../../test-helper';
+import { chaiPlugin, fromHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-core/schema mono mark', () => {
+describe('@atlaskit/editor-core/schema mono mark', () => {
   it('throws an error if it is not named "mono"', () => {
     expect(() => {
       new Schema({

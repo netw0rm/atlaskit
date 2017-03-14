@@ -239,7 +239,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Cmd-Alt-0');
-            expect(toggleBlockType.calledWith('normal')).to.equal(true);
+            expect(toggleBlockType.calledWith('normal', editorView)).to.equal(true);
           });
         });
 
@@ -249,7 +249,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Cmd-Alt-1');
-            expect(toggleBlockType.calledWith('heading1')).to.equal(true);
+            expect(toggleBlockType.calledWith('heading1', editorView)).to.equal(true);
           });
         });
 
@@ -259,7 +259,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Cmd-Alt-2');
-            expect(toggleBlockType.calledWith('heading2')).to.equal(true);
+            expect(toggleBlockType.calledWith('heading2', editorView)).to.equal(true);
           });
         });
 
@@ -269,7 +269,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Cmd-Alt-3');
-            expect(toggleBlockType.calledWith('heading3')).to.equal(true);
+            expect(toggleBlockType.calledWith('heading3', editorView)).to.equal(true);
           });
         });
 
@@ -279,7 +279,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Cmd-Alt-4');
-            expect(toggleBlockType.calledWith('heading4')).to.equal(true);
+            expect(toggleBlockType.calledWith('heading4', editorView)).to.equal(true);
           });
         });
 
@@ -289,7 +289,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Cmd-Alt-5');
-            expect(toggleBlockType.calledWith('heading5')).to.equal(true);
+            expect(toggleBlockType.calledWith('heading5', editorView)).to.equal(true);
           });
         });
 
@@ -299,7 +299,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Cmd-Alt-7');
-            expect(toggleBlockType.calledWith('blockquote')).to.equal(true);
+            expect(toggleBlockType.calledWith('blockquote', editorView)).to.equal(true);
           });
         });
 
@@ -309,7 +309,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Cmd-Alt-8');
-            expect(toggleBlockType.calledWith('codeblock')).to.equal(true);
+            expect(toggleBlockType.calledWith('codeblock', editorView)).to.equal(true);
           });
         });
       });
@@ -321,7 +321,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Ctrl-0');
-            expect(toggleBlockType.calledWith('normal')).to.equal(true);
+            expect(toggleBlockType.calledWith('normal', editorView)).to.equal(true);
           });
         });
 
@@ -331,7 +331,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Ctrl-1');
-            expect(toggleBlockType.calledWith('heading1')).to.equal(true);
+            expect(toggleBlockType.calledWith('heading1', editorView)).to.equal(true);
           });
         });
 
@@ -341,7 +341,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Ctrl-2');
-            expect(toggleBlockType.calledWith('heading2')).to.equal(true);
+            expect(toggleBlockType.calledWith('heading2', editorView)).to.equal(true);
           });
         });
 
@@ -351,7 +351,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Ctrl-3');
-            expect(toggleBlockType.calledWith('heading3')).to.equal(true);
+            expect(toggleBlockType.calledWith('heading3', editorView)).to.equal(true);
           });
         });
 
@@ -361,7 +361,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Ctrl-4');
-            expect(toggleBlockType.calledWith('heading4')).to.equal(true);
+            expect(toggleBlockType.calledWith('heading4', editorView)).to.equal(true);
           });
         });
 
@@ -371,7 +371,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Ctrl-5');
-            expect(toggleBlockType.calledWith('heading5')).to.equal(true);
+            expect(toggleBlockType.calledWith('heading5', editorView)).to.equal(true);
           });
         });
 
@@ -381,7 +381,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Ctrl-7');
-            expect(toggleBlockType.calledWith('blockquote')).to.equal(true);
+            expect(toggleBlockType.calledWith('blockquote', editorView)).to.equal(true);
           });
         });
 
@@ -391,7 +391,7 @@ describe('block-type', () => {
             const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
             sendKeyToPm(editorView, 'Ctrl-8');
-            expect(toggleBlockType.calledWith('codeblock')).to.equal(true);
+            expect(toggleBlockType.calledWith('codeblock', editorView)).to.equal(true);
           });
         });
       });
@@ -740,12 +740,12 @@ describe('block-type', () => {
   describe('toggleBlockType', () => {
     context('when origin block type is different with target block type', () => {
       it('converts to target block type', () => {
-        const { pluginState } = editor(doc(p('text')));
+        const { pluginState, editorView } = editor(doc(p('text')));
         const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
-        pluginState.toggleBlockType('heading1');
+        pluginState.toggleBlockType('heading1', editorView);
 
-        expect(toggleBlockType.calledWith('heading1')).to.equal(true);
+        expect(toggleBlockType.calledWith('heading1', editorView)).to.equal(true);
       });
     });
 
@@ -754,19 +754,19 @@ describe('block-type', () => {
         it('lifts content out of the quote', () => {
           const { editorView, pluginState } = editor(doc(blockquote(p('text'))));
 
-          pluginState.toggleBlockType('heading1');
+          pluginState.toggleBlockType('heading1', editorView);
           expect(editorView.state.doc).to.deep.equal(doc(h1('text')));
         });
       });
 
       context('when it is not a quote', () => {
         it('converts to a paragraph', () => {
-          const { pluginState } = editor(doc(h1('text')));
+          const { pluginState, editorView } = editor(doc(h1('text')));
           const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
-          pluginState.toggleBlockType('heading1');
+          pluginState.toggleBlockType('heading1', editorView);
 
-          expect(toggleBlockType.calledWith('normal')).to.equal(true);
+          expect(toggleBlockType.calledWith('normal', editorView)).to.equal(true);
         });
       });
     });

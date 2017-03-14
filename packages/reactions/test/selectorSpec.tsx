@@ -7,12 +7,14 @@ import { mount, shallow } from 'enzyme';
 import EmojiButton from '../src/internal/emoji-button';
 import Selector from '../src/internal/selector';
 import { defaultReactions, isDefaultReaction } from '../src/internal/selector';
-import { getEmojiResource } from '../stories/examples/emoji-provider';
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojiResourcePromise } = emojiTestData.emojiTestData;
 
 const { expect } = chai;
 
 const renderSelector = (onSelection: OnEmojiEvent = () => {}) => {
-  return <Selector emojiProvider={getEmojiResource()} onSelection={onSelection} />;
+  return <Selector emojiProvider={getEmojiResourcePromise()} onSelection={onSelection} />;
 };
 
 describe('@atlaskit/reactions/selector', () => {

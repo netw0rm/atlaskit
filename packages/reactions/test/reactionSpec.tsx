@@ -7,7 +7,9 @@ import { mount, shallow } from 'enzyme';
 
 import { emojiVisible } from './test-utils';
 import Reaction from '../src/internal/reaction';
-import { getEmojiResource, getEmojiService } from '../stories/examples/emoji-provider';
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojiResourcePromise, getEmojiService } = emojiTestData.emojiTestData;
 
 const { expect } = chai;
 
@@ -20,7 +22,7 @@ const renderReaction = (reacted: boolean, count: number, onClick: Function) => {
     reacted: reacted
   };
 
-  return <Reaction reaction={reactionData} emojiProvider={getEmojiResource()} onClick={onClick} />;
+  return <Reaction reaction={reactionData} emojiProvider={getEmojiResourcePromise()} onClick={onClick} />;
 };
 
 describe('@atlaskit/reactions/reaction', () => {

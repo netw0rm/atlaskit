@@ -95,6 +95,18 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
       const editor: Editor = editorWrapper.get(0) as any;
       expect(editor.state.schema.nodes.bullet_list).to.not.exist;
     });
+
+    it('allowLinks=true prop should enable links', () => {
+      const editorWrapper = mount(<Editor allowLinks={true}/>);
+      const editor: Editor = editorWrapper.get(0) as any;
+      expect(editor.state.schema.marks.link).to.exist;
+    });
+
+    it('links should be disabled without allowLinks prop', () => {
+      const editorWrapper = mount(<Editor/>);
+      const editor: Editor = editorWrapper.get(0) as any;
+      expect(editor.state.schema.marks.link).to.not.exist;
+    });
   });
 
 });

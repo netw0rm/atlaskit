@@ -5,6 +5,7 @@ import {
   HardBreakNodeType,
   HeadingNodeType,
   HorizontalRuleNodeType,
+  LinkMarkType,
   ListItemNodeType,
   MentionNodeType,
   MentionQueryMarkType,
@@ -33,6 +34,7 @@ export interface BaseSchemaNodes {
 }
 
 export interface BaseSchemaMarks {
+  link?: LinkMarkType;
   strong: StrongMarkType;
   em: EmMarkType;
   strike: StrikeMarkType;
@@ -45,6 +47,7 @@ export interface BaseSchemaMarks {
 export interface JIRASchemaConfig {
   allowLists?: boolean;
   allowMentions?: boolean;
+  allowLinks?: boolean;
 }
 
 export interface JIRASchema extends Schema {
@@ -58,6 +61,10 @@ export function isSchemaWithLists(schema: JIRASchema): boolean {
 
 export function isSchemaWithMentions(schema: JIRASchema): boolean {
   return !!schema.nodes.mention;
+}
+
+export function isSchemaWithLinks(schema: JIRASchema): boolean {
+  return !!schema.marks.link;
 }
 
 export function makeSchema(config: JIRASchemaConfig): JIRASchema {
@@ -75,6 +82,7 @@ export function makeSchema(config: JIRASchemaConfig): JIRASchema {
   };
 
   const marks = {
+    link: LinkMarkType,
     strong: StrongMarkType,
     em: EmMarkType,
     strike: StrikeMarkType,
@@ -83,6 +91,10 @@ export function makeSchema(config: JIRASchemaConfig): JIRASchema {
     mono: MonoMarkType,
     mention_query: MentionQueryMarkType,
   };
+
+  if (!config.allowLinks) {
+    delete marks.link;
+  }
 
   if (!config.allowLists) {
     delete nodes.ordered_list;

@@ -5,8 +5,8 @@ import { name } from '../package.json';
 
 describe(name, () => {
   describe('exports', () => {
-    it('should not export a base component', () => {
-      expect(defaultExported).to.not.equal(undefined);
+    it('should export an empty base component', () => {
+      expect(defaultExported).to.deep.equal({});
     });
   });
 });

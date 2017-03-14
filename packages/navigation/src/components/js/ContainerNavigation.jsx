@@ -44,6 +44,17 @@ export default class ContainerNavigation extends PureComponent {
     };
   }
 
+  getGlobalActionsAppearance() {
+    switch (this.props.appearance) {
+      case 'global':
+        return 'global';
+      case 'project-settings':
+        return 'project-settings';
+      default:
+        return 'container';
+    }
+  }
+
   render() {
     const {
       appearance,
@@ -83,10 +94,11 @@ export default class ContainerNavigation extends PureComponent {
             className={classNames(styles.containerNavigationInner, {
               [styles.hasContainerHeader]: headerComponent !== null,
               [styles.hasGlobalAppearance]: appearance === 'global',
+              [styles.hasProjectSettingsAppearance]: appearance === 'project-settings',
             })}
           >
             <GlobalActions
-              appearance={appearance === 'global' ? 'global' : 'container'}
+              appearance={this.getGlobalActionsAppearance()}
               createIcon={globalCreateIcon}
               isVisible={areGlobalActionsVisible}
               linkComponent={linkComponent}

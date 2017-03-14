@@ -3,6 +3,7 @@ import React from 'react';
 import {
   containerItem,
   hasGlobalAppearance,
+  hasProjectSettingsAppearance,
 } from 'style!../src/components/less/ContainerItem.less';
 import ContainerItem from '../src/components/js/ContainerItem';
 
@@ -29,8 +30,12 @@ describe('<ContainerItem />', () => {
       it(`passes on ${prop} to <NavigationItem />`, () => expect(passesOnProp(prop, value)).to.equal(true));
     });
 
-    it('appearnace="global" should render with the global appearance class', () => {
+    it('appearance="global" should render with the global appearance class', () => {
       expect((mount(<ContainerItem appearance="global" />).find(`.${containerItem}`)).hasClass((hasGlobalAppearance))).to.equal(true);
+    });
+
+    it('appearance="project-settings" should render with the project-settings appearance class', () => {
+      expect((mount(<ContainerItem appearance="project-settings" />).find(`.${containerItem}`)).hasClass((hasProjectSettingsAppearance))).to.equal(true);
     });
   });
 });

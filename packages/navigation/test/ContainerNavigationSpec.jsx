@@ -3,6 +3,7 @@ import React from 'react';
 import {
   containerNavigationInner,
   hasGlobalAppearance,
+  hasProjectSettingsAppearance,
 } from 'style!../src/components/less/ContainerNavigation.less';
 import ContainerNavigation from '../src/components/js/ContainerNavigation';
 import Spacer from '../src/components/js/Spacer';
@@ -21,6 +22,9 @@ describe('<ContainerNavigation />', () => {
     });
     it('appearnace="global" should render with the global appearance class', () => {
       expect((mount(<ContainerNavigation appearance="global" />).find(`.${containerNavigationInner}`)).hasClass((hasGlobalAppearance))).to.equal(true);
+    });
+    it('appearance="project-settings" should render with the project-settings appearance class', () => {
+      expect((mount(<ContainerNavigation appearance="project-settings" />).find(`.${containerNavigationInner}`)).hasClass((hasProjectSettingsAppearance))).to.equal(true);
     });
   });
   describe('behaviour', () => {

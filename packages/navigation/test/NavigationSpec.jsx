@@ -59,6 +59,10 @@ describe('<Navigation />', () => {
       const icon = <img alt="create" />;
       expect(mount(<Navigation globalCreateIcon={icon} />).find('GlobalNavigation').props().createIcon).to.equal(icon);
     });
+    it('globalAppearance should pass globalAppearance onto <GlobalNavigation />', () => {
+      const appearance = 'project-settings';
+      expect(mount(<Navigation globalAppearance={appearance} />).find('GlobalNavigation').props().appearance).to.equal(appearance);
+    });
     it('globalSearchIcon should pass globalSearchIcon onto <ContainerNavigation />', () => {
       const icon = <img alt="search" />;
       expect(mount(<Navigation globalSearchIcon={icon} />).find('ContainerNavigation').props().globalSearchIcon).to.equal(icon);

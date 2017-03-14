@@ -2,6 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import {
   containerItem,
   hasGlobalAppearance,
+  hasProjectSettingsAppearance,
   isSelected,
 } from 'style!../less/ContainerItem.less';
 import className from 'classnames';
@@ -34,6 +35,7 @@ export default class ContainerItem extends PureComponent {
       <div
         className={className(containerItem, {
           [hasGlobalAppearance]: this.props.appearance === 'global',
+          [hasProjectSettingsAppearance]: this.props.appearance === 'project-settings',
           [isSelected]: this.props.isSelected,
         })}
       >

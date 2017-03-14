@@ -2,10 +2,12 @@ import ImageIcon from 'ak-icon/glyph/editor/image';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
+import { EditorView } from '../../prosemirror';
 import { ImageUploadState } from '../../plugins/image-upload';
 import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
+  editorView: EditorView;
   pluginState: ImageUploadState;
 }
 
@@ -44,6 +46,6 @@ export default class ToolbarImage extends PureComponent<Props, State> {
 
   @analytics('atlassian.editor.image.button')
   private handleInsertImage = () => {
-    this.props.pluginState.handleImageUpload();
+    this.props.pluginState.handleImageUpload(this.props.editorView);
   }
 }

@@ -38,11 +38,73 @@
       },
       "minItems": 1
     },
-    "inline_node": {
-      "anyOf": [
+    "formatted_text_inline_node": {
+      "allOf": [
         {
           "$ref": "#/definitions/text_node"
         },
+        {
+          "type": "object",
+          "properties": {
+            "marks": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/link_mark"
+                  },
+                  {
+                    "$ref": "#/definitions/em_mark"
+                  },
+                  {
+                    "$ref": "#/definitions/strong_mark"
+                  },
+                  {
+                    "$ref": "#/definitions/strike_mark"
+                  },
+                  {
+                    "$ref": "#/definitions/mono_mark"
+                  },
+                  {
+                    "$ref": "#/definitions/subsup_mark"
+                  },
+                  {
+                    "$ref": "#/definitions/underline_mark"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "code_inline_node": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/text_node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "marks": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/code_mark"
+                  },
+                  {
+                    "$ref": "#/definitions/link_mark"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "atomic_inline_node": {
+      "anyOf": [
         {
           "$ref": "#/definitions/hardBreak_node"
         },
@@ -54,33 +116,18 @@
         }
       ]
     },
-    "marks": {
-      "type": "array",
-      "items": {
-        "anyOf": [
-          {
-            "$ref": "#/definitions/link_mark"
-          },
-          {
-            "$ref": "#/definitions/em_mark"
-          },
-          {
-            "$ref": "#/definitions/strong_mark"
-          },
-          {
-            "$ref": "#/definitions/strike_mark"
-          },
-          {
-            "$ref": "#/definitions/mono_mark"
-          },
-          {
-            "$ref": "#/definitions/subsup_mark"
-          },
-          {
-            "$ref": "#/definitions/underline_mark"
-          }
-        ]
-      }
+    "inline_node": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/formatted_text_inline_node"
+        },
+        {
+          "$ref": "#/definitions/code_inline_node"
+        },
+        {
+          "$ref": "#/definitions/atomic_inline_node"
+        }
+      ]
     },
     "doc_node": {
       "type": "object",
@@ -117,19 +164,7 @@
         "content": {
           "type": "array",
           "items": {
-            "allOf": [
-              {
-                "$ref": "#/definitions/inline_node"
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "marks": {
-                    "$ref": "#/definitions/marks"
-                  }
-                }
-              }
-            ]
+            "$ref": "#/definitions/inline_node"
           }
         }
       },
@@ -275,19 +310,7 @@
         "content": {
           "type": "array",
           "items": {
-            "allOf": [
-              {
-                "$ref": "#/definitions/inline_node"
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "marks": {
-                    "$ref": "#/definitions/marks"
-                  }
-                }
-              }
-            ]
+            "$ref": "#/definitions/formatted_text_inline_node"
           }
         },
         "attrs": {
@@ -608,6 +631,20 @@
       "required": [
         "type",
         "attrs"
+      ],
+      "additionalProperties": false
+    },
+    "code_mark": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "code"
+          ]
+        }
+      },
+      "required": [
+        "type"
       ],
       "additionalProperties": false
     },

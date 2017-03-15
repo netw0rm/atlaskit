@@ -7,6 +7,9 @@ import { name } from '../package.json';
 
 const formTestUrl = '//httpbin.org/get';
 
+let fieldRefs={
+};
+
 function generateInput(opts) {
   const props = { label: 'Example label', ...opts };
   return (
@@ -60,6 +63,10 @@ function submitTestForm(useNativeSubmitBtn) {
       <iframe src="" name="myFrame" style={{ width: '50%', height: '300px' }} />
     </div>
   );
+}
+
+function focus1() {
+  fieldRefs.input1.focus();
 }
 
 storiesOf(name, module)
@@ -125,7 +132,7 @@ storiesOf(name, module)
       }}
     >
       <h2>Autofill test</h2>
-      {generateInput({ label: 'First name', name: 'fname' })}
+      {generateInput({ label: 'First u name', name: 'fname' })}
       {generateInput({ label: 'Last name', name: 'lname' })}
       {generateInput({ type: 'email', label: 'Email', name: 'email' })}
       {generateInput({ label: 'Full name', name: 'name' })}
@@ -142,4 +149,22 @@ storiesOf(name, module)
   ))
   .add('ak-field-text with autofocus', () => (
     generateFormWithInput({ autoFocus: true })
+  ))
+  .add('field-text with buttons that choose foucs', () => (
+    <form
+      action={formTestUrl}
+      method="get"
+      style={{
+        backgroundColor: 'white',
+        padding: '40px',
+      }}
+    >
+      <h2>Focus Test</h2>
+      <AkFieldText label="First Field" name="1" ref={(AkFieldText) => { fieldRefs.input1 = AkFieldText; }}/>
+      <AkFieldText label="Second Field" name="2" ref={(AkFieldText) => { fieldRefs.input2 = AkFieldText; }}/>
+      <AkFieldText label="Third Field" name="3" ref={(AkFieldText) => { fieldRefs.input3 = AkFieldText; }}/>
+      <p>
+        <Button appearance="primary" onClick={focus1}>Focus First Field</Button>
+      </p>
+    </form>
   ));

@@ -18,12 +18,17 @@ export default class extends PureComponent {
     this.props.onChange(e);
   }
 
+  focus = () => {
+    this.input.focus();
+  }
+
   render() {
     return (
       <FieldText
         {...this.props}
         value={this.state.value}
         onChange={this.handleOnChange}
+        ref={(FieldText) => { this.input = FieldText; }}
       />
     );
   }

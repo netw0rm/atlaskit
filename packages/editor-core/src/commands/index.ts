@@ -1,4 +1,4 @@
-import { EditorState, Fragment, liftTarget, TextSelection, Transaction } from '../prosemirror';
+import { EditorState, NodeType, Fragment, liftTarget, TextSelection, Transaction } from '../prosemirror';
 import * as baseCommand from '../prosemirror/prosemirror-commands';
 import { findWrapping } from '../prosemirror/prosemirror-transform';
 import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
@@ -125,18 +125,8 @@ export function toggleCodeBlock(): Command {
 
     if (currentBlock.type !== state.schema.nodes.codeBlock) {
       if (isConvertableToCodeBlock(state)) {
-        // convert to codeblock
-        let tr = transformToCodeBlockAction(state, {});
-
-        // lift 
-        if ($from.depth > 1) {
-          const range = $from.blockRange($to);
-          const target = range && liftTarget(range);
-          if (target !== null) {
-            tr = tr.lift(range, target).scrollIntoView();
-          }
-        }
-        dispatch(tr);
+        const tr = transformToCodeBlockAction(state, {});
+        dispatch(lift(state, tr));
       }
     } else {
       dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
@@ -168,20 +158,9 @@ export function toggleBlockquote(): Command {
     if (potentialBlockquoteNode && potentialBlockquoteNode.type === state.schema.nodes.blockquote) {
       return baseCommand.lift(state, dispatch);
     }
-
-    // convert node to paragraph
-    let tr = state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph);
-
-    // apply 'wrapIn'
-    let range = $from.blockRange($to);
-    let wrapping = range && findWrapping(range, state.schema.nodes.blockquote);
-    if (!wrapping) {
-      dispatch(tr);
-      return false;
-    } else {
-      dispatch(tr.wrap(range, wrapping).scrollIntoView());
-      return true;
-    }
+    const tr = state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph);
+    dispatch(wrap(state, state.schema.nodes.blockquote, tr));
+    return true;
   };
 }
 
@@ -204,7 +183,8 @@ export function toggleHeading(level: number): Command {
     const currentBlock = $from.parent;
 
     if (currentBlock.type !== state.schema.nodes.heading || currentBlock.attrs['level'] !== level) {
-      dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.heading, { level }));
+      const tr = state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.heading, { level });
+      dispatch(lift(state, tr));
     } else {
       dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
     }
@@ -396,6 +376,30 @@ function getInsertPosFromNonTextBlock(state: EditorState<any>, append: boolean):
 function topLevelNodeIsEmptyTextBlock(state): boolean {
   const topLevelNode = state.selection.$from.node(1);
   return topLevelNode.isTextblock && topLevelNode.type !== state.schema.nodes.codeBlock && topLevelNode.nodeSize === 2;
+}
+
+// Lifts current selection up; 
+// it allows to chain transactions
+function lift (state: EditorState<any>, tr: Transaction): Transaction {
+  const { $from, $to } = state.selection;
+  if ($from.depth > 1) {
+    const range = $from.blockRange($to) as any;
+    const target = range && liftTarget(range) as any;
+    if (target !== null) {
+      tr = tr.lift(range, target).scrollIntoView();
+    }
+  }
+  return tr;
+}
+
+function wrap (state: EditorState<any>, nodeType: NodeType, tr: Transaction): Transaction {
+  const { $from, $to } = state.selection;
+  const range = $from.blockRange($to) as any;
+  const wrapping = range && findWrapping(range, nodeType) as any;
+  if (wrapping) {
+    tr = tr.wrap(range, wrapping).scrollIntoView();
+  }
+  return tr;
 }
 
 export interface Command {

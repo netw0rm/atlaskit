@@ -1,4 +1,4 @@
-import { denormaliseEmojis } from '../src/api/EmojiLoader';
+import { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
 import EmojiService from '../src/api/EmojiService';
 import { mockEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig } from '../test/MockEmojiResource';
 import { EmojiDescription, EmojiServiceResponse } from '../src/types';
@@ -17,7 +17,7 @@ const getEmojiSet = (name: string): EmojiDescription[] => {
     const standardEmojiData: EmojiServiceResponse = getStandardEmojiData();
     const atlassianEmojiData: EmojiServiceResponse = getAtlassianEmojiData();
 
-    const emojis = denormaliseEmojis({
+    const emojis = denormaliseEmojiServiceResponse({
       emojis: [
         ...standardEmojiData.emojis,
         ...atlassianEmojiData.emojis,
@@ -25,8 +25,8 @@ const getEmojiSet = (name: string): EmojiDescription[] => {
       meta: standardEmojiData.meta, // No meta in atlasianEmojiData
     }).emojis;
 
-    const standardEmojis = denormaliseEmojis(standardEmojiData).emojis;
-    const atlassianEmojis = denormaliseEmojis(atlassianEmojiData).emojis;
+    const standardEmojis = denormaliseEmojiServiceResponse(standardEmojiData).emojis;
+    const atlassianEmojis = denormaliseEmojiServiceResponse(atlassianEmojiData).emojis;
 
     emojisSets = new Map<string, EmojiDescription[]>();
     emojisSets.set('all', emojis);

@@ -52,7 +52,6 @@ const ErrorComponent = <div>ERROR</div>;
 export class CardList extends Component<CardListProps, CardListState> {
   static defaultProps = {
     pageSize: 10,
-    cardWidth: DEFAULT_CARD_DIMENSIONS.WIDTH,
     cardHeight: DEFAULT_CARD_DIMENSIONS.HEIGHT,
     loadingComponent: LoadingComponent,
     useInfiniteScroll: true,
@@ -190,7 +189,7 @@ export class CardList extends Component<CardListProps, CardListState> {
           collectionName={this.props.collectionName}
           id={item.id}
           mediaItemType={item.mediaItemType}
-          width={this.props.cardWidth}
+          width={this.cardWidth}
           height={this.props.cardHeight}
           type={this.props.cardType}
           actions={cardActions}
@@ -203,6 +202,18 @@ export class CardList extends Component<CardListProps, CardListState> {
         {cards}
       </ul>
     );
+  }
+
+  /*
+    We only want to apply default width (hardcoded value) for normal cards, 
+    in case of small cards we want them to grow up and use the whole parent width
+   */
+  private get cardWidth() {
+    if (this.props.cardWidth) { return this.props.cardWidth; }
+
+    const useDefaultWidth = this.props.cardType === 'normal';
+
+    return useDefaultWidth ? DEFAULT_CARD_DIMENSIONS.WIDTH : undefined;
   }
 
   private get useInfiniteScroll(): boolean {
@@ -223,7 +234,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     if (this.showLoadMoreButton && this.state.hasNextPage) {
       const title = this.state.loading ? 'Loading...' : 'Load more';
       return (
-        <LoadMoreButtonContainer style={{ width: this.props.cardWidth }}>
+        <LoadMoreButtonContainer style={{ width: this.cardWidth }}>
           <Button
             className="load-more-button"
             onClick={this.onLoadMoreButtonClick}

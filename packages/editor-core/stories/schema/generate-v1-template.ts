@@ -42,9 +42,9 @@ const schema = new Schema({
     em: MarkType,
     strong: MarkType,
     strike: MarkType,
-    mono: MarkType,
     subsup: MarkType,
-    underline: MarkType
+    underline: MarkType,
+    code: MarkType
   },
 });
 

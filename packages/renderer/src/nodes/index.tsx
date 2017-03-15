@@ -3,6 +3,7 @@ import { Mention, ResourcedMention } from '@atlaskit/mention';
 import { EventHandlers, ServicesConfig } from '../config';
 import Doc from './doc';
 import Paragraph from './paragraph';
+import Hardbreak from './hardBreak';
 import {
   mergeTextNodes,
   renderTextNodes,
@@ -26,6 +27,7 @@ export interface Renderable {
 
 enum NodeType {
   doc,
+  hardBreak,
   mention,
   paragraph,
   textWrapper,
@@ -38,6 +40,8 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
   switch (NodeType[node.type]) {
     case NodeType.doc:
       return <Doc key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Doc>;
+    case NodeType.hardBreak:
+      return <Hardbreak />;
     case NodeType.paragraph:
       return <Paragraph key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Paragraph>;
     case NodeType.mention: {

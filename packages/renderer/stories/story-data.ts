@@ -11,7 +11,7 @@ export const document = {
             {
               type: 'link',
               attrs: {
-                url: 'https://www.atlassian.com'
+                href: 'https://www.atlassian.com'
               }
             }
           ]
@@ -26,7 +26,7 @@ export const document = {
             {
               type: 'link',
               attrs: {
-                url: 'https://www.atlassian.com'
+                href: 'https://www.atlassian.com'
               }
             }
           ]
@@ -149,7 +149,7 @@ export const document = {
             {
               type: 'link',
               attrs: {
-                url: 'https://www.atlassian.com'
+                href: 'https://www.atlassian.com'
               }
             }
           ]
@@ -227,6 +227,22 @@ export const document = {
         },
         {
           type: 'very unkown'
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'This is a line with '
+         },
+         {
+          type: 'hardBreak'
+         },
+         {
+           type: 'text',
+           text: 'a hardbreak in it.'
         }
       ]
     }

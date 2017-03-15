@@ -11,6 +11,7 @@ import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
 import { MentionsPluginState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
+import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
 import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
@@ -39,6 +40,7 @@ export interface Props {
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
+  pluginStateClearFormatting?: ClearFormattingState;
   pluginStateImageUpload?: ImageUploadState;
   pluginStateMentions?: MentionsPluginState;
   mentionsResourceProvider?: any; // AbstractMentionResource
@@ -55,7 +57,11 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
         <div className={styles.toolbar}>
           {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
-          {props.pluginStateTextFormatting ? <ToolbarAdvancedTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
+          {props.pluginStateTextFormatting || props.pluginStateClearFormatting ?
+            <ToolbarAdvancedTextFormatting
+              pluginStateTextFormatting={props.pluginStateTextFormatting}
+              pluginStateClearFormatting={props.pluginStateClearFormatting}
+            /> : null}
           {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} /> : null}
           {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} /> : null}
           <span style={{ flexGrow: 1 }} />

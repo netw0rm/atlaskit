@@ -143,7 +143,7 @@ export default class Navigation extends PureComponent {
               shouldAnimate={shouldAnimate}
             />
           </div>
-          <div style={{ zIndex: 2 }}>
+          <div style={{ zIndex: 2, position: 'relative' }}>
             {drawers}
           </div>
           <div>

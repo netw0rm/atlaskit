@@ -83,4 +83,10 @@ export const hexToRgb = (hex) => {
 
 export const rgba = (hex, opacity) => `rgba(${hexToRgb(hex)}, ${opacity})`;
 
+export const capitalize = `
+  &::first-letter {
+    text-transform: uppercase;
+  }
+`;
+
 export default ellipsis;

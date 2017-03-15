@@ -1,0 +1,27 @@
+.layer-positions {
+  tr:first-of-type {
+    border-bottom: 1px solid black;
+  }
+
+  tr:last-of-type {
+    border-top: 1px solid black;
+  }
+
+  td {
+    text-align: center;
+
+    &:first-of-type {
+      border-right: 1px solid black;
+      text-align: right;
+    }
+
+    &:last-of-type {
+      border-left: 1px solid black;
+      text-align: left;
+    }
+  }
+
+  .target {
+    font-weight: bold;
+  }
+}

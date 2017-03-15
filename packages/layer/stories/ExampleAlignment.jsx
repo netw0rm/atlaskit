@@ -8,14 +8,22 @@ export default class ExampleAlignment extends PureComponent {
   static propTypes = {
     position: PropTypes.string,
     targetContent: PropTypes.string,
+    longContent: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    longContent: false,
   }
 
   render() {
     const popperContent = (
-      <div style={{ background: '#fca' }}>
-        <p>This is the layer content</p>
-        <p>It should be positioned with position: {this.props.position}</p>
-      </div>);
+      <div style={{ background: '#fca' }}>{this.props.longContent ?
+        (<div>
+          <p>This is the layer content</p>
+          <p>It should be positioned with position: {this.props.position}</p>
+        </div>) : this.props.position}
+      </div>
+    );
 
     return (
       <div>

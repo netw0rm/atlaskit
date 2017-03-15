@@ -12,6 +12,7 @@ import {
   BLOCK_QUOTE, CODE_BLOCK, PANEL, OTHER, BlockType
 } from './types';
 
+import * as commands from '../../commands';
 import keymapPlugin from './keymap';
 import inputRulePlugin from './input-rule';
 import { reconfigure } from '../utils';
@@ -62,6 +63,10 @@ export class BlockTypeState {
 
   unsubscribe(cb: StateChangeHandler) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
+  }
+
+  toggleBlockType(name: string, view: EditorView): boolean {
+    return commands.toggleBlockType(name)(view.state, view.dispatch);
   }
 
   update(newEditorState, dirty = false) {

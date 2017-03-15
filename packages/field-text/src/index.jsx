@@ -28,7 +28,7 @@ export default class extends PureComponent {
         {...this.props}
         value={this.state.value}
         onChange={this.handleOnChange}
-        ref={(FieldText) => { this.input = FieldText; }}
+        ref={(fieldRef) => { this.input = fieldRef; }}
       />
     );
   }

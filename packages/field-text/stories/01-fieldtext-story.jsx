@@ -7,8 +7,7 @@ import { name } from '../package.json';
 
 const formTestUrl = '//httpbin.org/get';
 
-let fieldRefs={
-};
+const fieldRefs = {};
 
 function generateInput(opts) {
   const props = { label: 'Example label', ...opts };
@@ -160,9 +159,9 @@ storiesOf(name, module)
       }}
     >
       <h2>Focus Test</h2>
-      <AkFieldText label="First Field" name="1" ref={(AkFieldText) => { fieldRefs.input1 = AkFieldText; }}/>
-      <AkFieldText label="Second Field" name="2" ref={(AkFieldText) => { fieldRefs.input2 = AkFieldText; }}/>
-      <AkFieldText label="Third Field" name="3" ref={(AkFieldText) => { fieldRefs.input3 = AkFieldText; }}/>
+      <AkFieldText label="First Field" name="1" ref={(field1Ref) => { fieldRefs.input1 = field1Ref; }} />
+      <AkFieldText label="Second Field" name="2" ref={(field2Ref) => { fieldRefs.input2 = field2Ref; }} />
+      <AkFieldText label="Third Field" name="3" ref={(field3Ref) => { fieldRefs.input3 = field3Ref; }} />
       <p>
         <Button appearance="primary" onClick={focus1}>Focus First Field</Button>
       </p>

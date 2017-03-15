@@ -76,8 +76,8 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
       >
       {availableBlockTypes.map((blockTypeGroup, groupNo) => (
         <Group key={`blockTypeGroup${groupNo}`}>
-        {blockTypeGroup.map(blockType => (
-          <Tooltip position="right" description={tooltip(findKeymapByDescription(blockType.title))}>
+        {blockTypeGroup.map((blockType, blockTypeNo) => (
+          <Tooltip key={`blockType${groupNo}${blockTypeNo}`} position="right" description={tooltip(findKeymapByDescription(blockType.title))}>
             <Item
               key={blockType.name}
               isActive={currentBlockType === blockType}

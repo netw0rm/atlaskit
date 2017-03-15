@@ -13,10 +13,10 @@ import {
   EmojiServiceRepresentation,
   EmojiServiceResponse,
   ImageRepresentation,
-  isImageRepresentation,
-  isSpriteServiceRepresentation,
   SpriteServiceRepresentation,
 } from '../types';
+
+import { isImageRepresentation, isSpriteServiceRepresentation } from '../type-helpers';
 
 const emojiRequest = (provider: ServiceConfig): Promise<EmojiServiceResponse> => {
   const { url, securityProvider, refreshedSecurityProvider } = provider;
@@ -71,7 +71,7 @@ export const denormaliseSkinServiceRepresentation = (skins?: EmojiServiceReprese
  * Denormalised an emoji response (emojis + sprite references) into an array of
  * emoji will local sprite definitions.
  */
-export const denormaliseEmojis = (emojiData: EmojiServiceResponse): EmojiResponse  => {
+export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse): EmojiResponse  => {
   const emojis: EmojiDescription[] = emojiData.emojis.map((emoji: EmojiServiceDescription): EmojiDescription => {
     const { id, name, shortcut, type, category, order } = emoji;
     const representation = denormaliseServiceRepresentation(emoji.representation, emojiData.meta);
@@ -113,6 +113,6 @@ export default class EmojiLoader {
    */
   loadEmoji(): Promise<EmojiResponse> {
     const emojisPromise = emojiRequest(this.config);
-    return emojisPromise.then(emojiServiceResponse => denormaliseEmojis(emojiServiceResponse));
+    return emojisPromise.then(emojiServiceResponse => denormaliseEmojiServiceResponse(emojiServiceResponse));
   }
 }

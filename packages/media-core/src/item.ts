@@ -50,7 +50,7 @@ export interface UrlAuthorDetails {
 export interface UrlPreview {
   type: string;
   url: string;
-  title?: string;
+  title: string;
   description?: string;
   site?: string;
   author?: UrlAuthorDetails;

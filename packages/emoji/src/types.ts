@@ -129,16 +129,12 @@ export interface AvailableCategories {
   [index: string]: boolean;
 }
 
-export const isSpriteServiceRepresentation = rep => !!(rep && (<SpriteServiceRepresentation> rep).spriteRef);
-export const isSpriteRepresentation = rep => !!(rep && (<SpriteRepresentation> rep).sprite);
-export const isImageRepresentation = rep => !!(rep && (<ImageRepresentation> rep).imagePath);
-
 export interface OnToneSelected {
   (variation: number): void;
 }
 
 export interface OnEmojiEvent {
-  (emojiId: EmojiId, emoji: EmojiDescription, event?: SyntheticEvent<any>): void;
+  (emojiId: EmojiId, emoji: OptionalEmojiDescription, event?: SyntheticEvent<any>): void;
 }
 
 export interface OnCategory {

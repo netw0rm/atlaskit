@@ -1,3 +1,4 @@
+import Keymap from 'browserkeymap';
 import {
   commands,
   DOMFromPos,
@@ -7,10 +8,12 @@ import {
   Plugin,
   ProseMirror,
   Schema,
-  TextSelection
+  TextSelection,
 } from '../../prosemirror';
 import { LinkMark, LinkMarkType } from '../../schema';
 import hyperlinkRule from './input-rule';
+import * as keymaps from '../../keymaps';
+import { trackAndInvoke } from '../../analytics';
 
 export type StateChangeHandler = (state: HyperlinkState) => void;
 
@@ -57,6 +60,10 @@ export class HyperlinkState {
       this.editorFocused = false;
       this.active && this.changeHandlers.forEach(cb => cb(this));
     });
+
+    pm.addKeymap(new Keymap({
+      [keymaps.addLink.common!]: trackAndInvoke('atlassian.editor.format.link.keyboard', this.showLinkPanel),
+    }));
 
     this.update(true);
   }
@@ -110,14 +117,16 @@ export class HyperlinkState {
     }
   }
 
-  showLinkPanel() {
-    const { pm } = this;
-    const { selection } = pm;
-    if (selection.empty) {
-      this.showToolbarPanel = !this.showToolbarPanel;
-      this.changeHandlers.forEach(cb => cb(this));
-    } else {
-      this.addLink({ href: '' });
+  showLinkPanel = () => {
+    if (!this.activeLinkMark) {
+      const { pm } = this;
+      const { selection } = pm;
+      if (selection.empty) {
+        this.showToolbarPanel = !this.showToolbarPanel;
+        this.changeHandlers.forEach(cb => cb(this));
+      } else {
+        this.addLink({ href: '' });
+      }
     }
   }
 

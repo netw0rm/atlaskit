@@ -57,8 +57,8 @@ export const renderMark = (mark: Renderable, index: number = 0) => {
     case MarkType.em:
       return <Em key={key}>{content}</Em>;
     case MarkType.link: {
-      const { url }  = mark.attrs as any;
-      return <Link key={key} url={url}>{content}</Link>;
+      const { href, url }  = mark.attrs as any;
+      return <Link key={key} href={href || url}>{content}</Link>;
     }
     case MarkType.mono:
       return <Mono key={key}>{content}</Mono>;
@@ -71,7 +71,7 @@ export const renderMark = (mark: Renderable, index: number = 0) => {
       return <SubSup key={key} type={type}>{content}</SubSup>;
     }
     case MarkType.underline:
-      return <Underline>{content}</Underline>;
+      return <Underline key={key}>{content}</Underline>;
     default: {
       if (isText(mark.type)) {
         return (mark as any).text;
@@ -100,5 +100,5 @@ export const isSameMark = (mark: Mark | null, otherMark: Mark | null) => {
   }
 
   // TODO: Use some deep-equal function instead
-  return !Object.keys(mark.attrs!).some(attr => mark.attrs![attr] !== otherMark.attrs![attr]);
+  return !Object.keys(mark.attrs || {}).some(attr => mark.attrs![attr] !== otherMark.attrs![attr]);
 };

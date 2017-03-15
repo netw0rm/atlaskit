@@ -3,7 +3,7 @@ import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 import MoreIcon from '@atlaskit/icon/glyph/more';
 
-import {Ellipsify} from '..';
+import {Ellipsify} from '../ellipsify';
 import {Dropdown} from '../dropdown/dropdown';
 import {
   Wrapper,
@@ -19,14 +19,15 @@ import {
 } from './styled';
 
 export interface LinkCardViewHorizontalProps {
-  height?: number;
-  width?: number;
-
   linkUrl: string;
   title: string;
+
   description?: string;
   thumbnailUrl?: string;
   iconUrl?: string;
+
+  height?: number;
+  width?: number;
 
   // TODO FIL-3892 implement visual designs for loading state
   loading?: boolean;
@@ -39,7 +40,9 @@ export interface LinkCardViewHorizontalProps {
 }
 
 export interface LinkCardViewHorizontalState {
-  isMenuExpanded: boolean;
+  isMenuExpanded?: boolean;
+  thumbnailError?: boolean;
+  iconError?: boolean;
 }
 
 export class LinkCardViewHorizontal extends Component<LinkCardViewHorizontalProps, LinkCardViewHorizontalState> {
@@ -61,16 +64,43 @@ export class LinkCardViewHorizontal extends Component<LinkCardViewHorizontalProp
     super(props);
 
     this.state = {
-      isMenuExpanded: false
+      isMenuExpanded: false,
+      thumbnailError: false,
+      iconError: false
     };
+
+    this.thumbnailError = this.thumbnailError.bind(this);
+    this.iconError = this.iconError.bind(this);
+  }
+
+  thumbnailError() {
+    this.setState({
+      thumbnailError: true,
+    });
+  }
+
+  iconError() {
+    this.setState({
+      iconError: true,
+    });
   }
 
   render() {
     const {width, height, linkUrl, title, description, thumbnailUrl, iconUrl} = this.props;
     const cardStyle = {height: `${height}px`, width: `${width}px`};
 
-    const thumbnail = thumbnailUrl ? <Thumbnail src={thumbnailUrl} alt={title} /> : null;
-    const icon = iconUrl ? <img src={iconUrl} alt={title} /> : null;
+    const thumbnail = (thumbnailUrl && !this.state.thumbnailError) ?
+      <Thumbnail
+        src={thumbnailUrl}
+        alt={title}
+        onError={this.thumbnailError}
+      /> : null;
+    const icon = (iconUrl && !this.state.iconError) ?
+      <img
+        src={iconUrl}
+        alt={title}
+        onError={this.iconError}
+      /> : null;
 
     return (
       <Wrapper style={cardStyle} onClick={this.onClick.bind(this)}>

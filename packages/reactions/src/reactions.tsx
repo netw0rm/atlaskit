@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { style } from 'typestyle';
+import { EmojiProvider } from '@atlaskit/emoji';
 import Reaction from './internal/reaction';
 import ReactionPicker from './reaction-picker';
-import AbstractReactionsService from './reactions-service';
-import { ReactionSummary } from './reactions-service';
+import { ReactionsProvider, ReactionSummary } from './reactions-resource';
 
 export interface Props {
   ari: string;
-  reactionsService: AbstractReactionsService;
-  emojiService: any; // EmojiService
+  reactionsProvider: ReactionsProvider;
+  emojiProvider: Promise<EmojiProvider>;
   onReactionClick: Function;
   boundariesElement?: string;
 }
@@ -47,13 +47,13 @@ export default class Reactions extends Component<Props, State> {
   }
 
   componentWillMount() {
-    const { ari, reactionsService } = this.props;
-    reactionsService.subscribe(ari, this.updateState);
+    const { ari, reactionsProvider } = this.props;
+    reactionsProvider.subscribe(ari, this.updateState);
   }
 
   componentWillUnmount() {
-    const { ari, reactionsService } = this.props;
-    reactionsService.unsubscribe(ari, this.updateState);
+    const { ari, reactionsProvider } = this.props;
+    reactionsProvider.unsubscribe(ari, this.updateState);
   }
 
   private updateState = (state) => {
@@ -63,7 +63,7 @@ export default class Reactions extends Component<Props, State> {
   }
 
   private renderPicker() {
-    const { emojiService, boundariesElement } = this.props;
+    const { emojiProvider, boundariesElement } = this.props;
     const { reactions } = this.state;
 
     if (!reactions.length) {
@@ -72,7 +72,7 @@ export default class Reactions extends Component<Props, State> {
 
     return (
       <ReactionPicker
-        emojiService={emojiService}
+        emojiProvider={emojiProvider}
         onSelection={(emojiId) => this.onEmojiClick(emojiId)}
         miniMode={true}
         boundariesElement={boundariesElement}
@@ -81,7 +81,7 @@ export default class Reactions extends Component<Props, State> {
   }
 
   render() {
-    const { emojiService } = this.props;
+    const { emojiProvider } = this.props;
     const { reactions } = this.state;
 
     return (
@@ -91,7 +91,7 @@ export default class Reactions extends Component<Props, State> {
             <div style={{ display: 'inline-block' }} key={reaction.emojiId}>
               <Reaction
                 reaction={reaction}
-                emojiService={emojiService}
+                emojiProvider={emojiProvider}
                 onClick={() => this.onEmojiClick(reaction.emojiId)}
               />
             </div>

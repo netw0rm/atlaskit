@@ -2,15 +2,18 @@ import React, { PureComponent, PropTypes } from 'react';
 import Popper from 'popper.js';
 import { akZIndexLayer } from '@atlaskit/util-shared-styles';
 
-import { POSITION_ATTRIBUTE_ENUM, positionPropToPopperPosition } from './internal/helpers';
+import { POSITION_ATTRIBUTE_ENUM, getFlipBehavior, positionPropToPopperPosition } from './internal/helpers';
 
 /* eslint-disable react/no-unused-prop-types */
 
 export default class Layer extends PureComponent {
   static propTypes = {
     position: PropTypes.oneOf(POSITION_ATTRIBUTE_ENUM.values),
+    autoFlip: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.arrayOf(PropTypes.oneOf(POSITION_ATTRIBUTE_ENUM.values)),
+    ]),
     boundariesElement: PropTypes.oneOf(['viewport', 'window', 'scrollParent']),
-    autoPosition: PropTypes.bool,
     offset: PropTypes.string,
     content: PropTypes.node,
     onFlippedChange: PropTypes.func,
@@ -20,7 +23,7 @@ export default class Layer extends PureComponent {
   static defaultProps = {
     position: POSITION_ATTRIBUTE_ENUM.default,
     boundariesElement: 'viewport',
-    autoPosition: true,
+    autoFlip: true,
     offset: '0 0',
     content: null,
     onFlippedChange: () => {},
@@ -90,7 +93,7 @@ export default class Layer extends PureComponent {
     // actual target to popper
     const actualTarget = this.targetRef.firstChild;
 
-    this.popper = new Popper(actualTarget, this.contentRef, {
+    const popperOpts = {
       placement: positionPropToPopperPosition(props.position),
       onCreate: this.extractStyles,
       onUpdate: this.extractStyles,
@@ -106,17 +109,24 @@ export default class Layer extends PureComponent {
           offset: this.props.offset,
         },
         flip: {
-          enabled: this.props.autoPosition,
+          enabled: !!this.props.autoFlip,
           flipVariations: true,
           boundariesElement: this.props.boundariesElement,
           padding: 0, // leave 0 pixels between popper and the boundariesElement
         },
         preventOverflow: {
-          enabled: this.props.autoPosition,
+          enabled: !!this.props.autoFlip,
           escapeWithReference: true,
         },
       },
-    });
+    };
+
+    const flipBehavior = getFlipBehavior(props);
+    if (flipBehavior) {
+      popperOpts.modifiers.flip.behavior = flipBehavior;
+    }
+
+    this.popper = new Popper(actualTarget, this.contentRef, popperOpts);
   }
 
   render() {

@@ -36,6 +36,11 @@ const AllAlignments = props => (<div className={styles.storyRoot}>
   </div>
 </div>);
 
+const layerStyles = {
+  background: 'green',
+  padding: '5px',
+};
+
 storiesOf(name, module)
   .add('Simple Layer story', () => {
     const targetStyle = {
@@ -45,10 +50,6 @@ storiesOf(name, module)
       left: '150px',
       background: 'red',
       padding: '50px',
-    };
-    const layerStyles = {
-      background: 'green',
-      padding: '5px',
     };
     const popperContent = <div style={layerStyles}>LayerContent</div>;
     return (
@@ -65,9 +66,40 @@ storiesOf(name, module)
       <AllAlignments />
       <div>Foo</div>
     </div>
-  )).add('Alignments flipping disabled', () => (
+  ))
+  .add('Alignments flipping disabled', () => (
     <div style={{ height: '100%' }}>
-      <AllAlignments autoPosition={false} />
+      <AllAlignments autoFlip={false} />
       <div>Foo</div>
     </div>
-  ));
+  ))
+  .add('Layer with custom flip order', () => {
+    const targetStyle = {
+      display: 'inline-block',
+      position: 'relative',
+      top: '100px',
+      left: '150px',
+      background: 'red',
+      padding: '50px',
+    };
+
+    const popperContent = <div style={layerStyles}>LayerContent</div>;
+    return (
+      <div>
+        <p>Passing autoPosition with preference order of: right, top, left bottom, bottom left.</p>
+        <div style={{ border: '1px solid black', height: '300px', width: '300px', overflow: 'scroll' }}>
+          <div style={{ width: '600px', height: '600px' }}>
+            <AKLayer
+              content={popperContent}
+              position="right top"
+              autoFlip={['top', 'left bottom', 'bottom left']}
+              boundariesElement="scrollParent"
+            >
+              <div style={targetStyle}>Target</div>
+            </AKLayer>
+          </div>
+        </div>
+      </div>
+
+    );
+  });

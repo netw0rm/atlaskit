@@ -169,12 +169,11 @@ describe('block-type', () => {
     expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text'))));
   });
 
-  it('should be not able to nest blockquote', () => {
+  it('should be able to deactivate blockquote after applying two times', () => {
     const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
-
     pluginState.toggleBlockType('blockquote', editorView);
     pluginState.toggleBlockType('blockquote', editorView);
-    expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text'))));
+    expect(editorView.state.doc).to.deep.equal(doc(p('text')));
   });
 
   it('should not be able to change to the same block type', () => {

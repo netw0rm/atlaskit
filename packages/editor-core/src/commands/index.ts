@@ -124,7 +124,9 @@ export function toggleCodeBlock(): Command {
     const currentBlock = $from.parent;
 
     if (currentBlock.type !== state.schema.nodes.codeBlock) {
-      dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.codeBlock));
+      if (isConvertableToCodeBlock(state)) {
+        dispatch(transformToCodeBlockAction(state).scrollIntoView());
+      }
     } else {
       dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
     }

@@ -5,7 +5,8 @@ import {
   EditorView,
   NodeViewDesc,
   TextSelection,
-  Plugin
+  Plugin,
+  Node,
 } from '../../prosemirror';
 import { liftAndSelectSiblingNodes, liftSiblingNodes } from '../../utils';
 
@@ -28,6 +29,7 @@ export class PanelState {
 
   element?: HTMLElement | undefined;
   activePanelType?: string | undefined;
+  toolbarVisible?: boolean | undefined;
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
@@ -50,10 +52,9 @@ export class PanelState {
   //   pm.setSelection(new TextSelection(pm.doc.resolve(originalStartPos), pm.doc.resolve(originalEndPos)));
   // }
 
-  // removePanelType() {
-  //   const { pm } = this;
-  //   liftSiblingNodes(pm).applyAndScroll();
-  // }
+  removePanelType(view: EditorView) {
+    liftSiblingNodes(view);
+  }
 
   // checkEndPanelBlock(): boolean {
   //   const { pm } = this;
@@ -79,43 +80,43 @@ export class PanelState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  // private update(domEvent = false) {
   update(state: EditorState<any>, docView: NodeViewDesc, domEvent: boolean = false) {
-    // const newPanel = this.getActivePanel();
-    // if ((domEvent && newPanel) || this.activeNode !== newPanel) {
-    //   const newElement = newPanel && this.getDomElement();
-    //   this.activeNode = newPanel;
-    //   this.toolbarVisible = this.editorFocused && !!newPanel && (domEvent || this.element !== newElement);
-    //   this.element = newElement;
-    //   this.activePanelType = newPanel && newPanel.attrs['panelType'];
-    //   this.changeHandlers.forEach(cb => cb(this));
-    // }
+    this.state = state;
+    const newPanel = this.getActivePanel(docView);
+    if ((domEvent && newPanel) || this.activeNode !== newPanel) {
+      const newElement = newPanel && this.getDomElement(docView);
+      this.activeNode = newPanel;
+      this.toolbarVisible = this.editorFocused && !!newPanel && (domEvent || this.element !== newElement);
+      this.element = newElement;
+      this.activePanelType = newPanel && newPanel.attrs['panelType'];
+      this.changeHandlers.forEach(cb => cb(this));
+    }
   }
 
-  // private getActivePanel(): PanelNode | undefined {
-  //   if (this.pm.selection instanceof TextSelection) {
-  //     const { $from } = this.pm.selection;
-  //     const node = $from.node(1);
-  //     if (isPanelNode(node)) {
-  //       return node;
-  //     }
-  //   }
-  // }
+  private getActivePanel(docView: NodeViewDesc): Node | undefined {
+    const { state } = this;
+    if (state.selection instanceof TextSelection) {
+      const { $from } = state.selection;
+      const node = $from.node(1);
+      if (node.type === state.schema.nodes.panel) {
+        return node;
+      }
+    }
+  }
 
-  // private getDomElement(): HTMLElement | undefined {
-  //   if (this.pm.selection instanceof TextSelection) {
-  //     const { $from } = this.pm.selection;
-  //     const { node } = DOMFromPos(this.pm, $from.start(1), true);
-  //     let currentNode: Node | null;
-  //     currentNode = node;
-  //     while (currentNode) {
-  //       if (currentNode.attributes && currentNode.attributes['data-panel-type']) {
-  //         return currentNode as HTMLElement;
-  //       }
-  //       currentNode = currentNode.parentNode;
-  //     }
-  //   }
-  // }
+  private getDomElement(docView: NodeViewDesc): HTMLElement | undefined {
+    const { state } = this;
+    if (state.selection instanceof TextSelection) {
+      const { node } = docView.domFromPos(1);
+      let currentNode = node;
+      while (currentNode) {
+        if (currentNode.attributes && currentNode.attributes['data-panel-type']) {
+          return currentNode as HTMLElement;
+        }
+        currentNode = currentNode.parentNode!;
+      }
+    }
+  }
 
   // private lastCharIsNewline(node: PanelNode): boolean {
   //   if (node && node.textContent) {
@@ -168,6 +169,5 @@ const plugin = new Plugin({
 
 export default plugin;
 
-// check if docView is needed in state.
 // add key-maps
 // add input-rules

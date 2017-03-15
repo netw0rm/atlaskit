@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { expect } from 'chai';
-import * as sinon from 'sinon';
 import { mount } from 'enzyme';
 
 import { LinkCardGenericView } from '../../src';

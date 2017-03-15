@@ -6,6 +6,7 @@ import Strike from './strike';
 import Strong from './strong';
 import SubSup from './subsup';
 import Underline from './underline';
+import Code from './code';
 import { Renderable } from '../nodes';
 
 import { isSubSupType } from '../marks/subsup';
@@ -23,6 +24,7 @@ enum MarkType {
   strong,
   subsup,
   underline,
+  code,
   text,
   unknown
 }
@@ -35,6 +37,7 @@ export const markOrder = [
   'mono',
   'subsup',
   'underline',
+  'code',
   'text',
   'unknown'
 ];
@@ -115,6 +118,11 @@ export const getValidMark = (mark: Renderable): Renderable => {
           type,
           content
         };
+      case MarkType.code:
+        return {
+          type,
+          content
+        };
       case MarkType.text: {
         const { text } = mark;
         if (text) {
@@ -160,6 +168,8 @@ export const renderMark = (mark: Renderable, index: number = 0) => {
     }
     case MarkType.underline:
       return <Underline key={key}>{content}</Underline>;
+    case MarkType.code:
+      return <Code key={key}>{content}</Code>;
     case MarkType.text:
       return validMark.text;
     default: {

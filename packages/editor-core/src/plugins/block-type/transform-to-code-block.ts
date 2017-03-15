@@ -40,7 +40,7 @@ export function isConvertableToCodeBlock(state: EditorState<any>): boolean {
 }
 
 function createSliceWithContent(content: string, state: EditorState<any>) {
-  return new Slice(Fragment.from(state.schema.nodes.text.create(null, content)), 0, 0);
+  return new Slice(Fragment.from(state.schema.text(content)), 0, 0);
 }
 
 function clearMarkupFor(state: EditorState<any>, pos: number): Transaction {
@@ -55,10 +55,10 @@ function clearMarkupFor(state: EditorState<any>, pos: number): Transaction {
 
     const allowed = match.matchType(child.type, child.attrs);
     if (!allowed) {
-      if (child.type === state.schema.nodes.mentions) {
+      if (child.type === state.schema.nodes.mention) {
         const content = child.attrs['displayName'];
         delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state), false));
-      } else if (child.type === state.schema.nodes.rule) {
+      } else if (child.type === state.schema.nodes.rule || child.type === state.schema.nodes.hardBreak) {
         const content = '\n';
         delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state), false));
       } else {

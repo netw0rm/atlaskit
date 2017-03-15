@@ -2,7 +2,9 @@ import {
   Plugin,
   Schema,
   EditorState,
-  EditorView
+  EditorView,
+  baseKeymap,
+  keymap
 } from '../';
 import { default as defaultSchema } from './schema';
 import { RefsNode, Refs } from './schema-builder';
@@ -21,7 +23,8 @@ export default (options: Options) : EditorInstance => {
     doc: options.doc,
     schema: options.schema || defaultSchema,
     plugins: [
-      options.plugin
+      options.plugin,
+      keymap(baseKeymap)
     ]
   }) as ProseMirrorWithRefs;
   const editorView = new EditorView(options.place || document.body, {

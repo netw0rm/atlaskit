@@ -125,7 +125,18 @@ export function toggleCodeBlock(): Command {
 
     if (currentBlock.type !== state.schema.nodes.codeBlock) {
       if (isConvertableToCodeBlock(state)) {
-        dispatch(transformToCodeBlockAction(state).scrollIntoView());
+        // convert to codeblock
+        let tr = transformToCodeBlockAction(state, {});
+
+        // lift 
+        if ($from.depth > 1) {
+          const range = $from.blockRange($to);
+          const target = range && liftTarget(range);
+          if (target !== null) {
+            tr = tr.lift(range, target).scrollIntoView();
+          }
+        }
+        dispatch(tr);
       }
     } else {
       dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));

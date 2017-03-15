@@ -132,6 +132,25 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
           case schema.marks.subsup:
             elem = elem.appendChild(doc.createElement(mark.attrs['type']));
             break;
+          case schema.marks.link:
+            const link = doc.createElement('a');
+            const href = mark.attrs['href'];
+
+            // Handle external links e.g. links which start with http://, https://, ftp://, //
+            if (href.match(/\w+:\/\//) || href.match(/^\/\//) || href.match('mailto:')) {
+              link.setAttribute('class', 'external-link');
+              link.setAttribute('href', href);
+              link.setAttribute('rel', 'nofollow');
+            } else {
+              link.setAttribute('href', href);
+            }
+
+            if (mark.attrs['title']) {
+              link.setAttribute('title', mark.attrs['title']);
+            }
+
+            elem = elem.appendChild(link);
+            break;
           case schema.marks.mention_query:
             break;
           default:

@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 
 import * as classNames from 'classnames';
 
-import { Mention, OnSelection } from '../../types';
+import { Mention, OnMentionEvent } from '../../types';
 import { MentionProvider, PresenceProvider, PresenceUpdate } from '../../api/MentionResource';
 import MentionList from '../MentionList';
 import debug from '../../util/logger';
@@ -40,7 +40,7 @@ export interface Props {
   resourceProvider: MentionProvider;
   presenceProvider?: PresenceProvider;
   query?: string;
-  onSelection?: OnSelection;
+  onSelection?: OnMentionEvent;
 }
 
 export interface State {
@@ -91,13 +91,13 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
     }
   }
 
-  selectIndex(index: number, callback?: () => any): void {
+  selectIndex = (index: number, callback?: () => any): void => {
     if (this.mentionListRef) {
       this.mentionListRef.selectIndex(index, callback);
     }
   }
 
-  selectId(id: string, callback?: () => any): void {
+  selectId = (id: string, callback?: () => any): void => {
     if (this.mentionListRef) {
       this.mentionListRef.selectId(id, callback);
     }
@@ -109,7 +109,7 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
     }
   }
 
-  mentionsCount(): number {
+  mentionsCount = (): number => {
     if (this.mentionListRef) {
       return this.mentionListRef.mentionsCount();
     }

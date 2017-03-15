@@ -10,8 +10,8 @@ export interface KeyValues {
 }
 
 export interface SecurityOptions {
-  params: KeyValues;
-  headers: KeyValues;
+  params?: KeyValues;
+  headers?: KeyValues;
 }
 
 /**

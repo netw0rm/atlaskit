@@ -78,6 +78,28 @@
         }
       ]
     },
+    "link_text_inline_node": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/text_node"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "marks": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/definitions/link_mark"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
     "code_inline_node": {
       "allOf": [
         {
@@ -310,7 +332,7 @@
         "content": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/formatted_text_inline_node"
+            "$ref": "#/definitions/link_text_inline_node"
           }
         },
         "attrs": {

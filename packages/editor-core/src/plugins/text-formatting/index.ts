@@ -10,7 +10,7 @@ import {
 } from '../../prosemirror';
 import {
   EmMarkType,
-  MonoMarkType,
+  CodeMarkType,
   StrikeMarkType,
   StrongMarkType,
   SubSupMarkType,
@@ -31,9 +31,9 @@ export class TextFormattingState {
   emActive = false;
   emDisabled = false;
   emHidden = false;
-  monoActive = false;
-  monoDisabled = false;
-  monoHidden = false;
+  codeActive = false;
+  codeDisabled = false;
+  codeHidden = false;
   underlineActive = false;
   underlineDisabled = false;
   underlineHidden = false;
@@ -56,7 +56,7 @@ export class TextFormattingState {
     this.emHidden = !pm.schema.marks.em;
     this.strongHidden = !pm.schema.marks.strong;
     this.underlineHidden = !pm.schema.marks.u;
-    this.monoHidden = !pm.schema.marks.mono;
+    this.codeHidden = !pm.schema.marks.code;
     this.superscriptHidden = !pm.schema.marks.subsup;
     this.subscriptHidden = !pm.schema.marks.subsup;
     this.strikeHidden = !pm.schema.marks.strike;
@@ -78,10 +78,10 @@ export class TextFormattingState {
     }
   }
 
-  toggleMono() {
-    const { mono } = this.pm.schema.marks;
-    if (mono) {
-      this.toggleMark(mono);
+  toggleCode() {
+    const { code } = this.pm.schema.marks;
+    if (code) {
+      this.toggleMark(code);
     }
   }
 
@@ -141,7 +141,7 @@ export class TextFormattingState {
 
   private update() {
     const { pm } = this;
-    const { em, mono, strike, strong, subsup, u } = pm.schema.marks;
+    const { em, code, strike, strong, subsup, u } = pm.schema.marks;
     let dirty = false;
 
     if (em) {
@@ -158,16 +158,16 @@ export class TextFormattingState {
       }
     }
 
-    if (mono) {
-      const newMonoActive = this.anyMarkActive(mono);
-      if (newMonoActive !== this.monoActive) {
-        this.monoActive = newMonoActive;
+    if (code) {
+      const newCodeActive = this.anyMarkActive(code);
+      if (newCodeActive !== this.codeActive) {
+        this.codeActive = newCodeActive;
         dirty = true;
       }
 
-      const newMonoDisabled = !commands.toggleMark(mono)(this.pm, false);
-      if (newMonoDisabled !== this.monoDisabled) {
-        this.monoDisabled = newMonoDisabled;
+      const newCodeDisabled = !commands.toggleMark(code)(this.pm, false);
+      if (newCodeDisabled !== this.codeDisabled) {
+        this.codeDisabled = newCodeDisabled;
         dirty = true;
       }
     }
@@ -254,7 +254,7 @@ export class TextFormattingState {
       [keymaps.toggleItalic.common!]: trackAndInvoke('atlassian.editor.format.em.keyboard', () => this.toggleEm()),
       [keymaps.toggleUnderline.common!]: trackAndInvoke('atlassian.editor.format.u.keyboard', () => this.toggleUnderline()),
       [keymaps.toggleStrikethrough.common!]: trackAndInvoke('atlassian.editor.format.strike.keyboard', () => this.toggleStrike()),
-      [keymaps.toggleMonospace.common!]: trackAndInvoke('atlassian.editor.format.mono.keyboard', () => this.toggleMono()),
+      [keymaps.toggleCode.common!]: trackAndInvoke('atlassian.editor.format.code.keyboard', () => this.toggleCode()),
     }));
   }
 
@@ -305,7 +305,7 @@ export default new Plugin(TextFormattingState);
 export interface S extends Schema {
   marks: {
     em?: EmMarkType;
-    mono?: MonoMarkType;
+    code?: CodeMarkType;
     strike?: StrikeMarkType;
     strong?: StrongMarkType;
     subsup?: SubSupMarkType;

@@ -1,9 +1,13 @@
-import { Mark, MarkType, Schema } from '../../prosemirror';
+import {
+  Mark,
+  Schema,
+  CodeMark as BaseCodeMark
+} from '../../prosemirror';
 
-export class MonoMarkType extends MarkType {
+export class CodeMarkType extends BaseCodeMark {
   constructor(name: string, rank: number, schema: Schema) {
-    if (name !== 'mono') {
-      throw new Error('MonoMarkType must be named "mono".');
+    if (name !== 'code') {
+      throw new Error('CodeMarkType must be named "code".');
     }
     super(name, rank, schema);
   }
@@ -29,15 +33,15 @@ export class MonoMarkType extends MarkType {
   toDOM(): [string, any] {
     return ['span', {
       style: 'font-family: monospace; white-space: pre-wrap;',
-      class: 'mono'
+      class: 'code'
     }];
   }
 }
 
-export interface MonoMark extends Mark {
-  type: MonoMarkType;
+export interface CodeMark extends Mark {
+  type: CodeMarkType;
 }
 
-export function isMonoMark(mark: Mark): mark is MonoMark {
-  return mark.type instanceof MonoMarkType;
+export function isCodeMark(mark: Mark): mark is CodeMark {
+  return mark.type instanceof CodeMarkType;
 }

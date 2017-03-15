@@ -10,7 +10,7 @@ import Item from 'ak-droplist-item';
 import ToolbarButton from '../ToolbarButton';
 import AdvancedIcon from 'ak-icon/glyph/editor/advanced';
 import ExpandIcon from 'ak-icon/glyph/editor/expand';
-import { toggleMonospace, toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
+import { toggleCode, toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
 import * as styles from './styles';
 
 export interface Props {
@@ -20,9 +20,9 @@ export interface Props {
 
 export interface State {
   isOpen?: boolean;
-  monoActive?: boolean;
-  monoDisabled?: boolean;
-  monoHidden?: boolean;
+  codeActive?: boolean;
+  codeDisabled?: boolean;
+  codeHidden?: boolean;
   strikeActive?: boolean;
   strikeDisabled?: boolean;
   strikeHidden?: boolean;
@@ -49,11 +49,11 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   render() {
     const {
       isOpen,
-      monoActive,
+      codeActive,
       strikeActive,
-      monoHidden,
+      codeHidden,
       strikeHidden,
-      monoDisabled,
+      codeDisabled,
       strikeDisabled,
       clearFormattingDisabled,
     } = this.state;
@@ -71,7 +71,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
           trigger={
             <ToolbarButton
               selected={isOpen}
-              disabled={monoDisabled && strikeDisabled && clearFormattingDisabled}
+              disabled={codeDisabled && strikeDisabled && clearFormattingDisabled}
               iconBefore={
                 <div className={styles.triggerWrapper}>
                   <AdvancedIcon label="text-formatting" />
@@ -83,14 +83,14 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
           }
         >
           {pluginStateTextFormatting && <Group>
-            {!monoHidden &&
-              <Tooltip position="right" description={tooltip(toggleMonospace)}>
+            {!codeHidden &&
+              <Tooltip position="right" description={tooltip(toggleCode)}>
                 <Item
-                  isActive={monoActive}
-                  isDisabled={monoDisabled}
-                  onActivate={this.handleMonoClick}
+                  isActive={codeActive}
+                  isDisabled={codeDisabled}
+                  onActivate={this.handleCodeClick}
                 >
-                  <span>Monospace</span>
+                  <span>Code</span>
                 </Item>
               </Tooltip>}
             {!strikeHidden &&
@@ -123,8 +123,8 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   }
 
   private toggleOpen = () => {
-    const { monoDisabled, strikeDisabled, clearFormattingDisabled, isOpen } = this.state;
-    if (!(monoDisabled && strikeDisabled && clearFormattingDisabled)) {
+    const { codeDisabled, strikeDisabled, clearFormattingDisabled, isOpen } = this.state;
+    if (!(codeDisabled && strikeDisabled && clearFormattingDisabled)) {
       this.setState({
         isOpen: !isOpen,
       });
@@ -133,9 +133,9 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
 
   private handlePluginStateTextFormattingChange = (pluginState: TextFormattingState) => {
     this.setState({
-      monoActive: pluginState.monoActive,
-      monoDisabled: pluginState.monoDisabled,
-      monoHidden: pluginState.monoHidden,
+      codeActive: pluginState.codeActive,
+      codeDisabled: pluginState.codeDisabled,
+      codeHidden: pluginState.codeHidden,
       strikeActive: pluginState.strikeActive,
       strikeDisabled: pluginState.strikeDisabled,
       strikeHidden: pluginState.strikeHidden,
@@ -148,20 +148,20 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     });
   }
 
-  @analytics('atlassian.editor.format.monospace.button')
+  @analytics('atlassian.editor.format.strikethrough.button')
   private handleStrikeClick = () => {
-    if (!this.state.monoDisabled) {
+    if (!this.state.strikeDisabled) {
       const { pluginStateTextFormatting } = this.props;
       pluginStateTextFormatting && pluginStateTextFormatting.toggleStrike();
       this.toggleOpen();
     }
   }
 
-  @analytics('atlassian.editor.format.strikethrough.button')
-  private handleMonoClick = () => {
-    if (!this.state.monoDisabled) {
+  @analytics('atlassian.editor.format.code.button')
+  private handleCodeClick = () => {
+    if (!this.state.codeDisabled) {
       const { pluginStateTextFormatting } = this.props;
-      pluginStateTextFormatting && pluginStateTextFormatting.toggleMono();
+      pluginStateTextFormatting && pluginStateTextFormatting.toggleCode();
       this.toggleOpen();
     }
   }

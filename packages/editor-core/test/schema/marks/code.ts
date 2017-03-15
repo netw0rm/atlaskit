@@ -1,13 +1,13 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { DocNodeType, MonoMarkType, Schema, Text } from '../../../src';
+import { DocNodeType, CodeMarkType, Schema, Text } from '../../../src';
 import { DOMNode } from '../../../src/prosemirror/dom';
 import { chaiPlugin, fromHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
-describe('@atlaskit/editor-core/schema mono mark', () => {
-  it('throws an error if it is not named "mono"', () => {
+describe('@atlaskit/editor-core/schema code mark', () => {
+  it('throws an error if it is not named "code"', () => {
     expect(() => {
       new Schema({
         nodes: {
@@ -15,13 +15,13 @@ describe('@atlaskit/editor-core/schema mono mark', () => {
           text: { type: Text }
         },
         marks: {
-          foo: MonoMarkType
+          foo: CodeMarkType
         }
       });
     }).to.throw(Error);
   });
 
-  it('does not throw an error if it is named "mono"', () => {
+  it('does not throw an error if it is named "code"', () => {
     expect(() => {
       new Schema({
         nodes: {
@@ -29,7 +29,7 @@ describe('@atlaskit/editor-core/schema mono mark', () => {
           text: { type: Text }
         },
         marks: {
-          mono: MonoMarkType
+          code: CodeMarkType
         }
       });
     }).to.not.throw(Error);
@@ -37,7 +37,7 @@ describe('@atlaskit/editor-core/schema mono mark', () => {
 
   it('declares itself as code', () => {
     const schema = makeSchema();
-    expect(schema.marks.mono).to.have.property('isCode', true);
+    expect(schema.marks.code).to.have.property('isCode', true);
   });
 
   itMatches('<tt>text</tt>', 'text');
@@ -47,16 +47,16 @@ describe('@atlaskit/editor-core/schema mono mark', () => {
   itMatches('<span style="font-family: monospace; white-space: pre-wrap">text</span>', 'text');
   itMatches('<span style="font-family: monospace; white-space: pre-line">text</span>', 'text');
 
-  it('serializes to <span style="font-family: monospace; white-space: pre-wrap" class="mono">', () => {
+  it('serializes to <span style="font-family: monospace; white-space: pre-wrap" class="code">', () => {
     const schema = makeSchema();
-    const node = schema.text('foo', [ schema.marks.mono.create() ] );
+    const node = schema.text('foo', [ schema.marks.code.create() ] );
 
     // at this moment DOMNode doesn't have getAttribute/classList
     const domNode: DOMNode = node.toDOM();
     const domNodeAttributes = domNode.attributes;
 
     expect(domNodeAttributes.getNamedItem('style').value).to.equal('font-family: monospace; white-space: pre-wrap;');
-    expect(domNodeAttributes.getNamedItem('class').value).to.equal('mono');
+    expect(domNodeAttributes.getNamedItem('class').value).to.equal('code');
   });
 });
 
@@ -67,7 +67,7 @@ function makeSchema() {
       text: Text;
     };
     marks: {
-      mono: MonoMarkType;
+      code: CodeMarkType;
     };
   }
 
@@ -77,7 +77,7 @@ function makeSchema() {
       text: { type: Text }
     },
     marks: {
-      mono: MonoMarkType
+      code: CodeMarkType
     }
   }) as ISchema;
 }
@@ -86,8 +86,8 @@ function itMatches(html: string, expectedText: string) {
   it(`matches ${html}`, () => {
     const schema = makeSchema();
     const doc = fromHTML(html, schema);
-    const mono = schema.marks.mono.create();
+    const code = schema.marks.code.create();
 
-    expect(doc).to.have.textWithMarks(expectedText, [ mono ]);
+    expect(doc).to.have.textWithMarks(expectedText, [ code ]);
   });
 }

@@ -1,5 +1,5 @@
-import { EditorTransform, Fragment, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
-import { isCodeBlockNode, isHardBreakNode, isMentionNode } from '../../schema';
+import { EditorTransform, ProseMirror } from '../../prosemirror';
+import { isCodeBlockNode } from '../../schema';
 
 export default function transformToCodeBlock(pm: ProseMirror): void {
   if (!isConvertableToCodeBlock(pm)) {
@@ -14,7 +14,7 @@ export function transformToCodeBlockAction(pm: ProseMirror, attrs?: any): Editor
   const codeBlock = pm.schema.nodes.code_block;
 
   const where = $from.before($from.depth);
-  const tr = clearMarkupFor(pm, where)
+  const tr = mergeClearContent(pm)
     .setNodeType(where, codeBlock, attrs);
 
   return tr;
@@ -40,45 +40,20 @@ export function isConvertableToCodeBlock(pm: ProseMirror): boolean {
   return parentNode.canReplaceWith(index, index + 1, pm.schema.nodes.code_block);
 }
 
-function createSliceWithContent(content: string, pm: ProseMirror) {
- return new Slice(Fragment.from(pm.schema.nodes.text.create(null, content)), 0, 0);
-}
-
-function clearMarkupFor(pm: ProseMirror, pos: number) {
-  const tr = pm.tr;
-  const node = tr.doc.nodeAt(pos)!;
-  let match = pm.schema.nodes.code_block.contentExpr.start();
-  const delSteps: Step[] = [];
-
-  for (let i = 0, cur = pos + 1; i < node.childCount; i++) {
-    const child = node.child(i);
-    const end = cur + child.nodeSize;
-
-    const allowed = match.matchType(child.type, child.attrs);
-    if (!allowed) {
-      if (isMentionNode(child)) {
-        const content = child.attrs['displayName'];
-        delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, pm)));
-      } else if (isHardBreakNode(child)) {
-        const content = '\n';
-        delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, pm)));
-      } else {
-        delSteps.push(new ReplaceStep(cur, end, Slice.empty));
+function mergeClearContent(pm: ProseMirror) {
+  const { tr } = pm;
+  const { text } = pm.schema.nodes;
+  const { from, to } = tr.selection;
+  let textContent = '';
+  tr.doc.nodesBetween(from, to, (node, pos) => {
+    if (node.isTextblock && node.textContent) {
+      if (textContent.length > 0) {
+        textContent += '\n';
       }
-    } else {
-      match = allowed;
-      for (let j = 0; j < child.marks.length; j++) {
-        if (!match.allowsMark(child.marks[j])) {
-          tr.step(new RemoveMarkStep(cur, end, child.marks[j]));
-        }
-      }
+      textContent += node.textContent;
     }
-    cur = end;
-  }
-
-  for (let i = delSteps.length - 1; i >= 0; i--) {
-    tr.step(delSteps[i]);
-  }
-
+  });
+  const textNode = text.create({}, textContent);
+  tr.replaceSelection(textNode);
   return tr;
 }

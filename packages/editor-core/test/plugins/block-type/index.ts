@@ -235,81 +235,68 @@ describe('block-type', () => {
       context('when on a Mac', () => {
         context('when hits Cmd-Alt-0', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
-
+            const { editorView } = editor(doc(h1('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-0');
-            expect(toggleBlockType.calledWith('normal', editorView)).to.equal(true);
+            expect(editorView.state.doc.toJSON()).to.eql(doc(p('text')).toJSON());
           });
         });
 
         context('when hits Cmd-Alt-1', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
-
+            const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-1');
-            expect(toggleBlockType.calledWith('heading1', editorView)).to.equal(true);
+            expect(editorView.state.doc.toJSON()).to.eql(doc(h1('text')).toJSON());
           });
         });
 
         context('when hits Cmd-Alt-2', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
-
+            const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-2');
-            expect(toggleBlockType.calledWith('heading2', editorView)).to.equal(true);
+            expect(editorView.state.doc.toJSON()).to.eql(doc(h2('text')).toJSON());
           });
         });
 
         context('when hits Cmd-Alt-3', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
-
+            const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-3');
-            expect(toggleBlockType.calledWith('heading3', editorView)).to.equal(true);
+            expect(editorView.state.doc.toJSON()).to.eql(doc(h3('text')).toJSON());
           });
         });
 
         context('when hits Cmd-Alt-4', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
-
+            const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-4');
-            expect(toggleBlockType.calledWith('heading4', editorView)).to.equal(true);
+            expect(editorView.state.doc.toJSON()).to.eql(doc(h4('text')).toJSON());
           });
         });
 
         context('when hits Cmd-Alt-5', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
-
+            const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-5');
-            expect(toggleBlockType.calledWith('heading5', editorView)).to.equal(true);
+            expect(editorView.state.doc.toJSON()).to.eql(doc(h5('text')).toJSON());
           });
         });
 
         context('when hits Cmd-Alt-7', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
-
+            const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-7');
-            expect(toggleBlockType.calledWith('blockquote', editorView)).to.equal(true);
+
+            expect(editorView.state.doc.toJSON()).to.eql(doc(blockquote(p('text'))).toJSON());
           });
         });
 
         context('when hits Cmd-Alt-8', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
+            const { editorView } = editor(doc(p('text')));
+            const code = code_block({language: null});
 
             sendKeyToPm(editorView, 'Cmd-Alt-8');
-            expect(toggleBlockType.calledWith('codeblock', editorView)).to.equal(true);
+            expect(editorView.state.doc.toJSON()).to.eql(doc(code('text')).toJSON());
           });
         });
       });
@@ -317,81 +304,68 @@ describe('block-type', () => {
       context('when not on a Mac', () => {
         context('when hits Ctrl-0', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
-
+            const { editorView } = editor(doc(h1('text')));
             sendKeyToPm(editorView, 'Ctrl-0');
-            expect(toggleBlockType.calledWith('normal', editorView)).to.equal(true);
+            expect(editorView.state.doc.toJSON()).to.eql(doc(p('text')).toJSON());
           });
         });
 
         context('when hits Ctrl-1', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
-
-            sendKeyToPm(editorView, 'Ctrl-1');
-            expect(toggleBlockType.calledWith('heading1', editorView)).to.equal(true);
+            const { editorView } = editor(doc(p('text')));
+            sendKeyToPm(editorView, 'Cmd-Alt-1');
+            expect(editorView.state.doc.toJSON()).to.eql(doc(h1('text')).toJSON());
           });
         });
 
         context('when hits Ctrl-2', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
-
+            const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Ctrl-2');
-            expect(toggleBlockType.calledWith('heading2', editorView)).to.equal(true);
+            expect(editorView.state.doc.toJSON()).to.eql(doc(h2('text')).toJSON());
           });
         });
 
         context('when hits Ctrl-3', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
-
+            const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Ctrl-3');
-            expect(toggleBlockType.calledWith('heading3', editorView)).to.equal(true);
+            expect(editorView.state.doc.toJSON()).to.eql(doc(h3('text')).toJSON());
           });
         });
 
         context('when hits Ctrl-4', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
-
+            const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Ctrl-4');
-            expect(toggleBlockType.calledWith('heading4', editorView)).to.equal(true);
+            expect(editorView.state.doc.toJSON()).to.eql(doc(h4('text')).toJSON());
           });
         });
 
         context('when hits Ctrl-5', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
-
+            const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Ctrl-5');
-            expect(toggleBlockType.calledWith('heading5', editorView)).to.equal(true);
+            expect(editorView.state.doc.toJSON()).to.eql(doc(h5('text')).toJSON());
           });
         });
 
         context('when hits Ctrl-7', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
-
+            const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Ctrl-7');
-            expect(toggleBlockType.calledWith('blockquote', editorView)).to.equal(true);
+
+            expect(editorView.state.doc.toJSON()).to.eql(doc(blockquote(p('text'))).toJSON());
           });
         });
 
         context('when hits Ctrl-8', () => {
           it('toggles paragraph', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
+            const { editorView } = editor(doc(p('text')));
+            const code = code_block({language: null});
 
             sendKeyToPm(editorView, 'Ctrl-8');
-            expect(toggleBlockType.calledWith('codeblock', editorView)).to.equal(true);
+            expect(editorView.state.doc.toJSON()).to.eql(doc(code('text')).toJSON());
           });
         });
       });

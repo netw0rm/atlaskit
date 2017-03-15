@@ -1,5 +1,5 @@
 import { Node } from '@atlaskit/editor-core';
-import { chaiPlugin, markFactory, nodeFactory } from '@atlaskit/editor-core/src/test-helper';
+import { chaiPlugin, markFactory, nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { name } from '../package.json';

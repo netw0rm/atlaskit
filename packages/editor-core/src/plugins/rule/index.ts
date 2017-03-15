@@ -12,11 +12,9 @@ import { reconfigure } from '../utils';
 export type StateChangeHandler = (state: RuleState) => any;
 
 export class RuleState {
-  private changeHandlers: StateChangeHandler[] = [];
   private state: EditorState<any>;
 
   constructor(state: EditorState<any>) {
-    this.changeHandlers = [];
     this.state = state;
   }
 }

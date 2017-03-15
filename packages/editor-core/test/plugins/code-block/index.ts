@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import CodeBlockPlugin from '../../../src/plugins/code-block';
-import { fixtures, createEvent, chaiPlugin, code_block, doc, makeEditor, p } from '../../../test-helper';
+import { setTextSelection, fixtures, createEvent, chaiPlugin, code_block, doc, makeEditor, p } from '../../../test-helper';
 
 chai.use(chaiPlugin);
 const click = createEvent('click');
@@ -27,12 +27,12 @@ describe('code-block', () => {
 
     context('when leaving code block', () => {
       it('notifies subscriber', () => {
-        const { refs, pluginState, setTextSelection } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
+        const { refs, pluginState, editorView } = editor(doc(p('paragraph{pPos}'), code_block()('codeBlock{<>}')));
         const spy = sinon.spy();
         const { pPos } = refs;
 
         pluginState.subscribe(spy);
-        setTextSelection(pPos);
+        setTextSelection(editorView, pPos);
 
         expect(spy.callCount).to.equal(2);
       });
@@ -40,12 +40,12 @@ describe('code-block', () => {
 
     context('when entering code block', () => {
       it('notifies subscriber', () => {
-        const { refs, pluginState, setTextSelection } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
+        const { refs, pluginState, editorView } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
         const spy = sinon.spy();
         const { cbPos } = refs;
 
         pluginState.subscribe(spy);
-        setTextSelection(cbPos);
+        setTextSelection(editorView, cbPos);
 
         expect(spy.callCount).to.equal(2);
       });
@@ -53,12 +53,12 @@ describe('code-block', () => {
 
     context('when moving to a different code block', () => {
       it('notifies subscriber', () => {
-        const { refs, pluginState, setTextSelection } = editor(doc(code_block()('codeBlock{<>}'), code_block()('codeBlock{cbPos}')));
+        const { refs, pluginState, editorView } = editor(doc(code_block()('codeBlock{<>}'), code_block()('codeBlock{cbPos}')));
         const spy = sinon.spy();
         const { cbPos } = refs;
 
         pluginState.subscribe(spy);
-        setTextSelection(cbPos);
+        setTextSelection(editorView, cbPos);
 
         expect(spy.callCount).to.equal(2);
       });
@@ -66,12 +66,12 @@ describe('code-block', () => {
 
     context('when moving within the same code block', () => {
       it('does not notify subscriber', () => {
-        const { refs, pluginState, setTextSelection } = editor(doc(code_block()('{<>}codeBlock{cbPos}')));
+        const { refs, pluginState, editorView } = editor(doc(code_block()('{<>}codeBlock{cbPos}')));
         const spy = sinon.spy();
         const { cbPos } = refs;
 
         pluginState.subscribe(spy);
-        setTextSelection(cbPos);
+        setTextSelection(editorView, cbPos);
 
         expect(spy.callCount).to.not.equal(2);
       });
@@ -103,13 +103,13 @@ describe('code-block', () => {
 
     context('when unsubscribe', () => {
       it('does not notify the subscriber', () => {
-        const { refs, pluginState, setTextSelection } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
+        const { refs, pluginState, editorView } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock{cbPos}')));
         const spy = sinon.spy();
         const { cbPos } = refs;
         pluginState.subscribe(spy);
 
         pluginState.unsubscribe(spy);
-        setTextSelection(cbPos);
+        setTextSelection(editorView, cbPos);
 
         expect(spy.callCount).to.not.equal(2);
       });
@@ -119,11 +119,11 @@ describe('code-block', () => {
   describe('element', () => {
     context('when cursor moves within the same code block', () => {
       it('returns the same element', () => {
-        const { refs, pluginState, setTextSelection } = editor(doc(code_block()('code{<>}Block{cbPos}')));
+        const { refs, pluginState, editorView } = editor(doc(code_block()('code{<>}Block{cbPos}')));
         const { cbPos } = refs;
 
         const previousElement = pluginState.element;
-        setTextSelection(cbPos);
+        setTextSelection(editorView, cbPos);
 
         const currentElement = pluginState.element;
 
@@ -133,11 +133,11 @@ describe('code-block', () => {
 
     context('when cursor moves onto different code block', () => {
       it('returns different elements', () => {
-        const { refs, pluginState, setTextSelection } = editor(doc(code_block()('one{<>} codeBlock'), code_block()('another{cbPos} codeBlock')));
+        const { refs, pluginState, editorView } = editor(doc(code_block()('one{<>} codeBlock'), code_block()('another{cbPos} codeBlock')));
         const { cbPos } = refs;
 
         const previousElement = pluginState.element;
-        setTextSelection(cbPos);
+        setTextSelection(editorView, cbPos);
 
         const currentElement = pluginState.element;
 
@@ -204,10 +204,10 @@ describe('code-block', () => {
 
     context('when has not been clicked', () => {
       it('returns false', () => {
-        const { refs, pluginState, setTextSelection } = editor(doc(p('paragraph'), code_block()('codeB{cbPos}lock')));
+        const { refs, pluginState, editorView } = editor(doc(p('paragraph'), code_block()('codeB{cbPos}lock')));
         const { cbPos } = refs;
 
-        setTextSelection(cbPos);
+        setTextSelection(editorView, cbPos);
 
         expect(pluginState.clicked).to.be.false;
       });

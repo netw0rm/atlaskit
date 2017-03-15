@@ -1,6 +1,7 @@
 import {
   EditorView,
-  TextSelection
+  TextSelection,
+  NodeSelection
 } from '../';
 import {
   Refs,
@@ -19,13 +20,21 @@ export function setTextSelection (view: EditorView, anchor: number, head?: numbe
   view.dispatch(tr);
 };
 
+export function setNodeSelection (view: EditorView, from: number) {
+  const { state } = view;
+  const tr = state.tr.setSelection(NodeSelection.create(state.doc, from));
+  view.dispatch(tr);
+};
+
+
 /**
  * Replace the given range, or the selection if no range is given, with a text node containing the given string
  */
-export function insertText (view: EditorView, text: string, from?: number, to?: number) {
-  const { state } = view;
-  const tr = state.tr.insertText(text, from, to);
-  view.dispatch(tr);
+export function insertText(view: EditorView, text: string, from?: number, to?: number) {
+  if (view.someProp('handleTextInput', f => f(view, from, to, text))) {
+    return;
+  }
+  view.dispatch(view.state.tr.insertText(text, from, to));
 };
 
 /**

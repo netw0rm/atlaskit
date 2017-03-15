@@ -11,6 +11,7 @@ import panelPlugin from '../../src/plugins/panel';
 import textFormattingPlugin from '../../src/plugins/text-formatting';
 import hyperlinkPlugin from '../../src/plugins/hyperlink';
 import rulePlugin from '../../src/plugins/rule';
+import imageUploadPlugin from '../../src/plugins/image-upload';
 import {
   baseKeymap,
   EditorState,
@@ -22,6 +23,7 @@ import {
 } from '../../src/prosemirror';
 import schema from './schema';
 
+export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {
   context?: ContextName;
   isExpandedByDefault?: boolean;
@@ -31,6 +33,7 @@ export interface Props {
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
   imageUploader?: Function;
+  imageUploadHandler?: ImageUploadHandler;
 }
 
 export interface State {
@@ -106,6 +109,7 @@ export default class Editor extends PureComponent<Props, State> {
     const panelState = editorState && panelPlugin.getState(editorState);
     const textFormattingState = editorState && textFormattingPlugin.getState(editorState);
     const hyperlinkState = editorState && hyperlinkPlugin.getState(editorState);
+    const imageUploadState = editorState && imageUploadPlugin.getState(editorState);
 
     return (
       <Chrome
@@ -123,6 +127,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStatePanel={panelState}
         pluginStateTextFormatting={textFormattingState}
         pluginStateHyperlink={hyperlinkState}
+        pluginStateImageUpload={imageUploadState}
       />
     );
   }
@@ -161,6 +166,7 @@ export default class Editor extends PureComponent<Props, State> {
             textFormattingPlugin,
             hyperlinkPlugin,
             rulePlugin,
+            imageUploadPlugin,
             history(),
             keymap(baseKeymap) // should be last :(
           ]
@@ -174,6 +180,7 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         }
       });
+      imageUploadPlugin.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);
 
       editorView.focus();
 

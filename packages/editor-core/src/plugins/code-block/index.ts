@@ -98,7 +98,7 @@ const plugin = new Plugin({
     apply(tr, pluginState: CodeBlockState, oldState, newState) {
       const stored = tr.getMeta(stateKey);
       if (stored) {
-        pluginState.update(newState, stored.docView, stored.clicked);
+        pluginState.update(newState, stored.docView, stored.domEvent);
       }
       return pluginState;
     }

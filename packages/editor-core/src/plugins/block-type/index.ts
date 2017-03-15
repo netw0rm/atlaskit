@@ -133,7 +133,7 @@ export class BlockTypeState {
 
   private nodeBlockType(node: Node): BlockType {
     if (node.type === this.state.schema.nodes.heading) {
-      switch (node.attrs.level) {
+      switch (node.attrs['level']) {
         case 1:
           return HEADING_1;
         case 2:
@@ -147,7 +147,7 @@ export class BlockTypeState {
       }
     } else if (node.type === this.state.schema.nodes.codeBlock) {
       return CODE_BLOCK;
-    } else if (node.type === this.state.schema.nodes.blockQuote) {
+    } else if (node.type === this.state.schema.nodes.blockquote) {
       return BLOCK_QUOTE;
     } else if (node.type === this.state.schema.nodes.panel) {
       return PANEL;

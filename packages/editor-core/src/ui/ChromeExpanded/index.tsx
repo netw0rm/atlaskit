@@ -91,7 +91,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
               <MentionIcon label="Mention" />
             </ToolbarButton>
             }
-            {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} /> : null}
+            {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} editorView={props.editorView} /> : null}
           </div>
         </div>
       </div>

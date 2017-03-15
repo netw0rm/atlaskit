@@ -14,7 +14,7 @@ export { default as fixtures } from './fixtures';
 export {
   doc, p, blockquote, code_block,
   h1, h2, h3, h4, h5, h6,
-  li, ul, ol, br, img, hr, em, strong, mono, a,
+  li, ul, ol, br, img, hr, em, strong, code, a,
   strike, text, fragment, slice, mention, emoji,
   nodeFactory, markFactory
 } from './schema-builder';

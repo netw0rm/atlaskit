@@ -40,7 +40,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     .replace(/<hr><\/hr>/g, '<hr />')
     .replace(/<hr>/g, '<hr />');
 
-  function encodeNode(node: PMNode) {
+  function encodeNode(node: PMNode, parentNode = '') {
     if (node.isText) {
       return encodeText(node);
     } else if (isHeadingNode(node)) {
@@ -59,7 +59,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
       } else if (isOrderedListNode(node)) {
         return encodeOrderedList(node);
       } else if (isListItemNode(node)) {
-        return encodeListItem(node);
+        return encodeListItem(node, parentNode);
       }
     }
 
@@ -79,9 +79,9 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     return doc;
   }
 
-  function encodeFragment(fragment: Fragment) {
+  function encodeFragment(fragment: Fragment, parentNode = '') {
     const documentFragment = doc.createDocumentFragment();
-    fragment.forEach(node => documentFragment.appendChild(encodeNode(node)));
+    fragment.forEach(node => documentFragment.appendChild(encodeNode(node, parentNode)));
     return documentFragment;
   }
 
@@ -177,21 +177,22 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     const elem = doc.createElement('ul');
     elem.setAttribute('class', 'alternate');
     elem.setAttribute('type', 'square');
-    elem.appendChild(encodeFragment(node.content));
+    elem.appendChild(encodeFragment(node.content, 'ul'));
     return elem;
   }
 
   function encodeOrderedList(node: OrderedListNode) {
     const elem = doc.createElement('ol');
-    elem.appendChild(encodeFragment(node.content));
+    elem.appendChild(encodeFragment(node.content, 'ol'));
     return elem;
   }
 
-  function encodeListItem(node: ListItemNode) {
+  function encodeListItem(node: ListItemNode, parentNode: string) {
     const elem = doc.createElement('li');
     // Strip the paragraph node from the list item.
     if (node.content.childCount) {
       const paragraph = node.content.child(0) as ParagraphNode;
+      elem.setAttribute('data-parent', parentNode);
       elem.appendChild(encodeFragment(paragraph.content));
     }
     return elem;

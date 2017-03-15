@@ -1,1 +1,1 @@
-../../../packages/*/test/**/!(_)*.+(js|ts|tsx)
+../../../packages/*/test/**/!(_)*!(Spec|spec).+(js|ts|tsx)

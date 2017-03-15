@@ -11,7 +11,11 @@ export default class ExampleAlignment extends PureComponent {
   }
 
   render() {
-    const popperContent = (<div style={{ background: '#fca' }}>{this.props.position}</div>);
+    const popperContent = (
+      <div style={{ background: '#fca' }}>
+        <p>This is the layer content</p>
+        <p>It should be positioned with position: {this.props.position}</p>
+      </div>);
 
     return (
       <div>

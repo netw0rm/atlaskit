@@ -37,10 +37,10 @@ export interface BaseSchemaMarks {
   link?: LinkMarkType;
   strong: StrongMarkType;
   em: EmMarkType;
-  strike: StrikeMarkType;
+  strike?: StrikeMarkType;
   subsup: SubSupMarkType;
   u: UnderlineMarkType;
-  code: CodeMarkType;
+  code?: CodeMarkType;
   mention_query?: MentionQueryMarkType;
 }
 
@@ -48,6 +48,7 @@ export interface JIRASchemaConfig {
   allowLists?: boolean;
   allowMentions?: boolean;
   allowLinks?: boolean;
+  allowAdvancedTextFormatting?: boolean;
 }
 
 export interface JIRASchema extends Schema {
@@ -65,6 +66,10 @@ export function isSchemaWithMentions(schema: JIRASchema): boolean {
 
 export function isSchemaWithLinks(schema: JIRASchema): boolean {
   return !!schema.marks.link;
+}
+
+export function isSchemaWithAdvancedTextFormattingMarks(schema: JIRASchema): boolean {
+  return !!schema.marks.code && !!schema.marks.strike;
 }
 
 export function makeSchema(config: JIRASchemaConfig): JIRASchema {
@@ -105,6 +110,11 @@ export function makeSchema(config: JIRASchemaConfig): JIRASchema {
   if (!config.allowMentions) {
     delete nodes.mention;
     delete marks.mention_query;
+  }
+
+  if (!config.allowAdvancedTextFormatting) {
+    delete marks.strike;
+    delete marks.code;
   }
 
   return new Schema({ nodes, marks });

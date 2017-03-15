@@ -3,7 +3,7 @@ import { Node } from '@atlaskit/editor-core';
 import { makeSchema } from '../../src/schema';
 import { encode } from '../../src/html';
 
-const schema = makeSchema({ allowLists: true, allowMentions: true, allowLinks: true });
+const schema = makeSchema({ allowLists: true, allowMentions: true, allowLinks: true, allowAdvancedTextFormatting: true });
 
 // Nodes
 const br = nodeFactory(schema.nodes.hard_break);
@@ -24,8 +24,8 @@ const mention = (attrs: { id: string, displayName?: string }) => schema.nodes.me
 const link = (attrs) => markFactory(schema.marks.link!, attrs);
 const strong = markFactory(schema.marks.strong);
 const em = markFactory(schema.marks.em);
-const code = markFactory(schema.marks.code);
-const strike = markFactory(schema.marks.strike);
+const code = markFactory(schema.marks.code!);
+const strike = markFactory(schema.marks.strike!);
 const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 const sup = markFactory(schema.marks.subsup, { type: 'sup' });
 const u = markFactory(schema.marks.u);

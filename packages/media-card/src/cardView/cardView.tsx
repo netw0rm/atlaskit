@@ -60,7 +60,7 @@ export class CardView extends Component<CardViewProps, {}> {
         </Card>
       );
     } else {
-      const isPersistent = !(this.props.mediaType === 'image' && this.props.dataURI);
+      const isPersistent = !(this.isPreviewable && this.props.dataURI);
       const overlay = this.props.loading ? false : <CardOverlay
         persistent={isPersistent}
         selectable={this.props.selectable}
@@ -83,6 +83,7 @@ export class CardView extends Component<CardViewProps, {}> {
                 loading={this.props.loading}
                 mediaType={this.props.mediaType}
                 dataURI={this.props.dataURI}
+                isPreviewable={this.isPreviewable}
               />
             </div>
             {overlay}
@@ -90,6 +91,10 @@ export class CardView extends Component<CardViewProps, {}> {
         </Card>
       );
     }
+  }
+
+  private get isPreviewable() {
+    return ['image', 'video'].indexOf(this.props.mediaType) > -1;
   }
 
   onClick(event: MouseEvent<HTMLDivElement>) {

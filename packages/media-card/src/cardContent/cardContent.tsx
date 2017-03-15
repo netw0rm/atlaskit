@@ -9,6 +9,7 @@ export interface CardContentProps {
   mediaType?: MediaType;
   dataURI?: string;
   loading?: boolean;
+  isPreviewable: boolean;
 }
 
 export class CardContent extends Component<CardContentProps, {}> {
@@ -19,7 +20,7 @@ export class CardContent extends Component<CardContentProps, {}> {
              </LoadingWrapper>;
     }
 
-    if (this.props.mediaType === 'image' && this.props.dataURI) {
+    if (this.props.isPreviewable) {
       return <FadeinImage>
                <img alt="" src={this.props.dataURI} />
              </FadeinImage>;

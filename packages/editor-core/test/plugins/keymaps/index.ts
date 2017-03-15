@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { browser } from '../../../src';
-import * as keymaps from '../../../src/plugins/keymaps';
+import * as keymaps from '../../../src/keymaps';
 
 describe('keymaps', () => {
   const keymap = {

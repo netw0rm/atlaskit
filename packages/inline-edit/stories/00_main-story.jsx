@@ -2,6 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import ModalDialog from '@atlaskit/modal-dialog';
 import MentionInlineEdit from './MentionInlineEdit';
+import SingleSelectInlineEdit from './SingleSelectInlineEdit';
 import TextInlineEdit from './TextInlineEdit';
 import LoopConfirmInlineEdit from './LoopConfirmInlineEdit';
 import SlowInlineEdit from './SlowInlineEdit';
@@ -123,6 +124,29 @@ storiesOf(name, module)
         label="User picker"
         mentions={exampleMentions}
       />
+    </div>
+  ))
+  .add('with single select', () => (
+    <div>
+      <div style={containerStyle}>
+        <SingleSelectInlineEdit
+          label="Single select"
+          selectItems={[
+            {
+              items: [
+                { content: 'High', value: 'high' },
+                { content: 'Medium', value: 'medium' },
+                { content: 'Low', value: 'low' },
+              ],
+            },
+          ]}
+        />
+      </div>
+      <div style={containerStyle}>
+        <TextInlineEdit
+          isEditing
+        />
+      </div>
     </div>
   ))
   .add('inside modal dialog', () => (

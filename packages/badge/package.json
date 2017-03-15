@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/badge",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "config": {
     "access": "public"
   },
@@ -8,11 +8,13 @@
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
+  "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/badge; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/index.d.ts"
   ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",

@@ -1,14 +1,10 @@
 import * as React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { MediaItem, MediaItemType, ListCardDelete, ListCardClick } from '@atlaskit/media-core';
-import { ContextFactory } from '@atlaskit/media-core';
-import { StoryBookTokenProvider } from '@atlaskit/media-test-helpers';
+import { createStorybookContext, defaultCollectionName } from '@atlaskit/media-test-helpers';
 import {FilmStrip} from '../src';
 
-const collectionName = 'MediaServicesSample';
-const clientId = '5a9812fc-d029-4a39-8a46-d3cc36eed7ab';
-const serviceHost = 'https://dt-api-filestore.internal.app.dev.atlassian.io';
-const tokenProvider = StoryBookTokenProvider.tokenProvider;
+const collectionName = defaultCollectionName;
 
 const deleteAction = ListCardDelete((item: MediaItem, items: Array<{ id: string }>, e?: Event) => {
   action('delete')(item, items);
@@ -26,7 +22,7 @@ const annotateAction = {
 };
 
 const cardsActions = [deleteAction, clickAction, annotateAction];
-const context = ContextFactory.create({ clientId, serviceHost, tokenProvider });
+const context = createStorybookContext();
 
 const fileType: MediaItemType = 'file';
 

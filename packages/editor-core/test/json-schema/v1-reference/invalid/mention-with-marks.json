@@ -9,7 +9,7 @@
           "type": "mention",
           "attrs": {
             "id": "test-id",
-            "text": "Test User",
+            "text": "Test User"
           },
           "marks": []
         }

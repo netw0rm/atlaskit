@@ -1,5 +1,5 @@
 import { action, storiesOf } from '@kadira/storybook';
-import { storyDecorator } from '@atlaskit/editor-core/src/test-helper';
+import { storyDecorator } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as React from 'react';
 import Editor from '../src';
 import { resourceProvider } from './story-data';

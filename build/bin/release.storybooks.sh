@@ -33,6 +33,12 @@ function build_storybooks() {
 
 storybooks_build_status "INPROGRESS"
 build_storybooks
-cdn_publish_folder "./stories" "$CDN_PREFIX"
-cf_invalidate "/atlaskit/stories/*"
+
+if [ -d "stories" ]; then
+    cdn_publish_folder "./stories" "$CDN_PREFIX"
+    cf_invalidate "/atlaskit/stories/*"
+else
+    $CHALK --no-stdin -t "{blue Skipping storybook publishing since no stories/ dir}"
+fi
+
 storybooks_build_status "SUCCESSFUL"

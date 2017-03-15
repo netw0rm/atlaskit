@@ -1,11 +1,11 @@
 import { Fragment, Mark, Node as PMNode } from '@atlaskit/editor-core';
-import { isSchemaWithLists, SupportedSchema } from '../schema';
+import { isSchemaWithLists, isSchemaWithMentions, isSchemaWithLinks, JIRASchema } from '../schema';
 import parseHtml from './parse-html';
 import WeakMap from './weak-map';
 
 const convertedNodes = new WeakMap();
 
-export default function parse(html: string, schema: SupportedSchema) {
+export default function parse(html: string, schema: JIRASchema) {
   const dom = parseHtml(html).querySelector('body')!;
   const nodes = bfsOrder(dom);
 
@@ -38,7 +38,7 @@ export default function parse(html: string, schema: SupportedSchema) {
  * Ensure that each node in the fragment is a block, wrapping
  * in a block node if necessary.
  */
-function ensureBlocks(fragment: Fragment, schema: SupportedSchema): Fragment {
+function ensureBlocks(fragment: Fragment, schema: JIRASchema): Fragment {
   // If all the nodes are inline, we want to wrap in a single paragraph.
   if (schema.nodes.paragraph.validContent(fragment)) {
     return Fragment.fromArray([schema.nodes.paragraph.createChecked({}, fragment)]);
@@ -59,7 +59,7 @@ function ensureBlocks(fragment: Fragment, schema: SupportedSchema): Fragment {
   return Fragment.fromArray(blockNodes);
 }
 
-function convert(content: Fragment, node: Node, schema: SupportedSchema): Fragment | PMNode | null | undefined {
+function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | PMNode | null | undefined {
   // text
   if (node.nodeType === Node.TEXT_NODE) {
     const text = node.textContent;
@@ -88,10 +88,27 @@ function convert(content: Fragment, node: Node, schema: SupportedSchema): Fragme
       // Nodes
       case 'A':
         const isAnchor = node.attributes.getNamedItem('href') === null;
+
+        if (node.className === 'user-hover' && isSchemaWithMentions(schema)) {
+          return schema.nodes.mention!.createChecked({
+            id: node.getAttribute('rel'),
+            displayName: node.innerText
+          });
+        }
+
         if (isAnchor) {
           return null;
         }
-        return;
+
+        return content && isSchemaWithLinks(schema)
+          ? addMarks(
+              content,
+              [schema.marks.link!.create({
+                href: node.getAttribute('href'),
+                title: node.getAttribute('title')
+              })]
+            )
+          : null;
       // case 'SPAN':
       //   return addMarks(content, marksFromStyle(node.style));
       case 'H1':
@@ -114,14 +131,14 @@ function convert(content: Fragment, node: Node, schema: SupportedSchema): Fragme
     if (isSchemaWithLists(schema)) {
       switch (tag) {
         case 'UL':
-          return schema.nodes.bullet_list.createChecked({}, content);
+          return schema.nodes.bullet_list!.createChecked({}, content);
         case 'OL':
-          return schema.nodes.ordered_list.createChecked({}, content);
+          return schema.nodes.ordered_list!.createChecked({}, content);
         case 'LI':
-          const compatibleContent = schema.nodes.list_item.validContent(content)
+          const compatibleContent = schema.nodes.list_item!.validContent(content)
             ? content
             : ensureBlocks(content, schema);
-          return schema.nodes.list_item.createChecked({}, compatibleContent);
+          return schema.nodes.list_item!.createChecked({}, compatibleContent);
       }
     }
   }

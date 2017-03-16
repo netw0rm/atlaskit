@@ -6,6 +6,8 @@ import WarningIcon from '@atlaskit/icon/glyph/warning';
 import InlineDialog from '@atlaskit/inline-dialog';
 import appearances, { standard, none, subtle } from './internal/appearances';
 
+const noop = () => {};
+
  /* eslint-disable react/no-unused-prop-types */
 export default class FieldBase extends PureComponent {
   static propTypes = {
@@ -23,7 +25,7 @@ export default class FieldBase extends PureComponent {
     isRequired: PropTypes.bool,
     onFocus: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
-    onIconMouseDown: PropTypes.func.isRequired,
+    onIconMouseDown: PropTypes.func,
     shouldReset: PropTypes.bool,
     children: PropTypes.node,
   }
@@ -43,6 +45,7 @@ export default class FieldBase extends PureComponent {
     isReadOnly: false,
     isRequired: false,
     shouldReset: false,
+    onIconMouseDown: noop,
   }
 
   componentDidUpdate() {

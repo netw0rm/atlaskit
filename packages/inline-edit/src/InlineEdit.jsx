@@ -85,11 +85,6 @@ export default class InlineEdit extends PureComponent {
       [styles.readViewWrapper]: !this.props.isEditing,
     })
 
-  getActionButtonsWrapperClasses = () => classNames({
-    [styles.buttonsWrapper]: true,
-    [styles.noFieldBaseButtonsWrapper]: !this.props.shouldWrapEditViewWithFieldBase,
-  })
-
   isReadOnly = () =>
     !this.props.editView
 
@@ -145,7 +140,7 @@ export default class InlineEdit extends PureComponent {
 
   renderActionButtons = () => (
     this.props.isEditing && !this.props.areActionButtonsHidden ?
-      <div className={this.getActionButtonsWrapperClasses()}>
+      <div className={styles.buttonsWrapper}>
         <div className={styles.buttonWrapper}>
           <Button
             iconBefore={<ConfirmIcon label="confirm" />}

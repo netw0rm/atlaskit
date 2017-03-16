@@ -32,6 +32,7 @@
     "@atlaskit/input": "^1.0.0",
     "@atlaskit/mention": "^1.0.0",
     "@atlaskit/modal-dialog": "^1.2.4",
+    "@atlaskit/single-select": "^1.4.0",
     "uid": "0.0.2"
   },
   "author": "Atlassian Pty Ltd",

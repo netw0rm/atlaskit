@@ -79,3 +79,9 @@
   opacity: 0;
   outline: 0;
 }
+
+// Prevent content 'jumping' when toggling between view/edit mode
+// specifically for the single-select (which applies a -1 margin to its field-base)
+.no-field-base-edit-wrapper {
+  margin: 1px -1px 1px 1px;
+}

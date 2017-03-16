@@ -1,4 +1,4 @@
-image: atlassianlabs/atlaskit:2017-02-22
+image: atlassianlabs/atlaskit:2017-03-17
 pipelines:
   branches:
     master:
@@ -26,6 +26,7 @@ pipelines:
   default:
     - step:
         script:
+          - cat /etc/alpine-release
           - export FORCE_COLOR=1
           - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
           - ./build/bin/setup.sh

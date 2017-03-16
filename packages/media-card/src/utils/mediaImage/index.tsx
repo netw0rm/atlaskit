@@ -15,7 +15,7 @@ export interface MediaImageProps {
   transparentFallback?: boolean;
   width?: string;
   height?: string;
-  onError?: () => void;
+  onError?: (el: HTMLElement, ev: ErrorEvent) => any;
 }
 
 export interface MediaImageState {

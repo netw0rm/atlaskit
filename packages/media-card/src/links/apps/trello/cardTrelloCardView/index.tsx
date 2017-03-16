@@ -61,7 +61,7 @@ export class LinkCardTrelloCardView extends Component<LinkCardTrelloCardViewProp
 
         return (
             <Wrapper style={cardStyle}>
-                <MediaImage dataURI={thumbnailUrl} />
+                <MediaImage dataURI={thumbnailUrl || ''} />
                 <Details className="details">
                     <Header>
                         <a href={card.url}>{card.name}</a>

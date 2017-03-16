@@ -105,7 +105,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
       return null;
     }
 
-    return <MediaImage dataURI={thumbnailUrl} onError={this.thumbnailError} />;
+    return <MediaImage dataURI={thumbnailUrl || ''} onError={this.thumbnailError} />;
   }
 
   private getIcon = (): JSX.Element | null => {

@@ -33,7 +33,7 @@ const ChatWrapper = styled.div`
   margin: 10p;
 `;
 
-const defaultItem = {
+const defaultItem: FilmStripViewItem = {
   dataURI: tallImageDataUri,
   mediaName: 'some image',
   mediaType: 'image',

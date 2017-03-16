@@ -8,7 +8,7 @@ import ClearFormattingPlugin from '../../src/plugins/clear-formatting';
 import ToolbarAdvancedTextFormatting from '../../src/ui/ToolbarAdvancedTextFormatting';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import { makeEditor } from '../../src/test-helper';
-import { doc, p, schema } from '../_schema-builder';
+import { doc, p, schema, code, strike } from '../_schema-builder';
 import Item from 'ak-droplist-item';
 
 describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
@@ -189,5 +189,29 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     const toolbarButton = toolbarOption.find(ToolbarButton);
     expect(toolbarButton.prop('disabled')).to.be.true;
+  });
+
+  it('should be selected inside code', () => {
+    const { plugins } = editor(doc(p(code('text'))));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={plugins[0]}
+        pluginStateClearFormatting={plugins[1]}
+      />
+    );
+    const toolbarButton = toolbarOption.find(ToolbarButton);
+    expect(toolbarButton.prop('selected')).to.be.true;
+  });
+
+  it('should be selected inside strike', () => {
+    const { plugins } = editor(doc(p(strike('text'))));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={plugins[0]}
+        pluginStateClearFormatting={plugins[1]}
+      />
+    );
+    const toolbarButton = toolbarOption.find(ToolbarButton);
+    expect(toolbarButton.prop('selected')).to.be.true;
   });
 });

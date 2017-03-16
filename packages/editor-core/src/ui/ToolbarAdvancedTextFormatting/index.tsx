@@ -71,7 +71,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
           position="top left"
           trigger={
             <ToolbarButton
-              selected={isOpen}
+              selected={isOpen || codeActive || strikeActive}
               disabled={codeDisabled && strikeDisabled && clearFormattingDisabled}
               iconBefore={
                 <div className={styles.triggerWrapper}>

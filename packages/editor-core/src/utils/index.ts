@@ -8,6 +8,7 @@ import {
   Selection,
   TextSelection,
   Fragment,
+  Slice,
 } from '../prosemirror';
 import { isCodeBlockNode, isListItemNode } from '../schema';
 
@@ -330,4 +331,8 @@ export function insertBlankSpace(pm: ProseMirror): EditorTransform | undefined {
     const fragment = new Fragment([textNode], textNode.nodeSize);
     return pm.tr.insert(to, fragment);
   }
+}
+
+export function createSliceWithContent(content: string, pm: ProseMirror) {
+ return new Slice(Fragment.from(pm.schema.nodes.text.create(null, content)), 0, 0);
 }

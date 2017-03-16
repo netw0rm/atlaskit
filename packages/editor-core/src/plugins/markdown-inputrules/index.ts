@@ -16,6 +16,7 @@ import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 import { isCodeBlockNode } from '../../schema';
 import Keymap from 'browserkeymap';
+import { transformToCodeAction } from '../text-formatting/transform-to-code';
 
 // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
 // input rule will allow for a list to start at any given number, which isn't allowed in
@@ -97,9 +98,19 @@ function replaceWithMark(
   mark: string,
   specialChar: string
 ): boolean {
-  const schema = pm.schema;
-  const to = pos;
   const from = pos - match[1].length;
+  return replaceRangeWithMark(pm, from, pos, mark, specialChar);
+}
+
+function replaceRangeWithMark(
+  pm: ProseMirror,
+  from: number,
+  to: number,
+  mark: string,
+  specialChar: string
+
+): boolean {
+  const schema = pm.schema;
   const markType = schema.mark(mark);
   const charSize = specialChar.length;
   const nodes: Node[] = [];
@@ -223,7 +234,9 @@ const codeRule = new InputRule(/(`([^`]+)`)$/, '`', (
   match: string[],
   pos: number
 ) => {
-  replaceWithMark(pm, match, pos, 'code', '`');
+  const from = pos - match[1].length;
+  transformToCodeAction(pm, from, pos);
+  replaceRangeWithMark(pm, from, pm.selection.to, 'code', '`');
   const tr = insertBlankSpace(pm);
   tr && tr.apply();
 });

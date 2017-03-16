@@ -1,5 +1,6 @@
-import { EditorTransform, Fragment, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step, TextSelection } from '../../prosemirror';
+import { EditorTransform, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step, TextSelection } from '../../prosemirror';
 import { isCodeBlockNode, isHardBreakNode, isMentionNode } from '../../schema';
+import { createSliceWithContent } from '../../utils';
 
 export default function transformToCodeBlock(pm: ProseMirror): void {
   if (!isConvertableToCodeBlock(pm)) {
@@ -37,10 +38,6 @@ export function isConvertableToCodeBlock(pm: ProseMirror): boolean {
   const index = $from.index(parentDepth);
 
   return parentNode.canReplaceWith(index, index + 1, pm.schema.nodes.code_block);
-}
-
-function createSliceWithContent(content: string, pm: ProseMirror) {
- return new Slice(Fragment.from(pm.schema.nodes.text.create(null, content)), 0, 0);
 }
 
 function clearMarkupFor(pm: ProseMirror, pos: number) {

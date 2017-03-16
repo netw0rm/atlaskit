@@ -132,20 +132,6 @@ export class TextFormattingState {
     const { em, code, strike, strong, subsup, u } = state.schema.marks;
     let dirty = false;
 
-    if (em) {
-      const newEmActive = this.anyMarkActive(em);
-      if (newEmActive !== this.emActive) {
-        this.emActive = newEmActive;
-        dirty = true;
-      }
-
-      const newEmDisabled = !commands.toggleMark(em)(this.state);
-      if (newEmDisabled !== this.emDisabled) {
-        this.emDisabled = newEmDisabled;
-        dirty = true;
-      }
-    }
-
     if (code) {
       const newCodeActive = this.anyMarkActive(code);
       if (newCodeActive !== this.codeActive) {
@@ -160,6 +146,20 @@ export class TextFormattingState {
       }
     }
 
+    if (em) {
+      const newEmActive = this.anyMarkActive(em);
+      if (newEmActive !== this.emActive) {
+        this.emActive = newEmActive;
+        dirty = true;
+      }
+
+      const newEmDisabled = !commands.toggleMark(em)(this.state);
+      if (this.codeActive && !this.emDisabled || newEmDisabled !== this.emDisabled) {
+        this.emDisabled = this.codeActive ? true : newEmDisabled;
+        dirty = true;
+      }
+    }
+
     if (strike) {
       const newStrikeActive = this.anyMarkActive(strike);
       if (newStrikeActive !== this.strikeActive) {
@@ -168,8 +168,8 @@ export class TextFormattingState {
       }
 
       const newStrikeDisabled = !commands.toggleMark(strike)(this.state);
-      if (newStrikeDisabled !== this.strikeDisabled) {
-        this.strikeDisabled = newStrikeDisabled;
+      if (this.codeActive && !this.strikeDisabled || newStrikeDisabled !== this.strikeDisabled) {
+        this.strikeDisabled = this.codeActive ? true : newStrikeDisabled;
         dirty = true;
       }
     }
@@ -182,8 +182,8 @@ export class TextFormattingState {
       }
 
       const newStrongDisabled = !commands.toggleMark(strong)(this.state);
-      if (newStrongDisabled !== this.strongDisabled) {
-        this.strongDisabled = newStrongDisabled;
+      if (this.codeActive && !this.strongDisabled || newStrongDisabled !== this.strongDisabled) {
+        this.strongDisabled = this.codeActive ? true : newStrongDisabled;
         dirty = true;
       }
     }
@@ -199,8 +199,8 @@ export class TextFormattingState {
       }
 
       const newSubscriptDisabled = !commands.toggleMark(subsup, { type: 'sub' })(this.state);
-      if (newSubscriptDisabled !== this.subscriptDisabled) {
-        this.subscriptDisabled = newSubscriptDisabled;
+      if (this.codeActive && !this.subscriptDisabled || newSubscriptDisabled !== this.subscriptDisabled) {
+        this.subscriptDisabled = this.codeActive ? true : newSubscriptDisabled;
         dirty = true;
       }
 
@@ -211,8 +211,8 @@ export class TextFormattingState {
       }
 
       const newSuperscriptDisabled = !commands.toggleMark(subsup, { type: 'sup' })(this.state);
-      if (newSuperscriptDisabled !== this.superscriptDisabled) {
-        this.superscriptDisabled = newSuperscriptDisabled;
+      if (this.codeActive && !this.superscriptDisabled || newSuperscriptDisabled !== this.superscriptDisabled) {
+        this.superscriptDisabled = this.codeActive ? true : newSuperscriptDisabled;
         dirty = true;
       }
     }
@@ -225,8 +225,8 @@ export class TextFormattingState {
       }
 
       const newUnderlineDisabled = !commands.toggleMark(u)(this.state);
-      if (newUnderlineDisabled !== this.underlineDisabled) {
-        this.underlineDisabled = newUnderlineDisabled;
+      if (this.codeActive && !this.underlineDisabled || (newUnderlineDisabled !== this.underlineDisabled)) {
+        this.underlineDisabled = this.codeActive ? true : newUnderlineDisabled;
         dirty = true;
       }
     }

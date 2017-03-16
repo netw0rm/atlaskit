@@ -168,7 +168,6 @@ export function togglePanel(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from } = state.selection;
     const potentialPanelNode = $from.node($from.depth - 1);
-
     if (potentialPanelNode && potentialPanelNode.type === state.schema.nodes.blockquote) {
       return baseCommand.lift(state, dispatch);
     }

@@ -7,6 +7,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import FloatingToolbar from '../FloatingToolbar';
 import ToolbarButton from '../ToolbarButton';
+import { EditorView } from '../../prosemirror';
 
 import { availablePanelType, PanelState, PanelType } from '../../plugins/panel';
 import * as styles from './styles';
@@ -19,6 +20,7 @@ const icons = {
 };
 
 export interface Props {
+  editorView: EditorView;
   pluginState: PanelState;
 }
 
@@ -90,10 +92,11 @@ export default class PanelEdit extends PureComponent<Props, State> {
   }
 
   private handleSelectPanelType = (panelType: PanelType, event) => {
-    this.props.pluginState.changePanelType(panelType);
+    this.props.pluginState.changePanelType(panelType, editorView);
   }
 
   private handleRemovePanelType = () => {
-    this.props.pluginState.removePanelType();
+    const { editorView } = this.props;
+    this.props.pluginState.removePanelType(editorView);
   }
 }

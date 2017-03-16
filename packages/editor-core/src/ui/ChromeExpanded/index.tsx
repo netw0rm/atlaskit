@@ -68,7 +68,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
           {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} editorView={props.editorView} /> : null}
           {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} /> : null}
-          {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} /> : null}
+          {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} editorView={props.editorView} /> : null}
         </div>
         <div className={styles.footer}>
           <div className={styles.footerActions}>

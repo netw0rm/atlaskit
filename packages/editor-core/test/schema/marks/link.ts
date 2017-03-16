@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { Schema, doc, paragraph, text, link } from '../../../src';
-import { chaiPlugin, toHTML, fromHTML } from '../../../test-helper';
+import { chaiPlugin, toHTML, fromHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 const href = 'http://atlassian.com';

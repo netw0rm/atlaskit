@@ -1,4 +1,4 @@
-import { Schema } from '../src/prosemirror';
+import { Schema } from '../prosemirror';
 import {
   doc,
   paragraph,
@@ -21,7 +21,7 @@ import {
   link,
   image,
   mentionQuery
-} from '../src/schema';
+} from '../schema';
 
 const nodes = {
   doc,

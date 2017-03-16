@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { Schema, doc, paragraph, text, hardBreak } from '../../../src';
-import { toHTML, fromHTML } from '../../../test-helper';
+import { toHTML, fromHTML } from '../../../src/test-helper';
 
 const schema = makeSchema();
 

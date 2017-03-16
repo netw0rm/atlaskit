@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import ImageUploadPlugin from '../../../src/plugins/image-upload';
-import { chaiPlugin, makeEditor } from '../../../test-helper';
+import { chaiPlugin, makeEditor } from '../../../src/test-helper';
 import { doc, image, images, noimages, schema } from '../../_schema-builder';
 
 chai.use(chaiPlugin);

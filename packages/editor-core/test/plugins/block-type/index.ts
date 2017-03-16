@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { browser } from '../../../src';
-import { setTextSelection, setNodeSelection, sendKeyToPm, fixtures, blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, img, makeEditor, mention, p, hr } from '../../../test-helper';
+import { setTextSelection, setNodeSelection, sendKeyToPm, fixtures, blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, img, makeEditor, mention, p, hr } from '../../../src/test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
 

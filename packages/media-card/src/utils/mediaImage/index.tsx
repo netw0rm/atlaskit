@@ -15,7 +15,7 @@ export interface MediaImageProps {
   transparentFallback?: boolean;
   width?: string;
   height?: string;
-  onError?: (el: HTMLElement, ev: ErrorEvent) => any;
+  onError?: (this: HTMLElement, ev: ErrorEvent) => any;
 }
 
 export interface MediaImageState {
@@ -50,11 +50,12 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
 
     img.src = this.props.dataURI;
     img.onload = this.onImageLoad(this);
-    img.onerror = this.props.onError;
+    if (this.props.onError) { img.onerror = this.props.onError; }
   }
 
   componentDidMount() {
     const parent = ReactDOM.findDOMNode(this).parentElement;
+    if (!parent) { return; }
     const parentSize = parent.getBoundingClientRect();
 
     this.setState({

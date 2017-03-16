@@ -222,4 +222,41 @@ describe('@atlaskit/inline-edit', () => {
       );
     });
   });
+
+  describe('shouldWrapEditViewWithFieldBase', () => {
+    it('should not wrap editView in a FieldBase when set to false', () => {
+      const wrapper = mount(
+        <InlineEdit
+          {...defaultProps}
+          isEditing
+          shouldWrapEditViewWithFieldBase={false}
+        />
+      );
+
+      expect(wrapper.find(FieldBase).length).to.equal(0);
+    });
+
+    it('should wrap editView in a FieldBase when set to true', () => {
+      const wrapper = mount(
+        <InlineEdit
+          {...defaultProps}
+          isEditing
+          shouldWrapEditViewWithFieldBase
+        />
+      );
+
+      expect(wrapper.find(FieldBase).length).to.equal(1);
+    });
+
+    it('should default to true', () => {
+      const wrapper = mount(
+        <InlineEdit
+          {...defaultProps}
+          isEditing
+        />
+      );
+
+      expect(wrapper.prop('shouldWrapEditViewWithFieldBase')).to.equal(true);
+    });
+  });
 });

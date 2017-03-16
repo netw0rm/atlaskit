@@ -2,10 +2,17 @@ import React, { PureComponent, PropTypes, cloneElement } from 'react';
 import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
+import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
 import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
+
+// Prevent content 'jumping' when toggling between view/edit mode
+// specifically for the single-select (which applies a -1 margin to its field-base)
+const NoFieldBaseEditWrapper = styled.div`
+  margin: 1px -1px 1px 1px;
+`;
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
@@ -157,7 +164,7 @@ export default class InlineEdit extends PureComponent {
 
     return this.props.shouldWrapEditViewWithFieldBase ?
       this.wrapWithFieldBase(editView) : (
-        <div className={styles.noFieldBaseEditWrapper}>{editView}</div>
+        <NoFieldBaseEditWrapper>{editView}</NoFieldBaseEditWrapper>
       );
   }
 

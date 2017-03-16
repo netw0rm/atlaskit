@@ -5,6 +5,7 @@ import 'rxjs/add/operator/publishReplay';
 
 export interface LinkProvider {
   observable(): Observable<LinkItem>;
+  readonly config: MediaApiConfig;
 }
 
 export class LinkProvider {
@@ -13,6 +14,7 @@ export class LinkProvider {
                              clientId: string,
                              collectionName?: string): LinkProvider {
     return LinkProvider.fromLinkService(
+      config,
       new MediaLinkService(config),
       linkId,
       clientId,
@@ -20,7 +22,8 @@ export class LinkProvider {
     );
   }
 
-  public static fromLinkService(linkService: LinkService,
+  public static fromLinkService(config: MediaApiConfig,
+                                linkService: LinkService,
                                 linkId: string,
                                 clientId: string,
                                 collectionName?: string): LinkProvider {
@@ -42,7 +45,8 @@ export class LinkProvider {
         observable.connect();
 
         return observable;
-      }
+      },
+      config
     };
   }
 }

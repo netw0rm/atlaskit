@@ -1,21 +1,24 @@
-import {FileItem, MediaApiConfig, MediaItem} from '../';
-import {FileService, MediaFileService} from '../services/fileService';
-import {Observable} from 'rxjs/Observable';
+import { FileItem, MediaApiConfig, MediaItem } from '../';
+import { FileService, MediaFileService } from '../services/fileService';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/publishReplay';
-import {LRUCache} from 'lru-fast';
+import { LRUCache } from 'lru-fast';
 
 export interface FileProvider {
   observable(): Observable<FileItem>;
+  readonly config: MediaApiConfig;
 }
 
 export class FileProvider {
-  public static fromMediaApi(config: MediaApiConfig,
-                             cache: LRUCache<string, MediaItem>,
-                             fileId: string,
-                             clientId: string,
-                             collection?: string,
-                             pollInterval?: number): FileProvider {
+  public static fromMediaApi(
+    config: MediaApiConfig,
+    cache: LRUCache<string, MediaItem>,
+    fileId: string,
+    clientId: string,
+    collection?: string,
+    pollInterval?: number): FileProvider {
     return FileProvider.fromFileService(
+      config,
       new MediaFileService(config, cache),
       fileId,
       clientId,
@@ -23,11 +26,13 @@ export class FileProvider {
       pollInterval);
   }
 
-  public static fromFileService(fileService: FileService,
-                                fileId: string,
-                                clientId: string,
-                                collectionName?: string,
-                                pollInterval?: number): FileProvider {
+  public static fromFileService(
+    config: MediaApiConfig,
+    fileService: FileService,
+    fileId: string,
+    clientId: string,
+    collectionName?: string,
+    pollInterval?: number): FileProvider {
     return {
       observable() {
         const observable = new Observable<FileItem>(subscriber => {
@@ -37,17 +42,17 @@ export class FileProvider {
           const fetch = () => {
             fileService.getFileItem(fileId, clientId, collectionName)
               .then(fileItem => {
-                  if (fileItem.details.processingStatus !== 'pending') {
-                    subscriber.next(fileItem);
-                    subscriber.complete();
-                  } else {
-                    subscriber.next(fileItem);
-                    handle = setTimeout(() => fetch(), timeout);
-                  }
-                },
-                error => {
-                  subscriber.error(error);
-                });
+                if (fileItem.details.processingStatus !== 'pending') {
+                  subscriber.next(fileItem);
+                  subscriber.complete();
+                } else {
+                  subscriber.next(fileItem);
+                  handle = setTimeout(() => fetch(), timeout);
+                }
+              },
+              error => {
+                subscriber.error(error);
+              });
           };
 
           fetch();
@@ -62,7 +67,8 @@ export class FileProvider {
         observable.connect();
 
         return observable;
-      }
+      },
+      config
     };
   }
 }

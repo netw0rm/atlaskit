@@ -35,7 +35,7 @@ export interface Props {
   pluginStateEmojis?: EmojisPluginState;
   mentionsResourceProvider?: any; // AbstractMentionResource
   presenceResourceProvider?: any; // AbstractPresenceResource
-  emojiProvider: any; // EmojiProvider
+  emojiProvider?: any; // EmojiProvider
   onCollapsedChromeFocus: () => void;
 }
 

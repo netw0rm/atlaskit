@@ -7,12 +7,8 @@ import {
   TextSelection,
   Plugin,
   Node,
-  NodeType,
-  findWrapping,
 } from '../../prosemirror';
-import { liftAndSelectSiblingNodes, liftSiblingNodes } from '../../utils';
-import * as baseCommand from '../../prosemirror/prosemirror-commands';
-import * as commands from '../../commands';
+import { liftSiblingNodes } from '../../utils';
 
 export interface PanelType {
   panelType: 'info' | 'note' | 'tip' | 'warning';
@@ -50,11 +46,15 @@ export class PanelState {
     const { tr } = state;
     const { panel } = state.schema.nodes;
     const { $from, $to } = state.selection;
-    const blockStart = tr.doc.resolve($from.start($from.depth - 1));
-    const blockEnd = tr.doc.resolve($to.end($to.depth - 1));
-    const range = blockStart.blockRange(blockEnd)!;
-    tr.lift(range, blockStart.depth - 1);
+    let blockStart = tr.doc.resolve($from.start($from.depth - 1));
+    let blockEnd = tr.doc.resolve($to.end($to.depth - 1));
+    let range = blockStart.blockRange(blockEnd)!;
     tr.wrap(range, [{ type: panel, attrs: panelType }]);
+    tr.setSelection(state.selection.map(tr.doc, tr.mapping));
+    blockStart = tr.doc.resolve($from.start($from.depth - 1));
+    blockEnd = tr.doc.resolve($to.end($to.depth - 1));
+    range = blockStart.blockRange(blockEnd)!;
+    tr.lift(range, blockStart.depth - 1);
     dispatch(tr);
   }
 
@@ -177,3 +177,5 @@ export default plugin;
 
 // add key-maps
 // add input-rules
+// move generic code to commands.js
+// add analytics to remove panel

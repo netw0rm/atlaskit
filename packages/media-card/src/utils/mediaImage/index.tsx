@@ -80,7 +80,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     const transparentBg = transparentFallback ? `, ${transparentFallbackBackground}` : '';
     const style = {
       backgroundSize,
-      backgroundImage: `url(${this.props.dataURI}) ${transparentBg}`
+      backgroundImage: `url(${this.props.dataURI})${transparentBg}`
     };
     const className = cx('media-card', {
       'fade-in': this.props.fadeIn,

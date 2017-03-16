@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { EmojiProvider } from '@atlaskit/emoji';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
 import { EmojisPluginState } from '../../plugins/emojis';
@@ -35,7 +36,7 @@ export interface Props {
   pluginStateEmojis?: EmojisPluginState;
   mentionsResourceProvider?: any; // AbstractMentionResource
   presenceResourceProvider?: any; // AbstractPresenceResource
-  emojiProvider?: any; // EmojiProvider
+  emojiProvider?: Promise<EmojiProvider>;
   onCollapsedChromeFocus: () => void;
 }
 

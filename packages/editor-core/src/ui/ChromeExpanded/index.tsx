@@ -3,6 +3,7 @@ import AkButtonGroup from '@atlaskit/button-group';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { PureComponent } from 'react';
 import * as React from 'react';
+import { EmojiProvider } from '@atlaskit/emoji';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
@@ -48,7 +49,7 @@ export interface Props {
   pluginStateEmojis?: EmojisPluginState;
   mentionsResourceProvider?: any; // AbstractMentionResource
   presenceResourceProvider?: any; // AbstractPresenceResource
-  emojiProvider?: any; // EmojiProvider
+  emojiProvider?: Promise<EmojiProvider>;
   pluginStatePanel?: PanelState;
 }
 
@@ -76,7 +77,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} /> : null}
           {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} /> : null}
           {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} presenceProvider={props.presenceResourceProvider} /> : null}
-          {props.pluginStateEmojis ? <EmojiTypeAhead pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
+          {props.pluginStateEmojis && props.emojiProvider ? <EmojiTypeAhead pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
           {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} /> : null}
         </div>
         <div className={styles.footer}>

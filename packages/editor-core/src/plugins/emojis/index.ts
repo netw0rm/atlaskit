@@ -1,5 +1,6 @@
 import Keymap from 'browserkeymap';
 import { inputRules, Fragment, Node, Plugin, ProseMirror, Schema, Slice } from '../../prosemirror';
+import { EmojiProvider } from '@atlaskit/emoji';
 
 import {
   EmojiNodeType,
@@ -10,7 +11,7 @@ import { emojiQueryRule } from './input-rules';
 
 export type StateChangeHandler = (state: EmojisPluginState) => any;
 
-export const setEmojiProviderOnNodes = (nf: Node | Fragment, emojiProvider: any) => {
+export const setEmojiProviderOnNodes = (nf: Node | Fragment, emojiProvider?: Promise<EmojiProvider>) => {
   const node = nf as Node;
   const nodeType = node.type;
   if (nodeType && nodeType instanceof EmojiNodeType) {
@@ -33,7 +34,7 @@ export class EmojisPluginState {
   onSelectPrevious = () => {};
   onSelectNext =  () => {};
   onSelectCurrent = () => {};
-  emojiProvider?: any; // Promise<EmojiProvider>
+  emojiProvider?: Promise<EmojiProvider>;
 
   constructor(pm: PM) {
     this.pm = pm;

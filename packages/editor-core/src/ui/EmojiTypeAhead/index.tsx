@@ -1,11 +1,12 @@
 import { EmojiTypeAhead as AkEmojiTypeAhead } from '@atlaskit/emoji';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { EmojiProvider } from '@atlaskit/emoji';
 import { EmojisPluginState } from '../../plugins/emojis';
 
 export interface Props {
   pluginState: EmojisPluginState;
-  emojiProvider: Promise<any>; // Promise<EmojiProvider>;
+  emojiProvider: Promise<EmojiProvider>;
   reversePosition?: boolean;
 }
 

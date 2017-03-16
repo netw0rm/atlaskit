@@ -1,4 +1,4 @@
-import { EditorTransform, Fragment, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
+import { EditorTransform, Fragment, ProseMirror, RemoveMarkStep, ReplaceStep, Slice, Step, TextSelection } from '../../prosemirror';
 import { isCodeBlockNode, isHardBreakNode, isMentionNode } from '../../schema';
 
 export default function transformToCodeBlock(pm: ProseMirror): void {
@@ -14,10 +14,9 @@ export function transformToCodeBlockAction(pm: ProseMirror, attrs?: any): Editor
   const codeBlock = pm.schema.nodes.code_block;
 
   const where = $from.before($from.depth);
-  const tr = clearMarkupFor(pm, where)
+  const tr = clearMarkupFor(pm, where);
+  return mergeContent(tr, pm.schema.nodes)
     .setNodeType(where, codeBlock, attrs);
-
-  return tr;
 }
 
 export function isConvertableToCodeBlock(pm: ProseMirror): boolean {
@@ -80,5 +79,25 @@ function clearMarkupFor(pm: ProseMirror, pos: number) {
     tr.step(delSteps[i]);
   }
 
+  return tr;
+}
+
+function mergeContent(tr: EditorTransform, nodes: any) {
+  const { text } = nodes;
+  const { from, to, $from, $to } = tr.selection;
+  let textContent = '';
+  tr.doc.nodesBetween(from, to, (node, pos) => {
+    if (node.isTextblock && node.textContent) {
+      if (textContent.length > 0) {
+        textContent += '\n';
+      }
+      textContent += node.textContent;
+    }
+  });
+  if (textContent.length > 0) {
+    const textNode = text.create({}, textContent);
+    tr.setSelection(new TextSelection(tr.doc.resolve($from.start(1)), tr.doc.resolve($to.end(1))));
+    tr.replaceSelection(textNode);
+  }
   return tr;
 }

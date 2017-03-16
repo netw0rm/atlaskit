@@ -1,4 +1,5 @@
 /* tslint:disable:variable-name */
+import styled from 'styled-components';
 import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 import {FilmStripView, FilmStripViewItem} from '../src';
@@ -24,15 +25,19 @@ const clickAction = (item: MediaItem, items: Array<{id: string}>, e?: Event) => 
 };
 
 const menuActions = [deleteAction];
+const ChatWrapper = styled.div`
+  border: 2px solid #60a9ff;
+  padding: 20px;
+  border-radius: 5px;
+  display: inline-block;
+  margin: 10p;
+`;
 
-const styles = {
-  chatWrapper: {
-    border: '2px solid #60a9ff',
-    padding: '20px',
-    borderRadius: '5px',
-    display: 'inline-block',
-    margin: '10px'
-  }
+const defaultItem = {
+  dataURI: tallImageDataUri,
+  mediaName: 'some image',
+  mediaType: 'image',
+  mediaSize: 8041
 };
 
 storiesOf('FilmListView', {})
@@ -52,89 +57,29 @@ storiesOf('FilmListView', {})
         mediaType: 'image',
         mediaSize: 8041
       },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      }
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem
     ];
-    return <div style={styles.chatWrapper}>
+    return <ChatWrapper>
             <FilmStripView
               items={items}
               onClick={clickAction}
               menuActions={menuActions}
               width={550}
             />
-           </div>;
+           </ChatWrapper>;
   }).add('Auto width with few cards', () => {
     const items: Array<FilmStripViewItem> = [
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      }
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem
     ];
     return (
       <FilmStripView
@@ -145,84 +90,19 @@ storiesOf('FilmListView', {})
     );
   }).add('Auto width with a lot of cards', () => {
     const items: Array<FilmStripViewItem> = [
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      },
-      {
-        dataURI: tallImageDataUri,
-        mediaName: 'some image',
-        mediaType: 'image',
-        mediaSize: 8041
-      }
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem,
+      defaultItem
     ];
     return (
       <FilmStripView
@@ -231,5 +111,18 @@ storiesOf('FilmListView', {})
         menuActions={menuActions}
       />
     );
+  }).add('Only one item', () => {
+    const items: Array<FilmStripViewItem> = [defaultItem];
+    const SmallChatWrapper = styled(ChatWrapper)`
+      width: 50px;
+    `;
+
+    return <SmallChatWrapper>
+      <FilmStripView
+        items={items}
+        onClick={clickAction}
+        menuActions={menuActions}
+      />
+    </SmallChatWrapper>;
   });
 

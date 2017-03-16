@@ -9,7 +9,7 @@ import {
   ListItemNodeType,
   MentionNodeType,
   MentionQueryMarkType,
-  MonoMarkType,
+  CodeMarkType,
   OrderedListNodeType,
   ParagraphNodeType,
   Schema,
@@ -40,7 +40,7 @@ export interface BaseSchemaMarks {
   strike: StrikeMarkType;
   subsup: SubSupMarkType;
   u: UnderlineMarkType;
-  mono: MonoMarkType;
+  code: CodeMarkType;
   mention_query?: MentionQueryMarkType;
 }
 
@@ -88,7 +88,7 @@ export function makeSchema(config: JIRASchemaConfig): JIRASchema {
     strike: StrikeMarkType,
     subsup: SubSupMarkType,
     u: UnderlineMarkType,
-    mono: MonoMarkType,
+    code: CodeMarkType,
     mention_query: MentionQueryMarkType,
   };
 

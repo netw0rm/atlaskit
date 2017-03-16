@@ -1,7 +1,6 @@
 import {
   EditorState, EditorView, Fragment, liftTarget, NodeSelection, NodeType, TextSelection, Transaction
 } from '../prosemirror';
-
 import * as baseCommand from '../prosemirror/prosemirror-commands';
 import { findWrapping } from '../prosemirror/prosemirror-transform';
 import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
@@ -215,7 +214,7 @@ export function setNormalText(): Command {
 
 export function toggleBlockquote(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from, $to  } = state.selection;
+    const { $from, $to } = state.selection;
     const potentialBlockquoteNode = $from.node($from.depth - 1);
 
     if (potentialBlockquoteNode && potentialBlockquoteNode.type === state.schema.nodes.blockquote) {
@@ -304,6 +303,32 @@ export function createCodeBlockFromFenceFormat(): Command {
       }
     }
 
+    return false;
+  };
+}
+
+
+export function clearFormatting(): Command {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    const { tr } = state;
+    const { from, to } = state.selection;
+    const { paragraph } = state.schema.nodes;
+    if (paragraph) {
+      tr.setBlockType(from, to, paragraph);
+      tr.doc.nodesBetween(from, to, (node, pos) => {
+        const res = tr.doc.resolve(pos);
+        const sel = new NodeSelection(res);
+        if (node.isBlock && node.type !== state.schema.nodes.listItem && sel.$from.depth > 0) {
+          const range = sel.$from.blockRange(sel.$to)!;
+          tr.lift(range, 0);
+        }
+      });
+
+      tr.clearMarkup(from, to);
+
+      dispatch(tr);
+      return true;
+    }
     return false;
   };
 }
@@ -455,7 +480,7 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
 
 // Lifts current selection up;
 // it allows to chain transactions
-function lift (state: EditorState<any>, tr: Transaction): Transaction {
+function lift(state: EditorState<any>, tr: Transaction): Transaction {
   const { $from, $to } = state.selection;
   if ($from.depth > 1) {
     const range = $from.blockRange($to) as any;
@@ -467,7 +492,7 @@ function lift (state: EditorState<any>, tr: Transaction): Transaction {
   return tr;
 }
 
-function wrap (state: EditorState<any>, nodeType: NodeType, tr: Transaction): Transaction {
+function wrap(state: EditorState<any>, nodeType: NodeType, tr: Transaction): Transaction {
   const { $from, $to } = state.selection;
   const range = $from.blockRange($to) as any;
   const wrapping = range && findWrapping(range, nodeType) as any;

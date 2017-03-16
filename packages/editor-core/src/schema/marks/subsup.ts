@@ -7,9 +7,8 @@ export interface SubSupMark extends Mark {
 }
 
 export const subsup: MarkSpec = {
-  get inclusiveRight() {
-    return true;
-  },
+  inclusiveRight: false,
+  inclusiveLeft: false,
   attrs: {type: {default: 'sub'}},
   parseDOM: [
     {tag: 'sub', attrs: {type: 'sub'}},

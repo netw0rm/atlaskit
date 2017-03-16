@@ -132,27 +132,27 @@ const buildHeaders = (secOptions: SecurityOptions) => {
 /**
  * @returns Promise containing the json response
  */
-const requestService = <T>(baseUrl: string, path: string | undefined, data: KeyValues, opts: KeyValues,
-                        secOptions: SecurityOptions, refreshedSecurityProvider?: RefreshSecurityProvider): Promise<T> => {
+const requestService = (baseUrl: string, path: string | undefined, data: KeyValues, opts: KeyValues,
+                        secOptions: SecurityOptions, refreshedSecurityProvider?: RefreshSecurityProvider) => {
   const url = buildUrl(baseUrl, path, data, secOptions);
   const headers = buildHeaders(secOptions);
   const options = {
     ...opts,
     ...{ headers },
-    credentials: 'include' as RequestCredentials,
+    credentials: 'include',
   };
   return fetch(new Request(url, options))
-    .then((response: Response) => {
+    .then(response => {
       if (response.ok) {
-        return response.json<T>();
+        return response.json();
       } else if (response.status === 401 && refreshedSecurityProvider) {
         // auth issue - try once
         debug('401 attempting a forced refresh from securityProvider');
         return refreshedSecurityProvider().then(newSecOptions => (
-          requestService<T>(baseUrl, path, data, opts, newSecOptions)
+          requestService(baseUrl, path, data, opts, newSecOptions)
         ));
       }
-      return Promise.reject<T>({
+      return Promise.reject({
         code: response.status,
         reason: response.statusText,
       });
@@ -333,7 +333,7 @@ class MentionResource extends AbstractMentionResource {
       data['productIdentifier'] = this.config.productId;
     }
 
-    return requestService<MentionsResult>(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider);
+    return requestService(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider);
   }
 
   private search(query: string): Promise<MentionsResult> {
@@ -351,7 +351,7 @@ class MentionResource extends AbstractMentionResource {
       data['productIdentifier'] = this.config.productId;
     }
 
-    return requestService<MentionsResult>(this.config.url, 'search', data, options, secOptions, refreshedSecurityProvider);
+    return requestService(this.config.url, 'search', data, options, secOptions, refreshedSecurityProvider);
   }
 
   private recordSelection(mention: Mention): Promise<void> {
@@ -368,7 +368,7 @@ class MentionResource extends AbstractMentionResource {
       data['productIdentifier'] = this.config.productId;
     }
 
-    return requestService<void>(this.config.url, 'record', data, options, secOptions, refreshedSecurityProvider);
+    return requestService(this.config.url, 'record', data, options, secOptions, refreshedSecurityProvider);
   }
 }
 

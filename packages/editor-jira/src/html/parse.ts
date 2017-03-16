@@ -1,7 +1,6 @@
 import { Fragment, Mark, Node as PMNode } from '@atlaskit/editor-core';
 import { isSchemaWithLists, isSchemaWithMentions, isSchemaWithLinks, JIRASchema } from '../schema';
 import parseHtml from './parse-html';
-import WeakMap from './weak-map';
 
 const convertedNodes = new WeakMap();
 

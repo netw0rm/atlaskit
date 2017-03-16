@@ -145,7 +145,7 @@ function marksFromStyle(style: CSSStyleDeclaration): Mark[] {
         break;
       case 'font-family':
         if (value === 'monospace') {
-          marks = schema.marks.mono.create().addToSet(marks);
+          marks = schema.marks.code.create().addToSet(marks);
           continue styles;
         }
     }
@@ -178,7 +178,7 @@ const converters = [
         case 'EM':
           return content ? addMarks(content, [schema.marks.em.create()]) : null;
         case 'CODE':
-          return content ? addMarks(content, [schema.marks.mono.create()]) : null;
+          return content ? addMarks(content, [schema.marks.code.create()]) : null;
         case 'SUB':
         case 'SUP':
           const type = tag === 'SUB' ? 'sub' : 'sup';

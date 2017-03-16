@@ -149,14 +149,14 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
     expect(handler.calledWith('atlassian.editor.format.em.keyboard')).to.equal(true);
   });
 
-  it('atlassian.editor.format.mono.keyboard', () => {
+  it('atlassian.editor.format.code.keyboard', () => {
     sendKeyToPm(pm, 'Mod-Shift-M');
-    expect(handler.calledWith('atlassian.editor.format.mono.keyboard')).to.equal(true);
+    expect(handler.calledWith('atlassian.editor.format.code.keyboard')).to.equal(true);
   });
 
-  it('atlassian.editor.format.mono.autoformatting', () => {
+  it('atlassian.editor.format.code.autoformatting', () => {
     pm.input.insertText(0, 0, '`text`');
-    expect(handler.calledWith('atlassian.editor.format.mono.autoformatting')).to.equal(true);
+    expect(handler.calledWith('atlassian.editor.format.code.autoformatting')).to.equal(true);
   });
 
   it('atlassian.editor.format.list.numbered.button', () => {

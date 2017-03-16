@@ -24,7 +24,7 @@ const mention = (attrs: { id: string, displayName?: string }) => schema.nodes.me
 const link = (attrs) => markFactory(schema.marks.link!, attrs);
 const strong = markFactory(schema.marks.strong);
 const em = markFactory(schema.marks.em);
-const mono = markFactory(schema.marks.mono);
+const code = markFactory(schema.marks.code);
 const strike = markFactory(schema.marks.strike);
 const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 const sup = markFactory(schema.marks.subsup, { type: 'sup' });
@@ -53,8 +53,8 @@ const seeds: ExampleSeed[] = [
     doc: doc(p(em('Emphasis'))),
   },
   {
-    description: 'Monospace',
-    doc: doc(p(mono('Monospace'))),
+    description: 'Code',
+    doc: doc(p(code('Code'))),
   },
   {
     description: 'Strikethrough',
@@ -74,11 +74,11 @@ const seeds: ExampleSeed[] = [
   },
   {
     description: 'Combined styles (1)',
-    doc: doc(p(strong('Strong', em('Emphasis', mono('Monospace', strike('Strikethrough', sub('Subscript', sup('Superscript', u('Underline'))))))))),
+    doc: doc(p(strong('Strong', em('Emphasis', code('Code', strike('Strikethrough', sub('Subscript', sup('Superscript', u('Underline'))))))))),
   },
   {
     description: 'Combined styles (2)',
-    doc: doc(p(u('Underline', sup('Superscript', sub('Subscript', strike('Strikethrough', mono('Monospace', em('Emphasis', strong('Strong'))))))))),
+    doc: doc(p(u('Underline', sup('Superscript', sub('Subscript', strike('Strikethrough', code('Code', em('Emphasis', strong('Strong'))))))))),
   },
   {
     description: 'Heading 1',

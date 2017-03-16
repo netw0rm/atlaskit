@@ -24,7 +24,7 @@ const hr = nodeFactory(schema.nodes.horizontal_rule);
 
 // Marks
 const em = markFactory(schema.marks.em);
-const mono = markFactory(schema.marks.mono);
+const code = markFactory(schema.marks.code);
 const strike = markFactory(schema.marks.strike);
 const strong = markFactory(schema.marks.strong);
 const sub = markFactory(schema.marks.subsup, { type: 'sub' });
@@ -100,31 +100,31 @@ describe(`${name} html:`, () => {
 
   describe('marks formatting:', () => {
     check('<tt> tag',
-      '<p>Text with <tt>monospace words</tt>.</p>',
+      '<p>Text with <tt>code words</tt>.</p>',
       doc(p(
         'Text with ',
-        mono('monospace words'),
+        code('code words'),
         '.'
       )));
 
     checkParse('<tt> and <b>',
       [
-        '<p>Text with <tt><b>monospace words</b></tt>.</p>',
-        '<p>Text with <b><tt>monospace words</tt></b>.</p>'
+        '<p>Text with <tt><b>code words</b></tt>.</p>',
+        '<p>Text with <b><tt>code words</tt></b>.</p>'
       ],
       doc(p(
         'Text with ',
-        strong(mono('monospace words')),
+        strong(code('code words')),
         '.'
       )));
 
     checkEncode('<tt> and <b>',
       doc(p(
         'Text with ',
-        strong(mono('monospace words')),
+        strong(code('code words')),
         '.'
       )),
-      '<p>Text with <b><tt>monospace words</tt></b>.</p>');
+      '<p>Text with <b><tt>code words</tt></b>.</p>');
 
     check('<ins> tag',
       '<p>Text with <ins>underline words</ins>.</p>',

@@ -78,7 +78,7 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
       case 'EM':
         return content ? addMarks(content, [schema.marks.em.create()]) : null;
       case 'TT':
-        return content ? addMarks(content, [schema.marks.mono.create()]) : null;
+        return content ? addMarks(content, [schema.marks.code.create()]) : null;
       case 'SUB':
       case 'SUP':
         const type = tag === 'SUB' ? 'sub' : 'sup';

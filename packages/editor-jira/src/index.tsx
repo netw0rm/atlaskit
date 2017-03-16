@@ -11,6 +11,7 @@ import {
   HyperlinkPlugin,
   ProseMirror,
   TextFormattingPlugin,
+  ClearFormattingPlugin,
   DefaultKeymapsPlugin,
   MentionsPlugin,
   version as coreVersion
@@ -155,6 +156,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
+        pluginStateClearFormatting={pm && ClearFormattingPlugin.get(pm)}
         pluginStateMentions={pm && mentionProvider && MentionsPlugin.get(pm)!}
         pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         packageVersion={version}
@@ -197,6 +199,7 @@ export default class Editor extends PureComponent<Props, State> {
           CodeBlockPlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          ClearFormattingPlugin,
           HorizontalRulePlugin,
           DefaultKeymapsPlugin,
           ...( isSchemaWithMentions(schema) ? [ MentionsPlugin ] : [] ),

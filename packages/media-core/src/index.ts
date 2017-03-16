@@ -4,6 +4,7 @@ export * from './config';
 export * from './mediaTypes';
 export * from './context/context';
 export * from './collection';
+export * from './trello';
 
 export interface Metadata {
   id: string;

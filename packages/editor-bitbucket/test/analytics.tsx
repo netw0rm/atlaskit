@@ -1,4 +1,4 @@
-import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from '@atlaskit/editor-core/src/test-helper';
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { mount, ReactWrapper } from 'enzyme';

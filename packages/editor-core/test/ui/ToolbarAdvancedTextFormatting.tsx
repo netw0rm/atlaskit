@@ -70,11 +70,11 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     expect(toolbarOption.state('isOpen')).to.be.true;
   });
 
-  it('should not open drop-down when trigger clicked but all monospace and strikethrough and clearformatting are disabled', () => {
+  it('should not open drop-down when trigger clicked but all code and strikethrough and clearformatting are disabled', () => {
     const { plugins } = editor(doc(p('text')));
     const pluginState = plugins[0];
     if (pluginState) {
-      pluginState.monoDisabled = true;
+      pluginState.codeDisabled = true;
       pluginState.strikeDisabled = true;
       pluginState.marksPresent = false;
     }
@@ -101,7 +101,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     expect(toolbarOption.find(Tooltip).length).to.equal(3);
   });
 
-  it('should trigger toggleMono of pluginStateTextFormatting when monospace option is clicked', () => {
+  it('should trigger toggleCode of pluginStateTextFormatting when code option is clicked', () => {
     const { plugins } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
@@ -110,10 +110,10 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    plugins[0].toggleMono = sinon.spy();
-    const monospaceButton = toolbarOption.find(Item).at(0).childAt(0);
-    monospaceButton.simulate('click');
-    expect(plugins[0].toggleMono.callCount).to.equal(1);
+    plugins[0].toggleCode = sinon.spy();
+    const codeButton = toolbarOption.find(Item).at(0).childAt(0);
+    codeButton.simulate('click');
+    expect(plugins[0].toggleCode.callCount).to.equal(1);
   });
 
   it('should trigger toggleStrike of pluginStateTextFormatting when strikethrough option is clicked', () => {
@@ -131,7 +131,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     expect(plugins[0].toggleStrike.callCount).to.equal(1);
   });
 
-  it('should not have Monospace option if monoHidden is true', () => {
+  it('should not have Code option if codeHidden is true', () => {
     const { plugins } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
@@ -139,9 +139,9 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         pluginStateClearFormatting={plugins[1]}
       />
     );
-    toolbarOption.setState({ monoHidden: true, isOpen: true });
-    const monospaceButton = toolbarOption.find('span').findWhere(wrapper => wrapper.text() === 'Monospace');
-    expect(monospaceButton.length).to.equal(0);
+    toolbarOption.setState({ codeHidden: true, isOpen: true });
+    const codeButton = toolbarOption.find('span').findWhere(wrapper => wrapper.text() === 'Code');
+    expect(codeButton.length).to.equal(0);
   });
 
   it('should not have Strikethrough option if strikeHidden is true', () => {
@@ -173,11 +173,11 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     expect(plugins[1].clearFormatting.callCount).to.equal(1);
   });
 
-  it('should be disabled if all monospace and strikethrough and clearformatting are disabled', () => {
+  it('should be disabled if all code and strikethrough and clearformatting are disabled', () => {
     const { plugins } = editor(doc(p('text')));
     const pluginState = plugins[0];
     if (pluginState) {
-      pluginState.monoDisabled = true;
+      pluginState.codeDisabled = true;
       pluginState.strikeDisabled = true;
       pluginState.marksPresent = false;
     }

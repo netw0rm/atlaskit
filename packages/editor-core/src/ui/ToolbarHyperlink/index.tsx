@@ -2,6 +2,7 @@ import LinkIcon from '@atlaskit/icon/glyph/editor/link';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
+import { addLink, tooltip } from '../../keymaps';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import FloatingToolbar from '../FloatingToolbar';
 import TextInput from '../PanelTextInput';
@@ -38,7 +39,7 @@ export default class ToolbarHyperlink extends PureComponent<Props, State> {
           disabled={disabled}
           onClick={this.toggleLinkPanel}
           selected={adding}
-          title="Hyperlink"
+          title={tooltip(addLink)}
           iconBefore={<LinkIcon label="Link" />}
         />
         {!showToolbarPanel ? null :

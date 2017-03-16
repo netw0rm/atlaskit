@@ -4,7 +4,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import Editor from '../src';
 import { name, version } from '../package.json';
-import { storyDecorator } from '@atlaskit/editor-core/src/test-helper';
+import { storyDecorator } from '@atlaskit/editor-core/dist/es5/test-helper';
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import {toHumanReadableMediaSize} from '../../src/utils/index';
+import {toHumanReadableMediaSize} from '../../src';
 
 describe('toHumanReadableMediaSize', () => {
   it('should return no decimal places when the media size is less than 1 MB', () => {

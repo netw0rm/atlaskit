@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "1.42.0",
+  "version": "1.48.0",
   "config": {
     "access": "public"
   },
@@ -19,6 +19,7 @@
     "src"
   ],
   "dependencies": {
+    "@atlaskit/badge": "^1.0.3",
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/droplist-group": "^1.0.0",
     "@atlaskit/droplist-item": "^1.0.0",

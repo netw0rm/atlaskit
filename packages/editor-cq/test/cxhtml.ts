@@ -1,5 +1,5 @@
 import { DocNode } from '@atlaskit/editor-core';
-import { chaiPlugin } from '@atlaskit/editor-core/src/test-helper';
+import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { encode, parse } from '../src/cxhtml';

@@ -4,7 +4,7 @@ import * as chai from 'chai';
 import { browser } from '../../../src';
 import { ClearFormattingPlugin } from '../../../src';
 import { chaiPlugin, makeEditor } from '../../../src/test-helper';
-import { doc, mono, p, schema, strong, em, u, strike, code_block, h1, panel, link, linkable, blockquote, li, ol } from '../../_schema-builder';
+import { doc, code, p, schema, strong, em, u, strike, code_block, h1, panel, link, linkable, blockquote, li, ol } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
 
@@ -68,8 +68,8 @@ describe('clear-formatting', () => {
       expect(plugin.formattingIsPresent).not.to.be.true;
     });
 
-    it('should clear monospace if present', () => {
-      const { plugin } = editor(doc(p(mono('t{<ex>}t'))));
+    it('should clear mono if present', () => {
+      const { plugin } = editor(doc(p(code('t{<ex>}t'))));
       expect(plugin.formattingIsPresent).to.be.true;
       plugin.clearFormatting();
       expect(plugin.formattingIsPresent).not.to.be.true;

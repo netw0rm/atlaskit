@@ -4,15 +4,13 @@ import {CardAction} from '@atlaskit/media-core';
 
 import {Ellipsify, Menu} from '../../utils';
 import {
-  Wrapper,
-  HorizontalThumbnail,
-  SquareThumbnail,
-  Details,
   Title,
   Description,
   Footer,
   Link
 } from './styled';
+import {MediaImage} from '../../utils';
+import {Details, Wrapper} from '../styled';
 
 export type LinkCardDisplay = 'horizontal' | 'square';
 
@@ -107,9 +105,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
       return null;
     }
 
-    return this.isHorizontal
-      ? <HorizontalThumbnail src={thumbnailUrl} alt={title} onError={this.thumbnailError}/>
-      : <SquareThumbnail className="square-img" style={{backgroundImage: `url(${thumbnailUrl})`}} />;
+    return <MediaImage dataURI={thumbnailUrl} onError={this.thumbnailError} />;
   }
 
   private getIcon = (): JSX.Element | null => {

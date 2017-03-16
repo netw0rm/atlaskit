@@ -3,7 +3,7 @@ import {Component} from 'react';
 import {MediaType} from '@atlaskit/media-core';
 import FileIcon from '@atlaskit/icon/glyph/file';
 import {LoadingWrapper} from './styled';
-import {FadeinImage} from '../../styles';
+import {MediaImage} from '../../utils';
 
 export interface CardContentProps {
   mediaType?: MediaType;
@@ -20,9 +20,7 @@ export class CardContent extends Component<CardContentProps, {}> {
     }
 
     if (this.props.mediaType === 'image' && this.props.dataURI) {
-      return <FadeinImage>
-               <img alt="" src={this.props.dataURI} />
-             </FadeinImage>;
+      return <MediaImage dataURI={this.props.dataURI} />;
     } else {
       return null;
     }

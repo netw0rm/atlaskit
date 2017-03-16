@@ -1,7 +1,5 @@
 /**
  * Only used internally ATM
- *
- * TODO: Use this component everywhere in media-* and remove previous solution
  */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -11,13 +9,13 @@ import * as cx from 'classnames';
 import {ImageViewWrapper, transparentFallbackBackground} from './styled';
 
 export interface MediaImageProps {
-  // mediaType: MediaType; // TODO: Do we need to provide a mediaType?
   dataURI: string;
   fadeIn?: boolean;
   crop?: boolean;
   transparentFallback?: boolean;
   width?: string;
   height?: string;
+  onError?: Function;
 }
 
 export interface MediaImageState {
@@ -49,8 +47,10 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
 
   componentWillMount() {
     const img = new window.Image();
+
     img.src = this.props.dataURI;
     img.onload = this.onImageLoad(this);
+    img.onerror = this.props.onError;
   }
 
   componentDidMount() {
@@ -82,7 +82,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
       backgroundSize,
       backgroundImage: `url(${this.props.dataURI}) ${transparentBg}`
     };
-    const className = cx('card-img', {
+    const className = cx('media-card', {
       'fade-in': this.props.fadeIn,
       crop: this.props.crop && !implicitNoCrop
     });

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 
-import { LinkCardGenericView } from '../../src';
+import { LinkCardGenericView, MediaImage } from '../../src';
 import { Title, Link } from '../../src/links/cardGenericView/styled';
 
 describe('LinkCardViewGeneric', () => {
@@ -24,7 +24,7 @@ describe('LinkCardViewGeneric', () => {
 
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />);
     expect(card.find('img')).to.have.length(1);
-    expect(card.find('.square-img')).to.have.length(0);
+    expect(card.find(MediaImage)).to.have.length(0);
   });
 
   it('should render in square display mode when specified', () => {
@@ -34,7 +34,7 @@ describe('LinkCardViewGeneric', () => {
 
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} display="square" />);
     expect(card.find('img')).to.have.length(0);
-    expect(card.find('.square-img')).to.have.length(1);
+    expect(card.find(MediaImage)).to.have.length(1);
   });
 
   it('should render a thumnail when supplied', () => {

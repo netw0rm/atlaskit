@@ -14,7 +14,7 @@ const ImageWrapper = styled.div`
   height: 150px;
 `;
 
-storiesOf('ImageView', {})
+storiesOf('MediaImage', {})
   .add('Default', () => (
     <StoryList>
       {[{

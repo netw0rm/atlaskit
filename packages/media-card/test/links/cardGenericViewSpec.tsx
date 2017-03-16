@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 
-import { LinkCardGenericView, MediaImage } from '../../src';
+import { LinkCardGenericView } from '../../src';
 import { Title, Link } from '../../src/links/cardGenericView/styled';
 
 describe('LinkCardViewGeneric', () => {
@@ -14,7 +14,7 @@ describe('LinkCardViewGeneric', () => {
 
     expect(card.find(Title).text()).to.eql(title);
     expect(card.find(Link).text()).to.eql(linkUrl);
-    expect(card.find('img')).to.have.length(0);
+    expect(card.find('.media-card')).to.have.length(0);
   });
 
   it('should render in horizontal display mode by default', () => {
@@ -23,8 +23,7 @@ describe('LinkCardViewGeneric', () => {
     const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
 
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />);
-    expect(card.find('img')).to.have.length(1);
-    expect(card.find(MediaImage)).to.have.length(0);
+    expect(card.find('.media-card')).to.have.length(1);
   });
 
   it('should render in square display mode when specified', () => {
@@ -33,8 +32,7 @@ describe('LinkCardViewGeneric', () => {
     const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
 
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} display="square" />);
-    expect(card.find('img')).to.have.length(0);
-    expect(card.find(MediaImage)).to.have.length(1);
+    expect(card.find('.media-card')).to.have.length(1);
   });
 
   it('should render a thumnail when supplied', () => {
@@ -43,20 +41,23 @@ describe('LinkCardViewGeneric', () => {
     const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
 
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />);
-    expect(card.find('img')).to.have.length(1);
-    expect(card.find(`img[src='${thumbnailUrl}']`)).to.have.length(1);
+
+    expect(card.find('.media-card')).to.have.length(1);
+    expect(card.find('.media-card').props().style.backgroundImage).to.contain(thumbnailUrl);
   });
 
-  it('should NOT render a thumnail when supplied thumbnail url errors', () => {
+  it('should NOT render a thumnail when supplied thumbnail url errors', (done) => {
     const title = 'Hello world';
     const linkUrl = 'http://localhost:9001/';
     const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
 
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />);
-    card.find(`img[src='${thumbnailUrl}']`).simulate('error');
 
-    expect(card.find('img')).to.have.length(0);
-    expect(card.find(`img[src='${thumbnailUrl}']`)).to.have.length(0);
+    // Waits until the image tries to load the uri and calls the error handler which hanpens async.
+    setTimeout(() => {
+      expect(card.state('thumbnailError')).to.be.true;
+      done();
+    }, 10);
   });
 
   it('should render an icon when supplied', () => {
@@ -66,7 +67,7 @@ describe('LinkCardViewGeneric', () => {
 
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} iconUrl={iconUrl} />);
 
-    expect(card.find('img')).to.have.length(1);
+    expect(card.find('.media-card')).to.have.length(0);
     expect(card.find(`img[src='${iconUrl}']`)).to.have.length(1);
   });
 
@@ -78,7 +79,7 @@ describe('LinkCardViewGeneric', () => {
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} iconUrl={iconUrl} />);
     card.find(`img[src='${iconUrl}']`).simulate('error');
 
-    expect(card.find('img')).to.have.length(0);
+    expect(card.find('.media-card')).to.have.length(0);
     expect(card.find(`img[src='${iconUrl}']`)).to.have.length(0);
   });
 
@@ -90,7 +91,7 @@ describe('LinkCardViewGeneric', () => {
 
     expect(card.find(Title).text()).to.eql(title);
     expect(card.find(Link).text()).to.eql(linkUrl);
-    expect(card.find('img')).to.have.length(0);
+    expect(card.find('.media-card')).to.have.length(0);
   });
 
   it('currently ignores the error prop', () => {
@@ -101,6 +102,6 @@ describe('LinkCardViewGeneric', () => {
 
     expect(card.find(Title).text()).to.eql(title);
     expect(card.find(Link).text()).to.eql(linkUrl);
-    expect(card.find('img')).to.have.length(0);
+    expect(card.find('.media-card')).to.have.length(0);
   });
 });

@@ -5,7 +5,7 @@ import { parseHtml as parse } from '../src/parse-html';
 import schema from '../src/schema';
 import {
   a, blockquote, code_block, doc, h1, h2,
-  h3, h4, h5, h6, hr, img, li, mention, mono, ol, p, strong, ul
+  h3, h4, h5, h6, hr, img, li, mention, code, ol, p, strong, ul
 } from './_schema-builder';
 
 chai.use(chaiPlugin);
@@ -58,9 +58,9 @@ describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
       expect(parse('<p><strike>text</strike></p>')).to.have.textWithMarks('text', [ strike ]);
     });
 
-    it('should support mono', () => {
-      const mono = schema.marks.mono.create();
-      expect(parse('<p><span style="font-family: monospace;">text</span></p>')).to.have.textWithMarks('text', [ mono ]);
+    it('should support code', () => {
+      const code = schema.marks.code.create();
+      expect(parse('<p><span style="font-family: monospace;">text</span></p>')).to.have.textWithMarks('text', [ code ]);
     });
 
     it('should support links', () => {
@@ -367,12 +367,12 @@ describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
     });
   });
 
-  describe('mono', () => {
+  describe('code', () => {
     it('inline should be parsed', () => {
       expect(parse(
         'foo <span style="font-family: monospace;">bar </span>baz'
       )).to.deep.equal(doc(
-        p('foo ', mono('bar '), 'baz')
+        p('foo ', code('bar '), 'baz')
       ));
     });
   });

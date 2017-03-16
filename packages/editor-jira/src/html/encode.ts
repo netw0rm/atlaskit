@@ -120,7 +120,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
           case schema.marks.em:
             elem = elem.appendChild(doc.createElement('em'));
             break;
-          case schema.marks.mono:
+          case schema.marks.code:
             elem = elem.appendChild(doc.createElement('tt'));
             break;
           case schema.marks.strike:

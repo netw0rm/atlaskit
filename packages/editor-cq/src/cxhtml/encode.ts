@@ -100,14 +100,14 @@ export default function encode(node: DocNode) {
           case schema.marks.strike:
             elem = elem.appendChild(doc.createElement('s'));
             break;
-          case schema.marks.mono:
-            elem = elem.appendChild(doc.createElement('code'));
-            break;
           case schema.marks.u:
             elem = elem.appendChild(doc.createElement('u'));
             break;
           case schema.marks.subsup:
             elem = elem.appendChild(doc.createElement(mark.attrs['type']));
+            break;
+          case schema.marks.code:
+            elem = elem.appendChild(doc.createElement('code'));
             break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);

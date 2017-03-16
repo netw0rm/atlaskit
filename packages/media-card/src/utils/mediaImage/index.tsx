@@ -15,7 +15,7 @@ export interface MediaImageProps {
   transparentFallback?: boolean;
   width?: string;
   height?: string;
-  onError?: Function;
+  onError?: () => void;
 }
 
 export interface MediaImageState {
@@ -46,7 +46,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   }
 
   componentWillMount() {
-    const img = new window.Image();
+    const img = new Image();
 
     img.src = this.props.dataURI;
     img.onload = this.onImageLoad(this);
@@ -75,7 +75,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   render() {
     const {transparentFallback, width, height} = this.props;
     const implicitNoCrop = width !== '100%' || height !== '100%';
-    const isSmallImage = window.parseInt(this.state.maxWidth) < this.state.parentWidth || window.parseInt(this.state.maxHeight) < this.state.parentHeight;
+    const isSmallImage = parseInt(this.state.maxWidth, 0) < this.state.parentWidth || parseInt(this.state.maxHeight, 0) < this.state.parentHeight;
     const backgroundSize = implicitNoCrop ? `${width} ${height}, auto` : (isSmallImage ? `${this.state.maxWidth} ${this.state.maxHeight}, auto` : null);
     const transparentBg = transparentFallback ? `, ${transparentFallbackBackground}` : '';
     const style = {

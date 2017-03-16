@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { akFontFamily, akColorN0, akColorN30, akColorN300 } from '@atlaskit/util-shared-styles';
-import { Root, cardShadow, borderRadius, borderRadiusLeft, size, spaceAround, ellipsis } from '../../../../styles';
+import { akColorN300 } from '@atlaskit/util-shared-styles';
+import { size, ellipsis } from '../../../../styles';
 
 export const Title = styled.div`
   user-select: text;

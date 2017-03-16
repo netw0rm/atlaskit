@@ -98,7 +98,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
       return !thumbnailUrl || thumbnailError;
     };
 
-    const {title, thumbnailUrl} = this.props;
+    const {thumbnailUrl} = this.props;
     const {thumbnailError} = this.state;
 
     if (shouldNotDisplayThumbnail(thumbnailUrl, thumbnailError)) {

@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import { ListsPlugin, MentionNodeType, MentionQueryMarkType, ProseMirror, Schema, schema as schemaBasic, Text } from '../../../src';
 import BlockTypePlugin from '../../../src/plugins/block-type';
 import MentionsPlugin from '../../../src/plugins/mentions';
-import { chaiPlugin, fixtures } from '../../../test-helper';
+import { chaiPlugin, fixtures } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 

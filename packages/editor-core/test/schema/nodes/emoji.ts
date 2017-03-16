@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { Schema, doc, paragraph, text, emoji } from '../../../src';
-import { fromHTML as fromHTML_, toHTML } from '../../../test-helper';
+import { fromHTML as fromHTML_, toHTML } from '../../../src/test-helper';
 
 const schema = makeSchema();
 const fromHTML = (html: string) => fromHTML_(html, schema);

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 import { browser } from '../../../src';
 import RulePlugin from '../../../src/plugins/rule';
-import { chaiPlugin, doc, hr, makeEditor, p } from '../../../test-helper';
+import { chaiPlugin, doc, hr, makeEditor, p } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 

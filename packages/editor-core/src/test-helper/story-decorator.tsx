@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { version } from '../src/index';
+import { version } from '../index';
 
 /**
  * This decorator displays current story name, package version and imported editor-core version.

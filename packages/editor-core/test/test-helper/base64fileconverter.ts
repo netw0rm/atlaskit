@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import {
   convertedHandlerCallback, Converter, dropHandler, pasteHandler
-} from '../../test-helper/base64fileconverter';
+} from '../../src/test-helper/base64fileconverter';
 
 describe('ak-editor-core/test-helper base64fileconverter', () => {
   let savedFileReader: any;

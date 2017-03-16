@@ -6,7 +6,7 @@ import * as sinon from 'sinon';
 import analytics from '../../src/analytics/decorator';
 import { AnalyticsHandler } from '../../src/analytics/handler';
 import service from '../../src/analytics/service';
-import { chaiPlugin } from '../../test-helper';
+import { chaiPlugin } from '../../src/test-helper';
 
 chai.use(chaiPlugin);
 

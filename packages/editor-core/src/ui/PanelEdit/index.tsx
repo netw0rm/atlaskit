@@ -92,7 +92,8 @@ export default class PanelEdit extends PureComponent<Props, State> {
   }
 
   private handleSelectPanelType = (panelType: PanelType, event) => {
-    this.props.pluginState.changePanelType(panelType, editorView);
+    const { editorView } = this.props;
+    this.props.pluginState.changePanelType(editorView, panelType);
   }
 
   private handleRemovePanelType = () => {

@@ -130,6 +130,9 @@ const nodes = {
     const delimiter = isLastNode ? '' : ' ';
 
     state.write(`@${node.attrs['id']}${delimiter}`);
+  },
+  emoji(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
+    state.write(`:${node.attrs['shortcut']}:`);
   }
 };
 

@@ -7,7 +7,7 @@ export const br = schema.nodes.hard_break.createChecked();
 // tslint:disable-next-line:variable-name
 export const code_block = (attrs: {} = {}) => nodeFactory(schema.nodes.code_block, attrs);
 export const doc = nodeFactory(schema.nodes.doc);
-export const emoji = (attrs: { id: string }) => schema.nodes.emoji.createChecked(attrs);
+export const emoji = (attrs: { shortcut: string }) => schema.nodes.emoji.createChecked(attrs);
 export const h1 = nodeFactory(schema.nodes.heading, {level: 1});
 export const h2 = nodeFactory(schema.nodes.heading, {level: 2});
 export const h3 = nodeFactory(schema.nodes.heading, {level: 3});

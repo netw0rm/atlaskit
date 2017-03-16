@@ -6,6 +6,7 @@ import {
   CodeBlockPlugin,
   ContextName,
   DefaultInputRulesPlugin,
+  EmojisPlugin,
   HorizontalRulePlugin,
   HyperlinkPlugin,
   ImageUploadPlugin,
@@ -22,6 +23,7 @@ import {
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { EmojiProvider } from '@atlaskit/emoji';
 
 import markdownSerializer from './markdown-serializer';
 import { MentionResource, MentionSource } from './mention-resource';
@@ -44,6 +46,7 @@ export interface Props {
   analyticsHandler?: AnalyticsHandler;
   imageUploadHandler?: ImageUploadHandler;
   mentionSource?: MentionSource;
+  emojiProvider?: Promise<EmojiProvider>;
 }
 
 export interface State {
@@ -161,6 +164,7 @@ export default class Editor extends PureComponent<Props, State> {
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const { pm, isExpanded } = this.state;
+    const { emojiProvider } = this.props;
 
     return (
       <Chrome
@@ -173,6 +177,7 @@ export default class Editor extends PureComponent<Props, State> {
         onCollapsedChromeFocus={this.expand}
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
         pluginStateCodeBlock={pm && CodeBlockPlugin.get(pm)}
+        pluginStateEmojis={pm && emojiProvider && EmojisPlugin.config({ emojiProvider }).get(pm)}
         pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
@@ -180,6 +185,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateImageUpload={pm && ImageUploadPlugin.get(pm)}
         pluginStateMentions={pm && this.mentionsResourceProvider && MentionsPlugin.get(pm)!}
         mentionsResourceProvider={this.mentionsResourceProvider}
+        emojiProvider={emojiProvider}
         packageVersion={version}
         packageName={name}
       />
@@ -225,7 +231,8 @@ export default class Editor extends PureComponent<Props, State> {
           DefaultKeymapsPlugin,
           ...( this.mentionsResourceProvider ? [ MentionsPlugin ] : [] ),
           DefaultInputRulesPlugin,
-          ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )
+          ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] ),
+          ...( this.props.emojiProvider ? [ EmojisPlugin ] : [] )
         ],
       });
 
@@ -235,6 +242,10 @@ export default class Editor extends PureComponent<Props, State> {
 
       if (this.props.imageUploadHandler) {
         ImageUploadPlugin.get(pm)!.uploadHandler = this.props.imageUploadHandler;
+      }
+
+      if (this.props.emojiProvider) {
+        EmojisPlugin.get(pm)!.setEmojiProvider(this.props.emojiProvider);
       }
 
       pm.addKeymap(new Keymap({

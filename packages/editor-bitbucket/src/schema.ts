@@ -5,6 +5,7 @@ import {
   DocNodeType,
   EmMarkType,
   EmojiNodeType,
+  EmojiQueryMarkType,
   HardBreakNodeType,
   HeadingNodeType,
   HorizontalRuleNodeType,
@@ -52,6 +53,7 @@ export default new Schema({
     strike: StrikeMarkType,
     code: CodeMarkType,
     mention_query: MentionQueryMarkType,
+    emoji_query: EmojiQueryMarkType,
   },
 }) as BitbucketSchema;
 

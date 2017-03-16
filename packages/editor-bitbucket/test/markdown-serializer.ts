@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import markdownSerializer from '../src/markdown-serializer';
 import stringRepeat from '../src/util/string-repeat';
 import {
-  a, blockquote, br, code_block, doc, em, h1, h2,
+  a, blockquote, br, code_block, doc, em, emoji, h1, h2,
   h3, h4, h5, h6, hr, img, li, mention, mention_query, code, ol, p, strike, strong,
   ul
 } from './_schema-builder';
@@ -63,40 +63,50 @@ describe('Bitbucket markdown serializer: ', () => {
     ))).to.eq('foo\n\n\u200c\n\n\u200c');
   });
 
-  it('should serialize mentions', () => {
-    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
-    const test = markdownSerializer.serialize(node);
-    expect(test).to.eq('@oscar');
+  describe('mentions', () => {
+    it('should serialize mentions', () => {
+      const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
+      const test = markdownSerializer.serialize(node);
+      expect(test).to.eq('@oscar');
+    });
+
+    it('should divide serialized mentions and text with one blank space', () => {
+      const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), 'text'));
+      const test = markdownSerializer.serialize(node);
+      expect(test).to.eq('@oscar text');
+    });
+
+    it('should not add a blank space in the end of the string for mentions', () => {
+      const node = doc(p('text ', mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
+      const test = markdownSerializer.serialize(node);
+      expect(test).to.eq('text @oscar');
+    });
+
+    it('should not divide mention and text with additional space if text starts with the space', () => {
+      const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), ' text'));
+      const test = markdownSerializer.serialize(node);
+      expect(test).to.eq('@oscar text');
+    });
+
+    it('should divide mention and text with only one additional space if text starts with the spaces', () => {
+      const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), '  text'));
+      const test = markdownSerializer.serialize(node);
+      expect(test).to.eq('@oscar  text');
+    });
+
+    it('should not divide mention and italic text node with additional space if text starts with the space', () => {
+      const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), em(' text')));
+      const test = markdownSerializer.serialize(node);
+      expect(test).to.eq('@oscar *text*');
+    });
   });
 
-  it('should divide serialized mentions and text with one blank space', () => {
-    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), 'text'));
-    const test = markdownSerializer.serialize(node);
-    expect(test).to.eq('@oscar text');
-  });
-
-  it('should not add a blank space in the end of the string for mentions', () => {
-    const node = doc(p('text ', mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
-    const test = markdownSerializer.serialize(node);
-    expect(test).to.eq('text @oscar');
-  });
-
-  it('should not divide mention and text with additional space if text starts with the space', () => {
-    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), ' text'));
-    const test = markdownSerializer.serialize(node);
-    expect(test).to.eq('@oscar text');
-  });
-
-  it('should divide mention and text with only one additional space if text starts with the spaces', () => {
-    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), '  text'));
-    const test = markdownSerializer.serialize(node);
-    expect(test).to.eq('@oscar  text');
-  });
-
-  it('should not divide mention and italic text node with additional space if text starts with the space', () => {
-    const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), em(' text')));
-    const test = markdownSerializer.serialize(node);
-    expect(test).to.eq('@oscar *text*');
+  describe('emoji', () => {
+    it('should serialize emoji', () => {
+      const node = doc(p(emoji({ shortcut: 'grinning' })));
+      const test = markdownSerializer.serialize(node);
+      expect(test).to.eq(':grinning:');
+    });
   });
 
   describe('code block', () => {

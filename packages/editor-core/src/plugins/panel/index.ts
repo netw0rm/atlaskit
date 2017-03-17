@@ -8,7 +8,7 @@ import {
   Plugin,
   Node,
 } from '../../prosemirror';
-import { liftAndSelectSiblingNodes, liftSiblingNodes } from '../../utils';
+import { liftSiblingNodes } from '../../utils';
 
 export interface PanelType {
   panelType: 'info' | 'note' | 'tip' | 'warning';
@@ -40,17 +40,23 @@ export class PanelState {
     this.editorFocused = editorFocused;
   }
 
-  // changePanelType(panelType: PanelType) {
-  //   analyticsService.trackEvent(`atlassian.editor.format.${panelType}.button`);
-  //   const { pm } = this;
-  //   const { nodes } = pm.schema;
-  //   const { from, to } = pm.selection;
-  //   const tr = liftAndSelectSiblingNodes(pm).applyAndScroll();
-  //   commands.wrapIn(nodes.panel as PanelNodeType, panelType)(pm);
-  //   const originalStartPos = tr.map(from) + 1;
-  //   const originalEndPos = tr.map(to) + 1;
-  //   pm.setSelection(new TextSelection(pm.doc.resolve(originalStartPos), pm.doc.resolve(originalEndPos)));
-  // }
+  changePanelType(view: EditorView, panelType: PanelType) {
+    analyticsService.trackEvent(`atlassian.editor.format.${panelType}.button`);
+    const { state, dispatch } = view;
+    const { tr } = state;
+    const { panel } = state.schema.nodes;
+    const { $from, $to } = state.selection;
+    let blockStart = tr.doc.resolve($from.start($from.depth - 1));
+    let blockEnd = tr.doc.resolve($to.end($to.depth - 1));
+    let range = blockStart.blockRange(blockEnd)!;
+    tr.wrap(range, [{ type: panel, attrs: panelType }]);
+    tr.setSelection(state.selection.map(tr.doc, tr.mapping));
+    blockStart = tr.doc.resolve($from.start($from.depth - 1));
+    blockEnd = tr.doc.resolve($to.end($to.depth - 1));
+    range = blockStart.blockRange(blockEnd)!;
+    tr.lift(range, blockStart.depth - 1);
+    dispatch(tr);
+  }
 
   removePanelType(view: EditorView) {
     liftSiblingNodes(view);
@@ -171,3 +177,5 @@ export default plugin;
 
 // add key-maps
 // add input-rules
+// move generic code to commands.js
+// add analytics to remove panel

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { Schema, doc, text, panel } from '../../../src';
-import { fromHTML, toHTML } from '../../../test-helper';
+import { fromHTML, toHTML } from '../../../src/test-helper';
 
 const schema = makeSchema();
 

@@ -75,7 +75,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
 
   render() {
     const {transparentFallback, crop, dataURI} = this.props;
-    const {implicitNoCrop, isSmall, backgroundSize} = this;
+    const {implicitNoCrop, backgroundSize} = this;
     const transparentBg = transparentFallback ? `, ${transparentFallbackBackground}` : '';
     const style = {
       backgroundSize,

@@ -28,6 +28,8 @@ export const Wrapper = styled(Root)`
     .details {
       height: 116px;
       flex-grow: 0;
+      min-width: initial;
+      border-radius: 0 0 3px 3px;
     }
 
     .media-card {

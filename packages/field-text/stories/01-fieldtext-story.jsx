@@ -131,7 +131,7 @@ storiesOf(name, module)
       }}
     >
       <h2>Autofill test</h2>
-      {generateInput({ label: 'First u name', name: 'fname' })}
+      {generateInput({ label: 'First name', name: 'fname' })}
       {generateInput({ label: 'Last name', name: 'lname' })}
       {generateInput({ type: 'email', label: 'Email', name: 'email' })}
       {generateInput({ label: 'Full name', name: 'name' })}

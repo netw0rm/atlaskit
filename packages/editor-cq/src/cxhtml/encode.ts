@@ -53,7 +53,7 @@ export default function encode(node: DocNode) {
   }
 
   function makeDocument() {
-    const docType = document.implementation.createDocumentType('html', null, null);
+    const docType = document.implementation.createDocumentType('html', '', '');
     const doc = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', docType);
     doc.body = doc.createElement('body');
     doc.documentElement.appendChild(doc.body);

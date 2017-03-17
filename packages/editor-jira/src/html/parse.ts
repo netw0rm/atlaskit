@@ -1,5 +1,11 @@
 import { Fragment, Mark, Node as PMNode } from '@atlaskit/editor-core';
-import { isSchemaWithLists, isSchemaWithMentions, isSchemaWithLinks, JIRASchema } from '../schema';
+import {
+  isSchemaWithLists,
+  isSchemaWithMentions,
+  isSchemaWithLinks,
+  isSchemaWithAdvancedTextFormattingMarks,
+  JIRASchema,
+} from '../schema';
 import parseHtml from './parse-html';
 
 const convertedNodes = new WeakMap();
@@ -71,13 +77,19 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
     switch (tag) {
       // Marks
       case 'DEL':
-        return content ? addMarks(content, [schema.marks.strike.create()]) : null;
+      if (!isSchemaWithAdvancedTextFormattingMarks(schema)) {
+          return null;
+        }
+        return content ? addMarks(content, [schema.marks.strike!.create()]) : null;
       case 'B':
         return content ? addMarks(content, [schema.marks.strong.create()]) : null;
       case 'EM':
         return content ? addMarks(content, [schema.marks.em.create()]) : null;
       case 'TT':
-        return content ? addMarks(content, [schema.marks.code.create()]) : null;
+        if (!isSchemaWithAdvancedTextFormattingMarks(schema)) {
+          return null;
+        }
+        return content ? addMarks(content, [schema.marks.code!.create()]) : null;
       case 'SUB':
       case 'SUP':
         const type = tag === 'SUB' ? 'sub' : 'sup';

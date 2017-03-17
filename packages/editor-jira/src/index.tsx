@@ -37,6 +37,7 @@ export interface Props {
   analyticsHandler?: AnalyticsHandler;
   allowLists?: boolean;
   allowLinks?: boolean;
+  allowAdvancedTextFormatting?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   mentionEncoder?: (userId: string) => string;
 }
@@ -60,7 +61,8 @@ export default class Editor extends PureComponent<Props, State> {
       schema: makeSchema({
         allowLists: !!props.allowLists,
         allowMentions: !!props.mentionProvider,
-        allowLinks: !!props.allowLinks
+        allowLinks: !!props.allowLinks,
+        allowAdvancedTextFormatting: !!props.allowAdvancedTextFormatting
       }),
     };
 

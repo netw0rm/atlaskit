@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import Item from '@atlaskit/droplist-item';
+import { Item } from '@atlaskit/droplist';
 
 import StatelessMultiSelect from './StatelessMultiSelect';
 import { appearances } from './internal/appearances';

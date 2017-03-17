@@ -68,5 +68,13 @@ describe('hyperlink', () => {
       insertText(editorView, 'javascript://alert(1);', sel, sel);
       expect(editorView.state.doc).to.deep.equal(doc(linkable('javascript://alert(1);')));
     });
+
+    it('should convert "[text](http://foo)" to hyperlink', () => {
+      const { editorView, sel } = editor(doc(linkable('{<>}')));
+
+      insertText(editorView, '[text](http://foo)', sel, sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://foo' })('text'))));
+    });
   });
 });

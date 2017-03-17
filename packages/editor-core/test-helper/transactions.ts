@@ -32,23 +32,19 @@ export function setNodeSelection (view: EditorView, from: number) {
  */
 export function insertText(view: EditorView, text: string, from: number, to?: number) {
   const len = text.length;
-  let substr;
-  let lastChar;
+  let str;
+  let pos = from;
 
-  // insert text except last character
-  if (text.length > 1) {
-    substr = text.substr(0, len - 1);
-    lastChar = text.substr(len - 1, len);
-    view.dispatch(view.state.tr.insertText(substr, from, to));
+  if (text.match(/\~\*\`/)) {
+    str = text.substr(len - 1, len);
+
+    view.dispatch(view.state.tr.insertText(text.substr(0, len - 1), from, to));
+    pos = view.state.selection.from;
   } else {
-    substr = text;
-    lastChar = text;
+    str = text;
   }
-
-  // insert last character
-  const { $from, $to } = view.state.selection;
-  if (!view.someProp('handleTextInput', f => f(view, $from.pos, $to.pos, lastChar))) {
-    view.dispatch(view.state.tr.insertText(substr, from, to));
+  if (!view.someProp('handleTextInput', f => f(view, view.state.selection.from, view.state.selection.to, str))) {
+    view.dispatch(view.state.tr.insertText(str, pos));
   }
 };
 

@@ -3,11 +3,11 @@ import { analyticsService } from '../../analytics';
 
 function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: string): Function {
   return (state, match, start, end): Transaction | null => {
-    const to = end;
-    const from = end - match[1].length + 1;
     const charSize = specialChar.length;
+    const to = end;
+    const from = match[1] ? to - match[1].length + 1 : start;
 
-    if (state.schema.marks.code.isInSet(state.doc.resolve(from + 1).marks())) {
+    if (state.schema.marks.code.isInSet(state.doc.resolve(start + 1).marks())) {
       return null;
     }
 

@@ -18,55 +18,6 @@ describe('inputrules', () => {
     expect(plugin.State.name).is.be.a('string');
   });
 
-  describe('strong rule', () => {
-    it('should convert "**text**" to strong', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '**text**');
-      expect(pm.doc).to.deep.equal(doc(p(strong('text'))));
-    });
-  });
-
-  describe('em rule', () => {
-    it('should convert "*text*" to em', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '*text*');
-      expect(pm.doc).to.deep.equal(doc(p(em('text'))));
-    });
-
-    it('should limit mark to surrounded text', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '*italic*');
-      pm.input.insertText(pm.selection.from, pm.selection.from, 'm');
-      expect(pm.doc).to.deep.equal(doc(p(em('italic'), 'm')));
-    });
-
-    it('should keep current marks when converting from markdown', () => {
-      const { pm, sel } = editor(doc(p(strong('This is bold {<>}'))));
-
-      pm.input.insertText(sel, sel, '*italic*');
-      expect(pm.doc).to.deep.equal(doc(p(strong('This is bold '), em(strong('italic')))));
-    });
-
-    it('should only replace text with italic if there is blank space or beginning of the line before underscore', () => {
-      const text = '1_2_';
-      const { pm, sel } = editor(doc(p('{<>}')));
-      pm.input.insertText(sel, sel, text);
-
-      expect(pm.doc).to.deep.equal(doc(p(text)));
-    });
-  });
-
-  describe('stike rule', () => {
-    it('should convert "~~text~~" to strike', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '~~text~~');
-      expect(pm.doc).to.deep.equal(doc(p(strike('text'))));
-    });
-  });
 
   describe('hyperlink rule', () => {
     it('should convert "[text](http://foo)" to hyperlink', () => {
@@ -100,26 +51,6 @@ describe('inputrules', () => {
     });
   });
 
-  describe('code rule', () => {
-    it('should convert "`text`" to code text', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '`text`');
-      expect(pm.doc).to.deep.equal(doc(p(code('text'))));
-    });
-
-    it('should be able to preserve mention inside code text', () => {
-      const mentionNode = mention({ id: '1234', displayName: '@helga' });
-      const { pm } = editor(
-        doc(p(
-          '`hello, ',
-          mentionNode,
-          'there'
-        )));
-      pm.input.insertText(15, 15, '`');
-      expect(pm.doc).to.deep.equal(doc(p(code('hello, '), code(mentionNode), code('there'))));
-    });
-  });
 
   describe('image rule', () => {
     it('should convert `![text](url)` to image', () => {
@@ -283,38 +214,4 @@ describe('inputrules', () => {
 
   });
 
-  describe('nested rules', () => {
-    it('should convert "*`text`*" to italic code text', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '*`text`');
-      expect(pm.doc).to.deep.equal(doc(p('*', code('text'))));
-      pm.input.insertText(sel + 5, sel + 5, '*');
-      expect(pm.doc).to.deep.equal(doc(p(em(code('text')))));
-    });
-
-    it('should convert "~~**text**~~" to strike strong', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '~~**text**');
-      expect(pm.doc).to.deep.equal(doc(p('~~', strong('text'))));
-      pm.input.insertText(sel + 6, sel + 6, '~~');
-      expect(pm.doc).to.deep.equal(doc(p(strike(strong('text')))));
-    });
-  });
-
-  describe('undo mark convertion', () => {
-    context('when hits Cmd+Z', () => {
-      it('should undo previously applied mark', () => {
-        const { pm, sel } = editor(doc(p('{<>}')));
-
-        pm.input.insertText(sel, sel, '~~text~~');
-        expect(pm.doc).to.deep.equal(doc(p(strike('text'))));
-
-        pm.input.dispatchKey('Cmd-Z');
-
-        expect(pm.doc).to.deep.equal(doc(p('~~text~~')));
-      });
-    });
-  });
 });

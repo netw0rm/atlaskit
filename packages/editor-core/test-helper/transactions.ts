@@ -30,11 +30,26 @@ export function setNodeSelection (view: EditorView, from: number) {
 /**
  * Replace the given range, or the selection if no range is given, with a text node containing the given string
  */
-export function insertText(view: EditorView, text: string, from?: number, to?: number) {
-  if (view.someProp('handleTextInput', f => f(view, from, to, text))) {
-    return;
+export function insertText(view: EditorView, text: string, from: number, to?: number) {
+  const len = text.length;
+  let substr;
+  let lastChar;
+
+  // insert text except last character
+  if (text.length > 1) {
+    substr = text.substr(0, len - 1);
+    lastChar = text.substr(len - 1, len);
+    view.dispatch(view.state.tr.insertText(substr, from, to));
+  } else {
+    substr = text;
+    lastChar = text;
   }
-  view.dispatch(view.state.tr.insertText(text, from, to));
+
+  // insert last character
+  const { $from, $to } = view.state.selection;
+  if (!view.someProp('handleTextInput', f => f(view, $from.pos, $to.pos, lastChar))) {
+    view.dispatch(view.state.tr.insertText(substr, from, to));
+  }
 };
 
 /**

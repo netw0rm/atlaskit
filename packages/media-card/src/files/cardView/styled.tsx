@@ -21,6 +21,7 @@ export const Card = styled(Root)`
     position: relative;
 
     .img-wrapper{
+      ${borderRadius}
       position: relative;
       width: inherit;
       height: inherit;

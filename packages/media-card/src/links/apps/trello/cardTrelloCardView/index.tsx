@@ -5,11 +5,10 @@ import AttachmentIcon from '@atlaskit/icon/glyph/attachment';
 import {MembersList, MemberAvatars} from '../shared';
 import {
     Lists,
-    Wrapper,
-    HorizontalThumbnail,
-    Details,
     Header
 } from './styled';
+import {Details, Wrapper} from '../../../styled';
+import {MediaImage} from '../../../../utils';
 
 export type TrelloList = {
     name: string,
@@ -62,7 +61,7 @@ export class LinkCardTrelloCardView extends Component<LinkCardTrelloCardViewProp
 
         return (
             <Wrapper style={cardStyle}>
-                <HorizontalThumbnail src={thumbnailUrl} alt={card.name} />
+                <MediaImage dataURI={thumbnailUrl || ''} />
                 <Details className="details">
                     <Header>
                         <a href={card.url}>{card.name}</a>

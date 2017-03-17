@@ -1,51 +1,7 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { akFontFamily, akColorN0, akColorN30, akColorN300 } from '@atlaskit/util-shared-styles';
-
-import { Root, cardShadow, borderRadius, borderRadiusLeft, size, spaceAround, ellipsis } from '../../../../styles';
-
-export const Wrapper = styled(Root)`
-  display: flex;
-  user-select: none;
-  background-color: ${akColorN0};
-  font-family: ${akFontFamily};
-
-  ${borderRadius}
-  ${cardShadow}
-
-  &.square {
-    flex-direction: column;
-
-    .details {
-      height: 116px;
-      flex-grow: 0;
-    }
-  }
-`;
-
-export const HorizontalThumbnail = styled.img`
-  flex-shrink: 0;
-  ${size(116)}
-  ${borderRadiusLeft}
-  object-fit: cover;
-`;
-
-export const SquareThumbnail = styled.div`
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  width: 116px;
-`;
-
- // min-width required in Details to get proper text wrapping in IE11
-export const Details = styled.div`
-  ${spaceAround}
-  flex-grow: 1;
-  min-width: 150px;
-
-  padding: 10px;
-  background-color: ${akColorN30};
-`;
+import { akColorN300 } from '@atlaskit/util-shared-styles';
+import { size, ellipsis } from '../../../../styles';
 
 export const Title = styled.div`
   user-select: text;

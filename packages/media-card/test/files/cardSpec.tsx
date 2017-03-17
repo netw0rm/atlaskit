@@ -58,10 +58,10 @@ describe('Card', () => {
       />
     );
 
-    expect(card.find('img').length).to.eql(0);
+    expect(card.find('.media-card').length).to.eql(0);
 
     return waitUntilCardIsLoaded(card).then(() => {
-      expect(card.find('img').first().props().src).to.eql(toDataUri('some-image'));
+      expect(card.find('.media-card').first().props().style.backgroundImage).to.contain(toDataUri('some-image'));
     });
   });
 

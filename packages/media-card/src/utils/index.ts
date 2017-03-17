@@ -18,3 +18,4 @@ export * from './placeholder';
 export * from './progressBar';
 export * from './isRetina';
 export * from './ellipsify';
+export * from './mediaImage';

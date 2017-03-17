@@ -83,6 +83,12 @@ export const hexToRgb = (hex) => {
 
 export const rgba = (hex, opacity) => `rgba(${hexToRgb(hex)}, ${opacity})`;
 
+export const capitalize = `
+  &::first-letter {
+    text-transform: uppercase;
+  }
+`;
+
 export const absolute = (top = 0, left = 0) => `
   position: absolute;
   top: ${top}px;

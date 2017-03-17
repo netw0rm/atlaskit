@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { Code, Chrome, Description } from '@atlaskit/util-readme';
+import { Code, Chrome, Description, Props } from '@atlaskit/util-readme';
 
 /* eslint-disable import/first, import/no-duplicates */
 import SmartSelectOverview from './examples/SmartSelectOverview';
@@ -23,7 +23,10 @@ import SmartSelectElemBefore from './examples/SmartSelectElemBefore';
 import SmartSelectElemBeforeRaw from '!raw!./examples/SmartSelectElemBefore';
 /* eslint-enable import/first, import/no-duplicates */
 
+import DummyItem from '../src/internal/DummyItem';
 import { name, description } from '../package.json';
+
+import { ItemPropDescriptions } from './props';
 
 storiesOf(name, module)
   .add('📖 Multi select (smart) - readme', () => (
@@ -43,6 +46,21 @@ storiesOf(name, module)
     </Chrome>
   ))
   /* 📖 Multi select (stateless) - readme */
+  .add('📖 Multi select Item - readme', () => (
+    <Chrome title="Multi select Item - overview">
+      <Description>
+        <p>
+          Items you pass in support a range of options that affect how your options are rendered
+          both in the dropdown and in the selected tags.
+        </p>
+      </Description>
+      {SmartSelectElemBefore}
+      <Code>
+        {SmartSelectElemBeforeRaw}
+      </Code>
+      <Props component={DummyItem} descriptions={ItemPropDescriptions} />
+    </Chrome>
+  ))
   /* 📖 Multi select Item - readme */
   .add('Multi select is submittable', () => (
     <Chrome title="Multi select in forms">

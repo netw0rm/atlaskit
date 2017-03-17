@@ -7,20 +7,14 @@ import Tag from '@atlaskit/tag';
 import classNames from 'classnames';
 
 import styles from 'style!./styles.less';
+import DummyItem from './internal/DummyItem';
 import Trigger from './internal/Trigger';
 import NothingWasFound from './internal/NothingWasFound';
 import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
 
-// This is the shape of the item object passed to the `items` prop and does not necessarily reflect
-// exactly what is passed to the dropdown-items
-export const itemShape = PropTypes.shape({
-  content: PropTypes.node,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  isDisabled: PropTypes.bool,
-  isSelected: PropTypes.bool,
-  elemBefore: PropTypes.node,
-  tagElemBefore: PropTypes.node,
-});
+// Note that itemShape is the shape of Items that are passed in and do not map 1:1 to Items from
+// @atlaskit/droplist
+export const itemShape = DummyItem.propTypes;
 
 export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {
@@ -33,7 +27,7 @@ export default class StatelessMultiSelect extends PureComponent {
     isInvalid: PropTypes.bool,
     isOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
-    items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    items: PropTypes.arrayOf(itemShape),
     label: PropTypes.string,
     noMatchesFound: PropTypes.string,
     name: PropTypes.string,
@@ -43,7 +37,7 @@ export default class StatelessMultiSelect extends PureComponent {
     onRemoved: PropTypes.func,
     placeholder: PropTypes.string,
     position: PropTypes.string,
-    selectedItems: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    selectedItems: PropTypes.arrayOf(itemShape), // eslint-disable-line react/forbid-prop-types
     shouldFitContainer: PropTypes.bool,
   }
 

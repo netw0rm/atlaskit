@@ -16,8 +16,8 @@ import {
   SubSupMarkType,
   UnderlineMarkType
 } from '../../schema';
-
 import { trackAndInvoke } from '../../analytics';
+import { transformToCodeAction } from './transform-to-code';
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 
@@ -81,7 +81,14 @@ export class TextFormattingState {
   toggleCode() {
     const { code } = this.pm.schema.marks;
     if (code) {
-      this.toggleMark(code);
+            // If not already code then do the cleaning
+      if (!this.codeActive) {
+        const { $from, $to } = this.pm.selection;
+        transformToCodeAction(this.pm, $from.pos, $to.pos);
+        this.pm.on.selectionChange.dispatch();
+      }
+      this.pm.on.interaction.dispatch();
+      commands.toggleMark(code)(this.pm);
     }
   }
 
@@ -158,20 +165,6 @@ export class TextFormattingState {
       }
     }
 
-    if (code) {
-      const newCodeActive = this.anyMarkActive(code);
-      if (newCodeActive !== this.codeActive) {
-        this.codeActive = newCodeActive;
-        dirty = true;
-      }
-
-      const newCodeDisabled = !commands.toggleMark(code)(this.pm, false);
-      if (newCodeDisabled !== this.codeDisabled) {
-        this.codeDisabled = newCodeDisabled;
-        dirty = true;
-      }
-    }
-
     if (strike) {
       const newStrikeActive = this.anyMarkActive(strike);
       if (newStrikeActive !== this.strikeActive) {
@@ -243,6 +236,29 @@ export class TextFormattingState {
       }
     }
 
+    if (code) {
+      const newCodeActive = this.anyMarkActive(code);
+      if (newCodeActive !== this.codeActive) {
+        this.codeActive = newCodeActive;
+        dirty = true;
+      }
+
+      const newCodeDisabled = !commands.toggleMark(code)(this.pm, false);
+      if (newCodeDisabled !== this.codeDisabled) {
+        this.codeDisabled = newCodeDisabled;
+        dirty = true;
+      }
+
+      // When code is active disable other buttons
+      // TODO This changes can be gone once upgraded prosemirror. Because the marks available or not can be defined by schema.
+      if (this.codeActive) {
+        this.strongDisabled = true;
+        this.emDisabled = true;
+        this.strikeDisabled = true;
+        this.underlineDisabled = true;
+      }
+    }
+
     if (dirty) {
       this.changeHandlers.forEach(cb => cb(this));
     }
@@ -292,8 +308,11 @@ export class TextFormattingState {
   }
 
   private toggleMark(markType: MarkType, attrs?: any) {
-    this.pm.on.interaction.dispatch();
-    commands.toggleMark(markType, attrs)(this.pm);
+    // Disable text-formatting inside code
+    if (this.codeActive ? this.codeDisabled : true) {
+      this.pm.on.interaction.dispatch();
+      commands.toggleMark(markType, attrs)(this.pm);
+    }
   }
 }
 

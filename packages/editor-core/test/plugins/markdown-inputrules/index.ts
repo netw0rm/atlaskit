@@ -108,16 +108,32 @@ describe('markdown-inputrules', () => {
       expect(pm.doc).to.deep.equal(doc(p(code('text'), ' ')));
     });
 
-    it('should be able to preserve mention inside code text', () => {
+    it('should not preserve mention inside code text', () => {
       const mentionNode = mention({ id: '1234', displayName: '@helga' });
       const { pm } = editor(
         doc(p(
-          '`hello, ',
+          'hi! `hello, ',
           mentionNode,
-          'there'
+          ' there'
         )));
-      pm.input.insertText(15, 15, '`');
-      expect(pm.doc).to.deep.equal(doc(p(code('hello, '), code(mentionNode), code('there'), ' ')));
+      pm.input.insertText(20, 20, '`');
+      expect(pm.doc).to.deep.equal(doc(p('hi! ', code('hello, @helga there'), ' ')));
+    });
+
+    it('should convert all nodes to plaintext and remove all marks inside selection', () => {
+      const mentionNode = mention({ id: '1234', displayName: '@helga' });
+      const { pm } = editor(
+        doc(p(
+          'hi! `h',
+          em('e'),
+          strike('l'),
+          'lo, ',
+          mentionNode,
+          strong(' duh!'),
+          ' there'
+        )));
+      pm.input.insertText(25, 25, '`');
+      expect(pm.doc).to.deep.equal(doc(p('hi! ', code('hello, @helga duh! there'), ' ')));
     });
   });
 

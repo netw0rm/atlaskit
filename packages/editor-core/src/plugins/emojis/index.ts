@@ -1,5 +1,5 @@
 import Keymap from 'browserkeymap';
-import { inputRules, Fragment, Node, Plugin, ProseMirror, Schema, Slice } from '../../prosemirror';
+import { inputRules, Plugin, ProseMirror, Schema } from '../../prosemirror';
 import { EmojiProvider } from '@atlaskit/emoji';
 
 import {
@@ -11,21 +11,15 @@ import { emojiQueryRule } from './input-rules';
 
 export type StateChangeHandler = (state: EmojisPluginState) => any;
 
-export const setEmojiProviderOnNodes = (nf: Node | Fragment, emojiProvider?: Promise<EmojiProvider>) => {
-  const node = nf as Node;
-  const nodeType = node.type;
-  if (nodeType && nodeType instanceof EmojiNodeType) {
-    node.attrs['emojiProvider'] = emojiProvider;
-  }
-  nf.forEach((child: Node) => {
-    setEmojiProviderOnNodes(child, emojiProvider);
-  });
-};
+export interface Options {
+  emojiProvider: Promise<EmojiProvider>;
+}
 
 export class EmojisPluginState {
   private pm: PM;
   private hasKeymap = false;
   private changeHandlers: StateChangeHandler[] = [];
+  private emojiProvider: Promise<EmojiProvider>;
 
   query?: string;
   queryActive = false;
@@ -34,10 +28,19 @@ export class EmojisPluginState {
   onSelectPrevious = () => {};
   onSelectNext =  () => {};
   onSelectCurrent = () => {};
-  emojiProvider?: Promise<EmojiProvider>;
 
-  constructor(pm: PM) {
+  setEmojiProvider(emojiProvider: Promise<EmojiProvider>) {
+    this.emojiProvider = emojiProvider;
+
+    const emojiNodeType = this.pm.schema.nodeType('emoji') as EmojiNodeType;
+    if (emojiNodeType) {
+      emojiNodeType.setEmojiProvider(this.emojiProvider);
+    }
+  }
+
+  constructor(pm: PM, options: Options) {
     this.pm = pm;
+    this.emojiProvider = options.emojiProvider;
 
     this.keymap = new Keymap({
       Up: () => this.onSelectPrevious(),
@@ -61,10 +64,7 @@ export class EmojisPluginState {
       ], () => this.update());
     }
 
-    pm.on.transformPasted.add((slice: Slice) => {
-      setEmojiProviderOnNodes(slice.content, this.emojiProvider);
-      return slice;
-    });
+    this.setEmojiProvider(options.emojiProvider);
   }
 
   private update(): void {
@@ -158,7 +158,7 @@ export class EmojisPluginState {
         shortcut,
         emojiProvider,
       });
-      this.pm.tr.delete(start, end).insert(start, node).apply();
+      this.pm.tr.replaceWith(start, end, node).apply();
     } else {
       this.dismiss();
     }

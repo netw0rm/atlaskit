@@ -11,6 +11,8 @@
 }
 
 .containerNavigationInner {
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   background: @ak-color-N20;
   color: @ak-color-N500;
@@ -32,4 +34,15 @@
     background-color: @ak-color-B500;
     color: @ak-color-N0;
   }
+}
+
+.primaryContainer {
+  flex: 1;
+}
+
+.secondaryContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: (@ak-grid-size * 2.5);
 }

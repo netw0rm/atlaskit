@@ -1,0 +1,32 @@
+@import '~@atlaskit/util-shared-styles/src/grid.less';
+@import '~@atlaskit/util-shared-styles/src/colors.less';
+@import '../../shared-variables.less';
+
+@actions-margin-top: @ak-grid-size * 1.5;
+
+.actions {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-top: @actions-margin-top;
+}
+
+.secondaryActions {
+  box-sizing: border-box;
+  height: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: height 220ms, margin 220ms, opacity 220ms;
+
+  .primaryItem {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &.isVisible {
+    height: @global-item-medium-size * 3 + @actions-margin-top;
+    opacity: 1;
+    visibility: visible;
+  }
+}

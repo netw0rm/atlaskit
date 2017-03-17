@@ -15,11 +15,11 @@ describe('<Navigation />', () => {
     it('should render a <GlobalNavigation />', () => {
       expect(shallow(<Navigation />).find('GlobalNavigation').length).to.equal(1);
     });
-    it('should render a <GlobalActions /> in GlobalNavigation', () => {
-      expect(mount(<Navigation />).find('GlobalNavigation').find('GlobalActions').length).to.equal(1);
+    it('should render a <PrimaryActions /> in GlobalNavigation', () => {
+      expect(mount(<Navigation />).find('GlobalNavigation').find('PrimaryActions').length).to.equal(1);
     });
-    it('should render a <GlobalActions /> in ContainerNavigation', () => {
-      expect(mount(<Navigation />).find('ContainerNavigation').find('GlobalActions').length).to.equal(1);
+    it('should render a <PrimaryActions /> in ContainerNavigation', () => {
+      expect(mount(<Navigation />).find('ContainerNavigation').find('PrimaryActions').length).to.equal(1);
     });
     it('should render a <Resizer />', () => {
       expect(shallow(<Navigation />).find('Resizer').length).to.equal(1);
@@ -101,14 +101,14 @@ describe('<Navigation />', () => {
         />).find('GlobalNavigation').props().primaryIcon).to.equal(primaryIcon);
     });
     it('globalHelpItem should map to global navigation\'s helpItem', () => {
-      const helpItem = <span className="HELP_ITEM" />;
+      const helpItem = () => <span className="HELP_ITEM" />;
       expect(mount(
         <Navigation
           globalHelpItem={helpItem}
         />).find('GlobalNavigation').props().helpItem).to.equal(helpItem);
     });
     it('globalAccountItem should map to <GlobalNavigation/>', () => {
-      const accountItem = <span className="ACCOUNT_ITEM" />;
+      const accountItem = () => <span className="ACCOUNT_ITEM" />;
       expect(mount(
         <Navigation
           globalAccountItem={accountItem}

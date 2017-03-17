@@ -121,68 +121,72 @@ export default class BasicNavigation extends PureComponent {
           </AkCreateDrawer>),
         ]}
         globalAccountItem={
-          <AkDropdownMenu
-            appearance="tall"
+          ({ appearance }) => (
+            <AkDropdownMenu
+              appearance="tall"
 
-            items={[
-              {
-                heading: 'Joshua Nelson',
-                items: [
-                  { content: 'View profile' },
-                  { content: 'Manage Atlassian account' },
-                  { content: 'Bitbucket settings' },
-                  { content: 'Integrations' },
-                  { content: 'Bitbucket labs' },
-                  { content: 'Log out' },
-                ],
-              },
-            ]}
-          >
-            <AkGlobalItem>
-              <AkAvatar size="small" src={emmaAvatar} />
-            </AkGlobalItem>
-          </AkDropdownMenu>
+              items={[
+                {
+                  heading: 'Joshua Nelson',
+                  items: [
+                    { content: 'View profile' },
+                    { content: 'Manage Atlassian account' },
+                    { content: 'Bitbucket settings' },
+                    { content: 'Integrations' },
+                    { content: 'Bitbucket labs' },
+                    { content: 'Log out' },
+                  ],
+                },
+              ]}
+            >
+              <AkGlobalItem appearance={appearance}>
+                <AkAvatar size="small" src={emmaAvatar} />
+              </AkGlobalItem>
+            </AkDropdownMenu>
+          )
         }
         globalCreateIcon={<AddIcon size="small" label="Create icon" />}
         globalHelpItem={
-          <AkDropdownMenu
-            appearance="tall"
-            items={[
-              {
-                heading: 'Help',
-                items: [
-                  { content: 'Documentation' },
-                  { content: 'Learn Git' },
-                  { content: 'Keyboard shortcuts' },
-                  { content: 'Bitbucket tutorials' },
-                  { content: 'API' },
-                  { content: 'Support' },
-                ],
-              },
-              {
-                heading: 'Information',
-                items: [
-                  { content: 'Latest features' },
-                  { content: 'Blog' },
-                  { content: 'Plans & pricing' },
-                  { content: 'Site status' },
-                  { content: 'Version info' },
-                ],
-              },
-              {
-                heading: 'Legal',
-                items: [
-                  { content: 'Terms of service' },
-                  { content: 'Privacy policy' },
-                ],
-              },
-            ]}
-            position="right bottom"
-          >
-            <AkGlobalItem>
-              <QuestionCircleIcon label="Help icon" />
-            </AkGlobalItem>
-          </AkDropdownMenu>
+          ({ appearance }) => (
+            <AkDropdownMenu
+              appearance="tall"
+              items={[
+                {
+                  heading: 'Help',
+                  items: [
+                    { content: 'Documentation' },
+                    { content: 'Learn Git' },
+                    { content: 'Keyboard shortcuts' },
+                    { content: 'Bitbucket tutorials' },
+                    { content: 'API' },
+                    { content: 'Support' },
+                  ],
+                },
+                {
+                  heading: 'Information',
+                  items: [
+                    { content: 'Latest features' },
+                    { content: 'Blog' },
+                    { content: 'Plans & pricing' },
+                    { content: 'Site status' },
+                    { content: 'Version info' },
+                  ],
+                },
+                {
+                  heading: 'Legal',
+                  items: [
+                    { content: 'Terms of service' },
+                    { content: 'Privacy policy' },
+                  ],
+                },
+              ]}
+              position="right bottom"
+            >
+              <AkGlobalItem appearance={appearance}>
+                <QuestionCircleIcon label="Help icon" />
+              </AkGlobalItem>
+            </AkDropdownMenu>
+          )
         }
         globalPrimaryIcon={globalPrimaryIcon}
         globalPrimaryItemHref="//www.atlassian.com"

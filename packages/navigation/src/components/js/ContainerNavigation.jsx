@@ -3,7 +3,8 @@ import classNames from 'classnames';
 import styles from 'style!../less/ContainerNavigation.less';
 import ContainerHeader from './ContainerHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
-import GlobalActions from './GlobalActions';
+import PrimaryActions from './PrimaryActions';
+import SecondaryActions from './SecondaryActions';
 import {
   containerOpenWidth,
   containerClosedWidth,
@@ -17,6 +18,8 @@ export default class ContainerNavigation extends PureComponent {
     children: PropTypes.node,
     headerComponent: PropTypes.func,
     shouldAnimate: PropTypes.bool,
+    helpItem: PropTypes.func,
+    accountItem: PropTypes.func,
     width: PropTypes.number,
     offsetX: PropTypes.number,
     linkComponent: PropTypes.func,
@@ -35,6 +38,8 @@ export default class ContainerNavigation extends PureComponent {
     width: containerOpenWidth,
     offsetX: 0,
     linkComponent: DefaultLinkComponent,
+    helpItem: () => null,
+    accountItem: () => null,
   }
 
   getOuterStyles() {
@@ -60,6 +65,8 @@ export default class ContainerNavigation extends PureComponent {
       onGlobalSearchActivate,
       shouldAnimate,
       width,
+      helpItem,
+      accountItem,
     } = this.props;
 
     const isWidthCollapsed = width <= containerClosedWidth;
@@ -85,27 +92,37 @@ export default class ContainerNavigation extends PureComponent {
               [styles.hasGlobalAppearance]: appearance === 'global',
             })}
           >
-            <GlobalActions
-              appearance={appearance === 'global' ? 'global' : 'container'}
-              createIcon={globalCreateIcon}
-              isVisible={areGlobalActionsVisible}
-              linkComponent={linkComponent}
-              onCreateActivate={onGlobalCreateActivate}
-              onSearchActivate={onGlobalSearchActivate}
-              primaryIcon={globalPrimaryIcon}
-              primaryItemHref={globalPrimaryItemHref}
-              searchIcon={globalSearchIcon}
-            />
-            <div>
-              {
+            <div className={styles.primaryContainer}>
+              <PrimaryActions
+                appearance={appearance === 'global' ? 'global' : 'container'}
+                createIcon={globalCreateIcon}
+                isVisible={areGlobalActionsVisible}
+                linkComponent={linkComponent}
+                onCreateActivate={onGlobalCreateActivate}
+                onSearchActivate={onGlobalSearchActivate}
+                primaryIcon={globalPrimaryIcon}
+                primaryItemHref={globalPrimaryItemHref}
+                searchIcon={globalSearchIcon}
+              />
+              <div>
+                {
                 this.props.headerComponent ? (
                   <ContainerHeader>
                     {this.props.headerComponent({ isCollapsed: width <= containerClosedWidth })}
                   </ContainerHeader>) : null
               }
+              </div>
+              <div>
+                {children}
+              </div>
             </div>
-            <div>
-              {children}
+            <div className={styles.secondaryContainer}>
+              <SecondaryActions
+                appearance={appearance === 'global' ? 'global' : 'container'}
+                isVisible={areGlobalActionsVisible}
+                helpItem={helpItem}
+                accountItem={accountItem}
+              />
             </div>
           </div>
         </div>

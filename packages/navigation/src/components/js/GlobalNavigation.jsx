@@ -3,13 +3,14 @@ import classNames from 'classnames';
 import styles from 'style!../less/GlobalNavigation.less';
 import { globalOpenWidth } from '../../shared-variables';
 import Spacer from './Spacer';
-import GlobalActions from './GlobalActions';
+import PrimaryActions from './PrimaryActions';
+import SecondaryActions from './SecondaryActions';
 import DefaultLinkComponent from './DefaultLinkComponent';
 
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
-    accountItem: PropTypes.node,
-    helpItem: PropTypes.node,
+    accountItem: PropTypes.func,
+    helpItem: PropTypes.func,
     linkComponent: PropTypes.func,
     primaryIcon: PropTypes.node,
     primaryItemHref: PropTypes.string,
@@ -20,8 +21,8 @@ export default class GlobalNavigation extends PureComponent {
     createIcon: PropTypes.node,
   };
   static defaultProps = {
-    accountItem: null,
-    helpItem: null,
+    accountItem: () => null,
+    helpItem: () => null,
     linkComponent: DefaultLinkComponent,
     primaryIcon: null,
     shouldAnimate: false,
@@ -53,7 +54,7 @@ export default class GlobalNavigation extends PureComponent {
           className={styles.globalNavigation}
         >
           <div className={styles.primaryContainer}>
-            <GlobalActions
+            <PrimaryActions
               createIcon={createIcon}
               linkComponent={linkComponent}
               onCreateActivate={onCreateActivate}
@@ -64,8 +65,11 @@ export default class GlobalNavigation extends PureComponent {
             />
           </div>
           <div className={styles.secondaryContainer}>
-            {helpItem}
-            {accountItem}
+            <SecondaryActions
+              appearance="global"
+              helpItem={helpItem}
+              accountItem={accountItem}
+            />
           </div>
         </div>
       </div>

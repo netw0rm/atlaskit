@@ -19,9 +19,9 @@ export default class Navigation extends PureComponent {
     containerAppearance: PropTypes.string,
     containerHeaderComponent: PropTypes.func,
     drawers: PropTypes.arrayOf(PropTypes.node),
-    globalAccountItem: PropTypes.node,
+    globalAccountItem: PropTypes.func,
     globalCreateIcon: PropTypes.node,
-    globalHelpItem: PropTypes.node,
+    globalHelpItem: PropTypes.func,
     globalPrimaryIcon: PropTypes.node,
     globalPrimaryItemHref: PropTypes.string,
     globalSearchIcon: PropTypes.node,
@@ -39,8 +39,8 @@ export default class Navigation extends PureComponent {
   static defaultProps = {
     containerAppearance: 'default',
     drawers: [],
-    globalAccountDropdownComponent: ({ children }) => children,
-    globalHelpDropdownComponent: ({ children }) => children,
+    globalAccountItem: () => null,
+    globalHelpItem: () => null,
     isCollapsible: true,
     isCreateDrawerOpen: false,
     isOpen: true,
@@ -161,6 +161,8 @@ export default class Navigation extends PureComponent {
               onGlobalSearchActivate={onSearchDrawerOpen}
               shouldAnimate={shouldAnimate}
               width={getContainerWidth(renderedWidth)}
+              helpItem={globalHelpItem}
+              accountItem={globalAccountItem}
             >
               {children}
             </ContainerNavigation>

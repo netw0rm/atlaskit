@@ -141,9 +141,11 @@ export default class CustomDrawerNavigation extends PureComponent {
         onSearchDrawerOpen={() => this.setDrawer('search')}
         width={this.state.width}
         globalHelpItem={
-          <AkGlobalItem onClick={() => { this.setDrawer('reports'); }}>
-            <QuestionCircleIcon label="Help icon" />
-          </AkGlobalItem>
+          ({ appearance }) => (
+            <AkGlobalItem appearance={appearance} onClick={() => { this.setDrawer('reports'); }}>
+              <QuestionCircleIcon label="Help icon" />
+            </AkGlobalItem>
+          )
         }
       >
         <div>

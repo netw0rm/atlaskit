@@ -11,7 +11,13 @@ import { containerClosedWidth } from '../src/shared-variables';
 describe('<ContainerNavigation />', () => {
   describe('children', () => {
     it('should render a <Spacer />', () => {
-      expect(shallow(<ContainerNavigation />).find(Spacer)).to.have.length(1);
+      expect(shallow(<ContainerNavigation />).find('Spacer')).to.have.length(1);
+    });
+    it('should render a <PrimaryActions />', () => {
+      expect(shallow(<ContainerNavigation />).find('PrimaryActions')).to.have.length(1);
+    });
+    it('should render a <SecondaryActions />', () => {
+      expect(shallow(<ContainerNavigation />).find('SecondaryActions')).to.have.length(1);
     });
   });
   describe('props', () => {
@@ -19,8 +25,20 @@ describe('<ContainerNavigation />', () => {
       expect(shallow(<ContainerNavigation width={500} />).find(Spacer).props().width).to.equal(500);
       expect(shallow(<ContainerNavigation width={200} />).find(Spacer).props().width).to.equal(200);
     });
-    it('appearnace="global" should render with the global appearance class', () => {
+    it('appearance="global" should render with the global appearance class', () => {
       expect((mount(<ContainerNavigation appearance="global" />).find(`.${containerNavigationInner}`)).hasClass((hasGlobalAppearance))).to.equal(true);
+    });
+    it('appearance="global" should be passed to <SecondaryActions />', () => {
+      expect(
+        mount(<ContainerNavigation appearance="global" />)
+        .find('SecondaryActions').props().appearance)
+      .to.equal('global');
+    });
+    it('appearance="something other than global" should passed \'container\' to <SecondaryActions />', () => {
+      expect(
+        mount(<ContainerNavigation appearance="something other than globa" />)
+        .find('SecondaryActions').props().appearance)
+      .to.equal('container');
     });
   });
   describe('behaviour', () => {

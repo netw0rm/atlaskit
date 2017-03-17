@@ -2,7 +2,7 @@ import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import Editor from './editor';
 import * as styles from './styles';
-import { base64fileconverter } from '../test-helper';
+import { base64fileconverter } from '../src/test-helper';
 
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const CANCEL_ACTION = () => action('Cancel')();

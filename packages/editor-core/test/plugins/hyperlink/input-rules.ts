@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
-import { insertText, chaiPlugin, fixtures, makeEditor, doc, a as link, linkable } from '../../../test-helper';
+import { insertText, chaiPlugin, fixtures, makeEditor, doc, a as link, linkable } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 

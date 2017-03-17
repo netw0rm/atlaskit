@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Schema, doc, text, codeBlock } from '../../../src';
 import { SUPPORTED_LANGUAGES } from '../../../src/ui/LanguagePicker/languageList';
-import { fromHTML, toHTML } from '../../../test-helper';
+import { fromHTML, toHTML } from '../../../src/test-helper';
 
 describe('ak-editor-core/schema codeBlock node', () => {
   describe('parse from html', () => {

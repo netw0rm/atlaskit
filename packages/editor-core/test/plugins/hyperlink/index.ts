@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import HyperlinkPlugin from '../../../src/plugins/hyperlink';
-import { insert, insertText, setTextSelection, chaiPlugin, fixtures, makeEditor, doc, a as link, linkable, unlinkable } from '../../../test-helper';
+import { insert, insertText, setTextSelection, chaiPlugin, fixtures, makeEditor, doc, a as link, linkable, unlinkable } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 

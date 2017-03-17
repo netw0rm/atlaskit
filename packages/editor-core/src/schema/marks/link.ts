@@ -4,12 +4,8 @@ export const link: MarkSpec = {
   attrs: {
     href: {}
   },
-  get inclusiveRight() {
-    return false;
-  },
-  get inclusiveLeft() {
-    return false;
-  },
+  inclusiveRight: false,
+  inclusiveLeft: false,
   parseDOM: [
     {tag: 'a[href]', getAttrs: (dom: Element) => {
       return {href: dom.getAttribute('href')};

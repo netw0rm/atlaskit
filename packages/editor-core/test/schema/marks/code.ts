@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import { Schema, doc, paragraph, text, code } from '../../../src';
 import { DOMNode } from '../../../src/prosemirror/dom';
-import { chaiPlugin, toDOM, fromHTML } from '../../../test-helper';
+import { chaiPlugin, toDOM, fromHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 

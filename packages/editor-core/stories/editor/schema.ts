@@ -15,6 +15,7 @@ import {
   heading,
   blockquote,
   codeBlock,
+  panel,
   rule,
   image,
 } from '../../src/schema';
@@ -29,6 +30,7 @@ const nodes = {
   heading,
   blockquote,
   codeBlock,
+  panel,
   rule,
   image,
 };

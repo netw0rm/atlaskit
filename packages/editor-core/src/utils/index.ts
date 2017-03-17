@@ -6,9 +6,12 @@ import {
   ProseMirror,
   ResolvedPos,
   Selection,
-  TextSelection
+  TextSelection,
+  EditorState,
+  EditorView,
 } from '../prosemirror';
 import { isCodeBlockNode } from '../schema/nodes/code-block';
+import * as baseCommand from '../prosemirror/prosemirror-commands';
 
 function validateNode(node: Node): boolean {
   return false;
@@ -217,58 +220,28 @@ function getParentPositionRange(pm: EditorTransform): any {
 }
 
 /**
- * Lift sibling nodes to document-level.
+ * Lift nodes in block to one level above.
  */
-export function liftSiblingNodes(pm: ProseMirror): EditorTransform {
-  const { tr } = pm;
-  const { from, to } = tr.selection;
-  const range = getParentPositionRange(tr);
-  if (range) {
-    let startPos = range.from.start(1);
-    let endPos = range.to.end(1);
-    tr.doc.nodesBetween(startPos, endPos, (node, pos) => {
-      if (
-        node.isText ||                          // Text node
-        (node.isTextblock && !node.textContent) // Empty paragraph
-      ) {
-        const res = tr.doc.resolve(tr.map(pos));
-        const sel = new NodeSelection(res);
-        const range = sel.$from.blockRange(sel.$to)!;
-        tr.lift(range, 0);
-      }
-    });
-    startPos = tr.map(from);
-    endPos = tr.map(to);
-    tr.setSelection(new TextSelection(tr.doc.resolve(startPos), tr.doc.resolve(endPos)));
-  }
-  return tr;
+export function liftSiblingNodes(view: EditorView): EditorTransform {
+  const { tr } = view.state;
+  const { $from, $to } = view.state.selection;
+  const blockStart = tr.doc.resolve($from.start($from.depth - 1));
+  const blockEnd = tr.doc.resolve($to.end($to.depth - 1));
+  const range = blockStart.blockRange(blockEnd)!;
+  view.dispatch(tr.lift(range, blockStart.depth - 1));
 }
-
 
 /**
  * Lift sibling nodes to document-level and select them.
  */
-export function liftAndSelectSiblingNodes(pm: ProseMirror): EditorTransform {
-  const { tr } = pm;
-  const range = getParentPositionRange(tr);
-  if (range) {
-    let startPos = range.from.start(1);
-    let endPos = range.to.end(1);
-    tr.doc.nodesBetween(startPos, endPos, (node, pos) => {
-      if (
-        node.isText ||                          // Text node
-        (node.isTextblock && !node.textContent) // Empty paragraph
-      ) {
-        const res = tr.doc.resolve(tr.map(pos));
-        const sel = new NodeSelection(res);
-        const range = sel.$from.blockRange(sel.$to)!;
-        tr.lift(range, 0);
-      }
-    });
-    startPos = tr.map(startPos) + 1;
-    endPos = tr.map(endPos) - 1;
-    tr.setSelection(new TextSelection(tr.doc.resolve(startPos), tr.doc.resolve(endPos)));
-  }
+export function liftAndSelectSiblingNodes(view: EditorView): EditorTransform {
+  const { tr } = view.state;
+  const { $from, $to } = view.state.selection;
+  const blockStart = tr.doc.resolve($from.start($from.depth - 1));
+  const blockEnd = tr.doc.resolve($to.end($to.depth - 1));
+  const range = blockStart.blockRange(blockEnd)!;
+  tr.setSelection(new TextSelection(blockStart, blockEnd));
+  tr.lift(range, blockStart.depth - 1);
   return tr;
 }
 

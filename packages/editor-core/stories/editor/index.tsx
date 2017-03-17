@@ -7,6 +7,7 @@ import {
 import listsPlugin from '../../src/plugins/lists/index-future';
 import blockTypePlugin from '../../src/plugins/block-type';
 import codeBlockPlugin from '../../src/plugins/code-block';
+import panelPlugin from '../../src/plugins/panel';
 import textFormattingPlugin from '../../src/plugins/text-formatting';
 import hyperlinkPlugin from '../../src/plugins/hyperlink';
 import rulePlugin from '../../src/plugins/rule';
@@ -105,6 +106,7 @@ export default class Editor extends PureComponent<Props, State> {
     const listsState = editorState && listsPlugin.getState(editorState);
     const blockTypeState = editorState && blockTypePlugin.getState(editorState);
     const codeBlockState = editorState && codeBlockPlugin.getState(editorState);
+    const panelState = editorState && panelPlugin.getState(editorState);
     const textFormattingState = editorState && textFormattingPlugin.getState(editorState);
     const hyperlinkState = editorState && hyperlinkPlugin.getState(editorState);
     const imageUploadState = editorState && imageUploadPlugin.getState(editorState);
@@ -122,6 +124,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateLists={listsState}
         pluginStateBlockType={blockTypeState}
         pluginStateCodeBlock={codeBlockState}
+        pluginStatePanel={panelState}
         pluginStateTextFormatting={textFormattingState}
         pluginStateHyperlink={hyperlinkState}
         pluginStateImageUpload={imageUploadState}
@@ -159,6 +162,7 @@ export default class Editor extends PureComponent<Props, State> {
             listsPlugin,
             blockTypePlugin,
             codeBlockPlugin,
+            panelPlugin,
             textFormattingPlugin,
             hyperlinkPlugin,
             rulePlugin,

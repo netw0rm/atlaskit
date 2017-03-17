@@ -56,11 +56,11 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   componentDidMount() {
     const parent = ReactDOM.findDOMNode(this).parentElement;
     if (!parent) { return; }
-    const parentSize = parent.getBoundingClientRect();
+    const {width, height} = parent.getBoundingClientRect();
 
     this.setState({
-      parentWidth: parentSize.width,
-      parentHeight: parentSize.height
+      parentWidth: width,
+      parentHeight: height
     });
   }
 
@@ -74,20 +74,33 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   }
 
   render() {
-    const {transparentFallback, width, height} = this.props;
-    const implicitNoCrop = width !== '100%' || height !== '100%';
-    const isSmallImage = parseInt(this.state.maxWidth, 0) < this.state.parentWidth || parseInt(this.state.maxHeight, 0) < this.state.parentHeight;
-    const backgroundSize = implicitNoCrop ? `${width} ${height}, auto` : (isSmallImage ? `${this.state.maxWidth} ${this.state.maxHeight}, auto` : null);
+    const {transparentFallback, crop, dataURI} = this.props;
+    const {implicitNoCrop, isSmall, backgroundSize} = this;
     const transparentBg = transparentFallback ? `, ${transparentFallbackBackground}` : '';
     const style = {
       backgroundSize,
-      backgroundImage: `url(${this.props.dataURI})${transparentBg}`
+      backgroundImage: `url(${dataURI})${transparentBg}`
     };
     const className = cx('media-card', {
       'fade-in': this.props.fadeIn,
-      crop: this.props.crop && !implicitNoCrop
+      crop: crop && !implicitNoCrop
     });
 
     return <ImageViewWrapper className={className} style={style} />;
+  }
+
+  private get isSmall() {
+    return parseInt(this.state.maxWidth, 0) < this.state.parentWidth || parseInt(this.state.maxHeight, 0) < this.state.parentHeight;
+  }
+
+  private get implicitNoCrop() {
+    return this.props.width !== '100%' || this.props.height !== '100%';
+  }
+
+  private get backgroundSize() {
+    const {width, height} = this.props;
+    const {maxWidth, maxHeight} = this.state;
+
+    return this.implicitNoCrop ? `${width} ${height}, auto` : (this.isSmall ? `${maxWidth} ${maxHeight}, auto` : null);
   }
 }

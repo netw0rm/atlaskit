@@ -440,20 +440,6 @@ describe('block-type', () => {
       });
     });
 
-    context('Shift-Backspace', () => {
-      it('should call delete last character', function () {
-        if (browser.ios) {
-          // Shift-Backspace doesn't work on Safari 9.
-          return this.skip();
-        }
-
-        const { editorView } = editor(doc(p('Hello World!{<>}')));
-
-        sendKeyToPm(editorView, 'Shift-Backspace');
-        expect(editorView.state.doc).to.deep.equal(doc(p('Hello World')));
-      });
-    });
-
     context('when hits up', () => {
       context('when on a text block', () => {
         context('when selection is not empty', () => {

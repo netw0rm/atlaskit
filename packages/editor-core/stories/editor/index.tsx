@@ -21,7 +21,7 @@ import {
   Node,
   TextSelection
 } from '../../src/prosemirror';
-import schema from './schema';
+import schema from '../schema/schema';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {

@@ -3,7 +3,7 @@ export { default as Keymap } from 'browserkeymap';
 export * from './config';
 export * from './media';
 export * from './plugins';
-export * from './prosemirror';
+export { Schema, NodeType, MarkType } from './prosemirror';
 export * from './schema';
 export * from './ui';
 export * from './analytics';

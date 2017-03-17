@@ -10,3 +10,4 @@ export * from './prosemirror-transform';
 export * from './prosemirror-view';
 import * as dom from './dom';
 export { dom }
+export { OrderedMap } from './orderedmap';

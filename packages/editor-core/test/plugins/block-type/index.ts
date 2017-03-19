@@ -383,7 +383,7 @@ describe('block-type', () => {
         });
 
         context('when it is not inside a code block', () => {
-          context('when langauge is provided', () => {
+          context('when language is provided', () => {
             it('returns code block with language', () => {
               const { editorView } = editor(doc(p('```javascript{<>}')));
 

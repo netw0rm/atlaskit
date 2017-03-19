@@ -1,10 +1,10 @@
-import {Observable} from 'rxjs/Observable';
-import {MediaCollection, MediaCollectionItem, MediaItemType, MediaApiConfig} from '../';
-import {Subject} from 'rxjs/Subject';
-import {Subscription} from 'rxjs/Subscription';
-import {CollectionService, MediaCollectionService, SortDirection} from '../services/collectionService';
+import { Observable } from 'rxjs/Observable';
+import { MediaCollection, MediaCollectionItem, MediaCollectionFileItem, MediaCollectionLinkItem, MediaApiConfig } from '../';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+import { CollectionService, MediaCollectionService, SortDirection } from '../services/collectionService';
 import 'rxjs/add/operator/publishReplay';
-import {Pool, observableFromReducerPool} from './util/reducerPool';
+import { Pool, observableFromReducerPool } from './util/reducerPool';
 
 export type CollectionCommand = 'loadNextPage';
 
@@ -62,14 +62,27 @@ export class CollectionCommandReducer {
       this.isLoading = true;
     }
 
-    this.collectionService.getCollectionItems(this.nextInclusiveStartKey)
+    this.collectionService.getCollectionItems(this.nextInclusiveStartKey, 'full')
       .then(response => {
-        const items = response.data.contents.map(item => {
-          return {
-            id: item.id,
-            mediaItemType: item.type as MediaItemType
-          };
-        });
+        const items = response.data.contents
+          .map(item => {
+            if (item.type === 'file') {
+              return {
+                type: item.type,
+                id: item.id,
+                occurrenceKey: item.occurrenceKey,
+                name: item.details.name,
+                mimeType: item.details.mimeType
+              } as MediaCollectionFileItem;
+            } else {
+              return {
+                type: item.type,
+                id: item.id,
+                occurrenceKey: item.occurrenceKey,
+                url: item.details.url
+              } as MediaCollectionLinkItem;
+            }
+          });
 
         this.items.push(...items);
 
@@ -112,20 +125,22 @@ export class CollectionProvider {
     };
   }
 
-  public static fromMediaAPI(config: MediaApiConfig,
-                             collectionName: string,
-                             clientId: string,
-                             pageSize: number,
-                             sortDirection: SortDirection): CollectionProvider {
+  public static fromMediaAPI(
+    config: MediaApiConfig,
+    collectionName: string,
+    clientId: string,
+    pageSize: number,
+    sortDirection: SortDirection): CollectionProvider {
     return CollectionProvider.fromCollectionService(new MediaCollectionService(config, collectionName, clientId, pageSize, sortDirection));
   }
 
-  public static fromPool(pool: Pool<CollectionCommandReducer>,
-                         config: MediaApiConfig,
-                         collectionName: string,
-                         clientId: string,
-                         pageSize: number,
-                         sortDirection: SortDirection): CollectionProvider {
+  public static fromPool(
+    pool: Pool<CollectionCommandReducer>,
+    config: MediaApiConfig,
+    collectionName: string,
+    clientId: string,
+    pageSize: number,
+    sortDirection: SortDirection): CollectionProvider {
     const controller = new CollectionControllerImpl();
 
     const poolId = [collectionName, pageSize, sortDirection].join('-');

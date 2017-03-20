@@ -22,8 +22,6 @@ const actions = [
 const canvasStyle = { padding: '30px' };
 
 class AkProfileCardRandomById extends PureComponent {
-  displayName: 'ProfileCardRandom'
-
   state = {
     userId: randomNumber(),
   };

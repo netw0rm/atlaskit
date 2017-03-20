@@ -4,7 +4,7 @@ import * as cx from 'classnames';
 import {CardAction} from '@atlaskit/media-core';
 
 import PlayButton from './play-button';
-import {LinkCardGenericView} from '..';
+import {LinkCardGenericView} from '../cardGenericView';
 import {Wrapper, AnimatedButton, PlayButtonWrapper, Circle} from './styled';
 
 export interface LinkCardPlayerProps {

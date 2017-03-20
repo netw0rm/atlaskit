@@ -686,7 +686,7 @@ describe('block-type', () => {
               const { editorView, sel } = editor(doc(blockquote(code_block()('text{<>}'), hr)));
               setNodeSelection(editorView, sel + 1);
 
-              sendKeyToPm(editorView, 'Down');
+              sendKeyToPm(editorView, 'ArrowDown');
 
               expect(editorView.state.doc).to.deep.equal(doc(blockquote(code_block()('text'), hr), p('')));
             });

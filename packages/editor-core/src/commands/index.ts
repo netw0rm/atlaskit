@@ -403,7 +403,7 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
   return topLevelNode.isTextblock && topLevelNode.type !== state.schema.nodes.codeBlock && topLevelNode.nodeSize === 2;
 }
 
-// Lifts current selection up; 
+// Lifts current selection up;
 // it allows to chain transactions
 function lift(state: EditorState<any>, tr: Transaction): Transaction {
   const { $from, $to } = state.selection;

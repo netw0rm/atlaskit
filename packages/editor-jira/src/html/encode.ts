@@ -40,7 +40,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     .replace(/<hr><\/hr>/g, '<hr />')
     .replace(/<hr>/g, '<hr />');
 
-  function encodeNode(node: PMNode, parentNode = '') {
+  function encodeNode(node: PMNode) {
     if (node.isText) {
       return encodeText(node);
     } else if (isHeadingNode(node)) {
@@ -59,7 +59,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
       } else if (isOrderedListNode(node)) {
         return encodeOrderedList(node);
       } else if (isListItemNode(node)) {
-        return encodeListItem(node, parentNode);
+        return encodeListItem(node);
       }
     }
 
@@ -79,9 +79,9 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     return doc;
   }
 
-  function encodeFragment(fragment: Fragment, parentNode = '') {
+  function encodeFragment(fragment: Fragment) {
     const documentFragment = doc.createDocumentFragment();
-    fragment.forEach(node => documentFragment.appendChild(encodeNode(node, parentNode)));
+    fragment.forEach(node => documentFragment.appendChild(encodeNode(node)));
     return documentFragment;
   }
 
@@ -177,22 +177,27 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     const elem = doc.createElement('ul');
     elem.setAttribute('class', 'alternate');
     elem.setAttribute('type', 'square');
-    elem.appendChild(encodeFragment(node.content, 'ul'));
+    elem.appendChild(encodeFragment(node.content));
+    for (let index = 0; index < elem.childElementCount; index++) {
+      elem.children[index].setAttribute('data-parent', 'ul');
+    }
     return elem;
   }
 
   function encodeOrderedList(node: OrderedListNode) {
     const elem = doc.createElement('ol');
-    elem.appendChild(encodeFragment(node.content, 'ol'));
+    elem.appendChild(encodeFragment(node.content));
+    for (let index = 0; index < elem.childElementCount; index++) {
+      elem.children[index].setAttribute('data-parent', 'ol');
+    }
     return elem;
   }
 
-  function encodeListItem(node: ListItemNode, parentNode: string) {
+  function encodeListItem(node: ListItemNode) {
     const elem = doc.createElement('li');
     // Strip the paragraph node from the list item.
     if (node.content.childCount) {
       const paragraph = node.content.child(0) as ParagraphNode;
-      elem.setAttribute('data-parent', parentNode);
       elem.appendChild(encodeFragment(paragraph.content));
     }
     return elem;

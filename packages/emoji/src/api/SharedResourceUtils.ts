@@ -83,8 +83,8 @@ const buildHeaders = (secOptions?: SecurityOptions): Headers => {
 /**
  * @returns Promise containing the json response
  */
-export const requestService = <T>(baseUrl: string, path: string | undefined, data: KeyValues, opts: KeyValues,
-                        secOptions: SecurityOptions | undefined, refreshedSecurityProvider?: RefreshSecurityProvider): Promise<T> => {
+export const requestService = (baseUrl: string, path: string | undefined, data: KeyValues, opts: KeyValues,
+                        secOptions: SecurityOptions | undefined, refreshedSecurityProvider?: RefreshSecurityProvider) => {
   const url = buildUrl(baseUrl, path, data, secOptions);
   const headers = buildHeaders(secOptions);
   const options = {
@@ -94,15 +94,15 @@ export const requestService = <T>(baseUrl: string, path: string | undefined, dat
   return fetch(new Request(url, options))
     .then((response: Response) => {
       if (response.ok) {
-        return response.json<T>();
+        return response.json();
       } else if (response.status === 401 && refreshedSecurityProvider) {
         // auth issue - try once
         debug('401 attempting a forced refresh from securityProvider');
         return refreshedSecurityProvider().then(newSecOptions => (
-          requestService<T>(baseUrl, path, data, opts, newSecOptions)
+          requestService(baseUrl, path, data, opts, newSecOptions)
         ));
       }
-      return Promise.reject<T>({
+      return Promise.reject({
         code: response.status,
         reason: response.statusText,
       });

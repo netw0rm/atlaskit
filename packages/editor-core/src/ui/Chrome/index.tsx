@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { EmojiProvider } from '@atlaskit/emoji';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
+import { EmojisPluginState } from '../../plugins/emojis';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
 import { MentionsPluginState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
+import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
 import { ProseMirror } from '../../prosemirror';
 import ChromeCollapsed from '../ChromeCollapsed';
@@ -26,11 +29,14 @@ export interface Props {
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
+  pluginStateClearFormatting?: ClearFormattingState;
   pluginStateImageUpload?: ImageUploadState;
   pluginStateMentions?: MentionsPluginState;
   pluginStatePanel?: PanelState;
+  pluginStateEmojis?: EmojisPluginState;
   mentionsResourceProvider?: any; // AbstractMentionResource
   presenceResourceProvider?: any; // AbstractPresenceResource
+  emojiProvider?: Promise<EmojiProvider>;
   onCollapsedChromeFocus: () => void;
 }
 
@@ -48,10 +54,13 @@ export default class Chrome extends PureComponent<Props, {}> {
           pluginStateHyperlink={props.pluginStateHyperlink}
           pluginStateLists={props.pluginStateLists}
           pluginStateTextFormatting={props.pluginStateTextFormatting}
+          pluginStateClearFormatting={props.pluginStateClearFormatting}
           pluginStateImageUpload={props.pluginStateImageUpload}
           pluginStateMentions={props.pluginStateMentions}
+          pluginStateEmojis={props.pluginStateEmojis}
           mentionsResourceProvider={props.mentionsResourceProvider}
           presenceResourceProvider={props.presenceResourceProvider}
+          emojiProvider={props.emojiProvider}
           pluginStatePanel={props.pluginStatePanel}
           packageVersion={props.packageVersion}
           packageName={props.packageName}

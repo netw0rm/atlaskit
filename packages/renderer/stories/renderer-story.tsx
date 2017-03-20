@@ -11,6 +11,7 @@ import Strike from '../src/marks/strike';
 import Strong from '../src/marks/strong';
 import Subsup from '../src/marks/subsup';
 import Underline from '../src/marks/underline';
+import Code from '../src/marks/code';
 import { name } from '../package.json';
 import { document } from './story-data';
 
@@ -57,6 +58,9 @@ storiesOf(name, module)
   ))
   .add('marks/underline', () => (
     <Underline>This is underlined</Underline>
+  ))
+  .add('marks/code', () => (
+    <Code>This is code</Code>
   ))
   .add('nodes/hardBreak', () => (
     <div>Some text with that<HardBreak />breaks on multiple lines</div>

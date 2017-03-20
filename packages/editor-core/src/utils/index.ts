@@ -8,8 +8,9 @@ import {
   Selection,
   TextSelection,
   Fragment,
+  Slice,
 } from '../prosemirror';
-import { isCodeBlockNode } from '../schema/nodes/code-block';
+import { isCodeBlockNode, isListItemNode } from '../schema';
 
 function validateNode(node: Node): boolean {
   return false;
@@ -245,7 +246,6 @@ export function liftSiblingNodes(pm: ProseMirror): EditorTransform {
   return tr;
 }
 
-
 /**
  * Lift sibling nodes to document-level and select them.
  */
@@ -289,6 +289,37 @@ export function removeCodeBlocksFromSelection(pm: ProseMirror): EditorTransform 
 }
 
 /**
+ * Change type of all blocks in select to paragraph type.
+ */
+export function setSelectionToNormalText(pm: ProseMirror): EditorTransform {
+  const { tr } = pm;
+  const { from, to } = pm.selection;
+  const { nodes: { paragraph } } = pm.schema;
+  if (paragraph) {
+    tr.setBlockType(from, to, paragraph);
+  }
+  return tr;
+}
+
+/**
+ * Function will lift all selected blocks to zero depth.
+ */
+export function liftSelectionBlocks(pm: ProseMirror): EditorTransform {
+  const { tr } = pm;
+  let { from, to } = tr.selection;
+
+  tr.doc.nodesBetween(from, to, (node, pos) => {
+    const res = tr.doc.resolve(tr.map(pos));
+    const sel = new NodeSelection(res);
+    if (node.isBlock && !isListItemNode(node) && sel.$from.depth > 0) {
+      const range = sel.$from.blockRange(sel.$to)!;
+      tr.lift(range, 0);
+    }
+  });
+  return tr;
+}
+
+/**
  * Function will insert a blank space atthe end of current selection.
  * @param pm
  */
@@ -300,4 +331,8 @@ export function insertBlankSpace(pm: ProseMirror): EditorTransform | undefined {
     const fragment = new Fragment([textNode], textNode.nodeSize);
     return pm.tr.insert(to, fragment);
   }
+}
+
+export function createSliceWithContent(content: string, pm: ProseMirror) {
+ return new Slice(Fragment.from(pm.schema.nodes.text.create(null, content)), 0, 0);
 }

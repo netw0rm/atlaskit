@@ -89,4 +89,17 @@ describe('ak-field-text', () => {
       expect(spy.callCount).to.equal(1);
     });
   });
+
+  describe('FieldText input focus', () => {
+    it('should get focus when focus() is called', () => {
+      let hasFocus = 0;
+      const wrapper = mount(<FieldTextSmart />);
+      wrapper.getDOMNode().addEventListener('focus', () => {
+        hasFocus = 1;
+      }, true);
+      wrapper.instance().focus();
+
+      expect(hasFocus).to.equal(1);
+    });
+  });
 });

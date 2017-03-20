@@ -67,6 +67,7 @@ export default class Handle extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps: Props) {
+    // dragging is disabled mid drag
     if (this.state.draggingWith && !nextProps.isEnabled) {
       this.stopDragging(() => this.props.onCancel());
     }
@@ -212,14 +213,12 @@ export default class Handle extends PureComponent {
   }
 
   unbindWindowEvents = () => {
-    console.log('unbinding events');
     window.removeEventListener('mousemove', this.onWindowMouseMove);
     window.removeEventListener('mouseup', this.onWindowMouseUp);
     window.removeEventListener('mousedown', this.onWindowMouseDown);
   }
 
   bindWindowEvents = () => {
-    console.log('binding events');
     window.addEventListener('mousemove', this.onWindowMouseMove);
     window.addEventListener('mouseup', this.onWindowMouseUp);
     window.addEventListener('mousedown', this.onWindowMouseDown);

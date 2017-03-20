@@ -1,12 +1,13 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { mount } from 'enzyme';
+// eslint-disable-next-line no-duplicate-imports
+import type { ReactWrapper } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import type { ReactWrapper } from 'enzyme';
 import DragHandle, { getCursor } from '../../src/view/drag-handle/drag-handle';
 import type { Callbacks } from '../../src/view/drag-handle';
-// import createDragHandle from '../../src/view/drag-handle/create-drag-handle';
+import createDragHandle from '../../src/view/drag-handle/';
 
 const describe = window.describe;
 const it = window.it;
@@ -415,11 +416,10 @@ describe('Drag handle', () => {
     });
 
     describe('drop', () => {
-      const wasDropped = (wrapper: ReactComponent<any>, callbacks: Callbacks) =>
+      const wasDropped = (wrapper: ReactWrapper<any>, callbacks: Callbacks) =>
         callbacks.onDrop.called &&
         !areWindowEventsBound(wrapper, callbacks) &&
         !isDragging(wrapper);
-
 
       it('should drop when you release the primary button', () => {
         const callbacks = getStubCallbacks();
@@ -832,8 +832,43 @@ describe('Drag handle', () => {
       expect(areWindowEventsBound(wrapper, callbacks)).to.equal(false);
     });
   });
+});
 
-  describe('make drag handle', () => {
+describe('create drag handle', () => {
+  it('should return a drag handle', () => {
+    const callbacks = getStubCallbacks();
+    const isEnabled = true;
+    const wrapper = mount(createDragHandle(callbacks)(isEnabled)(<Child />));
 
+    expect(wrapper.find(DragHandle).length).to.equal(1);
+  });
+
+  it('should apply the passed callbacks to the drag handle', () => {
+    const callbacks = getStubCallbacks();
+    const isEnabled = true;
+    const wrapper = mount(createDragHandle(callbacks)(isEnabled)(<Child />));
+
+    const props = wrapper.find(DragHandle).props();
+    Object.keys(callbacks).forEach((key: string) => {
+      expect(props[key]).to.equal(callbacks[key]);
+    });
+  });
+
+  it('should wrap the passed child in a drag handle', () => {
+    const callbacks = getStubCallbacks();
+    const isEnabled = true;
+    const wrapper = mount(createDragHandle(callbacks)(isEnabled)(<Child />));
+
+    expect(wrapper.find(DragHandle).children().find(Child).length).to.equal(1);
+  });
+
+  it('should allow conditional enabling of the drag handle', () => {
+    const callbacks = getStubCallbacks();
+
+    const wrapper1 = mount(createDragHandle(callbacks)(true)(<Child />));
+    expect(wrapper1.props().isEnabled).to.equal(true);
+
+    const wrapper2 = mount(createDragHandle(callbacks)(false)(<Child />));
+    expect(wrapper2.props().isEnabled).to.equal(false);
   });
 });

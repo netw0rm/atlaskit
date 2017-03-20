@@ -7,8 +7,7 @@ const emojiQueryStyle = style({
 });
 
 export const emojiQuery: MarkSpec = {
-  inclusiveRight: false,
-  inclusiveLeft: false,
+  inclusive: false,
   parseDOM: [
     {tag: 'span[data-emoji-id]', getAttrs: (dom: Element) => {
       return {id: dom.getAttribute('data-emoji-id')!};

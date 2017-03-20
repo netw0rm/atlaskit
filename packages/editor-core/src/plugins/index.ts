@@ -12,3 +12,4 @@ export { default as DefaultInputRulesPlugin } from './default-inputrules';
 export { default as PanelPlugin } from './panel';
 export { default as ClearFormattingPlugin } from './clear-formatting';
 export { default as DefaultKeymapsPlugin } from './default-keymaps';
+export { default as MarkdownPasteTransform } from './markdown-paste-transform';

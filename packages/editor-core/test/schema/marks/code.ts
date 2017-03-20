@@ -27,7 +27,8 @@ describe('ak-editor-core/schema code mark', () => {
 
 function makeSchema () {
   const nodes = {doc, paragraph, text};
-  const marks = {code};
+  code.excludes = '';
+  const marks = { code };
   return new Schema<typeof nodes, typeof marks>({ nodes, marks });
 }
 

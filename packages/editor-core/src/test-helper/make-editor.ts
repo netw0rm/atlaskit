@@ -5,7 +5,7 @@ import {
   EditorView,
   baseKeymap,
   keymap
-} from '../';
+} from '../prosemirror';
 import { default as defaultSchema } from './schema';
 import { RefsNode, Refs } from './schema-builder';
 import { setTextSelection } from './transactions';
@@ -26,7 +26,7 @@ export default (options: Options) : EditorInstance => {
       options.plugin,
       keymap(baseKeymap)
     ]
-  }) as ProseMirrorWithRefs;
+  });
   const editorView = new EditorView(options.place || document.body, {
     state: editorState
   });

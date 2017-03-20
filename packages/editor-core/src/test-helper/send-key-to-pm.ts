@@ -1,4 +1,4 @@
-import { EditorView, browser } from '../';
+import { EditorView, browser } from '../prosemirror';
 
 export function focusAndSelect(element: HTMLElement) {
   const range = document.createRange();

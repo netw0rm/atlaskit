@@ -3,6 +3,8 @@ import * as React from 'react';
 import Editor from './editor';
 import * as styles from './styles';
 import { base64fileconverter } from '../src/test-helper';
+import { name } from '../package.json';
+import * as v1schema from '../src/json-schema/v1.json';
 
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const CANCEL_ACTION = () => action('Cancel')();
@@ -23,7 +25,9 @@ const imageUploadHandler = (e: any, fn: any) => {
   }
 };
 
-storiesOf('ak-editor-core', module)
+const jsonPretty = (obj: any) => JSON.stringify(obj, null, 2);
+
+storiesOf(name, module)
   .add('Example editor', () => (
     <div className={styles.content} >
       <Editor
@@ -34,4 +38,7 @@ storiesOf('ak-editor-core', module)
         isExpandedByDefault
       />
     </div>
+  ))
+  .add('v1 JSON Schema', () => (
+    <pre><code className="json">{jsonPretty(v1schema)}</code></pre>
   ));

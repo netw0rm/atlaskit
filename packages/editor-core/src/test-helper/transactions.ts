@@ -2,7 +2,7 @@ import {
   EditorView,
   TextSelection,
   NodeSelection
-} from '../';
+} from '../prosemirror';
 import {
   Refs,
   BuilderContent,
@@ -11,7 +11,7 @@ import {
 } from './schema-builder';
 
 /**
- * Update the transaction's current selection. 
+ * Update the transaction's current selection.
  * This will determine the selection that the editor gets when the transaction is applied.
  */
 export function setTextSelection (view: EditorView, anchor: number, head?: number) {

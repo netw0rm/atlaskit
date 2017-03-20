@@ -1,4 +1,6 @@
-import { blockQuoteRule, Fragment, headingRule, InputRule, inputRules, Plugin, Schema, Transaction, MarkType, Mark } from '../../prosemirror';
+import {
+  blockQuoteRule, headingRule, InputRule, inputRules, Plugin, Schema, Transaction
+} from '../../prosemirror';
 import { analyticsService } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 

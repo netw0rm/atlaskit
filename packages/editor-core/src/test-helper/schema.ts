@@ -13,7 +13,7 @@ import {
   ListItemNodeType,
   MarkType,
   MentionNodeType,
-  MonoMarkType,
+  CodeMarkType,
   NodeType,
   OrderedListNodeType,
   ParagraphNodeType,
@@ -53,7 +53,7 @@ export interface AtlassianEditorSchema extends Schema {
     link: LinkMarkType;
     em: EmMarkType;
     strong: StrongMarkType;
-    mono: MonoMarkType;
+    code: CodeMarkType;
     strike: StrikeMarkType;
   };
 }
@@ -85,7 +85,7 @@ export const schema = new Schema({
     link: LinkMarkType,
     em: EmMarkType,
     strong: StrongMarkType,
-    mono: MonoMarkType,
+    code: CodeMarkType,
     strike: StrikeMarkType,
   },
 }) as AtlassianEditorSchema;

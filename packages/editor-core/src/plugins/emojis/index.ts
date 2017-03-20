@@ -1,5 +1,6 @@
 import Keymap from 'browserkeymap';
 import { inputRules, Plugin, ProseMirror, Schema } from '../../prosemirror';
+import { EmojiProvider } from '@atlaskit/emoji';
 
 import {
   EmojiNodeType,
@@ -10,10 +11,15 @@ import { emojiQueryRule } from './input-rules';
 
 export type StateChangeHandler = (state: EmojisPluginState) => any;
 
+export interface Options {
+  emojiProvider: Promise<EmojiProvider>;
+}
+
 export class EmojisPluginState {
   private pm: PM;
   private hasKeymap = false;
   private changeHandlers: StateChangeHandler[] = [];
+  private emojiProvider: Promise<EmojiProvider>;
 
   query?: string;
   queryActive = false;
@@ -23,8 +29,18 @@ export class EmojisPluginState {
   onSelectNext =  () => {};
   onSelectCurrent = () => {};
 
-  constructor(pm: PM) {
+  setEmojiProvider(emojiProvider: Promise<EmojiProvider>) {
+    this.emojiProvider = emojiProvider;
+
+    const emojiNodeType = this.pm.schema.nodeType('emoji') as EmojiNodeType;
+    if (emojiNodeType) {
+      emojiNodeType.setEmojiProvider(this.emojiProvider);
+    }
+  }
+
+  constructor(pm: PM, options: Options) {
     this.pm = pm;
+    this.emojiProvider = options.emojiProvider;
 
     this.keymap = new Keymap({
       Up: () => this.onSelectPrevious(),
@@ -47,6 +63,8 @@ export class EmojisPluginState {
         pm.on.activeMarkChange,
       ], () => this.update());
     }
+
+    this.setEmojiProvider(options.emojiProvider);
   }
 
   private update(): void {
@@ -128,13 +146,19 @@ export class EmojisPluginState {
     return { start, end };
   }
 
-  insertEmoji(emojiData?: Emoji) {
+  insertEmoji(emojiId?: EmojiId, emojiData?: Emoji) {
     const { emoji } = this.pm.schema.nodes;
+    const { emojiProvider } = this;
 
-    if (emoji && emojiData) {
+    if (emoji && emojiId && emojiData) {
+      const { shortcut } = emojiData;
       const { start, end } = this.findEmojiQueryMark();
-      const node = emoji.create(emojiData);
-      this.pm.tr.delete(start, end).insert(start, node).apply();
+      const node = emoji.create({
+        ...emojiId,
+        shortcut,
+        emojiProvider,
+      });
+      this.pm.tr.replaceWith(start, end, node).apply();
     } else {
       this.dismiss();
     }
@@ -154,6 +178,10 @@ export class EmojisPluginState {
 Object.defineProperty(EmojisPluginState, 'name', { value: 'EmojisPluginState' });
 
 export default new Plugin(EmojisPluginState);
+
+export interface EmojiId {
+  id: string;
+}
 
 export interface Emoji {
   id: string;

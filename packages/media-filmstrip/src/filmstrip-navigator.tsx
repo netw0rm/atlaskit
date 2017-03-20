@@ -115,10 +115,14 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
 
   private onWindowResize = (event) => {
     const parent = ReactDOM.findDOMNode(this).parentElement;
-    if (!parent) { return; }
+    if (!parent || !this.allowNavigation) { return; }
 
     this.wrapperWidth = parent.getBoundingClientRect().width;
     this.setNewPosition(this.state.position, this.state.showTransition);
+  }
+
+  private get allowNavigation() {
+    return this.numOfCards > 1;
   }
 
   private getDimensions = (el?: HTMLElement) => {
@@ -133,6 +137,8 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     this.listWidth = element.getBoundingClientRect().width;
     this.numOfCards = element.children.length;
 
+    if (!this.allowNavigation) { return; }
+
     if (this.numOfCards !== 0) {
       const card = element.firstChild as HTMLElement;
       const totalWidth = card.clientWidth || 0;
@@ -146,7 +152,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
 
   private onScroll = (e: WheelEvent<HTMLDivElement>) => {
     const isHorizontalScroll = Math.abs(e.deltaX) > Math.abs(e.deltaY);
-    if (!isHorizontalScroll) { return; }
+    if (!this.allowNavigation || !isHorizontalScroll) { return; }
 
     e.preventDefault();
     const showTransition = false;

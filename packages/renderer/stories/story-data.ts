@@ -1,5 +1,6 @@
 export const document = {
   type: 'doc',
+  version: 1,
   content: [
     {
       type: 'paragraph',
@@ -245,6 +246,34 @@ export const document = {
            text: 'a hardbreak in it.'
         }
       ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'This is a '
+        },
+        {
+          type: 'mention',
+          attrs: {
+            text: '@mention',
+            id: 'mention'
+          }
+        },
+        {
+          type: 'text',
+          text: '. And this is a broken '
+        },
+        {
+          type: 'mention',
+          attrs: {
+            textxtx: '@mention',
+            id: 'mention'
+          }
+        }
+      ]
     }
+
   ]
 };

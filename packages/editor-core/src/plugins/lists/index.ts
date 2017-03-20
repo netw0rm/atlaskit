@@ -108,7 +108,9 @@ export class ListsState {
     pm.addKeymap(new Keymap({
       [keymaps.splitListItem.common!]: () => commands.splitListItem(list_item)(pm),
       [keymaps.toggleOrderedList.common!]: trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', () => this.toggleOrderedList()),
-      [keymaps.toggleBulletList.common!]: trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', () => this.toggleBulletList())
+      [keymaps.toggleBulletList.common!]: trackAndInvoke('atlassian.editor.format.list.bullet.keyboard', () => this.toggleBulletList()),
+      [keymaps.indentList.common!]: trackAndInvoke('atlassian.editor.format.list.indent.keyboard', this.indentList),
+      [keymaps.outdentList.common!]: trackAndInvoke('atlassian.editor.format.list.outdent.keyboard', this.outdentList)
     }));
   }
 
@@ -189,6 +191,24 @@ export class ListsState {
       }
 
       this.resetSelection();
+    }
+  }
+
+  indentList = () => {
+    if (this.bulletListActive || this.orderedListActive) {
+      const { pm } = this;
+      const { list_item } = pm.schema.nodes;
+      commands.sinkListItem(list_item)(pm, true);
+      return true;
+    }
+  }
+
+  outdentList = () => {
+    if (this.bulletListActive || this.orderedListActive) {
+      const { pm } = this;
+      const { list_item } = pm.schema.nodes;
+      commands.liftListItem(list_item)(pm, true);
+      return true;
     }
   }
 

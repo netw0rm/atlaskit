@@ -33,7 +33,7 @@ describe('default-keymaps', () => {
           expect(pm.activeMarks().length === 1);
           dispatchKeypressEvent(pm, 'Mod-Z');
           expect(pm.activeMarks().length === 0);
-          dispatchKeypressEvent(pm, 'Mod-Shift-Y');
+          dispatchKeypressEvent(pm, 'Mod-Shift-Z');
           expect(pm.activeMarks().length === 1);
         }
       });
@@ -46,7 +46,7 @@ describe('default-keymaps', () => {
           expect(pm.activeMarks().length === 1);
           dispatchKeypressEvent(pm, 'Mod-Z');
           expect(pm.activeMarks().length === 0);
-          dispatchKeypressEvent(pm, 'Mod-Shift-Y');
+          dispatchKeypressEvent(pm, 'Mod-Shift-Z');
           expect(pm.activeMarks().length === 0);
         }
       });
@@ -74,7 +74,7 @@ describe('default-keymaps', () => {
           expect(pm.activeMarks().length === 1);
           dispatchKeypressEvent(pm, 'Mod-Z');
           expect(pm.activeMarks().length === 0);
-          dispatchKeypressEvent(pm, 'Mod-Shift-Y');
+          dispatchKeypressEvent(pm, 'Mod-Shift-Z');
           expect(pm.activeMarks().length === 1);
         }
       });

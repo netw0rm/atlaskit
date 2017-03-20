@@ -8,8 +8,10 @@ import {
   HorizontalRulePlugin,
   Keymap,
   ListsPlugin,
+  HyperlinkPlugin,
   ProseMirror,
   TextFormattingPlugin,
+  ClearFormattingPlugin,
   DefaultKeymapsPlugin,
   MentionsPlugin,
   version as coreVersion
@@ -18,7 +20,7 @@ import { MentionProvider } from '@atlaskit/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { encode, parse } from './html';
-import { makeSchema, isSchemaWithMentions, JIRASchema } from './schema';
+import { makeSchema, isSchemaWithMentions, isSchemaWithLinks, JIRASchema } from './schema';
 import { version, name } from './version';
 
 export { version };
@@ -34,6 +36,8 @@ export interface Props {
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
   allowLists?: boolean;
+  allowLinks?: boolean;
+  allowAdvancedTextFormatting?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   mentionEncoder?: (userId: string) => string;
 }
@@ -56,7 +60,9 @@ export default class Editor extends PureComponent<Props, State> {
       isExpanded: props.isExpandedByDefault,
       schema: makeSchema({
         allowLists: !!props.allowLists,
-        allowMentions: !!props.mentionProvider
+        allowMentions: !!props.mentionProvider,
+        allowLinks: !!props.allowLinks,
+        allowAdvancedTextFormatting: !!props.allowAdvancedTextFormatting
       }),
     };
 
@@ -152,7 +158,9 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
+        pluginStateClearFormatting={pm && ClearFormattingPlugin.get(pm)}
         pluginStateMentions={pm && mentionProvider && MentionsPlugin.get(pm)!}
+        pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         packageVersion={version}
         packageName={name}
       />
@@ -188,10 +196,12 @@ export default class Editor extends PureComponent<Props, State> {
         place,
         doc: parse(this.props.defaultValue || '', schema),
         plugins: [
+          ...( isSchemaWithLinks(schema) ? [ HyperlinkPlugin ] : [] ),
           BlockTypePlugin,
           CodeBlockPlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          ClearFormattingPlugin,
           HorizontalRulePlugin,
           DefaultKeymapsPlugin,
           ...( isSchemaWithMentions(schema) ? [ MentionsPlugin ] : [] ),

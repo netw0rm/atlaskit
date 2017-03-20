@@ -4,7 +4,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Context, CardAction, LinkItem, TrelloBoardLinkApp, CardSize, UrlPreview } from '@atlaskit/media-core';
 
-import { LinkCardTrelloBoardView, LinkCardPlayer, LinkCardGenericView } from '..';
+import { LinkCardTrelloBoardView } from '../apps/trello';
+import { LinkCardGenericView } from '../cardGenericView';
+import { LinkCardPlayer } from '../cardPlayerView';
 
 export interface OnLoadingChangeFunc {
   (state: LinkCardState):  void;

@@ -6,7 +6,7 @@ TAG="atlassianlabs/atlaskit:$CURRENT_DATE"
 LERNA_VERSION=$(node -e "console.log(require('./lerna.json').lerna)")
 
 echo "Building image"
-docker build --build-arg LERNA_VERSION="$LERNA_VERSION" -t "$TAG" . $@
+docker build --build-arg LERNA_VERSION="$LERNA_VERSION" -t "$TAG" $@ .
 
 
 echo "Let's make sure we have everything"

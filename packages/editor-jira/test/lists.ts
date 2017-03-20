@@ -1,12 +1,7 @@
-import { Node } from '@atlaskit/editor-core';
-import { chaiPlugin, markFactory, nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import { markFactory, nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { checkParseEncodeRoundTrips } from '../test-helpers';
 import { name } from '../package.json';
-import { encode, parse } from '../src/html';
 import { JIRASchema, makeSchema } from '../src/schema';
-
-chai.use(chaiPlugin);
 
 const schema = makeSchema({ allowLists: true }) as JIRASchema;
 
@@ -20,26 +15,10 @@ const ol = nodeFactory(schema.nodes.ordered_list!);
 // Marks
 const strong = markFactory(schema.marks.strong);
 
-function check(description: string, html: string, node: Node) {
-  it(`parses HTML: ${description}`, () => {
-    const actual = parse(html, schema);
-    expect(actual).to.deep.equal(node);
-  });
-
-  it(`encodes HTML: ${description}`, () => {
-    const encoded = encode(node, schema);
-    expect(html).to.deep.equal(encoded);
-  });
-
-  it(`round-trips HTML: ${description}`, () => {
-    const roundTripped = parse(encode(node, schema), schema);
-    expect(roundTripped).to.deep.equal(node);
-  });
-};
-
 describe(name, () => {
   describe('lists', () => {
-    check('bullet list',
+    checkParseEncodeRoundTrips('bullet list',
+      schema,
       '<ul class="alternate" type="square"><li data-parent="ul">one</li><li data-parent="ul">two</li></ul>',
       doc(
         ul(
@@ -48,7 +27,8 @@ describe(name, () => {
         )
       ));
 
-    check('ordered list',
+    checkParseEncodeRoundTrips('ordered list',
+      schema,
       '<ol><li data-parent="ol">one</li><li data-parent="ol">two</li></ol>',
       doc(
         ol(
@@ -57,7 +37,8 @@ describe(name, () => {
         )
       ));
 
-    check('bullet list with strong',
+    checkParseEncodeRoundTrips('bullet list with strong',
+      schema,
       '<ul class="alternate" type="square"><li data-parent="ul">A piggy</li><li data-parent="ul"><b>Bigger</b> piggy</li></ul>',
       doc(
         ul(
@@ -66,7 +47,8 @@ describe(name, () => {
         )
       ));
 
-    check('ordered list with strong',
+    checkParseEncodeRoundTrips('ordered list with strong',
+      schema,
       '<ol><li data-parent="ol">A piggy</li><li data-parent="ol"><b>Bigger</b> piggy</li></ol>',
       doc(
         ol(

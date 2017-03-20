@@ -13,6 +13,7 @@ describe(name, () => {
       Object.keys(other).should.be.deep.equal([
         'MentionResource',
         'AbstractMentionResource',
+        'PresenceResource',
         'AbstractPresenceResource',
         'MentionItem',
         'MentionList',

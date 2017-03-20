@@ -9,7 +9,7 @@ import {
   ImageNodeType,
   LinkMarkType,
   ListItemNodeType,
-  MonoMarkType,
+  CodeMarkType,
   OrderedListNodeType,
   PanelNodeType,
   ParagraphNodeType,
@@ -45,7 +45,7 @@ export const schema = new Schema({
   marks: {
     link: LinkMarkType,
     em: EmMarkType,
-    mono: MonoMarkType,
+    code: CodeMarkType,
     strike: StrikeMarkType,
     strong: StrongMarkType,
     subsup: SubSupMarkType,
@@ -77,7 +77,7 @@ export const horizontal_rule = nodeFactory(schema.nodes.horizontal_rule);
 
 export const plain = nodeFactory(schema.nodes.plain);
 export const em = markFactory(schema.marks.em);
-export const mono = markFactory(schema.marks.mono);
+export const code = markFactory(schema.marks.code);
 export const strike = markFactory(schema.marks.strike);
 export const strong = markFactory(schema.marks.strong);
 export const sub = markFactory(schema.marks.subsup, { type: 'sub' });

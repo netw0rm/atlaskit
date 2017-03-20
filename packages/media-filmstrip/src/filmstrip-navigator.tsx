@@ -121,6 +121,10 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     this.setNewPosition(this.state.position, this.state.showTransition);
   }
 
+  private get allowNavigation() {
+    return this.numOfCards > 1;
+  }
+
   private getDimensions = (el?: HTMLElement) => {
     const element = el || this.listElement;
 
@@ -132,6 +136,8 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     this.wrapperWidth = element.parentElement.getBoundingClientRect().width;
     this.listWidth = element.getBoundingClientRect().width;
     this.numOfCards = element.children.length;
+
+    if (!this.allowNavigation) { return; }
 
     if (this.numOfCards !== 0) {
       const card = element.firstChild as HTMLElement;
@@ -146,7 +152,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
 
   private onScroll = (e: WheelEvent<HTMLDivElement>) => {
     const isHorizontalScroll = Math.abs(e.deltaX) > Math.abs(e.deltaY);
-    if (!isHorizontalScroll) { return; }
+    if (!this.allowNavigation || !isHorizontalScroll) { return; }
 
     e.preventDefault();
     const showTransition = false;

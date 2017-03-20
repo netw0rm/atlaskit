@@ -17,15 +17,11 @@ export type Callbacks = {
 const noop = () => {};
 
 // https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/button
-const primaryClick = 0;
-// TODO: drag threshold
-// const threshold: number = 10;
+const primaryButton = 0;
 
 const allowDragProps = {
   tabIndex: '0',
 };
-
-const empty = {};
 
 type Props = {
   children?: React$Element<*>,
@@ -33,6 +29,8 @@ type Props = {
 } & Callbacks
 
 type DragTypes = 'KEYBOARD' | 'MOUSE';
+
+const logError = (...args) => console.error(...args);
 
 // exporting for testing
 export const getCursor = (isEnabled: boolean, isDragging: boolean) => {
@@ -64,7 +62,6 @@ export default class Handle extends PureComponent {
     if (!this.state.draggingWith) {
       return;
     }
-
     this.unbindWindowEvents();
     this.props.onCancel();
   }
@@ -82,7 +79,7 @@ export default class Handle extends PureComponent {
 
     const { button, clientX, clientY } = event;
 
-    if (button !== primaryClick) {
+    if (button !== primaryButton) {
       return;
     }
 
@@ -94,13 +91,10 @@ export default class Handle extends PureComponent {
     this.props.onMove(point);
   };
 
-  onWindowMouseUp = (): void => {
-    invariant(
-      this.state.draggingWith,
-      'should not be listening to mouse up events when nothing is dragging'
-    );
+  onWindowMouseUp = () => {
+    invariant(this.state.draggingWith, 'should not be listening to mouse up events when nothing is dragging');
 
-    if (this.state.draggingWith === 'MOUSE') {
+    if (this.state.draggingWith !== 'MOUSE') {
       return;
     }
 
@@ -110,11 +104,13 @@ export default class Handle extends PureComponent {
     this.stopDragging(() => this.props.onDrop());
   };
 
-  onWindowMouseDown = (): void => {
-    invariant(
-      this.state.draggingWith === 'KEYBOARD',
-      'should not be able to trigger a mouse down while a MOUSE drag is occuring'
-    );
+  onWindowMouseDown = () => {
+    if (this.state.draggingWith === 'MOUSE') {
+      this.stopDragging(() => this.props.onCancel());
+      logError(`should not be able to trigger a mousedown
+                  while a MOUSE drag is occuring. Expecting a mouseup first.`);
+      return;
+    }
 
     this.stopDragging(() => this.props.onDrop());
   }
@@ -126,18 +122,20 @@ export default class Handle extends PureComponent {
       return;
     }
 
-    invariant(
-      !this.state.draggingWith,
-      'mouse down will not start a drag as it is already dragging'
-    );
+    if (this.state.draggingWith) {
+      this.stopDragging(() => this.props.onCancel());
+      logError('mouse down will not start a drag as it is already dragging');
+      return;
+    }
 
     if (!this.props.isEnabled) {
       return;
     }
 
     const { button, clientX, clientY } = event;
+    event.stopPropagation();
 
-    if (button !== primaryClick) {
+    if (button !== primaryButton) {
       return;
     }
 
@@ -214,12 +212,14 @@ export default class Handle extends PureComponent {
   }
 
   unbindWindowEvents = () => {
+    console.log('unbinding events');
     window.removeEventListener('mousemove', this.onWindowMouseMove);
     window.removeEventListener('mouseup', this.onWindowMouseUp);
     window.removeEventListener('mousedown', this.onWindowMouseDown);
   }
 
   bindWindowEvents = () => {
+    console.log('binding events');
     window.addEventListener('mousemove', this.onWindowMouseMove);
     window.addEventListener('mouseup', this.onWindowMouseUp);
     window.addEventListener('mousedown', this.onWindowMouseDown);

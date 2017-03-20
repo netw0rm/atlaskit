@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-test-helpers",
-  "version": "1.19.0",
+  "version": "1.20.0",
   "config": {
     "access": "public"
   },

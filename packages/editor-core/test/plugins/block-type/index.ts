@@ -383,7 +383,7 @@ describe('block-type', () => {
         });
 
         context('when it is not inside a code block', () => {
-          context('when langauge is provided', () => {
+          context('when language is provided', () => {
             it('returns code block with language', () => {
               const { editorView } = editor(doc(p('```javascript{<>}')));
 
@@ -446,7 +446,7 @@ describe('block-type', () => {
           it('does not create a new paragraph above', () => {
             const { editorView } = editor(doc(code_block()('{<}te{>}xt')));
 
-            sendKeyToPm(editorView, 'Up');
+            sendKeyToPm(editorView, 'ArrowUp');
 
             expect(editorView.state.doc).to.deep.equal(doc(code_block()('text')));
           });
@@ -458,7 +458,7 @@ describe('block-type', () => {
               it('does not create a new paragraph above', () => {
                 const { editorView } = editor(doc(code_block()('te{<>}xt')));
 
-                sendKeyToPm(editorView, 'Up');
+                sendKeyToPm(editorView, 'ArrowUp');
 
                 expect(editorView.state.doc).to.deep.equal(doc(code_block()('text')));
               });
@@ -468,7 +468,7 @@ describe('block-type', () => {
               it('does not create a new paragraph above', () => {
                 const { editorView } = editor(doc(p('text'), code_block()('{<>}text')));
 
-                sendKeyToPm(editorView, 'Up');
+                sendKeyToPm(editorView, 'ArrowUp');
 
                 expect(editorView.state.doc).to.deep.equal(doc(p('text'), code_block()('text')));
               });
@@ -478,7 +478,7 @@ describe('block-type', () => {
               it('creates a new paragraph above', () => {
                 const { editorView } = editor(doc(code_block()('{<>}text')));
 
-                sendKeyToPm(editorView, 'Up');
+                sendKeyToPm(editorView, 'ArrowUp');
 
                 expect(editorView.state.doc).to.deep.equal(doc(p(''), code_block()('text')));
               });
@@ -487,7 +487,7 @@ describe('block-type', () => {
 
                 const { editorView } = editor(doc(p(mention({ id: 'foo1', displayName: '@bar1' }))));
 
-                sendKeyToPm(editorView, 'Up');
+                sendKeyToPm(editorView, 'ArrowUp');
 
                 expect(editorView.state.doc).to.deep.equal(doc(p(''), p(mention({ id: 'foo1', displayName: '@bar1' }))));
               });
@@ -500,7 +500,7 @@ describe('block-type', () => {
                 it('does not create a new paragraph above', () => {
                   const { editorView } = editor(doc(p('text'), blockquote(p('{<>}text'))));
 
-                  sendKeyToPm(editorView, 'Up');
+                  sendKeyToPm(editorView, 'ArrowUp');
 
 
                   expect(editorView.state.doc).to.deep.equal(doc(p('text'), blockquote(p('text'))));
@@ -511,7 +511,7 @@ describe('block-type', () => {
                 it('creates a new paragraph above', () => {
                   const { editorView } = editor(doc(blockquote(p('{<>}text'))));
 
-                  sendKeyToPm(editorView, 'Up');
+                  sendKeyToPm(editorView, 'ArrowUp');
 
                   expect(editorView.state.doc).to.deep.equal(doc(p(''), blockquote(p('text'))));
                 });
@@ -528,7 +528,7 @@ describe('block-type', () => {
               const { editorView, sel } = editor(doc(p('text'), hr, code_block()('{<>}text')));
               setNodeSelection(editorView, sel - 1);
 
-              sendKeyToPm(editorView, 'Up');
+              sendKeyToPm(editorView, 'ArrowUp');
 
               expect(editorView.state.doc).to.deep.equal(doc(p('text'), hr, code_block()('text')));
             });
@@ -539,7 +539,7 @@ describe('block-type', () => {
               const { editorView } = editor(doc(hr, code_block()('text')));
               setNodeSelection(editorView, 0);
 
-              sendKeyToPm(editorView, 'Up');
+              sendKeyToPm(editorView, 'ArrowUp');
 
               expect(editorView.state.doc).to.deep.equal(doc(p(''), hr, code_block()('text')));
             });
@@ -552,7 +552,7 @@ describe('block-type', () => {
               const { editorView, sel } = editor(doc(p('text'), blockquote(hr, code_block()('{<>}text'))));
               setNodeSelection(editorView, sel - 1);
 
-              sendKeyToPm(editorView, 'Up');
+              sendKeyToPm(editorView, 'ArrowUpv');
 
               expect(editorView.state.doc).to.deep.equal(doc(p('text'), blockquote(hr, code_block()('text'))));
             });
@@ -563,7 +563,7 @@ describe('block-type', () => {
               const { editorView } = editor(doc(blockquote(hr, code_block()('{<>}text'))));
               setNodeSelection(editorView, 1);
 
-              sendKeyToPm(editorView, 'Up');
+              sendKeyToPm(editorView, 'ArrowUp');
 
               expect(editorView.state.doc).to.deep.equal(doc(p(''), blockquote(hr, code_block()('text'))));
             });
@@ -578,7 +578,7 @@ describe('block-type', () => {
           it('does not create a new paragraph below', () => {
             const { editorView } = editor(doc(code_block()('te{<}xt{>}')));
 
-            sendKeyToPm(editorView, 'Down');
+            sendKeyToPm(editorView, 'ArrowDown');
 
             expect(editorView.state.doc).to.deep.equal(doc(code_block()('text')));
           });
@@ -590,7 +590,7 @@ describe('block-type', () => {
               it('does not create a new paragraph below', () => {
                 const { editorView } = editor(doc(code_block()('te{<>}xt')));
 
-                sendKeyToPm(editorView, 'Down');
+                sendKeyToPm(editorView, 'ArrowDown');
 
                 expect(editorView.state.doc).to.deep.equal(doc(code_block()('text')));
               });
@@ -600,7 +600,7 @@ describe('block-type', () => {
               it('does not create a new paragraph below', () => {
                 const { editorView } = editor(doc(code_block()('text{<>}'), p('text')));
 
-                sendKeyToPm(editorView, 'Down');
+                sendKeyToPm(editorView, 'ArrowDown');
 
                 expect(editorView.state.doc).to.deep.equal(doc(code_block()('text'), p('text')));
               });
@@ -610,7 +610,7 @@ describe('block-type', () => {
               it('creates a new paragraph below', () => {
                 const { editorView } = editor(doc(code_block()('text{<>}')));
 
-                sendKeyToPm(editorView, 'Down');
+                sendKeyToPm(editorView, 'ArrowDown');
 
                 expect(editorView.state.doc).to.deep.equal(doc(code_block()('text'), p('')));
               });
@@ -623,7 +623,7 @@ describe('block-type', () => {
                 it('does not create a new paragraph below', () => {
                   const { editorView } = editor(doc(blockquote(p('text{<>}')), p('text')));
 
-                  sendKeyToPm(editorView, 'Down');
+                  sendKeyToPm(editorView, 'ArrowDown');
 
 
                   expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text')), p('text')));
@@ -634,7 +634,7 @@ describe('block-type', () => {
                 it('creates a new paragraph below', () => {
                   const { editorView } = editor(doc(blockquote(p('text{<>}'))));
 
-                  sendKeyToPm(editorView, 'Down');
+                  sendKeyToPm(editorView, 'ArrowDown');
 
                   expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text')), p('')));
                 });
@@ -651,7 +651,7 @@ describe('block-type', () => {
               const { editorView, sel } = editor(doc(p('text{<>}'), hr, code_block()('text')));
               setNodeSelection(editorView, sel + 1);
 
-              sendKeyToPm(editorView, 'Down');
+              sendKeyToPm(editorView, 'ArrowDown');
 
               expect(editorView.state.doc).to.deep.equal(doc(p('text'), hr, code_block()('text')));
             });
@@ -662,7 +662,7 @@ describe('block-type', () => {
               const { editorView, sel } = editor(doc(code_block()('text{<>}'), hr));
               setNodeSelection(editorView, sel + 1);
 
-              sendKeyToPm(editorView, 'Down');
+              sendKeyToPm(editorView, 'ArrowDown');
 
               expect(editorView.state.doc).to.deep.equal(doc(code_block()('text'), hr, p('')));
             });
@@ -675,7 +675,7 @@ describe('block-type', () => {
               const { editorView, sel } = editor(doc(blockquote(hr, code_block()('{<>}text')), p('text')));
               setNodeSelection(editorView, sel - 1);
 
-              sendKeyToPm(editorView, 'Down');
+              sendKeyToPm(editorView, 'ArrowDown');
 
               expect(editorView.state.doc).to.deep.equal(doc(blockquote(hr, code_block()('text')), p('text')));
             });
@@ -686,7 +686,7 @@ describe('block-type', () => {
               const { editorView, sel } = editor(doc(blockquote(code_block()('text{<>}'), hr)));
               setNodeSelection(editorView, sel + 1);
 
-              sendKeyToPm(editorView, 'Down');
+              sendKeyToPm(editorView, 'ArrowDown');
 
               expect(editorView.state.doc).to.deep.equal(doc(blockquote(code_block()('text'), hr), p('')));
             });

@@ -226,6 +226,19 @@ export function createCodeBlockFromFenceFormat(): Command {
         dispatch(transformToCodeBlockAction(state, { language: matches[1] }).delete(startPos, $from.pos));
         return true;
       }
+
+      // add empty paragraph node if user hits Enter
+      // otherwise a new line is inserted by ProseMirror
+      const { codeBlock, paragraph } = state.schema.nodes;
+
+      if ($from && $from.parent.type === codeBlock) {
+        const posAfterCodeBlock = $from.end($from.depth) + 1;
+        const paragraphNode = paragraph.create();
+        const transform = state.tr.insert(posAfterCodeBlock, paragraphNode);
+
+        dispatch(transform);
+        return true;
+      }
     }
 
     return false;
@@ -403,7 +416,7 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
   return topLevelNode.isTextblock && topLevelNode.type !== state.schema.nodes.codeBlock && topLevelNode.nodeSize === 2;
 }
 
-// Lifts current selection up; 
+// Lifts current selection up;
 // it allows to chain transactions
 function lift(state: EditorState<any>, tr: Transaction): Transaction {
   const { $from, $to } = state.selection;

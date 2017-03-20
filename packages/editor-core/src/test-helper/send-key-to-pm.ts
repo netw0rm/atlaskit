@@ -1,5 +1,4 @@
 import { EditorView, browser } from '../';
-import focusAndSelect from './focusAndSelect';
 
 /**
  * Sends a key to ProseMirror content area, simulating user key press.
@@ -29,8 +28,6 @@ export default function sendKeyToPm(editorView: EditorView, keys: string) {
   (event as any).which = code;
   (event as any).view = window;
 
-  // The PM content area must be selected and focused in order for key events to be recognized
-  focusAndSelect(editorView.dom);
   editorView.dispatchEvent(event);
 }
 

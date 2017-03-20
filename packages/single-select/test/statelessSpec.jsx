@@ -232,6 +232,7 @@ describe(name, () => {
 
     describe('handleTriggerClick', () => {
       it('default behavior', () => {
+        wrapper.setProps({ isOpen: false });
         const args = { event: {}, isOpen: true };
         instance.handleTriggerClick({});
         expect(onOpenChangeSpy.calledOnce).to.equal(true);
@@ -243,6 +244,14 @@ describe(name, () => {
         instance.handleTriggerClick({});
         expect(onOpenChangeSpy.called).to.equal(false);
         wrapper.setProps({ isDisabled: false });
+      });
+
+      it('should close select when it was open before', () => {
+        wrapper.setProps({ isOpen: true });
+        const args = { event: {}, isOpen: false };
+        instance.handleTriggerClick({});
+        expect(onOpenChangeSpy.called).to.equal(true);
+        expect(onOpenChangeSpy.calledWith(args)).to.equal(true);
       });
     });
 

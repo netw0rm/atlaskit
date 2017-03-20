@@ -60,7 +60,7 @@ export class TextFormattingState {
   toggleEm(view: EditorView) {
     const { em } = this.state.schema.marks;
     if (em) {
-      commands.toggleMark(em)(view.state, view.dispatch);
+      this.toggleMark(view, em);
     }
   }
 
@@ -74,14 +74,14 @@ export class TextFormattingState {
   toggleStrike(view: EditorView) {
     const { strike } = this.state.schema.marks;
     if (strike) {
-      commands.toggleMark(strike)(view.state, view.dispatch);
+      this.toggleMark(view, strike);
     }
   }
 
   toggleStrong(view: EditorView) {
     const { strong } = this.state.schema.marks;
     if (strong) {
-      commands.toggleMark(strong)(view.state, view.dispatch);
+      this.toggleMark(view, strong);
     }
   }
 
@@ -90,10 +90,10 @@ export class TextFormattingState {
     if (subsup) {
       if (this.subscriptActive) {
         // If subscript is enabled, turn it off first.
-        commands.toggleMark(subsup)(view.state, view.dispatch);
+        this.toggleMark(view, subsup);
       }
 
-      commands.toggleMark(subsup, { type: 'sup' })(view.state, view.dispatch);
+      this.toggleMark(view, subsup, { type: 'sup' });
     }
   }
 
@@ -102,17 +102,17 @@ export class TextFormattingState {
     if (subsup) {
       if (this.superscriptActive) {
         // If superscript is enabled, turn it off first.
-        commands.toggleMark(subsup)(view.state, view.dispatch);
+        this.toggleMark(view, subsup);
       }
 
-      commands.toggleMark(subsup, { type: 'sub' })(view.state, view.dispatch);
+      this.toggleMark(view, subsup, { type: 'sub' });
     }
   }
 
   toggleUnderline(view: EditorView) {
     const { u } = this.state.schema.marks;
     if (u) {
-      commands.toggleMark(u)(view.state, view.dispatch);
+      this.toggleMark(view, u);
     }
   }
 
@@ -154,7 +154,7 @@ export class TextFormattingState {
       }
 
       const newEmDisabled = !commands.toggleMark(em)(this.state);
-      if (this.codeActive && !this.emDisabled || newEmDisabled !== this.emDisabled) {
+      if (this.codeActive || newEmDisabled !== this.emDisabled) {
         this.emDisabled = this.codeActive ? true : newEmDisabled;
         dirty = true;
       }
@@ -168,7 +168,7 @@ export class TextFormattingState {
       }
 
       const newStrikeDisabled = !commands.toggleMark(strike)(this.state);
-      if (this.codeActive && !this.strikeDisabled || newStrikeDisabled !== this.strikeDisabled) {
+      if (this.codeActive || newStrikeDisabled !== this.strikeDisabled) {
         this.strikeDisabled = this.codeActive ? true : newStrikeDisabled;
         dirty = true;
       }
@@ -182,7 +182,7 @@ export class TextFormattingState {
       }
 
       const newStrongDisabled = !commands.toggleMark(strong)(this.state);
-      if (this.codeActive && !this.strongDisabled || newStrongDisabled !== this.strongDisabled) {
+      if (this.codeActive || newStrongDisabled !== this.strongDisabled) {
         this.strongDisabled = this.codeActive ? true : newStrongDisabled;
         dirty = true;
       }
@@ -199,7 +199,7 @@ export class TextFormattingState {
       }
 
       const newSubscriptDisabled = !commands.toggleMark(subsup, { type: 'sub' })(this.state);
-      if (this.codeActive && !this.subscriptDisabled || newSubscriptDisabled !== this.subscriptDisabled) {
+      if (this.codeActive || newSubscriptDisabled !== this.subscriptDisabled) {
         this.subscriptDisabled = this.codeActive ? true : newSubscriptDisabled;
         dirty = true;
       }
@@ -211,7 +211,7 @@ export class TextFormattingState {
       }
 
       const newSuperscriptDisabled = !commands.toggleMark(subsup, { type: 'sup' })(this.state);
-      if (this.codeActive && !this.superscriptDisabled || newSuperscriptDisabled !== this.superscriptDisabled) {
+      if (this.codeActive || newSuperscriptDisabled !== this.superscriptDisabled) {
         this.superscriptDisabled = this.codeActive ? true : newSuperscriptDisabled;
         dirty = true;
       }
@@ -225,7 +225,7 @@ export class TextFormattingState {
       }
 
       const newUnderlineDisabled = !commands.toggleMark(u)(this.state);
-      if (this.codeActive && !this.underlineDisabled || (newUnderlineDisabled !== this.underlineDisabled)) {
+      if (this.codeActive || newUnderlineDisabled !== this.underlineDisabled) {
         this.underlineDisabled = this.codeActive ? true : newUnderlineDisabled;
         dirty = true;
       }
@@ -271,6 +271,13 @@ export class TextFormattingState {
     });
 
     return found;
+  }
+
+  private toggleMark(view: EditorView, markType: MarkType, attrs?: any) {
+    // Disable text-formatting inside code
+    if (this.codeActive ? this.codeDisabled : true) {
+      commands.toggleMark(markType)(view.state, view.dispatch);
+    }
   }
 }
 

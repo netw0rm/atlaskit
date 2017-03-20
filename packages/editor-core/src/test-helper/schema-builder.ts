@@ -1,5 +1,5 @@
 import { Fragment, MarkType, Node, NodeType, Schema, Slice } from '../';
-import { NodeSpec, MarkSpec } from '../src/prosemirror';
+import { NodeSpec, MarkSpec } from '../prosemirror';
 import matches from './matches';
 import sampleSchema from './schema';
 
@@ -218,6 +218,7 @@ export const emoji = (attrs: { id: string }) => sampleSchema.nodes.emoji.createC
 export const mention = (attrs: { id: string, displayName?: string }) => sampleSchema.nodes.mention.createChecked(attrs);
 export const hr = sampleSchema.nodes.rule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});
+export const underline = markFactory(sampleSchema.marks.underline, {});
 export const strong = markFactory(sampleSchema.marks.strong, {});
 export const code = markFactory(sampleSchema.marks.code, {});
 export const strike = markFactory(sampleSchema.marks.strike, {});

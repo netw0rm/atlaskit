@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 
 import TextFormattingPlugin from '../../../src/plugins/text-formatting';
-import { fixtures, mention, em, strike, code, strong, insertText, chaiPlugin, doc, makeEditor, p } from '../../../test-helper';
+import { fixtures, mention, em, strike, code, strong, insertText, chaiPlugin, doc, makeEditor, p } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 

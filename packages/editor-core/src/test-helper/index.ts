@@ -11,7 +11,7 @@ export * from './transactions';
 export {
   doc, p, blockquote, code_block,
   h1, h2, h3, h4, h5, h6,
-  li, ul, ol, br, img, hr, em, strong, code, a,
+  li, ul, ol, br, img, hr, em, strong, code, a, underline,
   strike, text, fragment, slice, mention, emoji,
   nodeFactory, markFactory, BuilderContent, coerce, offsetRefs,
   linkable, unlinkable

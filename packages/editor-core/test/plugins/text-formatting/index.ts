@@ -2,47 +2,48 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { browser, TextFormattingPlugin } from '../../../src';
-import { chaiPlugin, makeEditor } from '../../../src/test-helper';
-import { doc, em, code, p, plain, schema, strike, strong, sub, sup, u } from '../../_schema-builder';
+import { sendKeyToPm, fixtures, doc, strike, strong, em, underline, code, p, chaiPlugin, makeEditor } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
 describe('text-formatting', () => {
-  const editor = (doc: any) => makeEditor({ doc, plugin: TextFormattingPlugin, schema });
+  const fixture = fixtures();
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugin: TextFormattingPlugin,
+    place: fixture()
+  });
 
   describe('keymap', () => {
     if (browser.mac) {
       context('when on a mac', () => {
         context('when hits Cmd-B', () => {
           it('toggles bold mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleStrong = sinon.spy(plugin, 'toggleStrong');
+            const { editorView } = editor(doc(p('text')));
 
-            pm.input.dispatchKey('Cmd-B');
+            sendKeyToPm(editorView, 'Cmd-B');
 
-            expect(toggleStrong.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
           });
         });
 
         context('when hits Cmd-I', () => {
           it('toggles italic mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleEm = sinon.spy(plugin, 'toggleEm');
+            const { editorView } = editor(doc(p('text')));
 
-            pm.input.dispatchKey('Cmd-I');
+            sendKeyToPm(editorView, 'Cmd-I');
 
-            expect(toggleEm.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
           });
         });
 
         context('when hits Cmd-U', () => {
           it('toggles underline mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
+            const { editorView } = editor(doc(p('text')));
 
-            pm.input.dispatchKey('Cmd-U');
+            sendKeyToPm(editorView, 'Cmd-U');
 
-            expect(toggleUnderline.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(underline('text'))));
           });
         });
 
@@ -52,23 +53,21 @@ describe('text-formatting', () => {
         */
         context('when hits Shift-Cmd-S', () => {
           it('toggles strikethrough mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleStrike = sinon.spy(plugin, 'toggleStrike');
+            const { editorView } = editor(doc(p('text')));
 
-            pm.input.dispatchKey('Shift-Cmd-S');
+            sendKeyToPm(editorView, 'Shift-Cmd-S');
 
-            expect(toggleStrike.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'))));
           });
         });
 
         context('when hits Shift-Cmd-M', () => {
           it('toggles code mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleCode = sinon.spy(plugin, 'toggleCode');
+            const { editorView } = editor(doc(p('text')));
 
-            pm.input.dispatchKey('Shift-Cmd-M');
+            sendKeyToPm(editorView, 'Shift-Cmd-M');
 
-            expect(toggleCode.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(code('text'))));
           });
         });
       });
@@ -76,34 +75,31 @@ describe('text-formatting', () => {
       context('when not on a mac', () => {
         context('when hits Ctrl-B', () => {
           it('toggles bold mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleStrong = sinon.spy(plugin, 'toggleStrong');
+            const { editorView } = editor(doc(p('text')));
 
-            pm.input.dispatchKey('Ctrl-B');
+            sendKeyToPm(editorView, 'Ctrl-B');
 
-            expect(toggleStrong.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
           });
         });
 
         context('when hits Ctrl-B', () => {
           it('toggles italic mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleEm = sinon.spy(plugin, 'toggleEm');
+            const { editorView } = editor(doc(p('text')));
 
-            pm.input.dispatchKey('Ctrl-I');
+            sendKeyToPm(editorView, 'Ctrl-I');
 
-            expect(toggleEm.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
           });
         });
 
         context('when hits Ctrl-B', () => {
           it('toggles underline mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleUnderline = sinon.spy(plugin, 'toggleUnderline');
+            const { editorView } = editor(doc(p('text')));
 
-            pm.input.dispatchKey('Ctrl-U');
+            sendKeyToPm(editorView, 'Ctrl-U');
 
-            expect(toggleUnderline.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(underline('text'))));
           });
         });
 
@@ -113,23 +109,21 @@ describe('text-formatting', () => {
         */
         context('when hits Shift-Ctrl-S', () => {
           it('toggles strikethrough mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleStrike = sinon.spy(plugin, 'toggleStrike');
+            const { editorView } = editor(doc(p('text')));
 
-            pm.input.dispatchKey('Shift-Ctrl-S');
+            sendKeyToPm(editorView, 'Shift-Ctrl-S');
 
-            expect(toggleStrike.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'))));
           });
         });
 
         context('when hits Shift-Ctrl-M', () => {
           it('toggles code mark', () => {
-            const { pm, plugin } = editor(doc(p('text')));
-            const toggleCode = sinon.spy(plugin, 'toggleCode');
+            const { editorView } = editor(doc(p('text')));
 
-            pm.input.dispatchKey('Shift-Ctrl-M');
+            sendKeyToPm(editorView, 'Shift-Ctrl-M');
 
-            expect(toggleCode.callCount).to.equal(1);
+            expect(editorView.state.doc).to.deep.equal(doc(p(code('text'))));
           });
         });
       });
@@ -139,45 +133,34 @@ describe('text-formatting', () => {
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
     const plugin = TextFormattingPlugin as any; // .State is not public API.
-    expect(plugin.State.name).is.be.a('string');
+    expect(plugin.key).is.be.a('string');
   });
 
   it('should allow a change handler to be attached', () => {
-    const { plugin } = editor(doc(p('text')));
+    const { pluginState } = editor(doc(p('text')));
     const spy = sinon.spy();
-    plugin.subscribe(spy);
+    pluginState.subscribe(spy);
 
     expect(spy.callCount).to.equal(1);
-    expect(spy.calledWith(plugin)).to.equal(true);
-  });
-
-  it('should call change handlers when em is toggled', () => {
-    const { plugin } = editor(doc(p('te{<>}xt')));
-    const spy = sinon.spy();
-    plugin.subscribe(spy);
-
-    plugin.toggleEm();
-
-    expect(spy.callCount).to.equal(2);
-    expect(spy.calledWith(plugin)).to.equal(true);
+    expect(spy.calledWith(pluginState)).to.equal(true);
   });
 
   describe('em', () => {
     it('should be able to toggle em on a character', () => {
-      const { pm, plugin } = editor(doc(p('{<}t{>}ext')));
+      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
 
-      expect(plugin.toggleEm());
-      expect(pm.doc).to.deep.equal(doc(p(em('t'), 'ext')));
-      expect(plugin.toggleEm());
-      expect(pm.doc).to.deep.equal(doc(p('text')));
+      expect(pluginState.toggleEm(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p(em('t'), 'ext')));
+      expect(pluginState.toggleEm(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });
 
     it('should expose whether em is active on an empty selection', () => {
-      const { plugin } = editor(doc(p('te{<>}xt')));
+      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.emActive).to.equal(false);
-      expect(plugin.toggleEm());
-      expect(plugin.emActive).to.equal(true);
+      expect(pluginState.emActive).to.equal(false);
+      expect(pluginState.toggleEm(editorView));
+      expect(pluginState.emActive).to.equal(true);
     });
 
     it('should expose whether em is active on a text selection', () => {

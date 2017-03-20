@@ -1,50 +1,17 @@
 @import './styles.less';
 
-@error-color: @ak-color-N800;
-@error-sub-color: @ak-color-N90;
-
-.cardAnimationWrapper {
+.profilecard {
   .font-smoothing;
   font-family: @ak-font-family;
-  position: relative;
-  display: inline-block;
+  box-sizing: border-box;
   overflow: hidden;
+  position: relative;
+  width: @ak-grid-size * 45;
+  padding: @ak-grid-size * 3;
   border-radius: @ak-border-radius;
   box-shadow: @card-shadow;
-  width: @ak-grid-size * 45;
   background-color: @card-bg;
-}
 
-.spinnerContainer {
-  position: relative;
-  height: @ak-grid-size * 12;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.errorMessage {
-  text-align: center;
-  padding: @ak-grid-size * 3;
-
-  svg {
-    color: @error-sub-color;
-  }
-
-  p {
-    color: @error-color;
-    line-height: @ak-grid-size * 3;
-    margin: @ak-grid-size 0;
-
-    span {
-      color: @error-sub-color;
-    }
-  }
-}
-
-.profilecard {
-  box-sizing: border-box;
-  padding: @ak-grid-size * 3;
   background-image: linear-gradient(
     to bottom,
     @ak-color-B500 0%,

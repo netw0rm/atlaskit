@@ -17,7 +17,7 @@ const RandomAvatar = props => <AkAvatar
 
 const CompactItem = ({ children }) => (
   <AkContainerItem
-    action={<CrossIcon />}
+    action={<CrossIcon label="close" />}
     icon={<RandomAvatar />}
     isCompact
     text={children}
@@ -48,12 +48,17 @@ storiesOf(name, module)
           action={
             <AkButton
               appearance="subtle"
-              iconBefore={<EmojiCustomIcon size="small" />}
+              iconBefore={<EmojiCustomIcon label="add" size="small" />}
               spacing="none"
             />
           }
           title="Rooms"
         >
+          <CompactItem href="#1">Front deskers</CompactItem>
+          <CompactItem href="#2">Parents anonymous</CompactItem>
+          <CompactItem href="#3">Gone fishing</CompactItem>
+        </AkContainerItemGroup>
+        <AkContainerItemGroup title="Rooms">
           <CompactItem>Front deskers</CompactItem>
           <CompactItem>Parents anonymous</CompactItem>
           <CompactItem>Gone fishing</CompactItem>
@@ -61,6 +66,10 @@ storiesOf(name, module)
         <AkContainerItemGroup title="People">
           <CompactItem>John Lennon</CompactItem>
           <CompactItem>George Harrison</CompactItem>
+        </AkContainerItemGroup>
+        <AkContainerItemGroup hasSeparator>
+          <CompactItem isSelected >Mick Jagger </CompactItem>
+          <CompactItem>Ronnie Wood</CompactItem>
         </AkContainerItemGroup>
       </BasicNavigation>
     </Page>

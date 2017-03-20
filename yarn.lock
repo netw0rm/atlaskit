@@ -137,10 +137,15 @@
   version "3.4.34"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-3.4.34.tgz#d5335792823bb09cddd5e38c3d211b709183854d"
 
-"@types/enzyme@^2.5.39":
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-2.7.0.tgz#89e5329f212dc62ddbcb5d9ef91f0ec02cce1e9d"
+"@types/cheerio@*":
+  version "0.17.31"
+  resolved "https://registry.yarnpkg.com/@types/cheerio/-/cheerio-0.17.31.tgz#bfeda3e3e8647a6e49b2998d137c81d5d8ab52d0"
+
+"@types/enzyme@^2.7.5":
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-2.7.5.tgz#a7c52a444cfa7711b16096681d134f4718df8a86"
   dependencies:
+    "@types/cheerio" "*"
     "@types/react" "*"
 
 "@types/es6-promise@^0.0.32":
@@ -183,15 +188,15 @@
   version "0.0.32"
   resolved "https://registry.yarnpkg.com/@types/q/-/q-0.0.32.tgz#bd284e57c84f1325da702babfc82a5328190c0c5"
 
-"@types/react-dom@^0.14.19":
-  version "0.14.19"
-  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-0.14.19.tgz#698a14335e32fb1bc61db65f5647c9668a7fc2eb"
+"@types/react-dom@^0.14.23":
+  version "0.14.23"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-0.14.23.tgz#cecfcfad754b4c2765fe5d29b81b301889ad6c2e"
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^0.14.50":
-  version "0.14.54"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-0.14.54.tgz#0fb0dadad895febeb468a885d0fa2284d5bbefae"
+"@types/react@*", "@types/react@^15.0.14":
+  version "15.0.14"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.14.tgz#07a739b20b0d4cf946f52444d3c40a94d4a234b1"
 
 "@types/request@0.0.30":
   version "0.0.30"
@@ -207,16 +212,6 @@
 "@types/sinon@^1.16.32":
   version "1.16.32"
   resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-1.16.32.tgz#b3246844902d7cb33f376b369b176a65a144af7e"
-
-"@types/whatwg-fetch@^0.0.33":
-  version "0.0.33"
-  resolved "https://registry.yarnpkg.com/@types/whatwg-fetch/-/whatwg-fetch-0.0.33.tgz#19c0d2863c8cb2380f21a1c736b79cbf7895bb13"
-  dependencies:
-    "@types/whatwg-streams" "*"
-
-"@types/whatwg-streams@*":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@types/whatwg-streams/-/whatwg-streams-0.0.2.tgz#58eb11cf9ab33a2b55878d568ad7e9b933e67f7d"
 
 abab@^1.0.0:
   version "1.0.3"
@@ -1882,7 +1877,7 @@ clap@^1.0.9:
   dependencies:
     chalk "^1.1.3"
 
-classnames@^2.2.3:
+classnames@^2.2.3, classnames@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
@@ -7235,9 +7230,9 @@ style-loader@0.13.1, style-loader@^0.13.1:
   dependencies:
     loader-utils "^0.2.7"
 
-styled-components@^1.3.0:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-1.3.1.tgz#219aebf87405d890e0c60c8f702089d947aafc0a"
+styled-components@^1.4.0:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-1.4.3.tgz#83fa44e553882aaa3ddc4363ccc435814d690706"
   dependencies:
     buffer "^5.0.2"
     css-to-react-native "^1.0.6"
@@ -7497,9 +7492,9 @@ typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@2.2.0-dev.20170117:
-  version "2.2.0-dev.20170117"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.2.0-dev.20170117.tgz#6e8f0a306c3b6d26901321333ba9a7a301150379"
+typescript@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.2.1.tgz#4862b662b988a4c8ff691cc7969622d24db76ae9"
 
 ua-parser-js@^0.7.9:
   version "0.7.12"

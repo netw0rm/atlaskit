@@ -3,6 +3,7 @@ import * as sinon from 'sinon';
 
 import {MediaLinkService} from '../src/services/linkService';
 import {JwtTokenProvider} from '../src';
+import {UrlPreview} from '../src/item';
 
 const serviceHost = 'some-host';
 const token = 'some-token';
@@ -10,6 +11,20 @@ const token = 'some-token';
 const linkId = 'some-link-id';
 const clientId = 'some-client-id';
 const collection = 'some-collection';
+const linkUrl = 'some-url';
+const linkMetadata = <UrlPreview> {
+  type: 'some-type',
+  url: 'some-url',
+  title: 'some-title',
+  description: 'some-description',
+  site: 'some-site',
+  author: {url: 'some-author-url', name: 'some-author-name'},
+  date: 12345678,
+  resources: {
+    icon: {url: 'some-icon-url'},
+    thumbnail: {url: 'some-thumbnail-url'}
+  }
+};
 
 const expect = chai.expect;
 const assert = chai.assert;
@@ -90,8 +105,7 @@ describe('MediaLinkService', () => {
     return response;
   });
 
-
-  it('should reject server responded with 500', () => {
+  it('should reject get link when server responded with 500', () => {
     const response = linkService.getLinkItem('some-dodgy-link-id', clientId, collection)
       .then(
         () => assert.fail('The function getLinkItem should fail'),
@@ -99,6 +113,45 @@ describe('MediaLinkService', () => {
       );
 
     setTimeout(() => { requests[0].respond(500, { }, ''); });
+    return response;
+  });
+
+  it('should add link', () => {
+    const response = linkService.addLinkItem(linkUrl, clientId, collection, linkMetadata)
+      .then(id => {
+        expect(id).to.equal(linkId);
+      })
+      .then(() => {
+        // Validate call to token provider
+        assert((tokenProvider as any).calledWith(collection));
+      })
+      .then(() => {
+        const headers = requests[0].requestHeaders;
+        expect(headers['X-Client-Id']).to.equal(clientId);
+        expect(headers['Authorization']).to.equal(`Bearer ${token}`);
+        expect(requests[0].url).to.equal('some-host/link?collection=some-collection');
+      });
+
+    setTimeout(() => {
+      const mockedResponse = {
+        data: {id: linkId}
+      };
+      requests[0].respond(200, { 'Content-Type': 'application/json' },
+        JSON.stringify(mockedResponse));
+    });
+
+    return response;
+  });
+
+  it('should reject add link when server responded with 500', () => {
+    const response = linkService.addLinkItem(linkUrl, clientId, collection, linkMetadata)
+      .then(
+        () => assert.fail('The function addLinkItem should fail'),
+        error => expect(error).to.exist
+      );
+
+    setTimeout(() => { requests[0].respond(500, { }, ''); });
+
     return response;
   });
 });

@@ -12,8 +12,8 @@ export interface FilmstripNavigatorProps {
   width?: number;
 }
 
-function onDragEvent(dragEventHandler?: (event: DragEvent) => void): DragEventHandler<HTMLUListElement> {
-  return (event: ReactDragEvent<HTMLUListElement>) => {
+function onDragEvent(dragEventHandler?: (event: DragEvent) => void): DragEventHandler<HTMLDivElement> {
+  return (event: ReactDragEvent<HTMLDivElement>) => {
     if (!dragEventHandler) {
       return;
     }
@@ -53,6 +53,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   private numOfCards: number;
   private cardWidth: number;
   private listElement: HTMLElement;
+  private unmounted: boolean;
 
   constructor(props) {
     super(props);
@@ -60,16 +61,18 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
       showLeft: false,
       showRight: false,
       position: 0,
-      showTransition: true,
+      showTransition: false,
       transitionDuration: 0
     };
   }
 
   componentDidMount() {
+    this.unmounted = false;
     window.addEventListener('resize', this.onWindowResize);
   }
 
   componentWillUnmount() {
+    this.unmounted = true;
     window.removeEventListener('resize', this.onWindowResize);
   }
 
@@ -118,6 +121,10 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     this.setNewPosition(this.state.position, this.state.showTransition);
   }
 
+  private get allowNavigation() {
+    return this.numOfCards > 1;
+  }
+
   private getDimensions = (el?: HTMLElement) => {
     const element = el || this.listElement;
 
@@ -130,6 +137,8 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     this.listWidth = element.getBoundingClientRect().width;
     this.numOfCards = element.children.length;
 
+    if (!this.allowNavigation) { return; }
+
     if (this.numOfCards !== 0) {
       const card = element.firstChild as HTMLElement;
       const totalWidth = card.clientWidth || 0;
@@ -138,14 +147,14 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
       this.cardWidth = 0;
     }
 
-    this.setNewPosition(0, this.state.showTransition);
+    !this.unmounted && this.setNewPosition(0, this.state.showTransition);
   }
 
   private onScroll = (e: WheelEvent<HTMLDivElement>) => {
-    e.preventDefault();
     const isHorizontalScroll = Math.abs(e.deltaX) > Math.abs(e.deltaY);
-    if (!isHorizontalScroll) { return; }
+    if (!this.allowNavigation || !isHorizontalScroll) { return; }
 
+    e.preventDefault();
     const showTransition = false;
     this.updateState({showTransition});
     this.setNewPosition(this.state.position + e.deltaX, showTransition);

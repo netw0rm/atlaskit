@@ -3,18 +3,15 @@ import { Mention, ResourcedMention } from '@atlaskit/mention';
 import { EventHandlers, ServicesConfig } from '../config';
 import Doc from './doc';
 import Paragraph from './paragraph';
+import Hardbreak from './hardBreak';
 import {
   mergeTextNodes,
   renderTextNodes,
   TextNode,
 } from './text';
 
-import {
-  isText,
-  isTextWrapper
-} from '../utils';
-
 export interface Renderable {
+  version?: number;
   type: string;
   content?: Renderable[];
   text?: string;
@@ -26,43 +23,123 @@ export interface Renderable {
 
 enum NodeType {
   doc,
+  hardBreak,
   mention,
   paragraph,
   textWrapper,
+  text,
+  unknown
 }
 
-export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, eventHandlers?: EventHandlers, index: number = 0) => {
-  const nodeContent = mergeTextNodes(node.content || []);
-  const key = `${node.type}-${index}`;
+export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode => {
+  const { attrs, content, text, type } = node;
 
-  switch (NodeType[node.type]) {
+  if (type) {
+    switch (NodeType[type]) {
+      case NodeType.doc: {
+        const { version } = node;
+        if (version && content && content.length) {
+          return {
+            type,
+            version,
+            content
+          };
+        }
+        break;
+      }
+      case NodeType.hardBreak:
+        return {
+          type
+        };
+      case NodeType.mention: {
+        const { attrs, text } = node;
+        let mentionText = '';
+        let mentionId;
+        if (attrs) {
+          const { text, displayName, id } = attrs;
+          mentionText = text || displayName;
+          mentionId = id;
+        }
+
+        if (!mentionText) {
+          mentionText = text || '@unknown';
+        }
+
+        if (mentionText && mentionId) {
+          return {
+            type,
+            attrs: {
+              id: mentionId,
+              text: mentionText
+            }
+          };
+        }
+        break;
+      }
+      case NodeType.paragraph: {
+        if (content) {
+          return {
+            type,
+            content
+          };
+        }
+        break;
+      }
+      case NodeType.textWrapper: {
+        const { content } = node;
+        if (content && content.length) {
+          return {
+            type,
+            content
+          };
+        }
+        break;
+      }
+      case NodeType.text: {
+        const { marks } = node as TextNode;
+        if (text) {
+          return {
+            type,
+            text,
+            marks: marks || []
+          };
+        }
+        break;
+      }
+    }
+  }
+
+  return {
+    type: NodeType[NodeType.unknown],
+    text,
+    attrs,
+    content
+  };
+
+};
+
+export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, eventHandlers?: EventHandlers, index: number = 0) => {
+  const validNode = getValidNode(node);
+  const nodeContent = mergeTextNodes(validNode.content || []);
+  const key = `${validNode.type}-${index}`;
+
+  switch (NodeType[validNode.type]) {
     case NodeType.doc:
       return <Doc key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Doc>;
-    case NodeType.paragraph:
-      return <Paragraph key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Paragraph>;
+    case NodeType.hardBreak:
+      return <Hardbreak key={key} />;
     case NodeType.mention: {
-      const { text, attrs } = node;
-      let mentionText;
-
-      if (!text) {
-        if (attrs) {
-          mentionText = attrs.text || attrs['displayName'] || '@unknown';
-        } else {
-          mentionText = '@unknown';
-        }
-      } else {
-        mentionText = text;
-      }
-
-      const { id } = attrs as any || { id: 'unknown' };
+      const { attrs } = validNode;
+      const { id, text } = attrs as { id: string, text: string };
       const { mention } = eventHandlers || { mention: {} };
       const { onClick, onMouseEnter, onMouseLeave } = mention || { onClick: () => {}, onMouseEnter: () => {}, onMouseLeave: () => {}};
+
       if (servicesConfig && servicesConfig.getMentionProvider) {
         return (
           <ResourcedMention
             key={key}
             id={id}
-            text={mentionText}
+            text={text}
             mentionProvider={servicesConfig.getMentionProvider()}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
@@ -74,27 +151,35 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
         <Mention
           key={key}
           id={id}
-          text={mentionText}
+          text={text}
           onClick={onClick}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         />);
     }
+    case NodeType.paragraph:
+      return <Paragraph key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Paragraph>;
+    case NodeType.textWrapper:
+      return renderTextNodes(validNode.content as TextNode[]);
+    case NodeType.text:
+      return renderTextNodes([validNode as TextNode]);
     default: {
-      if (isTextWrapper(node.type)) {
-        return renderTextNodes(node.content as TextNode[]);
-      } else if (isText(node.type)) {
-        return renderTextNodes([node as TextNode]);
-      }
-
       // Try render text of unkown node
-      if (node.attrs && node.attrs.text) {
-        return node.attrs.text;
-      } else if (node.text) {
-        return node.text;
+      if (validNode.attrs && validNode.attrs.text) {
+        return validNode.attrs.text;
+      } else if (validNode.text) {
+        return validNode.text;
       }
 
-      // Node is unkown and can't be rendered
+      // Node is unkown or invalid and can't be rendered
+      if (NodeType[node.type] === NodeType.doc) {
+        return <div>Unknown document</div>;
+      }
+
+      if (NodeType[node.type]) {
+        return `Unknown format: "${node.type}"`;
+      }
+
       return `Unknown type: "${node.type}"`;
     }
   }

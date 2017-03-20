@@ -1,12 +1,15 @@
-import { CardView } from './cardView/cardView';
+// mutate RxJS Observable with required methods
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/fromPromise';
 
-export * from './generic/fileIcon/fileIcon';
-export * from './generic/errorIcon/errorIcon';
-export * from './generic/placeholder/placeholder';
-export * from './ellipsify';
-export * from './cardView/cardView';
-export * from './cardViewSmall/cardViewSmall';
-export * from './card/card';
+import { CardView } from './files';
+
+export * from './files';
+export * from './list';
+export * from './links';
+export * from './utils';
 
 export default CardView;
 

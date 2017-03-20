@@ -1,4 +1,4 @@
-import { EmojiPicker } from '@atlaskit/emoji';
+import { EmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import { EditorMoreIcon } from '@atlaskit/icon';
 import {
   akBorderRadius,
@@ -14,7 +14,7 @@ import Selector from './internal/selector';
 import Trigger from './internal/trigger';
 
 export interface Props {
-  emojiService: any;
+  emojiProvider: Promise<EmojiProvider>;
   onSelection: Function;
   miniMode?: boolean;
   boundariesElement?: string;
@@ -103,12 +103,12 @@ export default class ReactionPicker extends PureComponent<Props, State> {
   }
 
   private renderSelector() {
-    const { emojiService } = this.props;
+    const { emojiProvider } = this.props;
 
     return (
       <div className={contentStyle}>
         <Selector
-          emojiService={emojiService}
+          emojiProvider={emojiProvider}
           onSelection={this.onEmojiSelected}
         />
         <button className={moreButtonStyle} onMouseDown={this.showFullPicker}>
@@ -119,11 +119,11 @@ export default class ReactionPicker extends PureComponent<Props, State> {
   }
 
   private renderEmojiPicker() {
-    const { emojiService } = this.props;
+    const { emojiProvider } = this.props;
 
     return (
       <EmojiPicker
-        emojiService={emojiService}
+        emojiProvider={emojiProvider}
         onSelection={this.onEmojiSelected}
       />
     );

@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { SecurityOptions, ServiceConfig } from '../src/api/SharedResourceUtils';
-import EmojiLoader, { denormaliseEmojis } from '../src/api/EmojiLoader';
+import EmojiLoader, { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
 import { SpriteRepresentation } from '../src/types';
 
 const p1Url = 'https://p1/';
@@ -121,11 +121,11 @@ describe('EmojiLoader', () => {
         expect(true, 'Emojis should not have loaded').to.equal(false);
       }).catch(err => {
         expect(err.code, `Expected error: '${err}' to contain 401`).to.equal(401);
-      })
+      });
     });
   });
 
-  describe('#denormaliseEmojis', () => {
+  describe('#denormaliseEmojiServiceResponse', () => {
     const emojiFields = ['id', 'name', 'shortcut', 'type', 'category', 'order'];
 
     const checkFields = (actual, expected, fields) => {
@@ -134,7 +134,7 @@ describe('EmojiLoader', () => {
       });
     };
 
-    it('denormaliseEmojis emoji with sprite', () => {
+    it('denormaliseEmojiServiceResponse emoji with sprite', () => {
       const spriteRef = 'http://spriteref/test.png';
       const emoji = {
         id: '1f600',
@@ -171,7 +171,7 @@ describe('EmojiLoader', () => {
         height: 2952,
         width: 4032,
       };
-      const emojiResponse = denormaliseEmojis({
+      const emojiResponse = denormaliseEmojiServiceResponse({
         emojis: [emoji],
         meta: {
           spriteSheets: {
@@ -217,7 +217,7 @@ describe('EmojiLoader', () => {
           width: 64,
         },
       };
-      const emojiResponse = denormaliseEmojis({
+      const emojiResponse = denormaliseEmojiServiceResponse({
         emojis: [emoji],
       });
       const emojis = emojiResponse.emojis;

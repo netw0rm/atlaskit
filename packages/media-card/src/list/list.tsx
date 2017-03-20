@@ -1,14 +1,14 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
 import { Component } from 'react';
-import { Card } from '../card/card';
-import { DEFAULT_CARD_DIMENSIONS } from '../cardView/cardView';
-import { MediaItem, MediaCollection, MediaCollectionItem, Context, CardAction, ListAction } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs/Subscription';
-import {CardListWrapper, Spinner, LoadMoreButtonContainer} from './styled';
-import Button from '@atlaskit/button';
 import { AxiosError } from 'axios';
+import Button from '@atlaskit/button';
+import { CardSize, MediaItem, MediaCollection, MediaCollectionItem, Context, CardAction, ListAction } from '@atlaskit/media-core';
+
+import { Card, DEFAULT_CARD_DIMENSIONS } from '../files';
 import { InfiniteScroll } from './infiniteScroll';
+import {CardListWrapper, Spinner, LoadMoreButtonContainer} from './styled';
 
 export interface CardListProps {
   context: Context;
@@ -18,7 +18,7 @@ export interface CardListProps {
 
   cardWidth?: number;
   cardHeight?: number;
-  cardType?: 'normal' | 'small';
+  cardType?: CardSize;
 
   pageSize?: number;
 
@@ -52,7 +52,6 @@ const ErrorComponent = <div>ERROR</div>;
 export class CardList extends Component<CardListProps, CardListState> {
   static defaultProps = {
     pageSize: 10,
-    cardWidth: DEFAULT_CARD_DIMENSIONS.WIDTH,
     cardHeight: DEFAULT_CARD_DIMENSIONS.HEIGHT,
     loadingComponent: LoadingComponent,
     useInfiniteScroll: true,
@@ -73,39 +72,30 @@ export class CardList extends Component<CardListProps, CardListState> {
       this.state.subscription.unsubscribe();
     }
 
-    this.setState({
-      loadNextPage: () => {
-        return provider.controller().loadNextPage();
+    const subscription = provider.observable().subscribe({
+      next: (collection: MediaCollection): void => {
+        this.setState({
+          ...this.state,
+          collection,
+          hasNextPage: true,
+          loading: false
+        });
       },
-      hasNextPage: false,
-      collection: undefined,
-      error: undefined,
-      loading: false
+      complete: (): void => {
+        this.setState({...this.state, hasNextPage: false, loading: false});
+      },
+      error: (error: AxiosError): void => {
+        this.setState({...this.state, error, loading: false});
+      }
     });
 
     this.setState({
-      subscription: provider.observable().subscribe({
-        next: (collection: MediaCollection) => {
-          this.setState({
-            collection,
-            hasNextPage: true,
-            loading: false
-          });
-        },
-        complete: () => {
-          this.setState({
-            hasNextPage: false,
-            loading: false
-          });
-        },
-        error: (error: AxiosError) => {
-          console.error(`Error: ${error}`);
-          this.setState({
-            error,
-            loading: false
-          });
-        }
-      })
+      loadNextPage: () => provider.controller().loadNextPage(),
+      hasNextPage: false,
+      collection: undefined,
+      error: undefined,
+      loading: false,
+      subscription
     });
   }
 
@@ -190,7 +180,7 @@ export class CardList extends Component<CardListProps, CardListState> {
           collectionName={this.props.collectionName}
           id={item.id}
           mediaItemType={item.mediaItemType}
-          width={this.props.cardWidth}
+          width={this.cardWidth}
           height={this.props.cardHeight}
           type={this.props.cardType}
           actions={cardActions}
@@ -203,6 +193,18 @@ export class CardList extends Component<CardListProps, CardListState> {
         {cards}
       </ul>
     );
+  }
+
+  /*
+    We only want to apply default width (hardcoded value) for normal cards, 
+    in case of small cards we want them to grow up and use the whole parent width
+   */
+  private get cardWidth() {
+    if (this.props.cardWidth) { return this.props.cardWidth; }
+
+    const useDefaultWidth = this.props.cardType === 'normal';
+
+    return useDefaultWidth ? DEFAULT_CARD_DIMENSIONS.WIDTH : undefined;
   }
 
   private get useInfiniteScroll(): boolean {
@@ -223,7 +225,7 @@ export class CardList extends Component<CardListProps, CardListState> {
     if (this.showLoadMoreButton && this.state.hasNextPage) {
       const title = this.state.loading ? 'Loading...' : 'Load more';
       return (
-        <LoadMoreButtonContainer style={{ width: this.props.cardWidth }}>
+        <LoadMoreButtonContainer style={{ width: this.cardWidth }}>
           <Button
             className="load-more-button"
             onClick={this.onLoadMoreButtonClick}
@@ -241,8 +243,8 @@ export class CardList extends Component<CardListProps, CardListState> {
     this.loadNextPage();
   }
 
-  private loadNextPage(): void {
-    this.setState({ loading: true });
+  private loadNextPage = (): void => {
+    this.setState({ ...this.state, loading: true });
     this.state.loadNextPage();
   }
 }

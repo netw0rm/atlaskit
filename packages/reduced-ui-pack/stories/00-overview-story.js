@@ -11,6 +11,7 @@ const OverviewExample = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <title>Your page</title>
+  <link rel="stylesheet" href="node_modules/@atlaskit/css-reset/dist/bundle.css" />
   <link rel="stylesheet" href="node_modules/${name}/${main}" />
 </head>
 <body>

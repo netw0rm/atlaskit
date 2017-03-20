@@ -19,10 +19,6 @@ export interface TextNode extends Renderable {
   marks?: Mark[];
 }
 
-export interface TextWrapper extends Renderable {
-  textNodes: TextNode[];
-}
-
 /*
  *  Wraps adjecent textnodes in a textWrapper
  * 

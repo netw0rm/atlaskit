@@ -11,6 +11,10 @@ export const fadeInKeyframe = keyframes`
   }
 `;
 
-export const fadeIn = () => `
+export const fadeIn = `
   animation: ${fadeInKeyframe} .3s ${easeInOutCubic};
+`;
+
+export const spin = keyframes`
+  to { transform: rotate(360deg); }
 `;

@@ -3,27 +3,30 @@ import { PureComponent } from 'react';
 import Tooltip from '@atlaskit/tooltip';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { TextFormattingState } from '../../plugins/text-formatting';
-import DropdownList from '@atlaskit/droplist';
-import Group from '@atlaskit/droplist-group';
-import Item from '@atlaskit/droplist-item';
+import { ClearFormattingState } from '../../plugins/clear-formatting';
+import DropdownList from 'ak-droplist';
+import Group from 'ak-droplist-group';
+import Item from 'ak-droplist-item';
 import ToolbarButton from '../ToolbarButton';
-import AdvancedIcon from '@atlaskit/icon/glyph/editor/advanced';
-import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
-import { toggleMonospace, toggleStrikethrough, tooltip } from '../../keymaps';
+import AdvancedIcon from 'ak-icon/glyph/editor/advanced';
+import ExpandIcon from 'ak-icon/glyph/editor/expand';
+import { toggleCode, toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
 import * as styles from './styles';
 
 export interface Props {
-  pluginState: TextFormattingState | undefined;
+  pluginStateTextFormatting?: TextFormattingState | undefined;
+  pluginStateClearFormatting?: ClearFormattingState | undefined;
 }
 
 export interface State {
   isOpen?: boolean;
-  monoActive?: boolean;
-  monoDisabled?: boolean;
-  monoHidden?: boolean;
+  codeActive?: boolean;
+  codeDisabled?: boolean;
+  codeHidden?: boolean;
   strikeActive?: boolean;
   strikeDisabled?: boolean;
   strikeHidden?: boolean;
+  clearFormattingDisabled?: boolean;
 }
 
 export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, State> {
@@ -32,26 +35,34 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   };
 
   componentDidMount() {
-    const { pluginState } = this.props;
-    pluginState && pluginState.subscribe(this.handlePluginStateChange);
+    const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
+    pluginStateTextFormatting && pluginStateTextFormatting.subscribe(this.handlePluginStateTextFormattingChange);
+    pluginStateClearFormatting && pluginStateClearFormatting.subscribe(this.handlePluginStateClearFormattingChange);
   }
 
   componentWillUmount() {
-    const { pluginState } = this.props;
-    pluginState && pluginState.unsubscribe(this.handlePluginStateChange);
+    const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
+    pluginStateTextFormatting && pluginStateTextFormatting.unsubscribe(this.handlePluginStateTextFormattingChange);
+    pluginStateClearFormatting && pluginStateClearFormatting.unsubscribe(this.handlePluginStateClearFormattingChange);
   }
 
   render() {
     const {
       isOpen,
-      monoActive,
+      codeActive,
       strikeActive,
-      monoHidden,
+      codeHidden,
       strikeHidden,
-      monoDisabled,
+      codeDisabled,
       strikeDisabled,
+      clearFormattingDisabled,
     } = this.state;
-    if (!monoHidden && !strikeHidden) {
+    const {
+      pluginStateTextFormatting,
+      pluginStateClearFormatting,
+    } = this.props;
+    const hasMarksInSchema = !codeHidden || !strikeHidden;
+    if ((pluginStateTextFormatting && hasMarksInSchema) || pluginStateClearFormatting) {
       return (
         <DropdownList
           isOpen={isOpen}
@@ -60,8 +71,8 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
           position="top left"
           trigger={
             <ToolbarButton
-              selected={isOpen}
-              disabled={monoDisabled && strikeDisabled}
+              selected={isOpen || codeActive || strikeActive}
+              disabled={codeDisabled && strikeDisabled && clearFormattingDisabled}
               iconBefore={
                 <div className={styles.triggerWrapper}>
                   <AdvancedIcon label="text-formatting" />
@@ -72,65 +83,97 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
             />
           }
         >
-          <Group>
-            <Tooltip position="right" description={tooltip(toggleMonospace)}>
-              <Item
-                isActive={monoActive}
-                isDisabled={monoDisabled}
-                onActivate={this.handleMonoClick}
-              >
-                <span>Monospace</span>
-              </Item>
-            </Tooltip>
-            <Tooltip position="right" description={tooltip(toggleStrikethrough)}>
-              <Item
-                isActive={strikeActive}
-                isDisabled={strikeDisabled}
-                onActivate={this.handleStrikeClick}
-              >
-                <span>Strikethrough</span>
-              </Item>
-            </Tooltip>
-          </Group>
+          {(pluginStateTextFormatting && hasMarksInSchema) && <Group>
+            {!codeHidden &&
+              <Tooltip position="right" description={tooltip(toggleCode)}>
+                <Item
+                  isActive={codeActive}
+                  isDisabled={codeDisabled}
+                  onActivate={this.handleCodeClick}
+                >
+                  <span>Code</span>
+                </Item>
+              </Tooltip>}
+            {!strikeHidden &&
+              <Tooltip position="right" description={tooltip(toggleStrikethrough)}>
+                <Item
+                  isActive={strikeActive}
+                  isDisabled={strikeDisabled}
+                  onActivate={this.handleStrikeClick}
+                >
+                  <span>Strikethrough</span>
+                </Item>
+              </Tooltip>}
+          </Group>}
+          {pluginStateClearFormatting &&
+            <Group>
+              <Tooltip position="right" description={tooltip(clearFormatting)}>
+                <Item
+                  isDisabled={clearFormattingDisabled}
+                  onActivate={this.handleClearFormattingClick}
+                >
+                  <span>Clear formatting</span>
+                </Item>
+              </Tooltip>
+            </Group>}
         </DropdownList>
       );
+    } else {
+      return null;
     }
-    return null;
   }
 
   private toggleOpen = () => {
-    const isOpen = !this.state.isOpen;
-    this.setState({
-      isOpen,
-    });
+    const { codeDisabled, strikeDisabled, clearFormattingDisabled, isOpen } = this.state;
+    if (!(codeDisabled && strikeDisabled && clearFormattingDisabled)) {
+      this.setState({
+        isOpen: !isOpen,
+      });
+    }
   }
 
-  private handlePluginStateChange = (pluginState: TextFormattingState) => {
+  private handlePluginStateTextFormattingChange = (pluginState: TextFormattingState) => {
     this.setState({
-      monoActive: pluginState.monoActive,
-      monoDisabled: pluginState.monoDisabled,
-      monoHidden: pluginState.monoHidden,
+      codeActive: pluginState.codeActive,
+      codeDisabled: pluginState.codeDisabled,
+      codeHidden: pluginState.codeHidden,
       strikeActive: pluginState.strikeActive,
       strikeDisabled: pluginState.strikeDisabled,
       strikeHidden: pluginState.strikeHidden,
     });
   }
 
-  @analytics('atlassian.editor.format.monospace.button')
+  private handlePluginStateClearFormattingChange = (pluginState: ClearFormattingState) => {
+    this.setState({
+      clearFormattingDisabled: !pluginState.formattingIsPresent,
+    });
+  }
+
+  @analytics('atlassian.editor.format.strikethrough.button')
   private handleStrikeClick = () => {
-    if (!this.state.monoDisabled) {
-      const { pluginState } = this.props;
-      pluginState && pluginState.toggleStrike();
+    if (!this.state.strikeDisabled) {
+      const { pluginStateTextFormatting } = this.props;
+      pluginStateTextFormatting && pluginStateTextFormatting.toggleStrike();
       this.toggleOpen();
     }
   }
 
-  @analytics('atlassian.editor.format.strikethrough.button')
-  private handleMonoClick = () => {
-    if (!this.state.monoDisabled) {
-      const { pluginState } = this.props;
-      pluginState && pluginState.toggleMono();
+  @analytics('atlassian.editor.format.code.button')
+  private handleCodeClick = () => {
+    if (!this.state.codeDisabled) {
+      const { pluginStateTextFormatting } = this.props;
+      pluginStateTextFormatting && pluginStateTextFormatting.toggleCode();
       this.toggleOpen();
     }
   }
+
+  @analytics('atlassian.editor.format.clear.button')
+  private handleClearFormattingClick = () => {
+    if (!this.state.clearFormattingDisabled) {
+      const { pluginStateClearFormatting } = this.props;
+      pluginStateClearFormatting && pluginStateClearFormatting.clearFormatting();
+      this.toggleOpen();
+    }
+  }
+
 };

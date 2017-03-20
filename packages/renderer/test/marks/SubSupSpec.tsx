@@ -2,6 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import SubSup from '../../src/marks/subsup';
+import { isSubSupType } from '../../src/marks/subsup';
 
 describe('<SubSup />', () => {
 
@@ -26,6 +27,20 @@ describe('<SubSup />', () => {
 
     it('should output correct html', () => {
       expect(mark.html()).to.equal('<sup>This is sup</sup>');
+    });
+  });
+
+  describe('isSubSupType', () => {
+    it('should return false if type is not "sub" or "sup"', () => {
+      expect(isSubSupType('banana')).to.equal(false);
+    });
+
+    it('should return true if type is "sub"', () => {
+      expect(isSubSupType('sub')).to.equal(true);
+    });
+
+    it('should return true if type is "sup"', () => {
+      expect(isSubSupType('sup')).to.equal(true);
     });
   });
 

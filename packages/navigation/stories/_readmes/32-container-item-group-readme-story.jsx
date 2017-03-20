@@ -10,6 +10,8 @@ const containerItemGroupPropDescriptions = {
   action: 'An action to place alongside the header of the container item group',
   children: 'The items that belong to this group',
   title: 'The header of the group, details the semantic grouping that this ContainerItemGroup represents',
+  hasSeparator: 'Defines if the group sould draw a line to divide its content from the section above',
+  appearance: 'The visual style of the ContainerNavigation - it can be styled to appear like the GlobalNavigation, to create the Global product home navigation. This is useful for product dashboard screens.',
 };
 
 storiesOf(name, module)

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component, UIEvent } from 'react';
-import { debounce } from 'lodash';
+import * as debounce from 'lodash.debounce';
 
 export type ThresholdReachedEventHandler = () => void;
 
@@ -19,7 +19,7 @@ export interface InfiniteScrollState {
 
 export class InfiniteScroll extends Component<InfiniteScrollProps, InfiniteScrollState> {
   static defaultProps = {
-    width: 'auto',
+    width: '100%',
     delay: 1000,
     threshold: 100
   };

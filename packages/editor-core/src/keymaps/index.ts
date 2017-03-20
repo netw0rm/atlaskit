@@ -6,8 +6,9 @@ export const toggleBold = makeKeyMapWithCommon('Toggle bold', 'Mod-B');
 export const toggleItalic = makeKeyMapWithCommon('Toggle italic', 'Mod-I');
 export const toggleUnderline = makeKeyMapWithCommon('Toggle underline', 'Mod-U');
 export const toggleStrikethrough = makeKeyMapWithCommon('Toggle strikethrough', 'Mod-Shift-S');
-export const toggleMonospace = makeKeyMapWithCommon('Toggle monospace', 'Mod-Shift-M');
+export const toggleCode = makeKeyMapWithCommon('Toggle code', 'Mod-Shift-M');
 export const setNormalText = makeKeyMap('Normal text', 'Ctrl-0', 'Cmd-Alt-0');
+export const clearFormatting = makeKeyMapWithCommon('Clear formatting', 'Mod-\\');
 export const setHeading1 = makeKeyMap('Heading 1', 'Ctrl-1', 'Cmd-Alt-1');
 export const setHeading2 = makeKeyMap('Heading 2', 'Ctrl-2', 'Cmd-Alt-2');
 export const setHeading3 = makeKeyMap('Heading 3', 'Ctrl-3', 'Cmd-Alt-3');
@@ -24,6 +25,10 @@ export const insertHorizontalRule = makeKeyMapWithCommon('Insert horizontal rule
 export const createCodeBlock = makeKeyMapWithCommon('Create code block', 'Enter');
 export const moveUp = makeKeyMapWithCommon('Move up', 'Up');
 export const moveDown = makeKeyMapWithCommon('Move down', 'Down');
+export const undo = makeKeyMapWithCommon('Undo', 'Mod-Z');
+export const redo = makeKeyMap('Redo', 'Ctrl-Y', 'Cmd-Shift-Z');
+export const redoBarred = makeKeyMap('Redo Barred', 'Ctrl-Shift-Z', 'Cmd-Y');
+export const addLink = makeKeyMapWithCommon('Add Link', 'Mod-K');
 
 export function tooltip(keymap: Keymap | undefined): string | undefined {
   if (keymap) {
@@ -38,6 +43,16 @@ export function tooltip(keymap: Keymap | undefined): string | undefined {
       shortcut = keymap.windows;
     }
     return `${keymap.description} (${shortcut})`;
+  }
+}
+
+export function findKeyMapForBrowser(kayMap: Keymap): string | undefined {
+  if (kayMap) {
+    if (browser.mac) {
+      return kayMap.mac;
+    }
+
+    return kayMap.windows;
   }
 }
 
@@ -58,7 +73,7 @@ export function findShorcutByDescription(description: string): string | undefine
 }
 
 const ALL = [toggleOrderedList, toggleBulletList, toggleBold, toggleItalic,
-  toggleUnderline, toggleStrikethrough, toggleMonospace,
+  toggleUnderline, toggleStrikethrough, toggleCode,
   setNormalText, setHeading1, setHeading2, setHeading3, setHeading4, setHeading5,
   setBlockQuote, setCodeBlock, setPanel, insertNewLine, insertHorizontalRule,
   splitCodeBlock, createCodeBlock, splitListItem, moveUp, moveDown];

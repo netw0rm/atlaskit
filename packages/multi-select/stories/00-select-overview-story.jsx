@@ -23,6 +23,7 @@ import SmartSelectElemBefore from './examples/SmartSelectElemBefore';
 import SmartSelectElemBeforeRaw from '!raw!./examples/SmartSelectElemBefore';
 /* eslint-enable import/first, import/no-duplicates */
 
+// DummyItem exists so that we have a component to pass to <Props/>
 import DummyItem from '../src/internal/DummyItem';
 import { name, description } from '../package.json';
 

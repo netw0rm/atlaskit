@@ -23,7 +23,7 @@ export default class InlineEdit extends PureComponent {
     onCancel: PropTypes.func.isRequired,
     labelHtmlFor: PropTypes.string,
     shouldConfirmOnEnter: PropTypes.bool,
-    shouldWrapEditViewWithFieldBase: PropTypes.bool,
+    disableEditViewFieldBase: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -33,7 +33,7 @@ export default class InlineEdit extends PureComponent {
     areActionButtonsHidden: false,
     isConfirmOnBlurDisabled: false,
     shouldConfirmOnEnter: false,
-    shouldWrapEditViewWithFieldBase: true,
+    disableEditViewFieldBase: false,
   }
 
   state = {
@@ -163,8 +163,7 @@ export default class InlineEdit extends PureComponent {
           }) :
           this.props.editView;
 
-    return this.props.shouldWrapEditViewWithFieldBase ?
-      this.wrapWithFieldBase(editView) : editView;
+    return this.props.disableEditViewFieldBase ? editView : this.wrapWithFieldBase(editView);
   }
 
   render() {

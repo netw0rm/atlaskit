@@ -40,8 +40,7 @@ export default class extends PureComponent {
   }
 
   onSelect = (e) => {
-    this.setState({ editValue: e.item });
-    this.onConfirm();
+    this.setState({ editValue: e.item }, this.onConfirm);
   }
 
   renderReadView = () => (
@@ -73,7 +72,7 @@ export default class extends PureComponent {
         onEditRequested={() => this.setState({ isEditing: true })}
         onConfirm={this.onConfirm}
         onCancel={this.onCancel}
-        shouldWrapEditViewWithFieldBase={false}
+        disableEditViewFieldBase
         areActionButtonsHidden
         {...this.props}
       />

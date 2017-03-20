@@ -223,32 +223,32 @@ describe('@atlaskit/inline-edit', () => {
     });
   });
 
-  describe('shouldWrapEditViewWithFieldBase', () => {
-    it('should not wrap editView in a FieldBase when set to false', () => {
+  describe('disableEditViewFieldBase', () => {
+    it('should not wrap editView in a FieldBase when set to true', () => {
       const wrapper = mount(
         <InlineEdit
           {...defaultProps}
           isEditing
-          shouldWrapEditViewWithFieldBase={false}
+          disableEditViewFieldBase
         />
       );
 
       expect(wrapper.find(FieldBase).length).to.equal(0);
     });
 
-    it('should wrap editView in a FieldBase when set to true', () => {
+    it('should wrap editView in a FieldBase when set to false', () => {
       const wrapper = mount(
         <InlineEdit
           {...defaultProps}
           isEditing
-          shouldWrapEditViewWithFieldBase
+          disableEditViewFieldBase={false}
         />
       );
 
       expect(wrapper.find(FieldBase).length).to.equal(1);
     });
 
-    it('should default to true', () => {
+    it('should default to false', () => {
       const wrapper = mount(
         <InlineEdit
           {...defaultProps}
@@ -256,7 +256,7 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
 
-      expect(wrapper.prop('shouldWrapEditViewWithFieldBase')).to.equal(true);
+      expect(wrapper.prop('disableEditViewFieldBase')).to.equal(false);
     });
   });
 });

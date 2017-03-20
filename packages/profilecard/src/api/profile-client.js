@@ -1,5 +1,6 @@
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
+import { LRUCache } from 'lru-fast';
 
 /**
  * Transform response from GraphQL
@@ -103,15 +104,46 @@ const requestService = (baseUrl, options) => {
 
 class ProfileClient {
   constructor(config) {
-    if (!config.url) {
+    const defaults = {
+      cacheSize: 0,
+    };
+
+    this.config = { ...defaults, ...config };
+    this.cache = this.config.cacheSize
+      ? new LRUCache(this.config.cacheSize) : false;
+  }
+
+  makeRequest(options) {
+    if (!this.config.url) {
       throw new Error('config.url is a required parameter');
     }
 
-    this.config = config;
+    return requestService(this.config.url, options);
   }
 
-  fetch(options) {
-    return requestService(this.config.url, options);
+  getCachedProfile(options) {
+    return this.cache ? this.cache.get(options.userId) : false;
+  }
+
+  flushCache() {
+    if (this.cache) {
+      this.cache.removeAll();
+    }
+  }
+
+  getProfile(options) {
+    return new Promise((resolve, reject) => {
+      this.makeRequest(options)
+      .then((data) => {
+        if (this.cache) {
+          this.cache.put(options.userId, data);
+        }
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
   }
 }
 

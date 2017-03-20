@@ -1,21 +1,20 @@
 import React, { PureComponent, PropTypes } from 'react';
 
 import AkProfilecardStatic from './profilecard';
-import ProfileClient from './api/profile-client';
 
 export default class ProfilecardResourced extends PureComponent {
   static propTypes = {
     userId: PropTypes.string.isRequired,
     cloudId: PropTypes.string.isRequired,
-    actions: React.PropTypes.arrayOf(React.PropTypes.shape({
-      callback: React.PropTypes.func,
-      label: React.PropTypes.string,
+    actions: PropTypes.arrayOf(PropTypes.shape({
+      callback: PropTypes.func,
+      label: PropTypes.string,
     })),
-    apiEndpoint: React.PropTypes.string,
-
-    resourceClient: React.PropTypes.shape({
-      fetch: React.PropTypes.func,
-    }),
+    resourceClient: PropTypes.shape({
+      getProfile: PropTypes.func,
+      getCachedProfile: PropTypes.func,
+      makeRequest: PropTypes.func,
+    }).isRequired,
   }
 
   static defaultProps = {
@@ -24,10 +23,6 @@ export default class ProfilecardResourced extends PureComponent {
 
   constructor(props) {
     super(props);
-
-    this.profileClient = props.resourceClient || new ProfileClient({
-      url: props.apiEndpoint,
-    });
 
     this.state = {
       isLoading: false,
@@ -51,19 +46,43 @@ export default class ProfilecardResourced extends PureComponent {
     }
   }
 
+  updateData(dataObject) {
+    const newData = { ...this.state.data, ...dataObject };
+
+    this.setState({
+      data: newData,
+    });
+  }
+
+  updatePresence(presence) {
+    const data = this.state.data;
+    const newData = { ...data, presence };
+
+    this.setState({
+      data: newData,
+    });
+  }
+
   clientFetchProfile() {
+    const options = {
+      cloudId: this.props.cloudId,
+      userId: this.props.userId,
+    };
+
+    const cache = this.props.resourceClient.getCachedProfile(options);
+
+    if (cache) {
+      this.handleClientSuccess(cache);
+      return;
+    }
+
     this.setState({
       isLoading: true,
       hasError: false,
       data: {},
     });
 
-    const options = {
-      cloudId: this.props.cloudId,
-      userId: this.props.userId,
-    };
-
-    this.profileClient.fetch(options)
+    this.props.resourceClient.getProfile(options)
     .then(
       res => this.handleClientSuccess(res),
       err => this.handleClientError(err),

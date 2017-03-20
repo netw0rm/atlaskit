@@ -11,8 +11,8 @@ export * from './transactions';
 export {
   doc, p, blockquote, code_block,
   h1, h2, h3, h4, h5, h6,
-  li, ul, ol, br, img, hr, em, strong, code, a, underline,
-  strike, text, fragment, slice, mention, emoji,
+  li, ul, ol, br, img, hr, em, strong, code, a, u, subsup,
+  strike, text, fragment, slice, mention, emoji, plain,
   nodeFactory, markFactory, BuilderContent, coerce, offsetRefs,
   linkable, unlinkable
 } from './schema-builder';

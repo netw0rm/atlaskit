@@ -35,9 +35,8 @@ export function insertText(view: EditorView, text: string, from: number, to?: nu
   let str;
   let pos = from;
 
-  if (text.match(/\~\*\`/)) {
+  if (text.match(/\~|\*|\`/)) {
     str = text.substr(len - 1, len);
-
     view.dispatch(view.state.tr.insertText(text.substr(0, len - 1), from, to));
     pos = view.state.selection.from;
   } else {

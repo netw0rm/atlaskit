@@ -7,7 +7,7 @@ import {
   strong,
   code,
   strike,
-  underline,
+  u,
   bulletList,
   orderedList,
   listItem,
@@ -20,7 +20,8 @@ import {
   emoji,
   link,
   image,
-  mentionQuery
+  mentionQuery,
+  subsup
 } from '../schema';
 
 const nodes = {
@@ -39,7 +40,8 @@ const nodes = {
   emoji,
   image,
   linkable: {...paragraph, content: 'text<link>*'},
-  unlinkable: {...paragraph, content: 'text*'}
+  unlinkable: {...paragraph, content: 'text*'},
+  plain: { ...paragraph, content: 'text*' }
 };
 
 const marks = {
@@ -47,9 +49,10 @@ const marks = {
   strong,
   code,
   strike,
-  underline,
+  u,
   link,
-  mentionQuery
+  mentionQuery,
+  subsup
 };
 
 export default new Schema<typeof nodes, typeof marks>({ nodes, marks });

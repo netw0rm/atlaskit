@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { Schema, doc, paragraph, text, underline } from '../../../src';
+import { Schema, doc, paragraph, text, u } from '../../../src';
 import { chaiPlugin, fromHTML, toHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
@@ -11,14 +11,14 @@ describe('ak-editor-core/schema underline mark', () => {
 
   it('serializes to <u>', () => {
     const schema = makeSchema();
-    const node = schema.text('foo', [ schema.marks.underline.create() ] );
+    const node = schema.text('foo', [ schema.marks.u.create() ] );
     expect(toHTML(node, schema)).to.equal('<u>foo</u>');
   });
 });
 
 function makeSchema () {
   const nodes = {doc, paragraph, text};
-  const marks = {underline};
+  const marks = {u};
   return new Schema<typeof nodes, typeof marks>({ nodes, marks });
 }
 
@@ -26,8 +26,8 @@ function itMatches(html: string, expectedText: string) {
   it(`matches ${html}`, () => {
     const schema = makeSchema();
     const doc = fromHTML(`${html}`, schema);
-    const underline = schema.marks.underline.create();
+    const u = schema.marks.u.create();
 
-    expect(doc).to.have.textWithMarks(expectedText, [ underline ]);
+    expect(doc).to.have.textWithMarks(expectedText, [ u ]);
   });
 }

@@ -32,9 +32,9 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
     keymaps.bindKeymapWithCommand(keymaps.toggleStrikethrough.common!, trackAndInvoke(eventName, commands.toggleMark(schema.marks.strike)), list);
   }
 
-  if (schema.marks.underline) {
+  if (schema.marks.u) {
     const eventName = analyticsEventName(schema.marks.strong);
-    keymaps.bindKeymapWithCommand(keymaps.toggleUnderline.common!, trackAndInvoke(eventName, commands.toggleMark(schema.marks.underline)), list);
+    keymaps.bindKeymapWithCommand(keymaps.toggleUnderline.common!, trackAndInvoke(eventName, commands.toggleMark(schema.marks.u)), list);
   }
 
   plugin = keymap(list);

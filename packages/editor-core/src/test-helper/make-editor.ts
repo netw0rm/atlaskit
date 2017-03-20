@@ -26,7 +26,7 @@ export default (options: Options) : EditorInstance => {
       options.plugin,
       keymap(baseKeymap)
     ]
-  });
+  }) as ProseMirrorWithRefs;
   const editorView = new EditorView(options.place || document.body, {
     state: editorState
   });

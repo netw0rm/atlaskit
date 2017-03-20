@@ -17,6 +17,7 @@ import {
   ProseMirror,
   DefaultKeymapsPlugin,
   TextFormattingPlugin,
+  ClearFormattingPlugin,
   version as coreVersion
 } from '@atlaskit/editor-core';
 import * as React from 'react';
@@ -175,6 +176,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
+        pluginStateClearFormatting={pm && ClearFormattingPlugin.get(pm)}
         pluginStateImageUpload={pm && ImageUploadPlugin.get(pm)}
         pluginStateMentions={pm && this.mentionsResourceProvider && MentionsPlugin.get(pm)!}
         mentionsResourceProvider={this.mentionsResourceProvider}
@@ -218,6 +220,7 @@ export default class Editor extends PureComponent<Props, State> {
           CodeBlockPlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          ClearFormattingPlugin,
           HorizontalRulePlugin,
           DefaultKeymapsPlugin,
           ...( this.mentionsResourceProvider ? [ MentionsPlugin ] : [] ),

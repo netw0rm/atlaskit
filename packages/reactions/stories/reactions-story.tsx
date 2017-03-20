@@ -4,8 +4,11 @@ import { ReactionPicker, Reactions, ResourcedReactions, ResourcedReactionPicker 
 import Reaction from '../src/internal/reaction';
 import Selector, { defaultReactionsByShortcut } from '../src/internal/selector';
 import Trigger from '../src/internal/trigger';
-import { getEmojiResource } from './examples/emoji-provider';
 import { reactionsProvider, reactionsProviderPromise } from './examples/reactions-provider';
+
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojiResource } = emojiTestData.emojiStoryData;
 
 import { name } from '../package.json';
 

@@ -7,7 +7,7 @@ import * as styles from './styles';
 import Error from '../MentionListError';
 import MentionItem from '../MentionItem';
 import Scrollable from '../Scrollable';
-import { Mention, OnSelection } from '../../types';
+import { Mention, OnMentionEvent } from '../../types';
 import debug from '../../util/logger';
 import { mouseLocation, actualMouseMove, Position } from '../../util/mouse';
 
@@ -41,7 +41,7 @@ function getIndex(key: string, mentions?: Mention[]): number | undefined {
 export interface Props {
   mentions: Mention[];
   showError?: boolean;
-  onSelection: OnSelection;
+  onSelection?: OnMentionEvent;
 }
 
 export interface State {
@@ -111,7 +111,7 @@ export default class MentionList extends PureComponent<Props, State> {
     this.selectIndex(newIndex);
   }
 
-  selectIndex(index: number, callback?: () => any): void {
+  selectIndex = (index: number, callback?: () => any): void => {
     const { mentions } = this.props;
     this.setState({
       selectedIndex: index,
@@ -119,7 +119,7 @@ export default class MentionList extends PureComponent<Props, State> {
     }, callback);
   }
 
-  selectId(id: string, callback?: () => any): void {
+  selectId = (id: string, callback?: () => any): void => {
     const { mentions } = this.props;
     const index = getIndex(id, mentions);
     if (index !== undefined) {
@@ -140,7 +140,7 @@ export default class MentionList extends PureComponent<Props, State> {
     }
   }
 
-  mentionsCount(): number {
+  mentionsCount = (): number => {
     const { mentions } = this.props;
     return mentions && mentions.length || 0;
   }
@@ -160,12 +160,18 @@ export default class MentionList extends PureComponent<Props, State> {
     });
   }
 
-  private selectIndexOnHover(mouseEvent: MouseEvent<any>, index: number) {
-    const mousePosition = mouseLocation(mouseEvent);
+  private selectIndexOnHover = (mention: Mention, event: MouseEvent<any>) => {
+    const mousePosition = mouseLocation(event);
     if (actualMouseMove(this.lastMousePosition, mousePosition)) {
-      this.selectIndex(index);
+      this.selectId(mention.id);
     }
     this.lastMousePosition = mousePosition;
+  }
+
+  private itemSelected = (mention: Mention) => {
+    this.selectId(mention.id, () => {
+      this.chooseCurrentSelection();
+    });
   }
 
   private renderItems(): JSX.Element | null {
@@ -180,27 +186,16 @@ export default class MentionList extends PureComponent<Props, State> {
           {mentions.map((mention, idx) => {
             const selected = selectedKey === mention.id;
             const key = mention.id;
-            const presence = mention.presence || {};
-            const { status, time } = presence;
             const item = (
               <MentionItem
-                {...mention}
-                avatarUrl={mention.avatarUrl}
-                key={key}
+                mention={mention}
                 selected={selected}
-                status={status}
-                time={time}
-                onMouseMove={(mouseEvent) => {
-                  this.selectIndexOnHover(mouseEvent, idx);
-                }}
+                key={key}
+                onMouseMove={this.selectIndexOnHover}
                 /* Cannot use onclick, as onblur will close the element, and prevent
                  * onClick from firing.
                  */
-                onSelection={() => {
-                  this.selectIndex(idx, () => {
-                    this.chooseCurrentSelection();
-                  });
-                }}
+                onSelection={this.itemSelected}
                 ref={(ref) => {
                   if (ref) {
                     this.items[key] = ref;

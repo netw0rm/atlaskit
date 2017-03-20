@@ -5,8 +5,10 @@ import * as sinon from 'sinon';
 import { mount } from 'enzyme';
 import { Reactions } from '../src';
 import Reaction from '../src/internal/reaction';
-import { getEmojiResource } from '../stories/examples/emoji-provider';
 import { reactionsProvider } from '../stories/examples/reactions-provider';
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojiResourcePromise } = emojiTestData.emojiTestData;
 
 const { expect } = chai;
 
@@ -20,7 +22,7 @@ sinon.stub(reactionsProvider, 'subscribe', (ari: string, handler: Function) => {
 });
 
 const renderReactions = (onClick: Function = () => { }) => {
-  return <Reactions ari={demoAri} reactionsProvider={reactionsProvider} emojiProvider={getEmojiResource()} onReactionClick={onClick} />;
+  return <Reactions ari={demoAri} reactionsProvider={reactionsProvider} emojiProvider={getEmojiResourcePromise()} onReactionClick={onClick} />;
 };
 
 const getSortedReactions = () => {

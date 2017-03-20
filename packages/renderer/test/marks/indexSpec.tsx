@@ -2,6 +2,7 @@ import { mount } from 'enzyme';
 import { expect } from 'chai';
 import {
   getMarksByOrder,
+  getValidMark,
   isSameMark,
   markOrder,
   renderMark,
@@ -41,6 +42,156 @@ describe('Marks', () => {
         expect(markOrder[index]).to.equal(mark.type);
       });
     });
+  });
+
+  describe('getValidMark', () => {
+
+    describe('unkown', () => {
+      it('should return "unkown" if type is unkown', () => {
+        expect(getValidMark({ type: 'banana' }).type).to.equal('unknown');
+      });
+
+      it('should pass through content', () => {
+        expect(getValidMark({ type: 'banana', attrs: { color: 'yellow'  }, content: [] })).to.deep.equal({
+          type: 'unknown',
+          content: []
+        });
+      });
+    });
+
+    describe('em', () => {
+      it('should return "em" and pass through content', () => {
+        expect(getValidMark({ type: 'em', content: [ { type: 'text', text: 'Hello World' } ] })).to.deep.equal({
+          type: 'em',
+          content: [
+            {
+              type: 'text',
+              text: 'Hello World'
+            }
+          ]
+        });
+      });
+    });
+
+    describe('link', () => {
+      it('should return "unknown" if attrs is missing', () => {
+        expect(getValidMark({ type: 'link' }).type).to.equal('unknown');
+      });
+
+      it('should use attrs.href if present', () => {
+        expect(getValidMark({ type: 'link', attrs: { href: 'https://www.atlassian.com' }, content: [] })).to.deep.equal({
+          type: 'link',
+          attrs: {
+            href: 'https://www.atlassian.com'
+          },
+          content: []
+        });
+      });
+
+      it('should use attrs.url if present and attrs.href is missing', () => {
+        expect(getValidMark({ type: 'link', attrs: { url: 'https://www.atlassian.com' }, content: [] })).to.deep.equal({
+          type: 'link',
+          attrs: {
+            href: 'https://www.atlassian.com'
+          },
+          content: []
+        });
+      });
+    });
+
+    describe('mono', () => {
+      it('should return "mono" and pass through content', () => {
+        expect(getValidMark({ type: 'mono', content: [ { type: 'text', text: 'Hello World' } ] })).to.deep.equal({
+          type: 'mono',
+          content: [
+            {
+              type: 'text',
+              text: 'Hello World'
+            }
+          ]
+        });
+      });
+    });
+
+    describe('strike', () => {
+      it('should return "strike" and pass through content', () => {
+        expect(getValidMark({ type: 'strike', content: [ { type: 'text', text: 'Hello World' } ] })).to.deep.equal({
+          type: 'strike',
+          content: [
+            {
+              type: 'text',
+              text: 'Hello World'
+            }
+          ]
+        });
+      });
+    });
+
+    describe('strong', () => {
+      it('should return "strong" and pass through content', () => {
+        expect(getValidMark({ type: 'strong', content: [ { type: 'text', text: 'Hello World' } ] })).to.deep.equal({
+          type: 'strong',
+          content: [
+            {
+              type: 'text',
+              text: 'Hello World'
+            }
+          ]
+        });
+      });
+    });
+
+    describe('subsup', () => {
+      it('should return "unknown" if attrs is missing', () => {
+        expect(getValidMark({ type: 'subsup' }).type).to.equal('unknown');
+      });
+
+      it('should return "unknown" if attrs.type is not sub or sup', () => {
+        expect(getValidMark({ type: 'subsup', attrs: { type: 'banana'} }).type).to.equal('unknown');
+      });
+
+      it('should return "subsup" with correct type', () => {
+        expect(getValidMark({ type: 'subsup', attrs: { type: 'sub' }, content: [] })).to.deep.equal({
+          type: 'subsup',
+          attrs: {
+            type: 'sub'
+          },
+          content: []
+        });
+
+        expect(getValidMark({ type: 'subsup', attrs: { type: 'sup' }, content: [] })).to.deep.equal({
+          type: 'subsup',
+          attrs: {
+            type: 'sup'
+          },
+          content: []
+        });
+      });
+    });
+
+    describe('underline', () => {
+      it('should return "underline" and pass through content', () => {
+        expect(getValidMark({ type: 'underline', content: [ { type: 'text', text: 'Hello World' } ] })).to.deep.equal({
+          type: 'underline',
+          content: [
+            {
+              type: 'text',
+              text: 'Hello World'
+            }
+          ]
+        });
+      });
+    });
+
+    describe('text', () => {
+      it('should return "text" and pass through text value', () => {
+        expect(getValidMark({ type: 'text', text: 'Hello World' })).to.deep.equal({
+          type: 'text',
+           text: 'Hello World'
+        });
+      });
+    });
+
   });
 
   describe('isSameMark', () => {

@@ -11,10 +11,12 @@ import {
   wrappingInputRule,
   commands
 } from '../../prosemirror';
+import { insertBlankSpace } from '../../utils';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 import { isCodeBlockNode } from '../../schema';
 import Keymap from 'browserkeymap';
+import { transformToCodeAction } from '../text-formatting/transform-to-code';
 
 // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
 // input rule will allow for a list to start at any given number, which isn't allowed in
@@ -96,9 +98,19 @@ function replaceWithMark(
   mark: string,
   specialChar: string
 ): boolean {
-  const schema = pm.schema;
-  const to = pos;
   const from = pos - match[1].length;
+  return replaceRangeWithMark(pm, from, pos, mark, specialChar);
+}
+
+function replaceRangeWithMark(
+  pm: ProseMirror,
+  from: number,
+  to: number,
+  mark: string,
+  specialChar: string
+
+): boolean {
+  const schema = pm.schema;
   const markType = schema.mark(mark);
   const charSize = specialChar.length;
   const nodes: Node[] = [];
@@ -216,12 +228,18 @@ const strikeRule = new InputRule(/(\~\~([^\*]+)\~\~)$/, '~', (
   pos: number
 ) => replaceWithMark(pm, match, pos, 'strike', '~~'));
 
-// `string` should change the current text to monospace
-const monoRule = new InputRule(/(`([^`]+)`)$/, '`', (
+// `string` should change the current text to code
+const codeRule = new InputRule(/(`([^`]+)`)$/, '`', (
   pm: ProseMirror,
   match: string[],
   pos: number
-) => replaceWithMark(pm, match, pos, 'mono', '`'));
+) => {
+  const from = pos - match[1].length;
+  transformToCodeAction(pm, from, pos);
+  replaceRangeWithMark(pm, from, pm.selection.to, 'code', '`');
+  const tr = insertBlankSpace(pm);
+  tr && tr.apply();
+});
 
 const hrRule = new InputRule(/^\-\-\-$/, '-', (
   pm: ProseMirror,
@@ -239,7 +257,7 @@ export class MarkdownInputRulesPlugin {
       strongRule,
       emRule,
       strikeRule,
-      monoRule,
+      codeRule,
       imgRule,
       linkRule,
       hrRule,

@@ -3,13 +3,14 @@ import { PureComponent } from 'react';
 
 import * as classNames from 'classnames';
 
-import { Mention, OnSelection } from '../../types';
-import { MentionProvider, PresenceProvider, PresenceUpdate } from '../../api/MentionResource';
+import { Mention, OnMentionEvent } from '../../types';
+import { MentionProvider } from '../../api/MentionResource';
+import { PresenceProvider, PresenceMap } from '../../api/PresenceResource';
 import MentionList from '../MentionList';
 import debug from '../../util/logger';
 import uniqueId from '../../util/id';
 
-function applyPresence(mentions: Mention[], presences: PresenceUpdate) {
+function applyPresence(mentions: Mention[], presences: PresenceMap) {
   const updatedMentions: Mention[] = [];
   for (let i = 0; i < mentions.length; i++) {
     // Shallow copy
@@ -26,7 +27,7 @@ function applyPresence(mentions: Mention[], presences: PresenceUpdate) {
 }
 
 function extractPresences(mentions: Mention[]) {
-  const presences: PresenceUpdate = {};
+  const presences: PresenceMap = {};
   for (let i = 0; i < mentions.length; i++) {
     const mention = mentions[i];
     if (mention.presence) {
@@ -40,7 +41,7 @@ export interface Props {
   resourceProvider: MentionProvider;
   presenceProvider?: PresenceProvider;
   query?: string;
-  onSelection?: OnSelection;
+  onSelection?: OnMentionEvent;
 }
 
 export interface State {
@@ -91,13 +92,13 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
     }
   }
 
-  selectIndex(index: number, callback?: () => any): void {
+  selectIndex = (index: number, callback?: () => any): void => {
     if (this.mentionListRef) {
       this.mentionListRef.selectIndex(index, callback);
     }
   }
 
-  selectId(id: string, callback?: () => any): void {
+  selectId = (id: string, callback?: () => any): void => {
     if (this.mentionListRef) {
       this.mentionListRef.selectId(id, callback);
     }
@@ -109,7 +110,7 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
     }
   }
 
-  mentionsCount(): number {
+  mentionsCount = (): number => {
     if (this.mentionListRef) {
       return this.mentionListRef.mentionsCount();
     }
@@ -198,7 +199,7 @@ export default class ResourcedMentionList extends PureComponent<Props, State> {
     } as State);
   }
 
-  private presenceUpdate = (presences: PresenceUpdate): void => {
+  private presenceUpdate = (presences: PresenceMap): void => {
     this.setState({
       mentions: applyPresence(this.state.mentions, presences),
     } as State);

@@ -29,6 +29,10 @@ export default class FieldText extends PureComponent {
     type: 'text',
   }
 
+  focus() {
+    this.input.focus();
+  }
+
   render() {
     return (
       <div>
@@ -57,6 +61,7 @@ export default class FieldText extends PureComponent {
             onChange={this.props.onChange}
             id={this.props.id}
             autoFocus={this.props.autoFocus}
+            ref={(input) => { this.input = input; }}
           />
         </Base>
       </div>

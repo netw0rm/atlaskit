@@ -122,6 +122,10 @@ export class BlockTypeState {
       }
     }
 
+    if (name === CODE_BLOCK.name && nodes.code_block) {
+      return this.changeBlockTypeAtSelection(name, pm.selection.$from, pm.selection.$to, true);
+    }
+
     const groups = getGroupsInRange(pm, pm.selection.$from, pm.selection.$to);
     const { $from } = groups[0];
     const { $to } = groups[groups.length - 1];

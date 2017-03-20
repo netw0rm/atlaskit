@@ -53,7 +53,7 @@ export default function encode(node: DocNode) {
   }
 
   function makeDocument() {
-    const docType = document.implementation.createDocumentType('html', null, null);
+    const docType = document.implementation.createDocumentType('html', '', '');
     const doc = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', docType);
     doc.body = doc.createElement('body');
     doc.documentElement.appendChild(doc.body);
@@ -100,14 +100,14 @@ export default function encode(node: DocNode) {
           case schema.marks.strike:
             elem = elem.appendChild(doc.createElement('s'));
             break;
-          case schema.marks.mono:
-            elem = elem.appendChild(doc.createElement('code'));
-            break;
           case schema.marks.u:
             elem = elem.appendChild(doc.createElement('u'));
             break;
           case schema.marks.subsup:
             elem = elem.appendChild(doc.createElement(mark.attrs['type']));
+            break;
+          case schema.marks.code:
+            elem = elem.appendChild(doc.createElement('code'));
             break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);

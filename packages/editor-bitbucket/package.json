@@ -21,7 +21,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "@atlaskit/editor-core": "^5.0.0",
+    "@atlaskit/editor-core": "^7.1.0",
     "ak-editor-shared-styles": "^3.0.0",
     "@atlaskit/mention": "^1.3.4",
     "akutil-shared-styles": "^37.0.1",

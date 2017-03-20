@@ -465,5 +465,18 @@ describe('text-formatting', () => {
       plugin.toggleSuperscript();
       expect(plugin.subscriptActive).to.equal(false);
     });
+
+    it('deactives strong, em, strike after toggling code for selected text', () => {
+      const { plugin } = editor(doc(p('t{<}e{>}xt')));
+
+      expect(plugin.strongDisabled).to.be.false;
+      expect(plugin.emDisabled).to.be.false;
+      expect(plugin.strikeDisabled).to.be.false;
+      plugin.toggleCode();
+      expect(plugin.strongDisabled).to.be.true;
+      expect(plugin.emDisabled).to.be.true;
+      expect(plugin.strikeDisabled).to.be.true;
+    });
+
   });
 });

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-jira",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "config": {
     "access": "public"
   },
@@ -21,7 +21,7 @@
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "dependencies": {
-    "@atlaskit/editor-core": "^5.0.0",
+    "@atlaskit/editor-core": "^5.1.0",
     "@atlaskit/mention": "^2.1.0",
     "akutil-shared-styles": "^37.0.1",
     "collapse-whitespace": "^1.1.4",
@@ -39,5 +39,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "fabric",
+    "ui"
+  ]
 }

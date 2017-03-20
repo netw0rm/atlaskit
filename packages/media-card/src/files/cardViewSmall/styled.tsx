@@ -1,14 +1,12 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { Root, cardShadow, size, center, centerX, antialiased, ellipsis, borderRadius, spaceAround, easeInOutCubic, easeOutExpo, fadeIn } from '../../styles';
+import { Root, cardShadow, size, center, centerX, antialiased, ellipsis, borderRadius, spaceAround, easeInOutCubic, easeOutExpo } from '../../styles';
 import {
   akColorN30,
   akColorN70
 } from '@atlaskit/util-shared-styles';
 
 const imgSize = 32;
-
-export const transparentFallbackBackground = 'url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKAQMAAAC3/F3+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAABlBMVEXf39////8zI3BgAAAAEUlEQVQIW2Nk38mIjH5wICMAez4Iyz2C/F8AAAAASUVORK5CYII=")';
 
 export const SmallCard = styled(Root)`
   ${borderRadius}
@@ -157,12 +155,4 @@ export const PlaceholderSmallWrapper = styled.div`
 
     span {${size(12)}}
   }
-`;
-
-export const CardImage = styled.div`
-  ${size()}
-  ${fadeIn}
-  background-repeat: no-repeat, repeat;
-  background-position: center, center;
-  background-size: cover, auto;
 `;

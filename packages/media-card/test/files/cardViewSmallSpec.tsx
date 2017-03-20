@@ -22,7 +22,7 @@ describe('CardViewSmall', () => {
         dataURI={'some-data-uri'}
       />);
 
-    expect(cardView.find('.card-img').first().props().style.backgroundImage).to.contain('some-data-uri');
+    expect(cardView.find('.media-card').first().props().style.backgroundImage).to.contain('some-data-uri');
     expect(cardView.find('.title').first().text()).to.equal('some-name');
     expect(cardView.find('.size').first().text()).to.equal('1 kB');
   });

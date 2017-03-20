@@ -4,13 +4,12 @@ import AkBadge from '@atlaskit/badge';
 import Button from '@atlaskit/button';
 import {
   Lists,
-  Wrapper,
-  SquareThumbnail,
-  Details,
   Footer,
   Link,
   Header
 } from './styled';
+import {Wrapper, Details} from '../../../styled';
+import {MediaImage} from '../../../../utils';
 import {MembersList, MemberAvatars} from '../shared';
 
 export interface LinkCardTrelloBoardViewProps {
@@ -43,7 +42,7 @@ export class LinkCardTrelloBoardView extends Component<LinkCardTrelloBoardViewPr
   render() {
     const {linkUrl, title, thumbnailUrl, iconUrl} = this.props;
     const cardStyle = {height: `${this.props.height}px`, width: `${this.props.width}px`};
-    const thumbnail = thumbnailUrl ? <SquareThumbnail className="square-img" style={{backgroundImage: `url(${thumbnailUrl})`}} /> : null;
+    const thumbnail = thumbnailUrl ? <MediaImage dataURI={thumbnailUrl} /> : null;
     const icon = iconUrl ? <img src={iconUrl} alt={title} /> : null;
     const lists = this.props.lists.slice(0, 3).map(l => (
       <li key={l.name}>{l.name} <AkBadge value={l.count} appearance="added"/></li>

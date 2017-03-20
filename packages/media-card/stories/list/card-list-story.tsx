@@ -193,7 +193,7 @@ storiesOf('CardList', {})
     </div>;
   })
   .add('With infinite scroll with small cards', () => {
-    return <div style={{display: 'inline-block'}}>
+    return <div style={{display: 'inline-block', width: '300px', background: 'white', border: '2px solid'}}>
       <CardList
         context={context}
         collectionName={collectionName}

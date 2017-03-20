@@ -61,7 +61,8 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       pluginStateTextFormatting,
       pluginStateClearFormatting,
     } = this.props;
-    if (pluginStateTextFormatting || pluginStateClearFormatting) {
+    const hasMarksInSchema = !codeHidden || !strikeHidden;
+    if ((pluginStateTextFormatting && hasMarksInSchema) || pluginStateClearFormatting) {
       return (
         <DropdownList
           isOpen={isOpen}
@@ -70,7 +71,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
           position="top left"
           trigger={
             <ToolbarButton
-              selected={isOpen}
+              selected={isOpen || codeActive || strikeActive}
               disabled={codeDisabled && strikeDisabled && clearFormattingDisabled}
               iconBefore={
                 <div className={styles.triggerWrapper}>
@@ -82,7 +83,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
             />
           }
         >
-          {pluginStateTextFormatting && <Group>
+          {(pluginStateTextFormatting && hasMarksInSchema) && <Group>
             {!codeHidden &&
               <Tooltip position="right" description={tooltip(toggleCode)}>
                 <Item

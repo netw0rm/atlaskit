@@ -76,6 +76,12 @@ storiesOf(name, module)
               <td>A callback for handling an analytics event emitted from the editor.</td>
             </tr>
             <tr>
+              <td><code>allowAdvancedTextFormatting</code></td>
+              <td><code>boolean</code></td>
+              <td><code>false</code></td>
+              <td>If <code>true</code>, inline code and strikethrough can be used in the editor.</td>
+            </tr>
+            <tr>
               <td><code>allowLists</code></td>
               <td><code>boolean</code></td>
               <td><code>false</code></td>

@@ -27,16 +27,6 @@ describe('inputrules', () => {
     });
 
     context('when node is convertable to code block', () => {
-      context('when converted node has content', () => {
-        it('should convert "```" to a code block', () => {
-          const { editorView, sel } = editor(doc(p('{<>}hello', br, 'world')));
-
-          insertText(editorView, '```', sel);
-
-          expect(editorView.state.doc).to.deep.equal(doc(code_block()('hello\nworld')));
-        });
-      });
-
       context('when converted node has no content', () => {
         it('should not convert "```" to a code block\t', () => {
           const { editorView, sel } = editor(doc(p('{<>}')));

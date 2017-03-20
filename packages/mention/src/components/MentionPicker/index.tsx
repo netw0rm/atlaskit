@@ -4,7 +4,8 @@ import * as classNames from 'classnames';
 
 import * as styles from './styles';
 import { OnMentionEvent } from '../../types';
-import { MentionProvider, PresenceProvider } from '../../api/MentionResource';
+import { MentionProvider } from '../../api/MentionResource';
+import { PresenceProvider } from '../../api/PresenceResource';
 import ResourcedMentionList from '../ResourcedMentionList';
 import Popup from '../Popup';
 import debug from '../../util/logger';

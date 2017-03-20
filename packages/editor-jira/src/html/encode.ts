@@ -178,12 +178,18 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     elem.setAttribute('class', 'alternate');
     elem.setAttribute('type', 'square');
     elem.appendChild(encodeFragment(node.content));
+    for (let index = 0; index < elem.childElementCount; index++) {
+      elem.children[index].setAttribute('data-parent', 'ul');
+    }
     return elem;
   }
 
   function encodeOrderedList(node: OrderedListNode) {
     const elem = doc.createElement('ol');
     elem.appendChild(encodeFragment(node.content));
+    for (let index = 0; index < elem.childElementCount; index++) {
+      elem.children[index].setAttribute('data-parent', 'ol');
+    }
     return elem;
   }
 

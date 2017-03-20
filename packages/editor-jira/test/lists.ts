@@ -19,7 +19,7 @@ describe(name, () => {
   describe('lists', () => {
     checkParseEncodeRoundTrips('bullet list',
       schema,
-      '<ul class="alternate" type="square"><li>one</li><li>two</li></ul>',
+      '<ul class="alternate" type="square"><li data-parent="ul">one</li><li data-parent="ul">two</li></ul>',
       doc(
         ul(
           li(p('one')),
@@ -29,7 +29,7 @@ describe(name, () => {
 
     checkParseEncodeRoundTrips('ordered list',
       schema,
-      '<ol><li>one</li><li>two</li></ol>',
+      '<ol><li data-parent="ol">one</li><li data-parent="ol">two</li></ol>',
       doc(
         ol(
           li(p('one')),
@@ -39,7 +39,7 @@ describe(name, () => {
 
     checkParseEncodeRoundTrips('bullet list with strong',
       schema,
-      '<ul class="alternate" type="square"><li>A piggy</li><li><b>Bigger</b> piggy</li></ul>',
+      '<ul class="alternate" type="square"><li data-parent="ul">A piggy</li><li data-parent="ul"><b>Bigger</b> piggy</li></ul>',
       doc(
         ul(
           li(p('A piggy')),
@@ -49,7 +49,7 @@ describe(name, () => {
 
     checkParseEncodeRoundTrips('ordered list with strong',
       schema,
-      '<ol><li>A piggy</li><li><b>Bigger</b> piggy</li></ol>',
+      '<ol><li data-parent="ol">A piggy</li><li data-parent="ol"><b>Bigger</b> piggy</li></ol>',
       doc(
         ol(
           li(p('A piggy')),

@@ -4,7 +4,8 @@ import { Component } from 'react';
 
 import MentionPicker, { Position } from '../src/components/MentionPicker';
 import { Mention, OnMentionEvent } from '../src/types';
-import { MentionProvider, PresenceProvider } from '../src/api/MentionResource';
+import { MentionProvider } from '../src/api/MentionResource';
+import { PresenceProvider } from '../src/api/PresenceResource';
 
 import SearchTextInput from './demo-search-text-input';
 import debug from '../src/util/logger';

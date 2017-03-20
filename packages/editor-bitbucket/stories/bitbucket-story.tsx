@@ -15,10 +15,22 @@ const SAVE_ACTION = () => action('Save')();
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
+const isClipboardEvent = (e: Event) => {
+  return (typeof ClipboardEvent !== 'undefined')
+    ? e instanceof ClipboardEvent
+    : (e as ClipboardEvent).clipboardData instanceof DataTransfer;
+};
+
+const isDragEvent = (e: Event) => {
+  return (typeof DragEvent !== 'undefined')
+    ? e instanceof DragEvent
+    : (e as DragEvent).dataTransfer instanceof DataTransfer;
+};
+
 const imageUploadHandler = (e: any, fn: any) => {
-  if (e instanceof ClipboardEvent) {
+  if (isClipboardEvent(e)) {
     pasteHandler(converter, e, fn);
-  } else if (e instanceof DragEvent) {
+  } else if (isDragEvent(e)) {
     dropHandler(converter, e, fn);
   } else {
     // we cannot trigger a real file viewer from here

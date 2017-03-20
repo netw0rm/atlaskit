@@ -115,7 +115,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
 
   private onWindowResize = (event) => {
     const parent = ReactDOM.findDOMNode(this).parentElement;
-    if (!parent) { return; }
+    if (!parent || !this.allowNavigation) { return; }
 
     this.wrapperWidth = parent.getBoundingClientRect().width;
     this.setNewPosition(this.state.position, this.state.showTransition);

@@ -2,7 +2,7 @@ import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chro
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 
-import { Mention, Presence } from '../types';
+import { Mention } from '../types';
 import debug from '../util/logger';
 
 export interface KeyValues {
@@ -41,10 +41,6 @@ export interface InfoCallback {
   (info: string): void;
 }
 
-export interface PresenceUpdate {
-  [index: string]: Presence;
-}
-
 export interface MentionsResult {
   mentions: Mention[];
 }
@@ -68,10 +64,6 @@ export interface MentionProvider extends ResourceProvider<Mention[]> {
   filter(query?: string): void;
   recordMentionSelection(mention: Mention): void;
   shouldHighlightMention(mention: Mention): boolean;
-}
-
-export interface PresenceProvider extends ResourceProvider<PresenceUpdate> {
-  refreshPresence(arrayOfIds: string[]): void;
 }
 
 const emptySecurityProvider = () => {
@@ -187,24 +179,6 @@ class AbstractResource<Result> implements ResourceProvider<Result> {
     this.changeListeners.delete(key);
     this.errListeners.delete(key);
     this.infoListeners.delete(key);
-  }
-}
-
-class AbstractPresenceResource extends AbstractResource<PresenceUpdate> {
-  // eslint-disable-next-line class-methods-use-this
-  refreshPresence(arrayOfIds: string[]): void {
-    throw new Error(`not yet implemented.\nParams: arrayOfIds=${arrayOfIds}`);
-  }
-
-  protected notifyListeners(presences: PresenceUpdate): void {
-    this.changeListeners.forEach((listener, key) => {
-      try {
-        listener(presences);
-      } catch (e) {
-        // ignore error from listener
-        debug(`error from listener '${key}', ignoring`, e);
-      }
-    });
   }
 }
 
@@ -372,5 +346,5 @@ class MentionResource extends AbstractMentionResource {
   }
 }
 
-export { AbstractResource, AbstractMentionResource, AbstractPresenceResource };
+export { AbstractResource, AbstractMentionResource };
 export default MentionResource;

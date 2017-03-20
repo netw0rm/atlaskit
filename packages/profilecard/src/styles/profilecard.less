@@ -16,7 +16,7 @@
   background-image: linear-gradient(
     to bottom,
     @ak-color-B500 0%,
-    @ak-color-B500 100%,
+    @ak-color-B500 100%
   );
   background-repeat: no-repeat;
   background-size: 100% (@ak-grid-size * 12);
@@ -26,19 +26,12 @@
   position: absolute;
   top: @ak-grid-size * 3;
   left: @ak-grid-size * 3;
-
-  // @FIXME: Hack to already get ak-avatar to 96px
-  // Remove after ak-avatar sizes are updated to 8px grid
-  // https://ecosystem.atlassian.net/browse/AK-1469
-  & > div > div:nth-child(1) {
-    width: @ak-grid-size * 12;
-    height: @ak-grid-size * 12;
-  }
 }
 
 .detailsWrapper {
   display: flex;
   flex-direction: column;
+  min-height: @ak-grid-size * 17;
 }
 
 .detailsGroup {

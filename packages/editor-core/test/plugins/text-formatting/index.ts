@@ -21,7 +21,7 @@ describe('text-formatting', () => {
           it('toggles bold mark', () => {
             const { editorView } = editor(doc(p('text')));
 
-            sendKeyToPm(editorView, 'Cmd-B');
+            sendKeyToPm(editorView, 'Cmd-B', true);
 
             expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
           });
@@ -31,7 +31,7 @@ describe('text-formatting', () => {
           it('toggles italic mark', () => {
             const { editorView } = editor(doc(p('text')));
 
-            sendKeyToPm(editorView, 'Cmd-I');
+            sendKeyToPm(editorView, 'Cmd-I', true);
 
             expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
           });
@@ -41,7 +41,7 @@ describe('text-formatting', () => {
           it('toggles underline mark', () => {
             const { editorView } = editor(doc(p('text')));
 
-            sendKeyToPm(editorView, 'Cmd-U');
+            sendKeyToPm(editorView, 'Cmd-U', true);
 
             expect(editorView.state.doc).to.deep.equal(doc(p(underline('text'))));
           });
@@ -55,7 +55,7 @@ describe('text-formatting', () => {
           it('toggles strikethrough mark', () => {
             const { editorView } = editor(doc(p('text')));
 
-            sendKeyToPm(editorView, 'Shift-Cmd-S');
+            sendKeyToPm(editorView, 'Shift-Cmd-S', true);
 
             expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'))));
           });
@@ -65,7 +65,7 @@ describe('text-formatting', () => {
           it('toggles code mark', () => {
             const { editorView } = editor(doc(p('text')));
 
-            sendKeyToPm(editorView, 'Shift-Cmd-M');
+            sendKeyToPm(editorView, 'Shift-Cmd-M', true);
 
             expect(editorView.state.doc).to.deep.equal(doc(p(code('text'))));
           });
@@ -77,7 +77,7 @@ describe('text-formatting', () => {
           it('toggles bold mark', () => {
             const { editorView } = editor(doc(p('text')));
 
-            sendKeyToPm(editorView, 'Ctrl-B');
+            sendKeyToPm(editorView, 'Ctrl-B', true);
 
             expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
           });
@@ -87,7 +87,7 @@ describe('text-formatting', () => {
           it('toggles italic mark', () => {
             const { editorView } = editor(doc(p('text')));
 
-            sendKeyToPm(editorView, 'Ctrl-I');
+            sendKeyToPm(editorView, 'Ctrl-I', true);
 
             expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
           });
@@ -97,7 +97,7 @@ describe('text-formatting', () => {
           it('toggles underline mark', () => {
             const { editorView } = editor(doc(p('text')));
 
-            sendKeyToPm(editorView, 'Ctrl-U');
+            sendKeyToPm(editorView, 'Ctrl-U', true);
 
             expect(editorView.state.doc).to.deep.equal(doc(p(underline('text'))));
           });
@@ -111,7 +111,7 @@ describe('text-formatting', () => {
           it('toggles strikethrough mark', () => {
             const { editorView } = editor(doc(p('text')));
 
-            sendKeyToPm(editorView, 'Shift-Ctrl-S');
+            sendKeyToPm(editorView, 'Shift-Ctrl-S', true);
 
             expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'))));
           });
@@ -121,7 +121,7 @@ describe('text-formatting', () => {
           it('toggles code mark', () => {
             const { editorView } = editor(doc(p('text')));
 
-            sendKeyToPm(editorView, 'Shift-Ctrl-M');
+            sendKeyToPm(editorView, 'Shift-Ctrl-M', true);
 
             expect(editorView.state.doc).to.deep.equal(doc(p(code('text'))));
           });

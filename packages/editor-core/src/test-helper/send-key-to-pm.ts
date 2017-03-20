@@ -1,10 +1,21 @@
 import { EditorView, browser } from '../';
 
+export function focusAndSelect(element: HTMLElement) {
+  const range = document.createRange();
+  const selection = window.getSelection();
+
+  range.selectNodeContents(element);
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+  element.focus();
+}
+
 /**
  * Sends a key to ProseMirror content area, simulating user key press.
  * Accepts key descriptions similar to Keymap, i.e. 'Shift-Ctrl-L'
  */
-export default function sendKeyToPm(editorView: EditorView, keys: string) {
+export default function sendKeyToPm(editorView: EditorView, keys: string, focus?: boolean) {
   const parts = keys.split(/-(?!'?$)/);
   const modKey = parts.indexOf('Mod') !== -1;
   const cmdKey = parts.indexOf('Cmd') !== -1;
@@ -27,6 +38,10 @@ export default function sendKeyToPm(editorView: EditorView, keys: string) {
   (event as any).keyCode = code;
   (event as any).which = code;
   (event as any).view = window;
+
+  if (focus) {
+    focusAndSelect(editorView.dom);
+  }
 
   editorView.dispatchEvent(event);
 }

@@ -11,9 +11,9 @@ export default class ProfilecardResourced extends PureComponent {
       label: PropTypes.string,
     })),
     resourceClient: PropTypes.shape({
+      getProfile: PropTypes.func,
       getCachedProfile: PropTypes.func,
-      request: PropTypes.func,
-      fetch: PropTypes.func,
+      makeRequest: PropTypes.func,
     }).isRequired,
   }
 
@@ -82,7 +82,7 @@ export default class ProfilecardResourced extends PureComponent {
       data: {},
     });
 
-    this.props.resourceClient.fetch(options)
+    this.props.resourceClient.getProfile(options)
     .then(
       res => this.handleClientSuccess(res),
       err => this.handleClientError(err),

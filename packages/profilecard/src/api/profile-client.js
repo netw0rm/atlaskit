@@ -113,12 +113,16 @@ class ProfileClient {
       ? new LRUCache(this.config.cacheSize) : false;
   }
 
-  request(options) {
+  makeRequest(options) {
     if (!this.config.url) {
       throw new Error('config.url is a required parameter');
     }
 
     return requestService(this.config.url, options);
+  }
+
+  getCachedProfile(options) {
+    return this.cache ? this.cache.get(options.userId) : false;
   }
 
   flushCache() {
@@ -127,13 +131,9 @@ class ProfileClient {
     }
   }
 
-  getCachedProfile(options) {
-    return this.cache ? this.cache.get(options.userId) : false;
-  }
-
-  fetch(options) {
+  getProfile(options) {
     return new Promise((resolve, reject) => {
-      this.request(options)
+      this.makeRequest(options)
       .then((data) => {
         if (this.cache) {
           this.cache.put(options.userId, data);

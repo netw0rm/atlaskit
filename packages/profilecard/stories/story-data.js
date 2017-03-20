@@ -33,7 +33,7 @@ const requestService = (options) => {
 
 class MockProfileClient extends ProfileClient {
   // eslint-disable-next-line class-methods-use-this
-  request(options) {
+  makeRequest(options) {
     return requestService(options);
   }
 }

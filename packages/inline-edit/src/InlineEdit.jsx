@@ -8,8 +8,8 @@ import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
 import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
 
-// Prevent content 'jumping' when toggling between view/edit mode
-// specifically for the single-select (which applies a -1 margin to its field-base)
+// Prevent edit views that use their own field-base from shifting due to negative margin
+// set in 'no-padding' mode.
 const NoFieldBaseEditWrapper = styled.div`
   margin: 1px -1px 1px 1px;
 `;

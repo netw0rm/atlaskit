@@ -7,6 +7,8 @@ import styles from 'style!./styles/profilecard.less';
 import LoadingMessage from './components/LoadingMessage';
 import ErrorMessage from './components/ErrorMessage';
 
+import HeightTransition from './components/HeightAnimationWrapper';
+
 import IconLabel from './components/IconLabel';
 import presences from './internal/presences';
 
@@ -26,7 +28,6 @@ export default class Profilecard extends PureComponent {
     isLoading: React.PropTypes.bool,
     hasError: React.PropTypes.bool,
     clientFetchProfile: React.PropTypes.func,
-
   }
 
   static defaultProps = {
@@ -35,50 +36,56 @@ export default class Profilecard extends PureComponent {
   }
 
   render() {
+    let profilecard = null;
+
     if (this.props.hasError) {
-      return <ErrorMessage reload={this.props.clientFetchProfile} />;
+      profilecard = <ErrorMessage reload={this.props.clientFetchProfile} />;
+    } else if (this.props.isLoading) {
+      profilecard = <LoadingMessage />;
+    } else {
+      const actions = (this.props.actions).map((action, idx) => (
+        <AkButton
+          appearance={idx === 0 ? 'default' : 'subtle'}
+          compact
+          key={action.label}
+          onClick={action.callback}
+        >{action.label}</AkButton>
+      ));
+
+      const cardClasses = classNames([
+        styles.profilecard,
+        { [styles.noDetailsMeta]: !this.props.meta },
+      ]);
+
+      profilecard = (
+        <div className={cardClasses}>
+          <div className={styles.avatarWrapper}>
+            <AkAvatar size="xlarge" src={this.props.avatarUrl} />
+          </div>
+          <div className={styles.detailsWrapper}>
+            <div className={styles.detailsGroup}>
+              <span className={styles.detailsFullname}>{this.props.fullName}</span>
+              { this.props.meta && (<span className={styles.detailsMeta}>{this.props.meta}</span>) }
+              <IconLabel className={styles.presence} icon={this.props.presence}>
+                {presences[this.props.presence]}
+              </IconLabel>
+              <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
+              <IconLabel icon="time">{this.props.timestring}</IconLabel>
+              <IconLabel icon="location">{this.props.location}</IconLabel>
+            </div>
+            <div className={styles.actionsFlexSpacer} />
+            <div className={styles.actionsWrapper}>
+              {actions}
+            </div>
+          </div>
+        </div>
+      );
     }
-
-    if (this.props.isLoading) {
-      return <LoadingMessage />;
-    }
-
-    const actions = (this.props.actions).map((action, idx) => (
-      <AkButton
-        appearance={idx === 0 ? 'default' : 'subtle'}
-        compact
-        key={action.label}
-        onClick={action.callback}
-      >{action.label}</AkButton>
-    ));
-
-    const cardClasses = classNames([
-      styles.profilecard,
-      { [styles.noDetailsMeta]: !this.props.meta },
-    ]);
 
     return (
-      <div className={cardClasses}>
-        <div className={styles.avatarWrapper}>
-          <AkAvatar size="xlarge" src={this.props.avatarUrl} />
-        </div>
-        <div className={styles.detailsWrapper}>
-          <div className={styles.detailsGroup}>
-            <span className={styles.detailsFullname}>{this.props.fullName}</span>
-            { this.props.meta && (<span className={styles.detailsMeta}>{this.props.meta}</span>) }
-            <IconLabel className={styles.presence} icon={this.props.presence}>
-              {presences[this.props.presence]}
-            </IconLabel>
-            <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
-            <IconLabel icon="time">{this.props.timestring}</IconLabel>
-            <IconLabel icon="location">{this.props.location}</IconLabel>
-          </div>
-          <div className={styles.actionsFlexSpacer} />
-          <div className={styles.actionsWrapper}>
-            {actions}
-          </div>
-        </div>
-      </div>
+      <HeightTransition>
+        {profilecard}
+      </HeightTransition>
     );
   }
 }

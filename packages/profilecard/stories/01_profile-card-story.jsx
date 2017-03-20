@@ -1,6 +1,11 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
+import styles from 'style!../src/styles/profilecard.less';
+
+import LoadingMessage from '../src/components/LoadingMessage';
+import ErrorMessage from '../src/components/ErrorMessage';
+
 import { name } from '../package.json';
 import { AkProfilecard } from '../src/';
 import interActiveCard from './profile-interactive';
@@ -43,10 +48,7 @@ storiesOf(`${name}`, module)
   ))
   .add('error state', () => (
     <div style={canvasStyle}>
-      <AkProfilecard
-        hasError
-        clientFetchProfile={handleActionClick('Retry')}
-      />
+      <AkProfilecard hasError clientFetchProfile={handleActionClick('Retry')} />
     </div>
   ))
   .add('error state without reload option', () => (
@@ -89,16 +91,12 @@ storiesOf(`${name}`, module)
   .add('alternate actions', () => {
     const actions = [
       {
-        label: 'Foobar',
-        callback: handleActionClick('Foobar'),
+        label: 'Foo',
+        callback: handleActionClick('Foo'),
       },
       {
-        label: 'Barfoo',
-        callback: handleActionClick('Barfoo'),
-      },
-      {
-        label: 'Foobar2',
-        callback: handleActionClick('Foobar2'),
+        label: 'Bar',
+        callback: handleActionClick('Bar'),
       },
     ];
     const data = fakeData({ actions });

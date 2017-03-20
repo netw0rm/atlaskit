@@ -36,6 +36,7 @@ class AkProfileCardRandomById extends PureComponent {
     return (
       <div>
         <AkProfileCardResourced
+          style={{ position: 'absolute' }}
           actions={actions}
           cloudId="bogus-because-required"
           resourceClient={mockClient}

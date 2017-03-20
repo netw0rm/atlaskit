@@ -5,8 +5,9 @@ import { Code, Chrome, Description, Props } from '@atlaskit/util-readme';
 /* eslint-disable import/first, import/no-duplicates */
 import SmartSelectOverview from './examples/SmartSelectOverview';
 import SmartSelectOverviewRaw from '!raw!./examples/SmartSelectOverview';
-import StatelessSelectOverview from './examples/StatelessSelectOverview';
-import StatelessSelectOverviewRaw from '!raw!./examples/StatelessSelectOverview';
+import CustomMultiSelectRaw from '!raw!./examples/CustomMultiSelect';
+import CustomMultiSelectOverview from './examples/CustomMultiSelectOverview';
+import CustomMultiSelectOverviewRaw from '!raw!./examples/CustomMultiSelectOverview';
 import SmartSelectDefaultSelectedItems from './examples/SmartSelectDefaultSelectedItems';
 import SmartSelectDefaultSelectedItemsRaw from '!raw!./examples/SmartSelectDefaultSelectedItems';
 import SmartSelectRequired from './examples/SmartSelectRequired';
@@ -68,16 +69,18 @@ storiesOf(name, module)
         </p>
         <p>This also means it is up to the Application to keep the props up to date (filter text,
           isOpen, selectedItems, etc)</p>
-        <p>For a good example of how you could implement some of that functionality, you can check
-          out the Smart Multi-select component (<code>
-            <a href="https://bitbucket.org/atlassian/atlaskit/src/master/packages/multi-select/">atlaskit/multi-select</a>
-          </code>).
+        <p>The following is an example of how you could build your own multiselect using the
+          stateless component
         </p>
       </Description>
-      {StatelessSelectOverview}
       <Code>
-        {StatelessSelectOverviewRaw}
+        {CustomMultiSelectRaw}
       </Code>
+      <p>And we could then use it like so:</p>
+      <Code>
+        {CustomMultiSelectOverviewRaw}
+      </Code>
+      {CustomMultiSelectOverview}
       <Props
         component={StatelessMultiSelect}
         descriptions={statelessMultiSelectPropDescriptions}

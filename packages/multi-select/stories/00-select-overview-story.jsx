@@ -29,10 +29,11 @@ import SmartSelectElemBeforeRaw from '!raw!./examples/SmartSelectElemBefore';
 import DummyItem from '../src/internal/DummyItem';
 import { name, description } from '../package.json';
 
-import { StatelessMultiSelect } from '../src';
+import SmartMultiSelect, { StatelessMultiSelect } from '../src';
 import {
   statelessMultiSelectPropTypes,
   statelessMultiSelectPropDescriptions,
+  smartMultiSelectPropDescriptions,
   ItemPropDescriptions,
 } from './props';
 
@@ -51,6 +52,11 @@ storiesOf(name, module)
       <Code>
         {SmartSelectOverviewRaw}
       </Code>
+      <Props
+        component={SmartMultiSelect}
+        descriptions={smartMultiSelectPropDescriptions}
+        types={statelessMultiSelectPropTypes}
+      />
     </Chrome>
   ))
   .add('📖 Multi select (stateless) - readme', () => (

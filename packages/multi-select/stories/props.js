@@ -5,7 +5,7 @@ const statelessMultiSelectPropDescriptions = {
   filterValue: 'Text used in the filter input box to filter items. Use the `onFilterChange` prop to keep this in sync with the users text',
   id: 'The id of the component (same as the regular HTML id attribute)',
   isDisabled: 'Boolean flag for disabling the use of the component (clicking, keyboard, etc will be disabled)',
-  isFirstChild: '',
+  isFirstChild: 'Boolean property that removes the extra padding from the top of the component, usually used if a multiselect is the first child in a list',
   shouldFocus: 'Boolean flag that causes the multi-select to request focus (think of it as an `autofocus` attribute)',
   isInvalid: 'Boolean flag to indicate the validity of the users currect selection (actual validation needs to be performed by the application)',
   isOpen: `Boolean flag to indicate if a multi-select's dropdown should be open.
@@ -33,6 +33,29 @@ const statelessMultiSelectPropTypes = {
   selectedItems: 'Array(Item)',
 };
 
+// we can reuse most of the descriptions from the stateless component here to make updating easier
+const smartMultiSelectPropDescriptions = {
+  appearance: statelessMultiSelectPropDescriptions.appearance,
+  defaultSelected: 'List of items that should be selected by default (must be references to the actual elements from the items prop)',
+  id: statelessMultiSelectPropDescriptions.id,
+  isDisabled: statelessMultiSelectPropDescriptions.isDisabled,
+  isFirstChild: statelessMultiSelectPropDescriptions.isFirstChild,
+  shouldFocus: statelessMultiSelectPropDescriptions.shouldFocus,
+  isDefaultOpen: 'Boolean flag to indicate if a multi-select\'s dropdown should be open by default (user interaction will change this state but not update this prop).',
+  isRequired: statelessMultiSelectPropDescriptions.isRequired,
+  isInvalid: statelessMultiSelectPropDescriptions.isInvalid,
+  items: statelessMultiSelectPropDescriptions.items,
+  label: statelessMultiSelectPropDescriptions.label,
+  name: statelessMultiSelectPropDescriptions.name,
+  noMatchesFound: statelessMultiSelectPropDescriptions.noMatchesFound,
+  onFilterChange: 'Callback called when the user changes the filter value.',
+  onSelectedChange: 'Callback called when the user selects or removes an item.',
+  onOpenChange: 'Callback called whenever the open state of the dropdown changes',
+  placeholder: statelessMultiSelectPropDescriptions.placeholder,
+  position: statelessMultiSelectPropDescriptions.position,
+  shouldFitContainer: statelessMultiSelectPropDescriptions.shouldFitContainer,
+};
+
 const itemPropDescriptions = {
   content: 'The text/content to display in the option and in the rendered tags (selected options).',
   value: 'Value sent when option is selected in a form.',
@@ -46,6 +69,7 @@ const itemPropDescriptions = {
 export {
   statelessMultiSelectPropDescriptions,
   statelessMultiSelectPropTypes,
+  smartMultiSelectPropDescriptions,
   itemPropDescriptions,
 };
 /* eslint-enable import/prefer-default-export */

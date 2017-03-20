@@ -37,7 +37,7 @@ export default class StatelessMultiSelect extends PureComponent {
     onRemoved: PropTypes.func,
     placeholder: PropTypes.string,
     position: PropTypes.string,
-    selectedItems: PropTypes.arrayOf(itemShape), // eslint-disable-line react/forbid-prop-types
+    selectedItems: PropTypes.arrayOf(itemShape),
     shouldFitContainer: PropTypes.bool,
   }
 

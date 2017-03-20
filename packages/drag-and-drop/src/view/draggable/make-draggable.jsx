@@ -2,10 +2,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import invariant from 'invariant';
-import type {
-  TypeId,
-  Position,
-} from '../../types';
+import type { TypeId, Position, DraggingInitial } from '../../types';
 import type { Props, MapState, DraggableState } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
@@ -16,7 +13,7 @@ import getScrollPosition from '../get-scroll-position';
 import getDisplayName from '../get-display-name';
 
 const identity = x => x;
-const noWhere: Position = { x: 0, y: 0 };
+const origin: Position = { x: 0, y: 0 };
 
 type ComponentState = {|
   wasDragging: boolean,
@@ -28,40 +25,22 @@ const Container = styled.div`
   user-select: none;
 `;
 
-type Movement = {|
+type MovementStyle = {|
+  position: 'absolute',
+  zIndex: string,
+  width: number,
+  height: number,
+  top: number,
+  left: number,
+  |} | {|
+  zIndex: 'auto'
+  |}
+
+type MovementInfo = {|
+  showPlaceholder: boolean,
   speed: Speed,
-  zIndex: string
+  style?: MovementStyle
 |}
-
-const getMovement = (isDragging: boolean,
-  wasDragging: boolean,
-  canAnimate: boolean) => {
-  if (isDragging) {
-    return {
-      speed: canAnimate ? 'FAST' : 'NONE',
-      zIndex: '100',
-    };
-  }
-
-  if (!canAnimate) {
-    return {
-      speed: 'NONE',
-      zIndex: 'auto',
-    };
-  }
-
-  if (wasDragging) {
-    return {
-      speed: 'STANDARD',
-      zIndex: '50',
-    };
-  }
-
-  return {
-    speed: 'FAST',
-    zIndex: 'auto',
-  };
-};
 
 export default (type: TypeId, map: MapState): Function =>
   (Component: ReactClass<any>): ReactClass<any> =>
@@ -80,7 +59,7 @@ export default (type: TypeId, map: MapState): Function =>
       static displayName = `Draggable(${getDisplayName(Component)})`
 
       static defaultProps = {
-        offset: noWhere,
+        offset: origin,
       }
       /* eslint-enable */
 
@@ -268,16 +247,57 @@ export default (type: TypeId, map: MapState): Function =>
         );
       }
 
+      getMovementInfo(): MovementInfo {
+        const { isDragging, canAnimate, initial } = this.props.mapProps;
+        const { wasDragging } = this.state;
+
+        const getMovingStyle = (zIndex: string): MovementStyle => {
+          invariant(initial, 'initial dimension required to drag');
+          return {
+            zIndex,
+            position: 'absolute',
+            width: initial.dimension.width,
+            height: initial.dimension.height,
+            top: initial.dimension.top,
+            left: initial.dimension.left,
+          };
+        };
+
+        if (isDragging) {
+          return {
+            showPlaceholder: true,
+            speed: canAnimate ? 'FAST' : 'NONE',
+            style: getMovingStyle('100'),
+          };
+        }
+
+        if (!canAnimate) {
+          return {
+            showPlaceholder: false,
+            speed: 'NONE',
+          };
+        }
+
+        if (wasDragging) {
+          return {
+            showPlaceholder: true,
+            speed: 'STANDARD',
+            style: getMovingStyle('50'),
+          };
+        }
+
+        // moving out of the way while something else is dragging
+        return {
+          showPlaceholder: false,
+          speed: 'FAST',
+          style: {
+            zIndex: 'auto',
+          },
+        };
+      }
+
       render() {
         const { mapProps, ownProps } = this.props;
-
-        console.log('rendering draggable', mapProps.id);
-
-        const movement: Movement = getMovement(
-          mapProps.isDragging,
-          this.state.wasDragging,
-          mapProps.canAnimate
-        );
 
         const handle = this.getHandle(mapProps.isDragEnabled);
 
@@ -300,33 +320,16 @@ export default (type: TypeId, map: MapState): Function =>
         // if a drag handle was not request then the whole thing is the handle
         const wrap = requestDragHandle.wasCalled ? identity : handle;
 
-        const isMoving = mapProps.isDragging || this.state.wasDragging;
+        const info: MovementInfo = this.getMovementInfo();
 
-        const moveableStyle = (() => {
-          if (!isMoving) {
-            return {};
-          }
-          const dimension = mapProps.initial.dimension;
-          return {
-            position: 'absolute',
-            width: dimension.width,
-            height: dimension.height,
-            top: dimension.top,
-            left: dimension.left,
-            //TODO: Cursor..
-          };
-        })();
-
-        // TODO: remove `Container` and pass cursor style to `Moveable`
         return (
           <div>
             <Moveable
-              speed={movement.speed}
-              zIndex={movement.zIndex}
+              speed={info.speed}
+              style={info.style ? info.style : {}}
               destination={mapProps.offset}
               onMoveEnd={this.onMoveEnd}
               innerRef={this.setRef}
-              style={moveableStyle}
             >
               {wrap(
                 <DraggableDimensionPublisher
@@ -340,7 +343,7 @@ export default (type: TypeId, map: MapState): Function =>
                 </DraggableDimensionPublisher>
               )}
             </Moveable>
-            {isMoving ? this.getPlaceholder() : null}
+            {info.showPlaceholder ? this.getPlaceholder() : null}
           </div>
         );
       }

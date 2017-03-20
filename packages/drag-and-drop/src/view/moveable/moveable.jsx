@@ -20,7 +20,6 @@ type Props = {|
     // TODO: should this be optional?
     destination: Position,
     speed: Speed,
-    zIndex: string,
     onMoveEnd?: Function,
     innerRef?: Function,
     style?: Object,
@@ -112,7 +111,6 @@ export default class Movable extends PureComponent {
           return (
             <Canvas
               style={style}
-              zIndex={this.props.zIndex}
               innerRef={this.props.innerRef}
             >
               {this.props.children}

@@ -1,7 +1,7 @@
 import React from 'react';
-import Select from '@atlaskit/multi-select';
+import { StatelessMultiSelect as MultiSelect } from '@atlaskit/multi-select';
 
-const selectItems = [
+const items = [
   {
     items: [
       { content: 'Sydney', value: 'city_1' },
@@ -14,19 +14,20 @@ const selectItems = [
   },
 ];
 
-const items = selectItems[0].items;
-const defaultSelected = [items[0], items[1]];
+const selectedItems = [items[0].items[0], items[0].items[1], items[0].items[4]];
 
 export default (
-  <Select
-    defaultSelected={defaultSelected}
-    items={selectItems}
+  <MultiSelect
+    items={items}
+    selectedItems={selectedItems}
     label="Choose your favourite"
     placeholder="Australia"
     name="test"
     onSelected={(item) => {
+      // here we would normally update some state, add `item` to selectedItems for example
       console.log(item);
     }}
+
     shouldFitContainer
   />
 );

@@ -5,6 +5,8 @@ import { Code, Chrome, Description, Props } from '@atlaskit/util-readme';
 /* eslint-disable import/first, import/no-duplicates */
 import SmartSelectOverview from './examples/SmartSelectOverview';
 import SmartSelectOverviewRaw from '!raw!./examples/SmartSelectOverview';
+import StatelessSelectOverview from './examples/StatelessSelectOverview';
+import StatelessSelectOverviewRaw from '!raw!./examples/StatelessSelectOverview';
 import SmartSelectDefaultSelectedItems from './examples/SmartSelectDefaultSelectedItems';
 import SmartSelectDefaultSelectedItemsRaw from '!raw!./examples/SmartSelectDefaultSelectedItems';
 import SmartSelectRequired from './examples/SmartSelectRequired';
@@ -27,7 +29,12 @@ import SmartSelectElemBeforeRaw from '!raw!./examples/SmartSelectElemBefore';
 import DummyItem from '../src/internal/DummyItem';
 import { name, description } from '../package.json';
 
-import { ItemPropDescriptions } from './props';
+import { StatelessMultiSelect } from '../src';
+import {
+  statelessMultiSelectPropTypes,
+  statelessMultiSelectPropDescriptions,
+  ItemPropDescriptions,
+} from './props';
 
 storiesOf(name, module)
   .add('📖 Multi select (smart) - readme', () => (
@@ -46,7 +53,32 @@ storiesOf(name, module)
       </Code>
     </Chrome>
   ))
-  /* 📖 Multi select (stateless) - readme */
+  .add('📖 Multi select (stateless) - readme', () => (
+    <Chrome title="Multi select (smart) - overview">
+      <Description>
+        <p>
+          The &ldquo;stateless&rdquo; multi-select component gives you complete control of how the
+          component should display and react to user interaction.
+        </p>
+        <p>This also means it is up to the Application to keep the props up to date (filter text,
+          isOpen, selectedItems, etc)</p>
+        <p>For a good example of how you could implement some of that functionality, you can check
+          out the Smart Multi-select component (<code>
+            <a href="https://bitbucket.org/atlassian/atlaskit/src/master/packages/multi-select/">atlaskit/multi-select</a>
+          </code>).
+        </p>
+      </Description>
+      {StatelessSelectOverview}
+      <Code>
+        {StatelessSelectOverviewRaw}
+      </Code>
+      <Props
+        component={StatelessMultiSelect}
+        descriptions={statelessMultiSelectPropDescriptions}
+        types={statelessMultiSelectPropTypes}
+      />
+    </Chrome>
+  ))
   .add('📖 Multi select Item - readme', () => (
     <Chrome title="Multi select Item - overview">
       <Description>
@@ -62,7 +94,6 @@ storiesOf(name, module)
       <Props component={DummyItem} descriptions={ItemPropDescriptions} />
     </Chrome>
   ))
-  /* 📖 Multi select Item - readme */
   .add('Multi select is submittable', () => (
     <Chrome title="Multi select in forms">
       {SelectInForm}

@@ -2,17 +2,10 @@ import React, { PureComponent, PropTypes, cloneElement } from 'react';
 import ReactDOM from 'react-dom';
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
-import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
 import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
-
-// Prevent edit views that use their own field-base from shifting due to negative margin
-// set in 'no-padding' mode.
-const NoFieldBaseEditWrapper = styled.div`
-  margin: 1px -1px 1px 1px;
-`;
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {
@@ -171,9 +164,7 @@ export default class InlineEdit extends PureComponent {
           this.props.editView;
 
     return this.props.shouldWrapEditViewWithFieldBase ?
-      this.wrapWithFieldBase(editView) : (
-        <NoFieldBaseEditWrapper>{editView}</NoFieldBaseEditWrapper>
-      );
+      this.wrapWithFieldBase(editView) : editView;
   }
 
   render() {

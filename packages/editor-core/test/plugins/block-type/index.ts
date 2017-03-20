@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { browser } from '../../../src';
+import { browser } from '../../../src/prosemirror';
 import { setTextSelection, setNodeSelection, sendKeyToPm, fixtures, blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, img, makeEditor, mention, p, hr } from '../../../src/test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
@@ -236,7 +236,7 @@ describe('block-type', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(h1('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-0');
-            expect(editorView.state.doc.toJSON()).to.eql(doc(p('text')).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(p('text')));
           });
         });
 
@@ -244,7 +244,7 @@ describe('block-type', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-1');
-            expect(editorView.state.doc.toJSON()).to.eql(doc(h1('text')).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(h1('text')));
           });
         });
 
@@ -252,7 +252,7 @@ describe('block-type', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-2');
-            expect(editorView.state.doc.toJSON()).to.eql(doc(h2('text')).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(h2('text')));
           });
         });
 
@@ -260,7 +260,7 @@ describe('block-type', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-3');
-            expect(editorView.state.doc.toJSON()).to.eql(doc(h3('text')).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(h3('text')));
           });
         });
 
@@ -268,7 +268,7 @@ describe('block-type', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-4');
-            expect(editorView.state.doc.toJSON()).to.eql(doc(h4('text')).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(h4('text')));
           });
         });
 
@@ -276,7 +276,7 @@ describe('block-type', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-5');
-            expect(editorView.state.doc.toJSON()).to.eql(doc(h5('text')).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(h5('text')));
           });
         });
 
@@ -285,7 +285,7 @@ describe('block-type', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-7');
 
-            expect(editorView.state.doc.toJSON()).to.eql(doc(blockquote(p('text'))).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text'))));
           });
         });
 
@@ -295,7 +295,7 @@ describe('block-type', () => {
             const code = code_block({language: null});
 
             sendKeyToPm(editorView, 'Cmd-Alt-8');
-            expect(editorView.state.doc.toJSON()).to.eql(doc(code('text')).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(code('text')));
           });
         });
       });
@@ -305,7 +305,7 @@ describe('block-type', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(h1('text')));
             sendKeyToPm(editorView, 'Ctrl-0');
-            expect(editorView.state.doc.toJSON()).to.eql(doc(p('text')).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(p('text')));
           });
         });
 
@@ -313,7 +313,7 @@ describe('block-type', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-1');
-            expect(editorView.state.doc.toJSON()).to.eql(doc(h1('text')).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(h1('text')));
           });
         });
 
@@ -321,7 +321,7 @@ describe('block-type', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Ctrl-2');
-            expect(editorView.state.doc.toJSON()).to.eql(doc(h2('text')).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(h2('text')));
           });
         });
 
@@ -329,7 +329,7 @@ describe('block-type', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Ctrl-3');
-            expect(editorView.state.doc.toJSON()).to.eql(doc(h3('text')).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(h3('text')));
           });
         });
 
@@ -337,7 +337,7 @@ describe('block-type', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Ctrl-4');
-            expect(editorView.state.doc.toJSON()).to.eql(doc(h4('text')).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(h4('text')));
           });
         });
 
@@ -345,7 +345,7 @@ describe('block-type', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Ctrl-5');
-            expect(editorView.state.doc.toJSON()).to.eql(doc(h5('text')).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(h5('text')));
           });
         });
 
@@ -354,7 +354,7 @@ describe('block-type', () => {
             const { editorView } = editor(doc(p('text')));
             sendKeyToPm(editorView, 'Ctrl-7');
 
-            expect(editorView.state.doc.toJSON()).to.eql(doc(blockquote(p('text'))).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text'))));
           });
         });
 
@@ -364,7 +364,7 @@ describe('block-type', () => {
             const code = code_block({language: null});
 
             sendKeyToPm(editorView, 'Ctrl-8');
-            expect(editorView.state.doc.toJSON()).to.eql(doc(code('text')).toJSON());
+            expect(editorView.state.doc).to.deep.equal(doc(code('text')));
           });
         });
       });

@@ -5,10 +5,11 @@ import {
   HardBreakNodeType,
   HeadingNodeType,
   HorizontalRuleNodeType,
+  LinkMarkType,
   ListItemNodeType,
   MentionNodeType,
   MentionQueryMarkType,
-  MonoMarkType,
+  CodeMarkType,
   OrderedListNodeType,
   ParagraphNodeType,
   Schema,
@@ -33,18 +34,21 @@ export interface BaseSchemaNodes {
 }
 
 export interface BaseSchemaMarks {
+  link?: LinkMarkType;
   strong: StrongMarkType;
   em: EmMarkType;
-  strike: StrikeMarkType;
+  strike?: StrikeMarkType;
   subsup: SubSupMarkType;
   u: UnderlineMarkType;
-  mono: MonoMarkType;
+  code?: CodeMarkType;
   mention_query?: MentionQueryMarkType;
 }
 
 export interface JIRASchemaConfig {
   allowLists?: boolean;
   allowMentions?: boolean;
+  allowLinks?: boolean;
+  allowAdvancedTextFormatting?: boolean;
 }
 
 export interface JIRASchema extends Schema {
@@ -58,6 +62,14 @@ export function isSchemaWithLists(schema: JIRASchema): boolean {
 
 export function isSchemaWithMentions(schema: JIRASchema): boolean {
   return !!schema.nodes.mention;
+}
+
+export function isSchemaWithLinks(schema: JIRASchema): boolean {
+  return !!schema.marks.link;
+}
+
+export function isSchemaWithAdvancedTextFormattingMarks(schema: JIRASchema): boolean {
+  return !!schema.marks.code && !!schema.marks.strike;
 }
 
 export function makeSchema(config: JIRASchemaConfig): JIRASchema {
@@ -75,14 +87,19 @@ export function makeSchema(config: JIRASchemaConfig): JIRASchema {
   };
 
   const marks = {
+    link: LinkMarkType,
     strong: StrongMarkType,
     em: EmMarkType,
     strike: StrikeMarkType,
     subsup: SubSupMarkType,
     u: UnderlineMarkType,
-    mono: MonoMarkType,
+    code: CodeMarkType,
     mention_query: MentionQueryMarkType,
   };
+
+  if (!config.allowLinks) {
+    delete marks.link;
+  }
 
   if (!config.allowLists) {
     delete nodes.ordered_list;
@@ -93,6 +110,11 @@ export function makeSchema(config: JIRASchemaConfig): JIRASchema {
   if (!config.allowMentions) {
     delete nodes.mention;
     delete marks.mention_query;
+  }
+
+  if (!config.allowAdvancedTextFormatting) {
+    delete marks.strike;
+    delete marks.code;
   }
 
   return new Schema({ nodes, marks });

@@ -1,4 +1,4 @@
-import { AbstractPresenceResource } from '../src/api/MentionResource';
+import { AbstractPresenceResource } from '../src/api/PresenceResource';
 import debug from '../src/util/logger';
 
 export default class MockPresenceProvider extends AbstractPresenceResource {

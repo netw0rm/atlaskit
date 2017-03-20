@@ -4,7 +4,7 @@ import Avatar from '@atlaskit/avatar';
 
 import Comment, { CommentAction, CommentAuthor, CommentTime } from '../src';
 import { name } from '../package.json';
-import { clickHandler, sampleText } from './_constants';
+import { clickHandler, sampleText, nonSpacedSampleText } from './_constants';
 import sampleAvatarImg from './sample-avatar.png';
 
 const sampleAvatar = <Avatar src={sampleAvatarImg} label="User avatar" />;
@@ -99,4 +99,13 @@ storiesOf(name, module)
       avatar={<img src={sampleAvatarImg} alt="img avatar" height="40" width="40" />}
       content={<p>{sampleText}</p>}
     />
+  ))
+  .add('comment with restricted size and non-space-separated content', () => (
+    <div style={{ width: 500 }}>
+      <Comment
+        author={<CommentAuthor>John Smith</CommentAuthor>}
+        avatar={<img src={sampleAvatarImg} alt="img avatar" height="40" width="40" />}
+        content={<p>{nonSpacedSampleText}</p>}
+      />
+    </div>
 ));

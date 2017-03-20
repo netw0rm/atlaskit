@@ -1,9 +1,9 @@
-import { markFactory, nodeFactory } from '@atlaskit/editor-core/src/test-helper';
+import { markFactory, nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { Node } from '@atlaskit/editor-core';
 import { makeSchema } from '../../src/schema';
 import { encode } from '../../src/html';
 
-const schema = makeSchema({ allowLists: true, allowMentions: true });
+const schema = makeSchema({ allowLists: true, allowMentions: true, allowLinks: true, allowAdvancedTextFormatting: true });
 
 // Nodes
 const br = nodeFactory(schema.nodes.hard_break);
@@ -21,10 +21,11 @@ const ul = nodeFactory(schema.nodes.bullet_list!);
 const mention = (attrs: { id: string, displayName?: string }) => schema.nodes.mention!.createChecked(attrs);
 
 // Marks
+const link = (attrs) => markFactory(schema.marks.link!, attrs);
 const strong = markFactory(schema.marks.strong);
 const em = markFactory(schema.marks.em);
-const mono = markFactory(schema.marks.mono);
-const strike = markFactory(schema.marks.strike);
+const code = markFactory(schema.marks.code!);
+const strike = markFactory(schema.marks.strike!);
 const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 const sup = markFactory(schema.marks.subsup, { type: 'sup' });
 const u = markFactory(schema.marks.u);
@@ -52,8 +53,8 @@ const seeds: ExampleSeed[] = [
     doc: doc(p(em('Emphasis'))),
   },
   {
-    description: 'Monospace',
-    doc: doc(p(mono('Monospace'))),
+    description: 'Code',
+    doc: doc(p(code('Code'))),
   },
   {
     description: 'Strikethrough',
@@ -73,11 +74,11 @@ const seeds: ExampleSeed[] = [
   },
   {
     description: 'Combined styles (1)',
-    doc: doc(p(strong('Strong', em('Emphasis', mono('Monospace', strike('Strikethrough', sub('Subscript', sup('Superscript', u('Underline'))))))))),
+    doc: doc(p(strong('Strong', em('Emphasis', code('Code', strike('Strikethrough', sub('Subscript', sup('Superscript', u('Underline'))))))))),
   },
   {
     description: 'Combined styles (2)',
-    doc: doc(p(u('Underline', sup('Superscript', sub('Subscript', strike('Strikethrough', mono('Monospace', em('Emphasis', strong('Strong'))))))))),
+    doc: doc(p(u('Underline', sup('Superscript', sub('Subscript', strike('Strikethrough', code('Code', em('Emphasis', strong('Strong'))))))))),
   },
   {
     description: 'Heading 1',
@@ -130,6 +131,18 @@ const seeds: ExampleSeed[] = [
   {
     description: 'Mention (by providing `mentionEncoder` it\'s possible to change how `href` attribiute is generated)',
     doc: doc(p(mention({ id: 'ssysoev', displayName: 'Stanislav Sysoev' }))),
+  },
+  {
+    description: 'External link',
+    doc: doc(p(link({ href: 'https://atlassian.com'})('atlassian.com'))),
+  },
+  {
+    description: 'Anchor link',
+    doc: doc(p(link({ href: '#hash'})('#hash'))),
+  },
+  {
+    description: 'Mailto link',
+    doc: doc(p(link({ href: 'mailto:me@atlassian.com'})('mailto:me@atlassian.com'))),
   }
 ];
 

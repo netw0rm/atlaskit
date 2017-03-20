@@ -1,7 +1,12 @@
 import { Fragment, Mark, Node as PMNode } from '@atlaskit/editor-core';
-import { isSchemaWithLists, isSchemaWithMentions, JIRASchema } from '../schema';
+import {
+  isSchemaWithLists,
+  isSchemaWithMentions,
+  isSchemaWithLinks,
+  isSchemaWithAdvancedTextFormattingMarks,
+  JIRASchema,
+} from '../schema';
 import parseHtml from './parse-html';
-import WeakMap from './weak-map';
 
 const convertedNodes = new WeakMap();
 
@@ -72,13 +77,19 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
     switch (tag) {
       // Marks
       case 'DEL':
-        return content ? addMarks(content, [schema.marks.strike.create()]) : null;
+      if (!isSchemaWithAdvancedTextFormattingMarks(schema)) {
+          return null;
+        }
+        return content ? addMarks(content, [schema.marks.strike!.create()]) : null;
       case 'B':
         return content ? addMarks(content, [schema.marks.strong.create()]) : null;
       case 'EM':
         return content ? addMarks(content, [schema.marks.em.create()]) : null;
       case 'TT':
-        return content ? addMarks(content, [schema.marks.mono.create()]) : null;
+        if (!isSchemaWithAdvancedTextFormattingMarks(schema)) {
+          return null;
+        }
+        return content ? addMarks(content, [schema.marks.code!.create()]) : null;
       case 'SUB':
       case 'SUP':
         const type = tag === 'SUB' ? 'sub' : 'sup';
@@ -100,7 +111,15 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
           return null;
         }
 
-        return;
+        return content && isSchemaWithLinks(schema)
+          ? addMarks(
+              content,
+              [schema.marks.link!.create({
+                href: node.getAttribute('href'),
+                title: node.getAttribute('title')
+              })]
+            )
+          : null;
       // case 'SPAN':
       //   return addMarks(content, marksFromStyle(node.style));
       case 'H1':

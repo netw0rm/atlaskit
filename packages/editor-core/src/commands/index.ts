@@ -226,6 +226,19 @@ export function createCodeBlockFromFenceFormat(): Command {
         dispatch(transformToCodeBlockAction(state, { language: matches[1] }).delete(startPos, $from.pos));
         return true;
       }
+
+      // add empty paragraph node if user hits Enter
+      // otherwise a new line is inserted by ProseMirror
+      const { codeBlock, paragraph } = state.schema.nodes;
+
+      if ($from && $from.parent.type === codeBlock) {
+        const posAfterCodeBlock = $from.end($from.depth) + 1;
+        const paragraphNode = paragraph.create();
+        const transform = state.tr.insert(posAfterCodeBlock, paragraphNode);
+
+        dispatch(transform);
+        return true;
+      }
     }
 
     return false;

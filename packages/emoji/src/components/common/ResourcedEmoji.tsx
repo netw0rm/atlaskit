@@ -2,12 +2,12 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 
 import Emoji from './Emoji';
-import { EmojiId, OptionalEmojiDescription } from '../../types';
+import { isEmojiId, EmojiId, EmojiShortcut, OptionalEmojiDescription } from '../../types';
 import EmojiProvider from '../../api/EmojiResource';
 import { missingEmoji } from './styles';
 
 export interface Props {
-  emojiId: EmojiId;
+  emojiId: EmojiId | EmojiShortcut;
   emojiProvider: Promise<EmojiProvider>;
 }
 
@@ -41,14 +41,24 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
     };
   }
 
-  private refreshEmoji(emojiProviderPromise: Promise<EmojiProvider>, id: EmojiId) {
+  private refreshEmoji(emojiProviderPromise: Promise<EmojiProvider>, emojiId: EmojiId | EmojiShortcut) {
     if (emojiProviderPromise) {
       emojiProviderPromise.then(emojiProvider => {
-        emojiProvider.findById(id).then(emoji => {
-          this.setState({
-            emoji,
+        if (isEmojiId(emojiId)) {
+          const id = emojiId as EmojiId;
+          emojiProvider.findById(id).then(emoji => {
+            this.setState({
+              emoji,
+            });
           });
-        });
+        } else {
+          const emojiShortcut = emojiId as EmojiShortcut;
+          emojiProvider.findByShortcut(emojiShortcut.shortcut).then(emoji => {
+            this.setState({
+              emoji,
+            });
+          });
+        }
       });
     }
   }
@@ -71,6 +81,16 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
       return (<Emoji emoji={emoji} />);
     }
 
-    return <EmojiPlaceholder title={this.props.emojiId.id} />;
+    const { emojiId } = this.props;
+    let title;
+    if (isEmojiId(emojiId)) {
+      const id = emojiId as EmojiId;
+      title = id.id;
+    } else {
+      const shortcut = emojiId as EmojiShortcut;
+      title = shortcut.shortcut;
+    }
+
+    return <EmojiPlaceholder title={title} />;
   }
 }

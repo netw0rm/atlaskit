@@ -20,6 +20,8 @@ describe(name, () => {
         'EmojiService',
         'EmojiLoader',
         'denormaliseEmojiServiceResponse',
+        'isEmojiId',
+        'isEmojiShortcut',
         'default',
       ]);
     });

@@ -28,6 +28,18 @@ describe('<ResourcedEmoji />', () => {
     });
   });
 
+  it('should render emoji by shortcut', () => {
+    const component = mount(<ResourcedEmoji
+      emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
+      emojiId={{ shortcut: grinEmoji.shortcut }}
+    />);
+
+    return waitUntil(() => emojiVisible(component)).then(() => {
+      expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(grinEmoji.id);
+      expect(findEmoji(component).prop('emoji').shortcut, 'Emoji rendered').to.equal(grinEmoji.shortcut);
+    });
+  });
+
   it('should update emoji on id change', () => {
     const component = mount(<ResourcedEmoji
       emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
@@ -58,6 +70,28 @@ describe('<ResourcedEmoji />', () => {
     const component = mount(<ResourcedEmoji
       emojiProvider={getEmojiResourcePromise(config) as Promise<EmojiProvider>}
       emojiId={{ id: 'doesnotexist' }}
+    />);
+
+    return waitUntil(() => !!resolver).then(() => {
+      resolver();
+      return waitUntil(() => emojiPlaceHolderVisible(component)).then(() => {
+        expect(true, 'EmojiPlaceholder found').to.equal(true);
+      });
+    });
+  });
+
+  it('unknown emoji by shortcut', () => {
+    let resolver;
+    let resolverResult;
+    const config: MockEmojiResourceConfig = {
+      promiseBuilder: (result: EmojiDescription) => {
+        resolverResult = result;
+        return new Promise(resolve => { resolver = resolve; });
+      },
+    };
+    const component = mount(<ResourcedEmoji
+      emojiProvider={getEmojiResourcePromise(config) as Promise<EmojiProvider>}
+      emojiId={{ shortcut: 'doesnotexist' }}
     />);
 
     return waitUntil(() => !!resolver).then(() => {

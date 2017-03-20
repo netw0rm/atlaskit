@@ -35,6 +35,22 @@ storiesOf(`${name}/Resourced Emoji`, module)
   .add('resourced emoji', () => (
     <SampleEmojis />
   ))
+  .add('resourced emoji by shortcut', () => (
+    <span>
+      <ResourcedEmoji
+        emojiId={{shortcut: 'grimacing' }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+      <ResourcedEmoji
+        emojiId={{shortcut: 'awthanks'}}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+      <ResourcedEmoji
+        emojiId={{shortcut: 'not-an-emoji'}}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+    </span>
+  ))
   .add('Content resourced emoji', () => (
     <div>
       <h1>Heading 1 <SampleEmojis /></h1>

@@ -23,6 +23,7 @@ export default class InlineEdit extends PureComponent {
     onCancel: PropTypes.func.isRequired,
     labelHtmlFor: PropTypes.string,
     shouldConfirmOnEnter: PropTypes.bool,
+    invalidMessage: PropTypes.string,
   }
 
   static defaultProps = {
@@ -32,10 +33,12 @@ export default class InlineEdit extends PureComponent {
     areActionButtonsHidden: false,
     isConfirmOnBlurDisabled: false,
     shouldConfirmOnEnter: false,
+    invalidMessage: '',
   }
 
   state = {
     wasFocusReceivedSinceLastBlur: false,
+    wasIconMouseDown: false,
     resetFieldBase: false,
   }
 
@@ -44,6 +47,11 @@ export default class InlineEdit extends PureComponent {
   }
 
   onWrapperClick = () => {
+    if (this.state.wasIconMouseDown) {
+      // If we are clicking the icon, we don't want to treat it as a click on the field.
+      this.setState({ wasIconMouseDown: false });
+      return;
+    }
     if (!this.isReadOnly() && !this.props.isEditing) {
       this.props.onEditRequested();
     }
@@ -53,12 +61,19 @@ export default class InlineEdit extends PureComponent {
     if (this.isReadOnly() || !this.props.isEditing || this.props.isConfirmOnBlurDisabled) {
       return;
     }
+
+    if (this.state.wasIconMouseDown) {
+      // If we are clicking the icon then we don't want to confirm on blur.
+      this.setState({ wasIconMouseDown: false });
+      return;
+    }
+
     this.setState({ wasFocusReceivedSinceLastBlur: false });
     setTimeout(this.confirmIfUnfocused, 10);
   }
 
   onWrapperFocus = () => {
-    this.setState({ wasFocusReceivedSinceLastBlur: true });
+    this.setState({ wasIconMouseDown: false, wasFocusReceivedSinceLastBlur: true });
   }
 
   onConfirmClick = (event) => {
@@ -75,6 +90,11 @@ export default class InlineEdit extends PureComponent {
 
     event.preventDefault();
     this.props.onCancel();
+  }
+
+  onIconMouseDown = () => {
+    // Set the state here so that we can ignore the blur or click event on the field.
+    this.setState({ wasIconMouseDown: true });
   }
 
   getRootClasses = () =>
@@ -167,6 +187,8 @@ export default class InlineEdit extends PureComponent {
               isDisabled={this.shouldRenderSpinner()}
               isLoading={this.shouldRenderSpinner()}
               shouldReset={this.shouldResetFieldBase}
+              invalidMessage={this.props.invalidMessage}
+              onIconMouseDown={this.onIconMouseDown}
             >
               {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
             </FieldBase>

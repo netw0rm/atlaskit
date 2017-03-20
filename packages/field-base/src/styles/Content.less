@@ -147,6 +147,10 @@
   color: @base-color-invalid;
   display: flex;
   height: unit(@base-inner-height, px);
+
+  &.no-pointer-events {
+    pointer-events: none;
+  }
 }
 
 .fit-container-width {

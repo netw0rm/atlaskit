@@ -4,7 +4,8 @@ import {Observable} from 'rxjs/Observable';
 import {Subscription} from 'rxjs/Subscription';
 import {CardSize, DataUri, Context, CardAction, CardActionType, MediaItem, MediaItemType, LinkDetails, FileDetails} from '@atlaskit/media-core';
 
-import {CardViewSmall, CardView, DEFAULT_CARD_DIMENSIONS} from '..';
+import {CardView, DEFAULT_CARD_DIMENSIONS} from '../cardView';
+import {CardViewSmall} from '../cardViewSmall';
 import {isRetina} from '../../utils';
 
 const SMALL_CARD_IMAGE_WIDTH = 32;

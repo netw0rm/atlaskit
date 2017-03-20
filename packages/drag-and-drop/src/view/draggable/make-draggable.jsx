@@ -1,8 +1,8 @@
 // @flow
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import { css } from 'styled-components';
 import invariant from 'invariant';
-import type { TypeId, Position, DraggingInitial } from '../../types';
+import type { TypeId, Position } from '../../types';
 import type { Props, MapState, DraggableState } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
@@ -21,10 +21,6 @@ type ComponentState = {|
   childRef: ?Element,
 |}
 
-const Container = styled.div`
-  user-select: none;
-`;
-
 type MovementStyle = {|
   position: 'absolute',
   zIndex: string,
@@ -32,9 +28,7 @@ type MovementStyle = {|
   height: number,
   top: number,
   left: number,
-  |} | {|
-  zIndex: 'auto'
-  |}
+|}
 
 type MovementInfo = {|
   showPlaceholder: boolean,
@@ -290,9 +284,6 @@ export default (type: TypeId, map: MapState): Function =>
         return {
           showPlaceholder: false,
           speed: 'FAST',
-          style: {
-            zIndex: 'auto',
-          },
         };
       }
 
@@ -327,6 +318,7 @@ export default (type: TypeId, map: MapState): Function =>
             <Moveable
               speed={info.speed}
               style={info.style ? info.style : {}}
+              extraCSS="user-select: none;"
               destination={mapProps.offset}
               onMoveEnd={this.onMoveEnd}
               innerRef={this.setRef}
@@ -337,9 +329,7 @@ export default (type: TypeId, map: MapState): Function =>
                   type={type}
                   targetRef={this.state.childRef}
                 >
-                  <Container thisShouldBeRemovedAndStyleDoneElsewhere>
-                    <Component {...enhancedOwnProps} innerRef={this.setChildRef} />
-                  </Container>
+                  <Component {...enhancedOwnProps} innerRef={this.setChildRef} />
                 </DraggableDimensionPublisher>
               )}
             </Moveable>

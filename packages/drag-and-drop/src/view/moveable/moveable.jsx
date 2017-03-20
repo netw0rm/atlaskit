@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { Motion, spring } from 'react-motion';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import * as physics from '../physics';
 import type { Position } from '../../types';
 
@@ -22,7 +22,8 @@ type Props = {|
     speed: Speed,
     onMoveEnd?: Function,
     innerRef?: Function,
-    style?: Object,
+    style ?: Object,
+    extraCSS?: String,
 |}
 
 type DefaultProps = {|
@@ -31,7 +32,6 @@ type DefaultProps = {|
   style: Object,
 |}
 
-// TODO: memoizeOne
 const getMovement = (point: Position): Object => {
   if (isAtOrigin(point)) {
     return {};
@@ -42,7 +42,8 @@ const getMovement = (point: Position): Object => {
 };
 
 const Canvas = styled.div`
-  z-index: ${props => (props.zIndex)};
+  background-color: red;
+  ${props => (props.extraCSS ? props.extraCSS : '')}
 `;
 
 const start: Position = {
@@ -112,6 +113,7 @@ export default class Movable extends PureComponent {
             <Canvas
               style={style}
               innerRef={this.props.innerRef}
+              extraCSS={this.props.extraCSS}
             >
               {this.props.children}
             </Canvas>

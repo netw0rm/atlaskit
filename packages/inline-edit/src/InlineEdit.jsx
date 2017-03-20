@@ -46,10 +46,18 @@ export default class InlineEdit extends PureComponent {
   state = {
     wasFocusReceivedSinceLastBlur: false,
     resetFieldBase: false,
+    shouldResetFieldBase: false,
   }
 
   componentWillReceiveProps(nextProps) {
-    this.shouldResetFieldBase = this.props.isEditing && !nextProps.isEditing;
+    this.setState({ shouldResetFieldBase: this.props.isEditing && !nextProps.isEditing });
+  }
+
+  componentDidUpdate() {
+    // eslint-disable-next-line react/no-did-update-set-state
+    this.setState({
+      shouldResetFieldBase: false,
+    });
   }
 
   onWrapperClick = () => {
@@ -117,7 +125,7 @@ export default class InlineEdit extends PureComponent {
       appearance={this.props.isEditing ? 'standard' : 'subtle'}
       isDisabled={this.shouldRenderSpinner()}
       isLoading={this.shouldRenderSpinner()}
-      shouldReset={this.shouldResetFieldBase}
+      shouldReset={this.state.shouldResetFieldBase}
     >
       {children}
     </FieldBase>

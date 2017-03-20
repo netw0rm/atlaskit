@@ -94,10 +94,9 @@ describe('ak-field-text', () => {
     it('should get focus when focus() is called', () => {
       let hasFocus = 0;
       const wrapper = mount(<FieldTextSmart />);
-      const inputField = wrapper.find('input');
-      inputField.getDOMNode().addEventListener('focus', () => {
+      wrapper.getDOMNode().addEventListener('focus', (event) => {
         hasFocus = 1;
-      });
+      }, true);
       wrapper.instance().focus();
 
       expect(hasFocus).to.equal(1);

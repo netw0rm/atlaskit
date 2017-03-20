@@ -24,7 +24,7 @@ export default (
     label="Choose your favourite"
     placeholder="Australia"
     name="test"
-    onSelected={(item) => {
+    onSelectedChange={(item) => {
       console.log(item);
     }}
     shouldFitContainer

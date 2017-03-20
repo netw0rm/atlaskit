@@ -13,6 +13,7 @@ describe(name, () => {
       Object.keys(other).should.be.deep.equal([
         'Emoji',
         'ResourcedEmoji',
+        'ResourcedEmojiShortcut',
         'EmojiPicker',
         'EmojiTypeAhead',
         'EmojiResource',
@@ -20,8 +21,6 @@ describe(name, () => {
         'EmojiService',
         'EmojiLoader',
         'denormaliseEmojiServiceResponse',
-        'isEmojiId',
-        'isEmojiShortcut',
         'default',
       ]);
     });

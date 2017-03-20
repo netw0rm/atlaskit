@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 
 import { name } from '../package.json';
-import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
+import ResourcedEmojiShortcut from '../src/components/common/ResourcedEmojiShortcut';
 import { EmojiProvider } from '../src/api/EmojiResource';
 
 // import { MockEmojiResourceConfig } from '../test/MockEmojiResource';
@@ -16,26 +16,26 @@ interface SampleEmojiProps {
 // tslint:disable-next-line:variable-name
 const SampleEmojis = (props: SampleEmojiProps) => (
   <span>
-    <ResourcedEmoji
-      emojiId={{id: '1f62c'/* grimacing */}}
+    <ResourcedEmojiShortcut
+      shortcut="grimacing"
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
     />
-    <ResourcedEmoji
-      emojiId={{id: 'atlassian-awthanks'}}
+    <ResourcedEmojiShortcut
+      shortcut="awthanks"
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
     />
-    <ResourcedEmoji
-      emojiId={{id: 'not-an-emoji'}}
+    <ResourcedEmojiShortcut
+      shortcut="not-an-emoji"
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
     />
   </span>
 );
 
-storiesOf(`${name}/Resourced Emoji`, module)
-  .add('resourced emoji', () => (
+storiesOf(`${name}/Resourced Emoji Shortcut`, module)
+  .add('resourced emoji shortcut', () => (
     <SampleEmojis />
   ))
-  .add('Content resourced emoji', () => (
+  .add('Content resourced emoji shortcut', () => (
     <div>
       <h1>Heading 1 <SampleEmojis /></h1>
       <h2>Heading 2 <SampleEmojis /></h2>
@@ -48,7 +48,7 @@ storiesOf(`${name}/Resourced Emoji`, module)
       <p>{lorem} <SampleEmojis /> {lorem} <SampleEmojis /> {lorem} <SampleEmojis /> {lorem}</p>
     </div>
   ))
-  .add('slow loading emoji', () => {
+  .add('slow loading emoji shortcut', () => {
     let loadStandardRef;
     let loadAtlassianRef;
     const emojiResource: TriggeredEmojiResource = new TriggeredEmojiResource();

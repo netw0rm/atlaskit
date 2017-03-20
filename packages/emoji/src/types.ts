@@ -16,13 +16,6 @@ export interface EmojiId {
   variation?: number;
 }
 
-export interface EmojiShortcut {
-  shortcut: string;
-}
-
-export const isEmojiId = (obj: any) => !!obj.id;
-export const isEmojiShortcut = (obj: any) => !!obj.shortcut;
-
 export interface SpriteSheet {
   url: string;
   row: number;

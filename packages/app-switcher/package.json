@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/app-switcher",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "config": {
     "access": "public"
   },
@@ -29,9 +29,11 @@
     "styled-components": "^1.3.0"
   },
   "author": "Atlassian Pty Ltd",
-  "maintainers": [{
-    "name": "James McA"
-  }],
+  "maintainers": [
+    {
+      "name": "James McA"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

@@ -4,6 +4,11 @@ import Label from './Label';
 
 export { FieldBase, Label };
 
+function waitForRender(cb) {
+  // Execute the callback after any upcoming render calls in the execution queue
+  setTimeout(cb, 0);
+}
+
 export default class extends PureComponent {
   static propTypes = {
     defaultIsFocused: PropTypes.bool,
@@ -29,9 +34,9 @@ export default class extends PureComponent {
   }
 
   onBlur = (e) => {
-    // We wrap this in a setTimeout so that when we are tabbing to an element in the warning dialog,
-    // we do not render before the `onContentFocus` callback is called.
-    setTimeout(() => this.setState({ isFocused: false }), 0);
+    // Because the blur event fires before the focus event, we want to make sure that we don't
+    // render and close the dialog before we can check if the dialog is focused.
+    waitForRender(() => this.setState({ isFocused: false }));
     this.props.onBlur(e);
   }
 
@@ -46,14 +51,14 @@ export default class extends PureComponent {
   }
 
   onContentBlur = () => {
-    setTimeout(() => {
+    waitForRender(() => {
       if (this.state.shouldIgnoreNextDialogBlur) {
         // Ignore the blur event if we are still focused in the dialog.
         this.setState({ shouldIgnoreNextDialogBlur: false });
       } else {
         this.setState({ isDialogFocused: false });
       }
-    }, 0);
+    });
   }
 
   render() {

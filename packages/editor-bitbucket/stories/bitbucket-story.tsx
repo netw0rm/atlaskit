@@ -234,6 +234,7 @@ storiesOf(name, module)
               <Editor
                 ref={this.handleEditorRef}
                 isExpandedByDefault
+                emojiProvider={emojiProvider}
               />
             </div>
           </div>

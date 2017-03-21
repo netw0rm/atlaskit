@@ -86,11 +86,15 @@ export function transformHtml(html: string): HTMLElement {
     const src = img.getAttribute('src');
     const idMatch = !src ? false : src.match(/([^\/]+)\.[^\/]+$/);
 
+    console.log('matched emoji', idMatch);
+
+    const span = document.createElement('span');
+
     if (idMatch) {
-      const emoji = document.createTextNode(`:${decodeURIComponent(idMatch[1])}:`);
-      img.parentNode!.insertBefore(emoji, img);
+      span.setAttribute('data-emoji-shortcut', idMatch[1]);
     }
 
+    img.parentNode!.insertBefore(span, img);
     img.parentNode!.removeChild(img);
   });
 
@@ -100,6 +104,8 @@ export function transformHtml(html: string): HTMLElement {
     a.parentNode!.insertBefore(text, a);
     a.parentNode!.removeChild(a);
   });
+
+  console.log('converted html', el.innerHTML);
 
   return el;
 }

@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { parseHtml as parse } from '../src/parse-html';
 import schema from '../src/schema';
 import {
-  a, blockquote, code_block, doc, h1, h2,
+  a, blockquote, code_block, doc, emoji, h1, h2,
   h3, h4, h5, h6, hr, img, li, mention, code, ol, p, strong, ul
 } from './_schema-builder';
 
@@ -410,7 +410,7 @@ describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
   });
 
   describe('emojis', () => {
-    it('should be parsed preserving emoji id', () => {
+    it('should be parsed in an emoji', () => {
         expect(parse(
           '<p>' +
           'foo ' +
@@ -425,7 +425,7 @@ describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
         )).to.deep.equal(doc(
           p(
             'foo ',
-            ':diamond_shape_with_a_dot_inside:',
+            emoji({ shortcut: 'diamond_shape_with_a_dot_inside' }),
             ' bar'
           )
         ));

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/reduced-ui-pack",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "config": {
     "access": "public"
   },
@@ -20,9 +20,11 @@
     "@atlaskit/css-reset": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
-  "maintainers": [{
-    "name": "Sean C"
-  }],
+  "maintainers": [
+    {
+      "name": "Sean C"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/field-text": "^2.0.5",

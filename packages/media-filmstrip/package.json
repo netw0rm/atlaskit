@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-filmstrip",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "config": {
     "access": "public"
   },

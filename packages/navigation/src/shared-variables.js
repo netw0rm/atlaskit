@@ -1,4 +1,7 @@
-// NOTE: this is duplicated in shared-variables.less
+/**
+ * NOTE: these variables are duplicated in shared-variables.less
+ * NOTE: changing the width of the Navigation is considered a breaking change
+ */
 export const globalOpenWidth = 64;
 export const containerOpenWidth = 240;
 export const containerClosedWidth = 64;

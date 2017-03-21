@@ -7,6 +7,8 @@ import {
   NodeSelection,
   NodeViewDesc,
 } from '../../prosemirror';
+import inputRulePlugin from './input-rule';
+import { reconfigure } from '../utils';
 
 export type StateChangeHandler = (state: ImageUploadState) => any;
 export interface ImageUploadPluginOptions {
@@ -181,6 +183,8 @@ const plugin = new Plugin({
   key: stateKey,
   view: (view: EditorView) => {
     stateKey.getState(view.state).update(view.state, view.docView, true);
+    reconfigure(view, [inputRulePlugin(view.state.schema)]);
+
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
         stateKey.getState(view.state).update(view.state, view.docView);

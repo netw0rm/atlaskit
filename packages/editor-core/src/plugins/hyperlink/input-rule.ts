@@ -36,16 +36,16 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   });
 
   // [something](link) should convert to a hyperlink
-  const markdownLinkRule = new InputRule(/\[(\S+)\]\((\S+)\)$/, (state, match, start, end) => {
+  const markdownLinkRule = new InputRule(/(^|[^!])\[(\S+)\]\((\S+)\)$/, (state, match, start, end) => {
     const { schema } = state;
-    const url = match[2];
+    const url = match[3];
     const markType = schema.mark('link', { href: url });
 
     return state.tr.replaceWith(
-      start,
+      start + match[1].length,
       end,
       schema.text(
-        match[1],
+        match[2],
         [ markType ]
       )
     );

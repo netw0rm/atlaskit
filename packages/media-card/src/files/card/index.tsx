@@ -72,14 +72,17 @@ export class Card extends Component<CardProps, CardState> {
 
       return Promise.reject(undefined);
     }
-    else if (mediaItem.type === 'file' && mediaItem.details.mimeType === 'image/gif') {
-      return this.props.context.getDataUriService(this.props.collectionName).fetchOriginalDataUri(mediaItem);
-    } else {
-      const retinaFactor = isRetina() ? 2 : 1;
-      const width = (this._isSmall() ? SMALL_CARD_IMAGE_WIDTH : this.props.width || DEFAULT_CARD_DIMENSIONS.WIDTH) * retinaFactor;
-      const height = (this._isSmall() ? SMALL_CARD_IMAGE_HEIGHT : this.props.height || DEFAULT_CARD_DIMENSIONS.HEIGHT) * retinaFactor;
-      return this.props.context.getDataUriService(this.props.collectionName).fetchImageDataUri(mediaItem, width, height).catch(error => {});
+    const service = this.props.context.getDataUriService(this.props.collectionName);
+
+    if (this.isGif(mediaItem)) {
+      return this.safeFetch(() => service.fetchOriginalDataUri(mediaItem));
     }
+
+    const retinaFactor = isRetina() ? 2 : 1;
+    const width = (this._isSmall() ? SMALL_CARD_IMAGE_WIDTH : this.props.width || DEFAULT_CARD_DIMENSIONS.WIDTH) * retinaFactor;
+    const height = (this._isSmall() ? SMALL_CARD_IMAGE_HEIGHT : this.props.height || DEFAULT_CARD_DIMENSIONS.HEIGHT) * retinaFactor;
+
+    return this.safeFetch(() => service.fetchImageDataUri(mediaItem, width, height));
   }
 
   private updateState(props: CardProps): void {
@@ -281,5 +284,14 @@ export class Card extends Component<CardProps, CardState> {
 
   private _isSmall() {
     return this.props.type === 'small';
+  }
+
+  private isGif(mediaItem) {
+    return mediaItem.type === 'file' && mediaItem.details.mimeType === 'image/gif';
+  }
+
+  // Useful for when we want to swallow an exception while fetching the preview
+  private safeFetch(fn: Function) {
+    return fn().catch(error => {});
   }
 }

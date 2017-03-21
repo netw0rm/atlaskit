@@ -75,14 +75,14 @@ export class Card extends Component<CardProps, CardState> {
     const service = this.props.context.getDataUriService(this.props.collectionName);
 
     if (this.isGif(mediaItem)) {
-      return this.safeFetch(() => service.fetchOriginalDataUri(mediaItem));
+      return service.fetchOriginalDataUri(mediaItem);
     }
 
     const retinaFactor = isRetina() ? 2 : 1;
     const width = (this._isSmall() ? SMALL_CARD_IMAGE_WIDTH : this.props.width || DEFAULT_CARD_DIMENSIONS.WIDTH) * retinaFactor;
     const height = (this._isSmall() ? SMALL_CARD_IMAGE_HEIGHT : this.props.height || DEFAULT_CARD_DIMENSIONS.HEIGHT) * retinaFactor;
 
-    return this.safeFetch(() => service.fetchImageDataUri(mediaItem, width, height));
+    return service.fetchImageDataUri(mediaItem, width, height);
   }
 
   private updateState(props: CardProps): void {
@@ -96,7 +96,9 @@ export class Card extends Component<CardProps, CardState> {
         if (isProcessingCompleted(mediaItem)) {
           return Observable.fromPromise(
             this.fetchDataUri(mediaItem)
-              .then(dataUri => ({mediaItem, dataUri})));
+              .then(dataUri => ({mediaItem, dataUri}))
+              .catch(() => ({mediaItem}))
+            );
         } else {
           return Observable.of({mediaItem});
         }
@@ -106,7 +108,7 @@ export class Card extends Component<CardProps, CardState> {
 
     this.setPartialState({
       subscription: provider.subscribe({
-        next: ({mediaItem, dataUri}) => {
+        next: ({mediaItem, dataUri}: {mediaItem: MediaItem, dataUri?: string}) => {
           this.setPartialState({
             dataURI: dataUri,
             mediaItem,
@@ -288,10 +290,5 @@ export class Card extends Component<CardProps, CardState> {
 
   private isGif(mediaItem) {
     return mediaItem.type === 'file' && mediaItem.details.mimeType === 'image/gif';
-  }
-
-  // Useful for when we want to swallow an exception while fetching the preview
-  private safeFetch(fn: Function): Promise<DataUri> {
-    return fn().catch(error => {});
   }
 }

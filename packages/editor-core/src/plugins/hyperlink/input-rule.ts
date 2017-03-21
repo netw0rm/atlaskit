@@ -14,7 +14,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
     return plugin;
   }
 
-  const inputRule = new InputRule(urlAtEndOfLine, (state, match, start, end) => {
+  const endOfLine = new InputRule(urlAtEndOfLine, (state, match, start, end) => {
     const { schema } = state;
     const url = match[3] ? match[1] : `http://${match[1]}`;
 
@@ -35,7 +35,26 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
     );
   });
 
-  plugin = inputRules({ rules: [inputRule] });
+  // [something](link) should convert to a hyperlink
+  const markdownLinkRule = new InputRule(/\[(\S+)\]\((\S+)\)$/, (state, match, start, end) => {
+    const { schema } = state;
+    const url = match[2];
+    const markType = schema.mark('link', { href: url });
+
+    return state.tr.replaceWith(
+      start,
+      end,
+      schema.text(
+        match[1],
+        [ markType ]
+      )
+    );
+  });
+
+  plugin = inputRules({ rules: [
+    endOfLine,
+    markdownLinkRule
+  ]});
 
   return plugin;
 };

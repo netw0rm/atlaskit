@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/layer",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "config": {
     "access": "public"
   },
@@ -15,11 +15,14 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [{
-    "name": "Luke B"
-  }, {
-    "name": "Nadia M"
-  }],
+  "maintainers": [
+    {
+      "name": "Luke B"
+    },
+    {
+      "name": "Nadia M"
+    }
+  ],
   "license": "Apache-2.0",
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",

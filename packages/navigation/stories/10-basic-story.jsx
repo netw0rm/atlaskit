@@ -3,10 +3,10 @@ import React from 'react';
 import { CalendarIcon, DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/icon';
 import { AtlassianLogo } from '@atlaskit/logo';
 import navigationStencil from 'url-loader!./stencils/navigation.svg';
-import { AkContainerItem, AkContainerItemGroup } from '../src/index';
+import { AkContainerItem, AkContainerItemGroup, AkContainerTitle } from '../src/index';
 import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
-import nucleus from './nucleus.png';
+import nucleusLogo from './nucleus.png';
 import { name } from '../package.json';
 import RandomBadge from './components/RandomBadge';
 
@@ -33,18 +33,18 @@ storiesOf(name, module)
           href="#1"
         />
         <AkContainerItem
-          icon={<img src={nucleus} alt="icon" />}
+          icon={<img src={nucleusLogo} alt="icon" />}
           text="Item with an icon"
           href="#2"
         />
         <AkContainerItem
-          icon={<img src={nucleus} alt="icon" />}
+          icon={<img src={nucleusLogo} alt="icon" />}
           text="Item with two lines"
           subText="Another line of text, which could possibly be long"
           href="#3"
         />
         <AkContainerItem
-          icon={<img src={nucleus} alt="icon" />}
+          icon={<img src={nucleusLogo} alt="icon" />}
           text="A really, really, quite long, actually super long container name"
           href="#4"
         />
@@ -55,7 +55,7 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation>
         <AkContainerItem
-          icon={<img alt="icon" src={nucleus} />}
+          icon={<img alt="icon" src={nucleusLogo} />}
           isSelected
           text="This one is selected"
         />
@@ -67,7 +67,7 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation>
         <AkContainerItem
-          icon={<img alt="icon" src={nucleus} />}
+          icon={<img alt="icon" src={nucleusLogo} />}
           isSelected
           text="Nucleus"
         />
@@ -175,12 +175,12 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation isOpen={false}>
         <AkContainerItem
-          icon={<img alt="icon" src={nucleus} />}
+          icon={<img alt="icon" src={nucleusLogo} />}
           isSelected
           text="This one is selected"
         />
         <AkContainerItem
-          icon={<img alt="icon" src={nucleus} />}
+          icon={<img alt="icon" src={nucleusLogo} />}
           text="This one is not selected"
         />
       </BasicNavigation>
@@ -193,6 +193,21 @@ storiesOf(name, module)
         onCreateDrawerOpen={action('create-open')}
         onSearchDrawerClose={action('search-close')}
         onSearchDrawerOpen={action('search-open')}
+      />
+    </Page>
+  ))
+  .add('with no subText', () => (
+    <Page>
+      <BasicNavigation
+        containerHeaderComponent={() => (
+          <AkContainerTitle
+            href="#foo"
+            icon={
+              <img alt="nucleus" src={nucleusLogo} />
+            }
+            text="AtlasKit"
+          />
+        )}
       />
     </Page>
   ));

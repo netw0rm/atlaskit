@@ -1,10 +1,15 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { Code, Chrome, Description } from '@atlaskit/util-readme';
+import { Code, Chrome, Description, Props } from '@atlaskit/util-readme';
 
 /* eslint-disable import/first, import/no-duplicates */
 import SmartSelectOverview from './examples/SmartSelectOverview';
 import SmartSelectOverviewRaw from '!raw!./examples/SmartSelectOverview';
+import CustomMultiSelectRaw from '!raw!./examples/CustomMultiSelect';
+import CustomMultiSelectOverview from './examples/CustomMultiSelectOverview';
+import CustomMultiSelectOverviewRaw from '!raw!./examples/CustomMultiSelectOverview';
+import ItemsOverview from './examples/ItemsOverview';
+import ItemsOverviewRaw from '!raw!./examples/ItemsOverview';
 import SmartSelectDefaultSelectedItems from './examples/SmartSelectDefaultSelectedItems';
 import SmartSelectDefaultSelectedItemsRaw from '!raw!./examples/SmartSelectDefaultSelectedItems';
 import SmartSelectRequired from './examples/SmartSelectRequired';
@@ -23,7 +28,22 @@ import SmartSelectElemBefore from './examples/SmartSelectElemBefore';
 import SmartSelectElemBeforeRaw from '!raw!./examples/SmartSelectElemBefore';
 /* eslint-enable import/first, import/no-duplicates */
 
+// Dummy components exist so that we have a component to pass to <Props/>
+import DummyItem from '../src/internal/DummyItem';
+import DummyGroup from '../src/internal/DummyGroup';
 import { name, description } from '../package.json';
+
+import SmartMultiSelect, { StatelessMultiSelect } from '../src';
+import {
+  statelessMultiSelectPropTypes,
+  statelessMultiSelectPropDescriptions,
+  smartMultiSelectPropDescriptions,
+  smartMultiSelectPropTypes,
+  itemPropDescriptions,
+  itemPropTypes,
+  groupPropDescriptions,
+  groupPropTypes,
+} from './props';
 
 storiesOf(name, module)
   .add('📖 Multi select (smart) - readme', () => (
@@ -33,17 +53,71 @@ storiesOf(name, module)
         <p>
           The &ldquo;smart&rdquo; multi-select component will handle it&apos;s own state for you
           (you won&apos;t need to/be able to update the list of <code>selected</code> items). If
-          you require this funcitonality, use the <code>stateless</code> version instead.
+          you require this functionality, use the <code>stateless</code> version instead.
         </p>
       </Description>
       {SmartSelectOverview}
       <Code>
         {SmartSelectOverviewRaw}
       </Code>
+      <Props
+        component={SmartMultiSelect}
+        descriptions={smartMultiSelectPropDescriptions}
+        types={smartMultiSelectPropTypes}
+      />
     </Chrome>
   ))
-  /* 📖 Multi select (stateless) - readme */
-  /* 📖 Multi select Item - readme */
+  .add('📖 Multi select (stateless) - readme', () => (
+    <Chrome title="Multi select (smart) - overview">
+      <Description>
+        <p>
+          The &ldquo;stateless&rdquo; multi-select component gives you complete control of how the
+          component should display and react to user interaction.
+        </p>
+        <p>This also means it is up to the Application to keep the props up to date (filter text,
+          isOpen, selectedItems, etc)</p>
+        <p>The following is an example of how you could build your own multiselect using the
+          stateless component
+        </p>
+      </Description>
+      <Code>
+        {CustomMultiSelectRaw}
+      </Code>
+      <p>And we could then use it like so:</p>
+      <Code>
+        {CustomMultiSelectOverviewRaw}
+      </Code>
+      {CustomMultiSelectOverview}
+      <Props
+        component={StatelessMultiSelect}
+        descriptions={statelessMultiSelectPropDescriptions}
+        types={statelessMultiSelectPropTypes}
+      />
+    </Chrome>
+  ))
+  .add('📖 Multi select Item - readme', () => (
+    <Chrome title="Multi select Item - overview">
+      <Description>
+        <p>The <code>items</code> and <code>selectedItems</code> props both take an array of groups
+          of items. Groups are simply collections of Items with optional headings</p>
+        <p>It is recommended that every group should have a heading. However if headings are not
+          required, the dialog will either have all headings or no headings at all for these groups.
+          But if there are no headings for the group, then the group should be combined instead.</p>
+      </Description>
+      <Props component={DummyGroup} descriptions={groupPropDescriptions} types={groupPropTypes} />
+      <Description>
+        <p>
+          Items you pass in support a range of options that affect how your options are rendered
+          both in the dropdown and in the selected tags.
+        </p>
+      </Description>
+      <Props component={DummyItem} descriptions={itemPropDescriptions} types={itemPropTypes} />
+      {ItemsOverview}
+      <Code>
+        {ItemsOverviewRaw}
+      </Code>
+    </Chrome>
+  ))
   .add('Multi select is submittable', () => (
     <Chrome title="Multi select in forms">
       {SelectInForm}

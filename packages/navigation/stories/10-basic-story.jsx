@@ -115,45 +115,45 @@ storiesOf(name, module)
   .add('with project settings appearance', () => (
     <Page>
       <BasicNavigation
-        containerAppearance="project-settings"
-        globalAppearance="project-settings"
+        containerAppearance="settings"
+        globalAppearance="settings"
       >
         <AkContainerItemGroup>
           <AkContainerItem
-            appearance="project-settings"
+            appearance="settings"
             icon={<DashboardIcon label="Dashboard" />}
             isSelected
             text="Item A"
             textAfter={<RandomBadge theme="dark" />}
           />
           <AkContainerItem
-            appearance="project-settings"
+            appearance="settings"
             icon={<SettingsIcon label="Settings" />}
             text="Item B"
             textAfter={<RandomBadge theme="dark" />}
           />
           <AkContainerItem
-            appearance="project-settings"
+            appearance="settings"
             icon={<TrayIcon label="Tray" />}
             text="Item C"
           />
-          <AkContainerItemGroup hasSeparator appearance="project-settings" title="Alpha">
+          <AkContainerItemGroup hasSeparator appearance="settings" title="Alpha">
             <AkContainerItem
-              appearance="project-settings"
+              appearance="settings"
               text="Item D"
               textAfter={<RandomBadge theme="dark" />}
             />
             <AkContainerItem
-              appearance="project-settings"
+              appearance="settings"
               text="Item E"
               isSelected
               textAfter={<RandomBadge />}
             />
           </AkContainerItemGroup>
         </AkContainerItemGroup>
-        <AkContainerItemGroup appearance="project-settings" title="Beta">
+        <AkContainerItemGroup appearance="settings" title="Beta">
           <AkContainerItem
-            appearance="project-settings"
+            appearance="settings"
             icon={<CalendarIcon label="Calendar" />}
             text="Item X"
           />

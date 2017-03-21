@@ -35,7 +35,7 @@ export default class ContainerItem extends PureComponent {
       <div
         className={className(containerItem, {
           [hasGlobalAppearance]: this.props.appearance === 'global',
-          [hasProjectSettingsAppearance]: this.props.appearance === 'project-settings',
+          [hasProjectSettingsAppearance]: this.props.appearance === 'settings',
           [isSelected]: this.props.isSelected,
         })}
       >

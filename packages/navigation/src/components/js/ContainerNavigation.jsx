@@ -48,8 +48,8 @@ export default class ContainerNavigation extends PureComponent {
     switch (this.props.appearance) {
       case 'global':
         return 'global';
-      case 'project-settings':
-        return 'project-settings';
+      case 'settings':
+        return 'settings';
       default:
         return 'container';
     }
@@ -94,7 +94,7 @@ export default class ContainerNavigation extends PureComponent {
             className={classNames(styles.containerNavigationInner, {
               [styles.hasContainerHeader]: headerComponent !== null,
               [styles.hasGlobalAppearance]: appearance === 'global',
-              [styles.hasProjectSettingsAppearance]: appearance === 'project-settings',
+              [styles.hasProjectSettingsAppearance]: appearance === 'settings',
             })}
           >
             <GlobalActions

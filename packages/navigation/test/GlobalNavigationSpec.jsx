@@ -46,10 +46,10 @@ describe('<GlobalNavigation />', () => {
           accountItem={accountItem}
         />).contains(accountItem)).to.equal(true);
     });
-    it('appearance="project-settings" renders with the hasProjectSettingsAppearance class', () => {
+    it('appearance="settings" renders with the hasProjectSettingsAppearance class', () => {
       expect((shallow(
         <GlobalNavigation
-          appearance="project-settings"
+          appearance="settings"
         />).find(`.${styles.globalNavigationOuter}`)).hasClass((styles.hasProjectSettingsAppearance))).to.equal(true);
     });
   });

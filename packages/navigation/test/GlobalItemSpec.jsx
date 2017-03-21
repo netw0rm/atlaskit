@@ -23,8 +23,8 @@ describe('<GlobalItem />', () => {
     it('appearance="container" renders with the hasContainerAppearance class', () => {
       expect((shallow(<GlobalItem appearance="container" />).find(`.${styles.globalItem}`)).hasClass((styles.hasContainerAppearance))).to.equal(true);
     });
-    it('appearance="project-settings" renders with the hasProjectSettingsAppearance class', () => {
-      expect((shallow(<GlobalItem appearance="project-settings" />).find(`.${styles.globalItem}`)).hasClass((styles.hasProjectSettingsAppearance))).to.equal(true);
+    it('appearance="settings" renders with the hasProjectSettingsAppearance class', () => {
+      expect((shallow(<GlobalItem appearance="settings" />).find(`.${styles.globalItem}`)).hasClass((styles.hasProjectSettingsAppearance))).to.equal(true);
     });
     it('linkComponent can be used to render an arbitrary link', () => {
       const item = mount(<GlobalItem

@@ -33,7 +33,7 @@ export default class ContainerItemGroup extends PureComponent {
           <div
             className={className(style.separator, {
               [style.hasGlobalAppearance]: appearance === 'global',
-              [style.hasProjectSettingsAppearance]: appearance === 'project-settings',
+              [style.hasProjectSettingsAppearance]: appearance === 'settings',
             })}
           />
           ) : null}

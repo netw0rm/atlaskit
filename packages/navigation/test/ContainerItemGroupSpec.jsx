@@ -29,8 +29,8 @@ describe('<ContainerItemGroup />', () => {
     it('appearance="global" should render separator with the global appearance class', () => {
       expect((mount(<ContainerItemGroup appearance="global" hasSeparator />).find(`.${separator}`)).hasClass((hasGlobalAppearance))).to.equal(true);
     });
-    it('appearance="project-settings" should render separator with the project-settings appearance class', () => {
-      expect((mount(<ContainerItemGroup appearance="project-settings" hasSeparator />).find(`.${separator}`)).hasClass((hasProjectSettingsAppearance))).to.equal(true);
+    it('appearance="settings" should render separator with the settings appearance class', () => {
+      expect((mount(<ContainerItemGroup appearance="settings" hasSeparator />).find(`.${separator}`)).hasClass((hasProjectSettingsAppearance))).to.equal(true);
     });
   });
 });

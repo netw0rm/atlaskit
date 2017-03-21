@@ -34,8 +34,8 @@ describe('<ContainerItem />', () => {
       expect((mount(<ContainerItem appearance="global" />).find(`.${containerItem}`)).hasClass((hasGlobalAppearance))).to.equal(true);
     });
 
-    it('appearance="project-settings" should render with the project-settings appearance class', () => {
-      expect((mount(<ContainerItem appearance="project-settings" />).find(`.${containerItem}`)).hasClass((hasProjectSettingsAppearance))).to.equal(true);
+    it('appearance="settings" should render with the settings appearance class', () => {
+      expect((mount(<ContainerItem appearance="settings" />).find(`.${containerItem}`)).hasClass((hasProjectSettingsAppearance))).to.equal(true);
     });
   });
 });

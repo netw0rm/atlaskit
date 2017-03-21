@@ -11,7 +11,7 @@ import textFormattingPlugin from '../../src/plugins/text-formatting';
 import hyperlinkPlugin from '../../src/plugins/hyperlink';
 import rulePlugin from '../../src/plugins/rule';
 import imageUploadPlugin from '../../src/plugins/image-upload';
-import listsPlugin from '../../src/plugins/lists/index-future';
+import listsPlugin from '../../src/plugins/lists';
 import {
   baseKeymap,
   EditorState,

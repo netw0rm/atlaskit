@@ -18,7 +18,7 @@ export class CardContentSmall extends Component<CardContentProps, {}> {
     }
 
     if (this.props.mediaType === 'image' && this.props.dataURI) {
-      return <MediaImage dataURI={this.props.dataURI} />;
+      return <MediaImage dataURI={this.props.dataURI} fadeIn={this.props.loading} />;
     } else {
       return <PlaceholderSmall mediaType={this.props.mediaType} />;
     }

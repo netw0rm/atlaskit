@@ -25,8 +25,9 @@ export default class FieldBase extends PureComponent {
     onBlur: PropTypes.func.isRequired,
     shouldReset: PropTypes.bool,
     children: PropTypes.node,
-    onDialogFocus: PropTypes.func,
     onDialogBlur: PropTypes.func,
+    onDialogClick: PropTypes.func,
+    onDialogFocus: PropTypes.func,
   }
 
   static defaultProps = {
@@ -44,8 +45,9 @@ export default class FieldBase extends PureComponent {
     isReadOnly: false,
     isRequired: false,
     shouldReset: false,
-    onDialogFocus: () => {},
     onDialogBlur: () => {},
+    onDialogClick: () => {},
+    onDialogFocus: () => {},
   }
 
   componentDidUpdate() {
@@ -95,6 +97,7 @@ export default class FieldBase extends PureComponent {
             content={this.props.invalidMessage}
             isOpen={this.props.isDialogOpen && !!this.props.invalidMessage}
             position="right middle"
+            onContentClick={this.props.onDialogClick}
             onContentFocus={this.props.onDialogFocus}
             onContentBlur={this.props.onDialogBlur}
           >

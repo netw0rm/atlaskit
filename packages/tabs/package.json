@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tabs",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "config": {
     "access": "public"
   },
@@ -15,9 +15,11 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [{
-    "name": "Ben W"
-  }],
+  "maintainers": [
+    {
+      "name": "Ben W"
+    }
+  ],
   "license": "Apache-2.0",
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",

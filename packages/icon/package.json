@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/icon",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "config": {
     "access": "public"
   },
@@ -21,11 +21,14 @@
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
-  "maintainers": [{
-    "name": "Ben W"
-  }, {
-    "name": "Luke B"
-  }],
+  "maintainers": [
+    {
+      "name": "Ben W"
+    },
+    {
+      "name": "Luke B"
+    }
+  ],
   "peerDependencies": {
     "react": "^15.3.2"
   },

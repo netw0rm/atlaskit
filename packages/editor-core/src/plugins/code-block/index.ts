@@ -58,7 +58,6 @@ export class CodeBlockState {
       this.activeCodeBlock = codeBlockNode;
       this.language = codeBlockNode && codeBlockNode.attrs['language'] || undefined;
       this.element = newElement;
-      this.changeHandlers.forEach(changeHandler => changeHandler(this));
       this.triggerOnChange();
     }
   }

@@ -8,6 +8,8 @@ import SmartSelectOverviewRaw from '!raw!./examples/SmartSelectOverview';
 import CustomMultiSelectRaw from '!raw!./examples/CustomMultiSelect';
 import CustomMultiSelectOverview from './examples/CustomMultiSelectOverview';
 import CustomMultiSelectOverviewRaw from '!raw!./examples/CustomMultiSelectOverview';
+import ItemsOverview from './examples/ItemsOverview';
+import ItemsOverviewRaw from '!raw!./examples/ItemsOverview';
 import SmartSelectDefaultSelectedItems from './examples/SmartSelectDefaultSelectedItems';
 import SmartSelectDefaultSelectedItemsRaw from '!raw!./examples/SmartSelectDefaultSelectedItems';
 import SmartSelectRequired from './examples/SmartSelectRequired';
@@ -26,8 +28,9 @@ import SmartSelectElemBefore from './examples/SmartSelectElemBefore';
 import SmartSelectElemBeforeRaw from '!raw!./examples/SmartSelectElemBefore';
 /* eslint-enable import/first, import/no-duplicates */
 
-// DummyItem exists so that we have a component to pass to <Props/>
+// Dummy components exist so that we have a component to pass to <Props/>
 import DummyItem from '../src/internal/DummyItem';
+import DummyGroup from '../src/internal/DummyGroup';
 import { name, description } from '../package.json';
 
 import SmartMultiSelect, { StatelessMultiSelect } from '../src';
@@ -35,7 +38,10 @@ import {
   statelessMultiSelectPropTypes,
   statelessMultiSelectPropDescriptions,
   smartMultiSelectPropDescriptions,
-  ItemPropDescriptions,
+  itemPropDescriptions,
+  itemPropTypes,
+  groupPropDescriptions,
+  groupPropTypes,
 } from './props';
 
 storiesOf(name, module)
@@ -91,16 +97,24 @@ storiesOf(name, module)
   .add('📖 Multi select Item - readme', () => (
     <Chrome title="Multi select Item - overview">
       <Description>
+        <p>The <code>items</code> and <code>selectedItems</code> props both take an array of groups
+          of items. Groups are simply collections of Items with optional headings</p>
+        <p>It is recommended that every group should have a heading. However if headings are not
+          required, the dialog will either have all headings or no headings at all for these groups.
+          But if there are no headings for the group, then the group should be combined instead.</p>
+      </Description>
+      <Props component={DummyGroup} descriptions={groupPropDescriptions} types={groupPropTypes} />
+      <Description>
         <p>
           Items you pass in support a range of options that affect how your options are rendered
           both in the dropdown and in the selected tags.
         </p>
       </Description>
-      {SmartSelectElemBefore}
+      <Props component={DummyItem} descriptions={itemPropDescriptions} types={itemPropTypes} />
+      {ItemsOverview}
       <Code>
-        {SmartSelectElemBeforeRaw}
+        {ItemsOverviewRaw}
       </Code>
-      <Props component={DummyItem} descriptions={ItemPropDescriptions} />
     </Chrome>
   ))
   .add('Multi select is submittable', () => (

@@ -46,15 +46,16 @@ export default class CustomMultiSelect extends PureComponent {
     } else {
       this.selectItem(item);
     }
-    // we would update isInvalid here
+    // we could update isInvalid here
   }
 
   handleFilterChange = (value) => {
+    // value will tell us the value the filter wants to change to
     this.setState({ filterValue: value });
   }
 
   handleOpenChange = (attrs) => {
-    console.log(attrs);
+    // attrs.isOpen will tell us the state that the dropdown wants to move to
     this.setState({ isOpen: attrs.isOpen });
   }
 

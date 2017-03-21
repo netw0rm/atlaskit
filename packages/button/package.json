@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/button",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "config": {
     "access": "public"
   },
@@ -22,11 +22,14 @@
     "classnames": "^2.2.5"
   },
   "author": "Atlassian Pty Ltd",
-  "maintainers": [{
-    "name": "Matias C"
-  }, {
-    "name": "Nadia M"
-  }],
+  "maintainers": [
+    {
+      "name": "Matias C"
+    },
+    {
+      "name": "Nadia M"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/icon": "^1.0.0",

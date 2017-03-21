@@ -29,6 +29,15 @@
   }
 }
 
+.hasSeparator {
+  &:first-child {
+    margin-top: 0;
+    & .separator {
+      display: none;
+    }
+  }
+}
+
 .title {
   align-self: center;
   color: @ak-color-N90;

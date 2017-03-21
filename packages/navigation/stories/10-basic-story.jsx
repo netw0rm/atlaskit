@@ -124,7 +124,7 @@ storiesOf(name, module)
         containerAppearance="global"
         containerHeaderComponent={AtlassianLogo}
       >
-        <AkContainerItemGroup>
+        <AkContainerItemGroup hasSeparator>
           <AkContainerItem
             appearance="global"
             icon={<DashboardIcon label="Dashboard" />}
@@ -141,7 +141,7 @@ storiesOf(name, module)
             textAfter={<RandomBadge theme="dark" />}
           />
         </AkContainerItemGroup>
-        <AkContainerItemGroup title="one section">
+        <AkContainerItemGroup hasSeparator title="one section">
           <AkContainerItem
             appearance="global"
             icon={<TrayIcon label="Tray" />}

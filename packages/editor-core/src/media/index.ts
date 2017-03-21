@@ -1,6 +1,6 @@
 import { ContextConfig } from '@atlaskit/media-core';
 
-export interface MediaResource {
+export interface MediaProvider {
   /**
    * Resolve to a Media Context Config for uploading new media items, i.e.:
    *
@@ -36,4 +36,4 @@ export interface MediaResource {
 
 export { ContextConfig as MediaContextConfig };
 
-export default MediaResource;
+export default MediaProvider;

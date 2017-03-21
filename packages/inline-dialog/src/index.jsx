@@ -23,6 +23,8 @@ export default class AKInlineDialog extends PureComponent {
     isOpen: PropTypes.bool,
     content: PropTypes.node,
     shouldFlip: PropTypes.bool,
+    onContentFocus: PropTypes.func,
+    onContentBlur: PropTypes.func,
   }
 
   static defaultProps = {
@@ -30,6 +32,8 @@ export default class AKInlineDialog extends PureComponent {
     isOpen: false,
     content: null,
     shouldFlip: false,
+    onContentFocus: () => {},
+    onContentBlur: () => {},
   }
 
   render() {
@@ -40,12 +44,21 @@ export default class AKInlineDialog extends PureComponent {
 
     return (
       <Layer
-        content={props.isOpen ? content : null}
+        content={props.isOpen ?
+          <div
+            onFocusCapture={props.onContentFocus}
+            onBlurCapture={props.onContentBlur}
+          >
+            {content}
+          </div>
+          : null}
         position={props.position}
         autoPosition={props.shouldFlip}
         offset={dialogOffset}
       >
-        <div>{props.children}</div>
+        <div>
+          {props.children}
+        </div>
       </Layer>);
   }
 }

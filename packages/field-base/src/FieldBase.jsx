@@ -23,9 +23,10 @@ export default class FieldBase extends PureComponent {
     isRequired: PropTypes.bool,
     onFocus: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired,
-    onIconMouseDown: PropTypes.func.isRequired,
     shouldReset: PropTypes.bool,
     children: PropTypes.node,
+    onDialogFocus: PropTypes.func,
+    onDialogBlur: PropTypes.func,
   }
 
   static defaultProps = {
@@ -43,6 +44,8 @@ export default class FieldBase extends PureComponent {
     isReadOnly: false,
     isRequired: false,
     shouldReset: false,
+    onDialogFocus: () => {},
+    onDialogBlur: () => {},
   }
 
   componentDidUpdate() {
@@ -53,15 +56,8 @@ export default class FieldBase extends PureComponent {
 
   renderRightGutter() {
     if (!this.props.isDisabled && this.props.isInvalid) {
-      const iconWrapperClasses = classNames(styles.warningIconWrapper, {
-        [styles.noPointerEvents]: !this.props.invalidMessage,
-      });
-
       return (
-        <div
-          className={iconWrapperClasses}
-          onMouseDown={this.props.onIconMouseDown}
-        >
+        <div className={styles.warningIconWrapper}>
           <WarningIcon label="warning" />
         </div>
       );
@@ -99,6 +95,8 @@ export default class FieldBase extends PureComponent {
             content={this.props.invalidMessage}
             isOpen={this.props.isDialogOpen && !!this.props.invalidMessage}
             position="right middle"
+            onContentFocus={this.props.onDialogFocus}
+            onContentBlur={this.props.onDialogBlur}
           >
             <div
               className={contentClasses}

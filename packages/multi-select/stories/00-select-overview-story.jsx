@@ -38,6 +38,7 @@ import {
   statelessMultiSelectPropTypes,
   statelessMultiSelectPropDescriptions,
   smartMultiSelectPropDescriptions,
+  smartMultiSelectPropTypes,
   itemPropDescriptions,
   itemPropTypes,
   groupPropDescriptions,
@@ -62,7 +63,7 @@ storiesOf(name, module)
       <Props
         component={SmartMultiSelect}
         descriptions={smartMultiSelectPropDescriptions}
-        types={statelessMultiSelectPropTypes}
+        types={smartMultiSelectPropTypes}
       />
     </Chrome>
   ))

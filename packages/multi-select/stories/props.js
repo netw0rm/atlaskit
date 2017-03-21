@@ -28,7 +28,7 @@ const statelessMultiSelectPropDescriptions = {
 const statelessMultiSelectPropTypes = {
   appearance: 'string',
   items: 'Array(Group)',
-  selectedItems: 'Array(Group)',
+  selectedItems: 'Array(Item)',
 };
 
 // we can reuse most of the descriptions from the stateless component here to make updating easier
@@ -52,6 +52,12 @@ const smartMultiSelectPropDescriptions = {
   placeholder: statelessMultiSelectPropDescriptions.placeholder,
   position: statelessMultiSelectPropDescriptions.position,
   shouldFitContainer: statelessMultiSelectPropDescriptions.shouldFitContainer,
+};
+
+const smartMultiSelectPropTypes = {
+  appearance: 'string',
+  defaultSelected: 'Array(Item)',
+  items: 'Array(Group)',
 };
 
 const groupPropDescriptions = {
@@ -81,6 +87,7 @@ export {
   statelessMultiSelectPropDescriptions,
   statelessMultiSelectPropTypes,
   smartMultiSelectPropDescriptions,
+  smartMultiSelectPropTypes,
   itemPropDescriptions,
   itemPropTypes,
   groupPropDescriptions,

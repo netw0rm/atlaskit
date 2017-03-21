@@ -8,12 +8,12 @@ import classNames from 'classnames';
 
 import styles from 'style!./styles.less';
 import DummyItem from './internal/DummyItem';
+import DummyGroup from './internal/DummyGroup';
 import Trigger from './internal/Trigger';
 import NothingWasFound from './internal/NothingWasFound';
 import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
 
-// Note that itemShape is the shape of Items that are passed in and do not map 1:1 to Items from
-// @atlaskit/droplist
+export const groupShape = DummyGroup.propTypes;
 export const itemShape = DummyItem.propTypes;
 
 export default class StatelessMultiSelect extends PureComponent {
@@ -27,7 +27,7 @@ export default class StatelessMultiSelect extends PureComponent {
     isInvalid: PropTypes.bool,
     isOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
-    items: PropTypes.arrayOf(itemShape),
+    items: PropTypes.arrayOf(groupShape),
     label: PropTypes.string,
     noMatchesFound: PropTypes.string,
     name: PropTypes.string,

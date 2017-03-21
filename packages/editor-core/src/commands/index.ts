@@ -62,8 +62,86 @@ export function toggleBlockType(name: string): Command {
   };
 }
 
+/**
+ * Sometimes a selection in the editor can be slightly offset, for example:
+ * it's possible for a selection to start or end at an empty node at the very end of
+ * a line. This isn't obvious by looking at the editor and it's likely not what the
+ * user intended - so we need to adjust the seletion a bit in scenarios like that.
+ */
+export function adjustSelectionInList(doc, selection: TextSelection): TextSelection {
+  let { $from, $to } = selection;
+
+  const isSameLine = $from.pos === $to.pos;
+
+  if (isSameLine) {
+    $from = doc.resolve($from.start($from.depth));
+    $to = doc.resolve($from.end($from.depth));
+  }
+
+  let startPos = $from.pos;
+  let endPos = $to.pos;
+
+  if (isSameLine && startPos === doc.nodeSize - 3) { // Line is empty, don't do anything
+    return selection;
+  }
+
+  if ($from.nodeBefore) {
+    if (!isSameLine) {  // Selection started at the very beginning of a line and therefor points to the previous line.
+      startPos++;
+      let node = doc.nodeAt(startPos);
+      while (!node || (node && !node.isText)) {
+        startPos++;
+        node = doc.nodeAt(startPos);
+      }
+    } else if (!$from.nodeAfter) { // Selection started AND ended at the very end of a line.
+      startPos--;
+      let node = doc.nodeAt(startPos);
+      while (!node || (node && !node.isText)) {
+        startPos--;
+        node = doc.nodeAt(startPos);
+      }
+    }
+  }
+
+  if ($to.parentOffset) {
+    endPos--;
+  } else if ($to.nodeAfter && !($from.nodeAfter && isSameLine)) { // Selection ended at the very end of a line and therefor points to the next line.
+    endPos--;
+    let node = doc.nodeAt(endPos);
+    while (node && !node.isText) {
+      endPos--;
+      node = doc.nodeAt(endPos);
+    }
+  }
+
+  if (!($from.parent && $from.parent.isTextblock && !$from.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
+    let node = doc.nodeAt(startPos);
+    while (!node || (node && !node.isText)) {
+      startPos++;
+      node = doc.nodeAt(startPos)!;
+    }
+  }
+
+  if (!($to.parent && $to.parent.isTextblock && !$to.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
+    let node = doc.nodeAt(endPos);
+    while (!node || (node && !node.isText)) {
+      endPos--;
+      node = doc.nodeAt(endPos);
+    }
+  }
+
+  if (endPos === startPos) {
+    return new TextSelection(doc.resolve(startPos));
+  }
+
+  return new TextSelection(doc.resolve(startPos), doc.resolve(endPos));
+}
+
 export function toggleList(listType: 'bulletList' | 'orderedList'): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean {
+    view.dispatch(view.state.tr.setSelection(adjustSelectionInList(state.doc, state.selection as TextSelection)));
+    state = view.state;
+
     const { $from, $to } = state.selection;
     const grandgrandParent = $from.node(-2);
     const isRangeOfSingleType = isRangeOfType(state.doc, $from, $to, state.schema.nodes[listType]);

@@ -200,8 +200,7 @@ describe('lists', () => {
         expect(editorView.state.doc).to.deep.equal(expectedOutput);
       });
 
-      // TODO: fix
-      it.skip('should allow untoggling part of a list based on selection that starts at the end of previous line', () => {
+      it('should allow untoggling part of a list based on selection that starts at the end of previous line', () => {
         const { editorView, pluginState } = editor(doc(ol(li(p('One{<}')), li(p('Two')), li(p('Three{>}')), li(p('Four'))))); // When selection starts on previous (empty) node
 
         pluginState.toggleOrderedList(editorView);
@@ -239,8 +238,7 @@ describe('lists', () => {
         expect(editorView.state.doc).to.deep.equal(expectedOutput);
       });
 
-      // TODO: fix
-      it.skip('should allow converting part of a list based on selection that starts at the end of previous line', () => {
+      it('should allow converting part of a list based on selection that starts at the end of previous line', () => {
         const expectedOutput = doc(ol(li(p('One'))), ul(li(p('Two')), li(p('Three'))), ol((li(p('Four')))));
         const { editorView, pluginState } = editor(doc(ol(li(p('One{<}')), li(p('Two')), li(p('Three{>}')), li(p('Four'))))); // When selection starts on previous (empty) node
 
@@ -332,8 +330,7 @@ describe('lists', () => {
         expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two')), li(p('Three'))), ul(li(p('{<}Four')), li(p('Five'))), p('Six')));
       });
 
-      // TODO: fix/change?
-      it.skip('should not join with previous list if it\'s not of the same type and selection starts at the end of previous line', () => {
+      it('should not join with previous list if it\'s not of the same type and selection starts at the end of previous line', () => {
         const { editorView, pluginState } = editor(doc(ol(li(p('One')), li(p('Two')), li(p('Three{<}'))), p('Four'), p('Five{>}'), p('Six'))); // When selection starts on previous (empty) node
 
         pluginState.toggleBulletList(editorView);
@@ -348,8 +345,7 @@ describe('lists', () => {
         expect(editorView.state.doc).to.deep.equal(expectedOutputForNextList);
       });
 
-      // TODO: fix/change?
-      it.skip('should join with next list if it\'s of the same type and selection starts at the end of previous line', () => {
+      it('should join with next list if it\'s of the same type and selection starts at the end of previous line', () => {
         const { editorView, pluginState } = editor(doc(p('One{<}'), p('Two'), p('Three{>}'), ol(li(p('Four')), li(p('Five')), li(p('Six')))));
 
         pluginState.toggleOrderedList(editorView);
@@ -364,8 +360,7 @@ describe('lists', () => {
         expect(editorView.state.doc).to.deep.equal(doc(p('One'), ul(li(p('Two')), li(p('Three'))), ol(li(p('Four')), li(p('Five')), li(p('Six')))));
       });
 
-      // TODO: fix/change?
-      it.skip('should not join with next list if it isn\'t of the same type and selection starts at the end of previous line', () => {
+      it('should not join with next list if it isn\'t of the same type and selection starts at the end of previous line', () => {
         const { editorView, pluginState } = editor(doc(p('One{<}'), p('Two'), p('Three{>}'), ol(li(p('Four')), li(p('Five')), li(p('Six')))));
 
         pluginState.toggleBulletList(editorView);
@@ -395,8 +390,7 @@ describe('lists', () => {
         expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('One')), li(p('Two'))), ul(li(p('Three')), li(p('Four'))), ol(li(p('Five')), li(p('Six')))));
       });
 
-      // TODO: fix/change?
-      it.skip('should not join with previous and next list if they\'re not of the same type and selectoin starts at the end of previous line', () => {
+      it('should not join with previous and next list if they\'re not of the same type and selectoin starts at the end of previous line', () => {
         const { editorView, pluginState } = editor(doc(ol(li(p('One')), li(p('Two{<}'))), p('Three'), p('Four{>}'), ol(li(p('Five')), li(p('Six')))));
 
         pluginState.toggleBulletList(editorView);

@@ -314,7 +314,7 @@ export function insertRule(): Command {
     const { rule } = state.schema.nodes;
     if (rule) {
       const ruleNode = rule.create();
-      dispatch(state.tr.insert(to, ruleNode));
+      dispatch(state.tr.insert(to + 1, ruleNode));
       return true;
     }
     return false;

@@ -13,8 +13,8 @@ import Trigger from './internal/Trigger';
 import NothingWasFound from './internal/NothingWasFound';
 import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
 
-export const groupShape = DummyGroup.propTypes;
-export const itemShape = DummyItem.propTypes;
+const groupShape = DummyGroup.propTypes;
+const itemShape = DummyItem.propTypes;
 
 export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {

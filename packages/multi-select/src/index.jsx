@@ -5,8 +5,8 @@ import DummyGroup from './internal/DummyGroup';
 import StatelessMultiSelect from './StatelessMultiSelect';
 import { appearances } from './internal/appearances';
 
-export const itemShape = DummyItem.propTypes;
-export const groupShape = DummyGroup.propTypes;
+const itemShape = DummyItem.propTypes;
+const groupShape = DummyGroup.propTypes;
 
 export default class AkMultiSelect extends PureComponent {
   static propTypes = {

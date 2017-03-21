@@ -6,7 +6,7 @@ import { waitUntil } from '@atlaskit/util-common-test';
 import { EmojiDescription } from '../src/types';
 import Emoji from '../src/components/common/Emoji';
 import EmojiPlaceholder from '../src/components/common/EmojiPlaceholder';
-import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
+import ResourcedEmojiShortcut from '../src/components/common/ResourcedEmojiShortcut';
 import { EmojiProvider } from '../src/api/EmojiResource';
 
 import { MockEmojiResourceConfig } from './MockEmojiResource';
@@ -17,11 +17,11 @@ const emojiVisible = (component) => findEmoji(component).length === 1;
 const emojiVisibleById = (component, id) => emojiVisible(component) && findEmoji(component).prop('emoji').id === id;
 const emojiPlaceHolderVisible = (component) => component.find(EmojiPlaceholder).length === 1;
 
-describe('<ResourcedEmoji />', () => {
+describe('<ResourcedEmojiShortcut />', () => {
   it('should render emoji', () => {
-    const component = mount(<ResourcedEmoji
+    const component = mount(<ResourcedEmojiShortcut
       emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
-      emojiId={{ id: grinEmoji.id }}
+      shortcut={grinEmoji.shortcut}
     />);
 
     return waitUntil(() => emojiVisible(component)).then(() => {
@@ -29,16 +29,16 @@ describe('<ResourcedEmoji />', () => {
     });
   });
 
-  it('should update emoji on id change', () => {
-    const component = mount(<ResourcedEmoji
+  it('should update emoji on shortcut change', () => {
+    const component = mount(<ResourcedEmojiShortcut
       emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
-      emojiId={{ id: grinEmoji.id }}
+      shortcut={grinEmoji.shortcut}
     />);
 
     return waitUntil(() => emojiVisible(component)).then(() => {
       expect(findEmoji(component).prop('emoji').id, 'Emoji rendered').to.equal(grinEmoji.id);
       component.setProps({
-        emojiId: { id: areyoukiddingmeEmoji.id },
+        shortcut: areyoukiddingmeEmoji.shortcut,
       });
 
       return waitUntil(() => emojiVisibleById(component, areyoukiddingmeEmoji.id)).then(() => {
@@ -56,9 +56,9 @@ describe('<ResourcedEmoji />', () => {
         return new Promise(resolve => { resolver = resolve; });
       },
     };
-    const component = mount(<ResourcedEmoji
+    const component = mount(<ResourcedEmojiShortcut
       emojiProvider={getEmojiResourcePromise(config) as Promise<EmojiProvider>}
-      emojiId={{ id: 'doesnotexist' }}
+      shortcut="doesnotexist"
     />);
 
     return waitUntil(() => !!resolver).then(() => {
@@ -78,9 +78,9 @@ describe('<ResourcedEmoji />', () => {
         return new Promise(resolve => { resolver = resolve; });
       },
     };
-    const component = mount(<ResourcedEmoji
+    const component = mount(<ResourcedEmojiShortcut
       emojiProvider={getEmojiResourcePromise(config) as Promise<EmojiProvider>}
-      emojiId={{ id: grinEmoji.id }}
+      shortcut={grinEmoji.shortcut}
     />);
 
     return waitUntil(() => !!resolver).then(() => {

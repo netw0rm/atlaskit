@@ -21,6 +21,11 @@
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
+  "maintainers": [{
+    "name": "Ben W"
+  }, {
+    "name": "Luke B"
+  }],
   "peerDependencies": {
     "react": "^15.3.2"
   },

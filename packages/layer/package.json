@@ -15,6 +15,11 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
+  "maintainers": [{
+    "name": "Luke B"
+  }, {
+    "name": "Nadia M"
+  }],
   "license": "Apache-2.0",
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",

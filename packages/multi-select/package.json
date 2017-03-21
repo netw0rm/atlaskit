@@ -37,6 +37,9 @@
     "@atlaskit/button": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [{
+    "name": "Nadia M"
+  }],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

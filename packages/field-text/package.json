@@ -24,6 +24,11 @@
     "babel-runtime": "^6.11.6"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [{
+    "name": "Ben W"
+  }, {
+    "name": "Matias C"
+  }],
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",

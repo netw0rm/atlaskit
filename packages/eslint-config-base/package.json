@@ -5,6 +5,9 @@
     "access": "public"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [{
+    "name": "Alex R"
+  }],
   "description": "The eslint configuration for AtlasKit components",
   "license": "Apache-2.0",
   "main": ".eslintrc",

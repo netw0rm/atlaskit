@@ -28,6 +28,13 @@
     "@atlaskit/util-readme": "*"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [{
+    "name": "Trey S"
+  }, {
+    "name": "Luke B"
+  }, {
+    "name": "Nadia M"
+  }],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

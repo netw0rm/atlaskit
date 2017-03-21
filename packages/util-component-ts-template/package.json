@@ -24,6 +24,7 @@
     "typestyle": "^0.21.4"
   },
   "author": "Atlassian Pty. Ltd",
+  "maintainers": [],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2"

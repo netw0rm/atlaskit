@@ -10,7 +10,7 @@ export interface MediaResource {
    *     tokenProvider: tokenProvidingFunction
    *   });
    */
-  uploadContext?: () => Promise<ContextConfig>;
+  uploadContext?: Promise<ContextConfig>;
 
   /**
    * Resolve to Media Context that allows downloading Media, i.e.
@@ -20,7 +20,7 @@ export interface MediaResource {
    *     tokenProvider: tokenProvidingFunction
    *   });
    */
-  viewContext?: () => Promise<ContextConfig>;
+  viewContext?: Promise<ContextConfig>;
 
   /**
    * Resolve to Media Context that allows creating media links:
@@ -31,7 +31,7 @@ export interface MediaResource {
    *     tokenProvider: tokenProvidingFunction
    *   });
    */
-  linkCreateContext?: () => Promise<ContextConfig>;
+  linkCreateContext?: Promise<ContextConfig>;
 };
 
 export { ContextConfig as MediaContextConfig };

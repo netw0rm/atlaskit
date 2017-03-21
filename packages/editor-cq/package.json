@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-cq",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "config": {
     "access": "public"
   },
@@ -20,11 +20,14 @@
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
-  "maintainers": [{
-    "name": "Bradley A"
-  }, {
-    "name": "Artur B"
-  }],
+  "maintainers": [
+    {
+      "name": "Bradley A"
+    },
+    {
+      "name": "Artur B"
+    }
+  ],
   "dependencies": {
     "@atlaskit/editor-core": "^5.0.0",
     "ak-editor-shared-styles": "^3.0.0",

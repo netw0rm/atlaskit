@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-hipchat",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "config": {
     "access": "public"
   },
@@ -20,9 +20,11 @@
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
-  "maintainers": [{
-    "name": "Bradley A"
-  }],
+  "maintainers": [
+    {
+      "name": "Bradley A"
+    }
+  ],
   "dependencies": {
     "@atlaskit/editor-core": "^5.0.0",
     "classnames": "^2.2.5",

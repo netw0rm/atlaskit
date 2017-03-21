@@ -94,7 +94,8 @@ describe('Card', () => {
       }
     });
     context.getDataUriService = () => ({
-      fetchOriginalDataUri() {
+      fetchOriginalDataUri(mediaItem) {
+        expect(mediaItem.details.name).to.equal('some-image.jpg');
         return Promise.reject();
       }
     });

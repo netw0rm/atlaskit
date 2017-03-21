@@ -291,7 +291,7 @@ export class Card extends Component<CardProps, CardState> {
   }
 
   // Useful for when we want to swallow an exception while fetching the preview
-  private safeFetch(fn: Function) {
+  private safeFetch(fn: Function): Promise<DataUri> {
     return fn().catch(error => {});
   }
 }

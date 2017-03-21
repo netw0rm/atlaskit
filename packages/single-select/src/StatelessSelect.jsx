@@ -419,7 +419,13 @@ export default class StatelessSelect extends PureComponent {
                 {
                   !this.props.hasAutocomplete || this.props.isDisabled ?
                     <div className={styles.content}>
-                      { this.props.selectedItem.elemBefore || null }
+                      {
+                        this.props.selectedItem.elemBefore ?
+                          <div className={styles.elemBefore}>
+                            {this.props.selectedItem.elemBefore}
+                          </div> :
+                        null
+                      }
                       {
                         this.props.selectedItem.content ?
                           <span>{this.props.selectedItem.content}</span> :

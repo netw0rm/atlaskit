@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
 import { Tooltip } from '@atlaskit/tooltip';
-import AkButton from 'ak-button';
+import AkButton from '@atlaskit/button';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 
 describe('@atlaskit/editor-core/ui/ToolbarButton', () => {

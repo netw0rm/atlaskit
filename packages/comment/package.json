@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "@atlaskit/button": "^1.0.0",
+    "@atlaskit/icon": "^3.0.0",
     "@atlaskit/lozenge": "^1.0.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "classnames": "^2.2.5"

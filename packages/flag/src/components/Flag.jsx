@@ -10,7 +10,7 @@ export default class Flag extends PureComponent {
       content: PropTypes.node,
       onClick: PropTypes.func,
     })),
-    description: PropTypes.string,
+    description: PropTypes.node,
     icon: PropTypes.element.isRequired,
     id: PropTypes.oneOfType([
       PropTypes.string,

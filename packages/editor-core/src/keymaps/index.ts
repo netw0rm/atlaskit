@@ -8,7 +8,6 @@ export const toggleUnderline = makeKeyMapWithCommon('Toggle underline', 'Mod-u')
 export const toggleStrikethrough = makeKeyMapWithCommon('Toggle strikethrough', 'Mod-Shift-s');
 export const toggleCode = makeKeyMapWithCommon('Toggle code', 'Mod-Shift-m');
 export const setNormalText = makeKeymap('Normal text', 'Ctrl-0', 'Cmd-Alt-0');
-export const clearFormatting = makeKeyMapWithCommon('Clear formatting', 'Mod-\\');
 export const toggleHeading1 = makeKeymap('Heading 1', 'Ctrl-1', 'Cmd-Alt-1');
 export const toggleHeading2 = makeKeymap('Heading 2', 'Ctrl-2', 'Cmd-Alt-2');
 export const toggleHeading3 = makeKeymap('Heading 3', 'Ctrl-3', 'Cmd-Alt-3');

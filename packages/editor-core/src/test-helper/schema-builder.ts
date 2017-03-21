@@ -211,6 +211,7 @@ export const li = nodeFactory(sampleSchema.nodes.listItem, {});
 export const ul = nodeFactory(sampleSchema.nodes.bulletList, {});
 export const ol = nodeFactory(sampleSchema.nodes.orderedList, {});
 export const br = sampleSchema.nodes.hardBreak.createChecked();
+export const panel = nodeFactory(sampleSchema.nodes.panel, {});
 export const plain = nodeFactory(sampleSchema.nodes.plain, {});
 // tslint:disable-next-line:variable-name
 export const code_block = (attrs: {} = {}) => nodeFactory(sampleSchema.nodes.codeBlock, attrs);

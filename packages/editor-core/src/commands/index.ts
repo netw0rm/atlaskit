@@ -85,48 +85,13 @@ export function adjustSelectionInList(doc, selection: TextSelection): TextSelect
     return selection;
   }
 
-  if ($from.nodeBefore) {
-    if (!isSameLine) {  // Selection started at the very beginning of a line and therefor points to the previous line.
-      startPos++;
-      let node = doc.nodeAt(startPos);
-      while (!node || (node && !node.isText)) {
-        startPos++;
-        node = doc.nodeAt(startPos);
-      }
-    } else if (!$from.nodeAfter) { // Selection started AND ended at the very end of a line.
-      startPos--;
-      let node = doc.nodeAt(startPos);
-      while (!node || (node && !node.isText)) {
-        startPos--;
-        node = doc.nodeAt(startPos);
-      }
-    }
-  }
-
-  if ($to.parentOffset) {
-    endPos--;
-  } else if ($to.nodeAfter && !($from.nodeAfter && isSameLine)) { // Selection ended at the very end of a line and therefor points to the next line.
-    endPos--;
-    let node = doc.nodeAt(endPos);
-    while (node && !node.isText) {
-      endPos--;
-      node = doc.nodeAt(endPos);
-    }
-  }
-
-  if (!($from.parent && $from.parent.isTextblock && !$from.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
+  // Selection started at the very beginning of a line and therefor points to the previous line.
+  if ($from.nodeBefore && !isSameLine) {
+    startPos++;
     let node = doc.nodeAt(startPos);
     while (!node || (node && !node.isText)) {
       startPos++;
-      node = doc.nodeAt(startPos)!;
-    }
-  }
-
-  if (!($to.parent && $to.parent.isTextblock && !$to.parent.textContent)) { // Make sure we're not on an empty paragraph. Then we won't need this.
-    let node = doc.nodeAt(endPos);
-    while (!node || (node && !node.isText)) {
-      endPos--;
-      node = doc.nodeAt(endPos);
+      node = doc.nodeAt(startPos);
     }
   }
 
@@ -193,7 +158,7 @@ export function liftListItems(): Command {
         const sel = new NodeSelection(tr.doc.resolve(tr.mapping.map(pos)));
         const range = sel.$from.blockRange(sel.$to);
 
-        if (!range) {
+        if (!range || sel.$from.parent.type !== state.schema.nodes.listItem) {
           return false;
         }
 

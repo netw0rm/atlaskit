@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import { browser } from '../../../src';
 import { TextSelection } from '../../../src/prosemirror';
 import ListsPlugin from '../../../src/plugins/lists';
-import { chaiPlugin, makeEditor, sendKeyToPm, fixtures, doc, h1, ol, ul, li, p, blockquote } from '../../../src/test-helper';
+import { chaiPlugin, makeEditor, sendKeyToPm, fixtures, doc, h1, ol, ul, li, p, panel, blockquote } from '../../../src/test-helper';
 import schema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
@@ -238,6 +238,14 @@ describe('lists', () => {
         expect(editorView.state.doc).to.deep.equal(expectedOutput);
       });
 
+      it('should convert selection inside panel to list', () => {
+        const expectedOutput = doc(panel(ul(li(p('text')))));
+        const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
+
+        pluginState.toggleBulletList(editorView);
+        expect(editorView.state.doc).to.deep.equal(expectedOutput);
+      });
+
       it('should allow converting part of a list based on selection that starts at the end of previous line', () => {
         const expectedOutput = doc(ol(li(p('One'))), ul(li(p('Two')), li(p('Three'))), ol((li(p('Four')))));
         const { editorView, pluginState } = editor(doc(ol(li(p('One{<}')), li(p('Two')), li(p('Three{>}')), li(p('Four'))))); // When selection starts on previous (empty) node
@@ -278,8 +286,7 @@ describe('lists', () => {
         expect(editorView.state.doc).to.deep.equal(expectedOutput);
       });
 
-      // TODO: fix/change?
-      it.skip('should convert selection to list when selection is inside blockquote', () => {
+      it('should convert selection to list when selection is inside blockquote', () => {
         const { editorView, pluginState } = editor(doc(blockquote(p('{<}One'), p('Two'), p('Three{>}'))));
 
         pluginState.toggleBulletList(editorView);
@@ -292,14 +299,6 @@ describe('lists', () => {
 
         pluginState.toggleBulletList(editorView);
         expect(editorView.state.doc).to.deep.equal(expectedOutput);
-      });
-
-      // TODO: fix/change?
-      it.skip('should convert selection to multiple lists when selection starts and ends at different ancestor blocks', () => {
-        const { editorView, pluginState } = editor(doc(blockquote(p('{<}One'), p('Two'), p('Three')), p('Four'), p('Five'), blockquote(p('Six{>}'))));
-
-        pluginState.toggleBulletList(editorView);
-        expect(editorView.state.doc).to.deep.equal(doc(blockquote(ul(li(p('One')), li(p('Two')), li(p('Three')))), ul(li(p('Four')), li(p('Five'))), blockquote(ul(li(p('Six'))))));
       });
     });
 

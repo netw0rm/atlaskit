@@ -54,6 +54,10 @@ export function getAncestorNodesBetween(doc, $from: ResolvedPos, $to: ResolvedPo
       nodes.push(node);
     }
 
+    if (depth === 0) {
+      break;
+    }
+
     let next: ResolvedPos = doc.resolve(current.after(depth));
     if (next.start(depth) >= doc.nodeSize - 2) {
       break;

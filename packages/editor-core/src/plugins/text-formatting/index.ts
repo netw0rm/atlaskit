@@ -42,6 +42,8 @@ export class TextFormattingState {
   subscriptActive = false;
   subscriptDisabled = false;
   subscriptHidden = false;
+  clearStoredMarks = false;
+  toggledMarks = {};
 
   constructor(state: EditorState<any>) {
     this.state = state;
@@ -245,9 +247,18 @@ export class TextFormattingState {
    */
   private anyMarkActive(markType: MarkType): boolean {
     const { state } = this;
-    const { from, to, empty } = state.selection;
+    const { $from, from, to, empty } = state.selection;
+    let storedMarks = state.tr.storedMarks;
+
+    if (storedMarks && markType.isInSet(storedMarks) && !this.toggledMarks[markType.name] && (!$from.nodeBefore || !markType.isInSet($from.nodeBefore.marks))) {
+      storedMarks = null;
+      this.clearStoredMarks = true;
+    }
+
+    this.toggledMarks[markType.name] = false;
+
     if (empty) {
-      return !!markType.isInSet(state.tr.storedMarks || state.selection.$from.marks());
+      return !!markType.isInSet(storedMarks || state.selection.$from.marks());
     }
     return state.doc.rangeHasMark(from, to, markType);
   }
@@ -276,6 +287,7 @@ export class TextFormattingState {
   private toggleMark(view: EditorView, markType: MarkType, attrs?: any) {
     // Disable text-formatting inside code
     if (this.codeActive ? this.codeDisabled : true) {
+      this.toggledMarks[markType.name] = true;
       commands.toggleMark(markType)(view.state, view.dispatch);
     }
   }
@@ -297,6 +309,14 @@ const plugin = new Plugin({
   view: (view: EditorView) => {
     reconfigure(view, [keymapPlugin(view.state.schema), inputRulePlugin(view.state.schema)]);
     return {};
+  },
+  props: {
+    handleKeyDown (view, event) {
+      if (stateKey.getState(view.state).clearStoredMarks) {
+        view.dispatch(view.state.tr.setStoredMarks(null));
+        stateKey.getState(view.state).clearStoredMarks = false;
+      }
+    }
   }
 });
 

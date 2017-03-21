@@ -1,15 +1,13 @@
 import React, { PropTypes, PureComponent } from 'react';
-import classNames from 'classnames';
 import styles from 'style!./style.less';
 import Blanket from '@atlaskit/blanket';
 import {
   ModalWrapper,
-  ModalPositioner,
   Modal,
   HeaderWrapper,
   ContentWrapper,
   FooterWrapper,
-} from './styled.jsx';
+} from './styled';
 
 const WIDTH_ENUM = {
   values: ['small', 'medium', 'large', 'x-large'],
@@ -58,30 +56,30 @@ export default class ModalDialog extends PureComponent {
     const { onDialogDismissed, header, children, footer, width } = this.props;
 
     return (
-      <ModalWrapper>
+      <div>
         <Blanket isTinted onBlanketClicked={onDialogDismissed} />
-        <ModalPositioner width={width}>
-          <Modal>
+        <ModalWrapper>
+          <Modal width={width}>
             {
               header
-                ? <div className={styles.headerFlex}>
+                ? <HeaderWrapper>
                   {header}
-                </div>
+                </HeaderWrapper>
                 : null
-            }
-            <div className={styles.contentFlex}>
+              }
+            <ContentWrapper className={styles.contentFlex}>
               {children}
-            </div>
+            </ContentWrapper>
             {
               footer
-                ? <div className={styles.footerFlex}>
+                ? <FooterWrapper className={styles.footerFlex}>
                   {footer}
-                </div>
+                </FooterWrapper>
                 : null
-            }
+              }
           </Modal>
-        </ModalPositioner>
-      </ModalWrapper>
+        </ModalWrapper>
+      </div>
     );
   }
 }

@@ -8,7 +8,7 @@ import {
 } from '../../prosemirror';
 import {
   findAncestorPosition,
-} from '../../utils/index-future';
+} from '../../utils';
 
 import * as commands from '../../commands';
 import keymapPlugin from './keymap';

@@ -12,6 +12,7 @@ import {
 
 import * as commands from '../../commands';
 import keymapPlugin from './keymap';
+import inputRulePlugin from './input-rule';
 import { reconfigure } from '../utils';
 
 export type StateChangeHandler = (state: ListsState) => any;
@@ -130,7 +131,7 @@ const plugin = new Plugin({
   },
   key: stateKey,
   view: (view: EditorView) => {
-    reconfigure(view, [keymapPlugin(view.state.schema)]);
+    reconfigure(view, [keymapPlugin(view.state.schema), inputRulePlugin(view.state.schema)]);
     return {};
   }
 });

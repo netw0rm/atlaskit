@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-bitbucket",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "config": {
     "access": "public"
   },
@@ -20,9 +20,11 @@
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
-  "maintainers": [{
-    "name": "Bradley A"
-  }],
+  "maintainers": [
+    {
+      "name": "Bradley A"
+    }
+  ],
   "dependencies": {
     "@atlaskit/editor-core": "^7.1.0",
     "ak-editor-shared-styles": "^3.0.0",

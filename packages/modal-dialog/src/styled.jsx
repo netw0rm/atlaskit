@@ -6,6 +6,9 @@ import {
   akColorN0,
 } from '@atlaskit/util-shared-styles';
 
+const grid = parseInt(akGridSize, 10) / 2;
+const viewportMargin = grid * 15;
+
 const width = {
   small: 400,
   medium: 600,
@@ -13,8 +16,10 @@ const width = {
   'x-large': 968,
 };
 
-const grid = parseInt(akGridSize, 10) / 2;
-const viewportMargin = grid * 15;
+const padding = {
+  none: 0,
+  default: grid * 4,
+};
 
 export const ModalWrapper = styled.div`
     display: flex;
@@ -34,12 +39,12 @@ export const Modal = styled.div`
   z-index: ${akZIndexBlanket + 10};
   background-color: ${akColorN0};
   border-radius: ${akBorderRadius};
-  padding: ${grid * 4}px;
+  padding: ${props => padding[props.padding]}px;
 `;
 
 export const HeaderWrapper = styled.div`
   flex: 0 1 auto;
-  padding-bottom: ${grid * 4}px;
+  padding-bottom: ${props => padding[props.padding]}px;
 `;
 
 export const ContentWrapper = styled.div`
@@ -50,5 +55,5 @@ export const ContentWrapper = styled.div`
 
 export const FooterWrapper = styled.div`
   flex: 0 1 auto;
-  padding-top: ${grid * 4}px;
+  padding-top: ${props => padding[props.padding]}px;
 `;

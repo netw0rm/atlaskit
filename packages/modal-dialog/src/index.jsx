@@ -14,6 +14,11 @@ const WIDTH_ENUM = {
   defaultValue: 'medium',
 };
 
+const PADDING_ENUM = {
+  values: ['none', 'default'],
+  defaultValue: 'default',
+};
+
 export default class ModalDialog extends PureComponent {
   static propTypes = {
     isOpen: PropTypes.bool,
@@ -25,6 +30,7 @@ export default class ModalDialog extends PureComponent {
       PropTypes.string,
       PropTypes.oneOf(WIDTH_ENUM.values),
     ]),
+    padding: PropTypes.oneOf(PADDING_ENUM.values),
     onDialogDismissed: PropTypes.func,
   };
 
@@ -32,6 +38,7 @@ export default class ModalDialog extends PureComponent {
     isOpen: false,
     onDialogDismissed: () => {},
     width: WIDTH_ENUM.defaultValue,
+    padding: PADDING_ENUM.defaultValue,
   };
 
   componentDidMount = () => {
@@ -53,30 +60,18 @@ export default class ModalDialog extends PureComponent {
     // don't render anything if open = false
     if (!this.props.isOpen) return null;
 
-    const { onDialogDismissed, header, children, footer, width } = this.props;
+    const { onDialogDismissed, header, children, footer, width, padding } = this.props;
 
     return (
       <div>
         <Blanket isTinted onBlanketClicked={onDialogDismissed} />
         <ModalWrapper>
-          <Modal width={width}>
-            {
-              header
-                ? <HeaderWrapper>
-                  {header}
-                </HeaderWrapper>
-                : null
-              }
-            <ContentWrapper className={styles.contentFlex}>
+          <Modal width={width} padding={padding}>
+            { header ? <HeaderWrapper padding={padding}>{header}</HeaderWrapper> : null }
+            <ContentWrapper>
               {children}
             </ContentWrapper>
-            {
-              footer
-                ? <FooterWrapper className={styles.footerFlex}>
-                  {footer}
-                </FooterWrapper>
-                : null
-              }
+            { footer ? <FooterWrapper padding={padding}>{footer}</FooterWrapper> : null }
           </Modal>
         </ModalWrapper>
       </div>

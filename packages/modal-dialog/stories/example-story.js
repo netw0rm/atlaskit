@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import Button from '@atlaskit/button';
 import Layer from '@atlaskit/layer';
 import Navigation from '@atlaskit/navigation';
@@ -11,8 +11,16 @@ import ModalDemo from './ModalDemo';
 import SubmitDemo from './SubmitDemo';
 
 storiesOf(name, module)
-  .add('modal with no header or footer', () => <ModalDialog isOpen><Button>Hello</Button></ModalDialog>)
   .add('simple modal', () => <ModalDemo />)
+  .add('modal with only content and no padding', () => (
+    <ModalDialog
+      isOpen
+      padding="none"
+      onDialogDismissed={action('onDialogDismissed')}
+    >
+      <Button>Snug fit</Button>
+    </ModalDialog>
+  ))
   .add('demo with form submission', () => <SubmitDemo />)
   .add('with content overflow', () => (
     <ModalDemo>

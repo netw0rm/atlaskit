@@ -8,6 +8,6 @@ import DummyItem from './DummyItem';
 export default class DummyGroup extends PureComponent {
   static propTypes = {
     heading: PropTypes.string,
-    items: PropTypes.arrayOf(DummyItem.propTypes),
+    items: PropTypes.arrayOf(PropTypes.shape(DummyItem.propTypes)),
   }
 }

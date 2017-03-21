@@ -27,7 +27,7 @@ export default class StatelessMultiSelect extends PureComponent {
     isInvalid: PropTypes.bool,
     isOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
-    items: PropTypes.arrayOf(groupShape),
+    items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
     label: PropTypes.string,
     noMatchesFound: PropTypes.string,
     name: PropTypes.string,
@@ -37,7 +37,7 @@ export default class StatelessMultiSelect extends PureComponent {
     onRemoved: PropTypes.func,
     placeholder: PropTypes.string,
     position: PropTypes.string,
-    selectedItems: PropTypes.arrayOf(itemShape),
+    selectedItems: PropTypes.arrayOf(PropTypes.shape(itemShape)),
     shouldFitContainer: PropTypes.bool,
   }
 

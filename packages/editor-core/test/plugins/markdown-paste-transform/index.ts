@@ -76,6 +76,7 @@ describe('markdown-inputrules', () => {
     const fragment = new Fragment([node], node.nodeSize);
     const slice = new Slice(fragment, 0, 0);
     const newSlice = plugin.transformMarkdown(slice);
+
     expect(newSlice.content.child(0).childCount).to.equal(5);
     expect(newSlice.content.child(0).child(1).marks.length).to.equal(1);
     expect(newSlice.content.child(0).child(1).marks[0].attrs.href).to.equal('testurl');

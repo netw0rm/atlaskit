@@ -56,7 +56,7 @@ describe(name, () => {
 
     it('should render selectedItems elemBefore', () => {
       const select = mount(<StatelessSelect placeholder="test" selectedItem={{ elemBefore: <UpIcon label="up" /> }} />);
-      expect(select.find(UpIcon).length).to.equal(2);
+      expect(select.find(UpIcon).length).to.equal(1);
     });
 
     it('should render groups and items inside Droplist (when open)', () => {

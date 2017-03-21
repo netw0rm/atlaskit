@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   align-content: center;
-  padding-top: (@ak-grid-size * 0.5);
+  padding-bottom: @ak-grid-size * 0.5;
 }
 
 .link {
@@ -22,6 +22,11 @@
   }
 }
 
+.icon {
+  width: @icon-size;
+  height: @icon-size;
+}
+
 .icon > * {
   width: @icon-size;
   height: @icon-size;
@@ -29,5 +34,9 @@
 }
 
 .text {
-  margin-left: @ak-grid-size * 2;
+  margin-left: @ak-grid-size;
+
+  [data-__ak-navigation-container-closed="true"] & {
+    display: none;
+  }
 }

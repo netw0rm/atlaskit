@@ -247,7 +247,7 @@ export class TextFormattingState {
     const { state } = this;
     const { from, to, empty } = state.selection;
     if (empty) {
-      return !!markType.isInSet(state.selection.$from.marks());
+      return !!markType.isInSet(state.tr.storedMarks || state.selection.$from.marks());
     }
     return state.doc.rangeHasMark(from, to, markType);
   }
@@ -261,7 +261,7 @@ export class TextFormattingState {
 
     // When the selection is empty, only the active marks apply.
     if (empty) {
-      return !!mark.isInSet(state.selection.$from.marks());
+      return !!mark.isInSet(state.tr.storedMarks || state.selection.$from.marks());
     }
 
     // For a non-collapsed selection, the marks on the nodes matter.

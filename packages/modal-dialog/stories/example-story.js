@@ -11,6 +11,7 @@ import ModalDemo from './ModalDemo';
 import SubmitDemo from './SubmitDemo';
 
 storiesOf(name, module)
+  .add('modal with no header or footer', () => <ModalDialog isOpen><Button>Hello</Button></ModalDialog>)
   .add('simple modal', () => <ModalDemo />)
   .add('demo with form submission', () => <SubmitDemo />)
   .add('with content overflow', () => (

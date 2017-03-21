@@ -2,6 +2,14 @@ import React, { PropTypes, PureComponent } from 'react';
 import classNames from 'classnames';
 import styles from 'style!./style.less';
 import Blanket from '@atlaskit/blanket';
+import {
+  ModalWrapper,
+  ModalPositioner,
+  Modal,
+  HeaderWrapper,
+  ContentWrapper,
+  FooterWrapper,
+} from './styled.jsx';
 
 const WIDTH_ENUM = {
   values: ['small', 'medium', 'large', 'x-large'],
@@ -49,45 +57,31 @@ export default class ModalDialog extends PureComponent {
 
     const { onDialogDismissed, header, children, footer, width } = this.props;
 
-    // If a custom width (number of percentage) is supplied, set inline style
-    const customStyle = WIDTH_ENUM.values.indexOf(width) === -1 ? (
-      { style: { width } }
-    ) : {};
-
     return (
-      <div className={styles.modalWrapper}>
+      <ModalWrapper>
         <Blanket isTinted onBlanketClicked={onDialogDismissed} />
-        <div
-          className={classNames([
-            styles.modalPositioner,
+        <ModalPositioner width={width}>
+          <Modal>
             {
-              [styles.small]: width === 'small',
-              [styles.medium]: width === 'medium',
-              [styles.large]: width === 'large',
-              [styles.xLarge]: width === 'x-large',
-            },
-          ])}
-          {...customStyle}
-        >
-          {
-            header
-              ? <div className={styles.headerFlex}>
-                {header}
-              </div>
-              : null
-          }
-          <div className={styles.contentFlex}>
-            {children}
-          </div>
-          {
-            footer
-              ? <div className={styles.footerFlex}>
-                {footer}
-              </div>
-              : null
-          }
-        </div>
-      </div>
+              header
+                ? <div className={styles.headerFlex}>
+                  {header}
+                </div>
+                : null
+            }
+            <div className={styles.contentFlex}>
+              {children}
+            </div>
+            {
+              footer
+                ? <div className={styles.footerFlex}>
+                  {footer}
+                </div>
+                : null
+            }
+          </Modal>
+        </ModalPositioner>
+      </ModalWrapper>
     );
   }
 }

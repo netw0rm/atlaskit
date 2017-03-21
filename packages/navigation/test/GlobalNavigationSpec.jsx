@@ -46,11 +46,11 @@ describe('<GlobalNavigation />', () => {
           accountItem={accountItem}
         />).contains(accountItem)).to.equal(true);
     });
-    it('appearance="settings" renders with the hasProjectSettingsAppearance class', () => {
+    it('appearance="settings" renders with the hasSettingsAppearance class', () => {
       expect((shallow(
         <GlobalNavigation
           appearance="settings"
-        />).find(`.${styles.globalNavigationOuter}`)).hasClass((styles.hasProjectSettingsAppearance))).to.equal(true);
+        />).find(`.${styles.globalNavigationOuter}`)).hasClass((styles.hasSettingsAppearance))).to.equal(true);
     });
   });
 });

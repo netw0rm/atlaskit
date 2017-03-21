@@ -3,7 +3,7 @@ import React from 'react';
 import {
   containerNavigationInner,
   hasGlobalAppearance,
-  hasProjectSettingsAppearance,
+  hasSettingsAppearance,
 } from 'style!../src/components/less/ContainerNavigation.less';
 import ContainerNavigation from '../src/components/js/ContainerNavigation';
 import Spacer from '../src/components/js/Spacer';
@@ -24,7 +24,7 @@ describe('<ContainerNavigation />', () => {
       expect((mount(<ContainerNavigation appearance="global" />).find(`.${containerNavigationInner}`)).hasClass((hasGlobalAppearance))).to.equal(true);
     });
     it('appearance="settings" should render with the settings appearance class', () => {
-      expect((mount(<ContainerNavigation appearance="settings" />).find(`.${containerNavigationInner}`)).hasClass((hasProjectSettingsAppearance))).to.equal(true);
+      expect((mount(<ContainerNavigation appearance="settings" />).find(`.${containerNavigationInner}`)).hasClass((hasSettingsAppearance))).to.equal(true);
     });
   });
   describe('behaviour', () => {

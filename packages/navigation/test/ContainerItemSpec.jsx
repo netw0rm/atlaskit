@@ -3,7 +3,7 @@ import React from 'react';
 import {
   containerItem,
   hasGlobalAppearance,
-  hasProjectSettingsAppearance,
+  hasSettingsAppearance,
 } from 'style!../src/components/less/ContainerItem.less';
 import ContainerItem from '../src/components/js/ContainerItem';
 
@@ -35,7 +35,7 @@ describe('<ContainerItem />', () => {
     });
 
     it('appearance="settings" should render with the settings appearance class', () => {
-      expect((mount(<ContainerItem appearance="settings" />).find(`.${containerItem}`)).hasClass((hasProjectSettingsAppearance))).to.equal(true);
+      expect((mount(<ContainerItem appearance="settings" />).find(`.${containerItem}`)).hasClass((hasSettingsAppearance))).to.equal(true);
     });
   });
 });

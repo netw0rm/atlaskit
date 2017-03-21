@@ -32,7 +32,7 @@ export default class GlobalItem extends PureComponent {
             [styles.largeGlobalItem]: this.props.size === 'large',
             [styles.isSelected]: this.props.isSelected,
             [styles.hasContainerAppearance]: this.props.appearance === 'container',
-            [styles.hasProjectSettingsAppearance]: this.props.appearance === 'settings',
+            [styles.hasSettingsAppearance]: this.props.appearance === 'settings',
           })}
         >
           {this.props.children}

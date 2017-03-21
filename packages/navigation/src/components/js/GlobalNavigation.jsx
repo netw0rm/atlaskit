@@ -45,7 +45,7 @@ export default class GlobalNavigation extends PureComponent {
       <div
         className={classNames(styles.globalNavigationOuter, {
           [styles.shouldAnimate]: shouldAnimate,
-          [styles.hasProjectSettingsAppearance]: appearance === 'settings',
+          [styles.hasSettingsAppearance]: appearance === 'settings',
           [styles.test]: true,
         })}
       >

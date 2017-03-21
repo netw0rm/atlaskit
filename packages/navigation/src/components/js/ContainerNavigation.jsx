@@ -94,7 +94,7 @@ export default class ContainerNavigation extends PureComponent {
             className={classNames(styles.containerNavigationInner, {
               [styles.hasContainerHeader]: headerComponent !== null,
               [styles.hasGlobalAppearance]: appearance === 'global',
-              [styles.hasProjectSettingsAppearance]: appearance === 'settings',
+              [styles.hasSettingsAppearance]: appearance === 'settings',
             })}
           >
             <GlobalActions

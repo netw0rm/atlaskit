@@ -257,6 +257,18 @@ describe('Bitbucket markdown serializer: ', () => {
         '* foo 2'
       );
     });
+
+    it('with newline', () => {
+      expect(markdownSerializer.serialize(doc(
+        ul(
+          li(
+            p('item 1'),
+            '\n'
+          ),
+          li(p('item 2'))
+        )
+      ))).to.eq('* item 1\n\n    \n    \n* item 2');
+    });
   });
 
   describe('ordered list', () => {

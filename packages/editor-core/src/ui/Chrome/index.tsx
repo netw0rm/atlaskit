@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { EmojiProvider } from '@atlaskit/emoji';
+// import { EmojiProvider } from '@atlaskit/emoji';
+import { MentionProvider } from '@atlaskit/mention';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
-import { EmojisPluginState } from '../../plugins/emojis';
+// import { EmojisPluginState } from '../../plugins/emojis';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
-import { MentionsPluginState } from '../../plugins/mentions';
+import { MentionsState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { EditorView } from '../../prosemirror';
@@ -31,12 +32,12 @@ export interface Props {
   pluginStateTextFormatting?: TextFormattingState;
   pluginStateClearFormatting?: ClearFormattingState;
   pluginStateImageUpload?: ImageUploadState;
-  pluginStateMentions?: MentionsPluginState;
+  pluginStateMentions?: MentionsState;
   pluginStatePanel?: PanelState;
-  pluginStateEmojis?: EmojisPluginState;
-  mentionsResourceProvider?: any; // AbstractMentionResource
+  pluginStateEmojis?: any; //EmojisPluginState;
   presenceResourceProvider?: any; // AbstractPresenceResource
-  emojiProvider?: Promise<EmojiProvider>;
+  emojiProvider?: any; //Promise<EmojiProvider>;
+  mentionProvider?: Promise<MentionProvider>;
   onCollapsedChromeFocus: () => void;
 }
 
@@ -58,7 +59,7 @@ export default class Chrome extends PureComponent<Props, {}> {
         pluginStateImageUpload={props.pluginStateImageUpload}
         pluginStateMentions={props.pluginStateMentions}
         pluginStateEmojis={props.pluginStateEmojis}
-        mentionsResourceProvider={props.mentionsResourceProvider}
+        mentionProvider={props.mentionProvider}
         presenceResourceProvider={props.presenceResourceProvider}
         emojiProvider={props.emojiProvider}
         editorView={props.editorView}

@@ -1,298 +1,395 @@
-// import * as chai from 'chai';
-// import { expect } from 'chai';
-// import * as sinon from 'sinon';
-// import { ListsPlugin, MentionNodeType, MentionQueryMarkType, ProseMirror, Schema, schema as schemaBasic, Text } from '../../../src';
-// import BlockTypePlugin from '../../../src/plugins/block-type';
-// import MentionsPlugin from '../../../src/plugins/mentions';
-// import { chaiPlugin, fixtures } from '../../../src/test-helper';
+import * as chai from 'chai';
+import { expect } from 'chai';
+import * as sinon from 'sinon';
+import { mention as mentionNode } from '../../../src';
+import MentionsPlugin from '../../../src/plugins/mentions';
+import {
+  chaiPlugin,
+  fixtures,
+  makeEditor,
+  sendKeyToPm,
+  blockquote,
+  br,
+  doc,
+  mention,
+  mentionQuery,
+  li,
+  p,
+  ul,
+} from '../../../src/test-helper';
 
-// chai.use(chaiPlugin);
+import { resourceProvider } from '../../../stories/mentions/story-data';
 
-// const container = fixtures();
+const mentionProvider = new Promise<any>(resolve => {
+  resolve(resourceProvider);
+});
 
-// describe('mentions', () => {
-//   const schema: Schema = new Schema({
-//     nodes: schemaBasic.nodeSpec.append({
-//       mention: { type: MentionNodeType, group: 'inline' }
-//     }),
-//     marks: {
-//       mention_query: MentionQueryMarkType
-//     }
-//   });
+chai.use(chaiPlugin);
 
-//   const makeEditor = (container: Node) => {
-//     return new ProseMirror({
-//       schema: schema,
-//       plugins: [ListsPlugin, MentionsPlugin, BlockTypePlugin],
-//       place: container
-//     });
-//   };
+describe('mentions', () => {
+  const fixture = fixtures();
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugin: MentionsPlugin,
+    place: fixture()
+  });
 
-//   it('defines a name for use by the ProseMirror plugin registry ', () => {
-//     const plugin = MentionsPlugin as any; // .State is not public API.
-//     expect(plugin.State.name).is.be.a('string');
-//   });
+  const forceUpdate = (editorView: any) => {
+    editorView.updateState(editorView.state);
+  };
 
-//   describe('keymap', () => {
-//     xit('should bind keymap when query is active', () => {
-//       const pm = makeEditor(container());
-//       pm.input.insertText(0, 0, '@');
-//       pm.flush();
-//       expect(pm.input.keymaps.filter((k: any) => k.map.options.name === 'mentions-plugin-keymap').length).to.equal(1);
-//     });
+  it('defines a name for use by the ProseMirror plugin registry ', () => {
+    const plugin = MentionsPlugin as any; // .key is not public API.
+    expect(plugin.key).to.be.a('string');
+  });
 
-//     xit('should unbind keymap when dismissed', () => {
-//       const pm = makeEditor(container());
-//       pm.input.insertText(0, 0, '@');
-//       pm.flush();
+  describe('keymap', () => {
 
-//       const keyDownEvent = new CustomEvent('keydown');
-//       (keyDownEvent as any).keyCode = 27;
+    describe('ArrowUp', () => {
+      it('should be ignored if there is no mentionProvider', () => {
+        const { editorView, pluginState } = editor(doc(p(mentionQuery('@o{<>}'))));
+        const spy = sinon.spy(pluginState, 'onSelectPrevious');
 
-//       pm.input.dispatchKey('Esc', keyDownEvent);
-//       expect(pm.input.keymaps.filter((k: any) => k.map.options.name === 'mentions-plugin-keymap').length).to.equal(0);
-//     });
+        forceUpdate(editorView); // Force update to ensure active query.
+        sendKeyToPm(editorView, 'ArrowUp');
+        expect(spy.called).to.equal(false);
+      });
 
-//     it('should ignore "Up"-key if no "onSelectPrevious" is attached', () => {
-//       const pm = makeEditor(container());
-//       pm.input.insertText(0, 0, '@');
-//       pm.flush();
+      it('should be ignored if there is no active query', () => {
+        const { editorView, pluginState } = editor(doc(p('Hello')));
+        const spy = sinon.spy(pluginState, 'onSelectPrevious');
 
-//       const keyDownEvent = new CustomEvent('keydown');
-//       (keyDownEvent as any).keyCode = 38;
-//       pm.input.dispatchKey('Up', keyDownEvent);
-//     });
+        return pluginState
+          .setMentionProvider(mentionProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
 
-//     it('should ignore "Down"-key if no "onSelectNext" is attached', () => {
-//       const pm = makeEditor(container());
-//       pm.input.insertText(0, 0, '@');
-//       pm.flush();
+            sendKeyToPm(editorView, 'ArrowUp');
+            expect(spy.called).to.equal(false);
+          });
+      });
 
-//       const keyDownEvent = new CustomEvent('keydown');
-//       (keyDownEvent as any).keyCode = 40;
-//       pm.input.dispatchKey('Down', keyDownEvent);
-//     });
+      it('should call "onSelectPrevious" which should return false by default', () => {
+        const { editorView, pluginState } = editor(doc(p(mentionQuery('@o{<>}'))));
+        const spy = sinon.spy(pluginState, 'onSelectPrevious');
 
-//     it('should ignore "Enter"-key if no "onSelectCurrent" is attached', () => {
-//       const pm = makeEditor(container());
-//       pm.input.insertText(0, 0, '@');
-//       pm.flush();
+        return pluginState
+          .setMentionProvider(mentionProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
 
-//       const keyDownEvent = new CustomEvent('keydown');
-//       (keyDownEvent as any).keyCode = 13;
-//       pm.input.dispatchKey('Enter', keyDownEvent);
-//     });
+            sendKeyToPm(editorView, 'ArrowUp');
+            expect(spy.called).to.equal(true);
+            expect(spy.returned(false)).to.equal(true);
+          });
+      });
+    });
 
-//     it('should ignore "Space"-key if no "onTrySelectCurrent" is attached', () => {
-//       const pm = makeEditor(container());
-//       pm.input.insertText(0, 0, '@');
-//       pm.flush();
+    describe('ArrowDown', () => {
+      it('should be ignored if there is no mentionProvider', () => {
+        const { editorView, pluginState } = editor(doc(p(mentionQuery('@o{<>}'))));
+        const spy = sinon.spy(pluginState, 'onSelectNext');
 
-//       const keyDownEvent = new CustomEvent('keydown');
-//       (keyDownEvent as any).keyCode = 32;
-//       pm.input.dispatchKey('Space', keyDownEvent);
-//     });
+        forceUpdate(editorView); // Force update to ensure active query.
+        sendKeyToPm(editorView, 'ArrowDown');
+        expect(spy.called).to.equal(false);
+      });
 
-//     it('should trigger "onSelectPrevious" when "Up"-key is pressed', () => {
-//       const pm = makeEditor(container());
-//       const pluginState = MentionsPlugin.get(pm)!;
-//       pm.input.insertText(0, 0, '@');
-//       pm.flush();
+      it('should be ignored if there is no active query', () => {
+        const { editorView, pluginState } = editor(doc(p('Hello')));
+        const spy = sinon.spy(pluginState, 'onSelectNext');
 
-//       const spy = sinon.spy();
-//       pluginState.onSelectPrevious = spy;
-//       const keyDownEvent = new CustomEvent('keydown');
-//       (keyDownEvent as any).keyCode = 38;
+        return pluginState
+          .setMentionProvider(mentionProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
 
-//       pm.input.dispatchKey('Up', keyDownEvent);
-//       expect(spy.called).to.equal(true);
-//     });
+            sendKeyToPm(editorView, 'ArrowDown');
+            expect(spy.called).to.equal(false);
+          });
+      });
 
-//     it('should trigger "onSelectNext" when "Down"-key is pressed', () => {
-//       const pm = makeEditor(container());
-//       const pluginState = MentionsPlugin.get(pm)!;
-//       pm.input.insertText(0, 0, '@');
-//       pm.flush();
+      it('should call "onSelectNext" which should return false by default', () => {
+        const { editorView, pluginState } = editor(doc(p(mentionQuery('@o{<>}'))));
+        const spy = sinon.spy(pluginState, 'onSelectNext');
 
-//       const spy = sinon.spy();
-//       pluginState.onSelectNext = spy;
-//       const keyDownEvent = new CustomEvent('keydown');
-//       (keyDownEvent as any).keyCode = 40;
+        return pluginState
+          .setMentionProvider(mentionProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
 
-//       pm.input.dispatchKey('Down', keyDownEvent);
-//       expect(spy.called).to.equal(true);
-//     });
+            sendKeyToPm(editorView, 'ArrowDown');
+            expect(spy.called).to.equal(true);
+            expect(spy.returned(false)).to.equal(true);
+          });
+      });
+    });
 
-//     it('should trigger "onSelectCurrent" when "Enter"-key is pressed', () => {
-//       const pm = makeEditor(container());
-//       const pluginState = MentionsPlugin.get(pm)!;
-//       pm.input.insertText(0, 0, '@');
-//       pm.flush();
+    describe('Enter', () => {
+      it('should be ignored if there is no mentionProvider', () => {
+        const { editorView, pluginState } = editor(doc(p(mentionQuery('@o{<>}'))));
+        const spy = sinon.spy(pluginState, 'onSelectCurrent');
 
-//       const spy = sinon.spy();
-//       pluginState.onSelectCurrent = spy;
-//       const keyDownEvent = new CustomEvent('keydown');
-//       (keyDownEvent as any).keyCode = 13;
+        forceUpdate(editorView); // Force update to ensure active query.
+        sendKeyToPm(editorView, 'Enter');
+        expect(spy.called).to.equal(false);
+      });
 
-//       pm.input.dispatchKey('Enter', keyDownEvent);
-//       expect(spy.called).to.equal(true);
-//     });
+      it('should be ignored if there is no active query', () => {
+        const { editorView, pluginState } = editor(doc(p('Hello')));
+        const spy = sinon.spy(pluginState, 'onSelectCurrent');
 
-//     it('should trigger "onTrySelectCurrent" when "Space"-key is pressed', () => {
-//       const pm = makeEditor(container());
-//       const pluginState = MentionsPlugin.get(pm)!;
-//       pm.input.insertText(0, 0, '@');
-//       pm.flush();
+        return pluginState
+          .setMentionProvider(mentionProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
 
-//       const spy = sinon.spy();
-//       pluginState.onTrySelectCurrent = spy;
-//       const keyDownEvent = new CustomEvent('keydown');
-//       (keyDownEvent as any).keyCode = 32;
+            sendKeyToPm(editorView, 'Enter');
+            expect(spy.called).to.equal(false);
+          });
+      });
 
-//       pm.input.dispatchKey('Space', keyDownEvent);
-//       expect(spy.called).to.equal(true);
-//     });
+      it('should call "onSelectCurrent" which should return false by default', () => {
+        const { editorView, pluginState } = editor(doc(p(mentionQuery('@o{<>}'))));
+        const spy = sinon.spy(pluginState, 'onSelectCurrent');
 
-//     it('should trigger "dismiss" when "Esc"-key is pressed', () => {
-//       const pm = makeEditor(container());
-//       const pluginState = MentionsPlugin.get(pm)!;
-//       pm.input.insertText(0, 0, '@');
-//       pm.flush();
+        return pluginState
+          .setMentionProvider(mentionProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
 
-//       const spy = sinon.spy(pluginState, 'dismiss');
-//       const keyDownEvent = new CustomEvent('keydown');
-//       (keyDownEvent as any).keyCode = 27;
+            sendKeyToPm(editorView, 'Enter');
+            expect(spy.called).to.equal(true);
+            expect(spy.returned(false)).to.equal(true);
+          });
+      });
+    });
 
-//       pm.input.dispatchKey('Esc', keyDownEvent);
-//       expect(spy.called).to.equal(true);
-//     });
+    describe('Space', () => {
+      it('should be ignored if there is no mentionProvider', () => {
+        const { editorView, pluginState } = editor(doc(p(mentionQuery('@o{<>}'))));
+        const spy = sinon.spy(pluginState, 'onTrySelectCurrent');
 
-//   });
+        forceUpdate(editorView); // Force update to ensure active query.
+        sendKeyToPm(editorView, 'Space');
+        expect(spy.called).to.equal(false);
+      });
 
-//   describe('insertMention', () => {
+      it('should be ignored if there is no active query', () => {
+        const { editorView, pluginState } = editor(doc(p('Hello')));
+        const spy = sinon.spy(pluginState, 'onTrySelectCurrent');
 
-//     it('should replace mention-query-mark with mention-node', () => {
-//       const pm = makeEditor(container());
-//       const pluginInstance = MentionsPlugin.get(pm)!;
+        return pluginState
+          .setMentionProvider(mentionProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
 
-//       pm.input.insertText(0, 0, '@');
-//       pm.flush();
-//       pm.tr.typeText('oscar').apply();
+            sendKeyToPm(editorView, 'Space');
+            expect(spy.called).to.equal(false);
+          });
+      });
 
-//       pluginInstance.insertMention({
-//         name: 'Oscar Wallhult',
-//         mentionName: 'oscar',
-//         id: '1234'
-//       });
+      it('should call "onTrySelectCurrent" which should return false by default', () => {
+        const { editorView, pluginState } = editor(doc(p(mentionQuery('@kai{<>}'))));
+        const spy = sinon.spy(pluginState, 'onTrySelectCurrent');
 
-//       expect(pm.doc.nodeAt(1)).to.be.of.nodeType(MentionNodeType);
-//     });
+        return pluginState
+          .setMentionProvider(mentionProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
 
-//     it('should insert a space after the mention-node', () => {
-//       const pm = makeEditor(container());
-//       const pluginInstance = MentionsPlugin.get(pm)!;
+            sendKeyToPm(editorView, 'Space');
+            expect(spy.called).to.equal(true);
+            expect(spy.returned(false)).to.equal(true);
+          });
+      });
+    });
 
-//       pm.input.insertText(0, 0, '@');
-//       pm.flush();
-//       pm.tr.typeText('oscar').apply();
+    describe('Escape', () => {
+      it('should be ignored if there is no mentionProvider', () => {
+        const { editorView, pluginState } = editor(doc(p(mentionQuery('@o{<>}'))));
+        const spy = sinon.spy(pluginState, 'dismiss');
 
-//       pluginInstance.insertMention({
-//         name: 'Oscar Wallhult',
-//         mentionName: 'oscar',
-//         id: '1234'
-//       });
+        forceUpdate(editorView); // Force update to ensure active query.
+        sendKeyToPm(editorView, 'Esc');
+        expect(spy.called).to.equal(false);
+      });
 
-//       expect(pm.doc.nodeAt(2)).to.be.of.nodeType(Text);
-//     });
+      it('should be ignored if there is no active query', () => {
+        const { editorView, pluginState } = editor(doc(p('Hello')));
+        const spy = sinon.spy(pluginState, 'dismiss');
 
-//     it('should allow inserting multiple @-mentions next to eachother', () => {
-//       const pm = makeEditor(container());
-//       const pluginInstance = MentionsPlugin.get(pm)!;
+        return pluginState
+          .setMentionProvider(mentionProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
 
-//       pm.input.insertText(0, 0, '@');
-//       pm.flush();
-//       pm.tr.typeText('oscar').apply();
+            sendKeyToPm(editorView, 'Esc');
+            expect(spy.called).to.equal(false);
+          });
+      });
 
-//       pluginInstance.insertMention({
-//         name: 'Oscar Wallhult',
-//         mentionName: 'oscar',
-//         id: '1234'
-//       });
+      it('should call "dismiss" which should return true by default', () => {
+        const { editorView, pluginState } = editor(doc(p(mentionQuery('@kai{<>}'))));
+        const spy = sinon.spy(pluginState, 'dismiss');
 
-//       pm.input.insertText(2, 2, '@');
-//       pm.flush();
-//       pm.tr.typeText('brad').apply();
+        return pluginState
+          .setMentionProvider(mentionProvider)
+          .then(() => {
+            forceUpdate(editorView); // Force update to ensure active query.
+            sendKeyToPm(editorView, 'Esc');
+            expect(spy.called).to.equal(true);
+            expect(spy.returned(true)).to.equal(true);
+          });
+      });
+    });
 
-//       pluginInstance.insertMention({
-//         name: 'Bradley Ayers',
-//         mentionName: 'brad',
-//         id: '5678'
-//       });
+  });
 
-//       expect(pm.doc.nodeAt(1)).to.be.of.nodeType(MentionNodeType);
-//       expect(pm.doc.nodeAt(2)).to.be.of.nodeType(MentionNodeType);
-//     });
+  describe('insertMention', () => {
 
-//     it('should allow inserting @-mention on new line after hard break', () => {
-//       const pm = makeEditor(container());
-//       const pluginInstance = MentionsPlugin.get(pm)!;
-//       const blockTypePluginInstance = BlockTypePlugin.get(pm)!;
+    it('should replace mention-query-mark with mention-node', () => {
+      const { editorView, pluginState } = editor(doc(p(mentionQuery('@os'))));
 
-//       blockTypePluginInstance.insertNewLine();
+      pluginState.insertMention({
+        name: 'Oscar Wallhult',
+        mentionName: 'oscar',
+        id: '1234'
+      });
 
-//       pm.input.insertText(2, 2, '@');
-//       pm.flush();
-//       pm.tr.typeText('oscar').apply();
+      expect(editorView.state.doc.nodeAt(1)).to.be.of.nodeSpec(mentionNode);
+    });
 
-//       pluginInstance.insertMention({
-//         name: 'Oscar Wallhult',
-//         mentionName: 'oscar',
-//         id: '1234'
-//       });
+    it('should insert a space after the mention-node', () => {
+      const { editorView, pluginState } = editor(doc(p(mentionQuery('@os{<>}'))));
 
-//       expect(pm.doc.nodeAt(2)).to.be.of.nodeType(MentionNodeType);
-//     });
+      pluginState.insertMention({
+        name: 'Oscar Wallhult',
+        mentionName: 'oscar',
+        id: '1234'
+      });
 
-//     it('should not break list into two when inserting mention inside list item', () => {
-//       const pm = makeEditor(container());
-//       const pluginInstance = MentionsPlugin.get(pm)!;
-//       const listsPluginInstance = ListsPlugin.get(pm)!;
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(
+            mention({
+              displayName: '@Oscar Wallhult',
+              id: '1234'
+            }),
+            ' '
+          )
+        )
+      );
+    });
 
-//       listsPluginInstance.toggleBulletList();
+    it('should allow inserting multiple @-mentions next to eachother', () => {
+      const { editorView, pluginState } = editor(doc(p(mention({ id: '1234', displayName: '@Oscar Wallhult' }), ' ', mentionQuery('@{<>}'))));
 
-//       pm.input.insertText(3, 3, '@');
-//       pm.flush();
-//       pm.tr.typeText('oscar').apply();
+      pluginState.insertMention({
+        name: 'Bradley Ayers',
+        mentionName: 'brad',
+        id: '5678'
+      });
 
-//       pluginInstance.insertMention({
-//         name: 'Oscar Wallhult',
-//         mentionName: 'oscar',
-//         id: '1234'
-//       });
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(
+            mention({
+              displayName: '@Oscar Wallhult',
+              id: '1234'
+            }),
+            ' ',
+            mention({
+              displayName: '@Bradley Ayers',
+              id: '5678'
+            }),
+            ' '
+          )
+        )
+      );
 
-//       expect(pm.doc.nodeAt(3)).to.be.of.nodeType(MentionNodeType);
-//       expect(pm.doc.nodeAt(5)).to.equal(null);
-//     });
+    });
 
-//     it('should insert only 1 mention at a time inside blockqoute', () => {
-//       const pm = makeEditor(container());
-//       const pluginInstance = MentionsPlugin.get(pm)!;
-//       const blockTypePluginInstance = BlockTypePlugin.get(pm)!;
+    it('should allow inserting @-mention on new line after hard break', () => {
+      const { editorView, pluginState } = editor(doc(p(br, mentionQuery('@{<>}'))));
 
-//       blockTypePluginInstance.toggleBlockType('blockquote');
+      pluginState.insertMention({
+        name: 'Oscar Wallhult',
+        mentionName: 'oscar',
+        id: '1234'
+      });
 
-//       pm.input.insertText(2, 2, '@');
-//       pm.flush();
-//       pm.tr.typeText('oscar').apply();
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(
+            br,
+            mention({
+              id: '1234',
+              displayName: '@Oscar Wallhult'
+            }),
+            ' '
+          )
+        )
+      );
+    });
 
-//       pluginInstance.insertMention({
-//         name: 'Oscar Wallhult',
-//         mentionName: 'oscar',
-//         id: '1234'
-//       });
+    it('should not break list into two when inserting mention inside list item', () => {
+      const { editorView, pluginState } = editor(doc(p(ul(li(p('One')), li(p('Two ', mentionQuery('@{<>}'))), li(p('Three'))))));
 
-//       expect(pm.doc.nodeAt(2)).to.be.of.nodeType(MentionNodeType);
-//       expect(pm.doc.nodeAt(5)).to.equal(null);
-//     });
-//   });
-// });
+      pluginState.insertMention({
+        name: 'Oscar Wallhult',
+        mentionName: 'oscar',
+        id: '1234'
+      });
+
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(
+            ul(
+              li(p('One')),
+              li(
+                p(
+                  'Two ',
+                  mention({
+                    id: '1234',
+                    displayName: '@Oscar Wallhult'
+                  }),
+                  ' '
+                )
+              ),
+              li(p('Three'))
+            )
+          )
+        )
+      );
+    });
+
+    it('should insert only 1 mention at a time inside blockqoute', () => {
+      const { editorView, pluginState } = editor(doc(blockquote(p('Hello ', mentionQuery('@{<>}')))));
+
+      pluginState.insertMention({
+        name: 'Oscar Wallhult',
+        mentionName: 'oscar',
+        id: '1234'
+      });
+
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          blockquote(
+            p(
+              'Hello ',
+              mention({
+                id: '1234',
+                displayName: '@Oscar Wallhult'
+              }),
+              ' '
+            )
+          )
+        )
+      );
+
+      expect(editorView.state.doc.nodeAt(8)).to.be.of.nodeSpec(mentionNode);
+      expect(editorView.state.doc.nodeAt(10)).to.equal(null);
+    });
+  });
+});

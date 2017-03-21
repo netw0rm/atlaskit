@@ -22,7 +22,7 @@ export default function sendKeyToPm(editorView: EditorView, keys: string) {
     cancelable: true,
   });
 
-  (event as any).key = key;
+  (event as any).key = key.replace(/Space/g, ' ');
   (event as any).shiftKey = shiftKey;
   (event as any).altKey = altKey;
   (event as any).ctrlKey = ctrlKey || (!browser.mac && modKey);

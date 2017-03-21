@@ -14,6 +14,7 @@ export default class Element extends PureComponent {
     handleKeyPress: PropTypes.func,
     href: PropTypes.string,
     target: PropTypes.string,
+    title: PropTypes.string,
     type: PropTypes.oneOf(baseTypes.values),
   }
 
@@ -25,7 +26,7 @@ export default class Element extends PureComponent {
 
   render() {
     const { props } = this;
-    const { href, target, type, isDisabled, handleKeyPress, handleClick, className } = props;
+    const { href, target, type, isDisabled, handleKeyPress, handleClick, className, title } = props;
     const ariaAttributes = {};
     const commonAttributes = {
       className,
@@ -34,6 +35,7 @@ export default class Element extends PureComponent {
       onClick: handleClick,
       onMouseDown: this.handleMouseDown,
       'data-role': 'droplistItem',
+      title,
     };
 
     if (props.isDisabled) {

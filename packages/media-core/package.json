@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-core",
-  "version": "1.80.0",
+  "version": "1.81.0",
   "config": {
     "access": "public"
   },

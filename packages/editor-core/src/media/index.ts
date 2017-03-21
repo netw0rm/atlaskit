@@ -1,6 +1,18 @@
 import { ContextConfig } from '@atlaskit/media-core';
 
+export interface UploadParams {
+  // Collection name is required by Media API
+  collectionName: string;
+
+  autoFinalize?: boolean;
+  skipConversions?: boolean;
+  fetchMetadata?: boolean;
+  expireAfter?: number;
+}
+
 export interface MediaProvider {
+  uploadParams: UploadParams;
+
   /**
    * Resolve to a Media Context Config for uploading new media items, i.e.:
    *

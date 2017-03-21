@@ -1,66 +1,43 @@
 import React, { PureComponent, PropTypes } from 'react';
 
-import DummyItem from './internal/DummyItem';
-import DummyGroup from './internal/DummyGroup';
-import StatelessMultiSelect from './StatelessMultiSelect';
-import { appearances } from './internal/appearances';
+import { StatelessMultiSelect } from '@atlaskit/multi-select';
 
-const itemShape = DummyItem.propTypes;
-const groupShape = DummyGroup.propTypes;
-
-export default class AkMultiSelect extends PureComponent {
+export default class CustomMultiSelect extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.oneOf(appearances.values),
-    defaultSelected: PropTypes.arrayOf(PropTypes.shape(itemShape)),
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
-    isFirstChild: PropTypes.bool,
     shouldFocus: PropTypes.bool,
     isDefaultOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
-    isInvalid: PropTypes.bool,
-    items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
+    items: StatelessMultiSelect.propTypes.items, // Array, same shape as StatelessMultiSelect
     label: PropTypes.string,
     name: PropTypes.string,
-    noMatchesFound: PropTypes.string,
-    onFilterChange: PropTypes.func,
-    onSelectedChange: PropTypes.func,
-    onOpenChange: PropTypes.func,
     placeholder: PropTypes.string,
-    position: PropTypes.string,
-    shouldFitContainer: PropTypes.bool,
   }
 
   static defaultProps = {
-    appearance: appearances.default,
-    defaultSelected: [],
-    isOpen: false,
+    isDisabled: false,
     shouldFocus: false,
+    isDefaultOpen: false,
     isRequired: false,
-    items: [],
-    label: '',
-    onFilterChange: () => {},
-    onOpenChange: () => {},
-    onSelectedChange: () => {},
-    position: 'bottom left',
   }
 
+  // we need to keep track of this state ourselves and pass it back into the StatelessMultiSelect
   state = {
     isOpen: this.props.isDefaultOpen,
-    selectedItems: this.props.defaultSelected,
+    selectedItems: [],
     filterValue: '',
+    // we could also keep track of isInvalid here
   }
 
   selectItem = (item) => {
     const selectedItems = [...this.state.selectedItems, item];
     this.setState({ selectedItems });
-    this.props.onSelectedChange({ items: selectedItems, action: 'select', changed: item });
   }
 
   removeItem = (item) => {
     const selectedItems = this.state.selectedItems.filter(i => i.value !== item.value);
     this.setState({ selectedItems });
-    this.props.onSelectedChange({ items: selectedItems, action: 'remove', changed: item });
   }
 
   selectedChange = (item) => {
@@ -69,45 +46,40 @@ export default class AkMultiSelect extends PureComponent {
     } else {
       this.selectItem(item);
     }
+    // we could update isInvalid here
   }
 
   handleFilterChange = (value) => {
-    this.props.onFilterChange(value);
+    // value will tell us the value the filter wants to change to
     this.setState({ filterValue: value });
   }
 
   handleOpenChange = (attrs) => {
+    // attrs.isOpen will tell us the state that the dropdown wants to move to
     this.setState({ isOpen: attrs.isOpen });
-    this.props.onOpenChange(attrs);
   }
 
   render() {
     return (
       <StatelessMultiSelect
-        appearance={this.props.appearance}
         filterValue={this.state.filterValue}
         id={this.props.id}
         isDisabled={this.props.isDisabled}
-        isFirstChild={this.props.isFirstChild}
-        isInvalid={this.props.isInvalid}
         isOpen={this.state.isOpen}
         isRequired={this.props.isRequired}
         items={this.props.items}
         label={this.props.label}
         name={this.props.name}
-        noMatchesFound={this.props.noMatchesFound}
+        noMatchesFound="Uh oh! No matches found!"
         onFilterChange={this.handleFilterChange}
         onOpenChange={this.handleOpenChange}
         onRemoved={this.selectedChange}
         onSelected={this.selectedChange}
         placeholder={this.props.placeholder}
-        position={this.props.position}
         selectedItems={this.state.selectedItems}
         shouldFocus={this.props.shouldFocus}
-        shouldFitContainer={this.props.shouldFitContainer}
+        shouldFitContainer
       />
     );
   }
 }
-
-export { StatelessMultiSelect };

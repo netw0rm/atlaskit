@@ -188,7 +188,7 @@ describe('code-block', () => {
 
         plugin.props.handleClick(editorView, sel, click);
 
-        expect(pluginState.clicked).to.be.true;
+        expect(pluginState.domEvent).to.be.true;
       });
     });
 
@@ -198,7 +198,7 @@ describe('code-block', () => {
 
         plugin.props.handleClick(editorView, sel, click);
 
-        expect(pluginState.clicked).to.be.false;
+        expect(pluginState.domEvent).to.be.false;
       });
     });
 
@@ -209,7 +209,7 @@ describe('code-block', () => {
 
         setTextSelection(editorView, cbPos);
 
-        expect(pluginState.clicked).to.be.false;
+        expect(pluginState.domEvent).to.be.false;
       });
     });
   });

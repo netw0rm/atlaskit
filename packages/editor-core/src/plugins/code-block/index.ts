@@ -15,6 +15,7 @@ export class CodeBlockState {
   element?: HTMLElement;
   language: string | undefined;
   toolbarVisible: boolean = false;
+  domEvent: boolean = false;
 
   private state: EditorState<any>;
   private changeHandlers: CodeBlockStateSubscriber[] = [];
@@ -50,6 +51,8 @@ export class CodeBlockState {
     const codeBlockNode = this.activeCodeBlockNode();
 
     if (domEvent && codeBlockNode || codeBlockNode !== this.activeCodeBlock) {
+      this.domEvent = domEvent;
+
       const newElement = codeBlockNode && this.activeCodeBlockElement(docView);
       this.toolbarVisible = this.editorFocused && !!codeBlockNode && (domEvent || this.element !== newElement);
       this.activeCodeBlock = codeBlockNode;

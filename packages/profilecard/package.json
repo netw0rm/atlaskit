@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "config": {
     "access": "public"
   },
@@ -45,8 +45,10 @@
     "fabric"
   ],
   "author": "Atlassian Pty Ltd",
-  "maintainers": [{
-    "name": "Thorsten B"
-  }],
+  "maintainers": [
+    {
+      "name": "Thorsten B"
+    }
+  ],
   "license": "Apache-2.0"
 }

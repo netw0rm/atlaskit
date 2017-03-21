@@ -100,6 +100,19 @@ storiesOf(name, module)
       content={<p>{sampleText}</p>}
     />
   ))
+  .add('comment with restricted property', () => (
+    <Comment
+      author={<CommentAuthor>John Smith</CommentAuthor>}
+      avatar={sampleAvatar}
+      time={<CommentTime>30, August 2016</CommentTime>}
+      type="Author"
+      content={<div><p>{sampleText}</p><p>{sampleText}</p></div>}
+      restricted="atlassian-staff"
+      actions={[
+        <CommentAction onClick={clickHandler}>Like</CommentAction>,
+      ]}
+    />
+  ))
   .add('comment with restricted size and non-space-separated content', () => (
     <div style={{ width: 500 }}>
       <Comment

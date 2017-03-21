@@ -5,10 +5,10 @@ import { searchIconOffset } from '../../src/shared-variables';
 
 describe('<CustomDrawer />', () => {
   describe('the inner Drawer', () => {
-    it('width="narrow" should pass width="full" to the inner drawer', () => {
+    it('width="narrow" should pass width="narrow" to the inner drawer', () => {
       expect(mount(<AkCustomDrawer width="narrow" />).find('Drawer').props().width).to.equal('narrow');
     });
-    it('width="wide" should pass width="full" to the inner drawer', () => {
+    it('width="wide" should pass width="wide" to the inner drawer', () => {
       expect(mount(<AkCustomDrawer width="wide" />).find('Drawer').props().width).to.equal('wide');
     });
     it('width="full" should pass width="full" to the inner drawer', () => {

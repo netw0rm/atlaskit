@@ -5,14 +5,11 @@ import { AkSearchDrawer, AkCreateDrawer, AkCustomDrawer, AkContainerItem, AkGlob
 import BasicNavigation from './BasicNavigation';
 
 export default class DrawerWidthNavigation extends PureComponent {
-  constructor(...args) {
-    super(...args);
-    this.state = {
-      openDrawer: null,
-      isCreateDrawerFullWidth: false,
-      isSearchDrawerFullWidth: false,
-      customDrawerWidth: 'narrow',
-    };
+  state = {
+    openDrawer: null,
+    isCreateDrawerFullWidth: false,
+    isSearchDrawerFullWidth: false,
+    customDrawerWidth: 'narrow',
   }
 
   getBackIcon = () => (
@@ -78,14 +75,11 @@ export default class DrawerWidthNavigation extends PureComponent {
   }
 
   changeCustomDrawerWidth = () => {
-    let nextWidth;
-    if (this.state.customDrawerWidth === 'narrow') {
-      nextWidth = 'wide';
-    } else if (this.state.customDrawerWidth === 'wide') {
-      nextWidth = 'full';
-    } else {
-      nextWidth = 'narrow';
-    }
+    const nextWidth = {
+      wide: 'narrow',
+      narrow: 'full',
+      full: 'wide',
+    }[this.state.customDrawerWidth];
 
     this.setState({
       customDrawerWidth: nextWidth,
@@ -104,6 +98,14 @@ export default class DrawerWidthNavigation extends PureComponent {
     });
   };
 
+  handleCreateDrawerOpen = () => {
+    this.setDrawer('create');
+  }
+
+  handleSearchDrawerOpen = () => {
+    this.setDrawer('search');
+  }
+
   render() {
     return (
       <BasicNavigation
@@ -113,21 +115,19 @@ export default class DrawerWidthNavigation extends PureComponent {
           this.getCustomDrawer(),
         ]}
         isOpen={this.state.isOpen}
-        onCreateDrawerOpen={() => this.setDrawer('create')}
-        onSearchDrawerOpen={() => this.setDrawer('search')}
+        onCreateDrawerOpen={this.handleCreateDrawerOpen}
+        onSearchDrawerOpen={this.handleSearchDrawerOpen}
         globalHelpItem={
           <AkGlobalItem>
             <QuestionCircleIcon label="Help icon" />
           </AkGlobalItem>
         }
       >
-        <div>
-          <AkContainerItem
-            icon={<IssuesIcon label="Custom" />}
-            text="Open custom drawer"
-            onClick={() => this.setDrawer('custom')}
-          />
-        </div>
+        <AkContainerItem
+          icon={<IssuesIcon label="Custom" />}
+          text="Open custom drawer"
+          onClick={() => this.setDrawer('custom')}
+        />
       </BasicNavigation>
     );
   }

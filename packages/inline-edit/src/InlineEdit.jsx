@@ -24,7 +24,7 @@ export default class InlineEdit extends PureComponent {
     labelHtmlFor: PropTypes.string,
     shouldConfirmOnEnter: PropTypes.bool,
     disableEditViewFieldBase: PropTypes.bool,
-    invalidMessage: PropTypes.string,
+    invalidMessage: PropTypes.node,
   }
 
   static defaultProps = {
@@ -102,9 +102,8 @@ export default class InlineEdit extends PureComponent {
     this.props.onCancel();
   }
 
-  onIconMouseDown = () => {
-    // Set the state here so that we can ignore the blur or click event on the field.
-    this.setState({ wasIconMouseDown: true });
+  onDialogClick = (event) => {
+    event.stopPropagation();
   }
 
   getRootClasses = () =>
@@ -140,7 +139,7 @@ export default class InlineEdit extends PureComponent {
       isLoading={this.shouldRenderSpinner()}
       shouldReset={this.state.shouldResetFieldBase}
       invalidMessage={this.props.invalidMessage}
-      onIconMouseDown={this.onIconMouseDown}
+      onDialogClick={this.onDialogClick}
     >
       {children}
     </FieldBase>
@@ -210,6 +209,20 @@ export default class InlineEdit extends PureComponent {
             onClick={this.onWrapperClick}
           >
             {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
+            <FieldBase
+              isInvalid={this.props.isInvalid}
+              isFocused={this.isReadOnly() ? false : undefined}
+              isReadOnly={this.isReadOnly()}
+              isFitContainerWidthEnabled={this.props.isEditing}
+              appearance={this.props.isEditing ? 'standard' : 'subtle'}
+              isDisabled={this.shouldRenderSpinner()}
+              isLoading={this.shouldRenderSpinner()}
+              shouldReset={this.state.shouldResetFieldBase}
+              invalidMessage={this.props.invalidMessage}
+              onDialogClick={this.onDialogClick}
+            >
+              {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
+            </FieldBase>
           </div>
           {!this.shouldRenderSpinner() ? this.renderActionButtons() : null}
         </div>

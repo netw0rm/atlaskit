@@ -13,15 +13,15 @@ export default class Drawer extends PureComponent {
     children: PropTypes.node,
     header: PropTypes.node,
     isOpen: PropTypes.bool,
-    isWide: PropTypes.bool,
     onBackButton: PropTypes.func,
     primaryIcon: PropTypes.node,
+    width: PropTypes.oneOf(['narrow', 'wide', 'full']),
   }
   static defaultProps = {
     backIconOffset: 0,
     onBackButton: () => {},
     primaryIcon: null,
-    isWide: false,
+    width: 'narrow',
     isOpen: false,
   }
 
@@ -31,9 +31,9 @@ export default class Drawer extends PureComponent {
       backIconOffset,
       header,
       isOpen,
-      isWide,
       onBackButton,
       primaryIcon,
+      width,
     } = this.props;
 
     const backIconOuterStyle = {
@@ -52,7 +52,8 @@ export default class Drawer extends PureComponent {
         <div
           className={classNames(styles.drawer, {
             [styles.open]: isOpen,
-            [styles.wide]: isWide,
+            [styles.wideWidth]: (width === 'wide'),
+            [styles.fullWidth]: (width === 'full'),
           })}
         >
 
@@ -75,9 +76,11 @@ export default class Drawer extends PureComponent {
             </div>
           </div>
           <div className={classNames(styles.main)}>
-            <div className={classNames(styles.fixed, styles.header)}>
-              <ContainerHeader>{header}</ContainerHeader>
-            </div>
+            {(width !== 'full') ?
+              <div className={classNames(styles.fixed, styles.header)}>
+                <ContainerHeader>{header}</ContainerHeader>
+              </div>
+            : null}
             <div className={classNames(styles.content)}>
               {this.props.children}
             </div>

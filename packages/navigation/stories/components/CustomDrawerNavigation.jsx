@@ -4,14 +4,11 @@ import { AkCustomDrawer, AkSearchDrawer, AkCreateDrawer, AkContainerItemGroup, A
 import BasicNavigation from './BasicNavigation';
 
 export default class CustomDrawerNavigation extends PureComponent {
-  constructor(...args) {
-    super(...args);
-    this.state = {
-      openDrawer: null,
-      isOpen: true,
-      width: 300,
-    };
-  }
+  state = {
+    openDrawer: null,
+    isOpen: true,
+    width: 300,
+  };
 
   setDrawer(drawerId) {
     this.setState({

@@ -1,5 +1,5 @@
 import { ResourcedEmoji, ResourcedEmojiShortcut, EmojiPlaceholder } from '@atlaskit/emoji';
-import { EmojiProvider } from '@atlaskit/emoji';
+import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
 import {
   akColorN50,
 } from '@atlaskit/util-shared-styles';
@@ -14,7 +14,7 @@ const height = '20px';
 
 export interface EmojiNodeAttr {
   id?: string;
-  variation?: string;
+  variation?: number;
   shortcut?: string;
 }
 
@@ -84,7 +84,7 @@ export class EmojiNodeType extends Inline {
   get attrs() {
     return {
       id: new Attribute({ default: '' }),
-      variation: new Attribute({ default: '' }),
+      variation: new Attribute({ default: undefined }),
       shortcut: new Attribute({ default: '' }),
     };
   }
@@ -103,9 +103,12 @@ export class EmojiNodeType extends Inline {
     dom.classList.add(emojiStyle);
     id && dom.setAttribute('data-emoji-id', id);
     shortcut && dom.setAttribute('data-emoji-shortcut', shortcut);
-    variation && dom.setAttribute('data-emoji-variation', `${variation}`);
+    variation && dom.setAttribute('data-emoji-variation', variation);
     if (id) {
-      const emojiId = { id, variation };
+      const emojiId: EmojiId = {
+        id,
+        variation: isNaN(variation) ? undefined : +variation, // coerce possible string to number, undefined if NaN
+      };
       ReactDOM.render(<ResourcedEmoji emojiId={emojiId} emojiProvider={this.emojiProvider} />, dom);
     } else if (shortcut) {
       ReactDOM.render(<ResourcedEmojiShortcut shortcut={shortcut} emojiProvider={this.emojiProvider} />, dom);

@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { browser } from '../../../src';
 import { TextSelection } from '../../../src/prosemirror';
-import ListsPlugin from '../../../src/plugins/lists/index-future';
+import ListsPlugin from '../../../src/plugins/lists';
 import { chaiPlugin, makeEditor, sendKeyToPm, fixtures, doc, h1, ol, ul, li, p, blockquote } from '../../../src/test-helper';
 import schema from '../../../src/test-helper/schema';
 

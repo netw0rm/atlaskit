@@ -20,7 +20,7 @@
     "@atlaskit/droplist-group": "^1.0.0",
     "@atlaskit/droplist-item": "^2.0.0",
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/icon": "^1.0.0",
+    "@atlaskit/icon": "^3.0.0",
     "@atlaskit/field-base": "^2.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"

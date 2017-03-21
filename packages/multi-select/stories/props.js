@@ -33,25 +33,12 @@ const statelessMultiSelectPropTypes = {
 
 // we can reuse most of the descriptions from the stateless component here to make updating easier
 const smartMultiSelectPropDescriptions = {
-  appearance: statelessMultiSelectPropDescriptions.appearance,
+  ...statelessMultiSelectPropDescriptions,
   defaultSelected: 'List of items that should be selected by default (must be references to the actual elements from the items prop)',
-  id: statelessMultiSelectPropDescriptions.id,
-  isDisabled: statelessMultiSelectPropDescriptions.isDisabled,
-  isFirstChild: statelessMultiSelectPropDescriptions.isFirstChild,
-  shouldFocus: statelessMultiSelectPropDescriptions.shouldFocus,
   isDefaultOpen: 'Boolean flag to indicate if a multi-select\'s dropdown should be open by default (user interaction will change this state but not update this prop).',
-  isRequired: statelessMultiSelectPropDescriptions.isRequired,
-  isInvalid: statelessMultiSelectPropDescriptions.isInvalid,
-  items: statelessMultiSelectPropDescriptions.items,
-  label: statelessMultiSelectPropDescriptions.label,
-  name: statelessMultiSelectPropDescriptions.name,
-  noMatchesFound: statelessMultiSelectPropDescriptions.noMatchesFound,
   onFilterChange: 'Callback called when the user changes the filter value.',
   onSelectedChange: 'Callback called when the user selects or removes an item.',
   onOpenChange: 'Callback called whenever the open state of the dropdown changes',
-  placeholder: statelessMultiSelectPropDescriptions.placeholder,
-  position: statelessMultiSelectPropDescriptions.position,
-  shouldFitContainer: statelessMultiSelectPropDescriptions.shouldFitContainer,
 };
 
 const smartMultiSelectPropTypes = {

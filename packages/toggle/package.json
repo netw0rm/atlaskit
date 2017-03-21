@@ -29,6 +29,9 @@
     "@atlaskit/toggle": "*"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [{
+    "name": "Matias C"
+  }],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

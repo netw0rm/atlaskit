@@ -30,6 +30,9 @@
     "react": "^15.3.2"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [{
+    "name": "Ben G"
+  }],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

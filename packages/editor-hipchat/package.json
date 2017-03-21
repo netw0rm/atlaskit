@@ -20,6 +20,9 @@
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
+  "maintainers": [{
+    "name": "Bradley A"
+  }],
   "dependencies": {
     "@atlaskit/editor-core": "^5.0.0",
     "classnames": "^2.2.5",

@@ -25,6 +25,9 @@
     "uid": "0.0.2"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [{
+    "name": "Nadia M"
+  }],
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/avatar": "^1.0.0",

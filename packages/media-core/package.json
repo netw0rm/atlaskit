@@ -19,6 +19,9 @@
     "src"
   ],
   "author": "Atlassian Pty. Ltd",
+  "maintainers": [{
+    "name": "Jimmy L"
+  }],
   "license": "Apache-2.0",
   "keywords": [
     "media",

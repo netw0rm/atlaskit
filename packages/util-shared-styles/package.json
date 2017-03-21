@@ -17,6 +17,7 @@
     "index.d.ts"
   ],
   "author": "Atlassian Pty Ltd",
+  "maintainers": [],
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",

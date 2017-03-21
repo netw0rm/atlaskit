@@ -33,6 +33,11 @@
     "uid": "0.0.2"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [{
+    "name": "Matias C"
+  }, {
+    "name": "Luke B"
+  }],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

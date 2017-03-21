@@ -45,5 +45,8 @@
     "fabric"
   ],
   "author": "Atlassian Pty Ltd",
+  "maintainers": [{
+    "name": "Thorsten B"
+  }],
   "license": "Apache-2.0"
 }

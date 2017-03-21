@@ -27,6 +27,11 @@
     "@atlaskit/avatar": "^2.0.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [{
+    "name": "Soney M"
+  }, {
+    "name": "Nadia M"
+  }],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2"

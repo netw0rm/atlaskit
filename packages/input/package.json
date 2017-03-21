@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/input",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "config": {
     "access": "public"
   },
@@ -28,9 +28,11 @@
     "ak-field-base": "^6.4.2"
   },
   "author": "Atlassian Pty Ltd",
-  "maintainers": [{
-    "name": "Matias C"
-  }],
+  "maintainers": [
+    {
+      "name": "Matias C"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

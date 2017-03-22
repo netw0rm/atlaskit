@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {CardView} from '@atlaskit/media-card';
+import {FileCardView} from '@atlaskit/media-card';
 import FilmStripNavigator from './filmstrip-navigator';
 import {MediaType} from '@atlaskit/media-core';
 import {MediaItem} from '@atlaskit/media-core';
@@ -54,7 +54,7 @@ function createCardActions(item: FilmStripViewItem, items: Array<FilmStripViewIt
 export function FilmStripView(props: FilmStripViewProps): JSX.Element {
   const itemEls = props.items.map((item, k) => (
     <li key={item.id || k}>
-      <CardView
+      <FileCardView
         loading={item.loading}
         selectable={false}
         selected={false}

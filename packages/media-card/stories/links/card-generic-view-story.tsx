@@ -162,7 +162,7 @@ storiesOf('LinkCardGenericView', {})
         title: 'Default Square card',
         content: (
           <LinkCardGenericView
-            display="square"
+            appearance="square"
             title="This week inside Intercom."
             description="Convert today’s signups into tomorrow some text after"
             linkUrl="http://localhost:9001/?selectedKind=LinkCardViewHorizontal&selectedStory=Various%20text%20lengths&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel"

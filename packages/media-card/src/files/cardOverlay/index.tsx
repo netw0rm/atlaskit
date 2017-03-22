@@ -23,9 +23,6 @@ import {
 } from './styled';
 
 export interface CardOverlayProps {
-  height: number;
-  width: number;
-
   mediaType?: MediaType;
   mediaName?: string;
   mediaSize?: number;

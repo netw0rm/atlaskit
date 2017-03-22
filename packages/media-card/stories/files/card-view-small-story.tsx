@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {storiesOf, action} from '@kadira/storybook';
-import {CardViewSmall} from '../../src';
+import {FileCardViewSmall} from '../../src';
 import {tallImage, smallImage, smallTransparentImage, wideImage, wideTransparentImage} from '@atlaskit/media-test-helpers';
 import {StoryList} from '@atlaskit/media-test-helpers';
 
@@ -47,7 +47,7 @@ class DelayedLoadingCard extends Component<DelayedLoadingCardProps, DelayedLoadi
   render() {
     const dataURI = this.props.dataURI || tallImage;
 
-    return <CardViewSmall
+    return <FileCardViewSmall
       loading={this.state.loading}
       mediaName="loading image"
       mediaType="image"
@@ -58,20 +58,20 @@ class DelayedLoadingCard extends Component<DelayedLoadingCardProps, DelayedLoadi
   }
 }
 
-storiesOf('CardViewSmall', {})
+storiesOf('FileCardViewSmall', {})
   .add('Media types', () => (
     <StoryList>
       {[{
         title: 'audio',
         content: <div>
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="sea_creatures_foo.mp3"
             mediaType="audio"
             mediaSize={32831}
             onClick={onClick}
           />
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="sea_creatures.mp3"
             mediaType="audio"
@@ -83,14 +83,14 @@ storiesOf('CardViewSmall', {})
       }, {
         title: 'document',
         content: <div>
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="sea_creatures.mp3"
             mediaType="doc"
             mediaSize={32831}
             onClick={onClick}
           />
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="sea_creatures.mp3"
             mediaType="doc"
@@ -102,14 +102,14 @@ storiesOf('CardViewSmall', {})
       }, {
         title: 'video',
         content: <div>
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="sea_creatures.mp3"
             mediaType="video"
             mediaSize={32831}
             onClick={onClick}
           />
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="sea_creatures.mp3"
             mediaType="video"
@@ -121,14 +121,14 @@ storiesOf('CardViewSmall', {})
       }, {
         title: 'image',
         content: <div>
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="sea_creatures.mp3"
             mediaType="image"
             mediaSize={32831}
             onClick={onClick}
           />
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="sea_creatures.mp3"
             mediaType="image"
@@ -140,14 +140,14 @@ storiesOf('CardViewSmall', {})
       }, {
         title: 'unknown',
         content: <div>
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="sea_creatures.mp3"
             mediaType="unknown"
             mediaSize={32831}
             onClick={onClick}
           />
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="sea_creatures.mp3"
             mediaType="unknown"
@@ -163,7 +163,7 @@ storiesOf('CardViewSmall', {})
     const cards = [
       {
         title: 'Tall image',
-        content: <CardViewSmall
+        content: <FileCardViewSmall
                   loading={false}
                   mediaName="nature.png"
                   mediaType="image"
@@ -174,7 +174,7 @@ storiesOf('CardViewSmall', {})
       },
       {
         title: 'Small image',
-        content: <CardViewSmall
+        content: <FileCardViewSmall
           loading={false}
           mediaName="nature.png"
           mediaType="image"
@@ -185,7 +185,7 @@ storiesOf('CardViewSmall', {})
       },
       {
         title: 'Small transparent image',
-        content: <CardViewSmall
+        content: <FileCardViewSmall
           loading={false}
           mediaName="nature.png"
           mediaType="image"
@@ -196,7 +196,7 @@ storiesOf('CardViewSmall', {})
       },
       {
         title: 'Wide image',
-        content: <CardViewSmall
+        content: <FileCardViewSmall
           loading={false}
           mediaName="nature.png"
           mediaType="image"
@@ -207,7 +207,7 @@ storiesOf('CardViewSmall', {})
       },
       {
         title: 'Wide transparent image',
-        content: <CardViewSmall
+        content: <FileCardViewSmall
           loading={false}
           mediaName="nature.png"
           mediaType="image"
@@ -230,7 +230,7 @@ storiesOf('CardViewSmall', {})
     return <StoryList>
       {[{
         title: 'Infinite loading',
-        content: <CardViewSmall
+        content: <FileCardViewSmall
           loading={true}
           mediaName="annual_report_2016_06_32.doc"
           mediaType="doc"
@@ -250,7 +250,7 @@ storiesOf('CardViewSmall', {})
     <StoryList>
       {[{
         title: 'Default',
-        content: <CardViewSmall
+        content: <FileCardViewSmall
           loading={false}
           mediaName="sea_creatures.mp3"
           mediaType="audio"
@@ -265,14 +265,14 @@ storiesOf('CardViewSmall', {})
     <StoryList>
       {[{
         title: 'with handler',
-        content: <CardViewSmall
+        content: <FileCardViewSmall
           onClick={onClick}
           error={'Could not load file'}
           onRetry={{handler: onRetry}}
         />
       }, {
         title: 'without handler',
-        content: <CardViewSmall
+        content: <FileCardViewSmall
           onClick={onClick}
           error={'Could not load file'}
         />
@@ -283,7 +283,7 @@ storiesOf('CardViewSmall', {})
     <StoryList>
       {[{
         title: 'File size: B',
-        content: <CardViewSmall
+        content: <FileCardViewSmall
           loading={false}
           mediaName="nature.png"
           mediaType="image"
@@ -293,7 +293,7 @@ storiesOf('CardViewSmall', {})
         />
       }, {
         title: 'File size: kB',
-        content: <CardViewSmall
+        content: <FileCardViewSmall
           loading={false}
           mediaName="nature.png"
           mediaType="image"
@@ -303,7 +303,7 @@ storiesOf('CardViewSmall', {})
         />
       }, {
         title: 'File size: MB',
-        content: <CardViewSmall
+        content: <FileCardViewSmall
           loading={false}
           mediaName="nature.png"
           mediaType="image"
@@ -313,7 +313,7 @@ storiesOf('CardViewSmall', {})
         />
       }, {
         title: 'File size: GB',
-        content: <CardViewSmall
+        content: <FileCardViewSmall
           loading={false}
           mediaName="nature.png"
           mediaType="image"
@@ -329,28 +329,28 @@ storiesOf('CardViewSmall', {})
       {[{
         title: 'Mixed cards',
         content: <div>
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="sea_creatures.mp3"
             mediaType="audio"
             mediaSize={32831}
             onClick={onClick}
           />
-          <CardViewSmall
+          <FileCardViewSmall
             loading={true}
             mediaName="loading"
             mediaType="doc"
             mediaSize={32831}
             onClick={onClick}
           />
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="video.mp4"
             mediaType="video"
             mediaSize={32831}
             onClick={onClick}
           />
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="huge_image.png"
             mediaType="image"
@@ -358,7 +358,7 @@ storiesOf('CardViewSmall', {})
             dataURI={tallImage}
             onClick={onClick}
           />
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="huge_image.png"
             mediaType="image"
@@ -366,7 +366,7 @@ storiesOf('CardViewSmall', {})
             onClick={onClick}
           />
           <DelayedLoadingCard />
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="nature.png"
             mediaType="image"
@@ -375,7 +375,7 @@ storiesOf('CardViewSmall', {})
             onClick={onClick}
           />
           <DelayedLoadingCard delay={2500}/>
-          <CardViewSmall
+          <FileCardViewSmall
             loading={false}
             mediaName="nature.png"
             mediaType="image"
@@ -384,7 +384,7 @@ storiesOf('CardViewSmall', {})
             onClick={onClick}
           />
           <DelayedLoadingCard delay={2800} dataURI={wideImage}/>
-          <CardViewSmall
+          <FileCardViewSmall
             onClick={onClick}
             error={'Could not load file'}
             onRetry={{handler: onRetry}}

@@ -5,7 +5,7 @@ export type MediaItemType = 'file' | 'link';
 
 export type MediaItem = FileItem | LinkItem;
 
-export type CardSize = 'normal' | 'small';
+export type CardSize = 'image' | 'small';
 
 export interface FileItem {
   type: 'file';

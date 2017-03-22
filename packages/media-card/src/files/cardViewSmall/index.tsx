@@ -8,8 +8,8 @@ import {toHumanReadableMediaSize, Menu, ErrorIcon} from '../../utils';
 
 import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper, FileInfoWrapper} from './styled';
 
-export interface CardViewSmallProps {
-  width?: number;
+export interface FileCardViewSmallProps {
+  width?: number | string;
 
   mediaName?: string;
   mediaType?: MediaType;
@@ -26,12 +26,23 @@ export interface CardViewSmallProps {
   onRetry?: CardAction;
 }
 
-export interface CardViewSmallState {
+export interface FileCardViewSmallState {
   isMenuExpanded: boolean;
 }
 
-export class CardViewSmall extends Component<CardViewSmallProps, CardViewSmallState> {
-  constructor(props: CardViewSmallProps) {
+export class FileCardViewSmall extends Component<FileCardViewSmallProps, FileCardViewSmallState> {
+  private get wrapperStyles(): {width?: string} {
+    const width = this.props.width;
+
+    if (!width) {
+      return {};
+    }
+
+    const widthStr =  typeof width === 'string' ? width : `${width}px`;
+    return {width: widthStr};
+  }
+
+  constructor(props: FileCardViewSmallProps) {
     super(props);
 
     this.state = {
@@ -91,7 +102,7 @@ export class CardViewSmall extends Component<CardViewSmallProps, CardViewSmallSt
 
   formatCard(left: JSX.Element, right: JSX.Element) {
     const {menuActions} = this.props;
-    const cardStyle = this.props.width ? {width: `${this.props.width}px`} : {};
+    const cardStyle = this.wrapperStyles;
     const cardClass = cx({loading: this.props.loading});
     const imgClass = cx('img-wrapper', {shadow: this.props.mediaType === 'image' && this.props.dataURI});
 

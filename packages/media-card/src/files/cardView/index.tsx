@@ -3,14 +3,12 @@ import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 import {MediaType} from '@atlaskit/media-core';
 
+import {CardDimensions} from '../../card';
 import {CardContent} from '../cardContent';
 import {CardOverlay} from '../cardOverlay';
 import {Card} from './styled';
 
-export interface CardViewProps {
-  height?: number;
-  width?: number;
-
+export interface FileCardViewProps {
   mediaName?: string;
   mediaType?: MediaType;
   mediaSize?: number;
@@ -18,6 +16,8 @@ export interface CardViewProps {
   dataURI?: string;
   progress?: number;
   loading?: boolean;
+
+  dimensions?: CardDimensions;
 
   selectable?: boolean;
   selected?: boolean;
@@ -30,16 +30,34 @@ export interface CardViewProps {
 }
 
 export const DEFAULT_CARD_DIMENSIONS = {
-  WIDTH: 156,
-  HEIGHT: 104
+  WIDTH: '156px',
+  HEIGHT: '104px'
 };
 
 
-export class CardView extends Component<CardViewProps, {}> {
+export class FileCardView extends Component<FileCardViewProps, {}> {
+  private get width(): string {
+    const {width} = this.props.dimensions || {width: undefined};
+
+    if (!width) {
+      return DEFAULT_CARD_DIMENSIONS.WIDTH ;
+    }
+
+    return typeof width === 'string' ? width : `${width}px`;
+  }
+
+  private get height(): string {
+    const {height} = this.props.dimensions || {height: undefined};
+
+    if (!height) {
+      return DEFAULT_CARD_DIMENSIONS.HEIGHT ;
+    }
+
+    return typeof height === 'string' ? height : `${height}px`;
+  }
+
   render() {
-    const height = this.props.height || DEFAULT_CARD_DIMENSIONS.HEIGHT;
-    const width = this.props.width || DEFAULT_CARD_DIMENSIONS.WIDTH;
-    const cardStyle = {height: `${height}px`, width: `${width}px`};
+    const cardStyle = {height: this.height, width: this.width};
     const error = this.props.error;
 
     if (error) {
@@ -53,8 +71,6 @@ export class CardView extends Component<CardViewProps, {}> {
             error={error}
             onRetry={this.props.onRetry}
             menuActions={this.props.menuActions}
-            height={height}
-            width={width}
           />
         </Card>
       );
@@ -71,8 +87,6 @@ export class CardView extends Component<CardViewProps, {}> {
         progress={this.props.progress}
 
         menuActions={this.props.menuActions}
-        height={height}
-        width={width}
       />;
       return (
         <Card style={cardStyle} className={'card'} onClick={this.onClick.bind(this)}>
@@ -96,4 +110,4 @@ export class CardView extends Component<CardViewProps, {}> {
   }
 }
 
-export default CardView;
+export default FileCardView;

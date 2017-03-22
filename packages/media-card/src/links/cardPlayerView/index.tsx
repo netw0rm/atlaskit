@@ -65,7 +65,7 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
         </PlayButtonWrapper>
 
         <LinkCardGenericView
-          display="square"
+          appearance="square"
           title={title}
           description={description}
           linkUrl={linkUrl}

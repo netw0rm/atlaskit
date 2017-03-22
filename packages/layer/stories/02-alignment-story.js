@@ -86,13 +86,14 @@ storiesOf(name, module)
     const popperContent = <div style={layerStyles}>LayerContent</div>;
     return (
       <div>
-        <p>Passing autoPosition with preference order of: right, top, left bottom, bottom left.</p>
+        <p>Passing autoPosition with preference order of: right, top, left, bottom.</p>
+        <p>Scroll the red box to the sides of the container to flip the green box.</p>
         <div style={{ border: '1px solid black', height: '300px', width: '300px', overflow: 'scroll' }}>
-          <div style={{ width: '600px', height: '600px' }}>
+          <div style={{ width: '500px', height: '500px' }}>
             <AKLayer
               content={popperContent}
-              position="right top"
-              autoFlip={['top', 'left bottom', 'bottom left']}
+              position="right middle"
+              autoFlip={['top', 'left', 'bottom']}
               boundariesElement="scrollParent"
             >
               <div style={targetStyle}>Target</div>

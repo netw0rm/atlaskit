@@ -27,28 +27,12 @@ describe('Layer', () => {
         expect(getFlipBehavior(props)).to.deep.equal(['left', 'right']);
       });
 
-      it('with single value in array, and edge-position specified', () => {
-        const props = {
-          position: 'left top',
-          autoFlip: ['right bottom'],
-        };
-        expect(getFlipBehavior(props)).to.deep.equal(['left', 'right-end']);
-      });
-
       it('with multiple values in array', () => {
         const props = {
           position: 'right',
           autoFlip: ['top', 'left', 'bottom'],
         };
         expect(getFlipBehavior(props)).to.deep.equal(['right', 'top', 'left', 'bottom']);
-      });
-
-      it('with multiple values in array and edge-positions specified', () => {
-        const props = {
-          position: 'right top',
-          autoFlip: ['top right', 'left bottom', 'bottom left'],
-        };
-        expect(getFlipBehavior(props)).to.deep.equal(['right', 'top-end', 'left-end', 'bottom-start']);
       });
     });
   });

@@ -29,10 +29,9 @@ function positionToPopper(position) {
  * The first item must not include the edge-position variation, or Popper will not understand it.
  */
 function getFlipBehavior(props) {
-  return (Array.isArray(props.autoFlip)) ?
-    [props.position.split(' ')[0]].concat(
-      props.autoFlip.map(pos => positionToPopper(pos) || pos)
-    ) : null;
+  return Array.isArray(props.autoFlip)
+    ? [props.position.split(' ')[0]].concat(props.autoFlip)
+    : null;
 }
 
 function positionPropToPopperPosition(position) {

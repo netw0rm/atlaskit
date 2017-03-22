@@ -4,6 +4,21 @@ import * as reactDocs from 'react-docgen';
 import Description from './Description';
 import Heading from './Heading';
 
+function renderEnumValue(value) {
+  if (Array.isArray(value)) {
+    return (
+      <div>
+        One of <code>{value.map(i => i.value).join(' | ')}</code>
+      </div>
+    );
+  } else if (typeof value === 'string') {
+    return (
+      <div>See <code>{value}</code></div>
+    );
+  }
+  return null;
+}
+
 export default class ReadmeDynamicProps extends PureComponent {
   static propTypes = {
     componentSrc: PropTypes.string.isRequired,
@@ -45,11 +60,7 @@ export default class ReadmeDynamicProps extends PureComponent {
                     <td>{prop.defaultValue ? prop.defaultValue.value : '--'}</td>
                     <td>
                       {prop.description}
-                      {prop.type.value ? (
-                        <div>Allowed values are: <code>
-                          {prop.type.value.map(i => i.value).join(' | ')}
-                        </code></div>
-                      ) : null}
+                      {renderEnumValue(prop.type.value)}
                     </td>
                   </tr>
                 );

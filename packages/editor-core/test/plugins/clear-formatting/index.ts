@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as chai from 'chai';
 
-import { browser, EditorView } from '../../../src/prosemirror';
+import { browser } from '../../../src/prosemirror';
 import ClearFormattingPlugin from '../../../src/plugins/clear-formatting';
 import {
   a as link, blockquote, chaiPlugin, code_block, code, doc, em, fixtures, h1,
@@ -17,14 +17,6 @@ describe('clear-formatting', () => {
     plugin: ClearFormattingPlugin,
     place: fixture()
   });
-
-  const sendClearFormattingKeyToPm = (editorView: EditorView) => {
-    if (browser.mac) {
-      sendKeyToPm(editorView, 'Cmd-\\');
-    } else {
-      sendKeyToPm(editorView, 'Ctrl-\\');
-    }
-  };
 
   describe('formattingIsPresent', () => {
     it('should be true if some marks are present', () => {
@@ -45,19 +37,19 @@ describe('clear-formatting', () => {
     it('should be false if all present marks are cleared', () => {
       const { editorView, pluginState } = editor(doc(p(strong('{<text>}'))));
 
-      sendClearFormattingKeyToPm(editorView);
+      pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
 
     it('should be false if all present blocks are cleared', () => {
       const { editorView, pluginState } = editor(doc(p('paragraph'), code_block({language: 'java'})('code{<>}Block')));
-      sendClearFormattingKeyToPm(editorView);
+      pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
 
     it('should be false if all present marks and blocks are cleared', () => {
       const { editorView, pluginState } = editor(doc(p('parag{<raph'), code_block({language: 'java'})('code>}Block')));
-      sendClearFormattingKeyToPm(editorView);
+      pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
   });
@@ -67,7 +59,7 @@ describe('clear-formatting', () => {
       const { editorView, pluginState } = editor(doc(p(strong('t{<ex>}t'))));
       expect(pluginState.formattingIsPresent).to.be.true;
 
-      sendClearFormattingKeyToPm(editorView);
+      pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
 
@@ -75,7 +67,7 @@ describe('clear-formatting', () => {
       const { editorView, pluginState } = editor(doc(p(em('t{<ex>}t'))));
       expect(pluginState.formattingIsPresent).to.be.true;
 
-      sendClearFormattingKeyToPm(editorView);
+      pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
 
@@ -83,7 +75,7 @@ describe('clear-formatting', () => {
       const { editorView, pluginState } = editor(doc(p(u('t{<ex>}t'))));
       expect(pluginState.formattingIsPresent).to.be.true;
 
-      sendClearFormattingKeyToPm(editorView);
+      pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
 
@@ -91,7 +83,7 @@ describe('clear-formatting', () => {
       const { editorView, pluginState } = editor(doc(p(code('t{<ex>}t'))));
       expect(pluginState.formattingIsPresent).to.be.true;
 
-      sendClearFormattingKeyToPm(editorView);
+      pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
 
@@ -99,7 +91,7 @@ describe('clear-formatting', () => {
       const { editorView, pluginState } = editor(doc(p(strike('t{<ex>}t'))));
       expect(pluginState.formattingIsPresent).to.be.true;
 
-      sendClearFormattingKeyToPm(editorView);
+      pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
 
@@ -107,7 +99,7 @@ describe('clear-formatting', () => {
       const { editorView, pluginState } = editor(doc(h1(strike('t{<ex>}t'))));
       expect(pluginState.formattingIsPresent).to.be.true;
 
-      sendClearFormattingKeyToPm(editorView);
+      pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
 
@@ -115,7 +107,7 @@ describe('clear-formatting', () => {
       const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
       expect(pluginState.formattingIsPresent).to.be.true;
 
-      sendClearFormattingKeyToPm(editorView);
+      pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
 
@@ -123,7 +115,7 @@ describe('clear-formatting', () => {
       const { editorView, pluginState } = editor(doc(blockquote(p('te{<>}xt'))));
       expect(pluginState.formattingIsPresent).to.be.true;
 
-      sendClearFormattingKeyToPm(editorView);
+      pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
 
@@ -131,7 +123,7 @@ describe('clear-formatting', () => {
       const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('t{<ex>}t'))));
       expect(pluginState.formattingIsPresent).to.be.true;
 
-      sendClearFormattingKeyToPm(editorView);
+      pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
 
@@ -139,7 +131,7 @@ describe('clear-formatting', () => {
       const { editorView, pluginState } = editor(doc(ol(li(p('te{<>}xt')))));
       expect(pluginState.formattingIsPresent).to.be.true;
 
-      sendClearFormattingKeyToPm(editorView);
+      pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
   });
@@ -150,7 +142,12 @@ describe('clear-formatting', () => {
         const { editorView, pluginState } = editor(doc(p(strong('t{<ex>}t'))));
         expect(pluginState.formattingIsPresent).to.be.true;
 
-        sendClearFormattingKeyToPm(editorView);
+        if (browser.mac) {
+          sendKeyToPm(editorView, 'Cmd-\\');
+        } else {
+          sendKeyToPm(editorView, 'Ctrl-\\');
+        }
+
         expect(pluginState.formattingIsPresent).not.to.be.true;
       });
     });

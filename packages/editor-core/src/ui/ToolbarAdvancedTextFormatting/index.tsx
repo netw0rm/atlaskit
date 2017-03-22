@@ -196,7 +196,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private handleClearFormattingClick = () => {
     if (!this.state.clearFormattingDisabled) {
       const { pluginStateClearFormatting } = this.props;
-      pluginStateClearFormatting && pluginStateClearFormatting.clearFormatting();
+      pluginStateClearFormatting && pluginStateClearFormatting.clearFormatting(this.props.editorView);
       this.toggleOpen();
     }
   }

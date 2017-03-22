@@ -5,6 +5,7 @@ import {
   Plugin,
   PluginKey,
 } from '../../prosemirror';
+import * as commands from '../../commands';
 import keymapPlugin from './keymap';
 import { reconfigure } from '../utils';
 
@@ -44,6 +45,10 @@ export class ClearFormattingState {
       this.formattingIsPresent = formattingIsPresent;
       this.triggerOnChange();
     }
+  }
+
+  clearFormatting(view: EditorView) {
+    commands.clearFormatting()(view.state, view.dispatch);
   }
 
   private triggerOnChange() {

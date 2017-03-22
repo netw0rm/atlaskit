@@ -8,7 +8,6 @@ import {
 } from '../prosemirror';
 import { default as defaultSchema } from './schema';
 import { RefsNode, Refs } from './schema-builder';
-import SyncPlugin from './sync-plugin';
 import { setTextSelection } from './transactions';
 
 /**
@@ -31,7 +30,6 @@ export default (options: Options) : EditorInstance => {
   }
 
   plugins.push(
-    SyncPlugin,
     keymap(baseKeymap)
   );
 
@@ -60,9 +58,12 @@ export default (options: Options) : EditorInstance => {
     setTextSelection(editorView, refs['<'], refs['>']);
   }
 
+  const pluginStates = plugins.map((plugin) => plugin.getState(editorState));
+
   return {
     editorView,
     plugins,
+    pluginStates: pluginStates,
     refs,
     plugin: plugins[0],
     pluginState: plugins[0].getState(editorState),
@@ -85,6 +86,7 @@ export interface Options {
 export interface EditorInstance {
   editorView: EditorView;
   pluginState: any;
+  pluginStates: any[];
   plugin: Plugin;
   plugins: Plugin[];
   refs: Refs;

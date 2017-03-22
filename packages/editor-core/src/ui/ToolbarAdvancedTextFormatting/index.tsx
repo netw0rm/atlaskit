@@ -1,16 +1,18 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import Tooltip from '@atlaskit/tooltip';
+import DropdownList from '@atlaskit/droplist';
+import Group from '@atlaskit/droplist-group';
+import Item from '@atlaskit/droplist-item';
+import AdvancedIcon from '@atlaskit/icon/glyph/editor/advanced';
+import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
 import { analyticsDecorator as analytics } from '../../analytics';
-import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { TextFormattingState } from '../../plugins/text-formatting';
-import { EditorView } from '../../prosemirror';
-import DropdownList from 'ak-droplist';
-import Group from 'ak-droplist-group';
-import Item from 'ak-droplist-item';
+import { ClearFormattingState } from '../../plugins/clear-formatting';
 import ToolbarButton from '../ToolbarButton';
-import AdvancedIcon from 'ak-icon/glyph/editor/advanced';
-import { clearFormatting, toggleCode, toggleStrikethrough, tooltip } from '../../keymaps';
+import { toggleCode, toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
+import * as styles from './styles';
+import { EditorView } from '../../prosemirror';
 
 export interface Props {
   editorView: EditorView;
@@ -36,26 +38,14 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
 
   componentDidMount() {
     const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
-
-    if (pluginStateTextFormatting) {
-      pluginStateTextFormatting.subscribe(this.handlePluginStateTextFormattingChange);
-    }
-
-    if (pluginStateClearFormatting) {
-      pluginStateClearFormatting.subscribe(this.handlePluginStateClearFormattingChange);
-    }
+    pluginStateTextFormatting && pluginStateTextFormatting.subscribe(this.handlePluginStateTextFormattingChange);
+    pluginStateClearFormatting && pluginStateClearFormatting.subscribe(this.handlePluginStateClearFormattingChange);
   }
 
   componentWillUmount() {
     const { pluginStateTextFormatting, pluginStateClearFormatting } = this.props;
-
-    if (pluginStateTextFormatting) {
-      pluginStateTextFormatting.unsubscribe(this.handlePluginStateTextFormattingChange);
-    }
-
-    if (pluginStateClearFormatting) {
-      pluginStateClearFormatting.unsubscribe(this.handlePluginStateClearFormattingChange);
-    }
+    pluginStateTextFormatting && pluginStateTextFormatting.unsubscribe(this.handlePluginStateTextFormattingChange);
+    pluginStateClearFormatting && pluginStateClearFormatting.unsubscribe(this.handlePluginStateClearFormattingChange);
   }
 
   render() {
@@ -69,61 +59,12 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       strikeDisabled,
       clearFormattingDisabled,
     } = this.state;
-
     const {
       pluginStateTextFormatting,
       pluginStateClearFormatting,
     } = this.props;
-
-    if (pluginStateTextFormatting || pluginStateClearFormatting) {
-      const codeElem = (
-        <Tooltip position="right" description={tooltip(toggleCode)}>
-          <Item
-            isActive={codeActive}
-            isDisabled={codeDisabled}
-            onActivate={this.handleCodeClick}
-          >
-            <span>Monospace</span>
-          </Item>
-        </Tooltip>
-      );
-
-      const strikeThroughElem = (
-        <Tooltip position="right" description={tooltip(toggleStrikethrough)}>
-          <Item
-            isActive={strikeActive}
-            isDisabled={strikeDisabled}
-            onActivate={this.handleStrikeClick}
-          >
-            <span>Strikethrough</span>
-          </Item>
-        </Tooltip>
-      );
-
-      const textFormattingElem = pluginStateTextFormatting
-        ? (
-          <Group>
-            {codeHidden ? null : codeElem}
-            {strikeHidden ? null : strikeThroughElem}
-          </Group>
-        )
-        : null;
-
-      const clearFormattingElem = pluginStateClearFormatting
-        ? (
-          <Group>
-            <Tooltip position="right" description={tooltip(clearFormatting)}>
-              <Item
-                isDisabled={clearFormattingDisabled}
-                onActivate={this.handleClearFormattingClick}
-              >
-                <span>Clear formatting</span>
-              </Item>
-            </Tooltip>
-          </Group>
-        )
-        : null;
-
+    const hasMarksInSchema = !codeHidden || !strikeHidden;
+    if ((pluginStateTextFormatting && hasMarksInSchema) || pluginStateClearFormatting) {
       return (
         <DropdownList
           isOpen={isOpen}
@@ -132,14 +73,51 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
           position="top left"
           trigger={
             <ToolbarButton
-              selected={isOpen}
+              selected={isOpen || codeActive || strikeActive}
               disabled={codeDisabled && strikeDisabled && clearFormattingDisabled}
-              iconBefore={<AdvancedIcon label="text-formatting" />}
+              iconBefore={
+                <div className={styles.triggerWrapper}>
+                  <AdvancedIcon label="text-formatting" />
+                  <div className={styles.expandIcon}>
+                    <ExpandIcon label="expand-dropdown-menu" />
+                  </div>
+                </div>}
             />
           }
         >
-          {textFormattingElem}
-          {clearFormattingElem}
+          {(pluginStateTextFormatting && hasMarksInSchema) && <Group>
+            {!codeHidden &&
+              <Tooltip position="right" description={tooltip(toggleCode)}>
+                <Item
+                  isActive={codeActive}
+                  isDisabled={codeDisabled}
+                  onActivate={this.handleCodeClick}
+                >
+                  <span>Code</span>
+                </Item>
+              </Tooltip>}
+            {!strikeHidden &&
+              <Tooltip position="right" description={tooltip(toggleStrikethrough)}>
+                <Item
+                  isActive={strikeActive}
+                  isDisabled={strikeDisabled}
+                  onActivate={this.handleStrikeClick}
+                >
+                  <span>Strikethrough</span>
+                </Item>
+              </Tooltip>}
+          </Group>}
+          {pluginStateClearFormatting &&
+            <Group>
+              <Tooltip position="right" description={tooltip(clearFormatting)}>
+                <Item
+                  isDisabled={clearFormattingDisabled}
+                  onActivate={this.handleClearFormattingClick}
+                >
+                  <span>Clear formatting</span>
+                </Item>
+              </Tooltip>
+            </Group>}
         </DropdownList>
       );
     } else {
@@ -149,7 +127,6 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
 
   private toggleOpen = () => {
     const { codeDisabled, strikeDisabled, clearFormattingDisabled, isOpen } = this.state;
-
     if (!(codeDisabled && strikeDisabled && clearFormattingDisabled)) {
       this.setState({
         isOpen: !isOpen,
@@ -174,16 +151,16 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     });
   }
 
-  @analytics('atlassian.editor.format.code.button')
+  @analytics('atlassian.editor.format.strikethrough.button')
   private handleStrikeClick = () => {
-    if (!this.state.codeDisabled) {
+    if (!this.state.strikeDisabled) {
       const { pluginStateTextFormatting } = this.props;
       pluginStateTextFormatting && pluginStateTextFormatting.toggleStrike(this.props.editorView);
       this.toggleOpen();
     }
   }
 
-  @analytics('atlassian.editor.format.strikethrough.button')
+  @analytics('atlassian.editor.format.code.button')
   private handleCodeClick = () => {
     if (!this.state.codeDisabled) {
       const { pluginStateTextFormatting } = this.props;
@@ -200,5 +177,4 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       this.toggleOpen();
     }
   }
-
 };

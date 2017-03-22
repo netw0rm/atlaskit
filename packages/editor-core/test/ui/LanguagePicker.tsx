@@ -4,7 +4,7 @@ import * as React from 'react';
 import CodeBlockPlugin from '../../src/plugins/code-block';
 import FloatingToolbar from '../../src/ui/FloatingToolbar';
 import LanguagePicker from '../../src/ui/LanguagePicker';
-import { code_block, doc, p, makeEditor, fixtures } from '../../src/test-helper';
+import { code_block, doc, p, makeEditor, fixtures, createEvent } from '../../src/test-helper';
 
 describe('LanguagePicker', () => {
 
@@ -14,6 +14,8 @@ describe('LanguagePicker', () => {
     plugin: CodeBlockPlugin,
     place: fixture()
   });
+
+  const event = createEvent('event');
 
   context('when toolbarVisible is false', () => {
     it('does not render toolbar', () => {
@@ -39,11 +41,11 @@ describe('LanguagePicker', () => {
 
   context('click on a code block element', () => {
     it('sets toolbarVisible to be true', () => {
-      const { editorView, plugin, pluginState } = editor(doc(code_block()('text')));
+      const { editorView, plugin, pluginState, sel } = editor(doc(code_block()('text')));
       const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
 
-      plugin.props.onFocus(editorView);
-      plugin.props.handleClick(editorView);
+      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleClick!(editorView, sel, event);
 
       expect(languagePicker.state('toolbarVisible')).to.be.true;
     });
@@ -51,10 +53,10 @@ describe('LanguagePicker', () => {
 
   context('click on a non code block element', () => {
     it('sets current code-block element to be undefined', () => {
-      const { editorView, plugin, pluginState } = editor(doc(p('text')));
+      const { editorView, plugin, pluginState, sel } = editor(doc(p('text')));
       const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
 
-      plugin.props.handleClick(editorView);
+      plugin.props.handleClick!(editorView, sel, event);
 
       expect(languagePicker.state('element')).to.be.undefined;
     });
@@ -66,7 +68,7 @@ describe('LanguagePicker', () => {
       const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
       expect(languagePicker.html()).to.not.equal(null);
 
-      plugin.props.onBlur(editorView);
+      plugin.props.onBlur!(editorView, event);
 
       expect(languagePicker.html()).to.equal(null);
     });

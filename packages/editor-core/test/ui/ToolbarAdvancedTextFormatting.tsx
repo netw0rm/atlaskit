@@ -2,69 +2,233 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
+import { Tooltip } from '@atlaskit/tooltip';
+import Item from '@atlaskit/droplist-item';
 import TextFormattingPlugin from '../../src/plugins/text-formatting';
+import ClearFormattingPlugin from '../../src/plugins/clear-formatting';
 import ToolbarAdvancedTextFormatting from '../../src/ui/ToolbarAdvancedTextFormatting';
-import { doc, p, makeEditor, fixtures } from '../../src/test-helper';
+import ToolbarButton from '../../src/ui/ToolbarButton';
+import { doc, p, code, strike, makeEditor, fixtures } from '../../src/test-helper';
 
-
-describe('ak-editor-core/ui/ToolbarAdvancedTextFormatting', () => {
+describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
 
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: TextFormattingPlugin,
+    plugins: [TextFormattingPlugin, ClearFormattingPlugin],
     place: fixture()
   });
 
-  it('should return null if both strikethrough and monospace are hidden', () => {
-    const { editorView, pluginState } = editor(doc(p('text')));
-    const toolbarOption = shallow(<ToolbarAdvancedTextFormatting pluginState={pluginState} editorView={editorView} />);
-    expect(toolbarOption.html()).to.not.equal(null);
-    toolbarOption.setState({ strikeHidden: true, codeHidden: true });
+  it('should return null both pluginStateTextFormatting and pluginStateClearFormatting are undefined', () => {
+    const { editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting editorView={editorView} />
+    );
+    toolbarOption.setState({ isOpen: true });
     expect(toolbarOption.html()).to.equal(null);
   });
 
-  it('should open drop-down when clicked', () => {
-    const { editorView, pluginState } = editor(doc(p('text')));
-    const toolbarOption = mount(<ToolbarAdvancedTextFormatting pluginState={pluginState} editorView={editorView} />);
+  it('should have 3 child elements if both pluginStateTextFormatting and pluginStateClearFormatting are defined', () => {
+    const { pluginStates, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={pluginStates[0]}
+        pluginStateClearFormatting={pluginStates[1]}
+        editorView={editorView}
+      />
+    );
+    toolbarOption.setState({ isOpen: true });
+    expect(toolbarOption.find(Item).length).to.equal(3);
+  });
+
+  it('should return only 2 items if only pluginStateTextFormatting is defined', () => {
+    const { pluginStates, editorView } = editor(doc(p('text')));
+    const toolbarOption = shallow(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={pluginStates[0]}
+        editorView={editorView}
+      />
+    );
+    expect(toolbarOption.find(Item).length).to.equal(2);
+  });
+
+  it('should return only 1 items if only pluginStateClearFormatting is defined', () => {
+    const { pluginStates, editorView } = editor(doc(p('text')));
+    const toolbarOption = shallow(
+      <ToolbarAdvancedTextFormatting
+        pluginStateClearFormatting={pluginStates[1]}
+        editorView={editorView}
+      />
+    );
+    expect(toolbarOption.find(Item).length).to.equal(1);
+  });
+
+  it('should open drop-down when trigger clicked', () => {
+    const { pluginStates, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={pluginStates[0]}
+        pluginStateClearFormatting={pluginStates[1]}
+        editorView={editorView}
+      />
+    );
     expect(toolbarOption.state('isOpen')).to.be.false;
-    toolbarOption.find('svg').simulate('click');
+    toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.state('isOpen')).to.be.true;
   });
 
-  it('should have 2 child elements with title attribute', () => {
-    const { editorView, pluginState } = editor(doc(p('text')));
-    const toolbarOption = mount(<ToolbarAdvancedTextFormatting pluginState={pluginState} editorView={editorView} />);
+  it('should not open drop-down when trigger clicked but all code and strikethrough and clearformatting are disabled', () => {
+    const { pluginStates, editorView } = editor(doc(p('text')));
+    const pluginState = pluginStates[0];
+    if (pluginState) {
+      pluginState.codeDisabled = true;
+      pluginState.strikeDisabled = true;
+      pluginState.marksPresent = false;
+    }
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={pluginStates[0]}
+        pluginStateClearFormatting={pluginStates[1]}
+        editorView={editorView}
+      />
+    );
+    expect(toolbarOption.state('isOpen')).to.be.false;
+    toolbarOption.find(ToolbarButton).simulate('click');
+    expect(toolbarOption.state('isOpen')).to.be.false;
+  });
+
+  it('should have 3 child elements with title attribute', () => {
+    const { pluginStates, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={pluginStates[0]}
+        pluginStateClearFormatting={pluginStates[1]}
+        editorView={editorView}
+      />
+    );
     toolbarOption.setState({ isOpen: true });
-    expect(toolbarOption.find('[title]').length).to.equal(2);
+    expect(toolbarOption.find(Tooltip).length).to.equal(3);
   });
 
-  it('should trigger toggleCode of pluginState when code option is clicked', () => {
-    const { editorView, pluginState } = editor(doc(p('text')));
-    const toolbarOption = mount(<ToolbarAdvancedTextFormatting pluginState={pluginState} editorView={editorView} />);
-    toolbarOption.find('svg').simulate('click');
-    pluginState.toggleCode = sinon.spy();
-    const codeButton = toolbarOption.find('[title]').findWhere(wrapper => wrapper.text() === 'Code');
+  it('should trigger toggleCode of pluginStateTextFormatting when code option is clicked', () => {
+    const { pluginStates, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={pluginStates[0]}
+        pluginStateClearFormatting={pluginStates[1]}
+        editorView={editorView}
+      />
+    );
+    toolbarOption.find(ToolbarButton).simulate('click');
+    pluginStates[0].toggleCode = sinon.spy();
+    const codeButton = toolbarOption.find(Item).at(0).childAt(0);
     codeButton.simulate('click');
-    expect(pluginState.toggleCode.callCount).to.equal(1);
+    expect(pluginStates[0].toggleCode.callCount).to.equal(1);
   });
 
-  it('should trigger toggleStrike of pluginState when strikethrough option is clicked', () => {
-    const { editorView, pluginState } = editor(doc(p('text')));
-    const toolbarOption = mount(<ToolbarAdvancedTextFormatting pluginState={pluginState} editorView={editorView} />);
-    toolbarOption.find('svg').simulate('click');
-    pluginState.toggleStrike = sinon.spy();
-    const strikeButton = toolbarOption.find('[title]').findWhere(wrapper => wrapper.text() === 'Strikethrough');
+  it('should trigger toggleStrike of pluginStateTextFormatting when strikethrough option is clicked', () => {
+    const { pluginStates, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={pluginStates[0]}
+        pluginStateClearFormatting={pluginStates[1]}
+        editorView={editorView}
+      />
+    );
+    toolbarOption.find(ToolbarButton).simulate('click');
+    pluginStates[0].toggleStrike = sinon.spy();
+    const strikeButton = toolbarOption.find(Item).at(1).childAt(0);
     strikeButton.simulate('click');
-    expect(pluginState.toggleStrike.callCount).to.equal(1);
+    expect(pluginStates[0].toggleStrike.callCount).to.equal(1);
   });
 
-  it('should be disabled if both codeDisabled and strikeDisabled are true', () => {
-    const { editorView, pluginState } = editor(doc(p('text')));
-    pluginState.codeDisabled = true;
-    pluginState.strikeDisabled = true;
-    const toolbarOption = mount(<ToolbarAdvancedTextFormatting pluginState={pluginState} editorView={editorView} />);
-    const disabledButton = toolbarOption.find('button');
-    expect(disabledButton.prop('disabled')).to.be.true;
+  it('should not have Code option if codeHidden is true', () => {
+    const { pluginStates, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={pluginStates[0]}
+        pluginStateClearFormatting={pluginStates[1]}
+        editorView={editorView}
+      />
+    );
+    toolbarOption.setState({ codeHidden: true, isOpen: true });
+    const codeButton = toolbarOption.find('span').findWhere(wrapper => wrapper.text() === 'Code');
+    expect(codeButton.length).to.equal(0);
+  });
+
+  it('should not have Strikethrough option if strikeHidden is true', () => {
+    const { pluginStates, editorView } = editor(doc(p('text')));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={pluginStates[0]}
+        pluginStateClearFormatting={pluginStates[1]}
+        editorView={editorView}
+      />
+    );
+    toolbarOption.setState({ strikeHidden: true, isOpen: true });
+    const strikeButton = toolbarOption.find('span').findWhere(wrapper => wrapper.text() === 'Strikethrough');
+    expect(strikeButton.length).to.equal(0);
+  });
+
+  it('should trigger clearFormatting function of pluginStateTextFormatting when clearFormatting option is clicked', () => {
+    const { pluginStates, editorView } = editor(doc(p('text')));
+    pluginStates[1].formattingIsPresent = true;
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={pluginStates[0]}
+        pluginStateClearFormatting={pluginStates[1]}
+        editorView={editorView}
+      />
+    );
+    toolbarOption.find(ToolbarButton).simulate('click');
+    pluginStates[1].clearFormatting = sinon.spy();
+    const clearFormattingButton = toolbarOption.find(Item).at(2).childAt(0);
+    clearFormattingButton.simulate('click');
+    expect(pluginStates[1].clearFormatting.callCount).to.equal(1);
+  });
+
+  it('should be disabled if all code and strikethrough and clearformatting are disabled', () => {
+    const { pluginStates, editorView } = editor(doc(p('text')));
+    const pluginState = pluginStates[0];
+    if (pluginState) {
+      pluginState.codeDisabled = true;
+      pluginState.strikeDisabled = true;
+      pluginState.marksPresent = false;
+    }
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={pluginStates[0]}
+        pluginStateClearFormatting={pluginStates[1]}
+        editorView={editorView}
+      />
+    );
+    const toolbarButton = toolbarOption.find(ToolbarButton);
+    expect(toolbarButton.prop('disabled')).to.be.true;
+  });
+
+  it('should be selected inside code', () => {
+    const { pluginStates, editorView } = editor(doc(p(code('text'))));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={pluginStates[0]}
+        pluginStateClearFormatting={pluginStates[1]}
+        editorView={editorView}
+      />
+    );
+    const toolbarButton = toolbarOption.find(ToolbarButton);
+    expect(toolbarButton.prop('selected')).to.be.true;
+  });
+
+  it('should be selected inside strike', () => {
+    const { pluginStates, editorView } = editor(doc(p(strike('text'))));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={pluginStates[0]}
+        pluginStateClearFormatting={pluginStates[1]}
+        editorView={editorView}
+      />
+    );
+    const toolbarButton = toolbarOption.find(ToolbarButton);
+    expect(toolbarButton.prop('selected')).to.be.true;
   });
 });

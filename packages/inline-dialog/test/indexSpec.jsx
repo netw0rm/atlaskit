@@ -25,7 +25,7 @@ describe('inline-dialog', () => {
     it('should pass the expected default props to Layer', () => {
       const wrapper = mount(<InlineDialog />);
       const layer = wrapper.find(Layer);
-      expect(layer.prop('autoPosition')).to.equal(false);
+      expect(layer.prop('autoFlip')).to.equal(false);
       expect(layer.prop('content')).to.equal(null);
       expect(layer.prop('position')).to.equal('bottom center');
       expect(layer.prop('offset')).to.equal('0 8');
@@ -80,11 +80,21 @@ describe('inline-dialog', () => {
   });
 
   describe('shouldFlip prop', () => {
-    it('should be reflected onto the Layer component', () => {
-      const wrapper = mount(<InlineDialog shouldFlip />);
-      const layer = wrapper.find(Layer);
-      expect(layer).to.have.length.above(0);
-      expect(layer.prop('autoPosition')).to.equal(true);
+    describe('should be reflected onto the Layer component', () => {
+      it('for a boolean value', () => {
+        const wrapper = mount(<InlineDialog shouldFlip />);
+        const layer = wrapper.find(Layer);
+        expect(layer).to.have.length.above(0);
+        expect(layer.prop('autoFlip')).to.equal(true);
+      });
+
+      it('for an array of strings', () => {
+        const shouldFlipValue = ['top', 'bottom'];
+        const wrapper = mount(<InlineDialog shouldFlip={shouldFlipValue} />);
+        const layer = wrapper.find(Layer);
+        expect(layer).to.have.length.above(0);
+        expect(layer.prop('autoFlip')).to.equal(shouldFlipValue);
+      });
     });
   });
 

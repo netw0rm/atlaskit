@@ -12,17 +12,23 @@ const akGridSizeValue = parseInt(akGridSize, 10);
 // both are measured in pixels
 const dialogOffset = `0 ${akGridSizeValue}`;
 
+// TODO: expose positions and flipPositions from Layer and pull in here
+const positions = [
+  'top left', 'top center', 'top right', 'right top', 'right middle', 'right bottom',
+  'bottom left', 'bottom center', 'bottom right', 'left top', 'left middle', 'left bottom',
+];
+const flipPositions = ['top', 'right', 'bottom', 'left'];
+
 /* eslint-disable react/no-unused-prop-types */
 export default class AKInlineDialog extends PureComponent {
   static propTypes = {
-    // TODO: expose these from Layer and pull in here
-    position: PropTypes.oneOf([
-      'top left', 'top center', 'top right', 'right top', 'right middle', 'right bottom',
-      'bottom left', 'bottom center', 'bottom right', 'left top', 'left middle', 'left bottom',
-    ]),
+    position: PropTypes.oneOf(positions),
     isOpen: PropTypes.bool,
     content: PropTypes.node,
-    shouldFlip: PropTypes.bool,
+    shouldFlip: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.arrayOf(PropTypes.oneOf(flipPositions)),
+    ]),
     onContentFocus: PropTypes.func,
     onContentBlur: PropTypes.func,
   }
@@ -53,7 +59,7 @@ export default class AKInlineDialog extends PureComponent {
           </div>
           : null}
         position={props.position}
-        autoPosition={props.shouldFlip}
+        autoFlip={props.shouldFlip}
         offset={dialogOffset}
       >
         <div>

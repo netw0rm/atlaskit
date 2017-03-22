@@ -1,10 +1,10 @@
 {
   "name": "@atlaskit/input",
-  "version": "1.0.3",
+  "version": "1.0.11",
   "config": {
     "access": "public"
   },
-  "description": "ak-input component",
+  "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
@@ -28,6 +28,11 @@
     "ak-field-base": "^6.4.2"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Matias C"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -35,6 +40,7 @@
   },
   "keywords": [
     "atlaskit",
-    "ui"
+    "ui",
+    "internal"
   ]
 }

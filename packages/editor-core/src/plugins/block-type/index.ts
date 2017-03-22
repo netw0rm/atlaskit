@@ -122,6 +122,10 @@ export class BlockTypeState {
       }
     }
 
+    if (name === CODE_BLOCK.name && nodes.code_block) {
+      return this.changeBlockTypeAtSelection(name, pm.selection.$from, pm.selection.$to, true);
+    }
+
     const groups = getGroupsInRange(pm, pm.selection.$from, pm.selection.$to);
     const { $from } = groups[0];
     const { $to } = groups[groups.length - 1];
@@ -305,7 +309,7 @@ export class BlockTypeState {
 
     pm.tr.insert(insertPos, paragraph.create()).applyAndScroll();
 
-    const next = new TextSelection(pm.doc.resolve(insertPos + 1));
+    const next = new TextSelection(pm.doc.resolve( Math.min(insertPos + 1, pm.doc.nodeSize - 3)));
     pm.setSelection(next);
   }
 
@@ -318,9 +322,21 @@ export class BlockTypeState {
     if (!append) {
       pos = $from.start($from.depth) - 1;
       pos = $from.depth > 1 ? pos - 1 : pos;
+
+      // Same theory as comment below.
+      if ($to.node($to.depth - 1).type === pm.schema.nodes['list_item']) {
+        pos = pos - 1;
+      }
     } else {
       pos = $to.end($to.depth) + 1;
       pos = $to.depth > 1 ? pos + 1 : pos;
+
+      // List is a special case. Because from user point of view, the whole list is a unit,
+      // which has 3 level deep (ul, li, p), all the other block types has maxium two levels as a unit.
+      // eg. block type (bq, p/other), code block (cb) and panel (panel, p/other).
+      if ($to.node($to.depth - 1).type === pm.schema.nodes['list_item']) {
+        pos = pos + 1;
+      }
     }
 
     return pos;
@@ -392,17 +408,22 @@ export class BlockTypeState {
   }
 
   private createCodeBlock(): boolean {
+    if (!this.pm.schema.nodes.code_block) {
+      return false;
+    }
+
     const {$from} = this.pm.selection;
     const parentBlock = $from.parent;
+
     if (!parentBlock.isTextblock) {
       return false;
     }
-    const startPos = $from.start($from.depth);
 
+    const startPos = $from.start($from.depth);
     let textOnly = true;
 
     this.pm.doc.nodesBetween(startPos, $from.pos, (node) => {
-      if (!node.isText && !node.isTextblock) {
+      if (node.childCount === 0 && !node.isText && !node.isTextblock) {
         textOnly = false;
       }
     });
@@ -411,12 +432,7 @@ export class BlockTypeState {
       return false;
     }
 
-    if (!this.pm.schema.nodes.code_block) {
-      return false;
-    }
-
     const fencePart = parentBlock.textContent.slice(0, $from.pos - startPos).trim();
-
     const matches = /^```([^\s]+)?/.exec(fencePart);
 
     if (matches) {

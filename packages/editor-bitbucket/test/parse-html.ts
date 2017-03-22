@@ -1,11 +1,11 @@
-import { chaiPlugin } from '@atlaskit/editor-core/test-helper';
+import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { parseHtml as parse } from '../src/parse-html';
 import schema from '../src/schema';
 import {
   a, blockquote, code_block, doc, h1, h2,
-  h3, h4, h5, h6, hr, img, li, mention, mono, ol, p, strong, ul
+  h3, h4, h5, h6, hr, img, li, mention, code, ol, p, strong, ul
 } from './_schema-builder';
 
 chai.use(chaiPlugin);
@@ -13,7 +13,7 @@ chai.use(chaiPlugin);
 const pre = code_block();
 
 // Based on https://bitbucket.org/tutorials/markdowndemo
-describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
+describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
   describe('block elements', () => {
     it('should support level 1 to 6 headings', () => {
       expect(parse('<h1>text</h1>')).to.deep.equal(doc(h1('text')));
@@ -58,9 +58,9 @@ describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
       expect(parse('<p><strike>text</strike></p>')).to.have.textWithMarks('text', [ strike ]);
     });
 
-    it('should support mono', () => {
-      const mono = schema.marks.mono.create();
-      expect(parse('<p><span style="font-family: monospace;">text</span></p>')).to.have.textWithMarks('text', [ mono ]);
+    it('should support code', () => {
+      const code = schema.marks.code.create();
+      expect(parse('<p><span style="font-family: monospace;">text</span></p>')).to.have.textWithMarks('text', [ code ]);
     });
 
     it('should support links', () => {
@@ -367,12 +367,12 @@ describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
     });
   });
 
-  describe('mono', () => {
+  describe('code', () => {
     it('inline should be parsed', () => {
       expect(parse(
         'foo <span style="font-family: monospace;">bar </span>baz'
       )).to.deep.equal(doc(
-        p('foo ', mono('bar '), 'baz')
+        p('foo ', code('bar '), 'baz')
       ));
     });
   });
@@ -458,15 +458,15 @@ describe('ak-editor-bitbucket parsing Bitbucket rendered HTML', () => {
     it('created automatically for paths should be preserved', () => {
       const link = a({
         href: '/atlassian/atlaskit/src/dcc507bc8d05d3101955ec509033eb47c19cb3a9/' +
-              'packages/ak-editor-bitbucket/package.json'
+              'packages/@atlaskit/editor-bitbucket/package.json'
       });
 
       // The following HTML is rendered in a PR comment from relative markdown link:
-      //   [bar](packages/ak-editor-bitbucket/package.json)
+      //   [bar](packages/@atlaskit/editor-bitbucket/package.json)
       expect(parse(
         '<p>' +
           'foo ' +
-          '<a href="/atlassian/atlaskit/src/dcc507bc8d05d3101955ec509033eb47c19cb3a9/packages/ak-editor-bitbucket/package.json">' +
+          '<a href="/atlassian/atlaskit/src/dcc507bc8d05d3101955ec509033eb47c19cb3a9/packages/@atlaskit/editor-bitbucket/package.json">' +
             'bar' +
           '</a>' +
           ' baz' +

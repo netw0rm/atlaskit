@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import CodeBlockPlugin from '../../../src/plugins/code-block';
-import { chaiPlugin, code_block, doc, makeEditor, p } from '../../../test-helper';
+import { chaiPlugin, code_block, doc, makeEditor, p } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
@@ -71,6 +71,26 @@ describe('code-block', () => {
         pm.setTextSelection(cbPos);
 
         expect(spy.callCount).to.not.equal(2);
+      });
+    });
+
+    context('when code block is focused and then editor is blur', () => {
+      it('should call subscribers', () => {
+        const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+        const spy = sinon.spy();
+        plugin.subscribe(spy);
+        pm.on.blur.dispatch();
+        expect(spy.callCount).to.equal(2);
+      });
+    });
+
+    context('when code block is not focused and then editor is blur', () => {
+      it('should not call subscribers', () => {
+        const { pm, plugin } = editor(doc(p('para{<>}graph'), code_block()('codeBlock')));
+        const spy = sinon.spy();
+        plugin.subscribe(spy);
+        pm.on.blur.dispatch();
+        expect(spy.callCount).to.equal(1);
       });
     });
 
@@ -271,22 +291,25 @@ describe('code-block', () => {
     });
   });
 
-  context('clicked', () => {
+  context('toolbarVisible', () => {
     context('when click inside code block', () => {
       it('returns true', () => {
         const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+
+        pm.on.focus.dispatch();
         pm.on.click.dispatch();
 
-        expect(plugin.clicked).to.be.true;
+        expect(plugin.toolbarVisible).to.be.true;
       });
     });
 
     context('when click outside of code block', () => {
       it('returns false', () => {
         const { pm, plugin } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock')));
+
         pm.on.click.dispatch();
 
-        expect(plugin.clicked).to.be.false;
+        expect(plugin.toolbarVisible).to.be.false;
       });
     });
 
@@ -297,7 +320,7 @@ describe('code-block', () => {
 
         pm.setTextSelection(cbPos);
 
-        expect(plugin.clicked).to.be.false;
+        expect(plugin.toolbarVisible).to.be.false;
       });
     });
   });
@@ -363,4 +386,35 @@ describe('code-block', () => {
       expect(plugin.language).to.be.undefined;
     });
   });
+
+  describe('toolbarVisible', () => {
+    context('when editor is blur', () => {
+      it('it is false', () => {
+        const { plugin, pm } = editor(doc(p('paragraph'), code_block({language: 'java'})('code{<>}Block')));
+        pm.on.focus.dispatch();
+        pm.on.blur.dispatch();
+        expect(plugin.toolbarVisible).to.not.be.true;
+      });
+    });
+  });
+
+  describe('editorFocued', () => {
+    context('when editor is focused', () => {
+      it('it is true', () => {
+        const { plugin, pm } = editor(doc(p('paragraph'), code_block({language: 'java'})('code{<>}Block')));
+        pm.on.blur.dispatch();
+        pm.on.focus.dispatch();
+        expect(plugin.editorFocused).to.be.true;
+      });
+    });
+
+    context('when editor is blur', () => {
+      it('it is false', () => {
+        const { plugin, pm } = editor(doc(p('paragraph'), code_block({language: 'java'})('code{<>}Block')));
+        pm.on.blur.dispatch();
+        expect(plugin.editorFocused).not.to.be.true;
+      });
+    });
+  });
+
 });

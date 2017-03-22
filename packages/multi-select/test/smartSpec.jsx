@@ -30,6 +30,7 @@ describe(`${name} - smart`, () => {
         },
       ];
       const wrapper = mount(<SmartMultiSelect
+        appearance="subtle"
         defaultSelected={[items[0].items[0]]}
         id="id"
         isDefaultOpen
@@ -45,6 +46,7 @@ describe(`${name} - smart`, () => {
         shouldFitContainer
       />);
       const statelessProps = wrapper.find(StatelessMultiSelect).props();
+      expect(statelessProps.appearance, 'appearance').to.equal('subtle');
       expect(statelessProps.id, 'id').to.equal('id');
       expect(statelessProps.isDisabled, 'isDisabled').to.equal(true);
       expect(statelessProps.isInvalid, 'isInvalid').to.equal(true);

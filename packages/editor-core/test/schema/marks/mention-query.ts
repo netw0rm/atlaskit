@@ -1,11 +1,11 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { DocNodeType, MentionQueryMarkType, Schema, Text } from '../../../src';
-import { chaiPlugin, toHTML } from '../../../test-helper';
+import { chaiPlugin, toHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-core/schema mention-query mark', () => {
+describe('@atlaskit/editor-core/schema mention-query mark', () => {
 
   it('throws an error if it is not named "mention_query"', () => {
     expect(() => {

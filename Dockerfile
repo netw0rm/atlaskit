@@ -45,7 +45,8 @@ RUN wget -q https://www.browserstack.com/browserstack-local/BrowserStackLocal-li
 # Copied from https://github.com/matriphe/docker-alpine-node/blob/master/Dockerfile
 ENV TIMEZONE Australia/Sydney
 
-ENV NODE_VERSION 6.7.0-r0
+# Last updated: 17-03-17 for compatibility with alpine 3.5
+ENV NODE_VERSION 6.9.2-r1
 # TODO: We can't use 3.10.8 yet: https://github.com/npm/npm/issues/14042
 # Update 2016-10-27: still broken in 3.10.9 and won't be fixed in 3.x at all as 3.x was put in maintenance
 # TODO: Update to npm v4: https://ecosystem.atlassian.net/browse/AK-706
@@ -76,7 +77,7 @@ RUN echo "Installing AtlasKit tools" \
 # is 6.3.2, which *doesn't* include https://github.com/semantic-release/semantic-release/pull/332
 # However the version 6.3.6 exists which *does* include it, so we depend on that explicitly.
   semantic-release@6.3.6 \
-  lerna-semantic-release@9.0.6 \
+  lerna-semantic-release@9.0.7 \
   indexifier@2.0.0 \
   @atlassian/prebake-distributor-runner@1.0.2 \
   yarn@0.18.1 \

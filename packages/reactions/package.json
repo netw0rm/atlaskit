@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/reactions",
-  "version": "2.0.0",
+  "version": "4.0.2",
   "config": {
     "access": "public"
   },
@@ -19,7 +19,7 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/emoji": "^1.0.0",
+    "@atlaskit/emoji": "^11.1.0",
     "@atlaskit/icon": "^2.3.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "classnames": "^2.2.5",
@@ -33,8 +33,15 @@
     "react-dom": "^15.3.2"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Oscar W"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
+    "@atlaskit/util-common-test": "1.0.2",
+    "@atlaskit/util-data-test": "2.1.0",
     "@atlaskit/util-readme": "^1.0.0",
     "fetch-mock": "^5.8.0"
   },
@@ -43,7 +50,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "keywords": [
-    "atlaskit",
+    "fabric",
     "ui"
   ]
 }

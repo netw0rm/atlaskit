@@ -6,6 +6,29 @@ import expectedSvgIds from '../src/internal/iconIds';
 describe(name, () => {
   // it.skip('default export less file', () => {});
   it('icon export should contain expected SVG symbol ids', () => {
+    const arrayCompare = (actual, expected) => {
+      expect(actual.length).to.equal(expected.length);
+
+      for (let i = 0; i < actual.length; i++) {
+        if (actual[i] !== expected[i]) {
+          let actualContext = '... ';
+          let expectedContext = '... ';
+
+          for (let j = -2; j <= 2; j++) {
+            if (i + j >= 0 && i + j < actual.length) {
+              actualContext = `${actualContext} ${actual[i + j]}, `;
+              expectedContext = `${expectedContext} ${expected[i + j]}, `;
+            }
+          }
+
+          if (i + 1 < expected.length && actual[i] === expected[i + 1]) {
+            return `Missing value ${expected[i]}: ${actualContext} !== ${expectedContext}`;
+          }
+          return `Found unexpected value ${actual[i]}: ${actualContext} !== ${expectedContext}`;
+        }
+      }
+      return '';
+    };
     // NOTE Please remember:
     // An addition is a feature
     // a removal or rename is a BREAKING CHANGE
@@ -18,7 +41,10 @@ describe(name, () => {
       $(symbol).attr('id')
     )).get();
 
-    expect(symbolIds.sort()).to.deep.equal(expectedSvgIds.sort());
+    const actual = symbolIds.sort();
+    const expected = expectedSvgIds.sort();
+    const failedMatches = arrayCompare(actual, expected);
+    expect(failedMatches).to.equal('');
 
     // If you find yourself here and wonder why this list is not auto-generated, then bear in
     // mind that tests are supposed to tell you when a piece of software breaks.
@@ -32,4 +58,5 @@ describe(name, () => {
     // If we were to auto-generate this list, then renaming, adding or removing would NOT
     // break any tests and thus not hint the developer at what kind of change he/she is making
   });
-});
+})
+;

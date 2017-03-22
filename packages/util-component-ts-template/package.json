@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-component-ts-template",
-  "version": "2.0.0",
+  "version": "2.0.3",
   "config": {
     "access": "public"
   },
@@ -24,6 +24,7 @@
     "typestyle": "^0.21.4"
   },
   "author": "Atlassian Pty. Ltd",
+  "maintainers": [],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2"
@@ -36,7 +37,8 @@
     "akutil-common-test": "*"
   },
   "keywords": [
-    "atlaskit",
-    "ui"
+    "fabric",
+    "ui",
+    "private"
   ]
 }

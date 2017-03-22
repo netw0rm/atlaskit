@@ -61,6 +61,12 @@ export default class NavigationItem extends PureComponent {
       </div>
     : null);
 
+    const SubText = () => (
+      <div className={subText}>
+        {this.props.subText}
+      </div>
+    );
+
     return (
       <div
         className={classNames(navigationItemOuter, {
@@ -83,9 +89,7 @@ export default class NavigationItem extends PureComponent {
               <div className={mainText}>
                 {this.props.text}
               </div>
-              <div className={subText}>
-                {this.props.subText}
-              </div>
+              <SubText />
             </div>
             <After>
               <TextAfter />

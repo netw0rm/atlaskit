@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-cq",
-  "version": "1.1.0",
+  "version": "1.4.4",
   "config": {
     "access": "public"
   },
@@ -10,7 +10,7 @@
   "types": "dist/types/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
-    "build": "npm run build/es5 && npm run build/es2015",
+    "build": "../../build/bin/generate.version.export.js ./package.json src/version.ts && npm run build/es5 && npm run build/es2015",
     "build/es5": "../../node_modules/.bin/tsc -p build/es5",
     "build/es2015": "../../node_modules/.bin/tsc -p build/es2015"
   },
@@ -20,8 +20,16 @@
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Bradley A"
+    },
+    {
+      "name": "Artur B"
+    }
+  ],
   "dependencies": {
-    "@atlaskit/editor-core": "^1.13.2",
+    "@atlaskit/editor-core": "^5.0.0",
     "ak-editor-shared-styles": "^3.0.0",
     "akutil-shared-styles": "^37.0.1",
     "collapse-whitespace": "^1.1.4",
@@ -36,5 +44,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "fabric",
+    "ui"
+  ]
 }

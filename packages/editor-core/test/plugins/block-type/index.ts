@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { browser } from '../../../src';
-import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, img, makeEditor, mention, p, hr } from '../../../test-helper';
+import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, hr, li, img, makeEditor, mention, p, ul } from '../../../src/test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
 
@@ -87,6 +87,13 @@ describe('block-type', () => {
       expect(pm.doc).to.deep.equal(doc(code_block()('text')));
     });
 
+    it('should merge paragraphs while creating code blocks code block', () => {
+      const { pm, plugin } = editor(doc(p('text'), p('text'), p('text')));
+      pm.setTextSelection(1, 14);
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('text\ntext\ntext')));
+    });
+
     it('should be able to change to code block with multilines', () => {
       const { pm, plugin } = editor(
         doc(p(
@@ -99,6 +106,18 @@ describe('block-type', () => {
 
       plugin.changeBlockType('codeblock');
       expect(pm.doc).to.deep.equal(doc(code_block()('line1 \nline2 \n')));
+    });
+
+    it('should be able to change to code block with image and multiple blocks', () => {
+      const { pm, plugin } = editor(
+        doc(p(
+          'line1',
+          img({ src: 'url', alt: 'text', title: 'text' })
+          ), p('line2')));
+
+      pm.setTextSelection(1, 10);
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('line1\nline2')));
     });
 
     it('should be able to preserve mention text', () => {
@@ -115,6 +134,18 @@ describe('block-type', () => {
 
       plugin.changeBlockType('codeblock');
       expect(pm.doc).to.deep.equal(doc(code_block()('hello @bar1 & @bar2 & @bar3')));
+    });
+
+    it('should be able to preserve mention text when converting multiple blocks to code block', () => {
+      const { pm, plugin } = editor(
+        doc(p(
+          'hello ',
+          mention({ id: 'foo1', displayName: '@bar1' })
+        ), p('text')));
+
+      pm.setTextSelection(1, 14);
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('hello @bar1\ntext')));
     });
 
     it('should collaps nested block and convert to code block', () => {
@@ -425,7 +456,7 @@ describe('block-type', () => {
 
               pm.input.dispatchKey('Enter');
 
-              expect(pm.doc).to.deep.equal(doc(code_block({language: 'javascript'})('')));
+              expect(pm.doc).to.deep.equal(doc(code_block({ language: 'javascript' })('')));
             });
 
             it('trims the spaces', () => {
@@ -433,7 +464,7 @@ describe('block-type', () => {
 
               pm.input.dispatchKey('Enter');
 
-              expect(pm.doc).to.deep.equal(doc(code_block({language: 'javascript'})('   hello @bar1')));
+              expect(pm.doc).to.deep.equal(doc(code_block({ language: 'javascript' })('   hello @bar1')));
             });
           });
 
@@ -460,6 +491,16 @@ describe('block-type', () => {
               pm.input.dispatchKey('Enter');
 
               expect(pm.doc).to.deep.equal(doc(p('hello```    '), p('   hello')));
+            });
+          });
+
+          context('on a nested structure', () => {
+            it('converts to code block', () => {
+              const { pm } = editor(doc(blockquote(p('```{<>}'))));
+
+              pm.input.dispatchKey('Enter');
+
+              expect(pm.doc).to.deep.equal(doc(blockquote(code_block()(''))));
             });
           });
         });
@@ -515,21 +556,33 @@ describe('block-type', () => {
             });
 
             context('when cursor is at the beginning of the whole content', () => {
-              it('creates a new paragraph above', () => {
-                const { pm } = editor(doc(code_block()('{<>}text')));
+              context('non list item', () => {
+                it('creates a new paragraph above', () => {
+                  const { pm } = editor(doc(code_block()('{<>}text')));
 
-                pm.input.dispatchKey('Up');
+                  pm.input.dispatchKey('Up');
 
-                expect(pm.doc).to.deep.equal(doc(p(''), code_block()('text')));
+                  expect(pm.doc).to.deep.equal(doc(p(''), code_block()('text')));
+                });
+
+                it('does not ignore @mention', () => {
+
+                  const { pm } = editor(doc(p(mention({ id: 'foo1', displayName: '@bar1' }))));
+
+                  pm.input.dispatchKey('Up');
+
+                  expect(pm.doc).to.deep.equal(doc(p(''), p(mention({ id: 'foo1', displayName: '@bar1' }))));
+                });
               });
 
-              it('does not ignore @mention', () => {
+              context('list item', () => {
+                it('creates a new paragraph below the ul', () => {
+                  const { pm } = editor(doc(ul(li(p('{<>}text')))));
 
-                const { pm } = editor(doc(p(mention({ id: 'foo1', displayName: '@bar1' }))));
+                  pm.input.dispatchKey('Up');
 
-                pm.input.dispatchKey('Up');
-
-                expect(pm.doc).to.deep.equal(doc(p(''), p(mention({ id: 'foo1', displayName: '@bar1' }))));
+                  expect(pm.doc).to.deep.equal(doc(p(''), ul(li(p('text')))));
+                });
               });
             });
           });
@@ -647,12 +700,24 @@ describe('block-type', () => {
             });
 
             context('when cursor is at the end of the whole content', () => {
-              it('creates a new paragraph below', () => {
-                const { pm } = editor(doc(code_block()('text{<>}')));
+              context('non list item', () => {
+                it('creates a new paragraph below', () => {
+                  const { pm } = editor(doc(code_block()('text{<>}')));
 
-                pm.input.dispatchKey('Down');
+                  pm.input.dispatchKey('Down');
 
-                expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
+                  expect(pm.doc).to.deep.equal(doc(code_block()('text'), p('')));
+                });
+              });
+
+              context('list item', () => {
+                it('creates a new paragraph below the ul', () => {
+                  const { pm } = editor(doc(ul(li(p('text{<>}')))));
+
+                  pm.input.dispatchKey('Down');
+
+                  expect(pm.doc).to.deep.equal(doc(ul(li(p('text'))), p('')));
+                });
               });
             });
           });

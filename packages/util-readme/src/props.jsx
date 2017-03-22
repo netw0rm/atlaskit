@@ -5,7 +5,7 @@ import Heading from './heading';
 
 // eslint-disable-next-line react/no-multi-comp, react/prefer-stateless-function
 export default class extends PureComponent {
-  static displayName = 'AkutilReadmeProps'
+  static displayName = 'utilReadmeProps'
   static propTypes = {
     component: PropTypes.func.isRequired,
     descriptions: PropTypes.objectOf(PropTypes.string),

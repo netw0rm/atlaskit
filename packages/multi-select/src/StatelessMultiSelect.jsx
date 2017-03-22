@@ -1,28 +1,24 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import Droplist from '@atlaskit/droplist';
-import Item from '@atlaskit/droplist-item';
-import Group from '@atlaskit/droplist-group';
+import Droplist, { Item, Group } from '@atlaskit/droplist';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import TagGroup from '@atlaskit/tag-group';
 import Tag from '@atlaskit/tag';
 import classNames from 'classnames';
 
 import styles from 'style!./styles.less';
+import DummyItem from './internal/DummyItem';
+import DummyGroup from './internal/DummyGroup';
 import Trigger from './internal/Trigger';
 import NothingWasFound from './internal/NothingWasFound';
+import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
 
-export const itemShape = PropTypes.shape({
-  content: PropTypes.node,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  isDisabled: PropTypes.bool,
-  isSelected: PropTypes.bool,
-  elemBefore: PropTypes.node,
-  elemAfter: PropTypes.node,
-});
+const groupShape = DummyGroup.propTypes;
+const itemShape = DummyItem.propTypes;
 
 export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {
+    appearance: PropTypes.oneOf(appearances.values),
     filterValue: PropTypes.string,
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
@@ -31,7 +27,7 @@ export default class StatelessMultiSelect extends PureComponent {
     isInvalid: PropTypes.bool,
     isOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
-    items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
     label: PropTypes.string,
     noMatchesFound: PropTypes.string,
     name: PropTypes.string,
@@ -41,11 +37,12 @@ export default class StatelessMultiSelect extends PureComponent {
     onRemoved: PropTypes.func,
     placeholder: PropTypes.string,
     position: PropTypes.string,
-    selectedItems: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    selectedItems: PropTypes.arrayOf(PropTypes.shape(itemShape)),
     shouldFitContainer: PropTypes.bool,
   }
 
   static defaultProps = {
+    appearance: appearances.default,
     filterValue: '',
     shouldFocus: false,
     isOpen: false,
@@ -207,12 +204,14 @@ export default class StatelessMultiSelect extends PureComponent {
     const isSelectOpen = this.props.isOpen;
     switch (event.key) {
       case 'ArrowDown':
+        event.preventDefault();
         if (!isSelectOpen) {
           this.onOpenChange({ event, isOpen: true });
         }
         this.focusNextItem();
         break;
       case 'ArrowUp':
+        event.preventDefault();
         if (isSelectOpen) {
           this.focusPreviousItem();
         }
@@ -251,6 +250,7 @@ export default class StatelessMultiSelect extends PureComponent {
     if (filteredItems.length) {
       return filteredItems.map((item, itemIndex) => (<Item
         {...item}
+        elemBefore={item.elemBefore}
         isFocused={itemIndex === this.state.focusedItemIndex}
         key={itemIndex}
         onActivate={(attrs) => {
@@ -329,6 +329,7 @@ export default class StatelessMultiSelect extends PureComponent {
           shouldFitContainer
           trigger={
             <FieldBase
+              appearance={mapAppearanceToFieldBase(this.props.appearance)}
               isDisabled={this.props.isDisabled}
               isFitContainerWidthEnabled
               isFocused={this.props.isOpen || this.state.isFocused}
@@ -345,6 +346,7 @@ export default class StatelessMultiSelect extends PureComponent {
                 <TagGroup ref={ref => (this.tagGroup = ref)}>
                   {this.props.selectedItems.map(item =>
                     <Tag
+                      elemBefore={item.tagElemBefore}
                       key={item.value}
                       onAfterRemoveAction={() => {
                         this.handleItemRemove(item);

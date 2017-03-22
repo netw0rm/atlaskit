@@ -3,8 +3,9 @@ import { PureComponent } from 'react';
 import * as classNames from 'classnames';
 
 import * as styles from './styles';
-import { OnSelection } from '../../types';
-import { MentionProvider, PresenceProvider } from '../../api/MentionResource';
+import { OnMentionEvent } from '../../types';
+import { MentionProvider } from '../../api/MentionResource';
+import { PresenceProvider } from '../../api/PresenceResource';
 import ResourcedMentionList from '../ResourcedMentionList';
 import Popup from '../Popup';
 import debug from '../../util/logger';
@@ -18,17 +19,19 @@ export interface OnClose {
   (): void;
 }
 
+export type Position = 'above' | 'below' | 'auto';
+
 export interface Props {
   resourceProvider: MentionProvider;
   presenceProvider?: PresenceProvider;
   query?: string;
 
-  onSelection?: OnSelection;
+  onSelection?: OnMentionEvent;
   onOpen?: OnOpen;
   onClose?: OnClose;
 
   target?: string;
-  position?: 'above' | 'below' | 'auto';
+  position?: Position;
   zIndex?: number | string;
   offsetX?: number;
   offsetY?: number;
@@ -86,13 +89,13 @@ export default class MentionPicker extends PureComponent<Props, State> {
     }
   }
 
-  selectIndex(index: number, callback?: () => any): void {
+  selectIndex = (index: number, callback?: () => any): void => {
     if (this.mentionListRef) {
       this.mentionListRef.selectIndex(index, callback);
     }
   }
 
-  selectId(id: string, callback?: () => any): void {
+  selectId = (id: string, callback?: () => any): void => {
     if (this.mentionListRef) {
       this.mentionListRef.selectId(id, callback);
     }
@@ -104,7 +107,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
     }
   }
 
-  mentionsCount(): number {
+  mentionsCount = (): number => {
     if (this.mentionListRef) {
       return this.mentionListRef.mentionsCount();
     }

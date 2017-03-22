@@ -16,6 +16,7 @@
  *      done
  *    );
  *  });
+ * @ignore
  */
 function afterMutations(...fns) {
   setTimeout(() => {

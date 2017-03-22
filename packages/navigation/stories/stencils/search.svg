@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="664px" height="400px" viewBox="0 0 664 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>Guides/ quick search</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Guides/-quick-search" fill="#8777D9">
+            <g id="Combined-Shape">
+                <path d="M0,0 L64,0 L64,400 L0,400 L0,0 Z M16,100 C16,108.838499 23.163444,116 32,116 C40.8384989,116 48,108.836556 48,100 C48,91.1615011 40.836556,84 32,84 C23.1615011,84 16,91.163444 16,100 Z M12,44 C12,55.0481236 20.954305,64 32,64 C43.0481236,64 52,55.045695 52,44 C52,32.9518764 43.045695,24 32,24 C20.9518764,24 12,32.954305 12,44 Z" opacity="0.200000003"></path>
+                <path d="M64,0 L664,0 L664,400 L64,400 L64,0 Z M92,80 L92,120 L568,120 L568,80 L92,80 Z M92,140 L92,148 L288,148 L288,140 L92,140 Z M592,100 C592,108.838499 599.163444,116 608,116 C616.838499,116 624,108.836556 624,100 C624,91.1615011 616.836556,84 608,84 C599.161501,84 592,91.163444 592,100 Z M92,168 L92,192 L116,192 L116,168 L92,168 Z M124,170 L124,178 L620,178 L620,170 L124,170 Z M124,184 L124,192 L620,192 L620,184 L124,184 Z M92,212 L92,236 L116,236 L116,212 L92,212 Z M92,256 L92,280 L116,280 L116,256 L92,256 Z M92,300 L92,324 L116,324 L116,300 L92,300 Z M92,344 L92,368 L116,368 L116,344 L92,344 Z" opacity="0.5"></path>
+            </g>
+        </g>
+    </g>
+</svg>

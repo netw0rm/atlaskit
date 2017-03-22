@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import ImageUploadPlugin from '../../../src/plugins/image-upload';
-import { chaiPlugin, makeEditor } from '../../../test-helper';
+import { chaiPlugin, makeEditor } from '../../../src/test-helper';
 import { doc, image, images, noimages, schema } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
@@ -56,6 +56,17 @@ describe('image-upload', () => {
     expect(spy.callCount).to.equal(2);
   });
 
+  it('does not emits a change when unsubscribe', () => {
+    const { pm, plugin, sel } = editor(doc(images('{<>}', testImg())));
+    const spy = sinon.spy();
+    plugin.subscribe(spy);
+    plugin.unsubscribe(spy);
+
+    pm.setNodeSelection(sel);
+
+    expect(spy.callCount).to.equal(1);
+  });
+
   it('does not emit multiple changes when an image is not selected', () => {
     const { pm, plugin } = editor(doc(images('{<>}t{a}e{b}st', testImg())));
     const { a, b } = pm.doc.refs;
@@ -89,13 +100,21 @@ describe('image-upload', () => {
     expect(spy.callCount).to.equal(2);
   });
 
-  it('does not permit an image to be added when an image is selected', () => {
+  it('permits an image to be added when an image is selected', () => {
     const { pm, plugin, sel } = editor(doc(images('{<>}', testImg())));
     pm.setNodeSelection(sel);
 
     plugin.addImage({ src: testImgSrc });
 
-    expect(pm.doc).to.deep.equal(doc(images(testImg())));
+    expect(pm.doc).to.deep.equal(doc(images(testImg(), testImg())));
+  });
+
+  it('permits an image to be added when there is selected text', () => {
+    const { pm, plugin} = editor(doc(images('{<}hello{>}')));
+
+    plugin.addImage({ src: testImgSrc });
+
+    expect(pm.doc).to.deep.equal(doc(images('hello', testImg())));
   });
 
   it('does not permit an image to be added when the state is disabled', () => {

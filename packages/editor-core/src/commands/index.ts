@@ -12,7 +12,7 @@ export function toggleBlockType(view: EditorView, name: string): Command {
     const { nodes } = state.schema;
     const { $from } = state.selection;
     if ($from.depth > 1) {
-      dispatch(lift(state));
+      baseCommand.lift(state, dispatch);
     }
 
     switch (name) {
@@ -476,19 +476,6 @@ function getInsertPosFromNonTextBlock(state: EditorState<any>, append: boolean):
 function topLevelNodeIsEmptyTextBlock(state): boolean {
   const topLevelNode = state.selection.$from.node(1);
   return topLevelNode.isTextblock && topLevelNode.type !== state.schema.nodes.codeBlock && topLevelNode.nodeSize === 2;
-}
-
-// Lifts current selection up;
-// it allows to chain transactions
-function lift(state: EditorState<any>): Transaction {
-  const { $from, $to } = state.selection;
-  let { tr } = state;
-  const range = $from.blockRange($to) as any;
-  const target = range && liftTarget(range) as any;
-  if (target !== null) {
-    tr = tr.lift(range, target).scrollIntoView();
-  }
-  return tr;
 }
 
 function wrap(state: EditorState<any>, nodeType: NodeType, tr: Transaction): Transaction {

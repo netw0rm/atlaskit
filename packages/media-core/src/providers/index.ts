@@ -13,7 +13,6 @@ export type MediaItemObservablePool = Pool<Observable<MediaItem>>;
 
 export interface MediaItemProvider {
   observable(): Observable<MediaItem>;
-  readonly config: MediaApiConfig;
 }
 
 export class MediaItemProvider {
@@ -46,8 +45,7 @@ export class MediaItemProvider {
         return observableFromObservablePool(pool, poolId, () => {
           return MediaItemProvider.fromMediaApi(config, cache, mediaItemType, id, clientId, collection).observable();
         });
-      },
-      config
+      }
     };
   }
 

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { MediaApiConfig } from '../';
+
+import { MediaApiConfig } from '../config';
 
 export type SortDirection = 'desc' | 'asc';
 
@@ -37,38 +38,48 @@ export interface RemoteCollectionItemsResponse {
 }
 
 export interface CollectionService {
-  getCollectionItems(inclusiveStartKey: string, details?: DetailsType): Promise<RemoteCollectionItemsResponse>;
-  collectionName: string;
+  getCollectionItems(
+    collectionName: string,
+    limit: number,
+    inclusiveStartKey?: string,
+    sortDirection?: SortDirection,
+    details?: DetailsType): Promise<RemoteCollectionItemsResponse>;
 }
 
 export type DetailsType = 'minimal' | 'full';
 
 export class MediaCollectionService implements CollectionService {
-  constructor(
-    private config: MediaApiConfig,
-    public collectionName: string,
-    private clientId: string,
-    private limit: number,
-    private sortDirection: SortDirection) {
+  static defaultLimit = 10;
+
+  constructor(private config: MediaApiConfig, private clientId: string) {
   }
 
-  getCollectionItems(inclusiveStartKey: string, details: DetailsType = 'minimal'): Promise<RemoteCollectionItemsResponse> {
-    return this.config.tokenProvider(this.collectionName).then(token => {
-      return axios.get(`/collection/${this.collectionName}/items`, {
-        baseURL: this.config.serviceHost,
-        headers: {
-          'X-Client-Id': this.clientId,
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        params: {
-          collectionName: this.collectionName,
-          limit: this.limit,
-          inclusiveStartKey: inclusiveStartKey,
-          details: details,
-          sortDirection: this.sortDirection
-        }
-      }).then(response => response.data as RemoteCollectionItemsResponse);
-    });
+  getCollectionItems(
+    collectionName: string,
+    limit: number = MediaCollectionService.defaultLimit,
+    inclusiveStartKey?: string,
+    sortDirection?: SortDirection,
+    details?: DetailsType): Promise<RemoteCollectionItemsResponse> {
+
+    const { serviceHost, tokenProvider } = this.config;
+
+    return tokenProvider(collectionName)
+      .then(token => axios
+        .get(`/collection/${collectionName}/items`, {
+          baseURL: serviceHost,
+          headers: {
+            'X-Client-Id': this.clientId,
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          params: {
+            limit: limit,
+            inclusiveStartKey: inclusiveStartKey,
+            sortDirection: sortDirection,
+            details: details
+          }
+        })
+        .then(response => response.data)
+      );
   }
 }

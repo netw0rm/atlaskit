@@ -32,7 +32,11 @@ export class CollectionCommandReducer {
   private nextInclusiveStartKey: string = '';
   private isLoading = false;
 
-  constructor(private readonly collectionService: CollectionService) {
+  constructor(
+    private readonly collectionService: CollectionService,
+    private readonly collectionName: string,
+    private readonly pageSize: number,
+    private readonly sortDirection: SortDirection) {
     this.connectableObservable.connect();
     this.loadNextPage();
   }
@@ -62,7 +66,12 @@ export class CollectionCommandReducer {
       this.isLoading = true;
     }
 
-    this.collectionService.getCollectionItems(this.nextInclusiveStartKey, 'full')
+    this.collectionService.getCollectionItems(
+      this.collectionName,
+      this.pageSize,
+      this.nextInclusiveStartKey,
+      this.sortDirection,
+      'full')
       .then(response => {
         const items = response.data.contents
           .map(item => {
@@ -87,7 +96,7 @@ export class CollectionCommandReducer {
         this.items.push(...items);
 
         const mediaCollection = {
-          id: this.collectionService.collectionName,
+          id: this.collectionName,
           items: this.items
         };
 
@@ -115,9 +124,19 @@ export interface CollectionProvider {
 
 export class CollectionProvider {
 
-  public static fromCollectionService(collectionService: CollectionService): CollectionProvider {
+  public static fromCollectionService(
+    collectionService: CollectionService,
+    collectionName: string,
+    pageSize: number,
+    sortDirection: SortDirection): CollectionProvider {
+
     const controller = new CollectionControllerImpl();
-    const reducer = new CollectionCommandReducer(collectionService);
+    const reducer = new CollectionCommandReducer(
+      collectionService,
+      collectionName,
+      pageSize,
+      sortDirection);
+
     reducer.attachTo(controller.commands);
     return {
       controller: () => controller,
@@ -131,7 +150,11 @@ export class CollectionProvider {
     clientId: string,
     pageSize: number,
     sortDirection: SortDirection): CollectionProvider {
-    return CollectionProvider.fromCollectionService(new MediaCollectionService(config, collectionName, clientId, pageSize, sortDirection));
+    return CollectionProvider.fromCollectionService(
+      new MediaCollectionService(config, clientId),
+      collectionName,
+      pageSize,
+      sortDirection);
   }
 
   public static fromPool(
@@ -145,8 +168,8 @@ export class CollectionProvider {
 
     const poolId = [collectionName, pageSize, sortDirection].join('-');
     const createFn = () => {
-      const service = new MediaCollectionService(config, collectionName, clientId, pageSize, sortDirection);
-      return new CollectionCommandReducer(service);
+      const service = new MediaCollectionService(config, clientId);
+      return new CollectionCommandReducer(service, collectionName, pageSize, sortDirection);
     };
 
     return {

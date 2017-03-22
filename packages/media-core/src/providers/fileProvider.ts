@@ -6,7 +6,6 @@ import { LRUCache } from 'lru-fast';
 
 export interface FileProvider {
   observable(): Observable<FileItem>;
-  readonly config: MediaApiConfig;
 }
 
 export class FileProvider {
@@ -18,7 +17,6 @@ export class FileProvider {
     collection?: string,
     pollInterval?: number): FileProvider {
     return FileProvider.fromFileService(
-      config,
       new MediaFileService(config, cache),
       fileId,
       clientId,
@@ -27,7 +25,6 @@ export class FileProvider {
   }
 
   public static fromFileService(
-    config: MediaApiConfig,
     fileService: FileService,
     fileId: string,
     clientId: string,
@@ -67,8 +64,7 @@ export class FileProvider {
         observable.connect();
 
         return observable;
-      },
-      config
+      }
     };
   }
 }

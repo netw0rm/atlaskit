@@ -1,22 +1,24 @@
 import axios from 'axios';
-import { defaultCollectionName } from './contextProvider';
+import { defaultCollectionName } from './collectionNames';
 import { JwtToken, JwtTokenProvider } from '@atlaskit/media-core';
 
-let tokenRequest: Promise<JwtToken>;
+const tokens = {};
 const baseURL = 'https://media-playground.internal.app.dev.atlassian.io';
 
 export class StoryBookTokenProvider {
   static tokenProvider(collectionName: string): Promise<JwtToken> {
     const params = { collection: collectionName || defaultCollectionName };
-    if (tokenRequest) {
-      return tokenRequest;
-    }
-    tokenRequest = Promise.resolve(axios.get('/token', {
+    const token = tokens[params.collection];
+
+    if (token) { return token; }
+
+    tokens[params.collection] = Promise.resolve(axios.get('/token', {
       baseURL,
       headers: {},
       params
     }).then(response => response.data.token));
-    return tokenRequest;
+
+    return tokens[params.collection];
   }
 
   static withAccess(access: { [resourceUrn: string]: string[] }): JwtTokenProvider {

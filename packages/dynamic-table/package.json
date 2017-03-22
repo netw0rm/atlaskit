@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/dynamic-table",
-  "version": "2.1.0",
+  "version": "2.1.2",
   "config": {
     "access": "public"
   },
@@ -29,6 +29,11 @@
     "styled-components": "^1.3.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Vitalii B"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

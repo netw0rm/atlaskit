@@ -84,7 +84,7 @@ export class EmojiNodeType extends Inline {
   get attrs() {
     return {
       id: new Attribute({ default: '' }),
-      variation: new Attribute({ default: undefined }),
+      variation: new Attribute({ default: 0 }),
       shortcut: new Attribute({ default: '' }),
     };
   }

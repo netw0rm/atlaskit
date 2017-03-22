@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/flag",
-  "version": "1.0.5",
+  "version": "1.0.8",
   "config": {
     "access": "public"
   },
@@ -23,6 +23,11 @@
     "classnames": "^2.2.5"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Ben G"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/flag": "*",

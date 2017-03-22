@@ -1,4 +1,4 @@
-import { akColorN400, akColorPrimary1, akColorN20 } from 'akutil-shared-styles';
+import { akColorN400, akColorPrimary1, akColorN20 } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 
 export const removeButtonWrapperStyle = style({

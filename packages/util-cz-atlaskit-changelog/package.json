@@ -1,12 +1,13 @@
 {
   "name": "@atlaskit/util-cz-atlaskit-changelog",
-  "version": "1.1.3",
+  "version": "1.1.5",
   "config": {
     "access": "public"
   },
   "description": "A utility for managing the changelog of atlaskit",
   "main": "index.js",
   "author": "Atlassian Pty Ltd",
+  "maintainers": [],
   "license": "Apache-2.0",
   "scripts": {
     "prepublish": ""

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as cx from 'classnames';
 import {Component, MouseEvent} from 'react';
 import {CardAction, MediaType} from '@atlaskit/media-core';
 
@@ -91,12 +92,12 @@ export class CardViewSmall extends Component<CardViewSmallProps, CardViewSmallSt
   formatCard(left: JSX.Element, right: JSX.Element) {
     const {menuActions} = this.props;
     const cardStyle = this.props.width ? {width: `${this.props.width}px`} : {};
-    const className = this.props.loading ? 'loading' : '';
-    const shadowClass = this.props.mediaType === 'image' && this.props.dataURI ? 'shadow' : '';
+    const cardClass = cx({loading: this.props.loading});
+    const imgClass = cx('img-wrapper', {shadow: this.props.mediaType === 'image' && this.props.dataURI});
 
     return (
-      <SmallCard style={cardStyle} className={className} onClick={this.onClick.bind(this)}>
-        <ImgWrapper className={`img-wrapper ${shadowClass}`}>
+      <SmallCard style={cardStyle} className={cardClass} onClick={this.onClick.bind(this)}>
+        <ImgWrapper className={imgClass}>
           {left}
         </ImgWrapper>
         <InfoWrapper className="info-wrapper">

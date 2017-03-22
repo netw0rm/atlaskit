@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-data-test",
-  "version": "2.1.0",
+  "version": "2.1.2",
   "config": {
     "access": "public"
   },
@@ -11,8 +11,8 @@
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
     "build": "npm run build/es5 && npm run build/es2015",
-    "build/es5": "../../node_modules/.bin/tsc -p build/es5",
-    "build/es2015": "../../node_modules/.bin/tsc -p build/es2015"
+    "build/es5": "../../node_modules/.bin/tsc -p build/es5 && cp src/emoji/*.json dist/es5/emoji",
+    "build/es2015": "../../node_modules/.bin/tsc -p build/es2015 && cp src/emoji/*.json dist/es2015/emoji"
   },
   "files": [
     "dist",
@@ -23,6 +23,7 @@
     "tslib": "^1.2.0"
   },
   "author": "Atlassian Pty. Ltd",
+  "maintainers": [],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2",

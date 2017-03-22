@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/droplist",
-  "version": "3.0.2",
+  "version": "3.0.4",
   "config": {
     "access": "public"
   },
@@ -36,6 +36,11 @@
     "react-dom": "^15.3.2"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Nadia M"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

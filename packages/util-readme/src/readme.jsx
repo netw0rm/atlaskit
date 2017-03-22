@@ -10,7 +10,7 @@ export default class extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
-    description: PropTypes.string.isRequired,
+    description: PropTypes.node.isRequired,
   }
   render() {
     const { children, component, description } = this.props;

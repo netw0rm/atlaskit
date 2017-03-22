@@ -12,10 +12,10 @@ export interface CardDimensions {
   height?: number | string;
 }
 
-export type ProcessingStatus = 'loading' | 'processing' | 'complete' | 'error';
+export type CardProcessingStatus = 'loading' | 'processing' | 'complete' | 'error';
 
 export interface OnLoadingChangeState {
-  readonly type: ProcessingStatus;
+  readonly type: CardProcessingStatus;
   readonly payload?: Error | UrlPreview;
 }
 
@@ -55,7 +55,7 @@ export interface CardProps {
 
   readonly dimensions?: CardDimensions;
 
-  readonly menuActions?: Array<CardAction>;
+  readonly actions?: Array<CardAction>;
 
   readonly selectable?: boolean;
   readonly selected?: boolean;
@@ -75,15 +75,11 @@ export class Card extends Component<CardProps, {}> {
   render() {
     const isUrlIdentifier = (identifier) => (identifier as UrlPreviewIdentifier).url;
 
-    const getLinkDetails = (specifier) => {
-      if (isUrlIdentifier(specifier)) {
-        return (specifier as UrlPreviewIdentifier).url;
-      }
-
-      return specifier;
+    const getLinkDetails = (identifier) => {
+      return isUrlIdentifier(identifier) ? isUrlIdentifier(identifier) : identifier;
     };
 
-    const {identifier, context, dimensions, menuActions, appearance, selectable, selected} = this.props;
+    const {identifier, context, dimensions, actions, appearance, selectable, selected} = this.props;
     const {onClick, onHover, onLoadingChange, onSelectChange} = this.props;
 
     if (isUrlIdentifier(identifier) || identifier.mediaItemType === 'link') {
@@ -95,7 +91,7 @@ export class Card extends Component<CardProps, {}> {
           appearance={appearance}
           dimensions={dimensions}
 
-          menuActions={menuActions}
+          actions={actions}
 
           onClick={onClick}
           onHover={onHover}
@@ -118,7 +114,7 @@ export class Card extends Component<CardProps, {}> {
           selectable={selectable}
           selected={selected}
 
-          menuActions={menuActions}
+          actions={actions}
 
           onClick={onClick}
           onHover={onHover}

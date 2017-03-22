@@ -28,7 +28,7 @@ export interface FileCardProps {
   readonly selectable?: boolean;
   readonly selected?: boolean;
 
-  readonly menuActions?: Array<CardAction>;
+  readonly actions?: Array<CardAction>;
 
   // TODO FIL-3962 update card to fire click, hover, selectChange and loading change callbacks
   readonly onClick?: (result: CardEvent) => void;
@@ -49,7 +49,7 @@ export interface FileCardState {
 export class FileCard extends Component<FileCardProps, FileCardState> {
 
   static defaultProps: Partial<FileCardProps> = {
-    menuActions: []
+    actions: []
   };
 
   private setPartialState(partialState: Partial<FileCardState>, callback?: () => any) {
@@ -194,7 +194,7 @@ export class FileCard extends Component<FileCardProps, FileCardState> {
           width={dimensions && dimensions.width}
           loading={this.state.loading}
           dataURI={this.state.dataURI}
-          menuActions={this._getMenuActions()}
+          actions={this._getActions()}
           onClick={this.onClick.bind(this)}
         />
       ) : (
@@ -205,7 +205,7 @@ export class FileCard extends Component<FileCardProps, FileCardState> {
           selectable={this.props.selectable}
           selected={this.props.selected}
           dataURI={this.state.dataURI}
-          menuActions={this._getMenuActions()}
+          actions={this._getActions()}
           onClick={this.onClick.bind(this)}
         />
       );
@@ -223,7 +223,7 @@ export class FileCard extends Component<FileCardProps, FileCardState> {
           mediaName={file.name}
           mediaType={file.mediaType}
           mediaSize={file.size}
-          menuActions={this._getMenuActions()}
+          actions={this._getActions()}
           onClick={this.onClick.bind(this)}
         />
       ) : (
@@ -234,7 +234,7 @@ export class FileCard extends Component<FileCardProps, FileCardState> {
           mediaName={file.name}
           mediaType={file.mediaType}
           mediaSize={file.size}
-          menuActions={this._getMenuActions()}
+          actions={this._getActions()}
           onClick={this.onClick.bind(this)}
           selectable={this.props.selectable}
           selected={this.props.selected}
@@ -253,14 +253,14 @@ export class FileCard extends Component<FileCardProps, FileCardState> {
     return (actions.length) ? actions[0] : null;
   }
 
-  private _getMenuActions(): Array < CardAction > {
+  private _getActions(): Array < CardAction > {
     // redundant 'or' guarding to satisfy compiler
     // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11640
-    const actions = this.props.menuActions || [];
-    const nonMenuActions = [CardActionType.click];
+    const actions = this.props.actions || [];
+    const nonActions = [CardActionType.click];
 
     return actions
-      .filter(action => action.type && nonMenuActions.indexOf(action.type) === -1)
+      .filter(action => action.type && nonActions.indexOf(action.type) === -1)
       .map((action: CardAction) => {
         return {
           label: action.label,
@@ -275,7 +275,7 @@ export class FileCard extends Component<FileCardProps, FileCardState> {
   private _getActionsByType(type: CardActionType): Array < CardAction > {
     // redundant 'or' guarding to satisfy compiler
     // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11640
-    const actions: Array<CardAction> = this.props.menuActions || [];
+    const actions: Array<CardAction> = this.props.actions || [];
     return actions.filter(action => action.type === type);
   }
 

@@ -4,7 +4,7 @@ import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
 import { AxiosError } from 'axios';
 import Button from '@atlaskit/button';
-import { CardSize, MediaItem, MediaCollection, MediaCollectionItem, Context, CardAction, ListAction } from '@atlaskit/media-core';
+import { MediaItem, MediaCollection, MediaCollectionItem, Context, CardAction, ListAction } from '@atlaskit/media-core';
 
 import { DEFAULT_CARD_DIMENSIONS } from '../files';
 import { Card, CardDimensions } from '../card';
@@ -18,7 +18,7 @@ export interface CardListProps {
   height?: number;
 
   cardDimensions?: CardDimensions;
-  cardType?: CardSize;
+  cardType?: 'small' | 'image';
 
   pageSize?: number;
 
@@ -198,7 +198,7 @@ export class CardList extends Component<CardListProps, CardListState> {
             }}
 
             appearance={cardType}
-            menuActions={cardActions}
+            actions={cardActions}
           />
         </li>
       );

@@ -1,9 +1,10 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {storiesOf, action} from '@kadira/storybook';
-import {FileCardViewSmall} from '../../src';
 import {tallImage, smallImage, smallTransparentImage, wideImage, wideTransparentImage} from '@atlaskit/media-test-helpers';
 import {StoryList} from '@atlaskit/media-test-helpers';
+
+import {FileCardViewSmall} from '../../src';
 
 const onClick = (event: Event) => {
   action('click')();
@@ -13,7 +14,7 @@ const onRetry = () => {
   action('try again')();
 };
 
-const menuActions = [
+const actions = [
   {label: 'Open', handler: () => { action('open')(); }},
   {label: 'Close', handler: () => { action('close')(); }}
 ];
@@ -256,7 +257,7 @@ storiesOf('FileCardViewSmall', {})
           mediaType="audio"
           mediaSize={32831}
           onClick={onClick}
-          menuActions={menuActions}
+          actions={actions}
         />
       }]}
     </StoryList>

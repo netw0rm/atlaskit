@@ -4,7 +4,7 @@ import {Component, MouseEvent} from 'react';
 import {CardAction, MediaType} from '@atlaskit/media-core';
 
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
-import {toHumanReadableMediaSize, Menu, ErrorIcon} from '../../utils';
+import {toHumanReadableMediaSize, getCSSUnitValue, Menu, ErrorIcon} from '../../utils';
 
 import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper, FileInfoWrapper} from './styled';
 
@@ -19,7 +19,7 @@ export interface FileCardViewSmallProps {
   progress?: number;
   loading?: boolean;
 
-  menuActions?: Array<CardAction>;
+  actions?: Array<CardAction>;
   onClick?: (event: Event) => void;
 
   error?: string;
@@ -38,8 +38,7 @@ export class FileCardViewSmall extends Component<FileCardViewSmallProps, FileCar
       return {};
     }
 
-    const widthStr =  typeof width === 'string' ? width : `${width}px`;
-    return {width: widthStr};
+    return {width: getCSSUnitValue(width)};
   }
 
   constructor(props: FileCardViewSmallProps) {
@@ -101,7 +100,7 @@ export class FileCardViewSmall extends Component<FileCardViewSmallProps, FileCar
   }
 
   formatCard(left: JSX.Element, right: JSX.Element) {
-    const {menuActions} = this.props;
+    const {actions} = this.props;
     const cardStyle = this.wrapperStyles;
     const cardClass = cx({loading: this.props.loading});
     const imgClass = cx('img-wrapper', {shadow: this.props.mediaType === 'image' && this.props.dataURI});
@@ -114,7 +113,7 @@ export class FileCardViewSmall extends Component<FileCardViewSmallProps, FileCar
         <InfoWrapper className="info-wrapper">
           {right}
         </InfoWrapper>
-        <Menu actions={menuActions} />
+        <Menu actions={actions} />
       </SmallCard>
     );
   }

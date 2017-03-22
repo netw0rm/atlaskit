@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Context, CardAction, TrelloBoardLinkApp, UrlPreview } from '@atlaskit/media-core';
 
-import { CardDimensions, CardAppearance, OnLoadingChangeFunc, OnLoadingChangeState, OnSelectChangeFunc, CardEvent, ProcessingStatus } from '../../card';
+import { CardDimensions, CardAppearance, OnLoadingChangeFunc, OnLoadingChangeState, OnSelectChangeFunc, CardEvent, CardProcessingStatus } from '../../card';
 import { LinkCardGenericView } from '../cardGenericView';
 import { LinkCardPlayer } from '../cardPlayerView';
 import { LinkCardTrelloBoardView } from '../apps/trello';
@@ -20,7 +20,7 @@ export interface LinkCardProps {
 
   readonly dimensions?: CardDimensions;
 
-  readonly menuActions?: Array<CardAction>;
+  readonly actions?: Array<CardAction>;
 
   readonly appearance?: CardAppearance;
 
@@ -33,14 +33,14 @@ export interface LinkCardProps {
 
 export interface LinkCardState {
   readonly subscription?: Subscription;
-  readonly processingStatus: ProcessingStatus;
+  readonly processingStatus: CardProcessingStatus;
   readonly urlPreview?: UrlPreview;
   readonly error?: Error;
 }
 
 export class LinkCard extends Component<LinkCardProps, LinkCardState> {
   static defaultProps: Partial<LinkCardProps> = {
-    menuActions: [],
+    actions: [],
     onLoadingChange: () => {}
   };
 
@@ -197,7 +197,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
     const icon = resources ? resources.icon : undefined;
     const thumbnail = resources ? resources.icon : undefined;
 
-    const { dimensions, menuActions, appearance } = this.props;
+    const { dimensions, actions, appearance } = this.props;
     const { processingStatus } = this.state;
 
     return <LinkCardGenericView
@@ -212,7 +212,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
 
       appearance={appearance}
       loading={processingStatus === 'loading'}
-      menuActions={menuActions}
+      actions={actions}
     />;
   }
 };

@@ -78,6 +78,21 @@ storiesOf('Card', {})
       url: 'https://i.ytimg.com/vi/iLbyjaF8Cyc/maxresdefault.jpg'
     };
 
+    const audioUrlIdentifier: UrlPreviewIdentifier = {
+      mediaItemType: 'link',
+      url: 'https://devchat.cachefly.net/javascriptjabber/JSJ243_Immutable.js_with_Lee_Byron.mp3'
+    };
+
+    const docUrlIdentifier: UrlPreviewIdentifier = {
+      mediaItemType: 'link',
+      url: 'https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf'
+    };
+
+    const unknownLinkIdentifier: UrlPreviewIdentifier = {
+      mediaItemType: 'link',
+      url: 'https://www.reddit.com/r/javascript/'
+    };
+
     const videoFileIdentifier: MediaIdentifier = {
       mediaItemType: 'file',
       id: '1b01a476-83b4-4f44-8192-f83b2d00913a', // mp4 video
@@ -90,13 +105,30 @@ storiesOf('Card', {})
       collectionName
     };
 
+    const docFileIdentifier: MediaIdentifier = {
+      mediaItemType: 'file',
+      id: '71cd7e7d-4e86-4b89-a0b4-7f6ffe013c94',
+      collectionName
+    };
+
+    const unknownFileIdentifier: MediaIdentifier = {
+      mediaItemType: 'file',
+      id: 'e0652e68-c596-4800-8a91-1920e6b8a585',
+      collectionName
+    };
+
     // file cards
     const videoLinkCard = <Card context={context} identifier={videoUrlIdentifier} />;
     const imageLinkCard = <Card context={context} identifier={imageUrlIdentifier} />;
+    const audioLinkCard = <Card context={context} identifier={audioUrlIdentifier} />;
+    const docLinkCard = <Card context={context} identifier={docUrlIdentifier} />;
+    const unknownLinkCard = <Card context={context} identifier={unknownLinkIdentifier} />;
 
     // link cards
     const videoFileCard = <Card context={context} identifier={videoFileIdentifier} />;
     const imageFileCard = <Card context={context} identifier={imageFileIdentifier} />;
+    const docFileCard = <Card context={context} identifier={docFileIdentifier} />;
+    const unknownFileCard = <Card context={context} identifier={unknownFileIdentifier} />;
 
     return (
       <div style={{margin: '40px'}}>
@@ -105,20 +137,35 @@ storiesOf('Card', {})
             <thead>
               <tr>
                 <td />
-                <td>video</td>
-                <td>image</td>
+                <td>File Cards</td>
+                <td>Link Cards</td>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>File Cards</td>
+                <td>video</td>
                 <td><div>{videoFileCard}</div></td>
-                <td><div>{imageFileCard}</div></td>
+                <td><div>{videoLinkCard}</div></td>
               </tr>
               <tr>
-                <td>Link Cards</td>
-                <td><div>{videoLinkCard}</div></td>
+                <td>image</td>
+                <td><div>{imageFileCard}</div></td>
                 <td><div>{imageLinkCard}</div></td>
+              </tr>
+              <tr>
+                <td>audio</td>
+                <td />
+                <td><div>{audioLinkCard}</div></td>
+              </tr>
+              <tr>
+                <td>doc</td>
+                <td><div>{docFileCard}</div></td>
+                <td><div>{docLinkCard}</div></td>
+              </tr>
+              <tr>
+                <td>unknown</td>
+                <td><div>{unknownFileCard}</div></td>
+                <td><div>{unknownLinkCard}</div></td>
               </tr>
             </tbody>
         </Matrix>

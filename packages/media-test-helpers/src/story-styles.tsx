@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 
 export const Matrix = styled.table`
+
   thead {
     td {
       text-align: center;
@@ -12,7 +13,7 @@ export const Matrix = styled.table`
 
   tbody {
     td {
-      padding: 25px 0;
+      padding: 25px 10px;
     }
   }
 

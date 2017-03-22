@@ -43,7 +43,7 @@ export function FilmStrip(props: FilmStripProps): JSX.Element {
         context={props.context}
         id={item.id}
         dimensions={props.cardDimensions}
-        menuActions={createCardActions(props.actions, props.items)}
+        actions={createCardActions(props.actions, props.items)}
       />
     </li>;
   });

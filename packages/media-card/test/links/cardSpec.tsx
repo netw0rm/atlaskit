@@ -158,7 +158,7 @@ describe('LinkCard', () => {
     const context = fakeContext({
       getUrlPreviewProvider: {observable: () => Observable.create(observer => {
         observer.next({});
-        observer.error();
+        observer.error(errorPayload);
       })}
     });
 

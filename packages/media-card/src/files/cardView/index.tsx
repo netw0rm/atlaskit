@@ -3,6 +3,7 @@ import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 import {MediaType} from '@atlaskit/media-core';
 
+import {getCSSUnitValue} from '../../utils/index';
 import {CardDimensions} from '../../card';
 import {CardContent} from '../cardContent';
 import {CardOverlay} from '../cardOverlay';
@@ -22,7 +23,7 @@ export interface FileCardViewProps {
   selectable?: boolean;
   selected?: boolean;
 
-  menuActions?: Array<CardAction>;
+  actions?: Array<CardAction>;
   onClick?: (event: Event) => void;
 
   error?: string;
@@ -34,7 +35,6 @@ export const DEFAULT_CARD_DIMENSIONS = {
   HEIGHT: '104px'
 };
 
-
 export class FileCardView extends Component<FileCardViewProps, {}> {
   private get width(): string {
     const {width} = this.props.dimensions || {width: undefined};
@@ -43,7 +43,7 @@ export class FileCardView extends Component<FileCardViewProps, {}> {
       return DEFAULT_CARD_DIMENSIONS.WIDTH ;
     }
 
-    return typeof width === 'string' ? width : `${width}px`;
+    return getCSSUnitValue(width);
   }
 
   private get height(): string {
@@ -53,7 +53,7 @@ export class FileCardView extends Component<FileCardViewProps, {}> {
       return DEFAULT_CARD_DIMENSIONS.HEIGHT ;
     }
 
-    return typeof height === 'string' ? height : `${height}px`;
+    return getCSSUnitValue(height);
   }
 
   render() {
@@ -70,7 +70,7 @@ export class FileCardView extends Component<FileCardViewProps, {}> {
             mediaType={this.props.mediaType}
             error={error}
             onRetry={this.props.onRetry}
-            menuActions={this.props.menuActions}
+            actions={this.props.actions}
           />
         </Card>
       );
@@ -86,7 +86,7 @@ export class FileCardView extends Component<FileCardViewProps, {}> {
         mediaSize={this.props.mediaSize}
         progress={this.props.progress}
 
-        menuActions={this.props.menuActions}
+        actions={this.props.actions}
       />;
       return (
         <Card style={cardStyle} className={'card'} onClick={this.onClick.bind(this)}>

@@ -3,7 +3,7 @@ import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
 import {CardDimensions, CardAppearance} from '../../card';
-import {Ellipsify, Menu, MediaImage} from '../../utils';
+import {Ellipsify, Menu, MediaImage, getCSSUnitValue} from '../../utils';
 import {Details, Wrapper} from '../styled';
 import {
   Title,
@@ -26,7 +26,7 @@ export interface LinkCardGenericViewProps {
   // TODO FIL-3892 implement visual designs for loading state
   loading?: boolean;
 
-  menuActions?: Array<CardAction>;
+  actions?: Array<CardAction>;
   onClick?: (event: Event) => void;
 
   // TODO FIL-3893 implement visual designs for error state
@@ -47,7 +47,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
   static defaultProps = {
     title: '',
     description: '',
-    menuActions: [],
+    actions: [],
     appearance: 'auto'
   };
 
@@ -83,7 +83,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
       return this.isHorizontal ? defaultHorizontalWidth : defaultSquareWidth;
     }
 
-    return typeof width === 'string' ? width : `${width}px`;
+    return getCSSUnitValue(width);
   }
 
   private get height(): string {
@@ -94,7 +94,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
       return this.isHorizontal ? defaultHorizontalHeight : defaultSquareHeight;
     }
 
-    return typeof height === 'string' ? height : `${height}px`;
+    return getCSSUnitValue(height);
   }
 
   private get isHorizontal() {
@@ -126,7 +126,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
   }
 
   render() {
-    const {linkUrl, title, description, menuActions, appearance} = this.props;
+    const {linkUrl, title, description, actions, appearance} = this.props;
     const cardStyle = {height: this.height, width: this.width};
 
     const thumbnail = this.getThumbnail();
@@ -151,7 +151,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
                 {linkUrl}
               </a>
             </Link>
-            <Menu actions={menuActions} />
+            <Menu actions={actions} />
           </Footer>
         </Details>
       </Wrapper>

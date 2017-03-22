@@ -64,7 +64,7 @@ export function FilmStripView(props: FilmStripViewProps): JSX.Element {
         mediaType={item.mediaType}
         mediaSize={item.mediaSize}
         onClick={onItemClick(item, props)}
-        menuActions={createCardActions(item, props.items, props.menuActions)}
+        actions={createCardActions(item, props.items, props.menuActions)}
       />
     </li>
   ));

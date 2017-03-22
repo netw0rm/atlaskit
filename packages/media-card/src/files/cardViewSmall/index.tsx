@@ -3,108 +3,39 @@ import * as cx from 'classnames';
 import {Component, MouseEvent} from 'react';
 import {CardAction, MediaType} from '@atlaskit/media-core';
 
-import {CardContentSmall} from './cardContentSmall/cardContentSmall';
 import {toHumanReadableMediaSize, Menu, ErrorIcon} from '../../utils';
-
+import {CardGenericViewSmall} from '../../utils/cardGenericViewSmall';
 import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper, FileInfoWrapper} from './styled';
 
 export interface CardViewSmallProps {
   width?: number;
-
   mediaName?: string;
   mediaType?: MediaType;
   mediaSize?: number;
-
   dataURI?: string;
   progress?: number;
   loading?: boolean;
-
   menuActions?: Array<CardAction>;
   onClick?: (event: Event) => void;
-
   error?: string;
   onRetry?: CardAction;
 }
 
-export interface CardViewSmallState {
-  isMenuExpanded: boolean;
-}
-
-export class CardViewSmall extends Component<CardViewSmallProps, CardViewSmallState> {
-  constructor(props: CardViewSmallProps) {
-    super(props);
-
-    this.state = {
-      isMenuExpanded: false
-    };
-  }
-
+export class CardViewSmall extends Component<CardViewSmallProps, {}> {
   render() {
-    const {error} = this.props;
+    const subtitle = this.props.mediaSize && toHumanReadableMediaSize(this.props.mediaSize);
 
-    if (error) {
-      const onRetry = this.props.onRetry;
-      const retryMessage = (onRetry) ? (onRetry.label || 'Try again') : '';
-      const retryHandler = (event: MouseEvent<HTMLSpanElement>) => {
-        // We need to prevent the card's onClick being called
-        event.stopPropagation();
-        event.preventDefault();
-        onRetry && onRetry.handler(undefined, event.nativeEvent);
-      };
-      const retryComponent = (onRetry) ? (
-        <Retry className="retry">
-          <span onClick={retryHandler}>{retryMessage}</span>
-        </Retry>
-      ) : null;
-
-      return this.formatCard((
-        <ErrorIcon />
-      ), (
-        <div>
-          <Error className="error">{error}</Error>
-          {retryComponent}
-        </div>
-      ));
-    } else {
-      const fileSize = this.props.mediaSize && toHumanReadableMediaSize(this.props.mediaSize);
-
-      return this.formatCard((
-        <RoundedBackground>
-          <CardContentSmall
-            loading={this.props.loading}
-            mediaType={this.props.mediaType || 'unknown'}
-            dataURI={this.props.dataURI}
-          />
-        </RoundedBackground>
-      ), (
-        <FileInfoWrapper>
-          <Title className="title">{this.props.mediaName}</Title>
-          <Size className="size">{fileSize}</Size>
-        </FileInfoWrapper>
-      ));
-    }
-  }
-
-  onClick(event: MouseEvent<HTMLDivElement>) {
-    this.props.onClick && this.props.onClick(event.nativeEvent);
-  }
-
-  formatCard(left: JSX.Element, right: JSX.Element) {
-    const {menuActions} = this.props;
-    const cardStyle = this.props.width ? {width: `${this.props.width}px`} : {};
-    const cardClass = cx({loading: this.props.loading});
-    const imgClass = cx('img-wrapper', {shadow: this.props.mediaType === 'image' && this.props.dataURI});
-
-    return (
-      <SmallCard style={cardStyle} className={cardClass} onClick={this.onClick.bind(this)}>
-        <ImgWrapper className={imgClass}>
-          {left}
-        </ImgWrapper>
-        <InfoWrapper className="info-wrapper">
-          {right}
-        </InfoWrapper>
-        <Menu actions={menuActions} />
-      </SmallCard>
-    );
+    return <CardGenericViewSmall
+      title={this.props.mediaName}
+      subtitle={subtitle}
+      thumbnailUrl={this.props.dataURI}
+      width={this.props.width}
+      loading={this.props.loading}
+      menuActions={this.props.menuActions}
+      onClick={this.props.onClick}
+      error={this.props.error}
+      onRetry={this.props.onRetry}
+      mediaType={this.props.mediaType}
+    />;
   }
 }

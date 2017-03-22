@@ -8,7 +8,8 @@ import {
   Plugin,
   Node,
 } from '../../prosemirror';
-import { liftBlock } from '../utils';
+import inputRulePlugin from './input-rules';
+import { reconfigure } from '../utils';
 
 export interface PanelType {
   panelType: 'info' | 'note' | 'tip' | 'warning';
@@ -44,12 +45,12 @@ export class PanelState {
     analyticsService.trackEvent(`atlassian.editor.format.${panelType}.button`);
     const { state, dispatch } = view;
     let { tr } = state;
+    // wrap selection in new panel type
     const { panel } = state.schema.nodes;
     const { $from, $to } = state.selection;
-    // let blockStart = tr.doc.resolve($from.start($from.depth - 1));
-    // let blockEnd = tr.doc.resolve($to.end($to.depth - 1));
     let range = $from.blockRange($to)!;
     tr = tr.wrap(range, [{ type: panel, attrs: panelType }]);
+    // list selection
     tr.setSelection(state.selection.map(tr.doc, tr.mapping));
     let blockStart = tr.doc.resolve($from.start($from.depth - 1));
     let blockEnd = tr.doc.resolve($to.end($to.depth - 1));
@@ -60,7 +61,10 @@ export class PanelState {
 
   removePanelType(view: EditorView) {
     const { dispatch, state } = view;
-    dispatch(liftBlock(state));
+    const { tr } = state;
+    const { $from, $to } = state.selection;
+    const range = $from.blockRange($to)!;
+    dispatch(tr.lift(range, $from.depth - 2));
   }
 
   // checkEndPanelBlock(): boolean {
@@ -151,8 +155,8 @@ const plugin = new Plugin({
     }
   },
   key: stateKey,
-  view: (editorView: EditorView) => {
-    // reconfigure(view, [keymapPlugin(view.state.schema), inputRulePlugin(view.state.schema)]);
+  view: (view: EditorView) => {
+    reconfigure(view, [inputRulePlugin(view.state.schema)]);
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
         stateKey.getState(view.state).update(view.state, view.docView);
@@ -178,5 +182,3 @@ export default plugin;
 
 // add key-maps
 // add input-rules
-// move generic code to commands.js
-// add analytics to remove panel

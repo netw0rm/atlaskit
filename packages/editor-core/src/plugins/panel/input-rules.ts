@@ -1,22 +1,38 @@
-import { analyticsService } from '../../analytics';
-import { commands, InputRule, ProseMirror } from '../../prosemirror';
+import { Schema, InputRule, inputRules, Plugin, EditorState } from '../../prosemirror';
 
-const panelTypes = ['info', 'note', 'tip', 'warning'];
+const availablePanelTypes = ['info', 'note', 'tip', 'warning'];
+let plugin: Plugin | undefined;
 
-export default panelTypes.map((panelType) => {
-  return new InputRule(new RegExp(`^{${panelType}}$`), '', (
-    pm: ProseMirror,
-    match: string[],
-    to: number
-  ) : boolean => {
+export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+  if (plugin) {
+    return plugin;
+  }
 
-    analyticsService.trackEvent(`atlassian.editor.format.${panelType}.autoformatting`);
+  const panelInputRule = new InputRule(
+    /^\{(\S+)\}$/, (
+      state: EditorState<any>,
+      match: Object | undefined,
+      start: number,
+      end: number
+    ) => {
+    const panelType = match && match[1];
 
-    pm.tr.delete(to - (panelType.length + 2), to).apply();
-    const { nodes } = pm.schema;
-    if (nodes.panel) {
-      commands.wrapIn(nodes.panel, { panelType })(pm);
+    if (panelType && availablePanelTypes.indexOf(panelType) >= 0) {
+      const { schema } = state;
+      let { tr } = state;
+      const { panel } = schema.nodes;
+      if (panel) {
+        const { $from } = state.selection;
+        let range = $from.blockRange($from)!;
+        tr = tr.wrap(range, [{ type: panel, attrs: { panelType } }]);
+        tr = tr.delete(end - (panelType.length + 2), end + 1);
+        return tr;
+      }
     }
-    return true;
   });
-});
+
+  plugin = inputRules({ rules: [panelInputRule]});
+  return plugin;
+};
+
+export default inputRulePlugin;

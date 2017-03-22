@@ -6,7 +6,7 @@ import Description from './description';
 import Heading from './heading';
 
 export default class extends PureComponent {
-  static displayName = 'AkutilReadme'
+  static displayName = 'utilReadme'
   static propTypes = {
     children: PropTypes.node,
     component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,

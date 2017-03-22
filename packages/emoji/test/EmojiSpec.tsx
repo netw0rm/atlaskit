@@ -14,7 +14,7 @@ describe('<Emoji />', () => {
       />);
 
       const sprite = wrapper.find(`.${styles.emojiSprite}`);
-      expect(sprite.prop('style').backgroundImage).to.equal('url(https://path-to-spritesheet.png)');
+      expect((sprite.prop('style') || {}).backgroundImage).to.equal('url(https://path-to-spritesheet.png)');
     });
 
     it('should use percentage for background-position', () => {
@@ -23,7 +23,7 @@ describe('<Emoji />', () => {
       />);
 
       const sprite = wrapper.find(`.${styles.emojiSprite}`);
-      expect(sprite.prop('style').backgroundPosition).to.equal('20% 20%');
+      expect((sprite.prop('style') || {}).backgroundPosition).to.equal('20% 20%');
     });
 
     it('should use zoom the background image', () => {
@@ -32,7 +32,8 @@ describe('<Emoji />', () => {
       />);
 
       const sprite = wrapper.find(`.${styles.emojiSprite}`);
-      expect(sprite.prop('style').backgroundSize).to.equal('600% 600%');
+      const size = ((sprite.prop('style') || {}) as any).backgroundSize;
+      expect(size).to.equal('600% 600%');
     });
 
     it('should be selected', () => {
@@ -52,7 +53,7 @@ describe('<Emoji />', () => {
       />);
 
       const sprite = wrapper.find(`.${styles.emoji}`);
-      expect(sprite.prop('style').backgroundImage).to.equal('url(https://path-to-image.png)');
+      expect((sprite.prop('style') || {}).backgroundImage).to.equal('url(https://path-to-image.png)');
     });
 
     it('should be selected', () => {

@@ -1,9 +1,3 @@
-/**
- * Icon size values.
- *
- * @exports size
- * @enum {string}
- */
 const size = {
   /** small icon */
   small: 'small',

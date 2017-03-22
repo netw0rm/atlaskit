@@ -21,6 +21,5 @@ export const noDialogContainerBoxShadow = '0 3px 6px rgba(0, 0, 0, 0.2)';
 export const akEmojiSelectedBackgroundColor = akColorB50;
 export const emojiPreviewSelectedColor = akColorN30;
 
-export const scrollableMaxHeight = '350px';
-
-export const emojiTypeAheadWidth = '350px';
+export const emojiTypeAheadMaxHeight = 350;
+export const emojiTypeAheadWidth = 350;

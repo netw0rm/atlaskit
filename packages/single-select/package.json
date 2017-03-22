@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/single-select",
-  "version": "1.4.0",
+  "version": "1.4.3",
   "config": {
     "access": "public"
   },
@@ -33,6 +33,11 @@
     "@atlaskit/single-select": "*"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Nadia M"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

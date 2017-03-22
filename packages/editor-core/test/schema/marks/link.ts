@@ -11,30 +11,30 @@ const content = 'foo';
 const sampleLink = `<a href="${href}">${content}</a>`;
 
 describe('ak-editor-core/schema link mark', () => {
-  itMatches(`${sampleLink}`, href, content);
-  itMatches(`<a href="${href}" title="test" alt="hello">${content}</a>`, href, content);
-  itMatches(`<a href="${href2}">${content}</a>`, href2, content);
-  itMatches(`<a href="${href3}">${content}</a>`, href3, content);
+    itMatches(`${sampleLink}`, href, content);
+    itMatches(`<a href="${href}" title="test" alt="hello">${content}</a>`, href, content);
+    itMatches(`<a href="${href2}">${content}</a>`, href2, content);
+    itMatches(`<a href="${href3}">${content}</a>`, href3, content);
 
-  it(`serializes to ${sampleLink}`, () => {
-    const schema = makeSchema();
-    const node = schema.text(content, [ schema.marks.link.create({ href }) ] );
-    const html: string = toHTML(node, schema);
-    expect(html).to.have.string(`${sampleLink}`);
-  });
+    it(`serializes to ${sampleLink}`, () => {
+        const schema = makeSchema();
+        const node = schema.text(content, [ schema.marks.link.create({ href }) ] );
+        const html: string = toHTML(node, schema);
+        expect(html).to.have.string(`${sampleLink}`);
+    });
 });
 
 function makeSchema () {
-  const nodes = {doc, paragraph, text};
-  const marks = {link};
-  return new Schema<typeof nodes, typeof marks>({ nodes, marks });
+    const nodes = {doc, paragraph, text};
+    const marks = {link};
+    return new Schema<typeof nodes, typeof marks>({ nodes, marks });
 }
 
 function itMatches (html: string, href, expectedText: string) {
-  it(`matches ${html}`, () => {
-    const schema = makeSchema();
-    const doc = fromHTML(html, schema);
-    const link = schema.marks.link.create({ href });
-    expect(doc).to.have.textWithMarks(expectedText, [ link ]);
-  });
+    it(`matches ${html}`, () => {
+        const schema = makeSchema();
+        const doc = fromHTML(html, schema);
+        const link = schema.marks.link.create({ href });
+        expect(doc).to.have.textWithMarks(expectedText, [ link ]);
+    });
 }

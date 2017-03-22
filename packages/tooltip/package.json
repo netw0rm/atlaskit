@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tooltip",
-  "version": "1.0.3",
+  "version": "1.0.7",
   "config": {
     "access": "public"
   },
@@ -21,6 +21,14 @@
     "@atlaskit/layer": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Luke B"
+    },
+    {
+      "name": "Nadia M"
+    }
+  ],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2"

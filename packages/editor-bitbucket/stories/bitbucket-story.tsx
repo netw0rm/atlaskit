@@ -1,5 +1,5 @@
 import '!style!css!less!./bitbucket-styles.less';
-import { base64fileconverter, storyDecorator } from '@atlaskit/editor-core/test-helper';
+import { base64fileconverter, storyDecorator } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -15,10 +15,22 @@ const SAVE_ACTION = () => action('Save')();
 const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
+const isClipboardEvent = (e: Event) => {
+  return (typeof ClipboardEvent !== 'undefined')
+    ? e instanceof ClipboardEvent
+    : (e as ClipboardEvent).clipboardData instanceof DataTransfer;
+};
+
+const isDragEvent = (e: Event) => {
+  return (typeof DragEvent !== 'undefined')
+    ? e instanceof DragEvent
+    : (e as DragEvent).dataTransfer instanceof DataTransfer;
+};
+
 const imageUploadHandler = (e: any, fn: any) => {
-  if (e instanceof ClipboardEvent) {
+  if (isClipboardEvent(e)) {
     pasteHandler(converter, e, fn);
-  } else if (e instanceof DragEvent) {
+  } else if (isDragEvent(e)) {
     dropHandler(converter, e, fn);
   } else {
     // we cannot trigger a real file viewer from here
@@ -65,6 +77,33 @@ storiesOf(name, module)
       onSave={SAVE_ACTION}
     />
   )
+  .add('With attaching/detaching', () => {
+    let ref: Node;
+    let editor;
+    return (
+      <div>
+        <div id="editor">
+          <div ref={(elem) => ref = elem as Node}>
+            <Editor
+              ref={(e) => editor = e}
+              onCancel={() => (ref.parentNode as Node).removeChild(ref)}
+              onChange={CHANGE_ACTION}
+              onSave={SAVE_ACTION}
+              isExpandedByDefault
+            />
+          </div>
+        </div>
+        <button
+          onClick={() => {
+            (document.getElementById('editor') as Node).appendChild(ref);
+            editor && editor.clear();
+          }}
+        >
+          Attach
+        </button>
+      </div>
+    );
+  })
   .add('Analytics events', () => {
     return (
       <div>

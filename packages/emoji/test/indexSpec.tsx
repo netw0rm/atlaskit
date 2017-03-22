@@ -12,11 +12,16 @@ describe(name, () => {
     it('should export all the right subcomponents', () => {
       Object.keys(other).should.be.deep.equal([
         'Emoji',
+        'EmojiPlaceholder',
         'ResourcedEmoji',
+        'ResourcedEmojiShortcut',
         'EmojiPicker',
         'EmojiTypeAhead',
         'EmojiResource',
+        'AbstractResource',
         'EmojiService',
+        'EmojiLoader',
+        'denormaliseEmojiServiceResponse',
         'default',
       ]);
     });

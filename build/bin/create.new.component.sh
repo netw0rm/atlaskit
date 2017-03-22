@@ -49,7 +49,5 @@ popd > /dev/null
 # Install dependencies and link internal packages
 yarn run bootstrap/single/with-deps "@atlaskit/$COMP_NAME"
 
-yarn run docs/single "@atlaskit/$COMP_NAME"
-
 $CHALK --no-stdin -t "{green New component '$COMP_NAME' created (v1.0.0)}"
 $CHALK --no-stdin -t "{white.bold Hint: Please leave the version at 1.0.0+, as otherwise caret dependencies work differently}"

@@ -8,19 +8,19 @@ export * from './ui';
 export * from './analytics';
 export type ContextName = 'default';
 export {
-  dom,
-  NodeSpec,
-  MarkSpec,
-  DOMSerializer,
-  DOMParser,
-  Fragment,
-  Node,
-  Mark,
-  Slice,
-  Schema,
-  NodeType,
-  MarkType,
-  browser,
-  EditorView,
-  Plugin
+    dom,
+    NodeSpec,
+    MarkSpec,
+    DOMSerializer,
+    DOMParser,
+    Fragment,
+    Node,
+    Mark,
+    Slice,
+    Schema,
+    NodeType,
+    MarkType,
+    browser,
+    EditorView,
+    Plugin
 } from './prosemirror';

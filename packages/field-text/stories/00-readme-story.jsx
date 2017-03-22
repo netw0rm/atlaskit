@@ -13,6 +13,8 @@ const fieldTextPropDescriptions = {
   type: 'The type of control to display.',
   disabled: 'Whether the field is disabled.',
   required: 'Whether the field is required.',
+  isInvalid: 'Whether the field is invalid. An invalid field will display a warning icon, and clicking the icon will show a warning dialog if `invalidMessage` is provided.',
+  invalidMessage: 'The message to show in the warning dialog when isInvalid is set.',
   label: 'The label to be rendered next to the supplied text input.',
   name: 'The name of the field, which is submitted with the form data.',
   placeholder: 'A hint to the user of what can be entered in the control.',
@@ -21,6 +23,7 @@ const fieldTextPropDescriptions = {
   id: 'The id of the field text',
   isLabelHidden: 'Whether the field should show a label above it. If set to true no label will be shown and no space will be reserved for it.',
   shouldFitContainer: 'Whether or not the field should fill the width of its container.',
+  autoFocus: 'Whether the field should have focus when the page loads.',
 };
 
 storiesOf(name, module)

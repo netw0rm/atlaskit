@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-hipchat",
-  "version": "1.2.1",
+  "version": "1.4.2",
   "config": {
     "access": "public"
   },
@@ -20,8 +20,13 @@
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Bradley A"
+    }
+  ],
   "dependencies": {
-    "@atlaskit/editor-core": "^1.13.2",
+    "@atlaskit/editor-core": "^5.0.0",
     "classnames": "^2.2.5",
     "tslib": "^1.2.0"
   },
@@ -37,5 +42,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "fabric",
+    "ui"
+  ]
 }

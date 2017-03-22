@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Readme from 'akutil-readme';
+import Readme from '@atlaskit/util-readme';
 
 class MyComponent extends PureComponent {
   static displayName = 'MyComponent'

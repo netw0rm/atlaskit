@@ -1,4 +1,4 @@
-import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from '@atlaskit/editor-core/test-helper';
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, sendKeyToPm } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { mount, ReactWrapper } from 'enzyme';
@@ -12,7 +12,7 @@ import Editor from '../src/index';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-bitbucket/analytics/start-event', () => {
+describe('@atlaskit/editor-bitbucket/analytics/start-event', () => {
   it('atlassian.editor.start', () => {
     const handler = sinon.spy();
     analyticsService.handler = handler;
@@ -56,7 +56,7 @@ describe('ak-editor-bitbucket/analytics/start-event', () => {
   });
 });
 
-describe('ak-editor-bitbucket/analytics/analyticsHandler', () => {
+describe('@atlaskit/editor-bitbucket/analytics/analyticsHandler', () => {
   it('updates analytics handler when provided via property', () => {
     const handler = sinon.spy();
     mount(<Editor analyticsHandler={handler} />);
@@ -68,7 +68,7 @@ describe('ak-editor-bitbucket/analytics/analyticsHandler', () => {
   });
 });
 
-describe('ak-editor-bitbucket/analytics/formatting', () => {
+describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   const fixture = fixtures();
   let handler;
   let editor: ReactWrapper<any, any>;
@@ -149,14 +149,14 @@ describe('ak-editor-bitbucket/analytics/formatting', () => {
     expect(handler.calledWith('atlassian.editor.format.em.keyboard')).to.equal(true);
   });
 
-  it('atlassian.editor.format.mono.keyboard', () => {
+  it('atlassian.editor.format.code.keyboard', () => {
     sendKeyToPm(pm, 'Mod-Shift-M');
-    expect(handler.calledWith('atlassian.editor.format.mono.keyboard')).to.equal(true);
+    expect(handler.calledWith('atlassian.editor.format.code.keyboard')).to.equal(true);
   });
 
-  it('atlassian.editor.format.mono.autoformatting', () => {
+  it('atlassian.editor.format.code.autoformatting', () => {
     pm.input.insertText(0, 0, '`text`');
-    expect(handler.calledWith('atlassian.editor.format.mono.autoformatting')).to.equal(true);
+    expect(handler.calledWith('atlassian.editor.format.code.autoformatting')).to.equal(true);
   });
 
   it('atlassian.editor.format.list.numbered.button', () => {

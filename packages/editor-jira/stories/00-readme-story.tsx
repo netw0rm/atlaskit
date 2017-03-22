@@ -76,10 +76,34 @@ storiesOf(name, module)
               <td>A callback for handling an analytics event emitted from the editor.</td>
             </tr>
             <tr>
+              <td><code>allowAdvancedTextFormatting</code></td>
+              <td><code>boolean</code></td>
+              <td><code>false</code></td>
+              <td>If <code>true</code>, inline code and strikethrough can be used in the editor.</td>
+            </tr>
+            <tr>
               <td><code>allowLists</code></td>
               <td><code>boolean</code></td>
               <td><code>false</code></td>
               <td>If <code>true</code>, unordered and ordered lists can be used in the editor.</td>
+            </tr>
+            <tr>
+              <td><code>allowLinks</code></td>
+              <td><code>boolean</code></td>
+              <td><code>false</code></td>
+              <td>If <code>true</code>, links can be used in the editor.</td>
+            </tr>
+            <tr>
+              <td><code>mentionProvider</code></td>
+              <td><code>Promise?</code></td>
+              <td><code>--</code></td>
+              <td>If <code>provided</code>, mentions can be used in the editor.</td>
+            </tr>
+            <tr>
+              <td><code>mentionEncoder</code></td>
+              <td><code>(userId: string) => string</code></td>
+              <td><code>--</code></td>
+              <td>If <code>provided</code>, controlls how mention will be encoded to html.</td>
             </tr>
           </tbody>
         </table>

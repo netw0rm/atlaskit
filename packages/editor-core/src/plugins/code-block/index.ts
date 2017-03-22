@@ -107,6 +107,7 @@ const plugin = new Plugin({
   },
   key: stateKey,
   view: (editorView: EditorView) => {
+    stateKey.getState(editorView.state).update(editorView.state, editorView.docView);
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
         stateKey.getState(view.state).update(view.state, view.docView);

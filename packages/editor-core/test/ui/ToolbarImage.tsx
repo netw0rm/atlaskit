@@ -3,19 +3,22 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import ImageUploadPlugin from '../../src/plugins/image-upload';
 import ToolbarImage from '../../src/ui/ToolbarImage';
-import { makeEditor } from '../../test-helper';
-import { code_block, doc, images, schema } from '../_schema-builder';
+import { doc, code_block, p, makeEditor, fixtures } from '../../src/test-helper';
 
 describe('ToolbarImage', () => {
-  const editor = (doc: any) => {
-    const { pm, plugin } = makeEditor({ doc, plugin: ImageUploadPlugin, schema });
-    return { pm, plugin, sel: pm.doc.refs['<>'] };
-  };
+
+  const fixture = fixtures();
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugin: ImageUploadPlugin,
+    place: fixture()
+  });
+
 
   context('when plugin is enabled', () => {
     it('sets disabled to false', () => {
-      const { plugin } = editor(doc(images('text')));
-      const toolbarImage = mount(<ToolbarImage pluginState={plugin} />);
+      const { editorView, pluginState } = editor(doc(p('text')));
+      const toolbarImage = mount(<ToolbarImage pluginState={pluginState} editorView={editorView} />);
 
       expect(toolbarImage.state('disabled')).to.be.false;
     });
@@ -23,8 +26,8 @@ describe('ToolbarImage', () => {
 
   context('when plugin is not enabled', () => {
     it('sets disabled to true', () => {
-      const { plugin } = editor(doc(code_block()('text')));
-      const toolbarImage = mount(<ToolbarImage pluginState={plugin} />);
+      const { editorView, pluginState } = editor(doc(code_block()('text')));
+      const toolbarImage = mount(<ToolbarImage pluginState={pluginState} editorView={editorView} />);
 
       expect(toolbarImage.state('disabled')).to.be.true;
     });

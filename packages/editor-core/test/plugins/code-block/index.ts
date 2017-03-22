@@ -3,10 +3,9 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import CodeBlockPlugin from '../../../src/plugins/code-block';
-import { setTextSelection, fixtures, createEvent, chaiPlugin, code_block, doc, makeEditor, p } from '../../../src/test-helper';
+import { setTextSelection, fixtures, chaiPlugin, code_block, doc, makeEditor, p } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
-const click = createEvent('click');
 
 describe('code-block', () => {
   const fixture = fixtures();
@@ -79,11 +78,11 @@ describe('code-block', () => {
 
     context('when click inside code_block', () => {
       it('notify the subscriber', () => {
-        const { plugin, sel, pluginState, editorView } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
+        const { plugin, pluginState, editorView } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
         const spy = sinon.spy();
         pluginState.subscribe(spy);
 
-        plugin.props.handleClick(editorView, sel, click);
+        plugin.props.handleClick(editorView);
 
         expect(spy.callCount).to.equal(2);
       });
@@ -91,11 +90,11 @@ describe('code-block', () => {
 
     context('when click outside of code_block', () => {
       it('does not notify the subscriber', () => {
-        const { plugin, editorView, sel, pluginState } = editor(doc(p('paragraph{<>}')));
+        const { plugin, editorView, pluginState } = editor(doc(p('paragraph{<>}')));
         const spy = sinon.spy();
         pluginState.subscribe(spy);
 
-        plugin.props.handleClick(editorView, sel, click);
+        plugin.props.handleClick(editorView);
 
         expect(spy.callCount).to.equal(1);
       });
@@ -184,9 +183,9 @@ describe('code-block', () => {
   context('clicked', () => {
     context('when click inside code block', () => {
       it('returns true', () => {
-        const { plugin, editorView, sel, pluginState } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+        const { plugin, editorView, pluginState } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
 
-        plugin.props.handleClick(editorView, sel, click);
+        plugin.props.handleClick(editorView);
 
         expect(pluginState.domEvent).to.be.true;
       });
@@ -194,9 +193,9 @@ describe('code-block', () => {
 
     context('when click outside of code block', () => {
       it('returns false', () => {
-        const { plugin, editorView, sel, pluginState } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock')));
+        const { plugin, editorView, pluginState } = editor(doc(p('paragraph{<>}'), code_block()('codeBlock')));
 
-        plugin.props.handleClick(editorView, sel, click);
+        plugin.props.handleClick(editorView);
 
         expect(pluginState.domEvent).to.be.false;
       });

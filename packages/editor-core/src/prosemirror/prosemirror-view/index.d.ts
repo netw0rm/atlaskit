@@ -26,7 +26,7 @@ export class EditorView {
   endOfTextblock(dir: 'up' | 'down' | 'left' | 'right' | 'forward' | 'backward', state?: EditorState<any>): boolean;
   destroy(): void;
   dispatch(tr: Transaction): void;
-  dispatchEvent(event: string | CustomEvent);
+  dispatchEvent(event: string | CustomEvent | {type: string});
 }
 
 export interface PluginProps {

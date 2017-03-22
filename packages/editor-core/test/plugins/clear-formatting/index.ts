@@ -35,7 +35,7 @@ describe('clear-formatting', () => {
     });
 
     it('should be false if all present marks are cleared', () => {
-      const { editorView, pluginState } = editor(doc(p(strong('{<text>}'))));
+      const { editorView, pluginState } = editor(doc(p(strong('{<}text{>}'))));
 
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
@@ -55,48 +55,24 @@ describe('clear-formatting', () => {
   });
 
   describe('clearFormatting', () => {
-    it('should clear strong if present', () => {
-      const { editorView, pluginState } = editor(doc(p(strong('t{<ex>}t'))));
-      expect(pluginState.formattingIsPresent).to.be.true;
+    [
+      {nodeName: 'strong', nodeType: strong},
+      {nodeName: 'italic', nodeType: em},
+      {nodeName: 'underline', nodeType: u},
+      {nodeName: 'monospace', nodeType: code},
+      {nodeName: 'strikeout', nodeType: strike},
+    ].forEach(({nodeName, nodeType}) => {
+      it(`should clear ${nodeName} if present`, () => {
+        const { editorView, pluginState } = editor(doc(p(nodeType('t{<}ex{>}t'))));
+        expect(pluginState.formattingIsPresent).to.be.true;
 
-      pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.be.true;
-    });
-
-    it('should clear italic if present', () => {
-      const { editorView, pluginState } = editor(doc(p(em('t{<ex>}t'))));
-      expect(pluginState.formattingIsPresent).to.be.true;
-
-      pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.be.true;
-    });
-
-    it('should clear underline if present', () => {
-      const { editorView, pluginState } = editor(doc(p(u('t{<ex>}t'))));
-      expect(pluginState.formattingIsPresent).to.be.true;
-
-      pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.be.true;
-    });
-
-    it('should clear monospace if present', () => {
-      const { editorView, pluginState } = editor(doc(p(code('t{<ex>}t'))));
-      expect(pluginState.formattingIsPresent).to.be.true;
-
-      pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.be.true;
-    });
-
-    it('should clear strikeout if present', () => {
-      const { editorView, pluginState } = editor(doc(p(strike('t{<ex>}t'))));
-      expect(pluginState.formattingIsPresent).to.be.true;
-
-      pluginState.clearFormatting(editorView);
-      expect(pluginState.formattingIsPresent).not.to.be.true;
+        pluginState.clearFormatting(editorView);
+        expect(pluginState.formattingIsPresent).not.to.be.true;
+      });
     });
 
     it('should remove heading blocks if present', () => {
-      const { editorView, pluginState } = editor(doc(h1(strike('t{<ex>}t'))));
+      const { editorView, pluginState } = editor(doc(h1(strike('t{<}ex{>}t'))));
       expect(pluginState.formattingIsPresent).to.be.true;
 
       pluginState.clearFormatting(editorView);
@@ -137,19 +113,17 @@ describe('clear-formatting', () => {
   });
 
   describe('keymap', () => {
-    context('Cmd-\\', () => {
-      it('clear formatting', () => {
-        const { editorView, pluginState } = editor(doc(p(strong('t{<ex>}t'))));
-        expect(pluginState.formattingIsPresent).to.be.true;
+    it('should clear formatting', () => {
+      const { editorView, pluginState } = editor(doc(p(strong('t{<}ex{>}t'))));
+      expect(pluginState.formattingIsPresent).to.be.true;
 
-        if (browser.mac) {
-          sendKeyToPm(editorView, 'Cmd-\\');
-        } else {
-          sendKeyToPm(editorView, 'Ctrl-\\');
-        }
+      if (browser.mac) {
+        sendKeyToPm(editorView, 'Cmd-\\');
+      } else {
+        sendKeyToPm(editorView, 'Ctrl-\\');
+      }
 
-        expect(pluginState.formattingIsPresent).not.to.be.true;
-      });
+      expect(pluginState.formattingIsPresent).not.to.be.true;
     });
   });
 

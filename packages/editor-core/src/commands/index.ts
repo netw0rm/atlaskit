@@ -8,7 +8,7 @@ import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
-import { isRangeOfType } from '../utils/index-future';
+import { isRangeOfType } from '../utils';
 
 export function toggleBlockType(name: string): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {

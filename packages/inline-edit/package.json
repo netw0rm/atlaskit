@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-edit",
-  "version": "2.0.5",
+  "version": "2.0.8",
   "config": {
     "access": "public"
   },
@@ -35,6 +35,11 @@
     "uid": "0.0.2"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Matias C"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

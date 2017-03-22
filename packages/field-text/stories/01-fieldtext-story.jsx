@@ -7,6 +7,8 @@ import { name } from '../package.json';
 
 const formTestUrl = '//httpbin.org/get';
 
+const fieldRefs = {};
+
 function generateInput(opts) {
   const props = { label: 'Example label', ...opts };
   return (
@@ -60,6 +62,10 @@ function submitTestForm(useNativeSubmitBtn) {
       <iframe src="" name="myFrame" style={{ width: '50%', height: '300px' }} />
     </div>
   );
+}
+
+function focus1() {
+  fieldRefs.input1.focus();
 }
 
 storiesOf(name, module)
@@ -142,4 +148,22 @@ storiesOf(name, module)
   ))
   .add('ak-field-text with autofocus', () => (
     generateFormWithInput({ autoFocus: true })
+  ))
+  .add('field-text with buttons that choose foucs', () => (
+    <form
+      action={formTestUrl}
+      method="get"
+      style={{
+        backgroundColor: 'white',
+        padding: '40px',
+      }}
+    >
+      <h2>Focus Test</h2>
+      <AkFieldText label="First Field" name="1" ref={(field1Ref) => { fieldRefs.input1 = field1Ref; }} />
+      <AkFieldText label="Second Field" name="2" ref={(field2Ref) => { fieldRefs.input2 = field2Ref; }} />
+      <AkFieldText label="Third Field" name="3" ref={(field3Ref) => { fieldRefs.input3 = field3Ref; }} />
+      <p>
+        <Button appearance="primary" onClick={focus1}>Focus First Field</Button>
+      </p>
+    </form>
   ));

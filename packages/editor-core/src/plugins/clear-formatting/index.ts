@@ -17,7 +17,7 @@ import {
   PanelNodeType,
   ParagraphNodeType,
   EmMarkType,
-  MonoMarkType,
+  CodeMarkType,
   StrikeMarkType,
   StrongMarkType,
   UnderlineMarkType,
@@ -27,7 +27,7 @@ import { setSelectionToNormalText, liftSelectionBlocks } from '../../utils';
 
 export class ClearFormattingState {
   private pm: PM;
-  private markTypes = ['em', 'mono', 'strike', 'strong', 'u', 'link'];
+  private markTypes = ['em', 'code', 'strike', 'strong', 'u', 'link'];
   private activeMarkTypes: string[];
   private changeHandlers: ClearFormattingStateSubscriber[] = [];
 
@@ -120,7 +120,7 @@ export interface S extends Schema {
   };
   marks: {
     em?: EmMarkType;
-    mono?: MonoMarkType;
+    code?: CodeMarkType;
     strike?: StrikeMarkType;
     strong?: StrongMarkType;
     u?: UnderlineMarkType;

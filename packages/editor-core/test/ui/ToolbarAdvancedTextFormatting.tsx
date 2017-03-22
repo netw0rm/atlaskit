@@ -8,8 +8,8 @@ import ClearFormattingPlugin from '../../src/plugins/clear-formatting';
 import ToolbarAdvancedTextFormatting from '../../src/ui/ToolbarAdvancedTextFormatting';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import { makeEditor } from '../../src/test-helper';
-import { doc, p, schema } from '../_schema-builder';
-import Item from 'ak-droplist-item';
+import { doc, p, schema, code, strike } from '../_schema-builder';
+import Item from '@atlaskit/droplist-item';
 
 describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
   const editor = (doc: any) => {
@@ -70,11 +70,11 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     expect(toolbarOption.state('isOpen')).to.be.true;
   });
 
-  it('should not open drop-down when trigger clicked but all monospace and strikethrough and clearformatting are disabled', () => {
+  it('should not open drop-down when trigger clicked but all code and strikethrough and clearformatting are disabled', () => {
     const { plugins } = editor(doc(p('text')));
     const pluginState = plugins[0];
     if (pluginState) {
-      pluginState.monoDisabled = true;
+      pluginState.codeDisabled = true;
       pluginState.strikeDisabled = true;
       pluginState.marksPresent = false;
     }
@@ -101,7 +101,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     expect(toolbarOption.find(Tooltip).length).to.equal(3);
   });
 
-  it('should trigger toggleMono of pluginStateTextFormatting when monospace option is clicked', () => {
+  it('should trigger toggleCode of pluginStateTextFormatting when code option is clicked', () => {
     const { plugins } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
@@ -110,10 +110,10 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       />
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    plugins[0].toggleMono = sinon.spy();
-    const monospaceButton = toolbarOption.find(Item).at(0).childAt(0);
-    monospaceButton.simulate('click');
-    expect(plugins[0].toggleMono.callCount).to.equal(1);
+    plugins[0].toggleCode = sinon.spy();
+    const codeButton = toolbarOption.find(Item).at(0).childAt(0);
+    codeButton.simulate('click');
+    expect(plugins[0].toggleCode.callCount).to.equal(1);
   });
 
   it('should trigger toggleStrike of pluginStateTextFormatting when strikethrough option is clicked', () => {
@@ -131,7 +131,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     expect(plugins[0].toggleStrike.callCount).to.equal(1);
   });
 
-  it('should not have Monospace option if monoHidden is true', () => {
+  it('should not have Code option if codeHidden is true', () => {
     const { plugins } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
@@ -139,9 +139,9 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         pluginStateClearFormatting={plugins[1]}
       />
     );
-    toolbarOption.setState({ monoHidden: true, isOpen: true });
-    const monospaceButton = toolbarOption.find('span').findWhere(wrapper => wrapper.text() === 'Monospace');
-    expect(monospaceButton.length).to.equal(0);
+    toolbarOption.setState({ codeHidden: true, isOpen: true });
+    const codeButton = toolbarOption.find('span').findWhere(wrapper => wrapper.text() === 'Code');
+    expect(codeButton.length).to.equal(0);
   });
 
   it('should not have Strikethrough option if strikeHidden is true', () => {
@@ -173,11 +173,11 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     expect(plugins[1].clearFormatting.callCount).to.equal(1);
   });
 
-  it('should be disabled if all monospace and strikethrough and clearformatting are disabled', () => {
+  it('should be disabled if all code and strikethrough and clearformatting are disabled', () => {
     const { plugins } = editor(doc(p('text')));
     const pluginState = plugins[0];
     if (pluginState) {
-      pluginState.monoDisabled = true;
+      pluginState.codeDisabled = true;
       pluginState.strikeDisabled = true;
       pluginState.marksPresent = false;
     }
@@ -189,5 +189,29 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     const toolbarButton = toolbarOption.find(ToolbarButton);
     expect(toolbarButton.prop('disabled')).to.be.true;
+  });
+
+  it('should be selected inside code', () => {
+    const { plugins } = editor(doc(p(code('text'))));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={plugins[0]}
+        pluginStateClearFormatting={plugins[1]}
+      />
+    );
+    const toolbarButton = toolbarOption.find(ToolbarButton);
+    expect(toolbarButton.prop('selected')).to.be.true;
+  });
+
+  it('should be selected inside strike', () => {
+    const { plugins } = editor(doc(p(strike('text'))));
+    const toolbarOption = mount(
+      <ToolbarAdvancedTextFormatting
+        pluginStateTextFormatting={plugins[0]}
+        pluginStateClearFormatting={plugins[1]}
+      />
+    );
+    const toolbarButton = toolbarOption.find(ToolbarButton);
+    expect(toolbarButton.prop('selected')).to.be.true;
   });
 });

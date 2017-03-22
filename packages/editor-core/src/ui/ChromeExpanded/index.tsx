@@ -3,9 +3,11 @@ import AkButtonGroup from '@atlaskit/button-group';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { PureComponent } from 'react';
 import * as React from 'react';
+import { EmojiProvider } from '@atlaskit/emoji';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
+import { EmojisPluginState } from '../../plugins/emojis';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
@@ -13,6 +15,7 @@ import { MentionsPluginState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
+import EmojiTypeAhead from '../EmojiTypeAhead';
 import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
 import MentionPicker from '../MentionPicker';
@@ -43,8 +46,10 @@ export interface Props {
   pluginStateClearFormatting?: ClearFormattingState;
   pluginStateImageUpload?: ImageUploadState;
   pluginStateMentions?: MentionsPluginState;
+  pluginStateEmojis?: EmojisPluginState;
   mentionsResourceProvider?: any; // AbstractMentionResource
   presenceResourceProvider?: any; // AbstractPresenceResource
+  emojiProvider?: Promise<EmojiProvider>;
   pluginStatePanel?: PanelState;
 }
 
@@ -72,6 +77,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} /> : null}
           {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} /> : null}
           {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} presenceProvider={props.presenceResourceProvider} /> : null}
+          {props.pluginStateEmojis && props.emojiProvider ? <EmojiTypeAhead pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
           {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} /> : null}
         </div>
         <div className={styles.footer}>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import OutsideClickable from '../OutsideClickable';
-import Popper, { IPopper } from './popper';
+import Popper, { IPopper } from './../../popper';
 import * as styles from './styles';
 
 export interface Props {

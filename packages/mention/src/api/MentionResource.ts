@@ -2,7 +2,7 @@ import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chro
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 
-import { Mention, Presence } from '../types';
+import { Mention } from '../types';
 import debug from '../util/logger';
 
 export interface KeyValues {
@@ -41,10 +41,6 @@ export interface InfoCallback {
   (info: string): void;
 }
 
-export interface PresenceUpdate {
-  [index: string]: Presence;
-}
-
 export interface MentionsResult {
   mentions: Mention[];
 }
@@ -68,10 +64,6 @@ export interface MentionProvider extends ResourceProvider<Mention[]> {
   filter(query?: string): void;
   recordMentionSelection(mention: Mention): void;
   shouldHighlightMention(mention: Mention): boolean;
-}
-
-export interface PresenceProvider extends ResourceProvider<PresenceUpdate> {
-  refreshPresence(arrayOfIds: string[]): void;
 }
 
 const emptySecurityProvider = () => {
@@ -132,27 +124,27 @@ const buildHeaders = (secOptions: SecurityOptions) => {
 /**
  * @returns Promise containing the json response
  */
-const requestService = <T>(baseUrl: string, path: string | undefined, data: KeyValues, opts: KeyValues,
-                        secOptions: SecurityOptions, refreshedSecurityProvider?: RefreshSecurityProvider): Promise<T> => {
+const requestService = (baseUrl: string, path: string | undefined, data: KeyValues, opts: KeyValues,
+                        secOptions: SecurityOptions, refreshedSecurityProvider?: RefreshSecurityProvider) => {
   const url = buildUrl(baseUrl, path, data, secOptions);
   const headers = buildHeaders(secOptions);
   const options = {
     ...opts,
     ...{ headers },
-    credentials: 'include' as RequestCredentials,
+    credentials: 'include',
   };
   return fetch(new Request(url, options))
-    .then((response: Response) => {
+    .then(response => {
       if (response.ok) {
-        return response.json<T>();
+        return response.json();
       } else if (response.status === 401 && refreshedSecurityProvider) {
         // auth issue - try once
         debug('401 attempting a forced refresh from securityProvider');
         return refreshedSecurityProvider().then(newSecOptions => (
-          requestService<T>(baseUrl, path, data, opts, newSecOptions)
+          requestService(baseUrl, path, data, opts, newSecOptions)
         ));
       }
-      return Promise.reject<T>({
+      return Promise.reject({
         code: response.status,
         reason: response.statusText,
       });
@@ -187,24 +179,6 @@ class AbstractResource<Result> implements ResourceProvider<Result> {
     this.changeListeners.delete(key);
     this.errListeners.delete(key);
     this.infoListeners.delete(key);
-  }
-}
-
-class AbstractPresenceResource extends AbstractResource<PresenceUpdate> {
-  // eslint-disable-next-line class-methods-use-this
-  refreshPresence(arrayOfIds: string[]): void {
-    throw new Error(`not yet implemented.\nParams: arrayOfIds=${arrayOfIds}`);
-  }
-
-  protected notifyListeners(presences: PresenceUpdate): void {
-    this.changeListeners.forEach((listener, key) => {
-      try {
-        listener(presences);
-      } catch (e) {
-        // ignore error from listener
-        debug(`error from listener '${key}', ignoring`, e);
-      }
-    });
   }
 }
 
@@ -333,7 +307,7 @@ class MentionResource extends AbstractMentionResource {
       data['productIdentifier'] = this.config.productId;
     }
 
-    return requestService<MentionsResult>(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider);
+    return requestService(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider);
   }
 
   private search(query: string): Promise<MentionsResult> {
@@ -351,7 +325,7 @@ class MentionResource extends AbstractMentionResource {
       data['productIdentifier'] = this.config.productId;
     }
 
-    return requestService<MentionsResult>(this.config.url, 'search', data, options, secOptions, refreshedSecurityProvider);
+    return requestService(this.config.url, 'search', data, options, secOptions, refreshedSecurityProvider);
   }
 
   private recordSelection(mention: Mention): Promise<void> {
@@ -368,9 +342,9 @@ class MentionResource extends AbstractMentionResource {
       data['productIdentifier'] = this.config.productId;
     }
 
-    return requestService<void>(this.config.url, 'record', data, options, secOptions, refreshedSecurityProvider);
+    return requestService(this.config.url, 'record', data, options, secOptions, refreshedSecurityProvider);
   }
 }
 
-export { AbstractResource, AbstractMentionResource, AbstractPresenceResource };
+export { AbstractResource, AbstractMentionResource };
 export default MentionResource;

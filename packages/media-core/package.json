@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-core",
-  "version": "1.52.0",
+  "version": "1.83.0",
   "config": {
     "access": "public"
   },
@@ -19,6 +19,11 @@
     "src"
   ],
   "author": "Atlassian Pty. Ltd",
+  "maintainers": [
+    {
+      "name": "Jimmy L"
+    }
+  ],
   "license": "Apache-2.0",
   "keywords": [
     "media",

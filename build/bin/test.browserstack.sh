@@ -15,5 +15,5 @@ CURRENT_BRANCH="$CURRENT_BRANCH" \
 retry \
 --retries=$MAX_RETRIES \
 -- \
-karma start \
+node --max-old-space-size=4096 node_modules/.bin/karma start \
 ./build/karma/wc/browserstackAll.js

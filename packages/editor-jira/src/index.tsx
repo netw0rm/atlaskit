@@ -11,6 +11,7 @@ import {
   HyperlinkPlugin,
   ProseMirror,
   TextFormattingPlugin,
+  ClearFormattingPlugin,
   DefaultKeymapsPlugin,
   MentionsPlugin,
   version as coreVersion
@@ -36,6 +37,7 @@ export interface Props {
   analyticsHandler?: AnalyticsHandler;
   allowLists?: boolean;
   allowLinks?: boolean;
+  allowAdvancedTextFormatting?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   mentionEncoder?: (userId: string) => string;
 }
@@ -59,7 +61,8 @@ export default class Editor extends PureComponent<Props, State> {
       schema: makeSchema({
         allowLists: !!props.allowLists,
         allowMentions: !!props.mentionProvider,
-        allowLinks: !!props.allowLinks
+        allowLinks: !!props.allowLinks,
+        allowAdvancedTextFormatting: !!props.allowAdvancedTextFormatting
       }),
     };
 
@@ -155,6 +158,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
+        pluginStateClearFormatting={pm && ClearFormattingPlugin.get(pm)}
         pluginStateMentions={pm && mentionProvider && MentionsPlugin.get(pm)!}
         pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         packageVersion={version}
@@ -197,6 +201,7 @@ export default class Editor extends PureComponent<Props, State> {
           CodeBlockPlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          ClearFormattingPlugin,
           HorizontalRulePlugin,
           DefaultKeymapsPlugin,
           ...( isSchemaWithMentions(schema) ? [ MentionsPlugin ] : [] ),

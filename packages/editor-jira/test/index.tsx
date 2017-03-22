@@ -107,6 +107,20 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
       const editor: Editor = editorWrapper.get(0) as any;
       expect(editor.state.schema.marks.link).to.not.exist;
     });
+
+    it('allowAdvancedTextFormatting=true prop should enable advanced text formatting features', () => {
+      const editorWrapper = mount(<Editor allowAdvancedTextFormatting={true}/>);
+      const editor: Editor = editorWrapper.get(0) as any;
+      expect(editor.state.schema.marks.code).to.exist;
+      expect(editor.state.schema.marks.strike).to.exist;
+    });
+
+    it('advanced text formatting features should be disabled without allowAdvancedTextFormatting prop', () => {
+      const editorWrapper = mount(<Editor/>);
+      const editor: Editor = editorWrapper.get(0) as any;
+      expect(editor.state.schema.marks.code).to.not.exist;
+      expect(editor.state.schema.marks.strike).to.not.exist;
+    });
   });
 
 });

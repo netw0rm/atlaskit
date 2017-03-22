@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-test-helpers",
-  "version": "1.1.0",
+  "version": "1.32.0",
   "config": {
     "access": "public"
   },
@@ -26,6 +26,11 @@
     "tslib": "^1.2.0"
   },
   "author": "Atlassian Pty. Ltd",
+  "maintainers": [
+    {
+      "name": "Hector G"
+    }
+  ],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2"

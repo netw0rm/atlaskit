@@ -4,11 +4,11 @@ import {
   Plugin,
   PluginKey,
   EditorState,
-  EditorView,
+  EditorView
 } from '../../prosemirror';
 
 import * as commands from '../../commands';
-import keymapPlugin from './keymap';
+import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
 import { reconfigure } from '../utils';
 
@@ -44,6 +44,7 @@ export class TextFormattingState {
   subscriptHidden = false;
   clearStoredMarks = false;
   toggledMarks = {};
+  keymapHandler;
 
   constructor(state: EditorState<any>) {
     this.state = state;
@@ -251,7 +252,7 @@ export class TextFormattingState {
     let storedMarks = state.tr.storedMarks;
 
     if (storedMarks && markType.isInSet(storedMarks) && !this.toggledMarks[markType.name] && (!$from.nodeBefore || !markType.isInSet($from.nodeBefore.marks))) {
-      storedMarks = null;
+      storedMarks = undefined;
       this.clearStoredMarks = true;
     }
 
@@ -307,15 +308,22 @@ const plugin = new Plugin({
   },
   key: stateKey,
   view: (view: EditorView) => {
-    reconfigure(view, [keymapPlugin(view.state.schema), inputRulePlugin(view.state.schema)]);
+    const pluginState = stateKey.getState(view.state);
+    pluginState.keymapHandler = keymapHandler(view, pluginState);
+    reconfigure(view, [inputRulePlugin(view.state.schema)]);
     return {};
   },
   props: {
     handleKeyDown (view, event) {
-      if (stateKey.getState(view.state).clearStoredMarks) {
-        view.dispatch(view.state.tr.setStoredMarks(null));
-        stateKey.getState(view.state).clearStoredMarks = false;
+      const pluginState = stateKey.getState(view.state);
+      const result = pluginState.keymapHandler(view, event);
+
+      if (pluginState.clearStoredMarks) {
+        view.dispatch(view.state.tr.setStoredMarks([]));
+        pluginState.clearStoredMarks = false;
       }
+
+      return result;
     }
   }
 });

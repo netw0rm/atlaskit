@@ -8,6 +8,7 @@ import { ListsState } from '../../plugins/lists';
 import { MentionsPluginState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { EditorView } from '../../prosemirror';
+import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
 import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
@@ -26,6 +27,7 @@ export interface Props {
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
+  pluginStateClearFormatting?: ClearFormattingState;
   pluginStateImageUpload?: ImageUploadState;
   pluginStateMentions?: MentionsPluginState;
   pluginStatePanel?: PanelState;
@@ -47,6 +49,7 @@ export default class Chrome extends PureComponent<Props, {}> {
           pluginStateHyperlink={props.pluginStateHyperlink}
           pluginStateLists={props.pluginStateLists}
           pluginStateTextFormatting={props.pluginStateTextFormatting}
+          pluginStateClearFormatting={props.pluginStateClearFormatting}
           pluginStateImageUpload={props.pluginStateImageUpload}
           pluginStateMentions={props.pluginStateMentions}
           mentionsResourceProvider={props.mentionsResourceProvider}

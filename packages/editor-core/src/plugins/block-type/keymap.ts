@@ -21,13 +21,13 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
   keymaps.bindKeymapWithCommand(keymaps.redo.common!, redo, list);
   keymaps.bindKeymapWithCommand(keymaps!.undo.common!, undo, list);
 
-  ALL_BLOCK_TYPES.forEach((blockType) => {
-    const shortcut = keymaps.findShortcutByDescription(blockType.title);
-    if (shortcut) {
-      const eventName = analyticsEventName(blockType.name, 'keyboard');
-      keymaps.bindKeymapWithCommand(shortcut, trackAndInvoke(eventName, commands.toggleBlockType(blockType.name)), list);
-    }
-  });
+  // ALL_BLOCK_TYPES.forEach((blockType) => {
+  //   const shortcut = keymaps.findShortcutByDescription(blockType.title);
+  //   if (shortcut) {
+  //     const eventName = analyticsEventName(blockType.name, 'keyboard');
+  //     keymaps.bindKeymapWithCommand(shortcut, trackAndInvoke(eventName, commands.toggleBlockType(blockType.name)), list);
+  //   }
+  // });
 
   plugin = keymap(list);
   return plugin;

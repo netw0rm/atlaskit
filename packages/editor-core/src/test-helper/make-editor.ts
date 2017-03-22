@@ -8,6 +8,7 @@ import {
 } from '../prosemirror';
 import { default as defaultSchema } from './schema';
 import { RefsNode, Refs } from './schema-builder';
+import SyncPlugin from './sync-plugin';
 import { setTextSelection } from './transactions';
 
 /**
@@ -19,13 +20,25 @@ import { setTextSelection } from './transactions';
  * - `<` and `>` -- a range text selection (`<` is from, `>` is to).
  */
 export default (options: Options) : EditorInstance => {
+  const plugins: Plugin[] = [];
+
+  if (options.plugin) {
+    plugins.push(options.plugin);
+  }
+
+  if (options.plugins) {
+    plugins.push(...options.plugins);
+  }
+
+  plugins.push(
+    SyncPlugin,
+    keymap(baseKeymap)
+  );
+
   const editorState = EditorState.create({
+    plugins,
     doc: options.doc,
     schema: options.schema || defaultSchema,
-    plugins: [
-      options.plugin,
-      keymap(baseKeymap)
-    ]
   }) as ProseMirrorWithRefs;
   const editorView = new EditorView(options.place || document.body, {
     state: editorState
@@ -49,9 +62,10 @@ export default (options: Options) : EditorInstance => {
 
   return {
     editorView,
-    pluginState: options.plugin.getState(editorState),
-    plugin: options.plugin,
+    plugins,
     refs,
+    plugin: plugins[0],
+    pluginState: plugins[0].getState(editorState),
     sel: refs['<>']
   };
 };
@@ -62,7 +76,8 @@ export interface ProseMirrorWithRefs extends EditorState<Schema<any, any>> {
 
 export interface Options {
   doc: RefsNode;
-  plugin: Plugin;
+  plugin?: Plugin;
+  plugins?: Plugin[];
   place?: HTMLElement;
   schema?: Schema<any, any>;
 }
@@ -70,7 +85,8 @@ export interface Options {
 export interface EditorInstance {
   editorView: EditorView;
   pluginState: any;
-  plugin: any;
+  plugin: Plugin;
+  plugins: Plugin[];
   refs: Refs;
   sel: number;
 }

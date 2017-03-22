@@ -1,4 +1,5 @@
 export { default as BlockTypePlugin } from './block-type';
+export { default as ClearFormattingPlugin } from './clear-formatting';
 export { default as CodeBlockPlugin } from './code-block';
 export { default as EmojisPlugin } from './emojis';
 export { default as HyperlinkPlugin } from './hyperlink';

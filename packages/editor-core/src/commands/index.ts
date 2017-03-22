@@ -1,65 +1,71 @@
-import { EditorState, EditorView, Fragment, liftTarget, NodeSelection, NodeType, TextSelection, Transaction } from '../prosemirror';
+import { EditorState, EditorView, Fragment, liftTarget, NodeSelection, NodeType, TextSelection, Transaction, ResolvedPos } from '../prosemirror';
 import * as baseCommand from '../prosemirror/prosemirror-commands';
 import { findWrapping } from '../prosemirror/prosemirror-transform';
 import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
-import { isRangeOfType } from '../utils';
+import { isRangeOfType, liftSelection } from '../utils';
 
-export function toggleBlockType(name: string): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { nodes } = state.schema;
+export function toggleBlockType(view: EditorView, name: string, $from: ResolvedPos, $to: ResolvedPos): boolean {
+  const { nodes } = view.state.schema;
 
-    switch (name) {
-      case blockTypes.NORMAL_TEXT.name:
-        if (nodes.paragraph) {
-          return setNormalText()(state, dispatch);
-        }
-        break;
-      case blockTypes.HEADING_1.name:
-        if (nodes.heading) {
-          return toggleHeading(1)(state, dispatch);
-        }
-        break;
-      case blockTypes.HEADING_2.name:
-        if (nodes.heading) {
-          return toggleHeading(2)(state, dispatch);
-        }
-        break;
-      case blockTypes.HEADING_3.name:
-        if (nodes.heading) {
-          return toggleHeading(3)(state, dispatch);
-        }
-        break;
-      case blockTypes.HEADING_4.name:
-        if (nodes.heading) {
-          return toggleHeading(4)(state, dispatch);
-        }
-        break;
-      case blockTypes.HEADING_5.name:
-        if (nodes.heading) {
-          return toggleHeading(5)(state, dispatch);
-        }
-        break;
-      case blockTypes.BLOCK_QUOTE.name:
-        if (nodes.paragraph && nodes.blockquote) {
-          return toggleBlockquote()(state, dispatch);
-        }
-        break;
-      case blockTypes.CODE_BLOCK.name:
-        if (nodes.codeBlock) {
-          return toggleCodeBlock()(state, dispatch);
-        }
-        break;
-      case blockTypes.PANEL.name:
-        if (nodes.panel && nodes.paragraph) {
-          return togglePanel()(state, dispatch);
-        }
-        break;
-    }
-    return false;
-  };
+  const textSelection = new TextSelection($from, $to);
+
+  view.dispatch(view.state.tr.setSelection(textSelection));
+
+  if (view.state.selection.$from.depth > 1) {
+    view.dispatch(liftSelection(view.state.tr, view.state.doc, $from, $to));
+  }
+
+  switch (name) {
+    case blockTypes.NORMAL_TEXT.name:
+      if (nodes.paragraph) {
+        return setNormalText()(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.HEADING_1.name:
+      if (nodes.heading) {
+        return toggleHeading(1)(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.HEADING_2.name:
+      if (nodes.heading) {
+        return toggleHeading(2)(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.HEADING_3.name:
+      if (nodes.heading) {
+        return toggleHeading(3)(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.HEADING_4.name:
+      if (nodes.heading) {
+        return toggleHeading(4)(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.HEADING_5.name:
+      if (nodes.heading) {
+        return toggleHeading(5)(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.BLOCK_QUOTE.name:
+      if (nodes.paragraph && nodes.blockquote) {
+        return toggleBlockquote()(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.CODE_BLOCK.name:
+      if (nodes.codeBlock) {
+        return toggleCodeBlock()(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.PANEL.name:
+      if (nodes.panel && nodes.paragraph) {
+        return togglePanel()(view.state, view.dispatch);
+      }
+      break;
+  }
+  return false;
 }
 
 /**
@@ -185,8 +191,7 @@ export function toggleCodeBlock(): Command {
 
     if (currentBlock.type !== state.schema.nodes.codeBlock) {
       if (isConvertableToCodeBlock(state)) {
-        const tr = transformToCodeBlockAction(state, {});
-        dispatch(lift(state, tr));
+        dispatch(transformToCodeBlockAction(state, {}));
       }
     } else {
       dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
@@ -242,8 +247,7 @@ export function toggleHeading(level: number): Command {
     const currentBlock = $from.parent;
 
     if (currentBlock.type !== state.schema.nodes.heading || currentBlock.attrs['level'] !== level) {
-      const tr = state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.heading, { level });
-      dispatch(lift(state, tr));
+      dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.heading, { level }));
     } else {
       dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
     }
@@ -474,20 +478,6 @@ function getInsertPosFromNonTextBlock(state: EditorState<any>, append: boolean):
 function topLevelNodeIsEmptyTextBlock(state): boolean {
   const topLevelNode = state.selection.$from.node(1);
   return topLevelNode.isTextblock && topLevelNode.type !== state.schema.nodes.codeBlock && topLevelNode.nodeSize === 2;
-}
-
-// Lifts current selection up;
-// it allows to chain transactions
-function lift(state: EditorState<any>, tr: Transaction): Transaction {
-  const { $from, $to } = state.selection;
-  if ($from.depth > 1) {
-    const range = $from.blockRange($to) as any;
-    const target = range && liftTarget(range) as any;
-    if (target !== null) {
-      tr = tr.lift(range, target).scrollIntoView();
-    }
-  }
-  return tr;
 }
 
 function wrap(state: EditorState<any>, nodeType: NodeType, tr: Transaction): Transaction {

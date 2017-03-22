@@ -117,7 +117,7 @@ describe('Drag handle', () => {
     console.error.restore();
   });
 
-  describe('navigation', () => {
+  describe('navigation (tabbing)', () => {
     it('should be selectable when dragging is enabled', () => {
       const wrapper = mount(
         <DragHandle

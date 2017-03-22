@@ -1,9 +1,8 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { css } from 'styled-components';
 import invariant from 'invariant';
 import type { TypeId, Position } from '../../types';
-import type { Props, MapState, DraggableState } from './draggable-types';
+import type { Props, MapState, StateSnapshot } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
 import type { Speed } from '../moveable';
@@ -17,24 +16,23 @@ const origin: Position = { x: 0, y: 0 };
 
 type ComponentState = {|
   wasDragging: boolean,
-  ref: ?Element,
-  childRef: ?Element,
+    childRef: ?Element,
 |}
 
 type MovementStyle = {|
   position: 'absolute',
-  zIndex: string,
-  width: number,
-  height: number,
-  top: number,
-  left: number,
+    zIndex: string,
+      width: number,
+        height: number,
+          top: number,
+            left: number,
 |}
 
-type MovementInfo = {|
+type PlacementInfo = {|
   showPlaceholder: boolean,
-  speed: Speed,
-  style?: MovementStyle
-|}
+    speed: Speed,
+      style ?: MovementStyle
+        |}
 
 export default (type: TypeId, map: MapState): Function =>
   (Component: ReactClass<any>): ReactClass<any> =>
@@ -46,7 +44,6 @@ export default (type: TypeId, map: MapState): Function =>
 
       state: ComponentState = {
         wasDragging: false,
-        ref: null,
         childRef: null,
       }
 
@@ -72,6 +69,7 @@ export default (type: TypeId, map: MapState): Function =>
       }
 
       componentWillReceiveProps(nextProps) {
+        // TODO: need to not set wasDragging if there is no need to animate
         const wasDragging = this.props.mapProps.isDragging &&
           !nextProps.mapProps.isDragging;
 
@@ -82,16 +80,15 @@ export default (type: TypeId, map: MapState): Function =>
         }
       }
 
-      componentWillUnmount() {
-        // console.warn('unmounting draggable', this.props.id);
-      }
-
       onMoveEnd = () => {
         if (!this.state.wasDragging) {
           return;
         }
 
-        const { mapProps: { id }, dispatchProps: { dropFinished } } = this.props;
+        const {
+          mapProps: { id },
+          dispatchProps: { dropFinished },
+        } = this.props;
 
         dropFinished(id);
 
@@ -101,7 +98,7 @@ export default (type: TypeId, map: MapState): Function =>
       }
 
       onLift = (selection: Position) => {
-        invariant(this.state.ref, 'cannot move an item that is not in the DOM');
+        invariant(this.state.childRef, 'cannot move an item that is not in the DOM');
 
         const {
           mapProps: { id, isDragEnabled },
@@ -113,13 +110,13 @@ export default (type: TypeId, map: MapState): Function =>
         }
 
         const scroll: Position = getScrollPosition();
-        const center: Position = getCenterPosition(this.state.ref);
+        const center: Position = getCenterPosition(this.state.childRef);
 
         lift(id, type, center, scroll, selection);
       }
 
       onKeyLift = () => {
-        invariant(this.state.ref, 'cannot move an item that is not in the DOM');
+        invariant(this.state.childRef, 'cannot move an item that is not in the DOM');
 
         const {
           mapProps: { id, isDragEnabled },
@@ -131,14 +128,14 @@ export default (type: TypeId, map: MapState): Function =>
         }
 
         const scroll: Position = getScrollPosition();
-        const center: Position = getCenterPosition(this.state.ref);
+        const center: Position = getCenterPosition(this.state.childRef);
 
         // using center position as selection
         lift(id, type, center, scroll, center);
       }
 
       onMove = (point: Position) => {
-        invariant(this.state.ref, 'cannot move when there is no ref');
+        invariant(this.state.childRef, 'cannot move when there is no ref');
 
         const {
           mapProps: { id, isDragEnabled, initial },
@@ -214,13 +211,6 @@ export default (type: TypeId, map: MapState): Function =>
         cancel(id);
       }
 
-      setRef = (ref: ?Element) => {
-        // need to trigger a child render when ref changes
-        this.setState({
-          ref,
-        });
-      }
-
       setChildRef = (el: ?Element) => {
         this.setState({
           childRef: el,
@@ -241,7 +231,7 @@ export default (type: TypeId, map: MapState): Function =>
         );
       }
 
-      getMovementInfo(): MovementInfo {
+      getPlacementInfo(): PlacementInfo {
         const { isDragging, canAnimate, initial } = this.props.mapProps;
         const { wasDragging } = this.state;
 
@@ -290,6 +280,7 @@ export default (type: TypeId, map: MapState): Function =>
       render() {
         const { mapProps, ownProps } = this.props;
 
+        const info: PlacementInfo = this.getPlacementInfo();
         const handle = this.getHandle(mapProps.isDragEnabled);
 
         const requestDragHandle = () => {
@@ -297,7 +288,7 @@ export default (type: TypeId, map: MapState): Function =>
           return handle;
         };
 
-        const snapshot: DraggableState = {
+        const snapshot: StateSnapshot = {
           isDragging: mapProps.isDragging,
         };
 
@@ -308,11 +299,10 @@ export default (type: TypeId, map: MapState): Function =>
           ...additionalProps,
         };
 
-        // if a drag handle was not request then the whole thing is the handle
+        // if a drag handle was not requested then the whole thing is the handle
         const wrap = requestDragHandle.wasCalled ? identity : handle;
 
-        const info: MovementInfo = this.getMovementInfo();
-
+        console.log('rendering draggable. enhanced props:', enhancedOwnProps);
         return (
           <div>
             <Moveable
@@ -321,17 +311,16 @@ export default (type: TypeId, map: MapState): Function =>
               extraCSS="user-select: none;"
               destination={mapProps.offset}
               onMoveEnd={this.onMoveEnd}
-              innerRef={this.setRef}
             >
-              {wrap(
-                <DraggableDimensionPublisher
-                  itemId={mapProps.id}
-                  type={type}
-                  targetRef={this.state.childRef}
-                >
+              <DraggableDimensionPublisher
+                itemId={mapProps.id}
+                type={type}
+                targetRef={this.state.childRef}
+              >
+                {wrap(
                   <Component {...enhancedOwnProps} innerRef={this.setChildRef} />
-                </DraggableDimensionPublisher>
-              )}
+                )}
+              </DraggableDimensionPublisher>
             </Moveable>
             {info.showPlaceholder ? this.getPlaceholder() : null}
           </div>

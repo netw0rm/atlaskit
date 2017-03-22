@@ -29,8 +29,6 @@ export default (hooks?: Hooks = {}) => (Component: ReactClass<any>) => {
       }).isRequired,
     }
 
-     /* eslint-enable */
-
     getChildContext(): Context {
       return {
         [storeKey]: store,
@@ -39,7 +37,7 @@ export default (hooks?: Hooks = {}) => (Component: ReactClass<any>) => {
 
     render() {
       return (
-        <Component />
+        <Component {...this.props} />
       );
     }
   };

@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { Motion, spring } from 'react-motion';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import * as physics from '../physics';
 import type { Position } from '../../types';
 

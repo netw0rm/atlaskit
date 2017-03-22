@@ -76,6 +76,7 @@ export default class DimensionPublisher extends PureComponent {
   }
 
   render() {
+    console.log('rendering dimension publisher');
     return this.props.children;
   }
 }

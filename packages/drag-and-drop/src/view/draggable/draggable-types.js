@@ -48,9 +48,9 @@ export type Props = {
   ownProps: OwnProps,
 }
 
-export type DraggableState = {|
+export type StateSnapshot = {|
   isDragging: boolean
 |}
 
 export type MapState =
-  (state: DraggableState, ownProps: OwnProps, getDragHandle: Function) => Object;
+  (state: StateSnapshot, ownProps: OwnProps, getDragHandle: Function) => Object;

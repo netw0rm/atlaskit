@@ -18,8 +18,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
   keymaps.bindKeymapWithCommand(keymaps.moveUp.common!, trackAndInvoke('atlassian.editor.moveup.keyboard', commands.createNewParagraphAbove()), list);
   keymaps.bindKeymapWithCommand(keymaps.moveDown.common!, trackAndInvoke('atlassian.editor.movedown.keyboard', commands.createNewParagraphBelow()), list);
   keymaps.bindKeymapWithCommand(keymaps.createCodeBlock.common!, trackAndInvoke(analyticsEventName('codeblock', 'autoformatting'), commands.createCodeBlockFromFenceFormat()), list);
-  keymaps.bindKeymapWithCommand(keymaps.redo.common!, trackAndInvoke('atlassian.editor.undo.keyboard', redo), list);
-  keymaps.bindKeymapWithCommand(keymaps.undo.common!, trackAndInvoke('atlassian.editor.undo.keyboard', undo), list);
+  keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redo)!, trackAndInvoke('atlassian.editor.undo.keyboard', redo), list);
   keymaps.bindKeymapWithCommand(keymaps.undo.common!, trackAndInvoke('atlassian.editor.undo.keyboard', undo), list);
   keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redoBarred)!, commands.preventDefault(), list);
 

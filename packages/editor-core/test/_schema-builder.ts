@@ -33,7 +33,7 @@ export const schema = new Schema({
     image: { type: ImageNodeType },
     bullet_list: { type: BulletListNodeType, content: 'list_item+', group: 'block' },
     heading: { type: HeadingNodeType, content: 'text<_>*', group: 'block' },
-    list_item: { type: ListItemNodeType, content: 'paragraph+' },
+    list_item: { type: ListItemNodeType, content: 'paragraph block*' },
     ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
     blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
     panel: { type: PanelNodeType, content: 'block+', group: 'block' },

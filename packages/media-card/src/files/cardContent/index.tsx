@@ -20,7 +20,7 @@ export class CardContent extends Component<CardContentProps, {}> {
     }
 
     if (this.props.mediaType === 'image' && this.props.dataURI) {
-      return <MediaImage dataURI={this.props.dataURI} />;
+      return <MediaImage dataURI={this.props.dataURI} fadeIn={this.props.loading} />;
     } else {
       return null;
     }

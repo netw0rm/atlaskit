@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { MediaItem, ContextFactory, ListCardDelete, ListCardClick } from '@atlaskit/media-core';
-import { StoryBookTokenProvider, defaultServiceHost, defaultCollectionName } from '@atlaskit/media-test-helpers';
+import { StoryBookTokenProvider, defaultServiceHost, defaultCollectionName, StoryList, createStorybookContext, collectionNames } from '@atlaskit/media-test-helpers';
 import { CardList } from '../../src';
-import {StoryList, createStorybookContext} from '@atlaskit/media-test-helpers';
 
 const collectionName = defaultCollectionName;
 const wrongCollection = 'adfasdf';
@@ -36,6 +36,49 @@ storiesOf('CardList', {})
       actions={[clickAction]}
     />
   ))
+  .add('Loaded list toggling', () => {
+    interface CardSwitcherProps {
+      delay?: number;
+      dataURI?: string;
+    }
+
+    interface CardSwitcherState {
+      collectionName: string;
+    }
+
+    class CardSwitcher extends Component<CardSwitcherProps, CardSwitcherState> {
+      constructor(props) {
+        super(props);
+        this.state = {collectionName: this.collections[1]};
+      }
+
+      render() {
+        return <div style={{width: '300px', height: '400px', overflow: 'hidden', border: '1px solid'}}>
+          <button style={{margin: '10px auto', display: 'block'}} onClick={this.toggle}>Toggle collection</button>
+          <div style={{borderBottom: '1px solid', textAlign: 'center'}}>{this.state.collectionName}</div>
+          <CardList
+            context={context}
+            collectionName={this.state.collectionName}
+            actions={[clickAction]}
+            pageSize={30}
+            cardType={'small'}
+          />
+        </div>;
+      }
+
+      private get collections() {
+        return collectionNames;
+      }
+
+      toggle = () => {
+        const index = this.collections.indexOf(this.state.collectionName) === 0 ? 1 : 0;
+
+        this.setState({collectionName: this.collections[index]});
+      }
+    }
+
+    return <CardSwitcher />;
+  })
   .add('Caching', () => (
     <StoryList>
       {[{

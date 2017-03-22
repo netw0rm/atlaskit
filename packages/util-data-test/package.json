@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-data-test",
-  "version": "2.1.0",
+  "version": "2.1.2",
   "config": {
     "access": "public"
   },
@@ -23,6 +23,7 @@
     "tslib": "^1.2.0"
   },
   "author": "Atlassian Pty. Ltd",
+  "maintainers": [],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2",

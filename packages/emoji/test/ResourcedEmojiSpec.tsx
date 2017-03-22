@@ -5,7 +5,8 @@ import { waitUntil } from '@atlaskit/util-common-test';
 
 import { EmojiDescription } from '../src/types';
 import Emoji from '../src/components/common/Emoji';
-import ResourcedEmoji, { EmojiPlaceholder } from '../src/components/common/ResourcedEmoji';
+import EmojiPlaceholder from '../src/components/common/EmojiPlaceholder';
+import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
 import { EmojiProvider } from '../src/api/EmojiResource';
 
 import { MockEmojiResourceConfig } from './MockEmojiResource';

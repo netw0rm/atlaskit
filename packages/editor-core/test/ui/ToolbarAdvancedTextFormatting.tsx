@@ -9,7 +9,7 @@ import ToolbarAdvancedTextFormatting from '../../src/ui/ToolbarAdvancedTextForma
 import ToolbarButton from '../../src/ui/ToolbarButton';
 import { makeEditor } from '../../src/test-helper';
 import { doc, p, schema, code, strike } from '../_schema-builder';
-import Item from 'ak-droplist-item';
+import Item from '@atlaskit/droplist-item';
 
 describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
   const editor = (doc: any) => {

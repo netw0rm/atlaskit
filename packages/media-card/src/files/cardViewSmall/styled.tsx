@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import { Root, cardShadow, size, center, centerX, antialiased, ellipsis, borderRadius, spaceAround, easeInOutCubic, easeOutExpo } from '../../styles';
+import { Root, cardShadow, size, center, centerX, antialiased, ellipsis, borderRadius, spaceAround, easeOutExpo } from '../../styles';
 import {
   akColorN30,
   akColorN70
@@ -51,7 +51,7 @@ export const SmallCard = styled(Root)`
       box-shadow: none;
     }
   }
-
+  
   .error-icon {
     height: 20px;
   }
@@ -110,7 +110,6 @@ export const Title = styled.div`
   color: #091E42;
   font-size: 12px;
   line-height: 15px;
-  transition: .4s color ${easeInOutCubic};
 `;
 
 export const Size = styled.div`
@@ -120,7 +119,6 @@ export const Size = styled.div`
   line-height: 15px;
   margin-top: 2px;
   text-transform: uppercase;
-  transition: .4s color ${easeInOutCubic};
 `;
 
 export const RoundedBackground = styled.div`

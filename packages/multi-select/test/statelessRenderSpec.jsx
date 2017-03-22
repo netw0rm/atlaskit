@@ -2,9 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import Avatar from '@atlaskit/avatar';
-import Droplist from '@atlaskit/droplist';
-import Group from '@atlaskit/droplist-group';
-import Item from '@atlaskit/droplist-item';
+import Droplist, { Group, Item } from '@atlaskit/droplist';
 
 import styles from 'style!../src/styles.less';
 import { StatelessMultiSelect } from '../src';

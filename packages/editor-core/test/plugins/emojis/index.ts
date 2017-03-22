@@ -27,6 +27,10 @@ const makeEditor = (container: Node) => {
 
 const container = fixtures();
 
+const smileEmojiId = {
+  id: 'smile'
+};
+
 const smileEmoji = {
   id: 'smile',
   name: 'smiling face with open mouth and smiling eyes',
@@ -167,7 +171,7 @@ describe('emojis', () => {
       pm.flush();
       pm.tr.typeText('smile').apply();
 
-      pluginInstance.insertEmoji(smileEmoji);
+      pluginInstance.insertEmoji(smileEmojiId, smileEmoji);
 
       expect(pm.doc.nodeAt(1)).to.be.of.nodeType(EmojiNodeType);
     });
@@ -180,14 +184,14 @@ describe('emojis', () => {
       pm.flush();
       pm.tr.typeText('smile').apply();
 
-      pluginInstance.insertEmoji(smileEmoji);
+      pluginInstance.insertEmoji(smileEmojiId, smileEmoji);
       pm.flush();
 
       pm.input.insertText(2, 2, ':');
       pm.flush();
       pm.tr.typeText('smile').apply();
 
-      pluginInstance.insertEmoji(smileEmoji);
+      pluginInstance.insertEmoji(smileEmojiId, smileEmoji);
       pm.flush();
 
       expect(pm.doc.nodeAt(1)).to.be.of.nodeType(EmojiNodeType);
@@ -205,7 +209,7 @@ describe('emojis', () => {
       pm.flush();
       pm.tr.typeText('smile').apply();
 
-      pluginInstance.insertEmoji(smileEmoji);
+      pluginInstance.insertEmoji(smileEmojiId, smileEmoji);
       pm.flush();
 
       expect(pm.doc.nodeAt(2)).to.be.of.nodeType(EmojiNodeType);

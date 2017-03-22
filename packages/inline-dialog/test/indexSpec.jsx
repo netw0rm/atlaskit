@@ -87,4 +87,28 @@ describe('inline-dialog', () => {
       expect(layer.prop('autoPosition')).to.equal(true);
     });
   });
+
+  describe('onContentFocus', () => {
+    it('should be triggered when an element in the content is focused', () => {
+      const spy = sinon.spy();
+      const linkEl = <a id="link" href="/test">a link</a>;
+      const wrapper = mount(<InlineDialog onContentFocus={spy} content={linkEl} isOpen />);
+      const content = mount(wrapper.find(Layer).props().content);
+
+      content.find('#link').simulate('focus');
+      expect(spy.callCount).to.equal(1);
+    });
+  });
+
+  describe('onContentFocus', () => {
+    it('should be triggered when an element in the content is blurred', () => {
+      const spy = sinon.spy();
+      const linkEl = <a id="link" href="/test">a link</a>;
+      const wrapper = mount(<InlineDialog onContentBlur={spy} content={linkEl} isOpen />);
+      const content = mount(wrapper.find(Layer).props().content);
+
+      content.find('#link').simulate('blur');
+      expect(spy.callCount).to.equal(1);
+    });
+  });
 });

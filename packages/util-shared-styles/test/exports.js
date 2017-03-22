@@ -109,6 +109,7 @@ describe('exports', () => {
       'akColorY75',
       'akFontFamily',
       'akFontSizeDefault',
+      'akGridSizeUnitless',
       'akGridSize',
       'akZIndexBlanket',
       'akZIndexFlag',

@@ -1,4 +1,4 @@
-import { Plugin } from '../prosemirror';
+import { Plugin, EditorView } from '../prosemirror';
 
 export function reconfigure(view: EditorView, plugins: (Plugin | undefined)[]): void {
   const { state } = view;

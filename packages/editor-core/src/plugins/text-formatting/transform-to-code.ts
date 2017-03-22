@@ -1,22 +1,21 @@
-import { EditorTransform, ProseMirror, ReplaceStep, Step } from '../../prosemirror';
-import { isMentionNode } from '../../schema';
+import { Transaction, EditorState, ReplaceStep, Step } from '../../prosemirror';
 import { createSliceWithContent } from '../../utils';
 
-export function transformToCodeAction(pm: ProseMirror, from: number, to: number): EditorTransform {
+export function transformToCodeAction(state: EditorState<any>, from: number, to: number): Transaction {
   const replaceSteps: Step[] = [];
-  const tr = pm.tr;
+  const tr = state.tr;
 
-  if (!pm.selection) {
+  if (!state.selection) {
     return tr;
   }
 
   // Traverse through all the nodes within the range and replace them with their plaintext counterpart
-  pm.doc.nodesBetween(from, to, (node, nodePos) => {
+  state.doc.nodesBetween(from, to, (node, nodePos) => {
     const cur = nodePos;
     const end = cur + node.nodeSize;
-    if (isMentionNode(node)) {
+    if (node.type === state.schema.nodes.mention) {
       const content = node.attrs['displayName'];
-      replaceSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, pm)));
+      replaceSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state), false));
     }
   });
 
@@ -25,10 +24,5 @@ export function transformToCodeAction(pm: ProseMirror, from: number, to: number)
     tr.step(replaceSteps[i]);
   }
 
-  // Apply to get the new selection after the transformation
-  tr.apply();
-
-  // Clear all marks (strong, strike, etc.)
-  pm.tr.clearMarkup(from, pm.selection.to).apply();
-  return pm.tr;
+  return tr;
 }

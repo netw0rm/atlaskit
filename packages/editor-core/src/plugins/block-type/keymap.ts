@@ -2,7 +2,7 @@ import { Schema, keymap, Plugin } from '../../prosemirror';
 import * as keymaps from '../../keymaps';
 import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
-import { ALL_BLOCK_TYPES } from './types';
+// import { ALL_BLOCK_TYPES } from './types';
 import { redo, undo } from '../../prosemirror/prosemirror-history';
 
 let plugin: Plugin | undefined;
@@ -18,8 +18,10 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
   keymaps.bindKeymapWithCommand(keymaps.moveUp.common!, trackAndInvoke('atlassian.editor.moveup.keyboard', commands.createNewParagraphAbove()), list);
   keymaps.bindKeymapWithCommand(keymaps.moveDown.common!, trackAndInvoke('atlassian.editor.movedown.keyboard', commands.createNewParagraphBelow()), list);
   keymaps.bindKeymapWithCommand(keymaps.createCodeBlock.common!, trackAndInvoke(analyticsEventName('codeblock', 'autoformatting'), commands.createCodeBlockFromFenceFormat()), list);
-  keymaps.bindKeymapWithCommand(keymaps.redo.common!, redo, list);
-  keymaps.bindKeymapWithCommand(keymaps!.undo.common!, undo, list);
+  keymaps.bindKeymapWithCommand(keymaps.redo.common!, trackAndInvoke('atlassian.editor.undo.keyboard', redo), list);
+  keymaps.bindKeymapWithCommand(keymaps.undo.common!, trackAndInvoke('atlassian.editor.undo.keyboard', undo), list);
+  keymaps.bindKeymapWithCommand(keymaps.undo.common!, trackAndInvoke('atlassian.editor.undo.keyboard', undo), list);
+  keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redoBarred)!, commands.preventDefault(), list);
 
   // ALL_BLOCK_TYPES.forEach((blockType) => {
   //   const shortcut = keymaps.findShortcutByDescription(blockType.title);

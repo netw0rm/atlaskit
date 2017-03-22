@@ -9,5 +9,3 @@ export { default as MentionsPlugin } from './mentions';
 export { default as TextFormattingPlugin } from './text-formatting';
 export { default as RulePlugin } from './rule';
 export { default as PanelPlugin } from './panel';
-export { default as ClearFormattingPlugin } from './clear-formatting';
-export { default as DefaultKeymapsPlugin } from './default-keymaps';

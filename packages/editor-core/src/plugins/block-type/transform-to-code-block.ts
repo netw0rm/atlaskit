@@ -1,4 +1,5 @@
-import { Transaction, Fragment, EditorState, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
+import { Transaction, EditorState, RemoveMarkStep, ReplaceStep, Slice, Step } from '../../prosemirror';
+import { createSliceWithContent } from '../../utils';
 
 export default function transformToCodeBlock(state: EditorState<any>): void {
     if (!isConvertableToCodeBlock(state)) {
@@ -13,7 +14,7 @@ export function transformToCodeBlockAction(state: EditorState<any>, attrs?: any)
     const codeBlock = state.schema.nodes.codeBlock;
 
     const where = $from.before($from.depth);
-    const tr = clearMarkupFor(state, where)
+    const tr = clearMarkupFor(state, where);
     return mergeContent(tr, state.schema.nodes)
         .setNodeType(where, codeBlock, attrs);
 }
@@ -36,10 +37,6 @@ export function isConvertableToCodeBlock(state: EditorState<any>): boolean {
     const index = $from.index(parentDepth);
 
     return parentNode.canReplaceWith(index, index + 1, state.schema.nodes.codeBlock);
-}
-
-function createSliceWithContent(content: string, state: EditorState<any>) {
-    return new Slice(Fragment.from(state.schema.text(content)), 0, 0);
 }
 
 function clearMarkupFor(state: EditorState<any>, pos: number): Transaction {
@@ -83,7 +80,7 @@ function clearMarkupFor(state: EditorState<any>, pos: number): Transaction {
 
 function mergeContent(tr: Transaction, nodes: any) {
     const { text } = nodes;
-    const { from, to, $from, $to } = tr.selection;
+    const { from, to } = tr.selection;
     let textContent = '';
     tr.doc.nodesBetween(from, to, (node, pos) => {
         if (node.isTextblock && node.textContent) {

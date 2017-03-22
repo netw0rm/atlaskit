@@ -1,4 +1,4 @@
-import { Schema } from '../../src/prosemirror';
+import { Schema } from '../src/prosemirror';
 import {
   doc,
   paragraph,
@@ -18,7 +18,7 @@ import {
   panel,
   rule,
   image,
-} from '../../src/schema';
+} from '../src/schema';
 
 const nodes = {
   doc,

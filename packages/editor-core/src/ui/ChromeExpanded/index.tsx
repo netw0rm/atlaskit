@@ -15,6 +15,7 @@ import { MentionsPluginState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
+import EmojiTypeAhead from '../EmojiTypeAhead';
 import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
 import MentionPicker from '../MentionPicker';
@@ -62,38 +63,39 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
         return (
             <div className={styles.container} data-editor-chrome>
                 <div className={styles.toolbar}>
-                    {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} /> : null}
-                    {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
+                    {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} /> : null}
+                    {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} editorView={props.editorView} /> : null}
                     {props.pluginStateTextFormatting || props.pluginStateClearFormatting ?
                         <ToolbarAdvancedTextFormatting
                             pluginStateTextFormatting={props.pluginStateTextFormatting}
                             pluginStateClearFormatting={props.pluginStateClearFormatting}
+                            editorView={props.editorView}
                         /> : null}
-                    {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} /> : null}
-                    {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} /> : null}
+                    {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} editorView={props.editorView} /> : null}
+                    {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink}  editorView={props.editorView}/> : null}
                     <span style={{ flexGrow: 1 }} />
                     {props.feedbackFormUrl ? <ToolbarFeedback packageVersion={props.packageVersion} packageName={props.packageName} /> : null}
                 </div>
                 <div className={styles.content}>
                     {props.children}
-                    {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} /> : null}
-                    {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} /> : null}
+                    {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink}  editorView={props.editorView}/> : null}
+                    {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock}  editorView={props.editorView}/> : null}
                     {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} presenceProvider={props.presenceResourceProvider} /> : null}
                     {props.pluginStateEmojis && props.emojiProvider ? <EmojiTypeAhead pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
-                    {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} /> : null}
+                    {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel}  editorView={props.editorView}/> : null}
                 </div>
                 <div className={styles.footer}>
                     <div className={styles.footerActions}>
                         <AkButtonGroup>
                             {!this.props.onSave ? null :
                                 <span onClick={this.handleSave}>
-                <AkButton appearance="primary">Save</AkButton>
-              </span>
+                                    <AkButton appearance="primary">Save</AkButton>
+                                </span>
                             }
                             {!this.props.onCancel ? null :
                                 <span onClick={this.handleCancel}>
-                <AkButton appearance="subtle">Cancel</AkButton>
-              </span>
+                                    <AkButton appearance="subtle">Cancel</AkButton>
+                                </span>
                             }
                         </AkButtonGroup>
                     </div>
@@ -104,7 +106,6 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
                             </ToolbarButton>
                         }
                         {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} editorView={props.editorView} /> : null}
-import EmojiTypeAhead from '../EmojiTypeAhead';
                     </div>
                 </div>
             </div>

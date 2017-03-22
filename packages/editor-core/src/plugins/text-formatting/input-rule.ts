@@ -1,5 +1,6 @@
 import { InputRule, inputRules, Plugin, Schema, Transaction, MarkType } from '../../prosemirror';
 import { analyticsService } from '../../analytics';
+import { transformToCodeAction } from './transform-to-code';
 
 function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: string): Function {
   return (state, match, start, end): Transaction | null => {
@@ -32,6 +33,14 @@ function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: stri
   };
 };
 
+function addCodeMark(markType: MarkType, schema: Schema<any, any>, specialChar: string): Function {
+  return (state, match, start, end): Transaction | null => {
+    const tr = transformToCodeAction(state, start, end);
+    const newState = state.apply(tr);
+    return addMark(markType, schema, specialChar)(newState, match, start, end);
+  };
+}
+
 let plugin: Plugin | undefined;
 
 export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
@@ -58,7 +67,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
 
   if (schema.marks.code) {
     // `string` should monospace the text
-    rules.push(new InputRule(/(`([^`]+)`)$/, addMark(schema.marks.code, schema, '`')));
+    rules.push(new InputRule(/(`([^`]+)`)$/, addCodeMark(schema.marks.code, schema, '`')));
   }
 
   plugin = inputRules({ rules });

@@ -108,6 +108,13 @@ export function adjustSelectionInList(doc, selection: TextSelection): TextSelect
   return new TextSelection(doc.resolve(startPos), doc.resolve(endPos));
 }
 
+
+export function preventDefault(): Command {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean {
+    return true;
+  };
+}
+
 export function toggleList(listType: 'bulletList' | 'orderedList'): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean {
     view.dispatch(view.state.tr.setSelection(adjustSelectionInList(state.doc, state.selection as TextSelection)));

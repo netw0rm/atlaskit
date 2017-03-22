@@ -10,7 +10,7 @@ import ToolbarButton from '../ToolbarButton';
 import { EditorView } from '../../prosemirror';
 
 export interface Props {
-  editorView?: EditorView;
+  editorView: EditorView;
   pluginState: ListsState | FutureListsState;
 }
 
@@ -103,7 +103,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       if (this.props.editorView) {
         (this.props.pluginState as FutureListsState).toggleBulletList(this.props.editorView);
       } else {
-        (this.props.pluginState as ListsState).toggleBulletList();
+        (this.props.pluginState as ListsState).toggleBulletList(this.props.editorView);
       }
     }
   }
@@ -114,7 +114,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       if (this.props.editorView) {
         (this.props.pluginState as FutureListsState).toggleOrderedList(this.props.editorView);
       } else {
-        (this.props.pluginState as ListsState).toggleOrderedList();
+        (this.props.pluginState as ListsState).toggleOrderedList(this.props.editorView);
       }
     }
   }

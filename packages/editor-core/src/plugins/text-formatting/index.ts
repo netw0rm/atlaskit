@@ -11,6 +11,7 @@ import * as commands from '../../commands';
 import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
 import { reconfigure } from '../utils';
+import { transformToCodeAction } from './transform-to-code';
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 
@@ -69,7 +70,11 @@ export class TextFormattingState {
 
     toggleCode(view: EditorView) {
         const { code } = this.state.schema.marks;
+        const { from, to } = this.state.selection;
         if (code) {
+            if (!this.codeActive) {
+                view.dispatch(transformToCodeAction(view.state, from, to));
+            }
             commands.toggleMark(code)(view.state, view.dispatch);
         }
     }
@@ -314,7 +319,7 @@ const plugin = new Plugin({
         return {};
     },
     props: {
-        handleKeyDown (view, event) {
+        handleKeyDown(view, event) {
             const pluginState = stateKey.getState(view.state);
             const result = pluginState.keymapHandler(view, event);
 

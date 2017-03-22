@@ -8,6 +8,9 @@ import {
     TextSelection,
     Transaction,
     EditorView,
+    EditorState,
+    Slice,
+    Fragment,
 } from '../prosemirror';
 
 function validateNode(node: Node): boolean {
@@ -20,6 +23,10 @@ function validateNode(node: Node): boolean {
  */
 export function isRangeOfType(doc, $from: ResolvedPos, $to: ResolvedPos, nodeType: NodeType): boolean {
     return getAncestorNodesBetween(doc, $from, $to).filter(node => node.type !== nodeType).length === 0;
+}
+
+export function createSliceWithContent(content: string, state: EditorState<any>) {
+    return new Slice(Fragment.from(state.schema.text(content)), 0, 0);
 }
 
 /**

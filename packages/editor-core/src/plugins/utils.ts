@@ -1,4 +1,4 @@
-import { EditorView, Plugin } from '../prosemirror';
+import { EditorState, Plugin, Transaction } from '../prosemirror';
 
 export function reconfigure(view: EditorView, plugins: (Plugin | undefined)[]): void {
   const { state } = view;
@@ -16,4 +16,11 @@ export function reconfigure(view: EditorView, plugins: (Plugin | undefined)[]): 
   });
 
   view.updateState(newState);
+}
+
+export function liftBlock(state: EditorState<any>): Transaction {
+  const { tr } = state;
+  const { $from, $to } = state.selection;
+  const range = $from.blockRange($to)!;
+  return tr.lift(range, $from.depth - 2);
 }

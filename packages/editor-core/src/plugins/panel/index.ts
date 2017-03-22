@@ -8,7 +8,7 @@ import {
   Plugin,
   Node,
 } from '../../prosemirror';
-import { liftSiblingNodes } from '../../utils';
+import { liftBlock } from '../utils';
 
 export interface PanelType {
   panelType: 'info' | 'note' | 'tip' | 'warning';
@@ -43,23 +43,24 @@ export class PanelState {
   changePanelType(view: EditorView, panelType: PanelType) {
     analyticsService.trackEvent(`atlassian.editor.format.${panelType}.button`);
     const { state, dispatch } = view;
-    const { tr } = state;
+    let { tr } = state;
     const { panel } = state.schema.nodes;
     const { $from, $to } = state.selection;
+    // let blockStart = tr.doc.resolve($from.start($from.depth - 1));
+    // let blockEnd = tr.doc.resolve($to.end($to.depth - 1));
+    let range = $from.blockRange($to)!;
+    tr = tr.wrap(range, [{ type: panel, attrs: panelType }]);
+    tr.setSelection(state.selection.map(tr.doc, tr.mapping));
     let blockStart = tr.doc.resolve($from.start($from.depth - 1));
     let blockEnd = tr.doc.resolve($to.end($to.depth - 1));
-    let range = blockStart.blockRange(blockEnd)!;
-    tr.wrap(range, [{ type: panel, attrs: panelType }]);
-    tr.setSelection(state.selection.map(tr.doc, tr.mapping));
-    blockStart = tr.doc.resolve($from.start($from.depth - 1));
-    blockEnd = tr.doc.resolve($to.end($to.depth - 1));
     range = blockStart.blockRange(blockEnd)!;
     tr.lift(range, blockStart.depth - 1);
     dispatch(tr);
   }
 
   removePanelType(view: EditorView) {
-    liftSiblingNodes(view);
+    const { dispatch, state } = view;
+    dispatch(liftBlock(state));
   }
 
   // checkEndPanelBlock(): boolean {

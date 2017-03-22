@@ -20,7 +20,7 @@ export class ClearFormattingState {
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
-    this.state = state;
+    this.update(state);
   }
 
   subscribe(cb: StateChangeHandler) {

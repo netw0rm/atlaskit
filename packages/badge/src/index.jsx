@@ -14,11 +14,15 @@ const THEME_ENUM = {
 
 class Badge extends PureComponent {
   static propTypes = {
+    /** The value displayed within the badge */
     value: PropTypes.number,
+    /** The max value to display. If value is 100, and max is 50, "50+" will be displayed */
     max: PropTypes.number,
+    /** Affects the visual style of the badge */
     appearance: PropTypes.oneOf(APPEARANCE_ENUM.values),
+    /** Handler function to be called when the 'value' prop is changed */
     onValueUpdated: PropTypes.func,
-
+    /** Modifier used to change the badge colors for use with different color themes */
     theme: PropTypes.oneOf(THEME_ENUM.values),
   }
 

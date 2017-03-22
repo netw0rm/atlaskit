@@ -4,8 +4,10 @@ import {
   Node,
   Plugin,
   PluginKey,
+  TextSelection
 } from '../../prosemirror';
 import { ContextName } from '../../';
+import { getGroupsInRange } from '../../utils';
 
 import {
   NORMAL_TEXT, HEADING_1, HEADING_2, HEADING_3, HEADING_4, HEADING_5,
@@ -65,8 +67,16 @@ export class BlockTypeState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  toggleBlockType(name: string, view: EditorView): boolean {
-    return commands.toggleBlockType(view, name)(view.state, view.dispatch);
+  toggleBlockType(name: string, view: EditorView): void {
+    const groups = getGroupsInRange(view.state.doc, view.state.selection.$from, view.state.selection.$to);
+    const { $from } = groups[0];
+    const { $to } = groups[groups.length - 1];
+    view.dispatch(view.state.tr.setSelection(new TextSelection($from, $to)));
+
+    groups.reverse();
+    groups.forEach(group => {
+      commands.toggleBlockType(view, name, group.$from, group.$to);
+    });
   }
 
   update(newEditorState, dirty = false) {

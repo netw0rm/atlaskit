@@ -1,69 +1,71 @@
-import { EditorState, EditorView, Fragment, liftTarget, NodeSelection, NodeType, TextSelection, Transaction } from '../prosemirror';
+import { EditorState, EditorView, Fragment, liftTarget, NodeSelection, NodeType, TextSelection, Transaction, ResolvedPos } from '../prosemirror';
 import * as baseCommand from '../prosemirror/prosemirror-commands';
 import { findWrapping } from '../prosemirror/prosemirror-transform';
 import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
-import { isRangeOfType } from '../utils';
+import { isRangeOfType, liftSelection } from '../utils';
 
-export function toggleBlockType(view: EditorView, name: string): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { nodes } = state.schema;
-    const { $from } = state.selection;
-    if ($from.depth > 1) {
-      baseCommand.lift(state, dispatch);
-    }
+export function toggleBlockType(view: EditorView, name: string, $from: ResolvedPos, $to: ResolvedPos): boolean {
+  const { nodes } = view.state.schema;
 
-    switch (name) {
-      case blockTypes.NORMAL_TEXT.name:
-        if (nodes.paragraph) {
-          return setNormalText()(view.state, dispatch);
-        }
-        break;
-      case blockTypes.HEADING_1.name:
-        if (nodes.heading) {
-          return toggleHeading(1)(view.state, dispatch);
-        }
-        break;
-      case blockTypes.HEADING_2.name:
-        if (nodes.heading) {
-          return toggleHeading(2)(view.state, dispatch);
-        }
-        break;
-      case blockTypes.HEADING_3.name:
-        if (nodes.heading) {
-          return toggleHeading(3)(view.state, dispatch);
-        }
-        break;
-      case blockTypes.HEADING_4.name:
-        if (nodes.heading) {
-          return toggleHeading(4)(view.state, dispatch);
-        }
-        break;
-      case blockTypes.HEADING_5.name:
-        if (nodes.heading) {
-          return toggleHeading(5)(view.state, dispatch);
-        }
-        break;
-      case blockTypes.BLOCK_QUOTE.name:
-        if (nodes.paragraph && nodes.blockquote) {
-          return toggleBlockquote()(view.state, dispatch);
-        }
-        break;
-      case blockTypes.CODE_BLOCK.name:
-        if (nodes.codeBlock) {
-          return toggleCodeBlock()(view.state, dispatch);
-        }
-        break;
-      case blockTypes.PANEL.name:
-        if (nodes.panel && nodes.paragraph) {
-          return togglePanel()(view.state, dispatch);
-        }
-        break;
-    }
-    return false;
-  };
+  const textSelection = new TextSelection($from, $to);
+
+  view.dispatch(view.state.tr.setSelection(textSelection));
+
+  if (view.state.selection.$from.depth > 1) {
+    view.dispatch(liftSelection(view.state.tr, view.state.doc, $from, $to));
+  }
+
+  switch (name) {
+    case blockTypes.NORMAL_TEXT.name:
+      if (nodes.paragraph) {
+        return setNormalText()(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.HEADING_1.name:
+      if (nodes.heading) {
+        return toggleHeading(1)(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.HEADING_2.name:
+      if (nodes.heading) {
+        return toggleHeading(2)(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.HEADING_3.name:
+      if (nodes.heading) {
+        return toggleHeading(3)(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.HEADING_4.name:
+      if (nodes.heading) {
+        return toggleHeading(4)(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.HEADING_5.name:
+      if (nodes.heading) {
+        return toggleHeading(5)(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.BLOCK_QUOTE.name:
+      if (nodes.paragraph && nodes.blockquote) {
+        return toggleBlockquote()(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.CODE_BLOCK.name:
+      if (nodes.codeBlock) {
+        return toggleCodeBlock()(view.state, view.dispatch);
+      }
+      break;
+    case blockTypes.PANEL.name:
+      if (nodes.panel && nodes.paragraph) {
+        return togglePanel()(view.state, view.dispatch);
+      }
+      break;
+  }
+  return false;
 }
 
 /**

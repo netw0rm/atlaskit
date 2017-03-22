@@ -22,7 +22,7 @@ export interface CardListProps {
 
   pageSize?: number;
 
-  actions: Array<ListAction>;
+  actions: Array<CollectionAction>;
 
   showLoadMoreButton?: boolean;
 
@@ -157,18 +157,13 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private renderCardList(): JSX.Element {
-    const cardActions: Array<CardAction> = this.props.actions.map((action: ListAction) => {
+    const cardActions: Array<CardAction> = this.props.actions.map(action => {
       return {
         label: action.label,
         type: action.type,
         handler: (item: MediaItem, event: Event) => {
           if (!this.state.collection) { return; }
-
-          const fileIds = this.state.collection.items.map(cItem => ({
-            id: cItem.id,
-            mediaItemType: cItem.mediaItemType
-          }));
-          action.handler(item, fileIds, event);
+          action.handler(item, this.state.collection, event);
         }
       };
     });
@@ -212,7 +207,7 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   /*
-    We only want to apply default width (hardcoded value) for normal cards, 
+    We only want to apply default width (hardcoded value) for normal cards,
     in case of small cards we want them to grow up and use the whole parent width
    */
   private get cardWidth() {

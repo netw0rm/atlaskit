@@ -73,10 +73,10 @@ export class MediaCollectionService implements CollectionService {
             'Content-Type': 'application/json'
           },
           params: {
-            limit: limit,
-            inclusiveStartKey: inclusiveStartKey,
-            sortDirection: sortDirection,
-            details: details
+            limit,
+            inclusiveStartKey,
+            sortDirection,
+            details
           }
         })
         .then(response => response.data)

@@ -29,7 +29,7 @@ export class CollectionCommandReducer {
   private readonly connectableObservable = this.subject.publishReplay(1);
 
   private readonly items: Array<MediaCollectionItem> = [];
-  private nextInclusiveStartKey: string = '';
+  private nextInclusiveStartKey?: string = undefined;
   private isLoading = false;
 
   constructor(
@@ -71,7 +71,7 @@ export class CollectionCommandReducer {
       this.pageSize,
       this.nextInclusiveStartKey,
       this.sortDirection,
-      'full')
+      'minimal')
       .then(response => {
         const items = response.data.contents
           .map(item => {

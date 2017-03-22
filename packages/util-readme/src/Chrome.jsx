@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import Heading from './heading';
+import Heading from './Heading';
 
 const style = {
   chrome: {
@@ -7,8 +7,7 @@ const style = {
   },
 };
 
-export default class extends PureComponent {
-  static displayName = 'utilReadmeChrome'
+export default class ReadmeChrome extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     title: PropTypes.string,

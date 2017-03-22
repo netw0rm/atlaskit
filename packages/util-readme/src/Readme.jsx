@@ -1,12 +1,11 @@
 import React, { PropTypes, PureComponent } from 'react';
 import decamelize from 'decamelize';
-import Chrome from './chrome';
-import Code from './code';
-import Description from './description';
-import Heading from './heading';
+import Chrome from './Chrome';
+import Code from './Code';
+import Description from './Description';
+import Heading from './Heading';
 
-export default class extends PureComponent {
-  static displayName = 'utilReadme'
+export default class Readme extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,

@@ -11,10 +11,12 @@ export default class InlineMessage extends PureComponent {
     title: PropTypes.string,
     type: PropTypes.oneOf(types),
     secondaryText: PropTypes.string,
+    position: InlineDialog.propTypes.position,
   }
 
   static defaultProps = {
     type: defaultType,
+    position: 'bottom left',
   }
 
   state = {
@@ -31,7 +33,7 @@ export default class InlineMessage extends PureComponent {
         <InlineDialog
           content={this.props.children}
           isOpen={this.state.isOpen}
-          position="bottom left"
+          position={this.props.position}
           shouldFlip
         >
           <Button

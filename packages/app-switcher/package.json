@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/app-switcher",
-  "version": "2.0.0",
+  "version": "2.1.6",
   "config": {
     "access": "public"
   },
@@ -29,13 +29,18 @@
     "styled-components": "^1.3.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "James McA"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "keywords": [
-    "atlaskit",
+    "fabric",
     "ui"
   ]
 }

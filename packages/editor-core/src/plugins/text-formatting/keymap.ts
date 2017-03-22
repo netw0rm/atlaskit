@@ -8,27 +8,27 @@ export function keymapHandler(view: EditorView, pluginState: any): Function {
 
   if (schema.marks.strong) {
     const eventName = analyticsEventName(schema.marks.strong);
-    keymaps.bindKeymapWithCommand(keymaps.toggleBold.common!, trackAndInvoke(eventName, () => pluginState.toggleMark(view, schema.marks.strong)), list);
+    keymaps.bindKeymapWithCommand(keymaps.toggleBold.common!, trackAndInvoke(eventName, () => pluginState.toggleStrong(view)), list);
   }
 
   if (schema.marks.em) {
-    const eventName = analyticsEventName(schema.marks.strong);
-    keymaps.bindKeymapWithCommand(keymaps.toggleItalic.common!, trackAndInvoke(eventName, () => pluginState.toggleMark(view, schema.marks.em)), list);
+    const eventName = analyticsEventName(schema.marks.em);
+    keymaps.bindKeymapWithCommand(keymaps.toggleItalic.common!, trackAndInvoke(eventName, () => pluginState.toggleEm(view)), list);
   }
 
   if (schema.marks.code) {
-    const eventName = analyticsEventName(schema.marks.strong);
-    keymaps.bindKeymapWithCommand(keymaps.toggleCode.common!, trackAndInvoke(eventName, () => pluginState.toggleMark(view, schema.marks.code)), list);
+    const eventName = analyticsEventName(schema.marks.code);
+    keymaps.bindKeymapWithCommand(keymaps.toggleCode.common!, trackAndInvoke(eventName, () => pluginState.toggleCode(view)), list);
   }
 
   if (schema.marks.strike) {
-    const eventName = analyticsEventName(schema.marks.strong);
-    keymaps.bindKeymapWithCommand(keymaps.toggleStrikethrough.common!, trackAndInvoke(eventName, () => pluginState.toggleMark(view, schema.marks.strike)), list);
+    const eventName = analyticsEventName(schema.marks.strike);
+    keymaps.bindKeymapWithCommand(keymaps.toggleStrikethrough.common!, trackAndInvoke(eventName, () => pluginState.toggleStrike(view)), list);
   }
 
   if (schema.marks.u) {
-    const eventName = analyticsEventName(schema.marks.strong);
-    keymaps.bindKeymapWithCommand(keymaps.toggleUnderline.common!, trackAndInvoke(eventName, () => pluginState.toggleMark(view, schema.marks.u)), list);
+    const eventName = analyticsEventName(schema.marks.u);
+    keymaps.bindKeymapWithCommand(keymaps.toggleUnderline.common!, trackAndInvoke(eventName, () => pluginState.toggleUnderline(view)), list);
   }
 
   return keydownHandler(list);

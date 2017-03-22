@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/comment",
-  "version": "1.0.2",
+  "version": "1.0.6",
   "config": {
     "access": "public"
   },
@@ -27,6 +27,14 @@
     "@atlaskit/util-readme": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Sean C"
+    },
+    {
+      "name": "Ben W"
+    }
+  ],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2"

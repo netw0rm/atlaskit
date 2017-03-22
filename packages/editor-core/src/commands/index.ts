@@ -108,6 +108,13 @@ export function adjustSelectionInList(doc, selection: TextSelection): TextSelect
   return new TextSelection(doc.resolve(startPos), doc.resolve(endPos));
 }
 
+
+export function preventDefault(): Command {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean {
+    return true;
+  };
+}
+
 export function toggleList(listType: 'bulletList' | 'orderedList'): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean {
     view.dispatch(view.state.tr.setSelection(adjustSelectionInList(state.doc, state.selection as TextSelection)));
@@ -139,7 +146,7 @@ export function toggleOrderedList(): Command {
 }
 
 export function wrapInList(nodeType): Command {
-  return (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean  => {
+  return (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean => {
     return baseCommand.autoJoin(
       baseListCommand.wrapInList(nodeType) as any,
       (before, after) => before.type === after.type && before.type === nodeType
@@ -434,12 +441,12 @@ function createParagraphNear(state: EditorState<any>, dispatch: (tr: Transaction
     insertPos = getInsertPosFromNonTextBlock(state, append);
   }
 
-  if (append) {
-    const next = new TextSelection(state.doc.resolve(insertPos));
-    dispatch(state.tr.setSelection(next).insert(insertPos, paragraph.create()));
-  } else {
+  if (!append) {
     const next = new TextSelection(state.doc.resolve(insertPos + 1));
     dispatch(state.tr.insert(insertPos, paragraph.create()).setSelection(next));
+  } else {
+    const next = new TextSelection(state.doc.resolve(insertPos));
+    dispatch(state.tr.setSelection(next).insert(insertPos, paragraph.create()));
   }
 }
 
@@ -450,9 +457,21 @@ function getInsertPosFromTextBlock(state: EditorState<any>, append: boolean): vo
   if (!append) {
     pos = $from.start($from.depth) - 1;
     pos = $from.depth > 1 ? pos - 1 : pos;
+
+    // Same theory as comment below.
+    if ($to.node($to.depth - 1).type === state.schema.nodes.listItem) {
+      pos = pos - 1;
+    }
   } else {
     pos = $to.end($to.depth) + 1;
     pos = $to.depth > 1 ? pos + 1 : pos;
+
+    // List is a special case. Because from user point of view, the whole list is a unit,
+    // which has 3 level deep (ul, li, p), all the other block types has maxium two levels as a unit.
+    // eg. block type (bq, p/other), code block (cb) and panel (panel, p/other).
+    if ($to.node($to.depth - 1).type === state.schema.nodes.listItem) {
+      pos = pos + 1;
+    }
   }
 
   return pos;

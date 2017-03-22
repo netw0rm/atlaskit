@@ -4,6 +4,7 @@ import { Label, FieldBase } from '@atlaskit/field-base';
 import Droplist from '@atlaskit/droplist';
 import Group from '@atlaskit/droplist-group';
 import Item from '@atlaskit/droplist-item';
+import UpIcon from '@atlaskit/icon/glyph/hipchat/arrow-up';
 
 import styles from 'style!../src/styles.less';
 import { StatelessSelect } from '../src';
@@ -51,6 +52,11 @@ describe(name, () => {
       const select = mount(<StatelessSelect placeholder="test" selectedItem={{ content: 'selected' }} />);
       expect(select.text()).to.not.equal('test');
       expect(select.text()).to.equal('selected');
+    });
+
+    it('should render selectedItems elemBefore', () => {
+      const select = mount(<StatelessSelect placeholder="test" selectedItem={{ elemBefore: <UpIcon label="up" /> }} />);
+      expect(select.find(UpIcon).length).to.equal(1);
     });
 
     it('should render groups and items inside Droplist (when open)', () => {
@@ -232,6 +238,7 @@ describe(name, () => {
 
     describe('handleTriggerClick', () => {
       it('default behavior', () => {
+        wrapper.setProps({ isOpen: false });
         const args = { event: {}, isOpen: true };
         instance.handleTriggerClick({});
         expect(onOpenChangeSpy.calledOnce).to.equal(true);
@@ -243,6 +250,14 @@ describe(name, () => {
         instance.handleTriggerClick({});
         expect(onOpenChangeSpy.called).to.equal(false);
         wrapper.setProps({ isDisabled: false });
+      });
+
+      it('should close select when it was open before', () => {
+        wrapper.setProps({ isOpen: true });
+        const args = { event: {}, isOpen: false };
+        instance.handleTriggerClick({});
+        expect(onOpenChangeSpy.called).to.equal(true);
+        expect(onOpenChangeSpy.calledWith(args)).to.equal(true);
       });
     });
 

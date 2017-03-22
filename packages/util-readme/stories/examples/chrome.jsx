@@ -1,5 +1,5 @@
 import React from 'react';
-import { Chrome } from 'akutil-readme';
+import { Chrome } from '@atlaskit/util-readme';
 
 export default (
   <Chrome title="My Title">Content in the chromed area.</Chrome>

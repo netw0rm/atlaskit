@@ -12,7 +12,7 @@ export const FilmStripViewWrapper = styled.div`
   padding: 3px 0;
   border-radius: 3px;
   
-  &:hover .arrow{
+  &:hover .arrow {
     opacity: 1;
   }
 `;
@@ -21,6 +21,7 @@ export const FilmStripListWrapper = styled.div`
   width: inherit;
   overflow: hidden;
   line-height: 0;
+  padding: 2px 0;
 `;
 
 export const FilmStripList = styled.ul`

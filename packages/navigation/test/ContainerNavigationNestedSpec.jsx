@@ -4,12 +4,6 @@ import styles from 'style!../src/components/less/ContainerNavigationNested.less'
 import ContainerNavigationNested from '../src/components/js/ContainerNavigationNested';
 
 describe('<ContainerNavigationNested />', () => {
-  describe('rendering', () => {
-    it('should render children', () => {
-      expect(mount(<ContainerNavigationNested><h1>Content</h1></ContainerNavigationNested>).find('h1').text()).to.equal('Content');
-    });
-  });
-
   describe('state', () => {
     it('should store previous children in state', () => {
       const previousPane = <h1>Previous Pane</h1>;
@@ -22,6 +16,10 @@ describe('<ContainerNavigationNested />', () => {
   });
 
   describe('render', () => {
+    it('should render children', () => {
+      expect(mount(<ContainerNavigationNested><h1>Content</h1></ContainerNavigationNested>).find('h1').text()).to.equal('Content');
+    });
+
     it('should have new pane first if animationDirection is right', () => {
       const initPane = <h1>Previous Pane</h1>;
       const component = mount(<ContainerNavigationNested>{initPane}</ContainerNavigationNested>);
@@ -54,6 +52,20 @@ describe('<ContainerNavigationNested />', () => {
       const newPane = <h1>New Pane</h1>;
       component.setProps({ children: newPane, animationDirection: 'right' });
       expect(component.find('div').first().hasClass(styles.containerNavigationNestedRightAnimate)).to.equal(true);
+    });
+  });
+
+  describe('props', () => {
+    it('should call onAnimationEnd if specified', () => {
+      const initPane = <h1>Previous Pane</h1>;
+      const animationEventSpy = sinon.spy();
+      const component = mount(<ContainerNavigationNested onAnimationEnd={animationEventSpy}>
+        {initPane}
+      </ContainerNavigationNested>);
+      const newPane = <h1>New Pane</h1>;
+      component.setProps({ children: newPane, animationDirection: 'left' });
+      component.simulate('animationEnd');
+      expect(animationEventSpy.calledOnce).to.equal(true);
     });
   });
 });

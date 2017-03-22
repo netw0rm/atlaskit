@@ -2,7 +2,7 @@ import {
   akEditorCodeBackground,
   akEditorCodeBlockPadding,
   akEditorCodeFontFamily,
-} from 'ak-editor-shared-styles';
+} from '../src/styles';
 
 import {
   akBorderRadius,

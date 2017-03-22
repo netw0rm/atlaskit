@@ -5,8 +5,11 @@ import {
   HardBreakNodeType,
   HeadingNodeType,
   HorizontalRuleNodeType,
+  LinkMarkType,
   ListItemNodeType,
-  MonoMarkType,
+  MentionNodeType,
+  MentionQueryMarkType,
+  CodeMarkType,
   OrderedListNodeType,
   ParagraphNodeType,
   Schema,
@@ -24,21 +27,28 @@ export interface BaseSchemaNodes {
   text: Text;
   hard_break: HardBreakNodeType;
   horizontal_rule: HorizontalRuleNodeType;
-}
-
-export interface ListsSchemaNodes {
-  ordered_list: OrderedListNodeType;
-  bullet_list: BulletListNodeType;
-  list_item: ListItemNodeType;
+  ordered_list?: OrderedListNodeType;
+  bullet_list?: BulletListNodeType;
+  list_item?: ListItemNodeType;
+  mention?: MentionNodeType;
 }
 
 export interface BaseSchemaMarks {
+  link?: LinkMarkType;
   strong: StrongMarkType;
   em: EmMarkType;
-  strike: StrikeMarkType;
+  strike?: StrikeMarkType;
   subsup: SubSupMarkType;
   u: UnderlineMarkType;
-  mono: MonoMarkType;
+  code?: CodeMarkType;
+  mention_query?: MentionQueryMarkType;
+}
+
+export interface JIRASchemaConfig {
+  allowLists?: boolean;
+  allowMentions?: boolean;
+  allowLinks?: boolean;
+  allowAdvancedTextFormatting?: boolean;
 }
 
 export interface JIRASchema extends Schema {
@@ -46,18 +56,23 @@ export interface JIRASchema extends Schema {
   marks: BaseSchemaMarks;
 }
 
-export interface JIRASchemaWithLists extends Schema {
-  nodes: BaseSchemaNodes & ListsSchemaNodes;
-  marks: BaseSchemaMarks;
+export function isSchemaWithLists(schema: JIRASchema): boolean {
+  return !!schema.nodes.bullet_list;
 }
 
-export type SupportedSchema = JIRASchema | JIRASchemaWithLists;
-
-export function isSchemaWithLists(schema: SupportedSchema): schema is JIRASchemaWithLists {
-  return !!schema.nodes['bullet_list'];
+export function isSchemaWithMentions(schema: JIRASchema): boolean {
+  return !!schema.nodes.mention;
 }
 
-export function makeSchema(allowLists: boolean): SupportedSchema {
+export function isSchemaWithLinks(schema: JIRASchema): boolean {
+  return !!schema.marks.link;
+}
+
+export function isSchemaWithAdvancedTextFormattingMarks(schema: JIRASchema): boolean {
+  return !!schema.marks.code && !!schema.marks.strike;
+}
+
+export function makeSchema(config: JIRASchemaConfig): JIRASchema {
   const nodes = {
     doc: { type: DocNodeType, content: 'block+' },
     paragraph: { type: ParagraphNodeType, content: 'inline<_>*', group: 'block' },
@@ -68,21 +83,38 @@ export function makeSchema(allowLists: boolean): SupportedSchema {
     text: { type: Text, group: 'inline' },
     hard_break: { type: HardBreakNodeType, group: 'inline' },
     horizontal_rule: { type: HorizontalRuleNodeType, group: 'block' },
+    mention: { type: MentionNodeType, group: 'inline' },
   };
 
   const marks = {
+    link: LinkMarkType,
     strong: StrongMarkType,
     em: EmMarkType,
     strike: StrikeMarkType,
     subsup: SubSupMarkType,
     u: UnderlineMarkType,
-    mono: MonoMarkType,
+    code: CodeMarkType,
+    mention_query: MentionQueryMarkType,
   };
 
-  if (!allowLists) {
+  if (!config.allowLinks) {
+    delete marks.link;
+  }
+
+  if (!config.allowLists) {
     delete nodes.ordered_list;
     delete nodes.bullet_list;
     delete nodes.list_item;
+  }
+
+  if (!config.allowMentions) {
+    delete nodes.mention;
+    delete marks.mention_query;
+  }
+
+  if (!config.allowAdvancedTextFormatting) {
+    delete marks.strike;
+    delete marks.code;
   }
 
   return new Schema({ nodes, marks });

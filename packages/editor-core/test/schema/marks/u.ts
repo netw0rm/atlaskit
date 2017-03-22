@@ -5,7 +5,7 @@ import { chaiPlugin, fromHTML, toHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-core/schema underline mark', () => {
+describe('@atlaskit/editor-core/schema underline mark', () => {
   itMatches('<u>text</u>', 'text');
   itMatches('<span style="text-decoration: underline">text</span>', 'text');
 

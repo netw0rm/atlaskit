@@ -126,5 +126,4 @@ describe('clear-formatting', () => {
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
   });
-
 });

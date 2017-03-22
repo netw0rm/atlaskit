@@ -77,10 +77,6 @@ describe('analytics decorator', () => {
   it('returns property value if decorating a non-function property', () => {
     sinon.stub(console, 'warn', () => {});
 
-    after(() => {
-      (console.warn as any).restore();
-    });
-
     class AnnotatedTestClassWithPrimitiveValue {
       @analytics('test.event.foo')
       foo = 15.15;
@@ -90,6 +86,7 @@ describe('analytics decorator', () => {
 
     expect((console.warn as SinonSpy).called).to.equal(true);
     expect(instance.foo).to.eq(15.15);
+    (console.warn as any).restore();
   });
 
   it('can track private methods being called', () => {

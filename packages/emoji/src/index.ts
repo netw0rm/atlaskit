@@ -1,17 +1,33 @@
 import Emoji from './components/common/Emoji';
+import EmojiPlaceholder from './components/common/EmojiPlaceholder';
 import ResourcedEmoji from './components/common/ResourcedEmoji';
+import ResourcedEmojiShortcut from './components/common/ResourcedEmojiShortcut';
 import EmojiPicker from './components/picker/EmojiPicker';
 import EmojiTypeAhead from './components/typeahead/EmojiTypeAhead';
-import EmojiResource from './api/EmojiResource';
-import EmojiService from './api/EmojiService';
+import EmojiResource, { EmojiProvider } from './api/EmojiResource';
+import { AbstractResource } from './api/SharedResources';
+import EmojiService, { EmojiSearchResult } from './api/EmojiService';
+import EmojiLoader, { denormaliseEmojiServiceResponse } from './api/EmojiLoader';
 
 export {
+  // Classes
+  AbstractResource,
   Emoji,
-  ResourcedEmoji,
+  EmojiPlaceholder,
+  EmojiLoader,
   EmojiPicker,
-  EmojiTypeAhead,
   EmojiResource,
   EmojiService,
+  EmojiTypeAhead,
+  ResourcedEmoji,
+  ResourcedEmojiShortcut,
+  // functions
+  denormaliseEmojiServiceResponse,
+  // interfaces
+  EmojiProvider,
+  EmojiSearchResult
 };
+
+export * from './types';
 
 export default EmojiPicker;

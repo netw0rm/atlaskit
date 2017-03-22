@@ -1,5 +1,5 @@
-import BulletListIcon from 'ak-icon/glyph/editor/bullet-list';
-import NumberListIcon from 'ak-icon/glyph/editor/number-list';
+import BulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
+import NumberListIcon from '@atlaskit/icon/glyph/editor/number-list';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
@@ -10,7 +10,7 @@ import ToolbarButton from '../ToolbarButton';
 import { EditorView } from '../../prosemirror';
 
 export interface Props {
-  editorView?: EditorView;
+  editorView: EditorView;
   pluginState: ListsState | FutureListsState;
 }
 
@@ -103,7 +103,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       if (this.props.editorView) {
         (this.props.pluginState as FutureListsState).toggleBulletList(this.props.editorView);
       } else {
-        (this.props.pluginState as ListsState).toggleBulletList();
+        (this.props.pluginState as ListsState).toggleBulletList(this.props.editorView);
       }
     }
   }
@@ -114,7 +114,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       if (this.props.editorView) {
         (this.props.pluginState as FutureListsState).toggleOrderedList(this.props.editorView);
       } else {
-        (this.props.pluginState as ListsState).toggleOrderedList();
+        (this.props.pluginState as ListsState).toggleOrderedList(this.props.editorView);
       }
     }
   }

@@ -1,12 +1,14 @@
-import AkButton from 'ak-button';
-import DropdownList from 'ak-droplist';
-import Group from 'ak-droplist-group';
-import Item from 'ak-droplist-item';
+import AkButton from '@atlaskit/button';
+import DropdownList from '@atlaskit/droplist';
+import Group from '@atlaskit/droplist-group';
+import Item from '@atlaskit/droplist-item';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import Tooltip from '@atlaskit/tooltip';
 
 import { analyticsService as analytics } from '../../analytics';
-import { BlockType, BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
+import { BlockTypeState, GroupedBlockTypes } from '../../plugins/block-type';
+import { BlockType } from '../../plugins/block-type/types';
 import { findKeymapByDescription, tooltip } from '../../keymaps';
 import * as styles from './styles';
 import { EditorView } from '../../prosemirror';
@@ -75,21 +77,21 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
           </AkButton>
         }
       >
-      {availableBlockTypes.map((blockTypeGroup, groupNo) => (
-        <Group key={`blockTypeGroup${groupNo}`}>
-        {blockTypeGroup.map(blockType => (
-          <Item
-            key={blockType.name}
-            isActive={currentBlockType === blockType}
-            onActivate={() => { this.handleSelectBlockType(blockType); }}
-          >
-            <span title={tooltip(findKeymapByDescription(blockType.title))}>
-              {blockType.title}
-            </span>
-          </Item>
+        {availableBlockTypes.map((blockTypeGroup, groupNo) => (
+          <Group key={`blockTypeGroup${groupNo}`}>
+            {blockTypeGroup.map((blockType, blockTypeNo) => (
+              <Tooltip key={`blockType${groupNo}${blockTypeNo}`} position="right" description={tooltip(findKeymapByDescription(blockType.title))}>
+                <Item
+                  key={blockType.name}
+                  isActive={currentBlockType === blockType}
+                  onActivate={() => { this.handleSelectBlockType(blockType); }}
+                >
+                  <span>{blockType.title}</span>
+                </Item>
+              </Tooltip>
+            ))}
+          </Group>
         ))}
-        </Group>
-      ))}
       </DropdownList>
     );
   }

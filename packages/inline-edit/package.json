@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-edit",
-  "version": "1.0.5",
+  "version": "2.0.8",
   "config": {
     "access": "public"
   },
@@ -24,20 +24,29 @@
     "@atlaskit/field-base": "^2.0.0",
     "@atlaskit/icon": "^1.0.0",
     "babel-runtime": "^6.11.6",
-    "classnames": "^2.2.5",
-    "@atlaskit/spinner": "1.0.0"
+    "classnames": "^2.2.5"
   },
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/inline-dialog": "1.0.0",
     "@atlaskit/input": "^1.0.0",
     "@atlaskit/mention": "^1.0.0",
+    "@atlaskit/modal-dialog": "^1.2.4",
     "uid": "0.0.2"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Matias C"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "atlaskit",
+    "ui"
+  ]
 }

@@ -1,9 +1,20 @@
 // Copy this file to local-config.js and customise.
 export default {
-  url: 'https://emoji-example/custom',
-  securityProvider: () => ({
-    headers: {
-      'X-Bogus-Authorization': 'Bearer token',
-    },
-  }),
+  asap: {
+    url: 'http://www.example.org/mentions',
+    securityProvider: () => ({
+      headers: {
+        'X-Bogus-Authorization': 'Bearer asap_token',
+      },
+    }),
+  },
+  sessionservice: {
+    url: 'http://www.example.org/mentions/some-cloud-id',
+    productId: 'micros-group/confluence',
+    securityProvider: () => ({
+      headers: {
+        'X-Bogus-Authorization': 'Session-bearer session_service_token',
+      },
+    }),
+  },
 };

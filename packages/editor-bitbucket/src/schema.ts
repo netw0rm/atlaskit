@@ -13,7 +13,7 @@ import {
   ListItemNodeType,
   MentionNodeType,
   MentionQueryMarkType,
-  MonoMarkType,
+  CodeMarkType,
   OrderedListNodeType,
   ParagraphNodeType,
   Schema,
@@ -50,7 +50,7 @@ export default new Schema({
     em: EmMarkType,
     strong: StrongMarkType,
     strike: StrikeMarkType,
-    mono: MonoMarkType,
+    code: CodeMarkType,
     mention_query: MentionQueryMarkType,
   },
 }) as BitbucketSchema;
@@ -81,7 +81,7 @@ export interface BitbucketSchema extends Schema {
     link: LinkMarkType;
     em: EmMarkType;
     strong: StrongMarkType;
-    mono: MonoMarkType;
+    code: CodeMarkType;
     strike: StrikeMarkType;
     mention_query: MentionQueryMarkType;
   };

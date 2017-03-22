@@ -3,6 +3,8 @@ import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
 
 const SPINNER_SIZE = 20;
+// time in milliseconds to wait before displaying the loading spinner
+const SPINNER_DELAY = 100;
 const SIZES = Object.freeze({
   small: 20,
   medium: 30,
@@ -25,7 +27,45 @@ export default class Spinner extends PureComponent {
   static defaultProps = {
     onComplete: () => {},
     isCompleting: false,
-    size: SPINNER_SIZE,
+    size: 'small',
+  }
+
+  state = {
+    spinnerHiddenForDelay: true,
+    spinnerDelayTimeout: null,
+  };
+
+  componentDidMount() {
+    if (!this.props.isCompleting) {
+      this.showSpinnerAfterDelay();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // if we werent displaying the spinner and now we are
+    if (this.props.isCompleting && !nextProps.isCompleting) {
+      this.showSpinnerAfterDelay();
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.state.spinnerDelayTimeout) {
+      clearTimeout(this.state.spinnerDelayTimeout);
+    }
+  }
+
+  showSpinnerAfterDelay = () => {
+    if (this.state.spinnerDelayTimeout) {
+      clearTimeout(this.state.spinnerDelayTimeout);
+    }
+    this.setState({
+      spinnerDelayTimeout: setTimeout(this.handleSpinnerDelayEnd, SPINNER_DELAY),
+      spinnerHiddenForDelay: true,
+    });
+  }
+
+  handleSpinnerDelayEnd = () => {
+    this.setState({ spinnerHiddenForDelay: false });
   }
 
   handleTransitionEnd = (e) => {
@@ -47,6 +87,7 @@ export default class Spinner extends PureComponent {
 
     const spinnerStyles = {
       [styles.spinner]: true,
+      [styles.hidden]: this.state.spinnerHiddenForDelay,
       [styles.active]: !this.props.isCompleting,
     };
     const strokeWidth = Math.round(spinnerSize / 10);

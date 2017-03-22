@@ -297,7 +297,7 @@ export default class StatelessSelect extends PureComponent {
 
   handleTriggerClick = (event) => {
     if (!this.props.isDisabled) {
-      this.onOpenChange({ event, isOpen: true });
+      this.onOpenChange({ event, isOpen: !this.props.isOpen });
     }
   }
 
@@ -420,8 +420,16 @@ export default class StatelessSelect extends PureComponent {
                   !this.props.hasAutocomplete || this.props.isDisabled ?
                     <div className={styles.content}>
                       {
-                        this.props.selectedItem.content ||
-                        <span className={styles.placeholder}>{this.props.placeholder}</span>
+                        this.props.selectedItem.elemBefore ?
+                          <div className={styles.elemBefore}>
+                            {this.props.selectedItem.elemBefore}
+                          </div> :
+                        null
+                      }
+                      {
+                        this.props.selectedItem.content ?
+                          <span>{this.props.selectedItem.content}</span> :
+                          <span className={styles.placeholder}>{this.props.placeholder}</span>
                       }
                     </div> :
                     <div className={styles.contentAutocomplete}>

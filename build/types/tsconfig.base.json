@@ -22,8 +22,6 @@
     ],
     "types": [
       "chai",
-      "whatwg-fetch",
-      "whatwg-streams",
       "mocha",
       "react",
       "sinon",
@@ -42,8 +40,9 @@
     "../../packages/*/node_modules"
   ],
   "files": [
-    "./node.d.ts",
+    "./json-loader.d.ts",
     "./popper.d.ts",
-    "./raw-loader.d.ts"
+    "./raw-loader.d.ts",
+    "./webpack.d.ts"
   ]
 }

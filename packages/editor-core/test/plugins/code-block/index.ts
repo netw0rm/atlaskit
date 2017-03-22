@@ -80,20 +80,24 @@ describe('code-block', () => {
 
         context('when code block is focused and then editor is blur', () => {
             it('should call subscribers', () => {
-                const { pm, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
+                const { pluginState, editorView, plugin } = editor(doc(p('paragraph'), code_block()('code{<>}Block')));
                 const spy = sinon.spy();
-                plugin.subscribe(spy);
-                pm.on.blur.dispatch();
+                pluginState.subscribe(spy);
+
+                plugin.props.onBlur!(editorView, event);
+
                 expect(spy.callCount).to.equal(2);
             });
         });
 
         context('when code block is not focused and then editor is blur', () => {
             it('should not call subscribers', () => {
-                const { pm, plugin } = editor(doc(p('para{<>}graph'), code_block()('codeBlock')));
+                const { pluginState, editorView, plugin } = editor(doc(p('para{<>}graph'), code_block()('codeBlock')));
                 const spy = sinon.spy();
-                plugin.subscribe(spy);
-                pm.on.blur.dispatch();
+                pluginState.subscribe(spy);
+
+                plugin.props.onBlur!(editorView, event);
+
                 expect(spy.callCount).to.equal(1);
             });
         });
@@ -237,7 +241,7 @@ describe('code-block', () => {
 
     context('updateLanguage', () => {
         it('keeps the content', () => {
-            const { pluginState, editorView } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+            const { pluginState, editorView } = editor(doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock')));
             const previousElement = pluginState.element;
 
             pluginState.updateLanguage('php', editorView);
@@ -248,7 +252,7 @@ describe('code-block', () => {
         });
 
         it('can update language to be undefined', () => {
-            const { pluginState, editorView } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+            const { pluginState, editorView } = editor(doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock')));
 
             pluginState.updateLanguage(undefined, editorView);
 
@@ -256,7 +260,7 @@ describe('code-block', () => {
         });
 
         it('updates language', () => {
-            const { pluginState, editorView } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+            const { pluginState, editorView } = editor(doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock')));
 
             pluginState.updateLanguage('php', editorView);
 
@@ -264,7 +268,7 @@ describe('code-block', () => {
         });
 
         it('updates the node', () => {
-            const { pluginState, editorView } = editor(doc(p('paragraph'), code_block({language: 'java'})('{<>}codeBlock')));
+            const { pluginState, editorView } = editor(doc(p('paragraph'), code_block({ language: 'java' })('{<>}codeBlock')));
             const previousActiveCodeBlock = pluginState.activeCodeBlock;
 
             pluginState.updateLanguage('php', editorView);
@@ -277,13 +281,13 @@ describe('code-block', () => {
 
     describe('language', () => {
         it('is the same as activeCodeBlock language', () => {
-            const { pluginState } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
+            const { pluginState } = editor(doc(code_block({ language: 'java' })('te{<>}xt')));
 
             expect(pluginState.language).to.eq('java');
         });
 
         it('updates if activeCodeBlock updates langugae', () => {
-            const { pluginState, editorView } = editor(doc(code_block({language: 'java'})('te{<>}xt')));
+            const { pluginState, editorView } = editor(doc(code_block({ language: 'java' })('te{<>}xt')));
 
             pluginState.updateLanguage('php', editorView);
 
@@ -300,10 +304,12 @@ describe('code-block', () => {
     describe('toolbarVisible', () => {
         context('when editor is blur', () => {
             it('it is false', () => {
-                const { plugin, pm } = editor(doc(p('paragraph'), code_block({language: 'java'})('code{<>}Block')));
-                pm.on.focus.dispatch();
-                pm.on.blur.dispatch();
-                expect(plugin.toolbarVisible).to.not.be.true;
+                const { plugin, editorView, pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
+
+                plugin.props.onFocus!(editorView, event);
+                plugin.props.onBlur!(editorView, event);
+
+                expect(pluginState.toolbarVisible).to.not.be.true;
             });
         });
     });
@@ -311,18 +317,22 @@ describe('code-block', () => {
     describe('editorFocued', () => {
         context('when editor is focused', () => {
             it('it is true', () => {
-                const { plugin, pm } = editor(doc(p('paragraph'), code_block({language: 'java'})('code{<>}Block')));
-                pm.on.blur.dispatch();
-                pm.on.focus.dispatch();
-                expect(plugin.editorFocused).to.be.true;
+                const { plugin, editorView, pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
+
+                plugin.props.onBlur!(editorView, event);
+                plugin.props.onFocus!(editorView, event);
+
+                expect(pluginState.editorFocused).to.be.true;
             });
         });
 
         context('when editor is blur', () => {
             it('it is false', () => {
-                const { plugin, pm } = editor(doc(p('paragraph'), code_block({language: 'java'})('code{<>}Block')));
-                pm.on.blur.dispatch();
-                expect(plugin.editorFocused).not.to.be.true;
+                const { plugin, editorView, pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
+
+                plugin.props.onBlur!(editorView, event);
+
+                expect(pluginState.editorFocused).not.to.be.true;
             });
         });
     });

@@ -29,7 +29,7 @@ export default class ContainerNavigation extends PureComponent {
   }
 
   static defaultProps = {
-    appearance: 'default',
+    appearance: 'container',
     areGlobalActionsVisible: false,
     shouldAnimate: false,
     width: containerOpenWidth,
@@ -42,17 +42,6 @@ export default class ContainerNavigation extends PureComponent {
       transform: `translateX(${this.props.offsetX}px)`,
       width: this.props.width,
     };
-  }
-
-  getGlobalActionsAppearance() {
-    switch (this.props.appearance) {
-      case 'global':
-        return 'global';
-      case 'settings':
-        return 'settings';
-      default:
-        return 'container';
-    }
   }
 
   render() {
@@ -98,7 +87,7 @@ export default class ContainerNavigation extends PureComponent {
             })}
           >
             <GlobalActions
-              appearance={this.getGlobalActionsAppearance()}
+              appearance={appearance}
               createIcon={globalCreateIcon}
               isVisible={areGlobalActionsVisible}
               linkComponent={linkComponent}

@@ -14,12 +14,18 @@ import Layer from '../src';
 /* eslint-disable max-len */
 const layerPropDescriptions = {
   position: 'The position of a layer relative to its target. The position attribute takes two positional arguments in the format `position="edge edge-position"`, where `edge` specifies which edge to align the layer to, and `edge-position` specifies where on that edge the layer should appear. Refer to the table below for examples.',
-  autoFlip: 'If true, a Layer will flip it\'s position to the opposite side of its target if it does not fit in the available space. Alternatively, supply an ordered list of positions here to specify the flipping behavior, e.g. `autoFlip={[\'top\', \'bottom\']}`',
+  autoFlip: 'If true, a Layer will flip it\'s position to the opposite side of its target if it does not fit in the available space. Alternatively, supply an ordered list of positions here to specify the flipping behavior, e.g. `autoFlip={[\'top\', \'bottom\']}`. Available positions here are: "top", "bottom", "left", and "right". The content will first try to fit in the position specified by the `position` prop, and then try each other direction in order.',
   boundariesElement: 'One of "viewport", "window" or "scrollParent". If autoFlip is enabled, the Layer will attempt to remain inside this element.',
   offset: 'A string representing the offsets from the target element in the format "[x-offset] [y-offset]", measured in pixels.',
   content: 'The HTML content to display in the layer. This will be aligned to the target according to the `position` prop.',
   onFlippedChange: 'Callback that is used to know when the `flipped` state of Layer changes. This occurs when placing a Layered element in the requested position would cause Layer to be rendered outside of the boundariesElement (usually viewport). See below for more details.',
   children: 'The target element to align the Layer `content` to.',
+};
+
+const layerPropTypes = {
+  position: 'string',
+  autoFlip: 'bool | Array(string)',
+  boundariesElement: 'string',
 };
 
 storiesOf(name, module)
@@ -29,8 +35,8 @@ storiesOf(name, module)
       description={<Description>
         <p>
           The layer is responsible for the positioning of an element on a page.
-          For example, you can wrap a tooltip with a layer to make its position relative to a target.
-          You can specify up to 12 different positions.
+          For example, if you want to create a custom tooltip component, you could wrap it with a
+          layer to set its position relative to a target.
         </p>
         <p>
           If you use a layer with a component that could be opened or closed, you will need to
@@ -42,7 +48,7 @@ storiesOf(name, module)
       <Code code={LayerExampleRaw}>
         {LayerExample}
       </Code>
-      <Props component={Layer} descriptions={layerPropDescriptions} />
+      <Props component={Layer} descriptions={layerPropDescriptions} types={layerPropTypes} />
       <div>
         <Heading type="3">Position</Heading>
         <Description>

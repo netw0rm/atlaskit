@@ -15,7 +15,7 @@ export function transformToCodeBlockAction(state: EditorState<any>, attrs?: any)
 
     const where = $from.before($from.depth);
     const tr = clearMarkupFor(state, where);
-    return mergeContent(tr, state.schema.nodes)
+    return mergeContent(tr, state)
         .setNodeType(where, codeBlock, attrs);
 }
 
@@ -78,8 +78,7 @@ function clearMarkupFor(state: EditorState<any>, pos: number): Transaction {
     return tr;
 }
 
-function mergeContent(tr: Transaction, nodes: any) {
-    const { text } = nodes;
+function mergeContent(tr: Transaction, state: EditorState<any>) {
     const { from, to } = tr.selection;
     let textContent = '';
     tr.doc.nodesBetween(from, to, (node, pos) => {
@@ -91,7 +90,7 @@ function mergeContent(tr: Transaction, nodes: any) {
         }
     });
     if (textContent.length > 0) {
-        const textNode = text.create({}, textContent);
+        const textNode = state.schema.text(textContent);
         tr.replaceSelection(textNode);
     }
     return tr;

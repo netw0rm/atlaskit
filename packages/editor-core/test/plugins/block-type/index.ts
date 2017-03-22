@@ -3,7 +3,29 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { browser } from '../../../src/prosemirror';
-import { setTextSelection, setNodeSelection, sendKeyToPm, fixtures, blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, img, makeEditor, mention, p, hr } from '../../../src/test-helper';
+import {
+    setTextSelection,
+    setNodeSelection,
+    sendKeyToPm,
+    fixtures,
+    blockquote,
+    br,
+    chaiPlugin,
+    code_block,
+    doc,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    img,
+    makeEditor,
+    mention,
+    p,
+    hr,
+    ul,
+    li
+} from '../../../src/test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
 
@@ -87,14 +109,16 @@ describe('block-type', () => {
             const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
 
             pluginState.toggleBlockType('codeblock', editorView);
+
             expect(editorView.state.doc).to.deep.equal(doc(code_block()('text')));
         });
 
         it('should merge paragraphs while creating code blocks code block', () => {
-            const { pm, plugin } = editor(doc(p('text'), p('text'), p('text')));
-            pm.setTextSelection(1, 14);
-            plugin.changeBlockType('codeblock');
-            expect(pm.doc).to.deep.equal(doc(code_block()('text\ntext\ntext')));
+            const { editorView, pluginState } = editor(doc(p('{<}text'), p('text'), p('text{>}')));
+
+            pluginState.toggleBlockType('codeblock', editorView);
+
+            expect(editorView.state.doc).to.deep.equal(doc(code_block()('text\ntext\ntext')));
         });
 
         it('should be able to change to code block with multilines', () => {
@@ -108,19 +132,20 @@ describe('block-type', () => {
                     br)));
 
             pluginState.toggleBlockType('codeblock', editorView);
+
             expect(editorView.state.doc).to.deep.equal(doc(code_block()('line1 \nline2 \n')));
         });
 
         it('should be able to change to code block with image and multiple blocks', () => {
-            const { pm, plugin } = editor(
+            const { editorView, pluginState } = editor(
                 doc(p(
-                    'line1',
+                    '{<}line1',
                     img({ src: 'url', alt: 'text', title: 'text' })
-                ), p('line2')));
+                ), p('line2{>}')));
 
-            pm.setTextSelection(1, 10);
-            plugin.changeBlockType('codeblock');
-            expect(pm.doc).to.deep.equal(doc(code_block()('line1\nline2')));
+            pluginState.toggleBlockType('codeblock', editorView);
+
+            expect(editorView.state.doc).to.deep.equal(doc(code_block()('line1\nline2')));
         });
 
 
@@ -141,19 +166,19 @@ describe('block-type', () => {
         });
 
         it('should be able to preserve mention text when converting multiple blocks to code block', () => {
-            const { pm, plugin } = editor(
+            const { editorView, pluginState } = editor(
                 doc(p(
-                    'hello ',
+                    '{<}hello ',
                     mention({ id: 'foo1', displayName: '@bar1' })
-                ), p('text')));
+                ), p('text{>}')));
 
-            pm.setTextSelection(1, 14);
-            plugin.changeBlockType('codeblock');
-            expect(pm.doc).to.deep.equal(doc(code_block()('hello @bar1\ntext')));
+            pluginState.toggleBlockType('codeblock', editorView);
+
+            expect(editorView.state.doc).to.deep.equal(doc(code_block()('hello @bar1\ntext')));
         });
 
         it('should collaps nested block and convert to code block', () => {
-            const {editorView, pluginState} = editor(
+            const { editorView, pluginState } = editor(
                 doc(blockquote(
                     h1('h1')
                 ))
@@ -324,7 +349,7 @@ describe('block-type', () => {
                 context('when hits Cmd-Alt-8', () => {
                     it('toggles paragraph', () => {
                         const { editorView } = editor(doc(p('text')));
-                        const code = code_block({language: null});
+                        const code = code_block({ language: null });
 
                         sendKeyToPm(editorView, 'Cmd-Alt-8');
                         expect(editorView.state.doc).to.deep.equal(doc(code('text')));
@@ -393,7 +418,7 @@ describe('block-type', () => {
                 context('when hits Ctrl-8', () => {
                     it('toggles paragraph', () => {
                         const { editorView } = editor(doc(p('text')));
-                        const code = code_block({language: null});
+                        const code = code_block({ language: null });
 
                         sendKeyToPm(editorView, 'Ctrl-8');
                         expect(editorView.state.doc).to.deep.equal(doc(code('text')));
@@ -421,7 +446,7 @@ describe('block-type', () => {
 
                             sendKeyToPm(editorView, 'Enter');
 
-                            expect(editorView.state.doc).to.deep.equal(doc(code_block({language: 'javascript'})('')));
+                            expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'javascript' })('')));
                         });
 
                         it('trims the spaces', () => {
@@ -429,7 +454,7 @@ describe('block-type', () => {
 
                             sendKeyToPm(editorView, 'Enter');
 
-                            expect(editorView.state.doc).to.deep.equal(doc(code_block({language: 'javascript'})('   hello @bar1')));
+                            expect(editorView.state.doc).to.deep.equal(doc(code_block({ language: 'javascript' })('   hello @bar1')));
                         });
                     });
 
@@ -528,11 +553,11 @@ describe('block-type', () => {
 
                             context('list item', () => {
                                 it('creates a new paragraph below the ul', () => {
-                                    const { pm } = editor(doc(ul(li(p('{<>}text')))));
+                                    const { editorView } = editor(doc(ul(li(p('{<>}text')))));
 
-                                    pm.input.dispatchKey('Up');
+                                    sendKeyToPm(editorView, 'ArrowUp');
 
-                                    expect(pm.doc).to.deep.equal(doc(p(''), ul(li(p('text')))));
+                                    expect(editorView.state.doc).to.deep.equal(doc(p(''), ul(li(p('text')))));
                                 });
                             });
 
@@ -663,90 +688,89 @@ describe('block-type', () => {
                             });
                             context('list item', () => {
                                 it('creates a new paragraph below the ul', () => {
-                                    const { pm } = editor(doc(ul(li(p('text{<>}')))));
-
-                                    pm.input.dispatchKey('Down');
-
-                                    expect(pm.doc).to.deep.equal(doc(ul(li(p('text'))), p('')));
-                                });
-                            });
-                        });
-                        });
-                    });
-
-                    context('on a nested structure', () => {
-                        context('when cursor is at the end of the nested structure', () => {
-                            context('when there is still content after the nested block', () => {
-                                it('does not create a new paragraph below', () => {
-                                    const { editorView } = editor(doc(blockquote(p('text{<>}')), p('text')));
+                                    const { editorView } = editor(doc(ul(li(p('text{<>}')))));
 
                                     sendKeyToPm(editorView, 'ArrowDown');
 
-
-                                    expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text')), p('text')));
+                                    expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('text'))), p('')));
                                 });
                             });
-
-                            context('when there is no more content before the nested block', () => {
-                                it('creates a new paragraph below', () => {
-                                    const { editorView } = editor(doc(blockquote(p('text{<>}'))));
-
-                                    sendKeyToPm(editorView, 'ArrowDown');
-
-                                    expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text')), p('')));
-                                });
-                            });
-                        });
-                    });
-                });
-            });
-
-            context('when on a node selection', () => {
-                context('on a non nested structure', () => {
-                    context('when selection is in the middle of the content', () => {
-                        it('does not create a paragraph', () => {
-                            const { editorView, sel } = editor(doc(p('text{<>}'), hr, code_block()('text')));
-                            setNodeSelection(editorView, sel + 1);
-
-                            sendKeyToPm(editorView, 'ArrowDown');
-
-                            expect(editorView.state.doc).to.deep.equal(doc(p('text'), hr, code_block()('text')));
-                        });
-                    });
-
-                    context('when selection is at the end of the content', () => {
-                        it('creates a new paragraph below', () => {
-                            const { editorView, sel } = editor(doc(code_block()('text{<>}'), hr));
-                            setNodeSelection(editorView, sel + 1);
-
-                            sendKeyToPm(editorView, 'ArrowDown');
-
-                            expect(editorView.state.doc).to.deep.equal(doc(code_block()('text'), hr, p('')));
                         });
                     });
                 });
 
                 context('on a nested structure', () => {
-                    context('when there is more content after the nested block', () => {
-                        it('does not create a paragraph', () => {
-                            const { editorView, sel } = editor(doc(blockquote(hr, code_block()('{<>}text')), p('text')));
-                            setNodeSelection(editorView, sel - 1);
+                    context('when cursor is at the end of the nested structure', () => {
+                        context('when there is still content after the nested block', () => {
+                            it('does not create a new paragraph below', () => {
+                                const { editorView } = editor(doc(blockquote(p('text{<>}')), p('text')));
 
-                            sendKeyToPm(editorView, 'ArrowDown');
+                                sendKeyToPm(editorView, 'ArrowDown');
 
-                            expect(editorView.state.doc).to.deep.equal(doc(blockquote(hr, code_block()('text')), p('text')));
+
+                                expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text')), p('text')));
+                            });
+                        });
+
+                        context('when there is no more content before the nested block', () => {
+                            it('creates a new paragraph below', () => {
+                                const { editorView } = editor(doc(blockquote(p('text{<>}'))));
+
+                                sendKeyToPm(editorView, 'ArrowDown');
+
+                                expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('text')), p('')));
+                            });
                         });
                     });
+                });
+            });
+        });
 
-                    context('when there is no more content after the nested block', () => {
-                        it('creates a new paragraph below', () => {
-                            const { editorView, sel } = editor(doc(blockquote(code_block()('text{<>}'), hr)));
-                            setNodeSelection(editorView, sel + 1);
+        context('when on a node selection', () => {
+            context('on a non nested structure', () => {
+                context('when selection is in the middle of the content', () => {
+                    it('does not create a paragraph', () => {
+                        const { editorView, sel } = editor(doc(p('text{<>}'), hr, code_block()('text')));
+                        setNodeSelection(editorView, sel + 1);
 
-                            sendKeyToPm(editorView, 'ArrowDown');
+                        sendKeyToPm(editorView, 'ArrowDown');
 
-                            expect(editorView.state.doc).to.deep.equal(doc(blockquote(code_block()('text'), hr), p('')));
-                        });
+                        expect(editorView.state.doc).to.deep.equal(doc(p('text'), hr, code_block()('text')));
+                    });
+                });
+
+                context('when selection is at the end of the content', () => {
+                    it('creates a new paragraph below', () => {
+                        const { editorView, sel } = editor(doc(code_block()('text{<>}'), hr));
+                        setNodeSelection(editorView, sel + 1);
+
+                        sendKeyToPm(editorView, 'ArrowDown');
+
+                        expect(editorView.state.doc).to.deep.equal(doc(code_block()('text'), hr, p('')));
+                    });
+                });
+            });
+
+            context('on a nested structure', () => {
+                context('when there is more content after the nested block', () => {
+                    it('does not create a paragraph', () => {
+                        const { editorView, sel } = editor(doc(blockquote(hr, code_block()('{<>}text')), p('text')));
+                        setNodeSelection(editorView, sel - 1);
+
+                        sendKeyToPm(editorView, 'ArrowDown');
+
+                        expect(editorView.state.doc).to.deep.equal(doc(blockquote(hr, code_block()('text')), p('text')));
+                    });
+                });
+
+                context('when there is no more content after the nested block', () => {
+                    it('creates a new paragraph below', () => {
+                        const { editorView, sel } = editor(doc(blockquote(code_block()('text{<>}'), hr)));
+                        setNodeSelection(editorView, sel + 1);
+
+                        sendKeyToPm(editorView, 'ArrowDown');
+
+                        expect(editorView.state.doc).to.deep.equal(doc(blockquote(code_block()('text'), hr), p('')));
                     });
                 });
             });

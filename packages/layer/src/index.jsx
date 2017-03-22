@@ -11,7 +11,7 @@ export default class Layer extends PureComponent {
     position: PropTypes.oneOf(POSITION_ATTRIBUTE_ENUM.values),
     autoFlip: PropTypes.oneOfType([
       PropTypes.bool,
-      PropTypes.arrayOf(PropTypes.oneOf(POSITION_ATTRIBUTE_ENUM.values)),
+      PropTypes.arrayOf(PropTypes.oneOf(['top', 'right', 'bottom', 'left'])),
     ]),
     boundariesElement: PropTypes.oneOf(['viewport', 'window', 'scrollParent']),
     offset: PropTypes.string,

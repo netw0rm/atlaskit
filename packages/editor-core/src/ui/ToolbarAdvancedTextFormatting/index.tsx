@@ -4,12 +4,12 @@ import Tooltip from '@atlaskit/tooltip';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
-import DropdownList from 'ak-droplist';
-import Group from 'ak-droplist-group';
-import Item from 'ak-droplist-item';
+import DropdownList from '@atlaskit/droplist';
+import Group from '@atlaskit/droplist-group';
+import Item from '@atlaskit/droplist-item';
 import ToolbarButton from '../ToolbarButton';
-import AdvancedIcon from 'ak-icon/glyph/editor/advanced';
-import ExpandIcon from 'ak-icon/glyph/editor/expand';
+import AdvancedIcon from '@atlaskit/icon/glyph/editor/advanced';
+import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
 import { toggleCode, toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
 import * as styles from './styles';
 

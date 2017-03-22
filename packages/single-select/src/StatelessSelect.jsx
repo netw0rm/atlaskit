@@ -297,7 +297,7 @@ export default class StatelessSelect extends PureComponent {
 
   handleTriggerClick = (event) => {
     if (!this.props.isDisabled) {
-      this.onOpenChange({ event, isOpen: true });
+      this.onOpenChange({ event, isOpen: !this.props.isOpen });
     }
   }
 

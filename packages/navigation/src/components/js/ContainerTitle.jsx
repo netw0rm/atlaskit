@@ -6,6 +6,7 @@ export default class ContainerTitle extends PureComponent {
   static propTypes = {
     icon: PropTypes.node,
     text: PropTypes.string,
+    subText: PropTypes.string,
     href: PropTypes.string,
     linkComponent: PropTypes.func,
   }
@@ -18,6 +19,7 @@ export default class ContainerTitle extends PureComponent {
     const {
       href,
       text,
+      subText,
       linkComponent: Link,
     } = this.props;
 
@@ -27,7 +29,10 @@ export default class ContainerTitle extends PureComponent {
           <div className={styles.icon}>
             {this.props.icon}
           </div>
-          <div className={styles.text}> {text} </div>
+          <div className={styles.textContainer}>
+            <div className={styles.text}>{text}</div>
+            {subText ? <div className={styles.subText}>{subText}</div> : null}
+          </div>
         </div>
       </Link>
     );

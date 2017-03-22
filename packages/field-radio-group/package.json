@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-radio-group",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "config": {
     "access": "public"
   },
@@ -21,6 +21,11 @@
     "classnames": "^2.2.5"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Ben W"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",

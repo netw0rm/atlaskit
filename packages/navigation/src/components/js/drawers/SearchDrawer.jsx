@@ -5,7 +5,8 @@ import { searchIconOffset } from '../../../shared-variables';
 
 const ContentArea = styled.div`
   position: absolute;
-  top: ${searchIconOffset}px;
+  transition: top 220ms;
+  top: ${props => (props.isFullWidth ? 0 : searchIconOffset)}px;
   width: calc(100% - 16px);
 `;
 
@@ -15,13 +16,9 @@ export default class SearchDrawer extends PureComponent {
     children: PropTypes.node,
     header: PropTypes.node,
     isOpen: PropTypes.bool,
-    isWide: PropTypes.bool,
+    isFullWidth: PropTypes.bool,
     onBackButton: PropTypes.func,
     primaryIcon: PropTypes.node,
-  }
-
-  static defaultProps = {
-    isWide: true,
   }
 
   render() {
@@ -30,7 +27,7 @@ export default class SearchDrawer extends PureComponent {
       backIcon,
       header,
       isOpen,
-      isWide,
+      isFullWidth,
       onBackButton,
       primaryIcon,
     } = this.props;
@@ -39,12 +36,12 @@ export default class SearchDrawer extends PureComponent {
         backIcon={backIcon}
         header={header}
         isOpen={isOpen}
-        isWide={isWide}
+        width={isFullWidth ? 'full' : 'wide'}
         onBackButton={onBackButton}
         primaryIcon={primaryIcon}
         backIconOffset={searchIconOffset}
       >
-        <ContentArea>
+        <ContentArea isFullWidth={isFullWidth}>
           {children}
         </ContentArea>
       </Drawer>

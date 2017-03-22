@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "11.1.1",
+  "version": "11.2.2",
   "config": {
     "access": "public"
   },
@@ -40,6 +40,14 @@
     "react-dom": "^15.3.2"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Craig P"
+    },
+    {
+      "name": "Julien H"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/util-common-test": "1.0.2",

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/spinner",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "config": {
     "access": "public"
   },
@@ -16,6 +16,11 @@
     "dist"
   ],
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Luke B"
+    }
+  ],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2"

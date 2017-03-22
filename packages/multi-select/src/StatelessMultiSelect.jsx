@@ -1,28 +1,20 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import Droplist from '@atlaskit/droplist';
-import Item from '@atlaskit/droplist-item';
-import Group from '@atlaskit/droplist-group';
+import Droplist, { Item, Group } from '@atlaskit/droplist';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import TagGroup from '@atlaskit/tag-group';
 import Tag from '@atlaskit/tag';
 import classNames from 'classnames';
 
 import styles from 'style!./styles.less';
+import DummyItem from './internal/DummyItem';
+import DummyGroup from './internal/DummyGroup';
 import Trigger from './internal/Trigger';
 import NothingWasFound from './internal/NothingWasFound';
 import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
 
-// This is the shape of the item object passed to the `items` prop and does not necessarily reflect
-// exactly what is passed to the dropdown-items
-export const itemShape = PropTypes.shape({
-  content: PropTypes.node,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  isDisabled: PropTypes.bool,
-  isSelected: PropTypes.bool,
-  elemBefore: PropTypes.node,
-  tagElemBefore: PropTypes.node,
-});
+const groupShape = DummyGroup.propTypes;
+const itemShape = DummyItem.propTypes;
 
 export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {
@@ -35,7 +27,7 @@ export default class StatelessMultiSelect extends PureComponent {
     isInvalid: PropTypes.bool,
     isOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
-    items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
     label: PropTypes.string,
     noMatchesFound: PropTypes.string,
     name: PropTypes.string,
@@ -45,7 +37,7 @@ export default class StatelessMultiSelect extends PureComponent {
     onRemoved: PropTypes.func,
     placeholder: PropTypes.string,
     position: PropTypes.string,
-    selectedItems: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    selectedItems: PropTypes.arrayOf(PropTypes.shape(itemShape)),
     shouldFitContainer: PropTypes.bool,
   }
 

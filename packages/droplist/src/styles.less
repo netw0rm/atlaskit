@@ -69,7 +69,7 @@
     color: @ak-dropdown-font-main-color;
 
     .checkradio {
-      color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
+      color: @ak-color-N50;
       fill: transparent;
     }
 
@@ -90,13 +90,13 @@
     color: @ak-dropdown-font-active-color;
 
     .checkradio {
-      color: rgba(137, 147, 164, 0.48);  //n90, 48% opacity, TODO AK-397
+      color: @ak-color-B200;
       fill: transparent;
     }
 
     &.checked {
       .checkradio {
-        color: @ak-color-B400;
+        color: @ak-color-B200;
         fill: @ak-color-N0;
       }
     }
@@ -130,7 +130,7 @@
     cursor: not-allowed;
 
     .checkradio {
-      color: @ak-color-N600;
+      color: @ak-color-N20;
       fill: transparent;
     }
 
@@ -155,10 +155,10 @@
 .checkradio {
   margin: 0 @grid;
   display: flex;
-  color: @ak-color-N20;
-  fill: @ak-color-N20;
+  color: @ak-color-N40;
+  fill: @ak-color-N40;
 
-  & + .content {
+  & + .item-content {
     margin: 0;
   }
 }

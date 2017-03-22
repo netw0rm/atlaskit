@@ -72,14 +72,17 @@ export class Card extends Component<CardProps, CardState> {
 
       return Promise.reject(undefined);
     }
-    else if (mediaItem.type === 'file' && mediaItem.details.mimeType === 'image/gif') {
-      return this.props.context.getDataUriService(this.props.collectionName).fetchOriginalDataUri(mediaItem);
-    } else {
-      const retinaFactor = isRetina() ? 2 : 1;
-      const width = (this._isSmall() ? SMALL_CARD_IMAGE_WIDTH : this.props.width || DEFAULT_CARD_DIMENSIONS.WIDTH) * retinaFactor;
-      const height = (this._isSmall() ? SMALL_CARD_IMAGE_HEIGHT : this.props.height || DEFAULT_CARD_DIMENSIONS.HEIGHT) * retinaFactor;
-      return this.props.context.getDataUriService(this.props.collectionName).fetchImageDataUri(mediaItem, width, height).catch(error => {});
+    const service = this.props.context.getDataUriService(this.props.collectionName);
+
+    if (this.isGif(mediaItem)) {
+      return service.fetchOriginalDataUri(mediaItem);
     }
+
+    const retinaFactor = isRetina() ? 2 : 1;
+    const width = (this._isSmall() ? SMALL_CARD_IMAGE_WIDTH : this.props.width || DEFAULT_CARD_DIMENSIONS.WIDTH) * retinaFactor;
+    const height = (this._isSmall() ? SMALL_CARD_IMAGE_HEIGHT : this.props.height || DEFAULT_CARD_DIMENSIONS.HEIGHT) * retinaFactor;
+
+    return service.fetchImageDataUri(mediaItem, width, height);
   }
 
   private updateState(props: CardProps): void {
@@ -93,7 +96,9 @@ export class Card extends Component<CardProps, CardState> {
         if (isProcessingCompleted(mediaItem)) {
           return Observable.fromPromise(
             this.fetchDataUri(mediaItem)
-              .then(dataUri => ({mediaItem, dataUri})));
+              .then(dataUri => ({mediaItem, dataUri}))
+              .catch(() => ({mediaItem}))
+            );
         } else {
           return Observable.of({mediaItem});
         }
@@ -103,7 +108,7 @@ export class Card extends Component<CardProps, CardState> {
 
     this.setPartialState({
       subscription: provider.subscribe({
-        next: ({mediaItem, dataUri}) => {
+        next: ({mediaItem, dataUri}: {mediaItem: MediaItem, dataUri?: string}) => {
           this.setPartialState({
             dataURI: dataUri,
             mediaItem,
@@ -281,5 +286,9 @@ export class Card extends Component<CardProps, CardState> {
 
   private _isSmall() {
     return this.props.type === 'small';
+  }
+
+  private isGif(mediaItem) {
+    return mediaItem.type === 'file' && mediaItem.details.mimeType === 'image/gif';
   }
 }

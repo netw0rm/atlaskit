@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import schema from '../../src/test-helper/schema';
 import { markFactory, nodeFactory, p, RefsTracker, sequence, text } from '../../src/test-helper/schema-builder';
 
-describe('ak-editore-core/test-helper/schema-builder', () => {
+describe('@atlaskit/editore-core/test-helper/schema-builder', () => {
     const clone = (object = {}) => ({...object});
 
     describe('text', () => {

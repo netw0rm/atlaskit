@@ -1,6 +1,6 @@
-import BoldIcon from 'ak-icon/glyph/editor/bold';
-import ItalicIcon from 'ak-icon/glyph/editor/italic';
-import UnderlineIcon from 'ak-icon/glyph/editor/underline';
+import BoldIcon from '@atlaskit/icon/glyph/editor/bold';
+import ItalicIcon from '@atlaskit/icon/glyph/editor/italic';
+import UnderlineIcon from '@atlaskit/icon/glyph/editor/underline';
 import { EditorView } from '../../prosemirror';
 import * as React from 'react';
 import { PureComponent } from 'react';

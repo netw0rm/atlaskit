@@ -5,7 +5,7 @@ import { chaiPlugin, fromHTML, toHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-core/schema subsup mark', () => {
+describe('@atlaskit/editor-core/schema subsup mark', () => {
     itMatches('<sub>text</sub>', 'text', { type: 'sub' });
     itMatches('<sup>text</sup>', 'text', { type: 'sup' });
 

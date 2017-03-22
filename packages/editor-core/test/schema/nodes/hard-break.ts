@@ -4,7 +4,7 @@ import { toHTML, fromHTML } from '../../../src/test-helper';
 
 const schema = makeSchema();
 
-describe('ak-editor-core/schema hardBreak node', () => {
+describe('@atlaskit/editor-core/schema hardBreak node', () => {
     it('serializes to <br>', () => {
         const html = toHTML(schema.nodes.hardBreak.create(), schema);
         expect(html).to.have.string('<br>');

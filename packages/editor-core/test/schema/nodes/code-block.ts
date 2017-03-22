@@ -3,7 +3,7 @@ import { Schema, doc, text, codeBlock } from '../../../src';
 import { SUPPORTED_LANGUAGES } from '../../../src/ui/LanguagePicker/languageList';
 import { fromHTML, toHTML } from '../../../src/test-helper';
 
-describe('ak-editor-core/schema codeBlock node', () => {
+describe('@atlaskit/editor-core/schema codeBlock node', () => {
     describe('parse from html', () => {
         const schema = makeSchema();
 

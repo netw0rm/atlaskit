@@ -10,7 +10,7 @@ const href3 = 'http://atlassian.com?test=123';
 const content = 'foo';
 const sampleLink = `<a href="${href}">${content}</a>`;
 
-describe('ak-editor-core/schema link mark', () => {
+describe('@atlaskit/editor-core/schema link mark', () => {
     itMatches(`${sampleLink}`, href, content);
     itMatches(`<a href="${href}" title="test" alt="hello">${content}</a>`, href, content);
     itMatches(`<a href="${href2}">${content}</a>`, href2, content);

@@ -5,7 +5,7 @@ import { chaiPlugin, fromHTML, toHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-core/schema strike mark', () => {
+describe('@atlaskit/editor-core/schema strike mark', () => {
     itMatches('<s>text</s>', 'text');
     itMatches('<strike>text</strike>', 'text');
     itMatches('<span style="text-decoration: line-through">text</span>', 'text');

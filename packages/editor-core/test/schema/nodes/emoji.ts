@@ -5,7 +5,7 @@ import { fromHTML as fromHTML_, toHTML } from '../../../src/test-helper';
 const schema = makeSchema();
 const fromHTML = (html: string) => fromHTML_(html, schema);
 
-describe('ak-editor-core/schema emoji node', () => {
+describe('@atlaskit/editor-core/schema emoji node', () => {
     it('should have emoji id when serializing to DOM', () => {
         const html = toHTML(schema.nodes.emoji.create({ id: '123' }), schema);
         expect(html).to.have.string('data-emoji-id="123"');

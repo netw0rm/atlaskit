@@ -2,11 +2,11 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import FloatingToolbar from '../FloatingToolbar';
 import ToolbarButton from '../ToolbarButton';
-import TipIcon from 'ak-icon/glyph/editor/hint';
-import InfoIcon from 'ak-icon/glyph/editor/info';
-import NoteIcon from 'ak-icon/glyph/editor/note';
-import RemoveIcon from 'ak-icon/glyph/editor/remove';
-import WarningIcon from 'ak-icon/glyph/editor/warning';
+import TipIcon from '@atlaskit/icon/glyph/editor/hint';
+import InfoIcon from '@atlaskit/icon/glyph/editor/info';
+import NoteIcon from '@atlaskit/icon/glyph/editor/note';
+import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
+import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
 import { EditorView } from '../../prosemirror';
 
 import { availablePanelType, PanelState, PanelType } from '../../plugins/panel';

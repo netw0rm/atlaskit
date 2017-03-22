@@ -5,7 +5,7 @@ import { fromHTML as fromHTML_, toHTML } from '../../../src/test-helper';
 const schema = makeSchema();
 const fromHTML = (html: string) => fromHTML_(html, schema);
 
-describe('ak-editor-core/schema mention node', () => {
+describe('@atlaskit/editor-core/schema mention node', () => {
     it('should have mention id and display name when serializing to DOM', () => {
         const html = toHTML(schema.nodes.mention.create({ id: '@bar', displayName: 'foo bar' }), schema);
         expect(html).to.have.string('mention-id="@bar"');

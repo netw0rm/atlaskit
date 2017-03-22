@@ -5,7 +5,7 @@ import { chaiPlugin, toHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-core/schema emoji-query mark', () => {
+describe('@atlaskit/editor-core/schema emoji-query mark', () => {
   it('serializes to <span data-emoji-query="true">', () => {
     const schema = makeSchema();
     const node = schema.text('foo', [ schema.marks.emojiQuery.create() ] );

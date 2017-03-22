@@ -5,7 +5,7 @@ import { fromHTML, toHTML } from '../../../src/test-helper';
 const schema = makeSchema();
 const src = 'http://test.com';
 
-describe('ak-editor-core/schema image node', () => {
+describe('@atlaskit/editor-core/schema image node', () => {
     it('serializes to <img>', () => {
         const html = toHTML(schema.nodes.image.create({src}), schema);
         expect(html).to.have.string(`<img src="${src}">`);

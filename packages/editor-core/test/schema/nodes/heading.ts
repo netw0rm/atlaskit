@@ -4,7 +4,7 @@ import { fromHTML, toHTML } from '../../../src/test-helper';
 
 const schema = makeSchema();
 
-describe('ak-editor-core/schema heading node', () => {
+describe('@atlaskit/editor-core/schema heading node', () => {
     it('serializes to <h4>', () => {
         const html = toHTML(schema.nodes.heading.create({level: 4}), schema);
         expect(html).to.have.string('<h4>');

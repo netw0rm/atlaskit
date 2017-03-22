@@ -5,7 +5,7 @@ import { chaiPlugin, toHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
-describe('ak-editor-core/schema mention-query mark', () => {
+describe('@atlaskit/editor-core/schema mention-query mark', () => {
     it('serializes to <span data-mention-query="true">', () => {
         const schema = makeSchema();
         const node = schema.text('foo', [ schema.marks.mentionQuery.create() ] );

@@ -1,4 +1,4 @@
-import { Emoji } from 'ak-emoji';
+import { Emoji } from '@atlaskit/emoji';
 import { akColorN50 } from '@atlaskit/util-shared-styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';

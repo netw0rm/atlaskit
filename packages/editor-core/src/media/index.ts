@@ -2,7 +2,7 @@ import { ContextConfig } from '@atlaskit/media-core';
 
 export interface UploadParams {
   // Collection name is required by Media API
-  collectionName: string;
+  collection: string;
 
   autoFinalize?: boolean;
   skipConversions?: boolean;

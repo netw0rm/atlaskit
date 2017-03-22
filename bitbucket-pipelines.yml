@@ -11,9 +11,9 @@ pipelines:
             - run-p -ln "validate/package.json" "validate/typescript"
             - run-p -ln "validate/tslint" "validate/eslint"
             - run-p -ln "test" "test/base"
-            # - yarn run browserstack/tunnel/start
-            # - yarn run test/wc/browserstack
-            # - yarn run browserstack/tunnel/stop
+            - yarn run browserstack/tunnel/start
+            - yarn run test/wc/browserstack
+            - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
             - npm run release
@@ -38,7 +38,7 @@ pipelines:
           - run-p -ln "validate/package.json" "validate/typescript"
           - run-p -ln "validate/tslint" "validate/eslint"
           - run-p -ln "test" "test/base"
-          # - yarn run browserstack/tunnel/start
-          # - yarn run test/wc/browserstack
-          # - yarn run browserstack/tunnel/stop
+          - yarn run browserstack/tunnel/start
+          - yarn run test/wc/browserstack
+          - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"

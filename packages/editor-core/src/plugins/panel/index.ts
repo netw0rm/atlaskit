@@ -10,6 +10,7 @@ import {
 } from '../../prosemirror';
 import inputRulePlugin from './input-rules';
 import { reconfigure } from '../utils';
+import keymapPlugin from './keymaps';
 
 export interface PanelType {
   panelType: 'info' | 'note' | 'tip' | 'warning';
@@ -67,21 +68,6 @@ export class PanelState {
     dispatch(tr.lift(range, $from.depth - 2));
   }
 
-  // checkEndPanelBlock(): boolean {
-  //   const { pm } = this;
-  //   const { $from, $to } = pm.selection;
-  //   const range = $from.blockRange($to);
-  //   const node = range && range.parent;
-  //   if (node) {
-  //     if (isPanelNode(node) && this.lastCharIsNewline(node)) {
-  //       pm.tr.delete($from.pos - 1, $from.pos).applyAndScroll();
-  //     } else if (!node.textContent) {
-  //       pm.tr.typeText('\n').applyAndScroll();
-  //     }
-  //   }
-  //   return false;
-  // }
-
   subscribe(cb: PanelStateSubscriber) {
     this.changeHandlers.push(cb);
     cb(this);
@@ -129,12 +115,6 @@ export class PanelState {
     }
   }
 
-  // private lastCharIsNewline(node: PanelNode): boolean {
-  //   if (node && node.textContent) {
-  //     return node.textContent.slice(-1) === '\n';
-  //   }
-  //   return false;
-  // }
 }
 
 export type PanelStateSubscriber = (state: PanelState) => any;
@@ -156,7 +136,7 @@ const plugin = new Plugin({
   },
   key: stateKey,
   view: (view: EditorView) => {
-    reconfigure(view, [inputRulePlugin(view.state.schema)]);
+    reconfigure(view, [keymapPlugin(view), inputRulePlugin(view.state.schema)]);
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
         stateKey.getState(view.state).update(view.state, view.docView);
@@ -179,6 +159,3 @@ const plugin = new Plugin({
 });
 
 export default plugin;
-
-// add key-maps
-// add input-rules

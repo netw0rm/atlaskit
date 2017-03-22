@@ -4,7 +4,6 @@ import {
   Chrome,
   ContextName
 } from '../../';
-import listsPlugin from '../../src/plugins/lists/index-future';
 import blockTypePlugin from '../../src/plugins/block-type';
 import codeBlockPlugin from '../../src/plugins/code-block';
 import panelPlugin from '../../src/plugins/panel';
@@ -12,6 +11,7 @@ import textFormattingPlugin from '../../src/plugins/text-formatting';
 import hyperlinkPlugin from '../../src/plugins/hyperlink';
 import rulePlugin from '../../src/plugins/rule';
 import imageUploadPlugin from '../../src/plugins/image-upload';
+import listsPlugin from '../../src/plugins/lists';
 import {
   baseKeymap,
   EditorState,

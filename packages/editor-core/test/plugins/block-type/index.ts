@@ -721,11 +721,9 @@ describe('block-type', () => {
       context('when it is not a quote', () => {
         it('converts to a paragraph', () => {
           const { pluginState, editorView } = editor(doc(h1('text')));
-          const toggleBlockType = sinon.spy(pluginState, 'toggleBlockType');
 
           pluginState.toggleBlockType('heading1', editorView);
-
-          expect(toggleBlockType.calledWith('normal', editorView)).to.equal(true);
+          expect(editorView.state.doc).to.deep.equal(doc(p('text')));
         });
       });
     });

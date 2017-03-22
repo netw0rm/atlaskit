@@ -1,26 +1,26 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import MarkdownInputRulesPlugin from '../../../src/plugins/inputrules';
+import ImageUploadPlugin from '../../../src/plugins/image-upload';
 import {
-  a, blockquote, br, chaiPlugin, code_block, doc, em, h1, h2,
-  h3, hr, img, li, makeEditor, code, ol, p, strike, strong, ul, mention
-} from '../../../test-helper';
+  chaiPlugin, doc, fixtures, insertText, makeEditor, p, img
+} from '../../../src/test-helper';
+
 chai.use(chaiPlugin);
 
 describe('inputrules', () => {
-  const editor = (doc: any) => {
-    const { pm, plugin } = makeEditor({ doc, plugin: MarkdownInputRulesPlugin });
-    return { pm, plugin, sel: pm.doc.refs['<>'] };
-  };
+  const fixture = fixtures();
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugin: ImageUploadPlugin,
+    place: fixture()
+  });
 
   describe('image rule', () => {
     it('should convert `![text](url)` to image', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
+      const { editorView, sel} = editor(doc(p('{<>}')));
 
-      pm.input.insertText(sel, sel, `![text](url)`);
-      expect(pm.doc).to.deep.equal(doc(p(img({ src: 'url', alt: 'text', title: 'text' }))));
+      insertText(editorView, `![text](url)`, sel);
+      expect(editorView.state.doc).to.deep.equal(doc(p(img({ src: 'url', alt: 'text', title: 'text' }))));
     });
   });
-
-
 });

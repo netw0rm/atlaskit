@@ -14,7 +14,7 @@ export {
   li, ul, ol, br, img, hr, em, strong, code, a, u, subsup,
   strike, text, fragment, slice, mention, emoji, plain,
   nodeFactory, markFactory, BuilderContent, coerce, offsetRefs,
-  linkable, unlinkable
+  linkable, unlinkable, panel
 } from './schema-builder';
 export * from './html-helpers';
 export { default as storyDecorator } from './story-decorator';

@@ -1,37 +1,41 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 
-import { browser } from '../../../src';
+import { browser } from '../../../src/prosemirror';
 import RulePlugin from '../../../src/plugins/rule';
-import { chaiPlugin, doc, hr, makeEditor, p } from '../../../src/test-helper';
+import {
+  chaiPlugin, doc, fixtures, hr, makeEditor, p, sendKeyToPm
+} from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
 describe('rule', () => {
-  const editor = (doc: any) => {
-    const { pm, plugin } = makeEditor({ doc, plugin: RulePlugin });
-    return { pm, plugin, sel: pm.doc.refs['<>'] };
-  };
+  const fixture = fixtures();
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugin: RulePlugin,
+    place: fixture()
+  });
 
   describe('keymap', () => {
     if (browser.mac) {
       context('when hits Shift-Cmd--', () => {
         it('calls splitCodeBlock', () => {
-          const { pm } = editor(doc(p('text{<>}')));
+          const { editorView } = editor(doc(p('text{<>}')));
 
-          pm.input.dispatchKey('Shift-Cmd--');
+          sendKeyToPm(editorView, 'Shift-Cmd--');
 
-          expect(pm.doc).to.deep.equal(doc(p('text'), hr));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), hr));
         });
       });
     } else {
       context('when hits Shift-Ctrl--', () => {
         it('calls splitCodeBlock', () => {
-          const { pm } = editor(doc(p('text{<>}')));
+          const { editorView } = editor(doc(p('text{<>}')));
 
-          pm.input.dispatchKey('Shift-Ctrl--');
+          sendKeyToPm(editorView, 'Shift-Ctrl--');
 
-          expect(pm.doc).to.deep.equal(doc(p('text'), hr));
+          expect(editorView.state.doc).to.deep.equal(doc(p('text'), hr));
         });
       });
     }

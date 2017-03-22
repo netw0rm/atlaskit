@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import BlockTypePlugin from '../../../src/plugins/block-type';
 import {
-  blockquote, chaiPlugin, doc, fixtures, h1, h2, h3, insertText, li, makeEditor, p, ul
+  blockquote, br, code_block, chaiPlugin, doc, fixtures, h1, h2, h3, insertText, li, makeEditor, p, ul
 } from '../../../src/test-helper';
 chai.use(chaiPlugin);
 
@@ -61,4 +61,17 @@ describe('inputrules', () => {
     });
   });
 
+  describe('codeblock rule', () => {
+    context('when node is convertable to code block', () => {
+      context('when converted node has content', () => {
+        it('should convert "```" to a code block', () => {
+          const { editorView, sel } = editor(doc(p('{<>}hello', br, 'world')));
+
+          insertText(editorView, '```', sel);
+
+          expect(editorView.state.doc).to.deep.equal(doc(code_block()('hello\nworld')));
+        });
+      });
+    });
+  });
 });

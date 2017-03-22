@@ -2,150 +2,149 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import ImageUploadPlugin from '../../../src/plugins/image-upload';
-import { chaiPlugin, makeEditor } from '../../../src/test-helper';
-import { doc, image, images, noimages, schema } from '../../_schema-builder';
+import {
+  chaiPlugin, makeEditor, img, fixtures, doc, p, code_block,
+  setNodeSelection, setTextSelection,
+} from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
 describe('image-upload', () => {
   const testImgSrc = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>';
-  const testImg = () => image({ src: testImgSrc });
-  const editor = (doc: any) => {
-    const { pm, plugin } = makeEditor({ doc, plugin: ImageUploadPlugin, schema });
-    return { pm, plugin, sel: pm.doc.refs['<>'] };
-  };
-
-  it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = ImageUploadPlugin as any; // .State is not public API.
-    expect(plugin.State.name).is.be.a('string');
+  const testImg = () => img({ src: testImgSrc });
+  const fixture = fixtures();
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugin: ImageUploadPlugin,
+    place: fixture()
   });
 
   it('allows change handler to be registered', () => {
-    const { plugin } = editor(doc(images('')));
+    const { pluginState } = editor(doc(p('')));
 
-    plugin.subscribe(sinon.spy());
+    pluginState.subscribe(sinon.spy());
   });
 
   it('allows an image to be added at the current collapsed selection', () => {
-    const { pm, plugin } = editor(doc(images('{<>}')));
+    const { editorView, pluginState } = editor(doc(p('{<>}')));
 
-    plugin.addImage({ src: testImgSrc });
+    pluginState.addImage(editorView)({ src: testImgSrc });
 
-    expect(pm.doc).to.deep.equal(doc(images(testImg())));
+    expect(editorView.state.doc).to.deep.equal(doc(p(testImg())));
   });
 
   it('should get current state immediately once subscribed', () => {
-    const { plugin } = editor(doc(images('{<>}', testImg())));
+    const { pluginState } = editor(doc(p('{<>}', testImg())));
     const spy = sinon.spy();
-    plugin.subscribe(spy);
+    pluginState.subscribe(spy);
 
     expect(spy.callCount).to.equal(1);
-    expect(plugin).to.have.property('active', false);
-    expect(plugin).to.have.property('enabled', true);
-    expect(plugin).to.have.property('src', undefined);
-    expect(plugin).to.have.property('element', undefined);
+    expect(pluginState).to.have.property('active', false);
+    expect(pluginState).to.have.property('enabled', true);
+    expect(pluginState).to.have.property('src', undefined);
+    expect(pluginState).to.have.property('element', undefined);
   });
 
   it('emits a change when an image is selected', () => {
-    const { pm, plugin, sel } = editor(doc(images('{<>}', testImg())));
+    const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
     const spy = sinon.spy();
-    plugin.subscribe(spy);
+    pluginState.subscribe(spy);
 
-    pm.setNodeSelection(sel);
+    setNodeSelection(editorView, sel);
 
     expect(spy.callCount).to.equal(2);
   });
 
   it('does not emits a change when unsubscribe', () => {
-    const { pm, plugin, sel } = editor(doc(images('{<>}', testImg())));
+    const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
     const spy = sinon.spy();
-    plugin.subscribe(spy);
-    plugin.unsubscribe(spy);
+    pluginState.subscribe(spy);
+    pluginState.unsubscribe(spy);
 
-    pm.setNodeSelection(sel);
+    setNodeSelection(editorView, sel);
 
     expect(spy.callCount).to.equal(1);
   });
 
   it('does not emit multiple changes when an image is not selected', () => {
-    const { pm, plugin } = editor(doc(images('{<>}t{a}e{b}st', testImg())));
-    const { a, b } = pm.doc.refs;
+    const { editorView, pluginState } = editor(doc(p('{<>}t{a}e{b}st', testImg())));
+    const { a, b } = editorView.state.doc.refs;
     const spy = sinon.spy();
-    plugin.subscribe(spy);
+    pluginState.subscribe(spy);
 
-    pm.setTextSelection(a);
-    pm.setTextSelection(b);
+    setTextSelection(editorView, a);
+    setTextSelection(editorView, b);
 
     expect(spy.callCount).to.equal(1);
   });
 
   it('does not emit multiple changes when an image is selected multiple times', () => {
-    const { plugin } = editor(doc(images('{<>}', testImg())));
+    const { pluginState } = editor(doc(p('{<>}', testImg())));
     const spy = sinon.spy();
 
-    plugin.subscribe(spy);
+    pluginState.subscribe(spy);
 
     expect(spy.callCount).to.equal(1);
   });
 
   it('emits a change event when selection leaves an image', () => {
-    const { pm, plugin, sel } = editor(doc(images('{a}test{<>}', testImg())));
-    const { a } = pm.doc.refs;
+    const { editorView, pluginState, sel } = editor(doc(p('{a}test{<>}', testImg())));
+    const { a } = editorView.state.doc.refs;
     const spy = sinon.spy();
-    pm.setNodeSelection(sel);
-    plugin.subscribe(spy);
+    setNodeSelection(editorView, sel);
+    pluginState.subscribe(spy);
 
-    pm.setTextSelection(a);
+    setTextSelection(editorView, a);
 
     expect(spy.callCount).to.equal(2);
   });
 
   it('permits an image to be added when an image is selected', () => {
-    const { pm, plugin, sel } = editor(doc(images('{<>}', testImg())));
-    pm.setNodeSelection(sel);
+    const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
+    setNodeSelection(editorView, sel);
 
-    plugin.addImage({ src: testImgSrc });
+    pluginState.addImage(editorView)({ src: testImgSrc });
 
-    expect(pm.doc).to.deep.equal(doc(images(testImg(), testImg())));
+    expect(editorView.state.doc).to.deep.equal(doc(p(testImg(), testImg())));
   });
 
   it('permits an image to be added when there is selected text', () => {
-    const { pm, plugin} = editor(doc(images('{<}hello{>}')));
+    const { editorView, pluginState } = editor(doc(p('{<}hello{>}')));
 
-    plugin.addImage({ src: testImgSrc });
+    pluginState.addImage(editorView)({ src: testImgSrc });
 
-    expect(pm.doc).to.deep.equal(doc(images('hello', testImg())));
+    expect(editorView.state.doc).to.deep.equal(doc(p('hello', testImg())));
   });
 
   it('does not permit an image to be added when the state is disabled', () => {
-    const { pm, plugin } = editor(doc(noimages('{<>}')));
+    const { editorView, pluginState } = editor(doc(code_block()('{<>}')));
 
-    plugin.addImage({ src: testImgSrc });
+    pluginState.addImage(editorView)({ src: testImgSrc });
 
-    expect(pm.doc).to.deep.equal(doc(noimages()));
+    expect(editorView.state.doc).to.deep.equal(doc(code_block()()));
   });
 
   it('does not permit an image to be removed at a collapsed text selection', () => {
-    const { plugin } = editor(doc(images('test{<>}')));
+    const { editorView, pluginState } = editor(doc(p('test{<>}')));
 
-    plugin.removeImage();
+    pluginState.removeImage(editorView);
   });
 
   it('can remove a selected image', () => {
-    const { pm, plugin, sel } = editor(doc(images('{<>}', testImg())));
-    pm.setNodeSelection(sel);
+    const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
+    setNodeSelection(editorView, sel);
 
-    plugin.removeImage();
+    pluginState.removeImage(editorView);
 
-    expect(pm.doc).to.deep.equal(doc(images()));
+    expect(editorView.state.doc).to.deep.equal(doc(p()));
   });
 
   it('can update a selected image', () => {
-    const { pm, plugin, sel } = editor(doc(images('{<>}', testImg())));
-    pm.setNodeSelection(sel);
+    const { editorView, pluginState, sel } = editor(doc(p('{<>}', testImg())));
+    setNodeSelection(editorView, sel);
 
-    plugin.updateImage({ src: 'atlassian.png' });
+    pluginState.updateImage(editorView)({ src: 'atlassian.png' });
 
-    expect(pm.doc).to.deep.equal(doc(images(image({ src: 'atlassian.png' }))));
+    expect(editorView.state.doc).to.deep.equal(doc(p(img({ src: 'atlassian.png' }))));
   });
 });

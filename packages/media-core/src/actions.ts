@@ -68,7 +68,7 @@ export const CollectionCardClick: CollectionActionCreator = (eventHandler: Colle
     type: CardActionType.click,
     handler: eventHandler
   };
-}
+};
 
 export interface FetchingCollectionSucceeded {
   type: 'FETCHING_COLLECTION_SUCCEEDED';

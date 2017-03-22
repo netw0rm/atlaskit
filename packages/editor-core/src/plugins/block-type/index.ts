@@ -66,7 +66,7 @@ export class BlockTypeState {
   }
 
   toggleBlockType(name: string, view: EditorView): boolean {
-    return commands.toggleBlockType(name)(view.state, view.dispatch);
+    return commands.toggleBlockType(view, name)(view.state, view.dispatch);
   }
 
   update(newEditorState, dirty = false) {

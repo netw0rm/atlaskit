@@ -1,49 +1,42 @@
-import { Schema, keymap, Plugin, MarkType } from '../../prosemirror';
+import { EditorView, MarkType, keydownHandler } from '../../prosemirror';
 import * as keymaps from '../../keymaps';
-import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
 
-let plugin: Plugin | undefined;
-
-export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
+export function keymapHandler(view: EditorView, pluginState: any): Function {
   const list = {};
-
-  if (plugin) {
-    return plugin;
-  }
+  const { schema } = view.state;
 
   if (schema.marks.strong) {
     const eventName = analyticsEventName(schema.marks.strong);
-    keymaps.bindKeymapWithCommand(keymaps.toggleBold.common!, trackAndInvoke(eventName, commands.toggleMark(schema.marks.strong)), list);
+    keymaps.bindKeymapWithCommand(keymaps.toggleBold.common!, trackAndInvoke(eventName, () => pluginState.toggleMark(view, schema.marks.strong)), list);
   }
 
   if (schema.marks.em) {
     const eventName = analyticsEventName(schema.marks.strong);
-    keymaps.bindKeymapWithCommand(keymaps.toggleItalic.common!, trackAndInvoke(eventName, commands.toggleMark(schema.marks.em)), list);
+    keymaps.bindKeymapWithCommand(keymaps.toggleItalic.common!, trackAndInvoke(eventName, () => pluginState.toggleMark(view, schema.marks.em)), list);
   }
 
   if (schema.marks.code) {
     const eventName = analyticsEventName(schema.marks.strong);
-    keymaps.bindKeymapWithCommand(keymaps.toggleCode.common!, trackAndInvoke(eventName, commands.toggleMark(schema.marks.code)), list);
+    keymaps.bindKeymapWithCommand(keymaps.toggleCode.common!, trackAndInvoke(eventName, () => pluginState.toggleMark(view, schema.marks.code)), list);
   }
 
   if (schema.marks.strike) {
     const eventName = analyticsEventName(schema.marks.strong);
-    keymaps.bindKeymapWithCommand(keymaps.toggleStrikethrough.common!, trackAndInvoke(eventName, commands.toggleMark(schema.marks.strike)), list);
+    keymaps.bindKeymapWithCommand(keymaps.toggleStrikethrough.common!, trackAndInvoke(eventName, () => pluginState.toggleMark(view, schema.marks.strike)), list);
   }
 
   if (schema.marks.u) {
     const eventName = analyticsEventName(schema.marks.strong);
-    keymaps.bindKeymapWithCommand(keymaps.toggleUnderline.common!, trackAndInvoke(eventName, commands.toggleMark(schema.marks.u)), list);
+    keymaps.bindKeymapWithCommand(keymaps.toggleUnderline.common!, trackAndInvoke(eventName, () => pluginState.toggleMark(view, schema.marks.u)), list);
   }
 
-  plugin = keymap(list);
-  return plugin;
+  return keydownHandler(list);
 }
 
 function analyticsEventName(markType: MarkType): string {
   return `atlassian.editor.format.${markType.name}.keyboard`;
 }
 
-export default keymapPlugin;
+export default keymapHandler;
 

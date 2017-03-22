@@ -7,7 +7,7 @@ export interface SubSupMark extends Mark {
 }
 
 export const subsup: MarkSpec = {
-  inclusive: false,
+  inclusive: true,
   attrs: {type: {default: 'sub'}},
   parseDOM: [
     {tag: 'sub', attrs: {type: 'sub'}},

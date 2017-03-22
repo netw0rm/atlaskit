@@ -4,11 +4,11 @@ import {
   Plugin,
   PluginKey,
   EditorState,
-  EditorView,
+  EditorView
 } from '../../prosemirror';
 
 import * as commands from '../../commands';
-import keymapPlugin from './keymap';
+import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
 import { reconfigure } from '../utils';
 
@@ -42,6 +42,9 @@ export class TextFormattingState {
   subscriptActive = false;
   subscriptDisabled = false;
   subscriptHidden = false;
+  clearStoredMarks = false;
+  toggledMarks = {};
+  keymapHandler;
 
   constructor(state: EditorState<any>) {
     this.state = state;
@@ -245,9 +248,18 @@ export class TextFormattingState {
    */
   private anyMarkActive(markType: MarkType): boolean {
     const { state } = this;
-    const { from, to, empty } = state.selection;
+    const { $from, from, to, empty } = state.selection;
+    let storedMarks = state.tr.storedMarks;
+
+    if (storedMarks && markType.isInSet(storedMarks) && !this.toggledMarks[markType.name] && (!$from.nodeBefore || !markType.isInSet($from.nodeBefore.marks))) {
+      storedMarks = undefined;
+      this.clearStoredMarks = true;
+    }
+
+    this.toggledMarks[markType.name] = false;
+
     if (empty) {
-      return !!markType.isInSet(state.selection.$from.marks());
+      return !!markType.isInSet(storedMarks || state.selection.$from.marks());
     }
     return state.doc.rangeHasMark(from, to, markType);
   }
@@ -261,7 +273,7 @@ export class TextFormattingState {
 
     // When the selection is empty, only the active marks apply.
     if (empty) {
-      return !!mark.isInSet(state.selection.$from.marks());
+      return !!mark.isInSet(state.tr.storedMarks || state.selection.$from.marks());
     }
 
     // For a non-collapsed selection, the marks on the nodes matter.
@@ -276,6 +288,7 @@ export class TextFormattingState {
   private toggleMark(view: EditorView, markType: MarkType, attrs?: any) {
     // Disable text-formatting inside code
     if (this.codeActive ? this.codeDisabled : true) {
+      this.toggledMarks[markType.name] = true;
       commands.toggleMark(markType)(view.state, view.dispatch);
     }
   }
@@ -295,8 +308,23 @@ const plugin = new Plugin({
   },
   key: stateKey,
   view: (view: EditorView) => {
-    reconfigure(view, [keymapPlugin(view.state.schema), inputRulePlugin(view.state.schema)]);
+    const pluginState = stateKey.getState(view.state);
+    pluginState.keymapHandler = keymapHandler(view, pluginState);
+    reconfigure(view, [inputRulePlugin(view.state.schema)]);
     return {};
+  },
+  props: {
+    handleKeyDown (view, event) {
+      const pluginState = stateKey.getState(view.state);
+      const result = pluginState.keymapHandler(view, event);
+
+      if (pluginState.clearStoredMarks) {
+        view.dispatch(view.state.tr.setStoredMarks([]));
+        pluginState.clearStoredMarks = false;
+      }
+
+      return result;
+    }
   }
 });
 

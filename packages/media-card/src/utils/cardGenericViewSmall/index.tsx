@@ -35,10 +35,9 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
   }
 
   render() {
-    const {error} = this.props;
+    const {error, onRetry, loading, mediaType, thumbnailUrl, title, subtitle} = this.props;
 
     if (error) {
-      const onRetry = this.props.onRetry;
       const retryMessage = (onRetry) ? (onRetry.label || 'Try again') : '';
       const retryHandler = (event: MouseEvent<HTMLSpanElement>) => {
         // We need to prevent the card's onClick being called
@@ -64,15 +63,15 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
       return this.formatCard((
         <RoundedBackground>
           <CardContentSmall
-            loading={this.props.loading}
-            mediaType={this.props.mediaType || 'unknown'}
-            dataURI={this.props.dataURI}
+            loading={loading}
+            mediaType={mediaType || 'unknown'}
+            dataURI={thumbnailUrl}
           />
         </RoundedBackground>
       ), (
         <FileInfoWrapper>
-          <Title className="title">{this.props.title}</Title>
-          <Size className="size">{this.props.subtitle}</Size>
+          <Title className="title">{title}</Title>
+          <Size className="size">{subtitle}</Size>
         </FileInfoWrapper>
       ));
     }
@@ -83,10 +82,10 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
   }
 
   formatCard(left: JSX.Element, right: JSX.Element) {
-    const {menuActions} = this.props;
-    const cardStyle = this.props.width ? {width: `${this.props.width}px`} : {};
-    const cardClass = cx({loading: this.props.loading});
-    const imgClass = cx('img-wrapper', {shadow: this.props.mediaType === 'image' && this.props.dataURI});
+    const {menuActions, width, loading, mediaType, thumbnailUrl} = this.props;
+    const cardStyle = width ? {width: `${width}px`} : {};
+    const cardClass = cx({loading: loading});
+    const imgClass = cx('img-wrapper', {shadow: mediaType === 'image' && thumbnailUrl});
 
     return (
       <SmallCard style={cardStyle} className={cardClass} onClick={this.onClick}>

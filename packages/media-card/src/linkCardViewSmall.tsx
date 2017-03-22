@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as cx from 'classnames';
-import {Component, MouseEvent} from 'react';
+import {Component} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
 import {CardGenericViewSmall} from './utils/cardGenericViewSmall';

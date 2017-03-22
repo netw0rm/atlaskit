@@ -3,8 +3,7 @@ import Button from '@atlaskit/button';
 import styles from 'style!../less/Flag.less';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 
-// TODO SET TO 15s BEFORE PR
-const AUTO_DISMISS_SECONDS = 5;
+const AUTO_DISMISS_SECONDS = 15;
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class Flag extends PureComponent {
@@ -34,13 +33,29 @@ export default class Flag extends PureComponent {
     this.startAutoDismissTimer();
   }
 
+  componentDidUpdate(prevProps) {
+    const { isDismissAllowed: oldIsDismissAllowed } = prevProps;
+    const { isDismissAllowed } = this.props;
+
+    if (isDismissAllowed && !oldIsDismissAllowed) {
+      this.startAutoDismissTimer();
+    } else if (!isDismissAllowed && oldIsDismissAllowed) {
+      this.stopAutoDismissTimer();
+    }
+  }
+
   flagDismissed = () => {
     this.props.onDismissed(this.props.id);
   }
 
   startAutoDismissTimer = () => {
-    this.stopAutoDismissTimer();
-    this.autoDismissTimer = setTimeout(this.handleAutoDismissTimerEnd, AUTO_DISMISS_SECONDS * 1000);
+    if (this.props.isDismissAllowed) {
+      this.stopAutoDismissTimer();
+      this.autoDismissTimer = setTimeout(
+        this.handleAutoDismissTimerEnd,
+        AUTO_DISMISS_SECONDS * 1000
+      );
+    }
   }
 
   stopAutoDismissTimer = () => {

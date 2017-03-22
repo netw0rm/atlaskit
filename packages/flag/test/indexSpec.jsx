@@ -135,11 +135,11 @@ describe(name, () => {
             })
           );
 
-          // Make sure handler *hasn't* fired after 4.5 seconds
-          clock.tick(4500);
+          // Make sure handler *hasn't* fired after 14.5 seconds
+          clock.tick(14500);
           expect(spy.callCount).to.equal(0);
 
-          // Make sure handler *has* fired after the 5 second mark
+          // Make sure handler *has* fired after the 15 second mark
           clock.tick(500);
           expect(spy.callCount).to.equal(1);
           expect(spy.calledWith('a')).to.equal(true);
@@ -155,28 +155,104 @@ describe(name, () => {
             })
           );
 
-          // Make sure handler *hasn't* fired after 4.5 seconds
-          clock.tick(4500);
+          // Make sure handler *hasn't* fired after 14.5 seconds
+          clock.tick(14500);
           expect(spy.callCount).to.equal(0);
 
           // Trigger a mouseover
           wrapper.find(`.${flagLocals.root}`).simulate('mouseOver');
 
-          // Make sure handler *still hasn't* fired after the 5.5 second mark (because of mouseover)
-          clock.tick(1000);
+          // Make sure handler *still hasn't* fired after the 15 second mark (because of mouseover)
+          clock.tick(500);
           expect(spy.callCount).to.equal(0);
 
           // After a long time, mouse out of the flag to start the timer again
-          clock.tick(20000);
+          clock.tick(30000);
           wrapper.find(`.${flagLocals.root}`).simulate('mouseOut');
 
-          // Make sure handler *has* fired after the 5 second mark
-          clock.tick(5000);
+          // Make sure handler *has* fired after the 15 second mark
+          clock.tick(15000);
           expect(spy.callCount).to.equal(1);
           expect(spy.calledWith('a')).to.equal(true);
         });
 
-        // it.skip('auto dismiss timer should only apply to flags where isDismissAllowed === true');
+        it('hovered flag with isDismissAllowed false should not auto dismiss after mouseout', () => {
+          const spy = sinon.spy();
+          const wrapper = mount(
+            generateFlag({
+              id: 'a',
+              isDismissAllowed: false,
+              onDismissed: spy,
+            })
+          );
+
+          wrapper.find(`.${flagLocals.root}`).simulate('mouseOut');
+
+          // Make sure handler *hasn't* fired after standard auto timeout
+          clock.tick(15000);
+          expect(spy.callCount).to.equal(0);
+        });
+
+        it('auto dismiss timer should not fire when isDismissAllowed is false', () => {
+          const spy = sinon.spy();
+          mount(
+            generateFlag({
+              id: 'a',
+              isDismissAllowed: false,
+              onDismissed: spy,
+            })
+          );
+
+          // Make sure handler *hasn't* fired after standard 15 second timeout
+          clock.tick(15000);
+          expect(spy.callCount).to.equal(0);
+        });
+
+        it('auto dismiss timer should start when isDismissAllowed becomes true', () => {
+          const spy = sinon.spy();
+          const wrapper = mount(
+            generateFlag({
+              id: 'a',
+              isDismissAllowed: false,
+              onDismissed: spy,
+            })
+          );
+
+          // Make sure handler *hasn't* fired after standard 15 second timeout
+          clock.tick(15000);
+          expect(spy.callCount).to.equal(0);
+
+          // Set isDismissAllowed to true
+          wrapper.setProps({ isDismissAllowed: true });
+
+          // Make sure handler *has* fired after standard 15 second delay,
+          // now that isDismissAllowed is true
+          clock.tick(15000);
+          expect(spy.callCount).to.equal(1);
+        });
+
+        it('auto dismiss timer should stop when isDismissAllowed becomes false before timer fires', () => {
+          const spy = sinon.spy();
+          const wrapper = mount(
+            generateFlag({
+              id: 'a',
+              isDismissAllowed: true,
+              onDismissed: spy,
+            })
+          );
+
+          // Make sure handler *hasn't* fired prior to standard 15 second timeout
+          clock.tick(14500);
+          expect(spy.callCount).to.equal(0);
+
+          // Set isDismissAllowed to true
+          wrapper.setProps({ isDismissAllowed: false });
+
+          // Make sure handler still *hasn't* fired after standard 15 second delay,
+          // now that isDismissAllowed is false
+          clock.tick(5000);
+          expect(spy.callCount).to.equal(0);
+        });
       });
 
       it('Dismiss button should not be rendered is isDismissAllowed is omitted', () => {

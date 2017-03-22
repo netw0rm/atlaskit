@@ -1,12 +1,12 @@
 import React, { PropTypes, PureComponent } from 'react';
 import BadgeElement from './internal/BadgeElement';
 
-const APPEARANCE_ENUM = {
+export const APPEARANCE_ENUM = {
   values: ['default', 'primary', 'important', 'added', 'removed'],
   defaultValue: 'default',
 };
 
-const THEME_ENUM = {
+export const THEME_ENUM = {
   values: ['default', 'dark'],
   defaultValue: 'default',
 };

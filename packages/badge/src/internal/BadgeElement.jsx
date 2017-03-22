@@ -24,8 +24,8 @@ const textColor = {
   added: akColorG500,
   darkTheme: akColorB500,
   default: akColorN500,
-  important: '#fff',
-  primary: '#fff',
+  important: akColorN0,
+  primary: akColorN0,
   removed: akColorR500,
 };
 
@@ -39,10 +39,10 @@ const getTextColor = ({ appearance, theme }) => (theme === 'dark'
   : textColor[appearance]
 );
 
-export default styled.div`
+const Badge = styled.div`
   background-color: ${getBackgroundColor};
-  color: ${getTextColor};
   border-radius: 2em;
+  color: ${getTextColor};
   display: inline-block;
   font-size: 12px;
   font-weight: normal;
@@ -51,3 +51,5 @@ export default styled.div`
   padding: 0.16666666666667em 0.5em;
   text-align: center;
 `;
+
+export default Badge;

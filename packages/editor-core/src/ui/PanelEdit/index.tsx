@@ -1,12 +1,12 @@
+import * as React from 'react';
+import { PureComponent } from 'react';
+import FloatingToolbar from '../FloatingToolbar';
+import ToolbarButton from '../ToolbarButton';
 import TipIcon from 'ak-icon/glyph/editor/hint';
 import InfoIcon from 'ak-icon/glyph/editor/info';
 import NoteIcon from 'ak-icon/glyph/editor/note';
 import RemoveIcon from 'ak-icon/glyph/editor/remove';
 import WarningIcon from 'ak-icon/glyph/editor/warning';
-import * as React from 'react';
-import { PureComponent } from 'react';
-import FloatingToolbar from '../FloatingToolbar';
-import ToolbarButton from '../ToolbarButton';
 import { EditorView } from '../../prosemirror';
 
 import { availablePanelType, PanelState, PanelType } from '../../plugins/panel';
@@ -25,13 +25,13 @@ export interface Props {
 }
 
 export interface State {
-  showToolbar?: boolean;
+  toolbarVisible: boolean | undefined;
   target?: HTMLElement | undefined;
   activePanelType?: string | undefined;
 }
 
 export default class PanelEdit extends PureComponent<Props, State> {
-  state: State = { };
+  state: State = { toolbarVisible: false };
 
   constructor(props: Props) {
     super(props);
@@ -46,8 +46,8 @@ export default class PanelEdit extends PureComponent<Props, State> {
   }
 
   render() {
-    const { target, activePanelType, showToolbar } = this.state;
-    if (showToolbar) {
+    const { target, activePanelType, toolbarVisible } = this.state;
+    if (toolbarVisible) {
       return (
         <FloatingToolbar target={target} align="left">
           {availablePanelType.map((panelType, index) => {
@@ -81,12 +81,10 @@ export default class PanelEdit extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: PanelState) => {
-    const { target } = this.state;
-    const { element, clicked, activePanelType } = pluginState;
-    const showToolbar = !!element && (clicked || target !== element);
+    const { element: target, activePanelType, toolbarVisible } = pluginState;
     this.setState({
-      showToolbar,
-      target: element,
+      toolbarVisible,
+      target,
       activePanelType,
     });
   }

@@ -94,7 +94,7 @@ export class PanelState {
     const { state } = this;
     if (state.selection instanceof TextSelection) {
       const { $from } = state.selection;
-      const node = $from.node(1);
+      const node = $from.node($from.depth - 1);
       if (node.type === state.schema.nodes.panel) {
         return node;
       }
@@ -102,9 +102,9 @@ export class PanelState {
   }
 
   private getDomElement(docView: NodeViewDesc): HTMLElement | undefined {
-    const { state } = this;
-    if (state.selection instanceof TextSelection) {
-      const { node } = docView.domFromPos(1);
+    const { state: { selection } } = this;
+    if (selection instanceof TextSelection) {
+      const { node } = docView.domFromPos(selection.$from.pos);
       let currentNode = node;
       while (currentNode) {
         if (currentNode.attributes && currentNode.attributes['data-panel-type']) {
@@ -129,7 +129,7 @@ const plugin = new Plugin({
     apply(tr, pluginState: PanelState, oldState, newState) {
       const stored = tr.getMeta(stateKey);
       if (stored) {
-        pluginState.update(newState, stored.docView, stored.clicked);
+        pluginState.update(newState, stored.docView, stored.domEvent);
       }
       return pluginState;
     }

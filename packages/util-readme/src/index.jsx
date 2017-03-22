@@ -1,10 +1,10 @@
-import Chrome from './chrome';
-import Code from './code';
-import Description from './description';
-import Heading from './heading';
-import Props from './props';
-import Readme from './readme';
+import Chrome from './Chrome';
+import Code from './Code';
+import Description from './Description';
 import DynamicProps from './DynamicProps';
+import Heading from './Heading';
+import Props from './Props';
+import Readme from './Readme';
 
 /*
 
@@ -30,4 +30,4 @@ ocean and it was the simplest way.
 */
 
 export default Readme;
-export { DynamicProps, Chrome, Code, Description, Heading, Props };
+export { Chrome, Code, Description, DynamicProps, Heading, Props };

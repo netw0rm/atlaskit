@@ -1,10 +1,10 @@
 import React, { PropTypes, PureComponent } from 'react';
 import * as reactDocs from 'react-docgen';
 
-import Description from './description';
-import Heading from './heading';
+import Description from './Description';
+import Heading from './Heading';
 
-export default class DynamicProps extends PureComponent {
+export default class ReadmeDynamicProps extends PureComponent {
   static propTypes = {
     componentSrc: PropTypes.string.isRequired,
   }

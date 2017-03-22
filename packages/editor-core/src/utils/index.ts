@@ -5,7 +5,9 @@ import {
   NodeType,
   ResolvedPos,
   Selection,
-  TextSelection
+  TextSelection,
+  Transaction,
+  EditorView,
 } from '../prosemirror';
 
 function validateNode(node: Node): boolean {
@@ -201,5 +203,31 @@ export function liftSelection(tr, doc, $from: ResolvedPos, $to: ResolvedPos) {
 
   tr.setSelection(new TextSelection(tr.doc.resolve(startPos), tr.doc.resolve(endPos)));
 
+  return tr;
+}
+
+/**
+ * Lift nodes in block to one level above.
+ */
+export function liftSiblingNodes(view: EditorView) {
+  const { tr } = view.state;
+  const { $from, $to } = view.state.selection;
+  const blockStart = tr.doc.resolve($from.start($from.depth - 1));
+  const blockEnd = tr.doc.resolve($to.end($to.depth - 1));
+  const range = blockStart.blockRange(blockEnd)!;
+  view.dispatch(tr.lift(range, blockStart.depth - 1));
+}
+
+/**
+ * Lift sibling nodes to document-level and select them.
+ */
+export function liftAndSelectSiblingNodes(view: EditorView): Transaction {
+  const { tr } = view.state;
+  const { $from, $to } = view.state.selection;
+  const blockStart = tr.doc.resolve($from.start($from.depth - 1));
+  const blockEnd = tr.doc.resolve($to.end($to.depth - 1));
+  const range = blockStart.blockRange(blockEnd)!;
+  tr.setSelection(new TextSelection(blockStart, blockEnd));
+  tr.lift(range, blockStart.depth - 1);
   return tr;
 }

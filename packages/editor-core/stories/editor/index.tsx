@@ -5,6 +5,7 @@ import {
   ContextName
 } from '../../';
 import blockTypePlugin from '../../src/plugins/block-type';
+import clearFormattingPlugin from '../../src/plugins/clear-formatting';
 import codeBlockPlugin from '../../src/plugins/code-block';
 import panelPlugin from '../../src/plugins/panel';
 import textFormattingPlugin from '../../src/plugins/text-formatting';
@@ -105,6 +106,7 @@ export default class Editor extends PureComponent<Props, State> {
     const { isExpanded, editorState, editorView } = this.state;
     const listsState = editorState && listsPlugin.getState(editorState);
     const blockTypeState = editorState && blockTypePlugin.getState(editorState);
+    const clearFormattingState = editorState && clearFormattingPlugin.getState(editorState);
     const codeBlockState = editorState && codeBlockPlugin.getState(editorState);
     const panelState = editorState && panelPlugin.getState(editorState);
     const textFormattingState = editorState && textFormattingPlugin.getState(editorState);
@@ -126,6 +128,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateCodeBlock={codeBlockState}
         pluginStatePanel={panelState}
         pluginStateTextFormatting={textFormattingState}
+        pluginStateClearFormatting={clearFormattingState}
         pluginStateHyperlink={hyperlinkState}
         pluginStateImageUpload={imageUploadState}
       />
@@ -161,6 +164,7 @@ export default class Editor extends PureComponent<Props, State> {
           plugins: [
             listsPlugin,
             blockTypePlugin,
+            clearFormattingPlugin,
             codeBlockPlugin,
             panelPlugin,
             textFormattingPlugin,

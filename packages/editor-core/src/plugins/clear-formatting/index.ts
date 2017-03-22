@@ -1,4 +1,3 @@
-
 import {
   EditorState,
   EditorView,
@@ -6,6 +5,7 @@ import {
   Plugin,
   PluginKey,
 } from '../../prosemirror';
+import * as commands from '../../commands';
 import keymapPlugin from './keymap';
 import { reconfigure } from '../utils';
 
@@ -21,7 +21,7 @@ export class ClearFormattingState {
 
   constructor(state: EditorState<any>) {
     this.changeHandlers = [];
-    this.state = state;
+    this.update(state);
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -45,6 +45,10 @@ export class ClearFormattingState {
       this.formattingIsPresent = formattingIsPresent;
       this.triggerOnChange();
     }
+  }
+
+  clearFormatting(view: EditorView) {
+    commands.clearFormatting()(view.state, view.dispatch);
   }
 
   private triggerOnChange() {

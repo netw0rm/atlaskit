@@ -40,7 +40,7 @@ export default class GlobalNavigation extends PureComponent {
       shouldAnimate,
     } = this.props;
     return (
-      <div
+      <nav
         className={classNames(styles.globalNavigationOuter, {
           [styles.shouldAnimate]: shouldAnimate,
         })}
@@ -68,7 +68,7 @@ export default class GlobalNavigation extends PureComponent {
             {accountItem}
           </div>
         </div>
-      </div>
+      </nav>
     );
   }
 }

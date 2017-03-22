@@ -65,7 +65,7 @@ export default class ContainerNavigation extends PureComponent {
     const isWidthCollapsed = width <= containerClosedWidth;
 
     return (
-      <div
+      <nav
         className={classNames({
           [styles.shouldAnimate]: shouldAnimate,
         })}
@@ -109,7 +109,7 @@ export default class ContainerNavigation extends PureComponent {
             </div>
           </div>
         </div>
-      </div>
+      </nav>
     );
   }
 }

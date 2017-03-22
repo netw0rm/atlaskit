@@ -92,9 +92,10 @@ export default class FieldBase extends PureComponent {
       <div className={contentWrapperClasses}>
         <div className={dialogWrapperClasses}>
           <InlineDialog
-            content={this.props.invalidMessage}
-            isOpen={this.props.isDialogOpen && !!this.props.invalidMessage}
             position="right middle"
+            isOpen={this.props.isDialogOpen && !!this.props.invalidMessage}
+            content={this.props.invalidMessage}
+            shouldFlip={['top']}
             onContentFocus={this.props.onDialogFocus}
             onContentBlur={this.props.onDialogBlur}
           >

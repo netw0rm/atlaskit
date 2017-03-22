@@ -17,9 +17,10 @@
     "**/*.d.ts"
   ],
   "dependencies": {
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "decamelize": "^1.2.0",
-    "react-syntax-highlighter": "^3.0.2",
-    "@atlaskit/util-shared-styles": "^1.0.0"
+    "react-docgen": "^2.13.0",
+    "react-syntax-highlighter": "^3.0.2"
   },
   "peerDependencies": {
     "react": "^15.3.2"

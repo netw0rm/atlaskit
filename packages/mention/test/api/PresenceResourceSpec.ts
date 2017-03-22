@@ -151,7 +151,7 @@ describe('PresenceResource', () => {
   });
 
   describe('#refreshPresence', () => {
-    it('should result in fewer listener callbacks and service requests with cache', (done) => {
+    it.skip('should result in fewer listener callbacks and service requests with cache', (done) => {
       const resource = new PresenceResource(apiConfig);
       const spy = sinon.spy(resource, 'notifyListeners');
       try {

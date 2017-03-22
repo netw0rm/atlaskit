@@ -441,12 +441,12 @@ function createParagraphNear(state: EditorState<any>, dispatch: (tr: Transaction
     insertPos = getInsertPosFromNonTextBlock(state, append);
   }
 
-  if (append) {
-    const next = new TextSelection(state.doc.resolve(insertPos));
-    dispatch(state.tr.setSelection(next).insert(insertPos, paragraph.create()));
-  } else {
+  if (!append) {
     const next = new TextSelection(state.doc.resolve(insertPos + 1));
     dispatch(state.tr.insert(insertPos, paragraph.create()).setSelection(next));
+  } else {
+    const next = new TextSelection(state.doc.resolve(insertPos));
+    dispatch(state.tr.setSelection(next).insert(insertPos, paragraph.create()));
   }
 }
 

@@ -14,34 +14,18 @@ export interface MediaProvider {
   uploadParams: UploadParams;
 
   /**
-   * Resolve to a Media Context Config for uploading new media items, i.e.:
-   *
-   *   resolve({
-   *     clientId: 'e3afd8e5-b7d2-4b8d-bff0-ec86e4b14595',
-   *     serviceHost: 'http://media-api.host.com',
-   *     tokenProvider: tokenProvidingFunction
-   *   });
+   * Used for displaying Media Cards and downloading files.
+   * This is context config is required.
+   */
+  viewContext: Promise<ContextConfig>;
+
+  /**
+   * (optional) Used for creating new uploads and finalizing files.
    */
   uploadContext?: Promise<ContextConfig>;
 
   /**
-   * Resolve to Media Context that allows downloading Media, i.e.
-   *   resolve({
-   *     clientId: 'e3afd8e5-b7d2-4b8d-bff0-ec86e4b14595',
-   *     serviceHost: 'http://media-api.host.com',
-   *     tokenProvider: tokenProvidingFunction
-   *   });
-   */
-  viewContext?: Promise<ContextConfig>;
-
-  /**
-   * Resolve to Media Context that allows creating media links:
-   *
-   *   resolve({
-   *     clientId: 'e3afd8e5-b7d2-4b8d-bff0-ec86e4b14595',
-   *     serviceHost: 'http://media-api.host.com',
-   *     tokenProvider: tokenProvidingFunction
-   *   });
+   * (optional) Used for creation of new Media links.
    */
   linkCreateContext?: Promise<ContextConfig>;
 };

@@ -7,6 +7,7 @@ import 'style-loader!css-loader!highlight.js/styles/github.css';
 
 import 'style!./styles.less';
 
+import AnnotatedStory from './AnnotatedStory';
 import MonitoredStory from './MonitoredStory';
 import BaselineAlignmentStory from './BaselineAlignmentStory';
 import CodeExampleStory from './CodeExampleStory';
@@ -22,6 +23,12 @@ function loadStories() {
 }
 
 setAddon({
+  addAnnotated(storyName, storyFn) {
+    this.add(storyName, context => (
+      <AnnotatedStory component={() => storyFn(context)} />
+    ));
+  },
+
   addMonitored(storyName, storyFn, rafFn) {
     this.add(storyName, context => (
       <MonitoredStory rafFn={rafFn}>

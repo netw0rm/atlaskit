@@ -24,6 +24,11 @@ const manyContainerItems = () => {
 };
 
 storiesOf(name, module)
+  .addAnnotated('annotated', () => (
+    <Page>
+      <BasicNavigation />
+    </Page>
+  ))
   .add('with a few container items', () => (
     <Page>
       <BasicNavigation>

@@ -87,6 +87,8 @@
     "react-addons-test-utils": "^15.4.0",
     "react-dom": "^15.3.2",
     "react-highlight": "^0.9.0",
+    "react-tooltip": "^3.2.9",
+    "react-traverse": "^0.0.3",
     "readme-help": "^1.1.1",
     "retry-cli": "^0.4.0",
     "rxjs": "^5.2.0",

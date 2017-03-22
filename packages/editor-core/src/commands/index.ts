@@ -7,54 +7,58 @@ import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
 import { isRangeOfType } from '../utils';
 
-export function toggleBlockType(name: string): Command {
+export function toggleBlockType(view: EditorView, name: string): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { nodes } = state.schema;
+    const { $from } = state.selection;
+    if ($from.depth > 1) {
+      dispatch(lift(state));
+    }
 
     switch (name) {
       case blockTypes.NORMAL_TEXT.name:
         if (nodes.paragraph) {
-          return setNormalText()(state, dispatch);
+          return setNormalText()(view.state, dispatch);
         }
         break;
       case blockTypes.HEADING_1.name:
         if (nodes.heading) {
-          return toggleHeading(1)(state, dispatch);
+          return toggleHeading(1)(view.state, dispatch);
         }
         break;
       case blockTypes.HEADING_2.name:
         if (nodes.heading) {
-          return toggleHeading(2)(state, dispatch);
+          return toggleHeading(2)(view.state, dispatch);
         }
         break;
       case blockTypes.HEADING_3.name:
         if (nodes.heading) {
-          return toggleHeading(3)(state, dispatch);
+          return toggleHeading(3)(view.state, dispatch);
         }
         break;
       case blockTypes.HEADING_4.name:
         if (nodes.heading) {
-          return toggleHeading(4)(state, dispatch);
+          return toggleHeading(4)(view.state, dispatch);
         }
         break;
       case blockTypes.HEADING_5.name:
         if (nodes.heading) {
-          return toggleHeading(5)(state, dispatch);
+          return toggleHeading(5)(view.state, dispatch);
         }
         break;
       case blockTypes.BLOCK_QUOTE.name:
         if (nodes.paragraph && nodes.blockquote) {
-          return toggleBlockquote()(state, dispatch);
+          return toggleBlockquote()(view.state, dispatch);
         }
         break;
       case blockTypes.CODE_BLOCK.name:
         if (nodes.codeBlock) {
-          return toggleCodeBlock()(state, dispatch);
+          return toggleCodeBlock()(view.state, dispatch);
         }
         break;
       case blockTypes.PANEL.name:
         if (nodes.panel && nodes.paragraph) {
-          return togglePanel()(state, dispatch);
+          return togglePanel()(view.state, dispatch);
         }
         break;
     }
@@ -185,8 +189,7 @@ export function toggleCodeBlock(): Command {
 
     if (currentBlock.type !== state.schema.nodes.codeBlock) {
       if (isConvertableToCodeBlock(state)) {
-        const tr = transformToCodeBlockAction(state, {});
-        dispatch(lift(state, tr));
+        dispatch(transformToCodeBlockAction(state, {}));
       }
     } else {
       dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
@@ -242,8 +245,7 @@ export function toggleHeading(level: number): Command {
     const currentBlock = $from.parent;
 
     if (currentBlock.type !== state.schema.nodes.heading || currentBlock.attrs['level'] !== level) {
-      const tr = state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.heading, { level });
-      dispatch(lift(state, tr));
+      dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.heading, { level }));
     } else {
       dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
     }
@@ -478,14 +480,13 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
 
 // Lifts current selection up;
 // it allows to chain transactions
-function lift(state: EditorState<any>, tr: Transaction): Transaction {
+function lift(state: EditorState<any>): Transaction {
   const { $from, $to } = state.selection;
-  if ($from.depth > 1) {
-    const range = $from.blockRange($to) as any;
-    const target = range && liftTarget(range) as any;
-    if (target !== null) {
-      tr = tr.lift(range, target).scrollIntoView();
-    }
+  let { tr } = state;
+  const range = $from.blockRange($to) as any;
+  const target = range && liftTarget(range) as any;
+  if (target !== null) {
+    tr = tr.lift(range, target).scrollIntoView();
   }
   return tr;
 }

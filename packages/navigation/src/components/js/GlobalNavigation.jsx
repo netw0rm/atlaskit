@@ -16,6 +16,7 @@ const checkIfTooManySecondaryActions = (actions = []) =>
 
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
+    appearance: PropTypes.string,
     linkComponent: PropTypes.func,
     primaryIcon: PropTypes.node,
     primaryItemHref: PropTypes.string,
@@ -46,6 +47,7 @@ export default class GlobalNavigation extends PureComponent {
 
   render() {
     const {
+      appearance,
       createIcon,
       linkComponent,
       onCreateActivate,
@@ -60,6 +62,8 @@ export default class GlobalNavigation extends PureComponent {
       <nav
         className={classNames(styles.globalNavigationOuter, {
           [styles.shouldAnimate]: shouldAnimate,
+          [styles.hasSettingsAppearance]: appearance === 'settings',
+          [styles.test]: true,
         })}
       >
         <Spacer
@@ -71,6 +75,7 @@ export default class GlobalNavigation extends PureComponent {
         >
           <div className={styles.primaryContainer}>
             <GlobalPrimaryActions
+              appearance={appearance}
               createIcon={createIcon}
               linkComponent={linkComponent}
               onCreateActivate={onCreateActivate}

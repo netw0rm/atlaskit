@@ -1,5 +1,6 @@
 import { shallow, mount } from 'enzyme';
 import React, { PureComponent } from 'react';
+import styles from 'style-loader!../src/components/less/GlobalNavigation.less';
 import GlobalNavigation from '../src/components/js/GlobalNavigation';
 
 class Child extends PureComponent {
@@ -65,6 +66,12 @@ describe('<GlobalNavigation />', () => {
         wrapper.setProps('secondaryActions', [<Child />, <Child />, <Child />, <Child />, <Child />]);
 
       expect(updateWithTooManyActions).to.throw();
+    });
+    it('appearance="settings" renders with the hasSettingsAppearance class', () => {
+      expect((shallow(
+        <GlobalNavigation
+          appearance="settings"
+        />).find(`.${styles.globalNavigationOuter}`)).hasClass((styles.hasSettingsAppearance))).to.equal(true);
     });
   });
 });

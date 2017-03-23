@@ -19,6 +19,7 @@ export default class Navigation extends PureComponent {
     containerAppearance: PropTypes.string,
     containerHeaderComponent: PropTypes.func,
     drawers: PropTypes.arrayOf(PropTypes.node),
+    globalAppearance: PropTypes.string,
     globalCreateIcon: PropTypes.node,
     globalPrimaryIcon: PropTypes.node,
     globalPrimaryItemHref: PropTypes.string,
@@ -38,6 +39,7 @@ export default class Navigation extends PureComponent {
   static defaultProps = {
     containerAppearance: 'default',
     drawers: [],
+    globalAppearance: 'global',
     globalSecondaryActions: [],
     isCollapsible: true,
     isCreateDrawerOpen: false,
@@ -107,6 +109,7 @@ export default class Navigation extends PureComponent {
       containerAppearance,
       containerHeaderComponent,
       drawers,
+      globalAppearance,
       globalCreateIcon,
       globalPrimaryIcon,
       globalPrimaryItemHref,
@@ -132,6 +135,7 @@ export default class Navigation extends PureComponent {
         <div className={styles.navigationInner}>
           <div style={{ zIndex: isPartiallyCollapsed ? false : 1 }}>
             <GlobalNavigation
+              appearance={globalAppearance}
               createIcon={globalCreateIcon}
               linkComponent={linkComponent}
               onCreateActivate={onCreateDrawerOpen}

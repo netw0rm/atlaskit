@@ -87,6 +87,17 @@ storiesOf(name, module)
     </Chrome>
   ))
 
+  .add('with Home link disabled', () => (
+    <Chrome>
+      <AppSwitcher
+        {...{
+          ...data,
+          isHomeLinkEnabled: false,
+        }}
+      />
+    </Chrome>
+  ))
+
   .add('with applinks error', () => (
     <Chrome>
       <AppSwitcher

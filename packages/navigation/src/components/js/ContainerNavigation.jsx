@@ -29,7 +29,7 @@ export default class ContainerNavigation extends PureComponent {
   }
 
   static defaultProps = {
-    appearance: 'default',
+    appearance: 'container',
     areGlobalActionsVisible: false,
     shouldAnimate: false,
     width: containerOpenWidth,
@@ -65,7 +65,7 @@ export default class ContainerNavigation extends PureComponent {
     const isWidthCollapsed = width <= containerClosedWidth;
 
     return (
-      <div
+      <nav
         className={classNames({
           [styles.shouldAnimate]: shouldAnimate,
         })}
@@ -83,10 +83,11 @@ export default class ContainerNavigation extends PureComponent {
             className={classNames(styles.containerNavigationInner, {
               [styles.hasContainerHeader]: headerComponent !== null,
               [styles.hasGlobalAppearance]: appearance === 'global',
+              [styles.hasSettingsAppearance]: appearance === 'settings',
             })}
           >
             <GlobalActions
-              appearance={appearance === 'global' ? 'global' : 'container'}
+              appearance={appearance}
               createIcon={globalCreateIcon}
               isVisible={areGlobalActionsVisible}
               linkComponent={linkComponent}
@@ -109,7 +110,7 @@ export default class ContainerNavigation extends PureComponent {
             </div>
           </div>
         </div>
-      </div>
+      </nav>
     );
   }
 }

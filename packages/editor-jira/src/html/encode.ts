@@ -195,10 +195,15 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
 
   function encodeListItem(node: ListItemNode) {
     const elem = doc.createElement('li');
-    // Strip the paragraph node from the list item.
     if (node.content.childCount) {
-      const paragraph = node.content.child(0) as ParagraphNode;
-      elem.appendChild(encodeFragment(paragraph.content));
+      node.content.forEach(childNode => {
+        if (isBulletListNode(childNode) || isOrderedListNode(childNode)) {
+          elem.appendChild(encodeNode(childNode));
+        } else {
+          // Strip the paragraph node from the list item.
+          elem.appendChild(encodeFragment((childNode as ParagraphNode).content));
+        }
+      });
     }
     return elem;
   }

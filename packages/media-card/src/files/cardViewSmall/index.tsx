@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {CardAction, MediaType} from '@atlaskit/media-core';
-
-import {toHumanReadableMediaSize} from '../../utils';
 import {CardGenericViewSmall} from '../../utils/cardGenericViewSmall';
 
-export interface CardViewSmallProps {
-  width?: number;
+import {toHumanReadableMediaSize} from '../../utils';
+
+export interface FileCardViewSmallProps {
+  width?: number | string;
   mediaName?: string;
   mediaType?: MediaType;
   mediaSize?: number;
@@ -14,12 +14,17 @@ export interface CardViewSmallProps {
   progress?: number;
   loading?: boolean;
   menuActions?: Array<CardAction>;
+  actions?: Array<CardAction>;
   onClick?: (event: Event) => void;
   error?: string;
   onRetry?: CardAction;
 }
 
-export class CardViewSmall extends Component<CardViewSmallProps, {}> {
+export interface FileCardViewSmallState {
+  isMenuExpanded: boolean;
+}
+
+export class FileCardViewSmall extends Component<FileCardViewSmallProps, FileCardViewSmallState> {
   render() {
     const subtitle = this.props.mediaSize && toHumanReadableMediaSize(this.props.mediaSize);
 

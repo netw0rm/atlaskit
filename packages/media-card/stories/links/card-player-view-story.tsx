@@ -3,7 +3,7 @@ import {storiesOf, action} from '@kadira/storybook';
 import {LinkCardPlayer} from '../../src';
 import {StoryList} from '@atlaskit/media-test-helpers';
 
-const menuActions = [
+const actions = [
   {label: 'Open', handler: () => { action('open')(); }},
   {label: 'Close', handler: () => { action('close')(); }}
 ];
@@ -20,7 +20,7 @@ storiesOf('LinkCardPlayer', {})
           thumbnailUrl="https://i.ytimg.com/vi/I4tFNfROlqk/hqdefault.jpg"
           iconUrl="https://www.youtube.com/yts/img/favicon_144-vflWmzoXw.png"
           playerUrl="https://www.youtube.com/embed/I4tFNfROlqk?feature=oembed"
-          menuActions={menuActions}
+          actions={actions}
         />
       }, {
         title: 'Spotify',
@@ -31,7 +31,7 @@ storiesOf('LinkCardPlayer', {})
           thumbnailUrl="https://i.scdn.co/image/e9cdc3892cfc26b9a224844e9583b687ec146ddc"
           iconUrl="http://d2c87l0yth4zbw.cloudfront.net/i/_global/favicon.png"
           playerUrl="https://open.spotify.com/embed?uri=spotify:track:3pxw9Agh9VB9kyx79REpRQ"
-          menuActions={menuActions}
+          actions={actions}
         />
       }, {
         title: 'SoundCloud',
@@ -42,7 +42,7 @@ storiesOf('LinkCardPlayer', {})
           thumbnailUrl="https://i1.sndcdn.com/artworks-000196529492-77zopd-t500x500.jpg"
           iconUrl="https://a-v2.sndcdn.com/assets/images/sc-icons/favicon-2cadd14b.ico"
           playerUrl="https://w.soundcloud.com/player/?visual=true&url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F295926514&show_artwork=true"
-          menuActions={menuActions}
+          actions={actions}
         />
       }]}
     </StoryList>

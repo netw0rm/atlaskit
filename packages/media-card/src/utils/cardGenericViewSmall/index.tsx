@@ -4,12 +4,12 @@ import {Component, MouseEvent} from 'react';
 import {CardAction, MediaType} from '@atlaskit/media-core';
 
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
-import {Menu, ErrorIcon} from '../../utils';
+import {Menu, ErrorIcon, getCSSUnitValue} from '../../utils';
 
 import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper, FileInfoWrapper} from './styled';
 
 export interface CardGenericViewSmallProps {
-  width?: number;
+  width?: number | string;
   title?: string;
   subtitle?: string;
   mediaType?: MediaType;
@@ -26,6 +26,16 @@ export interface CardGenericViewSmallState {
 }
 
 export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, CardGenericViewSmallState> {
+  private get wrapperStyles(): {width?: string} {
+    const width = this.props.width;
+
+    if (!width) {
+      return {};
+    }
+
+    return {width: getCSSUnitValue(width)};
+  }
+
   constructor(props: CardGenericViewSmallProps) {
     super(props);
 
@@ -83,7 +93,7 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
 
   formatCard(left: JSX.Element, right: JSX.Element) {
     const {menuActions, width, loading, mediaType, thumbnailUrl} = this.props;
-    const cardStyle = width ? {width: `${width}px`} : {};
+    const cardStyle = this.wrapperStyles;
     const cardClass = cx({loading: loading});
     const imgClass = cx('img-wrapper', {shadow: mediaType === 'image' && thumbnailUrl});
 

@@ -164,7 +164,7 @@ storiesOf(name, module)
             text="Item X"
           />
           <AkContainerItem
-            icon={<img src={nucleus} alt="icon" />}
+            icon={<img src={nucleusLogo} alt="icon" />}
             text="Item Y"
             href="#2"
           />

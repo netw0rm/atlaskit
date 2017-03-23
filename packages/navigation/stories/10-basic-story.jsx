@@ -118,9 +118,20 @@ storiesOf(name, module)
       </BasicNavigation>
     </Page>
   ))
-  .add('with project settings appearance', () => (
+  .add('with settings appearance', () => (
     <Page>
       <BasicNavigation
+        containerHeaderComponent={() => (
+          <AkContainerTitle
+            appearance="settings"
+            href="#foo"
+            icon={
+              <img alt="nucleus" src={nucleusLogo} />
+            }
+            text="AtlasKit"
+            subText="Project settings"
+          />
+        )}
         containerAppearance="settings"
         globalAppearance="settings"
       >
@@ -250,7 +261,23 @@ storiesOf(name, module)
       />
     </Page>
   ))
-  .add('with no subText', () => (
+  .add('with a long ContainerTitle', () => (
+    <Page>
+      <BasicNavigation
+        containerHeaderComponent={() => (
+          <AkContainerTitle
+            href="#foo"
+            icon={
+              <img alt="nucleus" src={nucleusLogo} />
+            }
+            text="A long long time ago, I can still remember"
+            subText="How that music used to make me smile"
+          />
+        )}
+      />
+    </Page>
+  ))
+  .add('with no ContainerTitle subText', () => (
     <Page>
       <BasicNavigation
         containerHeaderComponent={() => (

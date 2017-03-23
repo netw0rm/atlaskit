@@ -107,19 +107,43 @@ describe(name, () => {
       });
 
       describe('saving and savingText props', () => {
-        it('should render the default savingText if saving is set', () => {
-          const wrapper = mount(<Comment saving />);
-          expect(wrapper.text()).to.contain('Sending...');
+        describe('if saving prop is set', () => {
+          it('should render the default savingText if no savingText is set', () => {
+            const wrapper = mount(<Comment saving />);
+            expect(wrapper.text()).to.contain('Sending...');
+          });
+
+          it('should render the savingText text if it is set', () => {
+            const wrapper = mount(<Comment saving savingText="Saving..." />);
+            expect(wrapper.text()).to.contain('Saving...');
+          });
+
+          it('should not render CommentActions', () => {
+            const actions = [
+              <CommentAction />,
+              <CommentAction>action content</CommentAction>,
+              <CommentAction onClick={() => {}}>action content</CommentAction>,
+            ];
+            const wrapper = mount(<Comment actions={actions} saving savingText="Saving..." />);
+            expect(wrapper.find(CommentAction).length).to.equal(0);
+          });
+
+          it('should apply .optimistic-saving-content styles', () => {
+            const wrapper = mount(<Comment saving savingText="Saving..." />);
+            expect(wrapper.find(`.${styles.locals.optimisticSavingContent}`).length).to.equal(1);
+          });
         });
 
-        it('should render the savingText text if the saving prop is set', () => {
-          const wrapper = mount(<Comment saving savingText="Saving..." />);
-          expect(wrapper.text()).to.contain('Saving...');
-        });
+        describe('if saving prop is not set', () => {
+          it('should not render savingText', () => {
+            const wrapper = mount(<Comment savingText="Saving..." />);
+            expect(wrapper.text()).to.not.contain('Saving...');
+          });
 
-        it('should not render savingText if saving is not set', () => {
-          const wrapper = mount(<Comment savingText="Saving..." />);
-          expect(wrapper.text()).to.not.contain('Saving...');
+          it('should not apply .optimistic-saving-content styles', () => {
+            const wrapper = mount(<Comment savingText="Saving..." />);
+            expect(wrapper.find(`.${styles.locals.optimisticSavingContent}`).length).to.equal(0);
+          });
         });
       });
 

@@ -106,6 +106,23 @@ describe(name, () => {
         });
       });
 
+      describe('saving and savingText props', () => {
+        it('should render the default savingText if saving is set', () => {
+          const wrapper = mount(<Comment saving />);
+          expect(wrapper.text()).to.contain('Sending...');
+        });
+
+        it('should render the savingText text if the saving prop is set', () => {
+          const wrapper = mount(<Comment saving savingText="Saving..." />);
+          expect(wrapper.text()).to.contain('Saving...');
+        });
+
+        it('should not render savingText if saving is not set', () => {
+          const wrapper = mount(<Comment savingText="Saving..." />);
+          expect(wrapper.text()).to.not.contain('Saving...');
+        });
+      });
+
       describe('Top items', () => {
         it('Should render in the order author, type, time, restrictedTo', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
@@ -115,6 +132,22 @@ describe(name, () => {
           expect(topItems.childAt(1).text()).to.equal('Type');
           expect(topItems.childAt(2).text()).to.equal('30 August, 2016');
           expect(topItems.childAt(3).text()).to.contain('atlassian-staff');
+        });
+
+        it('Should render in the order author, type, savingText, restrictedTo', () => {
+          const wrapper = mount(<Comment author="Mary" type="Type" restrictedTo="atlassian-staff" saving savingText="Saving..." />);
+          const topItems = wrapper.find(`.${styles.locals.topItemsContainer}`);
+          expect(topItems.childAt(0).text()).to.equal('Mary');
+          expect(topItems.childAt(1).text()).to.equal('Type');
+          expect(topItems.childAt(2).text()).to.equal('Saving...');
+          expect(topItems.childAt(3).text()).to.contain('atlassian-staff');
+        });
+
+        it('should not render time if saving is set', () => {
+          const time = <CommentTime>30 August, 2016</CommentTime>;
+          const wrapper = mount(<Comment author="Mary" type="Type" time={time} restrictedTo="atlassian-staff" saving savingText="Saving..." />);
+          expect(wrapper.find(CommentTime).length).to.equal(0);
+          expect(wrapper.text()).to.contain('Saving...');
         });
       });
     });

@@ -51,10 +51,10 @@ storiesOf(name, module)
       background: 'red',
       padding: '50px',
     };
-    const popperContent = <div style={layerStyles}>LayerContent</div>;
+    const content = <div style={layerStyles}>LayerContent</div>;
     return (
       <div>
-        <AKLayer content={popperContent} position="right bottom">
+        <AKLayer content={content} position="right bottom">
           <div style={targetStyle}>Target</div>
         </AKLayer>
         <div>Drag the left side bar over until the LayerContent reaches the edge of the screen</div>
@@ -83,15 +83,23 @@ storiesOf(name, module)
       padding: '50px',
     };
 
-    const popperContent = <div style={layerStyles}>LayerContent</div>;
+    const content = <div style={layerStyles}>LayerContent</div>;
     return (
       <div>
-        <p>Passing autoPosition with preference order of: right, top, left, bottom.</p>
+        <p>
+          Layer with position=&quot;right middle&quot; and
+          autoFlip=[&quot;top&quot;, &quot;left&quot;, &quot;bottom&quot;].
+        </p>
+        <p>
+          This layer will try to position itself on the right. If there is no space, it will try
+          to position itself at each of the positions specified in autoFlip, in order, until
+          it fits.
+        </p>
         <p>Scroll the red box to the sides of the container to flip the green box.</p>
         <div style={{ border: '1px solid black', height: '300px', width: '300px', overflow: 'scroll' }}>
           <div style={{ width: '500px', height: '500px' }}>
             <AKLayer
-              content={popperContent}
+              content={content}
               position="right middle"
               autoFlip={['top', 'left', 'bottom']}
               boundariesElement="scrollParent"

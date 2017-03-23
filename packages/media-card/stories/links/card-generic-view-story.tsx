@@ -1,15 +1,20 @@
 import * as React from 'react';
 import {storiesOf, action} from '@kadira/storybook';
-import {LinkCardGenericView} from '../../src';
 import {StoryList} from '@atlaskit/media-test-helpers';
+import {CardActionType} from '@atlaskit/media-core';
+
+import {LinkCardGenericView} from '../../src';
 
 const onClick = (event: Event) => {
   action('click')();
 };
 
+const deleteAction = {type: CardActionType.delete, label: 'Delete', handler: () => { action('delete')(); }};
+
 const actions = [
   {label: 'Open', handler: () => { action('open')(); }},
-  {label: 'Close', handler: () => { action('close')(); }}
+  {label: 'Close', handler: () => { action('close')(); }},
+  deleteAction
 ];
 
 const defaultThumbnailUrl = 'https://wac-cdn.atlassian.com/dam/jcr:51be4df5-1ffb-4a4d-9f44-0b84dad9de5e/hero-collaboration-partial.png';
@@ -153,6 +158,19 @@ storiesOf('LinkCardGenericView', {})
           iconUrl={defaultIconUrl}
           actions={actions}
          />
+       },
+       {
+         title: 'card delete',
+         content: (
+           <LinkCardGenericView
+              title="This week inside Intercom."
+              description="Convert today’s signups into tomorrow some text after"
+              linkUrl="http://localhost:9001/?selectedKind=LinkCardViewHorizontal&selectedStory=Various%20text%20lengths&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel"
+              thumbnailUrl={defaultThumbnailUrl}
+              iconUrl={defaultIconUrl}
+              actions={[deleteAction]}
+           />
+         )
        }]}
     </StoryList>
   ))

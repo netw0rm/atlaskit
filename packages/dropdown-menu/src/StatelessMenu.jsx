@@ -4,6 +4,7 @@ import Droplist, { Item, Group } from '@atlaskit/droplist';
 import Button from '@atlaskit/button';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import uid from 'uid';
+import styles from 'style!./styles.less';
 
 const Icon = <ExpandIcon label="" />;
 
@@ -230,6 +231,7 @@ export default class StatelessDropdownMenu extends PureComponent {
             this.domItemsList = ref ? ref.querySelectorAll('[data-role="droplistItem"]') : undefined;
           }}
           role="menu"
+          className={styles.menuContainer}
         >
           {this.renderGroups(props.items)}
         </div>

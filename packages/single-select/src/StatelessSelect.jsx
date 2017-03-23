@@ -53,12 +53,9 @@ export default class StatelessSelect extends PureComponent {
     items: [],
     label: '',
     noMatchesFound: 'No matches found',
-    onFilterChange: () => {
-    },
-    onSelected: () => {
-    },
-    onOpenChange: () => {
-    },
+    onFilterChange: () => {},
+    onSelected: () => {},
+    onOpenChange: () => {},
     placeholder: '',
     position: 'bottom left',
     shouldFocus: false,
@@ -170,7 +167,7 @@ export default class StatelessSelect extends PureComponent {
     const selectedItem = this.props.selectedItem;
     const unselectedItems = items.filter(item => selectedItem.value !== item.value);
     return trimmedValue &&
-    (trimmedValue !== (selectedItem.content && selectedItem.content.toLowerCase())) ?
+      (trimmedValue !== (selectedItem.content && selectedItem.content.toLowerCase())) ?
       unselectedItems.filter(item => (item.content.toLowerCase().indexOf(trimmedValue) > -1)) :
       unselectedItems;
   }

@@ -49,14 +49,10 @@ export default class StatelessMultiSelect extends PureComponent {
     items: [],
     label: '',
     noMatchesFound: 'No matches found',
-    onFilterChange: () => {
-    },
-    onOpenChange: () => {
-    },
-    onSelected: () => {
-    },
-    onRemoved: () => {
-    },
+    onFilterChange: () => {},
+    onOpenChange: () => {},
+    onSelected: () => {},
+    onRemoved: () => {},
     position: 'bottom left',
     selectedItems: [],
   }
@@ -97,8 +93,9 @@ export default class StatelessMultiSelect extends PureComponent {
     // eslint-disable-next-line react/no-find-dom-node
     const tagGroup = ReactDOM.findDOMNode(this.tagGroup);
     const tagGroupElements = tagGroup.children;
-    const isInsideTagGroup = [...tagGroupElements].some(node =>
-    node.contains(target) && node.tagName !== 'INPUT');
+    const isInsideTagGroup = [...tagGroupElements].some(
+      node => node.contains(target) && node.tagName !== 'INPUT'
+    );
 
     if (!isInsideTagGroup) {
       this.props.onOpenChange(attrs);

@@ -12,6 +12,7 @@ export interface Context {
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider;
   getDataUriService(collectionName?: string): DataUriService;
   addLinkItem(url: string, collectionName: string, metadata?: UrlPreview): Promise<string>;
+  readonly config: ContextConfig;
 }
 
 export interface ContextConfig {
@@ -33,7 +34,7 @@ class ContextImpl implements Context {
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly lruCache: LRUCache<string, MediaItem>;
 
-  constructor(private readonly config: ContextConfig) {
+  constructor(readonly config: ContextConfig) {
     this.lruCache = new LRUCache<string, MediaItem>(config.cacheSize || DEFAULT_CACHE_SIZE);
   }
 

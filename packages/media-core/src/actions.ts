@@ -1,11 +1,11 @@
 /* tslint:disable:variable-name */
-import { MediaCollection } from './';
+import { MediaCollection, MediaCollectionItem } from './collection';
 import { MediaItem, FileDetails } from './item';
 import { AxiosError } from 'axios/index';
 
 export type CardEventHandler = (item?: MediaItem, event?: Event) => void;
 export type ListEventHandler = (item?: MediaItem, siblings?: Array<FileDetails>, event?: Event) => void;
-export type CollectionEventHandler = (item: MediaItem, collection: MediaCollection, event: Event) => void;
+export type CollectionEventHandler = (item: MediaCollectionItem, collection: MediaCollection, event: Event) => void;
 
 export enum CardActionType {
   click, delete, download, retry, custom

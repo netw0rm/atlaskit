@@ -71,7 +71,7 @@ export class CollectionCommandReducer {
       this.pageSize,
       this.nextInclusiveStartKey,
       this.sortDirection,
-      'minimal')
+      'full')
       .then(response => {
         const items = response.data.contents
           .map(item => {

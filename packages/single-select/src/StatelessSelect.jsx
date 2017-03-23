@@ -53,9 +53,12 @@ export default class StatelessSelect extends PureComponent {
     items: [],
     label: '',
     noMatchesFound: 'No matches found',
-    onFilterChange: () => {},
-    onSelected: () => {},
-    onOpenChange: () => {},
+    onFilterChange: () => {
+    },
+    onSelected: () => {
+    },
+    onOpenChange: () => {
+    },
     placeholder: '',
     position: 'bottom left',
     shouldFocus: false,
@@ -167,7 +170,7 @@ export default class StatelessSelect extends PureComponent {
     const selectedItem = this.props.selectedItem;
     const unselectedItems = items.filter(item => selectedItem.value !== item.value);
     return trimmedValue &&
-      (trimmedValue !== (selectedItem.content && selectedItem.content.toLowerCase())) ?
+    (trimmedValue !== (selectedItem.content && selectedItem.content.toLowerCase())) ?
       unselectedItems.filter(item => (item.content.toLowerCase().indexOf(trimmedValue) > -1)) :
       unselectedItems;
   }
@@ -272,10 +275,13 @@ export default class StatelessSelect extends PureComponent {
         }
         break;
       case 'Enter':
-        if (isSelectOpen && this.state.focusedItemIndex !== undefined) {
-          this.handleItemSelect(
-            this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
-          );
+        if (isSelectOpen) {
+          event.preventDefault();
+          if (this.state.focusedItemIndex !== undefined) {
+            this.handleItemSelect(
+              this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
+            );
+          }
         }
         break;
       default:
@@ -424,7 +430,7 @@ export default class StatelessSelect extends PureComponent {
                           <div className={styles.elemBefore}>
                             {this.props.selectedItem.elemBefore}
                           </div> :
-                        null
+                          null
                       }
                       {
                         this.props.selectedItem.content ?

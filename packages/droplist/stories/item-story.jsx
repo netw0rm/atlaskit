@@ -5,6 +5,7 @@ import Question from '@atlaskit/icon/glyph/question';
 import Arrow from '@atlaskit/icon/glyph/arrowrightlong';
 import Avatar from '@atlaskit/avatar';
 import Lozenge from '@atlaskit/lozenge';
+import { Code, Description, Chrome } from '@atlaskit/util-readme';
 
 import { Item, SecondaryText } from '../src';
 import { name } from '../package.json';
@@ -12,6 +13,12 @@ import { name } from '../package.json';
 /* eslint-disable react/prop-types */
 const Icon = () => <Question label="test question" />;
 /* eslint-enable react/prop-types */
+
+/* eslint-disable import/first, import/no-duplicates */
+import ItemWithDescriptions from './examples/item/ItemWithDescriptions';
+import ItemWithDescriptionsRaw from '!raw!./examples/item/ItemWithDescriptions';
+/* eslint-enable import/first, import/no-duplicates */
+
 const imports = [['React', 'react'], ['Item', '@atlaskit/droplist-item']];
 storiesOf(`${name} - item`, module)
   .addCodeExampleStory('simple item', () => (
@@ -26,6 +33,17 @@ storiesOf(`${name} - item`, module)
       </div>
     </div>
   ), { imports })
+  .add('Item with descriptions', () => (
+    <Chrome title="Item with descriptions">
+      <Description>
+        <p>Droplist that fits container width.</p>
+        {ItemWithDescriptions}
+      </Description>
+      <Code>
+        {ItemWithDescriptionsRaw}
+      </Code>
+    </Chrome>
+  ))
   .addCodeExampleStory('simple checkbox item', () => (
     <div className={styles.storiesContainer}>
       <p>This is an example of droplist items with checkboxes</p>
@@ -110,20 +128,6 @@ storiesOf(`${name} - item`, module)
       </div>
     </div>
   ), { imports: [...imports, ['Icon', '@atlaskit/icon/glyph/question']] })
-  .addCodeExampleStory('items and handlers', () => (
-    <div className={styles.storiesContainer}>
-      <p>Items have a handler to help them communicate with the outside world.</p>
-      <p><b>onActivate</b> is called when the item is activated (clicked, pressed enter,
-        pressed space).</p>
-      <div className={styles.itemsContainer}>
-        <Item
-          onActivate={(attr) => {
-            console.log('look ma, I was activated!', attr.item);
-          }}
-        >first item</Item>
-      </div>
-    </div>
-  ), { imports })
   .addCodeExampleStory('items in different contexts (accessibility test)', () => (
     <div className={styles.storiesContainer}>
       <div className={styles.itemsContainer}>

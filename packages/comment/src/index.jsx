@@ -39,7 +39,7 @@ export default class Comment extends PureComponent {
         this.props.author || null,
         this.props.type ? <Lozenge>{this.props.type}</Lozenge> : null,
         this.props.time || null,
-        this.props.restrictedTo.length ? this.renderRestrictedItem() : null,
+        this.props.restrictedTo ? this.renderRestrictedItem() : null,
       ]
       .filter(item => !!item)
       .map((item, index) => <div key={index} className={styles.topItem}>{item}</div>)

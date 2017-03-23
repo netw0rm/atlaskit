@@ -79,7 +79,7 @@ export function makeSchema(config: JIRASchemaConfig): JIRASchema {
     ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
     bullet_list: { type: BulletListNodeType, content: 'list_item+', group: 'block' },
     heading: { type: HeadingNodeType, content: 'inline<_>*', group: 'block' },
-    list_item: { type: ListItemNodeType, content: 'paragraph' },
+    list_item: { type: ListItemNodeType, content: 'paragraph block*' },
     text: { type: Text, group: 'inline' },
     hard_break: { type: HardBreakNodeType, group: 'inline' },
     horizontal_rule: { type: HorizontalRuleNodeType, group: 'block' },

@@ -122,6 +122,21 @@ describe('ak-avatar', () => {
     });
   });
 
+  describe('type property', () => {
+    it('should default to object avatar type without rounded corners', () => {
+      const wrapper = mount(<Avatar />);
+      expect(wrapper.prop('type')).to.equal('object');
+      expect(wrapper.find(`.${styles.locals.objectAvatar}`)).to.have.lengthOf(1);
+      expect(wrapper.find(`.${styles.locals.containerAvatar}`)).to.have.lengthOf(0);
+    });
+
+    it('should apply rounded corners for container avatar type', () => {
+      const wrapper = mount(<Avatar type="container" />);
+      expect(wrapper.find(`.${styles.locals.containerAvatar}`)).to.have.lengthOf(1);
+      expect(wrapper.find(`.${styles.locals.objectAvatar}`)).to.have.lengthOf(0);
+    });
+  });
+
   describe('loading behaviour', () => {
     it('should not apply the .loaded class when loading', () => {
       const wrapper = mount(<Avatar />);

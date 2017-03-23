@@ -3,6 +3,7 @@ import React from 'react';
 import avatarStoryStyles from 'style!./stories.less';
 import { name } from '../package.json';
 import Avatar from '../src';
+import nucleusImage from './nucleus.png';
 
 const transparentAvatarUrl = require('url-loader!./face-w-transparency.png');
 const tickUrl = require('url-loader!./tick.svg');
@@ -99,10 +100,34 @@ storiesOf(name, module)
   .add('Square container avatar', () => (
     <div className={avatarRowClass}>
       <DefaultAvatar
-        presence="online"
+        presence="busy"
+        type="container"
+        size="xsmall"
+        src={nucleusImage}
+      />
+      <DefaultAvatar
+        presence="busy"
+        type="container"
+        size="small"
+        src={nucleusImage}
+      />
+      <DefaultAvatar
+        presence="busy"
+        type="container"
+        size="medium"
+        src={nucleusImage}
+      />
+      <DefaultAvatar
+        presence="busy"
         type="container"
         size="large"
-        src="TODO_IMG_URL_HERE"
+        src={nucleusImage}
+      />
+      <DefaultAvatar
+        presence="busy"
+        type="container"
+        size="xlarge"
+        src={nucleusImage}
       />
     </div>
   ))

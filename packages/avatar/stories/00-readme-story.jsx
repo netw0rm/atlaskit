@@ -17,15 +17,22 @@ const avatarPropDescriptions = {
   presenceBorderColor: 'Used to override the default border color of the presence indicator. Accepts any color argument that the border-color CSS property accepts.',
   presence: 'Indicates a user\'s online status by showing a small icon on the avatar itself. Allowed values: \'online\', \'offline\', \'busy\' or \'none\'',
   size: 'Defines the size of the avatar. Allowed values: \'xsmall\', \'small\', \'medium\', \'large\', \'xlarge\'.',
-  src: 'A url to load an image from (this can also be a base64 encoded image)',
+  src: 'A URL to load an image from (this can also be a base64 encoded image)',
+  type: 'Indicates whether the avatar represents a container (square) or object (circular).',
   label: 'Defines the label for the Avatar used by screen readers as fallback content if the image fails to load.',
   children: 'Content to use as a custom presence indicator. Accepts any html content. For best results, it is recommended to use square content with height and width of 100%',
 };
 
 const presencePropDescriptions = {
-  presence: 'Indicates a user\'s online status by showing a small icon on the avatar itself. Allowed values: \'online\', \'offline\', \'busy\' or \'none\'',
   borderColor: 'Used to override the default border color of the presence indicator. Accepts any color argument that the border-color CSS property accepts.',
   children: 'Content to use as a custom presence indicator (usually not required if consuming Presence separate to Avatar).',
+  presence: 'Indicates a user\'s online status by showing a small icon on the avatar itself. Allowed values: \'online\', \'offline\', \'busy\' or \'none\'',
+};
+
+const avatarPropTypes = {
+  presence: 'PropTypes.oneOf([\'online\', \'offline\', \'busy\', \'none\'])',
+  size: 'PropTypes.oneOf([\'xsmall\', \'small\', \'medium\', \'large\', \'xlarge\'])',
+  type: 'PropTypes.oneOf([\'object\', \'container\'])',
 };
 
 storiesOf(name, module)
@@ -38,7 +45,7 @@ storiesOf(name, module)
         <Code code={AvatarOverviewExampleRaw}>
           {AvatarOverviewExample}
         </Code>
-        <Props component={Avatar} descriptions={avatarPropDescriptions} />
+        <Props component={Avatar} descriptions={avatarPropDescriptions} types={avatarPropTypes} />
       </Readme>
     </div>
   ))

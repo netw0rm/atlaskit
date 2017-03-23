@@ -63,6 +63,13 @@
   .borderMixin(xlarge);
 }
 
+// Override for x-large container icon presence positioning slowflake, because x-large presence is
+// shifted away from edge by default.
+.xlarge > .container-avatar + .presence-wrapper {
+  right: 0px;
+  bottom: 0px;
+}
+
 .imgWrapper {
   align-content: center;
   align-items: middle;

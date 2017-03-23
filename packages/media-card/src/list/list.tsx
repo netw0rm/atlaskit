@@ -9,7 +9,7 @@ import { MediaItem, MediaCollection, MediaCollectionItem, Context, CardAction, L
 import { DEFAULT_CARD_DIMENSIONS } from '../files';
 import { Card, CardDimensions } from '../card';
 import { InfiniteScroll } from './infiniteScroll';
-import {CardListWrapper, Spinner, LoadMoreButtonContainer} from './styled';
+import { CardListWrapper, Spinner, LoadMoreButtonContainer } from './styled';
 
 export interface CardListProps {
   context: Context;
@@ -51,7 +51,7 @@ const ErrorComponent = <div>ERROR</div>;
 
 export class CardList extends Component<CardListProps, CardListState> {
   static defaultProps = {
-    pageSize: 10,
+    pageSize: 5,
     cardHeight: DEFAULT_CARD_DIMENSIONS.HEIGHT,
     loadingComponent: LoadingComponent,
     useInfiniteScroll: true,
@@ -66,7 +66,7 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private updateState(nextProps: CardListProps): void {
-    const provider = nextProps.context.getMediaCollectionProvider(nextProps.collectionName, nextProps.pageSize || 10);
+    const provider = nextProps.context.getMediaCollectionProvider(nextProps.collectionName, nextProps.pageSize);
 
     if (this.state && this.state.subscription) {
       this.state.subscription.unsubscribe();
@@ -82,10 +82,10 @@ export class CardList extends Component<CardListProps, CardListState> {
         });
       },
       complete: (): void => {
-        this.setState({...this.state, hasNextPage: false, loading: false});
+        this.setState({ ...this.state, hasNextPage: false, loading: false });
       },
       error: (error: AxiosError): void => {
-        this.setState({...this.state, error, loading: false});
+        this.setState({ ...this.state, error, loading: false });
       }
     });
 
@@ -157,15 +157,16 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private renderCardList(): JSX.Element {
-    const cardActions: Array<CardAction> = this.props.actions.map(action => {
+    const cardActions = (collectionItem: MediaCollectionItem) => this.props.actions.map(action => {
       return {
         label: action.label,
         type: action.type,
         handler: (item: MediaItem, event: Event) => {
-          if (!this.state.collection) { return; }
-          action.handler(item, this.state.collection, event);
+          if (this.state.collection) {
+            action.handler(collectionItem, this.state.collection, event);
+          }
         }
-      };
+      } as CardAction;
     });
 
     const cards = this.state.collection ? this.state.collection.items.map((item: MediaCollectionItem, index: number) => {

@@ -1,4 +1,4 @@
-import {MediaItemType} from '..';
+import {MediaItemType} from './item';
 
 export interface RemoteCollection {
   id: string;

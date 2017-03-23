@@ -25,7 +25,6 @@ export class MediaFileService implements FileService {
     if (cachedValue) {
       return Promise.resolve(cachedValue);
     } else {
-      
       return request({url: `/file/${fileId}`})
         .then(json => json.data)
         .then(fileDetails => {

@@ -1,7 +1,7 @@
 import {Action, ActionType} from '../actions';
-import {CardState} from '../../card';
+import {FileCardState} from '../../card';
 
-export function reducer(state: CardState, action: Action): CardState {
+export function reducer(state: FileCardState, action: Action): FileCardState {
   switch (action.type) {
     case ActionType.FetchingMediaItemSucceeded:
       return {...state, loading: true, mediaItem: action.mediaItem};

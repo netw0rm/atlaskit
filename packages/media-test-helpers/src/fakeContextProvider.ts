@@ -1,16 +1,23 @@
 import * as sinon from 'sinon';
-import { Observable } from 'rxjs';
+import { Context } from '@atlaskit/media-core';
 
-export const fakeContextFrom = methods => {
-  const fakeContext = Object.keys(methods).reduce((context, methodName) => {
-    context[methodName] = sinon.stub().returns({
-      observable() {
-        return Observable.of(methods[methodName]);
-      }
-    });
+export const fakeContext = (stubbedContext = {}): Context => {
+  const defaultContext = {
+    getMediaItemProvider: sinon.stub().returns({observable: sinon.spy()}),
+    getMediaCollectionProvider: sinon.stub().returns({observable: sinon.spy()}),
+    getDataUriService: sinon.stub().returns({fetchOriginalDataUri: sinon.spy(), fetchImageDataUri: sinon.spy()}),
+    addLinkItem: sinon.stub().returns({observable: sinon.spy()}),
+    getUrlPreviewProvider: sinon.stub().returns({observable: sinon.spy()})
+  };
 
-    return context;
-  }, {});
+  const wrappedStubbedContext = {};
+  Object.keys(stubbedContext).forEach(methodName => {
+    wrappedStubbedContext[methodName] = sinon.stub().returns(stubbedContext[methodName]);
+  });
 
-  return fakeContext;
+  return {
+    ...defaultContext,
+    ...wrappedStubbedContext
+  };
+
 };

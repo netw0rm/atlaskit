@@ -15,6 +15,8 @@ import SelectAlignment from './examples/SelectAlignment';
 import SelectAlignmentRaw from '!raw!./examples/SelectAlignment';
 import SelectWithGroups from './examples/SelectWithGroups';
 import SelectWithGroupsRaw from '!raw!./examples/SelectWithGroups';
+import SelectWithIcons from './examples/SelectWithIcons';
+import SelectWithIconsRaw from '!raw!./examples/SelectWithIcons';
 import SelectInForm from './examples/SelectInForm';
 import SelectInFormRaw from '!raw!./examples/SelectInForm';
 import SelectWithAutocomplete from './examples/SelectWithAutocomplete';
@@ -110,6 +112,14 @@ storiesOf(name, module)
         {WideSelectRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select with icons', () => (
+    <Chrome title="Select with icons">
+      {SelectWithIcons}
+      <Code>
+        {SelectWithIconsRaw}
+      </Code>
     </Chrome>
   ))
   .add('Select with groups', () => (

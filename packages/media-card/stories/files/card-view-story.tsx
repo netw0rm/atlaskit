@@ -4,7 +4,7 @@ import {storiesOf, action} from '@kadira/storybook';
 import {StoryList} from '@atlaskit/media-test-helpers';
 import {tallImage, wideImage, wideTransparentImage, smallImage} from '@atlaskit/media-test-helpers';
 
-import {CardView} from '../../src';
+import {FileCardView} from '../../src';
 
 const onClick = (event: Event) => {
   action('click')();
@@ -19,12 +19,12 @@ const menuActions = [
   {label: 'Close', handler: () => { action('close')(); }}
 ];
 
-storiesOf('CardView', {})
+storiesOf('FileCardView', {})
   .add('Ellipsify', () => (
     <StoryList>
       {[{
         title: 'ellipsis on long title',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -36,7 +36,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'html entity escaping',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -53,7 +53,7 @@ storiesOf('CardView', {})
     <StoryList>
       {[{
         title: 'Image type',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -65,7 +65,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Image type, no preview',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -77,7 +77,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Video type',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -89,7 +89,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Doc type',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -101,7 +101,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Audio type',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -113,7 +113,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Unknown type',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -131,7 +131,7 @@ storiesOf('CardView', {})
     <StoryList>
       {[{
         title: 'Image',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -143,7 +143,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Video',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -155,7 +155,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Audio',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -167,7 +167,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Video + menu actions',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -197,7 +197,7 @@ storiesOf('CardView', {})
       }
 
       render() {
-        return <CardView
+        return <FileCardView
           loading={false}
           selectable={true}
           selected={this.state.selected}
@@ -213,7 +213,7 @@ storiesOf('CardView', {})
     return <StoryList>
       {[{
         title: 'Not selected',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={true}
           selected={false}
@@ -225,7 +225,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Selected',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={true}
           selected={true}
@@ -237,7 +237,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Selected + menu actions',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={true}
           selected={true}
@@ -250,7 +250,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Not selected + menu actions',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={true}
           selected={false}
@@ -263,7 +263,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'No URI + selected',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={true}
           selected={true}
@@ -275,7 +275,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'No URI + unselected',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={true}
           selected={false}
@@ -287,7 +287,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'No URI + unselected + menu actions',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={true}
           selected={false}
@@ -300,7 +300,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'No URI + selected + menu actions',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={true}
           selected={true}
@@ -321,7 +321,7 @@ storiesOf('CardView', {})
     <StoryList>
       {[{
         title: 'Short name',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -333,7 +333,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: '2 lines name',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -345,7 +345,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Long name',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -357,7 +357,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Large width',
-        content: <CardView
+        content: <FileCardView
           width={380}
           loading={false}
           selectable={false}
@@ -370,7 +370,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Long name with large width',
-        content: <CardView
+        content: <FileCardView
           width={380}
           loading={false}
           selectable={false}
@@ -385,7 +385,7 @@ storiesOf('CardView', {})
     </StoryList>
   ))
   .add('Custom sized', () => (
-    <CardView
+    <FileCardView
       height={250}
       width={380}
       loading={false}
@@ -402,7 +402,7 @@ storiesOf('CardView', {})
     <StoryList>
       {[{
         title: 'File size: bytes',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -414,7 +414,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'File size: kB',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -426,7 +426,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'File size: MB',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -438,7 +438,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'File size: GB',
-        content: <CardView
+        content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -452,7 +452,7 @@ storiesOf('CardView', {})
     </StoryList>
   ))
   .add('With Progress', () => (
-    <CardView
+    <FileCardView
       loading={false}
       selectable={false}
       selected={false}
@@ -486,7 +486,7 @@ storiesOf('CardView', {})
       }
 
       render() {
-        return <CardView
+        return <FileCardView
           loading={this.state.loading}
           selectable={false}
           selected={false}
@@ -502,7 +502,7 @@ storiesOf('CardView', {})
     return <StoryList>
       {[{
         title: 'Infinite loading',
-        content: <CardView
+        content: <FileCardView
           loading={true}
           selectable={false}
           selected={false}
@@ -522,7 +522,7 @@ storiesOf('CardView', {})
     <StoryList>
        {[{
          title: 'Default',
-         content: <CardView
+         content: <FileCardView
           loading={false}
           selectable={false}
           selected={false}
@@ -540,7 +540,7 @@ storiesOf('CardView', {})
     <StoryList>
       {[{
         title: 'default',
-        content: <CardView
+        content: <FileCardView
           mediaName="with_progress.wav"
           mediaType="audio"
           mediaSize={32831}
@@ -549,7 +549,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'long name',
-        content: <CardView
+        content: <FileCardView
           mediaName="Screen_shot_2016_at_10.45.32_AM.jpg"
           mediaType="image"
           mediaSize={32831}
@@ -558,7 +558,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'long name and spaces',
-        content: <CardView
+        content: <FileCardView
           mediaName="Screen Shot 2016 at 10.45.32 AM.jpg"
           mediaType="image"
           mediaSize={32831}
@@ -567,7 +567,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'Handler + menu actions',
-        content: <CardView
+        content: <FileCardView
           mediaName="with_progress.wav"
           mediaType="audio"
           mediaSize={32831}
@@ -578,9 +578,11 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'handler + menu actions + custom size',
-        content: <CardView
-          height={250}
-          width={380}
+        content: <FileCardView
+          dimensions={{
+            height: 250,
+            width: 380
+          }}
           mediaName="with_progress.wav"
           mediaType="audio"
           mediaSize={32831}
@@ -591,7 +593,7 @@ storiesOf('CardView', {})
         />
       }, {
         title: 'handler + no menu actions',
-        content: <CardView
+        content: <FileCardView
           mediaName="with_progress.wav"
           mediaType="audio"
           mediaSize={32831}

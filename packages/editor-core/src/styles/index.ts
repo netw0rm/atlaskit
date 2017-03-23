@@ -9,6 +9,7 @@ import {
   akColorN500,
   akColorN700,
   akColorN900,
+  akZIndexLayer
 } from '@atlaskit/util-shared-styles';
 
 export const akEditorCodeFontFamily = akCodeFontFamily;
@@ -24,3 +25,4 @@ export const akEditorPrimaryButton = akColorB400;
 export const akEditorCodeBackground = akColorN20;
 export const akEditorCodeBlockPadding = '12px';
 export const akEditorCodeInlinePadding = '2px 4px';
+export const akEditorFloatingPanelZIndex = akZIndexLayer;

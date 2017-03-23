@@ -8,7 +8,7 @@ import ToolbarButton from '../../src/ui/ToolbarButton';
 import { doc, panel, p, makeEditor, fixtures, createEvent } from '../../src/test-helper';
 
 
-describe('@atlassian/editor-core ui/PanelEdit', () => {
+describe('@atlaskit/editor-core ui/PanelEdit', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,

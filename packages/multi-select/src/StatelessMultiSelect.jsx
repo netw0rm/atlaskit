@@ -49,10 +49,14 @@ export default class StatelessMultiSelect extends PureComponent {
     items: [],
     label: '',
     noMatchesFound: 'No matches found',
-    onFilterChange: () => {},
-    onOpenChange: () => {},
-    onSelected: () => {},
-    onRemoved: () => {},
+    onFilterChange: () => {
+    },
+    onOpenChange: () => {
+    },
+    onSelected: () => {
+    },
+    onRemoved: () => {
+    },
     position: 'bottom left',
     selectedItems: [],
   }
@@ -94,7 +98,7 @@ export default class StatelessMultiSelect extends PureComponent {
     const tagGroup = ReactDOM.findDOMNode(this.tagGroup);
     const tagGroupElements = tagGroup.children;
     const isInsideTagGroup = [...tagGroupElements].some(node =>
-      node.contains(target) && node.tagName !== 'INPUT');
+    node.contains(target) && node.tagName !== 'INPUT');
 
     if (!isInsideTagGroup) {
       this.props.onOpenChange(attrs);
@@ -217,10 +221,13 @@ export default class StatelessMultiSelect extends PureComponent {
         }
         break;
       case 'Enter':
-        if (isSelectOpen && this.state.focusedItemIndex !== null) {
-          this.handleItemSelect(
-            this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
-          );
+        if (isSelectOpen) {
+          event.preventDefault();
+          if (this.state.focusedItemIndex !== null) {
+            this.handleItemSelect(
+              this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
+            );
+          }
         }
         break;
       case 'Backspace':

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { Component } from 'react';
 import { Context, FileItem, MediaCollectionFileItem } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs/Subscription';
@@ -9,6 +8,7 @@ export interface MediaViewerAdapterProps {
     readonly context: Context;
     readonly occurenceKey: string;
     readonly collectionName: string;
+    readonly basePath: string;
 }
 
 export interface MediaViewerAdapterState {
@@ -19,15 +19,13 @@ export default class MediaViewerAdapter extends Component<MediaViewerAdapterProp
     private subscription: Subscription;
 
     componentDidMount(): void {
-        const { context, occurenceKey, collectionName } = this.props;
+        const { context, occurenceKey, collectionName, basePath } = this.props;
         const { config } = context;
-        const element = ReactDOM.findDOMNode(this.refs['mediaViewer']);
 
         this.setState({
             mediaViewer: new MediaViewer({
-                appendTo: element,
                 assets: {
-                    basePath: 'lib/'
+                    basePath: basePath
                 },
                 fetchToken: this.fetchToken
             })
@@ -94,7 +92,7 @@ export default class MediaViewerAdapter extends Component<MediaViewerAdapterProp
 
     render(): JSX.Element {
         return (
-            <div ref="mediaViewer" />
+            <div />
         );
     }
 }

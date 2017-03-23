@@ -17,10 +17,9 @@ const ReadmeDescription = 'A Readme component that gives a scaffold of a readme,
 storiesOf(name, module)
   .add('📖 Breadcrumbs readme', () => (
     <Readme
-      component={name}
+      component={Readme}
       name={'@atlaskit/util-readme'}
       description={ReadmeDescription}
-      componentInstance={Readme}
       componentSource={ReadmeSrc}
       codeExample={'This page is an example of the Readme Component'}
       codeSource={ThisSrc}

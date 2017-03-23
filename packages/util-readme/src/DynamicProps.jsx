@@ -1,8 +1,20 @@
 import React, { PropTypes, PureComponent } from 'react';
 import * as reactDocs from 'react-docgen';
+import styled from 'styled-components';
 
 import Description from './Description';
 import Heading from './Heading';
+
+const CodeBlock = styled.code`
+  display: block;
+`;
+
+const wrap = inner => (
+  <div>
+    <Heading type="2">Props</Heading>
+    {inner}
+  </div>
+);
 
 function parseValue(type) {
   if (type.name === 'arrayOf') {
@@ -26,26 +38,11 @@ function parseValue(type) {
 
 function renderValue(type) {
   if (type.name === 'arrayOf' || type.name === 'union' || (typeof type.value === 'string')) {
-    return (
-      <div>
-        <code>{parseValue(type)}</code>
-      </div>
-    );
+    return <CodeBlock>{parseValue(type)}</CodeBlock>;
   }
 
   return null;
 }
-
-const Wrap = ({ children }) => (
-  <div>
-    <Heading type="2">Props</Heading>
-    {children}
-  </div>
-);
-
-Wrap.propTypes = {
-  children: PropTypes.node,
-};
 
 export default class DynamicProps extends PureComponent {
   static propTypes = {
@@ -65,44 +62,38 @@ export default class DynamicProps extends PureComponent {
   render() {
     const { componentDocs } = this.state;
     if (!componentDocs || !componentDocs.props || !!componentDocs.props.length) {
-      return (
-        <Wrap>
-          <Description>There are no props for this component.</Description>
-        </Wrap>
-      );
+      return wrap(<Description>There are no props for this component.</Description>);
     }
 
     const propTypes = Object.keys(componentDocs.props);
 
-    return (
-      <Wrap>
-        <table>
-          <thead style={{ border: 0, borderBottom: '1px solid #ddd' }}>
-            <tr>
-              <th>Name (* is required)</th>
-              <th>Type</th>
-              <th>Default value</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody style={{ border: 0 }}>
-            {propTypes.map((propName) => {
-              const prop = componentDocs.props[propName];
-              return (
-                <tr key={propName}>
-                  <td>{propName}{prop.required ? ' *' : ''}</td>
-                  <td>{prop.type.name || '--'}</td>
-                  <td>{prop.defaultValue ? prop.defaultValue.value : '--'}</td>
-                  <td>
-                    {prop.description}
-                    {renderValue(prop.type)}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </Wrap>
+    return wrap(
+      <table>
+        <thead style={{ border: 0, borderBottom: '1px solid #ddd' }}>
+          <tr>
+            <th>Name (* is required)</th>
+            <th>Type</th>
+            <th>Default value</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody style={{ border: 0 }}>
+          {propTypes.map((propName) => {
+            const prop = componentDocs.props[propName];
+            return (
+              <tr key={propName}>
+                <td>{propName}{prop.required ? ' *' : ''}</td>
+                <td>{prop.type.name || '--'}</td>
+                <td>{prop.defaultValue ? prop.defaultValue.value : '--'}</td>
+                <td>
+                  {prop.description}
+                  {renderValue(prop.type)}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     );
   }
 }

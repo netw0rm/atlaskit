@@ -100,8 +100,9 @@ storiesOf(name, module)
   .add('📖 Multi select Item - readme', () => (
     <Chrome title="Multi select Item - overview">
       <Description>
-        <p>The <code>items</code> and <code>selectedItems</code> props both take an array of groups
+        <p>The <code>items</code> prop takes an array of groups
           of items. Groups are simply collections of Items with optional headings</p>
+        <p>The <code>selectedItems</code> prop takes just an array of references to items</p>
         <p>It is recommended that every group should have a heading. However if headings are not
           required, the dialog will either have all headings or no headings at all for these groups.
           But if there are no headings for the group, then the group should be combined instead.</p>

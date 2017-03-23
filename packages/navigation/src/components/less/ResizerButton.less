@@ -1,0 +1,74 @@
+@import '~@atlaskit/util-shared-styles/src/colors.less';
+@import '~@atlaskit/util-shared-styles/src/grid.less';
+@import '~@atlaskit/util-shared-styles/src/mixins/focus-ring.less';
+
+@toggle-button-height: @ak-grid-size * 4.5;
+@toggle-arrow-height: @ak-grid-size * 2;
+@toggle-arrow-width: 2px;
+@toggle-arrow-top-vertical-offset: (@toggle-button-height - @toggle-arrow-height) / 2;
+@toggle-arrow-bottom-vertical-offset: @toggle-arrow-top-vertical-offset + @toggle-arrow-height / 2 - @toggle-arrow-width;
+@opacity-transition: opacity cubic-bezier(0.15, 1, 0.3, 1) 0.3s;
+@transform-transition: transform 0.2s ease-in-out;
+
+.button {
+  position: relative;
+  top: calc(~"50% -" @toggle-button-height/2);
+  height: @toggle-button-height;
+  background: none;
+  border: none;
+  color: transparent;
+  width: @ak-grid-size * 3;
+  left: 0;
+  cursor: pointer;
+
+  .focus-ring();
+
+  &.isVisible {
+    &:before, &:after {
+      opacity: 1;
+    }
+  }
+
+  &:hover, &:focus {
+    &:before, &:after {
+      opacity: 1;
+    }
+    &:before {
+      transform: rotate(40deg);
+
+      .isPointingRight& {
+        transform: rotate(-40deg);
+      }
+    }
+    &:after {
+      transform: rotate(-40deg);
+
+      .isPointingRight& {
+        transform: rotate(40deg);
+      }
+    }
+  }
+
+  &:before, &:after {
+    content: '';
+    opacity: 0;
+    background: @ak-color-B200;
+    width: @toggle-arrow-width;
+    border-radius: @toggle-arrow-height;
+    height: @toggle-arrow-height / 2;
+    position: absolute;
+    left: 13px;
+    transition: @transform-transition, @opacity-transition;
+    transform: rotate(0deg);
+  }
+
+  &:before {
+    top: @toggle-arrow-top-vertical-offset;
+    transform-origin: (@toggle-arrow-width/2) (@toggle-arrow-height/2 - @toggle-arrow-width/2);
+  }
+
+  &:after {
+    top: @toggle-arrow-bottom-vertical-offset;
+    transform-origin: (@toggle-arrow-width/2) (@toggle-arrow-width/2);
+  }
+}

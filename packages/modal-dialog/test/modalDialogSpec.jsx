@@ -119,4 +119,23 @@ describe('ak-modal-dialog', () => {
       });
     });
   });
+
+  describe('rounded body', () => {
+    it('should be rounded on top only when header omitted but footer supplied', () => {
+      const wrapper = mount(<ModalDialog isOpen footer="Footer" />);
+      expect(wrapper.find(`.${styles.locals.roundedContentTop}`).length).to.equal(1);
+      expect(wrapper.find(`.${styles.locals.roundedContentBottom}`).length).to.equal(0);
+    });
+
+    it('should be rounded on bottom only when footer omitted but header supplied', () => {
+      const wrapper = mount(<ModalDialog isOpen header="Header" />);
+      expect(wrapper.find(`.${styles.locals.roundedContentTop}`).length).to.equal(0);
+      expect(wrapper.find(`.${styles.locals.roundedContentBottom}`).length).to.equal(1);
+    });
+
+    it('should be rounded on top + bottom when header and footer omitted', () => {
+      const wrapper = mount(<ModalDialog isOpen />);
+      expect(wrapper.find(`.${styles.locals.roundedContentTopBottom}`).length).to.equal(1);
+    });
+  });
 });

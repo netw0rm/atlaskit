@@ -118,6 +118,60 @@ storiesOf(name, module)
       </BasicNavigation>
     </Page>
   ))
+  .add('with project settings appearance', () => (
+    <Page>
+      <BasicNavigation
+        containerAppearance="settings"
+        globalAppearance="settings"
+      >
+        <AkContainerItemGroup>
+          <AkContainerItem
+            appearance="settings"
+            icon={<DashboardIcon label="Dashboard" />}
+            isSelected
+            text="Item A"
+            textAfter={<RandomBadge theme="dark" />}
+          />
+          <AkContainerItem
+            appearance="settings"
+            icon={<SettingsIcon label="Settings" />}
+            text="Item B"
+            textAfter={<RandomBadge theme="dark" />}
+          />
+          <AkContainerItem
+            appearance="settings"
+            icon={<TrayIcon label="Tray" />}
+            text="Item C"
+          />
+          <AkContainerItemGroup hasSeparator appearance="settings" title="Alpha">
+            <AkContainerItem
+              appearance="settings"
+              text="Item D"
+              textAfter={<RandomBadge theme="dark" />}
+            />
+            <AkContainerItem
+              appearance="settings"
+              text="Item E"
+              isSelected
+              textAfter={<RandomBadge />}
+            />
+          </AkContainerItemGroup>
+        </AkContainerItemGroup>
+        <AkContainerItemGroup appearance="settings" title="Beta">
+          <AkContainerItem
+            appearance="settings"
+            icon={<CalendarIcon label="Calendar" />}
+            text="Item X"
+          />
+          <AkContainerItem
+            icon={<img src={nucleusLogo} alt="icon" />}
+            text="Item Y"
+            href="#2"
+          />
+        </AkContainerItemGroup>
+      </BasicNavigation>
+    </Page>
+  ))
   .add('with multiple groups', () => (
     <Page>
       <BasicNavigation

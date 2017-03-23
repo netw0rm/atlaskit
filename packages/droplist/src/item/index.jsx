@@ -23,6 +23,7 @@ export default class Item extends PureComponent {
     isFocused: PropTypes.bool,
     onActivate: PropTypes.func,
     target: PropTypes.string,
+    title: PropTypes.string,
     type: PropTypes.oneOf(['link', 'radio', 'checkbox', 'option']),
   }
 
@@ -41,6 +42,7 @@ export default class Item extends PureComponent {
     isFocused: false,
     onActivate: () => {},
     target: null,
+    title: null,
     type: 'link',
   }
 
@@ -89,6 +91,7 @@ export default class Item extends PureComponent {
           isHidden={props.isHidden}
           isSelected={props.isSelected}
           target={props.target}
+          title={props.title}
           type={props.type}
         >
           {

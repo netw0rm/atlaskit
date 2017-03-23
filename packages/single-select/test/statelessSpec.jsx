@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
+import UpIcon from '@atlaskit/icon/glyph/hipchat/arrow-up';
 
 import styles from 'style!../src/styles.less';
 import { StatelessSelect } from '../src';
@@ -49,6 +50,11 @@ describe(name, () => {
       const select = mount(<StatelessSelect placeholder="test" selectedItem={{ content: 'selected' }} />);
       expect(select.text()).to.not.equal('test');
       expect(select.text()).to.equal('selected');
+    });
+
+    it('should render selectedItems elemBefore', () => {
+      const select = mount(<StatelessSelect placeholder="test" selectedItem={{ elemBefore: <UpIcon label="up" /> }} />);
+      expect(select.find(UpIcon).length).to.equal(1);
     });
 
     it('should render groups and items inside Droplist (when open)', () => {

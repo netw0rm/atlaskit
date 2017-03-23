@@ -5,7 +5,7 @@ import DefaultLinkComponent from './DefaultLinkComponent';
 
 export default class GlobalItem extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.oneOf(['container', 'global']),
+    appearance: PropTypes.oneOf(['container', 'global', 'settings']),
     children: PropTypes.node,
     href: PropTypes.string,
     isSelected: PropTypes.bool,
@@ -32,6 +32,7 @@ export default class GlobalItem extends PureComponent {
             [styles.largeGlobalItem]: this.props.size === 'large',
             [styles.isSelected]: this.props.isSelected,
             [styles.hasContainerAppearance]: this.props.appearance === 'container',
+            [styles.hasSettingsAppearance]: this.props.appearance === 'settings',
           })}
         >
           {this.props.children}

@@ -4,7 +4,7 @@ import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
 import { AxiosError } from 'axios';
 import Button from '@atlaskit/button';
-import { MediaItem, MediaCollection, MediaCollectionItem, Context, CardAction, ListAction } from '@atlaskit/media-core';
+import { MediaItem, MediaCollection, MediaCollectionItem, Context, CardAction, CollectionAction } from '@atlaskit/media-core';
 
 import { DEFAULT_CARD_DIMENSIONS } from '../files';
 import { Card, CardDimensions } from '../card';
@@ -169,21 +169,21 @@ export class CardList extends Component<CardListProps, CardListState> {
       } as CardAction;
     });
 
-    const cards = this.state.collection ? this.state.collection.items.map((item: MediaCollectionItem, index: number) => {
-      if (item.mediaItemType === 'link') {
+    const cards = this.state.collection ? this.state.collection.items.map((item: MediaCollectionItem) => {
+      if (item.type === 'link') {
         // TODO FIL-3945 allow links to be rendered in list after link views have been created
-        return <li key={`${index}-${item.id}`}/>;
+        return <li key={`${item.occurrenceKey}-${item.id}`}/>;
       }
 
       const {context, collectionName, cardType, cardDimensions} = this.props;
       const identifier = {
         id: item.id,
-        mediaItemType: item.mediaItemType,
+        mediaItemType: item.type,
         collectionName
       };
 
       return (
-        <li key={`${index}-${item.id}`}>
+        <li key={`${item.occurrenceKey}-${item.id}`}>
           <Card
             context={context}
             identifier={identifier}
@@ -194,7 +194,7 @@ export class CardList extends Component<CardListProps, CardListState> {
             }}
 
             appearance={cardType}
-            actions={cardActions}
+            actions={cardActions(item)}
           />
         </li>
       );

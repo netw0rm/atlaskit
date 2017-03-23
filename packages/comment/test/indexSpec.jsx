@@ -93,14 +93,14 @@ describe(name, () => {
         });
       });
 
-      describe('restricted prop', () => {
-        it('should render a Lock icon and restricted name when supplied', () => {
-          const wrapper = mount(<Comment restricted="atlassian-staff" />);
+      describe('restrictedTo prop', () => {
+        it('should render a Lock icon and restrictedTo name when supplied', () => {
+          const wrapper = mount(<Comment restrictedTo="atlassian-staff" />);
           expect(wrapper.find(LockIcon).length).to.equal(1);
           expect(wrapper.text()).to.contain('atlassian-staff');
         });
 
-        it('should not render a Lock icon if restricted prop is not set', () => {
+        it('should not render a Lock icon if restrictedTo prop is not set', () => {
           const wrapper = mount(<Comment />);
           expect(wrapper.find(LockIcon).length).to.equal(0);
         });

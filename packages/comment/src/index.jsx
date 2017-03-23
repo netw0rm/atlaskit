@@ -17,19 +17,19 @@ export default class Comment extends PureComponent {
     avatar: PropTypes.node.isRequired,
     children: PropTypes.node,
     content: PropTypes.node,
-    restricted: PropTypes.string,
+    restrictedTo: PropTypes.string,
     time: PropTypes.node,
     type: PropTypes.string,
   }
 
   static defaultProps = {
     actions: [],
-    restricted: '',
+    restrictedTo: '',
   }
 
   renderRestrictedItem = () => (
     <div className={styles.restricted}>
-      <span className={styles.bulletSpacer}>&bull;</span><LockIcon label="restricted" size="small" />Restricted to {this.props.restricted}
+      <span className={styles.bulletSpacer}>&bull;</span><LockIcon label="restricted" size="small" />Restricted to {this.props.restrictedTo}
     </div>
   );
 
@@ -39,7 +39,7 @@ export default class Comment extends PureComponent {
         this.props.author || null,
         this.props.type ? <Lozenge>{this.props.type}</Lozenge> : null,
         this.props.time || null,
-        this.props.restricted.length ? this.renderRestrictedItem() : null,
+        this.props.restrictedTo.length ? this.renderRestrictedItem() : null,
       ]
       .filter(item => !!item)
       .map((item, index) => <div key={index} className={styles.topItem}>{item}</div>)

@@ -107,7 +107,7 @@ storiesOf(name, module)
       time={<CommentTime>30, August 2016</CommentTime>}
       type="Author"
       content={<div><p>{sampleText}</p><p>{sampleText}</p></div>}
-      restricted="atlassian-staff"
+      restrictedTo="atlassian-staff"
       actions={[
         <CommentAction onClick={clickHandler}>Like</CommentAction>,
       ]}

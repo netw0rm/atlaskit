@@ -23,6 +23,8 @@ import Appearances from './examples/Appearances';
 import AppearancesRaw from '!raw!./examples/Appearances';
 import SelectWithHeapsOfOptions from './examples/SelectWithHeapsOfOptions';
 import SelectWithHeapsOfOptionsRaw from '!raw!./examples/SelectWithHeapsOfOptions';
+import SelectWithDescriptions from './examples/SelectWithDescriptions';
+import SelectWithDescriptionsRaw from '!raw!./examples/SelectWithDescriptions';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name } from '../package.json';
@@ -117,6 +119,17 @@ storiesOf(name, module)
       {SelectWithGroups}
       <Code>
         {SelectWithGroupsRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select with descriptions', () => (
+    <Chrome title="Select with descriptions">
+      <div style={{ width: '300px' }}>
+        {SelectWithDescriptions}
+      </div>
+      <Code>
+        {SelectWithDescriptionsRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

@@ -28,6 +28,7 @@ const commentPropDescriptions = {
   avatar: 'The element to display as the Comment avatar - generally an AtlasKit Avatar.',
   children: 'Nested comments should be provided as children of the Comment.',
   content: 'The main content of the Comment.',
+  restrictedTo: 'The name of a group that a comment is restricted to. Will display in the top items',
   time: 'A CommentTime element containing the time to be displayed. Optionally, specify the href property to link to another page.',
   type: 'The type of the comment - will be rendered in a lozenge at the top of the Comment.',
 };
@@ -38,6 +39,7 @@ const commentPropTypes = {
   avatar: 'node',
   children: 'node',
   content: 'node',
+  restrictedTo: 'String',
   time: 'CommentTime',
   type: 'String',
 };

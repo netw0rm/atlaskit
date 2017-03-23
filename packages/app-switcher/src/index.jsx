@@ -14,6 +14,7 @@ export default class AppSwitcher extends Component {
     recentContainers: AppSwitcherPropTypes.recentContainers.isRequired,
     linkedApplications: AppSwitcherPropTypes.linkedApplications.isRequired,
     isAnonymousUser: PropTypes.bool.isRequired,
+    isHomeLinkEnabled: PropTypes.bool,
     suggestedApplication: AppSwitcherPropTypes.suggestedApplication.isRequired,
     i18n: AppSwitcherPropTypes.i18n.isRequired,
     trigger: PropTypes.func.isRequired,
@@ -26,6 +27,7 @@ export default class AppSwitcher extends Component {
     analytics: () => {},
     isDropdownOpenInitially: true,
     dropdownOptions: {},
+    isHomeLinkEnabled: true,
   };
 
   constructor(props) {
@@ -54,6 +56,7 @@ export default class AppSwitcher extends Component {
     const {
       i18n,
       isAnonymousUser,
+      isHomeLinkEnabled,
       recentContainers,
       linkedApplications,
       suggestedApplication,
@@ -62,7 +65,7 @@ export default class AppSwitcher extends Component {
     } = this.props;
 
     const dropdownItems = [
-      getHomeLink(i18n, isAnonymousUser),
+      getHomeLink(i18n, isAnonymousUser, isHomeLinkEnabled),
       getRecentContainers(i18n, isAnonymousUser, recentContainers),
       getLinkedApplications(i18n, isAnonymousUser, linkedApplications),
       getSuggestedApplication(i18n, isAnonymousUser, suggestedApplication,

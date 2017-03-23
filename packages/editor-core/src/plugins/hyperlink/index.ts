@@ -1,535 +1,253 @@
-import * as chai from 'chai';
-import { expect } from 'chai';
-import * as sinon from 'sinon';
-import HyperlinkPlugin from '../../../src/plugins/hyperlink';
 import {
-  chaiPlugin, createEvent, doc, fixtures, insert, insertText, a as link,
-  linkable, makeEditor, p as paragraph, sendKeyToPm, setTextSelection, unlinkable
-} from '../../../src/test-helper';
-
-chai.use(chaiPlugin);
-
-describe('hyperlink', () => {
-  const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({
-    doc,
-    plugin: HyperlinkPlugin,
-    place: fixture(),
-  });
-
-  const event = createEvent('event');
-
-  it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = HyperlinkPlugin as any;
-    expect(plugin.key).is.be.a('string');
-  });
-
-  describe('active', () => {
-    context('when select the whole hyperlink text from start to end', () => {
-      it('is active', () => {
-        const { editorView, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos1, pos2);
-
-        expect(pluginState.active).to.be.true;
-      });
-    });
-
-    context('when select the whole hyperlink text from end to start', () => {
-      it('is active', () => {
-        const { editorView, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos2, pos1);
-
-        expect(pluginState.active).to.be.true;
-      });
-    });
-
-    context('when select part of the hyperlink text from the end', () => {
-      it('is active', () => {
-        const { editorView, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos2, pos1);
-
-        expect(pluginState.active).to.be.true;
-      });
-    });
-
-    context('when select part of the hyperlink text from the start', () => {
-      it('is active', () => {
-        const { editorView, pluginState, refs } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}t{pos2}ext'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos1, pos2);
-
-        expect(pluginState.active).to.be.true;
-      });
-    });
-
-    context('when select part of the hyperlink text in the middle', () => {
-      it('is active', () => {
-        const { editorView, pluginState, refs } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ex{pos2}t'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos1, pos2);
-
-        expect(pluginState.active).to.be.true;
-      });
-    });
-
-    context('when cursor is winthin hyperlink text', () => {
-      it('is active', () => {
-        const { pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('tex{<>}t'), 'after')));
-
-        expect(pluginState.active).to.be.true;
-      });
-    });
-
-    context('when cursor at the beginning of hyperlink text', () => {
-      it('returns undefined', () => {
-        const { pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{<>}text'), 'after')));
-
-        expect(pluginState.active).to.be.false;
-      });
-    });
-
-    context('when cursor at the end of hyperlink text', () => {
-      it('returns undefined', () => {
-        const { pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('text{<>}'), 'after')));
-
-        expect(pluginState.active).to.be.false;
-      });
-    });
-  });
-
-  describe('element', () => {
-    context('when select the whole hyperlink text from start to end', () => {
-      it('returns link element', () => {
-        const { editorView, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos1, pos2);
-
-        expect(pluginState.element.tagName).to.eq('A');
-      });
-    });
-
-    context('when select the whole hyperlink text from end to start', () => {
-      it('returns link element', () => {
-        const { editorView, pluginState, refs } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}text{pos2}'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos2, pos1);
-
-        expect(pluginState.element.tagName).to.eq('A');
-      });
-    });
-
-    context('when select part of the hyperlink text from the end', () => {
-      it('returns link element', () => {
-        const { editorView, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ext{pos2}'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos2, pos1);
-
-        expect(pluginState.element.tagName).to.eq('A');
-      });
-    });
-
-    context('when select part of the hyperlink text from the start', () => {
-      it('returns link element', () => {
-        const { editorView, pluginState, refs } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{pos1}t{pos2}ext'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos1, pos2);
-
-        expect(pluginState.element.tagName).to.eq('A');
-      });
-    });
-
-    context('when select part of the hyperlink text in the middle', () => {
-      it('returns link element', () => {
-        const { editorView, refs, pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('t{pos1}ex{pos2}t'), 'after')));
-        const { pos1, pos2 } = refs;
-
-        setTextSelection(editorView, pos1, pos2);
-
-        expect(pluginState.element.tagName).to.eq('A');
-      });
-    });
-
-    context('when cursor is winthin hyperlink text', () => {
-      it('returns undefined', () => {
-        const { pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('tex{<>}t'), 'after')));
-
-        expect(pluginState.element.tagName).to.eq('A');
-      });
-    });
-
-    context('when cursor at the beginning of hyperlink text', () => {
-      it('returns undefined', () => {
-        const { pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('{<>}text'), 'after')));
-
-        expect(pluginState.element).to.be.undefined;
-      });
-    });
-
-    context('when cursor at the end of hyperlink text', () => {
-      it('returns undefined', () => {
-        const { pluginState } = editor(doc(linkable('before', link({ href: 'http://www.atlassian.com' })('text{<>}'), 'after')));
-
-        expect(pluginState.element).to.be.undefined;
-      });
-    });
-  });
-
-  describe('API', () => {
-    it('should allow a change handler to be registered', () => {
-      const { pluginState } = editor(doc(linkable('')));
-
-      pluginState.subscribe(sinon.spy());
-    });
-
-    it('should get current state immediately once subscribed', () => {
-      const { pluginState } = editor(doc(linkable('{<}text{>}')));
-      const spy = sinon.spy();
-      pluginState.subscribe(spy);
-
-      expect(spy.callCount).to.equal(1);
-    });
-
-    it('should be able to register handlers for state change events', () => {
-      const { editorView, refs, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{pos}xt'))));
-      const spy = sinon.spy();
-      pluginState.subscribe(spy);
-
-      setTextSelection(editorView, refs['pos']);
-
-      expect(spy.callCount).to.equal(2);
-    });
-
-    it('sets linkable to false when in a context where links are not supported by the schema', () => {
-      const { pluginState } = editor(doc(unlinkable('{<}text{>}')));
-
-      expect(pluginState.linkable).to.equal(false);
-    });
-
-    it('sets active to true when link is already in place', () => {
-      const { pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
-
-      expect(pluginState.active).to.equal(true);
-    });
-
-    it('does not emit `change` multiple times when the selection moves within a link', () => {
-      const { editorView, refs, pluginState } = editor(doc(linkable('{<>}text', link({ href: 'http://www.atlassian.com' })('l{pos1}i{pos2}nk'))));
-      const spy = sinon.spy();
-      const { pos1, pos2 } = refs;
-      pluginState.subscribe(spy);
-
-      setTextSelection(editorView, pos1);
-      setTextSelection(editorView, pos2);
-
-      expect(spy.callCount).to.equal(2);
-    });
-
-    it('emits change when the selection leaves a link', () => {
-      const { editorView, refs, pluginState } = editor(doc(linkable('te{textPos}xt {<>}')));
-      const { textPos } = refs;
-      const spy = sinon.spy();
-      const { linkPos } = insert(editorView, link({ href: 'http://www.atlassian.com' })('li{linkPos}nk'));
-      setTextSelection(editorView, linkPos);
-
-      pluginState.subscribe(spy);
-      setTextSelection(editorView, textPos);
-
-      expect(spy.callCount).to.equal(2);
-    });
-
-    it('permits adding a link to an empty selection using the href', () => {
-      const { editorView, pluginState } = editor(doc(linkable('{<>}')));
-      const href = 'http://www.atlassian.com';
-
-      pluginState.addLink({ href }, editorView);
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href })(href))));
-    });
-
-    it('does not permit adding a link to an existing link', () => {
-      const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}link{>}'))));
-
-      pluginState.addLink({ href: 'http://www.example.com' }, editorView);
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://www.atlassian.com' })('link'))));
-    });
-
-    it('does not permit adding a link when not supported by the schema', () => {
-      const { editorView, pluginState } = editor(doc(unlinkable('{<}text{>}')));
-
-      pluginState.addLink({ href: 'http://www.atlassian.com' }, editorView);
-
-      expect(editorView.state.doc).to.deep.equal(doc(unlinkable('text')));
-    });
-
-    it('requires href when adding a link', () => {
-      const { editorView, pluginState } = editor(doc(linkable('{<}text{>}')));
-
-      pluginState.addLink({ href: 'http://example.com' }, editorView);
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('text'))));
-    });
-
-    it('should not be a part of the link when typing before it', () => {
-      const { editorView, refs, pluginState } = editor(doc(linkable('a{before}{<}text{>}')));
-      const { before } = refs;
-      const href = 'http://example.com';
-
-      pluginState.addLink({ href }, editorView);
-      insertText(editorView, 'bar', before);
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(`abar`, link({ href })('text'))));
-    });
-
-    it('should be a part of the link when typing in it', () => {
-      const { editorView, refs, pluginState } = editor(doc(linkable('{<}te{middle}xt{>}')));
-      const { middle } = refs;
-      const href = 'http://example.com';
-
-      pluginState.addLink({ href }, editorView);
-      insertText(editorView, 'bar', middle);
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href })('tebarxt'))));
-    });
-
-    it('should not be a part of the link when typing after it', () => {
-      const { refs, editorView, pluginState } = editor(doc(linkable('{<}text{>}{end}')));
-      const { end } = refs;
-      const href = 'http://example.com';
-
-      pluginState.addLink({ href }, editorView);
-      insertText(editorView, 'bar', end);
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href })('text'), 'bar')));
-    });
-
-    it('should allow links to be added when the selection is empty', () => {
-      const { pluginState } = editor(doc(linkable('{<>}text')));
-
-      expect(pluginState.linkable).to.equal(true);
-    });
-
-    it('should not be able to unlink a node that has no link', () => {
-      const { editorView, pluginState } = editor(doc(linkable('{<}text{>}')));
-
-      pluginState.removeLink(editorView);
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable('text')));
-    });
-
-    it('should be able to unlink an existing link', () => {
-      const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
-
-      pluginState.removeLink(editorView);
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable('text')));
-    });
-
-    context('when a link is in the second paragraph', () => {
-      it('should be able to unlink that link', () => {
-        const { editorView, pluginState } = editor(doc(paragraph('hello'), linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
-
-        pluginState.removeLink(editorView);
-
-        expect(editorView.state.doc).to.deep.equal(doc(paragraph('hello'), linkable('text')));
-      });
-    });
-
-    it('should be able to update existing links with href', () => {
-      const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
-
-      pluginState.updateLink({ href: 'http://example.com' }, editorView);
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('text'))));
-    });
-
-    it('should allow updating a link if new href is empty', () => {
-      const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://example.com' })('{<}text{>}'))));
-
-      pluginState.updateLink({ href: '' }, editorView);
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: '' })('text'))));
-    });
-
-    it('should not be able to update when not in a link', () => {
-      const { editorView, pluginState } = editor(doc(linkable('{<}text{>}')));
-
-      pluginState.updateLink({ href: 'http://example.com/foo' }, editorView);
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable('text')));
-    });
-
-    it('should escape from link mark when typing at the beginning of the link', () => {
-      const { editorView } = editor(doc(linkable(link({ href: 'http://example.com' })('text'))));
-
-      insertText(editorView, '1', 1, 1);
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable('1', link({ href: 'http://example.com' })('text'))));
-    });
-
-    it('should not escape from link mark when typing at the middle of the link', () => {
-      const { editorView } = editor(doc(linkable(link({ href: 'http://example.com' })('text'))));
-
-      insertText(editorView, '1', 2, 2);
-
-      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://example.com' })('t1ext'))));
-    });
-
-
-    it('should call subscribers when link was focused and then editor is blur', () => {
-      const { editorView, plugin, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
-      const spy = sinon.spy();
-
-      pluginState.subscribe(spy);
-      plugin.props.onBlur!(editorView, event);
-
-      expect(spy.callCount).to.equal(2);
-    });
-
-    it('should not call subscribers if link was not focused when editor is blur', () => {
-      const { editorView, plugin, pluginState } = editor(doc(paragraph('te{<>}st'), linkable(link({ href: 'http://www.atlassian.com' })('text'))));
-      const spy = sinon.spy();
-
-      pluginState.subscribe(spy);
-      plugin.props.onBlur!(editorView, event);
-
-      expect(spy.callCount).to.equal(1);
-    });
-
-    it('should not call subscribers if editor is focused but link is not focused', () => {
-      const { editorView, plugin, pluginState } = editor(doc(paragraph('te{<>}st'), linkable(link({ href: 'http://www.atlassian.com' })('text'))));
-      const spy = sinon.spy();
-      pluginState.subscribe(spy);
-
-      plugin.props.onBlur!(editorView, event);
-      plugin.props.onFocus!(editorView, event);
-
-      expect(spy.callCount).to.equal(1);
-    });
-
-    it('should return referring DOM element', () => {
-      const { pluginState } = editor(doc(
-        linkable(link({ href: 'http://www.atlassian.com' })('atlassian')),
-        linkable(link({ href: 'http://www.stypositive.ru' })('d{<>}sorin')))
+  EditorState,
+  EditorView,
+  Mark,
+  Node,
+  Plugin,
+  PluginKey,
+  NodeViewDesc,
+  TextSelection,
+} from '../../prosemirror';
+import * as commands from '../../commands';
+import inputRulePlugin from './input-rule';
+import keymapPlugin from './keymap';
+import { reconfigure } from '../utils';
+
+export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
+export type StateChangeHandler = (state: HyperlinkState) => any;
+export interface HyperlinkOptions {
+  href: string;
+}
+interface NodeInfo {
+  node: Node;
+  startPos: number;
+}
+
+export class HyperlinkState {
+  // public state
+  href?: string;
+  text?: string;
+  active = false;
+  linkable = false;
+  editorFocused = false;
+  element?: HTMLElement;
+  showToolbarPanel = false;
+
+  private changeHandlers: StateChangeHandler[] = [];
+  private state: EditorState<any>;
+  private activeLinkNode?: Node;
+  private activeLinkMark?: Mark;
+  private activeLinkStartPos?: number;
+
+  constructor(state: EditorState<any>) {
+    this.changeHandlers = [];
+  }
+
+  subscribe(cb: HyperlinkStateSubscriber) {
+    this.changeHandlers.push(cb);
+    cb(this);
+  }
+
+  unsubscribe(cb: HyperlinkStateSubscriber) {
+    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
+  }
+
+  addLink(options: HyperlinkOptions, view: EditorView) {
+    if (this.linkable && !this.active) {
+      const { state } = this;
+      const { href } = options;
+      const { empty, $from, $to } = state.selection;
+      const mark = state.schema.mark('link', { href });
+      const tr = empty
+        ? state.tr.replaceWith($from.pos, $to.pos, state.schema.text(href, [mark]))
+        : state.tr.addMark($from.pos, $to.pos, mark);
+
+      view.dispatch(tr);
+      view.focus();
+    }
+  }
+
+  removeLink(view: EditorView) {
+    if (this.activeLinkStartPos) {
+      const { state } = this;
+      const from = this.activeLinkStartPos;
+      const to = this.activeLinkStartPos + this.text!.length;
+      view.dispatch(state.tr.removeMark(from, to, this.activeLinkMark));
+    }
+  }
+
+  updateLink(options: HyperlinkOptions, view: EditorView) {
+    if (this.activeLinkStartPos) {
+      const { state } = this;
+      const from = this.activeLinkStartPos;
+      const to = this.activeLinkStartPos + this.text!.length;
+      view.dispatch(state.tr
+        .removeMark(from, to, this.activeLinkMark)
+        .addMark(from, to, state.schema.mark('link', { href: options.href })));
+    }
+  }
+
+  update(state: EditorState<any>, docView: NodeViewDesc, dirty: boolean = false) {
+    this.state = state;
+
+    const nodeInfo = this.getActiveLinkNodeInfo();
+    const canAddLink = this.isActiveNodeLinkable();
+
+    if (canAddLink !== this.linkable) {
+      this.linkable = canAddLink;
+      dirty = true;
+    }
+
+    if ((nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
+      this.activeLinkNode = nodeInfo && nodeInfo.node;
+      this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
+      this.activeLinkMark = nodeInfo && this.getActiveLinkMark(nodeInfo.node);
+      this.text = nodeInfo && nodeInfo.node.textContent;
+      this.href = this.activeLinkMark && this.activeLinkMark.attrs.href;
+      this.element = this.getDomElement(docView);
+      this.active = !!nodeInfo;
+      dirty = true;
+    }
+
+    if (dirty) {
+      this.triggerOnChange();
+    }
+  }
+
+  escapeFromMark(editorView: EditorView) {
+    const nodeInfo = this.getActiveLinkNodeInfo();
+    if (nodeInfo && this.isShouldEscapeFromMark(nodeInfo)) {
+      const transaction = this.state.tr.removeMark(
+        nodeInfo.startPos,
+        this.state.selection.$from.pos,
+        this.state.schema.marks.link
       );
 
-      expect(pluginState.element.text).to.eq('dsorin');
-    });
-  });
+      editorView.dispatch(transaction);
+    }
+  }
 
-  describe('toolbarVisible', () => {
-    context('when editor is blur', () => {
-      it('it is false', () => {
-        const { editorView, plugin, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+  showLinkPanel(editorView: EditorView) {
+    if (!this.activeLinkMark) {
+      const { selection } = this.state;
 
-        plugin.props.onFocus!(editorView, event);
-        plugin.props.onBlur!(editorView, event);
+      if (selection.empty) {
+        this.showToolbarPanel = !this.showToolbarPanel;
+        this.changeHandlers.forEach(cb => cb(this));
+      } else {
+        this.addLink({ href: '' }, editorView);
+      }
+    }
+  }
 
-        expect(pluginState.toolbarVisible).to.not.be.true;
-      });
-    });
-  });
+  private triggerOnChange() {
+    this.changeHandlers.forEach(cb => cb(this));
+  }
 
-  describe('editorFocued', () => {
-    context('when editor is focused', () => {
-      it('it is true', () => {
-        const { editorView, plugin, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+  private isShouldEscapeFromMark(nodeInfo: NodeInfo | undefined) {
+    const parentOffset = this.state.selection.$from.parentOffset;
+    return nodeInfo && parentOffset === 1 && nodeInfo.node.nodeSize > parentOffset;
+  }
 
-        plugin.props.onBlur!(editorView, event);
-        plugin.props.onFocus!(editorView, event);
+  private getActiveLinkNodeInfo(): NodeInfo | undefined {
+    const { state } = this;
+    const { link } = state.schema.marks;
+    const { $from, empty } = state.selection as TextSelection;
 
-        expect(pluginState.editorFocused).to.be.true;
-      });
-    });
+    if (link && $from) {
+      const { node, offset } = $from.parent.childAfter($from.parentOffset);
 
-    context('when editor is blur', () => {
-      it('it is false', () => {
-        const { editorView, plugin, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+      // offset is the end postion of previous node
+      // This is to check whether the cursor is at the beginning of current node
+      if (empty && offset + 1 === $from.pos) {
+        return;
+      }
 
-        plugin.props.onBlur!(editorView, event);
+      if (node && node.isText && link.isInSet(node.marks)) {
+        return {
+          node,
+          startPos: offset + 1
+        };
+      }
+    }
+  }
 
-        expect(pluginState.editorFocused).not.to.be.true;
-      });
-    });
-  });
-
-  describe('showLinkPanel', () => {
-    context('when called without any selection in the editor', () => {
-      it('should set state value showToolbarPanel to true', () => {
-        const { editorView, pluginState } = editor(doc(paragraph('testing')));
-        pluginState.showLinkPanel(editorView, );
-        expect(pluginState.showToolbarPanel).to.be.true;
-      });
-    });
-
-    context('when called without any selection in the editor', () => {
-      it('should call subscribers', () => {
-        const { editorView, pluginState } = editor(doc(paragraph('testing')));
-        const spy = sinon.spy();
-        pluginState.subscribe(spy);
-        pluginState.showLinkPanel(editorView);
-        expect(spy.callCount).to.equal(2);
-      });
+  private getActiveLinkMark(activeLinkNode: Node): Mark | undefined {
+    const linkMarks = activeLinkNode.marks.filter((mark) => {
+      return mark.type === this.state.schema.marks.link;
     });
 
-    context('when called with cursor in a link', () => {
-      it('should not call subscribers', () => {
-        const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
-        const spy = sinon.spy();
-        pluginState.subscribe(spy);
+    return (linkMarks as Mark[])[0];
+  }
 
-        pluginState.showLinkPanel(editorView);
-        expect(spy.callCount).to.equal(1);
-      });
-    });
+  private getDomElement(docView: NodeViewDesc): HTMLElement | undefined {
+    if (this.activeLinkStartPos) {
+      const { node, offset } = docView.domFromPos(
+        this.activeLinkStartPos + this.state.selection.$from.start(this.state.selection.$from.depth),
+        1
+      );
 
-    context('when called with a selection in the editor', () => {
-      it('should create a link node', () => {
-        const { editorView, pluginState } = editor(doc(paragraph('testing')));
+      if (node.childNodes.length === 0) {
+        return node.parentNode as HTMLElement;
+      }
 
-        setTextSelection(editorView, 4, 7);
-        pluginState.showLinkPanel(editorView);
+      return node.childNodes[offset] as HTMLElement;
+    }
+  }
 
-        expect(pluginState.activeLinkNode).not.to.be.undefined;
-        expect(pluginState.text).not.to.be.undefined;
-      });
-    });
-  });
+  private isActiveNodeLinkable(): boolean {
+    const { link } = this.state.schema.marks;
+    return !!link && commands.toggleMark(link)(this.state);
+  }
+}
+export const stateKey = new PluginKey('hypelinkPlugin');
 
-  describe('Key Press Cmd-K', () => {
-    context('when called without any selection in the editor', () => {
-      it('should call subscribers', () => {
-        const { editorView, pluginState } = editor(doc(paragraph('testing')));
-        const spy = sinon.spy();
-        pluginState.subscribe(spy);
+const plugin = new Plugin({
+  props: {
+    handleTextInput(view: EditorView, from: number, to: number, text: string) {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.escapeFromMark(view);
 
-        sendKeyToPm(editorView, 'Mod-K');
+      return false;
+    },
+    onBlur(view: EditorView) {
+      const pluginState = stateKey.getState(view.state);
 
-        expect(spy.callCount).to.equal(2);
-      });
-    });
+      pluginState.editorFocused = false;
+      pluginState.active && pluginState.changeHandlers.forEach(cb => cb(pluginState));
 
-    context('when called with a selection in the editor', () => {
-      it('should create a link node', () => {
-        const { editorView, pluginState } = editor(doc(paragraph('testing')));
+      return true;
+    },
+    onFocus(view: EditorView) {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.editorFocused = true;
 
-        setTextSelection(editorView, 4, 7);
-        sendKeyToPm(editorView, 'Mod-K');
+      return true;
+    }
+  },
+  state: {
+    init(config, state: EditorState<any>) {
+      return new HyperlinkState(state);
+    },
+    apply(tr, pluginState: HyperlinkState, oldState, newState) {
+      return pluginState;
+    }
+  },
+  key: stateKey,
+  view: (view: EditorView) => {
+    stateKey.getState(view.state).update(view.state, view.docView, true);
+    reconfigure(view, [
+      keymapPlugin(view.state.schema),
+      inputRulePlugin(view.state.schema),
+    ]);
 
-        expect(pluginState.activeLinkNode).not.to.be.undefined;
-        expect(pluginState.text).not.to.be.undefined;
-      });
-    });
-  });
+    return {
+      update: (view: EditorView, prevState: EditorState<any>) => {
+        const pluginState = stateKey.getState(view.state);
+        pluginState.update(view.state, view.docView);
+      }
+    };
+  }
 });
+
+export default plugin;

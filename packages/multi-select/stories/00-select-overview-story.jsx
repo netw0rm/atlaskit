@@ -26,6 +26,8 @@ import SmartSelectAppearances from './examples/SmartSelectAppearances';
 import SmartSelectAppearancesRaw from '!raw!./examples/SmartSelectAppearances';
 import SmartSelectElemBefore from './examples/SmartSelectElemBefore';
 import SmartSelectElemBeforeRaw from '!raw!./examples/SmartSelectElemBefore';
+import SmartSelectWithDescriptions from './examples/SmartSelectWithDescriptions';
+import SmartSelectWithDescriptionsRaw from '!raw!./examples/SmartSelectWithDescriptions';
 /* eslint-enable import/first, import/no-duplicates */
 
 // Dummy components exist so that we have a component to pass to <Props/>
@@ -188,6 +190,16 @@ storiesOf(name, module)
       {SmartSelectAppearances}
       <Code>
         {SmartSelectAppearancesRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Multi select with descriptions', () => (
+    <Chrome title="Multi select - appearance variations">
+      <div style={{ width: '300px' }}>
+        {SmartSelectWithDescriptions}
+      </div>
+      <Code>
+        {SmartSelectWithDescriptionsRaw}
       </Code>
     </Chrome>
   ));

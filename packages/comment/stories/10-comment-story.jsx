@@ -125,7 +125,7 @@ storiesOf(name, module)
         <p>You should not be able to see my actions</p>
         <p>Also, this text should be grey!</p>
       </div>}
-      restricted="atlassian-staff"
+      restrictedTo="atlassian-staff"
       actions={[
         <CommentAction onClick={clickHandler}>Like</CommentAction>,
       ]}

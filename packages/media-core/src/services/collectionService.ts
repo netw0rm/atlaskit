@@ -1,7 +1,5 @@
-import axios from 'axios';
-
 import { MediaApiConfig } from '../config';
-import createRequest, { CreateRequestFunc } from './util/createRequest';
+import createRequest from './util/createRequest';
 
 export type SortDirection = 'desc' | 'asc';
 
@@ -62,25 +60,20 @@ export class MediaCollectionService implements CollectionService {
     sortDirection?: SortDirection,
     details?: DetailsType): Promise<RemoteCollectionItemsResponse> {
 
-    const { serviceHost, tokenProvider } = this.config;
+    const request = createRequest({
+      config: this.config,
+      clientId: this.clientId,
+      collectionName: collectionName
+    });
 
-    return tokenProvider(collectionName)
-      .then(token => axios
-        .get(`/collection/${collectionName}/items`, {
-          baseURL: serviceHost,
-          headers: {
-            'X-Client-Id': this.clientId,
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          params: {
-            limit,
-            inclusiveStartKey,
-            sortDirection,
-            details
-          }
-        })
-        .then(response => response.data)
-      );
+    return request({
+      url: `/collection/${collectionName}/items`,
+      params: {
+        limit,
+        inclusiveStartKey,
+        sortDirection,
+        details
+      }
+    }).then(json => json as RemoteCollectionItemsResponse);
   }
 }

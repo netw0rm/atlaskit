@@ -93,8 +93,9 @@ export default class StatelessMultiSelect extends PureComponent {
     // eslint-disable-next-line react/no-find-dom-node
     const tagGroup = ReactDOM.findDOMNode(this.tagGroup);
     const tagGroupElements = tagGroup.children;
-    const isInsideTagGroup = [...tagGroupElements].some(node =>
-      node.contains(target) && node.tagName !== 'INPUT');
+    const isInsideTagGroup = [...tagGroupElements].some(
+      node => node.contains(target) && node.tagName !== 'INPUT'
+    );
 
     if (!isInsideTagGroup) {
       this.props.onOpenChange(attrs);
@@ -217,10 +218,13 @@ export default class StatelessMultiSelect extends PureComponent {
         }
         break;
       case 'Enter':
-        if (isSelectOpen && this.state.focusedItemIndex !== null) {
-          this.handleItemSelect(
-            this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
-          );
+        if (isSelectOpen) {
+          event.preventDefault();
+          if (this.state.focusedItemIndex !== null) {
+            this.handleItemSelect(
+              this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
+            );
+          }
         }
         break;
       case 'Backspace':

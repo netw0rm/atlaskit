@@ -13,89 +13,90 @@ import { availablePanelType, PanelState, PanelType } from '../../plugins/panel';
 import * as styles from './styles';
 
 const icons = {
-    info: InfoIcon,
-    note: NoteIcon,
-    tip: TipIcon,
-    warning: WarningIcon,
+  info: InfoIcon,
+  note: NoteIcon,
+  tip: TipIcon,
+  warning: WarningIcon,
 };
 
 export interface Props {
-    editorView: EditorView;
-    pluginState: PanelState;
+  editorView: EditorView;
+  pluginState: PanelState;
 }
 
 export interface State {
-    toolbarVisible: boolean | undefined;
-    target?: HTMLElement | undefined;
-    activePanelType?: string | undefined;
+  toolbarVisible: boolean | undefined;
+  target?: HTMLElement | undefined;
+  activePanelType?: string | undefined;
 }
 
 export default class PanelEdit extends PureComponent<Props, State> {
-    state: State = { toolbarVisible: false };
+  state: State = { toolbarVisible: false };
 
-    constructor(props: Props) {
-        super(props);
-    }
+  constructor(props: Props) {
+    super(props);
+  }
 
-    componentDidMount() {
-        this.props.pluginState.subscribe(this.handlePluginStateChange);
-    }
+  componentDidMount() {
+    this.props.pluginState.subscribe(this.handlePluginStateChange);
+  }
 
-    componentWillUnmount() {
-        this.props.pluginState.unsubscribe(this.handlePluginStateChange);
-    }
+  componentWillUnmount() {
+    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
+  }
 
-    render() {
-        const { target, activePanelType, toolbarVisible } = this.state;
-        if (toolbarVisible) {
+  render() {
+    const { target, activePanelType, toolbarVisible } = this.state;
+    if (toolbarVisible) {
+      return (
+        <FloatingToolbar target={target} align="left">
+          {availablePanelType.map((panelType, index) => {
+            // tslint:disable-next-line:variable-name
+            const Icon = icons[panelType.panelType];
             return (
-                <FloatingToolbar target={target} align="left">
-                    {availablePanelType.map((panelType, index) => {
-                        // tslint:disable-next-line:variable-name
-                        const Icon = icons[panelType.panelType];
-                        return (
-                            <ToolbarButton
-                                key={index}
-                                wrapperClassName={
+              <ToolbarButton
+                key={index}
+                wrapperClassName={
                   activePanelType === panelType.panelType ?
-                  styles.selectedButtonWrapperStyle :
-                  styles.buttonWrapperStyle
+                    styles.selectedButtonWrapperStyle :
+                    styles.buttonWrapperStyle
                 }
-                                selected={activePanelType === panelType.panelType}
-                                onClick={this.handleSelectPanelType.bind(this, panelType)}
-                                iconBefore={<Icon label={panelType.panelType} />}
-                            />
-                        );})}
-                    <span className={styles.removeButtonWrapperStyle}>
+                selected={activePanelType === panelType.panelType}
+                onClick={this.handleSelectPanelType.bind(this, panelType)}
+                iconBefore={<Icon label={panelType.panelType} />}
+              />
+            );
+          })}
+          <span className={styles.removeButtonWrapperStyle}>
             <ToolbarButton
-                wrapperClassName={styles.buttonWrapperStyle}
-                onClick={this.handleRemovePanelType}
-                iconBefore={<RemoveIcon label="remove" />}
+              wrapperClassName={styles.buttonWrapperStyle}
+              onClick={this.handleRemovePanelType}
+              iconBefore={<RemoveIcon label="remove" />}
             />
           </span>
-                </FloatingToolbar>
-            );
-        } else {
-            return null;
-        }
+        </FloatingToolbar>
+      );
+    } else {
+      return null;
     }
+  }
 
-    private handlePluginStateChange = (pluginState: PanelState) => {
-        const { element: target, activePanelType, toolbarVisible } = pluginState;
-        this.setState({
-            toolbarVisible,
-            target,
-            activePanelType,
-        });
-    }
+  private handlePluginStateChange = (pluginState: PanelState) => {
+    const { element: target, activePanelType, toolbarVisible } = pluginState;
+    this.setState({
+      toolbarVisible,
+      target,
+      activePanelType,
+    });
+  }
 
-    private handleSelectPanelType = (panelType: PanelType, event) => {
-        const { editorView } = this.props;
-        this.props.pluginState.changePanelType(editorView, panelType);
-    }
+  private handleSelectPanelType = (panelType: PanelType, event) => {
+    const { editorView } = this.props;
+    this.props.pluginState.changePanelType(editorView, panelType);
+  }
 
-    private handleRemovePanelType = () => {
-        const { editorView } = this.props;
-        this.props.pluginState.removePanelType(editorView);
-    }
+  private handleRemovePanelType = () => {
+    const { editorView } = this.props;
+    this.props.pluginState.removePanelType(editorView);
+  }
 }

@@ -19,12 +19,12 @@ export default (editorView: EditorView, content: PasteContent) => {
 
   const clipboardData = {
     getData(type: string) {
-       if (type === 'text/plain') {
-         return content.plain;
-       }
-       if (type === 'text/html') {
-         return content.html;
-       }
+      if (type === 'text/plain') {
+        return content.plain;
+      }
+      if (type === 'text/html') {
+        return content.html;
+      }
     },
     types: [],
   };

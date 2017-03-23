@@ -9,9 +9,11 @@ const emojiQueryStyle = style({
 export const emojiQuery: MarkSpec = {
   inclusive: true,
   parseDOM: [
-    {tag: 'span[data-emoji-id]', getAttrs: (dom: Element) => {
-      return {id: dom.getAttribute('data-emoji-id')!};
-    }}
+    {
+      tag: 'span[data-emoji-id]', getAttrs: (dom: Element) => {
+        return { id: dom.getAttribute('data-emoji-id')! };
+      }
+    }
   ],
   toDOM(): [string, any] {
     return ['span', {

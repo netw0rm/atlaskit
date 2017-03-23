@@ -6,9 +6,11 @@ export const link: MarkSpec = {
   },
   inclusive: false,
   parseDOM: [
-    {tag: 'a[href]', getAttrs: (dom: Element) => {
-      return {href: dom.getAttribute('href')};
-    }}
+    {
+      tag: 'a[href]', getAttrs: (dom: Element) => {
+        return { href: dom.getAttribute('href') };
+      }
+    }
   ],
   toDOM(node): [string, any] { return ['a', node.attrs]; }
 };

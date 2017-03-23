@@ -134,22 +134,22 @@ describe('panel', () => {
   });
 
   describe('editorFocued', () => {
-  context('when editor is focused', () => {
-    it('it is true', () => {
-      const { plugin, pm } = editor(doc(panel(paragraph('te{<>}xt'))));
-      pm.on.blur.dispatch();
-      pm.on.focus.dispatch();
-      expect(plugin.editorFocused).to.be.true;
+    context('when editor is focused', () => {
+      it('it is true', () => {
+        const { plugin, pm } = editor(doc(panel(paragraph('te{<>}xt'))));
+        pm.on.blur.dispatch();
+        pm.on.focus.dispatch();
+        expect(plugin.editorFocused).to.be.true;
+      });
     });
-  });
 
-  context('when editor is blur', () => {
-    it('it is false', () => {
-      const { plugin, pm } = editor(doc(panel(paragraph('te{<>}xt'))));
-      pm.on.blur.dispatch();
-      expect(plugin.editorFocused).not.to.be.true;
+    context('when editor is blur', () => {
+      it('it is false', () => {
+        const { plugin, pm } = editor(doc(panel(paragraph('te{<>}xt'))));
+        pm.on.blur.dispatch();
+        expect(plugin.editorFocused).not.to.be.true;
+      });
     });
   });
-});
 
 });

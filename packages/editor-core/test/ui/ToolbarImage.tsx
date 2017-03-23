@@ -7,29 +7,29 @@ import { doc, code_block, p, makeEditor, fixtures } from '../../src/test-helper'
 
 describe('ToolbarImage', () => {
 
-    const fixture = fixtures();
-    const editor = (doc: any) => makeEditor({
-        doc,
-        plugin: ImageUploadPlugin,
-        place: fixture()
+  const fixture = fixtures();
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugin: ImageUploadPlugin,
+    place: fixture()
+  });
+
+
+  context('when plugin is enabled', () => {
+    it('sets disabled to false', () => {
+      const { editorView, pluginState } = editor(doc(p('text')));
+      const toolbarImage = mount(<ToolbarImage pluginState={pluginState} editorView={editorView} />);
+
+      expect(toolbarImage.state('disabled')).to.be.false;
     });
+  });
 
+  context('when plugin is not enabled', () => {
+    it('sets disabled to true', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('text')));
+      const toolbarImage = mount(<ToolbarImage pluginState={pluginState} editorView={editorView} />);
 
-    context('when plugin is enabled', () => {
-        it('sets disabled to false', () => {
-            const { editorView, pluginState } = editor(doc(p('text')));
-            const toolbarImage = mount(<ToolbarImage pluginState={pluginState} editorView={editorView} />);
-
-            expect(toolbarImage.state('disabled')).to.be.false;
-        });
+      expect(toolbarImage.state('disabled')).to.be.true;
     });
-
-    context('when plugin is not enabled', () => {
-        it('sets disabled to true', () => {
-            const { editorView, pluginState } = editor(doc(code_block()('text')));
-            const toolbarImage = mount(<ToolbarImage pluginState={pluginState} editorView={editorView} />);
-
-            expect(toolbarImage.state('disabled')).to.be.true;
-        });
-    });
+  });
 });

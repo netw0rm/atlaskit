@@ -13,15 +13,15 @@ import { version } from '../index';
  *
  */
 export default function (packageVersion) {
-    return function (story: Function, context: { kind: string, story: string }) {
-        return <div style={{ padding: 20 }}>
-            <h3 style={{ marginBottom: 10 }}>
-                {context.story}
-                <span style={{ display: 'inline-block', float: 'right', width: 'auto', whiteSpace: 'nowrap', color: 'rgb(130, 130, 130)' }}>
+  return function (story: Function, context: { kind: string, story: string }) {
+    return <div style={{ padding: 20 }}>
+      <h3 style={{ marginBottom: 10 }}>
+        {context.story}
+        <span style={{ display: 'inline-block', float: 'right', width: 'auto', whiteSpace: 'nowrap', color: 'rgb(130, 130, 130)' }}>
           {packageVersion} (editor-core@{version})
         </span>
-            </h3>
-            {story()}
-        </div>;
-    };
+      </h3>
+      {story()}
+    </div>;
+  };
 }

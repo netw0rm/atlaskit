@@ -26,7 +26,7 @@ describe('analytics decorator', () => {
   it('tracks events after class method is called', () => {
     class AnnotatedTestClass {
       @analytics('test.event')
-      foo() {}
+      foo() { }
     }
 
     const instance = new AnnotatedTestClass();
@@ -44,10 +44,10 @@ describe('analytics decorator', () => {
   it('tracks events after bound method (instance property) is called', () => {
     class AnnotatedTestClass2 {
       @analytics('test.event.foo')
-      foo = () => {};
+      foo = () => { };
 
       @analytics('test.event.bar')
-      bar = () => {};
+      bar = () => { };
     }
 
     const instance = new AnnotatedTestClass2();
@@ -65,7 +65,7 @@ describe('analytics decorator', () => {
   it('returns unique decorated bound method (property) per instance', () => {
     class AnnotatedTestClassWithBoundMethod {
       @analytics('test.event.foo')
-      foo = () => {};
+      foo = () => { };
     }
 
     const instance1 = new AnnotatedTestClassWithBoundMethod();
@@ -75,7 +75,7 @@ describe('analytics decorator', () => {
   });
 
   it('returns property value if decorating a non-function property', () => {
-    sinon.stub(console, 'warn', () => {});
+    sinon.stub(console, 'warn', () => { });
 
     class AnnotatedTestClassWithPrimitiveValue {
       @analytics('test.event.foo')
@@ -97,7 +97,7 @@ describe('analytics decorator', () => {
       }
 
       @analytics('test.event.bar')
-      private bar = () => {};
+      private bar = () => { };
     }
 
     const instance = new AnnotatedTestClass3();

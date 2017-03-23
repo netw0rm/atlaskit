@@ -13,7 +13,7 @@ export function keymapPlugin(view: EditorView): Plugin | undefined {
     const range = $from.blockRange($to);
     const node = range && range.parent;
     if (node && node.type === nodes.panel) {
-      const { state: { tr } , dispatch } = view;
+      const { state: { tr }, dispatch } = view;
       if (lastCharIsNewline(node)) {
         tr.split($from.pos);
         tr.delete($from.pos - 1, $from.pos);

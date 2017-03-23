@@ -15,23 +15,23 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
       start: number,
       end: number
     ) => {
-    const panelType = match && match[1];
+      const panelType = match && match[1];
 
-    if (panelType && availablePanelTypes.indexOf(panelType) >= 0) {
-      const { schema } = state;
-      let { tr } = state;
-      const { panel } = schema.nodes;
-      if (panel) {
-        const { $from } = state.selection;
-        let range = $from.blockRange($from)!;
-        tr = tr.wrap(range, [{ type: panel, attrs: { panelType } }]);
-        tr = tr.delete(end - (panelType.length + 2), end + 1);
-        return tr;
+      if (panelType && availablePanelTypes.indexOf(panelType) >= 0) {
+        const { schema } = state;
+        let { tr } = state;
+        const { panel } = schema.nodes;
+        if (panel) {
+          const { $from } = state.selection;
+          let range = $from.blockRange($from)!;
+          tr = tr.wrap(range, [{ type: panel, attrs: { panelType } }]);
+          tr = tr.delete(end - (panelType.length + 2), end + 1);
+          return tr;
+        }
       }
-    }
-  });
+    });
 
-  plugin = inputRules({ rules: [panelInputRule]});
+  plugin = inputRules({ rules: [panelInputRule] });
   return plugin;
 };
 

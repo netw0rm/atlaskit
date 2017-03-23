@@ -1,4 +1,10 @@
 @import '~@atlaskit/util-shared-styles/src/grid.less';
+@import '~@atlaskit/util-shared-styles/src/colors.less';
+
+.placeholderMix() {
+  font-size: 14px;
+  color: @ak-color-N200;
+}
 
 .selectWrapper {
   display: inline-block;
@@ -12,12 +18,41 @@
   align-items: center;
   display: flex;
   width: 100%;
+  min-height: @ak-grid-size*4;
+}
+
+.elemBefore {
+  padding-right: @ak-grid-size;
+  display: flex;
 }
 
 .content {
+  display: flex;
+  align-items: center;
   flex: 1 1 auto;
   margin: 6px @ak-grid-size;
   white-space: nowrap;
+}
+
+.contentAutocomplete {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  padding: 0 @ak-grid-size;
+
+  input {
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: 0;
+    min-height: @ak-grid-size*4;
+    outline: 0;
+    font-size: 14px;
+    color: @ak-color-N800;
+
+    &::placeholder {
+      .placeholderMix;
+    }
+  }
 }
 
 .expand {
@@ -26,4 +61,12 @@
   flex: 0 0 @ak-grid-size*3;
   justify-content: center;
   margin: 0px @ak-grid-size;
+}
+
+.placeholder {
+  .placeholderMix;
+}
+
+.nothing {
+  padding: 6px (@ak-grid-size * 3);
 }

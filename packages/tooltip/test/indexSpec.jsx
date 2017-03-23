@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 // Testing the dumb component
 import { Tooltip } from '../src';
 
-describe('ak-tooltip', () => {
+describe('Tooltip', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Tooltip />);
     expect(wrapper).not.to.equal(undefined);

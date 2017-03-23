@@ -15,7 +15,10 @@ import {
   MentionsPlugin,
   Node,
   ProseMirror,
-  TextFormattingPlugin
+  DefaultKeymapsPlugin,
+  TextFormattingPlugin,
+  ClearFormattingPlugin,
+  version as coreVersion
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -23,6 +26,9 @@ import { PureComponent } from 'react';
 import markdownSerializer from './markdown-serializer';
 import { MentionResource, MentionSource } from './mention-resource';
 import { parseHtml, transformHtml } from './parse-html';
+import { version, name } from './version';
+
+export { version };
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 
@@ -48,6 +54,7 @@ export interface State {
 export default class Editor extends PureComponent<Props, State> {
   state: State;
   mentionsResourceProvider: MentionResource;
+  version = `${version} (editor-core ${coreVersion})`;
 
   constructor(props: Props) {
     super(props);
@@ -100,6 +107,9 @@ export default class Editor extends PureComponent<Props, State> {
     const { pm } = this.state;
     if (pm) {
       pm.tr.delete(0, pm.doc.nodeSize - 2).apply();
+
+      // We need flush for bitbucket, otherwise editor becomes broken after detaching/attaching parent DOM node
+      pm.flush();
     }
   }
 
@@ -156,7 +166,7 @@ export default class Editor extends PureComponent<Props, State> {
       <Chrome
         children={<div ref={this.handleRef} />}
         isExpanded={isExpanded}
-        feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
+        feedbackFormUrl="yes"
         onCancel={handleCancel}
         onSave={handleSave}
         placeholder={this.props.placeholder}
@@ -166,9 +176,12 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
+        pluginStateClearFormatting={pm && ClearFormattingPlugin.get(pm)}
         pluginStateImageUpload={pm && ImageUploadPlugin.get(pm)}
         pluginStateMentions={pm && this.mentionsResourceProvider && MentionsPlugin.get(pm)!}
         mentionsResourceProvider={this.mentionsResourceProvider}
+        packageVersion={version}
+        packageName={name}
       />
     );
   }
@@ -207,7 +220,9 @@ export default class Editor extends PureComponent<Props, State> {
           CodeBlockPlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          ClearFormattingPlugin,
           HorizontalRulePlugin,
+          DefaultKeymapsPlugin,
           ...( this.mentionsResourceProvider ? [ MentionsPlugin ] : [] ),
           DefaultInputRulesPlugin,
           ...( this.props.imageUploadHandler ? [ ImageUploadPlugin ] : [] )

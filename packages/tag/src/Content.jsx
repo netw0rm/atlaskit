@@ -3,14 +3,13 @@ import React, { PureComponent, PropTypes } from 'react';
 import Text from './Text';
 import Link from './Link';
 
-/* eslint-disable react/prefer-stateless-function */
 export default class Content extends PureComponent {
   static propTypes = {
     href: PropTypes.string,
     children: PropTypes.node.isRequired,
   }
 
-  render = () => {
+  render() {
     if (this.props.href) {
       return (
         <Link

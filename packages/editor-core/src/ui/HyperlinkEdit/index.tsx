@@ -1,5 +1,5 @@
-import OpenIcon from 'ak-icon/glyph/editor/open';
-import UnlinkIcon from 'ak-icon/glyph/editor/unlink';
+import OpenIcon from '@atlaskit/icon/glyph/editor/open';
+import UnlinkIcon from '@atlaskit/icon/glyph/editor/unlink';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { HyperlinkState } from '../../plugins/hyperlink';
@@ -23,10 +23,21 @@ export interface State {
   unlinkable?: boolean;
   textInputPlaceholder?: string;
   textInputValue?: string;
+  editorFocused?: boolean;
+  inputActive?: boolean;
+  autoFocusInput?: boolean;
+  active?: boolean;
 }
 
 export default class HyperlinkEdit extends PureComponent<Props, State> {
-  state: State = { unlinkable: true };
+
+  state: State = {
+    unlinkable: true,
+    editorFocused: false,
+    inputActive: false,
+    autoFocusInput: false,
+    active: false,
+  };
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -36,10 +47,22 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
-  render() {
-    const { href, target, unlinkable } = this.state;
+  setInputActive = () => {
+    this.setState({
+      inputActive: true,
+    });
+  }
 
-    if (target) {
+  resetInputActive = () => {
+    this.setState({
+      inputActive: false,
+    });
+  }
+
+  render() {
+    const { href, target, unlinkable, active, editorFocused, inputActive, autoFocusInput } = this.state;
+
+    if (active && (editorFocused || inputActive)) {
       const showOpenButton = !!href;
       const showUnlinkButton = unlinkable;
       const showSeparator = showOpenButton || showUnlinkButton;
@@ -52,6 +75,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               href={href}
               target="_blank"
               theme="dark"
+              title="Open link in new tab"
             >
               <OpenIcon label="Open" />
             </ToolbarButton>
@@ -59,6 +83,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
             {!showUnlinkButton ? null :
             <ToolbarButton
               theme="dark"
+              title="Unlink"
               onClick={this.handleUnlink}
             >
               <UnlinkIcon label="Unlink" />
@@ -69,9 +94,12 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
             }
             <PanelTextInput
               placeholder="Link address"
+              autoFocus={autoFocusInput}
               defaultValue={href}
               onSubmit={this.updateHref}
               onChange={this.updateHref}
+              onMouseDown={this.setInputActive}
+              onBlur={this.resetInputActive}
               ref="textInput"
             />
           </div>
@@ -87,10 +115,17 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: HyperlinkState) => {
+    const { inputActive } = this.state;
+    const hrefNotPreset = pluginState.active && (!pluginState.href || pluginState.href.length === 0);
+
     this.setState({
+      active: pluginState.active,
       target: pluginState.element,
       href: pluginState.href,
       textInputValue: pluginState.text,
+      editorFocused: pluginState.editorFocused,
+      inputActive: hrefNotPreset || inputActive,
+      autoFocusInput: hrefNotPreset,
     });
   }
 

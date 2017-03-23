@@ -1,6 +1,5 @@
 import {
   blockQuoteRule,
-  bulletListRule,
   InputRule,
   inputRules,
   Node,
@@ -9,11 +8,15 @@ import {
   ProseMirror,
   Schema,
   textblockTypeInputRule,
-  wrappingInputRule
+  wrappingInputRule,
+  commands
 } from '../../prosemirror';
-
+import { insertBlankSpace } from '../../utils';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
+import { isCodeBlockNode } from '../../schema';
+import Keymap from 'browserkeymap';
+import { transformToCodeAction } from '../text-formatting/transform-to-code';
 
 // NOTE: There is a built in input rule for ordered lists in ProseMirror. However, that
 // input rule will allow for a list to start at any given number, which isn't allowed in
@@ -23,6 +26,11 @@ const orderedListRule = (nodeType: NodeType): InputRule => {
   return wrappingInputRule(/^(\d+)\. $/, ' ', nodeType, (match: RegExpMatchArray) => ({}),
     (match, node) => node.childCount > 0);
 };
+
+// NOTE: we decided to restrict the creation of bullet lists to only "*"
+function bulletListRule(nodeType) {
+  return wrappingInputRule(/^\s*(\*) $/, ' ', nodeType);
+}
 
 const createTrackedInputRule = (analyticsEventName: string, rule: InputRule): InputRule => {
   if (typeof (rule.handler) !== 'function') {
@@ -46,7 +54,7 @@ const headingRule = (nodeType: NodeType, maxLevel: Number) => {
   );
 };
 
-const buildBlockRules = (schema: Schema): Array<InputRule> => {
+const buildBlockRules = (schema: Schema): InputRule[] => {
   const rules = Array<InputRule>();
   const { heading, bullet_list, ordered_list, blockquote } = schema.nodes;
 
@@ -71,7 +79,7 @@ const buildBlockRules = (schema: Schema): Array<InputRule> => {
 
 function replaceWithNode(
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number,
   node: Node
 ): boolean {
@@ -85,24 +93,43 @@ function replaceWithNode(
 
 function replaceWithMark(
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number,
-  mark: string
+  mark: string,
+  specialChar: string
+): boolean {
+  const from = pos - match[1].length;
+  return replaceRangeWithMark(pm, from, pos, mark, specialChar);
+}
+
+function replaceRangeWithMark(
+  pm: ProseMirror,
+  from: number,
+  to: number,
+  mark: string,
+  specialChar: string
+
 ): boolean {
   const schema = pm.schema;
-  const to = pos;
-  const from = pos - match[1].length;
   const markType = schema.mark(mark);
-  const marks = [...pm.tr.doc.marksAt(pos), markType];
+  const charSize = specialChar.length;
+  const nodes: Node[] = [];
 
-  pm.tr.replaceWith(
-    from,
-    to,
-    schema.text(
-      match[2],
-      marks,
-    )
-  ).apply();
+  pm.doc.nodesBetween(from, to, (node) => {
+    if (node.isText) {
+      nodes.push(node);
+    }
+  });
+
+  if (nodes.length > 1 && nodes[0].marks.length && (nodes[0].text || '').indexOf(specialChar) > -1) {
+    // TODO: remove setTimeout line after upgrading to new version of ProseMirror
+    setTimeout(() => pm.input.dispatchKey('Backspace'), 0);
+    return false;
+  }
+
+  pm.tr.addMark(from, to, markType.type.create()).applyAndScroll();
+  pm.tr.delete(from, from + charSize).apply();
+  pm.tr.delete(to - charSize * 2, to - charSize).apply();
 
   analyticsService.trackEvent(`atlassian.editor.format.${mark}.autoformatting`);
 
@@ -114,7 +141,7 @@ function replaceWithMark(
 // [something](link) should convert to a hyperlink
 const linkRule = new InputRule(/\[(\S+)\]\((\S+)\)$/, ')', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
 ) => {
   const schema = pm.schema;
@@ -145,7 +172,7 @@ const linkRule = new InputRule(/\[(\S+)\]\((\S+)\)$/, ')', (
 // Note: You have to load this rule before the link rule.
 const imgRule = new InputRule(/!\[(\S+)\]\((\S+)\)$/, ')', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
 ) => {
   const attrs = {
@@ -160,12 +187,18 @@ const imgRule = new InputRule(/!\[(\S+)\]\((\S+)\)$/, ')', (
 
 const codeBlockRule = new InputRule(/^```$/, '`', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
 ) => {
-  if (isConvertableToCodeBlock(pm)) {
+  const lengthOfDecorator = match[0].length;
+
+  // Because the node content is wrap by the node margin in prosemirror
+  // + 2 is the parent margin size. 1 in the front, and 1 at the end.
+  const convertedNodeHasContent = pm.selection.$from.parent.nodeSize > lengthOfDecorator + 2;
+
+  if (isConvertableToCodeBlock(pm) && convertedNodeHasContent) {
     analyticsService.trackEvent(`atlassian.editor.format.codeblock.autoformatting`);
-    const start = pos - match[0].length;
+    const start = pos - lengthOfDecorator;
     return transformToCodeBlockAction(pm)
       // remove markdown decorator ```
       .delete(start, pos)
@@ -175,56 +208,42 @@ const codeBlockRule = new InputRule(/^```$/, '`', (
 });
 
 // **string** should bold the text
-const strongRule1 = new InputRule(/(\*\*([^\*]+)\*\*)$/, '*', (
+const strongRule = new InputRule(/(\*\*([^\*]+)\*\*)$/, '*', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
-) => replaceWithMark(pm, match, pos, 'strong'));
+) => replaceWithMark(pm, match, pos, 'strong', '**'));
 
-// __string__ should bold the text
-const strongRule2 = new InputRule(/(__([^_]+)__)$/, '_', (
+// *string* should change the text to italic
+const emRule = new InputRule(/(?:[^\*]+)(\*([^\*]+?)\*)$|^(\*([^\*]+)\*)$/, '*', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
-) => replaceWithMark(pm, match, pos, 'strong'));
-
-// _string_ or *string* should change the text to italic
-const emRule1 = new InputRule(/(?:[\s]+)(\*([^\*]+?)\*)$|^(\*([^\*]+)\*)$/, '*', (
-  pm: ProseMirror,
-  match: Array<string>,
-  pos: number
-) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em'));
-
-const emRule2 = new InputRule(/(?:[\s]+)(_([^_]+?)_)$|^(_([^_]+)_)$/, '_', (
-  pm: ProseMirror,
-  match: Array<string>,
-  pos: number
-) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em'));
+) => replaceWithMark(pm, match.filter((m: string) => m !== undefined), pos, 'em', '*'));
 
 // ~~string~~ should strikethrough the text
 const strikeRule = new InputRule(/(\~\~([^\*]+)\~\~)$/, '~', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
-) => replaceWithMark(pm, match, pos, 'strike'));
+) => replaceWithMark(pm, match, pos, 'strike', '~~'));
 
-// `string` should change the current text to monospace
-const monoRule = new InputRule(/(`([^`]+)`)$/, '`', (
+// `string` should change the current text to code
+const codeRule = new InputRule(/(`([^`]+)`)$/, '`', (
   pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
-) => replaceWithMark(pm, match, pos, 'mono'));
+) => {
+  const from = pos - match[1].length;
+  transformToCodeAction(pm, from, pos);
+  replaceRangeWithMark(pm, from, pm.selection.to, 'code', '`');
+  const tr = insertBlankSpace(pm);
+  tr && tr.apply();
+});
 
-// --- or *** should add a horizontal line
-const hrRule1 = new InputRule(/^\*\*\*$/, '*', (
+const hrRule = new InputRule(/^\-\-\-$/, '-', (
   pm: ProseMirror,
-  match: Array<string>,
-  pos: number
-) => replaceWithNode(pm, match, pos, pm.schema.nodes['horizontal_rule'].create()));
-
-const hrRule2 = new InputRule(/^\-\-\-$/, '-', (
-  pm: ProseMirror,
-  match: Array<string>,
+  match: string[],
   pos: number
 ) => replaceWithNode(pm, match, pos, pm.schema.nodes['horizontal_rule'].create()));
 
@@ -235,28 +254,41 @@ export class MarkdownInputRulesPlugin {
     const blockRules = buildBlockRules(pm.schema);
 
     this.inputRules = [
-      strongRule1,
-      strongRule2,
-      emRule1,
-      emRule2,
+      strongRule,
+      emRule,
       strikeRule,
-      monoRule,
+      codeRule,
       imgRule,
       linkRule,
-      hrRule1,
-      hrRule2,
+      hrRule,
       codeBlockRule,
       ...blockRules
     ];
 
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.addRule(rule));
+    bindCmdZ(pm);
   }
 
   detach(pm: ProseMirror) {
     const rules = inputRules.ensure(pm);
     this.inputRules.forEach((rule: InputRule) => rules.removeRule(rule));
   }
+}
+
+// IE11 fix.
+function bindCmdZ (pm) {
+  pm.addKeymap(new Keymap({ 'Cmd-Z': pm => {
+    const { $from } = pm.selection;
+    const node = $from.parent;
+
+    if (isCodeBlockNode(node)) {
+      commands.undo(pm);
+      return true;
+    }
+
+    return false;
+  }}, { name: 'inputRules' }), 20);
 }
 
 // IE11 + multiple prosemirror fix.

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-text",
-  "version": "2.0.0",
+  "version": "2.3.2",
   "config": {
     "access": "public"
   },
@@ -8,20 +8,30 @@
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
+  "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/field-text; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/index.d.ts"
   ],
   "peerDependencies": {
     "react": "^15.3.2"
   },
   "dependencies": {
-    "@atlaskit/field-base": "^1.0.2",
+    "@atlaskit/field-base": "^5.0.0",
     "babel-runtime": "^6.11.6"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Ben W"
+    },
+    {
+      "name": "Matias C"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",

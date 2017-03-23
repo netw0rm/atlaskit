@@ -2,12 +2,14 @@
 @import '~@atlaskit/util-shared-styles/src/grid.less';
 
 // Size of the entire component, not including the borders
+@img-size-xsmall: @ak-grid-size * 2;
 @img-size-small: @ak-grid-size * 3;
 @img-size-medium: @ak-grid-size * 4;
 @img-size-large: @ak-grid-size * 6;
 @img-size-xlarge: @ak-grid-size * 12;
 
-// Size of the presence icon, not including the borders
+// Size of the presence icon, not including the borders (note: we dont support presence for xmall)
+@presence-size-xsmall: 0px; // note: we don't actually display presence for xsmall, this is just to allow us to use the mixins easily
 @presence-size-small: 12px;
 @presence-size-medium: 12px;
 @presence-size-large: 18px;
@@ -22,6 +24,7 @@
 @ak-avatar-presence-color-offline: @ak-color-N40;
 
 // Presence icon styles
+@ak-avatar-presence-border-width-xsmall: 0px;
 @ak-avatar-presence-border-width-small: 2px;
 @ak-avatar-presence-border-width-medium: 2px;
 @ak-avatar-presence-border-width-large: 3px;
@@ -29,6 +32,7 @@
 @ak-avatar-presence-border-color: @ak-color-primary3;
 
 // The top and left offset for where the presence icon should be positioned
+@presence-offset-xsmall: @ak-avatar-presence-border-width-xsmall;
 @presence-offset-small: -@ak-avatar-presence-border-width-small;
 @presence-offset-medium: -@ak-avatar-presence-border-width-medium;
 @presence-offset-large: -@ak-avatar-presence-border-width-large;
@@ -39,6 +43,9 @@
   position: relative;
 }
 
+.xsmall {
+  .sizeMixin(xsmall);
+}
 .small {
   .sizeMixin(small);
   .borderMixin(small);

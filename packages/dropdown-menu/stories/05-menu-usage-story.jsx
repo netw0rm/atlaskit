@@ -1,8 +1,8 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import Avatar from 'ak-avatar';
-import Question from 'ak-icon/glyph/question';
-import { Code, Chrome, Description } from 'akutil-readme';
+import Avatar from '@atlaskit/avatar';
+import Question from '@atlaskit/icon/glyph/question';
+import { Code, Chrome, Description } from '@atlaskit/util-readme';
 
 import DropdownMenu from '../src';
 import { name } from '../package.json';
@@ -118,18 +118,18 @@ storiesOf(name, module)
         }}
       >
         <DropdownMenu items={simpleDropdownItems}>
-          click me
+          <span tabIndex="0">click me</span>
         </DropdownMenu>
         <DropdownMenu items={simpleDropdownItems}>
-          <Avatar />
+          <span tabIndex="0"><Avatar /></span>
         </DropdownMenu>
         <DropdownMenu items={simpleDropdownItems}>
-          <Question label="dropdown`s trigger" />
+          <span tabIndex="0"><Question label="dropdown`s trigger" /></span>
         </DropdownMenu>
       </div>
     </div>
   ), {
-    imports: [...imports, ['t', 'ak-icon/glyph/question']],
+    imports: [...imports, ['t', '@atlaskit/icon/glyph/question']],
     overrides: {
       items: 'simpleDropdownItems',
     },

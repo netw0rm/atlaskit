@@ -28,10 +28,11 @@ describe(name, () => {
       });
 
       it('should render a list container', () => {
-        const wrapper = shallow(<TabsNav onKeyboardNav={kbNav} />);
-        expect(wrapper.type()).to.equal('ul');
-        expect(wrapper.props().className).to.equal(styles.locals.akTabLabels);
-        expect(wrapper.props().role).to.equal('tablist');
+        const wrapper = shallow(<TabsNav />);
+        expect(wrapper.type()).to.equal('div');
+        const ul = wrapper.find('ul').at(0);
+        expect(ul.props().className).to.equal(styles.locals.akTabLabels);
+        expect(ul.props().role).to.equal('tablist');
       });
     });
 

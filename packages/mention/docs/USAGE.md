@@ -14,6 +14,8 @@ Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.co
 
 ```sh
 npm install @NAME@
+# or
+yarn add @NAME@
 ```
 
 ## Using the component

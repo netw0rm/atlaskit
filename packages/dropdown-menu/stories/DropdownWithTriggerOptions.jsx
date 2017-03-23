@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MoreIcon from 'ak-icon/glyph/moreoptions';
+import MoreIcon from '@atlaskit/icon/glyph/more';
 
 import DropdownMenu from '../src';
 import { simpleDropdownItems } from './DropdownsData';

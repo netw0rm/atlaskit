@@ -1,5 +1,5 @@
 import React from 'react';
-import Readme from 'akutil-readme';
+import Readme from '@atlaskit/util-readme';
 
 export default (
   <Readme

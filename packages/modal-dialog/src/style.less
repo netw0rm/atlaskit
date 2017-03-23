@@ -1,6 +1,7 @@
 @import '~@atlaskit/util-shared-styles/src/grid.less';
 @import '~@atlaskit/util-shared-styles/src/colors.less';
 @import '~@atlaskit/util-shared-styles/src/z-indexes.less';
+
 @grid: @ak-grid-size / 2; // evaluates to 4px
 @ak-z-index-modal: @ak-z-index-blanket + 10;
 
@@ -29,7 +30,10 @@
 // Helper function for generating "base" box shadow with optional second shadow
 .modal-shadow(@extra-shadow: transparent 0 0 0, @extra-shadow2: transparent 0 0 0 ) {
     box-shadow:
-      0 @ak-grid-size (2.5 * @ak-grid-size) (@ak-grid-size * -0.5) @ak-color-N50A,
+      // temporarily disabling this shadow to let us
+      // quickly fix z-index issues. Follow up issue
+      // is AK-1664
+      // 0 @ak-grid-size (2.5 * @ak-grid-size) (@ak-grid-size * -0.5) @ak-color-N50A,
       @extra-shadow,
       @extra-shadow2;
 }
@@ -82,7 +86,6 @@
     box-sizing: border-box;
     padding: 0 (@grid * 4);
     position: relative;
-    z-index: @ak-z-index-modal + 1;
     .modal-shadow(inset 0px @modal-inner-shadow-size 0px 0px @ak-color-N30, inset 0px -@modal-inner-shadow-size 0px 0px @ak-color-N30);
     .panel-background();
 
@@ -109,11 +112,22 @@
     }
   }
 
+  .rounded-content-top {
+    .panel-background(@grid, 0);
+  }
+
+  .rounded-content-bottom {
+    .panel-background(0, @grid);
+  }
+
+  .rounded-content-top-bottom {
+    .panel-background(@grid, @grid);
+  }
+
   // Background and corners for footer
   .footer-flex {
     flex: 0 0 auto;
     padding: @grid * 4;
-    z-index: @ak-z-index-modal + 2;
     .modal-shadow();
     .panel-background(0, @grid);
     // TODO: AK-704: animated keylines

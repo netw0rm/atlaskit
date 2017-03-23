@@ -1,6 +1,6 @@
 export { EmMark, EmMarkType, isEmMark } from './marks/em';
 export { LinkMark, LinkMarkType, isLinkMark } from './marks/link';
-export { MonoMark, MonoMarkType, isMonoMark } from './marks/mono';
+export { CodeMark, CodeMarkType, isCodeMark } from './marks/code';
 export { StrikeMark, StrikeMarkType, isStrikeMark } from './marks/strike';
 export { StrongMark, StrongMarkType, isStrongMark } from './marks/strong';
 export { SubSupMark, SubSupMarkType, isSubSupMark } from './marks/subsup';
@@ -21,3 +21,4 @@ export { OrderedListNode, OrderedListNodeType, isOrderedListNode } from './nodes
 export { ParagraphNode, ParagraphNodeType, isParagraphNode } from './nodes/paragraph';
 export { MentionNode, MentionNodeType, isMentionNode } from './nodes/mention';
 export { EmojiNode, EmojiNodeType } from './nodes/emoji';
+export { PanelNodeType, isPanelNode, PanelNode } from './nodes/panel';

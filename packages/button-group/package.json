@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/button-group",
-  "version": "1.0.1",
+  "version": "1.0.9",
   "config": {
     "access": "public"
   },
@@ -20,6 +20,14 @@
     "@atlaskit/util-shared-styles": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Ben G"
+    },
+    {
+      "name": "Nadia M"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",

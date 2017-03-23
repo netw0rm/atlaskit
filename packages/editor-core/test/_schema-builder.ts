@@ -1,6 +1,7 @@
 import {
   BlockQuoteNodeType,
   BulletListNodeType,
+  CodeBlockNodeType,
   DocNodeType,
   EmMarkType,
   HeadingNodeType,
@@ -8,8 +9,9 @@ import {
   ImageNodeType,
   LinkMarkType,
   ListItemNodeType,
-  MonoMarkType,
+  CodeMarkType,
   OrderedListNodeType,
+  PanelNodeType,
   ParagraphNodeType,
   Schema,
   StrikeMarkType,
@@ -18,7 +20,7 @@ import {
   Text,
   UnderlineMarkType
 } from '../src';
-import { markFactory, nodeFactory } from '../test-helper';
+import { markFactory, nodeFactory } from '../src/test-helper';
 
 export const schema = new Schema({
   nodes: {
@@ -31,17 +33,19 @@ export const schema = new Schema({
     image: { type: ImageNodeType },
     bullet_list: { type: BulletListNodeType, content: 'list_item+', group: 'block' },
     heading: { type: HeadingNodeType, content: 'text<_>*', group: 'block' },
-    list_item: { type: ListItemNodeType, content: 'paragraph+' },
+    list_item: { type: ListItemNodeType, content: 'paragraph block*' },
     ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
     blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
+    panel: { type: PanelNodeType, content: 'block+', group: 'block' },
     plain: { type: ParagraphNodeType, content: 'text' },
-    horizontal_rule: {type: HorizontalRuleNodeType, group: 'block' }
+    horizontal_rule: {type: HorizontalRuleNodeType, group: 'block' },
+    code_block: { type: CodeBlockNodeType, content: 'text*', group: 'block' },
   },
 
   marks: {
     link: LinkMarkType,
     em: EmMarkType,
-    mono: MonoMarkType,
+    code: CodeMarkType,
     strike: StrikeMarkType,
     strong: StrongMarkType,
     subsup: SubSupMarkType,
@@ -65,15 +69,19 @@ export const ol = nodeFactory(schema.nodes.ordered_list);
 export const p = nodeFactory(schema.nodes.paragraph);
 export const ul = nodeFactory(schema.nodes.bullet_list);
 export const blockquote = nodeFactory(schema.nodes.blockquote);
+export const panel = nodeFactory(schema.nodes.panel, { panelType: 'info' });
+export const paragraph = nodeFactory(schema.nodes.paragraph);
 
 // tslint:disable-next-line:variable-name
 export const horizontal_rule = nodeFactory(schema.nodes.horizontal_rule);
 
 export const plain = nodeFactory(schema.nodes.plain);
 export const em = markFactory(schema.marks.em);
-export const mono = markFactory(schema.marks.mono);
+export const code = markFactory(schema.marks.code);
 export const strike = markFactory(schema.marks.strike);
 export const strong = markFactory(schema.marks.strong);
 export const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 export const sup = markFactory(schema.marks.subsup, { type: 'sup' });
 export const u = markFactory(schema.marks.u);
+// tslint:disable-next-line:variable-name
+export const code_block = (attrs: {} = {}) => nodeFactory(schema.nodes.code_block, attrs);

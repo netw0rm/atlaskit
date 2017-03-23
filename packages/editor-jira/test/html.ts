@@ -1,14 +1,10 @@
-import { Node } from 'ak-editor-core';
-import { chaiPlugin, markFactory, nodeFactory } from 'ak-editor-core/test-helper';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import { markFactory, nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { checkParse, checkEncode, checkParseEncodeRoundTrips } from '../test-helpers';
+
 import { name } from '../package.json';
-import { encode, parse } from '../src/html';
 import { JIRASchema, makeSchema } from '../src/schema';
 
-chai.use(chaiPlugin);
-
-export const schema = makeSchema(false) as JIRASchema;
+export const schema = makeSchema({ allowLists: false, allowAdvancedTextFormatting: true }) as JIRASchema;
 
 // Nodes
 const doc = nodeFactory(schema.nodes.doc);
@@ -24,64 +20,35 @@ const hr = nodeFactory(schema.nodes.horizontal_rule);
 
 // Marks
 const em = markFactory(schema.marks.em);
-const mono = markFactory(schema.marks.mono);
-const strike = markFactory(schema.marks.strike);
+const code = markFactory(schema.marks.code!);
+const strike = markFactory(schema.marks.strike!);
 const strong = markFactory(schema.marks.strong);
 const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 const sup = markFactory(schema.marks.subsup, { type: 'sup' });
 const u = markFactory(schema.marks.u);
 
-function checkParse(description: string, htmls: string[], node: Node) {
-  it(`parses HTML: ${description}`, () => {
-    for (const html of htmls) {
-      const actual = parse(html, schema);
-      expect(actual).to.deep.equal(node);
-    }
-  });
-};
-
-function checkEncode(description: string, node: Node, html: string) {
-  it(`encodes HTML: ${description}`, () => {
-    const encoded = encode(node, schema);
-    expect(encoded).to.deep.equal(html);
-  });
-};
-
-function check(description: string, html: string, node: Node) {
-  it(`parses HTML: ${description}`, () => {
-    const actual = parse(html, schema);
-    expect(actual).to.deep.equal(node);
-  });
-
-  it(`encodes HTML: ${description}`, () => {
-    const encoded = encode(node, schema);
-    expect(html).to.deep.equal(encoded);
-  });
-
-  it(`round-trips HTML: ${description}`, () => {
-    const roundTripped = parse(encode(node, schema), schema);
-    expect(roundTripped).to.deep.equal(node);
-  });
-};
-
 describe(`${name} html:`, () => {
   describe('paragraphs:', () => {
-    check('empty',
+    checkParseEncodeRoundTrips('empty',
+      schema,
       '',
       doc(p('')));
 
-    check('a paragraph with text',
+    checkParseEncodeRoundTrips('a paragraph with text',
+      schema,
       '<p>Text here.</p>',
       doc(p('Text here.')));
 
-    check('two adjacent paragraphs',
+    checkParseEncodeRoundTrips('two adjacent paragraphs',
+      schema,
       '<p>Text here.</p><p>And more here.</p>',
       doc(
         p('Text here.'),
         p('And more here.'),
       ));
 
-    check('a paragraph with a hard break in it',
+    checkParseEncodeRoundTrips('a paragraph with a hard break in it',
+      schema,
       '<p>Text on two<br />lines.</p>',
       doc(
         p('Text on two', br, 'lines.'),
@@ -89,44 +56,50 @@ describe(`${name} html:`, () => {
   });
 
   describe('breaks:', () => {
-    check('a hard break in a paragraph',
+    checkParseEncodeRoundTrips('a hard break in a paragraph',
+      schema,
       '<p>one<br />two</p>',
       doc(p('one', br, 'two')));
 
-    check('multiple hard break in a paragraph',
+    checkParseEncodeRoundTrips('multiple hard break in a paragraph',
+      schema,
       '<p>one<br /><br />two</p>',
       doc(p('one', br, br, 'two')));
   });
 
   describe('marks formatting:', () => {
-    check('<tt> tag',
-      '<p>Text with <tt>monospace words</tt>.</p>',
+    checkParseEncodeRoundTrips('<tt> tag',
+      schema,
+      '<p>Text with <tt>code words</tt>.</p>',
       doc(p(
         'Text with ',
-        mono('monospace words'),
+        code('code words'),
         '.'
       )));
 
     checkParse('<tt> and <b>',
+      schema,
       [
-        '<p>Text with <tt><b>monospace words</b></tt>.</p>',
-        '<p>Text with <b><tt>monospace words</tt></b>.</p>'
+        '<p>Text with <tt><b>code words</b></tt>.</p>',
+        '<p>Text with <b><tt>code words</tt></b>.</p>'
       ],
       doc(p(
         'Text with ',
-        strong(mono('monospace words')),
+        strong(code('code words')),
         '.'
       )));
 
     checkEncode('<tt> and <b>',
+      schema,
       doc(p(
         'Text with ',
-        strong(mono('monospace words')),
+        strong(code('code words')),
         '.'
       )),
-      '<p>Text with <b><tt>monospace words</tt></b>.</p>');
+      '<p>Text with <b><tt>code words</tt></b>.</p>');
 
-    check('<ins> tag',
+    checkParseEncodeRoundTrips('<ins> tag',
+      schema,
       '<p>Text with <ins>underline words</ins>.</p>',
       doc(p(
         'Text with ',
@@ -134,7 +107,8 @@ describe(`${name} html:`, () => {
         '.'
       )));
 
-    check('<em> tag',
+    checkParseEncodeRoundTrips('<em> tag',
+      schema,
       '<p>Text with <em>emphasised words</em>.</p>',
       doc(p(
         'Text with ',
@@ -142,7 +116,8 @@ describe(`${name} html:`, () => {
         '.'
       )));
 
-    check('<b> tag',
+    checkParseEncodeRoundTrips('<b> tag',
+      schema,
       '<p>Text with <b>strong words</b>.</p>',
       doc(p(
         'Text with ',
@@ -151,6 +126,7 @@ describe(`${name} html:`, () => {
       )));
 
     checkParse('<b> and <em>',
+      schema,
       [
         '<p>Text with <b><em>strong emphasised words</em></b>.</p>',
         '<p>Text with <em><b>strong emphasised words</b></em>.</p>'
@@ -162,6 +138,7 @@ describe(`${name} html:`, () => {
       )));
 
     checkEncode('<b> and <em>',
+      schema,
       doc(p(
         'Text with ',
         em(strong('strong emphasised words')),
@@ -169,11 +146,13 @@ describe(`${name} html:`, () => {
       )),
       '<p>Text with <b><em>strong emphasised words</em></b>.</p>');
 
-    check('<del>',
+    checkParseEncodeRoundTrips('<del>',
+      schema,
       '<p><del>struck</del></p>',
       doc(p(strike('struck'))));
 
-    check('<sub>',
+    checkParseEncodeRoundTrips('<sub>',
+      schema,
       '<p>Text with <sub>subscript emphasised words</sub>.</p>',
       doc(p(
         'Text with ',
@@ -182,6 +161,7 @@ describe(`${name} html:`, () => {
       )));
 
     checkEncode('<em> and <sub>',
+      schema,
       doc(p(
         'Text with ',
         em(sub('subscript emphasised words')),
@@ -190,6 +170,7 @@ describe(`${name} html:`, () => {
       '<p>Text with <em><sub>subscript emphasised words</sub></em>.</p>');
 
     checkParse('<em> and <sub>',
+      schema,
       [
         '<p>Text with <em><sub>subscript emphasised words</sub></em>.</p>',
         '<p>Text with <sub><em>subscript emphasised words</em></sub>.</p>'
@@ -200,7 +181,8 @@ describe(`${name} html:`, () => {
         '.'
       )));
 
-    check('<sup>',
+    checkParseEncodeRoundTrips('<sup>',
+      schema,
       '<p>Text with <sup>subscript emphasised words</sup>.</p>',
       doc(p(
         'Text with ',
@@ -209,6 +191,7 @@ describe(`${name} html:`, () => {
       )));
 
     checkEncode('<em> and <sup>',
+      schema,
       doc(p(
         'Text with ',
         em(sup('subscript emphasised words')),
@@ -217,6 +200,7 @@ describe(`${name} html:`, () => {
       '<p>Text with <em><sup>subscript emphasised words</sup></em>.</p>');
 
     checkParse('<em> and <sup>',
+      schema,
       [
         '<p>Text with <em><sup>subscript emphasised words</sup></em>.</p>',
         '<p>Text with <sup><em>subscript emphasised words</em></sup>.</p>'
@@ -229,31 +213,38 @@ describe(`${name} html:`, () => {
   });
 
   describe('heading:', () => {
-    check('<h1> with anchor',
+    checkParseEncodeRoundTrips('<h1> with anchor',
+      schema,
       '<h1><a name="Readallaboutit%21"></a>Read all about it!</h1>',
       doc(h1('Read all about it!')));
 
-    check('<h2> with anchor',
+    checkParseEncodeRoundTrips('<h2> with anchor',
+      schema,
       '<h2><a name="Readallaboutit%21"></a>Read all about it!</h2>',
       doc(h2('Read all about it!')));
 
-    check('<h3> with anchor',
+    checkParseEncodeRoundTrips('<h3> with anchor',
+      schema,
       '<h3><a name="Readallaboutit%21"></a>Read all about it!</h3>',
       doc(h3('Read all about it!')));
 
-    check('<h4> with anchor',
+    checkParseEncodeRoundTrips('<h4> with anchor',
+      schema,
       '<h4><a name="Readallaboutit%21"></a>Read all about it!</h4>',
       doc(h4('Read all about it!')));
 
-    check('<h5> with anchor',
+    checkParseEncodeRoundTrips('<h5> with anchor',
+      schema,
       '<h5><a name="Readallaboutit%21"></a>Read all about it!</h5>',
       doc(h5('Read all about it!')));
 
-    check('<h6> with anchor',
+    checkParseEncodeRoundTrips('<h6> with anchor',
+      schema,
       '<h6><a name="Readallaboutit%21"></a>Read all about it!</h6>',
       doc(h6('Read all about it!')));
 
-    check('<h1> with nested <b>',
+    checkParseEncodeRoundTrips('<h1> with nested <b>',
+      schema,
       '<h1><a name="Readallaboutit%21"></a>Read all <b>about</b> it!</h1>',
       doc(
         h1(
@@ -263,7 +254,8 @@ describe(`${name} html:`, () => {
         )
       ));
 
-    check('<h1> with nested <b><em>',
+    checkParseEncodeRoundTrips('<h1> with nested <b><em>',
+      schema,
       '<h1><a name="Readallaboutit%21"></a>Read all <b><em>about</em></b> it!</h1>',
       doc(
         h1(
@@ -275,11 +267,13 @@ describe(`${name} html:`, () => {
   });
 
   describe('horizontal rule', () => {
-    check('single <hr />',
+    checkParseEncodeRoundTrips('single <hr />',
+      schema,
       '<hr />',
       doc(hr()));
 
-    check('multiple <hr />',
+    checkParseEncodeRoundTrips('multiple <hr />',
+      schema,
       '<hr /><hr />',
       doc(hr(), hr()));
   });

@@ -1,0 +1,11 @@
+{
+  "extends": "../../build/types/tsconfig.base",
+  "compilerOptions": {
+    "declaration": true,
+    "strictNullChecks": false,
+    "declarationDir": "./types",
+    "types": [
+      "mocha"
+    ]
+  }
+}

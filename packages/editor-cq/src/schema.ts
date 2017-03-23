@@ -7,7 +7,7 @@ import {
   HeadingNodeType,
   HorizontalRuleNodeType,
   ListItemNodeType,
-  MonoMarkType,
+  CodeMarkType,
   OrderedListNodeType,
   ParagraphNodeType,
   Schema,
@@ -16,7 +16,7 @@ import {
   SubSupMarkType,
   Text,
   UnderlineMarkType
-} from 'ak-editor-core';
+} from '@atlaskit/editor-core';
 
 export default new Schema({
   nodes: {
@@ -34,7 +34,7 @@ export default new Schema({
 
   // Note: Marks are applied in the order they are defined.
   marks: {
-    mono: MonoMarkType,
+    code: CodeMarkType,
     em: EmMarkType,
     strike: StrikeMarkType,
     strong: StrongMarkType,
@@ -58,7 +58,7 @@ export interface CQSchema extends Schema {
   };
 
   marks: {
-    mono: MonoMarkType;
+    code: CodeMarkType;
     em: EmMarkType;
     strike: StrikeMarkType;
     strong: StrongMarkType;

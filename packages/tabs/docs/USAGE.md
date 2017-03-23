@@ -2,7 +2,7 @@
 
 A tab is a simple graphical element that allows to contain multiple panels within a single window, and provides an easy way to switch between panels of similar content.
 
-![Example tabs](http://i.imgur.com/NO3xKah.gif)
+![Example tabs](https://i.imgur.com/NO3xKah.gif)
 
 ## Try it out
 

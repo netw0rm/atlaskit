@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/badge",
-  "version": "1.0.1",
+  "version": "1.2.2",
   "config": {
     "access": "public"
   },
@@ -8,11 +8,13 @@
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
+  "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/badge; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/index.d.ts"
   ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",
@@ -24,6 +26,11 @@
     "@atlaskit/util-readme": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Sean C"
+    }
+  ],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2"

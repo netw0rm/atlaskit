@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/multi-select",
-  "version": "2.2.0",
+  "version": "2.8.3",
   "config": {
     "access": "public"
   },
@@ -18,11 +18,9 @@
     "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
-    "@atlaskit/droplist": "^1.0.0",
-    "@atlaskit/droplist-group": "^1.0.0",
-    "@atlaskit/droplist-item": "^1.0.0",
+    "@atlaskit/droplist": "^3.0.0",
     "@atlaskit/icon": "^2.0.0",
-    "@atlaskit/field-base": "^1.0.0",
+    "@atlaskit/field-base": "^2.0.0",
     "@atlaskit/tag": "^1.0.0",
     "@atlaskit/tag-group": "^1.0.0"
   },
@@ -31,11 +29,17 @@
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
+    "@atlaskit/avatar": "^2.0.2",
     "@atlaskit/util-readme": "^1.0.0",
     "@atlaskit/multi-select": "*",
     "@atlaskit/button": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Nadia M"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

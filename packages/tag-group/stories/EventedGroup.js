@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Tag from 'ak-tag';
+import Tag from '@atlaskit/tag';
 
 import groupStyles from '../src/styles.less';
 import Group from '../src';

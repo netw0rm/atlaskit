@@ -1,26 +1,33 @@
-import AkButton from 'ak-button';
-import AkButtonGroup from 'ak-button-group';
-import ImageIcon from 'ak-icon/glyph/editor/image';
-import MentionIcon from 'ak-icon/glyph/editor/mention';
+import AkButton from '@atlaskit/button';
+import AkButtonGroup from '@atlaskit/button-group';
+import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { PureComponent } from 'react';
 import * as React from 'react';
+import { EmojiProvider } from '@atlaskit/emoji';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
+import { EmojisPluginState } from '../../plugins/emojis';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
 import { MentionsPluginState } from '../../plugins/mentions';
 import { TextFormattingState } from '../../plugins/text-formatting';
+import { ClearFormattingState } from '../../plugins/clear-formatting';
+import { PanelState } from '../../plugins/panel';
+import EmojiTypeAhead from '../EmojiTypeAhead';
 import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
 import MentionPicker from '../MentionPicker';
+import PanelEdit from '../PanelEdit';
 import ToolbarBlockType from '../ToolbarBlockType';
 import ToolbarButton from '../ToolbarButton';
 import ToolbarFeedback from '../ToolbarFeedback';
 import ToolbarHyperlink from '../ToolbarHyperlink';
 import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
+import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
+import ToolbarImage from '../ToolbarImage';
 import * as styles from './styles';
 
 export interface Props {
@@ -29,14 +36,21 @@ export interface Props {
   onInsertMention?: () => void;
   onInsertImage?: () => void;
   onSave?: () => void;
+  packageVersion?: string;
+  packageName?: string;
   pluginStateBlockType?: BlockTypeState;
   pluginStateCodeBlock?: CodeBlockState;
   pluginStateHyperlink?: HyperlinkState;
   pluginStateLists?: ListsState;
   pluginStateTextFormatting?: TextFormattingState;
+  pluginStateClearFormatting?: ClearFormattingState;
   pluginStateImageUpload?: ImageUploadState;
   pluginStateMentions?: MentionsPluginState;
+  pluginStateEmojis?: EmojisPluginState;
   mentionsResourceProvider?: any; // AbstractMentionResource
+  presenceResourceProvider?: any; // AbstractPresenceResource
+  emojiProvider?: Promise<EmojiProvider>;
+  pluginStatePanel?: PanelState;
 }
 
 export default class ChromeExpanded extends PureComponent<Props, {}> {
@@ -48,16 +62,23 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
         <div className={styles.toolbar}>
           {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} /> : null}
           {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} /> : null}
+          {props.pluginStateTextFormatting || props.pluginStateClearFormatting ?
+            <ToolbarAdvancedTextFormatting
+              pluginStateTextFormatting={props.pluginStateTextFormatting}
+              pluginStateClearFormatting={props.pluginStateClearFormatting}
+            /> : null}
           {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} /> : null}
           {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} /> : null}
           <span style={{ flexGrow: 1 }} />
-          {props.feedbackFormUrl ? <ToolbarFeedback feedbackFormUrl={props.feedbackFormUrl} /> : null}
+          {props.feedbackFormUrl ? <ToolbarFeedback packageVersion={props.packageVersion} packageName={props.packageName} /> : null}
         </div>
         <div className={styles.content}>
           {props.children}
           {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} /> : null}
           {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} /> : null}
-          {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} /> : null}
+          {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} presenceProvider={props.presenceResourceProvider} /> : null}
+          {props.pluginStateEmojis && props.emojiProvider ? <EmojiTypeAhead pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
+          {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} /> : null}
         </div>
         <div className={styles.footer}>
           <div className={styles.footerActions}>
@@ -80,11 +101,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
               <MentionIcon label="Mention" />
             </ToolbarButton>
             }
-            {!props.pluginStateImageUpload ? null :
-            <ToolbarButton onClick={this.handleInsertImage}>
-              <ImageIcon label="Image" />
-            </ToolbarButton>
-            }
+            {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} /> : null}
           </div>
         </div>
       </div>
@@ -96,15 +113,6 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
     const { onCancel } = this.props;
     if (onCancel) {
       onCancel();
-    }
-  }
-
-  @analytics('atlassian.editor.image.button')
-  private handleInsertImage = () => {
-    const { pluginStateImageUpload } = this.props;
-
-    if (pluginStateImageUpload) {
-      pluginStateImageUpload.handleImageUpload();
     }
   }
 

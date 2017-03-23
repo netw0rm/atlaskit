@@ -3,7 +3,8 @@ import { action } from '@kadira/storybook';
 import { AtlassianIcon, SearchIcon, QuestionCircleIcon, AddIcon, DashboardIcon, SettingsIcon, IssuesIcon, ArrowleftIcon } from '@atlaskit/icon';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import AkAvatar from '@atlaskit/avatar';
-import Navigation, { AkContainerHeader, AkContainerItemGroup, AkContainerItem, AkDrawerItem, AkGlobalItem } from '../../src/index';
+import BasicSearch from './BasicSearch';
+import Navigation, { AkContainerTitle, AkContainerItemGroup, AkContainerItem, AkDrawerItem, AkSearchDrawer, AkCreateDrawer, AkGlobalItem } from '../../src/index';
 import nucleusLogo from '../nucleus.png';
 import emmaAvatar from '../emma.png';
 
@@ -12,8 +13,10 @@ export default class BasicNavigation extends PureComponent {
     children: PropTypes.node,
     isOpen: PropTypes.bool,
     width: PropTypes.number,
-    containerHeader: PropTypes.node,
+    containerHeaderComponent: PropTypes.func,
     openDrawer: PropTypes.string,
+    searchDrawerContent: PropTypes.node,
+    createDrawerContent: PropTypes.node,
   }
 
   static defaultProps = {
@@ -31,14 +34,16 @@ export default class BasicNavigation extends PureComponent {
         text="Item C"
       />
     </div>),
-    containerHeader: (
-      <AkContainerHeader
+    containerHeaderComponent: () => (
+      <AkContainerTitle
         href="#foo"
         icon={
           <img alt="nucleus" src={nucleusLogo} />
         }
         text="AtlasKit"
+        subText="Is the king"
       />),
+    searchDrawerContent: (<BasicSearch />),
     createDrawerContent: (
       <div>
         <AkDrawerItem
@@ -57,7 +62,6 @@ export default class BasicNavigation extends PureComponent {
           />
         </AkContainerItemGroup>
       </div>),
-    openDrawer: null,
   }
 
   constructor(...args) {
@@ -69,15 +73,17 @@ export default class BasicNavigation extends PureComponent {
     };
   }
 
-  openDrawer = name =>
-    () => this.setState({
+  openDrawer = (name) => {
+    this.setState({
       openDrawer: name,
     });
+  }
 
-  closeDrawer = () =>
-    () => this.setState({
+  closeDrawer = () => {
+    this.setState({
       openDrawer: null,
     });
+  }
 
   resize = (resizeState) => {
     this.setState({
@@ -87,10 +93,34 @@ export default class BasicNavigation extends PureComponent {
   }
 
   render() {
+    const backIcon = <ArrowleftIcon label="Back icon" size="medium" />;
+    const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="medium" />;
+    const ContainerHeader = this.props.containerHeaderComponent || (() => null);
     return (
       <Navigation
-        containerHeader={this.props.containerHeader}
-        drawerBackIcon={<ArrowleftIcon label="Back icon" size="medium" />}
+        backIconOffset={this.state.backIconOffset}
+        containerHeaderComponent={ContainerHeader}
+        drawers={[
+          (<AkSearchDrawer
+            backIcon={backIcon}
+            isOpen={this.state.openDrawer === 'search'}
+            key="search"
+            onBackButton={this.closeDrawer}
+            primaryIcon={globalPrimaryIcon}
+          >
+            {this.props.searchDrawerContent}
+          </AkSearchDrawer>),
+          (<AkCreateDrawer
+            backIcon={backIcon}
+            header={<ContainerHeader />}
+            isOpen={this.state.openDrawer === 'create'}
+            key="create"
+            onBackButton={this.closeDrawer}
+            primaryIcon={globalPrimaryIcon}
+          >
+            {this.props.createDrawerContent}
+          </AkCreateDrawer>),
+        ]}
         globalAccountItem={
           <AkDropdownMenu
             appearance="tall"
@@ -155,19 +185,15 @@ export default class BasicNavigation extends PureComponent {
             </AkGlobalItem>
           </AkDropdownMenu>
         }
-        globalPrimaryIcon={<AtlassianIcon label="Atlassian icon" size="medium" />}
-        globalPrimaryItemHref="http://www.atlassian.com"
+        globalPrimaryIcon={globalPrimaryIcon}
+        globalPrimaryItemHref="//www.atlassian.com"
         globalSearchIcon={<SearchIcon label="Search icon" />}
-        hasBlanket
-        isCreateDrawerOpen={this.state.openDrawer === 'create'}
         isOpen={this.state.isOpen}
-        isSearchDrawerOpen={this.state.openDrawer === 'search'}
-        onBlanketClicked={action('blanket clicked')}
-        onCreateDrawerClose={this.closeDrawer()}
-        onCreateDrawerOpen={this.openDrawer('create')}
+        onCreateDrawerOpen={() => { this.openDrawer('create'); }}
         onResize={this.resize}
-        onSearchDrawerClose={this.closeDrawer()}
-        onSearchDrawerOpen={this.openDrawer('search')}
+        onResizeStart={action('resizeStart')}
+        onSearchDrawerOpen={() => { this.openDrawer('search'); }}
+        openDrawer={this.state.openDrawer}
         position="right bottom"
         resizeHandler={action('resize')}
         width={this.state.width}

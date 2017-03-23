@@ -1,14 +1,16 @@
 @import '~@atlaskit/util-shared-styles/src/colors.less';
 @import '../../shared-variables.less';
 @import '~@atlaskit/util-shared-styles/src/grid.less';
-@import '~@atlaskit/util-shared-styles/src/z-indexes.less';
 
-@width: 45 * @ak-grid-size;
+@narrow-width: 45 * @ak-grid-size;
 @wide-width: 75 * @ak-grid-size;
+@full-width: 100vw;
 @box-shadow-spread: 4 * @ak-grid-size;
-@off-screen-translate-x: @width + @box-shadow-spread;
-@wide-off-screen-translate-x: @wide-width + @box-shadow-spread;
+@narrow-width-off-screen-translate-x: @narrow-width + @box-shadow-spread;
+@wide-width-off-screen-translate-x: @wide-width + @box-shadow-spread;
+@full-width-off-screen-translate-x: @full-width + @box-shadow-spread;
 @transform-transition: transform 220ms cubic-bezier(0.15, 1, 0.3, 1);
+@width-transition: width 220ms cubic-bezier(0.15, 1, 0.3, 1);
 
 .hidden {
   display: none;
@@ -24,20 +26,28 @@
   left: 0;
   overflow: hidden;
   position: fixed;
-  transform: translateX(-@off-screen-translate-x);
-  transition: @transform-transition;
-  width: @width;
-  z-index: @ak-z-index-blanket + 10;
+  transform: translateX(-@narrow-width-off-screen-translate-x);
+  transition: @transform-transition, @width-transition;
+  width: @narrow-width;
   &:not(.open) {
     box-shadow: none;
   }
-  &.wide {
+  &.wide-width {
     width: @wide-width;
-    transform: translateX(-@wide-off-screen-translate-x);
+    transform: translateX(-@wide-width-off-screen-translate-x);
   }
-  &.open, &.wide.open {
+  &.full-width {
+    width: @full-width;
+    transform: translateX(-@full-width-off-screen-translate-x);
+  }
+  &.open, &.wide-width.open, &.full-width.open {
     transform: translateX(0);
   }
+}
+
+.header {
+  min-height: @ak-grid-size * 7;
+  padding-top: @ak-grid-size;
 }
 
 .side {
@@ -45,7 +55,8 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: @global-vertical-padding 0;
+  flex: 1 0 auto; 
+  padding: @global-vertical-padding-top 0 @ak-grid-size * 2 0;
   width: @global-open-width;
 
   .icon {
@@ -56,30 +67,36 @@
     width: @drawer-back-icon-size;
   }
 
-  .isBackIconPositionCreate {
-    padding-top: @drawer-back-icon-size;
-  }
-
   .backIconOuter {
-    margin-top: @ak-grid-size * 1.5;
+     position: absolute,
   }
 }
 
 .main {
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   overflow-y: auto;
   padding: (@ak-grid-size * 2) @ak-grid-size 0 @ak-grid-size;
-  width: calc(~"100% -" @global-open-width)
+  position: relative;
+  width: 100%;
+}
+
+.content {
+  width: 100%;
 }
 
 .fixed {
   transition: @transform-transition;
-  transform: translateX(@off-screen-translate-x);
-  .wide & {
-    transform: translateX(@wide-off-screen-translate-x);
+  transform: translateX(@narrow-width-off-screen-translate-x);
+  .wide-width & {
+    transform: translateX(@wide-width-off-screen-translate-x);
   }
-  .open &, .wide.open & {
+  .full-width & {
+    transform: translateX(@full-width-off-screen-translate-x);
+  }
+  .open &, .wide-width.open &, .full-width.open & {
     transform: translateX(0);
   }
 }

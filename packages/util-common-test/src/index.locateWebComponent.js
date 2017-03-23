@@ -7,6 +7,7 @@
  * @param {String} componentNamePrefix The name of the web component (will be used as a prefix)
  * @param {Node} [parentElement] The parent element to search in. Will use document if omitted.
  * @return {Node[]} An array of DOM elements
+ * @ignore
  */
 function locateWebComponent(componentNamePrefix, parentElement) {
   const using = parentElement || document;

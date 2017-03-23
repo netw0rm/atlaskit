@@ -3,20 +3,20 @@ import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import Editor from '../src';
-import { name } from '../package.json';
+import { name, version } from '../package.json';
+import { storyDecorator } from '@atlaskit/editor-core/dist/es5/test-helper';
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
 
 storiesOf(name, module)
+  .addDecorator(storyDecorator(version))
   .add('Empty', () =>
-    <div style={{ padding: 20 }}>
-      <Editor
-        isExpandedByDefault
-        onCancel={CANCEL_ACTION}
-        onSave={SAVE_ACTION}
-      />
-    </div>
+    <Editor
+      isExpandedByDefault
+      onCancel={CANCEL_ACTION}
+      onSave={SAVE_ACTION}
+    />
   )
   .add('CXHTML preview', () => {
     type Props = {};
@@ -46,9 +46,5 @@ storiesOf(name, module)
       }
     }
 
-    return (
-      <div style={{ padding: 20 }}>
-        <Demo />
-      </div>
-    );
+    return <Demo />;
   });

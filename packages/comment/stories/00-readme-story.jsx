@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { Code, Description, Heading } from 'akutil-readme';
+import { Code, Description, Heading } from '@atlaskit/util-readme';
 
 /* eslint-disable import/no-duplicates, import/first */
 import CommentExample from './examples/CommentExample';

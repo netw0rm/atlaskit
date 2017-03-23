@@ -1,6 +1,6 @@
 import keyCode from 'keycode';
 import 'custom-event-polyfill';
-import { afterMutations } from 'akutil-common-test';
+import { afterMutations } from '@atlaskit/util-common-test';
 
 import { name } from '../package.json';
 import KeyPressHandler,

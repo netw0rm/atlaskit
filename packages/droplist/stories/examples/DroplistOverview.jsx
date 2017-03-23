@@ -1,33 +1,21 @@
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import Group from '@atlaskit/droplist-group';
-import Item from '@atlaskit/droplist-item';
-
-import DropdownList from '../../src';
+import DropdownList, { Group, Item } from '@atlaskit/droplist';
 
 const DroplistOverview = class extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isDropdownOpen: true,
-    };
-  }
-
   render() {
     return (<DropdownList
-      isOpen={this.state.isDropdownOpen}
-      onOpenChange={(attrs) => {
-        this.setState({ isDropdownOpen: attrs.isOpen });
-      }}
-      isTriggerNotTabbable
       appearance="default"
+      isOpen
+      isTriggerNotTabbable
+      onOpenChange={(attrs) => {
+        console.log(attrs.isOpen);
+      }}
       position="right top"
-      listContext="menu"
-      trigger={<Button isSelected={this.state.isDropdownOpen}>...</Button>}
+      trigger={<Button isSelected>...</Button>}
     >
       <Group heading="Australia">
-        <Item href="http://atlassian.com" target="_blank">Sydney</Item>
+        <Item href="//atlassian.com" target="_blank">Sydney</Item>
         <Item isHidden>Hidden item</Item>
         <Item>Canberra</Item>
         <Item

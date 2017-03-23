@@ -1,7 +1,0 @@
-{
-  "extends": "./tsconfig",
-  // The ts-loader pulls in all the 'include' files into the compiler when
-  // compiling a file, which is quite slow. So we omit them all so that only
-  // the file being loaded is compiled.
-  "include": []
-}

@@ -3,9 +3,8 @@ import { expect } from 'chai';
 import MarkdownInputRulesPlugin from '../../../src/plugins/markdown-inputrules';
 import {
   a, blockquote, br, chaiPlugin, code_block, doc, em, h1, h2,
-  h3, hr, img, li, makeEditor, mono, ol, p, strike, strong, ul
-} from '../../../test-helper';
-
+  h3, hr, img, li, makeEditor, code, ol, p, strike, strong, ul, mention
+} from '../../../src/test-helper';
 chai.use(chaiPlugin);
 
 describe('markdown-inputrules', () => {
@@ -26,13 +25,6 @@ describe('markdown-inputrules', () => {
       pm.input.insertText(sel, sel, '**text**');
       expect(pm.doc).to.deep.equal(doc(p(strong('text'))));
     });
-
-    it('should convert "__text__" to strong', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '__text__');
-      expect(pm.doc).to.deep.equal(doc(p(strong('text'))));
-    });
   });
 
   describe('em rule', () => {
@@ -40,13 +32,6 @@ describe('markdown-inputrules', () => {
       const { pm, sel } = editor(doc(p('{<>}')));
 
       pm.input.insertText(sel, sel, '*text*');
-      expect(pm.doc).to.deep.equal(doc(p(em('text'))));
-    });
-
-    it('should convert "_text_" to italic', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '_text_');
       expect(pm.doc).to.deep.equal(doc(p(em('text'))));
     });
 
@@ -93,13 +78,6 @@ describe('markdown-inputrules', () => {
   });
 
   describe('horizontal rule', () => {
-    it('should convert "***" at the start of a line to horizontal rule', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '***');
-      expect(pm.doc).to.deep.equal(doc(p(), hr, p()));
-    });
-
     it('should not convert "***" in the middle of a line to a horizontal rule', () => {
       const { pm, sel } = editor(doc(p('test{<>}')));
 
@@ -122,12 +100,40 @@ describe('markdown-inputrules', () => {
     });
   });
 
-  describe('mono rule', () => {
-    it('should convert "`text`" to mono text', () => {
+  describe('code rule', () => {
+    it('should convert "`text`" to code text', () => {
       const { pm, sel } = editor(doc(p('{<>}')));
 
       pm.input.insertText(sel, sel, '`text`');
-      expect(pm.doc).to.deep.equal(doc(p(mono('text'))));
+      expect(pm.doc).to.deep.equal(doc(p(code('text'), ' ')));
+    });
+
+    it('should not preserve mention inside code text', () => {
+      const mentionNode = mention({ id: '1234', displayName: '@helga' });
+      const { pm } = editor(
+        doc(p(
+          'hi! `hello, ',
+          mentionNode,
+          ' there'
+        )));
+      pm.input.insertText(20, 20, '`');
+      expect(pm.doc).to.deep.equal(doc(p('hi! ', code('hello, @helga there'), ' ')));
+    });
+
+    it('should convert all nodes to plaintext and remove all marks inside selection', () => {
+      const mentionNode = mention({ id: '1234', displayName: '@helga' });
+      const { pm } = editor(
+        doc(p(
+          'hi! `h',
+          em('e'),
+          strike('l'),
+          'lo, ',
+          mentionNode,
+          strong(' duh!'),
+          ' there'
+        )));
+      pm.input.insertText(25, 25, '`');
+      expect(pm.doc).to.deep.equal(doc(p('hi! ', code('hello, @helga duh! there'), ' ')));
     });
   });
 
@@ -168,20 +174,6 @@ describe('markdown-inputrules', () => {
       const { pm, sel } = editor(doc(p('{<>}')));
 
       pm.input.insertText(sel, sel, '* ');
-      expect(pm.doc).to.deep.equal(doc(ul(li(p()))));
-    });
-
-    it('should convert "+ " to a bullet list item', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '+ ');
-      expect(pm.doc).to.deep.equal(doc(ul(li(p()))));
-    });
-
-    it('should convert "- " to a bullet list item', () => {
-      const { pm, sel } = editor(doc(p('{<>}')));
-
-      pm.input.insertText(sel, sel, '- ');
       expect(pm.doc).to.deep.equal(doc(ul(li(p()))));
     });
 
@@ -275,18 +267,56 @@ describe('markdown-inputrules', () => {
   });
 
   describe('codeblock rule', () => {
-    it('should convert "```" to a code block', () => {
-      const { pm, sel } = editor(doc(p('{<>}hello', br, 'world')));
+    context('when node is not convertable to code block', () => {
+      it('should not convert "```" to a code block\t', () => {
+        const { pm, sel } = editor(doc(ul(li(p('{<>}hello')))));
 
-      pm.input.insertText(sel, sel, '```');
-      expect(pm.doc).to.deep.equal(doc(code_block()('hello\nworld')));
+        pm.input.insertText(sel, sel, '```');
+        expect(pm.doc).to.deep.equal(doc(ul(li(p('```hello')))));
+      });
     });
 
-    it('should not convert "```" to a code block when inside a list', () => {
-      const { pm, sel } = editor(doc(ul(li(p('{<>}')))));
+    context('when node is convertable to code block', () => {
+      context('when converted node has content', () => {
+        it('should convert "```" to a code block', () => {
+          const { pm, sel } = editor(doc(p('{<>}hello', br, 'world')));
 
-      pm.input.insertText(sel, sel, '```');
-      expect(pm.doc).to.deep.equal(doc(ul(li(p('```')))));
+          pm.input.insertText(sel, sel, '```');
+          expect(pm.doc).to.deep.equal(doc(code_block()('hello\nworld')));
+        });
+      });
+
+      context('when converted node has no content', () => {
+        it('should not convert "```" to a code block\t', () => {
+          const { pm, sel } = editor(doc(p('{<>}')));
+
+          pm.input.insertText(sel, sel, '```');
+          expect(pm.doc).to.deep.equal(doc(p('```')));
+        });
+      });
+
+    });
+
+  });
+
+  describe('nested rules', () => {
+    it('should convert "*`text`*" to italic code text', () => {
+      const { pm, sel } = editor(doc(p('{<>}')));
+
+      pm.input.insertText(sel, sel, '*`text`');
+      expect(pm.doc).to.deep.equal(doc(p('*', code('text'), ' ')));
+      pm.input.insertText(sel + 6, sel + 6, '*');
+      expect(pm.doc).to.deep.equal(doc(p(em(code('text')), em(' '))));
+    });
+
+    it('should convert "~~**text**~~" to strike strong', () => {
+      const { pm, sel } = editor(doc(p('{<>}')));
+
+      pm.input.insertText(sel, sel, '~~**text**');
+      expect(pm.doc).to.deep.equal(doc(p('~~', strong('text'))));
+      pm.input.insertText(sel + 6, sel + 6, '~~');
+      expect(pm.doc).to.deep.equal(doc(p(strike(strong('text')))));
     });
   });
+
 });

@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import Button from 'ak-button';
+import Button from '@atlaskit/button';
 
 import StatelessDropdownMenu from './StatelessMenu';
 
@@ -85,7 +85,7 @@ export default class DropdownMenu extends PureComponent {
     this.props.onOpenChange({ isOpen: false });
   }
 
-  render = () => {
+  render() {
     const { props, state } = this;
     return (
       <StatelessDropdownMenu

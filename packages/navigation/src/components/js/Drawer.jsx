@@ -1,70 +1,89 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
+import Blanket from '@atlaskit/blanket';
 import styles from 'style!../less/Drawer.less';
 import DrawerTrigger from './DrawerTrigger';
 import DrawerBackIcon from './DrawerBackIcon';
+import ContainerHeader from './ContainerHeader';
 
 export default class Drawer extends PureComponent {
   static propTypes = {
     backIcon: PropTypes.node,
-    backIconPosition: PropTypes.oneOf(['search', 'create']),
-    children: PropTypes.element,
+    backIconOffset: PropTypes.number,
+    children: PropTypes.node,
     header: PropTypes.node,
     isOpen: PropTypes.bool,
-    isWide: PropTypes.bool,
     onBackButton: PropTypes.func,
     primaryIcon: PropTypes.node,
+    width: PropTypes.oneOf(['narrow', 'wide', 'full']),
   }
   static defaultProps = {
+    backIconOffset: 0,
     onBackButton: () => {},
     primaryIcon: null,
-    isWide: false,
+    width: 'narrow',
     isOpen: false,
   }
 
   render() {
     const {
       backIcon,
-      backIconPosition,
+      backIconOffset,
       header,
       isOpen,
-      isWide,
       onBackButton,
       primaryIcon,
+      width,
     } = this.props;
+
+    const backIconOuterStyle = {
+      top: `${backIconOffset}px`,
+    };
+
     return (
-      <div
-        className={classNames(styles.drawer, {
-          [styles.open]: isOpen,
-          [styles.wide]: isWide,
-        })}
-      >
-        <div className={classNames(styles.fixed, styles.side)}>
-          <div className={classNames(styles.icon)}>
-            {primaryIcon}
-          </div>
-          <div
-            className={classNames(styles.backIconOuter, {
-              [styles.isBackIconPositionCreate]: (backIconPosition === 'create'),
-            })}
-          >
-            <div className={classNames(styles.backIcon)}>
-              <DrawerTrigger onActivate={onBackButton}>
-                <DrawerBackIcon
-                  isVisible={isOpen}
-                >
-                  {backIcon}
-                </DrawerBackIcon>
-              </DrawerTrigger>
+      <div>
+        <div style={{ zIndex: 0, position: 'relative' }}>
+          <Blanket
+            isTinted={isOpen}
+            canClickThrough={!isOpen}
+            onBlanketClicked={onBackButton}
+          />
+        </div>
+        <div
+          className={classNames(styles.drawer, {
+            [styles.open]: isOpen,
+            [styles.wideWidth]: (width === 'wide'),
+            [styles.fullWidth]: (width === 'full'),
+          })}
+        >
+
+          <div className={classNames(styles.fixed, styles.side)}>
+            <div className={classNames(styles.icon)}>
+              {primaryIcon}
+            </div>
+            <div
+              className={classNames(styles.backIconOuter)} style={backIconOuterStyle}
+            >
+              <div className={classNames(styles.backIcon)}>
+                <DrawerTrigger onActivate={onBackButton}>
+                  <DrawerBackIcon
+                    isVisible={isOpen}
+                  >
+                    {backIcon}
+                  </DrawerBackIcon>
+                </DrawerTrigger>
+              </div>
             </div>
           </div>
-        </div>
-        <div className={classNames(styles.main)}>
-          <div className={classNames(styles.fixed)}>
-            {header}
-          </div>
-          <div>
-            {this.props.children}
+          <div className={classNames(styles.main)}>
+            {(width !== 'full') ?
+              <div className={classNames(styles.fixed, styles.header)}>
+                <ContainerHeader>{header}</ContainerHeader>
+              </div>
+            : null}
+            <div className={classNames(styles.content)}>
+              {this.props.children}
+            </div>
           </div>
         </div>
       </div>

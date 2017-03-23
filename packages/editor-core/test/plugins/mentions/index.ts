@@ -1,10 +1,10 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { ListsPlugin, MentionNodeType, MentionQueryMarkType, ProseMirror, Schema, schema as schemaBasic } from '../../../src';
+import { ListsPlugin, MentionNodeType, MentionQueryMarkType, ProseMirror, Schema, schema as schemaBasic, Text } from '../../../src';
 import BlockTypePlugin from '../../../src/plugins/block-type';
 import MentionsPlugin from '../../../src/plugins/mentions';
-import { chaiPlugin, fixtures } from '../../../test-helper';
+import { chaiPlugin, fixtures } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
@@ -83,6 +83,16 @@ describe('mentions', () => {
       pm.input.dispatchKey('Enter', keyDownEvent);
     });
 
+    it('should ignore "Space"-key if no "onTrySelectCurrent" is attached', () => {
+      const pm = makeEditor(container());
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+
+      const keyDownEvent = new CustomEvent('keydown');
+      (keyDownEvent as any).keyCode = 32;
+      pm.input.dispatchKey('Space', keyDownEvent);
+    });
+
     it('should trigger "onSelectPrevious" when "Up"-key is pressed', () => {
       const pm = makeEditor(container());
       const pluginState = MentionsPlugin.get(pm)!;
@@ -128,6 +138,21 @@ describe('mentions', () => {
       expect(spy.called).to.equal(true);
     });
 
+    it('should trigger "onTrySelectCurrent" when "Space"-key is pressed', () => {
+      const pm = makeEditor(container());
+      const pluginState = MentionsPlugin.get(pm)!;
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+
+      const spy = sinon.spy();
+      pluginState.onTrySelectCurrent = spy;
+      const keyDownEvent = new CustomEvent('keydown');
+      (keyDownEvent as any).keyCode = 32;
+
+      pm.input.dispatchKey('Space', keyDownEvent);
+      expect(spy.called).to.equal(true);
+    });
+
     it('should trigger "dismiss" when "Esc"-key is pressed', () => {
       const pm = makeEditor(container());
       const pluginState = MentionsPlugin.get(pm)!;
@@ -161,6 +186,23 @@ describe('mentions', () => {
       });
 
       expect(pm.doc.nodeAt(1)).to.be.of.nodeType(MentionNodeType);
+    });
+
+    it('should insert a space after the mention-node', () => {
+      const pm = makeEditor(container());
+      const pluginInstance = MentionsPlugin.get(pm)!;
+
+      pm.input.insertText(0, 0, '@');
+      pm.flush();
+      pm.tr.typeText('oscar').apply();
+
+      pluginInstance.insertMention({
+        name: 'Oscar Wallhult',
+        mentionName: 'oscar',
+        id: '1234'
+      });
+
+      expect(pm.doc.nodeAt(2)).to.be.of.nodeType(Text);
     });
 
     it('should allow inserting multiple @-mentions next to eachother', () => {
@@ -232,7 +274,7 @@ describe('mentions', () => {
       expect(pm.doc.nodeAt(5)).to.equal(null);
     });
 
-    it('should not only 1 mention at a time inside blockqoute', () => {
+    it('should insert only 1 mention at a time inside blockqoute', () => {
       const pm = makeEditor(container());
       const pluginInstance = MentionsPlugin.get(pm)!;
       const blockTypePluginInstance = BlockTypePlugin.get(pm)!;

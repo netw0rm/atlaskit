@@ -26,7 +26,7 @@ const relativePosition = {
 };
 
 storiesOf(name, module)
-  .add('a dumb ak-tooltip', () => (
+  .add('a dumb tooltip', () => (
     <div>
       <div style={containerStyle}>
         <DumbTooltip position="top" description="This is a tooltip with position = top" visible>

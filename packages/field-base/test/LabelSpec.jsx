@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import Label from '../src/Label';
 import styles from '../src/styles.less';
 
@@ -40,6 +40,24 @@ describe('ak-field-base', () =>
       it('should not append an asterisk to the content if required is not set', () => {
         expect(shallow(<Label {...defaultProps} />).find(`.${styles.locals.required}`).length).to.equal(0);
         expect(shallow(<Label {...defaultProps} />).text()).to.equal('test');
+      });
+    });
+
+    describe('appearance prop', () => {
+      it('should be "default" appearance by default', () => {
+        expect(mount(<Label />).prop('appearance')).to.equal('default');
+      });
+
+      it('should set className for it', () => {
+        expect(mount(<Label />).find(`.${styles.locals.inlineEdit}`).length).to.equal(0);
+        expect(mount(<Label appearance="inline-edit" />).find(`.${styles.locals.inlineEdit}`).length).to.equal(1);
+      });
+    });
+
+    describe('isFirstChild prop', () => {
+      it('should set className for it', () => {
+        expect(mount(<Label />).find(`.${styles.locals.firstChild}`).length).to.equal(0);
+        expect(mount(<Label isFirstChild />).find(`.${styles.locals.firstChild}`).length).to.equal(1);
       });
     });
 

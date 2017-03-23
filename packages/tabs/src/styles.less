@@ -16,13 +16,16 @@
 
 .ak-tabs-root {
   display: flex;
+  flex-basis: 100%;
   flex-direction: column;
-  flex: 1 1 auto;
+  flex-grow: 1;
+  min-height: 0%; // FF http://stackoverflow.com/questions/28636832/firefox-overflow-y-not-working-with-nested-flexbox
+  max-width: 100%;
 }
 
 .ak-tab-labels {
   display: flex;
-  flex: 0 0 auto;
+  font-weight: 500;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -33,7 +36,6 @@
 .ak-tabs-button-container {
   color: @ak-tabs-color-label-default;
   cursor: pointer;
-  flex: 0 0 auto; // Prevents labels from shrinking in Safari when the container shrinks.
   font-size: @ak-tabs-font-size;
   line-height: @ak-tabs-line-height;
   margin: 0;
@@ -83,8 +85,9 @@
 .ak-tab-label-selected::after {
   background-color: @ak-tabs-color-line-default;
   bottom: 0;
+  border-radius: 2px;
   content: '';
-  height: 1px;
+  height: 2px;
   left: @ak-tabs-padding-horizontal;
   margin: 0;
   position: absolute;
@@ -108,9 +111,9 @@
 // Tab content
 .ak-tab-pane {
   display: flex;
-  min-height: 0; // needed for Firefox flex box
   padding-left: 2 * @ak-tabs-margin;
   flex-grow: 1;
+  min-height: 0%; // FF http://stackoverflow.com/questions/28636832/firefox-overflow-y-not-working-with-nested-flexbox
 
   &:not(.selected) {
     display: none;

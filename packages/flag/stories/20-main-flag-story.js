@@ -47,4 +47,19 @@ storiesOf(name, module)
         />
       </FlagGroup>
     </div>
+  ))
+  .add('with a description containing a link', () => (
+    <FlagGroup>
+      <Flag
+        description={
+          <span>
+            My favourite issue is <a href="https://ecosystem.atlassian.net/browse/AK-90210">AK-90210</a>
+          </span>
+        }
+        icon={<GreenSuccessIcon />}
+        id="1"
+        key="1"
+        title="I am a Flag"
+      />
+    </FlagGroup>
   ));

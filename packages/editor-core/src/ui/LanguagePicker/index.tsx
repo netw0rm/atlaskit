@@ -1,4 +1,4 @@
-import DropdownMenu from 'ak-dropdown-menu';
+import DropdownMenu from '@atlaskit/dropdown-menu';
 import * as React from 'react';
 import { PureComponent } from 'react';
 
@@ -15,7 +15,7 @@ export interface State {
   active?: boolean;
   element?: HTMLElement;
   language: string;
-  content?: string;
+  toolbarVisible?: boolean;
 }
 
 const items = [{
@@ -25,7 +25,7 @@ const items = [{
 }];
 
 export default class LanguagePicker extends PureComponent<Props, State> {
-  state: State = { language: NO_LANGUAGE };
+  state: State = { language: NO_LANGUAGE, toolbarVisible: false };
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -36,9 +36,9 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   render() {
-    const { active, language, element } = this.state;
+    const { language, element, toolbarVisible } = this.state;
 
-    if (active) {
+    if (toolbarVisible) {
       return (
         <FloatingToolbar target={element} align="left" autoPosition>
           <div className={styles.container}>
@@ -54,19 +54,28 @@ export default class LanguagePicker extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: CodeBlockState) => {
-    const {active, element, language, content} = pluginState;
+    const { element, language, toolbarVisible} = pluginState;
+
+    const matchedLanguage = findMatchedLanguage(language);
+    const updatedlanguage = this.optionToLanguage(matchedLanguage);
+
+    if (language !== updatedlanguage) {
+      this.props.pluginState.updateLanguage(updatedlanguage);
+    }
 
     this.setState({
-      active: active,
-      language: findMatchedLanguage(language),
-      element: element,
-      content: content
+      language: matchedLanguage,
+      element,
+      toolbarVisible
     });
   }
 
   private handleLanguageChange = (activeItem: any) => {
-    const selectedLanguage = activeItem.item.content;
-    const language = selectedLanguage.toLowerCase() === NO_LANGUAGE.toLowerCase() ? undefined : selectedLanguage;
+    const language = this.optionToLanguage(activeItem.item.content);
     this.props.pluginState.updateLanguage(language);
+  }
+
+  private optionToLanguage(languageOption: string): string | undefined {
+    return languageOption.toLowerCase() === NO_LANGUAGE.toLowerCase() ? undefined : languageOption;
   }
 }

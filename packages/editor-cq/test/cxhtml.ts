@@ -1,11 +1,11 @@
-import { DocNode } from 'ak-editor-core';
-import { chaiPlugin } from 'ak-editor-core/test-helper';
+import { DocNode } from '@atlaskit/editor-core';
+import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { encode, parse } from '../src/cxhtml';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
-  mono, ol, p, strike, strong, sub, sup, u, ul
+  code, ol, p, strike, strong, sub, sup, u, ul
 } from './_schema-builder';
 
 chai.use(chaiPlugin);
@@ -25,7 +25,7 @@ const checkBuilder = (fn: any, description: string, cxhtml: string, doc: DocNode
 const check = (description: string, cxhtml: string, doc: DocNode) =>
   checkBuilder(it, description, cxhtml, doc);
 
-describe('ak-editor-cq encode-cxml:', () => {
+describe('@atlaskit/editor-cq encode-cxml:', () => {
   describe('basic formatting:', () => {
     describe('text:', () => {
       check('basic text',
@@ -146,11 +146,11 @@ describe('ak-editor-cq encode-cxml:', () => {
         '<s>struck</s>',
         doc(p(strike('struck'))));
 
-      check('<mono>',
+      check('<code>',
         '<p>Text with <span style="font-family: monospace;">function bar() { return foo; }</span>.</p>',
         doc(p(
           'Text with ',
-          mono('function bar() { return foo; }'),
+          code('function bar() { return foo; }'),
           '.'
         )));
 
@@ -186,13 +186,13 @@ describe('ak-editor-cq encode-cxml:', () => {
           '.'
         )));
 
-      check('<i><mono> nesting',
+      check('<i><code> nesting',
         '<p>Text <i>in italics <span style="font-family: monospace;">AND SOME CODE</span> and others italics</i> and plain.</p>',
         doc(p(
           'Text ',
           em(
             'in italics ',
-            mono('AND SOME CODE'),
+            code('AND SOME CODE'),
             ' and others italics'
           ),
           ' and plain.'

@@ -4,5 +4,3 @@ export { joinPoint, joinable, canSplit, insertPoint, liftTarget, findWrapping } 
 export { PosMap, Mappable, MapResult, Remapping, mapThrough, mapThroughResult } from './map';
 export { AddMarkStep, RemoveMarkStep } from './mark_step';
 export { ReplaceStep, ReplaceAroundStep } from './replace_step';
-
-

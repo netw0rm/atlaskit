@@ -32,9 +32,9 @@ cp -r "packages/util-component-template" "packages/$COMP_NAME"
 
 # `find` is getting all the files under the new directory
 # `xargs` is passing them to sed
-# `sed` is replacing instances of 'util-component-template' and 'UtilComponentTemplate' with the new component name
+# `sed` is replacing instances of 'util-component-template' and 'Toggle' with the new component name
 # LC_CTYPE and LANG=C: http://stackoverflow.com/questions/19242275/re-error-illegal-byte-sequence-on-mac-os-x
-LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' -e "s/util-component-template/${COMP_NAME}/g" -e "s/UtilComponentTemplate/${PASCAL_CASE_NAME}/g" -e "s/utilComponentTemplate/${CAMEL_CASE}/g" '{}'
+LC_CTYPE=C && LANG=C && find "packages/$COMP_NAME/" -type f | xargs -I '{}' sed -i '' -e "s/util-component-template/${COMP_NAME}/g" -e "s/Toggle/${PASCAL_CASE_NAME}/g" -e "s/utilComponentTemplate/${CAMEL_CASE}/g" '{}'
 
 pushd "packages/$COMP_NAME" > /dev/null
 
@@ -47,9 +47,7 @@ rm -f CHANGELOG.md
 popd > /dev/null
 
 # Install dependencies and link internal packages
-yarn
-
-yarn run docs/single "$COMP_NAME"
+yarn run bootstrap/single/with-deps "@atlaskit/$COMP_NAME"
 
 $CHALK --no-stdin -t "{green New component '$COMP_NAME' created (v1.0.0)}"
 $CHALK --no-stdin -t "{white.bold Hint: Please leave the version at 1.0.0+, as otherwise caret dependencies work differently}"

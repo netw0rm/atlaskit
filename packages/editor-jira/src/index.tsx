@@ -8,13 +8,22 @@ import {
   HorizontalRulePlugin,
   Keymap,
   ListsPlugin,
+  HyperlinkPlugin,
   ProseMirror,
-  TextFormattingPlugin
-} from 'ak-editor-core';
+  TextFormattingPlugin,
+  ClearFormattingPlugin,
+  DefaultKeymapsPlugin,
+  MentionsPlugin,
+  version as coreVersion
+} from '@atlaskit/editor-core';
+import { MentionProvider } from '@atlaskit/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { encode, parse } from './html';
-import { makeSchema, SupportedSchema } from './schema';
+import { makeSchema, isSchemaWithMentions, isSchemaWithLinks, JIRASchema } from './schema';
+import { version, name } from './version';
+
+export { version };
 
 export interface Props {
   context?: ContextName;
@@ -23,26 +32,46 @@ export interface Props {
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
+  onExpanded?: (editor?: Editor) => void;
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
   allowLists?: boolean;
+  allowLinks?: boolean;
+  allowAdvancedTextFormatting?: boolean;
+  mentionProvider?: Promise<MentionProvider>;
+  mentionEncoder?: (userId: string) => string;
 }
 
 export interface State {
   pm?: ProseMirror;
+  mentionProvider?: MentionProvider;
   isExpanded?: boolean;
-  schema: SupportedSchema;
+  schema: JIRASchema;
 }
 
 export default class Editor extends PureComponent<Props, State> {
   state: State;
+  version = `${version} (editor-core ${coreVersion})`;
 
   constructor(props: Props) {
     super(props);
+
     this.state = {
       isExpanded: props.isExpandedByDefault,
-      schema: makeSchema(!!props.allowLists),
+      schema: makeSchema({
+        allowLists: !!props.allowLists,
+        allowMentions: !!props.mentionProvider,
+        allowLinks: !!props.allowLinks,
+        allowAdvancedTextFormatting: !!props.allowAdvancedTextFormatting
+      }),
     };
+
+    if (props.mentionProvider) {
+      props
+        .mentionProvider
+        .then((mentionProvider: MentionProvider) =>
+          this.setState({ mentionProvider, schema: this.state.schema }));
+    }
 
     analyticsService.handler = props.analyticsHandler || ((name) => {});
   }
@@ -55,6 +84,29 @@ export default class Editor extends PureComponent<Props, State> {
     if (pm) {
       pm.focus();
     }
+  }
+
+  /**
+   * Expand the editor chrome
+   */
+  expand = () => {
+    const { onExpanded } = this.props;
+    const { schema } = this.state;
+
+    this.setState({ isExpanded: true, schema });
+
+    if (onExpanded) {
+      onExpanded(this);
+    }
+  }
+
+  /**
+   * Collapse the editor chrome
+   */
+  collapse = () => {
+    const { schema } = this.state;
+
+    this.setState({ isExpanded: false, schema });
   }
 
   /**
@@ -84,14 +136,15 @@ export default class Editor extends PureComponent<Props, State> {
   get value(): string | undefined {
     const { pm, schema } = this.state;
     return pm
-      ? encode(pm.doc, schema)
+      ? encode(pm.doc, schema, { mention: this.props.mentionEncoder })
       : this.props.defaultValue;
   }
 
   render() {
-    const { pm, isExpanded, schema } = this.state;
+    const { pm, isExpanded } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
+    const { mentionProvider } = this.state;
 
     return (
       <Chrome
@@ -99,11 +152,17 @@ export default class Editor extends PureComponent<Props, State> {
         isExpanded={isExpanded}
         onCancel={handleCancel}
         onSave={handleSave}
-        onCollapsedChromeFocus={() => this.setState({ isExpanded: true, schema })}
+        onCollapsedChromeFocus={this.expand}
+        mentionsResourceProvider={mentionProvider}
         placeholder={this.props.placeholder}
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
+        pluginStateClearFormatting={pm && ClearFormattingPlugin.get(pm)}
+        pluginStateMentions={pm && mentionProvider && MentionsPlugin.get(pm)!}
+        pluginStateHyperlink={pm && HyperlinkPlugin.get(pm)}
+        packageVersion={version}
+        packageName={name}
       />
     );
   }
@@ -137,11 +196,15 @@ export default class Editor extends PureComponent<Props, State> {
         place,
         doc: parse(this.props.defaultValue || '', schema),
         plugins: [
+          ...( isSchemaWithLinks(schema) ? [ HyperlinkPlugin ] : [] ),
           BlockTypePlugin,
           CodeBlockPlugin,
           ListsPlugin,
           TextFormattingPlugin,
-          HorizontalRulePlugin
+          ClearFormattingPlugin,
+          HorizontalRulePlugin,
+          DefaultKeymapsPlugin,
+          ...( isSchemaWithMentions(schema) ? [ MentionsPlugin ] : [] ),
         ],
       });
 

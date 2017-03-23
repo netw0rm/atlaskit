@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React, { PropTypes, PureComponent } from 'react';
-import Avatar from 'ak-avatar';
+import Avatar from '@atlaskit/avatar';
 
 import Comment, { CommentAction, CommentAuthor, CommentTime } from '../src';
 import { name } from '../package.json';
@@ -37,7 +37,7 @@ class NestedComment extends PureComponent {
 }
 
 storiesOf(name, module)
-  .add('ak-comment with nested comments', () => (
+  .add('nested comments', () => (
     <div>
       <NestedComment content="Root-level comment" nestedLevel="0">
         <NestedComment content="1st-level comment 1" nestedLevel="1">

@@ -8,11 +8,15 @@ import {
   MentionsPlugin,
   ProseMirror,
   TextSelection,
-} from 'ak-editor-core';
+  DefaultKeymapsPlugin,
+  TextFormattingPlugin,
+  version as coreVersion,
+} from '@atlaskit/editor-core';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import schema from './schema';
+import { version } from './version';
 
 let debounced: number | null = null;
 
@@ -39,6 +43,12 @@ const hipchatSerializer = (doc: any) => {
               }
             };
           }
+
+          if (mark._ === 'u') {
+            mark._ = 'underline';
+          }
+
+          mark.type = mark._;
           return mark;
         });
         break;
@@ -67,6 +77,7 @@ export interface Props {
   onSubmit?: (doc: Doc) => void;
   onChange?: () => void;
   mentionResourceProvider?: any;
+  presenceResourceProvider?: any;
   reverseMentionPicker?: boolean;
 }
 
@@ -77,6 +88,8 @@ export interface State {
 }
 
 export default class Editor extends PureComponent<Props, State> {
+  version = `${version} (editor-core ${coreVersion})`;
+
   public static defaultProps: Props = {
     reverseMentionPicker: true
   };
@@ -106,7 +119,12 @@ export default class Editor extends PureComponent<Props, State> {
             <HyperlinkEdit pluginState={pluginStateHyperlink} />
           }
           {!pluginStateMentions ? null :
-            <MentionPicker resourceProvider={props.mentionResourceProvider} pluginState={pluginStateMentions} reversePosition={props.reverseMentionPicker} />
+            <MentionPicker
+              resourceProvider={props.mentionResourceProvider}
+              presenceProvider={props.presenceResourceProvider}
+              pluginState={pluginStateMentions}
+              reversePosition={props.reverseMentionPicker}
+            />
           }
         </div>
       </div>
@@ -125,6 +143,8 @@ export default class Editor extends PureComponent<Props, State> {
       plugins: [
         BlockTypePlugin,
         HyperlinkPlugin,
+        DefaultKeymapsPlugin,
+        TextFormattingPlugin,
         ...(this.props.mentionResourceProvider ? [MentionsPlugin] : [])
       ],
     });

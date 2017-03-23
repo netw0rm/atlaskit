@@ -1,4 +1,5 @@
 @import '~@atlaskit/util-shared-styles/src/grid.less';
+@import '~@atlaskit/util-shared-styles/src/colors.less';
 
 .selectWrapper {
   display: inline-block;
@@ -12,11 +13,16 @@
   align-items: center;
   display: flex;
   width: 100%;
+  min-height: 37px; // magic number to make multi-select the same height as field-text, to be fixed TODO: AK-1699
+
+  &.disabled {
+    cursor: not-allowed;
+  }
 }
 
 .content {
   flex: 1 1 auto;
-  margin: 6px @ak-grid-size;
+  margin: 3px @ak-grid-size; // magic number to make multi-select the same height as field-text, to be fixed TODO: AK-1699
   white-space: nowrap;
 }
 
@@ -34,9 +40,15 @@
   margin: 0;
   padding: 0;
   outline: 0;
-  height: 30px;
+  height: 17px; // magic number to make multi-select the same height as field-text, to be fixed TODO: AK-1699
   border: 0;
   background: none;
+  align-self: center;
+
+  &::placeholder {
+    font-size: 14px;
+    color: @ak-color-N200;
+  }
 }
 
 .nothing {

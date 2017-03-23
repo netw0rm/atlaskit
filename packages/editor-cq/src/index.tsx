@@ -11,11 +11,18 @@ import {
   ListsPlugin,
   MarkdownInputRulesPlugin,
   ProseMirror,
-  TextFormattingPlugin
-} from 'ak-editor-core';
+  TextFormattingPlugin,
+  ClearFormattingPlugin,
+  DefaultKeymapsPlugin,
+  version as coreVersion
+} from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { encode, parse } from './cxhtml';
+import { version, name } from './version';
+
+export { version };
+
 
 export interface Props {
   context?: ContextName;
@@ -35,6 +42,7 @@ export interface State {
 
 export default class Editor extends PureComponent<Props, State> {
   state: State;
+  version = `${version} (editor-core ${coreVersion})`;
 
   constructor(props: Props) {
     super(props);
@@ -93,7 +101,7 @@ export default class Editor extends PureComponent<Props, State> {
       <Chrome
         children={<div ref={this.handleRef} />}
         isExpanded={isExpanded}
-        feedbackFormUrl="https://atlassian.wufoo.com/embed/zy8kvpl0qfr9ov/"
+        feedbackFormUrl="yes"
         onCancel={handleCancel}
         onSave={handleSave}
         onCollapsedChromeFocus={() => this.setState({ isExpanded: true })}
@@ -101,6 +109,9 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
+        pluginStateClearFormatting={pm && ClearFormattingPlugin.get(pm)}
+        packageVersion={version}
+        packageName={name}
       />
     );
   }
@@ -138,8 +149,10 @@ export default class Editor extends PureComponent<Props, State> {
           MarkdownInputRulesPlugin,
           ListsPlugin,
           TextFormattingPlugin,
+          ClearFormattingPlugin,
           HorizontalRulePlugin,
-          DefaultInputRulesPlugin
+          DefaultInputRulesPlugin,
+          DefaultKeymapsPlugin,
         ],
       });
 

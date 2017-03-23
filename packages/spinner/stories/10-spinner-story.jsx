@@ -11,7 +11,7 @@ import statefulSpinnerRaw from '!raw!./StatefulSpinner';
 import ButtonSpinnerRaw from '!raw!./ButtonSpinner';
 /* eslint-enable import/no-duplicates, import/first */
 
-const defaultImports = { imports: [['Spinner', 'ak-spinner']] };
+const defaultImports = { imports: [['Spinner', '@atlaskit/spinner']] };
 
 storiesOf(name, module)
   .addCodeExampleStory('A default spinner', () => (

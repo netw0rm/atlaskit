@@ -9,7 +9,7 @@ import { Toggle } from '../src';
 
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
-describe('ak-toggle', () => {
+describe('Toggle', () => {
   it('defaults', () => {
     const wrapper = shallow(<Toggle />);
     expect(wrapper.find('label').length).to.equal(1);

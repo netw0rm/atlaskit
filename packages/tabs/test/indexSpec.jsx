@@ -73,7 +73,7 @@ describe(name, () => {
           );
           expect(spy.called).to.equal(false);
         });
-        it('is fired with selected tab index when new tab selected', () => {
+        it('is fired with selected tab index when new tab selected by click', () => {
           const spy = sinon.spy();
           const wrapper = mount(
             <Tabs
@@ -84,6 +84,23 @@ describe(name, () => {
 
           // Clicks on the tab at index 2, then checks that the spy is called with 2 as argument
           wrapper.find(`.${styles.locals.akTabLabel}`).at(2).simulate('click');
+          expect(spy.calledOnce).to.equal(true);
+          expect(spy.calledWith(2)).to.equal(true);
+        });
+        it('is fired with selected tab index when new tab selected by keyboard', () => {
+          const spy = sinon.spy();
+          const wrapper = mount(
+            <Tabs
+              onSelect={spy}
+              tabs={sampleTabsDefaultSelected}
+            />
+          );
+
+          // Triggers right arrow click on the tabs, then checks that handler prop was called
+          // with correct new selected tab index
+          wrapper.find(`.${styles.locals.akTabLabel}`).at(1).simulate('keyDown', {
+            key: 'ArrowRight',
+          });
           expect(spy.calledOnce).to.equal(true);
           expect(spy.calledWith(2)).to.equal(true);
         });

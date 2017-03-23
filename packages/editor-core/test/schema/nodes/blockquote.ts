@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { Schema, Text } from '../../../src';
 import { BlockQuoteNodeType, DocNodeType } from '../../../src';
 
-describe('ak-editor-core/schema blockquote node', () => {
+describe('@atlaskit/editor-core/schema blockquote node', () => {
   it('throws an error if it is not named "blockquote"', () => {
     expect(() => {
       new Schema({

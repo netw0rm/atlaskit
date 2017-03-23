@@ -6,25 +6,51 @@ export { FieldBase, Label };
 
 export default class extends PureComponent {
   static propTypes = {
-    isFocused: PropTypes.bool,
+    defaultIsDialogOpen: PropTypes.bool,
+    defaultIsFocused: PropTypes.bool,
+    onFocus: PropTypes.func,
+    onBlur: PropTypes.func,
+    onIconMouseDown: PropTypes.func,
   }
 
   static defaultProps = {
-    isFocused: false,
+    defaultIsDialogOpen: false,
+    defaultIsFocused: false,
+    onFocus: () => {},
+    onBlur: () => {},
+    onIconMouseDown: () => {},
   }
 
   state = {
-    isFocused: this.props.isFocused,
+    isDialogOpen: this.props.defaultIsDialogOpen,
+    isFocused: this.props.defaultIsFocused,
   }
 
-  onFocus = () => this.setState({ isFocused: true })
-  onBlur = () => this.setState({ isFocused: false })
+  onFocus = (e) => {
+    this.setState({ isFocused: true });
+    this.props.onFocus(e);
+  }
 
-  render = () =>
-    <FieldBase
-      {...this.props}
-      isFocused={this.state.isFocused}
-      onFocus={this.onFocus}
-      onBlur={this.onBlur}
-    />
+  onBlur = (e) => {
+    this.setState({ isFocused: false });
+    this.props.onBlur(e);
+  }
+
+  onIconMouseDown = (e) => {
+    this.setState({ isDialogOpen: !this.state.isDialogOpen });
+    this.props.onIconMouseDown(e);
+  }
+
+  render() {
+    return (
+      <FieldBase
+        {...this.props}
+        isDialogOpen={this.state.isDialogOpen}
+        isFocused={this.state.isFocused}
+        onBlur={this.onBlur}
+        onFocus={this.onFocus}
+        onIconMouseDown={this.onIconMouseDown}
+      />
+    );
+  }
 }

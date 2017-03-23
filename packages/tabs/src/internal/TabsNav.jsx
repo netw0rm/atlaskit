@@ -55,35 +55,42 @@ export default class TabsNav extends PureComponent {
     this.tabs = [];
     /* eslint-disable jsx-a11y/role-supports-aria-props, jsx-a11y/no-static-element-interactions */
     return (
-      <ul
-        className={styles.locals.akTabLabels}
-        role="tablist"
-      >
-        {this.props.tabs.map((tab, index) => (
-          <li
-            aria-posinset={index + 1}
-            aria-selected={tab.isSelected}
-            aria-setsize={this.props.tabs.length}
-            className={classNames(styles.locals.akTabLabel, {
-              [styles.locals.akTabLabelSelected]: tab.isSelected,
-            })}
-            key={index}
-            onClick={tab.onSelect}
-            onKeyDown={this.tabKeyDownHandler}
-            onMouseDown={this.tabMouseDownHandler}
-            ref={(ref) => {
-              this.tabs.push({
-                el: ref,
-                isSelected: tab.isSelected,
-              });
-            }}
-            role="tab"
-            tabIndex={tab.isSelected ? 0 : -1}
-          >
-            {tab.label}
-          </li>
-        ))}
-      </ul>
+      <div>
+        {
+          // without this outer div the ul renders incorrectly in Chrome only, tried for ages to
+          // fix but can't see the reason. it has something to do with the UL having display: flex
+          // ¯\_(ツ)_/¯
+        }
+        <ul
+          className={styles.locals.akTabLabels}
+          role="tablist"
+        >
+          {this.props.tabs.map((tab, index) => (
+            <li
+              aria-posinset={index + 1}
+              aria-selected={tab.isSelected}
+              aria-setsize={this.props.tabs.length}
+              className={classNames(styles.locals.akTabLabel, {
+                [styles.locals.akTabLabelSelected]: tab.isSelected,
+              })}
+              key={index}
+              onClick={tab.onSelect}
+              onKeyDown={this.tabKeyDownHandler}
+              onMouseDown={this.tabMouseDownHandler}
+              ref={(ref) => {
+                this.tabs.push({
+                  el: ref,
+                  isSelected: tab.isSelected,
+                });
+              }}
+              role="tab"
+              tabIndex={tab.isSelected ? 0 : -1}
+            >
+              {tab.label}
+            </li>
+          ))}
+        </ul>
+      </div>
     );
     /* eslint-enable jsx-a11y/role-supports-aria-props, jsx-a11y/no-static-element-interactions */
   }

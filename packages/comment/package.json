@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/comment",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
   "description": "ak-comment component",
   "main": "dist/bundle.js",
@@ -15,18 +15,26 @@
     "dist"
   ],
   "dependencies": {
-    "ak-button": "^5.1.11",
-    "ak-lozenge": "^5.0.4",
-    "akutil-shared-styles": "^37.0.0",
+    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/lozenge": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "classnames": "^2.2.5"
   },
   "devDependencies": {
-    "ak-avatar": "^5.1.1",
-    "ak-comment": "*",
-    "ak-editor-bitbucket": "^6.1.0",
-    "akutil-readme": "^1.1.0"
+    "@atlaskit/avatar": "^1.0.0",
+    "@atlaskit/comment": "*",
+    "@atlaskit/editor-bitbucket": "^1.0.0",
+    "@atlaskit/util-readme": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Sean C"
+    },
+    {
+      "name": "Ben W"
+    }
+  ],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2"

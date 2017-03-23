@@ -1,14 +1,13 @@
 {
-  "extends": "../../../../tsconfig",
+  "extends": "../../tsconfig",
   "compilerOptions": {
-    "declaration": true,
+    "outDir": "../../dist/es5",
     "lib": ["dom", "es6"],
-    "target": "es5"
+    "target": "es5",
+    "declaration": true
   },
   "include": [
     "../../src/**/*.ts",
-    "../../src/**/*.tsx",
-    "../../test-helper/**/*.ts",
-    "../../test-helper/**/*.tsx"
+    "../../src/**/*.tsx"
   ]
 }

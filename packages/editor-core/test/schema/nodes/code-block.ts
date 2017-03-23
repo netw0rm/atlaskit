@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import { CodeBlockNode, CodeBlockNodeType, DocNodeType, Schema, Text } from '../../../src';
 import { SUPPORTED_LANGUAGES } from '../../../src/ui/LanguagePicker/languageList';
-import { fromHTML, toHTML } from '../../../test-helper';
+import { fromHTML, toHTML } from '../../../src/test-helper';
 
-describe('ak-editor-core/schema code_block node', () => {
+describe('@atlaskit/editor-core/schema code_block node', () => {
   it('throws an error if it is not named "code_block"', () => {
     expect(() => {
       new Schema({
@@ -59,10 +59,10 @@ describe('ak-editor-core/schema code_block node', () => {
           expect(doc.firstChild!.type).to.be.an.instanceOf(CodeBlockNodeType);
         });
         SUPPORTED_LANGUAGES.forEach((language) => {
-          it(`extracts language "${language}" from data-language attribute`, () => {
-            const doc = fromHTML(`<pre data-language='${language}'><span>window.alert("hello");<span></pre>`, schema);
+          it(`extracts language "${language.name}" from data-language attribute`, () => {
+            const doc = fromHTML(`<pre data-language='${language.name}'><span>window.alert("hello");<span></pre>`, schema);
 
-            expect(doc.firstChild!.attrs['language']).to.eq(language);
+            expect(doc.firstChild!.attrs['language']).to.eq(language.name);
           });
         });
       });
@@ -90,7 +90,7 @@ describe('ak-editor-core/schema code_block node', () => {
         });
       });
 
-      context('when other class similar to languge is set', () => {
+      context('when other class similar to language is set', () => {
         it('has language attribute as null', () => {
           const doc = fromHTML('<div class="codehilite nolanguage-javascript"><pre><span>window.alert("hello");<span></pre></div>', schema);
           const codeBlock = doc.firstChild! as CodeBlockNode;
@@ -108,11 +108,11 @@ describe('ak-editor-core/schema code_block node', () => {
       });
 
       SUPPORTED_LANGUAGES.forEach((language) => {
-        it(`extracts language attribute from class "language-${language}"`, () => {
-          const doc = fromHTML(`<div class="codehilite language-${language}"><pre><span>window.alert("hello");<span></pre></div>`, schema);
+        it(`extracts language attribute from class "language-${language.name}"`, () => {
+          const doc = fromHTML(`<div class="codehilite language-${language.name}"><pre><span>window.alert("hello");<span></pre></div>`, schema);
           const codeBlock = doc.firstChild! as CodeBlockNode;
 
-          expect(codeBlock.attrs.language).to.eq(language);
+          expect(codeBlock.attrs.language).to.eq(language.name);
         });
       });
 
@@ -139,7 +139,7 @@ describe('ak-editor-core/schema code_block node', () => {
       }
     });
 
-    context('when languge is not set', () => {
+    context('when language is not set', () => {
       it('converts to pre tag', () => {
         const codeBlock = schema.nodes.code_block.create();
         expect(toHTML(codeBlock)).to.have.string('<pre');
@@ -151,21 +151,21 @@ describe('ak-editor-core/schema code_block node', () => {
       });
     });
 
-    context('when languge is set to null', () => {
+    context('when language is set to null', () => {
       it('does not set data-language attributes', () => {
         const codeBlock = schema.nodes.code_block.create({ language: null });
         expect(toHTML(codeBlock)).to.not.have.string('data-language');
       });
     });
 
-    context('when languge is set to undefined', () => {
+    context('when language is set to undefined', () => {
       it('does not set data-language attributes', () => {
         const codeBlock = schema.nodes.code_block.create({ language: undefined });
         expect(toHTML(codeBlock)).to.not.have.string('data-language');
       });
     });
 
-    context('when languge is set to a value', () => {
+    context('when language is set to a value', () => {
       it('converts to pre tag', () => {
         const codeBlock = schema.nodes.code_block.create({ language: 'javascript' });
         expect(toHTML(codeBlock)).to.have.string('<pre');

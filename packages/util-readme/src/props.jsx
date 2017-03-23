@@ -5,7 +5,7 @@ import Heading from './heading';
 
 // eslint-disable-next-line react/no-multi-comp, react/prefer-stateless-function
 export default class extends PureComponent {
-  static displayName = 'AkutilReadmeProps'
+  static displayName = 'utilReadmeProps'
   static propTypes = {
     component: PropTypes.func.isRequired,
     descriptions: PropTypes.objectOf(PropTypes.string),
@@ -47,7 +47,7 @@ export default class extends PureComponent {
             </thead>
             <tbody style={{ border: 0 }}>
               {this.getPropTypes().map(row => (
-                <tr>
+                <tr key={row.name}>
                   <td>{row.name}{row.isRequired ? '*' : ''}</td>
                   <td>{row.type || '--'}</td>
                   <td>{row.defaultValue === 'undefined' ? '--' : row.defaultValue}</td>

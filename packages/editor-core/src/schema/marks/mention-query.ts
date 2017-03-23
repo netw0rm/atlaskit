@@ -18,6 +18,12 @@ export class MentionQueryMarkType extends MarkType {
     return true;
   }
 
+  get matchDOMTag() {
+    return {
+      'span[data-mention-query]': () => ({})
+    };
+  }
+
   toDOM(): [string, any] {
     return ['span', {
       'data-mention-query': true,

@@ -10,14 +10,20 @@ import {
   isListItemNode,
   isOrderedListNode,
   isParagraphNode,
+  isMentionNode,
   ListItemNode,
+  MentionNode,
   Node as PMNode,
   OrderedListNode,
   ParagraphNode
-} from 'ak-editor-core';
-import { isSchemaWithLists, SupportedSchema } from '../schema';
+} from '@atlaskit/editor-core';
+import { isSchemaWithLists, isSchemaWithMentions, JIRASchema } from '../schema';
 
-export default function encode(node: DocNode, schema: SupportedSchema) {
+export interface JIRACustomEncoders {
+  mention?: (userId: string) => string;
+}
+
+export default function encode(node: DocNode, schema: JIRASchema, customEncoders: JIRACustomEncoders = {}) {
   const doc = makeDocument();
   doc.body.appendChild(encodeFragment(node.content));
   const html = doc.body.innerHTML;
@@ -54,6 +60,12 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
         return encodeOrderedList(node);
       } else if (isListItemNode(node)) {
         return encodeListItem(node);
+      }
+    }
+
+    if (isSchemaWithMentions(schema)) {
+      if (isMentionNode(node)) {
+        return encodeMention(node, customEncoders.mention);
       }
     }
 
@@ -108,7 +120,7 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
           case schema.marks.em:
             elem = elem.appendChild(doc.createElement('em'));
             break;
-          case schema.marks.mono:
+          case schema.marks.code:
             elem = elem.appendChild(doc.createElement('tt'));
             break;
           case schema.marks.strike:
@@ -119,6 +131,27 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
             break;
           case schema.marks.subsup:
             elem = elem.appendChild(doc.createElement(mark.attrs['type']));
+            break;
+          case schema.marks.link:
+            const link = doc.createElement('a');
+            const href = mark.attrs['href'];
+
+            // Handle external links e.g. links which start with http://, https://, ftp://, //
+            if (href.match(/\w+:\/\//) || href.match(/^\/\//) || href.match('mailto:')) {
+              link.setAttribute('class', 'external-link');
+              link.setAttribute('href', href);
+              link.setAttribute('rel', 'nofollow');
+            } else {
+              link.setAttribute('href', href);
+            }
+
+            if (mark.attrs['title']) {
+              link.setAttribute('title', mark.attrs['title']);
+            }
+
+            elem = elem.appendChild(link);
+            break;
+          case schema.marks.mention_query:
             break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);
@@ -145,22 +178,42 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
     elem.setAttribute('class', 'alternate');
     elem.setAttribute('type', 'square');
     elem.appendChild(encodeFragment(node.content));
+    for (let index = 0; index < elem.childElementCount; index++) {
+      elem.children[index].setAttribute('data-parent', 'ul');
+    }
     return elem;
   }
 
   function encodeOrderedList(node: OrderedListNode) {
     const elem = doc.createElement('ol');
     elem.appendChild(encodeFragment(node.content));
+    for (let index = 0; index < elem.childElementCount; index++) {
+      elem.children[index].setAttribute('data-parent', 'ol');
+    }
     return elem;
   }
 
   function encodeListItem(node: ListItemNode) {
     const elem = doc.createElement('li');
-    // Strip the paragraph node from the list item.
     if (node.content.childCount) {
-      const paragraph = node.content.child(0) as ParagraphNode;
-      elem.appendChild(encodeFragment(paragraph.content));
+      node.content.forEach(childNode => {
+        if (isBulletListNode(childNode) || isOrderedListNode(childNode)) {
+          elem.appendChild(encodeNode(childNode));
+        } else {
+          // Strip the paragraph node from the list item.
+          elem.appendChild(encodeFragment((childNode as ParagraphNode).content));
+        }
+      });
     }
+    return elem;
+  }
+
+  function encodeMention(node: MentionNode, encoder?: (userId: string) => string) {
+    const elem = doc.createElement('a');
+    elem.setAttribute('class', 'user-hover');
+    elem.setAttribute('href', encoder ? encoder(node.attrs.id) : node.attrs.id);
+    elem.setAttribute('rel', node.attrs.id);
+    elem.innerText = node.attrs.displayName;
     return elem;
   }
 }

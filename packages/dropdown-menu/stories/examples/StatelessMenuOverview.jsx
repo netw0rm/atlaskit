@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
-import { StatelessDropdownMenu } from 'ak-dropdown-menu';
+import { StatelessDropdownMenu } from '@atlaskit/dropdown-menu';
 
 const simpleDropdownItems = [
   {
     heading: 'Cities',
     items: [
-      { content: 'Sydney', href: 'http://atlassian.com', target: '_blank' },
+      { content: 'Sydney', href: '//atlassian.com', target: '_blank' },
       { content: 'Canberra' },
       { content: 'Melbourne' },
       { content: 'Perth' },

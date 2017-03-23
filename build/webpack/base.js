@@ -4,6 +4,7 @@ const path = require('path');
 const pkg = require(path.join(process.cwd(), 'package.json'));
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
+const glob = require('glob');
 
 const moduleBabelQuery = require('./babel.query.module');
 const loaderChain = require('./loader-chain').encode;
@@ -16,6 +17,8 @@ function defaultPackageMains() {
   return options.defaults.resolve.packageMains;
 }
 
+const root = path.join(__dirname, '..', '..');
+
 const css = {
   camelCase: true,
   hashPrefix: `${pkg.name}${pkg.version}`,  // Avoid hash collisions
@@ -23,6 +26,9 @@ const css = {
   mergeRules: false,
   modules: true,
 };
+
+const tsPackageNames = glob.sync('packages/*/tsconfig.json', { cwd: root })
+  .map(p => p.split('/')[1]);
 
 if (isDevelopment) {
   css['-minimize'] = true;
@@ -71,23 +77,23 @@ const standardConfig = {
       [ // exclusive configs for babel (first one that matches will be used)
         //
         // TYPESCRIPT
-        // React based code.
+        // Create a separate compiler for each package, to allow independent "lib" compiler options.
         //
-        {
-          test: /.tsx?$/,
+        ...tsPackageNames.map(name => ({
+          test: new RegExp(`packages/${name}/.*\\.tsx?$`),
+          exclude: /node_modules/,
           loader: loaderChain({
             'ts-loader': {
-              configFileName: 'tsconfig.webpack.json',
               logLevel: 'warn',
+              instance: name,
             },
           }),
-          exclude: /node_modules/,
-        },
+        })),
         //
         // Images (for storybook)
         //
         {
-          test: [/\.png$/, /\.svg$/],
+          test: [/\.png$/],
           loader: 'url-loader',
         },
         //
@@ -132,7 +138,7 @@ const standardConfig = {
   postcss: () => [
     autoprefixer({
       // have a look here: https://confluence.atlassian.com/display/Cloud/Supported+browsers
-      // "not Opera" w/o version qualifier is not valid, so I chose a really high version number
+      // 'not Opera' w/o version qualifier is not valid, so I chose a really high version number
       browsers: 'last 1 version, ie 11, Android > 4, not Opera < 1000',
     }),
   ],

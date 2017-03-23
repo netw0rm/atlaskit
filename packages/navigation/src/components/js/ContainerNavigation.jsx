@@ -1,6 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
 import styles from 'style!../less/ContainerNavigation.less';
+import ContainerHeader from './ContainerHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalActions from './GlobalActions';
 import {
@@ -14,7 +15,7 @@ export default class ContainerNavigation extends PureComponent {
     appearance: PropTypes.string,
     areGlobalActionsVisible: PropTypes.bool,
     children: PropTypes.node,
-    header: PropTypes.node,
+    headerComponent: PropTypes.func,
     shouldAnimate: PropTypes.bool,
     width: PropTypes.number,
     offsetX: PropTypes.number,
@@ -52,7 +53,7 @@ export default class ContainerNavigation extends PureComponent {
       globalPrimaryIcon,
       globalPrimaryItemHref,
       globalSearchIcon,
-      header,
+      headerComponent,
       linkComponent,
       offsetX,
       onGlobalCreateActivate,
@@ -62,8 +63,9 @@ export default class ContainerNavigation extends PureComponent {
     } = this.props;
 
     const isWidthCollapsed = width <= containerClosedWidth;
+
     return (
-      <div
+      <nav
         className={classNames({
           [styles.shouldAnimate]: shouldAnimate,
         })}
@@ -79,7 +81,7 @@ export default class ContainerNavigation extends PureComponent {
         >
           <div
             className={classNames(styles.containerNavigationInner, {
-              [styles.hasContainerHeader]: header !== null,
+              [styles.hasContainerHeader]: headerComponent !== null,
               [styles.hasGlobalAppearance]: appearance === 'global',
             })}
           >
@@ -95,14 +97,19 @@ export default class ContainerNavigation extends PureComponent {
               searchIcon={globalSearchIcon}
             />
             <div>
-              {header}
+              {
+                this.props.headerComponent ? (
+                  <ContainerHeader>
+                    {this.props.headerComponent({ isCollapsed: width <= containerClosedWidth })}
+                  </ContainerHeader>) : null
+              }
             </div>
             <div>
               {children}
             </div>
           </div>
         </div>
-      </div>
+      </nav>
     );
   }
 }

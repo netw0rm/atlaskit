@@ -13,12 +13,25 @@ import WideSelect from './examples/WideSelect';
 import WideSelectRaw from '!raw!./examples/WideSelect';
 import SelectAlignment from './examples/SelectAlignment';
 import SelectAlignmentRaw from '!raw!./examples/SelectAlignment';
+import SelectWithGroups from './examples/SelectWithGroups';
+import SelectWithGroupsRaw from '!raw!./examples/SelectWithGroups';
+import SelectWithIcons from './examples/SelectWithIcons';
+import SelectWithIconsRaw from '!raw!./examples/SelectWithIcons';
+import SelectInForm from './examples/SelectInForm';
+import SelectInFormRaw from '!raw!./examples/SelectInForm';
+import SelectWithAutocomplete from './examples/SelectWithAutocomplete';
+import SelectWithAutocompleteRaw from '!raw!./examples/SelectWithAutocomplete';
+import Appearances from './examples/Appearances';
+import AppearancesRaw from '!raw!./examples/Appearances';
+import SelectWithHeapsOfOptions from './examples/SelectWithHeapsOfOptions';
+import SelectWithHeapsOfOptionsRaw from '!raw!./examples/SelectWithHeapsOfOptions';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name } from '../package.json';
 import Select, { StatelessSelect } from '../src';
 
 const propDescriptions = {
+  appearance: 'Appearance of the triggering field',
   defaultSelected: 'Default selected item',
   id: 'id of the form element',
   isDisabled: 'Specifies that a select should be disabled',
@@ -31,14 +44,15 @@ const propDescriptions = {
   onSelected: 'This is a handler function which is called when an item is selected',
   onOpenChange: `This is a handler function which is called when the droplist should be open/closed.
   Received an object with isOpen state`,
-  placeholder: 'The short hint that is displayed in the select before the user selects a value.',
-  position: 'Position of the select. See the documentation of ak-layer for more details.',
+  placeholder: 'The short hint that is displayed in the select before the user selects a value',
+  position: 'Position of the select. See the documentation of ak-layer for more details',
   selectedItem: 'Selected item',
   shouldFitContainer: 'Specifies whether a select will take all available space',
 };
 const shape = 'shape({ content, value, isDisabled, isSelected, elemBefore, elemAfter })';
 
 const propTypes = {
+  appearance: 'Predefined appearances of single-select. One of: \'default\', \'subtle\'',
   defaultSelected: shape,
   id: 'string',
   isDisabled: 'bool',
@@ -100,11 +114,64 @@ storiesOf(name, module)
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>
   ))
+  .add('Select with icons', () => (
+    <Chrome title="Select with icons">
+      {SelectWithIcons}
+      <Code>
+        {SelectWithIconsRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Select with groups', () => (
+    <Chrome title="Select with groups">
+      {SelectWithGroups}
+      <Code>
+        {SelectWithGroupsRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
   .add('Select alignment', () => (
     <Chrome title="Select alignment">
       {SelectAlignment}
       <Code>
         {SelectAlignmentRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select in a form', () => (
+    <Chrome title="Select alignment">
+      {SelectInForm}
+      <Code>
+        {SelectInFormRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select with autocomplete', () => (
+    <Chrome title="Select with autocomplete">
+      {SelectWithAutocomplete}
+      <Code>
+        {SelectWithAutocompleteRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Appearance variations', () => (
+    <Chrome title="Appearance variations">
+      {Appearances}
+      <Code>
+        {AppearancesRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select with heaps of options to test dummy search', () => (
+    <Chrome title="Select with autocomplete">
+      {SelectWithHeapsOfOptions}
+      <Code>
+        {SelectWithHeapsOfOptionsRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

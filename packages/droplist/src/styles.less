@@ -3,15 +3,10 @@
 .dropContent {
   background: @ak-dropdown-background-main-color;
   border-radius: @ak-dropdown-border-radius;
-  box-shadow: 0 @grid/2 @grid -@grid/4 @ak-color-N50A, 0 0 1px @ak-color-N60A;
+  box-shadow: 0 @halfGrid @grid (-@grid/4) @ak-color-N50A, 0 0 1px @ak-color-N60A;
   box-sizing: border-box;
-  overflow-y: auto;
-  padding: @grid 0;
-}
-
-.dropTrigger {
-  display: flex;
-  width: 100%;
+  overflow: auto;
+  padding: @halfGrid 0;
 }
 
 .dropWrapper {
@@ -21,4 +16,186 @@
 .fitContainer {
   display: block;
   flex: 1 1 auto;
+}
+
+.group {
+  box-sizing: border-box;
+  display: block;
+  margin-top: @grid;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.heading {
+  align-items: baseline;
+  color: @ak-color-N300;
+  display: flex;
+  flex: 1 1 auto;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 1;
+  margin: 0;
+  padding: @grid (@halfGrid * 3);
+}
+
+.groupElemAfter {
+  flex: 0 0 auto;
+}
+
+.content {
+  flex: 1 1 auto;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.item {
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1;
+  padding: 0 (@halfGrid * 3);
+  text-decoration: none;
+  color: @ak-dropdown-font-main-color;
+  cursor: pointer;
+
+  &:hover {
+    background-color: @ak-dropdown-background-hover-color;
+    text-decoration: none;
+    color: @ak-dropdown-font-main-color;
+
+    .checkradio {
+      color: @ak-color-N50;
+      fill: transparent;
+    }
+
+    &.checked {
+      .checkradio {
+        color: @ak-color-B400;
+        fill: @ak-color-N0;
+      }
+    }
+
+    &.disabled {
+      background-color: @ak-dropdown-background-main-color;
+    }
+  }
+
+  &:active {
+    background-color: @ak-dropdown-background-active-color;
+    color: @ak-dropdown-font-active-color;
+
+    .checkradio {
+      color: @ak-color-B200;
+      fill: transparent;
+    }
+
+    &.checked {
+      .checkradio {
+        color: @ak-color-B200;
+        fill: @ak-color-N0;
+      }
+    }
+  }
+
+  &.hidden {
+    display: none;
+  }
+
+  &.checked {
+    .checkradio {
+      color: @ak-color-B400;
+      fill: @ak-color-N0;
+    }
+  }
+
+  &.focus, &:focus {
+    box-shadow: 0 0 0 2px @ak-dropdown-focused-outline-color inset;
+    outline: none;
+    outline-offset: 0;
+    position: relative; // prevents bgcolor of a hovered element from obfuscating focus ring of a focused sibling element
+  }
+
+  &.active {
+    background-color: @ak-dropdown-background-selected-color;
+    color: @ak-color-N0;
+  }
+
+  &.disabled {
+    color: @ak-dropdown-font-disabled-color;
+    cursor: not-allowed;
+
+    .checkradio {
+      color: @ak-color-N20;
+      fill: transparent;
+    }
+
+    &.checked {
+      .checkradio {
+        color: @ak-color-N600;
+        fill: @ak-color-N700;
+      }
+    }
+  }
+}
+
+.elemBefore {
+  display: flex;
+}
+
+.elemAfter {
+  display: flex;
+  align-items: center;
+}
+
+.checkradio {
+  margin: 0 @grid;
+  display: flex;
+  color: @ak-color-N40;
+  fill: @ak-color-N40;
+
+  & + .item-content {
+    margin: 0;
+  }
+}
+
+.item-content {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0 @grid;
+  padding: 9px 0;
+
+  &:first-child {
+    margin: 0;
+  }
+}
+
+.secondaryText {
+  color: @ak-color-N200;
+}
+
+.triggerContainer {
+  display: inline-flex;
+}
+
+.trigger {
+  display: inline-flex;
+  transition: box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38);
+  transition-duration: 0.2s;
+  cursor: pointer;
+}
+
+.triggerFitContainer {
+  flex: 1 1 auto;
+
+  &.trigger {
+    display: block;
+    box-sizing: border-box;
+  }
 }

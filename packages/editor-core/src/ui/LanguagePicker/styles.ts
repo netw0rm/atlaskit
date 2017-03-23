@@ -1,4 +1,4 @@
-import { akEditorPopupText } from 'ak-editor-shared-styles';
+import { akEditorPopupText } from '../../styles';
 import { style } from 'typestyle';
 
 export const container = style({

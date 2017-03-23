@@ -1,10 +1,10 @@
 {
   "name": "@atlaskit/util-common-test",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "config": {
-    "access": "public" 
+    "access": "public"
   },
-  "description": "Shared tests used by AtlasKit components",
+  "description": "Shared test helpers used by AtlasKit components",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.js",
@@ -16,6 +16,7 @@
     "src/index.locateWebComponent.js"
   ],
   "author": "Atlassian Pty Ltd",
+  "maintainers": [],
   "license": "Apache-2.0",
   "dependencies": {
     "babel-runtime": "^6.11.6",
@@ -36,6 +37,7 @@
   },
   "keywords": [
     "atlaskit",
-    "ui"
+    "ui",
+    "internal"
   ]
 }

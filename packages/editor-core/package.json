@@ -1,41 +1,50 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "1.0.5",
+  "version": "7.5.2",
   "config": {
     "access": "public"
   },
   "description": "A package contains Atlassian editor core functionality",
-  "main": "src/index.js",
+  "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
-  "types": "src/index.d.ts",
+  "types": "dist/es5/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
-    "build": "npm run build/es2015 && npm run build/es5",
+    "build": "../../build/bin/generate.version.export.js ./package.json src/version.ts && npm run build/es2015 && npm run build/es5",
     "build/es2015": "../../node_modules/.bin/babel --out-dir dist/es2015 --source-root src --no-babelrc src && ../../node_modules/.bin/tsc -p build/es2015",
-    "build/es5": "../../node_modules/.bin/babel --out-dir src --source-root src --no-babelrc --plugins transform-runtime --presets es2015 src && ../../node_modules/.bin/tsc -p build/es5"
+    "build/es5": "../../node_modules/.bin/babel --out-dir dist/es5 --source-root src --no-babelrc --plugins transform-runtime --presets es2015 src && ../../node_modules/.bin/tsc -p build/es5 && cp -Rf src/prosemirror dist/es5/"
   },
   "files": [
     "dist",
-    "src",
-    "test-helper"
+    "src"
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Bradley A"
+    },
+    {
+      "name": "Artur B"
+    }
+  ],
   "dependencies": {
-    "ak-button": "^5.0.0",
-    "ak-button-group": "^3.0.2",
-    "ak-droplist": "^4.1.0",
-    "ak-droplist-item": "^4.0.0",
-    "ak-droplist-group": "^2.1.0",
-    "ak-dropdown-menu": "^2.1.0",
-    "ak-editor-shared-styles": "^3.2.0",
-    "ak-emoji": "^0.7.0",
-    "ak-icon": "^14.0.0",
-    "ak-mention": "^1.9.0",
-    "@atlaskit/util-shared-styles": "^1.0.1",
+    "@atlaskit/button": "^1.0.10",
+    "@atlaskit/button-group": "^1.0.7",
+    "@atlaskit/dropdown-menu": "^1.1.4",
+    "@atlaskit/droplist": "^1.3.11",
+    "@atlaskit/droplist-group": "^1.0.6",
+    "@atlaskit/droplist-item": "^2.0.8",
+    "@atlaskit/emoji": "^11.2.0",
+    "@atlaskit/icon": "^2.5.6",
+    "@atlaskit/media-core": "^1.2.0",
+    "@atlaskit/mention": "^2.1.0",
+    "@atlaskit/spinner": "^1.0.1",
+    "@atlaskit/tooltip": "^1.0.3",
+    "@atlaskit/util-shared-styles": "^1.0.3",
     "browserkeymap": "git://github.com/bradleyayers/browserkeymap#es6-modules-compat-with-types",
     "popper.js": "^1.0.1",
-    "prosemirror": "0.10.1",
+    "prosemirror": "git+https://bitbucket.org/atlassian/prosemirror.git#backport-fixes-from-future",
     "tslib": "^1.2.0",
     "typestyle": "^0.21.4"
   },
@@ -44,7 +53,7 @@
     "react-dom": "^15.3.2"
   },
   "devDependencies": {
-    "ajv": "^4.7.2",
+    "ajv": "^4.11.3",
     "highlight.js": "^9.6.0",
     "sinon": "^1.17.6",
     "string.prototype.repeat": "^0.2.0",
@@ -53,5 +62,9 @@
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"
-  }
+  },
+  "keywords": [
+    "fabric",
+    "ui"
+  ]
 }

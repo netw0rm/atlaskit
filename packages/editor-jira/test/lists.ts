@@ -1,46 +1,25 @@
-import { Node } from 'ak-editor-core';
-import { chaiPlugin, markFactory, nodeFactory } from 'ak-editor-core/test-helper';
-import * as chai from 'chai';
-import { expect } from 'chai';
+import { markFactory, nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { checkParseEncodeRoundTrips } from '../test-helpers';
 import { name } from '../package.json';
-import { encode, parse } from '../src/html';
-import { JIRASchemaWithLists, makeSchema } from '../src/schema';
+import { JIRASchema, makeSchema } from '../src/schema';
 
-chai.use(chaiPlugin);
-
-const schema = makeSchema(true) as JIRASchemaWithLists;
+const schema = makeSchema({ allowLists: true }) as JIRASchema;
 
 // Nodes
-const ul = nodeFactory(schema.nodes.bullet_list);
+const ul = nodeFactory(schema.nodes.bullet_list!);
 const doc = nodeFactory(schema.nodes.doc);
 const p = nodeFactory(schema.nodes.paragraph);
-const li = nodeFactory(schema.nodes.list_item);
-const ol = nodeFactory(schema.nodes.ordered_list);
+const li = nodeFactory(schema.nodes.list_item!);
+const ol = nodeFactory(schema.nodes.ordered_list!);
 
 // Marks
 const strong = markFactory(schema.marks.strong);
 
-function check(description: string, html: string, node: Node) {
-  it(`parses HTML: ${description}`, () => {
-    const actual = parse(html, schema);
-    expect(actual).to.deep.equal(node);
-  });
-
-  it(`encodes HTML: ${description}`, () => {
-    const encoded = encode(node, schema);
-    expect(html).to.deep.equal(encoded);
-  });
-
-  it(`round-trips HTML: ${description}`, () => {
-    const roundTripped = parse(encode(node, schema), schema);
-    expect(roundTripped).to.deep.equal(node);
-  });
-};
-
 describe(name, () => {
   describe('lists', () => {
-    check('bullet list',
-      '<ul class="alternate" type="square"><li>one</li><li>two</li></ul>',
+    checkParseEncodeRoundTrips('bullet list',
+      schema,
+      '<ul class="alternate" type="square"><li data-parent="ul">one</li><li data-parent="ul">two</li></ul>',
       doc(
         ul(
           li(p('one')),
@@ -48,8 +27,9 @@ describe(name, () => {
         )
       ));
 
-    check('ordered list',
-      '<ol><li>one</li><li>two</li></ol>',
+    checkParseEncodeRoundTrips('ordered list',
+      schema,
+      '<ol><li data-parent="ol">one</li><li data-parent="ol">two</li></ol>',
       doc(
         ol(
           li(p('one')),
@@ -57,8 +37,9 @@ describe(name, () => {
         )
       ));
 
-    check('bullet list with strong',
-      '<ul class="alternate" type="square"><li>A piggy</li><li><b>Bigger</b> piggy</li></ul>',
+    checkParseEncodeRoundTrips('bullet list with strong',
+      schema,
+      '<ul class="alternate" type="square"><li data-parent="ul">A piggy</li><li data-parent="ul"><b>Bigger</b> piggy</li></ul>',
       doc(
         ul(
           li(p('A piggy')),
@@ -66,12 +47,67 @@ describe(name, () => {
         )
       ));
 
-    check('ordered list with strong',
-      '<ol><li>A piggy</li><li><b>Bigger</b> piggy</li></ol>',
+    checkParseEncodeRoundTrips('ordered list with strong',
+      schema,
+      '<ol><li data-parent="ol">A piggy</li><li data-parent="ol"><b>Bigger</b> piggy</li></ol>',
       doc(
         ol(
           li(p('A piggy')),
           li(p(strong('Bigger'), ' piggy'))
+        )
+      ));
+
+    checkParseEncodeRoundTrips('nested ordered list',
+      schema,
+      '<ol><li data-parent="ol">one</li><li data-parent="ol">two<ol><li data-parent="ol">two.one</li><li data-parent="ol">two.two</li><li data-parent="ol">two.three</li></ol></li><li data-parent="ol">three</li></ol>',
+      doc(
+        ol(
+          li(p('one')),
+          li(
+            p('two'),
+            ol(
+              li(p('two.one')),
+              li(p('two.two')),
+              li(p('two.three'))
+            )
+          ),
+          li(p('three'))
+        )
+      ));
+
+    checkParseEncodeRoundTrips('nested bullet list',
+      schema,
+      '<ul class="alternate" type="square"><li data-parent="ul">one</li><li data-parent="ul">two<ul class="alternate" type="square"><li data-parent="ul">two.one</li><li data-parent="ul">two.two</li><li data-parent="ul">two.three</li></ul></li><li data-parent="ul">three</li></ul>',
+      doc(
+        ul(
+          li(p('one')),
+          li(
+            p('two'),
+            ul(
+              li(p('two.one')),
+              li(p('two.two')),
+              li(p('two.three'))
+            )
+          ),
+          li(p('three'))
+        )
+      ));
+
+    checkParseEncodeRoundTrips('nested mixed list',
+      schema,
+      '<ul class="alternate" type="square"><li data-parent="ul">one</li><li data-parent="ul">two<ol><li data-parent="ol">two.one</li><li data-parent="ol">two.two</li><li data-parent="ol">two.three</li></ol></li><li data-parent="ul">three</li></ul>',
+      doc(
+        ul(
+          li(p('one')),
+          li(
+            p('two'),
+            ol(
+              li(p('two.one')),
+              li(p('two.two')),
+              li(p('two.three'))
+            )
+          ),
+          li(p('three'))
         )
       ));
   });

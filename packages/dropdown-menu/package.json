@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/dropdown-menu",
-  "version": "1.1.0",
+  "version": "1.1.10",
   "config": {
     "access": "public"
   },
@@ -17,25 +17,25 @@
     "src/index.d.ts"
   ],
   "dependencies": {
-    "akutil-shared-styles": "^37.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
-    "classnames": "^2.2.5",
-    "ak-layer": "^62.0.2",
-    "ak-droplist": "^4.0.0",
-    "ak-droplist-group": "^2.0.2",
-    "ak-droplist-item": "^4.0.3",
-    "ak-button": "^5.1.1",
-    "ak-icon": "^12.2.0",
-    "keycode": "^2.1.2",
+    "@atlaskit/droplist": "^3.0.0",
+    "@atlaskit/button": "^1.0.0",
+    "@atlaskit/icon": "^3.0.0",
     "uid": "0.0.2"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Nadia M"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "ak-avatar": "^5.0.5",
-    "akutil-readme": "^1.2.0",
-    "ak-dropdown-menu": "*",
-    "ak-lozenge": "^5.0.4"
+    "@atlaskit/avatar": "^1.0.0",
+    "@atlaskit/util-readme": "^1.0.0",
+    "@atlaskit/dropdown-menu": "*",
+    "@atlaskit/lozenge": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2",

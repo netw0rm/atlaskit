@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import Lozenge from 'ak-lozenge';
+import Lozenge from '@atlaskit/lozenge';
 
 import styles from 'style!./styles.less';
 import CommentAction from './CommentAction';
@@ -59,11 +59,13 @@ export default class Comment extends PureComponent {
     return (
       <CommentLayout
         avatar={this.props.avatar}
-        content={[
-          this.renderTopItems(),
-          <div className={styles.contentContainer}>{this.props.content}</div>,
-          this.renderActions(),
-        ]}
+        content={
+          <div>
+            {this.renderTopItems()}
+            <div className={styles.contentContainer}>{this.props.content}</div>
+            {this.renderActions()}
+          </div>
+        }
       >
         {this.props.children}
       </CommentLayout>

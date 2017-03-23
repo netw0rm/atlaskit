@@ -1,6 +1,7 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import Navigation from '../src/components/js/Navigation';
+import Drawer from '../src/components/js/Drawer';
 import {
   containerClosedWidth,
   navigationOpenWidth,
@@ -22,9 +23,6 @@ describe('<Navigation />', () => {
     });
     it('should render a <Resizer />', () => {
       expect(shallow(<Navigation />).find('Resizer').length).to.equal(1);
-    });
-    it('should render two <Drawer />', () => {
-      expect(shallow(<Navigation />).find('Drawer').length).to.equal(2);
     });
   });
 
@@ -48,10 +46,10 @@ describe('<Navigation />', () => {
     it('isCollapsible=false does render a <Resizer />', () => {
       expect(shallow(<Navigation isCollapsible={false} />).find('Resizer').length).to.be.above(0);
     });
-    it('containerHeader - can pass in an element for the container header', () => {
-      const header = <div>foo</div>;
-      expect(shallow(<Navigation containerHeader={header} />)
-        .find('ContainerNavigation').props().header).to.equal(header);
+    it('containerHeaderComponent - passes a func for the container header component to <ContainerNavigation />', () => {
+      const header = () => (<div>foo</div>);
+      expect(shallow(<Navigation containerHeaderComponent={header} />)
+        .find('ContainerNavigation').props().headerComponent).to.equal(header);
     });
     it('globalSearchIcon should pass search icon onto <GlobalNavigation />', () => {
       const icon = <img alt="search" />;
@@ -69,17 +67,14 @@ describe('<Navigation />', () => {
       const icon = <img alt="create" />;
       expect(mount(<Navigation globalCreateIcon={icon} />).find('ContainerNavigation').props().globalCreateIcon).to.equal(icon);
     });
-    it('isSearchDrawerOpen=true should set open=true on the SearchDrawer', () => {
-      expect(mount(<Navigation isSearchDrawerOpen />).find('Drawer').at(0).props().isOpen).to.equal(true);
-    });
-    it('isSearchDrawerOpen=false should set open=false on the SearchDrawer', () => {
-      expect(mount(<Navigation isSearchDrawerOpen={false} />).find('Drawer').at(0).props().isOpen).to.equal(false);
-    });
-    it('isCreateDrawerOpen=true should set open=true on the CreateDrawer', () => {
-      expect(mount(<Navigation isCreateDrawerOpen />).find('Drawer').at(1).props().isOpen).to.equal(true);
-    });
-    it('isCreateDrawerOpen=true should set open=true on the CreateDrawer', () => {
-      expect(mount(<Navigation isCreateDrawerOpen={false} />).find('Drawer').at(1).props().isOpen).to.equal(false);
+    it('onResizeStart is called when the resizer starts resizing', (done) => {
+      const navigation = shallow(<Navigation />);
+      navigation.setProps({
+        onResizeStart: () => {
+          done();
+        },
+      });
+      navigation.find('Resizer').simulate('resizeStart');
     });
     it('onResize is called after the resizeDelta has been reset to 0 (so that animations are enabled again)', (done) => {
       const navigation = shallow(<Navigation />);
@@ -92,6 +87,11 @@ describe('<Navigation />', () => {
       navigation.find('Resizer').simulate('resizeStart');
       navigation.find('Resizer').simulate('resize', -300);
       navigation.find('Resizer').simulate('resizeEnd');
+    });
+    it('drawers should render list of Drawers', () => {
+      const drawer1 = (<Drawer key="d1" />);
+      const drawer2 = (<Drawer key="d2" />);
+      expect(shallow(<Navigation drawers={[drawer1, drawer2]} />).find('Drawer').length).to.equal(2);
     });
     it('globalPrimaryItem should map to global navigation\'s primaryItem', () => {
       const primaryIcon = <span className="PRIMARY_ICON" />;

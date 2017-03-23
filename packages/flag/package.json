@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/flag",
-  "version": "1.0.2",
+  "version": "1.0.8",
   "config": {
     "access": "public"
   },
@@ -16,13 +16,18 @@
   ],
   "dependencies": {
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/icon": "^1.0.0",
+    "@atlaskit/icon": "^2.5.0",
     "@atlaskit/modal-dialog": "^1.0.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Ben G"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/flag": "*",

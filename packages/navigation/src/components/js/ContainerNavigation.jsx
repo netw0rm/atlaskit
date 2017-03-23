@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import styles from 'style!../less/ContainerNavigation.less';
 import ContainerHeader from './ContainerHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
-import GlobalActions from './GlobalActions';
+import GlobalPrimaryActions from './GlobalPrimaryActions';
 import {
   containerOpenWidth,
   containerClosedWidth,
@@ -85,7 +85,7 @@ export default class ContainerNavigation extends PureComponent {
               [styles.hasGlobalAppearance]: appearance === 'global',
             })}
           >
-            <GlobalActions
+            <GlobalPrimaryActions
               appearance={appearance === 'global' ? 'global' : 'container'}
               createIcon={globalCreateIcon}
               isVisible={areGlobalActionsVisible}

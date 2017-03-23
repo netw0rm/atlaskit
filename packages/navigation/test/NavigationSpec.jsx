@@ -1,11 +1,17 @@
 import { shallow, mount } from 'enzyme';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Navigation from '../src/components/js/Navigation';
 import Drawer from '../src/components/js/Drawer';
 import {
   containerClosedWidth,
   navigationOpenWidth,
 } from '../src/shared-variables';
+
+class Child extends PureComponent {
+  render() {
+    return <div>Hi there</div>;
+  }
+}
 
 describe('<Navigation />', () => {
   describe('renders', () => {
@@ -15,11 +21,11 @@ describe('<Navigation />', () => {
     it('should render a <GlobalNavigation />', () => {
       expect(shallow(<Navigation />).find('GlobalNavigation').length).to.equal(1);
     });
-    it('should render a <GlobalActions /> in GlobalNavigation', () => {
-      expect(mount(<Navigation />).find('GlobalNavigation').find('GlobalActions').length).to.equal(1);
+    it('should render a <GlobalPrimaryActions /> in GlobalNavigation', () => {
+      expect(mount(<Navigation />).find('GlobalNavigation').find('GlobalPrimaryActions').length).to.equal(1);
     });
-    it('should render a <GlobalActions /> in ContainerNavigation', () => {
-      expect(mount(<Navigation />).find('ContainerNavigation').find('GlobalActions').length).to.equal(1);
+    it('should render a <GlobalPrimaryActions /> in ContainerNavigation', () => {
+      expect(mount(<Navigation />).find('ContainerNavigation').find('GlobalPrimaryActions').length).to.equal(1);
     });
     it('should render a <Resizer />', () => {
       expect(shallow(<Navigation />).find('Resizer').length).to.equal(1);
@@ -100,19 +106,19 @@ describe('<Navigation />', () => {
           globalPrimaryIcon={primaryIcon}
         />).find('GlobalNavigation').props().primaryIcon).to.equal(primaryIcon);
     });
-    it('globalHelpItem should map to global navigation\'s helpItem', () => {
-      const helpItem = <span className="HELP_ITEM" />;
-      expect(mount(
+    it('should allow you to pass in global secondard actions', () => {
+      const wrapper = mount(
         <Navigation
-          globalHelpItem={helpItem}
-        />).find('GlobalNavigation').props().helpItem).to.equal(helpItem);
-    });
-    it('globalAccountItem should map to <GlobalNavigation/>', () => {
-      const accountItem = <span className="ACCOUNT_ITEM" />;
-      expect(mount(
-        <Navigation
-          globalAccountItem={accountItem}
-        />).find('GlobalNavigation').props().accountItem).to.equal(accountItem);
+          globalSecondaryActions={[<Child />, <Child />]}
+        />
+      );
+
+      expect(wrapper
+        .find('GlobalNavigation')
+        .find('GlobalSecondaryActions')
+        .find(Child)
+        .length
+      ).to.equal(2);
     });
     it('linkComponent is passed on to <GlobalNavigation/>', () => {
       const linkComponent = () => null;

@@ -375,6 +375,28 @@ export function insertRule(): Command {
   };
 }
 
+export function indentList(): Command {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    const { listItem } = state.schema.nodes;
+    const { $from } = state.selection;
+    if ($from.node(-1).type === listItem) {
+      return baseListCommand.sinkListItem(listItem)(state, dispatch);
+    }
+    return false;
+  };
+}
+
+export function outdentList(): Command {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    const { listItem } = state.schema.nodes;
+    const { $from } = state.selection;
+    if ($from.node(-1).type === listItem) {
+      return baseListCommand.liftListItem(listItem)(state, dispatch);
+    }
+    return false;
+  };
+}
+
 export function createNewParagraphAbove(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const append = false;

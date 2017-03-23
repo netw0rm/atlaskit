@@ -15,7 +15,7 @@ import {
 } from './types';
 
 import * as commands from '../../commands';
-import keymapPlugin from './keymap';
+import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
 import { reconfigure } from '../utils';
 
@@ -231,8 +231,16 @@ const plugin = new Plugin({
     },
     key: stateKey,
     view: (view: EditorView) => {
-        reconfigure(view, [keymapPlugin(view.state.schema), inputRulePlugin(view.state.schema)]);
+
+        const pluginState = stateKey.getState(view.state);
+        pluginState.keymapHandler = keymapHandler(view, pluginState);
+        reconfigure(view, [inputRulePlugin(view.state.schema)]);
         return {};
+    },
+    props: {
+      handleKeyDown (view, event) {
+        return stateKey.getState(view.state).keymapHandler(view, event);
+      }
     }
 });
 

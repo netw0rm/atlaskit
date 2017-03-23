@@ -5,10 +5,21 @@ import Description from './Description';
 import Heading from './Heading';
 
 function parseValue(type) {
-  if (type.name === 'arrayOf') return `[ ${parseValue(type.value)} ]`;
-  if (type.name === 'union') return type.value.map(parseValue).join(' | ');
-  if (!type.value) return type.name;
-  if (typeof type.value === 'string') return type.value;
+  if (type.name === 'arrayOf') {
+    return `[ ${parseValue(type.value)} ]`;
+  }
+
+  if (type.name === 'union') {
+    return type.value.map(parseValue).join(' | ');
+  }
+
+  if (!type.value) {
+    return type.name;
+  }
+
+  if (typeof type.value === 'string') {
+    return type.value;
+  }
 
   return null;
 }
@@ -24,6 +35,17 @@ function renderValue(type) {
 
   return null;
 }
+
+const Wrap = ({ children }) => (
+  <div>
+    <Heading type="2">Props</Heading>
+    {children}
+  </div>
+);
+
+Wrap.propTypes = {
+  children: PropTypes.node,
+};
 
 export default class DynamicProps extends PureComponent {
   static propTypes = {
@@ -44,18 +66,16 @@ export default class DynamicProps extends PureComponent {
     const { componentDocs } = this.state;
     if (!componentDocs || !componentDocs.props || !!componentDocs.props.length) {
       return (
-        <div>
-          <Heading type="2">Props</Heading>
+        <Wrap>
           <Description>There are no props for this component.</Description>
-        </div>
+        </Wrap>
       );
     }
 
     const propTypes = Object.keys(componentDocs.props);
 
     return (
-      <div>
-        <Heading type="2">Props</Heading>
+      <Wrap>
         <table>
           <thead style={{ border: 0, borderBottom: '1px solid #ddd' }}>
             <tr>
@@ -82,7 +102,7 @@ export default class DynamicProps extends PureComponent {
             })}
           </tbody>
         </table>
-      </div>
+      </Wrap>
     );
   }
 }

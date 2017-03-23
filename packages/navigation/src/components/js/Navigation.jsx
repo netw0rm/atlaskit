@@ -99,6 +99,10 @@ export default class Navigation extends PureComponent {
     });
   }
 
+  triggerResizeButtonHandler = (resizeState) => {
+    this.props.onResize(resizeState);
+  }
+
   render() {
     const {
       children,
@@ -168,7 +172,9 @@ export default class Navigation extends PureComponent {
           {
             isResizeable
             ? <Resizer
+              navigationWidth={renderedWidth}
               onResize={this.onResize}
+              onResizeButton={this.triggerResizeButtonHandler}
               onResizeStart={onResizeStart}
               onResizeEnd={this.triggerResizeHandler}
             />

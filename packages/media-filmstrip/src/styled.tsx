@@ -27,12 +27,12 @@ export const FilmStripListWrapper = styled.div`
 export const FilmStripList = styled.ul`
   margin: 0;
   padding: 0;
-  transition-property: transform;
-  transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
   white-space: nowrap;
   display: inline-block;
 
   li {
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.77, 0, 0.175, 1);
     list-style-type: none;
     margin: 0;
     padding-left: 4px;

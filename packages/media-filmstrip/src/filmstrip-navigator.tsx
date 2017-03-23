@@ -10,6 +10,7 @@ export interface FilmstripNavigatorProps {
   onDragEnter?: (event: DragEvent) => void;
   onDragOver?: (event: DragEvent) => void;
   width?: number;
+  children?: any;
 }
 
 function onDragEvent(dragEventHandler?: (event: DragEvent) => void): DragEventHandler<HTMLDivElement> {
@@ -92,12 +93,20 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
                          </ArrowRightWrapper>
                        </ShadowRight>;
     const transitionProperty = this.state.showTransition ? 'transform' : 'none';
-    const transitionDuration = `${this.state.transitionDuration}s`;
+    const items = props.children ? props.children.map((item, k) => {
+      const transitionDuration = `${this.state.transitionDuration + k * 0.05}s`;
+      const style = {transform, transitionProperty, transitionDuration};
+
+      return <li key={item.id || k} style={style}>
+        {item}
+      </li>;
+    }) : null;
+
     return <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(props.onDrop)} onDragEnter={onDragEvent(props.onDragEnter)} onDragOver={onDragEvent(props.onDragOver)}>
              {this.state.showLeft ? leftArrow : undefined}
              <FilmStripListWrapper>
-               <FilmStripList style={{transform, transitionProperty, transitionDuration}} innerRef={this.getDimensions}>
-                 {props.children}
+               <FilmStripList innerRef={this.getDimensions}>
+                 {items}
                </FilmStripList>
              </FilmStripListWrapper>
              {this.state.showRight ? rightArrow : undefined}

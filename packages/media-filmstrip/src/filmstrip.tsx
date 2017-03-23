@@ -36,18 +36,16 @@ function createCardActions(actions: Array<ListAction>, items: Array<FilmStripIte
 }
 
 export function FilmStrip(props: FilmStripProps): JSX.Element {
-  const els = props.items.map((item) => {
-    return <li key={item.id}>
-      <Card
-        collectionName={props.collectionName}
-        context={props.context}
-        id={item.id}
-        mediaItemType={item.mediaItemType}
-        height={props.cardHeight}
-        width={props.cardWidth}
-        actions={createCardActions(props.actions, props.items)}
-      />
-    </li>;
-  });
+  const els = props.items.map(item => (
+    <Card
+      collectionName={props.collectionName}
+      context={props.context}
+      id={item.id}
+      mediaItemType={item.mediaItemType}
+      height={props.cardHeight}
+      width={props.cardWidth}
+      actions={createCardActions(props.actions, props.items)}
+    />
+  ));
   return <FilmStripNavigator>{els}</FilmStripNavigator>;
 }

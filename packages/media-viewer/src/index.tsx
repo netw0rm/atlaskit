@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Component } from 'react';
-import { Context, FileItem } from '@atlaskit/media-core';
+import { Context, FileItem, MediaCollectionFileItem } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs/Subscription';
 import * as $ from 'jquery';
 
@@ -39,7 +39,7 @@ export default class MediaViewerAdapter extends Component<MediaViewerAdapterProp
                 next: collection => {
                     const files = collection.items
                         .filter(item => item.type === 'file')
-                        .map(item => ({
+                        .map((item: MediaCollectionFileItem) => ({
                             id: item.occurrenceKey,
                             src: `${config.serviceHost}/file/${item.id}/binary`,
                             type: item.mimeType,

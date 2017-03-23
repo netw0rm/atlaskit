@@ -25,7 +25,7 @@ describe('clear-formatting', () => {
     });
 
     it('should be true if code blocks is present', () => {
-      const { pluginState } = editor(doc(p('paragraph'), code_block({language: 'java'})('code{<>}Block')));
+      const { pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
       expect(pluginState.formattingIsPresent).to.be.true;
     });
 
@@ -42,13 +42,13 @@ describe('clear-formatting', () => {
     });
 
     it('should be false if all present blocks are cleared', () => {
-      const { editorView, pluginState } = editor(doc(p('paragraph'), code_block({language: 'java'})('code{<>}Block')));
+      const { editorView, pluginState } = editor(doc(p('paragraph'), code_block({ language: 'java' })('code{<>}Block')));
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
 
     it('should be false if all present marks and blocks are cleared', () => {
-      const { editorView, pluginState } = editor(doc(p('parag{<raph'), code_block({language: 'java'})('code>}Block')));
+      const { editorView, pluginState } = editor(doc(p('parag{<raph'), code_block({ language: 'java' })('code>}Block')));
       pluginState.clearFormatting(editorView);
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
@@ -56,12 +56,12 @@ describe('clear-formatting', () => {
 
   describe('clearFormatting', () => {
     [
-      {nodeName: 'strong', nodeType: strong},
-      {nodeName: 'italic', nodeType: em},
-      {nodeName: 'underline', nodeType: u},
-      {nodeName: 'monospace', nodeType: code},
-      {nodeName: 'strikeout', nodeType: strike},
-    ].forEach(({nodeName, nodeType}) => {
+      { nodeName: 'strong', nodeType: strong },
+      { nodeName: 'italic', nodeType: em },
+      { nodeName: 'underline', nodeType: u },
+      { nodeName: 'monospace', nodeType: code },
+      { nodeName: 'strikeout', nodeType: strike },
+    ].forEach(({ nodeName, nodeType }) => {
       it(`should clear ${nodeName} if present`, () => {
         const { editorView, pluginState } = editor(doc(p(nodeType('t{<}ex{>}t'))));
         expect(pluginState.formattingIsPresent).to.be.true;

@@ -19,9 +19,9 @@ export class MentionsPluginState {
   queryActive = false;
   anchorElement?: HTMLElement;
   keymap: Keymap;
-  onSelectPrevious = () => {};
-  onSelectNext =  () => {};
-  onSelectCurrent = () => {};
+  onSelectPrevious = () => { };
+  onSelectNext = () => { };
+  onSelectCurrent = () => { };
   onTrySelectCurrent = (): boolean => { return false; };
 
   constructor(pm: PM) {
@@ -35,8 +35,8 @@ export class MentionsPluginState {
       Space: () => this.onTrySelectCurrent(),
       Esc: () => this.dismiss(),
     }, {
-      name: 'mentions-plugin-keymap'
-    });
+        name: 'mentions-plugin-keymap'
+      });
 
     // add the input rules to insert mentions and emoticons
     if (pm.schema.nodes.mention) {
@@ -65,7 +65,7 @@ export class MentionsPluginState {
       const nodeBefore = this.pm.selection.$from.nodeBefore;
       const nodeAfter = this.pm.selection.$from.nodeAfter;
 
-      const newQuery = (nodeBefore ? nodeBefore.textContent : '' ).substr(1) + (nodeAfter && this.pm.schema.marks.mention_query.isInSet(nodeAfter.marks) ? nodeAfter.textContent : '');
+      const newQuery = (nodeBefore ? nodeBefore.textContent : '').substr(1) + (nodeAfter && this.pm.schema.marks.mention_query.isInSet(nodeAfter.marks) ? nodeAfter.textContent : '');
       if (this.query !== newQuery) {
         dirty = true;
         this.query = newQuery;

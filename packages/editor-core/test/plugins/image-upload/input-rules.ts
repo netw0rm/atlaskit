@@ -17,7 +17,7 @@ describe('inputrules', () => {
 
   describe('image rule', () => {
     it('should convert `![text](url)` to image', () => {
-      const { editorView, sel} = editor(doc(p('{<>}')));
+      const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, `![text](url)`, sel);
       expect(editorView.state.doc).to.deep.equal(doc(p(img({ src: 'url', alt: 'text', title: 'text' }))));

@@ -11,14 +11,14 @@ describe('@atlaskit/editor-core/schema underline mark', () => {
 
   it('serializes to <u>', () => {
     const schema = makeSchema();
-    const node = schema.text('foo', [ schema.marks.u.create() ] );
+    const node = schema.text('foo', [schema.marks.u.create()]);
     expect(toHTML(node, schema)).to.equal('<u>foo</u>');
   });
 });
 
-function makeSchema () {
-  const nodes = {doc, paragraph, text};
-  const marks = {u};
+function makeSchema() {
+  const nodes = { doc, paragraph, text };
+  const marks = { u };
   return new Schema<typeof nodes, typeof marks>({ nodes, marks });
 }
 
@@ -28,6 +28,6 @@ function itMatches(html: string, expectedText: string) {
     const doc = fromHTML(`${html}`, schema);
     const u = schema.marks.u.create();
 
-    expect(doc).to.have.textWithMarks(expectedText, [ u ]);
+    expect(doc).to.have.textWithMarks(expectedText, [u]);
   });
 }

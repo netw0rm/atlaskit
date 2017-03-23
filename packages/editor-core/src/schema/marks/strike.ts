@@ -7,5 +7,5 @@ export const strike: MarkSpec = {
     { tag: 's' },
     { style: 'text-decoration', getAttrs: value => value === 'line-through' && null }
   ],
-  toDOM(): [string]  { return ['s']; }
+  toDOM(): [string] { return ['s']; }
 };

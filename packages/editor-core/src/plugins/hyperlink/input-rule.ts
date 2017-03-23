@@ -46,15 +46,17 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
       end,
       schema.text(
         match[2],
-        [ markType ]
+        [markType]
       )
     );
   });
 
-  plugin = inputRules({ rules: [
-    endOfLine,
-    markdownLinkRule
-  ]});
+  plugin = inputRules({
+    rules: [
+      endOfLine,
+      markdownLinkRule
+    ]
+  });
 
   return plugin;
 };

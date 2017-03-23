@@ -1,4 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
+import classNames from 'classnames';
 import LockIcon from '@atlaskit/icon/glyph/lock';
 import Lozenge from '@atlaskit/lozenge';
 
@@ -18,6 +19,8 @@ export default class Comment extends PureComponent {
     children: PropTypes.node,
     content: PropTypes.node,
     restricted: PropTypes.string,
+    saving: PropTypes.bool,
+    savingText: PropTypes.string,
     time: PropTypes.node,
     type: PropTypes.string,
   }
@@ -25,6 +28,8 @@ export default class Comment extends PureComponent {
   static defaultProps = {
     actions: [],
     restricted: '',
+    saving: false,
+    savingText: 'Sending...',
   }
 
   renderRestrictedItem = () => (
@@ -38,7 +43,8 @@ export default class Comment extends PureComponent {
       [
         this.props.author || null,
         this.props.type ? <Lozenge>{this.props.type}</Lozenge> : null,
-        this.props.time || null,
+        this.props.time && !this.props.saving ? this.props.time : null,
+        this.props.saving ? this.props.savingText : null,
         this.props.restricted.length ? this.renderRestrictedItem() : null,
       ]
       .filter(item => !!item)
@@ -54,7 +60,7 @@ export default class Comment extends PureComponent {
     const items = this.props.actions.map(
       (item, index) => <div key={index} className={styles.actionsItem}>{item}</div>
     );
-    return items
+    return items && !this.props.saving
       ? <div className={styles.actionsContainer}>{items}</div>
       : null;
   }
@@ -66,13 +72,16 @@ export default class Comment extends PureComponent {
   )
 
   render() {
+    const contentClasses = [styles.contentContainer, {
+      [styles.optimisticSavingContent]: this.props.saving,
+    }];
     return (
       <CommentLayout
         avatar={this.props.avatar}
         content={
           <div>
             {this.renderTopItems()}
-            <div className={styles.contentContainer}>{this.props.content}</div>
+            <div className={classNames(contentClasses)}>{this.props.content}</div>
             {this.renderActions()}
           </div>
         }

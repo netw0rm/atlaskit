@@ -121,6 +121,17 @@ storiesOf(name, module)
   .add('with settings appearance', () => (
     <Page>
       <BasicNavigation
+        containerHeaderComponent={() => (
+          <AkContainerTitle
+            appearance="settings"
+            href="#foo"
+            icon={
+              <img alt="nucleus" src={nucleusLogo} />
+            }
+            text="AtlasKit"
+            subText="Project settings"
+          />
+        )}
         containerAppearance="settings"
         globalAppearance="settings"
       >

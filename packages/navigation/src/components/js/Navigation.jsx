@@ -20,6 +20,7 @@ export default class Navigation extends PureComponent {
     containerHeaderComponent: PropTypes.func,
     drawers: PropTypes.arrayOf(PropTypes.node),
     globalAccountItem: PropTypes.node,
+    globalAppearance: PropTypes.string,
     globalCreateIcon: PropTypes.node,
     globalHelpItem: PropTypes.node,
     globalPrimaryIcon: PropTypes.node,
@@ -40,6 +41,7 @@ export default class Navigation extends PureComponent {
     containerAppearance: 'default',
     drawers: [],
     globalAccountDropdownComponent: ({ children }) => children,
+    globalAppearance: 'global',
     globalHelpDropdownComponent: ({ children }) => children,
     isCollapsible: true,
     isCreateDrawerOpen: false,
@@ -99,6 +101,10 @@ export default class Navigation extends PureComponent {
     });
   }
 
+  triggerResizeButtonHandler = (resizeState) => {
+    this.props.onResize(resizeState);
+  }
+
   render() {
     const {
       children,
@@ -106,6 +112,7 @@ export default class Navigation extends PureComponent {
       containerHeaderComponent,
       drawers,
       globalAccountItem,
+      globalAppearance,
       globalCreateIcon,
       globalHelpItem,
       globalPrimaryIcon,
@@ -132,6 +139,7 @@ export default class Navigation extends PureComponent {
           <div style={{ zIndex: isPartiallyCollapsed ? false : 1 }}>
             <GlobalNavigation
               accountItem={globalAccountItem}
+              appearance={globalAppearance}
               createIcon={globalCreateIcon}
               helpItem={globalHelpItem}
               linkComponent={linkComponent}
@@ -168,7 +176,9 @@ export default class Navigation extends PureComponent {
           {
             isResizeable
             ? <Resizer
+              navigationWidth={renderedWidth}
               onResize={this.onResize}
+              onResizeButton={this.triggerResizeButtonHandler}
               onResizeStart={onResizeStart}
               onResizeEnd={this.triggerResizeHandler}
             />

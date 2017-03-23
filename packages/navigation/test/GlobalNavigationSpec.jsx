@@ -1,5 +1,6 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
+import styles from 'style-loader!../src/components/less/GlobalNavigation.less';
 import GlobalNavigation from '../src/components/js/GlobalNavigation';
 
 describe('<GlobalNavigation />', () => {
@@ -44,6 +45,12 @@ describe('<GlobalNavigation />', () => {
         <GlobalNavigation
           accountItem={accountItem}
         />).contains(accountItem)).to.equal(true);
+    });
+    it('appearance="settings" renders with the hasSettingsAppearance class', () => {
+      expect((shallow(
+        <GlobalNavigation
+          appearance="settings"
+        />).find(`.${styles.globalNavigationOuter}`)).hasClass((styles.hasSettingsAppearance))).to.equal(true);
     });
   });
 });

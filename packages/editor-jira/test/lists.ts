@@ -56,5 +56,59 @@ describe(name, () => {
           li(p(strong('Bigger'), ' piggy'))
         )
       ));
+
+    checkParseEncodeRoundTrips('nested ordered list',
+      schema,
+      '<ol><li data-parent="ol">one</li><li data-parent="ol">two<ol><li data-parent="ol">two.one</li><li data-parent="ol">two.two</li><li data-parent="ol">two.three</li></ol></li><li data-parent="ol">three</li></ol>',
+      doc(
+        ol(
+          li(p('one')),
+          li(
+            p('two'),
+            ol(
+              li(p('two.one')),
+              li(p('two.two')),
+              li(p('two.three'))
+            )
+          ),
+          li(p('three'))
+        )
+      ));
+
+    checkParseEncodeRoundTrips('nested bullet list',
+      schema,
+      '<ul class="alternate" type="square"><li data-parent="ul">one</li><li data-parent="ul">two<ul class="alternate" type="square"><li data-parent="ul">two.one</li><li data-parent="ul">two.two</li><li data-parent="ul">two.three</li></ul></li><li data-parent="ul">three</li></ul>',
+      doc(
+        ul(
+          li(p('one')),
+          li(
+            p('two'),
+            ul(
+              li(p('two.one')),
+              li(p('two.two')),
+              li(p('two.three'))
+            )
+          ),
+          li(p('three'))
+        )
+      ));
+
+    checkParseEncodeRoundTrips('nested mixed list',
+      schema,
+      '<ul class="alternate" type="square"><li data-parent="ul">one</li><li data-parent="ul">two<ol><li data-parent="ol">two.one</li><li data-parent="ol">two.two</li><li data-parent="ol">two.three</li></ol></li><li data-parent="ul">three</li></ul>',
+      doc(
+        ul(
+          li(p('one')),
+          li(
+            p('two'),
+            ol(
+              li(p('two.one')),
+              li(p('two.two')),
+              li(p('two.three'))
+            )
+          ),
+          li(p('three'))
+        )
+      ));
   });
 });

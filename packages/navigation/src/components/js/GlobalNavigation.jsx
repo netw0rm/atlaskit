@@ -9,6 +9,7 @@ import DefaultLinkComponent from './DefaultLinkComponent';
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
     accountItem: PropTypes.node,
+    appearance: PropTypes.string,
     helpItem: PropTypes.node,
     linkComponent: PropTypes.func,
     primaryIcon: PropTypes.node,
@@ -29,6 +30,7 @@ export default class GlobalNavigation extends PureComponent {
   render() {
     const {
       accountItem,
+      appearance,
       createIcon,
       helpItem,
       linkComponent,
@@ -40,9 +42,11 @@ export default class GlobalNavigation extends PureComponent {
       shouldAnimate,
     } = this.props;
     return (
-      <div
+      <nav
         className={classNames(styles.globalNavigationOuter, {
           [styles.shouldAnimate]: shouldAnimate,
+          [styles.hasSettingsAppearance]: appearance === 'settings',
+          [styles.test]: true,
         })}
       >
         <Spacer
@@ -54,6 +58,7 @@ export default class GlobalNavigation extends PureComponent {
         >
           <div className={styles.primaryContainer}>
             <GlobalActions
+              appearance={appearance}
               createIcon={createIcon}
               linkComponent={linkComponent}
               onCreateActivate={onCreateActivate}
@@ -68,7 +73,7 @@ export default class GlobalNavigation extends PureComponent {
             {accountItem}
           </div>
         </div>
-      </div>
+      </nav>
     );
   }
 }

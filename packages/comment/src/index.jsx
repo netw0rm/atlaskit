@@ -34,7 +34,7 @@ export default class Comment extends PureComponent {
 
   renderRestrictedItem = () => (
     <div className={styles.restricted}>
-      &bull; <LockIcon label="restricted" size="small" />Restricted to {this.props.restricted}
+      <span className={styles.bulletSpacer}>&bull;</span><LockIcon label="restricted" size="small" />Restricted to {this.props.restricted}
     </div>
   );
 

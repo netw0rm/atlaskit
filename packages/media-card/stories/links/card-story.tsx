@@ -33,6 +33,7 @@ storiesOf('LinkCard', {})
 
         return <div style={{margin: '20px'}}>
           <input style={inputStyles} type="text" autoFocus={true} placeholder="Paste some url..." defaultValue={this.state.link} onInput={this.onInputChange} />
+          <button onClick={this.onAddLink}>Add link</button>
           {loading}
           <LinkCard
             context={context}
@@ -48,9 +49,14 @@ storiesOf('LinkCard', {})
 
       onInputChange = (e) => {
         const link = e.target.value;
-
         this.setState({link});
       }
+
+      onAddLink = () => {
+        const {link} = this.state;
+        context.addLinkItem(link, defaultCollectionName);
+      }
+
     }
 
     return <LiveUrlConverter />;

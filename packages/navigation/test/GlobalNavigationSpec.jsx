@@ -49,24 +49,6 @@ describe('<GlobalNavigation />', () => {
       const wrapper = mount(<GlobalNavigation />);
       expect(wrapper.find('GlobalSecondaryActions').length).to.equal(0);
     });
-    it('should throw an error if attempting to render with more than four secondary actions', () => {
-      const mountWithTooManyActions = () => mount(
-        <GlobalNavigation
-          secondaryActions={[<Child />, <Child />, <Child />, <Child />, <Child />]}
-        />
-      );
-      expect(mountWithTooManyActions).to.throw();
-    });
-    it('should throw an error if attempting to update with more than four secondary actions', () => {
-      const wrapper = mount(
-        <GlobalNavigation />
-      );
-
-      const updateWithTooManyActions = () =>
-        wrapper.setProps('secondaryActions', [<Child />, <Child />, <Child />, <Child />, <Child />]);
-
-      expect(updateWithTooManyActions).to.throw();
-    });
     it('appearance="settings" renders with the hasSettingsAppearance class', () => {
       expect((shallow(
         <GlobalNavigation

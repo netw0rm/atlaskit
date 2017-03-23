@@ -1,5 +1,4 @@
 import React, { PureComponent, PropTypes } from 'react';
-import invariant from 'invariant';
 import classNames from 'classnames';
 import styles from 'style!../less/GlobalNavigation.less';
 import { globalOpenWidth } from '../../shared-variables';
@@ -7,12 +6,6 @@ import Spacer from './Spacer';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import GlobalSecondaryActions from './GlobalSecondaryActions';
 import DefaultLinkComponent from './DefaultLinkComponent';
-
-const maxSecondaryItems = 4;
-
-const checkIfTooManySecondaryActions = (actions = []) =>
-  invariant(actions.length <= maxSecondaryItems,
-    `cannot have more than ${maxSecondaryItems} secondary actions`);
 
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
@@ -35,15 +28,6 @@ export default class GlobalNavigation extends PureComponent {
     shouldAnimate: false,
     secondaryActions: [],
   };
-
-  constructor(props, context) {
-    super(props, context);
-    checkIfTooManySecondaryActions(props.secondaryActions);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    checkIfTooManySecondaryActions(nextProps.secondaryActions);
-  }
 
   render() {
     const {

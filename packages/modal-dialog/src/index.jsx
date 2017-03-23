@@ -54,6 +54,9 @@ export default class ModalDialog extends PureComponent {
       { style: { width } }
     ) : {};
 
+    const isContentTopRounded = !header;
+    const isContentBottomRounded = !footer;
+
     return (
       <div className={styles.modalWrapper}>
         <Blanket isTinted onBlanketClicked={onDialogDismissed} />
@@ -70,21 +73,22 @@ export default class ModalDialog extends PureComponent {
           {...customStyle}
         >
           {
-            header
-              ? <div className={styles.headerFlex}>
-                {header}
-              </div>
-              : null
+            header ? <div className={styles.headerFlex}>{header}</div> : null
           }
-          <div className={styles.contentFlex}>
+          <div
+            className={classNames([
+              styles.contentFlex,
+              {
+                [styles.roundedContentTop]: isContentTopRounded && !isContentBottomRounded,
+                [styles.roundedContentBottom]: isContentBottomRounded && !isContentTopRounded,
+                [styles.roundedContentTopBottom]: isContentTopRounded && isContentBottomRounded,
+              },
+            ])}
+          >
             {children}
           </div>
           {
-            footer
-              ? <div className={styles.footerFlex}>
-                {footer}
-              </div>
-              : null
+            footer ? <div className={styles.footerFlex}>{footer}</div> : null
           }
         </div>
       </div>

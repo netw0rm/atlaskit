@@ -27,15 +27,12 @@ export default class ContainerItemGroup extends PureComponent {
       <div
         className={className({
           [style.noHeaderContent]: !(title || action || hasSeparator),
+          [style.hasGlobalAppearance]: appearance === 'global',
+          [style.hasSettingsAppearance]: appearance === 'settings',
         })}
       >
         {hasSeparator ? (
-          <div
-            className={className(style.separator, {
-              [style.hasGlobalAppearance]: appearance === 'global',
-              [style.hasSettingsAppearance]: appearance === 'settings',
-            })}
-          />
+          <div className={style.separator} />
           ) : null}
         {title || action ? (
           <div className={style.header}>

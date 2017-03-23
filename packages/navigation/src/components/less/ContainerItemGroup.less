@@ -9,7 +9,7 @@
   display: flex;
   margin-bottom: @ak-grid-size;
   margin-left: @ak-grid-size;
-  margin-top: @ak-grid-size * 2;
+  margin-top: @ak-grid-size * 3;
 
   [data-__ak-navigation-container-closed="true"] & {
     margin-left: 0.5 * @ak-grid-size;
@@ -36,6 +36,10 @@
   flex-grow: 1;
   font-size: 12px;
   text-transform: uppercase;
+
+  .hasGlobalAppearance & {
+    color: rgba(255, 255, 255, 0.77);
+  }
 }
 
 .action {
@@ -48,11 +52,11 @@
   height: @divider-line-height;
   background: @ak-color-N20A;
 
-  &.hasGlobalAppearance {
+  .hasGlobalAppearance & {
     background: @ak-color-N50A;
   }
 
-  &.hasSettingsAppearance {
+  .hasSettingsAppearance & {
     background: @ak-color-N900;
   }
 }

@@ -54,6 +54,24 @@ storiesOf(name, module)
             text="Issues"
           />
         </AkContainerItemGroup>
+        <AkContainerItemGroup title="Not compact">
+          <AkContainerItem
+            icon={<SettingsIcon label="Settings" />}
+            text="Settings"
+          />
+          <AkContainerItem
+            icon={<IssuesIcon label="Issues" />}
+            text="Issues"
+          />
+        </AkContainerItemGroup>
+        <AkContainerItemGroup title="No icons">
+          <AkContainerItem
+            text="Settings"
+          />
+          <AkContainerItem
+            text="Issues"
+          />
+        </AkContainerItemGroup>
       </BasicNavigation>
     </Page>
   ));

@@ -206,7 +206,7 @@ storiesOf(name, module)
             textAfter={<RandomBadge theme="dark" />}
           />
         </AkContainerItemGroup>
-        <AkContainerItemGroup title="one section">
+        <AkContainerItemGroup appearance="global" title="one section">
           <AkContainerItem
             appearance="global"
             icon={<TrayIcon label="Tray" />}

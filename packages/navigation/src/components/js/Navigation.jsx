@@ -38,7 +38,7 @@ export default class Navigation extends PureComponent {
   };
 
   static defaultProps = {
-    containerAppearance: 'default',
+    containerAppearance: 'container',
     drawers: [],
     globalAccountDropdownComponent: ({ children }) => children,
     globalAppearance: 'global',

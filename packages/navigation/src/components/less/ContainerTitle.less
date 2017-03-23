@@ -37,13 +37,21 @@
   [data-__ak-navigation-container-closed="true"] & {
     display: none;
   }
+  width: 100%;
+  min-width: 0;
 }
 
 .text {
   color: @ak-color-N500;
   font-weight: 500;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .subText {
   color: @ak-color-N300;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

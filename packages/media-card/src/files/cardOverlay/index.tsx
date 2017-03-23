@@ -23,9 +23,6 @@ import {
 } from './styled';
 
 export interface CardOverlayProps {
-  height: number;
-  width: number;
-
   mediaType?: MediaType;
   mediaName?: string;
   mediaSize?: number;
@@ -39,7 +36,7 @@ export interface CardOverlayProps {
   error?: string;
   onRetry?: CardAction;
 
-  menuActions?: Array<CardAction>;
+  actions?: Array<CardAction>;
 }
 
 export interface CardOverlayState {
@@ -56,10 +53,10 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   static get defaultProps() {
-    const menuActions: Array<CardAction> = [];
+    const actions: Array<CardAction> = [];
 
     return {
-      menuActions
+      actions
     };
   }
 
@@ -174,7 +171,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   moreBtn() {
-    const actions = this.props.menuActions || [];
+    const actions = this.props.actions || [];
 
     if (!actions.length) {
       return null;

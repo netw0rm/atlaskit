@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
-import { MediaImage } from '../../src';
+import { MediaImage } from '../../src/utils';
 import {smallImage} from '@atlaskit/media-test-helpers';
 
 describe('MediaImage', () => {

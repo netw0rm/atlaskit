@@ -579,8 +579,10 @@ storiesOf('FileCardView', {})
       }, {
         title: 'handler + menu actions + custom size',
         content: <FileCardView
-          height={250}
-          width={380}
+          dimensions={{
+            height: 250,
+            width: 380
+          }}
           mediaName="with_progress.wav"
           mediaType="audio"
           mediaSize={32831}

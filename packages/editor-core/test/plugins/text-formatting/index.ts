@@ -345,7 +345,7 @@ describe('text-formatting', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
 
       expect(pluginState.toggleSubscript(editorView));
-      expect(editorView.state.doc).to.deep.equal(doc(p(subsup('t'), 'ext')));
+      expect(editorView.state.doc).to.deep.equal(doc(p(subsup({type: 'sub'})('t'), 'ext')));
       expect(pluginState.toggleSubscript(editorView));
       expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });
@@ -398,10 +398,9 @@ describe('text-formatting', () => {
   describe('superscript', () => {
     it('should be able to toggle superscript on a character', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
-
-      expect(pluginState.toggleSuperscript(editorView));
-      expect(editorView.state.doc).to.deep.equal(doc(p(subsup('t'), 'ext')));
-      expect(pluginState.toggleSuperscript(editorView));
+      pluginState.toggleSuperscript(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p(subsup({type: 'sup'})('t'), 'ext')));
+      pluginState.toggleSuperscript(editorView);
       expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });
 
@@ -450,15 +449,15 @@ describe('text-formatting', () => {
     });
 
     it('deactives strong, em, strike after toggling code for selected text', () => {
-      const { plugin } = editor(doc(p('t{<}e{>}xt')));
+      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.strongDisabled).to.be.false;
-      expect(plugin.emDisabled).to.be.false;
-      expect(plugin.strikeDisabled).to.be.false;
-      plugin.toggleCode();
-      expect(plugin.strongDisabled).to.be.true;
-      expect(plugin.emDisabled).to.be.true;
-      expect(plugin.strikeDisabled).to.be.true;
+      expect(pluginState.strongDisabled).to.be.false;
+      expect(pluginState.emDisabled).to.be.false;
+      expect(pluginState.strikeDisabled).to.be.false;
+      pluginState.toggleCode(editorView);
+      expect(pluginState.strongDisabled).to.be.true;
+      expect(pluginState.emDisabled).to.be.true;
+      expect(pluginState.strikeDisabled).to.be.true;
     });
   });
 });

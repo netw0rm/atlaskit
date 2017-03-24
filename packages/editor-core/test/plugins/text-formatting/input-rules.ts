@@ -43,7 +43,7 @@ describe('text-formatting input rules', () => {
       const { editorView, sel } = editor(doc(p(strong('This is bold {<>}'))));
 
       insertText(editorView, '*italic*', sel);
-      expect(editorView.state.doc).to.deep.equal(doc(p(strong('This is bold '), em('italic'))));
+      expect(editorView.state.doc).to.deep.equal(doc(p(strong('This is bold '), em(strong('italic')))));
     });
   });
 

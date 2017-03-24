@@ -1,8 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
-import style from 'style!../less/ContainerItemGroup.less';
+import style from 'style!../less/NavigationItemGroup.less';
 import className from 'classnames';
 
-export default class ContainerItemGroup extends PureComponent {
+export default class NavigationItemGroup extends PureComponent {
   static propTypes = {
     action: PropTypes.node,
     children: PropTypes.node,

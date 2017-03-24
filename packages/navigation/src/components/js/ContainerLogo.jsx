@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import ContainerLogoStyled from '../styled/ContainerLogoStyled';
+import ContainerLogoStyled from '../styled/ContainerLogo';
 
 export default class ContainerLogo extends PureComponent {
   static propTypes = {

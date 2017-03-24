@@ -1,6 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react';
 import RouterLinkComponent from './RouterLinkComponent';
-import { AkContainerItem } from '../../../src/index';
+import { AkNavigationItem } from '../../../src/index';
 
 export default class RouterLinkItem extends PureComponent {
   static propTypes = {
@@ -13,7 +13,7 @@ export default class RouterLinkItem extends PureComponent {
 
   render() {
     return (
-      <AkContainerItem
+      <AkNavigationItem
         href={this.props.to}
         isSelected={this.context.router.isActive(this.props.to, true)}
         linkComponent={RouterLinkComponent}

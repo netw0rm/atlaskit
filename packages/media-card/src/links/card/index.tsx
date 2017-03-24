@@ -175,7 +175,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
   }
 
   private renderPlayerLink(urlPreview: UrlPreview): JSX.Element {
-    const { title, description, resources } = urlPreview;
+    const { title, site,  description, resources } = urlPreview;
     const { thumbnail, icon, player } = resources;
 
     const playerUrl = player && player.url ? player.url : '';
@@ -185,6 +185,8 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
     return <LinkCardPlayer
       linkUrl={playerUrl}
       title={title}
+
+      site={site}
       description={description}
       thumbnailUrl={thumbnailUrl}
       iconUrl={iconUrl}
@@ -193,7 +195,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
   }
 
   private renderGenericLink(urlPreview: UrlPreview): JSX.Element {
-    const { url, title, description, resources } = urlPreview;
+    const { url, title, site, description, resources } = urlPreview;
     const icon = resources ? resources.icon : undefined;
     const thumbnail = resources ? resources.icon : undefined;
 
@@ -204,6 +206,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
       linkUrl={url}
       title={title}
 
+      site={site}
       description={description}
       thumbnailUrl={thumbnail && thumbnail.url}
       iconUrl={icon && icon.url}

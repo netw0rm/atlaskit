@@ -109,5 +109,11 @@ export const akFontFamily: string;
 export const akFontSizeDefault: string;
 export const akCodeFontFamily: string;
 
+export const akGridSizeUnitless: number;
 export const akGridSize: string;
 
+// Z-INDEX
+export const akZIndexNavigation: number;
+export const akZIndexLayer: number;
+export const akZIndexBlanket: number;
+export const akZIndexFlag: number;

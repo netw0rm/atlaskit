@@ -58,9 +58,7 @@ export const toolbar = style({
   height: '40px',
   paddingLeft: akGridSize,
   paddingRight: akGridSize,
-  // Place toolbar content above the content.
   position: 'relative',
-  zIndex: 2,
 
   $nest: {
     '& > *': {

@@ -37,7 +37,7 @@ export default class ResourcedMention extends PureComponent<Props, State> {
   }
 
   private handleMentionProvider = (props: Props) => {
-    const { id, mentionProvider } = this.props;
+    const { id, mentionProvider } = props;
     mentionProvider.then(provider => {
       this.setState({
         isHighlighted: provider.shouldHighlightMention({ id })

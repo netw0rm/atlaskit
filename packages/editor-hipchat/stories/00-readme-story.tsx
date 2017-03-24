@@ -1,5 +1,5 @@
 import { storiesOf } from '@kadira/storybook';
-import Readme, { Code, Heading } from 'akutil-readme';
+import Readme, { Code, Heading } from '@atlaskit/util-readme';
 import * as React from 'react';
 
 import * as SchemaRaw from '!raw!../src/schema.ts';

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "7.5.0",
+  "version": "7.6.0",
   "config": {
     "access": "public"
   },
@@ -44,7 +44,7 @@
     "@atlaskit/mention": "^2.1.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.0.3",
-    "@atlaskit/util-shared-styles": "^1.0.3",
+    "@atlaskit/util-shared-styles": "^1.2.1",
     "browserkeymap": "git://github.com/bradleyayers/browserkeymap#es6-modules-compat-with-types",
     "popper.js": "^1.0.1",
     "prosemirror": "git+https://bitbucket.org/atlassian/prosemirror.git#backport-fixes-from-future",

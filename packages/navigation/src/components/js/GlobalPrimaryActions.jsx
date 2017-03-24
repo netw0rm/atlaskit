@@ -1,11 +1,11 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
-import styles from 'style!../less/GlobalActions.less';
+import styles from 'style!../less/GlobalPrimaryActions.less';
 import GlobalItem from './GlobalItem';
 import DrawerTrigger from './DrawerTrigger';
 import DefaultLinkComponent from './DefaultLinkComponent';
 
-export default class GlobalActions extends PureComponent {
+export default class GlobalPrimaryActions extends PureComponent {
   static propTypes = {
     appearance: PropTypes.string,
     createIcon: PropTypes.node,

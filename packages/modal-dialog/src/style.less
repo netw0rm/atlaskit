@@ -1,6 +1,7 @@
 @import '~@atlaskit/util-shared-styles/src/grid.less';
 @import '~@atlaskit/util-shared-styles/src/colors.less';
 @import '~@atlaskit/util-shared-styles/src/z-indexes.less';
+
 @grid: @ak-grid-size / 2; // evaluates to 4px
 @ak-z-index-modal: @ak-z-index-blanket + 10;
 
@@ -109,6 +110,18 @@
       margin-right: -16px;
       margin-left: -16px;
     }
+  }
+
+  .rounded-content-top {
+    .panel-background(@grid, 0);
+  }
+
+  .rounded-content-bottom {
+    .panel-background(0, @grid);
+  }
+
+  .rounded-content-top-bottom {
+    .panel-background(@grid, @grid);
   }
 
   // Background and corners for footer

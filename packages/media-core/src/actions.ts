@@ -1,5 +1,5 @@
 /* tslint:disable:variable-name */
-import {MediaCollection} from '..';
+import {MediaCollection} from './';
 import {MediaItem, FileDetails} from './item';
 import {AxiosError} from 'axios/index';
 

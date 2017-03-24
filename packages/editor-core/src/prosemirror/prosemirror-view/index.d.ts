@@ -41,8 +41,8 @@ export interface PluginProps {
   handleTripleClickOn?: (view: EditorView, pos: number, node: Node, nodePos: number, event: dom.MouseEvent, direct: boolean) => boolean;
   handleTripleClick?: (view: EditorView, pos: number, event: dom.MouseEvent) => boolean;
   handleContextMenu?: (view: EditorView, pos: number, event: dom.MouseEvent) => boolean;
-  onFocus?: (view: EditorView, event: dom.Event) => void;
-  onBlur?: (view: EditorView, event: dom.Event) => void;
+  onFocus?: (view: EditorView, event?: dom.Event) => void;
+  onBlur?: (view: EditorView, event?: dom.Event) => void;
   domParser?: DOMParser;
   clipboardParser?: DOMParser;
   transformPasted?: (_0: Slice) => Slice;

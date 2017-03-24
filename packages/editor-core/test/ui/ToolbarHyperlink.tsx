@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as sinon from 'sinon';
 import * as React from 'react';
-import { TextSelection } from '../../src/prosemirror';
 import HyperlinkPlugin from '../../src/plugins/hyperlink';
 import ToolbarHyperlink from '../../src/ui/ToolbarHyperlink';
 import ToolbarButton from '../../src/ui/ToolbarButton';
@@ -35,7 +34,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
   });
 
   it('should state variable showToolbarPanel should be false when toolbar hyperlink button is clicked with a selection', () => {
-    const { pluginState, editorView } = editor(doc(p('te{<}stin<}>g')));
+    const { pluginState, editorView } = editor(doc(p('text')));
     const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView} />);
     toolbarHyperlink.find(ToolbarButton).simulate('click');
     expect(toolbarHyperlink.state('showToolbarPanel')).not.to.be.true;

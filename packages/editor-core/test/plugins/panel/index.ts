@@ -16,8 +16,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
 
   it('defines a name for use by the ProseMirror plugin registry ', () => {
     const plugin = PanelPlugin as any;
-    expect(plugin.State.name).is.be.a('string');
-    expect(plugin.State.name).to.equal('PanelState');
+    expect(plugin.key).is.be.a('string');
   });
 
   describe('API', () => {

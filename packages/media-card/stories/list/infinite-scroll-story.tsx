@@ -3,7 +3,7 @@ import { storiesOf } from '@kadira/storybook';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/publishReplay';
 
-import { InfiniteScroll, CardView } from '../../src';
+import { InfiniteScroll, FileCardView } from '../../src';
 import { List } from './list';
 import { tallImage } from '@atlaskit/media-test-helpers';
 
@@ -14,7 +14,7 @@ storiesOf('Infinite Scroll', {})
         const observable = subject.publishReplay();
         observable.connect();
 
-        const cardView = <CardView
+        const cardView = <FileCardView
             dataURI={tallImage}
         />;
 

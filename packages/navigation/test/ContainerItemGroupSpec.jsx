@@ -4,6 +4,8 @@ import {
   action,
   title,
   separator,
+  hasGlobalAppearance,
+  hasSettingsAppearance,
 } from 'style!../src/components/less/ContainerItemGroup.less';
 import ContainerItemGroup from '../src/components/js/ContainerItemGroup';
 
@@ -23,6 +25,12 @@ describe('<ContainerItemGroup />', () => {
     });
     it('with no separator specified, no separator should be rendered', () => {
       expect(mount(<ContainerItemGroup />).find(`.${separator}`).length).to.equal(0);
+    });
+    it('appearance="global" should render separator with the global appearance class', () => {
+      expect((mount(<ContainerItemGroup appearance="global" hasSeparator />).find(`.${separator}`)).hasClass((hasGlobalAppearance))).to.equal(true);
+    });
+    it('appearance="settings" should render separator with the settings appearance class', () => {
+      expect((mount(<ContainerItemGroup appearance="settings" hasSeparator />).find(`.${separator}`)).hasClass((hasSettingsAppearance))).to.equal(true);
     });
   });
 });

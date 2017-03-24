@@ -3,6 +3,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { EmojisPluginState } from '../../plugins/emojis';
+import { akEditorFloatingPanelZIndex } from '../../styles';
 
 export interface Props {
   pluginState: EmojisPluginState;
@@ -51,7 +52,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         left: (rect.left - parentRect.left),
         top: !this.props.reversePosition ? (rect.top - parentRect.top) + rect.height : null,
         bottom: this.props.reversePosition ? (window.innerHeight - parentRect.bottom) + 20 : null,
-        zIndex: 1
+        zIndex: akEditorFloatingPanelZIndex
       };
     }
 

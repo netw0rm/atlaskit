@@ -1,18 +1,23 @@
 import * as React from 'react';
 import {Component, MouseEvent} from 'react';
-import {CardAction} from '@atlaskit/media-core';
+import * as cx from 'classnames';
+import {CardAction, CardActionType, CardEventHandler} from '@atlaskit/media-core';
 import MoreIcon from '@atlaskit/icon/glyph/more';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
 
 import {Dropdown} from './dropdown';
 import {
   Wrapper,
-  MenuButton,
-  DropdownWrapper
+  MeatballsButton,
+  DropdownWrapper,
+  DeleteBtn
 } from './styled';
 
 export interface MenuProps {
   actions?: Array<CardAction>;
   onToggle?: (newState: MenuState) => void;
+
+  deleteBtnColor?: string;
 }
 
 export interface MenuState {
@@ -36,37 +41,55 @@ export class Menu extends Component<MenuProps, MenuState> {
   render() {
     return (
       <Wrapper>
-        {this.moreBtn()}
+        {this.actionBtn()}
         {this.dropdown()}
       </Wrapper>
     );
   }
 
-  private moreBtn() {
+  private actionBtn() {
     const actions = this.props.actions || [];
 
     if (!actions.length) {
       return null;
     }
 
-    const {isExpanded} = this.state;
-    const moreBtnClasses = ['more-btn'];
+    if (this.shouldRenderDeleteButton()) {
+      const deleteAction = actions[0];
 
-    if (isExpanded) {
-      moreBtnClasses.push('active');
+      return (
+        <DeleteBtn onClick={this.deleteBtnClick(deleteAction.handler)} style={{color: this.props.deleteBtnColor}} >
+          <CrossIcon label="cross" />
+        </DeleteBtn>
+      );
     }
 
+    const {isExpanded} = this.state;
+    const meatballBtnClasses: string = cx('more-btn', {active: isExpanded});
+
     return (
-      <MenuButton
-        className={moreBtnClasses.join(' ')}
-        onClick={this.moreBtnClick.bind(this)}
+      <MeatballsButton
+        className={meatballBtnClasses}
+        onClick={this.meatballBtnClick}
       >
         <MoreIcon label="more"/>
-      </MenuButton>
+      </MeatballsButton>
     );
   }
 
-  private moreBtnClick(e: MouseEvent<HTMLDivElement>) {
+  private shouldRenderDeleteButton() {
+    const actions = this.props.actions || [];
+    return actions.length === 1 && actions[0].type === CardActionType.delete;
+  }
+
+  private deleteBtnClick(handler: CardEventHandler) {
+    return (e: MouseEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      handler();
+    };
+  }
+
+  private meatballBtnClick = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
 
     const {isExpanded} = this.state;

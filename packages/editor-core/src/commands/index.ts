@@ -5,6 +5,7 @@ export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
 import { isRangeOfType, liftSelection, wrapIn } from '../utils';
+import { stateKey as hyperlinkPluginStateKey } from '../plugins/hyperlink';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
@@ -287,6 +288,13 @@ export function createCodeBlockFromFenceFormat(): Command {
   };
 }
 
+export function showLinkPanel(): Command {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean {
+    const pluginState = hyperlinkPluginStateKey.getState(view.state);
+    pluginState.showLinkPanel(view);
+    return true;
+  };
+}
 
 export function clearFormatting(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {

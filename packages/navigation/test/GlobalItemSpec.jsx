@@ -23,6 +23,9 @@ describe('<GlobalItem />', () => {
     it('appearance="container" renders with the hasContainerAppearance class', () => {
       expect((shallow(<GlobalItem appearance="container" />).find(`.${styles.globalItem}`)).hasClass((styles.hasContainerAppearance))).to.equal(true);
     });
+    it('appearance="settings" renders with the hasSettingsAppearance class', () => {
+      expect((shallow(<GlobalItem appearance="settings" />).find(`.${styles.globalItem}`)).hasClass((styles.hasSettingsAppearance))).to.equal(true);
+    });
     it('linkComponent can be used to render an arbitrary link', () => {
       const item = mount(<GlobalItem
         href="http://google.com"

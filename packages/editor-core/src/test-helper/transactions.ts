@@ -14,13 +14,13 @@ import {
  * Update the transaction's current selection.
  * This will determine the selection that the editor gets when the transaction is applied.
  */
-export function setTextSelection (view: EditorView, anchor: number, head?: number) {
+export function setTextSelection(view: EditorView, anchor: number, head?: number) {
   const { state } = view;
   const tr = state.tr.setSelection(TextSelection.create(state.doc, anchor, head));
   view.dispatch(tr);
 };
 
-export function setNodeSelection (view: EditorView, from: number) {
+export function setNodeSelection(view: EditorView, from: number) {
   const { state } = view;
   const tr = state.tr.setSelection(NodeSelection.create(state.doc, from));
   view.dispatch(tr);
@@ -53,7 +53,7 @@ export function insertText(view: EditorView, text: string, from: number, to?: nu
  * @returns refs from the inserted nodes, made relative to the document
  *   insertion position
  */
-export function insert (view: EditorView, content: BuilderContent[]): Refs {
+export function insert(view: EditorView, content: BuilderContent[]): Refs {
   const { state } = view;
   const { from, to } = state.selection;
   const { nodes, refs } = coerce(content, state.schema);

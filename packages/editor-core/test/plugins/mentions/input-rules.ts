@@ -1,7 +1,9 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { MentionNodeType, MentionQueryMarkType, MentionsPlugin,
-          ProseMirror, Schema, schema as schemaBasic } from '../../../src';
+import {
+  MentionNodeType, MentionQueryMarkType, MentionsPlugin,
+  ProseMirror, Schema, schema as schemaBasic
+} from '../../../src';
 import { chaiPlugin } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
@@ -18,7 +20,7 @@ describe('mentions - input rules', () => {
 
   const makeEditor = () => new ProseMirror({
     schema: schema,
-    plugins: [ MentionsPlugin ],
+    plugins: [MentionsPlugin],
   });
 
   it('should replace a standalone "@" with mention-query-mark', () => {

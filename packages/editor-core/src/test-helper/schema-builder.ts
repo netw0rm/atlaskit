@@ -126,11 +126,11 @@ export function sequence(...content: RefsContentItem[]) {
 
   for (const node of content) {
     if (isRefsTracker(node)) {
-      refs = {...refs, ...offsetRefs(node.refs, position)};
+      refs = { ...refs, ...offsetRefs(node.refs, position) };
     }
     if (isRefsNode(node)) {
       const thickness = node.isText ? 0 : 1;
-      refs = {...refs, ...offsetRefs(node.refs, position + thickness)};
+      refs = { ...refs, ...offsetRefs(node.refs, position + thickness) };
       position += node.nodeSize;
       nodes.push(node as RefsNode);
     }
@@ -168,7 +168,7 @@ export function coerce(content: BuilderContent[], schema: Schema<NodeSpec, MarkS
  * Create a factory for nodes.
  */
 export function nodeFactory(type: NodeType, attrs = {}) {
-  return function(...content: BuilderContent[]): RefsNode {
+  return function (...content: BuilderContent[]): RefsNode {
     const { nodes, refs } = coerce(content, type.schema);
     const node = type.create(attrs, nodes) as RefsNode;
     node.refs = refs;
@@ -181,7 +181,7 @@ export function nodeFactory(type: NodeType, attrs = {}) {
  */
 export function markFactory(type: MarkType, attrs = {}) {
   const mark = type.create(attrs);
-  return (...content: BuilderContent[]) : RefsNode[] => {
+  return (...content: BuilderContent[]): RefsNode[] => {
     const { nodes } = coerce(content, type.schema);
     return nodes
       .map(node => {
@@ -201,12 +201,12 @@ export const p = nodeFactory(sampleSchema.nodes.paragraph, {});
 export const linkable = nodeFactory(sampleSchema.nodes.linkable, {});
 export const unlinkable = nodeFactory(sampleSchema.nodes.unlinkable, {});
 export const blockquote = nodeFactory(sampleSchema.nodes.blockquote, {});
-export const h1 = nodeFactory(sampleSchema.nodes.heading, {level: 1});
-export const h2 = nodeFactory(sampleSchema.nodes.heading, {level: 2});
-export const h3 = nodeFactory(sampleSchema.nodes.heading, {level: 3});
-export const h4 = nodeFactory(sampleSchema.nodes.heading, {level: 4});
-export const h5 = nodeFactory(sampleSchema.nodes.heading, {level: 5});
-export const h6 = nodeFactory(sampleSchema.nodes.heading, {level: 6});
+export const h1 = nodeFactory(sampleSchema.nodes.heading, { level: 1 });
+export const h2 = nodeFactory(sampleSchema.nodes.heading, { level: 2 });
+export const h3 = nodeFactory(sampleSchema.nodes.heading, { level: 3 });
+export const h4 = nodeFactory(sampleSchema.nodes.heading, { level: 4 });
+export const h5 = nodeFactory(sampleSchema.nodes.heading, { level: 5 });
+export const h6 = nodeFactory(sampleSchema.nodes.heading, { level: 6 });
 export const li = nodeFactory(sampleSchema.nodes.listItem, {});
 export const ul = nodeFactory(sampleSchema.nodes.bulletList, {});
 export const ol = nodeFactory(sampleSchema.nodes.orderedList, {});

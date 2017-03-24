@@ -73,26 +73,26 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
         <FloatingToolbar target={target} align="left" autoPosition>
           <div className={styles.container}>
             {!showOpenButton ? null :
-            <ToolbarButton
-              href={href}
-              target="_blank"
-              theme="dark"
-              title="Open link in new tab"
-            >
-              <OpenIcon label="Open" />
-            </ToolbarButton>
+              <ToolbarButton
+                href={href}
+                target="_blank"
+                theme="dark"
+                title="Open link in new tab"
+              >
+                <OpenIcon label="Open" />
+              </ToolbarButton>
             }
             {!showUnlinkButton ? null :
-            <ToolbarButton
-              theme="dark"
-              title="Unlink"
-              onClick={this.handleUnlink}
-            >
-              <UnlinkIcon label="Unlink" />
-            </ToolbarButton>
+              <ToolbarButton
+                theme="dark"
+                title="Unlink"
+                onClick={this.handleUnlink}
+              >
+                <UnlinkIcon label="Unlink" />
+              </ToolbarButton>
             }
             {!showSeparator ? null :
-            <span className={styles.seperator} />
+              <span className={styles.seperator} />
             }
             <PanelTextInput
               placeholder="Link address"

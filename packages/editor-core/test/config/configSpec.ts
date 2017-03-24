@@ -23,13 +23,13 @@ describe(name, () => {
         mediaResourceProvider: function (): Promise<MediaResource> {
           return Promise.resolve({
             getUploadContext() {
-                return Promise.resolve({
-                  clientId: 'e3afd8e5-b7d2-4b8d-bff0-ec86e4b14595',
-                  serviceHost: 'http://media-api.host.com',
-                  tokenProvider: stubJwtTokenProvider
-                });
+              return Promise.resolve({
+                clientId: 'e3afd8e5-b7d2-4b8d-bff0-ec86e4b14595',
+                serviceHost: 'http://media-api.host.com',
+                tokenProvider: stubJwtTokenProvider
+              });
             },
-            getViewContext(scope?: MediaViewContextScope){
+            getViewContext(scope?: MediaViewContextScope) {
               return Promise.resolve({
                 clientId: 'e3afd8e5-b7d2-4b8d-bff0-ec86e4b14595',
                 serviceHost: 'http://media-api.host.com',

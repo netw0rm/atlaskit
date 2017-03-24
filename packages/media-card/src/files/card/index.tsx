@@ -2,59 +2,63 @@ import * as React from 'react';
 import {Component} from 'react';
 import {Observable} from 'rxjs/Observable';
 import {Subscription} from 'rxjs/Subscription';
-import {CardSize, DataUri, Context, CardAction, CardActionType, MediaItem, MediaItemType, LinkDetails, FileDetails} from '@atlaskit/media-core';
+import {DataUri, Context, CardAction, CardActionType, FileItem, FileDetails} from '@atlaskit/media-core';
 
-import {CardView, DEFAULT_CARD_DIMENSIONS} from '../cardView';
-import {CardViewSmall} from '../cardViewSmall';
+import {CardDimensions, CardAppearance, OnLoadingChangeFunc, OnSelectChangeFunc, CardEvent} from '../../card';
+import {FileCardView} from '../cardView';
+import {FileCardViewSmall} from '../cardViewSmall';
 import {isRetina} from '../../utils';
 
 const SMALL_CARD_IMAGE_WIDTH = 32;
 const SMALL_CARD_IMAGE_HEIGHT = 32;
 
-export interface CardProps {
+const DEFAULT_CARD_DIMENSIONS = {
+  WIDTH: 156,
+  HEIGHT: 104
+};
+
+export interface FileCardProps {
   readonly context: Context;
   readonly id: string;
-  readonly mediaItemType: MediaItemType;
   readonly collectionName?: string;
+
+  readonly appearance?: CardAppearance;
+  readonly dimensions?: CardDimensions;
 
   readonly selectable?: boolean;
   readonly selected?: boolean;
 
   readonly actions?: Array<CardAction>;
 
-  readonly width?: number;
-  readonly height?: number;
-
-  readonly type?: CardSize;
-  readonly onClick?: (event: Event, item: MediaItem) => void;
-  readonly onHover?: (event: any) => void;
-  readonly onError?: (error: Error) => void;
-  readonly onSelect?: (mediaItem: MediaItem) => void;
-  readonly onDeselect?: (mediaItem: MediaItem) => void;
+  // TODO FIL-3962 update card to fire click, hover, selectChange and loading change callbacks
+  readonly onClick?: (result: CardEvent) => void;
+  readonly onHover?: (result: CardEvent) => void;
+  readonly onSelectChange?: OnSelectChangeFunc;
+  readonly onLoadingChange?: OnLoadingChangeFunc;
 }
 
-export interface CardState {
+export interface FileCardState {
   readonly subscription: Subscription;
   readonly loading: boolean;
 
-  readonly mediaItem?: MediaItem;
+  readonly fileItem?: FileItem;
   readonly dataURI?: string;
   readonly error?: Error;
 }
 
-export class Card extends Component<CardProps, CardState> {
+export class FileCard extends Component<FileCardProps, FileCardState> {
 
-  static defaultProps: Partial<CardProps> = {
+  static defaultProps: Partial<FileCardProps> = {
     actions: []
   };
 
-  private setPartialState(partialState: Partial<CardState>, callback?: () => any) {
+  private setPartialState(partialState: Partial<FileCardState>, callback?: () => any) {
     this.setState((previousState, props) => {
       return {...previousState, ...partialState};
     }, callback);
   }
 
-  private shouldUpdateState(nextProps: CardProps): boolean {
+  private shouldUpdateState(nextProps: FileCardProps): boolean {
     return (nextProps.context !== this.props.context);
   }
 
@@ -64,43 +68,55 @@ export class Card extends Component<CardProps, CardState> {
     }
   }
 
-  private fetchDataUri(mediaItem: MediaItem): Promise<DataUri> {
-    if (mediaItem.type === 'link') {
-      if (mediaItem.details.resources && mediaItem.details.resources.thumbnail && mediaItem.details.resources.thumbnail.url) {
-        return Promise.resolve(mediaItem.details.resources.thumbnail.url);
-      }
+  private dataUriWidth(retinaFactor): number {
+    const {width} = this.props.dimensions || {width: undefined};
 
-      return Promise.reject(undefined);
+    if (this._isSmall()) {
+      return SMALL_CARD_IMAGE_WIDTH * retinaFactor;
     }
+
+    return (typeof width === 'number' ? width : DEFAULT_CARD_DIMENSIONS.WIDTH) * retinaFactor;
+  }
+
+  private dataUriHeight(retinaFactor): number {
+    const {height} = this.props.dimensions || {height: undefined};
+
+    if (this._isSmall()) {
+      return SMALL_CARD_IMAGE_HEIGHT * retinaFactor;
+    }
+
+    return (typeof height === 'number' ? height : DEFAULT_CARD_DIMENSIONS.HEIGHT) * retinaFactor;
+  }
+
+  private fetchDataUri(fileItem: FileItem): Promise<DataUri> {
     const service = this.props.context.getDataUriService(this.props.collectionName);
 
-    if (this.isGif(mediaItem)) {
-      return service.fetchOriginalDataUri(mediaItem);
+    if (this.isGif(fileItem)) {
+      return service.fetchOriginalDataUri(fileItem);
     }
 
     const retinaFactor = isRetina() ? 2 : 1;
-    const width = (this._isSmall() ? SMALL_CARD_IMAGE_WIDTH : this.props.width || DEFAULT_CARD_DIMENSIONS.WIDTH) * retinaFactor;
-    const height = (this._isSmall() ? SMALL_CARD_IMAGE_HEIGHT : this.props.height || DEFAULT_CARD_DIMENSIONS.HEIGHT) * retinaFactor;
-
-    return service.fetchImageDataUri(mediaItem, width, height);
+    const width = this.dataUriWidth(retinaFactor);
+    const height = this.dataUriHeight(retinaFactor);
+    return service.fetchImageDataUri(fileItem, width, height);
   }
 
-  private updateState(props: CardProps): void {
+  private updateState(props: FileCardProps): void {
     this.unsubscribe();
 
-    const mediaItemProvider = props.context.getMediaItemProvider(props.id, props.mediaItemType, props.collectionName);
-    const isProcessingCompleted = (mediaItem: MediaItem) => (mediaItem.type === 'file' && mediaItem.details.processingStatus !== 'pending') || (mediaItem.type === 'link');
+    const fileItemProvider = props.context.getMediaItemProvider(props.id, 'file', props.collectionName);
+    const isProcessingCompleted = (fileItem: FileItem) => fileItem.details.processingStatus !== 'pending';
 
-    const provider = mediaItemProvider.observable()
-      .mergeMap(mediaItem => {
-        if (isProcessingCompleted(mediaItem)) {
+    const provider = fileItemProvider.observable()
+      .mergeMap((fileItem: FileItem) => {
+        if (isProcessingCompleted(fileItem)) {
           return Observable.fromPromise(
-            this.fetchDataUri(mediaItem)
-              .then(dataUri => ({mediaItem, dataUri}))
-              .catch(() => ({mediaItem}))
+            this.fetchDataUri(fileItem)
+              .then(dataUri => ({fileItem, dataUri}))
+              .catch(() => ({fileItem}))
             );
         } else {
-          return Observable.of({mediaItem});
+          return Observable.of({fileItem});
         }
       });
 
@@ -108,10 +124,10 @@ export class Card extends Component<CardProps, CardState> {
 
     this.setPartialState({
       subscription: provider.subscribe({
-        next: ({mediaItem, dataUri}: {mediaItem: MediaItem, dataUri?: string}) => {
+        next: ({fileItem, dataUri}: {fileItem: FileItem, dataUri?: string}) => {
           this.setPartialState({
             dataURI: dataUri,
-            mediaItem,
+            fileItem,
             error: undefined,
             loading: false
           });
@@ -133,33 +149,26 @@ export class Card extends Component<CardProps, CardState> {
 
   componentDidMount(): void {
     this.updateState(this.props);
-  }
+  };
 
-  componentWillReceiveProps(nextProps: CardProps, nextContext: any): void {
+  componentWillReceiveProps(nextProps: FileCardProps, nextContext: any): void {
     if (this.shouldUpdateState(nextProps)) {
       this.updateState(nextProps);
     }
-  }
+  };
 
   componentWillUnmount(): void {
     this.unsubscribe();
-  }
+  };
 
   render() {
     if (this.state) {
-      const item = this.state.mediaItem;
+      const {fileItem} = this.state;
 
-      if (item) {
-        switch (item.type) {
-          case 'file':
-            return this.renderFile(item.details);
-          case 'link':
-            return this.renderLink(item.details);
-          default:
-            return this.renderNoMediaItem();
-        }
+      if (fileItem) {
+        return this.renderFile(fileItem.details);
       } else {
-        return this.renderNoMediaItem();
+        return this.renderNoFileItem();
       }
     } else {
       return <div />;
@@ -169,61 +178,63 @@ export class Card extends Component<CardProps, CardState> {
   onClick(event: Event): void { // TODO: select handlers seem to be broken now. fix.
     const onClick = this._getFirstAction(CardActionType.click);
 
-    if (onClick && this.state.mediaItem) {
-      onClick.handler(this.state.mediaItem, event);
+    if (onClick && this.state.fileItem) {
+      onClick.handler(this.state.fileItem, event);
     }
-  }
+  };
 
-  renderNoMediaItem(): JSX.Element {
+  renderNoFileItem(): JSX.Element {
     const errorMessage = this.state.error ? 'Error loading card' : undefined;
+    const {dimensions} = this.props;
+
     return (this._isSmall()) ?
       (
-        <CardViewSmall
+        <FileCardViewSmall
           error={errorMessage}
-          width={this.props.width}
+          width={dimensions && dimensions.width}
           loading={this.state.loading}
           dataURI={this.state.dataURI}
-          menuActions={this._getMenuActions()}
+          actions={this._getActions()}
           onClick={this.onClick.bind(this)}
         />
       ) : (
-        <CardView
+        <FileCardView
           error={errorMessage}
-          height={this.props.height || DEFAULT_CARD_DIMENSIONS.HEIGHT}
-          width={this.props.width || DEFAULT_CARD_DIMENSIONS.WIDTH}
+          dimensions={dimensions}
           loading={this.state.loading}
           selectable={this.props.selectable}
           selected={this.props.selected}
           dataURI={this.state.dataURI}
-          menuActions={this._getMenuActions()}
+          actions={this._getActions()}
           onClick={this.onClick.bind(this)}
         />
       );
   }
 
   renderFile(file: FileDetails): JSX.Element {
+    const {dimensions} = this.props;
+
     const card = (this._isSmall()) ?
       (
-        <CardViewSmall
-          width={this.props.width}
+        <FileCardViewSmall
+          width={dimensions && dimensions.width}
           loading={this.state.loading}
           dataURI={this.state.dataURI}
           mediaName={file.name}
           mediaType={file.mediaType}
           mediaSize={file.size}
-          menuActions={this._getMenuActions()}
+          actions={this._getActions()}
           onClick={this.onClick.bind(this)}
         />
       ) : (
-        <CardView
-          width={this.props.width || DEFAULT_CARD_DIMENSIONS.WIDTH}
-          height={this.props.height || DEFAULT_CARD_DIMENSIONS.HEIGHT}
+        <FileCardView
           loading={this.state.loading}
           dataURI={this.state.dataURI}
+          dimensions={dimensions}
           mediaName={file.name}
           mediaType={file.mediaType}
           mediaSize={file.size}
-          menuActions={this._getMenuActions()}
+          actions={this._getActions()}
           onClick={this.onClick.bind(this)}
           selectable={this.props.selectable}
           selected={this.props.selected}
@@ -233,24 +244,8 @@ export class Card extends Component<CardProps, CardState> {
     return card;
   }
 
-  // TODO: mediaType is hard coded. this needs a bit more of thought.
-  renderLink(link: LinkDetails): JSX.Element {
-    return <CardView
-      height={this.props.height || DEFAULT_CARD_DIMENSIONS.HEIGHT}
-      width={this.props.width || DEFAULT_CARD_DIMENSIONS.WIDTH}
-      loading={this.state.loading}
-      selectable={this.props.selectable}
-      selected={this.props.selected}
-      dataURI={this.state.dataURI}
-      mediaType={'image'}
-      mediaName={link.title}
-      menuActions={this._getMenuActions()}
-      onClick={this.onClick.bind(this)}
-    />;
-  }
-
   private _getFileItem() {
-    return this.state.mediaItem;
+    return this.state.fileItem;
   }
 
   private _getFirstAction(type: CardActionType): CardAction | null {
@@ -258,14 +253,14 @@ export class Card extends Component<CardProps, CardState> {
     return (actions.length) ? actions[0] : null;
   }
 
-  private _getMenuActions(): Array<CardAction> {
+  private _getActions(): Array < CardAction > {
     // redundant 'or' guarding to satisfy compiler
     // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11640
     const actions = this.props.actions || [];
-    const nonMenuActions = [CardActionType.click];
+    const nonActions = [CardActionType.click];
 
     return actions
-      .filter(action => action.type && nonMenuActions.indexOf(action.type) === -1)
+      .filter(action => action.type && nonActions.indexOf(action.type) === -1)
       .map((action: CardAction) => {
         return {
           label: action.label,
@@ -277,7 +272,7 @@ export class Card extends Component<CardProps, CardState> {
       });
   }
 
-  private _getActionsByType(type: CardActionType): Array<CardAction> {
+  private _getActionsByType(type: CardActionType): Array < CardAction > {
     // redundant 'or' guarding to satisfy compiler
     // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11640
     const actions: Array<CardAction> = this.props.actions || [];
@@ -285,7 +280,7 @@ export class Card extends Component<CardProps, CardState> {
   }
 
   private _isSmall() {
-    return this.props.type === 'small';
+    return this.props.appearance === 'small';
   }
 
   private isGif(mediaItem) {

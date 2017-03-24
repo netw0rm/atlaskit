@@ -18,7 +18,7 @@ import { setTextSelection } from './transactions';
  * - `<>` -- a collapsed text selection
  * - `<` and `>` -- a range text selection (`<` is from, `>` is to).
  */
-export default (options: Options) : EditorInstance => {
+export default (options: Options): EditorInstance => {
   const plugins: Plugin[] = [];
 
   if (options.plugin) {
@@ -47,7 +47,7 @@ export default (options: Options) : EditorInstance => {
   // Collapsed selection.
   if ('<>' in refs) {
     setTextSelection(editorView, refs['<>']);
-  // Expanded selection
+    // Expanded selection
   } else if ('<' in refs || '>' in refs) {
     if ('<' in refs === false) {
       throw new Error('A `<` ref must complement a `>` ref.');

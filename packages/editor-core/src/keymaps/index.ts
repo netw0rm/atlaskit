@@ -32,86 +32,86 @@ export const redoBarred = makeKeymap('Redo Barred', 'Ctrl-Shift-z', 'Cmd-y');
 export const addLink = makeKeyMapWithCommon('Add Link', 'Mod-k');
 
 export function tooltip(keymap: Keymap | undefined): string | undefined {
-    if (keymap) {
-        let shortcut;
-        if (browser.mac) {
-            shortcut = keymap.mac
-                .replace(/Cmd/i, '⌘')
-                .replace(/Shift/i, '⇧')
-                .replace(/Ctrl/i, '^')
-                .replace(/Alt/i, '⌥');
-        } else {
-            shortcut = keymap.windows;
-        }
-        return `${keymap.description} (${shortcut})`;
+  if (keymap) {
+    let shortcut;
+    if (browser.mac) {
+      shortcut = keymap.mac
+        .replace(/Cmd/i, '⌘')
+        .replace(/Shift/i, '⇧')
+        .replace(/Ctrl/i, '^')
+        .replace(/Alt/i, '⌥');
+    } else {
+      shortcut = keymap.windows;
     }
+    return `${keymap.description} (${shortcut})`;
+  }
 }
 
 export function findKeymapByDescription(description: string): Keymap | undefined {
-    const matches = ALL.filter((keymap) => (keymap.description.toUpperCase() === description.toUpperCase()));
-    return matches[0];
+  const matches = ALL.filter((keymap) => (keymap.description.toUpperCase() === description.toUpperCase()));
+  return matches[0];
 }
 
 export function findShortcutByDescription(description: string): string | undefined {
-    const keymap = findKeymapByDescription(description);
-    if (keymap) {
-        return findShortcutByKeymap(keymap);
-    }
+  const keymap = findKeymapByDescription(description);
+  if (keymap) {
+    return findShortcutByKeymap(keymap);
+  }
 }
 
 export function findShortcutByKeymap(keymap: Keymap): string | undefined {
-    if (browser.mac) {
-        return keymap.mac;
-    }
+  if (browser.mac) {
+    return keymap.mac;
+  }
 
-    return keymap.windows;
+  return keymap.windows;
 }
 
 const ALL = [toggleOrderedList, toggleBulletList, toggleBold, toggleItalic,
-    toggleUnderline, toggleStrikethrough, toggleCode,
-    setNormalText, toggleHeading1, toggleHeading2, toggleHeading3, toggleHeading4, toggleHeading5,
-    toggleBlockQuote, toggleCodeBlock, insertNewLine, insertRule,
-    splitCodeBlock, splitListItem, redo, undo];
+  toggleUnderline, toggleStrikethrough, toggleCode,
+  setNormalText, toggleHeading1, toggleHeading2, toggleHeading3, toggleHeading4, toggleHeading5,
+  toggleBlockQuote, toggleCodeBlock, insertNewLine, insertRule,
+  splitCodeBlock, splitListItem, redo, undo];
 
 function makeKeymap(description: string, windows: string, mac: string, common?: string): Keymap {
-    return {
-        description: description,
-        windows: windows,
-        mac: mac,
-        common: common
-    };
+  return {
+    description: description,
+    windows: windows,
+    mac: mac,
+    common: common
+  };
 }
 
 function makeKeyMapWithCommon(description: string, common: string): Keymap {
-    const windows = common.replace(/Mod/i, 'Ctrl');
-    const mac = common.replace(/Mod/i, 'Cmd');
-    return makeKeymap(description, windows, mac, common);
+  const windows = common.replace(/Mod/i, 'Ctrl');
+  const mac = common.replace(/Mod/i, 'Cmd');
+  return makeKeymap(description, windows, mac, common);
 }
 
 export interface Keymap {
-    description: string;
-    windows: string;
-    mac: string;
-    common?: string;
+  description: string;
+  windows: string;
+  mac: string;
+  common?: string;
 }
 
 export function bindKeymapWithCommand(shortcut: string, cmd: (state: EditorState<any>, dispatch: (tr: Transaction) => void) => boolean, keymap: { [key: string]: Function }) {
-    const oldCmd = keymap[shortcut];
-    let newCmd = cmd;
-    if (keymap[shortcut]) {
-        newCmd = (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
-            return oldCmd(state, dispatch) || cmd(state, dispatch);
-        };
-    }
-    keymap[shortcut] = newCmd;
+  const oldCmd = keymap[shortcut];
+  let newCmd = cmd;
+  if (keymap[shortcut]) {
+    newCmd = (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+      return oldCmd(state, dispatch) || cmd(state, dispatch);
+    };
+  }
+  keymap[shortcut] = newCmd;
 }
 
 export function findKeyMapForBrowser(kayMap: Keymap): string | undefined {
-    if (kayMap) {
-        if (browser.mac) {
-            return kayMap.mac;
-        }
-
-        return kayMap.windows;
+  if (kayMap) {
+    if (browser.mac) {
+      return kayMap.mac;
     }
+
+    return kayMap.windows;
+  }
 }

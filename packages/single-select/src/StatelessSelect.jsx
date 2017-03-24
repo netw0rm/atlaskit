@@ -272,10 +272,13 @@ export default class StatelessSelect extends PureComponent {
         }
         break;
       case 'Enter':
-        if (isSelectOpen && this.state.focusedItemIndex !== undefined) {
-          this.handleItemSelect(
-            this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
-          );
+        if (isSelectOpen) {
+          event.preventDefault();
+          if (this.state.focusedItemIndex !== undefined) {
+            this.handleItemSelect(
+              this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
+            );
+          }
         }
         break;
       default:
@@ -424,7 +427,7 @@ export default class StatelessSelect extends PureComponent {
                           <div className={styles.elemBefore}>
                             {this.props.selectedItem.elemBefore}
                           </div> :
-                        null
+                          null
                       }
                       {
                         this.props.selectedItem.content ?

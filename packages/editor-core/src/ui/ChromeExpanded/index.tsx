@@ -33,106 +33,106 @@ import { EditorView } from '../../prosemirror';
 import 'css-loader!prosemirror-view/style/prosemirror.css';
 
 export interface Props {
-    editorView: EditorView;
-    feedbackFormUrl?: string;
-    onCancel?: () => void;
-    onInsertMention?: () => void;
-    onInsertImage?: () => void;
-    onSave?: () => void;
-    packageVersion?: string;
-    packageName?: string;
-    pluginStateBlockType?: BlockTypeState;
-    pluginStateCodeBlock?: CodeBlockState;
-    pluginStateHyperlink?: HyperlinkState;
-    pluginStateLists?: ListsState;
-    pluginStateTextFormatting?: TextFormattingState;
-    pluginStateClearFormatting?: ClearFormattingState;
-    pluginStateImageUpload?: ImageUploadState;
-    pluginStateMentions?: MentionsPluginState;
-    pluginStateEmojis?: EmojisPluginState;
-    mentionsResourceProvider?: any; // AbstractMentionResource
-    presenceResourceProvider?: any; // AbstractPresenceResource
-    emojiProvider?: Promise<EmojiProvider>;
-    pluginStatePanel?: PanelState;
+  editorView: EditorView;
+  feedbackFormUrl?: string;
+  onCancel?: () => void;
+  onInsertMention?: () => void;
+  onInsertImage?: () => void;
+  onSave?: () => void;
+  packageVersion?: string;
+  packageName?: string;
+  pluginStateBlockType?: BlockTypeState;
+  pluginStateCodeBlock?: CodeBlockState;
+  pluginStateHyperlink?: HyperlinkState;
+  pluginStateLists?: ListsState;
+  pluginStateTextFormatting?: TextFormattingState;
+  pluginStateClearFormatting?: ClearFormattingState;
+  pluginStateImageUpload?: ImageUploadState;
+  pluginStateMentions?: MentionsPluginState;
+  pluginStateEmojis?: EmojisPluginState;
+  mentionsResourceProvider?: any; // AbstractMentionResource
+  presenceResourceProvider?: any; // AbstractPresenceResource
+  emojiProvider?: Promise<EmojiProvider>;
+  pluginStatePanel?: PanelState;
 }
 
 export default class ChromeExpanded extends PureComponent<Props, {}> {
-    render() {
-        const { props } = this;
+  render() {
+    const { props } = this;
 
-        return (
-            <div className={styles.container} data-editor-chrome>
-                <div className={styles.toolbar}>
-                    {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} /> : null}
-                    {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} editorView={props.editorView} /> : null}
-                    {props.pluginStateTextFormatting || props.pluginStateClearFormatting ?
-                        <ToolbarAdvancedTextFormatting
-                            pluginStateTextFormatting={props.pluginStateTextFormatting}
-                            pluginStateClearFormatting={props.pluginStateClearFormatting}
-                            editorView={props.editorView}
-                        /> : null}
-                    {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} editorView={props.editorView} /> : null}
-                    {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink}  editorView={props.editorView}/> : null}
-                    <span style={{ flexGrow: 1 }} />
-                    {props.feedbackFormUrl ? <ToolbarFeedback packageVersion={props.packageVersion} packageName={props.packageName} /> : null}
-                </div>
-                <div className={styles.content}>
-                    {props.children}
-                    {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink}  editorView={props.editorView}/> : null}
-                    {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock}  editorView={props.editorView}/> : null}
-                    {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} presenceProvider={props.presenceResourceProvider} /> : null}
-                    {props.pluginStateEmojis && props.emojiProvider ? <EmojiTypeAhead pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
-                    {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel}  editorView={props.editorView}/> : null}
-                </div>
-                <div className={styles.footer}>
-                    <div className={styles.footerActions}>
-                        <AkButtonGroup>
-                            {!this.props.onSave ? null :
-                                <span onClick={this.handleSave}>
-                                    <AkButton appearance="primary">Save</AkButton>
-                                </span>
-                            }
-                            {!this.props.onCancel ? null :
-                                <span onClick={this.handleCancel}>
-                                    <AkButton appearance="subtle">Cancel</AkButton>
-                                </span>
-                            }
-                        </AkButtonGroup>
-                    </div>
-                    <div>
-                        {!props.onInsertMention ? null :
-                            <ToolbarButton onClick={this.handleInsertMention}>
-                                <MentionIcon label="Mention" />
-                            </ToolbarButton>
-                        }
-                        {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} editorView={props.editorView} /> : null}
-                    </div>
-                </div>
-            </div>
-        );
-    }
+    return (
+      <div className={styles.container} data-editor-chrome>
+        <div className={styles.toolbar}>
+          {props.pluginStateBlockType ? <ToolbarBlockType pluginState={props.pluginStateBlockType} editorView={props.editorView} /> : null}
+          {props.pluginStateTextFormatting ? <ToolbarTextFormatting pluginState={props.pluginStateTextFormatting} editorView={props.editorView} /> : null}
+          {props.pluginStateTextFormatting || props.pluginStateClearFormatting ?
+            <ToolbarAdvancedTextFormatting
+              pluginStateTextFormatting={props.pluginStateTextFormatting}
+              pluginStateClearFormatting={props.pluginStateClearFormatting}
+              editorView={props.editorView}
+            /> : null}
+          {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} editorView={props.editorView} /> : null}
+          {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
+          <span style={{ flexGrow: 1 }} />
+          {props.feedbackFormUrl ? <ToolbarFeedback packageVersion={props.packageVersion} packageName={props.packageName} /> : null}
+        </div>
+        <div className={styles.content}>
+          {props.children}
+          {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
+          {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} editorView={props.editorView} /> : null}
+          {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionsResourceProvider} presenceProvider={props.presenceResourceProvider} /> : null}
+          {props.pluginStateEmojis && props.emojiProvider ? <EmojiTypeAhead pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
+          {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} editorView={props.editorView} /> : null}
+        </div>
+        <div className={styles.footer}>
+          <div className={styles.footerActions}>
+            <AkButtonGroup>
+              {!this.props.onSave ? null :
+                <span onClick={this.handleSave}>
+                  <AkButton appearance="primary">Save</AkButton>
+                </span>
+              }
+              {!this.props.onCancel ? null :
+                <span onClick={this.handleCancel}>
+                  <AkButton appearance="subtle">Cancel</AkButton>
+                </span>
+              }
+            </AkButtonGroup>
+          </div>
+          <div>
+            {!props.onInsertMention ? null :
+              <ToolbarButton onClick={this.handleInsertMention}>
+                <MentionIcon label="Mention" />
+              </ToolbarButton>
+            }
+            {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} editorView={props.editorView} /> : null}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-    @analytics('atlassian.editor.stop.cancel')
-    private handleCancel = () => {
-        const { onCancel } = this.props;
-        if (onCancel) {
-            onCancel();
-        }
+  @analytics('atlassian.editor.stop.cancel')
+  private handleCancel = () => {
+    const { onCancel } = this.props;
+    if (onCancel) {
+      onCancel();
     }
+  }
 
-    @analytics('atlassian.editor.mention.button')
-    private handleInsertMention = () => {
-        const { onInsertMention } = this.props;
-        if (onInsertMention) {
-            onInsertMention();
-        }
+  @analytics('atlassian.editor.mention.button')
+  private handleInsertMention = () => {
+    const { onInsertMention } = this.props;
+    if (onInsertMention) {
+      onInsertMention();
     }
+  }
 
-    @analytics('atlassian.editor.stop.save')
-    private handleSave = () => {
-        const { onSave } = this.props;
-        if (onSave) {
-            onSave();
-        }
+  @analytics('atlassian.editor.stop.save')
+  private handleSave = () => {
+    const { onSave } = this.props;
+    if (onSave) {
+      onSave();
     }
+  }
 };

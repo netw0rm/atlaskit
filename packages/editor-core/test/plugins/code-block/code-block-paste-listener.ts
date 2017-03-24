@@ -23,35 +23,35 @@ describe('block-type paste listener', () => {
   }
 
   describe('non-empty code block', () => {
-    it('should preserve existing code block content when pasting', function() {
+    it('should preserve existing code block content when pasting', function () {
       const { editorView } = editor('foo{<>}');
       maybeDispatchPasteEvent(editorView, { plain: 'bar' }, this);
       const expected = doc(code_block()('foobar'));
       expect(editorView.state.doc).to.deep.equal(expected);
     });
 
-    it('should preserve existing code block content when pasting two lines', function() {
+    it('should preserve existing code block content when pasting two lines', function () {
       const { editorView } = editor('foo{<>}');
       maybeDispatchPasteEvent(editorView, { plain: 'bar\nbaz' }, this);
       const expected = doc(code_block()('foobar\nbaz'));
       expect(editorView.state.doc).to.deep.equal(expected);
     });
 
-    it('should preserve existing code block content when pasting two lines with an empty newline', function() {
+    it('should preserve existing code block content when pasting two lines with an empty newline', function () {
       const { editorView } = editor('foo{<>}');
       maybeDispatchPasteEvent(editorView, { plain: 'bar\n\nbaz' }, this);
       const expected = doc(code_block()('foobar\n\nbaz'));
       expect(editorView.state.doc).to.deep.equal(expected);
     });
 
-    it('should preserve existing code block content when pasting three lines', function() {
+    it('should preserve existing code block content when pasting three lines', function () {
       const { editorView } = editor('foo{<>}');
       maybeDispatchPasteEvent(editorView, { plain: 'bar\n\nfoo\nbaz' }, this);
       const expected = doc(code_block()('foobar\n\nfoo\nbaz'));
       expect(editorView.state.doc).to.deep.equal(expected);
     });
 
-    it('should be at the right position after pasting', function() {
+    it('should be at the right position after pasting', function () {
       const { editorView } = editor('foo{<}bar{>}');
       maybeDispatchPasteEvent(editorView, { plain: 'barbaz' }, this);
       const expected = doc(code_block()('foobarbaz'));
@@ -60,7 +60,7 @@ describe('block-type paste listener', () => {
       expect(editorView.state.selection.$to.pos).to.deep.equal(10);
     });
 
-    it('should use our custom paste listener if the selected text block is inside of a blockquote', function() {
+    it('should use our custom paste listener if the selected text block is inside of a blockquote', function () {
       const { editorView } = makeEditor({
         doc: doc(blockquote(p('p'), code_block()('foo{<}bar{>}'))),
         plugin: CodeBlockPlugin,
@@ -75,28 +75,28 @@ describe('block-type paste listener', () => {
   });
 
   describe('empty code block', () => {
-    it('should preserve existing code block content when pasting plain text', function() {
+    it('should preserve existing code block content when pasting plain text', function () {
       const { editorView } = editor('{<>}');
       maybeDispatchPasteEvent(editorView, { plain: 'foo' }, this);
       const expected = doc(code_block()('foo'));
       expect(editorView.state.doc).to.deep.equal(expected);
     });
 
-    it('should preserve existing code block content when pasting two lines', function() {
+    it('should preserve existing code block content when pasting two lines', function () {
       const { editorView } = editor('{<>}');
       maybeDispatchPasteEvent(editorView, { plain: 'foo\nbar' }, this);
       const expected = doc(code_block()('foo\nbar'));
       expect(editorView.state.doc).to.deep.equal(expected);
     });
 
-    it('should preserve existing code block content when pasting two lines with an empty newline', function() {
+    it('should preserve existing code block content when pasting two lines with an empty newline', function () {
       const { editorView } = editor('{<>}');
       maybeDispatchPasteEvent(editorView, { plain: 'foo\n\nbar' }, this);
       const expected = doc(code_block()('foo\n\nbar'));
       expect(editorView.state.doc).to.deep.equal(expected);
     });
 
-    it('should preserve existing code block content when pasting three lines', function() {
+    it('should preserve existing code block content when pasting three lines', function () {
       const { editorView } = editor('{<>}');
       maybeDispatchPasteEvent(editorView, { plain: 'foo\n\nbar\nbaz' }, this);
       const expected = doc(code_block()('foo\n\nbar\nbaz'));

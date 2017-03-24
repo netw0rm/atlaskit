@@ -27,21 +27,21 @@ export default class StatelessSelect extends PureComponent {
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
     isFirstChild: PropTypes.bool,
+    isInvalid: PropTypes.bool,
     isOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
-    isInvalid: PropTypes.bool,
     items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
     label: PropTypes.string,
     name: PropTypes.string,
     noMatchesFound: PropTypes.string,
-    onSelected: PropTypes.func,
     onFilterChange: PropTypes.func,
     onOpenChange: PropTypes.func,
+    onSelected: PropTypes.func,
     placeholder: PropTypes.string,
     position: PropTypes.string,
-    shouldFocus: PropTypes.bool,
     selectedItem: itemShape,
     shouldFitContainer: PropTypes.bool,
+    shouldFocus: PropTypes.bool,
   }
 
   static defaultProps = {

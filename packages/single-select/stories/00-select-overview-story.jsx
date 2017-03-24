@@ -5,6 +5,8 @@ import { Code, Chrome, Description, Props } from '@atlaskit/util-readme';
 /* eslint-disable import/first, import/no-duplicates */
 import StatelessSelectOverview from './examples/StatelessSelectOverview';
 import StatelessSelectOverviewRaw from '!raw!./examples/StatelessSelectOverview';
+import EditableSelectOverview from './examples/EditableSelectOverview';
+import EditableSelectOverviewRaw from '!raw!./examples/EditableSelectOverview';
 import SmartSelectOverview from './examples/SmartSelectOverview';
 import SmartSelectOverviewRaw from '!raw!./examples/SmartSelectOverview';
 import DefaultSelectedItem from './examples/DefaultSelectedItem';
@@ -89,6 +91,18 @@ storiesOf(name, module)
       {SmartSelectOverview}
       <Code>
         {SmartSelectOverviewRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Single select (editable) - overview', () => (
+    <Chrome title="Single select (editable) - overview">
+      <Description>
+        <p>Simple select component integrated with inline-edit</p>
+      </Description>
+      {EditableSelectOverview}
+      <Code>
+        {EditableSelectOverviewRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

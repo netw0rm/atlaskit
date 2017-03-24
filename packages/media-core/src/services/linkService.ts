@@ -21,7 +21,7 @@ export class MediaLinkService implements LinkService {
     return request({url: `/link/${linkId}`})
       .then(json => json.data)
       .then(linkDetails => {
-        return <LinkItem> {
+        return {
           type: 'link',
           details: {
             id: linkDetails.id,
@@ -34,7 +34,7 @@ export class MediaLinkService implements LinkService {
             date: linkDetails.metadata.date,
             resources: linkDetails.metadata.resources
           }
-        };
+        } as LinkItem;
       });
     ;
 

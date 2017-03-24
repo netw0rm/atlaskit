@@ -1,22 +1,18 @@
-import { EditorState, EditorView, Fragment, liftTarget, NodeSelection, NodeType, TextSelection, Transaction, ResolvedPos } from '../prosemirror';
+import { EditorState, EditorView, Fragment, liftTarget, NodeSelection, NodeType, TextSelection, Transaction } from '../prosemirror';
 import * as baseCommand from '../prosemirror/prosemirror-commands';
-import { findWrapping } from '../prosemirror/prosemirror-transform';
 import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
-import { isRangeOfType, liftSelection } from '../utils';
+import { isRangeOfType, liftSelection, wrapIn } from '../utils';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
-  let depthLimit = 1;
 
-  if (name === blockTypes.PANEL.name || name === blockTypes.BLOCK_QUOTE.name) {
-    depthLimit = 2;
-  }
-
-  if (view.state.selection.$from.depth > depthLimit) {
-    view.dispatch(liftSelection(view.state.tr, view.state.doc, view.state.selection.$from, view.state.selection.$to));
+  if (name !== blockTypes.BLOCK_QUOTE.name && name !== blockTypes.PANEL.name) {
+    if (view.state.selection.$from.depth > 1) {
+      view.dispatch(liftSelection(view.state.tr, view.state.doc, view.state.selection.$from, view.state.selection.$to).tr);
+    }
   }
 
   switch (name) {
@@ -52,7 +48,7 @@ export function toggleBlockType(view: EditorView, name: string): boolean {
       break;
     case blockTypes.BLOCK_QUOTE.name:
       if (nodes.paragraph && nodes.blockquote) {
-        return toggleBlockquote()(view.state, view.dispatch);
+        return toggleNodeType(view.state.schema.nodes.blockquote)(view.state, view.dispatch);
       }
       break;
     case blockTypes.CODE_BLOCK.name:
@@ -62,7 +58,7 @@ export function toggleBlockType(view: EditorView, name: string): boolean {
       break;
     case blockTypes.PANEL.name:
       if (nodes.panel && nodes.paragraph) {
-        return togglePanel()(view.state, view.dispatch);
+        return toggleNodeType(view.state.schema.nodes.panel)(view.state, view.dispatch);
       }
       break;
   }
@@ -220,34 +216,6 @@ export function setNormalText(): Command {
     }
 
     return false;
-  };
-}
-
-export function toggleBlockquote(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from, $to } = state.selection;
-    const potentialBlockquoteNode = $from.node($from.depth - 1);
-
-    if (potentialBlockquoteNode.type !== state.schema.nodes.blockquote) {
-      const tr = state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph);
-      dispatch(wrap(state, state.schema.nodes.blockquote, tr));
-      return true;
-    } else {
-      return baseCommand.lift(state, dispatch);
-    }
-  };
-}
-
-export function togglePanel(): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from } = state.selection;
-    const potentialPanelNode = $from.node($from.depth - 1);
-
-    if (potentialPanelNode.type !== state.schema.nodes.panel) {
-      return baseCommand.wrapIn(state.schema.nodes.panel)(state, dispatch);
-    } else {
-      return baseCommand.lift(state, dispatch);
-    }
   };
 }
 
@@ -524,14 +492,29 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
   return topLevelNode.isTextblock && topLevelNode.type !== state.schema.nodes.codeBlock && topLevelNode.nodeSize === 2;
 }
 
-function wrap(state: EditorState<any>, nodeType: NodeType, tr: Transaction): Transaction {
-  const { $from, $to } = state.selection;
-  const range = $from.blockRange($to) as any;
-  const wrapping = range && findWrapping(range, nodeType) as any;
-  if (wrapping) {
-    tr = tr.wrap(range, wrapping).scrollIntoView();
-  }
-  return tr;
+function toggleNodeType(nodeType: NodeType): Command {
+  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    let { $from, $to } = state.selection;
+    const potentialBlockquoteNode = $from.node($from.depth - 1);
+
+    // lift the node and convert to given nodeType
+    if (potentialBlockquoteNode.type !== nodeType) {
+      let { tr } = state;
+
+      if ($from.depth > 1) {
+        const result = liftSelection(tr, state.doc, $from, $to);
+        tr = result.tr;
+        $from = result.$from;
+        $to = result.$to;
+      }
+
+      tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph);
+      dispatch(wrapIn(nodeType, tr, $from, $to));
+      return true;
+    }
+
+    return baseCommand.lift(state, dispatch);
+  };
 }
 
 export interface Command {

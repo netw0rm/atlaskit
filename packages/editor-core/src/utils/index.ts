@@ -11,6 +11,7 @@ import {
     EditorState,
     Slice,
     Fragment,
+    findWrapping
 } from '../prosemirror';
 
 function validateNode(node: Node): boolean {
@@ -210,7 +211,11 @@ export function liftSelection(tr, doc, $from: ResolvedPos, $to: ResolvedPos) {
 
     tr.setSelection(new TextSelection(tr.doc.resolve(startPos), tr.doc.resolve(endPos)));
 
-    return tr;
+    return {
+        tr: tr,
+        $from: tr.doc.resolve(startPos),
+        $to: tr.doc.resolve(endPos)
+    };
 }
 
 /**
@@ -237,4 +242,13 @@ export function liftAndSelectSiblingNodes(view: EditorView): Transaction {
     tr.setSelection(new TextSelection(blockStart, blockEnd));
     tr.lift(range, blockStart.depth - 1);
     return tr;
+}
+
+export function wrapIn(nodeType: NodeType, tr: Transaction, $from: ResolvedPos, $to: ResolvedPos): Transaction {
+  const range = $from.blockRange($to) as any;
+  const wrapping = range && findWrapping(range, nodeType) as any;
+  if (wrapping) {
+    tr = tr.wrap(range, wrapping).scrollIntoView();
+  }
+  return tr;
 }

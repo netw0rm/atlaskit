@@ -118,7 +118,6 @@ export const Size = styled.div`
   font-size: 12px;
   line-height: 15px;
   margin-top: 2px;
-  text-transform: uppercase;
 `;
 
 export const RoundedBackground = styled.div`

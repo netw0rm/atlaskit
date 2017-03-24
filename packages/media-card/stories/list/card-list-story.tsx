@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { MediaItem, ContextFactory, ListCardDelete, ListCardClick } from '@atlaskit/media-core';
-import { StoryBookTokenProvider, defaultServiceHost, StoryList, createStorybookContext, collectionNames, fileCollectionName} from '@atlaskit/media-test-helpers';
+import { StoryBookTokenProvider, defaultServiceHost, StoryList, createStorybookContext, collectionNames, fileCollectionName, defaultCollectionName} from '@atlaskit/media-test-helpers';
 import { CardList } from '../../src';
 
 const wrongCollection = 'adfasdf';
@@ -31,7 +31,7 @@ storiesOf('CardList', {})
   .add('Normal cards', () => (
     <CardList
       context={context}
-      collectionName={fileCollectionName}
+      collectionName={defaultCollectionName}
       actions={[clickAction]}
     />
   ))
@@ -58,7 +58,7 @@ storiesOf('CardList', {})
           <CardList
             context={context}
             collectionName={this.state.collectionName}
-            actions={[clickAction]}
+            // actions={[clickAction]}
             pageSize={30}
             cardType={'small'}
           />
@@ -140,7 +140,7 @@ storiesOf('CardList', {})
          content: <div style={{border: '1px solid', width: '200px', overflow: 'hidden'}}>
            <CardList
              context={context}
-             collectionName={fileCollectionName}
+             collectionName={defaultCollectionName}
              actions={[clickAction]}
              cardType={'small'}
            />
@@ -150,7 +150,7 @@ storiesOf('CardList', {})
          content: <div style={{border: '1px solid', width: '100px', overflow: 'hidden'}}>
            <CardList
              context={context}
-             collectionName={fileCollectionName}
+             collectionName={defaultCollectionName}
              actions={[clickAction]}
              cardType={'small'}
            />
@@ -159,7 +159,7 @@ storiesOf('CardList', {})
          title: 'Default',
          content: <CardList
            context={context}
-           collectionName={fileCollectionName}
+           collectionName={defaultCollectionName}
            actions={[clickAction]}
            cardType={'small'}
          />

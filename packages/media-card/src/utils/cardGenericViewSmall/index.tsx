@@ -5,7 +5,6 @@ import {CardAction, MediaType} from '@atlaskit/media-core';
 
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
 import {Menu, ErrorIcon, getCSSUnitValue} from '../../utils';
-
 import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper, FileInfoWrapper} from './styled';
 
 export interface CardGenericViewSmallProps {
@@ -45,46 +44,57 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
   }
 
   render() {
-    const {error, onRetry, loading, mediaType, thumbnailUrl, title, subtitle} = this.props;
+    const {error} = this.props;
 
     if (error) {
-      const retryMessage = (onRetry) ? (onRetry.label || 'Try again') : '';
-      const retryHandler = (event: MouseEvent<HTMLSpanElement>) => {
-        // We need to prevent the card's onClick being called
-        event.stopPropagation();
-        event.preventDefault();
-        onRetry && onRetry.handler(undefined, event.nativeEvent);
-      };
-      const retryComponent = (onRetry) ? (
-        <Retry className="retry">
-          <span onClick={retryHandler}>{retryMessage}</span>
-        </Retry>
-      ) : null;
-
-      return this.formatCard((
-        <ErrorIcon />
-      ), (
-        <div>
-          <Error className="error">{error}</Error>
-          {retryComponent}
-        </div>
-      ));
+      return this.renderError();
     } else {
-      return this.formatCard((
-        <RoundedBackground>
-          <CardContentSmall
-            loading={loading}
-            mediaType={mediaType || 'unknown'}
-            dataURI={thumbnailUrl}
-          />
-        </RoundedBackground>
-      ), (
-        <FileInfoWrapper>
-          <Title className="title">{title}</Title>
-          <Size className="size">{subtitle}</Size>
-        </FileInfoWrapper>
-      ));
+      return this.renderCard();
     }
+  }
+
+  renderCard() {
+    const {loading, mediaType, thumbnailUrl, title, subtitle} = this.props;
+
+    return this.formatCard((
+      <RoundedBackground>
+        <CardContentSmall
+          loading={loading}
+          mediaType={mediaType || 'unknown'}
+          dataURI={thumbnailUrl}
+        />
+      </RoundedBackground>
+    ), (
+      <FileInfoWrapper>
+        <Title className="title">{title}</Title>
+        <Size className="size">{subtitle}</Size>
+      </FileInfoWrapper>
+    ));
+  }
+
+  renderError() {
+    const {error, onRetry} = this.props;
+    const retryMessage = (onRetry) ? (onRetry.label || 'Try again') : '';
+    const retryHandler = (event: MouseEvent<HTMLSpanElement>) => {
+      // We need to prevent the card's onClick being called
+      event.stopPropagation();
+      event.preventDefault();
+      onRetry && onRetry.handler(undefined, event.nativeEvent);
+    };
+    const retryComponent = (onRetry) ? (
+      <Retry className="retry">
+        <span onClick={retryHandler}>{retryMessage}</span>
+      </Retry>
+    ) : null;
+
+    return this.formatCard((
+      <ErrorIcon />
+    ), (
+      <div>
+        <Error className="error">{error}</Error>
+        {retryComponent}
+      </div>
+    ));
   }
 
   onClick = (event: MouseEvent<HTMLDivElement>) => {

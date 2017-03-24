@@ -55,7 +55,7 @@ storiesOf('Card', {})
               </tr>
               <tr>
                 <td><div>Link Cards</div></td>
-                <td>{smallLinkCard}</td>
+                <td><div>{smallLinkCard}</div></td>
                 <td>No design implemented</td>
                 <td>
                   <div>{horizontalLinkCard}</div>

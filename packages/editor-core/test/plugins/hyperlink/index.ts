@@ -514,7 +514,7 @@ describe('hyperlink', () => {
         const spy = sinon.spy();
         pluginState.subscribe(spy);
 
-        sendKeyToPm(editorView, 'Mod-K');
+        sendKeyToPm(editorView, 'Mod-k');
 
         expect(spy.callCount).to.equal(2);
       });
@@ -525,7 +525,7 @@ describe('hyperlink', () => {
         const { editorView, pluginState } = editor(doc(paragraph('testing')));
 
         setTextSelection(editorView, 4, 7);
-        sendKeyToPm(editorView, 'Mod-K');
+        sendKeyToPm(editorView, 'Mod-k');
 
         expect(pluginState.activeLinkNode).not.to.be.undefined;
         expect(pluginState.text).not.to.be.undefined;

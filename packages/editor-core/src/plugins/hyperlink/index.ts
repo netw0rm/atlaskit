@@ -70,8 +70,10 @@ export class HyperlinkState {
   removeLink(view: EditorView) {
     if (this.activeLinkStartPos) {
       const { state } = this;
-      const from = this.activeLinkStartPos;
-      const to = this.activeLinkStartPos + this.text!.length;
+      const { $from } = state.selection;
+      const from = $from.pos + this.activeLinkStartPos - 1;
+      const to = from + this.text!.length;
+
       view.dispatch(state.tr.removeMark(from, to, this.activeLinkMark));
     }
   }

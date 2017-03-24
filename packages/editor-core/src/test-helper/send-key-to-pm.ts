@@ -23,7 +23,10 @@ export default function sendKeyToPm(editorView: EditorView, keys: string, focus?
   const shiftKey = parts.indexOf('Shift') !== -1;
   const altKey = parts.indexOf('Alt') !== -1;
   const key = parts[parts.length - 1];
-  const code = dictionary[key] ? dictionary[key] : key.charCodeAt(0);
+
+  // all of the browsers are using the same keyCode for alphabetical keys
+  // and it's the uppercased character code in real world
+  const code = dictionary[key] ? dictionary[key] : (key.toUpperCase()).charCodeAt(0);
 
   const event = new CustomEvent('keydown', {
     bubbles: true,

@@ -64,12 +64,15 @@ describe('LanguagePicker', () => {
 
   context('editor is blur', () => {
     it('LanguagePicker produce null HTML', () => {
-      const { editorView, plugin, pluginState } = editor(doc(p('paragraph'), code_block()('codeBlock{<>}')));
+      const { editorView, plugin, pluginState, sel } = editor(doc(p('paragraph'), code_block()('{<}codeBlock{>}')));
+
+      plugin.props.onFocus!(editorView, event);
+      plugin.props.handleClick!(editorView, sel, event);
+
       const languagePicker = mount(<LanguagePicker pluginState={pluginState} editorView={editorView} />);
+
       expect(languagePicker.html()).to.not.equal(null);
-
       plugin.props.onBlur!(editorView, event);
-
       expect(languagePicker.html()).to.equal(null);
     });
   });

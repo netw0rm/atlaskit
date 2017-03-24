@@ -52,8 +52,8 @@ export class CodeBlockState {
 
         if (domEvent && codeBlockNode || codeBlockNode !== this.activeCodeBlock) {
             this.domEvent = domEvent;
-
             const newElement = codeBlockNode && this.activeCodeBlockElement(docView);
+
             this.toolbarVisible = this.editorFocused && !!codeBlockNode && (domEvent || this.element !== newElement);
             this.activeCodeBlock = codeBlockNode;
             this.language = codeBlockNode && codeBlockNode.attrs['language'] || undefined;

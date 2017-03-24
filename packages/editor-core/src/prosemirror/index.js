@@ -8,3 +8,4 @@ Object.assign(exports, require('./prosemirror-schema-list'));
 Object.assign(exports, require('./prosemirror-state'));
 Object.assign(exports, require('./prosemirror-transform'));
 Object.assign(exports, require('./prosemirror-view'));
+Object.assign(exports, require('./prosemirror-markdown'));

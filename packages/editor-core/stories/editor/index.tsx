@@ -33,13 +33,11 @@ export interface Props {
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
-  imageUploader?: Function;
   imageUploadHandler?: ImageUploadHandler;
 }
 
 export interface State {
   editorView?: EditorView;
-  editorState?: EditorState<any>;
   isExpanded?: boolean;
 }
 
@@ -103,7 +101,8 @@ export default class Editor extends PureComponent<Props, State> {
   render() {
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
-    const { isExpanded, editorState, editorView } = this.state;
+    const { isExpanded, editorView } = this.state;
+    const editorState = editorView && editorView.state;
     const listsState = editorState && listsPlugin.getState(editorState);
     const blockTypeState = editorState && blockTypePlugin.getState(editorState);
     const clearFormattingState = editorState && clearFormattingPlugin.getState(editorState);
@@ -188,9 +187,9 @@ export default class Editor extends PureComponent<Props, State> {
 
       editorView.focus();
 
-      this.setState({ editorView, editorState });
+      this.setState({ editorView });
     } else {
-      this.setState({ editorView: undefined, editorState: undefined });
+      this.setState({ editorView: undefined });
     }
   }
 }

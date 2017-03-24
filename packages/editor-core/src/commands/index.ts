@@ -325,10 +325,10 @@ export function insertNewLine(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from } = state.selection;
     const node = $from.parent;
-    const { hard_break } = state.schema.nodes;
+    const { hardBreak } = state.schema.nodes;
 
-    if (hard_break) {
-      const hardBreakNode = hard_break.create();
+    if (hardBreak) {
+      const hardBreakNode = hardBreak.create();
 
       if (node.type.validContent(Fragment.from(hardBreakNode))) {
         dispatch(state.tr.replaceSelection(hardBreakNode));

@@ -20,7 +20,7 @@ import { MentionProvider } from '@atlaskit/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { encode, parse } from './html';
-import { makeSchema, isSchemaWithMentions, isSchemaWithLinks, JIRASchema } from './schema';
+import { makeSchema, isSchemaWithMentions, isSchemaWithLinks, isSchemaWithCodeBlock, JIRASchema } from './schema';
 import { version, name } from './version';
 
 export { version };
@@ -37,6 +37,7 @@ export interface Props {
   analyticsHandler?: AnalyticsHandler;
   allowLists?: boolean;
   allowLinks?: boolean;
+  allowCodeBlock?: boolean;
   allowAdvancedTextFormatting?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   mentionEncoder?: (userId: string) => string;
@@ -62,7 +63,8 @@ export default class Editor extends PureComponent<Props, State> {
         allowLists: !!props.allowLists,
         allowMentions: !!props.mentionProvider,
         allowLinks: !!props.allowLinks,
-        allowAdvancedTextFormatting: !!props.allowAdvancedTextFormatting
+        allowAdvancedTextFormatting: !!props.allowAdvancedTextFormatting,
+        allowCodeBlock: !!props.allowCodeBlock
       }),
     };
 
@@ -156,6 +158,7 @@ export default class Editor extends PureComponent<Props, State> {
         mentionsResourceProvider={mentionProvider}
         placeholder={this.props.placeholder}
         pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
+        pluginStateCodeBlock={pm && CodeBlockPlugin.get(pm)}
         pluginStateLists={pm && ListsPlugin.get(pm)}
         pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
         pluginStateClearFormatting={pm && ClearFormattingPlugin.get(pm)}
@@ -198,12 +201,12 @@ export default class Editor extends PureComponent<Props, State> {
         plugins: [
           ...( isSchemaWithLinks(schema) ? [ HyperlinkPlugin ] : [] ),
           BlockTypePlugin,
-          CodeBlockPlugin,
           ListsPlugin,
           TextFormattingPlugin,
           ClearFormattingPlugin,
           HorizontalRulePlugin,
           DefaultKeymapsPlugin,
+          ...( isSchemaWithCodeBlock(schema) ? [ CodeBlockPlugin ] : [] ),
           ...( isSchemaWithMentions(schema) ? [ MentionsPlugin ] : [] ),
         ],
       });

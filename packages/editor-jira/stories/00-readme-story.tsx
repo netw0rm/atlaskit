@@ -94,6 +94,12 @@ storiesOf(name, module)
               <td>If <code>true</code>, links can be used in the editor.</td>
             </tr>
             <tr>
+              <td><code>allowCodeBlock</code></td>
+              <td><code>boolean</code></td>
+              <td><code>false</code></td>
+              <td>If <code>true</code>, code block can be used in the editor.</td>
+            </tr>
+            <tr>
               <td><code>mentionProvider</code></td>
               <td><code>Promise?</code></td>
               <td><code>--</code></td>

@@ -2,14 +2,15 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 // we import from index so we know we are definitely exposing Presence as a separate component
-import { Presence } from '../src/index';
+import Avatar, { Presence } from '../src/index';
 import icons from '../src/internal/icons';
-import presences from '../src/internal/presences';
 import { locals as styles } from '../src/styles.less';
+
+const { PRESENCE } = Avatar.constants;
 
 describe('ak-avatar', () => {
   describe('Presence', () => {
-    presences.forEach(presence =>
+    PRESENCE.values.forEach(presence =>
       describe(`when presence is ${presence}`, () =>
         it('should render content', () =>
           expect(shallow(<Presence presence={presence} />).type(icons[presence]))
@@ -19,7 +20,7 @@ describe('ak-avatar', () => {
 
     it('should render children if provided', () => {
       const wrapper = shallow(
-        <Presence presence={presences[0]}>
+        <Presence presence={PRESENCE.values[0]}>
           <span className="child" />
         </Presence>
       );

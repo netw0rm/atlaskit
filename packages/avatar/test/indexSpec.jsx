@@ -3,12 +3,12 @@ import { shallow, mount } from 'enzyme';
 import styles from '../src/styles.less';
 
 import Avatar from '../src';
-import Image from '../src/Image';
+import Image from '../src/components/Image';
 import Presence from '../src/Presence';
-import sizes from '../src/internal/sizes';
-import presences from '../src/internal/presences';
 
-const [none, online, offline, busy] = presences;
+const { PRESENCE, SIZE } = Avatar.constants;
+
+const [none, online, offline, busy] = PRESENCE.values;
 
 const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 const oneByOnePixelBlack = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
@@ -22,7 +22,7 @@ describe('ak-avatar', () => {
   });
 
   describe('size property', () => {
-    sizes.forEach((size) => {
+    SIZE.values.forEach((size) => {
       describe(`when is set to ${size}`, () =>
         it(`should have class ${size}`, () => {
           const wrapper = shallow(<Avatar size={size} />);

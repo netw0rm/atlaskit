@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import DefaultAvatar from '../src/internal/default-avatar';
-import Image from '../src/Image';
+import DefaultAvatar from '../src/components/DefaultAvatar';
+import Image from '../src/components/Image';
 
 const src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 

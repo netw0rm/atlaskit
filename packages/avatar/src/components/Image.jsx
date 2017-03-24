@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import DefaultAvatar from './internal/default-avatar';
+import DefaultAvatar from './DefaultAvatar';
 
 /* eslint-disable react/prefer-stateless-function */
 export default class Image extends PureComponent {

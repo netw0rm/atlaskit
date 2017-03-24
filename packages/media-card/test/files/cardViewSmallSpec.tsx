@@ -25,7 +25,7 @@ describe('FileCardViewSmall', () => {
 
     expect(cardView.find('.media-card').first().props().style.backgroundImage).to.contain('some-data-uri');
     expect(cardView.find('.title').first().text()).to.equal('some-name');
-    expect(cardView.find('.size').first().text()).to.equal('1 kB');
+    expect(cardView.find('.size').first().text()).to.equal('1 KB');
   });
 
   it('should display file icon when file loaded', () => {
@@ -39,7 +39,7 @@ describe('FileCardViewSmall', () => {
 
     expect(cardView.find(FileIcon).length).to.equal(1);
     expect(cardView.find('.title').first().text()).to.equal('some-audio');
-    expect(cardView.find('.size').first().text()).to.equal('1 kB');
+    expect(cardView.find('.size').first().text()).to.equal('1 KB');
   });
 
   it('should display error and try again message when error with handler passed', () => {

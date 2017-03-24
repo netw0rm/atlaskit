@@ -13,13 +13,11 @@
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/lozenge; } || ../../node_modules/.bin/not-in-publish"
   },
   "files": [
-    "dist",
-    "src/index.d.ts"
+    "dist"
   ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",
-    "babel-runtime": "^6.11.6",
-    "classnames": "^2.2.5"
+    "babel-runtime": "^6.11.6"
   },
   "peerDependencies": {
     "react": "^15.3.2",

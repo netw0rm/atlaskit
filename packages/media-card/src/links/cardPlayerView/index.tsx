@@ -13,7 +13,7 @@ export interface LinkCardPlayerProps {
   description?: string;
   thumbnailUrl?: string;
   iconUrl?: string;
-  menuActions?: Array<CardAction>;
+  actions?: Array<CardAction>;
   playerUrl: string;
 }
 
@@ -55,7 +55,7 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
   }
 
   private renderLinkCard(): JSX.Element {
-    const {title, description, linkUrl, thumbnailUrl, iconUrl, menuActions} = this.props;
+    const {title, description, linkUrl, thumbnailUrl, iconUrl, actions} = this.props;
 
     return (
       <div className="link-info">
@@ -65,13 +65,13 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
         </PlayButtonWrapper>
 
         <LinkCardGenericView
-          display="square"
+          appearance="square"
           title={title}
           description={description}
           linkUrl={linkUrl}
           thumbnailUrl={thumbnailUrl}
           iconUrl={iconUrl}
-          menuActions={menuActions}
+          actions={actions}
         />
       </div>
     );

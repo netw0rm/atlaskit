@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import { LinkCardGenericView } from '../../src';
+import { MeatballsButton, DeleteBtn } from '../../src/utils/menu/styled';
 import { Title, Link } from '../../src/links/cardGenericView/styled';
 
 describe('LinkCardViewGeneric', () => {

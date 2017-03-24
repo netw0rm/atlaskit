@@ -99,6 +99,12 @@ describe('Bitbucket markdown serializer: ', () => {
     expect(test).to.eq('@oscar *text*');
   });
 
+  it('should not skip [ & ]', () => {
+    expect(markdownSerializer.serialize(doc(
+      p('[hello]')
+    ))).to.eq('[hello]');
+  });
+
   describe('code block', () => {
     it('with simple text should be serialized', () => {
       expect(markdownSerializer.serialize(doc(pre('foo')))).to.eq('    foo');

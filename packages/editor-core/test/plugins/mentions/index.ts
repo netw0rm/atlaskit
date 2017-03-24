@@ -23,7 +23,7 @@ describe('mentions', () => {
   const makeEditor = (container: Node) => {
     return new ProseMirror({
       schema: schema,
-      plugins: [ ListsPlugin, MentionsPlugin, BlockTypePlugin ],
+      plugins: [ListsPlugin, MentionsPlugin, BlockTypePlugin],
       place: container
     });
   };

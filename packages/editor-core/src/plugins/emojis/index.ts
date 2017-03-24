@@ -25,9 +25,9 @@ export class EmojisPluginState {
   queryActive = false;
   anchorElement?: HTMLElement;
   keymap: Keymap;
-  onSelectPrevious = () => {};
-  onSelectNext =  () => {};
-  onSelectCurrent = () => {};
+  onSelectPrevious = () => { };
+  onSelectNext = () => { };
+  onSelectCurrent = () => { };
 
   setEmojiProvider(emojiProvider: Promise<EmojiProvider>) {
     this.emojiProvider = emojiProvider;
@@ -48,8 +48,8 @@ export class EmojisPluginState {
       Enter: () => this.onSelectCurrent(),
       Esc: () => this.dismiss(),
     }, {
-      name: 'emojis-plugin-keymap'
-    });
+        name: 'emojis-plugin-keymap'
+      });
 
     // add the input rules to insert emojis
     if (pm.schema.nodes.emoji) {
@@ -80,7 +80,7 @@ export class EmojisPluginState {
       const nodeBefore = this.pm.selection.$from.nodeBefore;
       const nodeAfter = this.pm.selection.$from.nodeAfter;
 
-      const newQuery = (nodeBefore ? nodeBefore.textContent : '' ).substr(1) + (nodeAfter && this.pm.schema.marks.emoji_query.isInSet(nodeAfter.marks) ? nodeAfter.textContent : '');
+      const newQuery = (nodeBefore ? nodeBefore.textContent : '').substr(1) + (nodeAfter && this.pm.schema.marks.emoji_query.isInSet(nodeAfter.marks) ? nodeAfter.textContent : '');
       if (this.query !== newQuery) {
         dirty = true;
         this.query = newQuery;

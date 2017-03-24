@@ -16,7 +16,7 @@ export interface State {
 }
 
 export default class ToolbarImage extends PureComponent<Props, State> {
-  state: State = {disabled: false};
+  state: State = { disabled: false };
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);

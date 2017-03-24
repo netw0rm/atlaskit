@@ -8,7 +8,7 @@ import ToolbarButton from '../../src/ui/ToolbarButton';
 describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
   it('should not render tooltip if title is not set', () => {
     const toolbarButtonElem = mount(<ToolbarButton
-      onClick={() => {}}
+      onClick={() => { }}
       selected={false}
       disabled={false}
     />);
@@ -18,7 +18,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
 
   it('should render tooltip if title is set', () => {
     const toolbarButtonElem = mount(<ToolbarButton
-      onClick={() => {}}
+      onClick={() => { }}
       selected={false}
       disabled={false}
       title="tooltip text"
@@ -29,7 +29,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
 
   it('should show tooltip on mouseover', () => {
     const toolbarButtonElem = mount(<ToolbarButton
-      onClick={() => {}}
+      onClick={() => { }}
       selected={false}
       disabled={false}
       title="tooltip text"
@@ -43,7 +43,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
 
   it('should hide tooltip on mouseout', () => {
     const toolbarButtonElem = mount(<ToolbarButton
-      onClick={() => {}}
+      onClick={() => { }}
       selected={false}
       disabled={false}
       title="tooltip text"
@@ -58,7 +58,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
 
   it.skip('should hide tooltip on click', () => {
     const toolbarButtonElem = mount(<ToolbarButton
-      onClick={() => {}}
+      onClick={() => { }}
       selected={false}
       disabled={false}
       title="tooltip text"

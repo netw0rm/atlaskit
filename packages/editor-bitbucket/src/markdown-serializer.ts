@@ -19,7 +19,7 @@ interface NodeRendererOption {
  * @see MarkdownSerializerState.esc()
  */
 function escapeMarkdown(str: string, startOfLine?: boolean): string {
-  str = str.replace(/[`*\\+\[\]_]/g, '\\$&');
+  str = str.replace(/[`*\\+_]/g, '\\$&');
   if (startOfLine) {
     str = str.replace(/^[#-*]/, '\\$&').replace(/^(\d+)\./, '$1\\.');
   }

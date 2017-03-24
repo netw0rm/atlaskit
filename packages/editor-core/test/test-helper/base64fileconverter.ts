@@ -96,7 +96,7 @@ describe('@atlaskit/editor-core/test-helper base64fileconverter', () => {
       const cb = sinon.spy();
       const errCb = sinon.spy();
 
-      const fileReaderStub = () => {};
+      const fileReaderStub = () => { };
       fileReaderStub.prototype.onload = sinon.spy();
       fileReaderStub.prototype.readAsBinaryString = sinon.spy();
 
@@ -114,7 +114,7 @@ describe('@atlaskit/editor-core/test-helper base64fileconverter', () => {
       const cb = sinon.spy();
       const errCb = sinon.spy();
 
-      const fileReaderStub = () => {};
+      const fileReaderStub = () => { };
       fileReaderStub.prototype.onload = sinon.spy();
       fileReaderStub.prototype.readAsBinaryString = sinon.spy();
 
@@ -135,7 +135,7 @@ describe('@atlaskit/editor-core/test-helper base64fileconverter', () => {
       const cb = sinon.spy();
       const errCb = sinon.spy();
 
-      const fileReaderStub = () => {};
+      const fileReaderStub = () => { };
       fileReaderStub.prototype.onload = sinon.spy();
       fileReaderStub.prototype.readAsBinaryString = sinon.spy();
 

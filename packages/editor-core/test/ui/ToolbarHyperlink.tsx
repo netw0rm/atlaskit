@@ -20,7 +20,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
 
   it('should trigger showLinkPanel of plugin when toolbar hyperlink button is clicked', () => {
     const { pluginState, editorView } = editor(doc(p('text')));
-    const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView}/>);
+    const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView} />);
     const spyFunc = sinon.spy();
     pluginState.showLinkPanel = spyFunc;
     toolbarHyperlink.find(LinkIcon).simulate('click');
@@ -29,14 +29,14 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
 
   it('should state variable showToolbarPanel should be true when toolbar hyperlink button is clicked without a selection', () => {
     const { pluginState, editorView } = editor(doc(p('text')));
-    const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView}/>);
+    const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView} />);
     toolbarHyperlink.find(LinkIcon).simulate('click');
     expect(toolbarHyperlink.state('showToolbarPanel')).to.be.true;
   });
 
   it('should state variable showToolbarPanel should be false when toolbar hyperlink button is clicked with a selection', () => {
     const { pluginState, editorView } = editor(doc(p('te{<}stin<}>g')));
-    const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView}/>);
+    const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={pluginState} editorView={editorView} />);
     toolbarHyperlink.find(ToolbarButton).simulate('click');
     expect(toolbarHyperlink.state('showToolbarPanel')).not.to.be.true;
   });

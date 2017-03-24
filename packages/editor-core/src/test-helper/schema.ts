@@ -41,8 +41,8 @@ const nodes = {
   mention,
   emoji,
   image,
-  linkable: {...paragraph, content: 'text<link>*'},
-  unlinkable: {...paragraph, content: 'text*'},
+  linkable: { ...paragraph, content: 'text<link>*' },
+  unlinkable: { ...paragraph, content: 'text*' },
   plain: { ...paragraph, content: 'text*' }
 };
 

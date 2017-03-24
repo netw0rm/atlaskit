@@ -8,13 +8,13 @@ chai.use(chaiPlugin);
 describe('@atlaskit/editor-core/schema emoji-query mark', () => {
   it('serializes to <span data-emoji-query="true">', () => {
     const schema = makeSchema();
-    const node = schema.text('foo', [ schema.marks.emojiQuery.create() ] );
+    const node = schema.text('foo', [schema.marks.emojiQuery.create()]);
     expect(toHTML(node, schema)).to.have.string('data-emoji-query="true"');
   });
 });
 
-function makeSchema () {
-  const nodes = {doc, paragraph, text};
-  const marks = {emojiQuery};
+function makeSchema() {
+  const nodes = { doc, paragraph, text };
+  const marks = { emojiQuery };
   return new Schema<typeof nodes, typeof marks>({ nodes, marks });
 }

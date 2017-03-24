@@ -225,11 +225,13 @@ export function setNormalText(): Command {
 
 export function toggleBlockquote(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from } = state.selection;
+    const { $from, $to } = state.selection;
     const potentialBlockquoteNode = $from.node($from.depth - 1);
 
     if (potentialBlockquoteNode.type !== state.schema.nodes.blockquote) {
-      return baseCommand.wrapIn(state.schema.nodes.blockquote)(state, dispatch);
+      const tr = state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph);
+      dispatch(wrap(state, state.schema.nodes.blockquote, tr));
+      return true;
     } else {
       return baseCommand.lift(state, dispatch);
     }

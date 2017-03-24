@@ -2,33 +2,31 @@ import * as React from 'react';
 import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
-import {Ellipsify, Menu} from '../../utils';
+import {CardDimensions, CardAppearance} from '../../card';
+import {Ellipsify, Menu, MediaImage, getCSSUnitValue} from '../../utils';
+import {Details, Wrapper} from '../styled';
 import {
   Title,
   Description,
   Footer,
   Link
 } from './styled';
-import {MediaImage} from '../../utils';
-import {Details, Wrapper} from '../styled';
-
-export type LinkCardDisplay = 'horizontal' | 'square';
 
 export interface LinkCardGenericViewProps {
   linkUrl: string;
   title: string;
-  display?: LinkCardDisplay;
+  site?: string;
   description?: string;
   thumbnailUrl?: string;
   iconUrl?: string;
 
-  height?: number;
-  width?: number;
+  appearance?: CardAppearance;
+  dimensions?: CardDimensions;
 
   // TODO FIL-3892 implement visual designs for loading state
   loading?: boolean;
 
-  menuActions?: Array<CardAction>;
+  actions?: Array<CardAction>;
   onClick?: (event: Event) => void;
 
   // TODO FIL-3893 implement visual designs for error state
@@ -40,17 +38,17 @@ export interface LinkCardGenericViewState {
   iconError?: boolean;
 }
 
-const defaultHorizontalWidth = 435;
-const defaultHorizontalHeight = 116;
-const defaultSquareWidth = 300;
-const defaultSquareHeight = 300;
+const defaultHorizontalWidth = '435px';
+const defaultHorizontalHeight = '116px';
+const defaultSquareWidth = '300px';
+const defaultSquareHeight = '300px';
 
 export class LinkCardGenericView extends Component<LinkCardGenericViewProps, LinkCardGenericViewState> {
   static defaultProps = {
     title: '',
     description: '',
-    menuActions: [],
-    display: 'horizontal'
+    actions: [],
+    appearance: 'auto'
   };
 
   constructor(props: LinkCardGenericViewProps) {
@@ -77,20 +75,31 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
     });
   }
 
-  private get width() {
-    return this.props.width ? this.props.width : (
-      this.props.display === 'horizontal' ? defaultHorizontalWidth : defaultSquareWidth
-    );
+  private get width(): string {
+    const {dimensions} = this.props;
+    const {width} = dimensions || {width: undefined};
+
+    if (!width) {
+      return this.isHorizontal ? defaultHorizontalWidth : defaultSquareWidth;
+    }
+
+    return getCSSUnitValue(width);
   }
 
-  private get height() {
-    return this.props.height ? this.props.height : (
-      this.props.display === 'horizontal' ? defaultHorizontalHeight : defaultSquareHeight
-    );
+  private get height(): string {
+    const {dimensions} = this.props;
+    const {height} = dimensions || {height: undefined};
+
+    if (!height) {
+      return this.isHorizontal ? defaultHorizontalHeight : defaultSquareHeight;
+    }
+
+    return getCSSUnitValue(height);
   }
 
   private get isHorizontal() {
-    return this.props.display === 'horizontal';
+    const {appearance} = this.props;
+    return appearance === 'horizontal' || appearance === 'auto';
   }
 
   private getThumbnail = (): JSX.Element | null => {
@@ -117,14 +126,14 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
   }
 
   render() {
-    const {linkUrl, title, description, menuActions, display} = this.props;
-    const cardStyle = {height: `${this.height}px`, width: `${this.width}px`};
+    const {linkUrl, title, site, description, actions, appearance} = this.props;
+    const cardStyle = {height: this.height, width: this.width};
 
     const thumbnail = this.getThumbnail();
     const icon = this.getIcon();
 
     return (
-      <Wrapper style={cardStyle} className={display} onClick={this.onClick}>
+      <Wrapper style={cardStyle} className={appearance} onClick={this.onClick}>
         {thumbnail}
 
         <Details className="details">
@@ -139,10 +148,10 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
             <Link>
               {icon}
               <a href={linkUrl} rel="noopener">
-                {linkUrl}
+                {site || linkUrl}
               </a>
             </Link>
-            <Menu actions={menuActions} />
+            <Menu actions={actions} />
           </Footer>
         </Details>
       </Wrapper>

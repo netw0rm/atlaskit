@@ -6,14 +6,16 @@ import { Code, Chrome, Description } from '@atlaskit/util-readme';
 
 import DropdownMenu from '../src';
 import { name } from '../package.json';
-import DropdownLoadItemsExample from './DropdownLoadItemsExample'; // eslint-disable-line
-import StatusDropdown from './examples/StatusDropdown'; // eslint-disable-line
-import DropdownWithTriggerOptions from './DropdownWithTriggerOptions'; // eslint-disable-line
 
 /* eslint-disable import/first, import/no-duplicates */
+import DropdownLoadItemsExample from './DropdownLoadItemsExample';
 import DropdownLoadItemsExampleRaw from '!raw!./DropdownLoadItemsExample';
+import DropdownWithTriggerOptions from './DropdownWithTriggerOptions';
 import DropdownWithTriggerOptionsRaw from '!raw!./DropdownWithTriggerOptions';
+import StatusDropdown from './examples/StatusDropdown';
 import StatusDropdownRaw from '!raw!./examples/StatusDropdown';
+import LongItemsDropdown from './examples/LongItemsDropdown';
+import LongItemsDropdownRaw from '!raw!./examples/LongItemsDropdown';
 /* eslint-enable import/first, import/no-duplicates */
 
 import {
@@ -196,9 +198,21 @@ storiesOf(name, module)
       <Description>
         <p>Example of the Status Dropdown for JIRA</p>
       </Description>
-      <Code code={StatusDropdownRaw}>
-        {StatusDropdown}
+      {StatusDropdown}
+      <Code>
+        {StatusDropdownRaw}
       </Code>
-      <div style={{ height: '100px' }} />
     </Chrome>
-  ), { imports, overrides: { style: '...' } });
+  ))
+  .add('Dropdown with long items and titles', () => (
+    <Chrome title="Status Dropdown">
+      <Description>
+        <p>This is an example of how to use titles for those dropdowns that have very long text
+          in the items</p>
+      </Description>
+      {LongItemsDropdown}
+      <Code>
+        {LongItemsDropdownRaw}
+      </Code>
+    </Chrome>
+  ));

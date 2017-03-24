@@ -2,8 +2,8 @@ import React from 'react';
 import HomeIcon from '../components/HomeIcon';
 import { HomeIconContainer, HomeLinkContainer } from '../styled';
 
-export default function (i18n, isAnonymousUser) {
-  if (isAnonymousUser) {
+export default function (i18n, isAnonymousUser, isHomeLinkEnabled) {
+  if (isAnonymousUser || !isHomeLinkEnabled) {
     return null;
   }
 

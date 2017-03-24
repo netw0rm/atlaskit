@@ -83,6 +83,14 @@ storiesOf(name, module)
   .add('width="x-large"', () => (
     <ModalDemo width="x-large" />
   ))
+  .add('without header or footer', () => (
+    <ModalDemo
+      header={null}
+      footer={null}
+    >
+      <Lorem count="5" />
+    </ModalDemo>
+  ))
   .add('z-index test', () => (
     <div>
       <style>{'body { margin: 0 }'}</style>

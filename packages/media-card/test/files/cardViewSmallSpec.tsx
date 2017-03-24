@@ -2,20 +2,21 @@ import * as React from 'react';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { mount } from 'enzyme';
-import { CardViewSmall, CardViewSmallProps, FileIcon, ErrorIcon } from '../../src';
+import { FileCardViewSmall, FileCardViewSmallProps } from '../../src';
+import { FileIcon, ErrorIcon } from '../../src/utils/index';
 
-describe('CardViewSmall', () => {
+describe('FileCardViewSmall', () => {
   it('should display a file icon when loading', () => {
-    const cardView = mount<CardViewSmallProps, {}>(
-      <CardViewSmall
+    const cardView = mount<FileCardViewSmallProps, {}>(
+      <FileCardViewSmall
         loading={true}
       />);
     expect(cardView.find('.loading')).to.have.lengthOf(1);
   });
 
   it('should display image when image loaded', () => {
-    const cardView = mount<CardViewSmallProps, {}>(
-      <CardViewSmall
+    const cardView = mount<FileCardViewSmallProps, {}>(
+      <FileCardViewSmall
         mediaName={'some-name'}
         mediaType={'image'}
         mediaSize={1024}
@@ -24,12 +25,12 @@ describe('CardViewSmall', () => {
 
     expect(cardView.find('.media-card').first().props().style.backgroundImage).to.contain('some-data-uri');
     expect(cardView.find('.title').first().text()).to.equal('some-name');
-    expect(cardView.find('.size').first().text()).to.equal('1 kB');
+    expect(cardView.find('.size').first().text()).to.equal('1 KB');
   });
 
   it('should display file icon when file loaded', () => {
-    const cardView = mount<CardViewSmallProps, {}>(
-      <CardViewSmall
+    const cardView = mount<FileCardViewSmallProps, {}>(
+      <FileCardViewSmall
         mediaName={'some-audio'}
         mediaType={'audio'}
         mediaSize={1024}
@@ -38,7 +39,7 @@ describe('CardViewSmall', () => {
 
     expect(cardView.find(FileIcon).length).to.equal(1);
     expect(cardView.find('.title').first().text()).to.equal('some-audio');
-    expect(cardView.find('.size').first().text()).to.equal('1 kB');
+    expect(cardView.find('.size').first().text()).to.equal('1 KB');
   });
 
   it('should display error and try again message when error with handler passed', () => {
@@ -47,8 +48,8 @@ describe('CardViewSmall', () => {
     const errorActionMock = sinon.spy();
     const onClickMock = sinon.spy();
 
-    const cardView = mount<CardViewSmallProps, {}>(
-      <CardViewSmall
+    const cardView = mount<FileCardViewSmallProps, {}>(
+      <FileCardViewSmall
         error={'some-error'}
         onRetry={{handler: errorActionMock}}
         onClick={onClickMock}
@@ -67,8 +68,8 @@ describe('CardViewSmall', () => {
   });
 
   it('should display error when error without handler passed', () => {
-    const cardView = mount<CardViewSmallProps, {}>(
-      <CardViewSmall
+    const cardView = mount<FileCardViewSmallProps, {}>(
+      <FileCardViewSmall
         error={'some-error'}
       />);
 

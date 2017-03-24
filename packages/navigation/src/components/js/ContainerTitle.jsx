@@ -1,9 +1,11 @@
 import React, { PureComponent, PropTypes } from 'react';
+import className from 'classnames';
 import styles from 'style!../less/ContainerTitle.less';
 import DefaultLinkComponent from './DefaultLinkComponent';
 
 export default class ContainerTitle extends PureComponent {
   static propTypes = {
+    appearance: PropTypes.string,
     icon: PropTypes.node,
     text: PropTypes.string,
     subText: PropTypes.string,
@@ -17,6 +19,7 @@ export default class ContainerTitle extends PureComponent {
 
   render() {
     const {
+      appearance,
       href,
       text,
       subText,
@@ -25,7 +28,12 @@ export default class ContainerTitle extends PureComponent {
 
     return (
       <Link className={styles.link} href={href}>
-        <div className={styles.containerTitle}>
+        <div
+          className={className(styles.containerTitle, {
+            [styles.hasGlobalAppearance]: appearance === 'global',
+            [styles.hasSettingsAppearance]: appearance === 'settings',
+          })}
+        >
           <div className={styles.icon}>
             {this.props.icon}
           </div>

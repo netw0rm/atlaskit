@@ -220,7 +220,7 @@ export const emoji = (attrs: { id: string }) => sampleSchema.nodes.emoji.createC
 export const mention = (attrs: { id: string, displayName?: string }) => sampleSchema.nodes.mention.createChecked(attrs);
 export const hr = sampleSchema.nodes.rule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});
-export const subsup = markFactory(sampleSchema.marks.subsup, {});
+export const subsup = (attrs: { type: string }) => markFactory(sampleSchema.marks.subsup, attrs);
 export const u = markFactory(sampleSchema.marks.u, {});
 export const strong = markFactory(sampleSchema.marks.strong, {});
 export const code = markFactory(sampleSchema.marks.code, {});

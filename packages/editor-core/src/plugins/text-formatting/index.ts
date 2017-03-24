@@ -70,11 +70,7 @@ export class TextFormattingState {
 
   toggleCode(view: EditorView) {
     const { code } = this.state.schema.marks;
-    const { from, to } = this.state.selection;
     if (code) {
-      if (!this.codeActive) {
-        view.dispatch(transformToCodeAction(view.state, from, to));
-      }
       commands.toggleMark(code)(view.state, view.dispatch);
     }
   }
@@ -141,7 +137,7 @@ export class TextFormattingState {
     let dirty = false;
 
     if (code) {
-      const newCodeActive = this.anyMarkActive(code);
+      const newCodeActive = this.markActive(code.create());
       if (newCodeActive !== this.codeActive) {
         this.codeActive = newCodeActive;
         dirty = true;
@@ -291,8 +287,11 @@ export class TextFormattingState {
   }
 
   private toggleMark(view: EditorView, markType: MarkType, attrs?: any) {
-    this.toggledMarks[markType.name] = true;
-    commands.toggleMark(markType)(view.state, view.dispatch);
+    // Disable text-formatting inside code
+    if (this.codeActive ? this.codeDisabled : true) {
+      this.toggledMarks[markType.name] = true;
+      commands.toggleMark(markType, attrs)(view.state, view.dispatch);
+    }
   }
 }
 

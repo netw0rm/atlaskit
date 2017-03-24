@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/blanket",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "config": {
     "access": "public"
   },

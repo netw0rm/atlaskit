@@ -4,6 +4,7 @@ import { Label, FieldBase } from '@atlaskit/field-base';
 import Droplist from '@atlaskit/droplist';
 import Group from '@atlaskit/droplist-group';
 import Item from '@atlaskit/droplist-item';
+import UpIcon from '@atlaskit/icon/glyph/hipchat/arrow-up';
 
 import styles from 'style!../src/styles.less';
 import { StatelessSelect } from '../src';
@@ -51,6 +52,11 @@ describe(name, () => {
       const select = mount(<StatelessSelect placeholder="test" selectedItem={{ content: 'selected' }} />);
       expect(select.text()).to.not.equal('test');
       expect(select.text()).to.equal('selected');
+    });
+
+    it('should render selectedItems elemBefore', () => {
+      const select = mount(<StatelessSelect placeholder="test" selectedItem={{ elemBefore: <UpIcon label="up" /> }} />);
+      expect(select.find(UpIcon).length).to.equal(1);
     });
 
     it('should render groups and items inside Droplist (when open)', () => {
@@ -307,25 +313,31 @@ describe(name, () => {
       it('should call handleItemSelect when Enter is pressed and an item is focused and Select is open', () => {
         wrapper.setState({ focusedItemIndex: 0 });
         const spy = sinon.spy(instance, 'handleItemSelect');
-        const event = { key: 'Enter' };
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'Enter', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
         expect(spy.calledOnce).to.equal(true);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
       });
 
       it('should NOT call handleItemSelect when Enter is pressed and no item is focused and Select is open', () => {
         const spy = sinon.spy(instance, 'handleItemSelect');
-        const event = { key: 'Enter' };
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'Enter', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
         expect(spy.called).to.equal(false);
+        expect(preventDefaultSpy.calledOnce).to.equal(true);
       });
 
       it('should NOT call handleItemSelect when Enter is pressed and Select is closed', () => {
         wrapper.setProps({ isOpen: false });
         wrapper.setState({ focusedItemIndex: 0 });
         const spy = sinon.spy(instance, 'handleItemSelect');
-        const event = { key: 'Enter' };
+        const preventDefaultSpy = sinon.spy();
+        const event = { key: 'Enter', preventDefault: preventDefaultSpy };
         instance.handleKeyboardInteractions(event);
         expect(spy.called).to.equal(false);
+        expect(preventDefaultSpy.calledOnce).to.equal(false);
       });
 
       it('should NOT call handleNativeSearch when autocompelte is enabled', () => {
@@ -339,8 +351,9 @@ describe(name, () => {
       it('should NOT call handleNativeSearch when keyUp, keyDown or Enter are pressed', () => {
         wrapper.setProps({ hasAutocomplete: true });
         const spy = sinon.spy(instance, 'handleNativeSearch');
-        ['Enter', 'ArrowUp', 'ArrowDown'].forEach(() => {
-          const event = { key: 'Enter' };
+        const preventDefaultSpy = sinon.spy();
+        ['Enter', 'ArrowUp', 'ArrowDown'].forEach((eventName) => {
+          const event = { key: eventName, preventDefault: preventDefaultSpy };
           instance.handleKeyboardInteractions(event);
         });
         expect(spy.called).to.equal(false);

@@ -118,6 +118,71 @@ storiesOf(name, module)
       </BasicNavigation>
     </Page>
   ))
+  .add('with settings appearance', () => (
+    <Page>
+      <BasicNavigation
+        containerHeaderComponent={() => (
+          <AkContainerTitle
+            appearance="settings"
+            href="#foo"
+            icon={
+              <img alt="nucleus" src={nucleusLogo} />
+            }
+            text="AtlasKit"
+            subText="Project settings"
+          />
+        )}
+        containerAppearance="settings"
+        globalAppearance="settings"
+      >
+        <AkContainerItemGroup>
+          <AkContainerItem
+            appearance="settings"
+            icon={<DashboardIcon label="Dashboard" />}
+            isSelected
+            text="Item A"
+            textAfter={<RandomBadge theme="dark" />}
+          />
+          <AkContainerItem
+            appearance="settings"
+            icon={<SettingsIcon label="Settings" />}
+            text="Item B"
+            textAfter={<RandomBadge theme="dark" />}
+          />
+          <AkContainerItem
+            appearance="settings"
+            icon={<TrayIcon label="Tray" />}
+            text="Item C"
+          />
+          <AkContainerItemGroup hasSeparator appearance="settings" title="Alpha">
+            <AkContainerItem
+              appearance="settings"
+              text="Item D"
+              textAfter={<RandomBadge theme="dark" />}
+            />
+            <AkContainerItem
+              appearance="settings"
+              text="Item E"
+              isSelected
+              textAfter={<RandomBadge />}
+            />
+          </AkContainerItemGroup>
+        </AkContainerItemGroup>
+        <AkContainerItemGroup appearance="settings" title="Beta">
+          <AkContainerItem
+            appearance="settings"
+            icon={<CalendarIcon label="Calendar" />}
+            text="Item X"
+          />
+          <AkContainerItem
+            icon={<img src={nucleusLogo} alt="icon" />}
+            text="Item Y"
+            href="#2"
+          />
+        </AkContainerItemGroup>
+      </BasicNavigation>
+    </Page>
+  ))
   .add('with multiple groups', () => (
     <Page>
       <BasicNavigation
@@ -196,7 +261,23 @@ storiesOf(name, module)
       />
     </Page>
   ))
-  .add('with no subText', () => (
+  .add('with a long ContainerTitle', () => (
+    <Page>
+      <BasicNavigation
+        containerHeaderComponent={() => (
+          <AkContainerTitle
+            href="#foo"
+            icon={
+              <img alt="nucleus" src={nucleusLogo} />
+            }
+            text="A long long time ago, I can still remember"
+            subText="How that music used to make me smile"
+          />
+        )}
+      />
+    </Page>
+  ))
+  .add('with no ContainerTitle subText', () => (
     <Page>
       <BasicNavigation
         containerHeaderComponent={() => (

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import Avatar from '@atlaskit/avatar';
+import LockIcon from '@atlaskit/icon/glyph/lock';
 import Lozenge from '@atlaskit/lozenge';
 
 import Comment, { CommentAction, CommentAuthor, CommentTime, CommentLayout } from '../src/';
@@ -89,6 +90,31 @@ describe(name, () => {
                 <Lozenge>{type}</Lozenge>
               </div>)
           ).to.equal(true);
+        });
+      });
+
+      describe('restrictedTo prop', () => {
+        it('should render a Lock icon and restrictedTo name when supplied', () => {
+          const wrapper = mount(<Comment restrictedTo="atlassian-staff" />);
+          expect(wrapper.find(LockIcon).length).to.equal(1);
+          expect(wrapper.text()).to.contain('atlassian-staff');
+        });
+
+        it('should not render a Lock icon if restrictedTo prop is not set', () => {
+          const wrapper = mount(<Comment />);
+          expect(wrapper.find(LockIcon).length).to.equal(0);
+        });
+      });
+
+      describe('Top items', () => {
+        it('Should render in the order author, type, time, restrictedTo', () => {
+          const time = <CommentTime>30 August, 2016</CommentTime>;
+          const wrapper = mount(<Comment author="Mary" type="Type" time={time} restrictedTo="atlassian-staff" />);
+          const topItems = wrapper.find(`.${styles.locals.topItemsContainer}`);
+          expect(topItems.childAt(0).text()).to.equal('Mary');
+          expect(topItems.childAt(1).text()).to.equal('Type');
+          expect(topItems.childAt(2).text()).to.equal('30 August, 2016');
+          expect(topItems.childAt(3).text()).to.contain('atlassian-staff');
         });
       });
     });

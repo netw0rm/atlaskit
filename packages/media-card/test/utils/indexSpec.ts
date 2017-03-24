@@ -29,7 +29,7 @@ describe('index', () => {
       expect(toHumanReadableMediaSize(oneHundredBytes)).to.eql('100 B');
 
       const oneHundredAndFiftyKiloBytes = 153600;
-      expect(toHumanReadableMediaSize(oneHundredAndFiftyKiloBytes)).to.eql('150 kB');
+      expect(toHumanReadableMediaSize(oneHundredAndFiftyKiloBytes)).to.eql('150 KB');
     });
 
     it('should return one decimal place when the media size is greater than or equal to 1 MB', () => {

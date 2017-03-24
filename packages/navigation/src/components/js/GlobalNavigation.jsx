@@ -3,14 +3,13 @@ import classNames from 'classnames';
 import styles from 'style!../less/GlobalNavigation.less';
 import { globalOpenWidth } from '../../shared-variables';
 import Spacer from './Spacer';
-import GlobalActions from './GlobalActions';
+import GlobalPrimaryActions from './GlobalPrimaryActions';
+import GlobalSecondaryActions from './GlobalSecondaryActions';
 import DefaultLinkComponent from './DefaultLinkComponent';
 
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
-    accountItem: PropTypes.node,
     appearance: PropTypes.string,
-    helpItem: PropTypes.node,
     linkComponent: PropTypes.func,
     primaryIcon: PropTypes.node,
     primaryItemHref: PropTypes.string,
@@ -19,6 +18,7 @@ export default class GlobalNavigation extends PureComponent {
     onSearchActivate: PropTypes.func,
     onCreateActivate: PropTypes.func,
     createIcon: PropTypes.node,
+    secondaryActions: PropTypes.arrayOf(PropTypes.node),
   };
   static defaultProps = {
     accountItem: null,
@@ -26,13 +26,13 @@ export default class GlobalNavigation extends PureComponent {
     linkComponent: DefaultLinkComponent,
     primaryIcon: null,
     shouldAnimate: false,
+    secondaryActions: [],
   };
+
   render() {
     const {
-      accountItem,
       appearance,
       createIcon,
-      helpItem,
       linkComponent,
       onCreateActivate,
       onSearchActivate,
@@ -40,6 +40,7 @@ export default class GlobalNavigation extends PureComponent {
       primaryItemHref,
       searchIcon,
       shouldAnimate,
+      secondaryActions,
     } = this.props;
     return (
       <nav
@@ -57,7 +58,7 @@ export default class GlobalNavigation extends PureComponent {
           className={styles.globalNavigation}
         >
           <div className={styles.primaryContainer}>
-            <GlobalActions
+            <GlobalPrimaryActions
               appearance={appearance}
               createIcon={createIcon}
               linkComponent={linkComponent}
@@ -69,8 +70,9 @@ export default class GlobalNavigation extends PureComponent {
             />
           </div>
           <div className={styles.secondaryContainer}>
-            {helpItem}
-            {accountItem}
+            {secondaryActions.length ? <GlobalSecondaryActions
+              actions={secondaryActions}
+            /> : null}
           </div>
         </div>
       </nav>

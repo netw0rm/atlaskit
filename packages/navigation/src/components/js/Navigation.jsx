@@ -19,13 +19,12 @@ export default class Navigation extends PureComponent {
     containerAppearance: PropTypes.string,
     containerHeaderComponent: PropTypes.func,
     drawers: PropTypes.arrayOf(PropTypes.node),
-    globalAccountItem: PropTypes.node,
     globalAppearance: PropTypes.string,
     globalCreateIcon: PropTypes.node,
-    globalHelpItem: PropTypes.node,
     globalPrimaryIcon: PropTypes.node,
     globalPrimaryItemHref: PropTypes.string,
     globalSearchIcon: PropTypes.node,
+    globalSecondaryActions: PropTypes.arrayOf(PropTypes.node),
     isCollapsible: PropTypes.bool,
     isOpen: PropTypes.bool,
     isResizeable: PropTypes.bool,
@@ -38,11 +37,10 @@ export default class Navigation extends PureComponent {
   };
 
   static defaultProps = {
-    containerAppearance: 'default',
+    containerAppearance: 'container',
     drawers: [],
-    globalAccountDropdownComponent: ({ children }) => children,
     globalAppearance: 'global',
-    globalHelpDropdownComponent: ({ children }) => children,
+    globalSecondaryActions: [],
     isCollapsible: true,
     isCreateDrawerOpen: false,
     isOpen: true,
@@ -56,8 +54,8 @@ export default class Navigation extends PureComponent {
     width: navigationOpenWidth,
   };
 
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.state = {
       resizeDelta: 0,
     };
@@ -111,13 +109,12 @@ export default class Navigation extends PureComponent {
       containerAppearance,
       containerHeaderComponent,
       drawers,
-      globalAccountItem,
       globalAppearance,
       globalCreateIcon,
-      globalHelpItem,
       globalPrimaryIcon,
       globalPrimaryItemHref,
       globalSearchIcon,
+      globalSecondaryActions,
       isOpen,
       isResizeable,
       linkComponent,
@@ -138,10 +135,8 @@ export default class Navigation extends PureComponent {
         <div className={styles.navigationInner}>
           <div style={{ zIndex: isPartiallyCollapsed ? false : 1 }}>
             <GlobalNavigation
-              accountItem={globalAccountItem}
               appearance={globalAppearance}
               createIcon={globalCreateIcon}
-              helpItem={globalHelpItem}
               linkComponent={linkComponent}
               onCreateActivate={onCreateDrawerOpen}
               onSearchActivate={onSearchDrawerOpen}
@@ -149,6 +144,7 @@ export default class Navigation extends PureComponent {
               primaryItemHref={globalPrimaryItemHref}
               searchIcon={globalSearchIcon}
               shouldAnimate={shouldAnimate}
+              secondaryActions={globalSecondaryActions}
             />
           </div>
           <div style={{ zIndex: 2, position: 'relative' }}>

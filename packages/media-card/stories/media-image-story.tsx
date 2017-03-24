@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { storiesOf } from '@kadira/storybook';
 import {StoryList} from '@atlaskit/media-test-helpers';
 
-import { MediaImage } from '../src';
+import { MediaImage } from '../src/utils/mediaImage';
 import {tallImage, wideImage, wideTransparentImage, smallImage, smallTransparentImage} from '@atlaskit/media-test-helpers';
 
 const ImageWrapper = styled.div`

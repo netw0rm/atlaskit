@@ -1,14 +1,14 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
 import { akColorN500 } from '@atlaskit/util-shared-styles';
-import { Root, centerX, borderRadius } from '../../styles';
+import { Root, centerX, borderRadius, size, center } from '../../styles';
 
 export const Wrapper = styled(Root)`
   display: flex;
   position: relative;
 `;
 
-export const MenuButton = styled.div`
+export const MeatballsButton = styled.div`
   ${centerX}
   ${borderRadius}
   float: right;
@@ -37,4 +37,16 @@ export const DropdownWrapper = styled.div`;
   top: 105%;
 
   z-index: 100;
+`;
+
+export const DeleteBtn = styled.div`
+  ${center}
+  ${borderRadius}
+  ${size(26)}
+  color: ${akColorN500};
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(9, 30, 66, 0.06);
+  }
 `;

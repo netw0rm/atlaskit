@@ -1,13 +1,12 @@
 import * as React from 'react';
 import {MouseEvent, Component} from 'react';
-import {MediaType, CardAction, CardActionType, CardEventHandler} from '@atlaskit/media-core';
-import CrossIcon from '@atlaskit/icon/glyph/cross';
+import * as cx from 'classnames';
+import {MediaType, CardAction, CardEventHandler} from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/editor/check';
 
 import {toHumanReadableMediaSize, ProgressBar, FileIcon, ErrorIcon, Ellipsify, Menu} from '../../utils';
 
 import {
-  DeleteBtn,
   TickBox,
   Overlay,
   ErrorLine,
@@ -23,9 +22,6 @@ import {
 } from './styled';
 
 export interface CardOverlayProps {
-  height: number;
-  width: number;
-
   mediaType?: MediaType;
   mediaName?: string;
   mediaSize?: number;
@@ -39,7 +35,7 @@ export interface CardOverlayProps {
   error?: string;
   onRetry?: CardAction;
 
-  menuActions?: Array<CardAction>;
+  actions?: Array<CardAction>;
 }
 
 export interface CardOverlayState {
@@ -56,50 +52,29 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   static get defaultProps() {
-    const menuActions: Array<CardAction> = [];
+    const actions: Array<CardAction> = [];
 
     return {
-      menuActions
+      actions
     };
   }
 
+  private get wrapperClassNames() {
+    const {progress, error, selectable, selected, mediaType, persistent} = this.props;
+    const {isMenuExpanded} = this.state;
+    const isProcessing = (typeof progress === 'number');
+
+    return error
+      ? cx('overlay', {error, active: isMenuExpanded})
+      : cx('overlay', mediaType, {active: isProcessing || isMenuExpanded, selectable, selected, persistent: !persistent});
+  }
+
   render() {
-    const active = (typeof this.props.progress === 'number');
-
-    let classNames: Array<string> = ['overlay'];
-    if (this.props.error) {
-      classNames.push('error');
-    } else {
-      if (active) {
-        classNames.push('active');
-      }
-
-      if (this.props.selectable) {
-        classNames.push('selectable');
-      }
-
-      if (this.props.selected) {
-        classNames.push('selected');
-      }
-
-      if (this.props.mediaType) {
-        classNames.push(this.props.mediaType);
-      }
-
-      if (!this.props.persistent) {
-        classNames.push('persistent');
-      }
-
-    }
-
-    if (this.state.isMenuExpanded) {
-      classNames.push('active');
-    }
-
-    const text = this.props.mediaName || '';
+    const {mediaName, actions} = this.props;
+    const text = mediaName || '';
 
     return (
-      <Overlay className={classNames.join(' ')}>
+      <Overlay className={this.wrapperClassNames}>
         <TopRow className={'top-row'}>
           {this.errorLine()}
           <TitleWrapper className={'title'}>
@@ -112,7 +87,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
             {this.bottomLeftColumn()}
           </LeftColumn>
           <RightColumn className={'right-column'}>
-            {this.moreBtn()}
+            <Menu actions={actions} onToggle={this.onMenuToggle} deleteBtnColor="white" />
           </RightColumn>
         </BottomRow>
       </Overlay>
@@ -171,27 +146,6 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
         </div>
       );
     }
-  }
-
-  moreBtn() {
-    const actions = this.props.menuActions || [];
-
-    if (!actions.length) {
-      return null;
-    }
-
-    if (actions.length === 1 && actions[0].type === CardActionType.delete) {
-      const deleteAction = actions[0];
-      return (
-        <DeleteBtn className={'delete-btn'} onClick={this.removeBtnClick(deleteAction.handler)} >
-          <CrossIcon label="cross" />
-        </DeleteBtn>
-      );
-    }
-
-    return (
-      <Menu actions={actions} onToggle={this.onMenuToggle} />
-    );
   }
 
   onMenuToggle = (newMenuState) => {

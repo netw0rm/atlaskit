@@ -5,6 +5,7 @@ import MentionInlineEdit from './MentionInlineEdit';
 import TextInlineEdit from './TextInlineEdit';
 import LoopConfirmInlineEdit from './LoopConfirmInlineEdit';
 import SlowInlineEdit from './SlowInlineEdit';
+import SingleSelectInlineEdit from './SingleSelectInlineEdit';
 import exampleMentions from './example-mentions';
 import AkInlineEdit, { InlineEdit } from '../src';
 import { name } from '../package.json';
@@ -141,6 +142,22 @@ storiesOf(name, module)
       <MentionInlineEdit
         label="User picker"
         mentions={exampleMentions}
+      />
+    </div>
+  ))
+  .add('with single select', () => (
+    <div style={containerStyle}>
+      <SingleSelectInlineEdit
+        label="Single select"
+        selectItems={[
+          {
+            items: [
+              { content: 'High', value: 'high' },
+              { content: 'Medium', value: 'medium' },
+              { content: 'Low', value: 'low' },
+            ],
+          },
+        ]}
       />
     </div>
   ))

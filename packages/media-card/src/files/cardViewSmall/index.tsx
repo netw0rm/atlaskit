@@ -13,7 +13,6 @@ export interface FileCardViewSmallProps {
   dataURI?: string;
   progress?: number;
   loading?: boolean;
-  menuActions?: Array<CardAction>;
   actions?: Array<CardAction>;
   onClick?: (event: Event) => void;
   error?: string;
@@ -34,7 +33,7 @@ export class FileCardViewSmall extends Component<FileCardViewSmallProps, FileCar
       thumbnailUrl={this.props.dataURI}
       width={this.props.width}
       loading={this.props.loading}
-      menuActions={this.props.menuActions}
+      actions={this.props.actions}
       onClick={this.props.onClick}
       error={this.props.error}
       onRetry={this.props.onRetry}

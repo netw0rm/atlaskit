@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {storiesOf, action} from '@kadira/storybook';
-import {LinkCardViewSmall} from '../src/linkCardViewSmall';
+import {LinkCardViewSmall} from '../src/links/cardViewSmall';
 import {smallImage, smallTransparentImage, wideImage, wideTransparentImage} from '@atlaskit/media-test-helpers';
 import {StoryList} from '@atlaskit/media-test-helpers';
 

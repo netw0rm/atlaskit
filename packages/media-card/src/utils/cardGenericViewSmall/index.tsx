@@ -15,7 +15,7 @@ export interface CardGenericViewSmallProps {
   mediaType?: MediaType;
   thumbnailUrl?: string;
   loading?: boolean;
-  menuActions?: Array<CardAction>;
+  actions?: Array<CardAction>;
   onClick?: (event: Event) => void;
   error?: string;
   onRetry?: CardAction;
@@ -92,7 +92,7 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
   }
 
   formatCard(left: JSX.Element, right: JSX.Element) {
-    const {menuActions, width, loading, mediaType, thumbnailUrl} = this.props;
+    const {actions, loading, mediaType, thumbnailUrl} = this.props;
     const cardStyle = this.wrapperStyles;
     const cardClass = cx({loading: loading});
     const imgClass = cx('img-wrapper', {shadow: mediaType === 'image' && thumbnailUrl});
@@ -105,7 +105,7 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
         <InfoWrapper className="info-wrapper">
           {right}
         </InfoWrapper>
-        <Menu actions={menuActions} />
+        <Menu actions={actions} />
       </SmallCard>
     );
   }

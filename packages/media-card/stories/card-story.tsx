@@ -24,6 +24,7 @@ storiesOf('Card', {})
     const imageFileCard = <Card context={context} identifier={fileIdentifier} />;
 
     // link cards
+    const smallLinkCard = <Card context={context} identifier={genericUrlIdentifier} appearance="small" dimensions={{width: '200px'}} />;
     const horizontalLinkCard = <Card context={context} identifier={genericUrlIdentifier} />;
     const squareLinkCard = <Card context={context} identifier={genericUrlIdentifier} appearance="square" />;
 
@@ -54,7 +55,7 @@ storiesOf('Card', {})
               </tr>
               <tr>
                 <td><div>Link Cards</div></td>
-                <td>No design implemented</td>
+                <td>{smallLinkCard}</td>
                 <td>No design implemented</td>
                 <td>
                   <div>{horizontalLinkCard}</div>

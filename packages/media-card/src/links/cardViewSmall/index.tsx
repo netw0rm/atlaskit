@@ -2,17 +2,17 @@ import * as React from 'react';
 import {Component} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
-import {CardGenericViewSmall} from './utils/cardGenericViewSmall';
+import {CardGenericViewSmall} from '../../utils/cardGenericViewSmall';
 
 export interface LinkCardViewSmallProps {
-  width?: number;
+  width?: number | string;
   linkUrl: string;
   title: string;
   thumbnailUrl?: string;
   loading?: boolean;
   onClick?: (event: Event) => void;
   error?: string;
-  menuActions?: Array<CardAction>;
+  actions?: Array<CardAction>;
   onRetry?: CardAction;
 }
 
@@ -24,11 +24,11 @@ export class LinkCardViewSmall extends Component<LinkCardViewSmallProps, {}> {
       thumbnailUrl={this.props.thumbnailUrl}
       width={this.props.width}
       loading={this.props.loading}
-      menuActions={this.props.menuActions}
+      actions={this.props.actions}
       onClick={this.props.onClick}
       error={this.props.error}
       onRetry={this.props.onRetry}
-      mediaType={'unknown'}
+      mediaType={'image'}
     />;
   }
 }

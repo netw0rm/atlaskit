@@ -23,7 +23,7 @@ export default class InlineEdit extends PureComponent {
     onCancel: PropTypes.func.isRequired,
     labelHtmlFor: PropTypes.string,
     shouldConfirmOnEnter: PropTypes.bool,
-    invalidMessage: PropTypes.string,
+    invalidMessage: PropTypes.node,
   }
 
   static defaultProps = {
@@ -100,9 +100,8 @@ export default class InlineEdit extends PureComponent {
     this.props.onCancel();
   }
 
-  onIconMouseDown = () => {
-    // Set the state here so that we can ignore the blur or click event on the field.
-    this.setState({ wasIconMouseDown: true });
+  onDialogClick = (event) => {
+    event.stopPropagation();
   }
 
   getRootClasses = () =>
@@ -196,7 +195,7 @@ export default class InlineEdit extends PureComponent {
               isLoading={this.shouldRenderSpinner()}
               shouldReset={this.state.shouldResetFieldBase}
               invalidMessage={this.props.invalidMessage}
-              onIconMouseDown={this.onIconMouseDown}
+              onDialogClick={this.onDialogClick}
             >
               {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
             </FieldBase>

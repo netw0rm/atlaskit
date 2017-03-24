@@ -19,9 +19,9 @@ describe('text-formatting', () => {
       context('when on a mac', () => {
         context('when hits Cmd-B', () => {
           it('toggles bold mark', () => {
-            const { editorView } = editor(doc(p('text')));
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            sendKeyToPm(editorView, 'Cmd-B', true);
+            sendKeyToPm(editorView, 'Cmd-b');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
           });
@@ -29,9 +29,9 @@ describe('text-formatting', () => {
 
         context('when hits Cmd-I', () => {
           it('toggles italic mark', () => {
-            const { editorView } = editor(doc(p('text')));
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            sendKeyToPm(editorView, 'Cmd-I', true);
+            sendKeyToPm(editorView, 'Cmd-i');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
           });
@@ -39,9 +39,9 @@ describe('text-formatting', () => {
 
         context('when hits Cmd-U', () => {
           it('toggles underline mark', () => {
-            const { editorView } = editor(doc(p('text')));
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            sendKeyToPm(editorView, 'Cmd-U', true);
+            sendKeyToPm(editorView, 'Cmd-u');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(u('text'))));
           });
@@ -53,9 +53,9 @@ describe('text-formatting', () => {
          */
         context('when hits Shift-Cmd-S', () => {
           it('toggles strikethrough mark', () => {
-            const { editorView } = editor(doc(p('text')));
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            sendKeyToPm(editorView, 'Shift-Cmd-S', true);
+            sendKeyToPm(editorView, 'Shift-Cmd-s');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'))));
           });
@@ -63,9 +63,9 @@ describe('text-formatting', () => {
 
         context('when hits Shift-Cmd-M', () => {
           it('toggles code mark', () => {
-            const { editorView } = editor(doc(p('text')));
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            sendKeyToPm(editorView, 'Shift-Cmd-M', true);
+            sendKeyToPm(editorView, 'Shift-Cmd-m');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(code('text'))));
           });
@@ -75,9 +75,9 @@ describe('text-formatting', () => {
       context('when not on a mac', () => {
         context('when hits Ctrl-B', () => {
           it('toggles bold mark', () => {
-            const { editorView } = editor(doc(p('text')));
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            sendKeyToPm(editorView, 'Ctrl-B', true);
+            sendKeyToPm(editorView, 'Ctrl-b');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
           });
@@ -85,9 +85,9 @@ describe('text-formatting', () => {
 
         context('when hits Ctrl-B', () => {
           it('toggles italic mark', () => {
-            const { editorView } = editor(doc(p('text')));
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            sendKeyToPm(editorView, 'Ctrl-I', true);
+            sendKeyToPm(editorView, 'Ctrl-i');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
           });
@@ -95,9 +95,9 @@ describe('text-formatting', () => {
 
         context('when hits Ctrl-B', () => {
           it('toggles underline mark', () => {
-            const { editorView } = editor(doc(p('text')));
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            sendKeyToPm(editorView, 'Ctrl-U', true);
+            sendKeyToPm(editorView, 'Ctrl-u');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(u('text'))));
           });
@@ -109,9 +109,9 @@ describe('text-formatting', () => {
          */
         context('when hits Shift-Ctrl-S', () => {
           it('toggles strikethrough mark', () => {
-            const { editorView } = editor(doc(p('text')));
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            sendKeyToPm(editorView, 'Shift-Ctrl-S', true);
+            sendKeyToPm(editorView, 'Shift-Ctrl-s');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'))));
           });
@@ -119,9 +119,9 @@ describe('text-formatting', () => {
 
         context('when hits Shift-Ctrl-M', () => {
           it('toggles code mark', () => {
-            const { editorView } = editor(doc(p('text')));
+            const { editorView } = editor(doc(p('{<}text{>}')));
 
-            sendKeyToPm(editorView, 'Shift-Ctrl-M', true);
+            sendKeyToPm(editorView, 'Shift-Ctrl-m');
 
             expect(editorView.state.doc).to.deep.equal(doc(p(code('text'))));
           });

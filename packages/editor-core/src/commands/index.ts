@@ -7,15 +7,16 @@ import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
 import { isRangeOfType, liftSelection } from '../utils';
 
-export function toggleBlockType(view: EditorView, name: string, $from: ResolvedPos, $to: ResolvedPos): boolean {
+export function toggleBlockType(view: EditorView, name: string): boolean {
   const { nodes } = view.state.schema;
+  let depthLimit = 1;
 
-  const textSelection = new TextSelection($from, $to);
+  if (name === blockTypes.PANEL.name || name === blockTypes.BLOCK_QUOTE.name) {
+    depthLimit = 2;
+  }
 
-  view.dispatch(view.state.tr.setSelection(textSelection));
-
-  if (view.state.selection.$from.depth > 1) {
-    view.dispatch(liftSelection(view.state.tr, view.state.doc, $from, $to));
+  if (view.state.selection.$from.depth > depthLimit) {
+    view.dispatch(liftSelection(view.state.tr, view.state.doc, view.state.selection.$from, view.state.selection.$to));
   }
 
   switch (name) {
@@ -224,15 +225,14 @@ export function setNormalText(): Command {
 
 export function toggleBlockquote(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from, $to } = state.selection;
+    const { $from } = state.selection;
     const potentialBlockquoteNode = $from.node($from.depth - 1);
 
-    if (potentialBlockquoteNode && potentialBlockquoteNode.type === state.schema.nodes.blockquote) {
+    if (potentialBlockquoteNode.type !== state.schema.nodes.blockquote) {
+      return baseCommand.wrapIn(state.schema.nodes.blockquote)(state, dispatch);
+    } else {
       return baseCommand.lift(state, dispatch);
     }
-    const tr = state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph);
-    dispatch(wrap(state, state.schema.nodes.blockquote, tr));
-    return true;
   };
 }
 
@@ -240,11 +240,12 @@ export function togglePanel(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from } = state.selection;
     const potentialPanelNode = $from.node($from.depth - 1);
-    if (potentialPanelNode && potentialPanelNode.type === state.schema.nodes.blockquote) {
+
+    if (potentialPanelNode.type !== state.schema.nodes.panel) {
+      return baseCommand.wrapIn(state.schema.nodes.panel)(state, dispatch);
+    } else {
       return baseCommand.lift(state, dispatch);
     }
-
-    return baseCommand.wrapIn(state.schema.nodes.panel)(state, dispatch);
   };
 }
 

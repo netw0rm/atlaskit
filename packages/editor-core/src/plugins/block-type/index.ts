@@ -68,15 +68,7 @@ export class BlockTypeState {
     }
 
     toggleBlockType(name: string, view: EditorView): void {
-        const groups = getGroupsInRange(view.state.doc, view.state.selection.$from, view.state.selection.$to);
-        const { $from } = groups[0];
-        const { $to } = groups[groups.length - 1];
-        view.dispatch(view.state.tr.setSelection(new TextSelection($from, $to)));
-
-        groups.reverse();
-        groups.forEach(group => {
-            commands.toggleBlockType(view, name, group.$from, group.$to);
-        });
+        commands.toggleBlockType(view, name);
     }
 
     update(newEditorState, dirty = false) {

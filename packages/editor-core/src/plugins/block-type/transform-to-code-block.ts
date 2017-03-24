@@ -79,7 +79,11 @@ function clearMarkupFor(state: EditorState<any>, pos: number): Transaction {
 }
 
 function mergeContent(tr: Transaction, state: EditorState<any>) {
-    const { from, to } = tr.selection;
+    const { from, to, empty } = tr.selection;
+    if (empty) {
+        return tr;
+    }
+
     let textContent = '';
     tr.doc.nodesBetween(from, to, (node, pos) => {
         if (node.isTextblock && node.textContent) {
@@ -91,7 +95,7 @@ function mergeContent(tr: Transaction, state: EditorState<any>) {
     });
     if (textContent.length > 0) {
         const textNode = state.schema.text(textContent);
-        tr.replaceSelection(textNode);
+        tr.replaceSelectionWith(textNode);
     }
     return tr;
 }

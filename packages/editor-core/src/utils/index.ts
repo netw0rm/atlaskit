@@ -120,7 +120,7 @@ export function getGroupsInRange(doc, $from: ResolvedPos, $to: ResolvedPos, isNo
 
             const endPos = doc.resolve(Math.min(
                 // should not be smaller then start position in case of an empty paragpraph for example.
-                Math.max(ancestorPos.start(ancestorPos.depth), ancestorPos.end(ancestorPos.depth) - 2),
+                Math.max(ancestorPos.start(ancestorPos.depth), ancestorPos.end(ancestorPos.depth) - 3),
                 $to.pos
             ));
 

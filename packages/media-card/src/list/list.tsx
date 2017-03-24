@@ -175,6 +175,13 @@ export class CardList extends Component<CardListProps, CardListState> {
 
     const cards = this.state.collection ? this.state.collection.items.map((item: MediaCollectionItem, index: number) => {
       const {context, collectionName, cardType, cardDimensions} = this.props;
+
+      // Returning an empty item for now in order to not display a uggly card until 
+      // we have the 'image' apparence supported in linkCards
+      if (item.mediaItemType === 'link' && cardType === 'image') {
+        return <li key={`${index}-${item.id}`}/>;
+      }
+
       const identifier = {
         id: item.id,
         mediaItemType: item.mediaItemType,

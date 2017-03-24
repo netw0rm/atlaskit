@@ -25,19 +25,20 @@ export interface FileCardViewSmallState {
 
 export class FileCardViewSmall extends Component<FileCardViewSmallProps, FileCardViewSmallState> {
   render() {
-    const subtitle = this.props.mediaSize && toHumanReadableMediaSize(this.props.mediaSize);
+    const {mediaSize, mediaName, dataURI, width, loading, actions, onClick, error, onRetry, mediaType} = this.props;
+    const subtitle = mediaSize && toHumanReadableMediaSize(mediaSize);
 
     return <CardGenericViewSmall
-      title={this.props.mediaName}
+      title={mediaName}
       subtitle={subtitle}
-      thumbnailUrl={this.props.dataURI}
-      width={this.props.width}
-      loading={this.props.loading}
-      actions={this.props.actions}
-      onClick={this.props.onClick}
-      error={this.props.error}
-      onRetry={this.props.onRetry}
-      mediaType={this.props.mediaType}
+      thumbnailUrl={dataURI}
+      width={width}
+      loading={loading}
+      actions={actions}
+      onClick={onClick}
+      error={error}
+      onRetry={onRetry}
+      mediaType={mediaType}
     />;
   }
 }

@@ -128,8 +128,8 @@ try {
   const client = new HipChatNotifier({
     room: ROOM_ID,
     auth_token: AUTH_TOKEN,
-    // NOTE: disableLogger here simply disables the custom logger that hipchat-msg uses (which appears to have a bug in it).
-    // It will fall back to console.error() in this case
+    // NOTE: disableLogger here simply disables the custom logger that hipchat-msg uses
+    // (which appears to have a bug in it).  It will fall back to console.error() in this case
     disableLogger: true,
   });
 

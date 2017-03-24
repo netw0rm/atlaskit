@@ -3,19 +3,6 @@ import styled from 'styled-components';
 import {rgba, centerX, easeOutCubic, borderRadius, size, transition} from '../../styles';
 import { akColorN70, akColorB200, akColorN0, akColorN800, akColorN900, akColorB400 } from '@atlaskit/util-shared-styles';
 
-export const DeleteBtn = styled.div`
-  ${borderRadius}
-  ${size(26)}
-  display: none;
-  float: right;
-  color: white;
-  justify-content: center;
-
-  &:hover {
-    background-color: rgba(9, 30, 66, 0.06);
-  }
-`;
-
 export const TickBox = styled.div`
   ${size(14)}
   ${transition()}

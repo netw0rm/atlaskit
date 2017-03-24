@@ -4,57 +4,48 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { mount, ReactWrapper } from 'enzyme';
 import { ContextFactory, Context } from '@atlaskit/media-core';
-import { waitUntil, fakeContextFrom } from '@atlaskit/media-test-helpers';
+import { waitUntil, fakeContext } from '@atlaskit/media-test-helpers';
 
-import { Card, CardProps, CardState, CardOverlay } from '../../src';
+import { FileCard, FileCardProps, FileCardState, CardOverlay } from '../../src';
 
-describe('Card', () => {
-  const waitUntilCardIsLoaded = (card: ReactWrapper<CardProps, CardState>) => {
+describe('FileCard', () => {
+  const waitUntilCardIsLoaded = (card: ReactWrapper<FileCardProps, FileCardState>) => {
     return waitUntil(() => !card.state<boolean>('loading'));
   };
+
   const tokenProvider = (collection: string) => Promise.resolve('some-jwt-token');
+
   const toDataUri = (data: string) => {
     return 'data:;base64,' + btoa(data);
   };
-  // TODO: Use fakeContextFrom here
-  const fakeMediaItem = {
-      type: 'file',
-      details: {
-        id: 'some-image',
-        mediaType: 'image',
-        mimeType: 'image/jpeg',
-        name: 'some-image.jpg',
-        processingStatus: 'succeeded',
-        size: 123456,
-        artifacts: {}
-      }
-  };
-
-  const fakeMediaItemProvider = {
-    observable() {
-      return Observable.of(fakeMediaItem);
-    }
-  };
-
-  const fakeDataUriService = {
-    fetchImageDataUri() {
-      return Promise.resolve(toDataUri('some-image'));
-    }
-  };
-
-  const fakeContext: Context = {
-    getMediaItemProvider: sinon.stub().returns(fakeMediaItemProvider),
-    getDataUriService: sinon.stub().returns(fakeDataUriService),
-    getMediaCollectionProvider: sinon.spy(),
-    getUrlPreviewProvider: sinon.spy()
-  };
 
   it('should display an image when loaded', function() {
-    const card = mount<CardProps, CardState>(
-      <Card
-        context={fakeContext}
+    const fakeMediaItem = {
+        type: 'file',
+        details: {
+          id: 'some-image',
+          mediaType: 'image',
+          mimeType: 'image/jpeg',
+          name: 'some-image.jpg',
+          processingStatus: 'succeeded',
+          size: 123456,
+          artifacts: {}
+        }
+    };
+
+    const context = fakeContext({
+      getMediaItemProvider: {observable: () => Observable.of(fakeMediaItem)},
+      getDataUriService: {
+        fetchImageDataUri() {
+          return Promise.resolve(toDataUri('some-image'));
+        }
+      }
+    });
+
+    const card = mount<FileCardProps, FileCardState>(
+      <FileCard
+        context={context}
         id={'some-image'}
-        mediaItemType={'file'}
       />
     );
 
@@ -71,11 +62,10 @@ describe('Card', () => {
       serviceHost: 'some-service',
       tokenProvider
     });
-    const component = mount<CardProps, CardState>(
-      <Card
+    const component = mount<FileCardProps, FileCardState>(
+      <FileCard
         context={context}
         id={'some-image'}
-        mediaItemType={'file'}
       />);
 
     expect(component.state<boolean>('loading')).to.eql(true);
@@ -83,25 +73,27 @@ describe('Card', () => {
   });
 
   it('should not display error fallback for gif images if there is no preview image', () => {
-    const context = fakeContextFrom({
-      getMediaItemProvider: {
+    const fakeObservable = Observable.of({
         type: 'file',
         details: {
           mimeType: 'image/gif',
           name: 'some-image.jpg',
           processingStatus: 'succeeded'
         }
-      }
-    });
-    context.getDataUriService = () => ({
-      fetchOriginalDataUri(mediaItem) {
-        expect(mediaItem.details.name).to.equal('some-image.jpg');
-        return Promise.reject();
+      });
+
+    const context = fakeContext({
+      getMediaItemProvider: {observable: () => fakeObservable},
+      getDataUriService: {
+        fetchOriginalDataUri(mediaItem) {
+          expect(mediaItem.details.name).to.equal('some-image.jpg');
+          return Promise.reject();
+        }
       }
     });
 
-    const card = mount(
-      <Card context={context} id={'some-image'} mediaItemType={'file'} />
+    const card = mount<FileCardProps, FileCardState>(
+      <FileCard context={context} id="some-image"/>
     );
 
     waitUntilCardIsLoaded(card).then(() => {

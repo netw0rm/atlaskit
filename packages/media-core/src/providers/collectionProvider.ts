@@ -1,9 +1,11 @@
 import { Observable } from 'rxjs/Observable';
-import { MediaCollection, MediaCollectionItem, MediaCollectionFileItem, MediaCollectionLinkItem, MediaApiConfig } from '../';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { CollectionService, MediaCollectionService, SortDirection } from '../services/collectionService';
 import 'rxjs/add/operator/publishReplay';
+
+import { MediaCollection, MediaCollectionItem, MediaCollectionFileItem, MediaCollectionLinkItem } from '../collection';
+import { MediaApiConfig } from '../config';
+import { CollectionService, MediaCollectionService, SortDirection } from '../services/collectionService';
 import { Pool, observableFromReducerPool } from './util/reducerPool';
 
 export type CollectionCommand = 'loadNextPage';

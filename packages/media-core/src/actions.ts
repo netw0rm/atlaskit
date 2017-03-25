@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
+import { AxiosError } from 'axios';
 import { MediaCollection, MediaCollectionItem } from './collection';
 import { MediaItem, FileDetails } from './item';
-import { AxiosError } from 'axios/index';
 
 export type CardEventHandler = (item?: MediaItem, event?: Event) => void;
 export type ListEventHandler = (item?: MediaItem, siblings?: Array<FileDetails>, event?: Event) => void;
@@ -97,5 +97,5 @@ export function fetchingCollectionFailed(error: AxiosError): FetchingCollectionF
 }
 
 export type Action =
-    FetchingCollectionSucceeded
+  FetchingCollectionSucceeded
   | FetchingCollectionFailed;

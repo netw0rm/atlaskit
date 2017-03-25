@@ -376,12 +376,12 @@ export function outdentList(): Command {
   };
 }
 
-export function createNewParagraphAbove(): Command {
+export function createNewParagraphAbove(view: EditorView): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const append = false;
 
     if (!canMoveUp(state)) {
-      createParagraphNear(state, dispatch, append);
+      createParagraphNear(view, append);
       return true;
     }
 
@@ -389,12 +389,12 @@ export function createNewParagraphAbove(): Command {
   };
 }
 
-export function createNewParagraphBelow(): Command {
+export function createNewParagraphBelow(view: EditorView): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const append = true;
 
     if (!canMoveDown(state)) {
-      createParagraphNear(state, dispatch, append);
+      createParagraphNear(view, append);
       return true;
     }
 
@@ -424,7 +424,8 @@ function canMoveDown(state: EditorState<any>): boolean {
   return doc.nodeSize - selection.$to.pos - 2 !== selection.$to.depth;
 }
 
-function createParagraphNear(state: EditorState<any>, dispatch: (tr: Transaction) => void, append: boolean = true): void {
+function createParagraphNear(view: EditorView, append: boolean = true): void {
+  const { state, dispatch } = view;
   const paragraph = state.schema.nodes.paragraph;
 
   if (!paragraph) {
@@ -442,13 +443,11 @@ function createParagraphNear(state: EditorState<any>, dispatch: (tr: Transaction
     insertPos = getInsertPosFromNonTextBlock(state, append);
   }
 
-  if (!append) {
-    const next = new TextSelection(state.doc.resolve(insertPos + 1));
-    dispatch(state.tr.insert(insertPos, paragraph.create()).setSelection(next));
-  } else {
-    const next = new TextSelection(state.doc.resolve(insertPos));
-    dispatch(state.tr.setSelection(next).insert(insertPos, paragraph.create()));
-  }
+  dispatch(state.tr.insert(insertPos, paragraph.create()));
+
+  const newState = view.state;
+  const next = new TextSelection(newState.doc.resolve(insertPos + 1));
+  dispatch(newState.tr.setSelection(next));
 }
 
 function getInsertPosFromTextBlock(state: EditorState<any>, append: boolean): void {

@@ -4,8 +4,9 @@ import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
 import { ALL_BLOCK_TYPES } from './types';
 import { redo, undo } from '../../prosemirror/prosemirror-history';
+import { BlockTypeState } from './';
 
-export function keymapHandler(view: EditorView, pluginState: any): Function {
+export function keymapHandler(view: EditorView, pluginState: BlockTypeState): Function {
   const list = {};
 
   keymaps.bindKeymapWithCommand(keymaps.insertNewLine.common!, trackAndInvoke('atlassian.editor.newline.keyboard', commands.insertNewLine()), list);

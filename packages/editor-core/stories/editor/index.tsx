@@ -23,6 +23,7 @@ import {
   TextSelection
 } from '../../src/prosemirror';
 import schema from '../schema';
+import { AnalyticsHandler, analyticsService } from '../../src/analytics';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {
@@ -34,6 +35,7 @@ export interface Props {
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
   imageUploadHandler?: ImageUploadHandler;
+  analyticsHandler?: AnalyticsHandler;
 }
 
 export interface State {
@@ -47,6 +49,7 @@ export default class Editor extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
+    analyticsService.handler = props.analyticsHandler || ((name) => {});
   }
 
   /**

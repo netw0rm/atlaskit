@@ -1,4 +1,5 @@
 import { Schema, InputRule, inputRules, Plugin, EditorState } from '../../prosemirror';
+import { analyticsService } from '../../analytics';
 
 const availablePanelTypes = ['info', 'note', 'tip', 'warning'];
 let plugin: Plugin | undefined;
@@ -26,6 +27,9 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
           let range = $from.blockRange($from)!;
           tr = tr.wrap(range, [{ type: panel, attrs: { panelType } }]);
           tr = tr.delete(end - (panelType.length + 2), end + 1);
+
+          analyticsService.trackEvent(`atlassian.editor.format.panel.${panelType}.autoformatting`);
+
           return tr;
         }
       }

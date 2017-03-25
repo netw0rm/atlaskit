@@ -15,7 +15,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
   keymaps.bindKeymapWithCommand(
     keymaps.addLink.common!,
     trackAndInvoke(
-      'atlassian.editor.format.link.keyboard',
+      'atlassian.editor.format.hyperlink.keyboard',
       commands.showLinkPanel()
     ),
     list

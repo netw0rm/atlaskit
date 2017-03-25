@@ -2,41 +2,73 @@ import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import Editor from './editor';
 import * as styles from './styles';
-import { base64fileconverter } from '../src/test-helper';
 import { name } from '../package.json';
 import * as v1schema from '../src/json-schema/v1.json';
+import imageUploadHandler from '../stories/imageUpload/handler';
+import { resourceProvider, resourceProvider2 } from './mentions/story-data';
 
-const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
-const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
-
-const imageUploadHandler = (e: any, fn: any) => {
-  if (e instanceof ClipboardEvent) {
-    pasteHandler(converter, e, fn);
-  } else if (e instanceof DragEvent) {
-    dropHandler(converter, e, fn);
-  } else {
-    // we cannot trigger a real file viewer from here
-    // so we just simulate a succesful image upload and insert an image
-    fn({
-      src: 'https://design.atlassian.com/images/brand/logo-21.png'
-    });
-  }
-};
 
 const jsonPretty = (obj: any) => JSON.stringify(obj, null, 2);
+const analyticsHandler = (actionName, props) => action(actionName)(props);
+const mentionProvider = new Promise<any>(resolve => {
+  resolve(resourceProvider);
+});
+
+const mentionProvider2 = new Promise<any>(resolve => {
+  resolve(resourceProvider2);
+});
+class DemoEditor extends React.PureComponent<{ onChange }, { provider: Promise<any> }> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      provider: mentionProvider
+    };
+  }
+
+  private toggleProvider = () => {
+    const { provider } = this.state;
+    if (provider === mentionProvider) {
+      this.setState({
+        provider: mentionProvider2
+      });
+    } else {
+      this.setState({
+        provider: mentionProvider
+      });
+    }
+  }
+
+  render() {
+    const { provider } = this.state;
+    return (
+      <div className={styles.content}>
+        <Editor
+          imageUploadHandler={imageUploadHandler}
+          analyticsHandler={analyticsHandler}
+          onCancel={CANCEL_ACTION}
+          onSave={SAVE_ACTION}
+          onChange={this.props.onChange}
+          mentionProvider={provider}
+          isExpandedByDefault
+        />
+        <div>
+          <br />
+          <button onClick={this.toggleProvider}>Toggle mention provider</button>
+          {`Provider: ${provider === mentionProvider ? '1' : '2'}`}
+        </div>
+      </div>
+    );
+  }
+}
 
 storiesOf(name, module)
   .add('Example editor', () => (
     <div className={styles.content} >
-      <Editor
-        imageUploadHandler={imageUploadHandler}
-        analyticsHandler={(actionName, props) => action(actionName)(props)}
-        onCancel={CANCEL_ACTION}
-        onSave={SAVE_ACTION}
+      <DemoEditor
         onChange={this.fetchEditorState}
-        isExpandedByDefault
       />
     </div>
   ))

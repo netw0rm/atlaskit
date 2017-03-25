@@ -5,16 +5,12 @@ export function transformToCodeAction(state: EditorState<any>, from: number, to:
   const replaceSteps: Step[] = [];
   const tr = state.tr;
 
-  if (!state.selection) {
-    return tr;
-  }
-
   // Traverse through all the nodes within the range and replace them with their plaintext counterpart
   state.doc.nodesBetween(from, to, (node, nodePos) => {
     const cur = nodePos;
     const end = cur + node.nodeSize;
     if (node.type === state.schema.nodes.mention) {
-      const content = node.attrs['displayName'];
+      const content = node.attrs.displayName;
       replaceSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state), false));
     }
   });
@@ -23,6 +19,10 @@ export function transformToCodeAction(state: EditorState<any>, from: number, to:
   for (let i = replaceSteps.length - 1; i >= 0; i--) {
     tr.step(replaceSteps[i]);
   }
+
+  const updatedTo = state.apply(tr).selection.to;
+
+  tr.addMark(from, updatedTo, state.schema.marks.code.create());
 
   return tr;
 }

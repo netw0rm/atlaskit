@@ -35,9 +35,7 @@ function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: stri
 
 function addCodeMark(markType: MarkType, schema: Schema<any, any>, specialChar: string): Function {
   return (state, match, start, end): Transaction | null => {
-    const tr = transformToCodeAction(state, start, end);
-    const newState = state.apply(tr);
-    return addMark(markType, schema, specialChar)(newState, match, start, end);
+    return transformToCodeAction(state, start, end).delete(start, start + specialChar.length).removeStoredMark(markType);
   };
 }
 

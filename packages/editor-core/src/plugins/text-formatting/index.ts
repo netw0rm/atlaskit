@@ -75,6 +75,7 @@ export class TextFormattingState {
     if (code) {
       if (!this.codeActive) {
         view.dispatch(transformToCodeAction(view.state, from, to));
+        return true;
       }
       return commands.toggleMark(code)(view.state, view.dispatch);
     }

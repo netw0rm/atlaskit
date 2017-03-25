@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { MentionProvider } from '@atlaskit/mention';
+
 import {
   Chrome,
   ContextName
@@ -13,6 +15,7 @@ import hyperlinkPlugin from '../../src/plugins/hyperlink';
 import rulePlugin from '../../src/plugins/rule';
 import imageUploadPlugin from '../../src/plugins/image-upload';
 import listsPlugin from '../../src/plugins/lists';
+import mentionsPlugin from '../../src/plugins/mentions';
 import {
   baseKeymap,
   EditorState,
@@ -23,6 +26,8 @@ import {
   TextSelection
 } from '../../src/prosemirror';
 import schema from '../schema';
+import ProviderFactory from '../../src/providerFactory';
+import { mentionNodeView } from '../../src/schema/nodes/mention';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
@@ -35,21 +40,47 @@ export interface Props {
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
   imageUploadHandler?: ImageUploadHandler;
+  mentionProvider?: Promise<MentionProvider>;
   analyticsHandler?: AnalyticsHandler;
 }
 
 export interface State {
   editorView?: EditorView;
   isExpanded?: boolean;
+  mentionProvider?: Promise<MentionProvider>;
 }
 
 export default class Editor extends PureComponent<Props, State> {
+
   state: State;
+
+  providerFactory: ProviderFactory;
 
   constructor(props: Props) {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
+
     analyticsService.handler = props.analyticsHandler || ((name) => {});
+    this.providerFactory = new ProviderFactory();
+  }
+
+  componentWillMount() {
+    this.handleMentionProvider(this.props);
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    const { props } = this;
+    if (props.mentionProvider !== nextProps.mentionProvider) {
+      this.handleMentionProvider(nextProps);
+    }
+  }
+
+  handleMentionProvider = (props: Props) => {
+    const { mentionProvider } = props;
+    this.providerFactory.setProvider('mentionProvider', mentionProvider);
+    this.setState({
+      mentionProvider
+    });
   }
 
   /**
@@ -102,6 +133,8 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
+    const { mentionProvider } = this.state;
+
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const { isExpanded, editorView } = this.state;
@@ -114,6 +147,7 @@ export default class Editor extends PureComponent<Props, State> {
     const textFormattingState = editorState && textFormattingPlugin.getState(editorState);
     const hyperlinkState = editorState && hyperlinkPlugin.getState(editorState);
     const imageUploadState = editorState && imageUploadPlugin.getState(editorState);
+    const mentionsState = editorState && mentionsPlugin.getState(editorState);
 
     return (
       <Chrome
@@ -133,6 +167,8 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateClearFormatting={clearFormattingState}
         pluginStateHyperlink={hyperlinkState}
         pluginStateImageUpload={imageUploadState}
+        pluginStateMentions={mentionsState}
+        mentionProvider={mentionProvider}
       />
     );
   }
@@ -173,6 +209,7 @@ export default class Editor extends PureComponent<Props, State> {
             hyperlinkPlugin,
             rulePlugin,
             imageUploadPlugin,
+            mentionsPlugin,
             history(),
             keymap(baseKeymap) // should be last :(
           ]
@@ -184,9 +221,13 @@ export default class Editor extends PureComponent<Props, State> {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
           this.handleChange();
+        },
+        nodeViews: {
+          mention: mentionNodeView(this.providerFactory)
         }
       });
       imageUploadPlugin.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);
+      mentionsPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
       editorView.focus();
 

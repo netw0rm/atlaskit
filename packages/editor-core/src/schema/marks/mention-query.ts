@@ -7,7 +7,7 @@ const mentionQueryStyle = style({
 });
 
 export const mentionQuery: MarkSpec = {
-  inclusive: false,
+  inclusive: true,
   parseDOM: [
     { tag: 'span[data-mention-query]' }
   ],

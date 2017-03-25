@@ -9,6 +9,7 @@ import {
   strike,
   link,
   underline,
+  mentionQuery,
   bulletList,
   orderedList,
   listItem,
@@ -18,6 +19,7 @@ import {
   panel,
   rule,
   image,
+  mention,
 } from '../src/schema';
 
 const nodes = {
@@ -33,6 +35,7 @@ const nodes = {
   panel,
   rule,
   image,
+  mention,
 };
 
 const marks = {
@@ -41,7 +44,8 @@ const marks = {
   code,
   strike,
   underline,
-  link
+  link,
+  mentionQuery,
 };
 
 export default new Schema<typeof nodes, typeof marks>({ nodes, marks });

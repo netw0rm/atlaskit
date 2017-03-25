@@ -1,5 +1,6 @@
 /// <reference path="./types/chai.d.ts"/>
 import { Fragment, Mark, Node, NodeType, Slice } from '../';
+import { NodeSpec } from '../prosemirror';
 
 function isNodeOrFragment(thing: any): thing is Node | Fragment {
   // Using a simple `instanceof` check is intentionally avoided here to make
@@ -87,5 +88,15 @@ export default (chai: any) => {
       return new Assertion(matched).not.to.be.true;
     }
     return new Assertion(matched).to.be.true;
+  });
+
+  Assertion.addMethod('nodeSpec', function(nodeSpec: NodeSpec) {
+    const obj: Node = util.flag(this, 'object');
+    const negate: boolean = util.flag(this, 'negate');
+
+    if (negate) {
+      return new Assertion(obj.type.spec).not.to.deep.equal(nodeSpec);
+    }
+    return new Assertion(obj.type.spec).to.deep.equal(nodeSpec);
   });
 };

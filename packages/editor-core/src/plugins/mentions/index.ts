@@ -1,75 +1,75 @@
-import Keymap from 'browserkeymap';
-import { inputRules, Fragment, Plugin, ProseMirror, Schema, Text } from '../../prosemirror';
-
+import { MentionProvider } from '@atlaskit/mention';
 import {
-  MentionNodeType,
-  MentionQueryMarkType
-} from '../../schema';
+  EditorState,
+  EditorView,
+  Fragment,
+  Plugin,
+  PluginKey,
+} from '../../prosemirror';
+import { reconfigure } from '../utils';
+import inputRulePlugin from './input-rules';
+import keymapPlugin from './keymap';
+import ProviderFactory from '../../providerFactory';
 
-import { mentionQueryRule } from './input-rules';
+export type MentionsStateSubscriber = (state: MentionsState) => any;
+export type StateChangeHandler = (state: MentionsState) => any;
 
-export type StateChangeHandler = (state: MentionsPluginState) => any;
-
-export class MentionsPluginState {
-  private pm: PM;
-  private hasKeymap = false;
-  private changeHandlers: StateChangeHandler[] = [];
-
+export class MentionsState {
+  // public state
   query?: string;
   queryActive = false;
   anchorElement?: HTMLElement;
-  keymap: Keymap;
-  onSelectPrevious = () => { };
-  onSelectNext = () => { };
-  onSelectCurrent = () => { };
+  mentionProvider?: MentionProvider;
+
+  onSelectPrevious = (): boolean => { return false; };
+  onSelectNext =  (): boolean => { return false; };
+  onSelectCurrent = (): boolean => { return false; };
   onTrySelectCurrent = (): boolean => { return false; };
 
-  constructor(pm: PM) {
-    this.pm = pm;
+  private changeHandlers: StateChangeHandler[] = [];
+  private state: EditorState<any>;
+  private view: EditorView;
 
-    this.keymap = new Keymap({
-      Up: () => this.onSelectPrevious(),
-      Down: () => this.onSelectNext(),
-      Enter: () => this.onSelectCurrent(),
-      Tab: () => this.onSelectCurrent(),
-      Space: () => this.onTrySelectCurrent(),
-      Esc: () => this.dismiss(),
-    }, {
-        name: 'mentions-plugin-keymap'
-      });
-
-    // add the input rules to insert mentions and emoticons
-    if (pm.schema.nodes.mention) {
-      inputRules.ensure(pm).addRule(mentionQueryRule);
-    }
-
-    if (pm.schema.marks.mention_query) {
-      pm.updateScheduler([
-        pm.on.selectionChange,
-        pm.on.change,
-        pm.on.activeMarkChange,
-      ], () => this.update());
-    }
+  constructor(state: EditorState<any>) {
+    this.changeHandlers = [];
+    this.state = state;
   }
 
-  private update(): void {
+  subscribe(cb: MentionsStateSubscriber) {
+    this.changeHandlers.push(cb);
+    cb(this);
+  }
+
+  unsubscribe(cb: MentionsStateSubscriber) {
+    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
+  }
+
+  update(state: EditorState<any>) {
+    this.state = state;
+
+    if (!this.mentionProvider) {
+      return;
+    }
+
+    const { docView } = this.view;
+    const { mentionQuery } = state.schema.marks;
+    const { doc, selection } = state;
+    const { from, to } = selection;
+
     let dirty = false;
 
-    const marks = this.pm.activeMarks();
-    if (this.pm.schema.marks.mention_query.isInSet(marks)) {
+    if (doc.rangeHasMark(from - 1, to, mentionQuery)) {
       if (!this.queryActive) {
         dirty = true;
         this.queryActive = true;
       }
 
-      const nodeBefore = this.pm.selection.$from.nodeBefore;
-      const nodeAfter = this.pm.selection.$from.nodeAfter;
+      const { nodeBefore } = selection.$from;
+      const newQuery = (nodeBefore && nodeBefore.textContent || '').substr(1);
 
-      const newQuery = (nodeBefore ? nodeBefore.textContent : '').substr(1) + (nodeAfter && this.pm.schema.marks.mention_query.isInSet(nodeAfter.marks) ? nodeAfter.textContent : '');
       if (this.query !== newQuery) {
         dirty = true;
         this.query = newQuery;
-
       }
     } else if (this.queryActive) {
       dirty = true;
@@ -77,54 +77,56 @@ export class MentionsPluginState {
       return;
     }
 
-    const newAnchorElement = this.pm.wrapper.querySelector('[data-mention-query]') as HTMLElement;
+    const newAnchorElement = docView.dom.querySelector('[data-mention-query]') as HTMLElement;
     if (newAnchorElement !== this.anchorElement) {
       dirty = true;
       this.anchorElement = newAnchorElement;
     }
 
     if (dirty) {
-      if (this.queryActive) {
-        if (!this.hasKeymap) {
-          this.pm.addKeymap(this.keymap, 100);
-          this.hasKeymap = true;
-        }
-      } else {
-        if (this.hasKeymap) {
-          this.pm.removeKeymap(this.keymap);
-          this.hasKeymap = false;
-        }
-      }
       this.changeHandlers.forEach(cb => cb(this));
     }
   }
 
-  dismiss() {
+  dismiss(): boolean {
     this.queryActive = false;
     this.query = undefined;
 
-    this.pm.tr.removeMark(0, this.pm.doc.nodeSize - 2, this.pm.schema.marks.mention_query).applyAndScroll();
+    const { state, view } = this;
 
-    if (this.hasKeymap) {
-      this.pm.removeKeymap(this.keymap);
-      this.hasKeymap = false;
+    if (state) {
+      const { schema } = state;
+      const { tr } = state;
+      const markType = schema.mark('mentionQuery');
+
+      view.dispatch(
+        tr
+          .removeMark(0, state.doc.nodeSize - 2, markType)
+          .removeStoredMark(markType)
+      );
     }
-    this.changeHandlers.forEach(cb => cb(this));
+
+    return true;
   }
 
-  findMentionQueryMark() {
-    let start = this.pm.selection.from;
-    let node = this.pm.doc.nodeAt(start);
+  private findMentionQueryMark() {
+    const { state } = this;
+    const { doc, schema, selection } = state;
+    const { from } = selection;
+    const { mentionQuery } = schema.marks;
 
-    while (start > 0 && (!node || !this.pm.schema.marks.mention_query.isInSet(node.marks))) {
+    let start = from;
+    let node = doc.nodeAt(start);
+
+    while (start > 0 && (!node || !mentionQuery.isInSet(node.marks))) {
       start--;
-      node = this.pm.doc.nodeAt(start);
+      node = doc.nodeAt(start);
     }
 
     let end = start;
 
-    if (node && this.pm.schema.marks.mention_query.isInSet(node.marks)) {
-      const resolvedPos = this.pm.doc.resolve(start);
+    if (node && mentionQuery.isInSet(node.marks)) {
+      const resolvedPos = doc.resolve(start);
       // -1 is to include @ in replacement
       // resolvedPos.depth + 1 to make mentions work inside other blocks e.g. "list item" or "blockquote"
       start = resolvedPos.start(resolvedPos.depth + 1) - 1;
@@ -135,33 +137,75 @@ export class MentionsPluginState {
   }
 
   insertMention(mentionData?: Mention) {
-    const { mention, text } = this.pm.schema.nodes;
+    const { state, view } = this;
+    const { mention } = state.schema.nodes;
 
     if (mention && mentionData) {
       const { start, end } = this.findMentionQueryMark();
       const node = mention.create({ displayName: `@${mentionData.name}`, id: mentionData.id });
-      const textNode = text.create({}, ' ');
+      const textNode = state.schema.text(' ');
       const fragment = new Fragment([node, textNode], node.nodeSize + textNode.nodeSize);
-      this.pm.tr.delete(start, end).insert(start, fragment).apply();
+      view.dispatch(
+        state.tr.replaceWith(start, end, fragment)
+      );
     } else {
       this.dismiss();
     }
   }
 
-  subscribe(cb: StateChangeHandler) {
-    this.changeHandlers.push(cb);
-    cb(this);
+  subscribeToFactory(providerFactory: ProviderFactory) {
+    providerFactory.subscribe('mentionProvider', this.handleProvider);
   }
 
-  unsubscribe(cb: StateChangeHandler) {
-    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
+  handleProvider = (name: string, provider: Promise<any>): void => {
+    switch (name) {
+      case 'mentionProvider':
+        this.setMentionProvider(provider);
+        break;
+    }
+  }
+
+  setMentionProvider(provider: Promise<MentionProvider>): Promise<MentionProvider> {
+    return new Promise<MentionProvider>((resolve, reject) => {
+      provider
+        .then(mentionProvider => {
+          this.mentionProvider = mentionProvider;
+          resolve(mentionProvider);
+        })
+        .catch(reject);
+    });
+  }
+
+  setView(view: EditorView) {
+    this.view = view;
   }
 }
 
-// IE11 + multiple prosemirror fix.
-Object.defineProperty(MentionsPluginState, 'name', { value: 'MentionsPluginState' });
+export const stateKey = new PluginKey('mentionPlugin');
 
-export default new Plugin(MentionsPluginState);
+const plugin = new Plugin({
+  state: {
+    init(config, state) {
+      return new MentionsState(state);
+    },
+    apply(tr, pluginState, oldState, newState) {
+      // NOTE: Don't call pluginState.update here.
+      return pluginState;
+    }
+  },
+  key: stateKey,
+  view: (view: EditorView) => {
+    reconfigure(view, [inputRulePlugin(view.state.schema), keymapPlugin(view.state.schema)]);
+    const pluginState = stateKey.getState(view.state);
+    pluginState.setView(view);
+
+    return {
+      update(view: EditorView, prevState: EditorState<any>) {
+        pluginState.update(view.state, view);
+      }
+    };
+  }
+});
 
 export interface Mention {
   name: string;
@@ -169,17 +213,4 @@ export interface Mention {
   id: string;
 }
 
-export interface S extends Schema {
-  nodes: {
-    mention?: MentionNodeType
-    text: Text;
-  };
-
-  marks: {
-    mention_query: MentionQueryMarkType;
-  };
-}
-
-export interface PM extends ProseMirror {
-  schema: S;
-}
+export default plugin;

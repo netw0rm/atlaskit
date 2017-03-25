@@ -7,6 +7,7 @@ export class NodeViewDesc extends ViewDesc {
 
 export class ViewDesc {
   constructor(parent: ViewDesc, children: ViewDesc[], dom: dom.Node, contentDOM?: dom.Node);
+  dom: HTMLElement;
   matchesWidget(): boolean;
   matchesMark(): boolean;
   matchesNode(): boolean;

@@ -14,7 +14,7 @@ import service from './service';
 export default function trackAndInvoke(analyticsEventName: string, fn: (...args: any[]) => any) {
   return (...args: any[]) => {
     const result = fn(...args);
-    if (result) {
+    if (result !== false) {
       service.trackEvent(analyticsEventName);
     }
     return result;

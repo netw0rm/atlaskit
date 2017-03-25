@@ -16,6 +16,7 @@ export const toggleHeading4 = makeKeymap('Heading 4', 'Ctrl-4', 'Cmd-Alt-4');
 export const toggleHeading5 = makeKeymap('Heading 5', 'Ctrl-5', 'Cmd-Alt-5');
 export const toggleBlockQuote = makeKeymap('Block quote', 'Ctrl-7', 'Cmd-Alt-7');
 export const toggleCodeBlock = makeKeymap('Code block', 'Ctrl-8', 'Cmd-Alt-8');
+export const togglePanel = makeKeymap('Panel', 'Ctrl-9', 'Cmd-Alt-9');
 export const insertNewLine = makeKeyMapWithCommon('Insert new line', 'Shift-Enter');
 export const shiftBackspace = makeKeyMapWithCommon('Shift Backspace', 'Shift-Backspace');
 export const splitCodeBlock = makeKeyMapWithCommon('Split code block', 'Enter');
@@ -74,7 +75,7 @@ export function findShortcutByKeymap(keymap: Keymap): string | undefined {
 const ALL = [toggleOrderedList, toggleBulletList, toggleBold, toggleItalic,
   toggleUnderline, toggleStrikethrough, toggleCode,
   setNormalText, toggleHeading1, toggleHeading2, toggleHeading3, toggleHeading4, toggleHeading5,
-  toggleBlockQuote, toggleCodeBlock, insertNewLine, insertRule,
+  toggleBlockQuote, toggleCodeBlock, togglePanel, insertNewLine, insertRule,
   splitCodeBlock, splitListItem, redo, undo];
 
 function makeKeymap(description: string, windows: string, mac: string, common?: string): Keymap {

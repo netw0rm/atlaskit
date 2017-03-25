@@ -1,6 +1,6 @@
 import { MarkSpec } from '../../prosemirror';
 
-export const u: MarkSpec = {
+export const underline: MarkSpec = {
   inclusive: true,
   parseDOM: [
     { tag: 'u' },

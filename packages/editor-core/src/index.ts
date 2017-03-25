@@ -13,6 +13,8 @@ export {
   MarkSpec,
   DOMSerializer,
   DOMParser,
+  MarkdownSerializer,
+  MarkdownSerializerState,
   Fragment,
   Node,
   Mark,
@@ -22,5 +24,10 @@ export {
   MarkType,
   browser,
   EditorView,
-  Plugin
+  EditorState,
+  TextSelection,
+  Plugin,
+  history,
+  baseKeymap,
+  keymap,
 } from './prosemirror';

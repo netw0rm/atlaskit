@@ -52,7 +52,7 @@ export class TextFormattingState {
 
     this.emHidden = !state.schema.marks.em;
     this.strongHidden = !state.schema.marks.strong;
-    this.underlineHidden = !state.schema.marks.u;
+    this.underlineHidden = !state.schema.marks.underline;
     this.codeHidden = !state.schema.marks.code;
     this.superscriptHidden = !state.schema.marks.subsup;
     this.subscriptHidden = !state.schema.marks.subsup;
@@ -61,32 +61,40 @@ export class TextFormattingState {
     this.update(state);
   }
 
-  toggleEm(view: EditorView) {
+  toggleEm(view: EditorView): boolean {
     const { em } = this.state.schema.marks;
     if (em) {
-      this.toggleMark(view, em);
+      return this.toggleMark(view, em);
     }
+    return false;
   }
 
-  toggleCode(view: EditorView) {
+  toggleCode(view: EditorView): boolean {
     const { code } = this.state.schema.marks;
+    const { from, to } = this.state.selection;
     if (code) {
-      commands.toggleMark(code)(view.state, view.dispatch);
+      if (!this.codeActive) {
+        view.dispatch(transformToCodeAction(view.state, from, to));
+      }
+      return commands.toggleMark(code)(view.state, view.dispatch);
     }
+    return false;
   }
 
   toggleStrike(view: EditorView) {
     const { strike } = this.state.schema.marks;
     if (strike) {
-      this.toggleMark(view, strike);
+      return this.toggleMark(view, strike);
     }
+    return false;
   }
 
   toggleStrong(view: EditorView) {
     const { strong } = this.state.schema.marks;
     if (strong) {
-      this.toggleMark(view, strong);
+      return this.toggleMark(view, strong);
     }
+    return false;
   }
 
   toggleSuperscript(view: EditorView) {
@@ -94,30 +102,34 @@ export class TextFormattingState {
     if (subsup) {
       if (this.subscriptActive) {
         // If subscript is enabled, turn it off first.
-        this.toggleMark(view, subsup);
+        return this.toggleMark(view, subsup);
       }
 
-      this.toggleMark(view, subsup, { type: 'sup' });
+      return this.toggleMark(view, subsup, { type: 'sup' });
     }
+    return false;
   }
 
-  toggleSubscript(view: EditorView) {
+  toggleSubscript(view: EditorView): boolean {
     const { subsup } = this.state.schema.marks;
     if (subsup) {
       if (this.superscriptActive) {
         // If superscript is enabled, turn it off first.
-        this.toggleMark(view, subsup);
+        return this.toggleMark(view, subsup);
       }
 
-      this.toggleMark(view, subsup, { type: 'sub' });
+      return this.toggleMark(view, subsup, { type: 'sub' });
     }
+    return false;
   }
 
-  toggleUnderline(view: EditorView) {
-    const { u } = this.state.schema.marks;
-    if (u) {
-      this.toggleMark(view, u);
+  toggleUnderline(view: EditorView): boolean {
+    const { underline } = this.state.schema.marks;
+    if (underline) {
+      return this.toggleMark(view, underline);
     }
+
+    return false;
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -133,7 +145,7 @@ export class TextFormattingState {
     this.state = newEditorState;
 
     const { state } = this;
-    const { em, code, strike, strong, subsup, u } = state.schema.marks;
+    const { em, code, strike, strong, subsup, underline } = state.schema.marks;
     let dirty = false;
 
     if (code) {
@@ -221,14 +233,14 @@ export class TextFormattingState {
       }
     }
 
-    if (u) {
-      const newUnderlineActive = this.anyMarkActive(u);
+    if (underline) {
+      const newUnderlineActive = this.anyMarkActive(underline);
       if (newUnderlineActive !== this.underlineActive) {
         this.underlineActive = newUnderlineActive;
         dirty = true;
       }
 
-      const newUnderlineDisabled = !commands.toggleMark(u)(this.state);
+      const newUnderlineDisabled = !commands.toggleMark(underline)(this.state);
       if (this.codeActive || newUnderlineDisabled !== this.underlineDisabled) {
         this.underlineDisabled = this.codeActive ? true : newUnderlineDisabled;
         dirty = true;
@@ -286,12 +298,14 @@ export class TextFormattingState {
     return found;
   }
 
-  private toggleMark(view: EditorView, markType: MarkType, attrs?: any) {
+  private toggleMark(view: EditorView, markType: MarkType, attrs?: any): boolean {
     // Disable text-formatting inside code
     if (this.codeActive ? this.codeDisabled : true) {
       this.toggledMarks[markType.name] = true;
-      commands.toggleMark(markType, attrs)(view.state, view.dispatch);
+      return commands.toggleMark(markType, attrs)(view.state, view.dispatch);
     }
+
+    return false;
   }
 }
 

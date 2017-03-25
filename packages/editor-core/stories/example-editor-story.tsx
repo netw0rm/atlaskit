@@ -32,6 +32,7 @@ storiesOf(name, module)
     <div className={styles.content} >
       <Editor
         imageUploadHandler={imageUploadHandler}
+        analyticsHandler={(actionName, props) => action(actionName)(props)}
         onCancel={CANCEL_ACTION}
         onSave={SAVE_ACTION}
         onChange={this.fetchEditorState}

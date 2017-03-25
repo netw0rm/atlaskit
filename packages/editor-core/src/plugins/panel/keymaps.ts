@@ -34,7 +34,7 @@ export function keymapPlugin(view: EditorView): Plugin | undefined {
   };
 
   const keymaps = {
-    ['Enter']: checkEndPanelBlock,
+    'Enter': checkEndPanelBlock,
   };
 
   plugin = keymap(keymaps);

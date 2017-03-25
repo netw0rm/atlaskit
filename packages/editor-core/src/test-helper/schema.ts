@@ -7,7 +7,7 @@ import {
   strong,
   code,
   strike,
-  u,
+  underline,
   bulletList,
   orderedList,
   listItem,
@@ -51,7 +51,7 @@ const marks = {
   strong,
   code,
   strike,
-  u,
+  underline,
   link,
   mentionQuery,
   subsup

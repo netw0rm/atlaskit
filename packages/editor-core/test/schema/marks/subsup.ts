@@ -32,8 +32,8 @@ function itMatches(html: string, expectedText: string, attrs: { type: 'sub' | 's
   it(`matches ${html}`, () => {
     const schema = makeSchema();
     const doc = fromHTML(`${html}`, schema);
-    const u = schema.marks.subsup.create(attrs);
+    const subsupNode = schema.marks.subsup.create(attrs);
 
-    expect(doc).to.have.textWithMarks(expectedText, [u]);
+    expect(doc).to.have.textWithMarks(expectedText, [subsupNode]);
   });
 }

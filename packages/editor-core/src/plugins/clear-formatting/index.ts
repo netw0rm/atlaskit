@@ -15,7 +15,7 @@ export class ClearFormattingState {
   formattingIsPresent: boolean = false;
 
   private state: EditorState<any>;
-  private markTypes = ['em', 'code', 'strike', 'strong', 'u', 'link'];
+  private markTypes = ['em', 'code', 'strike', 'strong', 'underline', 'link'];
   private activeMarkTypes: string[];
   private changeHandlers: StateChangeHandler[] = [];
 

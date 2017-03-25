@@ -8,6 +8,7 @@ export * from './prosemirror-schema-list';
 export * from './prosemirror-state';
 export * from './prosemirror-transform';
 export * from './prosemirror-view';
+export * from './prosemirror-markdown';
 import * as dom from './dom';
 export { dom }
 export { OrderedMap } from './orderedmap';

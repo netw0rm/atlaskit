@@ -1,5 +1,6 @@
 import { URL_REGEX } from './url-regex';
 import { Schema, InputRule, inputRules, Plugin } from '../../prosemirror';
+import { analyticsService } from '../../analytics';
 
 const urlAtEndOfLine = new RegExp(`${URL_REGEX.source}$`);
 
@@ -17,13 +18,14 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   const endOfLine = new InputRule(urlAtEndOfLine, (state, match, start, end) => {
     const { schema } = state;
     const url = match[3] ? match[1] : `http://${match[1]}`;
-
     const markType = schema.mark(
       'link',
       {
         href: url,
       }
     );
+
+    analyticsService.trackEvent('atlassian.editor.format.hyperlink.autoformatting');
 
     return state.tr.replaceWith(
       start,
@@ -40,6 +42,8 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
     const { schema } = state;
     const url = match[3];
     const markType = schema.mark('link', { href: url });
+
+    analyticsService.trackEvent('atlassian.editor.format.hyperlink.autoformatting');
 
     return state.tr.replaceWith(
       start + match[1].length,

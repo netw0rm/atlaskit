@@ -28,6 +28,7 @@ import {
 import schema from '../schema';
 import ProviderFactory from '../../src/providerFactory';
 import { mentionNodeView } from '../../src/schema/nodes/mention';
+import { AnalyticsHandler, analyticsService } from '../../src/analytics';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
 export interface Props {
@@ -38,14 +39,13 @@ export interface Props {
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
-  imageUploader?: Function;
   imageUploadHandler?: ImageUploadHandler;
   mentionProvider?: Promise<MentionProvider>;
+  analyticsHandler?: AnalyticsHandler;
 }
 
 export interface State {
   editorView?: EditorView;
-  editorState?: EditorState<any>;
   isExpanded?: boolean;
   mentionProvider?: Promise<MentionProvider>;
 }
@@ -60,6 +60,7 @@ export default class Editor extends PureComponent<Props, State> {
     super(props);
     this.state = { isExpanded: props.isExpandedByDefault };
 
+    analyticsService.handler = props.analyticsHandler || ((name) => {});
     this.providerFactory = new ProviderFactory();
   }
 
@@ -136,7 +137,8 @@ export default class Editor extends PureComponent<Props, State> {
 
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
-    const { isExpanded, editorState, editorView } = this.state;
+    const { isExpanded, editorView } = this.state;
+    const editorState = editorView && editorView.state;
     const listsState = editorState && listsPlugin.getState(editorState);
     const blockTypeState = editorState && blockTypePlugin.getState(editorState);
     const clearFormattingState = editorState && clearFormattingPlugin.getState(editorState);
@@ -229,9 +231,9 @@ export default class Editor extends PureComponent<Props, State> {
 
       editorView.focus();
 
-      this.setState({ editorView, editorState });
+      this.setState({ editorView });
     } else {
-      this.setState({ editorView: undefined, editorState: undefined });
+      this.setState({ editorView: undefined });
     }
   }
 }

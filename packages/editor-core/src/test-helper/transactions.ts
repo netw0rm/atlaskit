@@ -31,20 +31,13 @@ export function setNodeSelection(view: EditorView, from: number) {
  * Replace the given range, or the selection if no range is given, with a text node containing the given string
  */
 export function insertText(view: EditorView, text: string, from: number, to?: number) {
-  const len = text.length;
-  let str;
   let pos = from;
 
-  if (text.match(/\~|\*|\`/)) {
-    str = text.substr(len - 1, len);
-    view.dispatch(view.state.tr.insertText(text.substr(0, len - 1), from, to));
-    pos = view.state.selection.from;
-  } else {
-    str = text;
-  }
-  if (!view.someProp('handleTextInput', f => f(view, view.state.selection.from, view.state.selection.to, str))) {
-    view.dispatch(view.state.tr.insertText(str, pos));
-  }
+  text.split('').forEach((character, index) => {
+    if (!view.someProp('handleTextInput', f => f(view, pos + index, pos + index, character))) {
+      view.dispatch(view.state.tr.insertText(character, pos + index, pos + index));
+    }
+  });
 };
 
 /**

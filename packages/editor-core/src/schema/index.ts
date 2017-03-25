@@ -2,7 +2,7 @@ export { em } from './marks/em';
 export { code } from './marks/code';
 export { strike } from './marks/strike';
 export { strong } from './marks/strong';
-export { u } from './marks/u';
+export { underline } from './marks/underline';
 export { link } from './marks/link';
 export { emojiQuery } from './marks/emoji-query';
 export { mentionQuery } from './marks/mention-query';

@@ -1,4 +1,5 @@
 import { Schema, inputRules, Plugin, wrappingInputRule, NodeType, InputRule } from '../../prosemirror';
+import { trackAndInvoke } from '../../analytics';
 
 let plugin: Plugin | undefined;
 
@@ -14,8 +15,10 @@ export default function inputRulePlugin(schema: Schema<any, any>): Plugin {
   const rules: InputRule[] = [];
 
   if (schema.nodes.bulletList) {
-    // NOTE: we decided to restrict the creation of bullet lists to only "*"
-    rules.push(createInputRule(/^\s*(\*) $/, schema.nodes.bulletList));
+    // NOTE: we decided to restrict the creation of bullet lists to only "*"x
+    const rule = createInputRule(/^\s*(\*) $/, schema.nodes.bulletList);
+    rule.handler = trackAndInvoke('atlassian.editor.format.list.bullet.autoformatting', rule.handler);
+    rules.push(rule);
   }
 
   if (schema.nodes.orderedList) {
@@ -23,7 +26,9 @@ export default function inputRulePlugin(schema: Schema<any, any>): Plugin {
     // input rule will allow for a list to start at any given number, which isn't allowed in
     // markdown (where a ordered list will always start on 1). This is a slightly modified
     // version of that input rule.
-    rules.push(createInputRule(/^(\d+)\. $/, schema.nodes.orderedList));
+    const rule = createInputRule(/^(\d+)\. $/, schema.nodes.orderedList);
+    rule.handler = trackAndInvoke('atlassian.editor.format.list.numbered.autoformatting', rule.handler);
+    rules.push(rule);
   }
 
   plugin = inputRules({ rules });

@@ -48,8 +48,8 @@ export class ImageUploadState {
   hidden = false;
   src?: string = undefined;
   element?: HTMLElement = undefined;
+  changeHandlers: StateChangeHandler[] = [];
 
-  private changeHandlers: StateChangeHandler[] = [];
   private state: EditorState<any>;
   private config: ImageUploadPluginOptions;
   private uploadHandler?: ImageUploadHandler;
@@ -194,19 +194,8 @@ const plugin = new Plugin({
   props: {
     handleDOMEvents: {
       drop(view: EditorView, event: DragEvent) {
-        if (!isDroppedFile(event) || !this.handlers.length) {
-          return false;
-        }
-        analyticsService.trackEvent('atlassian.editor.image.paste');
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        stateKey.getState(view.state).handleImageUpload(view, event);
-        return true;
-      },
-      paste(view: EditorView, event: ClipboardEvent) {
-        if (!isPastedFile(event) || !this.handlers.length) {
+        const pluginState: ImageUploadState = stateKey.getState(view.state);
+        if (!isDroppedFile(event) || !pluginState.changeHandlers.length) {
           return false;
         }
         analyticsService.trackEvent('atlassian.editor.image.drop');
@@ -214,7 +203,20 @@ const plugin = new Plugin({
         event.preventDefault();
         event.stopPropagation();
 
-        stateKey.getState(view.state).handleImageUpload(view, event);
+        pluginState.handleImageUpload(view, event);
+        return true;
+      },
+      paste(view: EditorView, event: ClipboardEvent) {
+        const pluginState: ImageUploadState = stateKey.getState(view.state);
+        if (!isPastedFile(event) || !pluginState.changeHandlers.length) {
+          return false;
+        }
+        analyticsService.trackEvent('atlassian.editor.image.paste');
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        pluginState.handleImageUpload(view, event);
         return true;
       },
     }

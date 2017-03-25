@@ -1,7 +1,7 @@
 import {
   blockQuoteRule, headingRule, InputRule, inputRules, Plugin, Schema, Transaction
 } from '../../prosemirror';
-import { analyticsService } from '../../analytics';
+import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 
 let plugin: Plugin | undefined;
@@ -15,12 +15,20 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
 
   if (schema.nodes.heading) {
     // '# ' for h1, '## ' for h2 and etc
-    rules.push(headingRule(schema.nodes.heading, 5));
+    const rule = headingRule(schema.nodes.heading, 5);
+    const currentHandler = rule.handler;
+    rule.handler = (state, match, start, end) => {
+      analyticsService.trackEvent(`atlassian.editor.format.heading${match[1].length}.autoformatting`);
+      return currentHandler(state, match, start, end);
+    };
+    rules.push(rule);
   }
 
   if (schema.nodes.blockquote) {
     // '> ' for blockquote
-    rules.push(blockQuoteRule(schema.nodes.blockquote));
+    const rule = blockQuoteRule(schema.nodes.blockquote);
+    rule.handler = trackAndInvoke('atlassian.editor.format.blockquote.autoformatting', rule.handler);
+    rules.push(rule);
   }
 
   if (schema.nodes.codeBlock) {

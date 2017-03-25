@@ -221,7 +221,7 @@ export const mention = (attrs: { id: string, displayName?: string }) => sampleSc
 export const hr = sampleSchema.nodes.rule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});
 export const subsup = (attrs: { type: string }) => markFactory(sampleSchema.marks.subsup, attrs);
-export const u = markFactory(sampleSchema.marks.u, {});
+export const underline = markFactory(sampleSchema.marks.underline, {});
 export const strong = markFactory(sampleSchema.marks.strong, {});
 export const code = markFactory(sampleSchema.marks.code, {});
 export const strike = markFactory(sampleSchema.marks.strike, {});

@@ -1,7 +1,7 @@
 import { MarkSpec } from '../../prosemirror';
 
 export const code: MarkSpec = {
-  excludes: 'em strike strong u',
+  excludes: 'em strike strong underline',
   inclusive: true,
   parseDOM: [
     { tag: 'code' },

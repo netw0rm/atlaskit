@@ -8,7 +8,7 @@ import {
   code,
   strike,
   link,
-  u,
+  underline,
   bulletList,
   orderedList,
   listItem,
@@ -40,7 +40,7 @@ const marks = {
   strong,
   code,
   strike,
-  u,
+  underline,
   link
 };
 

@@ -101,7 +101,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props, State> {
         }
     }
 
-    @analytics('atlassian.editor.format.u.button')
+    @analytics('atlassian.editor.format.underline.button')
     private handleUnderlineClick = () => {
         if (!this.state.underlineDisabled) {
             this.props.pluginState.toggleUnderline(this.props.editorView);

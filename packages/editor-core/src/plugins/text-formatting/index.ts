@@ -52,7 +52,7 @@ export class TextFormattingState {
 
     this.emHidden = !state.schema.marks.em;
     this.strongHidden = !state.schema.marks.strong;
-    this.underlineHidden = !state.schema.marks.u;
+    this.underlineHidden = !state.schema.marks.underline;
     this.codeHidden = !state.schema.marks.code;
     this.superscriptHidden = !state.schema.marks.subsup;
     this.subscriptHidden = !state.schema.marks.subsup;
@@ -124,9 +124,9 @@ export class TextFormattingState {
   }
 
   toggleUnderline(view: EditorView): boolean {
-    const { u } = this.state.schema.marks;
-    if (u) {
-      return this.toggleMark(view, u);
+    const { underline } = this.state.schema.marks;
+    if (underline) {
+      return this.toggleMark(view, underline);
     }
 
     return false;
@@ -145,7 +145,7 @@ export class TextFormattingState {
     this.state = newEditorState;
 
     const { state } = this;
-    const { em, code, strike, strong, subsup, u } = state.schema.marks;
+    const { em, code, strike, strong, subsup, underline } = state.schema.marks;
     let dirty = false;
 
     if (code) {
@@ -233,14 +233,14 @@ export class TextFormattingState {
       }
     }
 
-    if (u) {
-      const newUnderlineActive = this.anyMarkActive(u);
+    if (underline) {
+      const newUnderlineActive = this.anyMarkActive(underline);
       if (newUnderlineActive !== this.underlineActive) {
         this.underlineActive = newUnderlineActive;
         dirty = true;
       }
 
-      const newUnderlineDisabled = !commands.toggleMark(u)(this.state);
+      const newUnderlineDisabled = !commands.toggleMark(underline)(this.state);
       if (this.codeActive || newUnderlineDisabled !== this.underlineDisabled) {
         this.underlineDisabled = this.codeActive ? true : newUnderlineDisabled;
         dirty = true;

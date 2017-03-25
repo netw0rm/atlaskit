@@ -27,8 +27,8 @@ export function keymapHandler(view: EditorView, pluginState: TextFormattingState
     keymaps.bindKeymapWithCommand(keymaps.toggleStrikethrough.common!, trackAndInvoke(eventName, () => pluginState.toggleStrike(view)), list);
   }
 
-  if (schema.marks.u) {
-    const eventName = analyticsEventName(schema.marks.u);
+  if (schema.marks.underline) {
+    const eventName = analyticsEventName(schema.marks.underline);
     keymaps.bindKeymapWithCommand(keymaps.toggleUnderline.common!, trackAndInvoke(eventName, () => pluginState.toggleUnderline(view)), list);
   }
 

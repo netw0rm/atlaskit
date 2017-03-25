@@ -3,7 +3,7 @@ import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { browser, TextFormattingPlugin } from '../../../src';
 import {
-  sendKeyToPm, fixtures, doc, strike, plain, strong, em, u, code, p,
+  sendKeyToPm, fixtures, doc, strike, plain, strong, em, underline, code, p,
   subsup, chaiPlugin, makeEditor, mention
 } from '../../../src/test-helper';
 
@@ -46,7 +46,7 @@ describe('text-formatting', () => {
 
             sendKeyToPm(editorView, 'Cmd-u');
 
-            expect(editorView.state.doc).to.deep.equal(doc(p(u('text'))));
+            expect(editorView.state.doc).to.deep.equal(doc(p(underline('text'))));
           });
         });
 
@@ -102,7 +102,7 @@ describe('text-formatting', () => {
 
             sendKeyToPm(editorView, 'Ctrl-u');
 
-            expect(editorView.state.doc).to.deep.equal(doc(p(u('text'))));
+            expect(editorView.state.doc).to.deep.equal(doc(p(underline('text'))));
           });
         });
 
@@ -231,7 +231,7 @@ describe('text-formatting', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
 
       expect(pluginState.toggleUnderline(editorView));
-      expect(editorView.state.doc).to.deep.equal(doc(p(u('t'), 'ext')));
+      expect(editorView.state.doc).to.deep.equal(doc(p(underline('t'), 'ext')));
       expect(pluginState.toggleUnderline(editorView));
       expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });

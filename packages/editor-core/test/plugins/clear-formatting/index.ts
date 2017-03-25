@@ -5,7 +5,7 @@ import { browser } from '../../../src/prosemirror';
 import ClearFormattingPlugin from '../../../src/plugins/clear-formatting';
 import {
   a as link, blockquote, chaiPlugin, code_block, code, doc, em, fixtures, h1,
-  li, linkable, makeEditor, ol, p, panel, sendKeyToPm, strike, strong, u
+  li, linkable, makeEditor, ol, p, panel, sendKeyToPm, strike, strong, underline
 } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
@@ -58,7 +58,7 @@ describe('clear-formatting', () => {
     [
       { nodeName: 'strong', nodeType: strong },
       { nodeName: 'italic', nodeType: em },
-      { nodeName: 'underline', nodeType: u },
+      { nodeName: 'underline', nodeType: underline },
       { nodeName: 'monospace', nodeType: code },
       { nodeName: 'strikeout', nodeType: strike },
     ].forEach(({ nodeName, nodeType }) => {

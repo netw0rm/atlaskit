@@ -71,7 +71,11 @@ export class TextFormattingState {
 
   toggleCode(view: EditorView): boolean {
     const { code } = this.state.schema.marks;
+    const { from, to } = this.state.selection;
     if (code) {
+      if (!this.codeActive) {
+        view.dispatch(transformToCodeAction(view.state, from, to));
+      }
       return commands.toggleMark(code)(view.state, view.dispatch);
     }
     return false;

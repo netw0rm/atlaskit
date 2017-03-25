@@ -2,7 +2,10 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { browser, TextFormattingPlugin } from '../../../src';
-import { sendKeyToPm, fixtures, doc, strike, plain, strong, em, u, code, p, subsup, chaiPlugin, makeEditor } from '../../../src/test-helper';
+import {
+  sendKeyToPm, fixtures, doc, strike, plain, strong, em, u, code, p,
+  subsup, chaiPlugin, makeEditor, mention
+} from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
@@ -63,11 +66,11 @@ describe('text-formatting', () => {
 
         context('when hits Shift-Cmd-M', () => {
           it('toggles code mark', () => {
-            const { editorView } = editor(doc(p('{<}text{>}')));
+            const { editorView } = editor(doc(p(strong('{<}text '), mention({ id: '1234', displayName: '@helga' }), em(' text{>}'))));
 
             sendKeyToPm(editorView, 'Shift-Cmd-m');
 
-            expect(editorView.state.doc).to.deep.equal(doc(p(code('text'))));
+            expect(editorView.state.doc).to.deep.equal(doc(p(code('text @helga text'))));
           });
         });
       });
@@ -345,7 +348,7 @@ describe('text-formatting', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
 
       expect(pluginState.toggleSubscript(editorView));
-      expect(editorView.state.doc).to.deep.equal(doc(p(subsup({type: 'sub'})('t'), 'ext')));
+      expect(editorView.state.doc).to.deep.equal(doc(p(subsup({ type: 'sub' })('t'), 'ext')));
       expect(pluginState.toggleSubscript(editorView));
       expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });
@@ -399,7 +402,7 @@ describe('text-formatting', () => {
     it('should be able to toggle superscript on a character', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
       pluginState.toggleSuperscript(editorView);
-      expect(editorView.state.doc).to.deep.equal(doc(p(subsup({type: 'sup'})('t'), 'ext')));
+      expect(editorView.state.doc).to.deep.equal(doc(p(subsup({ type: 'sup' })('t'), 'ext')));
       pluginState.toggleSuperscript(editorView);
       expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });

@@ -1,8 +1,9 @@
 import { EditorView, MarkType, keydownHandler } from '../../prosemirror';
 import * as keymaps from '../../keymaps';
 import { trackAndInvoke } from '../../analytics';
+import { TextFormattingState } from './';
 
-export function keymapHandler(view: EditorView, pluginState: any): Function {
+export function keymapHandler(view: EditorView, pluginState: TextFormattingState): Function {
   const list = {};
   const { schema } = view.state;
 

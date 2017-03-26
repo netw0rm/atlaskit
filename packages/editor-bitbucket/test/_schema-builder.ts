@@ -1,4 +1,4 @@
-import { markFactory, nodeFactory } from '@atlaskit/editor-core/src/test-helper';
+import { markFactory, nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import schema from '../src/schema';
 
 // Nodes
@@ -24,7 +24,7 @@ export const ul = nodeFactory(schema.nodes.bullet_list);
 
 // Marks
 export const a = (attrs: { href: string, title?: string }) => markFactory(schema.marks.link, attrs);
-export const mono = markFactory(schema.marks.mono, {});
+export const code = markFactory(schema.marks.code, {});
 export const em = markFactory(schema.marks.em, {});
 export const strong = markFactory(schema.marks.strong, {});
 export const strike = markFactory(schema.marks.strike, {});

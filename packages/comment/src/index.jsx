@@ -1,4 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
+import LockIcon from '@atlaskit/icon/glyph/lock';
 import Lozenge from '@atlaskit/lozenge';
 
 import styles from 'style!./styles.less';
@@ -16,13 +17,21 @@ export default class Comment extends PureComponent {
     avatar: PropTypes.node.isRequired,
     children: PropTypes.node,
     content: PropTypes.node,
+    restrictedTo: PropTypes.string,
     time: PropTypes.node,
     type: PropTypes.string,
   }
 
   static defaultProps = {
     actions: [],
+    restrictedTo: '',
   }
+
+  renderRestrictedItem = () => (
+    <div className={styles.restricted}>
+      <span className={styles.bulletSpacer}>&bull;</span><LockIcon label="restricted" size="small" />Restricted to {this.props.restrictedTo}
+    </div>
+  );
 
   renderTopItems = () => {
     const items = (
@@ -30,13 +39,14 @@ export default class Comment extends PureComponent {
         this.props.author || null,
         this.props.type ? <Lozenge>{this.props.type}</Lozenge> : null,
         this.props.time || null,
+        this.props.restrictedTo ? this.renderRestrictedItem() : null,
       ]
       .filter(item => !!item)
       .map((item, index) => <div key={index} className={styles.topItem}>{item}</div>)
     );
 
     return items.length
-      ? <div className={styles.topContainer}>{items}</div>
+      ? <div className={styles.topItemsContainer}>{items}</div>
       : null;
   }
 

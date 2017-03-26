@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/blanket",
-  "version": "1.2.0",
+  "version": "1.2.4",
   "config": {
     "access": "public"
   },
@@ -24,6 +24,14 @@
     "@atlaskit/util-readme": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Nadia M"
+    },
+    {
+      "name": "Luke B"
+    }
+  ],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2"

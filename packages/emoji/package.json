@@ -1,12 +1,13 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "9.0.2",
+  "version": "11.2.3",
   "config": {
     "access": "public"
   },
   "description": "ak-emoji react component",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
+  "types": "dist/types/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && npm run build || ../../node_modules/.bin/not-in-publish",
     "build": "npm run build/es5 && npm run build/es2015",
@@ -21,6 +22,7 @@
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/field-base": "^2.0.4",
     "@atlaskit/icon": "^2.3.3",
+    "@atlaskit/spinner": "^1.0.2",
     "@atlaskit/util-common": "^1.0.0",
     "@atlaskit/util-shared-styles": "^1.0.2",
     "babel-runtime": "^6.11.6",
@@ -39,10 +41,19 @@
     "react-dom": "^15.3.2"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Craig P"
+    },
+    {
+      "name": "Julien H"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "akutil-common-test": "*",
-    "fetch-mock": "^5.8.0"
+    "@atlaskit/util-common-test": "1.0.2",
+    "fetch-mock": "^5.8.0",
+    "uid": "^0.0.2"
   },
   "repository": {
     "type": "git",

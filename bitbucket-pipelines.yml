@@ -1,4 +1,4 @@
-image: atlassianlabs/atlaskit:2017-02-22
+image: atlassianlabs/atlaskit:2017-03-17
 pipelines:
   branches:
     master:
@@ -8,13 +8,15 @@ pipelines:
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             - yarn
-            - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base"
-            #- yarn run browserstack/tunnel/start
-            #- yarn run "test/wc/browserstack"
-            #- yarn run browserstack/tunnel/stop
+            - run-p -ln "validate/package.json" "validate/typescript"
+            - run-p -ln "validate/tslint" "validate/eslint"
+            - run-p -ln "test" "test/base"
+            - yarn run browserstack/tunnel/start
+            - yarn run test/wc/browserstack
+            - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
-            - npm run release
+            - npm run release && echo "Released packages:" && cat .released-packages
             - run-p -ln "release/registry" "release/storybooks"
             - yarn run release/announce
     invalidate-atlaskit-cache:
@@ -33,8 +35,10 @@ pipelines:
           # we have to run this after `yarn` to have access to child-process-promise
           - ./build/bin/generate.changed.packages.file.pr.sh
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
-          - run-p -ln "validate/package.json" "validate/typescript" "lint" "test" "test/base"
-          #- yarn run browserstack/tunnel/start
-          #- yarn run "test/wc/browserstack/pr"
-          #- yarn run browserstack/tunnel/stop
+          - run-p -ln "validate/package.json" "validate/typescript"
+          - run-p -ln "validate/tslint" "validate/eslint"
+          - run-p -ln "test" "test/base"
+          - yarn run browserstack/tunnel/start
+          - yarn run test/wc/browserstack
+          - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"

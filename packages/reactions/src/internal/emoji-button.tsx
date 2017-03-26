@@ -1,4 +1,4 @@
-import { Emoji } from '@atlaskit/emoji';
+import { EmojiId, EmojiProvider, ResourcedEmoji, OnEmojiEvent } from '@atlaskit/emoji';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { style } from 'typestyle';
@@ -46,8 +46,9 @@ const emojiButtonStyle = style({
 });
 
 export interface Props {
-  emoji: any; // EmojiPops
-  onClick: Function;
+  emojiId: EmojiId;
+  emojiProvider: Promise<EmojiProvider>;
+  onClick: OnEmojiEvent;
 }
 
 export default class EmojiButton extends PureComponent<Props, {}> {
@@ -55,19 +56,19 @@ export default class EmojiButton extends PureComponent<Props, {}> {
   private handleMouseDown = (event) => {
     event.preventDefault();
     if (this.props.onClick && isLeftClick(event)) {
-      this.props.onClick(event);
+      this.props.onClick(this.props.emojiId, undefined, event);
     }
   }
 
   render() {
-    const { emoji } = this.props;
+    const { emojiId, emojiProvider } = this.props;
 
     return (
       <button
         onMouseUp={this.handleMouseDown}
         className={emojiButtonStyle}
       >
-        <span><Emoji {...emoji} /></span>
+        <span><ResourcedEmoji emojiProvider={emojiProvider} emojiId={emojiId} /></span>
       </button>
     );
   }

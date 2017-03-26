@@ -1,5 +1,6 @@
 import {
   isCodeBlockNode,
+  isListItemNode,
   Mark,
   MarkdownSerializer as PMMarkdownSerializer,
   MarkdownSerializerState as PMMarkdownSerializerState,
@@ -18,7 +19,7 @@ interface NodeRendererOption {
  * @see MarkdownSerializerState.esc()
  */
 function escapeMarkdown(str: string, startOfLine?: boolean): string {
-  str = str.replace(/[`*\\+\[\]_]/g, '\\$&');
+  str = str.replace(/[`*\\+_]/g, '\\$&');
   if (startOfLine) {
     str = str.replace(/^[#-*]/, '\\$&').replace(/^(\d+)\./, '$1\\.');
   }
@@ -174,7 +175,14 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
         !isCodeBlockNode(child) &&
         !(child.content && (child.content as any).size > 0)
       ) {
-        return nodes.empty_line(this, child);
+        // if parent is a ListItem then we need to skip zwnj (ED-1035)
+        if (isListItemNode(parent)) {
+          this.write('  ');
+          this.closeBlock(child);
+        }
+        else {
+          return nodes.empty_line(this, child);
+        }
       }
 
       const isLastNode = (index + 1 === parent.childCount);

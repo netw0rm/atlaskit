@@ -8,7 +8,7 @@ import {
   akColorP500,
   akColorT500,
   akColorY500
-} from 'akutil-shared-styles';
+} from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import TipIcon from '@atlaskit/icon/glyph/editor/hint';

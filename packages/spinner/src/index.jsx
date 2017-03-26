@@ -48,6 +48,12 @@ export default class Spinner extends PureComponent {
     }
   }
 
+  componentWillUnmount() {
+    if (this.state.spinnerDelayTimeout) {
+      clearTimeout(this.state.spinnerDelayTimeout);
+    }
+  }
+
   showSpinnerAfterDelay = () => {
     if (this.state.spinnerDelayTimeout) {
       clearTimeout(this.state.spinnerDelayTimeout);

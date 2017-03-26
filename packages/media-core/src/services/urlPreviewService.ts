@@ -1,4 +1,4 @@
-import axios from 'axios';
+import createRequest from './util/createRequest';
 import {UrlPreview, MediaApiConfig} from '../';
 
 export interface UrlPreviewService {
@@ -10,17 +10,18 @@ export class MediaUrlPreviewService implements UrlPreviewService {
   constructor(private readonly config: MediaApiConfig) {}
 
   getUrlPreview(url: string, clientId: string): Promise<UrlPreview> {
-    return this.config.tokenProvider()
-      .then(token => {
-        const params = {url};
-        return axios.get(`/link/preview`, {
-          baseURL: this.config.serviceHost,
-          headers: {
-            'X-Client-Id': clientId,
-            'Authorization': `Bearer ${token}`
-          },
-          params
-        }).then(response => response.data.data.preview as UrlPreview);
-      });
+
+    const request = createRequest({
+      config: this.config,
+      clientId: clientId
+    });
+
+    return request({
+      url: '/link/preview',
+      params: {url}
+    })
+      .then(json => json.data.preview as UrlPreview);
+    ;
+
   }
 }

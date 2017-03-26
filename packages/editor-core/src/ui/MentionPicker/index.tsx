@@ -3,20 +3,27 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { PureComponent } from 'react';
 import { MentionsPluginState } from '../../plugins/mentions';
+import Popper, { IPopper } from './../../popper';
+import { akEditorFloatingPanelZIndex } from '../../styles';
 
 export interface Props {
   pluginState: MentionsPluginState;
-  resourceProvider: any; // AbstractMentionResource;
+  resourceProvider: any; // AbstractMentionResource
+  presenceProvider?: any; // AbstractPresenceResource
   reversePosition?: boolean;
+  target?: HTMLElement;
 }
 
 export interface State {
   query?: string;
   anchorElement?: HTMLElement;
+  position?: string;
+  transform?: string;
 }
 
 export default class MentionPicker extends PureComponent<Props, State> {
   state: State = {};
+  popper?: IPopper;
 
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
@@ -34,6 +41,57 @@ export default class MentionPicker extends PureComponent<Props, State> {
   componentWillUmount() {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
     document.removeEventListener('click', this.handleClickOutside);
+    this.popper && this.popper.destroy();
+  }
+
+  extractStyles = (state: any) => {
+    if (state) {
+      const left = Math.round(state.offsets.popper.left);
+      const top = Math.round(state.offsets.popper.top);
+
+      this.setState({
+        position: state.offsets.popper.position,
+        transform: `translate3d(${left}px, ${top}px, 0px)`,
+      });
+    }
+  }
+
+  private applyPopper(): void {
+    const { content } = this.refs;
+    const target = this.state.anchorElement;
+
+    if (this.popper) {
+      this.popper.destroy();
+    }
+
+    if (target && content instanceof HTMLElement) {
+
+      this.popper = new Popper(target, content, {
+        onCreate: this.extractStyles,
+        onUpdate: this.extractStyles,
+        placement: this.props.reversePosition ? 'top-start' : 'bottom-start',
+        modifiers: {
+          applyStyle: {
+            enabled: false,
+          },
+          hide: {
+            enabled: false
+          },
+          offset: {
+            enabled: true,
+            offset: '0 3px',
+          },
+          flip: {
+            enabled: false,
+          },
+          preventOverflow: {
+            enabled: true,
+            escapeWithReference: true,
+            boundariesElement: document.body
+          },
+        },
+      });
+    }
   }
 
   private handleClickOutside = (e) => {
@@ -50,40 +108,28 @@ export default class MentionPicker extends PureComponent<Props, State> {
   private handlePluginStateChange = (state: MentionsPluginState) => {
     const { anchorElement, query } = state;
     this.setState({ anchorElement, query });
+    this.applyPopper();
   }
 
   render() {
-    const { anchorElement, query } = this.state;
+    const { anchorElement, query, position, transform } = this.state;
 
-    let style: any = {
-      display: 'none'
-    };
-
-    if (anchorElement && query) {
-      const rect = anchorElement.getBoundingClientRect();
-      const parentRect = anchorElement.offsetParent.getBoundingClientRect();
-      style = {
-        display: 'block',
-        position: 'absolute',
-        left: (rect.left - parentRect.left),
-        top: !this.props.reversePosition ? (rect.top - parentRect.top) + rect.height : null,
-        bottom: this.props.reversePosition ? (window.innerHeight - parentRect.bottom) + 20 : null,
-        zIndex: 1
-      };
+    if (!anchorElement || query === undefined) {
+      return null;
     }
 
-    const picker = (
-      <AkMentionPicker
-        resourceProvider={this.props.resourceProvider}
-        onSelection={this.handleSelectedMention}
-        query={query}
-        ref="picker"
-      />
-    );
-
     return (
-      <div style={style}>
-        {picker}
+      <div
+        ref="content"
+        style={{ top: 0, left: 0, position, transform, zIndex: akEditorFloatingPanelZIndex }}
+      >
+        <AkMentionPicker
+          resourceProvider={this.props.resourceProvider}
+          presenceProvider={this.props.presenceProvider}
+          onSelection={this.handleSelectedMention}
+          query={query}
+          ref="picker"
+        />
       </div>
     );
   }

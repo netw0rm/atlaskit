@@ -4,6 +4,7 @@ import Group from '@atlaskit/droplist-group';
 import Item from '@atlaskit/droplist-item';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import Tooltip from '@atlaskit/tooltip';
 
 import { analyticsService as analytics } from '../../analytics';
 import { findKeymapByDescription, tooltip } from '../../keymaps';
@@ -75,16 +76,16 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
       >
       {availableBlockTypes.map((blockTypeGroup, groupNo) => (
         <Group key={`blockTypeGroup${groupNo}`}>
-        {blockTypeGroup.map(blockType => (
-          <Item
-            key={blockType.name}
-            isActive={currentBlockType === blockType}
-            onActivate={() => { this.handleSelectBlockType(blockType); }}
-          >
-            <span title={tooltip(findKeymapByDescription(blockType.title))}>
-              {blockType.title}
-            </span>
-          </Item>
+        {blockTypeGroup.map((blockType, blockTypeNo) => (
+          <Tooltip key={`blockType${groupNo}${blockTypeNo}`} position="right" description={tooltip(findKeymapByDescription(blockType.title))}>
+            <Item
+              key={blockType.name}
+              isActive={currentBlockType === blockType}
+              onActivate={() => { this.handleSelectBlockType(blockType); }}
+            >
+              <span>{blockType.title}</span>
+            </Item>
+          </Tooltip>
         ))}
         </Group>
       ))}

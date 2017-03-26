@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/css-reset",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "config": {
     "access": "public"
   },
@@ -16,6 +16,11 @@
     "@atlaskit/util-shared-styles": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Sean C"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
     "less": "^2.7.1"

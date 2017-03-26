@@ -23,15 +23,20 @@ export interface State {
   unlinkable?: boolean;
   textInputPlaceholder?: string;
   textInputValue?: string;
-  toolbarVisible?: boolean;
+  editorFocused?: boolean;
   inputActive?: boolean;
+  autoFocusInput?: boolean;
+  active?: boolean;
 }
 
 export default class HyperlinkEdit extends PureComponent<Props, State> {
+
   state: State = {
     unlinkable: true,
-    toolbarVisible: false,
+    editorFocused: false,
     inputActive: false,
+    autoFocusInput: false,
+    active: false,
   };
 
   componentDidMount() {
@@ -55,9 +60,9 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   }
 
   render() {
-    const { href, target, unlinkable, toolbarVisible, inputActive } = this.state;
+    const { href, target, unlinkable, active, editorFocused, inputActive, autoFocusInput } = this.state;
 
-    if (toolbarVisible || inputActive) {
+    if (active && (editorFocused || inputActive)) {
       const showOpenButton = !!href;
       const showUnlinkButton = unlinkable;
       const showSeparator = showOpenButton || showUnlinkButton;
@@ -89,6 +94,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
             }
             <PanelTextInput
               placeholder="Link address"
+              autoFocus={autoFocusInput}
               defaultValue={href}
               onSubmit={this.updateHref}
               onChange={this.updateHref}
@@ -109,11 +115,17 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: HyperlinkState) => {
+    const { inputActive } = this.state;
+    const hrefNotPreset = pluginState.active && (!pluginState.href || pluginState.href.length === 0);
+
     this.setState({
+      active: pluginState.active,
       target: pluginState.element,
       href: pluginState.href,
       textInputValue: pluginState.text,
-      toolbarVisible: pluginState.toolbarVisible,
+      editorFocused: pluginState.editorFocused,
+      inputActive: hrefNotPreset || inputActive,
+      autoFocusInput: hrefNotPreset,
     });
   }
 

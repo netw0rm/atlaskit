@@ -12,7 +12,8 @@ const drawerComponentPropDescriptions = {
   children: 'The drawer contents',
   header: 'The header for this Drawer – often the ContainerTitle for a given Container',
   isOpen: 'Whether the Drawer is currently open',
-  isWide: 'Whether the Drawer is wide – this is used for the Search drawer, and other Drawers that require additional room',
+  isFullWidth: 'Whether the Drawer is full width – used for focus tasks',
+  width: 'The current width of the Drawer. One of "narrow", "wide" or "full"',
   onBackButton: 'A function to call when the backIcon button is clicked, or when the blanket behind the Drawer is clicked',
   primaryIcon: 'The primary icon in the Drawer – usually the globalPrimaryIcon that was given to the GlobalNavigation component',
 };

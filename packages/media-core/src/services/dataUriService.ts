@@ -1,4 +1,4 @@
-import axios from 'axios';
+import createRequest, {CreateRequestFunc} from './util/createRequest';
 import { MediaItem, JwtTokenProvider } from '../';
 import { DataUri } from '../index';
 
@@ -8,11 +8,22 @@ export interface DataUriService {
 }
 
 export class MediaDataUriService implements DataUriService {
+
+  private request: CreateRequestFunc;
+
   constructor(
     private readonly clientId: string,
     private readonly serviceHost: string,
     private readonly tokenProvider: JwtTokenProvider,
     private readonly collectionName?: string) {
+      this.request = createRequest({
+        config: {
+          serviceHost: this.serviceHost,
+          tokenProvider: this.tokenProvider
+        },
+        clientId: this.clientId,
+        collectionName: this.collectionName
+      });
   }
 
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri> {
@@ -35,19 +46,13 @@ export class MediaDataUriService implements DataUriService {
   }
 
   private fetchSomeDataUri(url: string, params: Object): Promise<DataUri> {
-    return this.tokenProvider(this.collectionName).then(token => {
-      return Promise.resolve(axios.get(url, {
-        baseURL: this.serviceHost,
-        responseType: 'blob',
-        params,
-        headers: {
-          'X-Client-Id': this.clientId,
-          'Authorization': `Bearer ${token}`
-        }
-      }))
-        .then(response => response.data)
-        .then(this.readBlob);
-    });
+    return this.request({
+      url,
+      params,
+      responseType: 'blob'
+    })
+      .then(this.readBlob);
+    ;
   }
 
   private readBlob(blob: Blob): Promise<DataUri> {

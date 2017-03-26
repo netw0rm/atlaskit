@@ -10,14 +10,14 @@ import {
 } from '../../prosemirror';
 import {
   EmMarkType,
-  MonoMarkType,
+  CodeMarkType,
   StrikeMarkType,
   StrongMarkType,
   SubSupMarkType,
   UnderlineMarkType
 } from '../../schema';
-
 import { trackAndInvoke } from '../../analytics';
+import { transformToCodeAction } from './transform-to-code';
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 
@@ -31,9 +31,9 @@ export class TextFormattingState {
   emActive = false;
   emDisabled = false;
   emHidden = false;
-  monoActive = false;
-  monoDisabled = false;
-  monoHidden = false;
+  codeActive = false;
+  codeDisabled = false;
+  codeHidden = false;
   underlineActive = false;
   underlineDisabled = false;
   underlineHidden = false;
@@ -56,7 +56,7 @@ export class TextFormattingState {
     this.emHidden = !pm.schema.marks.em;
     this.strongHidden = !pm.schema.marks.strong;
     this.underlineHidden = !pm.schema.marks.u;
-    this.monoHidden = !pm.schema.marks.mono;
+    this.codeHidden = !pm.schema.marks.code;
     this.superscriptHidden = !pm.schema.marks.subsup;
     this.subscriptHidden = !pm.schema.marks.subsup;
     this.strikeHidden = !pm.schema.marks.strike;
@@ -78,10 +78,17 @@ export class TextFormattingState {
     }
   }
 
-  toggleMono() {
-    const { mono } = this.pm.schema.marks;
-    if (mono) {
-      this.toggleMark(mono);
+  toggleCode() {
+    const { code } = this.pm.schema.marks;
+    if (code) {
+            // If not already code then do the cleaning
+      if (!this.codeActive) {
+        const { $from, $to } = this.pm.selection;
+        transformToCodeAction(this.pm, $from.pos, $to.pos);
+        this.pm.on.selectionChange.dispatch();
+      }
+      this.pm.on.interaction.dispatch();
+      commands.toggleMark(code)(this.pm);
     }
   }
 
@@ -141,7 +148,7 @@ export class TextFormattingState {
 
   private update() {
     const { pm } = this;
-    const { em, mono, strike, strong, subsup, u } = pm.schema.marks;
+    const { em, code, strike, strong, subsup, u } = pm.schema.marks;
     let dirty = false;
 
     if (em) {
@@ -154,20 +161,6 @@ export class TextFormattingState {
       const newEmDisabled = !commands.toggleMark(em)(this.pm, false);
       if (newEmDisabled !== this.emDisabled) {
         this.emDisabled = newEmDisabled;
-        dirty = true;
-      }
-    }
-
-    if (mono) {
-      const newMonoActive = this.anyMarkActive(mono);
-      if (newMonoActive !== this.monoActive) {
-        this.monoActive = newMonoActive;
-        dirty = true;
-      }
-
-      const newMonoDisabled = !commands.toggleMark(mono)(this.pm, false);
-      if (newMonoDisabled !== this.monoDisabled) {
-        this.monoDisabled = newMonoDisabled;
         dirty = true;
       }
     }
@@ -243,6 +236,29 @@ export class TextFormattingState {
       }
     }
 
+    if (code) {
+      const newCodeActive = this.anyMarkActive(code);
+      if (newCodeActive !== this.codeActive) {
+        this.codeActive = newCodeActive;
+        dirty = true;
+      }
+
+      const newCodeDisabled = !commands.toggleMark(code)(this.pm, false);
+      if (newCodeDisabled !== this.codeDisabled) {
+        this.codeDisabled = newCodeDisabled;
+        dirty = true;
+      }
+
+      // When code is active disable other buttons
+      // TODO This changes can be gone once upgraded prosemirror. Because the marks available or not can be defined by schema.
+      if (this.codeActive) {
+        this.strongDisabled = true;
+        this.emDisabled = true;
+        this.strikeDisabled = true;
+        this.underlineDisabled = true;
+      }
+    }
+
     if (dirty) {
       this.changeHandlers.forEach(cb => cb(this));
     }
@@ -254,7 +270,7 @@ export class TextFormattingState {
       [keymaps.toggleItalic.common!]: trackAndInvoke('atlassian.editor.format.em.keyboard', () => this.toggleEm()),
       [keymaps.toggleUnderline.common!]: trackAndInvoke('atlassian.editor.format.u.keyboard', () => this.toggleUnderline()),
       [keymaps.toggleStrikethrough.common!]: trackAndInvoke('atlassian.editor.format.strike.keyboard', () => this.toggleStrike()),
-      [keymaps.toggleMonospace.common!]: trackAndInvoke('atlassian.editor.format.mono.keyboard', () => this.toggleMono()),
+      [keymaps.toggleCode.common!]: trackAndInvoke('atlassian.editor.format.code.keyboard', () => this.toggleCode()),
     }));
   }
 
@@ -292,8 +308,11 @@ export class TextFormattingState {
   }
 
   private toggleMark(markType: MarkType, attrs?: any) {
-    this.pm.on.interaction.dispatch();
-    commands.toggleMark(markType, attrs)(this.pm);
+    // Disable text-formatting inside code
+    if (this.codeActive ? this.codeDisabled : true) {
+      this.pm.on.interaction.dispatch();
+      commands.toggleMark(markType, attrs)(this.pm);
+    }
   }
 }
 
@@ -305,7 +324,7 @@ export default new Plugin(TextFormattingState);
 export interface S extends Schema {
   marks: {
     em?: EmMarkType;
-    mono?: MonoMarkType;
+    code?: CodeMarkType;
     strike?: StrikeMarkType;
     strong?: StrongMarkType;
     subsup?: SubSupMarkType;

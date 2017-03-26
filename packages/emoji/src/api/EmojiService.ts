@@ -1,10 +1,11 @@
-import { Search } from 'js-search';
+import { Search, UnorderedSearchIndex } from 'js-search';
 import debug from '../util/logger';
-import { AvailableCategories, EmojiDescription, EmojiId } from '../types';
+import { AvailableCategories, EmojiDescription, EmojiId, OptionalEmojiDescription } from '../types';
 
 export interface EmojiSearchResult {
   emojis: EmojiDescription[];
   categories: AvailableCategories;
+  query?: string;
 }
 
 export const toEmojiId = (emoji: EmojiDescription): EmojiId => ({
@@ -39,12 +40,39 @@ const createMapBy = (emojis: EmojiDescription[], fnKey: EmojiToKey): EmojiByKey 
   return map;
 };
 
-const findByKey = (map: EmojiByKey, key: any) => {
+const findByKey = (map: EmojiByKey, key: any): OptionalEmojiDescription => {
   const emojis = map.get(key);
   if (emojis && emojis.length) {
     return emojis[0];
   }
-  return null;
+  return undefined;
+};
+
+const groupByCategory = (emojis: EmojiDescription[]) : EmojiDescription[] => {
+  const categoryOrder: string[] = [];
+  const groupedEmojis: Map<string, EmojiDescription[]> = new Map();
+
+  emojis.forEach(emoji => {
+    const { category } = emoji;
+    if (!groupedEmojis.has(category)) {
+      categoryOrder.push(category);
+      groupedEmojis.set(category, []);
+    }
+    const groupedEmoji = groupedEmojis.get(category);
+    if (groupedEmoji) {
+      groupedEmoji.push(emoji);
+    }
+  });
+
+  let groupedByCategory: EmojiDescription[] = [];
+  categoryOrder.forEach(category => {
+    const groupedEmoji = groupedEmojis.get(category);
+    if (groupedEmoji) {
+      groupedByCategory = groupedByCategory.concat(groupedEmoji);
+    }
+  });
+
+  return groupedByCategory;
 };
 
 export default class EmojiService {
@@ -54,9 +82,11 @@ export default class EmojiService {
   private idLookup: EmojiByKey;
 
   constructor(emojis: EmojiDescription[]) {
-    this.emojis = emojis;
+    // Ensure emojis are ordered by: category (in order found), then by emoji order
+    this.emojis = groupByCategory(emojis);
 
     this.fullSearch = new Search('id');
+    this.fullSearch.searchIndex = new UnorderedSearchIndex();
     this.fullSearch.addIndex('name');
     this.fullSearch.addIndex('shortcut');
     this.fullSearch.addDocuments(emojis);
@@ -88,20 +118,28 @@ export default class EmojiService {
     return {
       emojis: filteredEmoji,
       categories: availableCategories(filteredEmoji),
+      query,
     };
   }
 
   /**
    * Returns the first matching emoji matching the shortcut, or null if none found.
    */
-  findByShortcut(shortcut) {
+  findByShortcut(shortcut): OptionalEmojiDescription {
     return findByKey(this.shortcutLookup, shortcut);
   }
 
   /**
    * Returns the first matching emoji matching the id, or null if none found.
    */
-  findById(id) {
-    return findByKey(this.idLookup, id);
+  findById(id: EmojiId): OptionalEmojiDescription {
+    debug('findById', id, this.idLookup);
+    return findByKey(this.idLookup, id.id);
+  }
+
+  findInCategory(categoryId: string): EmojiDescription[] {
+    return this.all().emojis.filter(
+      emoji => emoji.category === categoryId
+    );
   }
 }

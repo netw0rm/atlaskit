@@ -216,7 +216,7 @@ export const mention = (attrs: { id: string, displayName?: string }) => sampleSc
 export const hr = sampleSchema.nodes.horizontal_rule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});
 export const strong = markFactory(sampleSchema.marks.strong, {});
-export const mono = markFactory(sampleSchema.marks.mono, {});
+export const code = markFactory(sampleSchema.marks.code, {});
 export const strike = markFactory(sampleSchema.marks.strike, {});
 export const a = (attrs: { href: string, title?: string }) => markFactory(sampleSchema.marks.link, attrs);
 export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);

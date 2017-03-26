@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
 import { LinkCardViewSmall } from '../../src';
+import { CardGenericViewSmall } from '../../src/utils/cardGenericViewSmall';
 import {Title, Size, LoadingWrapper} from '../../src/utils/cardGenericViewSmall/styled';
 
 describe('LinkCardViewSmall', () => {
@@ -31,5 +32,12 @@ describe('LinkCardViewSmall', () => {
 
     expect(card.find(LoadingWrapper)).to.have.length(1);
     expect(card.find('.media-card')).to.have.length(0);
+  });
+
+  it('should pass the site name to CardGenericViewSmall as subtitle prop instead of the link url when it is a string', () => {
+    const site = 'Some random site name';
+    const card = shallow(<LinkCardViewSmall title={title} site={site} linkUrl={linkUrl} loading={true} />);
+
+    expect(card.find(CardGenericViewSmall).props().subtitle).to.deep.equal(site);
   });
 });

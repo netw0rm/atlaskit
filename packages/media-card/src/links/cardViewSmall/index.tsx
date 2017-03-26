@@ -3,11 +3,13 @@ import {Component} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
 import {CardGenericViewSmall} from '../../utils/cardGenericViewSmall';
+import {A} from './styled';
 
 export interface LinkCardViewSmallProps {
   width?: number | string;
   linkUrl: string;
   title: string;
+  site?: string;
   thumbnailUrl?: string;
   loading?: boolean;
   onClick?: (event: Event) => void;
@@ -18,17 +20,23 @@ export interface LinkCardViewSmallProps {
 
 export class LinkCardViewSmall extends Component<LinkCardViewSmallProps, {}> {
   render() {
-    return <CardGenericViewSmall
-      title={this.props.title}
-      subtitle={this.props.linkUrl}
-      thumbnailUrl={this.props.thumbnailUrl}
-      width={this.props.width}
-      loading={this.props.loading}
-      actions={this.props.actions}
-      onClick={this.props.onClick}
-      error={this.props.error}
-      onRetry={this.props.onRetry}
-      mediaType={'image'}
-    />;
+    const {title, linkUrl, site, thumbnailUrl, width, loading, actions, onClick, onRetry, error} = this.props;
+
+    return (
+      <A href={linkUrl} target="_blank" rel="noopener">
+        <CardGenericViewSmall
+          title={title}
+          subtitle={site || linkUrl}
+          thumbnailUrl={thumbnailUrl}
+          width={width}
+          loading={loading}
+          actions={actions}
+          onClick={onClick}
+          error={error}
+          onRetry={onRetry}
+          mediaType={'image'}
+        />
+      </A>
+    );
   }
 }

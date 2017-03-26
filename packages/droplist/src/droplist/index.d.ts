@@ -3,13 +3,13 @@ import { Component, ReactNode } from 'react';
 interface Props {
   appearance?: 'default' | 'tall';
   isOpen?: boolean;
-  isTriggerDisabled?: boolean;
-  isTriggerNotTabbable?: boolean;
-  listContext?: 'menu';
+  shouldFitContainer?: boolean;
+  onClick?: () => void;
+  onKeyDown?: () => void;
   onOpenChange?: ({ isOpen: boolean }) => void;
   position?: string;
   trigger?: ReactNode;
-  shouldFitContainer?: boolean;
+  shouldFlip?: boolean;
 }
 
 interface State {}

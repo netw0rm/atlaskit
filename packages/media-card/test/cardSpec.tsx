@@ -1,83 +1,64 @@
 import * as React from 'react';
-import { Observable } from 'rxjs';
 import { expect } from 'chai';
-import * as sinon from 'sinon';
-import { Card, CardProps, CardState } from '../src/card/card';
-import { mount, ReactWrapper } from 'enzyme';
-import { waitUntil } from './utils';
-import { ContextFactory, Context } from '@atlaskit/media-core';
+import { shallow } from 'enzyme';
 
-describe('Card', () => {
-  const waitUntilCardIsLoaded = (card: ReactWrapper<CardProps, CardState>) => {
-    return waitUntil(() => !card.state<boolean>('loading'));
-  };
-  const tokenProvider = (collection: string) => Promise.resolve('some-jwt-token');
-  const toDataUri = (data: string) => {
-    return 'data:;base64,' + btoa(data);
-  };
+import { fakeContext } from '@atlaskit/media-test-helpers';
 
-  const fakeMediaItem = {
-      type: 'file',
-      details: {
-        id: 'some-image',
-        mediaType: 'image',
-        mimeType: 'image/jpeg',
-        name: 'some-image.jpg',
-        processingStatus: 'succeeded',
-        size: 123456,
-        artifacts: {}
-      }
-  };
+import { Card, LinkCard, FileCard, UrlPreviewIdentifier, MediaIdentifier } from '../src';
 
-  const fakeMediaItemProvider = {
-    observable() {
-      return Observable.of(fakeMediaItem);
-    }
-  };
+describe('Card', function() {
+  it('should load the stateful link card when passed a UrlPreviewIdentifier', function() {
+    const dummyUrl = 'http://some.url.com';
+    const identifier: UrlPreviewIdentifier = {
+      url: dummyUrl,
+      mediaItemType: 'link'
+    };
 
-  const fakeDataUriService = {
-    fetchImageDataUri() {
-      return Promise.resolve(toDataUri('some-image'));
-    }
-  };
+    const context = fakeContext();
 
-  const fakeContext: Context = {
-    getMediaItemProvider: sinon.stub().returns(fakeMediaItemProvider),
-    getDataUriService: sinon.stub().returns(fakeDataUriService),
-    getMediaCollectionProvider: sinon.spy(),
-    getUrlPreviewProvider: sinon.spy()
-  };
+    const card = shallow(<Card context={context} identifier={identifier} />);
+    const linkCard = card.find(LinkCard);
 
-  it('should display an image when loaded', function() {
-    const card = mount<CardProps, CardState>(
-      <Card
-        context={fakeContext}
-        id={'some-image'}
-        mediaItemType={'file'}
-      />
-    );
-
-    expect(card.find('img').length).to.eql(0);
-
-    return waitUntilCardIsLoaded(card).then(() => {
-      expect(card.find('img').first().props().src).to.eql(toDataUri('some-image'));
-    });
+    expect(linkCard).to.have.length(1);
+    expect(linkCard.props().context).to.deep.equal(context);
+    expect(linkCard.props().link).to.deep.equal(dummyUrl);
   });
 
-  it('should display a spinner while loading', () => {
-    const context = ContextFactory.create({
-      clientId: 'some-client',
-      serviceHost: 'some-service',
-      tokenProvider
-    });
-    const component = mount<CardProps, CardState>(
-      <Card
-        context={context}
-        id={'some-image'}
-        mediaItemType={'file'}
-      />);
+  it('should load the stateful link card when passed a MediaIdentifier with mediaItemType "link"', function() {
+    const identifier: MediaIdentifier = {
+      id: 'some-random-id',
+      mediaItemType: 'link',
+      collectionName: 'some-collection-name'
+    };
 
-    expect(component.state<boolean>('loading')).to.eql(true);
-    expect(component.find('FileIcon').first().props().label).to.eql('loading');
+    const context = fakeContext();
+
+    const card = shallow(<Card context={context} identifier={identifier} />);
+    const linkCard = card.find(LinkCard);
+
+    expect(linkCard).to.have.length(1);
+    expect(linkCard.props().context).to.deep.equal(context);
+    expect(linkCard.props().link).to.deep.equal(identifier);
+  });
+
+  it('should load the stateful file card when passed a MediaIdentifier with mediaItemType "file"', function() {
+    const dummyId = 'some-random-id';
+    const dummyCollectionName = 'some-collection-name';
+
+    const identifier: MediaIdentifier = {
+      id: dummyId,
+      mediaItemType: 'file',
+      collectionName: dummyCollectionName
+    };
+
+    const context = fakeContext();
+
+    const card = shallow(<Card context={context} identifier={identifier} />);
+    const fileCard = card.find(FileCard);
+
+    expect(fileCard).to.have.length(1);
+    expect(fileCard.props().context).to.deep.equal(context);
+    expect(fileCard.props().id).to.deep.equal(dummyId);
+    expect(fileCard.props().collectionName).to.deep.equal(dummyCollectionName);
   });
 });

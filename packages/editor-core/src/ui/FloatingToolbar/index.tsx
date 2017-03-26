@@ -2,8 +2,9 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import OutsideClickable from '../OutsideClickable';
-import Popper, { IPopper } from './popper';
+import Popper, { IPopper } from './../../popper';
 import * as styles from './styles';
+import { akEditorFloatingPanelZIndex } from '../../styles';
 
 export interface Props {
   autoPosition?: boolean;
@@ -98,7 +99,7 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
       <OutsideClickable onClick={this.props.onOutsideClick}>
         <div
           ref="content"
-          style={{ top: 0, left: 0, position, transform, padding, zIndex: 10 }}
+          style={{ top: 0, left: 0, position, transform, padding, zIndex: akEditorFloatingPanelZIndex }}
           className={styles.container}
         >
           {this.props.children}

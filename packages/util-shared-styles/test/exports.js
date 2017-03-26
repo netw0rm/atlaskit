@@ -110,6 +110,7 @@ describe('exports', () => {
       'akFontFamily',
       'akFontSizeDefault',
       'akGridSize',
+      'akGridSizeUnitless',
       'akTypographyH100',
       'akTypographyH200',
       'akTypographyH300',

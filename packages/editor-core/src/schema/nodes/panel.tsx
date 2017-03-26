@@ -8,12 +8,12 @@ import {
   akColorP500,
   akColorT500,
   akColorY500
-} from 'akutil-shared-styles';
+} from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
-import InfoIcon from 'ak-icon/glyph/editor/info';
-import TipIcon from 'ak-icon/glyph/editor/hint';
-import NoteIcon from 'ak-icon/glyph/editor/note';
-import WarningIcon from 'ak-icon/glyph/warning';
+import InfoIcon from '@atlaskit/icon/glyph/editor/info';
+import TipIcon from '@atlaskit/icon/glyph/editor/hint';
+import NoteIcon from '@atlaskit/icon/glyph/editor/note';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Attribute, Block, Node, Schema } from '../../prosemirror';

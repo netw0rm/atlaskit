@@ -1,8 +1,9 @@
-import axios from 'axios';
-import {LinkItem, MediaApiConfig} from '../';
+import createRequest from './util/createRequest';
+import {LinkItem, MediaApiConfig, UrlPreview} from '../';
 
 export interface LinkService {
   getLinkItem(linkId: string, clientId: string, collection?: string): Promise<LinkItem>;
+  addLinkItem(url: string, clientId: string, collection: string, metadata?: UrlPreview): Promise<string>;
 }
 
 export class MediaLinkService implements LinkService {
@@ -10,35 +11,45 @@ export class MediaLinkService implements LinkService {
   }
 
   getLinkItem(linkId: string, clientId: string, collectionName: string): Promise<LinkItem> {
-    return this.config.tokenProvider(collectionName)
-      .then(token => {
-        const params = {collection: collectionName};
 
-        return axios.get(`/link/${linkId}`, {
-          baseURL: this.config.serviceHost,
-          headers: {
-            'X-Client-Id': clientId,
-            'Authorization': `Bearer ${token}`
-          },
-          params
-        }).then(response => response.data.data)
-          .then(data => {
-            return <LinkItem> {
-              type: 'link',
-              details: {
-                id: data.id,
-                url: data.url,
-                type: data.metadata.type,
-                title: data.metadata.title,
-                description: data.metadata.description,
-                site: data.metadata.site,
-                author: data.metadata.author,
-                date: data.metadata.date,
+    const request = createRequest({
+      config: this.config,
+      clientId: clientId,
+      collectionName: collectionName
+    });
 
-                resources: data.metadata.resources
-              }
-            };
-          });
+    return request({url: `/link/${linkId}`})
+      .then(json => json.data)
+      .then(linkDetails => {
+        return {
+          type: 'link',
+          details: {
+            id: linkDetails.id,
+            url: linkDetails.url,
+            type: linkDetails.metadata.type,
+            title: linkDetails.metadata.title,
+            description: linkDetails.metadata.description,
+            site: linkDetails.metadata.site,
+            author: linkDetails.metadata.author,
+            date: linkDetails.metadata.date,
+            resources: linkDetails.metadata.resources
+          }
+        } as LinkItem;
       });
+    ;
+
+  }
+
+  addLinkItem(url: string, clientId: string, collectionName: string, metadata?: UrlPreview): Promise<string> {
+
+    const request = createRequest({
+      config: this.config,
+      clientId: clientId,
+      collectionName: collectionName
+    });
+
+    return request({method: 'post', url: '/link', data: {url, ...metadata}})
+      .then(json => json.data.id)
+    ;
   }
 }

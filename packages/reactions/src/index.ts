@@ -1,4 +1,6 @@
-export { default as AbstractReactionsService } from './reactions-service';
+export { default as AbstractReactionsProvider } from './reactions-resource';
 export { default as Reactions } from './reactions';
 export { default as ReactionPicker } from './reaction-picker';
-export { ReactionsService } from './reactions-service';
+export { default as ResourcedReactions } from './resourced-reactions';
+export { default as ResourcedReactionPicker } from './resourced-reaction-picker';
+export { ReactionsProvider, ReactionsResource } from './reactions-resource';

@@ -86,6 +86,7 @@ storiesOf(`${name} - item`, module)
               <Arrow label="" /><Lozenge appearance="inprogress">in progress</Lozenge>
             </div>
           }
+          title="title for this long item"
         >second item with very long text that is going to be cut off</Item>
       </div>
     </div>

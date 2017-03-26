@@ -6,8 +6,10 @@ import Strike from './strike';
 import Strong from './strong';
 import SubSup from './subsup';
 import Underline from './underline';
+import Code from './code';
 import { Renderable } from '../nodes';
-import { isText } from '../utils';
+
+import { isSubSupType } from '../marks/subsup';
 
 export interface Mark {
   type: string;
@@ -22,6 +24,9 @@ enum MarkType {
   strong,
   subsup,
   underline,
+  code,
+  text,
+  unknown
 }
 
 export const markOrder = [
@@ -31,7 +36,10 @@ export const markOrder = [
   'strike',
   'mono',
   'subsup',
-  'underline'
+  'underline',
+  'code',
+  'text',
+  'unknown'
 ];
 
 export const getMarksByOrder = (marks: Mark[]) => {
@@ -47,18 +55,105 @@ const getKey = (node: Renderable, index: number) => {
   return `${type}-${index}`;
 };
 
+export const getValidMark = (mark: Renderable): Renderable => {
+  const { content, type } = mark;
+
+  if (type) {
+    switch (MarkType[type]) {
+      case MarkType.em:
+        return {
+          type,
+          content
+        };
+      case MarkType.link: {
+        const { attrs } = mark;
+        if (attrs) {
+          const { href, url } = attrs;
+          const linkHref = href || url;
+          if (linkHref) {
+            return {
+              type,
+              content,
+              attrs: {
+                href: linkHref
+              }
+            };
+          }
+        }
+        break;
+      }
+      case MarkType.mono:
+        return {
+          type,
+          content
+        };
+      case MarkType.strike:
+        return {
+          type,
+          content
+        };
+      case MarkType.strong:
+        return {
+          type,
+          content
+        };
+      case MarkType.subsup: {
+        const { attrs } = mark;
+        if (attrs && attrs['type']) {
+          const subSupType = attrs['type'];
+          if (isSubSupType(subSupType)) {
+            return {
+              type,
+              content,
+              attrs: {
+                type: subSupType
+              }
+            };
+          }
+        }
+        break;
+      }
+      case MarkType.underline:
+        return {
+          type,
+          content
+        };
+      case MarkType.code:
+        return {
+          type,
+          content
+        };
+      case MarkType.text: {
+        const { text } = mark;
+        if (text) {
+          return {
+            type,
+            text
+          };
+        }
+        break;
+      }
+    }
+  }
+
+  return {
+    type: MarkType[MarkType.unknown],
+    content
+  };
+};
+
 export const renderMark = (mark: Renderable, index: number = 0) => {
-  const { type } = mark;
+  const validMark = getValidMark(mark);
+  const content = (validMark.content || []).map((child, index) => renderMark(child as Renderable, index));
+  const key = getKey(validMark, index);
 
-  const content = (mark.content || []).map((child, index) => renderMark(child as Renderable, index));
-  const key = getKey(mark, index);
-
-  switch (MarkType[type]) {
+  switch (MarkType[validMark.type]) {
     case MarkType.em:
       return <Em key={key}>{content}</Em>;
     case MarkType.link: {
-      const { url }  = mark.attrs as any;
-      return <Link key={key} url={url}>{content}</Link>;
+      const { attrs } = validMark;
+      const { href } = attrs as { href: string };
+      return <Link key={key} href={href}>{content}</Link>;
     }
     case MarkType.mono:
       return <Mono key={key}>{content}</Mono>;
@@ -67,17 +162,19 @@ export const renderMark = (mark: Renderable, index: number = 0) => {
     case MarkType.strong:
       return <Strong key={key}>{content}</Strong>;
     case MarkType.subsup: {
-      const { type } = mark.attrs as any;
+      const { attrs } = validMark;
+      const { type } = attrs as { type: 'sub' | 'sup' };
       return <SubSup key={key} type={type}>{content}</SubSup>;
     }
     case MarkType.underline:
-      return <Underline>{content}</Underline>;
+      return <Underline key={key}>{content}</Underline>;
+    case MarkType.code:
+      return <Code key={key}>{content}</Code>;
+    case MarkType.text:
+      return validMark.text;
     default: {
-      if (isText(mark.type)) {
-        return (mark as any).text;
-      }
-
-      return renderMark(mark.content![0] as Renderable);
+      // Mark is unkown, render it's content
+      return renderMark(validMark.content![0] as Renderable);
     }
   }
 };
@@ -100,5 +197,5 @@ export const isSameMark = (mark: Mark | null, otherMark: Mark | null) => {
   }
 
   // TODO: Use some deep-equal function instead
-  return !Object.keys(mark.attrs!).some(attr => mark.attrs![attr] !== otherMark.attrs![attr]);
+  return !Object.keys(mark.attrs || {}).some(attr => mark.attrs![attr] !== otherMark.attrs![attr]);
 };

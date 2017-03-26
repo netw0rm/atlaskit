@@ -1,11 +1,6 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
-import styles from 'style!../src/styles/profilecard-resourced.less';
-
-import LoadingMessage from '../src/components/LoadingMessage';
-import ErrorMessage from '../src/components/ErrorMessage';
-
 import { name } from '../package.json';
 import { AkProfilecard } from '../src/';
 import interActiveCard from './profile-interactive';
@@ -43,25 +38,20 @@ const canvasStyle = { padding: '30px' };
 storiesOf(`${name}`, module)
   .add('loading state', () => (
     <div style={canvasStyle}>
-      <div className={styles.profilecardResourced}>
-        <LoadingMessage />
-      </div>
+      <AkProfilecard isLoading />
     </div>
   ))
   .add('error state', () => (
     <div style={canvasStyle}>
-      <div className={styles.profilecardResourced}>
-        <ErrorMessage
-          reload={handleActionClick('Retry')}
-        />
-      </div>
+      <AkProfilecard
+        hasError
+        clientFetchProfile={handleActionClick('Retry')}
+      />
     </div>
   ))
   .add('error state without reload option', () => (
     <div style={canvasStyle}>
-      <div className={styles.profilecardResourced}>
-        <ErrorMessage />
-      </div>
+      <AkProfilecard hasError />
     </div>
   ))
   .add('worst case card', () => {
@@ -99,12 +89,16 @@ storiesOf(`${name}`, module)
   .add('alternate actions', () => {
     const actions = [
       {
-        label: 'Foo',
-        callback: handleActionClick('Foo'),
+        label: 'Foobar',
+        callback: handleActionClick('Foobar'),
       },
       {
-        label: 'Bar',
-        callback: handleActionClick('Bar'),
+        label: 'Barfoo',
+        callback: handleActionClick('Barfoo'),
+      },
+      {
+        label: 'Foobar2',
+        callback: handleActionClick('Foobar2'),
       },
     ];
     const data = fakeData({ actions });

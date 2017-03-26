@@ -1,3 +1,5 @@
+import { SyntheticEvent } from 'react';
+
 export interface HighlightDetail {
   start: number;
   end: number;
@@ -16,16 +18,13 @@ export interface Presence {
 export interface Mention {
   id: string;
   avatarUrl?: string;
-  selected?: boolean;
   name?: string;
   mentionName?: string;
-  status?: string;
-  time?: string;
   highlight?: Highlight;
   lozenge?: string;
   presence?: Presence;
 }
 
-export interface OnSelection {
-  (mention: Mention): void;
+export interface OnMentionEvent {
+  (mention: Mention, event?: SyntheticEvent<any>): void;
 }

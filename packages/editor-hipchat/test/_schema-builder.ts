@@ -1,4 +1,4 @@
-import { nodeFactory } from '@atlaskit/editor-core/test-helper';
+import { nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import schema from '../src/schema';
 
 export const doc = nodeFactory(schema.nodes.doc);

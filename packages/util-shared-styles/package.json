@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-shared-styles",
-  "version": "1.0.3",
+  "version": "1.2.1",
   "config": {
     "access": "public"
   },
@@ -17,6 +17,7 @@
     "index.d.ts"
   ],
   "author": "Atlassian Pty Ltd",
+  "maintainers": [],
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",

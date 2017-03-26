@@ -5,7 +5,7 @@ export const button = style({
 
   $nest: {
     '& + &': {
-      marginLeft: '8px',
+      marginLeft: '4px',
     }
   }
 });

@@ -2,7 +2,7 @@ import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chro
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 
-import { Mention, Presence } from '../types';
+import { Mention } from '../types';
 import debug from '../util/logger';
 
 export interface KeyValues {
@@ -10,8 +10,8 @@ export interface KeyValues {
 }
 
 export interface SecurityOptions {
-  params: KeyValues;
-  headers: KeyValues;
+  params?: KeyValues;
+  headers?: KeyValues;
 }
 
 /**
@@ -41,10 +41,6 @@ export interface InfoCallback {
   (info: string): void;
 }
 
-export interface PresenceUpdate {
-  [index: string]: Presence;
-}
-
 export interface MentionsResult {
   mentions: Mention[];
 }
@@ -52,8 +48,9 @@ export interface MentionsResult {
 export interface MentionResourceConfig {
   /** the base url of the mentions service */
   url: string;
-  securityProvider: SecurityProvider;
+  securityProvider?: SecurityProvider;
   containerId?: string;
+  productId?: string;
   refreshedSecurityProvider?: RefreshSecurityProvider;
   shouldHighlightMention?: (mention: Mention) => boolean;
 }
@@ -69,9 +66,12 @@ export interface MentionProvider extends ResourceProvider<Mention[]> {
   shouldHighlightMention(mention: Mention): boolean;
 }
 
-export interface PresenceProvider extends ResourceProvider<PresenceUpdate> {
-  refreshPresence(arrayOfIds: string[]): void;
-}
+const emptySecurityProvider = () => {
+  return {
+    params: {},
+    headers: {},
+  };
+};
 
 const buildUrl = (baseUrl: string, path: string | undefined, data: KeyValues, secOptions: SecurityOptions) => {
   const searchParam = new URLSearchParams();
@@ -124,26 +124,27 @@ const buildHeaders = (secOptions: SecurityOptions) => {
 /**
  * @returns Promise containing the json response
  */
-const requestService = <T>(baseUrl: string, path: string | undefined, data: KeyValues, opts: KeyValues,
-                        secOptions: SecurityOptions, refreshedSecurityProvider?: RefreshSecurityProvider): Promise<T> => {
+const requestService = (baseUrl: string, path: string | undefined, data: KeyValues, opts: KeyValues,
+                        secOptions: SecurityOptions, refreshedSecurityProvider?: RefreshSecurityProvider) => {
   const url = buildUrl(baseUrl, path, data, secOptions);
   const headers = buildHeaders(secOptions);
   const options = {
     ...opts,
     ...{ headers },
+    credentials: 'include',
   };
   return fetch(new Request(url, options))
-    .then((response: Response) => {
+    .then(response => {
       if (response.ok) {
-        return response.json<T>();
+        return response.json();
       } else if (response.status === 401 && refreshedSecurityProvider) {
         // auth issue - try once
         debug('401 attempting a forced refresh from securityProvider');
         return refreshedSecurityProvider().then(newSecOptions => (
-          requestService<T>(baseUrl, path, data, opts, newSecOptions)
+          requestService(baseUrl, path, data, opts, newSecOptions)
         ));
       }
-      return Promise.reject<T>({
+      return Promise.reject({
         code: response.status,
         reason: response.statusText,
       });
@@ -178,24 +179,6 @@ class AbstractResource<Result> implements ResourceProvider<Result> {
     this.changeListeners.delete(key);
     this.errListeners.delete(key);
     this.infoListeners.delete(key);
-  }
-}
-
-class AbstractPresenceResource extends AbstractResource<PresenceUpdate> {
-  // eslint-disable-next-line class-methods-use-this
-  refreshPresence(arrayOfIds: string[]): void {
-    throw new Error(`not yet implemented.\nParams: arrayOfIds=${arrayOfIds}`);
-  }
-
-  protected notifyListeners(presences: PresenceUpdate): void {
-    this.changeListeners.forEach((listener, key) => {
-      try {
-        listener(presences);
-      } catch (e) {
-        // ignore error from listener
-        debug(`error from listener '${key}', ignoring`, e);
-      }
-    });
   }
 }
 
@@ -267,9 +250,6 @@ class MentionResource extends AbstractMentionResource {
     if (!config.url) {
       throw new Error('config.url is a required parameter');
     }
-    if (!config.securityProvider) {
-      throw new Error('config.securityProvider is a required parameter');
-    }
 
     this.config = config;
     this.lastReturnedSearch = 0;
@@ -314,7 +294,7 @@ class MentionResource extends AbstractMentionResource {
    * @returns Promise
    */
   private initialState(): Promise<MentionsResult> {
-    const secOptions = this.config.securityProvider();
+    const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data: KeyValues = {};
     const options: KeyValues = {};
@@ -322,11 +302,16 @@ class MentionResource extends AbstractMentionResource {
     if (this.config.containerId) {
       data['containerId'] = this.config.containerId;
     }
-    return requestService<MentionsResult>(this.config.url, 'mentions/bootstrap', data, options, secOptions, refreshedSecurityProvider);
+
+    if (this.config.productId) {
+      data['productIdentifier'] = this.config.productId;
+    }
+
+    return requestService(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider);
   }
 
   private search(query: string): Promise<MentionsResult> {
-    const secOptions = this.config.securityProvider();
+    const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data = {
       query,
@@ -335,11 +320,16 @@ class MentionResource extends AbstractMentionResource {
     if (this.config.containerId) {
       data['containerId'] = this.config.containerId;
     }
-    return requestService<MentionsResult>(this.config.url, 'mentions/search', data, options, secOptions, refreshedSecurityProvider);
+
+    if (this.config.productId) {
+      data['productIdentifier'] = this.config.productId;
+    }
+
+    return requestService(this.config.url, 'search', data, options, secOptions, refreshedSecurityProvider);
   }
 
   private recordSelection(mention: Mention): Promise<void> {
-    const secOptions = this.config.securityProvider();
+    const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data = {
       selectedUserId: mention.id,
@@ -347,9 +337,14 @@ class MentionResource extends AbstractMentionResource {
     const options = {
       method: 'POST',
     };
-    return requestService<void>(this.config.url, 'mentions/record', data, options, secOptions, refreshedSecurityProvider);
+
+    if (this.config.productId) {
+      data['productIdentifier'] = this.config.productId;
+    }
+
+    return requestService(this.config.url, 'record', data, options, secOptions, refreshedSecurityProvider);
   }
 }
 
-export { AbstractResource, AbstractMentionResource, AbstractPresenceResource };
+export { AbstractResource, AbstractMentionResource };
 export default MentionResource;

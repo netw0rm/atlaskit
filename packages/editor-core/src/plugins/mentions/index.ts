@@ -22,7 +22,7 @@ export class MentionsState {
   mentionProvider?: MentionProvider;
 
   onSelectPrevious = (): boolean => { return false; };
-  onSelectNext =  (): boolean => { return false; };
+  onSelectNext = (): boolean => { return false; };
   onSelectCurrent = (): boolean => { return false; };
   onTrySelectCurrent = (): boolean => { return false; };
 
@@ -107,6 +107,11 @@ export class MentionsState {
     }
 
     return true;
+  }
+
+  mentionDisabled() {
+    const { selection, schema } = this.state;
+    return schema.marks.code.isInSet(selection.$from.marks());
   }
 
   private findMentionQueryMark() {

@@ -12,9 +12,13 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
 
   if (schema.nodes.mention && schema.marks.mentionQuery) {
     const mentionQueryRule = new InputRule(/(^|[^\w\`])@$/, (state, match, start, end): Transaction | undefined => {
-      const mentionsPlugin = stateKey.getState(state) as MentionsState;
+      const mentionsState = stateKey.getState(state) as MentionsState;
 
-      if (!mentionsPlugin.mentionProvider) {
+      if (!mentionsState.mentionProvider) {
+        return undefined;
+      }
+
+      if (mentionsState.mentionDisabled()) {
         return undefined;
       }
 

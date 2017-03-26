@@ -1,7 +1,7 @@
-import { Emoji } from '@atlaskit/emoji';
+// import { Emoji } from '@atlaskit/emoji';
 import { akColorN50 } from '@atlaskit/util-shared-styles';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+// import * as React from 'react';
+// import * as ReactDOM from 'react-dom';
 import { style } from 'typestyle';
 import { NodeSpec, Node } from '../../prosemirror';
 
@@ -71,7 +71,7 @@ export const emoji: NodeSpec = {
     dom.setAttribute('contenteditable', 'false');
     dom.setAttribute('data-emoji-id', node.attrs.id);
     dom.classList.add(emojiStyle);
-    ReactDOM.render(<Emoji {...node.attrs} />, dom);
+    // ReactDOM.render(<Emoji {...node.attrs} />, dom);
     return dom;
   }
 };

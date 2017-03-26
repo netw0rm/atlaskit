@@ -50,9 +50,9 @@ export interface Props {
   pluginStateClearFormatting?: ClearFormattingState;
   pluginStateImageUpload?: ImageUploadState;
   pluginStateMentions?: MentionsState;
-  pluginStateEmojis?: any; //EmojisPluginState;
+  pluginStateEmojis?: any; // EmojisPluginState;
   presenceResourceProvider?: any; // AbstractPresenceResource
-  emojiProvider?: any; //Promise<EmojiProvider>;
+  emojiProvider?: any; // Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
   pluginStatePanel?: PanelState;
 }
@@ -81,7 +81,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
           {props.children}
           {props.pluginStateHyperlink ? <HyperlinkEdit pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
           {props.pluginStateCodeBlock ? <LanguagePicker pluginState={props.pluginStateCodeBlock} editorView={props.editorView} /> : null}
-          {props.pluginStateMentions ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionProvider} /> : null}
+          {props.pluginStateMentions && props.mentionProvider ? <MentionPicker pluginState={props.pluginStateMentions} resourceProvider={props.mentionProvider} /> : null}
           {/*{props.pluginStateEmojis && props.emojiProvider ? <EmojiTypeAhead pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}*/}
           {props.pluginStatePanel ? <PanelEdit pluginState={props.pluginStatePanel} editorView={props.editorView} /> : null}
         </div>

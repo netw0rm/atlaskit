@@ -1,4 +1,4 @@
-import { dom, Node, Schema, NodeSpec, MarkSpec, DOMSerializer, DOMParser } from '../';
+import { dom, Schema, Node, NodeSpec, MarkSpec, DOMSerializer, DOMParser } from '../';
 
 export const fromHTML = (html: string, schema: Schema<NodeSpec, MarkSpec>): Node => {
   const el = document.createElement('div');
@@ -6,7 +6,7 @@ export const fromHTML = (html: string, schema: Schema<NodeSpec, MarkSpec>): Node
   return DOMParser.fromSchema(schema).parse(el);
 };
 
-export const toDOM = (node: any, schema: Schema<NodeSpec, MarkSpec>): dom.Node => {
+export const toDOM = (node: Node, schema: Schema<NodeSpec, MarkSpec>): dom.Node => {
   const serializer = DOMSerializer.fromSchema(schema);
   return serializer.serializeNodeAndMarks(node);
 };

@@ -7,7 +7,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { ResourcedMention } from '@atlaskit/mention';
 import { style } from 'typestyle';
-import { NodeSpec } from '../../prosemirror';
+import { NodeSpec, NodeView } from '../../prosemirror';
 import ProviderFactory, { WithProviders } from '../../providerFactory';
 
 const mentionStyle = style({
@@ -50,20 +50,8 @@ export const mention: NodeSpec = {
   }
 };
 
-interface NodeView {
-  dom?: any;
-  contentDOM?: any;
-  update?: (node: any, decorations: any[]) => boolean;
-  selectNode?: () => void;
-  deselectNode?: () => void;
-  setSelection?: (anchor: number, head: number, root: any) => void;
-  stopEvent?: (event: Event) => boolean;
-  ignoreMutation?: (mutation: any) => boolean;
-  destroy?: () => void;
-}
-
 export const mentionNodeView = (providerFactory: ProviderFactory) => (node: any, view: any, getPos: () => number): NodeView => {
-  let dom: HTMLElement | null = document.createElement('span');
+  let dom: HTMLElement | undefined = document.createElement('span');
   const { id, displayName } = node.attrs;
 
   ReactDOM.render(
@@ -87,7 +75,7 @@ export const mentionNodeView = (providerFactory: ProviderFactory) => (node: any,
 
     destroy() {
       ReactDOM.unmountComponentAtNode(dom!);
-      dom = null;
+      dom = undefined;
     }
   };
 };

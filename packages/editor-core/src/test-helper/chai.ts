@@ -23,7 +23,7 @@ export default (chai: any) => {
       const left: any = this._obj;
       const deep = util.flag(this, 'deep');
       if (deep && isNodeOrFragment(left) && isNodeOrFragment(right)) {
-        this.assert(left.eq(right),
+        this.assert((left as any).eq(right),
           'expected #{exp} to equal #{act}',
           'expected #{exp} to not equal #{act}',
           left.toString(),

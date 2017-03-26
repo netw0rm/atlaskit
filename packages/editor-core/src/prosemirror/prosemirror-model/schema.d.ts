@@ -1,6 +1,32 @@
 import { OrderedMap } from '../orderedmap';
 import { Fragment, Mark, Node, ParseRule } from './';
 
+export interface AttributeSpec {
+  default?: any;
+  compute?: () => any;
+}
+
+export interface MarkSpec {
+  excludes?: string;
+  attrs?: { [key: string]: AttributeSpec };
+  inclusive?: boolean;
+  toDOM?: (mark: Mark) => {};
+  parseDOM?: ParseRule[];
+}
+
+export interface NodeSpec {
+  content?: string;
+  group?: string;
+  inline?: boolean;
+  attrs?: { [key: string]: AttributeSpec };
+  selectable?: boolean;
+  draggable?: boolean;
+  code?: boolean;
+  defining?: boolean;
+  toDOM?: (_0: Node) => {};
+  parseDOM?: ParseRule[];
+}
+
 export class NodeType {
   name: string;
   schema: Schema<any, any>;
@@ -40,32 +66,6 @@ export class Schema<N, M> {
   mark(type: string | MarkType, attrs?: { [key: string]: any }): Mark;
   nodeFromJSON(json: { [key: string]: any }): Node;
   markFromJSON(json: { [key: string]: any }): Mark;
-}
-
-export interface AttributeSpec {
-  default?: any;
-  compute?: () => any;
-}
-
-export interface MarkSpec {
-  excludes?: string;
-  attrs?: { [key: string]: AttributeSpec };
-  inclusive?: boolean;
-  toDOM?: (mark: Mark) => {};
-  parseDOM?: ParseRule[];
-}
-
-export interface NodeSpec {
-  content?: string;
-  group?: string;
-  inline?: boolean;
-  attrs?: { [key: string]: AttributeSpec };
-  selectable?: boolean;
-  draggable?: boolean;
-  code?: boolean;
-  defining?: boolean;
-  toDOM?: (_0: Node) => {};
-  parseDOM?: ParseRule[];
 }
 
 export interface SchemaSpec<N, M> {

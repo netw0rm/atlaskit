@@ -26,7 +26,7 @@ export class EditorView {
   endOfTextblock(dir: 'up' | 'down' | 'left' | 'right' | 'forward' | 'backward', state?: EditorState<any>): boolean;
   destroy(): void;
   dispatch(tr: Transaction): void;
-  dispatchEvent(event: string | CustomEvent | {type: string});
+  dispatchEvent(event: string | CustomEvent | { type: string });
 }
 
 export interface PluginProps {
@@ -60,4 +60,16 @@ export interface PluginProps {
 export interface EditorProps extends PluginProps {
   state: EditorState<any>;
   dispatchTransaction?: (tr: Transaction) => void;
+}
+
+export interface NodeView {
+  dom?: dom.Node;
+  contentDOM?: dom.Node;
+  update?: (node: Node, decorations: [Decoration]) => boolean;
+  selectNode?: () => void;
+  deselectNode?: () => void;
+  setSelection?: (anchor: number, head: number, root: dom.Document) => void;
+  stopEvent?: (event: dom.Event) => boolean;
+  ignoreMutation?: (record: dom.MutationRecord) => boolean;
+  destroy?: () => void;
 }

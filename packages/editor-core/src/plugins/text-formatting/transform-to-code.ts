@@ -21,8 +21,9 @@ export function transformToCodeAction(state: EditorState<any>, from: number, to:
   }
 
   const updatedTo = state.apply(tr).selection.to;
+  const codeMark = state.schema.marks.code.create();
 
-  tr.addMark(from, updatedTo, state.schema.marks.code.create());
+  tr.addMark(from, updatedTo, codeMark).setStoredMarks([codeMark]);
 
   return tr;
 }

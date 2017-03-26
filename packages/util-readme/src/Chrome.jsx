@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import Heading from './heading';
+import Heading from './Heading';
 
 const style = {
   chrome: {
@@ -7,17 +7,17 @@ const style = {
   },
 };
 
-export default class extends PureComponent {
-  static displayName = 'utilReadmeChrome'
+export default class Chrome extends PureComponent {
   static propTypes = {
-    children: PropTypes.node,
-    title: PropTypes.string,
+    children: PropTypes.node.isRequired,
+    title: PropTypes.string.isRequired,
   }
   render() {
     const { children, title } = this.props;
+
     return (
       <div style={style.chrome}>
-        {title ? <Heading>{title}</Heading> : ''}
+        <Heading>{title}</Heading>
         {children}
       </div>
     );

@@ -1,11 +1,10 @@
 import React, { PropTypes, PureComponent } from 'react';
 
-import Description from './description';
-import Heading from './heading';
+import Description from './Description';
+import Heading from './Heading';
 
 // eslint-disable-next-line react/no-multi-comp, react/prefer-stateless-function
-export default class extends PureComponent {
-  static displayName = 'utilReadmeProps'
+export default class ReadmeProps extends PureComponent {
   static propTypes = {
     component: PropTypes.func.isRequired,
     descriptions: PropTypes.objectOf(PropTypes.string),

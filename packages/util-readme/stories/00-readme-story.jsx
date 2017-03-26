@@ -18,10 +18,10 @@ storiesOf(name, module)
   .add('📖 Breadcrumbs readme', () => (
     <Readme
       component={Readme}
-      name={'@atlaskit/util-readme'}
-      description={ReadmeDescription}
       componentSource={ReadmeSrc}
-      codeExample={'This page is an example of the Readme Component'}
-      codeSource={ThisSrc}
+      description={ReadmeDescription}
+      example={'This page is an example of the Readme Component'}
+      exampleSource={ThisSrc}
+      name={'@atlaskit/util-readme'}
     />
   ));

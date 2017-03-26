@@ -25,7 +25,8 @@
     "styled-components": "^1.3.0"
   },
   "devDependencies": {
-    "@atlaskit/util-readme": "*"
+    "@atlaskit/util-readme": "*",
+    "@atlaskit/util-common-test": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

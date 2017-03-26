@@ -2,6 +2,7 @@ import React, { PropTypes, PureComponent } from 'react';
 import * as reactDocs from 'react-docgen';
 import styled from 'styled-components';
 
+import typeParser from './typeParser';
 import Description from './Description';
 import Heading from './Heading';
 
@@ -11,34 +12,17 @@ const CodeBlock = styled.code`
 
 const wrap = inner => (
   <div>
-    <Heading type="2">Props</Heading>
+    <Heading type={2}>Props</Heading>
     {inner}
   </div>
 );
 
-function parseValue(type) {
-  if (type.name === 'arrayOf') {
-    return `[ ${parseValue(type.value)} ]`;
-  }
-
-  if (type.name === 'union') {
-    return type.value.map(parseValue).join(' | ');
-  }
-
-  if (!type.value) {
-    return type.name;
-  }
-
-  if (typeof type.value === 'string') {
-    return type.value;
-  }
-
-  return null;
-}
-
-function renderValue(type) {
-  if (type.name === 'arrayOf' || type.name === 'union' || (typeof type.value === 'string')) {
-    return <CodeBlock>{parseValue(type)}</CodeBlock>;
+function renderTypeDescription(type) {
+  // primitive types have the shape { name: <type> }
+  // complex types have the shape { name: <type>, value: <something> }
+  // we only want to render the explicit type options in the description area if they are complex
+  if (type.value) {
+    return <CodeBlock>{typeParser(type)}</CodeBlock>;
   }
 
   return null;
@@ -50,6 +34,11 @@ export default class DynamicProps extends PureComponent {
   }
   constructor(props) {
     super(props);
+    // we store this in state to cache it between "props" changes.changes
+    // this is defensive, against a case in the future where props to control behaviour are added
+    // since reactDocs.parse is an expensive operation, we want to avoid recomputing it
+    // when the props change, unless the componentSrc prop is the one that changes
+    // see the componentWillReceiveProps method below
     const componentDocs = reactDocs.parse(props.componentSrc);
     this.state = { componentDocs };
   }
@@ -87,7 +76,7 @@ export default class DynamicProps extends PureComponent {
                 <td>{prop.defaultValue ? prop.defaultValue.value : '--'}</td>
                 <td>
                   {prop.description}
-                  {renderValue(prop.type)}
+                  {renderTypeDescription(prop.type)}
                 </td>
               </tr>
             );

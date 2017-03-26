@@ -24,17 +24,17 @@ const style = {
   },
 };
 
-export default class ReadmeHeading extends PureComponent {
+export default class Heading extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
-    type: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    type: PropTypes.number,
   }
   static defaultProps = {
     type: 1,
   }
   render() {
     const { children, type } = this.props;
-    const Heading = `h${type}`;
-    return <Heading style={style[Heading]}>{children}</Heading>;
+    const HeadingTag = `h${type}`;
+    return <HeadingTag style={style[HeadingTag]}>{children}</HeadingTag>;
   }
 }

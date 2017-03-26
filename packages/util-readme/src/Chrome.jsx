@@ -7,16 +7,17 @@ const style = {
   },
 };
 
-export default class ReadmeChrome extends PureComponent {
+export default class Chrome extends PureComponent {
   static propTypes = {
-    children: PropTypes.node,
-    title: PropTypes.string,
+    children: PropTypes.node.isRequired,
+    title: PropTypes.string.isRequired,
   }
   render() {
     const { children, title } = this.props;
+
     return (
       <div style={style.chrome}>
-        {title ? <Heading>{title}</Heading> : ''}
+        <Heading>{title}</Heading>
         {children}
       </div>
     );

@@ -2,8 +2,7 @@ import React, { PropTypes, PureComponent } from 'react';
 
 const halfGrid = 4;
 
-export default class extends PureComponent {
-  static displayName = 'utilReadmeDescription'
+export default class ReadmeDescription extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
   }

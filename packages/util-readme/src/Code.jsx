@@ -31,8 +31,7 @@ function formatCode(code) {
   return lines.map(line => line.substring(indent)).join('\n').trim();
 }
 
-export default class extends PureComponent {
-  static displayName = 'utilReadmeCode'
+export default class ReadmeCode extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
     code: PropTypes.string,

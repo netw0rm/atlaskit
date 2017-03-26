@@ -38,6 +38,7 @@ storiesOf('LinkCardGenericView', {})
           <LinkCardGenericView
             linkUrl="the-url.user.linked"
             title="Welcome to the world of trips."
+            site="Touch Sensitive Site"
             thumbnailUrl={defaultThumbnailUrl}
             iconUrl={defaultIconUrl}
           />
@@ -49,6 +50,7 @@ storiesOf('LinkCardGenericView', {})
           <LinkCardGenericView
             linkUrl="the-url.user.linked"
             title="Welcome to the world of trips."
+            site="Touch Sensitive Site"
             description="Convert today’s signups into tomorrow some text after"
             iconUrl={defaultIconUrl}
           />
@@ -60,8 +62,21 @@ storiesOf('LinkCardGenericView', {})
           <LinkCardGenericView
             linkUrl="the-url.user.linked"
             title="Welcome to the world of trips."
+            site="Touch Sensitive Site"
             description="Convert today’s signups into tomorrow some text after"
             thumbnailUrl={defaultThumbnailUrl}
+          />
+        )
+      },
+      {
+        title: 'No site',
+        content: (
+          <LinkCardGenericView
+            linkUrl="the-url.user.linked"
+            title="Welcome to the world of trips."
+            description="Convert today’s signups into tomorrow some text after"
+            thumbnailUrl={defaultThumbnailUrl}
+            iconUrl={defaultIconUrl}
           />
         )
       },
@@ -71,6 +86,7 @@ storiesOf('LinkCardGenericView', {})
           <LinkCardGenericView
             linkUrl="the-url.user.linked"
             title="Welcome to the world of trips."
+            site="Touch Sensitive Site"
             description="Convert today’s signups into tomorrow some text after"
             thumbnailUrl="http://www.fakeresponse.com/api/?sleep=1&meta=false&status=404"
             iconUrl={defaultIconUrl}
@@ -83,6 +99,7 @@ storiesOf('LinkCardGenericView', {})
           <LinkCardGenericView
             linkUrl="the-url.user.linked"
             title="Welcome to the world of trips."
+            site="Touch Sensitive Site"
             description="Convert today’s signups into tomorrow some text after"
             thumbnailUrl={defaultThumbnailUrl}
             iconUrl="http://www.fakeresponse.com/api/?sleep=1&meta=false&status=404"
@@ -100,6 +117,7 @@ storiesOf('LinkCardGenericView', {})
         content: (
           <LinkCardGenericView
             title="This week inside Intercom."
+            site="The site name"
             description="You need to continuously onboard existing customers. Convert today’s signups into tomorrow some text after"
             linkUrl="the-url.user.linked"
             thumbnailUrl={defaultThumbnailUrl}
@@ -112,6 +130,7 @@ storiesOf('LinkCardGenericView', {})
         content: (
           <LinkCardGenericView
             title="Successful customer onboarding never stops - Inside Intercom."
+            site="The site name"
             description="You need to continuously onboard existing customers. Convert today’s signups into tomorrow some text after"
             linkUrl="the-url.user.linked"
             thumbnailUrl={defaultThumbnailUrl}
@@ -131,6 +150,19 @@ storiesOf('LinkCardGenericView', {})
           />
         )
       },
+      {
+        title: 'Long site',
+        content: (
+          <LinkCardGenericView
+            title="This week inside Intercom."
+            site="The site name is really really long and stuff with some more stuff"
+            description="Convert today’s signups into tomorrow some text after"
+            linkUrl="http://localhost:9001/?selectedKind=LinkCardViewHorizontal&selectedStory=Various%20text%20lengths&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel"
+            thumbnailUrl={defaultThumbnailUrl}
+            iconUrl={defaultIconUrl}
+          />
+        )
+      }
     ];
 
     return <StoryList>{linkCardViewHorizontals}</StoryList>;
@@ -141,6 +173,7 @@ storiesOf('LinkCardGenericView', {})
          title: 'card click',
          content: <LinkCardGenericView
           title="This week inside Intercom."
+          site="The site name"
           description="Convert today’s signups into tomorrow some text after"
           linkUrl="http://localhost:9001/?selectedKind=LinkCardViewHorizontal&selectedStory=Various%20text%20lengths&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel"
           thumbnailUrl={defaultThumbnailUrl}
@@ -152,6 +185,7 @@ storiesOf('LinkCardGenericView', {})
          title: 'card menu',
          content: <LinkCardGenericView
           title="This week inside Intercom."
+          site="The site name"
           description="Convert today’s signups into tomorrow some text after"
           linkUrl="http://localhost:9001/?selectedKind=LinkCardViewHorizontal&selectedStory=Various%20text%20lengths&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel"
           thumbnailUrl={defaultThumbnailUrl}
@@ -164,6 +198,7 @@ storiesOf('LinkCardGenericView', {})
          content: (
            <LinkCardGenericView
               title="This week inside Intercom."
+              site="The site name"
               description="Convert today’s signups into tomorrow some text after"
               linkUrl="http://localhost:9001/?selectedKind=LinkCardViewHorizontal&selectedStory=Various%20text%20lengths&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel"
               thumbnailUrl={defaultThumbnailUrl}
@@ -182,6 +217,7 @@ storiesOf('LinkCardGenericView', {})
           <LinkCardGenericView
             appearance="square"
             title="This week inside Intercom."
+            site="The site name"
             description="Convert today’s signups into tomorrow some text after"
             linkUrl="http://localhost:9001/?selectedKind=LinkCardViewHorizontal&selectedStory=Various%20text%20lengths&full=0&down=1&left=1&panelRight=0&downPanel=kadirahq%2Fstorybook-addon-actions%2Factions-panel"
             thumbnailUrl="https://wac-cdn.atlassian.com/dam/jcr:89e146b4-642e-41fc-8e65-7848337d7bdd/atlassian_charlie_square.png"

@@ -12,23 +12,27 @@ import {FileTypeIcon} from './styled';
 export interface FileIconProps {
   mediaType?: string;
   style?: any;
+  iconUrl?: string;
 }
+
+const icons = {
+  audio,
+  doc,
+  image,
+  video,
+  unknown
+};
 
 export class FileIcon extends Component<FileIconProps, {}> {
   render() {
     const type = this.props.mediaType || 'unknown';
     const fileTypeIconClass = `file-type-icon ${type}`;
-    const icons = {
-      audio,
-      doc,
-      image,
-      video,
-      unknown
-    };
-    const Icon = icons[type] || icons['unknown'];
+    const IconType = icons[type] || icons['unknown'];
+    const defaultIcon = <IconType className={fileTypeIconClass} size="small" label="fileIcon"/>;
+    const icon = this.props.iconUrl ? <img src={this.props.iconUrl} alt={type} /> : defaultIcon;
 
     return <FileTypeIcon style={this.props.style} className={fileTypeIconClass}>
-             <Icon className={fileTypeIconClass} size="small" label="fileIcon"/>
+            {icon}
            </FileTypeIcon>;
   }
 }

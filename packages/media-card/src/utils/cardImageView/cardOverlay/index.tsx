@@ -4,7 +4,7 @@ import * as cx from 'classnames';
 import {MediaType, CardAction, CardEventHandler} from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/editor/check';
 
-import {toHumanReadableMediaSize, ProgressBar, FileIcon, ErrorIcon, Ellipsify, Menu} from '../../utils';
+import {toHumanReadableMediaSize, ProgressBar, FileIcon, ErrorIcon, Ellipsify, Menu} from '../..';
 
 import {
   TickBox,
@@ -36,6 +36,7 @@ export interface CardOverlayProps {
   onRetry?: CardAction;
 
   actions?: Array<CardAction>;
+  icon?: string;
 }
 
 export interface CardOverlayState {
@@ -139,7 +140,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       return (
         <div>
           <Metadata className={className}>
-            <FileIcon mediaType={this.props.mediaType} />
+            <FileIcon mediaType={this.props.mediaType} iconUrl={this.props.icon} />
             <FileSize className={'file-size'}>{fileSize}</FileSize>
           </Metadata>
           <ProgressBar progress={this.props.progress} />

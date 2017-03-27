@@ -6,6 +6,7 @@ import Avatar from '@atlaskit/avatar';
 
 import Tag from '../src/index';
 import RemoveButton from '../src/RemoveButton';
+import Chrome from '../src/Chrome';
 import AnimationWrapper from '../src/AnimationWrapper';
 
 // TODO: Revist all these tests.
@@ -131,6 +132,20 @@ describe('<Tag/> component tests', () => {
     it('should not render a .elemBefore block if not elemBefore passed in', () => {
       const wrapper = mount(<Tag text="foo" />);
       expect(wrapper.find(`.${styles.elemBefore}`).length).to.equal(0);
+    });
+  });
+
+  describe('appearance prop', () => {
+    it('should set the rounded prop of Chrome and RemoveButton to true when set to "rounded"', () => {
+      const wrapper = mount(<Tag appearance="rounded" text="foo" removeButtonText="foo" />);
+      expect(wrapper.find(Chrome).prop('rounded')).to.equal(true);
+      expect(wrapper.find(RemoveButton).prop('rounded')).to.equal(true);
+    });
+
+    it('should set the rounded prop of Chrome and RemoveButton to false when not set to "rounded"', () => {
+      const wrapper = mount(<Tag appearance="default" text="foo" removeButtonText="foo" />);
+      expect(wrapper.find(Chrome).prop('rounded')).to.equal(false);
+      expect(wrapper.find(RemoveButton).prop('rounded')).to.equal(false);
     });
   });
 });

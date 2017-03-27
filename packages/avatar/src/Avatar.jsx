@@ -37,12 +37,9 @@ export default class Avatar extends PureComponent {
     size: 'medium',
   }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: false,
-      hasError: false,
-    };
+  state = {
+    isLoading: false,
+    hasError: false,
   }
 
   componentWillReceiveProps(nextProps) {

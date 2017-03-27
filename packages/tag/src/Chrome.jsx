@@ -5,7 +5,7 @@ import React, { PureComponent, PropTypes } from 'react';
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 export default class Chrome extends PureComponent {
   static propTypes = {
-    rounded: PropTypes.bool,
+    isRounded: PropTypes.bool,
     isLink: PropTypes.bool.isRequired,
     markedForRemoval: PropTypes.bool.isRequired,
     isRemovable: PropTypes.bool.isRequired,
@@ -28,7 +28,7 @@ export default class Chrome extends PureComponent {
   render() {
     const chromeClassNames = classNames({
       [styles.chrome]: true,
-      [styles.rounded]: this.props.rounded,
+      [styles.rounded]: this.props.isRounded,
       [styles.markedForRemoval]: this.props.markedForRemoval,
       [styles.isRemovable]: this.props.isRemovable,
     });

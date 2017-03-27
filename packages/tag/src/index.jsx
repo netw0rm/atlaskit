@@ -52,7 +52,7 @@ export default class Tag extends PureComponent {
     const newButton = this.props.removeButtonText ? (
       <Button
         removeText={this.props.removeButtonText}
-        rounded={this.props.appearance === 'rounded'}
+        isRounded={this.props.appearance === 'rounded'}
         onHoverChange={this.handleHoverChange}
         onRemoveAction={this.handleRemoveAction}
       />
@@ -66,7 +66,7 @@ export default class Tag extends PureComponent {
           onRemovalCompletion={this.handleRemovalCompletion}
         >
           <Chrome
-            rounded={this.props.appearance === 'rounded'}
+            isRounded={this.props.appearance === 'rounded'}
             isLink={!!this.props.href}
             markedForRemoval={this.state.markedForRemoval}
             isRemovable={!!this.props.removeButtonText}

@@ -7,7 +7,7 @@ import RemoveIcon from '@atlaskit/icon/glyph/cross';
 export default class RemoveButton extends PureComponent {
   static propTypes = {
     removeText: PropTypes.string.isRequired,
-    rounded: PropTypes.bool,
+    isRounded: PropTypes.bool,
     onHoverChange: PropTypes.func,
     onRemoveAction: PropTypes.func,
   }
@@ -29,7 +29,7 @@ export default class RemoveButton extends PureComponent {
 
   render() {
     const buttonStyles = classNames(styles.button, {
-      [styles.rounded]: this.props.rounded,
+      [styles.rounded]: this.props.isRounded,
     });
     return (
       <button

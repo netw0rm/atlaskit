@@ -93,8 +93,7 @@ storiesOf('FilmStrip', {})
     return (
       <FilmStrip
         items={items}
-        cardHeight={300}
-        cardWidth={300}
+        cardDimensions={{width: 300, height: 300}}
         context={context}
         collectionName={collectionName}
         actions={cardsActions}

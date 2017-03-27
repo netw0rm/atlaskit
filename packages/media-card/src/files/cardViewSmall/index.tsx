@@ -4,12 +4,12 @@ import {Component, MouseEvent} from 'react';
 import {CardAction, MediaType} from '@atlaskit/media-core';
 
 import {CardContentSmall} from './cardContentSmall/cardContentSmall';
-import {toHumanReadableMediaSize, Menu, ErrorIcon} from '../../utils';
+import {toHumanReadableMediaSize, getCSSUnitValue, Menu, ErrorIcon} from '../../utils';
 
 import {Error, Title, Size, Retry, SmallCard, ImgWrapper, RoundedBackground, InfoWrapper, FileInfoWrapper} from './styled';
 
-export interface CardViewSmallProps {
-  width?: number;
+export interface FileCardViewSmallProps {
+  width?: number | string;
 
   mediaName?: string;
   mediaType?: MediaType;
@@ -19,19 +19,29 @@ export interface CardViewSmallProps {
   progress?: number;
   loading?: boolean;
 
-  menuActions?: Array<CardAction>;
+  actions?: Array<CardAction>;
   onClick?: (event: Event) => void;
 
   error?: string;
   onRetry?: CardAction;
 }
 
-export interface CardViewSmallState {
+export interface FileCardViewSmallState {
   isMenuExpanded: boolean;
 }
 
-export class CardViewSmall extends Component<CardViewSmallProps, CardViewSmallState> {
-  constructor(props: CardViewSmallProps) {
+export class FileCardViewSmall extends Component<FileCardViewSmallProps, FileCardViewSmallState> {
+  private get wrapperStyles(): {width?: string} {
+    const width = this.props.width;
+
+    if (!width) {
+      return {};
+    }
+
+    return {width: getCSSUnitValue(width)};
+  }
+
+  constructor(props: FileCardViewSmallProps) {
     super(props);
 
     this.state = {
@@ -90,8 +100,8 @@ export class CardViewSmall extends Component<CardViewSmallProps, CardViewSmallSt
   }
 
   formatCard(left: JSX.Element, right: JSX.Element) {
-    const {menuActions} = this.props;
-    const cardStyle = this.props.width ? {width: `${this.props.width}px`} : {};
+    const {actions} = this.props;
+    const cardStyle = this.wrapperStyles;
     const cardClass = cx({loading: this.props.loading});
     const imgClass = cx('img-wrapper', {shadow: this.props.mediaType === 'image' && this.props.dataURI});
 
@@ -103,7 +113,7 @@ export class CardViewSmall extends Component<CardViewSmallProps, CardViewSmallSt
         <InfoWrapper className="info-wrapper">
           {right}
         </InfoWrapper>
-        <Menu actions={menuActions} />
+        <Menu actions={actions} />
       </SmallCard>
     );
   }

@@ -220,7 +220,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
   }
 
   private renderSmallLink(urlPreview: UrlPreview): JSX.Element {
-    const { url, title, resources } = urlPreview;
+    const { url, title, site, resources } = urlPreview;
     const thumbnail = resources ? resources.icon : undefined;
 
     const { dimensions, actions } = this.props;
@@ -229,6 +229,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
     return <LinkCardViewSmall
       linkUrl={url}
       title={title}
+      site={site}
 
       thumbnailUrl={thumbnail && thumbnail.url}
       width={dimensions && dimensions.width}

@@ -1,16 +1,32 @@
-import createRequest, {CreateRequestFunc} from './util/createRequest';
-import {MediaApiConfig} from '../';
+import { MediaApiConfig } from '../config';
+import createRequest from './util/createRequest';
 
 export type SortDirection = 'desc' | 'asc';
 
-export interface RemoteCollectionItem {
-  id: string;
-  occurrenceKey: string;
-  type: string;
-  details: {
-    name: string,
-    size: number
-  };
+export type RemoteCollectionItem = RemoteCollectionFileItem | RemoteCollectionLinkItem;
+
+export interface RemoteCollectionFileItem {
+  readonly id: string;
+  readonly occurrenceKey: string;
+  readonly type: 'file';
+  readonly details: RemoteCollectionFileItemDetails;
+}
+
+export interface RemoteCollectionFileItemDetails {
+  readonly name: string;
+  readonly size: number;
+  readonly mimeType?: string;
+}
+
+export interface RemoteCollectionLinkItem {
+  readonly id: string;
+  readonly occurrenceKey: string;
+  readonly type: 'link';
+  readonly details: RemoteCollectionLinkItemDetails;
+}
+
+export interface RemoteCollectionLinkItemDetails {
+  readonly url: string;
 }
 
 export interface RemoteCollectionItemsResponse {
@@ -21,36 +37,42 @@ export interface RemoteCollectionItemsResponse {
 }
 
 export interface CollectionService {
-  getCollectionItems(inclusiveStartKey: string): Promise<RemoteCollectionItemsResponse>;
-  collectionName: string;
+  getCollectionItems(
+    collectionName: string,
+    limit: number,
+    inclusiveStartKey?: string,
+    sortDirection?: SortDirection,
+    details?: DetailsType): Promise<RemoteCollectionItemsResponse>;
 }
 
+export type DetailsType = 'minimal' | 'full';
+
 export class MediaCollectionService implements CollectionService {
+  static defaultLimit = 10;
 
-  private request: CreateRequestFunc;
-
-  constructor(private config: MediaApiConfig,
-              public collectionName: string,
-              private clientId: string,
-              private limit: number,
-              private sortDirection: SortDirection) {
-    this.request = createRequest({
-      config: this.config,
-      clientId: this.clientId,
-      collectionName: this.collectionName
-    });
+  constructor(private config: MediaApiConfig, private clientId: string) {
   }
 
-  getCollectionItems(inclusiveStartKey: string): Promise<RemoteCollectionItemsResponse> {
-    return this.request({
-      url: `/collection/${this.collectionName}/items`,
+  getCollectionItems(
+    collectionName: string,
+    limit: number = MediaCollectionService.defaultLimit,
+    inclusiveStartKey?: string,
+    sortDirection?: SortDirection,
+    details?: DetailsType): Promise<RemoteCollectionItemsResponse> {
+
+    const request = createRequest({
+      config: this.config,
+      clientId: this.clientId
+    });
+
+    return request({
+      url: `/collection/${collectionName}/items`,
       params: {
-          limit: this.limit,
-          inclusiveStartKey: inclusiveStartKey,
-          sortDirection: this.sortDirection
+        limit,
+        inclusiveStartKey,
+        sortDirection,
+        details
       }
-    })
-      .then(json => json as RemoteCollectionItemsResponse)
-    ;
+    }).then(json => json as RemoteCollectionItemsResponse);
   }
 }

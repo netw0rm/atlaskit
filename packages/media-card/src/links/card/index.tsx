@@ -4,136 +4,24 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { Context, CardAction, TrelloBoardLinkApp, UrlPreview } from '@atlaskit/media-core';
 
-import { CardDimensions, CardAppearance, OnLoadingChangeFunc, OnLoadingChangeState, OnSelectChangeFunc, CardEvent, CardProcessingStatus } from '../../card';
+import { CardProps, CardProcessingStatus } from '../../index';
 import { LinkCardGenericView } from '../cardGenericView';
 import { LinkCardPlayer } from '../cardPlayerView';
 import { LinkCardTrelloBoardView } from '../apps/trello';
 import { LinkCardViewSmall } from '../cardViewSmall';
 
-export interface LinkFromId {
-  readonly id: string;
-  readonly collectionName: string;
+export interface LinkCardProps extends CardProps {
+  urlPreview: UrlPreview;
+  cardProcessingStatus: CardProcessingStatus;
 }
 
-export interface LinkCardProps {
-  readonly context: Context;
-  readonly link: string | LinkFromId;
-
-  readonly dimensions?: CardDimensions;
-
-  readonly actions?: Array<CardAction>;
-
-  readonly appearance?: CardAppearance;
-
-  // TODO FIL-3962 update card to fire click, hover, selectChange and loading change callbacks
-  readonly onClick?: (result: CardEvent) => void;
-  readonly onHover?: (result: CardEvent) => void;
-  readonly onSelectChange?: OnSelectChangeFunc;
-  readonly onLoadingChange?: OnLoadingChangeFunc;
-}
-
-export interface LinkCardState {
-  readonly subscription?: Subscription;
-  readonly processingStatus: CardProcessingStatus;
-  readonly urlPreview?: UrlPreview;
-  readonly error?: Error;
-}
-
-export class LinkCard extends Component<LinkCardProps, LinkCardState> {
-  static defaultProps: Partial<LinkCardProps> = {
-    actions: [],
-    onLoadingChange: () => {}
-  };
-
-  state: LinkCardState = {
-    processingStatus: 'loading'
-  };
-
-  componentDidMount(): void {
-    this.updateState(this.props);
-  }
-
-  componentWillReceiveProps(nextProps: LinkCardProps, nextContext: any): void {
-    if (this.shouldUpdateState(nextProps)) {
-      this.updateState(nextProps);
-    }
-  }
-
-  componentWillUnmount(): void {
-    this.unsubscribe();
-  }
-
-  private shouldUpdateState(nextProps: LinkCardProps): boolean {
-    return nextProps.context !== this.props.context || nextProps.link !== this.props.link;
-  }
-
-  private observable(): Observable<UrlPreview> {
-    const { context, link } = this.props;
-
-    if (typeof link === 'string') {
-      return context.getUrlPreviewProvider(link).observable();
-    } else {
-      return context.getMediaItemProvider(link.id, 'link', link.collectionName)
-        .observable()
-        .map(linkItem => linkItem.details);
-    }
-  }
-
-  private stateToProcessingStatus(): OnLoadingChangeState {
-    const {processingStatus, error, urlPreview} = this.state;
-    return {
-      type: processingStatus,
-      payload: error ? error : urlPreview
-    };
-  }
-
-  private updateState(props: LinkCardProps): void {
-    this.unsubscribe();
-    this.setPartialState({ processingStatus: 'loading' });
-
-    const onLoadingChange = this.props.onLoadingChange as OnLoadingChangeFunc;
-    onLoadingChange(this.stateToProcessingStatus());
-
-    this.setPartialState({
-      subscription: this.observable().subscribe({
-        next: urlPreview => {
-          this.setPartialState(
-            { urlPreview, error: undefined, processingStatus: 'processing'},
-            () => onLoadingChange(this.stateToProcessingStatus())
-          );
-        },
-        complete: () => {
-          this.setPartialState(
-            { processingStatus: 'complete' },
-            () => onLoadingChange(this.stateToProcessingStatus())
-          );
-        },
-        error: (error) => {
-          this.setPartialState(
-            { error, processingStatus: 'error' },
-            () => onLoadingChange(this.stateToProcessingStatus())
-          );
-        }
-      })
-    });
-  }
-
-  private setPartialState(partialState: Partial<LinkCardState>, callback?: () => any) {
-    this.setState((previousState, props) => {
-      return { ...previousState, ...partialState };
-    }, callback);
-  }
-
-  private unsubscribe(): void {
-    this.state && this.state.subscription && this.state.subscription.unsubscribe();
-  }
+export class LinkCard extends Component<LinkCardProps, {}> {
 
   render(): JSX.Element | null {
-    const { state, props } = this;
+    const {urlPreview, appearance} = this.props;
 
-    if (state && state.urlPreview) {
-      const urlPreview = state.urlPreview as UrlPreview;
-      const { resources } = urlPreview;
+    if (urlPreview) {
+      const {resources} = urlPreview;
 
       if (resources && resources.app) {
         return this.renderApplicationLink(urlPreview);
@@ -141,7 +29,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
         return this.renderPlayerLink(urlPreview);
       }
 
-      if (props.appearance === 'small') {
+      if (appearance === 'small') {
         return this.renderSmallLink(urlPreview);
       }
 
@@ -199,8 +87,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
     const icon = resources ? resources.icon : undefined;
     const thumbnail = resources ? resources.icon : undefined;
 
-    const { dimensions, actions, appearance } = this.props;
-    const { processingStatus } = this.state;
+    const {dimensions, actions, appearance, cardProcessingStatus} = this.props;
 
     return <LinkCardGenericView
       linkUrl={url}
@@ -214,7 +101,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
       dimensions={dimensions}
 
       appearance={appearance}
-      loading={processingStatus === 'loading'}
+      loading={cardProcessingStatus === 'loading'}
       actions={actions}
     />;
   }
@@ -223,8 +110,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
     const { url, title, site, resources } = urlPreview;
     const thumbnail = resources ? resources.icon : undefined;
 
-    const { dimensions, actions } = this.props;
-    const { processingStatus } = this.state;
+    const {dimensions, actions, cardProcessingStatus} = this.props;
 
     return <LinkCardViewSmall
       linkUrl={url}
@@ -234,7 +120,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
       thumbnailUrl={thumbnail && thumbnail.url}
       width={dimensions && dimensions.width}
 
-      loading={processingStatus === 'loading'}
+      loading={cardProcessingStatus === 'loading'}
       actions={actions}
     />;
   }

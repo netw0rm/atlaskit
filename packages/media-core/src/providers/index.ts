@@ -128,3 +128,5 @@ export class MediaUrlPreviewProvider extends UrlPreviewProvider {
     return new Pool<Observable<UrlPreview>>();
   }
 }
+
+export {UrlPreviewProvider};

@@ -7,7 +7,7 @@ import { Card, UrlPreviewIdentifier, MediaIdentifier } from '../src';
 const context = createStorybookContext();
 
 storiesOf('Card', {})
-  .add('Appearence matrix', () => {
+  /*.add('Appearence matrix', () => {
     const genericUrlIdentifier: UrlPreviewIdentifier = {
       mediaItemType: 'link',
       url: 'https://atlassian.com'
@@ -172,5 +172,12 @@ storiesOf('Card', {})
         </Matrix>
       </div>
     );
-  });
+  });*/
+
+  .add('foo', () => (
+    <Card context={context} identifier={{
+      mediaItemType: 'link',
+      url: 'https://www.youtube.com/watch?v=4OkP5_1qb7Y'
+    }} appearance="small"/>
+  ));
 

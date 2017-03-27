@@ -3,6 +3,8 @@ import { TrelloBoardLinkApp } from './trello';
 
 export type MediaItemType = 'file' | 'link';
 
+export type MediaItemDetails = FileDetails | UrlPreview;
+
 export type MediaItem = FileItem | LinkItem;
 
 export interface FileItem {

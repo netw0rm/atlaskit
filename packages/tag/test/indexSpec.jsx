@@ -9,7 +9,7 @@ import RemoveButton from '../src/RemoveButton';
 import Chrome from '../src/Chrome';
 import AnimationWrapper from '../src/AnimationWrapper';
 
-// TODO: Revist all these tests. AK-1975
+// TODO: Revisit all these tests. AK-1975
 // Large parts of the API are not tested (hrefs should render anchors, truncation should occur, etc)
 // Most of these tests are testing React behaviour (setting props) where they should be testing
 // props + state => expectedRenderedOutput

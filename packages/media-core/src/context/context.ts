@@ -38,8 +38,8 @@ class ContextImpl implements Context {
     this.lruCache = new LRUCache<string, MediaItem>(config.cacheSize || DEFAULT_CACHE_SIZE);
   }
 
-  getMediaItemProvider(id: string, mediaItemType: MediaItemType, collectionName?: string): MediaItemProvider {
-    return MediaItemProvider.fromPool(this.itemPool, this.apiConfig, this.lruCache, mediaItemType, id, this.config.clientId, collectionName);
+  getMediaItemProvider(id: string, mediaItemType: MediaItemType, collectionName?: string, mediaItem?: MediaItem): MediaItemProvider {
+    return MediaItemProvider.fromPool(this.itemPool, this.apiConfig, this.lruCache, mediaItemType, id, this.config.clientId, collectionName, mediaItem);
   }
 
   getMediaCollectionProvider(collectionName: string, pageSize: number): MediaCollectionProvider {

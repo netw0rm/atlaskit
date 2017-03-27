@@ -1,4 +1,6 @@
 import { MediaApiConfig } from '../config';
+import {MediaCollectionItem} from '../collection';
+import {Resources} from '../item';
 import createRequest from './util/createRequest';
 
 export type SortDirection = 'desc' | 'asc';
@@ -27,13 +29,13 @@ export interface RemoteCollectionLinkItem {
 
 export interface RemoteCollectionLinkItemDetails {
   readonly url: string;
+  readonly title?: string;
+  readonly resources?: Resources;
 }
 
 export interface RemoteCollectionItemsResponse {
-  data: {
-    contents: Array<RemoteCollectionItem>,
-    nextInclusiveStartKey: string
-  };
+  items: Array<MediaCollectionItem>;
+  nextInclusiveStartKey: string;
 }
 
 export interface CollectionService {
@@ -51,6 +53,33 @@ export class MediaCollectionService implements CollectionService {
   static defaultLimit = 10;
 
   constructor(private config: MediaApiConfig, private clientId: string) {
+  }
+
+  private mapToMediaCollectionItem(item: RemoteCollectionItem): MediaCollectionItem {
+    const {id, type, occurrenceKey, details} = item;
+    if (type === 'file') {
+      const fileDetails = details as RemoteCollectionFileItemDetails;
+      return {
+        type: 'file',
+        details: {
+          id,
+          occurrenceKey,
+          ...fileDetails
+        }
+      };
+    } else {
+      const linkDetails = details as RemoteCollectionLinkItemDetails;
+      return {
+        type: 'link',
+        details: {
+          id,
+          type: 'link',
+          occurrenceKey,
+          title: linkDetails.title || '',
+          ...linkDetails
+        }
+      };
+    }
   }
 
   getCollectionItems(
@@ -73,6 +102,14 @@ export class MediaCollectionService implements CollectionService {
         sortDirection,
         details
       }
-    }).then(json => json as RemoteCollectionItemsResponse);
+    })
+      .then(json => json)
+      .then(response => {
+        return {
+          items: response.data.contents.map(this.mapToMediaCollectionItem),
+          nextInclusiveStartKey: response.data.nextInclusiveStartKey
+        };
+      })
+    ;
   }
 }

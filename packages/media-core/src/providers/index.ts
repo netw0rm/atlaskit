@@ -1,6 +1,8 @@
 import {CollectionProvider, CollectionController, CollectionCommandReducer} from './collectionProvider';
 import {MediaItem, MediaItemType, MediaApiConfig, UrlPreview, MediaCollection} from '../';
 import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/startWith';
 import {FileProvider} from './fileProvider';
 import {LinkProvider} from './linkProvider';
 import {UrlPreviewProvider} from './urlPreviewProvider';
@@ -38,15 +40,35 @@ export class MediaItemProvider {
                          mediaItemType: MediaItemType,
                          id: string,
                          clientId: string,
-                         collection?: string): MediaItemProvider {
+                         collection?: string,
+                         mediaItem?: MediaItem): MediaItemProvider {
+
+    const isMediaItemLink = mediaItem && mediaItem.type === 'link';
+    const isMediaItemFileAndNotPending = mediaItem && mediaItem.type === 'file' && mediaItem.details.processingStatus !== 'pending';
+
+    if (isMediaItemLink || isMediaItemFileAndNotPending) {
+      return {
+        observable() {
+          return Observable.of(mediaItem);
+        }
+      };
+    }
+
+    const poolId = [mediaItemType, id, collection].join('-');
+    let observable = observableFromObservablePool(pool, poolId, () => {
+      return MediaItemProvider.fromMediaApi(config, cache, mediaItemType, id, clientId, collection).observable();
+    });
+
+    if (mediaItem) {
+      observable = observable.startWith(mediaItem);
+    }
+
     return {
       observable() {
-        const poolId = [mediaItemType, id, collection].join('-');
-        return observableFromObservablePool(pool, poolId, () => {
-          return MediaItemProvider.fromMediaApi(config, cache, mediaItemType, id, clientId, collection).observable();
-        });
+        return observable;
       }
     };
+
   }
 
   public static createPool(): MediaItemObservablePool {

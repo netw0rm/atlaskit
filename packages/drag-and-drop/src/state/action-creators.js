@@ -58,20 +58,22 @@ export type PublishDraggableDimensionAction = {|
   payload: Dimension
 |}
 
-export const publishDraggableDimension = (dimension: Dimension): PublishDraggableDimensionAction => ({
-  type: 'PUBLISH_DRAGGABLE_DIMENSION',
-  payload: dimension,
-});
+export const publishDraggableDimension =
+  (dimension: Dimension): PublishDraggableDimensionAction => ({
+    type: 'PUBLISH_DRAGGABLE_DIMENSION',
+    payload: dimension,
+  });
 
 export type PublishDroppableDimensionAction = {|
   type: 'PUBLISH_DROPPABLE_DIMENSION',
   payload: Dimension
 |}
 
-export const publishDroppableDimension = (dimension: Dimension): PublishDroppableDimensionAction => ({
-  type: 'PUBLISH_DROPPABLE_DIMENSION',
-  payload: dimension,
-});
+export const publishDroppableDimension =
+  (dimension: Dimension): PublishDroppableDimensionAction => ({
+    type: 'PUBLISH_DROPPABLE_DIMENSION',
+    payload: dimension,
+  });
 
 export type MoveAction = {|
   type: 'MOVE',
@@ -131,13 +133,13 @@ export const drop = (id: DraggableId): DropAction => ({
   payload: id,
 });
 
-export type DropFinishedAction = {
-  type: 'DROP_FINISHED',
+export type DropAnimationFinishedAction = {
+  type: 'DROP_ANIMATION_FINISHED',
   payload: DraggableId
 }
 
-export const dropFinished = (id: DraggableId): DropFinishedAction => ({
-  type: 'DROP_FINISHED',
+export const dropAnimationFinished = (id: DraggableId): DropAnimationFinishedAction => ({
+  type: 'DROP_ANIMATION_FINISHED',
   payload: id,
 });
 
@@ -161,7 +163,7 @@ export const lift = (id: DraggableId,
 ) => (dispatch: Dispatch, getState: Function) => {
   const state: State = getState();
   if (state.complete && !state.complete.isAnimationFinished) {
-    dispatch(dropFinished(id));
+    dispatch(dropAnimationFinished(id));
   }
   // https://github.com/chenglou/react-motion/issues/437
   // need to allow a flush of react-motion
@@ -205,6 +207,6 @@ export type Action = BeginLiftAction |
   MoveBackwardAction |
   MoveForwardAction |
   DropAction |
-  DropFinishedAction |
+  DropAnimationFinishedAction |
   CancelAction |
   UpdateDimensionScrollTopAction;

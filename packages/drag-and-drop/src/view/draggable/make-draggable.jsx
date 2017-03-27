@@ -1,6 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import invariant from 'invariant';
+import styled from 'styled-components';
 import type { TypeId, Position } from '../../types';
 import type { Props, MapState, StateSnapshot } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
@@ -15,24 +16,25 @@ const identity = x => x;
 const origin: Position = { x: 0, y: 0 };
 
 type ComponentState = {|
-  wasDragging: boolean,
-    childRef: ?Element,
+  childRef: ?Element,
 |}
 
 type MovementStyle = {|
   position: 'absolute',
-    zIndex: string,
-      width: number,
-        height: number,
-          top: number,
-            left: number,
+  zIndex: string,
+  width: number,
+  height: number,
+  top: number,
+  left: number,
 |}
 
 type PlacementInfo = {|
   showPlaceholder: boolean,
-    speed: Speed,
-      style ?: MovementStyle
-        |}
+  speed: Speed,
+  style ?: MovementStyle
+|}
+
+export const Placeholder = styled.div``;
 
 export default (type: TypeId, map: MapState): Function =>
   (Component: ReactClass<any>): ReactClass<any> =>
@@ -43,7 +45,6 @@ export default (type: TypeId, map: MapState): Function =>
       getHandle: Function
 
       state: ComponentState = {
-        wasDragging: false,
         childRef: null,
       }
 
@@ -68,33 +69,17 @@ export default (type: TypeId, map: MapState): Function =>
         });
       }
 
-      componentWillReceiveProps(nextProps) {
-        // TODO: need to not set wasDragging if there is no need to animate
-        const wasDragging = this.props.mapProps.isDragging &&
-          !nextProps.mapProps.isDragging;
-
-        if (this.state.wasDragging !== wasDragging) {
-          this.setState({
-            wasDragging,
-          });
-        }
-      }
-
       onMoveEnd = () => {
-        if (!this.state.wasDragging) {
+        if (!this.props.mapProps.isDropAnimating) {
           return;
         }
 
         const {
           mapProps: { id },
-          dispatchProps: { dropFinished },
+          dispatchProps: { dropAnimationFinished },
         } = this.props;
 
-        dropFinished(id);
-
-        this.setState({
-          wasDragging: false,
-        });
+        dropAnimationFinished(id);
       }
 
       onLift = (selection: Position) => {
@@ -227,13 +212,14 @@ export default (type: TypeId, map: MapState): Function =>
         };
 
         return (
-          <div style={style} />
+          <Placeholder style={style} />
         );
       }
 
       getPlacementInfo(): PlacementInfo {
-        const { isDragging, canAnimate, initial } = this.props.mapProps;
-        const { wasDragging } = this.state;
+        const { isDragging, canAnimate, initial, isDropAnimating } = this.props.mapProps;
+        console.log('this.props.mapProps', this.props.mapProps);
+        // const { wasDragging } = this.state;
 
         const getMovingStyle = (zIndex: string): MovementStyle => {
           invariant(initial, 'initial dimension required to drag');
@@ -262,7 +248,7 @@ export default (type: TypeId, map: MapState): Function =>
           };
         }
 
-        if (wasDragging) {
+        if (isDropAnimating) {
           return {
             showPlaceholder: true,
             speed: 'STANDARD',

@@ -78,7 +78,7 @@ export type DragComplete = {|
   result: DragResult,
   last: CurrentDrag,
   newHomeOffset: Position,
-  isAnimationFinished: boolean,
+  isWaitingForAnimation: boolean,
 |}
 
 export type Direction = 'vertical'; // | horiztonal - currently not supported

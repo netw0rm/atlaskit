@@ -32,11 +32,10 @@ export default (hooks: Hooks, store: Store) => {
       return;
     }
 
-    if (onDragEnd &&
-      state.complete &&
-      state.complete.isAnimationFinished &&
-      !(previous.complete && previous.complete.isAnimationFinished)
-    ) {
+    const isComplete = Boolean(state.complete && !state.complete.isWaitingForAnimation);
+    const wasComplete = Boolean(previous.complete && !previous.complete.isWaitingForAnimation);
+
+    if (onDragEnd && isComplete && !wasComplete) {
       onDragEnd(state.complete.result);
     }
 

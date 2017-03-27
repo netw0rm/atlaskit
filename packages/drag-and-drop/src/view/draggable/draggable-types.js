@@ -11,7 +11,7 @@ import {
   moveBackward,
   drop,
   cancel,
-  dropFinished,
+  dropAnimationFinished,
 } from '../../state/action-creators';
 
 export type NeedsProviding = {|
@@ -30,16 +30,17 @@ export type DispatchProps = {
   moveBackward: typeof moveBackward,
   drop: typeof drop,
   cancel: typeof cancel,
-  dropFinished: typeof dropFinished,
+  dropAnimationFinished: typeof dropAnimationFinished,
 }
 
 export type MapProps = {|
   id: DraggableId,
   isDragEnabled: boolean,
   isDragging: boolean,
+  isDropAnimating: boolean,
   canAnimate: boolean,
-  offset ?: Position,
-  initial ?: DraggingInitial,
+  offset?: Position,
+  initial?: DraggingInitial,
 |}
 
 export type Props = {

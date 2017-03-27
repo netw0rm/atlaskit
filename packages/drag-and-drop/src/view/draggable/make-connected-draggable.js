@@ -14,7 +14,7 @@ import {
   moveBackward as moveBackwardAction,
   drop as dropAction,
   cancel as cancelAction,
-  dropFinished as dropFinishedAction,
+  dropAnimationFinished as dropAnimationFinishedAction,
 } from '../../state/action-creators';
 import type {
   TypeId,
@@ -52,6 +52,7 @@ const makeSelector = (provide: Provide) => {
     (id: DraggableId, isDragEnabled: boolean): MapProps => ({
       id,
       isDragEnabled,
+      isDropAnimating: false,
       isDragging: false,
       canAnimate: true,
     }));
@@ -60,6 +61,7 @@ const makeSelector = (provide: Provide) => {
     (id: DraggableId, isDragEnabled: boolean): MapProps => ({
       id,
       isDragEnabled,
+      isDropAnimating: false,
       isDragging: false,
       canAnimate: false,
     }));
@@ -75,12 +77,14 @@ const makeSelector = (provide: Provide) => {
         const last: CurrentDrag = complete.last;
 
         if (last.dragging.id === provided.id) {
-          if (complete.isAnimationFinished) {
+          if (!complete.isWaitingForAnimation) {
             return cutOffAnimation(id, isDragEnabled);
           }
 
+          // waiting for animation to finish
           return {
             ...getDefaultProps(id, isDragEnabled),
+            isDropAnimating: true,
             offset: complete.newHomeOffset,
             // TODO: is this needed?
             initial: last.dragging.initial,
@@ -110,6 +114,7 @@ const makeSelector = (provide: Provide) => {
         return getDefaultProps(id, isDragEnabled);
       }
 
+      // item is dragging
       if (currentDrag.dragging.id === id) {
         const offset = currentDrag.dragging.offset;
         const initial = currentDrag.dragging.initial;
@@ -121,6 +126,7 @@ const makeSelector = (provide: Provide) => {
           id,
           isDragEnabled: true,
           isDragging: true,
+          isDropAnimating: false,
           canAnimate,
           offset,
           initial,
@@ -155,7 +161,7 @@ const mapDispatchToProps: DispatchProps = {
   moveBackward: moveBackwardAction,
   moveForward: moveForwardAction,
   drop: dropAction,
-  dropFinished: dropFinishedAction,
+  dropAnimationFinished: dropAnimationFinishedAction,
   cancel: cancelAction,
 };
 

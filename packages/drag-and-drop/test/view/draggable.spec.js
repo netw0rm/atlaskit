@@ -1,15 +1,16 @@
 // @flow
+/* eslint-disable react/no-multi-comp */
 import React, { PureComponent } from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
-import makeDraggable from '../../src/view/draggable/make-draggable';
+import makeDraggable, { Placeholder } from '../../src/view/draggable/make-draggable';
 import DragHandle from '../../src/view/drag-handle/drag-handle';
 import { dragDropContext } from '../../src/';
 import type { DraggingInitial } from '../../src/types';
-import type { DispatchProps, MapProps, OwnProps, StateSnapshot } from '../../src/view/draggable/draggable-types';
+import type { DispatchProps, MapProps, OwnProps, StateSnapshot, MapState } from '../../src/view/draggable/draggable-types';
 
 const describe = window.describe;
 const it = window.it;
@@ -17,8 +18,10 @@ const beforeEach = window.beforeEach;
 const afterEach = window.afterEach;
 
 class App extends PureComponent {
+  props: {
+    children?: React$Element<any>,
+  }
   render() {
-    console.log('rendering app');
     return this.props.children;
   }
 }
@@ -27,38 +30,46 @@ const ConnectedApp = dragDropContext()(App);
 
 class Child extends PureComponent {
   render() {
-    console.log('rendering child');
     return <div>hello world!</div>;
   }
 }
 
 class ChildWithHandle extends PureComponent {
+  props: {
+    dragHandle: Function,
+  }
   render() {
     return (
       <div>
         A child that contains a
         {this.props.dragHandle(<button>handle</button>)}
       </div>
-    )
+    );
   }
 }
 
 class Container extends PureComponent {
+  props: {|
+  innerRef: Function,
+  |}
   render() {
-    console.log('rendering container');
     return (
       <div ref={this.props.innerRef}>
-        Hello world!
+      Hello world!
       </div>
     );
   }
 }
 
 class ContainerWithHandle extends PureComponent {
+  props: {|
+  dragHandle: Function,
+  innerRef: Function,
+  |}
   render() {
     return (
       <div ref={this.props.innerRef}>
-        This container manages its own
+      This container manages its own
         {this.props.dragHandle(<button>handle</button>)}
       </div>
     );
@@ -77,9 +88,10 @@ const getDispatchPropsStub = (): DispatchProps => ({
 
 const empty = {};
 const defaultId = '1';
-const defaultMapProps: MapProps = {
+const notDraggingMapProps: MapProps = {
   id: defaultId,
   isDragEnabled: true,
+  isDropAnimating: false,
   isDragging: false,
   canAnimate: true,
 };
@@ -105,26 +117,63 @@ const mockInitial: DraggingInitial = {
     scrollWidth: 100,
     scrollTop: 0,
     scrollLeft: 0,
-  }
-}
+  },
+};
 
-const draggingMapProps: MapProps = {
+const mockDraggingMapProps: MapProps = {
   id: defaultId,
   isDragEnabled: true,
+  isDropAnimating: false,
   isDragging: true,
   canAnimate: true,
   initial: mockInitial,
+  offset: { x: 75, y: 75 },
+};
+
+type MountConnected = {
+  type?: string,
+  map?: MapState,
+  Component?: ReactClass<any>,
+  mapProps?: MapProps,
+  dispatchProps?: DispatchProps,
+  ownProps?: OwnProps,
+};
+
+const mountConnectedDraggable = ({
+  type = 'TYPE',
+  map = () => empty,
+  Component = Container,
+  mapProps = notDraggingMapProps,
+  dispatchProps = getDispatchPropsStub(),
+  ownProps = empty,
+}: MountConnected = {}): ReactWrapper => {
+  const Draggable = makeDraggable(type, map)(Component);
+  return mount(
+    <ConnectedApp>
+      <Draggable
+        mapProps={mapProps}
+        dispatchProps={dispatchProps}
+        ownProps={ownProps}
+      />
+    </ConnectedApp>
+  );
 };
 
 describe('Draggable', () => {
   describe('unconnected', () => {
     describe('placeholder', () => {
       it('should not render a placeholder when the item is not dragging', () => {
+        const wrapper = mountConnectedDraggable();
 
+        expect(wrapper.find(Placeholder).length).to.equal(0);
       });
 
       it('should render a placeholder if the item is dragging', () => {
+        const wrapper = mountConnectedDraggable({
+          mapProps: mockDraggingMapProps,
+        });
 
+        expect(wrapper.find(Placeholder).length).to.equal(1);
       });
 
       it('should render a placeholder if the item was dragging but as not finished animating yet', () => {
@@ -142,99 +191,115 @@ describe('Draggable', () => {
 
     describe('providing state to map function', () => {
       it('should provide the map function with a snapshot of the current drag state', () => {
-        const map = sinon.stub().returns(empty);
-        const Draggable = makeDraggable('TYPE', map)(Container);
-        const mapProps = {
-          ...defaultMapProps,
-          isDragging: true,
-        }
+        const map: MapState = sinon.stub().returns(empty);
         const expected: StateSnapshot = {
           isDragging: true,
         };
 
-        const wrapper = mount(
-          <ConnectedApp>
-            <Draggable
-              mapProps={mapProps}
-              dispatchProps={getDispatchPropsStub()}
-              ownProps={{}}
-            />
-          </ConnectedApp>
-        );
+        mountConnectedDraggable({
+          map,
+          mapProps: mockDraggingMapProps,
+        });
 
         expect(map.args[0][0]).to.deep.equal(expected);
-
       });
 
       it('should provide the map function with the childrens own props', () => {
+        const map: MapState = sinon.stub().returns(empty);
+        const ownProps = {
+          foo: 'bar',
+        };
 
+        mountConnectedDraggable({
+          ownProps,
+          map,
+        });
+
+        expect(map.args[0][1]).to.have.property('foo', 'bar');
       });
 
       it('should provide the map function a getDragHandle function which returns a DragHandle', () => {
+        const map: MapState = sinon.spy(
+          (snapshot: StateSnapshot, ownProps: Object, requestDragHandle: Function) => ({
+            dragHandle: requestDragHandle(),
+          })
+        );
 
+        mountConnectedDraggable({
+          map,
+          mapProps: mockDraggingMapProps,
+        });
+
+        // grab the requestDragHandle function
+        const requestDragHandle = map.args[0][2];
+
+        // mount the DragHandle independently
+        const wrapper = mount(requestDragHandle()(<Child />));
+
+        // Ensuring that the requestDragHandle function
+        // wrapped <Child /> in a  <DragHandle>
+        expect(wrapper.find(DragHandle).length).to.equal(1);
+        expect(wrapper.find(DragHandle).find(Child).length).to.equal(1);
       });
 
       it('should enhance the childs props with the result of the map function', () => {
+        const map: MapState = sinon.spy(
+          (snapshot: StateSnapshot, ownProps: Object, requestDragHandle: Function) => ({
+            isDragging: snapshot.isDragging,
+            name: ownProps.name,
+            foo: 'bar',
+            requestDragHandle: requestDragHandle(),
+          })
+        );
+        const myOwnProps = {
+          name: 'Alex',
+        };
 
+        const wrapper = mountConnectedDraggable({
+          map,
+          mapProps: mockDraggingMapProps,
+          ownProps: myOwnProps,
+        });
+
+        const { isDragging, name, foo, requestDragHandle } = wrapper.find(Container).props();
+        expect(isDragging).to.equal(mockDraggingMapProps.isDragging);
+        expect(name).to.equal('Alex');
+        expect(foo).to.equal('bar');
+        expect(typeof requestDragHandle === 'function').to.equal(true);
       });
     });
 
     describe('drag handle', () => {
       it('should wrap the draggable in a drag handle if the user does not request one', () => {
-
-        const Draggable = makeDraggable('TYPE', () => empty)(Container);
-        const wrapper = mount(
-          <ConnectedApp>
-            <Draggable
-              mapProps={defaultMapProps}
-              dispatchProps={getDispatchPropsStub()}
-              ownProps={{}}
-            />
-          </ConnectedApp>
-        );
+        const wrapper = mountConnectedDraggable();
 
         expect(wrapper.find(DragHandle).find(Container).length).to.equal(1);
       });
 
       it('should not wrap the draggable in a drag handle if the user requests to manage it', () => {
-        const map = (state, ownProps, requestDragHandle) => {
-          return {
-            dragHandle: requestDragHandle(),
-          };
-        };
-        const Draggable = makeDraggable('TYPE', map)(Container);
-        const wrapper = mount(
-          <ConnectedApp>
-            <Draggable
-              mapProps={defaultMapProps}
-              dispatchProps={getDispatchPropsStub()}
-              ownProps={{}}
-            />
-          </ConnectedApp>
-        );
+        const map = (state, ownProps, requestDragHandle) => ({
+          dragHandle: requestDragHandle(),
+        });
+
+        const wrapper = mountConnectedDraggable({
+          map,
+        });
 
         expect(wrapper.find(DragHandle).find(Container).length).to.equal(0);
       });
 
       it('should allow a draggable to handle its own drag handle', () => {
-        const map = (state, ownProps, requestDragHandle) => {
-          return {
-            dragHandle: requestDragHandle(),
-          };
-        };
-        const Draggable = makeDraggable('TYPE', map)(ContainerWithHandle);
-        const wrapper = mount(
-          <ConnectedApp>
-            <Draggable
-              mapProps={draggingMapProps}
-              dispatchProps={getDispatchPropsStub()}
-              ownProps={{}}
-            />
-          </ConnectedApp>
-        );
+        const map: MapState = (state: StateSnapshot, ownProps: OwnProps, requestDragHandle) => ({
+          dragHandle: requestDragHandle(),
+        });
+
+        const wrapper = mountConnectedDraggable({
+          map,
+          Component: ContainerWithHandle,
+        });
 
         expect(wrapper.find(ContainerWithHandle).find(DragHandle).length).to.equal(1);
-      })
+      });
     });
 
     describe('placement', () => {
@@ -242,9 +307,7 @@ describe('Draggable', () => {
     });
 
     describe('not dragging', () => {
-      it('should not render a placeholder', () => {
 
-      });
     });
 
     describe('dragging', () => {

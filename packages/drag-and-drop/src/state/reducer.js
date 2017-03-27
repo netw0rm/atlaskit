@@ -267,7 +267,7 @@ export default (state: State = initialState, action: Action): State => {
       result,
       last: state.currentDrag,
       newHomeOffset: offset,
-      isAnimationFinished: !isAnimationRequired,
+      isWaitingForAnimation: isAnimationRequired,
     };
 
     // clear the state and add a drag result
@@ -278,13 +278,14 @@ export default (state: State = initialState, action: Action): State => {
   }
 
   // TODO: drop animation finished
-  if (action.type === 'DROP_FINISHED') {
+  if (action.type === 'DROP_ANIMATION_FINISHED') {
     if (!state.complete) {
       console.warn('not finishing drop as there is no longer a drop in the state');
       return state;
     }
 
-    if (state.complete.isAnimationFinished) {
+    if (!state.complete.isWaitingForAnimation) {
+      console.warn('not finishing drop as there is it is not waiting for an animation to finish');
       return state;
     }
 
@@ -292,7 +293,7 @@ export default (state: State = initialState, action: Action): State => {
       result: state.complete.result,
       last: state.complete.last,
       newHomeOffset: state.complete.newHomeOffset,
-      isAnimationFinished: true,
+      isWaitingForAnimation: false,
     };
 
     return {

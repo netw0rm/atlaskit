@@ -60,6 +60,7 @@ export default class StatelessSelect extends PureComponent {
     position: 'bottom left',
     shouldFocus: false,
     selectedItem: {},
+    shouldFitContainer: false,
   }
 
   state = {

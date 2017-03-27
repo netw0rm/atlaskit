@@ -5,6 +5,8 @@ import { Code, Chrome, Description, Props } from '@atlaskit/util-readme';
 /* eslint-disable import/first, import/no-duplicates */
 import EditableSelectOverview from './examples/EditableSelectOverview';
 import EditableSelectOverviewRaw from '!raw!./examples/EditableSelectOverview';
+import EditableSelectConfirmOnSelect from './examples/EditableSelectConfirmOnSelect';
+import EditableSelectConfirmOnSelectRaw from '!raw!./examples/EditableSelectConfirmOnSelect';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name } from '../package.json';
@@ -18,14 +20,17 @@ const propTypes = {
   select: 'An instance of Single Select',
 };
 
-storiesOf(name, module)
-  .add('Single select (stateless) - overview', () => (
-    <Chrome title="Single select (stateless) - overview">
-      <Description>
-        <p>Simple select component</p>
-      </Description>
+storiesOf(`${name} (editable)`, module)
+  .add('Default Behaviour', () => (
+    <Chrome title="Overview">
       {EditableSelectOverview}
       <Code>{EditableSelectOverviewRaw}</Code>
       <Props component={EditableSelect} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Confirm on Select', () => (
+    <Chrome title="Overview">
+      {EditableSelectConfirmOnSelect}
+      <Code>{EditableSelectConfirmOnSelectRaw}</Code>
     </Chrome>
   ));

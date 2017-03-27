@@ -30,8 +30,8 @@ export default (
         />
       }
       initialValue={initialValue}
-      label="Editable Single Select"
+      label="Confirm on select"
+      isConfirmOnSelectEnabled
     />
   </div>
 );
-

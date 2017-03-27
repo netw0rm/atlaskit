@@ -14,6 +14,7 @@ const imports = [
 storiesOf(name, module)
   .addCodeExampleStory('ElemBefore: Avatar', () => (
     <Tag
+      appearance="rounded"
       elemBefore={<Avatar size="xsmall" />}
       text="Default Avatar"
       removeButtonText="Remove me"

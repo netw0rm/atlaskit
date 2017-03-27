@@ -5,10 +5,12 @@ const assignPattern = require('../assignPattern');
 const setUpEnzyme = require('../setUpEnzyme');
 const removeSourcemaps = require('../removeSourceMaps');
 
-module.exports = (config) => {
+module.exports = (config, { keepSourceMaps = false } = {}) => {
   karmaConf(config);
   setUpEnzyme(config);
-  removeSourcemaps(config);
+  if (!keepSourceMaps) {
+    removeSourcemaps(config);
+  }
   assignPattern(config, path.join(__dirname, 'all.entry.js'));
 
   config.set({

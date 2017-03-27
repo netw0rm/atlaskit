@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-test-helpers",
-  "version": "1.48.0",
+  "version": "2.0.0",
   "config": {
     "access": "public"
   },
@@ -19,7 +19,7 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/media-core": "^1.2.2",
+    "@atlaskit/media-core": "^3.0.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "akutil-common-test": "*",
     "axios": "^0.15.3",

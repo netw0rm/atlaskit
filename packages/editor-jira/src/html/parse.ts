@@ -4,6 +4,7 @@ import {
   isSchemaWithMentions,
   isSchemaWithLinks,
   isSchemaWithAdvancedTextFormattingMarks,
+  isSchemaWithCodeBlock,
   JIRASchema,
 } from '../schema';
 import parseHtml from './parse-html';
@@ -36,6 +37,7 @@ export default function parse(html: string, schema: JIRASchema) {
   const compatibleContent = schema.nodes.doc.validContent(content)
     ? content
     : ensureBlocks(content, schema);
+
   return schema.nodes.doc.createChecked({}, compatibleContent);
 }
 
@@ -96,6 +98,7 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
         return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
       case 'INS':
         return content ? addMarks(content, [schema.marks.u.create()]) : null;
+
       // Nodes
       case 'A':
         const isAnchor = node.attributes.getNamedItem('href') === null;
@@ -120,8 +123,6 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
               })]
             )
           : null;
-      // case 'SPAN':
-      //   return addMarks(content, marksFromStyle(node.style));
       case 'H1':
       case 'H2':
       case 'H3':
@@ -150,6 +151,31 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
             ? content
             : ensureBlocks(content, schema);
           return schema.nodes.list_item!.createChecked({}, compatibleContent);
+      }
+    }
+
+    // code block
+    if (isSchemaWithCodeBlock(schema)) {
+      switch (tag) {
+        case 'DIV':
+          if (node.className === 'codeContent panelContent') {
+            return null;
+          } else if (node.className === 'code panel') {
+            const pre = node.querySelector('pre');
+
+            if (!pre) {
+              return null;
+            }
+
+            const language = pre.className.split('-')[1];
+            return schema.nodes.code_block!.createChecked({ language }, schema.text(pre.innerText));
+          }
+          break;
+        case 'PRE':
+          if (node.className.match(/code-/)) {
+            return null;
+          }
+          break;
       }
     }
   }

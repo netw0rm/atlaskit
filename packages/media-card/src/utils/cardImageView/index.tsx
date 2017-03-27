@@ -3,7 +3,7 @@ import {Component, MouseEvent} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 import {MediaType} from '@atlaskit/media-core';
 
-import {getCSSUnitValue} from './index';
+import {getCSSUnitValue} from '../index';
 import {CardDimensions} from '../../card';
 import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';

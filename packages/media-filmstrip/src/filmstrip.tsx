@@ -36,6 +36,7 @@ function createCardActions(actions: Array<ListAction>, items: Array<FilmStripIte
 
 export function FilmStrip(props: FilmStripProps): JSX.Element {
   const {context, collectionName} = props;
+  const appearance = props.items.length > 1 ? 'image' : 'auto';
   const els = props.items.map((item) => {
     const identifier: MediaIdentifier = {
       mediaItemType: item.mediaItemType,
@@ -45,6 +46,7 @@ export function FilmStrip(props: FilmStripProps): JSX.Element {
 
     return <li key={item.id}>
       <Card
+        appearance={appearance}
         identifier={identifier}
         context={context}
         dimensions={props.cardDimensions}

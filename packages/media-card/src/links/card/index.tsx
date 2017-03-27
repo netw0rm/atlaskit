@@ -247,8 +247,8 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
 
   private renderLinkCardImage(urlPreview: UrlPreview): JSX.Element {
     const { url, title, site, resources } = urlPreview;
-    const {thumbnail, icon} = resources;
-    const { dimensions, actions, appearance, onClick } = this.props;
+    const { thumbnail, icon } = resources || {thumbnail: '', icon: ''};
+    const { dimensions, actions, appearance } = this.props;
     const { processingStatus } = this.state;
 
     return <LinkCardImageView

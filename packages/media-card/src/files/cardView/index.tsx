@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Component, MouseEvent} from 'react';
+import {Component} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 import {MediaType} from '@atlaskit/media-core';
 

@@ -1,26 +1,21 @@
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import React from 'react';
 
-import AkBadge from '../src';
-import styles from '../src/style.less';
+import AkBadge, { APPEARANCE_ENUM } from '../src';
 
 describe('ak-badge', () => {
-  function valueSpan(element) {
-    return element.find(`.${styles.locals.value}`);
-  }
-
   describe('value property', () => {
     it('should be visibly displayed', () => {
-      valueSpan(shallow(<AkBadge value={5} />)).text().should.equal('5');
+      mount(<AkBadge value={5} />).text().should.equal('5');
     });
     it('should only accept positive numbers', () => {
-      valueSpan(shallow(<AkBadge value={-5} />)).text().should.equal('0');
+      mount(<AkBadge value={-5} />).text().should.equal('0');
     });
     it('should show Infinity as the ∞ character', () => {
-      valueSpan(shallow(<AkBadge value={Infinity} max={Infinity} />)).text().should.equal('∞');
+      mount(<AkBadge value={Infinity} max={Infinity} />).text().should.equal('∞');
     });
     it('should trigger onValueUpdated when value prop changed with a number', (done) => {
-      const badge = shallow(
+      const badge = mount(
         <AkBadge
           value={1}
           onValueUpdated={(detail) => {
@@ -35,41 +30,39 @@ describe('ak-badge', () => {
   });
   describe('max property', () => {
     it('should constrain to 99+ when not specified', () => {
-      valueSpan(shallow(<AkBadge value={101} />)).text().should.equal('99+');
+      mount(<AkBadge value={101} />).text().should.equal('99+');
     });
     it('should constrain the value when set', () => {
-      valueSpan(shallow(<AkBadge value={200} max={100} />)).text().should.equal('100+');
+      mount(<AkBadge value={200} max={100} />).text().should.equal('100+');
     });
     it('should pass the value through when max === 0', () => {
-      valueSpan(
-        shallow(<AkBadge value={Number.MAX_VALUE} max={0} />)
-      ).text().should.equal(`${Number.MAX_VALUE}`);
+      mount(<AkBadge value={Number.MAX_VALUE} max={0} />)
+      .text().should.equal(`${Number.MAX_VALUE}`);
     });
     it('should not constrain if equal to value', () => {
-      valueSpan(shallow(<AkBadge value={200} max={200} />)).text().should.equal('200');
+      mount(<AkBadge value={200} max={200} />).text().should.equal('200');
     });
   });
   describe('appearance property', () => {
     it('should be "default" when not set', () => {
-      valueSpan(shallow(<AkBadge />)).hasClass(styles.locals.default).should.equal(true);
+      mount(<AkBadge />).prop('appearance').should.equal('default');
     });
     it('should change when set to an approved value', () => {
-      valueSpan(
-        shallow(<AkBadge appearance="removed" />)
-      ).hasClass(styles.locals.removed).should.equal(true);
+      APPEARANCE_ENUM.values.forEach((value) => {
+        mount(<AkBadge appearance={value} />).prop('appearance').should.equal(value);
+      });
     });
     it('should revert to "default" when set to an invalid value', () => {
-      valueSpan(
-        shallow(<AkBadge appearance="foo" />)
-      ).hasClass(styles.locals.default).should.equal(true);
+      mount(<AkBadge appearance="foo" />).getNode().validAppearance()
+        .should.equal('default');
     });
   });
   describe('theme property', () => {
     it('should not have dark theme when not set', () => {
-      valueSpan(shallow(<AkBadge />)).hasClass(styles.locals.isDarkTheme).should.equal(false);
+      mount(<AkBadge />).prop('theme').should.equal('default');
     });
     it('should apply the dark theme class when the theme is dark', () => {
-      valueSpan(shallow(<AkBadge theme="dark" />)).hasClass(styles.locals.isDarkTheme).should.equal(true);
+      mount(<AkBadge theme="dark" />).prop('theme').should.equal('dark');
     });
   });
 });

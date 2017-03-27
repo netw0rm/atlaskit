@@ -18,7 +18,7 @@ describe('exports', () => {
     //
     // If we were to auto-generate this list, then renaming, adding or removing would NOT
     // break any tests and thus not hint the developer at what kind of change he/she is making
-    Object.keys(allExports).sort().should.be.deep.equal([
+    Object.keys(allExports).sort().should.deep.equal([
       'akBorderRadius',
       'akCodeFontFamily',
       'akColorB100',
@@ -121,7 +121,7 @@ describe('exports', () => {
   });
 
   it('akTypographyMixins should have well-defined exports', () => {
-    Object.keys(allExports.akTypographyMixins).sort().should.be.deep.equal([
+    Object.keys(allExports.akTypographyMixins).sort().should.deep.equal([
       'h100',
       'h200',
       'h300',
@@ -142,7 +142,7 @@ describe('exports', () => {
       .entries(colors)
       .filter(([colorName]) => Prism.isTint(colorName))
       .forEach(([colorName, colorValue]) => {
-        rgba(colorValue).splice(0, 3).should.be.deep.equal(
+        rgba(colorValue).splice(0, 3).should.deep.equal(
           neutralBase,
           `${colorName} is not a tint of ${tintBase}`
         );

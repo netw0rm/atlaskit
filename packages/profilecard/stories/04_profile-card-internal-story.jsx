@@ -53,7 +53,7 @@ class ResizingBox extends PureComponent {
 storiesOf(`${name} internal`, module)
   .add('DirectionWrapper Bottom', () => (
     <div style={canvasStyle}>
-      <DirectionWrapper direction="bottom">
+      <DirectionWrapper position="bottom left">
         <ResizingBox />
       </DirectionWrapper>
     </div>
@@ -61,7 +61,7 @@ storiesOf(`${name} internal`, module)
   .add('DirectionWrapper Top', () => (
     <div style={canvasStyle}>
       <div style={{ position: 'relative', top: '100%' }}>
-        <DirectionWrapper direction="top">
+        <DirectionWrapper position="top left">
           <ResizingBox />
         </DirectionWrapper>
       </div>

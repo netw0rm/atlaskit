@@ -1,12 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styled from 'styled-components';
 
 import { cardAnimationWrapper } from 'style!../styles/profilecard.less';
-
-const ContainerAnimation = styled.div`
-  transition: height 0.25s ease;
-  overflow: hidden;
-`;
 
 export default class HeightTransitionWrapper extends PureComponent {
   static propTypes = {
@@ -33,13 +27,13 @@ export default class HeightTransitionWrapper extends PureComponent {
     };
 
     return (
-      <ContainerAnimation
+      <div
         className={cardAnimationWrapper}
         style={inlineHeight}
-        innerRef={ref => (this.ref = ref)}
+        ref={ref => (this.ref = ref)}
       >
         {this.props.children}
-      </ContainerAnimation>
+      </div>
     );
   }
 }

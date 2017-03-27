@@ -40,4 +40,5 @@ class MockProfileClient extends ProfileClient {
 
 export default new MockProfileClient({
   cacheSize: 10,
+  cacheMaxAge: 2500,
 });

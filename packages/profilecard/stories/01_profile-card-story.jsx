@@ -88,6 +88,14 @@ storiesOf(`${name}`, module)
       </div>
     );
   })
+  .add('without actions', () => {
+    const data = fakeData({ actions: [] });
+    return (
+      <div style={canvasStyle}>
+        <AkProfilecard {...data} />
+      </div>
+    );
+  })
   .add('alternate actions', () => {
     const actions = [
       {

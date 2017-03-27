@@ -5,25 +5,44 @@ const ContainerRelative = styled.div`
   position: relative;
 `;
 
+const mapPosition = (position) => {
+  switch (position) {
+    case 'top left':
+      return 'left: 0; bottom: 0;';
+    case 'top right':
+      return 'right: 0; bottom: 0;';
+    case 'right top':
+      return 'left: 0; top: 0;';
+    case 'right bottom':
+      return 'left: 0; bottom: 0;';
+    case 'bottom right':
+      return 'right: 0; top: 0;';
+    case 'bottom left':
+      return 'left: 0; top: 0;';
+    case 'left bottom':
+      return 'right: 0; bottom: 0;';
+    case 'left top':
+      return 'right: 0; top: 0;';
+    default:
+      return '';
+  }
+};
+
 const ContainerDirection = styled.div`
   position: absolute;
-  ${props => (props.direction === 'bottom' ? 'top' : 'bottom')}: 0
+  ${props => (mapPosition(props.position))}
 `;
 
 export default class DirectionWrapper extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    direction: PropTypes.oneOf(['top', 'bottom']),
-  };
-
-  static defaultProps = {
-    direction: 'bottom',
+    position: PropTypes.string,
   };
 
   render() {
     return (
       <ContainerRelative>
-        <ContainerDirection direction={this.props.direction}>
+        <ContainerDirection position={this.props.position}>
           {this.props.children}
         </ContainerDirection>
       </ContainerRelative>

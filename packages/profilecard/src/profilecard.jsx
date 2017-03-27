@@ -35,6 +35,25 @@ export default class Profilecard extends PureComponent {
     actions: [],
   }
 
+  renderActionsButtons() {
+    if (this.props.actions.length === 0) {
+      return null;
+    }
+
+    return (
+      <div className={styles.actionsWrapper}>
+        {(this.props.actions).map((action, idx) => (
+          <AkButton
+            appearance={idx === 0 ? 'default' : 'subtle'}
+            compact
+            key={action.label}
+            onClick={action.callback}
+          >{action.label}</AkButton>
+        ))}
+      </div>
+    );
+  }
+
   render() {
     let profilecard = null;
 
@@ -43,15 +62,6 @@ export default class Profilecard extends PureComponent {
     } else if (this.props.isLoading) {
       profilecard = <LoadingMessage />;
     } else {
-      const actions = (this.props.actions).map((action, idx) => (
-        <AkButton
-          appearance={idx === 0 ? 'default' : 'subtle'}
-          compact
-          key={action.label}
-          onClick={action.callback}
-        >{action.label}</AkButton>
-      ));
-
       const cardClasses = classNames([
         styles.profilecard,
         { [styles.noDetailsMeta]: !this.props.meta },
@@ -74,9 +84,7 @@ export default class Profilecard extends PureComponent {
               <IconLabel icon="location">{this.props.location}</IconLabel>
             </div>
             <div className={styles.actionsFlexSpacer} />
-            <div className={styles.actionsWrapper}>
-              {actions}
-            </div>
+            {this.renderActionsButtons()}
           </div>
         </div>
       );

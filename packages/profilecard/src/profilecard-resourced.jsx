@@ -24,6 +24,8 @@ export default class ProfilecardResourced extends PureComponent {
   constructor(props) {
     super(props);
 
+    this._isMounted = false;
+
     this.state = {
       isLoading: false,
       hasError: false,
@@ -34,6 +36,7 @@ export default class ProfilecardResourced extends PureComponent {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.clientFetchProfile();
   }
 
@@ -44,6 +47,10 @@ export default class ProfilecardResourced extends PureComponent {
     ) {
       this.clientFetchProfile();
     }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   updateData(dataObject) {
@@ -91,6 +98,8 @@ export default class ProfilecardResourced extends PureComponent {
   }
 
   handleClientSuccess(res) {
+    if (!this._isMounted) { return; }
+
     this.setState({
       isLoading: false,
       hasError: false,
@@ -99,6 +108,8 @@ export default class ProfilecardResourced extends PureComponent {
   }
 
   handleClientError(err) {
+    if (!this._isMounted) { return; }
+
     this.setState({
       isLoading: false,
       hasError: true,

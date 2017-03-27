@@ -3,9 +3,8 @@ import React, { PureComponent, PropTypes } from 'react';
 import AkLayer from '@atlaskit/layer';
 
 import { getAnimationClass } from './internal/helper';
-import AkProfilecard from './profilecard';
 import DirectionWrapper from './components/DirectionWrapper';
-// import AkProfilecardResourced from './profilecard-resourced';
+import AkProfilecardResourced from './profilecard-resourced';
 
 const allowedPositions = [
   'top left',
@@ -22,15 +21,23 @@ export default class ProfilecardTrigger extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     position: PropTypes.oneOf(allowedPositions),
-    isLoading: PropTypes.bool,
-    hasError: PropTypes.bool,
+    userId: PropTypes.string,
+    cloudId: PropTypes.string,
+    actions: PropTypes.arrayOf(PropTypes.shape({
+      callback: PropTypes.func,
+      label: PropTypes.string,
+    })),
+    resourceClient: PropTypes.shape({
+      getProfile: PropTypes.func,
+      getCachedProfile: PropTypes.func,
+      makeRequest: PropTypes.func,
+    }).isRequired,
   }
 
   static defaultProps = {
     position: 'right top',
     isLoading: false,
     hasError: false,
-    apiEndpoint: '',
   }
 
   constructor(props) {
@@ -72,32 +79,22 @@ export default class ProfilecardTrigger extends PureComponent {
     if (!this.state.visible) { return null; }
 
     const mainPosition = this.props.position.split(' ')[0];
-    const animationClass = getAnimationClass(mainPosition, this.state.isFlipped);
-
-    const profileData = {
-      fullName: 'Kramer Hatfield',
-      nickname: 'khatfield',
-      email: 'khatfield@gluid.com',
-      location: 'Vienna, Austria',
-      meta: 'Manager',
-      presence: 'available',
-    };
+    const animationClass = getAnimationClass(
+      mainPosition,
+      this.state.isFlipped
+    );
 
     return (
-      <DirectionWrapper direction={mainPosition}>
+      <DirectionWrapper
+        position={this.props.position}
+        isFlipped={this.state.isFlipped}
+      >
         <div className={animationClass}>
-          <AkProfilecard
-            isLoading={this.props.isLoading}
-            hasError={this.props.hasError}
-            {...profileData}
-            actions={[
-              {
-                label: 'View profile',
-                callback: () => {
-                  window.open('https://local.atlassian.io:10124/c/CLOUDID/people/655363:7c218e11-d210-43fd-9830-bcc1874e4736/FULLNAME', '_blank');
-                },
-              },
-            ]}
+          <AkProfilecardResourced
+            userId={this.props.userId}
+            cloudId={this.props.cloudId}
+            resourceClient={this.props.resourceClient}
+            actions={this.props.actions}
           />
         </div>
       </DirectionWrapper>

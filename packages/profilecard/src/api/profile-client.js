@@ -102,15 +102,22 @@ const requestService = (baseUrl, options) => {
   });
 };
 
+
 class ProfileClient {
   constructor(config) {
     const defaults = {
-      cacheSize: 0,
+      cacheSize: 10,
+      cacheMaxAge: null,
     };
 
     this.config = { ...defaults, ...config };
-    this.cache = this.config.cacheSize
-      ? new LRUCache(this.config.cacheSize) : false;
+    // Set maxCacheAge only if it's a positive number
+    this.cacheMaxAge = Math.max(
+      parseInt(this.config.cacheMaxAge, 10), 0
+    ) || null;
+    // Only set cache if maxCacheAge is set
+    this.cache = this.cacheMaxAge === null
+      ? null : new LRUCache(this.config.cacheSize);
   }
 
   makeRequest(options) {
@@ -122,7 +129,23 @@ class ProfileClient {
   }
 
   getCachedProfile(options) {
-    return this.cache ? this.cache.get(options.userId) : false;
+    const cached = this.cache && this.cache.get(options.userId);
+
+    if (!cached) {
+      return null;
+    }
+
+    if (cached.expire < Date.now()) {
+      this.cache.remove(options.userId);
+      return null;
+    }
+
+    this.cache.set(options.userId, {
+      expire: Date.now() + this.cacheMaxAge,
+      profile: cached.profile,
+    });
+
+    return cached.profile;
   }
 
   flushCache() {
@@ -136,7 +159,10 @@ class ProfileClient {
       this.makeRequest(options)
       .then((data) => {
         if (this.cache) {
-          this.cache.put(options.userId, data);
+          this.cache.put(options.userId, {
+            expire: Date.now() + this.cacheMaxAge,
+            profile: data,
+          });
         }
         resolve(data);
       })

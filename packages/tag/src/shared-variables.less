@@ -3,18 +3,15 @@
 @import '~@atlaskit/util-shared-styles/src/colors.less';
 @import '~@atlaskit/util-shared-styles/src/fonts.less';
 @import '~@atlaskit/util-shared-styles/src/borders.less';
+@import '~@atlaskit/util-shared-styles/src/grid.less';
+
 
 // TO DO: Remove this hardcoded (and outdated) grid unit
-@grid-unit: 10px;
-@border-radius: @ak-border-radius;
-@button-width: @grid-unit + @border-radius;
-@font-size: 14px;
-@distance: 4px;
-@max-height: 18px;
-@max-width: 200px;
-@max-text-width: @max-width - (2 * @distance);
-@spacing: 6px;
-
-@animation-width: @max-width + (2 * @spacing);
+@default-border-radius: @ak-border-radius;
+@button-width: 2 * @ak-grid-size + @default-border-radius;
+@font-size: @ak-font-size-default;
+@tag-height: 2.5 * @ak-grid-size;
+@max-width: 25 * @ak-grid-size;
+@max-text-width: @max-width - (@button-width);
 @animation-duration: 250ms;
-@remove-animation: 'max-width', 'XX', @animation-width, 0;
+@remove-animation: 'max-width', 'XX', @max-width, 0;

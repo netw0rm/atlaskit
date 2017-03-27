@@ -14,12 +14,13 @@
 .chrome {
   .focus-ring();
   background-color: @ak-color-N20;
-  border-radius: @border-radius;
+  border-radius: @default-border-radius;
   cursor:default;
   display: flex;
   flex-direction: row;
+  height: @tag-height;
   line-height: 1;
-  margin: @spacing;
+  margin: @ak-grid-size / 2;
   padding: 0;
 
   &:hover {
@@ -79,8 +80,8 @@
   font-size: @font-size;
   font-weight: normal;
   line-height: 1;
-  margin-left: @distance;
-  margin-right: @distance;
+  margin-left: @ak-grid-size / 2;
+  margin-right: @ak-grid-size / 2;
   padding: 2px 0;
 
   // text truncation
@@ -105,7 +106,7 @@
   appearance: none;
   background: none;
   border: none;
-  border-radius: @border-radius;
+  border-radius: @default-border-radius;
   color: @ak-color-N500;
   display: flex;
   justify-content: center;
@@ -123,4 +124,9 @@
   justify-content: center;
   align-items: center;
   padding-left: @ak-grid-size * 0.5;
+}
+
+/* Used for both the Button and Chrome*/
+&.rounded {
+  border-radius: @tag-height / 2;
 }

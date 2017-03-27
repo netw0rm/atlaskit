@@ -132,7 +132,8 @@ export const InfoWrapper = styled.div`
   display: flex;
   padding-left: 8px;
   position: relative;
-  width: calc(100% - ${imgSize}px);
+  width: 0;
+  flex: 1;
 `;
 
 export const LoadingWrapper = styled.div`

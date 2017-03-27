@@ -20,7 +20,6 @@ const InvisibleButton = styled.button`
 export default class InteractiveWrapper extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    className: PropTypes.string,
     href: PropTypes.string,
     linkComponent: PropTypes.func,
     onClick: PropTypes.func,
@@ -29,7 +28,6 @@ export default class InteractiveWrapper extends PureComponent {
   render() {
     const {
       children,
-      className,
       href,
       linkComponent: LinkComponent,
       onClick,
@@ -41,13 +39,11 @@ export default class InteractiveWrapper extends PureComponent {
         onMouseDown={onMouseDown}
         onClick={onClick}
         href={href}
-        className={className}
       >
         {children}
       </LinkComponent>
     ) : (
       <InvisibleButton
-        className={className}
         onClick={onClick}
         onMouseDown={onMouseDown}
       >

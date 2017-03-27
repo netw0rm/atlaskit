@@ -1,8 +1,4 @@
 import React, { PureComponent, PropTypes } from 'react';
-// TODO: convert link to styled component
-import {
-  link,
-} from 'style!../less/NavigationItem.less';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import InteractiveWrapper from './InteractiveWrapper';
 
@@ -21,10 +17,6 @@ export default class NavigationItem extends PureComponent {
     action: PropTypes.node,
     href: PropTypes.string,
     icon: PropTypes.node,
-    // TODO: isCompact and isSelected need to be implemented
-    // eslint-disable-next-line
-    isCompact: PropTypes.bool,
-    // eslint-disable-next-line
     isSelected: PropTypes.bool,
     linkComponent: PropTypes.func,
     onClick: PropTypes.func,
@@ -68,9 +60,8 @@ export default class NavigationItem extends PureComponent {
     : null);
 
     return (
-      <NavigationItemOuter>
+      <NavigationItemOuter isSelected={this.props.isSelected}>
         <InteractiveWrapper
-          className={link}
           href={this.props.href}
           onMouseDown={this.onMouseDown}
           onClick={this.props.onClick}
@@ -96,3 +87,8 @@ export default class NavigationItem extends PureComponent {
     );
   }
 }
+
+export const defaultTheme = {
+  appearance: 'container',
+  isCompact: false,
+};

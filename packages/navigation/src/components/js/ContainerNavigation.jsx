@@ -1,4 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
+import { ThemeProvider } from 'styled-components';
 import classNames from 'classnames';
 import styles from 'style!../less/ContainerNavigation.less';
 import ContainerHeader from './ContainerHeader';
@@ -16,6 +17,7 @@ export default class ContainerNavigation extends PureComponent {
     areGlobalActionsVisible: PropTypes.bool,
     children: PropTypes.node,
     headerComponent: PropTypes.func,
+    isCompact: PropTypes.bool,
     shouldAnimate: PropTypes.bool,
     width: PropTypes.number,
     offsetX: PropTypes.number,
@@ -54,6 +56,7 @@ export default class ContainerNavigation extends PureComponent {
       globalPrimaryItemHref,
       globalSearchIcon,
       headerComponent,
+      isCompact,
       linkComponent,
       offsetX,
       onGlobalCreateActivate,
@@ -63,54 +66,60 @@ export default class ContainerNavigation extends PureComponent {
     } = this.props;
 
     const isWidthCollapsed = width <= containerClosedWidth;
-
     return (
-      <nav
-        className={classNames({
-          [styles.shouldAnimate]: shouldAnimate,
-        })}
-        data-__ak-navigation-container-closed={isWidthCollapsed}
+      <ThemeProvider
+        theme={{
+          isCompact,
+          appearance,
+        }}
       >
-        <Spacer
-          shouldAnimate={shouldAnimate}
-          width={width + offsetX}
-        />
-        <div
-          className={styles.containerNavigationOuter}
-          style={this.getOuterStyles()}
+        <nav
+          className={classNames({
+            [styles.shouldAnimate]: shouldAnimate,
+          })}
+          data-__ak-navigation-container-closed={isWidthCollapsed}
         >
+          <Spacer
+            shouldAnimate={shouldAnimate}
+            width={width + offsetX}
+          />
           <div
-            className={classNames(styles.containerNavigationInner, {
-              [styles.hasContainerHeader]: headerComponent !== null,
-              [styles.hasGlobalAppearance]: appearance === 'global',
-              [styles.hasSettingsAppearance]: appearance === 'settings',
-            })}
+            className={styles.containerNavigationOuter}
+            style={this.getOuterStyles()}
           >
-            <GlobalPrimaryActions
-              appearance={appearance}
-              createIcon={globalCreateIcon}
-              isVisible={areGlobalActionsVisible}
-              linkComponent={linkComponent}
-              onCreateActivate={onGlobalCreateActivate}
-              onSearchActivate={onGlobalSearchActivate}
-              primaryIcon={globalPrimaryIcon}
-              primaryItemHref={globalPrimaryItemHref}
-              searchIcon={globalSearchIcon}
-            />
-            <div>
-              {
-                this.props.headerComponent ? (
-                  <ContainerHeader>
-                    {this.props.headerComponent({ isCollapsed: width <= containerClosedWidth })}
-                  </ContainerHeader>) : null
-              }
-            </div>
-            <div>
-              {children}
+            <div
+              className={classNames(styles.containerNavigationInner, {
+                [styles.hasContainerHeader]: headerComponent !== null,
+                [styles.hasGlobalAppearance]: appearance === 'global',
+                [styles.hasSettingsAppearance]: appearance === 'settings',
+              })}
+            >
+              <GlobalPrimaryActions
+                appearance={appearance}
+                createIcon={globalCreateIcon}
+                isVisible={areGlobalActionsVisible}
+                linkComponent={linkComponent}
+                onCreateActivate={onGlobalCreateActivate}
+                onSearchActivate={onGlobalSearchActivate}
+                primaryIcon={globalPrimaryIcon}
+                primaryItemHref={globalPrimaryItemHref}
+                searchIcon={globalSearchIcon}
+              />
+              <div>
+                {
+                  this.props.headerComponent ? (
+                    <ContainerHeader>
+                      {this.props.headerComponent({ isCollapsed: width <= containerClosedWidth })}
+                    </ContainerHeader>) : null
+                }
+              </div>
+              <div>
+                {children}
+              </div>
             </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </ThemeProvider>
     );
   }
 }

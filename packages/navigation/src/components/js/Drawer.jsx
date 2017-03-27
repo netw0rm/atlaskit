@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
+import { ThemeProvider } from 'styled-components';
 import Blanket from '@atlaskit/blanket';
 import styles from 'style!../less/Drawer.less';
 import DrawerTrigger from './DrawerTrigger';
@@ -82,7 +83,9 @@ export default class Drawer extends PureComponent {
               </div>
             : null}
             <div className={classNames(styles.content)}>
-              {this.props.children}
+              <ThemeProvider theme={{ appearance: 'container', isCompact: false }}>
+                {this.props.children}
+              </ThemeProvider>
             </div>
           </div>
         </div>

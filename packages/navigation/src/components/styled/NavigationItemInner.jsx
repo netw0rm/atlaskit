@@ -1,4 +1,6 @@
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import {
+  akGridSizeUnitless,
+} from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
 export default styled.div`

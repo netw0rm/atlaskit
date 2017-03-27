@@ -90,7 +90,7 @@ storiesOf(`${name} - item`, module)
         >second item with very long text that is going to be cut off</Item>
       </div>
     </div>
-  ), { imports: [...imports, ['Lozenge', '@atlaskit/lozenge'], ['t', '@atlaskit/icon/glyph/arrow-right-long']] })
+  ), { imports: [...imports, ['Lozenge', '@atlaskit/lozenge'], ['t', '@atlaskit/icon/glyph/arrowrightlong']] })
   .addCodeExampleStory('item with avatars and checkboxes', () => (
     <div className={styles.storiesContainer}>
       <p>This is an example of droplist items with avatars and checkboxes</p>

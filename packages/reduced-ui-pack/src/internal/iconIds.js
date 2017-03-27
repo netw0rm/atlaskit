@@ -8,6 +8,7 @@ const iconIds = [
   'arrow-down',
   'arrow-left-circle',
   'arrow-left',
+  'arrow-right-long',
   'arrow-right',
   'arrow-up',
   'atlassian',

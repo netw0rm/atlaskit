@@ -4,7 +4,7 @@ import fonts from '!less-vars-loader?camelCase&resolveVariables!./fonts.less';
 import grid from '!less-vars-loader?camelCase&resolveVariables!./grid.less';
 
 const fontSizeDefault = parseInt(fonts.akFontSizeDefault, 10);
-const gridSize = parseInt(grid.akGridSize, 10);
+const gridSize = parseInt(grid.akGridSizeUnitless, 10);
 
 const baseHeading = (fontSize, lineHeight) => css`
     font-size: ${fontSize / fontSizeDefault}em;

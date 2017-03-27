@@ -2,22 +2,21 @@ import classNames from 'classnames';
 import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
 import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
-import Presence from './Presence';
+import Presence, { PRESENCE } from './Presence';
 import Image from './components/Image';
 
-const SIZE = {
+export const SIZE = {
   values: ['xsmall', 'small', 'medium', 'large', 'xlarge'],
   defaultValue: 'small',
 };
-const { PRESENCE } = Presence.constants;
 
 export default class Avatar extends PureComponent {
-  static constants = { PRESENCE, SIZE }
   static propTypes = {
     /** Used to override the default border color of the presence indicator.
     Accepts any color argument that the border-color CSS property accepts. */
     presenceBorderColor: PropTypes.string,
-    /** Indicates a user's online status by showing a small icon on the avatar */
+    /** Indicates a user's online status by showing a small icon on the avatar.
+    Refer to presence values on the Presence component */
     presence: PropTypes.oneOf(PRESENCE.values),
     /** Defines the size of the avatar */
     size: PropTypes.oneOf(SIZE.values),

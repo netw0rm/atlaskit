@@ -2,11 +2,9 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 // we import from index so we know we are definitely exposing Presence as a separate component
-import Avatar, { Presence } from '../src/index';
+import Presence, { PRESENCE } from '../src/Presence';
 import icons from '../src/internal/icons';
 import { locals as styles } from '../src/styles.less';
-
-const { PRESENCE } = Avatar.constants;
 
 describe('ak-avatar', () => {
   describe('Presence', () => {

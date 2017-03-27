@@ -175,9 +175,13 @@ storiesOf('Card', {})
   });*/
 
   .add('foo', () => (
-    <Card context={context} identifier={{
-      mediaItemType: 'link',
-      url: 'https://www.youtube.com/watch?v=4OkP5_1qb7Y'
-    }} appearance="small"/>
+    <Card
+      context={context}
+      identifier={{
+        mediaItemType: 'link',
+        url: 'https://www.youtube.com/watch?v=4OkP5_1qb7Y'
+      }}
+      appearance="small"
+    />
   ));
 

@@ -119,17 +119,14 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     this.state && this.state.subscription && this.state.subscription.unsubscribe();
   }
 
-
-
   render() {
     const {type, provider, ...otherProps} = this.props;
     const {details, cardProcessingStatus} = this.state;
     if (type === 'link') {
-      console.log(details);
       return (
-        <LinkCard 
-          {...otherProps} 
-          urlPreview={details} 
+        <LinkCard
+          {...otherProps}
+          urlPreview={details}
           cardProcessingStatus={cardProcessingStatus}
         />
       );

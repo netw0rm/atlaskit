@@ -29,16 +29,19 @@ export interface LinkCardImageViewProps {
 
 export class LinkCardImageView extends Component<LinkCardImageViewProps, {}> {
   render() {
+    const {title, site, thumbnailUrl, loading, dimensions, actions, onClick, error, iconUrl} = this.props;
+
     return <CardImageView
-      mediaName={this.props.title}
+      mediaName={title}
+      subtitle={site}
       mediaType={'image'}
-      dataURI={this.props.thumbnailUrl}
-      loading={this.props.loading}
-      dimensions={this.props.dimensions}
-      actions={this.props.actions}
-      onClick={this.props.onClick}
-      error={this.props.error}
-      icon={this.props.iconUrl}
+      dataURI={thumbnailUrl}
+      loading={loading}
+      dimensions={dimensions}
+      actions={actions}
+      onClick={onClick}
+      error={error}
+      icon={iconUrl}
     />;
   }
 }

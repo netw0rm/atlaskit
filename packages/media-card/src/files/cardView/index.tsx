@@ -5,6 +5,7 @@ import {MediaType} from '@atlaskit/media-core';
 
 import {CardImageView} from '../../utils/cardImageView';
 import {CardDimensions} from '../../card';
+import {toHumanReadableMediaSize} from '../../utils';
 
 export interface FileCardViewProps {
   mediaName?: string;
@@ -34,20 +35,23 @@ export const DEFAULT_CARD_DIMENSIONS = {
 
 export class FileCardView extends Component<FileCardViewProps, {}> {
   render() {
+    const {mediaSize, mediaType, mediaName, dataURI, progress, loading, dimensions, selectable, selected, actions, onClick, error, onRetry} = this.props;
+    const fileSize = mediaSize && toHumanReadableMediaSize(mediaSize);
+
     return <CardImageView
-      mediaName={this.props.mediaName}
-      mediaType={this.props.mediaType}
-      mediaSize={this.props.mediaSize}
-      dataURI={this.props.dataURI}
-      progress={this.props.progress}
-      loading={this.props.loading}
-      dimensions={this.props.dimensions}
-      selectable={this.props.selectable}
-      selected={this.props.selected}
-      actions={this.props.actions}
-      onClick={this.props.onClick}
-      error={this.props.error}
-      onRetry={this.props.onRetry}
+      mediaType={mediaType}
+      mediaName={mediaName}
+      subtitle={fileSize}
+      dataURI={dataURI}
+      progress={progress}
+      loading={loading}
+      dimensions={dimensions}
+      selectable={selectable}
+      selected={selected}
+      actions={actions}
+      onClick={onClick}
+      error={error}
+      onRetry={onRetry}
     />;
   }
 }

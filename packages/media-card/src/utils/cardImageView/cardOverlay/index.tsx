@@ -4,7 +4,7 @@ import * as cx from 'classnames';
 import {MediaType, CardAction, CardEventHandler} from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/editor/check';
 
-import {toHumanReadableMediaSize, ProgressBar, FileIcon, ErrorIcon, Ellipsify, Menu} from '../..';
+import {ProgressBar, FileIcon, ErrorIcon, Ellipsify, Menu} from '../..';
 
 import {
   TickBox,
@@ -24,7 +24,7 @@ import {
 export interface CardOverlayProps {
   mediaType?: MediaType;
   mediaName?: string;
-  mediaSize?: number;
+  subtitle?: string;
 
   selectable?: boolean;
   selected?: boolean;
@@ -133,17 +133,17 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
         </Retry>
       );
     } else {
-      const fileSize = this.props.mediaSize && toHumanReadableMediaSize(this.props.mediaSize);
-      const hasProgress = !!this.props.progress;
+      const {progress, mediaType, subtitle, icon} = this.props;
+      const hasProgress = !!progress;
       const className = `metadata ${hasProgress ? 'has-progress' : ''}`;
 
       return (
         <div>
           <Metadata className={className}>
-            <FileIcon mediaType={this.props.mediaType} iconUrl={this.props.icon} />
-            <FileSize className={'file-size'}>{fileSize}</FileSize>
+            <FileIcon mediaType={mediaType} iconUrl={icon} />
+            <FileSize className={'file-size'}>{subtitle}</FileSize>
           </Metadata>
-          <ProgressBar progress={this.props.progress} />
+          <ProgressBar progress={progress} />
         </div>
       );
     }

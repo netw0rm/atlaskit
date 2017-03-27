@@ -12,7 +12,7 @@ import {Card} from './styled';
 export interface CardImageViewProps {
   mediaName?: string;
   mediaType?: MediaType;
-  mediaSize?: number;
+  subtitle?: string;
 
   dataURI?: string;
   progress?: number;
@@ -73,6 +73,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
             onRetry={this.props.onRetry}
             actions={this.props.actions}
             icon={this.props.icon}
+            subtitle={this.props.subtitle}
           />
         </Card>
       );
@@ -85,7 +86,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
 
         mediaName={this.props.mediaName}
         mediaType={this.props.mediaType}
-        mediaSize={this.props.mediaSize}
+        subtitle={this.props.subtitle}
         progress={this.props.progress}
 
         actions={this.props.actions}

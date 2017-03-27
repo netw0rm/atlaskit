@@ -286,7 +286,6 @@ export const FileSize = styled.div`
   float: left;
   font-size: 12px;
   color: #5E6C84;
-  text-transform: uppercase;
 `;
 
 export const Metadata = styled.div`

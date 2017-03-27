@@ -2,11 +2,9 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import styles from '../src/styles.less';
 
-import Avatar from '../src';
+import Avatar, { SIZE } from '../src';
 import Image from '../src/components/Image';
-import Presence from '../src/Presence';
-
-const { PRESENCE, SIZE } = Avatar.constants;
+import Presence, { PRESENCE } from '../src/Presence';
 
 const [none, online, offline, busy] = PRESENCE.values;
 

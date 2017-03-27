@@ -36,6 +36,11 @@ const AllAlignments = props => (<div className={styles.storyRoot}>
   </div>
 </div>);
 
+const layerStyles = {
+  background: 'green',
+  padding: '5px',
+};
+
 storiesOf(name, module)
   .add('Simple Layer story', () => {
     const targetStyle = {
@@ -46,14 +51,10 @@ storiesOf(name, module)
       background: 'red',
       padding: '50px',
     };
-    const layerStyles = {
-      background: 'green',
-      padding: '5px',
-    };
-    const popperContent = <div style={layerStyles}>LayerContent</div>;
+    const content = <div style={layerStyles}>LayerContent</div>;
     return (
       <div>
-        <AKLayer content={popperContent} position="right bottom">
+        <AKLayer content={content} position="right bottom">
           <div style={targetStyle}>Target</div>
         </AKLayer>
         <div>Drag the left side bar over until the LayerContent reaches the edge of the screen</div>
@@ -65,9 +66,49 @@ storiesOf(name, module)
       <AllAlignments />
       <div>Foo</div>
     </div>
-  )).add('Alignments flipping disabled', () => (
+  ))
+  .add('Alignments flipping disabled', () => (
     <div style={{ height: '100%' }}>
-      <AllAlignments autoPosition={false} />
+      <AllAlignments autoFlip={false} />
       <div>Foo</div>
     </div>
-  ));
+  ))
+  .add('Layer with custom flip order', () => {
+    const targetStyle = {
+      display: 'inline-block',
+      position: 'relative',
+      top: '100px',
+      left: '150px',
+      background: 'red',
+      padding: '50px',
+    };
+
+    const content = <div style={layerStyles}>LayerContent</div>;
+    return (
+      <div>
+        <p>
+          Layer with position=&quot;right middle&quot; and
+          autoFlip=[&quot;top&quot;, &quot;left&quot;, &quot;bottom&quot;].
+        </p>
+        <p>
+          This layer will try to position itself on the right. If there is no space, it will try
+          to position itself at each of the positions specified in autoFlip, in order, until
+          it fits.
+        </p>
+        <p>Scroll the red box to the sides of the container to flip the green box.</p>
+        <div style={{ border: '1px solid black', height: '300px', width: '300px', overflow: 'scroll' }}>
+          <div style={{ width: '500px', height: '500px' }}>
+            <AKLayer
+              content={content}
+              position="right middle"
+              autoFlip={['top', 'left', 'bottom']}
+              boundariesElement="scrollParent"
+            >
+              <div style={targetStyle}>Target</div>
+            </AKLayer>
+          </div>
+        </div>
+      </div>
+
+    );
+  });

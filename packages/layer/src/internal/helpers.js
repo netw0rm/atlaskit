@@ -21,15 +21,25 @@ const POSITION_ATTRIBUTE_ENUM = {
   default: 'right middle',
 };
 
-function positionPropToPopperPosition(position) {
-  if (positionMap[position]) {
-    return positionMap[position].position;
-  }
+function positionToPopper(position) {
+  return positionMap[position] ? positionMap[position].position : null;
+}
 
-  return positionMap[POSITION_ATTRIBUTE_ENUM.default].position;
+/* Convert the autoFlip property into the array format that Popper expects.
+ * The first item must not include the edge-position variation, or Popper will not understand it.
+ */
+function getFlipBehavior(props) {
+  return Array.isArray(props.autoFlip)
+    ? [props.position.split(' ')[0]].concat(props.autoFlip)
+    : null;
+}
+
+function positionPropToPopperPosition(position) {
+  return positionToPopper(position) || positionMap[POSITION_ATTRIBUTE_ENUM.default].position;
 }
 
 export {
+  getFlipBehavior,
   positionPropToPopperPosition,
   POSITION_ATTRIBUTE_ENUM,
 };

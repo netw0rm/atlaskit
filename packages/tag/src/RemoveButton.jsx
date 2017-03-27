@@ -40,7 +40,7 @@ export default class RemoveButton extends PureComponent {
         onKeyPress={this.onKeyPress}
         type="button"
       >
-        <RemoveIcon />
+        <RemoveIcon label={this.props.removeText} />
       </button>
     );
   }

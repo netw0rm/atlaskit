@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import StatelessSelect, { itemShape } from './StatelessSelect';
-import InlineEditableSelect from './InlineEditableSelect';
+import EditableSelect from './EditableSelect';
 import { appearances } from './internal/appearances';
 
 export default class AkSingleSelect extends PureComponent {
@@ -94,5 +94,5 @@ export default class AkSingleSelect extends PureComponent {
 
 export {
   StatelessSelect,
-  InlineEditableSelect,
+  EditableSelect,
 }; // eslint-disable-line import/prefer-default-export

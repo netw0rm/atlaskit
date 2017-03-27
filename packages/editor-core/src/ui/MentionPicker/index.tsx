@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom';
 import { PureComponent } from 'react';
 import { MentionsPluginState } from '../../plugins/mentions';
 import Popper, { IPopper } from './../../popper';
+import { akEditorFloatingPanelZIndex } from '../../styles';
 
 export interface Props {
   pluginState: MentionsPluginState;
@@ -120,7 +121,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
     return (
       <div
         ref="content"
-        style={{ top: 0, left: 0, position, transform, zIndex: 2 }}
+        style={{ top: 0, left: 0, position, transform, zIndex: akEditorFloatingPanelZIndex }}
       >
         <AkMentionPicker
           resourceProvider={this.props.resourceProvider}

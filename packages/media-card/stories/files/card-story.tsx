@@ -2,9 +2,8 @@ import * as React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { MediaItem, CardDelete, CardClick } from '@atlaskit/media-core';
 import { StoryList, createStorybookContext, defaultCollectionName } from '@atlaskit/media-test-helpers';
-import { Card } from '../../src';
+import { FileCard } from '../../src';
 
-const collectionName = defaultCollectionName;
 const wrongFileId = 'wrong-file-id';
 const thumbnailNotAvailableId = '64204867-bfa6-4e16-a163-a6477d0f0112';
 const successfulFileId = '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40';
@@ -25,25 +24,23 @@ const annotateAction = {
   }
 };
 
-storiesOf('Card', {})
+storiesOf('FileCard', {})
   .add('single card', () => (
     <StoryList>
       {[{
         title: 'Normal card',
-        content: <Card
+        content: <FileCard
           id={successfulFileId}
-          mediaItemType={'file'}
-          collectionName={collectionName}
+          collectionName={defaultCollectionName}
           context={context}
         />
       }, {
         title: 'Small card',
-        content: <Card
+        content: <FileCard
           id={successfulFileId}
-          mediaItemType={'file'}
-          collectionName={collectionName}
+          collectionName={defaultCollectionName}
           context={context}
-          type={'small'}
+          appearance={'small'}
         />
       }]}
     </StoryList>
@@ -52,20 +49,18 @@ storiesOf('Card', {})
     <StoryList>
       {[{
         title: 'Normal card',
-        content: <Card
+        content: <FileCard
           id={thumbnailNotAvailableId}
-          mediaItemType={'file'}
-          collectionName={collectionName}
+          collectionName={defaultCollectionName}
           context={context}
         />
       }, {
         title: 'Small card',
-        content: <Card
+        content: <FileCard
           id={thumbnailNotAvailableId}
-          mediaItemType={'file'}
-          collectionName={collectionName}
+          collectionName={defaultCollectionName}
           context={context}
-          type={'small'}
+          appearance={'small'}
         />
       }]}
     </StoryList>
@@ -74,20 +69,18 @@ storiesOf('Card', {})
     <StoryList>
       {[{
         title: 'Not selected',
-        content: <Card
+        content: <FileCard
           id={successfulFileId}
-          mediaItemType={'file'}
-          collectionName={collectionName}
+          collectionName={defaultCollectionName}
           context={context}
           selectable={true}
           selected={false}
         />
       }, {
         title: 'Selected',
-        content: <Card
+        content: <FileCard
           id={successfulFileId}
-          mediaItemType={'file'}
-          collectionName={collectionName}
+          collectionName={defaultCollectionName}
           context={context}
           selectable={true}
           selected={true}
@@ -99,25 +92,23 @@ storiesOf('Card', {})
     <StoryList>
       {[{
         title: 'Normal card',
-        content: <Card
+        content: <FileCard
           id={wrongFileId}
-          mediaItemType={'file'}
-          collectionName={collectionName}
+          collectionName={defaultCollectionName}
           context={context}
           selectable={true}
           selected={false}
         />
       }, {
         title: 'Small card',
-        content: <Card
+        content: <FileCard
           id={wrongFileId}
-          mediaItemType={'file'}
-          collectionName={collectionName}
+          collectionName={defaultCollectionName}
           context={context}
           selectable={true}
           selected={false}
-          type={'small'}
-          width={200}
+          appearance={'small'}
+          dimensions={{width: 200}}
         />
       }]}
     </StoryList>
@@ -127,46 +118,41 @@ storiesOf('Card', {})
       <tbody>
         <tr>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />
@@ -174,46 +160,41 @@ storiesOf('Card', {})
         </tr>
         <tr>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />
@@ -221,46 +202,41 @@ storiesOf('Card', {})
         </tr>
         <tr>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />
@@ -268,46 +244,41 @@ storiesOf('Card', {})
         </tr>
         <tr>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />
@@ -315,46 +286,41 @@ storiesOf('Card', {})
         </tr>
         <tr>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
-            <Card
+            <FileCard
               id={successfulFileId}
-              mediaItemType={'file'}
-              collectionName={collectionName}
+              collectionName={defaultCollectionName}
               context={context}
               actions={[clickAction, deleteAction, annotateAction]}
             />

@@ -1,18 +1,19 @@
-import {MediaItemType} from '..';
-
-export interface RemoteCollection {
+export interface MediaCollectionFileItem {
+  type: 'file';
   id: string;
-  apiConfig: {
-    clientId: string;
-    token: string;
-    baseURL: string;
-  };
+  occurrenceKey: string;
+  name: string;
+  mimeType: string;
 }
 
-export interface MediaCollectionItem {
+export interface MediaCollectionLinkItem {
+  type: 'link';
   id: string;
-  mediaItemType: MediaItemType;
+  occurrenceKey: string;
+  url: string;
 }
+
+export type MediaCollectionItem = MediaCollectionFileItem | MediaCollectionLinkItem;
 
 export interface MediaCollection {
   id: string;

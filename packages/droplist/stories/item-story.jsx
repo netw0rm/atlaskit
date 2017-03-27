@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import styles from 'style!./story-styles.less';
 import Question from '@atlaskit/icon/glyph/question';
-import Arrow from '@atlaskit/icon/glyph/arrowrightlong';
+import Arrow from '@atlaskit/icon/glyph/arrow-right-long';
 import Avatar from '@atlaskit/avatar';
 import Lozenge from '@atlaskit/lozenge';
 
@@ -90,7 +90,7 @@ storiesOf(`${name} - item`, module)
         >second item with very long text that is going to be cut off</Item>
       </div>
     </div>
-  ), { imports: [...imports, ['Lozenge', '@atlaskit/lozenge'], ['t', '@atlaskit/icon/glyph/arrowrightlong']] })
+  ), { imports: [...imports, ['Lozenge', '@atlaskit/lozenge'], ['t', '@atlaskit/icon/glyph/arrow-right-long']] })
   .addCodeExampleStory('item with avatars and checkboxes', () => (
     <div className={styles.storiesContainer}>
       <p>This is an example of droplist items with avatars and checkboxes</p>
@@ -151,4 +151,3 @@ storiesOf(`${name} - item`, module)
       </div>
     </div>
   ));
-

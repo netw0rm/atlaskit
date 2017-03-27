@@ -1,4 +1,4 @@
-import { Schema } from '../prosemirror';
+import { Schema, AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule } from '../prosemirror';
 import {
   doc,
   paragraph,
@@ -57,4 +57,5 @@ const marks = {
   subsup
 };
 
+export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule };
 export default new Schema<typeof nodes, typeof marks>({ nodes, marks });

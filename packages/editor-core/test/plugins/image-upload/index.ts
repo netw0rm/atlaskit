@@ -67,8 +67,8 @@ describe('image-upload', () => {
   });
 
   it('does not emit multiple changes when an image is not selected', () => {
-    const { editorView, pluginState } = editor(doc(p('{<>}t{a}e{b}st', testImg())));
-    const { a, b } = editorView.state.doc.refs;
+    const { editorView, pluginState, refs } = editor(doc(p('{<>}t{a}e{b}st', testImg())));
+    const { a, b } = refs;
     const spy = sinon.spy();
     pluginState.subscribe(spy);
 
@@ -88,8 +88,8 @@ describe('image-upload', () => {
   });
 
   it('emits a change event when selection leaves an image', () => {
-    const { editorView, pluginState, sel } = editor(doc(p('{a}test{<>}', testImg())));
-    const { a } = editorView.state.doc.refs;
+    const { editorView, pluginState, sel, refs } = editor(doc(p('{a}test{<>}', testImg())));
+    const { a } = refs;
     const spy = sinon.spy();
     setNodeSelection(editorView, sel);
     pluginState.subscribe(spy);

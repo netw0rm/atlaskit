@@ -26,9 +26,9 @@ export default class NavigationItem extends PureComponent {
   }
 
   static defaultProps = {
-    isCompact: false,
     isSelected: false,
     linkComponent: DefaultLinkComponent,
+    theme: defaultTheme,
   }
 
   onMouseDown = (e) => {
@@ -60,7 +60,9 @@ export default class NavigationItem extends PureComponent {
     : null);
 
     return (
-      <NavigationItemOuter isSelected={this.props.isSelected}>
+      <NavigationItemOuter
+        isSelected={this.props.isSelected}
+      >
         <InteractiveWrapper
           href={this.props.href}
           onMouseDown={this.onMouseDown}
@@ -89,6 +91,6 @@ export default class NavigationItem extends PureComponent {
 }
 
 export const defaultTheme = {
-  appearance: 'container',
-  isCompact: false,
+  NavigationItemAppearance: 'container',
+  NavigationItemIsCompact: false,
 };

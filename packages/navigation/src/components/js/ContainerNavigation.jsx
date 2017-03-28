@@ -17,7 +17,6 @@ export default class ContainerNavigation extends PureComponent {
     areGlobalActionsVisible: PropTypes.bool,
     children: PropTypes.node,
     headerComponent: PropTypes.func,
-    isCompact: PropTypes.bool,
     shouldAnimate: PropTypes.bool,
     width: PropTypes.number,
     offsetX: PropTypes.number,
@@ -56,7 +55,6 @@ export default class ContainerNavigation extends PureComponent {
       globalPrimaryItemHref,
       globalSearchIcon,
       headerComponent,
-      isCompact,
       linkComponent,
       offsetX,
       onGlobalCreateActivate,
@@ -69,8 +67,7 @@ export default class ContainerNavigation extends PureComponent {
     return (
       <ThemeProvider
         theme={{
-          isCompact,
-          appearance,
+          NavigationItemAppearance: appearance,
         }}
       >
         <nav

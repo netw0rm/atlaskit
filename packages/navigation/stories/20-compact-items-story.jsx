@@ -52,22 +52,23 @@ storiesOf(name, module)
               spacing="none"
             />
           }
+          isCompact
           title="Rooms"
         >
           <CompactItem href="#1">Front deskers</CompactItem>
           <CompactItem href="#2">Parents anonymous</CompactItem>
           <CompactItem href="#3">Gone fishing</CompactItem>
         </AkNavigationItemGroup>
-        <AkNavigationItemGroup title="Rooms">
+        <AkNavigationItemGroup title="Rooms" isCompact>
           <CompactItem>Front deskers</CompactItem>
           <CompactItem>Parents anonymous</CompactItem>
           <CompactItem>Gone fishing</CompactItem>
         </AkNavigationItemGroup>
-        <AkNavigationItemGroup title="People">
+        <AkNavigationItemGroup title="People" isCompact>
           <CompactItem>John Lennon</CompactItem>
           <CompactItem>George Harrison</CompactItem>
         </AkNavigationItemGroup>
-        <AkNavigationItemGroup hasSeparator>
+        <AkNavigationItemGroup hasSeparator isCompact>
           <CompactItem isSelected >Mick Jagger </CompactItem>
           <CompactItem>Ronnie Wood</CompactItem>
         </AkNavigationItemGroup>

@@ -70,13 +70,17 @@ const colors = {
 const borderRadius = 3;
 
 function getColors(theme) {
-  return colors[theme.appearance];
+  return colors[theme.NavigationItemAppearance];
+}
+
+function getHeight(theme) {
+  return theme.NavigationItemIsCompact ? akGridSizeUnitless * 4.5 : akGridSizeUnitless * 5;
 }
 
 const NavigationItemOuter = styled.div`
   border-radius: ${borderRadius}px;
   box-sizing: border-box;
-  height: ${akGridSizeUnitless * 5}px;
+  height: ${({ theme }) => getHeight(theme)}px;
   position: relative;
   text-overflow: ellipsis;
   width: 100%;

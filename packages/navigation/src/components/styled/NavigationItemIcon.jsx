@@ -5,12 +5,13 @@ import { containerClosedWidth } from '../../shared-variables';
 const size = akGridSizeUnitless * 3;
 const offsetLeft = akGridSizeUnitless * 3.5;
 const openPadding = `0 ${akGridSizeUnitless * 2}px 0 ${offsetLeft - (akGridSizeUnitless * 2)}px`;
+const compactPadding = `0 ${akGridSizeUnitless}px 0 0`;
 const closedHorizontalPadding = (containerClosedWidth - (akGridSizeUnitless * 4) - size) / 2;
 const closedPadding = `0 ${closedHorizontalPadding}px 0 ${closedHorizontalPadding}px`;
 
 export default styled.div`
   transition: padding 200ms;
-  padding: ${openPadding}
+  padding: ${({ theme }) => (theme.NavigationItemIsCompact ? compactPadding : openPadding)}
   display: flex;
   flex-shrink: 0;
 

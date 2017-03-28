@@ -42,10 +42,10 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   pkgJson.files = ['umd'];
   pkgJson.main = `umd/${pkgJson.name}.js`;
   pkgJson.scripts = {
-    prepublish: 'nwb build',
+    prepublish: '../../node_modules/.bin/nwb build',
     storybook: '../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001',
-    test: 'nwb test',
-    'test:watch': 'nwb test --server',
+    test: '../../node_modules/.bin/nwb test',
+    'test:watch': '../../node_modules/.bin/nwb test --server',
   };
 
   // Remove old fields.

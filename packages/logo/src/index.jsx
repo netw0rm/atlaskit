@@ -1,9 +1,14 @@
+/* eslint import/no-unresolved: 0 */
+
 import React from 'react';
-import AtlassianLogoText from 'babel-loader!svg-to-jsx-loader!./logos/atlassian.svg';
-import BitbucketLogoText from 'babel-loader!svg-to-jsx-loader!./logos/bitbucket.svg';
-import ConfluenceLogoText from 'babel-loader!svg-to-jsx-loader!./logos/confluence.svg';
-import HipchatLogoText from 'babel-loader!svg-to-jsx-loader!./logos/hipchat.svg';
-import JiraLogoText from 'babel-loader!svg-to-jsx-loader!./logos/jira.svg';
+
+// TODO try and use react-svg-loader (it makes the bundle significantly smaller).
+import AtlassianLogoText from '!babel-loader!svg-to-jsx-loader!./logos/atlassian.svg';
+import BitbucketLogoText from '!babel-loader!svg-to-jsx-loader!./logos/bitbucket.svg';
+import ConfluenceLogoText from '!babel-loader!svg-to-jsx-loader!./logos/confluence.svg';
+import HipchatLogoText from '!babel-loader!svg-to-jsx-loader!./logos/hipchat.svg';
+import JiraLogoText from '!babel-loader!svg-to-jsx-loader!./logos/jira.svg';
+
 import Logo from './Logo';
 
 const AtlassianLogo = props =>

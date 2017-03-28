@@ -10,7 +10,7 @@
     "generate-bundle-exports": "node ./bin/generate-bundle-exports.js > ./src/index.jsx",
     "generate-icon-exports": "node ./bin/generate-icon-exports.js",
     "gen-js": "npm run generate-icon-exports && npm run generate-bundle-exports",
-    "prepublish": "CLI=1 npm run gen-js && nwb build",
+    "prepublish": "CLI=1 npm run gen-js && ../../node_modules/.bin/nwb build",
     "pretest": "npm run gen-js"
   },
   "files": [

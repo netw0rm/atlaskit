@@ -73,7 +73,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "^0.0.26",
     "karma-webpack": "^1.8.0",
-    "lerna": "2.0.0-beta.34",
+    "lerna": "2.0.0-beta.38",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "minilog": "^3.0.1",
@@ -107,7 +107,8 @@
     "typescript": "2.2.0-dev.20170117",
     "url-loader": "^0.5.7",
     "validate-commit-message": "^3.0.1",
-    "wait-on": "^2.0.0"
+    "wait-on": "^2.0.0",
+    "webpack": "~2.2.0"
   },
   "engines": {
     "npm": ">=3.8",
@@ -192,5 +193,6 @@
     "validate/tslint/fix": "./build/bin/lint.tslint.sh --fix",
     "validate/package.json": "pjv -q && ./node_modules/.bin/lerna exec -- pjv -q",
     "validate/typescript": "./build/bin/validate.typescript.sh"
-  }
+  },
+  "devDependencies": {}
 }

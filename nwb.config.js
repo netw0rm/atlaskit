@@ -25,6 +25,7 @@ module.exports = {
   type: 'react-component',
   npm: {
     esModules: false,
+    cjs: false,
     umd: {
       global: camelcase(pkg.name),
       externals: Object.keys(Object.assign(
@@ -104,5 +105,7 @@ module.exports = {
         test: /\.jsx?/,
       },
     },
+
+    uglify: false,
   },
 };

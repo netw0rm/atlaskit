@@ -7,10 +7,10 @@
   "description": "A component to display Atlassian branded product logo lockups",
   "main": "umd/@atlaskit/logo.js",
   "scripts": {
-    "prepublish": "nwb build",
+    "prepublish": "../../node_modules/.bin/nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
-    "test": "nwb test",
-    "test:watch": "nwb test --server"
+    "test": "../../node_modules/.bin/nwb test",
+    "test:watch": "../../node_modules/.bin/nwb test --server"
   },
   "files": [
     "umd"
@@ -22,7 +22,8 @@
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/util-readme": "^1.0.0",
-    "@atlaskit/util-shared-styles": "^1.0.1"
+    "@atlaskit/util-shared-styles": "^1.0.1",
+    "svg-to-jsx-loader": "^1.1.0"
   },
   "peerDependencies": {
     "react": "^15.3.2",

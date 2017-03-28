@@ -8,10 +8,10 @@
   "main": "umd/@atlaskit/emoji.js",
   "jsnext:main": "dist/es2015/index.js",
   "scripts": {
-    "prepublish": "nwb build",
+    "prepublish": "../../node_modules/.bin/nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
-    "test": "nwb test",
-    "test:watch": "nwb test --server"
+    "test": "../../node_modules/.bin/nwb test",
+    "test:watch": "../../node_modules/.bin/nwb test --server"
   },
   "files": [
     "umd"

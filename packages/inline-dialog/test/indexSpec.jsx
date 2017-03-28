@@ -25,7 +25,7 @@ describe('inline-dialog', () => {
     it('should pass the expected default props to Layer', () => {
       const wrapper = mount(<InlineDialog />);
       const layer = wrapper.find(Layer);
-      expect(layer.prop('autoPosition')).to.equal(false);
+      expect(layer.prop('autoFlip')).to.equal(false);
       expect(layer.prop('content')).to.equal(null);
       expect(layer.prop('position')).to.equal('bottom center');
       expect(layer.prop('offset')).to.equal('0 8');
@@ -80,11 +80,45 @@ describe('inline-dialog', () => {
   });
 
   describe('shouldFlip prop', () => {
-    it('should be reflected onto the Layer component', () => {
-      const wrapper = mount(<InlineDialog shouldFlip />);
-      const layer = wrapper.find(Layer);
-      expect(layer).to.have.length.above(0);
-      expect(layer.prop('autoPosition')).to.equal(true);
+    describe('should be reflected onto the Layer component', () => {
+      it('for a boolean value', () => {
+        const wrapper = mount(<InlineDialog shouldFlip />);
+        const layer = wrapper.find(Layer);
+        expect(layer).to.have.length.above(0);
+        expect(layer.prop('autoFlip')).to.equal(true);
+      });
+
+      it('for an array of strings', () => {
+        const shouldFlipValue = ['top', 'bottom'];
+        const wrapper = mount(<InlineDialog shouldFlip={shouldFlipValue} />);
+        const layer = wrapper.find(Layer);
+        expect(layer).to.have.length.above(0);
+        expect(layer.prop('autoFlip')).to.equal(shouldFlipValue);
+      });
+    });
+  });
+
+  describe('onContentFocus', () => {
+    it('should be triggered when an element in the content is focused', () => {
+      const spy = sinon.spy();
+      const linkEl = <a id="link" href="/test">a link</a>;
+      const wrapper = mount(<InlineDialog onContentFocus={spy} content={linkEl} isOpen />);
+      const content = mount(wrapper.find(Layer).props().content);
+
+      content.find('#link').simulate('focus');
+      expect(spy.callCount).to.equal(1);
+    });
+  });
+
+  describe('onContentBlur', () => {
+    it('should be triggered when an element in the content is blurred', () => {
+      const spy = sinon.spy();
+      const linkEl = <a id="link" href="/test">a link</a>;
+      const wrapper = mount(<InlineDialog onContentBlur={spy} content={linkEl} isOpen />);
+      const content = mount(wrapper.find(Layer).props().content);
+
+      content.find('#link').simulate('blur');
+      expect(spy.callCount).to.equal(1);
     });
   });
 

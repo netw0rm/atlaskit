@@ -141,7 +141,7 @@ storiesOf(name, module)
     <Chrome title="Multi select with Avatars">
       <Description>
         <p>You can pass content to be displayed in front of the dropdown items and also the tags by
-          using the <code>elemBefore</code> and <code>tagElemBefore</code> props
+          using the <code>elemBefore</code> and <code>tag.elemBefore</code> props
           respectively.
         </p>
         <p>The most common use case for this would be for things like <code>@atlaskit/icon</code>

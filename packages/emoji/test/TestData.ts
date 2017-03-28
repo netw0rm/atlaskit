@@ -1,5 +1,6 @@
 import EmojiService from '../src/api/EmojiService';
-import { EmojiDescription } from '../src/types';
+import { EmojiDescription, EmojiMeta, EmojiRepresentation, EmojiServiceDescription, EmojiServiceRepresentation, EmojiServiceResponse, SpriteSheet } from '../src/types';
+import { isSpriteRepresentation } from '../src/type-helpers';
 import { mockEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig } from './MockEmojiResource';
 
 export const spriteEmoji: EmojiDescription = {
@@ -54,5 +55,50 @@ export const emojiService = new EmojiService(emojis);
 
 export const grinEmoji = emojiService.findByShortcut('grin') as EmojiDescription;
 export const areyoukiddingmeEmoji = emojiService.findByShortcut('areyoukiddingme') as EmojiDescription;
+export const thumbsupEmoji = emojiService.findByShortcut('thumbsup') as EmojiDescription;
 
 export const getEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(emojiService, config);
+
+// Returns EmojiDescription test data in service as a service response.
+export const asServiceData = (emojis: EmojiDescription[]): EmojiServiceResponse => {
+  const meta: EmojiMeta  = {};
+  const serviceEmojis: EmojiServiceDescription[] = [];
+
+  const setSpriteSheet = (sprite: SpriteSheet, category: string) => {
+    if (!meta.spriteSheets) {
+      meta.spriteSheets = {};
+    }
+    if (!meta.spriteSheets[category]) {
+      meta.spriteSheets[category] = sprite;
+    }
+  };
+
+  const convertRepresentation = (rep: EmojiRepresentation, category: string): EmojiServiceRepresentation => {
+    if (isSpriteRepresentation(rep)) {
+      const { sprite, ...others } = rep;
+      setSpriteSheet(rep.sprite, category);
+      return {
+        ...others,
+        spriteRef: category,
+      };
+    }
+    return { ...rep };
+  };
+
+  emojis.forEach(emoji => {
+    const { representation, skinVariations, modifiers, id, category, ...others } = emoji;
+    const serviceEmoji: EmojiServiceDescription = {
+      id: id || '',
+      category,
+      ...others,
+      representation: convertRepresentation(representation, category),
+      skinVariations: skinVariations && skinVariations.map(rep => convertRepresentation(rep, category)),
+    };
+    serviceEmojis.push(serviceEmoji);
+  });
+
+  return {
+    emojis: serviceEmojis,
+    meta,
+  };
+};

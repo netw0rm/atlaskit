@@ -116,7 +116,9 @@ export default class EmojiPicker extends PureComponent<Props, State> {
 
   private onSearch = (query) => {
     this.props.emojiProvider.then(provider => {
-      provider.filter(query);
+      provider.filter(query, {
+        skinTone: this.state.selectedTone,
+      });
     });
   }
 

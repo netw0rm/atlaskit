@@ -14,7 +14,6 @@ describe(name, () => {
         'Emoji',
         'EmojiPlaceholder',
         'ResourcedEmoji',
-        'ResourcedEmojiShortcut',
         'EmojiPicker',
         'EmojiTypeAhead',
         'EmojiResource',

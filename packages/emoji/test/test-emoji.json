@@ -250,29 +250,110 @@
     "skinVariations": []
   },
   {
-    "id": "1f60a",
-    "name": "smiling face with smiling eyes",
-    "shortcut": "blush",
+    "id": "1f44d",
+    "name": "thumbs up sign",
+    "shortcut": "thumbsup",
     "type": "STANDARD",
     "category": "PEOPLE",
-    "order": 11,
+    "order": 91,
+    "skinVariations": [
+      {
+        "sprite": {
+          "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAMAAAAoyzS7AAAAA1BMVEX///+nxBvIAAAACklEQVQIW2NgAAAAAgABYkBPaAAAAABJRU5ErkJggg==",
+          "row": 23,
+          "column": 25,
+          "height": 782,
+          "width": 850
+        },
+        "x": 646,
+        "y": 272,
+        "height": 32,
+        "width": 32,
+        "xIndex": 19,
+        "yIndex": 8,
+        "mediaApi": false
+      },
+      {
+        "sprite": {
+          "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAMAAAAoyzS7AAAAA1BMVEX///+nxBvIAAAACklEQVQIW2NgAAAAAgABYkBPaAAAAABJRU5ErkJggg==",
+          "row": 23,
+          "column": 25,
+          "height": 782,
+          "width": 850
+        },
+        "x": 680,
+        "y": 272,
+        "height": 32,
+        "width": 32,
+        "xIndex": 20,
+        "yIndex": 8,
+        "mediaApi": false
+      },
+      {
+        "sprite": {
+          "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAMAAAAoyzS7AAAAA1BMVEX///+nxBvIAAAACklEQVQIW2NgAAAAAgABYkBPaAAAAABJRU5ErkJggg==",
+          "row": 23,
+          "column": 25,
+          "height": 782,
+          "width": 850
+        },
+        "x": 714,
+        "y": 272,
+        "height": 32,
+        "width": 32,
+        "xIndex": 21,
+        "yIndex": 8,
+        "mediaApi": false
+      },
+      {
+        "sprite": {
+          "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAMAAAAoyzS7AAAAA1BMVEX///+nxBvIAAAACklEQVQIW2NgAAAAAgABYkBPaAAAAABJRU5ErkJggg==",
+          "row": 23,
+          "column": 25,
+          "height": 782,
+          "width": 850
+        },
+        "x": 748,
+        "y": 272,
+        "height": 32,
+        "width": 32,
+        "xIndex": 22,
+        "yIndex": 8,
+        "mediaApi": false
+      },
+      {
+        "sprite": {
+          "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAMAAAAoyzS7AAAAA1BMVEX///+nxBvIAAAACklEQVQIW2NgAAAAAgABYkBPaAAAAABJRU5ErkJggg==",
+          "row": 23,
+          "column": 25,
+          "height": 782,
+          "width": 850
+        },
+        "x": 782,
+        "y": 272,
+        "height": 32,
+        "width": 32,
+        "xIndex": 23,
+        "yIndex": 8,
+        "mediaApi": false
+      }
+    ],
     "representation": {
       "sprite": {
         "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAMAAAAoyzS7AAAAA1BMVEX///+nxBvIAAAACklEQVQIW2NgAAAAAgABYkBPaAAAAABJRU5ErkJggg==",
         "row": 23,
         "column": 25,
         "height": 782,
-        "width": 850
+        "width": 850,
+        "mediaApi": false
       },
+      "x": 510,
+      "y": 102,
       "height": 32,
       "width": 32,
-      "x": 340,
-      "y": 0,
-      "xIndex": 10,
-      "yIndex": 0,
-      "mediaApi": false
-    },
-    "skinVariations": []
+      "xIndex": 15,
+      "yIndex": 3
+    }
   },
   {
     "id": "1f436",

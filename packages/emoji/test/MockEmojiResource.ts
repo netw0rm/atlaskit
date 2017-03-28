@@ -1,4 +1,4 @@
-import { EmojiDescription, EmojiId, OptionalEmojiDescription } from '../src/types';
+import { EmojiDescription, EmojiId, EmojiModifiers, OptionalEmojiDescription } from '../src/types';
 import { EmojiProvider } from '../src/api/EmojiResource';
 import EmojiService, { EmojiSearchResult } from '../src/api/EmojiService';
 import { AbstractResource } from '../src/api/SharedResources';
@@ -12,7 +12,7 @@ export interface MockEmojiResourceConfig {
   promiseBuilder?: PromiseBuilder<any>;
 }
 
-export class MockEmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined> implements EmojiProvider {
+export class MockEmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, EmojiModifiers> implements EmojiProvider {
   private emojiService: EmojiService;
   private promiseBuilder: PromiseBuilder<any>;
 
@@ -29,22 +29,28 @@ export class MockEmojiResource extends AbstractResource<string, EmojiSearchResul
     }
   }
 
-  filter(query: string) {
+  filter(query: string, modifiers?: EmojiModifiers) {
     debug('MockEmojiResource.filter', query);
-    this.promiseBuilder(this.emojiService.search(query)).then((result: EmojiSearchResult) => {
+    this.promiseBuilder(this.emojiService.search(query, modifiers)).then((result: EmojiSearchResult) => {
       this.notifyResult(result);
     });
   }
 
-  findByShortcut(shortcut: string): Promise<OptionalEmojiDescription> {
-    const emoji = this.emojiService.findByShortcut(shortcut);
+  findByShortcut(shortcut: string, modifiers?: EmojiModifiers): Promise<OptionalEmojiDescription> {
+    const emoji = this.emojiService.findByShortcut(shortcut, modifiers);
     debug('MockEmojiResource.findByShortcut', shortcut, emoji);
     return this.promiseBuilder(emoji);
   }
 
-  findById(id: EmojiId): Promise<OptionalEmojiDescription> {
-    const emoji = this.emojiService.findById(id);
-    debug('MockEmojiResource.findById', id, emoji);
+  findByEmojiId(emojiId: EmojiId): Promise<OptionalEmojiDescription> {
+    const { id, modifiers, shortcut } = emojiId;
+    if (id) {
+      const emoji = this.emojiService.findById(id, modifiers);
+      debug('MockEmojiResource.findById', emojiId, emoji);
+      return this.promiseBuilder(emoji);
+    }
+    const emoji = this.emojiService.findByShortcut(shortcut, modifiers);
+    debug('MockEmojiResource.findById; not id using shortcut', emojiId, emoji);
     return this.promiseBuilder(emoji);
   }
 

@@ -1,4 +1,3 @@
-import { SecurityProvider, RefreshSecurityProvider } from './api/SharedResourceUtils';
 import { SyntheticEvent } from 'react';
 
 export type RelativePosition = 'above' | 'below' | 'auto';
@@ -7,13 +6,30 @@ export interface Styles {
   [index: string]: any;
 }
 
+/*
+ * Modifiers can be any key value pair (to support future modifiers). If a modifiers
+ * is unknown or invalid, it is used and the unmodified emoji when render in it's
+ * placed.
+ *
+ * Currently supported modifiers:
+ *   skinTone: number;
+ */
+export interface EmojiModifiers {
+  [index: string]: any;
+}
+
 /**
- * Can unique identify an emoji, including an optional variation of that emoji.
- * Unknown variations will be ignored and the default emoji used.
+ * Minimum information to defined an emoji is the shortcut.
+ * In order to uniquely define an emoji, the id should be included, and is
+ * used in preference to shortcut if provided, and has a matching emoji.
+ * If not emoji can be found by id (e.g. a custom emoji has been removed),
+ * fallback behaviour will be to attempt to find a matching emoji by shortcut.
  */
 export interface EmojiId {
-  id: string;
-  variation?: number;
+  shortcut: string;
+  id?: string;
+  fallback?: string;
+  modifiers?: EmojiModifiers;
 }
 
 export interface SpriteSheet {
@@ -140,10 +156,3 @@ export interface OnEmojiEvent {
 export interface OnCategory {
   (categoryId: string): void;
 }
-
-export interface EmojiResourceItemConfig {
-  url: string; /* url for this specific emoji configuration */
-  securityProvider?: SecurityProvider;
-  refreshedSecurityProvider?: RefreshSecurityProvider;
-}
-

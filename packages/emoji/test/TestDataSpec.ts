@@ -30,7 +30,7 @@ describe('#test data', () => {
   });
 
   it('expected grin emoji', () => {
-    const emoji = emojiService.findById({ id: '1f601' });
+    const emoji = emojiService.findById('1f601');
     expect(emoji, 'Emoji found').to.not.equal(undefined);
     if (emoji) {
       expect(emoji.id, 'id').to.equal('1f601');
@@ -39,7 +39,7 @@ describe('#test data', () => {
   });
 
   it('expected areyoukiddingme emojis', () => {
-    const emoji = emojiService.findById({ id: 'atlassian-areyoukiddingme' });
+    const emoji = emojiService.findById('atlassian-areyoukiddingme');
     expect(emoji, 'Emoji found').to.not.equal(undefined);
     if (emoji) {
       expect(emoji.id, 'id').to.equal('atlassian-areyoukiddingme');

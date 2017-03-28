@@ -28,7 +28,7 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
   private refreshEmoji(emojiProviderPromise: Promise<EmojiProvider>, emojiId: EmojiId) {
     if (emojiProviderPromise) {
       emojiProviderPromise.then(emojiProvider => {
-        emojiProvider.findById(emojiId).then(emoji => {
+        emojiProvider.findByEmojiId(emojiId).then(emoji => {
           this.setState({
             emoji,
           });
@@ -55,7 +55,7 @@ export default class ResourcedEmoji extends PureComponent<Props, State> {
       return (<Emoji emoji={emoji} />);
     }
 
-    const title = this.props.emojiId.id;
+    const title = this.props.emojiId.shortcut;
     return <EmojiPlaceholder title={title} />;
   }
 }

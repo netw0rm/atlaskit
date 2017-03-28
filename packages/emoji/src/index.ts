@@ -1,7 +1,6 @@
 import Emoji from './components/common/Emoji';
 import EmojiPlaceholder from './components/common/EmojiPlaceholder';
 import ResourcedEmoji from './components/common/ResourcedEmoji';
-import ResourcedEmojiShortcut from './components/common/ResourcedEmojiShortcut';
 import EmojiPicker from './components/picker/EmojiPicker';
 import EmojiTypeAhead from './components/typeahead/EmojiTypeAhead';
 import EmojiResource, { EmojiProvider } from './api/EmojiResource';
@@ -20,12 +19,11 @@ export {
   EmojiService,
   EmojiTypeAhead,
   ResourcedEmoji,
-  ResourcedEmojiShortcut,
   // functions
   denormaliseEmojiServiceResponse,
   // interfaces
   EmojiProvider,
-  EmojiSearchResult
+  EmojiSearchResult,
 };
 
 export * from './types';

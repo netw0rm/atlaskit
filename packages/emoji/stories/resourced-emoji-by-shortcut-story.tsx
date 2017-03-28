@@ -2,7 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 
 import { name } from '../package.json';
-import ResourcedEmojiShortcut from '../src/components/common/ResourcedEmojiShortcut';
+import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
 import { EmojiProvider } from '../src/api/EmojiResource';
 
 // import { MockEmojiResourceConfig } from '../test/MockEmojiResource';
@@ -16,26 +16,57 @@ interface SampleEmojiProps {
 // tslint:disable-next-line:variable-name
 const SampleEmojis = (props: SampleEmojiProps) => (
   <span>
-    <ResourcedEmojiShortcut
-      shortcut="grimacing"
+    <ResourcedEmoji
+      emojiId={{ shortcut: 'grimacing' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
     />
-    <ResourcedEmojiShortcut
-      shortcut="awthanks"
+    <ResourcedEmoji
+      emojiId={{ shortcut: 'awthanks' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
     />
-    <ResourcedEmojiShortcut
-      shortcut="not-an-emoji"
+    <ResourcedEmoji
+      emojiId={{ shortcut: 'not-an-emoji' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
     />
   </span>
 );
 
-storiesOf(`${name}/Resourced Emoji Shortcut`, module)
+storiesOf(`${name}/ResourcedEmoji by shortcut`, module)
   .add('resourced emoji shortcut', () => (
     <SampleEmojis />
   ))
-  .add('Content resourced emoji shortcut', () => (
+  .add('skin tones', () => (
+    <span>
+      <ResourcedEmoji
+        emojiId={{ shortcut: 'thumbsup' }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+      <ResourcedEmoji
+        emojiId={{ shortcut: 'thumbsup', modifiers: { skinTone: 1 } }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+      <ResourcedEmoji
+        emojiId={{ shortcut: 'thumbsup', modifiers: { skinTone: 2 } }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+      <ResourcedEmoji
+        emojiId={{ shortcut: 'thumbsup', modifiers: { skinTone: 3 } }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+      <ResourcedEmoji
+        emojiId={{ shortcut: 'thumbsup', modifiers: { skinTone: 4 } }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+      <ResourcedEmoji
+        emojiId={{ shortcut: 'thumbsup', modifiers: { skinTone: 5 } }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+      <ResourcedEmoji
+        emojiId={{ shortcut: 'thumbsup', modifiers: { skinTone: 6 /* invalid - will fallback to default */ } }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+    </span>
+  ))  .add('Content resourced emoji shortcut', () => (
     <div>
       <h1>Heading 1 <SampleEmojis /></h1>
       <h2>Heading 2 <SampleEmojis /></h2>

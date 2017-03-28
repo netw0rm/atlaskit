@@ -3,13 +3,13 @@ import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import { expect } from 'chai';
 
-import { EmojiDescription } from '../src/types';
+import { EmojiDescription, EmojiServiceResponse, SpriteRepresentation } from '../src/types';
 import { SecurityOptions, ServiceConfig } from '../src/api/SharedResourceUtils';
 import { OnProviderChange } from '../src/api/SharedResources';
 import EmojiResource, { EmojiResourceConfig } from '../src/api/EmojiResource';
 import { EmojiSearchResult } from '../src/api/EmojiService';
 
-import { areyoukiddingmeEmoji, atlassianEmojis, grinEmoji, standardEmojis } from './TestData';
+import { asServiceData, areyoukiddingmeEmoji, atlassianEmojis, grinEmoji, standardEmojis, thumbsupEmoji } from './TestData';
 
 const baseUrl = 'https://bogus/';
 const p1Url = 'https://p1/';
@@ -47,7 +47,7 @@ const defaultApiConfig: EmojiResourceConfig = {
 const providerData1 = standardEmojis;
 const providerData2 = atlassianEmojis;
 
-const fetchResponse = data => ({ emojis: data });
+const fetchResponse = (data: EmojiDescription[]) : EmojiServiceResponse => asServiceData(data);
 
 function checkOrder(expected: EmojiDescription[], actual: EmojiDescription[]) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
@@ -172,6 +172,35 @@ describe('EmojiResource', () => {
       });
       resource.subscribe(onChange);
       resource.filter('');
+      return filteredPromise;
+    });
+
+    it('single provider all emoji with modifier', () => {
+      fetchMock.mock({
+        matcher: `begin:${provider1.url}`,
+        response: fetchResponse(providerData1),
+      });
+
+      const config = {
+        ...defaultApiConfig,
+        providers: [provider1],
+      };
+
+      const skinTone = 2;
+      const resource = new EmojiResource(config);
+      const onChange = new MockOnProviderChange();
+      const filteredPromise = onChange.waitForResult().then(emojiResponse => {
+        expect(onChange.resultCalls.length, 'Result called').to.equal(1);
+        expect(emojiResponse.emojis.length, 'One emoji found').to.equal(1);
+        expect(emojiResponse.emojis[0].id).to.equal(thumbsupEmoji.id);
+        const emoji = emojiResponse.emojis[0];
+        const emojiRepresentation = emoji.representation as SpriteRepresentation;
+        const expectedSelectedSkinRepresentation = (thumbsupEmoji.skinVariations && thumbsupEmoji.skinVariations[skinTone - 1]) as SpriteRepresentation;
+        expect(emoji.id).to.equal(thumbsupEmoji.id);
+        expect(emojiRepresentation).to.deep.equal(expectedSelectedSkinRepresentation);
+      });
+      resource.subscribe(onChange);
+      resource.filter('thumbsup', { skinTone });
       return filteredPromise;
     });
 
@@ -340,13 +369,13 @@ describe('EmojiResource', () => {
 
       const resource = new EmojiResource(defaultApiConfig);
 
-      return resource.recordSelection({ id: ':bacon:' }).then(() => {
+      return resource.recordSelection({ shortcut: 'bacon', id: '123bacon' }).then(() => {
         expect(fetchMock.called('record')).to.equal(true);
       });
     });
   });
 
-  describe('#findById', () => {
+  describe('#findByEmojiId', () => {
     it('Before loaded, promise eventually resolved; one provider', () => {
       let resolveProvider1;
 
@@ -359,7 +388,47 @@ describe('EmojiResource', () => {
 
       const resource = new EmojiResource(defaultApiConfig);
 
-      const emojiPromise = resource.findById({ id: '1f601' }); // grin
+      const emojiPromise = resource.findByEmojiId({ shortcut: 'wontbeused', id: '1f601' }); // grin
+      const done = emojiPromise.then(emoji => {
+        checkEmoji(grinEmoji, emoji);
+      });
+      resolveProvider1(fetchResponse(providerData1));
+      return done;
+    });
+
+    it('one provider, no id', () => {
+      let resolveProvider1;
+
+      fetchMock.mock({
+        matcher: `begin:${provider1.url}`,
+        response: new Promise(resolve => {
+          resolveProvider1 = resolve;
+        }),
+      });
+
+      const resource = new EmojiResource(defaultApiConfig);
+
+      const emojiPromise = resource.findByEmojiId({ shortcut: 'grin' });
+      const done = emojiPromise.then(emoji => {
+        checkEmoji(grinEmoji, emoji);
+      });
+      resolveProvider1(fetchResponse(providerData1));
+      return done;
+    });
+
+    it('one provider, unknown id, shortcut fallback', () => {
+      let resolveProvider1;
+
+      fetchMock.mock({
+        matcher: `begin:${provider1.url}`,
+        response: new Promise(resolve => {
+          resolveProvider1 = resolve;
+        }),
+      });
+
+      const resource = new EmojiResource(defaultApiConfig);
+
+      const emojiPromise = resource.findByEmojiId({ shortcut: 'grin', id: 'unknownid' });
       const done = emojiPromise.then(emoji => {
         checkEmoji(grinEmoji, emoji);
       });
@@ -387,7 +456,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findById({ id: '1f601' }); // grin
+      const emojiPromise = resource.findByEmojiId({ shortcut: 'wontbeused', id: '1f601' }); // grin
       const done = emojiPromise.then(emoji => {
         checkEmoji(grinEmoji, emoji);
       });
@@ -416,7 +485,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findById({ id: 'atlassian-areyoukiddingme' }); // grin
+      const emojiPromise = resource.findByEmojiId({ shortcut: 'wontbeused', id: 'atlassian-areyoukiddingme' }); // grin
       const done = emojiPromise.then(emoji => {
         checkEmoji(areyoukiddingmeEmoji, emoji);
       });
@@ -445,7 +514,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findById({ id: 'bogus' }); // does not exist
+      const emojiPromise = resource.findByEmojiId({ shortcut: 'wontbeused', id: 'bogus' }); // does not exist
       const done = emojiPromise.then(emoji => {
         expect(emoji).to.equal(undefined);
       });
@@ -467,7 +536,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findById({ id: 'atlassian-areyoukiddingme' }); // grin
+      const emojiPromise = resource.findByEmojiId({ shortcut: 'wontbeused', id: 'atlassian-areyoukiddingme' }); // grin
       const done = emojiPromise.then(emoji => {
         checkEmoji(areyoukiddingmeEmoji, emoji);
       });
@@ -491,7 +560,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findById({ id: '1f601' }); // grin
+      const emojiPromise = resource.findByEmojiId({ shortcut: 'wontbeused', id: '1f601' }); // grin
       const done = emojiPromise.then(emoji => {
         expect(emoji, 'Emoji not found due to failed provider').to.equal(undefined);
       });
@@ -516,7 +585,7 @@ describe('EmojiResource', () => {
         ...defaultApiConfig,
         providers: [provider1, provider2],
       });
-      const emojiPromise = resource.findById({ id: 'atlassian-areyoukiddingme' }); // grin
+      const emojiPromise = resource.findByEmojiId({ shortcut: 'wontbeused', id: 'atlassian-areyoukiddingme' }); // grin
       const done = emojiPromise.then(emoji => {
         checkEmoji(areyoukiddingmeEmoji, emoji);
       });
@@ -600,6 +669,78 @@ describe('EmojiResource', () => {
       });
       resolveProvider1(fetchResponse(providerData1));
       resolveProvider2(fetchResponse(providerData2));
+      return done;
+    });
+
+    it('Two providers, duplicate shortcut - use from second provider. 1, then 2 resolved.', () => {
+      let resolveProvider1;
+      let resolveProvider2;
+
+      fetchMock.mock({
+        matcher: `begin:${provider1.url}`,
+        response: new Promise(resolve => {
+          resolveProvider1 = resolve;
+        }),
+      }).mock({
+        matcher: `begin:${provider2.url}`,
+        response: new Promise(resolve => {
+          resolveProvider2 = resolve;
+        }),
+      });
+
+      const p2grin = {
+        ...grinEmoji,
+        id: 'atlassian-grin',
+      };
+      const resource = new EmojiResource({
+        ...defaultApiConfig,
+        providers: [provider1, provider2],
+      });
+      const emojiPromise = resource.findByShortcut('grin'); // grin
+      const done = emojiPromise.then(emoji => {
+        checkEmoji(p2grin, emoji);
+      });
+      resolveProvider1(fetchResponse(providerData1));
+      resolveProvider2(fetchResponse([
+        ...providerData2,
+        p2grin,
+      ]));
+      return done;
+    });
+
+    it('Two providers, duplicate shortcut - use from second provider. 2, then 1 resolved.', () => {
+      let resolveProvider1;
+      let resolveProvider2;
+
+      fetchMock.mock({
+        matcher: `begin:${provider1.url}`,
+        response: new Promise(resolve => {
+          resolveProvider1 = resolve;
+        }),
+      }).mock({
+        matcher: `begin:${provider2.url}`,
+        response: new Promise(resolve => {
+          resolveProvider2 = resolve;
+        }),
+      });
+
+      const p2grin = {
+        ...grinEmoji,
+        id: 'atlassian-grin',
+      };
+      const resource = new EmojiResource({
+        ...defaultApiConfig,
+        providers: [provider1, provider2],
+      });
+      const emojiPromise = resource.findByShortcut('grin'); // grin
+      const done = emojiPromise.then(emoji => {
+        checkEmoji(p2grin, emoji);
+      });
+      resolveProvider2(fetchResponse([
+        ...providerData2,
+        p2grin,
+      ]));
+      resolveProvider1(fetchResponse(providerData1));
       return done;
     });
 

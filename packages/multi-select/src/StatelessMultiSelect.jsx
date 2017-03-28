@@ -250,9 +250,8 @@ export default class StatelessMultiSelect extends PureComponent {
   }
 
   renderItems = (items) => {
-    const filteredItems = this.filterItems(items);
-    if (filteredItems.length) {
-      return filteredItems.map((item, itemIndex) => (<Item
+    if (items.length) {
+      return items.map((item, itemIndex) => (<Item
         {...item}
         elemBefore={item.elemBefore}
         isFocused={itemIndex === this.state.focusedItemIndex}
@@ -269,12 +268,13 @@ export default class StatelessMultiSelect extends PureComponent {
   }
 
   renderGroups = groups => groups.map((group, groupIndex) => { // eslint-disable-line arrow-body-style, max-len
-    return group.items.length > 0 ?
+    const filteredItems = this.filterItems(group.items);
+    return filteredItems.length > 0 ?
       <Group
         heading={group.heading}
         key={groupIndex}
       >
-        {this.renderItems(group.items)}
+        {this.renderItems(filteredItems)}
       </Group>
     : null;
   })

@@ -5,11 +5,11 @@
 @import '~@atlaskit/util-shared-styles/src/grid.less';
 
 
-// TO DO: Remove this hardcoded (and outdated) grid unit
 @default-border-radius: @ak-border-radius;
-@button-width: 2 * @ak-grid-size + @default-border-radius;
-@font-size: @ak-font-size-default;
 @tag-height: 2.5 * @ak-grid-size;
+// button should be square so we make it the same as the tag-height
+@button-width: @tag-height;
+@font-size: @ak-font-size-default;
 @max-width: 25 * @ak-grid-size;
 @max-text-width: @max-width - (@button-width);
 @animation-duration: 250ms;

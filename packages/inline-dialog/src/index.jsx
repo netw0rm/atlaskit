@@ -12,20 +12,26 @@ const akGridSizeValue = parseInt(akGridSize, 10);
 // both are measured in pixels
 const dialogOffset = `0 ${akGridSizeValue}`;
 
+// TODO: expose positions and flipPositions from Layer and pull in here
+const positions = [
+  'top left', 'top center', 'top right', 'right top', 'right middle', 'right bottom',
+  'bottom left', 'bottom center', 'bottom right', 'left top', 'left middle', 'left bottom',
+];
+const flipPositions = ['top', 'right', 'bottom', 'left'];
+
 /* eslint-disable react/no-unused-prop-types */
 export default class AKInlineDialog extends PureComponent {
   static propTypes = {
-    // TODO: expose these from Layer and pull in here
-    position: PropTypes.oneOf([
-      'top left', 'top center', 'top right', 'right top', 'right middle', 'right bottom',
-      'bottom left', 'bottom center', 'bottom right', 'left top', 'left middle', 'left bottom',
-    ]),
+    position: PropTypes.oneOf(positions),
     isOpen: PropTypes.bool,
     content: PropTypes.node,
-    shouldFlip: PropTypes.bool,
+    shouldFlip: PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.arrayOf(PropTypes.oneOf(flipPositions)),
+    ]),
+    onContentBlur: PropTypes.func,
     onContentClick: PropTypes.func,
     onContentFocus: PropTypes.func,
-    onContentBlur: PropTypes.func,
   }
 
   static defaultProps = {
@@ -33,9 +39,9 @@ export default class AKInlineDialog extends PureComponent {
     isOpen: false,
     content: null,
     shouldFlip: false,
+    onContentBlur: () => {},
     onContentClick: () => {},
     onContentFocus: () => {},
-    onContentBlur: () => {},
   }
 
   /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -50,14 +56,14 @@ export default class AKInlineDialog extends PureComponent {
         content={props.isOpen ?
           <div
             onClick={props.onContentClick}
-            onFocusCapture={props.onContentFocus}
             onBlurCapture={props.onContentBlur}
+            onFocusCapture={props.onContentFocus}
           >
             {content}
           </div>
           : null}
         position={props.position}
-        autoPosition={props.shouldFlip}
+        autoFlip={props.shouldFlip}
         offset={dialogOffset}
       >
         <div>

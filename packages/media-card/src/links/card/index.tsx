@@ -135,7 +135,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
     if (state && state.urlPreview) {
       const urlPreview = state.urlPreview as UrlPreview;
       const { resources } = urlPreview;
-      const {appearance} = props;
+      const { appearance } = props;
 
       if (resources && resources.app) {
         return this.renderApplicationLink(urlPreview);

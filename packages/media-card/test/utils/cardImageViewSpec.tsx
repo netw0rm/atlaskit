@@ -4,6 +4,7 @@ import { mount } from 'enzyme';
 
 import { CardImageView } from '../../src/utils/cardImageView';
 import { FileIcon } from '../../src/utils';
+import { CardOverlay } from '../../src/utils/cardImageView/cardOverlay';
 
 describe('CardImageView', () => {
   it('should render default icon according to mediaType', () => {
@@ -20,10 +21,10 @@ describe('CardImageView', () => {
     expect(card.find('.custom-icon').prop('src')).to.equal(iconUrl);
   });
 
-  it.skip('should render subtitle when provided', function() {
+  it('should render subtitle when provided', function() {
     const subtitle = 'Software Development and Collaboration Tools';
     const card = mount(<CardImageView subtitle={subtitle} />);
 
-    // expect(card.find(CardOverlay).props().persistent).to.equal(subtitle);
+    expect(card.find(CardOverlay).props().subtitle).to.equal(subtitle);
   });
 });

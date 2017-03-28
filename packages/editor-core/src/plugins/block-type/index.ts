@@ -104,7 +104,7 @@ export class BlockTypeState {
   }
 
   blur(view): void {
-    view.dom.focus();
+    view.dom.blur();
   }
 
   private triggerOnChange() {

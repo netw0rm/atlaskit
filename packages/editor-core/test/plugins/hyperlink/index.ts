@@ -320,6 +320,15 @@ describe('hyperlink', () => {
       expect(pluginState.linkable).to.equal(true);
     });
 
+    it('should add link in the correct position', () => {
+      const { editorView, pluginState } = editor(doc(paragraph('text'), linkable('{<}text{>}')));
+      const href = 'http://example.com';
+
+      pluginState.addLink({ href }, editorView);
+
+      expect(editorView.state.doc).to.deep.equal(doc(paragraph('text'), linkable(link({ href })('text'))));
+    });
+
     it('should not be able to unlink a node that has no link', () => {
       const { editorView, pluginState } = editor(doc(linkable('{<}text{>}')));
 
@@ -334,6 +343,14 @@ describe('hyperlink', () => {
       pluginState.removeLink(editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable('text')));
+    });
+
+    it('should be able to unlink an existing link', () => {
+      const { editorView, pluginState } = editor(doc(linkable('hello ', link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
+
+      pluginState.removeLink(editorView);
+
+      expect(editorView.state.doc).to.deep.equal(doc(linkable('hello text')));
     });
 
     context('when a link is in the second paragraph', () => {

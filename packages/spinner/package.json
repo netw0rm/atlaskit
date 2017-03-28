@@ -33,7 +33,6 @@
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/util-readme": "^1.0.0",
-    "@atlaskit/spinner": "^1.0.0",
     "@atlaskit/util-common-test": "^1.0.0"
   },
   "repository": {

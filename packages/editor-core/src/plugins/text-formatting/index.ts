@@ -73,8 +73,9 @@ export class TextFormattingState {
     const { code } = this.state.schema.marks;
     const { from, to } = this.state.selection;
     if (code) {
+      this.toggledMarks['code'] = true;
       if (!this.codeActive) {
-        view.dispatch(transformToCodeAction(view.state, from, to));
+        view.dispatch(transformToCodeAction(view.state, from, to, this));
         return true;
       }
       return commands.toggleMark(code)(view.state, view.dispatch);
@@ -150,7 +151,7 @@ export class TextFormattingState {
     let dirty = false;
 
     if (code) {
-      const newCodeActive = this.markActive(code.create());
+      const newCodeActive = this.anyMarkActive(code);
       if (newCodeActive !== this.codeActive) {
         this.codeActive = newCodeActive;
         dirty = true;

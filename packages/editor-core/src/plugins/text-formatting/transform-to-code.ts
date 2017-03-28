@@ -1,9 +1,9 @@
 import { Transaction, EditorState, ReplaceStep, Step } from '../../prosemirror';
 import { createSliceWithContent } from '../../utils';
 
-export function transformToCodeAction(state: EditorState<any>, from: number, to: number): Transaction {
+export function transformToCodeAction(state: EditorState<any>, from: number, to: number, pluginState?: any): Transaction {
   const replaceSteps: Step[] = [];
-  const tr = state.tr;
+  let tr = state.tr;
 
   // Traverse through all the nodes within the range and replace them with their plaintext counterpart
   state.doc.nodesBetween(from, to, (node, nodePos) => {
@@ -24,6 +24,11 @@ export function transformToCodeAction(state: EditorState<any>, from: number, to:
   const codeMark = state.schema.marks.code.create();
 
   tr.addMark(from, updatedTo, codeMark).setStoredMarks([codeMark]);
+
+  // need it to be able to define when to remove storedMarks with code
+  if (pluginState) {
+    pluginState.toggledMarks['code'] = true;
+  }
 
   return tr;
 }

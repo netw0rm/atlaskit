@@ -268,14 +268,16 @@ export default class StatelessMultiSelect extends PureComponent {
     return (<NothingWasFound noMatchesFound={this.props.noMatchesFound} />);
   }
 
-  renderGroups = groups => groups.map((group, groupIndex) =>
-    <Group
-      heading={group.heading}
-      key={groupIndex}
-    >
-      {this.renderItems(group.items)}
-    </Group>
-  )
+  renderGroups = groups => groups.map((group, groupIndex) => { // eslint-disable-line arrow-body-style, max-len
+    return group.items.length > 0 ?
+      <Group
+        heading={group.heading}
+        key={groupIndex}
+      >
+        {this.renderItems(group.items)}
+      </Group>
+    : null;
+  })
 
   renderOptions = items => items.map((item, itemIndex) => (<option
     disabled={item.isDisabled}

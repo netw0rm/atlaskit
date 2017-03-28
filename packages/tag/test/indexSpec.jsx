@@ -136,16 +136,16 @@ describe('<Tag/> component tests', () => {
   });
 
   describe('appearance prop', () => {
-    it('should set the rounded prop of Chrome and RemoveButton to true when set to "rounded"', () => {
+    it('should set the isRounded prop of Chrome and RemoveButton to true when set to "rounded"', () => {
       const wrapper = mount(<Tag appearance="rounded" text="foo" removeButtonText="foo" />);
-      expect(wrapper.find(Chrome).prop('rounded')).to.equal(true);
-      expect(wrapper.find(RemoveButton).prop('rounded')).to.equal(true);
+      expect(wrapper.find(Chrome).prop('isRounded')).to.equal(true);
+      expect(wrapper.find(RemoveButton).prop('isRounded')).to.equal(true);
     });
 
-    it('should set the rounded prop of Chrome and RemoveButton to false when not set to "rounded"', () => {
+    it('should set the isRounded prop of Chrome and RemoveButton to false when not set to "rounded"', () => {
       const wrapper = mount(<Tag appearance="default" text="foo" removeButtonText="foo" />);
-      expect(wrapper.find(Chrome).prop('rounded')).to.equal(false);
-      expect(wrapper.find(RemoveButton).prop('rounded')).to.equal(false);
+      expect(wrapper.find(Chrome).prop('isRounded')).to.equal(false);
+      expect(wrapper.find(RemoveButton).prop('isRounded')).to.equal(false);
     });
   });
 });

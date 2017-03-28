@@ -102,6 +102,12 @@
 
 .button {
   .focus-ring(@color: @ak-color-R300);
+  // this removes some inbuilt padding that Firefox adds (taken from reduced-ui-pack)
+  &::-moz-focus-inner {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
   align-items: center;
   appearance: none;
   background: none;
@@ -112,7 +118,6 @@
   justify-content: center;
   margin: 0;
   padding: 0;
-  width: @button-width;
 
   &:hover {
     color: @ak-color-R500;

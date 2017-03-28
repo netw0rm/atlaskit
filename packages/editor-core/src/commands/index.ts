@@ -302,6 +302,7 @@ export function clearFormatting(): Command {
     const { from, to } = state.selection;
     const { paragraph } = state.schema.nodes;
     tr.clearMarkup(from, to);
+    tr.setStoredMarks([]);
     if (paragraph) {
       tr.setBlockType(from, to, paragraph);
       tr.doc.nodesBetween(from, to, (node, pos) => {

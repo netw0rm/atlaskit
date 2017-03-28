@@ -1,6 +1,6 @@
 import rgba from 'rgba-convert';
 
-import * as lessVars from '../src';
+import * as allExports from '../src';
 import Prism from './_Prism';
 
 const tintBase = 'akColorN900';
@@ -18,7 +18,7 @@ describe('exports', () => {
     //
     // If we were to auto-generate this list, then renaming, adding or removing would NOT
     // break any tests and thus not hint the developer at what kind of change he/she is making
-    Object.keys(lessVars).sort().should.be.deep.equal([
+    Object.keys(allExports).sort().should.deep.equal([
       'akBorderRadius',
       'akCodeFontFamily',
       'akColorB100',
@@ -111,6 +111,7 @@ describe('exports', () => {
       'akFontSizeDefault',
       'akGridSize',
       'akGridSizeUnitless',
+      'akTypographyMixins',
       'akZIndexBlanket',
       'akZIndexFlag',
       'akZIndexLayer',
@@ -119,15 +120,29 @@ describe('exports', () => {
     ]);
   });
 
+  it('akTypographyMixins should have well-defined exports', () => {
+    Object.keys(allExports.akTypographyMixins).sort().should.deep.equal([
+      'h100',
+      'h200',
+      'h300',
+      'h400',
+      'h500',
+      'h600',
+      'h700',
+      'h800',
+      'h900',
+    ]);
+  });
+
   it(`tints should be made of ${tintBase}`, () => {
-    const prism = new Prism(lessVars);
+    const prism = new Prism(allExports);
     const colors = prism.getColors();
     const neutralBase = rgba(colors[tintBase]).splice(0, 3);
     Object
       .entries(colors)
       .filter(([colorName]) => Prism.isTint(colorName))
       .forEach(([colorName, colorValue]) => {
-        rgba(colorValue).splice(0, 3).should.be.deep.equal(
+        rgba(colorValue).splice(0, 3).should.deep.equal(
           neutralBase,
           `${colorName} is not a tint of ${tintBase}`
         );

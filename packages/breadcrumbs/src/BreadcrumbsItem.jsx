@@ -4,7 +4,7 @@ import Button from '@atlaskit/button';
 import AKTooltip from '@atlaskit/tooltip';
 import classnames from 'classnames';
 import { locals } from './styles.less';
-import { itemTruncateWidth } from './internal/constants';
+import { itemTruncateWidth } from './styled/constants';
 
 const { item, itemButton, truncated } = locals;
 

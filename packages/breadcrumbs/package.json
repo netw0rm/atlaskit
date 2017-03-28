@@ -22,7 +22,9 @@
     "classnames": "^2.2.5"
   },
   "devDependencies": {
-    "ak-icon": "^12.1.2"
+    "ak-icon": "^12.1.2",
+    "@atlaskit/breadcrumbs": "*",
+    "@atlaskit/util-readme": "^3.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2",

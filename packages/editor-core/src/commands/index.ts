@@ -296,12 +296,12 @@ export function showLinkPanel(): Command {
   };
 }
 
-export function clearFormatting(): Command {
+export function clearFormatting(markTypes: Array<string>): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { tr } = state;
     const { from, to } = state.selection;
     const { paragraph } = state.schema.nodes;
-    tr.clearMarkup(from, to);
+    markTypes.forEach(mark => tr.removeMark(from, to, state.schema.marks[mark]));
     tr.setStoredMarks([]);
     if (paragraph) {
       tr.setBlockType(from, to, paragraph);

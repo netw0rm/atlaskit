@@ -48,7 +48,7 @@ export class ClearFormattingState {
   }
 
   clearFormatting(view: EditorView) {
-    commands.clearFormatting()(view.state, view.dispatch);
+    commands.clearFormatting(this.markTypes)(view.state, view.dispatch);
   }
 
   private triggerOnChange() {

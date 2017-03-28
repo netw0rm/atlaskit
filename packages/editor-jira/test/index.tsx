@@ -121,6 +121,18 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
       expect(editor.state.schema.marks.code).to.not.exist;
       expect(editor.state.schema.marks.strike).to.not.exist;
     });
+
+    it('allowCodeBlock=true prop should enable code blocks', () => {
+      const editorWrapper = mount(<Editor allowCodeBlock={true}/>);
+      const editor: Editor = editorWrapper.get(0) as any;
+      expect(editor.state.schema.nodes.code_block).to.exist;
+    });
+
+    it('code blocks should be disabled without allowCodeBlock prop', () => {
+      const editorWrapper = mount(<Editor/>);
+      const editor: Editor = editorWrapper.get(0) as any;
+      expect(editor.state.schema.nodes.code_block).to.not.exist;
+    });
   });
 
 });

@@ -14,7 +14,7 @@ const onRetry = () => {
   action('try again')();
 };
 
-const menuActions = [
+const actions = [
   {label: 'Open', handler: () => { action('open')(); }},
   {label: 'Close', handler: () => { action('close')(); }}
 ];
@@ -176,7 +176,7 @@ storiesOf('FileCardView', {})
           mediaSize={32831}
           dataURI={null}
           onClick={onClick}
-          menuActions={menuActions}
+          actions={actions}
         />
       }]}
     </StoryList>
@@ -246,7 +246,7 @@ storiesOf('FileCardView', {})
           mediaSize={32831}
           dataURI={wideTransparentImage}
           onClick={onClick}
-          menuActions={menuActions}
+          actions={actions}
         />
       }, {
         title: 'Not selected + menu actions',
@@ -259,7 +259,7 @@ storiesOf('FileCardView', {})
           mediaSize={32831}
           dataURI={smallImage}
           onClick={onClick}
-          menuActions={menuActions}
+          actions={actions}
         />
       }, {
         title: 'No URI + selected',
@@ -296,7 +296,7 @@ storiesOf('FileCardView', {})
           mediaSize={32831}
           dataURI={null}
           onClick={onClick}
-          menuActions={menuActions}
+          actions={actions}
         />
       }, {
         title: 'No URI + selected + menu actions',
@@ -309,7 +309,7 @@ storiesOf('FileCardView', {})
           mediaSize={32831}
           dataURI={null}
           onClick={onClick}
-          menuActions={menuActions}
+          actions={actions}
         />
       }, {
         title: 'Handle state change',
@@ -531,7 +531,7 @@ storiesOf('FileCardView', {})
           mediaSize={32831}
           dataURI={tallImage}
           onClick={onClick}
-          menuActions={menuActions}
+          actions={actions}
          />
        }]}
     </StoryList>
@@ -574,7 +574,7 @@ storiesOf('FileCardView', {})
           onClick={onClick}
           error={'Could not load file'}
           onRetry={{handler: onRetry}}
-          menuActions={menuActions}
+          actions={actions}
         />
       }, {
         title: 'handler + menu actions + custom size',
@@ -589,7 +589,7 @@ storiesOf('FileCardView', {})
           onClick={onClick}
           error={'Could not load file'}
           onRetry={{handler: onRetry}}
-          menuActions={menuActions}
+          actions={actions}
         />
       }, {
         title: 'handler + no menu actions',

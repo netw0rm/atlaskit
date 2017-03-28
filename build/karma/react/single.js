@@ -5,6 +5,6 @@ const base = 'test';
 const files = `${base}/**/*@(Spec|spec).+(js|jsx|ts|tsx)`;
 
 module.exports = (config) => {
-  allConf(config);
+  allConf(config, { keepSourceMaps: true });
   assignPattern(config, files);
 };

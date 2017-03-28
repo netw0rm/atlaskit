@@ -22,10 +22,13 @@
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
-      "name": "Bradley A"
+      "name": "Eduard S"
     },
     {
       "name": "Artur B"
+    },
+    {
+      "name": "Huanhuan H"
     }
   ],
   "dependencies": {

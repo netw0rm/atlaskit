@@ -3,6 +3,7 @@ import Toggle from './stateless';
 
 export default class AkToggle extends PureComponent {
   static propTypes = {
+    /** the label for the toggle */
     label: PropTypes.string.isRequired,
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-shared-styles",
-  "version": "1.2.1",
+  "version": "1.4.0",
   "config": {
     "access": "public"
   },
@@ -24,6 +24,8 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
+    "@atlaskit/util-readme": "^1.0.0",
+    "@atlaskit/util-shared-styles": "*",
     "ak-tooltip": "^5.0.0",
     "akutil-react": "*",
     "camelcase": "^3.0.0",
@@ -39,6 +41,9 @@
   },
   "dependencies": {
     "babel-runtime": "^6.11.6"
+  },
+  "peerDependencies": {
+    "styled-components": "^1.3.0"
   },
   "keywords": [
     "atlaskit",

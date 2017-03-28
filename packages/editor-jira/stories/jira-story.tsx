@@ -10,11 +10,12 @@ const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
 
 type Props = {
-  allowLists?: boolean,
+  allowLists?: boolean;
   allowLinks?: boolean;
   allowAdvancedTextFormatting?: boolean;
-  mentionProvider?: any,
-  mentionEncoder?: any
+  allowCodeBlock?: boolean;
+  mentionProvider?: any;
+  mentionEncoder?: any;
 };
 type State = { html?: string };
 class Demo extends PureComponent<Props, State> {
@@ -29,9 +30,10 @@ class Demo extends PureComponent<Props, State> {
           onSave={SAVE_ACTION}
           allowLists={this.props.allowLists}
           allowLinks={this.props.allowLinks}
+          allowAdvancedTextFormatting={this.props.allowAdvancedTextFormatting}
+          allowCodeBlock={this.props.allowCodeBlock}
           mentionProvider={this.props.mentionProvider}
           mentionEncoder={this.props.mentionEncoder}
-          allowAdvancedTextFormatting={this.props.allowAdvancedTextFormatting}
         />
         <fieldset style={{ marginTop: 20 }}>
           <legend>HTML</legend>
@@ -52,6 +54,7 @@ storiesOf(name, module)
   .add('Editor (allowLists)', () => <Demo allowLists />)
   .add('Editor (allowLinks)', () => <Demo allowLinks />)
   .add('Editor (allowAdvancedTextFormatting)', () => <Demo allowAdvancedTextFormatting />)
+  .add('Editor (allowCodeBlock)', () => <Demo allowCodeBlock />)
   .add('Editor (Mentions)', () =>
     <Demo
       mentionProvider={Promise.resolve(new MentionResource())}
@@ -62,6 +65,7 @@ storiesOf(name, module)
     <Demo
       allowLists
       allowLinks
+      allowCodeBlock
       allowAdvancedTextFormatting
       mentionProvider={Promise.resolve(new MentionResource())}
       mentionEncoder={(userId: string) => `/secure/ViewProfile?name=${userId}`}

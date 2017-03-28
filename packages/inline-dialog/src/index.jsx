@@ -23,6 +23,9 @@ export default class AKInlineDialog extends PureComponent {
     isOpen: PropTypes.bool,
     content: PropTypes.node,
     shouldFlip: PropTypes.bool,
+    onContentClick: PropTypes.func,
+    onContentFocus: PropTypes.func,
+    onContentBlur: PropTypes.func,
   }
 
   static defaultProps = {
@@ -30,8 +33,12 @@ export default class AKInlineDialog extends PureComponent {
     isOpen: false,
     content: null,
     shouldFlip: false,
+    onContentClick: () => {},
+    onContentFocus: () => {},
+    onContentBlur: () => {},
   }
 
+  /* eslint-disable jsx-a11y/no-static-element-interactions */
   render() {
     const { props } = this;
     const content = (<div className={styles.inlineDialogContainer} tabIndex="-1">
@@ -40,14 +47,25 @@ export default class AKInlineDialog extends PureComponent {
 
     return (
       <Layer
-        content={props.isOpen ? content : null}
+        content={props.isOpen ?
+          <div
+            onClick={props.onContentClick}
+            onFocusCapture={props.onContentFocus}
+            onBlurCapture={props.onContentBlur}
+          >
+            {content}
+          </div>
+          : null}
         position={props.position}
         autoPosition={props.shouldFlip}
         offset={dialogOffset}
       >
-        <div>{props.children}</div>
+        <div>
+          {props.children}
+        </div>
       </Layer>);
   }
+  /* eslint-enable jsx-a11y/no-static-element-interactions */
 }
 
 /* eslint-enable react/no-unused-prop-types */

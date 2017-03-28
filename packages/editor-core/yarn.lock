@@ -10,6 +10,14 @@
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
 
+"@atlaskit/blanket@^1.0.0":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@atlaskit/blanket/-/blanket-1.2.4.tgz#fe019157730d2310664f908c3113d3d606b8af4c"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^1.0.0"
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+
 "@atlaskit/lozenge@^1.0.2":
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/@atlaskit/lozenge/-/lozenge-1.0.11.tgz#8e24b07e2af58598c887884cbcc8832213acc21d"
@@ -17,6 +25,14 @@
     "@atlaskit/util-shared-styles" "^1.0.0"
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
+
+"@atlaskit/media-core@^1.0.0":
+  version "1.99.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/media-core/-/media-core-1.99.1.tgz#053add5df47fca079debc1c938951a405303b541"
+  dependencies:
+    axios "^0.15.3"
+    lru-fast "^0.2.2"
+    tslib "^1.2.0"
 
 "@atlaskit/mention@^1.3.4":
   version "1.4.0"
@@ -35,6 +51,22 @@
     url-search-params "^0.6.1"
     whatwg-fetch "^1.0.0"
 
+"@atlaskit/modal-dialog@^1.2.3":
+  version "1.2.12"
+  resolved "https://registry.yarnpkg.com/@atlaskit/modal-dialog/-/modal-dialog-1.2.12.tgz#0600075f90a6aa86e1599dcf7299315d9eabe961"
+  dependencies:
+    "@atlaskit/blanket" "^1.0.0"
+    "@atlaskit/util-shared-styles" "^1.0.0"
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+
+"@atlaskit/spinner@^1.0.1":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-1.0.5.tgz#1e50e11efb0cc35ee42135b01b06d7d8fe730dea"
+  dependencies:
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+
 "@atlaskit/util-common@^1.0.0":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-common/-/util-common-1.1.2.tgz#b703b58aed6b98813e2344e9e026d5f7a63ce4b8"
@@ -43,7 +75,7 @@
     create-error "^0.3.1"
     keycode "^2.1.2"
 
-"@atlaskit/util-shared-styles@^1.0.0":
+"@atlaskit/util-shared-styles@^1.0.0", "@atlaskit/util-shared-styles@^1.0.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.2.1.tgz#0813620fbe0f0352157d945b978853a46e3b0dc9"
   dependencies:
@@ -203,6 +235,12 @@ asap@~2.0.3:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.5.tgz#522765b50c3510490e52d7dcfe085ef9ba96958f"
 
+axios@^0.15.3:
+  version "0.15.3"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.15.3.tgz#2c9d638b2e191a08ea1d6cc988eadd6ba5bdc053"
+  dependencies:
+    follow-redirects "1.0.0"
+
 babel-runtime@^6.11.6:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
@@ -234,6 +272,12 @@ create-error@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/create-error/-/create-error-0.3.1.tgz#69810245a629e654432bf04377360003a5351a23"
 
+debug@^2.2.0:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.3.tgz#0f7eb8c30965ec08c72accfa0130c8b79984141d"
+  dependencies:
+    ms "0.7.2"
+
 "dom-helpers@^2.4.0 || ^3.0.0":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.2.1.tgz#3203e07fed217bd1f424b019735582fc37b2825a"
@@ -263,6 +307,12 @@ fbjs@^0.8.4:
     promise "^7.1.1"
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.9"
+
+follow-redirects@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.0.0.tgz#8e34298cbd2e176f254effec75a1c78cc849fd37"
+  dependencies:
+    debug "^2.2.0"
 
 formatio@1.1.1:
   version "1.1.1"
@@ -335,6 +385,10 @@ loose-envify@^1.0.0, loose-envify@^1.3.0:
   dependencies:
     js-tokens "^3.0.0"
 
+lru-fast@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/lru-fast/-/lru-fast-0.2.2.tgz#30c233304cdd9b694b75141d897c52d4d413796c"
+
 markdown-it@^6.0.4:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-6.1.1.tgz#ced037f4473ee9f5153ac414f77dc83c91ba927c"
@@ -348,6 +402,10 @@ markdown-it@^6.0.4:
 mdurl@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/mdurl/-/mdurl-1.0.1.tgz#fe85b2ec75a59037f2adfec100fd6c601761152e"
+
+ms@0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.2.tgz#ae25cf2512b3885a1d95d7f037868d8431124765"
 
 node-fetch@^1.0.1:
   version "1.6.3"

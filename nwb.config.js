@@ -16,9 +16,6 @@ const path = require('path');
 const camelcase = require('camelcase');
 
 const cwd = process.cwd();
-const entryPath = path.join(cwd, 'src', 'index');
-const entryJs = `${entryPath}.js`;
-const entryJsx = `${entryJs}x`;
 const pkg = require(path.join(cwd, 'package.json'));
 
 module.exports = {
@@ -66,8 +63,10 @@ module.exports = {
       sinon: true,
     },
     extra: {
-      // Some use .js, some use .jsx. Yeah.
-      entry: fs.existsSync(entryJsx) ? entryJsx : entryJs,
+      // The .(t|j)sx extensions are there because that's how we distinguished
+      // between Web Component and React JSX pragmas.
+      entry: ['index.js', 'index.jsx', 'index.ts', 'index.tsx']
+        .map(p => path.join(cwd, 'src', p)).filter(fs.existsSync),
 
       module: {
         rules: [{
@@ -85,12 +84,15 @@ module.exports = {
               modules: true,
             },
           }, 'less-loader'],
+        }, {
+          test: /\.tsx?$/,
+          use: 'ts-loader',
         }],
       },
 
       // TODO remove this when not using .jsx anymore.
       resolve: {
-        extensions: ['.js', '.json', '.jsx'],
+        extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
       },
 
       // TODO remove this when going back to using the -loader suffix.

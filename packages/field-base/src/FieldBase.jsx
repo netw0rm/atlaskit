@@ -79,7 +79,7 @@ export default class FieldBase extends PureComponent {
       [styles.invalid]: this.props.isInvalid && !this.props.isFocused,
     });
 
-    const dialogWrapperClasses = classNames({
+    const dialogWrapperClasses = classNames(styles.dialogContainer, {
       [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
     });
 

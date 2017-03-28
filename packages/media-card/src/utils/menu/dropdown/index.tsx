@@ -17,7 +17,7 @@ export class Dropdown extends Component<DropdownProps, {}> {
   render() {
     const Group: any = (DropdownGroup as any).default;
 
-    const items = this.props.items ? this.props.items.map((item, k) => this._itemElement(item.label, item.handler, k)) : null;
+    const items = this.props.items ? this.props.items.map(item => this._itemElement(item.label, item.handler)) : null;
 
     return (
       <DropdownWrapper className={'dropdown'}>
@@ -28,11 +28,11 @@ export class Dropdown extends Component<DropdownProps, {}> {
     );
   }
 
-  private _itemElement(name: string | undefined, handler: CardEventHandler, index: number) {
+  private _itemElement(name: string | undefined, handler: CardEventHandler) {
     const Item: any = (DropdownItem as any).default;
 
     return (
-      <Item onActivate={handler} key={name || index}>{name}</Item>
+      <Item onActivate={handler} key={name}>{name}</Item>
     );
   }
 }

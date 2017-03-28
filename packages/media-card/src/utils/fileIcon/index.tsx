@@ -29,7 +29,7 @@ export class FileIcon extends Component<FileIconProps, {}> {
     const fileTypeIconClass = `file-type-icon ${type}`;
     const IconType = icons[type] || icons['unknown'];
     const defaultIcon = <IconType className={fileTypeIconClass} size="small" label="fileIcon"/>;
-    const icon = this.props.iconUrl ? <img src={this.props.iconUrl} alt={type} /> : defaultIcon;
+    const icon = this.props.iconUrl ? <img src={this.props.iconUrl} className="custom-icon" alt={type} /> : defaultIcon;
 
     return <FileTypeIcon style={this.props.style} className={fileTypeIconClass}>
             {icon}

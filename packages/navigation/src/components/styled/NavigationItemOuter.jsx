@@ -2,9 +2,12 @@ import {
   akGridSizeUnitless,
   akColorN0,
   akColorN20A,
+  akColorN80A,
   akColorN50A,
+  akColorN700A,
   akColorB50,
   akColorB100,
+  akColorB200,
   akColorB400,
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
@@ -34,14 +37,31 @@ const colors = {
       color: 'inherit',
     },
     hover: {
-      background: akColorN20A,
+      background: akColorN80A,
     },
     active: {
-      background: akColorN20A,
+      background: akColorB200,
       color: akColorN0,
     },
     selected: {
       background: akColorN50A,
+      color: akColorN0,
+    },
+  },
+  settings: {
+    default: {
+      background: 'transparent',
+      color: 'inherit',
+    },
+    hover: {
+      background: akColorN700A,
+    },
+    active: {
+      background: 'rgba(255, 255, 255, 0.08)',
+      color: akColorN0,
+    },
+    selected: {
+      background: akColorN700A,
       color: akColorN0,
     },
   },
@@ -74,7 +94,7 @@ const NavigationItemOuter = styled.div`
     }
 
     &:hover {
-      background: ${({ theme }) => getColors(theme).hover.color};
+      background: ${({ theme }) => getColors(theme).hover.background};
     }
 
     &:active {

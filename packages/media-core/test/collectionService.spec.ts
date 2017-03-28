@@ -42,7 +42,7 @@ describe('MediaCollectionService', () => {
         const response = collectionService.getCollectionItems(collectionName)
             .then(response => {
                 const request = requests[0];
-                expect(request.url).to.equal(`${serviceHost}/collection/${collectionName}/items?limit=${MediaCollectionService.defaultLimit}`);
+                expect(request.url).to.equal(`${serviceHost}/collection/${collectionName}/items?collection=${collectionName}&limit=${MediaCollectionService.defaultLimit}`);
             });
 
         respond(JSON.stringify(Mocks.collectionItemsResponse));
@@ -60,8 +60,9 @@ describe('MediaCollectionService', () => {
             collectionName, limit, inclusiveStartKey, sortDirection, details)
             .then(response => {
                 const request = requests[0];
+
                 expect(request.url).to.equal(
-                    `${serviceHost}/collection/${collectionName}/items?limit=${limit}&` +
+                    `${serviceHost}/collection/${collectionName}/items?collection=${collectionName}&limit=${limit}&` +
                     `inclusiveStartKey=${inclusiveStartKey}&sortDirection=${sortDirection}&details=${details}`);
             });
 

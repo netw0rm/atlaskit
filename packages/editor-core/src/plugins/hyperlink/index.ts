@@ -70,8 +70,7 @@ export class HyperlinkState {
   removeLink(view: EditorView) {
     if (this.activeLinkStartPos) {
       const { state } = this;
-      const { $from } = state.selection;
-      const from = $from.pos + this.activeLinkStartPos - 1;
+      const from = this.activeLinkStartPos;
       const to = from + this.text!.length;
 
       view.dispatch(state.tr.removeMark(from, to, this.activeLinkMark));
@@ -158,6 +157,7 @@ export class HyperlinkState {
 
     if (link && $from) {
       const { node, offset } = $from.parent.childAfter($from.parentOffset);
+      const parentNodeStartPos = $from.start($from.depth);
 
       // offset is the end postion of previous node
       // This is to check whether the cursor is at the beginning of current node
@@ -168,7 +168,7 @@ export class HyperlinkState {
       if (node && node.isText && link.isInSet(node.marks)) {
         return {
           node,
-          startPos: offset + 1
+          startPos: parentNodeStartPos + offset
         };
       }
     }
@@ -184,10 +184,7 @@ export class HyperlinkState {
 
   private getDomElement(docView: NodeViewDesc): HTMLElement | undefined {
     if (this.activeLinkStartPos) {
-      const { node, offset } = docView.domFromPos(
-        this.activeLinkStartPos + this.state.selection.$from.start(this.state.selection.$from.depth),
-        1
-      );
+      const { node, offset } = docView.domFromPos(this.activeLinkStartPos, 1);
 
       if (node.childNodes.length === 0) {
         return node.parentNode as HTMLElement;

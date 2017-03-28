@@ -1,4 +1,5 @@
 import { PureComponent, PropTypes } from 'react';
+import DummyTag from './DummyTag';
 
 /** ************************************************************************************************
   This file exists so that we have a component we can pass the @atlaskit/readme Props component
@@ -12,7 +13,7 @@ export default class DummyItem extends PureComponent {
     isDisabled: PropTypes.bool,
     isSelected: PropTypes.bool,
     elemBefore: PropTypes.node,
-    tagElemBefore: PropTypes.node, // eslint-disable-line react/no-unused-prop-types
+    tag: PropTypes.shape(DummyTag.PropTypes), // eslint-disable-line react/no-unused-prop-types
   }
 
   static defaultProps = {

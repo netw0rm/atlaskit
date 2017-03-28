@@ -151,9 +151,6 @@ storiesOf(name, module)
   ))
   .add('Two-color icons', () => <ToggleIcons icons={toggleableIcons} />)
   .add('Animated', () => <AnimationDemo components={components} />)
-  .addBaselineAligned('baseline alignment', () => (
-    <AtlassianIcon label="Baseline aligned icon" />
-  ))
   .add('Inside a button', () => (
     <div>
       <div><AkButton iconBefore={<AtlassianIcon label="Icon before button" />}>

@@ -166,7 +166,7 @@ export class CardList extends Component<CardListProps, CardListState> {
 
           const fileIds = this.state.collection.items.map(cItem => ({
             id: cItem.id,
-            mediaItemType: cItem.mediaItemType
+            mediaItemType: cItem.type
           }));
           action.handler(item, fileIds, event);
         }
@@ -178,13 +178,13 @@ export class CardList extends Component<CardListProps, CardListState> {
 
       // Returning an empty item for now in order to not display a uggly card until 
       // we have the 'image' apparence supported in linkCards
-      if (item.mediaItemType === 'link' && cardType === 'image') {
+      if (item.type === 'link' && cardType === 'image') {
         return <li key={`${index}-${item.id}`}/>;
       }
 
       const identifier = {
         id: item.id,
-        mediaItemType: item.mediaItemType,
+        mediaItemType: item.type,
         collectionName
       };
 

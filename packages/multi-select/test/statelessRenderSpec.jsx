@@ -48,7 +48,7 @@ describe(`${name} - stateless`, () => {
       expect(mount(<StatelessMultiSelect />).find(FieldBase).find(Trigger).length).to.equal(1);
     });
 
-    it('should render groups and items inside Droplist (when open)', () => {
+    describe('groups and items', () => {
       const items = [
         {
           heading: 'test',
@@ -58,10 +58,22 @@ describe(`${name} - stateless`, () => {
           ],
         },
       ];
-      const select = mount(<StatelessMultiSelect items={items} isOpen />);
-      expect(select.find(Group).length).to.equal(1);
-      expect(select.find(Item).length).to.equal(2);
-      expect(select.find(Group).find(Item).length).to.equal(2);
+      it('should render groups and items inside Droplist (when open)', () => {
+        const select = mount(<StatelessMultiSelect items={items} isOpen />);
+        expect(select.find(Group).length).to.equal(1);
+        expect(select.find(Item).length).to.equal(2);
+        expect(select.find(Group).find(Item).length).to.equal(2);
+      });
+
+      it('should not render a group if all items in that group are selected', () => {
+        const selectedItems = [items[0].items[0], items[0].items[1]];
+        const select = mount(<StatelessMultiSelect
+          items={items}
+          selectedItems={selectedItems}
+          isOpen
+        />);
+        expect(select.find(Group).length).to.equal(0);
+      });
     });
 
     it('should render elemBefore inside Droplist (when open)', () => {

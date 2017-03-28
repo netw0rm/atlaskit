@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tag-group",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "config": {
     "access": "public"
   },

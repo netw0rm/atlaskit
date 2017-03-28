@@ -109,7 +109,6 @@ storiesOf(name, module)
         <tr>
           <th>Icon</th>
           <th>Import</th>
-          <th>Web component</th>
         </tr>
       </thead>
       <tbody>
@@ -120,7 +119,7 @@ storiesOf(name, module)
             return (
               <tr key={key}>
                 <td><Icon label={`${key} icon`} /></td>
-                <td><pre>import &#39;{importName}&#39;;</pre></td>
+                <td><pre>import {Icon.displayName}Icon from &#39;{importName}&#39;;</pre></td>
               </tr>
             );
           })

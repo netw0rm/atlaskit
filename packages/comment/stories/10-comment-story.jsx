@@ -100,6 +100,37 @@ storiesOf(name, module)
       content={<p>{sampleText}</p>}
     />
   ))
+  .add('comment with restricted property', () => (
+    <Comment
+      author={<CommentAuthor>John Smith</CommentAuthor>}
+      avatar={sampleAvatar}
+      time={<CommentTime>30, August 2016</CommentTime>}
+      type="Author"
+      content={<div><p>{sampleText}</p><p>{sampleText}</p></div>}
+      restrictedTo="atlassian-staff"
+      actions={[
+        <CommentAction onClick={clickHandler}>Like</CommentAction>,
+      ]}
+    />
+  ))
+  .add('comment with optimistic saving', () => (
+    <Comment
+      author={<CommentAuthor>John Smith</CommentAuthor>}
+      avatar={sampleAvatar}
+      time={<CommentTime>30, August 2016</CommentTime>}
+      type="Author"
+      isSaving
+      content={<div>
+        <p>The time permalink should be replaced</p>
+        <p>You should not be able to see my actions</p>
+        <p>Also, this text should be grey!</p>
+      </div>}
+      restrictedTo="atlassian-staff"
+      actions={[
+        <CommentAction onClick={clickHandler}>Like</CommentAction>,
+      ]}
+    />
+  ))
   .add('comment with restricted size and non-space-separated content', () => (
     <div style={{ width: 500 }}>
       <Comment

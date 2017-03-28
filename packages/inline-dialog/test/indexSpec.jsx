@@ -121,4 +121,41 @@ describe('inline-dialog', () => {
       expect(spy.callCount).to.equal(1);
     });
   });
+
+  describe('onContentClick', () => {
+    it('should be triggered when the content is clicked', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(
+        <InlineDialog onContentClick={spy} content={<div>content</div>} isOpen />
+      );
+      const content = mount(wrapper.find(Layer).props().content);
+
+      content.simulate('click');
+      expect(spy.callCount).to.equal(1);
+    });
+  });
+
+  describe('onContentFocus', () => {
+    it('should be triggered when an element in the content is focused', () => {
+      const spy = sinon.spy();
+      const linkEl = <a id="link" href="/test">a link</a>;
+      const wrapper = mount(<InlineDialog onContentFocus={spy} content={linkEl} isOpen />);
+      const content = mount(wrapper.find(Layer).props().content);
+
+      content.find('#link').simulate('focus');
+      expect(spy.callCount).to.equal(1);
+    });
+  });
+
+  describe('onContentBlur', () => {
+    it('should be triggered when an element in the content is blurred', () => {
+      const spy = sinon.spy();
+      const linkEl = <a id="link" href="/test">a link</a>;
+      const wrapper = mount(<InlineDialog onContentBlur={spy} content={linkEl} isOpen />);
+      const content = mount(wrapper.find(Layer).props().content);
+
+      content.find('#link').simulate('blur');
+      expect(spy.callCount).to.equal(1);
+    });
+  });
 });

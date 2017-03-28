@@ -25,8 +25,9 @@ export default class FieldBase extends PureComponent {
     onBlur: PropTypes.func.isRequired,
     shouldReset: PropTypes.bool,
     children: PropTypes.node,
-    onDialogFocus: PropTypes.func,
     onDialogBlur: PropTypes.func,
+    onDialogClick: PropTypes.func,
+    onDialogFocus: PropTypes.func,
   }
 
   static defaultProps = {
@@ -44,8 +45,9 @@ export default class FieldBase extends PureComponent {
     isReadOnly: false,
     isRequired: false,
     shouldReset: false,
-    onDialogFocus: () => {},
     onDialogBlur: () => {},
+    onDialogClick: () => {},
+    onDialogFocus: () => {},
   }
 
   componentDidUpdate() {
@@ -79,7 +81,7 @@ export default class FieldBase extends PureComponent {
       [styles.invalid]: this.props.isInvalid && !this.props.isFocused,
     });
 
-    const dialogWrapperClasses = classNames({
+    const dialogWrapperClasses = classNames(styles.dialogContainer, {
       [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
     });
 
@@ -96,8 +98,9 @@ export default class FieldBase extends PureComponent {
             isOpen={this.props.isDialogOpen && !!this.props.invalidMessage}
             content={this.props.invalidMessage}
             shouldFlip={['top']}
-            onContentFocus={this.props.onDialogFocus}
             onContentBlur={this.props.onDialogBlur}
+            onContentClick={this.props.onDialogClick}
+            onContentFocus={this.props.onDialogFocus}
           >
             <div
               className={contentClasses}

@@ -33,6 +33,7 @@ storiesOf('LinkCard', {})
 
         return <div style={{margin: '20px'}}>
           <input style={inputStyles} type="text" autoFocus={true} placeholder="Paste some url..." defaultValue={this.state.link} onInput={this.onInputChange} />
+          <button onClick={this.onAddLink}>Add link</button>
           {loading}
           <LinkCard
             context={context}
@@ -48,30 +49,45 @@ storiesOf('LinkCard', {})
 
       onInputChange = (e) => {
         const link = e.target.value;
-
         this.setState({link});
       }
+
+      onAddLink = () => {
+        const {link} = this.state;
+        context.addLinkItem(link, defaultCollectionName);
+      }
+
     }
 
     return <LiveUrlConverter />;
   })
   .add('From url string', () => {
-    const linkCardViewHorizontals = [
+    const linkCards = [
       {
-        title: 'Only required props',
+        title: 'Only required props (horizontal)',
         content: (
           <LinkCard
             context={context}
             link="https://atlassian.com"
           />
         )
+      },
+      {
+        title: 'Only required props (square)',
+        content: (
+          <LinkCard
+            context={context}
+            link="https://atlassian.com"
+            display="square"
+          />
+        )
       }
     ];
 
-    return <StoryList>{linkCardViewHorizontals}</StoryList>;
+    return <StoryList>{linkCards}</StoryList>;
   })
   .add('From link and collection id', () => {
-    const linkFromId = { id: 'e2365f30-1e08-4259-9372-56247303d1ec', collection: defaultCollectionName };
+    const linkFromId = { id: 'e2365f30-1e08-4259-9372-56247303d1ec', collectionName: defaultCollectionName };
 
     const linkCardViewHorizontals = [
       {

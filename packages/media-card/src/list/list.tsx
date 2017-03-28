@@ -4,9 +4,10 @@ import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
 import { AxiosError } from 'axios';
 import Button from '@atlaskit/button';
-import { CardSize, MediaItem, MediaCollection, MediaCollectionItem, Context, CardAction, ListAction } from '@atlaskit/media-core';
+import { MediaItem, MediaCollection, MediaCollectionItem, Context, CardAction, ListAction } from '@atlaskit/media-core';
 
-import { Card, DEFAULT_CARD_DIMENSIONS } from '../files';
+import { DEFAULT_CARD_DIMENSIONS } from '../files';
+import { Card, CardDimensions } from '../card';
 import { InfiniteScroll } from './infiniteScroll';
 import {CardListWrapper, Spinner, LoadMoreButtonContainer} from './styled';
 
@@ -16,13 +17,12 @@ export interface CardListProps {
 
   height?: number;
 
-  cardWidth?: number;
-  cardHeight?: number;
-  cardType?: CardSize;
+  cardDimensions?: CardDimensions;
+  cardType?: 'small' | 'image';
 
   pageSize?: number;
 
-  actions: Array<ListAction>;
+  actions?: Array<ListAction>;
 
   showLoadMoreButton?: boolean;
 
@@ -157,7 +157,7 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private renderCardList(): JSX.Element {
-    const cardActions: Array<CardAction> = this.props.actions.map((action: ListAction) => {
+    const cardActions: Array<CardAction> = this.props.actions ? this.props.actions.map((action: ListAction) => {
       return {
         label: action.label,
         type: action.type,
@@ -171,21 +171,39 @@ export class CardList extends Component<CardListProps, CardListState> {
           action.handler(item, fileIds, event);
         }
       };
-    });
+    }) : null;
 
     const cards = this.state.collection ? this.state.collection.items.map((item: MediaCollectionItem, index: number) => {
-      return <li key={`${index}-${item.id}`}>
-        <Card
-          context={this.props.context}
-          collectionName={this.props.collectionName}
-          id={item.id}
-          mediaItemType={item.mediaItemType}
-          width={this.cardWidth}
-          height={this.props.cardHeight}
-          type={this.props.cardType}
-          actions={cardActions}
-        />
-      </li>;
+      const {context, collectionName, cardType, cardDimensions} = this.props;
+
+      // Returning an empty item for now in order to not display a uggly card until 
+      // we have the 'image' apparence supported in linkCards
+      if (item.mediaItemType === 'link' && cardType === 'image') {
+        return <li key={`${index}-${item.id}`}/>;
+      }
+
+      const identifier = {
+        id: item.id,
+        mediaItemType: item.mediaItemType,
+        collectionName
+      };
+
+      return (
+        <li key={`${index}-${item.id}`}>
+          <Card
+            context={context}
+            identifier={identifier}
+
+            dimensions={{
+              width: this.cardWidth,
+              height: cardDimensions && cardDimensions.height
+            }}
+
+            appearance={cardType}
+            actions={cardActions}
+          />
+        </li>
+      );
     }) : null;
 
     return (
@@ -200,9 +218,10 @@ export class CardList extends Component<CardListProps, CardListState> {
     in case of small cards we want them to grow up and use the whole parent width
    */
   private get cardWidth() {
-    if (this.props.cardWidth) { return this.props.cardWidth; }
+    const {cardDimensions} = this.props;
+    if (cardDimensions) { return cardDimensions.width; }
 
-    const useDefaultWidth = this.props.cardType === 'normal';
+    const useDefaultWidth = this.props.cardType === 'image';
 
     return useDefaultWidth ? DEFAULT_CARD_DIMENSIONS.WIDTH : undefined;
   }

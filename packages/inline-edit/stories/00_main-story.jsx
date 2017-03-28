@@ -5,6 +5,7 @@ import MentionInlineEdit from './MentionInlineEdit';
 import TextInlineEdit from './TextInlineEdit';
 import LoopConfirmInlineEdit from './LoopConfirmInlineEdit';
 import SlowInlineEdit from './SlowInlineEdit';
+import SingleSelectInlineEdit from './SingleSelectInlineEdit';
 import exampleMentions from './example-mentions';
 import AkInlineEdit, { InlineEdit } from '../src';
 import { name } from '../package.json';
@@ -29,13 +30,24 @@ storiesOf(name, module)
   .add('with invalid input', () => (
     <div style={containerStyle}>
       <TextInlineEdit
-        label="This field will show a warning icon, but no error message"
+        label="This field has NO error message or warning dialog"
+      />
+      <TextInlineEdit
+        label="This field has a warning icon, but no error message"
         isInvalid
       />
       <TextInlineEdit
-        label="This field will show an error message when the icon is clicked"
+        label="This field has an error message, which is shown when the field is focused"
         isInvalid
-        invalidMessage="This error message is shown when the icon is clicked"
+        invalidMessage="This error message is shown when the field is focused"
+      />
+      <TextInlineEdit
+        label="This field will has an an error message with tabbable links, which is shown when the field is focused"
+        isInvalid
+        invalidMessage={<span>
+          A message containing a <a href="//atlassian.com">link</a>,
+          a <a target="_blank" rel="noreferrer noopener" href="//design.atlassian.com">second link (opens in new tab)</a>,
+          and a <button type="button">button</button></span>}
       />
     </div>
   ))
@@ -130,6 +142,22 @@ storiesOf(name, module)
       <MentionInlineEdit
         label="User picker"
         mentions={exampleMentions}
+      />
+    </div>
+  ))
+  .add('with single select', () => (
+    <div style={containerStyle}>
+      <SingleSelectInlineEdit
+        label="Single select"
+        selectItems={[
+          {
+            items: [
+              { content: 'High', value: 'high' },
+              { content: 'Medium', value: 'medium' },
+              { content: 'Low', value: 'low' },
+            ],
+          },
+        ]}
       />
     </div>
   ))

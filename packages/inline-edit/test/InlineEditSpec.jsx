@@ -223,6 +223,43 @@ describe('@atlaskit/inline-edit', () => {
     });
   });
 
+  describe('disableEditViewFieldBase', () => {
+    it('should not wrap editView in a FieldBase when set to true', () => {
+      const wrapper = mount(
+        <InlineEdit
+          {...defaultProps}
+          isEditing
+          disableEditViewFieldBase
+        />
+      );
+
+      expect(wrapper.find(FieldBase).length).to.equal(0);
+    });
+
+    it('should wrap editView in a FieldBase when set to false', () => {
+      const wrapper = mount(
+        <InlineEdit
+          {...defaultProps}
+          isEditing
+          disableEditViewFieldBase={false}
+        />
+      );
+
+      expect(wrapper.find(FieldBase).length).to.equal(1);
+    });
+
+    it('should default to false', () => {
+      const wrapper = mount(
+        <InlineEdit
+          {...defaultProps}
+          isEditing
+        />
+      );
+
+      expect(wrapper.prop('disableEditViewFieldBase')).to.equal(false);
+    });
+  });
+
   describe('invalidMessage prop', () => {
     it('should be reflected to the FieldBase', () => {
       expect(shallow(<InlineEdit {...defaultProps} invalidMessage="test" />)
@@ -234,53 +271,6 @@ describe('@atlaskit/inline-edit', () => {
     it('should be reflected to the FieldBase', () => {
       expect(shallow(<InlineEdit {...defaultProps} isInvalid />)
         .find(FieldBase).props().isInvalid).to.equal(true);
-    });
-  });
-
-  describe('warning icon interaction', () => {
-    describe('sets the wasIconMouseDown flag', () => {
-      it('when in read view', () => {
-        const wrapper = shallow(<InlineEdit {...defaultProps} isInvalid invalidMessage="test" />);
-        wrapper.find(FieldBase).props().onIconMouseDown();
-        expect(wrapper.state().wasIconMouseDown).to.equal(true);
-      });
-      it('when in edit view', () => {
-        const wrapper = shallow(<InlineEdit {...defaultProps} isEditing isInvalid invalidMessage="test" />);
-        wrapper.find(FieldBase).props().onIconMouseDown();
-        expect(wrapper.state().wasIconMouseDown).to.equal(true);
-      });
-    });
-    describe('with the wasIconMouseDown flag set', () => {
-      it('and in read view, does not switch to edit view when wrapper is clicked', () => {
-        const spy = sinon.spy();
-        const wrapper = shallow(<InlineEdit {...defaultProps} isInvalid invalidMessage="test" onEditRequested={spy} />);
-
-        wrapper.setState({ wasIconMouseDown: true });
-        wrapper.instance().onWrapperClick();
-        expect(spy.callCount).to.equal(0);
-
-        wrapper.setState({ wasIconMouseDown: false });
-        wrapper.instance().onWrapperClick();
-        expect(spy.callCount).to.equal(1);
-      });
-
-      it('and in edit view, does not switch to read view wrapper blurred', (done) => {
-        const spy = sinon.spy();
-        const wrapper = shallow(<InlineEdit {...defaultProps} isEditing isInvalid invalidMessage="test" onConfirm={spy} />);
-
-        wrapper.setState({ wasIconMouseDown: true });
-        wrapper.instance().onWrapperBlur();
-        expect(spy.callCount).to.equal(0);
-
-        wrapper.setState({ wasIconMouseDown: false });
-        wrapper.instance().onWrapperBlur();
-
-        // We have to wait for onWrapperBlur to call onConfirm inside a setTimeout call
-        setTimeout(() => {
-          expect(spy.callCount).to.equal(1);
-          done();
-        }, 50);
-      });
     });
   });
 });

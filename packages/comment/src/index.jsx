@@ -1,4 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react';
+import classNames from 'classnames';
+import LockIcon from '@atlaskit/icon/glyph/lock';
 import Lozenge from '@atlaskit/lozenge';
 
 import styles from 'style!./styles.less';
@@ -16,27 +18,41 @@ export default class Comment extends PureComponent {
     avatar: PropTypes.node.isRequired,
     children: PropTypes.node,
     content: PropTypes.node,
+    restrictedTo: PropTypes.string,
+    isSaving: PropTypes.bool,
+    savingText: PropTypes.string,
     time: PropTypes.node,
     type: PropTypes.string,
   }
 
   static defaultProps = {
     actions: [],
+    restrictedTo: '',
+    isSaving: false,
+    savingText: 'Sending...',
   }
+
+  renderRestrictedItem = () => (
+    <div className={styles.restricted}>
+      <span className={styles.bulletSpacer}>&bull;</span><LockIcon label="restricted" size="small" />Restricted to {this.props.restrictedTo}
+    </div>
+  );
 
   renderTopItems = () => {
     const items = (
       [
         this.props.author || null,
         this.props.type ? <Lozenge>{this.props.type}</Lozenge> : null,
-        this.props.time || null,
+        this.props.time && !this.props.isSaving ? this.props.time : null,
+        this.props.isSaving ? this.props.savingText : null,
+        this.props.restrictedTo ? this.renderRestrictedItem() : null,
       ]
       .filter(item => !!item)
       .map((item, index) => <div key={index} className={styles.topItem}>{item}</div>)
     );
 
     return items.length
-      ? <div className={styles.topContainer}>{items}</div>
+      ? <div className={styles.topItemsContainer}>{items}</div>
       : null;
   }
 
@@ -44,7 +60,7 @@ export default class Comment extends PureComponent {
     const items = this.props.actions.map(
       (item, index) => <div key={index} className={styles.actionsItem}>{item}</div>
     );
-    return items
+    return items && !this.props.isSaving
       ? <div className={styles.actionsContainer}>{items}</div>
       : null;
   }
@@ -56,13 +72,16 @@ export default class Comment extends PureComponent {
   )
 
   render() {
+    const contentClasses = [styles.contentContainer, {
+      [styles.optimisticSavingContent]: this.props.isSaving,
+    }];
     return (
       <CommentLayout
         avatar={this.props.avatar}
         content={
           <div>
             {this.renderTopItems()}
-            <div className={styles.contentContainer}>{this.props.content}</div>
+            <div className={classNames(contentClasses)}>{this.props.content}</div>
             {this.renderActions()}
           </div>
         }

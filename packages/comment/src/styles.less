@@ -33,6 +33,10 @@
   flex: 1 1 100%;
 }
 
+.top-items-container {
+  display: flex;
+}
+
 .top-item {
   display: inline-block;
 }
@@ -55,9 +59,22 @@
   font-weight: 500;
 }
 
+.bullet-spacer {
+  padding-right: @ak-grid-size/2;
+}
+
+.restricted {
+  display: flex;
+  color: @ak-color-N100A;
+}
+
 .content-container {
   color: @ak-color-N800;
   margin-top: @ak-grid-size / 2;
+}
+
+.optimistic-saving-content {
+  color: @ak-color-N100A;
 }
 
 .actions-container {

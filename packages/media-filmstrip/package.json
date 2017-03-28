@@ -21,6 +21,7 @@
   "dependencies": {
     "@atlaskit/media-core": "^3.0.0",
     "@atlaskit/media-card": "^6.6.1",
+    "@atlaskit/media-test-helpers": "^2.1.0",
     "@atlaskit/icon": "^2.4.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "tslib": "^1.2.0"

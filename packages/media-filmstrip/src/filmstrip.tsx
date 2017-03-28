@@ -44,15 +44,13 @@ export function FilmStrip(props: FilmStripProps): JSX.Element {
       collectionName: collectionName || '' // TODO: Make 'collectionName' optional in 'MediaIdentifier'
     };
 
-    return <li key={item.id}>
-      <Card
-        appearance={appearance}
-        identifier={identifier}
-        context={context}
-        dimensions={props.cardDimensions}
-        actions={createCardActions(props.actions, props.items)}
-      />
-    </li>;
+    return <Card
+      appearance={appearance}
+      identifier={identifier}
+      context={context}
+      dimensions={props.cardDimensions}
+      actions={createCardActions(props.actions, props.items)}
+    />;
   });
   return <FilmStripNavigator>{els}</FilmStripNavigator>;
 }

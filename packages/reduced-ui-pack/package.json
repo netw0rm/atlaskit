@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/reduced-ui-pack",
-  "version": "3.0.3",
+  "version": "5.0.0",
   "config": {
     "access": "public"
   },

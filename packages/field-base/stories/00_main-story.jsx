@@ -90,29 +90,32 @@ storiesOf(name, module)
   .add('with invalidMessage prop', () =>
     <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
       <BasicFieldBase
-        label="Click the warning icon to display the message"
+        label="Focus the field to display the warning message"
         id="fieldbase"
         isInvalid
-        invalidMessage="This warning dialog should be open by default"
+        invalidMessage="This warning dialog should open when the field is focused"
         defaultIsDialogOpen
       >
         <Input
-          value="input children"
           isEditing
           id="fieldbase"
+          value="Normal field"
         />
       </BasicFieldBase>
       <BasicFieldBase
-        label="Click the warning icon to display the message"
+        label="Focus the field to display the warning message"
         id="fieldbase"
         isCompact
         isInvalid
-        invalidMessage="This warning dialog should open when the icon is clicked"
+        invalidMessage={<span>
+          A message containing a <a href="//atlassian.com">link</a>,
+          a <a href="//design.atlassian.com">second link</a>,
+          and a <a href="//developer.atlassian.com">third link</a>.</span>}
       >
         <Input
           id="fieldbase"
           isEditing
-          value="input children"
+          value="Compact field"
         />
       </BasicFieldBase>
     </div>

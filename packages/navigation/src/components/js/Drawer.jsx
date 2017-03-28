@@ -83,7 +83,7 @@ export default class Drawer extends PureComponent {
               </div>
             : null}
             <div className={classNames(styles.content)}>
-              <ThemeProvider theme={{ NavigationItemAppearance: 'container', NavigationItemIsCompact: false }}>
+              <ThemeProvider theme={{ ContainerNavigationAppearance: 'container', NavigationItemIsCompact: false }}>
                 {this.props.children}
               </ThemeProvider>
             </div>

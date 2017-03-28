@@ -91,6 +91,6 @@ export default class NavigationItem extends PureComponent {
 }
 
 export const defaultTheme = {
-  NavigationItemAppearance: 'container',
+  ContainerNavigationAppearance: 'container',
   NavigationItemIsCompact: false,
 };

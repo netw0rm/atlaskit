@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
 import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
-import Presence, { PRESENCE } from './Presence';
+import Presence, { PRESENCE_TYPE } from './Presence';
 import Image from './components/Image';
 
 export const SIZE = {
@@ -17,7 +17,7 @@ export default class Avatar extends PureComponent {
     presenceBorderColor: PropTypes.string,
     /** Indicates a user's online status by showing a small icon on the avatar.
     Refer to presence values on the Presence component */
-    presence: PropTypes.oneOf(PRESENCE.values),
+    presence: PropTypes.oneOf(PRESENCE_TYPE.values),
     /** Defines the size of the avatar */
     size: PropTypes.oneOf(SIZE.values),
     /** A url to load an image from (this can also be a base64 encoded image) */

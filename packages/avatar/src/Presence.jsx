@@ -3,7 +3,7 @@ import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
 import presences from './internal/icons';
 import styles from './styles.less';
 
-export const PRESENCE = {
+export const PRESENCE_TYPE = {
   values: ['none', 'online', 'busy', 'offline'],
   defaultValue: 'none',
 };
@@ -18,12 +18,12 @@ export default class Presence extends PureComponent {
     borderColor: PropTypes.string,
     /** Content to use as a custom presence indicator (usually not required if
     consuming Presence separate to Avatar). */
-    presence: PropTypes.oneOf(PRESENCE.values),
+    presence: PropTypes.oneOf(PRESENCE_TYPE.values),
   }
 
   static defaultProps = {
     borderColor: akColorPrimary3, // white
-    presence: PRESENCE.defaultValue,
+    presence: PRESENCE_TYPE.defaultValue,
   }
 
   render() {

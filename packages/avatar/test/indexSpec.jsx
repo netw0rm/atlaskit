@@ -2,11 +2,11 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import styles from '../src/styles.less';
 
-import Avatar, { SIZE } from '../src';
+import Avatar, { SIZE } from '../src/Avatar';
 import Image from '../src/components/Image';
-import Presence, { PRESENCE } from '../src/Presence';
+import Presence, { PRESENCE_TYPE } from '../src/Presence';
 
-const [none, online, offline, busy] = PRESENCE.values;
+const [none, online, offline, busy] = PRESENCE_TYPE.values;
 
 const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 const oneByOnePixelBlack = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';

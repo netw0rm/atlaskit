@@ -32,6 +32,8 @@ export default class Profilecard extends PureComponent {
   static defaultProps = {
     presence: 'none',
     actions: [],
+    isLoading: false,
+    hasError: false,
   }
 
   render() {

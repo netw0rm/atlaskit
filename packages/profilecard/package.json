@@ -31,7 +31,9 @@
     "react": "^15.3.2"
   },
   "devDependencies": {
+    "@atlaskit/profilecard": "*",
     "@atlaskit/util-common-test": "*",
+    "@atlaskit/util-readme": "^1.0.3",
     "fetch-mock": "^5.9.4",
     "loader-utils": "^0.2.16",
     "lodash.sample": "^4.2.1",

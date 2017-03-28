@@ -62,7 +62,8 @@ export class MediaCollectionService implements CollectionService {
 
     const request = createRequest({
       config: this.config,
-      clientId: this.clientId
+      clientId: this.clientId,
+      collectionName
     });
 
     return request({

@@ -1,8 +1,5 @@
 /**
  * Used for links with appearance 'image'
- *
- * TODO:
- *   - Use FileCardView when link type is 'image'
  */
 
 import * as React from 'react';

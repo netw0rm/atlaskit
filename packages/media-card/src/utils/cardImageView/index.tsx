@@ -7,7 +7,7 @@ import {getCSSUnitValue} from '../index';
 import {CardDimensions} from '../../card';
 import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';
-import {Card} from './styled';
+import {Card as Wrapper} from './styled';
 
 export interface CardImageViewProps {
   mediaName?: string;
@@ -59,57 +59,56 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
 
   render() {
     const cardStyle = {height: this.height, width: this.width};
-    const error = this.props.error;
+    const {error, mediaName, mediaType, onRetry, actions, icon, subtitle, dataURI, loading, selectable, selected, progress} = this.props;
 
     if (error) {
       return (
-        <Card style={cardStyle} className={'card'} onClick={this.onClick.bind(this)}>
+        <Wrapper style={cardStyle} className={'card'} onClick={this.onClick}>
           <div className={'wrapper'} />
           <CardOverlay
             persistent={true}
-            mediaName={this.props.mediaName}
-            mediaType={this.props.mediaType}
+            mediaName={mediaName}
+            mediaType={mediaType}
             error={error}
-            onRetry={this.props.onRetry}
-            actions={this.props.actions}
-            icon={this.props.icon}
-            subtitle={this.props.subtitle}
+            onRetry={onRetry}
+            actions={actions}
+            icon={icon}
+            subtitle={subtitle}
           />
-        </Card>
-      );
-    } else {
-      const isPersistent = !(this.props.mediaType === 'image' && this.props.dataURI);
-      const overlay = this.props.loading ? false : <CardOverlay
-        persistent={isPersistent}
-        selectable={this.props.selectable}
-        selected={this.props.selected}
-
-        mediaName={this.props.mediaName}
-        mediaType={this.props.mediaType}
-        subtitle={this.props.subtitle}
-        progress={this.props.progress}
-
-        actions={this.props.actions}
-        icon={this.props.icon}
-      />;
-      return (
-        <Card style={cardStyle} className={'card'} onClick={this.onClick.bind(this)}>
-          <div className={'wrapper'}>
-            <div className={'img-wrapper'}>
-              <CardContent
-                loading={this.props.loading}
-                mediaType={this.props.mediaType}
-                dataURI={this.props.dataURI}
-              />
-            </div>
-            {overlay}
-          </div>
-        </Card>
+        </Wrapper>
       );
     }
+
+    const isPersistent = !(mediaType === 'image' && dataURI);
+    const overlay = loading ? false : <CardOverlay
+      persistent={isPersistent}
+      selectable={selectable}
+      selected={selected}
+      mediaName={mediaName}
+      mediaType={mediaType}
+      subtitle={subtitle}
+      progress={progress}
+      actions={actions}
+      icon={icon}
+    />;
+
+    return (
+      <Wrapper style={cardStyle} className={'card'} onClick={this.onClick}>
+        <div className={'wrapper'}>
+          <div className={'img-wrapper'}>
+            <CardContent
+              loading={loading}
+              mediaType={mediaType}
+              dataURI={dataURI}
+            />
+          </div>
+          {overlay}
+        </div>
+      </Wrapper>
+    );
   }
 
-  onClick(event: MouseEvent<HTMLDivElement>) {
+  onClick = (event: MouseEvent<HTMLDivElement>) => {
     this.props.onClick && this.props.onClick(event.nativeEvent);
   }
 }

@@ -61,13 +61,16 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   private get wrapperClassNames() {
-    const {progress, error, selectable, selected, mediaType, persistent} = this.props;
+    const {error, selectable, selected, mediaType, persistent} = this.props;
     const {isMenuExpanded} = this.state;
-    const isProcessing = (typeof progress === 'number');
 
     return error
       ? cx('overlay', {error, active: isMenuExpanded})
-      : cx('overlay', mediaType, {active: isProcessing || isMenuExpanded, selectable, selected, persistent: !persistent});
+      : cx('overlay', mediaType, {active: this.isProcessing || isMenuExpanded, selectable, selected, persistent: !persistent});
+  }
+
+  private get isProcessing() {
+    return typeof this.props.progress === 'number';
   }
 
   render() {
@@ -134,14 +137,13 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       );
     } else {
       const {progress, mediaType, subtitle, icon} = this.props;
-      const hasProgress = !!progress;
-      const className = `metadata ${hasProgress ? 'has-progress' : ''}`;
+      const classNames = cx('metadata', {'has-progress': this.isProcessing});
 
       return (
         <div>
-          <Metadata className={className}>
+          <Metadata className={classNames}>
             <FileIcon mediaType={mediaType} iconUrl={icon} />
-            <FileSize className={'file-size'}>{subtitle}</FileSize>
+            <FileSize className="file-size">{subtitle}</FileSize>
           </Metadata>
           <ProgressBar progress={progress} />
         </div>

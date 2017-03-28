@@ -1,5 +1,6 @@
 import {
   BulletListNodeType,
+  CodeBlockNodeType,
   DocNodeType,
   EmMarkType,
   HardBreakNodeType,
@@ -20,40 +21,38 @@ import {
   UnderlineMarkType
 } from '@atlaskit/editor-core';
 
-export interface BaseSchemaNodes {
-  doc: DocNodeType;
-  paragraph: ParagraphNodeType;
-  heading: HeadingNodeType;
-  text: Text;
-  hard_break: HardBreakNodeType;
-  horizontal_rule: HorizontalRuleNodeType;
-  ordered_list?: OrderedListNodeType;
-  bullet_list?: BulletListNodeType;
-  list_item?: ListItemNodeType;
-  mention?: MentionNodeType;
-}
-
-export interface BaseSchemaMarks {
-  link?: LinkMarkType;
-  strong: StrongMarkType;
-  em: EmMarkType;
-  strike?: StrikeMarkType;
-  subsup: SubSupMarkType;
-  u: UnderlineMarkType;
-  code?: CodeMarkType;
-  mention_query?: MentionQueryMarkType;
-}
-
 export interface JIRASchemaConfig {
   allowLists?: boolean;
   allowMentions?: boolean;
   allowLinks?: boolean;
   allowAdvancedTextFormatting?: boolean;
+  allowCodeBlock?: boolean;
 }
 
 export interface JIRASchema extends Schema {
-  nodes: BaseSchemaNodes;
-  marks: BaseSchemaMarks;
+  nodes: {
+    doc: DocNodeType;
+    paragraph: ParagraphNodeType;
+    heading: HeadingNodeType;
+    text: Text;
+    hard_break: HardBreakNodeType;
+    horizontal_rule: HorizontalRuleNodeType;
+    ordered_list?: OrderedListNodeType;
+    bullet_list?: BulletListNodeType;
+    list_item?: ListItemNodeType;
+    mention?: MentionNodeType;
+    code_block?: CodeBlockNodeType;
+  };
+  marks: {
+    link?: LinkMarkType;
+    strong: StrongMarkType;
+    em: EmMarkType;
+    strike?: StrikeMarkType;
+    subsup: SubSupMarkType;
+    u: UnderlineMarkType;
+    code?: CodeMarkType;
+    mention_query?: MentionQueryMarkType;
+  };
 }
 
 export function isSchemaWithLists(schema: JIRASchema): boolean {
@@ -72,6 +71,10 @@ export function isSchemaWithAdvancedTextFormattingMarks(schema: JIRASchema): boo
   return !!schema.marks.code && !!schema.marks.strike;
 }
 
+export function isSchemaWithCodeBlock(schema: JIRASchema): boolean {
+  return !!schema.nodes.code_block;
+}
+
 export function makeSchema(config: JIRASchemaConfig): JIRASchema {
   const nodes = {
     doc: { type: DocNodeType, content: 'block+' },
@@ -84,6 +87,7 @@ export function makeSchema(config: JIRASchemaConfig): JIRASchema {
     hard_break: { type: HardBreakNodeType, group: 'inline' },
     horizontal_rule: { type: HorizontalRuleNodeType, group: 'block' },
     mention: { type: MentionNodeType, group: 'inline' },
+    code_block: { type: CodeBlockNodeType, content: 'text*', group: 'block' },
   };
 
   const marks = {
@@ -115,6 +119,10 @@ export function makeSchema(config: JIRASchemaConfig): JIRASchema {
   if (!config.allowAdvancedTextFormatting) {
     delete marks.strike;
     delete marks.code;
+  }
+
+  if (!config.allowCodeBlock) {
+    delete nodes.code_block;
   }
 
   return new Schema({ nodes, marks });

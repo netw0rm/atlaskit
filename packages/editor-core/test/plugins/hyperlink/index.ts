@@ -345,6 +345,14 @@ describe('hyperlink', () => {
       expect(editorView.state.doc).to.deep.equal(doc(linkable('text')));
     });
 
+    it('should be able to unlink an existing link', () => {
+      const { editorView, pluginState } = editor(doc(linkable('hello ', link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));
+
+      pluginState.removeLink(editorView);
+
+      expect(editorView.state.doc).to.deep.equal(doc(linkable('hello text')));
+    });
+
     context('when a link is in the second paragraph', () => {
       it('should be able to unlink that link', () => {
         const { editorView, pluginState } = editor(doc(paragraph('hello'), linkable(link({ href: 'http://www.atlassian.com' })('{<}text{>}'))));

@@ -4,6 +4,7 @@ import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
 
 let plugin: Plugin | undefined;
+const markTypes = ['em', 'code', 'strike', 'strong', 'underline', 'link'];
 
 export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
   const list = {};
@@ -12,7 +13,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
     return plugin;
   }
 
-  keymaps.bindKeymapWithCommand(keymaps.clearFormatting.common!, trackAndInvoke('atlassian.editor.format.clear.keyboard', commands.clearFormatting()), list);
+  keymaps.bindKeymapWithCommand(keymaps.clearFormatting.common!, trackAndInvoke('atlassian.editor.format.clear.keyboard', commands.clearFormatting(markTypes)), list);
 
   plugin = keymap(list);
   return plugin;

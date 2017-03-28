@@ -267,7 +267,7 @@ export default class StatelessMultiSelect extends PureComponent {
     return (<NothingWasFound noMatchesFound={this.props.noMatchesFound} />);
   }
 
-  renderGroups = groups => groups.map((group, groupIndex) => { // eslint-disable-line arrow-body-style, max-len
+  renderGroups = groups => groups.map((group, groupIndex) => {
     const filteredItems = this.filterItems(group.items);
     return filteredItems.length > 0 ?
       <Group

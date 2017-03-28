@@ -1,32 +1,30 @@
-import classNames from 'classnames';
 import React, { PropTypes, PureComponent } from 'react';
-import styles from 'style!./style.less';
+import BadgeElement from './internal/BadgeElement';
 
-const APPEARANCE_ENUM = {
+export const APPEARANCE_ENUM = {
   values: ['default', 'primary', 'important', 'added', 'removed'],
   defaultValue: 'default',
 };
 
-const THEME_ENUM = {
+export const THEME_ENUM = {
   values: ['default', 'dark'],
   defaultValue: 'default',
 };
 
-class Badge extends PureComponent {
+export default class Badge extends PureComponent {
   static propTypes = {
-    value: PropTypes.number,
-    max: PropTypes.number,
     appearance: PropTypes.oneOf(APPEARANCE_ENUM.values),
+    max: PropTypes.number,
     onValueUpdated: PropTypes.func,
-
     theme: PropTypes.oneOf(THEME_ENUM.values),
+    value: PropTypes.number,
   }
 
   static defaultProps = {
-    value: 0,
-    max: 99,
     appearance: APPEARANCE_ENUM.defaultValue,
+    max: 99,
     theme: THEME_ENUM.defaultValue,
+    value: 0,
   }
 
   // triggered on prop/state change, but not on first render
@@ -60,20 +58,12 @@ class Badge extends PureComponent {
   }
 
   render() {
+    const { theme } = this.props;
+
     return (
-      <span className={styles.root}>
-        <span
-          className={classNames(
-            [styles.value, styles[this.validAppearance()]],
-            {
-              [styles.isDarkTheme]: this.props.theme === 'dark',
-            }
-          )}
-        >{this.displayValue().toString()}</span>
-      </span>
+      <BadgeElement appearance={this.validAppearance()} theme={theme}>
+        {this.displayValue().toString()}
+      </BadgeElement>
     );
   }
-
 }
-
-export default Badge;

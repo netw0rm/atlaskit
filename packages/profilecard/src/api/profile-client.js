@@ -1,5 +1,6 @@
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
+import { LRUCache } from 'lru-fast';
 
 /**
  * Transform response from GraphQL
@@ -103,15 +104,71 @@ const requestService = (baseUrl, options) => {
 
 class ProfileClient {
   constructor(config) {
-    if (!config.url) {
+    const defaults = {
+      cacheSize: 10,
+      cacheMaxAge: null,
+    };
+
+    this.config = { ...defaults, ...config };
+    // Set maxCacheAge only if it's a positive number
+    this.cacheMaxAge = Math.max(
+      parseInt(this.config.cacheMaxAge, 10), 0
+    ) || null;
+    // Only set cache if maxCacheAge is set
+    this.cache = this.cacheMaxAge === null
+      ? null : new LRUCache(this.config.cacheSize);
+  }
+
+  makeRequest(options) {
+    if (!this.config.url) {
       throw new Error('config.url is a required parameter');
     }
 
-    this.config = config;
+    return requestService(this.config.url, options);
   }
 
-  fetch(options) {
-    return requestService(this.config.url, options);
+  getCachedProfile(options) {
+    const cached = this.cache && this.cache.get(options.userId);
+
+    if (!cached) {
+      return null;
+    }
+
+    if (cached.expire < Date.now()) {
+      this.cache.remove(options.userId);
+      return null;
+    }
+
+    this.cache.set(options.userId, {
+      expire: Date.now() + this.cacheMaxAge,
+      profile: cached.profile,
+    });
+
+    return cached.profile;
+  }
+
+  flushCache() {
+    if (this.cache) {
+      this.cache.removeAll();
+    }
+  }
+
+  getProfile(options) {
+    return new Promise((resolve, reject) => {
+      this.makeRequest(options)
+      .then((data) => {
+        if (this.cache) {
+          this.cache.put(options.userId, {
+            expire: Date.now() + this.cacheMaxAge,
+            profile: data,
+          });
+        }
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+    });
   }
 }
 

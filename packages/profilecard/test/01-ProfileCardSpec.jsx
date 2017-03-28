@@ -4,12 +4,21 @@ import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import AkButton from '@atlaskit/button';
 import styles from '../src/styles/profilecard.less';
 
-import { AkProfilecard } from '../src';
+import AkProfilecardResourced, { AkProfilecard, AkProfileClient } from '../src';
 import LoadingMessage from '../src/components/LoadingMessage';
 import ErrorMessage from '../src/components/ErrorMessage';
 import presences from '../src/internal/presences';
 
 describe('Profilecard', () => {
+  it('should export default AkProfilecardResourced', () => {
+    expect(AkProfilecardResourced).to.be.an.instanceof(Object);
+  });
+
+  it('should export named AkProfilecard and AkProfileClient', () => {
+    expect(AkProfilecard).to.be.an.instanceof(Object);
+    expect(AkProfileClient).to.be.an.instanceof(Object);
+  });
+
   describe('AkProfilecard', () => {
     it('should be possible to create a component', () => {
       const card = shallow(<AkProfilecard />);

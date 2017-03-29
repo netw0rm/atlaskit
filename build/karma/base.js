@@ -45,6 +45,8 @@ module.exports = (config) => {
     // of time in CI.
     browserNoActivityTimeout: 100000,
 
+    browserDisconnectTolerance: 3,
+
     singleRun: true,
 
     concurrency: Infinity,

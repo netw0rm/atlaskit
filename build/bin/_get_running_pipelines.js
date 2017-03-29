@@ -52,7 +52,12 @@ function getPipelinesResultURL(pipelineUUID) {
 function stopPipelineBuild(pipelineUUID) {
   const stopPipelinesEndpoint = `${pipelinesEndpoint}${pipelineUUID}/stopPipeline/`;
   // we'll return the promise and let it be caught outside
-  return axios.post(stopPipelinesEndpoint, axiosRequestConfig);
+  return axios.post(stopPipelinesEndpoint, {
+    auth: {
+      username: BB_USERNAME,
+      password: BB_PASSWORD,
+    },
+  });
 }
 
 axios.get(pipelinesEndpoint, axiosRequestConfig)

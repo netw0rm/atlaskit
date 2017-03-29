@@ -2,14 +2,17 @@
 
 /* eslint-disable no-console */
 const fs = require('fs');
-const path = require('path');
+// const path = require('path');
 
-console.log(module.paths);
-try { require.resolve('axios'); } catch (e) { console.log(e); }
-console.log('contains axios:');
-const locaation = path.join(process.cwd(), 'node_modules');
-console.log(locaation);
-console.log(fs.readdirSync(location).includes('axios'));
+module.paths.forEach((dir) => {
+  try {
+    const dirs = fs.readdirSync(dir);
+    console.log(dirs.length);
+    console.log(dirs.includes('axios'));
+  } catch (e) {
+    console.log(`${dir} does not exist`);
+  }
+});
 
 const axios = require('axios');
 

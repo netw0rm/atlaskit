@@ -1,7 +1,7 @@
 import { Transaction, EditorState, ReplaceStep, Step } from '../../prosemirror';
 import { createSliceWithContent } from '../../utils';
 
-export function transformToCodeAction(state: EditorState<any>, from: number, to: number, pluginState?: any): Transaction {
+export function transformToCodeAction(state: EditorState<any>, from: number, to: number): Transaction {
   const replaceSteps: Step[] = [];
   let tr = state.tr;
 
@@ -24,11 +24,6 @@ export function transformToCodeAction(state: EditorState<any>, from: number, to:
   const codeMark = state.schema.marks.code.create();
 
   tr.addMark(from, updatedTo, codeMark).setStoredMarks([codeMark]);
-
-  // need it to be able to define when to remove storedMarks with code
-  if (pluginState) {
-    pluginState.toggledMarks['code'] = true;
-  }
 
   return tr;
 }

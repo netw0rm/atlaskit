@@ -73,9 +73,8 @@ export class TextFormattingState {
     const { code } = this.state.schema.marks;
     const { from, to } = this.state.selection;
     if (code) {
-      this.toggledMarks['code'] = true;
       if (!this.codeActive) {
-        view.dispatch(transformToCodeAction(view.state, from, to, this));
+        view.dispatch(transformToCodeAction(view.state, from, to));
         return true;
       }
       return commands.toggleMark(code)(view.state, view.dispatch);
@@ -151,7 +150,7 @@ export class TextFormattingState {
     let dirty = false;
 
     if (code) {
-      const newCodeActive = this.anyMarkActive(code);
+      const newCodeActive = this.markActive(code.create());
       if (newCodeActive !== this.codeActive) {
         this.codeActive = newCodeActive;
         dirty = true;
@@ -263,20 +262,56 @@ export class TextFormattingState {
    */
   private anyMarkActive(markType: MarkType): boolean {
     const { state } = this;
-    const { $from, from, to, empty } = state.selection;
-    let storedMarks = state.tr.storedMarks;
-
-    if (storedMarks && markType.isInSet(storedMarks) && !this.toggledMarks[markType.name] && (!$from.nodeBefore || !markType.isInSet($from.nodeBefore.marks))) {
-      storedMarks = undefined;
-      this.clearStoredMarks = true;
-    }
-
-    this.toggledMarks[markType.name] = false;
+    const { from, to, empty } = state.selection;
 
     if (empty) {
-      return !!markType.isInSet(storedMarks || state.selection.$from.marks());
+      return !!markType.isInSet(state.tr.storedMarks || state.selection.$from.marks());
     }
     return state.doc.rangeHasMark(from, to, markType);
+  }
+
+  handleKeyDown (view: EditorView, event: KeyboardEvent) {
+    const { state } = this;
+    const { $from, from, to, empty } = state.selection;
+    let marks = state.selection.$from.marks();
+
+    if (!empty) {
+      marks = [];
+      state.doc.nodesBetween(from, to, node => {
+        if (node.marks.length) {
+          marks = marks.concat(node.marks);
+        }
+      });
+    }
+
+    if (event.key === 'Backspace') {
+      let found = false;
+
+      if ($from.nodeBefore) {
+        $from.nodeBefore.marks.forEach(markBefore => {
+          marks.forEach(mark => {
+            if (markBefore.type.name === mark.type.name) {
+              found = true;
+            }
+          });
+        });
+      }
+
+      // the most tricky part
+      if (marks.length && (!$from.nodeBefore || (!empty && !$from.nodeBefore.marks.length) || found)) {
+        this.clearStoredMarks = true;
+      }
+    }
+  }
+
+  removeStoredMarks (view: EditorView, event: KeyboardEvent) {
+    const { state } = this;
+    const { storedMarks } = state.tr;
+
+    if (storedMarks && this.clearStoredMarks) {
+      this.clearStoredMarks = false;
+      view.dispatch(view.state.tr.setStoredMarks([]));
+    }
   }
 
   /**
@@ -334,13 +369,15 @@ const plugin = new Plugin({
     handleKeyDown(view, event) {
       const pluginState = stateKey.getState(view.state);
       const result = pluginState.keymapHandler(view, event);
-
-      if (pluginState.clearStoredMarks) {
-        view.dispatch(view.state.tr.setStoredMarks([]));
-        pluginState.clearStoredMarks = false;
-      }
+      pluginState.handleKeyDown(view, event);
 
       return result;
+    },
+    handleTextInput(view, event) {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.removeStoredMarks(view, event);
+
+      return false;
     }
   }
 });

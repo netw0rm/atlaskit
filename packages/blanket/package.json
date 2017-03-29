@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/blanket",
-  "version": "1.2.3",
+  "version": "2.0.1",
   "config": {
     "access": "public"
   },
@@ -16,12 +16,11 @@
   ],
   "dependencies": {
     "@atlaskit/util-shared-styles": "^1.0.0",
-    "babel-runtime": "^6.11.6",
-    "classnames": "^2.2.5"
+    "babel-runtime": "^6.11.6"
   },
   "devDependencies": {
     "@atlaskit/blanket": "*",
-    "@atlaskit/util-readme": "^1.0.0"
+    "@atlaskit/util-readme": "^3.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
@@ -34,7 +33,8 @@
   ],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2",
+    "styled-components": "^1.3.0"
   },
   "repository": {
     "type": "git",

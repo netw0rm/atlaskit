@@ -2,13 +2,11 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import styles from '../src/styles.less';
 
-import Avatar from '../src';
-import Image from '../src/Image';
-import Presence from '../src/Presence';
-import sizes from '../src/internal/sizes';
-import presences from '../src/internal/presences';
+import Avatar, { SIZE } from '../src/Avatar';
+import Image from '../src/components/Image';
+import Presence, { PRESENCE_TYPE } from '../src/Presence';
 
-const [none, online, offline, busy] = presences;
+const [none, online, offline, busy] = PRESENCE_TYPE.values;
 
 const oneByOnePixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
 const oneByOnePixelBlack = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
@@ -22,7 +20,7 @@ describe('ak-avatar', () => {
   });
 
   describe('size property', () => {
-    sizes.forEach((size) => {
+    SIZE.values.forEach((size) => {
       describe(`when is set to ${size}`, () =>
         it(`should have class ${size}`, () => {
           const wrapper = shallow(<Avatar size={size} />);

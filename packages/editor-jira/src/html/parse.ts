@@ -4,6 +4,7 @@ import {
   isSchemaWithMentions,
   isSchemaWithLinks,
   isSchemaWithAdvancedTextFormattingMarks,
+  isSchemaWithCodeBlock,
   JIRASchema,
 } from '../schema';
 import parseHtml from './parse-html';
@@ -36,6 +37,7 @@ export default function parse(html: string, schema: JIRASchema) {
   const compatibleContent = schema.nodes.doc.validContent(content)
     ? content
     : ensureBlocks(content, schema);
+
   return schema.nodes.doc.createChecked({}, compatibleContent);
 }
 
@@ -96,10 +98,9 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
         return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
       case 'INS':
         return content ? addMarks(content, [schema.marks.u.create()]) : null;
+
       // Nodes
       case 'A':
-        const isAnchor = node.attributes.getNamedItem('href') === null;
-
         if (node.className === 'user-hover' && isSchemaWithMentions(schema)) {
           return schema.nodes.mention!.createChecked({
             id: node.getAttribute('rel'),
@@ -107,21 +108,46 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
           });
         }
 
-        if (isAnchor) {
+        const isAnchor = node.attributes.getNamedItem('href') === null;
+        if (isAnchor || node.className.match('jira-issue-macro-key') || !content || !isSchemaWithLinks(schema)) {
           return null;
         }
 
-        return content && isSchemaWithLinks(schema)
-          ? addMarks(
-              content,
-              [schema.marks.link!.create({
-                href: node.getAttribute('href'),
-                title: node.getAttribute('title')
-              })]
-            )
-          : null;
-      // case 'SPAN':
-      //   return addMarks(content, marksFromStyle(node.style));
+        return addMarks(
+          content,
+          [schema.marks.link!.create({
+            href: node.getAttribute('href'),
+            title: node.getAttribute('title')
+          })]
+        );
+
+      case 'SPAN':
+        /**
+         * JIRA ISSUE MACROS
+         * `````````````````
+         * <span class="jira-issue-macro" data-jira-key="ED-1">
+         *     <a href="https://product-fabric.atlassian.net/browse/ED-1" class="jira-issue-macro-key issue-link">
+         *         <img class="icon" src="./epic.svg" />
+         *         ED-1
+         *     </a>
+         *     <span class="aui-lozenge aui-lozenge-subtle aui-lozenge-current jira-macro-single-issue-export-pdf">
+         *         In Progress
+         *     </span>
+         * </span>
+         */
+        if (node.className === 'jira-issue-macro') {
+          const jiraKey = node.dataset.jiraKey;
+          return jiraKey ? schema.text(jiraKey) : null;
+        } else if (node.className.match('jira-macro-single-issue-export-pdf')) {
+          return null;
+        }
+        break;
+
+      case 'IMG':
+        if (node.parentElement && node.parentElement.className.match('jira-issue-macro-key')) {
+          return null;
+        }
+        break;
       case 'H1':
       case 'H2':
       case 'H3':
@@ -150,6 +176,31 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
             ? content
             : ensureBlocks(content, schema);
           return schema.nodes.list_item!.createChecked({}, compatibleContent);
+      }
+    }
+
+    // code block
+    if (isSchemaWithCodeBlock(schema)) {
+      switch (tag) {
+        case 'DIV':
+          if (node.className === 'codeContent panelContent') {
+            return null;
+          } else if (node.className === 'code panel') {
+            const pre = node.querySelector('pre');
+
+            if (!pre) {
+              return null;
+            }
+
+            const language = pre.className.split('-')[1];
+            return schema.nodes.code_block!.createChecked({ language }, schema.text(pre.innerText));
+          }
+          break;
+        case 'PRE':
+          if (node.className.match(/code-/)) {
+            return null;
+          }
+          break;
       }
     }
   }

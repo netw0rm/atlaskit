@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import { LinkCardGenericView } from '../../src';
+import { MeatballsButton, DeleteBtn } from '../../src/utils/menu/styled';
 import { Title, Link } from '../../src/links/cardGenericView/styled';
 
 describe('LinkCardViewGeneric', () => {
@@ -82,6 +83,15 @@ describe('LinkCardViewGeneric', () => {
 
     expect(card.find('.media-card')).to.have.length(0);
     expect(card.find(`img[src='${iconUrl}']`)).to.have.length(0);
+  });
+
+  it('should render the site name instead of link url inside of they <a> tag when it is supplied as a prop', () => {
+    const title = 'Hello world';
+    const linkUrl = 'http://localhost:9001/';
+    const site = 'Hello world';
+
+    const card = shallow(<LinkCardGenericView title={title} linkUrl={linkUrl} site={site}/>);
+    expect(card.find(Link).children('a').text()).to.eql(site);
   });
 
   it('currently ignores the loading prop', () => {

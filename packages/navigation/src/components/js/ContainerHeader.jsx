@@ -13,7 +13,6 @@ const ContainerHeaderWrapper = styled.div`
 
   [data-__ak-navigation-container-closed="true"] & {
     padding: ${paddingClosed};
-    margin-bottom: 0;
   }
 `;
 

@@ -28,6 +28,9 @@ const commentPropDescriptions = {
   avatar: 'The element to display as the Comment avatar - generally an AtlasKit Avatar.',
   children: 'Nested comments should be provided as children of the Comment.',
   content: 'The main content of the Comment.',
+  restrictedTo: 'The name of a group that a comment is restricted to. Will display in the top items',
+  isSaving: 'Boolean used to display a comment in "optimistic saving" mode. Will prevent the display of actions and replace permalink with the `savingText` prop ("Sending..." by default)',
+  savingText: 'String used when showing a comment in "optimistic saving" mode. Only used for localization',
   time: 'A CommentTime element containing the time to be displayed. Optionally, specify the href property to link to another page.',
   type: 'The type of the comment - will be rendered in a lozenge at the top of the Comment.',
 };
@@ -38,6 +41,9 @@ const commentPropTypes = {
   avatar: 'node',
   children: 'node',
   content: 'node',
+  restrictedTo: 'String',
+  isSaving: 'Bool',
+  savingText: 'String',
   time: 'CommentTime',
   type: 'String',
 };

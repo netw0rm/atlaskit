@@ -1,10 +1,18 @@
 import React, { PureComponent } from 'react';
 import { Toggle } from '@atlaskit/util-component-template';
 
-export default class extends PureComponent {
+class StatelessToggleWrapper extends PureComponent {
+  state = { active: false }
+
   render() {
     return (
-      <Toggle />
+      <Toggle
+        label="Power Station"
+        onToggle={() => this.setState({ active: !this.state.active })}
+        isActive={this.state.active}
+      />
     );
   }
 }
+
+export default (<StatelessToggleWrapper />);

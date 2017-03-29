@@ -1,6 +1,7 @@
 import {
   isCodeBlockNode,
-  isListItemNode,
+  isOrderedListNode,
+  isBulletListNode,
   Mark,
   MarkdownSerializer as PMMarkdownSerializer,
   MarkdownSerializerState as PMMarkdownSerializerState,
@@ -19,7 +20,7 @@ interface NodeRendererOption {
  * @see MarkdownSerializerState.esc()
  */
 function escapeMarkdown(str: string, startOfLine?: boolean): string {
-  str = str.replace(/[`*\\+\[\]_]/g, '\\$&');
+  str = str.replace(/[`*\\+_]/g, '\\$&');
   if (startOfLine) {
     str = str.replace(/^[#-*]/, '\\$&').replace(/^(\d+)\./, '$1\\.');
   }
@@ -44,6 +45,8 @@ const generateOuterBacktickChain: (text: string, minLength?: number) => string =
     return stringRepeat('`', length);
   };
 })();
+
+const isListNode = (node: Node) => isBulletListNode(node) || isOrderedListNode(node);
 
 const nodes = {
   blockquote(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
@@ -93,6 +96,10 @@ const nodes = {
   },
   list_item(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     state.renderContent(node);
+    // When there's more than one item in a list item if they are not a nested list (ol/ul) insert a blank line
+    if (node.childCount > 1 && node.lastChild && !isListNode(node.lastChild)) {
+      state.write('\n');
+    }
   },
   paragraph(state: MarkdownSerializerState, node: Node, opts?: NodeRendererOption) {
     const isLastNode = opts && opts.isLastNode;
@@ -175,14 +182,7 @@ export class MarkdownSerializerState extends PMMarkdownSerializerState {
         !isCodeBlockNode(child) &&
         !(child.content && (child.content as any).size > 0)
       ) {
-        // if parent is a ListItem then we need to skip zwnj (ED-1035)
-        if (isListItemNode(parent)) {
-          this.write('  ');
-          this.closeBlock(child);
-        }
-        else {
-          return nodes.empty_line(this, child);
-        }
+        return nodes.empty_line(this, child);
       }
 
       const isLastNode = (index + 1 === parent.childCount);

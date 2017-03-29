@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/badge",
-  "version": "1.2.2",
+  "version": "2.0.0",
   "config": {
     "access": "public"
   },
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@atlaskit/badge": "*",
-    "@atlaskit/util-readme": "^1.0.0"
+    "@atlaskit/util-readme": "^3.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
@@ -33,7 +33,8 @@
   ],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2",
+    "styled-components": "^1.3.0"
   },
   "repository": {
     "type": "git",

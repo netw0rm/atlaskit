@@ -43,6 +43,7 @@
     "./json-loader.d.ts",
     "./popper.d.ts",
     "./raw-loader.d.ts",
-    "./webpack.d.ts"
+    "./webpack.d.ts",
+    "./wildcard.d.ts"
   ]
 }

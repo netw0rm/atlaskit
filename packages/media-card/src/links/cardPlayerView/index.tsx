@@ -10,10 +10,11 @@ import {Wrapper, AnimatedButton, PlayButtonWrapper, Circle} from './styled';
 export interface LinkCardPlayerProps {
   linkUrl: string;
   title: string;
+  site?: string;
   description?: string;
   thumbnailUrl?: string;
   iconUrl?: string;
-  menuActions?: Array<CardAction>;
+  actions?: Array<CardAction>;
   playerUrl: string;
 }
 
@@ -55,7 +56,7 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
   }
 
   private renderLinkCard(): JSX.Element {
-    const {title, description, linkUrl, thumbnailUrl, iconUrl, menuActions} = this.props;
+    const {title, description, site, linkUrl, thumbnailUrl, iconUrl, actions} = this.props;
 
     return (
       <div className="link-info">
@@ -65,13 +66,14 @@ export class LinkCardPlayer extends Component<LinkCardPlayerProps, LinkCardPlaye
         </PlayButtonWrapper>
 
         <LinkCardGenericView
-          display="square"
+          appearance="square"
           title={title}
+          site={site}
           description={description}
           linkUrl={linkUrl}
           thumbnailUrl={thumbnailUrl}
           iconUrl={iconUrl}
-          menuActions={menuActions}
+          actions={actions}
         />
       </div>
     );

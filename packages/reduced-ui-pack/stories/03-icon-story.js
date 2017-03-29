@@ -31,7 +31,7 @@ const icons2Desc = (<p>
 
 storiesOf(name, module)
   .add('Icons', () => (
-    <Readme component={'Icons'} description={iconsDesc}>
+    <Readme component={'reduced-ui-pack'} description={iconsDesc}>
       <Code code={iconSetupExample}>
         <Spritemap />
         <style>
@@ -60,7 +60,7 @@ storiesOf(name, module)
     </Readme>
   ))
   .add('Icons — accessibility check', () => (
-    <Readme component={'Icons — accessibility check'} description={icons2Desc}>
+    <Readme component={'reduced-ui-pack'} description={icons2Desc}>
       <Spritemap />
       <p>
         <AkFieldText

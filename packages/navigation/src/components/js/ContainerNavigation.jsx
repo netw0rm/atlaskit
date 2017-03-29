@@ -1,10 +1,11 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { ThemeProvider } from 'styled-components';
-import classNames from 'classnames';
-import styles from 'style!../less/ContainerNavigation.less';
 import ContainerHeader from './ContainerHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
+import ContainerNavigationOuter from '../styled/ContainerNavigationOuter';
+import ContainerNavigationInner from '../styled/ContainerNavigationInner';
+
 import {
   containerOpenWidth,
   containerClosedWidth,
@@ -71,25 +72,18 @@ export default class ContainerNavigation extends PureComponent {
         }}
       >
         <nav
-          className={classNames({
-            [styles.shouldAnimate]: shouldAnimate,
-          })}
           data-__ak-navigation-container-closed={isWidthCollapsed}
         >
           <Spacer
             shouldAnimate={shouldAnimate}
             width={width + offsetX}
           />
-          <div
-            className={styles.containerNavigationOuter}
+          <ContainerNavigationOuter
+            shouldAnimate={shouldAnimate}
             style={this.getOuterStyles()}
           >
-            <div
-              className={classNames(styles.containerNavigationInner, {
-                [styles.hasContainerHeader]: headerComponent !== null,
-                [styles.hasGlobalAppearance]: appearance === 'global',
-                [styles.hasSettingsAppearance]: appearance === 'settings',
-              })}
+            <ContainerNavigationInner
+              appearance={appearance}
             >
               <GlobalPrimaryActions
                 appearance={appearance}
@@ -104,17 +98,17 @@ export default class ContainerNavigation extends PureComponent {
               />
               <div>
                 {
-                  this.props.headerComponent ? (
+                  headerComponent ? (
                     <ContainerHeader>
-                      {this.props.headerComponent({ isCollapsed: width <= containerClosedWidth })}
+                      {headerComponent({ isCollapsed: width <= containerClosedWidth })}
                     </ContainerHeader>) : null
                 }
               </div>
               <div>
                 {children}
               </div>
-            </div>
-          </div>
+            </ContainerNavigationInner>
+          </ContainerNavigationOuter>
         </nav>
       </ThemeProvider>
     );

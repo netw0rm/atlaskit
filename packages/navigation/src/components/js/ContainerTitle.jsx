@@ -1,11 +1,14 @@
 import React, { PureComponent, PropTypes } from 'react';
-import className from 'classnames';
 import styles from 'style!../less/ContainerTitle.less';
 import DefaultLinkComponent from './DefaultLinkComponent';
+import ContainerTitleIcon from '../styled/ContainerTitleIcon';
+import ContainerTitleInner from '../styled/ContainerTitleInner';
+import ContainerTitleSubText from '../styled/ContainerTitleSubText';
+import ContainerTitleText from '../styled/ContainerTitleText';
+import ContainerTitleTextWrapper from '../styled/ContainerTitleTextWrapper';
 
 export default class ContainerTitle extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.string,
     icon: PropTypes.node,
     text: PropTypes.string,
     subText: PropTypes.string,
@@ -19,7 +22,6 @@ export default class ContainerTitle extends PureComponent {
 
   render() {
     const {
-      appearance,
       href,
       text,
       subText,
@@ -28,20 +30,15 @@ export default class ContainerTitle extends PureComponent {
 
     return (
       <Link className={styles.link} href={href}>
-        <div
-          className={className(styles.containerTitle, {
-            [styles.hasGlobalAppearance]: appearance === 'global',
-            [styles.hasSettingsAppearance]: appearance === 'settings',
-          })}
-        >
-          <div className={styles.icon}>
+        <ContainerTitleInner>
+          <ContainerTitleIcon>
             {this.props.icon}
-          </div>
-          <div className={styles.textContainer}>
-            <div className={styles.text}>{text}</div>
-            {subText ? <div className={styles.subText}>{subText}</div> : null}
-          </div>
-        </div>
+          </ContainerTitleIcon>
+          <ContainerTitleTextWrapper>
+            <ContainerTitleText>{text}</ContainerTitleText>
+            {subText ? <ContainerTitleSubText>{subText}</ContainerTitleSubText> : null}
+          </ContainerTitleTextWrapper>
+        </ContainerTitleInner>
       </Link>
     );
   }

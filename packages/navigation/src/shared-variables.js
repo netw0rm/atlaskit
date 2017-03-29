@@ -11,3 +11,4 @@ export const collapseBreakpoint = globalOpenWidth + containerClosedWidth;
 export const containerNavigationNestedPageSpacing = 8;
 export const searchIconOffset = 80;
 export const createIconOffset = 120;
+export const resizeAnimationTime = '200ms';

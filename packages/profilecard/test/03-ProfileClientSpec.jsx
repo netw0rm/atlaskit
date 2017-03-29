@@ -58,16 +58,10 @@ describe('Profilecard', () => {
 
       describe('#getCachedProfile', () => {
         it('should return cached data within n milliseconds', (done) => {
-          client.getProfile({
-            userId: '1',
-            cloudId: 'DUMMY-CLOUD-ID',
-          })
+          client.getProfile('DUMMY-CLOUD-ID', '1')
           .then((data) => {
             clock.tick(clientCacheMaxAge);
-            cache = client.getCachedProfile({
-              userId: '1',
-              cloudId: 'DUMMY-CLOUD-ID',
-            });
+            cache = client.getCachedProfile('1');
 
             expect(cache).to.equal(data);
             done();
@@ -78,16 +72,10 @@ describe('Profilecard', () => {
         });
 
         it('should return `null` after n+1 milliseconds ', (done) => {
-          client.getProfile({
-            userId: '1',
-            cloudId: 'DUMMY-CLOUD-ID',
-          })
+          client.getProfile('DUMMY-CLOUD-ID', '1')
           .then(() => {
             clock.tick(clientCacheMaxAge + 1);
-            cache = client.getCachedProfile({
-              userId: '1',
-              cloudId: 'DUMMY-CLOUD-ID',
-            });
+            cache = client.getCachedProfile('1');
 
             expect(cache).to.equal(null);
             done();
@@ -98,24 +86,15 @@ describe('Profilecard', () => {
         });
 
         it('should reset expiry to n ms when cache item is used', (done) => {
-          client.getProfile({
-            userId: '1',
-            cloudId: 'DUMMY-CLOUD-ID',
-          })
+          client.getProfile('DUMMY-CLOUD-ID', '1')
           .then((data) => {
             clock.tick(clientCacheMaxAge);
-            cache = client.getCachedProfile({
-              userId: '1',
-              cloudId: 'DUMMY-CLOUD-ID',
-            });
+            cache = client.getCachedProfile('1');
 
             expect(cache).to.equal(data);
 
             clock.tick(clientCacheMaxAge);
-            cache = client.getCachedProfile({
-              userId: '1',
-              cloudId: 'DUMMY-CLOUD-ID',
-            });
+            cache = client.getCachedProfile('1');
 
             expect(cache).to.equal(data);
             done();
@@ -128,23 +107,14 @@ describe('Profilecard', () => {
 
       describe('#flushCache', () => {
         it('should purge all cached items', (done) => {
-          client.getProfile({
-            userId: '1',
-            cloudId: 'DUMMY-CLOUD-ID',
-          })
+          client.getProfile('DUMMY-CLOUD-ID', '1')
           .then((data) => {
-            cache = client.getCachedProfile({
-              userId: '1',
-              cloudId: 'DUMMY-CLOUD-ID',
-            });
+            cache = client.getCachedProfile('1');
 
             expect(cache).to.equal(data);
 
             client.flushCache();
-            cache = client.getCachedProfile({
-              userId: '1',
-              cloudId: 'DUMMY-CLOUD-ID',
-            });
+            cache = client.getCachedProfile('1');
 
             expect(cache).to.equal(null);
             done();

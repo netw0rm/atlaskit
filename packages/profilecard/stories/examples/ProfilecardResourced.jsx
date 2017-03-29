@@ -53,7 +53,7 @@ class AkProfilecardRandomById extends PureComponent {
       <div>
         <AkProfilecardResourced
           actions={actions}
-          cloudId="bogus-because-required"
+          cloudId="DUMMY-CLOUDID"
           resourceClient={mockClient}
           userId={this.state.userId}
         />

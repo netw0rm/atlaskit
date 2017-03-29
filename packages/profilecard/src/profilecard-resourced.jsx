@@ -54,17 +54,7 @@ export default class ProfilecardResourced extends PureComponent {
   }
 
   clientFetchProfile() {
-    const options = {
-      cloudId: this.props.cloudId,
-      userId: this.props.userId,
-    };
-
-    const cache = this.props.resourceClient.getCachedProfile(options);
-
-    if (cache) {
-      this.handleClientSuccess(cache);
-      return;
-    }
+    const { cloudId, userId } = this.props;
 
     this.setState({
       isLoading: true,
@@ -72,7 +62,7 @@ export default class ProfilecardResourced extends PureComponent {
       data: {},
     });
 
-    this.props.resourceClient.getProfile(options)
+    this.props.resourceClient.getProfile(cloudId, userId)
     .then(
       res => this.handleClientSuccess(res),
       err => this.handleClientError(err),
@@ -101,11 +91,13 @@ export default class ProfilecardResourced extends PureComponent {
   }
 
   render() {
-    const newProps = Object.assign(this.state.data, {
+    const newProps = {
       isLoading: this.state.isLoading,
       hasError: this.state.hasError,
       clientFetchProfile: this.clientFetchProfile,
-    });
+      ...this.state.data,
+    };
+
     return (
       <AkProfilecardStatic {...newProps} actions={this.props.actions} />
     );

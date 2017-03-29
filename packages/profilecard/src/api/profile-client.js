@@ -38,13 +38,11 @@ const buildHeaders = () => {
 };
 
 /**
- * Build query string for GraphQL
- * @ignore
  * @param  {string} userId
- * @param  {string} [timeformat='h:mma']
- * @return {string}
+ * @param  {string} cloudId
+ * @return {string} GraphQL Query String
  */
-const buildQueryString = (userId, cloudId, timeformat = 'h:mma') => {
+const buildQueryString = (userId, cloudId) => {
   const fields = [
     'id',
     'fullName',
@@ -56,7 +54,7 @@ const buildQueryString = (userId, cloudId, timeformat = 'h:mma') => {
     'avatarUrl(size: 100)',
     'remoteWeekdayIndex: localTime(format: "d")',
     'remoteWeekdayString: localTime(format: "ddd")',
-    `remoteTimeString: localTime(format: "${timeformat}")`,
+    'remoteTimeString: localTime(format: "h:mma")',
   ];
 
   const presence = [
@@ -71,11 +69,16 @@ const buildQueryString = (userId, cloudId, timeformat = 'h:mma') => {
   return `{${queryUser} ${queryPresence}}`;
 };
 
-const requestService = (baseUrl, options) => {
+/**
+* @param {string} serviceUrl - GraphQL service endpoint
+* @param {string} userId
+* @param {string} cloudI
+*/
+const requestService = (serviceUrl, cloudId, userId) => {
   const headers = buildHeaders();
-  const query = buildQueryString(options.userId, options.cloudId, options.timeformat);
+  const query = buildQueryString(userId, cloudId);
 
-  return fetch(new Request(baseUrl, {
+  return fetch(new Request(serviceUrl, {
     method: 'POST',
     credentials: 'include',
     mode: 'cors',
@@ -103,6 +106,12 @@ const requestService = (baseUrl, options) => {
 };
 
 class ProfileClient {
+  /**
+   * @param {object} config
+   * @param {string} config.url
+   * @param {string} [config.cacheSize=10]
+   * @param {string} [config.cacheMaxAge=null]
+   */
   constructor(config) {
     const defaults = {
       cacheSize: 10,
@@ -119,27 +128,27 @@ class ProfileClient {
       ? null : new LRUCache(this.config.cacheSize);
   }
 
-  makeRequest(options) {
+  makeRequest(cloudId, userId) {
     if (!this.config.url) {
       throw new Error('config.url is a required parameter');
     }
 
-    return requestService(this.config.url, options);
+    return requestService(this.config.url, cloudId, userId);
   }
 
-  getCachedProfile(options) {
-    const cached = this.cache && this.cache.get(options.userId);
+  getCachedProfile(cacheIdentifier) {
+    const cached = this.cache && this.cache.get(cacheIdentifier);
 
     if (!cached) {
       return null;
     }
 
     if (cached.expire < Date.now()) {
-      this.cache.remove(options.userId);
+      this.cache.remove(cacheIdentifier);
       return null;
     }
 
-    this.cache.set(options.userId, {
+    this.cache.set(cacheIdentifier, {
       expire: Date.now() + this.cacheMaxAge,
       profile: cached.profile,
     });
@@ -153,12 +162,18 @@ class ProfileClient {
     }
   }
 
-  getProfile(options) {
+  getProfile(cloudId, userId) {
+    const cache = this.getCachedProfile(userId);
+
+    if (cache) {
+      return Promise.resolve(cache);
+    }
+
     return new Promise((resolve, reject) => {
-      this.makeRequest(options)
+      this.makeRequest(cloudId, userId)
       .then((data) => {
         if (this.cache) {
-          this.cache.put(options.userId, {
+          this.cache.put(userId, {
             expire: Date.now() + this.cacheMaxAge,
             profile: data,
           });

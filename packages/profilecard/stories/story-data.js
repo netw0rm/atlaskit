@@ -6,12 +6,12 @@ if (!window.Promise) {
   window.Promise = Promise;
 }
 
-const requestService = (options) => {
+const requestService = (cloudId, userId) => {
   const timeout = random(1500) + 500;
 
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const profile = profiles[options.userId];
+      const profile = profiles[userId];
 
       if (!profile) {
         reject(new Error('Not Found'));
@@ -33,8 +33,8 @@ const requestService = (options) => {
 
 class MockProfileClient extends ProfileClient {
   // eslint-disable-next-line class-methods-use-this
-  makeRequest(options) {
-    return requestService(options);
+  makeRequest(cloudId, userId) {
+    return requestService(cloudId, userId);
   }
 }
 

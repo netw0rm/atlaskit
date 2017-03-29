@@ -29,7 +29,7 @@ export class CardGenericViewSmall extends Component<CardGenericViewSmallProps, C
     const width = this.props.width;
 
     if (!width) {
-      return {};
+      return {width: '200px'};
     }
 
     return {width: getCSSUnitValue(width)};

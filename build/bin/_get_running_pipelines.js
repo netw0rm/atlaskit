@@ -33,7 +33,7 @@ function getPipelinesResultURL(pipelineUUID) {
 // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines/%7Bpipeline_uuid%7D/stopPipeline
 function stopPipelineBuild(pipelineUUID) {
   // we'll strip the braces from the uuid
-  const safeUUID = pipelineUUID.replace('{', '').replace('}', '');
+  const safeUUID = encodeURI(pipelineUUID);
   const stopPipelinesEndpoint = `${pipelinesEndpoint}${safeUUID}/stopPipeline`;
   console.log(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
   // we'll return the promise and let it be caught outside
@@ -49,7 +49,7 @@ axios.get(pipelinesEndpoint, axiosRequestConfig)
   .then((response) => {
     const allRunningPipelines = response.data.values;
     const currentPipeline = allRunningPipelines
-      .find(job => job.target.commit.hash.indexOf(CURRENT_BUILD_HASH) !== -1);
+      .find(job => job.target.commit.hash === CURRENT_BUILD_HASH);
     const olderRunningPipelines = allRunningPipelines
       .filter(job => job.state.name === 'IN_PROGRESS' || job.state.name === 'PENDING')
       .filter(job => new Date(job.created_on) < new Date(currentPipeline.created_on));

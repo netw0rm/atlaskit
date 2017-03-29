@@ -1,19 +1,5 @@
 #!/usr/bin/env node
-
 /* eslint-disable no-console */
-const fs = require('fs');
-// const path = require('path');
-
-module.paths.forEach((dir) => {
-  try {
-    const dirs = fs.readdirSync(dir);
-    console.log(dirs.length);
-    console.log(dirs.includes('axios'));
-  } catch (e) {
-    console.log(`${dir} does not exist`);
-  }
-});
-
 const axios = require('axios');
 
 const BUILDS_PER_PAGE = 30;
@@ -37,10 +23,6 @@ const axiosRequestConfig = {
     'target.ref_type': 'BRANCH',
   },
 };
-
-function pipelineIsForCurrentBuild(pipeline) {
-  return pipeline.target.commit.hash.indexOf(CURRENT_BUILD_HASH) !== -1;
-}
 
 function getPipelinesResultURL(pipelineUUID) {
   return `https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home#!/results/${pipelineUUID}`;
@@ -67,17 +49,19 @@ axios.get(pipelinesEndpoint, axiosRequestConfig)
   .then((response) => {
     const allRunningPipelines = response.data.values;
     const currentPipeline = allRunningPipelines
-      .find(pipelineIsForCurrentBuild);
+      .find(job => job.target.commit.hash.indexOf(CURRENT_BUILD_HASH) !== -1);
     const olderRunningPipelines = allRunningPipelines
       .filter(job => job.state.name === 'IN_PROGRESS' || job.state.name === 'PENDING')
       .filter(job => new Date(job.created_on) < new Date(currentPipeline.created_on));
-    const otherMasterPipelines = olderRunningPipelines
-      .filter(job => !pipelineIsForCurrentBuild(job));
+
+    console.log(`Current Build Hash: ${CURRENT_BUILD_HASH}`);
+    console.log(`Current pipeline Hash: ${currentPipeline.target.commit.hash}`);
+    console.log(`Current pipelines UUID: ${currentPipeline.uuid}`);
 
     // if there is another master branch running, we should stop our current one
-    if (otherMasterPipelines.length !== 0) {
+    if (olderRunningPipelines.length !== 0) {
       // Hypothetically, we should only be able to have 1 at a time...
-      const runningPipelineURL = getPipelinesResultURL(otherMasterPipelines[0].uuid);
+      const runningPipelineURL = getPipelinesResultURL(olderRunningPipelines[0].uuid);
       console.log(`Another master branch is already running: ${runningPipelineURL}`);
       console.log('Stopping this build to let that one finish');
       console.log('Feel free to re-run this build once that one is done if you like');

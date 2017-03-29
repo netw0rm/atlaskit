@@ -61,7 +61,7 @@ axios.get(pipelinesEndpoint, axiosRequestConfig)
     const currentPipeline = allRunningPipelines
       .find(pipelineIsForCurrentBuild);
     const olderRunningPipelines = allRunningPipelines
-      .filter(job => job.state.name === 'IN_PROGRESS')
+      .filter(job => job.state.name === 'IN_PROGRESS' || job.state.name === 'PENDING')
       .filter(job => new Date(job.created_on) < new Date(currentPipeline.created_on));
     const otherMasterPipelines = olderRunningPipelines
       .filter(job => !pipelineIsForCurrentBuild(job));

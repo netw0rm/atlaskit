@@ -289,7 +289,7 @@ export default (type: TypeId, map: MapState): Function =>
         // if a drag handle was not requested then the whole thing is the handle
         const wrap = requestDragHandle.wasCalled ? identity : handle;
 
-        console.warn('rendering draggable:', mapProps.id);
+        console.log('rendering with offset', mapProps.offset);
         return (
           <div>
             <Moveable

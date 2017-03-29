@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable react/no-multi-comp */
 import React, { PureComponent } from 'react';
-import { mount } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 // eslint-disable-next-line no-duplicate-imports
 import type { ReactWrapper } from 'enzyme';
 import { expect } from 'chai';
@@ -9,8 +9,7 @@ import sinon from 'sinon';
 import makeDraggable, { Placeholder } from '../../src/view/draggable/make-draggable';
 import DragHandle from '../../src/view/drag-handle/drag-handle';
 import Moveable from '../../src/view/moveable';
-import { dragDropContext } from '../../src/';
-import type { DraggingInitial, Position, ZIndex } from '../../src/types';
+import type { DraggingInitial, Position } from '../../src/types';
 import type { DispatchProps, MapProps, OwnProps, StateSnapshot, MapState } from '../../src/view/draggable/draggable-types';
 
 const describe = window.describe;
@@ -18,34 +17,9 @@ const it = window.it;
 const beforeEach = window.beforeEach;
 const afterEach = window.afterEach;
 
-class App extends PureComponent {
-  props: {
-    children?: React$Element<any>,
-  }
-  render() {
-    return this.props.children;
-  }
-}
-
-const ConnectedApp = dragDropContext()(App);
-
 class Child extends PureComponent {
   render() {
     return <div>hello world!</div>;
-  }
-}
-
-class ChildWithHandle extends PureComponent {
-  props: {
-    dragHandle: Function,
-  }
-  render() {
-    return (
-      <div>
-        A child that contains a
-        {this.props.dragHandle(<button>handle</button>)}
-      </div>
-    );
   }
 }
 
@@ -55,10 +29,10 @@ class Container extends PureComponent {
   |}
   render() {
     return (
-    <div ref={this.props.innerRef}>
+      <div ref={this.props.innerRef}>
       Hello world!
       </div>
-  );
+    );
   }
 }
 
@@ -69,11 +43,11 @@ class ContainerWithHandle extends PureComponent {
   |}
   render() {
     return (
-    <div ref={this.props.innerRef}>
+      <div ref={this.props.innerRef}>
       This container manages its own
         {this.props.dragHandle(<button>handle</button>)}
-    </div>
-  );
+      </div>
+    );
   }
 }
 
@@ -162,30 +136,32 @@ const mountConnectedDraggable = ({
   ownProps = empty,
 }: MountConnected = {}): ReactWrapper => {
   const Draggable = makeDraggable(type, map)(Component);
-  return mount(
-    <ConnectedApp>
-      <Draggable
-        mapProps={mapProps}
-        dispatchProps={dispatchProps}
-        ownProps={ownProps}
-      />
-    </ConnectedApp>
-  );
+  return shallow(
+    <Draggable
+      mapProps={mapProps}
+      dispatchProps={dispatchProps}
+      ownProps={ownProps}
+    />);
 };
 
-const draggingWrapper = mountConnectedDraggable({
-  mapProps: draggingMapProps,
-});
-
-const notDraggingWrapper = mountConnectedDraggable({
-  mapProps: notDraggingMapProps,
-});
-
-const returningHomeWrapper = mountConnectedDraggable({
-  mapProps: returningHomeMapProps,
-});
-
 describe('Draggable', () => {
+  let draggingWrapper;
+  let notDraggingWrapper;
+  let returningHomeWrapper;
+
+  beforeEach(() => {
+    // recreateing the wrappers before every test to guard against side effects
+    draggingWrapper = mountConnectedDraggable({
+      mapProps: draggingMapProps,
+    });
+    notDraggingWrapper = mountConnectedDraggable({
+      mapProps: notDraggingMapProps,
+    });
+    returningHomeWrapper = mountConnectedDraggable({
+      mapProps: returningHomeMapProps,
+    });
+  });
+
   describe('unconnected', () => {
     describe('TODO: remove - placeholder', () => {
       it('should not render a placeholder if a drag is finished and no animation is required', () => {
@@ -254,8 +230,6 @@ describe('Draggable', () => {
         // mount the DragHandle independently
         const wrapper = mount(requestDragHandle()(<Child />));
 
-        // Ensuring that the requestDragHandle function
-        // wrapped <Child /> in a  <DragHandle>
         expect(wrapper.find(DragHandle).length).to.equal(1);
         expect(wrapper.find(DragHandle).find(Child).length).to.equal(1);
       });
@@ -316,7 +290,7 @@ describe('Draggable', () => {
           Component: ContainerWithHandle,
         });
 
-        expect(wrapper.find(ContainerWithHandle).find(DragHandle).length).to.equal(1);
+        expect(wrapper.find(ContainerWithHandle).shallow().find(DragHandle).length).to.equal(1);
       });
     });
 
@@ -324,6 +298,28 @@ describe('Draggable', () => {
       // reaching into Movable to get the inline style
       const getInlineStyle = (wrapper: ReactWrapper<any>): Object =>
         wrapper.find(Moveable).props().style;
+
+      it('should move by the provided offset on mount', () => {
+        expect(draggingWrapper.find(Moveable).props().destination)
+          .to.equal(draggingMapProps.offset);
+      });
+
+      it('should move by the provided offset on update', () => {
+        const offsets: Position[] = [
+          { x: 12, y: 3 },
+          { x: 20, y: 100 },
+          { x: -100, y: 20 },
+        ];
+
+        offsets.forEach((offset: Position) => {
+          const newMapProps = {
+            ...draggingMapProps,
+            offset,
+          };
+          draggingWrapper.setProps({ mapProps: newMapProps });
+          expect(draggingWrapper.find(Moveable).props().destination).to.equal(offset);
+        });
+      });
 
       describe('is not dragging', () => {
         it('should not render a placeholder', () => {

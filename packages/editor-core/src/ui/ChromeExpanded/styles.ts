@@ -20,6 +20,7 @@ export const content = style({
       overflow: 'visible',
       wordWrap: 'break-word'
     },
+
     '.ProseMirror': {
       position: 'relative',
       wordWrap: 'break-word',

@@ -43,8 +43,7 @@ export class TextFormattingState {
   subscriptActive = false;
   subscriptDisabled = false;
   subscriptHidden = false;
-  clearStoredMarks = false;
-  toggledMarks = {};
+  marksToRemove;
   keymapHandler;
 
   constructor(state: EditorState<any>) {
@@ -73,9 +72,8 @@ export class TextFormattingState {
     const { code } = this.state.schema.marks;
     const { from, to } = this.state.selection;
     if (code) {
-      this.toggledMarks['code'] = true;
       if (!this.codeActive) {
-        view.dispatch(transformToCodeAction(view.state, from, to, this));
+        view.dispatch(transformToCodeAction(view.state, from, to));
         return true;
       }
       return commands.toggleMark(code)(view.state, view.dispatch);
@@ -151,7 +149,7 @@ export class TextFormattingState {
     let dirty = false;
 
     if (code) {
-      const newCodeActive = this.anyMarkActive(code);
+      const newCodeActive = this.markActive(code.create());
       if (newCodeActive !== this.codeActive) {
         this.codeActive = newCodeActive;
         dirty = true;
@@ -263,20 +261,72 @@ export class TextFormattingState {
    */
   private anyMarkActive(markType: MarkType): boolean {
     const { state } = this;
-    const { $from, from, to, empty } = state.selection;
-    let storedMarks = state.tr.storedMarks;
+    const { from, to, empty } = state.selection;
 
-    if (storedMarks && markType.isInSet(storedMarks) && !this.toggledMarks[markType.name] && (!$from.nodeBefore || !markType.isInSet($from.nodeBefore.marks))) {
-      storedMarks = undefined;
-      this.clearStoredMarks = true;
+    let found = false;
+    if (this.marksToRemove) {
+      this.marksToRemove.forEach(mark => {
+        if (mark.type.name === markType.name) {
+          found = true;
+        }
+      });
     }
 
-    this.toggledMarks[markType.name] = false;
+    if (found && !state.doc.rangeHasMark(from - 1, to, markType)) {
+      return false;
+    }
 
     if (empty) {
-      return !!markType.isInSet(storedMarks || state.selection.$from.marks());
+      return !!markType.isInSet(state.tr.storedMarks || state.selection.$from.marks());
     }
     return state.doc.rangeHasMark(from, to, markType);
+  }
+
+  handleKeyDown (view: EditorView, event: KeyboardEvent) {
+    const { state } = this;
+    const { from, to, empty } = state.selection;
+    let marks = state.selection.$from.marks();
+    let nodeBefore = view.docView.domFromPos(from - 1);
+
+    if (!empty) {
+      marks = [];
+      state.doc.nodesBetween(from, to, node => {
+        if (node.marks.length) {
+          marks = marks.concat(node.marks);
+        }
+      });
+    }
+
+    const { storedMarks } = state.tr;
+
+    if (storedMarks && this.marksToRemove) {
+      this.marksToRemove = null;
+      view.dispatch(view.state.tr.setStoredMarks([]));
+    }
+
+    if (event.key === 'Backspace') {
+      let found = false;
+
+      marks.forEach(mark => {
+        if (state.doc.rangeHasMark(from - 1, to, mark.type)) {
+          found = true;
+        }
+      });
+
+      if (marks.length && (!nodeBefore || found)) {
+        this.marksToRemove = marks;
+      }
+    }
+  }
+
+  handleTextInput (view: EditorView, event: KeyboardEvent) {
+    const { state } = this;
+    const { storedMarks } = state.tr;
+
+    if (storedMarks && this.marksToRemove) {
+      this.marksToRemove = null;
+      view.dispatch(view.state.tr.setStoredMarks([]));
+    }
   }
 
   /**
@@ -285,6 +335,19 @@ export class TextFormattingState {
   private markActive(mark: Mark): boolean {
     const { state } = this;
     const { from, to, empty } = state.selection;
+
+    let foundMark = false;
+    if (this.marksToRemove) {
+      this.marksToRemove.forEach(markToRemove => {
+        if (markToRemove.type.name === mark.type.name) {
+          foundMark = true;
+        }
+      });
+    }
+
+    if (foundMark && !state.doc.rangeHasMark(from - 1, to, mark.type)) {
+      return false;
+    }
 
     // When the selection is empty, only the active marks apply.
     if (empty) {
@@ -303,7 +366,6 @@ export class TextFormattingState {
   private toggleMark(view: EditorView, markType: MarkType, attrs?: any): boolean {
     // Disable text-formatting inside code
     if (this.codeActive ? this.codeDisabled : true) {
-      this.toggledMarks[markType.name] = true;
       return commands.toggleMark(markType, attrs)(view.state, view.dispatch);
     }
 
@@ -334,13 +396,15 @@ const plugin = new Plugin({
     handleKeyDown(view, event) {
       const pluginState = stateKey.getState(view.state);
       const result = pluginState.keymapHandler(view, event);
-
-      if (pluginState.clearStoredMarks) {
-        view.dispatch(view.state.tr.setStoredMarks([]));
-        pluginState.clearStoredMarks = false;
-      }
+      pluginState.handleKeyDown(view, event);
 
       return result;
+    },
+    handleTextInput(view, event) {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.handleTextInput(view, event);
+
+      return false;
     }
   }
 });

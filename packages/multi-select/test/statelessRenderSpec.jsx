@@ -78,5 +78,34 @@ describe(`${name} - stateless`, () => {
 
       expect(select.find(Avatar).length).to.equal(2);
     });
+
+    it('should pass props to Item', () => {
+      const selectItems = [
+        {
+          heading: 'test',
+          items: [
+            {
+              value: 1,
+              content: 'Test1',
+              description: 'Descr',
+              isDisabled: true,
+              elemBefore: '1',
+              elemAfter: '2',
+            },
+          ],
+        },
+      ];
+      const select = mount(<StatelessMultiSelect
+        isOpen
+        id="testId"
+        name="testName"
+        items={selectItems}
+      />);
+      const itemProps = select.find(Item).props();
+      expect(itemProps.description, 'description').to.equal('Descr');
+      expect(itemProps.isDisabled, 'isDisabled').to.equal(true);
+      expect(itemProps.elemBefore, 'elemBefore').to.equal('1');
+      expect(itemProps.elemAfter, 'elemAfter').to.equal('2');
+    });
   });
 });

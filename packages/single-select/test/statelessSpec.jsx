@@ -1,9 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Label, FieldBase } from '@atlaskit/field-base';
-import Droplist from '@atlaskit/droplist';
-import Group from '@atlaskit/droplist-group';
-import Item from '@atlaskit/droplist-item';
+import Droplist, { Group, Item } from '@atlaskit/droplist';
 import UpIcon from '@atlaskit/icon/glyph/hipchat/arrow-up';
 
 import styles from 'style!../src/styles.less';
@@ -105,6 +103,35 @@ describe(name, () => {
       expect(fieldbaseProps.onFocus, 'onFocus').to.equal(select.instance().onFocus);
       expect(fieldbaseProps.isPaddingDisabled, 'isPaddingDisabled').to.equal(true);
       expect(fieldbaseProps.isFitContainerWidthEnabled, 'isFitContainerWidthEnabled').to.equal(true);
+    });
+
+    it('should pass props to Item', () => {
+      const selectItems = [
+        {
+          heading: 'test',
+          items: [
+            {
+              value: 1,
+              content: 'Test1',
+              description: 'Descr',
+              isDisabled: true,
+              elemBefore: '1',
+              elemAfter: '2',
+            },
+          ],
+        },
+      ];
+      const select = mount(<StatelessSelect
+        isOpen
+        id="testId"
+        name="testName"
+        items={selectItems}
+      />);
+      const itemProps = select.find(Item).props();
+      expect(itemProps.description, 'description').to.equal('Descr');
+      expect(itemProps.isDisabled, 'isDisabled').to.equal(true);
+      expect(itemProps.elemBefore, 'elemBefore').to.equal('1');
+      expect(itemProps.elemAfter, 'elemAfter').to.equal('2');
     });
   });
 

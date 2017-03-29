@@ -42,7 +42,7 @@ describe('MediaCollectionService', () => {
         const response = collectionService.getCollectionItems(collectionName)
             .then(response => {
                 const request = requests[0];
-                expect(request.url).to.equal(`${serviceHost}/collection/${collectionName}/items?limit=${MediaCollectionService.defaultLimit}`);
+                expect(request.url).to.equal(`${serviceHost}/collection/${collectionName}/items?collection=${collectionName}&limit=${MediaCollectionService.defaultLimit}`);
             });
 
         respond(JSON.stringify(Mocks.collectionItemsResponse));
@@ -60,8 +60,9 @@ describe('MediaCollectionService', () => {
             collectionName, limit, inclusiveStartKey, sortDirection, details)
             .then(response => {
                 const request = requests[0];
+
                 expect(request.url).to.equal(
-                    `${serviceHost}/collection/${collectionName}/items?limit=${limit}&` +
+                    `${serviceHost}/collection/${collectionName}/items?collection=${collectionName}&limit=${limit}&` +
                     `inclusiveStartKey=${inclusiveStartKey}&sortDirection=${sortDirection}&details=${details}`);
             });
 
@@ -88,7 +89,21 @@ describe('MediaCollectionService', () => {
         const collectionService: MediaCollectionService = new MediaCollectionService(config, clientId);
         const response = collectionService.getCollectionItems(collectionName)
             .then(response => {
-                expect(response).to.deep.equal(Mocks.collectionItemsResponse);
+                expect(response).to.deep.equal({
+                    items: [
+                        {
+                            type: 'file',
+                            details: {
+                                mimeType: 'application/video',
+                                id: '0a6f64e4-7330-4dcf-ac65-58ab10677282',
+                                occurrenceKey: 'urn:hipchat:message:12413532',
+                                name: 'some_video.mp4',
+                                size: 34315
+                            }
+                        }
+                    ],
+                    nextInclusiveStartKey: '121'
+                });
             });
 
         respond(JSON.stringify(Mocks.collectionItemsResponse));
@@ -107,6 +122,7 @@ class Mocks {
                     id: '0a6f64e4-7330-4dcf-ac65-58ab10677282',
                     occurrenceKey: 'urn:hipchat:message:12413532',
                     details: {
+                        mimeType: 'application/video',
                         name: 'some_video.mp4',
                         size: 34315
                     },

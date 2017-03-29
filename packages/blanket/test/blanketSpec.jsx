@@ -1,8 +1,8 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import Blanket from '../src';
-import styles from '../src/style.less';
+import { getOpacity } from '../src/styled/Container';
 
 describe('ak-blanket', () => {
   describe('exports', () => {
@@ -12,32 +12,34 @@ describe('ak-blanket', () => {
   });
 
   it('should be possible to create a component', () => {
-    shallow(<Blanket />).find('div').hasClass(styles.locals.blanket).should.equal(true);
+    expect(mount(<Blanket />)).not.to.equal(undefined);
   });
 
   describe('props', () => {
     describe('isTinted', () => {
       it('should be false by default', () => {
-        shallow(<Blanket />).find('div').hasClass(styles.locals.tinted).should.equal(false);
+        mount(<Blanket />).prop('isTinted').should.equal(false);
       });
 
       it('should get tint styling when prop set', () => {
-        shallow(<Blanket isTinted />).find('div').hasClass(styles.locals.tinted).should.equal(true);
+        const props = { isTinted: true };
+        expect(getOpacity(props)).to.equal(0.5);
       });
 
       it('should not get tint styling when prop set to false', () => {
-        shallow(<Blanket isTinted={false} />).find('div').hasClass(styles.locals.tinted).should.equal(false);
+        const props = { isTinted: false };
+        expect(getOpacity(props)).to.equal(0);
       });
     });
 
     describe('canClickThrough', () => {
       it('should be false by default', () => {
-        shallow(<Blanket />).find('div').hasClass(styles.locals.canClickThrough).should.equal(false);
+        mount(<Blanket />).prop('canClickThrough').should.equal(false);
       });
       it('when canClickThrough is true, onBlanketClicked should not be triggered', () => {
         const spy = sinon.spy();
         const wrapper = mount(<Blanket canClickThrough onBlanketClicked={spy} />);
-        wrapper.find(`.${styles.locals.blanket}`).simulate('click');
+        wrapper.simulate('click');
         expect(spy.callCount).to.equal(0);
       });
     });
@@ -46,7 +48,7 @@ describe('ak-blanket', () => {
       it('should trigger when blanket clicked', () => {
         const spy = sinon.spy();
         const wrapper = mount(<Blanket onBlanketClicked={spy} />);
-        wrapper.find(`.${styles.locals.blanket}`).simulate('click');
+        wrapper.simulate('click');
         expect(spy.callCount).to.equal(1);
       });
     });

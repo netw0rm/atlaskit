@@ -4,26 +4,28 @@ import Label from './Label';
 
 export { FieldBase, Label };
 
+function waitForRender(cb) {
+  // Execute the callback after any upcoming render calls in the execution queue
+  setTimeout(cb, 0);
+}
+
 export default class extends PureComponent {
   static propTypes = {
-    defaultIsDialogOpen: PropTypes.bool,
     defaultIsFocused: PropTypes.bool,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
-    onIconMouseDown: PropTypes.func,
   }
 
   static defaultProps = {
-    defaultIsDialogOpen: false,
     defaultIsFocused: false,
     onFocus: () => {},
     onBlur: () => {},
-    onIconMouseDown: () => {},
   }
 
   state = {
-    isDialogOpen: this.props.defaultIsDialogOpen,
     isFocused: this.props.defaultIsFocused,
+    isDialogFocused: false,
+    shouldIgnoreNextDialogBlur: false,
   }
 
   onFocus = (e) => {
@@ -32,24 +34,43 @@ export default class extends PureComponent {
   }
 
   onBlur = (e) => {
-    this.setState({ isFocused: false });
+    // Because the blur event fires before the focus event, we want to make sure that we don't
+    // render and close the dialog before we can check if the dialog is focused.
+    waitForRender(() => this.setState({ isFocused: false }));
     this.props.onBlur(e);
   }
 
-  onIconMouseDown = (e) => {
-    this.setState({ isDialogOpen: !this.state.isDialogOpen });
-    this.props.onIconMouseDown(e);
+  onContentFocus = () => {
+    if (this.state.isDialogFocused) {
+      // If we are tabbing between two elements in the warning dialog, we need to prevent the
+      // dialog from closing.
+      this.setState({ shouldIgnoreNextDialogBlur: true });
+    } else {
+      this.setState({ isDialogFocused: true });
+    }
+  }
+
+  onContentBlur = () => {
+    waitForRender(() => {
+      if (this.state.shouldIgnoreNextDialogBlur) {
+        // Ignore the blur event if we are still focused in the dialog.
+        this.setState({ shouldIgnoreNextDialogBlur: false });
+      } else {
+        this.setState({ isDialogFocused: false });
+      }
+    });
   }
 
   render() {
     return (
       <FieldBase
         {...this.props}
-        isDialogOpen={this.state.isDialogOpen}
+        isDialogOpen={this.state.isFocused || this.state.isDialogFocused}
         isFocused={this.state.isFocused}
         onBlur={this.onBlur}
         onFocus={this.onFocus}
-        onIconMouseDown={this.onIconMouseDown}
+        onDialogFocus={this.onContentFocus}
+        onDialogBlur={this.onContentBlur}
       />
     );
   }

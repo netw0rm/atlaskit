@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-hipchat",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "config": {
     "access": "public"
   },
@@ -22,11 +22,11 @@
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
-      "name": "Bradley A"
+      "name": "Oscar W"
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^5.0.0",
+    "@atlaskit/editor-core": "^7.6.0",
     "classnames": "^2.2.5",
     "tslib": "^1.2.0"
   },
@@ -36,7 +36,7 @@
   "devDependencies": {
     "@atlaskit/editor-hipchat": "*",
     "@atlaskit/mention": "*",
-    "@atlaskit/util-readme": "*",
+    "@atlaskit/util-readme": "^1.0.0",
     "js-search": "^1.3.3"
   },
   "repository": {

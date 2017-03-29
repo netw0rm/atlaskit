@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-cq",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "config": {
     "access": "public"
   },
@@ -22,14 +22,11 @@
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
-      "name": "Bradley A"
-    },
-    {
       "name": "Artur B"
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^5.0.0",
+    "@atlaskit/editor-core": "^7.6.0",
     "collapse-whitespace": "^1.1.4",
     "tslib": "^1.2.0"
   },

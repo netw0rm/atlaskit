@@ -22,10 +22,13 @@
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
-      "name": "Bradley A"
+      "name": "Eduard S"
     },
     {
       "name": "Artur B"
+    },
+    {
+      "name": "Huanhuan H"
     }
   ],
   "dependencies": {
@@ -43,6 +46,7 @@
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.0.3",
     "@atlaskit/util-shared-styles": "^1.2.1",
+    "orderedmap": "^1.0.0",
     "popper.js": "^1.0.1",
     "prosemirror": "git+https://bitbucket.org/atlassian/prosemirror.git#backport-fixes-from-future",
     "prosemirror-commands": "^0.19.0",

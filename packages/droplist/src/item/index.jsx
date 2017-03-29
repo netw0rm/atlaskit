@@ -11,6 +11,7 @@ import SecondaryText from './internal/SecondaryText';
 export default class Item extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
+    description: PropTypes.string,
     elemBefore: PropTypes.node,
     elemAfter: PropTypes.node,
     href: PropTypes.string,
@@ -28,6 +29,7 @@ export default class Item extends PureComponent {
 
   static defaultProps = {
     children: null,
+    description: '',
     elemBefore: null,
     elemAfter: null,
     href: null,
@@ -107,7 +109,14 @@ export default class Item extends PureComponent {
             ? <span className={styles.elemBefore}>{ props.elemBefore }</span>
             : null
           }
-          <span className={styles.itemContent}>{ props.children }</span>
+          <span className={styles.itemContentWrapper}>
+            <span className={styles.itemContent}>{ props.children }</span>
+            {
+              props.description
+              ? <span className={styles.itemDescription}>{ props.description }</span>
+              : null
+            }
+          </span>
           {
             props.elemAfter
               ? <span className={styles.elemAfter}>{ props.elemAfter }</span>

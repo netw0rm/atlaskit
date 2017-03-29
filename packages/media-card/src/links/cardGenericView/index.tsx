@@ -15,12 +15,12 @@ import {
 export interface LinkCardGenericViewProps {
   linkUrl: string;
   title: string;
+  site?: string;
   description?: string;
   thumbnailUrl?: string;
   iconUrl?: string;
 
   appearance?: CardAppearance;
-
   dimensions?: CardDimensions;
 
   // TODO FIL-3892 implement visual designs for loading state
@@ -126,7 +126,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
   }
 
   render() {
-    const {linkUrl, title, description, actions, appearance} = this.props;
+    const {linkUrl, title, site, description, actions, appearance} = this.props;
     const cardStyle = {height: this.height, width: this.width};
 
     const thumbnail = this.getThumbnail();
@@ -148,7 +148,7 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
             <Link>
               {icon}
               <a href={linkUrl} rel="noopener">
-                {linkUrl}
+                {site || linkUrl}
               </a>
             </Link>
             <Menu actions={actions} />

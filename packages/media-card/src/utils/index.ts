@@ -8,7 +8,7 @@ const ONE_MEGABYTE_IN_BYTES = 1 << 20;
  */
 export function toHumanReadableMediaSize(size: number): string {
   const decimalPlaces = size < ONE_MEGABYTE_IN_BYTES ? 0 : 1;
-  return bytes.format(size, {unitSeparator: ' ', decimalPlaces});
+  return bytes.format(size, {unitSeparator: ' ', decimalPlaces}).toUpperCase();
 }
 
 export function getCSSUnitValue(value: number | string): string {

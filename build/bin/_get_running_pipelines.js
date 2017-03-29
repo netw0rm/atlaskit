@@ -43,7 +43,7 @@ function pipelineIsForCurrentBuild(pipeline) {
 }
 
 function getPipelinesResultURL(pipelineUUID) {
-  return `https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home#!/results/%7B${pipelineUUID}%7D`;
+  return `https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home#!/results/${pipelineUUID}`;
 }
 
 // Stops a currently running Pipelines build

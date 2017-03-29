@@ -86,7 +86,6 @@ const standardConfig = {
             'ts-loader': {
               logLevel: 'warn',
               instance: name,
-              transpileOnly: true,
             },
           }),
         })),

@@ -163,17 +163,30 @@
   }
 }
 
-.item-content {
+.itemContent {
   flex: 1 1 auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.itemContentWrapper {
+  display: flex;
+  flex-direction: column;
   margin: 0 @grid;
   padding: 9px 0;
 
   &:first-child {
     margin: 0;
   }
+}
+
+.itemDescription {
+  color: @ak-color-N200;
+  flex: 1 1 auto;
+  font-size: 12px;
+  line-height: 16/12;
+  margin-top: @halfGrid;
 }
 
 .secondaryText {

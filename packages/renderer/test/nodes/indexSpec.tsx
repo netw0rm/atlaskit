@@ -169,6 +169,56 @@ describe('Nodes', () => {
       });
     });
 
+    describe('mediaGroup', () => {
+      it('should return "mediaGroup" with type and content', () => {
+        expect(getValidNode({
+          type: 'mediaGroup',
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+                collectionId: ['MediaServicesSample']
+              }
+            }
+          ]
+        })).to.deep.equal({
+          type: 'mediaGroup',
+          content: [
+            {
+              type: 'media',
+              attrs: {
+                type: 'file',
+                id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+                collectionId: ['MediaServicesSample']
+              }
+            }
+          ]
+        });
+      });
+    });
+
+    describe('media', () => {
+      it('should return "media" with attrs and type', () => {
+        expect(getValidNode({
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collectionId: ['MediaServicesSample']
+          }
+        })).to.deep.equal({
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collectionId: ['MediaServicesSample']
+          }
+        });
+      });
+    });
+
   });
 
   describe('renderNode', () => {

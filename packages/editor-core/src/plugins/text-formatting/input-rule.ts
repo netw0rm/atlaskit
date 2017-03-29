@@ -26,9 +26,9 @@ function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: stri
 
     if (charSize > 1) {
       // remove special characters after the text
-      tr = tr.delete(to - charSize * 2 + 1, to - charSize);
+      tr = tr.delete(to - charSize * 2 + 1, to - charSize)
+            .removeStoredMark(markType);
     }
-
     return tr;
   };
 };

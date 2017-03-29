@@ -17,11 +17,15 @@ export function keymapHandler(view: EditorView, pluginState: BlockTypeState): Fu
   keymaps.bindKeymapWithCommand(keymaps.undo.common!, trackAndInvoke('atlassian.editor.undo.keyboard', undo), list);
   keymaps.bindKeymapWithCommand(keymaps.findKeyMapForBrowser(keymaps.redoBarred)!, commands.preventDefault(), list);
 
+  const nodes = view.state.schema.nodes;
+
   ALL_BLOCK_TYPES.forEach((blockType) => {
-    const shortcut = keymaps.findShortcutByDescription(blockType.title);
-    if (shortcut) {
-      const eventName = analyticsEventName(blockType.name, 'keyboard');
-      keymaps.bindKeymapWithCommand(shortcut, trackAndInvoke(eventName, () => pluginState.toggleBlockType(blockType.name, view)), list);
+    if (nodes[blockType.nodeName]) {
+      const shortcut = keymaps.findShortcutByDescription(blockType.title);
+      if (shortcut) {
+        const eventName = analyticsEventName(blockType.name, 'keyboard');
+        keymaps.bindKeymapWithCommand(shortcut, trackAndInvoke(eventName, () => pluginState.toggleBlockType(blockType.name, view)), list);
+      }
     }
   });
 

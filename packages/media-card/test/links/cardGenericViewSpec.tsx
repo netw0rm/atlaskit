@@ -85,6 +85,15 @@ describe('LinkCardViewGeneric', () => {
     expect(card.find(`img[src='${iconUrl}']`)).to.have.length(0);
   });
 
+  it('should render the site name instead of link url inside of they <a> tag when it is supplied as a prop', () => {
+    const title = 'Hello world';
+    const linkUrl = 'http://localhost:9001/';
+    const site = 'Hello world';
+
+    const card = shallow(<LinkCardGenericView title={title} linkUrl={linkUrl} site={site}/>);
+    expect(card.find(Link).children('a').text()).to.eql(site);
+  });
+
   it('currently ignores the loading prop', () => {
     const title = 'Hello world';
     const linkUrl = 'http://localhost:9001/';

@@ -43,6 +43,15 @@ export default class ModalDialog extends PureComponent {
     }
   }
 
+  // Detects click directly on the full-height modal container, to make sure that clicks in that
+  // blanket region trigger onDialogDismissed as expected.
+  handlePositionerDirectClick = (e) => {
+    const { target } = e;
+    if (target && target.classList.contains(styles.modalPositioner)) {
+      this.props.onDialogDismissed(e);
+    }
+  }
+
   render() {
     // don't render anything if open = false
     if (!this.props.isOpen) return null;
@@ -54,9 +63,11 @@ export default class ModalDialog extends PureComponent {
       { style: { width } }
     ) : {};
 
-    const isContentTopRounded = !header;
-    const isContentBottomRounded = !footer;
+    const hasHeader = !!header;
+    const hasFooter = !!footer;
 
+    // disables the following eslint rule to allow onClick on .modalPositioner
+    /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
       <div className={styles.modalWrapper}>
         <Blanket isTinted onBlanketClicked={onDialogDismissed} />
@@ -71,6 +82,7 @@ export default class ModalDialog extends PureComponent {
             },
           ])}
           {...customStyle}
+          onClick={this.handlePositionerDirectClick}
         >
           {
             header ? <div className={styles.headerFlex}>{header}</div> : null
@@ -79,9 +91,10 @@ export default class ModalDialog extends PureComponent {
             className={classNames([
               styles.contentFlex,
               {
-                [styles.roundedContentTop]: isContentTopRounded && !isContentBottomRounded,
-                [styles.roundedContentBottom]: isContentBottomRounded && !isContentTopRounded,
-                [styles.roundedContentTopBottom]: isContentTopRounded && isContentBottomRounded,
+                [styles.withHeader]: hasHeader,
+                [styles.withFooter]: hasFooter,
+                [styles.withoutHeader]: !hasHeader,
+                [styles.withoutFooter]: !hasFooter,
               },
             ])}
           >

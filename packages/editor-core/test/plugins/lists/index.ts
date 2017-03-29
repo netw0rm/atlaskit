@@ -422,7 +422,7 @@ describe('lists', () => {
 
         sendKeyToPm(editorView, 'Shift-Tab');
 
-        expect(editorView.state.selection.$from.depth).to.eq(4);
+        expect(editorView.state.selection.$from.depth).to.eq(3);
       });
 
       it('should lift the list item when Shift-Tab key press', () => {
@@ -430,7 +430,7 @@ describe('lists', () => {
 
         sendKeyToPm(editorView, 'Shift-Tab');
 
-        expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text'), li(p('te{<>}xt'))), li(p('text')))));
+        expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text')), li(p('te{<>}xt')), li(p('text')))));
       });
     });
   });

@@ -1,5 +1,6 @@
 import { action, storiesOf } from '@kadira/storybook';
 import { Mention } from '@atlaskit/mention';
+import { StoryBookTokenProvider, defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers';
 import * as React from 'react';
 import Renderer from '../src';
 import Paragraph from '../src/nodes/paragraph';
@@ -15,10 +16,20 @@ import Code from '../src/marks/code';
 import { name } from '../package.json';
 import { document } from './story-data';
 
+const tokenProvider = StoryBookTokenProvider.tokenProvider;
+
 const mentionProvider = Promise.resolve({
   shouldHighlightMention(mention) {
     return mention.id === 'ABCDE-ABCDE-ABCDE-ABCDE';
   }
+});
+
+const mediaProvider = Promise.resolve({
+  viewContext: Promise.resolve({
+    clientId: defaultClientId,
+    serviceHost: defaultServiceHost,
+    tokenProvider
+  })
 });
 
 storiesOf(name, module)
@@ -26,11 +37,15 @@ storiesOf(name, module)
     <Renderer
       document={document}
       mentionProvider={mentionProvider}
+      mediaProvider={mediaProvider}
       eventHandlers={{
         mention: {
           onClick: action('onClick'),
           onMouseEnter: action('onMouseEnter'),
           onMouseLeave: action('onMouseLeave')
+        },
+        media: {
+          onClick: action('onClick')
         }
       }}
     />

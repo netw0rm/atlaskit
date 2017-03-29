@@ -3,6 +3,7 @@ import {
   akColorB400,
   akColorN20,
   akColorN30,
+  akColorN50,
   akColorN500
 } from '@atlaskit/util-shared-styles';
 
@@ -12,7 +13,12 @@ export const mention = style({
   color: akColorN500,
   cursor: 'pointer',
   padding: '0 4px 2px 3px',
-  whiteSpace: 'nowrap'
+  whiteSpace: 'nowrap',
+  $nest: {
+    '.ProseMirror-selectednode &': {
+      background: akColorN50
+    }
+  }
 });
 
 export const highlighted = style({

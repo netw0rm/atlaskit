@@ -39,7 +39,7 @@ const axiosRequestConfig = {
 };
 
 function pipelineIsForCurrentBuild(pipeline) {
-  return pipeline.target.commit.indexOf(CURRENT_BUILD_HASH) !== -1;
+  return pipeline.target.commit.hash.indexOf(CURRENT_BUILD_HASH) !== -1;
 }
 
 function getPipelinesResultURL(pipelineUUID) {

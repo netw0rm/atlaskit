@@ -35,7 +35,7 @@ pipelines:
           - ./build/bin/_get_running_pipelines.js
           - echo "Doing some more stuff"
           - echo "sleeping for a while"
-          - sleep 60
+          - sleep 300
           # - yarn
           # # we have to run this after `yarn` to have access to child-process-promise
           # - ./build/bin/generate.changed.packages.file.pr.sh

@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
 /* eslint-disable no-console */
+const fs = require('fs');
+const path = require('path');
 
+console.log(fs.readdirSync(path.join(__dirname, '../../node_modules')).includes('axios'));
 const axios = require('axios');
 
-const BUILDS_PER_PAGE = 1;
+const BUILDS_PER_PAGE = 30;
 const BB_USERNAME = 'luke_batchelor';
 const BB_PASSWORD = 'BrJHE6GrNrkjTwdhEv5Y';
 // const BB_USERNAME = process.env.BITBUCKET_USER;
@@ -40,10 +43,7 @@ function getPipelinesResultURL(pipelineUUID) {
 function stopPipelineBuild(pipelineUUID) {
   const stopPipelinesEndpoint = `${pipelinesEndpoint}${pipelineUUID}/stopPipeline`;
   // we'll return the promise and let it be caught outside
-  return axios.post(stopPipelinesEndpoint, axiosRequestConfig)
-    .catch((err) => {
-      console.error(err);
-    });
+  return axios.post(stopPipelinesEndpoint, axiosRequestConfig);
 }
 
 axios.get(pipelinesEndpoint, axiosRequestConfig)
@@ -63,14 +63,16 @@ axios.get(pipelinesEndpoint, axiosRequestConfig)
       console.log('Stopping this build to let that one finish');
       console.log('Feel free to re-run this build once that one is done if you like');
 
-      stopPipelineBuild(currentPipeline.uuid);
+      return stopPipelineBuild(currentPipeline.uuid);
       // We are actually going to let the build continue here as process.exit will return a non-zero
       // return code and we want to leave these as 'stopped', not 'failed'
-    } else {
-      console.log('No other master builds seem to be running. Continuing build...');
     }
+
+    console.log('No other master builds seem to be running. Continuing build...');
+    return Promise.resolve();
   })
   .catch((err) => {
     console.error(err);
+    process.exit(1);
   });
 /* eslint-enable no-console */

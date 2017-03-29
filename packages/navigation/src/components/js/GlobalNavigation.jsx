@@ -1,5 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
+import { ThemeProvider } from 'styled-components';
 import styles from 'style!../less/GlobalNavigation.less';
 import { globalOpenWidth } from '../../shared-variables';
 import Spacer from './Spacer';
@@ -43,39 +44,45 @@ export default class GlobalNavigation extends PureComponent {
       secondaryActions,
     } = this.props;
     return (
-      <nav
-        className={classNames(styles.globalNavigationOuter, {
-          [styles.shouldAnimate]: shouldAnimate,
-          [styles.hasSettingsAppearance]: appearance === 'settings',
-          [styles.test]: true,
-        })}
+      <ThemeProvider
+        theme={{
+          GlobalNavigationAppearance: appearance,
+        }}
       >
-        <Spacer
-          shouldAnimate={shouldAnimate}
-          width={globalOpenWidth}
-        />
-        <div
-          className={styles.globalNavigation}
+        <nav
+          className={classNames(styles.globalNavigationOuter, {
+            [styles.shouldAnimate]: shouldAnimate,
+            [styles.hasSettingsAppearance]: appearance === 'settings',
+            [styles.test]: true,
+          })}
         >
-          <div className={styles.primaryContainer}>
-            <GlobalPrimaryActions
-              appearance={appearance}
-              createIcon={createIcon}
-              linkComponent={linkComponent}
-              onCreateActivate={onCreateActivate}
-              onSearchActivate={onSearchActivate}
-              primaryIcon={primaryIcon}
-              primaryItemHref={primaryItemHref}
-              searchIcon={searchIcon}
-            />
+          <Spacer
+            shouldAnimate={shouldAnimate}
+            width={globalOpenWidth}
+          />
+          <div
+            className={styles.globalNavigation}
+          >
+            <div className={styles.primaryContainer}>
+              <GlobalPrimaryActions
+                appearance={appearance}
+                createIcon={createIcon}
+                linkComponent={linkComponent}
+                onCreateActivate={onCreateActivate}
+                onSearchActivate={onSearchActivate}
+                primaryIcon={primaryIcon}
+                primaryItemHref={primaryItemHref}
+                searchIcon={searchIcon}
+              />
+            </div>
+            <div className={styles.secondaryContainer}>
+              {secondaryActions.length ? <GlobalSecondaryActions
+                actions={secondaryActions}
+              /> : null}
+            </div>
           </div>
-          <div className={styles.secondaryContainer}>
-            {secondaryActions.length ? <GlobalSecondaryActions
-              actions={secondaryActions}
-            /> : null}
-          </div>
-        </div>
-      </nav>
+        </nav>
+      </ThemeProvider>
     );
   }
 }

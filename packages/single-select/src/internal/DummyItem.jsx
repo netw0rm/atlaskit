@@ -13,7 +13,7 @@ export default class DummyItem extends PureComponent {
     isDisabled: PropTypes.bool,
     isSelected: PropTypes.bool,
     elemBefore: PropTypes.node,
-    tagElemBefore: PropTypes.node, // eslint-disable-line react/no-unused-prop-types
+    elemAfter: PropTypes.node,
   }
 
   static defaultProps = {

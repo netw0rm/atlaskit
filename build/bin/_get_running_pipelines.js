@@ -3,10 +3,8 @@
 const axios = require('axios');
 
 const BUILDS_PER_PAGE = 30;
-const BB_USERNAME = 'luke_batchelor';
-const BB_PASSWORD = 'Z4WW4uKPVF3UGJXrSeZS';
-// const BB_USERNAME = process.env.BITBUCKET_USER;
-// const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
+const BB_USERNAME = process.env.BITBUCKET_USER;
+const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
 const CURRENT_BUILD_HASH = process.env.BITBUCKET_COMMIT;
 const pipelinesEndpoint = 'https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pipelines/';
 
@@ -19,14 +17,10 @@ const axiosRequestConfig = {
     pagelen: BUILDS_PER_PAGE,
     // get the most recent builds first
     sort: '-created_on',
-    'target.ref_name': 'AK-2002-only-allow-one-master-at-a-time',
+    'target.ref_name': 'master',
     'target.ref_type': 'BRANCH',
   },
 };
-
-function getPipelinesResultURL(pipelineUUID) {
-  return `https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home#!/results/${pipelineUUID}`;
-}
 
 // Stops a currently running Pipelines build
 // Related documentation
@@ -34,7 +28,7 @@ function getPipelinesResultURL(pipelineUUID) {
 function stopPipelineBuild(pipelineUUID) {
   const stopPipelinesEndpoint = `${pipelinesEndpoint}${pipelineUUID}/stopPipeline`;
   console.log(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
-  // we'll return the promise and let it be caught outside
+  // we'll return the promise and let it be caught outside (first param is just empty form data)
   return axios.post(stopPipelinesEndpoint, {}, {
     auth: {
       username: BB_USERNAME,
@@ -52,19 +46,13 @@ axios.get(pipelinesEndpoint, axiosRequestConfig)
       .filter(job => job.state.name === 'IN_PROGRESS' || job.state.name === 'PENDING')
       .filter(job => new Date(job.created_on) < new Date(currentPipeline.created_on));
 
-    console.log(`Current Build Hash: ${CURRENT_BUILD_HASH}`);
-    console.log(`Current pipeline Hash: ${currentPipeline.target.commit.hash}`);
-    console.log(`Current pipelines UUID: ${currentPipeline.uuid}`);
-
     // if there is another master branch running, we should stop our current one
     if (olderRunningPipelines.length !== 0) {
       // Hypothetically, we should only be able to have 1 at a time...
-      const runningPipelineURL = getPipelinesResultURL(olderRunningPipelines[0].uuid);
-      console.log(`Another master branch is already running: ${runningPipelineURL}`);
+      const olderRunningPipelineURL = `https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home#!/results/${olderRunningPipelines[0].uuid}`;
+      console.log(`Another master branch is already running: ${olderRunningPipelineURL}`);
       console.log('Stopping this build to let that one finish');
-      console.log('Feel free to re-run this build once that one is done if you like');
-      console.log('For debugging purposes: ');
-      console.log(JSON.stringify(olderRunningPipelines[0]));
+      console.log('Feel free to re-run this build once that one is done if you like 👌');
 
       return stopPipelineBuild(currentPipeline.uuid);
       // We are actually going to let the build continue here as process.exit will return a non-zero
@@ -75,7 +63,7 @@ axios.get(pipelinesEndpoint, axiosRequestConfig)
     return Promise.resolve();
   })
   .catch((err) => {
-    console.error(err);
+    console.error(err.message);
     process.exit(1);
   });
 /* eslint-enable no-console */

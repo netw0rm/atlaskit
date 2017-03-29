@@ -54,8 +54,8 @@ export default class ModalDialog extends PureComponent {
       { style: { width } }
     ) : {};
 
-    const isContentTopRounded = !header;
-    const isContentBottomRounded = !footer;
+    const hasHeader = !!header;
+    const hasFooter = !!footer;
 
     return (
       <div className={styles.modalWrapper}>
@@ -79,9 +79,10 @@ export default class ModalDialog extends PureComponent {
             className={classNames([
               styles.contentFlex,
               {
-                [styles.roundedContentTop]: isContentTopRounded && !isContentBottomRounded,
-                [styles.roundedContentBottom]: isContentBottomRounded && !isContentTopRounded,
-                [styles.roundedContentTopBottom]: isContentTopRounded && isContentBottomRounded,
+                [styles.withHeader]: hasHeader,
+                [styles.withFooter]: hasFooter,
+                [styles.withoutHeader]: !hasHeader,
+                [styles.withoutFooter]: !hasFooter,
               },
             ])}
           >

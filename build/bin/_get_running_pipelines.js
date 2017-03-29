@@ -6,6 +6,7 @@ const path = require('path');
 
 console.log('contains axios:');
 console.log(fs.readdirSync(path.join(process.cwd(), 'node_modules')).includes('axios'));
+console.log(module.paths);
 try { require.resolve('axios'); } catch (e) { console.log(e); }
 
 const axios = require('axios');

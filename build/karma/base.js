@@ -45,6 +45,7 @@ module.exports = (config) => {
     // of time in CI.
     browserNoActivityTimeout: 100000,
 
+    // How many times we will attempt to reconnect after a browser disconnect
     browserDisconnectTolerance: 3,
 
     singleRun: true,

@@ -57,5 +57,5 @@ const marks = {
   subsup
 };
 
-export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule };
+export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, nodes, marks };
 export default new Schema<typeof nodes, typeof marks>({ nodes, marks });

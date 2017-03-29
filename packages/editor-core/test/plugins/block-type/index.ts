@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { browser } from '../../../src/prosemirror';
+import { browser, Schema } from '../../../src/prosemirror';
 import {
   setTextSelection,
   setNodeSelection,
@@ -24,7 +24,9 @@ import {
   p,
   hr,
   ul,
-  li
+  li,
+  nodes,
+  marks,
 } from '../../../src/test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
@@ -355,6 +357,45 @@ describe('block-type', () => {
             expect(editorView.state.doc).to.deep.equal(doc(code('text')));
           });
         });
+
+        context('when panel nodetype is not in schema', () => {
+          it('corresponding keymaps should not work', () => {
+            const schema = {
+              nodes: { ...nodes },
+              marks: { ...marks },
+            };
+            delete schema.nodes.panel;
+            const edit = (doc: any) => makeEditor({
+              doc,
+              plugin: BlockTypePlugin,
+              place: fixture(),
+              schema: new Schema(schema),
+            });
+            const { editorView } = edit(doc(p('text')));
+            sendKeyToPm(editorView, 'Cmd-Alt-9');
+            expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+          });
+        });
+
+        context('when blockquote nodetype is not in schema', () => {
+          it('corresponding keymaps should not work', () => {
+            const schema = {
+              nodes: { ...nodes },
+              marks: { ...marks },
+            };
+            delete schema.nodes.blockquote;
+            const edit = (doc: any) => makeEditor({
+              doc,
+              plugin: BlockTypePlugin,
+              place: fixture(),
+              schema: new Schema(schema),
+            });
+            const { editorView } = edit(doc(p('text')));
+            sendKeyToPm(editorView, 'Cmd-Alt-7');
+            expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+          });
+        });
+
       });
     } else {
       context('when not on a Mac', () => {

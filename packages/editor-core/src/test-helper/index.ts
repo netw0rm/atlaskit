@@ -17,3 +17,4 @@ export {
 } from './schema-builder';
 export * from './html-helpers';
 export { default as storyDecorator } from './story-decorator';
+export { nodes, marks } from './schema';

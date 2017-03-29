@@ -4,7 +4,10 @@
 const fs = require('fs');
 const path = require('path');
 
-console.log(fs.readdirSync(path.join(__dirname, '../../node_modules')).includes('axios'));
+console.log('contains axios:');
+console.log(fs.readdirSync(path.join(process.cwd(), 'node_modules')).includes('axios'));
+try { require.resolve('axios'); } catch (e) { console.log(e); }
+
 const axios = require('axios');
 
 const BUILDS_PER_PAGE = 30;

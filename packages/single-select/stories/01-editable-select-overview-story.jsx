@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import { Code, Chrome, Description, Props } from '@atlaskit/util-readme';
+import { Code, Chrome, Props } from '@atlaskit/util-readme';
 
 /* eslint-disable import/first, import/no-duplicates */
 import EditableSelectOverview from './examples/EditableSelectOverview';

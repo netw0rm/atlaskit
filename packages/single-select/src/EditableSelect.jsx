@@ -1,15 +1,14 @@
 import React, { PureComponent, PropTypes } from 'react';
+import { InlineEdit, itemShape } from '@atlaskit/inline-edit';
 import SingleLineTextInput from '@atlaskit/input';
 import StatelessSelect from './StatelessSelect';
-import { InlineEdit, itemShape } from '@atlaskit/inline-edit';
-import { appearances } from './internal/appearances';
 
 export default class InlineEditableSelect extends PureComponent {
   static propTypes = {
-    select: React.PropTypes.instanceOf(StatelessSelect).isRequired,
-    initialValue: React.PropTypes.shape(itemShape).isRequired,
-    label: React.PropTypes.string,
-    isConfirmOnSelectEnabled: React.PropTypes.bool,
+    select: PropTypes.instanceOf(StatelessSelect).isRequired,
+    initialValue: PropTypes.shape(itemShape).isRequired,
+    label: PropTypes.string,
+    isConfirmOnSelectEnabled: PropTypes.bool,
   }
 
   static defaultProps = {

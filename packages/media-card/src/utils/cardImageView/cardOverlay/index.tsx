@@ -4,7 +4,7 @@ import * as cx from 'classnames';
 import {MediaType, CardAction, CardEventHandler} from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/editor/check';
 
-import {toHumanReadableMediaSize, ProgressBar, FileIcon, ErrorIcon, Ellipsify, Menu} from '../../utils';
+import {ProgressBar, FileIcon, ErrorIcon, Ellipsify, Menu} from '../..';
 
 import {
   TickBox,
@@ -24,7 +24,7 @@ import {
 export interface CardOverlayProps {
   mediaType?: MediaType;
   mediaName?: string;
-  mediaSize?: number;
+  subtitle?: string;
 
   selectable?: boolean;
   selected?: boolean;
@@ -36,6 +36,7 @@ export interface CardOverlayProps {
   onRetry?: CardAction;
 
   actions?: Array<CardAction>;
+  icon?: string;
 }
 
 export interface CardOverlayState {
@@ -60,13 +61,16 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
   }
 
   private get wrapperClassNames() {
-    const {progress, error, selectable, selected, mediaType, persistent} = this.props;
+    const {error, selectable, selected, mediaType, persistent} = this.props;
     const {isMenuExpanded} = this.state;
-    const isProcessing = (typeof progress === 'number');
 
     return error
       ? cx('overlay', {error, active: isMenuExpanded})
-      : cx('overlay', mediaType, {active: isProcessing || isMenuExpanded, selectable, selected, persistent: !persistent});
+      : cx('overlay', mediaType, {active: this.isProcessing || isMenuExpanded, selectable, selected, persistent: !persistent});
+  }
+
+  private get isProcessing() {
+    return typeof this.props.progress === 'number';
   }
 
   render() {
@@ -132,17 +136,16 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
         </Retry>
       );
     } else {
-      const fileSize = this.props.mediaSize && toHumanReadableMediaSize(this.props.mediaSize);
-      const hasProgress = !!this.props.progress;
-      const className = `metadata ${hasProgress ? 'has-progress' : ''}`;
+      const {progress, mediaType, subtitle, icon} = this.props;
+      const classNames = cx('metadata', {'has-progress': this.isProcessing});
 
       return (
         <div>
-          <Metadata className={className}>
-            <FileIcon mediaType={this.props.mediaType} />
-            <FileSize className={'file-size'}>{fileSize}</FileSize>
+          <Metadata className={classNames}>
+            <FileIcon mediaType={mediaType} iconUrl={icon} />
+            <FileSize className="file-size">{subtitle}</FileSize>
           </Metadata>
-          <ProgressBar progress={this.props.progress} />
+          <ProgressBar progress={progress} />
         </div>
       );
     }

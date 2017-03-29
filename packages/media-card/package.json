@@ -24,7 +24,7 @@
     "@atlaskit/droplist-group": "^1.0.0",
     "@atlaskit/droplist-item": "^1.0.0",
     "@atlaskit/icon": "^2.4.0",
-    "@atlaskit/media-core": "^1.1.1",
+    "@atlaskit/media-core": "^3.0.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "@types/bytes": "^2.4.33",
     "axios": "^0.15.3",
@@ -51,7 +51,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^1.0.0",
+    "@atlaskit/media-test-helpers": "^2.1.0",
     "akutil-common-test": "*"
   },
   "keywords": [

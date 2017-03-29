@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Component} from 'react';
 import { storiesOf } from '@kadira/storybook';
-import { ContextFactory } from '@atlaskit/media-core';
 import { LinkCard } from '../../src';
 import { StoryList, createStorybookContext, defaultCollectionName } from '@atlaskit/media-test-helpers';
 
@@ -78,7 +77,7 @@ storiesOf('LinkCard', {})
           <LinkCard
             context={context}
             link="https://atlassian.com"
-            display="square"
+            appearance="square"
           />
         )
       }

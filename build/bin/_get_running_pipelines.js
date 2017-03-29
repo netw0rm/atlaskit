@@ -4,7 +4,7 @@ const axios = require('axios');
 
 const BUILDS_PER_PAGE = 30;
 const BB_USERNAME = 'luke_batchelor';
-const BB_PASSWORD = 'BrJHE6GrNrkjTwdhEv5Y';
+const BB_PASSWORD = 'Z4WW4uKPVF3UGJXrSeZS';
 // const BB_USERNAME = process.env.BITBUCKET_USER;
 // const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
 const CURRENT_BUILD_HASH = process.env.BITBUCKET_COMMIT;

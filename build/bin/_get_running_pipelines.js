@@ -50,7 +50,9 @@ function getPipelinesResultURL(pipelineUUID) {
 // Related documentation
 // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines/%7Bpipeline_uuid%7D/stopPipeline
 function stopPipelineBuild(pipelineUUID) {
-  const stopPipelinesEndpoint = encodeURI(`${pipelinesEndpoint}${pipelineUUID}/stopPipeline/`);
+  // we'll strip the braces from the uuid
+  const safeUUID = pipelineUUID.replace('{', '').replace('}');
+  const stopPipelinesEndpoint = `${pipelinesEndpoint}${safeUUID}/stopPipeline/`;
   console.log(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
   // we'll return the promise and let it be caught outside
   return axios.post(stopPipelinesEndpoint, {

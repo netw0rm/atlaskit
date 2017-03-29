@@ -121,16 +121,15 @@ export default (type: TypeId, map: MapState): Function =>
       }
 
       onMove = (point: Position) => {
-        invariant(this.state.childRef, 'cannot move when there is no ref');
-
         const {
           mapProps: { id, isDragEnabled, initial },
           dispatchProps: { move },
         } = this.props;
 
-        if (isDragEnabled === false) {
-          throw new Error('need to cancel the current drag');
-        }
+        invariant(this.state.childRef, 'cannot move when there is no ref');
+        // This should already be handled gracefully in DragHandle.
+        // Just being extra clear here
+        invariant(isDragEnabled, 'cannot move when dragging is disabled');
 
         // dimensions not provided yet
         if (!initial) {
@@ -219,7 +218,6 @@ export default (type: TypeId, map: MapState): Function =>
 
       getPlacementInfo(): PlacementInfo {
         const { isDragging, canAnimate, initial, isDropAnimating } = this.props.mapProps;
-        console.log('this.props.mapProps', this.props.mapProps);
 
         const getMovingStyle = (zIndex: ZIndex): MovementStyle => {
           invariant(initial, 'initial dimension required to drag');
@@ -289,7 +287,6 @@ export default (type: TypeId, map: MapState): Function =>
         // if a drag handle was not requested then the whole thing is the handle
         const wrap = requestDragHandle.wasCalled ? identity : handle;
 
-        console.log('rendering with offset', mapProps.offset);
         return (
           <div>
             <Moveable

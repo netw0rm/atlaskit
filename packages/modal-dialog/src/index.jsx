@@ -63,8 +63,8 @@ export default class ModalDialog extends PureComponent {
       { style: { width } }
     ) : {};
 
-    const isContentTopRounded = !header;
-    const isContentBottomRounded = !footer;
+    const hasHeader = !!header;
+    const hasFooter = !!footer;
 
     // disables the following eslint rule to allow onClick on .modalPositioner
     /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -91,9 +91,10 @@ export default class ModalDialog extends PureComponent {
             className={classNames([
               styles.contentFlex,
               {
-                [styles.roundedContentTop]: isContentTopRounded && !isContentBottomRounded,
-                [styles.roundedContentBottom]: isContentBottomRounded && !isContentTopRounded,
-                [styles.roundedContentTopBottom]: isContentTopRounded && isContentBottomRounded,
+                [styles.withHeader]: hasHeader,
+                [styles.withFooter]: hasFooter,
+                [styles.withoutHeader]: !hasHeader,
+                [styles.withoutFooter]: !hasFooter,
               },
             ])}
           >

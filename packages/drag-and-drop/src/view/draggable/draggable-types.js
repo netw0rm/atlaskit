@@ -39,7 +39,7 @@ export type MapProps = {|
   isDragging: boolean,
   isDropAnimating: boolean,
   canAnimate: boolean,
-  offset?: Position,
+  offset: Position,
   initial?: DraggingInitial,
 |}
 

@@ -162,7 +162,8 @@ export const lift = (id: DraggableId,
   selection: Position,
 ) => (dispatch: Dispatch, getState: Function) => {
   const state: State = getState();
-  if (state.complete && !state.complete.isAnimationFinished) {
+  // quickly finish any current animations
+  if (state.complete && state.complete.isWaitingForAnimation) {
     dispatch(dropAnimationFinished(id));
   }
   // https://github.com/chenglou/react-motion/issues/437

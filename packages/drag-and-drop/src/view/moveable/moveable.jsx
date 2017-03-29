@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import * as physics from '../physics';
 import type { Position } from '../../types';
 
-export type Speed = 'NONE' | 'STANDARD' | 'FAST';
+export type Speed = 'INSTANT' | 'STANDARD' | 'FAST';
 
 type PositionLike = {|
   x: any,
@@ -17,13 +17,12 @@ const isAtOrigin = (point: PositionLike): boolean =>
 
 type Props = {|
   children?: React$Element<*>,
-    // TODO: should this be optional?
-    destination: Position,
-    speed: Speed,
-    onMoveEnd?: Function,
-    innerRef?: Function,
-    style ?: Object,
-    extraCSS?: String,
+  destination: Position,
+  speed: Speed,
+  onMoveEnd?: Function,
+  innerRef?: Function,
+  style ?: Object,
+  extraCSS?: String,
 |}
 
 type DefaultProps = {|
@@ -32,9 +31,18 @@ type DefaultProps = {|
   style: Object,
 |}
 
+const origin: Position = {
+  x: 0, y: 0,
+};
+
+const start: Position = {
+  x: 0,
+  y: 0,
+};
+
 const getMovement = (point: Position): Object => {
   if (isAtOrigin(point)) {
-    return {};
+    return origin;
   }
   return {
     transform: `translate(${point.x}px, ${point.y}px)`,
@@ -45,11 +53,6 @@ const Canvas = styled.div`
   background-color: red;
   ${props => (props.extraCSS ? props.extraCSS : '')}
 `;
-
-const start: Position = {
-  x: 0,
-  y: 0,
-};
 
 export default class Movable extends PureComponent {
   /* eslint-disable react/sort-comp */
@@ -80,7 +83,7 @@ export default class Movable extends PureComponent {
   getFinal = () => {
     const { destination, speed } = this.props;
 
-    if (speed === 'NONE') {
+    if (speed === 'INSTANT') {
       return destination;
     }
 

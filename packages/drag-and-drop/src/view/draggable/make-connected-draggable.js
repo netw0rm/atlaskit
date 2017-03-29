@@ -35,6 +35,7 @@ import type {
 } from './draggable-types';
 
 const empty = {};
+const origin = { x: 0, y: 0 };
 
 const makeSelector = (provide: Provide) => {
   const memoizedProvide = memoizeOne(provide, isShallowEqual);
@@ -55,6 +56,7 @@ const makeSelector = (provide: Provide) => {
       isDropAnimating: false,
       isDragging: false,
       canAnimate: true,
+      offset: origin,
     }));
 
   const cutOffAnimation = memoizeOne(
@@ -64,6 +66,7 @@ const makeSelector = (provide: Provide) => {
       isDropAnimating: false,
       isDragging: false,
       canAnimate: false,
+      offset: origin,
     }));
 
   return createSelector(
@@ -94,7 +97,9 @@ const makeSelector = (provide: Provide) => {
         const { impact: { movement } } = last;
 
         if (movement.draggables.includes(provided.id)) {
-          if (complete.isAnimationFinished) {
+          // quickly cut off animation
+          // is this needed?
+          if (complete.isWaitingForAnimation) {
             return cutOffAnimation(id, isDragEnabled);
           }
 

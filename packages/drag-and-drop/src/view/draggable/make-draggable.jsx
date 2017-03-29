@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import invariant from 'invariant';
 import styled from 'styled-components';
-import type { TypeId, Position } from '../../types';
+import type { TypeId, Position, ZIndex } from '../../types';
 import type { Props, MapState, StateSnapshot } from './draggable-types';
 import { DraggableDimensionPublisher } from '../dimension-publisher/';
 import Moveable from '../moveable/';
@@ -14,6 +14,7 @@ import getDisplayName from '../get-display-name';
 
 const identity = x => x;
 const origin: Position = { x: 0, y: 0 };
+const empty = {};
 
 type ComponentState = {|
   childRef: ?Element,
@@ -21,7 +22,7 @@ type ComponentState = {|
 
 type MovementStyle = {|
   position: 'absolute',
-  zIndex: string,
+  zIndex: ZIndex,
   width: number,
   height: number,
   top: number,
@@ -219,9 +220,8 @@ export default (type: TypeId, map: MapState): Function =>
       getPlacementInfo(): PlacementInfo {
         const { isDragging, canAnimate, initial, isDropAnimating } = this.props.mapProps;
         console.log('this.props.mapProps', this.props.mapProps);
-        // const { wasDragging } = this.state;
 
-        const getMovingStyle = (zIndex: string): MovementStyle => {
+        const getMovingStyle = (zIndex: ZIndex): MovementStyle => {
           invariant(initial, 'initial dimension required to drag');
           return {
             zIndex,
@@ -236,15 +236,15 @@ export default (type: TypeId, map: MapState): Function =>
         if (isDragging) {
           return {
             showPlaceholder: true,
-            speed: canAnimate ? 'FAST' : 'NONE',
-            style: getMovingStyle('100'),
+            speed: canAnimate ? 'FAST' : 'INSTANT',
+            style: getMovingStyle(100),
           };
         }
 
         if (!canAnimate) {
           return {
             showPlaceholder: false,
-            speed: 'NONE',
+            speed: 'INSTANT',
           };
         }
 
@@ -252,11 +252,12 @@ export default (type: TypeId, map: MapState): Function =>
           return {
             showPlaceholder: true,
             speed: 'STANDARD',
-            style: getMovingStyle('50'),
+            style: getMovingStyle(50),
           };
         }
 
-        // moving out of the way while something else is dragging
+        // Default: can move quickly.
+        // Can move out of the way when other draggables are dragging
         return {
           showPlaceholder: false,
           speed: 'FAST',
@@ -288,12 +289,12 @@ export default (type: TypeId, map: MapState): Function =>
         // if a drag handle was not requested then the whole thing is the handle
         const wrap = requestDragHandle.wasCalled ? identity : handle;
 
-        console.log('rendering draggable. enhanced props:', enhancedOwnProps);
+        console.warn('rendering draggable:', mapProps.id);
         return (
           <div>
             <Moveable
               speed={info.speed}
-              style={info.style ? info.style : {}}
+              style={info.style ? info.style : empty}
               extraCSS="user-select: none;"
               destination={mapProps.offset}
               onMoveEnd={this.onMoveEnd}

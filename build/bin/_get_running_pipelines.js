@@ -52,7 +52,7 @@ function getPipelinesResultURL(pipelineUUID) {
 function stopPipelineBuild(pipelineUUID) {
   // we'll strip the braces from the uuid
   const safeUUID = pipelineUUID.replace('{', '').replace('}', '');
-  const stopPipelinesEndpoint = `${pipelinesEndpoint}${safeUUID}/stopPipeline/`;
+  const stopPipelinesEndpoint = `${pipelinesEndpoint}${safeUUID}/stopPipeline`;
   console.log(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
   // we'll return the promise and let it be caught outside
   return axios.post(stopPipelinesEndpoint, {

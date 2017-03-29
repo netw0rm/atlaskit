@@ -73,6 +73,8 @@ axios.get(pipelinesEndpoint, axiosRequestConfig)
       console.log(`Another master branch is already running: ${runningPipelineURL}`);
       console.log('Stopping this build to let that one finish');
       console.log('Feel free to re-run this build once that one is done if you like');
+      console.log('For debugging purposes: ');
+      console.log(JSON.stringify(olderRunningPipelines[0]));
 
       return stopPipelineBuild(currentPipeline.uuid);
       // We are actually going to let the build continue here as process.exit will return a non-zero

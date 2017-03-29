@@ -1,4 +1,4 @@
-import { EditorState, EditorView, Fragment, liftTarget, NodeSelection, NodeType, TextSelection, Transaction } from '../prosemirror';
+import { EditorState, EditorView, Fragment, liftTarget, NodeSelection, NodeType, TextSelection, Transaction, ReplaceAroundStep, NodeRange, Slice } from '../prosemirror';
 import * as baseCommand from '../prosemirror/prosemirror-commands';
 import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
@@ -298,7 +298,7 @@ export function showLinkPanel(): Command {
 
 export function clearFormatting(markTypes: Array<string>): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { tr } = state;
+    let { tr } = state;
     const { from, to } = state.selection;
     const { paragraph } = state.schema.nodes;
     markTypes.forEach(mark => tr.removeMark(from, to, state.schema.marks[mark]));
@@ -306,17 +306,58 @@ export function clearFormatting(markTypes: Array<string>): Command {
     if (paragraph) {
       tr.setBlockType(from, to, paragraph);
       tr.doc.nodesBetween(from, to, (node, pos) => {
-        const res = tr.doc.resolve(pos);
-        const sel = new NodeSelection(res);
-        if (node.isBlock && node.type !== state.schema.nodes.listItem && sel.$from.depth > 0) {
-          const range = sel.$from.blockRange(sel.$to)!;
-          tr.lift(range, 0);
+        if (node.type === state.schema.nodes.text) {
+          const start = tr.doc.resolve(tr.mapping.map(pos));
+          const end = tr.doc.resolve(tr.mapping.map(pos + node.textContent.length));
+          const sel = new TextSelection(start, end);
+          if (sel.$from.depth > 0) {
+            const range = sel.$from.blockRange(sel.$to)!;
+            tr.lift(range, liftTarget(range)!);
+          }
+        } else if (node.type === state.schema.nodes.listItem && node.childCount > 1) {
+          node.descendants((child, childPos) => {
+            if (child.isBlock && child.type === state.schema.nodes.bulletList) {
+              // todo: try to get rid of this 4, 2 by using a child node.
+              const start = tr.doc.resolve(tr.mapping.map(pos + childPos) + 4);
+              const nodeEnd = tr.mapping.map(pos + childPos) + child.nodeSize - 2;
+              const selectionEnd = tr.mapping.map(to);
+              const end = tr.doc.resolve(selectionEnd > nodeEnd ? nodeEnd : selectionEnd);
+              const sel = new TextSelection(start, end);
+              if (node.childCount > 1) {
+                tr = liftListItem(state, sel, tr);
+              }
+            }
+          });
         }
       });
     }
     dispatch(tr);
     return true;
   };
+}
+
+function liftListItem(state, selection, tr) {
+  let {$from, $to} = selection;
+  const nodeType = state.schema.nodes.listItem;
+  let range = $from.blockRange($to, node => node.childCount && node.firstChild.type === nodeType);
+  if (!range || range.depth < 2 || $from.node(range.depth - 1).type !== nodeType) { return tr; }
+  let end = range.end;
+  let endOfList = $to.end(range.depth);
+  if (end < endOfList) {
+    tr.step(
+      new ReplaceAroundStep(
+        end - 1,
+        endOfList,
+        end,
+        endOfList,
+        new Slice(Fragment.from(nodeType.create(null, range.parent.copy())), 1, 0),
+        1,
+        true
+      )
+    );
+    range = new NodeRange(tr.doc.resolveNoCache($from.pos), tr.doc.resolveNoCache(endOfList), range.depth);
+  }
+  return tr.lift(range, liftTarget(range)!).scrollIntoView();
 }
 
 export function insertNewLine(): Command {

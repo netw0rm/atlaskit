@@ -37,7 +37,7 @@ function stopPipelineBuild(pipelineUUID) {
   const stopPipelinesEndpoint = `${pipelinesEndpoint}${safeUUID}/stopPipeline`;
   console.log(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
   // we'll return the promise and let it be caught outside
-  return axios.post(stopPipelinesEndpoint, {
+  return axios.post(stopPipelinesEndpoint, {}, {
     auth: {
       username: BB_USERNAME,
       password: BB_PASSWORD,

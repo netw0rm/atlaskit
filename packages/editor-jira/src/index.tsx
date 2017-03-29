@@ -14,6 +14,7 @@ import {
   ClearFormattingPlugin,
   DefaultKeymapsPlugin,
   MentionsPlugin,
+  MarkdownInputRulesPlugin,
   version as coreVersion
 } from '@atlaskit/editor-core';
 import { MentionProvider } from '@atlaskit/mention';
@@ -206,6 +207,7 @@ export default class Editor extends PureComponent<Props, State> {
           ClearFormattingPlugin,
           HorizontalRulePlugin,
           DefaultKeymapsPlugin,
+          MarkdownInputRulesPlugin,
           ...( isSchemaWithCodeBlock(schema) ? [ CodeBlockPlugin ] : [] ),
           ...( isSchemaWithMentions(schema) ? [ MentionsPlugin ] : [] ),
         ],

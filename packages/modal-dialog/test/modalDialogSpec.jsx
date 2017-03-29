@@ -117,6 +117,24 @@ describe('ak-modal-dialog', () => {
         wrapper.find(`.${styles.locals.modalWrapper}`).children().first().simulate('click');
         expect(spy.callCount).to.equal(1);
       });
+
+      it('should trigger when blanket clicked below dialog (modalPositioner)', () => {
+        const spy = sinon.spy();
+        const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
+        wrapper.find(`.${styles.locals.modalPositioner}`).simulate('click');
+        expect(spy.callCount).to.equal(1);
+      });
+
+      it('should not trigger when blanket content clicked', () => {
+        const spy = sinon.spy();
+        const wrapper = mount(
+          <ModalDialog isOpen onDialogDismissed={spy}>
+            <span className="my-content" />
+          </ModalDialog>
+        );
+        wrapper.find('.my-content').simulate('click');
+        expect(spy.callCount).to.equal(0);
+      });
     });
   });
 

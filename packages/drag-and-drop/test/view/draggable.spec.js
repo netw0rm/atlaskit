@@ -329,21 +329,21 @@ describe('Draggable', () => {
 
           type LiftHelper = {|
             selection?: Position,
-            scroll?: Position,
-            center?: Position,
+              scroll ?: Position,
+              center ?: Position,
           |}
 
           const lift = (wrapper: ReactWrapper<any>) => ({
             selection = origin,
-            scroll,
-            center = origin,
+          scroll,
+          center = origin,
           }: LiftHelper = {}) => {
             if (scroll) {
               setScroll(scroll);
             }
 
             if (center) {
-              // fake some position to get the center we want
+            // fake some position to get the center we want
               sinon.stub(Element.prototype, 'getBoundingClientRect').returns({
                 left: 0,
                 top: 0,
@@ -360,7 +360,7 @@ describe('Draggable', () => {
             }
 
             const [draggableIdArg, typeArg, centerArg, scrollArg, selectionArg]
-              = dispatchProps.lift.args[0] || [];
+            = dispatchProps.lift.args[0] || [];
 
             return {
               draggableId: draggableIdArg,
@@ -414,7 +414,7 @@ describe('Draggable', () => {
 
           it('should do nothing if dragging is not enabled', () => {
             const myDispatchProps = getDispatchPropsStub();
-            // $FlowFixMe - spread and extact type
+          // $FlowFixMe - spread and extact type
             const mapProps: MapProps = {
               ...notDraggingMapProps,
               isDragEnabled: false,
@@ -431,24 +431,88 @@ describe('Draggable', () => {
         });
 
         describe('onMove', () => {
-          it('should throw an error if no childRef is set', () => {
-
-          });
-
           it('should throw if dragging is not enabled', () => {
+            // $FlowFixMe - spread and exact types
+            const mapProps: MapProps = {
+              ...draggingMapProps,
+              isDragEnabled: false,
+            };
 
+            const wrapper = mountDraggable({
+              mapProps,
+            });
+
+            const move = () => wrapper.find(DragHandle).onMove({ x: 100, y: 200 });
+
+            expect(move).to.throw();
           });
 
           it('should not do anything if the dimensions have not all been published yet', () => {
+            const dispatchProps = getDispatchPropsStub();
+            const wrapper = mountDraggable({
+              mapProps: notDraggingMapProps,
+              dispatchProps,
+            });
 
+            wrapper.find(DragHandle).props().onMove({ x: 100, y: 200 });
+
+            expect(dispatchProps.move.called).to.equal(false);
           });
 
-          it('should publish a new center position', () => {
+          it('should consider any mouse movement in offset and center', () => {
+            const original: Position = mockInitial.selection;
+            const mouse: Position = {
+              x: 10,
+              y: 50,
+            };
+            const mouseDiff = {
+              x: mouse.x - original.x,
+              y: mouse.y - original.y,
+            };
+            const expectedCenter = {
+              x: mockInitial.center.x + mouseDiff.x,
+              y: mockInitial.center.y + mouseDiff.y,
+            };
+            const dispatchProps = getDispatchPropsStub();
+            const wrapper = mountDraggable({
+              mapProps: draggingMapProps,
+              dispatchProps,
+            });
 
+            wrapper.find(DragHandle).props().onMove(mouse);
+            const [, offset, center] = dispatchProps.move.args[0];
+
+            expect(offset).to.deep.equal(mouseDiff);
+            expect(center).to.deep.equal(expectedCenter);
           });
 
-          it('should publish a new offset position', () => {
+          it('should consider any change in scroll in offset and center', () => {
+            const original: Position = mockInitial.scroll;
+            const scroll: Position = {
+              x: 100,
+              y: 500,
+            };
+            const scrollDiff = {
+              x: scroll.x - original.x,
+              y: scroll.y - original.y,
+            };
+            const expectedCenter = {
+              x: mockInitial.center.x + scrollDiff.x,
+              y: mockInitial.center.y + scrollDiff.y,
+            };
+            setScroll(scroll);
+            const dispatchProps = getDispatchPropsStub();
+            const wrapper = mountDraggable({
+              mapProps: draggingMapProps,
+              dispatchProps,
+            });
 
+              // no mouse movement
+            wrapper.find(DragHandle).props().onMove(mockInitial.selection);
+            const [, offset, center] = dispatchProps.move.args[0];
+
+            expect(offset).to.deep.equal(scrollDiff);
+            expect(center).to.deep.equal(expectedCenter);
           });
         });
 
@@ -475,20 +539,20 @@ describe('Draggable', () => {
     });
 
     describe('movement', () => {
-      // reaching into Movable to get the inline style
+    // reaching into Movable to get the inline style
       const getInlineStyle = (wrapper: ReactWrapper<any>): Object =>
-        wrapper.find(Moveable).props().style;
+      wrapper.find(Moveable).props().style;
 
       it('should move by the provided offset on mount', () => {
         expect(draggingWrapper.find(Moveable).props().destination)
-          .to.equal(draggingMapProps.offset);
+        .to.equal(draggingMapProps.offset);
       });
 
       it('should move by the provided offset on update', () => {
         const offsets: Position[] = [
-          { x: 12, y: 3 },
-          { x: 20, y: 100 },
-          { x: -100, y: 20 },
+        { x: 12, y: 3 },
+        { x: 20, y: 100 },
+        { x: -100, y: 20 },
         ];
 
         offsets.forEach((offset: Position) => {
@@ -499,6 +563,10 @@ describe('Draggable', () => {
           draggingWrapper.setProps({ mapProps: newMapProps });
           expect(draggingWrapper.find(Moveable).props().destination).to.equal(offset);
         });
+      });
+
+      it('should give a placeholder the same height and width of the element being moved', () => {
+
       });
 
       describe('is not dragging', () => {
@@ -519,7 +587,7 @@ describe('Draggable', () => {
         });
 
         it('should instantly move out of the way if animation is disabled', () => {
-          // $FlowFixMe
+        // $FlowFixMe
           const mapProps: MapProps = {
             ...notDraggingMapProps,
             canAnimate: false,
@@ -545,12 +613,12 @@ describe('Draggable', () => {
 
         it('should be above draggables returning to home', () => {
           expect(getInlineStyle(draggingWrapper).zIndex)
-            .to.be.above(getInlineStyle(returningHomeWrapper).zIndex);
+          .to.be.above(getInlineStyle(returningHomeWrapper).zIndex);
         });
 
         it('should be positioned absolutely in the same spot as before', () => {
           const draggingInlineStyle = getInlineStyle(draggingWrapper);
-          // appeasing flow
+        // appeasing flow
           if (!draggingMapProps.initial) {
             throw new Error('invalid data');
           }
@@ -565,7 +633,7 @@ describe('Draggable', () => {
         });
 
         it('should move quickly if it should animate', () => {
-          // $FlowFixMe - spead operator on exact type
+        // $FlowFixMe - spead operator on exact type
           const mapProps: MapProps = {
             ...draggingMapProps,
             canAnimate: true,
@@ -599,7 +667,7 @@ describe('Draggable', () => {
 
         it('should be positioned absolutely in the same spot as before', () => {
           const inlineStyle = getInlineStyle(returningHomeWrapper);
-          // appeasing flow
+        // appeasing flow
           if (!returningHomeMapProps.initial) {
             throw new Error('invalid data');
           }
@@ -615,7 +683,7 @@ describe('Draggable', () => {
       });
 
       describe('dropped and return to home animation is finished', () => {
-        // $FlowFixMe - spead operator and exact type
+      // $FlowFixMe - spead operator and exact type
         const mapProps: MapProps = {
           ...returningHomeMapProps,
           isDropAnimating: false,
@@ -635,7 +703,7 @@ describe('Draggable', () => {
       });
 
       describe('dropped but no return to home animation is needed', () => {
-        // $FlowFixMe - spead operator and exact type
+      // $FlowFixMe - spead operator and exact type
         const mapProps: MapProps = {
           ...returningHomeMapProps,
           canAnimate: false,

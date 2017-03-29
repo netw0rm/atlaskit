@@ -4,8 +4,10 @@ import AkAvatar from '@atlaskit/avatar';
 import AkButton from '@atlaskit/button';
 
 import styles from 'style!./styles/profilecard.less';
+
 import LoadingMessage from './components/LoadingMessage';
 import ErrorMessage from './components/ErrorMessage';
+import HeightTransitionWrapper from './components/HeightTransitionWrapper';
 
 import IconLabel from './components/IconLabel';
 import presences from './internal/presences';
@@ -34,24 +36,30 @@ export default class Profilecard extends PureComponent {
     actions: [],
   }
 
-  render() {
-    if (this.props.hasError) {
-      return <ErrorMessage reload={this.props.clientFetchProfile} />;
+  renderActionsButtons() {
+    if (this.props.actions.length === 0) {
+      return null;
     }
 
-    if (this.props.isLoading) {
-      return <LoadingMessage />;
-    }
+    return (
+      <div className={styles.actionsWrapper}>
+        {(this.props.actions).map((action, idx) => (
+          <AkButton
+            appearance={idx === 0 ? 'default' : 'subtle'}
+            compact
+            key={action.label}
+            onClick={action.callback}
+          >{action.label}</AkButton>
+        ))}
+      </div>
+    );
+  }
 
-    const actions = (this.props.actions).map((action, idx) => (
-      <AkButton
-        appearance={idx === 0 ? 'default' : 'subtle'}
-        compact
-        key={action.label}
-        onClick={action.callback}
-      >{action.label}</AkButton>
-    ));
+  renderErrorMessage() {
+    return (<ErrorMessage reload={this.props.clientFetchProfile} />);
+  }
 
+  renderProfilecard() {
     const cardClasses = classNames([
       styles.profilecard,
       { [styles.noDetailsMeta]: !this.props.meta },
@@ -74,11 +82,27 @@ export default class Profilecard extends PureComponent {
             <IconLabel icon="location">{this.props.location}</IconLabel>
           </div>
           <div className={styles.actionsFlexSpacer} />
-          <div className={styles.actionsWrapper}>
-            {actions}
-          </div>
+          {this.renderActionsButtons()}
         </div>
       </div>
+    );
+  }
+
+  render() {
+    let cardContent = null;
+
+    if (this.props.hasError) {
+      cardContent = this.renderErrorMessage();
+    } else if (this.props.isLoading) {
+      cardContent = <LoadingMessage />;
+    } else {
+      cardContent = this.renderProfilecard();
+    }
+
+    return (
+      <HeightTransitionWrapper>
+        {cardContent}
+      </HeightTransitionWrapper>
     );
   }
 }

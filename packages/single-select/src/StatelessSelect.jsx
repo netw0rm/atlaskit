@@ -1,23 +1,17 @@
 import React, { PureComponent, PropTypes } from 'react';
-import Droplist from '@atlaskit/droplist';
-import Item from '@atlaskit/droplist-item';
-import Group from '@atlaskit/droplist-group';
+import Droplist, { Item, Group } from '@atlaskit/droplist';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 import NothingWasFound from './internal/NothingWasFound';
+import DummyItem from './internal/DummyItem';
+import DummyGroup from './internal/DummyGroup';
 import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
 
-export const itemShape = PropTypes.shape({
-  content: PropTypes.node,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  isDisabled: PropTypes.bool,
-  isSelected: PropTypes.bool,
-  elemBefore: PropTypes.node,
-  elemAfter: PropTypes.node,
-});
+const itemShape = DummyItem.propTypes;
+const groupShape = DummyGroup.propTypes;
 
 export default class StatelessSelect extends PureComponent {
   static propTypes = {
@@ -30,7 +24,7 @@ export default class StatelessSelect extends PureComponent {
     isInvalid: PropTypes.bool,
     isOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
-    items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
     label: PropTypes.string,
     name: PropTypes.string,
     noMatchesFound: PropTypes.string,
@@ -39,9 +33,9 @@ export default class StatelessSelect extends PureComponent {
     onSelected: PropTypes.func,
     placeholder: PropTypes.string,
     position: PropTypes.string,
-    selectedItem: itemShape,
-    shouldFitContainer: PropTypes.bool,
     shouldFocus: PropTypes.bool,
+    selectedItem: PropTypes.shape(itemShape),
+    shouldFitContainer: PropTypes.bool,
   }
 
   static defaultProps = {

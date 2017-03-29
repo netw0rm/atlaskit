@@ -1,12 +1,17 @@
 import React, { PureComponent, PropTypes } from 'react';
-import StatelessSelect, { itemShape } from './StatelessSelect';
 import EditableSelect from './EditableSelect';
+import StatelessSelect from './StatelessSelect';
 import { appearances } from './internal/appearances';
+import DummyItem from './internal/DummyItem';
+import DummyGroup from './internal/DummyGroup';
+
+const itemShape = DummyItem.propTypes;
+const groupShape = DummyGroup.propTypes;
 
 export default class AkSingleSelect extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(appearances.values),
-    defaultSelected: itemShape,
+    defaultSelected: PropTypes.shape(itemShape),
     hasAutocomplete: PropTypes.bool,
     id: PropTypes.string,
     isFirstChild: PropTypes.bool,
@@ -14,7 +19,7 @@ export default class AkSingleSelect extends PureComponent {
     isDefaultOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
     isInvalid: PropTypes.bool,
-    items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
     label: PropTypes.string,
     name: PropTypes.string,
     noMatchesFound: PropTypes.string,

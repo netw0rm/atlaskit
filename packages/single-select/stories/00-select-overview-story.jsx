@@ -5,8 +5,6 @@ import { Code, Chrome, Description, Props } from '@atlaskit/util-readme';
 /* eslint-disable import/first, import/no-duplicates */
 import StatelessSelectOverview from './examples/StatelessSelectOverview';
 import StatelessSelectOverviewRaw from '!raw!./examples/StatelessSelectOverview';
-import EditableSelectOverview from './examples/EditableSelectOverview';
-import EditableSelectOverviewRaw from '!raw!./examples/EditableSelectOverview';
 import SmartSelectOverview from './examples/SmartSelectOverview';
 import SmartSelectOverviewRaw from '!raw!./examples/SmartSelectOverview';
 import DefaultSelectedItem from './examples/DefaultSelectedItem';
@@ -27,8 +25,15 @@ import Appearances from './examples/Appearances';
 import AppearancesRaw from '!raw!./examples/Appearances';
 import SelectWithHeapsOfOptions from './examples/SelectWithHeapsOfOptions';
 import SelectWithHeapsOfOptionsRaw from '!raw!./examples/SelectWithHeapsOfOptions';
+import SelectWithDescriptions from './examples/SelectWithDescriptions';
+import SelectWithDescriptionsRaw from '!raw!./examples/SelectWithDescriptions';
+import ItemsOverview from './examples/ItemsOverview';
+import ItemsOverviewRaw from '!raw!./examples/ItemsOverview';
 /* eslint-enable import/first, import/no-duplicates */
 
+// Dummy components exist so that we have a component to pass to <Props/>
+import DummyItem from '../src/internal/DummyItem';
+import DummyGroup from '../src/internal/DummyGroup';
 import { name } from '../package.json';
 import Select, { StatelessSelect } from '../src';
 
@@ -51,29 +56,39 @@ const propDescriptions = {
   selectedItem: 'Selected item',
   shouldFitContainer: 'Specifies whether a select will take all available space',
 };
-const shape = 'shape({ content, value, isDisabled, isSelected, elemBefore, elemAfter })';
 
 const propTypes = {
   appearance: 'Predefined appearances of single-select. One of: \'default\', \'subtle\'',
-  defaultSelected: shape,
-  id: 'string',
-  isDisabled: 'bool',
-  isDefaultOpen: 'bool',
-  isRequired: 'bool',
-  isInvalid: 'bool',
-  isOpen: 'bool',
-  items: 'array',
-  label: 'string',
-  onSelected: 'func',
-  onOpenChange: 'func',
-  placeholder: 'string',
-  position: 'string',
-  selectedItem: shape,
-  shouldFitContainer: 'bool',
+  defaultSelected: 'Array(Item)',
+  items: 'Array(Group)',
+  selectedItem: 'Array(Item)',
+};
+
+const groupPropDescriptions = {
+  items: 'An array of Items (see below for shape of Items)',
+  heading: 'A description to show above a group of items.',
+};
+
+const groupPropTypes = {
+  items: 'Array(Item)',
+};
+
+const itemPropDescriptions = {
+  content: 'The text/content to display in the option and in the rendered trigger (selected option).',
+  description: 'The text/content to display underneath the content. Doesn`t show in the rendered trigger',
+  value: 'Value sent when option is selected in a form.',
+  isDisabled: 'Whether an option is selectable or not.',
+  isSelected: 'Whether an option is selected or not (affects appearance of option, not of selectedItems)',
+  elemBefore: 'Content to display before the `content` in the option (icons, avatars, etc)',
+  elemAfter: 'Content to display after the `content` in the option (icons, avatars, etc)',
+};
+
+const itemPropTypes = {
+  value: 'OneOf(string, number)',
 };
 
 storiesOf(name, module)
-  .add('Single select (stateless) - overview', () => (
+  .add('📖 Single select (stateless) - readme', () => (
     <Chrome title="Single select (stateless) - overview">
       <Description>
         <p>Simple select component</p>
@@ -83,7 +98,7 @@ storiesOf(name, module)
       <Props component={StatelessSelect} descriptions={propDescriptions} types={propTypes} />
     </Chrome>
   ))
-  .add('Single select (smart) - overview', () => (
+  .add('📖 Single select (smart) - readme', () => (
     <Chrome title="Single select (smart) - overview">
       <Description>
         <p>Simple select component</p>
@@ -95,16 +110,28 @@ storiesOf(name, module)
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>
   ))
-  .add('Single select (editable) - overview', () => (
-    <Chrome title="Single select (editable) - overview">
+  .add('📖 Single select Item - readme', () => (
+    <Chrome title="Single select Item - overview">
       <Description>
-        <p>Simple select component integrated with inline-edit</p>
+        <p>The <code>items</code> prop take an array of groups
+          of items. Groups are simply collections of Items with optional headings</p>
+        <p>The <code>selectedItem</code> prop takes just an reference to one of the items</p>
+        <p>It is recommended that every group should have a heading. However if headings are not
+          required, the dialog will either have all headings or no headings at all for these groups.
+          But if there are no headings for the group, then the group should be combined instead.</p>
       </Description>
-      {EditableSelectOverview}
+      <Props component={DummyGroup} descriptions={groupPropDescriptions} types={groupPropTypes} />
+      <Description>
+        <p>
+          Items you pass in support a range of options that affect how your options are rendered
+          both in the dropdown and in the selected tags.
+        </p>
+      </Description>
+      <Props component={DummyItem} descriptions={itemPropDescriptions} types={itemPropTypes} />
+      {ItemsOverview}
       <Code>
-        {EditableSelectOverviewRaw}
+        {ItemsOverviewRaw}
       </Code>
-      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>
   ))
   .add('Specify selected item', () => (
@@ -141,6 +168,17 @@ storiesOf(name, module)
       {SelectWithGroups}
       <Code>
         {SelectWithGroupsRaw}
+      </Code>
+      <Props component={Select} descriptions={propDescriptions} types={propTypes} />
+    </Chrome>
+  ))
+  .add('Select with descriptions', () => (
+    <Chrome title="Select with descriptions">
+      <div style={{ width: '300px' }}>
+        {SelectWithDescriptions}
+      </div>
+      <Code>
+        {SelectWithDescriptionsRaw}
       </Code>
       <Props component={Select} descriptions={propDescriptions} types={propTypes} />
     </Chrome>

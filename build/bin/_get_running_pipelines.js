@@ -39,7 +39,7 @@ const axiosRequestConfig = {
 };
 
 function pipelineIsForCurrentBuild(pipeline) {
-  return pipeline.target.commit === CURRENT_BUILD_HASH;
+  return pipeline.target.commit.indexOf(CURRENT_BUILD_HASH) !== -1;
 }
 
 function getPipelinesResultURL(pipelineUUID) {
@@ -57,11 +57,13 @@ function stopPipelineBuild(pipelineUUID) {
 
 axios.get(pipelinesEndpoint, axiosRequestConfig)
   .then((response) => {
-    const allRunningPipelines = response.data.values
-      .filter(job => job.state.name === 'IN_PROGRESS');
+    const allRunningPipelines = response.data.values;
     const currentPipeline = allRunningPipelines
-      .filter(pipelineIsForCurrentBuild);
-    const otherMasterPipelines = allRunningPipelines
+      .find(pipelineIsForCurrentBuild);
+    const olderRunningPipelines = allRunningPipelines
+      .filter(job => job.state.name === 'IN_PROGRESS')
+      .filter(job => new Date(job.created_on) < new Date(currentPipeline.created_on));
+    const otherMasterPipelines = olderRunningPipelines
       .filter(job => !pipelineIsForCurrentBuild(job));
 
     // if there is another master branch running, we should stop our current one

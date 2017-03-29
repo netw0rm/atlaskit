@@ -36,7 +36,7 @@ export const DEFAULT_CARD_DIMENSIONS = {
 export class FileCardView extends Component<FileCardViewProps, {}> {
   render() {
     const {mediaSize, mediaType, mediaName, dataURI, progress, loading, dimensions, selectable, selected, actions, onClick, error, onRetry} = this.props;
-    const fileSize = mediaSize && toHumanReadableMediaSize(mediaSize);
+    const fileSize = toHumanReadableMediaSize(mediaSize || 0);
 
     return <CardImageView
       mediaType={mediaType}

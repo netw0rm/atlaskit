@@ -171,7 +171,7 @@ export class CardList extends Component<CardListProps, CardListState> {
           action.handler(item, fileIds, event);
         }
       };
-    }) : null;
+    }) : [];
 
     const cards = this.state.collection ? this.state.collection.items.map((item: MediaCollectionItem, index: number) => {
       const {context, collectionName, cardType, cardDimensions} = this.props;

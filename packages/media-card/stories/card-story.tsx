@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { storiesOf, action } from '@kadira/storybook';
-import { MediaItem, CardDelete, CardClick } from '@atlaskit/media-core';
+import { storiesOf } from '@kadira/storybook';
 import { Matrix, createStorybookContext, defaultCollectionName as collectionName } from '@atlaskit/media-test-helpers';
 import { Card, UrlPreviewIdentifier, MediaIdentifier } from '../src';
 

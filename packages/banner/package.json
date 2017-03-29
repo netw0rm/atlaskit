@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/banner",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "config": {
     "access": "public"
   },
@@ -33,7 +33,7 @@
     "@atlaskit/banner": "*",
     "@atlaskit/button": "^1.0.0",
     "ak-icon": "^12.2.0",
-    "@atlaskit/util-readme": "^1.0.0"
+    "@atlaskit/util-readme": "^3.0.0"
   },
   "repository": {
     "type": "git",

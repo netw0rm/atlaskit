@@ -1,6 +1,6 @@
-import { EmojiDescription, EmojiId, EmojiModifiers, EmojiResponse, OptionalEmojiDescription } from '../types';
+import { EmojiDescription, EmojiId, EmojiResponse, OptionalEmojiDescription, SearchOptions } from '../types';
 import EmojiLoader from './EmojiLoader';
-import EmojiService, { EmojiSearchResult } from './EmojiService';
+import EmojiRepository, { EmojiSearchResult } from './EmojiRepository';
 import { requestService, ServiceConfig } from './SharedResourceUtils';
 import { AbstractResource, OnProviderChange, Provider } from './SharedResources';
 
@@ -13,7 +13,7 @@ export interface EmojiResourceConfig {
 
   /**
    * This defines the different providers. Later providers will override earlier
-   * providers when performing shortcut based look up.
+   * providers when performing shortName based look up.
    */
   providers: ServiceConfig[];
 }
@@ -29,16 +29,16 @@ export interface ResolveReject<T> {
   reject(reason?: any): void;
 }
 
-export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, undefined, EmojiModifiers> {
+export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, undefined, SearchOptions> {
   /**
-   * Returns the first matching emoji matching the shortcut, or null if none found.
+   * Returns the first matching emoji matching the shortName, or null if none found.
    */
-  findByShortcut(shortcut: string, modifiers?: EmojiModifiers): Promise<OptionalEmojiDescription>;
+  findByShortName(shortName: string): Promise<OptionalEmojiDescription>;
 
   /**
    * Returns the first matching emoji matching the emojiId.id.
    *
-   * If not found or emojiId.id is undefined, fallback to a search by shortcut.
+   * If not found or emojiId.id is undefined, fallback to a search by shortName.
    *
    * Returns undefined if none found.
    */
@@ -59,12 +59,12 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
 
 interface LastQuery {
   query?: string;
-  modifiers?: EmojiModifiers;
+  options?: SearchOptions;
 }
 
-export default class EmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, EmojiModifiers> implements EmojiProvider {
+export default class EmojiResource extends AbstractResource<string, EmojiSearchResult, any, undefined, SearchOptions> implements EmojiProvider {
   private recordConfig?: ServiceConfig;
-  private emojiService: EmojiService;
+  private emojiRepository: EmojiRepository;
   private lastQuery: LastQuery;
   private activeLoaders: number = 0;
   private retries: Map<Retry<any>, ResolveReject<any>> = new Map();
@@ -105,7 +105,7 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
     emojiResponses.forEach(emojiResponse => {
       emojis = emojis.concat(emojiResponse.emojis);
     });
-    this.emojiService = new EmojiService(emojis);
+    this.emojiRepository = new EmojiRepository(emojis);
   }
 
   private performRetries(): void {
@@ -123,7 +123,8 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
 
   private refreshLastFilter(): void {
     if (typeof this.lastQuery !== 'undefined') {
-      this.filter(this.lastQuery.query, this.lastQuery.modifiers);
+      const { query, options } = this.lastQuery;
+      this.filter(query, options);
     }
   }
 
@@ -140,13 +141,13 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
     return Promise.resolve<T | undefined>(defaultResponse);
   }
 
-  filter(query?: string, modifiers?: EmojiModifiers): void {
+  filter(query?: string, options?: SearchOptions): void {
     this.lastQuery = {
       query: query || '',
-      modifiers,
+      options,
     };
-    if (this.emojiService) {
-      const searchResult = this.emojiService.search(query, modifiers);
+    if (this.emojiRepository) {
+      const searchResult = this.emojiRepository.search(query, options);
       this.notifyResult(searchResult);
     } else {
       // not ready
@@ -154,39 +155,39 @@ export default class EmojiResource extends AbstractResource<string, EmojiSearchR
     }
   }
 
-  findByShortcut(shortcut: string, modifiers?: EmojiModifiers): Promise<OptionalEmojiDescription> {
+  findByShortName(shortName: string): Promise<OptionalEmojiDescription> {
     if (this.isLoaded()) {
-      // Wait for all emoji to load before looking by shortcut (to ensure correct priority)
-      const emoji = this.emojiService.findByShortcut(shortcut, modifiers);
+      // Wait for all emoji to load before looking by shortName (to ensure correct priority)
+      const emoji = this.emojiRepository.findByShortName(shortName);
       return Promise.resolve(emoji);
     }
-    return this.retryIfLoading(() => this.findByShortcut(shortcut, modifiers), undefined);
+    return this.retryIfLoading(() => this.findByShortName(shortName), undefined);
   }
 
   findByEmojiId(emojiId: EmojiId): Promise<OptionalEmojiDescription> {
-    const { id, modifiers, shortcut } = emojiId;
-    if (this.emojiService) {
+    const { id, shortName } = emojiId;
+    if (this.emojiRepository) {
       if (id) {
-        const emoji = this.emojiService.findById(id, modifiers);
+        const emoji = this.emojiRepository.findById(id);
         if (emoji) {
           return Promise.resolve(emoji);
         }
         if (this.isLoaded()) {
-          // all loaded but not found by id, fallback to searching by shortcut to
+          // all loaded but not found by id, fallback to searching by shortName to
           // at least render an alternative
-          return this.findByShortcut(shortcut, modifiers);
+          return this.findByShortName(shortName);
         }
       } else {
-        // no id fallback to shortcut
-        return this.findByShortcut(shortcut, modifiers);
+        // no id fallback to shortName
+        return this.findByShortName(shortName);
       }
     }
     return this.retryIfLoading(() => this.findByEmojiId(emojiId), undefined);
   }
 
   findInCategory(categoryId: string): Promise<EmojiDescription[]> {
-    if (this.emojiService) {
-      return Promise.resolve(this.emojiService.findInCategory(categoryId));
+    if (this.emojiRepository) {
+      return Promise.resolve(this.emojiRepository.findInCategory(categoryId));
     }
     return this.retryIfLoading(() => this.findInCategory(categoryId), []);
   }

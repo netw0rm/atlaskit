@@ -1,0 +1,147 @@
+{
+  "emojis": [
+    {
+      "id": "atlassian-huh",
+      "name": "huh",
+      "shortName": ":huh:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "skinVariations": [],
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/huh.png",
+        "height": 25,
+        "width": 25
+      }
+    },
+    {
+      "id": "atlassian-evilburns",
+      "name": "evilburns",
+      "shortName": ":evilburns:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "skinVariations": [],
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/evilburns.png",
+        "height": 30,
+        "width": 24
+      }
+    },
+    {
+      "id": "atlassian-content",
+      "name": "content",
+      "shortName": ":content:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "skinVariations": [],
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/content.png",
+        "height": 25,
+        "width": 25
+      }
+    },
+    {
+      "id": "atlassian-confluence",
+      "name": "confluence",
+      "shortName": ":confluence:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "skinVariations": [],
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/confluence.png",
+        "height": 30,
+        "width": 30
+      }
+    },
+    {
+      "id": "atlassian-failed",
+      "name": "failed",
+      "shortName": ":failed:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "skinVariations": [],
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/failed.png",
+        "height": 16,
+        "width": 16
+      }
+    },
+    {
+      "id": "atlassian-boom",
+      "name": "boom",
+      "shortName": ":boom:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "skinVariations": [],
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/boom.gif",
+        "height": 30,
+        "width": 30
+      }
+    },
+    {
+      "id": "atlassian-krang",
+      "name": "krang",
+      "shortName": ":krang:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "skinVariations": [],
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/krang.png",
+        "height": 28,
+        "width": 30
+      }
+    },
+    {
+      "id": "atlassian-heart",
+      "name": "heart",
+      "shortName": ":heart:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "skinVariations": [],
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/heart.png",
+        "height": 14,
+        "width": 16
+      }
+    },
+    {
+      "id": "atlassian-chewie",
+      "name": "chewie",
+      "shortName": ":chewie:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "skinVariations": [],
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/chewie.png",
+        "height": 25,
+        "width": 24
+      }
+    },
+    {
+      "id": "atlassian-goldstar",
+      "name": "goldstar",
+      "shortName": ":goldstar:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "skinVariations": [],
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/goldstar.png",
+        "height": 20,
+        "width": 20
+      }
+    }
+  ],
+  "meta": {
+    "spriteSheets": {}
+  }
+}

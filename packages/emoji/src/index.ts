@@ -5,7 +5,7 @@ import EmojiPicker from './components/picker/EmojiPicker';
 import EmojiTypeAhead from './components/typeahead/EmojiTypeAhead';
 import EmojiResource, { EmojiProvider } from './api/EmojiResource';
 import { AbstractResource } from './api/SharedResources';
-import EmojiService, { EmojiSearchResult } from './api/EmojiService';
+import EmojiRepository, { EmojiSearchResult } from './api/EmojiRepository';
 import EmojiLoader, { denormaliseEmojiServiceResponse } from './api/EmojiLoader';
 
 export {
@@ -16,7 +16,7 @@ export {
   EmojiLoader,
   EmojiPicker,
   EmojiResource,
-  EmojiService,
+  EmojiRepository,
   EmojiTypeAhead,
   ResourcedEmoji,
   // functions

@@ -1,14 +1,14 @@
 import { expect } from 'chai';
 
-import { atlassianEmojis, emojiService, grinEmoji, areyoukiddingmeEmoji, standardEmojis } from './TestData';
+import { atlassianEmojis, emojiRepository, grinEmoji, evilburnsEmoji, standardEmojis } from './TestData';
 
 describe('#test data', () => {
   it('expected standard emojis', () => {
-    expect(standardEmojis.length, '88 Standard Emoji').to.equal(88);
+    expect(standardEmojis.length, '80 Standard Emoji').to.equal(80);
   });
 
   it('expected atlassian emojis', () => {
-    expect(atlassianEmojis.length, '11 Atlassian Emoji').to.equal(11);
+    expect(atlassianEmojis.length, '10 Atlassian Emoji').to.equal(10);
   });
 
   it('expected grin emoji', () => {
@@ -16,34 +16,34 @@ describe('#test data', () => {
     expect(emoji, 'Emoji found').to.not.equal(undefined);
     if (emoji) {
       expect(emoji.id, 'id').to.equal('1f601');
-      expect(emoji.shortcut, 'shortcut').to.equal('grin');
+      expect(emoji.shortName, 'shortName').to.equal(':grin:');
     }
   });
 
-  it('expected areyoukiddingme emojis', () => {
-    const emoji = areyoukiddingmeEmoji;
+  it('expected evilburns emojis', () => {
+    const emoji = evilburnsEmoji;
     expect(emoji, 'Emoji found').to.not.equal(undefined);
     if (emoji) {
-      expect(emoji.id, 'id').to.equal('atlassian-areyoukiddingme');
-      expect(emoji.shortcut, 'shortcut').to.equal('areyoukiddingme');
+      expect(emoji.id, 'id').to.equal('atlassian-evilburns');
+      expect(emoji.shortName, 'shortName').to.equal(':evilburns:');
     }
   });
 
   it('expected grin emoji', () => {
-    const emoji = emojiService.findById('1f601');
+    const emoji = emojiRepository.findById('1f601');
     expect(emoji, 'Emoji found').to.not.equal(undefined);
     if (emoji) {
       expect(emoji.id, 'id').to.equal('1f601');
-      expect(emoji.shortcut, 'shortcut').to.equal('grin');
+      expect(emoji.shortName, 'shortName').to.equal(':grin:');
     }
   });
 
-  it('expected areyoukiddingme emojis', () => {
-    const emoji = emojiService.findById('atlassian-areyoukiddingme');
+  it('expected evilburns emojis', () => {
+    const emoji = emojiRepository.findById('atlassian-evilburns');
     expect(emoji, 'Emoji found').to.not.equal(undefined);
     if (emoji) {
-      expect(emoji.id, 'id').to.equal('atlassian-areyoukiddingme');
-      expect(emoji.shortcut, 'shortcut').to.equal('areyoukiddingme');
+      expect(emoji.id, 'id').to.equal('atlassian-evilburns');
+      expect(emoji.shortName, 'shortName').to.equal(':evilburns:');
     }
   });
 });

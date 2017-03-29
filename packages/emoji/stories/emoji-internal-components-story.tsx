@@ -18,7 +18,7 @@ import RefreshableEmojiList from './demo-refreshable-emoji-list';
 const emoji = {
   id: '118608',
   name: 'Zoidberg',
-  shortcut: 'zoidberg',
+  shortName: ':zoidberg:',
   type: 'ATLASSIAN',
   category: 'ATLASSIAN',
   order: 2147483647,
@@ -33,11 +33,11 @@ const emoji = {
 
 const emojis = getEmojis();
 
-const tongueEmoji = filters.byShortcut(emojis, 'stuck_out_tongue_closed_eyes');
+const tongueEmoji = filters.byShortName(emojis, ':stuck_out_tongue_closed_eyes:');
 const longTongueEmoji = {
   ...tongueEmoji,
   name: `${tongueEmoji.name} ${tongueEmoji.name} ${tongueEmoji.name}`,
-  shortcut: `${tongueEmoji.shortcut}_${tongueEmoji.shortcut}_${tongueEmoji.shortcut}`,
+  shortName: `${tongueEmoji.shortName}_${tongueEmoji.shortName}_${tongueEmoji.shortName}`,
 };
 
 const toneEmoji = filters.toneEmoji(emojis);

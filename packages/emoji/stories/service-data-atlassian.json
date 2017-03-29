@@ -3,7 +3,7 @@
     {
       "id": "atlassian-huh",
       "name": "huh",
-      "shortcut": "huh",
+      "shortName": ":huh:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -17,7 +17,7 @@
     {
       "id": "atlassian-evilburns",
       "name": "evilburns",
-      "shortcut": "evilburns",
+      "shortName": ":evilburns:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -31,7 +31,7 @@
     {
       "id": "atlassian-content",
       "name": "content",
-      "shortcut": "content",
+      "shortName": ":content:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -45,7 +45,7 @@
     {
       "id": "atlassian-confluence",
       "name": "confluence",
-      "shortcut": "confluence",
+      "shortName": ":confluence:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -59,7 +59,7 @@
     {
       "id": "atlassian-failed",
       "name": "failed",
-      "shortcut": "failed",
+      "shortName": ":failed:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -73,7 +73,7 @@
     {
       "id": "atlassian-boom",
       "name": "boom",
-      "shortcut": "boom",
+      "shortName": ":boom:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -87,7 +87,7 @@
     {
       "id": "atlassian-krang",
       "name": "krang",
-      "shortcut": "krang",
+      "shortName": ":krang:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -101,7 +101,7 @@
     {
       "id": "atlassian-heart",
       "name": "heart",
-      "shortcut": "heart",
+      "shortName": ":heart:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -115,7 +115,7 @@
     {
       "id": "atlassian-chewie",
       "name": "chewie",
-      "shortcut": "chewie",
+      "shortName": ":chewie:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -129,7 +129,7 @@
     {
       "id": "atlassian-goldstar",
       "name": "goldstar",
-      "shortcut": "goldstar",
+      "shortName": ":goldstar:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -143,7 +143,7 @@
     {
       "id": "atlassian-areyoukiddingme",
       "name": "areyoukiddingme",
-      "shortcut": "areyoukiddingme",
+      "shortName": ":areyoukiddingme:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -157,7 +157,7 @@
     {
       "id": "atlassian-gates",
       "name": "gates",
-      "shortcut": "gates",
+      "shortName": ":gates:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -171,7 +171,7 @@
     {
       "id": "atlassian-branch",
       "name": "branch",
-      "shortcut": "branch",
+      "shortName": ":branch:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -185,7 +185,7 @@
     {
       "id": "atlassian-cerealspit",
       "name": "cerealspit",
-      "shortcut": "cerealspit",
+      "shortName": ":cerealspit:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -199,7 +199,7 @@
     {
       "id": "atlassian-gangnamstyle",
       "name": "gangnamstyle",
-      "shortcut": "gangnamstyle",
+      "shortName": ":gangnamstyle:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -213,7 +213,7 @@
     {
       "id": "atlassian-coffee",
       "name": "coffee",
-      "shortcut": "coffee",
+      "shortName": ":coffee:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -227,7 +227,7 @@
     {
       "id": "atlassian-awyeah",
       "name": "awyeah",
-      "shortcut": "awyeah",
+      "shortName": ":awyeah:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -241,7 +241,7 @@
     {
       "id": "atlassian-awwyiss",
       "name": "awwyiss",
-      "shortcut": "awwyiss",
+      "shortName": ":awwyiss:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -255,7 +255,7 @@
     {
       "id": "atlassian-allthethings",
       "name": "allthethings",
-      "shortcut": "allthethings",
+      "shortName": ":allthethings:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -269,7 +269,7 @@
     {
       "id": "atlassian-catchemall",
       "name": "catchemall",
-      "shortcut": "catchemall",
+      "shortName": ":catchemall:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -283,7 +283,7 @@
     {
       "id": "atlassian-continue",
       "name": "continue",
-      "shortcut": "continue",
+      "shortName": ":continue:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -297,7 +297,7 @@
     {
       "id": "atlassian-cornelius",
       "name": "cornelius",
-      "shortcut": "cornelius",
+      "shortName": ":cornelius:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -311,7 +311,7 @@
     {
       "id": "atlassian-lol",
       "name": "lol",
-      "shortcut": "lol",
+      "shortName": ":lol:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -325,7 +325,7 @@
     {
       "id": "atlassian-hipchat",
       "name": "hipchat",
-      "shortcut": "hipchat",
+      "shortName": ":hipchat:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -339,7 +339,7 @@
     {
       "id": "atlassian-indeed",
       "name": "indeed",
-      "shortcut": "indeed",
+      "shortName": ":indeed:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -353,7 +353,7 @@
     {
       "id": "atlassian-arrington",
       "name": "arrington",
-      "shortcut": "arrington",
+      "shortName": ":arrington:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -367,7 +367,7 @@
     {
       "id": "atlassian-drool",
       "name": "drool",
-      "shortcut": "drool",
+      "shortName": ":drool:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -381,7 +381,7 @@
     {
       "id": "atlassian-jira",
       "name": "jira",
-      "shortcut": "jira",
+      "shortName": ":jira:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -395,7 +395,7 @@
     {
       "id": "atlassian-atlassian",
       "name": "atlassian",
-      "shortcut": "atlassian",
+      "shortName": ":atlassian:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -409,7 +409,7 @@
     {
       "id": "atlassian-bitbucket",
       "name": "bitbucket",
-      "shortcut": "bitbucket",
+      "shortName": ":bitbucket:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -423,7 +423,7 @@
     {
       "id": "atlassian-cereal",
       "name": "cereal",
-      "shortcut": "cereal",
+      "shortName": ":cereal:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -437,7 +437,7 @@
     {
       "id": "atlassian-feelsbadman",
       "name": "feelsbadman",
-      "shortcut": "feelsbadman",
+      "shortName": ":feelsbadman:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -451,7 +451,7 @@
     {
       "id": "atlassian-donotwant",
       "name": "donotwant",
-      "shortcut": "donotwant",
+      "shortName": ":donotwant:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -465,7 +465,7 @@
     {
       "id": "atlassian-basket",
       "name": "basket",
-      "shortcut": "basket",
+      "shortName": ":basket:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -479,7 +479,7 @@
     {
       "id": "atlassian-beer",
       "name": "beer",
-      "shortcut": "beer",
+      "shortName": ":beer:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -493,7 +493,7 @@
     {
       "id": "atlassian-ashton",
       "name": "ashton",
-      "shortcut": "ashton",
+      "shortName": ":ashton:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -507,7 +507,7 @@
     {
       "id": "atlassian-disappear",
       "name": "disappear",
-      "shortcut": "disappear",
+      "shortName": ":disappear:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -521,7 +521,7 @@
     {
       "id": "atlassian-dealwithit",
       "name": "dealwithit",
-      "shortcut": "dealwithit",
+      "shortName": ":dealwithit:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -535,7 +535,7 @@
     {
       "id": "atlassian-derp",
       "name": "derp",
-      "shortcut": "derp",
+      "shortName": ":derp:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -549,7 +549,7 @@
     {
       "id": "atlassian-daenerys",
       "name": "daenerys",
-      "shortcut": "daenerys",
+      "shortName": ":daenerys:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -563,7 +563,7 @@
     {
       "id": "atlassian-doge",
       "name": "doge",
-      "shortcut": "doge",
+      "shortName": ":doge:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -577,7 +577,7 @@
     {
       "id": "atlassian-crucible",
       "name": "crucible",
-      "shortcut": "crucible",
+      "shortName": ":crucible:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -591,7 +591,7 @@
     {
       "id": "atlassian-arya",
       "name": "arya",
-      "shortcut": "arya",
+      "shortName": ":arya:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -605,7 +605,7 @@
     {
       "id": "atlassian-hugefan",
       "name": "hugefan",
-      "shortcut": "hugefan",
+      "shortName": ":hugefan:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -619,7 +619,7 @@
     {
       "id": "atlassian-kwanzaa",
       "name": "kwanzaa",
-      "shortcut": "kwanzaa",
+      "shortName": ":kwanzaa:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -633,7 +633,7 @@
     {
       "id": "atlassian-greenbeer",
       "name": "greenbeer",
-      "shortcut": "greenbeer",
+      "shortName": ":greenbeer:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -647,7 +647,7 @@
     {
       "id": "atlassian-jobs",
       "name": "jobs",
-      "shortcut": "jobs",
+      "shortName": ":jobs:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -661,7 +661,7 @@
     {
       "id": "atlassian-huehue",
       "name": "huehue",
-      "shortcut": "huehue",
+      "shortName": ":huehue:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -675,7 +675,7 @@
     {
       "id": "atlassian-banks",
       "name": "banks",
-      "shortcut": "banks",
+      "shortName": ":banks:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -689,7 +689,7 @@
     {
       "id": "atlassian-ilied",
       "name": "ilied",
-      "shortcut": "ilied",
+      "shortName": ":ilied:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -703,7 +703,7 @@
     {
       "id": "atlassian-challengeaccepted",
       "name": "challengeaccepted",
-      "shortcut": "challengeaccepted",
+      "shortName": ":challengeaccepted:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -717,7 +717,7 @@
     {
       "id": "atlassian-excellent",
       "name": "excellent",
-      "shortcut": "excellent",
+      "shortName": ":excellent:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -731,7 +731,7 @@
     {
       "id": "atlassian-drevil",
       "name": "drevil",
-      "shortcut": "drevil",
+      "shortName": ":drevil:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -745,7 +745,7 @@
     {
       "id": "atlassian-chompy",
       "name": "chompy",
-      "shortcut": "chompy",
+      "shortName": ":chompy:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -759,7 +759,7 @@
     {
       "id": "atlassian-fu",
       "name": "fu",
-      "shortcut": "fu",
+      "shortName": ":fu:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -773,7 +773,7 @@
     {
       "id": "atlassian-candycorn",
       "name": "candycorn",
-      "shortcut": "candycorn",
+      "shortName": ":candycorn:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -787,7 +787,7 @@
     {
       "id": "atlassian-cadbury",
       "name": "cadbury",
-      "shortcut": "cadbury",
+      "shortName": ":cadbury:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -801,7 +801,7 @@
     {
       "id": "atlassian-disapproval",
       "name": "disapproval",
-      "shortcut": "disapproval",
+      "shortName": ":disapproval:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -815,7 +815,7 @@
     {
       "id": "atlassian-haveaseat",
       "name": "haveaseat",
-      "shortcut": "haveaseat",
+      "shortName": ":haveaseat:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -829,7 +829,7 @@
     {
       "id": "atlassian-badjokeeel",
       "name": "badjokeeel",
-      "shortcut": "badjokeeel",
+      "shortName": ":badjokeeel:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -843,7 +843,7 @@
     {
       "id": "atlassian-caruso",
       "name": "caruso",
-      "shortcut": "caruso",
+      "shortName": ":caruso:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -857,7 +857,7 @@
     {
       "id": "atlassian-kennypowers",
       "name": "kennypowers",
-      "shortcut": "kennypowers",
+      "shortName": ":kennypowers:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -871,7 +871,7 @@
     {
       "id": "atlassian-chef",
       "name": "chef",
-      "shortcut": "chef",
+      "shortName": ":chef:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -885,7 +885,7 @@
     {
       "id": "atlassian-fuckyeah",
       "name": "fuckyeah",
-      "shortcut": "fuckyeah",
+      "shortName": ":fuckyeah:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -899,7 +899,7 @@
     {
       "id": "atlassian-dwaboutit",
       "name": "dwaboutit",
-      "shortcut": "dwaboutit",
+      "shortName": ":dwaboutit:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -913,7 +913,7 @@
     {
       "id": "atlassian-ghost",
       "name": "ghost",
-      "shortcut": "ghost",
+      "shortName": ":ghost:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -927,7 +927,7 @@
     {
       "id": "atlassian-feelsgoodman",
       "name": "feelsgoodman",
-      "shortcut": "feelsgoodman",
+      "shortName": ":feelsgoodman:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -941,7 +941,7 @@
     {
       "id": "atlassian-finn",
       "name": "finn",
-      "shortcut": "finn",
+      "shortName": ":finn:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -955,7 +955,7 @@
     {
       "id": "atlassian-clarence",
       "name": "clarence",
-      "shortcut": "clarence",
+      "shortName": ":clarence:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -969,7 +969,7 @@
     {
       "id": "atlassian-lincoln",
       "name": "lincoln",
-      "shortcut": "lincoln",
+      "shortName": ":lincoln:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -983,7 +983,7 @@
     {
       "id": "atlassian-downvote",
       "name": "downvote",
-      "shortcut": "downvote",
+      "shortName": ":downvote:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -997,7 +997,7 @@
     {
       "id": "atlassian-ban",
       "name": "ban",
-      "shortcut": "ban",
+      "shortName": ":ban:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1011,7 +1011,7 @@
     {
       "id": "atlassian-hipster",
       "name": "hipster",
-      "shortcut": "hipster",
+      "shortName": ":hipster:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1025,7 +1025,7 @@
     {
       "id": "atlassian-carl",
       "name": "carl",
-      "shortcut": "carl",
+      "shortName": ":carl:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1039,7 +1039,7 @@
     {
       "id": "atlassian-ftfy",
       "name": "ftfy",
-      "shortcut": "ftfy",
+      "shortName": ":ftfy:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1053,7 +1053,7 @@
     {
       "id": "atlassian-corpsethumb",
       "name": "corpsethumb",
-      "shortcut": "corpsethumb",
+      "shortName": ":corpsethumb:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1067,7 +1067,7 @@
     {
       "id": "atlassian-bicepright",
       "name": "bicepright",
-      "shortcut": "bicepright",
+      "shortName": ":bicepright:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1081,7 +1081,7 @@
     {
       "id": "atlassian-dance",
       "name": "dance",
-      "shortcut": "dance",
+      "shortName": ":dance:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1095,7 +1095,7 @@
     {
       "id": "atlassian-badass",
       "name": "badass",
-      "shortcut": "badass",
+      "shortName": ":badass:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1109,7 +1109,7 @@
     {
       "id": "atlassian-freddie",
       "name": "freddie",
-      "shortcut": "freddie",
+      "shortName": ":freddie:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1123,7 +1123,7 @@
     {
       "id": "atlassian-meh",
       "name": "meh",
-      "shortcut": "meh",
+      "shortName": ":meh:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1137,7 +1137,7 @@
     {
       "id": "atlassian-itsatrap",
       "name": "itsatrap",
-      "shortcut": "itsatrap",
+      "shortName": ":itsatrap:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1151,7 +1151,7 @@
     {
       "id": "atlassian-ceilingcat",
       "name": "ceilingcat",
-      "shortcut": "ceilingcat",
+      "shortName": ":ceilingcat:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1165,7 +1165,7 @@
     {
       "id": "atlassian-celeryman",
       "name": "celeryman",
-      "shortcut": "celeryman",
+      "shortName": ":celeryman:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1179,7 +1179,7 @@
     {
       "id": "atlassian-awesome",
       "name": "awesome",
-      "shortcut": "awesome",
+      "shortName": ":awesome:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1193,7 +1193,7 @@
     {
       "id": "atlassian-bunny",
       "name": "bunny",
-      "shortcut": "bunny",
+      "shortName": ":bunny:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1207,7 +1207,7 @@
     {
       "id": "atlassian-awthanks",
       "name": "awthanks",
-      "shortcut": "awthanks",
+      "shortName": ":awthanks:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1221,7 +1221,7 @@
     {
       "id": "atlassian-cake",
       "name": "cake",
-      "shortcut": "cake",
+      "shortName": ":cake:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1235,7 +1235,7 @@
     {
       "id": "atlassian-jonsnow",
       "name": "jonsnow",
-      "shortcut": "jonsnow",
+      "shortName": ":jonsnow:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1249,7 +1249,7 @@
     {
       "id": "atlassian-cancer",
       "name": "cancer",
-      "shortcut": "cancer",
+      "shortName": ":cancer:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1263,7 +1263,7 @@
     {
       "id": "atlassian-fisheye",
       "name": "fisheye",
-      "shortcut": "fisheye",
+      "shortName": ":fisheye:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1277,7 +1277,7 @@
     {
       "id": "atlassian-fwp",
       "name": "fwp",
-      "shortcut": "fwp",
+      "shortName": ":fwp:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1291,7 +1291,7 @@
     {
       "id": "atlassian-fireworks",
       "name": "fireworks",
-      "shortcut": "fireworks",
+      "shortName": ":fireworks:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1305,7 +1305,7 @@
     {
       "id": "atlassian-doh",
       "name": "doh",
-      "shortcut": "doh",
+      "shortName": ":doh:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1319,7 +1319,7 @@
     {
       "id": "atlassian-badtime",
       "name": "badtime",
-      "shortcut": "badtime",
+      "shortName": ":badtime:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1333,7 +1333,7 @@
     {
       "id": "atlassian-cookie",
       "name": "cookie",
-      "shortcut": "cookie",
+      "shortName": ":cookie:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1347,7 +1347,7 @@
     {
       "id": "atlassian-bamboo",
       "name": "bamboo",
-      "shortcut": "bamboo",
+      "shortName": ":bamboo:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1361,7 +1361,7 @@
     {
       "id": "atlassian-megusta",
       "name": "megusta",
-      "shortcut": "megusta",
+      "shortName": ":megusta:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1375,7 +1375,7 @@
     {
       "id": "atlassian-menorah",
       "name": "menorah",
-      "shortcut": "menorah",
+      "shortName": ":menorah:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1389,7 +1389,7 @@
     {
       "id": "atlassian-dumb",
       "name": "dumb",
-      "shortcut": "dumb",
+      "shortName": ":dumb:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1403,7 +1403,7 @@
     {
       "id": "atlassian-badpokerface",
       "name": "badpokerface",
-      "shortcut": "badpokerface",
+      "shortName": ":badpokerface:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1417,7 +1417,7 @@
     {
       "id": "atlassian-foreveralone",
       "name": "foreveralone",
-      "shortcut": "foreveralone",
+      "shortName": ":foreveralone:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1431,7 +1431,7 @@
     {
       "id": "atlassian-heygirl",
       "name": "heygirl",
-      "shortcut": "heygirl",
+      "shortName": ":heygirl:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1445,7 +1445,7 @@
     {
       "id": "atlassian-chocobunny",
       "name": "chocobunny",
-      "shortcut": "chocobunny",
+      "shortName": ":chocobunny:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1459,7 +1459,7 @@
     {
       "id": "atlassian-facepalm",
       "name": "facepalm",
-      "shortcut": "facepalm",
+      "shortName": ":facepalm:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1473,7 +1473,7 @@
     {
       "id": "atlassian-giggity",
       "name": "giggity",
-      "shortcut": "giggity",
+      "shortName": ":giggity:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1487,7 +1487,7 @@
     {
       "id": "atlassian-borat",
       "name": "borat",
-      "shortcut": "borat",
+      "shortName": ":borat:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1501,7 +1501,7 @@
     {
       "id": "atlassian-bicepleft",
       "name": "bicepleft",
-      "shortcut": "bicepleft",
+      "shortName": ":bicepleft:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1515,7 +1515,7 @@
     {
       "id": "atlassian-jaime",
       "name": "jaime",
-      "shortcut": "jaime",
+      "shortName": ":jaime:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1529,7 +1529,7 @@
     {
       "id": "atlassian-dosequis",
       "name": "dosequis",
-      "shortcut": "dosequis",
+      "shortName": ":dosequis:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1543,7 +1543,7 @@
     {
       "id": "atlassian-android",
       "name": "android",
-      "shortcut": "android",
+      "shortName": ":android:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1557,7 +1557,7 @@
     {
       "id": "atlassian-haha",
       "name": "haha",
-      "shortcut": "haha",
+      "shortName": ":haha:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1571,7 +1571,7 @@
     {
       "id": "atlassian-fry",
       "name": "fry",
-      "shortcut": "fry",
+      "shortName": ":fry:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1585,7 +1585,7 @@
     {
       "id": "atlassian-grumpycat",
       "name": "grumpycat",
-      "shortcut": "grumpycat",
+      "shortName": ":grumpycat:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1599,7 +1599,7 @@
     {
       "id": "atlassian-fonzie",
       "name": "fonzie",
-      "shortcut": "fonzie",
+      "shortName": ":fonzie:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1613,7 +1613,7 @@
     {
       "id": "atlassian-gtfo",
       "name": "gtfo",
-      "shortcut": "gtfo",
+      "shortName": ":gtfo:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1627,7 +1627,7 @@
     {
       "id": "atlassian-bumble",
       "name": "bumble",
-      "shortcut": "bumble",
+      "shortName": ":bumble:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1641,7 +1641,7 @@
     {
       "id": "atlassian-forscale",
       "name": "forscale",
-      "shortcut": "forscale",
+      "shortName": ":forscale:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1655,7 +1655,7 @@
     {
       "id": "atlassian-goodnews",
       "name": "goodnews",
-      "shortcut": "goodnews",
+      "shortName": ":goodnews:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1669,7 +1669,7 @@
     {
       "id": "atlassian-ducreux",
       "name": "ducreux",
-      "shortcut": "ducreux",
+      "shortName": ":ducreux:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1683,7 +1683,7 @@
     {
       "id": "atlassian-chucknorris",
       "name": "chucknorris",
-      "shortcut": "chucknorris",
+      "shortName": ":chucknorris:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1697,7 +1697,7 @@
     {
       "id": "atlassian-lolwut",
       "name": "lolwut",
-      "shortcut": "lolwut",
+      "shortName": ":lolwut:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,
@@ -1711,7 +1711,7 @@
     {
       "id": "atlassian-jackie",
       "name": "jackie",
-      "shortcut": "jackie",
+      "shortName": ":jackie:",
       "type": "ATLASSIAN",
       "category": "ATLASSIAN",
       "order": -1,

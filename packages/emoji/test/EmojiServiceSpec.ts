@@ -2,9 +2,9 @@ import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import { expect } from 'chai';
 
 import { EmojiDescription } from '../src/types';
-import EmojiService from '../src/api/EmojiService';
+import EmojiRepository from '../src/api/EmojiRepository';
 
-import { emojis as allEmojis, emojiService } from './TestData';
+import { emojis as allEmojis, emojiRepository } from './TestData';
 
 function checkOrder(expected, actual) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
@@ -16,11 +16,10 @@ function checkOrder(expected, actual) {
 const cowboy: EmojiDescription = {
   id: '1f920',
   name: 'face with cowboy hat',
-  shortcut: 'cowboy',
+  shortName: 'cowboy',
   type: 'STANDARD',
   category: 'PEOPLE',
   order: 10103,
-  skinVariations: [],
   representation: {
     sprite: {
       url: 'https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png',
@@ -42,28 +41,28 @@ describe('EmojiService', () => {
   describe('#search', () => {
     it('all', () => {
       const splitCategoryEmojis = [
-        ...allEmojis.slice(0, 88), // upto flag,
+        ...allEmojis.slice(0, 80), // upto flag,
         cowboy,
-        ...allEmojis.slice(88), // rest...
+        ...allEmojis.slice(80), // rest...
       ];
-      const service = new EmojiService(splitCategoryEmojis);
+      const service = new EmojiRepository(splitCategoryEmojis);
       const emojis = service.all().emojis;
       const expectedEmoji = [
-        ...allEmojis.slice(0, 11), // PEOPLE
+        ...allEmojis.slice(0, 10), // PEOPLE
         cowboy, // PEOPLE, but later
-        ...allEmojis.slice(11), // the rest
+        ...allEmojis.slice(10), // the rest
       ];
       checkOrder(expectedEmoji, emojis);
     });
     it('search retains order', () => {
-      const emojis = emojiService.search('flag').emojis;
+      const emojis = emojiRepository.search('flag').emojis;
       const flagEmojis = allEmojis.filter(emoji =>
-        emoji.shortcut.indexOf('flag') === 0 || emoji.name && emoji.name.indexOf('flag') === 0
+        emoji.shortName.indexOf(':flag') === 0 || emoji.name && emoji.name.indexOf('flag') === 0
       );
       checkOrder(flagEmojis, emojis);
     });
     it('no categories repeat', () => {
-      const emojis = emojiService.all().emojis;
+      const emojis = emojiRepository.all().emojis;
       const foundCategories = new Set<string>();
       let lastCategory: string;
 

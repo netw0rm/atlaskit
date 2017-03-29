@@ -9,7 +9,7 @@ import Scrollable from './Scrollable';
 import { EmojiDescription, EmojiId, OnEmojiEvent } from '../../types';
 import debug from '../../util/logger';
 import { mouseLocation, actualMouseMove, Position } from '../../util/mouse';
-import { toEmojiId } from '../../api/EmojiService';
+import { toEmojiId } from '../../api/EmojiRepository';
 
 function wrapIndex(emojis: EmojiDescription[], index: number): number {
   const len = emojis.length;
@@ -21,7 +21,7 @@ function wrapIndex(emojis: EmojiDescription[], index: number): number {
 }
 
 function getKey(emoji: EmojiDescription) {
-  return emoji.id || `${emoji.shortcut}-${emoji.type}`;
+  return emoji.id || `${emoji.shortName}-${emoji.type}`;
 }
 
 function getKeyByIndex(emojis: EmojiDescription[], index: number): string | undefined {
@@ -90,7 +90,7 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
     const { selectedIndex } = this.state;
     if (emojis && emojis[selectedIndex]) {
       const selectedEmoji = emojis[selectedIndex];
-      this.revealItem(selectedEmoji.id || selectedEmoji.shortcut);
+      this.revealItem(selectedEmoji.id || selectedEmoji.shortName);
     }
   }
 
@@ -143,7 +143,7 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
     let index = -1;
     for (let i = 0; i < emojis.length; i++) {
       const emoji = emojis[i];
-      if (emoji.id === emojiId.id || emoji.shortcut === emojiId.shortcut) {
+      if (emoji.id === emojiId.id || emoji.shortName === emojiId.shortName) {
         index = i;
         break;
       }

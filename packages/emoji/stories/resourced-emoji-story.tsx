@@ -17,15 +17,15 @@ interface SampleEmojiProps {
 const SampleEmojis = (props: SampleEmojiProps) => (
   <span>
     <ResourcedEmoji
-      emojiId={{ shortcut: 'grimacing', id: '1f62c' }}
+      emojiId={{ shortName: ':grimacing:', id: '1f62c' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
     />
     <ResourcedEmoji
-      emojiId={{ shortcut: 'awthanks', id: 'atlassian-awthanks' }}
+      emojiId={{ shortName: ':awthanks:', id: 'atlassian-awthanks' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
     />
     <ResourcedEmoji
-      emojiId={{ shortcut: 'not-an-emoji', id: 'not-an-emoji' }}
+      emojiId={{ shortName: ':not-an-emoji:', id: 'not-an-emoji' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
     />
   </span>
@@ -39,31 +39,31 @@ storiesOf(`${name}/ResourcedEmoji`, module)
   .add('skin tones', () => (
     <span>
       <ResourcedEmoji
-        emojiId={{ shortcut: 'thumbsup', id: '1f44d' }}
+        emojiId={{ shortName: ':thumbsup:', id: '1f44d' }}
         emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
       />
       <ResourcedEmoji
-        emojiId={{ shortcut: 'thumbsup', id: '1f44d', modifiers: { skinTone: 1 } }}
+        emojiId={{ shortName: ':thumbsup::skin-tone-2:', id: '1f44d-1f3fb' }}
         emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
       />
       <ResourcedEmoji
-        emojiId={{ shortcut: 'thumbsup', id: '1f44d', modifiers: { skinTone: 2 } }}
+        emojiId={{ shortName: ':thumbsup::skin-tone-3:', id: '1f44d-1f3fc' }}
         emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
       />
       <ResourcedEmoji
-        emojiId={{ shortcut: 'thumbsup', id: '1f44d', modifiers: { skinTone: 3 } }}
+        emojiId={{ shortName: ':thumbsup::skin-tone-4:', id: '1f44d-1f3fd' }}
         emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
       />
       <ResourcedEmoji
-        emojiId={{ shortcut: 'thumbsup', id: '1f44d', modifiers: { skinTone: 4 } }}
+        emojiId={{ shortName: ':thumbsup::skin-tone-5:', id: '1f44d-1f3fe' }}
         emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
       />
       <ResourcedEmoji
-        emojiId={{ shortcut: 'thumbsup', id: '1f44d', modifiers: { skinTone: 5 } }}
+        emojiId={{ shortName: ':thumbsup::skin-tone-6:', id: '1f44d-1f3ff' }}
         emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
       />
       <ResourcedEmoji
-        emojiId={{ shortcut: 'thumbsup', id: '1f44d', modifiers: { skinTone: 6 /* invalid - will fallback to default */ } }}
+        emojiId={{ shortName: ':thumbsup::skin-tone-7:', id: '1f44d-1f3fg', /* invalid - will fallback to text render */ }}
         emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
       />
     </span>

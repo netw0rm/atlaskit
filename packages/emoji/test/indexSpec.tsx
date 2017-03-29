@@ -18,7 +18,7 @@ describe(name, () => {
         'EmojiTypeAhead',
         'EmojiResource',
         'AbstractResource',
-        'EmojiService',
+        'EmojiRepository',
         'EmojiLoader',
         'denormaliseEmojiServiceResponse',
         'default',

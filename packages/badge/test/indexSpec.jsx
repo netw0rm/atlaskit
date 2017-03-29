@@ -1,7 +1,8 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import AkBadge, { APPEARANCE_ENUM } from '../src';
+import AkBadge from '../src';
+import { APPEARANCE_ENUM } from '../src/Badge';
 
 describe('ak-badge', () => {
   describe('value property', () => {

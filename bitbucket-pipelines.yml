@@ -33,6 +33,9 @@ pipelines:
           # need to run this so we have access to the Bitbucket credentials during generate.changed.packages.file.pr.sh
           - ./build/bin/prep_for_release.sh
           - ./build/bin/_get_running_pipelines.js
+          - echo "Doing some more stuff"
+          - echo "sleeping for a while"
+          - sleep 60
           # - yarn
           # # we have to run this after `yarn` to have access to child-process-promise
           # - ./build/bin/generate.changed.packages.file.pr.sh

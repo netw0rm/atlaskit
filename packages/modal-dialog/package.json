@@ -16,7 +16,7 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/blanket": "^1.0.0",
+    "@atlaskit/blanket": "^2.0.2",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5"
@@ -34,9 +34,9 @@
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/dropdown-menu": "^1.0.0",
-    "@atlaskit/field-text": "^1.0.0",
-    "@atlaskit/layer": "^1.0.0",
-    "@atlaskit/navigation": "^1.0.0",
+    "@atlaskit/field-text": "^2.3.3",
+    "@atlaskit/layer": "^2.0.0",
+    "@atlaskit/navigation": "^8.0.0",
     "react-lorem-component": "*"
   },
   "repository": {

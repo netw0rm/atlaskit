@@ -35,6 +35,10 @@ const link2 = {
   id: 'e2365f30-1e08-4259-9372-56247303d1ec',
   mediaItemType: linkType
 };
+const linkPlayer = {
+  id: '9cbceb52-c2b8-4573-8f02-7fa7b1fede89',
+  mediaItemType: linkType
+};
 const file1 = {
   id: '71cd7e7d-4e86-4b89-a0b4-7f6ffe013c94',
   mediaItemType: fileType
@@ -75,6 +79,14 @@ storiesOf('FilmStrip', {})
         content: <FilmStrip
           context={context}
           items={[link1]}
+          collectionName={collectionName}
+          actions={cardsActions}
+        />
+      }, {
+        title: 'Single player link',
+        content: <FilmStrip
+          context={context}
+          items={[linkPlayer]}
           collectionName={collectionName}
           actions={cardsActions}
         />

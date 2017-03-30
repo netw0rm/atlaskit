@@ -12,6 +12,7 @@ import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
 import { reconfigure } from '../utils';
+import { browser } from '../../../src/prosemirror';
 
 export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
 export type StateChangeHandler = (state: HyperlinkState) => any;
@@ -62,6 +63,11 @@ export class HyperlinkState {
         ? state.tr.replaceWith($from.pos, $to.pos, state.schema.text(href, [mark]))
         : state.tr.addMark($from.pos, $to.pos, mark);
 
+      if (browser.gecko && view.editable) {
+        view.selectionReader.ignoreUpdates = true;
+        view.dom.focus();
+        view.selectionReader.ignoreUpdates = false;
+      }
       view.dispatch(tr);
       view.focus();
     }

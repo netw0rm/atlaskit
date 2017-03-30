@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import { MediaItem, ContextFactory, ListCardDelete, ListCardClick } from '@atlaskit/media-core';
-import { StoryBookTokenProvider, defaultServiceHost, StoryList, createStorybookContext, collectionNames, fileCollectionName, defaultCollectionName} from '@atlaskit/media-test-helpers';
+import { MediaItem, ListCardDelete, ListCardClick } from '@atlaskit/media-core';
+import { StoryList, createStorybookContext, collectionNames, fileCollectionName, defaultCollectionName} from '@atlaskit/media-test-helpers';
 import { CardList } from '../../src';
 
 const wrongCollection = 'adfasdf';
@@ -216,8 +216,7 @@ storiesOf('CardList', {})
     return <CardList
       context={context}
       collectionName={fileCollectionName}
-      cardWidth={200}
-      cardHeight={100}
+      cardDimensions={{width: '200px', height: '100px'}}
       actions={cardsActions}
       pageSize={3}
     />;
@@ -249,8 +248,7 @@ storiesOf('CardList', {})
     return <CardList
       context={context}
       collectionName={fileCollectionName}
-      cardWidth={200}
-      cardHeight={100}
+      cardDimensions={{width: '200px', height: '100px'}}
       actions={cardsActions}
       pageSize={10}
       height={500}

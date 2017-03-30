@@ -2,7 +2,8 @@ import { DOMSerializer, EditorState, Node, Slice, Transaction } from '../';
 import * as dom from '../dom';
 import { Decoration, DecorationSet } from './decoration';
 import { NodeViewDesc } from './viewdesc';
-export { Decoration, DecorationSet, NodeViewDesc };
+import { SelectionReader } from './selection.d';
+export { Decoration, DecorationSet, NodeViewDesc, SelectionReader };
 import * as browser from './browser';
 
 export { browser };
@@ -15,6 +16,8 @@ export class EditorView {
   content: dom.Element;
   dom: dom.Element;
   docView: NodeViewDesc;
+  editable: boolean;
+  selectionReader: SelectionReader;
   update(props: EditorProps): void;
   updateState(state: EditorState<any>): void;
   hasFocus(): boolean;

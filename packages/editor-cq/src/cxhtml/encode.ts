@@ -3,6 +3,8 @@ import {
   Node as PMNode
 } from '@atlaskit/editor-core';
 import schema from '../schema';
+import parseCxhtml from './parse-cxhtml';
+import encodeCxhtml from './encode-cxhtml';
 
 import {
   BlockQuoteNode,
@@ -22,11 +24,14 @@ import {
   ParagraphNode
 } from '@atlaskit/editor-core';
 
+import { isUnsupportedBlockNode, UnsupportedBlockNode } from '../schema/nodes/unsupportedBlock';
+import { isUnsupportedInlineNode, UnsupportedInlineNode } from '../schema/nodes/unsupportedInline';
 
 export default function encode(node: DocNode) {
-  const doc = makeDocument();
-  doc.body.appendChild(encodeFragment(node.content));
-  return doc.body.innerHTML;
+  const docType = document.implementation.createDocumentType('html', '-//W3C//DTD XHTML 1.0 Strict//EN', 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd');
+  const doc = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', docType);
+
+  return encodeCxhtml(encodeFragment(node.content));
 
   function encodeNode(node: PMNode) {
     if (node.isText) {
@@ -47,17 +52,11 @@ export default function encode(node: DocNode) {
       return encodeParagraph(node);
     } else if (isHardBreakNode(node)) {
       return encodeHardBreak();
+    } else if (isUnsupportedInlineNode(node) || isUnsupportedBlockNode(node)) {
+      return encodeUnsupported(node);
     } else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
-  }
-
-  function makeDocument() {
-    const docType = document.implementation.createDocumentType('html', '', '');
-    const doc = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', docType);
-    doc.body = doc.createElement('body');
-    doc.documentElement.appendChild(doc.body);
-    return doc;
   }
 
   function encodeBlockquote(node: BlockQuoteNode) {
@@ -68,7 +67,12 @@ export default function encode(node: DocNode) {
 
   function encodeFragment(fragment: Fragment) {
     const documentFragment = doc.createDocumentFragment();
-    fragment.forEach(node => documentFragment.appendChild(encodeNode(node)));
+    fragment.forEach(node => {
+      const domNode = encodeNode(node);
+      if (domNode) {
+        documentFragment.appendChild(domNode);
+      }
+    });
     return documentFragment;
   }
 
@@ -145,5 +149,12 @@ export default function encode(node: DocNode) {
     const elem = doc.createElement('li');
     elem.appendChild(encodeFragment(node.content));
     return elem;
+  }
+
+  function encodeUnsupported(node: UnsupportedInlineNode | UnsupportedBlockNode) {
+    const domNode = parseCxhtml(node.attrs.cxhtml || '').querySelector('body')!.firstChild;
+    if (domNode) {
+      return doc.importNode(domNode, true);
+    }
   }
 }

@@ -8,4 +8,10 @@ export const A = styled.a`
   &:hover {
     text-decoration: none;
   }
+
+  &.underline {
+    &:hover {
+      text-decoration: underline;
+    }    
+  }
 `;

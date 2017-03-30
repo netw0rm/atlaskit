@@ -87,6 +87,7 @@ storiesOf('LinkCard', {})
   })
   .add('From link and collection id', () => {
     const linkFromId = { id: 'e2365f30-1e08-4259-9372-56247303d1ec', collectionName: defaultCollectionName };
+    const linkFromId2 = { id: '517dade5-5489-4e8c-a113-42319878c4a5', collectionName: defaultCollectionName };
 
     const linkCardViewHorizontals = [
       {
@@ -97,6 +98,12 @@ storiesOf('LinkCard', {})
             link={linkFromId}
           />
         )
+      }, {
+        title: 'All props',
+        content: <LinkCard
+          context={context}
+          link={linkFromId2}
+        />
       }
     ];
 

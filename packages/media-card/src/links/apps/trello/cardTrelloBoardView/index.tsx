@@ -10,6 +10,7 @@ import {
 } from './styled';
 import {Wrapper, Details} from '../../../styled';
 import {MediaImage} from '../../../../utils';
+import {Href} from '../../../../utils/href';
 import {MembersList, MemberAvatars} from '../shared';
 
 export interface LinkCardTrelloBoardViewProps {
@@ -62,9 +63,9 @@ export class LinkCardTrelloBoardView extends Component<LinkCardTrelloBoardViewPr
           <Footer>
             <Link>
               {icon}
-              <a href={linkUrl} rel="noopener">
+              <Href linkUrl={linkUrl} underline={true}>
                 Trello - Board
-              </a>
+              </Href>
             </Link>
             <Button onClick={() => open(this.props.linkUrl, '_blank')}>Open board</Button>
           </Footer>

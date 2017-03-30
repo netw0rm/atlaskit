@@ -1,5 +1,4 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/ContainerTitle.less';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import ContainerTitleIcon from '../styled/ContainerTitleIcon';
 import ContainerTitleInner from '../styled/ContainerTitleInner';
@@ -29,7 +28,7 @@ export default class ContainerTitle extends PureComponent {
     } = this.props;
 
     return (
-      <Link className={styles.link} href={href}>
+      <Link href={href}>
         <ContainerTitleInner>
           <ContainerTitleIcon>
             {this.props.icon}

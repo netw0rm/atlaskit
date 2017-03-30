@@ -5,7 +5,7 @@ import { StatelessMultiSelect } from '../src';
 
 import { name } from '../package.json';
 
-describe(`${name} - stateless`, () => {
+describe.skip(`${name} - stateless`, () => {
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {
     window.cancelAnimationFrame = () => {};

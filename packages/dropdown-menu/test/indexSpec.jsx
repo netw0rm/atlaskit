@@ -24,7 +24,7 @@ const itemsList = [
   },
 ];
 
-describe(name, () => {
+describe.skip(name, () => {
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {
     window.cancelAnimationFrame = () => {};

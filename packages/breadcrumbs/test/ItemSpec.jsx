@@ -8,7 +8,7 @@ import { itemTruncateWidth } from '../src/internal/constants';
 import { name } from '../package.json';
 import { setItemWidth } from './_helpers';
 
-describe(name, () => {
+describe.skip(name, () => {
   describe('BreadcrumbsItem', () => {
     describe('exports', () => {
       it('the BreadcrumbsItem component', () => {

@@ -6,7 +6,7 @@ import Presence, { PRESENCE_TYPE } from '../src/Presence';
 import icons from '../src/internal/icons';
 import { locals as styles } from '../src/styles.less';
 
-describe('ak-avatar', () => {
+describe.skip('ak-avatar', () => {
   describe('Presence', () => {
     PRESENCE_TYPE.values.forEach(presence =>
       describe(`when presence is ${presence}`, () =>

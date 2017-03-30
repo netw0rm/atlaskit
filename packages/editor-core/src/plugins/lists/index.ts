@@ -198,18 +198,18 @@ export class ListsState {
     if (this.bulletListActive || this.orderedListActive) {
       const { pm } = this;
       const { list_item } = pm.schema.nodes;
-      commands.sinkListItem(list_item)(pm, true);
-      return true;
+      return commands.sinkListItem(list_item)(pm, true);
     }
+    return false;
   }
 
   outdentList = () => {
     if (this.bulletListActive || this.orderedListActive) {
       const { pm } = this;
       const { list_item } = pm.schema.nodes;
-      commands.liftListItem(list_item)(pm, true);
-      return true;
+      return commands.liftListItem(list_item)(pm, true);
     }
+    return false;
   }
 
   private update() {

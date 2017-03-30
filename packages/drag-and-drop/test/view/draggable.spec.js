@@ -119,6 +119,12 @@ const returningHomeMapProps: MapProps = {
   offset: { x: 75, y: 75 },
 };
 
+// $FlowFixMe - spread and exact types
+const disableMapProps = (mapProps: MapProps): MapProps => ({
+  ...mapProps,
+  isDragEnabled: false,
+});
+
 type MountConnected = {
   type?: string,
   map?: MapState,
@@ -203,11 +209,18 @@ describe('Draggable', () => {
 
   afterEach(() => {
     setScroll(originalScroll);
+    if (Element.prototype.getBoundingClientRect.restore) {
+      Element.prototype.getBoundingClientRect.restore();
+    }
   });
 
   describe('unconnected', () => {
     it('should set the display name to reflect the component being wrapped', () => {
+      const wrapper = mountDraggable({
+        Component: Container,
+      });
 
+      expect(wrapper.find('Draggable').name()).to.equal('Draggable(Container)');
     });
 
     describe('providing a state snapshot to the provided map function', () => {
@@ -360,7 +373,7 @@ describe('Draggable', () => {
             }
 
             const [draggableIdArg, typeArg, centerArg, scrollArg, selectionArg]
-            = dispatchProps.lift.args[0] || [];
+              = dispatchProps.lift.args[0] || [];
 
             return {
               draggableId: draggableIdArg,
@@ -377,6 +390,20 @@ describe('Draggable', () => {
               mapProps: notDraggingMapProps,
               dispatchProps,
             });
+          });
+
+          it('should throw if lifted when dragging is not enabled', () => {
+            const wrapper = mountDraggable({
+              mapProps: disableMapProps(notDraggingMapProps),
+            });
+
+            expect(() => lift(wrapper)()).to.throw();
+          });
+
+          it('should throw if lifted when not attached to the dom', () => {
+            standardWrapper.unmount();
+
+            expect(() => lift(standardWrapper)()).to.throw();
           });
 
           it('should lift with the draggable id', () => {
@@ -411,38 +438,23 @@ describe('Draggable', () => {
 
             expect(result.center).to.deep.equal(center);
           });
-
-          it('should do nothing if dragging is not enabled', () => {
-            const myDispatchProps = getDispatchPropsStub();
-          // $FlowFixMe - spread and extact type
-            const mapProps: MapProps = {
-              ...notDraggingMapProps,
-              isDragEnabled: false,
-            };
-            const myWrapper = mountDraggable({
-              mapProps,
-              dispatchProps,
-            });
-
-            lift(myWrapper)();
-
-            expect(myDispatchProps.lift.called).to.equal(false);
-          });
         });
 
         describe('onMove', () => {
           it('should throw if dragging is not enabled', () => {
-            // $FlowFixMe - spread and exact types
-            const mapProps: MapProps = {
-              ...draggingMapProps,
-              isDragEnabled: false,
-            };
-
             const wrapper = mountDraggable({
-              mapProps,
+              mapProps: disableMapProps(draggingMapProps),
             });
 
             const move = () => wrapper.find(DragHandle).onMove({ x: 100, y: 200 });
+
+            expect(move).to.throw();
+          });
+
+          it('should throw if not attached to the DOM', () => {
+            const move = () => draggingWrapper.find(DragHandle).onMove({ x: 100, y: 200 });
+
+            draggingWrapper.unmount();
 
             expect(move).to.throw();
           });
@@ -517,23 +529,105 @@ describe('Draggable', () => {
         });
 
         describe('onDrop', () => {
+          it('should throw if dragging is disabled', () => {
+            const wrapper = mountDraggable({
+              mapProps: disableMapProps(draggingMapProps),
+            });
 
-        });
+            const drop = () => wrapper.find(DragHandle).props.onDrop();
 
-        describe('onCancel', () => {
+            expect(drop).to.throw();
+          });
 
+          it('should throw if not attached to the DOM', () => {
+            const drop = () => draggingWrapper.find(DragHandle).props.onDrop();
+
+            draggingWrapper.unmount();
+
+            expect(drop).to.throw();
+          });
+
+          it('should trigger drop', () => {
+            const dispatchProps = getDispatchPropsStub();
+            const wrapper = mountDraggable({
+              mapProps: draggingMapProps,
+              dispatchProps,
+            });
+
+            wrapper.find(DragHandle).props().onDrop();
+
+            expect(dispatchProps.drop.calledWith(defaultDraggableId)).to.equal(true);
+          });
         });
 
         describe('onKeyLift', () => {
+          it('should throw if dragging is disabled', () => {
+            const wrapper = shallowDraggable({
+              mapProps: disableMapProps(notDraggingMapProps),
+            });
 
+            const onKeyLift = () => wrapper.find(DragHandle).props.onKeyLift();
+
+            expect(onKeyLift).to.throw();
+          });
+
+          it('should throw if not attached to the DOM', () => {
+            const onKeyLift = () => notDraggingWrapper.find(DragHandle).props.onKeyLift();
+
+            notDraggingWrapper.unmount();
+
+            expect(onKeyLift).to.throw();
+          });
+
+          it('should trigger lift with the draggableId', () => {
+            const dispatchProps = getDispatchPropsStub();
+            const wrapper = mountDraggable({
+              mapProps: notDraggingMapProps,
+              dispatchProps,
+            });
+
+            wrapper.find(DragHandle).props().onKeyLift();
+
+            expect(dispatchProps.lift.args[0][0]).to.equal(defaultDraggableId);
+          });
+
+          it('should trigger lift with the current center position', () => {
+
+          });
+
+          it('should trigger lift with the current scroll position', () => {
+
+          });
         });
 
         describe('onMoveBackward', () => {
+          it('should throw if dragging is disabled', () => {
 
+          });
+
+          it('should throw if not attached to the DOM', () => {
+
+          });
         });
 
         describe('onMoveForward', () => {
+          it('should throw if dragging is disabled', () => {
 
+          });
+
+          it('should throw if not attached to the DOM', () => {
+
+          });
+        });
+
+        describe('onCancel', () => {
+          it('should allow the action even if dragging is disabled', () => {
+
+          });
+
+          it('should allow the action even when not attached to the dom', () => {
+
+          });
         });
       });
     });
@@ -566,7 +660,11 @@ describe('Draggable', () => {
       });
 
       it('should give a placeholder the same height and width of the element being moved', () => {
-
+        expect(draggingWrapper.find(Placeholder).props().style)
+          .to.deep.equal({
+            width: mockInitial.dimension.width,
+            height: mockInitial.dimension.height,
+          });
       });
 
       describe('is not dragging', () => {

@@ -70,6 +70,19 @@ export default (type: TypeId, map: MapState): Function =>
         });
       }
 
+      // This should already be handled gracefully in DragHandle.
+      // Just being extra clear here
+      throwIfCannotDrag() {
+        invariant(this.state.childRef,
+          'Draggable: cannot drag if no attached child node'
+        );
+
+        invariant(this.props.mapProps.isDragEnabled,
+          `Draggable: cannot perform drag action if drag is not enabled.
+          This should be handled by DragHandle.`
+        );
+      }
+
       onMoveEnd = () => {
         if (!this.props.mapProps.isDropAnimating) {
           return;
@@ -84,7 +97,7 @@ export default (type: TypeId, map: MapState): Function =>
       }
 
       onLift = (selection: Position) => {
-        invariant(this.state.childRef, 'cannot move an item that is not in the DOM');
+        this.throwIfCannotDrag();
 
         const {
           mapProps: { id, isDragEnabled },
@@ -102,7 +115,7 @@ export default (type: TypeId, map: MapState): Function =>
       }
 
       onKeyLift = () => {
-        invariant(this.state.childRef, 'cannot move an item that is not in the DOM');
+        this.throwIfCannotDrag();
 
         const {
           mapProps: { id, isDragEnabled },
@@ -121,15 +134,12 @@ export default (type: TypeId, map: MapState): Function =>
       }
 
       onMove = (point: Position) => {
+        this.throwIfCannotDrag();
+
         const {
-          mapProps: { id, isDragEnabled, initial },
+          mapProps: { id, initial },
           dispatchProps: { move },
         } = this.props;
-
-        invariant(this.state.childRef, 'cannot move when there is no ref');
-        // This should already be handled gracefully in DragHandle.
-        // Just being extra clear here
-        invariant(isDragEnabled, 'cannot move when dragging is disabled');
 
         // dimensions not provided yet
         if (!initial) {
@@ -161,6 +171,8 @@ export default (type: TypeId, map: MapState): Function =>
       }
 
       onMoveForward = () => {
+        this.throwIfCannotDrag();
+
         const {
           mapProps: { id },
           dispatchProps: { moveForward },
@@ -170,6 +182,8 @@ export default (type: TypeId, map: MapState): Function =>
       }
 
       onMoveBackward = () => {
+        this.throwIfCannotDrag();
+
         const {
           mapProps: { id },
           dispatchProps: { moveBackward },
@@ -179,15 +193,20 @@ export default (type: TypeId, map: MapState): Function =>
       }
 
       onDrop = () => {
+        this.throwIfCannotDrag();
+
         const {
           mapProps: { id },
           dispatchProps: { drop },
-         } = this.props;
+        } = this.props;
 
         drop(id);
       }
 
       onCancel = () => {
+        // not checking if drag is enabled
+        // cancel is an escape mechanism
+
         const {
           mapProps: { id },
           dispatchProps: { cancel },
@@ -208,7 +227,7 @@ export default (type: TypeId, map: MapState): Function =>
         const style = {
           width: dimension.width,
           height: dimension.height,
-          backgroundColor: 'pink',
+          // backgroundColor: 'pink',
         };
 
         return (

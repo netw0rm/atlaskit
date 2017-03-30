@@ -20,6 +20,7 @@ export interface Mention {
   avatarUrl?: string;
   name?: string;
   mentionName?: string;
+  nickname?: string;
   highlight?: Highlight;
   lozenge?: string;
   presence?: Presence;

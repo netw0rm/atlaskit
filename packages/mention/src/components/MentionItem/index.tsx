@@ -107,7 +107,7 @@ export default class MentionItem extends PureComponent<Props, undefined> {
   }
 
   render() {
-    const { id, highlight, avatarUrl, presence, name, mentionName, lozenge } = this.props.mention;
+    const { id, highlight, avatarUrl, presence, name, mentionName, nickname, lozenge } = this.props.mention;
     const { status, time } = presence || {} as Presence;
     const { selected } = this.props;
     const classes = classNames({
@@ -115,6 +115,8 @@ export default class MentionItem extends PureComponent<Props, undefined> {
       [styles.mentionItem]: true,
       [styles.selected]: selected,
     });
+
+    const renderName = nickname ? nickname : name;
 
     const nameHighlights = highlight && highlight.name;
     const mentionHighlights = highlight && highlight.mentionName;
@@ -133,7 +135,7 @@ export default class MentionItem extends PureComponent<Props, undefined> {
           </span>
           <div className={styles.nameSection}>
             {renderHighlight(styles.fullName, name, nameHighlights)}
-            {renderHighlight(styles.mentionName, mentionName, mentionHighlights, '@')}
+            {renderHighlight(styles.mentionName, renderName, mentionHighlights, '@')}
           </div>
           <div className={styles.infoSection}>
             {renderLozenge(lozenge)}

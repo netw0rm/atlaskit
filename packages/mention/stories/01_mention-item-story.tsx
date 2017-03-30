@@ -49,6 +49,19 @@ storiesOf(`${name}/MentionItem`, module)
       <MentionItem mention={mention} onSelection={action('onSelection')} />
     );
   })
+  .add('simple mention with nickname', () => {
+    const mention = {
+      avatarUrl,
+      id: '666',
+      name: 'Craig Petchell',
+      mentionName: 'petch',
+      nickname: 'cpetchell'
+    };
+
+    return renderSingleMention(
+      <MentionItem mention={mention} onSelection={action('onSelection')} />
+    );
+  })
   .add('simple mention selected', () => {
     const mention = {
       avatarUrl,

@@ -20,6 +20,10 @@ describe(`${name} - item`, () => {
       expect(mount(<Item>sample</Item>).text()).to.equal('sample');
     });
 
+    it('should render descriptions after the content', () => {
+      expect(mount(<Item description="test">sample</Item>).text()).to.equal('sampletest');
+    });
+
     it('should render elemBefore for all items', () => {
       const Icon = (<div id="icon">icon</div>);
       expect(mount(<Item elemBefore={Icon}>sample</Item>).contains(Icon)).to.equal(true);

@@ -3,7 +3,7 @@ import {Component} from 'react';
 import {MediaType} from '@atlaskit/media-core';
 import FileIcon from '@atlaskit/icon/glyph/file';
 import {LoadingWrapper} from './styled';
-import {MediaImage} from '../../utils';
+import {MediaImage} from '../../mediaImage';
 
 export interface CardContentProps {
   mediaType?: MediaType;

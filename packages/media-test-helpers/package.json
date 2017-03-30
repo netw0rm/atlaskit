@@ -19,7 +19,7 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/media-core": "^3.0.0",
+    "@atlaskit/media-core": "^5.0.2",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "akutil-common-test": "*",
     "axios": "^0.15.3",

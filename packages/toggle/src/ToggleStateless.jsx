@@ -78,12 +78,12 @@ export default class ToggleStateless extends PureComponent {
         />
         <Slide {...styledProps}>
           <Inner {...styledProps}>
+            <Handle
+              isChecked={isChecked}
+              isDisabled={isDisabled}
+              size={size}
+            />
             <IconWrapper isChecked={isChecked} size={size}>
-              <Handle
-                isChecked={isChecked}
-                isDisabled={isDisabled}
-                size={size}
-              />
               <Icon label={label || (isChecked ? 'Uncheck' : 'Check')} />
             </IconWrapper>
           </Inner>

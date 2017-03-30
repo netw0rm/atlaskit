@@ -13,14 +13,14 @@ export const widthTransition = 'width 220ms cubic-bezier(0.15, 1, 0.3, 1)';
 export const widths = {
   narrow: {
     width: narrowWidth,
-    offScreenTranslateX: -(narrowWidth + boxShadowSpread),
+    offScreenTranslateX: narrowWidth + boxShadowSpread,
   },
   wide: {
     width: wideWidth,
-    offScreenTranslateX: -(wideWidth + boxShadowSpread),
+    offScreenTranslateX: wideWidth + boxShadowSpread,
   },
   full: {
     width: fullWidth,
-    offScreenTranslateX: `-${fullWidth} - ${boxShadowSpread}`,
+    offScreenTranslateX: `${fullWidth} + ${boxShadowSpread}`,
   },
 };

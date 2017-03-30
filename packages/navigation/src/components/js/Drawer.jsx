@@ -11,8 +11,7 @@ import DrawerHeader from '../styled/DrawerHeader';
 import DrawerPrimaryIcon from '../styled/DrawerPrimaryIcon';
 import DrawerMain from '../styled/DrawerMain';
 import DrawerContent from '../styled/DrawerContent';
-import DrawerBackIconOuter from '../styled/DrawerBackIconOuter';
-import DrawerBackIconInner from '../styled/DrawerBackIconInner';
+import DrawerBackIconWrapper from '../styled/DrawerBackIconWrapper';
 
 export default class Drawer extends PureComponent {
   static propTypes = {
@@ -44,7 +43,7 @@ export default class Drawer extends PureComponent {
       width,
     } = this.props;
 
-    const backIconOuterStyle = {
+    const backIconWrapperStyle = {
       top: `${backIconOffset}px`,
     };
 
@@ -65,17 +64,15 @@ export default class Drawer extends PureComponent {
             <DrawerPrimaryIcon>
               {primaryIcon}
             </DrawerPrimaryIcon>
-            <DrawerBackIconOuter style={backIconOuterStyle}>
-              <DrawerBackIconInner>
-                <DrawerTrigger onActivate={onBackButton}>
-                  <DrawerBackIcon
-                    isVisible={isOpen}
-                  >
-                    {backIcon}
-                  </DrawerBackIcon>
-                </DrawerTrigger>
-              </DrawerBackIconInner>
-            </DrawerBackIconOuter>
+            <DrawerBackIconWrapper style={backIconWrapperStyle}>
+              <DrawerTrigger onActivate={onBackButton}>
+                <DrawerBackIcon
+                  isVisible={isOpen}
+                >
+                  {backIcon}
+                </DrawerBackIcon>
+              </DrawerTrigger>
+            </DrawerBackIconWrapper>
           </FixedDrawerSide>
           <DrawerMain>
             {(width !== 'full') ?

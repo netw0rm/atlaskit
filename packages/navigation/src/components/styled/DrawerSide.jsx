@@ -8,5 +8,5 @@ export default styled.div`
   flex-direction: column;
   flex: 1 0 auto;
   padding: ${globalVerticalPaddingTop}px 0 ${globalVerticalPaddingTop * 2}px 0;
-  width: ${globalOpenWidth};
+  width: ${globalOpenWidth}px;
 `;

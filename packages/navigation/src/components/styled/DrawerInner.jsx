@@ -21,7 +21,7 @@ export default styled.div`
   left: 0;
   overflow: hidden;
   position: fixed;
-  transform: ${({ width, isOpen }) => (isOpen ? 'translateX(0)' : `translateX(${widths[width].offScreenTranslateX}px)`)}
+  transform: ${({ width, isOpen }) => (isOpen ? 'translateX(0)' : `translateX(-${widths[width].offScreenTranslateX}px)`)}
   transition: ${transformTransition}, ${widthTransition};
   width: ${({ width }) => widths[width].width}px;
 `;

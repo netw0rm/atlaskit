@@ -320,8 +320,7 @@ export function clearFormatting(markTypes: Array<string>): Command {
               // todo: try to get rid of this 4, 2 by using a child node.
               const start = tr.doc.resolve(tr.mapping.map(pos + childPos) + 4);
               const nodeEnd = tr.mapping.map(pos + childPos) + child.nodeSize - 2;
-              const selectionEnd = tr.mapping.map(to);
-              const end = tr.doc.resolve(selectionEnd > nodeEnd ? nodeEnd : selectionEnd);
+              const end = tr.doc.resolve(nodeEnd);
               const sel = new TextSelection(start, end);
               if (node.childCount > 1) {
                 tr = liftListItem(state, sel, tr);

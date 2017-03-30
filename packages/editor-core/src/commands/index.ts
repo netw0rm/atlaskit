@@ -305,37 +305,56 @@ export function clearFormatting(markTypes: Array<string>): Command {
     tr.setStoredMarks([]);
     if (paragraph) {
       tr.setBlockType(from, to, paragraph);
-      tr.doc.nodesBetween(from, to, (node, pos) => {
-        if (node.type === state.schema.nodes.text) {
-          const start = tr.doc.resolve(tr.mapping.map(pos));
-          const end = tr.doc.resolve(tr.mapping.map(pos + node.textContent.length));
-          const sel = new TextSelection(start, end);
-          if (sel.$from.depth > 0) {
-            const range = sel.$from.blockRange(sel.$to)!;
-            tr.lift(range, liftTarget(range)!);
-          }
-        } else if (node.type === state.schema.nodes.listItem && node.childCount > 1) {
-          node.descendants((child, childPos) => {
-            if (child.isBlock && child.type === state.schema.nodes.bulletList) {
-              // todo: try to get rid of this 4, 2 by using a child node.
-              const start = tr.doc.resolve(tr.mapping.map(pos + childPos) + 4);
-              const nodeEnd = tr.mapping.map(pos + childPos) + child.nodeSize - 2;
-              const end = tr.doc.resolve(nodeEnd);
-              const sel = new TextSelection(start, end);
-              if (node.childCount > 1) {
-                tr = liftListItem(state, sel, tr);
-              }
-            }
-          });
-        }
-      });
+      tr = liftAllNodes(state, tr);
     }
     dispatch(tr);
     return true;
   };
 }
 
-function liftListItem(state, selection, tr) {
+function liftAllNodes(state: EditorState<any>, tr: Transaction): Transaction {
+  const { text } = state.schema.nodes;
+  const { from, to } = state.selection;
+  tr.doc.nodesBetween(from, to, (node, pos) => {
+    if (node.type === text) {
+      const start = tr.doc.resolve(tr.mapping.map(pos));
+      const end = tr.doc.resolve(tr.mapping.map(pos + node.textContent.length));
+      const sel = new TextSelection(start, end);
+      if (sel.$from.depth > 0) {
+        const range = sel.$from.blockRange(sel.$to)!;
+        tr.lift(range, liftTarget(range)!);
+      }
+    } else if (node.type === state.schema.nodes.listItem && node.childCount > 1) {
+      tr = liftSubList(state, node, pos, tr);
+    }
+  });
+  return tr;
+}
+
+function liftSubList(state: EditorState<any>, listNode, listPos, tr: Transaction): Transaction {
+  const { text, bulletList, orderedList } = state.schema.nodes;
+  listNode.descendants((node, pos) => {
+    if (node.type === bulletList || node.type === orderedList) {
+      let startPos;
+      let endpos;
+      node.descendants((child, childPos) => {
+        if (child.type === text) {
+          if (!startPos) {
+            startPos = listPos + pos + childPos;
+          }
+          endpos = listPos + pos + childPos + child.textContent.length;
+        }
+      });
+      const start = tr.doc.resolve(tr.mapping.map(startPos));
+      const end = tr.doc.resolve(tr.mapping.map(endpos));
+      const sel = new TextSelection(start, end);
+      tr = liftListItem(state, sel, tr);
+    }
+  });
+  return tr;
+}
+
+function liftListItem(state: EditorState<any>, selection, tr: Transaction): Transaction {
   let {$from, $to} = selection;
   const nodeType = state.schema.nodes.listItem;
   let range = $from.blockRange($to, node => node.childCount && node.firstChild.type === nodeType);

@@ -1,35 +1,37 @@
 import React, { PureComponent, PropTypes } from 'react';
 import keyCode from 'keycode';
-import { style } from 'glamor';
 import { akFontSizeDefault } from '@atlaskit/util-shared-styles';
+import styled from 'styled-components';
 
-const css = {
-  common: style({
-    color: 'inherit',
-    fontSize: akFontSizeDefault,
-    letterSpacing: 'normal',
-    appearance: 'none',
-  }),
-  readView: style({
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-  }),
-  editView: style({
-    lineHeight: 'inherit',
-    background: 'transparent',
-    border: 0,
-    margin: 0,
-    padding: 0,
-    boxSizing: 'border-box',
-    cursor: 'inherit',
-    outline: 'none',
-    width: '100%',
-    ':invalid': {
-      boxShadow: 'none',
-    },
-  }),
-};
+const common = `
+  color: inherit;
+  font-size: ${akFontSizeDefault};
+  letter-spacing: normal;
+  appearance: none;
+`;
+
+const ReadView = styled.div`
+  ${common}
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const EditView = styled.input`
+  ${common}
+  line-height: inherit;
+  background: transparent;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: inherit;
+  outline: none;
+  width: 100%;
+  :invalid: {
+    boxshadow: none;
+  },
+`;
 
 export default class SingleLineTextInput extends PureComponent {
   static propTypes = {
@@ -88,19 +90,17 @@ export default class SingleLineTextInput extends PureComponent {
 
   renderEditView() {
     return (
-      <input
-        {...style(css.common, css.editView, this.props.style)}
+      <EditView
+        style={this.props.style}
         {...this.getInputProps()}
-        ref={(ref) => { this.inputRef = ref; }}
+        innerRef={(ref) => { this.inputRef = ref; }}
       />
     );
   }
 
   renderReadView() {
     return (
-      <div {...style(css.common, css.readView, this.props.style)}>
-        {this.props.value}
-      </div>
+      <ReadView style={this.props.style}>{this.props.value}</ReadView>
     );
   }
 

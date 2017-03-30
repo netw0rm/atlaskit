@@ -1,16 +1,20 @@
-export interface MediaCollectionFileItem {
-  type: 'file';
-  id: string;
+import {FileItem, FileDetails, LinkItem, LinkDetails} from './item';
+
+
+export interface MediaCollectionFileItemDetails extends FileDetails {
   occurrenceKey: string;
-  name: string;
-  mimeType: string;
 }
 
-export interface MediaCollectionLinkItem {
-  type: 'link';
-  id: string;
+export interface MediaCollectionFileItem extends FileItem {
+  details: MediaCollectionFileItemDetails;
+}
+
+export interface MediaCollectionLinkItemDetails extends LinkDetails {
   occurrenceKey: string;
-  url: string;
+}
+
+export interface MediaCollectionLinkItem extends LinkItem {
+  details: MediaCollectionLinkItemDetails;
 }
 
 export type MediaCollectionItem = MediaCollectionFileItem | MediaCollectionLinkItem;

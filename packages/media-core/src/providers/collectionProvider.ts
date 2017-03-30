@@ -3,7 +3,7 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/publishReplay';
 
-import { MediaCollection, MediaCollectionItem, MediaCollectionFileItem, MediaCollectionLinkItem } from '../collection';
+import { MediaCollection, MediaCollectionItem} from '../collection';
 import { MediaApiConfig } from '../config';
 import { CollectionService, MediaCollectionService, SortDirection } from '../services/collectionService';
 import { Pool, observableFromReducerPool } from './util/reducerPool';
@@ -75,34 +75,14 @@ export class CollectionCommandReducer {
       this.sortDirection,
       'full')
       .then(response => {
-        const items = response.data.contents
-          .map(item => {
-            if (item.type === 'file') {
-              return {
-                type: item.type,
-                id: item.id,
-                occurrenceKey: item.occurrenceKey,
-                name: item.details.name,
-                mimeType: item.details.mimeType
-              } as MediaCollectionFileItem;
-            } else {
-              return {
-                type: item.type,
-                id: item.id,
-                occurrenceKey: item.occurrenceKey,
-                url: item.details.url
-              } as MediaCollectionLinkItem;
-            }
-          });
-
-        this.items.push(...items);
+        this.items.push(...response.items);
 
         const mediaCollection = {
           id: this.collectionName,
           items: this.items
         };
 
-        this.nextInclusiveStartKey = response.data.nextInclusiveStartKey;
+        this.nextInclusiveStartKey = response.nextInclusiveStartKey;
 
         if (this.nextInclusiveStartKey) {
           this.subject.next(mediaCollection);

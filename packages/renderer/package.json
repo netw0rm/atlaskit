@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "1.6.2",
+  "version": "1.13.0",
   "config": {
     "access": "public"
   },
@@ -19,10 +19,13 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/mention": "^2.1.0",
+    "@atlaskit/media-card": "^5.0.0",
+    "@atlaskit/media-core": "^1.2.2",
+    "@atlaskit/media-filmstrip": "^2.0.6",
+    "@atlaskit/mention": "^4.0.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
-    "tslib": "^1.2.0",
-    "styled-components": "^1.4.0"
+    "styled-components": "^1.4.0",
+    "tslib": "^1.2.0"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
@@ -39,6 +42,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
+    "@atlaskit/media-test-helpers": "^2.1.0",
     "akutil-common-test": "*"
   },
   "keywords": [

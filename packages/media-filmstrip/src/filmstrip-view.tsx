@@ -53,20 +53,18 @@ function createCardActions(item: FilmStripViewItem, items: Array<FilmStripViewIt
 
 export function FilmStripView(props: FilmStripViewProps): JSX.Element {
   const itemEls = props.items.map((item, k) => (
-    <li key={item.id || k}>
-      <FileCardView
-        loading={item.loading}
-        selectable={false}
-        selected={false}
-        progress={item.progress}
-        dataURI={item.dataURI}
-        mediaName={item.mediaName}
-        mediaType={item.mediaType}
-        mediaSize={item.mediaSize}
-        onClick={onItemClick(item, props)}
-        actions={createCardActions(item, props.items, props.menuActions)}
-      />
-    </li>
+    <FileCardView
+      loading={item.loading}
+      selectable={false}
+      selected={false}
+      progress={item.progress}
+      dataURI={item.dataURI}
+      mediaName={item.mediaName}
+      mediaType={item.mediaType}
+      mediaSize={item.mediaSize}
+      onClick={onItemClick(item, props)}
+      actions={createCardActions(item, props.items, props.menuActions)}
+    />
   ));
   return <FilmStripNavigator onDrop={props.onDrop} onDragEnter={props.onDragEnter} onDragOver={props.onDragOver} width={props.width}>
            {itemEls}

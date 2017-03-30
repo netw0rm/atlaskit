@@ -113,8 +113,8 @@ export const getEmojiVariation = (emoji: EmojiDescription, options?: SearchOptio
 export default class EmojiService {
   private emojis: EmojiDescription[];
   private fullSearch: Search;
-  private shortNameLookup: EmojiByKey;
-  private idLookup: EmojiByKey;
+  private shortNameMap: EmojiByKey;
+  private idMap: EmojiByKey;
 
   constructor(emojis: EmojiDescription[]) {
     // Ensure emojis are ordered by: category (in order found), then by emoji order
@@ -126,8 +126,8 @@ export default class EmojiService {
     this.fullSearch.addIndex('shortName');
     this.fullSearch.addDocuments(emojis);
 
-    this.shortNameLookup = createMapBy(emojis, e => e.shortName);
-    this.idLookup = createMapBy(emojis, e => e.id);
+    this.shortNameMap = createMapBy(emojis, e => e.shortName);
+    this.idMap = createMapBy(emojis, e => e.id);
   }
 
   /**
@@ -161,15 +161,15 @@ export default class EmojiService {
    * Returns the first matching emoji matching the shortName, or null if none found.
    */
   findByShortName(shortName: string): OptionalEmojiDescription {
-    return findByKey(this.shortNameLookup, shortName);
+    return findByKey(this.shortNameMap, shortName);
   }
 
   /**
    * Returns the first matching emoji matching the id, or null if none found.
    */
   findById(id: string): OptionalEmojiDescription {
-    debug('findById', id, this.idLookup);
-    return findByKey(this.idLookup, id);
+    debug('findById', id, this.idMap);
+    return findByKey(this.idMap, id);
   }
 
   findInCategory(categoryId: string): EmojiDescription[] {

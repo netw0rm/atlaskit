@@ -227,7 +227,7 @@ describe('Bitbucket markdown serializer: ', () => {
             pre('code\nblock'),
           )
         )
-      ))).to.eq('* item\n\n        code\n        block');
+      ))).to.eq('* item\n\n        code\n        block\n\n    \n');
     });
 
     it('with one empty element is preserved', () => {
@@ -269,11 +269,23 @@ describe('Bitbucket markdown serializer: ', () => {
         ul(
           li(
             p('item 1'),
-            '\n'
+            p('\n')
           ),
           li(p('item 2'))
         )
-      ))).to.eq('* item 1\n\n    \n    \n* item 2');
+      ))).to.eq('* item 1\n\n    \n    \n\n    \n* item 2');
+    });
+
+    it('with list item containing two lines', () => {
+      expect(markdownSerializer.serialize(doc(
+        ul(
+          li(
+            p('item 1'),
+            p('item 1 desc'),
+          ),
+          li(p('item 2'))
+        )
+      ))).to.eq('* item 1\n\n    item 1 desc\n\n    \n* item 2');
     });
   });
 
@@ -320,7 +332,7 @@ describe('Bitbucket markdown serializer: ', () => {
             pre('code\nblock'),
           )
         )
-      ))).to.eq('1. item\n\n        code\n        block');
+      ))).to.eq('1. item\n\n        code\n        block\n\n    \n');
     });
 
     it('with one empty element is preserved', () => {

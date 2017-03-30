@@ -1,65 +1,67 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import styles from '../src/styles.less';
 import Spinner from '../src';
+import Container from '../src/styled/Container';
+import Dash from '../src/styled/Dash';
 
-const {
-  spinner: spinnerClass,
-  hidden: hiddenClass,
-  active: activeClass,
-} = styles.locals;
-
-// we use this to know when the spinner is visible (because it has a time out before showing now)
-const spinnerIsVisible = elem => (elem.find(`.${hiddenClass}`).length === 0);
+// we use this to know when the spinner is visible (because it has a time out
+// before showing now)
+const spinnerIsVisible = elem => (elem.state('spinnerHiddenForDelay') === false);
 
 describe('Spinner', () => {
   it('should be possible to create a component', () => {
-    const wrapper = shallow(<Spinner />);
+    const wrapper = mount(<Spinner />);
     expect(wrapper).not.to.equal(undefined);
   });
 
-  it('should apply spinner class', () => {
-    const wrapper = shallow(<Spinner />);
-    expect(wrapper.find(`.${spinnerClass}`)).to.have.length.above(0);
+  it('should be active by default', () => {
+    const wrapper = mount(<Spinner />);
+
+    // active is equivalent to Prop `!isCompleting`
+    wrapper.prop('isCompleting').should.equal(false);
   });
 
-  it('should apply active class by default', () => {
-    const wrapper = shallow(<Spinner />);
-    expect(wrapper.find(`.${activeClass}`)).to.have.length.above(0);
+  it('should be hidden by default', () => {
+    const wrapper = mount(<Spinner />);
+    wrapper.find(Container).prop('hidden').should.equal(true);
   });
 
-  it('should apply .hidden class by default', () => {
-    const wrapper = shallow(<Spinner />);
-    expect(wrapper.find(`.${hiddenClass}`)).to.have.length.above(0);
-  });
+  it('should remove the hidden state after some time', () => {
+    const wrapper = mount(<Spinner />);
 
-  it('should remove the .hidden class after some time', () => {
-    const wrapper = shallow(<Spinner />);
-
-    return waitUntil(() => !spinnerIsVisible(wrapper));
+    return waitUntil(() => spinnerIsVisible(wrapper)).then(() =>
+      expect(wrapper.find(Container).prop('hidden').should.equal(false))
+    );
   });
 
   describe('isCompleting prop', () => {
-    it('should remove the .active class when set to true', () => {
-      const wrapper = shallow(<Spinner isCompleting />);
-      expect(wrapper.find(`.${activeClass}`).length).to.equal(0);
+    it('should remove the active prop from Container when set to true', () => {
+      const wrapper = mount(<Spinner isCompleting />);
+      wrapper.find(Container).prop('active').should.equal(false);
+    });
+    it('should remove the active prop from Dash when set to true', () => {
+      const wrapper = mount(<Spinner isCompleting />);
+      wrapper.find(Dash).prop('active').should.equal(false);
     });
   });
 
   describe('onComplete prop', () => {
     it('should be called after isCompleting is set', () => {
-      /* Unfortunately this is not testable properly in jsdom as no transitionEnd event will ever
-         get fired. The best we can do manually fire the event and check that function gets called
+      /*
+        Unfortunately this is not testable properly in jsdom as no transitionEnd
+        event will ever get fired. The best we can do manually fire the event
+        and check that function gets called
       */
       const spy = sinon.spy();
+
       // we render without the isCompleting set first to get past the delay
       const wrapper = mount(<Spinner onComplete={spy} />);
 
       return waitUntil(() => spinnerIsVisible(wrapper)).then(() => {
         wrapper.setProps({ isCompleting: true });
-        wrapper.find(`.${spinnerClass}`)
+        wrapper.find(Container)
           .simulate('transitionEnd', { propertyName: 'stroke-dashoffset' });
 
         expect(spy.callCount).to.equal(1);
@@ -71,7 +73,7 @@ describe('Spinner', () => {
       const wrapper = mount(<Spinner onComplete={spy} />);
 
       return waitUntil(() => spinnerIsVisible(wrapper)).then(() => {
-        wrapper.find(`.${spinnerClass}`)
+        wrapper.find(Container)
           .simulate('transitionEnd', { propertyName: 'stroke-dashoffset' });
 
         expect(spy.callCount).to.not.equal(1);
@@ -80,37 +82,37 @@ describe('Spinner', () => {
   });
 
   describe('size prop', () => {
-    it('should render the tee-shirt sizes with the proper widths', () => {
+    it('should render tee-shirt sizes with the proper heights/widths', () => {
       const small = mount(<Spinner size="small" />);
       const medium = mount(<Spinner size="medium" />);
       const large = mount(<Spinner size="large" />);
       const xlarge = mount(<Spinner size="xlarge" />);
 
-      expect(small.find(`.${spinnerClass}`).prop('style').height).to.equal('20px');
-      expect(small.find(`.${spinnerClass}`).prop('style').width).to.equal('20px');
+      expect(small.find(Container).prop('style').height).to.equal(20);
+      expect(small.find(Container).prop('style').width).to.equal(20);
 
-      expect(medium.find(`.${spinnerClass}`).prop('style').height).to.equal('30px');
-      expect(medium.find(`.${spinnerClass}`).prop('style').width).to.equal('30px');
+      expect(medium.find(Container).prop('style').height).to.equal(30);
+      expect(medium.find(Container).prop('style').width).to.equal(30);
 
-      expect(large.find(`.${spinnerClass}`).prop('style').height).to.equal('50px');
-      expect(large.find(`.${spinnerClass}`).prop('style').height).to.equal('50px');
+      expect(large.find(Container).prop('style').height).to.equal(50);
+      expect(large.find(Container).prop('style').height).to.equal(50);
 
-      expect(xlarge.find(`.${spinnerClass}`).prop('style').width).to.equal('100px');
-      expect(xlarge.find(`.${spinnerClass}`).prop('style').width).to.equal('100px');
+      expect(xlarge.find(Container).prop('style').width).to.equal(100);
+      expect(xlarge.find(Container).prop('style').width).to.equal(100);
     });
 
     it('should render the spinner with a custom size', () => {
       const custom = mount(<Spinner size={72} />);
 
-      expect(custom.find(`.${spinnerClass}`).prop('style').height).to.equal('72px');
-      expect(custom.find(`.${spinnerClass}`).prop('style').width).to.equal('72px');
+      expect(custom.find(Container).prop('style').height).to.equal(72);
+      expect(custom.find(Container).prop('style').width).to.equal(72);
     });
 
     it('should render the spinner with the default size if an unsupported value is provided', () => {
       const custom = mount(<Spinner size={{ something: 'weird' }} />);
 
-      expect(custom.find(`.${spinnerClass}`).prop('style').height).to.equal('20px');
-      expect(custom.find(`.${spinnerClass}`).prop('style').width).to.equal('20px');
+      expect(custom.find(Container).prop('style').height).to.equal(20);
+      expect(custom.find(Container).prop('style').width).to.equal(20);
     });
   });
 });

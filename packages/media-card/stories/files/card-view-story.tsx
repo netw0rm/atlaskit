@@ -358,7 +358,7 @@ storiesOf('FileCardView', {})
       }, {
         title: 'Large width',
         content: <FileCardView
-          width={380}
+          dimensions={{width: '380px'}}
           loading={false}
           selectable={false}
           selected={false}
@@ -371,7 +371,7 @@ storiesOf('FileCardView', {})
       }, {
         title: 'Long name with large width',
         content: <FileCardView
-          width={380}
+          dimensions={{width: '380px'}}
           loading={false}
           selectable={false}
           selected={false}
@@ -386,8 +386,7 @@ storiesOf('FileCardView', {})
   ))
   .add('Custom sized', () => (
     <FileCardView
-      height={250}
-      width={380}
+      dimensions={{width: '380px', height: '250px'}}
       loading={false}
       selectable={false}
       selected={false}

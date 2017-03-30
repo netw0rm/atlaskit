@@ -106,6 +106,47 @@ describe(name, () => {
         });
       });
 
+      describe('isSaving and savingText props', () => {
+        describe('if isSaving prop is set', () => {
+          it('should render the default savingText if no savingText is set', () => {
+            const wrapper = mount(<Comment isSaving />);
+            expect(wrapper.text()).to.contain('Sending...');
+          });
+
+          it('should render the savingText text if it is set', () => {
+            const wrapper = mount(<Comment isSaving savingText="Saving..." />);
+            expect(wrapper.text()).to.contain('Saving...');
+          });
+
+          it('should not render CommentActions', () => {
+            const actions = [
+              <CommentAction />,
+              <CommentAction>action content</CommentAction>,
+              <CommentAction onClick={() => {}}>action content</CommentAction>,
+            ];
+            const wrapper = mount(<Comment actions={actions} isSaving savingText="Saving..." />);
+            expect(wrapper.find(CommentAction).length).to.equal(0);
+          });
+
+          it('should apply .optimistic-saving-content styles', () => {
+            const wrapper = mount(<Comment isSaving savingText="Saving..." />);
+            expect(wrapper.find(`.${styles.locals.optimisticSavingContent}`).length).to.equal(1);
+          });
+        });
+
+        describe('if isSaving prop is not set', () => {
+          it('should not render savingText', () => {
+            const wrapper = mount(<Comment savingText="Saving..." />);
+            expect(wrapper.text()).to.not.contain('Saving...');
+          });
+
+          it('should not apply .optimistic-saving-content styles', () => {
+            const wrapper = mount(<Comment savingText="Saving..." />);
+            expect(wrapper.find(`.${styles.locals.optimisticSavingContent}`).length).to.equal(0);
+          });
+        });
+      });
+
       describe('Top items', () => {
         it('Should render in the order author, type, time, restrictedTo', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
@@ -115,6 +156,22 @@ describe(name, () => {
           expect(topItems.childAt(1).text()).to.equal('Type');
           expect(topItems.childAt(2).text()).to.equal('30 August, 2016');
           expect(topItems.childAt(3).text()).to.contain('atlassian-staff');
+        });
+
+        it('Should render in the order author, type, savingText, restrictedTo', () => {
+          const wrapper = mount(<Comment author="Mary" type="Type" restrictedTo="atlassian-staff" isSaving savingText="Saving..." />);
+          const topItems = wrapper.find(`.${styles.locals.topItemsContainer}`);
+          expect(topItems.childAt(0).text()).to.equal('Mary');
+          expect(topItems.childAt(1).text()).to.equal('Type');
+          expect(topItems.childAt(2).text()).to.equal('Saving...');
+          expect(topItems.childAt(3).text()).to.contain('atlassian-staff');
+        });
+
+        it('should not render time if isSaving is set', () => {
+          const time = <CommentTime>30 August, 2016</CommentTime>;
+          const wrapper = mount(<Comment author="Mary" type="Type" time={time} restrictedTo="atlassian-staff" isSaving savingText="Saving..." />);
+          expect(wrapper.find(CommentTime).length).to.equal(0);
+          expect(wrapper.text()).to.contain('Saving...');
         });
       });
     });

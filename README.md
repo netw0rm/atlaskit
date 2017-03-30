@@ -257,6 +257,10 @@ In both of these cases, `build/types/tsconfig.base.json` needs to be updated.
 * Add the `@types/package-name` dependency to Atlaskit's root `package.json`. In components either don't declare the `@types/package-name` dependency, or use `peerDependency` instead of `dependency`.
 * Encourage library authors to bundle TypeScript declarations in their own package, to avoid the need for an `@types/package-name` package entirely.
 
+### TypeScript consumers
+
+TypeScript users that are consuming packages that are not-TypeScript should rely on `declare module '@atlaskit/*'` inside `build/type/wildcare.d.ts` to provide types; as not all packages contains a types.
+
 ## Commit changes
 To ensure that all commit messages are formatted correctly, we use Commitizen in this repository. It provides a [Yeoman](http://yeoman.io/)-like interface that creates your commit messages for you. Running commitizen is as simple as running `yarn run commit` from the root of the repo. You can pass all the same flags you would normally use with `git commit`.
 

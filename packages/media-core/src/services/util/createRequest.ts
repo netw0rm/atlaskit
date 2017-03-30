@@ -20,7 +20,7 @@ export interface RequestOptions {
   responseType?: string;
 };
 
-export default (requesterOptions: RequesterOptions) => (requestOptions: RequestOptions) => {
+export default (requesterOptions: RequesterOptions) => (requestOptions: RequestOptions) : any => {
   return requesterOptions.config.tokenProvider(requesterOptions.collectionName).then(token => {
     return axios({
       method: requestOptions.method || 'get',

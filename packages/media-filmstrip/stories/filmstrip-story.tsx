@@ -47,6 +47,10 @@ const linkPlayer = {
   id: 'f0e80555-cf97-44ae-afef-9cbfae8c73c7',
   mediaItemType: linkType
 };
+const twitterLink = {
+  id: 'c3e22950-99b2-4f6e-9696-26117310741f',
+  mediaItemType: linkType
+};
 const file1 = {
   id: '71cd7e7d-4e86-4b89-a0b4-7f6ffe013c94',
   mediaItemType: fileType
@@ -95,6 +99,14 @@ storiesOf('FilmStrip', {})
         content: <FilmStrip
           context={context}
           items={[linkPlayer]}
+          collectionName={collectionName}
+          actions={cardsActions}
+        />
+      }, {
+        title: 'Single twitter link',
+        content: <FilmStrip
+          context={context}
+          items={[twitterLink]}
           collectionName={collectionName}
           actions={cardsActions}
         />

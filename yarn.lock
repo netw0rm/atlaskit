@@ -146,6 +146,89 @@
     webpack-dev-middleware "^1.6.0"
     webpack-hot-middleware "^2.13.2"
 
+"@treshugart/nwb@^0.16.1":
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/@treshugart/nwb/-/nwb-0.16.1.tgz#812a7865437a3449de85abc4c181e31dc7c63b27"
+  dependencies:
+    "@insin/extract-text-webpack-plugin" "2.0.0-beta.5.1b711fa5"
+    "@insin/npm-install-webpack-plugin" "4.0.4-3ee2c673"
+    autoprefixer "6.7.0"
+    babel-cli "6.22.2"
+    babel-core "6.22.1"
+    babel-loader "6.2.10"
+    babel-plugin-add-module-exports "0.2.1"
+    babel-plugin-inferno "1.7.0"
+    babel-plugin-istanbul "3.1.2"
+    babel-plugin-lodash "3.2.11"
+    babel-plugin-react-transform "2.0.2"
+    babel-plugin-syntax-dynamic-import "6.18.0"
+    babel-plugin-syntax-jsx "6.18.0"
+    babel-plugin-transform-decorators-legacy "1.3.4"
+    babel-plugin-transform-react-jsx "6.22.0"
+    babel-plugin-transform-react-jsx-self "6.22.0"
+    babel-plugin-transform-react-jsx-source "6.22.0"
+    babel-plugin-transform-react-remove-prop-types "0.2.11"
+    babel-plugin-transform-runtime "6.22.0"
+    babel-polyfill "6.22.0"
+    babel-preset-es2015 "6.22.0"
+    babel-preset-es2016 "6.22.0"
+    babel-preset-react "6.22.0"
+    babel-preset-stage-0 "6.22.0"
+    babel-preset-stage-1 "6.22.0"
+    babel-preset-stage-2 "6.22.0"
+    babel-preset-stage-3 "6.22.0"
+    babel-runtime "6.22.0"
+    case-sensitive-paths-webpack-plugin "1.1.4"
+    chalk "1.1.3"
+    connect-history-api-fallback "1.3.0"
+    copy-template-dir "1.3.0"
+    copy-webpack-plugin "4.0.1"
+    cross-spawn "5.0.1"
+    css-loader "0.26.1"
+    debug "2.6.0"
+    detect-port "1.1.0"
+    diff "3.2.0"
+    eventsource-polyfill "0.9.6"
+    expect "1.20.2"
+    express "4.14.0"
+    figures "2.0.0"
+    file-loader "0.9.0"
+    filesize "3.4.3"
+    glob "7.1.1"
+    gzip-size "3.0.0"
+    html-webpack-plugin "2.26.0"
+    inquirer "3.0.1"
+    karma "1.4.0"
+    karma-chrome-launcher "2.0.0"
+    karma-coverage "1.1.1"
+    karma-mocha "1.3.0"
+    karma-mocha-reporter "2.2.2"
+    karma-phantomjs-launcher "1.0.2"
+    karma-sourcemap-loader "0.3.7"
+    karma-webpack "2.0.1"
+    minimist "1.2.0"
+    mocha "3.2.0"
+    object-assign "4.1.1"
+    ora "1.1.0"
+    phantomjs-prebuilt "2.1.14"
+    postcss-loader "1.2.2"
+    promise "7.1.1"
+    react-transform-catch-errors "1.0.2"
+    react-transform-hmr "1.0.4"
+    redbox-noreact "1.1.0"
+    resolve "1.2.0"
+    rimraf "2.5.4"
+    run-series "1.1.4"
+    semver "5.3.0"
+    style-loader "0.13.1"
+    url-loader "0.5.7"
+    webpack "2.2.0"
+    webpack-dev-middleware "1.9.0"
+    webpack-hot-middleware "2.15.0"
+    webpack-md5-hash "0.0.5"
+    webpack-merge "2.4.0"
+    whatwg-fetch "2.0.2"
+
 "@types/ajv@0.0.5":
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/@types/ajv/-/ajv-0.0.5.tgz#116e10b69e5176bce2638d4a7febfc2e4d69c18b"
@@ -2124,8 +2207,8 @@ classnames@^2.2.3:
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
 clean-css@4.0.x:
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/clean-css/-/clean-css-4.0.8.tgz#063dfd593404d3a3d1db494d4b6d0f378b0781b6"
+  version "4.0.10"
+  resolved "https://registry.yarnpkg.com/clean-css/-/clean-css-4.0.10.tgz#6be448d6ba8c767654ebe11f158b97a887cb713f"
   dependencies:
     source-map "0.5.x"
 
@@ -3179,10 +3262,10 @@ encoding@^0.1.11:
     iconv-lite "~0.4.13"
 
 end-of-stream@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/end-of-stream/-/end-of-stream-1.1.0.tgz#e9353258baa9108965efc41cb0ef8ade2f3cfb07"
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/end-of-stream/-/end-of-stream-1.4.0.tgz#7a90d833efda6cfa6eac0f4949dbb0fad3a63206"
   dependencies:
-    once "~1.3.0"
+    once "^1.4.0"
 
 engine.io-client@1.8.2:
   version "1.8.2"
@@ -4486,8 +4569,8 @@ html-entities@^1.2.0:
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-1.2.0.tgz#41948caf85ce82fed36e4e6a0ed371a6664379e2"
 
 html-minifier@^3.2.3:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/html-minifier/-/html-minifier-3.4.0.tgz#80f236b7374d70f017fecaac42d37bb1170d2975"
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/html-minifier/-/html-minifier-3.4.2.tgz#31896baaf735c1d95f7a0b7291f9dc36c0720752"
   dependencies:
     camel-case "3.0.x"
     clean-css "4.0.x"
@@ -4630,14 +4713,8 @@ indexof@0.0.1:
   resolved "https://registry.yarnpkg.com/indexof/-/indexof-0.0.1.tgz#82dc336d232b9062179d05ab3293a66059fd435d"
 
 inferno-vnode-flags@^1:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/inferno-vnode-flags/-/inferno-vnode-flags-1.2.2.tgz#b223aab6876bf63effa2663815d1d06c3ba25732"
-  dependencies:
-    inferno "1.2.2"
-
-inferno@1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/inferno/-/inferno-1.2.2.tgz#0094e4ed428db30184bfa348a5aa38211945e67d"
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/inferno-vnode-flags/-/inferno-vnode-flags-1.5.1.tgz#3b1b54ee5e9f167863b89e6bee1b19fd3941329f"
 
 inflight@^1.0.4:
   version "1.0.6"
@@ -5063,20 +5140,20 @@ isstream@0.1.x, isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
 
-istanbul-lib-coverage@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/istanbul-lib-coverage/-/istanbul-lib-coverage-1.0.1.tgz#f263efb519c051c5f1f3343034fc40e7b43ff212"
+istanbul-lib-coverage@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/istanbul-lib-coverage/-/istanbul-lib-coverage-1.0.2.tgz#87a0c015b6910651cb3b184814dfb339337e25e1"
 
 istanbul-lib-instrument@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/istanbul-lib-instrument/-/istanbul-lib-instrument-1.4.2.tgz#0e2fdfac93c1dabf2e31578637dc78a19089f43e"
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/istanbul-lib-instrument/-/istanbul-lib-instrument-1.7.0.tgz#b8e0dc25709bb44e17336ab47b7bb5c97c23f659"
   dependencies:
     babel-generator "^6.18.0"
     babel-template "^6.16.0"
     babel-traverse "^6.18.0"
     babel-types "^6.18.0"
     babylon "^6.13.0"
-    istanbul-lib-coverage "^1.0.0"
+    istanbul-lib-coverage "^1.0.2"
     semver "^5.3.0"
 
 istanbul@^0.4.0:
@@ -6339,89 +6416,6 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
-nwb@^0.15.6:
-  version "0.15.6"
-  resolved "https://registry.yarnpkg.com/nwb/-/nwb-0.15.6.tgz#1448bec35c91cb026e9c115eda85c1aa80e63a42"
-  dependencies:
-    "@insin/extract-text-webpack-plugin" "2.0.0-beta.5.1b711fa5"
-    "@insin/npm-install-webpack-plugin" "4.0.4-3ee2c673"
-    autoprefixer "6.7.0"
-    babel-cli "6.22.2"
-    babel-core "6.22.1"
-    babel-loader "6.2.10"
-    babel-plugin-add-module-exports "0.2.1"
-    babel-plugin-inferno "1.7.0"
-    babel-plugin-istanbul "3.1.2"
-    babel-plugin-lodash "3.2.11"
-    babel-plugin-react-transform "2.0.2"
-    babel-plugin-syntax-dynamic-import "6.18.0"
-    babel-plugin-syntax-jsx "6.18.0"
-    babel-plugin-transform-decorators-legacy "1.3.4"
-    babel-plugin-transform-react-jsx "6.22.0"
-    babel-plugin-transform-react-jsx-self "6.22.0"
-    babel-plugin-transform-react-jsx-source "6.22.0"
-    babel-plugin-transform-react-remove-prop-types "0.2.11"
-    babel-plugin-transform-runtime "6.22.0"
-    babel-polyfill "6.22.0"
-    babel-preset-es2015 "6.22.0"
-    babel-preset-es2016 "6.22.0"
-    babel-preset-react "6.22.0"
-    babel-preset-stage-0 "6.22.0"
-    babel-preset-stage-1 "6.22.0"
-    babel-preset-stage-2 "6.22.0"
-    babel-preset-stage-3 "6.22.0"
-    babel-runtime "6.22.0"
-    case-sensitive-paths-webpack-plugin "1.1.4"
-    chalk "1.1.3"
-    connect-history-api-fallback "1.3.0"
-    copy-template-dir "1.3.0"
-    copy-webpack-plugin "4.0.1"
-    cross-spawn "5.0.1"
-    css-loader "0.26.1"
-    debug "2.6.0"
-    detect-port "1.1.0"
-    diff "3.2.0"
-    eventsource-polyfill "0.9.6"
-    expect "1.20.2"
-    express "4.14.0"
-    figures "2.0.0"
-    file-loader "0.9.0"
-    filesize "3.4.3"
-    glob "7.1.1"
-    gzip-size "3.0.0"
-    html-webpack-plugin "2.26.0"
-    inquirer "3.0.1"
-    karma "1.4.0"
-    karma-chrome-launcher "2.0.0"
-    karma-coverage "1.1.1"
-    karma-mocha "1.3.0"
-    karma-mocha-reporter "2.2.2"
-    karma-phantomjs-launcher "1.0.2"
-    karma-sourcemap-loader "0.3.7"
-    karma-webpack "2.0.1"
-    minimist "1.2.0"
-    mocha "3.2.0"
-    object-assign "4.1.1"
-    ora "1.1.0"
-    phantomjs-prebuilt "2.1.14"
-    postcss-loader "1.2.2"
-    promise "7.1.1"
-    react-transform-catch-errors "1.0.2"
-    react-transform-hmr "1.0.4"
-    redbox-noreact "1.1.0"
-    resolve "1.2.0"
-    rimraf "2.5.4"
-    run-series "1.1.4"
-    semver "5.3.0"
-    style-loader "0.13.1"
-    url-loader "0.5.7"
-    webpack "2.2.0"
-    webpack-dev-middleware "1.9.0"
-    webpack-hot-middleware "2.15.0"
-    webpack-md5-hash "0.0.5"
-    webpack-merge "2.4.0"
-    whatwg-fetch "2.0.2"
-
 "nwmatcher@>= 1.3.9 < 2.0.0":
   version "1.3.9"
   resolved "https://registry.yarnpkg.com/nwmatcher/-/nwmatcher-1.3.9.tgz#8bab486ff7fa3dfd086656bbe8b17116d3692d2a"
@@ -6457,8 +6451,8 @@ object-get@^2.0.4, object-get@^2.1.0:
   resolved "https://registry.yarnpkg.com/object-get/-/object-get-2.1.0.tgz#722bbdb60039efa47cad3c6dc2ce51a85c02c5ae"
 
 object-inspect@^1.1.0:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.2.1.tgz#3b62226eb8f6d441751c7d8f22a20ff80ac9dc3f"
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/object-inspect/-/object-inspect-1.2.2.tgz#c82115e4fcc888aea14d64c22e4f17f6a70d5e5a"
 
 object-is@^1.0.1:
   version "1.0.1"
@@ -6518,13 +6512,13 @@ on-finished@~2.3.0:
   dependencies:
     ee-first "1.1.1"
 
-once@1.x, once@^1.3.0, once@^1.3.1:
+once@1.x, once@^1.3.0, once@^1.3.1, once@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/once/-/once-1.4.0.tgz#583b1aa775961d4b113ac17d9c50baef9dd76bd1"
   dependencies:
     wrappy "1"
 
-once@~1.3.0, once@~1.3.3:
+once@~1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/once/-/once-1.3.3.tgz#b2e261557ce4c314ec8304f3fa82663e4297ca20"
   dependencies:
@@ -6644,8 +6638,8 @@ pako@~0.2.0:
   resolved "https://registry.yarnpkg.com/pako/-/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"
 
 param-case@2.1.x:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/param-case/-/param-case-2.1.0.tgz#2619f90fd6c829ed0b958f1c84ed03a745a6d70a"
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/param-case/-/param-case-2.1.1.tgz#df94fd8cf6531ecf75e6bef9a0858fbc72be2247"
   dependencies:
     no-case "^2.2.0"
 
@@ -7127,10 +7121,10 @@ preserve@^0.2.0:
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
 pretty-error@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/pretty-error/-/pretty-error-2.0.2.tgz#a7db19cbb529ca9f0af3d3a2f77d5caf8e5dec23"
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/pretty-error/-/pretty-error-2.0.3.tgz#bed3d816a008e76da617cde8216f4b778849b5d9"
   dependencies:
-    renderkid "~2.0.0"
+    renderkid "^2.0.1"
     utila "~0.4"
 
 private@^0.1.6, private@~0.1.5:
@@ -7734,9 +7728,9 @@ relateurl@0.2.x:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/relateurl/-/relateurl-0.2.7.tgz#54dbf377e51440aca90a4cd274600d3ff2d888a9"
 
-renderkid@~2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/renderkid/-/renderkid-2.0.0.tgz#1859753e7a5adbf35443aba0d4e4579e78abee85"
+renderkid@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/renderkid/-/renderkid-2.0.1.tgz#898cabfc8bede4b7b91135a3ffd323e58c0db319"
   dependencies:
     css-select "^1.1.0"
     dom-converter "~0.1"

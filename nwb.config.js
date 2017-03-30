@@ -73,7 +73,7 @@ module.exports = {
       // The .(t|j)sx extensions are there because that's how we distinguished
       // between Web Component and React JSX pragmas.
       entry: ['index.js', 'index.jsx', 'index.ts', 'index.tsx']
-        .map(p => path.join(cwd, 'src', p)).filter(fs.existsSync),
+        .map(p => path.join(cwd, 'src', p)).filter(fs.existsSync)[0],
 
       module: {
         rules: [{
@@ -115,4 +115,6 @@ module.exports = {
       },
     },
   },
+
+  uglify: false,
 };

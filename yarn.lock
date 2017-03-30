@@ -146,9 +146,9 @@
     webpack-dev-middleware "^1.6.0"
     webpack-hot-middleware "^2.13.2"
 
-"@treshugart/nwb@^0.16.1":
-  version "0.16.1"
-  resolved "https://registry.yarnpkg.com/@treshugart/nwb/-/nwb-0.16.1.tgz#812a7865437a3449de85abc4c181e31dc7c63b27"
+"@treshugart/nwb@^0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@treshugart/nwb/-/nwb-0.17.0.tgz#6fce11f51bc07f2fd9178938c8d282b445bed437"
   dependencies:
     "@insin/extract-text-webpack-plugin" "2.0.0-beta.5.1b711fa5"
     "@insin/npm-install-webpack-plugin" "4.0.4-3ee2c673"

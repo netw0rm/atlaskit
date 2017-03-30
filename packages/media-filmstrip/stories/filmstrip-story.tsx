@@ -27,12 +27,20 @@ const context = createStorybookContext();
 const fileType: MediaItemType = 'file';
 const linkType: MediaItemType = 'link';
 
-const link1 = {
-  id: 'fd119e6a-7881-4aac-8d31-daee546679ca',
+const spotifyLink = {
+  id: 'b3205cf6-7c26-4208-a1a2-50488bffa973',
   mediaItemType: linkType
 };
-const link2 = {
-  id: 'e2365f30-1e08-4259-9372-56247303d1ec',
+const genericLink = {
+  id: '517dade5-5489-4e8c-a113-42319878c4a5',
+  mediaItemType: linkType
+};
+const youtubeLink = {
+  id: '5c024c78-8dee-4a6c-9967-6276abd80286',
+  mediaItemType: linkType
+};
+const trelloLink = {
+  id: '70997118-3b5a-49f0-8608-43f6e0b9796e',
   mediaItemType: linkType
 };
 const linkPlayer = {
@@ -78,7 +86,7 @@ storiesOf('FilmStrip', {})
         title: 'Single generic link',
         content: <FilmStrip
           context={context}
-          items={[link1]}
+          items={[genericLink]}
           collectionName={collectionName}
           actions={cardsActions}
         />
@@ -94,7 +102,7 @@ storiesOf('FilmStrip', {})
         title: 'Multiple links',
         content: <FilmStrip
           context={context}
-          items={[link1, link2]}
+          items={[genericLink, youtubeLink, genericLink, spotifyLink]}
           collectionName={collectionName}
           actions={cardsActions}
         />
@@ -107,7 +115,7 @@ storiesOf('FilmStrip', {})
         title: 'Links + files',
         content: <FilmStrip
           context={context}
-          items={[link1, file1, link2, file2]}
+          items={[trelloLink, file1, spotifyLink, file2]}
           collectionName={collectionName}
           actions={cardsActions}
         />

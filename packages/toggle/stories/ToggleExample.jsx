@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import { Toggle } from '@atlaskit/toggle';
+import { ToggleStateless as Toggle } from '@atlaskit/toggle';
 
 class SmartToggle extends PureComponent {
   static propTypes = {

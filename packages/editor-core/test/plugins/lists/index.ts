@@ -447,5 +447,39 @@ describe('lists', () => {
         expect(pm.doc).to.deep.equal(doc(ol(li(p('text')), li(p('te{<>}xt')), li(p('text')))));
       });
     });
+
+    describe('indentList', () => {
+      it('should return false if active selection is not list', () => {
+        const { plugin } = editor(doc(ol(li(p('text')), li(p('text')), li(p('text'))), p('te{<>}xt')));
+        expect(plugin.indentList()).to.eq(false);
+      });
+
+      it('should return true if active selection can be indented', () => {
+        const { plugin } = editor(doc(ol(li(p('text')), li(p('te{<>}xt')), li(p('text')))));
+        expect(plugin.indentList()).to.eq(true);
+      });
+
+      it('should return false if active selection is list but can not be indented', () => {
+        const { plugin } = editor(doc(ol(li(p('te{<>}xt')), li(p('text')), li(p('text')))));
+        expect(plugin.indentList()).to.eq(false);
+      });
+    });
+
+    describe('outdentList', () => {
+      it('should return false if active selection is not list', () => {
+        const { plugin } = editor(doc(ol(li(p('text'), ol(li(p('text')))), li(p('text'))), p('te{<>}xt')));
+        expect(plugin.outdentList()).to.eq(false);
+      });
+
+      it('should return true if active selection can be indented', () => {
+        const { plugin } = editor(doc(ol(li(p('text'), ol(li(p('te{<>}xt')))), li(p('text')))));
+        expect(plugin.outdentList()).to.eq(true);
+      });
+
+      it('should return false if active selection is list but can not be indented', () => {
+        const { plugin } = editor(doc(ol(li(p('te{<>}xt'), ol(li(p('text')))), li(p('text')))));
+        expect(plugin.outdentList()).to.eq(false);
+      });
+    });
   });
 });

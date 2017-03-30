@@ -81,7 +81,7 @@ export const denormaliseSkinEmoji = (skinEmojis?: EmojiServiceDescription[], met
  */
 export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse): EmojiResponse  => {
   const emojis: EmojiDescription[] = emojiData.emojis.map((emoji: EmojiServiceDescriptionWithVariations): EmojiDescriptionWithVariations => {
-    const { id, name, shortName, type, category, order } = emoji;
+    const { id, name, shortName, type, category, order, fallback } = emoji;
     const representation = denormaliseServiceRepresentation(emoji.representation, emojiData.meta);
     const skinVariations = denormaliseSkinEmoji(emoji.skinVariations, emojiData.meta);
 
@@ -89,6 +89,7 @@ export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse)
       id,
       name,
       shortName,
+      fallback,
       type,
       category,
       order,

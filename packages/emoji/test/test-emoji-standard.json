@@ -633,186 +633,6 @@
       "shortName": ":melon:"
     },
     {
-      "id": "1f697",
-      "name": "automobile",
-      "fallback": "🚗",
-      "type": "STANDARD",
-      "category": "PLACES",
-      "order": 476,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
-        "x": 0,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 0,
-        "yIndex": 0
-      },
-      "shortName": ":red_car:"
-    },
-    {
-      "id": "1f695",
-      "name": "taxi",
-      "fallback": "🚕",
-      "type": "STANDARD",
-      "category": "PLACES",
-      "order": 477,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
-        "x": 34,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 1,
-        "yIndex": 0
-      },
-      "shortName": ":taxi:"
-    },
-    {
-      "id": "1f699",
-      "name": "recreational vehicle",
-      "fallback": "🚙",
-      "type": "STANDARD",
-      "category": "PLACES",
-      "order": 478,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
-        "x": 68,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 2,
-        "yIndex": 0
-      },
-      "shortName": ":blue_car:"
-    },
-    {
-      "id": "1f68c",
-      "name": "bus",
-      "fallback": "🚌",
-      "type": "STANDARD",
-      "category": "PLACES",
-      "order": 479,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
-        "x": 102,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 3,
-        "yIndex": 0
-      },
-      "shortName": ":bus:"
-    },
-    {
-      "id": "1f68e",
-      "name": "trolleybus",
-      "fallback": "🚎",
-      "type": "STANDARD",
-      "category": "PLACES",
-      "order": 480,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
-        "x": 136,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 4,
-        "yIndex": 0
-      },
-      "shortName": ":trolleybus:"
-    },
-    {
-      "id": "1f3ce",
-      "name": "racing car",
-      "fallback": "🏎️",
-      "type": "STANDARD",
-      "category": "PLACES",
-      "order": 481,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
-        "x": 170,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 5,
-        "yIndex": 0
-      },
-      "shortName": ":race_car:"
-    },
-    {
-      "id": "1f693",
-      "name": "police car",
-      "fallback": "🚓",
-      "type": "STANDARD",
-      "category": "PLACES",
-      "order": 482,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
-        "x": 204,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 6,
-        "yIndex": 0
-      },
-      "shortName": ":police_car:"
-    },
-    {
-      "id": "1f691",
-      "name": "ambulance",
-      "fallback": "🚑",
-      "type": "STANDARD",
-      "category": "PLACES",
-      "order": 483,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
-        "x": 238,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 7,
-        "yIndex": 0
-      },
-      "shortName": ":ambulance:"
-    },
-    {
-      "id": "1f692",
-      "name": "fire engine",
-      "fallback": "🚒",
-      "type": "STANDARD",
-      "category": "PLACES",
-      "order": 484,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
-        "x": 272,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 8,
-        "yIndex": 0
-      },
-      "shortName": ":fire_engine:"
-    },
-    {
-      "id": "1f690",
-      "name": "minibus",
-      "fallback": "🚐",
-      "type": "STANDARD",
-      "category": "PLACES",
-      "order": 485,
-      "representation": {
-        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
-        "x": 306,
-        "y": 0,
-        "height": 32,
-        "width": 32,
-        "xIndex": 9,
-        "yIndex": 0
-      },
-      "shortName": ":minibus:"
-    },
-    {
       "id": "26bd",
       "name": "soccer ball",
       "fallback": "⚽️",
@@ -991,6 +811,186 @@
         "yIndex": 0
       },
       "shortName": ":golfer:"
+    },
+    {
+      "id": "1f697",
+      "name": "automobile",
+      "fallback": "🚗",
+      "type": "STANDARD",
+      "category": "PLACES",
+      "order": 476,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "x": 0,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 0,
+        "yIndex": 0
+      },
+      "shortName": ":red_car:"
+    },
+    {
+      "id": "1f695",
+      "name": "taxi",
+      "fallback": "🚕",
+      "type": "STANDARD",
+      "category": "PLACES",
+      "order": 477,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "x": 34,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 1,
+        "yIndex": 0
+      },
+      "shortName": ":taxi:"
+    },
+    {
+      "id": "1f699",
+      "name": "recreational vehicle",
+      "fallback": "🚙",
+      "type": "STANDARD",
+      "category": "PLACES",
+      "order": 478,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "x": 68,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 2,
+        "yIndex": 0
+      },
+      "shortName": ":blue_car:"
+    },
+    {
+      "id": "1f68c",
+      "name": "bus",
+      "fallback": "🚌",
+      "type": "STANDARD",
+      "category": "PLACES",
+      "order": 479,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "x": 102,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 3,
+        "yIndex": 0
+      },
+      "shortName": ":bus:"
+    },
+    {
+      "id": "1f68e",
+      "name": "trolleybus",
+      "fallback": "🚎",
+      "type": "STANDARD",
+      "category": "PLACES",
+      "order": 480,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "x": 136,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 4,
+        "yIndex": 0
+      },
+      "shortName": ":trolleybus:"
+    },
+    {
+      "id": "1f3ce",
+      "name": "racing car",
+      "fallback": "🏎️",
+      "type": "STANDARD",
+      "category": "PLACES",
+      "order": 481,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "x": 170,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 5,
+        "yIndex": 0
+      },
+      "shortName": ":race_car:"
+    },
+    {
+      "id": "1f693",
+      "name": "police car",
+      "fallback": "🚓",
+      "type": "STANDARD",
+      "category": "PLACES",
+      "order": 482,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "x": 204,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 6,
+        "yIndex": 0
+      },
+      "shortName": ":police_car:"
+    },
+    {
+      "id": "1f691",
+      "name": "ambulance",
+      "fallback": "🚑",
+      "type": "STANDARD",
+      "category": "PLACES",
+      "order": 483,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "x": 238,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 7,
+        "yIndex": 0
+      },
+      "shortName": ":ambulance:"
+    },
+    {
+      "id": "1f692",
+      "name": "fire engine",
+      "fallback": "🚒",
+      "type": "STANDARD",
+      "category": "PLACES",
+      "order": 484,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "x": 272,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 8,
+        "yIndex": 0
+      },
+      "shortName": ":fire_engine:"
+    },
+    {
+      "id": "1f690",
+      "name": "minibus",
+      "fallback": "🚐",
+      "type": "STANDARD",
+      "category": "PLACES",
+      "order": 485,
+      "representation": {
+        "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/places.png",
+        "x": 306,
+        "y": 0,
+        "height": 32,
+        "width": 32,
+        "xIndex": 9,
+        "yIndex": 0
+      },
+      "shortName": ":minibus:"
     },
     {
       "id": "231a",

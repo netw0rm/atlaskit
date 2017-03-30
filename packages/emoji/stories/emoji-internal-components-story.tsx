@@ -2,7 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 
 import { name } from '../package.json';
-import { getEmojis } from './story-data';
+import { getEmojis, getStandardEmojis, getAtlassianEmojis } from './story-data';
 
 import CategorySelector from '../src/components/picker/CategorySelector';
 import EmojiPickerFooter from '../src/components/picker/EmojiPickerFooter';
@@ -100,4 +100,17 @@ storiesOf(`${name}/Internal components`, module)
       emojis={emojis}
       onEmojiSelected={action('onSelection')}
     />
-  ));
+  ))
+  .add('fallback emoji rendering', () => {
+    const emojis = [
+      ...getStandardEmojis(),
+      ...getAtlassianEmojis().slice(0, 20),
+    ];
+    return (
+      <div>
+        {emojis.map(emoji => {
+          return (<span key={emoji.id}>{emoji.fallback} </span>);
+        })}
+      </div>
+    );
+  });

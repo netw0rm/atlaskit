@@ -91,7 +91,8 @@ const NavigationItemOuter = styled.div`
     border-radius: ${borderRadius}px;
     background: ${({ isSelected, theme }) => (isSelected ? getColors(theme).selected.background : getColors(theme).default.background)};
     color: ${({ isSelected, theme }) => (isSelected ? getColors(theme).selected.color : getColors(theme).default.color)};
-
+    text-decoration: none;
+    
     &:focus {
       outline: none;
       box-shadow: 0px 0px 0px 2px ${akColorB100};

@@ -1,11 +1,20 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/ContainerTitle.less';
+import styled from 'styled-components';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import ContainerTitleIcon from '../styled/ContainerTitleIcon';
 import ContainerTitleInner from '../styled/ContainerTitleInner';
 import ContainerTitleSubText from '../styled/ContainerTitleSubText';
 import ContainerTitleText from '../styled/ContainerTitleText';
 import ContainerTitleTextWrapper from '../styled/ContainerTitleTextWrapper';
+
+function noUnderlineLink(component) {
+  return styled(component)`
+    text-decoration: none;
+    &:hover {
+      text-decoration: none;
+    }
+  `;
+}
 
 export default class ContainerTitle extends PureComponent {
   static propTypes = {
@@ -28,8 +37,10 @@ export default class ContainerTitle extends PureComponent {
       linkComponent: Link,
     } = this.props;
 
+    const NoUnderlineLink = noUnderlineLink(Link);
+
     return (
-      <Link className={styles.link} href={href}>
+      <NoUnderlineLink href={href}>
         <ContainerTitleInner>
           <ContainerTitleIcon>
             {this.props.icon}
@@ -39,7 +50,7 @@ export default class ContainerTitle extends PureComponent {
             {subText ? <ContainerTitleSubText>{subText}</ContainerTitleSubText> : null}
           </ContainerTitleTextWrapper>
         </ContainerTitleInner>
-      </Link>
+      </NoUnderlineLink>
     );
   }
 }

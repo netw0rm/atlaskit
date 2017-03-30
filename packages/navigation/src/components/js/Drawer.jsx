@@ -1,11 +1,18 @@
-import classNames from 'classnames';
 import React, { PureComponent, PropTypes } from 'react';
 import { ThemeProvider } from 'styled-components';
 import Blanket from '@atlaskit/blanket';
-import styles from 'style!../less/Drawer.less';
 import DrawerTrigger from './DrawerTrigger';
 import DrawerBackIcon from './DrawerBackIcon';
 import ContainerHeader from './ContainerHeader';
+import drawerFixedMixin from '../../utils/drawer-fixed-mixin';
+import DrawerSide from '../styled/DrawerSide';
+import DrawerInner from '../styled/DrawerInner';
+import DrawerHeader from '../styled/DrawerHeader';
+import DrawerPrimaryIcon from '../styled/DrawerPrimaryIcon';
+import DrawerMain from '../styled/DrawerMain';
+import DrawerContent from '../styled/DrawerContent';
+import DrawerBackIconOuter from '../styled/DrawerBackIconOuter';
+import DrawerBackIconInner from '../styled/DrawerBackIconInner';
 
 export default class Drawer extends PureComponent {
   static propTypes = {
@@ -41,6 +48,9 @@ export default class Drawer extends PureComponent {
       top: `${backIconOffset}px`,
     };
 
+    const FixedDrawerSide = drawerFixedMixin(isOpen, width)(DrawerSide);
+    const FixedDrawerHeader = drawerFixedMixin(isOpen, width)(DrawerHeader);
+
     return (
       <div>
         <div style={{ zIndex: 0, position: 'relative' }}>
@@ -50,22 +60,13 @@ export default class Drawer extends PureComponent {
             onBlanketClicked={onBackButton}
           />
         </div>
-        <div
-          className={classNames(styles.drawer, {
-            [styles.open]: isOpen,
-            [styles.wideWidth]: (width === 'wide'),
-            [styles.fullWidth]: (width === 'full'),
-          })}
-        >
-
-          <div className={classNames(styles.fixed, styles.side)}>
-            <div className={classNames(styles.icon)}>
+        <DrawerInner isOpen={isOpen} width={width}>
+          <FixedDrawerSide>
+            <DrawerPrimaryIcon>
               {primaryIcon}
-            </div>
-            <div
-              className={classNames(styles.backIconOuter)} style={backIconOuterStyle}
-            >
-              <div className={classNames(styles.backIcon)}>
+            </DrawerPrimaryIcon>
+            <DrawerBackIconOuter style={backIconOuterStyle}>
+              <DrawerBackIconInner>
                 <DrawerTrigger onActivate={onBackButton}>
                   <DrawerBackIcon
                     isVisible={isOpen}
@@ -73,22 +74,22 @@ export default class Drawer extends PureComponent {
                     {backIcon}
                   </DrawerBackIcon>
                 </DrawerTrigger>
-              </div>
-            </div>
-          </div>
-          <div className={classNames(styles.main)}>
+              </DrawerBackIconInner>
+            </DrawerBackIconOuter>
+          </FixedDrawerSide>
+          <DrawerMain>
             {(width !== 'full') ?
-              <div className={classNames(styles.fixed, styles.header)}>
+              <FixedDrawerHeader>
                 <ContainerHeader>{header}</ContainerHeader>
-              </div>
+              </FixedDrawerHeader>
             : null}
-            <div className={classNames(styles.content)}>
+            <DrawerContent>
               <ThemeProvider theme={{ ContainerNavigationAppearance: 'container', NavigationItemIsCompact: false }}>
                 {this.props.children}
               </ThemeProvider>
-            </div>
-          </div>
-        </div>
+            </DrawerContent>
+          </DrawerMain>
+        </DrawerInner>
       </div>
     );
   }

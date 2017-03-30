@@ -7,6 +7,7 @@ export interface Props {
   id: string;
   text: string;
   mentionProvider: Promise<MentionProvider>;
+  nickname?: string;
   onClick?: MentionEventHandler;
   onMouseEnter?: MentionEventHandler;
   onMouseLeave?: MentionEventHandler;
@@ -52,6 +53,7 @@ export default class ResourcedMention extends PureComponent<Props, State> {
       <Mention
         id={props.id}
         text={props.text}
+        nickname={props.nickname}
         isHighlighted={state.isHighlighted}
         onClick={props.onClick}
         onMouseEnter={props.onMouseEnter}

@@ -8,6 +8,7 @@ export type MentionEventHandler = (mentionId: string, text: string, event?: Synt
 export interface Props {
   id: string;
   text: string;
+  nickname?: string;
   isHighlighted?: boolean;
   onClick?: MentionEventHandler;
   onMouseEnter?: MentionEventHandler;
@@ -50,7 +51,7 @@ export default class Mention extends PureComponent<Props, {}> {
         onMouseEnter={this.handleOnMouseEnter}
         onMouseLeave={this.handleOnMouseLeave}
       >
-        {props.text}
+        {props.nickname ? props.nickname : props.text}
       </span>
     );
   }

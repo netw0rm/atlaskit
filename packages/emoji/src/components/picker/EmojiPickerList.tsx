@@ -9,7 +9,7 @@ import EmojiPickerListCategory from './EmojiPickerListCategory';
 import EmojiPickerListRow from './EmojiPickerListRow';
 import EmojiPickerListSearch from './EmojiPickerListSearch';
 import { emojiPickerListWidth, emojiPickerListHeight } from '../../shared-styles';
-import { toEmojiId } from '../../api/EmojiService';
+import { toEmojiId, getEmojiVariation } from '../../api/EmojiRepository';
 import { EmojiDescription, EmojiId, OnCategory, OnEmojiEvent } from '../../types';
 
 const emojiPerRow = 8;
@@ -169,14 +169,7 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
     }];
 
     for (let i = 0; i < emojis.length; i++) {
-      let emoji = emojis[i];
-
-      if (emoji.skinVariations && emoji.skinVariations.length && selectedTone) {
-        emoji = {
-          ...emoji,
-          representation: emoji.skinVariations[selectedTone - 1],
-        };
-      }
+      let emoji = getEmojiVariation(emojis[i], { skinTone: selectedTone });
 
       if (currentCategory !== emoji.category) {
         if (currentGroup) {

@@ -1,6 +1,6 @@
 import { Schema, keymap, Plugin } from '../../prosemirror';
 import * as keymaps from '../../keymaps';
-import * as commands from '../../commands';
+import { clearFormatting } from './commands';
 import { trackAndInvoke } from '../../analytics';
 
 let plugin: Plugin | undefined;
@@ -13,7 +13,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
     return plugin;
   }
 
-  keymaps.bindKeymapWithCommand(keymaps.clearFormatting.common!, trackAndInvoke('atlassian.editor.format.clear.keyboard', commands.clearFormatting(markTypes)), list);
+  keymaps.bindKeymapWithCommand(keymaps.clearFormatting.common!, trackAndInvoke('atlassian.editor.format.clear.keyboard', clearFormatting(markTypes)), list);
 
   plugin = keymap(list);
   return plugin;

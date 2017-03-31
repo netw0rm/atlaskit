@@ -1,4 +1,4 @@
-import { EditorState, EditorView, Fragment, liftTarget, NodeSelection, NodeType, TextSelection, Transaction, ReplaceAroundStep, NodeRange, Slice } from '../prosemirror';
+import { EditorState, EditorView, Fragment, liftTarget, NodeSelection, NodeType, TextSelection, Transaction } from '../prosemirror';
 import * as baseCommand from '../prosemirror/prosemirror-commands';
 import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
@@ -294,88 +294,6 @@ export function showLinkPanel(): Command {
     pluginState.showLinkPanel(view);
     return true;
   };
-}
-
-export function clearFormatting(markTypes: Array<string>): Command {
-  return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    let { tr } = state;
-    const { from, to } = state.selection;
-    const { paragraph } = state.schema.nodes;
-    markTypes.forEach(mark => tr.removeMark(from, to, state.schema.marks[mark]));
-    tr.setStoredMarks([]);
-    if (paragraph) {
-      tr.setBlockType(from, to, paragraph);
-      tr = liftAllNodes(state, tr);
-    }
-    dispatch(tr);
-    return true;
-  };
-}
-
-function liftAllNodes(state: EditorState<any>, tr: Transaction): Transaction {
-  const { text } = state.schema.nodes;
-  const { from, to } = state.selection;
-  tr.doc.nodesBetween(from, to, (node, pos) => {
-    if (node.type === text) {
-      const start = tr.doc.resolve(tr.mapping.map(pos));
-      const end = tr.doc.resolve(tr.mapping.map(pos + node.textContent.length));
-      const sel = new TextSelection(start, end);
-      if (sel.$from.depth > 0) {
-        const range = sel.$from.blockRange(sel.$to)!;
-        tr.lift(range, liftTarget(range)!);
-      }
-    } else if (node.type === state.schema.nodes.listItem && node.childCount > 1) {
-      tr = liftSubList(state, node, pos, tr);
-    }
-  });
-  return tr;
-}
-
-function liftSubList(state: EditorState<any>, listNode, listPos, tr: Transaction): Transaction {
-  const { text, bulletList, orderedList } = state.schema.nodes;
-  listNode.descendants((node, pos) => {
-    if (node.type === bulletList || node.type === orderedList) {
-      let startPos;
-      let endpos;
-      node.descendants((child, childPos) => {
-        if (child.type === text) {
-          if (!startPos) {
-            startPos = listPos + pos + childPos;
-          }
-          endpos = listPos + pos + childPos + child.textContent.length;
-        }
-      });
-      const start = tr.doc.resolve(tr.mapping.map(startPos));
-      const end = tr.doc.resolve(tr.mapping.map(endpos));
-      const sel = new TextSelection(start, end);
-      tr = liftListItem(state, sel, tr);
-    }
-  });
-  return tr;
-}
-
-function liftListItem(state: EditorState<any>, selection, tr: Transaction): Transaction {
-  let {$from, $to} = selection;
-  const nodeType = state.schema.nodes.listItem;
-  let range = $from.blockRange($to, node => node.childCount && node.firstChild.type === nodeType);
-  if (!range || range.depth < 2 || $from.node(range.depth - 1).type !== nodeType) { return tr; }
-  let end = range.end;
-  let endOfList = $to.end(range.depth);
-  if (end < endOfList) {
-    tr.step(
-      new ReplaceAroundStep(
-        end - 1,
-        endOfList,
-        end,
-        endOfList,
-        new Slice(Fragment.from(nodeType.create(null, range.parent.copy())), 1, 0),
-        1,
-        true
-      )
-    );
-    range = new NodeRange(tr.doc.resolveNoCache($from.pos), tr.doc.resolveNoCache(endOfList), range.depth);
-  }
-  return tr.lift(range, liftTarget(range)!).scrollIntoView();
 }
 
 export function insertNewLine(): Command {

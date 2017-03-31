@@ -3,7 +3,7 @@ import collapse from './collapse-whitespace';
 export default function(xhtml: string): Document {
   const nsHtml = `<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ac="http://example.com/ac" xmlns:ri="http://example.com/ri"><body>${xhtml}</body></html>`;
   const tree = new DOMParser().parseFromString(nsHtml, 'application/xhtml+xml');
-  collapse(tree.documentElement, isBlock);
+  collapse(tree.documentElement, isBlock, isPre);
   return tree;
 }
 
@@ -81,5 +81,15 @@ function isBlock(node: Node) {
     case 'RI:ATTACHMENT':
       return true;
   }
+  return false;
+}
+
+function isPre(node: Node) {
+  switch (node.nodeName.toUpperCase()) {
+    case 'PRE':
+    case 'AC:PLAIN-TEXT-BODY':
+      return true;
+  }
+
   return false;
 }

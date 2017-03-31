@@ -1,10 +1,27 @@
 // import * as chai from 'chai';
 // import { expect } from 'chai';
 // import * as sinon from 'sinon';
-// import { EmojiNodeType, EmojiQueryMarkType, ProseMirror, Schema, schema as schemaBasic } from '../../../src';
+// import { emoji as emojiData } from '@atlaskit/util-data-test';
+
+// import { emoji as emojiNode } from '../../../src';
 // import BlockTypePlugin from '../../../src/plugins/block-type';
-// import EmojisPlugin from '../../../src/plugins/emojis';
-// import { chaiPlugin, fixtures } from '../../../src/test-helper';
+// import EmojiPlugin from '../../../src/plugins/emojis';
+// import {
+//   chaiPlugin,
+//   fixtures,
+//   makeEditor,
+//   sendKeyToPm,
+//   blockquote,
+//   br,
+//   doc,
+//   mention,
+//   mentionQuery,
+//   li,
+//   p,
+//   ul,
+// } from '../../../src/test-helper';
+
+// const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
 
 // chai.use(chaiPlugin);
 
@@ -28,26 +45,40 @@
 // };
 
 // describe('emojis', () => {
-//   const schema: Schema = new Schema({
-//     nodes: schemaBasic.nodeSpec.append({
-//       emoji: { type: EmojiNodeType, group: 'inline' }
-//     }),
-//     marks: {
-//       emoji_query: EmojiQueryMarkType
-//     }
+//   const fixture = fixtures();
+//   const editor = (doc: any) => makeEditor({
+//     doc,
+//     plugin: EmojiPlugin,
+//     place: fixture()
 //   });
 
-//   const makeEditor = (container: Node) => {
-//     return new ProseMirror({
-//       schema: schema,
-//       plugins: [EmojisPlugin, BlockTypePlugin],
-//       place: container
-//     });
+//   const forceUpdate = (editorView: any) => {
+//     editorView.updateState(editorView.state);
 //   };
 
 
+// ///
+
+//   // const schema: Schema = new Schema({
+//   //   nodes: schemaBasic.nodeSpec.append({
+//   //     emoji: { type: EmojiNodeType, group: 'inline' }
+//   //   }),
+//   //   marks: {
+//   //     emoji_query: EmojiQueryMarkType
+//   //   }
+//   // });
+
+//   // const makeEditor = (container: Node) => {
+//   //   return new ProseMirror({
+//   //     schema: schema,
+//   //     plugins: [EmojisPlugin, BlockTypePlugin],
+//   //     place: container
+//   //   });
+//   // };
+
+
 //   it('defines a name for use by the ProseMirror plugin registry ', () => {
-//     const plugin = EmojisPlugin as any; // .State is not public API.
+//     const plugin = EmojiPlugin as any; // .key is not public API.
 //     expect(plugin.State.name).is.be.a('string');
 //   });
 

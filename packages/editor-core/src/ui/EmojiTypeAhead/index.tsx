@@ -1,12 +1,12 @@
-/*import { EmojiTypeAhead as AkEmojiTypeAhead } from '@atlaskit/emoji';
+import { EmojiTypeAhead as AkEmojiTypeAhead } from '@atlaskit/emoji';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
-import { EmojisPluginState } from '../../plugins/emojis';
+import { EmojiState } from '../../plugins/emojis';
 import { akEditorFloatingPanelZIndex } from '../../styles';
 
 export interface Props {
-  pluginState: EmojisPluginState;
+  pluginState: EmojiState;
   emojiProvider: Promise<EmojiProvider>;
   reversePosition?: boolean;
 }
@@ -21,17 +21,18 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   state: State = {};
 
   componentDidMount() {
-    this.props.pluginState.subscribe(this.handlePluginStateChange);
-    this.props.pluginState.onSelectPrevious = this.handleSelectPrevious;
-    this.props.pluginState.onSelectNext = this.handleSelectNext;
-    this.props.pluginState.onSelectCurrent = this.handleSelectCurrent;
+    const { pluginState } = this.props;
+    pluginState.subscribe(this.handlePluginStateChange);
+    pluginState.onSelectPrevious = this.handleSelectPrevious;
+    pluginState.onSelectNext = this.handleSelectNext;
+    pluginState.onSelectCurrent = this.handleSelectCurrent;
   }
 
   componentWillUmount() {
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
   }
 
-  private handlePluginStateChange = (state: EmojisPluginState) => {
+  private handlePluginStateChange = (state: EmojiState) => {
     const { anchorElement, query, queryActive } = state;
     this.setState({ anchorElement, query, queryActive });
   }
@@ -73,27 +74,32 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   }
 
   private handleSelectedEmoji = (emojiId: any, emoji: any) => {
-    this.props.pluginState.insertEmoji(emojiId, emoji);
+    this.props.pluginState.insertEmoji(emojiId);
   }
 
-  private handleSelectPrevious = () => {
+  private handleSelectPrevious = (): boolean => {
     const { typeAhead } = this.refs;
     if (typeAhead) {
       (typeAhead as AkEmojiTypeAhead).selectPrevious();
     }
+
+    return true;
   }
 
-  private handleSelectNext = () => {
+  private handleSelectNext = (): boolean => {
     const { typeAhead } = this.refs;
     if (typeAhead) {
       (typeAhead as AkEmojiTypeAhead).selectNext();
     }
+
+    return true;
   }
 
-  private handleSelectCurrent = () => {
+  private handleSelectCurrent = (): boolean => {
     const { typeAhead } = this.refs;
     if (typeAhead) {
       (typeAhead as AkEmojiTypeAhead).chooseCurrentSelection();
     }
+    return true;
   }
-}*/
+}

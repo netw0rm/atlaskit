@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
+import { EmojiProvider } from '@atlaskit/emoji';
 
 import {
   Chrome,
@@ -16,6 +17,7 @@ import rulePlugin from '../../src/plugins/rule';
 import imageUploadPlugin from '../../src/plugins/image-upload';
 import listsPlugin from '../../src/plugins/lists';
 import mentionsPlugin from '../../src/plugins/mentions';
+import emojiPlugin from '../../src/plugins/emojis';
 import {
   baseKeymap,
   EditorState,
@@ -28,6 +30,7 @@ import {
 import schema from '../schema';
 import ProviderFactory from '../../src/providerFactory';
 import { mentionNodeView } from '../../src/schema/nodes/mention';
+import { emojiNodeView } from '../../src/schema/nodes/emoji';
 import { AnalyticsHandler, analyticsService } from '../../src/analytics';
 
 export type ImageUploadHandler = (e: any, insertImageFn: any) => void;
@@ -41,6 +44,7 @@ export interface Props {
   placeholder?: string;
   imageUploadHandler?: ImageUploadHandler;
   mentionProvider?: Promise<MentionProvider>;
+  emojiProvider?: Promise<EmojiProvider>;
   analyticsHandler?: AnalyticsHandler;
 }
 
@@ -48,6 +52,7 @@ export interface State {
   editorView?: EditorView;
   isExpanded?: boolean;
   mentionProvider?: Promise<MentionProvider>;
+  emojiProvider?: Promise<EmojiProvider>;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -65,20 +70,22 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   componentWillMount() {
-    this.handleMentionProvider(this.props);
+    this.handleProviders(this.props);
   }
 
   componentWillReceiveProps(nextProps: Props) {
     const { props } = this;
     if (props.mentionProvider !== nextProps.mentionProvider) {
-      this.handleMentionProvider(nextProps);
+      this.handleProviders(nextProps);
     }
   }
 
-  handleMentionProvider = (props: Props) => {
-    const { mentionProvider } = props;
+  handleProviders = (props: Props) => {
+    const { emojiProvider, mentionProvider } = props;
+    this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
     this.setState({
+      emojiProvider,
       mentionProvider
     });
   }
@@ -133,7 +140,7 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
-    const { mentionProvider } = this.state;
+    const { mentionProvider, emojiProvider } = this.state;
 
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
@@ -148,6 +155,7 @@ export default class Editor extends PureComponent<Props, State> {
     const hyperlinkState = editorState && hyperlinkPlugin.getState(editorState);
     const imageUploadState = editorState && imageUploadPlugin.getState(editorState);
     const mentionsState = editorState && mentionsPlugin.getState(editorState);
+    const emojiState = editorState && emojiPlugin.getState(editorState);
 
     return (
       <Chrome
@@ -168,7 +176,9 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateHyperlink={hyperlinkState}
         pluginStateImageUpload={imageUploadState}
         pluginStateMentions={mentionsState}
+        pluginStateEmojis={emojiState}
         mentionProvider={mentionProvider}
+        emojiProvider={emojiProvider}
       />
     );
   }
@@ -210,6 +220,7 @@ export default class Editor extends PureComponent<Props, State> {
             rulePlugin,
             imageUploadPlugin,
             mentionsPlugin,
+            emojiPlugin,
             history(),
             keymap(baseKeymap) // should be last :(
           ]
@@ -223,11 +234,13 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         },
         nodeViews: {
-          mention: mentionNodeView(this.providerFactory)
+          mention: mentionNodeView(this.providerFactory),
+          emoji: emojiNodeView(this.providerFactory),
         }
       });
       imageUploadPlugin.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);
       mentionsPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
+      emojiPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
       editorView.focus();
 

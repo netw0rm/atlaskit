@@ -1,5 +1,9 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
+import { MentionProvider } from '@atlaskit/mention';
+import { EmojiProvider } from '@atlaskit/emoji';
+import { emoji as emojiData } from '@atlaskit/util-data-test';
+
 import Editor from './editor';
 import * as styles from './styles';
 import { name } from '../package.json';
@@ -12,37 +16,50 @@ const SAVE_ACTION = () => action('Save')();
 
 const jsonPretty = (obj: any) => JSON.stringify(obj, null, 2);
 const analyticsHandler = (actionName, props) => action(actionName)(props);
-const mentionProvider = new Promise<any>(resolve => {
+const mentionProvider1 = new Promise<any>(resolve => {
   resolve(resourceProvider);
 });
 
 const mentionProvider2 = new Promise<any>(resolve => {
   resolve(resourceProvider2);
 });
-class DemoEditor extends React.PureComponent<{ onChange }, { provider: Promise<any> }> {
+
+const emojiProvider1 = emojiData.emojiStoryData.getEmojiResource();
+
+interface Props {
+  onChange: any;
+}
+
+interface State {
+  mentionProvider: Promise<MentionProvider>;
+  emojiProvider: Promise<EmojiProvider>;
+}
+
+class DemoEditor extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
 
     this.state = {
-      provider: mentionProvider
+      mentionProvider: mentionProvider1,
+      emojiProvider: emojiProvider1,
     };
   }
 
   private toggleProvider = () => {
-    const { provider } = this.state;
-    if (provider === mentionProvider) {
+    const { mentionProvider } = this.state;
+    if (mentionProvider === mentionProvider1) {
       this.setState({
-        provider: mentionProvider2
+        mentionProvider: mentionProvider2
       });
     } else {
       this.setState({
-        provider: mentionProvider
+        mentionProvider: mentionProvider1
       });
     }
   }
 
   render() {
-    const { provider } = this.state;
+    const { mentionProvider, emojiProvider } = this.state;
     return (
       <div className={styles.content}>
         <Editor
@@ -51,13 +68,14 @@ class DemoEditor extends React.PureComponent<{ onChange }, { provider: Promise<a
           onCancel={CANCEL_ACTION}
           onSave={SAVE_ACTION}
           onChange={this.props.onChange}
-          mentionProvider={provider}
+          mentionProvider={mentionProvider}
+          emojiProvider={emojiProvider}
           isExpandedByDefault
         />
         <div>
           <br />
           <button onClick={this.toggleProvider}>Toggle mention provider</button>
-          {`Provider: ${provider === mentionProvider ? '1' : '2'}`}
+          {`Provider: ${mentionProvider === mentionProvider1 ? '1' : '2'}`}
         </div>
       </div>
     );

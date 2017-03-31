@@ -28,6 +28,15 @@ describe('rule', () => {
           expect(editorView.state.doc).to.deep.equal(doc(p('text'), hr));
         });
       });
+      context('when hits Escape', () => {
+        it('selection should not change', () => {
+          const { editorView } = editor(doc(p('te{<>}xt')));
+          const selectionFrom = editorView.state.selection.from;
+          sendKeyToPm(editorView, 'Escape');
+          const newSelectionFrom = editorView.state.selection.from;
+          expect(selectionFrom).to.equal(newSelectionFrom);
+        });
+      });
     } else {
       context('when hits Shift-Ctrl--', () => {
         it('calls splitCodeBlock', () => {

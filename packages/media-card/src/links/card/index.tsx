@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { Context, CardAction, TrelloBoardLinkApp, UrlPreview } from '@atlaskit/media-core';
+import { Context, CardAction, TrelloBoardLinkApp, LinkItem, UrlPreview } from '@atlaskit/media-core';
 
 import { CardDimensions, CardAppearance, OnLoadingChangeFunc, OnLoadingChangeState, OnSelectChangeFunc, CardEvent, CardProcessingStatus } from '../../card';
 import { LinkCardGenericView } from '../cardGenericView';
@@ -76,7 +76,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
     } else {
       return context.getMediaItemProvider(link.id, 'link', link.collectionName)
         .observable()
-        .map(linkItem => linkItem.details);
+        .map((linkItem: LinkItem) => linkItem.details);
     }
   }
 
@@ -153,13 +153,14 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
 
       return this.renderGenericLink(urlPreview);
     } else {
-      // TODO FIL-3893 render loading/error state 
+      // TODO FIL-3893 render loading/error state
       return null;
     }
   }
 
   private renderApplicationLink(urlPreview: UrlPreview): JSX.Element {
-    const {app, icon} = urlPreview.resources;
+    const resources = urlPreview.resources || {};
+    const {app, icon} = resources;
 
     switch (app && app.type) {
       case 'trello_board':
@@ -182,7 +183,7 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
 
   private renderPlayerLink(urlPreview: UrlPreview): JSX.Element {
     const { title, site,  description, resources } = urlPreview;
-    const { thumbnail, icon, player } = resources;
+    const { thumbnail, icon, player } = resources || {thumbnail: undefined, icon: undefined, player: undefined};
 
     const playerUrl = player && player.url ? player.url : '';
     const iconUrl = icon && icon.url;

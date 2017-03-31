@@ -304,7 +304,8 @@ export class TextFormattingState {
       view.dispatch(view.state.tr.setStoredMarks([]));
     }
 
-    if (event.key === 'Backspace') {
+    // Backspace
+    if (event.keyCode === 8) {
       let found = false;
 
       marks.forEach(mark => {

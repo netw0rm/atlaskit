@@ -9,7 +9,7 @@
     "transform-class-properties"
   ],
   "env": {
-    "unitTest": {
+    "test": {
       "plugins": [
         ["import-noop", {
           "extensions": ["less"]

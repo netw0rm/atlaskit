@@ -14,6 +14,7 @@ describe('Layer', () => {
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Layer />);
     expect(wrapper).not.to.equal(undefined);
+    wrapper.unmount();
   });
 
   describe('children', () => {
@@ -22,6 +23,7 @@ describe('Layer', () => {
     it('should be rendered by Layer', () => {
       expect(wrapper.find('#target').length).to.equal(1);
     });
+    wrapper.unmount();
   });
 
   describe('content prop', () => {
@@ -30,6 +32,7 @@ describe('Layer', () => {
     it('should be rendered by Layer', () => {
       const wrapper = shallow(<Layer content={content} />);
       expect(wrapper.find('#content').length).to.equal(1);
+      wrapper.unmount();
     });
   });
 
@@ -47,6 +50,7 @@ describe('Layer', () => {
 
       expect(contentParent.prop('style').position).to.equal('fixed');
       expect(contentParent.prop('style').transform).to.equal('translate3d(13px, 13px, 0px)');
+      wrapper.unmount();
     });
 
     it('flipped should cause onFlippedChange callback to be called', () => {
@@ -59,6 +63,7 @@ describe('Layer', () => {
 
       expect(spy.callCount).to.equal(1);
       expect(spy.calledWith(state)).to.equal(true);
+      wrapper.unmount();
     });
   });
 });

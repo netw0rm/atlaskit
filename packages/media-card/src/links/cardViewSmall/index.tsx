@@ -3,7 +3,7 @@ import {Component} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
 import {CardGenericViewSmall} from '../../utils/cardGenericViewSmall';
-import {A} from './styled';
+import {Href} from '../../utils/href';
 
 export interface LinkCardViewSmallProps {
   width?: number | string;
@@ -23,7 +23,7 @@ export class LinkCardViewSmall extends Component<LinkCardViewSmallProps, {}> {
     const {title, linkUrl, site, thumbnailUrl, width, loading, actions, onClick, onRetry, error} = this.props;
 
     return (
-      <A href={linkUrl} target="_blank" rel="noopener">
+      <Href linkUrl={linkUrl}>
         <CardGenericViewSmall
           title={title}
           subtitle={site || linkUrl}
@@ -36,7 +36,7 @@ export class LinkCardViewSmall extends Component<LinkCardViewSmallProps, {}> {
           onRetry={onRetry}
           mediaType={'image'}
         />
-      </A>
+      </Href>
     );
   }
 }

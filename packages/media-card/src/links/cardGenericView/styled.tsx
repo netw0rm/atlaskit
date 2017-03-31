@@ -12,9 +12,11 @@ export const Title = styled.div`
 
 export const Description = styled.div`
   user-select: text;
+  overflow: hidden;
 
   .ellipsed-text {
     font-size: 12px;
+    white-space: initial;
   }
 `;
 

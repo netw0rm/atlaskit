@@ -44,4 +44,8 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
   return plugin;
 }
 
+export function destroyRulePluginCache() {
+  plugin = undefined;
+}
+
 export default inputRulePlugin;

@@ -42,7 +42,7 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^1.0.0",
+    "@atlaskit/media-test-helpers": "^2.1.0",
     "akutil-common-test": "*"
   },
   "keywords": [

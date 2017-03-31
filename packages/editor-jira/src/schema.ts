@@ -1,4 +1,5 @@
 import {
+  BlockQuoteNodeType,
   BulletListNodeType,
   CodeBlockNodeType,
   DocNodeType,
@@ -27,6 +28,7 @@ export interface JIRASchemaConfig {
   allowLinks?: boolean;
   allowAdvancedTextFormatting?: boolean;
   allowCodeBlock?: boolean;
+  allowBlockQuote?: boolean;
 }
 
 export interface JIRASchema extends Schema {
@@ -42,6 +44,7 @@ export interface JIRASchema extends Schema {
     list_item?: ListItemNodeType;
     mention?: MentionNodeType;
     code_block?: CodeBlockNodeType;
+    blockquote?: BlockQuoteNodeType;
   };
   marks: {
     link?: LinkMarkType;
@@ -75,10 +78,15 @@ export function isSchemaWithCodeBlock(schema: JIRASchema): boolean {
   return !!schema.nodes.code_block;
 }
 
+export function isSchemaWithBlockQuotes(schema: JIRASchema): boolean {
+  return !!schema.nodes.blockquote;
+}
+
 export function makeSchema(config: JIRASchemaConfig): JIRASchema {
   const nodes = {
     doc: { type: DocNodeType, content: 'block+' },
     paragraph: { type: ParagraphNodeType, content: 'inline<_>*', group: 'block' },
+    blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
     ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
     bullet_list: { type: BulletListNodeType, content: 'list_item+', group: 'block' },
     heading: { type: HeadingNodeType, content: 'inline<_>*', group: 'block' },
@@ -123,6 +131,10 @@ export function makeSchema(config: JIRASchemaConfig): JIRASchema {
 
   if (!config.allowCodeBlock) {
     delete nodes.code_block;
+  }
+
+  if (!config.allowBlockQuote) {
+    delete nodes.blockquote;
   }
 
   return new Schema({ nodes, marks });

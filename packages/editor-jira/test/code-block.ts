@@ -17,6 +17,12 @@ describe(name, () => {
       doc(code({ language: 'javascript' })('var foo = "bar";'))
     );
 
+    checkParseEncodeRoundTrips('multiline code_block node',
+      schema,
+      `<div class="code panel"><div class="codeContent panelContent"><pre class="code-javascript">var foo = "bar";\nfoo += "baz";</pre></div></div>`,
+      doc(code({ language: 'javascript' })(`var foo = "bar";\nfoo += "baz";`))
+    );
+
     checkEncode('default language is java',
       schema,
       doc(code({})('var foo = "bar";')),

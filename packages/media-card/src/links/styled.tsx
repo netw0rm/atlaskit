@@ -18,6 +18,7 @@ export const Wrapper = styled(Root)`
   user-select: none;
   background-color: ${akColorN0};
   font-family: ${akFontFamily};
+  line-height: initial;
 
   ${borderRadius}
   ${cardShadow}

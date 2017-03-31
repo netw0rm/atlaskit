@@ -165,7 +165,7 @@ export class CardList extends Component<CardListProps, CardListState> {
           if (!this.state.collection) { return; }
 
           const fileIds = this.state.collection.items.map(cItem => ({
-            id: cItem.id,
+            id: cItem.details.id,
             mediaItemType: cItem.type
           }));
           action.handler(item, fileIds, event);
@@ -176,13 +176,13 @@ export class CardList extends Component<CardListProps, CardListState> {
     const cards = this.state.collection ? this.state.collection.items.map((item: MediaCollectionItem, index: number) => {
       const {context, collectionName, cardType, cardDimensions} = this.props;
       const identifier = {
-        id: item.id,
+        id: item.details.id || 'unknown',
         mediaItemType: item.type,
         collectionName
       };
 
       return (
-        <li key={`${index}-${item.id}`}>
+        <li key={`${index}-${item.details.id}`}>
           <Card
             context={context}
             identifier={identifier}
@@ -207,7 +207,7 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   /*
-    We only want to apply default width (hardcoded value) for normal cards, 
+    We only want to apply default width (hardcoded value) for normal cards,
     in case of small cards we want them to grow up and use the whole parent width
    */
   private get cardWidth() {

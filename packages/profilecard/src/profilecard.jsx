@@ -21,19 +21,21 @@ export default class Profilecard extends PureComponent {
     location: PropTypes.string,
     timestring: PropTypes.string,
     presence: PropTypes.oneOf(Object.keys(presences)),
-    actions: React.PropTypes.arrayOf(React.PropTypes.shape({
-      callback: React.PropTypes.function,
-      label: React.PropTypes.string,
+    actions: PropTypes.arrayOf(PropTypes.shape({
+      callback: PropTypes.function,
+      label: PropTypes.string,
     })),
-    isLoading: React.PropTypes.bool,
-    hasError: React.PropTypes.bool,
-    clientFetchProfile: React.PropTypes.func,
+    isLoading: PropTypes.bool,
+    hasError: PropTypes.bool,
+    clientFetchProfile: PropTypes.func,
 
   }
 
   static defaultProps = {
     presence: 'none',
     actions: [],
+    isLoading: false,
+    hasError: false,
   }
 
   renderActionsButtons() {

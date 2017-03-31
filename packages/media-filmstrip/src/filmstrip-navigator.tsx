@@ -95,7 +95,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     const transitionProperty = this.state.showTransition ? 'transform' : 'none';
     const transitionDuration = `${this.state.transitionDuration}s`;
     const items = props.children ? props.children.map((item, k) => (
-      <li key={item.id || k}>
+      <li key={k}>
         {item}
       </li>
     )) : null;

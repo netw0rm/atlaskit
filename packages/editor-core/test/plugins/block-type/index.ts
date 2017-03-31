@@ -27,6 +27,7 @@ import {
   li,
   nodes,
   marks,
+  hardBreak,
 } from '../../../src/test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
@@ -393,6 +394,14 @@ describe('block-type', () => {
             const { editorView } = edit(doc(p('text')));
             sendKeyToPm(editorView, 'Cmd-Alt-7');
             expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+          });
+        });
+
+        context('when hits Shift-Enter', () => {
+          it('inserts hard-break', () => {
+            const { editorView } = editor(doc(h1('t{<}ex{>}t')));
+            sendKeyToPm(editorView, 'Shift-Enter');
+            expect(editorView.state.doc).to.deep.equal(doc(h1('t', hardBreak(), 't')));
           });
         });
 

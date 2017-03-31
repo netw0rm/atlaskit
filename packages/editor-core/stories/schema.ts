@@ -20,6 +20,7 @@ import {
   rule,
   image,
   mention,
+  hardBreak,
 } from '../src/schema';
 
 const nodes = {
@@ -36,6 +37,7 @@ const nodes = {
   rule,
   image,
   mention,
+  hardBreak,
 };
 
 const marks = {

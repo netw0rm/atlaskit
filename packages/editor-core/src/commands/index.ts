@@ -388,7 +388,7 @@ export function insertNewLine(): Command {
       const hardBreakNode = hardBreak.create();
 
       if (node.type.validContent(Fragment.from(hardBreakNode))) {
-        dispatch(state.tr.replaceSelection(hardBreakNode));
+        dispatch(state.tr.replaceSelectionWith(hardBreakNode));
         return true;
       }
     }

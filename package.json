@@ -173,7 +173,7 @@
     "test/wc/single/watch": "NODE_ENV=development ./build/bin/test.single.watch.sh",
     "test/wc/watch": "NODE_ENV=development ./build/bin/test.watch.sh",
     "test": "./build/bin/test.react.sh",
-    "test/unit": "NODE_ENV=test mocha --colors --require test-setup './packages/**/test/unit/**/*.js'",
+    "test/unit": "NODE_ENV=unitTest mocha --colors --require test-setup './packages/**/test/unit/**/*.js'",
     "test/single": "./build/bin/test.react.single.sh",
     "test/single/watch": "NODE_ENV=development ./build/bin/test.react.single.watch.sh",
     "test/watch": "NODE_ENV=development ./build/bin/test.react.watch.sh",

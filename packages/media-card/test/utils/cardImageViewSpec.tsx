@@ -11,6 +11,7 @@ describe('CardImageView', () => {
     const card = mount(<CardImageView mediaType="audio" />);
 
     expect(card.find(FileIcon).props().mediaType).to.equal('audio');
+    card.unmount();
   });
 
   it('should render a custom icon when provided', () => {
@@ -19,6 +20,7 @@ describe('CardImageView', () => {
 
     expect(card.find('.custom-icon')).to.have.length(1);
     expect(card.find('.custom-icon').prop('src')).to.equal(iconUrl);
+    card.unmount();
   });
 
   it('should render subtitle when provided', function() {
@@ -26,5 +28,6 @@ describe('CardImageView', () => {
     const card = mount(<CardImageView subtitle={subtitle} />);
 
     expect(card.find(CardOverlay).props().subtitle).to.equal(subtitle);
+    card.unmount();
   });
 });

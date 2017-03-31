@@ -12,6 +12,7 @@ describe('FileCardViewSmall', () => {
         loading={true}
       />);
     expect(cardView.find('.loading')).to.have.lengthOf(1);
+    cardView.unmount();
   });
 
   it('should display image when image loaded', () => {
@@ -26,6 +27,7 @@ describe('FileCardViewSmall', () => {
     expect(cardView.find('.media-card').first().props().style.backgroundImage).to.contain('some-data-uri');
     expect(cardView.find('.title').first().text()).to.equal('some-name');
     expect(cardView.find('.size').first().text()).to.equal('1 KB');
+    cardView.unmount();
   });
 
   it('should display file icon when file loaded', () => {
@@ -40,6 +42,7 @@ describe('FileCardViewSmall', () => {
     expect(cardView.find(FileIcon).length).to.equal(1);
     expect(cardView.find('.title').first().text()).to.equal('some-audio');
     expect(cardView.find('.size').first().text()).to.equal('1 KB');
+    cardView.unmount();
   });
 
   it('should display error and try again message when error with handler passed', () => {
@@ -65,6 +68,7 @@ describe('FileCardViewSmall', () => {
     cardView.find('.retry').first().childAt(0).simulate('click');
     expect(errorActionMock.callCount).to.equal(1);
     expect(onClickMock.callCount).to.equal(1);
+    cardView.unmount();
   });
 
   it('should display error when error without handler passed', () => {
@@ -76,5 +80,6 @@ describe('FileCardViewSmall', () => {
     expect(cardView.find(ErrorIcon).length).to.equal(1);
     expect(cardView.find('.error').length).to.equal(1);
     expect(cardView.find('.retry').length).to.equal(0);
+    cardView.unmount();
   });
 });

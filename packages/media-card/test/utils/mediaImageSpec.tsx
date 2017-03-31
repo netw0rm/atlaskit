@@ -29,11 +29,13 @@ describe('MediaImage', () => {
     />);
 
     expect(mediaImg.find('.media-card').prop('className')).to.not.contain('crop');
+    mediaImg.unmount();
   });
 
   it('Only adds the image to the background when transparentFallback is disabled', () => {
     const mediaImg = mount(<MediaImage dataURI={validURI} transparentFallback={false} />);
 
     expect(mediaImg.find('.media-card').prop('style').backgroundImage).to.equal(`url(${validURI})`);
+    mediaImg.unmount();
   });
 });

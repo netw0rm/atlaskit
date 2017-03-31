@@ -45,6 +45,7 @@ describe.skip('Ellipsify', () => {
     elementHeight = getElementHeight(wrapper, container);
 
     expect(Math.ceil(elementHeight)).to.equal(Math.ceil(lineHeight));
+    wrapper.unmount();
   });
 
   it('Cut text where there is not enough lines', () => {
@@ -52,5 +53,6 @@ describe.skip('Ellipsify', () => {
     const elementHeight = getElementHeight(wrapper, container);
 
     expect(Math.ceil(elementHeight)).to.equal(Math.ceil(lineHeight * 2));
+    wrapper.unmount();
   });
 });

@@ -207,16 +207,22 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   /*
-    We only want to apply default width (hardcoded value) for normal cards, 
+    We only want to apply default width (hardcoded value) for normal cards,
     in case of small cards we want them to grow up and use the whole parent width
    */
-  private get cardWidth() {
-    const {cardDimensions} = this.props;
+  private get cardWidth(): string | number | undefined {
+    const {cardDimensions, cardType} = this.props;
     if (cardDimensions) { return cardDimensions.width; }
 
-    const useDefaultWidth = this.props.cardType === 'image';
+    if (cardType === 'image') {
+      return DEFAULT_CARD_DIMENSIONS.WIDTH;
+    }
 
-    return useDefaultWidth ? DEFAULT_CARD_DIMENSIONS.WIDTH : undefined;
+    if (cardType === 'small') {
+      return '100%';
+    }
+
+    return undefined;
   }
 
   private get useInfiniteScroll(): boolean {

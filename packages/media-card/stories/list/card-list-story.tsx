@@ -136,8 +136,8 @@ storiesOf('CardList', {})
    .add('Small cards', () => (
      <StoryList>
        {[{
-         title: 'Adapt parent width',
-         content: <div style={{border: '1px solid', width: '200px', overflow: 'hidden'}}>
+         title: 'No parent width',
+         content: <div style={{border: '1px solid', overflow: 'hidden'}}>
            <CardList
              context={context}
              collectionName={defaultCollectionName}
@@ -147,7 +147,7 @@ storiesOf('CardList', {})
          </div>
        }, {
          title: 'Small parent width',
-         content: <div style={{border: '1px solid', width: '100px', overflow: 'hidden'}}>
+         content: <div style={{border: '1px solid', width: '50px', overflow: 'hidden'}}>
            <CardList
              context={context}
              collectionName={defaultCollectionName}
@@ -156,13 +156,17 @@ storiesOf('CardList', {})
            />
          </div>
        }, {
-         title: 'Default',
-         content: <CardList
-           context={context}
-           collectionName={defaultCollectionName}
-           actions={[clickAction]}
-           cardType={'small'}
-         />
+         title: 'Large parent width',
+         content: (
+            <div style={{border: '1px solid', width: '400px', overflow: 'hidden'}}>
+              <CardList
+                context={context}
+                collectionName={defaultCollectionName}
+                actions={[clickAction]}
+                cardType={'small'}
+              />
+          </div>
+          )
        }]}
      </StoryList>
    ))

@@ -1,13 +1,14 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import sinon from 'sinon';
 
-import Blanket from '../src';
-import { getOpacity } from '../src/styled/Container';
+import Blanket from '../../src';
+import { getOpacity } from '../../src/styled/Container';
 
 describe('ak-blanket', () => {
   describe('exports', () => {
     it('should export a base component', () => {
-      Blanket.should.be.an.instanceof(Object);
+      expect(Blanket).to.be.an.instanceof(Object);
     });
   });
 
@@ -18,7 +19,7 @@ describe('ak-blanket', () => {
   describe('props', () => {
     describe('isTinted', () => {
       it('should be false by default', () => {
-        mount(<Blanket />).prop('isTinted').should.equal(false);
+        expect(mount(<Blanket />).prop('isTinted')).to.equal(false);
       });
 
       it('should get tint styling when prop set', () => {
@@ -34,7 +35,7 @@ describe('ak-blanket', () => {
 
     describe('canClickThrough', () => {
       it('should be false by default', () => {
-        mount(<Blanket />).prop('canClickThrough').should.equal(false);
+        expect(mount(<Blanket />).prop('canClickThrough')).to.equal(false);
       });
       it('when canClickThrough is true, onBlanketClicked should not be triggered', () => {
         const spy = sinon.spy();

@@ -183,9 +183,9 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
     if (isSchemaWithCodeBlock(schema)) {
       switch (tag) {
         case 'DIV':
-          if (node.className === 'codeContent panelContent') {
+          if (node.className === 'codeContent panelContent' || node.className.match('preformattedContent')) {
             return null;
-          } else if (node.className === 'code panel') {
+          } else if (node.className === 'code panel' || node.className === 'preformatted panel') {
             const pre = node.querySelector('pre');
 
             if (!pre) {
@@ -197,10 +197,7 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
           }
           break;
         case 'PRE':
-          if (node.className.match(/code-/)) {
-            return null;
-          }
-          break;
+          return null;
       }
     }
   }

@@ -30,7 +30,7 @@ const mockObserver = () => {
   };
 };
 
-describe('FileProvider', () => {
+describe.skip('FileProvider', () => {
   it('should complete given file that succeeds immediately', () => {
     const fileService = Mocks.fileServiceSucceeded();
     const fileProvider = FileProvider.fromFileService(fileService, fileId, clientId, collection).observable();

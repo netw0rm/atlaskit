@@ -48,7 +48,7 @@ export class MediaLinkService implements LinkService {
       collectionName: collectionName
     });
 
-    return request({method: 'post', url: '/link', data: {url, ...metadata}})
+    return request({method: 'post', url: '/link', data: {url, metadata}})
       .then(json => json.data.id)
     ;
   }

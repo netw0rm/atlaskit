@@ -42,7 +42,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     .replace(/<hr><\/hr>/g, '<hr />')
     .replace(/<hr>/g, '<hr />');
 
-  function encodeNode(node: PMNode) {
+  function encodeNode(node: PMNode): DocumentFragment | Text | HTMLElement {
     if (node.isText) {
       return encodeText(node);
     } else if (isHeadingNode(node)) {
@@ -180,11 +180,12 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
   function encodeBulletList(node: BulletListNode) {
     const elem = doc.createElement('ul');
     elem.setAttribute('class', 'alternate');
-    elem.setAttribute('type', 'square');
+    elem.setAttribute('type', 'disc');
     elem.appendChild(encodeFragment(node.content));
     for (let index = 0; index < elem.childElementCount; index++) {
       elem.children[index].setAttribute('data-parent', 'ul');
     }
+
     return elem;
   }
 
@@ -202,7 +203,23 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     if (node.content.childCount) {
       node.content.forEach(childNode => {
         if (isBulletListNode(childNode) || isOrderedListNode(childNode)) {
-          elem.appendChild(encodeNode(childNode)!);
+          const list = encodeNode(childNode)!;
+
+          /**
+           * Changing type for nested list:
+           *
+           * Second level -> circle
+           * Third and deeper -> square
+           */
+          if (list instanceof HTMLElement && list.tagName === 'UL') {
+            list.setAttribute('type', 'circle');
+
+            [].forEach.call(list.querySelectorAll('ul'), ul => {
+              ul.setAttribute('type', 'square');
+            });
+          }
+
+          elem.appendChild(list);
         } else {
           // Strip the paragraph node from the list item.
           elem.appendChild(encodeFragment((childNode as ParagraphNode).content));

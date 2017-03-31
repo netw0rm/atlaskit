@@ -1,6 +1,6 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
-import {rgba, centerX, easeOutCubic, borderRadius, size, transition} from '../../../styles';
+import {rgba, centerX, easeOutCubic, borderRadius, size, transition, ellipsis} from '../../../styles';
 import { akColorN70, akColorB200, akColorN0, akColorN800, akColorN900, akColorB400 } from '@atlaskit/util-shared-styles';
 
 export const TickBox = styled.div`
@@ -283,7 +283,7 @@ export const TitleWrapper = styled.div`
 `;
 
 export const FileSize = styled.div`
-  float: left;
+  ${ellipsis('100px')}
   font-size: 12px;
   color: #5E6C84;
 `;

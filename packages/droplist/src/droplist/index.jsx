@@ -75,16 +75,9 @@ export default class DropdownList extends PureComponent {
     const scrollThresholdItemIndex = Math.min(items.length, numberOfVisibleItems);
     const scrollThresholdItem = items[scrollThresholdItemIndex - 1];
 
-    if (!scrollThresholdItem) return null;
+    if (!scrollThresholdItem || (scrollThresholdItemIndex < numberOfVisibleItems)) return null;
 
-    // It really should be something like this.dropContentRef.lastChild.offsetBottom,
-    // but since there is no offsetBottom method, it's just easier to do it like this
-    // since the values are the same.
-    const bottomPadding = this.dropContentRef.firstChild.offsetTop;
-
-    return scrollThresholdItemIndex < numberOfVisibleItems ?
-      scrollThresholdItem.offsetTop + scrollThresholdItem.clientHeight + bottomPadding :
-      scrollThresholdItem.offsetTop + (scrollThresholdItem.clientHeight / 2);
+    return scrollThresholdItem.offsetTop + (scrollThresholdItem.clientHeight / 2);
   }
 
   handleEsc = (event) => {

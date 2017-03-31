@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/badge",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "config": {
     "access": "public"
   },
@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@atlaskit/badge": "*",
-    "@atlaskit/util-readme": "^1.0.0"
+    "@atlaskit/util-readme": "^3.0.0"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

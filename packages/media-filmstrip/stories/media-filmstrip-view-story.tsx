@@ -53,7 +53,7 @@ storiesOf('FilmListView', {})
         id: '2323r23-r23fsdfsd-few32r2r23-fsdfsdfs',
         progress: 0.75,
         dataURI: tallImageDataUri,
-        mediaName: 'in progress...',
+        mediaName: 'Lorem ipsum Cillum magna velit fugiat ut commodo laborum sint nisi adipisicing culpa sunt magna ex do commodo in nisi ullamco.',
         mediaType: 'image',
         mediaSize: 8041
       },

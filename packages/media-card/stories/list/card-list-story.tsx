@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import { MediaItem, ContextFactory, ListCardDelete, ListCardClick } from '@atlaskit/media-core';
-import { StoryBookTokenProvider, defaultServiceHost, StoryList, createStorybookContext, collectionNames, fileCollectionName, defaultCollectionName} from '@atlaskit/media-test-helpers';
+import { MediaItem, ListCardDelete, ListCardClick } from '@atlaskit/media-core';
+import { StoryList, createStorybookContext, collectionNames, fileCollectionName, defaultCollectionName} from '@atlaskit/media-test-helpers';
 import { CardList } from '../../src';
 
 const wrongCollection = 'adfasdf';
@@ -136,8 +136,8 @@ storiesOf('CardList', {})
    .add('Small cards', () => (
      <StoryList>
        {[{
-         title: 'Adapt parent width',
-         content: <div style={{border: '1px solid', width: '200px', overflow: 'hidden'}}>
+         title: 'No parent width',
+         content: <div style={{border: '1px solid', overflow: 'hidden'}}>
            <CardList
              context={context}
              collectionName={defaultCollectionName}
@@ -147,7 +147,7 @@ storiesOf('CardList', {})
          </div>
        }, {
          title: 'Small parent width',
-         content: <div style={{border: '1px solid', width: '100px', overflow: 'hidden'}}>
+         content: <div style={{border: '1px solid', width: '50px', overflow: 'hidden'}}>
            <CardList
              context={context}
              collectionName={defaultCollectionName}
@@ -156,13 +156,17 @@ storiesOf('CardList', {})
            />
          </div>
        }, {
-         title: 'Default',
-         content: <CardList
-           context={context}
-           collectionName={defaultCollectionName}
-           actions={[clickAction]}
-           cardType={'small'}
-         />
+         title: 'Large parent width',
+         content: (
+            <div style={{border: '1px solid', width: '400px', overflow: 'hidden'}}>
+              <CardList
+                context={context}
+                collectionName={defaultCollectionName}
+                actions={[clickAction]}
+                cardType={'small'}
+              />
+          </div>
+          )
        }]}
      </StoryList>
    ))
@@ -216,8 +220,7 @@ storiesOf('CardList', {})
     return <CardList
       context={context}
       collectionName={fileCollectionName}
-      cardWidth={200}
-      cardHeight={100}
+      cardDimensions={{width: '200px', height: '100px'}}
       actions={cardsActions}
       pageSize={3}
     />;
@@ -249,8 +252,7 @@ storiesOf('CardList', {})
     return <CardList
       context={context}
       collectionName={fileCollectionName}
-      cardWidth={200}
-      cardHeight={100}
+      cardDimensions={{width: '200px', height: '100px'}}
       actions={cardsActions}
       pageSize={10}
       height={500}

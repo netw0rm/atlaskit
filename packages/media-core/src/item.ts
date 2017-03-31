@@ -5,10 +5,14 @@ export type MediaItemType = 'file' | 'link';
 
 export type MediaItem = FileItem | LinkItem;
 
+export type MediaItemDetails = FileDetails | LinkDetails | UrlPreview;
+
 export interface FileItem {
   type: 'file';
   details: FileDetails;
 }
+
+export type FileProcessingStatus = 'pending' | 'running' | 'succeeded' | 'failed';
 
 export interface FileDetails {
   id?: string;
@@ -17,7 +21,7 @@ export interface FileDetails {
   mimeType?: string;
   mediaType?: MediaType;
   creationDate?: number; // timestamp in milliseconds from EPOCH
-  processingStatus?: string;
+  processingStatus?: FileProcessingStatus;
   artifacts?: Object;
 }
 
@@ -38,17 +42,7 @@ export interface UrlPreview {
   site?: string;
   author?: UrlAuthorDetails;
   date?: number;
-  resources: Resources;
-}
-export interface UrlPreview {
-  type: string;
-  url: string;
-  title: string;
-  description?: string;
-  site?: string;
-  author?: UrlAuthorDetails;
-  date?: number;
-  resources: Resources;
+  resources?: Resources;
 }
 
 export interface UrlAuthorDetails {

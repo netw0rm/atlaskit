@@ -9,6 +9,7 @@ import { LinkCardGenericView } from '../cardGenericView';
 import { LinkCardPlayer } from '../cardPlayerView';
 import { LinkCardTrelloBoardView } from '../apps/trello';
 import { LinkCardViewSmall } from '../cardViewSmall';
+import { LinkCardImageView } from '../cardImageView';
 
 export interface LinkFromId {
   readonly id: string;
@@ -134,15 +135,21 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
     if (state && state.urlPreview) {
       const urlPreview = state.urlPreview as UrlPreview;
       const { resources } = urlPreview;
+      const { appearance } = props;
+
+      // If appearance is passed we prioritize that instead of the better looking one
+      if (appearance === 'small') {
+        return this.renderSmallLink(urlPreview);
+      }
+
+      if (appearance === 'image') {
+        return this.renderLinkCardImage(urlPreview);
+      }
 
       if (resources && resources.app) {
         return this.renderApplicationLink(urlPreview);
       } else if (resources && resources.player) {
         return this.renderPlayerLink(urlPreview);
-      }
-
-      if (props.appearance === 'small') {
-        return this.renderSmallLink(urlPreview);
       }
 
       return this.renderGenericLink(urlPreview);
@@ -236,6 +243,25 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
 
       loading={processingStatus === 'loading'}
       actions={actions}
+    />;
+  }
+
+  private renderLinkCardImage(urlPreview: UrlPreview): JSX.Element {
+    const { url, title, site, resources } = urlPreview;
+    const { thumbnail, icon } = resources || {thumbnail: '', icon: ''};
+    const { dimensions, actions, appearance } = this.props;
+    const { processingStatus } = this.state;
+
+    return <LinkCardImageView
+      linkUrl={url}
+      title={title}
+      site={site}
+      thumbnailUrl={thumbnail && thumbnail.url}
+      appearance={appearance}
+      dimensions={dimensions}
+      loading={processingStatus === 'loading'}
+      actions={actions}
+      iconUrl={icon && icon.url}
     />;
   }
 };

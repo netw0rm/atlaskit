@@ -26,7 +26,7 @@ export interface FileCardViewSmallState {
 export class FileCardViewSmall extends Component<FileCardViewSmallProps, FileCardViewSmallState> {
   render() {
     const {mediaSize, mediaName, dataURI, width, loading, actions, onClick, error, onRetry, mediaType} = this.props;
-    const subtitle = mediaSize && toHumanReadableMediaSize(mediaSize);
+    const subtitle = toHumanReadableMediaSize(mediaSize || 0);
 
     return <CardGenericViewSmall
       title={mediaName}

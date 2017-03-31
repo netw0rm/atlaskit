@@ -259,4 +259,18 @@ describe('@atlaskit/inline-edit', () => {
       expect(wrapper.prop('disableEditViewFieldBase')).to.equal(false);
     });
   });
+
+  describe('invalidMessage prop', () => {
+    it('should be reflected to the FieldBase', () => {
+      expect(shallow(<InlineEdit {...defaultProps} invalidMessage="test" />)
+        .find(FieldBase).props().invalidMessage).to.equal('test');
+    });
+  });
+
+  describe('isInvalid prop', () => {
+    it('should be reflected to the FieldBase', () => {
+      expect(shallow(<InlineEdit {...defaultProps} isInvalid />)
+        .find(FieldBase).props().isInvalid).to.equal(true);
+    });
+  });
 });

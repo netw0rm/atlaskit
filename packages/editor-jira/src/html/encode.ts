@@ -1,33 +1,21 @@
 import {
-  BulletListNode,
-  BlockQuoteNode,
-  DocNode,
   Fragment,
-  HeadingNode,
-  isBlockQuoteNode,
-  isBulletListNode,
-  isHardBreakNode,
-  isHeadingNode,
-  isHorizontalRuleNode,
-  isListItemNode,
-  isOrderedListNode,
-  isParagraphNode,
-  isMentionNode,
-  isCodeBlockNode,
-  ListItemNode,
-  CodeBlockNode,
-  MentionNode,
   Node as PMNode,
-  OrderedListNode,
-  ParagraphNode
 } from '@atlaskit/editor-core';
-import { isSchemaWithBlockQuotes, isSchemaWithLists, isSchemaWithMentions, isSchemaWithCodeBlock, JIRASchema } from '../schema';
+
+import {
+  JIRASchema,
+  isSchemaWithBlockQuotes,
+  isSchemaWithCodeBlock,
+  isSchemaWithLists,
+  isSchemaWithMentions,
+} from '../schema';
 
 export interface JIRACustomEncoders {
   mention?: (userId: string) => string;
 }
 
-export default function encode(node: DocNode, schema: JIRASchema, customEncoders: JIRACustomEncoders = {}) {
+export default function encode(node: PMNode, schema: JIRASchema, customEncoders: JIRACustomEncoders = {}) {
   const doc = makeDocument();
   doc.body.appendChild(encodeFragment(node.content));
   const html = doc.body.innerHTML;
@@ -47,35 +35,35 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
   function encodeNode(node: PMNode): DocumentFragment | Text | HTMLElement {
     if (node.isText) {
       return encodeText(node);
-    } else if (isHeadingNode(node)) {
+    } else if (node.type === schema.nodes.heading) {
       return encodeHeading(node);
-    } else if (isHorizontalRuleNode(node)) {
+    } else if (node.type === schema.nodes.rule) {
       return encodeHorizontalRule();
-    } else if (isParagraphNode(node)) {
+    } else if (node.type === schema.nodes.paragraph) {
       return encodeParagraph(node);
-    } else if (isHardBreakNode(node)) {
+    } else if (node.type === schema.nodes.hardBreak) {
       return encodeHardBreak();
     }
 
     if (isSchemaWithLists(schema)) {
-      if (isBulletListNode(node)) {
+      if (node.type === schema.nodes.bulletList) {
         return encodeBulletList(node);
-      } else if (isOrderedListNode(node)) {
+      } else if (node.type === schema.nodes.orderedList) {
         return encodeOrderedList(node);
-      } else if (isListItemNode(node)) {
+      } else if (node.type === schema.nodes.listItem) {
         return encodeListItem(node);
       }
     }
 
-    if (isSchemaWithMentions(schema) && isMentionNode(node)) {
+    if (isSchemaWithMentions(schema) && node.type === schema.nodes.mention) {
       return encodeMention(node, customEncoders.mention);
     }
 
-    if (isSchemaWithCodeBlock(schema) && isCodeBlockNode(node)) {
+    if (isSchemaWithCodeBlock(schema) && node.type === schema.nodes.codeBlock) {
       return encodeCodeBlock(node);
     }
 
-    if (isSchemaWithBlockQuotes(schema) && isBlockQuoteNode(node)) {
+    if (isSchemaWithBlockQuotes(schema) && node.type === schema.nodes.blockquote) {
       return encodeBlockQuote(node);
     }
 
@@ -95,7 +83,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     return documentFragment;
   }
 
-  function encodeHeading(node: HeadingNode) {
+  function encodeHeading(node: PMNode) {
     function anchorNameEncode(name: string) {
       const noSpaces = name.replace(/ /g, '');
       const uriEncoded = encodeURIComponent(noSpaces);
@@ -112,7 +100,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     return elem;
   }
 
-  function encodeParagraph(node: ParagraphNode) {
+  function encodeParagraph(node: PMNode) {
     const elem = doc.createElement('p');
     elem.appendChild(encodeFragment(node.content));
     return elem;
@@ -136,7 +124,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
           case schema.marks.strike:
             elem = elem.appendChild(doc.createElement('del'));
             break;
-          case schema.marks.u:
+          case schema.marks.underline:
             elem = elem.appendChild(doc.createElement('ins'));
             break;
           case schema.marks.subsup:
@@ -161,7 +149,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
 
             elem = elem.appendChild(link);
             break;
-          case schema.marks.mention_query:
+          case schema.marks.mentionQuery:
             break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);
@@ -183,7 +171,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     return doc.createElement('hr');
   }
 
-  function encodeBulletList(node: BulletListNode) {
+  function encodeBulletList(node: PMNode) {
     const elem = doc.createElement('ul');
     elem.setAttribute('class', 'alternate');
     elem.setAttribute('type', 'disc');
@@ -195,7 +183,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     return elem;
   }
 
-  function encodeOrderedList(node: OrderedListNode) {
+  function encodeOrderedList(node: PMNode) {
     const elem = doc.createElement('ol');
     elem.appendChild(encodeFragment(node.content));
     for (let index = 0; index < elem.childElementCount; index++) {
@@ -204,11 +192,11 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     return elem;
   }
 
-  function encodeListItem(node: ListItemNode) {
+  function encodeListItem(node: PMNode) {
     const elem = doc.createElement('li');
     if (node.content.childCount) {
       node.content.forEach(childNode => {
-        if (isBulletListNode(childNode) || isOrderedListNode(childNode)) {
+        if (childNode.type === schema.nodes.bulletList || childNode.type === schema.nodes.orderedList) {
           const list = encodeNode(childNode)!;
 
           /**
@@ -228,14 +216,14 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
           elem.appendChild(list);
         } else {
           // Strip the paragraph node from the list item.
-          elem.appendChild(encodeFragment((childNode as ParagraphNode).content));
+          elem.appendChild(encodeFragment((childNode as PMNode).content));
         }
       });
     }
     return elem;
   }
 
-  function encodeMention(node: MentionNode, encoder?: (userId: string) => string) {
+  function encodeMention(node: PMNode, encoder?: (userId: string) => string) {
     const elem = doc.createElement('a');
     elem.setAttribute('class', 'user-hover');
     elem.setAttribute('href', encoder ? encoder(node.attrs.id) : node.attrs.id);
@@ -244,7 +232,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     return elem;
   }
 
-  function encodeCodeBlock(node: CodeBlockNode) {
+  function encodeCodeBlock(node: PMNode) {
     const elem = doc.createElement('div');
     elem.setAttribute('class', 'code panel');
 
@@ -262,7 +250,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     return elem;
   }
 
-  function encodeBlockQuote(node: BlockQuoteNode) {
+  function encodeBlockQuote(node: PMNode) {
     const elem = doc.createElement('blockquote');
     elem.appendChild(encodeFragment(node.content));
     return elem;

@@ -384,7 +384,7 @@ describe(name, () => {
       const { AtlassianIcon } = bundle;
       const wrapper = mount(<AtlassianIcon label="My label" />);
       expect(wrapper.find('svg').is('[role="img"]')).to.equal(true);
-      wrapper.unMount();
+      wrapper.unmount();
     });
 
     it('should be possible to create the components', () => {
@@ -392,6 +392,7 @@ describe(name, () => {
         const wrapper = shallow(<Icon label="My icon" />);
         expect(wrapper).not.to.equal(undefined);
         expect(wrapper.instance()).to.be.instanceOf(Component);
+        wrapper.unmount();
       });
     });
   });
@@ -415,7 +416,7 @@ describe(name, () => {
         expect(svgWrapper.containsAnyMatchingElements(
           ids.map(id => <title id={id}>{label}</title>)
         )).to.equal(true);
-        wrapper.unMount();
+        wrapper.unmount();
       });
     });
   });

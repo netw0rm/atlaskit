@@ -33,7 +33,7 @@ describe('@atlaskit/inline-edit', () => {
     expect(wrapper.find(FieldBase).length).to.equal(1);
     const fieldBase = wrapper.find(FieldBase);
     expect(fieldBase.contains(readView)).to.equal(true);
-    wrapper.unMount();
+    wrapper.unmount();
   });
 
   it('should render edit view inside FieldBase when in editing mode', () => {
@@ -42,7 +42,7 @@ describe('@atlaskit/inline-edit', () => {
     expect(wrapper.find(FieldBase).length).to.equal(1);
     const fieldBase = wrapper.find(FieldBase);
     expect(fieldBase.contains(editView)).to.equal(true);
-    wrapper.unMount();
+    wrapper.unmount();
   });
 
   describe('read-only mode', () => {
@@ -57,6 +57,7 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
       expect(wrapper.contains(readView)).to.equal(true);
+      wrapper.unmount();
     });
 
     it('should render the read view when "null" is supplied as the edit view', () => {
@@ -70,6 +71,7 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
       expect(wrapper.contains(readView)).to.equal(true);
+      wrapper.unmount();
     });
 
     it('should render the read view when "undefined" is supplied as the edit view', () => {
@@ -83,6 +85,7 @@ describe('@atlaskit/inline-edit', () => {
         />
       );
       expect(wrapper.contains(readView)).to.equal(true);
+      wrapper.unmount();
     });
   });
 
@@ -97,7 +100,7 @@ describe('@atlaskit/inline-edit', () => {
       );
       wrapper.find(FieldBase).simulate('click');
       expect(spy.callCount).to.equal(1);
-      wrapper.unMount();
+      wrapper.unmount();
     });
 
     it('should not be called when the edit view is clicked', () => {
@@ -111,7 +114,7 @@ describe('@atlaskit/inline-edit', () => {
       );
       wrapper.find(FieldBase).simulate('click');
       expect(spy.called).to.equal(false);
-      wrapper.unMount();
+      wrapper.unmount();
     });
   });
 
@@ -127,7 +130,7 @@ describe('@atlaskit/inline-edit', () => {
       );
       wrapper.find(ConfirmIcon).simulate('click');
       expect(spy.callCount).to.equal(1);
-      wrapper.unMount();
+      wrapper.unmount();
     })
   );
 
@@ -143,14 +146,15 @@ describe('@atlaskit/inline-edit', () => {
       );
       wrapper.find(CancelIcon).simulate('click');
       expect(spy.callCount).to.equal(1);
-      wrapper.unMount();
+      wrapper.unmount();
     })
   );
 
   describe('label', () => {
     it('should set parameter into FieldBase', () => {
-      expect(shallow(<InlineEdit {...defaultProps} label="test" />).find(Label).prop('label'))
-        .to.equal('test');
+      const wrapper = shallow(<InlineEdit {...defaultProps} label="test" />);
+      expect(wrapper).find(Label).prop('label').to.equal('test');
+      wrapper.unmount();
     });
 
     it('should set both isLabelHidden and label parameter into FieldBase', () => {
@@ -158,6 +162,7 @@ describe('@atlaskit/inline-edit', () => {
       const fieldBase = wrapper.find(Label);
       expect(fieldBase.prop('label')).to.equal('test');
       expect(fieldBase.prop('isLabelHidden')).to.equal(true);
+      wrapper.unmount();
     });
 
     it('it should not call onClick if is read only', () => {
@@ -183,7 +188,7 @@ describe('@atlaskit/inline-edit', () => {
       const onClickNode = label.findWhere(n => n.prop('onClick') && n.find(Label).isEmpty()).at(0);
       onClickNode.simulate('click');
       expect(spy.called).to.equal(false);
-      wrapper.unMount();
+      wrapper.unmount();
     });
   });
 
@@ -193,6 +198,7 @@ describe('@atlaskit/inline-edit', () => {
         const wrapper = shallow(<InlineEdit {...defaultProps} isEditing />);
         wrapper.setProps({ isEditing: false });
         expect(wrapper.find(FieldBase).prop('shouldReset')).to.equal(true);
+        wrapper.unmount();
       })
     );
 
@@ -201,6 +207,7 @@ describe('@atlaskit/inline-edit', () => {
         const wrapper = shallow(<InlineEdit {...defaultProps} />);
         wrapper.setProps({ isEditing: true });
         expect(wrapper.find(FieldBase).prop('shouldReset')).to.equal(false);
+        wrapper.unmount();
       })
     );
   });
@@ -210,7 +217,7 @@ describe('@atlaskit/inline-edit', () => {
       it('FieldBase should not have isLoading prop', () => {
         const wrapper = mount(<InlineEdit {...defaultProps} isWaiting />);
         expect(wrapper.find(FieldBase).prop('isLoading')).to.equal(false);
-        wrapper.unMount();
+        wrapper.unmount();
       })
     );
 
@@ -220,6 +227,10 @@ describe('@atlaskit/inline-edit', () => {
       beforeEach(() => (
         wrapper = shallow(<InlineEdit {...defaultProps} isWaiting isEditing />)
       ));
+
+      afterEach(() => {
+        wrapper.unmount();
+      });
 
       it('FieldBase should have prop isLoading', () =>
         expect(wrapper.find(FieldBase).prop('isLoading')).to.equal(true)
@@ -242,7 +253,7 @@ describe('@atlaskit/inline-edit', () => {
       );
 
       expect(wrapper.find(FieldBase).length).to.equal(0);
-      wrapper.unMount();
+      wrapper.unmount();
     });
 
     it('should wrap editView in a FieldBase when set to false', () => {
@@ -255,7 +266,7 @@ describe('@atlaskit/inline-edit', () => {
       );
 
       expect(wrapper.find(FieldBase).length).to.equal(1);
-      wrapper.unMount();
+      wrapper.unmount();
     });
 
     it('should default to false', () => {
@@ -267,21 +278,23 @@ describe('@atlaskit/inline-edit', () => {
       );
 
       expect(wrapper.prop('disableEditViewFieldBase')).to.equal(false);
-      wrapper.unMount();
+      wrapper.unmount();
     });
   });
 
   describe('invalidMessage prop', () => {
     it('should be reflected to the FieldBase', () => {
-      expect(shallow(<InlineEdit {...defaultProps} invalidMessage="test" />)
-        .find(FieldBase).props().invalidMessage).to.equal('test');
+      const wrapper = shallow(<InlineEdit {...defaultProps} invalidMessage="test" />);
+      expect(wrapper.find(FieldBase).props().invalidMessage).to.equal('test');
+      wrapper.unmount();
     });
   });
 
   describe('isInvalid prop', () => {
     it('should be reflected to the FieldBase', () => {
-      expect(shallow(<InlineEdit {...defaultProps} isInvalid />)
-        .find(FieldBase).props().isInvalid).to.equal(true);
+      const wrapper = shallow(<InlineEdit {...defaultProps} isInvalid />);
+      expect(wrapper.find(FieldBase).props().isInvalid).to.equal(true);
+      wrapper.unmount();
     });
   });
 });

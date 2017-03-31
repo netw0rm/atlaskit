@@ -29,25 +29,28 @@ describe(name, () => {
 
     it('throws an error if getGlyphTemplate is not overriden', () => {
       let error;
+      let wrapper;
       try {
-        shallow(<Icon label="My icon" />);
+        wrapper = shallow(<Icon label="My icon" />);
       } catch (e) {
         error = e;
       }
       expect(error).to.not.equal(undefined);
       expect(error).to.be.instanceof(NotImplementedError);
+      wrapper.unmount();
     });
 
     it('should be possible to create an Icon via a subclass', () => {
       const myIcon = mount(<MyIcon label="My icon" />);
       expect(myIcon.text()).to.equal(secretContent);
-      myIcon.unMount();
+      myIcon.unmount();
     });
 
     it('should be able to create a component', () => {
       const wrapper = shallow(<MyIcon label="My icon" />);
       expect(wrapper).not.to.equal(undefined);
       expect(wrapper.instance()).to.be.instanceOf(PureComponent);
+      wrapper.unmount();
     });
 
     describe('label property', () => {
@@ -62,7 +65,7 @@ describe(name, () => {
         const labelContent = 'label content';
         const wrapper = mount(<LabelIcon label={labelContent} />);
         expect(wrapper.text()).to.equal(labelContent);
-        wrapper.unMount();
+        wrapper.unmount();
       });
     });
 
@@ -71,6 +74,7 @@ describe(name, () => {
         it(`with value ${s}`, () => {
           const wrapper = shallow(<MyIcon label="My icon" size={s} />);
           expect((wrapper).hasClass((styles.locals[s]))).to.equal(true);
+          wrapper.unmount();
         });
       });
     });
@@ -78,12 +82,13 @@ describe(name, () => {
     describe('onClick property', () => {
       it('should set a click handler', () => {
         const handler = sinon.spy();
-
         const wrapper = shallow(<MyIcon label="My icon" onClick={handler} />);
+
         expect(wrapper.prop('onClick')).to.equal(handler);
 
         wrapper.find(`.${styles.locals.iconBody}`).simulate('click');
         expect(handler.callCount).to.equal(1);
+        wrapper.unmount();
       });
     });
   });

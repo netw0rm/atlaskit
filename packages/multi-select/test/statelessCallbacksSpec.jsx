@@ -36,6 +36,7 @@ describe(`${name} - stateless`, () => {
       />);
       select.find(Tag).first().props().onAfterRemoveAction();
       expect(spy.callCount).to.equal(1);
+      select.unmount();
     });
   });
 });

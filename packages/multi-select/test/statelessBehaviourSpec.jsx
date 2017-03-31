@@ -17,8 +17,13 @@ describe(`${name} - stateless`, () => {
 
   describe('behavior', () => {
     let select;
+
     beforeEach(() => {
       select = mount(<StatelessMultiSelect />);
+    });
+
+    afterEach(() => {
+      select.unmount();
     });
 
     describe('focus', () => {

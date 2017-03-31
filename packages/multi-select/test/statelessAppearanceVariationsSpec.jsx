@@ -19,6 +19,7 @@ describe(`${name} - stateless`, () => {
     it('should have appearance prop by default', () => {
       const wrapper = mount(<StatelessMultiSelect />);
       expect(wrapper.prop('appearance')).to.equal('default');
+      wrapper.unmount();
     });
 
     it('should correctly map appearance prop to FieldBase', () => {
@@ -28,6 +29,8 @@ describe(`${name} - stateless`, () => {
       const subtleFieldBase = subtleMultiSelect.find(FieldBase);
       expect(standardFieldBase.prop('appearance')).to.equal('standard');
       expect(subtleFieldBase.prop('appearance')).to.equal('subtle');
+      defaultMultiSelect.unmount();
+      subtleMultiSelect.unmount();
     });
   });
 });

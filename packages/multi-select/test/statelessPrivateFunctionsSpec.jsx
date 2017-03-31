@@ -53,6 +53,7 @@ describe(`${name} - stateless`, () => {
       onRemovedSpy.reset();
       wrapper.setProps({ filterValue: '' });
       wrapper.setProps({ selectedItems });
+      wrapper.unmount();
     });
 
     describe('handleTriggerClick', () => {

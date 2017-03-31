@@ -26,6 +26,7 @@ describe('<Mention />', () => {
       mention.simulate('click');
       expect(spy.called).to.equal(true);
       expect(spy.calledWith(mentionData.id, mentionData.text)).to.equal(true);
+      mention.unmount();
     });
 
     it('should dispatch onMouseEnter-event', () => {
@@ -34,6 +35,7 @@ describe('<Mention />', () => {
       mention.simulate('mouseenter');
       expect(spy.called).to.equal(true);
       expect(spy.calledWith(mentionData.id, mentionData.text)).to.equal(true);
+      mention.unmount();
     });
 
     it('should dispatch onMouseLeave-event', () => {
@@ -42,6 +44,7 @@ describe('<Mention />', () => {
       mention.simulate('mouseleave');
       expect(spy.called).to.equal(true);
       expect(spy.calledWith(mentionData.id, mentionData.text)).to.equal(true);
+      mention.unmount();
     });
   });
 
@@ -49,6 +52,7 @@ describe('<Mention />', () => {
     it('should render a stateless mention component based on mention data', () => {
       const mention = mount(<ResourcedMention {...mentionData} mentionProvider={mentionProvider} />);
       expect(mention.find(Mention).first().text()).to.equal(mentionData.text);
+      mention.unmount();
     });
 
     it('should render a highlighted statless mention component if mentionProvider.shouldHighlightMention returns true', () => {
@@ -56,6 +60,7 @@ describe('<Mention />', () => {
 
       return mentionProvider.then(() => {
         expect(mention.find(Mention).first().hasClass(styles.highlighted)).to.equal(true);
+        mention.unmount();
       });
     });
 
@@ -65,6 +70,7 @@ describe('<Mention />', () => {
       mention.simulate('click');
       expect(spy.called).to.equal(true);
       expect(spy.calledWith(mentionData.id, mentionData.text)).to.equal(true);
+      mention.unmount();
     });
 
     it('should dispatch onMouseEnter-event', () => {
@@ -73,6 +79,7 @@ describe('<Mention />', () => {
       mention.simulate('mouseenter');
       expect(spy.called).to.equal(true);
       expect(spy.calledWith(mentionData.id, mentionData.text)).to.equal(true);
+      mention.unmount();
     });
 
     it('should dispatch onMouseLeave-event', () => {
@@ -81,6 +88,7 @@ describe('<Mention />', () => {
       mention.simulate('mouseleave');
       expect(spy.called).to.equal(true);
       expect(spy.calledWith(mentionData.id, mentionData.text)).to.equal(true);
+      mention.unmount();
     });
   });
 });

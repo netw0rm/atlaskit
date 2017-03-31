@@ -22,6 +22,7 @@ describe('Card', function() {
     expect(linkCard).to.have.length(1);
     expect(linkCard.props().context).to.deep.equal(context);
     expect(linkCard.props().link).to.deep.equal(dummyUrl);
+    card.unmount();
   });
 
   it('should load the stateful link card when passed a MediaIdentifier with mediaItemType "link"', function() {
@@ -39,6 +40,7 @@ describe('Card', function() {
     expect(linkCard).to.have.length(1);
     expect(linkCard.props().context).to.deep.equal(context);
     expect(linkCard.props().link).to.deep.equal(identifier);
+    card.unmount();
   });
 
   it('should load the stateful file card when passed a MediaIdentifier with mediaItemType "file"', function() {
@@ -60,5 +62,6 @@ describe('Card', function() {
     expect(fileCard.props().context).to.deep.equal(context);
     expect(fileCard.props().id).to.deep.equal(dummyId);
     expect(fileCard.props().collectionName).to.deep.equal(dummyCollectionName);
+    card.unmount();
   });
 });

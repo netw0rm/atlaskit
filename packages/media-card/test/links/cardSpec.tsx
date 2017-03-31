@@ -24,6 +24,7 @@ describe('LinkCard', () => {
     const linkCard = mount(<LinkCard context={context} link={link} />);
 
     expect(linkCard.find(LinkCardGenericView)).to.have.length(1);
+    linkCard.unmount();
   });
 
   it('should use cardPlayer component if we have an embed available', () => {
@@ -43,6 +44,7 @@ describe('LinkCard', () => {
     const linkCard = mount(<LinkCard context={context} link={link} />);
 
     expect(linkCard.find(LinkCardPlayer)).to.have.length(1);
+    linkCard.unmount();
   });
 
   it('should render a TrelloBoard preview when link contains a trello board url', () => {
@@ -73,6 +75,7 @@ describe('LinkCard', () => {
     const linkCard = mount(<LinkCard context={context} link={link} />);
 
     expect(linkCard.find(LinkCardTrelloBoardView)).to.have.length(1);
+    linkCard.unmount();
   });
 
   it('should call onLoadingStateChange() with type "loading" when the component has mounted', () => {
@@ -97,6 +100,7 @@ describe('LinkCard', () => {
       type: 'loading',
       payload: undefined
     })).to.be.true;
+    element.unmount();
   });
 
   it('should call onLoadingStateChange() with type "processing" when the server has started processing the media', done => {
@@ -124,6 +128,7 @@ describe('LinkCard', () => {
     );
 
     (element.instance() as LinkCard).componentDidMount();
+    element.unmount();
   });
 
   it('should call onLoadingStateChange() with type "complete" when the server has finished processing the media', done => {
@@ -150,6 +155,7 @@ describe('LinkCard', () => {
     );
 
     (element.instance() as LinkCard).componentDidMount();
+    element.unmount();
   });
 
   it('should call onLoadingStateChange() with type "error" when the server has errored whilst processing the media', done => {
@@ -178,6 +184,7 @@ describe('LinkCard', () => {
     );
 
     (element.instance() as LinkCard).componentDidMount();
+    element.unmount();
   });
 
 });

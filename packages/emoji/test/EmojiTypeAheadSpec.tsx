@@ -34,15 +34,21 @@ const itemsVisible = (component) => findEmojiItems(component).length > 0;
 const doneLoading = (component: ReactWrapper<TypeAheadProps, TypeAheadState>) => !component.state('loading');
 
 describe('EmojiTypeAhead', () => {
+  let component: ReactWrapper<any, any>;
+
+  afterEach(() => {
+    component.unmount();
+  });
+
   it('should display max emoji by default', () => {
-    const component = setupPicker();
+    component = setupPicker();
     return waitUntil(() => doneLoading(component)).then(() => {
       expect(findEmojiItems(component).length).to.equal(defaultListLimit);
     });
   });
 
   it('should limit results to those matching "grin"', () => {
-    const component = setupPicker({
+    component = setupPicker({
       query: 'grin',
     } as Props);
     return waitUntil(() => doneLoading(component)).then(() => {
@@ -51,7 +57,7 @@ describe('EmojiTypeAhead', () => {
   });
 
   it('should limit result to matching "ball"', () => {
-    const component = setupPicker({
+    component = setupPicker({
       query: 'ball',
     } as Props);
     return waitUntil(() => doneLoading(component)).then(() => {
@@ -60,7 +66,7 @@ describe('EmojiTypeAhead', () => {
   });
 
   it('should change selection when navigating next', () => {
-    const component = setupPicker();
+    component = setupPicker();
     return waitUntil(() => doneLoading(component)).then(() => {
       const defaultEmojiShown = () => findEmojiItems(component).length === defaultListLimit;
       const secondItemSelected = () => isEmojiTypeAheadItemSelected(component, allEmojis[1].id);
@@ -74,7 +80,7 @@ describe('EmojiTypeAhead', () => {
   });
 
   it('should change selection when navigating previous', () => {
-    const component = setupPicker();
+    component = setupPicker();
     return waitUntil(() => doneLoading(component)).then(() => {
       const defaultEmojiShown = () => findEmojiItems(component).length === defaultListLimit;
       const lastItemSelected = () =>
@@ -91,7 +97,7 @@ describe('EmojiTypeAhead', () => {
   it('should choose current selection when chooseCurrentSelection called', () => {
     let choseEmoji: OptionalEmojiDescription;
 
-    const component = setupPicker({
+    component = setupPicker({
       onSelection: (emojiId, emoji) => { choseEmoji = emoji; },
     } as Props);
 
@@ -113,7 +119,7 @@ describe('EmojiTypeAhead', () => {
   it('should choose clicked selection when item clicked', () => {
     let choseEmoji: OptionalEmojiDescription;
 
-    const component = setupPicker({
+    component = setupPicker({
       onSelection: (emojiId, emoji) => { choseEmoji = emoji; },
     } as Props);
 
@@ -132,7 +138,7 @@ describe('EmojiTypeAhead', () => {
     const onOpen = sinon.spy();
     const onClose = sinon.spy();
 
-    const component = setupPicker({
+    component = setupPicker({
       onOpen: onOpen as OnLifecycle,
       onClose: onClose as OnLifecycle,
     } as Props);
@@ -149,7 +155,7 @@ describe('EmojiTypeAhead', () => {
     const onOpen = sinon.spy();
     const onClose = sinon.spy();
 
-    const component = setupPicker({
+    component = setupPicker({
       onOpen: onOpen as OnLifecycle,
       onClose: onClose as OnLifecycle,
       query: 'zeroresults',
@@ -175,7 +181,7 @@ describe('EmojiTypeAhead', () => {
     const onOpen = sinon.spy();
     const onClose = sinon.spy();
 
-    const component = setupPicker({
+    component = setupPicker({
       onOpen: onOpen as OnLifecycle,
       onClose: onClose as OnLifecycle,
     } as Props);

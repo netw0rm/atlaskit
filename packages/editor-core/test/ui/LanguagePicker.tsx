@@ -44,6 +44,7 @@ describe('LanguagePicker', () => {
       pm.on.click.dispatch();
 
       expect(languagePicker.state('toolbarVisible')).to.be.true;
+      languagePicker.unmount();
     });
   });
 
@@ -56,6 +57,7 @@ describe('LanguagePicker', () => {
       pm.on.click.dispatch();
 
       expect(languagePicker.state('element')).to.be.undefined;
+      languagePicker.unmount();
     });
   });
 
@@ -66,6 +68,7 @@ describe('LanguagePicker', () => {
       expect(languagePicker.html()).to.not.equal(null);
       pm.on.blur.dispatch();
       expect(languagePicker.html()).to.equal(null);
+      languagePicker.unmount();
     });
   });
 
@@ -75,13 +78,15 @@ describe('LanguagePicker', () => {
       const languagePicker = mount(<LanguagePicker pluginState={plugin} />);
 
       expect(languagePicker.state('language')).to.be.equal('JavaScript');
+      languagePicker.unmount();
     });
 
     it('updates plugin with the formatted langauge', () => {
       const { plugin } = editor(doc(code_block({ language: 'js' })('text')));
-      mount(<LanguagePicker pluginState={plugin} />);
+      const languagePicker = mount(<LanguagePicker pluginState={plugin} />);
 
       expect(plugin.language).to.equal('JavaScript');
+      languagePicker.unmount();
     });
   });
 
@@ -91,6 +96,7 @@ describe('LanguagePicker', () => {
       const languagePicker = mount(<LanguagePicker pluginState={plugin} />);
 
       expect(languagePicker.state('language')).to.be.equal('Language');
+      languagePicker.unmount();
     });
   });
 });

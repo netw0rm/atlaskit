@@ -88,6 +88,7 @@ describe.skip('Filmstrip', () => {
     const filmStrip = mountFilmStrip(container, items, 500);
 
     expect(filmStrip.find('li').length).to.be.equal(items.length);
+    filmStrip.unmount();
   });
 
   it('should initially have right arrow with large collection', (done) => {
@@ -98,6 +99,7 @@ describe.skip('Filmstrip', () => {
       expect(filmStrip.find(ArrowRightWrapper).length).to.equal(1);
 
       filmStrip.detach();
+      filmStrip.unmount();
       done();
     });
   });
@@ -111,6 +113,7 @@ describe.skip('Filmstrip', () => {
       expect(filmStrip.find(ArrowRightWrapper).length).to.equal(0);
 
       filmStrip.detach();
+      filmStrip.unmount();
       done();
     });
   });
@@ -126,6 +129,7 @@ describe.skip('Filmstrip', () => {
         expect(filmStrip.find(ArrowRightWrapper).length).to.equal(1);
 
         filmStrip.detach();
+        filmStrip.unmount();
         done();
       });
     });
@@ -145,6 +149,7 @@ describe.skip('Filmstrip', () => {
           expect(filmStrip.find(ArrowRightWrapper).length).to.equal(1);
 
           filmStrip.detach();
+          filmStrip.unmount();
           done();
         });
       });

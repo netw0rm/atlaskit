@@ -90,6 +90,7 @@ describe('Text', () => {
 
       const output = shallow(<div>{renderTextNodes(textNodes)}</div>);
       expect(output.html()).to.equal('<div>Hello <strong>World!</strong></div>');
+      output.unmount();
     });
 
     it('should order marks', () => {
@@ -152,6 +153,7 @@ describe('Text', () => {
       expect(output.find('a').first().text()).to.equal('Hello World!');
       expect(output.find('a').first().props()).to.have.property('href', 'https://www.atlassian.com');
       expect(output.find('a').find('strong').first().text()).to.equal('World!');
+      output.unmount();
     });
   });
 
@@ -190,6 +192,7 @@ describe('Text', () => {
     expect(output.childAt(1).childAt(0).is('Strong')).to.equal(true);
     expect(output.childAt(1).childAt(0).childAt(0).is('Underline')).to.equal(true);
     expect(output.childAt(1).text()).to.equal('World!');
+    output.unmount();
   });
 
   it('should not join adjecent nodes with same mark type when attributes are not the same', () => {
@@ -226,6 +229,7 @@ describe('Text', () => {
     expect(output.find('a').first().props()).to.have.property('href', 'https://www.atlassian.com');
     expect(output.find('a').last().text()).to.equal('World!');
     expect(output.find('a').last().props()).to.have.property('href', 'https://www.hipchat.com');
+    output.unmount();
   });
 
   it('should not join nodes with same mark type if they are not adjecent', () => {
@@ -266,6 +270,7 @@ describe('Text', () => {
     expect(output.find('a').first().props()).to.have.property('href', 'https://www.atlassian.com');
     expect(output.find('a').last().text()).to.equal('World!');
     expect(output.find('a').last().props()).to.have.property('href', 'https://www.atlassian.com');
+    output.unmount();
   });
 
 });

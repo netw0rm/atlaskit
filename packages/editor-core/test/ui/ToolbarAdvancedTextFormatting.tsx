@@ -23,6 +23,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     toolbarOption.setState({ isOpen: true });
     expect(toolbarOption.html()).to.equal(null);
+    toolbarOption.unmount();
   });
 
   it('should have 3 child elements if both pluginStateTextFormatting and pluginStateClearFormatting are defined', () => {
@@ -35,6 +36,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     toolbarOption.setState({ isOpen: true });
     expect(toolbarOption.find(Item).length).to.equal(3);
+    toolbarOption.unmount();
   });
 
   it('should return only 2 items if only pluginStateTextFormatting is defined', () => {
@@ -68,6 +70,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     expect(toolbarOption.state('isOpen')).to.be.false;
     toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.state('isOpen')).to.be.true;
+    toolbarOption.unmount();
   });
 
   it('should not open drop-down when trigger clicked but all code and strikethrough and clearformatting are disabled', () => {
@@ -87,6 +90,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     expect(toolbarOption.state('isOpen')).to.be.false;
     toolbarOption.find(ToolbarButton).simulate('click');
     expect(toolbarOption.state('isOpen')).to.be.false;
+    toolbarOption.unmount();
   });
 
   it('should have 3 child elements with title attribute', () => {
@@ -99,6 +103,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     toolbarOption.setState({ isOpen: true });
     expect(toolbarOption.find(Tooltip).length).to.equal(3);
+    toolbarOption.unmount();
   });
 
   it('should trigger toggleCode of pluginStateTextFormatting when code option is clicked', () => {
@@ -114,6 +119,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     const codeButton = toolbarOption.find(Item).at(0).childAt(0);
     codeButton.simulate('click');
     expect(plugins[0].toggleCode.callCount).to.equal(1);
+    toolbarOption.unmount();
   });
 
   it('should trigger toggleStrike of pluginStateTextFormatting when strikethrough option is clicked', () => {
@@ -129,6 +135,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     const strikeButton = toolbarOption.find(Item).at(1).childAt(0);
     strikeButton.simulate('click');
     expect(plugins[0].toggleStrike.callCount).to.equal(1);
+    toolbarOption.unmount();
   });
 
   it('should not have Code option if codeHidden is true', () => {
@@ -142,6 +149,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     toolbarOption.setState({ codeHidden: true, isOpen: true });
     const codeButton = toolbarOption.find('span').findWhere(wrapper => wrapper.text() === 'Code');
     expect(codeButton.length).to.equal(0);
+    toolbarOption.unmount();
   });
 
   it('should not have Strikethrough option if strikeHidden is true', () => {
@@ -155,6 +163,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     toolbarOption.setState({ strikeHidden: true, isOpen: true });
     const strikeButton = toolbarOption.find('span').findWhere(wrapper => wrapper.text() === 'Strikethrough');
     expect(strikeButton.length).to.equal(0);
+    toolbarOption.unmount();
   });
 
   it('should trigger clearFormatting function of pluginStateTextFormatting when clearFormatting option is clicked', () => {
@@ -171,6 +180,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     const clearFormattingButton = toolbarOption.find(Item).at(2).childAt(0);
     clearFormattingButton.simulate('click');
     expect(plugins[1].clearFormatting.callCount).to.equal(1);
+    toolbarOption.unmount();
   });
 
   it('should be disabled if all code and strikethrough and clearformatting are disabled', () => {
@@ -189,6 +199,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     const toolbarButton = toolbarOption.find(ToolbarButton);
     expect(toolbarButton.prop('disabled')).to.be.true;
+    toolbarOption.unmount();
   });
 
   it('should be selected inside code', () => {
@@ -201,6 +212,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     const toolbarButton = toolbarOption.find(ToolbarButton);
     expect(toolbarButton.prop('selected')).to.be.true;
+    toolbarOption.unmount();
   });
 
   it('should be selected inside strike', () => {
@@ -213,5 +225,6 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     );
     const toolbarButton = toolbarOption.find(ToolbarButton);
     expect(toolbarButton.prop('selected')).to.be.true;
+    toolbarOption.unmount();
   });
 });

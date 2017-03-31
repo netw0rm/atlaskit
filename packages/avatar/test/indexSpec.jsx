@@ -17,6 +17,7 @@ describe('ak-avatar', () => {
     expect(wrapper).not.to.equal(undefined);
     expect(wrapper.find(Image)).to.have.lengthOf(1);
     expect(wrapper.find(Presence)).to.have.lengthOf(1);
+    wrapper.unmount();
   });
 
   describe('size property', () => {
@@ -25,6 +26,7 @@ describe('ak-avatar', () => {
         it(`should have class ${size}`, () => {
           const wrapper = shallow(<Avatar size={size} />);
           expect(wrapper.find(`.${styles.locals[size]}`)).to.have.lengthOf(1);
+          wrapper.unmount();
         })
       );
     });
@@ -45,6 +47,8 @@ describe('ak-avatar', () => {
       expect(wrapper.find(Image).prop('alt')).to.equal(label);
       expect(wrapper.find(Image).find('img').is(`[alt="${label}"]`)).to.equal(true);
     });
+
+    afterEach(() => wrapper.unmount());
   });
 
   describe('presence property', () => {
@@ -52,6 +56,7 @@ describe('ak-avatar', () => {
       const wrapper = mount(<Avatar presence={none} />);
       expect(wrapper.find(`.${styles.locals.presenceWrapper}`).hasClass(styles.locals.hidden)).to.equal(true);
       expect(wrapper.find(Presence).find('svg').length).to.equal(0);
+      wrapper.unmount();
     });
 
     [online, busy, offline].forEach((presence) => {
@@ -64,6 +69,8 @@ describe('ak-avatar', () => {
             .to.equal(false);
           expect(wrapper.find(Presence).find('svg').length).to.be.above(0);
         });
+
+        afterEach(() => wrapper.unmount());
       });
     });
   });
@@ -74,6 +81,7 @@ describe('ak-avatar', () => {
       const presence = wrapper.find(Presence);
       expect(presence).to.have.length.above(0);
       expect(presence.prop('borderColor')).to.equal('#ff0000');
+      wrapper.unmount();
     });
   });
 
@@ -118,6 +126,8 @@ describe('ak-avatar', () => {
       wrapper = mount(<Avatar />);
       expect(wrapper.find(Image).find('img').length).to.equal(0);
     });
+
+    afterEach(() => wrapper.unmount());
   });
 
   describe('loading behaviour', () => {
@@ -126,12 +136,14 @@ describe('ak-avatar', () => {
       wrapper.setState({ isLoading: true });
       expect(wrapper.find(`.${styles.locals.imgWrapper}`).hasClass(styles.locals.loaded))
         .to.equal(false);
+      wrapper.unmount();
     });
 
     it('should apply the .loaded class when not loading', () => {
       const wrapper = mount(<Avatar />);
       wrapper.setState({ isLoading: false });
       expect(wrapper.find(`.${styles.locals.imgWrapper}`).hasClass(styles.locals.loaded)).to.equal(true);
+      wrapper.unmount();
     });
   });
 });

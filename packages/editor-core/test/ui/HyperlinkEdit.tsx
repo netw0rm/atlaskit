@@ -17,6 +17,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={plugin}/>);
     pm.on.focus.dispatch();
     expect(hyperlinkEdit.html()).to.equal(null);
+    hyperlinkEdit.unmount();
   });
 
   it('should not produce null HTML when a link on editor is focused', () => {
@@ -24,6 +25,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     pm.on.focus.dispatch();
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={plugin}/>);
     expect(hyperlinkEdit.html()).to.not.equal(null);
+    hyperlinkEdit.unmount();
   });
 
   it('should produce null HTML when editor is blur', () => {
@@ -31,12 +33,14 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={plugin}/>);
     pm.on.blur.dispatch();
     expect(hyperlinkEdit.html()).to.equal(null);
+    hyperlinkEdit.unmount();
   });
 
   it('should set state variable autoFocusInput to true when link href is not defined', () => {
     const { plugin } = editor(doc(linkable('before', link({ href: '' })('te{<>}xt'), 'after')));
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={plugin}/>);
     expect(hyperlinkEdit.state('autoFocusInput')).to.be.true;
+    hyperlinkEdit.unmount();
   });
 
   it('should set state variable autoFocusInput to false when link href is defined', () => {
@@ -44,5 +48,6 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
     const hyperlinkEdit = mount(<HyperlinkEdit pluginState={plugin}/>);
     pm.on.click.dispatch();
     expect(hyperlinkEdit.state('autoFocusInput')).not.to.be.true;
+    hyperlinkEdit.unmount();
   });
 });

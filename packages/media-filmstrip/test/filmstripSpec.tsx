@@ -30,17 +30,20 @@ describe('Filmstrip', () => {
     const filmstrip = mount(<FilmStrip items={[link1]} actions={[]} context={context} />);
 
     expect(filmstrip.find(Card).props().appearance).to.equal('auto');
+    filmstrip.unmount();
   });
   it('should force "image" appearance when more than 1 item is provided', () => {
     const filmstrip = mount(<FilmStrip items={[link1, link2]} actions={[]} context={context} />);
 
     expect(filmstrip.find(Card).first().props().appearance).to.equal('image');
     expect(filmstrip.find(Card).last().props().appearance).to.equal('image');
+    filmstrip.unmount();
   });
 
   it('should use Cards for every item', () => {
     const filmstrip = mount(<FilmStrip items={[link1, file1, link2]} actions={[]} context={context} />);
 
     expect(filmstrip.find(Card)).to.have.length(3);
+    filmstrip.unmount();
   });
 });

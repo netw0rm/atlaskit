@@ -16,6 +16,7 @@ describe('Menu', () => {
     const card = shallow(<Menu actions={menuActions}/>);
     expect(card.find(MeatballsButton)).to.have.length(1);
     expect(card.find(DeleteBtn)).to.have.length(0);
+    card.unmount();
   });
 
   it('should render the meatballs menu when supplied with multiple actions including one with type "delete"', () => {
@@ -29,6 +30,7 @@ describe('Menu', () => {
     const card = shallow(<Menu actions={[deleteAction]}/>);
     expect(card.find(MeatballsButton)).to.have.length(0);
     expect(card.find(DeleteBtn)).to.have.length(1);
+    card.unmount();
   });
 
   it('should render the delete button when supplied with a single action with type "delete"', () => {
@@ -37,5 +39,6 @@ describe('Menu', () => {
     const card = shallow(<Menu actions={[deleteAction]}/>);
     expect(card.find(MeatballsButton)).to.have.length(0);
     expect(card.find(DeleteBtn)).to.have.length(1);
+    card.unmount();
   });
 });

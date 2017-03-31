@@ -23,6 +23,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
     plugin.showLinkPanel = spyFunc;
     toolbarHyperlink.find(LinkIcon).simulate('click');
     expect(spyFunc.callCount).to.equal(1);
+    toolbarHyperlink.unmount();
   });
 
   it('should state variable showToolbarPanel should be true when toolbar hyperlink button is clicked without a selection', () => {
@@ -30,6 +31,7 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
     const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={plugin}/>);
     toolbarHyperlink.find(LinkIcon).simulate('click');
     expect(toolbarHyperlink.state('showToolbarPanel')).to.be.true;
+    toolbarHyperlink.unmount();
   });
 
   it('should state variable showToolbarPanel should be false when toolbar hyperlink button is clicked with a selection', () => {
@@ -38,5 +40,6 @@ describe('@atlaskit/editor-core/ui/ToolbarHyperlink', () => {
     const toolbarHyperlink = mount(<ToolbarHyperlink pluginState={plugin}/>);
     toolbarHyperlink.find(ToolbarButton).simulate('click');
     expect(toolbarHyperlink.state('showToolbarPanel')).not.to.be.true;
+    toolbarHyperlink.unmount();
   });
 });

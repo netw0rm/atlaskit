@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
@@ -18,8 +18,15 @@ const emojiVisibleById = (component, id) => emojiVisible(component) && findEmoji
 const emojiPlaceHolderVisible = (component) => component.find(EmojiPlaceholder).length === 1;
 
 describe('<ResourcedEmojiShortcut />', () => {
+
+  let component: ReactWrapper<any, any>;
+
+  afterEach(() => {
+    component.unmount();
+  });
+
   it('should render emoji', () => {
-    const component = mount(<ResourcedEmojiShortcut
+    component = mount(<ResourcedEmojiShortcut
       emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
       shortcut={grinEmoji.shortcut}
     />);
@@ -30,7 +37,7 @@ describe('<ResourcedEmojiShortcut />', () => {
   });
 
   it('should update emoji on shortcut change', () => {
-    const component = mount(<ResourcedEmojiShortcut
+    component = mount(<ResourcedEmojiShortcut
       emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
       shortcut={grinEmoji.shortcut}
     />);
@@ -56,7 +63,7 @@ describe('<ResourcedEmojiShortcut />', () => {
         return new Promise(resolve => { resolver = resolve; });
       },
     };
-    const component = mount(<ResourcedEmojiShortcut
+    component = mount(<ResourcedEmojiShortcut
       emojiProvider={getEmojiResourcePromise(config) as Promise<EmojiProvider>}
       shortcut="doesnotexist"
     />);
@@ -78,7 +85,7 @@ describe('<ResourcedEmojiShortcut />', () => {
         return new Promise(resolve => { resolver = resolve; });
       },
     };
-    const component = mount(<ResourcedEmojiShortcut
+    component = mount(<ResourcedEmojiShortcut
       emojiProvider={getEmojiResourcePromise(config) as Promise<EmojiProvider>}
       shortcut={grinEmoji.shortcut}
     />);

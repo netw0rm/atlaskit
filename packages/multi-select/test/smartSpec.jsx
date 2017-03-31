@@ -16,7 +16,9 @@ describe(`${name} - smart`, () => {
 
   describe('render', () => {
     it('should render stateless multi select', () => {
-      expect(mount(<SmartMultiSelect />).find(StatelessMultiSelect).length).to.equal(1);
+      const wrapper = mount(<SmartMultiSelect />);
+      expect(wrapper.find(StatelessMultiSelect).length).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should pass all the relevant props to the stateless component', () => {
@@ -60,6 +62,7 @@ describe(`${name} - smart`, () => {
       expect(statelessProps.selectedItems, 'selectedItems').to.deep.equal([items[0].items[0]]);
       expect(statelessProps.shouldFitContainer, 'shouldFitContainer').to.equal(true);
       expect(statelessProps.shouldFocus, 'shouldFocus').to.equal(true);
+      wrapper.unmount();
     });
   });
 
@@ -94,6 +97,7 @@ describe(`${name} - smart`, () => {
       onFilterChangeSpy.reset();
       onOpenChangeSpy.reset();
       onSelectedChange.reset();
+      wrapper.unmount();
     });
 
     describe('handleOpenChange', () => {

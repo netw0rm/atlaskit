@@ -6,6 +6,10 @@ import Link from '../../src/marks/link';
 describe('<Link />', () => {
   const mark = mount(<Link href="https://www.atlassian.com">This is a link</Link>);
 
+  after(() => {
+    mark.unmount();
+  });
+
   it('should wrap content with <a>-tag', () => {
     expect(mark.find('a').length).to.equal(1);
   });

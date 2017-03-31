@@ -18,6 +18,7 @@ describe('ToolbarImage', () => {
       const toolbarImage = mount(<ToolbarImage pluginState={plugin} />);
 
       expect(toolbarImage.state('disabled')).to.be.false;
+      toolbarImage.unmount();
     });
   });
 
@@ -27,6 +28,7 @@ describe('ToolbarImage', () => {
       const toolbarImage = mount(<ToolbarImage pluginState={plugin} />);
 
       expect(toolbarImage.state('disabled')).to.be.true;
+      toolbarImage.unmount();
     });
   });
 });

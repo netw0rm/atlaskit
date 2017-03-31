@@ -22,6 +22,7 @@ describe('Media', () => {
     expect(mediaComponent.find(FileCardView).length).to.equal(1);
     expect(props.mediaType).to.equal('unknown');
     expect(props.mediaName).to.equal('Loading…');
+    mediaComponent.unmount();
   });
 
   it('should render a FileCard component if it has a vewContext state', () => {
@@ -32,6 +33,7 @@ describe('Media', () => {
     });
     expect(mediaComponent.find(FileCardView).length).to.equal(0);
     expect(mediaComponent.find(FileCard).length).to.equal(1);
+    mediaComponent.unmount();
   });
 
   it('should render a FileCard component with the proper props', () => {
@@ -43,6 +45,7 @@ describe('Media', () => {
     const cardProps = mediaComponent.find(FileCard).props();
     expect(cardProps.id).to.equal('5556346b-b081-482b-bc4a-4faca8ecd2de');
     expect(cardProps.collectionName).to.equal('MediaServicesSample');
+    mediaComponent.unmount();
   });
 
 });

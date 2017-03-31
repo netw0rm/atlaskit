@@ -17,12 +17,13 @@ describe('@atlaskit/editor-bitbucket/analytics/start-event', () => {
     const handler = sinon.spy();
     analyticsService.handler = handler;
 
-    mount(<Editor analyticsHandler={handler} />);
+    const wrapper = mount(<Editor analyticsHandler={handler} />);
     expect(handler.called).to.equal(false);
 
-    mount(<Editor analyticsHandler={handler} />).find('ChromeCollapsed').simulate('focus');
+    wrapper.find('ChromeCollapsed').simulate('focus');
     expect(handler.callCount).to.equal(1);
     expect(handler.calledWith('atlassian.editor.start')).to.equal(true);
+    wrapper.unmount();
   });
 
   it('atlassian.editor.start with two child editors sharing a handler', () => {
@@ -41,9 +42,10 @@ describe('@atlaskit/editor-bitbucket/analytics/start-event', () => {
     }
 
     expect(handler.called).to.equal(false);
-    mount(<ContainerWithTwoEditors />);
+    const wrapper = mount(<ContainerWithTwoEditors />);
     expect(handler.calledWith('atlassian.editor.start')).to.equal(true);
     expect(handler.callCount).to.equal(2);
+    wrapper.unmount();
   });
 
   it('editor.start must not be called when unmounting component', () => {
@@ -59,12 +61,13 @@ describe('@atlaskit/editor-bitbucket/analytics/start-event', () => {
 describe('@atlaskit/editor-bitbucket/analytics/analyticsHandler', () => {
   it('updates analytics handler when provided via property', () => {
     const handler = sinon.spy();
-    mount(<Editor analyticsHandler={handler} />);
+    const wrapper = mount(<Editor analyticsHandler={handler} />);
     expect(handler.called).to.equal(false);
 
-    mount(<Editor analyticsHandler={handler} />).find('ChromeCollapsed').simulate('focus');
+    wrapper.find('ChromeCollapsed').simulate('focus');
     expect(handler.callCount).to.equal(1);
     expect(handler.calledWith('atlassian.editor.start')).to.equal(true);
+    wrapper.unmount();
   });
 });
 
@@ -89,6 +92,10 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
 
     editorAPI = editor.get(0) as any;
     pm = editorAPI!.state!.pm as ProseMirror;
+  });
+
+  afterEach(() => {
+    editor.unmount();
   });
 
   it('atlassian.editor.format.hyperlink.button', () => {
@@ -202,6 +209,9 @@ describe('@atlaskit/editor-bitbucket/analytics/formatting', () => {
   it('atlassian.editor.feedback.button', () => {
     window.jQuery = { ajax() { } };
     const noop = () => { };
+    if (editor) {
+      editor.unmount();
+    }
 
     editor = mount(
       <Editor isExpandedByDefault onCancel={noop} onSave={noop} imageUploadHandler={noop} analyticsHandler={handler} />,

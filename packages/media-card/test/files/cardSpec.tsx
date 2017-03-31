@@ -53,6 +53,7 @@ describe('FileCard', () => {
 
     return waitUntilCardIsLoaded(card).then(() => {
       expect(card.find('.media-card').first().props().style.backgroundImage).to.contain(toDataUri('some-image'));
+      card.unmount();
     });
   });
 
@@ -70,6 +71,7 @@ describe('FileCard', () => {
 
     expect(component.state<boolean>('loading')).to.eql(true);
     expect(component.find('FileIcon').first().props().label).to.eql('loading');
+    component.unmount();
   });
 
   it('should not display error fallback for gif images if there is no preview image', () => {
@@ -98,6 +100,7 @@ describe('FileCard', () => {
 
     waitUntilCardIsLoaded(card).then(() => {
       expect(card.find(CardOverlay).first().props().mediaName).to.equal('some-image.jpg');
+      card.unmount();
     });
   });
 });

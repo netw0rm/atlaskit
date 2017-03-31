@@ -22,8 +22,14 @@ const setupComponent = (props?: Props): ReactWrapper<any, any> => mount(
 );
 
 describe('<CategorySelector />', () => {
+  let component;
+
+  afterEach(() => {
+    component.unmount();
+  });
+
   it('all categories visible', () => {
-    const component = setupComponent();
+    component = setupComponent();
     const categoryButtons = component.find('button');
     expect(categoryButtons.length, 'Number of categories').to.be.equal(defaultCategories.length);
     defaultCategories.forEach((category, i) => {
@@ -34,7 +40,7 @@ describe('<CategorySelector />', () => {
   it('only available categories enabled', () => {
     const enabledCat1 = defaultCategories[0];
     const enabledCat2 = defaultCategories[3];
-    const component = setupComponent({
+    component = setupComponent({
       availableCategories: toAvailableCategories([enabledCat1, enabledCat2]),
     });
     const categoryButtons = component.find('button');
@@ -49,7 +55,7 @@ describe('<CategorySelector />', () => {
 
   it('onCategorySelected called which clicking a category', () => {
     let selectedCategoryId;
-    const component = setupComponent({
+    component = setupComponent({
       onCategorySelected: (id) => { selectedCategoryId = id; },
     });
     const categoryButtons = component.find('button');
@@ -59,7 +65,7 @@ describe('<CategorySelector />', () => {
 
   it('active category highlighted', () => {
     const activeCategoryId = defaultCategories[3].id;
-    const component = setupComponent({
+    component = setupComponent({
       activeCategoryId,
     });
     const categoryButtons = component.find('button');

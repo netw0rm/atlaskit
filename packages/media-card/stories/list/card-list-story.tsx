@@ -1,29 +1,31 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import { MediaItem, ListCardDelete, ListCardClick } from '@atlaskit/media-core';
+import { MediaCollection, MediaCollectionItem, CollectionCardClick } from '@atlaskit/media-core';
 import { StoryList, createStorybookContext, collectionNames, fileCollectionName, defaultCollectionName} from '@atlaskit/media-test-helpers';
 import { CardList } from '../../src';
 
 const wrongCollection = 'adfasdf';
 const wrongClientId = 'wrong-client-id';
 
-const deleteAction = ListCardDelete((item: MediaItem, items: Array<{ id: string }>, e?: Event) => {
-  action('delete')(item, items);
-});
+// TODO: Add CollectionCardDelete into media-core. see: https://jira.atlassian.com/browse/FIL-4004
+// const deleteAction = CollectionCardDelete((item: MediaItem, items: Array<{ id: string }>, e?: Event) => {
+//   action('delete')(item, items);
+// });
 
-const clickAction = ListCardClick((item: MediaItem, items: Array<{ id: string }>, e?: Event) => {
-  action('click')(item, items);
+const clickAction = CollectionCardClick((item: MediaCollectionItem, collection: MediaCollection, e?: Event) => {
+  action('click')(item, collection);
 });
 
 const annotateAction = {
   label: 'Annotate',
-  handler: (item: MediaItem, items: Array<{ id: string }>, e?: Event) => {
-    action('annotate')(item, items);
+  handler: (item: MediaCollectionItem, collection: MediaCollection, e?: Event) => {
+    action('annotate')(item, collection);
   }
 };
 
-const cardsActions = [deleteAction, clickAction, annotateAction];
+// TODO: Add deleteAction back to story. see: https://jira.atlassian.com/browse/FIL-4004
+const cardsActions = [/*deleteAction, */clickAction, annotateAction];
 const context = createStorybookContext();
 const wrongContext = createStorybookContext(wrongClientId);
 

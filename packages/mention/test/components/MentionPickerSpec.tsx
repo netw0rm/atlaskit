@@ -30,14 +30,20 @@ const leftClick = {
 };
 
 describe('MentionPicker', () => {
+  let component;
+
+  afterEach(() => {
+    component.unmount();
+  });
+
   it('should accept all mention names by default', () => {
-    const component = setupPicker();
+    component = setupPicker();
     const hasExpectedItems = () => component.find(MentionItem).length === mentionDataSize;
     return waitUntil(hasExpectedItems);
   });
 
   it('should accept limit result to starting with s', () => {
-    const component = setupPicker({
+    component = setupPicker({
       query: 's',
     } as Props);
     const hasExpectedItems = () => component.find(MentionItem).length === 4;
@@ -45,7 +51,7 @@ describe('MentionPicker', () => {
   });
 
   it('should accept limit result to starting with shae', () => {
-    const component = setupPicker({
+    component = setupPicker({
       query: 'shae',
     } as Props);
     const hasExpectedItems = () => component.find(MentionItem).length === 1;
@@ -53,7 +59,7 @@ describe('MentionPicker', () => {
   });
 
   it('should report error when service fails', () => {
-    const component = setupPicker();
+    component = setupPicker();
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const noMentionItemsShown = () => component.find(MentionItem).length === 0;
     const mentionErrorShown = () => component.find(MentionListError).length > 0;
@@ -70,7 +76,7 @@ describe('MentionPicker', () => {
   });
 
   it('should display previous mention if error straight after', () => {
-    const component = setupPicker();
+    component = setupPicker();
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const mentionErrorProcessed = () => {
       const mentionList = component.find(MentionList);
@@ -86,7 +92,7 @@ describe('MentionPicker', () => {
   });
 
   it('should change selection when navigating next', () => {
-    const component = setupPicker();
+    component = setupPicker();
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const secondItemSelected = () => isMentionItemSelected(component, mentions[1].id);
 
@@ -99,7 +105,7 @@ describe('MentionPicker', () => {
   });
 
   it('should change selection when selectIndex called', () => {
-    const component = setupPicker();
+    component = setupPicker();
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const thirdItemSelected = () => isMentionItemSelected(component, mentions[2].id);
 
@@ -112,7 +118,7 @@ describe('MentionPicker', () => {
   });
 
   it('should change selection when selectId called', () => {
-    const component = setupPicker();
+    component = setupPicker();
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const thirdItemSelected = () => isMentionItemSelected(component, mentions[2].id);
 
@@ -125,7 +131,7 @@ describe('MentionPicker', () => {
   });
 
   it('should change selection when navigating previous', () => {
-    const component = setupPicker();
+    component = setupPicker();
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const lastItemSelected = () =>
       isMentionItemSelected(component, mentions[mentions.length - 1].id);
@@ -141,7 +147,7 @@ describe('MentionPicker', () => {
   it('should choose current selection when chooseCurrentSelection called', () => {
     let chosenMention: Mention;
 
-    const component = setupPicker({
+    component = setupPicker({
       onSelection: (mention) => { chosenMention = mention; },
     } as Props);
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
@@ -164,7 +170,7 @@ describe('MentionPicker', () => {
   it('should choose clicked selection when item clicked', () => {
     let chosenMention: Mention;
 
-    const component = setupPicker({
+    component = setupPicker({
       onSelection: (mention) => {
         chosenMention = mention;
       },
@@ -184,7 +190,7 @@ describe('MentionPicker', () => {
     const onOpen = sinon.spy();
     const onClose = sinon.spy();
 
-    const component = setupPicker({
+    component = setupPicker({
       onOpen: onOpen as OnOpen,
       onClose: onClose as OnClose,
     } as Props);
@@ -201,7 +207,7 @@ describe('MentionPicker', () => {
     const onOpen = sinon.spy();
     const onClose = sinon.spy();
 
-    const component = setupPicker({
+    component = setupPicker({
       onOpen: onOpen as OnOpen,
       onClose: onClose as OnClose,
     } as Props);
@@ -222,7 +228,7 @@ describe('MentionPicker', () => {
   });
 
   it('mentionsCount returns the number of mentions in the list', () => {
-    const component = setupPicker();
+    component = setupPicker();
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
 
     return waitUntil(defaultMentionItemsShow)

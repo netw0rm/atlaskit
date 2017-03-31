@@ -25,12 +25,18 @@ const defaultValue = [
 ];
 
 describe('@atlaskit/editor-hipchat', () => {
+  let editorWrapper;
   let editor: Editor;
+
+  afterEach(() => {
+    editorWrapper.unmount();
+  });
 
   describe('Keymap', () => {
 
     it('should insert new line when user press Shift-Enter', () => {
-      editor = mount(<Editor />).get(0) as any;
+      editorWrapper = mount(<Editor />);
+      editor = editorWrapper.get(0) as any;
       const { pm } = editor.state;
 
       pm!.input.dispatchKey('Shift-Enter', new CustomEvent('keydown'));
@@ -44,7 +50,8 @@ describe('@atlaskit/editor-hipchat', () => {
 
     it('should trigger onSubmit when user press Enter', () => {
       const spy = sinon.spy();
-      editor = mount(<Editor onSubmit={spy} />).get(0) as any;
+      editorWrapper = mount(<Editor onSubmit={spy} />);
+      editor = editorWrapper.get(0) as any;
       const { pm } = editor.state;
 
       pm!.input.dispatchKey('Enter', new CustomEvent('keydown'));
@@ -56,7 +63,8 @@ describe('@atlaskit/editor-hipchat', () => {
   describe('MaxContentSize', () => {
 
     it('should prevent the user from entering more text if it node size is > maxContentSize', () => {
-      editor = mount(<Editor maxContentSize={9} />).get(0) as any;
+      editorWrapper = mount(<Editor maxContentSize={9} />);
+      editor = editorWrapper.get(0) as any;
       const { pm } = editor.state;
 
       pm!.tr.typeText('Hello').applyAndScroll();
@@ -71,20 +79,20 @@ describe('@atlaskit/editor-hipchat', () => {
     });
 
     it('should add css-classes for indicating that you have reached max content size', () => {
-      const editor = mount(<Editor maxContentSize={9} />);
-      const { pm } = (editor.get(0) as any).state;
+      editorWrapper = mount(<Editor maxContentSize={9} />);
+      const { pm } = (editorWrapper.get(0) as any).state;
 
       pm!.tr.typeText('Hello').applyAndScroll();
       pm!.tr.typeText('!').applyAndScroll();
       pm!.flush();
 
-      expect(editor.find('.max-length-reached').length).to.eq(1);
-      expect(editor.find('.flash-toggle').length).to.eq(0);
+      expect(editorWrapper.find('.max-length-reached').length).to.eq(1);
+      expect(editorWrapper.find('.flash-toggle').length).to.eq(0);
 
       pm!.tr.typeText('!').applyAndScroll();
       pm!.flush();
 
-      expect(editor.find('.flash-toggle').length).to.eq(1);
+      expect(editorWrapper.find('.flash-toggle').length).to.eq(1);
     });
 
   });
@@ -92,7 +100,8 @@ describe('@atlaskit/editor-hipchat', () => {
   describe('API', () => {
 
     beforeEach(() => {
-      editor = mount(<Editor />).get(0) as any;
+      editorWrapper = mount(<Editor />);
+      editor = editorWrapper.get(0) as any;
       editor.setFromJson(defaultValue);
     });
 

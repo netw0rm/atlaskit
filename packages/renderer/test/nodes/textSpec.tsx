@@ -90,6 +90,7 @@ describe('Text', () => {
 
       const output = shallow(<div>{renderTextNodes(textNodes)}</div>);
       expect(output.html()).to.equal('<div>Hello <strong>World!</strong></div>');
+      output.unmount();
     });
 
     it('should order marks', () => {

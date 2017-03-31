@@ -35,6 +35,7 @@ describe('@atlaskit/reactions/reaction', () => {
       expect(emoji.length).to.equal(1);
       const emojiDesc = emoji.prop('emoji');
       expect(emojiDesc.id).to.equal(grinning.id);
+      reaction.unmount();
     });
   });
 
@@ -49,6 +50,7 @@ describe('@atlaskit/reactions/reaction', () => {
 
     reaction.simulate('mouseup', { button: 0 });
     expect(onClickSpy.called).to.equal(true);
+    reaction.unmount();
   });
 
 });

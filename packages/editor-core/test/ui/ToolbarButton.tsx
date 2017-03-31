@@ -25,6 +25,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
     />);
 
     expect(toolbarButtonElem.find(Tooltip)).to.have.length(1);
+    toolbarButtonElem.unmount();
   });
 
   it('should show tooltip on mouseover', () => {
@@ -39,6 +40,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
     tooltip.simulate('mouseover');
 
     expect(tooltip.prop('visible')).to.be.true;
+    toolbarButtonElem.unmount();
   });
 
   it('should hide tooltip on mouseout', () => {
@@ -54,6 +56,7 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
     tooltip.simulate('mouseout');
 
     expect(tooltip.prop('visible')).to.be.false;
+    toolbarButtonElem.unmount();
   });
 
   it.skip('should hide tooltip on click', () => {
@@ -71,5 +74,6 @@ describe('@atlaskit/editor-core/ui/ToolbarButton', () => {
     akButton.simulate('click');
 
     expect(tooltip.prop('visible')).to.be.false;
+    toolbarButtonElem.unmount();
   });
 });

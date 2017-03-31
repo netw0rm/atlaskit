@@ -10,6 +10,7 @@ describe('MediaGroup', () => {
   it('should render a CardWrapper component if the numOfCards prop equals 1', () => {
     const mediaGroup = shallow(<MediaGroup numOfCards={1}/>);
     expect(mediaGroup.find(CardWrapper).length).to.equal(1);
+    mediaGroup.unmount();
   });
 
   it('should render children with the proper cardDimensions prop', () => {
@@ -31,6 +32,7 @@ describe('MediaGroup', () => {
     const mediaGroup = shallow(<MediaGroup numOfCards={2}/>);
     expect(mediaGroup.find(CardWrapper).length).to.equal(0);
     expect(mediaGroup.find(FilmStripNavigator).length).to.equal(1);
+    mediaGroup.unmount();
   });
 
 });

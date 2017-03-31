@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
@@ -18,8 +18,15 @@ const emojiVisibleById = (component, id) => emojiVisible(component) && findEmoji
 const emojiPlaceHolderVisible = (component) => component.find(EmojiPlaceholder).length === 1;
 
 describe('<ResourcedEmoji />', () => {
+
+  let component: ReactWrapper<any, any>;
+
+  afterEach(() => {
+    component.unmount();
+  });
+
   it('should render emoji', () => {
-    const component = mount(<ResourcedEmoji
+    component = mount(<ResourcedEmoji
       emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
       emojiId={{ id: grinEmoji.id }}
     />);
@@ -30,7 +37,7 @@ describe('<ResourcedEmoji />', () => {
   });
 
   it('should update emoji on id change', () => {
-    const component = mount(<ResourcedEmoji
+    component = mount(<ResourcedEmoji
       emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
       emojiId={{ id: grinEmoji.id }}
     />);
@@ -56,7 +63,7 @@ describe('<ResourcedEmoji />', () => {
         return new Promise(resolve => { resolver = resolve; });
       },
     };
-    const component = mount(<ResourcedEmoji
+    component = mount(<ResourcedEmoji
       emojiProvider={getEmojiResourcePromise(config) as Promise<EmojiProvider>}
       emojiId={{ id: 'doesnotexist' }}
     />);
@@ -78,7 +85,7 @@ describe('<ResourcedEmoji />', () => {
         return new Promise(resolve => { resolver = resolve; });
       },
     };
-    const component = mount(<ResourcedEmoji
+    component = mount(<ResourcedEmoji
       emojiProvider={getEmojiResourcePromise(config) as Promise<EmojiProvider>}
       emojiId={{ id: grinEmoji.id }}
     />);

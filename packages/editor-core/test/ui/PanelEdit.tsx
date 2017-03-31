@@ -32,6 +32,7 @@ describe('@atlassian/editor-core ui/PanelEdit', () => {
     const panelEditOptions = mount(<PanelEdit pluginState={plugin}/>);
     panelEditOptions.setState({ toolbarVisible: true });
     expect(panelEditOptions.find('button')).to.have.length(5);
+    panelEditOptions.unmount();
   });
 
   it('should set toolbarVisible to true when panel is clicked', () => {
@@ -40,6 +41,7 @@ describe('@atlassian/editor-core ui/PanelEdit', () => {
     pm.on.focus.dispatch();
     pm.on.click.dispatch();
     expect(panelEditOptions.state('toolbarVisible')).to.be.true;
+    panelEditOptions.unmount();
   });
 
   it('should set toolbarVisible to false when panel is blur', () => {
@@ -47,6 +49,7 @@ describe('@atlassian/editor-core ui/PanelEdit', () => {
     const panelEditOptions = mount(<PanelEdit pluginState={plugin}/>);
     pm.on.blur.dispatch();
     expect(panelEditOptions.state('toolbarVisible')).not.to.be.true;
+    panelEditOptions.unmount();
   });
 
   it('should continue toolbarVisible to true when panelType is changed', () => {
@@ -55,6 +58,7 @@ describe('@atlassian/editor-core ui/PanelEdit', () => {
     pm.on.focus.dispatch();
     plugin.changePanelType({ panelType: 'note' });
     expect(panelEditOptions.state('toolbarVisible')).to.be.true;
+    panelEditOptions.unmount();
   });
 
   it('should set toolbarVisible to false when panelType is removed', () => {
@@ -63,5 +67,6 @@ describe('@atlassian/editor-core ui/PanelEdit', () => {
     pm.on.focus.dispatch();
     plugin.removePanelType();
     expect(panelEditOptions.state('toolbarVisible')).to.be.false;
+    panelEditOptions.unmount();
   });
 });

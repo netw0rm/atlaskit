@@ -12,14 +12,18 @@ const expect = chai.expect;
 
 describe('@atlaskit/editor-jira expand and collapse', () => {
   it('should not render expanded chrome when collapsed by default', () => {
-    expect(mount(<Editor />).find('ChromeCollapsed')).to.have.length.above(0);
-    expect(mount(<Editor />).find('input[placeholder]')).to.have.length.above(0);
-    expect(mount(<Editor />).find('ChromeExpanded').length).to.equal(0);
+    const wrapper = mount(<Editor />);
+    expect(wrapper.find('ChromeCollapsed')).to.have.length.above(0);
+    expect(wrapper.find('input[placeholder]')).to.have.length.above(0);
+    expect(wrapper.find('ChromeExpanded').length).to.equal(0);
+    wrapper.unmount();
   });
 
   it('should respect defaultExpanded property', () => {
-    expect(mount(<Editor isExpandedByDefault />).find('ChromeCollapsed').length).to.equal(0);
-    expect(mount(<Editor isExpandedByDefault />).find('ChromeExpanded')).to.have.length.above(0);
+    const wrapper = mount(<Editor isExpandedByDefault />);
+    expect(wrapper.find('ChromeCollapsed').length).to.equal(0);
+    expect(wrapper.find('ChromeExpanded')).to.have.length.above(0);
+    wrapper.unmount();
   });
 
   it('should expand after clicking', () => {
@@ -29,6 +33,7 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
 
     expect(editorWrapper.find('ChromeCollapsed').length).to.equal(0);
     expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
+    editorWrapper.unmount();
   });
 
   it('.expand() method should expand the editor chrome', () => {
@@ -39,6 +44,7 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
 
     expect(editorWrapper.find('ChromeCollapsed').length).to.equal(0);
     expect(editorWrapper.find('ChromeExpanded')).to.have.length.above(0);
+    editorWrapper.unmount();
   });
 
   it('.collapse() method should collapse the editor chrome', () => {
@@ -49,6 +55,7 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
 
     expect(editorWrapper.find('ChromeCollapsed')).to.have.length.above(0);
     expect(editorWrapper.find('ChromeExpanded').length).to.equal(0);
+    editorWrapper.unmount();
   });
 
   it('should call onExpanded after editor is expanded via click', () => {
@@ -57,6 +64,7 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
 
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
     expect(spy.callCount).to.equal(1);
+    editorWrapper.unmount();
   });
 
   it('should call onExpanded after editor is expanded via .expand()', () => {
@@ -67,6 +75,7 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
     editor.expand();
 
     expect(spy.callCount).to.equal(1);
+    editorWrapper.unmount();
   });
 
   describe('feature flags', () => {
@@ -75,6 +84,7 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
       const editor: Editor = editorWrapper.get(0) as any;
       expect(editor.state.schema.nodes.mention).to.exist;
       expect(editor.state.schema.marks.mention_query).to.exist;
+      editorWrapper.unmount();
     });
 
     it('should not enable mentions if mentionProvider doesn`t exist', () => {
@@ -82,30 +92,35 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
       const editor: Editor = editorWrapper.get(0) as any;
       expect(editor.state.schema.nodes.mention).to.not.exist;
       expect(editor.state.schema.marks.mention_query).to.not.exist;
+      editorWrapper.unmount();
     });
 
     it('allowLists=true prop should enable lists', () => {
       const editorWrapper = mount(<Editor allowLists={true}/>);
       const editor: Editor = editorWrapper.get(0) as any;
       expect(editor.state.schema.nodes.bullet_list).to.exist;
+      editorWrapper.unmount();
     });
 
     it('lists should be disabled without allowLists prop', () => {
       const editorWrapper = mount(<Editor/>);
       const editor: Editor = editorWrapper.get(0) as any;
       expect(editor.state.schema.nodes.bullet_list).to.not.exist;
+      editorWrapper.unmount();
     });
 
     it('allowLinks=true prop should enable links', () => {
       const editorWrapper = mount(<Editor allowLinks={true}/>);
       const editor: Editor = editorWrapper.get(0) as any;
       expect(editor.state.schema.marks.link).to.exist;
+      editorWrapper.unmount();
     });
 
     it('links should be disabled without allowLinks prop', () => {
       const editorWrapper = mount(<Editor/>);
       const editor: Editor = editorWrapper.get(0) as any;
       expect(editor.state.schema.marks.link).to.not.exist;
+      editorWrapper.unmount();
     });
 
     it('allowAdvancedTextFormatting=true prop should enable advanced text formatting features', () => {
@@ -113,6 +128,7 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
       const editor: Editor = editorWrapper.get(0) as any;
       expect(editor.state.schema.marks.code).to.exist;
       expect(editor.state.schema.marks.strike).to.exist;
+      editorWrapper.unmount();
     });
 
     it('advanced text formatting features should be disabled without allowAdvancedTextFormatting prop', () => {
@@ -120,18 +136,21 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
       const editor: Editor = editorWrapper.get(0) as any;
       expect(editor.state.schema.marks.code).to.not.exist;
       expect(editor.state.schema.marks.strike).to.not.exist;
+      editorWrapper.unmount();
     });
 
     it('allowCodeBlock=true prop should enable code blocks', () => {
       const editorWrapper = mount(<Editor allowCodeBlock={true}/>);
       const editor: Editor = editorWrapper.get(0) as any;
       expect(editor.state.schema.nodes.code_block).to.exist;
+      editorWrapper.unmount();
     });
 
     it('code blocks should be disabled without allowCodeBlock prop', () => {
       const editorWrapper = mount(<Editor/>);
       const editor: Editor = editorWrapper.get(0) as any;
       expect(editor.state.schema.nodes.code_block).to.not.exist;
+      editorWrapper.unmount();
     });
   });
 

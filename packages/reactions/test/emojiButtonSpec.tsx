@@ -34,6 +34,7 @@ describe('@atlaskit/reactions/emoji-button', () => {
       const emoji = emojiButton.find(Emoji);
       expect(emoji.length).to.equal(1);
       expect(emoji.first().prop('emoji').id).to.equal(emojiId.id);
+      emojiButton.unmount();
     });
   });
 
@@ -42,6 +43,7 @@ describe('@atlaskit/reactions/emoji-button', () => {
     const emojiButton = mount(renderEmojiButton(onClick));
     emojiButton.simulate('mouseup', { button: 0 });
     expect(onClick.called).to.equal(true);
+    emojiButton.unmount();
   });
 
 });

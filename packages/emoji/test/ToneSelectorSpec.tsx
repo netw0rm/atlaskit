@@ -49,5 +49,6 @@ describe('<ToneSelector />', () => {
 
     wrapper.find(EmojiButton).first().simulate('mousedown', { button: 0 });
     expect(onToneSelectedSpy.calledWith(1)).to.equal(true);
+    wrapper.unmount();
   });
 });

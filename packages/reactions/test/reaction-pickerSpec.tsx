@@ -31,6 +31,7 @@ describe('@atlaskit/reactions/reaction-picker', () => {
     const trigger = picker.find(Trigger);
     trigger.simulate('mousedown', { button: 0 });
     expect(picker.find(Selector).length).to.equal(1);
+    picker.unmount();
   });
 
   it('should render emoji picker when "..." button is clicked', () => {
@@ -40,6 +41,7 @@ describe('@atlaskit/reactions/reaction-picker', () => {
     const moreButton = picker.find(EditorMoreIcon);
     moreButton.simulate('mousedown', { button: 0 });
     expect(picker.find(EmojiPicker).length).to.equal(1);
+    picker.unmount();
   });
 
   it('should call "onSelection" when an emoji is seleted', () => {
@@ -50,6 +52,7 @@ describe('@atlaskit/reactions/reaction-picker', () => {
     const selector = picker.find(Selector);
     selector.find(EmojiButton).first().simulate('mouseup', { button: 0 });
     expect(onSelectionSpy.called).to.equal(true);
+    picker.unmount();
   });
 
 });

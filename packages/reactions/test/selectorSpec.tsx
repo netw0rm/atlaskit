@@ -35,6 +35,7 @@ describe('@atlaskit/reactions/selector', () => {
     const selector = mount(renderSelector(onSelection));
     selector.find(EmojiButton).first().simulate('mouseup', { button: 0 });
     expect(onSelection.called).to.equal(true);
+    selector.unmount();
   });
 
 });

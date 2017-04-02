@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-data-test",
-  "version": "2.1.2",
+  "version": "3.0.0",
   "config": {
     "access": "public"
   },

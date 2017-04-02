@@ -419,7 +419,7 @@ describe('block-type', () => {
         context('when hits Ctrl-1', () => {
           it('toggles paragraph', () => {
             const { editorView } = editor(doc(p('text')));
-            sendKeyToPm(editorView, 'Cmd-Alt-1');
+            sendKeyToPm(editorView, 'Ctrl-1');
             expect(editorView.state.doc).to.deep.equal(doc(h1('text')));
           });
         });

@@ -26,15 +26,15 @@ export const content = style({
 
       $nest: {
         '& blockquote': {
-          paddingLeft: '16px',
           borderLeft: `4px solid ${akColorN40}`,
-          marginLeft: 0,
-          marginRight: 0,
           color: akColorN300,
 
           $nest: {
             '&::before, &::after': {
-              content: '',
+              content: 'none',
+            },
+            '& > *:last-child': {
+              display: `block`,
             }
           }
         },

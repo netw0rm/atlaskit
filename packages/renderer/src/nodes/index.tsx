@@ -167,11 +167,7 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
           key={key}
           numOfCards={nodeContent.length}
         >
-          {nodeContent.map((child, index) => {
-            return nodeContent.length > 1
-              ? <li>{renderNode(child, servicesConfig, eventHandlers, index)}</li>
-              : renderNode(child, servicesConfig, eventHandlers, index);
-          })}
+          {nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}
         </MediaGroup>);
     case NodeType.media:
       let provider;

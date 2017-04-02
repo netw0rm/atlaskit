@@ -1,5 +1,5 @@
 import { storiesOf, action } from '@kadira/storybook';
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import { name } from '../package.json';
 import { AkProfilecard } from '../src/';
@@ -34,6 +34,42 @@ const fakeData = data => ({
 
 // have some more space around the profilecard
 const canvasStyle = { padding: '30px' };
+
+class AkProfilecardHeightTransition extends PureComponent {
+  constructor(data) {
+    super();
+
+    this.data = data;
+    this.interval = null;
+
+    this.state = {
+      isLoading: true,
+    };
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      this.setState({
+        isLoading: !this.state.isLoading,
+      });
+    }, 2000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  render() {
+    return (
+      <div>
+        <AkProfilecard
+          isLoading={this.state.isLoading}
+          {... this.data}
+        />
+      </div>
+    );
+  }
+}
 
 storiesOf(`${name}`, module)
   .add('loading state', () => (
@@ -105,6 +141,15 @@ storiesOf(`${name}`, module)
     return (
       <div style={canvasStyle}>
         <AkProfilecard {...data} />
+      </div>
+    );
+  })
+  .add('height transition', () => {
+    const data = fakeData({});
+
+    return (
+      <div style={canvasStyle}>
+        <AkProfilecardHeightTransition {...data} />
       </div>
     );
   })

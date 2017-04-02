@@ -4,14 +4,13 @@ import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
 import { AxiosError } from 'axios';
 import Button from '@atlaskit/button';
-import { MediaItem, MediaCollection, MediaCollectionItem, Context, CardAction, ListAction } from '@atlaskit/media-core';
-
+import { MediaItem, MediaCollection, MediaCollectionItem, Context, CollectionAction } from '@atlaskit/media-core';
 import { DEFAULT_CARD_DIMENSIONS } from '../files';
 import { CardDimensions } from '../index';
 import { Provider } from '../card';
 import { MediaCard } from '../mediaCard';
 import { InfiniteScroll } from './infiniteScroll';
-import {CardListWrapper, Spinner, LoadMoreButtonContainer} from './styled';
+import { CardListWrapper, Spinner, LoadMoreButtonContainer } from './styled';
 
 export interface CardListProps {
   context: Context;
@@ -24,7 +23,7 @@ export interface CardListProps {
 
   pageSize?: number;
 
-  actions?: Array<ListAction>;
+  actions?: Array<CollectionAction>;
 
   showLoadMoreButton?: boolean;
 
@@ -52,10 +51,14 @@ const EmptyComponent = <div>No items</div>;
 const ErrorComponent = <div>ERROR</div>;
 
 export class CardList extends Component<CardListProps, CardListState> {
+  static defaultPageSize = 10;
+
   static defaultProps = {
     cardAppearance: 'image',
-    pageSize: 10,
-
+    pageSize: CardList.defaultPageSize,
+    actions: [],
+    cardHeight: DEFAULT_CARD_DIMENSIONS.HEIGHT,
+    loadingComponent: LoadingComponent,
     useInfiniteScroll: true,
 
     errorComponent: ErrorComponent,
@@ -73,8 +76,9 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private updateState(nextProps: CardListProps): void {
-    const {collectionName, context} = nextProps;
-    const provider = context.getMediaCollectionProvider(nextProps.collectionName, nextProps.pageSize || 10);
+    const {collectionName, context, pageSize} = nextProps;
+    const pageSize = pageSize || CardList.defaultPageSize;
+    const provider = context.getMediaCollectionProvider(collectionName, pageSize);
 
     if (this.state && this.state.subscription) {
       this.state.subscription.unsubscribe();
@@ -102,10 +106,10 @@ export class CardList extends Component<CardListProps, CardListState> {
         });
       },
       complete: (): void => {
-        this.setState({...this.state, hasNextPage: false, loading: false});
+        this.setState({ ...this.state, hasNextPage: false, loading: false });
       },
       error: (error: AxiosError): void => {
-        this.setState({...this.state, error, loading: false});
+        this.setState({ ...this.state, error, loading: false });
       }
     });
 
@@ -181,48 +185,52 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private renderCardList(): JSX.Element {
-    const cardActions: Array<CardAction> = this.props.actions ? this.props.actions.map((action: ListAction) => {
-      return {
-        label: action.label,
-        type: action.type,
-        handler: (item: MediaItem, event: Event) => {
-          if (!this.state.collection) { return; }
+    const { collection } = this.state;
 
-          const fileIds = this.state.collection.items.map(cItem => ({
-            id: cItem.details.id,
-            mediaItemType: cItem.type
-          }));
-          action.handler(item, fileIds, event);
-        }
-      };
-    }) : [];
+    const actions = this.props.actions || [];
+    const cardActions = (collectionItem: MediaCollectionItem) => actions
+      .map(action => {
+        return {
+          label: action.label,
+          type: action.type,
+          handler: (item: MediaItem, event: Event) => {
+            if (collection) {
+              action.handler(collectionItem, collection, event);
+            }
+          }
+        };
+      })
+    ;
 
-    const cards = this.state.collection ? this.state.collection.items.map((mediaItem: MediaCollectionItem, index: number) => {
-      const {cardAppearance, cardDimensions} = this.props;
-      return (
-        <li key={`${index}-${mediaItem.details.id}`}>
-          <MediaCard
-            type={mediaItem.type}
-            provider={this.providersByMediaItemId[mediaItem.details.id]}
-            dataURIService={this.dataURIService}
+    const cards = collection ? collection.items
+      .map((mediaItem: MediaCollectionItem, index: number) => {
+        const {cardAppearance, cardDimensions} = this.props;
+        return (
+          <li key={`${index}-${mediaItem.details.id}`}>
+            <MediaCard
+              type={mediaItem.type}
+              provider={this.providersByMediaItemId[mediaItem.details.id]}
+              dataURIService={this.dataURIService}
 
-            dimensions={{
-              width: this.cardWidth,
-              height: cardDimensions && cardDimensions.height
-            }}
+              dimensions={{
+                width: this.cardWidth,
+                height: cardDimensions && cardDimensions.height
+              }}
 
-            appearance={cardAppearance}
-            actions={cardActions}
-          />
-        </li>
-      );
-    }) : null;
+              appearance={cardAppearance}
+              actions={cardActions(mediaItem)}
+            />
+          </li>
+        );
+      }) : null
+    ;
 
     return (
       <ul>
         {cards}
       </ul>
     );
+
   }
 
   /*

@@ -2,11 +2,10 @@
  * Used for links with appearance 'image'
  */
 
-import * as React from 'react';
-import {Component} from 'react';
+import * as React from 'react'; import {Component} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 
-import {CardDimensions, CardAppearance} from '../../card';
+import {CardDimensions, CardAppearance} from '../../index';
 import {CardImageView} from '../../utils/cardImageView';
 import {Href} from '../../utils/href';
 

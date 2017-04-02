@@ -4,61 +4,85 @@ import { shallow } from 'enzyme';
 
 import { fakeContext } from '@atlaskit/media-test-helpers';
 
-import { Card, LinkCard, FileCard, UrlPreviewIdentifier, MediaIdentifier } from '../src';
+import { Card, UrlPreviewIdentifier, MediaIdentifier } from '../src';
+import { MediaCard } from '../src/mediaCard';
 
 describe('Card', function() {
-  it('should load the stateful link card when passed a UrlPreviewIdentifier', function() {
+  it('should render media card with UrlPreviewProvider when passed a UrlPreviewIdentifier', function() {
     const dummyUrl = 'http://some.url.com';
+    const mediaItemType = 'link';
+
     const identifier: UrlPreviewIdentifier = {
       url: dummyUrl,
-      mediaItemType: 'link'
+      mediaItemType
     };
 
-    const context = fakeContext();
+    const dummyProvider = {observable: 'dummy provider ftw!'};
+
+    const context = fakeContext({
+      getUrlPreviewProvider: dummyProvider
+    });
 
     const card = shallow(<Card context={context} identifier={identifier} />);
-    const linkCard = card.find(LinkCard);
+    const mediaCard = card.find(MediaCard);
 
-    expect(linkCard).to.have.length(1);
-    expect(linkCard.props().context).to.deep.equal(context);
-    expect(linkCard.props().link).to.deep.equal(dummyUrl);
+    expect(context.getUrlPreviewProvider.calledOnce).to.be.true;
+    expect(context.getUrlPreviewProvider.calledWithExactly(dummyUrl)).to.be.true;
+
+    expect(mediaCard).to.have.length(1);
+    expect(mediaCard.props().type).to.deep.equal(mediaItemType);
+    expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
   });
 
-  it('should load the stateful link card when passed a MediaIdentifier with mediaItemType "link"', function() {
+  it('should load render media card with MediaItemProvider when passed a MediaIdentifier with mediaItemType "link"', function() {
     const identifier: MediaIdentifier = {
       id: 'some-random-id',
       mediaItemType: 'link',
       collectionName: 'some-collection-name'
     };
 
-    const context = fakeContext();
+    const {id, mediaItemType, collectionName} = identifier;
+
+    const dummyProvider = {observable: 'dummy provider ftw!'};
+
+    const context = fakeContext({
+      getMediaItemProvider: dummyProvider
+    });
 
     const card = shallow(<Card context={context} identifier={identifier} />);
-    const linkCard = card.find(LinkCard);
+    const mediaCard = card.find(MediaCard);
 
-    expect(linkCard).to.have.length(1);
-    expect(linkCard.props().context).to.deep.equal(context);
-    expect(linkCard.props().link).to.deep.equal(identifier);
+    expect(context.getMediaItemProvider.calledOnce).to.be.true;
+    expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.be.true;
+
+    expect(mediaCard).to.have.length(1);
+    expect(mediaCard.props().type).to.deep.equal(mediaItemType);
+    expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
   });
 
-  it('should load the stateful file card when passed a MediaIdentifier with mediaItemType "file"', function() {
-    const dummyId = 'some-random-id';
-    const dummyCollectionName = 'some-collection-name';
-
+  it('should load render media card with MediaItemProvider when passed a MediaIdentifier with mediaItemType "file"', function() {
     const identifier: MediaIdentifier = {
-      id: dummyId,
+      id: 'some-random-id',
       mediaItemType: 'file',
-      collectionName: dummyCollectionName
+      collectionName: 'some-collection-name'
     };
 
-    const context = fakeContext();
+    const {id, mediaItemType, collectionName} = identifier;
+
+    const dummyProvider = {observable: 'dummy provider ftw!'};
+
+    const context = fakeContext({
+      getMediaItemProvider: dummyProvider
+    });
 
     const card = shallow(<Card context={context} identifier={identifier} />);
-    const fileCard = card.find(FileCard);
+    const mediaCard = card.find(MediaCard);
 
-    expect(fileCard).to.have.length(1);
-    expect(fileCard.props().context).to.deep.equal(context);
-    expect(fileCard.props().id).to.deep.equal(dummyId);
-    expect(fileCard.props().collectionName).to.deep.equal(dummyCollectionName);
+    expect(context.getMediaItemProvider.calledOnce).to.be.true;
+    expect(context.getMediaItemProvider.calledWithExactly(id, mediaItemType, collectionName)).to.be.true;
+
+    expect(mediaCard).to.have.length(1);
+    expect(mediaCard.props().type).to.deep.equal(mediaItemType);
+    expect(mediaCard.props().provider).to.deep.equal(dummyProvider);
   });
 });

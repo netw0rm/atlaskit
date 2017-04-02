@@ -1,0 +1,257 @@
+import * as React from 'react';
+import {expect} from 'chai';
+import * as sinon from 'sinon';
+
+import {shallow, ShallowWrapper} from 'enzyme';
+import {Observable} from 'rxjs';
+import 'rxjs/add/observable/of';
+
+import {fakeContext, waitUntil} from '@atlaskit/media-test-helpers';
+import {FileDetails, UrlPreview} from '@atlaskit/media-core';
+
+import {MediaCard, MediaCardProps, MediaCardState} from '../src/mediaCard';
+import {LinkCard} from '../src/links';
+import {FileCard} from '../src/files';
+
+describe('MediaCard', () => {
+  const waitUntilCardIsLoaded = (card: ShallowWrapper<MediaCardProps, MediaCardState>) => {
+    return waitUntil(() => !!card.instance().state.details, 50);
+  };
+
+  it('should initially render LinkCard with details undefined and passed in props', () => {
+    const context = fakeContext({
+      getMediaItemProvider: {observable: () => Observable.create(() => {/*do nothing*/})}
+    });
+
+    const dataUriService = {};
+    const onLoadingChange = sinon.spy();
+
+    const expectedProps = {
+      appearance: 'small',
+      cardProcessingStatus: 'loading',
+      urlPreview: undefined,
+      error: undefined
+    };
+
+    const element = shallow(
+      <MediaCard
+        type="link"
+        appearance="small"
+        provider={context.getMediaItemProvider()}
+        dataURIService={dataUriService}
+        onLoadingChange={onLoadingChange}
+      />
+    );
+
+    const linkCard = element.find(LinkCard);
+    expect(linkCard).to.be.length(1);
+    expect(linkCard.props()).to.deep.equal(expectedProps);
+  });
+
+  it('should initially render FileCard with details undefined, passed in props and dataURIService', () => {
+    const context = fakeContext({
+      getMediaItemProvider: {observable: () => Observable.create(() => {/*do nothing*/})}
+    });
+
+    const dataUriService = {};
+    const onLoadingChange = sinon.spy();
+
+    const expectedProps = {
+      actions: [],
+      appearance: 'small',
+      cardProcessingStatus: 'loading',
+      fileDetails: undefined,
+      error: undefined,
+      dataURIService: dataUriService
+    };
+
+    const element = shallow(
+      <MediaCard
+        type="file"
+        appearance="small"
+        provider={context.getMediaItemProvider()}
+        dataURIService={dataUriService}
+        onLoadingChange={onLoadingChange}
+      />
+    );
+
+    const fileCard = element.find(FileCard);
+    expect(fileCard).to.be.length(1);
+    expect(fileCard.props()).to.deep.equal(expectedProps);
+  });
+
+  it('should render LinkCard with urlPreview details after provider has returned them', () => {
+    const expectedUrlPreview: UrlPreview = {type: 'link', url: 'hello.world', title: 'l33t title'};
+
+    const context = fakeContext({
+      getMediaItemProvider: {observable: () => Observable.create(observer => {
+        observer.next(expectedUrlPreview);
+      })}
+    });
+
+    const dataUriService = {};
+    const onLoadingChange = sinon.spy();
+
+    const element = shallow<MediaCardProps, MediaCardState>(
+      <MediaCard
+        type="link"
+        appearance="small"
+        provider={context.getMediaItemProvider()}
+        dataURIService={dataUriService}
+        onLoadingChange={onLoadingChange}
+      />
+    );
+
+    (element.instance() as MediaCard).componentDidMount();
+
+    return waitUntilCardIsLoaded(element).then(() => {
+      const linkCard = element.find(LinkCard);
+      expect(linkCard).to.be.length(1);
+      expect(linkCard.props().urlPreview).to.deep.equal(expectedUrlPreview);
+    });
+  });
+
+  it('should render FileCard with FileDetails after provider has returned them', () => {
+    const expectedFileDetails: FileDetails = {id: 'abcd', name: 'my-file'};
+
+    const context = fakeContext({
+      getMediaItemProvider: {observable: () => Observable.create(observer => {
+        observer.next(expectedFileDetails);
+      })}
+    });
+
+    const dataUriService = {};
+    const onLoadingChange = sinon.spy();
+
+    const element = shallow<MediaCardProps, MediaCardState>(
+      <MediaCard
+        type="file"
+        appearance="small"
+        provider={context.getMediaItemProvider()}
+        dataURIService={dataUriService}
+        onLoadingChange={onLoadingChange}
+      />
+    );
+
+    (element.instance() as MediaCard).componentDidMount();
+
+    return waitUntilCardIsLoaded(element).then(() => {
+      const fileCard = element.find(FileCard);
+      expect(fileCard).to.be.length(1);
+      expect(fileCard.props().fileDetails).to.deep.equal(expectedFileDetails);
+    });
+  });
+
+  it('should call onLoadingStateChange() with type "loading" when the component has mounted', () => {
+    const context = fakeContext({
+      getMediaItemProvider: {observable: () => Observable.create(() => {/*do nothing*/})}
+    });
+
+    const dataUriService = {};
+    const onLoadingChange = sinon.spy();
+
+    const element = shallow(
+      <MediaCard
+        type="file"
+        provider={context.getMediaItemProvider()}
+        dataURIService={dataUriService}
+        onLoadingChange={onLoadingChange}
+      />
+    );
+
+    (element.instance() as MediaCard).componentDidMount();
+
+    expect(onLoadingChange.calledOnce).to.be.true;
+    expect(onLoadingChange.calledWithExactly({ type: 'loading', payload: undefined })).to.be.true;
+  });
+
+  it('should call onLoadingStateChange() with type "processing" when the server has started processing the media', done => {
+    const fileDetailsPayload: FileDetails = {id: 'cryptic-id', name: 'Some file name'};
+    const dataUriService = {};
+
+    const context = fakeContext({
+      getMediaItemProvider: {observable: () => Observable.create(observer => {
+        observer.next(fileDetailsPayload);
+      })}
+    });
+
+    const onLoadingChange = (state) => {
+      if (state.type === 'processing') {
+        expect(state.payload).to.be.equal(fileDetailsPayload);
+        done();
+      }
+    };
+
+    const element = shallow(
+      <MediaCard
+        type="file"
+        provider={context.getMediaItemProvider()}
+        dataURIService={dataUriService}
+        onLoadingChange={onLoadingChange}
+      />
+    );
+
+    (element.instance() as MediaCard).componentDidMount();
+  });
+
+  it('should call onLoadingStateChange() with type "complete" when the server has finished processing the media', done => {
+    const fileDetailsPayload: FileDetails = {id: 'cryptic-id', name: 'Some file name'};
+    const dataUriService = {};
+
+    const context = fakeContext({
+      getMediaItemProvider: {observable: () => Observable.create(observer => {
+        observer.next(fileDetailsPayload);
+        observer.complete();
+      })}
+    });
+
+    const onLoadingChange = (state) => {
+      if (state.type === 'complete') {
+        expect(state.payload).to.deep.equal(fileDetailsPayload);
+        done();
+      }
+    };
+
+    const element = shallow(
+      <MediaCard
+        type="file"
+        provider={context.getMediaItemProvider()}
+        dataURIService={dataUriService}
+        onLoadingChange={onLoadingChange}
+      />
+    );
+
+    (element.instance() as MediaCard).componentDidMount();
+  });
+
+  it('should call onLoadingStateChange() with type "error" when the server has errored whilst processing the media', done => {
+    const fileDetailsPayload: FileDetails = {id: 'cryptic-id', name: 'Some file name'};
+    const dataUriService = {};
+    const errorPayload = new Error('This is some random error');
+
+    const context = fakeContext({
+      getMediaItemProvider: {observable: () => Observable.create(observer => {
+        observer.next(fileDetailsPayload);
+        observer.error(errorPayload);
+      })}
+    });
+
+    const onLoadingChange = (state) => {
+      if (state.type === 'error') {
+        expect(state.payload).to.deep.equal(errorPayload);
+        done();
+      }
+    };
+
+    const element = shallow(
+      <MediaCard
+        type="file"
+        provider={context.getMediaItemProvider()}
+        dataURIService={dataUriService}
+        onLoadingChange={onLoadingChange}
+      />
+    );
+
+    (element.instance() as MediaCard).componentDidMount();
+  });
+});

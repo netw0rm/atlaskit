@@ -1,6 +1,7 @@
 import { Search, UnorderedSearchIndex } from 'js-search';
 import debug from '../util/logger';
-import { AvailableCategories, EmojiDescription, EmojiId, OptionalEmojiDescription } from '../types';
+import { AvailableCategories, EmojiDescription, EmojiId, OptionalEmojiDescription, SearchOptions } from '../types';
+import { isEmojiDescriptionWithVariations } from '../type-helpers';
 
 export interface EmojiSearchResult {
   emojis: EmojiDescription[];
@@ -9,8 +10,9 @@ export interface EmojiSearchResult {
 }
 
 export const toEmojiId = (emoji: EmojiDescription): EmojiId => ({
+  shortName: emoji.shortName,
   id: emoji.id,
-  variation: emoji.variation,
+  fallback: emoji.fallback,
 });
 
 declare type EmojiByKey = Map<any, EmojiDescription[]>;
@@ -24,26 +26,37 @@ const availableCategories = (emojis: EmojiDescription[]): AvailableCategories =>
   return categories;
 }, {});
 
+const addAllVariants = (emoji: EmojiDescription, fnKey: EmojiToKey, map: EmojiByKey): void => {
+  const key = fnKey(emoji);
+  if (!map.has(key)) {
+    map.set(key, []);
+  }
+  const emojisForKey = map.get(key);
+  // Unnecessary, but typescript thinks it is. :/
+  if (emojisForKey) {
+    emojisForKey.push(emoji);
+  }
+
+  if (isEmojiDescriptionWithVariations(emoji)) {
+    // map variations too
+    const variations = emoji.skinVariations;
+    if (variations) {
+      variations.forEach(variation => addAllVariants(variation, fnKey, map));
+    }
+  }
+};
+
 const createMapBy = (emojis: EmojiDescription[], fnKey: EmojiToKey): EmojiByKey => {
   const map: EmojiByKey = new Map();
-  emojis.forEach((emoji) => {
-    const key = fnKey(emoji);
-    if (!map.has(key)) {
-      map.set(key, []);
-    }
-    const emojisForShortcut = map.get(key);
-    // Unnecessary, but typescript thinks it is. :/
-    if (emojisForShortcut) {
-      emojisForShortcut.push(emoji);
-    }
-  });
+  emojis.forEach(emoji => addAllVariants(emoji, fnKey, map));
   return map;
 };
 
 const findByKey = (map: EmojiByKey, key: any): OptionalEmojiDescription => {
   const emojis = map.get(key);
   if (emojis && emojis.length) {
-    return emojis[0];
+    // Priority is always to source from the last emoji set (last overrides first)
+    return emojis[emojis.length - 1];
   }
   return undefined;
 };
@@ -75,11 +88,33 @@ const groupByCategory = (emojis: EmojiDescription[]) : EmojiDescription[] => {
   return groupedByCategory;
 };
 
+const applySearchOptions = (emojis: EmojiDescription[], options?: SearchOptions): EmojiDescription[] => {
+  if (options) {
+    return emojis.map(emoji => {
+      return getEmojiVariation(emoji, options);
+    });
+  }
+  return emojis;
+};
+
+export const getEmojiVariation = (emoji: EmojiDescription, options?: SearchOptions): EmojiDescription => {
+  if (isEmojiDescriptionWithVariations(emoji) && options) {
+    const skinTone = options.skinTone;
+    if (skinTone && emoji.skinVariations && emoji.skinVariations.length) {
+      const skinToneEmoji = emoji.skinVariations[skinTone - 1]; // skinTone start at 1
+      if (skinToneEmoji) {
+        return skinToneEmoji;
+      }
+    }
+  }
+  return emoji;
+};
+
 export default class EmojiService {
   private emojis: EmojiDescription[];
   private fullSearch: Search;
-  private shortcutLookup: EmojiByKey;
-  private idLookup: EmojiByKey;
+  private shortNameMap: EmojiByKey;
+  private idMap: EmojiByKey;
 
   constructor(emojis: EmojiDescription[]) {
     // Ensure emojis are ordered by: category (in order found), then by emoji order
@@ -88,11 +123,11 @@ export default class EmojiService {
     this.fullSearch = new Search('id');
     this.fullSearch.searchIndex = new UnorderedSearchIndex();
     this.fullSearch.addIndex('name');
-    this.fullSearch.addIndex('shortcut');
+    this.fullSearch.addIndex('shortName');
     this.fullSearch.addDocuments(emojis);
 
-    this.shortcutLookup = createMapBy(emojis, e => e.shortcut);
-    this.idLookup = createMapBy(emojis, e => e.id);
+    this.shortNameMap = createMapBy(emojis, e => e.shortName);
+    this.idMap = createMapBy(emojis, e => e.id);
   }
 
   /**
@@ -103,18 +138,18 @@ export default class EmojiService {
   }
 
   /**
-   * Text search of emoji shortcut and name field for suitable matches.
+   * Text search of emoji shortName and name field for suitable matches.
    *
    * Returns an array of all emoji is query is empty or null, otherwise an matching emoji.
    */
-  search(query?: string): EmojiSearchResult {
-    let filteredEmoji;
+  search(query?: string, options?: SearchOptions): EmojiSearchResult {
+    let filteredEmoji: EmojiDescription[];
     if (query) {
       filteredEmoji = this.fullSearch.search(query);
     } else {
       filteredEmoji = this.emojis;
     }
-    debug('EmojiService.search', query, filteredEmoji && filteredEmoji.length);
+    filteredEmoji = applySearchOptions(filteredEmoji, options);
     return {
       emojis: filteredEmoji,
       categories: availableCategories(filteredEmoji),
@@ -123,18 +158,18 @@ export default class EmojiService {
   }
 
   /**
-   * Returns the first matching emoji matching the shortcut, or null if none found.
+   * Returns the first matching emoji matching the shortName, or null if none found.
    */
-  findByShortcut(shortcut): OptionalEmojiDescription {
-    return findByKey(this.shortcutLookup, shortcut);
+  findByShortName(shortName: string): OptionalEmojiDescription {
+    return findByKey(this.shortNameMap, shortName);
   }
 
   /**
    * Returns the first matching emoji matching the id, or null if none found.
    */
-  findById(id: EmojiId): OptionalEmojiDescription {
-    debug('findById', id, this.idLookup);
-    return findByKey(this.idLookup, id.id);
+  findById(id: string): OptionalEmojiDescription {
+    debug('findById', id, this.idMap);
+    return findByKey(this.idMap, id);
   }
 
   findInCategory(categoryId: string): EmojiDescription[] {

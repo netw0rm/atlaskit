@@ -50,7 +50,8 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
   keymaps.bindKeymapWithCommand(keymaps.escape.common!, (state: any, dispatch) => {
     const mentionsPlugin = stateKey.getState(state) as MentionsState;
     if (!mentionsPlugin.queryActive) {
-      return false;
+      // returning true here makes sure that default handling of Escape by prose-mirror is not done #ED-1216
+      return true;
     }
 
     return mentionsPlugin.dismiss();

@@ -1,4 +1,4 @@
-import { NodeSpec, dom } from '../../prosemirror';
+import { NodeSpec, dom, browser } from '../../prosemirror';
 
 const getLanguageFromEditorStyle = (dom: HTMLElement): string | undefined => {
   return dom.dataset['language'];
@@ -46,7 +46,8 @@ export const codeBlock: NodeSpec = {
       return { language, preserveWhitespace: true };
     }
   }],
-  toDOM(node) {
-    return ['pre', { 'data-language': node.attrs['language'] }, 0];
+  toDOM(node): [string, any, number] {
+    const className = browser.ie && browser.ie_version <= 11 ? 'ie11' : '';
+    return ['pre', { 'data-language': node.attrs.language, 'class': className }, 0];
   }
 };

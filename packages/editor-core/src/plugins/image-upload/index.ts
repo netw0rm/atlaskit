@@ -39,7 +39,8 @@ function isDroppedFile(
 function isPastedFile(
   e: ClipboardEvent
 ): boolean {
-  return Array.prototype.slice.call(e.clipboardData.types).indexOf('Files') !== -1;
+  const types = e.clipboardData && e.clipboardData.types;
+  return types && Array.prototype.slice.call(types).indexOf('Files') !== -1;
 }
 
 export class ImageUploadState {

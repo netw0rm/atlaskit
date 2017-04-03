@@ -3,4 +3,4 @@
    file before looking in package.json:main
 */
 
-require('./src/index.jsx');
+module.exports = require('./src/index.jsx');

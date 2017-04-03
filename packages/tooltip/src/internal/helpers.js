@@ -1,5 +1,10 @@
 import styles from '../styles.less';
 
+// This hack is to make sure that styles.locals exists when style loading is a noop (when we are
+// running tests).
+// TODO: Remove in AK-2025
+styles.locals = styles.locals || {};
+
 // eslint-disable-next-line import/prefer-default-export
 export function positionToPopperPosition(position) {
   const allowedPositions = {

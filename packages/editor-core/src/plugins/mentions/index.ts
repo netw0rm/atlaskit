@@ -7,7 +7,7 @@ import {
   PluginKey,
 } from '../../prosemirror';
 import { reconfigure } from '../utils';
-import inputRulePlugin from './input-rules';
+import { inputRulePlugin, destroyRulePluginCache } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
 
@@ -111,7 +111,7 @@ export class MentionsState {
 
   mentionDisabled() {
     const { selection, schema } = this.state;
-    return schema.marks.code.isInSet(selection.$from.marks());
+    return schema.marks.code && schema.marks.code.isInSet(selection.$from.marks());
   }
 
   private findMentionQueryMark() {
@@ -207,6 +207,10 @@ const plugin = new Plugin({
     return {
       update(view: EditorView, prevState: EditorState<any>) {
         pluginState.update(view.state, view);
+      },
+
+      destroy() {
+        destroyRulePluginCache();
       }
     };
   }

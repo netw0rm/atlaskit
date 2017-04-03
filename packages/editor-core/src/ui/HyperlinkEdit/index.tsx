@@ -7,9 +7,11 @@ import FloatingToolbar from '../FloatingToolbar';
 import PanelTextInput from '../PanelTextInput';
 import ToolbarButton from '../ToolbarButton';
 import * as styles from './styles';
+import { EditorView } from '../../prosemirror';
 
 export interface Props {
   pluginState: HyperlinkState;
+  editorView: EditorView;
 }
 
 export interface State {
@@ -71,26 +73,26 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
         <FloatingToolbar target={target} align="left" autoPosition>
           <div className={styles.container}>
             {!showOpenButton ? null :
-            <ToolbarButton
-              href={href}
-              target="_blank"
-              theme="dark"
-              title="Open link in new tab"
-            >
-              <OpenIcon label="Open" />
-            </ToolbarButton>
+              <ToolbarButton
+                href={href}
+                target="_blank"
+                theme="dark"
+                title="Open link in new tab"
+              >
+                <OpenIcon label="Open" />
+              </ToolbarButton>
             }
             {!showUnlinkButton ? null :
-            <ToolbarButton
-              theme="dark"
-              title="Unlink"
-              onClick={this.handleUnlink}
-            >
-              <UnlinkIcon label="Unlink" />
-            </ToolbarButton>
+              <ToolbarButton
+                theme="dark"
+                title="Unlink"
+                onClick={this.handleUnlink}
+              >
+                <UnlinkIcon label="Unlink" />
+              </ToolbarButton>
             }
             {!showSeparator ? null :
-            <span className={styles.seperator} />
+              <span className={styles.seperator} />
             }
             <PanelTextInput
               placeholder="Link address"
@@ -111,7 +113,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   }
 
   private handleUnlink = () => {
-    this.props.pluginState.removeLink();
+    this.props.pluginState.removeLink(this.props.editorView);
   }
 
   private handlePluginStateChange = (pluginState: HyperlinkState) => {
@@ -130,6 +132,6 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
   }
 
   private updateHref = (href: string) => {
-    this.props.pluginState.updateLink({ href });
+    this.props.pluginState.updateLink({ href }, this.props.editorView);
   }
 };

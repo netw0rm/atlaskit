@@ -1,15 +1,15 @@
-import { MentionPicker as AkMentionPicker } from '@atlaskit/mention';
+import { MentionPicker as AkMentionPicker, MentionProvider } from '@atlaskit/mention';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { PureComponent } from 'react';
-import { MentionsPluginState } from '../../plugins/mentions';
 import Popper, { IPopper } from './../../popper';
 import { akEditorFloatingPanelZIndex } from '../../styles';
+import { MentionsState } from '../../plugins/mentions';
 
 export interface Props {
-  pluginState: MentionsPluginState;
-  resourceProvider: any; // AbstractMentionResource
-  presenceProvider?: any; // AbstractPresenceResource
+  pluginState: MentionsState;
+  presenceProvider?: any;
+  resourceProvider: Promise<MentionProvider>;
   reversePosition?: boolean;
   target?: HTMLElement;
 }
@@ -19,18 +19,46 @@ export interface State {
   anchorElement?: HTMLElement;
   position?: string;
   transform?: string;
+  mentionsProvider?: MentionProvider;
 }
 
 export default class MentionPicker extends PureComponent<Props, State> {
   state: State = {};
   popper?: IPopper;
 
+  private refreshProvider(providerPromise: Promise<any>) {
+    if (providerPromise) {
+      providerPromise.then(mentionsProvider => {
+        this.setState({
+          mentionsProvider
+        });
+      });
+    } else {
+      this.setState({
+        mentionsProvider: undefined
+      });
+    }
+  }
+
+  componentWillMount() {
+    if (!this.state.mentionsProvider) {
+      this.refreshProvider(this.props.resourceProvider);
+    }
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.resourceProvider !== this.props.resourceProvider) {
+      this.refreshProvider(nextProps.resourceProvider);
+    }
+  }
+
   componentDidMount() {
-    this.props.pluginState.subscribe(this.handlePluginStateChange);
-    this.props.pluginState.onSelectPrevious = this.handleSelectPrevious;
-    this.props.pluginState.onSelectNext = this.handleSelectNext;
-    this.props.pluginState.onSelectCurrent = this.handleSelectCurrent;
-    this.props.pluginState.onTrySelectCurrent = this.handleTrySelectCurrent;
+    const { pluginState } = this.props;
+    pluginState.subscribe(this.handlePluginStateChange);
+    pluginState.onSelectPrevious = this.handleSelectPrevious;
+    pluginState.onSelectNext = this.handleSelectNext;
+    pluginState.onSelectCurrent = this.handleSelectCurrent;
+    pluginState.onTrySelectCurrent = this.handleTrySelectCurrent;
   }
 
   componentDidUpdate() {
@@ -105,17 +133,39 @@ export default class MentionPicker extends PureComponent<Props, State> {
     }
   }
 
-  private handlePluginStateChange = (state: MentionsPluginState) => {
+  private handlePluginStateChange = (state: MentionsState) => {
     const { anchorElement, query } = state;
     this.setState({ anchorElement, query });
     this.applyPopper();
   }
 
   render() {
-    const { anchorElement, query, position, transform } = this.state;
+    const { anchorElement, query, position, transform, mentionsProvider } = this.state;
 
     if (!anchorElement || query === undefined) {
       return null;
+    }
+    // const { anchorElement, query, mentionsProvider } = this.state;
+
+    if (!mentionsProvider) {
+      return null;
+    }
+
+    let style: any = {
+      display: 'none'
+    };
+
+    if (anchorElement && typeof(query) !== 'undefined') {
+      const rect = anchorElement.getBoundingClientRect();
+      const parentRect = anchorElement.offsetParent.getBoundingClientRect();
+      style = {
+        display: 'block',
+        position: 'absolute',
+        left: (rect.left - parentRect.left),
+        top: !this.props.reversePosition ? (rect.top - parentRect.top) + rect.height : null,
+        bottom: this.props.reversePosition ? (window.innerHeight - parentRect.bottom) + 20 : null,
+        zIndex: 1
+      };
     }
 
     return (
@@ -124,7 +174,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
         style={{ top: 0, left: 0, position, transform, zIndex: akEditorFloatingPanelZIndex }}
       >
         <AkMentionPicker
-          resourceProvider={this.props.resourceProvider}
+          resourceProvider={mentionsProvider}
           presenceProvider={this.props.presenceProvider}
           onSelection={this.handleSelectedMention}
           query={query}
@@ -138,27 +188,33 @@ export default class MentionPicker extends PureComponent<Props, State> {
     this.props.pluginState.insertMention(mention);
   }
 
-  private handleSelectPrevious = () => {
+  private handleSelectPrevious = (): boolean => {
     const { picker } = this.refs;
     if (picker) {
       (picker as AkMentionPicker).selectPrevious();
     }
+
+    return true;
   }
 
-  private handleSelectNext = () => {
+  private handleSelectNext = (): boolean => {
     const { picker } = this.refs;
     if (picker) {
       (picker as AkMentionPicker).selectNext();
     }
+
+    return true;
   }
 
-  private handleSelectCurrent = () => {
+  private handleSelectCurrent = (): boolean => {
     const { picker } = this.refs;
     if (picker && (picker as AkMentionPicker).mentionsCount() > 0) {
       (picker as AkMentionPicker).chooseCurrentSelection();
     } else {
       this.props.pluginState.dismiss();
     }
+
+    return true;
   }
 
   private handleTrySelectCurrent = (): boolean => {

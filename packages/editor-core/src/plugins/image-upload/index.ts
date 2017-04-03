@@ -1,15 +1,16 @@
 import { analyticsService } from '../../analytics';
 import {
-  DOMFromPos,
-  NodeSelection,
+  EditorState,
+  EditorView,
   Plugin,
-  ProseMirror,
-  Schema,
+  PluginKey,
+  NodeSelection,
+  NodeViewDesc,
 } from '../../prosemirror';
-import { ImageNodeType } from '../../schema';
-import DropAdapter from './drop-adapter';
-import PasteAdapter from './paste-adapter';
+import inputRulePlugin from './input-rule';
+import { reconfigure } from '../utils';
 
+export type StateChangeHandler = (state: ImageUploadState) => any;
 export interface ImageUploadPluginOptions {
   defaultHandlersEnabled?: boolean;
   supportedImageTypes?: string[];
@@ -29,64 +30,39 @@ const DEFAULT_OPTIONS: ImageUploadPluginOptions = {
   ],
 };
 
-export class ImageUploadState {
-  private changeHandlers: StateChangeHandler[] = [];
-  private pm: PM;
-  private pasteAdapter: PasteAdapter;
-  private dropAdapter: DropAdapter;
-  private config: ImageUploadPluginOptions;
+function isDroppedFile(
+  e: DragEvent
+): boolean {
+  return Array.prototype.slice.call(e.dataTransfer.types).indexOf('Files') !== -1;
+}
 
-  // public state
+function isPastedFile(
+  e: ClipboardEvent
+): boolean {
+  return Array.prototype.slice.call(e.clipboardData.types).indexOf('Files') !== -1;
+}
+
+export class ImageUploadState {
   active = false;
   enabled = false;
   hidden = false;
-  uploadHandler?: ImageUploadHandler;
   src?: string = undefined;
   element?: HTMLElement = undefined;
+  changeHandlers: StateChangeHandler[] = [];
 
-  constructor(pm: PM, options: ImageUploadPluginOptions) {
-    this.pm = pm;
-    this.pasteAdapter = new PasteAdapter(pm);
-    this.dropAdapter = new DropAdapter(pm);
+  private state: EditorState<any>;
+  private config: ImageUploadPluginOptions;
+  private uploadHandler?: ImageUploadHandler;
+
+  constructor(state: EditorState<any>, options?: ImageUploadPluginOptions) {
+    this.changeHandlers = [];
+    this.state = state;
     this.config = { ...DEFAULT_OPTIONS, ...options };
-    this.hidden = !pm.schema.nodes.image;
+    this.hidden = !state.schema.nodes.image;
     this.enabled = this.canInsertImage();
-
-    pm.updateScheduler([
-      pm.on.selectionChange,
-      pm.on.change,
-      pm.on.activeMarkChange,
-    ], () => this.update());
-
-    this.pasteAdapter.add(() => {
-      analyticsService.trackEvent('atlassian.editor.image.paste');
-      return true;
-    });
-
-    this.dropAdapter.add(() => {
-      analyticsService.trackEvent('atlassian.editor.image.drop');
-      return true;
-    });
-
-    this.dropAdapter.add(this.handleImageUpload);
-    this.pasteAdapter.add(this.handleImageUpload);
-
-    this.update(true);
   }
 
-  handleImageUpload = (_?: any, e?: any): boolean => {
-    const { uploadHandler } = this;
-
-    if (!uploadHandler) {
-      return false;
-    }
-
-    uploadHandler(e, this.addImage);
-
-    return true;
-  }
-
-  subscribe = (cb: StateChangeHandler): void => {
+  subscribe(cb: StateChangeHandler) {
     this.changeHandlers.push(cb);
     cb(this);
   }
@@ -95,47 +71,8 @@ export class ImageUploadState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  /**
-   * Insert an image at the current selection.
-   */
-  addImage = (options: { src?: string }): void => {
-    const { pm } = this;
-    const { image } = pm.schema.nodes;
-    if (this.enabled && image) {
-      pm.tr.insert(pm.selection.$to.pos, image.create(options)).apply();
-    }
-  }
-
-  /**
-   * Remove the selected image.
-   */
-  removeImage(): void {
-    const { pm } = this;
-    const { $from, $to } = pm.selection;
-
-    if (this.isImageSelected()) {
-      pm.tr.delete($from.pos, $to.pos).apply();
-    }
-  }
-
-  /**
-   * Update the selected image.
-   */
-  updateImage(options: { src?: string }): void {
-    if (this.isImageSelected()) {
-      this.removeImage();
-      this.addImage(options);
-    }
-  }
-
-  private isImageSelected(): boolean {
-    const { selection } = this.pm;
-    return selection instanceof NodeSelection
-      && selection.node.type instanceof ImageNodeType;
-  }
-
-  private update(dirty = false): void {
-
+  update(state: EditorState<any>, docView: NodeViewDesc, dirty = false): void {
+    this.state = state;
     const newActive = this.isImageSelected();
     if (newActive !== this.active) {
       this.active = newActive;
@@ -149,7 +86,7 @@ export class ImageUploadState {
     }
 
     const newElement = newActive
-      ? this.getActiveImageElement()
+      ? this.getActiveImageElement(docView)
       : undefined;
     if (newElement !== this.element) {
       this.element = newElement;
@@ -161,9 +98,53 @@ export class ImageUploadState {
     }
   }
 
-  private getActiveImageElement(): HTMLElement {
-    const { $from } = this.pm.selection;
-    const { node, offset } = DOMFromPos(this.pm, $from.pos, true);
+  setUploadHandler(uploadHandler: ImageUploadHandler) {
+    this.uploadHandler = uploadHandler;
+  }
+
+  handleImageUpload(view: EditorView, event?: Event): boolean {
+    const { uploadHandler } = this;
+
+    if (!uploadHandler) {
+      return false;
+    }
+
+    uploadHandler(event, this.addImage(view));
+
+    return true;
+  }
+
+  addImage(view: EditorView): Function {
+    return (options: { src?: string }): void => {
+      const { state } = this;
+      const { image } = state.schema.nodes;
+      if (this.enabled && image) {
+        view.dispatch(state.tr.insert(state.selection.$to.pos, image.create(options)));
+      }
+    };
+  }
+
+  updateImage(view: EditorView): Function {
+    return (options: { src?: string }): void => {
+      if (this.isImageSelected()) {
+        this.removeImage(view);
+        this.addImage(view)(options);
+      }
+    };
+  }
+
+  removeImage(view: EditorView): void {
+    const { state } = this;
+    const { $from, $to } = state.selection;
+
+    if (this.isImageSelected()) {
+      view.dispatch(state.tr.delete($from.pos, $to.pos));
+    }
+  }
+
+  private getActiveImageElement(docView: NodeViewDesc): HTMLElement {
+    const { $from } = this.state.selection;
+    const { node, offset } = docView.domFromPos($from.pos, 1);
 
     if (node.childNodes.length === 0) {
       return node.parentElement!;
@@ -173,28 +154,74 @@ export class ImageUploadState {
   }
 
   private canInsertImage(): boolean {
-    const { pm } = this;
-    const { image } = pm.schema.nodes;
-    const { $to} = pm.selection;
+    const { state } = this;
+    const { image } = state.schema.nodes;
+    const { $to } = state.selection;
 
     return !!image
       && $to.parent.canReplaceWith($to.parentOffset, $to.parentOffset, image);
   }
+
+  private isImageSelected(): boolean {
+    const { selection } = this.state;
+    return selection instanceof NodeSelection
+      && selection.node.type === this.state.schema.nodes.image;
+  }
 }
 
-// IE11 + multiple prosemirror fix.
-Object.defineProperty(ImageUploadState, 'name', { value: 'ImageUploadState' });
+export const stateKey = new PluginKey('imageUploadPlugin');
 
-export default new Plugin(ImageUploadState);
+const plugin = new Plugin({
+  state: {
+    init(config, state: EditorState<any>) {
+      return new ImageUploadState(state);
+    },
+    apply(tr, pluginState: ImageUploadState, oldState, newState) {
+      return pluginState;
+    }
+  },
+  key: stateKey,
+  view: (view: EditorView) => {
+    stateKey.getState(view.state).update(view.state, view.docView, true);
+    reconfigure(view, [inputRulePlugin(view.state.schema)]);
 
-export interface S extends Schema {
-  nodes: {
-    image?: ImageNodeType
-  };
-}
+    return {
+      update: (view: EditorView, prevState: EditorState<any>) => {
+        stateKey.getState(view.state).update(view.state, view.docView);
+      }
+    };
+  },
+  props: {
+    handleDOMEvents: {
+      drop(view: EditorView, event: DragEvent) {
+        const pluginState: ImageUploadState = stateKey.getState(view.state);
+        if (!isDroppedFile(event) || !pluginState.changeHandlers.length) {
+          return false;
+        }
+        analyticsService.trackEvent('atlassian.editor.image.drop');
 
-export interface PM extends ProseMirror {
-  schema: S;
-}
+        event.preventDefault();
+        event.stopPropagation();
 
-export type StateChangeHandler = (state: ImageUploadState) => any;
+        pluginState.handleImageUpload(view, event);
+        return true;
+      },
+      paste(view: EditorView, event: ClipboardEvent) {
+        const pluginState: ImageUploadState = stateKey.getState(view.state);
+        if (!isPastedFile(event) || !pluginState.changeHandlers.length) {
+          return false;
+        }
+        analyticsService.trackEvent('atlassian.editor.image.paste');
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        pluginState.handleImageUpload(view, event);
+        return true;
+      },
+    }
+  }
+});
+
+export default plugin;
+

@@ -1,29 +1,28 @@
 import { expect } from 'chai';
-import { Schema, Text } from '../../../src';
-import { DocNodeType, EmojiNodeType } from '../../../src';
+import { Schema, doc, paragraph, text, emoji } from '../../../src';
+import { fromHTML as fromHTML_, toHTML } from '../../../src/test-helper';
 
-describe('@atlaskit/editor-core/schema emoji node', () => {
-  it('throws an error if it is not named "emoji"', () => {
-    expect(() => {
-      new Schema({
-        nodes: {
-          doc: { type: DocNodeType, content: 'inline*' },
-          foo: { type: EmojiNodeType, group: 'inline' },
-          text: { type: Text }
-        }
-      });
-    }).to.throw(Error);
-  });
+const schema = makeSchema();
+const fromHTML = (html: string) => fromHTML_(html, schema);
 
-  it('does not throw an error if it is named "emoji"', () => {
-    expect(() => {
-      new Schema({
-        nodes: {
-          doc: { type: DocNodeType, content: 'inline*' },
-          emoji: { type: EmojiNodeType, group: 'inline' },
-          text: { type: Text }
-        }
-      });
-    }).to.not.throw(Error);
-  });
+describe.skip('@atlaskit/editor-core/schema emoji node', () => {
+    it('should have emoji id when serializing to DOM', () => {
+        const html = toHTML(schema.nodes.emoji.create({ id: '123' }), schema);
+        expect(html).to.have.string('data-emoji-id="123"');
+        expect(html).to.have.string('contenteditable="false"');
+    });
+
+    it('should extract the correct values of emoji id', () => {
+        const doc = fromHTML('<span data-emoji-id=\'123\'></span>');
+        const emoji = doc.firstChild!.firstChild!;
+
+        expect(emoji.type.name).to.equal('emoji');
+        expect(emoji.attrs.id).to.equal('123');
+    });
 });
+
+function makeSchema () {
+    const nodes = {doc, paragraph, emoji, text};
+    const marks = {};
+    return new Schema<typeof nodes, typeof marks>({ nodes, marks });
+}

@@ -70,14 +70,14 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
       onClick();
     }
 
-    this.setState({isTooltipVisible: false});
+    this.setState({ isTooltipVisible: false });
   }
 
   private handleMouseOver = () => {
-    this.setState({isTooltipVisible: true});
+    this.setState({ isTooltipVisible: true });
   }
 
   private handleMouseOut = () => {
-    this.setState({isTooltipVisible: false});
+    this.setState({ isTooltipVisible: false });
   }
 };

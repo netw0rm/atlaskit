@@ -7,11 +7,19 @@ import Image from './components/Image';
 
 export const SIZE = {
   values: ['xsmall', 'small', 'medium', 'large', 'xlarge'],
-  defaultValue: 'small',
+  defaultValue: 'medium',
+};
+
+export const APPEARANCE = {
+  values: ['circle', 'square'],
+  defaultValue: 'circle',
 };
 
 export default class Avatar extends PureComponent {
   static propTypes = {
+    /** Indicates the shape of the avatar. Most avatars are circular, but square avatars
+    can be used for 'container' objects. */
+    appearance: PropTypes.oneOf(APPEARANCE.values),
     /** Used to override the default border color of the presence indicator.
     Accepts any color argument that the border-color CSS property accepts. */
     presenceBorderColor: PropTypes.string,
@@ -28,13 +36,14 @@ export default class Avatar extends PureComponent {
     /** Content to use as a custom presence indicator. Accepts any React element.
     For best results, it is recommended to use square content with height and
     width of 100% */
-    children: PropTypes.element,
+    icon: PropTypes.element,
   }
 
   static defaultProps = {
+    appearance: APPEARANCE.defaultValue,
     presenceBorderColor: akColorPrimary3, // white
     presence: 'none',
-    size: 'medium',
+    size: SIZE.defaultValue,
   }
 
   state = {
@@ -63,17 +72,27 @@ export default class Avatar extends PureComponent {
   }
 
   render() {
-    const { presenceBorderColor, presence, size, src, label, children } = this.props;
+    const {
+      appearance,
+      icon,
+      presenceBorderColor,
+      presence,
+      size,
+      src,
+      label,
+    } = this.props;
     const sizeClasses = classNames([
       styles[size],
       styles.size,
     ]);
     const imgWrapperClasses = classNames({
       [styles.loaded]: !this.state.isLoading,
+      [styles.circleAvatar]: appearance === 'circle',
+      [styles.squareAvatar]: appearance === 'square',
     }, styles.imgWrapper);
     const presenceWrapperClasses = classNames({
       // hide the presence if presence prop is set to none and no custom presence is passed in
-      [styles.hidden]: presence === 'none' && !children,
+      [styles.hidden]: presence === 'none' && !icon,
       [styles.presenceWrapper]: true,
     });
     return (
@@ -93,7 +112,7 @@ export default class Avatar extends PureComponent {
 
           <div className={presenceWrapperClasses}>
             <Presence presence={presence} borderColor={presenceBorderColor}>
-              {children}
+              {icon}
             </Presence>
           </div>
         </div>

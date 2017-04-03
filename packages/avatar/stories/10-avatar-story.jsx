@@ -3,6 +3,8 @@ import React from 'react';
 import avatarStoryStyles from 'style!./stories.less';
 import { name } from '../package.json';
 import Avatar from '../src';
+import nucleusImage from './nucleus.png';
+import lockImage from './lock.png';
 
 const transparentAvatarUrl = require('url-loader!./face-w-transparency.png');
 const tickUrl = require('url-loader!./tick.svg');
@@ -96,6 +98,43 @@ storiesOf(name, module)
       <DefaultAvatar size="large" presence="offline" />
     </div>
   ))
+  .add('Square avatars', () => {
+    const lock = <img src={lockImage} style={{ height: '100%', width: '100%' }} alt="Lock" />;
+    return (
+      <div className={avatarRowClass}>
+        <DefaultAvatar
+          appearance="square"
+          icon={lock}
+          size="xsmall"
+          src={nucleusImage}
+        />
+        <DefaultAvatar
+          appearance="square"
+          icon={lock}
+          size="small"
+          src={nucleusImage}
+        />
+        <DefaultAvatar
+          appearance="square"
+          icon={lock}
+          size="medium"
+          src={nucleusImage}
+        />
+        <DefaultAvatar
+          appearance="square"
+          icon={lock}
+          size="large"
+          src={nucleusImage}
+        />
+        <DefaultAvatar
+          appearance="square"
+          icon={lock}
+          size="xlarge"
+          src={nucleusImage}
+        />
+      </div>
+    );
+  })
   .add('Avatars with custom presence', () => (
     <div>
       <div>As well as the presence attribute, avatars can also display custom content on their badge
@@ -109,87 +148,125 @@ storiesOf(name, module)
           These avatars have an image as their default content and have been styled
           with &quot;height: 100%; width: 100%;&quot;
         </div>
-        <AllAvatarSizes>
-          <img
-            src={tickWithBackgroundUrl}
-            role="presentation"
-            style={{ height: '100%', width: '100%' }}
-          />
-        </AllAvatarSizes>
+        <AllAvatarSizes
+          icon={
+            <img
+              src={tickWithBackgroundUrl}
+              role="presentation"
+              style={{ height: '100%', width: '100%' }}
+            />
+          }
+        />
       </div>
       <div className={storybookExampleClass} >
         <div>
           These avatars show the behaviour of transparent nested images.
           Note there is no added background color
         </div>
-        <AllAvatarSizes>
-          <img
-            src={tickUrl}
-            role="presentation"
-            style={{ height: '100%', width: '100%', color: 'green' }}
-          />
-        </AllAvatarSizes>
+        <AllAvatarSizes
+          icon={
+            <img
+              src={tickUrl}
+              role="presentation"
+              style={{ height: '100%', width: '100%', color: 'green' }}
+            />
+          }
+        />
       </div>
-      <div className={storybookExampleClass} >
+      <div className={storybookExampleClass}>
         <div>
           These avatars have presence AND an image as a child. The expected behaviour is that the
           images will take precedence.
         </div>
-        <AllAvatarSizes presence="online">
-          <img
-            src={tickWithBackgroundUrl}
-            role="presentation"
-            style={{ height: '100%', width: '100%' }}
-          />
-        </AllAvatarSizes>
+        <AllAvatarSizes
+          icon={
+            <img
+              src={tickWithBackgroundUrl}
+              role="presentation"
+              style={{ height: '100%', width: '100%' }}
+            />
+          }
+          presence="online"
+        />
       </div>
-      <div className={storybookExampleClass} >
+      <div className={storybookExampleClass}>
         <div>
           This example shows using a styled div as a presence.
         </div>
-        <AllAvatarSizes presence="online">
-          <div
-            style={{
-              backgroundColor: 'green',
-              height: '100%',
-              width: '100%',
-              textAlign: 'center',
-              color: 'white',
-              marginTop: '1px',
-              lineHeight: '100%',
-              fontSize: '1em',
-            }}
-          >
-            1
-          </div>
-        </AllAvatarSizes>
+        <AllAvatarSizes
+          icon={
+            <div
+              style={{
+                backgroundColor: 'green',
+                height: '100%',
+                width: '100%',
+                textAlign: 'center',
+                color: 'white',
+                marginTop: '1px',
+                lineHeight: '100%',
+                fontSize: '1em',
+              }}
+            >
+              1
+            </div>
+          }
+          presence="online"
+        />
       </div>
-      <div className={storybookExampleClass} >
+      <div className={storybookExampleClass}>
+        <div>
+          This example shows using a styled div as a presence on a square avatar.
+        </div>
+        <AllAvatarSizes
+          appearance="square"
+          src={nucleusImage}
+          icon={
+            <div
+              style={{
+                backgroundColor: 'green',
+                height: '100%',
+                width: '100%',
+                textAlign: 'center',
+                color: 'white',
+                lineHeight: '100%',
+                fontSize: '1em',
+              }}
+            >
+              1
+            </div>
+          }
+          presence="online"
+        />
+      </div>
+      <div className={storybookExampleClass}>
         <div>
           Another example showing a styled div as the inserted content
         </div>
-        <AllAvatarSizes presence="online">
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              background: 'grey',
-              display: 'inline-block',
-            }}
-          >
+        <AllAvatarSizes
+          icon={
             <div
               style={{
-                width: '60%',
-                height: '20%',
-                background: 'red',
-                position: 'relative',
-                top: '45%',
-                left: '20%',
-                transform: 'rotate(50deg)',
+                width: '100%',
+                height: '100%',
+                background: 'grey',
+                display: 'inline-block',
               }}
-            />
-          </div>
-        </AllAvatarSizes>
+            >
+              <div
+                style={{
+                  width: '60%',
+                  height: '20%',
+                  background: 'red',
+                  position: 'relative',
+                  top: '45%',
+                  left: '20%',
+                  transform: 'rotate(50deg)',
+                }}
+              />
+            </div>
+          }
+          presence="online"
+        />
       </div>
     </div>
   ))
@@ -255,5 +332,12 @@ storiesOf(name, module)
     <div style={{ padding: '20px', backgroundColor: '#3a77d8' }}>
       <DefaultAvatar size="xlarge" presence="online" presenceBorderColor="#3a77d8" />
       <DefaultAvatar size="xlarge" presence="offline" presenceBorderColor="#3a77d8" />
+      <DefaultAvatar
+        src={nucleusImage}
+        appearance="square"
+        size="xlarge"
+        icon={<img src={lockImage} style={{ height: '100%', width: '100%' }} alt="Lock" />}
+        presenceBorderColor="#3a77d8"
+      />
     </div>
   ));

@@ -120,6 +120,38 @@ describe('ak-avatar', () => {
     });
   });
 
+  describe('appearance property', () => {
+    it('should default to circle avatar', () => {
+      const wrapper = mount(<Avatar />);
+      expect(wrapper.prop('appearance')).to.equal('circle');
+      expect(wrapper.find(`.${styles.locals.circleAvatar}`)).to.have.lengthOf(1);
+      expect(wrapper.find(`.${styles.locals.squareAvatar}`)).to.have.lengthOf(0);
+    });
+
+    it('should apply rounded corners for square avatar', () => {
+      const wrapper = mount(<Avatar appearance="square" />);
+      expect(wrapper.find(`.${styles.locals.squareAvatar}`)).to.have.lengthOf(1);
+      expect(wrapper.find(`.${styles.locals.circleAvatar}`)).to.have.lengthOf(0);
+    });
+  });
+
+  describe('icon property', () => {
+    it('should render the icon', () => {
+      const MyIcon = <div className="my-icon" />;
+      const wrapper = mount(<Avatar icon={MyIcon} />);
+      expect(wrapper.find('.my-icon')).to.have.lengthOf(1);
+    });
+
+    it('should pass icon and presence props to Presence', () => {
+      const MyIcon = <div className="my-icon" />;
+      const wrapper = mount(<Avatar presence={online} icon={MyIcon} />);
+      const presence = wrapper.find(Presence);
+      expect(presence).to.have.length.of(1);
+      expect(presence.find('.my-icon')).to.have.lengthOf(1);
+      expect(presence.props().presence).to.equal(online);
+    });
+  });
+
   describe('loading behaviour', () => {
     it('should not apply the .loaded class when loading', () => {
       const wrapper = mount(<Avatar />);

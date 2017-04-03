@@ -10,8 +10,6 @@ import {
 
 import EllipsisItem from '../../src/internal/EllipsisItem';
 
-const locals = undefined;
-
 describe('AkBreadcrumbs', () => {
   describe('exports', () => {
     it('the React component, and the Item component', () => {
@@ -29,18 +27,16 @@ describe('AkBreadcrumbs', () => {
       expect(wrapper.instance()).to.be.instanceOf(Component);
     });
 
-    it.skip('should be able to render a single child', () => {
+    it('should be able to render a single child', () => {
       const wrapper = shallow(
         <Breadcrumbs>
           <Item>item</Item>
         </Breadcrumbs>
       );
-      const containerDiv = wrapper.find(`.${locals.container}`);
-      expect(containerDiv).to.have.lengthOf(1);
-      expect(containerDiv.find(Item)).to.have.lengthOf(1);
+      expect(wrapper.find(Item)).to.have.lengthOf(1);
     });
 
-    it.skip('should render all children inside a container div', () => {
+    it('should render multiple children', () => {
       const wrapper = mount(
         <Breadcrumbs>
           <Item>item</Item>
@@ -48,9 +44,7 @@ describe('AkBreadcrumbs', () => {
           <Item>item</Item>
         </Breadcrumbs>
       );
-      const containerDiv = wrapper.find(`.${locals.container}`);
-      expect(containerDiv).to.have.length.above(0);
-      expect(containerDiv.find(Item).length).to.equal(3);
+      expect(wrapper.find(Item).length).to.equal(3);
     });
 
     describe('with enough items to collapse', () => {

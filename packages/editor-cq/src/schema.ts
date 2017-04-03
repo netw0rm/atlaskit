@@ -20,8 +20,8 @@ import {
   underline,
 } from '@atlaskit/editor-core';
 
-// import { UnsupportedInlineNodeType } from './schema/nodes/unsupportedInline';
-// import { UnsupportedBlockNodeType } from './schema/nodes/unsupportedBlock';
+import unsupportedInline from './schema/nodes/unsupportedInline';
+import unsupportedBlock from './schema/nodes/unsupportedBlock';
 
 interface CQSchemaNodes {
   blockquote: NodeSpec;
@@ -58,8 +58,8 @@ const nodes = {
   paragraph,
   rule,
   text,
-  // unsupportedBlock,
-  // unsupportedInline,
+  unsupportedBlock,
+  unsupportedInline,
 };
 
 const marks = {

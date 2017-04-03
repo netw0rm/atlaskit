@@ -3,11 +3,8 @@ import {
   Node as PMNode
 } from '@atlaskit/editor-core';
 import schema from '../schema';
-// import parseCxhtml from './parse-cxhtml';
+import parseCxhtml from './parse-cxhtml';
 import encodeCxhtml from './encode-cxhtml';
-
-// import { isUnsupportedBlockNode, UnsupportedBlockNode } from '../schema/nodes/unsupportedBlock';
-// import { isUnsupportedInlineNode, UnsupportedInlineNode } from '../schema/nodes/unsupportedInline';
 
 export default function encode(node: PMNode) {
   const docType = document.implementation.createDocumentType('html', '-//W3C//DTD XHTML 1.0 Strict//EN', 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd');
@@ -34,9 +31,9 @@ export default function encode(node: PMNode) {
       return encodeParagraph(node);
     } else if (node.type === schema.nodes.hardBreak) {
       return encodeHardBreak();
-    /*} else if (isUnsupportedInlineNode(node) || isUnsupportedBlockNode(node)) {
+    } else if (node.type === schema.nodes.unsupportedBlock || node.type === schema.nodes.unsupportedInline) {
       return encodeUnsupported(node);
-    */} else {
+    } else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
   }
@@ -133,10 +130,10 @@ export default function encode(node: PMNode) {
     return elem;
   }
 
-  /*function encodeUnsupported(node: UnsupportedInlineNode | UnsupportedBlockNode) {
+  function encodeUnsupported(node: PMNode) {
     const domNode = parseCxhtml(node.attrs.cxhtml || '').querySelector('body')!.firstChild;
     if (domNode) {
       return doc.importNode(domNode, true);
     }
-  }*/
+  }
 }

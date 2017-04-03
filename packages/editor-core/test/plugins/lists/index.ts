@@ -190,6 +190,20 @@ describe('lists', () => {
       expect(pluginState).to.have.property('bulletListHidden', false);
     });
 
+    it('should be disabled when on nested list of same ordered type', () => {
+      const { pluginState } = editor(doc(ol(li(p('text'), ol(li(p('te{<>}xt')))), li(p('text')))));
+
+      expect(pluginState).to.have.property('orderedListDisabled', true);
+      expect(pluginState).to.have.property('bulletListDisabled', false);
+    });
+
+    it('should be disabled when on nested list of same bullet type', () => {
+      const { pluginState } = editor(doc(ul(li(p('text'), ul(li(p('te{<>}xt')))), li(p('text')))));
+
+      expect(pluginState).to.have.property('bulletListDisabled', true);
+      expect(pluginState).to.have.property('orderedListDisabled', false);
+    });
+
     describe('untoggling a list', () => {
       const expectedOutput = doc(ol(li(p('One'))), p('Two'), p('Three'), ol(li(p('Four'))));
 

@@ -102,6 +102,14 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
           '.'
         )));
 
+      check('<s> tag',
+        '<p>Text with <s>strikethrough words</s>.</p>',
+        doc(p(
+          'Text with ',
+          strike('strikethrough words'),
+          '.'
+        )));
+
       check('<em> tag',
         '<p>Text with <em>emphasised words</em>.</p>',
         doc(p(

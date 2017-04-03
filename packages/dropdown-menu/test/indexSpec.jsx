@@ -54,6 +54,7 @@ describe(name, () => {
       expect(droplist.prop('position')).to.equal(wrapper.props().position);
       expect(droplist.prop('appearance')).to.equal(wrapper.props().appearance);
       expect(droplist.prop('shouldFlip')).to.equal(wrapper.props().shouldFlip);
+      expect(droplist.prop('manualMaxHeight')).to.equal(wrapper.props().manualMaxHeight);
       expect(droplist.prop('isOpen')).to.equal(wrapper.state().isOpen);
       expect(droplist.prop('trigger')).to.equal('text');
     });

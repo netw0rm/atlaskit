@@ -13,7 +13,7 @@ const dropOffset = `0 ${akGridSize}`;
 /* eslint-disable react/no-unused-prop-types */
 export default class DropdownList extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.oneOf(['default', 'tall']),
+    appearance: PropTypes.oneOf(['default', 'tall', 'manual']),
     children: PropTypes.node,
     isOpen: PropTypes.bool,
     onClick: PropTypes.func,
@@ -23,6 +23,7 @@ export default class DropdownList extends PureComponent {
     shouldFitContainer: PropTypes.bool,
     shouldFlip: PropTypes.bool,
     trigger: PropTypes.node,
+    manualMaxHeight: PropTypes.number,
   }
 
   static defaultProps = {
@@ -61,14 +62,20 @@ export default class DropdownList extends PureComponent {
   }
 
   setMaxHeight = (dropDomRef) => {
-    const { appearance } = this.props;
     const maxHeight = this.getMaxHeight();
-    const height = maxHeight ? `${maxHeight}px` : 'none';
-    dropDomRef.style.maxHeight = appearance !== 'tall' ? height : 'none';
+    dropDomRef.style.maxHeight = maxHeight ? `${maxHeight}px` : 'none';
   }
 
   getMaxHeight = () => {
-    // When dropdown contains more than 9 elemens (droplist items, droplist groups),
+    if (this.props.appearance === 'manual') {
+      return this.props.manualMaxHeight;
+    }
+
+    if (this.props.appearance === 'tall') {
+      return null;
+    }
+
+    // When dropdown contains more than 9 elements (droplist items, droplist groups),
     // it should have scroll and cut off half of the 10th item to indicate that there are more
     // items then are seen.
     const items = this.dropContentRef.querySelectorAll('[data-role="droplistGroupHeading"], [data-role="droplistItem"]');

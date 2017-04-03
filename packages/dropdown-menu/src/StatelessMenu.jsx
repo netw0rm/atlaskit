@@ -11,7 +11,7 @@ const Icon = <ExpandIcon label="" />;
 /* eslint-disable react/no-unused-prop-types */
 export default class StatelessDropdownMenu extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.oneOf(['default', 'tall']),
+    appearance: PropTypes.oneOf(['default', 'tall', 'manual']),
     children: PropTypes.node,
     isOpen: PropTypes.bool,
     isTriggerNotTabbable: PropTypes.bool,
@@ -22,6 +22,7 @@ export default class StatelessDropdownMenu extends PureComponent {
     triggerType: PropTypes.oneOf(['default', 'button']),
     triggerButtonProps: PropTypes.shape(Button.propTypes),
     shouldFlip: PropTypes.bool,
+    manualMaxHeight: PropTypes.number,
   }
 
   static defaultProps = {
@@ -223,6 +224,7 @@ export default class StatelessDropdownMenu extends PureComponent {
         position={props.position}
         shouldFlip={props.shouldFlip}
         trigger={this.renderTrigger()}
+        manualMaxHeight={props.manualMaxHeight}
       >
         <div
           id={state.id}

@@ -6,7 +6,7 @@ import StatelessDropdownMenu from './StatelessMenu';
 /* eslint-disable react/no-unused-prop-types */
 export default class DropdownMenu extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.oneOf(['default', 'tall']),
+    appearance: PropTypes.oneOf(['default', 'tall', 'manual']),
     children: PropTypes.node,
     defaultOpen: PropTypes.bool,
     isTriggerNotTabbable: PropTypes.bool,
@@ -17,6 +17,7 @@ export default class DropdownMenu extends PureComponent {
     triggerType: PropTypes.oneOf(['default', 'button']),
     triggerButtonProps: PropTypes.shape(Button.propTypes),
     shouldFlip: PropTypes.bool,
+    manualMaxHeight: PropTypes.number,
   }
 
   static defaultProps = {
@@ -99,6 +100,7 @@ export default class DropdownMenu extends PureComponent {
         triggerButtonProps={props.triggerButtonProps}
         shouldFlip={props.shouldFlip}
         items={state.items}
+        manualMaxHeight={props.manualMaxHeight}
       >
         { props.children }
       </StatelessDropdownMenu>

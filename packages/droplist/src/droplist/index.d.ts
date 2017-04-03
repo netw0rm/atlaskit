@@ -1,7 +1,7 @@
 import { Component, ReactNode } from 'react';
 
 interface Props {
-  appearance?: 'default' | 'tall';
+  appearance?: 'default' | 'tall' | 'manual';
   isOpen?: boolean;
   shouldFitContainer?: boolean;
   onClick?: () => void;
@@ -10,6 +10,7 @@ interface Props {
   position?: string;
   trigger?: ReactNode;
   shouldFlip?: boolean;
+  manualMaxHeight?: number;
 }
 
 interface State {}

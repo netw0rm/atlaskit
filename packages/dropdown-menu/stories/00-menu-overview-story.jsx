@@ -13,9 +13,9 @@ import { name } from '../package.json';
 import DropdownMenu, { StatelessDropdownMenu } from '../src';
 
 const menuPropsDescriptions = {
-  appearance: `Controls the appearance of the menu. Available types: 'default', 'tall'.
-  Default menu has scroll after its height exceeds the pre-defined amount. Tall menu has no
-  restrictions.`,
+  appearance: `Controls the appearance of the menu. Available types: 'default', 'tall', 'manual'.
+  Default menu has scroll after its height exceeds the height of 9 menu items. Tall menu has no
+  restrictions. Manual menu sets the max-height from the manualMaxHeight prop.`,
   position: 'Position of the menu. See the documentation of ak-layer for more details.',
   triggerType: `Types of the menu's built-in trigger. Available types: 'default', 'button'. Default
   trigger is emty, button trigger uses the Button component with the 'expand' icon`,
@@ -30,11 +30,13 @@ const menuPropsDescriptions = {
   an object with the activated item.`,
   onOpenChange: `This is a handler function which is called when the menu should be open/closed.
   Received an object with isOpen state`,
+  manualMaxHeight: `If the appearance prop is set to 'manual', this prop controls the maximum 
+  height (in pixels) of the dropdown.`,
   children: 'Content that will be rendered inside the trigger element. Accepts any html.',
 };
 
 const menuPropsTypes = {
-  appearance: 'oneOf([default, tall])',
+  appearance: 'oneOf([default, tall, manual])',
   triggerType: 'oneOf([default, button])',
   position: 'string',
   isTriggerNotTabbable: 'bool',

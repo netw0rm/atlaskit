@@ -14,9 +14,9 @@ import DroplistFitExampleRaw from '!raw!./examples/DroplistFit';
 import { name } from '../package.json';
 
 const droplistPropDescriptions = {
-  appearance: `Controls the appearance of the dropdown. Available types: 'default', 'tall'.
+  appearance: `Controls the appearance of the dropdown. Available types: 'default', 'tall', 'manual'.
   Default dropdown has scroll after its height exceeds the pre-defined amount. Tall dropdown has no
-  restrictions.`,
+  restrictions. Manual menu sets the max-height from the manualMaxHeight prop.`,
   position: 'Position of the menu. See the documentation of ak-layer for more details.',
   isOpen: 'Controls the open state of the dropdown',
   onOpenChange: `This is a handler function which is called when the droplist should be open/closed.
@@ -25,6 +25,8 @@ const droplistPropDescriptions = {
   children: 'Content of the droplist.',
   trigger: 'Content that will be rendered inside the trigger element.',
   shouldFitContainer: 'Defines whether the dropdown should fill all available space',
+  manualMaxHeight: `If the appearance prop is set to 'manual', this prop controls the maximum 
+  height (in pixels) of the dropdown.`,
   onClick: 'onClick handler that is attached to the first wrapper div inside',
   onKeyDown: 'onKeyDown handler that is attached to the first wrapper div inside',
   shouldFlip: 'Defines whether droplist should flip its position when there is not enough space',

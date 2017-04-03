@@ -4,9 +4,8 @@ import {
   Node as PMNode
 } from '@atlaskit/editor-core';
 import schema from '../schema';
-// import { isUnsupportedInlineNode } from '../schema/nodes/unsupportedInline';
 import parseCxhtml from './parse-cxhtml';
-// import encodeCxhtml from './encode-cxhtml';
+import encodeCxhtml from './encode-cxhtml';
 
 const convertedNodes = new WeakMap();
 
@@ -194,15 +193,15 @@ function ensureBlocks(fragment: Fragment): Fragment {
     const node = nodes[i];
     if (node.isBlock) {
       blocks.push(node);
-    }/* else if (isUnsupportedInlineNode(node)) {
+    } else if (node.type === schema.nodes.unsupportedInline) {
       blocks.push(schema.nodes.unsupportedBlock.create(node.attrs));
-    }*/ else {
+    } else {
       // An inline node is found. Now step through until we find the last inline
       // node, then throw everything in a paragraph.
       let j;
       for (j = i + 1; j < nodes.length; j++) {
         const node = nodes[j];
-        if (node.isBlock/* || isUnsupportedInlineNode(node)*/) {
+        if (node.isBlock || node.type === schema.nodes.unsupportedInline) {
           break;
         }
       }
@@ -330,5 +329,5 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
   // All unsupported content is wrapped in an `unsupportedInline` node. Converting
   // `unsupportedInline` to `unsupportedBlock` where appropriate is handled when
   // the content is inserted into a parent.
-  // return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
+  return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
 }

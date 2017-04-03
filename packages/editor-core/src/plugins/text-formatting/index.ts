@@ -12,6 +12,7 @@ import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
 import { reconfigure } from '../utils';
 import { transformToCodeAction } from './transform-to-code';
+import { keyCodes } from '../../keymaps';
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 
@@ -304,8 +305,7 @@ export class TextFormattingState {
       view.dispatch(view.state.tr.setStoredMarks([]));
     }
 
-    // Backspace
-    if (event.keyCode === 8) {
+    if (event.keyCode === keyCodes.Backspace) {
       let found = false;
 
       marks.forEach(mark => {

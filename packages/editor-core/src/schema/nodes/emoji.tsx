@@ -54,29 +54,37 @@ export const emoji: NodeSpec = {
   inline: true,
   group: 'inline',
   attrs: {
+    shortName: { default: '' },
     id: { default: '' },
+    fallback: { default: '' },
   },
   parseDOM: [{
-    tag: 'span[data-emoji-id]',
+    tag: 'span[data-emoji-short-name]',
     getAttrs: (dom: Element) => ({
-      id: dom.getAttribute('data-emoji-id')!
+      shortName: dom.getAttribute('data-emoji-short-name')!,
+      id: dom.getAttribute('data-emoji-id')!,
+      fallback: dom.getAttribute('data-emoji-fallback')!,
     })
   }],
   toDOM(node: any): [string, any, string] {
+    const { shortName, id, fallback } = node.attrs;
     const attrs = {
       'class': emojiStyle,
-      'data-emoji-id': node.attrs.id,
+      'data-emoji-short-name': shortName,
+      'data-emoji-id': id,
+      'data-emoji-fallback': fallback,
       'contenteditable': 'false',
     };
-    const fallback = node.attrs.id;
-    return ['span', attrs, fallback];
+    // Don't render any text as it will be replaced quite quickly by
+    // the placeholder in ResourcedEmoji
+    return ['span', attrs, ' '];
   }
 };
 
 export const emojiNodeView = (providerFactory: ProviderFactory) => (node: any, view: any, getPos: () => number): NodeView => {
   let dom: HTMLElement | undefined = document.createElement('span');
   dom.className = emojiStyle;
-  const { id } = node.attrs;
+  const { shortName, id, fallback } = node.attrs;
 
   ReactDOM.render(
     <WithProviders
@@ -84,7 +92,7 @@ export const emojiNodeView = (providerFactory: ProviderFactory) => (node: any, v
       providerFactory={providerFactory}
       renderNode={providers =>
         <ResourcedEmoji
-          emojiId={{ id }}
+          emojiId={{ shortName, id, fallback }}
           emojiProvider={providers['emojiProvider']}
         />
       }

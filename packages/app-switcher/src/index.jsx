@@ -52,6 +52,14 @@ export default class AppSwitcher extends Component {
     }
   };
 
+  onOpenChange = (attrs) => {
+    if (!this.state.isDropdownOpen && attrs.isOpen) {
+      this.props.analytics('appswitcher.trigger.click');
+    }
+
+    this.setState({ isDropdownOpen: attrs.isOpen });
+  };
+
   render = () => {
     const {
       i18n,
@@ -76,9 +84,9 @@ export default class AppSwitcher extends Component {
       <StatelessDropdownMenu
         items={dropdownItems}
         isOpen={this.state.isDropdownOpen}
-        onOpenChange={(attrs) => { this.setState({ isDropdownOpen: attrs.isOpen }); }}
+        onOpenChange={this.onOpenChange}
         onItemActivated={this.onItemActivated}
-        appearance="tall"
+        appearance="default"
         position="bottom left"
         shouldFlip={false}
         {...dropdownOptions}

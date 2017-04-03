@@ -14,15 +14,34 @@ export interface PresenceResourceConfig {
   cloudId: string;
   productId?: string;
   cache?: PresenceCache;
+  cacheExpiry?: number;
   parser?: PresenceParser;
 }
 
 export interface PresenceCache {
   contains(userId: string): boolean;
-  get(userId: string): Presence|null;
+  get(userId: string): Presence;
   getBulk(userIds: string[]): PresenceMap;
   getMissingUserIds(userIds: string[]): string[];
   update(presUpdate: PresenceMap): void;
+}
+
+class CacheEntry {
+  presence: Presence;
+  expiry: number;
+
+  constructor(pres: Presence, timeout: number) {
+    this.presence = pres;
+    this.expiry = Date.now() + timeout;
+  }
+
+  expired(): boolean {
+    return Date.now() > this.expiry;
+  }
+}
+
+interface CacheEntries {
+  [userId: string]: CacheEntry;
 }
 
 export interface PresenceParser {
@@ -68,7 +87,8 @@ class PresenceResource extends AbstractPresenceResource {
     }
 
     this.config = config;
-    this.presenceCache = config.cache || new DefaultPresenceCache();
+    this.config.url = PresenceResource.cleanUrl(config.url);
+    this.presenceCache = config.cache || new DefaultPresenceCache(config.cacheExpiry);
     this.presenceParser = config.parser || new DefaultPresenceParser();
   }
 
@@ -118,25 +138,58 @@ class PresenceResource extends AbstractPresenceResource {
     };
     return fetch(new Request(this.config.url + 'graphql', options)).then(response => response.json());
   }
+
+  private static cleanUrl(url: string): string {
+    if (url.substr(-1) !== '/') {
+      url += '/';
+    }
+    return url;
+  }
 }
 
 export class DefaultPresenceCache implements PresenceCache {
-  private cache: PresenceMap;
-  private expiry: number;
+  private static readonly defaultTimeout: number = 20000;
+  private static readonly defaultFlushTrigger: number = 50;
+  private cache: CacheEntries;
+  private size: number;
+  private expiryInMillis: number;
+  private flushTrigger: number;
 
-  constructor() {
+  constructor(cacheTimeout?: number, cacheTrigger?: number) {
+    this.expiryInMillis = cacheTimeout ? cacheTimeout : DefaultPresenceCache.defaultTimeout;
+    this.flushTrigger = cacheTrigger ? cacheTrigger : DefaultPresenceCache.defaultFlushTrigger;
     this.cache = {};
-    this.expiry = Date.now(); // Initialise cache in an expired state
+    this.size = 0;
   }
 
   /**
-   * Cleans expired entries from cache.
-   * (Currently, the entire cache shares a single expiry.  Will possibly add per-entry expires in future.)
+   * Precondition: _delete is only called internally if userId exists in cache
+   * Removes cache entry
+   * @param userId
    */
-  private _clean(): void {
-    if (this.expiry < Date.now()) {
-      this.cache = {};
+  private _delete(userId: string): void {
+    delete this.cache[userId];
+    this.size--;
+  }
+
+  /**
+   * Checks a cache entry and calls delete if the info has expired
+   * @param userId
+   */
+  private _deleteIfExpired(userId: string): void {
+    if (this.contains(userId) && this.cache[userId].expired()) {
+      this._delete(userId);
     }
+  }
+
+  /**
+   * Cleans expired entries from cache
+   */
+  private _removeExpired(): void {
+    Object.keys(this.cache)
+      .forEach(id => {
+        this._deleteIfExpired(id);
+      });
   }
 
   /**
@@ -148,49 +201,28 @@ export class DefaultPresenceCache implements PresenceCache {
   }
 
   /**
-   * Retrieves a presence from the cache after cleaning expired entries
+   * Retrieves a presence from the cache after checking for expired entries
    * @param userId - to index the cache
    * @returns Presence - the presence that matches the userId
    */
-  get(userId: string): Presence|null {
-    this._clean();
-    if (this.cache.hasOwnProperty(userId)) {
-      return this._get(userId);
-    } else {
-      return null;
+  get(userId: string): Presence {
+    this._deleteIfExpired(userId);
+    if (!this.contains(userId)) {
+      return {};
     }
-  }
-
-  /**
-   * Internal use version that avoids cleaning the cache each time
-   * @param userId - to index the cache
-   * @returns Presence - the presence that matches the userId
-   */
-  private _get(userId: string): Presence {
-    return this.cache[userId];
+    return this.cache[userId].presence;
   }
 
   /**
    * Retrieve multiple presences at once from the cache
-   * Cleans cache prior to hitting it.
    * @param userIds - to index the cache
    * @returns PresenceMap - A map of userIds to cached Presences
    */
   getBulk(userIds: string[]): PresenceMap {
-    this._clean();
-    return this._getBulk(userIds);
-  }
-
-  /**
-   * Internal use version that avoids cleaning the cache each time
-   * @param userIds - to index the cache
-   * @returns PresenceMap - A map of userIds to cached Presences
-   */
-  private _getBulk(userIds: string[]): PresenceMap {
     const presences: PresenceMap = {};
     for (const userId of userIds) {
       if (this.contains(userId)) {
-        presences[userId] = this._get(userId);
+        presences[userId] = this.get(userId);
       }
     }
     return presences;
@@ -207,25 +239,20 @@ export class DefaultPresenceCache implements PresenceCache {
   }
 
   /**
-   * Cleans then updates the cache
+   * Precondition: presMap only contains ids of users not in cache
+   *               expired users must first be removed then reinserted with updated presence
+   * Updates the cache by adding the new Presence entries and setting the expiry time
    * @param presMap
    */
   update(presMap: PresenceMap): void {
-    this._clean();
-    this._update(presMap);
-  }
-
-  /**
-   * Updates the cache by adding the new Presence entries and extending the expiry time
-   * @param presMap
-   */
-  private _update(presMap: PresenceMap): void {
-    const cacheTimeout: number = 20000;
+    if (this.size >= this.flushTrigger) {
+      this._removeExpired();
+    }
     Object.keys(presMap)
       .forEach(userId => {
-        this.cache[userId] = presMap[userId];
+        this.cache[userId] = new CacheEntry(presMap[userId], this.expiryInMillis);
+        this.size++;
       });
-    this.expiry = Date.now() + cacheTimeout;
   }
 }
 

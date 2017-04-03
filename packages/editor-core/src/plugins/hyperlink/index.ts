@@ -7,12 +7,12 @@ import {
   PluginKey,
   NodeViewDesc,
   TextSelection,
+  browser,
 } from '../../prosemirror';
 import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
 import { reconfigure } from '../utils';
-import { browser } from '../../../src/prosemirror';
 
 export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
 export type StateChangeHandler = (state: HyperlinkState) => any;

@@ -6,12 +6,12 @@ import {
   akColorN50A,
   akColorN700A,
   akColorB50,
-  akColorB100,
   akColorB200,
   akColorB400,
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 import { defaultTheme } from '../js/NavigationItem';
+import focusRingMixin from '../../utils/focus-ring-mixin';
 
 const colors = {
   container: {
@@ -92,11 +92,8 @@ const NavigationItemOuter = styled.div`
     background: ${({ isSelected, theme }) => (isSelected ? getColors(theme).selected.background : getColors(theme).default.background)};
     color: ${({ isSelected, theme }) => (isSelected ? getColors(theme).selected.color : getColors(theme).default.color)};
     text-decoration: none;
-    
-    &:focus {
-      outline: none;
-      box-shadow: 0px 0px 0px 2px ${akColorB100};
-    }
+
+    ${focusRingMixin()}
 
     &:hover {
       background: ${({ theme }) => getColors(theme).hover.background};

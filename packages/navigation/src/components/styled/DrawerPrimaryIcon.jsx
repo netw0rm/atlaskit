@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { drawerBackIconSize } from '../../shared-variables';
+import { drawerBackIconSize } from '../../utils/drawer-style-variables';
 
 export default styled.div`
   align-items: center;

@@ -13,9 +13,9 @@ export default styled.div`
   color: ${akColorN500};
   cursor: pointer;
   display: flex;
-  height: ${drawerBackIconSize};
+  height: ${drawerBackIconSize}px;
   justify-content: center;
-  width: ${drawerBackIconSize};
+  width: ${drawerBackIconSize}px;
 
   &:active {
     background: ${akColorB50};

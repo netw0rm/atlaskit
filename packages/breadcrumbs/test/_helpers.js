@@ -2,5 +2,7 @@ import ReactDOM from 'react-dom';
 
 export const setItemWidth = (item, width) => { // eslint-disable-line import/prefer-default-export
   const buttonEl = ReactDOM.findDOMNode(item.button); // eslint-disable-line react/no-find-dom-node
-  buttonEl.clientWidth = width;
+  Object.defineProperty(buttonEl, 'clientWidth', {
+    get: () => width,
+  });
 };

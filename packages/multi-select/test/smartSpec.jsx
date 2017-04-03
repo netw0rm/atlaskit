@@ -1,3 +1,5 @@
+import sinon from 'sinon';
+
 import React from 'react';
 import { mount } from 'enzyme';
 import SmartMultiSelect, { StatelessMultiSelect } from '../src';

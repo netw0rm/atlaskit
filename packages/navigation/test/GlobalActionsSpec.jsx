@@ -1,3 +1,5 @@
+import sinon from 'sinon';
+
 import { shallow, mount } from 'enzyme';
 import React from 'react';
 import style from 'style!../src/components/less/GlobalActions.less';

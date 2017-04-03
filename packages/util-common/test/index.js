@@ -1,3 +1,5 @@
+import sinon from 'sinon';
+
 import { name } from '../package.json';
 import * as exports from '../src';
 import {

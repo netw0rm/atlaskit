@@ -1,3 +1,5 @@
+import sinon from 'sinon';
+
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import WarningIcon from '@atlaskit/icon/glyph/warning';

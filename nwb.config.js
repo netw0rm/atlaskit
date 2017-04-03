@@ -3,20 +3,14 @@
 /* eslint no-unused-vars: 0 */
 /* eslint prefer-object-spread/prefer-object-spread: 0 */
 
-/*
-
-NWB TODO
-
-- Turn off "lib" build
-
-*/
-
 const fs = require('fs');
 const path = require('path');
 const camelcase = require('camelcase');
 
 const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json'));
+
+const runInRealBrowsers = [/^editor-/];
 
 module.exports = {
   type: 'react-component',
@@ -48,20 +42,27 @@ module.exports = {
     ],
   },
   karma: {
-    browsers: [require('karma-jsdom-launcher')],
+    browsers: runInRealBrowsers.some(r => r.test(pkg.name.replace('@altaskit/', ''))) ? [
+      require('karma-chrome-launcher'),
+    ] : [
+      require('karma-jsdom-launcher'),
+    ],
     frameworks: ['mocha', 'chai'],
     plugins: [require('karma-chai')],
 
     // TODO remove this when following the default convention.
     testFiles: [
       // This is our current convention.
-      'test/**Spec.jsx',
+      'test/**Spec.@(js|jsx|ts|tsx)',
 
       // This is the default NWB convention.
       '@(src|test|tests)/**@(.|-)@(spec|test).js',
 
       // Some follow this convention.
-      '@(src|test|tests)/**!(_)*.js',
+      '@(test|tests)/**!(_)*.@(js|jsx|ts|tsx)',
+
+      // Some TypeScript tests follow yet another convention.
+      'test/**/!(_)*.+(js|jsx|ts|tsx)',
     ],
   },
   webpack: {

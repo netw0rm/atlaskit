@@ -1,3 +1,5 @@
+import sinon from 'sinon';
+
 import React, { PureComponent } from 'react';
 import { mount, shallow } from 'enzyme';
 

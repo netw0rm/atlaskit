@@ -1,6 +1,6 @@
-const createWebpackConfig = require('nwb/lib/createWebpackConfig').default;
-const getPluginConfig = require('nwb/lib/getPluginConfig');
-const getUserConfig = require('nwb/lib/getUserConfig').default;
+const createWebpackConfig = require('@treshugart/nwb/lib/createWebpackConfig').default;
+const getPluginConfig = require('@treshugart/nwb/lib/getPluginConfig');
+const getUserConfig = require('@treshugart/nwb/lib/getUserConfig').default;
 
 const userConfig = getUserConfig();
 const pluginConfig = getPluginConfig();

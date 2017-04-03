@@ -1,3 +1,5 @@
+import sinon from 'sinon';
+
 import React from 'react';
 import { mount } from 'enzyme';
 import { akColorR400, akColorG75 } from '@atlaskit/util-shared-styles';

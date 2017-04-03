@@ -1,3 +1,4 @@
+import sinon from 'sinon';
 
 import { waitUntil } from '../src';
 

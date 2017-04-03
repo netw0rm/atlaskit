@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import sinon from 'sinon';
 
 import Blanket from '../src';
 import styles from '../src/style.less';

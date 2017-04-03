@@ -1,3 +1,5 @@
+import sinon from 'sinon';
+
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';

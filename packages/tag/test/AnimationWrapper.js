@@ -1,5 +1,7 @@
 /** @jsx vdom */
 
+import sinon from 'sinon';
+
 import { vdom } from 'skatejs';
 import { getShadowRoot } from '@atlaskit/util-common-test';
 

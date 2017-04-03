@@ -72,13 +72,19 @@ describe(name, () => {
       const animStub = window.cancelAnimationFrame;
 
       beforeEach(() => {
-        window.cancelAnimationFrame = () => {};
+        Object.defineProperty(window, 'cancelAnimationFrame', {
+          configurable: true,
+          get: () => () => {},
+        });
         const wrapper = mount(<Item>content</Item>);
         item = wrapper.instance();
       });
 
       afterEach(() => {
-        window.cancelAnimationFrame = animStub;
+        Object.defineProperty(window, 'cancelAnimationFrame', {
+          configurable: true,
+          get: () => animStub,
+        });
       });
 
       it('for an item which is truncated', () => {

@@ -1,5 +1,7 @@
 /** @jsx vdom */
 
+import sinon from 'sinon';
+
 import 'custom-event-polyfill';
 import { vdom } from 'skatejs';
 import keyCode from 'keycode';

@@ -1,3 +1,5 @@
+import sinon from 'sinon';
+
 import React, { Component } from 'react';
 import chai from 'chai';
 import { shallow } from 'enzyme';

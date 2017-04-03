@@ -1,3 +1,5 @@
+import sinon from 'sinon';
+
 import { shallow } from 'enzyme';
 import React from 'react';
 import DrawerTrigger from '../src/components/js/DrawerTrigger';

@@ -1,5 +1,6 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
+import sinon from 'sinon';
 
 import Button from '../src/index';
 import styles from '../src/less/styles.less';

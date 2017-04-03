@@ -1,0 +1,147 @@
+{
+  "emojis": [
+    {
+      "id": "atlassian-huh",
+      "name": "huh",
+      "fallback": ":huh:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/huh@4x.png",
+        "height": 100,
+        "width": 100
+      },
+      "shortName": ":huh:"
+    },
+    {
+      "id": "atlassian-evilburns",
+      "name": "evilburns",
+      "fallback": ":evilburns:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/evilburns@4x.png",
+        "height": 120,
+        "width": 96
+      },
+      "shortName": ":evilburns:"
+    },
+    {
+      "id": "atlassian-content",
+      "name": "content",
+      "fallback": ":content:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/content@4x.png",
+        "height": 100,
+        "width": 100
+      },
+      "shortName": ":content:"
+    },
+    {
+      "id": "atlassian-confluence",
+      "name": "confluence",
+      "fallback": ":confluence:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/confluence@4x.png",
+        "height": 120,
+        "width": 120
+      },
+      "shortName": ":confluence:"
+    },
+    {
+      "id": "atlassian-failed",
+      "name": "failed",
+      "fallback": ":failed:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/failed@4x.png",
+        "height": 64,
+        "width": 64
+      },
+      "shortName": ":failed:"
+    },
+    {
+      "id": "atlassian-jake",
+      "name": "jake",
+      "fallback": ":jake:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/jake@4x.png",
+        "height": 120,
+        "width": 120
+      },
+      "shortName": ":jake:"
+    },
+    {
+      "id": "atlassian-heart",
+      "name": "heart",
+      "fallback": ":heart:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/heart@4x.png",
+        "height": 56,
+        "width": 64
+      },
+      "shortName": ":heart:"
+    },
+    {
+      "id": "atlassian-chewie",
+      "name": "chewie",
+      "fallback": ":chewie:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/chewie@4x.png",
+        "height": 100,
+        "width": 96
+      },
+      "shortName": ":chewie:"
+    },
+    {
+      "id": "atlassian-goldstar",
+      "name": "goldstar",
+      "fallback": ":goldstar:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/goldstar@4x.png",
+        "height": 80,
+        "width": 80
+      },
+      "shortName": ":goldstar:"
+    },
+    {
+      "id": "atlassian-areyoukiddingme",
+      "name": "areyoukiddingme",
+      "fallback": ":areyoukiddingme:",
+      "type": "ATLASSIAN",
+      "category": "ATLASSIAN",
+      "order": -1,
+      "representation": {
+        "imagePath": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/atlassian/areyoukiddingme@4x.png",
+        "height": 100,
+        "width": 100
+      },
+      "shortName": ":areyoukiddingme:"
+    }
+  ],
+  "meta": {
+    "spriteSheets": {}
+  }
+}

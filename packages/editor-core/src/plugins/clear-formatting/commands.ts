@@ -50,7 +50,9 @@ function liftSubList(state: EditorState<any>, listNode: Node, listPos: number, t
           endpos = listPos + pos + childPos + child.textContent.length;
         }
       });
-      const start = tr.doc.resolve(tr.mapping.map(startPos));
+      const selectionStart = state.selection.$from.pos;
+      const startLocation = startPos > selectionStart ? startPos : selectionStart;
+      const start = tr.doc.resolve(tr.mapping.map(startLocation));
       const end = tr.doc.resolve(tr.mapping.map(endpos));
       const sel = new TextSelection(start, end);
       tr = liftListItem(state, sel, tr);
@@ -61,6 +63,7 @@ function liftSubList(state: EditorState<any>, listNode: Node, listPos: number, t
 
 function liftListItem(state: EditorState<any>, selection, tr: Transaction): Transaction {
   let {$from, $to} = selection;
+  const tf = tr.doc.resolve(tr.mapping.map(state.selection.$from.pos));
   const nodeType = state.schema.nodes.listItem;
   let range = $from.blockRange($to, node => node.childCount && node.firstChild.type === nodeType);
   if (!range || range.depth < 2 || $from.node(range.depth - 1).type !== nodeType) { return tr; }
@@ -78,7 +81,7 @@ function liftListItem(state: EditorState<any>, selection, tr: Transaction): Tran
         true
       )
     );
-    range = new NodeRange(tr.doc.resolveNoCache($from.pos), tr.doc.resolveNoCache(endOfList), range.depth);
+    range = new NodeRange(tr.doc.resolveNoCache(tf.pos), tr.doc.resolveNoCache(endOfList), range.depth);
   }
   return tr.lift(range, liftTarget(range)!).scrollIntoView();
 }

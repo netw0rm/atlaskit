@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@atlaskit/media-core": "^5.0.4",
-    "@atlaskit/media-test-helpers": "^3.0.0",
+    "@atlaskit/media-test-helpers": "^4.0.0",
     "akutil-common-test": "*"
   },
   "keywords": [

@@ -451,17 +451,17 @@ describe('lists', () => {
     describe('indentList', () => {
       it('should return false if active selection is not list', () => {
         const { plugin } = editor(doc(ol(li(p('text')), li(p('text')), li(p('text'))), p('te{<>}xt')));
-        expect(plugin.outdentList()).to.be.false;
+        expect(plugin.indentList()).to.be.false;
       });
 
       it('should return true if active selection can be indented', () => {
         const { plugin } = editor(doc(ol(li(p('text')), li(p('te{<>}xt')), li(p('text')))));
-        expect(plugin.outdentList()).to.be.true;
+        expect(plugin.indentList()).to.be.true;
       });
 
       it('should return false if active selection is list but can not be indented', () => {
         const { plugin } = editor(doc(ol(li(p('te{<>}xt')), li(p('text')), li(p('text')))));
-        expect(plugin.outdentList()).to.be.false;
+        expect(plugin.indentList()).to.be.false;
       });
     });
 

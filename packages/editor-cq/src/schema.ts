@@ -6,6 +6,7 @@ import {
   em,
   hardBreak,
   heading,
+  link,
   listItem,
   MarkSpec,
   NodeSpec,
@@ -41,6 +42,7 @@ interface CQSchemaNodes {
 interface CQSchemaMarks {
   code: MarkSpec;
   em: MarkSpec;
+  link: MarkSpec;
   strike: MarkSpec;
   strong: MarkSpec;
   subsup: MarkSpec;
@@ -65,6 +67,7 @@ const nodes = {
 const marks = {
   code,
   em,
+  link,
   strike,
   strong,
   subsup,

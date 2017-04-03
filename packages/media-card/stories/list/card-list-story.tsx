@@ -60,9 +60,8 @@ storiesOf('CardList', {})
           <CardList
             context={context}
             collectionName={this.state.collectionName}
-            // actions={[clickAction]}
             pageSize={30}
-            cardType={'small'}
+            cardAppearance={'small'}
           />
         </div>;
       }
@@ -97,7 +96,7 @@ storiesOf('CardList', {})
            collectionName={fileCollectionName}
            actions={[clickAction]}
            pageSize={30}
-           cardType={'small'}
+           cardAppearance={'small'}
          />
        }, {
          title: 'Small card',
@@ -106,7 +105,7 @@ storiesOf('CardList', {})
            collectionName={fileCollectionName}
            actions={[clickAction]}
            pageSize={30}
-           cardType={'small'}
+           cardAppearance={'small'}
          />
        }, {
          title: 'Normal Card',
@@ -144,7 +143,7 @@ storiesOf('CardList', {})
              context={context}
              collectionName={defaultCollectionName}
              actions={[clickAction]}
-             cardType={'small'}
+             cardAppearance={'small'}
            />
          </div>
        }, {
@@ -154,7 +153,7 @@ storiesOf('CardList', {})
              context={context}
              collectionName={defaultCollectionName}
              actions={[clickAction]}
-             cardType={'small'}
+             cardAppearance={'small'}
            />
          </div>
        }, {
@@ -165,7 +164,7 @@ storiesOf('CardList', {})
                 context={context}
                 collectionName={defaultCollectionName}
                 actions={[clickAction]}
-                cardType={'small'}
+                cardAppearance="small"
               />
           </div>
           )
@@ -244,7 +243,7 @@ storiesOf('CardList', {})
         context={context}
         collectionName={fileCollectionName}
         actions={cardsActions}
-        cardType={'small'}
+        cardAppearance="small"
         pageSize={20}
         height={500}
       />

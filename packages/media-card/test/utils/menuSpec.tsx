@@ -20,12 +20,6 @@ describe('Menu', () => {
 
   it('should render the meatballs menu when supplied with multiple actions including one with type "delete"', () => {
     const deleteAction = {type: CardActionType.delete, label: 'Delete', handler: () => {}};
-    const menuActions = [
-      {label: 'Open', handler: () => {}},
-      {label: 'Close', handler: () => {}},
-      deleteAction
-    ];
-
     const card = shallow(<Menu actions={[deleteAction]}/>);
     expect(card.find(MeatballsButton)).to.have.length(0);
     expect(card.find(DeleteBtn)).to.have.length(1);

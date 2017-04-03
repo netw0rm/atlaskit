@@ -24,5 +24,6 @@ export class MediaUrlPreviewService implements UrlPreviewService {
       }
       return preview as UrlPreview;
     });
+
   }
 }

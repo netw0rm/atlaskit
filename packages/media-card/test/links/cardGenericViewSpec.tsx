@@ -90,8 +90,9 @@ describe('LinkCardViewGeneric', () => {
     const linkUrl = 'http://localhost:9001/';
     const site = 'Hello world';
 
-    const card = shallow(<LinkCardGenericView title={title} linkUrl={linkUrl} site={site}/>);
-    expect(card.find(Link).children('a').text()).to.eql(site);
+    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} site={site}/>);
+    expect(card.find('a.underline').props().href).to.eql(linkUrl);
+    expect(card.find('a.underline').text()).to.eql(site);
   });
 
   it('currently ignores the loading prop', () => {

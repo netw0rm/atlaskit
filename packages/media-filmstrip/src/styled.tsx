@@ -15,6 +15,10 @@ export const FilmStripViewWrapper = styled.div`
   &:hover .arrow {
     opacity: 1;
   }
+
+  .ellipsed-text {
+    white-space: initial;
+  }
 `;
 
 export const FilmStripListWrapper = styled.div`

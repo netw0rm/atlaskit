@@ -35,7 +35,7 @@ export default class EmojiPickerListRow extends PureComponent<Props, undefined> 
           return (
             <div
               style={{ display: 'inline-block' }}
-              key={emoji.shortcut}
+              key={emoji.shortName}
             >
 
               <EmojiButton

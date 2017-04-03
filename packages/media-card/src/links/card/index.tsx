@@ -137,18 +137,19 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
       const { resources } = urlPreview;
       const { appearance } = props;
 
-      if (resources && resources.app) {
-        return this.renderApplicationLink(urlPreview);
-      } else if (resources && resources.player) {
-        return this.renderPlayerLink(urlPreview);
-      }
-
+      // If appearance is passed we prioritize that instead of the better looking one
       if (appearance === 'small') {
         return this.renderSmallLink(urlPreview);
       }
 
       if (appearance === 'image') {
         return this.renderLinkCardImage(urlPreview);
+      }
+
+      if (resources && resources.app) {
+        return this.renderApplicationLink(urlPreview);
+      } else if (resources && resources.player) {
+        return this.renderPlayerLink(urlPreview);
       }
 
       return this.renderGenericLink(urlPreview);

@@ -4,7 +4,7 @@ import { PureComponent } from 'react';
 
 import * as styles from './styles';
 import { EmojiDescription, OnEmojiEvent } from '../../types';
-import { toEmojiId } from '../../api/EmojiService';
+import { toEmojiId } from '../../api/EmojiRepository';
 import EmojiPreview from '../common/EmojiPreview';
 import { leftClick } from '../../util/mouse';
 
@@ -46,7 +46,7 @@ export default class EmojiTypeAheadItem extends PureComponent<Props, undefined> 
         className={classes}
         onMouseDown={this.onEmojiSelected}
         onMouseMove={this.onEmojiMenuItemMouseMove}
-        data-emoji-id={emoji.shortcut}
+        data-emoji-id={emoji.shortName}
       >
         <div className={styles.typeAheadItemRow}>
           <EmojiPreview

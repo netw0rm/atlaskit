@@ -4,6 +4,7 @@ import {CardAction} from '@atlaskit/media-core';
 
 import {CardDimensions, CardAppearance} from '../../card';
 import {Ellipsify, Menu, MediaImage, getCSSUnitValue} from '../../utils';
+import {Href} from '../../utils/href';
 import {Details, Wrapper} from '../styled';
 import {
   Title,
@@ -147,9 +148,9 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps, Lin
           <Footer>
             <Link>
               {icon}
-              <a href={linkUrl} rel="noopener">
+              <Href linkUrl={linkUrl} underline={true}>
                 {site || linkUrl}
-              </a>
+              </Href>
             </Link>
             <Menu actions={actions} />
           </Footer>

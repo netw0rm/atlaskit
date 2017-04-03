@@ -1,9 +1,9 @@
-import { EmojiService, EmojiDescription } from '@atlaskit/emoji';
+import { denormaliseEmojiServiceResponse, EmojiDescription, EmojiDescriptionWithVariations, EmojiRepository, EmojiServiceResponse } from '@atlaskit/emoji';
 import { mockEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig } from './mock-emoji-resource';
 
 export const spriteEmoji: EmojiDescription = {
   id: 'grimacing',
-  shortcut: ':grimacing:',
+  shortName: ':grimacing:',
   name: 'Grimacing',
   type: 'standard',
   category: 'PEOPLE',
@@ -27,7 +27,7 @@ export const spriteEmoji: EmojiDescription = {
 
 export const imageEmoji: EmojiDescription = {
   id: 'grimacing',
-  shortcut: ':grimacing:',
+  shortName: ':grimacing:',
   name: 'Grimacing',
   type: 'standard',
   category: 'PEOPLE',
@@ -44,14 +44,34 @@ declare var require: {
 };
 
 // tslint:disable-next-line:no-var-requires
-export const emojis = (): EmojiDescription[] => require('./test-data.json') as EmojiDescription[];
+export const standardServiceEmojis: EmojiServiceResponse = require('./test-emoji-standard.json') as EmojiServiceResponse;
+// tslint:disable-next-line:no-var-requires
+export const atlassianServiceEmojis: EmojiServiceResponse = require('./test-emoji-atlassian.json') as EmojiServiceResponse;
 
-export const standardEmojis = (): EmojiDescription[] => emojis().filter(emoji => emoji.category !== 'ATLASSIAN');
-export const atlassianEmojis = (): EmojiDescription[] => emojis().filter(emoji => emoji.category === 'ATLASSIAN');
+export const standardEmojis: EmojiDescription[] = denormaliseEmojiServiceResponse(standardServiceEmojis).emojis;
+export const atlassianEmojis: EmojiDescription[] = denormaliseEmojiServiceResponse(atlassianServiceEmojis).emojis;
+export const emojis: EmojiDescription[] = [ ...standardEmojis, ...atlassianEmojis ];
 
-export const getEmojiService = () => new EmojiService(emojis());
+export const emojiRepository = new EmojiRepository(emojis);
 
-export const grinEmoji = () => getEmojiService().findByShortcut('grin') as EmojiDescription;
-export const areyoukiddingmeEmoji = () => getEmojiService().findByShortcut('areyoukiddingme') as EmojiDescription;
+export const grinEmoji = emojiRepository.findByShortName(':grin:') as EmojiDescriptionWithVariations;
+export const evilburnsEmoji = emojiRepository.findByShortName(':evilburns:') as EmojiDescriptionWithVariations;
+export const thumbsupEmoji = emojiRepository.findByShortName(':thumbsup:') as EmojiDescriptionWithVariations;
 
-export const getEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(getEmojiService(), config);
+export const getEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(emojiRepository, config);
+
+export const generateSkinVariation = (base: EmojiDescription, idx: number): EmojiDescription => {
+  const { id, shortName, name } = base;
+  return {
+    id: `${id}-${idx}`,
+    shortName: `${shortName.substring(0, shortName.length - 1)}-${idx}:`,
+    name: `${name} ${idx}`,
+    type: 'SITE',
+    category: 'CHEESE',
+    representation: {
+      imagePath: `https://path-to-skin-variation-tone${idx}.png`,
+      width: 24,
+      height: 24,
+    },
+  };
+};

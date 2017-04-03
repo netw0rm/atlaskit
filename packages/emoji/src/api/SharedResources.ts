@@ -33,7 +33,7 @@ export interface OnProviderChange<R, E, I> {
  * R = result type
  * I = info type
  */
-export interface Provider<Q, R, E, I> {
+export interface Provider<Q, R, E, I, O> {
   /**
    * Results are returned to the OnSearchResult
    * in the subscriber.
@@ -47,13 +47,13 @@ export interface Provider<Q, R, E, I> {
    * set to search has changed, the last search may be executed again
    * with updated results.
    */
-  filter(query?: Q): void;
+  filter(query?: Q, options?: O): void;
 
   subscribe(onChange: OnProviderChange<R, E, I>): void;
   unsubscribe(onChange: OnProviderChange<R, E, I>): void;
 }
 
-export abstract class AbstractResource<Q, R, E, I> implements Provider<Q, R, E, I> {
+export abstract class AbstractResource<Q, R, E, I, O> implements Provider<Q, R, E, I, O> {
   private lastResult: R;
   private listeners = new Set<OnProviderChange<R, E, I>>();
 

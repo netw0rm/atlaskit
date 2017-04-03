@@ -2,7 +2,8 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Readme, { Code, Props } from '@atlaskit/util-readme';
 
-import FlagGroupExampleRaw from '!raw!./examples/FlagGroupExample'; // eslint-disable-line import/first, import/no-duplicates
+import ExampleRaw from '!raw!./examples/FlagGroupExample'; // eslint-disable-line import/no-duplicates
+import Example from './examples/FlagGroupExample'; // eslint-disable-line import/no-duplicates
 
 import { name, description } from '../package.json';
 import { FlagGroup } from '../src';
@@ -24,7 +25,9 @@ storiesOf(name, module)
         component={name}
         description={description}
       >
-        <Code code={FlagGroupExampleRaw} />
+        <Code code={ExampleRaw}>
+          {Example}
+        </Code>
         <Props
           component={FlagGroup}
           descriptions={flagGroupPropDescriptions}

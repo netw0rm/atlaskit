@@ -62,6 +62,7 @@ export class ListsState {
   update(newEditorState) {
     const { doc, selection } = newEditorState;
     const ancestorPosition = findAncestorPosition(doc, selection.$from);
+    const nodeDepth = selection.$from.depth;
     const rootNode = selection instanceof NodeSelection
       ? selection.node
       : ancestorPosition.node(ancestorPosition.depth)!;
@@ -80,15 +81,21 @@ export class ListsState {
       dirty = true;
     }
 
-    const anyListActive = newBulletListActive || newOrderedListActive;
-
-    const newBulletListDisabled = !(anyListActive || this.isWrappingPossible(newEditorState.schema.nodes.bulletList, newEditorState));
+    const newBulletListDisabled = !(
+      (newBulletListActive && nodeDepth <= 3) ||
+      newOrderedListActive ||
+      this.isWrappingPossible(newEditorState.schema.nodes.bulletList, newEditorState)
+    );
     if (newBulletListDisabled !== this.bulletListDisabled) {
       this.bulletListDisabled = newBulletListDisabled;
       dirty = true;
     }
 
-    const newOrderedListDisabled = !(anyListActive || this.isWrappingPossible(newEditorState.schema.nodes.orderedList, newEditorState));
+    const newOrderedListDisabled = !(
+      (newOrderedListActive && nodeDepth <= 3) ||
+      newBulletListActive ||
+      this.isWrappingPossible(newEditorState.schema.nodes.orderedList, newEditorState)
+    );
     if (newOrderedListDisabled !== this.orderedListDisabled) {
       this.orderedListDisabled = newOrderedListDisabled;
       dirty = true;

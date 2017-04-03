@@ -5,7 +5,6 @@
   "config": {
     "access": "public"
   },
-  "description": "TypeScript component template",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
   "types": "dist/types/index.d.ts",

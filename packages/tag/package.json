@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tag",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "config": {
     "access": "public"
   },
@@ -30,7 +30,7 @@
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
-      "name": "Soney M"
+      "name": "Luke B"
     },
     {
       "name": "Nadia M"

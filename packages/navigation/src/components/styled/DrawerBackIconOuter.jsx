@@ -1,5 +1,4 @@
 import {
-  akGridSizeUnitless,
   akColorN20,
   akColorN500,
   akColorB50,
@@ -21,16 +20,5 @@ export default styled.div`
   &:active {
     background: ${akColorB50};
     color: ${akColorB400};
-  }
-  
-  .icon {
-    align-items: center;
-    display: flex;
-    transform: translateX(${-akGridSizeUnitless * 2}px);
-    transition: transform 220ms;
-  }
-  
-  &.isVisible .icon {
-    transform: translateX(0);
   }
 `;

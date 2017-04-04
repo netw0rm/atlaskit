@@ -2,13 +2,12 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { akColorN0, akColorR400 } from '@atlaskit/util-shared-styles';
 import WarningIcon from 'ak-icon/glyph/warning';
-import { name } from '../package.json';
-import Banner from '../src';
-import Container, { getMaxHeight } from '../src/styled/Container';
-import { getBackgroundColor, getTextColor } from '../src/styled/Content';
-import Text from '../src/styled/Text';
+import Banner from '../../src';
+import Container, { getMaxHeight } from '../../src/styled/Container';
+import { getBackgroundColor, getTextColor } from '../../src/styled/Content';
+import Text from '../../src/styled/Text';
 
-describe(name, () => {
+describe('banner', () => {
   it('basic sanity check', () =>
     expect(shallow(<Banner />)).not.to.equal(undefined)
   );

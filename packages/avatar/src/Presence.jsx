@@ -3,6 +3,11 @@ import { akColorPrimary3 } from '@atlaskit/util-shared-styles';
 import presences from './internal/icons';
 import styles from './styles.less';
 
+// This hack is to make sure that styles.locals exists when style loading is a noop (when we are
+// running tests).
+// TODO: Remove in AK-2025
+styles.locals = styles.locals || {};
+
 export const PRESENCE_TYPE = {
   values: ['none', 'online', 'busy', 'offline'],
   defaultValue: 'none',

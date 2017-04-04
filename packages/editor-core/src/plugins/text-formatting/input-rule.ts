@@ -6,30 +6,29 @@ function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: stri
   return (state, match, start, end): Transaction | null => {
     const charSize = specialChar.length;
     const to = end;
+    // in case of *string* pattern it matches the text from beginning of the paragraph,
+    // because we want ** to work for strong text
+    // that's why "start" argument is wrong and we need to calculate it ourselves
     const from = match[1] ? to - match[1].length + 1 : start;
 
-    if (state.schema.marks.code.isInSet(state.doc.resolve(start + 1).marks())) {
+    if (state.schema.marks.code.isInSet(state.doc.resolve(start).marks())) {
       return null;
     }
 
     analyticsService.trackEvent(`atlassian.editor.format.${markType.name}.autoformatting`);
 
-    let tr = (
-      state.tr
-        // apply mark
-        .addMark(from, to, markType.create())
-        // delete special characters before the text
-        .delete(from, from + charSize)
-        // deactivate mark
-        .removeStoredMark(markType)
-    );
+    let tr = state.tr
+      .addMark(from, to, markType.create())
+      .removeStoredMark(markType);
 
     if (charSize > 1) {
-      // remove special characters after the text
-      tr = tr.delete(to - charSize * 2 + 1, to - charSize)
-            .removeStoredMark(markType);
+      // delete special characters after the text
+      // Prosemirror removes the last symbol by itself, so we need to remove "charSize - 1" symbols
+      tr = tr.delete(to - (charSize - 1), to);
     }
-    return tr;
+
+    // delete special characters before the text
+    return tr.delete(from, from + charSize);
   };
 };
 

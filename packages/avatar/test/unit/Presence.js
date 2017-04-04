@@ -8,6 +8,7 @@ import icons from '../../src/internal/icons';
 import { locals as styles } from '../../src/styles.less';
 
 describe('ak-avatar', () => {
+  // TO DO: This test is not testing anything
   describe('Presence', () => {
     PRESENCE_TYPE.values.forEach(presence =>
       describe(`when presence is ${presence}`, () =>

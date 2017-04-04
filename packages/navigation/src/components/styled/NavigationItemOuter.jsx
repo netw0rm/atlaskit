@@ -70,7 +70,7 @@ const colors = {
 const borderRadius = 3;
 
 function getColors(theme) {
-  return colors[theme.ContainerNavigationAppearance];
+  return colors[theme.NavigationAppearance];
 }
 
 function getHeight(theme) {

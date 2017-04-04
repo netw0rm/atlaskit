@@ -8,7 +8,7 @@ const colors = {
 };
 
 const ContainerTitleSubText = styled.div`
-  color: ${({ theme }) => colors[theme.ContainerNavigationAppearance]};
+  color: ${({ theme }) => colors[theme.NavigationAppearance]};
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -16,7 +16,7 @@ const ContainerTitleSubText = styled.div`
 
 ContainerTitleSubText.defaultProps = {
   theme: {
-    ContainerNavigationAppearance: 'container',
+    NavigationAppearance: 'container',
   },
 };
 

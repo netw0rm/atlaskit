@@ -46,7 +46,7 @@ export default class GlobalNavigation extends PureComponent {
     return (
       <ThemeProvider
         theme={{
-          GlobalNavigationAppearance: appearance,
+          NavigationAppearance: appearance,
         }}
       >
         <GlobalNavigationOuter>

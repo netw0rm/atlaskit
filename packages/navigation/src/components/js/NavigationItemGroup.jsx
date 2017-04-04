@@ -29,7 +29,7 @@ export default class NavigationItemGroup extends PureComponent {
     return (
       <ThemeProvider
         theme={outerTheme => ({
-          ContainerNavigationAppearance: outerTheme.ContainerNavigationAppearance,
+          NavigationAppearance: outerTheme.NavigationAppearance,
           NavigationItemIsCompact: isCompact,
         })}
       >

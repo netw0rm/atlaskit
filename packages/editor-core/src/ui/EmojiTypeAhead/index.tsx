@@ -1,4 +1,4 @@
-import { EmojiTypeAhead as AkEmojiTypeAhead } from '@atlaskit/emoji';
+/*import { EmojiTypeAhead as AkEmojiTypeAhead } from '@atlaskit/emoji';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
@@ -96,4 +96,4 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
       (typeAhead as AkEmojiTypeAhead).chooseCurrentSelection();
     }
   }
-}
+}*/

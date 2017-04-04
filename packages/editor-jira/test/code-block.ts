@@ -34,5 +34,22 @@ describe(name, () => {
       [`<div class="preformatted panel"><div class="preformattedContent panelContent"><pre>*no* further _formatting_</pre></div></div>`],
       doc(code({})('*no* further _formatting_'))
     );
+
+    checkParse('strip spans',
+      schema,
+      [
+        `<div class="code panel"><div class="codeContent panelContent"><pre class="code-java"><span class="code-comment">// Some comments here
+</span><span class="code-keyword">public</span> <span class="code-object">String</span> getFoo()
+{
+    <span class="code-keyword">return</span> foo;
+}</pre></div></div>`
+      ],
+      doc(code({ language: 'java' })(`// Some comments here
+public String getFoo()
+{
+    return foo;
+}`)
+      )
+    );
   });
 });

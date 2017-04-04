@@ -37,6 +37,9 @@ export class FileCardView extends Component<FileCardViewProps, {}> {
   render() {
     const {mediaSize, mediaType, mediaName, dataURI, progress, status, dimensions, selectable, selected, actions, onClick, error, onRetry} = this.props;
     const fileSize = toHumanReadableMediaSize(mediaSize || 0);
+    const elementToWidget = () => {
+      return <FileCardView {...this.props} key={new Date().getTime()} dimensions={{width: '100%', height: 'calc(100% - 90px)'}} />;
+    };
 
     return <CardImageView
       mediaType={mediaType}
@@ -52,6 +55,7 @@ export class FileCardView extends Component<FileCardViewProps, {}> {
       onClick={onClick}
       error={error}
       onRetry={onRetry}
+      elementToWidget={elementToWidget}
     />;
   }
 }

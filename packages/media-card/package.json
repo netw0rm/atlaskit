@@ -36,6 +36,7 @@
     "deep-equal": "^1.0.1",
     "lodash.debounce": "^4.0.8",
     "polished": "^1.1.0",
+    "react-rnd": "^4.2.2",
     "tslib": "^1.2.0"
   },
   "author": "Atlassian Pty. Ltd",

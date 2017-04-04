@@ -30,6 +30,7 @@ export interface CardImageViewProps {
   error?: string;
   onRetry?: CardAction;
   icon?: string;
+  elementToWidget: Function;
 }
 
 export const DEFAULT_CARD_DIMENSIONS = {
@@ -100,8 +101,8 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
   }
 
   render() {
-    const {error, mediaItemType, mediaName, mediaType, onRetry, actions, icon, subtitle, dataURI, selectable, selected, status} = this.props;
-    const cardStyle = this.cardStyle;
+    const cardStyle = {height: this.height, width: this.width};
+    const {error, mediaName, mediaType, mediaItemType, onRetry, actions, icon, subtitle, dataURI, selectable, selected, elementToWidget} = this.props;
 
     if (error) {
       return (
@@ -116,6 +117,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
             actions={actions}
             icon={icon}
             subtitle={subtitle}
+            elementToWidget={elementToWidget}
           />
         </Wrapper>
       );
@@ -135,6 +137,7 @@ export class CardImageView extends Component<CardImageViewProps, {}> {
       subtitle={subtitle}
       actions={actions}
       icon={icon}
+      elementToWidget={elementToWidget}
     />;
 
     return (

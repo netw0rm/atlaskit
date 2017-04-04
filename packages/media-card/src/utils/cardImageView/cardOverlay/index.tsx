@@ -1,9 +1,12 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import {MouseEvent, Component} from 'react';
 import * as cx from 'classnames';
 import {MediaType, CardAction, CardEventHandler} from '@atlaskit/media-core';
-import TickIcon from '@atlaskit/icon/glyph/check';
 import Icon from '@atlaskit/icon';
+import TickIcon from '@atlaskit/icon/glyph/editor/check';
+import ExpandIcon from '@atlaskit/icon/glyph/image-resize';
+import Widget from '../../../widget';
 
 import {FileIcon, ErrorIcon, Ellipsify, Menu} from '../..';
 
@@ -19,7 +22,8 @@ import {
   Retry,
   TitleWrapper,
   FileSize,
-  Metadata
+  Metadata,
+  ExpandIconWrapper
 } from './styled';
 
 export interface CardOverlayProps {
@@ -36,6 +40,7 @@ export interface CardOverlayProps {
 
   actions?: Array<CardAction>;
   icon?: string;
+  elementToWidget: Function;
 }
 
 export interface CardOverlayState {
@@ -82,12 +87,21 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
           <LeftColumn className={'left-column'}>
             {this.bottomLeftColumn()}
           </LeftColumn>
+          <ExpandIconWrapper className="expand-icon">
+            <ExpandIcon label="expand" onClick={this.makeWidget} />
+          </ExpandIconWrapper>
           <RightColumn className={'right-column'}>
             <Menu actions={actions} onToggle={this.onMenuToggle} deleteBtnColor="white" />
           </RightColumn>
         </BottomRow>
       </Overlay>
     );
+  }
+
+  makeWidget = () => {
+    const component = this.props.elementToWidget();
+
+    Widget.add(component);
   }
 
   errorLine() {

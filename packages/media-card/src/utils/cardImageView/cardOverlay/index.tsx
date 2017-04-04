@@ -1,8 +1,11 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import {MouseEvent, Component} from 'react';
 import * as cx from 'classnames';
 import {MediaType, CardAction, CardEventHandler} from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/editor/check';
+import ExpandIcon from '@atlaskit/icon/glyph/image-resize';
+import * as Rnd from 'react-rnd';
 
 import {ProgressBar, FileIcon, ErrorIcon, Ellipsify, Menu} from '../..';
 
@@ -18,7 +21,8 @@ import {
   Retry,
   TitleWrapper,
   FileSize,
-  Metadata
+  Metadata,
+  ExpandIconWrapper
 } from './styled';
 
 export interface CardOverlayProps {
@@ -37,6 +41,7 @@ export interface CardOverlayProps {
 
   actions?: Array<CardAction>;
   icon?: string;
+  elementToWidget: Function;
 }
 
 export interface CardOverlayState {
@@ -90,12 +95,63 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
           <LeftColumn className={'left-column'}>
             {this.bottomLeftColumn()}
           </LeftColumn>
+          <ExpandIconWrapper className="expand-icon">
+            <ExpandIcon label="expand" onClick={this.makeWidget} />
+          </ExpandIconWrapper>
           <RightColumn className={'right-column'}>
             <Menu actions={actions} onToggle={this.onMenuToggle} deleteBtnColor="white" />
           </RightColumn>
         </BottomRow>
       </Overlay>
     );
+  }
+
+  makeWidget = () => {
+    const widgetContainer = document.createElement('div');
+    const style = {
+      textAlign: 'center',
+      padding: '5px',
+      borderRadius: '5px',
+      color: '#fff',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      'pointer-events': 'all',
+      'background-color': 'rgba(0, 0, 0, 0.0980392)',
+      'box-shadow': 'black 1px 1px 7px -2px'
+    };
+    widgetContainer.id = 'widget-container';
+    // TODO: add "box-sizing" to all widget childs
+    Object.assign(widgetContainer.style, {
+      width: '100%',
+      height: '100%',
+      position: 'absolute',
+      'pointer-events': 'none',
+      top: 0,
+      left: 0
+    });
+    document.body.appendChild(widgetContainer);
+    const component = this.props.elementToWidget();
+    const componentWrapper = <Rnd
+      ref={c => { this.rnd = c; }}
+      initial={{
+        x: 100,
+        y: 100,
+        // x: window.innerWidth / 2 - 200,
+        // y: window.innerHeight / 2 - 80,
+        width: 400,
+        height: 160,
+      }}
+      style={style}
+      minWidth={300}
+      minHeight={160}
+      // maxWidth={800}
+      // maxHeight={300}
+      bounds={'parent'}
+    >
+      {component}
+    </Rnd>;
+    ReactDOM.render(componentWrapper, widgetContainer);
   }
 
   errorLine() {

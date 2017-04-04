@@ -31,6 +31,7 @@
     "bytes": "^2.4.0",
     "classnames": "^2.2.5",
     "lodash.debounce": "^4.0.8",
+    "react-rnd": "^4.2.2",
     "tslib": "^1.2.0"
   },
   "author": "Atlassian Pty. Ltd",

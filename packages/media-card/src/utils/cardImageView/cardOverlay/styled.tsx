@@ -293,3 +293,10 @@ export const Metadata = styled.div`
     display: none;
   }
 `;
+
+export const ExpandIconWrapper = styled.div`
+  color: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+`;

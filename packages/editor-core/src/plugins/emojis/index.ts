@@ -9,7 +9,7 @@ import {
   PluginKey,
 } from '../../prosemirror';
 import { reconfigure } from '../utils';
-import inputRulePlugin from './input-rules';
+import { inputRulePlugin, destroyRulePluginCache } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
 
@@ -25,6 +25,7 @@ export class EmojiState {
   queryActive = false;
   anchorElement?: HTMLElement;
   keymap: Keymap;
+  blah = 'EmojiPlugin';
 
   onSelectPrevious = (): boolean => false;
   onSelectNext = (): boolean => false;
@@ -69,8 +70,8 @@ export class EmojiState {
         this.queryActive = true;
       }
 
-      const { nodeBefore, nodeAfter } = selection.$from;
-      const newQuery = (nodeBefore && nodeBefore.textContent || '').substr(1) + (nodeAfter && nodeAfter.textContent || '');
+      const { nodeBefore, /*nodeAfter*/ } = selection.$from;
+      const newQuery = (nodeBefore && nodeBefore.textContent || '').substr(1); // + (nodeAfter && nodeAfter.textContent || '');
 
       if (this.query !== newQuery) {
         dirty = true;
@@ -137,7 +138,7 @@ export class EmojiState {
 
     if (node && emojiQuery.isInSet(node.marks)) {
       const resolvedPos = doc.resolve(start);
-      // -1 is to include @ in replacement
+      // -1 is to include : in replacement
       // resolvedPos.depth + 1 to make emoji work inside other blocks e.g. "list item" or "blockquote"
       start = resolvedPos.start(resolvedPos.depth + 1) - 1;
       end = start + node.nodeSize;
@@ -147,12 +148,12 @@ export class EmojiState {
   }
 
   insertEmoji(emojiId?: EmojiId) {
-    const { emojiProvider, state, view } = this;
+    const { state, view } = this;
     const { emoji } = state.schema.nodes;
 
     if (emoji && emojiId) {
       const { start, end } = this.findEmojiQueryMark();
-      const node = emoji.create({ ...emojiId, emojiProvider });
+      const node = emoji.create({ ...emojiId });
       const textNode = state.schema.text(' ');
       const fragment = new Fragment([node, textNode], node.nodeSize + textNode.nodeSize);
       view.dispatch(
@@ -206,6 +207,10 @@ export default new Plugin({
     return {
       update(view: EditorView, prevState: EditorState<any>) {
         pluginState.update(view.state, view);
+      },
+
+      destroy() {
+        destroyRulePluginCache();
       }
     };
   }

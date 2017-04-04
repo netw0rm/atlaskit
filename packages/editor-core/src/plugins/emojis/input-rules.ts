@@ -11,7 +11,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.emoji && schema.marks.emojiQuery) {
-    const emojiQueryRule = new InputRule(/(^|[^\w]):$/, (state, match, start, end): Transaction | undefined => {
+    const emojiQueryRule = new InputRule(/(^|[^\w\`]):$/, (state, match, start, end): Transaction | undefined => {
       const emojisState = stateKey.getState(state) as EmojiState;
 
       if (!emojisState.emojiProvider) {
@@ -42,6 +42,10 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
   plugin = inputRules({ rules });
 
   return plugin;
+}
+
+export function destroyRulePluginCache() {
+  plugin = undefined;
 }
 
 export default inputRulePlugin;

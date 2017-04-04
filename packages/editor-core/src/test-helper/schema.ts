@@ -22,7 +22,8 @@ import {
   link,
   image,
   mentionQuery,
-  subsup
+  subsup,
+  emojiQuery,
 } from '../schema';
 
 const nodes = {
@@ -54,7 +55,8 @@ const marks = {
   underline,
   link,
   mentionQuery,
-  subsup
+  subsup,
+  emojiQuery
 };
 
 export { AttributeSpec, MarkSpec, Node, NodeSpec, ParseRule, nodes, marks };

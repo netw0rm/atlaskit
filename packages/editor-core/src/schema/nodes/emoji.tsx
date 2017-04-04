@@ -17,6 +17,7 @@ const emojiStyle = style({
   verticalAlign: 'middle',
   userSelect: 'all',
 
+  // Temporary until @atlaskit/emoji fixes padding/positioning see FS-853
   $nest: {
     '&.ProseMirror-selectednode': {
       backgroundColor: akColorN50,

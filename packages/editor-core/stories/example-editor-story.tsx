@@ -33,15 +33,19 @@ interface Props {
 interface State {
   mentionProvider: Promise<MentionProvider>;
   emojiProvider: Promise<EmojiProvider>;
+  jsonDocument?: string;
 }
 
 class DemoEditor extends React.PureComponent<Props, State> {
+  private editorRef: Editor;
+
   constructor(props) {
     super(props);
 
     this.state = {
       mentionProvider: mentionProvider1,
       emojiProvider: emojiProvider1,
+      jsonDocument: '{}',
     };
   }
 
@@ -58,8 +62,17 @@ class DemoEditor extends React.PureComponent<Props, State> {
     }
   }
 
+  private extractDocument = () => {
+    const editor = this.editorRef;
+    if (editor && editor.doc) {
+      this.setState({
+        jsonDocument: JSON.stringify(editor.doc.toJSON(), null, 2),
+      });
+    }
+  }
+
   render() {
-    const { mentionProvider, emojiProvider } = this.state;
+    const { mentionProvider, emojiProvider, jsonDocument } = this.state;
     return (
       <div className={styles.content}>
         <Editor
@@ -71,12 +84,17 @@ class DemoEditor extends React.PureComponent<Props, State> {
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
           isExpandedByDefault
+          ref={(ref) => { this.editorRef = ref; }}
         />
         <div>
           <br />
           <button onClick={this.toggleProvider}>Toggle mention provider</button>
           {`Provider: ${mentionProvider === mentionProvider1 ? '1' : '2'}`}
         </div>
+        <div>
+          <button onClick={this.extractDocument}>Extract document</button>
+        </div>
+        <pre>{jsonDocument}</pre>
       </div>
     );
   }

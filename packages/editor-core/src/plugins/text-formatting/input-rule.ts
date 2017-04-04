@@ -11,7 +11,9 @@ function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: stri
     // that's why "start" argument is wrong and we need to calculate it ourselves
     const from = match[1] ? to - match[1].length + 1 : start;
 
-    if (state.schema.marks.code.isInSet(state.doc.resolve(start).marks())) {
+    // fixes the following case: my `*name` is *
+    // expected result: should ignore special characters inside "code"
+    if (state.schema.marks.code.isInSet(state.doc.resolve(from + 1).marks())) {
       return null;
     }
 

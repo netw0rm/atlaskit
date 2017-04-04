@@ -1,0 +1,35 @@
+{
+  "name": "@atlaskit/analytics",
+  "version": "1.0.0",
+  "config": {
+    "access": "public"
+  },
+  "description": "A template for creating AtlasKit components",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
+  "scripts": {
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/analytics; } || ../../node_modules/.bin/not-in-publish"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "babel-runtime": "^6.11.6"
+  },
+  "peerDependencies": {
+    "react": "^15.3.2"
+  },
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  },
+  "keywords": [
+    "atlaskit",
+    "ui",
+    "internal"
+  ]
+}

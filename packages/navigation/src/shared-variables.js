@@ -15,4 +15,5 @@ export const createIconOffset = 120;
 export const resizeAnimationTime = '200ms';
 export const globalVerticalPaddingTop = akGridSizeUnitless * 3;
 export const globalVerticalPaddingBottom = akGridSizeUnitless * 2;
+export const globalItemMediumSize = akGridSizeUnitless * 5;
 

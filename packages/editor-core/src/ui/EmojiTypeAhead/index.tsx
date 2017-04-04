@@ -17,8 +17,7 @@ export interface State {
   queryActive?: boolean;
 }
 
-// FIXME FS-856 - switch to count when issue fixed and released
-const isEmojiTypeAhead = (typeAhead): typeAhead is AkEmojiTypeAhead => !!(typeAhead.state.emojis);
+const isEmojiTypeAhead = (typeAhead): typeAhead is AkEmojiTypeAhead => !!(typeAhead.count);
 
 export default class EmojiTypeAhead extends PureComponent<Props, State> {
   state: State = {};
@@ -101,7 +100,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
 
   private handleSelectCurrent = (): boolean => {
     const { typeAhead } = this.refs;
-    if (isEmojiTypeAhead(typeAhead) && typeAhead.state.emojis.length > 0) {
+    if (isEmojiTypeAhead(typeAhead) && typeAhead.count() > 0) {
       (typeAhead as AkEmojiTypeAhead).chooseCurrentSelection();
     } else {
       this.props.pluginState.dismiss();
@@ -112,7 +111,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
 
   private handleTrySelectCurrent = (): boolean => {
     const { typeAhead } = this.refs;
-    if (isEmojiTypeAhead(typeAhead) && typeAhead.state.emojis.length === 1) {
+    if (isEmojiTypeAhead(typeAhead) && typeAhead.count() === 1) {
       (typeAhead as AkEmojiTypeAhead).chooseCurrentSelection();
       return true;
     }

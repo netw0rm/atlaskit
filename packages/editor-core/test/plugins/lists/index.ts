@@ -4,6 +4,7 @@ import * as sinon from 'sinon';
 import { browser } from '../../../src';
 import { TextSelection } from '../../../src/prosemirror';
 import ListsPlugin from '../../../src/plugins/lists';
+import TextFormattingPlugin from '../../../src/plugins/text-formatting';
 import { chaiPlugin, makeEditor, sendKeyToPm, fixtures, doc, h1, ol, ul, li, p, panel, blockquote } from '../../../src/test-helper';
 import schema from '../../../src/test-helper/schema';
 
@@ -431,6 +432,57 @@ describe('lists', () => {
         sendKeyToPm(editorView, 'Shift-Tab');
 
         expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text')), li(p('te{<>}xt')), li(p('text')))));
+      });
+
+      it('should lift the list item when Enter key press is done on empty list-item', () => {
+        const { editorView } = editor(doc(ol(li(p('text'), ol(li(p('{<>}')))), li(p('text')))));
+
+        sendKeyToPm(editorView, 'Enter');
+
+        expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text')), li(p('{<>}')), li(p('text')))));
+      });
+    });
+
+    describe('Enter key-press', () => {
+
+      context('when Enter key is pressed on empty nested list item', () => {
+        it('should create new list item in parent list', () => {
+          const { editorView } = editor(doc(ol(li(p('text'), ol(li(p('{<>}')))), li(p('text')))));
+
+          sendKeyToPm(editorView, 'Enter');
+
+          expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text')), li(p('{<>}')), li(p('text')))));
+        });
+      });
+
+      context('when Enter key is pressed on non-empty nested list item', () => {
+        it('should created new nested list item', () => {
+          const { editorView } = editor(doc(ol(li(p('text'), ol(li(p('test{<>}')))), li(p('text')))));
+
+          sendKeyToPm(editorView, 'Enter');
+
+          expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text'), ol(li(p('test')), li(p('{<>}')))), li(p('text')))));
+        });
+      });
+
+      context('when Enter key is pressed on non-empty top level list item', () => {
+        it('should created new list item at top level', () => {
+          const { editorView } = editor(doc(ol(li(p('text')), li(p('test{<>}')), li(p('text')))));
+
+          sendKeyToPm(editorView, 'Enter');
+
+          expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text')), li(p('test')), li(p('{<>}')), li(p('text')))));
+        });
+      });
+
+      context('when Enter key is pressed on empty top level list item', () => {
+        it('should create new paragraph outside the list', () => {
+          const { editorView } = editor(doc(ol(li(p('text')), li(p('{<>}')), li(p('text')))));
+
+          sendKeyToPm(editorView, 'Enter');
+
+          expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text'))), p('{<>}'), ol(li(p('text')))));
+        });
       });
     });
   });

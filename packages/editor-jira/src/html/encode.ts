@@ -1,8 +1,10 @@
 import {
   BulletListNode,
+  BlockQuoteNode,
   DocNode,
   Fragment,
   HeadingNode,
+  isBlockQuoteNode,
   isBulletListNode,
   isHardBreakNode,
   isHeadingNode,
@@ -19,7 +21,7 @@ import {
   OrderedListNode,
   ParagraphNode
 } from '@atlaskit/editor-core';
-import { isSchemaWithLists, isSchemaWithMentions, isSchemaWithCodeBlock, JIRASchema } from '../schema';
+import { isSchemaWithBlockQuotes, isSchemaWithLists, isSchemaWithMentions, isSchemaWithCodeBlock, JIRASchema } from '../schema';
 
 export interface JIRACustomEncoders {
   mention?: (userId: string) => string;
@@ -71,6 +73,10 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
 
     if (isSchemaWithCodeBlock(schema) && isCodeBlockNode(node)) {
       return encodeCodeBlock(node);
+    }
+
+    if (isSchemaWithBlockQuotes(schema) && isBlockQuoteNode(node)) {
+      return encodeBlockQuote(node);
     }
 
     throw new Error(`Unexpected node '${(node as any).type.name}' for HTML encoding`);
@@ -253,6 +259,12 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     content.appendChild(pre);
     elem.appendChild(content);
 
+    return elem;
+  }
+
+  function encodeBlockQuote(node: BlockQuoteNode) {
+    const elem = doc.createElement('blockquote');
+    elem.appendChild(encodeFragment(node.content));
     return elem;
   }
 }

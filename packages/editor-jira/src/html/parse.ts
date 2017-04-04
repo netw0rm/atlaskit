@@ -5,6 +5,7 @@ import {
   isSchemaWithLinks,
   isSchemaWithAdvancedTextFormattingMarks,
   isSchemaWithCodeBlock,
+  isSchemaWithBlockQuotes,
   JIRASchema,
 } from '../schema';
 import parseHtml from './parse-html';
@@ -202,14 +203,11 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
           return null;
       }
     }
-  }
 
-  // debug
-  let repr = node.toString();
-  if (node instanceof HTMLElement) {
-    repr = (node.cloneNode(false) as HTMLElement).outerHTML;
+    if (isSchemaWithBlockQuotes(schema) && tag === 'BLOCKQUOTE') {
+      return schema.nodes.blockquote!.createChecked({}, content);
+    }
   }
-  throw new Error(`Unable to handle node ${repr}`);
 }
 
 /*

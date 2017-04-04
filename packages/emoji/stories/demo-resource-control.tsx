@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 
-import EmojiResource, { EmojiResourceConfig } from '../src/api/EmojiResource';
-import EmojiService from '../src/api/EmojiService';
+import { ServiceConfig } from '../src/api/SharedResourceUtils';
+import EmojiLoader from '../src/api/EmojiLoader';
+import EmojiRepository from '../src/api/EmojiRepository';
 
 // FIXME FAB-1732 - extract or replace with third-party implementation
 const toJavascriptString = (obj: any): string => {
@@ -29,18 +30,18 @@ const toJavascriptString = (obj: any): string => {
 
 export interface Props {
   children: ReactElement<any>;
-  emojiConfig: EmojiResourceConfig;
+  emojiConfig: ServiceConfig;
 }
 
 export interface State {
-  emojiService: EmojiService;
+  emojiRepository: EmojiRepository;
 }
 
 export default class ResourcedEmojiControl extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      emojiService: new EmojiService([]),
+      emojiRepository: new EmojiRepository([]),
     };
     this.refreshEmoji(this.props.emojiConfig);
   }
@@ -49,11 +50,11 @@ export default class ResourcedEmojiControl extends PureComponent<Props, State> {
     this.refreshEmoji(nextProps.emojiConfig);
   }
 
-  refreshEmoji(emojiConfig) {
-    const resource = new EmojiResource(emojiConfig);
-    resource.loadAllEmoji().then((emojiResponse) => {
+  refreshEmoji(emojiConfig: ServiceConfig) {
+    const resource = new EmojiLoader(emojiConfig);
+    resource.loadEmoji().then((emojiResponse) => {
       this.setState({
-        emojiService: new EmojiService(emojiResponse.emojis),
+        emojiRepository: new EmojiRepository(emojiResponse.emojis),
       });
     });
   }
@@ -65,13 +66,13 @@ export default class ResourcedEmojiControl extends PureComponent<Props, State> {
   }
 
   render() {
-    const { emojiService } = this.state;
+    const { emojiRepository } = this.state;
 
     return (
       <div style={{ padding: '10px' }} >
-        {React.cloneElement(this.props.children, { emojiService })}
+        {React.cloneElement(this.props.children, { emojiRepository })}
         <p>
-          <label htmlFor="emoji-urls">EmojiResource config</label>
+          <label htmlFor="emoji-urls">EmojiLoader config</label>
         </p>
         <p>
           <textarea

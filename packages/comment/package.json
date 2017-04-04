@@ -1,10 +1,10 @@
 {
   "name": "@atlaskit/comment",
-  "version": "1.0.2",
+  "version": "1.2.0",
   "config": {
     "access": "public"
   },
-  "description": "ak-comment component",
+  "description": "Comments enable discussions on an entity such as a page, blog post, issue or pull request",
   "main": "umd/@atlaskit/comment.js",
   "scripts": {
     "prepublish": "../../node_modules/.bin/nwb build",
@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "@atlaskit/button": "^1.0.0",
+    "@atlaskit/icon": "^3.0.0",
     "@atlaskit/lozenge": "^1.0.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "classnames": "^2.2.5"
@@ -28,6 +29,14 @@
     "@atlaskit/util-readme": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Sean C"
+    },
+    {
+      "name": "Ben W"
+    }
+  ],
   "license": "Apache-2.0",
   "peerDependencies": {
     "react": "^15.3.2"

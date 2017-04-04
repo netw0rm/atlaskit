@@ -12,7 +12,7 @@ storiesOf(name, module)
     <Page>
       <BasicNavigation
         createDrawerContent={(
-          <AkContainerItemGroup>
+          <div>
             <AkDrawerItem
               href="#1"
               icon={<EmojiTravelIcon label="Travel" />}
@@ -25,7 +25,7 @@ storiesOf(name, module)
               subText="Also with more text"
               text="Create item 2"
             />
-          </AkContainerItemGroup>
+          </div>
         )}
       >
         <AkContainerItem
@@ -42,14 +42,14 @@ storiesOf(name, module)
         />
         <AkContainerItemGroup title="With things at the end">
           <AkContainerItem
-            action={<CrossIcon />}
+            action={<CrossIcon label="close" />}
             icon={<DashboardIcon label="Dashboard" />}
             subText="And two lines"
             text="With an action"
             textAfter={<RandomBadge />}
           />
           <AkContainerItem
-            action={<CrossIcon />}
+            action={<CrossIcon label="close" />}
             icon={<EmojiNatureIcon label="Nature" />}
             subText="And a very long second line of text"
             text="A very long first line of text"
@@ -58,7 +58,7 @@ storiesOf(name, module)
         </AkContainerItemGroup>
         <AkContainerItemGroup title="With compact items">
           <AkContainerItem
-            action={<CrossIcon />}
+            action={<CrossIcon label="close" />}
             isCompact
             subText="Text with y, q, etc."
             text="Should have even smaller subText"

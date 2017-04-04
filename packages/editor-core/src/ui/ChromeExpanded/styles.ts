@@ -1,4 +1,4 @@
-import { akEditorSubtleAccent } from 'ak-editor-shared-styles';
+import { akEditorSubtleAccent } from '../../styles';
 import { akBorderRadius, akGridSize } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 
@@ -58,9 +58,7 @@ export const toolbar = style({
   height: '40px',
   paddingLeft: akGridSize,
   paddingRight: akGridSize,
-  // Place toolbar content above the content.
   position: 'relative',
-  zIndex: 2,
 
   $nest: {
     '& > *': {

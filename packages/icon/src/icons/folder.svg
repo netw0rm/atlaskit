@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 41 (35326) - http://www.bohemiancoding.com/sketch -->
-    <title>Projects</title>
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>folder</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="projects" fill="currentColor">
-            <g id="jira_projects_icon_24x24">
-                <path d="M10.4261966,8 C10.4320932,7.87016195 10.4239593,7.75026096 10.3983204,7.65962933 L9.8877728,5.85488174 C9.77802862,5.46694431 9.2906067,5 9.0026083,5 L3.9973917,5 C3.99889208,5 3.99964704,6.44823333 4,8.29372724 L4,19 L20,19 L20,8 L10.4261966,8 Z M12.2,6 L11.7447262,4.86181545 C11.3302593,3.82564831 10.1057373,3 9.0026083,3 L3.9973917,3 C2.89585781,3 2,3.89805351 2,5.00585866 L2,11.4930128 L2,19.0081158 C2,20.1066027 2.89130934,21 3.99079514,21 L20.0092049,21 C21.1017876,21 22,20.1082031 22,19.0081158 L22,7.99188419 C22,6.89339733 21.1086907,6 20.0092049,6 L12.2,6 Z" id="Combined-Shape"></path>
+    <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="folder" fill-rule="nonzero" fill="currentColor">
+            <g id="Page-1">
+                <path d="M20,19 L20,8 L10.8457131,8 L10.3429341,6.74249999 L9.88841762,5.60570819 C9.77815183,5.33044227 9.29060197,5 9.003,5 L3.997,5 C4.00157141,5 4,19 4,19 L20,19 Z M12.2,6 L20.009,6 C21.109,6 22,6.893 22,7.992 L22,19.008 C22,20.108 21.102,21 20.009,21 L3.991,21 C2.891,21 2,20.107 2,19.008 L2,5.006 C2,3.898 2.896,3 3.997,3 L9.003,3 C10.106,3 11.33,3.826 11.745,4.862 L12.2,6 Z"></path>
             </g>
         </g>
     </g>

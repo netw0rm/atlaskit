@@ -1,23 +1,17 @@
 import React, { PureComponent, PropTypes } from 'react';
-import Droplist from '@atlaskit/droplist';
-import Item from '@atlaskit/droplist-item';
-import Group from '@atlaskit/droplist-group';
+import Droplist, { Item, Group } from '@atlaskit/droplist';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 import NothingWasFound from './internal/NothingWasFound';
+import DummyItem from './internal/DummyItem';
+import DummyGroup from './internal/DummyGroup';
 import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
 
-export const itemShape = PropTypes.shape({
-  content: PropTypes.node,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  isDisabled: PropTypes.bool,
-  isSelected: PropTypes.bool,
-  elemBefore: PropTypes.node,
-  elemAfter: PropTypes.node,
-});
+const itemShape = DummyItem.propTypes;
+const groupShape = DummyGroup.propTypes;
 
 export default class StatelessSelect extends PureComponent {
   static propTypes = {
@@ -30,7 +24,7 @@ export default class StatelessSelect extends PureComponent {
     isOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
     isInvalid: PropTypes.bool,
-    items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
     label: PropTypes.string,
     name: PropTypes.string,
     noMatchesFound: PropTypes.string,
@@ -40,7 +34,7 @@ export default class StatelessSelect extends PureComponent {
     placeholder: PropTypes.string,
     position: PropTypes.string,
     shouldFocus: PropTypes.bool,
-    selectedItem: itemShape,
+    selectedItem: PropTypes.shape(itemShape),
     shouldFitContainer: PropTypes.bool,
   }
 
@@ -272,10 +266,13 @@ export default class StatelessSelect extends PureComponent {
         }
         break;
       case 'Enter':
-        if (isSelectOpen && this.state.focusedItemIndex !== undefined) {
-          this.handleItemSelect(
-            this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
-          );
+        if (isSelectOpen) {
+          event.preventDefault();
+          if (this.state.focusedItemIndex !== undefined) {
+            this.handleItemSelect(
+              this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
+            );
+          }
         }
         break;
       default:
@@ -297,7 +294,7 @@ export default class StatelessSelect extends PureComponent {
 
   handleTriggerClick = (event) => {
     if (!this.props.isDisabled) {
-      this.onOpenChange({ event, isOpen: true });
+      this.onOpenChange({ event, isOpen: !this.props.isOpen });
     }
   }
 
@@ -420,8 +417,16 @@ export default class StatelessSelect extends PureComponent {
                   !this.props.hasAutocomplete || this.props.isDisabled ?
                     <div className={styles.content}>
                       {
-                        this.props.selectedItem.content ||
-                        <span className={styles.placeholder}>{this.props.placeholder}</span>
+                        this.props.selectedItem.elemBefore ?
+                          <div className={styles.elemBefore}>
+                            {this.props.selectedItem.elemBefore}
+                          </div> :
+                          null
+                      }
+                      {
+                        this.props.selectedItem.content ?
+                          <span>{this.props.selectedItem.content}</span> :
+                          <span className={styles.placeholder}>{this.props.placeholder}</span>
                       }
                     </div> :
                     <div className={styles.contentAutocomplete}>

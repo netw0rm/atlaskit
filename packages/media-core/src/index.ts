@@ -1,29 +1,12 @@
-import { MediaItemType } from './item';
-
 export * from './item';
 export * from './actions';
 export * from './config';
 export * from './mediaTypes';
-export * from './context/context'
-
-export interface RemoteCollection {
-  id: string;
-  apiConfig: {
-    clientId: string;
-    token: string;
-    baseURL: string;
-  };
-}
-
-export interface MediaCollectionItem {
-  id: string;
-  mediaItemType: MediaItemType;
-}
-
-export interface MediaCollection {
-  id: string;
-  items: Array<MediaCollectionItem>;
-}
+export * from './context/context';
+export * from './collection';
+export * from './trello';
+export {MediaItemProvider} from './providers';
+export {UrlPreviewProvider} from './providers/urlPreviewProvider';
 
 export interface Metadata {
   id: string;

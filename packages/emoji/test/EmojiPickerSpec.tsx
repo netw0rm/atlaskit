@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { expect } from 'chai';
+import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiService } from './TestData';
+import { emojiRepository, getEmojiResourcePromise } from './TestData';
 
 import CategorySelector from '../src/components/picker/CategorySelector';
 import Emoji from '../src/components/common/Emoji';
@@ -11,13 +12,14 @@ import EmojiPicker, { Props } from '../src/components/picker/EmojiPicker';
 import EmojiPickerFooter from '../src/components/picker/EmojiPickerFooter';
 import EmojiPickerList from '../src/components/picker/EmojiPickerList';
 import EmojiPickerListCategory from '../src/components/picker/EmojiPickerListCategory';
+import { EmojiProvider } from '../src/api/EmojiResource';
 // import EmojiPickerListSearch from '../src/components/picker/EmojiPickerListSearch';
 // import { EmojiDescription } from '../src/types';
 
 function setupPicker(props?: Props): ReactWrapper<any, any> {
   return mount(
     <EmojiPicker
-      emojiService={emojiService}
+      emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
       {...props}
     />
   );
@@ -27,18 +29,23 @@ const leftClick = {
   button: 0,
 };
 
-const allEmojis = emojiService.all().emojis;
+const allEmojis = emojiRepository.all().emojis;
+
+const findEmoji = list => list.find(Emoji);
+const emojisVisible = (list) => findEmoji(list).length > 0;
 
 describe('<EmojiPicker />', () => {
   it('should display first set of emoji in viewport by default', () => {
     const component = setupPicker();
     const list = component.find(EmojiPickerList);
-    const emojis = list.find(Emoji);
 
-    const emojiProp = emojis.at(0).prop('emoji');
-    expect(emojiProp.id, 'First emoji displayed').to.equal(allEmojis[0].id);
-    const lastEmojiProp = emojis.at(emojis.length - 1).prop('emoji');
-    expect(lastEmojiProp.id, 'Last displayed emoji in same order as source data').to.equal(allEmojis[emojis.length - 1].id);
+    return waitUntil(() => emojisVisible(list)).then(() => {
+      const emojis = findEmoji(list);
+      const emojiProp = emojis.at(0).prop('emoji');
+      expect(emojiProp.id, 'First emoji displayed').to.equal(allEmojis[0].id);
+      const lastEmojiProp = emojis.at(emojis.length - 1).prop('emoji');
+      expect(lastEmojiProp.id, 'Last displayed emoji in same order as source data').to.equal(allEmojis[emojis.length - 1].id);
+    });
   });
 
   it('should display all categories', () => {
@@ -67,27 +74,37 @@ describe('<EmojiPicker />', () => {
     const component = setupPicker();
     const footer = component.find(EmojiPickerFooter);
     const list = component.find(EmojiPickerList);
-    const hoverButton = list.find(EmojiButton).at(hoverOffset);
-    hoverButton.simulate('mousemove');
-    const previewEmoji = footer.find(Emoji);
-    expect(previewEmoji.length, 'Emoji preview after hover').to.equal(1);
-    const emojiProps = previewEmoji.prop('emoji');
-    expect(emojiProps.id, 'First emoji displayed').to.equal(allEmojis[hoverOffset].id);
+
+    return waitUntil(() => emojisVisible(list)).then(() => {
+      const hoverButton = list.find(EmojiButton).at(hoverOffset);
+      hoverButton.simulate('mousemove');
+      const previewEmoji = footer.find(Emoji);
+      expect(previewEmoji.length, 'Emoji preview after hover').to.equal(1);
+      const emojiProps = previewEmoji.prop('emoji');
+      expect(emojiProps.id, 'First emoji displayed').to.equal(allEmojis[hoverOffset].id);
+    });
   });
 
   it('selecting category should show that category', () => {
     const component = setupPicker();
     const categorySelector = component.find(CategorySelector);
     const list = component.find(EmojiPickerList);
-    const flagCategory1 = list.find(EmojiPickerListCategory).filterWhere(n => n.prop('title') === 'FLAGS');
-    // This will stop working if we stop using react-virtualized - will need
-    // to check scroll position instead
-    expect(flagCategory1.length, 'Flags category not yet displayed').to.equal(0);
-    const flagCategoryButton = categorySelector.find('button').filterWhere(n => n.key() === 'Flags');
-    expect(flagCategoryButton.length, 'Flag category button').to.equal(1);
-    flagCategoryButton.simulate('click', leftClick);
-    const flagCategory2 = list.find(EmojiPickerListCategory).filterWhere(n => n.prop('title') === 'FLAGS');
-    expect(flagCategory2.length, 'Flags category displayed').to.equal(1);
+
+    const getFlagCategoryButton = () => categorySelector.find('button').filterWhere(n => n.key() === 'Flags');
+    const getFlagCategory = () => list.find(EmojiPickerListCategory).filterWhere(n => n.prop('title') === 'FLAGS');
+
+    return waitUntil(() => emojisVisible(list)).then(() => {
+      const flagCategory1 = getFlagCategory();
+      // This will stop working if we stop using react-virtualized - will need
+      // to check scroll position instead
+      expect(flagCategory1.length, 'Flags category not yet displayed').to.equal(0);
+      expect(getFlagCategoryButton().length, 'Flag category button').to.equal(1);
+      getFlagCategoryButton().simulate('click', leftClick);
+      return waitUntil(() => getFlagCategory().length > 0).then(() => {
+        const flagCategory2 = getFlagCategory();
+        expect(flagCategory2.length, 'Flags category displayed').to.equal(1);
+      });
+    });
   });
 
   // it('selecting emoji should trigger onSelection', () => {
@@ -120,7 +137,7 @@ describe('<EmojiPicker />', () => {
   //   expect(emojis.at(1).prop('id'), 'Austria emoji displayed').to.equal('flag_at');
   // });
 
-  // it('searching for aus should match emoji via shortcut', () => {
+  // it('searching for aus should match emoji via shortName', () => {
   //   const component = setupPicker();
   //   const search = component.find(EmojiPickerListSearch);
   //   const searchInput = search.find('input');

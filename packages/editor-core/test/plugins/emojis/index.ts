@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import { EmojiNodeType, EmojiQueryMarkType, ProseMirror, Schema, schema as schemaBasic } from '../../../src';
 import BlockTypePlugin from '../../../src/plugins/block-type';
 import EmojisPlugin from '../../../src/plugins/emojis';
-import { chaiPlugin, fixtures } from '../../../test-helper';
+import { chaiPlugin, fixtures } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
@@ -26,6 +26,10 @@ const makeEditor = (container: Node) => {
 };
 
 const container = fixtures();
+
+const smileEmojiId = {
+  id: 'smile'
+};
 
 const smileEmoji = {
   id: 'smile',
@@ -167,7 +171,7 @@ describe('emojis', () => {
       pm.flush();
       pm.tr.typeText('smile').apply();
 
-      pluginInstance.insertEmoji(smileEmoji);
+      pluginInstance.insertEmoji(smileEmojiId, smileEmoji);
 
       expect(pm.doc.nodeAt(1)).to.be.of.nodeType(EmojiNodeType);
     });
@@ -180,14 +184,14 @@ describe('emojis', () => {
       pm.flush();
       pm.tr.typeText('smile').apply();
 
-      pluginInstance.insertEmoji(smileEmoji);
+      pluginInstance.insertEmoji(smileEmojiId, smileEmoji);
       pm.flush();
 
       pm.input.insertText(2, 2, ':');
       pm.flush();
       pm.tr.typeText('smile').apply();
 
-      pluginInstance.insertEmoji(smileEmoji);
+      pluginInstance.insertEmoji(smileEmojiId, smileEmoji);
       pm.flush();
 
       expect(pm.doc.nodeAt(1)).to.be.of.nodeType(EmojiNodeType);
@@ -205,7 +209,7 @@ describe('emojis', () => {
       pm.flush();
       pm.tr.typeText('smile').apply();
 
-      pluginInstance.insertEmoji(smileEmoji);
+      pluginInstance.insertEmoji(smileEmojiId, smileEmoji);
       pm.flush();
 
       expect(pm.doc.nodeAt(2)).to.be.of.nodeType(EmojiNodeType);

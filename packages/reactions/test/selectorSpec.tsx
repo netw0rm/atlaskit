@@ -1,17 +1,20 @@
 import * as chai from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
+import { OnEmojiEvent } from '@atlaskit/emoji';
 
 import { mount, shallow } from 'enzyme';
 import EmojiButton from '../src/internal/emoji-button';
 import Selector from '../src/internal/selector';
-import { defaultReactions } from '../src/internal/selector';
-import { emojiService } from '../stories/examples/emoji-service';
+import { defaultReactions, isDefaultReaction } from '../src/internal/selector';
+import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+
+const { getEmojiResourcePromise } = emojiTestData.emojiTestData;
 
 const { expect } = chai;
 
-const renderSelector = (onSelection: Function = () => {}) => {
-  return <Selector emojiService={emojiService} onSelection={onSelection} />;
+const renderSelector = (onSelection: OnEmojiEvent = () => {}) => {
+  return <Selector emojiProvider={getEmojiResourcePromise()} onSelection={onSelection} />;
 };
 
 describe('@atlaskit/reactions/selector', () => {
@@ -23,7 +26,7 @@ describe('@atlaskit/reactions/selector', () => {
     expect(emojis.length).to.equal(defaultReactions.length);
 
     emojis.forEach(emoji => {
-      expect(defaultReactions.indexOf(emoji.props().emoji.shortcut)).not.to.equal(-1);
+      expect(isDefaultReaction(emoji.props().emojiId.id)).to.equal(true);
     });
   });
 

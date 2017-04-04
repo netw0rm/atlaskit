@@ -1,6 +1,7 @@
 @import '~@atlaskit/util-shared-styles/src/grid.less';
 @import '~@atlaskit/util-shared-styles/src/colors.less';
 @import '~@atlaskit/util-shared-styles/src/z-indexes.less';
+
 @grid: @ak-grid-size / 2; // evaluates to 4px
 @ak-z-index-modal: @ak-z-index-blanket + 10;
 
@@ -85,30 +86,19 @@
     box-sizing: border-box;
     padding: 0 (@grid * 4);
     position: relative;
-    .modal-shadow(inset 0px @modal-inner-shadow-size 0px 0px @ak-color-N30, inset 0px -@modal-inner-shadow-size 0px 0px @ak-color-N30);
     .panel-background();
+  }
 
-    // This pseudo element hides the top shadow when the scroll position is 0,
-    // then reveals the top shadow once scroll position > 0
-    &:before {
-      background: @ak-color-N0;
-      content: "";
-      display: block;
-      height: @modal-inner-shadow-size;
-      left: 0;
-      position: absolute;
-      right: 0;
-      top: 0px;
-    }
+  .without-header {
+    .panel-background(@grid, 0);
+  }
 
-    &:after {
-      background: @ak-color-N0;
-      content: "";
-      display: block;
-      height: @modal-inner-shadow-size;
-      margin-right: -16px;
-      margin-left: -16px;
-    }
+  .without-footer {
+    .panel-background(0, @grid);
+  }
+
+  .without-header.without-footer {
+    .panel-background(@grid, @grid);
   }
 
   // Background and corners for footer
@@ -119,4 +109,41 @@
     .panel-background(0, @grid);
     // TODO: AK-704: animated keylines
   }
+}
+
+.with-header {
+  .modal-shadow(inset 0px -@modal-inner-shadow-size 0px 0px @ak-color-N30);
+
+  // This pseudo element hides the top shadow when the scroll position is 0,
+  // then reveals the top shadow once scroll position > 0
+  &:before {
+    background: @ak-color-N0;
+    content: "";
+    display: block;
+    height: @modal-inner-shadow-size;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0px;
+  }
+}
+
+.with-footer {
+  .modal-shadow(inset 0px @modal-inner-shadow-size 0px 0px @ak-color-N30);
+
+  &:after {
+    background: @ak-color-N0;
+    content: "";
+    display: block;
+    height: @modal-inner-shadow-size;
+    margin-right: -16px;
+    margin-left: -16px;
+  }
+}
+
+.with-header.with-footer {
+  .modal-shadow(
+    inset 0px @modal-inner-shadow-size 0px 0px @ak-color-N30,
+    inset 0px -@modal-inner-shadow-size 0px 0px @ak-color-N30
+  );
 }

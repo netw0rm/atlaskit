@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/icon",
-  "version": "2.5.6",
+  "version": "3.0.3",
   "config": {
     "access": "public"
   },
@@ -11,14 +11,24 @@
     "generate-icon-exports": "node ./bin/generate-icon-exports.js",
     "gen-js": "npm run generate-icon-exports && npm run generate-bundle-exports",
     "prepublish": "CLI=1 npm run gen-js && ../../node_modules/.bin/nwb build",
-    "pretest": "npm run gen-js"
+    "pretest": "npm run gen-js",
+    "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
+    "test": "../../node_modules/.bin/nwb test",
+    "test:watch": "../../node_modules/.bin/nwb test --server"
   },
   "files": [
-    "glyph",
     "umd"
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Ben W"
+    },
+    {
+      "name": "Luke B"
+    }
+  ],
   "peerDependencies": {
     "react": "^15.3.2"
   },

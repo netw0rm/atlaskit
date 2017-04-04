@@ -10,6 +10,7 @@ import 'style!./styles.less';
 import MonitoredStory from './MonitoredStory';
 import BaselineAlignmentStory from './BaselineAlignmentStory';
 import CodeExampleStory from './CodeExampleStory';
+import StencilStory from './StencilStory';
 
 function loadStories() {
   // Use a webpack loader to dynamically require stories.
@@ -35,6 +36,14 @@ setAddon({
       <BaselineAlignmentStory>
         {storyFn(context)}
       </BaselineAlignmentStory>
+    ));
+  },
+
+  addStencilStory(storyName, storyFn, options = {}) {
+    this.add(`✏️️ ${storyName}`, context => (
+      <StencilStory {...options}>
+        {storyFn(context)}
+      </StencilStory>
     ));
   },
 

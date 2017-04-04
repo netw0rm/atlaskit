@@ -7,12 +7,16 @@ export default class ContainerItemGroup extends PureComponent {
     action: PropTypes.node,
     children: PropTypes.node,
     title: PropTypes.string,
+    hasSeparator: PropTypes.bool,
+    appearance: PropTypes.string,
   }
 
   render() {
     const {
       title,
       action,
+      hasSeparator,
+      appearance,
     } = this.props;
 
     const Title = () => (title ?
@@ -22,9 +26,17 @@ export default class ContainerItemGroup extends PureComponent {
     return (
       <div
         className={className({
-          [style.noHeaderContent]: !(title || action),
+          [style.noHeaderContent]: !(title || action || hasSeparator),
         })}
       >
+        {hasSeparator ? (
+          <div
+            className={className(style.separator, {
+              [style.hasGlobalAppearance]: appearance === 'global',
+              [style.hasSettingsAppearance]: appearance === 'settings',
+            })}
+          />
+          ) : null}
         {title || action ? (
           <div className={style.header}>
             <Title />

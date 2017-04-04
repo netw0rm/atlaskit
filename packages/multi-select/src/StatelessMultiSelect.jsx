@@ -1,26 +1,20 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import Droplist from '@atlaskit/droplist';
-import Item from '@atlaskit/droplist-item';
-import Group from '@atlaskit/droplist-group';
+import Droplist, { Item, Group } from '@atlaskit/droplist';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import TagGroup from '@atlaskit/tag-group';
 import Tag from '@atlaskit/tag';
 import classNames from 'classnames';
 
 import styles from 'style!./styles.less';
+import DummyItem from './internal/DummyItem';
+import DummyGroup from './internal/DummyGroup';
 import Trigger from './internal/Trigger';
 import NothingWasFound from './internal/NothingWasFound';
 import { appearances, mapAppearanceToFieldBase } from './internal/appearances';
 
-export const itemShape = PropTypes.shape({
-  content: PropTypes.node,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  isDisabled: PropTypes.bool,
-  isSelected: PropTypes.bool,
-  elemBefore: PropTypes.node,
-  elemAfter: PropTypes.node,
-});
+const groupShape = DummyGroup.propTypes;
+const itemShape = DummyItem.propTypes;
 
 export default class StatelessMultiSelect extends PureComponent {
   static propTypes = {
@@ -33,7 +27,7 @@ export default class StatelessMultiSelect extends PureComponent {
     isInvalid: PropTypes.bool,
     isOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
-    items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
     label: PropTypes.string,
     noMatchesFound: PropTypes.string,
     name: PropTypes.string,
@@ -43,7 +37,7 @@ export default class StatelessMultiSelect extends PureComponent {
     onRemoved: PropTypes.func,
     placeholder: PropTypes.string,
     position: PropTypes.string,
-    selectedItems: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    selectedItems: PropTypes.arrayOf(PropTypes.shape(itemShape)),
     shouldFitContainer: PropTypes.bool,
   }
 
@@ -99,8 +93,9 @@ export default class StatelessMultiSelect extends PureComponent {
     // eslint-disable-next-line react/no-find-dom-node
     const tagGroup = ReactDOM.findDOMNode(this.tagGroup);
     const tagGroupElements = tagGroup.children;
-    const isInsideTagGroup = [...tagGroupElements].some(node =>
-      node.contains(target) && node.tagName !== 'INPUT');
+    const isInsideTagGroup = [...tagGroupElements].some(
+      node => node.contains(target) && node.tagName !== 'INPUT'
+    );
 
     if (!isInsideTagGroup) {
       this.props.onOpenChange(attrs);
@@ -223,10 +218,13 @@ export default class StatelessMultiSelect extends PureComponent {
         }
         break;
       case 'Enter':
-        if (isSelectOpen && this.state.focusedItemIndex !== null) {
-          this.handleItemSelect(
-            this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
-          );
+        if (isSelectOpen) {
+          event.preventDefault();
+          if (this.state.focusedItemIndex !== null) {
+            this.handleItemSelect(
+              this.getAllVisibleItems(this.props.items)[this.state.focusedItemIndex], { event }
+            );
+          }
         }
         break;
       case 'Backspace':
@@ -252,10 +250,10 @@ export default class StatelessMultiSelect extends PureComponent {
   }
 
   renderItems = (items) => {
-    const filteredItems = this.filterItems(items);
-    if (filteredItems.length) {
-      return filteredItems.map((item, itemIndex) => (<Item
+    if (items.length) {
+      return items.map((item, itemIndex) => (<Item
         {...item}
+        elemBefore={item.elemBefore}
         isFocused={itemIndex === this.state.focusedItemIndex}
         key={itemIndex}
         onActivate={(attrs) => {
@@ -269,14 +267,17 @@ export default class StatelessMultiSelect extends PureComponent {
     return (<NothingWasFound noMatchesFound={this.props.noMatchesFound} />);
   }
 
-  renderGroups = groups => groups.map((group, groupIndex) =>
-    <Group
-      heading={group.heading}
-      key={groupIndex}
-    >
-      {this.renderItems(group.items)}
-    </Group>
-  )
+  renderGroups = groups => groups.map((group, groupIndex) => {
+    const filteredItems = this.filterItems(group.items);
+    return filteredItems.length > 0 ?
+      <Group
+        heading={group.heading}
+        key={groupIndex}
+      >
+        {this.renderItems(filteredItems)}
+      </Group>
+    : null;
+  })
 
   renderOptions = items => items.map((item, itemIndex) => (<option
     disabled={item.isDisabled}
@@ -351,6 +352,7 @@ export default class StatelessMultiSelect extends PureComponent {
                 <TagGroup ref={ref => (this.tagGroup = ref)}>
                   {this.props.selectedItems.map(item =>
                     <Tag
+                      elemBefore={item.tagElemBefore}
                       key={item.value}
                       onAfterRemoveAction={() => {
                         this.handleItemRemove(item);

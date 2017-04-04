@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-core",
-  "version": "1.1.1",
+  "version": "5.0.4",
   "config": {
     "access": "public"
   },
@@ -18,6 +18,11 @@
     "umd"
   ],
   "author": "Atlassian Pty. Ltd",
+  "maintainers": [
+    {
+      "name": "Jimmy L"
+    }
+  ],
   "license": "Apache-2.0",
   "keywords": [
     "media",
@@ -28,14 +33,15 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2",
+    "rxjs": "^5.1.0"
   },
   "dependencies": {
-    "tslib": "^1.2.0"
+    "axios": "^0.15.3",
+    "tslib": "^1.2.0",
+    "lru-fast": "^0.2.2"
   },
   "devDependencies": {
-    "axios": "^0.15.3",
-    "lru-fast": "^0.2.2",
-    "rxjs": "^5.1.0"
+    "@atlaskit/media-test-helpers": "^1.0.0"
   }
 }

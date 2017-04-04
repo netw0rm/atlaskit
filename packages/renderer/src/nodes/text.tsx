@@ -9,13 +9,14 @@ import {
   Renderable,
 } from './';
 
+import {
+  isText,
+  isTextWrapper
+} from '../utils';
+
 export interface TextNode extends Renderable {
   text: string;
   marks?: Mark[];
-}
-
-export interface TextWrapper extends Renderable {
-  textNodes: TextNode[];
 }
 
 /*
@@ -81,14 +82,6 @@ export const mergeTextNodes = (nodes: Renderable[]) => {
   }, []);
 };
 
-export const isTextWrapper = (type: string): type is 'textWrapper' => {
-  return type === 'textWrapper';
-};
-
-export const isText = (type: string): type is 'text' => {
-  return type === 'text';
-};
-
 export const renderTextNodes = (textNodes: TextNode[]) => {
   let currentMarkNode: Renderable;
   const content = textNodes.reduce((acc, node, index) => {
@@ -97,31 +90,26 @@ export const renderTextNodes = (textNodes: TextNode[]) => {
         type: 'text',
         text: node.text
       };
-
       acc.push(currentMarkNode);
     } else {
-      let newMark = true;
+      const nodeMarks = getMarksByOrder(node.marks);
+      nodeMarks.forEach((mark, markIndex) => {
+        const isSameAsPrevious = isSameMark(mark, currentMarkNode as Mark);
+        const previousIsInMarks = markIndex > 0 && nodeMarks.some(m => isSameMark(m, currentMarkNode));
 
-      getMarksByOrder(node.marks).forEach(mark => {
-        if (index > 0 && isSameMark(mark, currentMarkNode as Mark)) {
-          newMark = false;
-        } else {
-          if (newMark) {
-            currentMarkNode = {
-              type: mark.type,
-              attrs: mark.attrs,
-              content: []
-            };
-            (acc as any).push(currentMarkNode);
+        if (!isSameAsPrevious) {
+          let newMarkNode: Renderable = {
+            type: mark.type,
+            attrs: mark.attrs,
+            content: [],
+          };
+
+          if (previousIsInMarks) {
+            currentMarkNode.content!.push(newMarkNode);
+            currentMarkNode = newMarkNode;
           } else {
-            let newMark = {
-              type: mark.type,
-              attrs: mark.attrs,
-              content: []
-            };
-
-            currentMarkNode.content!.push(newMark);
-            currentMarkNode = newMark;
+            acc.push(newMarkNode);
+            currentMarkNode = newMarkNode;
           }
         }
       });

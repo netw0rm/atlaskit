@@ -1,11 +1,12 @@
 {
   "name": "@atlaskit/badge",
-  "version": "1.0.3",
+  "version": "3.0.0",
   "config": {
     "access": "public"
   },
   "description": "A React component that indicates values",
   "main": "umd/@atlaskit/badge.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",
@@ -22,12 +23,18 @@
   },
   "devDependencies": {
     "@atlaskit/badge": "*",
-    "@atlaskit/util-readme": "^1.0.0"
+    "@atlaskit/util-readme": "^3.0.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Sean C"
+    }
+  ],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2",
+    "styled-components": "^1.3.0"
   },
   "repository": {
     "type": "git",

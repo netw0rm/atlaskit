@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/logo",
-  "version": "2.0.1",
+  "version": "3.0.3",
   "config": {
     "access": "public"
   },
@@ -31,6 +31,11 @@
   },
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Josh N"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "https://bitbucket.org/atlassian/atlaskit"

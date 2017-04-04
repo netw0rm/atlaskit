@@ -1,11 +1,17 @@
 import { shallow, mount } from 'enzyme';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Navigation from '../src/components/js/Navigation';
 import Drawer from '../src/components/js/Drawer';
 import {
   containerClosedWidth,
   navigationOpenWidth,
 } from '../src/shared-variables';
+
+class Child extends PureComponent {
+  render() {
+    return <div>Hi there</div>;
+  }
+}
 
 describe('<Navigation />', () => {
   describe('renders', () => {
@@ -15,11 +21,11 @@ describe('<Navigation />', () => {
     it('should render a <GlobalNavigation />', () => {
       expect(shallow(<Navigation />).find('GlobalNavigation').length).to.equal(1);
     });
-    it('should render a <GlobalActions /> in GlobalNavigation', () => {
-      expect(mount(<Navigation />).find('GlobalNavigation').find('GlobalActions').length).to.equal(1);
+    it('should render a <GlobalPrimaryActions /> in GlobalNavigation', () => {
+      expect(mount(<Navigation />).find('GlobalNavigation').find('GlobalPrimaryActions').length).to.equal(1);
     });
-    it('should render a <GlobalActions /> in ContainerNavigation', () => {
-      expect(mount(<Navigation />).find('ContainerNavigation').find('GlobalActions').length).to.equal(1);
+    it('should render a <GlobalPrimaryActions /> in ContainerNavigation', () => {
+      expect(mount(<Navigation />).find('ContainerNavigation').find('GlobalPrimaryActions').length).to.equal(1);
     });
     it('should render a <Resizer />', () => {
       expect(shallow(<Navigation />).find('Resizer').length).to.equal(1);
@@ -27,16 +33,6 @@ describe('<Navigation />', () => {
   });
 
   describe('props', () => {
-    it('width prop is reflected on <Spacer />', () => {
-      expect(shallow(<Navigation width={500} />).find('Spacer').props().width).to.equal(500);
-      expect(shallow(<Navigation width={200} />).find('Spacer').props().width).to.equal(200);
-    });
-    it('open=false overrides width prop on <Spacer />', () => {
-      expect(shallow(<Navigation isOpen={false} width={500} />)
-        .find('Spacer').props().width).to.equal(containerClosedWidth);
-      expect(shallow(<Navigation isOpen={false} width={200} />)
-        .find('Spacer').props().width).to.equal(containerClosedWidth);
-    });
     it('isResizeable=false does not render a <Resizer />', () => {
       expect(shallow(<Navigation isResizeable={false} />).find('Resizer').length).to.equal(0);
     });
@@ -58,6 +54,10 @@ describe('<Navigation />', () => {
     it('globalCreateIcon should pass createIcon onto <GlobalNavigation />', () => {
       const icon = <img alt="create" />;
       expect(mount(<Navigation globalCreateIcon={icon} />).find('GlobalNavigation').props().createIcon).to.equal(icon);
+    });
+    it('globalAppearance should pass globalAppearance onto <GlobalNavigation />', () => {
+      const appearance = 'settings';
+      expect(mount(<Navigation globalAppearance={appearance} />).find('GlobalNavigation').props().appearance).to.equal(appearance);
     });
     it('globalSearchIcon should pass globalSearchIcon onto <ContainerNavigation />', () => {
       const icon = <img alt="search" />;
@@ -100,19 +100,19 @@ describe('<Navigation />', () => {
           globalPrimaryIcon={primaryIcon}
         />).find('GlobalNavigation').props().primaryIcon).to.equal(primaryIcon);
     });
-    it('globalHelpItem should map to global navigation\'s helpItem', () => {
-      const helpItem = <span className="HELP_ITEM" />;
-      expect(mount(
+    it('should allow you to pass in global secondard actions', () => {
+      const wrapper = mount(
         <Navigation
-          globalHelpItem={helpItem}
-        />).find('GlobalNavigation').props().helpItem).to.equal(helpItem);
-    });
-    it('globalAccountItem should map to <GlobalNavigation/>', () => {
-      const accountItem = <span className="ACCOUNT_ITEM" />;
-      expect(mount(
-        <Navigation
-          globalAccountItem={accountItem}
-        />).find('GlobalNavigation').props().accountItem).to.equal(accountItem);
+          globalSecondaryActions={[<Child />, <Child />]}
+        />
+      );
+
+      expect(wrapper
+        .find('GlobalNavigation')
+        .find('GlobalSecondaryActions')
+        .find(Child)
+        .length
+      ).to.equal(2);
     });
     it('linkComponent is passed on to <GlobalNavigation/>', () => {
       const linkComponent = () => null;
@@ -138,6 +138,100 @@ describe('<Navigation />', () => {
       const navigation = shallow(<Navigation isCollapsible={false} />);
       navigation.find('Resizer').simulate('resize', -300);
       expect(navigation.find('Spacer').props().width).to.be.at.least(navigationOpenWidth);
+    });
+  });
+
+  describe('open/closed props matrix', () => {
+    it('width prop is reflected on <Spacer />', () => {
+      expect(shallow(<Navigation width={500} />).find('Spacer').props().width).to.equal(500);
+      expect(shallow(<Navigation width={200} />).find('Spacer').props().width).to.equal(200);
+    });
+    it('open=false overrides width prop on <Spacer />', () => {
+      expect(shallow(<Navigation isOpen={false} width={500} />)
+        .find('Spacer').props().width).to.equal(containerClosedWidth);
+      expect(shallow(<Navigation isOpen={false} width={200} />)
+        .find('Spacer').props().width).to.equal(containerClosedWidth);
+    });
+
+    // if specific test from the matrix fail hard code them here
+    // hard coded tests being more resistant to co-changes
+    it('isCollapsible=false overrides isOpen=false', () => {
+      const navigation = shallow(<Navigation isCollapsible={false} isOpen={false} />);
+      const spacer = navigation.find('Spacer');
+      const container = navigation.find('ContainerNavigation');
+      expect(container.length).to.equal(1);
+      expect(spacer.props().width).to.equal(navigationOpenWidth);
+      expect(container.props().areGlobalActionsVisible).to.equal(false);
+    });
+
+    it('static isCollapsible=false isOpen=true width=containerClosedWidth must render with renderedWidth=navigationOpenWidth, and showGlobalActions=false', () => {
+      const navigation = shallow(<Navigation isCollapsible={false} width={containerClosedWidth} />);
+      const spacer = navigation.find('Spacer');
+      const container = navigation.find('ContainerNavigation');
+      expect(container.length).to.equal(1);
+      expect(spacer.props().width).to.equal(navigationOpenWidth);
+      expect(container.props().areGlobalActionsVisible).to.equal(false);
+    });
+
+    it('static isCollapsible=false isOpen=false width=containerClosedWidth must render with renderedWidth=navigationOpenWidth, and showGlobalActions=false', () => {
+      const navigation = shallow(
+        <Navigation
+          isCollapsible={false}
+          isOpen={false}
+          width={containerClosedWidth}
+        />
+      );
+      const spacer = navigation.find('Spacer');
+      const container = navigation.find('ContainerNavigation');
+      expect(container.length).to.equal(1);
+      expect(spacer.props().width).to.equal(navigationOpenWidth);
+      expect(container.props().areGlobalActionsVisible).to.equal(false);
+    });
+
+    // construct the parameter matrix
+    const matrix = [];
+    [true, false].forEach((isCollapsible) => {
+      [true, false].forEach((isOpen) => {
+        const halfWayWidth =
+          ((navigationOpenWidth - containerClosedWidth) / 2) + containerClosedWidth;
+        [navigationOpenWidth, containerClosedWidth].forEach((setWidth) => {
+          // decide assertable values
+          const isClosed = isCollapsible && !isOpen;
+          const renderedWidth = (!isCollapsible || (isOpen && setWidth > halfWayWidth)) ?
+              navigationOpenWidth :
+              containerClosedWidth;
+          matrix.push({
+            isCollapsible,
+            isOpen,
+            setWidth,
+            renderedWidth,
+            showGlobalActions: isClosed,
+          });
+        });
+      });
+    });
+
+    // one test per matrix entry ^
+    matrix.forEach((params) => {
+      it(
+        `isCollapsible=${params.isCollapsible} ` +
+        `isOpen=${params.isOpen} ` +
+        `width=${params.setWidth} must render with ` +
+        `renderedWidth=${params.renderedWidth}, and ` +
+        `showGlobalActions=${params.showGlobalActions}`, () => {
+        const navigation = shallow(
+          <Navigation
+            isCollapsible={params.isCollapsible}
+            isOpen={params.isOpen}
+            width={params.setWidth}
+          />
+        );
+        const spacer = navigation.find('Spacer');
+        const container = navigation.find('ContainerNavigation');
+        expect(container.length).to.equal(1);
+        expect(spacer.props().width).to.equal(params.renderedWidth);
+        expect(container.props().areGlobalActionsVisible).to.equal(params.showGlobalActions);
+      });
     });
   });
 });

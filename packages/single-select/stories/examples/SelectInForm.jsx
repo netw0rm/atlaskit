@@ -64,6 +64,15 @@ export default (
       placeholder="Select animal"
       shouldFitContainer
     />
+    <Select
+      id="colors_id"
+      items={colors}
+      label="Autocomplete field"
+      name="autocomplete"
+      placeholder="Select color"
+      shouldFitContainer
+      hasAutocomplete
+    />
     <div style={{ margin: '20px 0' }}>
       <Button type="submit">Submit allthethings!</Button>
     </div>

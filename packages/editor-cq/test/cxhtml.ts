@@ -1,11 +1,12 @@
 import { DocNode } from '@atlaskit/editor-core';
-import { chaiPlugin } from '@atlaskit/editor-core/test-helper';
+import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { encode, parse } from '../src/cxhtml';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
-  mono, ol, p, strike, strong, sub, sup, u, ul
+  code, ol, p, strike, strong, sub, sup, u, ul, unsupportedInline,
+  unsupportedBlock
 } from './_schema-builder';
 
 chai.use(chaiPlugin);
@@ -25,7 +26,13 @@ const checkBuilder = (fn: any, description: string, cxhtml: string, doc: DocNode
 const check = (description: string, cxhtml: string, doc: DocNode) =>
   checkBuilder(it, description, cxhtml, doc);
 
-describe('ak-editor-cq encode-cxml:', () => {
+describe('@atlaskit/editor-cq encode-cxml:', () => {
+  describe('empty', () => {
+    check('empty',
+      '',
+      doc(p('')));
+  });
+
   describe('basic formatting:', () => {
     describe('text:', () => {
       check('basic text',
@@ -146,11 +153,11 @@ describe('ak-editor-cq encode-cxml:', () => {
         '<s>struck</s>',
         doc(p(strike('struck'))));
 
-      check('<mono>',
+      check('<code>',
         '<p>Text with <span style="font-family: monospace;">function bar() { return foo; }</span>.</p>',
         doc(p(
           'Text with ',
-          mono('function bar() { return foo; }'),
+          code('function bar() { return foo; }'),
           '.'
         )));
 
@@ -186,13 +193,13 @@ describe('ak-editor-cq encode-cxml:', () => {
           '.'
         )));
 
-      check('<i><mono> nesting',
+      check('<i><code> nesting',
         '<p>Text <i>in italics <span style="font-family: monospace;">AND SOME CODE</span> and others italics</i> and plain.</p>',
         doc(p(
           'Text ',
           em(
             'in italics ',
-            mono('AND SOME CODE'),
+            code('AND SOME CODE'),
             ' and others italics'
           ),
           ' and plain.'
@@ -308,6 +315,71 @@ describe('ak-editor-cq encode-cxml:', () => {
         '<blockquote><blockquote>Elementary my dear Watson</blockquote></blockquote>',
         doc(blockquote(blockquote(p('Elementary my dear Watson')))));
     });
+  });
+
+  describe('unsupported content', () => {
+    check('inline ac:structured-macro in p',
+      '<p><ac:structured-macro name="foo"/></p>',
+      doc(p(unsupportedInline('<ac:structured-macro name="foo"/>'))));
+
+    check('inline ac:structured-macro in p (multiple)',
+      '<p><ac:structured-macro name="foo"/><ac:structured-macro name="bar"/></p>',
+      doc(p(
+        unsupportedInline('<ac:structured-macro name="foo"/>'),
+        unsupportedInline('<ac:structured-macro name="bar"/>'),
+      )));
+
+    check('inline ac:structured-macro in p with text',
+      '<p>foo <ac:structured-macro name="foo"/></p>',
+      doc(p('foo', unsupportedInline('<ac:structured-macro name="foo"/>'))));
+
+    check('inline ac:structured-macro>ac:property in p',
+      '<p><ac:structured-macro name="foo"><ac:property/></ac:structured-macro></p>',
+      doc(p(unsupportedInline('<ac:structured-macro name="foo"><ac:property/></ac:structured-macro>'))));
+
+    check('inline ac:structured-macro>ac:property in p (multiple)',
+      '<p><ac:structured-macro name="foo"><ac:property/></ac:structured-macro><ac:structured-macro name="foo"><ac:property/></ac:structured-macro></p>',
+      doc(p(
+        unsupportedInline('<ac:structured-macro name="foo"><ac:property/></ac:structured-macro>'),
+        unsupportedInline('<ac:structured-macro name="foo"><ac:property/></ac:structured-macro>'),
+      )));
+
+    check('block ac:structured-macro',
+      '<ac:structured-macro name="foo"/>',
+      doc(unsupportedBlock('<ac:structured-macro name="foo"/>')));
+
+    check('block ac:structured-macro (multiple)',
+      '<ac:structured-macro name="foo"/><ac:structured-macro name="bar"/>',
+      doc(
+        unsupportedBlock('<ac:structured-macro name="foo"/>'),
+        unsupportedBlock('<ac:structured-macro name="bar"/>'),
+      ));
+
+    check('block h2, ac:structured-macro',
+      '<h2>foo</h2><ac:structured-macro name="foo"/>',
+      doc(
+        h2('foo'),
+        unsupportedBlock('<ac:structured-macro name="foo"/>'),
+      ));
+
+    check('CDATA',
+      '<![CDATA[some code]]>',
+      doc(
+        p('some code'),
+      ));
+
+    check('CDATA surrounded by whitespace',
+      ' <![CDATA[some code]]> ',
+      doc(
+        p('some code'),
+      ));
+
+    check('h1 + macro with CDATA',
+      '<h1>Code block</h1><ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
+      doc(
+        h1('Code block'),
+        unsupportedBlock('<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>'),
+      ));
   });
 
 // Color text span

@@ -1,12 +1,13 @@
 import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
+import classNames from 'classnames';
 
-import RemoveIcon from './RemoveIcon';
+import RemoveIcon from '@atlaskit/icon/glyph/cross';
 
-/* eslint-disable react/prefer-stateless-function */
 export default class RemoveButton extends PureComponent {
   static propTypes = {
     removeText: PropTypes.string.isRequired,
+    isRounded: PropTypes.bool,
     onHoverChange: PropTypes.func,
     onRemoveAction: PropTypes.func,
   }
@@ -27,16 +28,19 @@ export default class RemoveButton extends PureComponent {
   }
 
   render() {
+    const buttonStyles = classNames(styles.button, {
+      [styles.rounded]: this.props.isRounded,
+    });
     return (
       <button
-        className={styles.button} aria-label={this.props.removeText}
+        className={buttonStyles} aria-label={this.props.removeText}
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
         onClick={this.props.onRemoveAction}
         onKeyPress={this.onKeyPress}
         type="button"
       >
-        <RemoveIcon />
+        <RemoveIcon label={this.props.removeText} size="small" />
       </button>
     );
   }

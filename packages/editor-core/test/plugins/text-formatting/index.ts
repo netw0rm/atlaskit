@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { browser, TextFormattingPlugin } from '../../../src';
-import { chaiPlugin, makeEditor } from '../../../test-helper';
-import { doc, em, mono, p, plain, schema, strike, strong, sub, sup, u } from '../../_schema-builder';
+import { chaiPlugin, makeEditor } from '../../../src/test-helper';
+import { doc, em, code, p, plain, schema, strike, strong, sub, sup, u } from '../../_schema-builder';
 
 chai.use(chaiPlugin);
 
@@ -62,13 +62,13 @@ describe('text-formatting', () => {
         });
 
         context('when hits Shift-Cmd-M', () => {
-          it('toggles monospace mark', () => {
+          it('toggles code mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
-            const toggleMono = sinon.spy(plugin, 'toggleMono');
+            const toggleCode = sinon.spy(plugin, 'toggleCode');
 
             pm.input.dispatchKey('Shift-Cmd-M');
 
-            expect(toggleMono.callCount).to.equal(1);
+            expect(toggleCode.callCount).to.equal(1);
           });
         });
       });
@@ -123,13 +123,13 @@ describe('text-formatting', () => {
         });
 
         context('when hits Shift-Ctrl-M', () => {
-          it('toggles monospace mark', () => {
+          it('toggles code mark', () => {
             const { pm, plugin } = editor(doc(p('text')));
-            const toggleMono = sinon.spy(plugin, 'toggleMono');
+            const toggleCode = sinon.spy(plugin, 'toggleCode');
 
             pm.input.dispatchKey('Shift-Ctrl-M');
 
-            expect(toggleMono.callCount).to.equal(1);
+            expect(toggleCode.callCount).to.equal(1);
           });
         });
       });
@@ -279,42 +279,42 @@ describe('text-formatting', () => {
     });
   });
 
-  describe('monospace', () => {
-    it('should be able to toggle monospace on a character', () => {
+  describe('code', () => {
+    it('should be able to toggle code on a character', () => {
       const { pm, plugin } = editor(doc(p('{<}t{>}ext')));
 
-      expect(plugin.toggleMono());
-      expect(pm.doc).to.deep.equal(doc(p(mono('t'), 'ext')));
-      expect(plugin.toggleMono());
+      expect(plugin.toggleCode());
+      expect(pm.doc).to.deep.equal(doc(p(code('t'), 'ext')));
+      expect(plugin.toggleCode());
       expect(pm.doc).to.deep.equal(doc(p('text')));
     });
 
-    it('should expose whether mono is active on an empty selection', () => {
+    it('should expose whether code is active on an empty selection', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.monoActive).to.equal(false);
-      expect(plugin.toggleMono());
-      expect(plugin.monoActive).to.equal(true);
+      expect(plugin.codeActive).to.equal(false);
+      expect(plugin.toggleCode());
+      expect(plugin.codeActive).to.equal(true);
     });
 
-    it('should expose whether mono is active on a text selection', () => {
+    it('should expose whether code is active on a text selection', () => {
       const { plugin } = editor(doc(p('t{<}e{>}xt')));
 
-      expect(plugin.monoActive).to.equal(false);
-      expect(plugin.toggleMono());
-      expect(plugin.monoActive).to.equal(true);
+      expect(plugin.codeActive).to.equal(false);
+      expect(plugin.toggleCode());
+      expect(plugin.codeActive).to.equal(true);
     });
 
-    it('exposes mono as disabled when the mark cannot be applied', () => {
+    it('exposes code as disabled when the mark cannot be applied', () => {
       const { plugin } = editor(doc(plain('te{<>}xt')));
 
-      expect(plugin.monoDisabled).to.equal(true);
+      expect(plugin.codeDisabled).to.equal(true);
     });
 
-    it('exposes mono as not disabled when the mark can be applied', () => {
+    it('exposes code as not disabled when the mark can be applied', () => {
       const { plugin } = editor(doc(p('te{<>}xt')));
 
-      expect(plugin.monoDisabled).to.equal(false);
+      expect(plugin.codeDisabled).to.equal(false);
     });
   });
 
@@ -465,5 +465,18 @@ describe('text-formatting', () => {
       plugin.toggleSuperscript();
       expect(plugin.subscriptActive).to.equal(false);
     });
+
+    it('deactives strong, em, strike after toggling code for selected text', () => {
+      const { plugin } = editor(doc(p('t{<}e{>}xt')));
+
+      expect(plugin.strongDisabled).to.be.false;
+      expect(plugin.emDisabled).to.be.false;
+      expect(plugin.strikeDisabled).to.be.false;
+      plugin.toggleCode();
+      expect(plugin.strongDisabled).to.be.true;
+      expect(plugin.emDisabled).to.be.true;
+      expect(plugin.strikeDisabled).to.be.true;
+    });
+
   });
 });

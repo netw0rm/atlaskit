@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "4.1.0",
+  "version": "8.0.1",
   "config": {
     "access": "public"
   },
@@ -16,11 +16,12 @@
     "umd"
   ],
   "dependencies": {
-    "@atlaskit/blanket": "^1.0.0",
+    "@atlaskit/blanket": "^1.2.0",
     "@atlaskit/util-common": "^1.0.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
+    "invariant": "^2.2.2",
     "keycode": "^2.1.2"
   },
   "peerDependencies": {
@@ -29,6 +30,11 @@
     "styled-components": "^1.3.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Josh N"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/avatar": "^2.0.0",

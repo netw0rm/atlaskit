@@ -10,14 +10,22 @@ import {
   isListItemNode,
   isOrderedListNode,
   isParagraphNode,
+  isMentionNode,
+  isCodeBlockNode,
   ListItemNode,
+  CodeBlockNode,
+  MentionNode,
   Node as PMNode,
   OrderedListNode,
   ParagraphNode
 } from '@atlaskit/editor-core';
-import { isSchemaWithLists, SupportedSchema } from '../schema';
+import { isSchemaWithLists, isSchemaWithMentions, isSchemaWithCodeBlock, JIRASchema } from '../schema';
 
-export default function encode(node: DocNode, schema: SupportedSchema) {
+export interface JIRACustomEncoders {
+  mention?: (userId: string) => string;
+}
+
+export default function encode(node: DocNode, schema: JIRASchema, customEncoders: JIRACustomEncoders = {}) {
   const doc = makeDocument();
   doc.body.appendChild(encodeFragment(node.content));
   const html = doc.body.innerHTML;
@@ -34,7 +42,7 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
     .replace(/<hr><\/hr>/g, '<hr />')
     .replace(/<hr>/g, '<hr />');
 
-  function encodeNode(node: PMNode) {
+  function encodeNode(node: PMNode): DocumentFragment | Text | HTMLElement {
     if (node.isText) {
       return encodeText(node);
     } else if (isHeadingNode(node)) {
@@ -57,6 +65,14 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
       }
     }
 
+    if (isSchemaWithMentions(schema) && isMentionNode(node)) {
+      return encodeMention(node, customEncoders.mention);
+    }
+
+    if (isSchemaWithCodeBlock(schema) && isCodeBlockNode(node)) {
+      return encodeCodeBlock(node);
+    }
+
     throw new Error(`Unexpected node '${(node as any).type.name}' for HTML encoding`);
   }
 
@@ -69,7 +85,7 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
 
   function encodeFragment(fragment: Fragment) {
     const documentFragment = doc.createDocumentFragment();
-    fragment.forEach(node => documentFragment.appendChild(encodeNode(node)));
+    fragment.forEach(node => documentFragment.appendChild(encodeNode(node)!));
     return documentFragment;
   }
 
@@ -108,7 +124,7 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
           case schema.marks.em:
             elem = elem.appendChild(doc.createElement('em'));
             break;
-          case schema.marks.mono:
+          case schema.marks.code:
             elem = elem.appendChild(doc.createElement('tt'));
             break;
           case schema.marks.strike:
@@ -119,6 +135,27 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
             break;
           case schema.marks.subsup:
             elem = elem.appendChild(doc.createElement(mark.attrs['type']));
+            break;
+          case schema.marks.link:
+            const link = doc.createElement('a');
+            const href = mark.attrs['href'];
+
+            // Handle external links e.g. links which start with http://, https://, ftp://, //
+            if (href.match(/\w+:\/\//) || href.match(/^\/\//) || href.match('mailto:')) {
+              link.setAttribute('class', 'external-link');
+              link.setAttribute('href', href);
+              link.setAttribute('rel', 'nofollow');
+            } else {
+              link.setAttribute('href', href);
+            }
+
+            if (mark.attrs['title']) {
+              link.setAttribute('title', mark.attrs['title']);
+            }
+
+            elem = elem.appendChild(link);
+            break;
+          case schema.marks.mention_query:
             break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);
@@ -143,24 +180,79 @@ export default function encode(node: DocNode, schema: SupportedSchema) {
   function encodeBulletList(node: BulletListNode) {
     const elem = doc.createElement('ul');
     elem.setAttribute('class', 'alternate');
-    elem.setAttribute('type', 'square');
+    elem.setAttribute('type', 'disc');
     elem.appendChild(encodeFragment(node.content));
+    for (let index = 0; index < elem.childElementCount; index++) {
+      elem.children[index].setAttribute('data-parent', 'ul');
+    }
+
     return elem;
   }
 
   function encodeOrderedList(node: OrderedListNode) {
     const elem = doc.createElement('ol');
     elem.appendChild(encodeFragment(node.content));
+    for (let index = 0; index < elem.childElementCount; index++) {
+      elem.children[index].setAttribute('data-parent', 'ol');
+    }
     return elem;
   }
 
   function encodeListItem(node: ListItemNode) {
     const elem = doc.createElement('li');
-    // Strip the paragraph node from the list item.
     if (node.content.childCount) {
-      const paragraph = node.content.child(0) as ParagraphNode;
-      elem.appendChild(encodeFragment(paragraph.content));
+      node.content.forEach(childNode => {
+        if (isBulletListNode(childNode) || isOrderedListNode(childNode)) {
+          const list = encodeNode(childNode)!;
+
+          /**
+           * Changing type for nested list:
+           *
+           * Second level -> circle
+           * Third and deeper -> square
+           */
+          if (list instanceof HTMLElement && list.tagName === 'UL') {
+            list.setAttribute('type', 'circle');
+
+            [].forEach.call(list.querySelectorAll('ul'), ul => {
+              ul.setAttribute('type', 'square');
+            });
+          }
+
+          elem.appendChild(list);
+        } else {
+          // Strip the paragraph node from the list item.
+          elem.appendChild(encodeFragment((childNode as ParagraphNode).content));
+        }
+      });
     }
+    return elem;
+  }
+
+  function encodeMention(node: MentionNode, encoder?: (userId: string) => string) {
+    const elem = doc.createElement('a');
+    elem.setAttribute('class', 'user-hover');
+    elem.setAttribute('href', encoder ? encoder(node.attrs.id) : node.attrs.id);
+    elem.setAttribute('rel', node.attrs.id);
+    elem.innerText = node.attrs.displayName;
+    return elem;
+  }
+
+  function encodeCodeBlock(node: CodeBlockNode) {
+    const elem = doc.createElement('div');
+    elem.setAttribute('class', 'code panel');
+
+    const content = doc.createElement('div');
+    content.setAttribute('class', 'codeContent panelContent');
+
+    const pre = doc.createElement('pre');
+    // java is default language for JIRA
+    pre.setAttribute('class', `code-${(node.attrs.language || 'java').toLocaleLowerCase()}`);
+    pre.appendChild(encodeFragment(node.content));
+
+    content.appendChild(pre);
+    elem.appendChild(content);
+
     return elem;
   }
 }

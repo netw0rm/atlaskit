@@ -2,6 +2,7 @@ import sinon from 'sinon';
 
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import InlineDialog from '@atlaskit/inline-dialog';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import Spinner from '@atlaskit/spinner';
 import FieldBaseSmart, { FieldBase } from '../src';
@@ -20,9 +21,20 @@ const {
 const defaultProps = {
   onFocus: () => {},
   onBlur: () => {},
+  onIconClick: () => {},
 };
 
 describe('ak-field-base', () => {
+  // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't error when accessing it.
+  const animStub = window.cancelAnimationFrame;
+  beforeEach(() => {
+    window.cancelAnimationFrame = () => {};
+  });
+
+  afterEach(() => {
+    window.cancelAnimationFrame = animStub;
+  });
+
   describe('properties', () => {
     describe('by default', () =>
       it('should render a content', () =>
@@ -59,6 +71,21 @@ describe('ak-field-base', () => {
       );
     });
 
+    describe('isDisabled prop = true AND isInvalid prop = true', () => {
+      it('should not render the warning icon', () =>
+        expect(shallow(<FieldBase {...defaultProps} isDisabled isInvalid />)
+          .find(WarningIcon).length).to.equal(0)
+      );
+    });
+
+    describe('invalidMessage prop', () => {
+      it('should be reflected to the inline dialog content', () => {
+        const stringContent = 'invalid msg content';
+        expect(shallow(<FieldBase {...defaultProps} invalidMessage={stringContent} />)
+          .find(InlineDialog).props().content).to.equal(stringContent);
+      });
+    });
+
     describe('isFocused prop = true AND isInvalid prop = true', () =>
       it('should render with the isFocused styles and not the isInvalid styles', () => {
         const wrapper = shallow(<FieldBase {...defaultProps} isFocused isInvalid />);
@@ -71,6 +98,18 @@ describe('ak-field-base', () => {
       it('should render the content with the .isCompact class', () =>
         expect(shallow(<FieldBase {...defaultProps} isCompact />).find(`.${isCompactClass}`).length).to.be.above(0)
       );
+    });
+
+    describe('isDialogOpen prop', () => {
+      it('reflects value to InlineDialog isOpen if invalidMessage prop is provided', () => {
+        const wrapper = shallow(<FieldBase {...defaultProps} isDialogOpen invalidMessage="test" />);
+        expect(wrapper.find(InlineDialog).props().isOpen).to.equal(true);
+      });
+
+      it('reflects value to InlineDialog isOpen if invalidMessage prop is not provided', () => {
+        const wrapper = shallow(<FieldBase {...defaultProps} isDialogOpen />);
+        expect(wrapper.find(InlineDialog).props().isOpen).to.equal(false);
+      });
     });
 
     describe('appearance', () => {
@@ -95,15 +134,15 @@ describe('ak-field-base', () => {
     describe('isLoading', () => {
       it('should render Spinner', () => {
         const wrapper = shallow(<FieldBase {...defaultProps} isLoading />);
-        expect(wrapper.find(Spinner).length).to.equals(1);
+        expect(wrapper.find(Spinner).length).to.equal(1);
         wrapper.setProps({ isLoading: false });
-        expect(wrapper.find(Spinner).length).to.equals(0);
+        expect(wrapper.find(Spinner).length).to.equal(0);
       });
 
       describe('and isInvalid', () =>
         it('should not render Spinner', () => {
           const wrapper = shallow(<FieldBase {...defaultProps} isLoading isInvalid />);
-          expect(wrapper.find(Spinner).length).to.equals(0);
+          expect(wrapper.find(Spinner).length).to.equal(0);
         })
       );
     });
@@ -133,14 +172,14 @@ describe('ak-field-base', () => {
   });
 
   describe('smart component', () => {
-    it('should call onFocus hanlder', () => {
+    it('should call onFocus handler', () => {
       const spy = sinon.spy();
       const wrapper = mount(<FieldBaseSmart onFocus={spy} />);
       wrapper.find(`.${contentClass}`).simulate('focus');
       expect(spy.callCount).to.equal(1);
     });
 
-    it('should call onBlur hanlder', () => {
+    it('should call onBlur handler', () => {
       const spy = sinon.spy();
       const wrapper = mount(<FieldBaseSmart onBlur={spy} />);
       wrapper.find(`.${contentClass}`).simulate('blur');

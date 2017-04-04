@@ -1,15 +1,18 @@
 import styles from 'style!./styles.less';
 import classNames from 'classnames';
-import WarningIcon from '@atlaskit/icon/glyph/warning';
 import React, { PureComponent, PropTypes } from 'react';
 import Spinner from '@atlaskit/spinner';
+import WarningIcon from '@atlaskit/icon/glyph/warning';
+import InlineDialog from '@atlaskit/inline-dialog';
 import appearances, { standard, none, subtle } from './internal/appearances';
 
  /* eslint-disable react/no-unused-prop-types */
 export default class FieldBase extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(Object.keys(appearances)),
+    invalidMessage: PropTypes.node,
     isCompact: PropTypes.bool,
+    isDialogOpen: PropTypes.bool,
     isDisabled: PropTypes.bool,
     isFitContainerWidthEnabled: PropTypes.bool,
     isFocused: PropTypes.bool,
@@ -22,11 +25,16 @@ export default class FieldBase extends PureComponent {
     onBlur: PropTypes.func.isRequired,
     shouldReset: PropTypes.bool,
     children: PropTypes.node,
+    onDialogBlur: PropTypes.func,
+    onDialogClick: PropTypes.func,
+    onDialogFocus: PropTypes.func,
   }
 
   static defaultProps = {
     appearance: standard,
+    invalidMessage: '',
     isCompact: false,
+    isDialogOpen: false,
     isDisabled: false,
     isFitContainerWidthEnabled: false,
     isFocused: false,
@@ -37,6 +45,9 @@ export default class FieldBase extends PureComponent {
     isReadOnly: false,
     isRequired: false,
     shouldReset: false,
+    onDialogBlur: () => {},
+    onDialogClick: () => {},
+    onDialogFocus: () => {},
   }
 
   componentDidUpdate() {
@@ -45,15 +56,13 @@ export default class FieldBase extends PureComponent {
     }
   }
 
-  renderWarningIcon = () => (
-    <div className={styles.warningIconWrapper}>
-      <WarningIcon label="warning" />
-    </div>
-  )
-
-  renderRightGutter = () => {
-    if (this.props.isInvalid) {
-      return this.renderWarningIcon();
+  renderRightGutter() {
+    if (!this.props.isDisabled && this.props.isInvalid) {
+      return (
+        <div className={styles.warningIconWrapper}>
+          <WarningIcon label="warning" />
+        </div>
+      );
     }
 
     return this.props.isLoading ? <Spinner /> : null;
@@ -72,6 +81,10 @@ export default class FieldBase extends PureComponent {
       [styles.invalid]: this.props.isInvalid && !this.props.isFocused,
     });
 
+    const dialogWrapperClasses = classNames(styles.dialogContainer, {
+      [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
+    });
+
     const contentWrapperClasses = classNames(styles.contentWrapper, {
       [styles.fitContainerWidth]: this.props.isFitContainerWidthEnabled,
       [styles.disabled]: this.props.isDisabled,
@@ -79,13 +92,24 @@ export default class FieldBase extends PureComponent {
 
     return (
       <div className={contentWrapperClasses}>
-        <div
-          className={contentClasses}
-          onFocusCapture={this.props.onFocus}
-          onBlurCapture={this.props.onBlur}
-        >
-          {this.props.children}
-          {this.renderRightGutter()}
+        <div className={dialogWrapperClasses}>
+          <InlineDialog
+            content={this.props.invalidMessage}
+            isOpen={this.props.isDialogOpen && !!this.props.invalidMessage}
+            position="right middle"
+            onContentClick={this.props.onDialogClick}
+            onContentFocus={this.props.onDialogFocus}
+            onContentBlur={this.props.onDialogBlur}
+          >
+            <div
+              className={contentClasses}
+              onFocusCapture={this.props.onFocus}
+              onBlurCapture={this.props.onBlur}
+            >
+              {this.props.children}
+              {this.renderRightGutter()}
+            </div>
+          </InlineDialog>
         </div>
       </div>
     );

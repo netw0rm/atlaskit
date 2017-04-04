@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tag-group",
-  "version": "1.0.2",
+  "version": "1.0.7",
   "config": {
     "access": "public"
   },
@@ -21,8 +21,17 @@
     "classnames": "^2.2.5"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Luke B"
+    },
+    {
+      "name": "Nadia M"
+    }
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
+    "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/tag": "^1.0.0",
     "lodash.uniq": "^4.5.0"
   },

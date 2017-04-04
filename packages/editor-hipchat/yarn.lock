@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-akutil-readme@^1.2.0:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/akutil-readme/-/akutil-readme-1.2.2.tgz#1e60b94c573d64def7182b89bc022a65eafef01c"
+"@atlaskit/util-readme@^1.0.0":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-readme/-/util-readme-1.0.5.tgz#28bc17c547839c41e40eaae620242427dd0dc4bb"
   dependencies:
-    akutil-shared-styles "^37.2.0"
+    "@atlaskit/util-shared-styles" "^1.0.0"
     decamelize "^1.2.0"
     react-syntax-highlighter "^3.0.2"
 
-akutil-shared-styles@^37.2.0:
-  version "37.3.3"
-  resolved "https://registry.yarnpkg.com/akutil-shared-styles/-/akutil-shared-styles-37.3.3.tgz#18a47a6ed5c37a554786ecafb59022a1ffc9c8e5"
+"@atlaskit/util-shared-styles@^1.0.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.5.0.tgz#e96501d0ef9fd1f31cc57a9710c25c6f14336ab5"
   dependencies:
     babel-runtime "^6.11.6"
 

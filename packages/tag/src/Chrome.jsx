@@ -2,9 +2,10 @@ import classNames from 'classnames';
 import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
 
-/* eslint-disable react/prefer-stateless-function,jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 export default class Chrome extends PureComponent {
   static propTypes = {
+    isRounded: PropTypes.bool,
     isLink: PropTypes.bool.isRequired,
     markedForRemoval: PropTypes.bool.isRequired,
     isRemovable: PropTypes.bool.isRequired,
@@ -27,6 +28,7 @@ export default class Chrome extends PureComponent {
   render() {
     const chromeClassNames = classNames({
       [styles.chrome]: true,
+      [styles.rounded]: this.props.isRounded,
       [styles.markedForRemoval]: this.props.markedForRemoval,
       [styles.isRemovable]: this.props.isRemovable,
     });

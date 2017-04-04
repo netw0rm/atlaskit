@@ -12,7 +12,6 @@ function silent(fn) {
 ['base', 'stories', 'tests'].forEach((config) => {
   const packageName = `eslint-config-${config}`;
   silent(() => pushd(`packages/${packageName}`));
-  exec('yarn unlink 1> /dev/null');
   exec('yarn link 1> /dev/null');
   silent(() => popd());
   exec(`yarn link @atlaskit/${packageName} 1> /dev/null`);

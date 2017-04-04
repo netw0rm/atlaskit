@@ -2,31 +2,89 @@
 # yarn lockfile v1
 
 
-"@atlaskit/avatar@^1.0.0":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@atlaskit/avatar/-/avatar-1.0.1.tgz#6fcd362c50eeec486ae9907adde4b568b161f942"
+"@atlaskit/button@^1.0.0":
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-1.0.15.tgz#450614abe0ff45c737d543969044ed5ca712b26a"
   dependencies:
     "@atlaskit/util-shared-styles" "^1.0.0"
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
 
-"@atlaskit/blanket@^1.0.0":
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/@atlaskit/blanket/-/blanket-1.2.4.tgz#fe019157730d2310664f908c3113d3d606b8af4c"
+"@atlaskit/droplist-trigger@^1.0.0":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@atlaskit/droplist-trigger/-/droplist-trigger-1.1.4.tgz#818534119989dbecae7dc23d5c1029072058355e"
   dependencies:
     "@atlaskit/util-shared-styles" "^1.0.0"
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
+    keycode "^2.1.7"
 
-"@atlaskit/lozenge@^1.0.2":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@atlaskit/lozenge/-/lozenge-1.0.11.tgz#8e24b07e2af58598c887884cbcc8832213acc21d"
+"@atlaskit/droplist@^1.3.11":
+  version "1.3.11"
+  resolved "https://registry.yarnpkg.com/@atlaskit/droplist/-/droplist-1.3.11.tgz#81228a5441e2bf94d79afc72110bd8300fec393a"
   dependencies:
+    "@atlaskit/droplist-trigger" "^1.0.0"
+    "@atlaskit/layer" "^1.0.0"
     "@atlaskit/util-shared-styles" "^1.0.0"
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
 
-"@atlaskit/media-core@^1.0.0":
+"@atlaskit/emoji@^11.2.0":
+  version "11.2.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/emoji/-/emoji-11.2.3.tgz#03490ce5c31e77a3e03ce4bb1da2601caf9ef1f4"
+  dependencies:
+    "@atlaskit/button" "^1.0.0"
+    "@atlaskit/field-base" "^2.0.4"
+    "@atlaskit/icon" "^2.3.3"
+    "@atlaskit/spinner" "^1.0.2"
+    "@atlaskit/util-common" "^1.0.0"
+    "@atlaskit/util-shared-styles" "^1.0.2"
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+    es6-promise "^4.0.5"
+    js-search "1.3.5"
+    react-addons-shallow-compare "^15.4.1"
+    react-virtualized "^8.7.1"
+    tslib "^1.2.0"
+    typestyle "^0.21.4"
+    url-search-params "^0.6.1"
+    whatwg-fetch "^1.0.0"
+
+"@atlaskit/field-base@^2.0.4":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/field-base/-/field-base-2.1.6.tgz#79917da913eaf66fc5b6cab225caa813bde0cf09"
+  dependencies:
+    "@atlaskit/icon" "^1.0.0"
+    "@atlaskit/spinner" "^1.0.1"
+    "@atlaskit/util-shared-styles" "^1.0.1"
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+
+"@atlaskit/icon@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-1.0.0.tgz#267a41e4d254afbf4d2cff8acd85d4e0218fb18a"
+  dependencies:
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+    create-error "^0.3.1"
+
+"@atlaskit/icon@^2.3.3", "@atlaskit/icon@^2.5.6":
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-2.5.6.tgz#6743bf214973cdfe62ec5996a956c465551198a0"
+  dependencies:
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+    create-error "^0.3.1"
+
+"@atlaskit/layer@^1.0.0":
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/@atlaskit/layer/-/layer-1.1.9.tgz#d2ea4ff2ec99175dcaabb383a820c604d5e9aa0f"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^1.0.0"
+    babel-runtime "^6.11.6"
+    popper.js "^1.0.1"
+
+"@atlaskit/media-core@^1.2.0":
   version "1.99.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/media-core/-/media-core-1.99.1.tgz#053add5df47fca079debc1c938951a405303b541"
   dependencies:
@@ -34,33 +92,7 @@
     lru-fast "^0.2.2"
     tslib "^1.2.0"
 
-"@atlaskit/mention@^1.3.4":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/mention/-/mention-1.4.0.tgz#5184525a27e50d2e455c3a8155501bca220418c5"
-  dependencies:
-    uid "^0.0.2"
-    "@atlaskit/avatar" "^1.0.0"
-    "@atlaskit/lozenge" "^1.0.2"
-    "@atlaskit/util-common" "^1.0.0"
-    "@atlaskit/util-shared-styles" "^1.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-    es6-promise "^4.0.5"
-    tslib "^1.2.0"
-    typestyle "^0.21.4"
-    url-search-params "^0.6.1"
-    whatwg-fetch "^1.0.0"
-
-"@atlaskit/modal-dialog@^1.2.3":
-  version "1.2.12"
-  resolved "https://registry.yarnpkg.com/@atlaskit/modal-dialog/-/modal-dialog-1.2.12.tgz#0600075f90a6aa86e1599dcf7299315d9eabe961"
-  dependencies:
-    "@atlaskit/blanket" "^1.0.0"
-    "@atlaskit/util-shared-styles" "^1.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-
-"@atlaskit/spinner@^1.0.1":
+"@atlaskit/spinner@^1.0.1", "@atlaskit/spinner@^1.0.2":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-1.0.5.tgz#1e50e11efb0cc35ee42135b01b06d7d8fe730dea"
   dependencies:
@@ -75,155 +107,18 @@
     create-error "^0.3.1"
     keycode "^2.1.2"
 
-"@atlaskit/util-shared-styles@^1.0.0", "@atlaskit/util-shared-styles@^1.0.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.2.1.tgz#0813620fbe0f0352157d945b978853a46e3b0dc9"
+"@atlaskit/util-shared-styles@^1.0.0", "@atlaskit/util-shared-styles@^1.0.1", "@atlaskit/util-shared-styles@^1.0.2":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.5.0.tgz#e96501d0ef9fd1f31cc57a9710c25c6f14336ab5"
   dependencies:
     babel-runtime "^6.11.6"
 
-ajv@^4.7.2:
+ajv@^4.11.3:
   version "4.11.5"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-4.11.5.tgz#b6ee74657b993a01dce44b7944d56f485828d5bd"
   dependencies:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
-
-ak-button-group@^3.0.2:
-  version "3.0.11"
-  resolved "https://registry.yarnpkg.com/ak-button-group/-/ak-button-group-3.0.11.tgz#3bb7c54fbcf8f9bbb6a834ad9b4549bc446a4e08"
-  dependencies:
-    akutil-shared-styles "^37.0.0"
-
-ak-button@^5.0.0, ak-button@^5.1.0, ak-button@^5.1.1:
-  version "5.4.3"
-  resolved "https://registry.yarnpkg.com/ak-button/-/ak-button-5.4.3.tgz#243d4d87647ac8d0403f59967f0523f44a2bb82a"
-  dependencies:
-    akutil-shared-styles "^37.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-
-ak-dropdown-menu@^2.1.0:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/ak-dropdown-menu/-/ak-dropdown-menu-2.3.1.tgz#d5ebe27fbae16fa969555b04627d0be4eb89ee46"
-  dependencies:
-    uid "0.0.2"
-    ak-button "^5.1.1"
-    ak-droplist "^4.0.0"
-    ak-droplist-group "^2.0.2"
-    ak-droplist-item "^4.0.3"
-    ak-icon "^12.2.0"
-    ak-layer "^62.0.2"
-    akutil-shared-styles "^37.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-    keycode "^2.1.2"
-
-ak-droplist-group@^2.0.2, ak-droplist-group@^2.1.0:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/ak-droplist-group/-/ak-droplist-group-2.2.1.tgz#e9735e65ad64276f979f417549f152fdf1ec307a"
-  dependencies:
-    akutil-shared-styles "^37.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-
-ak-droplist-item@^4.0.0, ak-droplist-item@^4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/ak-droplist-item/-/ak-droplist-item-4.0.3.tgz#731ddcbc0a6974f39230f5cbf45391a409594cf2"
-  dependencies:
-    ak-icon "^12.1.3"
-    akutil-shared-styles "^37.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-
-ak-droplist-trigger@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/ak-droplist-trigger/-/ak-droplist-trigger-2.0.1.tgz#6f24f94afdabe3dd606dbb61fbfe39d11c9d3d1d"
-  dependencies:
-    akutil-shared-styles "^37.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-    keycode "^2.1.7"
-
-ak-droplist@^4.0.0, ak-droplist@^4.1.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/ak-droplist/-/ak-droplist-4.3.0.tgz#27fde38e5a8f2c374caf0add7df0114fd4d758f0"
-  dependencies:
-    ak-droplist-trigger "^2.0.0"
-    ak-layer "^62.0.2"
-    akutil-shared-styles "^37.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-
-ak-editor-shared-styles@^3.2.0:
-  version "3.2.6"
-  resolved "https://registry.yarnpkg.com/ak-editor-shared-styles/-/ak-editor-shared-styles-3.2.6.tgz#927c7f165e947fa6b4c68d206c969e59afffeb1c"
-  dependencies:
-    akutil-shared-styles "^37.3.0"
-
-ak-emoji@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/ak-emoji/-/ak-emoji-0.7.0.tgz#fa064a4819912ea5680a095d838b82acb9e122fa"
-  dependencies:
-    ak-button "^5.1.0"
-    ak-field-base "^6.4.0"
-    ak-icon "^12.1.0"
-    akutil-common "^5.0.0"
-    akutil-shared-styles "^37.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-    es6-promise "^4.0.5"
-    js-search "^1.3.3"
-    react-addons-shallow-compare "^15.4.1"
-    react-virtualized "^8.7.1"
-    url-search-params "^0.6.1"
-    whatwg-fetch "^1.0.0"
-
-ak-field-base@^6.4.0:
-  version "6.4.3"
-  resolved "https://registry.yarnpkg.com/ak-field-base/-/ak-field-base-6.4.3.tgz#884e57e27179d031ce805fd6f1dd94c1f162d60c"
-  dependencies:
-    ak-icon "^12.1.2"
-    akutil-shared-styles "^37.0.0"
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-
-ak-icon@^12.1.0, ak-icon@^12.1.2, ak-icon@^12.1.3, ak-icon@^12.2.0:
-  version "12.2.1"
-  resolved "https://registry.yarnpkg.com/ak-icon/-/ak-icon-12.2.1.tgz#181c6cfc4a92a0be76594742afcb41e62cbd1330"
-  dependencies:
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-    create-error "^0.3.1"
-
-ak-icon@^14.0.0:
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/ak-icon/-/ak-icon-14.0.0.tgz#5e0305d6186e8f9a9fbcd655330dab73599667b8"
-  dependencies:
-    babel-runtime "^6.11.6"
-    classnames "^2.2.5"
-    create-error "^0.3.1"
-
-ak-layer@^62.0.2:
-  version "62.2.2"
-  resolved "https://registry.yarnpkg.com/ak-layer/-/ak-layer-62.2.2.tgz#6012fafc7b5d498414fac8e0ff21c4aca2738808"
-  dependencies:
-    akutil-shared-styles "^37.3.2"
-    babel-runtime "^6.11.6"
-    popper.js "^1.0.1"
-
-akutil-common@^5.0.0:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/akutil-common/-/akutil-common-5.0.1.tgz#ef38d86d182fa7a9b28a3bbd2adc33b495f9d0e2"
-  dependencies:
-    babel-runtime "^6.11.6"
-    create-error "^0.3.1"
-    keycode "^2.1.2"
-
-akutil-shared-styles@^37.0.0, akutil-shared-styles@^37.3.0, akutil-shared-styles@^37.3.2:
-  version "37.3.3"
-  resolved "https://registry.yarnpkg.com/akutil-shared-styles/-/akutil-shared-styles-37.3.3.tgz#18a47a6ed5c37a554786ecafb59022a1ffc9c8e5"
-  dependencies:
-    babel-runtime "^6.11.6"
 
 argparse@^1.0.7:
   version "1.0.9"
@@ -297,8 +192,8 @@ es6-promise@^4.0.5:
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.1.0.tgz#dda03ca8f9f89bc597e689842929de7ba8cebdf0"
 
 fbjs@^0.8.4:
-  version "0.8.11"
-  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.11.tgz#340b590b8a2278a01ef7467c07a16da9b753db24"
+  version "0.8.12"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.12.tgz#10b5d92f76d45575fd63a217d4ea02bea2f8ed04"
   dependencies:
     core-js "^1.0.0"
     isomorphic-fetch "^2.1.1"
@@ -347,9 +242,9 @@ isomorphic-fetch@^2.1.1:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
 
-js-search@^1.3.3:
-  version "1.3.7"
-  resolved "https://registry.yarnpkg.com/js-search/-/js-search-1.3.7.tgz#296116ed37fb39cb237d427f0dbd36cd8c773e10"
+js-search@1.3.5:
+  version "1.3.5"
+  resolved "https://registry.yarnpkg.com/js-search/-/js-search-1.3.5.tgz#b489c05aabc4b22cdb75484fe75ac49fa94feff2"
 
 js-tokens@^3.0.0:
   version "3.0.1"
@@ -437,8 +332,8 @@ promise@^7.1.1:
     subscription "^3.0.0"
 
 react-addons-shallow-compare@^15.4.1:
-  version "15.4.2"
-  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.4.2.tgz#027ffd9720e3a1e0b328dcd8fc62e214a0d174a5"
+  version "15.5.0"
+  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.5.0.tgz#4d95c68a5537ccb75f395169b64db1745617fab5"
   dependencies:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
@@ -506,10 +401,6 @@ ua-parser-js@^0.7.9:
 uc.micro@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/uc.micro/-/uc.micro-1.0.3.tgz#7ed50d5e0f9a9fb0a573379259f2a77458d50192"
-
-uid@0.0.2, uid@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/uid/-/uid-0.0.2.tgz#5e4a5d4b78138b4f70f89fd3c76fc59aa9d2f103"
 
 url-search-params@^0.6.1:
   version "0.6.1"

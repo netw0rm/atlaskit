@@ -2,6 +2,20 @@
 # yarn lockfile v1
 
 
+"@atlaskit/util-readme@^1.0.0":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-readme/-/util-readme-1.0.5.tgz#28bc17c547839c41e40eaae620242427dd0dc4bb"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^1.0.0"
+    decamelize "^1.2.0"
+    react-syntax-highlighter "^3.0.2"
+
+"@atlaskit/util-shared-styles@^1.0.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.5.0.tgz#e96501d0ef9fd1f31cc57a9710c25c6f14336ab5"
+  dependencies:
+    babel-runtime "^6.11.6"
+
 ak-layer@^60.0.0:
   version "60.0.3"
   resolved "https://registry.yarnpkg.com/ak-layer/-/ak-layer-60.0.3.tgz#741ba798b92931c8aa077b47c7790f3f68a440a2"
@@ -52,7 +66,7 @@ asap@~2.0.3:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.5.tgz#522765b50c3510490e52d7dcfe085ef9ba96958f"
 
-babel-runtime@^6.11.6:
+babel-runtime@^6.11.6, babel-runtime@^6.18.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
   dependencies:
@@ -108,6 +122,10 @@ debounce@^1.0.0:
   dependencies:
     date-now "1.0.1"
 
+decamelize@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
+
 define-properties@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/define-properties/-/define-properties-1.1.2.tgz#83a73f2fea569898fb737193c8f873caf6d45c94"
@@ -147,8 +165,8 @@ es-to-primitive@^1.1.1:
     is-symbol "^1.0.1"
 
 fbjs@^0.8.1, fbjs@^0.8.4:
-  version "0.8.11"
-  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.11.tgz#340b590b8a2278a01ef7467c07a16da9b753db24"
+  version "0.8.12"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.12.tgz#10b5d92f76d45575fd63a217d4ea02bea2f8ed04"
   dependencies:
     core-js "^1.0.0"
     isomorphic-fetch "^2.1.1"
@@ -181,6 +199,14 @@ has@^1.0.1:
 hex-rgb@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/hex-rgb/-/hex-rgb-1.0.0.tgz#532275697cb9823e052429b184c6781d46cfdf49"
+
+highlight.js@~9.8.0:
+  version "9.8.0"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.8.0.tgz#38eeef40cd45eaddbec8c9e5238fb7a783a3b685"
+
+highlight.js@~9.9.0:
+  version "9.9.0"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.9.0.tgz#b9995dcfdc2773e307a34f0460d92b9a474782c0"
 
 iconv-lite@~0.4.13:
   version "0.4.15"
@@ -267,6 +293,12 @@ lower-case@^1.1.1:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/lower-case/-/lower-case-1.1.4.tgz#9a2cabd1b9e8e0ae993a4bf7d5875c39c42e8eac"
 
+lowlight@^1.5.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/lowlight/-/lowlight-1.6.0.tgz#92f61e31e09ae9e971e70cabdd9e8f219f025232"
+  dependencies:
+    highlight.js "~9.9.0"
+
 no-case@^2.2.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/no-case/-/no-case-2.3.1.tgz#7aeba1c73a52184265554b7dc03baf720df80081"
@@ -321,6 +353,14 @@ react-dom@^15.3.1:
     fbjs "^0.8.1"
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
+
+react-syntax-highlighter@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/react-syntax-highlighter/-/react-syntax-highlighter-3.0.2.tgz#77c556385bbf71dc2e974ba96bfdd0edef5c3192"
+  dependencies:
+    babel-runtime "^6.18.0"
+    highlight.js "~9.8.0"
+    lowlight "^1.5.0"
 
 react@^15.3.1:
   version "15.4.2"

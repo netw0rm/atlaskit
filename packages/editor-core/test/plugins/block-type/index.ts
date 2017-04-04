@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { browser } from '../../../src';
-import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, hr, li, img, makeEditor, mention, p, ul } from '../../../test-helper';
+import { blockquote, br, chaiPlugin, code_block, doc, h1, h2, h3, h4, h5, hr, li, img, makeEditor, mention, p, ul } from '../../../src/test-helper';
 
 import BlockTypePlugin from '../../../src/plugins/block-type';
 
@@ -87,6 +87,13 @@ describe('block-type', () => {
       expect(pm.doc).to.deep.equal(doc(code_block()('text')));
     });
 
+    it('should merge paragraphs while creating code blocks code block', () => {
+      const { pm, plugin } = editor(doc(p('text'), p('text'), p('text')));
+      pm.setTextSelection(1, 14);
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('text\ntext\ntext')));
+    });
+
     it('should be able to change to code block with multilines', () => {
       const { pm, plugin } = editor(
         doc(p(
@@ -99,6 +106,18 @@ describe('block-type', () => {
 
       plugin.changeBlockType('codeblock');
       expect(pm.doc).to.deep.equal(doc(code_block()('line1 \nline2 \n')));
+    });
+
+    it('should be able to change to code block with image and multiple blocks', () => {
+      const { pm, plugin } = editor(
+        doc(p(
+          'line1',
+          img({ src: 'url', alt: 'text', title: 'text' })
+          ), p('line2')));
+
+      pm.setTextSelection(1, 10);
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('line1\nline2')));
     });
 
     it('should be able to preserve mention text', () => {
@@ -115,6 +134,18 @@ describe('block-type', () => {
 
       plugin.changeBlockType('codeblock');
       expect(pm.doc).to.deep.equal(doc(code_block()('hello @bar1 & @bar2 & @bar3')));
+    });
+
+    it('should be able to preserve mention text when converting multiple blocks to code block', () => {
+      const { pm, plugin } = editor(
+        doc(p(
+          'hello ',
+          mention({ id: 'foo1', displayName: '@bar1' })
+        ), p('text')));
+
+      pm.setTextSelection(1, 14);
+      plugin.changeBlockType('codeblock');
+      expect(pm.doc).to.deep.equal(doc(code_block()('hello @bar1\ntext')));
     });
 
     it('should collaps nested block and convert to code block', () => {

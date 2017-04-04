@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import { CodeBlockNode, CodeBlockNodeType, DocNodeType, Schema, Text } from '../../../src';
 import { SUPPORTED_LANGUAGES } from '../../../src/ui/LanguagePicker/languageList';
-import { fromHTML, toHTML } from '../../../test-helper';
+import { fromHTML, toHTML } from '../../../src/test-helper';
 
-describe('ak-editor-core/schema code_block node', () => {
+describe('@atlaskit/editor-core/schema code_block node', () => {
   it('throws an error if it is not named "code_block"', () => {
     expect(() => {
       new Schema({

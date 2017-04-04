@@ -127,7 +127,7 @@ cz-customizable@^4.0.0:
     winston "2.1.0"
     word-wrap "1.1.0"
 
-cz-lerna-changelog@^1.2.0:
+cz-lerna-changelog@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/cz-lerna-changelog/-/cz-lerna-changelog-1.2.1.tgz#2e42605555f55b2b0bc9ddf62c4d1c5f91b36858"
   dependencies:

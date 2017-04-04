@@ -12,8 +12,12 @@ export const FilmStripViewWrapper = styled.div`
   padding: 3px 0;
   border-radius: 3px;
   
-  &:hover .arrow{
+  &:hover .arrow {
     opacity: 1;
+  }
+
+  .ellipsed-text {
+    white-space: initial;
   }
 `;
 

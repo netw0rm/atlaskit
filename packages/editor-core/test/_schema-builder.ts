@@ -9,7 +9,7 @@ import {
   ImageNodeType,
   LinkMarkType,
   ListItemNodeType,
-  MonoMarkType,
+  CodeMarkType,
   OrderedListNodeType,
   PanelNodeType,
   ParagraphNodeType,
@@ -20,7 +20,7 @@ import {
   Text,
   UnderlineMarkType
 } from '../src';
-import { markFactory, nodeFactory } from '../test-helper';
+import { markFactory, nodeFactory } from '../src/test-helper';
 
 export const schema = new Schema({
   nodes: {
@@ -33,7 +33,7 @@ export const schema = new Schema({
     image: { type: ImageNodeType },
     bullet_list: { type: BulletListNodeType, content: 'list_item+', group: 'block' },
     heading: { type: HeadingNodeType, content: 'text<_>*', group: 'block' },
-    list_item: { type: ListItemNodeType, content: 'paragraph+' },
+    list_item: { type: ListItemNodeType, content: 'paragraph block*' },
     ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
     blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
     panel: { type: PanelNodeType, content: 'block+', group: 'block' },
@@ -45,7 +45,7 @@ export const schema = new Schema({
   marks: {
     link: LinkMarkType,
     em: EmMarkType,
-    mono: MonoMarkType,
+    code: CodeMarkType,
     strike: StrikeMarkType,
     strong: StrongMarkType,
     subsup: SubSupMarkType,
@@ -77,7 +77,7 @@ export const horizontal_rule = nodeFactory(schema.nodes.horizontal_rule);
 
 export const plain = nodeFactory(schema.nodes.plain);
 export const em = markFactory(schema.marks.em);
-export const mono = markFactory(schema.marks.mono);
+export const code = markFactory(schema.marks.code);
 export const strike = markFactory(schema.marks.strike);
 export const strong = markFactory(schema.marks.strong);
 export const sub = markFactory(schema.marks.subsup, { type: 'sub' });

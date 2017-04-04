@@ -1,15 +1,21 @@
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/startWith';
 import { MediaItemProvider, MediaCollectionProvider, MediaUrlPreviewProvider } from '../providers/';
-import { JwtTokenProvider, MediaItemType, MediaItem } from '../';
+import { JwtTokenProvider, MediaItemType, MediaItem, UrlPreview } from '../';
 import { MediaDataUriService, DataUriService } from '../services/dataUriService';
+import { MediaLinkService } from '../services/linkService';
 import { LRUCache } from 'lru-fast';
 
 const DEFAULT_CACHE_SIZE = 200;
 
 export interface Context {
-  getMediaItemProvider(id: string, mediaItemType: MediaItemType, collectionName?: string): MediaItemProvider;
+  getMediaItemProvider(id: string, mediaItemType: MediaItemType, collectionName?: string, mediaItem?: MediaItem): MediaItemProvider;
   getMediaCollectionProvider(collectionName: string, pageSize: number): MediaCollectionProvider;
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider;
   getDataUriService(collectionName?: string): DataUriService;
+  addLinkItem(url: string, collectionName: string, metadata?: UrlPreview): Promise<string>;
+  readonly config: ContextConfig;
 }
 
 export interface ContextConfig {
@@ -31,12 +37,33 @@ class ContextImpl implements Context {
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly lruCache: LRUCache<string, MediaItem>;
 
-  constructor(private readonly config: ContextConfig) {
+  constructor(readonly config: ContextConfig) {
     this.lruCache = new LRUCache<string, MediaItem>(config.cacheSize || DEFAULT_CACHE_SIZE);
   }
 
-  getMediaItemProvider(id: string, mediaItemType: MediaItemType, collectionName?: string): MediaItemProvider {
-    return MediaItemProvider.fromPool(this.itemPool, this.apiConfig, this.lruCache, mediaItemType, id, this.config.clientId, collectionName);
+  getMediaItemProvider(id: string, mediaItemType: MediaItemType, collectionName?: string, mediaItem?: MediaItem): MediaItemProvider {
+    const isMediaItemLink = mediaItem && mediaItem.type === 'link';
+    const isMediaItemFileAndNotPending = mediaItem && mediaItem.type === 'file' && mediaItem.details.processingStatus !== 'pending';
+
+    if (isMediaItemLink || isMediaItemFileAndNotPending) {
+      return {
+        observable() {
+          return Observable.of(mediaItem);
+        }
+      };
+    }
+
+    const provider = MediaItemProvider.fromPool(this.itemPool, this.apiConfig, this.lruCache, mediaItemType, id, this.config.clientId, collectionName);
+
+    if (mediaItem) {
+      return {
+        observable() {
+          return provider.observable().startWith(mediaItem);
+        }
+      };
+    }
+
+    return provider;
   }
 
   getMediaCollectionProvider(collectionName: string, pageSize: number): MediaCollectionProvider {
@@ -49,6 +76,11 @@ class ContextImpl implements Context {
 
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider {
     return MediaUrlPreviewProvider.fromPool(this.urlPreviewPool, this.apiConfig, url, this.config.clientId);
+  }
+
+  addLinkItem(url: string, collectionName: string, metadata?: UrlPreview): Promise<string> {
+    const linkService = new MediaLinkService(this.apiConfig);
+    return linkService.addLinkItem(url, this.config.clientId, collectionName, metadata);
   }
 
   private get apiConfig() {

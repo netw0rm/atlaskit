@@ -10,8 +10,11 @@ describe('<Drawer />', () => {
     it('isOpen prop defaults to `false`', () => {
       expect(mount(<Drawer />).props().isOpen).to.equal(false);
     });
-    it('isWide prop defaults to `false`', () => {
-      expect(mount(<Drawer />).props().isWide).to.equal(false);
+    it('width defaults to `narrow`', () => {
+      expect(mount(<Drawer />).props().width).to.equal('narrow');
+    });
+    it('width="full" does not render the <ContainerHeader />', () => {
+      expect(mount(<Drawer width="full" />).find('ContainerHeader').length).to.equal(0);
     });
     it('primaryIcon is rendered', () => {
       const icon = <img alt="foo" />;
@@ -55,6 +58,9 @@ describe('<Drawer />', () => {
     });
     it('a blanket', () => {
       expect(mount(<Drawer />).find('Blanket').length).to.equal(1);
+    });
+    it('a <ContainerHeader />', () => {
+      expect(mount(<Drawer />).find('ContainerHeader').length).to.equal(1);
     });
   });
   describe('blanket', () => {

@@ -1,17 +1,20 @@
-import { EmojiTypeAhead as AkEmojiTypeAhead } from 'ak-emoji';
+import { EmojiTypeAhead as AkEmojiTypeAhead } from '@atlaskit/emoji';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { EmojiProvider } from '@atlaskit/emoji';
 import { EmojisPluginState } from '../../plugins/emojis';
+import { akEditorFloatingPanelZIndex } from '../../styles';
 
 export interface Props {
   pluginState: EmojisPluginState;
-  emojiService: any; // EmojiResource;
+  emojiProvider: Promise<EmojiProvider>;
   reversePosition?: boolean;
 }
 
 export interface State {
   query?: string;
   anchorElement?: HTMLElement;
+  queryActive?: boolean;
 }
 
 export default class EmojiTypeAhead extends PureComponent<Props, State> {
@@ -29,18 +32,18 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   }
 
   private handlePluginStateChange = (state: EmojisPluginState) => {
-    const { anchorElement, query } = state;
-    this.setState({ anchorElement, query });
+    const { anchorElement, query, queryActive } = state;
+    this.setState({ anchorElement, query, queryActive });
   }
 
   render() {
-    const { anchorElement, query } = this.state;
+    const { anchorElement, query, queryActive } = this.state;
 
     let style: any = {
       display: 'none'
     };
 
-    if (anchorElement && query) {
+    if (anchorElement && queryActive) {
       const rect = anchorElement.getBoundingClientRect();
       const parentRect = anchorElement.offsetParent.getBoundingClientRect();
       style = {
@@ -49,13 +52,13 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         left: (rect.left - parentRect.left),
         top: !this.props.reversePosition ? (rect.top - parentRect.top) + rect.height : null,
         bottom: this.props.reversePosition ? (window.innerHeight - parentRect.bottom) + 20 : null,
-        zIndex: 1
+        zIndex: akEditorFloatingPanelZIndex
       };
     }
 
     const typeAhead = (
       <AkEmojiTypeAhead
-        emojiService={this.props.emojiService}
+        emojiProvider={this.props.emojiProvider}
         onSelection={this.handleSelectedEmoji}
         query={query}
         ref="typeAhead"
@@ -69,8 +72,8 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     );
   }
 
-  private handleSelectedEmoji = (emoji: any) => {
-    this.props.pluginState.insertEmoji(emoji);
+  private handleSelectedEmoji = (emojiId: any, emoji: any) => {
+    this.props.pluginState.insertEmoji(emojiId, emoji);
   }
 
   private handleSelectPrevious = () => {

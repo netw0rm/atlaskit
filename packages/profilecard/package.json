@@ -1,10 +1,10 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "config": {
     "access": "public"
   },
-  "description": "profilecard component",
+  "description": "A React component to display a card with user information.",
   "main": "umd/@atlaskit/profilecard.js",
   "scripts": {
     "prepublish": "../../node_modules/.bin/nwb build",
@@ -16,25 +16,30 @@
     "umd"
   ],
   "dependencies": {
-    "@atlaskit/avatar": "^1.0.0",
-    "@atlaskit/spinner": "^1.0.0",
+    "@atlaskit/avatar": "^2.1.0",
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/icon": "^1.0.0",
+    "@atlaskit/icon": "^2.5.6",
+    "@atlaskit/spinner": "^1.0.0",
     "@atlaskit/util-common": "^1.0.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "es6-promise": "^4.0.5",
+    "lru-fast": "^0.2.2",
     "whatwg-fetch": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2"
   },
   "devDependencies": {
+    "@atlaskit/profilecard": "*",
     "@atlaskit/util-common-test": "*",
+    "@atlaskit/util-readme": "^1.0.3",
+    "fetch-mock": "^5.9.4",
     "loader-utils": "^0.2.16",
-    "uid": "^0.0.2",
-    "lodash.sample": "^4.2.1"
+    "lodash.sample": "^4.2.1",
+    "sinon": "^2.1.0",
+    "uid": "^0.0.2"
   },
   "repository": {
     "type": "git",
@@ -46,5 +51,10 @@
     "fabric"
   ],
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Thorsten B"
+    }
+  ],
   "license": "Apache-2.0"
 }

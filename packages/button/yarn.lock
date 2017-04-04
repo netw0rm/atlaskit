@@ -10,7 +10,21 @@
     classnames "^2.2.5"
     create-error "^0.3.1"
 
-babel-runtime@^6.11.6:
+"@atlaskit/util-readme@^1.0.0":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-readme/-/util-readme-1.0.5.tgz#28bc17c547839c41e40eaae620242427dd0dc4bb"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^1.0.0"
+    decamelize "^1.2.0"
+    react-syntax-highlighter "^3.0.2"
+
+"@atlaskit/util-shared-styles@^1.0.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.5.0.tgz#e96501d0ef9fd1f31cc57a9710c25c6f14336ab5"
+  dependencies:
+    babel-runtime "^6.11.6"
+
+babel-runtime@^6.11.6, babel-runtime@^6.18.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.23.0.tgz#0a9489f144de70efb3ce4300accdb329e2fc543b"
   dependencies:
@@ -28,6 +42,32 @@ core-js@^2.4.0:
 create-error@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/create-error/-/create-error-0.3.1.tgz#69810245a629e654432bf04377360003a5351a23"
+
+decamelize@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
+
+highlight.js@~9.8.0:
+  version "9.8.0"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.8.0.tgz#38eeef40cd45eaddbec8c9e5238fb7a783a3b685"
+
+highlight.js@~9.9.0:
+  version "9.9.0"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.9.0.tgz#b9995dcfdc2773e307a34f0460d92b9a474782c0"
+
+lowlight@^1.5.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/lowlight/-/lowlight-1.6.0.tgz#92f61e31e09ae9e971e70cabdd9e8f219f025232"
+  dependencies:
+    highlight.js "~9.9.0"
+
+react-syntax-highlighter@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/react-syntax-highlighter/-/react-syntax-highlighter-3.0.2.tgz#77c556385bbf71dc2e974ba96bfdd0edef5c3192"
+  dependencies:
+    babel-runtime "^6.18.0"
+    highlight.js "~9.8.0"
+    lowlight "^1.5.0"
 
 regenerator-runtime@^0.10.0:
   version "0.10.3"

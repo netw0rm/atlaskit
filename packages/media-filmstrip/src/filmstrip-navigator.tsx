@@ -10,10 +10,11 @@ export interface FilmstripNavigatorProps {
   onDragEnter?: (event: DragEvent) => void;
   onDragOver?: (event: DragEvent) => void;
   width?: number;
+  children?: any;
 }
 
-function onDragEvent(dragEventHandler?: (event: DragEvent) => void): DragEventHandler<HTMLUListElement> {
-  return (event: ReactDragEvent<HTMLUListElement>) => {
+function onDragEvent(dragEventHandler?: (event: DragEvent) => void): DragEventHandler<HTMLDivElement> {
+  return (event: ReactDragEvent<HTMLDivElement>) => {
     if (!dragEventHandler) {
       return;
     }
@@ -53,6 +54,7 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
   private numOfCards: number;
   private cardWidth: number;
   private listElement: HTMLElement;
+  private unmounted: boolean;
 
   constructor(props) {
     super(props);
@@ -60,16 +62,18 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
       showLeft: false,
       showRight: false,
       position: 0,
-      showTransition: true,
+      showTransition: false,
       transitionDuration: 0
     };
   }
 
   componentDidMount() {
+    this.unmounted = false;
     window.addEventListener('resize', this.onWindowResize);
   }
 
   componentWillUnmount() {
+    this.unmounted = true;
     window.removeEventListener('resize', this.onWindowResize);
   }
 
@@ -90,11 +94,17 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
                        </ShadowRight>;
     const transitionProperty = this.state.showTransition ? 'transform' : 'none';
     const transitionDuration = `${this.state.transitionDuration}s`;
+    const items = props.children ? props.children.map((item, k) => (
+      <li key={k}>
+        {item}
+      </li>
+    )) : null;
+
     return <FilmStripViewWrapper style={{width}} onWheel={this.onScroll} onDrop={onDragEvent(props.onDrop)} onDragEnter={onDragEvent(props.onDragEnter)} onDragOver={onDragEvent(props.onDragOver)}>
              {this.state.showLeft ? leftArrow : undefined}
              <FilmStripListWrapper>
                <FilmStripList style={{transform, transitionProperty, transitionDuration}} innerRef={this.getDimensions}>
-                 {props.children}
+                 {items}
                </FilmStripList>
              </FilmStripListWrapper>
              {this.state.showRight ? rightArrow : undefined}
@@ -112,10 +122,14 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
 
   private onWindowResize = (event) => {
     const parent = ReactDOM.findDOMNode(this).parentElement;
-    if (!parent) { return; }
+    if (!parent || !this.allowNavigation) { return; }
 
     this.wrapperWidth = parent.getBoundingClientRect().width;
     this.setNewPosition(this.state.position, this.state.showTransition);
+  }
+
+  private get allowNavigation() {
+    return this.numOfCards > 1;
   }
 
   private getDimensions = (el?: HTMLElement) => {
@@ -130,6 +144,8 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
     this.listWidth = element.getBoundingClientRect().width;
     this.numOfCards = element.children.length;
 
+    if (!this.allowNavigation) { return; }
+
     if (this.numOfCards !== 0) {
       const card = element.firstChild as HTMLElement;
       const totalWidth = card.clientWidth || 0;
@@ -138,14 +154,14 @@ export class FilmStripNavigator extends Component<FilmstripNavigatorProps, FilmS
       this.cardWidth = 0;
     }
 
-    this.setNewPosition(0, this.state.showTransition);
+    !this.unmounted && this.setNewPosition(0, this.state.showTransition);
   }
 
   private onScroll = (e: WheelEvent<HTMLDivElement>) => {
-    e.preventDefault();
     const isHorizontalScroll = Math.abs(e.deltaX) > Math.abs(e.deltaY);
-    if (!isHorizontalScroll) { return; }
+    if (!this.allowNavigation || !isHorizontalScroll) { return; }
 
+    e.preventDefault();
     const showTransition = false;
     this.updateState({showTransition});
     this.setNewPosition(this.state.position + e.deltaX, showTransition);

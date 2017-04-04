@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-cq",
-  "version": "1.1.2",
+  "version": "1.6.0",
   "config": {
     "access": "public"
   },
@@ -19,18 +19,20 @@
   ],
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Artur B"
+    }
+  ],
   "dependencies": {
-    "@atlaskit/editor-core": "^1.13.2",
-    "ak-editor-shared-styles": "^3.0.0",
-    "akutil-shared-styles": "^37.0.1",
-    "collapse-whitespace": "^1.1.4",
-    "tslib": "^1.2.0"
+    "@atlaskit/editor-core": "^7.6.0",
+    "@atlaskit/util-shared-styles": "^1.2.1",
+    "collapse-whitespace": "https://github.com/superchu/collapse-whitespace/archive/c7c8e03.tar.gz",
+    "tslib": "^1.2.0",
+    "typestyle": "^0.21.4"
   },
   "peerDependencies": {
     "react": "^15.3.2"
-  },
-  "devDependencies": {
-    "akutil-common-test": "*"
   },
   "repository": {
     "type": "git",

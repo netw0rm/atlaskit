@@ -3,25 +3,111 @@ import * as React from 'react';
 
 import { name } from '../package.json';
 import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
+import { EmojiProvider } from '../src/api/EmojiResource';
 
-import { getEmojiService } from './story-data';
+// import { MockEmojiResourceConfig } from '../test/MockEmojiResource';
+import { getEmojiResource, lorem } from './story-data';
+import TriggeredEmojiResource from './TriggeredEmojiResource';
 
-const emojiService = getEmojiService();
+interface SampleEmojiProps {
+  emojiProvider?: Promise<EmojiProvider>;
+}
 
-storiesOf(`${name}/Resourced Emoji`, module)
+// tslint:disable-next-line:variable-name
+const SampleEmojis = (props: SampleEmojiProps) => (
+  <span>
+    <ResourcedEmoji
+      emojiId={{ shortName: ':grimacing:', id: '1f62c' }}
+      emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
+    />
+    <ResourcedEmoji
+      emojiId={{ shortName: ':awthanks:', id: 'atlassian-awthanks' }}
+      emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
+    />
+    <ResourcedEmoji
+      emojiId={{ shortName: ':not-an-emoji:', id: 'not-an-emoji' }}
+      emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
+    />
+  </span>
+);
+
+
+storiesOf(`${name}/ResourcedEmoji`, module)
   .add('resourced emoji', () => (
+    <SampleEmojis />
+  ))
+  .add('skin tones', () => (
+    <span>
+      <ResourcedEmoji
+        emojiId={{ shortName: ':thumbsup:', id: '1f44d' }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+      <ResourcedEmoji
+        emojiId={{ shortName: ':thumbsup::skin-tone-2:', id: '1f44d-1f3fb' }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+      <ResourcedEmoji
+        emojiId={{ shortName: ':thumbsup::skin-tone-3:', id: '1f44d-1f3fc' }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+      <ResourcedEmoji
+        emojiId={{ shortName: ':thumbsup::skin-tone-4:', id: '1f44d-1f3fd' }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+      <ResourcedEmoji
+        emojiId={{ shortName: ':thumbsup::skin-tone-5:', id: '1f44d-1f3fe' }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+      <ResourcedEmoji
+        emojiId={{ shortName: ':thumbsup::skin-tone-6:', id: '1f44d-1f3ff' }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+      <ResourcedEmoji
+        emojiId={{ shortName: ':thumbsup::skin-tone-7:', id: '1f44d-1f3fg', /* invalid - will fallback to text render */ }}
+        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+      />
+    </span>
+  ))
+  .add('Content resourced emoji', () => (
     <div>
-      <ResourcedEmoji
-        id={{id: 'awthanks'}}
-        emojiService={emojiService}
-      />
-      <ResourcedEmoji
-        id={{id: 'not-an-emoji'}}
-        emojiService={emojiService}
-      />
-      <ResourcedEmoji
-        id={{id: 'grimacing'}}
-        emojiService={emojiService}
-      />
+      <h1>Heading 1 <SampleEmojis /></h1>
+      <h2>Heading 2 <SampleEmojis /></h2>
+      <h3>Heading 3 <SampleEmojis /></h3>
+      <h4>Heading 4 <SampleEmojis /></h4>
+      <h5>Heading 5 <SampleEmojis /></h5>
+      <h6>Heading 6 <SampleEmojis /></h6>
+      <p>Paragraph <SampleEmojis /></p>
+      <code>Code <SampleEmojis /></code>
+      <p>{lorem} <SampleEmojis /> {lorem} <SampleEmojis /> {lorem} <SampleEmojis /> {lorem}</p>
     </div>
-  ));
+  ))
+  .add('slow loading emoji', () => {
+    let loadStandardRef;
+    let loadAtlassianRef;
+    const emojiResource: TriggeredEmojiResource = new TriggeredEmojiResource();
+
+    const loadStandard = () => {
+      emojiResource.triggerStandardLoaded();
+      if (loadStandardRef) {
+        loadStandardRef.disabled = 'disabled';
+      }
+    };
+
+    const loadAtlassian = () => {
+      emojiResource.triggerAtlassianLoaded();
+      if (loadAtlassianRef) {
+        loadAtlassianRef.disabled = 'disabled';
+      }
+    };
+
+    return (
+      <div>
+        <SampleEmojis emojiProvider={Promise.resolve(emojiResource)} />
+        <div>
+          <button onClick={loadStandard} ref={(ref) => { loadStandardRef = ref; }}>Load Standard Emojis</button>
+          <button onClick={loadAtlassian} ref={(ref) => { loadAtlassianRef = ref; }}>Load Atlassian Emojis</button>
+        </div>
+      </div>
+    );
+  });
+

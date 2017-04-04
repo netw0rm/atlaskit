@@ -2,7 +2,8 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import * as styles from './styles';
-import { EmojiDescription, ImageRepresentation, SpriteRepresentation, isSpriteRepresentation } from '../../types';
+import { EmojiDescription, ImageRepresentation, SpriteRepresentation } from '../../types';
+import { isSpriteRepresentation } from '../../type-helpers';
 
 export interface Props {
   emoji: EmojiDescription;
@@ -35,7 +36,7 @@ export default class Emoji extends PureComponent<Props, undefined> {
       <div className={classNames(classes)}>
         <span
           className={styles.emojiSprite}
-          title={emoji.shortcut}
+          title={emoji.shortName}
           style={style}
         />
       </div>
@@ -59,7 +60,7 @@ export default class Emoji extends PureComponent<Props, undefined> {
     return (
       <span
         className={classNames(classes)}
-        title={emoji.shortcut}
+        title={emoji.shortName}
         style={style}
       />);
   }

@@ -23,6 +23,8 @@ export default class InlineEdit extends PureComponent {
     onCancel: PropTypes.func.isRequired,
     labelHtmlFor: PropTypes.string,
     shouldConfirmOnEnter: PropTypes.bool,
+    disableEditViewFieldBase: PropTypes.bool,
+    invalidMessage: PropTypes.node,
   }
 
   static defaultProps = {
@@ -32,18 +34,34 @@ export default class InlineEdit extends PureComponent {
     areActionButtonsHidden: false,
     isConfirmOnBlurDisabled: false,
     shouldConfirmOnEnter: false,
+    disableEditViewFieldBase: false,
+    invalidMessage: '',
   }
 
   state = {
     wasFocusReceivedSinceLastBlur: false,
+    wasIconMouseDown: false,
     resetFieldBase: false,
+    shouldResetFieldBase: false,
   }
 
   componentWillReceiveProps(nextProps) {
-    this.shouldResetFieldBase = this.props.isEditing && !nextProps.isEditing;
+    this.setState({ shouldResetFieldBase: this.props.isEditing && !nextProps.isEditing });
+  }
+
+  componentDidUpdate() {
+    // eslint-disable-next-line react/no-did-update-set-state
+    this.setState({
+      shouldResetFieldBase: false,
+    });
   }
 
   onWrapperClick = () => {
+    if (this.state.wasIconMouseDown) {
+      // If we are clicking the icon, we don't want to treat it as a click on the field.
+      this.setState({ wasIconMouseDown: false });
+      return;
+    }
     if (!this.isReadOnly() && !this.props.isEditing) {
       this.props.onEditRequested();
     }
@@ -53,12 +71,19 @@ export default class InlineEdit extends PureComponent {
     if (this.isReadOnly() || !this.props.isEditing || this.props.isConfirmOnBlurDisabled) {
       return;
     }
+
+    if (this.state.wasIconMouseDown) {
+      // If we are clicking the icon then we don't want to confirm on blur.
+      this.setState({ wasIconMouseDown: false });
+      return;
+    }
+
     this.setState({ wasFocusReceivedSinceLastBlur: false });
     setTimeout(this.confirmIfUnfocused, 10);
   }
 
   onWrapperFocus = () => {
-    this.setState({ wasFocusReceivedSinceLastBlur: true });
+    this.setState({ wasIconMouseDown: false, wasFocusReceivedSinceLastBlur: true });
   }
 
   onConfirmClick = (event) => {
@@ -75,6 +100,10 @@ export default class InlineEdit extends PureComponent {
 
     event.preventDefault();
     this.props.onCancel();
+  }
+
+  onDialogClick = (event) => {
+    event.stopPropagation();
   }
 
   getRootClasses = () =>
@@ -98,6 +127,23 @@ export default class InlineEdit extends PureComponent {
   shouldRenderEditIcon = () => !this.isReadOnly() && !this.props.isInvalid;
 
   shouldRenderSpinner = () => this.props.isWaiting && this.props.isEditing;
+
+  wrapWithFieldBase = children => (
+    <FieldBase
+      isInvalid={this.props.isInvalid}
+      isFocused={this.isReadOnly() ? false : undefined}
+      isReadOnly={this.isReadOnly()}
+      isFitContainerWidthEnabled={this.props.isEditing}
+      appearance={this.props.isEditing ? 'standard' : 'subtle'}
+      isDisabled={this.shouldRenderSpinner()}
+      isLoading={this.shouldRenderSpinner()}
+      shouldReset={this.state.shouldResetFieldBase}
+      invalidMessage={this.props.invalidMessage}
+      onDialogClick={this.onDialogClick}
+    >
+      {children}
+    </FieldBase>
+  )
 
   renderActionButtons = () => (
     this.props.isEditing && !this.props.areActionButtonsHidden ?
@@ -123,19 +169,23 @@ export default class InlineEdit extends PureComponent {
   )
 
   renderReadView = () => (
-    <div className={styles.readViewContentWrapper}>
-      {this.props.readView}
-      <button className={styles.editButton} />
-    </div>
+    this.wrapWithFieldBase(
+      <div className={styles.readViewContentWrapper}>
+        {this.props.readView}
+        <button className={styles.editButton} />
+      </div>
+    )
   )
 
-  renderEditView = () => (
-    this.props.shouldConfirmOnEnter ?
-      cloneElement(this.props.editView, {
-        onConfirm: this.props.onConfirm,
-      }) :
-      this.props.editView
-  )
+  renderEditView = () => {
+    const editView = this.props.shouldConfirmOnEnter ?
+          cloneElement(this.props.editView, {
+            onConfirm: this.props.onConfirm,
+          }) :
+          this.props.editView;
+
+    return this.props.disableEditViewFieldBase ? editView : this.wrapWithFieldBase(editView);
+  }
 
   render() {
     return (
@@ -158,18 +208,7 @@ export default class InlineEdit extends PureComponent {
             className={styles.fieldBaseWrapper}
             onClick={this.onWrapperClick}
           >
-            <FieldBase
-              isInvalid={this.props.isInvalid}
-              isFocused={this.isReadOnly() ? false : undefined}
-              isReadOnly={this.isReadOnly()}
-              isFitContainerWidthEnabled={this.props.isEditing}
-              appearance={this.props.isEditing ? 'standard' : 'subtle'}
-              isDisabled={this.shouldRenderSpinner()}
-              isLoading={this.shouldRenderSpinner()}
-              shouldReset={this.shouldResetFieldBase}
-            >
-              {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
-            </FieldBase>
+            {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
           </div>
           {!this.shouldRenderSpinner() ? this.renderActionButtons() : null}
         </div>

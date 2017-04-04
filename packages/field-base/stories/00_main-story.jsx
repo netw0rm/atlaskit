@@ -87,6 +87,39 @@ storiesOf(name, module)
       </BasicFieldBase>
     </div>
   )
+  .add('with invalidMessage prop', () =>
+    <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
+      <BasicFieldBase
+        label="Focus the field to display the warning message"
+        id="fieldbase"
+        isInvalid
+        invalidMessage="This warning dialog should open when the field is focused"
+        defaultIsDialogOpen
+      >
+        <Input
+          isEditing
+          id="fieldbase"
+          value="Normal field"
+        />
+      </BasicFieldBase>
+      <BasicFieldBase
+        label="Focus the field to display the warning message"
+        id="fieldbase"
+        isCompact
+        isInvalid
+        invalidMessage={<span>
+          A message containing a <a href="//atlassian.com">link</a>,
+          a <a href="//design.atlassian.com">second link</a>,
+          and a <a href="//developer.atlassian.com">third link</a>.</span>}
+      >
+        <Input
+          id="fieldbase"
+          isEditing
+          value="Compact field"
+        />
+      </BasicFieldBase>
+    </div>
+  )
   .add('with spinner', () => {
     const input = (
       <Input
@@ -164,7 +197,7 @@ storiesOf(name, module)
         />
       </BasicFieldBase>
       <BasicFieldBase
-        label="Disabled + invalid example"
+        label="Disabled + invalid example (should not show an icon)"
         id="fieldbase"
         isInvalid
         isDisabled

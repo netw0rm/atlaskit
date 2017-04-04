@@ -10,17 +10,33 @@ import HipchatLogoText from '!babel-loader!svg-to-jsx-loader!./logos/hipchat.svg
 import JiraLogoText from '!babel-loader!svg-to-jsx-loader!./logos/jira.svg';
 
 import Logo from './Logo';
+import {
+  atlassianTypeOffset,
+  bitbucketTypeOffset,
+  confluenceTypeOffset,
+  hipchatTypeOffset,
+  jiraTypeOffset,
+} from './internal/typeOffsetRatios';
 
-const AtlassianLogo = props =>
-  (<Logo {...props} logoText={<AtlassianLogoText />} />);
-const BitbucketLogo = props =>
-  (<Logo {...props} logoText={<BitbucketLogoText />} />);
-const ConfluenceLogo = props =>
-  (<Logo {...props} logoText={<ConfluenceLogoText />} />);
-const HipchatLogo = props =>
-  (<Logo {...props} logoText={<HipchatLogoText />} />);
-const JiraLogo = props =>
-  (<Logo {...props} logoText={<JiraLogoText />} />);
+const AtlassianLogo = props => (
+  <Logo {...props} logoText={<AtlassianLogoText />} typeOffsetRatio={atlassianTypeOffset} />
+);
+
+const BitbucketLogo = props => (
+  <Logo {...props} logoText={<BitbucketLogoText />} typeOffsetRatio={bitbucketTypeOffset} />
+);
+
+const ConfluenceLogo = props => (
+  <Logo {...props} logoText={<ConfluenceLogoText />} typeOffsetRatio={confluenceTypeOffset} />
+);
+
+const HipchatLogo = props => (
+  <Logo {...props} logoText={<HipchatLogoText />} typeOffsetRatio={hipchatTypeOffset} />
+);
+
+const JiraLogo = props => (
+  <Logo {...props} logoText={<JiraLogoText />} typeOffsetRatio={jiraTypeOffset} />
+);
 
 export default AtlassianLogo;
 export { AtlassianLogo, BitbucketLogo, ConfluenceLogo, HipchatLogo, JiraLogo };

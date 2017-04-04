@@ -10,6 +10,8 @@ interface Props {
   onOpenChange?: Function;
   position?: string;
   triggerType?: 'default' | 'button';
+  triggerButtonProps?: any;
+  shouldFlip?: boolean;
 }
 
 interface State {}

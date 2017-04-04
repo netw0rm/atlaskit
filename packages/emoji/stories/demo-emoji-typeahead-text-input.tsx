@@ -3,22 +3,21 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 
 import EmojiTypeAhead from '../src/components/typeahead/EmojiTypeAhead';
-import EmojiService from '../src/api/EmojiService';
+import { EmojiProvider } from '../src/api/EmojiResource';
 import debug from '../src/util/logger';
 import { OnEmojiEvent, RelativePosition } from '../src/types';
 
 import SearchTextInput from './demo-search-text-input';
 import { lorem } from './story-data';
 
-const defaultEmojiService = new EmojiService([]);
-
 export interface Props {
   label: string;
   onSelection: OnEmojiEvent;
-  emojiService?: EmojiService;
+  emojiProvider: Promise<EmojiProvider>;
   position?: RelativePosition;
   beforeContent?: boolean;
   afterContent?: boolean;
+  disableBlur?: boolean;
 }
 
 export interface State {
@@ -67,9 +66,10 @@ export default class EmojiTypeAheadTextInput extends PureComponent<Props, State>
   }
 
   render() {
-    const { label, emojiService, position, beforeContent, afterContent } = this.props;
+    const { label, emojiProvider, position, beforeContent, afterContent, disableBlur } = this.props;
     debug('demo-emoji-text-input.render', position);
     const target = position ? '#demo-input' : undefined;
+    const onBlur = disableBlur ? () => {} : this.hideEmojiPopup;
     const searchInput = (
       <SearchTextInput
         inputId="demo-input"
@@ -80,7 +80,7 @@ export default class EmojiTypeAheadTextInput extends PureComponent<Props, State>
         onEnter={() => this.emojiTypeAheadRef.chooseCurrentSelection()}
         onEscape={this.hideEmojiPopup}
         onFocus={this.showEmojiPopup}
-        onBlur={this.hideEmojiPopup}
+        onBlur={onBlur}
       />
     );
 
@@ -96,7 +96,7 @@ export default class EmojiTypeAheadTextInput extends PureComponent<Props, State>
           onClose={action('picker closed')}
           ref={(ref) => { this.emojiTypeAheadRef = ref; }}
           query={this.state.query}
-          emojiService={emojiService || defaultEmojiService}
+          emojiProvider={emojiProvider}
         />
       );
     }

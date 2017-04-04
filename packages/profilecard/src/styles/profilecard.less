@@ -1,42 +1,73 @@
 @import './styles.less';
 
-.profilecard {
+@error-color: @ak-color-N800;
+@error-sub-color: @ak-color-N90;
+
+.cardAnimationWrapper {
   .font-smoothing;
-  font-family: @ak-font-family;
-  display: inline-block;
-  box-sizing: border-box;
-  overflow: hidden;
-  position: relative;
-  width: @ak-grid-size * 45;
-  padding: @ak-grid-size * 3;
+  background-color: @card-bg;
   border-radius: @ak-border-radius;
   box-shadow: @card-shadow;
-  background-color: @card-bg;
+  display: inline-block;
+  font-family: @ak-font-family;
+  overflow: hidden;
+  position: relative;
+  transition: height 0.25s ease;
+  width: @ak-grid-size * 45;
+}
 
+.spinnerContainer {
+  align-items: center;
+  display: flex;
+  height: @ak-grid-size * 12;
+  justify-content: center;
+  position: relative;
+}
+
+.errorMessage {
+  text-align: center;
+  padding: @ak-grid-size * 3;
+
+  svg {
+    color: @error-sub-color;
+  }
+
+  p {
+    color: @error-color;
+    line-height: @ak-grid-size * 3;
+    margin: @ak-grid-size 0;
+
+    span {
+      color: @error-sub-color;
+    }
+  }
+}
+
+.profilecard {
   background-image: linear-gradient(
     to bottom,
     @ak-color-B500 0%,
-    @ak-color-B500 100%,
+    @ak-color-B500 100%
   );
   background-repeat: no-repeat;
   background-size: 100% (@ak-grid-size * 12);
+  box-sizing: content-box;
+  padding: @ak-grid-size * 3;
 }
 
 .avatarWrapper {
   position: absolute;
   top: @ak-grid-size * 3;
   left: @ak-grid-size * 3;
-
-  // @FIXME: Hack to already get ak-avatar to 96px
-  // Remove after ak-avatar sizes are updated to 8px grid
-  // https://ecosystem.atlassian.net/browse/AK-1469
-  & > div > div:nth-child(1) {
-    width: @ak-grid-size * 12;
-    height: @ak-grid-size * 12;
-  }
 }
 
 .detailsWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: @ak-grid-size * 17;
+}
+
+.detailsGroup {
   display: flex;
   flex-direction: column;
   margin-left: @ak-grid-size * 14;
@@ -124,8 +155,12 @@
   margin: (@ak-grid-size * 2) 0 0 0;
   text-align: right;
 
-  ak-button {
-    display: inline-block;
+  button {
+    margin-left: 8px;
+
+    &:first-child {
+      margin-left: 0;
+    }
   }
 }
 
@@ -135,10 +170,9 @@
     right: @ak-grid-size * 3;
   }
 
-  .detailsWrapper {
-    position: relative;
-    left: auto;
-    right: @ak-grid-size * 14;
+  .detailsGroup {
+    margin-left: 0;
+    margin-right: @ak-grid-size * 14;
   }
 
   .actionsWrapper {

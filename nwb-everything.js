@@ -9,7 +9,6 @@ const pathPackages = path.join(cwd, 'packages');
 
 const exclude = [
   'css-reset',
-  'icon',
   'reduced-ui-pack',
   'util-cz-',
   'util-dmd-',
@@ -33,6 +32,11 @@ fs.readdirSync(pathPackages).forEach((pathPackage) => {
   }
 
   const pkg = path.join(dir, 'package.json');
+
+  if (!fs.existsSync(pkg)) {
+    return;
+  }
+
   const pkgJson = require(pkg);
 
   if (!pkgJson.scripts || !pkgJson.scripts.prepublish) {

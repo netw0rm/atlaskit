@@ -62,6 +62,14 @@ describe(name, () => {
             generateFlag({ description: 'Oh hi!' })
           ).find(`.${flagLocals.description}`).text()).to.equal('Oh hi!')
         );
+
+        it('should accept JSX in description', () =>
+          expect(shallow(
+            generateFlag({
+              description: <span>Check this <a href="https://google.com">link</a> out</span>,
+            })
+          ).find(`.${flagLocals.description} > span > a`).length).to.equal(1)
+        );
       });
 
       describe('actions prop', () => {

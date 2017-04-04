@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/toggle",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "config": {
     "access": "public"
   },
@@ -16,20 +16,25 @@
     "umd"
   ],
   "peerDependencies": {
-    "react": "^15.3.2"
+    "react": "^15.3.2",
+    "styled-components": "^1.3.0"
   },
   "dependencies": {
-    "ak-icon": "12.1.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
+    "ak-icon": "12.1.0",
     "babel-runtime": "^6.11.6",
-    "classnames": "2.2.5",
     "uid": "0.0.2"
   },
   "devDependencies": {
-    "@atlaskit/util-readme": "^1.0.0",
-    "@atlaskit/toggle": "*"
+    "@atlaskit/toggle": "*",
+    "@atlaskit/util-readme": "^1.0.0"
   },
   "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    {
+      "name": "Matias C"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

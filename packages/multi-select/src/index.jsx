@@ -1,13 +1,17 @@
 import React, { PureComponent, PropTypes } from 'react';
-import Item from '@atlaskit/droplist-item';
 
+import DummyItem from './internal/DummyItem';
+import DummyGroup from './internal/DummyGroup';
 import StatelessMultiSelect from './StatelessMultiSelect';
 import { appearances } from './internal/appearances';
+
+const itemShape = DummyItem.propTypes;
+const groupShape = DummyGroup.propTypes;
 
 export default class AkMultiSelect extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(appearances.values),
-    defaultSelected: PropTypes.arrayOf(PropTypes.shape(Item.propTypes)),
+    defaultSelected: PropTypes.arrayOf(PropTypes.shape(itemShape)),
     id: PropTypes.string,
     isDisabled: PropTypes.bool,
     isFirstChild: PropTypes.bool,
@@ -15,7 +19,7 @@ export default class AkMultiSelect extends PureComponent {
     isDefaultOpen: PropTypes.bool,
     isRequired: PropTypes.bool,
     isInvalid: PropTypes.bool,
-    items: PropTypes.array, // eslint-disable-line react/forbid-prop-types
+    items: PropTypes.arrayOf(PropTypes.shape(groupShape)),
     label: PropTypes.string,
     name: PropTypes.string,
     noMatchesFound: PropTypes.string,

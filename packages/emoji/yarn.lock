@@ -20,27 +20,35 @@
     classnames "^2.2.5"
     create-error "^0.3.1"
 
-"@atlaskit/spinner@^1.0.1":
+"@atlaskit/icon@^2.3.3":
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-2.5.6.tgz#6743bf214973cdfe62ec5996a956c465551198a0"
+  dependencies:
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+    create-error "^0.3.1"
+
+"@atlaskit/spinner@^1.0.1", "@atlaskit/spinner@^1.0.2":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-1.0.5.tgz#1e50e11efb0cc35ee42135b01b06d7d8fe730dea"
   dependencies:
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
 
-"@atlaskit/util-shared-styles@^1.0.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.2.1.tgz#0813620fbe0f0352157d945b978853a46e3b0dc9"
-  dependencies:
-    babel-runtime "^6.11.6"
-
-akutil-common-test@*:
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/akutil-common-test/-/akutil-common-test-7.0.3.tgz#d381f8824cf3940d08c7bffa11e6538bfbe5dca5"
+"@atlaskit/util-common-test@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-common-test/-/util-common-test-1.0.2.tgz#3094b4b92cd6cba05840855db20a4a0afcf976f2"
   dependencies:
     uid "^0.0.2"
     babel-runtime "^6.11.6"
     custom-event-polyfill "^0.3.0"
     keycode "^2.1.4"
+
+"@atlaskit/util-shared-styles@^1.0.1":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-1.5.0.tgz#e96501d0ef9fd1f31cc57a9710c25c6f14336ab5"
+  dependencies:
+    babel-runtime "^6.11.6"
 
 asap@~2.0.3:
   version "2.0.5"
@@ -88,8 +96,8 @@ es6-promise@^4.0.5:
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.1.0.tgz#dda03ca8f9f89bc597e689842929de7ba8cebdf0"
 
 fbjs@^0.8.4:
-  version "0.8.11"
-  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.11.tgz#340b590b8a2278a01ef7467c07a16da9b753db24"
+  version "0.8.12"
+  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.12.tgz#10b5d92f76d45575fd63a217d4ea02bea2f8ed04"
   dependencies:
     core-js "^1.0.0"
     isomorphic-fetch "^2.1.1"
@@ -176,8 +184,8 @@ promise@^7.1.1:
     asap "~2.0.3"
 
 react-addons-shallow-compare@^15.4.1:
-  version "15.4.2"
-  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.4.2.tgz#027ffd9720e3a1e0b328dcd8fc62e214a0d174a5"
+  version "15.5.0"
+  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.5.0.tgz#4d95c68a5537ccb75f395169b64db1745617fab5"
   dependencies:
     fbjs "^0.8.4"
     object-assign "^4.1.0"

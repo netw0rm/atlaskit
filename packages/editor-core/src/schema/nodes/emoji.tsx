@@ -1,15 +1,24 @@
-import { Emoji } from 'ak-emoji';
+import { ResourcedEmoji, ResourcedEmojiShortcut, EmojiPlaceholder } from '@atlaskit/emoji';
+import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
 import {
   akColorN50,
 } from '@atlaskit/util-shared-styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { style } from 'typestyle';
+import { style, types as styleTypes } from 'typestyle';
 import { Attribute, Inline, Node, Schema } from '../../prosemirror';
+import { ParseSpec } from '../../prosemirror/model/from_dom';
 
 const width = '20px';
 const height = '20px';
 
+export interface EmojiNodeAttr {
+  id?: string;
+  variation?: number;
+  shortcut?: string;
+}
+
+// FIXME this should be able to be removed when moved into emoji
 const emojiStyle = style({
   display: 'inline-block',
   width: width,
@@ -19,25 +28,48 @@ const emojiStyle = style({
 
   $nest: {
     '&.ProseMirror-selectednode': {
-      background: akColorN50,
-      outline: 'none'
+      backgroundColor: akColorN50,
+      outline: 'none',
     },
-    '&&> div': {
+    // sprite
+    '.emoji-sprite': {
+      margin: '0',
+      width: width,
+      height: height,
+    },
+
+    // image
+    '> span': {
+      margin: '0',
+      width: width,
+      height: height,
+      backgroundSize: `${width} ${height}`,
+    },
+
+    // placeholder
+    '> svg': {
+      margin: '0',
       width: width,
       height: height,
 
       $nest: {
-        '> span': {
-          margin: '0',
-          width: width,
-          height: height,
-        }
-      }
-    }
+        'circle': {
+          r: '16',
+        } as styleTypes.NestedCSSProperties,
+      },
+    },
   }
 });
 
+const extractAttributes = (dom: Element): ParseSpec => ({
+  id: dom.getAttribute('data-emoji-id')!,
+  shortcut: dom.getAttribute('data-emoji-shortcut')!,
+  variation: dom.getAttribute('data-emoji-variation')!,
+});
+
 export class EmojiNodeType extends Inline {
+  private emojiProvider: Promise<EmojiProvider>;
+
   constructor(name: string, schema: Schema) {
     super(name, schema);
     if (name !== 'emoji') {
@@ -45,46 +77,51 @@ export class EmojiNodeType extends Inline {
     }
   }
 
+  setEmojiProvider = (provider: Promise<EmojiProvider>) => {
+    this.emojiProvider = provider;
+  }
+
   get attrs() {
     return {
       id: new Attribute({ default: '' }),
+      variation: new Attribute({ default: 0 }),
       shortcut: new Attribute({ default: '' }),
-      representation: new Attribute({ default: {
-        xIndex: 0,
-        yIndex: 0,
-        sprite: {
-          url: '',
-          row: '',
-          column: ''
-        }
-      }})
     };
   }
 
   get matchDOMTag() {
     return {
-      'span[data-emoji-id]': (dom: Element) => ({
-        id: dom.getAttribute('data-emoji-id')!
-      })
+      'span[data-emoji-id]': (dom: Element) => extractAttributes(dom),
+      'span[data-emoji-shortcut]': (dom: Element) => extractAttributes(dom),
     };
   }
 
-  toDOM(node: EmojiNode): any {
+  toDOM(node: Node): any {
+    const { id, variation, shortcut } = node.attrs;
     const dom = document.createElement('span');
     dom.setAttribute('contenteditable', 'false');
-    dom.setAttribute('data-emoji-id', node.attrs.id);
     dom.classList.add(emojiStyle);
-    ReactDOM.render(<Emoji {...node.attrs} />, dom);
+    id && dom.setAttribute('data-emoji-id', id);
+    shortcut && dom.setAttribute('data-emoji-shortcut', shortcut);
+    variation && dom.setAttribute('data-emoji-variation', variation);
+    if (id) {
+      const emojiId: EmojiId = {
+        id,
+        variation: isNaN(variation) ? undefined : +variation, // coerce possible string to number, undefined if NaN
+      };
+      ReactDOM.render(<ResourcedEmoji emojiId={emojiId} emojiProvider={this.emojiProvider} />, dom);
+    } else if (shortcut) {
+      ReactDOM.render(<ResourcedEmojiShortcut shortcut={shortcut} emojiProvider={this.emojiProvider} />, dom);
+    } else {
+      ReactDOM.render(<EmojiPlaceholder title="" />, dom);
+    }
     return dom;
   }
 }
 
 export interface EmojiNode extends Node {
   type: EmojiNodeType;
-  attrs: {
-    id: string;
-    [key: string]: any;
-  };
+  attrs: EmojiNodeAttr;
 }
 
 export function isEmojiNode(node: Node): node is EmojiNode {

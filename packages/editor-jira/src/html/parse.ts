@@ -1,11 +1,17 @@
 import { Fragment, Mark, Node as PMNode } from '@atlaskit/editor-core';
-import { isSchemaWithLists, SupportedSchema } from '../schema';
+import {
+  isSchemaWithLists,
+  isSchemaWithMentions,
+  isSchemaWithLinks,
+  isSchemaWithAdvancedTextFormattingMarks,
+  isSchemaWithCodeBlock,
+  JIRASchema,
+} from '../schema';
 import parseHtml from './parse-html';
-import WeakMap from './weak-map';
 
 const convertedNodes = new WeakMap();
 
-export default function parse(html: string, schema: SupportedSchema) {
+export default function parse(html: string, schema: JIRASchema) {
   const dom = parseHtml(html).querySelector('body')!;
   const nodes = bfsOrder(dom);
 
@@ -31,6 +37,7 @@ export default function parse(html: string, schema: SupportedSchema) {
   const compatibleContent = schema.nodes.doc.validContent(content)
     ? content
     : ensureBlocks(content, schema);
+
   return schema.nodes.doc.createChecked({}, compatibleContent);
 }
 
@@ -38,7 +45,7 @@ export default function parse(html: string, schema: SupportedSchema) {
  * Ensure that each node in the fragment is a block, wrapping
  * in a block node if necessary.
  */
-function ensureBlocks(fragment: Fragment, schema: SupportedSchema): Fragment {
+function ensureBlocks(fragment: Fragment, schema: JIRASchema): Fragment {
   // If all the nodes are inline, we want to wrap in a single paragraph.
   if (schema.nodes.paragraph.validContent(fragment)) {
     return Fragment.fromArray([schema.nodes.paragraph.createChecked({}, fragment)]);
@@ -59,7 +66,7 @@ function ensureBlocks(fragment: Fragment, schema: SupportedSchema): Fragment {
   return Fragment.fromArray(blockNodes);
 }
 
-function convert(content: Fragment, node: Node, schema: SupportedSchema): Fragment | PMNode | null | undefined {
+function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | PMNode | null | undefined {
   // text
   if (node.nodeType === Node.TEXT_NODE) {
     const text = node.textContent;
@@ -72,28 +79,75 @@ function convert(content: Fragment, node: Node, schema: SupportedSchema): Fragme
     switch (tag) {
       // Marks
       case 'DEL':
-        return content ? addMarks(content, [schema.marks.strike.create()]) : null;
+      if (!isSchemaWithAdvancedTextFormattingMarks(schema)) {
+          return null;
+        }
+        return content ? addMarks(content, [schema.marks.strike!.create()]) : null;
       case 'B':
         return content ? addMarks(content, [schema.marks.strong.create()]) : null;
       case 'EM':
         return content ? addMarks(content, [schema.marks.em.create()]) : null;
       case 'TT':
-        return content ? addMarks(content, [schema.marks.mono.create()]) : null;
+        if (!isSchemaWithAdvancedTextFormattingMarks(schema)) {
+          return null;
+        }
+        return content ? addMarks(content, [schema.marks.code!.create()]) : null;
       case 'SUB':
       case 'SUP':
         const type = tag === 'SUB' ? 'sub' : 'sup';
         return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
       case 'INS':
         return content ? addMarks(content, [schema.marks.u.create()]) : null;
+
       // Nodes
       case 'A':
+        if (node.className === 'user-hover' && isSchemaWithMentions(schema)) {
+          return schema.nodes.mention!.createChecked({
+            id: node.getAttribute('rel'),
+            displayName: node.innerText
+          });
+        }
+
         const isAnchor = node.attributes.getNamedItem('href') === null;
-        if (isAnchor) {
+        if (isAnchor || node.className.match('jira-issue-macro-key') || !content || !isSchemaWithLinks(schema)) {
           return null;
         }
-        return;
-      // case 'SPAN':
-      //   return addMarks(content, marksFromStyle(node.style));
+
+        return addMarks(
+          content,
+          [schema.marks.link!.create({
+            href: node.getAttribute('href'),
+            title: node.getAttribute('title')
+          })]
+        );
+
+      case 'SPAN':
+        /**
+         * JIRA ISSUE MACROS
+         * `````````````````
+         * <span class="jira-issue-macro" data-jira-key="ED-1">
+         *     <a href="https://product-fabric.atlassian.net/browse/ED-1" class="jira-issue-macro-key issue-link">
+         *         <img class="icon" src="./epic.svg" />
+         *         ED-1
+         *     </a>
+         *     <span class="aui-lozenge aui-lozenge-subtle aui-lozenge-current jira-macro-single-issue-export-pdf">
+         *         In Progress
+         *     </span>
+         * </span>
+         */
+        if (node.className === 'jira-issue-macro') {
+          const jiraKey = node.dataset.jiraKey;
+          return jiraKey ? schema.text(jiraKey) : null;
+        } else if (node.className.match('jira-macro-single-issue-export-pdf')) {
+          return null;
+        }
+        break;
+
+      case 'IMG':
+        if (node.parentElement && node.parentElement.className.match('jira-issue-macro-key')) {
+          return null;
+        }
+        break;
       case 'H1':
       case 'H2':
       case 'H3':
@@ -114,14 +168,36 @@ function convert(content: Fragment, node: Node, schema: SupportedSchema): Fragme
     if (isSchemaWithLists(schema)) {
       switch (tag) {
         case 'UL':
-          return schema.nodes.bullet_list.createChecked({}, content);
+          return schema.nodes.bullet_list!.createChecked({}, content);
         case 'OL':
-          return schema.nodes.ordered_list.createChecked({}, content);
+          return schema.nodes.ordered_list!.createChecked({}, content);
         case 'LI':
-          const compatibleContent = schema.nodes.list_item.validContent(content)
+          const compatibleContent = schema.nodes.list_item!.validContent(content)
             ? content
             : ensureBlocks(content, schema);
-          return schema.nodes.list_item.createChecked({}, compatibleContent);
+          return schema.nodes.list_item!.createChecked({}, compatibleContent);
+      }
+    }
+
+    // code block
+    if (isSchemaWithCodeBlock(schema)) {
+      switch (tag) {
+        case 'DIV':
+          if (node.className === 'codeContent panelContent' || node.className.match('preformattedContent')) {
+            return null;
+          } else if (node.className === 'code panel' || node.className === 'preformatted panel') {
+            const pre = node.querySelector('pre');
+
+            if (!pre) {
+              return null;
+            }
+
+            const language = pre.className.split('-')[1];
+            return schema.nodes.code_block!.createChecked({ language }, schema.text(pre.innerText));
+          }
+          break;
+        case 'PRE':
+          return null;
       }
     }
   }

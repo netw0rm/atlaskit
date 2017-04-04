@@ -1,4 +1,4 @@
-import DropdownMenu from 'ak-dropdown-menu';
+import DropdownMenu from '@atlaskit/dropdown-menu';
 import * as React from 'react';
 import { PureComponent } from 'react';
 

@@ -53,8 +53,8 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     return mediaItem && (mediaItem as MediaItem).details !== undefined;
   }
 
-  observable = (): Observable<MediaItemDetails> => {
-    const {provider} = this.props;
+  private observable = (props: MediaCardProps): Observable<MediaItemDetails> => {
+    const {provider} = props;
 
     return provider.observable()
       .map((result: MediaItem | UrlPreview) => {
@@ -63,8 +63,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
         } else {
           return result;
         }
-      })
-    ;
+      });
   }
 
   private stateToCardProcessingStatus(): OnLoadingChangeState {
@@ -83,7 +82,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     onLoadingChange(this.stateToCardProcessingStatus());
 
     this.setPartialState({
-      subscription: this.observable().subscribe({
+      subscription: this.observable(props).subscribe({
         next: details => {
           this.setPartialState(
             {details, error: undefined, cardProcessingStatus: 'processing'},

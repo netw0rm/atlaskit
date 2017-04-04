@@ -7,8 +7,9 @@ import {Observable} from 'rxjs';
 import 'rxjs/add/observable/of';
 
 import {fakeContext, waitUntil} from '@atlaskit/media-test-helpers';
-import {FileDetails, UrlPreview} from '@atlaskit/media-core';
+import {MediaItem, FileDetails, UrlPreview} from '@atlaskit/media-core';
 
+import {Provider} from '../src/';
 import {MediaCard, MediaCardProps, MediaCardState} from '../src/mediaCard';
 import {LinkCard} from '../src/links';
 import {FileCard} from '../src/files';
@@ -254,4 +255,47 @@ describe('MediaCard', () => {
 
     (element.instance() as MediaCard).componentDidMount();
   });
+
+  it('should unsubscribe from the old provider and subscribe to the new provider when the provider changes', () => {
+    const fileDetailsPayload: FileDetails = {id: 'cryptic-id', name: 'Some file name'};
+    const dataUriService = {};
+
+    const oldUnsubscribe = sinon.spy();
+    const oldSubscribe = sinon.stub().returns({unsubscribe: oldUnsubscribe});
+
+    const newUnsubscribe = sinon.spy();
+    const newSubscribe = sinon.stub().returns({unsubscribe: newUnsubscribe});
+
+    const oldObservable = {
+      map: () => ({subscribe: oldSubscribe})
+    };
+    const newObservable = {
+      map: () => ({subscribe: newSubscribe})
+    };
+
+    const firstProvider = {
+      observable: () => oldObservable
+    };
+    const secondProvider = {
+      observable: () => newObservable
+    };
+
+    const element = shallow(
+      <MediaCard
+        type="file"
+        provider={firstProvider}
+        dataURIService={dataUriService}
+      />
+    );
+
+    (element.instance() as MediaCard).componentDidMount();
+    element.setProps({provider: secondProvider});
+
+    expect(oldUnsubscribe.calledOnce).to.be.true;
+    expect(oldSubscribe.calledOnce).to.be.true;
+
+    expect(newSubscribe.calledOnce).to.be.true;
+    expect(newUnsubscribe.called).to.be.false;
+  });
+
 });

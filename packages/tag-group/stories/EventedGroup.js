@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
 import Tag from '@atlaskit/tag';
-
-import groupStyles from '../src/styles.less';
 import Group from '../src';
 
 export default class EventedGroup extends PureComponent {
@@ -16,14 +14,14 @@ export default class EventedGroup extends PureComponent {
     super(props, context);
 
     this.state = {
-      tags: this.props.initialTags,
-      allowRemoval: true,
       alignment: this.props.alignment,
+      allowRemoval: true,
+      tags: this.props.initialTags,
     };
     this.onRemove = this.props.onRemove || (() => null);
   }
 
-  beforeRemoveCallback = () => !!this.state.allowRemoval;
+  beforeRemoveCallback = () => this.state.allowRemoval;
 
   afterRemoveCallback = (removedTagText) => {
     this.onRemove(removedTagText);
@@ -32,28 +30,28 @@ export default class EventedGroup extends PureComponent {
   }
 
   render() {
+    const { alignment, allowRemoval, tags } = this.state;
+
     return (
       <div ref={g => (this.group = g)}>
         <input
+          defaultChecked={allowRemoval}
           id="allow-remove"
-          type="checkbox"
-          defaultChecked={this.state.allowRemoval}
           onChange={e => (this.setState({ allowRemoval: e.target.checked }))}
+          type="checkbox"
         />
         <label htmlFor="allow-remove">Allow tag removal</label>
         <hr />
-        <Group className={groupStyles.locals.akTagGroup} alignment={this.state.alignment}>
-          {
-            this.state.tags.map(text => (
-              <Tag
-                text={text}
-                key={text}
-                removeButtonText="Remove me"
-                onBeforeRemoveAction={this.beforeRemoveCallback}
-                onAfterRemoveAction={this.afterRemoveCallback}
-              />
-            ))
-          }
+        <Group alignment={alignment}>
+          {tags.map(text => (
+            <Tag
+              key={text}
+              onAfterRemoveAction={this.afterRemoveCallback}
+              onBeforeRemoveAction={this.beforeRemoveCallback}
+              removeButtonText={allowRemoval ? 'Remove me' : null}
+              text={text}
+            />
+          ))}
         </Group>
       </div>
     );

@@ -2,12 +2,13 @@ import sinon from 'sinon';
 import styles from 'style!../src/styles.less';
 import React from 'react';
 import { mount } from 'enzyme';
-import Avatar from '@atlaskit/avatar';
 
 import Tag from '../src/index';
-import RemoveButton from '../src/RemoveButton';
-import Chrome from '../src/Chrome';
 import AnimationWrapper from '../src/AnimationWrapper';
+import Chrome from '../src/Chrome';
+import Content from '../src/Content';
+import ElemBefore from '../src/ElemBefore';
+import RemoveButton from '../src/RemoveButton';
 
 // TODO: Revisit all these tests. AK-1975
 // Large parts of the API are not tested (hrefs should render anchors, truncation should occur, etc)
@@ -15,7 +16,7 @@ import AnimationWrapper from '../src/AnimationWrapper';
 // props + state => expectedRenderedOutput
 // They also don't follow the normal naming standards for describe and it blocks
 
-describe('<Tag/> component tests', () => {
+describe('Tag component', () => {
   const atlassianUrl = 'https://www.atlassian.com/';
   const bitbucketUrl = 'https://bitbucket.org/';
   const atlassianlinkText = 'Atlassian';
@@ -121,20 +122,6 @@ describe('<Tag/> component tests', () => {
     expect(wrapper.find('Tag').html()).to.equal(renderedHtml);
   });
 
-  describe('elemBefore props', () => {
-    it('should render anything passed to it', () => {
-      const wrapper = mount(<Tag
-        elemBefore={<Avatar size="xsmall" />}
-      />);
-      expect(wrapper.find(Avatar).length).to.equal(1);
-    });
-
-    it('should not render a .elemBefore block if not elemBefore passed in', () => {
-      const wrapper = mount(<Tag text="foo" />);
-      expect(wrapper.find(`.${styles.elemBefore}`).length).to.equal(0);
-    });
-  });
-
   describe('appearance prop', () => {
     it('should set the isRounded prop of Chrome and RemoveButton to true when set to "rounded"', () => {
       const wrapper = mount(<Tag appearance="rounded" text="foo" removeButtonText="foo" />);
@@ -146,6 +133,93 @@ describe('<Tag/> component tests', () => {
       const wrapper = mount(<Tag appearance="default" text="foo" removeButtonText="foo" />);
       expect(wrapper.find(Chrome).prop('isRounded')).to.equal(false);
       expect(wrapper.find(RemoveButton).prop('isRounded')).to.equal(false);
+    });
+  });
+
+  describe('elemBefore prop', () => {
+    it('should render anything passed to it', () => {
+      const wrapper = mount(<Tag text="foo" elemBefore={<div className="test" />} />);
+      expect(wrapper.find(ElemBefore).find('div.test').length).to.equal(1);
+    });
+
+    it('should render the elemBefore before the content', () => {
+      const wrapper = mount(<Tag text="foo" elemBefore={<div className="test" />} />);
+      const chrome = wrapper.find(Chrome);
+      expect(chrome.childAt(0).is(ElemBefore)).to.equal(true);
+      expect(chrome.childAt(1).is(Content)).to.equal(true);
+    });
+  });
+
+  describe('text prop', () => {
+    it('should render text to a Content block', () => {
+      const wrapper = mount(<Tag text="foo" />);
+      expect(wrapper.find(Content).text()).to.equal('foo');
+    });
+  });
+
+  describe('href prop', () => {
+    it('should cause an anchor to be rendered', () => {
+      const wrapper = mount(<Tag text="foo" href="#" />);
+      expect(wrapper.find(Content).find('a').length).to.equal(1);
+    });
+
+    it('should reflect the href onto the anchor', () => {
+      const wrapper = mount(<Tag text="foo" href="#" />);
+      expect(wrapper.find(Content).find('a').prop('href')).to.equal('#');
+    });
+
+    it('should set the isLink prop on Chrome', () => {
+      const wrapper = mount(<Tag text="foo" href="#" />);
+      expect(wrapper.find(Chrome).prop('isLink')).to.equal(true);
+    });
+  });
+
+  describe('removeButtonText prop', () => {
+    it('should not render a button if not set', () => {
+      const wrapper = mount(<Tag text="foo" />);
+      expect(wrapper.find(RemoveButton).length).to.equal(0);
+    });
+
+    it('should render a button if set', () => {
+      const wrapper = mount(<Tag text="foo" removeButtonText="removeMe" />);
+      expect(wrapper.find(RemoveButton).length).to.equal(1);
+    });
+
+    it('should set the removeText prop of button if set', () => {
+      const wrapper = mount(<Tag text="foo" removeButtonText="removeMe" />);
+      expect(wrapper.find(RemoveButton).prop('removeText')).to.equal('removeMe');
+    });
+  });
+
+  describe('onBeforeRemoveAction prop', () => {
+    it('should be called if button is clicked', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(<Tag text="foo" removeButtonText="removeMe" onBeforeRemoveAction={spy} />);
+      wrapper.find('button').simulate('click');
+      expect(spy.callCount).to.equal(1);
+    });
+  });
+
+  describe('onAfterRemoveAction prop', () => {
+    it('should be called after remove animation is completed', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(<Tag text="foo" removeButtonText="removeMe" onAfterRemoveAction={spy} />);
+      // we simulate the remove action finishing by calling AnimationWrappers onRemovalCompletion()
+      wrapper.find(AnimationWrapper).prop('onRemovalCompletion')();
+      expect(spy.callCount).to.equal(1);
+    });
+
+    it('should not be called if onBeforeRemoveAction returns false', () => {
+      const beforeRemove = () => false;
+      const spy = sinon.spy();
+      const wrapper = mount(<Tag
+        text="foo"
+        removeButtonText="removeMe"
+        onBeforeRemoveAction={beforeRemove}
+        onAfterRemoveAction={spy}
+      />);
+      wrapper.find('button').simulate('click');
+      expect(spy.callCount).to.equal(0);
     });
   });
 });

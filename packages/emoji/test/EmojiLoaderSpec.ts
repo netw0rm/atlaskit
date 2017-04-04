@@ -6,7 +6,7 @@ import * as sinon from 'sinon';
 
 import { SecurityOptions, ServiceConfig } from '../src/api/SharedResourceUtils';
 import EmojiLoader, { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
-import { SpriteRepresentation } from '../src/types';
+import { EmojiServiceDescriptionWithVariations, SpriteRepresentation } from '../src/types';
 
 const p1Url = 'https://p1/';
 
@@ -126,7 +126,7 @@ describe('EmojiLoader', () => {
   });
 
   describe('#denormaliseEmojiServiceResponse', () => {
-    const emojiFields = ['id', 'name', 'shortcut', 'type', 'category', 'order'];
+    const emojiFields = ['id', 'name', 'shortName', 'type', 'category', 'order'];
 
     const checkFields = (actual, expected, fields) => {
       fields.forEach((field) => {
@@ -136,22 +136,30 @@ describe('EmojiLoader', () => {
 
     it('denormaliseEmojiServiceResponse emoji with sprite', () => {
       const spriteRef = 'http://spriteref/test.png';
-      const emoji = {
+      const emoji: EmojiServiceDescriptionWithVariations = {
         id: '1f600',
         name: 'grinning face',
-        shortcut: 'grinning',
+        shortName: 'grinning',
         type: 'STANDARD',
         category: 'PEOPLE',
         order: 1,
         skinVariations: [
           {
-            spriteRef,
-            x: 666,
-            y: 777,
-            height: 42,
-            width: 43,
-            xIndex: 6,
-            yIndex: 23,
+            id: '1f600-1f3fb',
+            name: 'grinning face',
+            shortName: ':grinning::skin-tone-2',
+            type: 'STANDARD',
+            category: 'PEOPLE',
+            order: 1,
+            representation: {
+              spriteRef,
+              x: 666,
+              y: 777,
+              height: 42,
+              width: 43,
+              xIndex: 6,
+              yIndex: 23,
+            }
           },
         ],
         representation: {
@@ -189,10 +197,11 @@ describe('EmojiLoader', () => {
       const representation = e.representation as SpriteRepresentation;
       checkFields(representation && representation.sprite, spriteSheet, spriteSheetFields);
       expect(e.skinVariations && e.skinVariations.length).to.equal(1);
-      if (e.skinVariations) {
-        const skin0 = e.skinVariations[0] as SpriteRepresentation;
-        checkFields(skin0, emoji.skinVariations[0], spriteFields);
-        checkFields(skin0.sprite, spriteSheet, spriteSheetFields);
+      if (e.skinVariations && emoji.skinVariations && emoji.skinVariations.length) {
+        const skinEmoji0 = e.skinVariations[0];
+        checkFields(skinEmoji0, emoji.skinVariations[0], spriteFields);
+        const skinEmoji0Rep = skinEmoji0.representation as SpriteRepresentation;
+        checkFields(skinEmoji0Rep.sprite, spriteSheet, spriteSheetFields);
       }
     });
 
@@ -200,15 +209,23 @@ describe('EmojiLoader', () => {
       const emoji = {
         id: '13d29267-ff9e-4892-a484-1a1eef3b5ca3',
         name: 'standup.png',
-        shortcut: 'standup.png',
+        shortName: 'standup.png',
         type: 'SITE',
         category: 'CUSTOM',
         order: -1,
         skinVariations: [
           {
-            imagePath: 'https://something/something2.png',
-            height: 666,
-            width: 666,
+            id: '13d29267-ff9e-4892-a484-1a1eef3b5c45',
+            name: 'standup-large.png',
+            shortName: ':standup-large:',
+            type: 'SITE',
+            category: 'CUSTOM',
+            order: -1,
+            representation: {
+              imagePath: 'https://something/something2.png',
+              height: 666,
+              width: 666,
+            },
           },
         ],
         representation: {

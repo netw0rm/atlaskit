@@ -2,9 +2,10 @@ import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import { expect } from 'chai';
-import * as sinon from 'sinon';
 
-import PresenceResource, { DefaultPresenceCache, DefaultPresenceParser, PresenceMap } from '../../src/api/PresenceResource';
+import PresenceResource, {
+  DefaultPresenceCache, DefaultPresenceParser, PresenceMap
+} from '../../src/api/PresenceResource';
 import { validPresenceData, invalidPresenceData } from '../_presence-data';
 
 const baseUrl = 'https://bogus/presence';
@@ -53,10 +54,15 @@ describe('PresenceCache', () => {
   let cache: DefaultPresenceCache;
   let parser: DefaultPresenceParser;
   let testPresenceMap: PresenceMap;
+  let extraPresences: PresenceMap;
 
   before(() => {
     const beforeParser = new DefaultPresenceParser();
     testPresenceMap = beforeParser.parse(validPresenceData);
+    extraPresences = {
+      '13-thirteen-13': {'status': 'available'},
+      'Roger-rolo-the-steam-roller-Lo': {'status': 'busy'}
+    };
   });
 
   beforeEach(() => {
@@ -67,8 +73,12 @@ describe('PresenceCache', () => {
 
   it('should know whether it contains a user by ID', () => {
     cache.update(testPresenceMap);
-    const userId = Object.keys(testPresenceMap)[2];
+    const userId = Object.keys(testPresenceMap)[0];
     expect(cache.contains(userId)).to.be.true;
+   });
+
+  it('should not contain IDs that not have been manually added to the cache', () => {
+    cache.update(testPresenceMap);
     expect(cache.contains('DEFINITELY-N0T-A-TEST-US3R-1D'), 'Claimed to contain a user ID it shouldn\'t have').to.be.false;
   });
 
@@ -79,6 +89,11 @@ describe('PresenceCache', () => {
     expect(cache.get(userId)).to.deep.equal(expectedPresence);
   });
 
+  it('should return no presence if queried for users not present in the cache', () => {
+    cache.update(testPresenceMap);
+    expect(cache.get('DEFINITELY-N0T-A-TEST-US3R-1D')).to.be.empty;
+  });
+
   it('should retrieve a set of users given an array of their IDs', () => {
     cache.update(testPresenceMap);
     const userIds = Object.keys(testPresenceMap);
@@ -87,10 +102,6 @@ describe('PresenceCache', () => {
   });
 
   it('should update its entries when given a PresenceMap', () => {
-    const extraPresences: PresenceMap = {
-      '13-thirteen-13': {'status': 'available'},
-      'Roger-rolo-the-steam-roller-Lo': {'status': 'busy'}
-    };
     cache.update(testPresenceMap);
     cache.update(extraPresences);
     const combinedPresences = {
@@ -102,13 +113,8 @@ describe('PresenceCache', () => {
 
   it('should retrieve a set of missing users given an array of their IDs', () => {
     const extraIds: string[] = ['13-thirteen-13', 'Roger-rolo-the-steam-roller-Lo'];
-    const extraPresences: PresenceMap = {
-      '13-thirteen-13': {'status': 'available'},
-      'Roger-rolo-the-steam-roller-Lo': {'status': 'busy'}
-    };
-    expect(cache.getMissingUserIds(extraIds)).to.deep.equal(extraIds);
-    cache.update(extraPresences);
-    expect(cache.getMissingUserIds(extraIds)).to.empty;
+    cache.update(testPresenceMap);
+    expect(cache.getMissingUserIds(testIds.concat(extraIds))).to.deep.equal(testIds.slice(6, 9).concat(extraIds));
   });
 
   it('should insert and store user ids on demand', (done) => {
@@ -126,23 +132,56 @@ describe('PresenceCache', () => {
     }
   });
 
-  it('should store correctly parsed responses from presence service', (done) => {
+  it('should store correctly parsed responses from presence service', () => {
     cache.update(testPresenceMap);
     // Check cache stores correct mapping
-    expect(cache.contains(testIds[6])).to.equal(false);
-    const cacheHits = cache.getBulk(testIds);
-    expect(cacheHits[testIds[0]].status).to.equal('offline');
-    expect(cacheHits[testIds[1]].status).to.equal('online');
-    expect(cacheHits[testIds[3]].status).to.equal('busy');
-    done();
+    validPresenceData['data'].PresenceBulk.forEach((response) => {
+      if (response.state) {
+        expect(cache.get(response.userId).status).to.equal(parser.mapState(response.state));
+      }
+    });
+  });
+
+  it('should store correctly parsed responses from presence service', () => {
+    cache.update(testPresenceMap);
+    // Check cache stores correct mapping
+    validPresenceData['data'].PresenceBulk.forEach((response) => {
+      if (response.state) {
+        expect(cache.get(response.userId).status).to.equal(parser.mapState(response.state));
+      }
+    });
+  });
+
+  it('should delete the entry if the user presence it gets has expired', () => {
+    const expiredCache = new DefaultPresenceCache(-1);
+    expiredCache.update(testPresenceMap);
+    expiredCache.get(testIds[0]);
+    expect(expiredCache.contains(testIds[0])).to.be.false;
+  });
+
+  it('should remove all expired users if the cache hits its trigger point', () => {
+    const limitedCache = new DefaultPresenceCache(-1, 5);
+    limitedCache.update(testPresenceMap);
+    limitedCache.update(extraPresences);
+    validPresenceData['data'].PresenceBulk.forEach((response) => {
+      expect(limitedCache.contains(response.userId)).to.be.false;
+    });
   });
 });
 
 describe('PresenceResource', () => {
+  const mockName: string = 'query';
   beforeEach(() => {
+    const matcher = {
+      name: `${mockName}`,
+      matcher: `begin:${baseUrl}`,
+    };
+
     fetchMock
-      .mock(/\/bogus\/presence/, {
-        body: validPresenceData
+      .mock({ ...matcher,
+        response: {
+          body: validPresenceData
+        },
       });
   });
 
@@ -151,24 +190,19 @@ describe('PresenceResource', () => {
   });
 
   describe('#refreshPresence', () => {
-    it.skip('should result in fewer listener callbacks and service requests with cache', (done) => {
+    it('should result in fewer listener callbacks and service requests with cache', (done) => {
       const resource = new PresenceResource(apiConfig);
-      const spy = sinon.spy(resource, 'notifyListeners');
       try {
         // notifyListeners called twice as no cache hits so must call again after service query
         resource.refreshPresence(testIds);
+        let calls = fetchMock.calls(mockName);
+        expect(calls.length, 'First presence query made').to.equal(1);
         setTimeout(() => {
-          expect(spy.callCount).to.equal(2);
-        }, 0);
-        // Refreshed ids should be present in cache
-        setTimeout(() => {
-          resource.refreshPresence(testIds.slice(0, 6));
-        }, 0);
-        // One additional call since only needs to query through cache
-        setTimeout(() => {
-          expect(spy.callCount).to.equal(3);
-          done();
-        }, 0);
+            resource.refreshPresence(testIds.slice(0, 6));
+          }, 5);
+        calls = fetchMock.calls(mockName);
+        expect(calls.length, 'Cache should return all data').to.equal(1);
+        done();
       } catch (err) {
         done(err);
       }
@@ -184,13 +218,11 @@ describe('PresenceResource', () => {
 
         // Initialise resource with cache
         const resource = new PresenceResource({...apiConfig, cache: populatedCache});
-        const spy = sinon.spy(resource, 'notifyListeners');
         resource.refreshPresence(testIds.slice(0, 6));
+        const calls = fetchMock.calls(mockName);
         // One call since only needs to render info from cache
-        setTimeout(() => {
-          expect(spy.callCount).to.equal(1);
-          done();
-        }, 0);
+        expect(calls.length).to.equal(0);
+        done();
       } catch (err) {
         done(err);
       }

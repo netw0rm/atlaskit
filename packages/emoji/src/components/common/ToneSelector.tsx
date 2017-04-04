@@ -1,37 +1,34 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 
-import { EmojiDescription, OnToneSelected } from '../../types';
+import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected } from '../../types';
 import EmojiButton from './EmojiButton';
 
 export interface Props {
-  emoji: EmojiDescription;
+  emoji: EmojiDescriptionWithVariations;
   onToneSelected: OnToneSelected;
 }
+
+const extractAllTones = (emoji: EmojiDescriptionWithVariations): EmojiDescription[] => {
+  if (emoji.skinVariations) {
+    return [ emoji, ...emoji.skinVariations ];
+  }
+  return [ emoji ];
+};
 
 export default class ToneSelector extends PureComponent<Props, undefined> {
   render() {
     const { emoji, onToneSelected } = this.props;
-    const variations = emoji.skinVariations;
-    let toneEmojis: EmojiDescription[] = [];
-    if (variations) {
-      toneEmojis = variations.map((skinVariation, i) => ({
-        ...emoji,
-        shortcut: `${emoji.shortcut}_tone${i + 1}`,
-        representation: skinVariation,
-      }));
-    }
-
-    toneEmojis.unshift(emoji);
+    const toneEmojis: EmojiDescription[] = extractAllTones(emoji);
 
     return (
       <div>
         {
-          toneEmojis.map((em, i) => (
+          toneEmojis.map((tone, i) => (
             <EmojiButton
-              key={`${em.id}-${i}`}
+              key={`${tone.id}`}
               onSelected={() => onToneSelected(i + 1)}
-              emoji={emoji}
+              emoji={tone}
             />
           ))
         }

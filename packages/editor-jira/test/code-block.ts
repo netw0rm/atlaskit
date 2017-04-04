@@ -1,5 +1,5 @@
 import { nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
-import { checkParseEncodeRoundTrips, checkEncode } from '../test-helpers';
+import { checkParseEncodeRoundTrips, checkEncode, checkParse } from '../test-helpers';
 import { name } from '../package.json';
 import { JIRASchema, makeSchema } from '../src/schema';
 
@@ -27,6 +27,12 @@ describe(name, () => {
       schema,
       doc(code({ language: 'JavaScript' })('var foo = "bar";')),
       `<div class="code panel"><div class="codeContent panelContent"><pre class="code-javascript">var foo = "bar";</pre></div></div>`,
+    );
+
+    checkParse('JIRA preformatted macros',
+      schema,
+      [`<div class="preformatted panel"><div class="preformattedContent panelContent"><pre>*no* further _formatting_</pre></div></div>`],
+      doc(code({})('*no* further _formatting_'))
     );
   });
 });

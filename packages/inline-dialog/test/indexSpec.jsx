@@ -1,24 +1,18 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import Layer from '@atlaskit/layer';
 
 import InlineDialog from '../src';
-import styles from '../src/styles.less';
-
-const containerClass = styles.locals.inlineDialogContainer;
+import Container from '../src/styled/Container';
 
 describe('inline-dialog', () => {
-  it('should be possible to create a component', () => {
-    const wrapper = shallow(<InlineDialog />);
-    expect(wrapper).not.to.equal(undefined);
-  });
-
   describe('default', () => {
     it('should have the expected default props', () => {
       const wrapper = mount(<InlineDialog />);
+
       expect(wrapper.prop('position')).to.equal('bottom center');
       expect(wrapper.prop('isOpen')).to.equal(false);
-      expect(wrapper.prop('content')).to.equal(null);
+      expect(wrapper.prop('content')).to.equal(undefined);
       expect(wrapper.prop('shouldFlip')).to.equal(false);
     });
 
@@ -32,20 +26,20 @@ describe('inline-dialog', () => {
     });
 
     it('should render any children passed to it', () => {
-      const wrapper = mount(<InlineDialog><div id="children" /></InlineDialog>);
-      expect(wrapper.find('#children')).to.have.length.above(0);
+      const wrapper = shallow(<InlineDialog><div id="children" /></InlineDialog>);
+      expect(wrapper.find('#children').exists()).to.equal(true);
     });
   });
 
   describe('isOpen prop', () => {
     it('should render the content container if isOpen is set', () => {
       const wrapper = mount(<InlineDialog isOpen />);
-      expect(wrapper.find(`.${containerClass}`)).to.have.length.above(0);
+      expect(wrapper.find(Container).exists()).to.equal(true);
     });
 
     it('should not render the content container if isOpen is not set', () => {
       const wrapper = mount(<InlineDialog />);
-      expect(wrapper.find(`.${containerClass}`).length).to.equal(0);
+      expect(wrapper.find(Container).exists()).to.equal(false);
     });
   });
 
@@ -54,25 +48,25 @@ describe('inline-dialog', () => {
 
     it('should render content if isOpen is set', () => {
       const wrapper = mount(<InlineDialog content={content} isOpen />);
-      expect(wrapper.find('#someContent')).to.have.length.above(0);
+      expect(wrapper.find('#someContent').exists()).to.equal(true);
     });
 
     it('should not render content if isOpen is not set', () => {
       const wrapper = mount(<InlineDialog content={content} />);
-      expect(wrapper.find('#content').length).to.equal(0);
+      expect(wrapper.find('#content').exists()).to.equal(false);
     });
 
     it('should reflect content prop onto Layer if isOpen is set', () => {
-      const wrapper = mount(<InlineDialog content={content} isOpen />);
+      const wrapper = shallow(<InlineDialog content={content} isOpen />);
       const layer = wrapper.find(Layer);
-      const foo = mount(layer.prop('content'));
+      const foo = shallow(layer.prop('content'));
       expect(foo.find('#someContent')).to.have.length.above(0);
     });
   });
 
   describe('position prop', () => {
     it('should be reflected onto the Layer component', () => {
-      const wrapper = mount(<InlineDialog position="right middle" />);
+      const wrapper = shallow(<InlineDialog position="right middle" />);
       const layer = wrapper.find(Layer);
       expect(layer).to.have.length.above(0);
       expect(layer.prop('position')).to.equal('right middle');
@@ -131,30 +125,6 @@ describe('inline-dialog', () => {
       const content = mount(wrapper.find(Layer).props().content);
 
       content.simulate('click');
-      expect(spy.callCount).to.equal(1);
-    });
-  });
-
-  describe('onContentFocus', () => {
-    it('should be triggered when an element in the content is focused', () => {
-      const spy = sinon.spy();
-      const linkEl = <a id="link" href="/test">a link</a>;
-      const wrapper = mount(<InlineDialog onContentFocus={spy} content={linkEl} isOpen />);
-      const content = mount(wrapper.find(Layer).props().content);
-
-      content.find('#link').simulate('focus');
-      expect(spy.callCount).to.equal(1);
-    });
-  });
-
-  describe('onContentBlur', () => {
-    it('should be triggered when an element in the content is blurred', () => {
-      const spy = sinon.spy();
-      const linkEl = <a id="link" href="/test">a link</a>;
-      const wrapper = mount(<InlineDialog onContentBlur={spy} content={linkEl} isOpen />);
-      const content = mount(wrapper.find(Layer).props().content);
-
-      content.find('#link').simulate('blur');
       expect(spy.callCount).to.equal(1);
     });
   });

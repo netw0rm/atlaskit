@@ -16,7 +16,6 @@ export default class GlobalNavigation extends PureComponent {
     linkComponent: PropTypes.func,
     primaryIcon: PropTypes.node,
     primaryItemHref: PropTypes.string,
-    shouldAnimate: PropTypes.bool,
     searchIcon: PropTypes.node,
     onSearchActivate: PropTypes.func,
     onCreateActivate: PropTypes.func,
@@ -29,7 +28,6 @@ export default class GlobalNavigation extends PureComponent {
     helpItem: null,
     linkComponent: DefaultLinkComponent,
     primaryIcon: null,
-    shouldAnimate: false,
     secondaryActions: [],
   };
 
@@ -43,7 +41,6 @@ export default class GlobalNavigation extends PureComponent {
       primaryIcon,
       primaryItemHref,
       searchIcon,
-      shouldAnimate,
       secondaryActions,
     } = this.props;
     return (
@@ -54,10 +51,9 @@ export default class GlobalNavigation extends PureComponent {
       >
         <GlobalNavigationOuter>
           <Spacer
-            shouldAnimate={shouldAnimate}
             width={globalOpenWidth}
           />
-          <GlobalNavigationInner shouldAnimate={shouldAnimate} appearance={appearance}>
+          <GlobalNavigationInner appearance={appearance}>
             <GlobalNavigationPrimaryContainer>
               <GlobalPrimaryActions
                 appearance={appearance}

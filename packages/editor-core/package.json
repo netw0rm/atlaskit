@@ -48,7 +48,6 @@
     "browserkeymap": "git://github.com/bradleyayers/browserkeymap#es6-modules-compat-with-types",
     "orderedmap": "^1.0.0",
     "popper.js": "^1.0.1",
-    "prosemirror": "git+https://bitbucket.org/atlassian/prosemirror.git#backport-fixes-from-future",
     "prosemirror-commands": "^0.19.0",
     "prosemirror-history": "^0.19.0",
     "prosemirror-inputrules": "^0.19.0",

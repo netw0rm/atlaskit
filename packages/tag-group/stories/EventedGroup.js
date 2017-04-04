@@ -21,9 +21,11 @@ export default class EventedGroup extends PureComponent {
     this.onRemove = this.props.onRemove || (() => null);
   }
 
-  beforeRemoveCallback = () => this.state.allowRemoval;
+  handleChange = e => (this.setState({ allowRemoval: e.target.checked }));
 
-  afterRemoveCallback = (removedTagText) => {
+  handleRemoveRequest = () => this.state.allowRemoval;
+
+  handleRemoveComplete = (removedTagText) => {
     this.onRemove(removedTagText);
     const tags = this.state.tags.filter(text => text !== removedTagText);
     this.setState({ tags });
@@ -37,7 +39,7 @@ export default class EventedGroup extends PureComponent {
         <input
           defaultChecked={allowRemoval}
           id="allow-remove"
-          onChange={e => (this.setState({ allowRemoval: e.target.checked }))}
+          onChange={this.handleChange}
           type="checkbox"
         />
         <label htmlFor="allow-remove">Allow tag removal</label>
@@ -46,8 +48,8 @@ export default class EventedGroup extends PureComponent {
           {tags.map(text => (
             <Tag
               key={text}
-              onAfterRemoveAction={this.afterRemoveCallback}
-              onBeforeRemoveAction={this.beforeRemoveCallback}
+              onAfterRemoveAction={this.handleRemoveComplete}
+              onBeforeRemoveAction={this.handleRemoveRequest}
               removeButtonText={allowRemoval ? 'Remove me' : null}
               text={text}
             />

@@ -22,7 +22,7 @@
     "classnames": "^2.2.5"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^1.0.0",
+    "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/comment": "*",
     "@atlaskit/editor-bitbucket": "^1.0.0",
     "@atlaskit/util-readme": "^1.0.0"

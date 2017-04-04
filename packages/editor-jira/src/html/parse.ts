@@ -140,6 +140,8 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
           return jiraKey ? schema.text(jiraKey) : null;
         } else if (node.className.match('jira-macro-single-issue-export-pdf')) {
           return null;
+        } else if (node.className.match('code-')) { // Removing spans with syntax highlighting from JIRA
+          return null;
         }
         break;
 
@@ -193,7 +195,7 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
             }
 
             const language = pre.className.split('-')[1];
-            return schema.nodes.code_block!.createChecked({ language }, schema.text(pre.innerText));
+            return schema.nodes.code_block!.createChecked({ language }, schema.text(pre.innerText.replace(/\r\n/g, '\n')));
           }
           break;
         case 'PRE':

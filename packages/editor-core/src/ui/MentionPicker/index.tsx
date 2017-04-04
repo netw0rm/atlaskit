@@ -25,19 +25,44 @@ export interface State {
 export default class MentionPicker extends PureComponent<Props, State> {
   state: State = {};
   popper?: IPopper;
+  subscriberKey?: string;
+
+  constructor(props) {
+    super(props);
+    this.subscriberKey = 'editor-' + Math.floor(Math.random() * 100000);
+  }
 
   private refreshProvider(providerPromise: Promise<any>) {
     if (providerPromise) {
       providerPromise.then(mentionsProvider => {
-        this.setState({
-          mentionsProvider
-        });
+        this.subscribeResourceProvider(mentionsProvider);
+        this.setState({ mentionsProvider });
       });
     } else {
-      this.setState({
-        mentionsProvider: undefined
-      });
+      this.unsubscribeResourceProvider(this.state.mentionsProvider);
+      this.setState({ mentionsProvider: undefined });
     }
+  }
+
+  private subscribeResourceProvider(mentionsProvider) {
+    if (mentionsProvider) {
+      mentionsProvider.subscribe(
+        this.subscriberKey,
+        this.updatePopupPosition.bind(this),
+        () => {},
+        () => {}
+      );
+    }
+  }
+
+  private unsubscribeResourceProvider(mentionsProvider) {
+    if (mentionsProvider) {
+      mentionsProvider.unsubscribe(this.subscriberKey);
+    }
+  }
+
+  private updatePopupPosition() {
+    this.popper && this.popper.update();
   }
 
   componentWillMount() {
@@ -67,6 +92,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   componentWillUmount() {
+    this.unsubscribeResourceProvider(this.state.mentionsProvider);
     this.props.pluginState.unsubscribe(this.handlePluginStateChange);
     document.removeEventListener('click', this.handleClickOutside);
     this.popper && this.popper.destroy();
@@ -145,27 +171,9 @@ export default class MentionPicker extends PureComponent<Props, State> {
     if (!anchorElement || query === undefined) {
       return null;
     }
-    // const { anchorElement, query, mentionsProvider } = this.state;
 
     if (!mentionsProvider) {
       return null;
-    }
-
-    let style: any = {
-      display: 'none'
-    };
-
-    if (anchorElement && typeof(query) !== 'undefined') {
-      const rect = anchorElement.getBoundingClientRect();
-      const parentRect = anchorElement.offsetParent.getBoundingClientRect();
-      style = {
-        display: 'block',
-        position: 'absolute',
-        left: (rect.left - parentRect.left),
-        top: !this.props.reversePosition ? (rect.top - parentRect.top) + rect.height : null,
-        bottom: this.props.reversePosition ? (window.innerHeight - parentRect.bottom) + 20 : null,
-        zIndex: 1
-      };
     }
 
     return (

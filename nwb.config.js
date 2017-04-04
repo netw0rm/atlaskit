@@ -52,11 +52,11 @@ module.exports = {
 
     // TODO remove this when following the default convention.
     testFiles: [
+      // This is the default NWB convention.
+      '+(src|test?(s))/**/*+(-test|.spec|.test).js',
+
       // This is our current convention.
       'test/**Spec.@(js|jsx|ts|tsx)',
-
-      // This is the default NWB convention.
-      '@(src|test|tests)/**@(.|-)@(spec|test).js',
 
       // Some follow this convention.
       '@(test|tests)/**!(_)*.@(js|jsx|ts|tsx)',

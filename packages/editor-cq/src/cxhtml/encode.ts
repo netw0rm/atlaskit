@@ -164,9 +164,9 @@ export default function encode(node: PMNode) {
 
   function encodeMention(node: PMNode) {
     const elem = doc.createElement('fab:mention');
-    elem.setAttribute('atlassian-id', node.attrs['atlassianId']);
+    elem.setAttribute('atlassian-id', node.attrs['id']);
 
-    const cdata = doc.createCDATASection(node.attrs['user']);
+    const cdata = doc.createCDATASection(node.attrs['displayName']);
     elem.appendChild(cdata);
 
     return elem;

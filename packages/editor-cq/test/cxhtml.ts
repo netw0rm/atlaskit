@@ -451,7 +451,10 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
       doc(
         p(
           'This is mention from ',
-          mention('557057:ff721128-093e-4357-8d8e-8caf869f577', 'Artur Bodera')
+          mention({
+            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+            displayName: 'Artur Bodera'
+          })
         )
       )
     );

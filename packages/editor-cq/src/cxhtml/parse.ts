@@ -330,8 +330,8 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         const cdata = node.firstChild!;
 
         return schema.nodes.mention.create({
-          atlassianId: node.getAttribute('atlassian-id'),
-          user: cdata!.nodeValue,
+          id: node.getAttribute('atlassian-id'),
+          displayName: cdata!.nodeValue,
         });
     }
   }

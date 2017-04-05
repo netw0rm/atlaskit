@@ -9,6 +9,7 @@ import {
   heading,
   link,
   listItem,
+  mention,
   MarkSpec,
   NodeSpec,
   orderedList,
@@ -22,7 +23,6 @@ import {
   underline,
 } from '@atlaskit/editor-core';
 
-import mention from './schema/nodes/mention';
 import unsupportedBlock from './schema/nodes/unsupportedBlock';
 import unsupportedInline from './schema/nodes/unsupportedInline';
 

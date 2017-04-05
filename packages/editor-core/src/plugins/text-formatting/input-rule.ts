@@ -19,9 +19,7 @@ function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: stri
 
     analyticsService.trackEvent(`atlassian.editor.format.${markType.name}.autoformatting`);
 
-    let tr = state.tr
-      .addMark(from, to, markType.create())
-      .removeStoredMark(markType);
+    let { tr } = state;
 
     if (charSize > 1) {
       // delete special characters after the text
@@ -29,8 +27,13 @@ function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: stri
       tr = tr.delete(to - (charSize - 1), to);
     }
 
-    // delete special characters before the text
-    return tr.delete(from, from + charSize);
+    return tr
+      // apply mark to the range (from, to)
+      .addMark(from, to, markType.create())
+      // delete special characters before the text
+      .delete(from, from + charSize)
+      // deactivate the mark
+      .removeStoredMark(markType);
   };
 };
 

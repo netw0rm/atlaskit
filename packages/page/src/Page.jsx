@@ -20,7 +20,7 @@ const BannerContainer = styled.div`
   flex-shrink: 0;
   flex-basis: auto;
   transition: height .25s ease-in-out;
-  height: ${props => (props.isBannerOpen ? 52 : 0)}px; /* 52 is line height (20) + 4*grid */
+  max-height: ${props => (props.isBannerOpen ? 52 : 0)}px; /* 52 is line height (20) + 4*grid */
   position: relative;
   width: 100%;
   z-index: 3;

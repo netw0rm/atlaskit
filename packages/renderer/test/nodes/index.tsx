@@ -47,6 +47,17 @@ describe('Nodes', () => {
       });
     });
 
+    describe('emoji', () => {
+      it('should pass through attrs as id', () => {
+        const emojiId = { shortName: ':grinning:', id: '123', fallback: 'cheese' };
+        const attrs = getValidNode({ type: 'emoji', attrs: emojiId }).attrs;
+        expect(attrs).to.not.be.undefined;
+        if (attrs) {
+          expect(attrs.id).to.deep.equal(emojiId);
+        }
+      });
+    });
+
     describe('hardBreak', () => {
       it('should return "hardBreak"', () => {
         expect(getValidNode({ type: 'hardBreak' })).to.deep.equal({ type: 'hardBreak' });

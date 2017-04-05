@@ -179,10 +179,7 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
     case NodeType.emoji: {
       const { attrs } = validNode;
       const { id } = attrs as { id: EmojiId };
-
-
       const emojiProvider = servicesConfig && servicesConfig.getEmojiProvider && servicesConfig.getEmojiProvider();
-
       return <Emoji emojiId={id} emojiProvider={emojiProvider} />;
     }
     case NodeType.hardBreak:

@@ -1,5 +1,5 @@
 import { nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
-import { checkParseEncodeRoundTrips, checkEncode } from '../test-helpers';
+import { checkParseEncodeRoundTrips, checkEncode, checkParse } from '../test-helpers';
 import { name } from '../package.json';
 import { JIRASchema, makeSchema } from '../src/schema';
 
@@ -17,6 +17,12 @@ describe(name, () => {
       doc(code({ language: 'javascript' })('var foo = "bar";'))
     );
 
+    checkParseEncodeRoundTrips('multiline code_block node',
+      schema,
+      `<div class="code panel"><div class="codeContent panelContent"><pre class="code-javascript">var foo = "bar";\nfoo += "baz";</pre></div></div>`,
+      doc(code({ language: 'javascript' })(`var foo = "bar";\nfoo += "baz";`))
+    );
+
     checkEncode('default language is java',
       schema,
       doc(code({})('var foo = "bar";')),
@@ -27,6 +33,29 @@ describe(name, () => {
       schema,
       doc(code({ language: 'JavaScript' })('var foo = "bar";')),
       `<div class="code panel"><div class="codeContent panelContent"><pre class="code-javascript">var foo = "bar";</pre></div></div>`,
+    );
+
+    checkParse('JIRA preformatted macros',
+      schema,
+      [`<div class="preformatted panel"><div class="preformattedContent panelContent"><pre>*no* further _formatting_</pre></div></div>`],
+      doc(code({})('*no* further _formatting_'))
+    );
+
+    checkParse('strip spans',
+      schema,
+      [
+        `<div class="code panel"><div class="codeContent panelContent"><pre class="code-java"><span class="code-comment">// Some comments here
+</span><span class="code-keyword">public</span> <span class="code-object">String</span> getFoo()
+{
+    <span class="code-keyword">return</span> foo;
+}</pre></div></div>`
+      ],
+      doc(code({ language: 'java' })(`// Some comments here
+public String getFoo()
+{
+    return foo;
+}`)
+      )
     );
   });
 });

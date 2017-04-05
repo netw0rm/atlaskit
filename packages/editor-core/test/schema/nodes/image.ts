@@ -1,28 +1,25 @@
 import { expect } from 'chai';
-import { DocNodeType, ImageNodeType, Schema, Text } from '../../../src';
+import { Schema, doc, paragraph, text, image } from '../../../src';
+import { fromHTML, toHTML } from '../../../src/test-helper';
+
+const schema = makeSchema();
+const src = 'http://test.com';
 
 describe('@atlaskit/editor-core/schema image node', () => {
-  it('throws an error if it is not named "image"', () => {
-    expect(() => {
-      new Schema({
-        nodes: {
-          doc: { type: DocNodeType, content: 'inline*' },
-          foo: { type: ImageNodeType, group: 'inline' },
-          text: { type: Text }
-        }
-      });
-    }).to.throw(Error);
+  it('serializes to <img>', () => {
+    const html = toHTML(schema.nodes.image.create({ src }), schema);
+    expect(html).to.have.string(`<img src="${src}">`);
   });
 
-  it('does not throw an error if it is named "image"', () => {
-    expect(() => {
-      new Schema({
-        nodes: {
-          doc: { type: DocNodeType, content: 'inline*' },
-          image: { type: ImageNodeType, group: 'inline' },
-          text: { type: Text }
-        }
-      });
-    }).to.not.throw(Error);
+  it('matches <img src="...">', () => {
+    const doc = fromHTML(`<img src="${src}" />`, schema);
+    const img = doc.firstChild!.firstChild!;
+    expect(img.type.name).to.equal('image');
   });
 });
+
+function makeSchema() {
+  const nodes = { doc, paragraph, image, text };
+  const marks = {};
+  return new Schema<typeof nodes, typeof marks>({ nodes, marks });
+}

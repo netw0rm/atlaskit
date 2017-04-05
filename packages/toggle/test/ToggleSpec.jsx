@@ -1,58 +1,60 @@
 import sinon from 'sinon';
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import CloseIcon from 'ak-icon/glyph/cancel';
 import ConfirmIcon from 'ak-icon/glyph/confirm';
-import styles from '../src/styles.less';
 
-import { Toggle } from '../src';
+import { ToggleStateless as Toggle } from '../src';
+import { IconWrapper, Input, Label } from '../src/styled';
 
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
 describe('Toggle', () => {
   it('defaults', () => {
     const wrapper = shallow(<Toggle />);
-    expect(wrapper.find('label').length).to.equal(1);
-    const label = wrapper.find('label');
-    expect((label).hasClass((styles.locals.regular))).to.equal(true);
-    expect(label.find('input').length).to.equal(1);
-    const iconWrapper = label.find('div').at(2);
-    expect(iconWrapper).to.have.length.above(0);
-    expect(iconWrapper.find(CloseIcon).length).to.equal(1);
+    const input = wrapper.find(Input);
+    const label = wrapper.find(Label);
+    const iconWrapper = wrapper.find(IconWrapper);
+
+    expect(input.exists()).to.equal(true);
+
+    expect(label.exists()).to.equal(true);
+    expect(label.prop('size')).to.equal('regular');
+
+    expect(iconWrapper.exists()).to.equal(true);
+    expect(iconWrapper.find(CloseIcon).exists()).to.equal(true);
   });
 
   describe('properties', () => {
     it('isChecked=true', () => {
       const wrapper = shallow(<Toggle isChecked />);
-      expect(wrapper.find('input').prop('checked')).to.equal(true);
-      const iconWrapper = wrapper.find('div').at(2);
-      expect(iconWrapper.find(ConfirmIcon).length).to.be.above(0);
-      expect(iconWrapper.find(CloseIcon).length).to.equal(0);
+      expect(wrapper.find(Input).prop('checked')).to.equal(true);
+      expect(wrapper.find(ConfirmIcon).exists()).to.be.equal(true);
+      expect(wrapper.find(CloseIcon).exists()).to.equal(false);
     });
     it('isChecked=false', () => {
       const wrapper = shallow(<Toggle />);
-      expect(wrapper.find('input').prop('checked')).to.equal(false);
-      const iconWrapper = wrapper.find('div').at(2);
-      expect(iconWrapper.find(CloseIcon).length).to.be.above(0);
-      expect(iconWrapper.find(ConfirmIcon).length).to.equal(0);
+      expect(wrapper.find(Input).prop('checked')).to.equal(false);
+      expect(wrapper.find(ConfirmIcon).exists()).to.be.equal(false);
+      expect(wrapper.find(CloseIcon).exists()).to.equal(true);
     });
     it('isDisabled=true', () => {
       const wrapper = shallow(<Toggle isDisabled />);
-      expect(wrapper.find('input').prop('disabled')).to.equal(true);
+      expect(wrapper.find(Input).prop('disabled')).to.equal(true);
     });
     it('isDisabled=false', () => {
       const wrapper = shallow(<Toggle />);
-      expect(wrapper.find('input').prop('disabled')).to.equal(false);
+      expect(wrapper.find(Input).prop('disabled')).to.equal(false);
     });
 
     it('name', () =>
-      expect(shallow(<Toggle name="test" />).find('input').prop('name', 'test')).to.not.equal(undefined)
+      expect(shallow(<Toggle name="test" />).find(Input).prop('name')).to.equal('test')
     );
     it('value', () =>
-      expect(shallow(<Toggle value="test" />).find('input').prop('value', 'test')).to.not.equal(undefined)
+      expect(shallow(<Toggle value="test" />).find(Input).prop('value')).to.equal('test')
     );
     it('size', () =>
-      expect(shallow(<Toggle size="large" />).find('label').hasClass(styles.locals.large)).to.equal(true)
+      expect(shallow(<Toggle size="large" />).find(Label).prop('size')).to.equal('large')
     );
 
     it('label', () => {
@@ -67,8 +69,8 @@ describe('Toggle', () => {
         it('onChange', () => {
           const spy = sinon.spy();
           const props = { [`on${capitalize(eventName)}`]: spy };
-          const wrapper = shallow(<Toggle {...props} />);
-          wrapper.find('input').simulate(eventName);
+          const wrapper = mount(<Toggle {...props} />);
+          wrapper.find(Input).simulate(eventName);
           expect(spy.called).to.equal(true);
         })
       )

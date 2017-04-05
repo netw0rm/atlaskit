@@ -42,6 +42,7 @@ export const mentions = [
     avatarUrl: '//66.media.tumblr.com/avatar_2072eeb45575_64.png',
     name: 'Doctor Who',
     mentionName: 'thedoctor',
+    nickname: 'doctor',
     presence: {
       status: 'busy',
     },
@@ -61,12 +62,14 @@ export const mentions = [
     avatarUrl: '//cdn.akamai.steamstatic.com/steamcommunity/public/images/avatars/ab/abee9ce4fbd1c9c94b695b16062b8fdf57a21de7_medium.jpg',
     name: 'James T. Kirk',
     mentionName: 'wheresmyshirt',
+    nickname: 'jim'
   },
   {
     id: '12312312',
     avatarUrl: 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/cf/cf845e576741bd2db28c079b279c6a81dcc33666_medium.jpg',
     name: 'Dude with long name that doesn\'t seem to stop and should overflow',
     mentionName: 'Dudewithlongnamethatdoesn\'tseemtostopandshouldoverflow',
+    nickname: 'Dude'
   },
   {
     id: '12312412',

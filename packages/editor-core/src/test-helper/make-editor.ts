@@ -1,15 +1,14 @@
-import { Plugin, ProseMirror, Schema } from '../';
-import { schema } from './schema';
-import { RefsNode } from './schema-builder';
-import SyncPlugin from './sync-plugin';
-
-export interface Options {
-  doc: RefsNode;
-  plugin?: Plugin<any>;
-  plugins?: Plugin<any>[];
-  place?: HTMLElement;
-  schema?: Schema;
-}
+import {
+  Plugin,
+  Schema,
+  EditorState,
+  EditorView,
+  baseKeymap,
+  keymap
+} from '../prosemirror';
+import { default as defaultSchema } from './schema';
+import { RefsNode, Refs } from './schema-builder';
+import { setTextSelection } from './transactions';
 
 /**
  * Build a ProseMirror instance.
@@ -19,28 +18,36 @@ export interface Options {
  * - `<>` -- a collapsed text selection
  * - `<` and `>` -- a range text selection (`<` is from, `>` is to).
  */
-export default (options: Options) => {
-  let plugins: Plugin<any>[] = [];
+export default (options: Options): EditorInstance => {
+  const plugins: Plugin[] = [];
+
   if (options.plugin) {
     plugins.push(options.plugin);
   }
+
   if (options.plugins) {
     plugins.push(...options.plugins);
   }
-  plugins.push(SyncPlugin);
-  const pm = new ProseMirror({
-    doc: options.doc,
-    place: options.place,
-    schema: options.schema || schema,
-    plugins,
-  }) as ProseMirrorWithRefs;
 
-  const { refs } = pm.doc;
+  plugins.push(
+    keymap(baseKeymap)
+  );
+
+  const editorState = EditorState.create({
+    plugins,
+    doc: options.doc,
+    schema: options.schema || defaultSchema,
+  }) as ProseMirrorWithRefs;
+  const editorView = new EditorView(options.place || document.body, {
+    state: editorState
+  });
+
+  const { refs } = editorState.doc;
 
   // Collapsed selection.
   if ('<>' in refs) {
-    pm.setTextSelection(refs['<>']);
-  // Expanded selection
+    setTextSelection(editorView, refs['<>']);
+    // Expanded selection
   } else if ('<' in refs || '>' in refs) {
     if ('<' in refs === false) {
       throw new Error('A `<` ref must complement a `>` ref.');
@@ -48,12 +55,40 @@ export default (options: Options) => {
     if ('>' in refs === false) {
       throw new Error('A `>` ref must complement a `<` ref.');
     }
-    pm.setTextSelection(refs['<'], refs['>']);
+    setTextSelection(editorView, refs['<'], refs['>']);
   }
 
-  return { pm, plugin: plugins[0].get(pm), plugins: plugins.map(plugin => plugin.get(pm)) };
+  const pluginStates = plugins.map((plugin) => plugin.getState(editorState));
+
+  return {
+    editorView,
+    plugins,
+    pluginStates: pluginStates,
+    refs,
+    plugin: plugins[0],
+    pluginState: plugins[0].getState(editorState),
+    sel: refs['<>']
+  };
 };
 
-export interface ProseMirrorWithRefs extends ProseMirror {
+export interface ProseMirrorWithRefs extends EditorState<Schema<any, any>> {
   doc: RefsNode;
+}
+
+export interface Options {
+  doc: RefsNode;
+  plugin?: Plugin;
+  plugins?: Plugin[];
+  place?: HTMLElement;
+  schema?: Schema<any, any>;
+}
+
+export interface EditorInstance {
+  editorView: EditorView;
+  pluginState: any;
+  pluginStates: any[];
+  plugin: Plugin;
+  plugins: Plugin[];
+  refs: Refs;
+  sel: number;
 }

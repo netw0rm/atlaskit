@@ -1,49 +1,45 @@
 import { expect } from 'chai';
-import { ProseMirror } from '../../../src';
 import PanelPlugin from '../../../src/plugins/panel';
-import { PanelNodeType, ParagraphNodeType } from '../../../src/schema';
-import { schema } from '../../_schema-builder';
+import PanelInputRulesPlugin from '../../../src/plugins/panel/input-rules';
+import { insertText, doc, p, makeEditor, fixtures, panel } from '../../../src/test-helper';
 
-const makeEditor = () => new ProseMirror({
-  schema,
+const fixture = fixtures();
+const editor = (doc: any) => makeEditor({
+  doc,
   plugins: [PanelPlugin],
+  place: fixture()
 });
 
 describe('panel input rules', () => {
   it('should create plain ParagraphNodeType for a random text input', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, 'testing');
-    const node = pm.selection.$to.node();
-    expect(node.type instanceof ParagraphNodeType).to.be.true;
+    const { editorView, sel } = editor(doc(p('{<>}')));
+    insertText(editorView, 'testing', sel, sel);
+    const node = editorView.state.selection.$to.node();
+    expect(node.type.name).to.equal('paragraph');
   });
 
   it('should replace {info} input with panel node of type info', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, '{info}');
-    const { $from, $to } = pm.selection;
-    const range = $from.blockRange($to);
-    const node = range && range.parent;
-    expect(node && node.type instanceof PanelNodeType).to.be.true;
-    expect(node && node.attrs['panelType']).to.equal('info');
+    const { editorView } = editor(doc(p('{info')));
+
+    const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
+    inputRulePlugin!.props.handleTextInput!(editorView, 6, 6, '}');
+
+    expect(editorView.state.doc).to.deep.equal(doc(panel(p())));
   });
 
   it('should replace {tip} input with panel node of type tip', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, '{tip}');
-    const { $from, $to } = pm.selection;
-    const range = $from.blockRange($to);
-    const node = range && range.parent;
-    expect(node && node.type instanceof PanelNodeType).to.be.true;
-    expect(node && node.attrs['panelType']).to.equal('tip');
+    const { editorView } = editor(doc(p('{tip')));
+
+    const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
+    inputRulePlugin!.props.handleTextInput!(editorView, 5, 5, '}');
+    expect(editorView.state.doc.content.content[0].attrs.panelType).to.deep.equal('tip');
   });
 
   it('should replace {warning} input with panel node of type warning', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, '{warning}');
-    const { $from, $to } = pm.selection;
-    const range = $from.blockRange($to);
-    const node = range && range.parent;
-    expect(node && node.type instanceof PanelNodeType).to.be.true;
-    expect(node && node.attrs['panelType']).to.equal('warning');
+    const { editorView } = editor(doc(p('{warning')));
+
+    const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
+    inputRulePlugin!.props.handleTextInput!(editorView, 9, 9, '}');
+    expect(editorView.state.doc.content.content[0].attrs.panelType).to.deep.equal('warning');
   });
 });

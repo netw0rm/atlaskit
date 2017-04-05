@@ -5,10 +5,13 @@ import { PureComponent } from 'react';
 import { analyticsDecorator as analytics } from '../../analytics';
 import { toggleBulletList, toggleOrderedList, tooltip } from '../../keymaps';
 import { ListsState } from '../../plugins/lists';
+import { ListsState as FutureListsState } from '../../plugins/lists';
 import ToolbarButton from '../ToolbarButton';
+import { EditorView } from '../../prosemirror';
 
 export interface Props {
-  pluginState: ListsState;
+  editorView: EditorView;
+  pluginState: ListsState | FutureListsState;
 }
 
 export interface State {
@@ -31,11 +34,19 @@ export default class ToolbarLists extends PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    this.props.pluginState.subscribe(this.handlePluginStateChange);
+    if (this.props.editorView) {
+      (this.props.pluginState as FutureListsState).subscribe(this.handleFuturePluginStateChange);
+    } else {
+      (this.props.pluginState as ListsState).subscribe(this.handlePluginStateChange);
+    }
   }
 
   componentWillUnmount() {
-    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
+    if (this.props.editorView) {
+      (this.props.pluginState as FutureListsState).unsubscribe(this.handleFuturePluginStateChange);
+    } else {
+      (this.props.pluginState as ListsState).unsubscribe(this.handlePluginStateChange);
+    }
   }
 
   render() {
@@ -75,17 +86,36 @@ export default class ToolbarLists extends PureComponent<Props, State> {
     });
   }
 
+  private handleFuturePluginStateChange = (pluginState: FutureListsState) => {
+    this.setState({
+      bulletListActive: pluginState.bulletListActive,
+      bulletListDisabled: pluginState.bulletListDisabled,
+      bulletListHidden: pluginState.bulletListHidden,
+      orderedListActive: pluginState.orderedListActive,
+      orderedListDisabled: pluginState.orderedListDisabled,
+      orderedListHidden: pluginState.orderedListHidden,
+    });
+  }
+
   @analytics('atlassian.editor.format.list.bullet.button')
   private handleBulletListClick = () => {
     if (!this.state.bulletListDisabled) {
-      this.props.pluginState.toggleBulletList();
+      if (this.props.editorView) {
+        (this.props.pluginState as FutureListsState).toggleBulletList(this.props.editorView);
+      } else {
+        (this.props.pluginState as ListsState).toggleBulletList(this.props.editorView);
+      }
     }
   }
 
   @analytics('atlassian.editor.format.list.numbered.button')
   private handleOrderedListClick = () => {
     if (!this.state.orderedListDisabled) {
-      this.props.pluginState.toggleOrderedList();
+      if (this.props.editorView) {
+        (this.props.pluginState as FutureListsState).toggleOrderedList(this.props.editorView);
+      } else {
+        (this.props.pluginState as ListsState).toggleOrderedList(this.props.editorView);
+      }
     }
   }
 };

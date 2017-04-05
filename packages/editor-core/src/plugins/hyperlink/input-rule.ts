@@ -1,34 +1,68 @@
-import { InputRule, ProseMirror } from '../../prosemirror';
-import { URL } from './regex';
+import { URL_REGEX } from './url-regex';
+import { Schema, InputRule, inputRules, Plugin } from '../../prosemirror';
+import { analyticsService } from '../../analytics';
 
-const urlAtEndOfLine = new RegExp(`${URL.source}$`);
+const urlAtEndOfLine = new RegExp(`${URL_REGEX.source}$`);
 
-export default new InputRule(urlAtEndOfLine, '', (
-  pm: ProseMirror,
-  match: string[],
-  to: number
-) : boolean => {
-  const { schema } = pm;
-  const from = to - match[1].length;
-  const url = match[3] ? match[1] : `http://${match[1]}`;
+let plugin: Plugin | undefined;
 
-  const markType = schema.mark(
-    'link',
-    {
-      href: url,
-    }
-  );
+export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+  if (!schema.marks.link) {
+    return;
+  }
 
-  pm.tr.replaceWith(
-    from,
-    to,
-    schema.text(
-      match[1],
-      [markType]
-    )
-  ).apply();
+  if (plugin) {
+    return plugin;
+  }
 
-  pm.removeActiveMark(markType.type);
+  const endOfLine = new InputRule(urlAtEndOfLine, (state, match, start, end) => {
+    const { schema } = state;
+    const url = match[3] ? match[1] : `http://${match[1]}`;
+    const markType = schema.mark(
+      'link',
+      {
+        href: url,
+      }
+    );
 
-  return true;
-});
+    analyticsService.trackEvent('atlassian.editor.format.hyperlink.autoformatting');
+
+    return state.tr.replaceWith(
+      start,
+      end,
+      schema.text(
+        match[1],
+        [markType]
+      )
+    );
+  });
+
+  // [something](link) should convert to a hyperlink
+  const markdownLinkRule = new InputRule(/(^|[^!])\[(\S+)\]\((\S+)\)$/, (state, match, start, end) => {
+    const { schema } = state;
+    const url = match[3];
+    const markType = schema.mark('link', { href: url });
+
+    analyticsService.trackEvent('atlassian.editor.format.hyperlink.autoformatting');
+
+    return state.tr.replaceWith(
+      start + match[1].length,
+      end,
+      schema.text(
+        match[2],
+        [markType]
+      )
+    );
+  });
+
+  plugin = inputRules({
+    rules: [
+      endOfLine,
+      markdownLinkRule
+    ]
+  });
+
+  return plugin;
+};
+
+export default inputRulePlugin;

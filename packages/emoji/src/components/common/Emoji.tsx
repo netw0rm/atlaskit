@@ -36,7 +36,7 @@ export default class Emoji extends PureComponent<Props, undefined> {
       <div className={classNames(classes)}>
         <span
           className={styles.emojiSprite}
-          title={emoji.shortcut}
+          title={emoji.shortName}
           style={style}
         />
       </div>
@@ -60,7 +60,7 @@ export default class Emoji extends PureComponent<Props, undefined> {
     return (
       <span
         className={classNames(classes)}
-        title={emoji.shortcut}
+        title={emoji.shortName}
         style={style}
       />);
   }

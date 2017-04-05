@@ -1,8 +1,131 @@
+import * as sinon from 'sinon';
+import { expect } from 'chai';
+import fetchMock from 'fetch-mock';
 
-import { modifyResponse } from '../src/api/profile-client';
+import AkProfileClient, { modifyResponse } from '../src/api/profile-client';
+import profileData from '../stories/profile-data';
+
+const clientUrl = 'https://foo/';
+const clientCacheSize = 10;
+const clientCacheMaxAge = 500;
 
 describe('Profilecard', () => {
-  describe('profile-client', () => {
+  describe('AkProfileClient', () => {
+    it('config.url is available when set on instantiation', () => {
+      const client = new AkProfileClient({
+        url: clientUrl,
+      });
+
+      expect(client.config.url).to.equal(clientUrl);
+      expect(client.cache).to.equal(null);
+    });
+
+    it('cache is available when cacheMaxAge is set on instantiation', () => {
+      const client = new AkProfileClient({
+        url: clientUrl,
+        cacheSize: clientCacheSize,
+        cacheMaxAge: clientCacheMaxAge,
+      });
+
+      expect(client.config.url).to.equal(clientUrl);
+      expect(client.cache).to.not.equal(null);
+      expect(client.cache.limit).to.equal(clientCacheSize);
+      expect(client.cacheMaxAge).to.equal(clientCacheMaxAge);
+    });
+
+    describe('LRU Cache', () => {
+      const client = new AkProfileClient({
+        url: clientUrl,
+        cacheSize: clientCacheSize,
+        cacheMaxAge: clientCacheMaxAge,
+      });
+
+      let cache;
+      let clock;
+
+      beforeEach(() => {
+        clock = sinon.useFakeTimers();
+        fetchMock.post(
+          '*',
+          { data: profileData[0] }
+        );
+      });
+
+      afterEach(() => {
+        clock.restore();
+        fetchMock.restore();
+      });
+
+      describe('#getCachedProfile', () => {
+        it('should return cached data within n milliseconds', (done) => {
+          client.getProfile('DUMMY-CLOUD-ID', '1')
+          .then((data) => {
+            clock.tick(clientCacheMaxAge);
+            cache = client.getCachedProfile('1');
+
+            expect(cache).to.equal(data);
+            done();
+          })
+          .catch((err) => {
+            done(err);
+          });
+        });
+
+        it('should return `null` after n+1 milliseconds ', (done) => {
+          client.getProfile('DUMMY-CLOUD-ID', '1')
+          .then(() => {
+            clock.tick(clientCacheMaxAge + 1);
+            cache = client.getCachedProfile('1');
+
+            expect(cache).to.equal(null);
+            done();
+          })
+          .catch((err) => {
+            done(err);
+          });
+        });
+
+        it('should reset expiry to n ms when cache item is used', (done) => {
+          client.getProfile('DUMMY-CLOUD-ID', '1')
+          .then((data) => {
+            clock.tick(clientCacheMaxAge);
+            cache = client.getCachedProfile('1');
+
+            expect(cache).to.equal(data);
+
+            clock.tick(clientCacheMaxAge);
+            cache = client.getCachedProfile('1');
+
+            expect(cache).to.equal(data);
+            done();
+          })
+          .catch((err) => {
+            done(err);
+          });
+        });
+      });
+
+      describe('#flushCache', () => {
+        it('should purge all cached items', (done) => {
+          client.getProfile('DUMMY-CLOUD-ID', '1')
+          .then((data) => {
+            cache = client.getCachedProfile('1');
+
+            expect(cache).to.equal(data);
+
+            client.flushCache();
+            cache = client.getCachedProfile('1');
+
+            expect(cache).to.equal(null);
+            done();
+          })
+          .catch((err) => {
+            done(err);
+          });
+        });
+      });
+    });
+
     describe('#modifyResponse', () => {
       it('should remove certain properties from the data object', () => {
         const data = {

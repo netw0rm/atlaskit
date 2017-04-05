@@ -19,6 +19,7 @@ const mentionProvider = new Promise<any>(resolve => {
 const mentionProvider2 = new Promise<any>(resolve => {
   resolve(resourceProvider2);
 });
+
 class DemoEditor extends React.PureComponent<{ onChange }, { provider: Promise<any> }> {
   constructor(props) {
     super(props);

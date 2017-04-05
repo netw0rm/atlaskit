@@ -32,6 +32,9 @@
     "tslib": "^1.2.0",
     "typestyle": "^0.21.4"
   },
+  "devDependencies": {
+    "pretty-data": "^0.40.0"
+  },
   "peerDependencies": {
     "react": "^15.3.2"
   },

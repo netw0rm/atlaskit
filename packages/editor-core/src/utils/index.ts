@@ -252,3 +252,40 @@ export function wrapIn(nodeType: NodeType, tr: Transaction, $from: ResolvedPos, 
   }
   return tr;
 }
+
+/**
+ * Returns a method which removes a single node at position obtained from getPos() callback.
+ * This is designed to be used with node views for interactions, where a node is to be removed.
+ *
+ * For example:
+ *
+ *   const nv:NodeView = (node: any, view: any, getPos: () => number) => {
+ *     let div: HTMLElement | undefined = document.createElement('div');
+ *
+ *     ReactDOM.render(
+ *       <Component>
+ *         <Button onClick={locateAndRemoveNode(view, getPos)}>
+ *           Click to remove
+ *         </Button>
+ *       </Component>
+ *     );
+ *     return {
+ *       get dom() {
+ *         return div;
+ *       }
+ *     }
+ *   }
+ *
+ * @param getPos Callback normally passed into Node View by ProseMirror.
+ * @param view A View instance which will be updated
+ */
+export function locateAndRemoveNode(view: EditorView, getPos: () => number): () => void {
+  return function() {
+    const pos = getPos();
+    if (!pos || pos <= 0) {
+      return;
+    }
+
+    view.dispatch(view.state.tr.delete(pos, pos + 1));
+  };
+}

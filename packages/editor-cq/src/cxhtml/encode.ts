@@ -4,7 +4,7 @@ import {
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
-import encodeCxhtml from './encode-cxhtml';
+import { default as encodeCxhtml, FAB_XMLNS } from './encode-cxhtml';
 
 export default function encode(node: PMNode) {
   const docType = document.implementation.createDocumentType('html', '-//W3C//DTD XHTML 1.0 Strict//EN', 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd');
@@ -33,6 +33,10 @@ export default function encode(node: PMNode) {
       return encodeHardBreak();
     } else if (node.type === schema.nodes.unsupportedBlock || node.type === schema.nodes.unsupportedInline) {
       return encodeUnsupported(node);
+    } else if (node.type === schema.nodes.mediaGroup) {
+      return encodeMediaGroup(node);
+    } else if (node.type === schema.nodes.media) {
+      return encodeMedia(node);
     } else {
       throw new Error(`Unexpected node '${(node as PMNode).type.name}' for CXHTML encoding`);
     }
@@ -64,6 +68,20 @@ export default function encode(node: PMNode) {
   function encodeParagraph(node: PMNode) {
     const elem = doc.createElement('p');
     elem.appendChild(encodeFragment(node.content));
+    return elem;
+  }
+
+  function encodeMediaGroup(node: PMNode) {
+    const elem = doc.createElement('p');
+    elem.appendChild(encodeFragment(node.content));
+    return elem;
+  }
+
+  function encodeMedia(node: PMNode) {
+    const elem = doc.createElementNS(FAB_XMLNS, 'fab:media');
+    elem.setAttribute('media-id', node.attrs.id);
+    elem.setAttribute('media-type', node.attrs.type);
+    elem.setAttribute('file-name', node.filename);
     return elem;
   }
 

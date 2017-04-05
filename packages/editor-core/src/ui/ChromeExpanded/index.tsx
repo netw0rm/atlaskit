@@ -17,6 +17,8 @@ import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { PanelState } from '../../plugins/panel';
 // import EmojiTypeAhead from '../EmojiTypeAhead';
+import { MediaPluginState } from '../../plugins/media';
+import { MediaProvider } from '../../media';
 import HyperlinkEdit from '../HyperlinkEdit';
 import LanguagePicker from '../LanguagePicker';
 import MentionPicker from '../MentionPicker';
@@ -29,6 +31,7 @@ import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import ToolbarImage from '../ToolbarImage';
+import ToolbarMedia from '../ToolbarMedia';
 import * as styles from './styles';
 import { EditorView } from '../../prosemirror';
 
@@ -50,9 +53,11 @@ export interface Props {
   pluginStateImageUpload?: ImageUploadState;
   pluginStateMentions?: MentionsState;
   pluginStateEmojis?: any; // EmojisPluginState;
+  pluginStateMedia?: MediaPluginState;
   presenceResourceProvider?: any; // AbstractPresenceResource
   emojiProvider?: any; // Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
+  mediaProvider?: Promise<MediaProvider>;
   pluginStatePanel?: PanelState;
 }
 
@@ -106,6 +111,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
               </ToolbarButton>
             }
             {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} editorView={props.editorView} /> : null}
+            {props.pluginStateMedia ? <ToolbarMedia pluginState={props.pluginStateMedia} /> : null}
           </div>
         </div>
       </div>

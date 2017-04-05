@@ -13,6 +13,7 @@ import { TextFormattingState } from '../../plugins/text-formatting';
 import { ClearFormattingState } from '../../plugins/clear-formatting';
 import { EditorView } from '../../prosemirror';
 import { PanelState } from '../../plugins/panel';
+import { MediaPluginState } from '../../plugins/media';
 import ChromeCollapsed from '../ChromeCollapsed';
 import ChromeExpanded from '../ChromeExpanded';
 
@@ -35,6 +36,7 @@ export interface Props {
   pluginStateMentions?: MentionsState;
   pluginStatePanel?: PanelState;
   pluginStateEmojis?: any; // EmojisPluginState;
+  pluginStateMedia?: MediaPluginState;
   presenceResourceProvider?: any; // AbstractPresenceResource
   emojiProvider?: any; // Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
@@ -59,6 +61,7 @@ export default class Chrome extends PureComponent<Props, {}> {
         pluginStateImageUpload={props.pluginStateImageUpload}
         pluginStateMentions={props.pluginStateMentions}
         pluginStateEmojis={props.pluginStateEmojis}
+        pluginStateMedia={props.pluginStateMedia}
         mentionProvider={props.mentionProvider}
         presenceResourceProvider={props.presenceResourceProvider}
         emojiProvider={props.emojiProvider}

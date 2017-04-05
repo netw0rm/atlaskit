@@ -1,5 +1,6 @@
 export const AC_XMLNS = 'http://example.com/ac';
 export const RI_XMLNS = 'http://example.com/ri';
+export const FAB_XMLNS = 'http://example.com/fab';
 export const XHTML_XMLNS = 'http://www.w3.org/1999/xhtml';
 
 export default function(node: Node): string {
@@ -13,7 +14,9 @@ export default function(node: Node): string {
   //     <wrapper xmlns="http://www.w3.org/1999/xhtml">
   //       <ac:wrapper xmlns="http://example.com/ac">
   //         <ri:wrapper xmlns="http://example.com/ri">
+  //           <fab:wrapper xmlns="http://example.com/fab">
   //           …
+  //           </fab:wrapper>
   //         </ri:wrapper>
   //       </ac:wrapper>
   //     </wrapper>
@@ -30,23 +33,25 @@ export default function(node: Node): string {
     node.parentNode.replaceChild(marker, node);
   }
 
+  const wrapper = doc.createElementNS(XHTML_XMLNS, 'wrapper');
   const acWrapper = doc.createElementNS(AC_XMLNS, 'ac:wrapper');
   const riWrapper = doc.createElementNS(RI_XMLNS, 'ri:wrapper');
-  const wrapper = doc.createElementNS(XHTML_XMLNS, 'wrapper');
+  const fabWrapper = doc.createElementNS(FAB_XMLNS, 'fab:wrapper');
 
   wrapper.appendChild(acWrapper);
   acWrapper.appendChild(riWrapper);
+  riWrapper.appendChild(fabWrapper);
 
   // Force avoid self-closing tags, as these would invalidate suffix/prefix length calculations.
   const wedge = '|';
   const wedgeText = doc.createTextNode(wedge);
-  riWrapper.appendChild(wedgeText);
+  fabWrapper.appendChild(wedgeText);
   const template = (wrapper as any).__outerHTML || wrapper.outerHTML; // NOTE: skatejs-named-slots breaks ".outerHTML" in IE, but keeps desired behaviour as ".__outerHTML".
   const prefixLength = template.indexOf(wedge);
   const suffixLength = template.length - prefixLength - wedge.length;
 
-  riWrapper.removeChild(wedgeText);
-  riWrapper.appendChild(node);
+  fabWrapper.removeChild(wedgeText);
+  fabWrapper.appendChild(node);
 
   const wrappedResult = (wrapper as any).__outerHTML || wrapper.outerHTML; // NOTE: skatejs-named-slots breaks ".outerHTML" in IE, but keeps desired behaviour as ".__outerHTML".
   const result = wrappedResult.slice(prefixLength, wrappedResult.length - suffixLength);
@@ -55,5 +60,5 @@ export default function(node: Node): string {
     marker.parentNode.replaceChild(node, marker);
   }
 
-  return result.replace(/\s\/>/g, '/>'); // Remove unnecessary white-space added by IE 
+  return result.replace(/\s\/>/g, '/>'); // Remove unnecessary white-space added by IE
 }

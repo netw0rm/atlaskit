@@ -18,6 +18,8 @@ import {
   subsup,
   text,
   underline,
+  media,
+  mediaGroup
 } from '@atlaskit/editor-core';
 
 import unsupportedInline from './schema/nodes/unsupportedInline';
@@ -36,7 +38,10 @@ interface CQSchemaNodes {
   text: NodeSpec;
   unsupportedBlock: NodeSpec;
   unsupportedInline: NodeSpec;
+  media: NodeSpec;
+  mediaGroup: NodeSpec;
 }
+
 
 interface CQSchemaMarks {
   code: MarkSpec;
@@ -46,6 +51,7 @@ interface CQSchemaMarks {
   subsup: MarkSpec;
   underline: MarkSpec;
 }
+
 
 const nodes = {
   blockquote,

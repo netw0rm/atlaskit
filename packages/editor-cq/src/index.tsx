@@ -15,7 +15,10 @@ import {
   TextFormattingPlugin,
   TextSelection,
   ClearFormattingPlugin,
-  version as coreVersion
+  version as coreVersion,
+  mediaPluginFactory,
+  MediaProvider,
+  ProviderFactory
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -24,7 +27,6 @@ import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
 
 export { version };
-
 
 export interface Props {
   context?: ContextName;
@@ -35,6 +37,7 @@ export interface Props {
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
+  mediaProvider?: Promise<MediaProvider>;
 }
 
 export interface State {
@@ -46,6 +49,7 @@ export interface State {
 
 export default class Editor extends PureComponent<Props, State> {
   state: State;
+  providerFactory: ProviderFactory;
   version = `${version} (editor-core ${coreVersion})`;
 
   constructor(props: Props) {
@@ -56,7 +60,14 @@ export default class Editor extends PureComponent<Props, State> {
       isExpanded: props.isExpandedByDefault,
     };
 
+    this.providerFactory = new ProviderFactory();
     analyticsService.handler = props.analyticsHandler || ((name) => {});
+
+    const { mediaProvider } = props;
+
+    if (mediaProvider) {
+      this.providerFactory.setProvider('mediaProvider', mediaProvider);
+    }
   }
 
   /**
@@ -109,6 +120,13 @@ export default class Editor extends PureComponent<Props, State> {
       : this.props.defaultValue;
   }
 
+ componentWillReceiveProps(nextProps: Props) {
+    const { props } = this;
+    if (props.mediaProvider !== nextProps.mediaProvider) {
+      this.providerFactory.setProvider('mediaProvider', nextProps.mediaProvider);
+    }
+  }
+
   render() {
     const { editorView, isExpanded } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
@@ -119,6 +137,7 @@ export default class Editor extends PureComponent<Props, State> {
     const clearFormattingState = editorState && ClearFormattingPlugin.getState(editorState);
     const listsState = editorState && ListsPlugin.getState(editorState);
     const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
+    const mediaState = editorState && this.props.mediaProvider && MediaPlugin.getState(editorState);
 
     return (
       <Chrome
@@ -134,6 +153,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateLists={listsState}
         pluginStateTextFormatting={textFormattingState}
         pluginStateClearFormatting={clearFormattingState}
+        pluginStateMedia={mediaState}
         packageVersion={version}
         packageName={name}
       />
@@ -180,6 +200,10 @@ export default class Editor extends PureComponent<Props, State> {
           ListsPlugin,
           RulePlugin,
           TextFormattingPlugin,
+          mediaPluginFactory({
+            providerFactory: this.providerFactory,
+            behavior: 'default'
+          }),
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap), // should be last :(
@@ -203,10 +227,14 @@ export default class Editor extends PureComponent<Props, State> {
             analyticsService.trackEvent('atlassian.editor.paste');
             return false;
           }
+        },
+        nodeViews: {
+          media: mediaNodeView(this.providerFactory)
         }
       });
 
       analyticsService.trackEvent('atlassian.editor.start');
+      mediaPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
       this.setState({ editorView });
       this.focus();

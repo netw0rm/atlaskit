@@ -40,7 +40,6 @@ export interface Props {
 
 export interface State {
   editorView?: EditorView;
-  editorState?: EditorState<any>;
   isExpanded?: boolean;
   schema: CQSchema;
 }
@@ -117,6 +116,7 @@ export default class Editor extends PureComponent<Props, State> {
     const editorState = editorView && editorView.state;
 
     const blockTypeState = editorState && BlockTypePlugin.getState(editorState);
+    const codeBlockState = editorState && CodeBlockPlugin.getState(editorState);
     const clearFormattingState = editorState && ClearFormattingPlugin.getState(editorState);
     const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
     const listsState = editorState && ListsPlugin.getState(editorState);
@@ -133,6 +133,7 @@ export default class Editor extends PureComponent<Props, State> {
         onCollapsedChromeFocus={() => this.setState({ isExpanded: true })}
         placeholder={this.props.placeholder}
         pluginStateBlockType={blockTypeState}
+        pluginStateCodeBlock={codeBlockState}
         pluginStateHyperlink={hyperlinkState}
         pluginStateLists={listsState}
         pluginStateTextFormatting={textFormattingState}

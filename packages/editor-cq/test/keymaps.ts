@@ -1,0 +1,77 @@
+import {
+  chaiPlugin,
+  doc,
+  fixtures,
+  makeEditor,
+  p,
+  subsup,
+} from '@atlaskit/editor-core/dist/es5/test-helper';
+import {
+  TextFormattingPlugin,
+} from '@atlaskit/editor-core';
+import * as chai from 'chai';
+import { expect } from 'chai';
+
+chai.use(chaiPlugin);
+
+describe('Keymaps', () => {
+  const fixture = fixtures();
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugin: TextFormattingPlugin,
+    place: fixture()
+  });
+
+  describe('subscript', () => {
+    it('should be able to toggle subscript on a character', () => {
+      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
+
+      expect(pluginState.toggleSubscript(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p(subsup({ type: 'sub' })('t'), 'ext')));
+      expect(pluginState.toggleSubscript(editorView));
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+    });
+
+    it('deactives superscript after toggling subscript for an empty selection', () => {
+      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
+
+      pluginState.toggleSuperscript(editorView);
+      pluginState.toggleSubscript(editorView);
+      expect(pluginState.superscriptActive).to.equal(false);
+    });
+
+    it('deactives superscript after toggling subscript for selected text', () => {
+      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
+
+      pluginState.toggleSuperscript(editorView);
+      pluginState.toggleSubscript(editorView);
+      expect(pluginState.superscriptActive).to.equal(false);
+    });
+  });
+
+  describe('superscript', () => {
+    it('should be able to toggle superscript on a character', () => {
+      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
+      pluginState.toggleSuperscript(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p(subsup({ type: 'sup' })('t'), 'ext')));
+      pluginState.toggleSuperscript(editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p('text')));
+    });
+
+    it('deactives subscript after toggling superscript for an empty selection', () => {
+      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
+
+      pluginState.toggleSubscript(editorView);
+      pluginState.toggleSuperscript(editorView);
+      expect(pluginState.subscriptActive).to.equal(false);
+    });
+
+    it('deactives subscript after toggling superscript for selected text', () => {
+      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
+
+      pluginState.toggleSubscript(editorView);
+      pluginState.toggleSuperscript(editorView);
+      expect(pluginState.subscriptActive).to.equal(false);
+    });
+  });
+});

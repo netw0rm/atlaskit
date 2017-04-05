@@ -374,8 +374,8 @@ function getAcName(node: Element): string | undefined {
 }
 
 function getAcParameter(node: Element, parameter: string): string | null {
-  for (let i = 0; i < node.children.length; i++) {
-    const child = node.children[i];
+  for (let i = 0; i < node.childNodes.length; i++) {
+    const child = node.childNodes[i] as Element;
     if (getTagName(child) === 'AC:PARAMETER' && getAcName(child) === parameter.toUpperCase()) {
       return child.textContent;
     }
@@ -385,8 +385,8 @@ function getAcParameter(node: Element, parameter: string): string | null {
 }
 
 function getAcPlainText(node: Element): string | null {
-  for (let i = 0; i < node.children.length; i++) {
-    const child = node.children[i];
+  for (let i = 0; i < node.childNodes.length; i++) {
+    const child = node.childNodes[i] as Element;
     if (getTagName(child) === 'AC:PLAIN-TEXT-BODY') {
       return child.textContent;
     }

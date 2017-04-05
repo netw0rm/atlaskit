@@ -134,12 +134,12 @@ export default function encode(node: PMNode) {
 
   function encodeCodeBlock(node: PMNode) {
     const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
-    elem.setAttribute('ac:name', 'code');
-    elem.setAttribute('ac:schema-version', '1');
+    elem.setAttributeNS(AC_XMLNS, 'ac:name', 'code');
+    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
 
     if (node.attrs.language) {
       const langParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-      langParam.setAttribute('ac:name', 'language');
+      langParam.setAttributeNS(AC_XMLNS, 'ac:name', 'language');
       langParam.textContent = mapCodeLanguage(node.attrs.language);
       elem.appendChild(langParam);
     }

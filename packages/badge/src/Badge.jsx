@@ -13,21 +13,15 @@ export const THEME_ENUM = {
 
 export default class Badge extends PureComponent {
   static propTypes = {
-    /** The value displayed within the badge. */
+    /** Affects the visual style of the badge */
     appearance: PropTypes.oneOf(APPEARANCE_ENUM.values),
-    /** The max value to display. If value is 100, and max is 50, "50+" will be displayed */
+    /** The maximum value to display. If value is 100, and max is 50, "50+" will be displayed */
     max: PropTypes.number,
-    /**
-      Affects the visual style of the badge.
-      Allowed values are: default, primary, important, added, removed.
-    */
+    /** Handler function to be called when the value prop is changed */
     onValueUpdated: PropTypes.func,
-    /** Handler function to be called when the updated prop is changed. */
+    /** Changes the badge colors for use with different color themes */
     theme: PropTypes.oneOf(THEME_ENUM.values),
-    /**
-      Modifier used to change the badge colors for use with different color themes.
-      Allowed values are: default, dark
-    */
+    /** The value displayed within the badge. */
     value: PropTypes.number,
   }
 

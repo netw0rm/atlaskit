@@ -3,11 +3,23 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { expect } from 'chai';
 
 import { Mention } from '../../src/types';
-import mentionData from '../_mention-data';
 import { Props, State } from '../../src/components/MentionList';
 import MentionItem from '../../src/components/MentionItem';
 
-const mentions = mentionData.mentions;
+const mentionWithNickname = {
+    id: '0',
+    name: 'Raina Halper',
+    mentionName: 'Caprice',
+    nickname: 'Carolyn',
+    avatarUrl: ''
+};
+
+const mentionWithoutNickname =  {
+    id: '1',
+    name: 'Kaitlyn Prouty',
+    mentionName: 'Fidela',
+    avatarUrl: ''
+};
 
 function setupMentionItem(mention: Mention, props?: Props): ShallowWrapper<Props, State> {
   return shallow(
@@ -20,12 +32,12 @@ function setupMentionItem(mention: Mention, props?: Props): ShallowWrapper<Props
 
 describe('MentionItem', () => {
   it('should display @-nickname if nickname is present', () => {
-    const component = setupMentionItem(mentions[0]);
-    expect(component.text()).contains('@' + mentions[0].nickname);
+    const component = setupMentionItem(mentionWithNickname);
+    expect(component.text()).contains('@' + mentionWithNickname.nickname);
   });
 
   it('should display @-name if nickname is not present', () => {
-    const component = setupMentionItem(mentions[1]);
-    expect(component.text()).contains('@' + mentions[1].name);
+    const component = setupMentionItem(mentionWithoutNickname);
+    expect(component.text()).contains('@' + mentionWithoutNickname.name);
   });
 });

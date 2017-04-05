@@ -1,12 +1,14 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { ThemeProvider } from 'styled-components';
-import style from 'style!../less/NavigationItemGroup.less';
-import className from 'classnames';
+import NavigationItemGroupTitle from '../styled/NavigationItemGroupTitle';
+import NavigationItemGroupInner from '../styled/NavigationItemGroupInner';
+import NavigationItemGroupSeparator from '../styled/NavigationItemGroupSeparator';
+import NavigationItemGroupHeader from '../styled/NavigationItemGroupHeader';
+import NavigationItemGroupAction from '../styled/NavigationItemGroupAction';
 
 export default class NavigationItemGroup extends PureComponent {
   static propTypes = {
     action: PropTypes.node,
-    appearance: PropTypes.string,
     children: PropTypes.node,
     hasSeparator: PropTypes.bool,
     isCompact: PropTypes.bool,
@@ -18,12 +20,11 @@ export default class NavigationItemGroup extends PureComponent {
       title,
       action,
       hasSeparator,
-      appearance,
       isCompact,
     } = this.props;
 
     const Title = () => (title ?
-      <div className={style.title}><span>{title}</span></div>
+      <NavigationItemGroupTitle><span>{title}</span></NavigationItemGroupTitle>
     : null);
 
     return (
@@ -33,33 +34,24 @@ export default class NavigationItemGroup extends PureComponent {
           NavigationItemIsCompact: isCompact,
         })}
       >
-        <div
-          className={className({
-            [style.noHeaderContent]: !(title || action || hasSeparator),
-          })}
-        >
+        <NavigationItemGroupInner hasHeaderContent={(title || action || hasSeparator)}>
           {hasSeparator ? (
-            <div
-              className={className(style.separator, {
-                [style.hasGlobalAppearance]: appearance === 'global',
-                [style.hasSettingsAppearance]: appearance === 'settings',
-              })}
-            />
+            <NavigationItemGroupSeparator />
             ) : null}
           {title || action ? (
-            <div className={style.header}>
+            <NavigationItemGroupHeader>
               <Title />
               {this.props.action ?
-                <div className={style.action}>
+                <NavigationItemGroupAction>
                   {this.props.action}
-                </div>
+                </NavigationItemGroupAction>
               : null}
-            </div>) : null
+            </NavigationItemGroupHeader>) : null
           }
           <div>
             {this.props.children}
           </div>
-        </div>
+        </NavigationItemGroupInner>
       </ThemeProvider>
     );
   }

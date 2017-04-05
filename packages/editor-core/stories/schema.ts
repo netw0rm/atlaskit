@@ -21,6 +21,8 @@ import {
   image,
   mention,
   hardBreak,
+  emoji,
+  emojiQuery,
 } from '../src/schema';
 
 const nodes = {
@@ -38,6 +40,7 @@ const nodes = {
   image,
   mention,
   hardBreak,
+  emoji,
 };
 
 const marks = {
@@ -48,6 +51,7 @@ const marks = {
   underline,
   link,
   mentionQuery,
+  emojiQuery,
 };
 
 export default new Schema<typeof nodes, typeof marks>({ nodes, marks });

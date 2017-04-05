@@ -17,7 +17,7 @@ export { heading } from './nodes/heading';
 export { rule } from './nodes/rule';
 export { orderedList } from './nodes/ordered-list';
 export { paragraph } from './nodes/paragraph';
-export { emoji } from './nodes/emoji';
+export { emoji, emojiNodeView } from './nodes/emoji';
 export { image } from './nodes/image';
 export { mention, mentionNodeView } from './nodes/mention';
 export { listItem } from './nodes/list-item';

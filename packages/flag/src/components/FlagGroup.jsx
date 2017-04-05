@@ -1,8 +1,7 @@
-import React, { PropTypes, PureComponent } from 'react';
-import styles from 'style!../less/FlagGroup.less';
+import React, { Children, cloneElement, PropTypes, PureComponent } from 'react';
 import FlagAnimationWrapper from './FlagAnimationWrapper';
+import Group, { SROnly, Inner } from '../styled/Group';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class FlagGroup extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
@@ -35,25 +34,21 @@ export default class FlagGroup extends PureComponent {
       key={childFlag.props.id}
       onAnimationFinished={this.onFlagDismissFinished}
     >
-      {
-        React.cloneElement(childFlag, {
-          onDismissed: this.onFlagDismissRequested,
-          isDismissAllowed: flagIndex === 0,
-        })
-      }
+      {cloneElement(childFlag, {
+        onDismissed: this.onFlagDismissRequested,
+        isDismissAllowed: flagIndex === 0,
+      })}
     </FlagAnimationWrapper>
   )
 
   render() {
     return (
-      <section className={styles.root}>
-        <h1 className={styles.assistive}>Flag notifications</h1>
-        <div className={styles.groupInner}>
-          {
-            React.Children.map(this.props.children, this.renderFlag)
-          }
-        </div>
-      </section>
+      <Group>
+        <SROnly>Flag notifications</SROnly>
+        <Inner>
+          {Children.map(this.props.children, this.renderFlag)}
+        </Inner>
+      </Group>
     );
   }
 }

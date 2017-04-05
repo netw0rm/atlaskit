@@ -13,6 +13,7 @@ export interface IPopper {
   destroy(): void;
   onCreate(cb: (state: State) => void);
   onUpdate(cb: (state: State) => void);
+  update(): void;
 }
 
 export interface IPopperConstructor {

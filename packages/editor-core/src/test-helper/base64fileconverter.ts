@@ -38,8 +38,8 @@ export class Converter {
 
   convert(
     files: File[],
-    fn = (base64src: string) => {},
-    errFn = (file: File) => {}
+    fn = (base64src: string) => { },
+    errFn = (file: File) => { }
   ) {
     if (files && files[0]) {
       files.forEach((

@@ -114,6 +114,11 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     }
   }
 
+  count = (): number => {
+    const { emojis } = this.state;
+    return emojis && emojis.length || 0;
+  }
+
   private onSearch(query?: string) {
     this.props.emojiProvider.then(provider => {
       provider.filter(query);

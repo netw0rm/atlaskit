@@ -1,11 +1,9 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Flag, { FlagGroup } from '../src';
-import flagStyles from '../src/less/Flag.less';
-
 import { name } from '../package.json';
-
-const { locals: flagLocals } = flagStyles;
+import Container, { Description, DismissButton, Title } from '../src/styled/Flag';
+import { Action } from '../src/styled/Actions';
 
 describe(name, () => {
   let flagCount = 0;
@@ -14,60 +12,53 @@ describe(name, () => {
   function generateFlag(extraProps) {
     return (
       <Flag
+        icon={<div />}
         key={flagCount++}
         title="Flag"
-        icon={<div />}
         {...extraProps}
       />
     );
   }
 
   describe('Flag', () => {
-    it('should instantiate', () =>
-      shallow(generateFlag()).hasClass(flagLocals.root).should.equal(true)
-    );
+    it('should instantiate', () => {
+      const wrapper = shallow(generateFlag());
+      expect(wrapper.exists()).to.equal(true);
+    });
 
     describe('props', () => {
-      it('icon prop element should be rendered to correct location', () =>
-        shallow(
-          generateFlag({
-            icon: <span className="test-icon" />,
-          })
-        ).find(`.${flagLocals.primaryIcon}`).contains(<span className="test-icon" />).should.be.equal(true)
-      );
+      it('icon prop element should be rendered to correct location', () => {
+        const wrapper = shallow(generateFlag({ icon: <span id="test-icon" /> }));
+        expect(wrapper.find('#test-icon').exists()).to.equal(true);
+      });
 
-      it('title prop text should be rendered to correct location', () =>
-        expect(shallow(
-          generateFlag({ title: 'Oh hi!' })
-        ).find(`.${flagLocals.title}`).text()).to.equal('Oh hi!')
-      );
+      it('title prop text should be rendered to correct location', () => {
+        const wrapper = shallow(generateFlag({ title: 'Oh hi!' }));
+        expect(wrapper.find(Title).childAt(0).text()).to.equal('Oh hi!');
+      });
 
       describe('description prop', () => {
-        it('description element should not be rendered if description prop is empty', () =>
-          shallow(
-            generateFlag({ description: '' })
-          ).find(`.${flagLocals.description}`).isEmpty().should.equal(true)
-        );
+        it('description element should not be rendered if description prop is empty', () => {
+          const wrapper = shallow(generateFlag({ description: '' }));
+          expect(wrapper.find(Description).exists()).to.equal(false);
+        });
 
-        it('description element should not be rendered if description prop not passed', () =>
-          shallow(
-            generateFlag()
-          ).find(`.${flagLocals.description}`).isEmpty().should.equal(true)
-        );
+        it('description element should not be rendered if description prop not passed', () => {
+          const wrapper = shallow(generateFlag());
+          expect(wrapper.find(Description).exists()).to.equal(false);
+        });
 
-        it('description prop text should be rendered to correct location', () =>
-          expect(shallow(
-            generateFlag({ description: 'Oh hi!' })
-          ).find(`.${flagLocals.description}`).text()).to.equal('Oh hi!')
-        );
+        it('description prop text should be rendered to correct location', () => {
+          const wrapper = shallow(generateFlag({ description: 'Oh hi!' }));
+          expect(wrapper.find(Description).childAt(0).text()).to.equal('Oh hi!');
+        });
 
-        it('should accept JSX in description', () =>
-          expect(shallow(
-            generateFlag({
-              description: <span>Check this <a href="https://google.com">link</a> out</span>,
-            })
-          ).find(`.${flagLocals.description} > span > a`).length).to.equal(1)
-        );
+        it('should accept JSX in description', () => {
+          const wrapper = shallow(generateFlag({
+            description: <span>Check this <a href="https://google.com">link</a> out</span>,
+          }));
+          expect(wrapper.find(Description).find('> span > a').exists()).to.equal(true);
+        });
       });
 
       describe('actions prop', () => {
@@ -80,10 +71,10 @@ describe(name, () => {
               ],
             })
           );
-          const renderedActionItems = flag.find(`.${flagLocals.actionsItem}`);
-          renderedActionItems.length.should.equal(2);
-          renderedActionItems.at(0).text().should.be.equal('Hello!');
-          renderedActionItems.at(1).text().should.be.equal('Goodbye!');
+          const actionItems = flag.find(Action);
+          actionItems.length.should.equal(2);
+          actionItems.at(0).text().should.be.equal('Hello!');
+          actionItems.at(1).text().should.be.equal('Goodbye!');
         });
 
         it('action onClick should be triggered on click', () => {
@@ -95,7 +86,7 @@ describe(name, () => {
               ],
             })
           );
-          flag.find(`.${flagLocals.actionsItem} button`).simulate('click');
+          flag.find('button').simulate('click');
           expect(spy.callCount).to.equal(1);
         });
       });
@@ -109,12 +100,12 @@ describe(name, () => {
             onDismissed: spy,
           })
         );
-        wrapper.find(`.${flagLocals.dismissIconButton}`).simulate('click');
+        wrapper.find(DismissButton).simulate('click');
         expect(spy.callCount).to.equal(1);
         expect(spy.calledWith('a')).to.equal(true);
       });
 
-      it('Dismiss button should not be rendered is isDismissAllowed is omitted', () => {
+      it('Dismiss button should not be rendered if isDismissAllowed is omitted', () => {
         const spy = sinon.spy();
         const wrapper = mount(
           generateFlag({
@@ -122,7 +113,7 @@ describe(name, () => {
             onDismissed: spy,
           })
         );
-        wrapper.find(`.${flagLocals.dismissIconButton}`).length.should.equal(0);
+        expect(wrapper.find(DismissButton).exists()).to.equal(false);
         expect(spy.callCount).to.equal(0);
       });
     });
@@ -132,11 +123,11 @@ describe(name, () => {
     it('should render the correct number of Flag children', () =>
       mount(
         <FlagGroup>
-          { generateFlag() }
-          { generateFlag() }
-          { generateFlag() }
+          {generateFlag()}
+          {generateFlag()}
+          {generateFlag()}
         </FlagGroup>
-      ).find(`.${flagLocals.root}`).length.should.equal(3)
+      ).find(Container).length.should.equal(3)
     );
 
     it('onDismissed should be called when child Flag is dismissed', () => {
@@ -153,8 +144,8 @@ describe(name, () => {
           { generateFlag({ id: 'b' }) }
         </FlagGroup>
       );
-      wrapper.find(`.${flagLocals.dismissIconButton}`).simulate('click');
-      wrapper.find(`.${flagLocals.root}`).first().simulate('animationEnd');
+      wrapper.find(DismissButton).simulate('click');
+      wrapper.find(Container).first().simulate('animationEnd');
       expect(spy.callCount).to.equal(1);
       expect(spy.calledWith('a')).to.equal(true);
     });

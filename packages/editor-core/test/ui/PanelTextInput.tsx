@@ -31,7 +31,7 @@ describe('@atlaskit/editor-core/ui/PanelTextInput', () => {
 
   it('should not prevent KeyDown event if any other key is pressed', () => {
     const preventDefault = sinon.stub();
-    const panel = mount(<PanelTextInput onSubmit={() => {}}/>);
+    const panel = mount(<PanelTextInput onSubmit={() => { }} />);
 
     const input = panel.find('input');
     input.simulate('keydown', { which: 'a', keyCode: 65, preventDefault });

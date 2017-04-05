@@ -1,6 +1,7 @@
 import {
   bulletList,
   blockquote,
+  codeBlock,
   code,
   doc,
   em,
@@ -26,6 +27,7 @@ import unsupportedBlock from './schema/nodes/unsupportedBlock';
 interface CQSchemaNodes {
   blockquote: NodeSpec;
   bulletList: NodeSpec;
+  codeBlock: NodeSpec;
   doc: NodeSpec;
   hardBreak: NodeSpec;
   heading: NodeSpec;
@@ -50,6 +52,7 @@ interface CQSchemaMarks {
 const nodes = {
   blockquote,
   bulletList,
+  codeBlock,
   doc,
   hardBreak,
   heading,

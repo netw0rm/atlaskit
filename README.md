@@ -328,9 +328,10 @@ yarn upgrade "packageName@^1.2.3"
 This can feel slightly cumbersome, but the easiest way to solve these conflicts is to:
 
 * Note the changes you have made to the `package.json` (added dependency XYZ, set dependency ABC to use version "^1.2.3", etc)
+* (If you've made changes to any scripts, you will want to copy those somewhere)
 * Take all of master's changes over the top of yours
     ```sh
-    git checkout -- yarn.lock package.json
+    git checkout --theirs yarn.lock package.json
     ```
 * Redo each of your changes using the appropriate yarn commands.
     ```sh

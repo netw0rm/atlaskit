@@ -3,7 +3,14 @@ import { Node } from '@atlaskit/editor-core';
 import { makeSchema } from '../../src/schema';
 import { encode } from '../../src/html';
 
-const schema = makeSchema({ allowLists: true, allowMentions: true, allowLinks: true, allowAdvancedTextFormatting: true });
+const schema = makeSchema({
+  allowLists: true,
+  allowLinks: true,
+  allowMentions: true,
+  allowCodeBlock: true,
+  allowAdvancedTextFormatting: true,
+  allowBlockQuote: true,
+});
 
 // Nodes
 const br = nodeFactory(schema.nodes.hard_break);
@@ -19,6 +26,8 @@ const li = nodeFactory(schema.nodes.list_item!);
 const ol = nodeFactory(schema.nodes.ordered_list!);
 const ul = nodeFactory(schema.nodes.bullet_list!);
 const mention = (attrs: { id: string, displayName?: string }) => schema.nodes.mention!.createChecked(attrs);
+const codeBlock = nodeFactory(schema.nodes.code_block!);
+const blockquote = nodeFactory(schema.nodes.blockquote!);
 
 // Marks
 const link = (attrs) => markFactory(schema.marks.link!, attrs);
@@ -143,6 +152,14 @@ const seeds: ExampleSeed[] = [
   {
     description: 'Mailto link',
     doc: doc(p(link({ href: 'mailto:me@atlassian.com'})('mailto:me@atlassian.com'))),
+  },
+  {
+    description: 'Code Block',
+    doc: doc(p(codeBlock('var bar = "foo";'))),
+  },
+  {
+    description: 'Blockquote',
+    doc: doc(blockquote(p('I just googled "am I still drunk?" which means yes.'))),
   }
 ];
 

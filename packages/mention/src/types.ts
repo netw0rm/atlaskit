@@ -8,6 +8,7 @@ export interface HighlightDetail {
 export interface Highlight {
   name: HighlightDetail[];
   mentionName: HighlightDetail[];
+  nickname: HighlightDetail[];
 }
 
 export interface Presence {
@@ -20,6 +21,7 @@ export interface Mention {
   avatarUrl?: string;
   name?: string;
   mentionName?: string;
+  nickname?: string;
   highlight?: Highlight;
   lozenge?: string;
   presence?: Presence;

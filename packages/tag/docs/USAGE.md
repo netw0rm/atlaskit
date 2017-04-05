@@ -73,6 +73,24 @@ ReactDOM.render(<Tag text="Atlassian"
                      href="https://www.atlassian.com"
                      removeButtonText="Remove Me"/>, container);
 ```
+
+<a name="Tag+appearance"></a>
+
+### tag.appearance : <code>string</code>
+Allowed values: "default", "rounded".
+
+Rounded is recommended only for use with Avatars in elemBefore
+
+**Kind**: instance property of <code>[Tag](#Tag)</code>
+**JS Example**
+```js
+ReactDOM.render(<Tag
+  text="Cupcake"
+  elemBefore={<Avatar size="xsmall" />}
+  appearance="rounded"
+/>, container);
+```
+
 <a name="Tag+text"></a>
 
 ### tag.text : <code>string</code>

@@ -1,10 +1,13 @@
-import EmojiService from '../src/api/EmojiService';
-import { EmojiDescription } from '../src/types';
+import EmojiRepository from '../src/api/EmojiRepository';
+import { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
+// import { EmojiDescription, EmojiDescriptionWithVariations, EmojiMeta, EmojiRepresentation, EmojiServiceDescription, EmojiServiceDescriptionWithVariations, EmojiServiceRepresentation, EmojiServiceResponse, SpriteSheet } from '../src/types';
+// import { isSpriteRepresentation } from '../src/type-helpers';
+import { EmojiDescription, EmojiDescriptionWithVariations, EmojiServiceResponse } from '../src/types';
 import { mockEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig } from './MockEmojiResource';
 
 export const spriteEmoji: EmojiDescription = {
   id: 'grimacing',
-  shortcut: ':grimacing:',
+  shortName: ':grimacing:',
   name: 'Grimacing',
   type: 'standard',
   category: 'PEOPLE',
@@ -28,7 +31,7 @@ export const spriteEmoji: EmojiDescription = {
 
 export const imageEmoji: EmojiDescription = {
   id: 'grimacing',
-  shortcut: ':grimacing:',
+  shortName: ':grimacing:',
   name: 'Grimacing',
   type: 'standard',
   category: 'PEOPLE',
@@ -45,14 +48,34 @@ declare var require: {
 };
 
 // tslint:disable-next-line:no-var-requires
-export const emojis: EmojiDescription[] = require('./test-emoji.json') as EmojiDescription[];
+export const standardServiceEmojis: EmojiServiceResponse = require('./test-emoji-standard.json') as EmojiServiceResponse;
+// tslint:disable-next-line:no-var-requires
+export const atlassianServiceEmojis: EmojiServiceResponse = require('./test-emoji-atlassian.json') as EmojiServiceResponse;
 
-export const standardEmojis: EmojiDescription[] = emojis.filter(emoji => emoji.category !== 'ATLASSIAN');
-export const atlassianEmojis: EmojiDescription[] = emojis.filter(emoji => emoji.category === 'ATLASSIAN');
+export const standardEmojis: EmojiDescription[] = denormaliseEmojiServiceResponse(standardServiceEmojis).emojis;
+export const atlassianEmojis: EmojiDescription[] = denormaliseEmojiServiceResponse(atlassianServiceEmojis).emojis;
+export const emojis: EmojiDescription[] = [ ...standardEmojis, ...atlassianEmojis ];
 
-export const emojiService = new EmojiService(emojis);
+export const emojiRepository = new EmojiRepository(emojis);
 
-export const grinEmoji = emojiService.findByShortcut('grin') as EmojiDescription;
-export const areyoukiddingmeEmoji = emojiService.findByShortcut('areyoukiddingme') as EmojiDescription;
+export const grinEmoji = emojiRepository.findByShortName(':grin:') as EmojiDescriptionWithVariations;
+export const evilburnsEmoji = emojiRepository.findByShortName(':evilburns:') as EmojiDescriptionWithVariations;
+export const thumbsupEmoji = emojiRepository.findByShortName(':thumbsup:') as EmojiDescriptionWithVariations;
 
-export const getEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(emojiService, config);
+export const getEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(emojiRepository, config);
+
+export const generateSkinVariation = (base: EmojiDescription, idx: number): EmojiDescription => {
+  const { id, shortName, name } = base;
+  return {
+    id: `${id}-${idx}`,
+    shortName: `${shortName.substring(0, shortName.length - 1)}-${idx}:`,
+    name: `${name} ${idx}`,
+    type: 'SITE',
+    category: 'CHEESE',
+    representation: {
+      imagePath: `https://path-to-skin-variation-tone${idx}.png`,
+      width: 24,
+      height: 24,
+    },
+  };
+};

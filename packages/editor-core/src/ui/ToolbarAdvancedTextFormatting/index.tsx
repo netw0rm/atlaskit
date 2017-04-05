@@ -1,19 +1,21 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import Tooltip from '@atlaskit/tooltip';
-import { analyticsDecorator as analytics } from '../../analytics';
-import { TextFormattingState } from '../../plugins/text-formatting';
-import { ClearFormattingState } from '../../plugins/clear-formatting';
 import DropdownList from '@atlaskit/droplist';
 import Group from '@atlaskit/droplist-group';
 import Item from '@atlaskit/droplist-item';
-import ToolbarButton from '../ToolbarButton';
 import AdvancedIcon from '@atlaskit/icon/glyph/editor/advanced';
 import ExpandIcon from '@atlaskit/icon/glyph/editor/expand';
+import { analyticsDecorator as analytics } from '../../analytics';
+import { TextFormattingState } from '../../plugins/text-formatting';
+import { ClearFormattingState } from '../../plugins/clear-formatting';
+import ToolbarButton from '../ToolbarButton';
 import { toggleCode, toggleStrikethrough, clearFormatting, tooltip } from '../../keymaps';
 import * as styles from './styles';
+import { EditorView } from '../../prosemirror';
 
 export interface Props {
+  editorView: EditorView;
   pluginStateTextFormatting?: TextFormattingState | undefined;
   pluginStateClearFormatting?: ClearFormattingState | undefined;
 }
@@ -48,7 +50,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
 
   render() {
     const {
-      isOpen,
+            isOpen,
       codeActive,
       strikeActive,
       codeHidden,
@@ -56,11 +58,11 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
       codeDisabled,
       strikeDisabled,
       clearFormattingDisabled,
-    } = this.state;
+        } = this.state;
     const {
-      pluginStateTextFormatting,
+            pluginStateTextFormatting,
       pluginStateClearFormatting,
-    } = this.props;
+        } = this.props;
     const hasMarksInSchema = !codeHidden || !strikeHidden;
     if ((pluginStateTextFormatting && hasMarksInSchema) || pluginStateClearFormatting) {
       return (
@@ -153,7 +155,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private handleStrikeClick = () => {
     if (!this.state.strikeDisabled) {
       const { pluginStateTextFormatting } = this.props;
-      pluginStateTextFormatting && pluginStateTextFormatting.toggleStrike();
+      pluginStateTextFormatting && pluginStateTextFormatting.toggleStrike(this.props.editorView);
       this.toggleOpen();
     }
   }
@@ -162,7 +164,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private handleCodeClick = () => {
     if (!this.state.codeDisabled) {
       const { pluginStateTextFormatting } = this.props;
-      pluginStateTextFormatting && pluginStateTextFormatting.toggleCode();
+      pluginStateTextFormatting && pluginStateTextFormatting.toggleCode(this.props.editorView);
       this.toggleOpen();
     }
   }
@@ -171,9 +173,8 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
   private handleClearFormattingClick = () => {
     if (!this.state.clearFormattingDisabled) {
       const { pluginStateClearFormatting } = this.props;
-      pluginStateClearFormatting && pluginStateClearFormatting.clearFormatting();
+      pluginStateClearFormatting && pluginStateClearFormatting.clearFormatting(this.props.editorView);
       this.toggleOpen();
     }
   }
-
 };

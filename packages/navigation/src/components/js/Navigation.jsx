@@ -104,6 +104,19 @@ export default class Navigation extends PureComponent {
     this.props.onResize(resizeState);
   }
 
+  isCollapsed() {
+    const {
+      isCollapsible,
+      isOpen,
+    } = this.props;
+
+    if (!isCollapsible) {
+      return false;
+    }
+
+    return !isOpen && (this.state.resizeDelta <= 0);
+  }
+
   render() {
     const {
       children,
@@ -116,7 +129,6 @@ export default class Navigation extends PureComponent {
       globalPrimaryItemHref,
       globalSearchIcon,
       globalSecondaryActions,
-      isOpen,
       isResizeable,
       linkComponent,
       onCreateDrawerOpen,
@@ -154,7 +166,7 @@ export default class Navigation extends PureComponent {
           <div>
             <ContainerNavigation
               appearance={containerAppearance}
-              areGlobalActionsVisible={!isOpen && (this.state.resizeDelta <= 0)}
+              areGlobalActionsVisible={this.isCollapsed()}
               globalCreateIcon={globalCreateIcon}
               globalPrimaryIcon={globalPrimaryIcon}
               globalPrimaryItemHref={globalPrimaryItemHref}
@@ -172,14 +184,14 @@ export default class Navigation extends PureComponent {
           </div>
           {
             isResizeable
-            ? <Resizer
-              navigationWidth={renderedWidth}
-              onResize={this.onResize}
-              onResizeButton={this.triggerResizeButtonHandler}
-              onResizeStart={onResizeStart}
-              onResizeEnd={this.triggerResizeHandler}
-            />
-            : null
+              ? <Resizer
+                navigationWidth={renderedWidth}
+                onResize={this.onResize}
+                onResizeButton={this.triggerResizeButtonHandler}
+                onResizeStart={onResizeStart}
+                onResizeEnd={this.triggerResizeHandler}
+              />
+              : null
           }
         </NavigationInner>
       </NavigationOuter>

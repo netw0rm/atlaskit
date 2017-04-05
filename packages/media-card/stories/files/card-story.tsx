@@ -122,7 +122,7 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction]}
+              actions={[clickAction]}
             />
           </td>
           <td>
@@ -130,7 +130,7 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction, deleteAction]}
+              actions={[clickAction, deleteAction]}
             />
           </td>
           <td>
@@ -138,7 +138,7 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
+              actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
@@ -146,7 +146,7 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
+              actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
@@ -154,49 +154,7 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <FileCard
-              id={successfulFileId}
-              collectionName={defaultCollectionName}
-              context={context}
-              menuActions={[clickAction]}
-            />
-          </td>
-          <td>
-            <FileCard
-              id={successfulFileId}
-              collectionName={defaultCollectionName}
-              context={context}
-              menuActions={[clickAction, deleteAction]}
-            />
-          </td>
-          <td>
-            <FileCard
-              id={successfulFileId}
-              collectionName={defaultCollectionName}
-              context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
-            />
-          </td>
-          <td>
-            <FileCard
-              id={successfulFileId}
-              collectionName={defaultCollectionName}
-              context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
-            />
-          </td>
-          <td>
-            <FileCard
-              id={successfulFileId}
-              collectionName={defaultCollectionName}
-              context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
+              actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
         </tr>
@@ -206,7 +164,7 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction]}
+              actions={[clickAction]}
             />
           </td>
           <td>
@@ -214,7 +172,7 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction, deleteAction]}
+              actions={[clickAction, deleteAction]}
             />
           </td>
           <td>
@@ -222,7 +180,7 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
+              actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
@@ -230,7 +188,7 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
+              actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
@@ -238,49 +196,7 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <FileCard
-              id={successfulFileId}
-              collectionName={defaultCollectionName}
-              context={context}
-              menuActions={[clickAction]}
-            />
-          </td>
-          <td>
-            <FileCard
-              id={successfulFileId}
-              collectionName={defaultCollectionName}
-              context={context}
-              menuActions={[clickAction, deleteAction]}
-            />
-          </td>
-          <td>
-            <FileCard
-              id={successfulFileId}
-              collectionName={defaultCollectionName}
-              context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
-            />
-          </td>
-          <td>
-            <FileCard
-              id={successfulFileId}
-              collectionName={defaultCollectionName}
-              context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
-            />
-          </td>
-          <td>
-            <FileCard
-              id={successfulFileId}
-              collectionName={defaultCollectionName}
-              context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
+              actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
         </tr>
@@ -290,7 +206,7 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction]}
+              actions={[clickAction]}
             />
           </td>
           <td>
@@ -298,7 +214,7 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction, deleteAction]}
+              actions={[clickAction, deleteAction]}
             />
           </td>
           <td>
@@ -306,7 +222,7 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
+              actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
@@ -314,7 +230,7 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
+              actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
           <td>
@@ -322,7 +238,91 @@ storiesOf('FileCard', {})
               id={successfulFileId}
               collectionName={defaultCollectionName}
               context={context}
-              menuActions={[clickAction, deleteAction, annotateAction]}
+              actions={[clickAction, deleteAction, annotateAction]}
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <FileCard
+              id={successfulFileId}
+              collectionName={defaultCollectionName}
+              context={context}
+              actions={[clickAction]}
+            />
+          </td>
+          <td>
+            <FileCard
+              id={successfulFileId}
+              collectionName={defaultCollectionName}
+              context={context}
+              actions={[clickAction, deleteAction]}
+            />
+          </td>
+          <td>
+            <FileCard
+              id={successfulFileId}
+              collectionName={defaultCollectionName}
+              context={context}
+              actions={[clickAction, deleteAction, annotateAction]}
+            />
+          </td>
+          <td>
+            <FileCard
+              id={successfulFileId}
+              collectionName={defaultCollectionName}
+              context={context}
+              actions={[clickAction, deleteAction, annotateAction]}
+            />
+          </td>
+          <td>
+            <FileCard
+              id={successfulFileId}
+              collectionName={defaultCollectionName}
+              context={context}
+              actions={[clickAction, deleteAction, annotateAction]}
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <FileCard
+              id={successfulFileId}
+              collectionName={defaultCollectionName}
+              context={context}
+              actions={[clickAction]}
+            />
+          </td>
+          <td>
+            <FileCard
+              id={successfulFileId}
+              collectionName={defaultCollectionName}
+              context={context}
+              actions={[clickAction, deleteAction]}
+            />
+          </td>
+          <td>
+            <FileCard
+              id={successfulFileId}
+              collectionName={defaultCollectionName}
+              context={context}
+              actions={[clickAction, deleteAction, annotateAction]}
+            />
+          </td>
+          <td>
+            <FileCard
+              id={successfulFileId}
+              collectionName={defaultCollectionName}
+              context={context}
+              actions={[clickAction, deleteAction, annotateAction]}
+            />
+          </td>
+          <td>
+            <FileCard
+              id={successfulFileId}
+              collectionName={defaultCollectionName}
+              context={context}
+              actions={[clickAction, deleteAction, annotateAction]}
             />
           </td>
         </tr>

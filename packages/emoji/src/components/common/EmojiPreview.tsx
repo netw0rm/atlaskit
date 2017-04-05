@@ -6,11 +6,11 @@ import * as styles from './styles';
 import AkButton from '@atlaskit/button';
 import Emoji from '../../components/common/Emoji';
 import ToneSelector from './ToneSelector';
-import { EmojiDescription, OnToneSelected } from '../../types';
+import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected } from '../../types';
 
 export interface Props {
   emoji?: EmojiDescription;
-  toneEmoji?: EmojiDescription;
+  toneEmoji?: EmojiDescriptionWithVariations;
   selectedTone?: number;
   onToneSelected?: OnToneSelected;
 }
@@ -66,10 +66,7 @@ export default class EmojiPreview extends PureComponent<Props, State> {
 
     let previewEmoji = toneEmoji;
     if (selectedTone && previewEmoji.skinVariations) {
-      previewEmoji = {
-        ...previewEmoji,
-        representation: previewEmoji.skinVariations[(selectedTone || 1) - 1],
-      };
+      previewEmoji = previewEmoji.skinVariations[(selectedTone || 1) - 1];
     }
 
     return (
@@ -107,7 +104,7 @@ export default class EmojiPreview extends PureComponent<Props, State> {
         <Emoji emoji={emoji} />
         <div className={previewTextClasses}>
           <div className={styles.name}>{emoji.name}</div>
-          <div className={styles.shortName}>:{emoji.shortcut}:</div>
+          <div className={styles.shortName}>{emoji.shortName}</div>
         </div>
       </div>
     );

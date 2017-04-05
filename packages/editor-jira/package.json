@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-jira",
-  "version": "1.13.0",
+  "version": "1.20.0",
   "config": {
     "access": "public"
   },
@@ -22,7 +22,7 @@
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
-      "name": "Bradley A"
+      "name": "Stanislav S"
     }
   ],
   "dependencies": {

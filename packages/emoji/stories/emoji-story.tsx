@@ -8,9 +8,9 @@ import { getEmojiService } from './story-data';
 const emojiService = getEmojiService();
 
 const emoji = {
-  id: '118608',
+  id: 'atlassian-zoidberg',
   name: 'Zoidberg',
-  shortcut: 'zoidberg',
+  shortName: ':zoidberg:',
   type: 'ATLASSIAN',
   category: 'ATLASSIAN',
   order: 2147483647,
@@ -24,9 +24,9 @@ const emoji = {
 
 storiesOf(`${name}/Emoji`, module)
   .add('simple emoji', () => {
-    const awthanks = emojiService.findByShortcut('awthanks');
+    const awthanks = emojiService.findByShortName(':awthanks:');
     const awthanksEmoji = awthanks ? <Emoji emoji={awthanks} /> : <span>[awthanks emoji not found]</span>;
-    const grimacing = emojiService.findByShortcut('grimacing');
+    const grimacing = emojiService.findByShortName(':grimacing:');
     const grimacingEmoji = grimacing ? <Emoji emoji={grimacing} /> : <span>[grimacing emoji not found]</span>;
     return (
       <div>

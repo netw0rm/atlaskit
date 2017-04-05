@@ -38,7 +38,6 @@ describe('UrlPreviewService', () => {
   });
 
   it('should resolve a preview', () => {
-
     const linkPreviewResponse = {
       url: 'some-url',
       type: 'link',
@@ -81,4 +80,39 @@ describe('UrlPreviewService', () => {
 
     return response;
   });
+
+  it('should resolve an error when iFramely fails to process provided link', () => {
+    const expectedError = '417: Some cray cray error occured';
+
+    const response = urlPreviewService.getUrlPreview('http://atlassian.com', clientId)
+      .catch((actualError) => {
+        expect(actualError.message).to.deep.equal(expectedError);
+      })
+      .then(() => {
+        // Validate call to token provider with no parameters
+        assert((tokenProvider as any).calledOnce);
+      })
+      .then(() => {
+        const headers = requests[0].requestHeaders;
+        expect(headers['X-Client-Id']).to.equal(clientId);
+        expect(headers['Authorization']).to.equal(`Bearer ${token}`);
+        expect(requests[0].url).to.equal('some-host/link/preview?url=http:%2F%2Fatlassian.com');
+      });
+
+    setTimeout(() => {
+      const mockedResponse = {
+        data: {
+          previewError: {
+            code: '417',
+            name: 'Some cray cray error occured'
+          }
+        }
+      };
+      requests[0].respond(200, { 'Content-Type': 'application/json' },
+          JSON.stringify(mockedResponse));
+    });
+
+    return response;
+  });
+
 });

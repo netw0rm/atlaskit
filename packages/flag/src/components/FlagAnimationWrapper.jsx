@@ -1,8 +1,6 @@
 import React, { PropTypes, PureComponent } from 'react';
-import classNames from 'classnames';
-import styles from 'style!../less/FlagAnimationWrapper.less';
+import Wrapper from '../styled/Wrapper';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class FlagAnimationWrapper extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
@@ -35,26 +33,21 @@ export default class FlagAnimationWrapper extends PureComponent {
   }
 
   render() {
+    const { hasAnimatedIn } = this.state;
+    const {
+      children, flagId, isEntering, isExiting, isMovingToPrimary, onAnimationFinished,
+    } = this.props;
+    const isEnteringQualified = !hasAnimatedIn && !isExiting && isEntering;
+
     return (
-      <div
-        className={classNames({
-          [styles.root]: true,
-          [styles.entering]: (
-            !this.state.hasAnimatedIn &&
-            !this.props.isExiting &&
-            this.props.isEntering
-          ),
-          [styles.movingToPrimary]: this.props.isMovingToPrimary,
-          [styles.exiting]: this.props.isExiting,
-        })}
-        onAnimationEnd={() => {
-          if (this.props.isExiting) {
-            this.props.onAnimationFinished(this.props.flagId);
-          }
-        }}
+      <Wrapper
+        isEntering={isEnteringQualified}
+        isExiting={isExiting}
+        isMovingToPrimary={isMovingToPrimary}
+        onAnimationEnd={() => isExiting && onAnimationFinished(flagId)}
       >
-        { this.props.children }
-      </div>
+        {children}
+      </Wrapper>
     );
   }
 }

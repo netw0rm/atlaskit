@@ -1,167 +1,44 @@
 import Keymap from 'browserkeymap';
-import { inputRules, Plugin, ProseMirror, Schema } from '../../prosemirror';
-import { EmojiProvider } from '@atlaskit/emoji';
+import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
 
 import {
-  EmojiNodeType,
-  EmojiQueryMarkType
-} from '../../schema';
+  EditorState,
+  EditorView,
+  Fragment,
+  Plugin,
+  PluginKey,
+} from '../../prosemirror';
+import { reconfigure } from '../utils';
+import { inputRulePlugin, destroyRulePluginCache } from './input-rules';
+import keymapPlugin from './keymap';
+import ProviderFactory from '../../providerFactory';
 
-import { emojiQueryRule } from './input-rules';
-
-export type StateChangeHandler = (state: EmojisPluginState) => any;
+export type StateChangeHandler = (state: EmojiState) => any;
 
 export interface Options {
   emojiProvider: Promise<EmojiProvider>;
 }
 
-export class EmojisPluginState {
-  private pm: PM;
-  private hasKeymap = false;
-  private changeHandlers: StateChangeHandler[] = [];
-  private emojiProvider: Promise<EmojiProvider>;
-
+export class EmojiState {
+  emojiProvider: Promise<EmojiProvider>;
   query?: string;
   queryActive = false;
   anchorElement?: HTMLElement;
   keymap: Keymap;
-  onSelectPrevious = () => {};
-  onSelectNext =  () => {};
-  onSelectCurrent = () => {};
+  blah = 'EmojiPlugin';
 
-  setEmojiProvider(emojiProvider: Promise<EmojiProvider>) {
-    this.emojiProvider = emojiProvider;
+  onSelectPrevious = (): boolean => false;
+  onSelectNext = (): boolean => false;
+  onSelectCurrent = (): boolean => false;
+  onTrySelectCurrent = (): boolean => false;
 
-    const emojiNodeType = this.pm.schema.nodeType('emoji') as EmojiNodeType;
-    if (emojiNodeType) {
-      emojiNodeType.setEmojiProvider(this.emojiProvider);
-    }
-  }
+  private changeHandlers: StateChangeHandler[] = [];
+  private state: EditorState<any>;
+  private view: EditorView;
 
-  constructor(pm: PM, options: Options) {
-    this.pm = pm;
-    this.emojiProvider = options.emojiProvider;
-
-    this.keymap = new Keymap({
-      Up: () => this.onSelectPrevious(),
-      Down: () => this.onSelectNext(),
-      Enter: () => this.onSelectCurrent(),
-      Esc: () => this.dismiss(),
-    }, {
-      name: 'emojis-plugin-keymap'
-    });
-
-    // add the input rules to insert emojis
-    if (pm.schema.nodes.emoji) {
-      inputRules.ensure(pm).addRule(emojiQueryRule);
-    }
-
-    if (pm.schema.marks.emoji_query) {
-      pm.updateScheduler([
-        pm.on.selectionChange,
-        pm.on.change,
-        pm.on.activeMarkChange,
-      ], () => this.update());
-    }
-
-    this.setEmojiProvider(options.emojiProvider);
-  }
-
-  private update(): void {
-    let dirty = false;
-
-    const marks = this.pm.activeMarks();
-    if (this.pm.schema.marks.emoji_query.isInSet(marks)) {
-      if (!this.queryActive) {
-        dirty = true;
-        this.queryActive = true;
-      }
-
-      const nodeBefore = this.pm.selection.$from.nodeBefore;
-      const nodeAfter = this.pm.selection.$from.nodeAfter;
-
-      const newQuery = (nodeBefore ? nodeBefore.textContent : '' ).substr(1) + (nodeAfter && this.pm.schema.marks.emoji_query.isInSet(nodeAfter.marks) ? nodeAfter.textContent : '');
-      if (this.query !== newQuery) {
-        dirty = true;
-        this.query = newQuery;
-
-      }
-    } else if (this.queryActive) {
-      dirty = true;
-      this.dismiss();
-      return;
-    }
-
-    const newAnchorElement = this.pm.wrapper.querySelector('[data-emoji-query]') as HTMLElement;
-    if (newAnchorElement !== this.anchorElement) {
-      dirty = true;
-      this.anchorElement = newAnchorElement;
-    }
-
-    if (dirty) {
-      if (this.queryActive) {
-        if (!this.hasKeymap) {
-          this.pm.addKeymap(this.keymap, 100);
-          this.hasKeymap = true;
-        }
-      } else {
-        if (this.hasKeymap) {
-          this.pm.removeKeymap(this.keymap);
-          this.hasKeymap = false;
-        }
-      }
-      this.changeHandlers.forEach(cb => cb(this));
-    }
-  }
-
-  dismiss() {
-    this.queryActive = false;
-    this.query = undefined;
-
-    this.pm.tr.removeMark(0, this.pm.doc.nodeSize - 2, this.pm.schema.marks.emoji_query).applyAndScroll();
-
-    if (this.hasKeymap) {
-      this.pm.removeKeymap(this.keymap);
-      this.hasKeymap = false;
-    }
-    this.changeHandlers.forEach(cb => cb(this));
-  }
-
-  private findEmojiQueryMark() {
-    let start = this.pm.selection.from;
-    let node = this.pm.doc.nodeAt(start);
-
-    while (start > 0 && (!node || !this.pm.schema.marks.emoji_query.isInSet(node.marks))) {
-      start--;
-      node = this.pm.doc.nodeAt(start);
-    }
-
-    let end = start;
-
-    if (node && this.pm.schema.marks.emoji_query.isInSet(node.marks)) {
-      start = this.pm.doc.resolve(start).start(2) - 1;
-      end = start + node.nodeSize;
-    }
-
-    return { start, end };
-  }
-
-  insertEmoji(emojiId?: EmojiId, emojiData?: Emoji) {
-    const { emoji } = this.pm.schema.nodes;
-    const { emojiProvider } = this;
-
-    if (emoji && emojiId && emojiData) {
-      const { shortcut } = emojiData;
-      const { start, end } = this.findEmojiQueryMark();
-      const node = emoji.create({
-        ...emojiId,
-        shortcut,
-        emojiProvider,
-      });
-      this.pm.tr.replaceWith(start, end, node).apply();
-    } else {
-      this.dismiss();
-    }
+  constructor(state: EditorState<any>) {
+    this.changeHandlers = [];
+    this.state = state;
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -172,33 +49,169 @@ export class EmojisPluginState {
   unsubscribe(cb: StateChangeHandler) {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
+
+  update(state: EditorState<any>) {
+    this.state = state;
+
+    if (!this.emojiProvider) {
+      return;
+    }
+
+    const { docView } = this.view;
+    const { emojiQuery } = state.schema.marks;
+    const { doc, selection } = state;
+    const { from, to } = selection;
+
+    let dirty = false;
+
+    if (doc.rangeHasMark(from - 1, to, emojiQuery)) {
+      if (!this.queryActive) {
+        dirty = true;
+        this.queryActive = true;
+      }
+
+      const { nodeBefore, /*nodeAfter*/ } = selection.$from;
+      const newQuery = (nodeBefore && nodeBefore.textContent || '').substr(1); // + (nodeAfter && nodeAfter.textContent || '');
+
+      if (this.query !== newQuery) {
+        dirty = true;
+        this.query = newQuery;
+      }
+    } else if (this.queryActive) {
+      dirty = true;
+      this.dismiss();
+      return;
+    }
+
+    const newAnchorElement = docView.dom.querySelector('[data-emoji-query]') as HTMLElement;
+    if (newAnchorElement !== this.anchorElement) {
+      dirty = true;
+      this.anchorElement = newAnchorElement;
+    }
+
+    if (dirty) {
+      this.changeHandlers.forEach(cb => cb(this));
+    }
+  }
+
+  dismiss(): boolean {
+    this.queryActive = false;
+    this.query = undefined;
+
+    const { state, view } = this;
+
+    if (state) {
+      const { schema } = state;
+      const { tr } = state;
+      const markType = schema.mark('emojiQuery');
+
+      view.dispatch(
+        tr
+          .removeMark(0, state.doc.nodeSize - 2, markType)
+          .removeStoredMark(markType)
+      );
+    }
+
+    return true;
+  }
+
+  emojiDisabled() {
+    const { selection, schema } = this.state;
+    return schema.marks.code.isInSet(selection.$from.marks());
+  }
+
+  private findEmojiQueryMark() {
+    const { state } = this;
+    const { doc, schema, selection } = state;
+    const { from } = selection;
+    const { emojiQuery } = schema.marks;
+
+    let start = from;
+    let node = doc.nodeAt(start);
+
+    while (start > 0 && (!node || !emojiQuery.isInSet(node.marks))) {
+      start--;
+      node = doc.nodeAt(start);
+    }
+
+    let end = start;
+
+    if (node && emojiQuery.isInSet(node.marks)) {
+      const resolvedPos = doc.resolve(start);
+      // -1 is to include : in replacement
+      // resolvedPos.depth + 1 to make emoji work inside other blocks e.g. "list item" or "blockquote"
+      start = resolvedPos.start(resolvedPos.depth + 1) - 1;
+      end = start + node.nodeSize;
+    }
+
+    return { start, end };
+  }
+
+  insertEmoji(emojiId?: EmojiId) {
+    const { state, view } = this;
+    const { emoji } = state.schema.nodes;
+
+    if (emoji && emojiId) {
+      const { start, end } = this.findEmojiQueryMark();
+      const node = emoji.create({ ...emojiId });
+      const textNode = state.schema.text(' ');
+      const fragment = new Fragment([node, textNode], node.nodeSize + textNode.nodeSize);
+      view.dispatch(
+        state.tr.replaceWith(start, end, fragment)
+      );
+    } else {
+      this.dismiss();
+    }
+  }
+
+  subscribeToFactory(providerFactory: ProviderFactory) {
+    providerFactory.subscribe('emojiProvider', this.handleProvider);
+  }
+
+  handleProvider = (name: string, provider: Promise<any>): void => {
+    switch (name) {
+      case 'emojiProvider':
+        this.setEmojiProvider(provider);
+        break;
+    }
+  }
+
+  setEmojiProvider(emojiProvider: Promise<EmojiProvider>) {
+    this.emojiProvider = emojiProvider;
+    return emojiProvider;
+  }
+
+  setView(view: EditorView) {
+    this.view = view;
+  }
 }
 
-// IE11 + multiple prosemirror fix.
-Object.defineProperty(EmojisPluginState, 'name', { value: 'EmojisPluginState' });
+export const stateKey = new PluginKey('emojiPlugin');
 
-export default new Plugin(EmojisPluginState);
+export default new Plugin({
+  state: {
+    init(config, state) {
+      return new EmojiState(state);
+    },
+    apply(tr, pluginState, oldState, newState) {
+      // NOTE: Don't call pluginState.update here.
+      return pluginState;
+    }
+  },
+  key: stateKey,
+  view: (view: EditorView) => {
+    reconfigure(view, [inputRulePlugin(view.state.schema), keymapPlugin(view.state.schema)]);
+    const pluginState = stateKey.getState(view.state);
+    pluginState.setView(view);
 
-export interface EmojiId {
-  id: string;
-}
+    return {
+      update(view: EditorView, prevState: EditorState<any>) {
+        pluginState.update(view.state, view);
+      },
 
-export interface Emoji {
-  id: string;
-  name?: string;
-  shortcut: string;
-}
-
-export interface S extends Schema {
-  nodes: {
-    emoji?: EmojiNodeType
-  };
-
-  marks: {
-    emoji_query: EmojiQueryMarkType;
-  };
-}
-
-export interface PM extends ProseMirror {
-  schema: S;
-}
+      destroy() {
+        destroyRulePluginCache();
+      }
+    };
+  }
+});

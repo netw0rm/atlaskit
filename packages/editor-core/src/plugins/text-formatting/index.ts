@@ -1,23 +1,18 @@
-import Keymap from 'browserkeymap';
-import * as keymaps from '../../keymaps';
 import {
-  commands,
   Mark,
   MarkType,
   Plugin,
-  ProseMirror,
-  Schema,
+  PluginKey,
+  EditorState,
+  EditorView
 } from '../../prosemirror';
-import {
-  EmMarkType,
-  CodeMarkType,
-  StrikeMarkType,
-  StrongMarkType,
-  SubSupMarkType,
-  UnderlineMarkType
-} from '../../schema';
-import { trackAndInvoke } from '../../analytics';
+
+import * as commands from '../../commands';
+import keymapHandler from './keymap';
+import inputRulePlugin from './input-rule';
+import { reconfigure } from '../utils';
 import { transformToCodeAction } from './transform-to-code';
+import { keyCodes } from '../../keymaps';
 
 export type StateChangeHandler = (state: TextFormattingState) => any;
 
@@ -25,7 +20,7 @@ export type BlockTypeStateSubscriber = (state: TextFormattingState) => void;
 
 export class TextFormattingState {
   private changeHandlers: StateChangeHandler[] = [];
-  private pm: PM;
+  private state: EditorState<any>;
 
   // public state
   emActive = false;
@@ -49,92 +44,93 @@ export class TextFormattingState {
   subscriptActive = false;
   subscriptDisabled = false;
   subscriptHidden = false;
+  marksToRemove;
+  keymapHandler;
 
-  constructor(pm: PM) {
-    this.pm = pm;
+  constructor(state: EditorState<any>) {
+    this.state = state;
 
-    this.emHidden = !pm.schema.marks.em;
-    this.strongHidden = !pm.schema.marks.strong;
-    this.underlineHidden = !pm.schema.marks.u;
-    this.codeHidden = !pm.schema.marks.code;
-    this.superscriptHidden = !pm.schema.marks.subsup;
-    this.subscriptHidden = !pm.schema.marks.subsup;
-    this.strikeHidden = !pm.schema.marks.strike;
+    this.emHidden = !state.schema.marks.em;
+    this.strongHidden = !state.schema.marks.strong;
+    this.underlineHidden = !state.schema.marks.underline;
+    this.codeHidden = !state.schema.marks.code;
+    this.superscriptHidden = !state.schema.marks.subsup;
+    this.subscriptHidden = !state.schema.marks.subsup;
+    this.strikeHidden = !state.schema.marks.strike;
 
-    pm.updateScheduler([
-      pm.on.selectionChange,
-      pm.on.change,
-      pm.on.activeMarkChange,
-    ], () => this.update());
-
-    this.addKeymap();
-    this.update();
+    this.update(state);
   }
 
-  toggleEm() {
-    const { em } = this.pm.schema.marks;
+  toggleEm(view: EditorView): boolean {
+    const { em } = this.state.schema.marks;
     if (em) {
-      this.toggleMark(em);
+      return this.toggleMark(view, em);
     }
+    return false;
   }
 
-  toggleCode() {
-    const { code } = this.pm.schema.marks;
+  toggleCode(view: EditorView): boolean {
+    const { code } = this.state.schema.marks;
+    const { from, to } = this.state.selection;
     if (code) {
-            // If not already code then do the cleaning
       if (!this.codeActive) {
-        const { $from, $to } = this.pm.selection;
-        transformToCodeAction(this.pm, $from.pos, $to.pos);
-        this.pm.on.selectionChange.dispatch();
+        view.dispatch(transformToCodeAction(view.state, from, to));
+        return true;
       }
-      this.pm.on.interaction.dispatch();
-      commands.toggleMark(code)(this.pm);
+      return commands.toggleMark(code)(view.state, view.dispatch);
     }
+    return false;
   }
 
-  toggleStrike() {
-    const { strike } = this.pm.schema.marks;
+  toggleStrike(view: EditorView) {
+    const { strike } = this.state.schema.marks;
     if (strike) {
-      this.toggleMark(strike);
+      return this.toggleMark(view, strike);
     }
+    return false;
   }
 
-  toggleStrong() {
-    const { strong } = this.pm.schema.marks;
+  toggleStrong(view: EditorView) {
+    const { strong } = this.state.schema.marks;
     if (strong) {
-      this.toggleMark(strong);
+      return this.toggleMark(view, strong);
     }
+    return false;
   }
 
-  toggleSuperscript() {
-    const { subsup } = this.pm.schema.marks;
+  toggleSuperscript(view: EditorView) {
+    const { subsup } = this.state.schema.marks;
     if (subsup) {
       if (this.subscriptActive) {
         // If subscript is enabled, turn it off first.
-        this.toggleMark(subsup);
+        return this.toggleMark(view, subsup);
       }
 
-      this.toggleMark(subsup, { type: 'sup' });
+      return this.toggleMark(view, subsup, { type: 'sup' });
     }
+    return false;
   }
 
-  toggleSubscript() {
-    const { subsup } = this.pm.schema.marks;
+  toggleSubscript(view: EditorView): boolean {
+    const { subsup } = this.state.schema.marks;
     if (subsup) {
       if (this.superscriptActive) {
         // If superscript is enabled, turn it off first.
-        this.toggleMark(subsup);
+        return this.toggleMark(view, subsup);
       }
 
-      this.toggleMark(subsup, { type: 'sub' });
+      return this.toggleMark(view, subsup, { type: 'sub' });
     }
+    return false;
   }
 
-  toggleUnderline() {
-    const { u } = this.pm.schema.marks;
-    if (u) {
-      this.toggleMark(u);
+  toggleUnderline(view: EditorView): boolean {
+    const { underline } = this.state.schema.marks;
+    if (underline) {
+      return this.toggleMark(view, underline);
     }
+
+    return false;
   }
 
   subscribe(cb: StateChangeHandler) {
@@ -146,10 +142,26 @@ export class TextFormattingState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  private update() {
-    const { pm } = this;
-    const { em, code, strike, strong, subsup, u } = pm.schema.marks;
+  update(newEditorState: EditorState<any>) {
+    this.state = newEditorState;
+
+    const { state } = this;
+    const { em, code, strike, strong, subsup, underline } = state.schema.marks;
     let dirty = false;
+
+    if (code) {
+      const newCodeActive = this.markActive(code.create());
+      if (newCodeActive !== this.codeActive) {
+        this.codeActive = newCodeActive;
+        dirty = true;
+      }
+
+      const newCodeDisabled = !commands.toggleMark(code)(this.state);
+      if (newCodeDisabled !== this.codeDisabled) {
+        this.codeDisabled = newCodeDisabled;
+        dirty = true;
+      }
+    }
 
     if (em) {
       const newEmActive = this.anyMarkActive(em);
@@ -158,9 +170,9 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newEmDisabled = !commands.toggleMark(em)(this.pm, false);
-      if (newEmDisabled !== this.emDisabled) {
-        this.emDisabled = newEmDisabled;
+      const newEmDisabled = !commands.toggleMark(em)(this.state);
+      if (this.codeActive || newEmDisabled !== this.emDisabled) {
+        this.emDisabled = this.codeActive ? true : newEmDisabled;
         dirty = true;
       }
     }
@@ -172,9 +184,9 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newStrikeDisabled = !commands.toggleMark(strike)(this.pm, false);
-      if (newStrikeDisabled !== this.strikeDisabled) {
-        this.strikeDisabled = newStrikeDisabled;
+      const newStrikeDisabled = !commands.toggleMark(strike)(this.state);
+      if (this.codeActive || newStrikeDisabled !== this.strikeDisabled) {
+        this.strikeDisabled = this.codeActive ? true : newStrikeDisabled;
         dirty = true;
       }
     }
@@ -186,9 +198,9 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newStrongDisabled = !commands.toggleMark(strong)(this.pm, false);
-      if (newStrongDisabled !== this.strongDisabled) {
-        this.strongDisabled = newStrongDisabled;
+      const newStrongDisabled = !commands.toggleMark(strong)(this.state);
+      if (this.codeActive || newStrongDisabled !== this.strongDisabled) {
+        this.strongDisabled = this.codeActive ? true : newStrongDisabled;
         dirty = true;
       }
     }
@@ -203,9 +215,9 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newSubscriptDisabled = !commands.toggleMark(subsup, { type: 'sub' })(this.pm, false);
-      if (newSubscriptDisabled !== this.subscriptDisabled) {
-        this.subscriptDisabled = newSubscriptDisabled;
+      const newSubscriptDisabled = !commands.toggleMark(subsup, { type: 'sub' })(this.state);
+      if (this.codeActive || newSubscriptDisabled !== this.subscriptDisabled) {
+        this.subscriptDisabled = this.codeActive ? true : newSubscriptDisabled;
         dirty = true;
       }
 
@@ -215,123 +227,187 @@ export class TextFormattingState {
         dirty = true;
       }
 
-      const newSuperscriptDisabled = !commands.toggleMark(subsup, { type: 'sup' })(this.pm, false);
-      if (newSuperscriptDisabled !== this.superscriptDisabled) {
-        this.superscriptDisabled = newSuperscriptDisabled;
+      const newSuperscriptDisabled = !commands.toggleMark(subsup, { type: 'sup' })(this.state);
+      if (this.codeActive || newSuperscriptDisabled !== this.superscriptDisabled) {
+        this.superscriptDisabled = this.codeActive ? true : newSuperscriptDisabled;
         dirty = true;
       }
     }
 
-    if (u) {
-      const newUnderlineActive = this.anyMarkActive(u);
+    if (underline) {
+      const newUnderlineActive = this.anyMarkActive(underline);
       if (newUnderlineActive !== this.underlineActive) {
         this.underlineActive = newUnderlineActive;
         dirty = true;
       }
 
-      const newUnderlineDisabled = !commands.toggleMark(u)(this.pm, false);
-      if (newUnderlineDisabled !== this.underlineDisabled) {
-        this.underlineDisabled = newUnderlineDisabled;
+      const newUnderlineDisabled = !commands.toggleMark(underline)(this.state);
+      if (this.codeActive || newUnderlineDisabled !== this.underlineDisabled) {
+        this.underlineDisabled = this.codeActive ? true : newUnderlineDisabled;
         dirty = true;
-      }
-    }
-
-    if (code) {
-      const newCodeActive = this.anyMarkActive(code);
-      if (newCodeActive !== this.codeActive) {
-        this.codeActive = newCodeActive;
-        dirty = true;
-      }
-
-      const newCodeDisabled = !commands.toggleMark(code)(this.pm, false);
-      if (newCodeDisabled !== this.codeDisabled) {
-        this.codeDisabled = newCodeDisabled;
-        dirty = true;
-      }
-
-      // When code is active disable other buttons
-      // TODO This changes can be gone once upgraded prosemirror. Because the marks available or not can be defined by schema.
-      if (this.codeActive) {
-        this.strongDisabled = true;
-        this.emDisabled = true;
-        this.strikeDisabled = true;
-        this.underlineDisabled = true;
       }
     }
 
     if (dirty) {
-      this.changeHandlers.forEach(cb => cb(this));
+      this.triggerOnChange();
     }
   }
 
-  private addKeymap(): void {
-    this.pm.addKeymap(new Keymap({
-      [keymaps.toggleBold.common!]: trackAndInvoke('atlassian.editor.format.strong.keyboard', () => this.toggleStrong()),
-      [keymaps.toggleItalic.common!]: trackAndInvoke('atlassian.editor.format.em.keyboard', () => this.toggleEm()),
-      [keymaps.toggleUnderline.common!]: trackAndInvoke('atlassian.editor.format.u.keyboard', () => this.toggleUnderline()),
-      [keymaps.toggleStrikethrough.common!]: trackAndInvoke('atlassian.editor.format.strike.keyboard', () => this.toggleStrike()),
-      [keymaps.toggleCode.common!]: trackAndInvoke('atlassian.editor.format.code.keyboard', () => this.toggleCode()),
-    }));
+  private triggerOnChange() {
+    this.changeHandlers.forEach(cb => cb(this));
   }
 
   /**
    * Determine if a mark of a specific type exists anywhere in the selection.
    */
   private anyMarkActive(markType: MarkType): boolean {
-    const { pm } = this;
-    const { from, to, empty } = pm.selection;
-    if (empty) {
-      return !!markType.isInSet(pm.activeMarks());
+    const { state } = this;
+    const { from, to, empty } = state.selection;
+
+    let found = false;
+    if (this.marksToRemove) {
+      this.marksToRemove.forEach(mark => {
+        if (mark.type.name === markType.name) {
+          found = true;
+        }
+      });
     }
-    return pm.doc.rangeHasMark(from, to, markType);
+
+    if (found && !state.doc.rangeHasMark(from - 1, to, markType)) {
+      return false;
+    }
+
+    if (empty) {
+      return !!markType.isInSet(state.tr.storedMarks || state.selection.$from.marks());
+    }
+    return state.doc.rangeHasMark(from, to, markType);
+  }
+
+  handleKeyDown (view: EditorView, event: KeyboardEvent) {
+    const { state } = this;
+    const { from, to, empty } = state.selection;
+    let marks = state.selection.$from.marks();
+    let nodeBefore = view.docView.domFromPos(from - 1);
+
+    if (!empty) {
+      marks = [];
+      state.doc.nodesBetween(from, to, node => {
+        if (node.marks.length) {
+          marks = marks.concat(node.marks);
+        }
+      });
+    }
+
+    const { storedMarks } = state.tr;
+
+    if (storedMarks && this.marksToRemove) {
+      this.marksToRemove = null;
+      view.dispatch(view.state.tr.setStoredMarks([]));
+    }
+
+    if (event.keyCode === keyCodes.Backspace) {
+      let found = false;
+
+      marks.forEach(mark => {
+        if (state.doc.rangeHasMark(from - 1, to, mark.type)) {
+          found = true;
+        }
+      });
+
+      if (marks.length && (!nodeBefore || found)) {
+        this.marksToRemove = marks;
+      }
+    }
+  }
+
+  handleTextInput (view: EditorView, event: KeyboardEvent) {
+    const { state } = this;
+    const { storedMarks } = state.tr;
+
+    if (storedMarks && this.marksToRemove) {
+      this.marksToRemove = null;
+      view.dispatch(view.state.tr.setStoredMarks([]));
+    }
   }
 
   /**
    * Determine if a mark (with specific attribute values) exists anywhere in the selection.
    */
   private markActive(mark: Mark): boolean {
-    const { pm } = this;
-    const { from, to, empty } = pm.selection;
+    const { state } = this;
+    const { from, to, empty } = state.selection;
+
+    let foundMark = false;
+    if (this.marksToRemove) {
+      this.marksToRemove.forEach(markToRemove => {
+        if (markToRemove.type.name === mark.type.name) {
+          foundMark = true;
+        }
+      });
+    }
+
+    if (foundMark && !state.doc.rangeHasMark(from - 1, to, mark.type)) {
+      return false;
+    }
 
     // When the selection is empty, only the active marks apply.
     if (empty) {
-      return !!mark.isInSet(pm.activeMarks());
+      return !!mark.isInSet(state.tr.storedMarks || state.selection.$from.marks());
     }
 
     // For a non-collapsed selection, the marks on the nodes matter.
     let found = false;
-    pm.doc.nodesBetween(from, to, node => {
+    state.doc.nodesBetween(from, to, node => {
       found = found || mark.isInSet(node.marks);
     });
 
     return found;
   }
 
-  private toggleMark(markType: MarkType, attrs?: any) {
+  private toggleMark(view: EditorView, markType: MarkType, attrs?: any): boolean {
     // Disable text-formatting inside code
     if (this.codeActive ? this.codeDisabled : true) {
-      this.pm.on.interaction.dispatch();
-      commands.toggleMark(markType, attrs)(this.pm);
+      return commands.toggleMark(markType, attrs)(view.state, view.dispatch);
     }
+
+    return false;
   }
 }
 
-// IE11 + multiple prosemirror fix.
-Object.defineProperty(TextFormattingState, 'name', { value: 'TextFormattingState' });
+const stateKey = new PluginKey('hypelinkPlugin');
 
-export default new Plugin(TextFormattingState);
+const plugin = new Plugin({
+  state: {
+    init(config, state: EditorState<any>) {
+      return new TextFormattingState(state);
+    },
+    apply(tr, pluginState: TextFormattingState, oldState, newState) {
+      pluginState.update(newState);
+      return pluginState;
+    }
+  },
+  key: stateKey,
+  view: (view: EditorView) => {
+    const pluginState = stateKey.getState(view.state);
+    pluginState.keymapHandler = keymapHandler(view, pluginState);
+    reconfigure(view, [inputRulePlugin(view.state.schema)]);
+    return {};
+  },
+  props: {
+    handleKeyDown(view, event) {
+      const pluginState = stateKey.getState(view.state);
+      const result = pluginState.keymapHandler(view, event);
+      pluginState.handleKeyDown(view, event);
 
-export interface S extends Schema {
-  marks: {
-    em?: EmMarkType;
-    code?: CodeMarkType;
-    strike?: StrikeMarkType;
-    strong?: StrongMarkType;
-    subsup?: SubSupMarkType;
-    u?: UnderlineMarkType;
-  };
-}
+      return result;
+    },
+    handleTextInput(view, event) {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.handleTextInput(view, event);
 
-export interface PM extends ProseMirror {
-  schema: S;
-}
+      return false;
+    }
+  }
+});
+
+export default plugin;

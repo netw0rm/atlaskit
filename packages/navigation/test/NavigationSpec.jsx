@@ -33,16 +33,6 @@ describe('<Navigation />', () => {
   });
 
   describe('props', () => {
-    it('width prop is reflected on <Spacer />', () => {
-      expect(shallow(<Navigation width={500} />).find('Spacer').props().width).to.equal(500);
-      expect(shallow(<Navigation width={200} />).find('Spacer').props().width).to.equal(200);
-    });
-    it('open=false overrides width prop on <Spacer />', () => {
-      expect(shallow(<Navigation isOpen={false} width={500} />)
-        .find('Spacer').props().width).to.equal(containerClosedWidth);
-      expect(shallow(<Navigation isOpen={false} width={200} />)
-        .find('Spacer').props().width).to.equal(containerClosedWidth);
-    });
     it('isResizeable=false does not render a <Resizer />', () => {
       expect(shallow(<Navigation isResizeable={false} />).find('Resizer').length).to.equal(0);
     });
@@ -148,6 +138,100 @@ describe('<Navigation />', () => {
       const navigation = shallow(<Navigation isCollapsible={false} />);
       navigation.find('Resizer').simulate('resize', -300);
       expect(navigation.find('Spacer').props().width).to.be.at.least(navigationOpenWidth);
+    });
+  });
+
+  describe('open/closed props matrix', () => {
+    it('width prop is reflected on <Spacer />', () => {
+      expect(shallow(<Navigation width={500} />).find('Spacer').props().width).to.equal(500);
+      expect(shallow(<Navigation width={200} />).find('Spacer').props().width).to.equal(200);
+    });
+    it('open=false overrides width prop on <Spacer />', () => {
+      expect(shallow(<Navigation isOpen={false} width={500} />)
+        .find('Spacer').props().width).to.equal(containerClosedWidth);
+      expect(shallow(<Navigation isOpen={false} width={200} />)
+        .find('Spacer').props().width).to.equal(containerClosedWidth);
+    });
+
+    // if specific test from the matrix fail hard code them here
+    // hard coded tests being more resistant to co-changes
+    it('isCollapsible=false overrides isOpen=false', () => {
+      const navigation = shallow(<Navigation isCollapsible={false} isOpen={false} />);
+      const spacer = navigation.find('Spacer');
+      const container = navigation.find('ContainerNavigation');
+      expect(container.length).to.equal(1);
+      expect(spacer.props().width).to.equal(navigationOpenWidth);
+      expect(container.props().areGlobalActionsVisible).to.equal(false);
+    });
+
+    it('static isCollapsible=false isOpen=true width=containerClosedWidth must render with renderedWidth=navigationOpenWidth, and showGlobalActions=false', () => {
+      const navigation = shallow(<Navigation isCollapsible={false} width={containerClosedWidth} />);
+      const spacer = navigation.find('Spacer');
+      const container = navigation.find('ContainerNavigation');
+      expect(container.length).to.equal(1);
+      expect(spacer.props().width).to.equal(navigationOpenWidth);
+      expect(container.props().areGlobalActionsVisible).to.equal(false);
+    });
+
+    it('static isCollapsible=false isOpen=false width=containerClosedWidth must render with renderedWidth=navigationOpenWidth, and showGlobalActions=false', () => {
+      const navigation = shallow(
+        <Navigation
+          isCollapsible={false}
+          isOpen={false}
+          width={containerClosedWidth}
+        />
+      );
+      const spacer = navigation.find('Spacer');
+      const container = navigation.find('ContainerNavigation');
+      expect(container.length).to.equal(1);
+      expect(spacer.props().width).to.equal(navigationOpenWidth);
+      expect(container.props().areGlobalActionsVisible).to.equal(false);
+    });
+
+    // construct the parameter matrix
+    const matrix = [];
+    [true, false].forEach((isCollapsible) => {
+      [true, false].forEach((isOpen) => {
+        const halfWayWidth =
+          ((navigationOpenWidth - containerClosedWidth) / 2) + containerClosedWidth;
+        [navigationOpenWidth, containerClosedWidth].forEach((setWidth) => {
+          // decide assertable values
+          const isClosed = isCollapsible && !isOpen;
+          const renderedWidth = (!isCollapsible || (isOpen && setWidth > halfWayWidth)) ?
+              navigationOpenWidth :
+              containerClosedWidth;
+          matrix.push({
+            isCollapsible,
+            isOpen,
+            setWidth,
+            renderedWidth,
+            showGlobalActions: isClosed,
+          });
+        });
+      });
+    });
+
+    // one test per matrix entry ^
+    matrix.forEach((params) => {
+      it(
+        `isCollapsible=${params.isCollapsible} ` +
+        `isOpen=${params.isOpen} ` +
+        `width=${params.setWidth} must render with ` +
+        `renderedWidth=${params.renderedWidth}, and ` +
+        `showGlobalActions=${params.showGlobalActions}`, () => {
+        const navigation = shallow(
+          <Navigation
+            isCollapsible={params.isCollapsible}
+            isOpen={params.isOpen}
+            width={params.setWidth}
+          />
+        );
+        const spacer = navigation.find('Spacer');
+        const container = navigation.find('ContainerNavigation');
+        expect(container.length).to.equal(1);
+        expect(spacer.props().width).to.equal(params.renderedWidth);
+        expect(container.props().areGlobalActionsVisible).to.equal(params.showGlobalActions);
+      });
     });
   });
 });

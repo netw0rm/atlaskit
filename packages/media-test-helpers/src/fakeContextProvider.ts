@@ -7,7 +7,12 @@ export const fakeContext = (stubbedContext = {}): Context => {
     getMediaCollectionProvider: sinon.stub().returns({observable: sinon.spy()}),
     getDataUriService: sinon.stub().returns({fetchOriginalDataUri: sinon.spy(), fetchImageDataUri: sinon.spy()}),
     addLinkItem: sinon.stub().returns({observable: sinon.spy()}),
-    getUrlPreviewProvider: sinon.stub().returns({observable: sinon.spy()})
+    getUrlPreviewProvider: sinon.stub().returns({observable: sinon.spy()}),
+    config: {
+      clientId: 'some-client',
+      serviceHost: 'some-service-host',
+      tokenProvider: () => Promise.resolve('some-token')
+    }
   };
 
   const wrappedStubbedContext = {};

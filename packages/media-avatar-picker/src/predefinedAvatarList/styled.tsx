@@ -1,3 +1,4 @@
+/* tslint:disable:variable-name */
 import styled from 'styled-components';
 
 export const PredefinedAvatarsWrapper = styled.div`

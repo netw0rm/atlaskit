@@ -1,15 +1,15 @@
-import { storiesOf } from '@kadira/storybook';
+import {storiesOf} from '@kadira/storybook';
 import * as React from 'react';
 
-import { CardImageView } from '@atlaskit/media-card';
+import {CardImageView} from '@atlaskit/media-card';
 
 import AvatarList from '../../src/avatarList';
 import PredefinedAvatarList from '../../src/predefinedAvatarList';
 
-const avatarIds = [18831, 18832, 18833, 18834, 18835,];
+const avatarIds = [18831, 18832, 18833, 18834, 18835];
 const avatars = avatarIds.map(id => ({
   dataURI: `https://jdog.jira-dev.com/secure/viewavatar?avatarId=${id}&avatarType=project`,
-  selected: id == 18831 || id == 18833
+  selected: id === 18831 || id === 18833
 }));
 
 storiesOf('Predefined Avatars', {})
@@ -17,7 +17,7 @@ storiesOf('Predefined Avatars', {})
     <AvatarList avatars={avatars}/>
   ))
   .add('Predefined Avatars', () => (
-    <PredefinedAvatarList avatars={avatars} />
+    <PredefinedAvatarList avatars={avatars}/>
   ))
   .add('Card Experiment', () => (
     <CardImageView
@@ -25,6 +25,6 @@ storiesOf('Predefined Avatars', {})
       mediaType="image"
       selectable
       selected
-      dimensions={{height: 50, width:50}}
+      dimensions={{height: 50, width: 50}}
     />
   ));

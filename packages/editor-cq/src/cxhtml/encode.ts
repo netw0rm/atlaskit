@@ -33,6 +33,8 @@ export default function encode(node: PMNode) {
       return encodeHardBreak();
     } else if (node.type === schema.nodes.codeBlock) {
       return encodeCodeBlock(node);
+    } else if (node.type === schema.nodes.mention) {
+      return encodeMention(node);
     } else if (node.type === schema.nodes.unsupportedBlock || node.type === schema.nodes.unsupportedInline) {
       return encodeUnsupported(node);
     } else {
@@ -156,6 +158,16 @@ export default function encode(node: PMNode) {
 
     plainTextBody.appendChild(fragment);
     elem.appendChild(plainTextBody);
+
+    return elem;
+  }
+
+  function encodeMention(node: PMNode) {
+    const elem = doc.createElement('fab:mention');
+    elem.setAttribute('atlassian-id', node.attrs['atlassianId']);
+
+    const cdata = doc.createCDATASection(node.attrs['user']);
+    elem.appendChild(cdata);
 
     return elem;
   }

@@ -111,6 +111,7 @@ function isNodeSupportedContent(node: Node): boolean {
       case 'OL':
       case 'LI':
       case 'P':
+      case 'FAB:MENTION':
         return true;
     }
   }
@@ -325,6 +326,13 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         return schema.nodes.paragraph.createChecked({}, content);
       case 'AC:STRUCTURED-MACRO':
         return convertConfluenceMacro(node);
+      case 'FAB:MENTION':
+        const cdata = node.firstChild!;
+
+        return schema.nodes.mention.create({
+          atlassianId: node.getAttribute('atlassian-id'),
+          user: cdata!.nodeValue,
+        });
     }
   }
 

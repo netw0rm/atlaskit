@@ -13,6 +13,7 @@ describe('getRootNode', () => {
     },
   };
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should be possible to remove a component', () => createTemporaryComponent(define, definition)
     .then((newComponent) => {
       component = newComponent;
@@ -22,6 +23,7 @@ describe('getRootNode', () => {
     })
   );
 
+  // eslint-disable-next-line mocha/no-skipped-tests
   it.skip('should be possible to remove a component from target', () => {
     target = document.createElement('div');
     document.body.appendChild(target);

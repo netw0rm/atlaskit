@@ -4,6 +4,7 @@ import { vdom, define } from 'skatejs';
 
 import { createTemporaryComponent, tearDownComponent, getRootNode } from '../src';
 
+// eslint-disable-next-line mocha/no-skipped-tests
 describe.skip('getRootNode', () => {
   let component;
   let rootNode;

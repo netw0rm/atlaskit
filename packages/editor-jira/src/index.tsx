@@ -25,7 +25,13 @@ import { MentionProvider } from '@atlaskit/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { encode, parse } from './html';
-import { makeSchema, isSchemaWithMentions, isSchemaWithLinks, JIRASchema } from './schema';
+import {
+  JIRASchema,
+  isSchemaWithCodeBlock,
+  isSchemaWithLinks,
+  isSchemaWithMentions,
+  makeSchema,
+} from './schema';
 import { version, name } from './version';
 
 export { version };
@@ -232,7 +238,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...( isSchemaWithMentions(schema) ? [ MentionsPlugin ] : [] ),
           BlockTypePlugin,
           ClearFormattingPlugin,
-          CodeBlockPlugin,
+          ...( isSchemaWithCodeBlock(schema) ? [ CodeBlockPlugin ] : [] ),
           ListsPlugin,
           RulePlugin,
           TextFormattingPlugin,

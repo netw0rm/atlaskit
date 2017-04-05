@@ -33,37 +33,50 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
     .replace(/<hr>/g, '<hr />');
 
   function encodeNode(node: PMNode): DocumentFragment | Text | HTMLElement {
+    const {
+      blockquote,
+      bulletList,
+      codeBlock,
+      hardBreak,
+      heading,
+      listItem,
+      mention,
+      orderedList,
+      paragraph,
+      rule,
+    } = schema.nodes;
+
     if (node.isText) {
       return encodeText(node);
-    } else if (node.type === schema.nodes.heading) {
+    } else if (node.type === heading) {
       return encodeHeading(node);
-    } else if (node.type === schema.nodes.rule) {
+    } else if (node.type === rule) {
       return encodeHorizontalRule();
-    } else if (node.type === schema.nodes.paragraph) {
+    } else if (node.type === paragraph) {
       return encodeParagraph(node);
-    } else if (node.type === schema.nodes.hardBreak) {
+    } else if (node.type === hardBreak) {
       return encodeHardBreak();
     }
 
     if (isSchemaWithLists(schema)) {
-      if (node.type === schema.nodes.bulletList) {
+      if (node.type === bulletList) {
         return encodeBulletList(node);
-      } else if (node.type === schema.nodes.orderedList) {
+      } else if (node.type === orderedList) {
         return encodeOrderedList(node);
-      } else if (node.type === schema.nodes.listItem) {
+      } else if (node.type === listItem) {
         return encodeListItem(node);
       }
     }
 
-    if (isSchemaWithMentions(schema) && node.type === schema.nodes.mention) {
+    if (isSchemaWithMentions(schema) && node.type === mention) {
       return encodeMention(node, customEncoders.mention);
     }
 
-    if (isSchemaWithCodeBlock(schema) && node.type === schema.nodes.codeBlock) {
+    if (isSchemaWithCodeBlock(schema) && node.type === codeBlock) {
       return encodeCodeBlock(node);
     }
 
-    if (isSchemaWithBlockQuotes(schema) && node.type === schema.nodes.blockquote) {
+    if (isSchemaWithBlockQuotes(schema) && node.type === blockquote) {
       return encodeBlockQuote(node);
     }
 
@@ -110,46 +123,57 @@ export default function encode(node: PMNode, schema: JIRASchema, customEncoders:
     if (node.text) {
       const root = doc.createDocumentFragment();
       let elem = root as Node;
+      const {
+        code,
+        em,
+        link,
+        mentionQuery,
+        strike,
+        strong,
+        subsup,
+        underline,
+      } = schema.marks;
+
       for (const mark of node.marks) {
         switch (mark.type) {
-          case schema.marks.strong:
+          case strong:
             elem = elem.appendChild(doc.createElement('b'));
             break;
-          case schema.marks.em:
+          case em:
             elem = elem.appendChild(doc.createElement('em'));
             break;
-          case schema.marks.code:
+          case code:
             elem = elem.appendChild(doc.createElement('tt'));
             break;
-          case schema.marks.strike:
+          case strike:
             elem = elem.appendChild(doc.createElement('del'));
             break;
-          case schema.marks.underline:
+          case underline:
             elem = elem.appendChild(doc.createElement('ins'));
             break;
-          case schema.marks.subsup:
+          case subsup:
             elem = elem.appendChild(doc.createElement(mark.attrs['type']));
             break;
-          case schema.marks.link:
-            const link = doc.createElement('a');
+          case link:
+            const linkElem = doc.createElement('a');
             const href = mark.attrs['href'];
 
             // Handle external links e.g. links which start with http://, https://, ftp://, //
             if (href.match(/\w+:\/\//) || href.match(/^\/\//) || href.match('mailto:')) {
-              link.setAttribute('class', 'external-link');
-              link.setAttribute('href', href);
-              link.setAttribute('rel', 'nofollow');
+              linkElem.setAttribute('class', 'external-link');
+              linkElem.setAttribute('href', href);
+              linkElem.setAttribute('rel', 'nofollow');
             } else {
-              link.setAttribute('href', href);
+              linkElem.setAttribute('href', href);
             }
 
             if (mark.attrs['title']) {
-              link.setAttribute('title', mark.attrs['title']);
+              linkElem.setAttribute('title', mark.attrs['title']);
             }
 
-            elem = elem.appendChild(link);
+            elem = elem.appendChild(linkElem);
             break;
-          case schema.marks.mentionQuery:
+          case mentionQuery:
             break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);

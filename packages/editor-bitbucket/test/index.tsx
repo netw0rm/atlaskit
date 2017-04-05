@@ -5,8 +5,8 @@ import * as sinon from 'sinon';
 import { SinonSpy } from 'sinon';
 import { doc, h1, mention, p, strong, code_block } from './_schema-builder';
 
-import { ProseMirror } from '@atlaskit/editor-core';
-import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { EditorView, browser } from '@atlaskit/editor-core';
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, insertText, sendKeyToPm } from '@atlaskit/editor-core/dist/es5/test-helper';
 import Editor from '../src/index';
 
 chai.use(chaiPlugin);
@@ -119,7 +119,7 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
   });
 
   it('should invoke upload handler after pasting an image', function() {
-    const contentArea: HTMLElement = (editor.get(0) as any).state.pm.content;
+    const contentArea: HTMLElement = (editor.get(0) as any).state.editorView.dom;
     const event = createEvent('paste');
 
     try {
@@ -145,7 +145,7 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
   it('should invoke upload handler after dropping an image', function(){
     // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop'
     //       so we must dispatch the event directly on the event which has listener attached.
-    const dropElement: HTMLElement = (editor.get(0) as any).state.pm.content.parentNode;
+    const dropElement: HTMLElement = (editor.get(0) as any).state.editorView.dom;
     const event = createEvent('drop');
 
     Object.defineProperties(event, {
@@ -235,11 +235,11 @@ describe('@atlaskit/editor-bitbucket/toolbar', () => {
 describe('@atlaskit/editor-bitbucket/pasting', () => {
   const fixture = fixtures();
   let editor: Editor;
-  let pm: ProseMirror;
+  let editorView: EditorView;
 
   beforeEach(() => {
     editor = mount(<Editor isExpandedByDefault />, { attachTo: fixture() }).get(0) as any;
-    pm = editor!.state!.pm as ProseMirror;
+    editorView = editor!.state!.editorView as EditorView;
   });
 
   it('should transform pasted html with an emoji', function() {
@@ -247,7 +247,7 @@ describe('@atlaskit/editor-bitbucket/pasting', () => {
       html: '<p>Nice! <img src="https://d301sr.cloudfront.net/69284d5bf158/emoji/img/%2B1.svg" class="emoji"></p>'
     };
 
-    if (!dispatchPasteEvent(pm, content)) {
+    if (!dispatchPasteEvent(editorView, content)) {
       // This environment does not allow mocking paste events
       return this.skip();
     }
@@ -260,7 +260,7 @@ describe('@atlaskit/editor-bitbucket/pasting', () => {
       html: '<p><a href="/mention/" rel="nofollow" title="@mention" class="mention">Mention</a> some mention.</p>'
     };
 
-    if (!dispatchPasteEvent(pm, content)) {
+    if (!dispatchPasteEvent(editorView, content)) {
       // This environment does not allow mocking paste events
       return this.skip();
     }
@@ -272,22 +272,22 @@ describe('@atlaskit/editor-bitbucket/pasting', () => {
 describe('@atlaskit/editor-bitbucket/keymaps', () => {
   const fixture = fixtures();
   let editor: Editor;
-  let pm: ProseMirror;
+  let editorView: EditorView;
 
   beforeEach(() => {
     editor = mount(<Editor isExpandedByDefault />, { attachTo: fixture() }).get(0) as any;
-    pm = editor!.state!.pm as ProseMirror;
+    editorView = editor!.state!.editorView as EditorView;
   });
 
   it('should undo code block with Cmd+Z', function() {
     editor.setFromHtml('<p></p>');
-    pm.input.insertText(1, 1, '```');
-    pm.input.dispatchKey('Enter');
+    insertText(editorView, '```', 1);
+    sendKeyToPm(editorView, 'Enter');
 
-    expect(pm.doc).to.deep.equal(doc(code_block()('')));
+    expect(editorView.state.doc).to.deep.equal(doc(code_block()('')));
 
-    pm.input.dispatchKey('Cmd-Z');
+    sendKeyToPm(editorView, browser.mac ? 'Cmd-z' : 'Ctrl-z');
 
-    expect(pm.doc).to.deep.equal(doc(p()));
+    expect(editorView.state.doc).to.deep.equal(doc(p()));
   });
 });

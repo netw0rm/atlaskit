@@ -12,11 +12,13 @@ export default function(node: Node): string {
   // some wrapper elements that will contain the xmlns:* attributes. A document will be structured as:
   //
   //     <wrapper xmlns="http://www.w3.org/1999/xhtml">
-  //       <ac:wrapper xmlns="http://example.com/ac">
-  //         <ri:wrapper xmlns="http://example.com/ri">
-  //           …
-  //         </ri:wrapper>
-  //       </ac:wrapper>
+  //       <fab:wrapper xmlns="http://example.com/fab">
+  //         <ac:wrapper xmlns="http://example.com/ac">
+  //           <ri:wrapper xmlns="http://example.com/ri">
+  //             …
+  //           </ri:wrapper>
+  //         </ac:wrapper>
+  //       </fab:wrapper>
   //     </wrapper>
   //
   // Before content is added, `.outerHTML` of the `ac:wrapper` is used to determine the number of

@@ -1,6 +1,9 @@
-import { Block, Fragment, Mark, Node as PMNode } from '@atlaskit/editor-core';
+import {
+  Fragment,
+  Mark,
+  Node as PMNode
+} from '@atlaskit/editor-core';
 import schema from '../schema';
-import { isUnsupportedInlineNode } from '../schema/nodes/unsupportedInline';
 import parseCxhtml from './parse-cxhtml';
 import encodeCxhtml from './encode-cxhtml';
 
@@ -188,9 +191,9 @@ function ensureBlocks(fragment: Fragment): Fragment {
   let i;
   for (i = 0; i < nodes.length; i++) {
     const node = nodes[i];
-    if (node.type instanceof Block) {
+    if (node.isBlock) {
       blocks.push(node);
-    } else if (isUnsupportedInlineNode(node)) {
+    } else if (node.type === schema.nodes.unsupportedInline) {
       blocks.push(schema.nodes.unsupportedBlock.create(node.attrs));
     } else {
       // An inline node is found. Now step through until we find the last inline
@@ -198,7 +201,7 @@ function ensureBlocks(fragment: Fragment): Fragment {
       let j;
       for (j = i + 1; j < nodes.length; j++) {
         const node = nodes[j];
-        if (node.type instanceof Block || isUnsupportedInlineNode(node)) {
+        if (node.isBlock || node.type === schema.nodes.unsupportedInline) {
           break;
         }
       }
@@ -286,7 +289,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         const type = tag === 'SUB' ? 'sub' : 'sup';
         return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
       case 'U':
-        return content ? addMarks(content, [schema.marks.u.create()]) : null;
+        return content ? addMarks(content, [schema.marks.underline.create()]) : null;
       // Nodes
       case 'BLOCKQUOTE':
         return schema.nodes.blockquote.createChecked({},
@@ -305,16 +308,16 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         const level = Number(tag.charAt(1));
         return schema.nodes.heading.createChecked({ level }, content);
       case 'BR':
-        return schema.nodes.hard_break.createChecked();
+        return schema.nodes.hardBreak.createChecked();
       case 'HR':
-        return schema.nodes.horizontal_rule.createChecked();
+        return schema.nodes.rule.createChecked();
       case 'UL':
-        return schema.nodes.bullet_list.createChecked({}, content);
+        return schema.nodes.bulletList.createChecked({}, content);
       case 'OL':
-        return schema.nodes.ordered_list.createChecked({}, content);
+        return schema.nodes.orderedList.createChecked({}, content);
       case 'LI':
-        return schema.nodes.list_item.createChecked({},
-          schema.nodes.list_item.validContent(content)
+        return schema.nodes.listItem.createChecked({},
+          schema.nodes.listItem.validContent(content)
             ? content
             : ensureBlocks(content)
         );

@@ -1,4 +1,4 @@
-import { DocNode } from '@atlaskit/editor-core';
+import { Node as PMNode } from '@atlaskit/editor-core';
 import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
@@ -11,7 +11,7 @@ import {
 
 chai.use(chaiPlugin);
 
-const checkBuilder = (fn: any, description: string, cxhtml: string, doc: DocNode) => {
+const checkBuilder = (fn: any, description: string, cxhtml: string, doc: PMNode) => {
   fn(`parses CXHTML: ${description}`, () => {
     const actual = parse(cxhtml);
     expect(actual).to.deep.equal(doc);
@@ -23,7 +23,7 @@ const checkBuilder = (fn: any, description: string, cxhtml: string, doc: DocNode
   });
 };
 
-const check = (description: string, cxhtml: string, doc: DocNode) =>
+const check = (description: string, cxhtml: string, doc: PMNode) =>
   checkBuilder(it, description, cxhtml, doc);
 
 describe('@atlaskit/editor-cq encode-cxml:', () => {

@@ -2,6 +2,14 @@
 /* eslint-disable no-console */
 const axios = require('axios');
 
+/*
+   To debug this file you should be able to change BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR to be the
+    name of the branch you are working on then call this script from a branch build AFTER running
+   yarn. It should then be able to simulate a master build fine.
+   (replacing the rest of the build after calling this with `sleep 300` is a good idea too!)
+*/
+
+const BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR = 'AK-2002-single-master-build-WORKING';
 const BUILDS_PER_PAGE = 30;
 const BB_USERNAME = process.env.BITBUCKET_USER;
 const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
@@ -17,7 +25,7 @@ const axiosRequestConfig = {
     pagelen: BUILDS_PER_PAGE,
     // get the most recent builds first
     sort: '-created_on',
-    'target.ref_name': 'master',
+    'target.ref_name': BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR,
     'target.ref_type': 'BRANCH',
   },
 };

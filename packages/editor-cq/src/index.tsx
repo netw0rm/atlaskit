@@ -39,7 +39,6 @@ export interface Props {
 
 export interface State {
   editorView?: EditorView;
-  editorState?: EditorState<any>;
   isExpanded?: boolean;
   schema: CQSchema;
 }

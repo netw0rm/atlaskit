@@ -15,6 +15,7 @@ export interface MarkSpec {
 }
 
 export interface NodeSpec {
+  atom?: boolean;
   content?: string;
   group?: string;
   inline?: boolean;

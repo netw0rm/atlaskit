@@ -4,9 +4,9 @@ const { Converter, dropHandler, pasteHandler } = base64fileconverter;
 const converter = new Converter(['jpg', 'jpeg', 'png', 'gif', 'svg'], 10000000);
 
 const imageUploadHandler = (e: any, fn: any) => {
-  if (e.type === 'paste') {
+  if (e && e.type === 'paste') {
     pasteHandler(converter, e, fn);
-  } else if (e.type === 'drop') {
+  } else if (e && e.type === 'drop') {
     dropHandler(converter, e, fn);
   } else {
     // we cannot trigger a real file viewer from here

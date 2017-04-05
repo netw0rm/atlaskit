@@ -5,8 +5,8 @@ import { expect } from 'chai';
 import { encode, parse } from '../src/cxhtml';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
-  code, ol, p, strike, strong, sub, sup, u, ul, unsupportedInline,
-  unsupportedBlock
+  code, ol, p, strike, strong, sub, sup, u, ul, codeblock,
+  unsupportedInline, unsupportedBlock
 } from './_schema-builder';
 
 chai.use(chaiPlugin);
@@ -99,6 +99,14 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         doc(p(
           'Text with ',
           strong('bold words'),
+          '.'
+        )));
+
+      check('<s> tag',
+        '<p>Text with <s>strikethrough words</s>.</p>',
+        doc(p(
+          'Text with ',
+          strike('strikethrough words'),
           '.'
         )));
 
@@ -315,6 +323,30 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         '<blockquote><blockquote>Elementary my dear Watson</blockquote></blockquote>',
         doc(blockquote(blockquote(p('Elementary my dear Watson')))));
     });
+
+    describe('code block', () => {
+      check('with CDATA',
+        '<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
+        doc(codeblock()('some code')));
+
+      check('with multiline CDATA',
+        `<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code
+        on
+        multiple
+        lines]]></ac:plain-text-body></ac:structured-macro>`,
+        doc(codeblock()(`some code
+        on
+        multiple
+        lines`)));
+
+      check('with selected language',
+        '<ac:structured-macro ac:name="code"><ac:parameter ac:name="language">js</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
+        doc(codeblock({ language: 'js' })('some code')));
+
+      check('with title',
+        '<ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Code</ac:parameter><ac:parameter ac:name="language">js</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
+        doc(p(strong('Code')), codeblock({ language: 'js' })('some code')));
+    });
   });
 
   describe('unsupported content', () => {
@@ -375,10 +407,10 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
       ));
 
     check('h1 + macro with CDATA',
-      '<h1>Code block</h1><ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
+      '<h1>Code block</h1><ac:structured-macro ac:name="foo"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
       doc(
         h1('Code block'),
-        unsupportedBlock('<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>'),
+        unsupportedBlock('<ac:structured-macro ac:name="foo"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>'),
       ));
   });
 

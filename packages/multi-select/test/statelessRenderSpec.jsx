@@ -3,6 +3,8 @@ import { shallow, mount } from 'enzyme';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import Avatar from '@atlaskit/avatar';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
+import Tag from '@atlaskit/tag';
+import TagGroup from '@atlaskit/tag-group';
 
 import styles from 'style!../src/styles.less';
 import { StatelessMultiSelect } from '../src';
@@ -118,6 +120,41 @@ describe(`${name} - stateless`, () => {
       expect(itemProps.isDisabled, 'isDisabled').to.equal(true);
       expect(itemProps.elemBefore, 'elemBefore').to.equal('1');
       expect(itemProps.elemAfter, 'elemAfter').to.equal('2');
+    });
+  });
+
+  describe('selectedTags', () => {
+    const items = [
+      {
+        heading: 'test',
+        items: [
+          { value: 1, content: '1', tag: { elemBefore: <Avatar size="small" />, appearance: 'rounded' } },
+          { value: 2, content: '2' },
+          { value: 3, content: '3', tag: { elemBefore: <Avatar size="small" /> } },
+        ],
+      },
+    ];
+    const selectedItems = [items[0].items[0], items[0].items[1]];
+
+    it('should render selectedTags', () => {
+      const wrapper = mount(<StatelessMultiSelect items={items} selectedItems={selectedItems} />);
+      const tagGroup = wrapper.find(TagGroup);
+      expect(tagGroup.find(Tag).length).to.equal(2);
+    });
+
+    it('should pass on tag.elemBefore prop to selected tags', () => {
+      const wrapper = mount(<StatelessMultiSelect items={items} selectedItems={selectedItems} />);
+      const tagGroup = wrapper.find(TagGroup);
+      expect(tagGroup.find(Tag).length).to.equal(2);
+      expect(tagGroup.find(Avatar).length).to.equal(1);
+    });
+
+    it('should pass on tag.appearance prop to selected tags', () => {
+      const wrapper = mount(<StatelessMultiSelect items={items} selectedItems={selectedItems} />);
+      const tagGroup = wrapper.find(TagGroup);
+      expect(tagGroup.find(Tag).length).to.equal(2);
+      expect(tagGroup.find(Tag).at(0).prop('appearance')).to.equal('rounded');
+      expect(tagGroup.find(Tag).at(1).prop('appearance')).to.equal('default');
     });
   });
 });

@@ -1,10 +1,8 @@
-import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-
 import RemoveIcon from '@atlaskit/icon/glyph/cross';
+import Button from '../styled/Remove';
 
-export default class RemoveButton extends PureComponent {
+export default class Remove extends PureComponent {
   static propTypes = {
     removeText: PropTypes.string.isRequired,
     isRounded: PropTypes.bool,
@@ -13,7 +11,9 @@ export default class RemoveButton extends PureComponent {
   }
 
   onKeyPress = (e) => {
-    if (e.charCode === 32 || e.charCode === 13) {
+    const spacebarOrEnter = (e.key === ' ' || e.key === 'Enter');
+
+    if (spacebarOrEnter) {
       e.stopPropagation();
       this.props.onRemoveAction();
     }
@@ -28,20 +28,20 @@ export default class RemoveButton extends PureComponent {
   }
 
   render() {
-    const buttonStyles = classNames(styles.button, {
-      [styles.rounded]: this.props.isRounded,
-    });
+    const { isRounded, onRemoveAction, removeText } = this.props;
+
     return (
-      <button
-        className={buttonStyles} aria-label={this.props.removeText}
-        onMouseOver={this.onMouseOver}
-        onMouseOut={this.onMouseOut}
-        onClick={this.props.onRemoveAction}
+      <Button
+        aria-label={removeText}
+        isRounded={isRounded}
+        onClick={onRemoveAction}
         onKeyPress={this.onKeyPress}
+        onMouseOut={this.onMouseOut}
+        onMouseOver={this.onMouseOver}
         type="button"
       >
-        <RemoveIcon label={this.props.removeText} size="small" />
-      </button>
+        <RemoveIcon label={removeText} size="small" />
+      </Button>
     );
   }
 }

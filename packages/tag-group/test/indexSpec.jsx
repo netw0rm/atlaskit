@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Tag from '@atlaskit/tag';
 import TagGroup from '../src';
-import styles from '../src/styles.less';
+import Container from '../src/styled/Container';
 
 describe('Tag-group', () => {
   it('should export a base component', () => {
@@ -14,9 +14,7 @@ describe('Tag-group', () => {
 
     const wrapper = mount(
       <TagGroup>
-        {
-          tags.map(tagName => <Tag key={tagName} text={tagName} />)
-        }
+        {tags.map(tagName => <Tag key={tagName} text={tagName} />)}
       </TagGroup>
     );
 
@@ -24,7 +22,11 @@ describe('Tag-group', () => {
   });
 
   it('should apply the .endAligned class when aligment prop is set to end', () => {
-    shallow(<TagGroup><Tag text="test" /></TagGroup>).hasClass(styles.locals.endAligned).should.equal(false);
-    shallow(<TagGroup alignment="end"><Tag text="test" /></TagGroup>).hasClass(styles.locals.endAligned).should.equal(true);
+    expect(
+      mount(<TagGroup><Tag text="test" /></TagGroup>).find(Container).prop('justify')
+    ).to.equal('start');
+    expect(
+      mount(<TagGroup alignment="end"><Tag text="test" /></TagGroup>).find(Container).prop('justify')
+    ).to.equal('end');
   });
 });

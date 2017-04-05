@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import chai from 'chai';
 
-import DynamicProps from '../src/DynamicProps';
+import DynamicProps from '../../src/DynamicProps';
 
 const expect = chai.expect;
 

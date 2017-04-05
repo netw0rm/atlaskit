@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import chai from 'chai';
 
-import PrettyPropType from '../src/PrettyPropType';
+import PrettyPropType from '../../src/PrettyPropType';
 
 const expect = chai.expect;
 

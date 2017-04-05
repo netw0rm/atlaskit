@@ -1,4 +1,4 @@
-import { Node } from '@atlaskit/editor-core';
+import { Node, DOMParser } from '@atlaskit/editor-core';
 import schema from './schema';
 import arrayFrom from './util/array-from';
 
@@ -109,5 +109,5 @@ export function transformHtml(html: string): HTMLElement {
  * Note that all unsupported elements will be discarded after parsing.
  */
 export function parseHtml(html: string): Node {
-  return schema.parseDOM(transformHtml(html));
+  return DOMParser.fromSchema(schema).parse(transformHtml(html));
 };

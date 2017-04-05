@@ -516,7 +516,7 @@ describe('Bitbucket markdown serializer: ', () => {
     });
   });
 
-  it('should serialize hard_break to newline', () => {
+  it('should serialize hardBreak to newline', () => {
     expect(markdownSerializer.serialize(doc(
       p('foo ', br, 'bar')
     ))).to.eq('foo   \nbar');

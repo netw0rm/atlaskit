@@ -111,9 +111,9 @@ storiesOf(name, module)
         <Editor
           placeholder="Click me to expand ..."
           analyticsHandler={(actionName, props) => action(actionName)(props)}
-          onSave={() => {}}
-          onCancel={() => {}}
-          imageUploadHandler={() => {}}
+          onSave={() => { }}
+          onCancel={() => { }}
+          imageUploadHandler={() => { }}
         />
       </div>
     );
@@ -275,5 +275,4 @@ storiesOf(name, module)
     }
 
     return <EditorWithFeedback />;
-  })
-;
+  });

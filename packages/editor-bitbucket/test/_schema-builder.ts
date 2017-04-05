@@ -7,7 +7,7 @@ export const br = schema.nodes.hardBreak.createChecked();
 // tslint:disable-next-line:variable-name
 export const code_block = (attrs: {} = {}) => nodeFactory(schema.nodes.codeBlock, attrs);
 export const doc = nodeFactory(schema.nodes.doc);
-export const emoji = (attrs: { id: string }) => schema.nodes.emoji.createChecked(attrs);
+export const emoji = (attrs: { shortName: string }) => schema.nodes.emoji.createChecked(attrs);
 export const h1 = nodeFactory(schema.nodes.heading, {level: 1});
 export const h2 = nodeFactory(schema.nodes.heading, {level: 2});
 export const h3 = nodeFactory(schema.nodes.heading, {level: 3});
@@ -30,3 +30,5 @@ export const strong = markFactory(schema.marks.strong, {});
 export const strike = markFactory(schema.marks.strike, {});
 // tslint:disable-next-line:variable-name
 export const mention_query = markFactory(schema.marks.mentionQuery, {});
+// tslint:disable-next-line:variable-name
+export const emoji_query = markFactory(schema.marks.emojiQuery, {});

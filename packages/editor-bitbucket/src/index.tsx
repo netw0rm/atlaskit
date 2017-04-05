@@ -6,6 +6,7 @@ import {
   CodeBlockPlugin,
   ContextName,
   RulePlugin,
+  EmojisPlugin,
   HyperlinkPlugin,
   ImageUploadPlugin,
   MentionsPlugin,
@@ -17,12 +18,14 @@ import {
   TextFormattingPlugin,
   ClearFormattingPlugin,
   ProviderFactory,
+  emojiNodeView,
   mentionNodeView,
   history,
   keymap,
   baseKeymap,
   version as coreVersion
 } from '@atlaskit/editor-core';
+import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -49,6 +52,7 @@ export interface Props {
   analyticsHandler?: AnalyticsHandler;
   imageUploadHandler?: ImageUploadHandler;
   mentionSource?: MentionSource;
+  emojiProvider?: Promise<EmojiProvider>;
 }
 
 export interface State {
@@ -78,6 +82,10 @@ export default class Editor extends PureComponent<Props, State> {
 
       this.mentionProvider = Promise.resolve(mentionsResourceProvider);
       this.providerFactory.setProvider('mentionProvider', this.mentionProvider);
+    }
+
+    if (props.emojiProvider) {
+      this.providerFactory.setProvider('emojiProvider', props.emojiProvider);
     }
   }
 
@@ -185,6 +193,7 @@ export default class Editor extends PureComponent<Props, State> {
     const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
     const imageUploadState = editorState && ImageUploadPlugin.getState(editorState);
     const mentionsState = editorState && MentionsPlugin.getState(editorState);
+    const emojiState = editorState && EmojisPlugin.getState(editorState);
 
     return (
       <Chrome
@@ -198,6 +207,7 @@ export default class Editor extends PureComponent<Props, State> {
         editorView={editorView!}
         pluginStateBlockType={blockTypeState}
         pluginStateCodeBlock={codeBlockState}
+        pluginStateEmojis={emojiState}
         pluginStateHyperlink={hyperlinkState}
         pluginStateLists={listsState}
         pluginStateMentions={mentionsState}
@@ -205,6 +215,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateClearFormatting={clearFormattingState}
         pluginStateImageUpload={imageUploadState}
         mentionProvider={this.mentionProvider}
+        emojiProvider={this.props.emojiProvider}
         packageVersion={version}
         packageName={name}
       />
@@ -234,7 +245,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { context, imageUploadHandler } = this.props;
+      const { context, emojiProvider, imageUploadHandler } = this.props;
       const bitbucketKeymap = {
         'Mod-Enter': this.handleSave,
         'Esc'() { } // Disable Esc handler
@@ -253,6 +264,7 @@ export default class Editor extends PureComponent<Props, State> {
             RulePlugin,
             ...(imageUploadHandler ? [ImageUploadPlugin] : []),
             ...(this.mentionProvider ? [MentionsPlugin] : []),
+            ...(emojiProvider ? [EmojisPlugin] : []),
             history(),
             keymap(bitbucketKeymap),
             keymap(baseKeymap) // should be last :(
@@ -278,7 +290,8 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         },
         nodeViews: {
-          mention: mentionNodeView(this.providerFactory)
+          mention: mentionNodeView(this.providerFactory),
+          emoji: emojiNodeView(this.providerFactory)
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {
@@ -293,6 +306,10 @@ export default class Editor extends PureComponent<Props, State> {
 
       if (this.mentionProvider) {
         MentionsPlugin.getState(editorState).subscribeToFactory(this.providerFactory);
+      }
+
+      if (emojiProvider) {
+        EmojisPlugin.getState(editorState).subscribeToFactory(this.providerFactory);
       }
 
       this.setState({ editorView });

@@ -18,6 +18,7 @@ import {
   rule,
   image,
   emoji,
+  emojiQuery,
   mention,
   mentionQuery,
   MarkSpec,
@@ -49,7 +50,8 @@ const marks = {
   code,
   strike,
   link,
-  mentionQuery
+  mentionQuery,
+  emojiQuery
 };
 
 export { MarkSpec, NodeSpec };

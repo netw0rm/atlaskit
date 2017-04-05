@@ -1,8 +1,10 @@
 import {
   BulletListNode,
+  BlockQuoteNode,
   DocNode,
   Fragment,
   HeadingNode,
+  isBlockQuoteNode,
   isBulletListNode,
   isHardBreakNode,
   isHeadingNode,
@@ -19,7 +21,7 @@ import {
   OrderedListNode,
   ParagraphNode
 } from '@atlaskit/editor-core';
-import { isSchemaWithLists, isSchemaWithMentions, isSchemaWithCodeBlock, JIRASchema } from '../schema';
+import { isSchemaWithBlockQuotes, isSchemaWithLists, isSchemaWithMentions, isSchemaWithCodeBlock, JIRASchema } from '../schema';
 
 export interface JIRACustomEncoders {
   mention?: (userId: string) => string;
@@ -42,7 +44,7 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     .replace(/<hr><\/hr>/g, '<hr />')
     .replace(/<hr>/g, '<hr />');
 
-  function encodeNode(node: PMNode) {
+  function encodeNode(node: PMNode): DocumentFragment | Text | HTMLElement {
     if (node.isText) {
       return encodeText(node);
     } else if (isHeadingNode(node)) {
@@ -71,6 +73,10 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
 
     if (isSchemaWithCodeBlock(schema) && isCodeBlockNode(node)) {
       return encodeCodeBlock(node);
+    }
+
+    if (isSchemaWithBlockQuotes(schema) && isBlockQuoteNode(node)) {
+      return encodeBlockQuote(node);
     }
 
     throw new Error(`Unexpected node '${(node as any).type.name}' for HTML encoding`);
@@ -180,11 +186,12 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
   function encodeBulletList(node: BulletListNode) {
     const elem = doc.createElement('ul');
     elem.setAttribute('class', 'alternate');
-    elem.setAttribute('type', 'square');
+    elem.setAttribute('type', 'disc');
     elem.appendChild(encodeFragment(node.content));
     for (let index = 0; index < elem.childElementCount; index++) {
       elem.children[index].setAttribute('data-parent', 'ul');
     }
+
     return elem;
   }
 
@@ -202,7 +209,23 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     if (node.content.childCount) {
       node.content.forEach(childNode => {
         if (isBulletListNode(childNode) || isOrderedListNode(childNode)) {
-          elem.appendChild(encodeNode(childNode)!);
+          const list = encodeNode(childNode)!;
+
+          /**
+           * Changing type for nested list:
+           *
+           * Second level -> circle
+           * Third and deeper -> square
+           */
+          if (list instanceof HTMLElement && list.tagName === 'UL') {
+            list.setAttribute('type', 'circle');
+
+            [].forEach.call(list.querySelectorAll('ul'), ul => {
+              ul.setAttribute('type', 'square');
+            });
+          }
+
+          elem.appendChild(list);
         } else {
           // Strip the paragraph node from the list item.
           elem.appendChild(encodeFragment((childNode as ParagraphNode).content));
@@ -236,6 +259,12 @@ export default function encode(node: DocNode, schema: JIRASchema, customEncoders
     content.appendChild(pre);
     elem.appendChild(content);
 
+    return elem;
+  }
+
+  function encodeBlockQuote(node: BlockQuoteNode) {
+    const elem = doc.createElement('blockquote');
+    elem.appendChild(encodeFragment(node.content));
     return elem;
   }
 }

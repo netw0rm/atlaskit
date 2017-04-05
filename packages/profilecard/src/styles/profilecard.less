@@ -1,18 +1,49 @@
 @import './styles.less';
 
-.profilecard {
+@error-color: @ak-color-N800;
+@error-sub-color: @ak-color-N90;
+
+.cardAnimationWrapper {
   .font-smoothing;
-  font-family: @ak-font-family;
-  display: inline-block;
-  box-sizing: border-box;
-  overflow: hidden;
-  position: relative;
-  width: @ak-grid-size * 45;
-  padding: @ak-grid-size * 3;
+  background-color: @card-bg;
   border-radius: @ak-border-radius;
   box-shadow: @card-shadow;
-  background-color: @card-bg;
+  display: inline-block;
+  font-family: @ak-font-family;
+  overflow: hidden;
+  position: relative;
+  transition: height 0.25s ease;
+  width: @ak-grid-size * 45;
+}
 
+.spinnerContainer {
+  align-items: center;
+  display: flex;
+  height: @ak-grid-size * 12;
+  justify-content: center;
+  position: relative;
+}
+
+.errorMessage {
+  text-align: center;
+  padding: @ak-grid-size * 3;
+
+  svg {
+    color: @error-sub-color;
+  }
+
+  p {
+    color: @error-color;
+    line-height: @ak-grid-size * 3;
+    margin: @ak-grid-size 0;
+
+    span {
+      color: @error-sub-color;
+    }
+  }
+}
+
+.profilecard {
   background-image: linear-gradient(
     to bottom,
     @ak-color-B500 0%,
@@ -20,6 +51,8 @@
   );
   background-repeat: no-repeat;
   background-size: 100% (@ak-grid-size * 12);
+  box-sizing: content-box;
+  padding: @ak-grid-size * 3;
 }
 
 .avatarWrapper {
@@ -137,10 +170,9 @@
     right: @ak-grid-size * 3;
   }
 
-  .detailsWrapper {
-    position: relative;
-    left: auto;
-    right: @ak-grid-size * 14;
+  .detailsGroup {
+    margin-left: 0;
+    margin-right: @ak-grid-size * 14;
   }
 
   .actionsWrapper {

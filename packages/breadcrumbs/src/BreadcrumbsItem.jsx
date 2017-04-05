@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import Button from '@atlaskit/button';
 import AKTooltip from '@atlaskit/tooltip';
 import classnames from 'classnames';
-import { locals } from './styles.less';
+import styles from './styles.less';
 import { itemTruncateWidth } from './internal/constants';
 
-const { item, itemButton, truncated } = locals;
+// This hack is to make sure that styles.locals exists when style loading is a noop (when we are
+// running tests).
+// TODO: Remove in AK-2025
+styles.locals = styles.locals || {};
 
 export default class BreadcrumbsItem extends PureComponent {
   static propTypes = {
@@ -53,7 +56,7 @@ export default class BreadcrumbsItem extends PureComponent {
 
   renderButton = () => (
     <Button
-      className={itemButton}
+      className={styles.locals.itemButton}
       appearance="link"
       iconAfter={this.props.iconAfter}
       iconBefore={this.props.iconBefore}
@@ -75,8 +78,8 @@ export default class BreadcrumbsItem extends PureComponent {
   );
 
   render() {
-    const itemClasses = classnames(item, {
-      [truncated]: this.state.hasOverflow,
+    const itemClasses = classnames(styles.locals.item, {
+      [styles.locals.truncated]: this.state.hasOverflow,
     });
     return (
       <div className={itemClasses}>

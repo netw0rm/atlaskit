@@ -6,10 +6,12 @@ import debug from '../util/logger';
 
 import {
   EmojiDescription,
+  EmojiDescriptionWithVariations,
   EmojiMeta,
   EmojiRepresentation,
   EmojiResponse,
   EmojiServiceDescription,
+  EmojiServiceDescriptionWithVariations,
   EmojiServiceRepresentation,
   EmojiServiceResponse,
   ImageRepresentation,
@@ -60,27 +62,34 @@ export const denormaliseServiceRepresentation = (representation: EmojiServiceRep
   return undefined;
 };
 
-export const denormaliseSkinServiceRepresentation = (skins?: EmojiServiceRepresentation[], meta?: EmojiMeta): EmojiRepresentation[] => {
-  if (!skins) {
+export const denormaliseSkinEmoji = (skinEmojis?: EmojiServiceDescription[], meta?: EmojiMeta): EmojiDescriptionWithVariations[] => {
+  if (!skinEmojis) {
     return [];
   }
-  return skins.map(skin => denormaliseServiceRepresentation(skin, meta));
+  return skinEmojis.map((skin): EmojiDescriptionWithVariations => {
+    const { representation, ...other } = skin;
+    return {
+      ...other,
+      representation: denormaliseServiceRepresentation(representation, meta),
+    };
+  });
 };
 
 /**
  * Denormalised an emoji response (emojis + sprite references) into an array of
- * emoji will local sprite definitions.
+ * emoji with local sprite definitions.
  */
 export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse): EmojiResponse  => {
-  const emojis: EmojiDescription[] = emojiData.emojis.map((emoji: EmojiServiceDescription): EmojiDescription => {
-    const { id, name, shortcut, type, category, order } = emoji;
+  const emojis: EmojiDescription[] = emojiData.emojis.map((emoji: EmojiServiceDescriptionWithVariations): EmojiDescriptionWithVariations => {
+    const { id, name, shortName, type, category, order, fallback } = emoji;
     const representation = denormaliseServiceRepresentation(emoji.representation, emojiData.meta);
-    const skinVariations = denormaliseSkinServiceRepresentation(emoji.skinVariations, emojiData.meta);
+    const skinVariations = denormaliseSkinEmoji(emoji.skinVariations, emojiData.meta);
 
     return {
       id,
       name,
-      shortcut,
+      shortName,
+      fallback,
       type,
       category,
       order,

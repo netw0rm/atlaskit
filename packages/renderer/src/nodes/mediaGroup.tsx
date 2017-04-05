@@ -15,7 +15,7 @@ export const CardWrapper = styled.div`
   padding: 5px 10px;
 `;
 
-interface Props {
+export interface Props {
   numOfCards: number;
 }
 

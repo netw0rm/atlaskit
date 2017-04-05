@@ -5,6 +5,7 @@ import {
   isSchemaWithLinks,
   isSchemaWithAdvancedTextFormattingMarks,
   isSchemaWithCodeBlock,
+  isSchemaWithBlockQuotes,
   JIRASchema,
 } from '../schema';
 import parseHtml from './parse-html';
@@ -140,6 +141,8 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
           return jiraKey ? schema.text(jiraKey) : null;
         } else if (node.className.match('jira-macro-single-issue-export-pdf')) {
           return null;
+        } else if (node.className.match('code-')) { // Removing spans with syntax highlighting from JIRA
+          return null;
         }
         break;
 
@@ -183,9 +186,9 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
     if (isSchemaWithCodeBlock(schema)) {
       switch (tag) {
         case 'DIV':
-          if (node.className === 'codeContent panelContent') {
+          if (node.className === 'codeContent panelContent' || node.className.match('preformattedContent')) {
             return null;
-          } else if (node.className === 'code panel') {
+          } else if (node.className === 'code panel' || node.className === 'preformatted panel') {
             const pre = node.querySelector('pre');
 
             if (!pre) {
@@ -193,24 +196,18 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
             }
 
             const language = pre.className.split('-')[1];
-            return schema.nodes.code_block!.createChecked({ language }, schema.text(pre.innerText));
+            return schema.nodes.code_block!.createChecked({ language }, schema.text(pre.innerText.replace(/\r\n/g, '\n')));
           }
           break;
         case 'PRE':
-          if (node.className.match(/code-/)) {
-            return null;
-          }
-          break;
+          return null;
       }
     }
-  }
 
-  // debug
-  let repr = node.toString();
-  if (node instanceof HTMLElement) {
-    repr = (node.cloneNode(false) as HTMLElement).outerHTML;
+    if (isSchemaWithBlockQuotes(schema) && tag === 'BLOCKQUOTE') {
+      return schema.nodes.blockquote!.createChecked({}, content);
+    }
   }
-  throw new Error(`Unable to handle node ${repr}`);
 }
 
 /*

@@ -8,6 +8,7 @@ import {CardAction} from '@atlaskit/media-core';
 
 import {CardDimensions, CardAppearance} from '../../card';
 import {CardImageView} from '../../utils/cardImageView';
+import {Href} from '../../utils/href';
 
 export interface LinkCardImageViewProps {
   linkUrl: string;
@@ -28,17 +29,19 @@ export class LinkCardImageView extends Component<LinkCardImageViewProps, {}> {
   render() {
     const {title, site, thumbnailUrl, loading, dimensions, actions, onClick, error, iconUrl, linkUrl} = this.props;
 
-    return <CardImageView
-      mediaName={title}
-      subtitle={site || linkUrl}
-      mediaType={'image'}
-      dataURI={thumbnailUrl}
-      loading={loading}
-      dimensions={dimensions}
-      actions={actions}
-      onClick={onClick}
-      error={error}
-      icon={iconUrl}
-    />;
+    return <Href linkUrl={linkUrl}>
+      <CardImageView
+        mediaName={title}
+        subtitle={site || linkUrl}
+        mediaType={'image'}
+        dataURI={thumbnailUrl}
+        loading={loading}
+        dimensions={dimensions}
+        actions={actions}
+        onClick={onClick}
+        error={error}
+        icon={iconUrl}
+      />
+    </Href>;
   }
 }

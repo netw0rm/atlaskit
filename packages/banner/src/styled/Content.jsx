@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import {
   akColorN0,
   akColorN800,
+  akColorP300,
   akColorR400,
   akColorY300,
-  akColorP300,
 
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';

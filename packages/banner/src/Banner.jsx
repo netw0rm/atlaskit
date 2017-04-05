@@ -4,7 +4,7 @@ import { Container, Content, Icon, Text } from './styled';
 export default class Banner extends PureComponent {
   static propTypes = {
     /** Visual style to be used for the banner */
-    appearance: PropTypes.oneOf(['warning', 'error']),
+    appearance: PropTypes.oneOf(['warning', 'error', 'info']),
     /** Content to be shown next to the icon. Typically text content but can contain links. */
     children: PropTypes.node,
     /** Icon to be shown left of the main content. Typically an AtlasKit icon (ak-icon) */

@@ -11,6 +11,6 @@ const Container = styled.div`
 storiesOf('Slider', {})
     .add('default', () => (
         <Container>
-            <Slider onChange={action('onChange')} />
+            <Slider value={20} min={0} max={100} onChange={action('onChange')} />
         </Container>
     ));

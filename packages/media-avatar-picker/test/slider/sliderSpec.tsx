@@ -10,7 +10,7 @@ describe('Slider', () => {
         let input;
 
         beforeEach(() => {
-            slider = mount<SliderProps, {}>(<Slider />);
+            slider = mount<SliderProps, {}>(<Slider value={20} />);
             input = slider.find('input');
         });
 
@@ -22,6 +22,10 @@ describe('Slider', () => {
             expect(input.props().min).to.equal(0);
             expect(input.props().max).to.equal(100);
         });
+
+        it('should input with defined value', () => {
+            expect(input.props().defaultValue).to.equal('20');
+        });
     });
 
     describe('with defined props', () => {
@@ -31,7 +35,7 @@ describe('Slider', () => {
 
       beforeEach(() => {
           onChangeSpy = sinon.spy();
-          slider = mount<SliderProps, {}>(<Slider min={10} max={20} onChange={onChangeSpy}/>);
+          slider = mount<SliderProps, {}>(<Slider value={15} min={10} max={20} onChange={onChangeSpy}/>);
           input = slider.find('input');
       });
 
@@ -40,10 +44,16 @@ describe('Slider', () => {
           expect(input.props().max).to.equal(20);
       });
 
-      it('should call spy when value is changed', () => {
+      it('should call spy when value is changed continuesly', () => {
           input.simulate('input', {target: {value: '15'}});
           expect(onChangeSpy.calledOnce).to.equal(true);
           expect(onChangeSpy.calledWithExactly(15)).to.equal(true);
+      });
+
+      it('should call spy when value is changed', () => {
+        input.simulate('change', {target: {value: '15'}});
+        expect(onChangeSpy.calledOnce).to.equal(true);
+        expect(onChangeSpy.calledWithExactly(15)).to.equal(true);
       });
     });
 });

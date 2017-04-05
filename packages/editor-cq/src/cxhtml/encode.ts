@@ -169,15 +169,15 @@ export default function encode(node: PMNode) {
 
   function mapCodeLanguage(language: string): string {
     const map = {
-      'Shell': 'bash',
-      'CSharp': 'c#',
-      'C++': 'cpp',
-      'Erlang': 'erl',
-      'JavaFX': 'jfx',
-      'JavaScript': 'js',
-      'Python': 'py',
+      'shell': 'bash',
+      'cSharp': 'c#',
+      'c++': 'cpp',
+      'erlang': 'erl',
+      'javafx': 'jfx',
+      'javascript': 'js',
+      'python': 'py',
     };
 
-    return map[language] || language.toLowerCase();
+    return map[language.toLowerCase()] || language.toLowerCase();
   }
 }

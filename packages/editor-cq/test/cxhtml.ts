@@ -319,25 +319,25 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
     describe('code block', () => {
       check('with CDATA',
         '<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
-        doc(codeblock()(('some code'))));
+        doc(codeblock()('some code')));
 
       check('with multiline CDATA',
         `<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code
         on
         multiple
         lines]]></ac:plain-text-body></ac:structured-macro>`,
-        doc(codeblock()((`some code
+        doc(codeblock()(`some code
         on
         multiple
-        lines`))));
+        lines`)));
 
       check('with selected language',
         '<ac:structured-macro ac:name="code"><ac:parameter ac:name="language">js</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
-        doc(codeblock({ language: 'js' })(('some code'))));
+        doc(codeblock({ language: 'js' })('some code')));
 
       check('with title',
         '<ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Code</ac:parameter><ac:parameter ac:name="language">js</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
-        doc(p(strong('Code')), codeblock({ language: 'js' })(('some code'))));
+        doc(p(strong('Code')), codeblock({ language: 'js' })('some code')));
     });
   });
 

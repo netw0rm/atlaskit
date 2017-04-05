@@ -85,7 +85,7 @@ function isNodeSupportedContent(node: Node): boolean {
   }
 
   if (node instanceof HTMLElement) {
-    const tag = getTagName(node);
+    const tag = getNodeName(node);
     switch (tag) {
       case 'DEL':
       case 'S':
@@ -270,7 +270,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
 
   // marks and nodes
   if (node instanceof Element) {
-    const tag = getTagName(node);
+    const tag = getNodeName(node);
     switch (tag) {
       // Marks
       case 'DEL':
@@ -334,8 +334,8 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
   return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
 }
 
-function getTagName(node: Element): string {
-  return node.tagName.toUpperCase();
+export function getNodeName(node: Node): string {
+  return node.nodeName.toUpperCase();
 }
 
 
@@ -376,7 +376,7 @@ function getAcName(node: Element): string | undefined {
 function getAcParameter(node: Element, parameter: string): string | null {
   for (let i = 0; i < node.childNodes.length; i++) {
     const child = node.childNodes[i] as Element;
-    if (getTagName(child) === 'AC:PARAMETER' && getAcName(child) === parameter.toUpperCase()) {
+    if (getNodeName(child) === 'AC:PARAMETER' && getAcName(child) === parameter.toUpperCase()) {
       return child.textContent;
     }
   }
@@ -387,7 +387,7 @@ function getAcParameter(node: Element, parameter: string): string | null {
 function getAcPlainText(node: Element): string | null {
   for (let i = 0; i < node.childNodes.length; i++) {
     const child = node.childNodes[i] as Element;
-    if (getTagName(child) === 'AC:PLAIN-TEXT-BODY') {
+    if (getNodeName(child) === 'AC:PLAIN-TEXT-BODY') {
       return child.textContent;
     }
   }

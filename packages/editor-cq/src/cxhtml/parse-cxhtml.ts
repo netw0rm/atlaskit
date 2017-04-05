@@ -1,4 +1,5 @@
 import collapse from './collapse-whitespace';
+import { getNodeName } from './parse';
 
 export default function(xhtml: string): Document {
   const nsHtml = `<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ac="http://example.com/ac" xmlns:ri="http://example.com/ri"><body>${xhtml}</body></html>`;
@@ -10,7 +11,7 @@ export default function(xhtml: string): Document {
 function isBlock(node: Node) {
   // these blocks are mainly used to collapse whitespace between the blocks
   // (preventing spurious text nodes of ' ')
-  switch (node.nodeName.toUpperCase()) {
+  switch (getNodeName(node)) {
     case 'ADDRESS':
     case 'ARTICLE':
     case 'ASIDE':
@@ -85,7 +86,7 @@ function isBlock(node: Node) {
 }
 
 function isPre(node: Node) {
-  switch (node.nodeName.toUpperCase()) {
+  switch (getNodeName(node)) {
     case 'PRE':
     case 'AC:PLAIN-TEXT-BODY':
       return true;

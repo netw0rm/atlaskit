@@ -1,8 +1,9 @@
 import collapse from './collapse-whitespace';
 import { getNodeName } from './parse';
+import { AC_XMLNS, FAB_XMLNS, RI_XMLNS } from './encode-cxhtml';
 
 export default function(xhtml: string): Document {
-  const nsHtml = `<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ac="http://example.com/ac" xmlns:ri="http://example.com/ri" xmlns:fab="http://example.com/fab"><body>${xhtml}</body></html>`;
+  const nsHtml = `<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ac="${AC_XMLNS}" xmlns:ri="${RI_XMLNS}" xmlns:fab="${FAB_XMLNS}"><body>${xhtml}</body></html>`;
   const tree = new DOMParser().parseFromString(nsHtml, 'application/xhtml+xml');
   collapse(tree.documentElement, isBlock, isPre);
   return tree;

@@ -4,7 +4,7 @@ import {
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
-import encodeCxhtml, { AC_XMLNS } from './encode-cxhtml';
+import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 
 export default function encode(node: PMNode) {
   const docType = document.implementation.createDocumentType('html', '-//W3C//DTD XHTML 1.0 Strict//EN', 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd');
@@ -163,7 +163,7 @@ export default function encode(node: PMNode) {
   }
 
   function encodeMention(node: PMNode) {
-    const elem = doc.createElement('fab:mention');
+    const elem = doc.createElementNS(FAB_XMLNS, 'fab:mention');
     elem.setAttribute('atlassian-id', node.attrs['id']);
 
     const cdata = doc.createCDATASection(node.attrs['displayName']);

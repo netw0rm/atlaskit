@@ -1,5 +1,6 @@
 export const AC_XMLNS = 'http://example.com/ac';
 export const RI_XMLNS = 'http://example.com/ri';
+export const FAB_XMLNS = 'http://example.com/fab';
 export const XHTML_XMLNS = 'http://www.w3.org/1999/xhtml';
 
 export default function(node: Node): string {
@@ -55,5 +56,5 @@ export default function(node: Node): string {
     marker.parentNode.replaceChild(node, marker);
   }
 
-  return result.replace(/\s\/>/g, '/>'); // Remove unnecessary white-space added by IE 
+  return result.replace(/\s\/>/g, '/>'); // Remove unnecessary white-space added by IE
 }

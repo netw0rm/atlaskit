@@ -5,7 +5,6 @@ import Tag from '@atlaskit/tag';
 
 import Group from '../src';
 import { name } from '../package.json';
-import styles from '../src/styles.less';
 import tagNames from './tagNames';
 
 const imports = [
@@ -17,7 +16,7 @@ const imports = [
 storiesOf(name, module)
   .addCodeExampleStory('Rounded tags in group', () => (
     <div style={{ border: '1px solid black' }}>
-      <Group className={styles.locals.akTagGroup}>
+      <Group>
         {
           tagNames.map((sweet, i) => (
             <Tag

@@ -31,11 +31,13 @@ export default function(node: Node): string {
     node.parentNode.replaceChild(marker, node);
   }
 
+  const fabWrapper = doc.createElementNS(FAB_XMLNS, 'fab:wrapper');
   const acWrapper = doc.createElementNS(AC_XMLNS, 'ac:wrapper');
   const riWrapper = doc.createElementNS(RI_XMLNS, 'ri:wrapper');
   const wrapper = doc.createElementNS(XHTML_XMLNS, 'wrapper');
 
-  wrapper.appendChild(acWrapper);
+  wrapper.appendChild(fabWrapper);
+  fabWrapper.appendChild(acWrapper);
   acWrapper.appendChild(riWrapper);
 
   // Force avoid self-closing tags, as these would invalidate suffix/prefix length calculations.

@@ -10,7 +10,7 @@ const camelcase = require('camelcase');
 const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json'));
 
-const runInRealBrowsers = [/^editor-/];
+const runInRealBrowsers = [/^editor-/, /util-common-test/];
 
 module.exports = {
   type: 'react-component',

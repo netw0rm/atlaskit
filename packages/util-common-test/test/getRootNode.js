@@ -4,7 +4,7 @@ import { vdom, define } from 'skatejs';
 
 import { createTemporaryComponent, tearDownComponent, getRootNode } from '../src';
 
-describe('getRootNode', () => {
+describe.skip('getRootNode', () => {
   let component;
   let rootNode;
 

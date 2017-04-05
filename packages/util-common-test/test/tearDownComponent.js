@@ -13,7 +13,7 @@ describe('getRootNode', () => {
     },
   };
 
-  it('should be possible to remove a component', () => createTemporaryComponent(define, definition)
+  it.skip('should be possible to remove a component', () => createTemporaryComponent(define, definition)
     .then((newComponent) => {
       component = newComponent;
       tearDownComponent(component);
@@ -22,7 +22,7 @@ describe('getRootNode', () => {
     })
   );
 
-  it('should be possible to remove a component from target', () => {
+  it.skip('should be possible to remove a component from target', () => {
     target = document.createElement('div');
     document.body.appendChild(target);
     return createTemporaryComponent(define, definition, target).then((newComponent) => {

@@ -1,3 +1,14 @@
+import { emoji as emojiData } from '@atlaskit/util-data-test';
+
+const toEmojiId = (emoji) => {
+  const { shortName, id, fallback } = emoji;
+  return { shortName, id, fallback };
+};
+
+const { emojiTestData } = emojiData;
+const grinEmojiId = toEmojiId(emojiTestData.grinEmoji);
+const evilburnsEmojiId = toEmojiId(emojiTestData.evilburnsEmoji);
+
 export const document = {
   type: 'doc',
   version: 1,
@@ -69,6 +80,50 @@ export const document = {
             },
             {
               type: 'underline'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'My favourite emoji are '
+        },
+        {
+          type: 'emoji',
+          attrs: {
+            ...grinEmojiId,
+          }
+        },
+        {
+          type: 'text',
+          text: ' ',
+        },
+        {
+          type: 'emoji',
+          attrs: {
+            ...evilburnsEmojiId,
+          }
+        },
+        {
+          type: 'text',
+          text: ' ',
+        },
+        {
+          type: 'emoji',
+          attrs: {
+            shortName: ':not-an-emoji:',
+          }
+        },
+        {
+          type: 'text',
+          text: '. What are yours?',
+          marks: [
+            {
+              type: 'unkown mark'
             }
           ]
         }

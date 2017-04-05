@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { EmojiId, ResourcedEmoji } from '@atlaskit/emoji';
 import { Mention, ResourcedMention } from '@atlaskit/mention';
 import { EventHandlers, ServicesConfig } from '../config';
 import Doc from './doc';
 import Paragraph from './paragraph';
+import Emoji from './emoji';
 import Hardbreak from './hardBreak';
 import MediaGroup from './mediaGroup';
 import Media, { MediaNode } from './media';
@@ -25,6 +27,7 @@ export interface Renderable {
 
 enum NodeType {
   doc,
+  emoji,
   hardBreak,
   media,
   mediaGroup,
@@ -47,6 +50,20 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
             type,
             version,
             content
+          };
+        }
+        break;
+      }
+      case NodeType.emoji: {
+        const { attrs } = node;
+        let emojiId = attrs;
+
+        if (emojiId) {
+          return {
+            type,
+            attrs: {
+              id: emojiId,
+            }
           };
         }
         break;
@@ -159,6 +176,15 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
   switch (NodeType[validNode.type]) {
     case NodeType.doc:
       return <Doc key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Doc>;
+    case NodeType.emoji: {
+      const { attrs } = validNode;
+      const { id } = attrs as { id: EmojiId };
+
+
+      const emojiProvider = servicesConfig && servicesConfig.getEmojiProvider && servicesConfig.getEmojiProvider();
+
+      return <Emoji emojiId={id} emojiProvider={emojiProvider} />;
+    }
     case NodeType.hardBreak:
       return <Hardbreak key={key} />;
     case NodeType.mediaGroup:

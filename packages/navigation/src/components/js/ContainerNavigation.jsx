@@ -1,10 +1,13 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { ThemeProvider } from 'styled-components';
+import memoizeOne from 'memoize-one';
 import ContainerHeader from './ContainerHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import ContainerNavigationOuter from '../styled/ContainerNavigationOuter';
 import ContainerNavigationInner from '../styled/ContainerNavigationInner';
+import ContainerNavigationChildren from '../styled/ContainerNavigationChildren';
+import subscribe from '../../watch-scroll-top';
 
 import {
   containerOpenWidth,
@@ -39,11 +42,45 @@ export default class ContainerNavigation extends PureComponent {
     linkComponent: DefaultLinkComponent,
   }
 
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      isScrolling: false,
+    };
+
+    this.onScrollTopChange = memoizeOne(this.onScrollTopChange);
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+  }
+
+  onScrollTopChange = (number) => {
+    this.setState({
+      isScrolling: number > 0,
+    });
+  }
+
   getOuterStyles() {
     return {
       transform: `translateX(${this.props.offsetX}px)`,
       width: this.props.width,
     };
+  }
+
+  watchScrollTop = (el) => {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+
+    if (!el) {
+      return;
+    }
+
+    this.unsubscribe = subscribe(el, this.onScrollTopChange);
   }
 
   render() {
@@ -85,6 +122,7 @@ export default class ContainerNavigation extends PureComponent {
           >
             <ContainerNavigationInner
               appearance={appearance}
+              innerRef={this.watchScrollTop}
             >
               <GlobalPrimaryActions
                 appearance={appearance}
@@ -97,17 +135,18 @@ export default class ContainerNavigation extends PureComponent {
                 primaryItemHref={globalPrimaryItemHref}
                 searchIcon={globalSearchIcon}
               />
-              <div>
-                {
-                  headerComponent ? (
-                    <ContainerHeader>
-                      {headerComponent({ isCollapsed: width <= containerClosedWidth })}
-                    </ContainerHeader>) : null
-                }
-              </div>
-              <div>
+              {
+                headerComponent ? (
+                  <ContainerHeader
+                    appearance={appearance}
+                    isContentScrolled={this.state.isScrolling}
+                  >
+                    {headerComponent({ isCollapsed: width <= containerClosedWidth })}
+                  </ContainerHeader>) : null
+              }
+              <ContainerNavigationChildren>
                 {children}
-              </div>
+              </ContainerNavigationChildren>
             </ContainerNavigationInner>
           </ContainerNavigationOuter>
         </nav>

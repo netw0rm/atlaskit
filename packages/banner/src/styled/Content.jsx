@@ -4,6 +4,7 @@ import {
   akColorN800,
   akColorR400,
   akColorY300,
+  akColorP300,
 
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
@@ -12,10 +13,12 @@ import { TRANSITION_DURATION } from './constants';
 const backgroundColor = {
   error: akColorR400,
   warning: akColorY300,
+  info: akColorP300,
 };
 const textColor = {
   error: akColorN0,
   warning: akColorN800,
+  info: akColorN0,
 };
 
 export const getBackgroundColor = ({ appearance }) => backgroundColor[appearance];

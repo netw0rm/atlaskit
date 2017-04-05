@@ -1,6 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import WarningIcon from 'ak-icon/glyph/warning';
+import AtlassianIcon from 'ak-icon/glyph/atlassian';
 
 import Banner from '../src';
 import AnimationDemo from './AnimationDemo';
@@ -23,6 +24,15 @@ storiesOf(name, module)
       isOpen
     >
       Your JIRA OnDemand license is about to expire. There are two days left to renew your license
+    </Banner>
+  ))
+  .addCodeExampleStory('an info banner', () => (
+    <Banner
+      appearance="info"
+      icon={<AtlassianIcon label="Info icon" />}
+      isOpen
+    >
+      Welcome to Atlassian!
     </Banner>
   ))
   .addCodeExampleStory('with icon and text overflow', () => (

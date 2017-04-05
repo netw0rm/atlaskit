@@ -1,6 +1,5 @@
 import * as React from 'react';
-// TODO change to Card component when we have view for link cards in film strip
-import { FileCard, CardDimensions } from '@atlaskit/media-card';
+import { Card, CardDimensions, MediaIdentifier } from '@atlaskit/media-card';
 import {ListAction, CardAction, Context, MediaItem, MediaItemType} from '@atlaskit/media-core';
 import {FilmStripNavigator} from './filmstrip-navigator';
 
@@ -36,16 +35,23 @@ function createCardActions(actions: Array<ListAction>, items: Array<FilmStripIte
 }
 
 export function FilmStrip(props: FilmStripProps): JSX.Element {
-  const els = props.items.map((item) => {
-    return <li key={item.id}>
-      <FileCard
-        collectionName={props.collectionName}
-        context={props.context}
-        id={item.id}
-        dimensions={props.cardDimensions}
-        actions={createCardActions(props.actions, props.items)}
-      />
-    </li>;
+  const {context, collectionName} = props;
+  const appearance = props.items.length > 1 ? 'image' : 'auto';
+  const els = props.items.map((item, k) => {
+    const identifier: MediaIdentifier = {
+      mediaItemType: item.mediaItemType,
+      id: item.id,
+      collectionName: collectionName || '' // TODO: Make 'collectionName' optional in 'MediaIdentifier'
+    };
+
+    return <Card
+      key={k}
+      appearance={appearance}
+      identifier={identifier}
+      context={context}
+      dimensions={props.cardDimensions}
+      actions={createCardActions(props.actions, props.items)}
+    />;
   });
   return <FilmStripNavigator>{els}</FilmStripNavigator>;
 }

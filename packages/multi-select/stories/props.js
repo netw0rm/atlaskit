@@ -58,6 +58,7 @@ const groupPropTypes = {
 
 const itemPropDescriptions = {
   content: 'The text/content to display in the option and in the rendered tags (selected options).',
+  description: 'The text/content to display underneath the content. Doesn`t show in the rendered tags',
   value: 'Value sent when option is selected in a form.',
   isDisabled: 'Whether an option is selectable or not.',
   isSelected: 'Whether an option is selected or not (affects appearance of option, not of selectedItems)',

@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiService, getEmojiResourcePromise } from './TestData';
+import { emojiRepository, getEmojiResourcePromise } from './TestData';
 
 import CategorySelector from '../src/components/picker/CategorySelector';
 import Emoji from '../src/components/common/Emoji';
@@ -29,7 +29,7 @@ const leftClick = {
   button: 0,
 };
 
-const allEmojis = emojiService.all().emojis;
+const allEmojis = emojiRepository.all().emojis;
 
 const findEmoji = list => list.find(Emoji);
 const emojisVisible = (list) => findEmoji(list).length > 0;
@@ -137,7 +137,7 @@ describe('<EmojiPicker />', () => {
   //   expect(emojis.at(1).prop('id'), 'Austria emoji displayed').to.equal('flag_at');
   // });
 
-  // it('searching for aus should match emoji via shortcut', () => {
+  // it('searching for aus should match emoji via shortName', () => {
   //   const component = setupPicker();
   //   const search = component.find(EmojiPickerListSearch);
   //   const searchInput = search.find('input');

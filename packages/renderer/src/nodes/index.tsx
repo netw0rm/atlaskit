@@ -4,6 +4,8 @@ import { EventHandlers, ServicesConfig } from '../config';
 import Doc from './doc';
 import Paragraph from './paragraph';
 import Hardbreak from './hardBreak';
+import MediaGroup from './mediaGroup';
+import Media, { MediaNode } from './media';
 import {
   mergeTextNodes,
   renderTextNodes,
@@ -24,6 +26,8 @@ export interface Renderable {
 enum NodeType {
   doc,
   hardBreak,
+  media,
+  mediaGroup,
   mention,
   paragraph,
   textWrapper,
@@ -51,6 +55,35 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
         return {
           type
         };
+      case NodeType.media:
+        let mediaId = '';
+        let mediaType = '';
+        let mediaCollectionId = [];
+        if (attrs) {
+          const { id, collectionId, type } = attrs;
+          mediaId = id;
+          mediaType = type;
+          mediaCollectionId = collectionId;
+        }
+        if (mediaId && mediaType && mediaCollectionId.length) {
+          return {
+            type,
+            attrs: {
+              type: mediaType,
+              id: mediaId,
+              collectionId: mediaCollectionId
+            }
+          };
+        }
+        break;
+      case NodeType.mediaGroup:
+        if (content) {
+          return {
+            type,
+            content
+          };
+        }
+        break;
       case NodeType.mention: {
         const { attrs, text } = node;
         let mentionText = '';
@@ -128,6 +161,28 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
       return <Doc key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Doc>;
     case NodeType.hardBreak:
       return <Hardbreak key={key} />;
+    case NodeType.mediaGroup:
+      return (
+        <MediaGroup
+          key={key}
+          numOfCards={nodeContent.length}
+        >
+          {nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}
+        </MediaGroup>);
+    case NodeType.media:
+      let provider;
+      if (servicesConfig && servicesConfig.getMediaProvider) {
+        provider = servicesConfig.getMediaProvider();
+      }
+      const { media } = eventHandlers || { media: {} };
+      const { onClick } = media || { onClick: () => {} };
+      return (
+        <Media
+          key={key}
+          mediaProvider={provider}
+          item={validNode as MediaNode}
+          onClick={onClick}
+        />);
     case NodeType.mention: {
       const { attrs } = validNode;
       const { id, text } = attrs as { id: string, text: string };

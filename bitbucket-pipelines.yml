@@ -10,13 +10,14 @@ pipelines:
             - yarn
             - run-p -ln "validate/package.json" "validate/typescript"
             - run-p -ln "validate/tslint" "validate/eslint"
+            - yarn run test/unit
             - run-p -ln "test" "test/base"
             - yarn run browserstack/tunnel/start
             - yarn run test/wc/browserstack
             - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
-            - npm run release && echo "Released packages:" && cat .released-packages
+            - npm run release && echo "Released packages:" && touch .released-packages && cat .released-packages
             - run-p -ln "release/registry" "release/storybooks"
             - yarn run release/announce
     invalidate-atlaskit-cache:
@@ -37,6 +38,7 @@ pipelines:
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
           - run-p -ln "validate/package.json" "validate/typescript"
           - run-p -ln "validate/tslint" "validate/eslint"
+          - yarn run test/unit
           - run-p -ln "test" "test/base"
           - yarn run browserstack/tunnel/start
           - yarn run test/wc/browserstack

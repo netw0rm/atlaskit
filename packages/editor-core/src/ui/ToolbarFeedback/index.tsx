@@ -33,7 +33,7 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
 
   render() {
     const iconBefore = this.state.jiraIssueCollectorScriptLoading
-      ? <Spinner isCompleting={false} onComplete={() => {}}/>
+      ? <Spinner isCompleting={false} onComplete={() => { }} />
       : undefined;
 
     // JIRA issue collector script is using jQuery internally
@@ -60,12 +60,12 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
       return;
     }
 
-    this.setState({jiraIssueCollectorScriptLoading: true});
+    this.setState({ jiraIssueCollectorScriptLoading: true });
 
     // triggerFunction is executed as soon as JIRA issue collector script is loaded
     window.ATL_JQ_PAGE_PROPS = {
       triggerFunction: (showCollectorDialog) => {
-        this.setState({jiraIssueCollectorScriptLoading: false});
+        this.setState({ jiraIssueCollectorScriptLoading: false });
 
         if (typeof showCollectorDialog === 'function') {
           // save reference to `showCollectorDialog` for future calls
@@ -80,9 +80,9 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
         description: `Please describe the problem you're having or feature you'd like to see:\n\n\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n version: ${this.props.packageName}@${this.props.packageVersion} (${coreVersion})\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n\n`
       },
       environment: {
-        'Editor Package' : this.props.packageName,
-        'Editor Version' : this.props.packageVersion,
-        'Editor Core Version' : coreVersion,
+        'Editor Package': this.props.packageName,
+        'Editor Version': this.props.packageVersion,
+        'Editor Core Version': coreVersion,
       }
     };
 

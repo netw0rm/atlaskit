@@ -1,43 +1,29 @@
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import React from 'react';
 
-import Lozenge from '../src';
-import styles from '../src/style.less';
+import Lozenge, { APPEARANCE_ENUM } from '../src/Lozenge';
 
 describe('Lozenge', () => {
-  const { locals: style } = styles;
-
   describe('isBold property', () => {
-    function isBold(wrapper) {
-      return wrapper.find(`.${style.bold}`).length === 1;
-    }
-
     it('should not be the default', () => {
-      isBold(shallow(<Lozenge />)).should.equal(false);
+      mount(<Lozenge />).prop('isBold').should.equal(false);
     });
     it('should change when toggled', () => {
-      const wrapper = shallow(<Lozenge />);
-      wrapper.setProps({ isBold: true });
-      isBold(wrapper).should.equal(true);
+      mount(<Lozenge isBold />).prop('isBold').should.equal(true);
     });
   });
   describe('appearance property', () => {
-    function hasClass(wrapper, className) {
-      return wrapper.find('span').first().hasClass(className);
-    }
-
     it('should be "default" when not set', () => {
-      hasClass(shallow(<Lozenge />), style.default).should.equal(true);
+      mount(<Lozenge />).prop('appearance').should.equal('default');
     });
     it('should change when set to an approved value', () => {
-      const lozenge = shallow(<Lozenge />);
-      lozenge.setProps({ appearance: 'success' });
-      hasClass(lozenge, style.success).should.equal(true);
+      APPEARANCE_ENUM.values.forEach((value) => {
+        mount(<Lozenge appearance={value} />).prop('appearance').should.equal(value);
+      });
     });
     it('should revert to "default" when set to an invalid value', () => {
-      const lozenge = shallow(<Lozenge />);
-      lozenge.setProps({ appearance: 'foo' });
-      hasClass(lozenge, style.default).should.equal(true);
+      mount(<Lozenge appearance="foo" />).getNode().validAppearance()
+        .should.equal('default');
     });
   });
 });

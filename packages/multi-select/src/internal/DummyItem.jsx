@@ -9,6 +9,7 @@ import DummyTag from './DummyTag';
 export default class DummyItem extends PureComponent {
   static propTypes = {
     content: PropTypes.node,
+    description: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // eslint-disable-line react/no-unused-prop-types, max-len
     isDisabled: PropTypes.bool,
     isSelected: PropTypes.bool,

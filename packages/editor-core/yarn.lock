@@ -10,6 +10,23 @@
     babel-runtime "^6.11.6"
     classnames "^2.2.5"
 
+"@atlaskit/droplist-group@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/droplist-group/-/droplist-group-1.0.6.tgz#709640c4081e4e5c93fa28cf4499d2bfe70704de"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^1.0.0"
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+
+"@atlaskit/droplist-item@^2.0.8":
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/@atlaskit/droplist-item/-/droplist-item-2.0.8.tgz#93db27f0d9e3d9f1bb1fa943b0c864326488b258"
+  dependencies:
+    "@atlaskit/util-shared-styles" "^1.0.0"
+    ak-icon "^12.1.3"
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+
 "@atlaskit/droplist-trigger@^1.0.0":
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@atlaskit/droplist-trigger/-/droplist-trigger-1.1.4.tgz#818534119989dbecae7dc23d5c1029072058355e"
@@ -119,6 +136,14 @@ ajv@^4.11.3:
   dependencies:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
+
+ak-icon@^12.1.3:
+  version "12.2.1"
+  resolved "https://registry.yarnpkg.com/ak-icon/-/ak-icon-12.2.1.tgz#181c6cfc4a92a0be76594742afcb41e62cbd1330"
+  dependencies:
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+    create-error "^0.3.1"
 
 argparse@^1.0.7:
   version "1.0.9"

@@ -10,6 +10,7 @@ import {
   findAncestorPosition,
 } from '../../utils';
 
+import { toggleBulletList } from './commands';
 import * as commands from '../../commands';
 import keymapPlugin from './keymap';
 import inputRulePlugin from './input-rule';
@@ -52,7 +53,7 @@ export class ListsState {
   }
 
   toggleBulletList(view: EditorView) {
-    commands.toggleBulletList()(view.state, view.dispatch, view);
+    toggleBulletList(view.state, view.dispatch, view);
   }
 
   toggleOrderedList(view: EditorView) {
@@ -62,7 +63,6 @@ export class ListsState {
   update(newEditorState) {
     const { doc, selection } = newEditorState;
     const ancestorPosition = findAncestorPosition(doc, selection.$from);
-    const nodeDepth = selection.$from.depth;
     const rootNode = selection instanceof NodeSelection
       ? selection.node
       : ancestorPosition.node(ancestorPosition.depth)!;
@@ -82,7 +82,7 @@ export class ListsState {
     }
 
     const newBulletListDisabled = !(
-      (newBulletListActive && nodeDepth <= 3) ||
+      newBulletListActive ||
       newOrderedListActive ||
       this.isWrappingPossible(newEditorState.schema.nodes.bulletList, newEditorState)
     );
@@ -92,8 +92,8 @@ export class ListsState {
     }
 
     const newOrderedListDisabled = !(
-      (newOrderedListActive && nodeDepth <= 3) ||
       newBulletListActive ||
+      newOrderedListActive ||
       this.isWrappingPossible(newEditorState.schema.nodes.orderedList, newEditorState)
     );
     if (newOrderedListDisabled !== this.orderedListDisabled) {

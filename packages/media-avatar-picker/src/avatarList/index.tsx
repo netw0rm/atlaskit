@@ -62,6 +62,6 @@ export default class AvatarList extends PureComponent<AvatarListProps, {}> {
       if (onItemClick) {
         onItemClick(avatar.avatar);
       }
-    }
+    };
   }
 }

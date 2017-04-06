@@ -16,19 +16,8 @@ storiesOf('Predefined Avatars', {})
     <AvatarList avatars={avatars.map(a => ({avatar: a, selected: false}))}/>
   ))
   .add('Predefined Avatars (none preselected)', () => {
-    const onShowMore = () => {
-      console.log('Show me more!');
-    };
-
-    const onAvatarSelected = (avatar: Avatar) => {
-      console.log('Selected: ' + JSON.stringify(avatar));
-    }
-
     return (<PredefinedAvatarList
       avatars={avatars}
-      selectedAvatar={avatars[0]}
-      onShowMore={onShowMore}
-      onAvatarSelected={onAvatarSelected}
     />);
   })
   .add('Predefined Avatars (preselected)', () => {

@@ -25,7 +25,7 @@ class ShowMoreButton extends PureComponent<ShowMoreButtonProps, {}> {
 
 export interface PredefinedAvatarListProps {
   avatars: Array<Avatar>;
-  selectedAvatar: Avatar;
+  selectedAvatar?: Avatar;
   onShowMore?: () => void;
   onAvatarSelected?: (avatar: Avatar) => void;
 }
@@ -53,7 +53,7 @@ export default class PredefinedAvatarList extends PureComponent<PredefinedAvatar
         ...state,
         avatars,
         selectedAvatar: (!selectedAvatar && avatars.length > 0) ? avatars[0] : selectedAvatar
-      }
+      };
     });
   }
 
@@ -64,7 +64,7 @@ export default class PredefinedAvatarList extends PureComponent<PredefinedAvatar
         avatar: a,
         selected: a === this.state.selectedAvatar
       })
-    )
+    );
 
     return (
       <PredefinedAvatarsWrapper>
@@ -77,9 +77,11 @@ export default class PredefinedAvatarList extends PureComponent<PredefinedAvatar
   onItemClick(avatar: Avatar) {
     this.setState(state => {
       const { onAvatarSelected } = this.props;
-      if (onAvatarSelected) onAvatarSelected(avatar);
+      if (onAvatarSelected) {
+        onAvatarSelected(avatar);
+      }
 
       return {...state, selectedAvatar: avatar};
-    })
+    });
   }
 }

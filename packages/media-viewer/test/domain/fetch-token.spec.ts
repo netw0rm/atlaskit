@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { fetchToken, File } from '../../src/util/fetch-token';
+import { fetchToken, File } from '../../src/domain/fetch-token';
 import {
   defaultClientId as clientId,
   defaultCollectionName as collectionName

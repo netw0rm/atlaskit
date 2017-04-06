@@ -8,6 +8,7 @@ pipelines:
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             - yarn
+            - ./build/bin/release.stop.pipeline.if.other.master.running.js
             - run-p -ln "validate/package.json" "validate/typescript"
             - run-p -ln "validate/tslint" "validate/eslint"
             - yarn run test/unit

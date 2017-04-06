@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { FileItem, LinkItem } from '@atlaskit/media-core';
 import { ArtifactFormat } from '../../src/domain/artifact-format';
 
-describe('MediaViewerItemMapper', () => {
+describe('ArtifactFormat', () => {
   describe('fromMediaItem', () => {
     it('should return undefined for partial files', () => {
       expect(ArtifactFormat.fromMediaItem(Mocks.partialFile))

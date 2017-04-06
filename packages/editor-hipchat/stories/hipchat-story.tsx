@@ -2,7 +2,7 @@ import { action, storiesOf } from '@kadira/storybook';
 import { storyDecorator } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as React from 'react';
 import Editor from '../src';
-import { resourceProvider } from './story-data';
+import { mentionProvider } from './story-data';
 import { name, version } from '../package.json';
 
 storiesOf(name, module)
@@ -12,7 +12,7 @@ storiesOf(name, module)
     return (
       <Editor
         onSubmit={action('submit')}
-        mentionResourceProvider={resourceProvider}
+        mentionProvider={mentionProvider}
         reverseMentionPicker={false}
       />
     );

@@ -26,11 +26,12 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^7.6.1",
+    "@atlaskit/editor-core": "^10.2.0",
     "classnames": "^2.2.5",
     "tslib": "^1.2.0"
   },
   "peerDependencies": {
+    "@atlaskit/mention": "^4.1.0",
     "react": "^15.3.2"
   },
   "devDependencies": {

@@ -1,10 +1,5 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
-import {
-  containerNavigationInner,
-  hasGlobalAppearance,
-  hasSettingsAppearance,
-} from 'style!../src/components/less/ContainerNavigation.less';
 import ContainerNavigation from '../src/components/js/ContainerNavigation';
 import Spacer from '../src/components/js/Spacer';
 import { containerClosedWidth } from '../src/shared-variables';

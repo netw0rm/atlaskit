@@ -1,6 +1,5 @@
 import { shallow, mount } from 'enzyme';
 import React, { PureComponent } from 'react';
-import styles from 'style-loader!../src/components/less/GlobalNavigation.less';
 import GlobalNavigation from '../src/components/js/GlobalNavigation';
 
 class Child extends PureComponent {

@@ -1,6 +1,5 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
-import styles from 'style-loader!../src/components/less/GlobalItem.less';
 import GlobalItem from '../src/components/js/GlobalItem';
 
 describe('<GlobalItem />', () => {

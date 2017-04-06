@@ -1,6 +1,5 @@
 import { shallow, mount } from 'enzyme';
 import React from 'react';
-import style from 'style!../src/components/less/GlobalPrimaryActions.less';
 import GlobalPrimaryActions from '../src/components/js/GlobalPrimaryActions';
 
 describe('<GlobalPrimaryActions />', () => {

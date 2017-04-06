@@ -37,7 +37,7 @@ const CircularMask = styled(Mask)`
   border-radius: 500px;
 `;
 
-const DragContainer = styled.div`
+export const DragOverlay = styled.div`
   position: absolute;
   width: 100%;
   height:100%;
@@ -51,13 +51,17 @@ export interface ImageCropperProp {
   isCircularMask?: boolean;
   top: number;
   left: number;
+  onDragStarted?: () => void;
 }
 
 export class StatelessImageCropper extends Component<ImageCropperProp, {}> {
   static defaultProps = {
     containerSize: 200,
     isCircleMask: false,
+    onDragStarted: () => {},
   };
+
+  onDragStarted = () => this.props.onDragStarted && this.props.onDragStarted();
 
   render(){
     const {
@@ -66,7 +70,7 @@ export class StatelessImageCropper extends Component<ImageCropperProp, {}> {
       top,
       left,
       imageSource,
-      imageWidth
+      imageWidth,
     } = this.props;
 
     const containerStyle = {
@@ -83,7 +87,7 @@ export class StatelessImageCropper extends Component<ImageCropperProp, {}> {
     return <Container style={containerStyle}>
       <Image src={imageSource} style={imageStyle} />
       {isCircularMask ? <CircularMask /> : <RectMask />}
-      <DragContainer />
+      <DragOverlay onMouseDown={this.onDragStarted} />
     </Container>;
   }
 }

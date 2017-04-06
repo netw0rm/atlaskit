@@ -79,8 +79,10 @@ axios.get(pipelinesEndpoint, axiosRequestConfig)
     return Promise.resolve();
   })
   .then((response) => {
-    if (response) {
-      console.log(response);
+    if (response && response.status === 201) {
+      const newPipelinesUUID = response.data.uuid;
+      const newPipelineURL = `https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home#!/results/${newPipelinesUUID}`;
+      console.log(`Successfully restarted pipeline at: ${newPipelineURL}`);
     }
   })
   .catch((err) => {

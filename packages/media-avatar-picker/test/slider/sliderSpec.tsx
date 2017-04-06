@@ -2,7 +2,7 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
-import {Slider, SliderProps} from '../../src/slider/slider';
+import {Slider, SliderProps} from '../../src/slider/index';
 
 describe('Slider', () => {
     describe('with default props', () => {

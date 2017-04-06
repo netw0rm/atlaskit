@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { EmojiId, ResourcedEmoji } from '@atlaskit/emoji';
+import { EmojiId } from '@atlaskit/emoji';
 import { Mention, ResourcedMention } from '@atlaskit/mention';
 import { EventHandlers, ServicesConfig } from '../config';
 import Doc from './doc';

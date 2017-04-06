@@ -12,6 +12,7 @@ import {
 const sliderThumbSize = 20;
 const sliderThumbBorderThickness = 2;
 const sliderLineThickness = 6;
+export const overallHeight = sliderThumbSize + akGridSizeUnitless;
 
 const sliderThumbStyle = `
     box-shadow: 0px 0px 0px ${sliderThumbBorderThickness}px ${akColorN800};
@@ -121,7 +122,7 @@ const IERangeInputStyle = `
 export const rangeInputStyle = `
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
   width: 100%; /* Specific width is required for Firefox. */
-  height: ${sliderThumbSize + akGridSizeUnitless}px; /* Otherwise thumb will collide with previous box element */
+  height: ${overallHeight}px; /* Otherwise thumb will collide with previous box element */
   background: transparent; /* Otherwise white in Chrome */
 
   &:focus {

@@ -3,8 +3,10 @@ import * as React from 'react';
 import {Component} from 'react';
 import {ImageCropper} from '../image-cropper/image-cropper';
 import {Slider} from '../slider/index';
+import {Container, SliderContainer} from './styled';
+import {akGridSizeUnitless} from '@atlaskit/util-shared-styles';
 
-export const CONTAINER_SIZE = 400;
+export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 
 interface Props {
   imageSource: string;
@@ -78,17 +80,28 @@ export class ImageNavigator extends Component<Props, State> {
     });
   }
 
+  /**
+   * When scale change we want to zoom in/out relative to the center of the frame.
+   * @param scale New scale in 0-100 format.
+   */
   onScaleChange = (scale) => {
     const newScale = scale / 100;
     const oldScale = this.state.scale;
-    const imageWidth = this.state.imageWidth || 0;
-    const imageHeight = this.state.imageHeight || 0;
-    // TODO Make it better
+    const scaleRelation = newScale / oldScale;
+    const oldCenterPixel: Position = {
+      x: CONTAINER_SIZE / 2 - this.state.imagePos.x,
+      y: CONTAINER_SIZE / 2 - this.state.imagePos.y,
+    };
+    const newCenterPixel: Position = {
+      x: scaleRelation * oldCenterPixel.x,
+      y: scaleRelation * oldCenterPixel.y,
+    };
+
     this.setState({
       scale: newScale,
       imagePos: {
-        x: this.state.imagePos.x - ((newScale * imageWidth) - (oldScale * imageWidth)) / 2,
-        y: this.state.imagePos.y - ((newScale * imageHeight) - (oldScale * imageHeight)) / 2
+        x: CONTAINER_SIZE / 2 - newCenterPixel.x,
+        y: CONTAINER_SIZE / 2 - newCenterPixel.y,
       }
     });
   }
@@ -123,7 +136,7 @@ export class ImageNavigator extends Component<Props, State> {
       minScale
     } = this.state;
 
-    return <div>
+    return <Container>
       <ImageCropper
         scale={scale}
         imageSource={imageSource}
@@ -135,12 +148,14 @@ export class ImageNavigator extends Component<Props, State> {
         onDragStarted={this.onDragStarted}
         onImageSize={this.onImageSize}
       />
-      <Slider
-        value={100 * scale}
-        min={minScale}
-        max={100}
-        onChange={this.onScaleChange}
-      />
-    </div>;
+      <SliderContainer>
+        <Slider
+          value={100 * scale}
+          min={minScale}
+          max={100}
+          onChange={this.onScaleChange}
+        />
+      </SliderContainer>
+    </Container>;
   }
 }

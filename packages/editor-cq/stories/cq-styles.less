@@ -146,4 +146,50 @@
   h6 + h6 {
     margin-top: 10px;
   }
+
+ pre {
+    margin: 10px 0 0 0;
+  }
+
+  pre:first-child {
+    margin-top: 0;
+  }
+
+  code,
+  pre {
+    font-family: Consolas, Menlo, 'Liberation Mono', Courier, monospace;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  pre {
+    overflow-x: auto;
+
+    padding: 5px 10px;
+
+    word-wrap: normal;
+
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: #f5f5f5;
+  }
+
+  pre > code {
+    margin: 0;
+    padding: 1px 3px;
+
+    border: none;
+  }
+
+  code {
+    display: inline-block;
+    overflow-x: auto;
+
+    box-sizing: border-box;
+    max-width: 100%;
+
+    vertical-align: bottom;
+    white-space: nowrap;
+  }
+
 }

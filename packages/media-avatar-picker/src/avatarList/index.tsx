@@ -6,11 +6,16 @@ import {AvatarListWrapper} from './styled';
 
 export interface Avatar {
   dataURI: string;
+}
+
+export interface SelectableAvatar {
+  avatar: Avatar;
   selected: boolean;
 }
 
 export interface AvatarListProps {
-  avatars: Array<Avatar>;
+  avatars: Array<SelectableAvatar>;
+  onItemClick?: (avatar: Avatar) => void;
 }
 
 const DEFAULT_AVATAR_DIMENSIONS = {
@@ -27,14 +32,16 @@ export default class AvatarList extends PureComponent<AvatarListProps, {}> {
     const {avatars} = this.props;
 
     const cards = avatars.map(
-      avatar => {
-        return (<li>
+      (avatar, idx) => {
+        const elementKey = `predefined-avatar-${idx}`;
+        return (<li key={elementKey}>
           <CardImageView
             mediaType="image"
-            dataURI={avatar.dataURI}
+            dataURI={avatar.avatar.dataURI}
             selectable
             selected={avatar.selected}
             dimensions={DEFAULT_AVATAR_DIMENSIONS}
+            onClick={this.createOnItemClickHandler(avatar)}
           />
         </li>);
       }
@@ -47,5 +54,14 @@ export default class AvatarList extends PureComponent<AvatarListProps, {}> {
         </ul>
       </AvatarListWrapper>
     );
+  }
+
+  createOnItemClickHandler(avatar: SelectableAvatar): (event: Event) => void {
+    return () => {
+      const { onItemClick } = this.props;
+      if (onItemClick) {
+        onItemClick(avatar.avatar);
+      }
+    }
   }
 }

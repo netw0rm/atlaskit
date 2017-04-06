@@ -371,7 +371,7 @@ storiesOf('FileCardView', {})
       }, {
         title: 'Long name with large width',
         content: <FileCardView
-          dimensions={{width: '380px'}}
+          dimensions={{width: 380}}
           loading={false}
           selectable={false}
           selected={false}

@@ -3,9 +3,59 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/fromPromise';
+import {CardAction, MediaItem, MediaItemDetails} from '@atlaskit/media-core';
 
 export * from './files';
 export * from './list';
 export * from './links';
 export * from './card';
 export * from './utils/cardImageView';
+
+export type CardProcessingStatus = 'loading' | 'processing' | 'complete' | 'error';
+
+export type CardAppearance = 'auto' | 'small' | 'image' | 'square' | 'horizontal';
+
+export interface CardDimensions {
+  width?: number | string;
+  height?: number | string;
+}
+
+export interface CardEvent {
+  event: Event;
+  mediaItem: MediaItem;
+}
+
+export interface OnSelectChangeFuncResult extends CardEvent {
+  selected: boolean;
+}
+
+export interface OnSelectChangeFunc {
+  (result: OnSelectChangeFuncResult):  void;
+}
+
+export interface OnLoadingChangeState {
+  readonly type: CardProcessingStatus;
+  readonly payload?: Error | MediaItemDetails;
+}
+
+export interface OnLoadingChangeFunc {
+  (state: OnLoadingChangeState):  void;
+}
+
+export interface SharedCardProps {
+  readonly appearance?: CardAppearance;
+
+  readonly dimensions?: CardDimensions;
+
+  readonly actions?: Array<CardAction>;
+
+  readonly selectable?: boolean;
+  readonly selected?: boolean;
+}
+
+export interface CardEventProps {
+  readonly onClick?: (result: CardEvent) => void;
+  readonly onHover?: (result: CardEvent) => void;
+  readonly onSelectChange?: OnSelectChangeFunc;
+  readonly onLoadingChange?: OnLoadingChangeFunc;
+}

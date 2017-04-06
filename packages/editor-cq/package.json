@@ -27,6 +27,7 @@
   ],
   "dependencies": {
     "@atlaskit/editor-core": "^10.0.0",
+    "@atlaskit/reduced-ui-pack": "^5.0.1",
     "@atlaskit/util-shared-styles": "^1.2.1",
     "collapse-whitespace": "^1.1.6",
     "tslib": "^1.2.0",

@@ -24,13 +24,14 @@ import {
   panel
 } from '@atlaskit/editor-core';
 
+import jiraIssue from './schema/nodes/jiraIssue';
+import unsupportedBlock from './schema/nodes/unsupportedBlock';
+import unsupportedInline from './schema/nodes/unsupportedInline';
+
 const code = {
   ...codeBase,
   excludes: 'em strike strong underline'
 };
-
-import unsupportedBlock from './schema/nodes/unsupportedBlock';
-import unsupportedInline from './schema/nodes/unsupportedInline';
 
 interface CQSchemaNodes {
   blockquote: NodeSpec;
@@ -40,6 +41,7 @@ interface CQSchemaNodes {
   doc: NodeSpec;
   hardBreak: NodeSpec;
   heading: NodeSpec;
+  jiraIssue: NodeSpec;
   listItem: NodeSpec;
   mention: NodeSpec;
   orderedList: NodeSpec;
@@ -71,6 +73,7 @@ const nodes = {
   bulletList,
   heading,
   unsupportedBlock,
+  jiraIssue,
   listItem,
   mention,
   text,

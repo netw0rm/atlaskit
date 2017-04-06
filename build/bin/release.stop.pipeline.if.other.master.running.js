@@ -9,12 +9,12 @@ const axios = require('axios');
    (replacing the rest of the build after calling this with `sleep 300` is a good idea too!)
 */
 
-const BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR = 'master';
+const BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR = 'flush-node-buffer-with-warning';
 const BUILDS_PER_PAGE = 30;
 const BB_USERNAME = process.env.BITBUCKET_USER;
 const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
 const CURRENT_BUILD_HASH = process.env.BITBUCKET_COMMIT;
-const pipelinesEndpoint = 'https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pipelines/';
+const PIPELINES_ENDPOINT = 'https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pipelines/';
 
 const axiosRequestConfig = {
   auth: {
@@ -34,8 +34,8 @@ const axiosRequestConfig = {
 // Related documentation
 // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines/%7Bpipeline_uuid%7D/stopPipeline
 function stopPipelineBuild(pipelineUUID) {
-  const stopPipelinesEndpoint = `${pipelinesEndpoint}${pipelineUUID}/stopPipeline`;
-  console.log(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
+  const stopPipelinesEndpoint = `${PIPELINES_ENDPOINT}${pipelineUUID}/stopPipeline`;
+  console.warn(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
   // we'll return the promise and let it be caught outside (first param is just empty form data)
   return axios.post(stopPipelinesEndpoint, {}, {
     auth: {
@@ -45,7 +45,7 @@ function stopPipelineBuild(pipelineUUID) {
   });
 }
 
-axios.get(pipelinesEndpoint, axiosRequestConfig)
+axios.get(PIPELINES_ENDPOINT, axiosRequestConfig)
   .then((response) => {
     const allRunningPipelines = response.data.values;
     const currentPipeline = allRunningPipelines
@@ -58,9 +58,9 @@ axios.get(pipelinesEndpoint, axiosRequestConfig)
     if (olderRunningPipelines.length !== 0) {
       // Hypothetically, we should only be able to have 1 at a time...
       const olderRunningPipelineURL = `https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home#!/results/${olderRunningPipelines[0].uuid}`;
-      console.log(`Another master branch is already running: ${olderRunningPipelineURL}`);
-      console.log('Stopping this build to let that one finish');
-      console.log('Feel free to re-run this build once that one is done if you like 👌');
+      console.warn(`Another master branch is already running: ${olderRunningPipelineURL}`);
+      console.warn('Stopping this build to let that one finish');
+      console.warn('Feel free to re-run this build once that one is done if you like 👌');
 
       return stopPipelineBuild(currentPipeline.uuid);
       // We are actually going to let the build continue here as process.exit will return a non-zero

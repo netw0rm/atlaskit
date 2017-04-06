@@ -1,7 +1,7 @@
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
-export default styled.div`
+const NavigationItemAction = styled.div`
   display: flex;
   height: 100%;
   justify-content: center;
@@ -13,3 +13,6 @@ export default styled.div`
     opacity: 0;
   }
 `;
+
+NavigationItemAction.displayName = NavigationItemAction;
+export default NavigationItemAction;

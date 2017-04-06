@@ -3,6 +3,9 @@ import {
   resizeAnimationTime,
 } from '../../shared-variables';
 
-export default styled.div`
+const SpacerInner = styled.div`
   transition: ${({ shouldAnimate }) => (shouldAnimate ? `width ${resizeAnimationTime}` : 'none')};
 `;
+
+SpacerInner.displayName = SpacerInner;
+export default SpacerInner;

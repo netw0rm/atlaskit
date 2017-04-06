@@ -5,7 +5,7 @@ import {
 import styled from 'styled-components';
 import focusRingMixin from '../../utils/focus-ring-mixin';
 
-export default styled.button`
+const DrawerTriggerInner = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,3 +21,6 @@ export default styled.button`
 
   ${focusRingMixin()}
 `;
+
+DrawerTriggerInner.displayName = DrawerTriggerInner;
+export default DrawerTriggerInner;

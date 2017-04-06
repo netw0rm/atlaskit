@@ -4,7 +4,7 @@ import { actionsMarginTop } from './GlobalPrimaryActionsPrimaryItem';
 
 const actionsMarginBottom = akGridSizeUnitless * 3.5;
 
-export default styled.div`
+const GlobalPrimaryActionsInner = styled.div`
   box-sizing: border-box;
   height: ${({ isVisible }) => (isVisible ? `${globalItemMediumSize * 3}px + ${actionsMarginTop}px` : 0)};
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
@@ -12,3 +12,6 @@ export default styled.div`
   transition: height 220ms, margin 220ms, opacity 220ms;
   margin-bottom: ${({ isVisible }) => (isVisible ? `${actionsMarginBottom}px` : 0)};
 `;
+
+GlobalPrimaryActionsInner.displayName = GlobalPrimaryActionsInner;
+export default GlobalPrimaryActionsInner;

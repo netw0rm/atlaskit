@@ -9,7 +9,7 @@ const compactPadding = `0 ${akGridSizeUnitless}px 0 0`;
 const closedHorizontalPadding = (containerClosedWidth - (akGridSizeUnitless * 4) - size) / 2;
 const closedPadding = `0 ${closedHorizontalPadding}px 0 ${closedHorizontalPadding}px`;
 
-export default styled.div`
+const NavigationItemIcon = styled.div`
   transition: padding 200ms;
   padding: ${({ theme }) => (theme.NavigationItemIsCompact ? compactPadding : openPadding)}
   display: flex;
@@ -25,3 +25,6 @@ export default styled.div`
     width: ${size}px;
   }
 `;
+
+NavigationItemIcon.displayName = NavigationItemIcon;
+export default NavigationItemIcon;

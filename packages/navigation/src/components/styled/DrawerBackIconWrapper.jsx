@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
-export default styled.div`
+const DrawerBackIconWrapper = styled.div`
   position: absolute;
 `;
+
+DrawerBackIconWrapper.displayName = DrawerBackIconWrapper;
+export default DrawerBackIconWrapper;

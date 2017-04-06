@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
-export default styled.div`
+const GlobalNavigationOuter = styled.div`
   position: relative;
 `;
+
+GlobalNavigationOuter.displayName = GlobalNavigationOuter;
+export default GlobalNavigationOuter;

@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
-export default styled.div`
+const GlobalPrimaryActionsPrimaryItem = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
 `;
+
+GlobalPrimaryActionsPrimaryItem.displayName = GlobalPrimaryActionsPrimaryItem;
+export default GlobalPrimaryActionsPrimaryItem;

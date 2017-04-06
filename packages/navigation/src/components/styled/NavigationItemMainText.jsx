@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 
-export default styled.div`
+const NavigationItemMainText = styled.div`
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
+
+NavigationItemMainText.displayName = NavigationItemMainText;
+export default NavigationItemMainText;

@@ -4,7 +4,7 @@ import {
     akColorN40A,
  } from '@atlaskit/util-shared-styles';
 
-export default styled.div`
+const NavigationItemGroupHeader = styled.div`
   display: flex;
   margin-bottom: ${akGridSizeUnitless}px;
   margin-left: ${akGridSizeUnitless}px;
@@ -16,3 +16,6 @@ export default styled.div`
     border-top: 1px solid ${akColorN40A};
   }
 `;
+
+NavigationItemGroupHeader.displayName = NavigationItemGroupHeader;
+export default NavigationItemGroupHeader;

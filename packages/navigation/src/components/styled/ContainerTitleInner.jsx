@@ -4,7 +4,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
-export default styled.div`
+const ContainerTitleInner = styled.div`
   display: flex;
   align-items: center;
   align-content: center;
@@ -19,3 +19,6 @@ export default styled.div`
     }
   }
 `;
+
+ContainerTitleInner.displayName = ContainerTitleInner;
+export default ContainerTitleInner;

@@ -14,9 +14,12 @@ const colors = {
 const dividerLineHeight = 2;
 const dividerTotalHeight = akGridSizeUnitless * 5;
 
-export default styled.div`
+const NavigationItemGroupSeparator = styled.div`
   margin-top: ${(dividerTotalHeight - dividerLineHeight) / 2}px;
   margin-bottom: ${(dividerTotalHeight - dividerLineHeight) / 2}px;
   height: ${dividerLineHeight}px;
   background: ${({ theme }) => colors[theme.NavigationAppearance]};
 `;
+
+NavigationItemGroupSeparator.displayName = NavigationItemGroupSeparator;
+export default NavigationItemGroupSeparator;

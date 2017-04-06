@@ -7,7 +7,7 @@ import {
 import styled from 'styled-components';
 import { drawerBackIconSize } from '../../utils/drawer-style-variables';
 
-export default styled.div`
+const DrawerBackIconOuter = styled.div`
   background: ${akColorN20};
   border-radius: 50%;
   color: ${akColorN500};
@@ -22,3 +22,6 @@ export default styled.div`
     color: ${akColorB400};
   }
 `;
+
+DrawerBackIconOuter.displayName = DrawerBackIconOuter;
+export default DrawerBackIconOuter;

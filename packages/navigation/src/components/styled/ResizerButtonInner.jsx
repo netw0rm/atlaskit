@@ -13,7 +13,7 @@ const toggleArrowBottomVerticalOffset = 2;
 const opacityTransition = 'opacity cubic-bezier(0.15, 1, 0.3, 1) 0.3s';
 const transformTransition = 'transform 0.2s ease-in-out';
 
-export default styled.button`
+const ResizerButtonInner = styled.button`
   position: relative;
   top: calc(50% - ${toggleButtonHeight / 2}px);
   height: ${toggleButtonHeight}px;
@@ -61,3 +61,6 @@ export default styled.button`
     }
   }
 `;
+
+ResizerButtonInner.displayName = ResizerButtonInner;
+export default ResizerButtonInner;

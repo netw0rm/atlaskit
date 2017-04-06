@@ -92,4 +92,5 @@ GlobalItemInner.defaultProps = {
   },
 };
 
+GlobalItemInner.displayName = GlobalItemInner;
 export default GlobalItemInner;

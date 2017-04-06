@@ -110,5 +110,5 @@ NavigationItemOuter.defaultProps = {
   theme: defaultTheme,
 };
 
+NavigationItemOuter.displayName = NavigationItemOuter;
 export default NavigationItemOuter;
-

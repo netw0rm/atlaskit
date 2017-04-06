@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
-export default styled.div`
+const GlobalNavigationPrimaryContainer = styled.div`
   flex: 1;
 `;
+
+GlobalNavigationPrimaryContainer.displayName = GlobalNavigationPrimaryContainer;
+export default GlobalNavigationPrimaryContainer;

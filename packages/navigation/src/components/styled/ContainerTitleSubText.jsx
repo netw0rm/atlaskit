@@ -20,4 +20,5 @@ ContainerTitleSubText.defaultProps = {
   },
 };
 
+ContainerTitleSubText.displayName = ContainerTitleSubText;
 export default ContainerTitleSubText;

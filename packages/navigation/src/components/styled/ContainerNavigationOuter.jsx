@@ -11,4 +11,5 @@ ContainerNavigationOuter.defaultProps = {
   shouldAnimate: true,
 };
 
+ContainerNavigationOuter.displayName = ContainerNavigationOuter;
 export default ContainerNavigationOuter;

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { akZIndexNavigation } from '@atlaskit/util-shared-styles';
 
-export default styled.div`
+const NavigationInner = styled.div`
   height: 100%;
   display: flex;
   flex-direction: row;
@@ -9,3 +9,6 @@ export default styled.div`
   left: 0;
   z-index: ${akZIndexNavigation};
 `;
+
+NavigationInner.displayName = NavigationInner;
+export default NavigationInner;

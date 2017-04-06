@@ -7,7 +7,7 @@ import {
  } from '@atlaskit/util-shared-styles';
 import focusRingMixin from '../../utils/focus-ring-mixin';
 
-export default styled.button`
+const SearchClearButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,3 +32,6 @@ export default styled.button`
     color: ${akColorB400};
   }
 `;
+
+SearchClearButton.displayName = SearchClearButton;
+export default SearchClearButton;

@@ -3,6 +3,9 @@ import {
     akGridSizeUnitless,
  } from '@atlaskit/util-shared-styles';
 
-export default styled.div`
+const SearchInner = styled.div`
   padding: ${akGridSizeUnitless * 0.5} 0 0 ${akGridSizeUnitless * 3};
 `;
+
+SearchInner.displayName = SearchInner;
+export default SearchInner;

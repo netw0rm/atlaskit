@@ -18,7 +18,7 @@ const colors = {
   },
 };
 
-export default styled.div`
+const GlobalNavigationInner = styled.div`
   align-items: center;
   background-color: ${({ appearance }) => colors[appearance].background};
   box-sizing: border-box;
@@ -30,3 +30,6 @@ export default styled.div`
   position: fixed;
   width: ${globalOpenWidth}px;
 `;
+
+GlobalNavigationInner.displayName = GlobalNavigationInner;
+export default GlobalNavigationInner;

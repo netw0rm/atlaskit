@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { akColorN90 } from '@atlaskit/util-shared-styles';
 
-export default styled.div`
+const NavigationItemGroupTitle = styled.div`
   align-self: center;
   color: ${akColorN90};
   display: flex;
@@ -13,3 +13,6 @@ export default styled.div`
     visibility: hidden;
   }
 `;
+
+NavigationItemGroupTitle.displayName = NavigationItemGroupTitle;
+export default NavigationItemGroupTitle;

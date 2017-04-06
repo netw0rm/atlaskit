@@ -48,12 +48,23 @@ describe('Nodes', () => {
     });
 
     describe('emoji', () => {
-      it('should pass through attrs as id', () => {
+      it('should pass through attrs as id, fallback as text', () => {
         const emojiId = { shortName: ':grinning:', id: '123', fallback: 'cheese' };
-        const attrs = getValidNode({ type: 'emoji', attrs: emojiId }).attrs;
+        const { attrs } = getValidNode({ type: 'emoji', attrs: emojiId });
         expect(attrs).to.not.be.undefined;
         if (attrs) {
-          expect(attrs.id).to.deep.equal(emojiId);
+          expect(attrs.id, 'emoji id').to.deep.equal(emojiId);
+          expect(attrs.text, 'emoji text').to.be.equal('cheese');
+        }
+      });
+
+      it('should pass through shortName as text if no fallback', () => {
+        const emojiId = { shortName: ':grinning:', id: '123' };
+        const { attrs } = getValidNode({ type: 'emoji', attrs: emojiId });
+        expect(attrs).to.not.be.undefined;
+        if (attrs) {
+          expect(attrs.id, 'emoji id').to.deep.equal(emojiId);
+          expect(attrs.text, 'emoji text').to.be.equal(':grinning:');
         }
       });
     });

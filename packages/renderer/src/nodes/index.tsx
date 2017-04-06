@@ -56,14 +56,15 @@ export const getValidNode = (node: Renderable | TextNode): Renderable | TextNode
       }
       case NodeType.emoji: {
         const { attrs } = node;
-        let emojiId = attrs;
-
+        const emojiId = attrs;
         if (emojiId) {
+          const text = emojiId.fallback || emojiId.shortName || ':unknown:';
           return {
             type,
             attrs: {
               id: emojiId,
-            }
+              text,
+            },
           };
         }
         break;
@@ -177,10 +178,9 @@ export const renderNode = (node: Renderable, servicesConfig?: ServicesConfig, ev
     case NodeType.doc:
       return <Doc key={key}>{nodeContent.map((child, index) => renderNode(child, servicesConfig, eventHandlers, index))}</Doc>;
     case NodeType.emoji: {
-      const { attrs } = validNode;
-      const { id } = attrs as { id: EmojiId };
+      const { id, text } = validNode.attrs as { id: EmojiId, text: string };
       const emojiProvider = servicesConfig && servicesConfig.getEmojiProvider && servicesConfig.getEmojiProvider();
-      return <Emoji emojiId={id} emojiProvider={emojiProvider} />;
+      return <Emoji emojiId={id} emojiProvider={emojiProvider} text={text} />;
     }
     case NodeType.hardBreak:
       return <Hardbreak key={key} />;

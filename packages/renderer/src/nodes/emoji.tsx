@@ -47,15 +47,13 @@ export const EmojiWrapper = styled.span`
 export interface Props {
   emojiId: EmojiId;
   emojiProvider?: Promise<EmojiProvider>;
+  text: string;
 }
 
 export default class Emoji extends PureComponent<Props, {}> {
 
   render() {
-    const { emojiProvider, emojiId } = this.props;
-    if (emojiProvider) {
-
-    }
+    const { emojiProvider, emojiId, text } = this.props;
 
     if (emojiProvider) {
       return (
@@ -68,7 +66,6 @@ export default class Emoji extends PureComponent<Props, {}> {
       );
     }
 
-    const fallback = emojiId.fallback || emojiId.shortName || ':unknown:';
-    return <span>{fallback}</span>;
+    return <span>{text}</span>;
   }
 }

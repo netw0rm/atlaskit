@@ -30,7 +30,7 @@ export class MediaFileAttributes {
     return {
       id: fileItem.details.id,
       src: `${serviceHost}${resource}`,
-      srcDownload: `${serviceHost}${binary}&dl=1`,
+      srcDownload: `${serviceHost}${binary}?dl=1`,
       type: artifactFormat ? artifactFormat.type : fileItem.details.mediaType,
       title: fileItem.details.name,
       src_hd: video1280 && `${serviceHost}${video1280}`,

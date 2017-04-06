@@ -11,7 +11,7 @@ describe('MediaFileAttributes', () => {
       const attributes = MediaFileAttributes.fromFileItem(Mocks.basicFile, serviceHost);
       expect(attributes.id).to.be.equal('basic-file');
       expect(attributes.src).to.be.equal('https://filestore.io/file/basic-file/binary');
-      expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/basic-file/binary&dl=1');
+      expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/basic-file/binary?dl=1');
       expect(attributes.type).to.be.undefined;
       expect(attributes.title).to.be.undefined;
       expect(attributes.src_hd).to.be.undefined;
@@ -22,7 +22,7 @@ describe('MediaFileAttributes', () => {
       const attributes = MediaFileAttributes.fromFileItem(Mocks.gifFile, serviceHost);
       expect(attributes.id).to.be.equal('gif-file');
       expect(attributes.src).to.be.equal('https://filestore.io/file/gif-file/binary');
-      expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/gif-file/binary&dl=1');
+      expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/gif-file/binary?dl=1');
       expect(attributes.type).to.be.equal('image/gif');
       expect(attributes.title).to.be.equal('Some GIF');
     });
@@ -31,7 +31,7 @@ describe('MediaFileAttributes', () => {
       const attributes = MediaFileAttributes.fromFileItem(Mocks.sdVideoFile, serviceHost);
       expect(attributes.id).to.be.equal('sd-file');
       expect(attributes.src).to.be.equal('https://filestore.io/file/hd-file/artifact/video_640.mp4/binary');
-      expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/sd-file/binary&dl=1');
+      expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/sd-file/binary?dl=1');
       expect(attributes.type).to.be.equal('video/mp4');
       expect(attributes.title).to.be.equal('Some SD Video');
       expect(attributes.src_hd).to.be.undefined;
@@ -42,7 +42,7 @@ describe('MediaFileAttributes', () => {
       const attributes = MediaFileAttributes.fromFileItem(Mocks.hdVideoFile, serviceHost);
       expect(attributes.id).to.be.equal('hd-file');
       expect(attributes.src).to.be.equal('https://filestore.io/file/hd-file/artifact/video_640.mp4/binary');
-      expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/hd-file/binary&dl=1');
+      expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/hd-file/binary?dl=1');
       expect(attributes.type).to.be.equal('video/mp4');
       expect(attributes.title).to.be.equal('Some HD Video');
       expect(attributes.src_hd).to.be.equal('https://filestore.io/file/hd-file/artifact/video_1280.mp4/binary');
@@ -51,7 +51,7 @@ describe('MediaFileAttributes', () => {
 
     it('should return download url from binary', () => {
       const attributes = MediaFileAttributes.fromFileItem(Mocks.basicFile, serviceHost);
-      expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/basic-file/binary&dl=1');
+      expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/basic-file/binary?dl=1');
     });
   });
 });

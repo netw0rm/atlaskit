@@ -13,15 +13,15 @@ export const drawerBackIconSize = akGridSizeUnitless * 5;
 
 export const widths = {
   narrow: {
-    width: narrowWidth,
-    offScreenTranslateX: narrowWidth + boxShadowSpread,
+    width: `${narrowWidth}px`,
+    offScreenTranslateX: `${-narrowWidth - boxShadowSpread}px`,
   },
   wide: {
-    width: wideWidth,
-    offScreenTranslateX: wideWidth + boxShadowSpread,
+    width: `${wideWidth}px`,
+    offScreenTranslateX: `${-wideWidth - boxShadowSpread}px`,
   },
   full: {
     width: fullWidth,
-    offScreenTranslateX: `${fullWidth} + ${boxShadowSpread}`,
+    offScreenTranslateX: `-${fullWidth} - ${boxShadowSpread}px`,
   },
 };

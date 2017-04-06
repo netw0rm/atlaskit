@@ -88,7 +88,7 @@ export function transformHtml(html: string): HTMLElement {
     const span = document.createElement('span');
 
     if (idMatch) {
-      span.setAttribute('data-emoji-short-name', `:${idMatch[1]}:`);
+      span.setAttribute('data-emoji-short-name', `:${decodeURIComponent(idMatch[1])}:`);
     }
 
     img.parentNode!.insertBefore(span, img);

@@ -21,6 +21,7 @@ pipelines:
             - npm run release && echo "Released packages:" && touch .released-packages && cat .released-packages
             - run-p -ln "release/registry" "release/storybooks"
             - yarn run release/announce
+            - ./build/bin/release.restart.last.stopped.pipeline.js
     invalidate-atlaskit-cache:
       - step:
           script:
@@ -34,17 +35,14 @@ pipelines:
           # need to run this so we have access to the Bitbucket credentials during generate.changed.packages.file.pr.sh
           - ./build/bin/prep_for_release.sh
           - yarn
-          - ./build/bin/release.stop.pipeline.if.other.master.running.js
-          - sleep 120
-          # # we have to run this after `yarn` to have access to child-process-promise
-          # - ./build/bin/generate.changed.packages.file.pr.sh
-          # # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
-          # - run-p -ln "validate/package.json" "validate/typescript"
-          # - run-p -ln "validate/tslint" "validate/eslint"
-          # - yarn run test/unit
-          # - run-p -ln "test" "test/base"
-          # - yarn run browserstack/tunnel/start
-          # - yarn run test/wc/browserstack
-          # - yarn run browserstack/tunnel/stop
-          # - yarn run "pr/storybook"
-          - ./build/bin/release.restart.last.stopped.pipeline.js
+          # we have to run this after `yarn` to have access to child-process-promise
+          - ./build/bin/generate.changed.packages.file.pr.sh
+          # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
+          - run-p -ln "validate/package.json" "validate/typescript"
+          - run-p -ln "validate/tslint" "validate/eslint"
+          - yarn run test/unit
+          - run-p -ln "test" "test/base"
+          - yarn run browserstack/tunnel/start
+          - yarn run test/wc/browserstack
+          - yarn run browserstack/tunnel/stop
+          - yarn run "pr/storybook"

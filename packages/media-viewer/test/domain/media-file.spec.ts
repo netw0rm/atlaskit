@@ -9,6 +9,7 @@ describe('MediaFile', () => {
 
     it('should return binary url given no artifacts', () => {
       const mediaFile = MediaFile.fromFileItem(Mocks.basicFile, serviceHost);
+      expect(mediaFile.id).to.be.equal('basic-file');
       expect(mediaFile.src).to.be.equal('https://filestore.io/file/basic-file/binary');
       expect(mediaFile.srcDownload).to.be.equal('https://filestore.io/file/basic-file/binary&dl=1');
       expect(mediaFile.type).to.be.undefined;
@@ -19,6 +20,7 @@ describe('MediaFile', () => {
 
     it('should return binary url given gif file', () => {
       const mediaFile = MediaFile.fromFileItem(Mocks.gifFile, serviceHost);
+      expect(mediaFile.id).to.be.equal('gif-file');
       expect(mediaFile.src).to.be.equal('https://filestore.io/file/gif-file/binary');
       expect(mediaFile.srcDownload).to.be.equal('https://filestore.io/file/gif-file/binary&dl=1');
       expect(mediaFile.type).to.be.equal('image/gif');
@@ -27,6 +29,7 @@ describe('MediaFile', () => {
 
     it('should return type video/mp4 given SD video', () => {
       const mediaFile = MediaFile.fromFileItem(Mocks.sdVideoFile, serviceHost);
+      expect(mediaFile.id).to.be.equal('sd-file');
       expect(mediaFile.src).to.be.equal('https://filestore.io/file/hd-file/artifact/video_640.mp4/binary');
       expect(mediaFile.srcDownload).to.be.equal('https://filestore.io/file/sd-file/binary&dl=1');
       expect(mediaFile.type).to.be.equal('video/mp4');
@@ -37,6 +40,7 @@ describe('MediaFile', () => {
 
     it('should return HD url and HD poster given HD artifacts exists', () => {
       const mediaFile = MediaFile.fromFileItem(Mocks.hdVideoFile, serviceHost);
+      expect(mediaFile.id).to.be.equal('hd-file');
       expect(mediaFile.src).to.be.equal('https://filestore.io/file/hd-file/artifact/video_640.mp4/binary');
       expect(mediaFile.srcDownload).to.be.equal('https://filestore.io/file/hd-file/binary&dl=1');
       expect(mediaFile.type).to.be.equal('video/mp4');

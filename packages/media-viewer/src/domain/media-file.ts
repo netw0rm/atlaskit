@@ -5,6 +5,7 @@ export interface MediaFile {
   readonly src: string;
   readonly srcDownload: string;
 
+  readonly id?: string;
   readonly type?: string;
   readonly title?: string;
   readonly src_hd?: string;
@@ -27,6 +28,7 @@ export class MediaFile {
     const poster640 = getArtifactUrl('poster_640.jpg');
 
     return {
+      id: fileItem.details.id,
       src: `${serviceHost}${resource}`,
       srcDownload: `${serviceHost}${binary}&dl=1`,
       type: artifactFormat ? artifactFormat.type : fileItem.details.mediaType,

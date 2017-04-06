@@ -64,7 +64,7 @@ export default class DropdownList extends PureComponent {
     const { appearance } = this.props;
     const maxHeight = this.getMaxHeight();
 
-    if (maxHeight && appearance === 'default') {
+    if (maxHeight && appearance !== 'tall') {
       dropDomRef.style.maxHeight = `${maxHeight}px`;
     }
   }

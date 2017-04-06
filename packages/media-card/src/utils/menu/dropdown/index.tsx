@@ -17,7 +17,7 @@ export class Dropdown extends Component<DropdownProps, {}> {
   render() {
     const Group: any = (DropdownGroup as any).default;
 
-    const items = this.props.items ? this.props.items.map(item => this._itemElement(item.label, item.handler)) : null;
+    const items = this.props.items ? this.props.items.map((item) => this._itemElement(item.label, item.handler)) : null;
 
     return (
       <DropdownWrapper className={'dropdown'}>

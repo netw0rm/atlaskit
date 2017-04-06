@@ -7,6 +7,7 @@ import {
 export const Container = styled.div`
   position: relative;
   overflow: hidden;
+  border-radius: ${akBorderRadius};
 `;
 
 export const Image = styled.img`

@@ -10,5 +10,6 @@ export const SliderContainer = styled.div`
   align-items: center;
   justify-content: center;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  margin-top: ${akGridSizeUnitless}px;
 `;

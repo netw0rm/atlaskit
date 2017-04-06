@@ -5,6 +5,7 @@ import {ImageCropper} from '../image-cropper/image-cropper';
 import {Slider} from '../slider/index';
 import {Container, SliderContainer} from './styled';
 import {akGridSizeUnitless} from '@atlaskit/util-shared-styles';
+import ImageIcon from '@atlaskit/icon/glyph/media-services/image';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 
@@ -149,12 +150,14 @@ export class ImageNavigator extends Component<Props, State> {
         onImageSize={this.onImageSize}
       />
       <SliderContainer>
+        <ImageIcon label="scale-small-icon" size="small" />
         <Slider
           value={100 * scale}
           min={minScale}
           max={100}
           onChange={this.onScaleChange}
         />
+        <ImageIcon label="scale-small-icon" size="large" />
       </SliderContainer>
     </Container>;
   }

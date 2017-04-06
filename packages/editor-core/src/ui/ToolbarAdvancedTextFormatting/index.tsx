@@ -28,6 +28,12 @@ export interface State {
   strikeActive?: boolean;
   strikeDisabled?: boolean;
   strikeHidden?: boolean;
+  subscriptActive?: boolean;
+  subscriptDisabled?: boolean;
+  subscriptHidden?: boolean;
+  superscriptActive?: boolean;
+  superscriptDisabled?: boolean;
+  superscriptHidden?: boolean;
   clearFormattingDisabled?: boolean;
 }
 
@@ -50,19 +56,25 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
 
   render() {
     const {
-            isOpen,
+      isOpen,
       codeActive,
-      strikeActive,
-      codeHidden,
-      strikeHidden,
       codeDisabled,
+      codeHidden,
+      strikeActive,
       strikeDisabled,
+      strikeHidden,
+      subscriptActive,
+      subscriptDisabled,
+      subscriptHidden,
+      superscriptActive,
+      superscriptDisabled,
+      superscriptHidden,
       clearFormattingDisabled,
-        } = this.state;
+    } = this.state;
     const {
-            pluginStateTextFormatting,
+      pluginStateTextFormatting,
       pluginStateClearFormatting,
-        } = this.props;
+    } = this.props;
     const hasMarksInSchema = !codeHidden || !strikeHidden;
     if ((pluginStateTextFormatting && hasMarksInSchema) || pluginStateClearFormatting) {
       return (
@@ -106,6 +118,28 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
                   <span>Strikethrough</span>
                 </Item>
               </Tooltip>}
+            {!subscriptHidden &&
+              <Tooltip position="right" description="Toggle subscript">
+                <Item
+                  isActive={subscriptActive}
+                  isDisabled={subscriptDisabled}
+                  onActivate={this.handleSubscriptClick}
+                >
+                  <span>Subscript</span>
+                </Item>
+              </Tooltip>
+            }
+            {!superscriptHidden &&
+              <Tooltip position="right" description="Toggle superscript">
+                <Item
+                  isActive={superscriptActive}
+                  isDisabled={superscriptDisabled}
+                  onActivate={this.handleSuperscriptClick}
+                >
+                  <span>Superscript</span>
+                </Item>
+              </Tooltip>
+            }
           </Group>}
           {pluginStateClearFormatting &&
             <Group>
@@ -156,6 +190,24 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<Props, 
     if (!this.state.strikeDisabled) {
       const { pluginStateTextFormatting } = this.props;
       pluginStateTextFormatting && pluginStateTextFormatting.toggleStrike(this.props.editorView);
+      this.toggleOpen();
+    }
+  }
+
+  @analytics('atlassian.editor.format.subscript.button')
+  private handleSubscriptClick = () => {
+    if (!this.state.subscriptDisabled) {
+      const { pluginStateTextFormatting } = this.props;
+      pluginStateTextFormatting && pluginStateTextFormatting.toggleSubscript(this.props.editorView);
+      this.toggleOpen();
+    }
+  }
+
+  @analytics('atlassian.editor.format.superscript.button')
+  private handleSuperscriptClick = () => {
+    if (!this.state.subscriptDisabled) {
+      const { pluginStateTextFormatting } = this.props;
+      pluginStateTextFormatting && pluginStateTextFormatting.toggleSuperscript(this.props.editorView);
       this.toggleOpen();
     }
   }

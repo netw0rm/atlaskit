@@ -9,7 +9,7 @@ const axios = require('axios');
    (replacing the rest of the build after calling this with `sleep 300` is a good idea too!)
 */
 
-const BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR = 'flush-node-buffer-with-warning';
+const BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR = 'master';
 const BUILDS_PER_PAGE = 30;
 const BB_USERNAME = process.env.BITBUCKET_USER;
 const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;

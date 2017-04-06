@@ -1,6 +1,9 @@
-import { Block, Fragment, Mark, Node as PMNode } from '@atlaskit/editor-core';
+import {
+  Fragment,
+  Mark,
+  Node as PMNode
+} from '@atlaskit/editor-core';
 import schema from '../schema';
-import { isUnsupportedInlineNode } from '../schema/nodes/unsupportedInline';
 import parseCxhtml from './parse-cxhtml';
 import encodeCxhtml from './encode-cxhtml';
 
@@ -82,7 +85,7 @@ function isNodeSupportedContent(node: Node): boolean {
   }
 
   if (node instanceof HTMLElement) {
-    const tag = node.tagName.toUpperCase();
+    const tag = getNodeName(node);
     switch (tag) {
       case 'DEL':
       case 'S':
@@ -188,9 +191,9 @@ function ensureBlocks(fragment: Fragment): Fragment {
   let i;
   for (i = 0; i < nodes.length; i++) {
     const node = nodes[i];
-    if (node.type instanceof Block) {
+    if (node.isBlock) {
       blocks.push(node);
-    } else if (isUnsupportedInlineNode(node)) {
+    } else if (node.type === schema.nodes.unsupportedInline) {
       blocks.push(schema.nodes.unsupportedBlock.create(node.attrs));
     } else {
       // An inline node is found. Now step through until we find the last inline
@@ -198,7 +201,7 @@ function ensureBlocks(fragment: Fragment): Fragment {
       let j;
       for (j = i + 1; j < nodes.length; j++) {
         const node = nodes[j];
-        if (node.type instanceof Block || isUnsupportedInlineNode(node)) {
+        if (node.isBlock || node.type === schema.nodes.unsupportedInline) {
           break;
         }
       }
@@ -266,8 +269,8 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
   }
 
   // marks and nodes
-  if (node instanceof HTMLElement) {
-    const tag = node.tagName.toUpperCase();
+  if (node instanceof Element) {
+    const tag = getNodeName(node);
     switch (tag) {
       // Marks
       case 'DEL':
@@ -286,7 +289,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         const type = tag === 'SUB' ? 'sub' : 'sup';
         return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
       case 'U':
-        return content ? addMarks(content, [schema.marks.u.create()]) : null;
+        return content ? addMarks(content, [schema.marks.underline.create()]) : null;
       // Nodes
       case 'BLOCKQUOTE':
         return schema.nodes.blockquote.createChecked({},
@@ -295,7 +298,7 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
             : ensureBlocks(content)
         );
       case 'SPAN':
-        return addMarks(content, marksFromStyle(node.style));
+        return addMarks(content, marksFromStyle((node as HTMLSpanElement).style));
       case 'H1':
       case 'H2':
       case 'H3':
@@ -305,21 +308,23 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         const level = Number(tag.charAt(1));
         return schema.nodes.heading.createChecked({ level }, content);
       case 'BR':
-        return schema.nodes.hard_break.createChecked();
+        return schema.nodes.hardBreak.createChecked();
       case 'HR':
-        return schema.nodes.horizontal_rule.createChecked();
+        return schema.nodes.rule.createChecked();
       case 'UL':
-        return schema.nodes.bullet_list.createChecked({}, content);
+        return schema.nodes.bulletList.createChecked({}, content);
       case 'OL':
-        return schema.nodes.ordered_list.createChecked({}, content);
+        return schema.nodes.orderedList.createChecked({}, content);
       case 'LI':
-        return schema.nodes.list_item.createChecked({},
-          schema.nodes.list_item.validContent(content)
+        return schema.nodes.listItem.createChecked({},
+          schema.nodes.listItem.validContent(content)
             ? content
             : ensureBlocks(content)
         );
       case 'P':
         return schema.nodes.paragraph.createChecked({}, content);
+      case 'AC:STRUCTURED-MACRO':
+        return convertConfluenceMacro(node);
     }
   }
 
@@ -327,4 +332,65 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
   // `unsupportedInline` to `unsupportedBlock` where appropriate is handled when
   // the content is inserted into a parent.
   return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
+}
+
+export function getNodeName(node: Node): string {
+  return node.nodeName.toUpperCase();
+}
+
+
+function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undefined  {
+  const name = getAcName(node);
+
+  switch (name) {
+    case 'CODE':
+      const language = getAcParameter(node, 'language');
+      const title = getAcParameter(node, 'title');
+      const codeContent = getAcPlainText(node) || ' ';
+      const content: PMNode[] = [];
+      let nodeSize = 0;
+
+      if (!!title) {
+        const titleNode = schema.nodes.paragraph.create({ level: 1 }, schema.text(title, [schema.marks.strong.create()]));
+        content.push(titleNode);
+        nodeSize += titleNode.nodeSize;
+      }
+
+      const codeBlockNode = schema.nodes.codeBlock.create({ language }, schema.text(codeContent));
+      content.push(codeBlockNode);
+      nodeSize += codeBlockNode.nodeSize;
+
+      return new Fragment(content, nodeSize);
+  }
+
+  // All unsupported content is wrapped in an `unsupportedInline` node. Converting
+  // `unsupportedInline` to `unsupportedBlock` where appropriate is handled when
+  // the content is inserted into a parent.
+  return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
+}
+
+function getAcName(node: Element): string | undefined {
+  return (node.getAttribute('ac:name') || '').toUpperCase();
+}
+
+function getAcParameter(node: Element, parameter: string): string | null {
+  for (let i = 0; i < node.childNodes.length; i++) {
+    const child = node.childNodes[i] as Element;
+    if (getNodeName(child) === 'AC:PARAMETER' && getAcName(child) === parameter.toUpperCase()) {
+      return child.textContent;
+    }
+  }
+
+  return null;
+}
+
+function getAcPlainText(node: Element): string | null {
+  for (let i = 0; i < node.childNodes.length; i++) {
+    const child = node.childNodes[i] as Element;
+    if (getNodeName(child) === 'AC:PLAIN-TEXT-BODY') {
+      return child.textContent;
+    }
+  }
+
+  return null;
 }

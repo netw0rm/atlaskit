@@ -1,8 +1,8 @@
 /* tslint:disable:variable-name */
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 import styled from 'styled-components';
-import {Slider} from '../../src/slider/slider';
+import {Slider} from '../../src/slider/index';
 
 const Container = styled.div`
     width: 500px
@@ -11,6 +11,6 @@ const Container = styled.div`
 storiesOf('Slider', {})
     .add('default', () => (
         <Container>
-            <Slider />
+            <Slider value={20} min={0} max={100} onChange={action('onChange')} />
         </Container>
     ));

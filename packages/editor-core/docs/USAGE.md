@@ -31,7 +31,7 @@ Plugins (and "plugin states") are the mechanisms by which functionality is added
 
     - `HyperlinkPlugin` for hyperlinks.
     - `MentionsPlugin` for mentions.
-    - `HorizontalRulePlugin` for horizontal rules.
+    - `RulePlugin` for horizontal rules.
 
 - Plugins are responsible for attaching keymaps and input rules that are specific to the content.
   For example MentionsPlugin intercepts arrow keys when the selection is in a mention query and

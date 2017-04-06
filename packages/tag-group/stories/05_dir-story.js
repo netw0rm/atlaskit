@@ -4,7 +4,6 @@ import Tag from '@atlaskit/tag';
 
 import Group from '../src';
 import { name } from '../package.json';
-import styles from '../src/styles.less';
 
 const imports = [
   ['React', 'react'],
@@ -17,7 +16,7 @@ storiesOf(name, module)
     <div>
       Try tabbing :)
       <hr />
-      <Group className={styles.locals.akTagGroup}>
+      <Group>
         <Tag href="http://www.cupcakeipsum.com/" removeButtonText="No sweets for you!" text="Danish chocolate" />
         <Tag href="http://www.cupcakeipsum.com/" removeButtonText="No sweets for you!" text="Jelly beans" />
         <Tag href="http://www.cupcakeipsum.com/" removeButtonText="No sweets for you!" text="Cheesecake" />

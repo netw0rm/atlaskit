@@ -1,61 +1,64 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
+import EmojiPlugin from '../../../src/plugins/emojis';
 import {
-  EmojiNodeType,
-  EmojiQueryMarkType,
-  EmojisPlugin,
-  ProseMirror,
-  Schema,
-  schema as schemaBasic
-} from '../../../src';
-import { chaiPlugin } from '../../../src/test-helper';
+  chaiPlugin,
+  fixtures,
+  insertText,
+  makeEditor,
+  doc,
+  p,
+} from '../../../src/test-helper';
+import { emoji as emojiData } from '@atlaskit/util-data-test';
+
+const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
 
 chai.use(chaiPlugin);
 
-const schema: Schema = new Schema({
-  nodes: schemaBasic.nodeSpec.append({
-    emoji: { type: EmojiNodeType, group: 'inline' }
-  }),
-  marks: {
-    emoji_query: EmojiQueryMarkType
-  }
-});
-
-const makeEditor = () => new ProseMirror({
-  schema: schema,
-  plugins: [EmojisPlugin],
-});
-
 describe('emojis - input rules', () => {
-  it('should replace a standalone ":" with emoji-query-mark', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, 'foo :');
+  const fixture = fixtures();
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugin: EmojiPlugin,
+    place: fixture()
+  });
 
-    const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['emoji_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.not.equal(undefined);
+  const assert = (what: string, expected: boolean) => {
+    const { editorView, pluginState, sel } = editor(doc(p('{<>}')));
+    return pluginState
+      .setEmojiProvider(emojiProvider)
+      .then(() => {
+        insertText(editorView, what, sel);
+
+        const { state } = editorView;
+        const { emojiQuery } = state.schema.marks;
+        const cursorFocus = state.selection.$to.nodeBefore!;
+
+        if (expected) {
+          expect(emojiQuery.isInSet(cursorFocus.marks)).to.not.equal(undefined);
+        } else {
+          expect(emojiQuery.isInSet(cursorFocus.marks)).to.equal(undefined);
+        }
+      });
+  };
+
+  it('should replace a standalone ":" with emoji-query-mark', () => {
+    assert('foo :', true);
   });
 
   it('should not replace a ":" thats part of a word', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, 'foo:');
+    assert('foo:', false);
+  });
 
-    const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['emoji_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.equal(undefined);
+  it('should not replace a ":" after the "`"', () => {
+    assert('`:', false);
   });
 
   it('should replace ":" at the start of the content', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, ':');
-
-    const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['emoji_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.not.equal(undefined);
+    assert(':', true);
   });
 
   it('should replace ":" if there are multiple spaces infront of it', () => {
-    const pm = makeEditor();
-    pm.input.insertText(0, 0, '  :');
-
-    const cursorFocus = pm.selection.$to;
-    expect(pm.schema.marks['emoji_query'].isInSet(cursorFocus.nodeBefore!.marks)).to.not.equal(undefined);
+    assert('  :', true);
   });
 });

@@ -8,8 +8,10 @@ pipelines:
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             - yarn
+            - ./build/bin/release.stop.pipeline.if.other.master.running.js
             - run-p -ln "validate/package.json" "validate/typescript"
             - run-p -ln "validate/tslint" "validate/eslint"
+            - yarn run test/unit
             - run-p -ln "test" "test/base"
             - yarn run browserstack/tunnel/start
             - yarn run test/wc/browserstack
@@ -37,6 +39,7 @@ pipelines:
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
           - run-p -ln "validate/package.json" "validate/typescript"
           - run-p -ln "validate/tslint" "validate/eslint"
+          - yarn run test/unit
           - run-p -ln "test" "test/base"
           - yarn run browserstack/tunnel/start
           - yarn run test/wc/browserstack

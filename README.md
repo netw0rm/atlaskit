@@ -110,6 +110,30 @@ AtlasKit uses [React Storybook](https://github.com/kadirahq/react-storybook) to 
 
 > You can pass arguments to Karma like this to override the AtlasKit defaults: `yarn run test/single @atlaskit/my-component-name -- --browsers=Chrome`
 
+**Note: The above information is slightly out of date in some cases as we are currently undergoing a major refactor for how we run tests**
+
+Some packages will have moved to the new unit testing frame work (using mocha to run jsdom rather than karma).
+
+For these packages you'll need to run the `test/unit` script
+
+```
+yarn run test/unit
+```
+
+To run for a single package you can pass the package name (the name used in the directory not the package.json) like so:
+
+```
+yarn run test/unit avatar
+```
+
+And to pass any extra flags you need to separate them using `--`
+
+```
+yarn run test/unit avatar -- --watch
+```
+
+These scripts are likely to change in the future as well, so use this readme as the source of truth
+
 ### Browserstack tests
 Browserstack is a tool that lets you run your unit tests in a larger set of browsers running different versions.
 
@@ -329,9 +353,10 @@ yarn upgrade "packageName@^1.2.3"
 This can feel slightly cumbersome, but the easiest way to solve these conflicts is to:
 
 * Note the changes you have made to the `package.json` (added dependency XYZ, set dependency ABC to use version "^1.2.3", etc)
+* (If you've made changes to any scripts, you will want to copy those somewhere)
 * Take all of master's changes over the top of yours
     ```sh
-    git checkout -- yarn.lock package.json
+    git checkout --theirs yarn.lock package.json
     ```
 * Redo each of your changes using the appropriate yarn commands.
     ```sh

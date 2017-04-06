@@ -39,6 +39,7 @@ function addMark(markType: MarkType, schema: Schema<any, any>, specialChar: stri
 
 function addCodeMark(markType: MarkType, schema: Schema<any, any>, specialChar: string): Function {
   return (state, match, start, end): Transaction | null => {
+    analyticsService.trackEvent('atlassian.editor.format.code.autoformatting');
     return transformToCodeAction(state, start, end).delete(start, start + specialChar.length).removeStoredMark(markType);
   };
 }

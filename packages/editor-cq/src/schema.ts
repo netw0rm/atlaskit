@@ -68,13 +68,13 @@ const nodes = {
 };
 
 const marks = {
-  code,
   em,
-  link,
-  strike,
   strong,
-  subsup,
+  code,
+  strike,
   underline,
+  link,
+  subsup,
 };
 
 export interface CQSchema extends Schema<CQSchemaNodes, CQSchemaMarks> {}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
-import { Ellipsify } from '../../src';
+import { Ellipsify } from '../../src/utils';
 
 const getElementHeight = (wrapper, container) => {
   container.appendChild(wrapper.node);

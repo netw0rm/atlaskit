@@ -1,11 +1,13 @@
 import {
   bulletList,
   blockquote,
+  codeBlock,
   code,
   doc,
   em,
   hardBreak,
   heading,
+  link,
   listItem,
   MarkSpec,
   NodeSpec,
@@ -26,6 +28,7 @@ import unsupportedBlock from './schema/nodes/unsupportedBlock';
 interface CQSchemaNodes {
   blockquote: NodeSpec;
   bulletList: NodeSpec;
+  codeBlock: NodeSpec;
   doc: NodeSpec;
   hardBreak: NodeSpec;
   heading: NodeSpec;
@@ -41,6 +44,7 @@ interface CQSchemaNodes {
 interface CQSchemaMarks {
   code: MarkSpec;
   em: MarkSpec;
+  link: MarkSpec;
   strike: MarkSpec;
   strong: MarkSpec;
   subsup: MarkSpec;
@@ -50,6 +54,7 @@ interface CQSchemaMarks {
 const nodes = {
   blockquote,
   bulletList,
+  codeBlock,
   doc,
   hardBreak,
   heading,
@@ -65,6 +70,7 @@ const nodes = {
 const marks = {
   code,
   em,
+  link,
   strike,
   strong,
   subsup,

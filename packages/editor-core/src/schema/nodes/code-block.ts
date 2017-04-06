@@ -30,7 +30,7 @@ const removeLastNewLine = (dom: HTMLElement): HTMLElement => {
 };
 
 export const codeBlock: NodeSpec = {
-  attrs: { language: { default: null } },
+  attrs: { language: { default: null }, supportedLanguages: { default: []} },
   content: 'text*',
   group: 'block',
   code: true,

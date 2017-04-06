@@ -14,6 +14,7 @@ export type StateChangeHandler = (state: CodeBlockState) => any;
 export class CodeBlockState {
     element?: HTMLElement;
     language: string | undefined;
+    supportedLanguages: string[];
     toolbarVisible: boolean = false;
     domEvent: boolean = false;
 
@@ -38,7 +39,8 @@ export class CodeBlockState {
 
     updateLanguage(language: string | undefined, view: EditorView): void {
         if (this.activeCodeBlock) {
-            commands.setBlockType(view.state.schema.nodes.codeBlock, { language: language })(view.state, view.dispatch);
+            const { supportedLanguages } = this;
+            commands.setBlockType(view.state.schema.nodes.codeBlock, { language, supportedLanguages })(view.state, view.dispatch);
         }
     }
 
@@ -57,6 +59,7 @@ export class CodeBlockState {
             this.toolbarVisible = this.editorFocused && !!codeBlockNode && (domEvent || this.element !== newElement);
             this.activeCodeBlock = codeBlockNode;
             this.language = codeBlockNode && codeBlockNode.attrs['language'] || undefined;
+            this.supportedLanguages = codeBlockNode && codeBlockNode.attrs['supportedLanguages'] || [];
             this.element = newElement;
             this.triggerOnChange();
         }

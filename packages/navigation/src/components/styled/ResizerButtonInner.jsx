@@ -8,8 +8,9 @@ import focusRingMixin from '../../utils/focus-ring-mixin';
 const toggleButtonHeight = akGridSizeUnitless * 4.5;
 const toggleArrowHeight = akGridSizeUnitless * 2;
 const toggleArrowWidth = 2;
-const toggleArrowTopVerticalOffset = 2;
-const toggleArrowBottomVerticalOffset = 2;
+const toggleArrowTopVerticalOffset = (toggleButtonHeight - toggleArrowHeight) / 2;
+const toggleArrowBottomVerticalOffset =
+  (toggleArrowTopVerticalOffset - toggleArrowWidth) + (toggleArrowHeight / 2);
 const opacityTransition = 'opacity cubic-bezier(0.15, 1, 0.3, 1) 0.3s';
 const transformTransition = 'transform 0.2s ease-in-out';
 
@@ -40,7 +41,7 @@ const ResizerButtonInner = styled.button`
   }
 
   &:before {
-    top: ${toggleArrowTopVerticalOffset};
+    top: ${toggleArrowTopVerticalOffset}px;
     transform-origin: ${toggleArrowWidth / 2}px ${(toggleArrowHeight / 2) - (toggleArrowWidth / 2)}px;
   }
 
@@ -54,10 +55,10 @@ const ResizerButtonInner = styled.button`
       opacity: 1;
     }
     &:before {
-      transform: rotate(${({ isPointingRight }) => (isPointingRight ? '40deg' : '-40deg')});
+      transform: rotate(${({ isPointingRight }) => (isPointingRight ? '-40deg' : '40deg')});
     }
     &:after {
-      transform: rotate(${({ isPointingRight }) => (isPointingRight ? '-40deg' : '40deg')});
+      transform: rotate(${({ isPointingRight }) => (isPointingRight ? '40deg' : '-40deg')});
     }
   }
 `;

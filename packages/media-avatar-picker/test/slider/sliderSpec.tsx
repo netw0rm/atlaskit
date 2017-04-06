@@ -10,7 +10,7 @@ describe('Slider', () => {
         let input;
 
         beforeEach(() => {
-            slider = mount<SliderProps, {}>(<Slider value={20} />);
+            slider = mount<SliderProps, {}>(<Slider value={20.12} />);
             input = slider.find('input');
         });
 
@@ -18,13 +18,14 @@ describe('Slider', () => {
             expect(input.props().type).to.equal('range');
         });
 
-        it('should have min and max set to default values', () => {
+        it('should have min, max and step set to default values', () => {
             expect(input.props().min).to.equal(0);
             expect(input.props().max).to.equal(100);
+            expect(input.props().step).to.equal(0.1);
         });
 
         it('should input with defined value', () => {
-            expect(input.props().defaultValue).to.equal('20');
+            expect(input.props().value).to.equal('20.12');
         });
     });
 
@@ -35,7 +36,7 @@ describe('Slider', () => {
 
       beforeEach(() => {
           onChangeSpy = sinon.spy();
-          slider = mount<SliderProps, {}>(<Slider value={15} min={10} max={20} onChange={onChangeSpy}/>);
+          slider = mount<SliderProps, {}>(<Slider value={25} min={10} max={20} onChange={onChangeSpy}/>);
           input = slider.find('input');
       });
 
@@ -44,7 +45,7 @@ describe('Slider', () => {
           expect(input.props().max).to.equal(20);
       });
 
-      it('should call spy when value is changed continuesly', () => {
+      it('should call spy when value is changed continuously', () => {
           input.simulate('input', {target: {value: '15'}});
           expect(onChangeSpy.calledOnce).to.equal(true);
           expect(onChangeSpy.calledWithExactly(15)).to.equal(true);
@@ -55,6 +56,17 @@ describe('Slider', () => {
         expect(onChangeSpy.calledOnce).to.equal(true);
         expect(onChangeSpy.calledWithExactly(15)).to.equal(true);
       });
+
+      it('should change input value when value is changed', () => {
+        input.simulate('change', {target: {value: '15'}});
+        expect(input.props().value).to.equal('15');
+      });
+
+      it('should change input value when prop is changed', () => {
+        slider.setProps({value: 15});
+        expect(input.props().value).to.equal('15');
+      });
+
     });
 });
 

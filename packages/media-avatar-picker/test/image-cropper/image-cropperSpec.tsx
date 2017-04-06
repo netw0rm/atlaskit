@@ -6,6 +6,7 @@ import {ImageCropper, ImageCropperProp} from '../../src/image-cropper/image-crop
 import {Container, DragOverlay} from '../../src/image-cropper/styled';
 
 const imageWidth = 600;
+const imageHeight = 400;
 const imageSource = 'image-url';
 const top = 10;
 const left = 20;
@@ -18,11 +19,11 @@ describe('Image cropper', () => {
   let container;
   let dragOverlay;
   let onDragStartedSpy;
-  let onImageWidthSpy;
+  let onImageSizeSpy;
 
   const createComponent = (props = {}) => {
     onDragStartedSpy = sinon.spy();
-    onImageWidthSpy = sinon.spy();
+    onImageSizeSpy = sinon.spy();
     const allProps: ImageCropperProp = {
       imageSource,
       scale,
@@ -30,7 +31,7 @@ describe('Image cropper', () => {
       top,
       left,
       onDragStarted: onDragStartedSpy,
-      onImageWidth: onImageWidthSpy,
+      onImageSize: onImageSizeSpy,
       ...props
     };
     component = mount(<ImageCropper {...allProps} />);
@@ -79,10 +80,10 @@ describe('Image cropper', () => {
       createComponent();
     });
 
-    it('should call onImageWidth when image is loaded', () => {
-      img.simulate('load', {target: {naturalWidth: imageWidth}});
-      expect(onImageWidthSpy.calledOnce).to.equal(true);
-      expect(onImageWidthSpy.calledWith(imageWidth)).to.equal(true);
+    it('should call onImageSize when image is loaded', () => {
+      img.simulate('load', {target: {naturalWidth: imageWidth, naturalHeight: imageHeight}});
+      expect(onImageSizeSpy.calledOnce).to.equal(true);
+      expect(onImageSizeSpy.calledWith(imageWidth, imageHeight)).to.equal(true);
     });
   });
 });

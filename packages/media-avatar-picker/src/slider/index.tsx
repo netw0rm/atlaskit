@@ -10,19 +10,40 @@ export interface SliderProps {
   value: number;
   min?: number;
   max?: number;
+  step?: number;
   onChange?: (value: number) => void;
 }
 
-export class Slider extends Component<SliderProps, {}> {
+export interface State {
+  value: number;
+}
+
+const defaultStep = 0.1;
+
+export class Slider extends Component<SliderProps, State> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: props.value
+    };
+  }
+
   static defaultProps = {
     min: 0,
     max: 100,
+    step: defaultStep,
     onChange: () => {
     },
   };
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({value: nextProps.value});
+  }
+
   onInputChange = (e) => {
     const value = parseFloat(e.target.value);
+    this.setState({value});
     this.props.onChange && this.props.onChange(value);
   }
 
@@ -30,14 +51,18 @@ export class Slider extends Component<SliderProps, {}> {
     const {
       min,
       max,
-      value
+      step,
     } = this.props;
+    const {
+      value
+    } = this.state;
 
     return <Input
       type="range"
-      defaultValue={value.toString()}
+      value={value.toString()}
       min={min}
       max={max}
+      step={step}
       onChange={this.onInputChange}
       onInput={this.onInputChange}
     />;

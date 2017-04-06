@@ -12,21 +12,24 @@ export interface ImageCropperProp {
   left: number;
   imageWidth?: number;
   onDragStarted?: () => void;
-  onImageWidth?: (width: number) => void;
+  onImageSize?: (width: number, height: number) => void;
 }
+
+const defaultScale = 1;
 
 export class ImageCropper extends Component<ImageCropperProp, {}> {
   static defaultProps = {
     containerSize: 200,
     isCircleMask: false,
-    scale: 1,
+    scale: defaultScale,
     onDragStarted: () => {},
-    onImageWidth: () => {},
+    onImageSize: () => {},
   };
 
   onDragStarted = () => this.props.onDragStarted && this.props.onDragStarted();
 
-  onImageLoaded = (e) => this.props.onImageWidth && this.props.onImageWidth(e.target.naturalWidth);
+  onImageLoaded = (e) =>
+    this.props.onImageSize && this.props.onImageSize(e.target.naturalWidth, e.target.naturalHeight);
 
   render(){
     const {
@@ -44,7 +47,7 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
       height: `${containerSize}px`,
     };
 
-    const width = imageWidth ? `${imageWidth * (scale || 1)}px` : 'auto';
+    const width = imageWidth ? `${imageWidth * (scale || defaultScale)}px` : 'auto';
 
     const imageStyle = {
       width,

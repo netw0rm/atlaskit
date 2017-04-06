@@ -63,7 +63,7 @@ describe('Bitbucket markdown serializer: ', () => {
     ))).to.eq('foo\n\n\u200c\n\n\u200c');
   });
 
-  describe('code block', () => {
+  describe('mentions', () => {
     it('should serialize mentions', () => {
       const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
       const test = markdownSerializer.serialize(node);

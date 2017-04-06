@@ -6,6 +6,7 @@ import {
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
 import encodeCxhtml from './encode-cxhtml';
+import { LANGUAGE_MAP } from './languageMap';
 
 const convertedNodes = new WeakMap();
 
@@ -356,7 +357,11 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
         nodeSize += titleNode.nodeSize;
       }
 
-      const codeBlockNode = schema.nodes.codeBlock.create({ language }, schema.text(codeContent));
+      const codeBlockNode = schema.nodes.codeBlock.create({
+        language,
+        supportedLanguages: Object.keys(LANGUAGE_MAP).map(name => LANGUAGE_MAP[name])
+      }, schema.text(codeContent));
+
       content.push(codeBlockNode);
       nodeSize += codeBlockNode.nodeSize;
 

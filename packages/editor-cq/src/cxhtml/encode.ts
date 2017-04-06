@@ -5,6 +5,7 @@ import {
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
 import encodeCxhtml, { AC_XMLNS } from './encode-cxhtml';
+import { mapCodeLanguage } from './languageMap';
 
 export default function encode(node: PMNode) {
   const docType = document.implementation.createDocumentType('html', '-//W3C//DTD XHTML 1.0 Strict//EN', 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd');
@@ -165,19 +166,5 @@ export default function encode(node: PMNode) {
     if (domNode) {
       return doc.importNode(domNode, true);
     }
-  }
-
-  function mapCodeLanguage(language: string): string {
-    const map = {
-      'shell': 'bash',
-      'cSharp': 'c#',
-      'c++': 'cpp',
-      'erlang': 'erl',
-      'javafx': 'jfx',
-      'javascript': 'js',
-      'python': 'py',
-    };
-
-    return map[language.toLowerCase()] || language.toLowerCase();
   }
 }

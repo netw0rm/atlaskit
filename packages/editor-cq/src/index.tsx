@@ -9,6 +9,7 @@ import {
   EditorState,
   EditorView,
   history,
+  HyperlinkPlugin,
   keymap,
   ListsPlugin,
   RulePlugin,
@@ -117,6 +118,7 @@ export default class Editor extends PureComponent<Props, State> {
     const blockTypeState = editorState && BlockTypePlugin.getState(editorState);
     const codeBlockState = editorState && CodeBlockPlugin.getState(editorState);
     const clearFormattingState = editorState && ClearFormattingPlugin.getState(editorState);
+    const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
     const listsState = editorState && ListsPlugin.getState(editorState);
     const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
 
@@ -132,6 +134,7 @@ export default class Editor extends PureComponent<Props, State> {
         placeholder={this.props.placeholder}
         pluginStateBlockType={blockTypeState}
         pluginStateCodeBlock={codeBlockState}
+        pluginStateHyperlink={hyperlinkState}
         pluginStateLists={listsState}
         pluginStateTextFormatting={textFormattingState}
         pluginStateClearFormatting={clearFormattingState}
@@ -178,6 +181,7 @@ export default class Editor extends PureComponent<Props, State> {
           BlockTypePlugin,
           ClearFormattingPlugin,
           CodeBlockPlugin,
+          HyperlinkPlugin,
           ListsPlugin,
           RulePlugin,
           TextFormattingPlugin,

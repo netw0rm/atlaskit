@@ -412,6 +412,38 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         h1('Code block'),
         unsupportedBlock('<ac:structured-macro ac:name="foo"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>'),
       ));
+
+    describe('ac:link', () => {
+      check(
+        'link to Confluence page',
+        '<p><ac:link><ri:page ri:content-title="Questions test page"/></ac:link></p>',
+        doc(
+          p(
+            unsupportedInline('<ac:link><ri:page ri:content-title="Questions test page"/></ac:link>')
+          )
+        )
+      );
+
+      check(
+        'link to uploaded file',
+        '<p><ac:link><ri:attachment ri:filename="Classic Minesweeper.pdf"/></ac:link></p>',
+        doc(
+          p(
+            unsupportedInline('<ac:link><ri:attachment ri:filename="Classic Minesweeper.pdf"/></ac:link>')
+          )
+        )
+      );
+
+      check(
+        'link to Confluence space',
+        '<p><ac:link><ri:space ri:space-key="ZAA"/></ac:link></p>',
+        doc(
+          p(
+            unsupportedInline('<ac:link><ri:space ri:space-key="ZAA"/></ac:link>')
+          )
+        )
+      );
+    });
   });
 
 // Color text span

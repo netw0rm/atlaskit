@@ -282,6 +282,29 @@ describe('mentions', () => {
       );
     });
 
+    it('should render the mention-node using a nickname if present', () => {
+      const { editorView, pluginState } = editor(doc(p(mentionQuery('@ta'))));
+
+      pluginState.insertMention({
+        name: 'Tara Tjandra',
+        mentionName: 'ttjandra',
+        nickname: 'tara',
+        id: '1234'
+      });
+
+      expect(editorView.state.doc).to.deep.equal(
+        doc(
+          p(
+            mention({
+              displayName: '@tara',
+              id: '1234'
+            }),
+            ' '
+          )
+        )
+      );
+    });
+
     it('should allow inserting multiple @-mentions next to eachother', () => {
       const { editorView, pluginState } = editor(doc(p(mention({ id: '1234', displayName: '@Oscar Wallhult' }), ' ', mentionQuery('@{<>}'))));
 

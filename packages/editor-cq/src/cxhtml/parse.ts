@@ -394,4 +394,3 @@ function getAcPlainText(node: Element): string | null {
 
   return null;
 }
-

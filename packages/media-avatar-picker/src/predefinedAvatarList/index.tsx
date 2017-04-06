@@ -3,7 +3,7 @@ import {PureComponent} from 'react';
 
 import {Avatar, default as AvatarList} from '../avatarList';
 
-import EditorMoreIconIcon from '@atlaskit/icon/glyph/editor/more';
+import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import Button from '@atlaskit/button';
 import {PredefinedAvatarsWrapper} from './styled';
 
@@ -16,7 +16,7 @@ export class ShowMoreButton extends PureComponent<{}, {}> {
     return (
       <Button
         className="show-more-button"
-        iconAfter={<EditorMoreIconIcon label="" size="large"/>}
+        iconAfter={<EditorMoreIcon label="" size="large"/>}
       />
     );
   }

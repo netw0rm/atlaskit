@@ -36,7 +36,7 @@ const axiosRequestConfig = {
 // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines/%7Bpipeline_uuid%7D/stopPipeline
 function stopPipelineBuild(pipelineUUID) {
   const stopPipelinesEndpoint = `${PIPELINES_ENDPOINT}${pipelineUUID}/stopPipeline`;
-  console.warn(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
+  console.log(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
   // we'll return the promise and let it be caught outside (first param is just empty form data)
   return axios.post(stopPipelinesEndpoint, {}, {
     auth: {
@@ -59,9 +59,9 @@ axios.get(PIPELINES_ENDPOINT, axiosRequestConfig)
     if (olderRunningPipelines.length !== 0) {
       // Hypothetically, we should only be able to have 1 at a time...
       const olderRunningPipelineURL = `https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home#!/results/${olderRunningPipelines[0].uuid}`;
-      console.warn(`Another master branch is already running: ${olderRunningPipelineURL}`);
-      console.warn('Stopping this build to let that one finish');
-      console.warn('Feel free to re-run this build once that one is done if you like 👌');
+      console.log(`Another master branch is already running: ${olderRunningPipelineURL}`);
+      console.log('Stopping this build to let that one finish');
+      console.log('Feel free to re-run this build once that one is done if you like 👌');
 
       return new Promise((resolve) => {
         // we need to wait a bit so that pipelines takes our logs and uploads them before we stop

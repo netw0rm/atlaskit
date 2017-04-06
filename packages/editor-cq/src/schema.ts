@@ -67,14 +67,16 @@ const nodes = {
   unsupportedInline,
 };
 
+// ranking order is important
+// @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-Rank
 const marks = {
+  link,
   em,
   strong,
-  code,
   strike,
-  underline,
-  link,
   subsup,
+  underline,
+  code,
 };
 
 export interface CQSchema extends Schema<CQSchemaNodes, CQSchemaMarks> {}

@@ -4,5 +4,5 @@ const GlobalNavigationPrimaryContainer = styled.div`
   flex: 1;
 `;
 
-GlobalNavigationPrimaryContainer.displayName = GlobalNavigationPrimaryContainer;
+GlobalNavigationPrimaryContainer.displayName = 'GlobalNavigationPrimaryContainer';
 export default GlobalNavigationPrimaryContainer;

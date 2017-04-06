@@ -10,7 +10,6 @@ import {
   akColorB400,
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
-import { defaultTheme } from '../js/NavigationItem';
 import focusRingMixin from '../../utils/focus-ring-mixin';
 
 const colors = {
@@ -107,8 +106,11 @@ const NavigationItemOuter = styled.div`
 `;
 
 NavigationItemOuter.defaultProps = {
-  theme: defaultTheme,
+  theme: {
+    NavigationAppearance: 'container',
+    NavigationItemIsCompact: false,
+  },
 };
 
-NavigationItemOuter.displayName = NavigationItemOuter;
+NavigationItemOuter.displayName = 'NavigationItemOuter';
 export default NavigationItemOuter;

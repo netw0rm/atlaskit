@@ -20,5 +20,5 @@ const ContainerTitleInner = styled.div`
   }
 `;
 
-ContainerTitleInner.displayName = ContainerTitleInner;
+ContainerTitleInner.displayName = 'ContainerTitleInner';
 export default ContainerTitleInner;

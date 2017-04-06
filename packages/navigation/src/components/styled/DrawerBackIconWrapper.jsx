@@ -4,5 +4,5 @@ const DrawerBackIconWrapper = styled.div`
   position: absolute;
 `;
 
-DrawerBackIconWrapper.displayName = DrawerBackIconWrapper;
+DrawerBackIconWrapper.displayName = 'DrawerBackIconWrapper';
 export default DrawerBackIconWrapper;

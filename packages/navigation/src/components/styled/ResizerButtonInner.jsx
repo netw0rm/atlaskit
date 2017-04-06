@@ -62,5 +62,5 @@ const ResizerButtonInner = styled.button`
   }
 `;
 
-ResizerButtonInner.displayName = ResizerButtonInner;
+ResizerButtonInner.displayName = 'ResizerButtonInner';
 export default ResizerButtonInner;

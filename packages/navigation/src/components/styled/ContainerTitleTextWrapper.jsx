@@ -13,5 +13,5 @@ const ContainerTitleTextWrapper = styled.div`
   }
 `;
 
-ContainerTitleTextWrapper.displayName = ContainerTitleTextWrapper;
+ContainerTitleTextWrapper.displayName = 'ContainerTitleTextWrapper';
 export default ContainerTitleTextWrapper;

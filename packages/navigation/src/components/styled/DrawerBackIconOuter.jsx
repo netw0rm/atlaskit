@@ -23,5 +23,5 @@ const DrawerBackIconOuter = styled.div`
   }
 `;
 
-DrawerBackIconOuter.displayName = DrawerBackIconOuter;
+DrawerBackIconOuter.displayName = 'DrawerBackIconOuter';
 export default DrawerBackIconOuter;

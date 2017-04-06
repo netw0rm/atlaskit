@@ -31,5 +31,5 @@ const GlobalNavigationInner = styled.div`
   width: ${globalOpenWidth}px;
 `;
 
-GlobalNavigationInner.displayName = GlobalNavigationInner;
+GlobalNavigationInner.displayName = 'GlobalNavigationInner';
 export default GlobalNavigationInner;

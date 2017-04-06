@@ -33,5 +33,5 @@ const SearchClearButton = styled.button`
   }
 `;
 
-SearchClearButton.displayName = SearchClearButton;
+SearchClearButton.displayName = 'SearchClearButton';
 export default SearchClearButton;

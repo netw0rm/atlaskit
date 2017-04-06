@@ -9,5 +9,5 @@ const NavigationItemGroupAction = styled.div`
   }
 `;
 
-NavigationItemGroupAction.displayName = NavigationItemGroupAction;
+NavigationItemGroupAction.displayName = 'NavigationItemGroupAction';
 export default NavigationItemGroupAction;

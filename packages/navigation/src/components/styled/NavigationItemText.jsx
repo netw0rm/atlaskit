@@ -6,5 +6,5 @@ const NavigationItemText = styled.div`
   flex-grow: 1;
 `;
 
-NavigationItemText.displayName = NavigationItemText;
+NavigationItemText.displayName = 'NavigationItemText';
 export default NavigationItemText;

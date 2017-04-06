@@ -27,5 +27,5 @@ const DrawerInner = styled.div`
   width: ${({ width }) => widths[width].width};
 `;
 
-DrawerInner.displayName = DrawerInner;
+DrawerInner.displayName = 'DrawerInner';
 export default DrawerInner;

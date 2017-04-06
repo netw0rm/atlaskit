@@ -8,5 +8,5 @@ const GlobalNavigationSecondaryContainer = styled.div`
   padding-bottom: ${akGridSizeUnitless * 2.5}px;
 `;
 
-GlobalNavigationSecondaryContainer.displayName = GlobalNavigationSecondaryContainer;
+GlobalNavigationSecondaryContainer.displayName = 'GlobalNavigationSecondaryContainer';
 export default GlobalNavigationSecondaryContainer;

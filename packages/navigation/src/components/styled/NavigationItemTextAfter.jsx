@@ -9,5 +9,5 @@ const NavigationItemTextAfter = styled.div`
   }
 `;
 
-NavigationItemTextAfter.displayName = NavigationItemTextAfter;
+NavigationItemTextAfter.displayName = 'NavigationItemTextAfter';
 export default NavigationItemTextAfter;

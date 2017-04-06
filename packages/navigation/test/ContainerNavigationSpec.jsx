@@ -15,12 +15,6 @@ describe('<ContainerNavigation />', () => {
       expect(shallow(<ContainerNavigation width={500} />).find(Spacer).props().width).to.equal(500);
       expect(shallow(<ContainerNavigation width={200} />).find(Spacer).props().width).to.equal(200);
     });
-    it('appearnace="global" should render with the global appearance class', () => {
-      expect((mount(<ContainerNavigation appearance="global" />).find(`.${containerNavigationInner}`)).hasClass((hasGlobalAppearance))).to.equal(true);
-    });
-    it('appearance="settings" should render with the settings appearance class', () => {
-      expect((mount(<ContainerNavigation appearance="settings" />).find(`.${containerNavigationInner}`)).hasClass((hasSettingsAppearance))).to.equal(true);
-    });
   });
   describe('behaviour', () => {
     it('renders [data-__ak-navigation-container-closed="true"] if and only if it is closed', () => {

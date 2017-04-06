@@ -7,5 +7,5 @@ const SearchResults = styled.div`
   margin-top: ${akGridSizeUnitless * 3}px;
 `;
 
-SearchResults.displayName = SearchResults;
+SearchResults.displayName = 'SearchResults';
 export default SearchResults;

@@ -6,5 +6,5 @@ const ContainerLogo = styled.div`
   margin: ${akGridSizeUnitless * 3.5}px 0 ${akGridSizeUnitless * 3.5}px ${akGridSizeUnitless * 3};
 `;
 
-ContainerLogo.displayName = ContainerLogo;
+ContainerLogo.displayName = 'ContainerLogo';
 export default ContainerLogo;

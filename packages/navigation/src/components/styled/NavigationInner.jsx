@@ -10,5 +10,5 @@ const NavigationInner = styled.div`
   z-index: ${akZIndexNavigation};
 `;
 
-NavigationInner.displayName = NavigationInner;
+NavigationInner.displayName = 'NavigationInner';
 export default NavigationInner;

@@ -4,5 +4,5 @@ const GlobalNavigationOuter = styled.div`
   position: relative;
 `;
 
-GlobalNavigationOuter.displayName = GlobalNavigationOuter;
+GlobalNavigationOuter.displayName = 'GlobalNavigationOuter';
 export default GlobalNavigationOuter;

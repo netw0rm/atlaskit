@@ -12,5 +12,5 @@ const DrawerMain = styled.div`
   width: 100%;
 `;
 
-DrawerMain.displayName = DrawerMain;
+DrawerMain.displayName = 'DrawerMain';
 export default DrawerMain;

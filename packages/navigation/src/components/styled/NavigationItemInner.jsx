@@ -12,5 +12,5 @@ const NavigationItemInner = styled.div`
   box-sizing: border-box;
 `;
 
-NavigationItemInner.displayName = NavigationItemInner;
+NavigationItemInner.displayName = 'NavigationItemInner';
 export default NavigationItemInner;

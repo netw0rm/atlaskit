@@ -10,5 +10,5 @@ const NavigationItemGroupInner = styled.div`
   }
 `;
 
-NavigationItemGroupInner.displayName = NavigationItemGroupInner;
+NavigationItemGroupInner.displayName = 'NavigationItemGroupInner';
 export default NavigationItemGroupInner;

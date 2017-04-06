@@ -11,5 +11,5 @@ const DrawerSide = styled.div`
   width: ${globalOpenWidth}px;
 `;
 
-DrawerSide.displayName = DrawerSide;
+DrawerSide.displayName = 'DrawerSide';
 export default DrawerSide;

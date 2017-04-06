@@ -22,5 +22,5 @@ const DrawerTriggerInner = styled.button`
   ${focusRingMixin()}
 `;
 
-DrawerTriggerInner.displayName = DrawerTriggerInner;
+DrawerTriggerInner.displayName = 'DrawerTriggerInner';
 export default DrawerTriggerInner;

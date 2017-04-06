@@ -6,5 +6,5 @@ const NavigationItemMainText = styled.div`
   white-space: nowrap;
 `;
 
-NavigationItemMainText.displayName = NavigationItemMainText;
+NavigationItemMainText.displayName = 'NavigationItemMainText';
 export default NavigationItemMainText;

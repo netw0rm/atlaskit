@@ -8,5 +8,5 @@ const SearchInput = styled.input`
   outline: 0;
 `;
 
-SearchInput.displayName = SearchInput;
+SearchInput.displayName = 'SearchInput';
 export default SearchInput;

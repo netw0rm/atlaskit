@@ -58,7 +58,7 @@ describe('<GlobalPrimaryActions />', () => {
       />).find('DrawerTrigger').at(1).props().onActivate).to.equal(handler);
     });
     it('isVisible applies the isVisible class', () => {
-      expect(mount(<GlobalPrimaryActions isVisible />).find(`.${style.isVisible}`).length).to.equal(1);
+      expect(mount(<GlobalPrimaryActions isVisible />).find('GlobalPrimaryActions').props().isVisible).to.equal(true);
     });
   });
 });

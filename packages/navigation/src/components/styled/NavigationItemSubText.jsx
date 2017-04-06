@@ -10,5 +10,5 @@ const NavigationItemSubText = styled.div`
   white-space: nowrap;
 `;
 
-NavigationItemSubText.displayName = NavigationItemSubText;
+NavigationItemSubText.displayName = 'NavigationItemSubText';
 export default NavigationItemSubText;

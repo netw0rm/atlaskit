@@ -7,5 +7,5 @@ const SpacerInner = styled.div`
   transition: ${({ shouldAnimate }) => (shouldAnimate ? `width ${resizeAnimationTime}` : 'none')};
 `;
 
-SpacerInner.displayName = SpacerInner;
+SpacerInner.displayName = 'SpacerInner';
 export default SpacerInner;

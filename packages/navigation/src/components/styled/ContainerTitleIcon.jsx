@@ -16,5 +16,5 @@ const ContainerTitleIcon = styled.div`
   }
 `;
 
-ContainerTitleIcon.displayName = ContainerTitleIcon;
+ContainerTitleIcon.displayName = 'ContainerTitleIcon';
 export default ContainerTitleIcon;

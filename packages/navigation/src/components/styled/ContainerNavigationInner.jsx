@@ -38,5 +38,5 @@ ContainerNavigationInner.defaultProps = {
   appearance: 'container',
 };
 
-ContainerNavigationInner.displayName = ContainerNavigationInner;
+ContainerNavigationInner.displayName = 'ContainerNavigationInner';
 export default ContainerNavigationInner;

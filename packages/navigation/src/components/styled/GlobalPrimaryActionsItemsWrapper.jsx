@@ -10,5 +10,5 @@ const GlobalPrimaryActionsItemsWrapper = styled.div`
   margin-top: ${actionsMarginTop}px;
 `;
 
-GlobalPrimaryActionsItemsWrapper.displayName = GlobalPrimaryActionsItemsWrapper;
+GlobalPrimaryActionsItemsWrapper.displayName = 'GlobalPrimaryActionsItemsWrapper';
 export default GlobalPrimaryActionsItemsWrapper;

@@ -22,5 +22,5 @@ const ResizerInner = styled.div`
   }
 `;
 
-ResizerInner.displayName = ResizerInner;
+ResizerInner.displayName = 'ResizerInner';
 export default ResizerInner;

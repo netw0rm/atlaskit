@@ -8,5 +8,5 @@ const SearchBox = styled.div`
   color: ${akColorN800};
 `;
 
-SearchBox.displayName = SearchBox;
+SearchBox.displayName = 'SearchBox';
 export default SearchBox;

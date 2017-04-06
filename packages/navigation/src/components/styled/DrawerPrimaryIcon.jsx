@@ -9,5 +9,5 @@ const DrawerPrimaryIcon = styled.div`
   width: ${drawerBackIconSize}px;
 `;
 
-DrawerPrimaryIcon.displayName = DrawerPrimaryIcon;
+DrawerPrimaryIcon.displayName = 'DrawerPrimaryIcon';
 export default DrawerPrimaryIcon;

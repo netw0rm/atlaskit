@@ -17,5 +17,5 @@ const NavigationItemGroupHeader = styled.div`
   }
 `;
 
-NavigationItemGroupHeader.displayName = NavigationItemGroupHeader;
+NavigationItemGroupHeader.displayName = 'NavigationItemGroupHeader';
 export default NavigationItemGroupHeader;

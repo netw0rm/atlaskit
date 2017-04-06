@@ -6,5 +6,5 @@ const DrawerHeader = styled.div`
   padding-top: ${akGridSizeUnitless}px;
 `;
 
-DrawerHeader.displayName = DrawerHeader;
+DrawerHeader.displayName = 'DrawerHeader';
 export default DrawerHeader;

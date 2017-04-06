@@ -4,5 +4,5 @@ const DrawerContent = styled.div`
   width: 100%;
 `;
 
-DrawerContent.displayName = DrawerContent;
+DrawerContent.displayName = 'DrawerContent';
 export default DrawerContent;

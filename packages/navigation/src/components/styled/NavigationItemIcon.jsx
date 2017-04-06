@@ -26,5 +26,5 @@ const NavigationItemIcon = styled.div`
   }
 `;
 
-NavigationItemIcon.displayName = NavigationItemIcon;
+NavigationItemIcon.displayName = 'NavigationItemIcon';
 export default NavigationItemIcon;

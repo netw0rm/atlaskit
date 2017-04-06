@@ -13,5 +13,5 @@ const GlobalPrimaryActionsInner = styled.div`
   margin-bottom: ${({ isVisible }) => (isVisible ? `${actionsMarginBottom}px` : 0)};
 `;
 
-GlobalPrimaryActionsInner.displayName = GlobalPrimaryActionsInner;
+GlobalPrimaryActionsInner.displayName = 'GlobalPrimaryActionsInner';
 export default GlobalPrimaryActionsInner;

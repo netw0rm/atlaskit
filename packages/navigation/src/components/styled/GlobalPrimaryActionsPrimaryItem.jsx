@@ -6,5 +6,5 @@ const GlobalPrimaryActionsPrimaryItem = styled.div`
   flex-direction: column;
 `;
 
-GlobalPrimaryActionsPrimaryItem.displayName = GlobalPrimaryActionsPrimaryItem;
+GlobalPrimaryActionsPrimaryItem.displayName = 'GlobalPrimaryActionsPrimaryItem';
 export default GlobalPrimaryActionsPrimaryItem;

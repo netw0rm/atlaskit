@@ -48,11 +48,5 @@ describe('<GlobalNavigation />', () => {
       const wrapper = mount(<GlobalNavigation />);
       expect(wrapper.find('GlobalSecondaryActions').length).to.equal(0);
     });
-    it('appearance="settings" renders with the hasSettingsAppearance class', () => {
-      expect((shallow(
-        <GlobalNavigation
-          appearance="settings"
-        />).find(`.${styles.globalNavigationOuter}`)).hasClass((styles.hasSettingsAppearance))).to.equal(true);
-    });
   });
 });

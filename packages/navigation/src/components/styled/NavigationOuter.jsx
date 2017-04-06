@@ -7,5 +7,5 @@ const NavigationOuter = styled.div`
   flex: 1 0 auto;
 `;
 
-NavigationOuter.displayName = NavigationOuter;
+NavigationOuter.displayName = 'NavigationOuter';
 export default NavigationOuter;

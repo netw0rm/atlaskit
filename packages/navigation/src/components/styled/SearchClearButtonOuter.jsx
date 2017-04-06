@@ -10,5 +10,5 @@ const SearchClearButtonOuter = styled.div`
   margin-right: ${akGridSizeUnitless * 2}px;
 `;
 
-SearchClearButtonOuter.displayName = SearchClearButtonOuter;
+SearchClearButtonOuter.displayName = 'SearchClearButtonOuter';
 export default SearchClearButtonOuter;

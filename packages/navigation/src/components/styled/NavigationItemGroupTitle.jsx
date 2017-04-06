@@ -14,5 +14,5 @@ const NavigationItemGroupTitle = styled.div`
   }
 `;
 
-NavigationItemGroupTitle.displayName = NavigationItemGroupTitle;
+NavigationItemGroupTitle.displayName = 'NavigationItemGroupTitle';
 export default NavigationItemGroupTitle;

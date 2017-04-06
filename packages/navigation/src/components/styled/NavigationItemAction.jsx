@@ -14,5 +14,5 @@ const NavigationItemAction = styled.div`
   }
 `;
 
-NavigationItemAction.displayName = NavigationItemAction;
+NavigationItemAction.displayName = 'NavigationItemAction';
 export default NavigationItemAction;

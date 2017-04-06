@@ -10,5 +10,5 @@ const DrawerBackIconInner = styled.div`
     transition: transform 220ms;
 `;
 
-DrawerBackIconInner.displayName = DrawerBackIconInner;
+DrawerBackIconInner.displayName = 'DrawerBackIconInner';
 export default DrawerBackIconInner;

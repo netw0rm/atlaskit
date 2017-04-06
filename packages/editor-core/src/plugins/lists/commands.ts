@@ -15,12 +15,17 @@ export const enterKeyCommand = (state: EditorState<any>, dispatch: (tr: Transact
   return false;
 };
 
-export const toggleBulletList = (state: EditorState<any>, dispatch: (tr: Transaction) => void, view: EditorView): boolean => {
+export const toggleList = (
+  state: EditorState<any>,
+  dispatch: (tr: Transaction) => void,
+  view: EditorView,
+  listType: 'bulletList' | 'orderedList'
+): boolean => {
   const { selection } = state;
   const { bulletList, orderedList } = state.schema.nodes;
   const node = selection.$from.node(selection.$from.depth - 2);
-  if (!node || node.type !== bulletList) {
-    return commands.toggleList('bulletList')(state, dispatch, view);
+  if (!node || node.type.name !== listType) {
+    return commands.toggleList(listType)(state, dispatch, view);
   } else {
     let rootListDepth;
     for (let i = selection.$from.depth; i > 0; i--) {
@@ -29,14 +34,25 @@ export const toggleBulletList = (state: EditorState<any>, dispatch: (tr: Transac
         rootListDepth = i;
       }
     }
-    let tr = liftFollowingList(state, selection.$to.pos, selection.$to.end(rootListDepth), rootListDepth, state.tr);
+    let tr = liftFollowingList(
+      state,
+      selection.$to.pos,
+      selection.$to.end(rootListDepth),
+      rootListDepth,
+      state.tr
+    );
     tr = liftSelectionList(state, tr);
     dispatch(tr);
     return true;
   }
 };
 
-function liftFollowingList(state: EditorState<any>, from: number, to: number, rootListDepth: number, tr: Transaction): Transaction {
+function liftFollowingList(
+  state: EditorState<any>,
+  from: number, to: number,
+  rootListDepth: number,
+  tr: Transaction
+): Transaction {
   const { listItem } = state.schema.nodes;
   let lifted = false;
   tr.doc.nodesBetween(from, to, (node, pos) => {

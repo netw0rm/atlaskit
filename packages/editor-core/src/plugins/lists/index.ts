@@ -10,7 +10,7 @@ import {
   findAncestorPosition,
 } from '../../utils';
 
-import { toggleBulletList } from './commands';
+import { toggleList } from './commands';
 import * as commands from '../../commands';
 import keymapPlugin from './keymap';
 import inputRulePlugin from './input-rule';
@@ -53,11 +53,11 @@ export class ListsState {
   }
 
   toggleBulletList(view: EditorView) {
-    toggleBulletList(view.state, view.dispatch, view);
+    toggleList(view.state, view.dispatch, view, 'bulletList');
   }
 
   toggleOrderedList(view: EditorView) {
-    commands.toggleOrderedList()(view.state, view.dispatch, view);
+    toggleList(view.state, view.dispatch, view, 'orderedList');
   }
 
   update(newEditorState) {

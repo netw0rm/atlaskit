@@ -3,7 +3,7 @@ import {Component} from 'react';
 import {Observable, Subscription} from 'rxjs';
 import {MediaItem, FileItem, MediaItemDetails, UrlPreview, DataUriService} from '@atlaskit/media-core';
 
-import {SharedCardProps, CardEventProps, OnLoadingChangeState, OnLoadingChangeFunc} from '.';
+import {SharedCardProps, CardEventProps, OnLoadingChangeState} from '.';
 import {LinkCard} from './links';
 import {FileCard} from './files';
 import {Provider} from './card';
@@ -139,8 +139,8 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
           {...otherProps}
           fileDetails={details}
           cardProcessingStatus={cardProcessingStatus}
-          error={error}
           dataURIService={dataURIService}
+          error={error}
         />
       );
     }

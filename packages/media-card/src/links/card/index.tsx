@@ -15,9 +15,8 @@ export interface LinkCardProps extends SharedCardProps {
 }
 
 export class LinkCard extends Component<LinkCardProps, {}> {
-
   render(): JSX.Element | null {
-    const {urlPreview, appearance, cardProcessingStatus, error} = this.props;
+    const {urlPreview, appearance, error} = this.props;
 
     if (error) {
       return null;

@@ -16,10 +16,10 @@ const DEFAULT_CARD_DIMENSIONS = {
 };
 
 export interface FileCardProps extends SharedCardProps {
-  readonly fileDetails: FileDetails;
   readonly cardProcessingStatus: CardProcessingStatus;
-  readonly error?: Error;
+  readonly fileDetails: FileDetails;
   readonly dataURIService: DataUriService;
+  readonly error?: Error;
 };
 
 export interface FileCardState {
@@ -120,7 +120,7 @@ export class FileCard extends Component<FileCardProps, FileCardState> {
   };
 
   renderNoFileItem(): JSX.Element {
-    const {cardProcessingStatus, error, dimensions, selectable, selected} = this.props;
+    const {error, dimensions, selectable, selected} = this.props;
     const {dataURI} = this.state;
 
     const errorMessage = error ? 'Error loading card' : undefined;
@@ -150,7 +150,7 @@ export class FileCard extends Component<FileCardProps, FileCardState> {
   }
 
   renderFile(file: FileDetails): JSX.Element {
-    const {cardProcessingStatus, dimensions, selectable, selected} = this.props;
+    const {dimensions, selectable, selected} = this.props;
     const {dataURI} = this.state;
 
     const card = (this._isSmall()) ?

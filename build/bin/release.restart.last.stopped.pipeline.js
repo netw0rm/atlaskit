@@ -4,13 +4,16 @@ const axios = require('axios');
 
 /*
    This script queries pipelines and checks the most recent master* builds. If the most recent one
-   was "stopped" (not failed or running), then we tell pipelines to restart that pipeline.
+   was "stopped" or "failed" (not pending or running), then we tell pipelines to restart that
+   pipeline.
 
    This script should be called at the very END of a master* build so that stopped builds will still
    get run after the last build finishes.
+
+   *The script will automatically work for any branch it is run in, which is useful for testing.
 */
 
-const BUILDS_PER_PAGE = 30;
+const BUILDS_TO_FETCH = 10;
 const BRANCH_TO_CHECK_FOR_STOPPED_BUILDS_FOR = process.env.BITBUCKET_BRANCH;
 const BB_USERNAME = process.env.BITBUCKET_USER;
 const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
@@ -22,13 +25,24 @@ const axiosRequestConfig = {
     password: BB_PASSWORD,
   },
   params: {
-    pagelen: BUILDS_PER_PAGE,
+    pagelen: BUILDS_TO_FETCH,
     // get the most recent builds first
     sort: '-created_on',
     'target.ref_name': BRANCH_TO_CHECK_FOR_STOPPED_BUILDS_FOR,
     'target.ref_type': 'BRANCH',
   },
 };
+
+function pipelineFailedOrStopped(pipelineState) {
+  // the state will have a name of 'PENDING', 'COMPLETED' or 'IN_PROGRESS'
+  // if it is COMPLETED the state also has a result.name of 'SUCCESSFUL', 'FAILED' or 'STOPPED'
+  if (pipelineState.name === 'FAILED') {
+    return true;
+  } else if (pipelineState.name === 'COMPLETED' && pipelineState.result.name === 'STOPPED') {
+    return true;
+  }
+  return false;
+}
 
 axios.get(pipelinesEndpoint, axiosRequestConfig)
   .then((response) => {
@@ -43,9 +57,9 @@ axios.get(pipelinesEndpoint, axiosRequestConfig)
     //    - we are either looking at ourselves (we can safely exit)
     //    - or we are looking at a new build which is going to pick up the work (we can safely exit)
     const mostRecentPipeline = allRunningPipelines[0];
-    const pipelineState = mostRecentPipeline.state.name;
+    const pipelineState = mostRecentPipeline.state;
 
-    if (pipelineState === 'STOPPED' || pipelineState === 'FAILED') {
+    if (pipelineFailedOrStopped(pipelineState)) {
       console.log('There is a stopped or failed pipeline created after this one.');
       console.log('Restarting it now.');
       const postData = {

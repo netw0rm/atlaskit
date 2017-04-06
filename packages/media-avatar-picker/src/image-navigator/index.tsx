@@ -23,6 +23,7 @@ interface State {
   cursorInitPos?: Position;
   scale: number;
   isDragging: boolean;
+  minScale?: number;
 }
 
 export class ImageNavigator extends Component<Props, State> {
@@ -78,14 +79,26 @@ export class ImageNavigator extends Component<Props, State> {
   }
 
   onScaleChange = (scale) => {
-    this.setState({scale: scale / 100});
+    const newScale = scale / 100;
+    const oldScale = this.state.scale;
+    const imageWidth = this.state.imageWidth || 0;
+    const imageHeight = this.state.imageHeight || 0;
+    // TODO Make it better
+    this.setState({
+      scale: newScale,
+      imagePos: {
+        x: this.state.imagePos.x - ((newScale * imageWidth) - (oldScale * imageWidth)) / 2,
+        y: this.state.imagePos.y - ((newScale * imageHeight) - (oldScale * imageHeight)) / 2
+      }
+    });
   }
 
   onImageSize = (width, height) => {
     this.setState({
       imageWidth: width,
       imageHeight: height,
-      scale: this.calculateInitialScale(width, height)
+      scale: this.calculateInitialScale(width, height),
+      minScale: (CONTAINER_SIZE / 2) / Math.max(width, height) * 100,
     });
   }
 
@@ -107,6 +120,7 @@ export class ImageNavigator extends Component<Props, State> {
       imageWidth,
       imagePos,
       scale,
+      minScale
     } = this.state;
 
     return <div>
@@ -123,6 +137,8 @@ export class ImageNavigator extends Component<Props, State> {
       />
       <Slider
         value={100 * scale}
+        min={minScale}
+        max={100}
         onChange={this.onScaleChange}
       />
     </div>;

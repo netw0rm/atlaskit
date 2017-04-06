@@ -6,7 +6,7 @@ import Mention, { MentionEventHandler } from './';
 export interface Props {
   id: string;
   text: string;
-  mentionProvider: Promise<MentionProvider>;
+  mentionProvider?: Promise<MentionProvider>;
   onClick?: MentionEventHandler;
   onMouseEnter?: MentionEventHandler;
   onMouseLeave?: MentionEventHandler;

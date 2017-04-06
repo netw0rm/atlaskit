@@ -131,6 +131,9 @@ const nodes = {
     const delimiter = isLastNode ? '' : ' ';
 
     state.write(`@${node.attrs['id']}${delimiter}`);
+  },
+  emoji(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
+    state.write(`${node.attrs['shortName']}`);
   }
 };
 
@@ -146,7 +149,8 @@ const marks = {
     }
   },
   code: { open: '`', close: '`' },
-  mentionQuery: { open: '', close: '', mixable: false }
+  mentionQuery: { open: '', close: '', mixable: false },
+  emojiQuery: { open: '', close: '', mixable: false }
 };
 
 export class MarkdownSerializer extends PMMarkdownSerializer {

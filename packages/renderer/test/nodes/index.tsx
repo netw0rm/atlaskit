@@ -48,24 +48,25 @@ describe('Nodes', () => {
     });
 
     describe('emoji', () => {
-      it('should pass through attrs as id, fallback as text', () => {
+      it('should pass through attrs as emoji', () => {
         const emojiId = { shortName: ':grinning:', id: '123', fallback: 'cheese' };
-        const { attrs } = getValidNode({ type: 'emoji', attrs: emojiId });
-        expect(attrs).to.not.be.undefined;
-        if (attrs) {
-          expect(attrs.id, 'emoji id').to.deep.equal(emojiId);
-          expect(attrs.text, 'emoji text').to.be.equal('cheese');
-        }
+        const { type, attrs } = getValidNode({ type: 'emoji', attrs: emojiId });
+        expect(type).to.equal('emoji');
+        expect(attrs).to.deep.equal(emojiId);
       });
 
-      it('should pass through shortName as text if no fallback', () => {
-        const emojiId = { shortName: ':grinning:', id: '123' };
-        const { attrs } = getValidNode({ type: 'emoji', attrs: emojiId });
-        expect(attrs).to.not.be.undefined;
-        if (attrs) {
-          expect(attrs.id, 'emoji id').to.deep.equal(emojiId);
-          expect(attrs.text, 'emoji text').to.be.equal(':grinning:');
-        }
+      it('should pass through attrs with only shortName as emoji', () => {
+        const emojiId = { shortName: ':grinning:' };
+        const { type, attrs } = getValidNode({ type: 'emoji', attrs: emojiId });
+        expect(type).to.equal('emoji');
+        expect(attrs).to.deep.equal(emojiId);
+      });
+
+      it('should reject emoji without shortName', () => {
+        const emojiId = { id: '123', fallback: 'cheese' };
+        const { type, attrs } = getValidNode({ type: 'emoji', attrs: emojiId });
+        expect(type).to.equal('unknown');
+        expect(attrs).to.deep.equal(emojiId);
       });
     });
 

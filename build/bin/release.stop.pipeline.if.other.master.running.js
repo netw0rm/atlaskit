@@ -3,14 +3,16 @@
 const axios = require('axios');
 
 /*
-   To debug this file you should be able to change BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR to be the
-    name of the branch you are working on then call this script from a branch build AFTER running
-   yarn. It should then be able to simulate a master build fine.
-   (replacing the rest of the build after calling this with `sleep 300` is a good idea too!)
+   This script will automatically end a build if another build of the same branch is already running
+
+   In normal usage, we only use this for preventing multiple master builds from running, but this
+   also makes it easy to simulate a master build on a regular branch build. Simply call this script
+   from a regular branch build in bitbucket-pipelines.yml AFTER the yarn step (so that you have
+   axios installed)
 */
 
-const BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR = 'master';
 const BUILDS_PER_PAGE = 30;
+const BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR = process.env.BITBUCKET_BRANCH;
 const BB_USERNAME = process.env.BITBUCKET_USER;
 const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
 const CURRENT_BUILD_HASH = process.env.BITBUCKET_COMMIT;

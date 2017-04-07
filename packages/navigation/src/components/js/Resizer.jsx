@@ -84,7 +84,7 @@ export default class Resizer extends PureComponent {
   render() {
     return (
       <ResizerInner
-        ref={(resizerNode) => {
+        innerRef={(resizerNode) => {
           this.resizerNode = resizerNode;
         }}
         onMouseDown={this.mouseDownHandler}

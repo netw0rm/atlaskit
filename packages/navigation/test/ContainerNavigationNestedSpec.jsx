@@ -1,5 +1,6 @@
 import { mount } from 'enzyme';
 import React from 'react';
+import styles from 'style!../src/components/less/ContainerNavigationNested.less';
 import ContainerNavigationNested from '../src/components/js/ContainerNavigationNested';
 
 describe('<ContainerNavigationNested />', () => {
@@ -45,7 +46,7 @@ describe('<ContainerNavigationNested />', () => {
       expect(component.find('div').first().hasClass(styles.containerNavigationNestedLeftAnimate)).to.equal(true);
     });
 
-    it('should have left animation class if animationDirection is right', () => {
+    it('should have right animation class if animationDirection is right', () => {
       const initPane = <h1>Previous Pane</h1>;
       const component = mount(<ContainerNavigationNested>{initPane}</ContainerNavigationNested>);
       const newPane = <h1>New Pane</h1>;

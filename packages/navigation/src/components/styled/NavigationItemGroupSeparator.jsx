@@ -21,5 +21,12 @@ const NavigationItemGroupSeparator = styled.div`
   background: ${({ theme }) => colors[theme.NavigationAppearance]};
 `;
 
+NavigationItemGroupSeparator.defaultProps = {
+  theme: {
+    NavigationAppearance: 'container',
+    NavigationItemIsCompact: false,
+  },
+};
+
 NavigationItemGroupSeparator.displayName = 'NavigationItemGroupSeparator';
 export default NavigationItemGroupSeparator;

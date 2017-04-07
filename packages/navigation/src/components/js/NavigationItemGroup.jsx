@@ -5,7 +5,6 @@ import NavigationItemGroupInner from '../styled/NavigationItemGroupInner';
 import NavigationItemGroupSeparator from '../styled/NavigationItemGroupSeparator';
 import NavigationItemGroupHeader from '../styled/NavigationItemGroupHeader';
 import NavigationItemGroupAction from '../styled/NavigationItemGroupAction';
-import { defaultTheme as defaultOuterTheme } from './NavigationItem';
 
 export default class NavigationItemGroup extends PureComponent {
   static propTypes = {
@@ -14,10 +13,6 @@ export default class NavigationItemGroup extends PureComponent {
     hasSeparator: PropTypes.bool,
     isCompact: PropTypes.bool,
     title: PropTypes.string,
-  }
-
-  static defaultProps = {
-    theme: defaultTheme,
   }
 
   render() {
@@ -35,7 +30,7 @@ export default class NavigationItemGroup extends PureComponent {
     return (
       <ThemeProvider
         theme={outerTheme => ({
-          NavigationAppearance: (outerTheme || defaultOuterTheme).NavigationAppearance,
+          NavigationAppearance: (outerTheme && outerTheme.NavigationAppearance) || 'container',
           NavigationItemIsCompact: isCompact,
         })}
       >
@@ -61,8 +56,3 @@ export default class NavigationItemGroup extends PureComponent {
     );
   }
 }
-
-const defaultTheme = {
-  NavigationAppearance: 'container',
-  NavigationItemIsCompact: false,
-};

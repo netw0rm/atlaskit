@@ -8,6 +8,13 @@ const mapContent = (node: any) => {
           attrs: child.attrs
         };
 
+      case 'emoji':
+        return {
+          type: 'emoji',
+          attrs: child.attrs,
+          text: child.attrs.fallback
+        };
+
       case 'text':  // Hipchat expects text nodes to always have a marks array
         const marks = (child.marks || []).map(mark => {
           switch (mark.type) {
@@ -15,7 +22,7 @@ const mapContent = (node: any) => {
               return {
                 type: 'link',
                 attrs: {
-                  url: mark.attrs['href']
+                  url: mark.attrs.href
                 }
               };
             default:

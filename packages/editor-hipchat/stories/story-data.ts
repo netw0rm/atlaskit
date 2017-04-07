@@ -1,3 +1,5 @@
+import { emoji as emojiData } from '@atlaskit/util-data-test';
+
 import MentionResource from '../test/_mock-ak-mention-resource';
 
 export const resourceProvider = new MentionResource({
@@ -6,3 +8,4 @@ export const resourceProvider = new MentionResource({
 });
 
 export const mentionProvider = Promise.resolve(resourceProvider);
+export const emojiProvider = emojiData.emojiStoryData.getEmojiResource();

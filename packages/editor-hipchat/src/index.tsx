@@ -3,6 +3,9 @@ import {
   BlockTypePlugin,
   EditorState,
   EditorView,
+  emojiNodeView,
+  EmojiTypeAhead,
+  EmojisPlugin,
   history,
   HyperlinkEdit,
   HyperlinkPlugin,
@@ -15,6 +18,7 @@ import {
   TextSelection,
   version as coreVersion
 } from '@atlaskit/editor-core';
+import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
 import * as cx from 'classnames';
 import * as React from 'react';
@@ -22,6 +26,7 @@ import { PureComponent } from 'react';
 import { HCSchema, default as schema } from './schema';
 import { version } from './version';
 import { hipchatEncoder } from './encoders';
+import { hipchatDecoder } from './decoders';
 
 let debounced: number | null = null;
 
@@ -35,6 +40,7 @@ export interface Props {
   maxContentSize?: number;
   onSubmit?: (doc: Doc) => void;
   onChange?: () => void;
+  emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
   presenceProvider?: any;
   reverseMentionPicker?: boolean;
@@ -45,6 +51,7 @@ export interface State {
   schema: HCSchema;
   maxLengthReached?: boolean;
   flashToggle?: boolean;
+  emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
 }
 
@@ -113,20 +120,15 @@ export default class Editor extends PureComponent<Props, State> {
   setFromJson(value: any): void {
     const { editorView } = this.state;
     if (editorView) {
-      const val = {
-        type: 'paragraph',
-        content: (value.length ? value : [{ type: 'text', text: ' ' }]) // We need to insert a space instead of an empty node in order to trigger the update event (which will close the mentions picker)
-      };
-
       const { state } = editorView;
-      const content = schema.nodeFromJSON(val);
+      const content = schema.nodeFromJSON(hipchatDecoder(value).content[0]);
       const tr = state.tr
         .replaceWith(0, state.doc.nodeSize - 2, content)
         .scrollIntoView();
       editorView.dispatch(tr);
 
       if (!value.length) {
-        this.clear(); // Part of hack above
+        this.clear();
       }
     }
   }
@@ -148,25 +150,29 @@ export default class Editor extends PureComponent<Props, State> {
 
   componentWillReceiveProps(nextProps: Props) {
     const { props } = this;
-    if (props.mentionProvider !== nextProps.mentionProvider) {
+    if (props.emojiProvider !== nextProps.emojiProvider || props.mentionProvider !== nextProps.mentionProvider) {
       this.handleProviders(nextProps);
     }
   }
 
   handleProviders = (props: Props) => {
-    const { mentionProvider } = props;
+    const { emojiProvider, mentionProvider } = props;
+
+    this.providerFactory.setProvider('emojiProvider', emojiProvider);
     this.providerFactory.setProvider('mentionProvider', mentionProvider);
+
     this.setState({
+      emojiProvider,
       mentionProvider
     });
   }
 
   render() {
     const { props } = this;
-    const { editorView, mentionProvider } = this.state;
+    const { editorView, emojiProvider, mentionProvider } = this.state;
 
     const editorState = editorView && editorView.state;
-
+    const emojisState = editorState && emojiProvider && EmojisPlugin.getState(editorState);
     const mentionsState = editorState && mentionProvider && MentionsPlugin.getState(editorState);
     const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
     const classNames = cx('ak-editor-hipchat', {
@@ -179,6 +185,13 @@ export default class Editor extends PureComponent<Props, State> {
         <div ref={this.handleRef}>
           {!hyperlinkState ? null :
             <HyperlinkEdit pluginState={hyperlinkState} editorView={editorView!} />
+          }
+          {!emojisState ? null :
+            <EmojiTypeAhead
+              pluginState={emojisState}
+              emojiProvider={emojiProvider!}
+              reversePosition={props.reverseMentionPicker}
+            />
           }
           {!mentionsState ? null :
             <MentionPicker
@@ -209,6 +222,7 @@ export default class Editor extends PureComponent<Props, State> {
         BlockTypePlugin,
         HyperlinkPlugin,
         TextFormattingPlugin,
+        EmojisPlugin,
         MentionsPlugin,
         history(),
         keymap(hcKeymap),
@@ -241,10 +255,12 @@ export default class Editor extends PureComponent<Props, State> {
         this.handleChange();
       },
       nodeViews: {
+        emoji: emojiNodeView(this.providerFactory),
         mention: mentionNodeView(this.providerFactory)
       }
     });
 
+    EmojisPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
     MentionsPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
     if (place instanceof HTMLElement) {

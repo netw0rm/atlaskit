@@ -1,6 +1,8 @@
 import {
   em,
   doc,
+  emoji,
+  emojiQuery,
   hardBreak,
   link,
   MarkSpec,
@@ -20,6 +22,7 @@ export interface HCSchemaNodes {
   text: NodeSpec;
   hardBreak: NodeSpec;
   mention: NodeSpec;
+  emoji: NodeSpec;
 }
 
 export interface HCSchemaMarks {
@@ -27,7 +30,8 @@ export interface HCSchemaMarks {
   em: MarkSpec;
   strong: MarkSpec;
   underline: MarkSpec;
-  mentionQuery;
+  mentionQuery: MarkSpec;
+  emojiQuery: MarkSpec;
 }
 
 const nodes: HCSchemaNodes = {
@@ -47,7 +51,10 @@ const nodes: HCSchemaNodes = {
   hardBreak,
 
   // An @-mention.
-  mention
+  mention,
+
+  // An emoji.
+  emoji
 };
 
 const marks: HCSchemaMarks = {
@@ -68,7 +75,14 @@ const marks: HCSchemaMarks = {
   //
   // This mark is used internally, and is stripped from documents before they are exposed through
   // the editor getter APIs.
-  mentionQuery
+  mentionQuery,
+
+  // Represents an "emoji query". An emoji query is created by typing the : symbol. The text
+  // within an emoji query is used to search for an emoji.
+  //
+  // This mark is used internally, and is stripped from documents before they are exposed through
+  // the editor getter APIs.
+  emojiQuery
 };
 
 export interface HCSchema extends Schema<HCSchemaNodes, HCSchemaMarks> {}

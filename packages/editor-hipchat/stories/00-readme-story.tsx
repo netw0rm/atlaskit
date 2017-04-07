@@ -129,7 +129,6 @@ storiesOf(name, module)
 
 function SchemaDoc(props: { schemaSourceFile: string }) {
   const regexp = new RegExp('new Schema\\(([^]+)\\) as \\w+Schema;', 'gm');
-  // const regexp = new RegExp('const nodes: HCSchemaNodes = (([^]+)\\) export interface HCSchema', 'gm');
   const match = regexp.exec(props.schemaSourceFile);
   const schema = match && match[1];
   return schema

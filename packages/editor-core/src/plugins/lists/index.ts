@@ -11,7 +11,6 @@ import {
 } from '../../utils';
 
 import { toggleList } from './commands';
-import * as commands from '../../commands';
 import keymapPlugin from './keymap';
 import inputRulePlugin from './input-rule';
 import { reconfigure } from '../utils';

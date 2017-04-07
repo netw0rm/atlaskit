@@ -7,9 +7,8 @@ import {Observable} from 'rxjs';
 import 'rxjs/add/observable/of';
 
 import {waitUntil} from '@atlaskit/media-test-helpers';
-import {MediaItem, FileDetails, UrlPreview, MediaItemProvider} from '@atlaskit/media-core';
+import {FileDetails, UrlPreview} from '@atlaskit/media-core';
 
-import {Provider} from '../src/';
 import {MediaCard, MediaCardProps, MediaCardState} from '../src/mediaCard';
 import {LinkCard} from '../src/links';
 import {FileCard} from '../src/files';
@@ -20,7 +19,6 @@ describe('MediaCard', () => {
   };
 
   it('should initially render LinkCard with details undefined and passed in props', () => {
-
     const provider = {
       observable: () => Observable.create(() => {/*do nothing*/})
     };
@@ -40,10 +38,10 @@ describe('MediaCard', () => {
         type="link"
         appearance="small"
         provider={provider}
-        dataURIService={dataUriService}
+        dataURIService={dataUriService as any}
         onLoadingChange={onLoadingChange}
       />
-    );
+    ) as any;
 
     const linkCard = element.find(LinkCard);
     expect(linkCard).to.be.length(1);
@@ -72,10 +70,10 @@ describe('MediaCard', () => {
         type="file"
         appearance="small"
         provider={provider}
-        dataURIService={dataUriService}
+        dataURIService={dataUriService as any}
         onLoadingChange={onLoadingChange}
       />
-    );
+    ) as any;
 
     const fileCard = element.find(FileCard);
     expect(fileCard).to.be.length(1);
@@ -99,10 +97,10 @@ describe('MediaCard', () => {
         type="link"
         appearance="small"
         provider={provider}
-        dataURIService={dataUriService}
+        dataURIService={dataUriService as any}
         onLoadingChange={onLoadingChange}
       />
-    );
+    ) as any;
 
     (element.instance() as MediaCard).componentDidMount();
 
@@ -130,10 +128,10 @@ describe('MediaCard', () => {
         type="file"
         appearance="small"
         provider={provider}
-        dataURIService={dataUriService}
+        dataURIService={dataUriService as any}
         onLoadingChange={onLoadingChange}
       />
-    );
+    ) as any;
 
     (element.instance() as MediaCard).componentDidMount();
 
@@ -156,10 +154,10 @@ describe('MediaCard', () => {
       <MediaCard
         type="file"
         provider={provider}
-        dataURIService={dataUriService}
+        dataURIService={dataUriService as any}
         onLoadingChange={onLoadingChange}
       />
-    );
+    ) as any;
 
     (element.instance() as MediaCard).componentDidMount();
 
@@ -188,10 +186,10 @@ describe('MediaCard', () => {
       <MediaCard
         type="file"
         provider={provider}
-        dataURIService={dataUriService}
+        dataURIService={dataUriService as any}
         onLoadingChange={onLoadingChange}
       />
-    );
+    ) as any;
 
     (element.instance() as MediaCard).componentDidMount();
   });
@@ -218,10 +216,10 @@ describe('MediaCard', () => {
       <MediaCard
         type="file"
         provider={provider}
-        dataURIService={dataUriService}
+        dataURIService={dataUriService as any}
         onLoadingChange={onLoadingChange}
       />
-    );
+    ) as any;
 
     (element.instance() as MediaCard).componentDidMount();
   });
@@ -249,16 +247,15 @@ describe('MediaCard', () => {
       <MediaCard
         type="file"
         provider={provider}
-        dataURIService={dataUriService}
+        dataURIService={dataUriService as any}
         onLoadingChange={onLoadingChange}
       />
-    );
+    ) as any;
 
     (element.instance() as MediaCard).componentDidMount();
   });
 
   it('should unsubscribe from the old provider and subscribe to the new provider when the provider changes', () => {
-    const fileDetailsPayload: FileDetails = {id: 'cryptic-id', name: 'Some file name'};
     const dataUriService = {};
 
     const oldUnsubscribe = sinon.spy();
@@ -284,10 +281,10 @@ describe('MediaCard', () => {
     const element = shallow(
       <MediaCard
         type="file"
-        provider={firstProvider}
-        dataURIService={dataUriService}
+        provider={firstProvider as any}
+        dataURIService={dataUriService as any}
       />
-    );
+    ) as any;
 
     (element.instance() as MediaCard).componentDidMount();
     element.setProps({provider: secondProvider});

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {Observable, Subscription} from 'rxjs';
-import {MediaItem, FileItem, MediaItemDetails, UrlPreview, DataUriService} from '@atlaskit/media-core';
+import {MediaItem, FileItem, MediaItemDetails, FileDetails, UrlPreview, DataUriService} from '@atlaskit/media-core';
 
-import {SharedCardProps, CardEventProps, OnLoadingChangeState, OnLoadingChangeFunc} from '.';
+import {SharedCardProps, CardEventProps, OnLoadingChangeState} from '.';
 import {LinkCard} from './links';
 import {FileCard} from './files';
 import {Provider} from './card';
@@ -12,7 +12,7 @@ import {CardProcessingStatus} from '.';
 export interface MediaCardProps extends SharedCardProps, CardEventProps {
   readonly type: string;
   readonly provider: Provider;
-  readonly dataURIService: DataUriService;
+  readonly dataURIService?: DataUriService;
 }
 
 export interface MediaCardState {
@@ -75,7 +75,7 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
   }
 
   private updateState(props: MediaCardProps): void {
-    const onLoadingChange = this.props.onLoadingChange;
+    const onLoadingChange = this.props.onLoadingChange || (() => {});
     this.unsubscribe();
 
     this.setPartialState(
@@ -120,15 +120,19 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
     this.state && this.state.subscription && this.state.subscription.unsubscribe();
   }
 
+  private isUrlPreviewOrUndefined(details: UrlPreview | FileDetails | undefined): details is UrlPreview | undefined {
+    return details === undefined || (details as UrlPreview).url !== undefined;
+  }
+
   render() {
     const {type, provider, dataURIService, onLoadingChange, ...otherProps} = this.props;
     const {details, cardProcessingStatus, error} = this.state;
 
-    if (type === 'link') {
+    if (type === 'link' && this.isUrlPreviewOrUndefined(details)) {
       return (
         <LinkCard
           {...otherProps}
-          urlPreview={details as UrlPreview | undefined}
+          urlPreview={details}
           cardProcessingStatus={cardProcessingStatus}
           error={error}
         />
@@ -139,8 +143,8 @@ export class MediaCard extends Component<MediaCardProps, MediaCardState> {
           {...otherProps}
           fileDetails={details}
           cardProcessingStatus={cardProcessingStatus}
+          dataURIService={dataURIService as DataUriService}
           error={error}
-          dataURIService={dataURIService}
         />
       );
     }

@@ -44,6 +44,8 @@ module.exports = (config) => {
     // deduping is not implicit, and bundle sizes are huge, which can take a significant amount
     // of time in CI.
     browserNoActivityTimeout: 100000,
+    browserDisconnectTimeout: 10000,
+    browserDisconnectTolerance: 5,
 
     singleRun: true,
 

@@ -40,12 +40,6 @@ const addAllVariants = (emoji: EmojiDescription, fnKey: EmojiToKey, map: EmojiBy
   }
 };
 
-const createMapBy = (emojis: EmojiDescription[], fnKey: EmojiToKey): EmojiByKey => {
-  const map: EmojiByKey = new Map();
-  emojis.forEach(emoji => addAllVariants(emoji, fnKey, map));
-  return map;
-};
-
 const findByKey = (map: EmojiByKey, key: any): OptionalEmojiDescription => {
   const emojis = map.get(key);
   if (emojis && emojis.length) {
@@ -53,49 +47,6 @@ const findByKey = (map: EmojiByKey, key: any): OptionalEmojiDescription => {
     return emojis[emojis.length - 1];
   }
   return undefined;
-};
-
-const groupByCategory = (categoryOrder: string[], emojis: EmojiDescription[]) : EmojiDescription[] => {
-  let initOrder: boolean = false;
-  if (categoryOrder.length === 0) {
-    initOrder = true;
-  }
-  const groupedEmojis: Map<string, EmojiDescription[]> = new Map();
-
-  emojis.forEach(emoji => {
-    const { category } = emoji;
-    if (!groupedEmojis.has(category)) {
-      if (initOrder) {
-        categoryOrder.push(category);
-      }
-      groupedEmojis.set(category, []);
-    }
-    const groupedEmoji = groupedEmojis.get(category);
-    if (groupedEmoji) {
-      groupedEmoji.push(emoji);
-    }
-  });
-
-  let groupedByCategory: EmojiDescription[] = [];
-  categoryOrder.forEach(category => {
-    const groupedEmoji = groupedEmojis.get(category);
-    if (groupedEmoji) {
-      groupedByCategory = groupedByCategory.concat(groupedEmoji.sort(emojiSorter));
-    }
-  });
-
-  return groupedByCategory;
-};
-
-const emojiSorter = (e1: EmojiDescription, e2: EmojiDescription) : number  => {
-  if (e1.order && e2.order && e1.order !== e2.order) {
-    return e1.order - e2.order;
-  } else if (e1.shortName !== e2.shortName) {
-    return e1.shortName.localeCompare(e2.shortName);
-  } else if (e1.id && e2.id) {
-    return e1.id.localeCompare(e2.id);
-  }
-  return 0;
 };
 
 const applySearchOptions = (emojis: EmojiDescription[], options?: SearchOptions): EmojiDescription[] => {
@@ -125,24 +76,18 @@ export default class EmojiRepository {
   private fullSearch: Search;
   private shortNameMap: EmojiByKey;
   private idMap: EmojiByKey;
-  private categoryOrder: string[];
+  private categoryOrder: Map<string, number>;
 
   constructor(emojis: EmojiDescription[]) {
-    // Setup category order for entire service based on initial set of emojis
-    this.categoryOrder = [];
-
-    // Ensure emojis are ordered by: category (in order found), then by emoji order
-    this.emojis = groupByCategory(this.categoryOrder, emojis);
+    this.emojis = emojis;
+    this.initMaps();
 
     this.fullSearch = new Search('id');
     this.fullSearch.searchIndex = new UnorderedSearchIndex();
     this.fullSearch.addIndex('name');
     this.fullSearch.addIndex('shortName');
     this.fullSearch.addDocuments(emojis);
-
-    this.shortNameMap = createMapBy(emojis, e => e.shortName);
-    this.idMap = createMapBy(emojis, e => e.id);
-  }
+  };
 
   /**
    * Returns all available emoji.
@@ -159,11 +104,11 @@ export default class EmojiRepository {
   search(query?: string, options?: SearchOptions): EmojiSearchResult {
     let filteredEmoji: EmojiDescription[];
     if (query) {
-      filteredEmoji = this.fullSearch.search(query);
+      filteredEmoji = this.fullSearch.search(query).sort(this.emojiComparator);
     } else {
       filteredEmoji = this.emojis;
     }
-    filteredEmoji = groupByCategory(this.categoryOrder, applySearchOptions(filteredEmoji, options));
+    filteredEmoji = applySearchOptions(filteredEmoji, options);
     return {
       emojis: filteredEmoji,
       categories: availableCategories(filteredEmoji),
@@ -191,4 +136,43 @@ export default class EmojiRepository {
       emoji => emoji.category === categoryId
     );
   }
+
+  /**
+   * Optimisation to initialise all map member variables in single loop over emojis
+   */
+  private initMaps(): void {
+    this.categoryOrder = new Map();
+    this.shortNameMap  = new Map();
+    this.idMap = new Map();
+    let index: number = 1;
+
+    this.emojis.forEach(emoji => {
+      if (!this.categoryOrder.get(emoji.category)) {
+        this.categoryOrder.set(emoji.category, index++);
+      }
+      addAllVariants(emoji, e => e.shortName, this.shortNameMap);
+      addAllVariants(emoji, e => e.id, this.idMap);
+    });
+  }
+
+  /**
+   * Sorts list of EmojiDescription returned by search
+   * Order: category -> order -> shortName -> id
+   */
+  private emojiComparator = (e1: EmojiDescription, e2: EmojiDescription) : number => {
+    const c1: number | undefined = this.categoryOrder.get(e1.category);
+    const c2: number | undefined = this.categoryOrder.get(e2.category);
+
+    if (c1 && c2 && c1 !== c2) {
+      return c1 - c2;
+    } else if (e1.order && e2.order && e1.order !== e2.order) {
+      return e1.order - e2.order;
+    } else if (e1.shortName !== e2.shortName) {
+      return e1.shortName.localeCompare(e2.shortName);
+    } else if (e1.id && e2.id) {
+      return e1.id.localeCompare(e2.id);
+    }
+    return 0;
+  }
+
 }

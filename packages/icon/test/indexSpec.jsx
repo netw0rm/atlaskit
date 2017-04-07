@@ -257,6 +257,8 @@ describe(name, () => {
         'media-services/zip',
         'media-services/zoom-in',
         'media-services/zoom-out',
+        'media-services/scale-large',
+        'media-services/scale-small',
 
         'mention',
         'menu',

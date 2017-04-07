@@ -1,13 +1,10 @@
 import React from 'react';
-import classNames from 'classnames';
 import { storiesOf } from '@kadira/storybook';
 
-import storyStyles from './animation/animation-story.less';
 import { name } from '../package.json';
 import AnimatedBox from './animation/AnimatedBox';
 import AnimatedBoxGroup from './animation/AnimatedBoxGroup';
-
-const containerClass = classNames(storyStyles.container);
+import { Container } from './animation/styled';
 
 storiesOf(name, module)
   .add('Bold, Optimistic and Combined curves', () => (
@@ -29,9 +26,11 @@ storiesOf(name, module)
       <p>It follows an 80/20 rule where it will do 80% of it&#39;s motion in the first 20% of
         the time
       </p>
-      <div className={containerClass}>
-        <AnimatedBox boxStyle="bold" animationClass="boldBounce">Bold</AnimatedBox>
-      </div>
+      <Container>
+        <AnimatedBox appearance="bold">
+          Bold
+        </AnimatedBox>
+      </Container>
     </div>
   ))
   .add('Optimistic animation curve', () => (
@@ -42,19 +41,20 @@ storiesOf(name, module)
       <p>The curve itself will cause a property to “overshoot” by 5%, “undershoot” by 2.5% and
         finally, settle on the end value.
       </p>
-      <div className={containerClass}>
-        <AnimatedBox
-          boxStyle="optimistic"
-          animationClass="optimisticBounce"
-        >Optimistic</AnimatedBox>
-      </div>
+      <Container>
+        <AnimatedBox appearance="optimistic">
+          Optimistic
+        </AnimatedBox>
+      </Container>
     </div>
   ))
   .add('Combined animation curve', () => (
     <div>
       <p>The combined animation curve brings in the best of both worlds</p>
-      <div className={containerClass}>
-        <AnimatedBox boxStyle="combined" animationClass="combinedBounce">Combined</AnimatedBox>
-      </div>
+      <Container>
+        <AnimatedBox appearance="combined">
+          Combined
+        </AnimatedBox>
+      </Container>
     </div>
   ));

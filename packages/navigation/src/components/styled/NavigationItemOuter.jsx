@@ -80,7 +80,6 @@ const NavigationItemOuter = styled.div`
   border-radius: ${borderRadius}px;
   box-sizing: border-box;
   height: ${({ theme }) => getHeight(theme)}px;
-  position: relative;
   text-overflow: ellipsis;
   width: 100%;
 

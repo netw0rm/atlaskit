@@ -3,6 +3,7 @@
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
+const chalk = require('chalk');
 
 /*
   This script is used to find broken storybooks in the registry. This can occur for several reasons.
@@ -42,7 +43,7 @@ Promise.all(packageJsons.map(pkg => getPackageStorybook(pkg.name, pkg.version)))
     // remove all the undefined values
     const brokenStorybookUrls = values.filter(value => !!value);
     if (brokenStorybookUrls.length > 0) {
-      console.log('Failed to find the following storybooks:');
+      console.log(chalk.red('Failed to find the following storybooks:'));
       brokenStorybookUrls.forEach(url => console.log(`  ${url}`));
     }
   })

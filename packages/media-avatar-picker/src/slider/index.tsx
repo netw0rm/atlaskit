@@ -64,7 +64,6 @@ export class Slider extends Component<SliderProps, State> {
       max={max}
       step={step}
       onChange={this.onInputChange}
-      onInput={this.onInputChange}
     />;
   }
 }

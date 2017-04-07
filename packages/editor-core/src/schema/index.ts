@@ -23,5 +23,5 @@ export { mention, mentionNodeView } from './nodes/mention';
 export { listItem } from './nodes/list-item';
 export { panel } from './nodes/panel';
 export { text } from './nodes/text';
-export { media, MediaType } from './nodes/media';
+export { media, MediaType, mediaNodeView } from './nodes/media';
 export { mediaGroup } from './nodes/media-group';

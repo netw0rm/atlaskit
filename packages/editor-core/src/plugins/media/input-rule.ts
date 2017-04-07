@@ -1,25 +1,37 @@
-import { InputRule, ProseMirror } from '../../prosemirror';
-import { URL } from '../hyperlink/regex';
+import { URL_REGEX } from './../hyperlink/url-regex';
+import { Transaction, Plugin, InputRule, inputRules, Schema } from '../../prosemirror';
+import { MediaPluginState, stateKey } from './';
 
-const urlWithASpace = new RegExp(`${URL.source} $`);
+const urlWithASpace = new RegExp(`${URL_REGEX.source} $`);
+let plugin: Plugin | undefined;
 
-export default new InputRule(urlWithASpace, '', (
-  pm: ProseMirror,
-  match: string[],
-  to: number
-) : boolean => {
-  const url = match[3] ? match[1] : `http://${match[1]}`;
-  const $from = pm.selection.$from;
-  const afterHere = $from.end($from.depth) + 1;
-
-  // do nothing if there's already a following card
-  if (pm.doc.nodeAt(afterHere)) {
-    return true;
+export function inputRulePlugin(schema: Schema<any, any>): Plugin {
+  if (plugin) {
+    return plugin;
   }
 
-  pm.tr.insert(
-    $from.end($from.depth) + 1,
-    pm.schema.nodes.media.create({ url, type: 'link' })
-  ).apply();
-  return true;
-});
+  const rules: Array<InputRule> = [];
+
+  if (schema.nodes.mention && schema.marks.mentionQuery) {
+    const mentionQueryRule = new InputRule(urlWithASpace, (state, match, start, end): Transaction | undefined => {
+      const mediaState = stateKey.getState(state) as MediaPluginState;
+
+      if (!mediaState.allowsPastingLinks) {
+        return undefined;
+      }
+      const url = match[3] ? match[1] : `http://${match[1]}`;
+
+      return mediaState.insertLinkFromUrl(url);
+    });
+
+    rules.push(mentionQueryRule);
+  }
+
+  plugin = inputRules({ rules });
+
+  return plugin;
+}
+
+export function destroyRulePluginCache() {
+  plugin = undefined;
+}

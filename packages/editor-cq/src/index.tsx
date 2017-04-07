@@ -17,8 +17,10 @@ import {
   ClearFormattingPlugin,
   version as coreVersion,
   mediaPluginFactory,
+  mediaNodeView,
   MediaProvider,
-  ProviderFactory
+  ProviderFactory,
+  Plugin
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -49,8 +51,10 @@ export interface State {
 
 export default class Editor extends PureComponent<Props, State> {
   state: State;
-  providerFactory: ProviderFactory;
   version = `${version} (editor-core ${coreVersion})`;
+
+  private providerFactory: ProviderFactory;
+  private mediaPlugin: Plugin;
 
   constructor(props: Props) {
     super(props);
@@ -64,10 +68,12 @@ export default class Editor extends PureComponent<Props, State> {
     analyticsService.handler = props.analyticsHandler || ((name) => {});
 
     const { mediaProvider } = props;
+    this.providerFactory.setProvider('mediaProvider', mediaProvider);
 
-    if (mediaProvider) {
-      this.providerFactory.setProvider('mediaProvider', mediaProvider);
-    }
+    this.mediaPlugin = mediaPluginFactory({
+      providerFactory: this.providerFactory,
+      behavior: 'default'
+    });
   }
 
   /**
@@ -121,9 +127,11 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
  componentWillReceiveProps(nextProps: Props) {
-    const { props } = this;
-    if (props.mediaProvider !== nextProps.mediaProvider) {
-      this.providerFactory.setProvider('mediaProvider', nextProps.mediaProvider);
+    const { props, providerFactory } = this;
+    const { mediaProvider } = nextProps;
+
+    if (props.mediaProvider !== mediaProvider) {
+      providerFactory.setProvider('mediaProvider', mediaProvider);
     }
   }
 
@@ -137,7 +145,7 @@ export default class Editor extends PureComponent<Props, State> {
     const clearFormattingState = editorState && ClearFormattingPlugin.getState(editorState);
     const listsState = editorState && ListsPlugin.getState(editorState);
     const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
-    const mediaState = editorState && this.props.mediaProvider && MediaPlugin.getState(editorState);
+    const mediaState = editorState && this.mediaPlugin && this.props.mediaProvider && this.mediaPlugin.getState(editorState);
 
     return (
       <Chrome
@@ -160,29 +168,9 @@ export default class Editor extends PureComponent<Props, State> {
     );
   }
 
-  private handleCancel = () => {
-    const { onCancel } = this.props;
-    if (onCancel) {
-      onCancel(this);
-    }
-  }
-
-  private handleChange = () => {
-    const { onChange } = this.props;
-    if (onChange) {
-      onChange(this);
-    }
-  }
-
-  private handleSave = () => {
-    const { onSave } = this.props;
-    if (onSave) {
-      onSave(this);
-    }
-  }
-
   private handleRef = (place: Element | null) => {
     const { schema } = this.state;
+    const { mediaPlugin } = this;
 
     if (place) {
       const { context } = this.props;
@@ -200,13 +188,10 @@ export default class Editor extends PureComponent<Props, State> {
           ListsPlugin,
           RulePlugin,
           TextFormattingPlugin,
-          mediaPluginFactory({
-            providerFactory: this.providerFactory,
-            behavior: 'default'
-          }),
+          mediaPlugin,
           history(),
           keymap(cqKeymap),
-          keymap(baseKeymap), // should be last :(
+          keymap(baseKeymap),
         ]
       });
 
@@ -240,6 +225,27 @@ export default class Editor extends PureComponent<Props, State> {
       this.focus();
     } else {
       this.setState({ editorView: undefined });
+    }
+  }
+
+  private handleCancel = () => {
+    const { onCancel } = this.props;
+    if (onCancel) {
+      onCancel(this);
+    }
+  }
+
+  private handleChange = () => {
+    const { onChange } = this.props;
+    if (onChange) {
+      onChange(this);
+    }
+  }
+
+  private handleSave = () => {
+    const { onSave } = this.props;
+    if (onSave) {
+      onSave(this);
     }
   }
 }

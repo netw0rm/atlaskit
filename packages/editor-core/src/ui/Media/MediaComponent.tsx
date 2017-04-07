@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { LinkCard, LinkCardGenericView, CardView, Card } from '@atlaskit/media-card';
 import { ContextConfig, ContextFactory, Context, CardDelete } from '@atlaskit/media-core';
 import { MediaPluginState } from '../../plugins/media';
@@ -13,7 +12,7 @@ interface Props extends Attributes {
   onDelete?: () => void;
 };
 
-interface State extends MediaState{
+interface State extends MediaState {
   mediaProvider?: MediaProvider;
   viewContext?: Context;
 }
@@ -28,15 +27,22 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    if (props.id && props.pluginState) {
-      props.pluginState.subscribeForMediaStateUpdates(props.id, this.handleMediaStateChange);
+    const { mediaProvider, pluginState, id } = this.props;
+
+
+    if (id && pluginState) {
+      pluginState.subscribeForMediaStateUpdates(id, this.handleMediaStateChange);
+    }
+
+    if (mediaProvider) {
+      mediaProvider.then(this.handleMediaProvider);
     }
   }
 
-  public componentWillMount() {
-    const { mediaProvider } = this.props;
+  public componentWillReceiveProps(nextProps) {
+    const { mediaProvider } = nextProps;
 
-    if (mediaProvider) {
+    if (this.props.mediaProvider !== mediaProvider) {
       mediaProvider.then(this.handleMediaProvider);
     }
   }
@@ -50,17 +56,6 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   render() {
-    if (!this.props.id) {
-      console.debug('unmounting MediaComponent because id property has been cleared', this);
-      setTimeout(() => {
-        try {
-          const domNode = ReactDOM.findDOMNode(this as any);
-          domNode && ReactDOM.unmountComponentAtNode(domNode);
-        } catch (e){}
-      }, 0);
-      return null;
-    }
-
     switch (this.props.type) {
       case 'file':
         return this.renderFile();
@@ -73,31 +68,10 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     }
   }
 
-  private handleMediaStateChange = (mediaState: MediaState) => {
-    const newState = {
-      ...this.state,
-      ...mediaState
-    };
-
-    console.debug('new state', newState, this);
-
-    this.setState(newState);
-  }
-
-  private handleMediaProvider = (mediaProvider: MediaProvider) => {
-    this.setState({ ...this.state, mediaProvider });
-
-    mediaProvider.viewContext.then((contextConfig: ContextConfig) => {
-      this.setState({
-         ...this.state,
-         viewContext: ContextFactory.create(contextConfig)
-        });
-    });
-  }
-
   private renderLink() {
     const { mediaProvider, viewContext } = this.state;
-    const { id, collection, url, onDelete } = this.props;
+    const { id, collection, onDelete } = this.props;
+    const url = this.getLinkUrlFromId(id);
 
     if ( !mediaProvider || !viewContext ) {
       return <LinkCardGenericView
@@ -165,5 +139,31 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       dataURI={thumbnailProvider && blob ? URL.createObjectURL(blob) : undefined}
       menuActions={[ CardDelete(onDelete!) ]}
     />;
+  }
+
+  private handleMediaStateChange = (mediaState: MediaState) => {
+    const newState = {
+      ...this.state,
+      ...mediaState
+    };
+
+    console.debug('new state', newState, this);
+
+    this.setState(newState);
+  }
+
+  private handleMediaProvider = (mediaProvider: MediaProvider) => {
+    this.setState({ ...this.state, mediaProvider });
+
+    mediaProvider.viewContext.then((contextConfig: ContextConfig) => {
+      this.setState({
+         ...this.state,
+         viewContext: ContextFactory.create(contextConfig)
+        });
+    });
+  }
+
+  private getLinkUrlFromId(id: string) {
+    return id.split(/^temporary:(.*?)/)[2];
   }
 }

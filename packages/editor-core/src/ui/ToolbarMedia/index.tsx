@@ -1,12 +1,11 @@
 import ImageIcon from '@atlaskit/icon/glyph/editor/image';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { analyticsDecorator as analytics } from '../../analytics';
-import { MediaState } from '../../plugins/media';
+import { MediaPluginState } from '../../plugins/media';
 import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
-  pluginState: MediaState;
+  pluginState: MediaPluginState;
 }
 
 export interface State {
@@ -16,20 +15,34 @@ export interface State {
 export default class ToolbarMedia extends PureComponent<Props, State> {
   state: State = {disabled: false};
 
+  componentDidMount() {
+    this.props.pluginState.subscribe(this.handlePluginStateChange);
+  }
+
+  componentWillUnmount() {
+    this.props.pluginState.unsubscribe(this.handlePluginStateChange);
+  }
+
   render() {
-    const { disabled } = this.state;
+    if (this.state.disabled) {
+      return null;
+    }
 
     return (
       <ToolbarButton
-        onClick={this.handleInsertMedia}
-        disabled={disabled}
+        onClick={this.handleClickMediaButton}
         iconBefore={<ImageIcon label="Image" />}
       />
     );
   }
 
-  @analytics('atlassian.editor.media.button')
-  private handleInsertMedia = () => {
-    this.props.pluginState.handleClickMediaButton();
+  private handlePluginStateChange = (pluginState: MediaPluginState) => {
+    this.setState({
+      disabled: !pluginState.allowsUploads
+    });
+  }
+
+  private handleClickMediaButton = () => {
+    this.props.pluginState.showMediaPicker();
   }
 }

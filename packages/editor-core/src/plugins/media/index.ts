@@ -1,3 +1,4 @@
+import { mediaGroup } from './../../schema/nodes/media-group';
 import { MediaType } from './../../schema/nodes/media';
 import {
   EditorState,
@@ -10,11 +11,10 @@ import { URL_REGEX } from '../hyperlink/url-regex';
 import { MediaPicker } from '@atlassian/mediapicker';
 import { MediaProvider, MediaState, UploadParams } from '../../media';
 import { ContextConfig } from '@atlaskit/media-core';
+import { analyticsService } from '../../analytics';
 
 import { MediaPluginOptions, MediaPluginBehavior } from './media-plugin-options';
-import inputRulePlugin from './input-rules';
-
-import inputRule from './input-rule';
+import { inputRulePlugin } from './input-rule';
 
 const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
 
@@ -26,12 +26,11 @@ export class MediaPluginState {
   public allowsUploads: boolean = false;
   public allowsPastingLinks: boolean = false;
 
-  private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
-  private mediaStateChangeSubscribers: MediaStateChangeSubscriber[] = [];
+  // private view: EditorView;
   private state: EditorState<any>;
-  private view: EditorView;
-
-  private detached = false;
+  private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
+  private mediaStateChangeSubscribers: { [key: string]: MediaStateChangeSubscriber[] } = {};
+  private destroyed = false;
   private behavior: MediaPluginBehavior;
   private mediaProvider: MediaProvider;
   private popupPicker: any;
@@ -45,7 +44,7 @@ export class MediaPluginState {
     const { nodes } = state.schema;
 
     if (!nodes.media || !nodes.mediaGroup) {
-      console.warn('unable to init media plugin - no media or mediaGroup node type in schema');
+      console.warn('Editor: unable to init media plugin - media or mediaGroup node absent in schema');
       return;
     }
 
@@ -68,49 +67,18 @@ export class MediaPluginState {
 
   update(state: EditorState<any>) {
     this.state = state;
-
-    if (!this.mediaProvider) {
-      return;
-    }
-
-    const { docView } = this.view;
-    const { mentionQuery } = state.schema.marks;
-    const { doc, selection } = state;
-    const { from, to } = selection;
-
-    let dirty = false;
-
-    if (doc.rangeHasMark(from - 1, to, mentionQuery)) {
-      if (!this.queryActive) {
-        dirty = true;
-        this.queryActive = true;
-      }
-
-      const { nodeBefore } = selection.$from;
-      const newQuery = (nodeBefore && nodeBefore.textContent || '').substr(1);
-
-      if (this.query !== newQuery) {
-        dirty = true;
-        this.query = newQuery;
-      }
-    } else if (this.queryActive) {
-      dirty = true;
-      this.dismiss();
-      return;
-    }
-
-    const newAnchorElement = docView.dom.querySelector('[data-mention-query]') as HTMLElement;
-    if (newAnchorElement !== this.anchorElement) {
-      dirty = true;
-      this.anchorElement = newAnchorElement;
-    }
-
-    if (dirty) {
-      this.mediaStateChangeSubscribers.forEach(cb => cb(this));
-    }
   }
 
-  setMediaProvider = (mediaProvider: Promise<MediaProvider>) => {
+  setMediaProvider = (mediaProvider?: Promise<MediaProvider>) => {
+    if (!mediaProvider) {
+      this.allowsPastingLinks = false;
+      this.allowsUploads = false;
+      this.allowsMedia = false;
+      this.notifyPluginStateSubscribers();
+
+      return;
+    }
+
     mediaProvider.then(mediaProvider => {
       this.mediaProvider = mediaProvider;
       this.allowsMedia = true;
@@ -150,44 +118,29 @@ export class MediaPluginState {
     });
   }
 
-  handleDOMPaste = (e: ClipboardEvent) => {
-    const text = e.clipboardData.getData('text/plain');
-    if (!text) {
-      return;
-    }
-
-    const url = this.extractFirstURLFromString(text);
-    if (!url) {
-      return;
-    }
-
-    this.insertLinkFromUrl(url);
-  }
-
   insertLinkFromUrl = (url: string) => {
-    const { pm } = this;
+    const { state } = this;
 
-    pm.tr.insert(
+    return state.tr.insert(
       this.findInsertPosition(),
-      pm.schema.nodes.media!.create({ url, type: 'link' })
-    ).apply();
+      state.schema.nodes.media.create({ url, type: 'link' })
+    );
   }
 
   insertFile = (id: string, filename: string, collection: string) => {
-    const { pm } = this;
-
-    const node = pm.schema.nodes.media!.create({
+    const { state } = this;
+    const node = state.schema.nodes.media!.create({
       id,
       collection,
       type: 'file'
-    }) as MediaNode;
+    });
 
     node.filename = filename;
 
-    pm.tr.insert(this.findInsertPosition(), node).apply();
+    state.apply(state.tr.insert(this.findInsertPosition(), node));
   }
 
-  handleClickMediaButton = () => {
+  showMediaPicker = () => {
     if (!this.popupPicker) {
       return;
     }
@@ -195,38 +148,36 @@ export class MediaPluginState {
     this.popupPicker.show();
   }
 
-  private subscribers = {};
-
   subscribeForMediaStateUpdates(id: string, cb: (state: MediaState) => void) {
-    if (this.subscribers[id] === undefined) {
-      this.subscribers[id] = [];
+    if (this.mediaStateChangeSubscribers[id] === undefined) {
+      this.mediaStateChangeSubscribers[id] = [];
     }
 
-    if (this.subscribers[id].indexOf(cb) > -1) {
+    if (this.mediaStateChangeSubscribers[id].indexOf(cb) > -1) {
       return;
     }
 
-    this.subscribers[id].push(cb);
+    this.mediaStateChangeSubscribers[id].push(cb);
   }
 
   unsubscribeFromMediaStateUpdates(id: string, cb: (state: MediaState) => void) {
-    const bag = this.subscribers[id];
+    const bag = this.mediaStateChangeSubscribers[id];
     if (bag === undefined) {
       return;
     }
 
     const pos = bag.indexOf(cb);
     if (pos > -1) {
-      this.subscribers[id].splice(pos, 1);
+      this.mediaStateChangeSubscribers[id].splice(pos, 1);
     }
   }
 
-  detach() {
-    if (this.detached) {
+  destroy() {
+    if (this.destroyed) {
       return;
     }
 
-    this.detached = true;
+    this.destroyed = true;
 
     const { dropzonePicker, clipboardPicker, popupPicker } = this;
 
@@ -235,17 +186,47 @@ export class MediaPluginState {
 
     if (popupPicker) {
       popupPicker.teardown();
-
-      // TODO: remove after fixing https://jira.atlassian.com/browse/FIL-4012
-      popupPicker._userMethodsInteractor._channel.destroy()
-      popupPicker._popupIframe._channel.destroy()
-      const { _iframe } = popupPicker._userMethodsInteractor;
-      _iframe.parentNode.removeChild(_iframe);
     }
   }
 
+  /**
+   * Determine best PM document position to insert a new media item at.
+   */
+  findInsertPosition = () => {
+    const { state } = this;
+    const $from = state.selection.$from;
+
+    // Check if we're already in a media group and prepend the element inside the group
+    if ($from.parent.type === mediaGroup) {
+      return $from.start($from.depth);
+    }
+
+    // Resolve node adjacent to parent
+    const adjacentPos = $from.end($from.depth) + 1;
+    const adjacentNode = state.doc.nodeAt(adjacentPos);
+
+    // There's nothing below, so insert a new media item wrapped in a group there.
+    if (!adjacentNode) {
+      return adjacentPos;
+    }
+
+    // TODO: review this for HCNG
+    // Compact behavior disallows multiple media groups, so prepend the item inside
+    // if (this.behavior === 'compact' && adjacentNode.type instanceof MediaGroupNodeType) {
+      // return adjacentPos + 1;
+    // }
+
+    // The adjacent node is a media group, so let's append there...
+    if (adjacentNode.type === mediaGroup) {
+      return adjacentPos + 1;
+    }
+
+    // Prepend the item, wrapped in a new group, adjacent to parent
+    return adjacentPos;
+  }
+
   private initPickers(uploadParams: UploadParams, contextConfig: ContextConfig) {
-    if (this.detached) {
+    if (this.destroyed) {
       return;
     }
 
@@ -267,11 +248,11 @@ export class MediaPluginState {
   }
 
   private notifyMediaStateSubscribers(mediaId: string, state: MediaState) {
-    const bag = this.subscribers[mediaId];
+    const bag = this.mediaStateChangeSubscribers[mediaId];
     if (bag === undefined) {
       return;
     }
-    this.subscribers[mediaId].forEach(cb => cb.call(cb, state));
+    this.mediaStateChangeSubscribers[mediaId].forEach(cb => cb.call(cb, state));
   }
 
   private notifyPluginStateSubscribers = () => {
@@ -279,6 +260,11 @@ export class MediaPluginState {
   }
 
   private handleUploadStart = (event: any) => {
+    if (!this.allowsUploads) {
+      console.warn('Editor: media plugin: an upload started even though uploads are not allowed in current state.', this);
+      return;
+    }
+
     const tempId = `temporary:${event.file.id}`;
     const { file } = event;
 
@@ -340,51 +326,6 @@ export class MediaPluginState {
     }
   }
 
-  /**
-   * Resolve best PM document position to insert a new media item
-   */
-  private findInsertPosition = () => {
-    const { pm } = this;
-    const $from = pm.selection.$from;
-
-    // Check if we're already in a media group and prepend the element inside the group
-    if ($from.parent.type instanceof MediaGroupNodeType) {
-      return $from.start($from.depth);
-    }
-
-    // Resolve node adjacent to parent
-    const adjacentPos = $from.end($from.depth) + 1;
-    const adjacentNode = pm.doc.nodeAt(adjacentPos);
-
-    // There's nothing below, so insert a new media item wrapped in a group there.
-    if (!adjacentNode) {
-      return adjacentPos;
-    }
-
-    // Compact behavior disallows multiple media groups, so prepend the item inside
-    // if (this.behavior === 'compact' && adjacentNode.type instanceof MediaGroupNodeType) {
-      // return adjacentPos + 1;
-    // }
-
-
-    // The adjacent node is a media group, so let's append there...
-    if (adjacentNode.type instanceof MediaGroupNodeType) {
-      return adjacentPos + 1;
-    }
-
-    // Prepend the item, wrapped in a new group, adjacent to parent
-    return adjacentPos;
-  }
-
-  private extractFirstURLFromString(string: string) {
-    const search = urlRegex.exec(string);
-    if (!search) {
-      return;
-    }
-
-    return search ? search[0] : null;
-  }
-
   private buildPickerConfigFromContext(uploadParams: UploadParams, config: ContextConfig) {
     return {
       uploadParams: uploadParams,
@@ -428,6 +369,35 @@ export default function mediaPluginFactory (options: MediaPluginOptions) {
           pluginState.update(view.state, view);
         }
       };
+    },
+    props: {
+      handleDOMEvents: {
+        paste(view: EditorView, event: ClipboardEvent) {
+          const pluginState: MediaPluginState = stateKey.getState(view.state);
+
+          if (!pluginState.allowsPastingLinks) {
+            return false;
+          }
+
+          const text = event.clipboardData.getData('text/plain');
+
+          if (!text) {
+            return false;
+          }
+
+          const url = extractFirstURLFromString(text);
+          if (!url) {
+            return false;
+          }
+
+          view.state.apply(pluginState.insertLinkFromUrl(url));
+          analyticsService.trackEvent('atlassian.editor.media.link.paste');
+
+          // The URL is inserted as a Media Link item, however we do not return true
+          // so we're not preventing a text link (mark) to be added as well.
+          return false;
+        }
+      }
     }
   });
 };
@@ -435,4 +405,13 @@ export default function mediaPluginFactory (options: MediaPluginOptions) {
 export interface MediaData {
   id: string;
   type?: MediaType;
+}
+
+function extractFirstURLFromString(string: string) {
+  const search = urlRegex.exec(string);
+  if (!search) {
+    return;
+  }
+
+  return search ? search[0] : null;
 }

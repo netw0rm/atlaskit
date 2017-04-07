@@ -1,4 +1,4 @@
-import { EditorState, Transaction, EditorView, ReplaceAroundStep, Slice, NodeRange, liftTarget, Fragment, TextSelection } from '../../prosemirror';
+import { EditorState, Transaction, EditorView, ReplaceAroundStep, Slice, NodeRange, liftTarget, Fragment, TextSelection, ResolvedPos, Schema } from '../../prosemirror';
 import * as commands from '../../commands';
 
 export const enterKeyCommand = (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
@@ -23,8 +23,10 @@ export const toggleList = (
 ): boolean => {
   const { selection } = state;
   const { bulletList, orderedList } = state.schema.nodes;
-  const node = selection.$from.node(selection.$from.depth - 2);
-  if (!node || node.type.name !== listType) {
+  const fromNode = selection.$from.node(selection.$from.depth - 2);
+  const endNode = selection.$to.node(selection.$to.depth - 2);
+  if ((!fromNode || fromNode.type.name !== listType) ||
+    (!endNode || endNode.type.name !== listType)) {
     return commands.toggleList(listType)(state, dispatch, view);
   } else {
     let rootListDepth;
@@ -41,12 +43,15 @@ export const toggleList = (
       rootListDepth,
       state.tr
     );
-    tr = liftSelectionList(state, tr);
+    tr = liftSelectionList(state, rootListDepth, tr);
     dispatch(tr);
     return true;
   }
 };
 
+/**
+ * Function will lift list item following selection to level-1.
+ */
 function liftFollowingList(
   state: EditorState<any>,
   from: number, to: number,
@@ -71,26 +76,9 @@ function liftFollowingList(
   return tr;
 }
 
-function liftSelectionList(state: EditorState<any>, tr: Transaction): Transaction {
-  const { paragraph } = state.schema.nodes;
-  const { from, to } = state.selection;
-  const listCol: any[] = [];
-  tr.doc.nodesBetween(from, to, (node, pos) => {
-    if (node.type === paragraph) {
-      listCol.push({ node, pos });
-    }
-  });
-  for (let i = listCol.length - 1; i >= 0; i--) {
-    const paragraph = listCol[i];
-    const start = tr.doc.resolve(tr.mapping.map(paragraph.pos));
-    const end = tr.doc.resolve(tr.mapping.map(paragraph.pos + paragraph.node.textContent.length));
-    const sel = new TextSelection(start, end);
-    const range = sel.$from.blockRange(sel.$to)!;
-    tr.lift(range, 0);
-  }
-  return tr;
-}
-
+/**
+ * Lift list item.
+ */
 function liftListItem(state: EditorState<any>, selection, tr: Transaction): Transaction {
   let {$from, $to} = selection;
   const nodeType = state.schema.nodes.listItem;
@@ -113,4 +101,46 @@ function liftListItem(state: EditorState<any>, selection, tr: Transaction): Tran
     range = new NodeRange(tr.doc.resolve($from.pos), tr.doc.resolve(endOfList), range.depth);
   }
   return tr.lift(range, liftTarget(range)!).scrollIntoView();
+}
+
+/**
+ * The function will list paragraphs in selection out to level 1 below root list.
+ */
+function liftSelectionList(state: EditorState<any>, rootListDepth: number, tr: Transaction): Transaction {
+  const { paragraph } = state.schema.nodes;
+  const { from, to } = state.selection;
+  const listCol: any[] = [];
+  tr.doc.nodesBetween(from, to, (node, pos) => {
+    if (node.type === paragraph) {
+      listCol.push({ node, pos });
+    }
+  });
+  for (let i = listCol.length - 1; i >= 0; i--) {
+    const paragraph = listCol[i];
+    const start = tr.doc.resolve(tr.mapping.map(paragraph.pos));
+    let end;
+    if (paragraph.node.textContent && paragraph.node.textContent.length > 0) {
+      end = tr.doc.resolve(tr.mapping.map(paragraph.pos + paragraph.node.textContent.length));
+    } else {
+      end = tr.doc.resolve(tr.mapping.map(paragraph.pos + 1));
+    }
+    const range = start.blockRange(end)!;
+    tr.lift(range, listLiftTarget(state.schema, start));
+  }
+  return tr;
+}
+
+/**
+ * This will return (depth - 1) for root list parent of a list.
+ */
+function listLiftTarget(schema: Schema<any, any>, resPos: ResolvedPos): number {
+  let target = resPos.depth;
+  const { bulletList, orderedList } = schema.nodes;
+  for (let i = resPos.depth; i > 0; i--) {
+    const node = resPos.node(i);
+    if (node.type === bulletList || node.type === orderedList) {
+      target = i;
+    }
+  }
+  return target - 1;
 }

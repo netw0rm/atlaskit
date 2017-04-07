@@ -24,9 +24,8 @@ function liftAllNodes(state: EditorState<any>, tr: Transaction): Transaction {
     if (node.type === text) {
       const start = tr.doc.resolve(tr.mapping.map(pos));
       const end = tr.doc.resolve(tr.mapping.map(pos + node.textContent.length));
-      const sel = new TextSelection(start, end);
-      if (sel.$from.depth > 0) {
-        const range = sel.$from.blockRange(sel.$to)!;
+      if (start.depth > 0) {
+        const range = start.blockRange(end)!;
         tr.lift(range, liftTarget(range)!);
       }
     } else if (node.type === listItem && node.childCount > 1) {
@@ -47,7 +46,11 @@ function liftSubList(state: EditorState<any>, listNode: Node, listPos: number, t
           if (!startPos) {
             startPos = listPos + pos + childPos;
           }
-          endpos = listPos + pos + childPos + child.textContent.length;
+          if (child.textContent && child.textContent.length > 0) {
+            endpos = listPos + pos + childPos + child.textContent.length;
+          } else {
+            endpos = listPos + pos + childPos + 1;
+          }
         }
       });
       const selectionStart = state.selection.$from.pos;

@@ -200,8 +200,8 @@ describe('lists', () => {
         expect(editorView.state.doc).to.deep.equal(expectedOutput);
       });
 
-      it('should allow untoggling part of a list based on selection that starts at the end of previous line', () => {
-        const { editorView, pluginState } = editor(doc(ol(li(p('One{<}')), li(p('Two')), li(p('Three{>}')), li(p('Four'))))); // When selection starts on previous (empty) node
+      it.skip('should allow untoggling part of a list based on selection that starts at the end of previous line', () => {
+        const { editorView, pluginState } = editor(doc(ol(li(p('one{<}')), li(p('Two')), li(p('Three{>}')), li(p('Four'))))); // When selection starts on previous (empty) node
 
         pluginState.toggleOrderedList(editorView);
         expect(editorView.state.doc).to.deep.equal(expectedOutput);

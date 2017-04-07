@@ -19,12 +19,19 @@ class ButtonActivatedDialog extends PureComponent {
     });
   }
 
+  handleOnClose = (data) => {
+    this.setState({
+      isOpen: data.isOpen,
+    });
+  }
+
   render() {
     return (
       <AKInlineDialog
         content={this.props.content}
         position={this.props.position}
         isOpen={this.state.isOpen}
+        onClose={this.handleOnClose}
       >
         <AKButton
           onClick={this.handleClick}

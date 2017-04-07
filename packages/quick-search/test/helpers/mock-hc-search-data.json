@@ -1,0 +1,858 @@
+[
+  {
+    "type": "hc.room",
+    "title": "Product Fabric Team",
+    "id": "abcd-1239",
+    "meta": [
+      {
+        "key": "avatarUrl",
+        "value": "https://product-fabric.atlassian.net/wiki/download/attachments/200360/PRODUCT?version=7&modificationDate=1487829825632&cacheVersion=1&api=v2"
+      },
+      {
+        "key": "privacy",
+        "value": "private"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "type": "mention",
+    "title": "Jonathan Yeo",
+    "id": "abcd-1234",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "jyeo"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/618f93d035043e3f9e2d4c243b5372fe"
+      }
+    ]
+  },
+  {
+    "type": "mention",
+    "title": "Frederik Granna",
+    "id": "abcd-1235",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "fgranna"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/53ef18dfb9be8f9eb3817937fc9331ac"
+      }
+    ]
+  },
+  {
+    "type": "mention",
+    "title": "Thorsten Basse",
+    "id": "abcd-1236",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "tbasse"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/4d54ad2beaff5bf30e9d17c248b8df54"
+      }
+    ]
+  },
+  {
+    "type": "mention",
+    "title": "Sam Tardif",
+    "id": "abcd-1237",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "stardif"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/14c2d401a644c8c8dc79e6e1577e7cd1"
+      }
+    ]
+  },
+  {
+    "type": "mention",
+    "title": "Ernest Wong",
+    "id": "abcd-1238",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "ernest"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/c10a1216b0e3d4528edcb2ffba6d1434"
+      }
+    ]
+  },
+  {
+    "id": "655362:0514d1b1-1101-4851-9e6d-c29a3d0fe34e",
+    "type": "mention",
+    "title": "Fabian Kraemer",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "fakraemer"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/1714e11138d297d534f9281c4f58b3c7"
+      }
+    ]
+  },
+  {
+    "id": "655363:85a9b56b-a19d-4364-a4ed-8f05be82f3f9",
+    "type": "mention",
+    "title": "Fabian Mueller",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "fmueller"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/5e59409b5343cccb499519d613ae87e0"
+      }
+    ]
+  },
+  {
+    "id": "655362:43fd42d8-cd61-4d01-8783-3c314dcb5eef",
+    "type": "mention",
+    "title": "Fabiana Fabiana",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "fgenila"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/4fe139bbafac48cd8a9951f1ecd54dbe"
+      }
+    ]
+  },
+  {
+    "id": "655362:748963e1-5970-491b-a4b4-f4468b61cd2a",
+    "type": "mention",
+    "title": "Fagner Fagner",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "fscheibel"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/4c43dcfc39d8fb7d2163c6765696ccd2"
+      }
+    ]
+  },
+  {
+    "id": "655362:55c5549c-ed4f-426a-af4a-b42042bf4f29",
+    "type": "mention",
+    "title": "Fatma Fatma",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "fbetul"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/fde3c6ff99be767308298fbbcab6dcad"
+      }
+    ]
+  },
+  {
+    "id": "655362:e8ca11d8-eead-4a42-8f39-57e7fa27e9d6",
+    "type": "mention",
+    "title": "Feico Frederik Mol",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "fmol"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/db314b0d046df8e91169d4492ef56769"
+      }
+    ]
+  },
+  {
+    "id": "655362:d538c4e2-801a-4121-ba76-cab5f5efa014",
+    "type": "mention",
+    "title": "Felix Felix",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "fschmitz"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/96dd857494f5187da7b31918d4b16753"
+      }
+    ]
+  },
+  {
+    "id": "655362:47fd9af6-7a79-434b-879b-c5255ba5973c",
+    "type": "mention",
+    "title": "Fernando Freitas [Atlassian]",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "fdefreitas"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/7f68c0c6f9b554deb3fc87e31eac0fbc"
+      }
+    ]
+  },
+  {
+    "id": "655363:31161d95-0b21-4cd4-9905-3c579b7fb09e",
+    "type": "mention",
+    "title": "FNU Shreyas",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "fshreyas"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/92f1287a9757f4fda024f283b6808f2f"
+      }
+    ]
+  },
+  {
+    "id": "655362:9726bd8b-4343-432b-be82-6cc2f5064234",
+    "type": "mention",
+    "title": "Francoise Francoise",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "ftourniaire"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/7e16c4cad7e56e0250eca69c0905d040"
+      }
+    ]
+  },
+  {
+    "id": "6966090",
+    "type": "hc.room",
+    "title": "Alex Treyger",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "private"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "8948473",
+    "type": "hc.room",
+    "title": "Atlassian Home",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "4419108",
+    "type": "hc.room",
+    "title": "Atlassian TAG",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "private"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "8825849",
+    "type": "hc.room",
+    "title": "Build Engineering",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "1166591",
+    "type": "hc.room",
+    "title": "Cloud Platform Leads",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "private"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "5035003",
+    "type": "hc.room",
+    "title": "Cloud Search Platform (CSP)",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "5615402",
+    "type": "hc.room",
+    "title": "Cloud Team",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "8625084",
+    "type": "hc.room",
+    "title": "Connect as a Service",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "3824557",
+    "type": "hc.room",
+    "title": "Cronman",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "3973012",
+    "type": "hc.room",
+    "title": "Cronman Alerts",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "5685536",
+    "type": "hc.room",
+    "title": "Cross Product Search Service",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "5851454",
+    "type": "hc.room",
+    "title": "David Mankin",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "private"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "2464341",
+    "type": "hc.room",
+    "title": "Gene Drabkin",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "private"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "5093027",
+    "type": "hc.room",
+    "title": "HCNG Service Engagement",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "6833433",
+    "type": "hc.room",
+    "title": "HCNG Technical Leadership",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "7749057",
+    "type": "hc.room",
+    "title": "IMDW - Dropwizard Instant Micros Template",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "4791953",
+    "type": "hc.room",
+    "title": "Instant Micros",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "2888552",
+    "type": "hc.room",
+    "title": "Java Technology Recommendations",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "4975312",
+    "type": "hc.room",
+    "title": "LaaS - Logging as a Service",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "6808888",
+    "type": "hc.room",
+    "title": "Micros",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "1031395",
+    "type": "hc.room",
+    "title": "Mountain View Beverage Club",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "7741147",
+    "type": "hc.room",
+    "title": "Mountain View Social",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "1576993",
+    "type": "hc.room",
+    "title": "MTV Interviews",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "1165283",
+    "type": "hc.room",
+    "title": "Outage Notifications",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "5152745",
+    "type": "hc.room",
+    "title": "Platform Services",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "2523410",
+    "type": "hc.room",
+    "title": "PS OpsHub",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "4941985",
+    "type": "hc.room",
+    "title": "Search Guild",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "3968383",
+    "type": "hc.room",
+    "title": "Seldon",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "9334969",
+    "type": "hc.room",
+    "title": "SOC2 Requirement Owners",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "1206009",
+    "type": "hc.room",
+    "title": "South Bay Parents",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "5750253",
+    "type": "hc.room",
+    "title": "StreamHub",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "id": "9645110",
+    "type": "hc.room",
+    "title": "Vertigo Disaster Recovery",
+    "meta": [
+      {
+        "key": "privacy",
+        "value": "public"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  }
+]

@@ -1,0 +1,46 @@
+{
+  "name": "@atlaskit/quick-search",
+  "version": "1.0.0",
+  "config": {
+    "access": "public"
+  },
+  "description": "A template for creating AtlasKit components",
+  "main": "dist/bundle.js",
+  "webpack": "dist/bundle-cjs.js",
+  "ak:webpack:raw": "src/index.js",
+  "scripts": {
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/quick-search; } || ../../node_modules/.bin/not-in-publish"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@atlaskit/avatar": "2.1.4",
+    "@atlaskit/icon": "^6.0.0",
+    "@atlaskit/navigation": "7.3.0",
+    "@atlaskit/util-shared-styles": "^1.0.1",
+    "axios": "^0.16.0",
+    "babel-runtime": "^6.11.6",
+    "uid": "^0.0.2"
+  },
+  "devDependencies": {
+    "@atlaskit/util-readme": "^3.0.0"
+  },
+  "peerDependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "styled-components": "^1.3.0"
+  },
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit"
+  },
+  "keywords": [
+    "atlaskit",
+    "ui",
+    "internal"
+  ]
+}

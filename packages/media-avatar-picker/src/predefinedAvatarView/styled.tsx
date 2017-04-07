@@ -5,14 +5,15 @@ export const PredefinedAvatarViewWrapper = styled.div`
   ul {
     display: flex; 
     flex-flow: row wrap;
-  
+    
     padding: 0;
     margin: 0;
     
     list-style-type: none;
 
     li {
-      padding-right: 8px;
+      padding-right: 4px;
+      padding-left: 4px;
       padding-bottom: 8px;
       margin: 0px;
     }
@@ -22,6 +23,7 @@ export const PredefinedAvatarViewWrapper = styled.div`
       display: flex;
       align-items: center;
       
+      padding-top: 4px;
       padding-bottom: 8px;
       
       .description {

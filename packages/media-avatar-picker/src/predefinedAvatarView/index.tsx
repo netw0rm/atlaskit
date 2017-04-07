@@ -30,15 +30,25 @@ export interface PredefinedAvatarViewProps {
   onAvatarSelected?: (avatar: Avatar) => void;
 }
 
+export interface PredefinedAvatarViewState {
+  selectedAvatar?: Avatar;
+}
+
 const DEFAULT_AVATAR_DIMENSIONS = {
   height: 72,
   width: 72,
 };
 
-export default class PredefinedAvatarView extends PureComponent<PredefinedAvatarViewProps, {}> {
+export default class PredefinedAvatarView extends PureComponent<PredefinedAvatarViewProps, PredefinedAvatarViewState> {
   static defaultProps = {
     avatars: []
   };
+
+  constructor() {
+    super();
+
+    this.state = {};
+  }
 
   render() {
     const {avatars} = this.props;
@@ -52,6 +62,8 @@ export default class PredefinedAvatarView extends PureComponent<PredefinedAvatar
             dataURI={avatar.dataURI}
             dimensions={DEFAULT_AVATAR_DIMENSIONS}
             onClick={this.createOnItemClickHandler(avatar)}
+            selectable
+            selected={avatar === this.state.selectedAvatar}
           />
         </li>);
       }
@@ -75,6 +87,10 @@ export default class PredefinedAvatarView extends PureComponent<PredefinedAvatar
       if (onAvatarSelected) {
         onAvatarSelected(avatar);
       }
+
+      this.setState(state => {
+        return {...state, selectedAvatar: avatar};
+      });
     };
   }
 }

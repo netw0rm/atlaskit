@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-
-import storyStyles from './animation-story.less';
+import { Container } from './styled';
 import AnimatedBox from './AnimatedBox';
 
 /* This component simply renders three AnimatedBoxes with a button underneath
@@ -18,28 +17,22 @@ class AnimatedBoxGroup extends PureComponent {
 
   render() {
     return (
-      <div className={storyStyles.container}>
+      <Container>
         <div>
-          <AnimatedBox
-            boxStyle="bold"
-            animationClass="boldBounce"
-            ref={n => (this.boldBox = n)}
-          >Bold</AnimatedBox>
-          <AnimatedBox
-            boxStyle="optimistic"
-            animationClass="optimisticBounce"
-            ref={n => (this.optimisticBox = n)}
-          >Optimistic</AnimatedBox>
-          <AnimatedBox
-            boxStyle="combined"
-            animationClass="combinedBounce"
-            ref={n => (this.combinedBox = n)}
-          >Combined</AnimatedBox>
+          <AnimatedBox appearance="bold" ref={n => (this.boldBox = n)}>
+            Bold
+          </AnimatedBox>
+          <AnimatedBox appearance="optimistic" ref={n => (this.optimisticBox = n)}>
+            Optimistic
+          </AnimatedBox>
+          <AnimatedBox appearance="combined" ref={n => (this.combinedBox = n)} >
+            Combined
+          </AnimatedBox>
         </div>
-        <div className={storyStyles.centerContent}>
+        <div style={{ textAlign: 'center' }}>
           <button onClick={this.clickAll}>All</button>
         </div>
-      </div>
+      </Container>
     );
   }
 }

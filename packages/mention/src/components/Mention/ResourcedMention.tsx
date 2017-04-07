@@ -6,7 +6,7 @@ import Mention, { MentionEventHandler } from './';
 export interface Props {
   id: string;
   text: string;
-  mentionProvider: Promise<MentionProvider>;
+  mentionProvider?: Promise<MentionProvider>;
   onClick?: MentionEventHandler;
   onMouseEnter?: MentionEventHandler;
   onMouseLeave?: MentionEventHandler;
@@ -38,11 +38,17 @@ export default class ResourcedMention extends PureComponent<Props, State> {
 
   private handleMentionProvider = (props: Props) => {
     const { id, mentionProvider } = props;
-    mentionProvider.then(provider => {
-      this.setState({
-        isHighlighted: provider.shouldHighlightMention({ id })
+    if (mentionProvider) {
+      mentionProvider.then(provider => {
+        this.setState({
+          isHighlighted: provider.shouldHighlightMention({ id })
+        });
       });
-    });
+    } else {
+      this.setState({
+        isHighlighted: false
+      });
+    }
   }
 
   render() {

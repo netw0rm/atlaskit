@@ -1,3 +1,5 @@
+import * as Cache from 'timed-cache';
+
 import { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
 import EmojiRepository from '../src/api/EmojiRepository';
 import { mockEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig } from '../test/MockEmojiResource';
@@ -7,10 +9,22 @@ declare var require: {
     <T>(path: string): T;
 };
 
-let emojisSets: Map<string, EmojiDescription[]>;
+const cache = new Cache({ defaultTtl: 10000 });
+const getOrCreate = (key: string, create: () => any): any => {
+  let data = cache.get(key);
+  if (!data) {
+    data = create();
+  }
+  // Force ttl reset to keep alive
+  cache.put(key, data);
+  return data;
+};
 
-export const getStandardEmojiData = (): EmojiServiceResponse => require('./service-data-standard.json') as EmojiServiceResponse;
-export const getAtlassianEmojiData = (): EmojiServiceResponse => require('./service-data-atlassian.json') as EmojiServiceResponse;
+export const getStandardEmojiData = (): EmojiServiceResponse =>
+  getOrCreate('service-data-standard.json', () => require('./service-data-standard.json') as EmojiServiceResponse);
+// tslint:disable-next-line:no-var-requires
+export const getAtlassianEmojiData = (): EmojiServiceResponse =>
+  getOrCreate('service-data-atlassian.json', () => require('./service-data-atlassian.json') as EmojiServiceResponse);
 
 export const getAllEmojiData = (): EmojiServiceResponse => {
   const standardEmojis = getStandardEmojiData();
@@ -32,17 +46,16 @@ export const getAllEmojiData = (): EmojiServiceResponse => {
 };
 
 const getEmojiSet = (name: string): EmojiDescription[] => {
-  if (!emojisSets) {
-    const emojis = denormaliseEmojiServiceResponse(getAllEmojiData()).emojis;
-    const standardEmojis = denormaliseEmojiServiceResponse(getStandardEmojiData()).emojis;
-    const atlassianEmojis = denormaliseEmojiServiceResponse(getAtlassianEmojiData()).emojis;
-
-    emojisSets = new Map<string, EmojiDescription[]>();
-    emojisSets.set('all', emojis);
-    emojisSets.set('standard', standardEmojis);
-    emojisSets.set('atlassian', atlassianEmojis);
+  switch (name) {
+    case 'all':
+      return getOrCreate(`emoji-set-all`, () => denormaliseEmojiServiceResponse(getAllEmojiData()).emojis);
+    case 'standard':
+      return getOrCreate(`emoji-set-standard`, () => denormaliseEmojiServiceResponse(getStandardEmojiData()).emojis);
+    case 'atlassian':
+      return getOrCreate(`emoji-set-standard`, () => denormaliseEmojiServiceResponse(getAtlassianEmojiData()).emojis);
+    default:
+      return [];
   }
-  return emojisSets.get(name) || [];
 };
 
 export const getStandardEmojis = (): EmojiDescription[] => getEmojiSet('standard');
@@ -63,6 +76,7 @@ ullamcorper lectus mi, quis varius libero ultricies nec. Quisque tempus neque li
 a semper massa dignissim nec.
 `;
 
-export const getEmojiService = (): EmojiRepository => new EmojiRepository(getEmojis());
+export const getEmojiRepository = (): EmojiRepository =>
+  getOrCreate('EmojiRepository', () => new EmojiRepository(getEmojis()));
 
-export const getEmojiResource = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(getEmojiService(), config);
+export const getEmojiResource = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(getEmojiRepository(), config);

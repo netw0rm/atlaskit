@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiRepository, getEmojiResourcePromise } from './TestData';
+import { getEmojiRepository, getEmojiResourcePromise } from './TestData';
 
 import CategorySelector from '../src/components/picker/CategorySelector';
 import Emoji from '../src/components/common/Emoji';
@@ -29,12 +29,20 @@ const leftClick = {
   button: 0,
 };
 
-const allEmojis = emojiRepository.all().emojis;
-
 const findEmoji = list => list.find(Emoji);
 const emojisVisible = (list) => findEmoji(list).length > 0;
 
 describe('<EmojiPicker />', () => {
+  let allEmojis;
+
+  beforeEach(() => {
+    allEmojis = getEmojiRepository().all().emojis;
+  });
+
+  afterEach(() => {
+    allEmojis = undefined;
+  });
+
   it('should display first set of emoji in viewport by default', () => {
     const component = setupPicker();
     const list = component.find(EmojiPickerList);

@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { EmojiDescription } from '../src/types';
 import EmojiRepository from '../src/api/EmojiRepository';
 
-import { emojis as allEmojis, emojiRepository } from './TestData';
+import { getEmojis, getEmojiRepository } from './TestData';
 
 function checkOrder(expected, actual) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
@@ -41,28 +41,28 @@ describe('EmojiService', () => {
   describe('#search', () => {
     it('all', () => {
       const splitCategoryEmojis = [
-        ...allEmojis.slice(0, 80), // upto flag,
+        ...getEmojis().slice(0, 80), // upto flag,
         cowboy,
-        ...allEmojis.slice(80), // rest...
+        ...getEmojis().slice(80), // rest...
       ];
       const service = new EmojiRepository(splitCategoryEmojis);
       const emojis = service.all().emojis;
       const expectedEmoji = [
-        ...allEmojis.slice(0, 10), // PEOPLE
+        ...getEmojis().slice(0, 10), // PEOPLE
         cowboy, // PEOPLE, but later
-        ...allEmojis.slice(10), // the rest
+        ...getEmojis().slice(10), // the rest
       ];
       checkOrder(expectedEmoji, emojis);
     });
     it('search retains order', () => {
-      const emojis = emojiRepository.search('flag').emojis;
-      const flagEmojis = allEmojis.filter(emoji =>
+      const emojis = getEmojiRepository().search('flag').emojis;
+      const flagEmojis = getEmojis().filter(emoji =>
         emoji.shortName.indexOf(':flag') === 0 || emoji.name && emoji.name.indexOf('flag') === 0
       );
       checkOrder(flagEmojis, emojis);
     });
     it('no categories repeat', () => {
-      const emojis = emojiRepository.all().emojis;
+      const emojis = getEmojiRepository().all().emojis;
       const foundCategories = new Set<string>();
       let lastCategory: string;
 

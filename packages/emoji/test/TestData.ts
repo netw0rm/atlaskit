@@ -1,7 +1,7 @@
+import * as Cache from 'timed-cache';
+
 import EmojiRepository from '../src/api/EmojiRepository';
 import { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
-// import { EmojiDescription, EmojiDescriptionWithVariations, EmojiMeta, EmojiRepresentation, EmojiServiceDescription, EmojiServiceDescriptionWithVariations, EmojiServiceRepresentation, EmojiServiceResponse, SpriteSheet } from '../src/types';
-// import { isSpriteRepresentation } from '../src/type-helpers';
 import { EmojiDescription, EmojiDescriptionWithVariations, EmojiServiceResponse } from '../src/types';
 import { mockEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig } from './MockEmojiResource';
 
@@ -47,22 +47,39 @@ declare var require: {
     <T>(path: string): T;
 };
 
+const cache = new Cache({ defaultTtl: 10000 });
+const getOrCreate = (key: string, create: () => any): any => {
+  let data = cache.get(key);
+  if (!data) {
+    data = create();
+  }
+  // Force ttl reset to keep alive
+  cache.put(key, data);
+  return data;
+};
+
 // tslint:disable-next-line:no-var-requires
-export const standardServiceEmojis: EmojiServiceResponse = require('./test-emoji-standard.json') as EmojiServiceResponse;
+export const getStandardServiceEmojis = (): EmojiServiceResponse =>
+  getOrCreate('test-emoji-standard.json', () => require('./test-emoji-standard.json') as EmojiServiceResponse);
 // tslint:disable-next-line:no-var-requires
-export const atlassianServiceEmojis: EmojiServiceResponse = require('./test-emoji-atlassian.json') as EmojiServiceResponse;
+export const getAtlassianServiceEmojis = (): EmojiServiceResponse =>
+  getOrCreate('test-emoji-atlassian.json', () => require('./test-emoji-atlassian.json') as EmojiServiceResponse);
 
-export const standardEmojis: EmojiDescription[] = denormaliseEmojiServiceResponse(standardServiceEmojis).emojis;
-export const atlassianEmojis: EmojiDescription[] = denormaliseEmojiServiceResponse(atlassianServiceEmojis).emojis;
-export const emojis: EmojiDescription[] = [ ...standardEmojis, ...atlassianEmojis ];
+export const getStandardEmojis = (): EmojiDescription[] =>
+  getOrCreate('standardEmojis', () => denormaliseEmojiServiceResponse(getStandardServiceEmojis()).emojis);
+export const getAtlassianEmojis = (): EmojiDescription[] =>
+  getOrCreate('atlassianEmojis', () => denormaliseEmojiServiceResponse(getAtlassianServiceEmojis()).emojis);
+export const getEmojis = (): EmojiDescription[] =>
+  getOrCreate('allEmojis', () => [ ...getStandardEmojis(), ...getAtlassianEmojis() ]);
 
-export const emojiRepository = new EmojiRepository(emojis);
+export const getEmojiRepository = () =>
+  getOrCreate('EmojiRepository', () => new EmojiRepository(getEmojis()));
 
-export const grinEmoji = emojiRepository.findByShortName(':grin:') as EmojiDescriptionWithVariations;
-export const evilburnsEmoji = emojiRepository.findByShortName(':evilburns:') as EmojiDescriptionWithVariations;
-export const thumbsupEmoji = emojiRepository.findByShortName(':thumbsup:') as EmojiDescriptionWithVariations;
+export const getGrinEmoji = () => getEmojiRepository().findByShortName(':grin:') as EmojiDescriptionWithVariations;
+export const getEvilburnsEmoji = () => getEmojiRepository().findByShortName(':evilburns:') as EmojiDescriptionWithVariations;
+export const getThumbsupEmoji = () => getEmojiRepository().findByShortName(':thumbsup:') as EmojiDescriptionWithVariations;
 
-export const getEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(emojiRepository, config);
+export const getEmojiResourcePromise = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(getEmojiRepository(), config);
 
 export const generateSkinVariation = (base: EmojiDescription, idx: number): EmojiDescription => {
   const { id, shortName, name } = base;

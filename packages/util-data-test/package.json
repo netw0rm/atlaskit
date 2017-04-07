@@ -19,6 +19,7 @@
     "src"
   ],
   "dependencies": {
+    "timed-cache": "^1.0.5",
     "tslib": "^1.2.0"
   },
   "author": "Atlassian Pty. Ltd",

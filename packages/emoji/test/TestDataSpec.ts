@@ -1,18 +1,18 @@
 import { expect } from 'chai';
 
-import { atlassianEmojis, emojiRepository, grinEmoji, evilburnsEmoji, standardEmojis } from './TestData';
+import { getAtlassianEmojis, getEmojiRepository, getGrinEmoji, getEvilburnsEmoji, getStandardEmojis } from './TestData';
 
 describe('#test data', () => {
   it('expected standard emojis', () => {
-    expect(standardEmojis.length, '80 Standard Emoji').to.equal(80);
+    expect(getStandardEmojis().length, '80 Standard Emoji').to.equal(80);
   });
 
   it('expected atlassian emojis', () => {
-    expect(atlassianEmojis.length, '10 Atlassian Emoji').to.equal(10);
+    expect(getAtlassianEmojis().length, '10 Atlassian Emoji').to.equal(10);
   });
 
   it('expected grin emoji', () => {
-    const emoji = grinEmoji;
+    const emoji = getGrinEmoji();
     expect(emoji, 'Emoji found').to.not.equal(undefined);
     if (emoji) {
       expect(emoji.id, 'id').to.equal('1f601');
@@ -21,7 +21,7 @@ describe('#test data', () => {
   });
 
   it('expected evilburns emojis', () => {
-    const emoji = evilburnsEmoji;
+    const emoji = getEvilburnsEmoji();
     expect(emoji, 'Emoji found').to.not.equal(undefined);
     if (emoji) {
       expect(emoji.id, 'id').to.equal('atlassian-evilburns');
@@ -30,7 +30,7 @@ describe('#test data', () => {
   });
 
   it('expected grin emoji', () => {
-    const emoji = emojiRepository.findById('1f601');
+    const emoji = getEmojiRepository().findById('1f601');
     expect(emoji, 'Emoji found').to.not.equal(undefined);
     if (emoji) {
       expect(emoji.id, 'id').to.equal('1f601');
@@ -39,7 +39,7 @@ describe('#test data', () => {
   });
 
   it('expected evilburns emojis', () => {
-    const emoji = emojiRepository.findById('atlassian-evilburns');
+    const emoji = getEmojiRepository().findById('atlassian-evilburns');
     expect(emoji, 'Emoji found').to.not.equal(undefined);
     if (emoji) {
       expect(emoji.id, 'id').to.equal('atlassian-evilburns');

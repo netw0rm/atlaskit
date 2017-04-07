@@ -9,7 +9,7 @@ import { OnProviderChange } from '../src/api/SharedResources';
 import EmojiResource, { EmojiResourceConfig } from '../src/api/EmojiResource';
 import { EmojiSearchResult } from '../src/api/EmojiRepository';
 
-import { evilburnsEmoji, atlassianEmojis, atlassianServiceEmojis, grinEmoji, standardEmojis, standardServiceEmojis, thumbsupEmoji } from './TestData';
+import { getEvilburnsEmoji, getAtlassianEmojis, getAtlassianServiceEmojis, getGrinEmoji, getStandardEmojis, getStandardServiceEmojis, getThumbsupEmoji } from './TestData';
 
 const baseUrl = 'https://bogus/';
 const p1Url = 'https://p1/';
@@ -43,11 +43,6 @@ const defaultApiConfig: EmojiResourceConfig = {
   },
   providers: [provider1],
 };
-
-const providerData1 = standardEmojis;
-const providerData2 = atlassianEmojis;
-const providerServiceData1 = standardServiceEmojis;
-const providerServiceData2 = atlassianServiceEmojis;
 
 function checkOrder(expected: EmojiDescription[], actual: EmojiDescription[]) {
   expect(actual.length, `${actual.length} emojis`).to.equal(expected.length);
@@ -127,14 +122,30 @@ class MockOnProviderChange implements OnProviderChange<EmojiSearchResult, any, u
 }
 
 describe('EmojiResource', () => {
+  let providerData1;
+  let providerData2;
+  let providerServiceData1;
+  let providerServiceData2;
+
+  beforeEach(() => {
+    providerData1 = getStandardEmojis();
+    providerData2 = getAtlassianEmojis();
+    providerServiceData1 = getStandardServiceEmojis();
+    providerServiceData2 = getAtlassianServiceEmojis();
+  });
+
   afterEach(() => {
+    providerData1 = undefined;
+    providerData2 = undefined;
+    providerServiceData1 = undefined;
+    providerServiceData2 = undefined;
     fetchMock.restore();
   });
 
   describe('#test data', () => {
     it('expected test data', () => {
-      expect(standardEmojis.length > 0, 'More than 1 Standard Emoji').to.equal(true);
-      expect(atlassianEmojis.length > 0, 'More than 1 Atlassian Emoji').to.equal(true);
+      expect(providerData1.length > 0, 'More than 1 Standard Emoji').to.equal(true);
+      expect(providerData2.length > 0, 'More than 1 Atlassian Emoji').to.equal(true);
     });
   });
 
@@ -192,6 +203,7 @@ describe('EmojiResource', () => {
       const filteredPromise = onChange.waitForResult().then(emojiResponse => {
         expect(onChange.resultCalls.length, 'Result called').to.equal(1);
         expect(emojiResponse.emojis.length, 'One emoji found').to.equal(1);
+        const thumbsupEmoji = getThumbsupEmoji();
         const expectedSelectedSkinEmoji = (thumbsupEmoji.skinVariations && thumbsupEmoji.skinVariations[skinTone - 1]) as EmojiDescription;
         expect(emojiResponse.emojis[0].id).to.equal(expectedSelectedSkinEmoji.id);
         const emoji = emojiResponse.emojis[0];
@@ -389,7 +401,7 @@ describe('EmojiResource', () => {
 
       const emojiPromise = resource.findByEmojiId({ shortName: ':wontbeused:', id: '1f601' }); // grin
       const done = emojiPromise.then(emoji => {
-        checkEmoji(grinEmoji, emoji);
+        checkEmoji(getGrinEmoji(), emoji);
       });
       resolveProvider1(providerServiceData1);
       return done;
@@ -409,7 +421,7 @@ describe('EmojiResource', () => {
 
       const emojiPromise = resource.findByEmojiId({ shortName: ':grin:' });
       const done = emojiPromise.then(emoji => {
-        checkEmoji(grinEmoji, emoji);
+        checkEmoji(getGrinEmoji(), emoji);
       });
       resolveProvider1(providerServiceData1);
       return done;
@@ -429,7 +441,7 @@ describe('EmojiResource', () => {
 
       const emojiPromise = resource.findByEmojiId({ shortName: ':grin:', id: 'unknownid' });
       const done = emojiPromise.then(emoji => {
-        checkEmoji(grinEmoji, emoji);
+        checkEmoji(getGrinEmoji(), emoji);
       });
       resolveProvider1(providerServiceData1);
       return done;
@@ -457,7 +469,7 @@ describe('EmojiResource', () => {
       });
       const emojiPromise = resource.findByEmojiId({ shortName: ':wontbeused:', id: '1f601' }); // grin
       const done = emojiPromise.then(emoji => {
-        checkEmoji(grinEmoji, emoji);
+        checkEmoji(getGrinEmoji(), emoji);
       });
       resolveProvider1(providerServiceData1);
       resolveProvider2(providerServiceData2);
@@ -486,7 +498,7 @@ describe('EmojiResource', () => {
       });
       const emojiPromise = resource.findByEmojiId({ shortName: ':wontbeused:', id: 'atlassian-evilburns' }); // grin
       const done = emojiPromise.then(emoji => {
-        checkEmoji(evilburnsEmoji, emoji);
+        checkEmoji(getEvilburnsEmoji(), emoji);
       });
       resolveProvider1(providerServiceData1);
       resolveProvider2(providerServiceData2);
@@ -537,7 +549,7 @@ describe('EmojiResource', () => {
       });
       const emojiPromise = resource.findByEmojiId({ shortName: ':wontbeused:', id: 'atlassian-evilburns' }); // grin
       const done = emojiPromise.then(emoji => {
-        checkEmoji(evilburnsEmoji, emoji);
+        checkEmoji(getEvilburnsEmoji(), emoji);
       });
       return done;
     });
@@ -586,7 +598,7 @@ describe('EmojiResource', () => {
       });
       const emojiPromise = resource.findByEmojiId({ shortName: ':wontbeused:', id: 'atlassian-evilburns' }); // grin
       const done = emojiPromise.then(emoji => {
-        checkEmoji(evilburnsEmoji, emoji);
+        checkEmoji(getEvilburnsEmoji(), emoji);
       });
       resolveProvider2(providerServiceData2);
       return done;
@@ -607,7 +619,7 @@ describe('EmojiResource', () => {
       const resource = new EmojiResource(defaultApiConfig);
       const emojiPromise = resource.findByShortName(':grin:');
       const done = emojiPromise.then(emoji => {
-        checkEmoji(grinEmoji, emoji);
+        checkEmoji(getGrinEmoji(), emoji);
       });
       resolveProvider1(providerServiceData1);
       return done;
@@ -635,7 +647,7 @@ describe('EmojiResource', () => {
       });
       const emojiPromise = resource.findByShortName(':grin:');
       const done = emojiPromise.then(emoji => {
-        checkEmoji(grinEmoji, emoji);
+        checkEmoji(getGrinEmoji(), emoji);
       });
       resolveProvider1(providerServiceData1);
       resolveProvider2(providerServiceData2);
@@ -664,7 +676,7 @@ describe('EmojiResource', () => {
       });
       const emojiPromise = resource.findByShortName(':evilburns:');
       const done = emojiPromise.then(emoji => {
-        checkEmoji(evilburnsEmoji, emoji);
+        checkEmoji(getEvilburnsEmoji(), emoji);
       });
       resolveProvider1(providerServiceData1);
       resolveProvider2(providerServiceData2);
@@ -688,7 +700,7 @@ describe('EmojiResource', () => {
       });
 
       const p2grin = {
-        ...grinEmoji,
+        ...getGrinEmoji(),
         id: 'atlassian-grin',
       };
       const resource = new EmojiResource({
@@ -727,7 +739,7 @@ describe('EmojiResource', () => {
       });
 
       const p2grin = {
-        ...grinEmoji,
+        ...getGrinEmoji(),
         id: 'atlassian-grin',
       };
       const resource = new EmojiResource({
@@ -793,7 +805,7 @@ describe('EmojiResource', () => {
       });
       const emojiPromise = resource.findByShortName(':evilburns:');
       const done = emojiPromise.then(emoji => {
-        checkEmoji(evilburnsEmoji, emoji);
+        checkEmoji(getEvilburnsEmoji(), emoji);
       });
       return done;
     });
@@ -842,7 +854,7 @@ describe('EmojiResource', () => {
       });
       const emojiPromise = resource.findByShortName(':evilburns:');
       const done = emojiPromise.then(emoji => {
-        checkEmoji(evilburnsEmoji, emoji);
+        checkEmoji(getEvilburnsEmoji(), emoji);
       });
       resolveProvider2(providerServiceData2);
       return done;

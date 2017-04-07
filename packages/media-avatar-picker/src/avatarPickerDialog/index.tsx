@@ -21,7 +21,7 @@ enum Mode {
 }
 
 export interface AvatarPickerDialogState {
-  mode: Mode
+  mode: Mode;
 }
 
 const url = 'https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg';
@@ -41,8 +41,6 @@ export default class AvatarPickerDialog extends PureComponent<AvatarPickerDialog
   }
 
   render() {
-    console.log('render');
-
     return (
       <ModalDialog
         width="small"
@@ -57,7 +55,7 @@ export default class AvatarPickerDialog extends PureComponent<AvatarPickerDialog
       >
         {this.renderContent()}
       </ModalDialog>
-    )
+    );
   }
 
   renderContent() {

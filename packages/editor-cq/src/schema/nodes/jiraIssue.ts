@@ -5,8 +5,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 import { NodeSpec } from '@atlaskit/editor-core';
 
-import '!raw!@atlaskit/reduced-ui-pack/dist/icons-sprite.svg';
-import '!style-loader!css-loader!less-loader!@atlaskit/reduced-ui-pack/src/index.less';
+import { JiraSVGLogo } from '@atlaskit/logo';
 import { style } from 'typestyle';
 
 const nodeClassName = style({
@@ -34,6 +33,7 @@ const nodeClassName = style({
 
 const jiraChildNodeClassName = style({
   color: '#707070',
+  lineHeight: '24px',
 
   $nest: {
     '&:before': {
@@ -44,25 +44,49 @@ const jiraChildNodeClassName = style({
 });
 
 const svgChildNodeClassName = style({
+  backgroundImage: `url('data:image/svg+xml;utf8,${cleanSVGIcon()}')`,
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
   height: '24px',
   width: '24px',
 });
 
+function cleanSVGIconNode(node: Node, target?: Element): Element {
+  if (!target) {
+    target = document.createElement('div');
+  }
+
+  if (node.nodeType === Node.ELEMENT_NODE) {
+    if (node.nodeName !== 'title' && node.nodeName !== 'desc') {
+      const clone = node.cloneNode() as Element;
+      target.appendChild(clone);
+
+      for (let i = 0; i < node.childNodes.length; i++) {
+        cleanSVGIconNode(node.childNodes[i], clone);
+      }
+    }
+  } else if (node.nodeType === Node.TEXT_NODE) {
+    const nodeContents = node.nodeValue!.trim();
+
+    if (nodeContents) {
+      const clone = node.cloneNode();
+      target.appendChild(clone);
+    }
+  }
+
+  return target;
+}
+
 /**
- * Returns DOMOutputSpec structure for JIRA icon
+ * Clean JIRA SVG icon of line breaks and comments
+ * so it can be used inside CSS (hello svgo)
  */
-function getJiraIcon(): [string, any, any] {
-  return [
-    'svg',
-    {
-      class: svgChildNodeClassName,
-      focusable: 'false',
-    },
-    [
-      'use',
-      { 'xlink:href' : '#ak-icon-jira' }
-    ]
-  ];
+function cleanSVGIcon(): string {
+  const parser = new DOMParser();
+  const svgTree = parser.parseFromString(JiraSVGLogo, 'text/xml');
+
+  const wrapper = cleanSVGIconNode(svgTree.documentElement);
+  return wrapper.innerHTML;
 }
 
 export default {
@@ -89,7 +113,10 @@ export default {
     return [
       'div',
       attrs,
-      getJiraIcon(),
+      [
+        'span',
+        { class: svgChildNodeClassName }
+      ],
       [
         'span',
         { class: jiraChildNodeClassName },

@@ -484,5 +484,65 @@ describe('lists', () => {
         });
       });
     });
+
+    describe('Toggle - nested list scenarios - to lift items out of list', () => {
+
+      it('should be possible to toggle a simple nested list', () => {
+        const { editorView, pluginState } = editor(doc(ol(li(p('text'), ol(li(p('text{<>}')))), li(p('text')))));
+
+        pluginState.toggleOrderedList(editorView);
+
+        expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text'))), p('text{<>}'), ol(li(p('text')))));
+      });
+
+      it('should be possible to toggle an empty nested list item', () => {
+        const { editorView, pluginState } = editor(doc(ol(li(p('text'), ol(li(p('{<>}')))), li(p('text')))));
+
+        pluginState.toggleOrderedList(editorView);
+
+        expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text'))), p('{<>}'), ol(li(p('text')))));
+      });
+
+      it('should be possible to toggle a selection across different depths in the list', () => {
+        const { editorView, pluginState } = editor(doc(ol(li(p('te{<}xt'), ol(li(p('text{>}')))), li(p('text')))));
+
+        pluginState.toggleOrderedList(editorView);
+
+        expect(editorView.state.doc).to.deep.equal(doc(p('te{<}xt'), p('text{>}'), ol(li(p('text')))));
+      });
+
+      it('should be possible to toggle a selection across lists with different parent lists', () => {
+        const { editorView, pluginState } = editor(doc(ol(li(p('te{<}xt'), ol(li(p('text'))))), ol(li(p('te{>}xt'), ol(li(p('text')))))));
+
+        pluginState.toggleOrderedList(editorView);
+
+        expect(editorView.state.doc).to.deep.equal(doc(p('te{<}xt'), p('text'), p('te{>}xt'), ol(li(p('text')))));
+      });
+
+      it('should be possible to toggle a nested list inside a blockquote to the level of block-quote', () => {
+        const { editorView, pluginState } = editor(doc(blockquote(ol(li(p('text'), ol(li(p('te{<>}xt')))), li(p('te{<}xt'))))));
+
+        pluginState.toggleOrderedList(editorView);
+
+        expect(editorView.state.doc).to.deep.equal(doc(blockquote(ol(li(p('text'))), p('te{<>}xt'), ol(li(p('text'))))));
+      });
+
+      it('should be create a new list for children of lifted list item', () => {
+        const { editorView, pluginState } = editor(doc(ol(li(p('text'), ol(li(p('te{<>}xt'), ol(li(p('text')))))), li(p('text')))));
+
+        pluginState.toggleOrderedList(editorView);
+
+        expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text'))), p('te{<>}xt'), ol(li(p('text')), li(p('text')))));
+      });
+
+      it('should only change type to bullet list when toggling orderedList to bulletList', () => {
+        const { editorView, pluginState } = editor(doc(ol(li(p('text'), ol(li(p('text'), ol(li(p('te{<>}xt')))))), li(p('text')))));
+
+        pluginState.toggleBulletList(editorView);
+
+        expect(editorView.state.doc).to.deep.equal(doc(ol(li(p('text'), ol(li(p('text'), ul(li(p('te{<>}xt')))))), li(p('text')))));
+      });
+    });
+
   });
 });

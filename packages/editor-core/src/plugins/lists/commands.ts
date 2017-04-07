@@ -118,14 +118,16 @@ function liftSelectionList(state: EditorState<any>, rootListDepth: number, tr: T
   for (let i = listCol.length - 1; i >= 0; i--) {
     const paragraph = listCol[i];
     const start = tr.doc.resolve(tr.mapping.map(paragraph.pos));
-    let end;
-    if (paragraph.node.textContent && paragraph.node.textContent.length > 0) {
-      end = tr.doc.resolve(tr.mapping.map(paragraph.pos + paragraph.node.textContent.length));
-    } else {
-      end = tr.doc.resolve(tr.mapping.map(paragraph.pos + 1));
+    if (start.depth > 0) {
+      let end;
+      if (paragraph.node.textContent && paragraph.node.textContent.length > 0) {
+        end = tr.doc.resolve(tr.mapping.map(paragraph.pos + paragraph.node.textContent.length));
+      } else {
+        end = tr.doc.resolve(tr.mapping.map(paragraph.pos + 1));
+      }
+      const range = start.blockRange(end)!;
+      tr.lift(range, listLiftTarget(state.schema, start));
     }
-    const range = start.blockRange(end)!;
-    tr.lift(range, listLiftTarget(state.schema, start));
   }
   return tr;
 }

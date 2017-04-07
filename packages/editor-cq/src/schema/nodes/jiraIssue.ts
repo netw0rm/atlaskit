@@ -20,6 +20,7 @@ const nodeClassName = style({
   margin: '0 2px',
   minHeight: 24,
   padding: '0 4px',
+  userSelect: 'all',
   verticalAlign: 'middle',
   whiteSpace: 'nowrap',
 

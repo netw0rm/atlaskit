@@ -31,8 +31,8 @@ export interface PredefinedAvatarViewProps {
 }
 
 const DEFAULT_AVATAR_DIMENSIONS = {
-  height: 76,
-  width: 76,
+  height: 72,
+  width: 72,
 };
 
 export default class PredefinedAvatarView extends PureComponent<PredefinedAvatarViewProps, {}> {

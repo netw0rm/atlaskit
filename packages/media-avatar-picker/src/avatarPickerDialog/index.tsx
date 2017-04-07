@@ -8,7 +8,7 @@ import {Avatar} from '../avatarList/index';
 import {ImageNavigator} from '../image-navigator/index';
 import PredefinedAvatarList from '../predefinedAvatarList/index';
 
-import {AvatarPickerCropViewWrapper} from './styled';
+import {AvatarPickerViewWrapper} from './styled';
 import PredefinedAvatarView from '../predefinedAvatarView/index';
 
 export interface AvatarPickerDialogProps {
@@ -43,7 +43,7 @@ export default class AvatarPickerDialog extends PureComponent<AvatarPickerDialog
   render() {
     return (
       <ModalDialog
-        width="small"
+        width="352"
         header="Upload an avatar"
         footer={
           <div>
@@ -53,7 +53,9 @@ export default class AvatarPickerDialog extends PureComponent<AvatarPickerDialog
         }
         isOpen
       >
-        {this.renderContent()}
+        <AvatarPickerViewWrapper>
+          {this.renderContent()}
+        </AvatarPickerViewWrapper>
       </ModalDialog>
     );
   }
@@ -62,7 +64,7 @@ export default class AvatarPickerDialog extends PureComponent<AvatarPickerDialog
     switch (this.state.mode) {
       case Mode.Cropping:
         return (
-          <AvatarPickerCropViewWrapper>
+          <div className="cropping-wrapper">
             <div className="cropper">
               <ImageNavigator imageSource={url}/>
             </div>
@@ -72,14 +74,16 @@ export default class AvatarPickerDialog extends PureComponent<AvatarPickerDialog
                 onShowMore={this.onShowMore}
               />
             </div>
-          </AvatarPickerCropViewWrapper>
+          </div>
         );
       case Mode.PredefinedAvatars:
         return (
-          <PredefinedAvatarView
-            avatars={this.props.avatars}
-            onGoBack={this.onGoBack}
-          />
+          <div className="predefined-avatars-wrapper">
+            <PredefinedAvatarView
+              avatars={this.props.avatars}
+              onGoBack={this.onGoBack}
+            />
+          </div>
         );
     }
   }

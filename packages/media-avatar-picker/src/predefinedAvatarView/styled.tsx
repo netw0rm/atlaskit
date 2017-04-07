@@ -2,8 +2,6 @@
 import styled from 'styled-components';
 
 export const PredefinedAvatarViewWrapper = styled.div`
-  width: 350px;
-  
   ul {
     display: flex; 
     flex-flow: row wrap;
@@ -14,8 +12,8 @@ export const PredefinedAvatarViewWrapper = styled.div`
     list-style-type: none;
 
     li {
-      padding-right: 10px;
-      padding-bottom: 10px;
+      padding-right: 8px;
+      padding-bottom: 8px;
       margin: 0px;
     }
   }
@@ -24,11 +22,10 @@ export const PredefinedAvatarViewWrapper = styled.div`
       display: flex;
       align-items: center;
       
-      padding-top: 10px;
-      padding-bottom: 10px;
+      padding-bottom: 8px;
       
       .description {
-        padding-left: 10px;
+        padding-left: 8px;
       }
   
       .back-button {

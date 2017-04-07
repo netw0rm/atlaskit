@@ -74,7 +74,7 @@ export default {
   }
 } as NodeSpec;
 
-export const jiraIssueNodeView = () => (node: any, view: any, getPos: () => number): NodeView => {
+export const jiraIssueNodeView = (node: any, view: any, getPos: () => number): NodeView => {
   const { issueKey, macroId, schemaVersion, server, serverId } = node.attrs;
 
   let dom: HTMLElement | undefined = document.createElement('span');

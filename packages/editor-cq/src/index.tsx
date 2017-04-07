@@ -216,7 +216,7 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         },
         nodeViews: {
-          jiraIssue: jiraIssueNodeView(),
+          jiraIssue: jiraIssueNodeView,
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

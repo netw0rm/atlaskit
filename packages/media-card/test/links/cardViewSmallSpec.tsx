@@ -21,7 +21,7 @@ describe('LinkCardViewSmall', () => {
   it('should render a thumnail when supplied', () => {
     const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
 
-    const card = mount(<LinkCardViewSmall title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />);
+    const card = mount(<LinkCardViewSmall title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />) as any;
 
     expect(card.find('.media-card')).to.have.length(1);
     expect(card.find('.media-card').props().style.backgroundImage).to.contain(thumbnailUrl);

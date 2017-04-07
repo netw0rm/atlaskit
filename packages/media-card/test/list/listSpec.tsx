@@ -6,7 +6,7 @@ import {fakeContext} from '@atlaskit/media-test-helpers';
 import {Observable} from 'rxjs';
 import 'rxjs/add/observable/of';
 
-import {CardList, CardListProps, CardListState, InfiniteScroll} from '../../src/list';
+import {CardList, CardListProps, CardListState} from '../../src/list';
 import {MediaCard} from '../../src/mediaCard';
 
 describe('CardList', () => {
@@ -42,7 +42,7 @@ describe('CardList', () => {
         }
       },
       getMediaItemProvider: expectedMediaItemProvider
-    });
+    }) as any;
 
     mount(<CardList context={context} collectionName={collectionName}/>);
 
@@ -114,7 +114,7 @@ describe('CardList', () => {
       }
     });
     const collectionName = 'MyMedia';
-    const card = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>);
+    const card = shallow<CardListProps, CardListState>(<CardList context={context} collectionName={collectionName}/>) as any;
     card.setState({loading: false, loadNextPage: sinon.spy()});
     card.instance().loadNextPage();
     expect(card.state().loading).to.be.false;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { expect } from 'chai';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import { UrlPreview } from '@atlaskit/media-core';
 
 import { LinkCard, LinkCardPlayer, LinkCardGenericView, LinkCardTrelloBoardView } from '../../src';

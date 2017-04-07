@@ -9,7 +9,7 @@ describe('LinkCardPlayer', () => {
   const title = '';
 
   it('should not load the iframe until the user press play', () => {
-    const cardPlayer = mount(<LinkCardPlayer linkUrl={url} playerUrl={playerUrl} title={title} />);
+    const cardPlayer = mount(<LinkCardPlayer linkUrl={url} playerUrl={playerUrl} title={title} />) as any;
 
     expect(cardPlayer.find('iframe').get(0).getAttribute('src')).to.not.contain(playerUrl);
 

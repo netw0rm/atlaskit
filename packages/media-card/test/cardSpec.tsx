@@ -21,7 +21,7 @@ describe('Card', function() {
 
     const context = fakeContext({
       getUrlPreviewProvider: dummyProvider
-    });
+    }) as any;
 
     const card = shallow(<Card context={context} identifier={identifier} />);
     const mediaCard = card.find(MediaCard);
@@ -47,7 +47,7 @@ describe('Card', function() {
 
     const context = fakeContext({
       getMediaItemProvider: dummyProvider
-    });
+    }) as any;
 
     const card = shallow(<Card context={context} identifier={identifier} />);
     const mediaCard = card.find(MediaCard);
@@ -73,7 +73,7 @@ describe('Card', function() {
 
     const context = fakeContext({
       getMediaItemProvider: dummyProvider
-    });
+    }) as any;
 
     const card = shallow(<Card context={context} identifier={identifier} />);
     const mediaCard = card.find(MediaCard);
@@ -101,7 +101,7 @@ describe('Card', function() {
 
     const secondContext = fakeContext({
       getMediaItemProvider: dummyProvider
-    });
+    }) as any;
 
     const card = shallow(<Card context={firstContext} identifier={identifier} />);
     card.setProps({context: secondContext, identifier});
@@ -133,7 +133,7 @@ describe('Card', function() {
 
     const context = fakeContext({
       getMediaItemProvider: dummyProvider
-    });
+    }) as any;
 
     const card = shallow(<Card context={context} identifier={firstIdentifier} />);
     card.setProps({context, identifier: secondIdentifier});

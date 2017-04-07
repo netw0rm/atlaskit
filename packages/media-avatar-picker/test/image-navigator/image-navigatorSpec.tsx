@@ -48,6 +48,11 @@ describe('Image navigator', () => {
     it('should have image scale set', () => {
       expect(imageCropper.props().scale).to.equal(0.5);
     });
+
+    it('should have min scale set to minimum allowed', () => {
+      const expectedMinScale = (CONTAINER_SIZE / 2) / Math.max(imageWidth, imageHeight);
+      expect(slider.props().min).to.equal(expectedMinScale * 100);
+    });
   });
 
   describe('when portrait image is loaded', () => {

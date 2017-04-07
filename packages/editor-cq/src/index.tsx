@@ -24,6 +24,7 @@ import { PureComponent } from 'react';
 import { encode, parse } from './cxhtml';
 import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
+import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
 
 export { version };
 
@@ -213,6 +214,9 @@ export default class Editor extends PureComponent<Props, State> {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
           this.handleChange();
+        },
+        nodeViews: {
+          jiraIssue: jiraIssueNodeView(),
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

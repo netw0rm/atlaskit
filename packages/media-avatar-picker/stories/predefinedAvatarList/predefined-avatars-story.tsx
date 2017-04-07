@@ -4,20 +4,7 @@ import * as React from 'react';
 import AvatarList, {Avatar} from '../../src/avatarList';
 import PredefinedAvatarList from '../../src/predefinedAvatarList';
 import PredefinedAvatarView from '../../src/predefinedAvatarView/index';
-
-function generateAvatarIds(start: number, count: number): Array<number> {
-  const result: Array<number> = [];
-  for (let i = 0; i < count; ++i) {
-    result[i] = start + i;
-  }
-  return result;
-}
-
-function generateAvatars(count: number) {
-  return generateAvatarIds(18831, count).map(id => ({
-    dataURI: `https://jdog.jira-dev.com/secure/viewavatar?avatarId=${id}&avatarType=project`,
-  }));
-}
+import {generateAvatars} from '../utils';
 
 const avatars: Array<Avatar> = generateAvatars(5);
 

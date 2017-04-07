@@ -54,12 +54,15 @@ describe('EmojiRepository', () => {
       ];
       checkOrder(expectedEmoji, emojis);
     });
-    it('search retains order', () => {
-      const emojis = emojiRepository.search('flag').emojis;
-      const flagEmojis = allEmojis.filter(emoji =>
-        emoji.shortName.indexOf(':flag') === 0 || emoji.name && emoji.name.indexOf('flag') === 0
+    it('retains emoji order', () => {
+      const emojis = emojiRepository.search('f').emojis;
+      const fEmojis = allEmojis.filter(emoji =>
+        emoji.shortName.indexOf(':f') === 0 ||
+        emoji.name && emoji.name.split(' ').filter(token =>
+          token.indexOf('f') === 0
+        ).length !== 0 // matches emojis where a name token starts with 'f'
       );
-      checkOrder(flagEmojis, emojis);
+      checkOrder(fEmojis, emojis);
     });
     it('no categories repeat', () => {
       const emojis = emojiRepository.all().emojis;
@@ -72,6 +75,29 @@ describe('EmojiRepository', () => {
           lastCategory = emoji.category;
         }
       });
+    });
+    it('retains category order', () => {
+      const emojis = emojiRepository.all().emojis;
+      const grEmojis = emojiRepository.search('gr').emojis;
+      const orderedCategories: string[] = [];
+      const grCategories: string[] = [];
+      let lastCategory: string;
+
+      emojis.forEach(emoji => {
+        if (emoji.category !== lastCategory) {
+          orderedCategories.push(emoji.category);
+          lastCategory = emoji.category;
+        }
+      });
+
+      lastCategory = '';
+      grEmojis.forEach(emoji => {
+        if (emoji.category !== lastCategory) {
+          grCategories.push(emoji.category);
+          lastCategory = emoji.category;
+        }
+      });
+      expect(orderedCategories.filter(category => grCategories.indexOf(category) !== -1)).to.deep.equal(grCategories);
     });
   });
 });

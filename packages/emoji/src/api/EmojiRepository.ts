@@ -95,7 +95,7 @@ const emojiSorter = (e1: EmojiDescription, e2: EmojiDescription) : number  => {
   } else if (e1.id && e2.id) {
     return e1.id.localeCompare(e2.id);
   }
-  return -1;
+  return 0;
 };
 
 const applySearchOptions = (emojis: EmojiDescription[], options?: SearchOptions): EmojiDescription[] => {

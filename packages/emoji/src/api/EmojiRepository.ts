@@ -80,11 +80,22 @@ const groupByCategory = (categoryOrder: string[], emojis: EmojiDescription[]) : 
   categoryOrder.forEach(category => {
     const groupedEmoji = groupedEmojis.get(category);
     if (groupedEmoji) {
-      groupedByCategory = groupedByCategory.concat(groupedEmoji);
+      groupedByCategory = groupedByCategory.concat(groupedEmoji.sort(emojiSorter));
     }
   });
 
   return groupedByCategory;
+};
+
+const emojiSorter = (e1: EmojiDescription, e2: EmojiDescription) : number  => {
+  if (e1.order && e2.order && e1.order !== e2.order) {
+    return e1.order - e2.order;
+  } else if (e1.shortName !== e2.shortName) {
+    return e1.shortName.localeCompare(e2.shortName);
+  } else if (e1.id && e2.id) {
+    return e1.id.localeCompare(e2.id);
+  }
+  return -1;
 };
 
 const applySearchOptions = (emojis: EmojiDescription[], options?: SearchOptions): EmojiDescription[] => {

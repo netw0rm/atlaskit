@@ -4,8 +4,8 @@ import {
   akColorN50,
 } from '@atlaskit/util-shared-styles';
 import { NodeSpec } from '@atlaskit/editor-core';
-
-import { JiraSVGLogo } from '@atlaskit/logo';
+import { JiraLogo } from '@atlaskit/logo';
+import { render } from 'react-dom';
 import { style } from 'typestyle';
 
 const nodeClassName = style({
@@ -44,49 +44,23 @@ const jiraChildNodeClassName = style({
 });
 
 const svgChildNodeClassName = style({
-  backgroundImage: `url('data:image/svg+xml;utf8,${cleanSVGIcon()}')`,
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover',
   height: '24px',
   width: '24px',
+
+  $nest: {
+    '&>div': {
+      height: '24px',
+      width: '24px',
+    }
+  }
 });
 
-function cleanSVGIconNode(node: Node, target?: Element): Element {
-  if (!target) {
-    target = document.createElement('div');
-  }
+function getSVGIcon(): Element {
+  const jiraReactElement = JiraLogo({ size: 'small', collapseTo: 'icon' });
+  const container = document.createElement('div');
+  const jiraIcon = render(jiraReactElement, container);
 
-  if (node.nodeType === Node.ELEMENT_NODE) {
-    if (node.nodeName !== 'title' && node.nodeName !== 'desc') {
-      const clone = node.cloneNode() as Element;
-      target.appendChild(clone);
-
-      for (let i = 0; i < node.childNodes.length; i++) {
-        cleanSVGIconNode(node.childNodes[i], clone);
-      }
-    }
-  } else if (node.nodeType === Node.TEXT_NODE) {
-    const nodeContents = node.nodeValue!.trim();
-
-    if (nodeContents) {
-      const clone = node.cloneNode();
-      target.appendChild(clone);
-    }
-  }
-
-  return target;
-}
-
-/**
- * Clean JIRA SVG icon of line breaks and comments
- * so it can be used inside CSS (hello svgo)
- */
-function cleanSVGIcon(): string {
-  const parser = new DOMParser();
-  const svgTree = parser.parseFromString(JiraSVGLogo, 'text/xml');
-
-  const wrapper = cleanSVGIconNode(svgTree.documentElement);
-  return wrapper.innerHTML;
+  return container.firstChild;
 }
 
 export default {
@@ -115,7 +89,8 @@ export default {
       attrs,
       [
         'span',
-        { class: svgChildNodeClassName }
+        { class: svgChildNodeClassName },
+        getSVGIcon()
       ],
       [
         'span',

@@ -102,7 +102,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
 
   onCategorySelected = (categoryId: string) => {
     this.props.emojiProvider.then(provider => {
-        provider.findInCategory(categoryId).then(emojisInCategory => {
+      provider.findInCategory(categoryId).then(emojisInCategory => {
         if (emojisInCategory && emojisInCategory.length) {
           this.setState({
             activeCategory: categoryId,

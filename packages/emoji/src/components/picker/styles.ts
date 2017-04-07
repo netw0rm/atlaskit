@@ -26,22 +26,22 @@ export const emojiPickerFooter = style({
 });
 
 export const emojiPickerRow = style({
-    boxSizing: 'border-box',
-    padding: '0 8px',
+  boxSizing: 'border-box',
+  padding: '0 8px',
 });
 
 export const emojiPickerCategoryTitle = style({
-    boxSizing: 'border-box',
-    color: akColorN900,
-    fontSize: '14px',
-    padding: '5px 8px',
-    textTransform: 'lowercase',
+  boxSizing: 'border-box',
+  color: akColorN900,
+  fontSize: '14px',
+  padding: '5px 8px',
+  textTransform: 'lowercase',
 
-    $nest: {
-      ['&:first-letter']: {
-        textTransform: 'uppercase',
-      },
+  $nest: {
+    ['&:first-letter']: {
+      textTransform: 'uppercase',
     },
+  },
 });
 
 export const active = 'active';
@@ -175,3 +175,16 @@ export const emojiPickerSpinner = style({
   top: `${((emojiPickerListHeight - spinnerSize + listSizes.search) / 2).toFixed()}px`,
 });
 
+export const emojiCategoryTitle = style({
+  boxSizing: 'border-box',
+  color: akColorN900,
+  fontSize: '14px',
+  padding: '5px 8px',
+  textTransform: 'lowercase',
+
+  $nest: {
+    '&:first-letter': {
+      textTransform: 'uppercase'
+    }
+  }
+});

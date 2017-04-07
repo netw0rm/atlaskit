@@ -1,6 +1,6 @@
 import { Search, UnorderedSearchIndex } from 'js-search';
 import debug from '../util/logger';
-import { AvailableCategories, EmojiDescription, EmojiId, OptionalEmojiDescription, SearchOptions } from '../types';
+import { AvailableCategories, EmojiDescription, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
 
 export interface EmojiSearchResult {
@@ -8,12 +8,6 @@ export interface EmojiSearchResult {
   categories: AvailableCategories;
   query?: string;
 }
-
-export const toEmojiId = (emoji: EmojiDescription): EmojiId => ({
-  shortName: emoji.shortName,
-  id: emoji.id,
-  fallback: emoji.fallback,
-});
 
 declare type EmojiByKey = Map<any, EmojiDescription[]>;
 

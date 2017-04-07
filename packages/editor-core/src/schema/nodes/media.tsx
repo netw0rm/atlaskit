@@ -6,6 +6,7 @@ import { akColorN50 } from '@atlaskit/util-shared-styles';
 import MediaComponent from '../../ui/Media/MediaComponent';
 import ProviderFactory, { WithProviders } from '../../providerFactory';
 import { locateAndRemoveNode } from '../../utils';
+import { stateKey as mediaStateKey } from '../../plugins/media';
 
 const mediaStyle = style({
   display: 'inline-block',
@@ -19,8 +20,8 @@ const mediaStyle = style({
     '&.ProseMirror-selectednode': {
       outline: 'none',
       $nest: {
-        '&&> div': {
-          outline: '2px solid #8cf',
+        '.card': {
+          outline: '3px solid #8cf',
           background: akColorN50,
         }
       }
@@ -38,7 +39,7 @@ export interface Attributes {
 
 export const media: NodeSpec = {
   inline: false,
-  group: 'block',
+  selectable: true,
   attrs: {
     id: { default: '' },
     type: { default: '' },
@@ -52,26 +53,27 @@ export const media: NodeSpec = {
       collection: dom.getAttribute('data-collection')!
     })
   }],
-
-  // TODO: This will not be able to read the data-filename attribute and set the node's instance JS property
-  toDOM(node: any): [string, any] {
-    const attrs = {
-      'class': mediaStyle,
-      'contenteditable': 'false',
-      'data-node-type': 'media',
-      'data-id': node.attrs.id,
-      'data-type': node.attrs.type,
-      'data-collection': node.attrs.collection,
-      'data-filename': node.filename ? node.filename : ''
-    };
-
-    return ['div', attrs];
-  }
 };
 
 export const mediaNodeView = (providerFactory: ProviderFactory) => (node: any, view: EditorView, getPos: () => number): NodeView => {
-  let div: HTMLElement | undefined = document.createElement('div');
   const { id, type, collection } = node.attrs;
+  const pluginState = mediaStateKey.getState(view.state);
+  let div: HTMLElement | undefined = document.createElement('div');
+
+  const attrs = {
+    'class': mediaStyle,
+    'contenteditable': 'false',
+    'spellcheck' : 'false',
+    'data-node-type': 'media',
+    'data-id': node.attrs.id,
+    'data-type': node.attrs.type,
+    'data-collection': node.attrs.collection,
+    'data-filename': node.filename ? node.filename : ''
+  };
+
+  for (let key of Object.keys(attrs) ){
+    div.setAttribute(key, attrs[key]);
+  }
 
   ReactDOM.render(
     <WithProviders
@@ -80,7 +82,7 @@ export const mediaNodeView = (providerFactory: ProviderFactory) => (node: any, v
       renderNode={providers =>
         <MediaComponent
           mediaProvider={providers['mediaProvider']}
-          pluginState={this.pluginState}
+          pluginState={pluginState}
           id={id!}
           type={type!}
           collection={collection!}

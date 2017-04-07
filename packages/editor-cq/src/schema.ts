@@ -59,6 +59,7 @@ const nodes = {
   doc,
   hardBreak,
   heading,
+  mediaGroup,
   listItem,
   orderedList,
   paragraph,
@@ -66,6 +67,7 @@ const nodes = {
   text,
   unsupportedBlock,
   unsupportedInline,
+  media,
 };
 
 const marks = {

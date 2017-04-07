@@ -135,6 +135,13 @@ export default class Editor extends PureComponent<Props, State> {
     }
   }
 
+  componentWillUnmount() {
+    const { editorView } = this.state;
+    if (editorView && editorView.state) {
+      this.mediaPlugin.getState(editorView.state).destroy();
+    }
+  }
+
   render() {
     const { editorView, isExpanded } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
@@ -219,7 +226,6 @@ export default class Editor extends PureComponent<Props, State> {
       });
 
       analyticsService.trackEvent('atlassian.editor.start');
-      mediaPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
       this.setState({ editorView });
       this.focus();

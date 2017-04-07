@@ -26,7 +26,7 @@ export class MediaPluginState {
   public allowsUploads: boolean = false;
   public allowsPastingLinks: boolean = false;
 
-  // private view: EditorView;
+  private view: EditorView;
   private state: EditorState<any>;
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
   private mediaStateChangeSubscribers: { [key: string]: MediaStateChangeSubscriber[] } = {};
@@ -44,8 +44,7 @@ export class MediaPluginState {
     const { nodes } = state.schema;
 
     if (!nodes.media || !nodes.mediaGroup) {
-      console.warn('Editor: unable to init media plugin - media or mediaGroup node absent in schema');
-      return;
+      throw new Error('Editor: unable to init media plugin - media or mediaGroup node absent in schema');
     }
 
     options.providerFactory.subscribe('mediaProvider', (name, provider: Promise<MediaProvider>) => this.setMediaProvider(provider));
@@ -128,7 +127,7 @@ export class MediaPluginState {
   }
 
   insertFile = (id: string, filename: string, collection: string) => {
-    const { state } = this;
+    const { state, view } = this;
     const node = state.schema.nodes.media!.create({
       id,
       collection,
@@ -137,7 +136,7 @@ export class MediaPluginState {
 
     node.filename = filename;
 
-    state.apply(state.tr.insert(this.findInsertPosition(), node));
+    view.dispatch(state.tr.insert(this.findInsertPosition(), node));
   }
 
   showMediaPicker = () => {
@@ -172,6 +171,10 @@ export class MediaPluginState {
     }
   }
 
+  setView(view: EditorView) {
+    this.view = view;
+  }
+
   destroy() {
     if (this.destroyed) {
       return;
@@ -192,12 +195,12 @@ export class MediaPluginState {
   /**
    * Determine best PM document position to insert a new media item at.
    */
-  findInsertPosition = () => {
+  private findInsertPosition = () => {
     const { state } = this;
     const $from = state.selection.$from;
 
     // Check if we're already in a media group and prepend the element inside the group
-    if ($from.parent.type === mediaGroup) {
+    if ($from.parent.type === state.schema.nodes.mediaGroup) {
       return $from.start($from.depth);
     }
 
@@ -217,7 +220,7 @@ export class MediaPluginState {
     // }
 
     // The adjacent node is a media group, so let's append there...
-    if (adjacentNode.type === mediaGroup) {
+    if (adjacentNode.type === state.schema.nodes.mediaGroup) {
       return adjacentPos + 1;
     }
 
@@ -362,7 +365,7 @@ export default function mediaPluginFactory (options: MediaPluginOptions) {
     view: (view: EditorView) => {
       reconfigure(view, [inputRulePlugin(view.state.schema)]);
       const pluginState = stateKey.getState(view.state);
-      pluginState.setView(view);
+      pluginState.setView(view); // no need for
 
       return {
         update(view: EditorView, prevState: EditorState<any>) {

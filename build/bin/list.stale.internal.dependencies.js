@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
-const path = require('path');
-const fs = require('fs');
 const semver = require('semver');
 const chalk = require('chalk');
+
+const getAllPackageJsons = require('./_get_all_package_jsons');
 
 /*
   This script is for finding packages that depend on non-latest versions of other internal packages.
@@ -12,18 +12,6 @@ const chalk = require('chalk');
 
   Pass the `--dev` flag to list stale dev dependencies instead
 */
-
-function getAllPackageJsons() {
-  const packagesDir = path.join(__dirname, '..', '..', 'packages');
-  const packages = fs.readdirSync(packagesDir)
-    .filter(file => fs.statSync(path.join(packagesDir, file)).isDirectory());
-  const packageJsons = [];
-  packages.forEach((pkg) => {
-    const packageJson = JSON.parse(fs.readFileSync(path.join(packagesDir, pkg, 'package.json')));
-    packageJsons.push(packageJson);
-  });
-  return packageJsons;
-}
 
 function getLocalDep(packageJsons, packageName) {
   return packageJsons.find(pkg => pkg.name === packageName);

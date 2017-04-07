@@ -1,4 +1,4 @@
-import * as Cache from 'timed-cache';
+import Cache from '../test/Cache';
 
 import { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
 import EmojiRepository from '../src/api/EmojiRepository';
@@ -9,22 +9,13 @@ declare var require: {
     <T>(path: string): T;
 };
 
-const cache = new Cache({ defaultTtl: 10000 });
-const getOrCreate = (key: string, create: () => any): any => {
-  let data = cache.get(key);
-  if (!data) {
-    data = create();
-  }
-  // Force ttl reset to keep alive
-  cache.put(key, data);
-  return data;
-};
+const cache = new Cache({ ttl: 10000 });
 
 export const getStandardEmojiData = (): EmojiServiceResponse =>
-  getOrCreate('service-data-standard.json', () => require('./service-data-standard.json') as EmojiServiceResponse);
+  cache.getOrCreate('service-data-standard.json', () => require('./service-data-standard.json') as EmojiServiceResponse);
 // tslint:disable-next-line:no-var-requires
 export const getAtlassianEmojiData = (): EmojiServiceResponse =>
-  getOrCreate('service-data-atlassian.json', () => require('./service-data-atlassian.json') as EmojiServiceResponse);
+  cache.getOrCreate('service-data-atlassian.json', () => require('./service-data-atlassian.json') as EmojiServiceResponse);
 
 export const getAllEmojiData = (): EmojiServiceResponse => {
   const standardEmojis = getStandardEmojiData();
@@ -48,11 +39,11 @@ export const getAllEmojiData = (): EmojiServiceResponse => {
 const getEmojiSet = (name: string): EmojiDescription[] => {
   switch (name) {
     case 'all':
-      return getOrCreate(`emoji-set-all`, () => denormaliseEmojiServiceResponse(getAllEmojiData()).emojis);
+      return cache.getOrCreate(`emoji-set-all`, () => denormaliseEmojiServiceResponse(getAllEmojiData()).emojis);
     case 'standard':
-      return getOrCreate(`emoji-set-standard`, () => denormaliseEmojiServiceResponse(getStandardEmojiData()).emojis);
+      return cache.getOrCreate(`emoji-set-standard`, () => denormaliseEmojiServiceResponse(getStandardEmojiData()).emojis);
     case 'atlassian':
-      return getOrCreate(`emoji-set-standard`, () => denormaliseEmojiServiceResponse(getAtlassianEmojiData()).emojis);
+      return cache.getOrCreate(`emoji-set-standard`, () => denormaliseEmojiServiceResponse(getAtlassianEmojiData()).emojis);
     default:
       return [];
   }
@@ -77,6 +68,6 @@ a semper massa dignissim nec.
 `;
 
 export const getEmojiRepository = (): EmojiRepository =>
-  getOrCreate('EmojiRepository', () => new EmojiRepository(getEmojis()));
+  cache.getOrCreate('EmojiRepository', () => new EmojiRepository(getEmojis()));
 
 export const getEmojiResource = (config?: MockEmojiResourceConfig): Promise<MockEmojiResource> => mockEmojiResourceFactory(getEmojiRepository(), config);

@@ -1,4 +1,4 @@
-import * as Cache from 'timed-cache';
+import Cache from './Cache';
 
 import EmojiRepository from '../src/api/EmojiRepository';
 import { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
@@ -47,33 +47,24 @@ declare var require: {
     <T>(path: string): T;
 };
 
-const cache = new Cache({ defaultTtl: 10000 });
-const getOrCreate = (key: string, create: () => any): any => {
-  let data = cache.get(key);
-  if (!data) {
-    data = create();
-  }
-  // Force ttl reset to keep alive
-  cache.put(key, data);
-  return data;
-};
+const cache = new Cache({ ttl: 10000 });
 
 // tslint:disable-next-line:no-var-requires
 export const getStandardServiceEmojis = (): EmojiServiceResponse =>
-  getOrCreate('test-emoji-standard.json', () => require('./test-emoji-standard.json') as EmojiServiceResponse);
+  cache.getOrCreate('test-emoji-standard.json', () => require('./test-emoji-standard.json') as EmojiServiceResponse);
 // tslint:disable-next-line:no-var-requires
 export const getAtlassianServiceEmojis = (): EmojiServiceResponse =>
-  getOrCreate('test-emoji-atlassian.json', () => require('./test-emoji-atlassian.json') as EmojiServiceResponse);
+  cache.getOrCreate('test-emoji-atlassian.json', () => require('./test-emoji-atlassian.json') as EmojiServiceResponse);
 
 export const getStandardEmojis = (): EmojiDescription[] =>
-  getOrCreate('standardEmojis', () => denormaliseEmojiServiceResponse(getStandardServiceEmojis()).emojis);
+  cache.getOrCreate('standardEmojis', () => denormaliseEmojiServiceResponse(getStandardServiceEmojis()).emojis);
 export const getAtlassianEmojis = (): EmojiDescription[] =>
-  getOrCreate('atlassianEmojis', () => denormaliseEmojiServiceResponse(getAtlassianServiceEmojis()).emojis);
+  cache.getOrCreate('atlassianEmojis', () => denormaliseEmojiServiceResponse(getAtlassianServiceEmojis()).emojis);
 export const getEmojis = (): EmojiDescription[] =>
-  getOrCreate('allEmojis', () => [ ...getStandardEmojis(), ...getAtlassianEmojis() ]);
+  cache.getOrCreate('allEmojis', () => [ ...getStandardEmojis(), ...getAtlassianEmojis() ]);
 
 export const getEmojiRepository = () =>
-  getOrCreate('EmojiRepository', () => new EmojiRepository(getEmojis()));
+  cache.getOrCreate('EmojiRepository', () => new EmojiRepository(getEmojis()));
 
 export const getGrinEmoji = () => getEmojiRepository().findByShortName(':grin:') as EmojiDescriptionWithVariations;
 export const getEvilburnsEmoji = () => getEmojiRepository().findByShortName(':evilburns:') as EmojiDescriptionWithVariations;

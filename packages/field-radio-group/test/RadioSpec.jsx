@@ -25,6 +25,7 @@ describe(name, () => {
         const wrapper = mount(<Radio>{content}</Radio>);
         expect(wrapper.find('input').length).to.equal(1);
         expect(wrapper.text()).to.equal(content);
+        wrapper.unmount();
       });
 
       it('should render content with markup correctly', () => {
@@ -32,6 +33,7 @@ describe(name, () => {
         const wrapper = mount(<Radio>{content}</Radio>);
         expect(wrapper.find('input').length).to.equal(1);
         expect(wrapper.contains(content)).to.equal(true);
+        wrapper.unmount();
       });
     });
 
@@ -41,6 +43,7 @@ describe(name, () => {
           const props = { [prop]: val };
           const wrapper = mount(<Radio {...props} />);
           expect(wrapper.find('input').prop(inputProp)).to.equal(val);
+          wrapper.unmount();
         });
       }
 
@@ -72,6 +75,7 @@ describe(name, () => {
           const wrapper = mount(<Radio onChange={spy} />);
           wrapper.find('input').simulate('change');
           expect(spy.calledOnce).to.equal(true);
+          wrapper.unmount();
         });
       });
 

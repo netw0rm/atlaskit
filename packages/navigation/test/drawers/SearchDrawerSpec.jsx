@@ -6,13 +6,19 @@ import { searchIconOffset } from '../../src/shared-variables';
 describe('<SearchDrawer />', () => {
   describe('the inner Drawer', () => {
     it('isFullWidth should pass width="full" to the inner drawer', () => {
-      expect(mount(<AkSearchDrawer isFullWidth />).find('Drawer').props().width).to.equal('full');
+      const wrapper = mount(<AkSearchDrawer isFullWidth />);
+      expect(wrapper.find('Drawer').props().width).to.equal('full');
+      wrapper.unmount();
     });
     it('isFullWidth={false} should pass width="wide" to the inner drawer', () => {
-      expect(mount(<AkSearchDrawer isFullWidth={false} />).find('Drawer').props().width).to.equal('wide');
+      const wrapper = mount(<AkSearchDrawer isFullWidth={false} />);
+      expect(wrapper.find('Drawer').props().width).to.equal('wide');
+      wrapper.unmount();
     });
     it('should render the backIcon in the correct position default to false', () => {
-      expect(mount(<AkSearchDrawer />).find('Drawer').props().backIconOffset).to.equal(searchIconOffset);
+      const wrapper = mount(<AkSearchDrawer />);
+      expect(wrapper.find('Drawer').props().backIconOffset).to.equal(searchIconOffset);
+      wrapper.unmount();
     });
   });
 });

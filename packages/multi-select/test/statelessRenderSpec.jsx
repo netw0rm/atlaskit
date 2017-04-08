@@ -28,26 +28,38 @@ describe(`${name} - stateless`, () => {
     });
 
     it('should render with correct CSS class name', () => {
-      expect(mount(<StatelessMultiSelect />).find(`.${styles.selectWrapper}`).length).to.equal(1);
+      const wrapper = mount(<StatelessMultiSelect />);
+      expect(wrapper.find(`.${styles.selectWrapper}`).length).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should render Label when the prop is set', () => {
-      expect(mount(<StatelessMultiSelect />).find(Label).length).to.equal(0);
-      expect(mount(<StatelessMultiSelect label="test" />).find(Label).length).to.equal(1);
+      const wrapper = mount(<StatelessMultiSelect />);
+      const wrapperLabel = mount(<StatelessMultiSelect label="test" />);
+      expect(wrapper.find(Label).length).to.equal(0);
+      expect(wrapperLabel.find(Label).length).to.equal(1);
+      wrapper.unmount();
+      wrapperLabel.unmount();
     });
 
     it('should render Droplist', () => {
-      expect(mount(<StatelessMultiSelect />).find(Droplist).length).to.equal(1);
+      const wrapper = mount(<StatelessMultiSelect />);
+      expect(wrapper.find(Droplist).length).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should render Fieldbase inside Droplist', () => {
-      expect(mount(<StatelessMultiSelect />).find(FieldBase).length).to.equal(1);
-      expect(mount(<StatelessMultiSelect />).find(Droplist).find(FieldBase).length).to.equal(1);
+      const wrapper = mount(<StatelessMultiSelect />);
+      expect(wrapper.find(FieldBase).length).to.equal(1);
+      expect(wrapper.find(Droplist).find(FieldBase).length).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should render Trigger inside Fieldbase', () => {
-      expect(mount(<StatelessMultiSelect />).find(Trigger).length).to.equal(1);
-      expect(mount(<StatelessMultiSelect />).find(FieldBase).find(Trigger).length).to.equal(1);
+      const wrapper = mount(<StatelessMultiSelect />);
+      expect(wrapper.find(Trigger).length).to.equal(1);
+      expect(wrapper.find(FieldBase).find(Trigger).length).to.equal(1);
+      wrapper.unmount();
     });
 
     describe('groups and items', () => {
@@ -65,6 +77,7 @@ describe(`${name} - stateless`, () => {
         expect(select.find(Group).length).to.equal(1);
         expect(select.find(Item).length).to.equal(2);
         expect(select.find(Group).find(Item).length).to.equal(2);
+        select.unmount();
       });
 
       it('should not render a group if all items in that group are selected', () => {
@@ -75,6 +88,7 @@ describe(`${name} - stateless`, () => {
           isOpen
         />);
         expect(select.find(Group).length).to.equal(0);
+        select.unmount();
       });
     });
 
@@ -91,6 +105,7 @@ describe(`${name} - stateless`, () => {
       const select = mount(<StatelessMultiSelect items={items} isOpen />);
 
       expect(select.find(Avatar).length).to.equal(2);
+      select.unmount();
     });
 
     it('should pass props to Item', () => {
@@ -120,6 +135,7 @@ describe(`${name} - stateless`, () => {
       expect(itemProps.isDisabled, 'isDisabled').to.equal(true);
       expect(itemProps.elemBefore, 'elemBefore').to.equal('1');
       expect(itemProps.elemAfter, 'elemAfter').to.equal('2');
+      select.unmount();
     });
   });
 
@@ -140,6 +156,7 @@ describe(`${name} - stateless`, () => {
       const wrapper = mount(<StatelessMultiSelect items={items} selectedItems={selectedItems} />);
       const tagGroup = wrapper.find(TagGroup);
       expect(tagGroup.find(Tag).length).to.equal(2);
+      wrapper.unmount();
     });
 
     it('should pass on tag.elemBefore prop to selected tags', () => {
@@ -147,6 +164,7 @@ describe(`${name} - stateless`, () => {
       const tagGroup = wrapper.find(TagGroup);
       expect(tagGroup.find(Tag).length).to.equal(2);
       expect(tagGroup.find(Avatar).length).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should pass on tag.appearance prop to selected tags', () => {
@@ -155,6 +173,7 @@ describe(`${name} - stateless`, () => {
       expect(tagGroup.find(Tag).length).to.equal(2);
       expect(tagGroup.find(Tag).at(0).prop('appearance')).to.equal('rounded');
       expect(tagGroup.find(Tag).at(1).prop('appearance')).to.equal('default');
+      wrapper.unmount();
     });
   });
 });

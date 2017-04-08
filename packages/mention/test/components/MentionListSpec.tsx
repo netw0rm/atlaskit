@@ -20,8 +20,14 @@ function setupList(props?: Props): ReactWrapper<Props, State> {
 }
 
 describe('MentionList', () => {
+  let component: ReactWrapper<Props, State>;
+
+  afterEach(() => {
+    component.unmount();
+  });
+
   it('should have first item selected by default', () => {
-    const component = setupList();
+    component = setupList();
     const defaultMentionItemsShow = () => {
       return component.find(MentionItem).length === mentionDataSize;
     };
@@ -32,7 +38,7 @@ describe('MentionList', () => {
   });
 
   it('selectIndex selects correct item', () => {
-    const component = setupList();
+    component = setupList();
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const thirdItemSelected = () => isMentionItemSelected(component, mentions[2].id);
 
@@ -45,7 +51,7 @@ describe('MentionList', () => {
   });
 
   it('selectId selects correct item', () => {
-    const component = setupList();
+    component = setupList();
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
     const thirdItemSelected = () => isMentionItemSelected(component, mentions[2].id);
 
@@ -58,7 +64,7 @@ describe('MentionList', () => {
   });
 
   it('mentionsCount returns the number of mentions in the list', () => {
-    const component = setupList();
+    component = setupList();
     const defaultMentionItemsShow = () => component.find(MentionItem).length === mentionDataSize;
 
     return waitUntil(defaultMentionItemsShow)

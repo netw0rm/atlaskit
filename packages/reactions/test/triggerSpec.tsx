@@ -24,6 +24,7 @@ describe('@atlaskit/reactions/trigger', () => {
     const trigger = mount(<Trigger onClick={onClick} />);
     trigger.simulate('mousedown', { button: 0 });
     expect(onClick.called).to.equal(true);
+    trigger.unmount();
   });
 
 });

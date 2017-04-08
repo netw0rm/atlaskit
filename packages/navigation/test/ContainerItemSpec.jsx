@@ -9,11 +9,18 @@ import ContainerItem from '../src/components/js/ContainerItem';
 
 describe('<ContainerItem />', () => {
   describe('props', () => {
+    let container;
+
     function passesOnProp(prop, value) {
-      return mount(<ContainerItem
-        {...{ [prop]: value }}
-      />).find('NavigationItem').props()[prop] === value;
+      container = mount(<ContainerItem {...{ [prop]: value }} />);
+      return container.find('NavigationItem').props()[prop] === value;
     }
+
+    afterEach(() => {
+      if (container) {
+        container.unmount();
+      }
+    });
 
     [
       { prop: 'action', value: 'foo' },
@@ -31,11 +38,15 @@ describe('<ContainerItem />', () => {
     });
 
     it('appearance="global" should render with the global appearance class', () => {
-      expect((mount(<ContainerItem appearance="global" />).find(`.${containerItem}`)).hasClass((hasGlobalAppearance))).to.equal(true);
+      const wrapper = mount(<ContainerItem appearance="global" />);
+      expect(wrapper.find(`.${containerItem}`).hasClass(hasGlobalAppearance)).to.equal(true);
+      wrapper.unmount();
     });
 
     it('appearance="settings" should render with the settings appearance class', () => {
-      expect((mount(<ContainerItem appearance="settings" />).find(`.${containerItem}`)).hasClass((hasSettingsAppearance))).to.equal(true);
+      const wrapper = mount(<ContainerItem appearance="settings" />);
+      expect(wrapper.find(`.${containerItem}`).hasClass(hasSettingsAppearance)).to.equal(true);
+      wrapper.unmount();
     });
   });
 });

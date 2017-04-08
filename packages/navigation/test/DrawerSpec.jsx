@@ -6,76 +6,104 @@ import Drawer from '../src/components/js/Drawer';
 describe('<Drawer />', () => {
   describe('props', () => {
     it('isOpen prop defaults to `false`', () => {
-      expect(mount(<Drawer />).props().isOpen).to.equal(false);
+      const wrapper = mount(<Drawer />);
+      expect(wrapper.props().isOpen).to.equal(false);
+      wrapper.unmount();
     });
     it('width defaults to `narrow`', () => {
-      expect(mount(<Drawer />).props().width).to.equal('narrow');
+      const wrapper = mount(<Drawer />);
+      expect(wrapper.props().width).to.equal('narrow');
+      wrapper.unmount();
     });
     it('width="full" does not render the <ContainerHeader />', () => {
-      expect(mount(<Drawer width="full" />).find('ContainerHeader').length).to.equal(0);
+      const wrapper = mount(<Drawer width="full" />);
+      expect(wrapper.find('ContainerHeader').length).to.equal(0);
+      wrapper.unmount();
     });
     it('primaryIcon is rendered', () => {
       const icon = <img alt="foo" />;
-      expect(mount(<Drawer primaryIcon={icon} />)
-        .find(`.${styles.icon}`).props().children).to.equal(icon);
+      const wrapper = mount(<Drawer primaryIcon={icon} />);
+      expect(wrapper.find(`.${styles.icon}`).props().children).to.equal(icon);
+      wrapper.unmount();
     });
     it('backIcon is rendered inside a <DrawerBackIcon />', () => {
       const icon = <img alt="foo" />;
-      expect(mount(<Drawer backIcon={icon} />)
-        .find('DrawerBackIcon').props().children).to.equal(icon);
+      const wrapper = mount(<Drawer backIcon={icon} />);
+      expect(wrapper.find('DrawerBackIcon').props().children).to.equal(icon);
+      wrapper.unmount();
     });
     it('header is rendered', () => {
       const header = <div className="foo" />;
-      expect(mount(<Drawer header={header} />)
-        .contains(header)).to.equal(true);
+      const wrapper = mount(<Drawer header={header} />);
+      expect(wrapper.contains(header)).to.equal(true);
+      wrapper.unmount();
     });
     it('children is rendered', () => {
       const content = <div className="foo" />;
-      expect(mount(<Drawer>{content}</Drawer>)
-        .contains(content)).to.equal(true);
+      const wrapper = mount(<Drawer>{content}</Drawer>);
+      expect(wrapper.contains(content)).to.equal(true);
+      wrapper.unmount();
     });
     it('onBackButton is triggered on activate of <DrawerTrigger />', () => {
       const spy = sinon.spy();
-      mount(<Drawer onBackButton={spy} />).find('DrawerTrigger').simulate('click');
+      const wrapper = mount(<Drawer onBackButton={spy} />);
+      wrapper.find('DrawerTrigger').simulate('click');
       expect(spy.called).to.equal(true);
+      wrapper.unmount();
     });
     it('backIconOffset defaults the back icon position to 0px', () => {
-      expect(mount(
+      const wrapper = mount(
         <Drawer />
-      ).find(`.${styles.backIconOuter}`).props().style.top).to.equal('0px');
+      );
+      expect(wrapper.find(`.${styles.backIconOuter}`).props().style.top).to.equal('0px');
+      wrapper.unmount();
     });
     it('backIconOffset changes the Y offset of where the backIcon is rendered', () => {
-      expect(mount(
+      const wrapper = mount(
         <Drawer backIconOffset={123} />
-      ).find(`.${styles.backIconOuter}`).props().style.top).to.equal('123px');
+      );
+      expect(wrapper.find(`.${styles.backIconOuter}`).props().style.top).to.equal('123px');
+      wrapper.unmount();
     });
   });
   describe('renders', () => {
     it('a <DrawerTrigger /> with a <DrawerBackIcon /> inside', () => {
-      expect(mount(<Drawer />).find('DrawerTrigger').childAt(0).is('DrawerBackIcon')).to.equal(true);
+      const wrapper = mount(<Drawer />);
+      expect(wrapper.find('DrawerTrigger').childAt(0).is('DrawerBackIcon')).to.equal(true);
+      wrapper.unmount();
     });
     it('a blanket', () => {
-      expect(mount(<Drawer />).find('Blanket').length).to.equal(1);
+      const wrapper = mount(<Drawer />);
+      expect(wrapper.find('Blanket').length).to.equal(1);
+      wrapper.unmount();
     });
     it('a <ContainerHeader />', () => {
-      expect(mount(<Drawer />).find('ContainerHeader').length).to.equal(1);
+      const wrapper = mount(<Drawer />);
+      expect(wrapper.find('ContainerHeader').length).to.equal(1);
+      wrapper.unmount();
     });
   });
   describe('blanket', () => {
     it('when Drawer.isOpen=true, Blanket.isTinted and Blanket.canClickThrough=false', () => {
-      const blanket = mount(<Drawer isOpen />).find('Blanket');
+      const drawer = mount(<Drawer isOpen />);
+      const blanket = drawer.find('Blanket');
       expect(blanket.props().isTinted).to.equal(true);
       expect(blanket.props().canClickThrough).to.equal(false);
+      drawer.unmount();
     });
     it('when Drawer.isOpen=false, Blanket.isTinted=false and Blanket.canClickThrough', () => {
-      const blanket = mount(<Drawer />).find('Blanket');
+      const drawer = mount(<Drawer />);
+      const blanket = drawer.find('Blanket');
       expect(blanket.props().isTinted).to.equal(false);
       expect(blanket.props().canClickThrough).to.equal(true);
+      drawer.unmount();
     });
     it('clicking on the blanket is the same as clicking the back button', () => {
       const onBackButton = () => {};
-      const blanket = mount(<Drawer onBackButton={onBackButton} />).find('Blanket');
+      const drawer = mount(<Drawer onBackButton={onBackButton} />);
+      const blanket = drawer.find('Blanket');
       expect(blanket.props().onBlanketClicked).to.equal(onBackButton);
+      drawer.unmount();
     });
   });
 });

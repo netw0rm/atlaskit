@@ -23,10 +23,12 @@ describe(`${name} - group`, () => {
     const wrapper = mount(<Group heading="test" elemAfter="elem" />);
     expect(wrapper.find(`.${styles.groupElemAfter}`).length).to.be.above(0);
     expect(wrapper.find(`.${styles.groupElemAfter}`).text()).to.equal('elem');
+    wrapper.unmount();
   });
 
   it('should generate corrent ariaLabel from heading and elemAfter', () => {
     const wrapper = mount(<Group heading="test" elemAfter="elem" />);
     expect(wrapper.instance().getAriaLabel()).to.equal('test elem');
+    wrapper.unmount();
   });
 });

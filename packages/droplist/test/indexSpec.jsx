@@ -12,6 +12,15 @@ const itemsList = (<Group heading="test1">
 </Group>);
 
 describe(`${name} - core`, () => {
+  const animStub = window.cancelAnimationFrame;
+  beforeEach(() => {
+    window.cancelAnimationFrame = () => {};
+  });
+
+  afterEach(() => {
+    window.cancelAnimationFrame = animStub;
+  });
+
   it('should be possible to create a component', () => {
     expect(shallow(<Droplist>test</Droplist>)).not.to.equal(undefined);
   });
@@ -21,6 +30,10 @@ describe(`${name} - core`, () => {
 
     beforeEach(() => {
       wrapper = mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>);
+    });
+
+    afterEach(() => {
+      wrapper.unmount();
     });
 
     it('should render Layer component', () => {
@@ -53,8 +66,12 @@ describe(`${name} - core`, () => {
 
   describe('onOpenChange', () => {
     it('should be open when the isOpen property set to true', () => {
-      expect(mount(<Droplist trigger="text">{itemsList}</Droplist>).find(`.${styles.dropContent}`).length).to.equal(0);
-      expect(mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>).find(`.${styles.dropContent}`).length).to.equal(1);
+      const wrapper = mount(<Droplist trigger="text">{itemsList}</Droplist>);
+      const wrapperOpen = mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>);
+      expect(wrapper.find(`.${styles.dropContent}`).length).to.equal(0);
+      expect(wrapperOpen.find(`.${styles.dropContent}`).length).to.equal(1);
+      wrapper.unmount();
+      wrapperOpen.unmount();
     });
   });
 });

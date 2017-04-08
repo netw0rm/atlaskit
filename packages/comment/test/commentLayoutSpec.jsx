@@ -30,12 +30,14 @@ describe(name, () => {
           const wrapper = mount(<CommentLayout avatar={avatar} />);
           expect(wrapper.find(Avatar).length).to.equal(1);
           expect(wrapper.find(`.${styles.locals.avatarContainer}`).contains(avatar)).to.equal(true);
+          wrapper.unmount();
         });
 
         it('can render non-Avatar nodes as the comment avatar', () => {
           const avatar = <img src="test/src" alt="test alt" />;
           const wrapper = mount(<CommentLayout avatar={avatar} />);
           expect(wrapper.find(`.${styles.locals.avatarContainer}`).contains(avatar)).to.equal(true);
+          wrapper.unmount();
         });
 
         it('does not render the avatar container if no avatar is provided', () => {
@@ -50,6 +52,7 @@ describe(name, () => {
           const content = (<p>My sample content</p>);
           const wrapper = mount(<CommentLayout content={content} />);
           expect(wrapper.find(`.${styles.locals.mainSection}`).contains(content)).to.equal(true);
+          wrapper.unmount();
         });
       });
     });
@@ -61,6 +64,7 @@ describe(name, () => {
 
         const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
         expect(commentsContainer.contains(childComment)).to.equal(true);
+        wrapper.unmount();
       });
 
       it('should render multiple adjacent siblings', () => {
@@ -70,11 +74,13 @@ describe(name, () => {
         const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
         childComments.forEach(childComment =>
           expect(commentsContainer.contains(childComment)).to.equal(true));
+        wrapper.unmount();
       });
 
       it('should not render the container if no nested comments are provided', () => {
         const wrapper = mount(<CommentLayout />);
         expect(wrapper.contains(`.${styles.locals.nestedComments}`)).to.equal(false);
+        wrapper.unmount();
       });
     });
   });

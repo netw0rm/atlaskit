@@ -32,6 +32,7 @@ describe(name, () => {
         const wrapper = mount(<AkFieldRadioGroup items={sampleItems} />);
         expect(wrapper.find(Base).length).to.equal(1);
         expect(wrapper.find(Base).find(Radio).length).to.equal(3);
+        wrapper.unmount();
       });
     });
 
@@ -84,6 +85,7 @@ describe(name, () => {
           const wrapper = mount(<AkFieldRadioGroup onRadioChange={spy} items={sampleItems} />);
           wrapper.find(Radio).first().find('input').simulate('change');
           expect(spy.callCount).to.equal(1);
+          wrapper.unmount();
         });
       });
     });

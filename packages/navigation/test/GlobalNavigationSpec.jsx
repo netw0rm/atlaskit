@@ -12,10 +12,14 @@ class Child extends PureComponent {
 describe('<GlobalNavigation />', () => {
   describe('renders', () => {
     it('should render a <Spacer />', () => {
-      expect(mount(<GlobalNavigation />).find('Spacer')).to.have.length(1);
+      const wrapper = mount(<GlobalNavigation />);
+      expect(wrapper.find('Spacer')).to.have.length(1);
+      wrapper.unmount();
     });
     it('should render <GlobalPrimaryActions />', () => {
-      expect(mount(<GlobalNavigation />).find('GlobalPrimaryActions')).to.have.length(1);
+      const wrapper = mount(<GlobalNavigation />);
+      expect(wrapper.find('GlobalPrimaryActions')).to.have.length(1);
+      wrapper.unmount();
     });
   });
   describe('props', () => {
@@ -44,10 +48,12 @@ describe('<GlobalNavigation />', () => {
           secondaryActions={[<Child />, <Child />]}
         />);
       expect(wrapper.find('GlobalSecondaryActions').find(Child).length).to.equal(2);
+      wrapper.unmount();
     });
     it('should not render out any secondary actions if none are provided', () => {
       const wrapper = mount(<GlobalNavigation />);
       expect(wrapper.find('GlobalSecondaryActions').length).to.equal(0);
+      wrapper.unmount();
     });
     it('appearance="settings" renders with the hasSettingsAppearance class', () => {
       expect((shallow(

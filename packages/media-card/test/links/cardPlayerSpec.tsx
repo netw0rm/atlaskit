@@ -18,6 +18,8 @@ describe('LinkCardPlayer', () => {
     expect(cardPlayer.state('isPlayed')).to.be.true;
     expect(cardPlayer.state('isLoading')).to.be.true;
     expect(cardPlayer.find('iframe').get(0).getAttribute('src')).to.be.contain(playerUrl);
+
+    cardPlayer.unmount();
   });
 
   it('should hide the player details after the embed loads', () => {
@@ -28,5 +30,7 @@ describe('LinkCardPlayer', () => {
 
     expect(cardPlayer.find('.is-played')).to.have.length(1);
     expect(cardPlayer.find('.is-playing')).to.have.length(0);
+
+    cardPlayer.unmount();
   });
 });

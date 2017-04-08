@@ -44,11 +44,13 @@ describe('CardList', () => {
       getMediaItemProvider: expectedMediaItemProvider
     }) as any;
 
-    mount(<CardList context={context} collectionName={collectionName}/>);
+    const cardList = mount(<CardList context={context} collectionName={collectionName}/>);
 
     expect(context.getMediaItemProvider.callCount).to.be.equal(expectedMediaItems.length);
     expect(context.getMediaItemProvider.calledWithExactly(expectedMediaItems[0].details.id, expectedMediaItems[0].type, collectionName, expectedMediaItems[0])).to.be.true;
     expect(context.getMediaItemProvider.calledWithExactly(expectedMediaItems[1].details.id, expectedMediaItems[1].type, collectionName, expectedMediaItems[1])).to.be.true;
+
+    cardList.unmount();
   });
 
   it('should pass a provider to MediaCard', () => {
@@ -91,6 +93,7 @@ describe('CardList', () => {
 
     card.find(MediaCard).forEach(mediaCard => expect(mediaCard.prop('provider')).to.be.equal(expectedMediaItemProvider));
 
+    card.unmount();
   });
 
   it('should be loading=true when mounted', () => {

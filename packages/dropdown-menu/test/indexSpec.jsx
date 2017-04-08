@@ -45,6 +45,10 @@ describe(name, () => {
       wrapper = mount(<Menu items={itemsList}>text</Menu>);
     });
 
+    afterEach(() => {
+      wrapper.unmount();
+    });
+
     it('should render Droplist component', () => {
       expect(wrapper.find(Droplist).length).to.equal(1);
     });
@@ -69,6 +73,7 @@ describe(name, () => {
         expect(button.prop('ariaHaspopup')).to.equal(true);
         expect(button.prop('ariaExpanded')).to.equal(menu.props().defaultOpen);
         expect(button.prop('ariaControls')).to.not.equal(undefined);
+        menu.unmount();
       });
     });
 
@@ -80,6 +85,7 @@ describe(name, () => {
       expect(trigger.prop('iconAfter')).not.to.equal(undefined);
       expect(trigger.prop('children')).to.equal(text);
       expect(menu.find(ExpandIcon).length).to.equal(1);
+      menu.unmount();
     });
 
     it('should pass through triggerButtonProps to the trigger for triggerType=button', () => {
@@ -93,6 +99,7 @@ describe(name, () => {
       expect(trigger.prop('appearance')).to.equal(triggerProps.appearance);
       expect(trigger.prop('id')).to.equal(triggerProps.id);
       expect(trigger.prop('theme')).to.equal(triggerProps.theme);
+      menu.unmount();
     });
 
     it('should render provided iconAfter in trigger instead of default expand icon if provided', () => {
@@ -104,6 +111,7 @@ describe(name, () => {
       expect(trigger.prop('iconBefore')).to.equal(undefined);
       expect(trigger.prop('iconAfter')).to.equal(triggerProps.iconAfter);
       expect(menu.find(MoreIcon).length).to.equal(1);
+      menu.unmount();
     });
 
     it('should render provided iconBefore in trigger instead of default expand icon if provided', () => {
@@ -115,6 +123,7 @@ describe(name, () => {
       expect(trigger.prop('iconBefore')).to.equal(triggerProps.iconBefore);
       expect(trigger.prop('iconAfter')).to.equal(undefined);
       expect(menu.find(MoreIcon).length).to.equal(1);
+      menu.unmount();
     });
   });
 
@@ -129,6 +138,7 @@ describe(name, () => {
       expect(wrapper.state().isOpen).to.equal(false);
       trigger.simulate('click');
       expect(wrapper.state().isOpen).to.equal(true);
+      wrapper.unmount();
     });
 
     it('interacting with link item should close the dropdown', () => {
@@ -143,6 +153,7 @@ describe(name, () => {
       expect(wrapper.state().isOpen).to.equal(true);
       item.simulate('click');
       expect(wrapper.state().isOpen).to.equal(false);
+      wrapper.unmount();
     });
 
     it('interacting with checkbox item should not close the menu', () => {
@@ -157,6 +168,7 @@ describe(name, () => {
       expect(wrapper.state().isOpen).to.equal(true);
       item.simulate('click');
       expect(wrapper.state().isOpen).to.equal(true);
+      wrapper.unmount();
     });
 
     it('interacting with radio item should not close the menu', () => {
@@ -171,6 +183,7 @@ describe(name, () => {
       expect(wrapper.state().isOpen).to.equal(true);
       item.simulate('click');
       expect(wrapper.state().isOpen).to.equal(true);
+      wrapper.unmount();
     });
   });
 
@@ -188,6 +201,7 @@ describe(name, () => {
       const item = wrapper.find('[role="menuitemcheckbox"]');
       item.simulate('click');
       expect(spy.called).to.equal(true);
+      wrapper.unmount();
     });
 
     it('should pass the item when activated', () => {
@@ -206,6 +220,7 @@ describe(name, () => {
       expect(attrs.item).not.to.equal(undefined);
       expect(attrs.item).to.equal(items[0].items[0]);
       expect(attrs.item).to.deep.equal({ content: 'item 1', type: 'checkbox', isChecked: true });
+      wrapper.unmount();
     });
   });
 
@@ -224,6 +239,10 @@ describe(name, () => {
       beforeEach(() => {
         wrapper = mount(<Menu items={items} defaultOpen>test</Menu>);
         handler = wrapper.instance().handleItemActivation;
+      });
+
+      afterEach(() => {
+        wrapper.unmount();
       });
 
       it('should set `checked` to true when the radio item is activated', () => {
@@ -311,6 +330,8 @@ describe(name, () => {
         const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
 
         expect(wrapper.instance().getPrevFocusable(1)).to.equal(0);
+
+        wrapper.unmount();
       });
 
       it('should skip hidden items', () => {
@@ -325,6 +346,8 @@ describe(name, () => {
         const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
 
         expect(wrapper.instance().getPrevFocusable(4)).to.equal(1);
+
+        wrapper.unmount();
       });
 
       it('should return the first item if there is nothing before', () => {
@@ -338,6 +361,8 @@ describe(name, () => {
         const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
 
         expect(wrapper.instance().getPrevFocusable(0)).to.equal(0);
+
+        wrapper.unmount();
       });
 
       it('should return the first non-hidden item if the first item is hidden', () => {
@@ -351,6 +376,8 @@ describe(name, () => {
         const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
 
         expect(wrapper.instance().getPrevFocusable(2)).to.equal(2);
+
+        wrapper.unmount();
       });
     });
 
@@ -366,6 +393,8 @@ describe(name, () => {
         const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
 
         expect(wrapper.instance().getNextFocusable()).to.equal(0);
+
+        wrapper.unmount();
       });
 
       it('if the first item is hidden it should return next available item', () => {
@@ -379,6 +408,8 @@ describe(name, () => {
         const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
 
         expect(wrapper.instance().getNextFocusable()).to.equal(2);
+
+        wrapper.unmount();
       });
 
       it('should return next item when passed an item', () => {
@@ -392,6 +423,8 @@ describe(name, () => {
         const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
 
         expect(wrapper.instance().getNextFocusable(1)).to.equal(2);
+
+        wrapper.unmount();
       });
 
       it('should skip hidden items', () => {
@@ -406,6 +439,8 @@ describe(name, () => {
         const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
 
         expect(wrapper.instance().getNextFocusable(1)).to.equal(4);
+
+        wrapper.unmount();
       });
 
       it('should return the latest item if there is nothing beyond', () => {
@@ -419,6 +454,8 @@ describe(name, () => {
         const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
 
         expect(wrapper.instance().getNextFocusable(2)).to.equal(2);
+
+        wrapper.unmount();
       });
 
       it('should return the latest non-hidden item if the latest item is hidden', () => {
@@ -433,6 +470,8 @@ describe(name, () => {
         const wrapper = mount(<StatelessMenu items={Items} isOpen>test</StatelessMenu>);
 
         expect(wrapper.instance().getNextFocusable(2)).to.equal(2);
+
+        wrapper.unmount();
       });
     });
   });

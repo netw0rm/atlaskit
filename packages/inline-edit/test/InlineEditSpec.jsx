@@ -27,12 +27,22 @@ const defaultProps = {
 };
 
 describe('@atlaskit/inline-edit', () => {
+  const animStub = window.cancelAnimationFrame;
+  beforeEach(() => {
+    window.cancelAnimationFrame = () => {};
+  });
+
+  afterEach(() => {
+    window.cancelAnimationFrame = animStub;
+  });
+
   it('should render read view inside FieldBase when in read mode', () => {
     const readView = <span>read</span>;
     const wrapper = mount(<InlineEdit {...defaultProps} readView={readView} />);
     expect(wrapper.find(FieldBase).length).to.equal(1);
     const fieldBase = wrapper.find(FieldBase);
     expect(fieldBase.contains(readView)).to.equal(true);
+    wrapper.unmount();
   });
 
   it('should render edit view inside FieldBase when in editing mode', () => {
@@ -41,6 +51,7 @@ describe('@atlaskit/inline-edit', () => {
     expect(wrapper.find(FieldBase).length).to.equal(1);
     const fieldBase = wrapper.find(FieldBase);
     expect(fieldBase.contains(editView)).to.equal(true);
+    wrapper.unmount();
   });
 
   describe('read-only mode', () => {
@@ -95,6 +106,7 @@ describe('@atlaskit/inline-edit', () => {
       );
       wrapper.find(FieldBase).simulate('click');
       expect(spy.callCount).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should not be called when the edit view is clicked', () => {
@@ -108,6 +120,7 @@ describe('@atlaskit/inline-edit', () => {
       );
       wrapper.find(FieldBase).simulate('click');
       expect(spy.called).to.equal(false);
+      wrapper.unmount();
     });
   });
 
@@ -123,6 +136,7 @@ describe('@atlaskit/inline-edit', () => {
       );
       wrapper.find(ConfirmIcon).simulate('click');
       expect(spy.callCount).to.equal(1);
+      wrapper.unmount();
     })
   );
 
@@ -138,6 +152,7 @@ describe('@atlaskit/inline-edit', () => {
       );
       wrapper.find(CancelIcon).simulate('click');
       expect(spy.callCount).to.equal(1);
+      wrapper.unmount();
     })
   );
 
@@ -177,6 +192,7 @@ describe('@atlaskit/inline-edit', () => {
       const onClickNode = label.findWhere(n => n.prop('onClick') && n.find(Label).isEmpty()).at(0);
       onClickNode.simulate('click');
       expect(spy.called).to.equal(false);
+      wrapper.unmount();
     });
   });
 
@@ -203,6 +219,7 @@ describe('@atlaskit/inline-edit', () => {
       it('FieldBase should not have isLoading prop', () => {
         const wrapper = mount(<InlineEdit {...defaultProps} isWaiting />);
         expect(wrapper.find(FieldBase).prop('isLoading')).to.equal(false);
+        wrapper.unmount();
       })
     );
 
@@ -234,6 +251,7 @@ describe('@atlaskit/inline-edit', () => {
       );
 
       expect(wrapper.find(FieldBase).length).to.equal(0);
+      wrapper.unmount();
     });
 
     it('should wrap editView in a FieldBase when set to false', () => {
@@ -246,6 +264,7 @@ describe('@atlaskit/inline-edit', () => {
       );
 
       expect(wrapper.find(FieldBase).length).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should default to false', () => {
@@ -257,6 +276,7 @@ describe('@atlaskit/inline-edit', () => {
       );
 
       expect(wrapper.prop('disableEditViewFieldBase')).to.equal(false);
+      wrapper.unmount();
     });
   });
 

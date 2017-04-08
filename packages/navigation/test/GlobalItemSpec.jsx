@@ -33,6 +33,7 @@ describe('<GlobalItem />', () => {
       />);
       expect(item.find('[data-foo]').length).to.equal(1);
       expect(item.find('linkComponent').props().href).to.equal('http://google.com');
+      item.unmount();
     });
   });
 });

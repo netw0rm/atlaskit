@@ -4,11 +4,16 @@ import DrawerItem from '../src/components/js/DrawerItem';
 
 describe('<DrawerItem />', () => {
   describe('props', () => {
+    let wrapper;
+
     function passesOnProp(prop, value) {
-      return mount(<DrawerItem
-        {...{ [prop]: value }}
-      />).find('NavigationItem').props()[prop] === value;
+      wrapper = mount(<DrawerItem {...{ [prop]: value }} />);
+      return wrapper.find('NavigationItem').props()[prop] === value;
     }
+
+    afterEach(() => {
+      wrapper.unmount();
+    });
 
     [
       { prop: 'action', value: 'foo' },

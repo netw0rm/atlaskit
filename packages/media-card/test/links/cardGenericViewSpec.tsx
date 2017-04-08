@@ -15,6 +15,7 @@ describe('LinkCardViewGeneric', () => {
     expect(card.find(Title).text()).to.eql(title);
     expect(card.find(Link).text()).to.eql(linkUrl);
     expect(card.find('.media-card')).to.have.length(0);
+    card.unmount();
   });
 
   it('should render in horizontal display mode by default', () => {
@@ -24,6 +25,7 @@ describe('LinkCardViewGeneric', () => {
 
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />);
     expect(card.find('.media-card')).to.have.length(1);
+    card.unmount();
   });
 
   it('should render in square display mode when specified', () => {
@@ -33,6 +35,7 @@ describe('LinkCardViewGeneric', () => {
 
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} appearance="square" />);
     expect(card.find('.media-card')).to.have.length(1);
+    card.unmount();
   });
 
   it('should render a thumnail when supplied', () => {
@@ -44,6 +47,7 @@ describe('LinkCardViewGeneric', () => {
 
     expect(card.find('.media-card')).to.have.length(1);
     expect(card.find('.media-card').props().style.backgroundImage).to.contain(thumbnailUrl);
+    card.unmount();
   });
 
   it.skip('should NOT render a thumnail when supplied thumbnail url errors', (done) => {
@@ -57,6 +61,7 @@ describe('LinkCardViewGeneric', () => {
     // Waits until the image tries to load the uri and calls the error handler which hanpens async.
     setTimeout(() => {
       expect(card.state('thumbnailError')).to.be.true;
+      card.unmount();
       done();
     }, 10);
   });
@@ -70,6 +75,7 @@ describe('LinkCardViewGeneric', () => {
 
     expect(card.find('.media-card')).to.have.length(0);
     expect(card.find(`img[src='${iconUrl}']`)).to.have.length(1);
+    card.unmount();
   });
 
   it('should NOT render an icon when supplied icon url errors', () => {
@@ -82,6 +88,7 @@ describe('LinkCardViewGeneric', () => {
 
     expect(card.find('.media-card')).to.have.length(0);
     expect(card.find(`img[src='${iconUrl}']`)).to.have.length(0);
+    card.unmount();
   });
 
   it('should render the site name instead of link url inside of they <a> tag when it is supplied as a prop', () => {
@@ -92,6 +99,7 @@ describe('LinkCardViewGeneric', () => {
     const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} site={site}/>);
     expect(card.find('a.underline').props().href).to.eql(linkUrl);
     expect(card.find('a.underline').text()).to.eql(site);
+    card.unmount();
   });
 
   it('currently ignores the loading prop', () => {
@@ -103,6 +111,7 @@ describe('LinkCardViewGeneric', () => {
     expect(card.find(Title).text()).to.eql(title);
     expect(card.find(Link).text()).to.eql(linkUrl);
     expect(card.find('.media-card')).to.have.length(0);
+    card.unmount();
   });
 
   it('currently ignores the error prop', () => {
@@ -114,5 +123,6 @@ describe('LinkCardViewGeneric', () => {
     expect(card.find(Title).text()).to.eql(title);
     expect(card.find(Link).text()).to.eql(linkUrl);
     expect(card.find('.media-card')).to.have.length(0);
+    card.unmount();
   });
 });

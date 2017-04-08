@@ -21,6 +21,7 @@ describe('<GlobalSecondaryActions />', () => {
     );
 
     expect(wrapper.find(Child).length).to.equal(2);
+    wrapper.unmount();
   });
 
   it('should throw an error if attempting to render with more than four secondary actions', () => {
@@ -41,5 +42,6 @@ describe('<GlobalSecondaryActions />', () => {
       wrapper.setProps('actions', [<Child />, <Child />, <Child />, <Child />, <Child />]);
 
     expect(updateWithTooManyActions).to.throw();
+    wrapper.unmount();
   });
 });

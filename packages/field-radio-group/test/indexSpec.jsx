@@ -60,6 +60,8 @@ describe(name, () => {
             expect(radio.prop('isDisabled')).to.equal(!!item.isDisabled);
             expect(radio.prop('isSelected')).to.equal(false);
           }
+
+          wrapper.unmount();
         });
       });
 
@@ -70,6 +72,7 @@ describe(name, () => {
         it('selects the item by default', () => {
           const wrapper = mount(<FieldRadioGroup items={sampleItemsWithDefault} />);
           expect(wrapper.find(AkRadio).at(2).prop('isSelected')).to.equal(true);
+          wrapper.unmount();
         });
 
         it('is overridden when an item is selected', () => {
@@ -82,6 +85,7 @@ describe(name, () => {
           expect(radios.at(0).prop('isSelected')).to.equal(true);
           expect(radios.at(1).prop('isSelected')).to.equal(false);
           expect(radios.at(2).prop('isSelected')).to.equal(false);
+          wrapper.unmount();
         });
       });
 
@@ -91,6 +95,7 @@ describe(name, () => {
           expect(wrapper.state('selectedValue')).to.equal(null);
           wrapper.find(AkRadio).first().find('input').simulate('change');
           expect(wrapper.state('selectedValue')).to.equal(sampleItems[0].value);
+          wrapper.unmount();
         });
       });
     });

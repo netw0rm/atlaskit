@@ -21,6 +21,10 @@ describe(`${name} - stateless`, () => {
       select = mount(<StatelessMultiSelect />);
     });
 
+    afterEach(() => {
+      select.unmount();
+    });
+
     describe('focus', () => {
       it('should focus the input field if shouldFocus is set to true', () => {
         const input = select.find('input');

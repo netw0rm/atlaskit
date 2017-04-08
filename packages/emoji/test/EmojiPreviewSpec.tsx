@@ -87,6 +87,7 @@ describe('<EmojiPreview />', () => {
       expect(emoji2Prop, 'Second has emoji prop').to.not.equal(undefined);
       expect(emoji2Prop.id, 'Tone id').to.equal(toneEmoji.id);
       expect(emoji2Prop.shortName, 'Tone shortName').to.equal(toneEmoji.shortName);
+      wrapper.unmount();
     });
 
     it('button should show default tone if selected tone is not specified', () => {
@@ -104,6 +105,7 @@ describe('<EmojiPreview />', () => {
       const emoji2Prop = second.prop('emoji');
       expect(emoji2Prop.shortName, 'Tone shortName').to.equal(toneEmoji.shortName);
       expect(emoji2Prop.representation, 'Tone skin variation').to.have.all.keys(toneEmoji.representation as Object);
+      wrapper.unmount();
     });
 
     it('should stop selecting tone when tone selected', () => {
@@ -117,6 +119,7 @@ describe('<EmojiPreview />', () => {
       instance.onToneSelected(1);
 
       expect(wrapper.state('selectingTone')).to.equal(false);
+      wrapper.unmount();
     });
 
     it('should pass onToneSelected to tone selector', () => {
@@ -129,6 +132,7 @@ describe('<EmojiPreview />', () => {
       instance.onToneButtonClick();
 
       expect(wrapper.find(ToneSelector).prop('onToneSelected')).to.equal(instance.onToneSelected);
+      wrapper.unmount();
     });
 
     it('should stop selecting tone on mouse leave', () => {
@@ -142,6 +146,7 @@ describe('<EmojiPreview />', () => {
 
       wrapper.simulate('mouseLeave');
       expect(wrapper.state('selectingTone')).to.equal(false);
+      wrapper.unmount();
     });
   });
 });

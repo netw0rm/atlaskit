@@ -16,7 +16,9 @@ describe(`${name} - smart`, () => {
 
   describe('render', () => {
     it('should render stateless single select', () => {
-      expect(mount(<SmartSelect />).find(StatelessSelect).length).to.equal(1);
+      const wrapper = mount(<SmartSelect />);
+      expect(wrapper.find(StatelessSelect).length).to.equal(1);
+      wrapper.unmount();
     });
   });
 
@@ -34,6 +36,10 @@ describe(`${name} - smart`, () => {
 
     beforeEach(() => {
       wrapper = mount(<SmartSelect items={[{ items }]} />);
+    });
+
+    afterEach(() => {
+      wrapper.unmount();
     });
 
     describe('when select is closed', () => {

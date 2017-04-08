@@ -14,6 +14,7 @@ describe('Spinner', () => {
   it('should be possible to create a component', () => {
     const wrapper = mount(<Spinner />);
     expect(wrapper).not.to.equal(undefined);
+    wrapper.unmount();
   });
 
   it('should be active by default', () => {
@@ -21,29 +22,34 @@ describe('Spinner', () => {
 
     // active is equivalent to Prop `!isCompleting`
     wrapper.prop('isCompleting').should.equal(false);
+    wrapper.unmount();
   });
 
   it('should be hidden by default', () => {
     const wrapper = mount(<Spinner />);
     wrapper.find(Container).prop('hidden').should.equal(true);
+    wrapper.unmount();
   });
 
   it('should remove the hidden state after some time', () => {
     const wrapper = mount(<Spinner />);
 
-    return waitUntil(() => spinnerIsVisible(wrapper)).then(() =>
-      expect(wrapper.find(Container).prop('hidden').should.equal(false))
-    );
+    return waitUntil(() => spinnerIsVisible(wrapper)).then(() => {
+      expect(wrapper.find(Container).prop('hidden')).to.equal(false);
+      wrapper.unmount();
+    });
   });
 
   describe('isCompleting prop', () => {
     it('should remove the active prop from Container when set to true', () => {
       const wrapper = mount(<Spinner isCompleting />);
       wrapper.find(Container).prop('active').should.equal(false);
+      wrapper.unmount();
     });
     it('should remove the active prop from Dash when set to true', () => {
       const wrapper = mount(<Spinner isCompleting />);
       wrapper.find(Dash).prop('active').should.equal(false);
+      wrapper.unmount();
     });
   });
 
@@ -65,6 +71,7 @@ describe('Spinner', () => {
           .simulate('transitionEnd', { propertyName: 'stroke-dashoffset' });
 
         expect(spy.callCount).to.equal(1);
+        wrapper.unmount();
       });
     });
 
@@ -77,6 +84,7 @@ describe('Spinner', () => {
           .simulate('transitionEnd', { propertyName: 'stroke-dashoffset' });
 
         expect(spy.callCount).to.not.equal(1);
+        wrapper.unmount();
       });
     });
   });
@@ -99,6 +107,11 @@ describe('Spinner', () => {
 
       expect(xlarge.find(Container).prop('style').width).to.equal(100);
       expect(xlarge.find(Container).prop('style').width).to.equal(100);
+
+      small.unmount();
+      medium.unmount();
+      large.unmount();
+      xlarge.unmount();
     });
 
     it('should render the spinner with a custom size', () => {
@@ -106,6 +119,8 @@ describe('Spinner', () => {
 
       expect(custom.find(Container).prop('style').height).to.equal(72);
       expect(custom.find(Container).prop('style').width).to.equal(72);
+
+      custom.unmount();
     });
 
     it('should render the spinner with the default size if an unsupported value is provided', () => {
@@ -113,6 +128,8 @@ describe('Spinner', () => {
 
       expect(custom.find(Container).prop('style').height).to.equal(20);
       expect(custom.find(Container).prop('style').width).to.equal(20);
+
+      custom.unmount();
     });
   });
 });

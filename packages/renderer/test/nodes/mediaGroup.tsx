@@ -24,6 +24,7 @@ describe('MediaGroup', () => {
     const mediaGroup = mount(<MediaGroup numOfCards={1}><Media item={mediaNode}/></MediaGroup>);
     const wrapperProps = mediaGroup.find(Media).props();
     expect(wrapperProps.cardDimensions).to.equal(LargeCard);
+    mediaGroup.unmount();
   });
 
   it('should render a FilmStripNavigator component if it has more than one media node', () => {

@@ -62,6 +62,7 @@ describe(name, () => {
       const EmptyView = <div>empty view</div>;
       const wrapper = mount(<DynamicTable emptyView={EmptyView} />);
       expect(wrapper.html()).to.equal(mount(EmptyView).html());
+      wrapper.unmount();
     });
 
     it('should display paginated data', () => {
@@ -77,6 +78,7 @@ describe(name, () => {
       expect(bodyRows.length).to.equal(1);
       expect(bodyRows.at(0).find('td').at(0).text()).to.equal('Hillary');
       expect(bodyRows.at(0).find('td').at(1).text()).to.equal('Clinton');
+      wrapper.unmount();
     });
 
     it('should display sorted data', () => {
@@ -99,6 +101,7 @@ describe(name, () => {
       expect(bodyRows.at(1).find('td').at(1).text()).to.equal('Trump');
       expect(bodyRows.at(2).find('td').at(0).text()).to.equal('Hillary');
       expect(bodyRows.at(2).find('td').at(1).text()).to.equal('Clinton');
+      wrapper.unmount();
     });
 
     it('should pass down extra props', () => {
@@ -141,6 +144,7 @@ describe(name, () => {
       wrapper.find('td').forEach((bodyCell) => {
         expect(bodyCell.prop('onClick')).to.equal(tdOnClick);
       });
+      wrapper.unmount();
     });
 
     describe('should invoke callbacks', () => {
@@ -161,6 +165,10 @@ describe(name, () => {
             onSort={onSort}
           />
         );
+      });
+
+      afterEach(() => {
+        wrapper.unmount();
       });
 
       it('onSort & onSetPage', () => {
@@ -209,6 +217,7 @@ describe(name, () => {
       expect(bodyRows.at(0).find('td').at(1).text()).to.equal('Obama');
       expect(bodyRows.at(1).find('td').at(0).text()).to.equal('Donald');
       expect(bodyRows.at(1).find('td').at(1).text()).to.equal('Trump');
+      wrapper.unmount();
     });
 
     it('should sort data', () => {
@@ -227,6 +236,7 @@ describe(name, () => {
       expect(bodyRows.at(1).find('td').at(1).text()).to.equal('Trump');
       expect(bodyRows.at(2).find('td').at(0).text()).to.equal('Hillary');
       expect(bodyRows.at(2).find('td').at(1).text()).to.equal('Clinton');
+      wrapper.unmount();
     });
   });
 });

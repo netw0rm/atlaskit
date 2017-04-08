@@ -17,76 +17,130 @@ describe(`${name} - item`, () => {
 
   describe('rendering', () => {
     it('should render content that is passed to the item', () => {
-      expect(mount(<Item>sample</Item>).text()).to.equal('sample');
+      const wrapper = mount(<Item>sample</Item>);
+      expect(wrapper.text()).to.equal('sample');
+      wrapper.unmount();
     });
 
     it('should render descriptions after the content', () => {
-      expect(mount(<Item description="test">sample</Item>).text()).to.equal('sampletest');
+      const wrapper = mount(<Item description="test">sample</Item>);
+      expect(wrapper.text()).to.equal('sampletest');
+      wrapper.unmount();
     });
 
     it('should render elemBefore for all items', () => {
       const Icon = (<div id="icon">icon</div>);
-      expect(mount(<Item elemBefore={Icon}>sample</Item>).contains(Icon)).to.equal(true);
-      expect(mount(<Item elemBefore={Icon} type="checkbox">sample</Item>).contains(Icon)).to.equal(true);
-      expect(mount(<Item elemBefore={Icon} type="radio">sample</Item>).contains(Icon)).to.equal(true);
+      const wrapper = mount(<Item elemBefore={Icon}>sample</Item>);
+      const wrapperCheckBox = mount(<Item elemBefore={Icon} type="checkbox">sample</Item>);
+      const wrapperRadio = mount(<Item elemBefore={Icon} type="radio">sample</Item>);
+      expect(wrapper.contains(Icon)).to.equal(true);
+      expect(wrapperCheckBox.contains(Icon)).to.equal(true);
+      expect(wrapperRadio.contains(Icon)).to.equal(true);
+      wrapper.unmount();
+      wrapperCheckBox.unmount();
+      wrapperRadio.unmount();
     });
 
     it('should render elemAfter for all items', () => {
       const Icon = (<div id="icon">icon</div>);
-      expect(mount(<Item elemAfter={Icon}>sample</Item>).contains(Icon)).to.equal(true);
-      expect(mount(<Item elemAfter={Icon} type="checkbox">sample</Item>).contains(Icon)).to.equal(true);
-      expect(mount(<Item elemAfter={Icon} type="radio">sample</Item>).contains(Icon)).to.equal(true);
+      const wrapper = mount(<Item elemAfter={Icon}>sample</Item>);
+      const wrapperCheckBox = mount(<Item elemAfter={Icon} type="checkbox">sample</Item>);
+      const wrapperRadio = mount(<Item elemAfter={Icon} type="radio">sample</Item>);
+      expect(wrapper.contains(Icon)).to.equal(true);
+      expect(wrapperCheckBox.contains(Icon)).to.equal(true);
+      expect(wrapperRadio.contains(Icon)).to.equal(true);
+      wrapper.unmount();
+      wrapperCheckBox.unmount();
+      wrapperRadio.unmount();
     });
 
     it('should render icon for the radio or checkbox element', () => {
-      expect(mount(<Item type="radio" />).find(`.${styles.checkradio}`).length).to.be.above(0);
-      expect(mount(<Item type="checkbox" />).find(`.${styles.checkradio}`).length).to.be.above(0);
+      const wrapperRadio = mount(<Item type="radio" />);
+      const wrapperCheckBox = mount(<Item type="checkbox" />);
+      expect(wrapperRadio.find(`.${styles.checkradio}`).length).to.be.above(0);
+      expect(wrapperCheckBox.find(`.${styles.checkradio}`).length).to.be.above(0);
+      wrapperRadio.unmount();
+      wrapperCheckBox.unmount();
     });
 
     it('should NOT render icon for the link element', () => {
-      expect(mount(<Item type="link" />).find(`.${styles.checkradio}`).length).to.equal(0);
+      const wrapper = mount(<Item type="link" />);
+      expect(wrapper.find(`.${styles.checkradio}`).length).to.equal(0);
+      wrapper.unmount();
     });
   });
 
   describe('classes', () => {
     it('should have "item" class by default', () => {
-      expect(mount(<Item type="link" />).find(`.${styles.item}`)).to.have.length.above(0);
-      expect(mount(<Item type="checkbox" />).find(`.${styles.item}`)).to.have.length.above(0);
-      expect(mount(<Item type="radio" />).find(`.${styles.item}`)).to.have.length.above(0);
+      const wrapperLink = mount(<Item type="link" />);
+      const wrapperCheckBox = mount(<Item type="checkbox" />);
+      const wrapperRadio = mount(<Item type="radio" />);
+      expect(wrapperLink.find(`.${styles.item}`)).to.have.length.above(0);
+      expect(wrapperCheckBox.find(`.${styles.item}`)).to.have.length.above(0);
+      expect(wrapperRadio.find(`.${styles.item}`)).to.have.length.above(0);
+      wrapperLink.unmount();
+      wrapperCheckBox.unmount();
+      wrapperRadio.unmount();
     });
 
     it('should have "disabled" class when disabled', () => {
-      expect(mount(<Item type="link" isDisabled />).find(`.${styles.disabled}`)).to.have.length.above(0);
-      expect(mount(<Item type="radio" isDisabled />).find(`.${styles.disabled}`)).to.have.length.above(0);
-      expect(mount(<Item type="checkbox" isDisabled />).find(`.${styles.disabled}`)).to.have.length.above(0);
+      const wrapperLink = mount(<Item type="link" isDisabled />);
+      const wrapperCheckBox = mount(<Item type="checkbox" isDisabled />);
+      const wrapperRadio = mount(<Item type="radio" isDisabled />);
+      expect(wrapperLink.find(`.${styles.disabled}`)).to.have.length.above(0);
+      expect(wrapperCheckBox.find(`.${styles.disabled}`)).to.have.length.above(0);
+      expect(wrapperRadio.find(`.${styles.disabled}`)).to.have.length.above(0);
+      wrapperLink.unmount();
+      wrapperCheckBox.unmount();
+      wrapperRadio.unmount();
     });
 
     it('should have "active" class when link item is active', () => {
-      expect(mount(<Item type="link" isActive />).find(`.${styles.active}`)).to.have.length.above(0);
+      const wrapper = mount(<Item type="link" isActive />);
+      expect(wrapper.find(`.${styles.active}`)).to.have.length.above(0);
+      wrapper.unmount();
     });
 
     it('should have "active" class when option item is selected', () => {
-      expect(mount(<Item type="option" isSelected />).find(`.${styles.active}`)).to.have.length.above(0);
+      const wrapper = mount(<Item type="option" isSelected />);
+      expect(wrapper.find(`.${styles.active}`)).to.have.length.above(0);
+      wrapper.unmount();
     });
 
     it('should NOT have "active" class for any other item types', () => {
-      expect(mount(<Item type="radio" isActive />).find(`.${styles.active}`).length).to.equal(0);
-      expect(mount(<Item type="checkbox" isActive />).find(`.${styles.active}`).length).to.equal(0);
+      const wrapperRadio = mount(<Item type="radio" isActive />);
+      const wrapperCheckBox = mount(<Item type="checkbox" isActive />);
+      expect(wrapperRadio.find(`.${styles.active}`).length).to.equal(0);
+      expect(wrapperCheckBox.find(`.${styles.active}`).length).to.equal(0);
+      wrapperRadio.unmount();
+      wrapperCheckBox.unmount();
     });
 
     it('should have "checked" class when checkbox or radio is checked', () => {
-      expect(mount(<Item type="checkbox" isChecked />).find(`.${styles.checked}`)).to.have.length.above(0);
-      expect(mount(<Item type="radio" isChecked />).find(`.${styles.checked}`)).to.have.length.above(0);
+      const wrapperCheckBox = mount(<Item type="checkbox" isChecked />);
+      const wrapperRadio = mount(<Item type="radio" isChecked />);
+      expect(wrapperCheckBox.find(`.${styles.checked}`)).to.have.length.above(0);
+      expect(wrapperRadio.find(`.${styles.checked}`)).to.have.length.above(0);
+      wrapperCheckBox.unmount();
+      wrapperRadio.unmount();
     });
 
     it('should NOT have "checked" class for any other items', () => {
-      expect(mount(<Item type="link" isChecked />).find(`.${styles.checked}`).length).to.equal(0);
+      const wrapper = mount(<Item type="link" isChecked />);
+      expect(wrapper.find(`.${styles.checked}`).length).to.equal(0);
+      wrapper.unmount();
     });
 
     it('should have "hidden" class when item is hidden', () => {
-      expect(mount(<Item type="link" isHidden />).find(`.${styles.hidden}`)).to.have.length.above(0);
-      expect(mount(<Item type="checkbox" isHidden />).find(`.${styles.hidden}`)).to.have.length.above(0);
-      expect(mount(<Item type="radio" isHidden />).find(`.${styles.hidden}`)).to.have.length.above(0);
+      const wrapperLink = mount(<Item type="link" isHidden />);
+      const wrapperCheckBox = mount(<Item type="checkbox" isHidden />);
+      const wrapperRadio = mount(<Item type="radio" isHidden />);
+      expect(wrapperLink.find(`.${styles.hidden}`)).to.have.length.above(0);
+      expect(wrapperCheckBox.find(`.${styles.hidden}`)).to.have.length.above(0);
+      expect(wrapperRadio.find(`.${styles.hidden}`)).to.have.length.above(0);
+      wrapperLink.unmount();
+      wrapperCheckBox.unmount();
+      wrapperRadio.unmount();
     });
   });
 
@@ -101,10 +155,17 @@ describe(`${name} - item`, () => {
     });
 
     describe('onActivate', () => {
+      let item;
       let wrapper;
       beforeEach(() => {
         onActivate = sinon.spy();
-        wrapper = mount(<Item onActivate={onActivate} />).find(`.${styles.item}`);
+        item = mount(<Item onActivate={onActivate} />);
+        wrapper = item.find(`.${styles.item}`);
+      });
+
+      afterEach(() => {
+        item.unmount();
+        wrapper = null;
       });
 
       it('should be activated when enter is pressed', () => {
@@ -123,50 +184,72 @@ describe(`${name} - item`, () => {
       });
 
       it('should not be activated when disabled', () => {
-        const disabledWrapper =
-          mount(<Item onActivate={onActivate} isDisabled />).find(`.${styles.item}`);
+        const disabledItem = mount(<Item onActivate={onActivate} isDisabled />);
+        const disabledWrapper = disabledItem.find(`.${styles.item}`);
         disabledWrapper.simulate('click');
         disabledWrapper.simulate('keyPress', { key: 'Enter' });
         disabledWrapper.simulate('keyPress', { key: ' ' });
         expect(onActivate.called).to.equal(false);
+        disabledItem.unmount();
       });
     });
   });
 
   describe('secondary text', () => {
     it('should render content inside', () => {
-      expect(mount(<SecondaryText>text</SecondaryText>).text()).to.equal('text');
+      const wrapper = mount(<SecondaryText>text</SecondaryText>);
+      expect(wrapper.text()).to.equal('text');
+      wrapper.unmount();
     });
 
     it('should have className', () => {
-      expect(mount(<SecondaryText>text</SecondaryText>)
-        .find(`.${styles.secondaryText}`).length).to.equal(1);
+      const wrapper = mount(<SecondaryText>text</SecondaryText>);
+      expect(wrapper.find(`.${styles.secondaryText}`).length).to.equal(1);
+      wrapper.unmount();
     });
   });
 
   describe('accessibility', () => {
     it('disabled item', () => {
-      expect(mount(<Item />).find('[aria-disabled]').length).to.equal(0);
-      expect(mount(<Item isDisabled />).find('[aria-disabled]').length).to.equal(1);
+      const wrapper = mount(<Item />);
+      const wrapperDisabled = mount(<Item isDisabled />);
+      expect(wrapper.find('[aria-disabled]').length).to.equal(0);
+      expect(wrapperDisabled.find('[aria-disabled]').length).to.equal(1);
+      wrapper.unmount();
+      wrapperDisabled.unmount();
     });
 
     it('hidden item', () => {
-      expect(mount(<Item />).find('[aria-hidden]').length).to.equal(0);
-      expect(mount(<Item isHidden />).find('[aria-hidden]').length).to.equal(1);
+      const wrapper = mount(<Item />);
+      const wrapperHidden = mount(<Item isHidden />);
+      expect(wrapper.find('[aria-hidden]').length).to.equal(0);
+      expect(wrapperHidden.find('[aria-hidden]').length).to.equal(1);
+      wrapper.unmount();
+      wrapperHidden.unmount();
     });
 
     it('checked item', () => {
-      expect(mount(<Item />).find('[aria-checked]').length).to.equal(0);
-      expect(mount(<Item isChecked />).find('[aria-checked]').length).to.equal(1);
+      const wrapper = mount(<Item />);
+      const wrapperChecked = mount(<Item isChecked />);
+      expect(wrapper.find('[aria-checked]').length).to.equal(0);
+      expect(wrapperChecked.find('[aria-checked]').length).to.equal(1);
+      wrapper.unmount();
+      wrapperChecked.unmount();
     });
 
     it('option item', () => {
-      expect(mount(<Item type="option" />).find('[aria-selected=false]').length).to.equal(1);
-      expect(mount(<Item type="option" isSelected />).find('[aria-selected=true]').length).to.equal(1);
+      const wrapper = mount(<Item type="option" />);
+      const wrapperSelected = mount(<Item type="option" isSelected />);
+      expect(wrapper.find('[aria-selected=false]').length).to.equal(1);
+      expect(wrapperSelected.find('[aria-selected=true]').length).to.equal(1);
+      wrapper.unmount();
+      wrapperSelected.unmount();
     });
 
     it('data-role', () => {
-      expect(mount(<Item />).find('[data-role]').length).to.equal(1);
+      const wrapper = mount(<Item />);
+      expect(wrapper.find('[data-role]').length).to.equal(1);
+      wrapper.unmount();
     });
   });
 });

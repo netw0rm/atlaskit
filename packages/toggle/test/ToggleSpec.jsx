@@ -72,6 +72,7 @@ describe('Toggle', () => {
           const wrapper = mount(<Toggle {...props} />);
           wrapper.find(Input).simulate(eventName);
           expect(spy.called).to.equal(true);
+          wrapper.unmount();
         })
       )
     );

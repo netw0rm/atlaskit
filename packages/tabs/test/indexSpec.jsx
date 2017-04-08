@@ -65,13 +65,14 @@ describe(name, () => {
       describe('onSelect prop', () => {
         it('is not fired for default selected tab', () => {
           const spy = sinon.spy();
-          mount(
+          const wrapper = mount(
             <Tabs
               onSelect={spy}
               tabs={sampleTabsDefaultSelected}
             />
           );
           expect(spy.called).to.equal(false);
+          wrapper.unmount();
         });
         it('is fired with selected tab index when new tab selected by click', () => {
           const spy = sinon.spy();
@@ -86,6 +87,7 @@ describe(name, () => {
           wrapper.find(`.${styles.locals.akTabLabel}`).at(2).simulate('click');
           expect(spy.calledOnce).to.equal(true);
           expect(spy.calledWith(2)).to.equal(true);
+          wrapper.unmount();
         });
         it('is fired with selected tab index when new tab selected by keyboard', () => {
           const spy = sinon.spy();
@@ -103,6 +105,7 @@ describe(name, () => {
           });
           expect(spy.calledOnce).to.equal(true);
           expect(spy.calledWith(2)).to.equal(true);
+          wrapper.unmount();
         });
       });
     });
@@ -117,6 +120,10 @@ describe(name, () => {
 
           beforeEach(() => {
             wrapper = mount(<Tabs tabs={sampleTabsDefaultSelected} />);
+          });
+
+          afterEach(() => {
+            wrapper.unmount();
           });
 
           it('pressing LEFT arrow selects the first tab', () => {

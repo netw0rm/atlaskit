@@ -31,6 +31,7 @@ describe('Tag component', () => {
     expect(wrapper.prop('href')).to.equal(atlassianHref);
     expect(wrapper.find('a').text()).to.equal(atlassianText);
     expect(wrapper.find(Chrome).prop('isRemovable')).to.equal(true);
+    wrapper.unmount();
   });
 
   it('onBeforeRemoveAction callback contract', () => {
@@ -40,6 +41,7 @@ describe('Tag component', () => {
     );
     wrapper.find(Remove).simulate('click');
     expect(onBeforeRemoveAction.calledOnce).to.equal(true);
+    wrapper.unmount();
   });
 
   it('onAfterRemoveAction callback contract', () => {
@@ -50,6 +52,7 @@ describe('Tag component', () => {
     wrapper.find(Remove).simulate('click');
     wrapper.find(Container).simulate('animationEnd');
     expect(onAfterRemoveAction.calledOnce).to.equal(true);
+    wrapper.unmount();
   });
 
   it('onAfterRemoveAction should not be called if onBeforeRemoveAction returns false', () => {
@@ -63,6 +66,7 @@ describe('Tag component', () => {
     );
     wrapper.find(Remove).simulate('click');
     expect(onAfterRemoveAction.calledOnce).to.equal(false);
+    wrapper.unmount();
   });
 
   it('set markedForRemoval via mouse events on remove button', () => {
@@ -71,6 +75,7 @@ describe('Tag component', () => {
     expect(wrapper.find(Chrome).prop('markedForRemoval')).to.equal(true);
     wrapper.find(Remove).simulate('mouseout');
     expect(wrapper.find(Chrome).prop('markedForRemoval')).to.equal(false);
+    wrapper.unmount();
   });
 
   it('remove via keypress on remove button', () => {
@@ -78,6 +83,7 @@ describe('Tag component', () => {
     wrapper.find(Remove).simulate('keypress', { key: ' ' });
     wrapper.find(Remove).simulate('keypress', { key: 'Enter' });
     expect(wrapper.state(('isRemoving'))).to.equal(true);
+    wrapper.unmount();
   });
 
   it('Tag allows us to set props', () => {
@@ -88,6 +94,7 @@ describe('Tag component', () => {
 
     wrapper.setProps({ href: bitbucketHref });
     expect(wrapper.prop('href')).to.equal(bitbucketHref);
+    wrapper.unmount();
   });
 
   describe('appearance prop', () => {
@@ -95,12 +102,14 @@ describe('Tag component', () => {
       const wrapper = mount(<Tag appearance="rounded" text="foo" removeButtonText="foo" />);
       expect(wrapper.find(Chrome).prop('isRounded')).to.equal(true);
       expect(wrapper.find(Remove).prop('isRounded')).to.equal(true);
+      wrapper.unmount();
     });
 
     it('should set the isRounded prop of Chrome and Remove to false when not set to "rounded"', () => {
       const wrapper = mount(<Tag appearance="default" text="foo" removeButtonText="foo" />);
       expect(wrapper.find(Chrome).prop('isRounded')).to.equal(false);
       expect(wrapper.find(Remove).prop('isRounded')).to.equal(false);
+      wrapper.unmount();
     });
   });
 
@@ -108,6 +117,7 @@ describe('Tag component', () => {
     it('should render anything passed to it', () => {
       const wrapper = mount(<Tag text="foo" elemBefore={<div className="test" />} />);
       expect(wrapper.find(Before).find('div.test').length).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should render the elemBefore before the content', () => {
@@ -115,6 +125,7 @@ describe('Tag component', () => {
       const chrome = wrapper.find(Chrome);
       expect(chrome.childAt(0).is(Before)).to.equal(true);
       expect(chrome.childAt(1).is(Content)).to.equal(true);
+      wrapper.unmount();
     });
   });
 
@@ -122,6 +133,7 @@ describe('Tag component', () => {
     it('should render text to a Content block', () => {
       const wrapper = mount(<Tag text="foo" />);
       expect(wrapper.find(Content).text()).to.equal('foo');
+      wrapper.unmount();
     });
   });
 
@@ -129,16 +141,19 @@ describe('Tag component', () => {
     it('should cause an anchor to be rendered', () => {
       const wrapper = mount(<Tag text="foo" href="#" />);
       expect(wrapper.find(Content).find('a').length).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should reflect the href onto the anchor', () => {
       const wrapper = mount(<Tag text="foo" href="#" />);
       expect(wrapper.find(Content).find('a').prop('href')).to.equal('#');
+      wrapper.unmount();
     });
 
     it('should set the isLink prop on Chrome', () => {
       const wrapper = mount(<Tag text="foo" href="#" />);
       expect(wrapper.find(Chrome).prop('isLink')).to.equal(true);
+      wrapper.unmount();
     });
   });
 
@@ -146,16 +161,19 @@ describe('Tag component', () => {
     it('should not render a button if not set', () => {
       const wrapper = mount(<Tag text="foo" />);
       expect(wrapper.find(Remove).length).to.equal(0);
+      wrapper.unmount();
     });
 
     it('should render a button if set', () => {
       const wrapper = mount(<Tag text="foo" removeButtonText="removeMe" />);
       expect(wrapper.find(Remove).length).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should set the removeText prop of button if set', () => {
       const wrapper = mount(<Tag text="foo" removeButtonText="removeMe" />);
       expect(wrapper.find(Remove).prop('removeText')).to.equal('removeMe');
+      wrapper.unmount();
     });
   });
 
@@ -165,6 +183,7 @@ describe('Tag component', () => {
       const wrapper = mount(<Tag text="foo" removeButtonText="removeMe" onBeforeRemoveAction={spy} />);
       wrapper.find('button').simulate('click');
       expect(spy.callCount).to.equal(1);
+      wrapper.unmount();
     });
   });
 
@@ -175,6 +194,7 @@ describe('Tag component', () => {
       wrapper.find('button').simulate('click');
       wrapper.find(Container).simulate('animationEnd');
       expect(spy.callCount).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should not be called if onBeforeRemoveAction returns false', () => {
@@ -188,6 +208,7 @@ describe('Tag component', () => {
       />);
       wrapper.find('button').simulate('click');
       expect(spy.callCount).to.equal(0);
+      wrapper.unmount();
     });
   });
 });

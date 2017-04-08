@@ -51,6 +51,7 @@ describe('Profilecard', () => {
             const el = card.find(`.${styles.locals.presence}`);
             expect(el.length).to.be.above(0);
             expect(el.text()).to.equal(presences[presence]);
+            card.unmount();
           });
         });
       });
@@ -59,6 +60,7 @@ describe('Profilecard', () => {
         const card = mount(<AkProfilecard />);
         const el = card.find(`.${styles.locals.presence}`);
         expect(el.isEmpty()).to.equal(true);
+        card.unmount();
       });
     });
 
@@ -68,6 +70,7 @@ describe('Profilecard', () => {
           <AkProfilecard isLoading />
         );
         expect(card.find(LoadingMessage).length).to.equal(1);
+        card.unmount();
       });
     });
 
@@ -77,6 +80,7 @@ describe('Profilecard', () => {
           <AkProfilecard hasError />
         );
         expect(card.find(ErrorMessage).length).to.equal(1);
+        card.unmount();
       });
 
       it('should render the ErrorMessage component with retry button if clientFetchProfile is provided', () => {
@@ -87,6 +91,7 @@ describe('Profilecard', () => {
         expect(errorComponent.length).to.equal(1);
         expect(errorComponent.find(CrossCircleIcon).length).to.equal(1);
         expect(errorComponent.find(AkButton).length).to.equal(1);
+        card.unmount();
       });
     });
 

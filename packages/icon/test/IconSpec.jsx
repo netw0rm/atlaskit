@@ -41,6 +41,7 @@ describe(name, () => {
     it('should be possible to create an Icon via a subclass', () => {
       const myIcon = mount(<MyIcon label="My icon" />);
       expect(myIcon.text()).to.equal(secretContent);
+      myIcon.unmount();
     });
 
     it('should be able to create a component', () => {
@@ -61,6 +62,7 @@ describe(name, () => {
         const labelContent = 'label content';
         const wrapper = mount(<LabelIcon label={labelContent} />);
         expect(wrapper.text()).to.equal(labelContent);
+        wrapper.unmount();
       });
     });
 

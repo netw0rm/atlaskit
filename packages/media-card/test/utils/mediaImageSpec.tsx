@@ -13,10 +13,11 @@ describe('MediaImage', () => {
     const onError = function(ev) {
       expect(ev).to.instanceOf(Event);
       expect(this).to.instanceOf(HTMLElement);
+      mediaImg.unmount();
       done();
     };
 
-    mount(<MediaImage dataURI={invalidURI} onError={onError} />);
+    const mediaImg = mount(<MediaImage dataURI={invalidURI} onError={onError} />);
   });
 
   it('Implicitly disables cropping the image when dimensions are supplied', () => {
@@ -29,11 +30,13 @@ describe('MediaImage', () => {
     />);
 
     expect(mediaImg.find('.media-card').prop('className')).to.not.contain('crop');
+    mediaImg.unmount();
   });
 
   it('Only adds the image to the background when transparentFallback is disabled', () => {
     const mediaImg = mount(<MediaImage dataURI={validURI} transparentFallback={false} />) as any;
 
     expect(mediaImg.find('.media-card').prop('style').backgroundImage).to.equal(`url(${validURI})`);
+    mediaImg.unmount();
   });
 });

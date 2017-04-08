@@ -45,19 +45,29 @@ describe('ak-field-base', () =>
 
     describe('appearance prop', () => {
       it('should be "default" appearance by default', () => {
-        expect(mount(<Label />).prop('appearance')).to.equal('default');
+        const wrapper = mount(<Label />);
+        expect(wrapper.prop('appearance')).to.equal('default');
+        wrapper.unmount();
       });
 
       it('should set className for it', () => {
-        expect(mount(<Label />).find(`.${styles.locals.inlineEdit}`).length).to.equal(0);
-        expect(mount(<Label appearance="inline-edit" />).find(`.${styles.locals.inlineEdit}`).length).to.equal(1);
+        const wrapper = mount(<Label />);
+        const wrapperEdit = mount(<Label appearance="inline-edit" />);
+        expect(wrapper.find(`.${styles.locals.inlineEdit}`).length).to.equal(0);
+        expect(wrapperEdit.find(`.${styles.locals.inlineEdit}`).length).to.equal(1);
+        wrapper.unmount();
+        wrapperEdit.unmount();
       });
     });
 
     describe('isFirstChild prop', () => {
       it('should set className for it', () => {
-        expect(mount(<Label />).find(`.${styles.locals.firstChild}`).length).to.equal(0);
-        expect(mount(<Label isFirstChild />).find(`.${styles.locals.firstChild}`).length).to.equal(1);
+        const wrapper = mount(<Label />);
+        const wrapperFirstChild = mount(<Label isFirstChild />);
+        expect(wrapper.find(`.${styles.locals.firstChild}`).length).to.equal(0);
+        expect(wrapperFirstChild.find(`.${styles.locals.firstChild}`).length).to.equal(1);
+        wrapper.unmount();
+        wrapperFirstChild.unmount();
       });
     });
 

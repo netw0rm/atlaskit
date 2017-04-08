@@ -12,12 +12,17 @@ describe('<ContainerNavigationNested />', () => {
       );
       component.setProps({ children: <h1>New Pane</h1> });
       expect(component.state().prevChildren).to.equal(previousPane);
+      component.unmount();
     });
   });
 
   describe('render', () => {
     it('should render children', () => {
-      expect(mount(<ContainerNavigationNested><h1>Content</h1></ContainerNavigationNested>).find('h1').text()).to.equal('Content');
+      const component = mount(
+        <ContainerNavigationNested><h1>Content</h1></ContainerNavigationNested>
+      );
+      expect(component.find('h1').text()).to.equal('Content');
+      component.unmount();
     });
 
     it('should have new pane first if animationDirection is right', () => {
@@ -27,6 +32,7 @@ describe('<ContainerNavigationNested />', () => {
       component.setProps({ children: newPane, animationDirection: 'right' });
       expect(component.children().at(0).contains(newPane)).to.equal(true);
       expect(component.children().at(1).contains(initPane)).to.equal(true);
+      component.unmount();
     });
 
     it('should have init pane first if animationDirection is left', () => {
@@ -36,6 +42,7 @@ describe('<ContainerNavigationNested />', () => {
       component.setProps({ children: newPane, animationDirection: 'left' });
       expect(component.children().at(0).contains(initPane)).to.equal(true);
       expect(component.children().at(1).contains(newPane)).to.equal(true);
+      component.unmount();
     });
 
     it('should have left animation class if animationDirection is left', () => {
@@ -44,6 +51,7 @@ describe('<ContainerNavigationNested />', () => {
       const newPane = <h1>New Pane</h1>;
       component.setProps({ children: newPane, animationDirection: 'left' });
       expect(component.find('div').first().hasClass(styles.containerNavigationNestedLeftAnimate)).to.equal(true);
+      component.unmount();
     });
 
     it('should have left animation class if animationDirection is right', () => {
@@ -52,6 +60,7 @@ describe('<ContainerNavigationNested />', () => {
       const newPane = <h1>New Pane</h1>;
       component.setProps({ children: newPane, animationDirection: 'right' });
       expect(component.find('div').first().hasClass(styles.containerNavigationNestedRightAnimate)).to.equal(true);
+      component.unmount();
     });
   });
 
@@ -66,6 +75,7 @@ describe('<ContainerNavigationNested />', () => {
       component.setProps({ children: newPane, animationDirection: 'left' });
       component.simulate('animationEnd');
       expect(animationEventSpy.calledOnce).to.equal(true);
+      component.unmount();
     });
   });
 });

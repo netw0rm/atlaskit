@@ -44,22 +44,28 @@ describe('<GlobalPrimaryActions />', () => {
     });
     it('onSearchActivate is given to to the first <DrawerTrigger />', () => {
       const handler = sinon.spy();
-      expect(mount(<GlobalPrimaryActions
+      const wrapper = mount(<GlobalPrimaryActions
         searchIcon={'s'}
         createIcon={'c'}
         onSearchActivate={handler}
-      />).find('DrawerTrigger').at(0).props().onActivate).to.equal(handler);
+      />);
+      expect(wrapper.find('DrawerTrigger').at(0).props().onActivate).to.equal(handler);
+      wrapper.unmount();
     });
     it('onCreateActivate is given to to the second <DrawerTrigger />', () => {
       const handler = sinon.spy();
-      expect(mount(<GlobalPrimaryActions
+      const wrapper = mount(<GlobalPrimaryActions
         searchIcon={'s'}
         createIcon={'c'}
         onCreateActivate={handler}
-      />).find('DrawerTrigger').at(1).props().onActivate).to.equal(handler);
+      />);
+      expect(wrapper.find('DrawerTrigger').at(1).props().onActivate).to.equal(handler);
+      wrapper.unmount();
     });
     it('isVisible applies the isVisible class', () => {
-      expect(mount(<GlobalPrimaryActions isVisible />).find(`.${style.isVisible}`).length).to.equal(1);
+      const wrapper = mount(<GlobalPrimaryActions isVisible />);
+      expect(wrapper.find(`.${style.isVisible}`).length).to.equal(1);
+      wrapper.unmount();
     });
   });
 });

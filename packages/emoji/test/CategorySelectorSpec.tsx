@@ -29,6 +29,7 @@ describe('<CategorySelector />', () => {
     defaultCategories.forEach((category, i) => {
       expect(categoryButtons.at(i).key(), `Button #${i}`).to.equal(category.name);
     });
+    component.unmount();
   });
 
   it('only available categories enabled', () => {
@@ -45,6 +46,7 @@ describe('<CategorySelector />', () => {
       const shouldBeEnabled = i === 0 || i === 3;
       expect(button.hasClass(styles.disable), `Button #${i} enabled=${shouldBeEnabled}`).to.equal(!shouldBeEnabled);
     });
+    component.unmount();
   });
 
   it('onCategorySelected called which clicking a category', () => {
@@ -55,6 +57,7 @@ describe('<CategorySelector />', () => {
     const categoryButtons = component.find('button');
     categoryButtons.at(4).simulate('click');
     expect(selectedCategoryId, 'Category was selected').to.equal(defaultCategories[4].id);
+    component.unmount();
   });
 
   it('active category highlighted', () => {
@@ -70,5 +73,6 @@ describe('<CategorySelector />', () => {
       const shouldBeActive = i === 3;
       expect(button.hasClass(styles.active), `Button #${i} active=${shouldBeActive}`).to.equal(shouldBeActive);
     });
+    component.unmount();
   });
 });

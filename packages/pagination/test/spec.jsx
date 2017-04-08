@@ -11,6 +11,7 @@ describe(name, () => {
     it('should not render when total is 0', () => {
       const wrapper = mount(<Pagination total={0} current={0} />);
       expect(wrapper.find(Button).length).to.equal(0);
+      wrapper.unmount();
     });
 
     it('should render pages and Prev/Next buttons when total is not 0', () => {
@@ -21,18 +22,21 @@ describe(name, () => {
       expect(buttons.at(1).text()).to.equal('1');
       expect(buttons.at(2).text()).to.equal('2');
       expect(buttons.at(3).text()).to.equal('Next');
+      wrapper.unmount();
     });
 
     it('should render Prev button disabled when current in 1', () => {
       const wrapper = mount(<Pagination total={3} />);
       const prevButton = wrapper.find(Button).at(0);
       expect(prevButton.prop('isDisabled')).to.equal(true);
+      wrapper.unmount();
     });
 
     it('should render Next button disabled when current in 1', () => {
       const wrapper = mount(<Pagination total={3} current={3} />);
       const nextButton = wrapper.find(Button).at(4);
       expect(nextButton.prop('isDisabled')).to.equal(true);
+      wrapper.unmount();
     });
 
     it('should invoke callback passed to onSetPage', () => {
@@ -47,6 +51,7 @@ describe(name, () => {
       buttons.at(3).simulate('click');
       expect(onSetPage.calledTwice).to.equal(true);
       expect(onSetPage.calledWith(3)).to.equal(true);
+      wrapper.unmount();
     });
 
     describe('shouldn\'t invoke callback passed to onSetPage', () => {
@@ -62,6 +67,7 @@ describe(name, () => {
         const buttons = wrapper.find(Button);
         buttons.at(2).simulate('click');
         expect(onSetPage.calledOnce).to.equal(false);
+        wrapper.unmount();
       });
 
       it('when clicked on Prev and first page is active', () => {
@@ -76,6 +82,7 @@ describe(name, () => {
         const buttons = wrapper.find(Button);
         buttons.at(1).simulate('click');
         expect(onSetPage.calledOnce).to.equal(false);
+        wrapper.unmount();
       });
 
       it('when clicked on Next and last page is active', () => {
@@ -90,6 +97,7 @@ describe(name, () => {
         const buttons = wrapper.find(Button);
         buttons.at(4).simulate('click');
         expect(onSetPage.calledOnce).to.equal(false);
+        wrapper.unmount();
       });
     });
   });
@@ -104,6 +112,10 @@ describe(name, () => {
             defaultCurrent={3}
           />
         );
+      });
+
+      afterEach(() => {
+        wrapper.unmount();
       });
 
       it('upon clicking on corresponding button', () => {

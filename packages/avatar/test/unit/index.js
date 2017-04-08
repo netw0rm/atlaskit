@@ -35,6 +35,7 @@ describe('ak-avatar', () => {
     const label = 'This is an avatar!';
     let wrapper;
     beforeEach(() => (wrapper = mount(<Avatar label={label} />)));
+    afterEach(() => wrapper.unmount());
 
     it.skip('should set an aria-label on the imgWrapper', () => {
       expect(wrapper.find(`.${styles.locals.imgWrapper}`).is(`[aria-label="${label}"]`))
@@ -53,12 +54,14 @@ describe('ak-avatar', () => {
       const wrapper = mount(<Avatar presence={none} />);
       expect(wrapper.find(`.${styles.locals.presenceWrapper}`).hasClass(styles.locals.hidden)).to.equal(true);
       expect(wrapper.find(Presence).find('svg').length).to.equal(0);
+      wrapper.unmount();
     });
 
     [online, busy, offline].forEach((presence) => {
       describe(`when presence is set to '${presence}'`, () => {
         let wrapper;
         beforeEach(() => (wrapper = mount(<Avatar presence={presence} />)));
+        afterEach(() => wrapper.unmount());
 
         it('should be visible', () => {
           expect(wrapper.find(`.${styles.locals.presenceWrapper}`).hasClass(styles.locals.hidden))
@@ -81,6 +84,7 @@ describe('ak-avatar', () => {
   describe('src property', () => {
     let wrapper;
     beforeEach(() => (wrapper = mount(<Avatar src={oneByOnePixel} />)));
+    afterEach(() => wrapper.unmount());
 
     it('should set the src property on the internal img', () => {
       expect(wrapper.find(Image).prop('src')).to.equal(oneByOnePixel);
@@ -127,12 +131,14 @@ describe('ak-avatar', () => {
       wrapper.setState({ isLoading: true });
       expect(wrapper.find(`.${styles.locals.imgWrapper}`).hasClass(styles.locals.loaded))
         .to.equal(false);
+      wrapper.unmount();
     });
 
     it('should apply the .loaded class when not loading', () => {
       const wrapper = mount(<Avatar />);
       wrapper.setState({ isLoading: false });
       expect(wrapper.find(`.${styles.locals.imgWrapper}`).hasClass(styles.locals.loaded)).to.equal(true);
+      wrapper.unmount();
     });
   });
 });

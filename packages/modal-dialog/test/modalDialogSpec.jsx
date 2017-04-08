@@ -116,6 +116,7 @@ describe('ak-modal-dialog', () => {
         const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
         wrapper.find(`.${styles.locals.modalWrapper}`).children().first().simulate('click');
         expect(spy.callCount).to.equal(1);
+        wrapper.unmount();
       });
 
       it('should trigger when blanket clicked below dialog (modalPositioner)', () => {
@@ -123,6 +124,7 @@ describe('ak-modal-dialog', () => {
         const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
         wrapper.find(`.${styles.locals.modalPositioner}`).simulate('click');
         expect(spy.callCount).to.equal(1);
+        wrapper.unmount();
       });
 
       it('should not trigger when blanket content clicked', () => {
@@ -134,6 +136,7 @@ describe('ak-modal-dialog', () => {
         );
         wrapper.find('.my-content').simulate('click');
         expect(spy.callCount).to.equal(0);
+        wrapper.unmount();
       });
     });
   });
@@ -143,18 +146,21 @@ describe('ak-modal-dialog', () => {
       const wrapper = mount(<ModalDialog isOpen footer="Footer" />);
       expect(wrapper.find(`.${styles.locals.withoutHeader}`).length).to.equal(1);
       expect(wrapper.find(`.${styles.locals.withoutFooter}`).length).to.equal(0);
+      wrapper.unmount();
     });
 
     it('should be rounded on bottom only when footer omitted but header supplied', () => {
       const wrapper = mount(<ModalDialog isOpen header="Header" />);
       expect(wrapper.find(`.${styles.locals.withoutHeader}`).length).to.equal(0);
       expect(wrapper.find(`.${styles.locals.withoutFooter}`).length).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should be rounded on top + bottom when header and footer omitted', () => {
       const wrapper = mount(<ModalDialog isOpen />);
       expect(wrapper.find(`.${styles.locals.withoutHeader}`).length).to.equal(1);
       expect(wrapper.find(`.${styles.locals.withoutFooter}`).length).to.equal(1);
+      wrapper.unmount();
     });
   });
 
@@ -164,6 +170,7 @@ describe('ak-modal-dialog', () => {
       expect(wrapper.find(`.${styles.locals.withHeader}`).length).to.equal(0);
       wrapper.setProps({ header: 'Header' });
       expect(wrapper.find(`.${styles.locals.withHeader}`).length).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should enable footer keyline only when footer provided', () => {
@@ -171,6 +178,7 @@ describe('ak-modal-dialog', () => {
       expect(wrapper.find(`.${styles.locals.withFooter}`).length).to.equal(0);
       wrapper.setProps({ footer: 'Header' });
       expect(wrapper.find(`.${styles.locals.withFooter}`).length).to.equal(1);
+      wrapper.unmount();
     });
   });
 });

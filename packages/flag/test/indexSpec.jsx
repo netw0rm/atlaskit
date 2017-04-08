@@ -75,6 +75,7 @@ describe(name, () => {
           actionItems.length.should.equal(2);
           actionItems.at(0).text().should.be.equal('Hello!');
           actionItems.at(1).text().should.be.equal('Goodbye!');
+          flag.unmount();
         });
 
         it('action onClick should be triggered on click', () => {
@@ -88,6 +89,7 @@ describe(name, () => {
           );
           flag.find('button').simulate('click');
           expect(spy.callCount).to.equal(1);
+          flag.unmount();
         });
       });
 
@@ -103,6 +105,7 @@ describe(name, () => {
         wrapper.find(DismissButton).simulate('click');
         expect(spy.callCount).to.equal(1);
         expect(spy.calledWith('a')).to.equal(true);
+        wrapper.unmount();
       });
 
       it('Dismiss button should not be rendered if isDismissAllowed is omitted', () => {
@@ -115,20 +118,24 @@ describe(name, () => {
         );
         expect(wrapper.find(DismissButton).exists()).to.equal(false);
         expect(spy.callCount).to.equal(0);
+        wrapper.unmount();
       });
     });
   });
 
   describe('FlagGroup', () => {
-    it('should render the correct number of Flag children', () =>
-      mount(
+    it('should render the correct number of Flag children', () => {
+      const wrapper = mount(
         <FlagGroup>
           {generateFlag()}
           {generateFlag()}
           {generateFlag()}
         </FlagGroup>
-      ).find(Container).length.should.equal(3)
-    );
+      );
+
+      expect(wrapper.find(Container).length).to.equal(3);
+      wrapper.unmount();
+    });
 
     it('onDismissed should be called when child Flag is dismissed', () => {
       const spy = sinon.spy();
@@ -148,6 +155,7 @@ describe(name, () => {
       wrapper.find(Container).first().simulate('animationEnd');
       expect(spy.callCount).to.equal(1);
       expect(spy.calledWith('a')).to.equal(true);
+      wrapper.unmount();
     });
   });
 });

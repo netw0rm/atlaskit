@@ -35,9 +35,15 @@ const findEmoji = list => list.find(Emoji);
 const emojisVisible = (list) => findEmoji(list).length > 0;
 
 describe('<EmojiPicker />', () => {
+  let component: ReactWrapper<any, any>;
+
+  afterEach(() => {
+    component.unmount();
+  });
+
   describe('display', () => {
     it('should display first set of emoji in viewport by default', () => {
-      const component = setupPicker();
+      component = setupPicker();
       const list = component.find(EmojiPickerList);
 
       return waitUntil(() => emojisVisible(list)).then(() => {
@@ -50,7 +56,7 @@ describe('<EmojiPicker />', () => {
     });
 
     it('should display all categories', () => {
-      const component = setupPicker();
+      component = setupPicker();
       const categorySelector = component.find(CategorySelector);
       const buttons = categorySelector.find('button');
       const expectedCategories = CategorySelector.defaultProps.categories;
@@ -63,7 +69,7 @@ describe('<EmojiPicker />', () => {
     });
 
     it('should empty preview by default', () => {
-      const component = setupPicker();
+      component = setupPicker();
       const footer = component.find(EmojiPickerFooter);
       const previewEmoji = footer.find(Emoji);
 
@@ -74,7 +80,7 @@ describe('<EmojiPicker />', () => {
   describe('hover', () => {
     it('should update preview on hover', () => {
       const hoverOffset = 5;
-      const component = setupPicker();
+      component = setupPicker();
       const footer = component.find(EmojiPickerFooter);
       const list = component.find(EmojiPickerList);
 
@@ -91,9 +97,8 @@ describe('<EmojiPicker />', () => {
 
   describe('category', () => {
     it('selecting category should show that category', () => {
-      const component = setupPicker();
+      component = setupPicker();
       const categorySelector = component.find(CategorySelector);
-
       const list = component.find(EmojiPickerList);
       expect(list.prop('selectedCategory'), 'Flags category not yet selected').to.not.equal('FLAGS');
 
@@ -113,7 +118,7 @@ describe('<EmojiPicker />', () => {
     it('selecting emoji should trigger onSelection', () => {
       let selection: OptionalEmojiDescription;
       const clickOffset = 10;
-      const component = setupPicker({
+      component = setupPicker({
         onSelection: (emojiId, emoji) => { selection = emoji; },
       } as Props);
       const list = component.find(EmojiPickerList);

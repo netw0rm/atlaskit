@@ -22,10 +22,14 @@ describe('<Navigation />', () => {
       expect(shallow(<Navigation />).find('GlobalNavigation').length).to.equal(1);
     });
     it('should render a <GlobalPrimaryActions /> in GlobalNavigation', () => {
-      expect(mount(<Navigation />).find('GlobalNavigation').find('GlobalPrimaryActions').length).to.equal(1);
+      const wrapper = mount(<Navigation />);
+      expect(wrapper.find('GlobalNavigation').find('GlobalPrimaryActions').length).to.equal(1);
+      wrapper.unmount();
     });
     it('should render a <GlobalPrimaryActions /> in ContainerNavigation', () => {
-      expect(mount(<Navigation />).find('ContainerNavigation').find('GlobalPrimaryActions').length).to.equal(1);
+      const wrapper = mount(<Navigation />);
+      expect(wrapper.find('ContainerNavigation').find('GlobalPrimaryActions').length).to.equal(1);
+      wrapper.unmount();
     });
     it('should render a <Resizer />', () => {
       expect(shallow(<Navigation />).find('Resizer').length).to.equal(1);
@@ -49,23 +53,33 @@ describe('<Navigation />', () => {
     });
     it('globalSearchIcon should pass search icon onto <GlobalNavigation />', () => {
       const icon = <img alt="search" />;
-      expect(mount(<Navigation globalSearchIcon={icon} />).find('GlobalNavigation').props().searchIcon).to.equal(icon);
+      const wrapper = mount(<Navigation globalSearchIcon={icon} />);
+      expect(wrapper.find('GlobalNavigation').props().searchIcon).to.equal(icon);
+      wrapper.unmount();
     });
     it('globalCreateIcon should pass createIcon onto <GlobalNavigation />', () => {
       const icon = <img alt="create" />;
-      expect(mount(<Navigation globalCreateIcon={icon} />).find('GlobalNavigation').props().createIcon).to.equal(icon);
+      const wrapper = mount(<Navigation globalCreateIcon={icon} />);
+      expect(wrapper.find('GlobalNavigation').props().createIcon).to.equal(icon);
+      wrapper.unmount();
     });
     it('globalAppearance should pass globalAppearance onto <GlobalNavigation />', () => {
       const appearance = 'settings';
-      expect(mount(<Navigation globalAppearance={appearance} />).find('GlobalNavigation').props().appearance).to.equal(appearance);
+      const wrapper = mount(<Navigation globalAppearance={appearance} />);
+      expect(wrapper.find('GlobalNavigation').props().appearance).to.equal(appearance);
+      wrapper.unmount();
     });
     it('globalSearchIcon should pass globalSearchIcon onto <ContainerNavigation />', () => {
       const icon = <img alt="search" />;
-      expect(mount(<Navigation globalSearchIcon={icon} />).find('ContainerNavigation').props().globalSearchIcon).to.equal(icon);
+      const wrapper = mount(<Navigation globalSearchIcon={icon} />);
+      expect(wrapper.find('ContainerNavigation').props().globalSearchIcon).to.equal(icon);
+      wrapper.unmount();
     });
     it('globalCreateIcon should pass globalCreateIcon onto <ContainerNavigation />', () => {
       const icon = <img alt="create" />;
-      expect(mount(<Navigation globalCreateIcon={icon} />).find('ContainerNavigation').props().globalCreateIcon).to.equal(icon);
+      const wrapper = mount(<Navigation globalCreateIcon={icon} />);
+      expect(wrapper.find('ContainerNavigation').props().globalCreateIcon).to.equal(icon);
+      wrapper.unmount();
     });
     it('onResizeStart is called when the resizer starts resizing', (done) => {
       const navigation = shallow(<Navigation />);
@@ -95,10 +109,13 @@ describe('<Navigation />', () => {
     });
     it('globalPrimaryItem should map to global navigation\'s primaryItem', () => {
       const primaryIcon = <span className="PRIMARY_ICON" />;
-      expect(mount(
+      const wrapper = mount(
         <Navigation
           globalPrimaryIcon={primaryIcon}
-        />).find('GlobalNavigation').props().primaryIcon).to.equal(primaryIcon);
+        />
+      );
+      expect(wrapper.find('GlobalNavigation').props().primaryIcon).to.equal(primaryIcon);
+      wrapper.unmount();
     });
     it('should allow you to pass in global secondard actions', () => {
       const wrapper = mount(
@@ -113,13 +130,17 @@ describe('<Navigation />', () => {
         .find(Child)
         .length
       ).to.equal(2);
+      wrapper.unmount();
     });
     it('linkComponent is passed on to <GlobalNavigation/>', () => {
       const linkComponent = () => null;
-      expect(mount(
+      const wrapper = mount(
         <Navigation
           linkComponent={linkComponent}
-        />).find('GlobalNavigation').props().linkComponent).to.equal(linkComponent);
+        />
+      );
+      expect(wrapper.find('GlobalNavigation').props().linkComponent).to.equal(linkComponent);
+      wrapper.unmount();
     });
   });
 

@@ -16,6 +16,8 @@ describe('LinkCardViewSmall', () => {
     expect(card.find(Title).text()).to.eql(title);
     expect(card.find(Size).text()).to.eql(linkUrl);
     expect(card.find('.media-card')).to.have.length(0);
+
+    card.unmount();
   });
 
   it('should render a thumnail when supplied', () => {
@@ -25,6 +27,8 @@ describe('LinkCardViewSmall', () => {
 
     expect(card.find('.media-card')).to.have.length(1);
     expect(card.find('.media-card').props().style.backgroundImage).to.contain(thumbnailUrl);
+
+    card.unmount();
   });
 
   it('should render loading placeholders', () => {
@@ -32,6 +36,8 @@ describe('LinkCardViewSmall', () => {
 
     expect(card.find(LoadingWrapper)).to.have.length(1);
     expect(card.find('.media-card')).to.have.length(0);
+
+    card.unmount();
   });
 
   it('should pass the site name to CardGenericViewSmall as subtitle prop instead of the link url when it is a string', () => {

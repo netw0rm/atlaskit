@@ -19,14 +19,19 @@ describe('Tag-group', () => {
     );
 
     wrapper.text().should.be.equal(tags.join(''));
+    wrapper.unmount();
   });
 
   it('should apply the .endAligned class when aligment prop is set to end', () => {
+    const wrapper = mount(<TagGroup><Tag text="test" /></TagGroup>);
+    const wrapperEnd = mount(<TagGroup alignment="end"><Tag text="test" /></TagGroup>);
     expect(
-      mount(<TagGroup><Tag text="test" /></TagGroup>).find(Container).prop('justify')
+      wrapper.find(Container).prop('justify')
     ).to.equal('start');
     expect(
-      mount(<TagGroup alignment="end"><Tag text="test" /></TagGroup>).find(Container).prop('justify')
+      wrapperEnd.find(Container).prop('justify')
     ).to.equal('end');
+    wrapper.unmount();
+    wrapperEnd.unmount();
   });
 });

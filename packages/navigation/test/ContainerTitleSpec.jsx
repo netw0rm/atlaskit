@@ -15,6 +15,7 @@ describe('<ContainerTitle />', () => {
       />);
       expect(wrapper.find('[data-foo]').length).to.equal(1);
       expect(wrapper.find('linkComponent').props().href).to.equal('http://google.com');
+      wrapper.unmount();
     });
 
     it('should render its title', () => {
@@ -23,6 +24,7 @@ describe('<ContainerTitle />', () => {
       );
 
       expect(wrapper.text()).to.equal('Main text');
+      wrapper.unmount();
     });
 
     it('should render subText if it is provided', () => {
@@ -31,6 +33,7 @@ describe('<ContainerTitle />', () => {
       );
 
       expect(wrapper.text()).to.equal('Main textsub text');
+      wrapper.unmount();
     });
   });
 });

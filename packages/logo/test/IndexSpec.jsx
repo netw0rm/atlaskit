@@ -29,6 +29,7 @@ describe(name, () => {
       Object.values(logos).forEach((ProductLogo) => {
         const wrapper = mount(<ProductLogo logoText={<svg id="bad-logo" />} />);
         expect(wrapper.find('#bad-logo')).to.have.length(0);
+        wrapper.unmount();
       });
     });
   });

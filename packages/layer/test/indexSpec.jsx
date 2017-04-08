@@ -11,6 +11,15 @@ import Layer from '../src';
    be done as a part of AK-1098 */
 
 describe('Layer', () => {
+  const animStub = window.cancelAnimationFrame;
+  beforeEach(() => {
+    window.cancelAnimationFrame = () => {};
+  });
+
+  afterEach(() => {
+    window.cancelAnimationFrame = animStub;
+  });
+
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Layer />);
     expect(wrapper).not.to.equal(undefined);
@@ -59,6 +68,8 @@ describe('Layer', () => {
 
       expect(spy.callCount).to.equal(1);
       expect(spy.calledWith(state)).to.equal(true);
+
+      wrapper.unmount();
     });
   });
 });

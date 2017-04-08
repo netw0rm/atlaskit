@@ -26,6 +26,7 @@ describe('Tooltip (smart)', () => {
       expect((wrapper).state('visible')).to.equal(false);
       wrapper.simulate('mouseOver');
       expect((wrapper).state('visible')).to.equal(true);
+      wrapper.unmount();
     });
 
     it('should set visible state to false when mouse leaves', () => {
@@ -37,6 +38,7 @@ describe('Tooltip (smart)', () => {
 
       wrapper.simulate('mouseOut');
       expect((wrapper).state('visible')).to.equal(false);
+      wrapper.unmount();
     });
   });
 });

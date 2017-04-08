@@ -21,16 +21,24 @@ describe('<ContainerNavigation />', () => {
       expect(shallow(<ContainerNavigation width={200} />).find(Spacer).props().width).to.equal(200);
     });
     it('appearnace="global" should render with the global appearance class', () => {
-      expect((mount(<ContainerNavigation appearance="global" />).find(`.${containerNavigationInner}`)).hasClass((hasGlobalAppearance))).to.equal(true);
+      const wrapper = mount(<ContainerNavigation appearance="global" />);
+      expect(wrapper.find(`.${containerNavigationInner}`).hasClass((hasGlobalAppearance))).to.equal(true);
+      wrapper.unmount();
     });
     it('appearance="settings" should render with the settings appearance class', () => {
-      expect((mount(<ContainerNavigation appearance="settings" />).find(`.${containerNavigationInner}`)).hasClass((hasSettingsAppearance))).to.equal(true);
+      const wrapper = mount(<ContainerNavigation appearance="settings" />);
+      expect(wrapper.find(`.${containerNavigationInner}`).hasClass((hasSettingsAppearance))).to.equal(true);
+      wrapper.unmount();
     });
   });
   describe('behaviour', () => {
     it('renders [data-__ak-navigation-container-closed="true"] if and only if it is closed', () => {
-      expect(mount(<ContainerNavigation width={containerClosedWidth} />).getDOMNode().matches('[data-__ak-navigation-container-closed="true"]')).to.equal(true);
-      expect(mount(<ContainerNavigation width={200} />).getDOMNode().matches('[data-__ak-navigation-container-closed="true"]')).to.equal(false);
+      const wrapperClosedWidth = mount(<ContainerNavigation width={containerClosedWidth} />);
+      const wrapper = mount(<ContainerNavigation width={200} />);
+      expect(wrapperClosedWidth.getDOMNode().matches('[data-__ak-navigation-container-closed="true"]')).to.equal(true);
+      expect(wrapper.getDOMNode().matches('[data-__ak-navigation-container-closed="true"]')).to.equal(false);
+      wrapperClosedWidth.unmount();
+      wrapper.unmount();
     });
     it('collapses the container header when closed', () => {
       const headerComponent = sinon.spy();

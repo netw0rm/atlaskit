@@ -126,6 +126,7 @@ describe('ak-field-base', () => {
         const wrapper = mount(<FieldBase {...defaultProps} onBlur={spy} />);
         wrapper.setProps({ shouldReset: true });
         expect(spy.called).to.equal(true);
+        wrapper.unmount();
       })
     );
 
@@ -149,9 +150,8 @@ describe('ak-field-base', () => {
   describe('focus behaviour', () => {
     let wrapper;
 
-    beforeEach(() => {
-      wrapper = mount(<FieldBase {...defaultProps} />);
-      wrapper.find(`.${contentClass}`).simulate('focus');
+    afterEach(() => {
+      wrapper.unmount();
     });
 
     it('should call onFocus', () => {
@@ -175,6 +175,7 @@ describe('ak-field-base', () => {
       const wrapper = mount(<FieldBaseSmart onFocus={spy} />);
       wrapper.find(`.${contentClass}`).simulate('focus');
       expect(spy.callCount).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should call onBlur handler', () => {
@@ -182,6 +183,7 @@ describe('ak-field-base', () => {
       const wrapper = mount(<FieldBaseSmart onBlur={spy} />);
       wrapper.find(`.${contentClass}`).simulate('blur');
       expect(spy.callCount).to.equal(1);
+      wrapper.unmount();
     });
   });
 });

@@ -16,6 +16,7 @@ describe('<EmojiPickerList />', () => {
       />);
 
       expect(wrapper.find(`.${styles.pickerSearch}`)).to.have.length(1);
+      wrapper.unmount();
     });
   });
 });

@@ -24,6 +24,7 @@ describe(name, () => {
     const wrapper = mount(<AkCalendar />);
     expect(wrapper.find(MonthAndYear).at(0).text().includes(`${getMonthName(nowMonth)} ${nowYear}`))
       .to.equal(true);
+    wrapper.unmount();
   });
 
   it('should call onSelect', (done) => {
@@ -64,5 +65,7 @@ describe(name, () => {
       children: 2,
       selected: true,
     })).to.have.lengthOf(1);
+
+    wrapper.unmount();
   });
 });

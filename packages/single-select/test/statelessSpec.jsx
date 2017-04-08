@@ -25,36 +25,50 @@ describe(name, () => {
     });
 
     it('should render with correct CSS class name', () => {
-      expect(mount(<StatelessSelect />).find(`.${styles.selectWrapper}`).length).to.equal(1);
+      const wrapper = mount(<StatelessSelect />);
+      expect(wrapper.find(`.${styles.selectWrapper}`).length).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should render Label when the prop is set', () => {
-      expect(mount(<StatelessSelect />).find(Label).length).to.equal(0);
-      expect(mount(<StatelessSelect label="test" />).find(Label).length).to.equal(1);
+      const wrapper = mount(<StatelessSelect />);
+      const wrapperLabel = mount(<StatelessSelect label="test" />);
+      expect(wrapper.find(Label).length).to.equal(0);
+      expect(wrapperLabel.find(Label).length).to.equal(1);
+      wrapper.unmount();
+      wrapperLabel.unmount();
     });
 
     it('should render Droplist', () => {
-      expect(mount(<StatelessSelect />).find(Droplist).length).to.equal(1);
+      const wrapper = mount(<StatelessSelect />);
+      expect(wrapper.find(Droplist).length).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should render Fieldbase inside Droplist', () => {
-      expect(mount(<StatelessSelect />).find(FieldBase).length).to.equal(1);
-      expect(mount(<StatelessSelect />).find(Droplist).find(FieldBase).length).to.equal(1);
+      const wrapper = mount(<StatelessSelect />);
+      expect(wrapper.find(FieldBase).length).to.equal(1);
+      expect(wrapper.find(Droplist).find(FieldBase).length).to.equal(1);
+      wrapper.unmount();
     });
 
     it('should render placeholder in trigger if there is no selected item', () => {
-      expect(mount(<StatelessSelect placeholder="test" />).text()).to.equal('test');
+      const wrapper = mount(<StatelessSelect placeholder="test" />);
+      expect(wrapper.text()).to.equal('test');
+      wrapper.unmount();
     });
 
     it('should render selected items`s content instead of placeholder', () => {
       const select = mount(<StatelessSelect placeholder="test" selectedItem={{ content: 'selected' }} />);
       expect(select.text()).to.not.equal('test');
       expect(select.text()).to.equal('selected');
+      select.unmount();
     });
 
     it('should render selectedItems elemBefore', () => {
       const select = mount(<StatelessSelect placeholder="test" selectedItem={{ elemBefore: <UpIcon label="up" /> }} />);
       expect(select.find(UpIcon).length).to.equal(1);
+      select.unmount();
     });
 
     it('should render groups and items inside Droplist (when open)', () => {
@@ -71,6 +85,7 @@ describe(name, () => {
       expect(select.find(Group).length).to.equal(1);
       expect(select.find(Item).length).to.equal(2);
       expect(select.find(Group).find(Item).length).to.equal(2);
+      select.unmount();
     });
   });
 
@@ -81,6 +96,7 @@ describe(name, () => {
       expect(labelProps.isRequired).to.equal(true);
       expect(labelProps.label).to.equal('test');
       expect(labelProps.htmlFor).to.equal('test2');
+      select.unmount();
     });
 
     it('should pass props to Droplist', () => {
@@ -93,6 +109,7 @@ describe(name, () => {
       expect(droplistProps.shouldFitContainer, 'shouldFitContainer').to.equal(true);
       expect(droplistProps.isKeyboardInteractionDisabled, 'isKeyboardInteractionDisabled').to.equal(true);
       expect(droplistProps.isTriggerDisabled, 'isTriggerDisabled').to.equal(true);
+      select.unmount();
     });
 
     it('should pass props to fieldBase', () => {
@@ -103,6 +120,7 @@ describe(name, () => {
       expect(fieldbaseProps.onFocus, 'onFocus').to.equal(select.instance().onFocus);
       expect(fieldbaseProps.isPaddingDisabled, 'isPaddingDisabled').to.equal(true);
       expect(fieldbaseProps.isFitContainerWidthEnabled, 'isFitContainerWidthEnabled').to.equal(true);
+      select.unmount();
     });
 
     it('should pass props to Item', () => {
@@ -132,6 +150,7 @@ describe(name, () => {
       expect(itemProps.isDisabled, 'isDisabled').to.equal(true);
       expect(itemProps.elemBefore, 'elemBefore').to.equal('1');
       expect(itemProps.elemAfter, 'elemAfter').to.equal('2');
+      select.unmount();
     });
   });
 
@@ -157,6 +176,10 @@ describe(name, () => {
         items={selectItems}
         selectedItem={selectedItem}
       />);
+    });
+
+    afterEach(() => {
+      wrapper.unmount();
     });
 
     it('should render a select tag', () => {
@@ -261,6 +284,8 @@ describe(name, () => {
       onRemovedSpy.reset();
       wrapper.setProps({ filterValue: '' });
       wrapper.setProps({ selectedItem });
+      wrapper.unmount();
+      instance = null;
     });
 
     describe('handleTriggerClick', () => {
@@ -591,6 +616,7 @@ describe(name, () => {
     it('should have appearance prop by default', () => {
       const wrapper = mount(<StatelessSelect />);
       expect(wrapper.prop('appearance')).to.equal('default');
+      wrapper.unmount();
     });
 
     it('should correctly map appearance prop to FieldBase', () => {
@@ -600,6 +626,8 @@ describe(name, () => {
       const subtleFieldBase = subtleMultiSelect.find(FieldBase);
       expect(standardFieldBase.prop('appearance')).to.equal('standard');
       expect(subtleFieldBase.prop('appearance')).to.equal('subtle');
+      defaultMultiSelect.unmount();
+      subtleMultiSelect.unmount();
     });
   });
 });

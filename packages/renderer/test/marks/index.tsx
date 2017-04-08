@@ -225,6 +225,7 @@ describe('Marks', () => {
     it('should render the right mark based on type', () => {
       const mark = mount(renderMark( { type: 'strong', content: [ { type: 'text', text: 'hello world' } ]}));
       expect(mark.is(Strong)).to.equal(true);
+      mark.unmount();
     });
 
     it('should render as text if given a textnode', () => {

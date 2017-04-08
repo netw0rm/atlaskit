@@ -32,7 +32,7 @@ const fetchGetReactions = () => {
       },
       {
         ari: ari,
-        emojiId: 'grin',
+        emojiId: 'heart',
         count: 100,
         reacted: false
       }

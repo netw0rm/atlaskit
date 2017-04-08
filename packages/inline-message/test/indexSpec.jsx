@@ -18,6 +18,15 @@ import IconForType from '../src/internal/IconForType';
 import { name } from '../package.json';
 
 describe(name, () => {
+  const animStub = window.cancelAnimationFrame;
+  beforeEach(() => {
+    window.cancelAnimationFrame = () => {};
+  });
+
+  afterEach(() => {
+    window.cancelAnimationFrame = animStub;
+  });
+
   it('basic sanity check', () => {
     expect(shallow(<InlineMessage />)).not.to.equal(undefined);
   });
@@ -46,7 +55,9 @@ describe(name, () => {
     });
     describe('type', () => {
       it('should default to "connectivity"', () => {
-        expect(mount(<InlineMessage />).prop('type')).to.equal('connectivity');
+        const wrapper = mount(<InlineMessage />);
+        expect(wrapper.prop('type')).to.equal('connectivity');
+        wrapper.unmount();
       });
       it('should be passed to IconForType component', () => {
         expect(shallow(<InlineMessage type="error" />).find(IconForType).prop('type')).to.equal('error');
@@ -54,7 +65,9 @@ describe(name, () => {
     });
     describe('position', () => {
       it('should default to "bottom left"', () => {
-        expect(mount(<InlineMessage />).prop('position')).to.equal('bottom left');
+        const wrapper = mount(<InlineMessage />);
+        expect(wrapper.prop('position')).to.equal('bottom left');
+        wrapper.unmount();
       });
       it('should be passed to InlineDialog component', () => {
         expect(shallow(<InlineMessage position="right middle" />).find(InlineDialog).prop('position')).to.equal('right middle');

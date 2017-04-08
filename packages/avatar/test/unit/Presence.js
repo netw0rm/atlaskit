@@ -33,11 +33,13 @@ describe('ak-avatar', () => {
       it('should be white by default', () => {
         const wrapper = mount(<Presence presence="online" />);
         expect(wrapper.find(`.${styles.presence}`).node.style.borderColor).to.equal('#ffffff');
+        wrapper.unmount();
       });
 
       it('should reflect the prop as a CSS style property', () => {
         const wrapper = mount(<Presence presence="online" borderColor="#ff0000" />);
         expect(wrapper.find(`.${styles.presence}`).node.style.borderColor).to.equal('#ff0000');
+        wrapper.unmount();
       });
     });
   });

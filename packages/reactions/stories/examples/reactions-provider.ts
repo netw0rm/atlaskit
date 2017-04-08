@@ -22,7 +22,7 @@ export default class MockReactionsProvider extends AbstractReactionsProvider {
       },
       {
         ari: 'ari:cloud:demo:123:123',
-        emojiId: defaultReactionsByShortcut.get('grin') as string,
+        emojiId: defaultReactionsByShortcut.get('heart') as string,
         count: 100,
         reacted: false
       }

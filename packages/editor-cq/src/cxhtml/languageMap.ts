@@ -26,6 +26,8 @@ export const LANGUAGE_MAP = {
   'VisualBasic': 'vb'
 };
 
+export const supportedLanguages = Object.keys(LANGUAGE_MAP).map(name => LANGUAGE_MAP[name]);
+
 export function mapCodeLanguage(language: string): string {
   return LANGUAGE_MAP[language] || language.toLowerCase();
 }

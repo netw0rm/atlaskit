@@ -94,6 +94,8 @@ export class CardList extends Component<CardListProps, CardListState> {
 
         this.providersByMediaItemId = {};
         collection.items.forEach(mediaItem => {
+          if (!mediaItem.details || !mediaItem.details.id) { return; }
+
           this.providersByMediaItemId[mediaItem.details.id] = context.getMediaItemProvider(
             mediaItem.details.id,
             mediaItem.type,
@@ -204,6 +206,8 @@ export class CardList extends Component<CardListProps, CardListState> {
     const cards = collection ? collection.items
       .map((mediaItem: MediaCollectionItem, index: number) => {
         const {cardAppearance, cardDimensions} = this.props;
+        if (!mediaItem.details.id) { return null; }
+
         return (
           <li key={`${index}-${mediaItem.details.id}`}>
             <MediaCard
@@ -260,9 +264,12 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   private get showLoadMoreButton(): boolean {
+    if (!this.state.hasNextPage) { return false; }
+
     return this.state.hasNextPage && (
       (this.props.showLoadMoreButton === true) ||
-      (this.isNullOrUndefined(this.props.showLoadMoreButton) && !this.useInfiniteScroll));
+      (this.isNullOrUndefined(this.props.showLoadMoreButton) && !this.useInfiniteScroll)
+    );
   }
 
   private renderLoadMoreButton(): JSX.Element | null {
@@ -288,6 +295,6 @@ export class CardList extends Component<CardListProps, CardListState> {
   }
 
   loadNextPage = (): void => {
-    this.state.loadNextPage();
+    this.state.loadNextPage && this.state.loadNextPage();
   }
 }

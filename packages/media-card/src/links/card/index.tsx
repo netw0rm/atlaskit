@@ -9,53 +9,45 @@ import { LinkCardViewSmall } from '../cardViewSmall';
 import { LinkCardImageView } from '../cardImageView';
 
 export interface LinkCardProps extends SharedCardProps {
-  urlPreview: UrlPreview;
+  urlPreview?: UrlPreview;
   cardProcessingStatus: CardProcessingStatus;
   error?: Error;
 }
 
 export class LinkCard extends Component<LinkCardProps, {}> {
-
   render(): JSX.Element | null {
-    const {urlPreview, appearance, cardProcessingStatus, error} = this.props;
+    const {appearance, error} = this.props;
 
     if (error) {
       return null;
     }
 
-    if (urlPreview) {
-      const {resources} = urlPreview;
-
-      // If appearance is passed we prioritize that instead of the better looking one
-      if (appearance === 'small') {
-        return this.renderSmallLink(urlPreview);
-      }
-
-      if (appearance === 'image') {
-        return this.renderLinkCardImage(urlPreview);
-      }
-
-      if (resources && resources.app) {
-        return this.renderApplicationLink(urlPreview);
-      } else if (resources && resources.player) {
-        return this.renderPlayerLink(urlPreview);
-      }
-
-      return this.renderGenericLink(urlPreview);
-    } else {
-      // TODO FIL-3893 render loading/error state
-      return null;
+    // If appearance is passed we prioritize that instead of the better looking one
+    if (appearance === 'small') {
+      return this.renderSmallLink();
     }
+
+    if (appearance === 'image') {
+      return this.renderLinkCardImage();
+    }
+
+    if (this.resources && this.resources.app) {
+      return this.renderApplicationLink();
+    } else if (this.resources && this.resources.player) {
+      return this.renderPlayerLink();
+    }
+
+    return this.renderGenericLink();
   }
 
-  private renderApplicationLink(urlPreview: UrlPreview): JSX.Element {
-    const {app, icon} = urlPreview.resources;
+  private renderApplicationLink(): JSX.Element {
+    const {app, icon} = this.resources;
 
     switch (app && app.type) {
       case 'trello_board':
         return this.renderTrelloBoard(app as TrelloBoardLinkApp, icon && icon.url);
       default:
-        return this.renderGenericLink(urlPreview);
+        return this.renderGenericLink();
     }
   }
 
@@ -70,13 +62,11 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     />;
   }
 
-  private renderPlayerLink(urlPreview: UrlPreview): JSX.Element {
-    const { title, site,  description, resources } = urlPreview;
-    const { thumbnail, icon, player } = resources;
+  private renderPlayerLink(): JSX.Element {
+    const { title, site, description } = this.urlPreview;
+    const { player } = this.resources;
 
     const playerUrl = player && player.url ? player.url : '';
-    const iconUrl = icon && icon.url;
-    const thumbnailUrl = thumbnail && thumbnail.url;
 
     return <LinkCardPlayer
       linkUrl={playerUrl}
@@ -84,71 +74,94 @@ export class LinkCard extends Component<LinkCardProps, {}> {
 
       site={site}
       description={description}
-      thumbnailUrl={thumbnailUrl}
-      iconUrl={iconUrl}
+      thumbnailUrl={this.thumbnailUrl}
+      iconUrl={this.iconUrl}
       playerUrl={playerUrl}
     />;
   }
 
-  private renderGenericLink(urlPreview: UrlPreview): JSX.Element {
-    const { url, title, site, description, resources } = urlPreview;
-    const icon = resources ? resources.icon : undefined;
-    const thumbnail = resources ? resources.icon : undefined;
-
-    const {dimensions, actions, appearance, cardProcessingStatus} = this.props;
+  private renderGenericLink(): JSX.Element {
+    const { url, title, site, description } = this.urlPreview;
+    const { dimensions, actions, appearance } = this.props;
 
     return <LinkCardGenericView
       linkUrl={url}
       title={title}
-
       site={site}
       description={description}
-      thumbnailUrl={thumbnail && thumbnail.url}
-      iconUrl={icon && icon.url}
-
+      thumbnailUrl={this.thumbnailUrl}
+      iconUrl={this.iconUrl}
       dimensions={dimensions}
-
       appearance={appearance}
-      loading={cardProcessingStatus === 'loading'}
+      loading={this.isLoading}
       actions={actions}
     />;
   }
 
-  private renderSmallLink(urlPreview: UrlPreview): JSX.Element {
-    const { url, title, site, resources } = urlPreview;
-    const thumbnail = resources ? resources.icon : undefined;
-
-    const {dimensions, actions, cardProcessingStatus} = this.props;
+  private renderSmallLink(): JSX.Element {
+    const { url, title, site } = this.urlPreview;
+    const { dimensions, actions } = this.props;
 
     return <LinkCardViewSmall
       linkUrl={url}
       title={title}
       site={site}
-
-      thumbnailUrl={thumbnail && thumbnail.url}
+      thumbnailUrl={this.iconUrl}
       width={dimensions && dimensions.width}
-
-      loading={cardProcessingStatus === 'loading'}
+      loading={this.isLoading}
       actions={actions}
     />;
   }
 
-  private renderLinkCardImage(urlPreview: UrlPreview): JSX.Element {
-    const { url, title, site, resources } = urlPreview;
-    const { thumbnail, icon } = resources || {thumbnail: '', icon: ''};
-    const { dimensions, actions, appearance, cardProcessingStatus } = this.props;
+  private renderLinkCardImage(): JSX.Element {
+    const { url, title, site } = this.urlPreview;
+    const { dimensions, actions, appearance } = this.props;
 
     return <LinkCardImageView
       linkUrl={url}
       title={title}
       site={site}
-      thumbnailUrl={thumbnail && thumbnail.url}
+      thumbnailUrl={this.thumbnailUrl}
       appearance={appearance}
       dimensions={dimensions}
-      loading={cardProcessingStatus === 'loading'}
+      loading={this.isLoading}
       actions={actions}
-      iconUrl={icon && icon.url}
+      iconUrl={this.iconUrl}
     />;
+  }
+
+  private get resources() {
+    const { resources } = this.urlPreview;
+
+    return resources || {};
+  }
+
+  private get urlPreview() {
+    const defaultUrlPreview: UrlPreview = {type: '', url: '', title: ''};
+    const urlPreview = this.props.urlPreview;
+
+    // We provide a defaultUrlPreview in order to conform what the card is expecting and show the right loading status
+    return urlPreview || defaultUrlPreview;
+  }
+
+  private get thumbnailUrl() {
+    const { thumbnail } = this.resources;
+
+    // TODO: Should we default here to 'this.iconUrl'?
+    return thumbnail ? thumbnail.url : undefined;
+  }
+
+  private get iconUrl() {
+    const { icon } = this.resources;
+
+    return icon ? icon.url : undefined;
+  }
+
+  private get isLoading(): boolean {
+    const {cardProcessingStatus} = this.props;
+    const notProcesed = cardProcessingStatus === 'loading' || cardProcessingStatus === 'processing';
+
+    return notProcesed;
   }
 };
 

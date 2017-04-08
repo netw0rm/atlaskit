@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Context, MediaCollectionItem, MediaCollectionFileItem } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs/Subscription';
-import { fetchToken } from '../util/fetch-token';
+import { fetchToken } from '../domain/fetch-token';
 
 export interface MediaCollectionViewerProps {
   readonly context: Context;

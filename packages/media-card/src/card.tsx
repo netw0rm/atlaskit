@@ -31,7 +31,7 @@ export class Card extends Component<CardProps, {}> {
   };
 
   private provider: Provider;
-  private dataURIService: DataUriService;
+  private dataURIService?: DataUriService;
 
   constructor(props) {
     super(props);

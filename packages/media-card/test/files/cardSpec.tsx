@@ -153,7 +153,7 @@ describe('FileCard', () => {
 
       const card = shallow<FileCardProps, FileCardState>(
         <FileCard appearance="small" fileDetails={fileDetails} dataURIService={dataUriService} cardProcessingStatus="complete" />
-      );
+      ) as any;
 
       card.instance().fetchDataUri(dataUriService, fileDetails);
 
@@ -174,7 +174,7 @@ describe('FileCard', () => {
 
       const card = shallow<FileCardProps, FileCardState>(
         <FileCard appearance="small" fileDetails={fileDetails} dataURIService={dataUriService} cardProcessingStatus="complete" />
-      );
+      ) as any;
 
       card.setState({dataURI: 'test.exe'});
       card.instance().fetchDataUri(dataUriService, fileDetails);
@@ -196,7 +196,7 @@ describe('FileCard', () => {
 
       const card = shallow<FileCardProps, FileCardState>(
         <FileCard appearance="small" fileDetails={fileDetails} dataURIService={dataUriService} cardProcessingStatus="complete" />
-      );
+      ) as any;
 
       card.instance().fetchDataUri(dataUriService, fileDetails);
 
@@ -217,7 +217,7 @@ describe('FileCard', () => {
 
       const card = shallow<FileCardProps, FileCardState>(
         <FileCard appearance="small" fileDetails={fileDetails} dataURIService={dataUriService} cardProcessingStatus="complete" />
-      );
+      ) as any;
 
       card.setState({dataURI: 'test.exe'});
       card.instance().fetchDataUri(dataUriService, fileDetails);

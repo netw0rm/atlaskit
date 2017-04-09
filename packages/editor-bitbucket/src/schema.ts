@@ -42,7 +42,7 @@ const nodes = {
   emoji,
 };
 
-code['excludes'] = 'em strike strong mentionQuery emojiQuery';
+code['excludes'] = 'em strike strong';
 
 const marks = {
   em,

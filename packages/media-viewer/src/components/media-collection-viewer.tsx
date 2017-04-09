@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Context, MediaCollectionItem, MediaCollectionFileItem } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs/Subscription';
 import { fetchToken } from '../domain/fetch-token';
+import { MediaFileAttributesFactory } from '../domain/media-file-attributes';
 import { MediaViewerInterface, MediaViewerConstructor } from '../mediaviewer';
 
 export interface MediaCollectionViewerProps {
@@ -25,7 +26,7 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
   componentDidMount(): void {
     const { context, occurenceKey, collectionName, basePath, onClose, MediaViewer } = this.props;
     const { config } = context;
-    const { clientId, tokenProvider } = config;
+    const { serviceHost, clientId, tokenProvider } = config;
 
     this.setState({
       mediaViewer: new MediaViewer({
@@ -37,23 +38,13 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
     }, () => {
       const { mediaViewer } = this.state;
       const provider = context.getMediaCollectionProvider(collectionName, 50);
-      const collectionFileItemFilter = (item: MediaCollectionItem) => item.type === 'file';
 
       this.subscription = provider.observable().subscribe({
         next: collection => {
           if (onClose) {
             mediaViewer.on('fv.close', onClose);
           }
-          const files = collection.items
-            .filter(collectionFileItemFilter)
-            .map((item: MediaCollectionFileItem) => ({
-              id: item.details.occurrenceKey,
-              src: `${config.serviceHost}/file/${item.details.id}/binary`,
-              type: item.details.mimeType,
-              title: item.details.name
-            }));
-
-          mediaViewer.setFiles(files);
+          mediaViewer.setFiles(MediaFileAttributesFactory.fromMediaCollection(collection, serviceHost));
           mediaViewer.open({ id: occurenceKey });
         }
       });

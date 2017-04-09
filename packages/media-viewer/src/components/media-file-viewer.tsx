@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { fetchToken } from '../domain/fetch-token';
-import { MediaFileAttributes } from '../domain/media-file-attributes';
+import { MediaFileAttributesFactory } from '../domain/media-file-attributes';
 import { MediaViewerInterface, MediaViewerConstructor } from '../mediaviewer';
 
 export interface MediaFileViewerProps {
@@ -44,7 +44,7 @@ export class MediaFileViewer extends Component<MediaFileViewerProps, MediaFileVi
           if (onClose) {
             mediaViewer.on('fv.close', onClose);
           }
-          mediaViewer.setFiles([MediaFileAttributes.fromFileItem(item, serviceHost)]);
+          mediaViewer.setFiles([MediaFileAttributesFactory.fromFileItem(item, serviceHost)]);
           mediaViewer.open({ id: item.details.id });
         }
       });

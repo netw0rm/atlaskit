@@ -1,18 +1,8 @@
 import { FileItem } from '@atlaskit/media-core';
 import { ArtifactFormat } from './artifact-format';
+import { MediaFileAttributes } from '../mediaviewer';
 
-export interface MediaFileAttributes {
-  readonly src: string;
-  readonly srcDownload: string;
-
-  readonly id?: string;
-  readonly type?: string;
-  readonly title?: string;
-  readonly src_hd?: string;
-  readonly poster?: string;
-}
-
-export class MediaFileAttributes {
+export class MediaFileAttributesFactory {
   static fromFileItem(fileItem: FileItem, serviceHost: string): MediaFileAttributes {
     const getArtifactUrl = (name: string) => {
       return fileItem.details.artifacts &&

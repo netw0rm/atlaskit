@@ -1,13 +1,29 @@
-export interface MediaFile {
+import 'jquery';
+
+export interface MediaFileAttributes {
   readonly src: string;
-  readonly type: string;
-  readonly thumbnail: string;
-  readonly poster: string;
-  readonly title: string;
-  readonly downloadable: boolean;
+  readonly srcDownload: string;
+
+  readonly id?: string;
+  readonly type?: string;
+  readonly title?: string;
+  readonly src_hd?: string;
+  readonly poster?: string;
+  readonly thumbnail?: string;
+  readonly downlodable?: boolean;
 }
 
+export interface MediaFile {
+  readonly attributes: MediaFileAttributes;
+}
+
+export type MediaViewerAssets = {
+  readonly basePath: string
+};
+
 export interface MediaViewerConfig {
+  readonly assets: MediaViewerAssets;
+  readonly fetchToken: (file: MediaFile) => JQueryPromise<MediaFileAttributes>;
 }
 
 export type MediaViewerMode = 'BASE' | 'PRESENTATION' | 'CONTAINED';
@@ -21,9 +37,9 @@ export interface MediaViewerInterface {
   on(eventName: 'fv.setFiles', callback: () => void, context?: any): void;
   on(eventName: 'fv.changeMode', callback: (mode: MediaViewerMode) => void, context?: any): void;
   on(eventName: 'fv.updateFiles', callback: () => void, context?: any): void;
-  on(eventName: 'fv.changeFile', callback: (file: MediaFile) => void, context?: any): void;
-  on(eventName: 'fv.showFile', callback: (file: MediaFile) => void, context?: any): void;
-  on(eventName: 'fv.showFileError', callback: (file: MediaFile) => void, context?: any): void;
+  on(eventName: 'fv.changeFile', callback: (file: MediaFileAttributes) => void, context?: any): void;
+  on(eventName: 'fv.showFile', callback: (file: MediaFileAttributes) => void, context?: any): void;
+  on(eventName: 'fv.showFileError', callback: (file: MediaFileAttributes) => void, context?: any): void;
   on(eventName: 'reset', callback: (files: any) => void, context?: any): void;
 
   off(eventName: string, callback: Function, context?: any): any;

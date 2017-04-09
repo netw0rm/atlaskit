@@ -4,25 +4,27 @@ import { Subscription } from 'rxjs/Subscription';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { fetchToken } from '../domain/fetch-token';
 import { MediaFileAttributes } from '../domain/media-file-attributes';
+import { MediaViewerInterface, MediaViewerConstructor } from '../mediaviewer';
 
 export interface MediaFileViewerProps {
   readonly context: Context;
   readonly fileId: string;
   readonly collectionName?: string;
-  readonly basePath: string;
 
+  readonly MediaViewer: MediaViewerConstructor;
+  readonly basePath: string;
   readonly onClose?: () => void;
 }
 
 export interface MediaFileViewerState {
-  readonly mediaViewer: MediaViewer;
+  readonly mediaViewer: MediaViewerInterface;
 }
 
 export class MediaFileViewer extends Component<MediaFileViewerProps, MediaFileViewerState> {
   private subscription: Subscription;
 
   componentDidMount(): void {
-    const { context, fileId, collectionName, basePath, onClose } = this.props;
+    const { context, fileId, collectionName, basePath, onClose, MediaViewer } = this.props;
     const { config } = context;
     const { serviceHost, clientId, tokenProvider } = config;
 

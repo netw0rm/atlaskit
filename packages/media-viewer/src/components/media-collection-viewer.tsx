@@ -3,25 +3,27 @@ import { Component } from 'react';
 import { Context, MediaCollectionItem, MediaCollectionFileItem } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs/Subscription';
 import { fetchToken } from '../domain/fetch-token';
+import { MediaViewerInterface, MediaViewerConstructor } from '../mediaviewer';
 
 export interface MediaCollectionViewerProps {
   readonly context: Context;
   readonly occurenceKey: string;
   readonly collectionName: string;
-  readonly basePath: string;
 
+  readonly MediaViewer: MediaViewerConstructor;
+  readonly basePath: string;
   readonly onClose?: () => void;
 }
 
 export interface MediaCollectionViewerState {
-  readonly mediaViewer: MediaViewer;
+  readonly mediaViewer: MediaViewerInterface;
 }
 
 export class MediaCollectionViewer extends Component<MediaCollectionViewerProps, MediaCollectionViewerState> {
   private subscription: Subscription;
 
   componentDidMount(): void {
-    const { context, occurenceKey, collectionName, basePath, onClose } = this.props;
+    const { context, occurenceKey, collectionName, basePath, onClose, MediaViewer } = this.props;
     const { config } = context;
     const { clientId, tokenProvider } = config;
 

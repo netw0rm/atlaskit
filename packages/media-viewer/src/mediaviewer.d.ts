@@ -1,5 +1,18 @@
-declare class MediaViewer {
-  constructor(config);
+export interface MediaFile {
+  readonly src: string;
+  readonly type: string;
+  readonly thumbnail: string;
+  readonly poster: string;
+  readonly title: string;
+  readonly downloadable: boolean;
+}
+
+export interface MediaViewerConfig {
+}
+
+export type MediaViewerMode = 'BASE' | 'PRESENTATION' | 'CONTAINED';
+
+export interface MediaViewerInterface {
   open(fileQuery?: Object): Promise<void>;
   setFiles(files: Array<Object>, nextFileQuery?: Object): void;
 
@@ -8,21 +21,14 @@ declare class MediaViewer {
   on(eventName: 'fv.setFiles', callback: () => void, context?: any): void;
   on(eventName: 'fv.changeMode', callback: (mode: MediaViewerMode) => void, context?: any): void;
   on(eventName: 'fv.updateFiles', callback: () => void, context?: any): void;
-  on(eventName: 'fv.changeFile', callback: (file: File) => void, context?: any): void;
-  on(eventName: 'fv.showFile', callback: (file: File) => void, context?: any): void;
-  on(eventName: 'fv.showFileError', callback: (file: File) => void, context?: any): void;
+  on(eventName: 'fv.changeFile', callback: (file: MediaFile) => void, context?: any): void;
+  on(eventName: 'fv.showFile', callback: (file: MediaFile) => void, context?: any): void;
+  on(eventName: 'fv.showFileError', callback: (file: MediaFile) => void, context?: any): void;
   on(eventName: 'reset', callback: (files: any) => void, context?: any): void;
 
-  off(eventName?: string, callback?: Function, context?: any): any;
+  off(eventName: string, callback: Function, context?: any): any;
 }
 
-type MediaViewerMode = 'BASE' | 'PRESENTATION' | 'CONTAINED';
-
-interface File {
-  readonly src: string;
-  readonly type: string;
-  readonly thumbnail: string;
-  readonly poster: string;
-  readonly title: string;
-  readonly downloadable: boolean;
+export interface MediaViewerConstructor {
+  new (config: MediaViewerConfig): MediaViewerInterface;
 }

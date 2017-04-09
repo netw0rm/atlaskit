@@ -17,6 +17,7 @@ export const hr = nodeFactory(schema.nodes.rule);
 export const li = nodeFactory(schema.nodes.listItem);
 export const ol = nodeFactory(schema.nodes.orderedList);
 export const codeblock = (attrs: {} = {}) => nodeFactory(schema.nodes.codeBlock, attrs);
+export const panel = (attrs: {} = {}) => nodeFactory(schema.nodes.panel, attrs);
 export const unsupportedBlock = (cxhtml: string) => nodeFactory(schema.nodes.unsupportedBlock, { cxhtml })();
 export const unsupportedInline = (cxhtml: string) => nodeFactory(schema.nodes.unsupportedInline, { cxhtml })();
 

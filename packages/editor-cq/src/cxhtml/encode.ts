@@ -33,6 +33,8 @@ export default function encode(node: PMNode) {
       return encodeHardBreak();
     } else if (node.type === schema.nodes.codeBlock) {
       return encodeCodeBlock(node);
+    } else if (node.type === schema.nodes.panel) {
+      return encodePanel(node);
     } else if (node.type === schema.nodes.unsupportedBlock || node.type === schema.nodes.unsupportedInline) {
       return encodeUnsupported(node);
     } else {
@@ -133,9 +135,7 @@ export default function encode(node: PMNode) {
   }
 
   function encodeCodeBlock(node: PMNode) {
-    const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
-    elem.setAttributeNS(AC_XMLNS, 'ac:name', 'code');
-    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
+    const elem = createMacroElement('code');
 
     if (node.attrs.language) {
       const langParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
@@ -160,6 +160,25 @@ export default function encode(node: PMNode) {
     return elem;
   }
 
+  function encodePanel (node: PMNode) {
+    const elem = createMacroElement(node.attrs.panelType);
+
+    if (node.firstChild!.type.name === 'heading') {
+      const title = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+      title.setAttributeNS(AC_XMLNS, 'ac:name', 'title');
+      title.textContent = node.firstChild!.textContent;
+      elem.appendChild(title);
+    }
+
+    const body = doc.createElementNS(AC_XMLNS, 'ac:rich-text-body');
+    const p = doc.createElement('p');
+    p.innerHTML = node.lastChild!.textContent;
+    body.appendChild(p);
+    elem.appendChild(body);
+
+    return elem;
+  }
+
   function encodeUnsupported(node: PMNode) {
     const domNode = parseCxhtml(node.attrs.cxhtml || '').querySelector('body')!.firstChild;
     if (domNode) {
@@ -179,5 +198,12 @@ export default function encode(node: PMNode) {
     };
 
     return map[language.toLowerCase()] || language.toLowerCase();
+  }
+
+  function createMacroElement (name) {
+    const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
+    elem.setAttributeNS(AC_XMLNS, 'ac:name', name);
+    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
+    return elem;
   }
 }

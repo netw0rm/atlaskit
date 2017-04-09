@@ -346,7 +346,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
     case 'CODE':
       const language = getAcParameter(node, 'language');
       const title = getAcParameter(node, 'title');
-      const codeContent = getAcPlainText(node) || ' ';
+      const codeContent = getAcTagContent(node, 'AC:PLAIN-TEXT-BODY') || ' ';
       const content: PMNode[] = [];
       let nodeSize = 0;
 
@@ -361,6 +361,26 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       nodeSize += codeBlockNode.nodeSize;
 
       return new Fragment(content, nodeSize);
+
+    case 'WARNING':
+    case 'INFO':
+    case 'NOTE':
+    case 'TIP':
+      const panelTitle = getAcParameter(node, 'title');
+      const panelText = getAcTagContent(node, 'AC:RICH-TEXT-BODY') || '';
+      let panelBody: PMNode[] = [];
+
+      if (panelTitle) {
+        panelBody.push(
+          schema.nodes.heading.create({ level: 3 }, schema.text(panelTitle))
+        );
+      }
+
+      panelBody.push(
+        schema.nodes.paragraph.create({}, schema.text(panelText))
+      );
+
+      return schema.nodes.panel.create({ panelType: name.toLowerCase() }, panelBody);
   }
 
   // All unsupported content is wrapped in an `unsupportedInline` node. Converting
@@ -384,10 +404,10 @@ function getAcParameter(node: Element, parameter: string): string | null {
   return null;
 }
 
-function getAcPlainText(node: Element): string | null {
+function getAcTagContent(node: Element, tagName: string): string | null {
   for (let i = 0; i < node.childNodes.length; i++) {
     const child = node.childNodes[i] as Element;
-    if (getNodeName(child) === 'AC:PLAIN-TEXT-BODY') {
+    if (getNodeName(child) === tagName) {
       return child.textContent;
     }
   }

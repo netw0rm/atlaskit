@@ -1,40 +1,48 @@
-import { FileItem } from '@atlaskit/media-core';
+import {
+  FileItem, FileDetails,
+  MediaCollection, MediaCollectionItem, MediaCollectionFileItem
+} from '@atlaskit/media-core';
 import { ArtifactFormat } from './artifact-format';
+import { MediaFileAttributes } from '../mediaviewer';
 
-export interface MediaFileAttributes {
-  readonly src: string;
-  readonly srcDownload: string;
-
-  readonly id?: string;
-  readonly type?: string;
-  readonly title?: string;
-  readonly src_hd?: string;
-  readonly poster?: string;
-}
-
-export class MediaFileAttributes {
-  static fromFileItem(fileItem: FileItem, serviceHost: string): MediaFileAttributes {
+export class MediaFileAttributesFactory {
+  static create(id = '', details: FileDetails, serviceHost: string): MediaFileAttributes {
     const getArtifactUrl = (name: string) => {
-      return fileItem.details.artifacts &&
-        fileItem.details.artifacts[name] &&
-        fileItem.details.artifacts[name].url;
+      return details.artifacts &&
+        details.artifacts[name] &&
+        details.artifacts[name].url;
     };
 
-    const binary = `/file/${fileItem.details.id}/binary`;
-    const artifactFormat = ArtifactFormat.fromFileItem(fileItem);
+    const binary = `/file/${details.id}/binary`;
+    const artifactFormat = ArtifactFormat.fromFileDetails(details);
     const resource = artifactFormat && getArtifactUrl(artifactFormat.name) || binary;
     const video1280 = getArtifactUrl('video_1280.mp4');
     const poster1280 = getArtifactUrl('poster_1280.jpg');
     const poster640 = getArtifactUrl('poster_640.jpg');
 
     return {
-      id: fileItem.details.id,
+      id,
       src: `${serviceHost}${resource}`,
       srcDownload: `${serviceHost}${binary}?dl=1`,
-      type: artifactFormat ? artifactFormat.type : fileItem.details.mediaType,
-      title: fileItem.details.name,
+      type: artifactFormat ? artifactFormat.type : details.mediaType,
+      title: details.name,
       src_hd: video1280 && `${serviceHost}${video1280}`,
       poster: poster1280 ? `${serviceHost}${poster1280}` : poster640 && `${serviceHost}${poster640}`
     };
+  }
+
+  static fromFileItem(item: FileItem, serviceHost: string): MediaFileAttributes {
+    return MediaFileAttributesFactory.create(item.details.id, item.details, serviceHost);
+  };
+
+  static fromMediaCollectionFileItem(item: MediaCollectionFileItem, serviceHost: string): MediaFileAttributes {
+    return MediaFileAttributesFactory.create(item.details.occurrenceKey, item.details, serviceHost);
+  }
+
+  static fromMediaCollection(collection: MediaCollection, serviceHost: string): Array<MediaFileAttributes> {
+    const collectionFileItemFilter = (item: MediaCollectionItem) => item.type === 'file';
+    return collection.items
+      .filter(collectionFileItemFilter)
+      .map((item: MediaCollectionFileItem) => MediaFileAttributesFactory.fromMediaCollectionFileItem(item, serviceHost));
   }
 }

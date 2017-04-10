@@ -32,5 +32,4 @@ import {CardView} from '@atlaskit/media-card';
   dataURI={tallImageDataUri}
   onClick={onClick}
 />
-
 ```

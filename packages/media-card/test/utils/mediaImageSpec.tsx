@@ -32,7 +32,7 @@ describe('MediaImage', () => {
   });
 
   it('Only adds the image to the background when transparentFallback is disabled', () => {
-    const mediaImg = mount(<MediaImage dataURI={validURI} transparentFallback={false} />);
+    const mediaImg = mount(<MediaImage dataURI={validURI} transparentFallback={false} />) as any;
 
     expect(mediaImg.find('.media-card').prop('style').backgroundImage).to.equal(`url(${validURI})`);
   });

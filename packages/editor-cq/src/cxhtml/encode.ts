@@ -4,7 +4,7 @@ import {
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
-import { default as encodeCxhtml, FAB_XMLNS } from './encode-cxhtml';
+import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 
 export default function encode(node: PMNode) {
   const docType = document.implementation.createDocumentType('html', '-//W3C//DTD XHTML 1.0 Strict//EN', 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd');
@@ -31,6 +31,10 @@ export default function encode(node: PMNode) {
       return encodeParagraph(node);
     } else if (node.type === schema.nodes.hardBreak) {
       return encodeHardBreak();
+    } else if (node.type === schema.nodes.codeBlock) {
+      return encodeCodeBlock(node);
+    } else if (node.type === schema.nodes.mention) {
+      return encodeMention(node);
     } else if (node.type === schema.nodes.unsupportedBlock || node.type === schema.nodes.unsupportedInline) {
       return encodeUnsupported(node);
     } else if (node.type === schema.nodes.mediaGroup) {
@@ -148,10 +152,62 @@ export default function encode(node: PMNode) {
     return elem;
   }
 
+  function encodeCodeBlock(node: PMNode) {
+    const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
+    elem.setAttributeNS(AC_XMLNS, 'ac:name', 'code');
+    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
+
+    if (node.attrs.language) {
+      const langParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+      langParam.setAttributeNS(AC_XMLNS, 'ac:name', 'language');
+      langParam.textContent = mapCodeLanguage(node.attrs.language);
+      elem.appendChild(langParam);
+    }
+
+    const plainTextBody = doc.createElementNS(AC_XMLNS, 'ac:plain-text-body');
+    const fragment = doc.createDocumentFragment();
+    (node.textContent || '').split(/]]>/g).map((value, index, array) => {
+        const isFirst = index === 0;
+        const isLast = index === array.length - 1;
+        const prefix = isFirst ? '' : '>';
+        const suffix = isLast ? '' : ']]';
+        return doc.createCDATASection(prefix + value + suffix);
+    }).forEach(cdata => fragment.appendChild(cdata));
+
+    plainTextBody.appendChild(fragment);
+    elem.appendChild(plainTextBody);
+
+    return elem;
+  }
+
+  function encodeMention(node: PMNode) {
+    const elem = doc.createElementNS(FAB_XMLNS, 'fab:mention');
+    elem.setAttribute('atlassian-id', node.attrs['id']);
+
+    const cdata = doc.createCDATASection(node.attrs['displayName']);
+    elem.appendChild(cdata);
+
+    return elem;
+  }
+
   function encodeUnsupported(node: PMNode) {
     const domNode = parseCxhtml(node.attrs.cxhtml || '').querySelector('body')!.firstChild;
     if (domNode) {
       return doc.importNode(domNode, true);
     }
+  }
+
+  function mapCodeLanguage(language: string): string {
+    const map = {
+      'shell': 'bash',
+      'cSharp': 'c#',
+      'c++': 'cpp',
+      'erlang': 'erl',
+      'javafx': 'jfx',
+      'javascript': 'js',
+      'python': 'py',
+    };
+
+    return map[language.toLowerCase()] || language.toLowerCase();
   }
 }

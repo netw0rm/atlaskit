@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-// import { EmojiProvider } from '@atlaskit/emoji';
+import { EmojiProvider } from '@atlaskit/emoji';
 import { MentionProvider } from '@atlaskit/mention';
 import { BlockTypeState } from '../../plugins/block-type';
 import { CodeBlockState } from '../../plugins/code-block';
-// import { EmojisPluginState } from '../../plugins/emojis';
+import { EmojiState } from '../../plugins/emojis';
 import { HyperlinkState } from '../../plugins/hyperlink';
 import { ImageUploadState } from '../../plugins/image-upload';
 import { ListsState } from '../../plugins/lists';
@@ -35,10 +35,10 @@ export interface Props {
   pluginStateImageUpload?: ImageUploadState;
   pluginStateMentions?: MentionsState;
   pluginStatePanel?: PanelState;
-  pluginStateEmojis?: any; // EmojisPluginState;
   pluginStateMedia?: MediaPluginState;
+  pluginStateEmojis?: EmojiState;
   presenceResourceProvider?: any; // AbstractPresenceResource
-  emojiProvider?: any; // Promise<EmojiProvider>;
+  emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
   onCollapsedChromeFocus: () => void;
 }

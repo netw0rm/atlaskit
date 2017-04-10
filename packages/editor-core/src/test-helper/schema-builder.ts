@@ -217,7 +217,7 @@ export const hardBreak = nodeFactory(sampleSchema.nodes.hardBreak, {});
 // tslint:disable-next-line:variable-name
 export const code_block = (attrs: {} = {}) => nodeFactory(sampleSchema.nodes.codeBlock, attrs);
 export const img = (attrs: { src: string, alt?: string, title?: string }) => sampleSchema.nodes.image.createChecked(attrs);
-export const emoji = (attrs: { id: string }) => sampleSchema.nodes.emoji.createChecked(attrs);
+export const emoji = (attrs: { shortName: string, id?: string, fallback?: string }) => sampleSchema.nodes.emoji.createChecked(attrs);
 export const mention = (attrs: { id: string, displayName?: string }) => sampleSchema.nodes.mention.createChecked(attrs);
 export const hr = sampleSchema.nodes.rule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});
@@ -230,3 +230,4 @@ export const mentionQuery = markFactory(sampleSchema.marks.mentionQuery, {});
 export const a = (attrs: { href: string, title?: string }) => markFactory(sampleSchema.marks.link, attrs);
 export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
 export const slice = (...content: BuilderContent[]) => new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
+export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});

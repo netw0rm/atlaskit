@@ -9,14 +9,14 @@ export const schema = makeSchema({ allowLists: false, allowAdvancedTextFormattin
 // Nodes
 const doc = nodeFactory(schema.nodes.doc);
 const p = nodeFactory(schema.nodes.paragraph);
-const br = schema.node(schema.nodes.hard_break);
+const br = schema.node(schema.nodes.hardBreak);
 const h1 = nodeFactory(schema.nodes.heading, { level: 1 });
 const h2 = nodeFactory(schema.nodes.heading, { level: 2 });
 const h3 = nodeFactory(schema.nodes.heading, { level: 3 });
 const h4 = nodeFactory(schema.nodes.heading, { level: 4 });
 const h5 = nodeFactory(schema.nodes.heading, { level: 5 });
 const h6 = nodeFactory(schema.nodes.heading, { level: 6 });
-const hr = nodeFactory(schema.nodes.horizontal_rule);
+const hr = nodeFactory(schema.nodes.rule);
 
 // Marks
 const em = markFactory(schema.marks.em);
@@ -25,7 +25,7 @@ const strike = markFactory(schema.marks.strike!);
 const strong = markFactory(schema.marks.strong);
 const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 const sup = markFactory(schema.marks.subsup, { type: 'sup' });
-const u = markFactory(schema.marks.u);
+const u = markFactory(schema.marks.underline);
 
 describe(`${name} html:`, () => {
   describe('paragraphs:', () => {
@@ -88,15 +88,6 @@ describe(`${name} html:`, () => {
         strong(code('code words')),
         '.'
       )));
-
-    checkEncode('<tt> and <b>',
-      schema,
-      doc(p(
-        'Text with ',
-        strong(code('code words')),
-        '.'
-      )),
-      '<p>Text with <b><tt>code words</tt></b>.</p>');
 
     checkParseEncodeRoundTrips('<ins> tag',
       schema,

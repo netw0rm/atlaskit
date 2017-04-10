@@ -16,8 +16,10 @@ export const h6 = nodeFactory(schema.nodes.heading, { level: 6 });
 export const hr = nodeFactory(schema.nodes.rule);
 export const li = nodeFactory(schema.nodes.listItem);
 export const ol = nodeFactory(schema.nodes.orderedList);
+export const codeblock = (attrs: {} = {}) => nodeFactory(schema.nodes.codeBlock, attrs);
 export const unsupportedBlock = (cxhtml: string) => nodeFactory(schema.nodes.unsupportedBlock, { cxhtml })();
 export const unsupportedInline = (cxhtml: string) => nodeFactory(schema.nodes.unsupportedInline, { cxhtml })();
+export const mention = (attrs: { id: string, displayName?: string }) => schema.nodes.mention.createChecked(attrs);
 
 // Marks
 export const code = markFactory(schema.marks.code);

@@ -77,12 +77,6 @@ export default class Editor extends PureComponent<Props, State> {
     });
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.expanded !== this.props.expanded) {
-      this.setState({ isExpanded: nextProps.expanded });
-    }
-  }
-
   /**
    * Focus the content region of the editor.
    */
@@ -139,6 +133,10 @@ export default class Editor extends PureComponent<Props, State> {
 
     if (props.mediaProvider !== mediaProvider) {
       providerFactory.setProvider('mediaProvider', mediaProvider);
+    }
+
+    if (nextProps.expanded !== this.props.expanded) {
+      this.setState({ isExpanded: nextProps.expanded });
     }
   }
 

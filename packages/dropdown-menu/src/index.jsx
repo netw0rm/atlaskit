@@ -17,6 +17,7 @@ export default class DropdownMenu extends PureComponent {
     triggerType: PropTypes.oneOf(['default', 'button']),
     triggerButtonProps: PropTypes.shape(Button.propTypes),
     shouldFlip: PropTypes.bool,
+    shouldFitContainer: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -30,6 +31,7 @@ export default class DropdownMenu extends PureComponent {
     triggerType: 'default',
     triggerButtonProps: {},
     shouldFlip: true,
+    shouldFitContainer: false,
   }
 
   state = {
@@ -99,6 +101,7 @@ export default class DropdownMenu extends PureComponent {
         triggerButtonProps={props.triggerButtonProps}
         shouldFlip={props.shouldFlip}
         items={state.items}
+        shouldFitContainer={this.props.shouldFitContainer}
       >
         { props.children }
       </StatelessDropdownMenu>

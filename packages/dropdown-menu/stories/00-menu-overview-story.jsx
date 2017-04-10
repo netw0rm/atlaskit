@@ -31,6 +31,7 @@ const menuPropsDescriptions = {
   onOpenChange: `This is a handler function which is called when the menu should be open/closed.
   Received an object with isOpen state`,
   children: 'Content that will be rendered inside the trigger element. Accepts any html.',
+  shouldFitContainer: 'Makes dropdown menu that fits container width.',
 };
 
 const menuPropsTypes = {
@@ -44,6 +45,7 @@ const menuPropsTypes = {
   onOpenChange: 'func',
   children: 'node',
   items: 'array',
+  shouldFitContainer: 'bool',
 };
 
 storiesOf(name, module)

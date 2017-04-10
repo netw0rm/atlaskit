@@ -21,6 +21,7 @@ import {
   subsup,
   text,
   underline,
+  panel
 } from '@atlaskit/editor-core';
 
 import unsupportedBlock from './schema/nodes/unsupportedBlock';
@@ -30,6 +31,7 @@ interface CQSchemaNodes {
   blockquote: NodeSpec;
   bulletList: NodeSpec;
   codeBlock: NodeSpec;
+  panel: NodeSpec;
   doc: NodeSpec;
   hardBreak: NodeSpec;
   heading: NodeSpec;
@@ -58,6 +60,8 @@ const nodes = {
   paragraph,
   blockquote,
   codeBlock,
+  panel,
+  hardBreak,
   orderedList,
   bulletList,
   heading,
@@ -65,7 +69,6 @@ const nodes = {
   listItem,
   mention,
   text,
-  hardBreak,
   unsupportedInline,
   rule,
 };

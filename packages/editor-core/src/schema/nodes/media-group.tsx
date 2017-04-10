@@ -22,7 +22,7 @@ const mediaGroupStyle = style({
 export const mediaGroup: NodeSpec = {
   inline: false,
   group: 'block',
-  content: 'media+',
+  content: 'media*',
   attrs: {},
   parseDOM: [{
     tag: 'p[data-node-type="mediaGroup"]',

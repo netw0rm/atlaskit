@@ -49,7 +49,7 @@ describe('@atlaskit/editor-cq', () => {
     });
   });
 
-  describe('misc', () => {
+  describe('ED-1410', () => {
     const fixture = fixtures();
     const editor = (doc: any) => makeEditor({
       doc,

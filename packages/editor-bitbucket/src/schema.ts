@@ -45,7 +45,7 @@ const nodes = {
 const code = {
   ...coreCode,
   excludes: 'em strike strong mentionQuery emojiQuery'
-};
+} as MarkSpec;
 
 const marks = {
   em,

@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import { LinkCardGenericView } from '../../src';
-import { MeatballsButton, DeleteBtn } from '../../src/utils/menu/styled';
 import { Title, Link } from '../../src/links/cardGenericView/styled';
 
 describe('LinkCardViewGeneric', () => {
@@ -32,7 +31,7 @@ describe('LinkCardViewGeneric', () => {
     const linkUrl = 'http://localhost:9001/';
     const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
 
-    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} display="square" />);
+    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} appearance="square" />);
     expect(card.find('.media-card')).to.have.length(1);
   });
 
@@ -41,7 +40,7 @@ describe('LinkCardViewGeneric', () => {
     const linkUrl = 'http://localhost:9001/';
     const thumbnailUrl = 'http://localhost:9001/some/thumbnail';
 
-    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />);
+    const card = mount(<LinkCardGenericView title={title} linkUrl={linkUrl} thumbnailUrl={thumbnailUrl} />) as any;
 
     expect(card.find('.media-card')).to.have.length(1);
     expect(card.find('.media-card').props().style.backgroundImage).to.contain(thumbnailUrl);

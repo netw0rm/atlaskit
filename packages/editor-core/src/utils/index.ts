@@ -1,54 +1,68 @@
 import {
-  EditorTransform,
+  liftTarget,
+  MarkType,
   Node,
   NodeSelection,
   NodeType,
-  ProseMirror,
   ResolvedPos,
   Selection,
   TextSelection,
-  Fragment,
+  Transaction,
+  EditorView,
+  EditorState,
   Slice,
+  Fragment,
+  findWrapping
 } from '../prosemirror';
-import { isCodeBlockNode, isListItemNode } from '../schema';
 
 function validateNode(node: Node): boolean {
   return false;
 }
 
 /**
+ * Check if a mark is allowed at a given position
+ */
+export function isMarkAllowedAtPosition(markType: MarkType, selection: Selection) {
+  return selection.$from.marks().filter(mark => mark.type.spec.excludes && mark.type.spec.excludes.indexOf(markType.name) !== -1).length > 0;
+}
+
+/**
  * Step through block-nodes between $from and $to and returns false if a node is
  * found that isn't of the specified type
  */
-export function isRangeOfType(pm: ProseMirror, $from: ResolvedPos, $to: ResolvedPos, nodeType: NodeType): boolean {
-  return getAncestorNodesBetween(pm, $from, $to).filter(node => node.type !== nodeType).length === 0;
+export function isRangeOfType(doc, $from: ResolvedPos, $to: ResolvedPos, nodeType: NodeType): boolean {
+  return getAncestorNodesBetween(doc, $from, $to).filter(node => node.type !== nodeType).length === 0;
+}
+
+export function createSliceWithContent(content: string, state: EditorState<any>) {
+  return new Slice(Fragment.from(state.schema.text(content)), 0, 0);
 }
 
 /**
  * Determines if content inside a selection can be joined with the next block.
- * We need this check since the built-in method for "joinDown" will join a ordered_list with bullet_list.
+ * We need this check since the built-in method for "joinDown" will join a orderedList with bulletList.
  */
-export function canJoinDown(pm: ProseMirror, selection: Selection, doc: any, nodeType: NodeType): boolean {
-  const res = doc.resolve(selection.$to.after(findAncestorPosition(pm, selection.$to).depth));
+export function canJoinDown(selection: Selection, doc: any, nodeType: NodeType): boolean {
+  const res = doc.resolve(selection.$to.after(findAncestorPosition(doc, selection.$to).depth));
   return res.nodeAfter && res.nodeAfter.type === nodeType;
 }
 
 /**
  * Determines if content inside a selection can be joined with the previous block.
- * We need this check since the built-in method for "joinUp" will join a ordered_list with bullet_list.
+ * We need this check since the built-in method for "joinUp" will join a orderedList with bulletList.
  */
-export function canJoinUp(pm: ProseMirror, selection: Selection, doc: any, nodeType: NodeType): boolean {
-  const res = doc.resolve(selection.$from.before(findAncestorPosition(pm, selection.$from).depth));
+export function canJoinUp(selection: Selection, doc: any, nodeType: NodeType): boolean {
+  const res = doc.resolve(selection.$from.before(findAncestorPosition(doc, selection.$from).depth));
   return res.nodeBefore && res.nodeBefore.type === nodeType;
 }
 
 /**
  * Returns all top-level ancestor-nodes between $from and $to
  */
-export function getAncestorNodesBetween(pm: ProseMirror, $from: ResolvedPos, $to: ResolvedPos): Node[] {
+export function getAncestorNodesBetween(doc, $from: ResolvedPos, $to: ResolvedPos): Node[] {
   const nodes = Array<Node>();
-  const maxDepth = findAncestorPosition(pm, $from).depth;
-  let current = pm.doc.resolve($from.start(maxDepth));
+  const maxDepth = findAncestorPosition(doc, $from).depth;
+  let current = doc.resolve($from.start(maxDepth));
 
   while (current.pos <= $to.start($to.depth)) {
     const depth = Math.min(current.depth, maxDepth);
@@ -58,19 +72,23 @@ export function getAncestorNodesBetween(pm: ProseMirror, $from: ResolvedPos, $to
       nodes.push(node);
     }
 
-    let next: ResolvedPos = pm.doc.resolve(current.after(depth));
-    if (next.start(depth) >= pm.doc.nodeSize - 2) {
+    if (depth === 0) {
+      break;
+    }
+
+    let next: ResolvedPos = doc.resolve(current.after(depth));
+    if (next.start(depth) >= doc.nodeSize - 2) {
       break;
     }
 
     if (next.depth !== current.depth) {
-      next = pm.doc.resolve(next.pos + 2);
+      next = doc.resolve(next.pos + 2);
     }
 
     if (next.depth) {
-      current = pm.doc.resolve(next.start(next.depth));
+      current = doc.resolve(next.start(next.depth));
     } else {
-      current = pm.doc.resolve(next.end(next.depth));
+      current = doc.resolve(next.end(next.depth));
     }
   }
 
@@ -93,25 +111,25 @@ export function getAncestorNodesBetween(pm: ProseMirror, $from: ResolvedPos, $to
  *
  * The output will be two selection-groups. One within the ul and one with the two paragraphs.
  */
-export function getGroupsInRange(pm: ProseMirror, $from: ResolvedPos, $to: ResolvedPos, isNodeValid: (node: Node) => boolean = validateNode): Array<{ $from: ResolvedPos, $to: ResolvedPos }> {
+export function getGroupsInRange(doc, $from: ResolvedPos, $to: ResolvedPos, isNodeValid: (node: Node) => boolean = validateNode): Array<{ $from: ResolvedPos, $to: ResolvedPos }> {
   const groups = Array<{ $from: ResolvedPos, $to: ResolvedPos }>();
-  const commonAncestor = hasCommonAncestor(pm, $from, $to);
-  const fromAncestor = findAncestorPosition(pm, $from);
+  const commonAncestor = hasCommonAncestor(doc, $from, $to);
+  const fromAncestor = findAncestorPosition(doc, $from);
 
-  if (commonAncestor || (fromAncestor.depth === 1 && isNodeValid($from.node(1) !))) {
+  if (commonAncestor || (fromAncestor.depth === 1 && isNodeValid($from.node(1)!))) {
     groups.push({ $from, $to });
   } else {
     let current = $from;
 
     while (current.pos < $to.pos) {
-      let ancestorPos = findAncestorPosition(pm, current);
+      let ancestorPos = findAncestorPosition(doc, current);
       while (ancestorPos.depth > 1) {
-        ancestorPos = findAncestorPosition(pm, ancestorPos);
+        ancestorPos = findAncestorPosition(doc, ancestorPos);
       }
 
-      const endPos = pm.doc.resolve(Math.min(
+      const endPos = doc.resolve(Math.min(
         // should not be smaller then start position in case of an empty paragpraph for example.
-        Math.max(ancestorPos.start(ancestorPos.depth), ancestorPos.end(ancestorPos.depth) - 1),
+        Math.max(ancestorPos.start(ancestorPos.depth), ancestorPos.end(ancestorPos.depth) - 3),
         $to.pos
       ));
 
@@ -120,7 +138,7 @@ export function getGroupsInRange(pm: ProseMirror, $from: ResolvedPos, $to: Resol
         $to: endPos
       });
 
-      current = pm.doc.resolve(Math.min(endPos.after(1) + 1, pm.doc.nodeSize - 2));
+      current = doc.resolve(Math.min(endPos.after(1) + 1, doc.nodeSize - 2));
     }
   }
 
@@ -130,8 +148,8 @@ export function getGroupsInRange(pm: ProseMirror, $from: ResolvedPos, $to: Resol
 /**
  * Traverse the document until an "ancestor" is found. Any nestable block can be an ancestor.
  */
-export function findAncestorPosition(pm: ProseMirror, pos: ResolvedPos): ResolvedPos {
-  const nestableBlocks = ['blockquote', 'bullet_list', 'ordered_list', 'panel'];
+export function findAncestorPosition(doc: Node, pos: any): any {
+  const nestableBlocks = ['blockquote', 'bulletList', 'orderedList'];
 
   if (pos.depth === 1) {
     return pos;
@@ -139,7 +157,7 @@ export function findAncestorPosition(pm: ProseMirror, pos: ResolvedPos): Resolve
 
   let node: Node | undefined = pos.node(pos.depth);
   while (pos.depth >= 1) {
-    pos = pm.doc.resolve(pos.before(pos.depth));
+    pos = doc.resolve(pos.before(pos.depth));
     node = pos.node(pos.depth);
 
     if (node && nestableBlocks.indexOf(node.type.name) !== -1) {
@@ -153,20 +171,20 @@ export function findAncestorPosition(pm: ProseMirror, pos: ResolvedPos): Resolve
 /**
  * Determine if two positions have a common ancestor.
  */
-export function hasCommonAncestor(pm: ProseMirror, $from: ResolvedPos, $to: ResolvedPos): boolean {
+export function hasCommonAncestor(doc, $from: ResolvedPos, $to: ResolvedPos): boolean {
   let current;
   let target;
 
   if ($from.depth > $to.depth) {
-    current = findAncestorPosition(pm, $from);
-    target = findAncestorPosition(pm, $to);
+    current = findAncestorPosition(doc, $from);
+    target = findAncestorPosition(doc, $to);
   } else {
-    current = findAncestorPosition(pm, $to);
-    target = findAncestorPosition(pm, $from);
+    current = findAncestorPosition(doc, $to);
+    target = findAncestorPosition(doc, $from);
   }
 
   while (current.depth > target.depth && current.depth > 1) {
-    current = findAncestorPosition(pm, current);
+    current = findAncestorPosition(doc, current);
   }
 
   return current.node(current.depth) === target.node(target.depth);
@@ -175,164 +193,70 @@ export function hasCommonAncestor(pm: ProseMirror, $from: ResolvedPos, $to: Reso
 /**
  * Takes a selection $from and $to and lift all text nodes from their parents to document-level
  */
-export function liftSelection(pm: ProseMirror, $from: ResolvedPos, $to: ResolvedPos): EditorTransform {
-  const { tr } = pm;
+export function liftSelection(tr, doc, $from: ResolvedPos, $to: ResolvedPos) {
   let startPos = $from.start($from.depth);
   let endPos = $to.end($to.depth);
-  const target = Math.max(0, findAncestorPosition(pm, $from).depth - 1);
+  const target = Math.max(0, findAncestorPosition(doc, $from).depth - 1);
 
   tr.doc.nodesBetween(startPos, endPos, (node, pos) => {
     if (
       node.isText ||                          // Text node
       (node.isTextblock && !node.textContent) // Empty paragraph
     ) {
-      const res = tr.doc.resolve(tr.map(pos));
+      const res = tr.doc.resolve(tr.mapping.map(pos));
       const sel = new NodeSelection(res);
       const range = sel.$from.blockRange(sel.$to)!;
-      tr.lift(range, target);
+
+      if (liftTarget(range) !== undefined) {
+        tr.lift(range, target);
+      }
     }
   });
 
-  startPos = tr.map(startPos);
-  endPos = tr.map(endPos);
+  startPos = tr.mapping.map(startPos);
+  endPos = tr.mapping.map(endPos);
   endPos = tr.doc.resolve(endPos).end(tr.doc.resolve(endPos).depth); // We want to select the entire node
 
   tr.setSelection(new TextSelection(tr.doc.resolve(startPos), tr.doc.resolve(endPos)));
 
-  return tr;
-}
-
-/**
- * Get resolved positions for start and end indexes of the parent.
- */
-function getParentPositionRange(pm: EditorTransform): any {
-  const {$from, $to} = pm.selection;
-
-  if ($from.depth === 1) {
-    return;
-  }
-
   return {
-    from: pm.doc.resolve($from.start($from.depth - 1)),
-    to: pm.doc.resolve($to.end($to.depth - 1))
+    tr: tr,
+    $from: tr.doc.resolve(startPos),
+    $to: tr.doc.resolve(endPos)
   };
 }
 
 /**
- * Lift sibling nodes to document-level.
+ * Lift nodes in block to one level above.
  */
-export function liftSiblingNodes(pm: ProseMirror): EditorTransform {
-  const { tr } = pm;
-  const { from, to } = tr.selection;
-  const range = getParentPositionRange(tr);
-  if (range) {
-    let startPos = range.from.start(1);
-    let endPos = range.to.end(1);
-    tr.doc.nodesBetween(startPos, endPos, (node, pos) => {
-      if (
-        node.isText ||                          // Text node
-        (node.isTextblock && !node.textContent) // Empty paragraph
-      ) {
-        const res = tr.doc.resolve(tr.map(pos));
-        const sel = new NodeSelection(res);
-        const range = sel.$from.blockRange(sel.$to)!;
-        tr.lift(range, 0);
-      }
-    });
-    startPos = tr.map(from);
-    endPos = tr.map(to);
-    tr.setSelection(new TextSelection(tr.doc.resolve(startPos), tr.doc.resolve(endPos)));
-  }
-  return tr;
+export function liftSiblingNodes(view: EditorView) {
+  const { tr } = view.state;
+  const { $from, $to } = view.state.selection;
+  const blockStart = tr.doc.resolve($from.start($from.depth - 1));
+  const blockEnd = tr.doc.resolve($to.end($to.depth - 1));
+  const range = blockStart.blockRange(blockEnd)!;
+  view.dispatch(tr.lift(range, blockStart.depth - 1));
 }
 
 /**
  * Lift sibling nodes to document-level and select them.
  */
-export function liftAndSelectSiblingNodes(pm: ProseMirror): EditorTransform {
-  const { tr } = pm;
-  const range = getParentPositionRange(tr);
-  if (range) {
-    let startPos = range.from.start(1);
-    let endPos = range.to.end(1);
-    tr.doc.nodesBetween(startPos, endPos, (node, pos) => {
-      if (
-        node.isText ||                          // Text node
-        (node.isTextblock && !node.textContent) // Empty paragraph
-      ) {
-        const res = tr.doc.resolve(tr.map(pos));
-        const sel = new NodeSelection(res);
-        const range = sel.$from.blockRange(sel.$to)!;
-        tr.lift(range, 0);
-      }
-    });
-    startPos = tr.map(startPos) + 1;
-    endPos = tr.map(endPos) - 1;
-    tr.setSelection(new TextSelection(tr.doc.resolve(startPos), tr.doc.resolve(endPos)));
+export function liftAndSelectSiblingNodes(view: EditorView): Transaction {
+  const { tr } = view.state;
+  const { $from, $to } = view.state.selection;
+  const blockStart = tr.doc.resolve($from.start($from.depth - 1));
+  const blockEnd = tr.doc.resolve($to.end($to.depth - 1));
+  const range = blockStart.blockRange(blockEnd)!;
+  tr.setSelection(new TextSelection(blockStart, blockEnd));
+  tr.lift(range, blockStart.depth - 1);
+  return tr;
+}
+
+export function wrapIn(nodeType: NodeType, tr: Transaction, $from: ResolvedPos, $to: ResolvedPos): Transaction {
+  const range = $from.blockRange($to) as any;
+  const wrapping = range && findWrapping(range, nodeType) as any;
+  if (wrapping) {
+    tr = tr.wrap(range, wrapping).scrollIntoView();
   }
   return tr;
-}
-
-/**
- * Function will remove code-blocks from selection.
- */
-export function removeCodeBlocksFromSelection(pm: ProseMirror): EditorTransform {
-  const { tr } = pm;
-  const { from, to } = tr.selection;
-  const paragraph = pm.schema.nodes.paragraph;
-  tr.doc.nodesBetween(from, to, (node, pos) => {
-    if (isCodeBlockNode(node)) {
-      tr.setNodeType(pos, paragraph, {});
-    }
-  });
-  return tr;
-}
-
-/**
- * Change type of all blocks in select to paragraph type.
- */
-export function setSelectionToNormalText(pm: ProseMirror): EditorTransform {
-  const { tr } = pm;
-  const { from, to } = pm.selection;
-  const { nodes: { paragraph } } = pm.schema;
-  if (paragraph) {
-    tr.setBlockType(from, to, paragraph);
-  }
-  return tr;
-}
-
-/**
- * Function will lift all selected blocks to zero depth.
- */
-export function liftSelectionBlocks(pm: ProseMirror): EditorTransform {
-  const { tr } = pm;
-  let { from, to } = tr.selection;
-
-  tr.doc.nodesBetween(from, to, (node, pos) => {
-    const res = tr.doc.resolve(tr.map(pos));
-    const sel = new NodeSelection(res);
-    if (node.isBlock && !isListItemNode(node) && sel.$from.depth > 0) {
-      const range = sel.$from.blockRange(sel.$to)!;
-      tr.lift(range, 0);
-    }
-  });
-  return tr;
-}
-
-/**
- * Function will insert a blank space atthe end of current selection.
- * @param pm
- */
-export function insertBlankSpace(pm: ProseMirror): EditorTransform | undefined {
-  const { text } = pm.schema.nodes;
-  const { to } = pm.selection;
-  if (text && to) {
-    const textNode = text.create({}, ' ');
-    const fragment = new Fragment([textNode], textNode.nodeSize);
-    return pm.tr.insert(to, fragment);
-  }
-}
-
-export function createSliceWithContent(content: string, pm: ProseMirror) {
- return new Slice(Fragment.from(pm.schema.nodes.text.create(null, content)), 0, 0);
 }

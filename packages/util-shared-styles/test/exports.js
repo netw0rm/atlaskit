@@ -112,6 +112,7 @@ describe('exports', () => {
       'akFontSizeDefault',
       'akGridSize',
       'akGridSizeUnitless',
+      'akHelperMixins',
       'akTypographyMixins',
       'akZIndexBlanket',
       'akZIndexCard',

@@ -1,42 +1,10 @@
-import { Mark, MarkType, Schema } from '../../prosemirror';
+import { MarkSpec } from '../../prosemirror';
 
-export class UnderlineMarkType extends MarkType {
-  constructor(name: string, rank: number, schema: Schema) {
-    if (name !== 'u') {
-      throw new Error('UnderlineMarkType must be named "u".');
-    }
-    super(name, rank, schema);
-  }
-
-  create() {
-    return super.create();
-  }
-
-  get matchDOMTag() {
-    return {
-      u: null
-    };
-  }
-
-  get matchDOMStyle() {
-    return {
-      'text-decoration': (value: string) => {
-        if (value === 'underline') {
-          return null;
-        }
-      }
-    };
-  }
-
-  toDOM(): [string] {
-    return ['u'];
-  }
-}
-
-export interface UnderlineMark extends Mark {
-  type: UnderlineMarkType;
-}
-
-export function isUnderlineMark(mark: Mark): mark is UnderlineMark {
-  return mark.type instanceof UnderlineMarkType;
-}
+export const underline: MarkSpec = {
+  inclusive: true,
+  parseDOM: [
+    { tag: 'u' },
+    { style: 'text-decoration', getAttrs: value => value === 'underline' && null }
+  ],
+  toDOM(): [string] { return ['u']; }
+};

@@ -13,7 +13,7 @@ const doc = nodeFactory(schema.nodes.doc);
 const p = nodeFactory(schema.nodes.paragraph);
 
 // Marks
-const mentionQuery = markFactory(schema.marks.mention_query!);
+const mentionQuery = markFactory(schema.marks.mentionQuery!);
 
 const mentionEncoder = (userId: string) => `/secure/ViewProfile?name=${userId}`;
 

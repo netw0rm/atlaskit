@@ -1,77 +1,33 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { DocNodeType, Schema, Text, UnderlineMarkType } from '../../../src';
+import { Schema, doc, paragraph, text, underline } from '../../../src';
 import { chaiPlugin, fromHTML, toHTML } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
 describe('@atlaskit/editor-core/schema underline mark', () => {
-  it('throws an error if it is not named "u"', () => {
-    expect(() => {
-      new Schema({
-        nodes: {
-          doc: { type: DocNodeType, content: 'text*' },
-          text: { type: Text }
-        },
-        marks: {
-          foo: UnderlineMarkType
-        }
-      });
-    }).to.throw(Error);
-  });
-
-  it('does not throw an error if it is named "u"', () => {
-    expect(() => {
-      new Schema({
-        nodes: {
-          doc: { type: DocNodeType, content: 'text*' },
-          text: { type: Text }
-        },
-        marks: {
-          u: UnderlineMarkType
-        }
-      });
-    }).to.not.throw(Error);
-  });
-
   itMatches('<u>text</u>', 'text');
   itMatches('<span style="text-decoration: underline">text</span>', 'text');
 
   it('serializes to <u>', () => {
     const schema = makeSchema();
-    const node = schema.text('foo', [ schema.marks.u.create() ] );
-    expect(toHTML(node)).to.equal('<u>foo</u>');
+    const node = schema.text('foo', [schema.marks.underline.create()]);
+    expect(toHTML(node, schema)).to.equal('<u>foo</u>');
   });
 });
 
 function makeSchema() {
-  interface ISchema extends Schema{
-    nodes: {
-      doc: DocNodeType;
-      text: Text;
-    };
-    marks: {
-      u: UnderlineMarkType;
-    };
-  }
-
-  return new Schema({
-    nodes: {
-      doc: { type: DocNodeType, content: 'inline<_>*' },
-      text: { type: Text, group: 'inline' }
-    },
-    marks: {
-      u: UnderlineMarkType
-    }
-  }) as ISchema;
+  const nodes = { doc, paragraph, text };
+  const marks = { underline };
+  return new Schema<typeof nodes, typeof marks>({ nodes, marks });
 }
 
 function itMatches(html: string, expectedText: string) {
   it(`matches ${html}`, () => {
     const schema = makeSchema();
     const doc = fromHTML(`${html}`, schema);
-    const u = schema.marks.u.create();
+    const underlineNode = schema.marks.underline.create();
 
-    expect(doc).to.have.textWithMarks(expectedText, [ u ]);
+    expect(doc).to.have.textWithMarks(expectedText, [underlineNode]);
   });
 }

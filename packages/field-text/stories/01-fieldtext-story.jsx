@@ -149,6 +149,27 @@ storiesOf(name, module)
   .add('ak-field-text with autofocus', () => (
     generateFormWithInput({ autoFocus: true })
   ))
+  .add('ak-field-text with spellcheck', () => (
+    <form
+      style={{
+        backgroundColor: 'white',
+        padding: '40px',
+        width: '500px',
+      }}
+    >
+      <h2>AtlasKit form</h2>
+      {generateInput({
+        isSpellCheckEnabled: true,
+        autoFocus: true,
+        label: 'Spellcheck enabled',
+        value: 'This is mispelled' })}
+      {generateInput({
+        isSpellCheckEnabled: false,
+        label: 'Spellcheck disabled',
+        value: 'This is mispelled' }
+        )}
+    </form>
+  ))
   .add('field-text with buttons that choose foucs', () => (
     <form
       action={formTestUrl}

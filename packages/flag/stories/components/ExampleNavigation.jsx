@@ -4,7 +4,6 @@ import Navigation, {
   AkContainerItem,
 } from '@atlaskit/navigation';
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class Flag extends PureComponent {
   static propTypes = {
     children: PropTypes.node,

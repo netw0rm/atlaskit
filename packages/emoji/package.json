@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "13.0.0",
+  "version": "13.1.0",
   "config": {
     "access": "public"
   },

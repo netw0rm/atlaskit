@@ -4,7 +4,7 @@ import {CardAction} from '@atlaskit/media-core';
 import {MediaType} from '@atlaskit/media-core';
 
 import {getCSSUnitValue} from '../index';
-import {CardDimensions} from '../../card';
+import {CardDimensions} from '../../index';
 import {CardContent} from './cardContent';
 import {CardOverlay} from './cardOverlay';
 import {Card as Wrapper} from './styled';

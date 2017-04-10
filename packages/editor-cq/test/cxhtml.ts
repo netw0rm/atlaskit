@@ -1,17 +1,17 @@
-import { DocNode } from '@atlaskit/editor-core';
+import { Node as PMNode } from '@atlaskit/editor-core';
 import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { encode, parse } from '../src/cxhtml';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
-  code, ol, p, strike, strong, sub, sup, u, ul, unsupportedInline,
-  unsupportedBlock
+  code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention,
+  unsupportedInline, unsupportedBlock
 } from './_schema-builder';
 
 chai.use(chaiPlugin);
 
-const checkBuilder = (fn: any, description: string, cxhtml: string, doc: DocNode) => {
+const checkBuilder = (fn: any, description: string, cxhtml: string, doc: PMNode) => {
   fn(`parses CXHTML: ${description}`, () => {
     const actual = parse(cxhtml);
     expect(actual).to.deep.equal(doc);
@@ -23,7 +23,7 @@ const checkBuilder = (fn: any, description: string, cxhtml: string, doc: DocNode
   });
 };
 
-const check = (description: string, cxhtml: string, doc: DocNode) =>
+const check = (description: string, cxhtml: string, doc: PMNode) =>
   checkBuilder(it, description, cxhtml, doc);
 
 describe('@atlaskit/editor-cq encode-cxml:', () => {
@@ -99,6 +99,14 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         doc(p(
           'Text with ',
           strong('bold words'),
+          '.'
+        )));
+
+      check('<s> tag',
+        '<p>Text with <s>strikethrough words</s>.</p>',
+        doc(p(
+          'Text with ',
+          strike('strikethrough words'),
           '.'
         )));
 
@@ -315,6 +323,58 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         '<blockquote><blockquote>Elementary my dear Watson</blockquote></blockquote>',
         doc(blockquote(blockquote(p('Elementary my dear Watson')))));
     });
+
+    describe('code block', () => {
+      check('with CDATA',
+        '<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
+        doc(codeblock()('some code')));
+
+      check('with multiline CDATA',
+        `<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code
+        on
+        multiple
+        lines]]></ac:plain-text-body></ac:structured-macro>`,
+        doc(codeblock()(`some code
+        on
+        multiple
+        lines`)));
+
+      check('with selected language',
+        '<ac:structured-macro ac:name="code"><ac:parameter ac:name="language">js</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
+        doc(codeblock({ language: 'js' })('some code')));
+
+      check('with title',
+        '<ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Code</ac:parameter><ac:parameter ac:name="language">js</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
+        doc(p(strong('Code')), codeblock({ language: 'js' })('some code')));
+    });
+
+    describe('panel', () => {
+      context('when panel does not have title', () => {
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p>${panelType} panel</p></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(p(`${panelType} panel`))));
+        });
+      });
+      context('when panel has title', () => {
+        const title = 'Panel title';
+
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${title}</ac:parameter><ac:rich-text-body><p>${panelType} panel</p></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(h3(title), p(`${panelType} panel`))));
+        });
+      });
+      context('when panel has multiple top-level nodes', () => {
+        const title = 'Panel title';
+
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${title}</ac:parameter><ac:rich-text-body><p>p1</p><p>p2</p><h5>h5</h5></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(h3(title), p('p1'), p('p2'), h5('h5'))));
+        });
+      });
+    });
   });
 
   describe('unsupported content', () => {
@@ -375,11 +435,57 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
       ));
 
     check('h1 + macro with CDATA',
-      '<h1>Code block</h1><ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
+      '<h1>Code block</h1><ac:structured-macro ac:name="foo"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
       doc(
         h1('Code block'),
-        unsupportedBlock('<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>'),
+        unsupportedBlock('<ac:structured-macro ac:name="foo"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>'),
       ));
+
+    describe('ac:link', () => {
+      check(
+        'link to Confluence page',
+        '<p><ac:link><ri:page ri:content-title="Questions test page"/></ac:link></p>',
+        doc(
+          p(
+            unsupportedInline('<ac:link><ri:page ri:content-title="Questions test page"/></ac:link>')
+          )
+        )
+      );
+
+      check(
+        'link to uploaded file',
+        '<p><ac:link><ri:attachment ri:filename="Classic Minesweeper.pdf"/></ac:link></p>',
+        doc(
+          p(
+            unsupportedInline('<ac:link><ri:attachment ri:filename="Classic Minesweeper.pdf"/></ac:link>')
+          )
+        )
+      );
+
+      check(
+        'link to Confluence space',
+        '<p><ac:link><ri:space ri:space-key="ZAA"/></ac:link></p>',
+        doc(
+          p(
+            unsupportedInline('<ac:link><ri:space ri:space-key="ZAA"/></ac:link>')
+          )
+        )
+      );
+    });
+
+    check(
+      'mentions',
+      '<p>This is mention from <fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></p>',
+      doc(
+        p(
+          'This is mention from ',
+          mention({
+            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+            displayName: 'Artur Bodera'
+          })
+        )
+      )
+    );
   });
 
 // Color text span

@@ -39,7 +39,7 @@ const getTextColor = ({ appearance, theme }) => (theme === 'dark'
   : textColor[appearance]
 );
 
-export default styled.div`
+const BadgeElement = styled.div`
   background-color: ${getBackgroundColor};
   border-radius: 2em;
   color: ${getTextColor};
@@ -51,3 +51,5 @@ export default styled.div`
   padding: 0.16666666666667em 0.5em;
   text-align: center;
 `;
+BadgeElement.displayName = 'BadgeElement';
+export default BadgeElement;

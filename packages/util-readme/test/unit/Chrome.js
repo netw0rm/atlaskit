@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import React from 'react';
 import chai from 'chai';
 
-import Chrome from '../src/Chrome';
+import Chrome from '../../src/Chrome';
 
 const expect = chai.expect;
 

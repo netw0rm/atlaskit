@@ -9,6 +9,7 @@ import {
   EditorState,
   EditorView,
   history,
+  HyperlinkPlugin,
   keymap,
   ListsPlugin,
   RulePlugin,
@@ -30,6 +31,7 @@ export interface Props {
   context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
+  expanded?: boolean;
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
@@ -39,7 +41,6 @@ export interface Props {
 
 export interface State {
   editorView?: EditorView;
-  editorState?: EditorState<any>;
   isExpanded?: boolean;
   schema: CQSchema;
 }
@@ -53,10 +54,16 @@ export default class Editor extends PureComponent<Props, State> {
 
     this.state = {
       schema,
-      isExpanded: props.isExpandedByDefault,
+      isExpanded: (props.expanded !== undefined) ? props.expanded : props.isExpandedByDefault,
     };
 
     analyticsService.handler = props.analyticsHandler || ((name) => {});
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.expanded !== this.props.expanded) {
+      this.setState({ isExpanded: nextProps.expanded });
+    }
   }
 
   /**
@@ -116,7 +123,9 @@ export default class Editor extends PureComponent<Props, State> {
     const editorState = editorView && editorView.state;
 
     const blockTypeState = editorState && BlockTypePlugin.getState(editorState);
+    const codeBlockState = editorState && CodeBlockPlugin.getState(editorState);
     const clearFormattingState = editorState && ClearFormattingPlugin.getState(editorState);
+    const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
     const listsState = editorState && ListsPlugin.getState(editorState);
     const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
 
@@ -131,6 +140,8 @@ export default class Editor extends PureComponent<Props, State> {
         onCollapsedChromeFocus={() => this.setState({ isExpanded: true })}
         placeholder={this.props.placeholder}
         pluginStateBlockType={blockTypeState}
+        pluginStateCodeBlock={codeBlockState}
+        pluginStateHyperlink={hyperlinkState}
         pluginStateLists={listsState}
         pluginStateTextFormatting={textFormattingState}
         pluginStateClearFormatting={clearFormattingState}
@@ -177,6 +188,7 @@ export default class Editor extends PureComponent<Props, State> {
           BlockTypePlugin,
           ClearFormattingPlugin,
           CodeBlockPlugin,
+          HyperlinkPlugin,
           ListsPlugin,
           RulePlugin,
           TextFormattingPlugin,

@@ -74,26 +74,26 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
       const editorWrapper = mount(<Editor mentionProvider={Promise.resolve({})}/>);
       const editor: Editor = editorWrapper.get(0) as any;
       expect(editor.state.schema.nodes.mention).to.exist;
-      expect(editor.state.schema.marks.mention_query).to.exist;
+      expect(editor.state.schema.marks.mentionQuery).to.exist;
     });
 
     it('should not enable mentions if mentionProvider doesn`t exist', () => {
       const editorWrapper = mount(<Editor/>);
       const editor: Editor = editorWrapper.get(0) as any;
       expect(editor.state.schema.nodes.mention).to.not.exist;
-      expect(editor.state.schema.marks.mention_query).to.not.exist;
+      expect(editor.state.schema.marks.mentionQuery).to.not.exist;
     });
 
     it('allowLists=true prop should enable lists', () => {
       const editorWrapper = mount(<Editor allowLists={true}/>);
       const editor: Editor = editorWrapper.get(0) as any;
-      expect(editor.state.schema.nodes.bullet_list).to.exist;
+      expect(editor.state.schema.nodes.bulletList).to.exist;
     });
 
     it('lists should be disabled without allowLists prop', () => {
       const editorWrapper = mount(<Editor/>);
       const editor: Editor = editorWrapper.get(0) as any;
-      expect(editor.state.schema.nodes.bullet_list).to.not.exist;
+      expect(editor.state.schema.nodes.bulletList).to.not.exist;
     });
 
     it('allowLinks=true prop should enable links', () => {
@@ -125,13 +125,13 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
     it('allowCodeBlock=true prop should enable code blocks', () => {
       const editorWrapper = mount(<Editor allowCodeBlock={true}/>);
       const editor: Editor = editorWrapper.get(0) as any;
-      expect(editor.state.schema.nodes.code_block).to.exist;
+      expect(editor.state.schema.nodes.codeBlock).to.exist;
     });
 
     it('code blocks should be disabled without allowCodeBlock prop', () => {
       const editorWrapper = mount(<Editor/>);
       const editor: Editor = editorWrapper.get(0) as any;
-      expect(editor.state.schema.nodes.code_block).to.not.exist;
+      expect(editor.state.schema.nodes.codeBlock).to.not.exist;
     });
   });
 

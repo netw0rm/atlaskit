@@ -1,12 +1,15 @@
 import {
   bulletList,
   blockquote,
+  codeBlock,
   code,
   doc,
   em,
   hardBreak,
   heading,
+  link,
   listItem,
+  mention,
   MarkSpec,
   NodeSpec,
   orderedList,
@@ -20,16 +23,18 @@ import {
   underline,
 } from '@atlaskit/editor-core';
 
-import unsupportedInline from './schema/nodes/unsupportedInline';
 import unsupportedBlock from './schema/nodes/unsupportedBlock';
+import unsupportedInline from './schema/nodes/unsupportedInline';
 
 interface CQSchemaNodes {
   blockquote: NodeSpec;
   bulletList: NodeSpec;
+  codeBlock: NodeSpec;
   doc: NodeSpec;
   hardBreak: NodeSpec;
   heading: NodeSpec;
   listItem: NodeSpec;
+  mention: NodeSpec;
   orderedList: NodeSpec;
   paragraph: NodeSpec;
   rule: NodeSpec;
@@ -41,6 +46,7 @@ interface CQSchemaNodes {
 interface CQSchemaMarks {
   code: MarkSpec;
   em: MarkSpec;
+  link: MarkSpec;
   strike: MarkSpec;
   strong: MarkSpec;
   subsup: MarkSpec;
@@ -48,23 +54,26 @@ interface CQSchemaMarks {
 }
 
 const nodes = {
-  blockquote,
-  bulletList,
   doc,
-  hardBreak,
-  heading,
-  listItem,
-  orderedList,
   paragraph,
-  rule,
-  text,
+  blockquote,
+  codeBlock,
+  orderedList,
+  bulletList,
+  heading,
   unsupportedBlock,
+  listItem,
+  mention,
+  text,
+  hardBreak,
   unsupportedInline,
+  rule,
 };
 
 const marks = {
   code,
   em,
+  link,
   strike,
   strong,
   subsup,

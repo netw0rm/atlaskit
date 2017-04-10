@@ -69,6 +69,10 @@ export const content = style({
       outline: 'none',
     },
 
+    '.ProseMirror-selectednode:empty': {
+      outline: '2px solid #8cf',
+    },
+
     /* Make sure li selections wrap around markers */
     'li.ProseMirror-selectednode': {
       outline: 'none'

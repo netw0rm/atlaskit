@@ -60,22 +60,22 @@ interface CQSchemaMarks {
 
 
 const nodes = {
-  blockquote,
-  bulletList,
-  codeBlock,
   doc,
-  hardBreak,
+  paragraph,
+  blockquote,
+  codeBlock,
+  orderedList,
+  bulletList,
   heading,
   mediaGroup,
+  unsupportedBlock,
   listItem,
   mention,
-  orderedList,
-  paragraph,
-  rule,
   text,
-  unsupportedBlock,
+  hardBreak,
   unsupportedInline,
   media,
+  rule,
 };
 
 const marks = {

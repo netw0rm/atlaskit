@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 const axios = require('axios');
-const getAllPackageJsons = require('../_get_all_package_jsons');
 
 /*
   This package ss used to collect responses from attempting to reach each storybook in the registry
@@ -23,11 +22,9 @@ function getPackageStorybook(packageName, packageVersion) {
     .catch(() => Promise.resolve({ name: packageName, exists: false, url: storybookURL }));
 }
 
-function getStorybooksFromRegistry() {
-  const packageJsons = getAllPackageJsons();
-
+function getStorybooksFromRegistry(packages) {
   // we return once all the promises are resolved
-  return Promise.all(packageJsons.map(pkg => getPackageStorybook(pkg.name, pkg.version)));
+  return Promise.all(packages.map(pkg => getPackageStorybook(pkg.name, pkg.version)));
 }
 
 module.exports = getStorybooksFromRegistry;

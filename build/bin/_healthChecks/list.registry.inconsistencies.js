@@ -2,8 +2,8 @@
 /* eslint-disable no-console */
 const chalk = require('chalk');
 
-const getAllPackageJsons = require('../_get_all_package_jsons');
-const getPackagesFromRegistry = require('./_get.packages.from.registry');
+const getAllPackageJsons = require('./_get.packages.from.local');
+const getPackagesFromRegistry = require('./_get.packages.from.registry').getPackagesFromRegistryAtVersion;
 
 /*
   This script is used to find inconsistencies between our local versions of packages and the ones
@@ -15,24 +15,25 @@ const packageJsons = getAllPackageJsons();
 
 console.log('Fetching registry data, this may take a while...');
 
-getPackagesFromRegistry()
+// get the package.jsons from the registry for each of the versions of the packages we have locally
+getPackagesFromRegistry(packageJsons)
   .then((registryData) => {
     console.log(chalk.green('Successfully fetched data'));
     const packagesNotFoundInRegistry = [];
     const packagesNotUpToDateInRegistry = [];
 
     packageJsons.forEach((pkg) => {
-      const latestOnRegistry = registryData
+      const packageOnRegistry = registryData
         // map over it to get the actual json from the response
         .map(pkgData => pkgData.json)
         .find(pkgData => !!pkgData && pkgData.name === pkg.name);
-      if (!latestOnRegistry) {
+      if (!packageOnRegistry) {
         packagesNotFoundInRegistry.push(pkg);
-      } else if (latestOnRegistry.version !== pkg.version) {
+      } else if (packageOnRegistry.version !== pkg.version) {
         packagesNotUpToDateInRegistry.push({
           name: pkg.name,
           expectedVersion: pkg.version,
-          registryVersion: latestOnRegistry.version,
+          registryVersion: packageOnRegistry.version,
         });
       }
     });

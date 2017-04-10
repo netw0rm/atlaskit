@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 const chalk = require('chalk');
+const getLocalPackageJsons = require('./_get.packages.from.local');
 const getStorybooksFromRegistry = require('./_get.storybooks.from.registry');
 
 /*
@@ -11,7 +12,9 @@ const getStorybooksFromRegistry = require('./_get.storybooks.from.registry');
   this. This is a fair compromise
 */
 
-getStorybooksFromRegistry()
+const localPackages = getLocalPackageJsons();
+
+getStorybooksFromRegistry(localPackages)
   .then((storybookResponses) => {
     const brokenStorybooks = storybookResponses.filter(response => !response.exists);
     if (brokenStorybooks.length > 0) {

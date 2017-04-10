@@ -22,30 +22,47 @@ describe(`${name} - stateless`, () => {
 
   describe('render', () => {
     it('sanity check', () => {
-      expect(shallow(<StatelessMultiSelect />).isEmpty()).to.equal(false);
+      const select = shallow(<StatelessMultiSelect />);
+      expect(select.isEmpty()).to.equal(false);
+      select.unmount();
     });
 
     it('should render with correct CSS class name', () => {
-      expect(mount(<StatelessMultiSelect />).find(`.${styles.selectWrapper}`).length).to.equal(1);
+      const select = shallow(<StatelessMultiSelect />);
+      expect(select.find(`.${styles.selectWrapper}`).length).to.equal(1);
+      select.unmount();
+    });
+
+    it('should not render a label by default', () => {
+      const select = mount(<StatelessMultiSelect />);
+      expect(select.find(Label).length).to.equal(0);
+      select.unmount();
     });
 
     it('should render Label when the prop is set', () => {
-      expect(mount(<StatelessMultiSelect />).find(Label).length).to.equal(0);
-      expect(mount(<StatelessMultiSelect label="test" />).find(Label).length).to.equal(1);
+      const select = mount(<StatelessMultiSelect label="test" />);
+      expect(select.find(Label).length).to.equal(1);
+      select.unmount();
     });
 
     it('should render Droplist', () => {
-      expect(mount(<StatelessMultiSelect />).find(Droplist).length).to.equal(1);
+      const select = mount(<StatelessMultiSelect />);
+      expect(select.find(Droplist).length).to.equal(1);
+      select.unmount();
     });
 
     it('should render Fieldbase inside Droplist', () => {
-      expect(mount(<StatelessMultiSelect />).find(FieldBase).length).to.equal(1);
-      expect(mount(<StatelessMultiSelect />).find(Droplist).find(FieldBase).length).to.equal(1);
+      const select = mount(<StatelessMultiSelect />);
+      expect(select.find(FieldBase).length).to.equal(1);
+      expect(select.find(Droplist).find(FieldBase).length).to.equal(1);
+      select.unmount();
     });
 
     it('should render Trigger inside Fieldbase', () => {
-      expect(mount(<StatelessMultiSelect />).find(Trigger).length).to.equal(1);
-      expect(mount(<StatelessMultiSelect />).find(FieldBase).find(Trigger).length).to.equal(1);
+      const select = mount(<StatelessMultiSelect />);
+      expect(select.find(Trigger).length).to.equal(1);
+      expect(select.find(FieldBase).find(Trigger).length).to.equal(1);
+      select.unmount();
     });
 
     describe('groups and items', () => {
@@ -63,6 +80,7 @@ describe(`${name} - stateless`, () => {
         expect(select.find(Group).length).to.equal(1);
         expect(select.find(Item).length).to.equal(2);
         expect(select.find(Group).find(Item).length).to.equal(2);
+        select.unmount();
       });
 
       it('should not render a group if all items in that group are selected', () => {
@@ -73,6 +91,7 @@ describe(`${name} - stateless`, () => {
           isOpen
         />);
         expect(select.find(Group).length).to.equal(0);
+        select.unmount();
       });
     });
 
@@ -87,8 +106,8 @@ describe(`${name} - stateless`, () => {
         },
       ];
       const select = mount(<StatelessMultiSelect items={items} isOpen />);
-
       expect(select.find(Avatar).length).to.equal(2);
+      select.unmount();
     });
 
     it('should pass props to Item', () => {
@@ -118,6 +137,7 @@ describe(`${name} - stateless`, () => {
       expect(itemProps.isDisabled, 'isDisabled').to.equal(true);
       expect(itemProps.elemBefore, 'elemBefore').to.equal('1');
       expect(itemProps.elemAfter, 'elemAfter').to.equal('2');
+      select.unmount();
     });
   });
 });

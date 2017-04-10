@@ -39,6 +39,10 @@ describe(`${name} - stateless`, () => {
       />);
     });
 
+    afterEach(() => {
+      wrapper.unmount();
+    });
+
     it('should render a select tag', () => {
       expect(wrapper.find('select').length).to.equal(1);
     });

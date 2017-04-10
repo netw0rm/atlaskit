@@ -23,12 +23,14 @@ describe(name, () => {
         const wrapper = shallow(<ProductLogo collapseTo="type" size="small" />);
         expect(wrapper.find('Logo').props().collapseTo).to.equal('type');
         expect(wrapper.find('Logo').props().size).to.equal('small');
+        wrapper.unmount();
       });
     });
     it('does not allow logoText to be overridden on the underlying component', () => {
       Object.values(logos).forEach((ProductLogo) => {
         const wrapper = mount(<ProductLogo logoText={<svg id="bad-logo" />} />);
         expect(wrapper.find('#bad-logo')).to.have.length(0);
+        wrapper.unmount();
       });
     });
   });

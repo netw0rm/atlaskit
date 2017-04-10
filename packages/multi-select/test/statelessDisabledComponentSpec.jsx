@@ -39,6 +39,10 @@ describe(`${name} - stateless`, () => {
       />);
     });
 
+    afterEach(() => {
+      wrapper.unmount();
+    });
+
     it('native select should be "disabled"', () => {
       expect(wrapper.find('select[disabled]').length).to.equal(1);
     });

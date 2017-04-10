@@ -11,6 +11,7 @@ describe('<Logo />', () => {
       it('should not collapse by default', () => {
         const wrapper = shallow(<Logo size="small" />);
         expect(wrapper.props().collapseTo).to.equal(undefined);
+        wrapper.unmount();
       });
 
       // Note: other values can be supplied, but will cause a PropType warning
@@ -20,6 +21,8 @@ describe('<Logo />', () => {
 
         const iconWrapper = shallow(<Logo collapseTo="icon" size="small" />);
         expect(iconWrapper.props().collapseTo).to.equal('icon');
+        typeWrapper.unmount();
+        iconWrapper.unmount();
       });
     });
   });

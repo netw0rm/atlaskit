@@ -38,13 +38,20 @@ describe(name, () => {
       };
 
       // NOTE Please remember:
-      // An addition is a feature
-      // a removal or rename is a BREAKING CHANGE
-
-      // NOTE the reduced-ui-pack package uses the icons from this package, so if you change
-      // anything in the list below then you'll also need to update the tests in reduced-ui-pack.
-      // A breaking change to this package is also a breaking change to the reduced-ui-pack package.
-
+      //
+      // - A backward compatible update is a patch
+      // - A backward compatible addition is a feature
+      // - A removal or rename is a BREAKING CHANGE
+      // - A rename is a BREAKING CHANGE
+      //
+      // NOTE the reduced-ui-pack package uses the icons from this package, so
+      // if you change anything in the list below then you'll also need to
+      // update the tests in reduced-ui-pack. A breaking change to this package
+      // is also a breaking change to the reduced-ui-pack package.
+      //
+      // This list is manually maintained because if we auto-generated it, we
+      // wouldn't be able to detect breaking changes (removals).
+      //
       // This list should be sorted alphabetically.
       const expected = [
         'activity',
@@ -338,20 +345,8 @@ describe(name, () => {
       ];
 
       const actual = Object.keys(components);
-
       const errorMsg = arrayCompare(actual, expected);
       expect(errorMsg).to.equal('');
-        // If you find yourself here and wonder why this list is not auto-generated, then bear in
-        // mind that tests are supposed to tell you when a piece of software breaks.
-        // As the sole purpose of this component is providing icons:
-        //
-        // * changing an icon is a patch
-        // * adding an icon is a feature
-        // * removing an icon is a breaking change
-        // * renaming an icon is a breaking change
-        //
-        // If we were to auto-generate this list, then renaming, adding or removing would NOT
-        // break any tests and thus not hint the developer at what kind of change he/she is making
     });
 
     describe('bundle', () => {
@@ -368,9 +363,9 @@ describe(name, () => {
           .filter(key => key !== 'size');
 
         bundleKeys.should.be.deep.equal(Object
-              .keys(components)
-              .map(pathToDashed)
-              .map(x => iconNameToComponentName(x)));
+          .keys(components)
+          .map(pathToDashed)
+          .map(x => iconNameToComponentName(x)));
 
         bundleKeys.forEach((key) => {
           expect(typeof bundle[key]).to.equal('function');

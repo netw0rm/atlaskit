@@ -11,16 +11,9 @@
   "scripts": {
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish/single @atlaskit/tooltip; } || ../../node_modules/.bin/not-in-publish"
   },
-  "types": "src/index.d.ts",
   "files": [
     "dist"
   ],
-  "dependencies": {
-    "@atlaskit/util-shared-styles": "^1.0.0",
-    "babel-runtime": "^6.11.6",
-    "@atlaskit/layer": "^2.1.3",
-    "styled-components": "^1.3.0"
-  },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
@@ -31,6 +24,12 @@
     }
   ],
   "license": "Apache-2.0",
+  "dependencies": {
+    "@atlaskit/layer": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^1.0.0",
+    "babel-runtime": "^6.11.6",
+    "styled-components": "^1.3.0"
+  },
   "peerDependencies": {
     "react": "^15.3.2"
   },

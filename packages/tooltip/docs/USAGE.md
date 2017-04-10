@@ -54,10 +54,10 @@ function renderButtonInContainer() {
   ReactDOM.render(<div>
     <Tooltip
       description="Opens the user preferences screen in a new window"
-      position="bottom"
-      visible={tooltipVisibleState}
-      onMouseOver={handleMouseOver}
+      isVisible={tooltipVisibleState}
       onMouseOut={handleMouseOut}
+      onMouseOver={handleMouseOver}
+      position="bottom"
     >
       <button>I do something!</button>
     </Tooltip>
@@ -88,7 +88,7 @@ Obviously your state would normally be stored in a component or value store.
 
     *  [tooltip.position](#Tooltip+position) : <code>string</code>
     *  [tooltip.description](#Tooltip+description) : <code>string</code>
-    *  [tooltip.visible](#Tooltip+visible) : <code>boolean</code>
+    *  [tooltip.isVisible](#Tooltip+isVisible) : <code>boolean</code>
 
 <a name="new_Tooltip_new"></a>
 
@@ -115,10 +115,10 @@ The text to display in the tooltip when a user hovers over the element.
 
 **Kind**: instance property of <code>[Tooltip](#Tooltip)</code>
 **Default**: <code>&quot;&#x27;&#x27;&quot;</code>
-<a name="Tooltip+visible"></a>
+<a name="Tooltip+isVisible"></a>
 
-### tooltip.visible : <code>boolean</code>
-Whether or not the tooltip is open and visible on the page.
+### tooltip.isVisible : <code>boolean</code>
+Whether or not the tooltip is open and isVisible on the page.
 
 **Kind**: instance property of <code>[Tooltip](#Tooltip)</code>
 **Default**: <code>false</code>

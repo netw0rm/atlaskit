@@ -59,8 +59,14 @@ export default class ContainerNavigation extends PureComponent {
   }
 
   onScrollTopChange = (number) => {
+    const isScrolling = number > 0;
+
+    if (isScrolling === this.state.isScrolling) {
+      return;
+    }
+
     this.setState({
-      isScrolling: number > 0,
+      isScrolling,
     });
   }
 

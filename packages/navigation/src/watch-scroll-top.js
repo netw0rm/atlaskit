@@ -18,6 +18,9 @@ export default (el, fn) => {
     });
   };
 
+  // fire the callback immediatly with the initial value
+  memoizedFn(el.scrollTop);
+
   el.addEventListener('scroll', onScroll, { passive: true });
 
   const unsubscribe = () => {

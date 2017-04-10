@@ -375,7 +375,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
     case 'NOTE':
     case 'TIP':
       const panelTitle = getAcParameter(node, 'title');
-      const panelHTML = getAcTagHTML(node, 'AC:RICH-TEXT-BODY') || '';
+      const panelNodes = getAcTagNodes(node, 'AC:RICH-TEXT-BODY') || '';
       let panelBody: any[] = [];
 
       if (panelTitle) {
@@ -384,12 +384,11 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
         );
       }
 
-      if (panelHTML) {
-        const div = document.createElement('div');
-        div.innerHTML = panelHTML;
+      if (panelNodes) {
+        const nodes = Array.prototype.slice.call(panelNodes);
 
-        for (let i = 0, len = div.childNodes.length; i < len; i += 1) {
-          const domNode: any = div.childNodes[i];
+        for (let i = 0, len = nodes.length; i < len; i += 1) {
+          const domNode: any = nodes[i];
           const content = Fragment.from([ schema.text(domNode.innerText) ]);
           const pmNode = converter(content, domNode);
           if (pmNode) {
@@ -435,11 +434,11 @@ function getAcTagContent(node: Element, tagName: string): string | null {
   return null;
 }
 
-function getAcTagHTML(node: Element, tagName: string): string | null {
+function getAcTagNodes(node: Element, tagName: string): NodeList | null {
   for (let i = 0; i < node.childNodes.length; i++) {
     const child = node.childNodes[i] as Element;
     if (getNodeName(child) === tagName) {
-      return child.innerHTML;
+      return child.childNodes;
     }
   }
 

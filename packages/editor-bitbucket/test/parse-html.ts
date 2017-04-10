@@ -7,7 +7,7 @@ import {
   a, blockquote, code_block, doc, h1, h2,
   h3, h4, h5, hr, img, li, emoji, mention,
   code, ol, p, strong, ul
-} from '@atlaskit/editor-core/dist/es5/test-helper';
+} from './_schema-builder';
 
 chai.use(chaiPlugin);
 

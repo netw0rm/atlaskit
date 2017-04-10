@@ -3,12 +3,10 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { SinonSpy } from 'sinon';
+import { doc, h1, emoji, mention, p, strong, code_block } from './_schema-builder';
 
 import { EditorView, browser } from '@atlaskit/editor-core';
-import {
-  chaiPlugin, createEvent, dispatchPasteEvent, fixtures, insertText, sendKeyToPm,
-  doc, h1, emoji, mention, p, strong, code_block
-} from '@atlaskit/editor-core/dist/es5/test-helper';
+import { chaiPlugin, createEvent, dispatchPasteEvent, fixtures, insertText, sendKeyToPm } from '@atlaskit/editor-core/dist/es5/test-helper';
 import Editor from '../src/index';
 
 chai.use(chaiPlugin);
@@ -58,7 +56,7 @@ describe('@atlaskit/editor-bitbucket/expand and collapse', () => {
 
   it('should call onExpanded after editor is expanded via click', () => {
     const spy = sinon.spy();
-    const editorWrapper = mount(<Editor onExpanded={spy} />);
+    const editorWrapper = mount(<Editor onExpanded={spy}/>);
 
     editorWrapper.find('ChromeCollapsed input').simulate('focus');
     expect(spy.callCount).to.equal(1);
@@ -66,7 +64,7 @@ describe('@atlaskit/editor-bitbucket/expand and collapse', () => {
 
   it('should call onExpanded after editor is expanded via .expand()', () => {
     const spy = sinon.spy();
-    const editorWrapper = mount(<Editor onExpanded={spy} />);
+    const editorWrapper = mount(<Editor onExpanded={spy}/>);
     const editor: Editor = editorWrapper.get(0) as any;
 
     editor.expand();
@@ -120,7 +118,7 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 
-  it('should invoke upload handler after pasting an image', function () {
+  it('should invoke upload handler after pasting an image', function() {
     const contentArea: HTMLElement = (editor.get(0) as any).state.editorView.dom;
     const event = createEvent('paste');
 
@@ -144,7 +142,7 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
     expect(spy.getCall(0).args[1]).to.be.a('function');
   });
 
-  it('should invoke upload handler after dropping an image', function () {
+  it('should invoke upload handler after dropping an image', function(){
     // Note: Mobile Safari and OSX Safari 9 do not bubble CustomEvent of type 'drop'
     //       so we must dispatch the event directly on the event which has listener attached.
     const dropElement: HTMLElement = (editor.get(0) as any).state.editorView.dom;
@@ -154,8 +152,8 @@ describe('@atlaskit/editor-bitbucket/imageUploadHandler', () => {
       dataTransfer: {
         value: {
           getData: (type: string) => '',
-          setData: () => { },
-          clearData: () => { },
+          setData: () => {},
+          clearData: () => {},
           types: ['Files'],
           files: [],
           items: [],
@@ -177,12 +175,12 @@ describe('@atlaskit/editor-bitbucket/multiple editors as children', () => {
   type State = {};
   class ContainerWithTwoEditors extends React.PureComponent<Props, State> {
     render() {
-      return (
-        <div>
-          <Editor isExpandedByDefault />
-          <Editor isExpandedByDefault />
-        </div>
-      );
+     return (
+       <div>
+         <Editor isExpandedByDefault />
+         <Editor isExpandedByDefault />
+       </div>
+     );
     }
   }
 
@@ -241,11 +239,11 @@ describe('@atlaskit/editor-bitbucket/pasting', () => {
 
   beforeEach(() => {
     const mentionResoure = sinon.stub() as any;
-    editor = mount(<Editor isExpandedByDefault mentionSource={mentionResoure} />, { attachTo: fixture() }).get(0) as any;
+    editor = mount(<Editor isExpandedByDefault mentionSource={mentionResoure}/>, { attachTo: fixture() }).get(0) as any;
     editorView = editor!.state!.editorView as EditorView;
   });
 
-  it('should transform pasted html with an emoji', function () {
+  it('should transform pasted html with an emoji', function() {
     const content = {
       html: '<p>Nice! <img src="https://d301sr.cloudfront.net/69284d5bf158/emoji/img/%2B1.svg" class="emoji"></p>'
     };
@@ -258,7 +256,7 @@ describe('@atlaskit/editor-bitbucket/pasting', () => {
     expect(editor.doc).to.deep.equal(doc(p('Nice! ', emoji({ shortName: ':+1:' }))));
   });
 
-  it('should transform pasted html with a mention', function () {
+  it('should transform pasted html with a mention', function() {
     const content = {
       html: '<p><a href="/mention/" rel="nofollow" title="@mention" class="mention">Mention</a> some mention.</p>'
     };
@@ -282,7 +280,7 @@ describe('@atlaskit/editor-bitbucket/keymaps', () => {
     editorView = editor!.state!.editorView as EditorView;
   });
 
-  it('should undo code block with Cmd+Z', function () {
+  it('should undo code block with Cmd+Z', function() {
     editor.setFromHtml('<p></p>');
     insertText(editorView, '```', 1);
     sendKeyToPm(editorView, 'Enter');

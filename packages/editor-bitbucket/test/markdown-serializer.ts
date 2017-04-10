@@ -3,9 +3,9 @@ import markdownSerializer from '../src/markdown-serializer';
 import stringRepeat from '../src/util/string-repeat';
 import {
   a, blockquote, br, code_block, doc, em, h1, h2,
-  h3, h4, h5, h6, hr, img, li, emoji, emojiQuery, mention,
-  mentionQuery, code, ol, p, strike, strong, ul
-} from '@atlaskit/editor-core/dist/es5/test-helper';
+  h3, h4, h5, h6, hr, img, li, emoji, emoji_query, mention,
+  mention_query, code, ol, p, strike, strong, ul
+} from './_schema-builder';
 
 describe('Bitbucket markdown serializer: ', () => {
   const pre = code_block();
@@ -561,12 +561,12 @@ describe('Bitbucket markdown serializer: ', () => {
   });
 
   describe('marks -', () => {
-      it('should ignore mentionQuery mark', () => {
-        expect(markdownSerializer.serialize(doc(p(mentionQuery('@oscar'))))).to.eq('@oscar');
+      it('should ignore mention_query mark', () => {
+        expect(markdownSerializer.serialize(doc(p(mention_query('@oscar'))))).to.eq('@oscar');
       });
 
-      it('should ignore emojiQuery mark', () => {
-        expect(markdownSerializer.serialize(doc(p(emojiQuery(':grin'))))).to.eq(':grin');
+      it('should ignore emoji_query mark', () => {
+        expect(markdownSerializer.serialize(doc(p(emoji_query(':grin'))))).to.eq(':grin');
       });
 
       it('should serialize em', () => {

@@ -25,5 +25,7 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded/styles/createNestedListStyles'
   it('should return correct styles for list items', () => {
     const nestedOrderedListStyle = createNestedListStyles();
     expect(Object.keys(nestedOrderedListStyle.li.listStyleType)).not.equal('decimal');
+    expect(Object.keys(nestedOrderedListStyle['ol li'].listStyleType)).not.equal('lower-alpha');
+    expect(Object.keys(nestedOrderedListStyle['ol ol li'].listStyleType)).not.equal('lower-roman');
   });
 });

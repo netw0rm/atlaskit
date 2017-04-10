@@ -19,8 +19,14 @@ describe('inputrules', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '# ', sel);
-
       expect(editorView.state.doc).to.deep.equal(doc(h1()));
+    });
+
+    it('should not convert "# " to heading 1 when inside a code_block', () => {
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+      insertText(editorView, '# ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('# ')));
     });
 
     it('should convert "## " to heading 2', () => {
@@ -30,11 +36,25 @@ describe('inputrules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(h2()));
     });
 
+    it('should not convert "## " to heading 1 when inside a code_block', () => {
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+      insertText(editorView, '## ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('## ')));
+    });
+
     it('should convert "### " to heading 3', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '### ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(h3()));
+    });
+
+    it('should not convert "### " to heading 1 when inside a code_block', () => {
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+      insertText(editorView, '### ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('### ')));
     });
   });
 
@@ -59,6 +79,13 @@ describe('inputrules', () => {
       insertText(editorView, '> ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('> ')))));
     });
+
+    it('should not convert "> " to a blockquote when inside a code_block', () => {
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+      insertText(editorView, '> ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('> ')));
+    });
   });
 
   describe('codeblock rule', () => {
@@ -68,7 +95,6 @@ describe('inputrules', () => {
           const { editorView, sel } = editor(doc(p('{<>}hello', br, 'world')));
 
           insertText(editorView, '```', sel);
-
           expect(editorView.state.doc).to.deep.equal(doc(code_block()('hello\nworld')));
         });
       });

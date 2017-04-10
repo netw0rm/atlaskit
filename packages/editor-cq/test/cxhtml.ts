@@ -365,6 +365,15 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
             doc(panel({ panelType })(h3(title), p(`${panelType} panel`))));
         });
       });
+      context('when panel has multiple top-level nodes', () => {
+        const title = 'Panel title';
+
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${title}</ac:parameter><ac:rich-text-body><p>p1</p><p>p2</p><h5>h5</h5></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(h3(title), p('p1'), p('p2'), h5('h5'))));
+        });
+      });
     });
   });
 

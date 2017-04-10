@@ -162,18 +162,31 @@ export default function encode(node: PMNode) {
 
   function encodePanel (node: PMNode) {
     const elem = createMacroElement(node.attrs.panelType);
-
-    if (node.firstChild!.type.name === 'heading') {
-      const title = doc.createElementNS(AC_XMLNS, 'ac:parameter');
-      title.setAttributeNS(AC_XMLNS, 'ac:name', 'title');
-      title.textContent = node.firstChild!.textContent;
-      elem.appendChild(title);
-    }
-
     const body = doc.createElementNS(AC_XMLNS, 'ac:rich-text-body');
-    const p = doc.createElement('p');
-    p.innerHTML = node.lastChild!.textContent;
-    body.appendChild(p);
+    const fragment = doc.createDocumentFragment();
+
+    node.descendants(function (node, pos) {
+      // there is at least one top-level paragraph node in the panel body
+      // all text nodes will be handled by "encodeNode"
+      if (node.isBlock) {
+        // panel title
+        if (node.type.name === 'heading' && pos === 0) {
+          const title = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+          title.setAttributeNS(AC_XMLNS, 'ac:name', 'title');
+          title.textContent = node.firstChild!.textContent;
+          elem.appendChild(title);
+        }
+        // panel content
+        else {
+          const domNode = encodeNode(node);
+          if (domNode) {
+            fragment.appendChild(domNode);
+          }
+        }
+      }
+    });
+
+    body.appendChild(fragment);
     elem.appendChild(body);
 
     return elem;

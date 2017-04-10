@@ -1,5 +1,5 @@
 import React, { PropTypes, PureComponent } from 'react';
-import BadgeElement from './styled/BadgeElement';
+import Div from '../styled/Badge';
 
 export const APPEARANCE_ENUM = {
   values: ['default', 'primary', 'important', 'added', 'removed'],
@@ -66,9 +66,9 @@ export default class Badge extends PureComponent {
     const { appearance, theme } = this.props;
 
     return (
-      <BadgeElement appearance={validAppearance(appearance)} theme={theme}>
+      <Div appearance={validAppearance(appearance)} theme={theme}>
         {this.displayValue()}
-      </BadgeElement>
+      </Div>
     );
   }
 }

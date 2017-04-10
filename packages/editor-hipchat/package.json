@@ -36,7 +36,6 @@
   "devDependencies": {
     "@atlaskit/editor-hipchat": "*",
     "@atlaskit/mention": "*",
-    "@atlaskit/media-test-helpers": "*",
     "@atlaskit/util-readme": "^1.0.0",
     "js-search": "^1.3.3"
   },

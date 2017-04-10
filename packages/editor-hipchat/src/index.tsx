@@ -11,11 +11,6 @@ import {
   DefaultKeymapsPlugin,
   TextFormattingPlugin,
   version as coreVersion,
-  MediaPluginFactory,
-  MediaNodeType,
-  MediaProvider,
-  ToolbarMedia,
-  MediaPlugin
 } from '@atlaskit/editor-core';
 import * as cx from 'classnames';
 import * as React from 'react';
@@ -84,7 +79,6 @@ export interface Props {
   mentionResourceProvider?: any;
   presenceResourceProvider?: any;
   reverseMentionPicker?: boolean;
-  mediaProvider?: Promise<MediaProvider>;
 }
 
 export interface State {
@@ -94,7 +88,6 @@ export interface State {
 }
 
 export default class Editor extends PureComponent<Props, State> {
-  private mediaPlugin: MediaPlugin;
   version = `${version} (editor-core ${coreVersion})`;
 
   public static defaultProps: Props = {
@@ -106,30 +99,12 @@ export default class Editor extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {};
-
-    const { mediaProvider } = props;
-
-    if (mediaProvider) {
-      this.mediaPlugin = this.constructMediaPlugin(mediaProvider);
-    }
-  }
-
-  public componentWillReceiveProps(newProps) {
-    const { props } = this;
-    const { pm } = this.state;
-    const { mediaProvider } = newProps;
-
-    if (props.mediaProvider !== mediaProvider) {
-      this.mediaPlugin = this.constructMediaPlugin(mediaProvider);
-      (pm!.schema.nodes['media'] as MediaNodeType).setMediaProvider(mediaProvider);
-    }
   }
 
   render() {
-    const { props, mediaPlugin } = this;
+    const { props } = this;
     const { pm } = this.state;
 
-    const pluginStateMedia = mediaPlugin && pm && mediaPlugin.get(pm);
     const pluginStateMentions = props.mentionResourceProvider && pm && MentionsPlugin.get(pm);
     const pluginStateHyperlink = pm && HyperlinkPlugin.get(pm);
     const classNames = cx('ak-editor-hipchat', {
@@ -151,11 +126,6 @@ export default class Editor extends PureComponent<Props, State> {
               reversePosition={props.reverseMentionPicker}
             />
           }
-          {!pluginStateMedia ? null :
-          <div style={{ float: 'right', position: 'relative', zIndex: 1 }}>
-            <ToolbarMedia pluginState={pluginStateMedia} />
-          </div>
-          }
         </div>
       </div>
     );
@@ -167,8 +137,6 @@ export default class Editor extends PureComponent<Props, State> {
     }
 
     const { props } = this;
-    const { mediaProvider } = props;
-
     const pm = new ProseMirror({
       place,
       doc: schema.nodes.doc.createAndFill(),
@@ -177,14 +145,9 @@ export default class Editor extends PureComponent<Props, State> {
         HyperlinkPlugin,
         DefaultKeymapsPlugin,
         TextFormattingPlugin,
-        ...(this.props.mentionResourceProvider ? [MentionsPlugin] : []),
-        ...(mediaProvider ? [this.mediaPlugin] : []),
+        ...(this.props.mentionResourceProvider ? [MentionsPlugin] : [])
       ],
     });
-
-    if (mediaProvider) {
-      (pm.schema.nodes['media'] as MediaNodeType).setMediaProvider(mediaProvider);
-    }
 
     if (place instanceof HTMLElement) {
       const content = place.querySelector('[contenteditable]');
@@ -286,12 +249,5 @@ export default class Editor extends PureComponent<Props, State> {
     if (pm) {
       pm.tr.typeText(text).applyAndScroll();
     }
-  }
-
-  private constructMediaPlugin (mediaProvider: Promise<MediaProvider>) {
-    return MediaPluginFactory({
-      mediaProvider,
-      behavior: 'compact'
-    });
   }
 }

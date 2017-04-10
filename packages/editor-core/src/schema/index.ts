@@ -22,4 +22,5 @@ export { image } from './nodes/image';
 export { mention, mentionNodeView } from './nodes/mention';
 export { listItem } from './nodes/list-item';
 export { panel } from './nodes/panel';
+export { panelText } from './nodes/panel-text';
 export { text } from './nodes/text';

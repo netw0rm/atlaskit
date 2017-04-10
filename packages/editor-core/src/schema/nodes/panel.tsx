@@ -93,7 +93,7 @@ export interface DOMAttributes {
 
 export const panel: NodeSpec = {
   group: 'block',
-  content: 'block+',
+  content: 'panelText',
   attrs: {
     panelType: { default: 'info' }
   },

@@ -10,7 +10,6 @@ import {
 } from '../../prosemirror';
 import inputRulePlugin from './input-rules';
 import { reconfigure } from '../utils';
-import keymapPlugin from './keymaps';
 
 export interface PanelType {
   panelType: 'info' | 'note' | 'tip' | 'warning';
@@ -137,7 +136,7 @@ const plugin = new Plugin({
   },
   key: stateKey,
   view: (view: EditorView) => {
-    reconfigure(view, [keymapPlugin(view), inputRulePlugin(view.state.schema)]);
+    reconfigure(view, [inputRulePlugin(view.state.schema)]);
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
         stateKey.getState(view.state).update(view.state, view.docView);

@@ -1,7 +1,9 @@
 import { expect } from 'chai';
 import PanelPlugin from '../../../src/plugins/panel';
 import PanelInputRulesPlugin from '../../../src/plugins/panel/input-rules';
-import { insertText, doc, p, makeEditor, fixtures, panel } from '../../../src/test-helper';
+import {
+  insertText, doc, p, makeEditor, fixtures, panel, code_block
+} from '../../../src/test-helper';
 
 const fixture = fixtures();
 const editor = (doc: any) => makeEditor({
@@ -25,6 +27,14 @@ describe('panel input rules', () => {
     inputRulePlugin!.props.handleTextInput!(editorView, 6, 6, '}');
 
     expect(editorView.state.doc).to.deep.equal(doc(panel(p())));
+  });
+
+  it('should not convert {info} inside a code_block', () => {
+    const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+    insertText(editorView, '{info}', sel);
+
+    expect(editorView.state.doc).to.deep.equal(doc(code_block()('\\{info}')));
   });
 
   it('should replace {tip} input with panel node of type tip', () => {

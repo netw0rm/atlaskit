@@ -31,6 +31,7 @@ export interface Props {
   context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
+  expanded?: boolean;
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
@@ -53,10 +54,16 @@ export default class Editor extends PureComponent<Props, State> {
 
     this.state = {
       schema,
-      isExpanded: props.isExpandedByDefault,
+      isExpanded: (props.expanded !== undefined) ? props.expanded : props.isExpandedByDefault,
     };
 
     analyticsService.handler = props.analyticsHandler || ((name) => {});
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.expanded !== this.props.expanded) {
+      this.setState({ isExpanded: nextProps.expanded });
+    }
   }
 
   /**

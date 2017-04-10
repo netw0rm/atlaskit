@@ -1,5 +1,6 @@
 import { Transaction, Plugin, InputRule, inputRules, Schema } from '../../prosemirror';
 import { MentionsState, stateKey } from './';
+import { createInputRule } from '../utils';
 
 let plugin: Plugin | undefined;
 
@@ -11,7 +12,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.mention && schema.marks.mentionQuery) {
-    const mentionQueryRule = new InputRule(/(^|[^\w\`])@$/, (state, match, start, end): Transaction | undefined => {
+    const mentionQueryRule = createInputRule(/(^|[^\w\`])@$/, (state, match, start, end): Transaction | undefined => {
       const mentionsState = stateKey.getState(state) as MentionsState;
 
       if (!mentionsState.mentionProvider) {

@@ -4,15 +4,9 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import { encode, parse } from '../src/cxhtml';
 import {
-<<<<<<< HEAD
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention,
-  unsupportedInline, unsupportedBlock
-=======
-  blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li, mention,
-  code, ol, p, strike, strong, sub, sup, u, ul, codeblock,
   unsupportedInline, unsupportedBlock, jiraIssue,
->>>>>>> fix(component): render JIRA issue macros
 } from './_schema-builder';
 
 chai.use(chaiPlugin);
@@ -380,6 +374,7 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
             doc(panel({ panelType })(h3(title), p('p1'), p('p2'), h5('h5'))));
         });
       });
+    });
 
     describe('jira issue', () => {
       check(

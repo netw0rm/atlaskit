@@ -13,6 +13,8 @@ const CODE_MACRO = `<ac:structured-macro ac:name="code" ac:schema-version="1" ac
   console.log('Hello World');
 }]]></ac:plain-text-body></ac:structured-macro>`;
 
+const PANEL_MACRO = `<ac:structured-macro ac:name="warning" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">Hello</ac:parameter><ac:rich-text-body><p>Warning panel</p></ac:rich-text-body></ac:structured-macro>`;
+
 storiesOf(name, module)
   .addDecorator(storyDecorator(version))
   .add('Empty', () =>
@@ -53,6 +55,7 @@ storiesOf(name, module)
               />
               <button onClick={() => this.setState({ input: this.refs.input.value })}>Import</button>
               <button onClick={() => this.setState({ input: CODE_MACRO })}>Insert Code</button>
+              <button onClick={() => this.setState({ input: PANEL_MACRO })}>Insert Panel</button>
             </fieldset>
             <Editor
               isExpandedByDefault

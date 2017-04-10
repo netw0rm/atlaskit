@@ -1,16 +1,15 @@
 import {
   chaiPlugin,
-  doc,
   fixtures,
   makeEditor,
-  p,
-  subsup,
 } from '@atlaskit/editor-core/dist/es5/test-helper';
 import {
   TextFormattingPlugin,
 } from '@atlaskit/editor-core';
+import { doc, p, sub, sup, } from './_schema-builder';
 import * as chai from 'chai';
 import { expect } from 'chai';
+import schema from '../src/schema';
 
 chai.use(chaiPlugin);
 
@@ -18,6 +17,7 @@ describe('Keymaps', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
+    schema,
     plugin: TextFormattingPlugin,
     place: fixture()
   });
@@ -27,7 +27,7 @@ describe('Keymaps', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
 
       expect(pluginState.toggleSubscript(editorView));
-      expect(editorView.state.doc).to.deep.equal(doc(p(subsup({ type: 'sub' })('t'), 'ext')));
+      expect(editorView.state.doc).to.deep.equal(doc(p(sub('t'), 'ext')));
       expect(pluginState.toggleSubscript(editorView));
       expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });
@@ -53,7 +53,7 @@ describe('Keymaps', () => {
     it('should be able to toggle superscript on a character', () => {
       const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
       pluginState.toggleSuperscript(editorView);
-      expect(editorView.state.doc).to.deep.equal(doc(p(subsup({ type: 'sup' })('t'), 'ext')));
+      expect(editorView.state.doc).to.deep.equal(doc(p(sup('t'), 'ext')));
       pluginState.toggleSuperscript(editorView);
       expect(editorView.state.doc).to.deep.equal(doc(p('text')));
     });

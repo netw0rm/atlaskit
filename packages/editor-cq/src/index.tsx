@@ -16,7 +16,8 @@ import {
   TextFormattingPlugin,
   TextSelection,
   ClearFormattingPlugin,
-  version as coreVersion
+  version as coreVersion,
+  PanelPlugin
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -128,6 +129,7 @@ export default class Editor extends PureComponent<Props, State> {
     const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
     const listsState = editorState && ListsPlugin.getState(editorState);
     const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
+    const panelState = editorState && PanelPlugin.getState(editorState);
 
     return (
       <Chrome
@@ -145,6 +147,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateLists={listsState}
         pluginStateTextFormatting={textFormattingState}
         pluginStateClearFormatting={clearFormattingState}
+        pluginStatePanel={panelState}
         packageVersion={version}
         packageName={name}
       />
@@ -192,6 +195,7 @@ export default class Editor extends PureComponent<Props, State> {
           ListsPlugin,
           RulePlugin,
           TextFormattingPlugin,
+          PanelPlugin,
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap), // should be last :(

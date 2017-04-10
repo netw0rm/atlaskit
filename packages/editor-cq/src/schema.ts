@@ -56,21 +56,21 @@ interface CQSchemaMarks {
 }
 
 const nodes = {
+  doc,
+  paragraph,
   blockquote,
-  bulletList,
   codeBlock,
   panel,
-  doc,
   hardBreak,
+  orderedList,
+  bulletList,
   heading,
+  unsupportedBlock,
   listItem,
   mention,
-  orderedList,
-  paragraph,
-  rule,
   text,
-  unsupportedBlock,
   unsupportedInline,
+  rule,
 };
 
 const marks = {

@@ -11,13 +11,21 @@ export const THEME_ENUM = {
   defaultValue: 'default',
 };
 
+// returns the assigned appearance if valid, falling back to the default otherwise
+function validAppearance(appearance) {
+  const { values, defaultValue } = APPEARANCE_ENUM;
+  return values.indexOf(appearance) !== -1 ? appearance : defaultValue;
+}
+
 export default class Badge extends PureComponent {
   static propTypes = {
     /** Affects the visual style of the badge */
     appearance: PropTypes.oneOf(APPEARANCE_ENUM.values),
-    /** The maximum value to display. If value is 100, and max is 50, "50+" will be displayed */
+    /** The maximum value to display. If value is 100, and max is 50,
+        "50+" will be displayed */
     max: PropTypes.number,
-    /** Handler function to be called when the value prop is changed */
+    /** Handler function to be called when the value prop is changed.
+        Called with fn({ oldValue, newValue }) */
     onValueUpdated: PropTypes.func,
     /** Changes the badge colors for use with different color themes */
     theme: PropTypes.oneOf(THEME_ENUM.values),
@@ -32,7 +40,6 @@ export default class Badge extends PureComponent {
     value: 0,
   }
 
-  // triggered on prop/state change, but not on first render
   componentWillUpdate(nextProps) {
     const { onValueUpdated, value: oldValue } = this.props;
     const { value: newValue } = nextProps;
@@ -44,7 +51,7 @@ export default class Badge extends PureComponent {
   displayValue() {
     const { value, max } = this.props;
     if (value < 0) {
-      return 0;
+      return '0';
     }
     if (max > 0 && value > max) {
       return `${max}+`;
@@ -52,22 +59,15 @@ export default class Badge extends PureComponent {
     if (value === Infinity) {
       return '\u221E'; // ∞ inifinity character
     }
-    return value;
-  }
-
-  // returns the assigned appearance if valid, falling back to the default otherwise
-  validAppearance() {
-    const { appearance } = this.props;
-    const { values, defaultValue } = APPEARANCE_ENUM;
-    return values.indexOf(appearance) !== -1 ? appearance : defaultValue;
+    return String(value);
   }
 
   render() {
-    const { theme } = this.props;
+    const { appearance, theme } = this.props;
 
     return (
-      <BadgeElement appearance={this.validAppearance()} theme={theme}>
-        {this.displayValue().toString()}
+      <BadgeElement appearance={validAppearance(appearance)} theme={theme}>
+        {this.displayValue()}
       </BadgeElement>
     );
   }

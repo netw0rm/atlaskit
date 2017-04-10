@@ -57,7 +57,6 @@ export interface Props {
 
 export interface State {
   editorView?: EditorView;
-  editorState?: EditorState<any>;
   isExpanded?: boolean;
 }
 
@@ -245,7 +244,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     if (place) {
-      const { context, emojiProvider, imageUploadHandler } = this.props;
+      const { context, emojiProvider, mentionSource, imageUploadHandler } = this.props;
       const bitbucketKeymap = {
         'Mod-Enter': this.handleSave,
         'Esc'() { } // Disable Esc handler
@@ -263,7 +262,7 @@ export default class Editor extends PureComponent<Props, State> {
             HyperlinkPlugin,
             RulePlugin,
             ...(imageUploadHandler ? [ImageUploadPlugin] : []),
-            ...(this.mentionProvider ? [MentionsPlugin] : []),
+            ...(mentionSource ? [MentionsPlugin] : []),
             ...(emojiProvider ? [EmojisPlugin] : []),
             history(),
             keymap(bitbucketKeymap),
@@ -304,7 +303,7 @@ export default class Editor extends PureComponent<Props, State> {
         }
       });
 
-      if (this.mentionProvider) {
+      if (mentionSource) {
         MentionsPlugin.getState(editorState).subscribeToFactory(this.providerFactory);
       }
 

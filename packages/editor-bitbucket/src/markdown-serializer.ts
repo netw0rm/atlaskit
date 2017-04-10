@@ -106,8 +106,8 @@ const nodes = {
   text(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
     const previousNode = index === 0 ? null : parent.child(index - 1);
     const previousNodeIsAMention = (previousNode && previousNode.type === schema.nodes.mention);
-    const currentNodetartWithASpace = (node.textContent.indexOf(' ') === 0);
-    const trimTrailingWhitespace = (previousNodeIsAMention && currentNodetartWithASpace);
+    const currentNodeStartWithASpace = (node.textContent.indexOf(' ') === 0);
+    const trimTrailingWhitespace = (previousNodeIsAMention && currentNodeStartWithASpace);
     const text = trimTrailingWhitespace
       ? node.textContent.replace(' ', '') // only first blank space occurrence is replaced
       : node.textContent;

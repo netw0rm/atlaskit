@@ -6,7 +6,7 @@ export const createNestedListStyles = (): any => {
   const styles = {};
   const listStyleTypes = ['decimal', 'lower-alpha', 'lower-roman'];
   let key = '';
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 9; i++) {
     styles[`${key}li`] = {
       listStyleType: listStyleTypes[i % 3]
     };

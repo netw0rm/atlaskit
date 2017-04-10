@@ -82,9 +82,27 @@ export function text(value: string, schema: Schema<NodeSpec, MarkSpec>): RefsCon
   let textIndex = 0;
   const refs: Refs = {};
 
-  for (const match of matches(value, /{(\w+|<|>|<>)}/g)) {
-    const [refToken, refName] = match;
-    stripped += value.slice(textIndex, match.index);
+  // Helpers
+  const isEven = n => n % 2 === 0;
+
+  for (const match of matches(value, /([\\]+)?{(\w+|<|>|<>)}/g)) {
+    const [refToken, skipChars, refName] = match;
+    let { index } = match;
+
+    const skipLen = skipChars && skipChars.length;
+    if (skipLen) {
+      if (isEven(skipLen)) {
+        index += (skipLen / 2);
+      }
+      else {
+        stripped += value.slice(textIndex, index + ((skipLen - 1) / 2));
+        stripped += value.slice(index + skipLen, index + refToken.length);
+        textIndex = index + refToken.length;
+        continue;
+      }
+    }
+
+    stripped += value.slice(textIndex, index);
     refs[refName] = stripped.length;
     textIndex = match.index + refToken.length;
   }

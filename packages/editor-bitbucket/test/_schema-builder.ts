@@ -29,6 +29,6 @@ export const em = markFactory(schema.marks.em, {});
 export const strong = markFactory(schema.marks.strong, {});
 export const strike = markFactory(schema.marks.strike, {});
 // tslint:disable-next-line:variable-name
-export const mention_query = markFactory(schema.marks.mentionQuery, {});
+export const mentionQuery = markFactory(schema.marks.mentionQuery, {});
 // tslint:disable-next-line:variable-name
-export const emoji_query = markFactory(schema.marks.emojiQuery, {});
+export const emojiQuery = markFactory(schema.marks.emojiQuery, {});

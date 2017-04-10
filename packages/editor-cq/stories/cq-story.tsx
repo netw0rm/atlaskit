@@ -115,7 +115,7 @@ storiesOf(name, module)
               onChange={handleChange}
               onSave={SAVE_ACTION}
               defaultValue={this.state.input}
-              key="input-editor"
+              key={this.state.input}
             />
           </div>
         );

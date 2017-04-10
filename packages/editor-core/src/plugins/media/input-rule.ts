@@ -1,6 +1,7 @@
 import { URL_REGEX } from './../hyperlink/url-regex';
 import { Transaction, Plugin, InputRule, inputRules, Schema } from '../../prosemirror';
 import { MediaPluginState, stateKey } from './';
+import { createInputRule } from '../utils';
 
 const urlWithASpace = new RegExp(`${URL_REGEX.source} $`);
 let plugin: Plugin | undefined;
@@ -13,7 +14,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.mention && schema.marks.mentionQuery) {
-    const mentionQueryRule = new InputRule(urlWithASpace, (state, match, start, end): Transaction | undefined => {
+    const mentionQueryRule = createInputRule(urlWithASpace, (state, match, start, end): Transaction | undefined => {
       const mediaState = stateKey.getState(state) as MediaPluginState;
 
       if (!mediaState.allowsPastingLinks) {

@@ -41,7 +41,6 @@ export default function(node: Node): string {
   wrapper.appendChild(fabWrapper);
   fabWrapper.appendChild(acWrapper);
   acWrapper.appendChild(riWrapper);
-  riWrapper.appendChild(fabWrapper);
 
   // Force avoid self-closing tags, as these would invalidate suffix/prefix length calculations.
   const wedge = '|';

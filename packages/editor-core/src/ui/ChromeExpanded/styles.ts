@@ -2,6 +2,19 @@ import { akEditorSubtleAccent } from '../../styles';
 import { akBorderRadius, akGridSize } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 
+export const createNestedListStyles = (): any => {
+  const styles = {};
+  const listStyleTypes = ['decimal', 'lower-alpha', 'lower-roman'];
+  let key = '';
+  for (let i = 0; i < 18; i++) {
+    styles[`${key}li`] = {
+      listStyleType: listStyleTypes[i % 3]
+    };
+    key += 'ol ';
+  }
+  return styles;
+};
+
 export const container = style({
   backgroundColor: 'white',
   border: `1px solid ${akEditorSubtleAccent}`,
@@ -49,6 +62,10 @@ export const content = style({
       position: 'relative',
       /* Don't do weird stuff with marker clicks */
       pointerEvents: 'none'
+    },
+
+    '.ProseMirror ol': {
+      $nest: createNestedListStyles(),
     },
 
     '.ProseMirror li > *': {

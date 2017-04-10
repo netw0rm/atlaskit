@@ -4,7 +4,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import { encode, parse } from '../src/cxhtml';
 import {
-  blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
+  blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li, mention,
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock,
   unsupportedInline, unsupportedBlock
 } from './_schema-builder';
@@ -444,6 +444,20 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         )
       );
     });
+
+    check(
+      'mentions',
+      '<p>This is mention from <fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></p>',
+      doc(
+        p(
+          'This is mention from ',
+          mention({
+            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+            displayName: 'Artur Bodera'
+          })
+        )
+      )
+    );
   });
 
 // Color text span

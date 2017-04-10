@@ -37,7 +37,7 @@ const cowboy: EmojiDescription = {
   },
 };
 
-describe('EmojiService', () => {
+describe('EmojiRepository', () => {
   describe('#search', () => {
     it('all', () => {
       const splitCategoryEmojis = [

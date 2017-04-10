@@ -104,7 +104,7 @@ export const getEmojiVariation = (emoji: EmojiDescription, options?: SearchOptio
   return emoji;
 };
 
-export default class EmojiService {
+export default class EmojiRepository {
   private emojis: EmojiDescription[];
   private fullSearch: Search;
   private shortNameMap: EmojiByKey;

@@ -75,6 +75,10 @@ export const mediaNodeView = (providerFactory: ProviderFactory) => (node: any, v
     div.setAttribute(key, attrs[key]);
   }
 
+  // We're injecting the node with the callback for resolving current doc position.
+  // This way we can perform transformations on the node in the future.
+  node.getPos = getPos;
+
   ReactDOM.render(
     <WithProviders
       providers={['mediaProvider']}

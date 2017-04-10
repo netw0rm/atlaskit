@@ -1,10 +1,10 @@
-import { mediaGroup } from './../../schema/nodes/media-group';
 import { MediaType } from './../../schema/nodes/media';
 import {
   EditorState,
   EditorView,
   Plugin,
   PluginKey,
+  Node
 } from '../../prosemirror';
 import { reconfigure } from '../utils';
 import { URL_REGEX } from '../hyperlink/url-regex';
@@ -30,6 +30,7 @@ export class MediaPluginState {
   private state: EditorState<any>;
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
   private mediaStateChangeSubscribers: { [key: string]: MediaStateChangeSubscriber[] } = {};
+  private temporaryMediaNodes = new TemporaryNodesList();
   private destroyed = false;
   private behavior: MediaPluginBehavior;
   private mediaProvider: MediaProvider;
@@ -126,17 +127,19 @@ export class MediaPluginState {
     );
   }
 
-  insertFile = (id: string, filename: string, collection: string) => {
+  insertFile = (id: string, filename: string, collection: string): Node => {
     const { state, view } = this;
     const node = state.schema.nodes.media!.create({
       id,
       collection,
       type: 'file'
-    });
+    }) as Node;
 
-    node.filename = filename;
+    // node.filename = filename;
 
     view.dispatch(state.tr.insert(this.findInsertPosition(), node));
+
+    return node;
   }
 
   showMediaPicker = () => {
@@ -182,7 +185,7 @@ export class MediaPluginState {
 
     this.destroyed = true;
 
-    const { dropzonePicker, clipboardPicker, popupPicker } = this;
+    const { dropzonePicker, clipboardPicker, popupPicker, temporaryMediaNodes } = this;
 
     dropzonePicker && dropzonePicker.deactivate();
     clipboardPicker && clipboardPicker.deactivate();
@@ -190,6 +193,8 @@ export class MediaPluginState {
     if (popupPicker) {
       popupPicker.teardown();
     }
+
+    temporaryMediaNodes.clear();
   }
 
   /**
@@ -271,7 +276,11 @@ export class MediaPluginState {
     const tempId = `temporary:${event.file.id}`;
     const { file } = event;
 
-    this.insertFile(tempId, file.name, this.mediaProvider.uploadParams.collection);
+    this.temporaryMediaNodes.push(
+      tempId,
+      this.insertFile(tempId, file.name, this.mediaProvider.uploadParams.collection)
+    );
+
     this.notifyMediaStateSubscribers(tempId, {
       id: tempId,
       status: 'uploading',
@@ -319,6 +328,8 @@ export class MediaPluginState {
       fileSize: file.size as number,
       fileType: file.type as string,
     });
+
+    this.replaceTemporaryMediaNodes(tempId, file.publicId);
   }
 
   private handleUploadPreviewUpdate = (event: any) => {
@@ -327,6 +338,31 @@ export class MediaPluginState {
     if (thumbnailProvider && event.preview !== undefined) {
       thumbnailProvider.setThumbnail(event.file.id, event.preview);
     }
+  }
+
+  private replaceTemporaryMediaNodes = (tempId: string, publicId: string) => {
+    const { view, temporaryMediaNodes } = this;
+
+    if (!view) {
+      return;
+    }
+
+    temporaryMediaNodes.get(tempId).forEach((node: PositionedNode) => {
+      const pos = node.getPos && node.getPos();
+
+      if (!pos || pos < 1) {
+        return;
+      }
+
+      const newNode = view.state.schema.nodes.media!.create({
+        ...node.attrs,
+        id: publicId
+      }) as Node;
+
+      view.dispatch(view.state.tr.replaceWith(pos, pos + 1, newNode));
+    });
+
+    temporaryMediaNodes.delete(tempId);
   }
 
   private buildPickerConfigFromContext(uploadParams: UploadParams, config: ContextConfig) {
@@ -408,6 +444,58 @@ export default function mediaPluginFactory (options: MediaPluginOptions) {
 export interface MediaData {
   id: string;
   type?: MediaType;
+}
+
+class TemporaryNodesList {
+  private map: Map<string, Node[]>;
+
+  constructor() {
+    // Note: because we're targeting ES5 and because V8 doesn't currently allow
+    //       extending built-in classes (like Map), we're using Map internally
+    //       and proxying several methods (like delete, forEach ...)
+    //       https://github.com/Microsoft/TypeScript/issues/10853
+    //       https://github.com/Microsoft/TypeScript-wiki/blob/master/Breaking-Changes.md#extending-built-ins-like-error-array-and-map-may-no-longer-work
+    this.map = new Map();
+  }
+
+  get(mediaId: string): Node[] {
+    let list: Node[] | undefined = this.map.get(mediaId);
+
+    if (!list) {
+      list = [];
+    }
+
+    return list;
+  }
+
+  push(mediaId: string, node: Node): this {
+    let list: Node[] | undefined = this.map.get(mediaId);
+
+    if (!list) {
+      list = [];
+      this.map.set(mediaId, list);
+    }
+
+    list.push(node);
+
+    return this;
+  }
+
+  forEach(...args: any[]) {
+    return this.map.forEach.apply(this.map, args);
+  }
+
+  delete(...args: any[]) {
+    return this.map.delete.apply(this.map, args);
+  }
+
+  clear(...args: any[]) {
+    return this.map.clear.apply(this.map, args);
+  }
+}
+
+interface PositionedNode extends Node {
+  getPos: () => number;
 }
 
 function extractFirstURLFromString(string: string) {

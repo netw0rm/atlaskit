@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {Component} from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import { FilmStripNavigator } from '../src';
@@ -20,40 +19,14 @@ describe('FilmStripNavigator', () => {
     expect(filmstripNavigator.find('li').length).to.equal(children.length);
   });
 
-  it('Component gets re-rendered when children are modified', (done) => {
-    interface State {
-      items: Array<any>;
-    }
-
-    class NavigatorWrapper extends Component<{}, State> {
-      constructor(props) {
-        super(props);
-
-        this.state = {
-          items: [1, 2]
-        };
-      }
-
-      componentDidMount() {
-        window.setTimeout(() => {
-          this.state.items.push(3);
-          this.setState({items: this.state.items});
-        }, 10);
-      }
-
-      render() {
-        return <FilmStripNavigator>
-          {this.state.items}
-        </FilmStripNavigator>;
-      }
-    }
-
-    const navigatorWrapper = mount(<NavigatorWrapper />);
-
-    expect(navigatorWrapper.find('li').length).to.equal(2);
-    setTimeout(() => {
-      expect(navigatorWrapper.find('li').length).to.equal(3);
-      done();
-    }, 20);
+  it('Navigator items gets re-rendered when children are modified', () => {
+    const filmstripNavigator = shallow(
+      <FilmStripNavigator>
+        {[1, 2]}
+      </FilmStripNavigator>
+    );
+    expect(filmstripNavigator.find('li').length).to.equal(2);
+    filmstripNavigator.setProps({children: [1, 2, 3]});
+    expect(filmstripNavigator.find('li').length).to.equal(3);
   });
 });

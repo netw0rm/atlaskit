@@ -28,7 +28,6 @@ export default class NavigationItem extends PureComponent {
   static defaultProps = {
     isSelected: false,
     linkComponent: DefaultLinkComponent,
-    theme: defaultTheme,
   }
 
   onMouseDown = (e) => {
@@ -89,8 +88,3 @@ export default class NavigationItem extends PureComponent {
     );
   }
 }
-
-export const defaultTheme = {
-  ContainerNavigationAppearance: 'container',
-  NavigationItemIsCompact: false,
-};

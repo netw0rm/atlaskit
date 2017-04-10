@@ -1,8 +1,7 @@
 import { akColorN90 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
-// TODO: font size in EM
-export default styled.div`
+const NavigationItemSubText = styled.div`
   color: ${akColorN90};
   font-size: ${({ theme }) => (theme.NavigationItemIsCompact ? '10px' : '12px')};
   line-height: ${({ theme }) => (theme.NavigationItemIsCompact ? '12px' : 'normal')};
@@ -10,3 +9,6 @@ export default styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
+
+NavigationItemSubText.displayName = 'NavigationItemSubText';
+export default NavigationItemSubText;

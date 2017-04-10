@@ -61,7 +61,7 @@ const colors = {
 };
 
 function getColors(theme) {
-  return colors[theme.GlobalNavigationAppearance || 'global'];
+  return colors[theme.NavigationAppearance || 'global'];
 }
 
 const GlobalItemInner = styled.div`
@@ -88,8 +88,9 @@ const GlobalItemInner = styled.div`
 
 GlobalItemInner.defaultProps = {
   theme: {
-    GlobalNavigationAppearance: 'global',
+    NavigationAppearance: 'global',
   },
 };
 
+GlobalItemInner.displayName = 'GlobalItemInner';
 export default GlobalItemInner;

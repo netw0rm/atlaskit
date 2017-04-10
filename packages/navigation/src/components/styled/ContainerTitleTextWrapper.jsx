@@ -3,7 +3,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
-export default styled.div`
+const ContainerTitleTextWrapper = styled.div`
   margin-left: ${akGridSizeUnitless}px;
   width: 100%;
   min-width: 0;
@@ -12,3 +12,6 @@ export default styled.div`
     display: none;
   }
 `;
+
+ContainerTitleTextWrapper.displayName = 'ContainerTitleTextWrapper';
+export default ContainerTitleTextWrapper;

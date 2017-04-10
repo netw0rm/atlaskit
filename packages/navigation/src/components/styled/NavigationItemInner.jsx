@@ -3,7 +3,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
-export default styled.div`
+const NavigationItemInner = styled.div`
   height: 100%;
   width: 100%;
   padding: 0 ${akGridSizeUnitless}px;
@@ -11,3 +11,6 @@ export default styled.div`
   align-items: center;
   box-sizing: border-box;
 `;
+
+NavigationItemInner.displayName = 'NavigationItemInner';
+export default NavigationItemInner;

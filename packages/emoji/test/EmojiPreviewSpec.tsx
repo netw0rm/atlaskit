@@ -6,39 +6,37 @@ import { expect } from 'chai';
 import EmojiPreview from '../src/components/common/EmojiPreview';
 import ToneSelector from '../src/components/common/ToneSelector';
 import Emoji from '../src/components/common/Emoji';
-import { EmojiDescription } from '../src/types';
-import { imageEmoji } from './TestData';
+import { EmojiDescription, EmojiDescriptionWithVariations } from '../src/types';
+import { imageEmoji, generateSkinVariation } from './TestData';
 
-function skinVariation(id) {
-  return {
-    imagePath: `https://path-to-skin-variation-tone${id}.png`,
-    width: 24,
-    height: 24,
-  };
-}
+const baseEmoji = imageEmoji;
 
 const emoji: EmojiDescription = {
-  ...imageEmoji,
-  skinVariations: [
-    skinVariation(1),
-    skinVariation(2),
-    skinVariation(3),
-    skinVariation(4),
-    skinVariation(5),
+  ...baseEmoji,
+  generateSkinVariations: [
+    generateSkinVariation(imageEmoji, 1),
+    generateSkinVariation(imageEmoji, 2),
+    generateSkinVariation(imageEmoji, 3),
+    generateSkinVariation(imageEmoji, 4),
+    generateSkinVariation(imageEmoji, 5),
   ],
 };
 
-const toneEmoji = {
+const baseToneEmoji = {
   ...imageEmoji,
   id: 'raised_back_of_hand',
-  shortcut: ':raised_back_of_hand:',
+  shortName: ':raised_back_of_hand:',
   name: 'Raised back of hand',
-  skinVariations: [
-    skinVariation(1),
-    skinVariation(2),
-    skinVariation(3),
-    skinVariation(4),
-    skinVariation(5),
+};
+
+const toneEmoji: EmojiDescriptionWithVariations = {
+  ...baseToneEmoji,
+  generateSkinVariations: [
+    generateSkinVariation(baseToneEmoji, 1),
+    generateSkinVariation(baseToneEmoji, 2),
+    generateSkinVariation(baseToneEmoji, 3),
+    generateSkinVariation(baseToneEmoji, 4),
+    generateSkinVariation(baseToneEmoji, 5),
   ],
 };
 
@@ -82,13 +80,13 @@ describe('<EmojiPreview />', () => {
       const first = wrapper.find(Emoji).first();
       const emoji1Prop = first.prop('emoji');
       expect(emoji1Prop, 'First has emoji prop').to.not.equal(undefined);
-      expect(emoji1Prop.shortcut, 'Emoji shortcut').to.equal(emoji.shortcut);
-      expect(emoji1Prop.representation, 'Emoji skin variation').to.have.all.keys(skinVariation(1));
+      expect(emoji1Prop.id, 'Emoji id').to.equal(emoji.id);
+      expect(emoji1Prop.shortName, 'Emoji shortName').to.equal(emoji.shortName);
       const second = wrapper.find(Emoji).at(1);
       const emoji2Prop = second.prop('emoji');
       expect(emoji2Prop, 'Second has emoji prop').to.not.equal(undefined);
-      expect(emoji2Prop.shortcut, 'Tone shortcut').to.equal(toneEmoji.shortcut);
-      expect(emoji2Prop.representation, 'Tone skin variation').to.have.all.keys(skinVariation(1));
+      expect(emoji2Prop.id, 'Tone id').to.equal(toneEmoji.id);
+      expect(emoji2Prop.shortName, 'Tone shortName').to.equal(toneEmoji.shortName);
     });
 
     it('button should show default tone if selected tone is not specified', () => {
@@ -100,11 +98,11 @@ describe('<EmojiPreview />', () => {
       expect(wrapper.find(Emoji), 'Emoji in preview').to.have.length(2);
       const first = wrapper.find(Emoji).first();
       const emoji1Prop = first.prop('emoji');
-      expect(emoji1Prop.shortcut, 'Emoji shortcut').to.equal(emoji.shortcut);
+      expect(emoji1Prop.shortName, 'Emoji shortName').to.equal(emoji.shortName);
       expect(emoji1Prop.representation, 'Emoji skin variation').to.have.all.keys(emoji.representation as Object);
       const second = wrapper.find(Emoji).at(1);
       const emoji2Prop = second.prop('emoji');
-      expect(emoji2Prop.shortcut, 'Tone shortcut').to.equal(toneEmoji.shortcut);
+      expect(emoji2Prop.shortName, 'Tone shortName').to.equal(toneEmoji.shortName);
       expect(emoji2Prop.representation, 'Tone skin variation').to.have.all.keys(toneEmoji.representation as Object);
     });
 

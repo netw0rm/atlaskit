@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import { emojiService, getEmojiResourcePromise } from './TestData';
+import { emojiRepository, getEmojiResourcePromise } from './TestData';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById } from './emoji-selectors';
 
 import EmojiTypeAhead, { defaultListLimit, Props, OnLifecycle } from '../src/components/typeahead/EmojiTypeAhead';
@@ -23,7 +23,7 @@ function setupPicker(props?: Props): ReactWrapper<any, any> {
   );
 }
 
-const allEmojis = emojiService.all().emojis;
+const allEmojis = emojiRepository.all().emojis;
 
 const leftClick = {
   button: 0,
@@ -55,7 +55,7 @@ describe('EmojiTypeAhead', () => {
       query: 'ball',
     } as Props);
     return waitUntil(() => doneLoading(component)).then(() => {
-      expect(findEmojiItems(component).length).to.equal(3);
+      expect(findEmojiItems(component).length).to.equal(2);
     });
   });
 

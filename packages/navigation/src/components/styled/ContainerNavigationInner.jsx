@@ -20,4 +20,5 @@ const ContainerNavigationInner = styled.div`
 
 ContainerNavigationInner.displayName = 'ContainerNavigationInner';
 
+ContainerNavigationInner.displayName = 'ContainerNavigationInner';
 export default ContainerNavigationInner;

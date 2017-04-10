@@ -8,6 +8,8 @@ import { CardDimensions, CardAppearance, OnLoadingChangeFunc, OnLoadingChangeSta
 import { LinkCardGenericView } from '../cardGenericView';
 import { LinkCardPlayer } from '../cardPlayerView';
 import { LinkCardTrelloBoardView } from '../apps/trello';
+import { LinkCardViewSmall } from '../cardViewSmall';
+import { LinkCardImageView } from '../cardImageView';
 
 export interface LinkFromId {
   readonly id: string;
@@ -130,14 +132,19 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
   render(): JSX.Element | null {
     const { state, props } = this;
 
-    // TODO FIL-3945 render small card when link small card view has been created
-    if (props.appearance === 'small') {
-      return null;
-    }
-
     if (state && state.urlPreview) {
       const urlPreview = state.urlPreview as UrlPreview;
       const { resources } = urlPreview;
+      const { appearance } = props;
+
+      // If appearance is passed we prioritize that instead of the better looking one
+      if (appearance === 'small') {
+        return this.renderSmallLink(urlPreview);
+      }
+
+      if (appearance === 'image') {
+        return this.renderLinkCardImage(urlPreview);
+      }
 
       if (resources && resources.app) {
         return this.renderApplicationLink(urlPreview);
@@ -216,6 +223,45 @@ export class LinkCard extends Component<LinkCardProps, LinkCardState> {
       appearance={appearance}
       loading={processingStatus === 'loading'}
       actions={actions}
+    />;
+  }
+
+  private renderSmallLink(urlPreview: UrlPreview): JSX.Element {
+    const { url, title, site, resources } = urlPreview;
+    const thumbnail = resources ? resources.icon : undefined;
+
+    const { dimensions, actions } = this.props;
+    const { processingStatus } = this.state;
+
+    return <LinkCardViewSmall
+      linkUrl={url}
+      title={title}
+      site={site}
+
+      thumbnailUrl={thumbnail && thumbnail.url}
+      width={dimensions && dimensions.width}
+
+      loading={processingStatus === 'loading'}
+      actions={actions}
+    />;
+  }
+
+  private renderLinkCardImage(urlPreview: UrlPreview): JSX.Element {
+    const { url, title, site, resources } = urlPreview;
+    const { thumbnail, icon } = resources || {thumbnail: '', icon: ''};
+    const { dimensions, actions, appearance } = this.props;
+    const { processingStatus } = this.state;
+
+    return <LinkCardImageView
+      linkUrl={url}
+      title={title}
+      site={site}
+      thumbnailUrl={thumbnail && thumbnail.url}
+      appearance={appearance}
+      dimensions={dimensions}
+      loading={processingStatus === 'loading'}
+      actions={actions}
+      iconUrl={icon && icon.url}
     />;
   }
 };

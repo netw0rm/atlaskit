@@ -111,8 +111,7 @@ export default class ContainerNavigation extends PureComponent {
     return (
       <ThemeProvider
         theme={{
-          ContainerNavigationAppearance: appearance,
-          GlobalNavigationAppearance: appearance,
+          NavigationAppearance: appearance,
         }}
       >
         <nav

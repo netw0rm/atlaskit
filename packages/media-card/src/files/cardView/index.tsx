@@ -1,13 +1,11 @@
 import * as React from 'react';
-import {Component, MouseEvent} from 'react';
+import {Component} from 'react';
 import {CardAction} from '@atlaskit/media-core';
 import {MediaType} from '@atlaskit/media-core';
 
-import {getCSSUnitValue} from '../../utils/index';
+import {CardImageView} from '../../utils/cardImageView';
 import {CardDimensions} from '../../card';
-import {CardContent} from '../cardContent';
-import {CardOverlay} from '../cardOverlay';
-import {Card} from './styled';
+import {toHumanReadableMediaSize} from '../../utils';
 
 export interface FileCardViewProps {
   mediaName?: string;
@@ -36,77 +34,25 @@ export const DEFAULT_CARD_DIMENSIONS = {
 };
 
 export class FileCardView extends Component<FileCardViewProps, {}> {
-  private get width(): string {
-    const {width} = this.props.dimensions || {width: undefined};
-
-    if (!width) {
-      return DEFAULT_CARD_DIMENSIONS.WIDTH ;
-    }
-
-    return getCSSUnitValue(width);
-  }
-
-  private get height(): string {
-    const {height} = this.props.dimensions || {height: undefined};
-
-    if (!height) {
-      return DEFAULT_CARD_DIMENSIONS.HEIGHT ;
-    }
-
-    return getCSSUnitValue(height);
-  }
-
   render() {
-    const cardStyle = {height: this.height, width: this.width};
-    const error = this.props.error;
+    const {mediaSize, mediaType, mediaName, dataURI, progress, loading, dimensions, selectable, selected, actions, onClick, error, onRetry} = this.props;
+    const fileSize = toHumanReadableMediaSize(mediaSize || 0);
 
-    if (error) {
-      return (
-        <Card style={cardStyle} className={'card'} onClick={this.onClick.bind(this)}>
-          <div className={'wrapper'} />
-          <CardOverlay
-            persistent={true}
-            mediaName={this.props.mediaName}
-            mediaType={this.props.mediaType}
-            error={error}
-            onRetry={this.props.onRetry}
-            actions={this.props.actions}
-          />
-        </Card>
-      );
-    } else {
-      const isPersistent = !(this.props.mediaType === 'image' && this.props.dataURI);
-      const overlay = this.props.loading ? false : <CardOverlay
-        persistent={isPersistent}
-        selectable={this.props.selectable}
-        selected={this.props.selected}
-
-        mediaName={this.props.mediaName}
-        mediaType={this.props.mediaType}
-        mediaSize={this.props.mediaSize}
-        progress={this.props.progress}
-
-        actions={this.props.actions}
-      />;
-      return (
-        <Card style={cardStyle} className={'card'} onClick={this.onClick.bind(this)}>
-          <div className={'wrapper'}>
-            <div className={'img-wrapper'}>
-              <CardContent
-                loading={this.props.loading}
-                mediaType={this.props.mediaType}
-                dataURI={this.props.dataURI}
-              />
-            </div>
-            {overlay}
-          </div>
-        </Card>
-      );
-    }
-  }
-
-  onClick(event: MouseEvent<HTMLDivElement>) {
-    this.props.onClick && this.props.onClick(event.nativeEvent);
+    return <CardImageView
+      mediaType={mediaType}
+      mediaName={mediaName}
+      subtitle={fileSize}
+      dataURI={dataURI}
+      progress={progress}
+      loading={loading}
+      dimensions={dimensions}
+      selectable={selectable}
+      selected={selected}
+      actions={actions}
+      onClick={onClick}
+      error={error}
+      onRetry={onRetry}
+    />;
   }
 }
 

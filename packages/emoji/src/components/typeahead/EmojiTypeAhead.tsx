@@ -3,7 +3,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 
 import * as styles from './styles';
-import { EmojiSearchResult } from '../../api/EmojiService';
+import { EmojiSearchResult } from '../../api/EmojiRepository';
 import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
 import { EmojiDescription, OnEmojiEvent, RelativePosition } from '../../types';
 import EmojiList from './EmojiTypeAheadList';
@@ -112,6 +112,11 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     if (this.emojiListRef) {
       this.emojiListRef.chooseCurrentSelection();
     }
+  }
+
+  count = (): number => {
+    const { emojis } = this.state;
+    return emojis && emojis.length || 0;
   }
 
   private onSearch(query?: string) {

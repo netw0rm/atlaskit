@@ -6,12 +6,11 @@ import {
   akColorN50A,
   akColorN700A,
   akColorB50,
-  akColorB100,
   akColorB200,
   akColorB400,
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
-import { defaultTheme } from '../js/NavigationItem';
+import focusRingMixin from '../../utils/focus-ring-mixin';
 
 const colors = {
   container: {
@@ -70,7 +69,7 @@ const colors = {
 const borderRadius = 3;
 
 function getColors(theme) {
-  return colors[theme.ContainerNavigationAppearance];
+  return colors[theme.NavigationAppearance];
 }
 
 function getHeight(theme) {
@@ -81,7 +80,6 @@ const NavigationItemOuter = styled.div`
   border-radius: ${borderRadius}px;
   box-sizing: border-box;
   height: ${({ theme }) => getHeight(theme)}px;
-  position: relative;
   text-overflow: ellipsis;
   width: 100%;
 
@@ -92,11 +90,8 @@ const NavigationItemOuter = styled.div`
     background: ${({ isSelected, theme }) => (isSelected ? getColors(theme).selected.background : getColors(theme).default.background)};
     color: ${({ isSelected, theme }) => (isSelected ? getColors(theme).selected.color : getColors(theme).default.color)};
     text-decoration: none;
-    
-    &:focus {
-      outline: none;
-      box-shadow: 0px 0px 0px 2px ${akColorB100};
-    }
+
+    ${focusRingMixin()}
 
     &:hover {
       background: ${({ theme }) => getColors(theme).hover.background};
@@ -110,8 +105,11 @@ const NavigationItemOuter = styled.div`
 `;
 
 NavigationItemOuter.defaultProps = {
-  theme: defaultTheme,
+  theme: {
+    NavigationAppearance: 'container',
+    NavigationItemIsCompact: false,
+  },
 };
 
+NavigationItemOuter.displayName = 'NavigationItemOuter';
 export default NavigationItemOuter;
-

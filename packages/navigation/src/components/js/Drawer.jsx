@@ -81,7 +81,7 @@ export default class Drawer extends PureComponent {
               </FixedDrawerHeader>
             : null}
             <DrawerContent>
-              <ThemeProvider theme={{ ContainerNavigationAppearance: 'container', NavigationItemIsCompact: false }}>
+              <ThemeProvider theme={{ NavigationAppearance: 'container', NavigationItemIsCompact: false }}>
                 {this.props.children}
               </ThemeProvider>
             </DrawerContent>

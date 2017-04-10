@@ -12,7 +12,8 @@ import {
 } from '../../utils/drawer-style-variables';
 
 const boxShadow = `${-akGridSizeUnitless * 4}px 0 ${akGridSizeUnitless * 4}px ${boxShadowSpread}px rgba(23,43,77,0.24)`;
-export default styled.div`
+
+const DrawerInner = styled.div`
   background: ${akColorN0};
   box-shadow: ${({ isOpen }) => (isOpen ? boxShadow : 'none')};
   color: ${akColorN500};
@@ -21,7 +22,10 @@ export default styled.div`
   left: 0;
   overflow: hidden;
   position: fixed;
-  transform: ${({ width, isOpen }) => (isOpen ? 'translateX(0)' : `translateX(-${widths[width].offScreenTranslateX}px)`)}
+  transform: ${({ width, isOpen }) => (isOpen ? 'translateX(0)' : `translateX(calc(${widths[width].offScreenTranslateX}))`)}
   transition: ${transformTransition}, ${widthTransition};
-  width: ${({ width }) => widths[width].width}px;
+  width: ${({ width }) => widths[width].width};
 `;
+
+DrawerInner.displayName = 'DrawerInner';
+export default DrawerInner;

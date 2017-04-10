@@ -3,6 +3,8 @@ import { shallow, mount } from 'enzyme';
 import { Label, FieldBase } from '@atlaskit/field-base';
 import Avatar from '@atlaskit/avatar';
 import Droplist, { Group, Item } from '@atlaskit/droplist';
+import Tag from '@atlaskit/tag';
+import TagGroup from '@atlaskit/tag-group';
 
 import styles from 'style!../src/styles.less';
 import { StatelessMultiSelect } from '../src';
@@ -48,7 +50,7 @@ describe(`${name} - stateless`, () => {
       expect(mount(<StatelessMultiSelect />).find(FieldBase).find(Trigger).length).to.equal(1);
     });
 
-    it('should render groups and items inside Droplist (when open)', () => {
+    describe('groups and items', () => {
       const items = [
         {
           heading: 'test',
@@ -58,10 +60,22 @@ describe(`${name} - stateless`, () => {
           ],
         },
       ];
-      const select = mount(<StatelessMultiSelect items={items} isOpen />);
-      expect(select.find(Group).length).to.equal(1);
-      expect(select.find(Item).length).to.equal(2);
-      expect(select.find(Group).find(Item).length).to.equal(2);
+      it('should render groups and items inside Droplist (when open)', () => {
+        const select = mount(<StatelessMultiSelect items={items} isOpen />);
+        expect(select.find(Group).length).to.equal(1);
+        expect(select.find(Item).length).to.equal(2);
+        expect(select.find(Group).find(Item).length).to.equal(2);
+      });
+
+      it('should not render a group if all items in that group are selected', () => {
+        const selectedItems = [items[0].items[0], items[0].items[1]];
+        const select = mount(<StatelessMultiSelect
+          items={items}
+          selectedItems={selectedItems}
+          isOpen
+        />);
+        expect(select.find(Group).length).to.equal(0);
+      });
     });
 
     it('should render elemBefore inside Droplist (when open)', () => {
@@ -77,6 +91,70 @@ describe(`${name} - stateless`, () => {
       const select = mount(<StatelessMultiSelect items={items} isOpen />);
 
       expect(select.find(Avatar).length).to.equal(2);
+    });
+
+    it('should pass props to Item', () => {
+      const selectItems = [
+        {
+          heading: 'test',
+          items: [
+            {
+              value: 1,
+              content: 'Test1',
+              description: 'Descr',
+              isDisabled: true,
+              elemBefore: '1',
+              elemAfter: '2',
+            },
+          ],
+        },
+      ];
+      const select = mount(<StatelessMultiSelect
+        isOpen
+        id="testId"
+        name="testName"
+        items={selectItems}
+      />);
+      const itemProps = select.find(Item).props();
+      expect(itemProps.description, 'description').to.equal('Descr');
+      expect(itemProps.isDisabled, 'isDisabled').to.equal(true);
+      expect(itemProps.elemBefore, 'elemBefore').to.equal('1');
+      expect(itemProps.elemAfter, 'elemAfter').to.equal('2');
+    });
+  });
+
+  describe('selectedTags', () => {
+    const items = [
+      {
+        heading: 'test',
+        items: [
+          { value: 1, content: '1', tag: { elemBefore: <Avatar size="small" />, appearance: 'rounded' } },
+          { value: 2, content: '2' },
+          { value: 3, content: '3', tag: { elemBefore: <Avatar size="small" /> } },
+        ],
+      },
+    ];
+    const selectedItems = [items[0].items[0], items[0].items[1]];
+
+    it('should render selectedTags', () => {
+      const wrapper = mount(<StatelessMultiSelect items={items} selectedItems={selectedItems} />);
+      const tagGroup = wrapper.find(TagGroup);
+      expect(tagGroup.find(Tag).length).to.equal(2);
+    });
+
+    it('should pass on tag.elemBefore prop to selected tags', () => {
+      const wrapper = mount(<StatelessMultiSelect items={items} selectedItems={selectedItems} />);
+      const tagGroup = wrapper.find(TagGroup);
+      expect(tagGroup.find(Tag).length).to.equal(2);
+      expect(tagGroup.find(Avatar).length).to.equal(1);
+    });
+
+    it('should pass on tag.appearance prop to selected tags', () => {
+      const wrapper = mount(<StatelessMultiSelect items={items} selectedItems={selectedItems} />);
+      const tagGroup = wrapper.find(TagGroup);
+      expect(tagGroup.find(Tag).length).to.equal(2);
+      expect(tagGroup.find(Tag).at(0).prop('appearance')).to.equal('rounded');
+      expect(tagGroup.find(Tag).at(1).prop('appearance')).to.equal('default');
     });
   });
 });

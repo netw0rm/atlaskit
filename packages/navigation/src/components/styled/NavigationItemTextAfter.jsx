@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export default styled.div`
+const NavigationItemTextAfter = styled.div`
   position: relative;
   z-index: 1;
 
@@ -8,3 +8,6 @@ export default styled.div`
     opacity: 0;
   }
 `;
+
+NavigationItemTextAfter.displayName = 'NavigationItemTextAfter';
+export default NavigationItemTextAfter;

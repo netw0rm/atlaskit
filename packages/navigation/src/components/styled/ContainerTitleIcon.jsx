@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const size = akGridSizeUnitless * 5;
 
-export default styled.div`
+const ContainerTitleIcon = styled.div`
   width: ${size}px;
   height: ${size}px;
 
@@ -15,3 +15,6 @@ export default styled.div`
     border-radius: 4px;
   }
 `;
+
+ContainerTitleIcon.displayName = 'ContainerTitleIcon';
+export default ContainerTitleIcon;

@@ -1,7 +1,7 @@
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
 
-export default styled.div`
+const DrawerMain = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -11,3 +11,6 @@ export default styled.div`
   position: relative;
   width: 100%;
 `;
+
+DrawerMain.displayName = 'DrawerMain';
+export default DrawerMain;

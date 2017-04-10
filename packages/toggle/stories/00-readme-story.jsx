@@ -3,7 +3,7 @@ import React from 'react';
 import Readme, { Props, Code } from '@atlaskit/util-readme';
 import ExampleRaw from '!raw!./ToggleExample'; // eslint-disable-line import/no-duplicates
 import { name } from '../package.json';
-import { Toggle } from '../src';
+import { ToggleStateless as Toggle } from '../src';
 import Example from './ToggleExample'; // eslint-disable-line import/no-duplicates
 
 const togglePropDescriptions = {

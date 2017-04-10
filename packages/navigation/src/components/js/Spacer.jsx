@@ -1,6 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from 'style!../less/Spacer.less';
+import SpacerInner from '../styled/SpacerInner';
 
 export default class Spacer extends PureComponent {
   static propTypes = {
@@ -13,10 +12,8 @@ export default class Spacer extends PureComponent {
   }
   render() {
     return (
-      <div
-        className={classNames(styles.spacer, {
-          [styles.shouldAnimate]: this.props.shouldAnimate,
-        })}
+      <SpacerInner
+        shouldAnimate={this.props.shouldAnimate}
         style={{
           width: this.props.width,
         }}

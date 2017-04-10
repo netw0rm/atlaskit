@@ -1,65 +1,121 @@
-import { Fragment, Mark, Node as PMNode } from '@atlaskit/editor-core';
+import {
+  Fragment,
+  Mark,
+  Node as PMNode
+} from '@atlaskit/editor-core';
 import schema from '../schema';
-import parseHtml from './parse-xhtml';
+import parseCxhtml from './parse-cxhtml';
+import encodeCxhtml from './encode-cxhtml';
 
 const convertedNodes = new WeakMap();
 
-export interface Converter {
-  (content: Fragment, node: Node): Fragment | PMNode | null | undefined;
-}
-
 export default function(cxhtml: string) {
-  const dom = parseHtml(cxhtml).querySelector('body')!;
-  const nodes = bfsOrder(dom);
+  const dom = parseCxhtml(cxhtml).querySelector('body')!;
+  const nodes = findTraversalPath(Array.prototype.slice.call(dom.childNodes, 0));
 
   // Process through nodes in reverse (so deepest child elements are first).
   for (let i = nodes.length - 1; i >= 0; i--) {
     const node = nodes[i];
     const content = getContent(node);
-    for (const converter of converters) {
-      const candidate = converter(content, node);
-      if (typeof candidate !== 'undefined') {
-        convertedNodes.set(node, candidate);
-        break;
-      }
+    const candidate = converter(content, node);
+    if (typeof candidate !== 'undefined') {
+      convertedNodes.set(node, candidate);
     }
   }
 
   const content = getContent(dom);
+  const compatibleContent = content.childCount > 0
+    // Dangling inline nodes can't be directly inserted into a document, so
+    // we attempt to wrap in a paragraph.
+    ? schema.nodes.doc.validContent(content)
+      ? content
+      : ensureBlocks(content)
+    // The document must have at least one block element.
+    : schema.nodes.paragraph.createChecked({});
 
-  // Dangling inline nodes can't be directly inserted into a document, so
-  // we attempt to wrap in a paragraph.
-  const compatibleContent = schema.nodes.doc.validContent(content)
-    ? content
-    : ensureBlocks(content);
   return schema.nodes.doc.createChecked({}, compatibleContent);
 }
 
-/*
- * Flattens DOM tree into single array
+/**
+ * Traverse the DOM node and build an array of the breadth-first-search traversal
+ * through the tree.
+ *
+ * Detection of supported vs unsupported content happens at this stage. Unsupported
+ * nodes do not have their children traversed. Doing this avoids attempting to
+ * decode unsupported content descendents into ProseMirror nodes.
  */
-function bfsOrder(root: Node) {
-  const inqueue = [root];
+function findTraversalPath(roots: Node[]) {
+  const inqueue = [...roots];
   const outqueue = [] as Node[];
 
   let elem;
   while (elem = inqueue.shift()) {
     outqueue.push(elem);
-    let childIndex;
-    for (childIndex = 0; childIndex < elem.childNodes.length; childIndex++) {
-      const child = elem.childNodes[childIndex];
-      switch (child.nodeType) {
-        case Node.ELEMENT_NODE:
-        case Node.TEXT_NODE:
-          inqueue.push(child);
-          break;
-        default:
-          console.error(`Not pushing: ${child.nodeType} ${child.nodeName}`);
+    if (isNodeSupportedContent(elem)) {
+      let childIndex;
+      for (childIndex = 0; childIndex < elem.childNodes.length; childIndex++) {
+        const child = elem.childNodes[childIndex];
+        switch (child.nodeType) {
+          case Node.ELEMENT_NODE:
+          case Node.TEXT_NODE:
+          case Node.CDATA_SECTION_NODE:
+            inqueue.push(child);
+            break;
+          default:
+            console.error(`Not pushing: ${child.nodeType} ${child.nodeName}`);
+        }
       }
     }
   }
-  outqueue.shift();
   return outqueue;
+}
+
+/**
+ * Quickly determine if a DOM node is supported (i.e. can be represented in the ProseMirror
+ * schema).
+ *
+ * When a node is not supported, its children are not traversed — instead the entire node content
+ * is stored inside an `unsupportedInline` or `unsupportedBlock` node.
+ *
+ * @param node
+ */
+function isNodeSupportedContent(node: Node): boolean {
+  if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.CDATA_SECTION_NODE) {
+    return true;
+  }
+
+  if (node instanceof HTMLElement) {
+    const tag = node.tagName.toUpperCase();
+    switch (tag) {
+      case 'DEL':
+      case 'S':
+      case 'B':
+      case 'STRONG':
+      case 'I':
+      case 'EM':
+      case 'CODE':
+      case 'SUB':
+      case 'SUP':
+      case 'U':
+      case 'BLOCKQUOTE':
+      case 'SPAN':
+      case 'H1':
+      case 'H2':
+      case 'H3':
+      case 'H4':
+      case 'H5':
+      case 'H6':
+      case 'BR':
+      case 'HR':
+      case 'UL':
+      case 'OL':
+      case 'LI':
+      case 'P':
+        return true;
+    }
+  }
+
+  return false;
 }
 
 /*
@@ -100,24 +156,61 @@ function addMarks(fragment: Fragment, marks: Mark[]): Fragment {
  * in a block node if necessary.
  */
 function ensureBlocks(fragment: Fragment): Fragment {
-  // If all the nodes are inline, we want to wrap in a single paragraph.
-  if (schema.nodes.paragraph.validContent(fragment)) {
-    return Fragment.fromArray([schema.nodes.paragraph.createChecked({}, fragment)]);
+  // This algorithm is fairly simple:
+  //
+  // 1. When a block is encountered, keep it as-is.
+  // 2. When an unsupported inline is encountered, convert it to an unsupported block.
+  // 3. When a sequence of supported (i.e. *not* `unsupportedInline`) inlines is encountered,
+  //     wrap it in a a paragraph.
+  //
+  // There's an assumption/guess in step #2 that all unsupported nodes should be treated as
+  // blocks if they exist in the content at a point where blocks are expected.
+  //
+  // It's seems possible for CXHTML documents to be poorly formed, where inline content exists
+  // in positions where block content is expected. For example the top-level content is not wrapped
+  // in a paragraph, but is expected to be a top-level block node.
+  //
+  //     Foo bar baz
+  //
+  // In this scenario it's effectively wrapped in a paragraph:
+  //
+  //     <p>Foo bar baz</p>
+  //
+  // This is more common in places like list items, or block quotes:
+  //
+  //     <ul>
+  //       <li>Foo bar</li>
+  //     </ul>
+  //     <blockquote>Foo bar</blockquote>
+  //
+  // Both `<li>` (`listItem`) and `<blockquote>` (`blockQuote`) expect *block* content, and so
+  // in both cases `Foo bar` is wrapped in a paragraph.
+  const nodes = children(fragment);
+  const blocks: PMNode[] = [];
+
+  let i;
+  for (i = 0; i < nodes.length; i++) {
+    const node = nodes[i];
+    if (node.isBlock) {
+      blocks.push(node);
+    } else if (node.type === schema.nodes.unsupportedInline) {
+      blocks.push(schema.nodes.unsupportedBlock.create(node.attrs));
+    } else {
+      // An inline node is found. Now step through until we find the last inline
+      // node, then throw everything in a paragraph.
+      let j;
+      for (j = i + 1; j < nodes.length; j++) {
+        const node = nodes[j];
+        if (node.isBlock || node.type === schema.nodes.unsupportedInline) {
+          break;
+        }
+      }
+      blocks.push(schema.nodes.paragraph.createChecked({}, nodes.slice(i, j)));
+      i = j;
+    }
   }
 
-  // Either all the nodes are blocks, or a mix of inline and blocks.
-  // We convert each (if any) inline nodes to blocks.
-  const blockNodes: PMNode[] = [];
-
-  fragment.forEach(child => {
-    if (child.isBlock) {
-      blockNodes.push(child);
-    } else {
-      blockNodes.push(schema.nodes.paragraph.createChecked({}, child));
-    }
-  });
-
-  return Fragment.fromArray(blockNodes);
+  return Fragment.fromArray(blocks);
 }
 
 /**
@@ -155,78 +248,86 @@ function marksFromStyle(style: CSSStyleDeclaration): Mark[] {
   return marks;
 }
 
-const converters = [
-  function text(content, node) {
-    if (node.nodeType === Node.TEXT_NODE) {
-      const text = node.textContent;
-      return text ? schema.text(text) : null;
-    }
-  },
-  function marksAndNodes(content, node) {
-    if (node instanceof HTMLElement) {
-      const tag = node.tagName.toUpperCase();
-      switch (tag) {
-        // Marks
-        case 'DEL':
-        case 'S':
-          return content ? addMarks(content, [schema.marks.strike.create()]) : null;
-        case 'B':
-        case 'STRONG':
-          return content ? addMarks(content, [schema.marks.strong.create()]) : null;
-        case 'I':
-        case 'EM':
-          return content ? addMarks(content, [schema.marks.em.create()]) : null;
-        case 'CODE':
-          return content ? addMarks(content, [schema.marks.code.create()]) : null;
-        case 'SUB':
-        case 'SUP':
-          const type = tag === 'SUB' ? 'sub' : 'sup';
-          return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
-        case 'U':
-          return content ? addMarks(content, [schema.marks.u.create()]) : null;
-        // Nodes
-        case 'BLOCKQUOTE':
-          return schema.nodes.blockquote.createChecked({},
-            schema.nodes.blockquote.validContent(content)
-              ? content
-              : ensureBlocks(content)
-          );
-        case 'SPAN':
-          return addMarks(content, marksFromStyle(node.style));
-        case 'H1':
-        case 'H2':
-        case 'H3':
-        case 'H4':
-        case 'H5':
-        case 'H6':
-          const level = Number(tag.charAt(1));
-          return schema.nodes.heading.createChecked({ level }, content);
-        case 'BR':
-          return schema.nodes.hard_break.createChecked();
-        case 'HR':
-          return schema.nodes.horizontal_rule.createChecked();
-        case 'UL':
-          return schema.nodes.bullet_list.createChecked({}, content);
-        case 'OL':
-          return schema.nodes.ordered_list.createChecked({}, content);
-        case 'LI':
-          return schema.nodes.list_item.createChecked({},
-            schema.nodes.list_item.validContent(content)
-              ? content
-              : ensureBlocks(content)
-          );
-        case 'P':
-          return schema.nodes.paragraph.createChecked({}, content);
-      }
-    }
-  },
-  function debugFallback(content, node) {
-    let repr = node.toString();
-
-    if (node instanceof HTMLElement) {
-      repr = (node.cloneNode(false) as HTMLElement).outerHTML;
-    }
-
-    throw new Error(`Unable to handle node ${repr}`);
+/**
+ * Return an array containing the child nodes in a fragment.
+ *
+ * @param fragment
+ */
+function children(fragment: Fragment): PMNode[] {
+  const nodes: PMNode[] = [];
+  for (let i = 0; i < fragment.childCount; i++) {
+    nodes.push(fragment.child(i));
   }
-] as Converter[];
+  return nodes;
+}
+
+function converter(content: Fragment, node: Node): Fragment | PMNode | null | undefined {
+  // text
+  if (node.nodeType === Node.TEXT_NODE || node.nodeType === Node.CDATA_SECTION_NODE) {
+    const text = node.textContent;
+    return text ? schema.text(text) : null;
+  }
+
+  // marks and nodes
+  if (node instanceof HTMLElement) {
+    const tag = node.tagName.toUpperCase();
+    switch (tag) {
+      // Marks
+      case 'DEL':
+      case 'S':
+        return content ? addMarks(content, [schema.marks.strike.create()]) : null;
+      case 'B':
+      case 'STRONG':
+        return content ? addMarks(content, [schema.marks.strong.create()]) : null;
+      case 'I':
+      case 'EM':
+        return content ? addMarks(content, [schema.marks.em.create()]) : null;
+      case 'CODE':
+        return content ? addMarks(content, [schema.marks.code.create()]) : null;
+      case 'SUB':
+      case 'SUP':
+        const type = tag === 'SUB' ? 'sub' : 'sup';
+        return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
+      case 'U':
+        return content ? addMarks(content, [schema.marks.underline.create()]) : null;
+      // Nodes
+      case 'BLOCKQUOTE':
+        return schema.nodes.blockquote.createChecked({},
+          schema.nodes.blockquote.validContent(content)
+            ? content
+            : ensureBlocks(content)
+        );
+      case 'SPAN':
+        return addMarks(content, marksFromStyle(node.style));
+      case 'H1':
+      case 'H2':
+      case 'H3':
+      case 'H4':
+      case 'H5':
+      case 'H6':
+        const level = Number(tag.charAt(1));
+        return schema.nodes.heading.createChecked({ level }, content);
+      case 'BR':
+        return schema.nodes.hardBreak.createChecked();
+      case 'HR':
+        return schema.nodes.rule.createChecked();
+      case 'UL':
+        return schema.nodes.bulletList.createChecked({}, content);
+      case 'OL':
+        return schema.nodes.orderedList.createChecked({}, content);
+      case 'LI':
+        return schema.nodes.listItem.createChecked({},
+          schema.nodes.listItem.validContent(content)
+            ? content
+            : ensureBlocks(content)
+        );
+      case 'P':
+        return schema.nodes.paragraph.createChecked({}, content);
+    }
+  }
+
+  // All unsupported content is wrapped in an `unsupportedInline` node. Converting
+  // `unsupportedInline` to `unsupportedBlock` where appropriate is handled when
+  // the content is inserted into a parent.
+  return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
+}

@@ -250,9 +250,8 @@ export default class StatelessMultiSelect extends PureComponent {
   }
 
   renderItems = (items) => {
-    const filteredItems = this.filterItems(items);
-    if (filteredItems.length) {
-      return filteredItems.map((item, itemIndex) => (<Item
+    if (items.length) {
+      return items.map((item, itemIndex) => (<Item
         {...item}
         elemBefore={item.elemBefore}
         isFocused={itemIndex === this.state.focusedItemIndex}
@@ -268,14 +267,17 @@ export default class StatelessMultiSelect extends PureComponent {
     return (<NothingWasFound noMatchesFound={this.props.noMatchesFound} />);
   }
 
-  renderGroups = groups => groups.map((group, groupIndex) =>
-    <Group
-      heading={group.heading}
-      key={groupIndex}
-    >
-      {this.renderItems(group.items)}
-    </Group>
-  )
+  renderGroups = groups => groups.map((group, groupIndex) => {
+    const filteredItems = this.filterItems(group.items);
+    return filteredItems.length > 0 ?
+      <Group
+        heading={group.heading}
+        key={groupIndex}
+      >
+        {this.renderItems(filteredItems)}
+      </Group>
+    : null;
+  })
 
   renderOptions = items => items.map((item, itemIndex) => (<option
     disabled={item.isDisabled}
@@ -350,7 +352,8 @@ export default class StatelessMultiSelect extends PureComponent {
                 <TagGroup ref={ref => (this.tagGroup = ref)}>
                   {this.props.selectedItems.map(item =>
                     <Tag
-                      elemBefore={item.tagElemBefore}
+                      appearance={item.tag ? item.tag.appearance : undefined}
+                      elemBefore={item.tag ? item.tag.elemBefore : undefined}
                       key={item.value}
                       onAfterRemoveAction={() => {
                         this.handleItemRemove(item);

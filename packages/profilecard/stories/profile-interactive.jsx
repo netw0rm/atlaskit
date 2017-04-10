@@ -39,6 +39,8 @@ export default function interActiveCard(dependencies) {
       hasLongName: false,
       hasLongRole: false,
       hasAltActions: false,
+      hasLoadingState: false,
+      hasErrorState: false,
     }
 
     actions = [
@@ -94,9 +96,11 @@ export default function interActiveCard(dependencies) {
       /* eslint-disable max-len */
       return (
         <div>
-          <style>{'label {margin-right: 10px; -webkit-user-select: none;} legend {margin: 5px 0;}'}</style>
+          <style>{'label {margin-right: 10px; -webkit-user-select: none;} ul {margin: 0; padding: 0; list-style: none; float: left;}'}</style>
 
           <AkProfilecard
+            isLoading={this.state.hasLoadingState}
+            hasError={this.state.hasErrorState}
             actions={actions}
             avatarUrl={this.state.hasAvatar ? this.state.avatarUrl : ''}
             companyName={this.state.company}
@@ -109,26 +113,32 @@ export default function interActiveCard(dependencies) {
             timestring={this.state.hasTime ? getTimeString(this.state.hasWeekday) : ''}
           />
 
-          <div>
-            <br />
-            <legend>
-              {this.createCheckboxBooleanAttribute('hasAvatar')}
-              {this.createCheckboxBooleanAttribute('hasAltActions')}
-              {this.createCheckboxBooleanAttribute('hasWeekday')}
-              <br />
-              {this.createCheckboxBooleanAttribute('hasMeta')}
-              {this.createCheckboxBooleanAttribute('hasLocation')}
-              {this.createCheckboxBooleanAttribute('hasTime')}
-              <br />
-              {this.createCheckboxBooleanAttribute('hasLongName')}
-              {this.createCheckboxBooleanAttribute('hasLongRole')}
-            </legend>
-            <legend>
-              {this.createRadioPresenceAttribute('available')}
-              {this.createRadioPresenceAttribute('busy')}
-              {this.createRadioPresenceAttribute('unavailable')}
-              {this.createRadioPresenceAttribute('none')}
-            </legend>
+          <div style={{ marginTop: '16px' }}>
+            <ul>
+              <li>{this.createCheckboxBooleanAttribute('hasAvatar')}</li>
+              <li>{this.createCheckboxBooleanAttribute('hasAltActions')}</li>
+              <li>{this.createCheckboxBooleanAttribute('hasMeta')}</li>
+              <li>{this.createCheckboxBooleanAttribute('hasLocation')}</li>
+              <li>{this.createCheckboxBooleanAttribute('hasTime')}</li>
+            </ul>
+
+            <ul>
+              <li>{this.createCheckboxBooleanAttribute('hasLongName')}</li>
+              <li>{this.createCheckboxBooleanAttribute('hasLongRole')}</li>
+              <li>{this.createCheckboxBooleanAttribute('hasWeekday')}</li>
+            </ul>
+
+            <ul>
+              <li>{this.createCheckboxBooleanAttribute('hasLoadingState')}</li>
+              <li>{this.createCheckboxBooleanAttribute('hasErrorState')}</li>
+            </ul>
+
+            <ul>
+              <li>{this.createRadioPresenceAttribute('available')}</li>
+              <li>{this.createRadioPresenceAttribute('busy')}</li>
+              <li>{this.createRadioPresenceAttribute('unavailable')}</li>
+              <li>{this.createRadioPresenceAttribute('none')}</li>
+            </ul>
           </div>
 
         </div>

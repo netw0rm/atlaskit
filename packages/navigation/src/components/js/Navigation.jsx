@@ -1,5 +1,4 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/Navigation.less';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import DefaultLinkComponent from './DefaultLinkComponent';
@@ -12,6 +11,8 @@ import {
   resizeClosedBreakpoint,
 } from '../../shared-variables';
 import getContainerWidth from '../../utils/collapse';
+import NavigationOuter from '../styled/NavigationOuter';
+import NavigationInner from '../styled/NavigationInner';
 
 export default class Navigation extends PureComponent {
   static propTypes = {
@@ -103,6 +104,19 @@ export default class Navigation extends PureComponent {
     this.props.onResize(resizeState);
   }
 
+  isCollapsed() {
+    const {
+      isCollapsible,
+      isOpen,
+    } = this.props;
+
+    if (!isCollapsible) {
+      return false;
+    }
+
+    return !isOpen && (this.state.resizeDelta <= 0);
+  }
+
   render() {
     const {
       children,
@@ -115,7 +129,6 @@ export default class Navigation extends PureComponent {
       globalPrimaryItemHref,
       globalSearchIcon,
       globalSecondaryActions,
-      isOpen,
       isResizeable,
       linkComponent,
       onCreateDrawerOpen,
@@ -127,12 +140,12 @@ export default class Navigation extends PureComponent {
     const renderedWidth = this.getRenderedWidth();
     const isPartiallyCollapsed = renderedWidth < globalOpenWidth + containerClosedWidth;
     return (
-      <div className={styles.navigation}>
+      <NavigationOuter>
         <Spacer
           shouldAnimate={shouldAnimate}
           width={renderedWidth}
         />
-        <div className={styles.navigationInner}>
+        <NavigationInner>
           <div style={{ zIndex: isPartiallyCollapsed ? false : 1 }}>
             <GlobalNavigation
               appearance={globalAppearance}
@@ -153,7 +166,7 @@ export default class Navigation extends PureComponent {
           <div>
             <ContainerNavigation
               appearance={containerAppearance}
-              areGlobalActionsVisible={!isOpen && (this.state.resizeDelta <= 0)}
+              areGlobalActionsVisible={this.isCollapsed()}
               globalCreateIcon={globalCreateIcon}
               globalPrimaryIcon={globalPrimaryIcon}
               globalPrimaryItemHref={globalPrimaryItemHref}
@@ -171,17 +184,17 @@ export default class Navigation extends PureComponent {
           </div>
           {
             isResizeable
-            ? <Resizer
-              navigationWidth={renderedWidth}
-              onResize={this.onResize}
-              onResizeButton={this.triggerResizeButtonHandler}
-              onResizeStart={onResizeStart}
-              onResizeEnd={this.triggerResizeHandler}
-            />
-            : null
+              ? <Resizer
+                navigationWidth={renderedWidth}
+                onResize={this.onResize}
+                onResizeButton={this.triggerResizeButtonHandler}
+                onResizeStart={onResizeStart}
+                onResizeEnd={this.triggerResizeHandler}
+              />
+              : null
           }
-        </div>
-      </div>
+        </NavigationInner>
+      </NavigationOuter>
     );
   }
 }

@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import styles from 'style!../src/components/less/Drawer.less';
 import Drawer from '../src/components/js/Drawer';
 
 describe('<Drawer />', () => {
@@ -17,7 +16,7 @@ describe('<Drawer />', () => {
     it('primaryIcon is rendered', () => {
       const icon = <img alt="foo" />;
       expect(mount(<Drawer primaryIcon={icon} />)
-        .find(`.${styles.icon}`).props().children).to.equal(icon);
+        .find('DrawerPrimaryIcon').props().children).to.equal(icon);
     });
     it('backIcon is rendered inside a <DrawerBackIcon />', () => {
       const icon = <img alt="foo" />;
@@ -42,12 +41,12 @@ describe('<Drawer />', () => {
     it('backIconOffset defaults the back icon position to 0px', () => {
       expect(mount(
         <Drawer />
-      ).find(`.${styles.backIconOuter}`).props().style.top).to.equal('0px');
+      ).find('DrawerBackIconWrapper').props().style.top).to.equal('0px');
     });
     it('backIconOffset changes the Y offset of where the backIcon is rendered', () => {
       expect(mount(
         <Drawer backIconOffset={123} />
-      ).find(`.${styles.backIconOuter}`).props().style.top).to.equal('123px');
+      ).find('DrawerBackIconWrapper').props().style.top).to.equal('123px');
     });
   });
   describe('renders', () => {

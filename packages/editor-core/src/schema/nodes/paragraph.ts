@@ -1,11 +1,3 @@
-import { Node, Paragraph as ParagraphNodeType } from '../../prosemirror';
+import { NodeSpec, nodes } from '../../prosemirror';
 
-export { ParagraphNodeType };
-
-export interface ParagraphNode extends Node {
-  type: ParagraphNodeType;
-}
-
-export function isParagraphNode(node: Node): node is ParagraphNode {
-  return node.type instanceof ParagraphNodeType;
-}
+export const paragraph: NodeSpec = nodes.paragraph;

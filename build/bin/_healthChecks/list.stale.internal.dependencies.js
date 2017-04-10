@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 const chalk = require('chalk');
 
-const getPackagesWithStaleDeps = require('./_healthChecks/get.packages.with.stale.dependencies');
+const getPackagesWithStaleDeps = require('./_get.packages.with.stale.dependencies');
 
 /*
   This script is for finding packages that depend on non-latest versions of other internal packages.

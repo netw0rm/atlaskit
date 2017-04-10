@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 const chalk = require('chalk');
-const getBrokenStorybooks = require('./_healthChecks/get.broken.registry.storybooks');
+const getStorybooksFromRegistry = require('./_get.storybooks.from.registry');
 
 /*
   This script is used to find broken storybooks in the registry. This can occur for several reasons.
@@ -11,8 +11,9 @@ const getBrokenStorybooks = require('./_healthChecks/get.broken.registry.storybo
   this. This is a fair compromise
 */
 
-getBrokenStorybooks()
-  .then((brokenStorybooks) => {
+getStorybooksFromRegistry()
+  .then((storybookResponses) => {
+    const brokenStorybooks = storybookResponses.filter(response => !response.exists);
     if (brokenStorybooks.length > 0) {
       console.log(chalk.red('Failed to find the following storybooks:'));
       brokenStorybooks.forEach(pkg => console.log(`  ${pkg.url}`));
@@ -21,6 +22,8 @@ getBrokenStorybooks()
       console.log('If you would like to re-release these storybooks you can run' +
         ` ${chalk.blue('yarn run commit')}, select ${chalk.blue('fix')}, select ${chalk.blue('dummy')},` +
         ` make the message ${chalk.blue('dummy commit to fix storybook')} and select each of the affected packages`);
+    } else {
+      console.log(chalk.green('All storybooks found successfully!'));
     }
   })
   .catch((err) => {

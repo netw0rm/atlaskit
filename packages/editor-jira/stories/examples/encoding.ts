@@ -13,7 +13,7 @@ const schema = makeSchema({
 });
 
 // Nodes
-const br = nodeFactory(schema.nodes.hard_break);
+const br = nodeFactory(schema.nodes.hardBreak);
 const doc = nodeFactory(schema.nodes.doc);
 const h1 = nodeFactory(schema.nodes.heading, { level: 1 });
 const h2 = nodeFactory(schema.nodes.heading, { level: 2 });
@@ -22,12 +22,12 @@ const h4 = nodeFactory(schema.nodes.heading, { level: 4 });
 const h5 = nodeFactory(schema.nodes.heading, { level: 5 });
 const h6 = nodeFactory(schema.nodes.heading, { level: 6 });
 const p = nodeFactory(schema.nodes.paragraph);
-const li = nodeFactory(schema.nodes.list_item!);
-const ol = nodeFactory(schema.nodes.ordered_list!);
-const ul = nodeFactory(schema.nodes.bullet_list!);
+const li = nodeFactory(schema.nodes.listItem!);
+const ol = nodeFactory(schema.nodes.orderedList!);
+const ul = nodeFactory(schema.nodes.bulletList!);
 const mention = (attrs: { id: string, displayName?: string }) => schema.nodes.mention!.createChecked(attrs);
-const codeBlock = nodeFactory(schema.nodes.code_block!);
 const blockquote = nodeFactory(schema.nodes.blockquote!);
+const codeBlock = nodeFactory(schema.nodes.codeBlock!);
 
 // Marks
 const link = (attrs) => markFactory(schema.marks.link!, attrs);
@@ -37,7 +37,7 @@ const code = markFactory(schema.marks.code!);
 const strike = markFactory(schema.marks.strike!);
 const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 const sup = markFactory(schema.marks.subsup, { type: 'sup' });
-const u = markFactory(schema.marks.u);
+const u = markFactory(schema.marks.underline);
 
 interface ExampleSeed {
   description: string;

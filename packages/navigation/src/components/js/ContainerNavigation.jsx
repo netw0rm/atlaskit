@@ -47,7 +47,7 @@ export default class ContainerNavigation extends PureComponent {
     // temporary fix for the AK-1780. When it resolved, this marginLeft should be changed back
     // to translateX
     return {
-      marginLeft: `${this.props.offsetX}`,
+      marginLeft: `${this.props.offsetX}px`,
       width: this.props.width,
     };
   }

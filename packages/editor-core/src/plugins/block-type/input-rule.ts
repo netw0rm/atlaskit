@@ -3,6 +3,7 @@ import {
 } from '../../prosemirror';
 import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
+import { createInputRule, defaultInputRuleHandler } from '../utils';
 
 let plugin: Plugin | undefined;
 
@@ -15,7 +16,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
 
   if (schema.nodes.heading) {
     // '# ' for h1, '## ' for h2 and etc
-    const rule = headingRule(schema.nodes.heading, 5);
+    const rule = defaultInputRuleHandler(headingRule(schema.nodes.heading, 5));
     const currentHandler = rule.handler;
     rule.handler = (state, match, start, end) => {
       analyticsService.trackEvent(`atlassian.editor.format.heading${match[1].length}.autoformatting`);
@@ -26,13 +27,13 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
 
   if (schema.nodes.blockquote) {
     // '> ' for blockquote
-    const rule = blockQuoteRule(schema.nodes.blockquote);
+    const rule = defaultInputRuleHandler(blockQuoteRule(schema.nodes.blockquote));
     rule.handler = trackAndInvoke('atlassian.editor.format.blockquote.autoformatting', rule.handler);
     rules.push(rule);
   }
 
   if (schema.nodes.codeBlock) {
-    rules.push(new InputRule(/^```$/, (state, match, start, end): Transaction | undefined => {
+    rules.push(createInputRule(/^```$/, (state, match, start, end): Transaction | undefined => {
       const lengthOfDecorator = match[0].length;
 
       // Because the node content is wrap by the node margin in prosemirror

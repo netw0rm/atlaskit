@@ -5,7 +5,7 @@ import {
   text,
   em,
   strong,
-  code,
+  code as coreCode,
   strike,
   link,
   bulletList,
@@ -42,7 +42,10 @@ const nodes = {
   emoji,
 };
 
-code['excludes'] = 'em strike strong';
+const code = {
+  ...coreCode,
+  excludes: 'em strike strong mentionQuery emojiQuery'
+};
 
 const marks = {
   em,

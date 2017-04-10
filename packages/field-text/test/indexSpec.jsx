@@ -63,6 +63,7 @@ describe('ak-field-text', () => {
       { disabled: true },
       { name: 'test' },
       { placeholder: 'test placeholder' },
+      { maxLength: 5 },
       { required: true },
     ].forEach(prop =>
       describe(JSON.stringify(prop), () =>

@@ -71,6 +71,27 @@ export default {
     schemaVersion: { default: null },
     server: { default: null },
     serverId: { default: null },
+  },
+  parseDOM: [{
+    tag: 'span[jira-issue]',
+    getAttrs: (dom: Element) => ({
+      issueKey: dom.textContent,
+      macroId: dom.getAttribute('data-macro-id'),
+      schemaVersion: dom.getAttribute('data-schema-version'),
+      server: dom.getAttribute('data-server'),
+      serverId: dom.getAttribute('data-server-id'),
+    })
+  }],
+  toDOM(node: any) {
+    const attrs = {
+      'data-macro-id': node.attrs.macroId,
+      'data-schema-version': node.attrs.schemaVersion,
+      'data-server': node.attrs.server,
+      'data-server-id': node.attrs.serverId,
+      'jira-issue': node.attrs.issueKey,
+    };
+
+    return ['span', attrs, node.attrs.issueKey];
   }
 } as NodeSpec;
 

@@ -71,7 +71,6 @@ const styles = {
   overflow: 'scroll',
   position: 'relative'
 };
-const assign = (Object as any).assign; // avoids TS issue
 
 storiesOf('FilmStrip', {})
   .add('Default', () => (
@@ -142,7 +141,7 @@ storiesOf('FilmStrip', {})
       <li>{filmstrip()}</li>
       <li>{filmstrip()}</li>
     </ul>;
-    const largeList = <ul style={assign({}, styles, {height: '400px'})}>
+    const largeList = <ul style={{...styles, height: '400px'}}>
       <li>{filmstrip()}</li>
       <li>{filmstrip()}</li>
       <li>{filmstrip()}</li>
@@ -150,13 +149,13 @@ storiesOf('FilmStrip', {})
       <li>{filmstrip()}</li>
       <li>{filmstrip()}</li>
     </ul>;
-    const visibleList = <ul style={assign({}, styles, {height: '600px'})}>
+    const visibleList = <ul style={{...styles, height: '600px'}}>
       <li>{filmstrip()}</li>
       <li>{filmstrip()}</li>
       <li>{filmstrip()}</li>
       <li>{filmstrip()}</li>
     </ul>;
-    const autoHeight = <ul style={assign({}, styles, {height: 'auto'})}>
+    const autoHeight = <ul style={{...styles, height: 'auto'}}>
       <li>{filmstrip()}</li>
       <li>{filmstrip()}</li>
       <li>{filmstrip()}</li>

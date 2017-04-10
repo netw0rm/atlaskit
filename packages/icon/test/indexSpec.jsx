@@ -362,7 +362,7 @@ describe(name, () => {
           .keys(bundle)
           .filter(key => key !== 'size');
 
-        bundleKeys.should.be.deep.equal(Object
+        expect(bundleKeys).members(Object
           .keys(components)
           .map(pathToDashed)
           .map(x => iconNameToComponentName(x)));

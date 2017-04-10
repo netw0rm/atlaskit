@@ -1,4 +1,6 @@
-import { EditorView, keymap, Plugin, Node } from '../../prosemirror';
+import { EditorView, keymap, Plugin, Node, EditorState, Transaction, TextSelection } from '../../prosemirror';
+
+import * as keymaps from '../../keymaps';
 
 let plugin: Plugin | undefined;
 
@@ -7,37 +9,40 @@ export function keymapPlugin(view: EditorView): Plugin | undefined {
     return plugin;
   }
 
-  const checkEndPanelBlock = (): boolean => {
-    const { state: { selection, schema: { nodes } } } = view;
+  const list = {};
+
+  const checkEndPanelBlock = (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean => {
+    const { selection, schema: { nodes } } = state;
     const { $from, $to } = selection;
     const range = $from.blockRange($to);
     const node = range && range.parent;
     if (node && node.type === nodes.panel) {
-      const { state: { tr }, dispatch } = view;
-      if (lastCharIsNewline(node)) {
-        tr.split($from.pos);
-        tr.delete($from.pos - 1, $from.pos);
+      let { tr } = view.state;
+      if (lastParagraphHasContent($from.node($from.depth))) {
+        tr = tr.split($from.pos);
+        tr = tr.setSelection(new TextSelection(
+          tr.doc.resolve(tr.mapping.map($from.pos)),
+          tr.doc.resolve(tr.mapping.map(($to.pos)))
+        ));
+        // const sel = new TextSelection(
+        //   tr.doc.resolve(tr.mapping.map($from.pos)),
+        //   tr.doc.resolve(tr.mapping.map(($to.pos)))
+        // );
+        // console.log('**', sel.$from.depth, sel.$from.node(sel.$from.depth))
         dispatch(tr);
-      } else {
-        dispatch(tr.insertText('\n'));
         return true;
       }
     }
     return false;
   };
 
-  const lastCharIsNewline = (node: Node): boolean => {
-    if (node && node.textContent) {
-      return node.textContent.slice(-1) === '\n';
-    }
-    return false;
+  const lastParagraphHasContent = (node: Node): boolean => {
+    return node && !!node.textContent;
   };
 
-  const keymaps = {
-    'Enter': checkEndPanelBlock,
-  };
+  keymaps.bindKeymapWithCommand(keymaps.enter.common!!, checkEndPanelBlock, list);
 
-  plugin = keymap(keymaps);
+  plugin = keymap(list);
   return plugin;
 }
 

@@ -2,7 +2,7 @@ import {
   bulletList,
   blockquote,
   codeBlock,
-  code,
+  code as codeBase,
   doc,
   em,
   hardBreak,
@@ -22,6 +22,11 @@ import {
   text,
   underline,
 } from '@atlaskit/editor-core';
+
+const code = {
+  ...codeBase,
+  excludes: 'em strike strong underline'
+};
 
 import unsupportedBlock from './schema/nodes/unsupportedBlock';
 import unsupportedInline from './schema/nodes/unsupportedInline';

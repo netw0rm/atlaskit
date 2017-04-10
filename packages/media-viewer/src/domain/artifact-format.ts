@@ -1,4 +1,4 @@
-import { MediaItem, FileItem } from '@atlaskit/media-core';
+import { MediaItem, FileItem, FileDetails } from '@atlaskit/media-core';
 
 export interface ArtifactFormat {
   readonly type: string;
@@ -13,8 +13,12 @@ export class ArtifactFormat {
   }
 
   static fromFileItem(fileItem: FileItem): ArtifactFormat | undefined {
-    return ArtifactFormat.fromMimeType(fileItem.details.mimeType)
-      || ArtifactFormat.fromMediaType(fileItem.details.mediaType);
+    return ArtifactFormat.fromFileDetails(fileItem.details);
+  }
+
+  static fromFileDetails(details: FileDetails): ArtifactFormat | undefined {
+    return ArtifactFormat.fromMimeType(details.mimeType)
+      || ArtifactFormat.fromMediaType(details.mediaType);
   }
 
   static fromMimeType(mimeType?: string): ArtifactFormat | undefined {

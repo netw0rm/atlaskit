@@ -69,6 +69,7 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
         position="top left"
         trigger={
           <AkButton
+            className={styles.button}
             isSelected={active}
             appearance="subtle"
             spacing="compact"
@@ -76,22 +77,25 @@ export default class ToolbarBlockType extends PureComponent<Props, State> {
             <div className={styles.buttonContent}>{currentBlockType.title}</div>
           </AkButton>
         }
-      >
+      ><div className={styles.dropList}>
         {availableBlockTypes.map((blockTypeGroup, groupNo) => (
           <Group key={`blockTypeGroup${groupNo}`}>
             {blockTypeGroup.map((blockType, blockTypeNo) => (
-              <Tooltip key={`blockType${groupNo}${blockTypeNo}`} position="right" description={tooltip(findKeymapByDescription(blockType.title))}>
-                <Item
-                  key={blockType.name}
-                  isActive={currentBlockType === blockType}
-                  onActivate={() => { this.handleSelectBlockType(blockType); }}
-                >
-                  <span>{blockType.title}</span>
-                </Item>
-              </Tooltip>
+              <div className={styles.dropListItem} key={`blockType${groupNo}${blockTypeNo}`}>
+                <Tooltip position="right" description={tooltip(findKeymapByDescription(blockType.title))}>
+                  <Item
+                    key={blockType.name}
+                    isActive={currentBlockType === blockType}
+                    onActivate={() => { this.handleSelectBlockType(blockType); }}
+                  >
+                    <span>{blockType.title}</span>
+                  </Item>
+                </Tooltip>
+              </div>
             ))}
           </Group>
         ))}
+        </div>
       </DropdownList>
     );
   }

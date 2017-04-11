@@ -16,6 +16,7 @@ export const createNestedListStyles = (): any => {
 };
 
 export const container = style({
+  $debugName: 'editor-chrome-expanded',
   backgroundColor: 'white',
   border: `1px solid ${akEditorSubtleAccent}`,
   boxSizing: 'border-box',

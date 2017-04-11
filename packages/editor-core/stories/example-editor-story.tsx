@@ -83,7 +83,6 @@ class DemoEditor extends React.PureComponent<Props, State> {
           onChange={this.props.onChange}
           mentionProvider={mentionProvider}
           emojiProvider={emojiProvider}
-          isExpandedByDefault
           ref={(ref) => { this.editorRef = ref; }}
         />
         <div>

@@ -4,7 +4,14 @@ export const buttonContent = style({
   width: '80px',
 });
 
-export const container = style({
-  position: 'relative',
-  width: '92px',
+export const button = style({
+  $debugName: 'editor-toolbar-blocktype-button'
+});
+
+export const dropList = style({
+  $debugName: 'editor-toolbar-blocktype-droplist'
+});
+
+export const dropListItem = style({
+  $debugName: 'editor-toolbar-blocktype-droplist-item'
 });

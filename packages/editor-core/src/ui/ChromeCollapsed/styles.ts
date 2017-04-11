@@ -8,6 +8,7 @@ import {
 import { style } from 'typestyle';
 
 export const input = style({
+  $debugName: 'editor-chrome-collapsed',
   backgroundColor: 'white',
   border: `1px solid ${akEditorSubtleAccent}`,
   borderRadius: akBorderRadius,

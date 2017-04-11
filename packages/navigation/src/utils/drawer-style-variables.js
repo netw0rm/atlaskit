@@ -22,6 +22,6 @@ export const widths = {
   },
   full: {
     width: fullWidth,
-    offScreenTranslateX: `-${fullWidth} - ${boxShadowSpread}px`,
+    offScreenTranslateX: `calc(-${fullWidth} - ${boxShadowSpread}px)`,
   },
 };

@@ -22,7 +22,7 @@ const DrawerInner = styled.div`
   left: 0;
   overflow: hidden;
   position: fixed;
-  transform: ${({ width, isOpen }) => (isOpen ? 'translateX(0)' : `translateX(calc(${widths[width].offScreenTranslateX}))`)}
+  transform: ${({ width, isOpen }) => (isOpen ? 'translateX(0)' : `translateX(${widths[width].offScreenTranslateX})`)}
   transition: ${transformTransition}, ${widthTransition};
   width: ${({ width }) => widths[width].width};
 `;

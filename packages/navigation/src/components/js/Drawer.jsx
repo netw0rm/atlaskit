@@ -4,7 +4,6 @@ import Blanket from '@atlaskit/blanket';
 import DrawerTrigger from './DrawerTrigger';
 import DrawerBackIcon from './DrawerBackIcon';
 import ContainerHeader from './ContainerHeader';
-import drawerFixedMixin from '../../utils/drawer-fixed-mixin';
 import DrawerSide from '../styled/DrawerSide';
 import DrawerInner from '../styled/DrawerInner';
 import DrawerHeader from '../styled/DrawerHeader';
@@ -47,9 +46,6 @@ export default class Drawer extends PureComponent {
       top: `${backIconOffset}px`,
     };
 
-    const FixedDrawerSide = drawerFixedMixin(isOpen, width)(DrawerSide);
-    const FixedDrawerHeader = drawerFixedMixin(isOpen, width)(DrawerHeader);
-
     return (
       <div>
         <div style={{ zIndex: 0, position: 'relative' }}>
@@ -60,7 +56,7 @@ export default class Drawer extends PureComponent {
           />
         </div>
         <DrawerInner isOpen={isOpen} width={width}>
-          <FixedDrawerSide>
+          <DrawerSide>
             <DrawerPrimaryIcon>
               {primaryIcon}
             </DrawerPrimaryIcon>
@@ -73,12 +69,12 @@ export default class Drawer extends PureComponent {
                 </DrawerBackIcon>
               </DrawerTrigger>
             </DrawerBackIconWrapper>
-          </FixedDrawerSide>
+          </DrawerSide>
           <DrawerMain>
             {(width !== 'full') ?
-              <FixedDrawerHeader>
+              <DrawerHeader>
                 <ContainerHeader>{header}</ContainerHeader>
-              </FixedDrawerHeader>
+              </DrawerHeader>
             : null}
             <DrawerContent>
               <ThemeProvider theme={{ NavigationAppearance: 'container', NavigationItemIsCompact: false }}>

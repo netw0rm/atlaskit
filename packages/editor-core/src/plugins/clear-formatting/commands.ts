@@ -24,9 +24,8 @@ function liftAllNodes(state: EditorState<any>, tr: Transaction): Transaction {
     if (node.type === paragraph) {
       const start = tr.doc.resolve(tr.mapping.map(pos));
       const end = tr.doc.resolve(tr.mapping.map(pos + node.textContent.length));
-      const sel = new TextSelection(start, end);
-      if (sel.$from.depth > 0) {
-        const range = sel.$from.blockRange(sel.$to)!;
+      if (start.depth > 0) {
+        const range = start.blockRange(end)!;
         tr.lift(range, liftTarget(range)!);
       }
     } else if (node.type === listItem && node.childCount > 1) {
@@ -41,19 +40,23 @@ function liftSubList(state: EditorState<any>, listNode: Node, listPos: number, t
   listNode.descendants((node, pos) => {
     if (node.type === bulletList || node.type === orderedList) {
       let startPos;
-      let endpos;
+      let endPos;
       node.descendants((child, childPos) => {
         if (child.type === text) {
           if (!startPos) {
             startPos = listPos + pos + childPos;
           }
-          endpos = listPos + pos + childPos + child.textContent.length;
+          if (child.textContent && child.textContent.length > 0) {
+            endPos = listPos + pos + childPos + child.textContent.length;
+          } else {
+            endPos = listPos + pos + childPos + 1;
+          }
         }
       });
       const selectionStart = state.selection.$from.pos;
       const startLocation = startPos > selectionStart ? startPos : selectionStart;
       const start = tr.doc.resolve(tr.mapping.map(startLocation));
-      const end = tr.doc.resolve(tr.mapping.map(endpos));
+      const end = tr.doc.resolve(tr.mapping.map(endPos));
       const sel = new TextSelection(start, end);
       tr = liftListItem(state, sel, tr);
     }

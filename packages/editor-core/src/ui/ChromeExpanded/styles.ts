@@ -61,7 +61,13 @@ export const content = style({
     '.ProseMirror li': {
       position: 'relative',
       /* Don't do weird stuff with marker clicks */
-      pointerEvents: 'none'
+      pointerEvents: 'none',
+
+      $nest: {
+        '> p:not(:first-child)': {
+          margin: '4px 0 0 0'
+        }
+      }
     },
 
     '.ProseMirror ol': {

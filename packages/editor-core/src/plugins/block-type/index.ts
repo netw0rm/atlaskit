@@ -1,6 +1,7 @@
 import {
   EditorState,
   EditorView,
+  Schema,
   Node,
   Plugin,
   PluginKey,
@@ -234,5 +235,9 @@ const plugin = new Plugin({
   }
 });
 
-export default plugin;
+const plugins = (schema: Schema<any, any>) => {
+  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+};
+
+export default plugins;
 

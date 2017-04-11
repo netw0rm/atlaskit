@@ -29,8 +29,9 @@ import {
   marks,
   hardBreak,
 } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
 
-import BlockTypePlugin from '../../../src/plugins/block-type';
+import blockTypePlugins from '../../../src/plugins/block-type';
 
 chai.use(chaiPlugin);
 
@@ -38,13 +39,8 @@ describe('block-type', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: BlockTypePlugin,
+    plugins: blockTypePlugins(defaultSchema),
     place: fixture()
-  });
-
-  it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = BlockTypePlugin as any; // .State is not public API.
-    expect(plugin.key).is.be.a('string');
   });
 
   it('should be able to change to normal', () => {
@@ -364,11 +360,11 @@ describe('block-type', () => {
             const schema = {
               nodes: { ...nodes },
               marks: { ...marks },
-            };
+            } as Schema<any, any>;
             delete schema.nodes.panel;
             const edit = (doc: any) => makeEditor({
               doc,
-              plugin: BlockTypePlugin,
+              plugins: blockTypePlugins(schema),
               place: fixture(),
               schema: new Schema(schema),
             });
@@ -383,11 +379,11 @@ describe('block-type', () => {
             const schema = {
               nodes: { ...nodes },
               marks: { ...marks },
-            };
+            } as Schema<any, any>;
             delete schema.nodes.blockquote;
             const edit = (doc: any) => makeEditor({
               doc,
-              plugin: BlockTypePlugin,
+              plugins: blockTypePlugins(schema),
               place: fixture(),
               schema: new Schema(schema),
             });

@@ -5,10 +5,11 @@ import { container, resizeAnimationTime } from '../../shared-variables';
 const keylineHeight = 2;
 const intGridSize = Number(akGridSizeUnitless);
 const paddingBottom = `${(intGridSize * 1.5) - keylineHeight}px`;
-const paddingOpen = `${(intGridSize * 3)}px ${container.padding.side + (intGridSize * 1.75)}px ${paddingBottom} ${container.padding.side + (intGridSize * 1.5)}px`;
+const paddingOpen = `${container.padding.top}px ${container.padding.side + (intGridSize * 1.75)}px ${paddingBottom} ${container.padding.side + (intGridSize * 1.5)}px`;
 const paddingClosed = `0 ${intGridSize * 2.5}px 0 ${intGridSize * 0.5}px`;
 
 const ContainerHeaderWrapper = styled.div`
+  // TODO: animation curve
   transition: padding 200ms;
   padding: ${paddingOpen};
 
@@ -16,7 +17,8 @@ const ContainerHeaderWrapper = styled.div`
   margin-bottom: ${keylineHeight}px;
 
   @supports ( position: sticky ) or ( position: -webkit-sticky ) {
-    background-color: ${({ appearance }) => container.colors[appearance].background};
+    // use the background color of the parent
+    background-color: inherit;
     position: sticky;
     top: 0px;
     z-index: 2;
@@ -42,6 +44,10 @@ const ContainerHeaderWrapper = styled.div`
     @supports ( position: sticky ) or ( position: -webkit-sticky ) {
       position: static;
       background-color: transparent;
+
+      &::after {
+        display: none;
+      }
     }
   }
 `;

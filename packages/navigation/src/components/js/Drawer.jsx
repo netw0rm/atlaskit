@@ -47,8 +47,11 @@ export default class Drawer extends PureComponent {
       top: `${backIconOffset}px`,
     };
 
-    const FixedDrawerSide = drawerFixedMixin(isOpen, width)(DrawerSide);
-    const FixedDrawerHeader = drawerFixedMixin(isOpen, width)(DrawerHeader);
+    // to be removed by Josh
+    /* eslint-disable no-unused-vars */
+    const FixedDrawerSide = drawerFixedMixin(isOpen, width, 'FixedDrawerSide')(DrawerSide);
+    const FixedDrawerHeader = drawerFixedMixin(isOpen, width, 'FixedDrawerHeader')(DrawerHeader);
+    /* eslint-enable no-unused-vars */
 
     return (
       <div>
@@ -75,13 +78,16 @@ export default class Drawer extends PureComponent {
             </DrawerBackIconWrapper>
           </FixedDrawerSide>
           <DrawerMain>
-            {(width !== 'full') ?
-              <FixedDrawerHeader>
-                <ContainerHeader>{header}</ContainerHeader>
-              </FixedDrawerHeader>
+            {(width !== 'full' && header) ?
+              <ContainerHeader>{header}</ContainerHeader>
             : null}
             <DrawerContent>
-              <ThemeProvider theme={{ NavigationAppearance: 'container', NavigationItemIsCompact: false }}>
+              <ThemeProvider
+                theme={{
+                  NavigationAppearance: 'container',
+                  NavigationItemIsCompact: false,
+                }}
+              >
                 {this.props.children}
               </ThemeProvider>
             </DrawerContent>

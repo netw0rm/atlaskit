@@ -29,6 +29,7 @@ export const globalItemMediumSize = akGridSizeUnitless * 5;
 export const container = {
   padding: {
     side: Number(akGridSizeUnitless),
+    top: Number(akGridSizeUnitless) * 3,
   },
   colors: {
     container: {

@@ -2,6 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import { ThemeProvider } from 'styled-components';
 import memoizeOne from 'memoize-one';
 import ContainerHeader from './ContainerHeader';
+import ContainerNoHeader from '../styled/ContainerNoHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import ContainerNavigationOuter from '../styled/ContainerNavigationOuter';
@@ -112,6 +113,7 @@ export default class ContainerNavigation extends PureComponent {
       <ThemeProvider
         theme={{
           NavigationAppearance: appearance,
+          isCollapsed: isWidthCollapsed,
         }}
       >
         <nav
@@ -146,8 +148,8 @@ export default class ContainerNavigation extends PureComponent {
                     appearance={appearance}
                     isContentScrolled={this.state.isScrolling}
                   >
-                    {headerComponent({ isCollapsed: width <= containerClosedWidth })}
-                  </ContainerHeader>) : null
+                    {headerComponent({ isCollapsed: isWidthCollapsed })}
+                  </ContainerHeader>) : <ContainerNoHeader />
               }
               <ContainerNavigationChildren>
                 {children}

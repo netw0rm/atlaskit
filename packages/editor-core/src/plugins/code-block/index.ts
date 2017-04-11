@@ -39,13 +39,16 @@ export class CodeBlockState {
 
     updateLanguage(language: string | undefined, view: EditorView): void {
         if (this.activeCodeBlock) {
-            const { supportedLanguages } = this;
-            commands.setBlockType(view.state.schema.nodes.codeBlock, { language, supportedLanguages })(view.state, view.dispatch);
+            commands.setBlockType(view.state.schema.nodes.codeBlock, { language })(view.state, view.dispatch);
         }
     }
 
     updateEditorFocused(editorFocused: boolean) {
         this.editorFocused = editorFocused;
+    }
+
+    setLanguages(supportedLanguages: string[]) {
+        this.supportedLanguages = supportedLanguages;
     }
 
     update(state: EditorState<any>, docView: NodeViewDesc, domEvent: boolean = false) {
@@ -59,7 +62,6 @@ export class CodeBlockState {
             this.toolbarVisible = this.editorFocused && !!codeBlockNode && (domEvent || this.element !== newElement);
             this.activeCodeBlock = codeBlockNode;
             this.language = codeBlockNode && codeBlockNode.attrs['language'] || undefined;
-            this.supportedLanguages = codeBlockNode && codeBlockNode.attrs['supportedLanguages'] || [];
             this.element = newElement;
             this.triggerOnChange();
         }

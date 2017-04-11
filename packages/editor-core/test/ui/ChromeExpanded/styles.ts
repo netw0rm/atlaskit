@@ -11,7 +11,7 @@ describe('@atlaskit/editor-core/ui/ChromeExpanded/styles/createNestedListStyles'
 
   it('should return not-null object for nested ordered list styles', () => {
     const nestedOrderedListStyle = createNestedListStyles();
-    expect(Object.keys(nestedOrderedListStyle).length).to.eq(18);
+    expect(Object.keys(nestedOrderedListStyle).length).to.eq(9);
   });
 
   it('should return correct values in the object', () => {

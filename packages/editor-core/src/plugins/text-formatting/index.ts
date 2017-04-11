@@ -4,13 +4,13 @@ import {
   Plugin,
   PluginKey,
   EditorState,
-  EditorView
+  EditorView,
+  Schema,
 } from '../../prosemirror';
 
 import * as commands from '../../commands';
 import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
-import { reconfigure } from '../utils';
 import { transformToCodeAction } from './transform-to-code';
 import { keyCodes } from '../../keymaps';
 
@@ -390,7 +390,6 @@ const plugin = new Plugin({
   view: (view: EditorView) => {
     const pluginState = stateKey.getState(view.state);
     pluginState.keymapHandler = keymapHandler(view, pluginState);
-    reconfigure(view, [inputRulePlugin(view.state.schema)]);
     return {};
   },
   props: {
@@ -410,4 +409,8 @@ const plugin = new Plugin({
   }
 });
 
-export default plugin;
+const plugins = (schema: Schema<any, any>) => {
+  return [plugin, inputRulePlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+};
+
+export default plugins;

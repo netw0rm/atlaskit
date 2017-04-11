@@ -45,13 +45,7 @@ function addCodeMark(markType: MarkType, schema: Schema<any, any>, specialChar: 
   };
 }
 
-let plugin: Plugin | undefined;
-
 export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
-  if (plugin) {
-    return plugin;
-  }
-
   const rules: Array<InputRule> = [];
 
   if (schema.marks.strong) {
@@ -74,9 +68,9 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
     rules.push(createInputRule(/(`([^`]+)`)$/, addCodeMark(schema.marks.code, schema, '`')));
   }
 
-  plugin = inputRules({ rules });
-
-  return plugin;
+  if (rules.length !== 0) {
+    return inputRules({ rules });
+  }
 };
 
 export default inputRulePlugin;

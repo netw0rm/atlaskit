@@ -1,6 +1,7 @@
 import {
   EditorState,
   EditorView,
+  Schema,
   findWrapping,
   NodeSelection,
   Plugin,
@@ -13,7 +14,6 @@ import {
 import * as commands from '../../commands';
 import keymapPlugin from './keymap';
 import inputRulePlugin from './input-rule';
-import { reconfigure } from '../utils';
 
 export type StateChangeHandler = (state: ListsState) => any;
 
@@ -138,9 +138,12 @@ const plugin = new Plugin({
   },
   key: stateKey,
   view: (view: EditorView) => {
-    reconfigure(view, [keymapPlugin(view.state.schema), inputRulePlugin(view.state.schema)]);
     return {};
   }
 });
 
-export default plugin;
+const plugins = (schema: Schema<any, any>) => {
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+};
+
+export default plugins;

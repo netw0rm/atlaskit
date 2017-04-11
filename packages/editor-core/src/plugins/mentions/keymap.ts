@@ -2,14 +2,8 @@ import { Schema, keymap, Plugin } from '../../prosemirror';
 import * as keymaps from '../../keymaps';
 import { MentionsState, stateKey } from './';
 
-let plugin: Plugin | undefined;
-
-export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
+export function keymapPlugin(schema: Schema<any, any>): Plugin {
   const list = {};
-
-  if (plugin) {
-    return plugin;
-  }
 
   keymaps.bindKeymapWithCommand(keymaps.moveUp.common!, (state: any, dispatch) => {
     const mentionsPlugin = stateKey.getState(state) as MentionsState;
@@ -66,8 +60,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
     return mentionsPlugin.onTrySelectCurrent();
   }, list);
 
-  plugin = keymap(list);
-  return plugin;
+  return keymap(list);
 }
 
 export default keymapPlugin;

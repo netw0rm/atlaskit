@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { mention as mentionNode } from '../../../src';
-import MentionsPlugin from '../../../src/plugins/mentions';
+import mentionsPlugins from '../../../src/plugins/mentions';
 import {
   chaiPlugin,
   fixtures,
@@ -17,7 +17,7 @@ import {
   p,
   ul,
 } from '../../../src/test-helper';
-
+import defaultSchema from '../../../src/test-helper/schema';
 import { resourceProvider } from '../../../stories/mentions/story-data';
 
 const mentionProvider = new Promise<any>(resolve => {
@@ -30,18 +30,13 @@ describe('mentions', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: MentionsPlugin,
+    plugins: mentionsPlugins(defaultSchema),
     place: fixture()
   });
 
   const forceUpdate = (editorView: any) => {
     editorView.updateState(editorView.state);
   };
-
-  it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = MentionsPlugin as any; // .key is not public API.
-    expect(plugin.key).to.be.a('string');
-  });
 
   describe('keymap', () => {
 

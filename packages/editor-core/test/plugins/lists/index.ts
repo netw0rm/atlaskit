@@ -3,15 +3,19 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { browser } from '../../../src';
 import { TextSelection } from '../../../src/prosemirror';
-import ListsPlugin from '../../../src/plugins/lists';
+import listsPlugins from '../../../src/plugins/lists';
 import { chaiPlugin, makeEditor, sendKeyToPm, fixtures, doc, h1, ol, ul, li, p, panel, blockquote } from '../../../src/test-helper';
-import schema from '../../../src/test-helper/schema';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
 describe('lists', () => {
   const fixture = fixtures();
-  const editor = (doc: any) => makeEditor({ doc: doc, plugin: ListsPlugin, schema, place: fixture() });
+  const editor = (doc: any) => makeEditor({
+    doc,
+    plugins: listsPlugins(defaultSchema),
+    place: fixture()
+  });
 
   describe('keymap', () => {
     context('when hit enter', () => {

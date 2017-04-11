@@ -1,9 +1,10 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import { EditorView } from '../../../src/prosemirror';
-import CodeBlockPlugin from '../../../src/plugins/code-block';
+import codeBlockPlugins from '../../../src/plugins/code-block';
 import { blockquote, chaiPlugin, code_block, dispatchPasteEvent, doc, fixtures, makeEditor, p } from '../../../src/test-helper';
 import { PasteContent } from '../../../src/test-helper/dispatch-paste-event';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
@@ -11,7 +12,7 @@ describe('block-type paste listener', () => {
   const fixture = fixtures();
   const editor = (code: string = '') => makeEditor({
     doc: doc(code_block()(code)),
-    plugin: CodeBlockPlugin,
+    plugins: codeBlockPlugins(defaultSchema),
     place: fixture(),
   });
 
@@ -63,7 +64,7 @@ describe('block-type paste listener', () => {
     it('should use our custom paste listener if the selected text block is inside of a blockquote', function () {
       const { editorView } = makeEditor({
         doc: doc(blockquote(p('p'), code_block()('foo{<}bar{>}'))),
-        plugin: CodeBlockPlugin,
+        plugins: codeBlockPlugins(defaultSchema),
         place: fixture(),
       });
       maybeDispatchPasteEvent(editorView, { plain: 'baz' }, this);

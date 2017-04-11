@@ -96,6 +96,7 @@ export const emojiPreview = style({
 
         [`.${previewImg}`]: {
           display: 'inline-block',
+          flex: 'initial',
           backgroundPosition: '50%',
           backgroundRepeat: 'no-repeat',
           backgroundSize: '32px 32px',

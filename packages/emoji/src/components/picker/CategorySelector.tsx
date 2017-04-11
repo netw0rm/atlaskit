@@ -48,14 +48,14 @@ export default class CategorySelector extends PureComponent<Props, undefined> {
         icon: EmojiFoodIcon,
       },
       {
-        id: 'PLACES',
-        name: 'Travel & Places',
-        icon: EmojiTravelIcon,
-      },
-      {
         id: 'ACTIVITY',
         name: 'Activity',
         icon: EmojiActivityIcon,
+      },
+      {
+        id: 'PLACES',
+        name: 'Travel & Places',
+        icon: EmojiTravelIcon,
       },
       {
         id: 'OBJECTS',

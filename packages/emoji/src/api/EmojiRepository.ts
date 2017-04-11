@@ -2,6 +2,7 @@ import { Search, UnorderedSearchIndex } from 'js-search';
 import debug from '../util/logger';
 import { AvailableCategories, EmojiDescription, OptionalEmojiDescription, SearchOptions } from '../types';
 import { isEmojiDescriptionWithVariations } from '../type-helpers';
+import CategorySelector from '../components/picker/CategorySelector';
 
 export interface EmojiSearchResult {
   emojis: EmojiDescription[];
@@ -77,11 +78,16 @@ export default class EmojiRepository {
   private shortNameMap: EmojiByKey;
   private idMap: EmojiByKey;
   private categoryOrder: Map<string, number>;
+  private static readonly defaultEmojiWeight: number = 1000;
 
   constructor(emojis: EmojiDescription[]) {
     this.emojis = emojis;
-    this.initMaps();
+    this.categoryOrder = new Map();
+    CategorySelector.defaultProps.categories.forEach((category, index) => {
+      this.categoryOrder.set(category.id, index + 1);
+    });
 
+    this.initMaps();
     this.fullSearch = new Search('id');
     this.fullSearch.searchIndex = new UnorderedSearchIndex();
     this.fullSearch.addIndex('name');
@@ -141,14 +147,16 @@ export default class EmojiRepository {
    * Optimisation to initialise all map member variables in single loop over emojis
    */
   private initMaps(): void {
-    this.categoryOrder = new Map();
     this.shortNameMap  = new Map();
     this.idMap = new Map();
-    let index: number = 1;
 
     this.emojis.forEach(emoji => {
-      if (!this.categoryOrder.get(emoji.category)) {
-        this.categoryOrder.set(emoji.category, index++);
+      // Give default value for consistent order when sorting
+      if (!emoji.order) {
+        emoji.order = EmojiService.defaultEmojiWeight;
+      }
+      if (!emoji.id) {
+        emoji.id = EmojiService.defaultEmojiWeight.toString();
       }
       addAllVariants(emoji, e => e.shortName, this.shortNameMap);
       addAllVariants(emoji, e => e.id, this.idMap);
@@ -160,11 +168,12 @@ export default class EmojiRepository {
    * Order: category -> order -> shortName -> id
    */
   private emojiComparator = (e1: EmojiDescription, e2: EmojiDescription) : number => {
-    const c1: number | undefined = this.categoryOrder.get(e1.category);
-    const c2: number | undefined = this.categoryOrder.get(e2.category);
+    const categoryIndex1: number = this.categoryOrder.get(e1.category) || EmojiService.defaultEmojiWeight;
+    const categoryIndex2: number = this.categoryOrder.get(e2.category) || EmojiService.defaultEmojiWeight;
 
-    if (c1 && c2 && c1 !== c2) {
-      return c1 - c2;
+    // Order and id will always have a value but still need undefined check for TS
+    if (categoryIndex1 !== categoryIndex2) {
+      return categoryIndex1 - categoryIndex2;
     } else if (e1.order && e2.order && e1.order !== e2.order) {
       return e1.order - e2.order;
     } else if (e1.shortName !== e2.shortName) {

@@ -8,6 +8,7 @@ import SubSup from './subsup';
 import Underline from './underline';
 import Code from './code';
 import { Renderable } from '../nodes';
+import HardBreak from '../nodes/hardBreak';
 
 import { isSubSupType } from '../marks/subsup';
 
@@ -171,6 +172,9 @@ export const renderMark = (mark: Renderable, index: number = 0) => {
     case MarkType.code:
       return <Code key={key}>{content}</Code>;
     case MarkType.text:
+      if (validMark.text === '\n') {
+        return <HardBreak />;
+      }
       return validMark.text;
     default: {
       // Mark is unkown, render it's content

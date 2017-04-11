@@ -268,4 +268,24 @@ describe('Text', () => {
     expect(output.find('a').last().props()).to.have.property('href', 'https://www.atlassian.com');
   });
 
+  it('should replace text nodes that only contains "\\n" with a hard break', () => {
+    const textNodes = [
+      {
+        type: 'text',
+        text: 'Hello'
+      },
+      {
+        type: 'text',
+        text: '\n'
+      },
+      {
+        type: 'text',
+        text: 'World'
+      }
+    ];
+
+    const output = mount(<div>{renderTextNodes(textNodes)}</div>);
+    expect(output.find('br').length).to.equal(1);
+  });
+
 });

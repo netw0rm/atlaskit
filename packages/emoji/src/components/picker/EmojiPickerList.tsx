@@ -89,7 +89,7 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
       });
     }
 
-    if (nextProps.selectedCategory) {
+    if (nextProps.selectedCategory && nextProps.selectedCategory !== this.props.selectedCategory) {
       this.reveal(nextProps.selectedCategory);
     }
   }
@@ -210,6 +210,7 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
           selectedEmoji={groupSelectedEmojiId}
           onMouseMove={this.onEmojiMouseEnter}
           onSelected={this.props.onEmojiSelected}
+          className={categoryClassname}
         />
       );
     });

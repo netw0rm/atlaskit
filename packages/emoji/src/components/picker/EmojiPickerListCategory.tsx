@@ -12,18 +12,19 @@ export interface Props {
   selectedEmoji?: EmojiId;
   onSelected?: OnEmojiEvent;
   onMouseMove?: OnEmojiEvent;
-//  className: PropTypes.string,
+  className?: string;
 }
 
 export default class EmojiPickerListCategory extends PureComponent<Props, {}> {
 
   render() {
-    const { id, selectedEmoji, emojis, title, onMouseMove, onSelected } = this.props;
+    const { className, emojis, id, onMouseMove, onSelected, selectedEmoji, title } = this.props;
 
     return (
       <div
         id={id}
         data-category-id={title}
+        className={className}
       >
         <div className={styles.emojiCategoryTitle} >
           {title}

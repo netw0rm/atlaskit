@@ -89,15 +89,19 @@ export default class EmojiPicker extends PureComponent<Props, State> {
   }
 
   onEmojiActive = (emojiId: EmojiId, emoji: EmojiDescription) => {
-    this.setState({
-      selectedEmoji: emoji,
-    } as State);
+    if (this.state.selectedEmoji !== emoji) {
+      this.setState({
+        selectedEmoji: emoji,
+      } as State);
+    }
   }
 
   onCategoryActivated = (category: string) => {
-    this.setState({
-      activeCategory: category,
-    } as State);
+    if (this.state.activeCategory !== category) {
+      this.setState({
+        activeCategory: category,
+      } as State);
+    }
   }
 
   onCategorySelected = (categoryId: string) => {
@@ -133,6 +137,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
     let activeCategory;
     if (firstResult) {
       selectedEmoji = firstResult;
+      // Only enable categories for full emoji list (non-search)
       activeCategory = searchResults.query ? undefined : firstResult.category;
     }
 
@@ -158,7 +163,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
 
   render() {
     const { target, position, zIndex, offsetX, offsetY, onSelection } = this.props;
-    const { activeCategory, availableCategories } = this.state;
+    const { activeCategory, availableCategories, filteredEmojis, loading, selectedCategory, selectedEmoji, selectedTone } = this.state;
     const classes = [styles.emojiPicker];
 
     const picker = (
@@ -169,18 +174,18 @@ export default class EmojiPicker extends PureComponent<Props, State> {
           availableCategories={availableCategories}
         />
         <EmojiPickerList
-          emojis={this.state.filteredEmojis}
-          selectedCategory={this.state.selectedCategory}
+          emojis={filteredEmojis}
+          selectedCategory={selectedCategory}
           onEmojiSelected={onSelection}
           onEmojiActive={this.onEmojiActive}
           onCategoryActivated={this.onCategoryActivated}
           onSearch={this.onSearch}
-          selectedTone={this.state.selectedTone}
-          loading={this.state.loading}
+          selectedTone={selectedTone}
+          loading={loading}
         />
         <EmojiPickerFooter
-          selectedEmoji={this.state.selectedEmoji}
-          selectedTone={this.state.selectedTone}
+          selectedEmoji={selectedEmoji}
+          selectedTone={selectedTone}
           onToneSelected={this.onToneSelected}
         />
       </div>

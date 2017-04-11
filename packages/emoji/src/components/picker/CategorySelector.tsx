@@ -117,6 +117,7 @@ export default class CategorySelector extends PureComponent<Props, undefined> {
                 key={category.name}
                 className={classNames(categoryClasses)}
                 onClick={() => this.onClick(category.id)}
+                title={category.name}
               >
                 <Icon
                   label={category.name}

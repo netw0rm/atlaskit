@@ -1,4 +1,4 @@
-import { akEditorSubtleAccent } from '../../styles';
+import { akEditorSubtleAccent, akEditorMentionSelected } from '../../styles';
 import { akBorderRadius, akGridSize } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
 
@@ -71,6 +71,10 @@ export const content = style({
 
     '.ProseMirror-selectednode:empty': {
       outline: '2px solid #8cf',
+    },
+
+    '.ProseMirror-selectednode .ak-mention': {
+      background: akEditorMentionSelected
     },
 
     /* Make sure li selections wrap around markers */

@@ -1,0 +1,100 @@
+[
+  {
+    "type": "hc.room",
+    "title": "Product Fabric Team",
+    "id": "abcd-1239",
+    "meta": [
+      {
+        "key": "avatarUrl",
+        "value": "https://product-fabric.atlassian.net/wiki/download/attachments/200360/PRODUCT?version=7&modificationDate=1487829825632&cacheVersion=1&api=v2"
+      },
+      {
+        "key": "privacy",
+        "value": "private"
+      },
+      {
+        "key": "conversation_id",
+        "value": "20000000-1326-4663-a9f0-042054c5a0fe"
+      },
+      {
+        "key": "is_archived",
+        "value": "false"
+      }
+    ]
+  },
+  {
+    "type": "mention",
+    "title": "Jonathan Yeo",
+    "id": "abcd-1234",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "jyeo"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/618f93d035043e3f9e2d4c243b5372fe"
+      }
+    ]
+  },
+  {
+    "type": "mention",
+    "title": "Frederik Granna",
+    "id": "abcd-1235",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "fgranna"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/53ef18dfb9be8f9eb3817937fc9331ac"
+      }
+    ]
+  },
+  {
+    "type": "mention",
+    "title": "Thorsten Basse",
+    "id": "abcd-1236",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "tbasse"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/4d54ad2beaff5bf30e9d17c248b8df54"
+      }
+    ]
+  },
+  {
+    "type": "mention",
+    "title": "Sam Tardif",
+    "id": "abcd-1237",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "stardif"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/14c2d401a644c8c8dc79e6e1577e7cd1"
+      }
+    ]
+  },
+  {
+    "type": "mention",
+    "title": "Ernest Wong",
+    "id": "abcd-1238",
+    "meta": [
+      {
+        "key": "mentionName",
+        "value": "ernest"
+      },
+      {
+        "key": "avatarUrl",
+        "value": "https://avatar-cdn.stg.internal.atlassian.com/c10a1216b0e3d4528edcb2ffba6d1434"
+      }
+    ]
+  }
+]

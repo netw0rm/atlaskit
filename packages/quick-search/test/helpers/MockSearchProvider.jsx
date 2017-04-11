@@ -1,8 +1,14 @@
 import { ISearchProvider } from '../../src/api/SearchProvider';
 import mockSearchData from './mock-search-data.json';
+import recentData from './mock-recent-data.json';
 // import mockSearchData from './mock-hc-search-data.json';
 
 export default class MockSearchProvider extends ISearchProvider {
+
+  constructor(delay = 0) {
+    super();
+    this.delay = delay;
+  }
 
   query = (searchTerm) => {
     if (!searchTerm) {
@@ -10,12 +16,24 @@ export default class MockSearchProvider extends ISearchProvider {
       return;
     }
 
-    Promise.resolve(
-      mockSearchData.filter(
-        ({ title }) => title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
-      )
-    ).then(items => this.notifyChange(items));
-    // ).then(items => this.notifyChange(format(items)));
+    setTimeout(
+      () => {
+        Promise.resolve(
+          mockSearchData.filter(
+            ({ title }) => title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
+          )
+        ).then((data) => {
+          const items = data.length ? data : null;
+          this.notifyChange(items);
+        });
+      }
+      , this.delay || 0
+    );
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  recentItems() {
+    return Promise.resolve(recentData);
   }
 
   notifyChange = (items) => {

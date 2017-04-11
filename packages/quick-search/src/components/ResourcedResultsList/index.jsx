@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import ResultsList from '../ResultsList';
-import { ISearchProvider } from '../../api/SearchProvider';
+import { ISearchProvider, SearchSubscriber } from '../../api/SearchProvider';
 import JsonToResultParser from '../../api/JsonToResultParser';
 import uniqueId from '../../util/id';
 
@@ -15,45 +15,31 @@ export default class ResourcedResultsList extends Component {
     jsonToResultParser: new JsonToResultParser(),
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       items: [],
     };
-    this.subscriberKey = uniqueId('ak-quick-search');
+    this.searchSubscriber = new SearchSubscriber({
+      subscriberKey: uniqueId('ak-quick-search-resourced-results'),
+      changeHandler: this.onSearchResultUpdate,
+      errorHandler: this.filterError,
+    });
   }
 
   componentDidMount() {
-    this.subscribeSearchProvider(this.props.searchProvider);
+    this.searchSubscriber.subscribe(this.props.searchProvider);
   }
 
   componentWillUnmount() {
-    this.unsubscribeSearchProvider(this.props.searchProvider);
+    this.searchSubscriber.unsubscribe(this.props.searchProvider);
   }
 
-  onSearchResultUpdate(items) {
+  onSearchResultUpdate = (items) => {
     this.setState({
       items,
     });
   }
-
-  subscribeSearchProvider = (searchProvider) => {
-    if (searchProvider) {
-      searchProvider.subscribe(
-        this.subscriberKey,
-        this.filterChange,
-        this.filterError
-      );
-    }
-  }
-
-  unsubscribeSearchProvider(searchProvider) {
-    if (searchProvider) {
-      searchProvider.unsubscribe(this.subscriberKey);
-    }
-  }
-
-  filterChange = items => this.setState({ items });
 
   filterError = (err) => {
     this.setState({

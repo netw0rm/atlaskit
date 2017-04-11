@@ -129,13 +129,16 @@ export default class JsonToResultParser {
   }
 
   parse(data) {
+    if (!data) {
+      return null;
+    }
     const XformedData = this.applyDataTransformations(data);
     const componentList = this.renderer.render(XformedData);
     const XformedCmpntList = this.applyComponentTransformations(componentList);
     return XformedCmpntList;
   }
 
-  /** Should these accept functions as well as transformer objects? */
+  /** TODO: Should these accept functions as well as transformer objects? */
   applyDataTransformations(data) {
     return this.dataTransformers.reduce(
         ((XformedData, transformer) => transformer.transform(data))

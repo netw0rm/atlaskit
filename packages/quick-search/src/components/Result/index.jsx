@@ -38,7 +38,7 @@ export class HipChatRoomResult extends Result {
         // withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
-          authorization: 'Hipchat eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJoaXBjaGF0IiwiY2xvdWRfaWQiOiIwNjJlNDE1NS1kNTUzLTQ0YjctODdhNi1lODc2MjUzZGIzMjYiLCJleHAiOjE0OTE1NTM5OTAsImlzcyI6ImhpcGNoYXQtaWRlbnRpdHkiLCJ1c2VyX2lkIjoiNjU1MzYzOjczOTY0ZGY3LWJmZGUtNGNjYi1iMzgxLTBhZTg2YTFlZmNmOCJ9.gHzCkqQ943o3CQin-X9RbsBJBvWybHQZULU9zLhJEdY',
+          authorization: '',
         },
         cancelToken: new CancelToken((c) => {
           this._cancel = c;

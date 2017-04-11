@@ -26,6 +26,34 @@ export class /* interface */ ISearchProvider {
   query = () => {};
 }
 
+export class SearchSubscriber {
+  constructor(options) {
+    if (!options.subscriberKey && !options.key) {
+      throw new Error('Missing required parameter: subscriberKey');
+    }
+    this.key = options.subscriberKey || options.key;
+    this.defaultChangeHandler = options.changeHandler;
+    this.defaultErrorHandler = options.errorHandler;
+  }
+
+  subscribe = (searchProvider, changeHandler, errorHandler) => {
+    if (!searchProvider) {
+      throw new Error('Passed in SearchProvider must not be null');
+    }
+    searchProvider.subscribe(
+      this.key,
+      changeHandler || this.defaultChangeHandler,
+      errorHandler || this.defaultErrorHandler
+    );
+  }
+
+  unsubscribe(searchProvider) {
+    if (searchProvider) {
+      searchProvider.unsubscribe(this.key);
+    }
+  }
+}
+
 // Babel does not support extending built-in types
 // http://stackoverflow.com/questions/31089801/extending-error-in-javascript-with-es6-syntax
 

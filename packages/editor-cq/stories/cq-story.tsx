@@ -5,6 +5,7 @@ import { PureComponent } from 'react';
 import Editor from '../src';
 import { name, version } from '../package.json';
 import { storyDecorator } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { resourceProvider } from './mentions/story-data';
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
@@ -14,6 +15,10 @@ const CODE_MACRO = `<ac:structured-macro ac:name="code" ac:schema-version="1" ac
 }]]></ac:plain-text-body></ac:structured-macro>`;
 
 const PANEL_MACRO = `<ac:structured-macro ac:name="warning" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">Hello</ac:parameter><ac:rich-text-body><p>Warning panel</p></ac:rich-text-body></ac:structured-macro>`;
+
+const mentionProvider = new Promise<any>(resolve => {
+  resolve(resourceProvider);
+});
 
 storiesOf(name, module)
   .addDecorator(storyDecorator(version))
@@ -64,6 +69,7 @@ storiesOf(name, module)
               onSave={SAVE_ACTION}
               defaultValue={this.state.input}
               key={this.state.input}
+              mentionProvider={mentionProvider}
             />
             <fieldset style={{ marginTop: 20 }}>
               <legend>Output</legend>

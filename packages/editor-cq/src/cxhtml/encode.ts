@@ -98,6 +98,8 @@ export default function encode(node: PMNode) {
           case schema.marks.code:
             elem = elem.appendChild(doc.createElement('code'));
             break;
+          case schema.marks.mentionQuery:
+            break;
           case schema.marks.link:
             elem = elem.appendChild(encodeLink(node));
             break;

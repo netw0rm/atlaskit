@@ -21,7 +21,8 @@ import {
   subsup,
   text,
   underline,
-  panel
+  panel,
+  mentionQuery
 } from '@atlaskit/editor-core';
 
 const code = {
@@ -58,6 +59,7 @@ interface CQSchemaMarks {
   strong: MarkSpec;
   subsup: MarkSpec;
   underline: MarkSpec;
+  mentionQuery: MarkSpec;
 }
 
 const nodes = {
@@ -86,6 +88,7 @@ const marks = {
   strong,
   subsup,
   underline,
+  mentionQuery,
 };
 
 export interface CQSchema extends Schema<CQSchemaNodes, CQSchemaMarks> {}

@@ -12,6 +12,7 @@ import {
   HyperlinkPlugin,
   keymap,
   ListsPlugin,
+  Node as PMNode,
   RulePlugin,
   TextFormattingPlugin,
   TextSelection,
@@ -197,13 +198,14 @@ export default class Editor extends PureComponent<Props, State> {
 
     if (place) {
       const { context } = this.props;
+      const doc = parse(this.props.defaultValue || '');
       const cqKeymap = {
         'Mod-Enter': this.handleSave,
       };
 
       const editorState = EditorState.create({
         schema,
-        doc: parse(this.props.defaultValue || ''),
+        doc,
         plugins: [
           BlockTypePlugin,
           ClearFormattingPlugin,
@@ -255,8 +257,40 @@ export default class Editor extends PureComponent<Props, State> {
 
       this.setState({ editorView });
       this.focus();
+
+      this.sendUnsupportedNodeUsage(doc);
     } else {
       this.setState({ editorView: undefined });
     }
   }
+
+  /**
+   * Traverse document nodes to find the number of unsupported ones
+   */
+  private sendUnsupportedNodeUsage(doc: PMNode) {
+    const { unsupportedBlock, unsupportedInline } = schema.nodes;
+    const blockNodesOccurance = 0;
+    const inlineNodesOccurance = 0;
+
+    traverseNode(node);
+
+    for (let i = 0; i < blockNodesOccurance; i++) {
+      analyticsService.trackEvent('atlassian.editor.unsupported.block');
+    }
+
+    for (let i = 0; i < inlineNodesOccurance; i++) {
+      analyticsService.trackEvent('atlassian.editor.unsupported.inline');
+    }
+
+    function traverseNode(node: PMNode) {
+      if (node.type === unsupportedBlock) {
+        blockNodesOccurance += 1;
+      } else if (node.type === unsupportedInline) {
+        inlineNodesOccurance += 1;
+      } else {
+        node.content.forEach(traverseNode);
+      }
+    }
+  }
+
 }

@@ -1,3 +1,5 @@
+import sinon from 'sinon';
+
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import Layer from '@atlaskit/layer';

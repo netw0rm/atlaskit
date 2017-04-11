@@ -307,6 +307,23 @@ export const document = {
       content: [
         {
           type: 'text',
+          text: 'This is a paragraph with a text node'
+        },
+        {
+          type: 'text',
+          text: '\n'
+        },
+        {
+          type: 'text',
+          text: 'that contains a new line'
+        },
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
           text: 'This is a '
         },
         {
@@ -360,6 +377,35 @@ export const document = {
             id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
             collectionId: ['MediaServicesSample']
           }
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Click me! ',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'javascript:alert("hello world")'
+              }
+            }
+          ]
+        },
+        {
+          type: 'text',
+          text: 'www.atlassian.com',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'www.atlassian.com'
+              }
+            }
+          ]
         }
       ]
     }

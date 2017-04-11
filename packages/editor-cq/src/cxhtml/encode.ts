@@ -21,6 +21,8 @@ export default function encode(node: PMNode) {
       return encodeBulletList(node);
     } else if (node.type === schema.nodes.heading) {
       return encodeHeading(node);
+    } else if (node.type === schema.nodes.jiraIssue) {
+      return encodeJiraIssue(node);
     } else if (node.type === schema.nodes.rule) {
       return encodeHorizontalRule();
     } else if (node.type === schema.nodes.listItem) {
@@ -209,6 +211,36 @@ export default function encode(node: PMNode) {
     if (domNode) {
       return doc.importNode(domNode, true);
     }
+  }
+
+  function encodeJiraIssue(node: PMNode) {
+    // if this is an issue list, parse it as unsupported node
+    // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672
+    if (!node.attrs.issueKey) {
+      return encodeUnsupported(node);
+    }
+
+    const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
+    elem.setAttributeNS(AC_XMLNS, 'ac:name', 'jira');
+    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
+    elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
+
+    const serverParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+    serverParam.setAttributeNS(AC_XMLNS, 'ac:name', 'server');
+    serverParam.textContent = node.attrs.server;
+    elem.appendChild(serverParam);
+
+    const serverIdParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+    serverIdParam.setAttributeNS(AC_XMLNS, 'ac:name', 'serverId');
+    serverIdParam.textContent = node.attrs.serverId;
+    elem.appendChild(serverIdParam);
+
+    const keyParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+    keyParam.setAttributeNS(AC_XMLNS, 'ac:name', 'key');
+    keyParam.textContent = node.attrs.issueKey;
+    elem.appendChild(keyParam);
+
+    return elem;
   }
 
   function mapCodeLanguage(language: string): string {

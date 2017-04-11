@@ -485,7 +485,7 @@ describe('block-type', () => {
 
             sendKeyToPm(editorView, 'Enter');
 
-            expect(editorView.state.doc).to.deep.equal(doc(code_block()('```'), p('')));
+            expect(editorView.state.doc).to.deep.equal(doc(code_block()('```\n')));
           });
         });
 

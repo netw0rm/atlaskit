@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "10.5.0",
+  "version": "10.5.3",
   "config": {
     "access": "public"
   },
@@ -41,7 +41,7 @@
     "@atlaskit/emoji": "^13.0.0",
     "@atlaskit/icon": "^2.5.6",
     "@atlaskit/media-core": "^1.2.0",
-    "@atlaskit/mention": "^4.1.0",
+    "@atlaskit/mention": "^4.2.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.0.3",
     "@atlaskit/util-shared-styles": "^1.2.1",

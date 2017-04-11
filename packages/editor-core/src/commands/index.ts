@@ -237,9 +237,10 @@ export function toggleHeading(level: number): Command {
 
 export function createCodeBlockFromFenceFormat(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
+    const { codeBlock } = state.schema.nodes;
     const { $from } = state.selection;
     const parentBlock = $from.parent;
-    if (!parentBlock.isTextblock) {
+    if (!parentBlock.isTextblock || parentBlock.type === codeBlock) {
       return false;
     }
     const startPos = $from.start($from.depth);
@@ -264,24 +265,9 @@ export function createCodeBlockFromFenceFormat(): Command {
 
     const matches = /^```([^\s]+)?/.exec(fencePart);
 
-    if (matches) {
-      if (isConvertableToCodeBlock(state)) {
-        dispatch(transformToCodeBlockAction(state, { language: matches[1] }).delete(startPos, $from.pos));
-        return true;
-      }
-
-      // add empty paragraph node if user hits Enter
-      // otherwise a new line is inserted by ProseMirror
-      const { codeBlock, paragraph } = state.schema.nodes;
-
-      if ($from && $from.parent.type === codeBlock) {
-        const posAfterCodeBlock = $from.end($from.depth) + 1;
-        const paragraphNode = paragraph.create();
-        const transform = state.tr.insert(posAfterCodeBlock, paragraphNode);
-
-        dispatch(transform);
-        return true;
-      }
+    if (matches && isConvertableToCodeBlock(state)) {
+      dispatch(transformToCodeBlockAction(state, { language: matches[1] }).delete(startPos, $from.pos));
+      return true;
     }
 
     return false;

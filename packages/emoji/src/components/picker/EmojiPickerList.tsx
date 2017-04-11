@@ -35,7 +35,6 @@ export interface Props {
   selectedTone?: number;
   onSearch?: OnSearch;
   loading?: boolean;
-  showCategories?: boolean;
 }
 
 export interface State {
@@ -66,8 +65,6 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
 
-    this.groups = this.buildList(props.emojis);
-
     let selectedEmoji = props.emojis[0];
     if (props.selectedCategory) {
       const emojiInCategory = props.emojis
@@ -81,6 +78,8 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
       selectedEmoji,
       query: '',
     };
+
+    this.groups = this.buildList(props.emojis);
   }
 
   componentWillReceiveProps = (nextProps: Props) => {
@@ -143,15 +142,27 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
 
   private buildList = (emojis: EmojiDescription[]): EmojiGroup[] => {
     const existingCategories = new Map();
+    const isSearching = !!this.state.query;
 
     let currentGroup;
     let currentCategory: string | undefined;
 
     const list: EmojiGroup[] = [];
+
+    if (isSearching) {
+      currentCategory = 'SEARCHRESULTS';
+      currentGroup = {
+        emojis: [],
+        title: 'Search results',
+        category: currentCategory,
+      };
+      list.push(currentGroup);
+    }
+
     for (let i = 0; i < emojis.length; i++) {
       let emoji = emojis[i];
 
-      if (currentCategory !== emoji.category) {
+      if (!isSearching && currentCategory !== emoji.category) {
         currentCategory = emoji.category;
         if (existingCategories.has(currentCategory)) {
           currentGroup = existingCategories.get(currentCategory);

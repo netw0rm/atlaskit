@@ -125,14 +125,15 @@ export default class EmojiPicker extends PureComponent<Props, State> {
   private onSearchResult = (searchResults: EmojiSearchResult): void => {
     const filteredEmojis = searchResults.emojis;
     const firstResult = filteredEmojis[0];
-    const availableCategories = searchResults.categories;
+    // Only enable categories for full emoji list (non-search)
+    const availableCategories = searchResults.query ? [] : searchResults.categories;
     const query = searchResults.query;
 
     let selectedEmoji;
     let activeCategory;
     if (firstResult) {
       selectedEmoji = firstResult;
-      activeCategory = firstResult.category;
+      activeCategory = searchResults.query ? undefined : firstResult.category;
     }
 
     this.setState({

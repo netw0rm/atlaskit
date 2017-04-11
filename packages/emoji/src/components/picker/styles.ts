@@ -81,6 +81,10 @@ export const category = style({
         },
       },
     },
+
+    ['&:focus']: {
+      outline: '0',
+    },
   },
 });
 

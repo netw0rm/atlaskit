@@ -81,14 +81,16 @@ const nodes = {
   rule,
 };
 
+// ranking order is important
+// @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-Rank
 const marks = {
-  code,
-  em,
   link,
-  strike,
+  em,
   strong,
+  strike,
   subsup,
   underline,
+  code,
 };
 
 export interface CQSchema extends Schema<CQSchemaNodes, CQSchemaMarks> {}

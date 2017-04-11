@@ -40,23 +40,23 @@ function liftSubList(state: EditorState<any>, listNode: Node, listPos: number, t
   listNode.descendants((node, pos) => {
     if (node.type === bulletList || node.type === orderedList) {
       let startPos;
-      let endpos;
+      let endPos;
       node.descendants((child, childPos) => {
         if (child.type === text) {
           if (!startPos) {
             startPos = listPos + pos + childPos;
           }
           if (child.textContent && child.textContent.length > 0) {
-            endpos = listPos + pos + childPos + child.textContent.length;
+            endPos = listPos + pos + childPos + child.textContent.length;
           } else {
-            endpos = listPos + pos + childPos + 1;
+            endPos = listPos + pos + childPos + 1;
           }
         }
       });
       const selectionStart = state.selection.$from.pos;
       const startLocation = startPos > selectionStart ? startPos : selectionStart;
       const start = tr.doc.resolve(tr.mapping.map(startLocation));
-      const end = tr.doc.resolve(tr.mapping.map(endpos));
+      const end = tr.doc.resolve(tr.mapping.map(endPos));
       const sel = new TextSelection(start, end);
       tr = liftListItem(state, sel, tr);
     }

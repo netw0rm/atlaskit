@@ -16,6 +16,8 @@ import StatusDropdown from './examples/StatusDropdown';
 import StatusDropdownRaw from '!raw!./examples/StatusDropdown';
 import LongItemsDropdown from './examples/LongItemsDropdown';
 import LongItemsDropdownRaw from '!raw!./examples/LongItemsDropdown';
+import WideDropdown from './examples/WideDropdown';
+import WideDropdownRaw from '!raw!./examples/WideDropdown';
 /* eslint-enable import/first, import/no-duplicates */
 
 import {
@@ -213,6 +215,17 @@ storiesOf(name, module)
       {LongItemsDropdown}
       <Code>
         {LongItemsDropdownRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('dropdown that fits container width', () => (
+    <Chrome title="Wide Dropdown">
+      <Description>
+        <p>This is an example of how to create a dropdown which fits container width</p>
+      </Description>
+      {WideDropdown}
+      <Code>
+        {WideDropdownRaw}
       </Code>
     </Chrome>
   ));

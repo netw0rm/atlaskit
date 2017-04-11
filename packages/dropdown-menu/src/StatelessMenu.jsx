@@ -234,7 +234,9 @@ export default class StatelessDropdownMenu extends PureComponent {
             this.domItemsList = ref ? ref.querySelectorAll('[data-role="droplistItem"]') : undefined;
           }}
           role="menu"
-          className={styles.menuContainer}
+          className={this.props.shouldFitContainer
+            ? styles.menuContainerWithoutLimit
+            : styles.menuContainer}
         >
           {this.renderGroups(props.items)}
         </div>

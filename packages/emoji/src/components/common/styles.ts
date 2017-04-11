@@ -66,6 +66,14 @@ export const emojiButton = style({
   cursor: 'pointer',
   margin: '0',
   padding: '4px',
+
+  $nest: {
+    /* Firefox */
+    ['&::-moz-focus-inner']: {
+      border: '0 none',
+      padding: 0,
+    },
+  },
 });
 
 export const buttons = 'buttons';

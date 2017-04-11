@@ -117,16 +117,20 @@ export default class CategorySelector extends PureComponent<Props, undefined> {
             const Icon = category.icon;
 
             return (
-              <button
+              <li
                 key={category.name}
-                className={classNames(categoryClasses)}
-                onClick={onClick}
-                title={category.name}
               >
-                <Icon
-                  label={category.name}
-                />
-              </button>
+                <button
+                  key={category.name}
+                  className={classNames(categoryClasses)}
+                  onClick={onClick}
+                  title={category.name}
+                >
+                  <Icon
+                    label={category.name}
+                  />
+                </button>
+              </li>
             );
           })}
         </ul>

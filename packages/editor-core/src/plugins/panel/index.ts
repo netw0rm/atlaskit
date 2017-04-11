@@ -55,7 +55,7 @@ export class PanelState {
     let selEnd = tr.doc.resolve(selEndPos);
     let range = selStart.blockRange(selEnd)!;
     // lift selection
-    tr.lift(range, 0);
+    tr.lift(range, $from.depth - 3);
     selStart = tr.doc.resolve(tr.mapping.map(selStartPos));
     selEnd = tr.doc.resolve(tr.mapping.map(selEndPos));
     range = selStart.blockRange(selEnd)!;

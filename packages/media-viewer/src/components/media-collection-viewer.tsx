@@ -1,29 +1,32 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Context, MediaCollectionItem, MediaCollectionFileItem } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import { Subscription } from 'rxjs/Subscription';
-import { fetchToken } from '../util/fetch-token';
+import { fetchToken } from '../domain/fetch-token';
+import { MediaFileAttributesFactory } from '../domain/media-file-attributes';
+import { MediaViewerInterface, MediaViewerConstructor } from '../mediaviewer';
 
 export interface MediaCollectionViewerProps {
   readonly context: Context;
   readonly occurenceKey: string;
   readonly collectionName: string;
-  readonly basePath: string;
 
+  readonly MediaViewer: MediaViewerConstructor;
+  readonly basePath: string;
   readonly onClose?: () => void;
 }
 
 export interface MediaCollectionViewerState {
-  readonly mediaViewer: MediaViewer;
+  readonly mediaViewer: MediaViewerInterface;
 }
 
 export class MediaCollectionViewer extends Component<MediaCollectionViewerProps, MediaCollectionViewerState> {
   private subscription: Subscription;
 
   componentDidMount(): void {
-    const { context, occurenceKey, collectionName, basePath, onClose } = this.props;
+    const { context, occurenceKey, collectionName, basePath, onClose, MediaViewer } = this.props;
     const { config } = context;
-    const { clientId, tokenProvider } = config;
+    const { serviceHost, clientId, tokenProvider } = config;
 
     this.setState({
       mediaViewer: new MediaViewer({
@@ -35,23 +38,13 @@ export class MediaCollectionViewer extends Component<MediaCollectionViewerProps,
     }, () => {
       const { mediaViewer } = this.state;
       const provider = context.getMediaCollectionProvider(collectionName, 50);
-      const collectionFileItemFilter = (item: MediaCollectionItem) => item.type === 'file';
 
       this.subscription = provider.observable().subscribe({
         next: collection => {
           if (onClose) {
             mediaViewer.on('fv.close', onClose);
           }
-          const files = collection.items
-            .filter(collectionFileItemFilter)
-            .map((item: MediaCollectionFileItem) => ({
-              id: item.details.occurrenceKey,
-              src: `${config.serviceHost}/file/${item.details.id}/binary`,
-              type: item.details.mimeType,
-              title: item.details.name
-            }));
-
-          mediaViewer.setFiles(files);
+          mediaViewer.setFiles(MediaFileAttributesFactory.fromMediaCollection(collection, serviceHost));
           mediaViewer.open({ id: occurenceKey });
         }
       });

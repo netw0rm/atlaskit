@@ -64,6 +64,13 @@ const file3 = {
   mediaItemType: fileType
 };
 const fileItems = [file1, file2, file3];
+const styles = {
+  border: '1px solid black',
+  paddingLeft: 0,
+  height: '180px',
+  overflow: 'scroll',
+  position: 'relative'
+};
 
 storiesOf('FilmStrip', {})
   .add('Default', () => (
@@ -121,6 +128,120 @@ storiesOf('FilmStrip', {})
       }]}
     </StoryList>
   ))
+  .add('Lazy loading (single item)', () => {
+    const filmstrip = () => <FilmStrip
+      context={context}
+      items={[file2]}
+      collectionName={collectionName}
+      actions={cardsActions}
+    />;
+    const smallList = <ul style={styles}>
+      <li>{filmstrip()}</li>
+      <li>{filmstrip()}</li>
+      <li>{filmstrip()}</li>
+      <li>{filmstrip()}</li>
+    </ul>;
+    const largeList = <ul style={{...styles, height: '400px'}}>
+      <li>{filmstrip()}</li>
+      <li>{filmstrip()}</li>
+      <li>{filmstrip()}</li>
+      <li>{filmstrip()}</li>
+      <li>{filmstrip()}</li>
+      <li>{filmstrip()}</li>
+    </ul>;
+    const visibleList = <ul style={{...styles, height: '600px'}}>
+      <li>{filmstrip()}</li>
+      <li>{filmstrip()}</li>
+      <li>{filmstrip()}</li>
+      <li>{filmstrip()}</li>
+    </ul>;
+    const autoHeight = <ul style={{...styles, height: 'auto'}}>
+      <li>{filmstrip()}</li>
+      <li>{filmstrip()}</li>
+      <li>{filmstrip()}</li>
+    </ul>;
+
+    return <StoryList>
+      {[{
+        title: 'Small container',
+        content: smallList
+      }, {
+        title: 'Large container',
+        content: largeList
+      }, {
+        title: 'All visible',
+        content: visibleList
+      }, {
+        title: 'Auto height',
+        content: autoHeight
+      }]}
+    </StoryList>;
+  })
+  .add('Lazy loading (multiple items)', () => {
+    const onlyFilesFilmstrip = () => <FilmStrip
+      context={context}
+      items={[file1, file3, file2, file2, file1, file3, file3, file2, file1, file2]}
+      collectionName={collectionName}
+      actions={cardsActions}
+    />;
+    const filmstrip = () => <FilmStrip
+      context={context}
+      items={[file1, spotifyLink, file3, file2, trelloLink, twitterLink, linkPlayer, genericLink]}
+      collectionName={collectionName}
+      actions={cardsActions}
+    />;
+    const noFilesFilmstrip = () => <FilmStrip
+      context={context}
+      items={[spotifyLink, trelloLink, twitterLink, linkPlayer, genericLink]}
+      collectionName={collectionName}
+      actions={cardsActions}
+    />;
+    const filesList = <ul style={styles}>
+      <li>{onlyFilesFilmstrip()}</li>
+      <li>{onlyFilesFilmstrip()}</li>
+      <li>{onlyFilesFilmstrip()}</li>
+      <li>{onlyFilesFilmstrip()}</li>
+      <li>{onlyFilesFilmstrip()}</li>
+      <li>{onlyFilesFilmstrip()}</li>
+      <li>{onlyFilesFilmstrip()}</li>
+    </ul>;
+    const linksList = <ul style={styles}>
+      <li>{noFilesFilmstrip()}</li>
+      <li>{noFilesFilmstrip()}</li>
+      <li>{noFilesFilmstrip()}</li>
+      <li>{noFilesFilmstrip()}</li>
+      <li>{noFilesFilmstrip()}</li>
+      <li>{noFilesFilmstrip()}</li>
+      <li>{noFilesFilmstrip()}</li>
+    </ul>;
+    const mixedList = <ul style={styles}>
+      <li>{onlyFilesFilmstrip()}</li>
+      <li>{filmstrip()}</li>
+      <li>{onlyFilesFilmstrip()}</li>
+      <li>{onlyFilesFilmstrip()}</li>
+      <li>{filmstrip()}</li>
+      <li>{onlyFilesFilmstrip()}</li>
+      <li>{noFilesFilmstrip()}</li>
+      <li>{noFilesFilmstrip()}</li>
+      <li>{onlyFilesFilmstrip()}</li>
+      <li>{noFilesFilmstrip()}</li>
+      <li>{onlyFilesFilmstrip()}</li>
+      <li>{onlyFilesFilmstrip()}</li>
+    </ul>;
+
+    return <StoryList>
+      {[{
+        title: 'Only Files',
+        content: filesList
+      }, {
+        title: 'Only Links',
+        content: linksList
+      }, {
+        title: 'Mixed content',
+        content: mixedList
+      }]}
+    </StoryList>;
+  })
   .add('Mixed content', () => (
     <StoryList>
       {[{

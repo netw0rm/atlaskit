@@ -16,10 +16,10 @@ const DEFAULT_CARD_DIMENSIONS = {
 };
 
 export interface FileCardProps extends SharedCardProps {
-  readonly fileDetails: FileDetails;
   readonly cardProcessingStatus: CardProcessingStatus;
-  readonly error?: Error;
+  readonly fileDetails?: FileDetails;
   readonly dataURIService: DataUriService;
+  readonly error?: Error;
 };
 
 export interface FileCardState {
@@ -44,7 +44,7 @@ export class FileCard extends Component<FileCardProps, FileCardState> {
     const {fileDetails: nextFileDetails, dataURIService} = nextProps;
 
     if (nextFileDetails !== currentFileDetails) {
-      this.setState({dataURI: null}, () => {
+      this.setState({dataURI: undefined}, () => {
         this.fetchDataUri(dataURIService, nextFileDetails);
       });
     }
@@ -102,81 +102,50 @@ export class FileCard extends Component<FileCardProps, FileCardState> {
   }
 
   render() {
-    const {fileDetails} = this.props;
-    if (fileDetails) {
-      return this.renderFile(fileDetails);
-    } else {
-      return this.renderNoFileItem();
-    }
+    return this.renderFile();
   }
 
-  onClick(event: Event): void { // TODO: select handlers seem to be broken now. fix.
+  onClick = (event: Event) : void => { // TODO: select handlers seem to be broken now. fix.
     const {fileDetails} = this.props;
     const onClick = this._getFirstAction(CardActionType.click);
 
     if (onClick && fileDetails) {
       onClick.handler({type: 'file', details: fileDetails}, event);
     }
-  };
-
-  renderNoFileItem(): JSX.Element {
-    const {cardProcessingStatus, error, dimensions, selectable, selected} = this.props;
-    const {dataURI} = this.state;
-
-    const errorMessage = error ? 'Error loading card' : undefined;
-
-    return (this._isSmall()) ?
-      (
-        <FileCardViewSmall
-          error={errorMessage}
-          width={dimensions && dimensions.width}
-          loading={this.isLoading()}
-          dataURI={dataURI}
-          actions={this._getActions()}
-          onClick={this.onClick.bind(this)}
-        />
-      ) : (
-        <FileCardView
-          error={errorMessage}
-          dimensions={dimensions}
-          loading={this.isLoading()}
-          selectable={selectable}
-          selected={selected}
-          dataURI={dataURI}
-          actions={this._getActions()}
-          onClick={this.onClick.bind(this)}
-        />
-      );
   }
 
-  renderFile(file: FileDetails): JSX.Element {
-    const {cardProcessingStatus, dimensions, selectable, selected} = this.props;
+  renderFile(): JSX.Element {
     const {dataURI} = this.state;
-
+    const {dimensions, selectable, selected, fileDetails, error} = this.props;
+    const defaultDetails = {name: undefined, mediaType: undefined, size: undefined};
+    const {name, mediaType, size} = fileDetails ? fileDetails : defaultDetails;
+    const errorMessage = error ? 'Error loading card' : undefined;
     const card = (this._isSmall()) ?
       (
         <FileCardViewSmall
+          error={errorMessage}
           width={dimensions && dimensions.width}
-          loading={this.isLoading()}
           dataURI={dataURI}
-          mediaName={file.name}
-          mediaType={file.mediaType}
-          mediaSize={file.size}
+          mediaName={name}
+          mediaType={mediaType}
+          mediaSize={size}
+          loading={this.isLoading}
           actions={this._getActions()}
-          onClick={this.onClick.bind(this)}
+          onClick={this.onClick}
         />
       ) : (
         <FileCardView
-          loading={this.isLoading()}
-          dataURI={dataURI}
+          error={errorMessage}
           dimensions={dimensions}
-          mediaName={file.name}
-          mediaType={file.mediaType}
-          mediaSize={file.size}
-          actions={this._getActions()}
-          onClick={this.onClick.bind(this)}
           selectable={selectable}
           selected={selected}
+          dataURI={dataURI}
+          mediaName={name}
+          mediaType={mediaType}
+          mediaSize={size}
+          loading={this.isLoading}
+          actions={this._getActions()}
+          onClick={this.onClick}
         />
       );
 
@@ -202,7 +171,8 @@ export class FileCard extends Component<FileCardProps, FileCardState> {
           label: action.label,
           type: action.type,
           handler: () => {
-            action.handler({type: 'file', details: fileDetails});
+            // TODO remove || guarding and update action signature to be correct
+            action.handler({type: 'file', details: fileDetails || {}});
           }
         };
       });
@@ -219,7 +189,9 @@ export class FileCard extends Component<FileCardProps, FileCardState> {
     return this.props.appearance === 'small';
   }
 
-  private isLoading(): boolean {
-    return this.props.cardProcessingStatus === 'loading';
+  private get isLoading(): boolean {
+    const {cardProcessingStatus} = this.props;
+
+    return cardProcessingStatus === 'loading' || cardProcessingStatus === 'processing';
   }
 }

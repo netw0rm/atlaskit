@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { encode, parse } from '../src/cxhtml';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
-  code, ol, p, strike, strong, sub, sup, u, ul, codeblock,
+  code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention,
   unsupportedInline, unsupportedBlock
 } from './_schema-builder';
 
@@ -347,6 +347,34 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         '<ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Code</ac:parameter><ac:parameter ac:name="language">js</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
         doc(p(strong('Code')), codeblock({ language: 'js' })('some code')));
     });
+
+    describe('panel', () => {
+      context('when panel does not have title', () => {
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p>${panelType} panel</p></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(p(`${panelType} panel`))));
+        });
+      });
+      context('when panel has title', () => {
+        const title = 'Panel title';
+
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${title}</ac:parameter><ac:rich-text-body><p>${panelType} panel</p></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(h3(title), p(`${panelType} panel`))));
+        });
+      });
+      context('when panel has multiple top-level nodes', () => {
+        const title = 'Panel title';
+
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${title}</ac:parameter><ac:rich-text-body><p>p1</p><p>p2</p><h5>h5</h5></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(h3(title), p('p1'), p('p2'), h5('h5'))));
+        });
+      });
+    });
   });
 
   describe('unsupported content', () => {
@@ -444,6 +472,20 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         )
       );
     });
+
+    check(
+      'mentions',
+      '<p>This is mention from <fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></p>',
+      doc(
+        p(
+          'This is mention from ',
+          mention({
+            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+            displayName: 'Artur Bodera'
+          })
+        )
+      )
+    );
   });
 
 // Color text span

@@ -1,5 +1,6 @@
-import { Schema, InputRule, inputRules, Plugin } from '../../prosemirror';
+import { Schema, inputRules, Plugin } from '../../prosemirror';
 import { analyticsService } from '../../analytics';
+import { createInputRule } from '../utils';
 
 let plugin: Plugin | undefined;
 
@@ -13,7 +14,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   }
 
   // ![something](link) should convert to an image
-  const imageRule = new InputRule(/!\[(\S+)\]\((\S+)\)$/, (state, match, start, end) => {
+  const imageRule = createInputRule(/!\[(\S+)\]\((\S+)\)$/, (state, match, start, end) => {
     const { schema } = state;
     const attrs = {
       src: match[2],

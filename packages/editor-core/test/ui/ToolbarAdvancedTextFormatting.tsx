@@ -28,7 +28,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         expect(toolbarOption.html()).to.equal(null);
     });
 
-    it('should have 3 child elements if both pluginStateTextFormatting and pluginStateClearFormatting are defined', () => {
+    it('should have 5 child elements if both pluginStateTextFormatting and pluginStateClearFormatting are defined', () => {
         const { pluginStates, editorView } = editor(doc(p('text')));
         const toolbarOption = mount(
             <ToolbarAdvancedTextFormatting
@@ -38,10 +38,10 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
             />
         );
         toolbarOption.setState({ isOpen: true });
-        expect(toolbarOption.find(Item).length).to.equal(3);
+        expect(toolbarOption.find(Item).length).to.equal(5);
     });
 
-    it('should return only 2 items if only pluginStateTextFormatting is defined', () => {
+    it('should return only 4 items if only pluginStateTextFormatting is defined', () => {
         const { pluginStates, editorView } = editor(doc(p('text')));
         const toolbarOption = shallow(
             <ToolbarAdvancedTextFormatting
@@ -49,7 +49,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
                 editorView={editorView}
             />
         );
-        expect(toolbarOption.find(Item).length).to.equal(2);
+        expect(toolbarOption.find(Item).length).to.equal(4);
     });
 
     it('should return only 1 items if only pluginStateClearFormatting is defined', () => {
@@ -97,7 +97,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         expect(toolbarOption.state('isOpen')).to.be.false;
     });
 
-    it('should have 3 child elements with title attribute', () => {
+    it('should have 5 child elements with title attribute', () => {
         const { pluginStates, editorView } = editor(doc(p('text')));
         const toolbarOption = mount(
             <ToolbarAdvancedTextFormatting
@@ -107,7 +107,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
             />
         );
         toolbarOption.setState({ isOpen: true });
-        expect(toolbarOption.find(Tooltip).length).to.equal(3);
+        expect(toolbarOption.find(Tooltip).length).to.equal(5);
     });
 
     it('should trigger toggleCode of pluginStateTextFormatting when code option is clicked', () => {
@@ -182,7 +182,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
         );
         toolbarOption.find(ToolbarButton).simulate('click');
         pluginStates[1].clearFormatting = sinon.spy();
-        const clearFormattingButton = toolbarOption.find(Item).at(2).childAt(0);
+        const clearFormattingButton = toolbarOption.find(Item).at(4).childAt(0);
         clearFormattingButton.simulate('click');
         expect(pluginStates[1].clearFormatting.callCount).to.equal(1);
     });

@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 import chai from 'chai';
 
-import DynamicProps from '../src/DynamicProps';
+import DynamicProps from '../../src/DynamicProps';
 
 const expect = chai.expect;
 
@@ -29,6 +29,6 @@ export default class Foo extends React.PureComponent {
 }`;
     const wrapper = mount(<DynamicProps componentSrc={componentSrc} />);
     expect(wrapper.text()).to.not.contain('There are no props for this component');
-    expect(wrapper.find('table')).to.have.length(1);
+    expect(wrapper.find('h3').text()).to.contain('foo');
   });
 });

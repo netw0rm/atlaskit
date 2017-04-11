@@ -54,13 +54,16 @@ function getPackagesFromRegistry(packages, getLatest = true) {
     });
 }
 
-/* Fetches packages at specific versions. `packages` should be in the form:
-     [{ name: 'package-a', version: '1.0.0' }, { name: 'package-b', version: '1.0.0' }, ...]
+/* Fetches the latest version of packages from registry. `packages` should be in the form:
+     [{ name: 'package-a' }, { name: 'package-b' }, ...]
 */
 function getLatestPackagesFromRegistry(packages) {
   return getPackagesFromRegistry(packages);
 }
 
+/* Fetches packages at specific versions. `packages` should be in the form:
+     [{ name: 'package-a', version: '1.0.0' }, { name: 'package-b', version: '1.0.0' }, ...]
+*/
 function getPackagesFromRegistryAtVersion(packages) {
   // tell getPackagesFromRegistry to not get latest
   return getPackagesFromRegistry(packages, true);

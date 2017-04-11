@@ -57,7 +57,6 @@ export class EmojiState {
       return;
     }
 
-    const { docView } = this.view;
     const { emojiQuery } = state.schema.marks;
     const { doc, selection } = state;
     const { from, to } = selection;
@@ -83,7 +82,7 @@ export class EmojiState {
       return;
     }
 
-    const newAnchorElement = docView.dom.querySelector('[data-emoji-query]') as HTMLElement;
+    const newAnchorElement = this.view.dom.querySelector('[data-emoji-query]') as HTMLElement;
     if (newAnchorElement !== this.anchorElement) {
       dirty = true;
       this.anchorElement = newAnchorElement;

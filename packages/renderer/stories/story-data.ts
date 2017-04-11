@@ -307,6 +307,23 @@ export const document = {
       content: [
         {
           type: 'text',
+          text: 'This is a paragraph with a text node'
+        },
+        {
+          type: 'text',
+          text: '\n'
+        },
+        {
+          type: 'text',
+          text: 'that contains a new line'
+        },
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
           text: 'This is a '
         },
         {

@@ -69,7 +69,7 @@ export default class Drawer extends PureComponent {
             </DrawerBackIconWrapper>
           </DrawerSide>
           <DrawerMain>
-            {(width !== 'full') ?
+            {((width !== 'full') && header) ?
               <DrawerHeader>
                 <ContainerHeader>{header}</ContainerHeader>
               </DrawerHeader>

@@ -10,6 +10,8 @@ const ContainerTitleInner = styled.div`
   align-content: center;
   padding-bottom: ${akGridSizeUnitless * 0.5}px;
 
+  /* We need to "leak" styles here, as we need to override link and button
+  styles the user may have passed in with the linkComponent prop */
   a, button {
     text-decoration: none;
 

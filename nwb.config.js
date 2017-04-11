@@ -10,7 +10,16 @@ const camelcase = require('camelcase');
 const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json'));
 
-const runInRealBrowsers = [/^editor-/, /util-common-test/];
+const runInRealBrowsers = [
+  // These should actually be run through BrowserStack in CI.
+  /^editor-/,
+
+  // Seems to be errors that kill JSDOM.
+  /^multi-select/,
+
+  // This only works in Chrome for now becuase we're not including polyfills.
+  /util-common-test/,
+];
 
 module.exports = {
   type: 'react-component',
@@ -42,11 +51,19 @@ module.exports = {
     ],
   },
   karma: {
-    browsers: runInRealBrowsers.some(r => r.test(pkg.name.replace('@altaskit/', ''))) ? [
+    browsers: runInRealBrowsers.some(r => r.test(pkg.name.replace('@atlaskit/', ''))) ? [
       require('karma-chrome-launcher'),
     ] : [
       require('karma-jsdom-launcher'),
     ],
+
+    extra: {
+      // Required so we don't get incorrect MIME type errors for TypeScript files.
+      mime: {
+        'text/x-typescript': ['ts', 'tsx'],
+      },
+    },
+
     frameworks: ['mocha', 'chai'],
     plugins: [require('karma-chai')],
 

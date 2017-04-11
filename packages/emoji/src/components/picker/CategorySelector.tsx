@@ -105,8 +105,12 @@ export default class CategorySelector extends PureComponent<Props, undefined> {
               categoryClasses.push(styles.active);
             }
 
+            let onClick;
             if (!availableCategories || !availableCategories[category.id]) {
               categoryClasses.push(styles.disable);
+            } else {
+              // disable click handling
+              onClick = () => this.onClick(category.id);
             }
 
             // tslint:disable-next-line:variable-name
@@ -116,7 +120,7 @@ export default class CategorySelector extends PureComponent<Props, undefined> {
               <button
                 key={category.name}
                 className={classNames(categoryClasses)}
-                onClick={() => this.onClick(category.id)}
+                onClick={onClick}
                 title={category.name}
               >
                 <Icon

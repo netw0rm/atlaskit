@@ -99,10 +99,12 @@ describe('<EmojiPicker />', () => {
 
       const flagCategoryButton = categorySelector.find('button').filterWhere(n => n.key() === 'Flags');
       expect(flagCategoryButton.length, 'Flag category button').to.equal(1);
-      flagCategoryButton.simulate('click', leftClick);
 
-      return waitUntil(() => list.prop('selectedCategory') === 'FLAGS').then(() => {
-        expect(list.prop('selectedCategory'), 'Flags category selected').to.equal('FLAGS');
+      return waitUntil(() => emojisVisible(list)).then(() => {
+        flagCategoryButton.simulate('click', leftClick);
+        return waitUntil(() => list.prop('selectedCategory') === 'FLAGS').then(() => {
+          expect(list.prop('selectedCategory'), 'Flags category selected').to.equal('FLAGS');
+        });
       });
     });
   });

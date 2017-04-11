@@ -3,6 +3,7 @@ import { MouseEvent, PureComponent } from 'react';
 import * as classNames from 'classnames';
 import Spinner from '@atlaskit/spinner';
 import * as uid from 'uid';
+import 'element-closest';
 
 import * as styles from './styles';
 import Scrollable from '../common/Scrollable';

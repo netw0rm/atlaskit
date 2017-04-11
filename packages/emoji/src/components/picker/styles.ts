@@ -76,7 +76,7 @@ export const category = style({
       cursor: 'default',
 
       $nest: {
-        [':hover']: {
+        ['&:hover']: {
           color: akColorN50,
         },
       },

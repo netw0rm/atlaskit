@@ -16,7 +16,6 @@ import {
 import * as commands from '../../commands';
 import keymapHandler from './keymap';
 import inputRulePlugin from './input-rule';
-import { reconfigure } from '../utils';
 
 export type StateChangeHandler = (state: BlockTypeState) => any;
 export type GroupedBlockTypes = BlockType[][];
@@ -225,7 +224,6 @@ const plugin = new Plugin({
 
     const pluginState = stateKey.getState(view.state);
     pluginState.keymapHandler = keymapHandler(view, pluginState);
-    reconfigure(view, [inputRulePlugin(view.state.schema)]);
     return {};
   },
   props: {

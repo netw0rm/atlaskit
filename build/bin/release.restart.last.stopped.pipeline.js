@@ -17,7 +17,7 @@ const BUILDS_TO_FETCH = 10;
 const BRANCH_TO_CHECK_FOR_STOPPED_BUILDS_FOR = process.env.BITBUCKET_BRANCH;
 const BB_USERNAME = process.env.BITBUCKET_USER;
 const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
-const pipelinesEndpoint = 'https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pipelines/';
+const PIPELINES_ENDPOINT = 'https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pipelines/';
 
 const axiosRequestConfig = {
   auth: {
@@ -44,7 +44,7 @@ function pipelineFailedOrStopped(pipelineState) {
   return false;
 }
 
-axios.get(pipelinesEndpoint, axiosRequestConfig)
+axios.get(PIPELINES_ENDPOINT, axiosRequestConfig)
   .then((response) => {
     const allRunningPipelines = response.data.values;
 
@@ -69,7 +69,7 @@ axios.get(pipelinesEndpoint, axiosRequestConfig)
           type: 'pipeline_ref_target',
         },
       };
-      return axios.post(pipelinesEndpoint, postData, {
+      return axios.post(PIPELINES_ENDPOINT, postData, {
         auth: {
           username: BB_USERNAME,
           password: BB_PASSWORD,

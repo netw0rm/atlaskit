@@ -230,6 +230,7 @@ export const ul = nodeFactory(sampleSchema.nodes.bulletList, {});
 export const ol = nodeFactory(sampleSchema.nodes.orderedList, {});
 export const br = sampleSchema.nodes.hardBreak.createChecked();
 export const panel = nodeFactory(sampleSchema.nodes.panel, {});
+export const panelText = nodeFactory(sampleSchema.nodes.panelText, {});
 export const plain = nodeFactory(sampleSchema.nodes.plain, {});
 export const hardBreak = nodeFactory(sampleSchema.nodes.hardBreak, {});
 // tslint:disable-next-line:variable-name

@@ -13,7 +13,7 @@ export {
   li, ul, ol, br, img, hr, em, strong, code, a, underline, subsup,
   strike, text, fragment, slice, mention, emoji, plain,
   nodeFactory, markFactory, BuilderContent, coerce, offsetRefs,
-  linkable, unlinkable, panel, mentionQuery, hardBreak, emojiQuery
+  linkable, unlinkable, panel, panelText, mentionQuery, hardBreak, emojiQuery
 } from './schema-builder';
 export * from './html-helpers';
 export { default as storyDecorator } from './story-decorator';

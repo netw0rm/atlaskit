@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import PanelPlugin from '../../../src/plugins/panel';
 import PanelInputRulesPlugin from '../../../src/plugins/panel/input-rules';
 import {
-  insertText, doc, p, makeEditor, fixtures, panel, code_block
+  insertText, doc, p, makeEditor, fixtures, panel, panelText, code_block
 } from '../../../src/test-helper';
 
 const fixture = fixtures();
@@ -26,7 +26,7 @@ describe('panel input rules', () => {
     const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
     inputRulePlugin!.props.handleTextInput!(editorView, 6, 6, '}');
 
-    expect(editorView.state.doc).to.deep.equal(doc(panel(p())));
+    expect(editorView.state.doc).to.deep.equal(doc(panel(panelText(p()))));
   });
 
   it('should not convert {info} inside a code_block', () => {

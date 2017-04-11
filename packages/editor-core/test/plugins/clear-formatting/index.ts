@@ -5,7 +5,7 @@ import { browser } from '../../../src/prosemirror';
 import ClearFormattingPlugin from '../../../src/plugins/clear-formatting';
 import {
   a as link, blockquote, chaiPlugin, code_block, code, doc, em, fixtures, h1,
-  li, linkable, makeEditor, ol, p, panel, sendKeyToPm, strike, strong, underline
+  li, linkable, makeEditor, ol, p, panel, panelText, sendKeyToPm, strike, strong, underline
 } from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
@@ -80,7 +80,7 @@ describe('clear-formatting', () => {
     });
 
     it('should remove panel block if present', () => {
-      const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
+      const { editorView, pluginState } = editor(doc(panel((p('te{<>}xt')))));
       expect(pluginState.formattingIsPresent).to.be.true;
 
       pluginState.clearFormatting(editorView);
@@ -88,7 +88,7 @@ describe('clear-formatting', () => {
     });
 
     it('should remove panel block even if selection is at the end of the block', () => {
-      const { editorView, pluginState } = editor(doc(panel(p('text{<>}'))));
+      const { editorView, pluginState } = editor(doc(panel(panelText(p('text{<>}')))));
       expect(pluginState.formattingIsPresent).to.be.true;
 
       pluginState.clearFormatting(editorView);

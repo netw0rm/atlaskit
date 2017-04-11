@@ -1,4 +1,4 @@
-import { Schema, inputRules, Plugin, EditorState } from '../../prosemirror';
+import { Schema, inputRules, Plugin, EditorState, findWrapping } from '../../prosemirror';
 import { analyticsService } from '../../analytics';
 import { createInputRule } from '../utils';
 
@@ -24,10 +24,14 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
         let { tr } = state;
         const { panel } = schema.nodes;
         if (panel) {
-          const { $from } = state.selection;
-          let range = $from.blockRange($from)!;
-          tr = tr.wrap(range, [{ type: panel, attrs: { panelType } }]);
-          tr = tr.delete(end - (panelType.length + 2), end + 1);
+          const { $from, $to } = state.selection;
+          let range = $from.blockRange($to)!;
+          const wrapping = range && findWrapping(range, panel, { panelType }) as any;
+          if (wrapping) {
+            tr = tr.wrap(range, wrapping).scrollIntoView();
+          }
+          const mappedStart = tr.mapping.map(start);
+          tr = tr.delete(mappedStart, mappedStart + panelType.length + 1);
 
           analyticsService.trackEvent(`atlassian.editor.format.panel.${panelType}.autoformatting`);
 

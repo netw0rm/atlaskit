@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import { browser } from '../../../src';
 import { TextSelection } from '../../../src/prosemirror';
 import ListsPlugin from '../../../src/plugins/lists';
-import { chaiPlugin, makeEditor, sendKeyToPm, fixtures, doc, h1, ol, ul, li, p, panel, blockquote } from '../../../src/test-helper';
+import { chaiPlugin, makeEditor, sendKeyToPm, fixtures, doc, h1, ol, ul, li, p, panel, blockquote, panelText } from '../../../src/test-helper';
 import schema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
@@ -239,8 +239,8 @@ describe('lists', () => {
       });
 
       it('should convert selection inside panel to list', () => {
-        const expectedOutput = doc(panel(ul(li(p('text')))));
-        const { editorView, pluginState } = editor(doc(panel(p('te{<>}xt'))));
+        const expectedOutput = doc(panel(panelText(ul(li(p('text'))))));
+        const { editorView, pluginState } = editor(doc(panel(panelText(p('te{<>}xt')))));
 
         pluginState.toggleBulletList(editorView);
         expect(editorView.state.doc).to.deep.equal(expectedOutput);

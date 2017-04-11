@@ -7,6 +7,7 @@ import {
   TextSelection,
   Plugin,
   Node,
+  findWrapping,
 } from '../../prosemirror';
 import inputRulePlugin from './input-rules';
 import { reconfigure } from '../utils';
@@ -46,17 +47,23 @@ export class PanelState {
     analyticsService.trackEvent(`atlassian.editor.format.${panelType}.button`);
     const { state, dispatch } = view;
     let { tr } = state;
-    // wrap selection in new panel type
     const { panel } = state.schema.nodes;
     const { $from, $to } = state.selection;
-    let range = $from.blockRange($to)!;
-    tr = tr.wrap(range, [{ type: panel, attrs: panelType }]);
-    // list selection
-    tr.setSelection(state.selection.map(tr.doc, tr.mapping));
-    let blockStart = tr.doc.resolve($from.start($from.depth - 1));
-    let blockEnd = tr.doc.resolve($to.end($to.depth - 1));
-    range = blockStart.blockRange(blockEnd)!;
-    tr.lift(range, blockStart.depth - 1);
+    const selStartPos = $from.start($from.depth - 1);
+    const selEndPos = $to.end($to.depth - 1);
+    let selStart = tr.doc.resolve(selStartPos);
+    let selEnd = tr.doc.resolve(selEndPos);
+    let range = selStart.blockRange(selEnd)!;
+    // lift selection
+    tr.lift(range, 0);
+    selStart = tr.doc.resolve(tr.mapping.map(selStartPos));
+    selEnd = tr.doc.resolve(tr.mapping.map(selEndPos));
+    range = selStart.blockRange(selEnd)!;
+    // wrap selection in new panel type
+    const wrapping = range && findWrapping(range, panel, panelType) as any;
+    if (wrapping) {
+      tr = tr.wrap(range, wrapping).scrollIntoView();
+    }
     dispatch(tr);
   }
 
@@ -64,8 +71,8 @@ export class PanelState {
     const { dispatch, state } = view;
     const { tr } = state;
     const { $from, $to } = state.selection;
-    const range = $from.blockRange($to)!;
-    dispatch(tr.lift(range, $from.depth - 2));
+    const range = $from.blockRange($to, node => node.type === state.schema.nodes.panel)!;
+    dispatch(tr.lift(range, $from.depth - 3));
   }
 
   subscribe(cb: PanelStateSubscriber) {
@@ -94,8 +101,8 @@ export class PanelState {
     const { state } = this;
     if (state.selection instanceof TextSelection) {
       const { $from } = state.selection;
-      const node = $from.node($from.depth - 1);
-      if (node.type === state.schema.nodes.panel) {
+      const node = $from.node($from.depth - 2);
+      if (node && node.type === state.schema.nodes.panel) {
         return node;
       }
     }

@@ -149,6 +149,9 @@ storiesOf(name, module)
   .add('ak-field-text with autofocus', () => (
     generateFormWithInput({ autoFocus: true })
   ))
+  .add('ak-field-text with maxLength', () => (
+    generateFormWithInput({ maxLength: 5 })
+  ))
   .add('ak-field-text with spellcheck', () => (
     <form
       style={{

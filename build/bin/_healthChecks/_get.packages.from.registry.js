@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-/* eslint-disable no-console */
 const axios = require('axios');
 
 /*
@@ -73,4 +71,3 @@ module.exports = {
   getPackagesFromRegistryAtVersion,
 };
 
-/* eslint-enable no-console */

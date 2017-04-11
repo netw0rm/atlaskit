@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-/* eslint-disable no-console */
 const semver = require('semver');
 const getAllPackageJsons = require('./_get.packages.from.local');
 
@@ -38,5 +36,3 @@ function getPackagesWithStaleDeps(depsToCheck) {
 }
 
 module.exports = getPackagesWithStaleDeps;
-
-/* eslint-enable no-console */

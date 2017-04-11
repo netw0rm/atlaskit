@@ -80,15 +80,18 @@ const NavigationItemOuter = styled.div`
   border-radius: ${borderRadius}px;
   box-sizing: border-box;
   height: ${({ theme }) => getHeight(theme)}px;
+  position: relative;
   text-overflow: ellipsis;
   width: 100%;
 
   button, a {
+    background: ${({ isSelected, theme }) => (isSelected ? getColors(theme).selected.background : getColors(theme).default.background)};
+    border-radius: ${borderRadius}px;
+    color: ${({ isSelected, theme }) => (isSelected ? getColors(theme).selected.color : getColors(theme).default.color)};
     display: block;
     height: 100%;
-    border-radius: ${borderRadius}px;
-    background: ${({ isSelected, theme }) => (isSelected ? getColors(theme).selected.background : getColors(theme).default.background)};
-    color: ${({ isSelected, theme }) => (isSelected ? getColors(theme).selected.color : getColors(theme).default.color)};
+    /* In theory this wouldn't be required, but Chrome does not place focus styles correctly without it */
+    position: relative;
     text-decoration: none;
 
     ${focusRingMixin()}

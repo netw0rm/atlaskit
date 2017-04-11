@@ -4,7 +4,6 @@ import Blanket from '@atlaskit/blanket';
 import DrawerTrigger from './DrawerTrigger';
 import DrawerBackIcon from './DrawerBackIcon';
 import ContainerHeader from './ContainerHeader';
-import drawerFixedMixin from '../../utils/drawer-fixed-mixin';
 import DrawerSide from '../styled/DrawerSide';
 import DrawerInner from '../styled/DrawerInner';
 import DrawerHeader from '../styled/DrawerHeader';
@@ -47,12 +46,6 @@ export default class Drawer extends PureComponent {
       top: `${backIconOffset}px`,
     };
 
-    // to be removed by Josh
-    /* eslint-disable no-unused-vars */
-    const FixedDrawerSide = drawerFixedMixin(isOpen, width, 'FixedDrawerSide')(DrawerSide);
-    const FixedDrawerHeader = drawerFixedMixin(isOpen, width, 'FixedDrawerHeader')(DrawerHeader);
-    /* eslint-enable no-unused-vars */
-
     return (
       <div>
         <div style={{ zIndex: 0, position: 'relative' }}>
@@ -63,7 +56,7 @@ export default class Drawer extends PureComponent {
           />
         </div>
         <DrawerInner isOpen={isOpen} width={width}>
-          <FixedDrawerSide>
+          <DrawerSide>
             <DrawerPrimaryIcon>
               {primaryIcon}
             </DrawerPrimaryIcon>
@@ -76,10 +69,12 @@ export default class Drawer extends PureComponent {
                 </DrawerBackIcon>
               </DrawerTrigger>
             </DrawerBackIconWrapper>
-          </FixedDrawerSide>
+          </DrawerSide>
           <DrawerMain>
             {(width !== 'full' && header) ?
-              <ContainerHeader>{header}</ContainerHeader>
+              <DrawerHeader>
+                <ContainerHeader>{header}</ContainerHeader>
+              </DrawerHeader>
             : null}
             <DrawerContent>
               <ThemeProvider

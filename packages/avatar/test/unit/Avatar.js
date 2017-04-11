@@ -20,7 +20,6 @@ describe('Avatar', () => {
     const wrapper = shallow(<Avatar />);
     expect(wrapper).not.to.equal(undefined);
     expect(wrapper.find(Image).exists()).to.equal(true);
-    expect(wrapper.find(Presence).exists()).to.equal(true);
   });
 
   describe('size property', () => {
@@ -45,8 +44,8 @@ describe('Avatar', () => {
 
     it('should set the alt of the internal img', () => {
       wrapper.setProps({ src: oneByOnePixel });
-      expect(wrapper.find(Image).prop('alt')).to.equal(label);
-      expect(wrapper.find(Image).find('img').is(`[alt="${label}"]`)).to.equal(true);
+      wrapper.setState({ isLoading: false });
+      expect(wrapper.find(Image).getDOMNode().alt).to.equal(label);
     });
   });
 

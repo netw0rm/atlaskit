@@ -37,6 +37,5 @@ const getPresenceLayout = ({ size }) => `
 `;
 export const PresenceWrapper = styled.div`
   ${getPresenceLayout}
-  ${({ isVisible }) => (isVisible ? null : 'display: none;')}
   position: absolute;
 `;

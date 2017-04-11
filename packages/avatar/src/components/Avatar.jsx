@@ -80,21 +80,24 @@ export default class Avatar extends PureComponent {
     return (
       <Container size={size}>
         <ImageWrapper isLoading={isLoading} aria-label={label}>
-          <Image
-            alt={label}
-            src={src}
-            onLoad={this.imageLoadedHandler}
-            onError={this.imageErrorHandler}
-            hasError={hasError}
-            isLoading={isLoading}
-          />
+          {isLoading ? null : (
+            <Image
+              alt={label}
+              src={src}
+              onLoad={this.imageLoadedHandler}
+              onError={this.imageErrorHandler}
+              hasError={hasError}
+            />
+          )}
         </ImageWrapper>
 
-        <PresenceWrapper isVisible={showPresence} size={size}>
-          <Presence presence={presence} borderColor={presenceBorderColor} size={size}>
-            {children}
-          </Presence>
-        </PresenceWrapper>
+        {showPresence ? (
+          <PresenceWrapper size={size}>
+            <Presence presence={presence} borderColor={presenceBorderColor} size={size}>
+              {children}
+            </Presence>
+          </PresenceWrapper>
+        ) : null}
       </Container>
     );
   }

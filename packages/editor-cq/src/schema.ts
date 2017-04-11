@@ -33,7 +33,7 @@ const code = {
   excludes: 'em strike strong underline'
 };
 
-interface CQSchemaNodes {
+export interface CQSchemaNodes {
   blockquote: NodeSpec;
   bulletList: NodeSpec;
   codeBlock: NodeSpec;
@@ -52,7 +52,7 @@ interface CQSchemaNodes {
   unsupportedInline: NodeSpec;
 }
 
-interface CQSchemaMarks {
+export interface CQSchemaMarks {
   code: MarkSpec;
   em: MarkSpec;
   link: MarkSpec;

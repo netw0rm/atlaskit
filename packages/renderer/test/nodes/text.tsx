@@ -288,4 +288,53 @@ describe('Text', () => {
     expect(output.find('br').length).to.equal(1);
   });
 
+  it('should render link-marks that is missing protocol', () => {
+    const textNodes = [
+      {
+        type: 'text',
+        text: 'www.atlassian.com'
+      },
+      {
+        type: 'text',
+        text: 'link',
+        marks: [
+          {
+            type: 'link',
+            attrs: {
+              href: 'www.atlassian.com'
+            }
+          }
+        ]
+      }
+    ];
+
+    const output = mount(<div>{renderTextNodes(textNodes)}</div>);
+    expect(output.find('a').length).to.equal(1);
+    expect(output.find('a').first().props()).to.have.property('href', '//www.atlassian.com');
+  });
+
+  it('should not render link-marks that starts with "javascript:"', () => {
+    const textNodes = [
+      {
+        type: 'text',
+        text: 'Click this '
+      },
+      {
+        type: 'text',
+        text: 'link',
+        marks: [
+          {
+            type: 'link',
+            attrs: {
+              href: 'javascript:alert("Hello world!")'
+            }
+          }
+        ]
+      }
+    ];
+
+    const output = mount(<div>{renderTextNodes(textNodes)}</div>);
+    expect(output.find('a').length).to.equal(0);
+  });
+
 });

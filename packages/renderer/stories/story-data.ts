@@ -379,6 +379,35 @@ export const document = {
           }
         }
       ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Click me! ',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'javascript:alert("hello world")'
+              }
+            }
+          ]
+        },
+        {
+          type: 'text',
+          text: 'www.atlassian.com',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'www.atlassian.com'
+              }
+            }
+          ]
+        }
+      ]
     }
 
   ]

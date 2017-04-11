@@ -1,14 +1,14 @@
 import { FileItem } from '@atlaskit/media-core';
 import { expect } from 'chai';
 
-import { MediaFileAttributes } from '../../src/domain/media-file-attributes';
+import { MediaFileAttributesFactory } from '../../src/domain/media-file-attributes';
 
 describe('MediaFileAttributes', () => {
   describe('fromFileItem', () => {
     const serviceHost = 'https://filestore.io';
 
     it('should return binary url given no artifacts', () => {
-      const attributes = MediaFileAttributes.fromFileItem(Mocks.basicFile, serviceHost);
+      const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.basicFile, serviceHost);
       expect(attributes.id).to.be.equal('basic-file');
       expect(attributes.src).to.be.equal('https://filestore.io/file/basic-file/binary');
       expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/basic-file/binary?dl=1');
@@ -19,7 +19,7 @@ describe('MediaFileAttributes', () => {
     });
 
     it('should return binary url given gif file', () => {
-      const attributes = MediaFileAttributes.fromFileItem(Mocks.gifFile, serviceHost);
+      const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.gifFile, serviceHost);
       expect(attributes.id).to.be.equal('gif-file');
       expect(attributes.src).to.be.equal('https://filestore.io/file/gif-file/binary');
       expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/gif-file/binary?dl=1');
@@ -28,7 +28,7 @@ describe('MediaFileAttributes', () => {
     });
 
     it('should return type video/mp4 given SD video', () => {
-      const attributes = MediaFileAttributes.fromFileItem(Mocks.sdVideoFile, serviceHost);
+      const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.sdVideoFile, serviceHost);
       expect(attributes.id).to.be.equal('sd-file');
       expect(attributes.src).to.be.equal('https://filestore.io/file/hd-file/artifact/video_640.mp4/binary');
       expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/sd-file/binary?dl=1');
@@ -39,7 +39,7 @@ describe('MediaFileAttributes', () => {
     });
 
     it('should return HD url and HD poster given HD artifacts exists', () => {
-      const attributes = MediaFileAttributes.fromFileItem(Mocks.hdVideoFile, serviceHost);
+      const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.hdVideoFile, serviceHost);
       expect(attributes.id).to.be.equal('hd-file');
       expect(attributes.src).to.be.equal('https://filestore.io/file/hd-file/artifact/video_640.mp4/binary');
       expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/hd-file/binary?dl=1');
@@ -50,7 +50,7 @@ describe('MediaFileAttributes', () => {
     });
 
     it('should return download url from binary', () => {
-      const attributes = MediaFileAttributes.fromFileItem(Mocks.basicFile, serviceHost);
+      const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.basicFile, serviceHost);
       expect(attributes.srcDownload).to.be.equal('https://filestore.io/file/basic-file/binary?dl=1');
     });
   });

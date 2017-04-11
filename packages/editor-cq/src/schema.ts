@@ -2,7 +2,7 @@ import {
   bulletList,
   blockquote,
   codeBlock,
-  code,
+  code as codeBase,
   doc,
   em,
   hardBreak,
@@ -21,18 +21,27 @@ import {
   subsup,
   text,
   underline,
+  panel
 } from '@atlaskit/editor-core';
 
+import jiraIssue from './schema/nodes/jiraIssue';
 import unsupportedBlock from './schema/nodes/unsupportedBlock';
 import unsupportedInline from './schema/nodes/unsupportedInline';
+
+const code = {
+  ...codeBase,
+  excludes: 'em strike strong underline'
+};
 
 interface CQSchemaNodes {
   blockquote: NodeSpec;
   bulletList: NodeSpec;
   codeBlock: NodeSpec;
+  panel: NodeSpec;
   doc: NodeSpec;
   hardBreak: NodeSpec;
   heading: NodeSpec;
+  jiraIssue: NodeSpec;
   listItem: NodeSpec;
   mention: NodeSpec;
   orderedList: NodeSpec;
@@ -58,14 +67,16 @@ const nodes = {
   paragraph,
   blockquote,
   codeBlock,
+  panel,
+  hardBreak,
   orderedList,
   bulletList,
   heading,
   unsupportedBlock,
+  jiraIssue,
   listItem,
   mention,
   text,
-  hardBreak,
   unsupportedInline,
   rule,
 };

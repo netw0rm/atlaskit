@@ -18,10 +18,10 @@ export function clearFormatting(markTypes: Array<string>): Command {
 }
 
 function liftAllNodes(state: EditorState<any>, tr: Transaction): Transaction {
-  const { text, listItem } = state.schema.nodes;
+  const { paragraph, listItem } = state.schema.nodes;
   const { from, to } = state.selection;
   tr.doc.nodesBetween(from, to, (node, pos) => {
-    if (node.type === text) {
+    if (node.type === paragraph) {
       const start = tr.doc.resolve(tr.mapping.map(pos));
       const end = tr.doc.resolve(tr.mapping.map(pos + node.textContent.length));
       if (start.depth > 0) {

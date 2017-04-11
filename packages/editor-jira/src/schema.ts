@@ -1,7 +1,7 @@
 import {
   blockquote,
   bulletList,
-  code,
+  code as codeBase,
   codeBlock,
   doc,
   em,
@@ -23,6 +23,11 @@ import {
   text,
   underline,
 } from '@atlaskit/editor-core';
+
+const code = {
+  ...codeBase,
+  excludes: 'em strike strong underline'
+};
 
 interface JIRASchemaNodes {
   blockquote?: NodeSpec;

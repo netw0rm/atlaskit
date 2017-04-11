@@ -87,6 +87,14 @@ describe('clear-formatting', () => {
       expect(pluginState.formattingIsPresent).not.to.be.true;
     });
 
+    it('should remove panel block even if selection is at the end of the block', () => {
+      const { editorView, pluginState } = editor(doc(panel(p('text{<>}'))));
+      expect(pluginState.formattingIsPresent).to.be.true;
+
+      pluginState.clearFormatting(editorView);
+      expect(pluginState.formattingIsPresent).not.to.be.true;
+    });
+
     it('should remove block-quote if present', () => {
       const { editorView, pluginState } = editor(doc(blockquote(p('te{<>}xt'))));
       expect(pluginState.formattingIsPresent).to.be.true;

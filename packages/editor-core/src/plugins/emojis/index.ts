@@ -9,6 +9,7 @@ import {
   PluginKey,
 } from '../../prosemirror';
 import { reconfigure } from '../utils';
+import { isMarkAllowedAtPosition } from '../../utils';
 import { inputRulePlugin, destroyRulePluginCache } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
@@ -116,8 +117,9 @@ export class EmojiState {
   }
 
   emojiDisabled() {
-    const { selection, schema } = this.state;
-    return schema.marks.code.isInSet(selection.$from.marks());
+    const { schema, selection } = this.state;
+    const { emojiQuery } = schema.marks;
+    return isMarkAllowedAtPosition(emojiQuery, selection);
   }
 
   private findEmojiQueryMark() {

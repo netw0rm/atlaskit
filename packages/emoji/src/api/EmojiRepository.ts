@@ -78,7 +78,7 @@ export default class EmojiRepository {
   private shortNameMap: EmojiByKey;
   private idMap: EmojiByKey;
   private categoryOrder: Map<string, number>;
-  private static readonly defaultEmojiWeight: number = 1000;
+  private static readonly defaultEmojiWeight: number = 1000000;
 
   constructor(emojis: EmojiDescription[]) {
     this.emojis = emojis;
@@ -152,11 +152,11 @@ export default class EmojiRepository {
 
     this.emojis.forEach(emoji => {
       // Give default value for consistent order when sorting
-      if (!emoji.order) {
-        emoji.order = EmojiService.defaultEmojiWeight;
+      if (typeof emoji.order === 'undefined') {
+        emoji.order = EmojiRepository.defaultEmojiWeight;
       }
-      if (!emoji.id) {
-        emoji.id = EmojiService.defaultEmojiWeight.toString();
+      if (typeof emoji.id === 'undefined') {
+        emoji.id = EmojiRepository.defaultEmojiWeight.toString();
       }
       addAllVariants(emoji, e => e.shortName, this.shortNameMap);
       addAllVariants(emoji, e => e.id, this.idMap);
@@ -168,8 +168,8 @@ export default class EmojiRepository {
    * Order: category -> order -> shortName -> id
    */
   private emojiComparator = (e1: EmojiDescription, e2: EmojiDescription) : number => {
-    const categoryIndex1: number = this.categoryOrder.get(e1.category) || EmojiService.defaultEmojiWeight;
-    const categoryIndex2: number = this.categoryOrder.get(e2.category) || EmojiService.defaultEmojiWeight;
+    const categoryIndex1: number = this.categoryOrder.get(e1.category) || EmojiRepository.defaultEmojiWeight;
+    const categoryIndex2: number = this.categoryOrder.get(e2.category) || EmojiRepository.defaultEmojiWeight;
 
     // Order and id will always have a value but still need undefined check for TS
     if (categoryIndex1 !== categoryIndex2) {

@@ -2,7 +2,9 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 
 import TextFormattingPlugin from '../../../src/plugins/text-formatting';
-import { fixtures, mention, em, strike, code, strong, insertText, chaiPlugin, doc, makeEditor, p } from '../../../src/test-helper';
+import {
+  fixtures, mention, em, strike, code, strong, insertText, chaiPlugin, doc, makeEditor, p, code_block
+} from '../../../src/test-helper';
 
 chai.use(chaiPlugin);
 
@@ -21,6 +23,14 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '**text**', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'))));
+    });
+
+    it('should not convert "**text**" to strong inside a code_block', () => {
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+      insertText(editorView, '**text**', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('**text**')));
     });
   });
 
@@ -45,6 +55,14 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '*italic*', sel);
       expect(editorView.state.doc).to.deep.equal(doc(p(strong('This is bold '), em(strong('italic')))));
     });
+
+    it('should not convert "*text*" to em inside a code_block', () => {
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+      insertText(editorView, '*text*', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('*text*')));
+    });
   });
 
   describe('stike rule', () => {
@@ -53,6 +71,14 @@ describe('text-formatting input rules', () => {
 
       insertText(editorView, '~~text~~', sel);
       expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'))));
+    });
+
+    it('should not convert "~~text~~" to strike inside a code_block', () => {
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+      insertText(editorView, '~~text~~', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('~~text~~')));
     });
   });
 
@@ -64,17 +90,40 @@ describe('text-formatting input rules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(p(code('text'))));
     });
 
-    it.skip('should convert mention to plaint text', () => {
+    it('should convert mention to plaint text', () => {
       const mentionNode = mention({ id: '1234', displayName: '@helga' });
-      const { editorView } = editor(
+      const { editorView, sel } = editor(
         doc(p(
-          '`hello, ',
+          'hey! `hello, ',
           mentionNode,
-          'there'
+          ' there{<>}?'
         )));
-      insertText(editorView, '`', 15, 15);
+      insertText(editorView, '`', sel);
 
-      expect(editorView.state.doc).to.deep.equal(doc(p(code('hello, @helga there'))));
+      expect(editorView.state.doc).to.deep.equal(doc(p('hey! ', code('hello, @helga there'), '?')));
+    });
+
+    it('should cleanup other formatting', () => {
+      const mentionNode = mention({ id: '1234', displayName: '@helga' });
+      const { editorView, sel } = editor(
+        doc(p(
+          '`',
+          strong('hello '),
+          mentionNode,
+          em(', '),
+          strike('there?{<>}')
+        )));
+      insertText(editorView, '`', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p(code('hello @helga, there?'))));
+    });
+
+    it('should not convert "`text`" to code text inside a code_block', () => {
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+      insertText(editorView, '`text`', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('`text`')));
     });
   });
 

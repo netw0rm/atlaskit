@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import { MediaCollection, MediaCollectionItem, CollectionCardClick } from '@atlaskit/media-core';
+import { MediaCollection, MediaCollectionItem } from '@atlaskit/media-core';
 import { StoryList, createStorybookContext, collectionNames, fileCollectionName, defaultCollectionName} from '@atlaskit/media-test-helpers';
 import { CardList } from '../../src';
 

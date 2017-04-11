@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import RulePlugin from '../../../src/plugins/rule';
 import {
-  chaiPlugin, doc, fixtures, hr, insertText, makeEditor, p
+  chaiPlugin, doc, fixtures, hr, insertText, makeEditor, p, code_block
 } from '../../../src/test-helper';
 chai.use(chaiPlugin);
 
@@ -37,6 +37,14 @@ describe('inputrules', () => {
       insertText(editorView, 'text---', sel);
 
       expect(editorView.state.doc).to.not.equal(doc(p('text'), hr, p()));
+    });
+
+    it('should not convert "---" inside a code_block', () => {
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+      insertText(editorView, '---', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('---')));
     });
   });
 

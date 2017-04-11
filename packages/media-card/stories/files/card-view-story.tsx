@@ -138,7 +138,7 @@ storiesOf('FileCardView', {})
           mediaName="No preview image"
           mediaType="image"
           mediaSize={32831}
-          dataURI={null}
+          dataURI={undefined}
           onClick={onClick}
         />
       }, {
@@ -150,7 +150,7 @@ storiesOf('FileCardView', {})
           mediaName="No preview video"
           mediaType="video"
           mediaSize={32831}
-          dataURI={null}
+          dataURI={undefined}
           onClick={onClick}
         />
       }, {
@@ -162,7 +162,7 @@ storiesOf('FileCardView', {})
           mediaName="No preview audio"
           mediaType="audio"
           mediaSize={32831}
-          dataURI={null}
+          dataURI={undefined}
           onClick={onClick}
         />
       }, {
@@ -174,7 +174,7 @@ storiesOf('FileCardView', {})
           mediaName="No preview audio"
           mediaType="video"
           mediaSize={32831}
-          dataURI={null}
+          dataURI={undefined}
           onClick={onClick}
           actions={actions}
         />
@@ -270,7 +270,7 @@ storiesOf('FileCardView', {})
           mediaName="I have no URI :("
           mediaType="image"
           mediaSize={32831}
-          dataURI={null}
+          dataURI={undefined}
           onClick={onClick}
         />
       }, {
@@ -282,7 +282,7 @@ storiesOf('FileCardView', {})
           mediaName="I have no URI :("
           mediaType="image"
           mediaSize={32831}
-          dataURI={null}
+          dataURI={undefined}
           onClick={onClick}
         />
       }, {
@@ -294,7 +294,7 @@ storiesOf('FileCardView', {})
           mediaName="🌋 👽"
           mediaType="image"
           mediaSize={32831}
-          dataURI={null}
+          dataURI={undefined}
           onClick={onClick}
           actions={actions}
         />
@@ -307,7 +307,7 @@ storiesOf('FileCardView', {})
           mediaName="😵🤖"
           mediaType="image"
           mediaSize={32831}
-          dataURI={null}
+          dataURI={undefined}
           onClick={onClick}
           actions={actions}
         />

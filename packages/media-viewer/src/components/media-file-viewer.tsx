@@ -2,28 +2,31 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
 import { Context, FileItem } from '@atlaskit/media-core';
-import { fetchToken } from '../util/fetch-token';
+import { fetchToken } from '../domain/fetch-token';
+import { MediaFileAttributesFactory } from '../domain/media-file-attributes';
+import { MediaViewerInterface, MediaViewerConstructor } from '../mediaviewer';
 
 export interface MediaFileViewerProps {
   readonly context: Context;
   readonly fileId: string;
   readonly collectionName?: string;
-  readonly basePath: string;
 
+  readonly MediaViewer: MediaViewerConstructor;
+  readonly basePath: string;
   readonly onClose?: () => void;
 }
 
 export interface MediaFileViewerState {
-  readonly mediaViewer: MediaViewer;
+  readonly mediaViewer: MediaViewerInterface;
 }
 
 export class MediaFileViewer extends Component<MediaFileViewerProps, MediaFileViewerState> {
   private subscription: Subscription;
 
   componentDidMount(): void {
-    const { context, fileId, collectionName, basePath, onClose } = this.props;
+    const { context, fileId, collectionName, basePath, onClose, MediaViewer } = this.props;
     const { config } = context;
-    const { clientId, tokenProvider } = config;
+    const { serviceHost, clientId, tokenProvider } = config;
 
     this.setState({
       mediaViewer: new MediaViewer({
@@ -41,12 +44,7 @@ export class MediaFileViewer extends Component<MediaFileViewerProps, MediaFileVi
           if (onClose) {
             mediaViewer.on('fv.close', onClose);
           }
-          mediaViewer.setFiles([{
-            id: item.details.id,
-            src: `${config.serviceHost}/file/${item.details.id}/binary`,
-            type: item.details.mimeType,
-            title: item.details.name
-          }]);
+          mediaViewer.setFiles([MediaFileAttributesFactory.fromFileItem(item, serviceHost)]);
           mediaViewer.open({ id: item.details.id });
         }
       });

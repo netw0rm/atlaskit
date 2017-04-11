@@ -228,13 +228,7 @@ const plugin = new Plugin({
       pluginState.editorFocused = true;
 
       return true;
-    },
-    handleDOMEvents: {
-      // This enables default behavior on paste
-      paste: (view: EditorView, event) => {
-        return true;
-      },
-    },
+    }
   },
   state: {
     init(config, state: EditorState<any>) {

@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { encode, parse } from '../src/cxhtml';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
-  code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention,
+  code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link,
   unsupportedInline, unsupportedBlock
 } from './_schema-builder';
 
@@ -140,6 +140,13 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
           'Text with ',
           em(strong('strong emphasised words')),
           '.'
+        )));
+
+      check('<a> tag',
+        '<p>Text with <a href="http://www.atlassian.com">www.atlassian.com</a></p>',
+        doc(p(
+          'Text with ',
+          link({ href: 'http://www.atlassian.com' })('www.atlassian.com')
         )));
 
       check('combination of strong and emphasis',

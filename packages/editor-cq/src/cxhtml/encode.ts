@@ -98,6 +98,9 @@ export default function encode(node: PMNode) {
           case schema.marks.code:
             elem = elem.appendChild(doc.createElement('code'));
             break;
+          case schema.marks.link:
+            elem = elem.appendChild(encodeLink(node));
+            break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);
         }
@@ -134,6 +137,21 @@ export default function encode(node: PMNode) {
     const elem = doc.createElement('li');
     elem.appendChild(encodeFragment(node.content));
     return elem;
+  }
+
+  function encodeLink(node: PMNode) {
+    const link: HTMLAnchorElement = doc.createElement('a');
+    link.innerHTML = node.text || '';
+    let href = '';
+    if (node.marks) {
+      node.marks.forEach(mark => {
+        if (mark.type.name === 'link') {
+          href = mark.attrs.href;
+        }
+      });
+    }
+    link.href = href;
+    return link;
   }
 
   function encodeCodeBlock(node: PMNode) {

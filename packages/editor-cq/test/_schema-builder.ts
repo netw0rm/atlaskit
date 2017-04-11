@@ -30,3 +30,4 @@ export const strong = markFactory(schema.marks.strong);
 export const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 export const sup = markFactory(schema.marks.subsup, { type: 'sup' });
 export const u = markFactory(schema.marks.underline);
+export const link = (attrs: {} = {}) => markFactory(schema.marks.link, attrs);

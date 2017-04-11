@@ -1,4 +1,5 @@
 import {
+  akBorderRadius,
   akColorN200,
   akColorN900,
 } from '@atlaskit/util-shared-styles';
@@ -165,4 +166,14 @@ export const emojiPreview = style({
       maxWidth: '255px',
     },
   },
+});
+
+export const emojiScrollable = style({
+  border: '1px solid #fff',
+  borderRadius: akBorderRadius,
+  display: 'block',
+  margin: '0',
+  overflowX: 'hidden',
+  overflowY: 'auto',
+  padding: '0',
 });

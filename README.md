@@ -405,4 +405,22 @@ yarn run build/docker/image -- --no-cache
 ```
 
 **Note:** Make sure you also update the `bitbucket-pipelines.yml` file with the name of your new image!
+
+### Checking Consistency of the repository
+
+There are several ways that things can become out of date within the Atlaskit repository. The build is designed in a way that most
+issues will fix themselves on the next master build, but some are not possible to fix like this. To help track down these issues we
+have a health check script that can be used to quickly identify possible issues.
+
+```sh
+yarn run health-check
+```
+
+Will display a table of components and versions, highlighing any discrepencies between local, npm and the registry.
+
+It will also look for storybooks on the registry that are not available.
+
+The root cause of each of these can vary widely, and all should be investigated. Most of the time, simply pushing a dummy commit
+with `"fix(dummy): ..."` should be enough.
+
 </section>

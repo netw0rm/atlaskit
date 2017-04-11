@@ -50,7 +50,10 @@ export default class ContainerNavigation extends PureComponent {
       isScrolling: false,
     };
 
-    this.onScrollTopChange = memoizeOne(this.onScrollTopChange);
+    // Memoizing this function so that it will only be called
+    // when the underlying DOM node is changing OR if it is
+    // unmounting (in which case it will be `null`).
+    this.onRefChange = memoizeOne(this.onRefChange);
   }
 
   componentWillUnmount() {
@@ -71,14 +74,7 @@ export default class ContainerNavigation extends PureComponent {
     });
   }
 
-  getOuterStyles() {
-    return {
-      transform: `translateX(${this.props.offsetX}px)`,
-      width: this.props.width,
-    };
-  }
-
-  watchScrollTop = (el) => {
+  onRefChange = (el) => {
     if (this.unsubscribe) {
       this.unsubscribe();
     }
@@ -88,6 +84,13 @@ export default class ContainerNavigation extends PureComponent {
     }
 
     this.unsubscribe = subscribe(el, this.onScrollTopChange);
+  }
+
+  getOuterStyles() {
+    return {
+      transform: `translateX(${this.props.offsetX}px)`,
+      width: this.props.width,
+    };
   }
 
   render() {
@@ -129,7 +132,7 @@ export default class ContainerNavigation extends PureComponent {
           >
             <ContainerNavigationInner
               appearance={appearance}
-              innerRef={this.watchScrollTop}
+              innerRef={this.onRefChange}
             >
               <GlobalPrimaryActions
                 appearance={appearance}

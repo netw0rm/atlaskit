@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import {
-    akGridSizeUnitless,
-    akColorN20A,
-    akColorN50A,
-    akColorN900,
+  akGridSizeUnitless,
+  akColorN20A,
+  akColorN50A,
+  akColorN900,
  } from '@atlaskit/util-shared-styles';
 
 const colors = {

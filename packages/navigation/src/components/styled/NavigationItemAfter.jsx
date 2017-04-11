@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const NavigationItemAfter = styled.div`
-    display: block;
+  display: block;
 `;
 
 NavigationItemAfter.displayName = 'NavigationItemAfter';

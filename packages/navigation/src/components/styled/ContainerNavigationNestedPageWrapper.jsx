@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-import {
-    akGridSizeUnitless,
- } from '@atlaskit/util-shared-styles';
+import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 const ContainerNavigationNestedPageWrapper = styled.div`
   flex: 1 0 100%;

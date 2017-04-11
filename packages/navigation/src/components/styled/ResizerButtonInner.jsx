@@ -11,7 +11,7 @@ const toggleArrowWidth = 2;
 const toggleArrowTopVerticalOffset = (toggleButtonHeight - toggleArrowHeight) / 2;
 const toggleArrowBottomVerticalOffset =
   (toggleArrowTopVerticalOffset - toggleArrowWidth) + (toggleArrowHeight / 2);
-const opacityTransition = 'opacity cubic-bezier(0.15, 1, 0.3, 1) 0.3s';
+const opacityTransition = 'opacity 0.3s ease-in-out';
 const transformTransition = 'transform 0.2s ease-in-out';
 
 const ResizerButtonInner = styled.button`

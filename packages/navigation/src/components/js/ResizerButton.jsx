@@ -10,11 +10,11 @@ export default class ResizerButton extends PureComponent {
   render() {
     return (
       <ResizerButtonInner
-        isVisible={this.props.isVisible}
-        isPointingRight={this.props.isPointingRight}
-        onMouseDown={e => e.preventDefault()}
-        onClick={this.props.onClick}
         aria-expanded={!this.props.isPointingRight}
+        isPointingRight={this.props.isPointingRight}
+        isVisible={this.props.isVisible}
+        onClick={this.props.onClick}
+        onMouseDown={e => e.preventDefault()}
       />
     );
   }

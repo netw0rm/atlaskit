@@ -25,7 +25,6 @@ const GlobalNavigationInner = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding-bottom: 0;
   padding: ${globalVerticalPaddingTop}px 0 ${globalVerticalPaddingBottom}px 0;
   position: fixed;
   width: ${globalOpenWidth}px;

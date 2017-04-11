@@ -24,14 +24,14 @@ const colors = {
 };
 
 const ContainerNavigationInner = styled.div`
+  background-color: ${({ appearance }) => colors[appearance].background};
   box-sizing: border-box;
   color: ${({ appearance }) => colors[appearance].color};
-  background-color: ${({ appearance }) => colors[appearance].background};
-  width: 100%;
   height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
   padding: ${akGridSizeUnitless * 3}px ${akGridSizeUnitless}px 0 ${akGridSizeUnitless}px;
+  width: 100%;
 `;
 
 ContainerNavigationInner.defaultProps = {

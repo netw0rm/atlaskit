@@ -1,6 +1,7 @@
 import {
   akGridSizeUnitless,
   akColorN0,
+  akColorN50A,
   akColorN500,
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
@@ -11,7 +12,7 @@ import {
   boxShadowSpread,
 } from '../../utils/drawer-style-variables';
 
-const boxShadow = `${-akGridSizeUnitless * 4}px 0 ${akGridSizeUnitless * 4}px ${boxShadowSpread}px rgba(23,43,77,0.24)`;
+const boxShadow = `${-akGridSizeUnitless * 4}px 0 ${akGridSizeUnitless * 4}px ${boxShadowSpread}px ${akColorN50A}`;
 
 const DrawerInner = styled.div`
   background: ${akColorN0};

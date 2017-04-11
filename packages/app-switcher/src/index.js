@@ -8,6 +8,8 @@ import getRecentContainers from './items/recent-containers';
 import getLinkedApplications from './items/linked-applications';
 import getSuggestedApplication from './items/suggested-application';
 
+import { AppSwitcherContainer } from './styled';
+
 export default class AppSwitcher extends Component {
 
   static propTypes = {
@@ -52,6 +54,14 @@ export default class AppSwitcher extends Component {
     }
   };
 
+  onOpenChange = (attrs) => {
+    if (!this.state.isDropdownOpen && attrs.isOpen) {
+      this.props.analytics('appswitcher.trigger.click');
+    }
+
+    this.setState({ isDropdownOpen: attrs.isOpen });
+  };
+
   render = () => {
     const {
       i18n,
@@ -73,18 +83,20 @@ export default class AppSwitcher extends Component {
     ].filter(item => item != null);
 
     return (
-      <StatelessDropdownMenu
-        items={dropdownItems}
-        isOpen={this.state.isDropdownOpen}
-        onOpenChange={(attrs) => { this.setState({ isDropdownOpen: attrs.isOpen }); }}
-        onItemActivated={this.onItemActivated}
-        appearance="tall"
-        position="bottom left"
-        shouldFlip={false}
-        {...dropdownOptions}
-      >
-        {trigger(this.state.isDropdownOpen)}
-      </StatelessDropdownMenu>
+      <AppSwitcherContainer>
+        <StatelessDropdownMenu
+          items={dropdownItems}
+          isOpen={this.state.isDropdownOpen}
+          onOpenChange={this.onOpenChange}
+          onItemActivated={this.onItemActivated}
+          appearance="tall"
+          position="bottom left"
+          shouldFlip={false}
+          {...dropdownOptions}
+        >
+          {trigger(this.state.isDropdownOpen)}
+        </StatelessDropdownMenu>
+      </AppSwitcherContainer>
     );
   }
 }

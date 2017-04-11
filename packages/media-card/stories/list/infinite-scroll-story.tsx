@@ -18,10 +18,10 @@ storiesOf('Infinite Scroll', {})
             dataURI={tallImage}
         />;
 
-        const loadMore = (something: any, count: number) => {
-            Array(count)
-                .fill(something)
-                .forEach(value => subject.next(value));
+        const loadMore = (cardView: any, count: number) => {
+          for (let i = 0; i < count; i++) {
+            subject.next(cardView);
+          }
         };
 
         loadMore(cardView, 20);

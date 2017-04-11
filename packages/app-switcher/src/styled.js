@@ -66,3 +66,9 @@ export const RecentContainerImage = styled.img`
 export const Link = styled.span`
   color: ${akColorB400};
 `;
+
+export const AppSwitcherContainer = styled.span`
+  [data-role="droplistContent"] {
+    max-height: 85vh;
+  }
+`;

@@ -1,12 +1,13 @@
+import * as React from 'react';
+import { PureComponent } from 'react';
+import FloatingToolbar from '../FloatingToolbar';
+import ToolbarButton from '../ToolbarButton';
 import TipIcon from '@atlaskit/icon/glyph/editor/hint';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import WarningIcon from '@atlaskit/icon/glyph/editor/warning';
-import * as React from 'react';
-import { PureComponent } from 'react';
-import FloatingToolbar from '../FloatingToolbar';
-import ToolbarButton from '../ToolbarButton';
+import { EditorView } from '../../prosemirror';
 
 import { availablePanelType, PanelState, PanelType } from '../../plugins/panel';
 import * as styles from './styles';
@@ -19,11 +20,12 @@ const icons = {
 };
 
 export interface Props {
+  editorView: EditorView;
   pluginState: PanelState;
 }
 
 export interface State {
-  toolbarVisible: boolean;
+  toolbarVisible: boolean | undefined;
   target?: HTMLElement | undefined;
   activePanelType?: string | undefined;
 }
@@ -56,14 +58,15 @@ export default class PanelEdit extends PureComponent<Props, State> {
                 key={index}
                 wrapperClassName={
                   activePanelType === panelType.panelType ?
-                  styles.selectedButtonWrapperStyle :
-                  styles.buttonWrapperStyle
+                    styles.selectedButtonWrapperStyle :
+                    styles.buttonWrapperStyle
                 }
                 selected={activePanelType === panelType.panelType}
                 onClick={this.handleSelectPanelType.bind(this, panelType)}
                 iconBefore={<Icon label={panelType.panelType} />}
               />
-          ); })}
+            );
+          })}
           <span className={styles.removeButtonWrapperStyle}>
             <ToolbarButton
               wrapperClassName={styles.buttonWrapperStyle}
@@ -88,10 +91,12 @@ export default class PanelEdit extends PureComponent<Props, State> {
   }
 
   private handleSelectPanelType = (panelType: PanelType, event) => {
-    this.props.pluginState.changePanelType(panelType);
+    const { editorView } = this.props;
+    this.props.pluginState.changePanelType(editorView, panelType);
   }
 
   private handleRemovePanelType = () => {
-    this.props.pluginState.removePanelType();
+    const { editorView } = this.props;
+    this.props.pluginState.removePanelType(editorView);
   }
 }

@@ -5,6 +5,7 @@ import {
   isSchemaWithLinks,
   isSchemaWithAdvancedTextFormattingMarks,
   isSchemaWithCodeBlock,
+  isSchemaWithBlockQuotes,
   JIRASchema,
 } from '../schema';
 import parseHtml from './parse-html';
@@ -97,7 +98,7 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
         const type = tag === 'SUB' ? 'sub' : 'sup';
         return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
       case 'INS':
-        return content ? addMarks(content, [schema.marks.u.create()]) : null;
+        return content ? addMarks(content, [schema.marks.underline.create()]) : null;
 
       // Nodes
       case 'A':
@@ -140,6 +141,8 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
           return jiraKey ? schema.text(jiraKey) : null;
         } else if (node.className.match('jira-macro-single-issue-export-pdf')) {
           return null;
+        } else if (node.className.match('code-')) { // Removing spans with syntax highlighting from JIRA
+          return null;
         }
         break;
 
@@ -157,9 +160,9 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
         const level = Number(tag.charAt(1));
         return schema.nodes.heading.createChecked({ level }, content);
       case 'BR':
-        return schema.nodes.hard_break.createChecked();
+        return schema.nodes.hardBreak.createChecked();
       case 'HR':
-        return schema.nodes.horizontal_rule.createChecked();
+        return schema.nodes.rule.createChecked();
       case 'P':
         return schema.nodes.paragraph.createChecked({}, content);
     }
@@ -168,14 +171,14 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
     if (isSchemaWithLists(schema)) {
       switch (tag) {
         case 'UL':
-          return schema.nodes.bullet_list!.createChecked({}, content);
+          return schema.nodes.bulletList!.createChecked({}, content);
         case 'OL':
-          return schema.nodes.ordered_list!.createChecked({}, content);
+          return schema.nodes.orderedList!.createChecked({}, content);
         case 'LI':
-          const compatibleContent = schema.nodes.list_item!.validContent(content)
+          const compatibleContent = schema.nodes.listItem!.validContent(content)
             ? content
             : ensureBlocks(content, schema);
-          return schema.nodes.list_item!.createChecked({}, compatibleContent);
+          return schema.nodes.listItem!.createChecked({}, compatibleContent);
       }
     }
 
@@ -193,21 +196,18 @@ function convert(content: Fragment, node: Node, schema: JIRASchema): Fragment | 
             }
 
             const language = pre.className.split('-')[1];
-            return schema.nodes.code_block!.createChecked({ language }, schema.text(pre.innerText));
+            return schema.nodes.codeBlock!.createChecked({ language }, schema.text(pre.innerText.replace(/\r\n/g, '\n')));
           }
           break;
         case 'PRE':
           return null;
       }
     }
-  }
 
-  // debug
-  let repr = node.toString();
-  if (node instanceof HTMLElement) {
-    repr = (node.cloneNode(false) as HTMLElement).outerHTML;
+    if (isSchemaWithBlockQuotes(schema) && tag === 'BLOCKQUOTE') {
+      return schema.nodes.blockquote!.createChecked({}, content);
+    }
   }
-  throw new Error(`Unable to handle node ${repr}`);
 }
 
 /*

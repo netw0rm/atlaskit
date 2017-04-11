@@ -5,7 +5,7 @@ export const fakeContext = (stubbedContext = {}): Context => {
   const defaultContext = {
     getMediaItemProvider: sinon.stub().returns({observable: sinon.spy()}),
     getMediaCollectionProvider: sinon.stub().returns({observable: sinon.spy()}),
-    getDataUriService: sinon.stub().returns({fetchOriginalDataUri: sinon.spy(), fetchImageDataUri: sinon.spy()}),
+    getDataUriService: sinon.stub().returns({fetchOriginalDataUri: sinon.spy(), fetchImageDataUri: sinon.stub().returns(Promise.resolve())}),
     addLinkItem: sinon.stub().returns({observable: sinon.spy()}),
     getUrlPreviewProvider: sinon.stub().returns({observable: sinon.spy()}),
     config: {

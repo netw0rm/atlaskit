@@ -1,25 +1,30 @@
 import {
   AnalyticsHandler,
   analyticsService,
+  baseKeymap,
   BlockTypePlugin,
   Chrome,
   CodeBlockPlugin,
   ContextName,
-  DefaultInputRulesPlugin,
-  HorizontalRulePlugin,
-  Keymap,
+  EditorState,
+  EditorView,
+  history,
+  HyperlinkPlugin,
+  keymap,
   ListsPlugin,
-  MarkdownInputRulesPlugin,
-  ProseMirror,
+  RulePlugin,
   TextFormattingPlugin,
+  TextSelection,
   ClearFormattingPlugin,
-  DefaultKeymapsPlugin,
-  version as coreVersion
+  version as coreVersion,
+  PanelPlugin
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { encode, parse } from './cxhtml';
 import { version, name } from './version';
+import { CQSchema, default as schema } from './schema';
+import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
 
 export { version };
 
@@ -28,6 +33,7 @@ export interface Props {
   context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
+  expanded?: boolean;
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
@@ -36,8 +42,9 @@ export interface Props {
 }
 
 export interface State {
-  pm?: ProseMirror;
+  editorView?: EditorView;
   isExpanded?: boolean;
+  schema: CQSchema;
 }
 
 export default class Editor extends PureComponent<Props, State> {
@@ -46,18 +53,29 @@ export default class Editor extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { isExpanded: props.isExpandedByDefault };
+
+    this.state = {
+      schema,
+      isExpanded: (props.expanded !== undefined) ? props.expanded : props.isExpandedByDefault,
+    };
 
     analyticsService.handler = props.analyticsHandler || ((name) => {});
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.expanded !== this.props.expanded) {
+      this.setState({ isExpanded: nextProps.expanded });
+    }
   }
 
   /**
    * Focus the content region of the editor.
    */
   focus(): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.focus();
+    const { editorView } = this.state;
+
+    if (editorView) {
+      editorView.focus();
     }
   }
 
@@ -65,9 +83,15 @@ export default class Editor extends PureComponent<Props, State> {
    * Clear the content of the editor, making it an empty document.
    */
   clear(): void {
-    const { pm } = this.state;
-    if (pm) {
-      pm.tr.delete(0, pm.doc.nodeSize - 2).apply();
+    const { editorView } = this.state;
+
+    if (editorView) {
+      const { state } = editorView;
+      const tr = state.tr
+        .setSelection(TextSelection.create(state.doc, 0, state.doc.nodeSize - 2))
+        .deleteSelection();
+
+      editorView.dispatch(tr);
     }
   }
 
@@ -76,9 +100,10 @@ export default class Editor extends PureComponent<Props, State> {
    * (i.e. text)
    */
   isEmpty(): boolean {
-    const { pm } = this.state;
-    return pm && pm.doc
-      ? !!pm.doc.textContent
+    const { editorView } = this.state;
+
+    return editorView && editorView.state.doc
+      ? !!editorView.state.doc.textContent
       : false;
   }
 
@@ -86,30 +111,44 @@ export default class Editor extends PureComponent<Props, State> {
    * The current value of the editor, encoded as CXTML.
    */
   get value(): string | undefined {
-    const { pm } = this.state;
-    return pm
-      ? encode(pm.doc)
+    const { editorView } = this.state;
+
+    return editorView && editorView.state.doc
+      ? encode(editorView.state.doc)
       : this.props.defaultValue;
   }
 
   render() {
-    const { pm, isExpanded } = this.state;
+    const { editorView, isExpanded } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
+    const editorState = editorView && editorView.state;
+
+    const blockTypeState = editorState && BlockTypePlugin.getState(editorState);
+    const codeBlockState = editorState && CodeBlockPlugin.getState(editorState);
+    const clearFormattingState = editorState && ClearFormattingPlugin.getState(editorState);
+    const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
+    const listsState = editorState && ListsPlugin.getState(editorState);
+    const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
+    const panelState = editorState && PanelPlugin.getState(editorState);
 
     return (
       <Chrome
         children={<div ref={this.handleRef} />}
+        editorView={editorView!}
         isExpanded={isExpanded}
         feedbackFormUrl="yes"
         onCancel={handleCancel}
         onSave={handleSave}
         onCollapsedChromeFocus={() => this.setState({ isExpanded: true })}
         placeholder={this.props.placeholder}
-        pluginStateBlockType={pm && BlockTypePlugin.get(pm)}
-        pluginStateLists={pm && ListsPlugin.get(pm)}
-        pluginStateTextFormatting={pm && TextFormattingPlugin.get(pm)}
-        pluginStateClearFormatting={pm && ClearFormattingPlugin.get(pm)}
+        pluginStateBlockType={blockTypeState}
+        pluginStateCodeBlock={codeBlockState}
+        pluginStateHyperlink={hyperlinkState}
+        pluginStateLists={listsState}
+        pluginStateTextFormatting={textFormattingState}
+        pluginStateClearFormatting={clearFormattingState}
+        pluginStatePanel={panelState}
         packageVersion={version}
         packageName={name}
       />
@@ -138,45 +177,61 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   private handleRef = (place: Element | null) => {
+    const { schema } = this.state;
+
     if (place) {
       const { context } = this.props;
-      const pm = new ProseMirror({
-        place,
+      const cqKeymap = {
+        'Mod-Enter': this.handleSave,
+      };
+
+      const editorState = EditorState.create({
+        schema,
         doc: parse(this.props.defaultValue || ''),
         plugins: [
           BlockTypePlugin,
-          CodeBlockPlugin,
-          MarkdownInputRulesPlugin,
-          ListsPlugin,
-          TextFormattingPlugin,
           ClearFormattingPlugin,
-          HorizontalRulePlugin,
-          DefaultInputRulesPlugin,
-          DefaultKeymapsPlugin,
-        ],
+          CodeBlockPlugin,
+          HyperlinkPlugin,
+          ListsPlugin,
+          RulePlugin,
+          TextFormattingPlugin,
+          PanelPlugin,
+          history(),
+          keymap(cqKeymap),
+          keymap(baseKeymap), // should be last :(
+        ]
       });
 
       if (context) {
-        BlockTypePlugin.get(pm)!.changeContext(context);
+        const blockTypeState = BlockTypePlugin.getState(editorState);
+        blockTypeState.changeContext(context);
       }
 
-      pm.addKeymap(new Keymap({
-        'Mod-Enter': this.handleSave
-      }));
-
-      pm.on.domPaste.add(() => {
-        analyticsService.trackEvent('atlassian.editor.paste');
+      const editorView = new EditorView(place, {
+        state: editorState,
+        dispatchTransaction: (tr) => {
+          const newState = editorView.state.apply(tr);
+          editorView.updateState(newState);
+          this.handleChange();
+        },
+        nodeViews: {
+          jiraIssue: jiraIssueNodeView,
+        },
+        handleDOMEvents: {
+          paste(view: EditorView, event: ClipboardEvent) {
+            analyticsService.trackEvent('atlassian.editor.paste');
+            return false;
+          }
+        }
       });
-
-
-      pm.on.change.add(this.handleChange);
-      pm.focus();
 
       analyticsService.trackEvent('atlassian.editor.start');
 
-      this.setState({ pm });
+      this.setState({ editorView });
+      this.focus();
     } else {
-      this.setState({ pm: undefined });
+      this.setState({ editorView: undefined });
     }
   }
 }

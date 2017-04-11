@@ -6,7 +6,7 @@ import { JIRASchema, makeSchema } from '../src/schema';
 const schema = makeSchema({ allowCodeBlock: true }) as JIRASchema;
 
 // Nodes
-const code = (attrs: { language?: string }) => nodeFactory(schema.nodes.code_block!, attrs);
+const code = (attrs: { language?: string }) => nodeFactory(schema.nodes.codeBlock!, attrs);
 const doc = nodeFactory(schema.nodes.doc);
 
 describe(name, () => {
@@ -15,6 +15,12 @@ describe(name, () => {
       schema,
       `<div class="code panel"><div class="codeContent panelContent"><pre class="code-javascript">var foo = "bar";</pre></div></div>`,
       doc(code({ language: 'javascript' })('var foo = "bar";'))
+    );
+
+    checkParseEncodeRoundTrips('multiline code_block node',
+      schema,
+      `<div class="code panel"><div class="codeContent panelContent"><pre class="code-javascript">var foo = "bar";\nfoo += "baz";</pre></div></div>`,
+      doc(code({ language: 'javascript' })(`var foo = "bar";\nfoo += "baz";`))
     );
 
     checkEncode('default language is java',
@@ -33,6 +39,23 @@ describe(name, () => {
       schema,
       [`<div class="preformatted panel"><div class="preformattedContent panelContent"><pre>*no* further _formatting_</pre></div></div>`],
       doc(code({})('*no* further _formatting_'))
+    );
+
+    checkParse('strip spans',
+      schema,
+      [
+        `<div class="code panel"><div class="codeContent panelContent"><pre class="code-java"><span class="code-comment">// Some comments here
+</span><span class="code-keyword">public</span> <span class="code-object">String</span> getFoo()
+{
+    <span class="code-keyword">return</span> foo;
+}</pre></div></div>`
+      ],
+      doc(code({ language: 'java' })(`// Some comments here
+public String getFoo()
+{
+    return foo;
+}`)
+      )
     );
   });
 });

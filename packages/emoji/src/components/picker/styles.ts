@@ -141,6 +141,9 @@ export const pickerSearch = style({
         ['&:invalid']: {
           boxShadow: 'none',
         },
+        ['&::-ms-clear']: {
+          display: 'none',
+        },
       },
     },
   },

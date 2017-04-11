@@ -234,7 +234,7 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         },
         nodeViews: {
-          mention: mentionNodeView(this.providerFactory)
+          mention: mentionNodeView(this.providerFactory),
           jiraIssue: jiraIssueNodeView,
         },
         handleDOMEvents: {

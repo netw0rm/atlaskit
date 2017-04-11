@@ -8,6 +8,7 @@ import {
 } from '../../prosemirror';
 import { reconfigure } from '../utils';
 import { inputRulePlugin, destroyRulePluginCache } from './input-rules';
+import { isMarkAllowedAtPosition } from '../../utils';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
 
@@ -110,8 +111,9 @@ export class MentionsState {
   }
 
   mentionDisabled() {
-    const { selection, schema } = this.state;
-    return schema.marks.code && schema.marks.code.isInSet(selection.$from.marks());
+    const { schema, selection } = this.state;
+    const { mentionQuery } = schema.marks;
+    return isMarkAllowedAtPosition(mentionQuery, selection);
   }
 
   private findMentionQueryMark() {

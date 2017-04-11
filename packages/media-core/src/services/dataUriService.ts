@@ -1,6 +1,7 @@
 import createRequest, {CreateRequestFunc} from './util/createRequest';
 import { MediaItem, JwtTokenProvider } from '../';
-import { DataUri } from '../index';
+
+export type DataUri = string;
 
 export interface DataUriService {
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri>;

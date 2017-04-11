@@ -2,11 +2,11 @@ import { Node as PMNode } from '@atlaskit/editor-core';
 import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { encode, parse, LANGUAGE_MAP, supportedLanguages } from '../src/cxhtml';
+import { encode, parse, LANGUAGE_MAP } from '../src/cxhtml';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
-  code, ol, p, strike, strong, sub, sup, u, ul, codeblock,
-  unsupportedInline, unsupportedBlock
+  code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention,
+  unsupportedInline, unsupportedBlock, jiraIssue,
 } from './_schema-builder';
 chai.use(chaiPlugin);
 
@@ -352,10 +352,56 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         Object.keys(LANGUAGE_MAP).forEach(languageName => {
           check(`with language "${languageName}"`,
             `<ac:structured-macro ac:name="code"><ac:parameter ac:name="language">${LANGUAGE_MAP[languageName]}</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>`,
-            doc(codeblock({ language: LANGUAGE_MAP[languageName], supportedLanguages })('some code')));
+            doc(codeblock({ language: LANGUAGE_MAP[languageName] })('some code')));
         });
       });
 
+    });
+
+    describe('panel', () => {
+      context('when panel does not have title', () => {
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p>${panelType} panel</p></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(p(`${panelType} panel`))));
+        });
+      });
+      context('when panel has title', () => {
+        const title = 'Panel title';
+
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${title}</ac:parameter><ac:rich-text-body><p>${panelType} panel</p></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(h3(title), p(`${panelType} panel`))));
+        });
+      });
+      context('when panel has multiple top-level nodes', () => {
+        const title = 'Panel title';
+
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${title}</ac:parameter><ac:rich-text-body><p>p1</p><p>p2</p><h5>h5</h5></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(h3(title), p('p1'), p('p2'), h5('h5'))));
+        });
+      });
+    });
+
+    describe('jira issue', () => {
+      check(
+        'basic',
+        '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="a1a887df-a2dd-492b-8b5c-415d8eab22cf"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter><ac:parameter ac:name="key">ED-1068</ac:parameter></ac:structured-macro></p>',
+        doc(
+          p(
+            jiraIssue({
+              issueKey: 'ED-1068',
+              macroId: 'a1a887df-a2dd-492b-8b5c-415d8eab22cf',
+              schemaVersion: '1',
+              server: 'JIRA (product-fabric.atlassian.net)',
+              serverId: '70d83bc8-0aff-3fa5-8121-5ae90121f5fc',
+            })
+          )
+        )
+      );
     });
   });
 
@@ -363,6 +409,14 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
     check('inline ac:structured-macro in p',
       '<p><ac:structured-macro name="foo"/></p>',
       doc(p(unsupportedInline('<ac:structured-macro name="foo"/>'))));
+
+    check('inline ac:structured-macro with unknown ac:name key',
+      '<p><ac:structured-macro ac:name="blabla"/></p>',
+      doc(p(unsupportedInline('<ac:structured-macro ac:name="blabla"/>'))));
+
+    check('inline ac:structured-macro with JIRA issues list',
+      '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="be852c2a-4d33-4ceb-8e21-b3b45791d92e"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="columns">key,summary,type,created,updated,due,assignee,reporter,priority,status,resolution</ac:parameter><ac:parameter ac:name="maximumIssues">20</ac:parameter><ac:parameter ac:name="jqlQuery">project = ED AND component = codeblock</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter></ac:structured-macro></p>',
+      doc(p(unsupportedInline('<ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="be852c2a-4d33-4ceb-8e21-b3b45791d92e"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="columns">key,summary,type,created,updated,due,assignee,reporter,priority,status,resolution</ac:parameter><ac:parameter ac:name="maximumIssues">20</ac:parameter><ac:parameter ac:name="jqlQuery">project = ED AND component = codeblock</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter></ac:structured-macro>'))));
 
     check('inline ac:structured-macro in p (multiple)',
       '<p><ac:structured-macro name="foo"/><ac:structured-macro name="bar"/></p>',
@@ -454,6 +508,20 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         )
       );
     });
+
+    check(
+      'mentions',
+      '<p>This is mention from <fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></p>',
+      doc(
+        p(
+          'This is mention from ',
+          mention({
+            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+            displayName: 'Artur Bodera'
+          })
+        )
+      )
+    );
   });
 
 // Color text span

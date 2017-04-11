@@ -1,16 +1,16 @@
 import { nodeFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
 import { checkParseEncodeRoundTrips } from '../test-helpers';
 import { name } from '../package.json';
-import { JIRASchema, makeSchema } from '../src/schema';
+import { makeSchema } from '../src/schema';
 
-const schema = makeSchema({ allowBlockQuote: true,  allowLists: true  }) as JIRASchema;
+const schema = makeSchema({ allowBlockQuote: true,  allowLists: true  });
 
 // Nodes
 const doc = nodeFactory(schema.nodes.doc);
 const blockquote = nodeFactory(schema.nodes.blockquote!, {});
 const p = nodeFactory(schema.nodes.paragraph);
-const ul = nodeFactory(schema.nodes.bullet_list!);
-const li = nodeFactory(schema.nodes.list_item!);
+const ul = nodeFactory(schema.nodes.bulletList!);
+const li = nodeFactory(schema.nodes.listItem!);
 
 describe(name, () => {
   describe('blockquote', () => {

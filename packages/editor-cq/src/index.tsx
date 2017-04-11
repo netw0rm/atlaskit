@@ -16,14 +16,15 @@ import {
   TextFormattingPlugin,
   TextSelection,
   ClearFormattingPlugin,
-  version as coreVersion
+  version as coreVersion,
+  PanelPlugin
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { encode, parse } from './cxhtml';
+import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
-
+import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
 export { version };
 
 
@@ -31,6 +32,7 @@ export interface Props {
   context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
+  expanded?: boolean;
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
@@ -53,10 +55,16 @@ export default class Editor extends PureComponent<Props, State> {
 
     this.state = {
       schema,
-      isExpanded: props.isExpandedByDefault,
+      isExpanded: (props.expanded !== undefined) ? props.expanded : props.isExpandedByDefault,
     };
 
     analyticsService.handler = props.analyticsHandler || ((name) => {});
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.expanded !== this.props.expanded) {
+      this.setState({ isExpanded: nextProps.expanded });
+    }
   }
 
   /**
@@ -121,6 +129,7 @@ export default class Editor extends PureComponent<Props, State> {
     const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
     const listsState = editorState && ListsPlugin.getState(editorState);
     const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
+    const panelState = editorState && PanelPlugin.getState(editorState);
 
     return (
       <Chrome
@@ -138,6 +147,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateLists={listsState}
         pluginStateTextFormatting={textFormattingState}
         pluginStateClearFormatting={clearFormattingState}
+        pluginStatePanel={panelState}
         packageVersion={version}
         packageName={name}
       />
@@ -185,11 +195,17 @@ export default class Editor extends PureComponent<Props, State> {
           ListsPlugin,
           RulePlugin,
           TextFormattingPlugin,
+          PanelPlugin,
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap), // should be last :(
         ]
       });
+
+      const codeBlockState = CodeBlockPlugin.getState(editorState);
+      if (typeof codeBlockState.setLanguages === 'function') {
+        codeBlockState.setLanguages(supportedLanguages);
+      }
 
       if (context) {
         const blockTypeState = BlockTypePlugin.getState(editorState);
@@ -202,6 +218,9 @@ export default class Editor extends PureComponent<Props, State> {
           const newState = editorView.state.apply(tr);
           editorView.updateState(newState);
           this.handleChange();
+        },
+        nodeViews: {
+          jiraIssue: jiraIssueNodeView,
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

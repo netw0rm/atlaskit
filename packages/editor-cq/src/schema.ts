@@ -21,7 +21,8 @@ import {
   subsup,
   text,
   underline,
-  panel
+  panel,
+  panelText,
 } from '@atlaskit/editor-core';
 
 import jiraIssue from './schema/nodes/jiraIssue';
@@ -38,6 +39,7 @@ interface CQSchemaNodes {
   bulletList: NodeSpec;
   codeBlock: NodeSpec;
   panel: NodeSpec;
+  panelText: NodeSpec;
   doc: NodeSpec;
   hardBreak: NodeSpec;
   heading: NodeSpec;
@@ -68,6 +70,7 @@ const nodes = {
   blockquote,
   codeBlock,
   panel,
+  panelText,
   hardBreak,
   orderedList,
   bulletList,

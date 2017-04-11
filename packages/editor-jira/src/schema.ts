@@ -29,7 +29,7 @@ const code = {
   excludes: 'em strike strong underline'
 };
 
-interface JIRASchemaNodes {
+export interface JIRASchemaNodes {
   blockquote?: NodeSpec;
   bulletList?: NodeSpec;
   codeBlock?: NodeSpec;
@@ -44,7 +44,7 @@ interface JIRASchemaNodes {
   text: NodeSpec;
 }
 
-interface JIRASchemaMarks {
+export interface JIRASchemaMarks {
   code?: MarkSpec;
   em: MarkSpec;
   link?: MarkSpec;

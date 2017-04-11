@@ -28,6 +28,7 @@ import { MentionProvider } from '@atlaskit/mention';
 import { encode, parse } from './cxhtml';
 import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
+import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
 
 export { version };
 
@@ -234,6 +235,7 @@ export default class Editor extends PureComponent<Props, State> {
         },
         nodeViews: {
           mention: mentionNodeView(this.providerFactory)
+          jiraIssue: jiraIssueNodeView,
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {

@@ -5,7 +5,7 @@ import {
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
-import encodeCxhtml from './encode-cxhtml';
+import { AC_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 
 const convertedNodes = new WeakMap();
 
@@ -403,6 +403,27 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       }
 
       return schema.nodes.panel.create({ panelType: name.toLowerCase() }, panelBody);
+
+    case 'JIRA':
+      const schemaVersion = node.getAttributeNS(AC_XMLNS, 'schema-version');
+      const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
+      const server = getAcParameter(node, 'server');
+      const serverId = getAcParameter(node, 'serverId');
+      const issueKey = getAcParameter(node, 'key');
+
+      // if this is an issue list, render it as unsupported node
+      // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672
+      if (!issueKey) {
+        return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
+      }
+
+      return schema.nodes.jiraIssue.create({
+        issueKey,
+        macroId,
+        schemaVersion,
+        server,
+        serverId,
+      });
   }
 
   // All unsupported content is wrapped in an `unsupportedInline` node. Converting

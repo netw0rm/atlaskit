@@ -1,6 +1,19 @@
-import { akEditorSubtleAccent } from '../../styles';
+import { akEditorSubtleAccent, akEditorMentionSelected } from '../../styles';
 import { akBorderRadius, akGridSize } from '@atlaskit/util-shared-styles';
 import { style } from 'typestyle';
+
+export const createNestedListStyles = (): any => {
+  const styles = {};
+  const listStyleTypes = ['decimal', 'lower-alpha', 'lower-roman'];
+  let key = '';
+  for (let i = 0; i < 9; i++) {
+    styles[`${key}li`] = {
+      listStyleType: listStyleTypes[i % 3]
+    };
+    key += 'ol ';
+  }
+  return styles;
+};
 
 export const container = style({
   backgroundColor: 'white',
@@ -51,6 +64,10 @@ export const content = style({
       pointerEvents: 'none'
     },
 
+    '.ProseMirror ol': {
+      $nest: createNestedListStyles(),
+    },
+
     '.ProseMirror li > *': {
       pointerEvents: 'auto'
     },
@@ -71,6 +88,10 @@ export const content = style({
 
     '.ProseMirror-selectednode:empty': {
       outline: '2px solid #8cf',
+    },
+
+    '.ProseMirror-selectednode .ak-mention': {
+      background: akEditorMentionSelected
     },
 
     /* Make sure li selections wrap around markers */

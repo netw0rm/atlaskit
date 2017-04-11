@@ -48,6 +48,9 @@ describe('<Drawer />', () => {
         <Drawer backIconOffset={123} />
       ).find('DrawerBackIconWrapper').props().style.top).to.equal('123px');
     });
+    it('header renders a <ContainerHeader />', () => {
+      expect(mount(<Drawer header={<span>foo</span>} />).find('ContainerHeader').length).to.equal(1);
+    });
   });
   describe('renders', () => {
     it('a <DrawerTrigger /> with a <DrawerBackIcon /> inside', () => {
@@ -56,8 +59,8 @@ describe('<Drawer />', () => {
     it('a blanket', () => {
       expect(mount(<Drawer />).find('Blanket').length).to.equal(1);
     });
-    it('a <ContainerHeader />', () => {
-      expect(mount(<Drawer />).find('ContainerHeader').length).to.equal(1);
+    it('no <ContainerHeader /> by default', () => {
+      expect(mount(<Drawer />).find('ContainerHeader').length).to.equal(0);
     });
   });
   describe('blanket', () => {

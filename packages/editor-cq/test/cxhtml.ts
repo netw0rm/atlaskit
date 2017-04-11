@@ -6,7 +6,7 @@ import { encode, parse } from '../src/cxhtml';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
   code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention,
-  unsupportedInline, unsupportedBlock
+  unsupportedInline, unsupportedBlock, jiraIssue,
 } from './_schema-builder';
 
 chai.use(chaiPlugin);
@@ -375,12 +375,38 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         });
       });
     });
+
+    describe('jira issue', () => {
+      check(
+        'basic',
+        '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="a1a887df-a2dd-492b-8b5c-415d8eab22cf"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter><ac:parameter ac:name="key">ED-1068</ac:parameter></ac:structured-macro></p>',
+        doc(
+          p(
+            jiraIssue({
+              issueKey: 'ED-1068',
+              macroId: 'a1a887df-a2dd-492b-8b5c-415d8eab22cf',
+              schemaVersion: '1',
+              server: 'JIRA (product-fabric.atlassian.net)',
+              serverId: '70d83bc8-0aff-3fa5-8121-5ae90121f5fc',
+            })
+          )
+        )
+      );
+    });
   });
 
   describe('unsupported content', () => {
     check('inline ac:structured-macro in p',
       '<p><ac:structured-macro name="foo"/></p>',
       doc(p(unsupportedInline('<ac:structured-macro name="foo"/>'))));
+
+    check('inline ac:structured-macro with unknown ac:name key',
+      '<p><ac:structured-macro ac:name="blabla"/></p>',
+      doc(p(unsupportedInline('<ac:structured-macro ac:name="blabla"/>'))));
+
+    check('inline ac:structured-macro with JIRA issues list',
+      '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="be852c2a-4d33-4ceb-8e21-b3b45791d92e"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="columns">key,summary,type,created,updated,due,assignee,reporter,priority,status,resolution</ac:parameter><ac:parameter ac:name="maximumIssues">20</ac:parameter><ac:parameter ac:name="jqlQuery">project = ED AND component = codeblock</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter></ac:structured-macro></p>',
+      doc(p(unsupportedInline('<ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="be852c2a-4d33-4ceb-8e21-b3b45791d92e"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="columns">key,summary,type,created,updated,due,assignee,reporter,priority,status,resolution</ac:parameter><ac:parameter ac:name="maximumIssues">20</ac:parameter><ac:parameter ac:name="jqlQuery">project = ED AND component = codeblock</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter></ac:structured-macro>'))));
 
     check('inline ac:structured-macro in p (multiple)',
       '<p><ac:structured-macro name="foo"/><ac:structured-macro name="bar"/></p>',

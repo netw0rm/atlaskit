@@ -86,6 +86,7 @@ export const emojiPreview = style({
     [`.${preview}`]: {
       display: 'flex',
       flexDirection: 'row',
+      flexWrap: 'wrap',
 
       $nest: {
         [`.${emojiSprite}`]: {
@@ -103,13 +104,15 @@ export const emojiPreview = style({
         },
 
         [`.${previewText}`]: {
-          flex: 1,
+          flex: 'column',
           marginLeft: '10px',
           marginTop: '-2px',
           maxWidth: '285px',
+          width: '285px', /* IE */
 
           $nest: {
             [`.${name}`]: {
+              display: 'block',
               color: akColorN900,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -123,6 +126,7 @@ export const emojiPreview = style({
             },
 
             [`.${shortName}`]: {
+              display: 'block',
               color: akColorN200,
               fontSize: '12px',
               lineHeight: 1,

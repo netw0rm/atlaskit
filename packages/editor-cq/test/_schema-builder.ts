@@ -21,6 +21,13 @@ export const panel = (attrs: {} = {}) => nodeFactory(schema.nodes.panel, attrs);
 export const unsupportedBlock = (cxhtml: string) => nodeFactory(schema.nodes.unsupportedBlock, { cxhtml })();
 export const unsupportedInline = (cxhtml: string) => nodeFactory(schema.nodes.unsupportedInline, { cxhtml })();
 export const mention = (attrs: { id: string, displayName?: string }) => schema.nodes.mention.createChecked(attrs);
+export const jiraIssue = (attrs: {
+  issueKey?: string;
+  macroId?: string;
+  schemaVersion?: string;
+  server?: string;
+  serverId?: string;
+}) => schema.nodes.jiraIssue.create(attrs);
 
 // Marks
 export const code = markFactory(schema.marks.code);
@@ -30,3 +37,4 @@ export const strong = markFactory(schema.marks.strong);
 export const sub = markFactory(schema.marks.subsup, { type: 'sub' });
 export const sup = markFactory(schema.marks.subsup, { type: 'sup' });
 export const u = markFactory(schema.marks.underline);
+export const link = (attrs: {} = {}) => markFactory(schema.marks.link, attrs);

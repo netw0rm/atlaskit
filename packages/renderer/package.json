@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "1.29.0",
+  "version": "1.29.3",
   "config": {
     "access": "public"
   },
@@ -19,11 +19,11 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/emoji": "^13.0.0",
+    "@atlaskit/emoji": "^13.1.1",
     "@atlaskit/media-card": "^5.0.0",
     "@atlaskit/media-core": "^1.2.2",
     "@atlaskit/media-filmstrip": "^2.0.6",
-    "@atlaskit/mention": "^4.0.0",
+    "@atlaskit/mention": "^4.2.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
     "styled-components": "^1.4.0",
     "tslib": "^1.2.0"

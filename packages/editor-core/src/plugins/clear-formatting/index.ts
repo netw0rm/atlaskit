@@ -1,13 +1,13 @@
 import {
   EditorState,
   EditorView,
+  Schema,
   MarkType,
   Plugin,
   PluginKey,
 } from '../../prosemirror';
 import { clearFormatting } from './commands';
 import keymapPlugin from './keymap';
-import { reconfigure } from '../utils';
 
 export type StateChangeHandler = (state: ClearFormattingState) => any;
 
@@ -91,9 +91,12 @@ const plugin = new Plugin({
   },
   key: stateKey,
   view: (view: EditorView) => {
-    reconfigure(view, [keymapPlugin(view.state.schema)]);
     return {};
   }
 });
 
-export default plugin;
+const plugins = (schema: Schema<any, any>) => {
+  return [plugin, keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+};
+
+export default plugins;

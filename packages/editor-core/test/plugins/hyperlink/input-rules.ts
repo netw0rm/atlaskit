@@ -4,6 +4,7 @@ import HyperlinkPlugin from '../../../src/plugins/hyperlink';
 import {
   insertText, chaiPlugin, fixtures, makeEditor, doc, a as link, linkable, code_block
 } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
@@ -11,7 +12,7 @@ describe('hyperlink', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: HyperlinkPlugin,
+    plugins: HyperlinkPlugin(defaultSchema),
     place: fixture(),
   });
 

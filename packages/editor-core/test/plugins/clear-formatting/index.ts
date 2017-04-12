@@ -2,11 +2,12 @@ import { expect } from 'chai';
 import * as chai from 'chai';
 
 import { browser } from '../../../src/prosemirror';
-import ClearFormattingPlugin from '../../../src/plugins/clear-formatting';
+import clearFormattingPlugins from '../../../src/plugins/clear-formatting';
 import {
   a as link, blockquote, chaiPlugin, code_block, code, doc, em, fixtures, h1,
   li, linkable, makeEditor, ol, p, panel, sendKeyToPm, strike, strong, underline
 } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
@@ -14,7 +15,7 @@ describe('clear-formatting', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: ClearFormattingPlugin,
+    plugins: clearFormattingPlugins(defaultSchema),
     place: fixture()
   });
 

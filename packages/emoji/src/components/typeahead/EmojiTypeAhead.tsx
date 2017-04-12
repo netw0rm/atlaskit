@@ -151,6 +151,10 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
     result: this.onSearchResult,
   };
 
+  private onEmojiListRef = (ref) => {
+    this.emojiListRef = ref;
+  }
+
   render() {
     const { onSelection, target, position, zIndex, offsetX, offsetY } = this.props;
     const { visible, emojis, loading } = this.state;
@@ -168,7 +172,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         <EmojiList
           emojis={emojis}
           onEmojiSelected={onSelection}
-          ref={(ref) => { this.emojiListRef = ref; }}
+          ref={this.onEmojiListRef}
           loading={loading}
         />
       </div>

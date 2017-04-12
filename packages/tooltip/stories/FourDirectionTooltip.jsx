@@ -37,6 +37,7 @@ export default class FourWayTooltip extends PureComponent {
       <AKTooltip
         description={position}
         position={position}
+        shouldAppendToBody
       >
         <div style={buttonStyles}>Click Me!</div>
       </AKTooltip>

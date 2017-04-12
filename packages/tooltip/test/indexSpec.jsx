@@ -18,6 +18,14 @@ describe('Tooltip', () => {
     });
   });
 
+  describe('shouldAppendToBody prop', () => {
+    it('should be reflected into Layers position prop when Tooltip is visible', () => {
+      const wrapper = shallow(<Tooltip position="bottom" visible shouldAppendToBody><div>Foo</div></Tooltip>);
+
+      expect(wrapper.find('Layer').prop('shouldAppendToBody')).to.equal(true);
+    });
+  });
+
   describe('description prop', () => {
     it('should be reflected in the Layer content prop when Tooltip is visible', () => {
       const wrapper = shallow(<Tooltip description="Some words!" visible><div>Foo</div></Tooltip>);

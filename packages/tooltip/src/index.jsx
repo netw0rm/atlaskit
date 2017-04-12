@@ -9,12 +9,14 @@ export default class AKTooltip extends PureComponent {
     description: PropTypes.string,
     position: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
     children: PropTypes.node,
+    shouldAppendToBody: PropTypes.bool,
   }
 
   static defaultProps = {
     description: '',
     position: 'bottom',
     children: null,
+    shouldAppendToBody: false,
   }
 
   constructor(props) {
@@ -41,6 +43,7 @@ export default class AKTooltip extends PureComponent {
       position={props.position}
       onMouseOver={this.showTooltip}
       onMouseOut={this.hideTooltip}
+      shouldAppendToBody={props.shouldAppendToBody}
     >
       {props.children}
     </Tooltip>);

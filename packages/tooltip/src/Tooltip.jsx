@@ -19,6 +19,7 @@ export default class StatelessTooltip extends PureComponent {
     onMouseOver: PropTypes.func,
     onMouseOut: PropTypes.func,
     children: PropTypes.node,
+    shouldAppendToBody: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -28,6 +29,7 @@ export default class StatelessTooltip extends PureComponent {
     onMouseOver: () => {},
     onMouseOut: () => {},
     children: null,
+    shouldAppendToBody: false,
   }
 
   constructor(props) {
@@ -53,6 +55,7 @@ export default class StatelessTooltip extends PureComponent {
           autoPosition
           content={content}
           onFlippedChange={this.handleLayerFlipChange}
+          shouldAppendToBody={props.shouldAppendToBody}
         >
           {this.props.children}
         </Layer>

@@ -2,15 +2,9 @@ import { Schema, inputRules, Plugin } from '../../prosemirror';
 import { analyticsService } from '../../analytics';
 import { createInputRule } from '../utils';
 
-let plugin: Plugin | undefined;
-
 export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   if (!schema.nodes.image) {
     return;
-  }
-
-  if (plugin) {
-    return plugin;
   }
 
   // ![something](link) should convert to an image
@@ -31,13 +25,11 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
     );
   });
 
-  plugin = inputRules({
+  return inputRules({
     rules: [
       imageRule
     ]
   });
-
-  return plugin;
 };
 
 export default inputRulePlugin;

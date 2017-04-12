@@ -4,14 +4,8 @@ import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
 import { enterKeyCommand } from './commands';
 
-let plugin: Plugin | undefined;
-
 export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
   const list = {};
-
-  if (plugin) {
-    return plugin;
-  }
 
   keymaps.bindKeymapWithCommand(keymaps.splitListItem.common!, commands.splitListItem(), list);
   keymaps.bindKeymapWithCommand(keymaps.toggleOrderedList.common!, trackAndInvoke('atlassian.editor.format.list.numbered.keyboard', commands.toggleOrderedList()), list);
@@ -20,8 +14,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
   keymaps.bindKeymapWithCommand(keymaps.outdentList.common!!, trackAndInvoke('atlassian.editor.format.list.outdent.keyboard', commands.outdentList()), list);
   keymaps.bindKeymapWithCommand(keymaps.enter.common!!, enterKeyCommand, list);
 
-  plugin = keymap(list);
-  return plugin;
+  return keymap(list);
 }
 
 export default keymapPlugin;

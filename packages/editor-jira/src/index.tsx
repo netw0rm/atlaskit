@@ -180,25 +180,27 @@ export default class Editor extends PureComponent<Props, State> {
 
 
     return (
-      <Chrome
-        children={<div ref={this.handleRef} />}
-        editorView={editorView!}
-        isExpanded={isExpanded}
-        mentionProvider={mentionProvider}
-        onCancel={handleCancel}
-        onSave={handleSave}
-        onCollapsedChromeFocus={this.expand}
-        placeholder={this.props.placeholder}
-        pluginStateBlockType={blockTypeState}
-        pluginStateCodeBlock={codeBlockState}
-        pluginStateLists={listsState}
-        pluginStateTextFormatting={textFormattingState}
-        pluginStateClearFormatting={clearFormattingState}
-        pluginStateMentions={mentionsState}
-        pluginStateHyperlink={hyperlinkState}
-        packageVersion={version}
-        packageName={name}
-      />
+      <div onBlur={this.onBlur}>
+        <Chrome
+          children={<div ref={this.handleRef} />}
+          editorView={editorView!}
+          isExpanded={isExpanded}
+          mentionProvider={mentionProvider}
+          onCancel={handleCancel}
+          onSave={handleSave}
+          onCollapsedChromeFocus={this.expand}
+          placeholder={this.props.placeholder}
+          pluginStateBlockType={blockTypeState}
+          pluginStateCodeBlock={codeBlockState}
+          pluginStateLists={listsState}
+          pluginStateTextFormatting={textFormattingState}
+          pluginStateClearFormatting={clearFormattingState}
+          pluginStateMentions={mentionsState}
+          pluginStateHyperlink={hyperlinkState}
+          packageVersion={version}
+          packageName={name}
+        />
+      </div>
     );
   }
 
@@ -284,5 +286,20 @@ export default class Editor extends PureComponent<Props, State> {
     } else {
       this.setState({ editorView: undefined });
     }
+  }
+
+  /**
+   * When BlockType Dropdown is closed, "blur" event is fired
+   * JIRA description view is using @atlaskit/inline-edit component
+   * to wrap the editor and it's listening to "blur" events with
+   * React's onBlur (which is a synthetic event listener and blur is
+   * being propagated to inline-edit). This prevents the event to propagate
+   * to the inline-edit container
+   *
+   * @see https://ecosystem.atlassian.net/browse/AK-2127
+   * @see https://product-fabric.atlassian.net/browse/ED-1419
+   */
+  private onBlur = (evt: React.SyntheticEvent<HTMLElement>) => {
+    evt.stopPropagation();
   }
 }

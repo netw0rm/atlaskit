@@ -1,5 +1,6 @@
 import { action, storiesOf } from '@kadira/storybook';
 import { storyDecorator } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { InlineEdit } from '@atlaskit/inline-edit';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { name, version } from '../package.json';
@@ -50,6 +51,27 @@ storiesOf(name, module)
       mentionEncoder={(userId: string) => `/secure/ViewProfile?name=${userId}`}
     />
   )
+  .add('Editor with InlineEdit', () => {
+    const fabricEditor = (
+      <Editor
+        isExpandedByDefault
+        defaultValue="Text"
+      />
+    );
+
+    return (
+      <InlineEdit
+        isEditing
+        areActionButtonsHidden
+        label="@atlaskit/editor-jira + @atlaskit/inline-edit"
+        onCancel={action('onCancel')}
+        onConfirm={action('onConfirm')}
+        onEditRequested={action('onEditRequested')}
+        editView={fabricEditor}
+        readView={fabricEditor}
+      />
+    );
+  })
   .add('Editor (All flags)', () =>
     <Demo
       allowLists

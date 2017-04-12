@@ -12,6 +12,14 @@ import SubmitDemo from './SubmitDemo';
 
 storiesOf(name, module)
   .add('simple modal', () => <ModalDemo />)
+  .add('modal within modal', () => (
+    <ModalDialog isOpen width="large">
+      <Lorem count="10" />
+      <ModalDialog isOpen width="small">
+        <Lorem count="1" />
+      </ModalDialog>
+    </ModalDialog>
+  ))
   .add('demo with form submission', () => <SubmitDemo />)
   .add('with content overflow', () => (
     <ModalDemo>

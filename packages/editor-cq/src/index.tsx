@@ -269,10 +269,10 @@ export default class Editor extends PureComponent<Props, State> {
    */
   private sendUnsupportedNodeUsage(doc: PMNode) {
     const { unsupportedBlock, unsupportedInline } = schema.nodes;
-    const blockNodesOccurance = 0;
-    const inlineNodesOccurance = 0;
+    let blockNodesOccurance = 0;
+    let inlineNodesOccurance = 0;
 
-    traverseNode(node);
+    traverseNode(doc);
 
     for (let i = 0; i < blockNodesOccurance; i++) {
       analyticsService.trackEvent('atlassian.editor.unsupported.block');

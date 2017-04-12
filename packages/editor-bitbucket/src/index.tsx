@@ -1,22 +1,31 @@
 import {
   AnalyticsHandler,
   analyticsService,
-  BlockTypePlugin,
   Chrome,
-  CodeBlockPlugin,
+  codeBlockPlugins,
+  blockTypePlugins,
+  rulePlugins,
+  emojisPlugins,
+  hyperlinkPlugins,
+  imageUploadPlugins,
+  mentionsPlugins,
+  listsPlugins,
+  textFormattingPlugins,
+  clearFormattingPlugins,
+  codeBlockStateKey,
+  blockTypeStateKey,
+  emojisStateKey,
+  hyperlinkStateKey,
+  imageUploadStateKey,
+  mentionsStateKey,
+  listsStateKey,
+  textFormattingStateKey,
+  clearFormattingStateKey,
   ContextName,
-  RulePlugin,
-  EmojisPlugin,
-  HyperlinkPlugin,
-  ImageUploadPlugin,
-  MentionsPlugin,
-  ListsPlugin,
   EditorView,
   EditorState,
   Node,
   TextSelection,
-  TextFormattingPlugin,
-  ClearFormattingPlugin,
   ProviderFactory,
   emojiNodeView,
   mentionNodeView,
@@ -184,15 +193,15 @@ export default class Editor extends PureComponent<Props, State> {
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const { isExpanded, editorView } = this.state;
     const editorState = editorView && editorView.state;
-    const listsState = editorState && ListsPlugin.getState(editorState);
-    const blockTypeState = editorState && BlockTypePlugin.getState(editorState);
-    const clearFormattingState = editorState && ClearFormattingPlugin.getState(editorState);
-    const codeBlockState = editorState && CodeBlockPlugin.getState(editorState);
-    const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
-    const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
-    const imageUploadState = editorState && ImageUploadPlugin.getState(editorState);
-    const mentionsState = editorState && MentionsPlugin.getState(editorState);
-    const emojiState = editorState && EmojisPlugin.getState(editorState);
+    const listsState = editorState && listsStateKey.getState(editorState);
+    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
+    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
+    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
+    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
+    const imageUploadState = editorState && imageUploadStateKey.getState(editorState);
+    const mentionsState = editorState && mentionsStateKey.getState(editorState);
+    const emojiState = editorState && emojisStateKey.getState(editorState);
 
     return (
       <Chrome
@@ -254,16 +263,16 @@ export default class Editor extends PureComponent<Props, State> {
           schema,
           doc: parseHtml(this.props.defaultValue || ''),
           plugins: [
-            ListsPlugin,
-            BlockTypePlugin,
-            ClearFormattingPlugin,
-            CodeBlockPlugin,
-            TextFormattingPlugin,
-            HyperlinkPlugin,
-            RulePlugin,
-            ...(imageUploadHandler ? [ImageUploadPlugin] : []),
-            ...(mentionSource ? [MentionsPlugin] : []),
-            ...(emojiProvider ? [EmojisPlugin] : []),
+            ...listsPlugins(schema),
+            ...blockTypePlugins(schema),
+            ...clearFormattingPlugins(schema),
+            ...codeBlockPlugins(schema),
+            ...textFormattingPlugins(schema),
+            ...hyperlinkPlugins(schema),
+            ...rulePlugins(schema),
+            ...(imageUploadHandler ? imageUploadPlugins(schema) : []),
+            ...(mentionSource ? mentionsPlugins(schema) : []),
+            ...(emojiProvider ? emojisPlugins(schema) : []),
             history(),
             keymap(bitbucketKeymap),
             keymap(baseKeymap) // should be last :(
@@ -272,12 +281,12 @@ export default class Editor extends PureComponent<Props, State> {
       );
 
       if (context) {
-        const blockTypeState = BlockTypePlugin.getState(editorState);
+        const blockTypeState = blockTypeStateKey.getState(editorState);
         blockTypeState.changeContext(context);
       }
 
       if (imageUploadHandler) {
-        const imageUploadState = ImageUploadPlugin.getState(editorState);
+        const imageUploadState = imageUploadStateKey.getState(editorState);
         imageUploadState.setUploadHandler(imageUploadHandler);
       }
 
@@ -304,11 +313,11 @@ export default class Editor extends PureComponent<Props, State> {
       });
 
       if (mentionSource) {
-        MentionsPlugin.getState(editorState).subscribeToFactory(this.providerFactory);
+        mentionsStateKey.getState(editorState).subscribeToFactory(this.providerFactory);
       }
 
       if (emojiProvider) {
-        EmojisPlugin.getState(editorState).subscribeToFactory(this.providerFactory);
+        emojisStateKey.getState(editorState).subscribeToFactory(this.providerFactory);
       }
 
       this.setState({ editorView });

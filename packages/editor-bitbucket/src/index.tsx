@@ -67,34 +67,54 @@ export interface Props {
 export interface State {
   editorView?: EditorView;
   isExpanded?: boolean;
+  mentionProvider?: Promise<MentionProvider>;
+  emojiProvider?: Promise<EmojiProvider>;
 }
 
 export default class Editor extends PureComponent<Props, State> {
   state: State;
-  mentionProvider: Promise<MentionProvider>;
   providerFactory: ProviderFactory;
   version = `${version} (editor-core ${coreVersion})`;
 
   constructor(props: Props) {
     super(props);
-    this.state = { isExpanded: props.isExpandedByDefault };
-    this.providerFactory = new ProviderFactory();
-
     analyticsService.handler = props.analyticsHandler || ((name) => { });
 
-    if (props.mentionSource) {
+    this.state = { isExpanded: props.isExpandedByDefault };
+    this.providerFactory = new ProviderFactory();
+  }
+
+  componentWillMount() {
+    this.handleProviders(this.props);
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    const { props } = this;
+    if (props.mentionSource !== nextProps.mentionSource || props.emojiProvider !== nextProps.emojiProvider) {
+      this.handleProviders(nextProps);
+    }
+  }
+
+  handleProviders = (props: Props) => {
+    const { emojiProvider, mentionSource } = props;
+
+    let mentionProvider;
+
+    if (mentionSource) {
       const mentionsResourceProvider = new MentionResource({
         minWait: 10,
         maxWait: 25,
-      }, props.mentionSource);
+      }, mentionSource);
 
-      this.mentionProvider = Promise.resolve(mentionsResourceProvider);
-      this.providerFactory.setProvider('mentionProvider', this.mentionProvider);
+      mentionProvider = Promise.resolve(mentionsResourceProvider);
     }
 
-    if (props.emojiProvider) {
-      this.providerFactory.setProvider('emojiProvider', props.emojiProvider);
-    }
+    this.providerFactory.setProvider('emojiProvider', emojiProvider);
+    this.providerFactory.setProvider('mentionProvider', mentionProvider);
+    this.setState({
+      emojiProvider,
+      mentionProvider
+    });
   }
 
   /**
@@ -189,6 +209,7 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   render() {
+    const { mentionProvider, emojiProvider } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const { isExpanded, editorView } = this.state;
@@ -222,8 +243,8 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateTextFormatting={textFormattingState}
         pluginStateClearFormatting={clearFormattingState}
         pluginStateImageUpload={imageUploadState}
-        mentionProvider={this.mentionProvider}
-        emojiProvider={this.props.emojiProvider}
+        mentionProvider={mentionProvider}
+        emojiProvider={emojiProvider}
         packageVersion={version}
         packageName={name}
       />
@@ -270,9 +291,9 @@ export default class Editor extends PureComponent<Props, State> {
             ...textFormattingPlugins(schema),
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
-            ...(imageUploadHandler ? imageUploadPlugins(schema) : []),
-            ...(mentionSource ? mentionsPlugins(schema) : []),
-            ...(emojiProvider ? emojisPlugins(schema) : []),
+            ...imageUploadPlugins(schema),
+            ...mentionsPlugins(schema),
+            ...emojisPlugins(schema),
             history(),
             keymap(bitbucketKeymap),
             keymap(baseKeymap) // should be last :(

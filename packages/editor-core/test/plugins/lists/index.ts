@@ -179,14 +179,14 @@ describe('lists', () => {
       expect(pluginState).to.have.property('bulletListHidden', false);
     });
 
-    it('should be disabled when selecting h1', () => {
+    it('should be enabeld when selecting h1', () => {
       const { pluginState } = editor(doc(h1('te{<>}xt')));
 
       expect(pluginState).to.have.property('orderedListActive', false);
-      expect(pluginState).to.have.property('orderedListDisabled', true);
+      expect(pluginState).to.have.property('orderedListDisabled', false);
       expect(pluginState).to.have.property('orderedListHidden', false);
       expect(pluginState).to.have.property('bulletListActive', false);
-      expect(pluginState).to.have.property('bulletListDisabled', true);
+      expect(pluginState).to.have.property('bulletListDisabled', false);
       expect(pluginState).to.have.property('bulletListHidden', false);
     });
 

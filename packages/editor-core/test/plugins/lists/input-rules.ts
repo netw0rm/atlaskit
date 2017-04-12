@@ -31,6 +31,12 @@ describe('inputrules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('* ')))));
     });
 
+    it('should convert "* " to a bullet list item when not inside first paragraph of a list', () => {
+      const { editorView, sel } = editor(doc(ul(li(p(), p('{<>}')))));
+      insertText(editorView, '* ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(ul(li(p(), ul(li(p()))))));
+    });
+
     it('should convert "* " to a bullet list item when inside a blockquote', () => {
       const { editorView, sel } = editor(doc(blockquote(p('{<>}'))));
       insertText(editorView, '* ', sel);

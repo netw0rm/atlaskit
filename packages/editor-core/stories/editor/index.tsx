@@ -7,17 +7,17 @@ import {
   Chrome,
   ContextName
 } from '../../';
-import blockTypePlugin from '../../src/plugins/block-type';
-import clearFormattingPlugin from '../../src/plugins/clear-formatting';
-import codeBlockPlugin from '../../src/plugins/code-block';
-import panelPlugin from '../../src/plugins/panel';
-import textFormattingPlugin from '../../src/plugins/text-formatting';
-import hyperlinkPlugin from '../../src/plugins/hyperlink';
-import rulePlugin from '../../src/plugins/rule';
-import imageUploadPlugin from '../../src/plugins/image-upload';
-import listsPlugin from '../../src/plugins/lists';
-import mentionsPlugin from '../../src/plugins/mentions';
-import emojiPlugin from '../../src/plugins/emojis';
+import blockTypePlugins, {stateKey as blockTypeStateKey} from '../../src/plugins/block-type';
+import clearFormattingPlugins, {stateKey as clearFormattingStateKey} from '../../src/plugins/clear-formatting';
+import codeBlockPlugins, {stateKey as codeBlockStateKey} from '../../src/plugins/code-block';
+import panelPlugins, {stateKey as panelStateKey} from '../../src/plugins/panel';
+import textFormattingPlugins, {stateKey as textFormattingStateKey} from '../../src/plugins/text-formatting';
+import hyperlinkPlugins, {stateKey as hyperlinkStateKey} from '../../src/plugins/hyperlink';
+import rulePlugins from '../../src/plugins/rule';
+import imageUploadPlugins, {stateKey as imageUploadStateKey} from '../../src/plugins/image-upload';
+import listsPlugins, {stateKey as listsStateKey} from '../../src/plugins/lists';
+import mentionsPlugins, {stateKey as mentionsStateKey} from '../../src/plugins/mentions';
+import emojiPlugins, {stateKey as emojiStateKey} from '../../src/plugins/emojis';
 import {
   baseKeymap,
   EditorState,
@@ -146,16 +146,16 @@ export default class Editor extends PureComponent<Props, State> {
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const { isExpanded, editorView } = this.state;
     const editorState = editorView && editorView.state;
-    const listsState = editorState && listsPlugin.getState(editorState);
-    const blockTypeState = editorState && blockTypePlugin.getState(editorState);
-    const clearFormattingState = editorState && clearFormattingPlugin.getState(editorState);
-    const codeBlockState = editorState && codeBlockPlugin.getState(editorState);
-    const panelState = editorState && panelPlugin.getState(editorState);
-    const textFormattingState = editorState && textFormattingPlugin.getState(editorState);
-    const hyperlinkState = editorState && hyperlinkPlugin.getState(editorState);
-    const imageUploadState = editorState && imageUploadPlugin.getState(editorState);
-    const mentionsState = editorState && mentionsPlugin.getState(editorState);
-    const emojiState = editorState && emojiPlugin.getState(editorState);
+    const listsState = editorState && listsStateKey.getState(editorState);
+    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
+    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
+    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
+    const panelState = editorState && panelStateKey.getState(editorState);
+    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
+    const imageUploadState = editorState && imageUploadStateKey.getState(editorState);
+    const mentionsState = editorState && mentionsStateKey.getState(editorState);
+    const emojiState = editorState && emojiStateKey.getState(editorState);
 
     return (
       <Chrome
@@ -210,18 +210,18 @@ export default class Editor extends PureComponent<Props, State> {
         {
           schema,
           plugins: [
-            listsPlugin,
-            blockTypePlugin,
-            clearFormattingPlugin,
-            codeBlockPlugin,
-            panelPlugin,
-            textFormattingPlugin,
-            hyperlinkPlugin,
-            rulePlugin,
-            imageUploadPlugin,
-            mentionsPlugin,
-            emojiPlugin,
-            history(),
+            ...listsPlugins(schema),
+            ...blockTypePlugins(schema),
+            ...clearFormattingPlugins(schema),
+            ...codeBlockPlugins(schema),
+            ...panelPlugins(schema),
+            ...textFormattingPlugins(schema),
+            ...hyperlinkPlugins(schema),
+            ...rulePlugins(schema),
+            ...imageUploadPlugins(schema),
+            ...mentionsPlugins(schema),
+            ...emojiPlugins(schema),
+            ...history(),
             keymap(baseKeymap) // should be last :(
           ]
         }
@@ -238,9 +238,9 @@ export default class Editor extends PureComponent<Props, State> {
           emoji: emojiNodeView(this.providerFactory),
         }
       });
-      imageUploadPlugin.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);
-      mentionsPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
-      emojiPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
+      imageUploadStateKey.getState(editorView.state).setUploadHandler(this.props.imageUploadHandler);
+      mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
+      emojiStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
       editorView.focus();
 

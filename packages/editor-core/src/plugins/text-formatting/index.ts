@@ -374,7 +374,7 @@ export class TextFormattingState {
   }
 }
 
-const stateKey = new PluginKey('hypelinkPlugin');
+export const stateKey = new PluginKey('hypelinkPlugin');
 
 const plugin = new Plugin({
   state: {

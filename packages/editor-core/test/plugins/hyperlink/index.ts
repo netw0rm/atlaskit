@@ -496,7 +496,7 @@ describe('hyperlink', () => {
       });
     });
 
-    context(' ', () => {
+    context('when called with cursor in a link', () => {
       it('should not call subscribers', () => {
         const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
         const spy = sinon.spy();

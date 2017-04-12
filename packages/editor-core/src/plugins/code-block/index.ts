@@ -15,6 +15,7 @@ export type StateChangeHandler = (state: CodeBlockState) => any;
 export class CodeBlockState {
   element?: HTMLElement;
   language: string | undefined;
+  supportedLanguages: string[];
   toolbarVisible: boolean = false;
   domEvent: boolean = false;
 
@@ -39,12 +40,16 @@ export class CodeBlockState {
 
   updateLanguage(language: string | undefined, view: EditorView): void {
     if (this.activeCodeBlock) {
-      commands.setBlockType(view.state.schema.nodes.codeBlock, { language: language })(view.state, view.dispatch);
+      commands.setBlockType(view.state.schema.nodes.codeBlock, { language })(view.state, view.dispatch);
     }
   }
 
   updateEditorFocused(editorFocused: boolean) {
     this.editorFocused = editorFocused;
+  }
+
+  setLanguages(supportedLanguages: string[]) {
+    this.supportedLanguages = supportedLanguages;
   }
 
   update(state: EditorState<any>, docView: NodeViewDesc, domEvent: boolean = false) {

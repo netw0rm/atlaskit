@@ -21,7 +21,8 @@ import {
   subsup,
   text,
   underline,
-  panel
+  panel,
+  mentionQuery
 } from '@atlaskit/editor-core';
 
 import jiraIssue from './schema/nodes/jiraIssue';
@@ -60,6 +61,7 @@ export interface CQSchemaMarks {
   strong: MarkSpec;
   subsup: MarkSpec;
   underline: MarkSpec;
+  mentionQuery: MarkSpec;
 }
 
 const nodes = {
@@ -90,6 +92,7 @@ const marks = {
   strike,
   subsup,
   underline,
+  mentionQuery,
   code,
 };
 

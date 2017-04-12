@@ -26,9 +26,12 @@
   "devDependencies": {
     "@atlaskit/media-core": "^5.0.4",
     "@atlaskit/media-test-helpers": "^4.0.0",
+    "@types/node": "^7.0.12",
     "@types/query-string": "^4.3.1",
+    "@types/sinon-chai": "^2.7.27",
     "akutil-common-test": "*",
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "sinon-chai": "^2.9.0"
   },
   "peerDependencies": {
     "@atlaskit/media-core": "^5.0.4",

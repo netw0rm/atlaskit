@@ -21,6 +21,7 @@ const isEmojiTypeAhead = (typeAhead): typeAhead is AkEmojiTypeAhead => !!(typeAh
 
 export default class EmojiTypeAhead extends PureComponent<Props, State> {
   state: State = {};
+  typeAhead?: AkEmojiTypeAhead;
 
   componentDidMount() {
     const { pluginState } = this.props;
@@ -65,7 +66,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         emojiProvider={this.props.emojiProvider}
         onSelection={this.handleSelectedEmoji}
         query={query}
-        ref="typeAhead"
+        ref={ref => {this.typeAhead = ref;}}
       />
     );
 
@@ -81,27 +82,24 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   }
 
   private handleSelectPrevious = (): boolean => {
-    const { typeAhead } = this.refs;
-    if (typeAhead) {
-      (typeAhead as AkEmojiTypeAhead).selectPrevious();
+    if (this.typeAhead) {
+      (this.typeAhead as AkEmojiTypeAhead).selectPrevious();
     }
 
     return true;
   }
 
   private handleSelectNext = (): boolean => {
-    const { typeAhead } = this.refs;
-    if (typeAhead) {
-      (typeAhead as AkEmojiTypeAhead).selectNext();
+    if (this.typeAhead) {
+      (this.typeAhead as AkEmojiTypeAhead).selectNext();
     }
 
     return true;
   }
 
   private handleSelectCurrent = (): boolean => {
-    const { typeAhead } = this.refs;
-    if (isEmojiTypeAhead(typeAhead) && typeAhead.count() > 0) {
-      (typeAhead as AkEmojiTypeAhead).chooseCurrentSelection();
+    if (isEmojiTypeAhead(this.typeAhead) && this.typeAhead.count() > 0) {
+      (this.typeAhead as AkEmojiTypeAhead).chooseCurrentSelection();
     } else {
       this.props.pluginState.dismiss();
     }
@@ -110,9 +108,8 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   }
 
   private handleTrySelectCurrent = (): boolean => {
-    const { typeAhead } = this.refs;
-    if (isEmojiTypeAhead(typeAhead) && typeAhead.count() === 1) {
-      (typeAhead as AkEmojiTypeAhead).chooseCurrentSelection();
+    if (isEmojiTypeAhead(this.typeAhead) && this.typeAhead.count() === 1) {
+      (this.typeAhead as AkEmojiTypeAhead).chooseCurrentSelection();
       return true;
     }
 

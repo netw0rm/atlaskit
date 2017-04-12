@@ -18,6 +18,7 @@ export default class Layer extends PureComponent {
     content: PropTypes.node,
     onFlippedChange: PropTypes.func,
     children: PropTypes.node,
+    shouldAppendToBody: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -28,6 +29,7 @@ export default class Layer extends PureComponent {
     content: null,
     onFlippedChange: () => {},
     children: null,
+    shouldAppendToBody: false,
   }
 
   constructor(props) {
@@ -62,6 +64,10 @@ export default class Layer extends PureComponent {
   componentWillUnmount() {
     if (this.popper) {
       this.popper.destroy();
+    }
+
+    if (this.props.shouldAppendToBody) {
+      document.body.removeChild(this.contentRef);
     }
   }
 
@@ -129,6 +135,13 @@ export default class Layer extends PureComponent {
     this.popper = new Popper(actualTarget, this.contentRef, popperOpts);
   }
 
+  positionedRef = (ref) => {
+    this.contentRef = ref;
+    if (ref && this.props.shouldAppendToBody) {
+      document.body.appendChild(this.contentRef);
+    }
+  }
+
   render() {
     const { cssPosition, transform } = this.state;
     return (
@@ -137,7 +150,7 @@ export default class Layer extends PureComponent {
           {this.props.children}
         </div>
         <div
-          ref={ref => (this.contentRef = ref)}
+          ref={this.positionedRef}
           style={{ top: 0, left: 0, position: cssPosition, transform, zIndex: akZIndexLayer }}
         >
           {this.props.content}

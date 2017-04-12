@@ -11,6 +11,15 @@ import Layer from '../src';
    be done as a part of AK-1098 */
 
 describe('Layer', () => {
+  const animStub = window.cancelAnimationFrame;
+  beforeEach(() => {
+    window.cancelAnimationFrame = () => {};
+  });
+
+  afterEach(() => {
+    window.cancelAnimationFrame = animStub;
+  });
+
   it('should be possible to create a component', () => {
     const wrapper = shallow(<Layer />);
     expect(wrapper).not.to.equal(undefined);
@@ -30,6 +39,18 @@ describe('Layer', () => {
     it('should be rendered by Layer', () => {
       const wrapper = shallow(<Layer content={content} />);
       expect(wrapper.find('#content').length).to.equal(1);
+    });
+  });
+
+  describe('shouldAppendToBody prop', () => {
+    it('if it`s true, layer element should have body as parentNode', () => {
+      const text = 'Some Content';
+      const content = (<div id="content">{text}</div>);
+      const wrapper = mount(<Layer content={content} shouldAppendToBody>test</Layer>);
+      expect(wrapper.instance().contentRef.parentNode).to.equal(document.body);
+      expect(document.body.lastChild.textContent).to.equal(text);
+      wrapper.unmount();
+      expect(document.body.lastChild.textContent).not.to.equal(text);
     });
   });
 

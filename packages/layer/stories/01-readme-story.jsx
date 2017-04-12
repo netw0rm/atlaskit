@@ -20,6 +20,7 @@ const layerPropDescriptions = {
   content: 'The HTML content to display in the layer. This will be aligned to the target according to the `position` prop.',
   onFlippedChange: 'Callback that is used to know when the `flipped` state of Layer changes. This occurs when placing a Layered element in the requested position would cause Layer to be rendered outside of the boundariesElement (usually viewport). See below for more details.',
   children: 'The target element to align the Layer `content` to.',
+  shouldAppendToBody: 'Whether the content element should be appended to the body.',
 };
 
 const layerPropTypes = {

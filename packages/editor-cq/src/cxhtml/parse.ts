@@ -368,6 +368,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       }
 
       const codeBlockNode = schema.nodes.codeBlock.create({ language }, schema.text(codeContent));
+
       content.push(codeBlockNode);
       nodeSize += codeBlockNode.nodeSize;
 
@@ -462,7 +463,8 @@ function getAcTagNodes(node: Element, tagName: string): NodeList | null {
   for (let i = 0; i < node.childNodes.length; i++) {
     const child = node.childNodes[i] as Element;
     if (getNodeName(child) === tagName) {
-      return child.childNodes;
+      // return html collection only if childNodes are found
+      return child.childNodes.length ? child.childNodes : null;
     }
   }
 

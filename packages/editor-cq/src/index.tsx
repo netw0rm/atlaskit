@@ -25,11 +25,10 @@ import {
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
-import { encode, parse } from './cxhtml';
+import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
 import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
-
 export { version };
 
 
@@ -220,6 +219,9 @@ export default class Editor extends PureComponent<Props, State> {
           keymap(baseKeymap), // should be last :(
         ]
       });
+
+      const codeBlockState = CodeBlockPlugin.getState(editorState);
+      codeBlockState.setLanguages(supportedLanguages);
 
       if (context) {
         const blockTypeState = BlockTypePlugin.getState(editorState);

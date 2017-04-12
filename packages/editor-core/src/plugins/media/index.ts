@@ -1,3 +1,4 @@
+import { MediaStateManager } from './../../media/index';
 import { MediaType } from './../../schema/nodes/media';
 import {
   EditorState,
@@ -8,8 +9,9 @@ import {
 } from '../../prosemirror';
 import { reconfigure } from '../utils';
 import { URL_REGEX } from '../hyperlink/url-regex';
-import { MediaPicker } from '@atlassian/mediapicker';
-import { MediaProvider, MediaState, UploadParams } from '../../media';
+import { MediaProvider, UploadParams, DefaultMediaStateManager } from '../../media';
+import PickerFacade from './picker-facade';
+import TemporaryNodesList from './temporary-nodes-list';
 import { ContextConfig } from '@atlaskit/media-core';
 import { analyticsService } from '../../analytics';
 
@@ -19,24 +21,23 @@ import { inputRulePlugin } from './input-rule';
 const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
-export type MediaStateChangeSubscriber = (state: MediaState) => any;
 
 export class MediaPluginState {
   public allowsMedia: boolean = false;
   public allowsUploads: boolean = false;
   public allowsPastingLinks: boolean = false;
+  public stateManager: MediaStateManager;
 
   private view: EditorView;
   private state: EditorState<any>;
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
-  private mediaStateChangeSubscribers: { [key: string]: MediaStateChangeSubscriber[] } = {};
   private temporaryMediaNodes = new TemporaryNodesList();
   private destroyed = false;
   private behavior: MediaPluginBehavior;
   private mediaProvider: MediaProvider;
-  private popupPicker: any;
-  private dropzonePicker: any;
-  private clipboardPicker: any;
+  private popupPicker: PickerFacade;
+  private dropzonePicker: PickerFacade;
+  private clipboardPicker: PickerFacade;
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
     this.state = state;
@@ -82,6 +83,14 @@ export class MediaPluginState {
     mediaProvider.then(mediaProvider => {
       this.mediaProvider = mediaProvider;
       this.allowsMedia = true;
+
+      const { stateManager } = mediaProvider;
+
+      if (stateManager) {
+        this.stateManager = stateManager;
+      } else {
+        this.stateManager = new DefaultMediaStateManager();
+      }
 
       if (mediaProvider.uploadContext && this.popupPicker) {
         this.allowsUploads = true;
@@ -150,30 +159,6 @@ export class MediaPluginState {
     this.popupPicker.show();
   }
 
-  subscribeForMediaStateUpdates(id: string, cb: (state: MediaState) => void) {
-    if (this.mediaStateChangeSubscribers[id] === undefined) {
-      this.mediaStateChangeSubscribers[id] = [];
-    }
-
-    if (this.mediaStateChangeSubscribers[id].indexOf(cb) > -1) {
-      return;
-    }
-
-    this.mediaStateChangeSubscribers[id].push(cb);
-  }
-
-  unsubscribeFromMediaStateUpdates(id: string, cb: (state: MediaState) => void) {
-    const bag = this.mediaStateChangeSubscribers[id];
-    if (bag === undefined) {
-      return;
-    }
-
-    const pos = bag.indexOf(cb);
-    if (pos > -1) {
-      this.mediaStateChangeSubscribers[id].splice(pos, 1);
-    }
-  }
-
   setView(view: EditorView) {
     this.view = view;
   }
@@ -187,12 +172,9 @@ export class MediaPluginState {
 
     const { dropzonePicker, clipboardPicker, popupPicker, temporaryMediaNodes } = this;
 
-    dropzonePicker && dropzonePicker.deactivate();
-    clipboardPicker && clipboardPicker.deactivate();
-
-    if (popupPicker) {
-      popupPicker.teardown();
-    }
+    dropzonePicker && dropzonePicker.destroy();
+    clipboardPicker && clipboardPicker.destroy();
+    popupPicker && popupPicker.destroy();
 
     temporaryMediaNodes.clear();
   }
@@ -233,46 +215,24 @@ export class MediaPluginState {
     return adjacentPos;
   }
 
-  private initPickers(uploadParams: UploadParams, contextConfig: ContextConfig) {
+  private initPickers(uploadParams: UploadParams, context: ContextConfig) {
     if (this.destroyed) {
       return;
     }
 
-    const pickerConfig = this.buildPickerConfigFromContext(uploadParams, contextConfig);
-    const popupPicker = this.popupPicker = MediaPicker('popup', pickerConfig);
-    const clipboardPicker = this.clipboardPicker = MediaPicker('clipboard', pickerConfig);
-    const dropzonePicker = this.dropzonePicker = MediaPicker('dropzone', pickerConfig);
+    const { stateManager } = this;
+
+    const popupPicker = this.popupPicker = new PickerFacade('popup', uploadParams, context, stateManager);
+    const clipboardPicker = this.clipboardPicker = new PickerFacade('clipboard', uploadParams, context, stateManager);
+    const dropzonePicker = this.dropzonePicker = new PickerFacade('dropzone', uploadParams, context, stateManager);
 
     [ popupPicker, dropzonePicker, clipboardPicker ].forEach(picker => {
-      picker.on('upload-start', this.handleUploadStart);
-      picker.on('upload-preview-update', this.handleUploadPreviewUpdate);
-      picker.on('upload-status-update', this.handleUploadStatusUpdate);
-      picker.on('upload-processing', this.handleUploadProcessing);
-      picker.on('upload-end', this.handleUploadEnd);
+      picker.onStart(this.handleNewMediaPicked);
+      picker.onEnd(this.handleNewMediaPublished);
     });
-
-    dropzonePicker.activate();
-    clipboardPicker.activate();
   }
 
-  private notifyMediaStateSubscribers(mediaId: string, state: MediaState) {
-    const bag = this.mediaStateChangeSubscribers[mediaId];
-    if (bag === undefined) {
-      return;
-    }
-    this.mediaStateChangeSubscribers[mediaId].forEach(cb => cb.call(cb, state));
-  }
-
-  private notifyPluginStateSubscribers = () => {
-    this.pluginStateChangeSubscribers.forEach(cb => cb.call(cb, this));
-  }
-
-  private handleUploadStart = (event: any) => {
-    if (!this.allowsUploads) {
-      console.warn('Editor: media plugin: an upload started even though uploads are not allowed in current state.', this);
-      return;
-    }
-
+  private handleNewMediaPicked = (event: any) => {
     const tempId = `temporary:${event.file.id}`;
     const { file } = event;
 
@@ -280,64 +240,16 @@ export class MediaPluginState {
       tempId,
       this.insertFile(tempId, file.name, this.mediaProvider.uploadParams.collection)
     );
-
-    this.notifyMediaStateSubscribers(tempId, {
-      id: tempId,
-      status: 'uploading',
-      fileName: file.name as string,
-      fileSize: file.size as number,
-      fileType: file.type as string,
-    });
   }
 
-  private handleUploadStatusUpdate = (event: any, progress: any) => {
+  private handleNewMediaPublished = (event: any) => {
     const tempId = `temporary:${event.file.id}`;
     const { file } = event;
-
-    this.notifyMediaStateSubscribers(tempId, {
-      id: tempId,
-      status: 'uploading',
-      progress: progress ? progress.portion : undefined,
-      fileName: file.name as string,
-      fileSize: file.size as number,
-      fileType: file.type as string,
-    });
-  }
-
-  private handleUploadProcessing = (event: any) => {
-    const tempId = `temporary:${event.file.id}`;
-    const { file } = event;
-
-    this.notifyMediaStateSubscribers(tempId, {
-      id: file.publicId as string,
-      status: 'processing',
-      fileName: file.name as string,
-      fileSize: file.size as number,
-      fileType: file.type as string,
-    });
-  }
-
-  private handleUploadEnd = (event: any) => {
-    const tempId = `temporary:${event.file.id}`;
-    const { file } = event;
-
-    this.notifyMediaStateSubscribers(tempId, {
-      id: file.publicId as string,
-      status: 'ready',
-      fileName: file.name as string,
-      fileSize: file.size as number,
-      fileType: file.type as string,
-    });
-
     this.replaceTemporaryMediaNodes(tempId, file.publicId);
   }
 
-  private handleUploadPreviewUpdate = (event: any) => {
-    const { thumbnailProvider } = this.mediaProvider;
-
-    if (thumbnailProvider && event.preview !== undefined) {
-      thumbnailProvider.setThumbnail(event.file.id, event.preview);
-    }
+  private notifyPluginStateSubscribers = () => {
+    this.pluginStateChangeSubscribers.forEach(cb => cb.call(cb, this));
   }
 
   private replaceTemporaryMediaNodes = (tempId: string, publicId: string) => {
@@ -365,23 +277,7 @@ export class MediaPluginState {
     temporaryMediaNodes.delete(tempId);
   }
 
-  private buildPickerConfigFromContext(uploadParams: UploadParams, config: ContextConfig) {
-    return {
-      uploadParams: uploadParams,
-      apiUrl: config.serviceHost,
-      apiClientId: config.clientId,
-      container: this.getDropzoneContainer(uploadParams),
-      tokenSource: { getter: (reject, resolve) => {
-        config.tokenProvider(uploadParams.collection).then(resolve, reject);
-      }},
-    };
-  }
 
-  private getDropzoneContainer(uploadParams: UploadParams) {
-    const { dropzoneContainer } = uploadParams;
-
-    return dropzoneContainer ? dropzoneContainer : document.body;
-  }
 }
 
 export const stateKey = new PluginKey('mediaPlugin');
@@ -444,54 +340,6 @@ export default function mediaPluginFactory (options: MediaPluginOptions) {
 export interface MediaData {
   id: string;
   type?: MediaType;
-}
-
-class TemporaryNodesList {
-  private map: Map<string, Node[]>;
-
-  constructor() {
-    // Note: because we're targeting ES5 and because V8 doesn't currently allow
-    //       extending built-in classes (like Map), we're using Map internally
-    //       and proxying several methods (like delete, forEach ...)
-    //       https://github.com/Microsoft/TypeScript/issues/10853
-    //       https://github.com/Microsoft/TypeScript-wiki/blob/master/Breaking-Changes.md#extending-built-ins-like-error-array-and-map-may-no-longer-work
-    this.map = new Map();
-  }
-
-  get(mediaId: string): Node[] {
-    let list: Node[] | undefined = this.map.get(mediaId);
-
-    if (!list) {
-      list = [];
-    }
-
-    return list;
-  }
-
-  push(mediaId: string, node: Node): this {
-    let list: Node[] | undefined = this.map.get(mediaId);
-
-    if (!list) {
-      list = [];
-      this.map.set(mediaId, list);
-    }
-
-    list.push(node);
-
-    return this;
-  }
-
-  forEach(...args: any[]) {
-    return this.map.forEach.apply(this.map, args);
-  }
-
-  delete(...args: any[]) {
-    return this.map.delete.apply(this.map, args);
-  }
-
-  clear(...args: any[]) {
-    return this.map.clear.apply(this.map, args);
-  }
 }
 
 interface PositionedNode extends Node {

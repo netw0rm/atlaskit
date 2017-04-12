@@ -31,7 +31,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
 
     if (id && pluginState) {
-      pluginState.subscribeForMediaStateUpdates(id, this.handleMediaStateChange);
+      pluginState.stateManager.subscribe(id, this.handleMediaStateChange);
     }
 
     if (mediaProvider) {
@@ -51,7 +51,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
     const { pluginState, id } = this.props;
 
     if (pluginState) {
-      pluginState.unsubscribeFromMediaStateUpdates(id, this.handleMediaStateChange);
+      pluginState.stateManager.unsubscribe(id, this.handleMediaStateChange);
     }
   }
 
@@ -125,18 +125,15 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
 
   private renderTemporaryFile() {
     const { state } = this;
-    const { mediaProvider } = state;
-    const { thumbnailProvider } = mediaProvider!;
-    const { id, onDelete } = this.props;
-
-    const blob = thumbnailProvider && thumbnailProvider!.getThumbnail(id.substr(10));
+    const { thumbnail, fileName, fileSize, fileType, progress} = state;
+    const { onDelete } = this.props;
 
     return <CardView
-      mediaName={state.fileName}
-      mediaSize={state.fileSize}
-      mediaType={(blob || (state.fileType && state.fileType.indexOf('image/') > -1) ? 'image' : 'unknown')}
-      progress={state.progress}
-      dataURI={thumbnailProvider && blob ? URL.createObjectURL(blob) : undefined}
+      mediaName={fileName}
+      mediaSize={fileSize}
+      mediaType={(thumbnail || (fileType && fileType.indexOf('image/') > -1) ? 'image' : 'unknown')}
+      progress={progress}
+      dataURI={thumbnail && URL.createObjectURL(thumbnail)}
       menuActions={[ CardDelete(onDelete!) ]}
     />;
   }

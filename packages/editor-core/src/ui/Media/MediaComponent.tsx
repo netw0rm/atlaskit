@@ -144,8 +144,6 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       ...mediaState
     };
 
-    console.debug('new state', newState, this);
-
     this.setState(newState);
   }
 

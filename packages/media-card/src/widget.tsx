@@ -23,34 +23,37 @@ const wrapperStyles = {
 };
 // TODO: Retrieve initial state from localStorage
 const recentItems = [];
+let lastWidgetId = 0;
 
 export default class Widget {
   static add(component) {
+    const widgetId = lastWidgetId++;
     // TODO: Save component to localStorage
-    recentItems.unshift(component);
+    recentItems.unshift({
+      id: widgetId,
+      component,
+      componentItem: <div data-widget-id={widgetId} onClick={this.changeCurrentItem(widgetId)}>{component}</div>
+    });
 
+    this.renderWidget(component);
+  }
+
+  static renderWidget(activeComponent) {
     const componentWrapper = <Rnd
-      ref={c => {
-        window.rnd = c;
-      }}
       initial={{
         // TODO: Get coordinates from actual element position
         x: 100,
         y: 100,
-        // x: window.innerWidth / 2 - 200,
-        // y: window.innerHeight / 2 - 80,
         width: 400,
         height: 300
       }}
       style={wrapperStyles}
       minWidth={300}
       minHeight={160}
-      // maxWidth={800}
-      // maxHeight={300}
       bounds={'parent'}
     >
-      {component}
-      {this.recentItems()}
+      {activeComponent}
+      {this.renderRecentItems()}
     </Rnd>;
 
     ReactDOM.render(componentWrapper, this.getContainer());
@@ -106,11 +109,21 @@ export default class Widget {
     return styles;
   }
 
-  static recentItems() {
+  static renderRecentItems() {
+    const components = recentItems.map(i => i.componentItem);
+
     return <div className="widget-filmstrip-wrapper">
       <FilmStripNavigator>
-        {recentItems}
+        {components}
       </FilmStripNavigator>
     </div>;
+  }
+
+  static changeCurrentItem(componentId) {
+    return () => {
+      const component = recentItems.filter(i => i.id === componentId)[0].component;
+
+      this.renderWidget(component);
+    };
   }
 }

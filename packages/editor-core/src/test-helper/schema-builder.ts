@@ -82,9 +82,27 @@ export function text(value: string, schema: Schema<NodeSpec, MarkSpec>): RefsCon
   let textIndex = 0;
   const refs: Refs = {};
 
-  for (const match of matches(value, /{(\w+|<|>|<>)}/g)) {
-    const [refToken, refName] = match;
-    stripped += value.slice(textIndex, match.index);
+  // Helpers
+  const isEven = n => n % 2 === 0;
+
+  for (const match of matches(value, /([\\]+)?{(\w+|<|>|<>)}/g)) {
+    const [refToken, skipChars, refName] = match;
+    let { index } = match;
+
+    const skipLen = skipChars && skipChars.length;
+    if (skipLen) {
+      if (isEven(skipLen)) {
+        index += (skipLen / 2);
+      }
+      else {
+        stripped += value.slice(textIndex, index + ((skipLen - 1) / 2));
+        stripped += value.slice(index + skipLen, index + refToken.length);
+        textIndex = index + refToken.length;
+        continue;
+      }
+    }
+
+    stripped += value.slice(textIndex, index);
     refs[refName] = stripped.length;
     textIndex = match.index + refToken.length;
   }
@@ -217,7 +235,7 @@ export const hardBreak = nodeFactory(sampleSchema.nodes.hardBreak, {});
 // tslint:disable-next-line:variable-name
 export const code_block = (attrs: {} = {}) => nodeFactory(sampleSchema.nodes.codeBlock, attrs);
 export const img = (attrs: { src: string, alt?: string, title?: string }) => sampleSchema.nodes.image.createChecked(attrs);
-export const emoji = (attrs: { id: string }) => sampleSchema.nodes.emoji.createChecked(attrs);
+export const emoji = (attrs: { shortName: string, id?: string, fallback?: string }) => sampleSchema.nodes.emoji.createChecked(attrs);
 export const mention = (attrs: { id: string, displayName?: string }) => sampleSchema.nodes.mention.createChecked(attrs);
 export const hr = sampleSchema.nodes.rule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});
@@ -230,3 +248,4 @@ export const mentionQuery = markFactory(sampleSchema.marks.mentionQuery, {});
 export const a = (attrs: { href: string, title?: string }) => markFactory(sampleSchema.marks.link, attrs);
 export const fragment = (...content: BuilderContent[]) => flatten<BuilderContent>(content);
 export const slice = (...content: BuilderContent[]) => new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
+export const emojiQuery = markFactory(sampleSchema.marks.emojiQuery, {});

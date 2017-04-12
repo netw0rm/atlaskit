@@ -3,9 +3,9 @@ import * as React from 'react';
 
 import { name } from '../package.json';
 import Emoji from '../src/components/common/Emoji';
-import { getEmojiService } from './story-data';
+import { getEmojiRepository } from './story-data';
 
-const emojiService = getEmojiService();
+const emojiService = getEmojiRepository();
 
 const emoji = {
   id: 'atlassian-zoidberg',

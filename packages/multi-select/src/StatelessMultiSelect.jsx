@@ -352,7 +352,8 @@ export default class StatelessMultiSelect extends PureComponent {
                 <TagGroup ref={ref => (this.tagGroup = ref)}>
                   {this.props.selectedItems.map(item =>
                     <Tag
-                      elemBefore={item.tagElemBefore}
+                      appearance={item.tag ? item.tag.appearance : undefined}
+                      elemBefore={item.tag ? item.tag.elemBefore : undefined}
                       key={item.value}
                       onAfterRemoveAction={() => {
                         this.handleItemRemove(item);

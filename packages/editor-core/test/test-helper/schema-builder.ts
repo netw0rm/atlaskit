@@ -75,6 +75,24 @@ describe('@atlaskit/editore-core/test-helper/schema-builder', () => {
 
       expect(Object.keys(node.refs)).to.be.empty;
     });
+
+    it('supports skipping refs with a backslash', () => {
+      const node = text('\\{a}', schema);
+      expect((node as any).text).to.equal('{a}');
+    });
+
+    it('supports skipping backslash adjacent to refs', () => {
+      const node = text('\\\\{a}', schema);
+
+      expect((node as any).text).to.equal('\\');
+      expect(node.refs).to.deep.equal({ a: 1 });
+    });
+
+    it('supports skipping refs with a backslash (mutiple)', () => {
+      const node = text('\\\\\\{a}', schema);
+
+      expect((node as any).text).to.equal('\\{a}');
+    });
   });
 
   describe('nodeFactory', () => {

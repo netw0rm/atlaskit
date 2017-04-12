@@ -1,3 +1,14 @@
+import { emoji as emojiData } from '@atlaskit/util-data-test';
+
+const toEmojiId = (emoji) => {
+  const { shortName, id, fallback } = emoji;
+  return { shortName, id, fallback };
+};
+
+const { emojiTestData } = emojiData;
+const grinEmojiId = toEmojiId(emojiTestData.grinEmoji);
+const evilburnsEmojiId = toEmojiId(emojiTestData.evilburnsEmoji);
+
 export const document = {
   type: 'doc',
   version: 1,
@@ -69,6 +80,50 @@ export const document = {
             },
             {
               type: 'underline'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'My favourite emoji are '
+        },
+        {
+          type: 'emoji',
+          attrs: {
+            ...grinEmojiId,
+          }
+        },
+        {
+          type: 'text',
+          text: ' ',
+        },
+        {
+          type: 'emoji',
+          attrs: {
+            ...evilburnsEmojiId,
+          }
+        },
+        {
+          type: 'text',
+          text: ' ',
+        },
+        {
+          type: 'emoji',
+          attrs: {
+            shortName: ':not-an-emoji:',
+          }
+        },
+        {
+          type: 'text',
+          text: '. What are yours?',
+          marks: [
+            {
+              type: 'unkown mark'
             }
           ]
         }
@@ -252,6 +307,23 @@ export const document = {
       content: [
         {
           type: 'text',
+          text: 'This is a paragraph with a text node'
+        },
+        {
+          type: 'text',
+          text: '\n'
+        },
+        {
+          type: 'text',
+          text: 'that contains a new line'
+        },
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
           text: 'This is a '
         },
         {
@@ -305,6 +377,35 @@ export const document = {
             id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
             collectionId: ['MediaServicesSample']
           }
+        }
+      ]
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Click me! ',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'javascript:alert("hello world")'
+              }
+            }
+          ]
+        },
+        {
+          type: 'text',
+          text: 'www.atlassian.com',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'www.atlassian.com'
+              }
+            }
+          ]
         }
       ]
     }

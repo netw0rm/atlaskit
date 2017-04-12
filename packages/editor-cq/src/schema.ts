@@ -1,80 +1,101 @@
 import {
-  BlockQuoteNodeType,
-  BulletListNodeType,
-  DocNodeType,
-  EmMarkType,
-  HardBreakNodeType,
-  HeadingNodeType,
-  HorizontalRuleNodeType,
-  ListItemNodeType,
-  CodeMarkType,
-  OrderedListNodeType,
-  ParagraphNodeType,
+  bulletList,
+  blockquote,
+  codeBlock,
+  code as codeBase,
+  doc,
+  em,
+  hardBreak,
+  heading,
+  link,
+  listItem,
+  mention,
+  MarkSpec,
+  NodeSpec,
+  orderedList,
+  paragraph,
+  rule,
   Schema,
-  StrikeMarkType,
-  StrongMarkType,
-  SubSupMarkType,
-  Text,
-  UnderlineMarkType
+  strike,
+  strong,
+  subsup,
+  text,
+  underline,
+  panel,
+  mentionQuery
 } from '@atlaskit/editor-core';
 
-import {
-  UnsupportedInlineNodeType
-} from './schema/nodes/unsupportedInline';
+import jiraIssue from './schema/nodes/jiraIssue';
+import unsupportedBlock from './schema/nodes/unsupportedBlock';
+import unsupportedInline from './schema/nodes/unsupportedInline';
 
-import {
-  UnsupportedBlockNodeType
-} from './schema/nodes/unsupportedBlock';
+const code = {
+  ...codeBase,
+  excludes: 'em strike strong underline'
+};
 
-export default new Schema({
-  nodes: {
-    doc: { type: DocNodeType, content: 'block+' },
-    paragraph: { type: ParagraphNodeType, content: 'inline<_>*', group: 'block' },
-    blockquote: { type: BlockQuoteNodeType, content: 'block+', group: 'block' },
-    ordered_list: { type: OrderedListNodeType, content: 'list_item+', group: 'block' },
-    bullet_list: { type: BulletListNodeType, content: 'list_item+', group: 'block' },
-    heading: { type: HeadingNodeType, content: 'inline<_>*', group: 'block' },
-    unsupportedBlock: { type: UnsupportedBlockNodeType, group: 'block' },
-    list_item: { type: ListItemNodeType, content: 'block+' },
-    text: { type: Text, group: 'inline' },
-    hard_break: { type: HardBreakNodeType, group: 'inline' },
-    unsupportedInline: { type: UnsupportedInlineNodeType, group: 'inline' },
-    horizontal_rule: { type: HorizontalRuleNodeType, group: 'block' }
-  },
-
-  // Note: Marks are applied in the order they are defined.
-  marks: {
-    code: CodeMarkType,
-    em: EmMarkType,
-    strike: StrikeMarkType,
-    strong: StrongMarkType,
-    subsup: SubSupMarkType,
-    u: UnderlineMarkType,
-  },
-}) as CQSchema;
-
-export interface CQSchema extends Schema {
-  nodes: {
-    doc: DocNodeType;
-    paragraph: ParagraphNodeType;
-    blockquote: BlockQuoteNodeType;
-    ordered_list: OrderedListNodeType;
-    bullet_list: BulletListNodeType;
-    heading: HeadingNodeType;
-    unsupportedBlock: UnsupportedBlockNodeType;
-    list_item: ListItemNodeType;
-    text: Text;
-    hard_break: HardBreakNodeType;
-    unsupportedInline: UnsupportedInlineNodeType;
-    horizontal_rule: HorizontalRuleNodeType;
-  };
-
-  marks: {
-    code: CodeMarkType;
-    em: EmMarkType;
-    strike: StrikeMarkType;
-    strong: StrongMarkType;
-    subsup: SubSupMarkType;
-    u: UnderlineMarkType;
-  };
+export interface CQSchemaNodes {
+  blockquote: NodeSpec;
+  bulletList: NodeSpec;
+  codeBlock: NodeSpec;
+  panel: NodeSpec;
+  doc: NodeSpec;
+  hardBreak: NodeSpec;
+  heading: NodeSpec;
+  jiraIssue: NodeSpec;
+  listItem: NodeSpec;
+  mention: NodeSpec;
+  orderedList: NodeSpec;
+  paragraph: NodeSpec;
+  rule: NodeSpec;
+  text: NodeSpec;
+  unsupportedBlock: NodeSpec;
+  unsupportedInline: NodeSpec;
 }
+
+export interface CQSchemaMarks {
+  code: MarkSpec;
+  em: MarkSpec;
+  link: MarkSpec;
+  strike: MarkSpec;
+  strong: MarkSpec;
+  subsup: MarkSpec;
+  underline: MarkSpec;
+  mentionQuery: MarkSpec;
+}
+
+const nodes = {
+  doc,
+  paragraph,
+  blockquote,
+  codeBlock,
+  panel,
+  hardBreak,
+  orderedList,
+  bulletList,
+  heading,
+  unsupportedBlock,
+  jiraIssue,
+  listItem,
+  mention,
+  text,
+  unsupportedInline,
+  rule,
+};
+
+// ranking order is important
+// @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-Rank
+const marks = {
+  link,
+  em,
+  strong,
+  strike,
+  subsup,
+  underline,
+  mentionQuery,
+  code,
+};
+
+export interface CQSchema extends Schema<CQSchemaNodes, CQSchemaMarks> {}
+
+export default new Schema<typeof nodes, typeof marks>({ nodes, marks }) as CQSchema;

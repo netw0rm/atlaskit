@@ -203,9 +203,7 @@ export default class Editor extends PureComponent<Props, State> {
       });
 
       const codeBlockState = CodeBlockPlugin.getState(editorState);
-      if (typeof codeBlockState.setLanguages === 'function') {
-        codeBlockState.setLanguages(supportedLanguages);
-      }
+      codeBlockState.setLanguages(supportedLanguages);
 
       if (context) {
         const blockTypeState = BlockTypePlugin.getState(editorState);

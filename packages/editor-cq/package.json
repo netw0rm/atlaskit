@@ -26,7 +26,7 @@
     }
   ],
   "dependencies": {
-    "@atlaskit/editor-core": "^10.0.0",
+    "@atlaskit/editor-core": "^10.8.0",
     "@atlaskit/logo": "^3.0.3",
     "@atlaskit/util-shared-styles": "^1.2.1",
     "collapse-whitespace": "^1.1.6",

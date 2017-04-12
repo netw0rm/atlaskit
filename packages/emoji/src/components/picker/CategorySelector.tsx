@@ -105,23 +105,32 @@ export default class CategorySelector extends PureComponent<Props, undefined> {
               categoryClasses.push(styles.active);
             }
 
+            let onClick;
             if (!availableCategories || !availableCategories[category.id]) {
               categoryClasses.push(styles.disable);
+            } else {
+              // disable click handling
+              onClick = () => this.onClick(category.id);
             }
 
             // tslint:disable-next-line:variable-name
             const Icon = category.icon;
 
             return (
-              <button
+              <li
                 key={category.name}
-                className={classNames(categoryClasses)}
-                onClick={() => this.onClick(category.id)}
               >
-                <Icon
-                  label={category.name}
-                />
-              </button>
+                <button
+                  key={category.name}
+                  className={classNames(categoryClasses)}
+                  onClick={onClick}
+                  title={category.name}
+                >
+                  <Icon
+                    label={category.name}
+                  />
+                </button>
+              </li>
             );
           })}
         </ul>

@@ -2,7 +2,7 @@ import {
   bulletList,
   blockquote,
   codeBlock,
-  code,
+  code as codeBase,
   doc,
   em,
   hardBreak,
@@ -22,19 +22,29 @@ import {
   text,
   underline,
   media,
-  mediaGroup
+  mediaGroup,
+  panel,
+  mentionQuery
 } from '@atlaskit/editor-core';
 
+import jiraIssue from './schema/nodes/jiraIssue';
 import unsupportedBlock from './schema/nodes/unsupportedBlock';
 import unsupportedInline from './schema/nodes/unsupportedInline';
 
-interface CQSchemaNodes {
+const code = {
+  ...codeBase,
+  excludes: 'em strike strong underline'
+};
+
+export interface CQSchemaNodes {
   blockquote: NodeSpec;
   bulletList: NodeSpec;
   codeBlock: NodeSpec;
+  panel: NodeSpec;
   doc: NodeSpec;
   hardBreak: NodeSpec;
   heading: NodeSpec;
+  jiraIssue: NodeSpec;
   listItem: NodeSpec;
   mention: NodeSpec;
   orderedList: NodeSpec;
@@ -47,8 +57,7 @@ interface CQSchemaNodes {
   mediaGroup: NodeSpec;
 }
 
-
-interface CQSchemaMarks {
+export interface CQSchemaMarks {
   code: MarkSpec;
   em: MarkSpec;
   link: MarkSpec;
@@ -56,6 +65,7 @@ interface CQSchemaMarks {
   strong: MarkSpec;
   subsup: MarkSpec;
   underline: MarkSpec;
+  mentionQuery: MarkSpec;
 }
 
 
@@ -64,28 +74,33 @@ const nodes = {
   paragraph,
   blockquote,
   codeBlock,
+  panel,
+  hardBreak,
   orderedList,
   bulletList,
   heading,
   mediaGroup,
   unsupportedBlock,
+  jiraIssue,
   listItem,
   mention,
   text,
-  hardBreak,
   unsupportedInline,
   media,
   rule,
 };
 
+// ranking order is important
+// @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/11174043/Document+structure#Documentstructure-Rank
 const marks = {
-  code,
-  em,
   link,
-  strike,
+  em,
   strong,
+  strike,
   subsup,
   underline,
+  mentionQuery,
+  code,
 };
 
 export interface CQSchema extends Schema<CQSchemaNodes, CQSchemaMarks> {}

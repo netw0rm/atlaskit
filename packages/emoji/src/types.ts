@@ -149,7 +149,7 @@ export interface OnEmojiEvent {
 }
 
 export interface OnCategory {
-  (categoryId: string): void;
+  (categoryId: string | null): void;
 }
 
 export interface SearchOptions {

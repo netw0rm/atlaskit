@@ -8,6 +8,8 @@ import SubSup from './subsup';
 import Underline from './underline';
 import Code from './code';
 import { Renderable } from '../nodes';
+import HardBreak from '../nodes/hardBreak';
+import { isSafeUrl } from '../utils';
 
 import { isSubSupType } from '../marks/subsup';
 
@@ -69,8 +71,13 @@ export const getValidMark = (mark: Renderable): Renderable => {
         const { attrs } = mark;
         if (attrs) {
           const { href, url } = attrs;
-          const linkHref = href || url;
-          if (linkHref) {
+          let linkHref = href || url;
+
+          if (linkHref.indexOf(':') === -1) {
+            linkHref = `//${linkHref}`;
+          }
+
+          if (linkHref && isSafeUrl(linkHref)) {
             return {
               type,
               content,
@@ -171,10 +178,13 @@ export const renderMark = (mark: Renderable, index: number = 0) => {
     case MarkType.code:
       return <Code key={key}>{content}</Code>;
     case MarkType.text:
+      if (validMark.text === '\n') {
+        return <HardBreak key={key} />;
+      }
       return validMark.text;
     default: {
-      // Mark is unkown, render it's content
-      return renderMark(validMark.content![0] as Renderable);
+      // Mark is unkown, render it's content (if any)
+      return validMark.content ? renderMark(validMark.content![0] as Renderable) : null;
     }
   }
 };

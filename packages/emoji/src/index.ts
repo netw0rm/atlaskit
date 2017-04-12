@@ -7,6 +7,7 @@ import EmojiResource, { EmojiProvider } from './api/EmojiResource';
 import { AbstractResource } from './api/SharedResources';
 import EmojiRepository, { EmojiSearchResult } from './api/EmojiRepository';
 import EmojiLoader, { denormaliseEmojiServiceResponse } from './api/EmojiLoader';
+import { toEmojiId, toOptionalEmojiId } from './type-helpers';
 
 export {
   // Classes
@@ -21,6 +22,8 @@ export {
   ResourcedEmoji,
   // functions
   denormaliseEmojiServiceResponse,
+  toEmojiId,
+  toOptionalEmojiId,
   // interfaces
   EmojiProvider,
   EmojiSearchResult,

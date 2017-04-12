@@ -24,6 +24,7 @@ const fieldTextPropDescriptions = {
   isLabelHidden: 'Whether the field should show a label above it. If set to true no label will be shown and no space will be reserved for it.',
   shouldFitContainer: 'Whether or not the field should fill the width of its container.',
   autoFocus: 'Whether the field should have focus when the page loads.',
+  maxLength: 'The maximum length the input should accept.',
 };
 
 storiesOf(name, module)

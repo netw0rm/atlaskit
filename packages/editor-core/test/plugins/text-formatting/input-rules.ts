@@ -32,6 +32,14 @@ describe('text-formatting input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('**text**')));
     });
+
+    it('should not convert the surrounding text to strong', () => {
+      const { editorView, sel } = editor(doc(p('hello{<>}there')));
+
+      insertText(editorView, '**text**', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('hello', strong('text'), 'there')));
+    });
   });
 
   describe('em rule', () => {

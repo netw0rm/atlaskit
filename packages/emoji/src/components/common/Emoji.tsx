@@ -33,13 +33,13 @@ export default class Emoji extends PureComponent<Props, undefined> {
     };
 
     return (
-      <div className={classNames(classes)}>
+      <span className={classNames(classes)}>
         <span
           className={styles.emojiSprite}
           title={emoji.shortName}
           style={style}
         />
-      </div>
+      </span>
     );
   }
 

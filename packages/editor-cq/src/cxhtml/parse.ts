@@ -5,7 +5,7 @@ import {
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
-import encodeCxhtml from './encode-cxhtml';
+import { AC_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 
 const convertedNodes = new WeakMap();
 
@@ -111,6 +111,7 @@ function isNodeSupportedContent(node: Node): boolean {
       case 'OL':
       case 'LI':
       case 'P':
+      case 'A':
       case 'FAB:MENTION':
         return true;
     }
@@ -291,6 +292,8 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
       case 'U':
         return content ? addMarks(content, [schema.marks.underline.create()]) : null;
+      case 'A':
+        return content ? addMarks(content, [schema.marks.link.create({ href: node.getAttribute('href') })]) : null;
       // Nodes
       case 'BLOCKQUOTE':
         return schema.nodes.blockquote.createChecked({},
@@ -354,7 +357,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
     case 'CODE':
       const language = getAcParameter(node, 'language');
       const title = getAcParameter(node, 'title');
-      const codeContent = getAcPlainText(node) || ' ';
+      const codeContent = getAcTagContent(node, 'AC:PLAIN-TEXT-BODY') || ' ';
       const content: PMNode[] = [];
       let nodeSize = 0;
 
@@ -369,6 +372,58 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       nodeSize += codeBlockNode.nodeSize;
 
       return new Fragment(content, nodeSize);
+
+    case 'WARNING':
+    case 'INFO':
+    case 'NOTE':
+    case 'TIP':
+      const panelTitle = getAcParameter(node, 'title');
+      const panelNodes = getAcTagNodes(node, 'AC:RICH-TEXT-BODY') || '';
+      let panelBody: any[] = [];
+
+      if (panelTitle) {
+        panelBody.push(
+          schema.nodes.heading.create({ level: 3 }, schema.text(panelTitle))
+        );
+      }
+
+      if (panelNodes) {
+        const nodes = Array.prototype.slice.call(panelNodes);
+
+        for (let i = 0, len = nodes.length; i < len; i += 1) {
+          const domNode: any = nodes[i];
+          const content = Fragment.from([ schema.text(domNode.innerText) ]);
+          const pmNode = converter(content, domNode);
+          if (pmNode) {
+            panelBody.push(pmNode);
+          }
+        }
+      } else {
+        panelBody.push(schema.nodes.paragraph.create({}));
+      }
+
+      return schema.nodes.panel.create({ panelType: name.toLowerCase() }, panelBody);
+
+    case 'JIRA':
+      const schemaVersion = node.getAttributeNS(AC_XMLNS, 'schema-version');
+      const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
+      const server = getAcParameter(node, 'server');
+      const serverId = getAcParameter(node, 'serverId');
+      const issueKey = getAcParameter(node, 'key');
+
+      // if this is an issue list, render it as unsupported node
+      // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672
+      if (!issueKey) {
+        return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
+      }
+
+      return schema.nodes.jiraIssue.create({
+        issueKey,
+        macroId,
+        schemaVersion,
+        server,
+        serverId,
+      });
   }
 
   // All unsupported content is wrapped in an `unsupportedInline` node. Converting
@@ -392,11 +447,22 @@ function getAcParameter(node: Element, parameter: string): string | null {
   return null;
 }
 
-function getAcPlainText(node: Element): string | null {
+function getAcTagContent(node: Element, tagName: string): string | null {
   for (let i = 0; i < node.childNodes.length; i++) {
     const child = node.childNodes[i] as Element;
-    if (getNodeName(child) === 'AC:PLAIN-TEXT-BODY') {
+    if (getNodeName(child) === tagName) {
       return child.textContent;
+    }
+  }
+
+  return null;
+}
+
+function getAcTagNodes(node: Element, tagName: string): NodeList | null {
+  for (let i = 0; i < node.childNodes.length; i++) {
+    const child = node.childNodes[i] as Element;
+    if (getNodeName(child) === tagName) {
+      return child.childNodes;
     }
   }
 

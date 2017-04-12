@@ -4,6 +4,8 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/publishReplay';
 import {LRUCache} from 'lru-fast';
 
+export const FILE_PROVIDER_RETRY_INTERVAL = 2000;
+
 export interface FileProvider {
   observable(): Observable<FileItem>;
 }

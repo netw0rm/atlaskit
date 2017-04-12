@@ -4,12 +4,13 @@ import { MouseEvent, PureComponent } from 'react';
 import Spinner from '@atlaskit/spinner';
 
 import * as styles from './styles';
+import { emojiTypeAheadMaxHeight } from '../../shared-styles';
 import EmojiItem from './EmojiTypeAheadItem';
-import Scrollable from './Scrollable';
+import Scrollable from '../common/Scrollable';
 import { EmojiDescription, EmojiId, OnEmojiEvent } from '../../types';
 import debug from '../../util/logger';
 import { mouseLocation, actualMouseMove, Position } from '../../util/mouse';
-import { toEmojiId } from '../../api/EmojiRepository';
+import { toEmojiId } from '../../type-helpers';
 
 function wrapIndex(emojis: EmojiDescription[], index: number): number {
   const len = emojis.length;
@@ -232,6 +233,7 @@ export default class EmojiTypeAheadList extends PureComponent<Props, State> {
         <div className={classes}>
           <Scrollable
             ref={(ref) => { this.scrollable = ref; }}
+            maxHeight={`${emojiTypeAheadMaxHeight}px`}
           >
             {listBody}
           </Scrollable>

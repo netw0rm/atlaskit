@@ -20,6 +20,7 @@ export default class FieldText extends PureComponent {
     shouldFitContainer: PropTypes.bool,
     isSpellCheckEnabled: PropTypes.bool,
     autoFocus: PropTypes.bool,
+    maxLength: PropTypes.number,
   }
 
   static defaultProps = {
@@ -64,6 +65,7 @@ export default class FieldText extends PureComponent {
             id={this.props.id}
             autoFocus={this.props.autoFocus}
             spellCheck={this.props.isSpellCheckEnabled}
+            maxLength={this.props.maxLength}
             ref={(input) => { this.input = input; }}
           />
         </Base>

@@ -1,10 +1,12 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 
-import TextFormattingPlugin from '../../../src/plugins/text-formatting';
 import {
   fixtures, mention, em, strike, code, strong, insertText, chaiPlugin, doc, makeEditor, p, code_block
 } from '../../../src/test-helper';
+
+import textFormattingPlugins from '../../../src/plugins/text-formatting';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
@@ -12,7 +14,7 @@ describe('text-formatting input rules', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: TextFormattingPlugin,
+    plugins: textFormattingPlugins(defaultSchema),
     place: fixture()
   });
 

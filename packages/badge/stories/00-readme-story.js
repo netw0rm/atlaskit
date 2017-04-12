@@ -5,8 +5,8 @@ import Readme from '@atlaskit/util-readme';
 import { name } from '../package.json';
 
 /* eslint-disable import/no-duplicates, import/first */
-import defaultComponent from '../src/Badge';
-import defaultComponentSource from '!raw!../src/Badge';
+import defaultComponent from '../src/components/Badge';
+import defaultComponentSource from '!raw!../src/components/Badge';
 import defaultOverview from './examples/basic-usage';
 import defaultOverviewSource from '!raw!./examples/basic-usage';
 /* eslint-enable import/no-duplicates, import/first */

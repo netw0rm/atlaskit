@@ -2,9 +2,9 @@ import { mount } from 'enzyme';
 import React from 'react';
 
 import Badge from '../../src';
-import { APPEARANCE_ENUM } from '../../src/Badge';
+import { APPEARANCE_ENUM } from '../../src/components/Badge';
 
-describe('ak-badge', () => {
+describe('Badge', () => {
   describe('value property', () => {
     it('should be visibly displayed', () => {
       expect(mount(<Badge value={5} />).text()).to.equal('5');

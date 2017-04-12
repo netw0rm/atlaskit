@@ -51,6 +51,7 @@ export interface Props {
   allowCodeBlock?: boolean;
   allowAdvancedTextFormatting?: boolean;
   allowBlockQuote?: boolean;
+  allowSubSup?: boolean;
   mentionProvider?: Promise<MentionProvider>;
   mentionEncoder?: (userId: string) => string;
 }
@@ -78,7 +79,8 @@ export default class Editor extends PureComponent<Props, State> {
         allowLinks: !!props.allowLinks,
         allowAdvancedTextFormatting: !!props.allowAdvancedTextFormatting,
         allowCodeBlock: !!props.allowCodeBlock,
-        allowBlockQuote: !!props.allowBlockQuote
+        allowBlockQuote: !!props.allowBlockQuote,
+        allowSubSup: !!props.allowSubSup
       }),
     };
 

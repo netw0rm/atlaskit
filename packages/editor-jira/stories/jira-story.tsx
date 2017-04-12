@@ -41,6 +41,7 @@ storiesOf(name, module)
   .add('Editor (allowLists)', () => <Demo allowLists />)
   .add('Editor (allowLinks)', () => <Demo allowLinks />)
   .add('Editor (allowAdvancedTextFormatting)', () => <Demo allowAdvancedTextFormatting />)
+  .add('Editor (allowSubSup)', () => <Demo allowSubSup />)
   .add('Editor (allowCodeBlock)', () => <Demo allowCodeBlock />)
   .add('Editor (allowBlockQuote)', () => <Demo allowBlockQuote />)
   .add('Editor (Mentions)', () =>
@@ -55,6 +56,7 @@ storiesOf(name, module)
       allowLinks
       allowCodeBlock
       allowAdvancedTextFormatting
+      allowSubSup
       allowBlockQuote
       mentionProvider={Promise.resolve(new MentionResource())}
       mentionEncoder={(userId: string) => `/secure/ViewProfile?name=${userId}`}

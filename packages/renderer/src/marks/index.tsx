@@ -183,8 +183,8 @@ export const renderMark = (mark: Renderable, index: number = 0) => {
       }
       return validMark.text;
     default: {
-      // Mark is unkown, render it's content
-      return renderMark(validMark.content![0] as Renderable);
+      // Mark is unkown, render it's content (if any)
+      return validMark.content ? renderMark(validMark.content![0] as Renderable) : null;
     }
   }
 };

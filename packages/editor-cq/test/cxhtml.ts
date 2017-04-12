@@ -345,7 +345,7 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
 
       check('with title',
         '<ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Code</ac:parameter><ac:parameter ac:name="language">js</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
-        doc(p(strong('Code')), codeblock({ language: 'js' })('some code')));
+        doc(h5(strong('Code')), codeblock({ language: 'js' })('some code')));
     });
 
     describe('panel', () => {

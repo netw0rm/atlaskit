@@ -10,6 +10,7 @@ const schema = makeSchema({
   allowCodeBlock: true,
   allowAdvancedTextFormatting: true,
   allowBlockQuote: true,
+  allowSubSup: true,
 });
 
 // Nodes

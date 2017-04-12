@@ -111,6 +111,7 @@ function isNodeSupportedContent(node: Node): boolean {
       case 'OL':
       case 'LI':
       case 'P':
+      case 'A':
       case 'FAB:MENTION':
         return true;
     }
@@ -291,6 +292,8 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
       case 'U':
         return content ? addMarks(content, [schema.marks.underline.create()]) : null;
+      case 'A':
+        return content ? addMarks(content, [schema.marks.link.create({ href: node.getAttribute('href') })]) : null;
       // Nodes
       case 'BLOCKQUOTE':
         return schema.nodes.blockquote.createChecked({},

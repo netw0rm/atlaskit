@@ -17,10 +17,14 @@ import {
   TextSelection,
   ClearFormattingPlugin,
   version as coreVersion,
-  PanelPlugin
+  PanelPlugin,
+  mentionNodeView,
+  MentionsPlugin,
+  ProviderFactory
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { MentionProvider } from '@atlaskit/mention';
 import { encode, parse } from './cxhtml';
 import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
@@ -39,6 +43,7 @@ export interface Props {
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
+  mentionProvider?: Promise<MentionProvider>;
 }
 
 export interface State {
@@ -50,6 +55,8 @@ export interface State {
 export default class Editor extends PureComponent<Props, State> {
   state: State;
   version = `${version} (editor-core ${coreVersion})`;
+  providerFactory: ProviderFactory;
+  mentionProvider: Promise<MentionProvider>;
 
   constructor(props: Props) {
     super(props);
@@ -60,6 +67,13 @@ export default class Editor extends PureComponent<Props, State> {
     };
 
     analyticsService.handler = props.analyticsHandler || ((name) => {});
+
+    this.providerFactory = new ProviderFactory();
+
+    if (props.mentionProvider) {
+      this.mentionProvider = props.mentionProvider;
+      this.providerFactory.setProvider('mentionProvider', this.mentionProvider);
+    }
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -131,6 +145,7 @@ export default class Editor extends PureComponent<Props, State> {
     const listsState = editorState && ListsPlugin.getState(editorState);
     const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
     const panelState = editorState && PanelPlugin.getState(editorState);
+    const mentionsState = editorState && MentionsPlugin.getState(editorState);
 
     return (
       <Chrome
@@ -151,6 +166,8 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStatePanel={panelState}
         packageVersion={version}
         packageName={name}
+        mentionProvider={this.mentionProvider}
+        pluginStateMentions={mentionsState}
       />
     );
   }
@@ -197,6 +214,7 @@ export default class Editor extends PureComponent<Props, State> {
           RulePlugin,
           TextFormattingPlugin,
           PanelPlugin,
+          MentionsPlugin,
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap), // should be last :(
@@ -216,6 +234,7 @@ export default class Editor extends PureComponent<Props, State> {
           this.handleChange();
         },
         nodeViews: {
+          mention: mentionNodeView(this.providerFactory),
           jiraIssue: jiraIssueNodeView,
         },
         handleDOMEvents: {
@@ -225,6 +244,10 @@ export default class Editor extends PureComponent<Props, State> {
           }
         }
       });
+
+      if (this.mentionProvider) {
+        MentionsPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
+      }
 
       analyticsService.trackEvent('atlassian.editor.start');
 

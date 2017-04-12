@@ -2,8 +2,7 @@ import { Transaction, Plugin, InputRule, inputRules, Schema } from '../../prosem
 import { EmojiState, stateKey } from './';
 import { createInputRule } from '../utils';
 
-export function inputRulePlugin(schema: Schema<any, any>): Plugin {
-  let plugin: Plugin;
+export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.emoji && schema.marks.emojiQuery) {
@@ -35,9 +34,9 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
     rules.push(emojiQueryRule);
   }
 
-  plugin = inputRules({ rules });
-
-  return plugin;
+  if (rules.length !== 0) {
+    return inputRules({ rules });
+  }
 }
 
 export default inputRulePlugin;

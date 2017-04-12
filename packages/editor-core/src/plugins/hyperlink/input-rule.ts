@@ -5,15 +5,9 @@ import { createInputRule } from '../utils';
 
 const urlAtEndOfLine = new RegExp(`${URL_REGEX.source}$`);
 
-let plugin: Plugin | undefined;
-
 export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   if (!schema.marks.link) {
     return;
-  }
-
-  if (plugin) {
-    return plugin;
   }
 
   const endOfLine = createInputRule(urlAtEndOfLine, (state, match, start, end) => {
@@ -56,14 +50,12 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
     );
   });
 
-  plugin = inputRules({
+  return inputRules({
     rules: [
       endOfLine,
       markdownLinkRule
     ]
   });
-
-  return plugin;
 };
 
 export default inputRulePlugin;

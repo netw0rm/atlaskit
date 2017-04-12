@@ -6,8 +6,6 @@ import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-t
 import { createInputRule, defaultInputRuleHandler } from '../utils';
 
 export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
-  let plugin: Plugin | undefined;
-
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.heading) {
@@ -47,9 +45,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   }
 
   if (rules.length !== 0) {
-    plugin = inputRules({ rules });
-
-    return plugin;
+    return inputRules({ rules });
   }
 };
 

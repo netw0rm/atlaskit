@@ -152,10 +152,14 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   private handleMediaProvider = (mediaProvider: MediaProvider) => {
     this.setState({ ...this.state, mediaProvider });
 
-    mediaProvider.viewContext.then((contextConfig: ContextConfig) => {
+    mediaProvider.viewContext.then((context: ContextConfig | Context) => {
+      if ('clientId' in (context as ContextConfig)) {
+        context = ContextFactory.create(context as ContextConfig);
+      }
+
       this.setState({
          ...this.state,
-         viewContext: ContextFactory.create(contextConfig)
+         viewContext: context as Context
         });
     });
   }

@@ -9,7 +9,6 @@ import {
   Plugin,
   PluginKey,
 } from '../../prosemirror';
-import { reconfigure } from '../utils';
 import { isMarkAllowedAtPosition } from '../../utils';
 import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';

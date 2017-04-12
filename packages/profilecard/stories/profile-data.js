@@ -76,11 +76,7 @@ const profiles = [
       fullName: 'Cleveland Rodriquez',
       nickname: 'crodriquez',
       email: 'crodriquez@slofast.com',
-      location: 'Sydney, Australia',
       meta: 'Manager',
-      remoteTimeString: getTimeString(),
-      remoteWeekdayIndex: getWeekday().index,
-      remoteWeekdayString: getWeekday().string,
     },
     Presence: {
       state: 'available',

@@ -25,5 +25,5 @@ export interface ParseRule {
   getAttrs?: (_0: dom.Node | string) => boolean | { [key: string]: any } | null;
   contentElement?: string;
   getContent?: (_0: dom.Node) => Fragment;
-  preserveWhitespace?: boolean;
+  preserveWhitespace?: boolean | string;
 }

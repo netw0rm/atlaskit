@@ -9,6 +9,7 @@ export * from './files';
 export * from './list';
 export * from './links';
 export * from './card';
+export * from './utils/cardImageView';
 
 export type CardProcessingStatus = 'loading' | 'processing' | 'complete' | 'error';
 

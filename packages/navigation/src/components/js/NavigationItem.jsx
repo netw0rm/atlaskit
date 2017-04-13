@@ -53,7 +53,7 @@ export default class NavigationItem extends PureComponent {
     : null);
 
     const After = ({ children }) => (this.props.textAfter ?
-      <NavigationItemAfter>
+      <NavigationItemAfter shouldTakeSpace={this.props.action || this.props.textAfter}>
         {children}
       </NavigationItemAfter>
     : null);

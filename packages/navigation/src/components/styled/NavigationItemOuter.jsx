@@ -83,7 +83,7 @@ function getColors(theme) {
 }
 
 function getHeight(theme) {
-  return theme[getThemeValue(theme, 'isCompact')] ? akGridSizeUnitless * 4.5 : akGridSizeUnitless * 5;
+  return (getThemeValue(theme, 'isCompact') ? akGridSizeUnitless * 4.5 : akGridSizeUnitless * 5);
 }
 
 const NavigationItemOuter = styled.div`

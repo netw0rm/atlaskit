@@ -42,6 +42,13 @@ describe('text-formatting input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(doc(p('hello', strong('text'), 'there')));
     });
+
+    it('should be inclusive right', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '**text**', sel);
+      insertText(editorView, 'text', editorView.state.selection.$from.pos);
+      expect(editorView.state.doc).to.deep.equal(doc(p(strong('texttext'))));
+    });
   });
 
   describe('em rule', () => {
@@ -52,11 +59,11 @@ describe('text-formatting input rules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
     });
 
-    it('should limit mark to surrounded text', () => {
+    it('should be inclusive right', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '*italic*', sel);
-      insertText(editorView, 'm', editorView.state.selection.$from.pos);
-      expect(editorView.state.doc).to.deep.equal(doc(p(em('italic'), 'm')));
+      insertText(editorView, 'text', editorView.state.selection.$from.pos);
+      expect(editorView.state.doc).to.deep.equal(doc(p(em('italictext'))));
     });
 
     it('should keep current marks when converting from markdown', () => {
@@ -89,6 +96,13 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '~~text~~', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('~~text~~')));
+    });
+
+    it('should be inclusive right', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '~~text~~', sel);
+      insertText(editorView, 'text', editorView.state.selection.$from.pos);
+      expect(editorView.state.doc).to.deep.equal(doc(p(strike('texttext'))));
     });
   });
 
@@ -134,6 +148,13 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '`text`', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('`text`')));
+    });
+
+    it('should not be inclusive right', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '`text`', sel);
+      insertText(editorView, 'text', editorView.state.selection.$from.pos);
+      expect(editorView.state.doc).to.deep.equal(doc(p(code('text'), 'text')));
     });
   });
 

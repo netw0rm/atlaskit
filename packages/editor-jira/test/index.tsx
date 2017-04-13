@@ -4,6 +4,7 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 
 import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
+import { InlineEdit } from '@atlaskit/inline-edit';
 import Editor from '../src/index';
 
 chai.use(chaiPlugin);
@@ -147,4 +148,36 @@ describe('@atlaskit/editor-jira expand and collapse', () => {
     });
   });
 
+  describe('interactions with other components', () => {
+    it('should not call inline-edit onConfirm when BlockType dropdown is closed', (done) => {
+      const fabricEditor = (
+        <Editor
+          isExpandedByDefault
+          defaultValue="Text"
+        />
+      );
+
+      const spy = sinon.spy();
+      const wrapper = mount(
+        <InlineEdit
+          isEditing
+          areActionButtonsHidden
+          label="@atlaskit/editor-jira + @atlaskit/inline-edit"
+          onCancel={() => {}}
+          onConfirm={spy}
+          onEditRequested={() => {}}
+          editView={fabricEditor}
+          readView={fabricEditor}
+        />
+      );
+
+      wrapper.find(Editor).simulate('blur');
+
+      // onConfirm is fired after 10ms timeout in inline-edit
+      setTimeout(() => {
+        expect(spy.callCount).to.equal(0);
+        done();
+      }, 100);
+    });
+  });
 });

@@ -221,7 +221,7 @@ export default class Editor extends PureComponent<Props, State> {
             ...imageUploadPlugins(schema),
             ...mentionsPlugins(schema),
             ...emojiPlugins(schema),
-            ...history(),
+            history(),
             keymap(baseKeymap) // should be last :(
           ]
         }

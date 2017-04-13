@@ -32,31 +32,77 @@ export default class Search extends PureComponent {
     this.updateFocus(nextProps.shouldFocusInput);
   }
 
+  // Attaching a mouse down handler to the whole search box rather than
+  // just the button. This is done so that the input field never looses
+  // focus when the user is clearing the input. This is really useful
+  // on devices that close the keyboard input if the text field looses
+  // focus.
+  onSearchBoxMouseDown = (event) => {
+    const { target } = event;
+    const shouldClearInput = target === this.clearButtonRef ||
+                             this.clearButtonRef.contains(target);
+
+    if (!shouldClearInput) {
+      return;
+    }
+
+    event.preventDefault();
+    this.clear();
+  }
+
+  onClearButtonKeyDown = (event) => {
+    if (event.key !== 'Enter') {
+      return;
+    }
+
+    event.preventDefault();
+    this.clear();
+  }
+
+  // clear the input when the user hits Escape
+  onInputKeyDown = (event) => {
+    if (event.key !== 'Escape') {
+      return;
+    }
+
+    event.stopPropagation();
+    this.clear();
+  }
+
   setInputRef = (ref) => {
     this.inputRef = ref;
   }
 
-  blur() {
+  setClearButtonRef = (ref) => {
+    this.clearButtonRef = ref;
+  }
+
+  blurInput() {
     if (this.inputRef &&
-         this.inputRef === document.activeElement) {
+      this.inputRef === document.activeElement) {
       this.inputRef.blur();
     }
   }
 
-  focus() {
+  focusInput() {
     if (this.inputRef &&
-         this.inputRef !== document.activeElement) {
+      this.inputRef !== document.activeElement) {
       this.inputRef.focus();
     }
   }
 
   updateFocus(shouldFocus) {
     if (shouldFocus) {
-      this.focus();
+      this.focusInput();
       return;
     }
 
-    this.blur();
+    this.blurInput();
+  }
+
+  clear() {
+    this.props.onSearchClear();
+    this.focusInput();
   }
 
   render() {
@@ -68,18 +114,22 @@ export default class Search extends PureComponent {
     } = this.props;
     return (
       <SearchInner>
-        <SearchBox>
+        <SearchBox
+          onMouseDown={this.onSearchBoxMouseDown}
+        >
           <SearchInput
             innerRef={this.setInputRef}
             onChange={onChange}
             placeholder={placeholder}
             type="text"
             value={value}
+            onKeyDown={this.onInputKeyDown}
           />
           <SearchClearButtonOuter>
             <SearchClearButton
-              onClick={this.props.onSearchClear}
-              onMouseDown={e => e.preventDefault()}
+              type="button"
+              innerRef={this.setClearButtonRef}
+              onKeyDown={this.onClearButtonKeyDown}
             >
               {this.props.clearIcon}
             </SearchClearButton>

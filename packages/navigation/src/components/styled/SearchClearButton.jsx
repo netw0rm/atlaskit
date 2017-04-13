@@ -25,6 +25,8 @@ const SearchClearButton = styled.button`
 
   &:hover {
     background: ${akColorN20A};
+    // Unsure why this is needed - but it is 🙃
+    cursor: pointer;
   }
 
   &:active {

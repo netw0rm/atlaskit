@@ -24,7 +24,13 @@ export default class NavigationItemGroup extends PureComponent {
     } = this.props;
 
     const Title = () => (title ?
-      <NavigationItemGroupTitle><span>{title}</span></NavigationItemGroupTitle>
+      <NavigationItemGroupTitle>{title}</NavigationItemGroupTitle>
+    : null);
+
+    const Action = () => (action ?
+      <NavigationItemGroupAction>
+        {this.props.action}
+      </NavigationItemGroupAction>
     : null);
 
     return (
@@ -37,15 +43,11 @@ export default class NavigationItemGroup extends PureComponent {
         <NavigationItemGroupInner hasHeaderContent={(title || action || hasSeparator)}>
           {hasSeparator ? (
             <NavigationItemGroupSeparator />
-            ) : null}
+          ) : null}
           {title || action ? (
             <NavigationItemGroupHeader>
               <Title />
-              {this.props.action ?
-                <NavigationItemGroupAction>
-                  {this.props.action}
-                </NavigationItemGroupAction>
-              : null}
+              <Action />
             </NavigationItemGroupHeader>) : null
           }
           <div>

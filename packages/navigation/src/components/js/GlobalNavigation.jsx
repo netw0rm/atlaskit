@@ -50,9 +50,7 @@ export default class GlobalNavigation extends PureComponent {
         }}
       >
         <GlobalNavigationOuter>
-          <Spacer
-            width={globalOpenWidth}
-          />
+          <Spacer width={globalOpenWidth} />
           <GlobalNavigationInner appearance={appearance}>
             <GlobalNavigationPrimaryContainer>
               <GlobalPrimaryActions
@@ -67,9 +65,9 @@ export default class GlobalNavigation extends PureComponent {
               />
             </GlobalNavigationPrimaryContainer>
             <GlobalNavigationSecondaryContainer>
-              {secondaryActions.length ? <GlobalSecondaryActions
-                actions={secondaryActions}
-              /> : null}
+              {secondaryActions.length ? (
+                <GlobalSecondaryActions actions={secondaryActions} />
+              ) : null}
             </GlobalNavigationSecondaryContainer>
           </GlobalNavigationInner>
         </GlobalNavigationOuter>

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {
-    akGridSizeUnitless,
-    akColorN40A,
+  akGridSizeUnitless,
+  akColorN40A,
  } from '@atlaskit/util-shared-styles';
 
 const NavigationItemGroupHeader = styled.div`

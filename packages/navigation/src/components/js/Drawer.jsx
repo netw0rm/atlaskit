@@ -62,16 +62,14 @@ export default class Drawer extends PureComponent {
             </DrawerPrimaryIcon>
             <DrawerBackIconWrapper style={backIconWrapperStyle}>
               <DrawerTrigger onActivate={onBackButton}>
-                <DrawerBackIcon
-                  isVisible={isOpen}
-                >
+                <DrawerBackIcon isVisible={isOpen}>
                   {backIcon}
                 </DrawerBackIcon>
               </DrawerTrigger>
             </DrawerBackIconWrapper>
           </DrawerSide>
           <DrawerMain>
-            {(width !== 'full' && header) ?
+            {((width !== 'full') && header) ?
               <DrawerHeader>
                 <ContainerHeader>{header}</ContainerHeader>
               </DrawerHeader>

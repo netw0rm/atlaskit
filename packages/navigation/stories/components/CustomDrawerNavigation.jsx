@@ -6,7 +6,6 @@ import BasicNavigation from './BasicNavigation';
 export default class CustomDrawerNavigation extends PureComponent {
   state = {
     openDrawer: null,
-    isOpen: true,
     width: 300,
   };
 
@@ -105,7 +104,7 @@ export default class CustomDrawerNavigation extends PureComponent {
 
   resize(resizeState) {
     this.setState({
-      isOpen: resizeState.isOpen,
+      openDrawer: resizeState.isOpen ? this.state.openDrawer : null,
       width: resizeState.width,
     });
   }
@@ -132,7 +131,6 @@ export default class CustomDrawerNavigation extends PureComponent {
           this.getQueuesDrawer(),
           this.getReportsDrawer(),
         ]}
-        isOpen={this.state.isOpen}
         onCreateDrawerOpen={() => this.setDrawer('create')}
         onResize={(resizeState) => { this.resize(resizeState); }}
         onSearchDrawerOpen={() => this.setDrawer('search')}
@@ -144,9 +142,9 @@ export default class CustomDrawerNavigation extends PureComponent {
         }
       >
         <div>
-          {this.state.isOpen ? queuesItemOpen : queuesItemCollapsed }
+          {this.state.openDrawer ? queuesItemOpen : queuesItemCollapsed }
           <AkNavigationItem icon={<IssuesIcon label="Customers" />} text="Collapse navigation and click one of the other two icons" />
-          {this.state.isOpen ? reportsItemOpen : reportsItemCollapsed }
+          {this.state.openDrawer ? reportsItemOpen : reportsItemCollapsed }
         </div>
       </BasicNavigation>
     );

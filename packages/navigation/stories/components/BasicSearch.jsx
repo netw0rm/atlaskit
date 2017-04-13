@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { AtlassianIcon, CrossIcon, DashboardIcon } from '@atlaskit/icon';
 import { AkSearch, AkNavigationItem } from '../../src/index';
 
@@ -91,12 +91,18 @@ function search(query) {
 }
 
 export default class BasicSearch extends PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      query: '',
-    };
+  static propTypes = {
+    shouldFocusInput: PropTypes.bool,
   }
+
+  static defaultProps = {
+    shouldFocusInput: false,
+  }
+
+  state = {
+    query: '',
+  }
+
   render() {
     return (
       <AkSearch
@@ -104,6 +110,7 @@ export default class BasicSearch extends PureComponent {
         onChange={({ target }) => { this.setState({ query: target.value }); }}
         onSearchClear={() => { this.setState({ query: '' }); }}
         value={this.state.query}
+        shouldFocusInput={this.props.shouldFocusInput}
       >
         {search(this.state.query)}
       </AkSearch>

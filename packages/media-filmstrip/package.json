@@ -22,7 +22,7 @@
     "@atlaskit/media-card": "^8.0.0",
     "@atlaskit/icon": "^2.4.0",
     "@atlaskit/util-shared-styles": "^1.0.0",
-    "react-lazyload": "^2.2.5",
+    "react-lazyload": "2.2.5",
     "tslib": "^1.2.0"
   },
   "author": "Atlassian Pty. Ltd",

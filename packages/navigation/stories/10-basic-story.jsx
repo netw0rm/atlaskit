@@ -4,6 +4,7 @@ import { CalendarIcon, DashboardIcon, SettingsIcon, TrayIcon } from '@atlaskit/i
 import { AtlassianLogo } from '@atlaskit/logo';
 import navigationStencil from 'url-loader!./stencils/navigation.svg';
 import { AkNavigationItem, AkNavigationItemGroup, AkContainerTitle } from '../src/index';
+import NavigationWithDropdown from './components/NavigationWithDropdown';
 import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
 import nucleusLogo from './nucleus.png';
@@ -63,6 +64,37 @@ storiesOf(name, module)
       </BasicNavigation>
     </Page>
   ))
+  .add('with a container drop item', () => {
+    const items = [
+      {
+        heading: 'Cities',
+        items: [
+          { content: 'Sydney', value: 1 },
+          { content: 'Canberra', value: 2 },
+          { content: 'Melbourne', value: 3 },
+          { content: 'Perth', value: 4 },
+        ],
+      },
+    ];
+    return (
+      <Page>
+        <NavigationWithDropdown items={items}>
+          <AkNavigationItem
+            text="Test page 1"
+            icon={<DashboardIcon label="Dashboard" />}
+          />
+          <AkNavigationItem
+            text="Test page 3"
+            icon={<DashboardIcon label="Dashboard" />}
+          />
+          <AkNavigationItem
+            text="Test page 4"
+            icon={<DashboardIcon label="Dashboard" />}
+          />
+        </NavigationWithDropdown>
+      </Page>
+    );
+  })
   .add('with a selected item', () => (
     <Page>
       <BasicNavigation>

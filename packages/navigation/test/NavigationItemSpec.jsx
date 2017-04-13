@@ -67,6 +67,15 @@ describe('<NavigationItem />', () => {
     it('subText should render in the navigation item', () => {
       expect(mount(<NavigationItem subText="SUBTEXT" />).html()).to.contain('SUBTEXT');
     });
+
+    it('isDropdownTrigger=true and dropIcon is provided should render dropIcon', () => {
+      const navigationWrapper = mount(<NavigationItem isDropdownTrigger dropIcon={<img alt="foo" />} />);
+      expect(navigationWrapper.find('img').length).to.equal(1);
+    });
+    it('isDropdownTrigger=false should not render dropIcon', () => {
+      const navigationWrapper = mount(<NavigationItem dropIcon={<img alt="foo" />} />);
+      expect(navigationWrapper.find('img').length).to.equal(0);
+    });
   });
   describe('behaviour', () => {
     it('mousedown on the link is prevented', () => {

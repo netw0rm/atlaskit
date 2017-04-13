@@ -86,6 +86,17 @@ function getHeight(theme) {
   return (getThemeValue(theme, 'isCompact') ? akGridSizeUnitless * 4.5 : akGridSizeUnitless * 5);
 }
 
+function getBackgroundCss(props) {
+  const themeColors = getColors(props.theme);
+  const background = (
+    props.isDropdownTrigger ? themeColors.hover.background : themeColors.default.background
+  );
+
+  return `
+    background: ${props.isSelected ? themeColors.selected.background : background};
+  `;
+}
+
 const NavigationItemOuter = styled.div`
   border-radius: ${borderRadius}px;
   box-sizing: border-box;
@@ -95,7 +106,7 @@ const NavigationItemOuter = styled.div`
   width: 100%;
 
   button, a {
-    background: ${({ isSelected, theme }) => (isSelected ? getColors(theme).selected.background : getColors(theme).default.background)};
+    ${getBackgroundCss}
     border-radius: ${borderRadius}px;
     color: ${({ isSelected, theme }) => (isSelected ? getColors(theme).selected.color : getColors(theme).default.color)};
     display: block;
@@ -115,6 +126,8 @@ const NavigationItemOuter = styled.div`
       color: ${({ theme }) => getColors(theme).active.color};
     }
   }
+
+
 `;
 
 NavigationItemOuter.defaultProps = {

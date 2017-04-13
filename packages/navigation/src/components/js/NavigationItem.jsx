@@ -1,4 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
+import styled from 'styled-components';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import InteractiveWrapper from './InteractiveWrapper';
 
@@ -12,12 +13,22 @@ import NavigationItemMainText from '../styled/NavigationItemMainText';
 import NavigationItemOuter from '../styled/NavigationItemOuter';
 import NavigationItemSubText from '../styled/NavigationItemSubText';
 
+const NavigationDropItemIcon = styled(NavigationItemIcon)`
+  padding-right: 0px;
+
+  [data-__ak-navigation-container-closed="true"] & {
+    display: none;
+  }
+`;
+
 export default class NavigationItem extends PureComponent {
   static propTypes = {
     action: PropTypes.node,
     href: PropTypes.string,
     icon: PropTypes.node,
+    dropIcon: PropTypes.node,
     isSelected: PropTypes.bool,
+    isDropdownTrigger: PropTypes.bool,
     linkComponent: PropTypes.func,
     onClick: PropTypes.func,
     subText: PropTypes.string,
@@ -28,6 +39,7 @@ export default class NavigationItem extends PureComponent {
   static defaultProps = {
     isSelected: false,
     linkComponent: DefaultLinkComponent,
+    isDropdownTrigger: false,
   }
 
   onMouseDown = (e) => {
@@ -40,6 +52,13 @@ export default class NavigationItem extends PureComponent {
         {this.props.icon}
       </NavigationItemIcon>
     : null);
+
+    const DropIcon = () => (this.props.dropIcon && this.props.isDropdownTrigger ?
+      <NavigationDropItemIcon>
+        {this.props.dropIcon}
+      </NavigationDropItemIcon>
+    : null);
+
     const TextAfter = () => (this.props.textAfter ?
       <NavigationItemTextAfter>
         {this.props.textAfter}
@@ -58,15 +77,23 @@ export default class NavigationItem extends PureComponent {
       </NavigationItemAfter>
     : null);
 
+    const interactiveWrapperProps = {
+      onMouseDown: this.onMouseDown,
+      onClick: this.props.onClick,
+    };
+
+    if (!this.props.isDropdownTrigger) {
+      interactiveWrapperProps.href = this.props.href;
+      interactiveWrapperProps.linkComponent = this.props.linkComponent;
+    }
+
     return (
       <NavigationItemOuter
         isSelected={this.props.isSelected}
+        isDropdownTrigger={this.props.isDropdownTrigger}
       >
         <InteractiveWrapper
-          href={this.props.href}
-          onMouseDown={this.onMouseDown}
-          onClick={this.props.onClick}
-          linkComponent={this.props.linkComponent}
+          {...interactiveWrapperProps}
         >
           <NavigationItemInner>
             <Icon />
@@ -78,6 +105,7 @@ export default class NavigationItem extends PureComponent {
                 {this.props.subText}
               </NavigationItemSubText>
             </NavigationItemText>
+            <DropIcon />
             <After>
               <TextAfter />
             </After>

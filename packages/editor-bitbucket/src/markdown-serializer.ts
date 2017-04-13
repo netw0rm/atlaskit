@@ -130,10 +130,10 @@ const nodes = {
     const isLastNode = (parent.childCount === index + 1);
     const delimiter = isLastNode ? '' : ' ';
 
-    state.write(`@${node.attrs['id']}${delimiter}`);
+    state.write(`@${node.attrs.id}${delimiter}`);
   },
   emoji(state: MarkdownSerializerState, node: Node, parent: Node, index: number) {
-    state.write(`${node.attrs['shortName']}`);
+    state.write(node.attrs.shortName);
   }
 };
 

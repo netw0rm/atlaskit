@@ -1,16 +1,15 @@
 import React, { Component, PropTypes } from 'react';
-import { AkSearch } from '@atlaskit/navigation';
-import AkSpinner from '@atlaskit/spinner';
 import { CrossIcon } from '@atlaskit/icon';
+import { AkSearch } from '@atlaskit/navigation';
 
+import DelayedSpinner from '../DelayedSpinner';
 import ResourcedResultsList from '../ResourcedResultsList';
-import RecentResultsList from '../RecentResultsList';
-import { ISearchProvider, SearchSubscriber } from '../../api/SearchProvider';
+import SearchResource, { SearchSubscriber } from '../../api/SearchResource';
 import uniqueId from '../../util/id';
 
 export default class QuickSearch extends Component {
   static propTypes = {
-    searchProvider: PropTypes.instanceOf(ISearchProvider),
+    searchResource: PropTypes.instanceOf(SearchResource),
   }
 
   constructor(props) {
@@ -24,16 +23,15 @@ export default class QuickSearch extends Component {
       changeHandler: this.queryComplete,
       errorHandler: this.filterError,
     });
-    this.recentResults = <RecentResultsList searchProvider={this.props.searchProvider} />;
-    this.searchResults = <ResourcedResultsList searchProvider={this.props.searchProvider} />;
   }
 
   componentDidMount() {
-    this.searchSubscriber.subscribe(this.props.searchProvider);
+    this.searchSubscriber.subscribe(this.props.searchResource);
+    this.props.searchResource.recentItems();
   }
 
   componentWillUnmount() {
-    this.searchSubscriber.unsubscribe(this.props.searchProvider);
+    this.searchSubscriber.unsubscribe(this.props.searchResource);
   }
 
   queryComplete = () => this.setState({ isLoading: false });
@@ -46,18 +44,38 @@ export default class QuickSearch extends Component {
 
   handleQueryChange = (ev) => {
     const query = ev.target.value;
-    this.props.searchProvider.query(query);
+    if (query === '') {
+      this.props.searchResource.recentItems();
+    } else {
+      this.props.searchResource.query(query);
+    }
     this.setState({
-      isLoading: true && query,
+      isLoading: true,
       query,
     });
   }
 
+  clearSearch = () => {
+    this.props.searchResource.cancelQuery();
+    this.setState({
+      isLoading: false,
+      query: '',
+    });
+    this.props.searchResource.recentItems();
+  }
+
   render() {
-    const clearIcon = this.state.isLoading ? <AkSpinner /> : <CrossIcon label="Clear search" />;
+    const clearIcon = this.state.isLoading
+      ? <DelayedSpinner />
+      : <CrossIcon label="Clear search" />;
     return (
-      <AkSearch onChange={this.handleQueryChange} clearIcon={clearIcon}>
-        {this.state.query ? this.searchResults : this.recentResults}
+      <AkSearch
+        onChange={this.handleQueryChange}
+        clearIcon={clearIcon}
+        onSearchClear={this.clearSearch}
+        value={this.state.query}
+      >
+        <ResourcedResultsList searchResource={this.props.searchResource} />
       </AkSearch>
     );
   }

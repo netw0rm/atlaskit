@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 
 import ResultsList from '../ResultsList';
-import { ISearchProvider } from '../../api/SearchProvider';
+import SearchResource from '../../api/SearchResource';
 import JsonToResultParser from '../../api/JsonToResultParser';
 
 export default class RecentResultsList extends Component {
   static propTypes = {
-    searchProvider: PropTypes.instanceOf(ISearchProvider).isRequired,
+    searchResource: PropTypes.instanceOf(SearchResource).isRequired,
     jsonToResultParser: PropTypes.instanceOf(JsonToResultParser).isRequired,
   }
 
@@ -20,7 +20,7 @@ export default class RecentResultsList extends Component {
       items: [],
     };
     /** TODO: revise */
-    props.searchProvider.recentItems().then((items) => {
+    props.searchResource.recentItems().then((items) => {
       this.setState({ items });
     });
   }

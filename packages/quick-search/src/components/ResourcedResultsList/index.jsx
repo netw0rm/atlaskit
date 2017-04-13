@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 
 import ResultsList from '../ResultsList';
-import { ISearchProvider, SearchSubscriber } from '../../api/SearchProvider';
+import SearchResource, { SearchSubscriber } from '../../api/SearchResource';
 import JsonToResultParser from '../../api/JsonToResultParser';
 import uniqueId from '../../util/id';
 
 export default class ResourcedResultsList extends Component {
   static propTypes = {
-    searchProvider: PropTypes.instanceOf(ISearchProvider).isRequired,
+    searchResource: PropTypes.instanceOf(SearchResource).isRequired,
     jsonToResultParser: PropTypes.instanceOf(JsonToResultParser).isRequired,
   }
 
@@ -28,11 +28,11 @@ export default class ResourcedResultsList extends Component {
   }
 
   componentDidMount() {
-    this.searchSubscriber.subscribe(this.props.searchProvider);
+    this.searchSubscriber.subscribe(this.props.searchResource);
   }
 
   componentWillUnmount() {
-    this.searchSubscriber.unsubscribe(this.props.searchProvider);
+    this.searchSubscriber.unsubscribe(this.props.searchResource);
   }
 
   onSearchResultUpdate = (items) => {

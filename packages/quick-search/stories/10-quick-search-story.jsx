@@ -4,31 +4,31 @@ import { storiesOf } from '@kadira/storybook';
 
 import { name } from '../package.json';
 import QuickSearch, { AkQuickSearchResultsList } from '../src/';
-// import SearchProvider from '../src/api/SearchProvider';
-import MockSearchProvider from '../test/helpers/MockSearchProvider';
+import SearchResource from '../src/api/SearchResource';
+// import MockSearchResource from '../test/helpers/MockSearchResource';
 // import JsonToResultParser from '../src/api/JsonToResultParser';
 import BasicNav from '../../navigation/stories/components/BasicNavigation';
 
-/* const searchProvider = new SearchProvider({
-  serviceHost: 'https://pf-ppl-directory-service.internal.uswest2.staging.atlassian.io/',
+const searchResource = new SearchResource({
+  userId: '655363:7c218e11-d210-43fd-9830-bcc1874e4736',
   cloudId: 'DUMMY-a5a01d21-1cc3-4f29-9565-f2bb8cd969f5',
-});*/
-const searchProvider = new MockSearchProvider(1000);
+});
+// const searchResource = new MockSearchResource(200);
 
 storiesOf(name, module)
   /* .add('QuickSearch Component', () => (
     <div>
-      <input type="text" onChange={(ev) => { searchProvider.query(ev.target.value); }} />
-      <AkQuickSearchResourcedResultsList searchProvider={searchProvider} />
+      <input type="text" onChange={(ev) => { searchResource.query(ev.target.value); }} />
+      <AkQuickSearchResourcedResultsList searchResource={searchResource} />
     </div>
     ))
   .add('QuickSearch Component in a SearchDrawer', () => (
     <BasicNav
       searchDrawerContent={(
         <div>
-          <AkSearch onChange={(ev) => { searchProvider.query(ev.target.value); }} />
+          <AkSearch onChange={(ev) => { searchResource.query(ev.target.value); }} />
           <AkQuickSearchResourcedResultsList
-            searchProvider={searchProvider}
+            searchResource={searchResource}
           />
         </div>
       )}
@@ -39,7 +39,7 @@ storiesOf(name, module)
   .add('QuickSearch Component in a SearchDrawer', () => (
     <BasicNav
       searchDrawerContent={(
-        <QuickSearch searchProvider={searchProvider} />
+        <QuickSearch searchResource={searchResource} />
       )}
     >
       Hi

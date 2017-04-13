@@ -1,9 +1,9 @@
-import { ISearchProvider } from '../../src/api/SearchProvider';
+import { AbstractResource } from '../../src/api/SearchResource';
 import mockSearchData from './mock-search-data.json';
 import recentData from './mock-recent-data.json';
 // import mockSearchData from './mock-hc-search-data.json';
 
-export default class MockSearchProvider extends ISearchProvider {
+export default class MockSearchResource extends AbstractResource {
 
   constructor(delay = 0) {
     super();

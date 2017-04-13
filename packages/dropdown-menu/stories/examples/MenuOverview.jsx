@@ -13,27 +13,27 @@ const simpleDropdownItems = [
   },
 ];
 
-const StatelessMenuOverview = class extends PureComponent {
+class MenuOverview extends PureComponent {
   render() {
-    return (<DropdownMenu
-      items={simpleDropdownItems}
-      onOpenChange={(attrs) => {
-        console.log(attrs);
-        this.setState({ isDropdownOpen: attrs.isOpen });
-      }}
-      onItemActivated={(attrs) => {
-        console.log(attrs.item);
-        this.setState({ isDropdownOpen: false });
-      }}
-      appearance="default"
-      triggerType="button"
-      position="right middle"
-    >
-      Choose
-    </DropdownMenu>);
+    return (
+      <DropdownMenu
+        appearance="default"
+        items={simpleDropdownItems}
+        onOpenChange={(attrs) => {
+          console.log(attrs);
+          this.setState({ isDropdownOpen: attrs.isOpen });
+        }}
+        onItemActivated={(attrs) => {
+          console.log(attrs.item);
+          this.setState({ isDropdownOpen: false });
+        }}
+        position="right middle"
+        triggerType="button"
+      >
+        Choose
+      </DropdownMenu>
+    );
   }
-};
+}
 
-export default (
-  <StatelessMenuOverview />
-);
+export default <MenuOverview />;

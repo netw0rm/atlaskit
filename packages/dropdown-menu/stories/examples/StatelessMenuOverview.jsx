@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StatelessDropdownMenu } from '@atlaskit/dropdown-menu';
+import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
 
 const simpleDropdownItems = [
   {
@@ -13,36 +13,30 @@ const simpleDropdownItems = [
   },
 ];
 
-const StatelessMenuOverview = class extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isDropdownOpen: true,
-    };
-  }
+class StatelessMenuOverview extends PureComponent {
+  state = { isDropdownOpen: true };
 
   render() {
-    return (<StatelessDropdownMenu
-      items={simpleDropdownItems}
-      isOpen={this.state.isDropdownOpen}
-      onOpenChange={(attrs) => {
-        console.log(attrs);
-        this.setState({ isDropdownOpen: attrs.isOpen });
-      }}
-      onItemActivated={(attrs) => {
-        console.log(attrs.item);
-        this.setState({ isDropdownOpen: false });
-      }}
-      appearance="default"
-      triggerType="button"
-      position="right middle"
-    >
-      Choose
-    </StatelessDropdownMenu>);
+    return (
+      <DropdownMenuStateless
+        appearance="default"
+        isOpen={this.state.isDropdownOpen}
+        items={simpleDropdownItems}
+        onItemActivated={(attrs) => {
+          console.log(attrs.item);
+          this.setState({ isDropdownOpen: false });
+        }}
+        onOpenChange={(attrs) => {
+          console.log(attrs);
+          this.setState({ isDropdownOpen: attrs.isOpen });
+        }}
+        position="right middle"
+        triggerType="button"
+      >
+        Choose
+      </DropdownMenuStateless>
+    );
   }
-};
+}
 
-export default (
-  <StatelessMenuOverview />
-);
+export default <StatelessMenuOverview />;

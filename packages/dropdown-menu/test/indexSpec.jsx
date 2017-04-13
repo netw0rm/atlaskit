@@ -7,7 +7,7 @@ import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
 import { name } from '../package.json';
 
-import Menu, { StatelessDropdownMenu as StatelessMenu } from '../src';
+import Menu, { DropdownMenuStateless as StatelessMenu } from '../src';
 
 const itemsList = [
   {

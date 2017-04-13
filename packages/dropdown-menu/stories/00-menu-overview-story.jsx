@@ -10,7 +10,7 @@ import MenuOverviewRaw from '!raw!./examples/MenuOverview';
 /* eslint-enable import/first, import/no-duplicates */
 
 import { name } from '../package.json';
-import DropdownMenu, { StatelessDropdownMenu } from '../src';
+import DropdownMenu, { DropdownMenuStateless } from '../src';
 
 const menuPropsDescriptions = {
   appearance: `Controls the appearance of the menu. Available types: 'default', 'tall'.
@@ -54,7 +54,7 @@ storiesOf(name, module)
           radio group items and disabled items.</p>
       </Description>
       <Props
-        component={StatelessDropdownMenu}
+        component={DropdownMenuStateless}
         descriptions={menuPropsDescriptions}
         types={menuPropsTypes}
       />

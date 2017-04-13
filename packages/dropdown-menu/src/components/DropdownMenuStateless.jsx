@@ -1,15 +1,15 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import Droplist, { Item, Group } from '@atlaskit/droplist';
-import Button from '@atlaskit/button';
-import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import uid from 'uid';
-import styles from 'style!./styles.less';
 
-const Icon = <ExpandIcon label="" />;
+import Button from '@atlaskit/button';
+import Droplist, { Item, Group } from '@atlaskit/droplist';
+import ExpandIcon from '@atlaskit/icon/glyph/expand';
+
+import MenuContainer from '../styled/MenuContainer';
 
 /* eslint-disable react/no-unused-prop-types */
-export default class StatelessDropdownMenu extends PureComponent {
+export default class DropdownMenuStateless extends PureComponent {
   static propTypes = {
     appearance: PropTypes.oneOf(['default', 'tall']),
     children: PropTypes.node,
@@ -19,9 +19,9 @@ export default class StatelessDropdownMenu extends PureComponent {
     onItemActivated: PropTypes.func,
     onOpenChange: PropTypes.func,
     position: PropTypes.string,
-    triggerType: PropTypes.oneOf(['default', 'button']),
-    triggerButtonProps: PropTypes.shape(Button.propTypes),
     shouldFlip: PropTypes.bool,
+    triggerButtonProps: PropTypes.shape(Button.propTypes),
+    triggerType: PropTypes.oneOf(['default', 'button']),
   }
 
   static defaultProps = {
@@ -169,11 +169,8 @@ export default class StatelessDropdownMenu extends PureComponent {
   toggle = (attrs) => {
     if (attrs.source === 'keydown') return;
 
-    if (this.props.isOpen) {
-      this.close(attrs);
-    } else {
-      this.open(attrs);
-    }
+    // eslint-disable-next-line no-unused-expressions
+    this.props.isOpen ? this.close(attrs) : this.open(attrs);
   }
 
   renderItems = items => items.map((item, itemIndex) =>
@@ -193,22 +190,27 @@ export default class StatelessDropdownMenu extends PureComponent {
   )
 
   renderTrigger = () => {
-    if (this.props.triggerType === 'button') {
-      const triggerProps = { ...this.props.triggerButtonProps };
+    const { children, isOpen, triggerButtonProps, triggerType } = this.props;
+
+    if (triggerType === 'button') {
+      const triggerProps = { ...triggerButtonProps };
       const defaultButtonProps = {
-        isSelected: this.props.isOpen,
-        ariaHaspopup: true,
-        ariaExpanded: this.props.isOpen,
         ariaControls: this.state.id,
+        ariaExpanded: isOpen,
+        ariaHaspopup: true,
+        isSelected: isOpen,
       };
       if (!triggerProps.iconAfter && !triggerProps.iconBefore) {
-        triggerProps.iconAfter = Icon;
+        triggerProps.iconAfter = <ExpandIcon label="" />;
       }
       return (
-        <Button {...defaultButtonProps} {...triggerProps}>{ this.props.children }</Button>
+        <Button {...defaultButtonProps} {...triggerProps}>
+          {children}
+        </Button>
       );
     }
-    return this.props.children;
+
+    return children;
   }
 
   render() {
@@ -224,17 +226,18 @@ export default class StatelessDropdownMenu extends PureComponent {
         shouldFlip={props.shouldFlip}
         trigger={this.renderTrigger()}
       >
-        <div
+        <MenuContainer
           id={state.id}
-          ref={(ref) => {
+          innerRef={(ref) => {
             this.domMenuContainer = ref;
-            this.domItemsList = ref ? ref.querySelectorAll('[data-role="droplistItem"]') : undefined;
+            this.domItemsList = ref
+              ? ref.querySelectorAll('[data-role="droplistItem"]')
+              : undefined;
           }}
           role="menu"
-          className={styles.menuContainer}
         >
           {this.renderGroups(props.items)}
-        </div>
+        </MenuContainer>
       </Droplist>
     );
   }

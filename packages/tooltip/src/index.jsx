@@ -1,2 +1,2 @@
-export default from './components/Tooltip';
-export StatelessTooltip from './components/StatelessTooltip';
+export { default } from './components/Tooltip';
+export { default as TooltipStateless } from './components/TooltipStateless';

@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import StatelessTooltip from './StatelessTooltip';
+import TooltipStateless from './TooltipStateless';
 
 export default class Tooltip extends PureComponent {
   static propTypes = {
@@ -20,7 +20,7 @@ export default class Tooltip extends PureComponent {
     const { isVisible } = this.state;
 
     return (
-      <StatelessTooltip
+      <TooltipStateless
         description={description}
         isVisible={isVisible}
         onMouseOut={this.hideTooltip}
@@ -28,7 +28,7 @@ export default class Tooltip extends PureComponent {
         position={position}
       >
         {children}
-      </StatelessTooltip>
+      </TooltipStateless>
     );
   }
 }

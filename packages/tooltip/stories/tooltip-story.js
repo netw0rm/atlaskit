@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
-import Tooltip, { StatelessTooltip as DumbTooltip } from '../src/index';
+import Tooltip, { TooltipStateless } from '../src/index';
 import { name } from '../package.json';
 
 import PositionExample from './PositionExample';
@@ -10,9 +10,9 @@ import { Container, Relative, Target } from './styled';
 storiesOf(name, module)
   .add('a dumb tooltip', () => (
     <Container>
-      <DumbTooltip position="top" description='Tooltip with position "top"' isVisible>
+      <TooltipStateless position="top" description='Tooltip with position "top"' isVisible>
         <Target>Tooltips are great!</Target>
-      </DumbTooltip>
+      </TooltipStateless>
     </Container>
   ))
   .add('a smart tooltip', () => (

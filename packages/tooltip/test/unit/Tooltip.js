@@ -1,7 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
-
-// Testing the smart component
+import { shallow } from 'enzyme';
 import Tooltip from '../../src';
 
 describe('Tooltip (smart)', () => {
@@ -20,16 +18,17 @@ describe('Tooltip (smart)', () => {
       window.cancelAnimationFrame = animStub;
     });
 
-    it('should set isVisible state to true when mouse enters', () => {
-      const wrapper = mount(<Tooltip><div>foo</div></Tooltip>);
+    it('should be set to true when mouse enters', () => {
+      const wrapper = shallow(<Tooltip><div>foo</div></Tooltip>);
 
       expect((wrapper).state('isVisible')).to.equal(false);
+
       wrapper.simulate('mouseOver');
       expect((wrapper).state('isVisible')).to.equal(true);
     });
 
-    it('should set isVisible state to false when mouse leaves', () => {
-      const wrapper = mount(<Tooltip><div>foo</div></Tooltip>);
+    it('should be set to false when mouse leaves', () => {
+      const wrapper = shallow(<Tooltip><div>foo</div></Tooltip>);
 
       // set up the negative case first
       wrapper.simulate('mouseOver');

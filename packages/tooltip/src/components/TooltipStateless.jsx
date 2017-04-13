@@ -3,7 +3,7 @@ import Layer from '@atlaskit/layer';
 import { getLayerPosition } from '../utils';
 import Tip from '../styled/Tooltip';
 
-export default class StatelessTooltip extends PureComponent {
+export default class TooltipStateless extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     description: PropTypes.string,

@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
 // Testing the dumb component
-import { StatelessTooltip as Tooltip } from '../../src';
+import { TooltipStateless as Tooltip } from '../../src';
 
 describe('Tooltip', () => {
   it('should be possible to create a component', () => {

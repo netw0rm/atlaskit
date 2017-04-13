@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {PureComponent} from 'react';
 
-import {CardImageView} from '@atlaskit/media-card';
-import {PredefinedAvatarViewWrapper} from './styled';
-import {Avatar} from '../avatarList/index';
+import {PredefinedAvatarViewWrapper, LargeAvatarImage} from './styled';
+import {Avatar} from '../avatar-list/index';
 
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Button from '@atlaskit/button';
@@ -34,11 +33,6 @@ export interface PredefinedAvatarViewState {
   selectedAvatar?: Avatar;
 }
 
-const DEFAULT_AVATAR_DIMENSIONS = {
-  height: 72,
-  width: 72,
-};
-
 export default class PredefinedAvatarView extends PureComponent<PredefinedAvatarViewProps, PredefinedAvatarViewState> {
   static defaultProps = {
     avatars: []
@@ -52,18 +46,14 @@ export default class PredefinedAvatarView extends PureComponent<PredefinedAvatar
 
   render() {
     const {avatars} = this.props;
-
     const cards = avatars.map(
       (avatar, idx) => {
         const elementKey = `predefined-avatar-${idx}`;
         return (<li key={elementKey}>
-          <CardImageView
-            mediaType="image"
-            dataURI={avatar.dataURI}
-            dimensions={DEFAULT_AVATAR_DIMENSIONS}
-            onClick={this.createOnItemClickHandler(avatar)}
-            selectable
-            selected={avatar === this.state.selectedAvatar}
+          <LargeAvatarImage
+            className={avatar === this.state.selectedAvatar ? 'selected' : ''}
+            src={avatar.dataURI}
+            onClick={(e) => this.createOnItemClickHandler(avatar)}
           />
         </li>);
       }

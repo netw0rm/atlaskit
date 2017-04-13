@@ -1,4 +1,4 @@
-import {Avatar} from '../src/avatarList';
+import {Avatar} from '../src/avatar-list';
 
 function generateAvatarIds(start: number, count: number): Array<number> {
   const result: Array<number> = [];

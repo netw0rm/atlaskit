@@ -45,12 +45,6 @@ describe('Slider', () => {
           expect(input.props().max).to.equal(20);
       });
 
-      it('should call spy when value is changed continuously', () => {
-          input.simulate('input', {target: {value: '15'}});
-          expect(onChangeSpy.calledOnce).to.equal(true);
-          expect(onChangeSpy.calledWithExactly(15)).to.equal(true);
-      });
-
       it('should call spy when value is changed', () => {
         input.simulate('change', {target: {value: '15'}});
         expect(onChangeSpy.calledOnce).to.equal(true);

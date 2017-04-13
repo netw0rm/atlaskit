@@ -1,5 +1,29 @@
 /* tslint:disable:variable-name */
 import styled from 'styled-components';
+import {
+  akColorB200,
+  akBorderRadius,
+  akGridSizeUnitless
+} from '@atlaskit/util-shared-styles';
+
+const AvatarImage = styled.img`
+  border-radius: ${akBorderRadius};
+  cursor: pointer;
+  &.selected {
+    box-shadow: 0px 0px 0px 1px white, 0px 0px 0px 3px ${akColorB200};
+  }
+`;
+
+export const LargeAvatarImage = styled(AvatarImage)`
+  width: ${akGridSizeUnitless * 9}px;
+  height: ${akGridSizeUnitless * 9}px;
+`;
+
+export const SmallAvatarImage = styled(AvatarImage)`
+  width: ${akGridSizeUnitless * 5}px;
+  height: ${akGridSizeUnitless * 5}px;
+`;
+
 
 export const PredefinedAvatarViewWrapper = styled.div`
   ul {

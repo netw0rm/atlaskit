@@ -51,7 +51,6 @@ export class MentionsState {
       return;
     }
 
-    const { docView } = this.view;
     const { mentionQuery } = state.schema.marks;
     const { doc, selection } = state;
     const { from, to } = selection;
@@ -77,7 +76,7 @@ export class MentionsState {
       return;
     }
 
-    const newAnchorElement = docView.dom.querySelector('[data-mention-query]') as HTMLElement;
+    const newAnchorElement = this.view.dom.querySelector('[data-mention-query]') as HTMLElement;
     if (newAnchorElement !== this.anchorElement) {
       dirty = true;
       this.anchorElement = newAnchorElement;

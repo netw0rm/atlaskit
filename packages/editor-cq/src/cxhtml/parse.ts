@@ -372,7 +372,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       content.push(codeBlockNode);
       nodeSize += codeBlockNode.nodeSize;
 
-      return new Fragment(content, nodeSize);
+      return Fragment.from(content);
 
     case 'WARNING':
     case 'INFO':

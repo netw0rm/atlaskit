@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 
-import ResultsList from '../ResultsList';
 import SearchResource, { SearchSubscriber } from '../../api/SearchResource';
 import JsonToResultParser from '../../api/JsonToResultParser';
 import uniqueId from '../../util/id';
@@ -18,7 +17,7 @@ export default class ResourcedResultsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [],
+      items: null,
     };
     this.searchSubscriber = new SearchSubscriber({
       subscriberKey: uniqueId('ak-quick-search-resourced-results'),
@@ -36,9 +35,7 @@ export default class ResourcedResultsList extends Component {
   }
 
   onSearchResultUpdate = (items) => {
-    this.setState({
-      items,
-    });
+    this.setState({ items });
   }
 
   filterError = (err) => {
@@ -50,6 +47,15 @@ export default class ResourcedResultsList extends Component {
   }
 
   render() {
-    return <ResultsList items={this.props.jsonToResultParser.parse(this.state.items)} />;
+    const mapItemsToResults = items => (
+      items.length
+        ? this.props.jsonToResultParser.parse(items)
+        : 'No results found'
+    );
+    return (
+      <div>
+        {this.state.items && mapItemsToResults(this.state.items)}
+      </div>
+    );
   }
 }

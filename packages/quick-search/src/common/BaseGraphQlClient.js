@@ -1,5 +1,6 @@
 import 'es6-promise/auto'; // 'axios' needs a Promise polyfill
 import axios, { CancelToken } from 'axios';
+import axiosRetry from 'axios-retry';
 
 // Babel does not support extending built-in types
 // http://stackoverflow.com/questions/31089801/extending-error-in-javascript-with-es6-syntax
@@ -89,6 +90,11 @@ export default class BaseGraphQlClient {
   constructor() {
     this.serviceUrl = `${getServiceUrlFromLocation()}${graphqlEndpoint}`;
     this._cancel = () => {};
+    this.axiosInstance = axios.create();
+    axiosRetry(this.axiosInstance, {
+      retries: 1,
+      retryCondition: err => !axios.isCancel(err),
+    });
   }
 
   cancelPreviousRequest() {
@@ -96,7 +102,7 @@ export default class BaseGraphQlClient {
   }
 
   makeGraphQLRequest(body) {
-    const request = axios.post(
+    const request = this.axiosInstance.post(
       this.serviceUrl,
       JSON.parse(body),
       {

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { CrossIcon } from '@atlaskit/icon';
 import { AkSearch } from '@atlaskit/navigation';
+import _debounce from 'lodash.debounce';
 
 import DelayedSpinner from '../DelayedSpinner';
 import ResourcedResultsList from '../ResourcedResultsList';
@@ -20,9 +21,10 @@ export default class QuickSearch extends Component {
     };
     this.searchSubscriber = new SearchSubscriber({
       subscriberKey: uniqueId('ak-quick-search-bar'),
-      changeHandler: this.queryComplete,
-      errorHandler: this.filterError,
+      changeHandler: this.subscriptionChangeCallback,
+      errorHandler: this.subscriptionErrorCallback,
     });
+    this.queryResourceDebounced = _debounce(this.queryResource, 250);
   }
 
   componentDidMount() {
@@ -34,23 +36,30 @@ export default class QuickSearch extends Component {
     this.searchSubscriber.unsubscribe(this.props.searchResource);
   }
 
-  queryComplete = () => this.setState({ isLoading: false });
+  subscriptionChangeCallback = () => this.setState({ isLoading: false });
 
-  filterError = (err) => {
-    this.queryComplete();
+  subscriptionErrorCallback = (err) => {
+    this.subscriptionChangeCallback();
     // eslint-disable-next-line no-console
-    console.log('ak-quick-search-bar.filterError', err);
+    console.log('ak-quick-search-bar.queryErrorCallback', err);
+  }
+
+  queryResource = (query) => {
+    this.props.searchResource.query(query);
+    this.setState({
+      isLoading: true,
+    });
   }
 
   handleQueryChange = (ev) => {
     const query = ev.target.value;
     if (query === '') {
+      this.props.searchResource.cancelQuery();
       this.props.searchResource.recentItems();
     } else {
-      this.props.searchResource.query(query);
+      this.queryResourceDebounced(query);
     }
     this.setState({
-      isLoading: true,
       query,
     });
   }

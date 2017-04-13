@@ -87,7 +87,18 @@ export default class SearchResource extends AbstractResource {
   }
 
   /** TODO:revise when more info/design is available */
-  recentItems = () => this.query('');
+  recentItems = () => {
+    if (this._recentItems) {
+      this.notifyChange(this._recentItems);
+      return;
+    }
+    this._queryClient('')
+      .then((items) => {
+        this._recentItems = items;
+        this.notifyChange(items);
+      })
+      .catch(this.notifyError);
+  }
 
   cancelQuery = () => this.searchClient.cancelPreviousRequest();
 

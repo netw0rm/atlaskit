@@ -35,7 +35,7 @@ export interface RemoteCollectionLinkItemDetails {
 
 export interface RemoteCollectionItemsResponse {
   items: Array<MediaCollectionItem>;
-  nextInclusiveStartKey: string;
+  nextInclusiveStartKey?: string;
 }
 
 export interface CollectionService {

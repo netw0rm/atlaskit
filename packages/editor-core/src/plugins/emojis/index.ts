@@ -4,12 +4,13 @@ import { EmojiId, EmojiProvider } from '@atlaskit/emoji';
 import {
   EditorState,
   EditorView,
+  Schema,
   Fragment,
   Plugin,
   PluginKey,
 } from '../../prosemirror';
-import { reconfigure } from '../utils';
-import { inputRulePlugin, destroyRulePluginCache } from './input-rules';
+import { isMarkAllowedAtPosition } from '../../utils';
+import { inputRulePlugin } from './input-rules';
 import keymapPlugin from './keymap';
 import ProviderFactory from '../../providerFactory';
 
@@ -116,8 +117,9 @@ export class EmojiState {
   }
 
   emojiDisabled() {
-    const { selection, schema } = this.state;
-    return schema.marks.code.isInSet(selection.$from.marks());
+    const { schema, selection } = this.state;
+    const { emojiQuery } = schema.marks;
+    return isMarkAllowedAtPosition(emojiQuery, selection);
   }
 
   private findEmojiQueryMark() {
@@ -188,7 +190,7 @@ export class EmojiState {
 
 export const stateKey = new PluginKey('emojiPlugin');
 
-export default new Plugin({
+const plugin = new Plugin({
   state: {
     init(config, state) {
       return new EmojiState(state);
@@ -200,18 +202,19 @@ export default new Plugin({
   },
   key: stateKey,
   view: (view: EditorView) => {
-    reconfigure(view, [inputRulePlugin(view.state.schema), keymapPlugin(view.state.schema)]);
     const pluginState = stateKey.getState(view.state);
     pluginState.setView(view);
 
     return {
       update(view: EditorView, prevState: EditorState<any>) {
         pluginState.update(view.state, view);
-      },
-
-      destroy() {
-        destroyRulePluginCache();
       }
     };
   }
 });
+
+const plugins = (schema: Schema<any, any>) => {
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+};
+
+export default plugins;

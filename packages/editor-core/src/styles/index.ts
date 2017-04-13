@@ -6,6 +6,7 @@ import {
   akColorN0,
   akColorN20,
   akColorN40,
+  akColorN50,
   akColorN500,
   akColorN700,
   akColorN900,
@@ -26,3 +27,4 @@ export const akEditorCodeBackground = akColorN20;
 export const akEditorCodeBlockPadding = '12px';
 export const akEditorCodeInlinePadding = '2px 4px';
 export const akEditorFloatingPanelZIndex = akZIndexLayer;
+export const akEditorMentionSelected = akColorN50;

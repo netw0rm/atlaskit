@@ -1,19 +1,14 @@
-import { Schema, InputRule, inputRules, Plugin } from '../../prosemirror';
+import { Schema, inputRules, Plugin } from '../../prosemirror';
 import { analyticsService } from '../../analytics';
-
-let plugin: Plugin | undefined;
+import { createInputRule } from '../utils';
 
 export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   if (!schema.nodes.image) {
     return;
   }
 
-  if (plugin) {
-    return plugin;
-  }
-
   // ![something](link) should convert to an image
-  const imageRule = new InputRule(/!\[(\S+)\]\((\S+)\)$/, (state, match, start, end) => {
+  const imageRule = createInputRule(/!\[(\S+)\]\((\S+)\)$/, (state, match, start, end) => {
     const { schema } = state;
     const attrs = {
       src: match[2],
@@ -30,13 +25,11 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
     );
   });
 
-  plugin = inputRules({
+  return inputRules({
     rules: [
       imageRule
     ]
   });
-
-  return plugin;
 };
 
 export default inputRulePlugin;

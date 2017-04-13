@@ -4,7 +4,8 @@ import {
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
-import encodeCxhtml, { AC_XMLNS } from './encode-cxhtml';
+import { AC_XMLNS, FAB_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
+import { mapCodeLanguage } from './languageMap';
 
 export default function encode(node: PMNode) {
   const docType = document.implementation.createDocumentType('html', '-//W3C//DTD XHTML 1.0 Strict//EN', 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd');
@@ -21,6 +22,8 @@ export default function encode(node: PMNode) {
       return encodeBulletList(node);
     } else if (node.type === schema.nodes.heading) {
       return encodeHeading(node);
+    } else if (node.type === schema.nodes.jiraIssue) {
+      return encodeJiraIssue(node);
     } else if (node.type === schema.nodes.rule) {
       return encodeHorizontalRule();
     } else if (node.type === schema.nodes.listItem) {
@@ -33,6 +36,10 @@ export default function encode(node: PMNode) {
       return encodeHardBreak();
     } else if (node.type === schema.nodes.codeBlock) {
       return encodeCodeBlock(node);
+    } else if (node.type === schema.nodes.panel) {
+      return encodePanel(node);
+    } else if (node.type === schema.nodes.mention) {
+      return encodeMention(node);
     } else if (node.type === schema.nodes.unsupportedBlock || node.type === schema.nodes.unsupportedInline) {
       return encodeUnsupported(node);
     } else {
@@ -94,6 +101,11 @@ export default function encode(node: PMNode) {
           case schema.marks.code:
             elem = elem.appendChild(doc.createElement('code'));
             break;
+          case schema.marks.mentionQuery:
+            break;
+          case schema.marks.link:
+            elem = elem.appendChild(encodeLink(node));
+            break;
           default:
             throw new Error(`Unable to encode mark '${mark.type.name}'`);
         }
@@ -132,10 +144,23 @@ export default function encode(node: PMNode) {
     return elem;
   }
 
+  function encodeLink(node: PMNode) {
+    const link: HTMLAnchorElement = doc.createElement('a');
+    link.innerHTML = node.text || '';
+    let href = '';
+    if (node.marks) {
+      node.marks.forEach(mark => {
+        if (mark.type.name === 'link') {
+          href = mark.attrs.href;
+        }
+      });
+    }
+    link.href = href;
+    return link;
+  }
+
   function encodeCodeBlock(node: PMNode) {
-    const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
-    elem.setAttributeNS(AC_XMLNS, 'ac:name', 'code');
-    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
+    const elem = createMacroElement('code');
 
     if (node.attrs.language) {
       const langParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
@@ -160,6 +185,48 @@ export default function encode(node: PMNode) {
     return elem;
   }
 
+  function encodePanel (node: PMNode) {
+    const elem = createMacroElement(node.attrs.panelType);
+    const body = doc.createElementNS(AC_XMLNS, 'ac:rich-text-body');
+    const fragment = doc.createDocumentFragment();
+
+    node.descendants(function (node, pos) {
+      // there is at least one top-level paragraph node in the panel body
+      // all text nodes will be handled by "encodeNode"
+      if (node.isBlock) {
+        // panel title
+        if (node.type.name === 'heading' && pos === 0) {
+          const title = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+          title.setAttributeNS(AC_XMLNS, 'ac:name', 'title');
+          title.textContent = node.firstChild!.textContent;
+          elem.appendChild(title);
+        }
+        // panel content
+        else {
+          const domNode = encodeNode(node);
+          if (domNode) {
+            fragment.appendChild(domNode);
+          }
+        }
+      }
+    });
+
+    body.appendChild(fragment);
+    elem.appendChild(body);
+
+    return elem;
+  }
+
+  function encodeMention(node: PMNode) {
+    const elem = doc.createElementNS(FAB_XMLNS, 'fab:mention');
+    elem.setAttribute('atlassian-id', node.attrs['id']);
+
+    const cdata = doc.createCDATASection(node.attrs['displayName']);
+    elem.appendChild(cdata);
+
+    return elem;
+  }
+
   function encodeUnsupported(node: PMNode) {
     const domNode = parseCxhtml(node.attrs.cxhtml || '').querySelector('body')!.firstChild;
     if (domNode) {
@@ -167,17 +234,40 @@ export default function encode(node: PMNode) {
     }
   }
 
-  function mapCodeLanguage(language: string): string {
-    const map = {
-      'shell': 'bash',
-      'cSharp': 'c#',
-      'c++': 'cpp',
-      'erlang': 'erl',
-      'javafx': 'jfx',
-      'javascript': 'js',
-      'python': 'py',
-    };
+  function encodeJiraIssue(node: PMNode) {
+    // if this is an issue list, parse it as unsupported node
+    // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672
+    if (!node.attrs.issueKey) {
+      return encodeUnsupported(node);
+    }
 
-    return map[language.toLowerCase()] || language.toLowerCase();
+    const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
+    elem.setAttributeNS(AC_XMLNS, 'ac:name', 'jira');
+    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
+    elem.setAttributeNS(AC_XMLNS, 'ac:macro-id', node.attrs.macroId);
+
+    const serverParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+    serverParam.setAttributeNS(AC_XMLNS, 'ac:name', 'server');
+    serverParam.textContent = node.attrs.server;
+    elem.appendChild(serverParam);
+
+    const serverIdParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+    serverIdParam.setAttributeNS(AC_XMLNS, 'ac:name', 'serverId');
+    serverIdParam.textContent = node.attrs.serverId;
+    elem.appendChild(serverIdParam);
+
+    const keyParam = doc.createElementNS(AC_XMLNS, 'ac:parameter');
+    keyParam.setAttributeNS(AC_XMLNS, 'ac:name', 'key');
+    keyParam.textContent = node.attrs.issueKey;
+    elem.appendChild(keyParam);
+
+    return elem;
+  }
+
+  function createMacroElement (name) {
+    const elem = doc.createElementNS(AC_XMLNS, 'ac:structured-macro');
+    elem.setAttributeNS(AC_XMLNS, 'ac:name', name);
+    elem.setAttributeNS(AC_XMLNS, 'ac:schema-version', '1');
+    return elem;
   }
 }

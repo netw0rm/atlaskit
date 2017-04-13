@@ -22,6 +22,7 @@ export interface State {
 export default class FloatingToolbar extends PureComponent<Props, State> {
   state: State = {};
   popper?: IPopper;
+  content?: HTMLElement;
 
   componentDidMount() {
     this.applyPopper(this.props);
@@ -51,16 +52,15 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
   }
 
   private applyPopper(props: Props): void {
-    const { content } = this.refs;
     const target = props.target || ReactDOM.findDOMNode(this).parentElement!;
     const boundary = this.findBoundary(target);
 
-    if (target && boundary && content instanceof HTMLElement) {
+    if (target && boundary && this.content instanceof HTMLElement) {
       if (this.popper) {
         this.popper.destroy();
       }
 
-      this.popper = new Popper(target, content, {
+      this.popper = new Popper(target, this.content, {
         onCreate: this.extractStyles,
         onUpdate: this.extractStyles,
         placement: this.popperPlacement(),
@@ -98,7 +98,7 @@ export default class FloatingToolbar extends PureComponent<Props, State> {
     return (
       <OutsideClickable onClick={this.props.onOutsideClick}>
         <div
-          ref="content"
+          ref={ref => {this.content = ref;}}
           style={{ top: 0, left: 0, position, transform, padding, zIndex: akEditorFloatingPanelZIndex }}
           className={styles.container}
         >

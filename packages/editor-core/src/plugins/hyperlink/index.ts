@@ -1,6 +1,7 @@
 import {
   EditorState,
   EditorView,
+  Schema,
   Mark,
   Node,
   Plugin,
@@ -12,7 +13,6 @@ import {
 import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
-import { reconfigure } from '../utils';
 
 export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
 export type StateChangeHandler = (state: HyperlinkState) => any;
@@ -228,13 +228,7 @@ const plugin = new Plugin({
       pluginState.editorFocused = true;
 
       return true;
-    },
-    handleDOMEvents: {
-      // This enables default behavior on paste
-      paste: (view: EditorView, event) => {
-        return true;
-      },
-    },
+    }
   },
   state: {
     init(config, state: EditorState<any>) {
@@ -247,10 +241,6 @@ const plugin = new Plugin({
   key: stateKey,
   view: (view: EditorView) => {
     stateKey.getState(view.state).update(view.state, view.docView, true);
-    reconfigure(view, [
-      keymapPlugin(view.state.schema),
-      inputRulePlugin(view.state.schema),
-    ]);
 
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
@@ -261,4 +251,8 @@ const plugin = new Plugin({
   }
 });
 
-export default plugin;
+const plugins = (schema: Schema<any, any>) => {
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+};
+
+export default plugins;

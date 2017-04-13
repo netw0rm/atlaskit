@@ -3,7 +3,9 @@ import ToggleStateless from './ToggleStateless';
 
 export default class Toggle extends PureComponent {
   static propTypes = {
+    /** Callback to be called when native 'change' event happens internally. */
     onChange: PropTypes.func,
+    /** Whether the toggle is initially checked or not */
     isDefaultChecked: PropTypes.bool,
   }
 

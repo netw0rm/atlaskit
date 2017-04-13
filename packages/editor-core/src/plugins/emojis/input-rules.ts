@@ -1,17 +1,12 @@
 import { Transaction, Plugin, InputRule, inputRules, Schema } from '../../prosemirror';
 import { EmojiState, stateKey } from './';
+import { createInputRule } from '../utils';
 
-let plugin: Plugin | undefined;
-
-export function inputRulePlugin(schema: Schema<any, any>): Plugin {
-  if (plugin) {
-    return plugin;
-  }
-
+export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.emoji && schema.marks.emojiQuery) {
-    const emojiQueryRule = new InputRule(/(^|[^\w\`]):$/, (state, match, start, end): Transaction | undefined => {
+    const emojiQueryRule = createInputRule(/(^|[^\w\`]):$/, (state, match, start, end): Transaction | undefined => {
       const emojisState = stateKey.getState(state) as EmojiState;
 
       if (!emojisState.emojiProvider) {
@@ -39,13 +34,9 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
     rules.push(emojiQueryRule);
   }
 
-  plugin = inputRules({ rules });
-
-  return plugin;
-}
-
-export function destroyRulePluginCache() {
-  plugin = undefined;
+  if (rules.length !== 0) {
+    return inputRules({ rules });
+  }
 }
 
 export default inputRulePlugin;

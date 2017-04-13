@@ -46,6 +46,12 @@ describe('ak-field-text', () => {
       });
     });
 
+    describe('spellCheck prop', () => {
+      it('should render an input with a spellCheck prop', () => {
+        expect(shallow(<FieldText isSpellCheckEnabled />).find('input').props().spellCheck).to.equal(true);
+      });
+    });
+
     describe('invalidMessage prop', () => {
       it('should reflect its value to the FieldBase', () => {
         expect(shallow(<FieldText invalidMessage="test" />).find(Base).props().invalidMessage).to.equal('test');
@@ -57,6 +63,7 @@ describe('ak-field-text', () => {
       { disabled: true },
       { name: 'test' },
       { placeholder: 'test placeholder' },
+      { maxLength: 5 },
       { required: true },
     ].forEach(prop =>
       describe(JSON.stringify(prop), () =>

@@ -5,18 +5,25 @@ import Actions from './FlagActions';
 
 export default class Flag extends PureComponent {
   static propTypes = {
+    /** Optional array of clickable actions to be shown at the bottom of the flag */
     actions: PropTypes.arrayOf(PropTypes.shape({
       content: PropTypes.node,
       onClick: PropTypes.func,
     })),
+    /** The secondary content shown below the flag title */
     description: PropTypes.node,
+    /** The icon displayed in the top-left of the flag. Should be an instance of `ak-icon` */
     icon: PropTypes.element.isRequired,
+    /** A unique identifier used for rendering and onDismissed callbacks */
     id: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
     ]),
+    /** Private, do not use. */
     isDismissAllowed: PropTypes.bool,
+    /** Private, do not use. Use the FlagGroup onDismissed handler. */
     onDismissed: PropTypes.func,
+    /** The bold text shown at the top of the flag */
     title: PropTypes.string.isRequired,
   };
 

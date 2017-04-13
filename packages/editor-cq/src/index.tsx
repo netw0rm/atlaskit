@@ -12,18 +12,24 @@ import {
   HyperlinkPlugin,
   keymap,
   ListsPlugin,
+  Node as PMNode,
   RulePlugin,
   TextFormattingPlugin,
   TextSelection,
   ClearFormattingPlugin,
-  version as coreVersion
+  version as coreVersion,
+  PanelPlugin,
+  mentionNodeView,
+  MentionsPlugin,
+  ProviderFactory
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { encode, parse } from './cxhtml';
+import { MentionProvider } from '@atlaskit/mention';
+import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
-
+import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
 export { version };
 
 
@@ -31,11 +37,13 @@ export interface Props {
   context?: ContextName;
   isExpandedByDefault?: boolean;
   defaultValue?: string;
+  expanded?: boolean;
   onCancel?: (editor?: Editor) => void;
   onChange?: (editor?: Editor) => void;
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
+  mentionProvider?: Promise<MentionProvider>;
 }
 
 export interface State {
@@ -47,16 +55,31 @@ export interface State {
 export default class Editor extends PureComponent<Props, State> {
   state: State;
   version = `${version} (editor-core ${coreVersion})`;
+  providerFactory: ProviderFactory;
+  mentionProvider: Promise<MentionProvider>;
 
   constructor(props: Props) {
     super(props);
 
     this.state = {
       schema,
-      isExpanded: props.isExpandedByDefault,
+      isExpanded: (props.expanded !== undefined) ? props.expanded : props.isExpandedByDefault,
     };
 
     analyticsService.handler = props.analyticsHandler || ((name) => {});
+
+    this.providerFactory = new ProviderFactory();
+
+    if (props.mentionProvider) {
+      this.mentionProvider = props.mentionProvider;
+      this.providerFactory.setProvider('mentionProvider', this.mentionProvider);
+    }
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.expanded !== this.props.expanded) {
+      this.setState({ isExpanded: nextProps.expanded });
+    }
   }
 
   /**
@@ -121,6 +144,8 @@ export default class Editor extends PureComponent<Props, State> {
     const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
     const listsState = editorState && ListsPlugin.getState(editorState);
     const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
+    const panelState = editorState && PanelPlugin.getState(editorState);
+    const mentionsState = editorState && MentionsPlugin.getState(editorState);
 
     return (
       <Chrome
@@ -138,8 +163,11 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateLists={listsState}
         pluginStateTextFormatting={textFormattingState}
         pluginStateClearFormatting={clearFormattingState}
+        pluginStatePanel={panelState}
         packageVersion={version}
         packageName={name}
+        mentionProvider={this.mentionProvider}
+        pluginStateMentions={mentionsState}
       />
     );
   }
@@ -170,13 +198,14 @@ export default class Editor extends PureComponent<Props, State> {
 
     if (place) {
       const { context } = this.props;
+      const doc = parse(this.props.defaultValue || '');
       const cqKeymap = {
         'Mod-Enter': this.handleSave,
       };
 
       const editorState = EditorState.create({
         schema,
-        doc: parse(this.props.defaultValue || ''),
+        doc,
         plugins: [
           BlockTypePlugin,
           ClearFormattingPlugin,
@@ -185,11 +214,16 @@ export default class Editor extends PureComponent<Props, State> {
           ListsPlugin,
           RulePlugin,
           TextFormattingPlugin,
+          PanelPlugin,
+          MentionsPlugin,
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap), // should be last :(
         ]
       });
+
+      const codeBlockState = CodeBlockPlugin.getState(editorState);
+      codeBlockState.setLanguages(supportedLanguages);
 
       if (context) {
         const blockTypeState = BlockTypePlugin.getState(editorState);
@@ -203,6 +237,10 @@ export default class Editor extends PureComponent<Props, State> {
           editorView.updateState(newState);
           this.handleChange();
         },
+        nodeViews: {
+          mention: mentionNodeView(this.providerFactory),
+          jiraIssue: jiraIssueNodeView,
+        },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {
             analyticsService.trackEvent('atlassian.editor.paste');
@@ -211,12 +249,48 @@ export default class Editor extends PureComponent<Props, State> {
         }
       });
 
+      if (this.mentionProvider) {
+        MentionsPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
+      }
+
       analyticsService.trackEvent('atlassian.editor.start');
 
       this.setState({ editorView });
       this.focus();
+
+      this.sendUnsupportedNodeUsage(doc);
     } else {
       this.setState({ editorView: undefined });
     }
   }
+
+  /**
+   * Traverse document nodes to find the number of unsupported ones
+   */
+  private sendUnsupportedNodeUsage(doc: PMNode) {
+    const { unsupportedBlock, unsupportedInline } = schema.nodes;
+    let blockNodesOccurance = 0;
+    let inlineNodesOccurance = 0;
+
+    traverseNode(doc);
+
+    for (let i = 0; i < blockNodesOccurance; i++) {
+      analyticsService.trackEvent('atlassian.editor.unsupported.block');
+    }
+
+    for (let i = 0; i < inlineNodesOccurance; i++) {
+      analyticsService.trackEvent('atlassian.editor.unsupported.inline');
+    }
+
+    function traverseNode(node: PMNode) {
+      if (node.type === unsupportedBlock) {
+        blockNodesOccurance += 1;
+      } else if (node.type === unsupportedInline) {
+        inlineNodesOccurance += 1;
+      } else {
+        node.content.forEach(traverseNode);
+      }
+    }
+  }
+
 }

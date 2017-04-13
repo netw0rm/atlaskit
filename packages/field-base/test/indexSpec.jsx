@@ -4,7 +4,6 @@ import InlineDialog from '@atlaskit/inline-dialog';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import Spinner from '@atlaskit/spinner';
 import FieldBaseSmart, { FieldBase } from '../src';
-import { none, subtle } from '../src/internal/appearances';
 import { locals } from '../src/styles.less';
 
 const {
@@ -111,7 +110,7 @@ describe('ak-field-base', () => {
     });
 
     describe('appearance', () => {
-      [none, subtle].forEach(appearance =>
+      ['none', 'subtle'].forEach(appearance =>
         describe(appearance, () =>
           it(`should render the content with the .${appearance} class`, () =>
             expect(shallow(<FieldBase {...defaultProps} appearance={appearance} />).find(`.${locals[appearance]}`).length).to.be.above(0)

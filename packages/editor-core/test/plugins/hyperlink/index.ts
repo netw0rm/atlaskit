@@ -1,11 +1,12 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import HyperlinkPlugin from '../../../src/plugins/hyperlink';
+import hyperlinkPlugins from '../../../src/plugins/hyperlink';
 import {
   chaiPlugin, createEvent, doc, fixtures, insert, insertText, a as link,
   linkable, makeEditor, p as paragraph, sendKeyToPm, setTextSelection, unlinkable
 } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
@@ -13,16 +14,11 @@ describe('hyperlink', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: HyperlinkPlugin,
+    plugins: hyperlinkPlugins(defaultSchema),
     place: fixture(),
   });
 
   const event = createEvent('event');
-
-  it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = HyperlinkPlugin as any;
-    expect(plugin.key).is.be.a('string');
-  });
 
   describe('active', () => {
     context('when select the whole hyperlink text from start to end', () => {

@@ -1,16 +1,18 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import BlockTypePlugin from '../../../src/plugins/block-type';
+import blockTypePlugins from '../../../src/plugins/block-type';
 import {
   blockquote, br, code_block, chaiPlugin, doc, fixtures, h1, h2, h3, insertText, li, makeEditor, p, ul
 } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
+
 chai.use(chaiPlugin);
 
 describe('inputrules', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: BlockTypePlugin,
+    plugins: blockTypePlugins(defaultSchema),
     place: fixture()
   });
 
@@ -19,8 +21,14 @@ describe('inputrules', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '# ', sel);
-
       expect(editorView.state.doc).to.deep.equal(doc(h1()));
+    });
+
+    it('should not convert "# " to heading 1 when inside a code_block', () => {
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+      insertText(editorView, '# ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('# ')));
     });
 
     it('should convert "## " to heading 2', () => {
@@ -30,11 +38,25 @@ describe('inputrules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(h2()));
     });
 
+    it('should not convert "## " to heading 1 when inside a code_block', () => {
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+      insertText(editorView, '## ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('## ')));
+    });
+
     it('should convert "### " to heading 3', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
 
       insertText(editorView, '### ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(h3()));
+    });
+
+    it('should not convert "### " to heading 1 when inside a code_block', () => {
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+      insertText(editorView, '### ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('### ')));
     });
   });
 
@@ -59,6 +81,13 @@ describe('inputrules', () => {
       insertText(editorView, '> ', sel);
       expect(editorView.state.doc).to.deep.equal(doc(ul(li(p('> ')))));
     });
+
+    it('should not convert "> " to a blockquote when inside a code_block', () => {
+      const { editorView, sel } = editor(doc(code_block()('{<>}')));
+
+      insertText(editorView, '> ', sel);
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('> ')));
+    });
   });
 
   describe('codeblock rule', () => {
@@ -68,7 +97,6 @@ describe('inputrules', () => {
           const { editorView, sel } = editor(doc(p('{<>}hello', br, 'world')));
 
           insertText(editorView, '```', sel);
-
           expect(editorView.state.doc).to.deep.equal(doc(code_block()('hello\nworld')));
         });
       });

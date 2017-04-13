@@ -5,6 +5,7 @@ import {
   akColorN50A,
   akColorN900,
  } from '@atlaskit/util-shared-styles';
+import { appearanceEnum, themeVariables } from '../../utils/theme';
 
 const colors = {
   container: akColorN20A,
@@ -18,13 +19,13 @@ const NavigationItemGroupSeparator = styled.div`
   margin-top: ${(dividerTotalHeight - dividerLineHeight) / 2}px;
   margin-bottom: ${(dividerTotalHeight - dividerLineHeight) / 2}px;
   height: ${dividerLineHeight}px;
-  background: ${({ theme }) => colors[theme.NavigationAppearance]};
+  background: ${({ theme }) => colors[theme[themeVariables.appearance]]};
 `;
 
 NavigationItemGroupSeparator.defaultProps = {
   theme: {
-    NavigationAppearance: 'container',
-    NavigationItemIsCompact: false,
+    [themeVariables.appearance]: appearanceEnum.container,
+    [themeVariables.isCompact]: false,
   },
 };
 

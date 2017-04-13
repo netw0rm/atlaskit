@@ -1,5 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { ThemeProvider } from 'styled-components';
+import { themeVariables } from '../../utils/theme';
 import ContainerHeader from './ContainerHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
@@ -68,7 +69,7 @@ export default class ContainerNavigation extends PureComponent {
     return (
       <ThemeProvider
         theme={{
-          NavigationAppearance: appearance,
+          [themeVariables.appearance]: appearance,
         }}
       >
         <nav
@@ -82,9 +83,7 @@ export default class ContainerNavigation extends PureComponent {
             shouldAnimate={shouldAnimate}
             style={this.getOuterStyles()}
           >
-            <ContainerNavigationInner
-              appearance={appearance}
-            >
+            <ContainerNavigationInner>
               <GlobalPrimaryActions
                 appearance={appearance}
                 createIcon={globalCreateIcon}

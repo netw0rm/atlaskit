@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import { containerClosedWidth } from '../../shared-variables';
+import { themeVariables } from '../../utils/theme';
 
 const size = akGridSizeUnitless * 3;
 const offsetLeft = akGridSizeUnitless * 3.5;
@@ -11,7 +12,7 @@ const closedPadding = `0 ${closedHorizontalPadding}px 0 ${closedHorizontalPaddin
 
 const NavigationItemIcon = styled.div`
   transition: padding 200ms;
-  padding: ${({ theme }) => (theme.NavigationItemIsCompact ? compactPadding : openPadding)}
+  padding: ${({ theme }) => (theme[themeVariables.isCompact] ? compactPadding : openPadding)}
   display: flex;
   flex-shrink: 0;
 
@@ -29,6 +30,12 @@ const NavigationItemIcon = styled.div`
     width: ${size}px;
   }
 `;
+
+NavigationItemIcon.defaultProps = {
+  theme: {
+    [themeVariables.isCompact]: false,
+  },
+};
 
 NavigationItemIcon.displayName = 'NavigationItemIcon';
 export default NavigationItemIcon;

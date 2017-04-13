@@ -1,5 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { ThemeProvider } from 'styled-components';
+import { appearanceEnum, themeVariables } from '../../utils/theme';
 import { globalOpenWidth } from '../../shared-variables';
 import Spacer from './Spacer';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
@@ -12,7 +13,7 @@ import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecond
 
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.oneOf(['global', 'settings']),
+    appearance: PropTypes.oneOf([appearanceEnum.global, appearanceEnum.settings]),
     linkComponent: PropTypes.func,
     primaryIcon: PropTypes.node,
     primaryItemHref: PropTypes.string,
@@ -23,7 +24,7 @@ export default class GlobalNavigation extends PureComponent {
     secondaryActions: PropTypes.arrayOf(PropTypes.node),
   };
   static defaultProps = {
-    appearance: 'global',
+    appearance: appearanceEnum.global,
     accountItem: null,
     helpItem: null,
     linkComponent: DefaultLinkComponent,
@@ -46,15 +47,14 @@ export default class GlobalNavigation extends PureComponent {
     return (
       <ThemeProvider
         theme={{
-          NavigationAppearance: appearance,
+          [themeVariables.appearance]: appearance,
         }}
       >
         <GlobalNavigationOuter>
           <Spacer width={globalOpenWidth} />
-          <GlobalNavigationInner appearance={appearance}>
+          <GlobalNavigationInner>
             <GlobalNavigationPrimaryContainer>
               <GlobalPrimaryActions
-                appearance={appearance}
                 createIcon={createIcon}
                 linkComponent={linkComponent}
                 onCreateActivate={onCreateActivate}

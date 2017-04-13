@@ -11,6 +11,7 @@ import {
   akColorB200,
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+import { appearanceEnum, themeVariables } from '../../utils/theme';
 
 const sizes = {
   small: 4 * akGridSizeUnitless,
@@ -61,7 +62,7 @@ const colors = {
 };
 
 function getColors(theme) {
-  return colors[theme.NavigationAppearance || 'global'];
+  return colors[theme[themeVariables.appearance] || appearanceEnum.global];
 }
 
 const GlobalItemInner = styled.div`
@@ -88,7 +89,7 @@ const GlobalItemInner = styled.div`
 
 GlobalItemInner.defaultProps = {
   theme: {
-    NavigationAppearance: 'global',
+    [themeVariables.appearance]: appearanceEnum.global,
   },
 };
 

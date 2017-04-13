@@ -7,6 +7,7 @@ import {
   akGridSizeUnitless,
 } from '@atlaskit/util-shared-styles';
 import styled from 'styled-components';
+import { appearanceEnum, themeVariables } from '../../utils/theme';
 
 const colors = {
   container: {
@@ -24,9 +25,9 @@ const colors = {
 };
 
 const ContainerNavigationInner = styled.div`
-  background-color: ${({ appearance }) => colors[appearance].background};
+  background-color: ${({ theme }) => colors[theme[themeVariables.appearance]].background};
   box-sizing: border-box;
-  color: ${({ appearance }) => colors[appearance].color};
+  color: ${({ theme }) => colors[theme[themeVariables.appearance]].color};
   height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
@@ -35,7 +36,7 @@ const ContainerNavigationInner = styled.div`
 `;
 
 ContainerNavigationInner.defaultProps = {
-  appearance: 'container',
+  [themeVariables.appearance]: appearanceEnum.container,
 };
 
 ContainerNavigationInner.displayName = 'ContainerNavigationInner';

@@ -8,7 +8,6 @@ const ContainerNavigationInner = styled.div`
   background-color: ${({ appearance }) => getColor(appearance).background};
   box-sizing: border-box;
   color: ${({ appearance }) => getColor(appearance).color};
-  background-color: ${({ appearance }) => getColor(appearance).background};
   height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;

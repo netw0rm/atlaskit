@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
-import { container, resizeAnimationTime } from '../../shared-variables';
+import { animationTime, container, resizeAnimationTime } from '../../shared-variables';
 
 const keylineHeight = 2;
 const intGridSize = Number(akGridSizeUnitless);
@@ -9,8 +9,7 @@ const paddingOpen = `${container.padding.top}px ${container.padding.side + (intG
 const paddingClosed = `0 ${intGridSize * 2.5}px 0 ${intGridSize * 0.5}px`;
 
 const ContainerHeaderWrapper = styled.div`
-  // TODO: animation curve
-  transition: padding 200ms;
+  transition: padding ${animationTime};
   padding: ${paddingOpen};
 
   // the keyline will be drawn over the margin

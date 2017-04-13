@@ -16,8 +16,8 @@ export default class ContainerHeader extends PureComponent {
   render() {
     return (
       <ContainerHeaderWrapper
-        isContentScrolled={this.props.isContentScrolled}
         appearance={this.props.appearance}
+        isContentScrolled={this.props.isContentScrolled}
       >
         {this.props.children}
       </ContainerHeaderWrapper>

@@ -10,6 +10,9 @@ const intVariableNames = [
   'akZIndexLayer',
   'akZIndexBlanket',
   'akZIndexFlag',
+  'akZIndexCard',
+  'akZIndexDialog',
+  'akZIndexModal',
 ];
 
 export default req.keys().reduce((prev, file) => {

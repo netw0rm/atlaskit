@@ -1,15 +1,12 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import avatarStoryStyles from 'style!./stories.less';
 import { name } from '../package.json';
 import Avatar from '../src';
+import { AvatarRow, Example } from './styled';
 
 const transparentAvatarUrl = require('url-loader!./face-w-transparency.png');
 const tickUrl = require('url-loader!./tick.svg');
 const tickWithBackgroundUrl = require('url-loader!./tick.png');
-
-const avatarRowClass = avatarStoryStyles.rowOfAvatarsStory;
-const storybookExampleClass = avatarStoryStyles.example;
 
 const DefaultAvatar = props => (
   <div style={{ display: 'inline-block', marginLeft: '10px' }}>
@@ -18,21 +15,19 @@ const DefaultAvatar = props => (
 );
 
 const AllAvatarSizes = props => (
-  <div className={avatarRowClass}>
+  <AvatarRow>
     <DefaultAvatar size="xsmall" {...props} />
     <DefaultAvatar size="small" {...props} />
     <DefaultAvatar size="medium" {...props} />
     <DefaultAvatar size="large" {...props} />
     <DefaultAvatar size="xlarge" {...props} />
-  </div>
+  </AvatarRow>
 );
 
 storiesOf(name, module)
   .add('A default avatar', () => (
     <div>
-      <div>
-        By default an avatar should be medium sized and have no presence
-      </div>
+      <p>By default an avatar should be medium sized and have no presence</p>
       <DefaultAvatar />
     </div>
   ))
@@ -89,12 +84,12 @@ storiesOf(name, module)
     </div>
   ))
   .add('All presences', () => (
-    <div className={avatarRowClass}>
+    <AvatarRow>
       <DefaultAvatar size="large" presence="none" />
       <DefaultAvatar size="large" presence="online" />
       <DefaultAvatar size="large" presence="busy" />
       <DefaultAvatar size="large" presence="offline" />
-    </div>
+    </AvatarRow>
   ))
   .add('Avatars with custom presence', () => (
     <div>
@@ -104,7 +99,7 @@ storiesOf(name, module)
         content fit (height and width of 100% and a background color
         are a good start)
       </div>
-      <div className={storybookExampleClass} >
+      <Example>
         <div>
           These avatars have an image as their default content and have been styled
           with &quot;height: 100%; width: 100%;&quot;
@@ -116,8 +111,8 @@ storiesOf(name, module)
             style={{ height: '100%', width: '100%' }}
           />
         </AllAvatarSizes>
-      </div>
-      <div className={storybookExampleClass} >
+      </Example>
+      <Example>
         <div>
           These avatars show the behaviour of transparent nested images.
           Note there is no added background color
@@ -129,8 +124,8 @@ storiesOf(name, module)
             style={{ height: '100%', width: '100%', color: 'green' }}
           />
         </AllAvatarSizes>
-      </div>
-      <div className={storybookExampleClass} >
+      </Example>
+      <Example>
         <div>
           These avatars have presence AND an image as a child. The expected behaviour is that the
           images will take precedence.
@@ -142,8 +137,8 @@ storiesOf(name, module)
             style={{ height: '100%', width: '100%' }}
           />
         </AllAvatarSizes>
-      </div>
-      <div className={storybookExampleClass} >
+      </Example>
+      <Example>
         <div>
           This example shows using a styled div as a presence.
         </div>
@@ -163,8 +158,8 @@ storiesOf(name, module)
             1
           </div>
         </AllAvatarSizes>
-      </div>
-      <div className={storybookExampleClass} >
+      </Example>
+      <Example>
         <div>
           Another example showing a styled div as the inserted content
         </div>
@@ -190,7 +185,7 @@ storiesOf(name, module)
             />
           </div>
         </AllAvatarSizes>
-      </div>
+      </Example>
     </div>
   ))
   .add('Avatar loaded from external source', () => {
@@ -234,22 +229,22 @@ storiesOf(name, module)
     }
 
     return (
-      <div className={avatarRowClass}>
+      <AvatarRow>
         <div>
           Try loading an image from an external source to see the loading behaviour.
         </div>
         <ExternalSrcAvatar />
-      </div>
+      </AvatarRow>
     );
   })
   .add('Avatar with a label', () => (
-    <div className={avatarRowClass}>
+    <AvatarRow>
       <div>
         This image should have an aria-label that should be read out when tabbing to the link
           around it and also an alt text.
       </div>
       <a href="//www.atlassian.com"><DefaultAvatar size="xlarge" label="This is an avatar!" /></a>
-    </div>
+    </AvatarRow>
   ))
   .addCodeExampleStory('Avatar with a custom border', () => (
     <div style={{ padding: '20px', backgroundColor: '#3a77d8' }}>

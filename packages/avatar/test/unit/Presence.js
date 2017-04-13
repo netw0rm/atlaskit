@@ -2,18 +2,17 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-// we import from index so we know we are definitely exposing Presence as a separate component
-import Presence, { PRESENCE_TYPE } from '../../src/Presence';
-import icons from '../../src/internal/icons';
-import { locals as styles } from '../../src/styles.less';
+// import from index; ensures we're exposing Presence as a named export
+import { Presence } from '../../src';
+import { getPresenceSvg, PRESENCE_TYPE } from '../../src/components/Presence';
 
-describe('ak-avatar', () => {
-  // TO DO: This test is not testing anything
+describe('Avatar', () => {
+  // TODO: This test is not testing anything
   describe('Presence', () => {
     PRESENCE_TYPE.values.forEach(presence =>
       describe(`when presence is ${presence}`, () =>
         it('should render content', () =>
-          expect(shallow(<Presence presence={presence} />).type(icons[presence]))
+          expect(shallow(<Presence presence={presence} />).type(getPresenceSvg(presence)))
         )
       )
     );
@@ -29,15 +28,15 @@ describe('ak-avatar', () => {
       expect((wrapper.find('span')).hasClass(('child'))).to.equal(true);
     });
 
-    describe.skip('borderColor prop', () => {
+    describe('borderColor prop', () => {
       it('should be white by default', () => {
         const wrapper = mount(<Presence presence="online" />);
-        expect(wrapper.find(`.${styles.presence}`).node.style.borderColor).to.equal('#ffffff');
+        expect(wrapper.getDOMNode().style.borderColor).to.equal('#ffffff');
       });
 
       it('should reflect the prop as a CSS style property', () => {
         const wrapper = mount(<Presence presence="online" borderColor="#ff0000" />);
-        expect(wrapper.find(`.${styles.presence}`).node.style.borderColor).to.equal('#ff0000');
+        expect(wrapper.getDOMNode().style.borderColor).to.equal('#ff0000');
       });
     });
   });

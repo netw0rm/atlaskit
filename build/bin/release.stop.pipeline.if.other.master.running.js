@@ -14,7 +14,8 @@ const BUILDS_PER_PAGE = 30;
 const BB_USERNAME = process.env.BITBUCKET_USER;
 const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
 const CURRENT_BUILD_HASH = process.env.BITBUCKET_COMMIT;
-const pipelinesEndpoint = 'https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pipelines/';
+const PIPELINES_ENDPOINT = 'https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pipelines/';
+const TIME_TO_WAIT_FOR_LOGS_UPLOAD_MS = 5000;
 
 const axiosRequestConfig = {
   auth: {
@@ -34,7 +35,7 @@ const axiosRequestConfig = {
 // Related documentation
 // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines/%7Bpipeline_uuid%7D/stopPipeline
 function stopPipelineBuild(pipelineUUID) {
-  const stopPipelinesEndpoint = `${pipelinesEndpoint}${pipelineUUID}/stopPipeline`;
+  const stopPipelinesEndpoint = `${PIPELINES_ENDPOINT}${pipelineUUID}/stopPipeline`;
   console.log(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
   // we'll return the promise and let it be caught outside (first param is just empty form data)
   return axios.post(stopPipelinesEndpoint, {}, {
@@ -45,7 +46,7 @@ function stopPipelineBuild(pipelineUUID) {
   });
 }
 
-axios.get(pipelinesEndpoint, axiosRequestConfig)
+axios.get(PIPELINES_ENDPOINT, axiosRequestConfig)
   .then((response) => {
     const allRunningPipelines = response.data.values;
     const currentPipeline = allRunningPipelines
@@ -62,7 +63,12 @@ axios.get(pipelinesEndpoint, axiosRequestConfig)
       console.log('Stopping this build to let that one finish');
       console.log('Feel free to re-run this build once that one is done if you like 👌');
 
-      return stopPipelineBuild(currentPipeline.uuid);
+      return new Promise((resolve) => {
+        // we need to wait a bit so that pipelines takes our logs and uploads them before we stop
+        // the build
+        setTimeout(() => resolve(), TIME_TO_WAIT_FOR_LOGS_UPLOAD_MS);
+      })
+      .then(() => stopPipelineBuild(currentPipeline.uuid));
       // We are actually going to let the build continue here as process.exit will return a non-zero
       // return code and we want to leave these as 'stopped', not 'failed'
     }

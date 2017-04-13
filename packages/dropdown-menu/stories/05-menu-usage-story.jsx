@@ -2,7 +2,6 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import Question from '@atlaskit/icon/glyph/question';
-import { Code, Chrome, Description } from '@atlaskit/util-readme';
 
 import DropdownMenu from '../src';
 import { name } from '../package.json';
@@ -193,26 +192,13 @@ storiesOf(name, module)
       DropdownWithTriggerOptionsRaw,
     ],
   })
-  .add('Status Dropdown (special for JIRA)', () => (
-    <Chrome title="Status Dropdown">
-      <Description>
-        <p>Example of the Status Dropdown for JIRA</p>
-      </Description>
-      {StatusDropdown}
-      <Code>
-        {StatusDropdownRaw}
-      </Code>
-    </Chrome>
-  ))
-  .add('Dropdown with long items and titles', () => (
-    <Chrome title="Status Dropdown">
-      <Description>
-        <p>This is an example of how to use titles for those dropdowns that have very long text
-          in the items</p>
-      </Description>
-      {LongItemsDropdown}
-      <Code>
-        {LongItemsDropdownRaw}
-      </Code>
-    </Chrome>
-  ));
+  .addCodeExampleStory(
+    'Status Dropdown (special for JIRA)',
+    () => (StatusDropdown),
+    { scripts: [StatusDropdownRaw] }
+  )
+  .addCodeExampleStory(
+    'Dropdown with long items and titles',
+    () => (LongItemsDropdown),
+    { scripts: [LongItemsDropdownRaw] }
+  );

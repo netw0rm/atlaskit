@@ -11,8 +11,11 @@ function waitForRender(cb) {
 
 export default class extends PureComponent {
   static propTypes = {
+    /** focus the element when initially rendered */
     defaultIsFocused: PropTypes.bool,
+    /** focus event handler */
     onFocus: PropTypes.func,
+    /** blur event handler */
     onBlur: PropTypes.func,
   }
 

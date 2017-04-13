@@ -119,6 +119,7 @@ describe('exports', () => {
       'akZIndexDialog',
       'akZIndexFlag',
       'akZIndexLayer',
+      'akZIndexModal',
       'akZIndexNavigation',
       'default',
     ]);
@@ -151,5 +152,16 @@ describe('exports', () => {
           `${colorName} is not a tint of ${tintBase}`
         );
       });
+  });
+
+  it('should have some exports as numbers', () => {
+    expect(typeof allExports.akGridSizeUnitless).to.equal('number');
+    expect(typeof allExports.akZIndexNavigation).to.equal('number');
+    expect(typeof allExports.akZIndexLayer).to.equal('number');
+    expect(typeof allExports.akZIndexBlanket).to.equal('number');
+    expect(typeof allExports.akZIndexFlag).to.equal('number');
+    expect(typeof allExports.akZIndexCard).to.equal('number');
+    expect(typeof allExports.akZIndexDialog).to.equal('number');
+    expect(typeof allExports.akZIndexModal).to.equal('number');
   });
 });

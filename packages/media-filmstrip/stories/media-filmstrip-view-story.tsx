@@ -40,7 +40,7 @@ const defaultItem: FilmStripViewItem = {
   mediaSize: 8041
 };
 
-storiesOf('FilmListView', {})
+storiesOf('FilmStripView', {})
   .add('Fixed width', () => {
     const items: Array<FilmStripViewItem> = [
       {

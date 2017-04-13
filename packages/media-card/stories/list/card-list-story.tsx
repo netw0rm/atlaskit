@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import { MediaCollection, MediaCollectionItem, CollectionCardClick } from '@atlaskit/media-core';
+import { MediaCollection, MediaCollectionItem } from '@atlaskit/media-core';
 import { StoryList, createStorybookContext, collectionNames, fileCollectionName, defaultCollectionName} from '@atlaskit/media-test-helpers';
 import { CardList } from '../../src';
 
@@ -13,11 +13,16 @@ const wrongClientId = 'wrong-client-id';
 //   action('delete')(item, items);
 // });
 
-const clickAction = CollectionCardClick((item: MediaCollectionItem, collection: MediaCollection, e?: Event) => {
-  action('click')(item, collection);
-});
+const anotherAction = {
+  type: -2,
+  label: 'Some other action',
+  handler: (item: MediaCollectionItem, collection: MediaCollection, e?: Event) => {
+    action('annotate')(item, collection);
+  }
+};
 
 const annotateAction = {
+  type: -1,
   label: 'Annotate',
   handler: (item: MediaCollectionItem, collection: MediaCollection, e?: Event) => {
     action('annotate')(item, collection);
@@ -25,7 +30,7 @@ const annotateAction = {
 };
 
 // TODO: Add deleteAction back to story. see: https://jira.atlassian.com/browse/FIL-4004
-const cardsActions = [/*deleteAction, */clickAction, annotateAction];
+const cardsActions = [/*deleteAction, */anotherAction, annotateAction];
 const context = createStorybookContext();
 const wrongContext = createStorybookContext(wrongClientId);
 
@@ -34,7 +39,6 @@ storiesOf('CardList', {})
     <CardList
       context={context}
       collectionName={defaultCollectionName}
-      actions={[clickAction]}
     />
   ))
   .add('Loaded list toggling', () => {
@@ -60,9 +64,8 @@ storiesOf('CardList', {})
           <CardList
             context={context}
             collectionName={this.state.collectionName}
-            // actions={[clickAction]}
             pageSize={30}
-            cardType={'small'}
+            cardAppearance={'small'}
           />
         </div>;
       }
@@ -87,7 +90,6 @@ storiesOf('CardList', {})
          content: <CardList
            context={context}
            collectionName={fileCollectionName}
-           actions={[clickAction]}
            pageSize={30}
          />
        }, {
@@ -95,25 +97,22 @@ storiesOf('CardList', {})
          content: <CardList
            context={context}
            collectionName={fileCollectionName}
-           actions={[clickAction]}
            pageSize={30}
-           cardType={'small'}
+           cardAppearance={'small'}
          />
        }, {
          title: 'Small card',
          content: <CardList
            context={context}
            collectionName={fileCollectionName}
-           actions={[clickAction]}
            pageSize={30}
-           cardType={'small'}
+           cardAppearance={'small'}
          />
        }, {
          title: 'Normal Card',
          content: <CardList
            context={context}
            collectionName={fileCollectionName}
-           actions={[clickAction]}
            pageSize={30}
          />
        }, {
@@ -121,7 +120,6 @@ storiesOf('CardList', {})
          content: <CardList
            context={context}
            collectionName={fileCollectionName}
-           actions={[clickAction]}
            pageSize={30}
          />
        }, {
@@ -129,7 +127,6 @@ storiesOf('CardList', {})
          content: <CardList
            context={context}
            collectionName={fileCollectionName}
-           actions={[clickAction]}
            pageSize={30}
          />
        }]}
@@ -143,8 +140,7 @@ storiesOf('CardList', {})
            <CardList
              context={context}
              collectionName={defaultCollectionName}
-             actions={[clickAction]}
-             cardType={'small'}
+             cardAppearance={'small'}
            />
          </div>
        }, {
@@ -153,8 +149,7 @@ storiesOf('CardList', {})
            <CardList
              context={context}
              collectionName={defaultCollectionName}
-             actions={[clickAction]}
-             cardType={'small'}
+             cardAppearance={'small'}
            />
          </div>
        }, {
@@ -164,8 +159,7 @@ storiesOf('CardList', {})
               <CardList
                 context={context}
                 collectionName={defaultCollectionName}
-                actions={[clickAction]}
-                cardType={'small'}
+                cardAppearance="small"
               />
           </div>
           )
@@ -180,7 +174,7 @@ storiesOf('CardList', {})
      />
    ))
    .add('Custom loading state', () => {
-     const customLoadingComponent = <div>loading...</div>;
+     const customLoadingComponent = <div>this is a custom loading...</div>;
      return <CardList
        context={context}
        loadingComponent={customLoadingComponent}
@@ -231,7 +225,7 @@ storiesOf('CardList', {})
     return <div style={{display: 'inline-block'}}>
       <CardList
         context={context}
-        collectionName={fileCollectionName}
+        collectionName={defaultCollectionName}
         actions={cardsActions}
         pageSize={10}
         height={500}
@@ -242,9 +236,9 @@ storiesOf('CardList', {})
     return <div style={{display: 'inline-block', width: '300px', background: 'white', border: '2px solid'}}>
       <CardList
         context={context}
-        collectionName={fileCollectionName}
+        collectionName={defaultCollectionName}
         actions={cardsActions}
-        cardType={'small'}
+        cardAppearance="small"
         pageSize={20}
         height={500}
       />
@@ -253,7 +247,7 @@ storiesOf('CardList', {})
   .add('With infinite scroll and card width', () => {
     return <CardList
       context={context}
-      collectionName={fileCollectionName}
+      collectionName={defaultCollectionName}
       cardDimensions={{width: '200px', height: '100px'}}
       actions={cardsActions}
       pageSize={10}

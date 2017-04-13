@@ -1,7 +1,9 @@
 import { action, storiesOf } from '@kadira/storybook';
 import { Mention } from '@atlaskit/mention';
 import { StoryBookTokenProvider, defaultClientId, defaultServiceHost } from '@atlaskit/media-test-helpers';
+import { emoji as emojiData } from '@atlaskit/util-data-test';
 import * as React from 'react';
+
 import Renderer from '../src';
 import Paragraph from '../src/nodes/paragraph';
 import HardBreak from '../src/nodes/hardBreak';
@@ -24,6 +26,8 @@ const mentionProvider = Promise.resolve({
   }
 });
 
+const emojiProvider = emojiData.emojiStoryData.getEmojiResource();
+
 const mediaProvider = Promise.resolve({
   viewContext: Promise.resolve({
     clientId: defaultClientId,
@@ -36,6 +40,7 @@ storiesOf(name, module)
   .add('renderer', () => (
     <Renderer
       document={document}
+      emojiProvider={emojiProvider}
       mentionProvider={mentionProvider}
       mediaProvider={mediaProvider}
       eventHandlers={{
@@ -48,6 +53,11 @@ storiesOf(name, module)
           onClick: action('onClick')
         }
       }}
+    />
+  ))
+  .add('renderer without providers', () => (
+    <Renderer
+      document={document}
     />
   ))
   .add('marks/em', () => (

@@ -39,7 +39,7 @@ export default class Mention extends PureComponent<Props, {}> {
 
   render() {
     const { props } = this;
-    const classNames = cx(styles.mention, {
+    const classNames = cx('ak-mention', styles.mention, {
       [styles.highlighted]: props.isHighlighted
     });
 

@@ -6,7 +6,7 @@ import { JIRASchema, makeSchema } from '../src/schema';
 const schema = makeSchema({ allowCodeBlock: true }) as JIRASchema;
 
 // Nodes
-const code = (attrs: { language?: string }) => nodeFactory(schema.nodes.code_block!, attrs);
+const code = (attrs: { language?: string }) => nodeFactory(schema.nodes.codeBlock!, attrs);
 const doc = nodeFactory(schema.nodes.doc);
 
 describe(name, () => {

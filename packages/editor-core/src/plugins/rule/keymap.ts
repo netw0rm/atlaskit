@@ -4,14 +4,8 @@ import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
 import { stateKey } from '../mentions';
 
-let plugin: Plugin | undefined;
-
-export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
+export function keymapPlugin(schema: Schema<any, any>): Plugin {
   const list = {};
-
-  if (plugin) {
-    return plugin;
-  }
 
   keymaps.bindKeymapWithCommand(keymaps.insertRule.common!, trackAndInvoke('atlassian.editor.format.horizontalrule.keyboard', commands.insertRule()), list);
 
@@ -22,8 +16,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
     return true;
   }, list);
 
-  plugin = keymap(list);
-  return plugin;
+  return keymap(list);
 }
 
 export default keymapPlugin;

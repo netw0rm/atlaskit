@@ -21,7 +21,7 @@ describe('FileCardViewSmall', () => {
         mediaType={'image'}
         mediaSize={1024}
         dataURI={'some-data-uri'}
-      />);
+      />) as any;
 
     expect(cardView.find('.media-card').first().props().style.backgroundImage).to.contain('some-data-uri');
     expect(cardView.find('.title').first().text()).to.equal('some-name');

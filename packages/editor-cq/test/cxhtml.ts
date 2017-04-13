@@ -2,13 +2,12 @@ import { Node as PMNode } from '@atlaskit/editor-core';
 import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { encode, parse } from '../src/cxhtml';
+import { encode, parse, LANGUAGE_MAP } from '../src/cxhtml';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
-  code, ol, p, strike, strong, sub, sup, u, ul, unsupportedInline,
-  unsupportedBlock
+  code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link,
+  unsupportedInline, unsupportedBlock, jiraIssue,
 } from './_schema-builder';
-
 chai.use(chaiPlugin);
 
 const checkBuilder = (fn: any, description: string, cxhtml: string, doc: PMNode) => {
@@ -102,6 +101,14 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
           '.'
         )));
 
+      check('<s> tag',
+        '<p>Text with <s>strikethrough words</s>.</p>',
+        doc(p(
+          'Text with ',
+          strike('strikethrough words'),
+          '.'
+        )));
+
       check('<em> tag',
         '<p>Text with <em>emphasised words</em>.</p>',
         doc(p(
@@ -132,6 +139,13 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
           'Text with ',
           em(strong('strong emphasised words')),
           '.'
+        )));
+
+      check('<a> tag',
+        '<p>Text with <a href="http://www.atlassian.com">www.atlassian.com</a></p>',
+        doc(p(
+          'Text with ',
+          link({ href: 'http://www.atlassian.com' })('www.atlassian.com')
         )));
 
       check('combination of strong and emphasis',
@@ -315,12 +329,100 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         '<blockquote><blockquote>Elementary my dear Watson</blockquote></blockquote>',
         doc(blockquote(blockquote(p('Elementary my dear Watson')))));
     });
+
+    describe('code block', () => {
+      check('with CDATA',
+        '<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
+        doc(codeblock()('some code')));
+
+      check('with multiline CDATA',
+        `<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code
+        on
+        multiple
+        lines]]></ac:plain-text-body></ac:structured-macro>`,
+        doc(codeblock()(`some code
+        on
+        multiple
+        lines`)));
+
+      check('with title',
+        '<ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Code</ac:parameter><ac:parameter ac:name="language">js</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
+        doc(h5(strong('Code')), codeblock({ language: 'js' })('some code')));
+
+      context('when language is not set', () => {
+        check(`has language attribute as null`,
+            `<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>`,
+            doc(codeblock({ language: null })('some code')));
+      });
+
+      context('when language is set', () => {
+        Object.keys(LANGUAGE_MAP).forEach(languageName => {
+          check(`with language "${languageName}"`,
+            `<ac:structured-macro ac:name="code"><ac:parameter ac:name="language">${LANGUAGE_MAP[languageName]}</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>`,
+            doc(codeblock({ language: LANGUAGE_MAP[languageName] })('some code')));
+        });
+      });
+    });
+
+    describe('panel', () => {
+      context('when panel does not have title', () => {
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:rich-text-body><p>${panelType} panel</p></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(p(`${panelType} panel`))));
+        });
+      });
+      context('when panel has title', () => {
+        const title = 'Panel title';
+
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${title}</ac:parameter><ac:rich-text-body><p>${panelType} panel</p></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(h3(title), p(`${panelType} panel`))));
+        });
+      });
+      context('when panel has multiple top-level nodes', () => {
+        const title = 'Panel title';
+
+        ['warning', 'tip', 'info', 'note'].forEach(panelType => {
+          check(`${panelType} panel`,
+            `<ac:structured-macro ac:name="${panelType}" ac:schema-version="1" ac:macro-id="f348e247-44a6-41e5-8034-e8aa469649b5"><ac:parameter ac:name="title">${title}</ac:parameter><ac:rich-text-body><p>p1</p><p>p2</p><h5>h5</h5></ac:rich-text-body></ac:structured-macro>`,
+            doc(panel({ panelType })(h3(title), p('p1'), p('p2'), h5('h5'))));
+        });
+      });
+    });
+
+    describe('jira issue', () => {
+      check(
+        'basic',
+        '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="a1a887df-a2dd-492b-8b5c-415d8eab22cf"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter><ac:parameter ac:name="key">ED-1068</ac:parameter></ac:structured-macro></p>',
+        doc(
+          p(
+            jiraIssue({
+              issueKey: 'ED-1068',
+              macroId: 'a1a887df-a2dd-492b-8b5c-415d8eab22cf',
+              schemaVersion: '1',
+              server: 'JIRA (product-fabric.atlassian.net)',
+              serverId: '70d83bc8-0aff-3fa5-8121-5ae90121f5fc',
+            })
+          )
+        )
+      );
+    });
   });
 
   describe('unsupported content', () => {
     check('inline ac:structured-macro in p',
       '<p><ac:structured-macro name="foo"/></p>',
       doc(p(unsupportedInline('<ac:structured-macro name="foo"/>'))));
+
+    check('inline ac:structured-macro with unknown ac:name key',
+      '<p><ac:structured-macro ac:name="blabla"/></p>',
+      doc(p(unsupportedInline('<ac:structured-macro ac:name="blabla"/>'))));
+
+    check('inline ac:structured-macro with JIRA issues list',
+      '<p><ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="be852c2a-4d33-4ceb-8e21-b3b45791d92e"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="columns">key,summary,type,created,updated,due,assignee,reporter,priority,status,resolution</ac:parameter><ac:parameter ac:name="maximumIssues">20</ac:parameter><ac:parameter ac:name="jqlQuery">project = ED AND component = codeblock</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter></ac:structured-macro></p>',
+      doc(p(unsupportedInline('<ac:structured-macro ac:name="jira" ac:schema-version="1" ac:macro-id="be852c2a-4d33-4ceb-8e21-b3b45791d92e"><ac:parameter ac:name="server">JIRA (product-fabric.atlassian.net)</ac:parameter><ac:parameter ac:name="columns">key,summary,type,created,updated,due,assignee,reporter,priority,status,resolution</ac:parameter><ac:parameter ac:name="maximumIssues">20</ac:parameter><ac:parameter ac:name="jqlQuery">project = ED AND component = codeblock</ac:parameter><ac:parameter ac:name="serverId">70d83bc8-0aff-3fa5-8121-5ae90121f5fc</ac:parameter></ac:structured-macro>'))));
 
     check('inline ac:structured-macro in p (multiple)',
       '<p><ac:structured-macro name="foo"/><ac:structured-macro name="bar"/></p>',
@@ -375,11 +477,57 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
       ));
 
     check('h1 + macro with CDATA',
-      '<h1>Code block</h1><ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
+      '<h1>Code block</h1><ac:structured-macro ac:name="foo"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
       doc(
         h1('Code block'),
-        unsupportedBlock('<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>'),
+        unsupportedBlock('<ac:structured-macro ac:name="foo"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>'),
       ));
+
+    describe('ac:link', () => {
+      check(
+        'link to Confluence page',
+        '<p><ac:link><ri:page ri:content-title="Questions test page"/></ac:link></p>',
+        doc(
+          p(
+            unsupportedInline('<ac:link><ri:page ri:content-title="Questions test page"/></ac:link>')
+          )
+        )
+      );
+
+      check(
+        'link to uploaded file',
+        '<p><ac:link><ri:attachment ri:filename="Classic Minesweeper.pdf"/></ac:link></p>',
+        doc(
+          p(
+            unsupportedInline('<ac:link><ri:attachment ri:filename="Classic Minesweeper.pdf"/></ac:link>')
+          )
+        )
+      );
+
+      check(
+        'link to Confluence space',
+        '<p><ac:link><ri:space ri:space-key="ZAA"/></ac:link></p>',
+        doc(
+          p(
+            unsupportedInline('<ac:link><ri:space ri:space-key="ZAA"/></ac:link>')
+          )
+        )
+      );
+    });
+
+    check(
+      'mentions',
+      '<p>This is mention from <fab:mention atlassian-id="557057:ff721128-093e-4357-8d8e-8caf869f577"><![CDATA[Artur Bodera]]></fab:mention></p>',
+      doc(
+        p(
+          'This is mention from ',
+          mention({
+            id: '557057:ff721128-093e-4357-8d8e-8caf869f577',
+            displayName: 'Artur Bodera'
+          })
+        )
+      )
+    );
   });
 
 // Color text span

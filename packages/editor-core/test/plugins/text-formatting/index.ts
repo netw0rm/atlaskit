@@ -1,11 +1,13 @@
 import { expect } from 'chai';
 import * as chai from 'chai';
 import * as sinon from 'sinon';
-import { browser, TextFormattingPlugin } from '../../../src';
+import { browser } from '../../../src';
 import {
   sendKeyToPm, insertText, fixtures, doc, strike, plain, strong, em, underline, code, p,
   subsup, chaiPlugin, makeEditor, mention
 } from '../../../src/test-helper';
+import textFormattingPlugins from '../../../src/plugins/text-formatting';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
@@ -13,7 +15,7 @@ describe('text-formatting', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: TextFormattingPlugin,
+    plugins: textFormattingPlugins(defaultSchema),
     place: fixture()
   });
 
@@ -132,11 +134,6 @@ describe('text-formatting', () => {
       });
     }
 
-  });
-
-  it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = TextFormattingPlugin as any; // .State is not public API.
-    expect(plugin.key).is.be.a('string');
   });
 
   it('should allow a change handler to be attached', () => {

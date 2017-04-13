@@ -23,6 +23,7 @@ export {
   Slice,
   Schema,
   NodeType,
+  NodeView,
   MarkType,
   browser,
   EditorView,

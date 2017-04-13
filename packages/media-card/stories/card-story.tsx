@@ -1,12 +1,68 @@
 import * as React from 'react';
+import { Component } from 'react';
 import { storiesOf } from '@kadira/storybook';
-import { Matrix, createStorybookContext, defaultCollectionName as collectionName } from '@atlaskit/media-test-helpers';
+import { StoryList, Matrix, createStorybookContext, defaultCollectionName as collectionName } from '@atlaskit/media-test-helpers';
 import { Card, UrlPreviewIdentifier, MediaIdentifier } from '../src';
 
 const context = createStorybookContext();
 
 storiesOf('Card', {})
-  .add('Appearence matrix', () => {
+  .add('Live preview', () => {
+    const inputStyles = {
+      display: 'inline-block',
+      margin: '0 20px 20px',
+      width: '300px'
+    };
+
+    interface LiveUrlConverterState {
+      link: string;
+      loading: boolean;
+    }
+
+    class LiveUrlConverter extends Component<{}, LiveUrlConverterState> {
+      interval: number;
+
+      constructor(props) {
+        super(props);
+        this.state = {link: 'https://www.atlassian.com', loading: false};
+      }
+
+      render() {
+        const loading = this.state.loading ? <div>Loading...</div> : null;
+        const identifier: UrlPreviewIdentifier = {
+          mediaItemType: 'link',
+          url: this.state.link
+        };
+
+        return <div style={{margin: '20px'}}>
+          <input style={inputStyles} type="text" autoFocus={true} placeholder="Paste some url..." defaultValue={this.state.link} onInput={this.onInputChange} />
+          <button onClick={this.onAddLink}>Add link</button>
+          {loading}
+          <Card
+            identifier={identifier}
+            onLoadingChange={this.onLoadingChange}
+            context={context}
+          />
+        </div>;
+      }
+
+      onLoadingChange = state => {
+        state && this.setState({loading: state.loading});
+      }
+
+      onInputChange = (e) => {
+        const link = e.target.value;
+        this.setState({link});
+      }
+
+      onAddLink = () => {
+        const {link} = this.state;
+        context.addLinkItem(link, collectionName);
+      }
+    }
+
+    return <LiveUrlConverter />;
+  }).add('Appearence matrix', () => {
     const genericUrlIdentifier: UrlPreviewIdentifier = {
       mediaItemType: 'link',
       url: 'https://atlassian.com'
@@ -172,5 +228,134 @@ storiesOf('Card', {})
         </Matrix>
       </div>
     );
-  });
+  }).add('Thumbnail not available', () => {
+    const fileThumbnailNotAvailableId = '64204867-bfa6-4e16-a163-a6477d0f0112';
 
+    const identifier: MediaIdentifier = {
+      mediaItemType: 'file',
+      id: fileThumbnailNotAvailableId,
+      collectionName: collectionName
+    };
+
+    const stories = [
+      {
+        title: 'File card, appearance="image"',
+        content: <Card identifier={identifier} context={context} appearance="image" />
+      }, {
+        title: 'File card, Appearence="small"',
+        content: <Card identifier={identifier} context={context} appearance="small" />
+      }
+    ];
+
+    return <StoryList>{stories}</StoryList>;
+  }).add('Selectable card', () => {
+    const successfulFileId = '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40';
+
+    const identifier: MediaIdentifier = {
+      mediaItemType: 'file',
+      id: successfulFileId,
+      collectionName: collectionName
+    };
+
+    const stories = [
+      {
+        title: 'File card, not selected',
+        content: <Card identifier={identifier} context={context} appearance="image" selectable selected={false} />
+      }, {
+        title: 'File card, selected',
+        content: <Card identifier={identifier} context={context} appearance="image" selectable selected />
+      }
+    ];
+
+    return <StoryList>{stories}</StoryList>;
+  })
+  .add('Fatal error', () => {
+    const wrongFileId = 'wrong-file-id';
+
+    const identifier: MediaIdentifier = {
+      mediaItemType: 'file',
+      id: wrongFileId,
+      collectionName: collectionName
+    };
+
+    const stories = [
+      {
+        title: 'File card, not selected',
+        content: <Card identifier={identifier} context={context} appearance="image" selectable selected={false} />
+      }, {
+        title: 'File card, selected',
+        content: <Card identifier={identifier} context={context} appearance="small" selectable selected />
+      }
+    ];
+
+    return <StoryList>{stories}</StoryList>;
+  }).add('Links', () => {
+    const storedLinkIdentifier: MediaIdentifier = {
+      mediaItemType: 'link',
+      id: 'e2365f30-1e08-4259-9372-56247303d1ec',
+      collectionName
+    };
+
+    const storedLinkCards = [
+      {
+        title: 'AirBnB',
+        content: <Card identifier={storedLinkIdentifier} context={context} />
+      }
+    ];
+
+    const youtubeIdentifier: UrlPreviewIdentifier = {
+      mediaItemType: 'link',
+      url: 'https://www.youtube.com/watch?v=zso6jskUaS8'
+    };
+
+    const spotifyIdentifier: UrlPreviewIdentifier = {
+      mediaItemType: 'link',
+      url: 'https://play.spotify.com/track/2Foc5Q5nqNiosCNqttzHof'
+    };
+
+    const soundcloudIdentifier: UrlPreviewIdentifier = {
+      mediaItemType: 'link',
+      url: 'https://soundcloud.com/kodak-black/tunnel-vision-1'
+    };
+
+    const playerCards = [
+      {
+        title: 'YouTube',
+        content: <Card identifier={youtubeIdentifier} context={context} />
+      }, {
+        title: 'Spotify',
+        content: <Card identifier={spotifyIdentifier} context={context} />
+      }, {
+        title: 'Sound Cloud',
+        content: <Card identifier={soundcloudIdentifier} context={context} />
+      }
+    ];
+
+    const publicTrelloBoardIdentifier: UrlPreviewIdentifier = {
+      mediaItemType: 'link',
+      url: 'https://trello.com/b/rq2mYJNn/public-trello-boards'
+    };
+
+    const privateTrelloBoardIdentifier: UrlPreviewIdentifier = {
+      mediaItemType: 'link',
+      url: 'https://trello.com/b/hlo7gRqs/shpxxxviii-60'
+    };
+
+    const trelloCards = [
+      {
+        title: 'Public board',
+        content: <Card identifier={publicTrelloBoardIdentifier} context={context} />
+      }, {
+        title: 'Private board',
+        content: <Card identifier={privateTrelloBoardIdentifier} context={context} />
+      }
+    ];
+
+    return (
+      <div>
+        <StoryList>{storedLinkCards}</StoryList>
+        <StoryList>{playerCards}</StoryList>
+        <StoryList>{trelloCards}</StoryList>
+      </div>
+    );
+  });

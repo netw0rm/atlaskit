@@ -24,7 +24,7 @@ const emojiStyle = style({
       outline: 'none'
     },
     // sprite
-    '.emoji-sprite': {
+    'span.emoji-sprite': {
       margin: '0',
       width: width,
       height: height,

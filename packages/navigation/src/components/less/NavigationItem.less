@@ -11,8 +11,9 @@
 @icon-closed-padding: 0 @icon-closed-horizontal-padding 0 @icon-closed-horizontal-padding;
 @sub-text-size: unit(12px / @ak-font-size-default, em);
 @sub-text-line-height: unit(16px / @ak-font-size-default, em);
+@compact-main-text-line-height: unit(16 / @ak-font-size-default);
 @compact-sub-text-size: 10px;
-@compact-sub-text-line-height: 12px;
+@compact-sub-text-line-height: unit(12 / 10);
 
 @border-radius: 3px;
 
@@ -59,6 +60,10 @@
 
 .isCompact {
   height: @ak-grid-size * 4.5;
+
+  .mainText {
+    line-height: @compact-main-text-line-height;
+  }
 
   .subText {
     font-size: @compact-sub-text-size;
@@ -117,7 +122,7 @@
 }
 
 .mainText {
-  overflow-x: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

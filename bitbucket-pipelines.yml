@@ -30,7 +30,7 @@ pipelines:
       - step:
           script:
             - echo "Testing"
-            - sleep 120
+            - sleep 10
             - echo "Done"
   default:
     - step:

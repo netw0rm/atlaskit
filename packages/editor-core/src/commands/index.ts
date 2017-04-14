@@ -212,7 +212,8 @@ export function setNormalText(): Command {
     const currentBlock = $from.parent;
 
     if (currentBlock.type !== state.schema.nodes.paragraph) {
-      dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
+      const { tr } = splitCodeBlock(state);
+      dispatch(tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
       return true;
     }
 
@@ -224,11 +225,12 @@ export function toggleHeading(level: number): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
     const { $from, $to } = state.selection;
     const currentBlock = $from.parent;
+    const { tr } = splitCodeBlock(state);
 
     if (currentBlock.type !== state.schema.nodes.heading || currentBlock.attrs['level'] !== level) {
-      dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.heading, { level }));
+      dispatch(tr.setBlockType($from.pos, $to.pos, state.schema.nodes.heading, { level }));
     } else {
-      dispatch(state.tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
+      dispatch(tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
     }
 
     return true;
@@ -462,12 +464,12 @@ function topLevelNodeIsEmptyTextBlock(state): boolean {
 
 function toggleNodeType(nodeType: NodeType): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    let { $from, $to } = state.selection;
-    const potentialBlockquoteNode = $from.node($from.depth - 1);
+    let { $from : selFrom } = state.selection;
+    const potentialNodePresent = selFrom.node(selFrom.depth - 1);
 
     // lift the node and convert to given nodeType
-    if (potentialBlockquoteNode.type !== nodeType) {
-      let { tr } = state;
+    if (potentialNodePresent.type !== nodeType) {
+      let { tr, $from, $to } = splitCodeBlock(state);
 
       if ($from.depth > 1) {
         const result = liftSelection(tr, state.doc, $from, $to);
@@ -482,6 +484,33 @@ function toggleNodeType(nodeType: NodeType): Command {
     }
 
     return baseCommand.lift(state, dispatch);
+  };
+}
+
+function splitCodeBlock(state: EditorState<any>) {
+  const { tr } = state;
+  const { $from, $to } = state.selection;
+  const { codeBlock } = state.schema.nodes;
+  const node = $to.node($to.depth);
+  if ($to.pos < $to.end($to.depth) && node.type === codeBlock) {
+    let toPos = $to.pos;
+    if (node.textContent[$to.pos - 1] !== '\n') {
+      for (let i = $to.pos; i < node.textContent.length; i++) {
+        if (node.textContent[i] === '\n') {
+          toPos = i + 1;
+          break;
+        }
+      }
+    }
+    if (node.textContent[toPos - 1] === '\n') {
+      tr.delete(toPos, toPos + 1);
+    }
+    tr.split(toPos, $to.depth);
+  }
+  return {
+    tr,
+    $from: tr.doc.resolve(tr.mapping.map($from.pos)),
+    $to: tr.doc.resolve(tr.mapping.map($to.pos)),
   };
 }
 

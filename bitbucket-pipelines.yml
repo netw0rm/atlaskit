@@ -26,6 +26,12 @@ pipelines:
       - step:
           script:
             - ./build/bin/cloudfront_invalidate.sh
+    luke/testing-addon2:
+      - step:
+          script:
+            - echo "Testing"
+            - sleep 120
+            - echo "Done"
   default:
     - step:
         script:

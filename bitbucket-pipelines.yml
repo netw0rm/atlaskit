@@ -30,7 +30,6 @@ pipelines:
       - step:
           script:
             - echo "Testing"
-            - return 1
             - echo "Done"
   default:
     - step:

@@ -115,7 +115,7 @@ describe('text-formatting input rules', () => {
     });
 
     it('should convert mention to plaint text', () => {
-      const mentionNode = mention({ id: '1234', displayName: '@helga' });
+      const mentionNode = mention({ id: '1234', text: '@helga' });
       const { editorView, sel } = editor(
         doc(p(
           'hey! `hello, ',
@@ -128,7 +128,7 @@ describe('text-formatting input rules', () => {
     });
 
     it('should cleanup other formatting', () => {
-      const mentionNode = mention({ id: '1234', displayName: '@helga' });
+      const mentionNode = mention({ id: '1234', text: '@helga' });
       const { editorView, sel } = editor(
         doc(p(
           '`',

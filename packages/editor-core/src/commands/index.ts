@@ -510,7 +510,7 @@ function splitCodeBlock(state: EditorState<any>) {
   return {
     tr,
     $from: tr.doc.resolve(tr.mapping.map($from.pos)),
-    $to: tr.doc.resolve(tr.mapping.map($to.pos)),
+    $to: tr.doc.resolve(tr.mapping.map($to.pos - 1)),
   };
 }
 

@@ -12,6 +12,7 @@ import {
   br,
   chaiPlugin,
   code_block,
+  panel,
   doc,
   h1,
   h2,
@@ -185,6 +186,34 @@ describe('block-type', () => {
 
       pluginState.toggleBlockType('codeblock', editorView);
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('h1')));
+    });
+
+    it('should split code block when converting to normal text with partial selection', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('{<}test\ntest{>}\ntest\ntest')));
+
+      pluginState.toggleBlockType('normal', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(p('test\ntest'), code_block()('test\ntest')));
+    });
+
+    it('should split code block when converting to heading1 with partial selection', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('{<}test\ntest{>}\ntest\ntest')));
+
+      pluginState.toggleBlockType('heading1', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(h1('test\ntest'), code_block()('test\ntest')));
+    });
+
+    it('should split code block when converting to block-quote with partial selection', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('{<}test\ntest{>}\ntest\ntest')));
+
+      pluginState.toggleBlockType('blockquote', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(blockquote(p('test\ntest')), code_block()('test\ntest')));
+    });
+
+    it('should split code block when converting to panel with partial selection', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('{<}test\ntest{>}\ntest\ntest')));
+
+      pluginState.toggleBlockType('panel', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(panel(p('test\ntest')), code_block()('test\ntest')));
     });
   });
 

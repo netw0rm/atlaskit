@@ -86,6 +86,13 @@ describe('hyperlink', () => {
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://foo' })('text'))));
     });
 
+    it('should convert text with spaces "[text text](http://foo)" to hyperlink', () => {
+      const { editorView, sel } = editor(doc(linkable('{<>}')));
+      insertText(editorView, '[text text](http://foo)', sel, sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'http://foo' })('text text'))));
+    });
+
     it('should convert "[text](http://foo)" to hyperlink inside a code_block', () => {
       const { editorView, sel } = editor(doc(code_block()('{<>}')));
       insertText(editorView, '[text](http://foo)', sel, sel);

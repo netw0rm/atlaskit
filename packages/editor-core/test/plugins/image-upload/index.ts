@@ -1,11 +1,12 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import ImageUploadPlugin from '../../../src/plugins/image-upload';
+import imageUploadPlugins from '../../../src/plugins/image-upload';
 import {
   chaiPlugin, makeEditor, img, fixtures, doc, p, code_block,
   setNodeSelection, setTextSelection,
 } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
@@ -15,7 +16,7 @@ describe('image-upload', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: ImageUploadPlugin,
+    plugins: imageUploadPlugins(defaultSchema),
     place: fixture()
   });
 

@@ -2,13 +2,7 @@ import { Fragment, InputRule, inputRules, Plugin, Schema } from '../../prosemirr
 import { analyticsService } from '../../analytics';
 import { createInputRule } from '../utils';
 
-let plugin: Plugin | undefined;
-
 export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
-  if (plugin) {
-    return plugin;
-  }
-
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.rule) {
@@ -19,9 +13,9 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
     }));
   }
 
-  plugin = inputRules({ rules });
-
-  return plugin;
+  if (rules.length !== 0) {
+    return inputRules({ rules });
+  }
 };
 
 export default inputRulePlugin;

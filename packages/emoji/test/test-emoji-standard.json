@@ -145,22 +145,22 @@
       "shortName": ":laughing:"
     },
     {
-      "id": "1f607",
-      "name": "smiling face with halo",
-      "fallback": "😇",
+      "id": "2639",
+      "name": "white frowning face",
+      "fallback": "☹️",
       "type": "STANDARD",
       "category": "PEOPLE",
-      "order": 9,
+      "order": 44,
       "representation": {
         "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png",
-        "x": 272,
-        "y": 0,
+        "x": 612,
+        "y": 34,
         "height": 32,
         "width": 32,
-        "xIndex": 8,
-        "yIndex": 0
+        "xIndex": 18,
+        "yIndex": 1
       },
-      "shortName": ":innocent:"
+      "shortName": ":frowning2:"
     },
     {
       "id": "1f44d",
@@ -1335,22 +1335,22 @@
       "shortName": ":revolving_hearts:"
     },
     {
-      "id": "1f493",
-      "name": "beating heart",
-      "fallback": "💓",
+      "id": "2754",
+      "name": "white question mark ornament",
+      "fallback": "❔",
       "type": "STANDARD",
       "category": "SYMBOLS",
-      "order": 778,
+      "order": 853,
       "representation": {
         "spriteRef": "https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/symbols.png",
-        "x": 306,
-        "y": 0,
+        "x": 408,
+        "y": 136,
         "height": 32,
         "width": 32,
-        "xIndex": 9,
-        "yIndex": 0
+        "xIndex": 12,
+        "yIndex": 4
       },
-      "shortName": ":heartbeat:"
+      "shortName": ":grey_question:"
     },
     {
       "id": "1f1e6-1f1e8",

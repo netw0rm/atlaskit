@@ -5,13 +5,7 @@ import { analyticsService, trackAndInvoke } from '../../analytics';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../block-type/transform-to-code-block';
 import { createInputRule, defaultInputRuleHandler } from '../utils';
 
-let plugin: Plugin | undefined;
-
 export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
-  if (plugin) {
-    return plugin;
-  }
-
   const rules: Array<InputRule> = [];
 
   if (schema.nodes.heading) {
@@ -50,9 +44,9 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
     }));
   }
 
-  plugin = inputRules({ rules });
-
-  return plugin;
+  if (rules.length !== 0) {
+    return inputRules({ rules });
+  }
 };
 
 export default inputRulePlugin;

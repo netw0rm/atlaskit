@@ -114,7 +114,7 @@ export default class DropdownList extends PureComponent {
         onKeyDown={this.props.onKeyDown}
       >
         <Layer
-          autoPosition={props.shouldFlip}
+          autoFlip={props.shouldFlip}
           content={props.isOpen ?
             <div
               className={styles.dropContent}

@@ -1,11 +1,12 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import HyperlinkPlugin from '../../../src/plugins/hyperlink';
+import hyperlinkPlugins from '../../../src/plugins/hyperlink';
 import {
   chaiPlugin, createEvent, doc, fixtures, insert, insertText, a as link,
   linkable, makeEditor, p as paragraph, sendKeyToPm, setTextSelection, unlinkable
 } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
@@ -13,16 +14,11 @@ describe('hyperlink', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: HyperlinkPlugin,
+    plugins: hyperlinkPlugins(defaultSchema),
     place: fixture(),
   });
 
   const event = createEvent('event');
-
-  it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = HyperlinkPlugin as any;
-    expect(plugin.key).is.be.a('string');
-  });
 
   describe('active', () => {
     context('when select the whole hyperlink text from start to end', () => {
@@ -255,6 +251,26 @@ describe('hyperlink', () => {
       pluginState.addLink({ href }, editorView);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href })(href))));
+    });
+
+    it('should add http:// for a link without protocol', () => {
+      const { editorView, pluginState } = editor(doc(linkable('{<>}')));
+      const href = 'www.atlassian.com';
+      const hrefWithProtocol = 'http://' + href;
+
+      pluginState.addLink({ href }, editorView);
+
+      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: hrefWithProtocol })(href))));
+    });
+
+    it('should add mailto: for a link if it is an email', () => {
+      const { editorView, pluginState } = editor(doc(linkable('{<>}')));
+      const href = 'test@atlassian.com';
+      const hrefWithProtocol = 'mailto:' + href;
+
+      pluginState.addLink({ href }, editorView);
+
+      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: hrefWithProtocol })(href))));
     });
 
     it('does not permit adding a link to an existing link', () => {

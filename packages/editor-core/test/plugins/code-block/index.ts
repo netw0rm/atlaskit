@@ -2,8 +2,9 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import CodeBlockPlugin from '../../../src/plugins/code-block';
+import codeBlockPlugins from '../../../src/plugins/code-block';
 import { setTextSelection, fixtures, chaiPlugin, code_block, doc, makeEditor, p, createEvent } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
@@ -11,7 +12,7 @@ describe('code-block', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: CodeBlockPlugin,
+    plugins: codeBlockPlugins(defaultSchema),
     place: fixture()
   });
 

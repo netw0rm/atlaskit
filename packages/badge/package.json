@@ -1,12 +1,11 @@
 {
   "name": "@atlaskit/badge",
-  "version": "3.0.2",
+  "version": "4.0.0",
   "config": {
     "access": "public"
   },
   "description": "A React component that indicates values",
   "main": "umd/@atlaskit/badge.js",
-  "types": "src/index.d.ts",
   "scripts": {
     "prepublish": "../../node_modules/.bin/nwb build",
     "storybook": "../../node_modules/.bin/start-storybook -c ../../build/storybook-nwb -p 9001",

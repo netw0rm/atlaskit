@@ -130,6 +130,15 @@ function print(type, depth = 1) {
   }
 
   if (type.name === 'shape') {
+    if (typeof type.value === 'string') {
+      return (
+        <span>
+          <TypeMeta>Shape <Outline>{'{'}</Outline></TypeMeta>
+          <InstanceType>{type.value}</InstanceType>
+          <TypeMeta><Outline>{'}'}</Outline></TypeMeta>
+        </span>
+      );
+    }
     return (
       <span>
         <TypeMeta>Shape <Outline>{'{'}</Outline></TypeMeta>
@@ -149,6 +158,15 @@ function print(type, depth = 1) {
   }
 
   if (type.name === 'enum') {
+    if (typeof type.value === 'string') {
+      return (
+        <span>
+          <TypeMeta>One of <Outline>{'('}</Outline></TypeMeta>
+          <InstanceType>{type.value}</InstanceType>
+          <TypeMeta><Outline>{')'}</Outline></TypeMeta>
+        </span>
+      );
+    }
     return (
       <span>
         <TypeMeta>One of <Outline>{'('}</Outline></TypeMeta>
@@ -163,6 +181,15 @@ function print(type, depth = 1) {
   }
 
   if (type.name === 'union') {
+    if (typeof type.value === 'string') {
+      return (
+        <span>
+          <TypeMeta>One of <Outline>{'('}</Outline></TypeMeta>
+          <InstanceType>{type.value}</InstanceType>
+          <TypeMeta><Outline>{')'}</Outline></TypeMeta>
+        </span>
+      );
+    }
     return (
       <span>
         <TypeMeta>One of <Outline>{'('}</Outline></TypeMeta>

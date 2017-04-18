@@ -163,7 +163,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
 
   render() {
     const { target, position, zIndex, offsetX, offsetY, onSelection } = this.props;
-    const { activeCategory, availableCategories, filteredEmojis, loading, selectedCategory, selectedEmoji, selectedTone } = this.state;
+    const { activeCategory, availableCategories, filteredEmojis, loading, query, selectedCategory, selectedEmoji, selectedTone } = this.state;
     const classes = [styles.emojiPicker];
 
     const picker = (
@@ -180,6 +180,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
           onEmojiActive={this.onEmojiActive}
           onCategoryActivated={this.onCategoryActivated}
           onSearch={this.onSearch}
+          query={query}
           selectedTone={selectedTone}
           loading={loading}
         />

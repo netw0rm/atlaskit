@@ -19,6 +19,12 @@ export default class HeightTransitionWrapper extends PureComponent {
     this.updateRefHeight();
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  preventDefault(event) {
+    event.persist();
+    event.preventDefault();
+  }
+
   updateRefHeight() {
     this.setState({
       height: this.ref ? this.ref.children[0].offsetHeight : 'auto',
@@ -31,10 +37,12 @@ export default class HeightTransitionWrapper extends PureComponent {
     };
 
     return (
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
       <div
         className={cardAnimationWrapper}
         style={inlineHeight}
         ref={ref => (this.ref = ref)}
+        onClick={this.preventDefault}
       >
         {this.props.children}
       </div>

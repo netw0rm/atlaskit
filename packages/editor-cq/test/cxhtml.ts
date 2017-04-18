@@ -2,13 +2,12 @@ import { Node as PMNode } from '@atlaskit/editor-core';
 import { chaiPlugin } from '@atlaskit/editor-core/dist/es5/test-helper';
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { encode, parse } from '../src/cxhtml';
+import { encode, parse, LANGUAGE_MAP } from '../src/cxhtml';
 import {
   blockquote, br, doc, em, h1, h2, h3, h4, h5, h6, hr, li,
-  code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention,
+  code, ol, p, strike, strong, sub, sup, u, ul, codeblock, panel, mention, link,
   unsupportedInline, unsupportedBlock, jiraIssue,
 } from './_schema-builder';
-
 chai.use(chaiPlugin);
 
 const checkBuilder = (fn: any, description: string, cxhtml: string, doc: PMNode) => {
@@ -140,6 +139,13 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
           'Text with ',
           em(strong('strong emphasised words')),
           '.'
+        )));
+
+      check('<a> tag',
+        '<p>Text with <a href="http://www.atlassian.com">www.atlassian.com</a></p>',
+        doc(p(
+          'Text with ',
+          link({ href: 'http://www.atlassian.com' })('www.atlassian.com')
         )));
 
       check('combination of strong and emphasis',
@@ -339,13 +345,23 @@ describe('@atlaskit/editor-cq encode-cxml:', () => {
         multiple
         lines`)));
 
-      check('with selected language',
-        '<ac:structured-macro ac:name="code"><ac:parameter ac:name="language">js</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
-        doc(codeblock({ language: 'js' })('some code')));
-
       check('with title',
         '<ac:structured-macro ac:name="code"><ac:parameter ac:name="title">Code</ac:parameter><ac:parameter ac:name="language">js</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>',
-        doc(p(strong('Code')), codeblock({ language: 'js' })('some code')));
+        doc(h5(strong('Code')), codeblock({ language: 'js' })('some code')));
+
+      context('when language is not set', () => {
+        check(`has language attribute as null`,
+            `<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>`,
+            doc(codeblock({ language: null })('some code')));
+      });
+
+      context('when language is set', () => {
+        Object.keys(LANGUAGE_MAP).forEach(languageName => {
+          check(`with language "${languageName}"`,
+            `<ac:structured-macro ac:name="code"><ac:parameter ac:name="language">${LANGUAGE_MAP[languageName]}</ac:parameter><ac:plain-text-body><![CDATA[some code]]></ac:plain-text-body></ac:structured-macro>`,
+            doc(codeblock({ language: LANGUAGE_MAP[languageName] })('some code')));
+        });
+      });
     });
 
     describe('panel', () => {

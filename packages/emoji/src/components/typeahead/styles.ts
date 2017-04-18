@@ -33,6 +33,7 @@ export const typeAheadItem = style({
     display: 'block',
     listStyleType: 'none',
     overflow: 'hidden',
+    width: emojiTypeAheadWidth,
 
     $nest: {
       [`&.${selected}`]: {

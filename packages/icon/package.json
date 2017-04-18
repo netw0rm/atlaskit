@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/icon",
-  "version": "3.0.3",
+  "version": "6.0.1",
   "config": {
     "access": "public"
   },
@@ -41,7 +41,9 @@
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",
     "@atlaskit/button-group": "^1.0.0",
+    "@atlaskit/icon": "*",
     "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/util-readme": "^3.1.0",
     "async": "^2.0.1",
     "camelcase": "^3.0.0",
     "glob": "^7.0.5",

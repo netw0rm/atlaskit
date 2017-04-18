@@ -20,6 +20,10 @@ import {
   emojiPickerWidth,
 } from '../../shared-styles';
 
+export const pickerEmoji = style({
+  margin: '4px',
+});
+
 export const emojiPickerFooter = style({
   borderTop: `2px solid ${akColorN30A}`,
   boxShadow: emojiFooterBoxShadow,
@@ -57,6 +61,12 @@ export const category = style({
   transition: 'color 0.2s ease',
 
   $nest: {
+    /* Firefox */
+    ['&::-moz-focus-inner']: {
+      border: '0 none',
+      padding: 0,
+    },
+
     [`&.${active}`]: {
       color: akColorB300,
 
@@ -102,13 +112,15 @@ export const categorySelector = style({
 
     li: {
       display: 'inline-block',
-      margin: '4px 0 0 0',
+      margin: 0,
+      padding: 0,
       verticalAlign: 'middle',
     },
 
     [`.${addButton}`]: {
       color: akColorN200,
       margin: '0 0 0 5px',
+      verticalAlign: 'middle',
     },
   },
 });
@@ -118,7 +130,7 @@ export const input = 'input';
 
 export const pickerSearch = style({
   boxSizing: 'border-box',
-  padding: '10px 8px',
+  padding: '10px 25px 10px 8px',
 
   $nest: {
     [`.${searchIcon}`]: {

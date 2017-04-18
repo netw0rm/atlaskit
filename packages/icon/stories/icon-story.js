@@ -116,10 +116,11 @@ storiesOf(name, module)
           .entries(components)
           .map(([key, Icon]) => {
             const importName = `${name}/glyph/${key}`;
+            const displayName = Icon.displayName.match(/Icon/) ? Icon.displayName : `${Icon.displayName}Icon`;
             return (
               <tr key={key}>
                 <td><Icon label={`${key} icon`} /></td>
-                <td><pre>import {Icon.displayName}Icon from &#39;{importName}&#39;;</pre></td>
+                <td><pre>import {displayName} from &#39;{importName}&#39;;</pre></td>
               </tr>
             );
           })

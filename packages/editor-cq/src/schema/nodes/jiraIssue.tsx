@@ -74,12 +74,12 @@ export default {
   },
   parseDOM: [{
     tag: 'span[jira-issue]',
-    getAttrs: (dom: Element) => ({
+    getAttrs: (dom: HTMLElement) => ({
       issueKey: dom.textContent,
-      macroId: dom.getAttribute('data-macro-id'),
-      schemaVersion: dom.getAttribute('data-schema-version'),
-      server: dom.getAttribute('data-server'),
-      serverId: dom.getAttribute('data-server-id'),
+      macroId: dom.dataset.macroId,
+      schemaVersion: dom.dataset.schemaVersion,
+      server: dom.dataset.server,
+      serverId: dom.dataset.serverId,
     })
   }],
   toDOM(node: any) {

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { Schema, doc, text, codeBlock } from '../../../src';
-import { SUPPORTED_LANGUAGES } from '../../../src/ui/LanguagePicker/languageList';
+import { DEFAULT_LANGUAGES } from '../../../src/ui/LanguagePicker/languageList';
 import { fromHTML, toHTML } from '../../../src/test-helper';
 
 describe('@atlaskit/editor-core/schema codeBlock node', () => {
@@ -28,7 +28,7 @@ describe('@atlaskit/editor-core/schema codeBlock node', () => {
 
                     expect(doc.firstChild!.type.spec).to.equal(codeBlock);
                 });
-                SUPPORTED_LANGUAGES.forEach((language) => {
+                DEFAULT_LANGUAGES.forEach((language) => {
                     it(`extracts language "${language.name}" from data-language attribute`, () => {
                         const doc = fromHTML(`<pre data-language='${language.name}'><span>window.alert("hello");<span></pre>`, schema);
 
@@ -77,7 +77,7 @@ describe('@atlaskit/editor-core/schema codeBlock node', () => {
                 expect(doc.firstChild!.type.spec).to.equal(codeBlock);
             });
 
-            SUPPORTED_LANGUAGES.forEach((language) => {
+            DEFAULT_LANGUAGES.forEach((language) => {
                 it(`extracts language attribute from class "language-${language.name}"`, () => {
                     const doc = fromHTML(`<div class="codehilite language-${language.name}"><pre><span>window.alert("hello");<span></pre></div>`, schema);
                     const codeBlock = doc.firstChild!;

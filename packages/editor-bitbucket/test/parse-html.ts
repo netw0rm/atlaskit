@@ -402,7 +402,7 @@ describe('@atlaskit/editor-bitbucket parsing Bitbucket rendered HTML', () => {
       )).to.deep.equal(doc(
         p(
           'foo ',
-          mention({ displayName: '@Artur Bodera', id: 'abodera' }),
+          mention({ text: '@Artur Bodera', id: 'abodera' }),
           ' bar'
         )
       ));

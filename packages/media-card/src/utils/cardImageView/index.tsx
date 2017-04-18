@@ -31,7 +31,7 @@ export interface CardImageViewProps {
   icon?: string;
 }
 
-const DEFAULT_CARD_DIMENSIONS = {
+export const DEFAULT_CARD_DIMENSIONS = {
   WIDTH: '156px',
   HEIGHT: '104px'
 };

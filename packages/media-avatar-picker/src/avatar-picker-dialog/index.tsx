@@ -10,6 +10,7 @@ import PredefinedAvatarList from '../predefined-avatar-list/index';
 
 import {AvatarPickerViewWrapper} from './styled';
 import PredefinedAvatarView from '../predefined-avatar-view/index';
+import {tallImage} from '@atlaskit/media-test-helpers';
 
 export interface AvatarPickerDialogProps {
   avatars: Array<Avatar>;
@@ -23,8 +24,6 @@ enum Mode {
 export interface AvatarPickerDialogState {
   mode: Mode;
 }
-
-const url = 'https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg';
 
 export default class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, AvatarPickerDialogState> {
   static defaultProps = {
@@ -66,7 +65,7 @@ export default class AvatarPickerDialog extends PureComponent<AvatarPickerDialog
         return (
           <div className="cropping-wrapper">
             <div className="cropper">
-              <ImageNavigator imageSource={url}/>
+              <ImageNavigator imageSource={tallImage}/>
             </div>
             <div className="predefined-avatars">
               <PredefinedAvatarList

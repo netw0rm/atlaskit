@@ -168,6 +168,8 @@
     "test/base": "mocha --colors",
     "test/wc": "./build/bin/test.sh",
     "test/wc/browserstack": "./build/bin/test.browserstack.sh",
+    "test/wc/browserstack/coverage": "./build/bin/test.browserstack.coverage.sh",
+    "test/wc/browserstack/cover/pr": "run-s -ln 'test/wc/browserstack/coverage'",
     "test/wc/browserstack/pr": "run-s -ln 'test/wc/browserstack'",
     "test/wc/single": "./build/bin/test.single.sh",
     "test/wc/single/browserstack": "./build/bin/test.single.browserstack.sh",

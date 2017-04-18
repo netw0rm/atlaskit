@@ -43,6 +43,6 @@ pipelines:
           - yarn run test/unit
           - run-p -ln "test" "test/base"
           - yarn run browserstack/tunnel/start
-          - yarn run test/wc/browserstack
+          - yarn run test/wc/browserstack/coverage
           - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"

@@ -13,14 +13,14 @@ import { EmojiSearchResult } from '../../api/EmojiRepository';
 import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
 import { AvailableCategories, EmojiDescription, EmojiId, OnEmojiEvent, RelativePosition } from '../../types';
 
-export interface PickerRef {
+export interface PickerRefHandler {
   (ref: any): any;
 }
 
 export interface Props {
   emojiProvider: Promise<EmojiProvider>;
   onSelection?: OnEmojiEvent;
-  pickerRef?: PickerRef;
+  onPickerRef?: PickerRefHandler;
 
   target?: string | HTMLElement;
   position?: RelativePosition;
@@ -166,9 +166,9 @@ export default class EmojiPicker extends PureComponent<Props, State> {
     } as State);
   }
 
-  private onPickerRef = (ref: any) => {
-    if (this.props.pickerRef) {
-      this.props.pickerRef(ref);
+  private handlePickerRef = (ref: any) => {
+    if (this.props.onPickerRef) {
+      this.props.onPickerRef(ref);
     }
   }
 
@@ -178,7 +178,7 @@ export default class EmojiPicker extends PureComponent<Props, State> {
     const classes = [styles.emojiPicker];
 
     const picker = (
-      <div className={classNames(classes)} ref={this.onPickerRef}>
+      <div className={classNames(classes)} ref={this.handlePickerRef}>
         <CategorySelector
           activeCategoryId={activeCategory}
           onCategorySelected={this.onCategorySelected}

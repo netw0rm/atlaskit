@@ -1,4 +1,4 @@
-import { MediaStateManager, UploadParams } from './../../media';
+import { MediaStateManager, MediaState, UploadParams } from './../../media';
 import { MediaPicker } from 'mediapicker';
 import { ContextConfig } from '@atlaskit/media-core';
 
@@ -49,12 +49,33 @@ export default class PickerFacade {
     this.picker.show && this.picker.show();
   }
 
-  onStart(cb: (...args: any[]) => any) {
-    this.picker.addListener('upload-start', cb);
+  onStart(cb: (state: MediaState) => any) {
+    this.picker.addListener('upload-start', (event: any) => {
+      const { file } = event;
+
+      cb({
+        id: `temporary:${event.file.id}`,
+        status: 'uploading',
+        fileName: file.name as string,
+        fileSize: file.size as number,
+        fileType: file.type as string,
+      });
+    });
   }
 
-  onEnd(cb: (...args: any[]) => any) {
-    this.picker.addListener('upload-end', cb);
+  onEnd(cb: (state: MediaState) => any) {
+    this.picker.addListener('upload-end', (event: any) => {
+      const { file } = event;
+
+      cb({
+        id: `temporary:${event.file.id}`,
+        status: 'ready',
+        publicId: file.publicId as string,
+        fileName: file.name as string,
+        fileSize: file.size as number,
+        fileType: file.type as string,
+      });
+    });
   }
 
   private buildPickerConfigFromContext(uploadParams: UploadParams, context: ContextConfig) {

@@ -110,4 +110,6 @@ export const mediaNodeView = (providerFactory: ProviderFactory) => (node: any, v
 
 export interface MediaNode extends Node {
   fileName?: string;
+  fileSize?: number;
+  fileMimeType?: string;
 };

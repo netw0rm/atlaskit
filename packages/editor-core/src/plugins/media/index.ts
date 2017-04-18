@@ -1,5 +1,5 @@
-import { MediaStateManager } from './../../media/index';
-import { MediaType } from './../../schema/nodes/media';
+import { MediaStateManager, MediaState } from './../../media';
+import { MediaType, MediaNode } from './../../schema/nodes/media';
 import {
   EditorState,
   EditorView,
@@ -136,15 +136,19 @@ export class MediaPluginState {
     );
   }
 
-  insertFile = (id: string, filename: string, collection: string): Node => {
+  insertFile = (mediaState: MediaState, collection: string): Node => {
     const { state, view } = this;
+    const { id, fileName, fileSize, fileMimeType } = mediaState;
+
     const node = state.schema.nodes.media!.create({
       id,
+      type: 'file',
       collection,
-      type: 'file'
-    }) as Node;
+    }) as MediaNode;
 
-    // node.filename = filename;
+    fileName && (node.fileName = fileName);
+    fileSize && (node.fileSize = fileSize);
+    fileMimeType && (node.fileMimeType = fileMimeType);
 
     view.dispatch(state.tr.insert(this.findInsertPosition(), node));
 
@@ -232,20 +236,15 @@ export class MediaPluginState {
     });
   }
 
-  private handleNewMediaPicked = (event: any) => {
-    const tempId = `temporary:${event.file.id}`;
-    const { file } = event;
-
+  private handleNewMediaPicked = (state: MediaState) => {
     this.temporaryMediaNodes.push(
-      tempId,
-      this.insertFile(tempId, file.name, this.mediaProvider.uploadParams.collection)
+      state.id,
+      this.insertFile(state, this.mediaProvider.uploadParams.collection)
     );
   }
 
-  private handleNewMediaPublished = (event: any) => {
-    const tempId = `temporary:${event.file.id}`;
-    const { file } = event;
-    this.replaceTemporaryMediaNodes(tempId, file.publicId);
+  private handleNewMediaPublished = (state: MediaState) => {
+    this.replaceTemporaryMediaNodes(state.id, state.publicId!);
   }
 
   private notifyPluginStateSubscribers = () => {
@@ -269,7 +268,13 @@ export class MediaPluginState {
       const newNode = view.state.schema.nodes.media!.create({
         ...node.attrs,
         id: publicId
-      }) as Node;
+      }) as MediaNode;
+
+      const { fileSize, fileName, fileMimeType } = node as MediaNode;
+
+      fileName && (newNode.fileName = fileName);
+      fileSize && (newNode.fileSize = fileSize);
+      fileMimeType && (newNode.fileMimeType = fileMimeType);
 
       view.dispatch(view.state.tr.replaceWith(pos, pos + 1, newNode));
     });

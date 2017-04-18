@@ -1,10 +1,15 @@
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 
-import axios, { CancelToken } from 'axios';
 import AkAvatar from '@atlaskit/avatar';
 import LockCircleIconIcon from '@atlaskit/icon/glyph/lock-circle';
 import WorldIconIcon from '@atlaskit/icon/glyph/world';
 import { AkDrawerItem } from '@atlaskit/navigation';
+import { akColorN100 } from '@atlaskit/util-shared-styles';
+
+const SecondaryTitle = styled.span`
+  color: ${akColorN100}
+`;
 
 export default class Result extends PureComponent {
   // static propTypes = {
@@ -29,29 +34,17 @@ export class HipChatRoomResult extends Result {
   }
 
   handleClick = () => {
-    const host = 'https://hc-shapeshifter.internal.uswest2.adev.atlassian.io';
-    axios.put(
-      `${host}/conversations/join`,
-      { conversationId: 'a58acf84-cfec-4845-a02c-61d24803f8dc' },
-      {
-        responseType: 'json',
-        // withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: 'Hipchat eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJoaXBjaGF0IiwiY2xvdWRfaWQiOiIwNjJlNDE1NS1kNTUzLTQ0YjctODdhNi1lODc2MjUzZGIzMjYiLCJleHAiOjE0OTE3ODQ5NzAsImlzcyI6ImhpcGNoYXQtaWRlbnRpdHkiLCJ1c2VyX2lkIjoiNjU1MzYzOjczOTY0ZGY3LWJmZGUtNGNjYi1iMzgxLTBhZTg2YTFlZmNmOCJ9.NyzRIb35OVxJigHDti4Y6KuJD5Fpt9bZV6UqRIavrGA',
-        },
-        cancelToken: new CancelToken((c) => {
-          this._cancel = c;
-        }),
-        validateStatus: status => (
-          status < 300 || status === 400
-        ),
-      }
-    ).then((response) => {
-      const data = response.data.response.conversation;
-      window.location = `/${data.orgId}/chat/${data.id}`;
-    });
+    if (this.props.callback) {
+      this.props.callback({
+        uuid: this.props.meta.conversation_id,
+        type: 'group',
+      });
+      this.terminateSearch();
+    }
   }
+
+  terminateSearch = () =>
+    this.props.onSearchTerminate && this.props.onSearchTerminate();
 
   render() {
     return (
@@ -68,14 +61,34 @@ export class HipChatRoomResult extends Result {
 }
 
 export class HipChatPersonResult extends Result {
+  handleClick = () => {
+    if (this.props.callback) {
+      this.props.callback({
+        uuid: this.props.id,
+        type: 'direct',
+      });
+      this.terminateSearch();
+    }
+  }
+
+  terminateSearch = () =>
+    this.props.onSearchTerminate && this.props.onSearchTerminate();
+
   render() {
+    const mainText = (
+      <div>
+        {this.props.title}
+        <SecondaryTitle>{` @${this.props.meta.mentionName}`}</SecondaryTitle>
+      </div>
+    );
     return (
       <AkDrawerItem
         href={''}
         icon={(<AkAvatar src={this.props.meta.avatarUrl} size="small" />)}
-        text={this.props.title}
-        subText={this.props.subTitle}
         isCompact
+        onClick={this.handleClick}
+        subText={this.props.subTitle}
+        text={mainText}
       />
     );
   }

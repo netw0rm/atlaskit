@@ -1,17 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 
-import SearchResource, { SearchSubscriber } from '../../api/SearchResource';
+import { AbstractResource, SearchSubscriber } from '../../api/SearchResource';
 import JsonToResultParser from '../../api/JsonToResultParser';
 import uniqueId from '../../util/id';
 
 export default class ResourcedResultsList extends Component {
   static propTypes = {
-    searchResource: PropTypes.instanceOf(SearchResource).isRequired,
-    jsonToResultParser: PropTypes.instanceOf(JsonToResultParser).isRequired,
+    searchResource: PropTypes.instanceOf(AbstractResource).isRequired,
+    jsonToResultParser: PropTypes.instanceOf(JsonToResultParser),
+    callbacks: PropTypes.shape({
+      HipChatConversation: PropTypes.func,
+    }),
+    onSearchTerminate: PropTypes.func,
   }
 
   static defaultProps = {
-    jsonToResultParser: new JsonToResultParser(),
+    callbacks: {},
   }
 
   constructor(props) {
@@ -24,6 +28,12 @@ export default class ResourcedResultsList extends Component {
       changeHandler: this.onSearchResultUpdate,
       errorHandler: this.filterError,
     });
+    this.jsonToResultParser =
+      this.props.jsonToResultParser ||
+      new JsonToResultParser({
+        callbacks: props.callbacks,
+        onSearchTerminate: props.onSearchTerminate,
+      });
   }
 
   componentDidMount() {
@@ -49,7 +59,7 @@ export default class ResourcedResultsList extends Component {
   render() {
     const mapItemsToResults = items => (
       items.length
-        ? this.props.jsonToResultParser.parse(items)
+        ? this.jsonToResultParser.parse(items)
         : 'No results found'
     );
     return (

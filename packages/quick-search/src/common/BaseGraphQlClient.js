@@ -60,7 +60,7 @@ const getServiceUrlFromLocation = () => {
   const hostname = window.location.hostname;
 
   // Local dev
-  if (hostname === 'local.atlassian.io' || window.location.port === '3001') {
+  if (hostname === 'local.atlassian.io' || hostname === 'localhost' || window.location.port === '3001') {
     return `https://${serviceName}.internal.uswest2.staging.atlassian.io`;
   }
 

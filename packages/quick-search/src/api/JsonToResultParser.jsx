@@ -34,6 +34,12 @@ class /* interface*/ ResultRenderer {
 }
 
 class DefaultResultRenderer extends /* implements*/ ResultRenderer {
+  constructor(onSearchTerminate, callbacks) {
+    super();
+    this.onSearchTerminate = onSearchTerminate;
+    this.callbacks = callbacks;
+  }
+
   render(dataList) {
     if (!dataList || !dataList.length) {
       return [];
@@ -44,22 +50,34 @@ class DefaultResultRenderer extends /* implements*/ ResultRenderer {
       }
 
       let className;
-      let key = 'huh';
+      let key;
+      let callbackType;
       switch (data.type) {
         case 'hc.room':
           className = HipChatRoomResult;
+          callbackType = 'HipChatConversation';
           key = `hc.room.${data.id}`;
           break;
         case 'mention':
           className = HipChatPersonResult;
+          callbackType = 'HipChatConversation';
           key = `hc.person.${data.id}`;
           break;
         default:
           className = UnknownResult;
+          callbackType = 'unknown';
           key = `${data.type}.${data.id}`;
       }
 
-      return React.createElement(className, { key, ...data });
+      return React.createElement(
+        className,
+        {
+          ...data,
+          key,
+          callback: this.callbacks[callbackType],
+          onSearchTerminate: this.onSearchTerminate,
+        }
+      );
     });
   }
 }
@@ -124,8 +142,13 @@ export default class JsonToResultParser {
       && options.componentTransformers;
 
     this.dataTransformers = dataTransf || [new DefaultJsonParser()];
-    this.renderer = renderer || new DefaultResultRenderer();
+    this.renderer = renderer ||
+      new DefaultResultRenderer(options.onSearchTerminate, options.callbacks);
     this.componentTransformers = cmpntTransf || [new DefaultResultGrouper()];
+  }
+
+  pushComponentTransformer(transformer) {
+    this.componentTransformers.push(transformer);
   }
 
   parse(data) {

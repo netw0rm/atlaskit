@@ -128,6 +128,7 @@ export default class Search extends PureComponent {
           <SearchClearButtonOuter>
             <SearchClearButton
               type="button"
+              tabIndex="-1"
               innerRef={this.setClearButtonRef}
               onKeyDown={this.onClearButtonKeyDown}
             >

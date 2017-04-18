@@ -202,6 +202,13 @@ describe('block-type', () => {
       expect(editorView.state.doc).to.deep.equal(doc(h1('test\ntest'), code_block()('test\ntest')));
     });
 
+    it('should split code block when converting to heading1 with partial selection in middle of code block', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('test\n{<}test\ntest{>}\ntest')));
+
+      pluginState.toggleBlockType('heading1', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('test'), h1('test\ntest'), code_block()('test')));
+    });
+
     it('should split code block when converting to block-quote with partial selection', () => {
       const { editorView, pluginState } = editor(doc(code_block()('{<}test\ntest{>}\ntest\ntest')));
 
@@ -214,6 +221,13 @@ describe('block-type', () => {
 
       pluginState.toggleBlockType('panel', editorView);
       expect(editorView.state.doc).to.deep.equal(doc(panel(p('test\ntest')), code_block()('test\ntest')));
+    });
+
+    it('should split code block when converting to panel with partial selection at end of code block', () => {
+      const { editorView, pluginState } = editor(doc(code_block()('test\ntest\n{<}test\ntest{>}')));
+
+      pluginState.toggleBlockType('panel', editorView);
+      expect(editorView.state.doc).to.deep.equal(doc(code_block()('test\ntest'), panel(p('test\ntest'))));
     });
   });
 

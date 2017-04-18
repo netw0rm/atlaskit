@@ -4,7 +4,7 @@ import * as baseListCommand from '../prosemirror/prosemirror-schema-list';
 export * from '../prosemirror/prosemirror-commands';
 import * as blockTypes from '../plugins/block-type/types';
 import { isConvertableToCodeBlock, transformToCodeBlockAction } from '../plugins/block-type/transform-to-code-block';
-import { isRangeOfType, liftSelection, wrapIn } from '../utils';
+import { isRangeOfType, liftSelection, wrapIn, splitCodeBlockAtSelection } from '../utils';
 import { stateKey as hyperlinkPluginStateKey } from '../plugins/hyperlink';
 
 export function toggleBlockType(view: EditorView, name: string): boolean {
@@ -208,11 +208,11 @@ export function toggleCodeBlock(): Command {
 
 export function setNormalText(): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from, $to } = state.selection;
-    const currentBlock = $from.parent;
+    const { $from : initialFrom } = state.selection;
+    const currentBlock = initialFrom.parent;
 
     if (currentBlock.type !== state.schema.nodes.paragraph) {
-      const { tr } = splitCodeBlock(state);
+      const { tr, $from, $to } = splitCodeBlockAtSelection(state);
       dispatch(tr.setBlockType($from.pos, $to.pos, state.schema.nodes.paragraph));
       return true;
     }
@@ -223,9 +223,9 @@ export function setNormalText(): Command {
 
 export function toggleHeading(level: number): Command {
   return function (state: EditorState<any>, dispatch: (tr: Transaction) => void): boolean {
-    const { $from, $to } = state.selection;
-    const currentBlock = $from.parent;
-    const { tr } = splitCodeBlock(state);
+    const { $from : initialFrom } = state.selection;
+    const currentBlock = initialFrom.parent;
+    const { tr, $from, $to } = splitCodeBlockAtSelection(state);
 
     if (currentBlock.type !== state.schema.nodes.heading || currentBlock.attrs['level'] !== level) {
       dispatch(tr.setBlockType($from.pos, $to.pos, state.schema.nodes.heading, { level }));
@@ -469,7 +469,7 @@ function toggleNodeType(nodeType: NodeType): Command {
 
     // lift the node and convert to given nodeType
     if (potentialNodePresent.type !== nodeType) {
-      let { tr, $from, $to } = splitCodeBlock(state);
+      let { tr, $from, $to } = splitCodeBlockAtSelection(state);
 
       if ($from.depth > 1) {
         const result = liftSelection(tr, state.doc, $from, $to);
@@ -484,33 +484,6 @@ function toggleNodeType(nodeType: NodeType): Command {
     }
 
     return baseCommand.lift(state, dispatch);
-  };
-}
-
-function splitCodeBlock(state: EditorState<any>) {
-  const { tr } = state;
-  const { $from, $to } = state.selection;
-  const { codeBlock } = state.schema.nodes;
-  const node = $to.node($to.depth);
-  if ($to.pos < $to.end($to.depth) && node.type === codeBlock) {
-    let toPos = $to.pos;
-    if (node.textContent[$to.pos - 1] !== '\n') {
-      for (let i = $to.pos; i < node.textContent.length; i++) {
-        if (node.textContent[i] === '\n') {
-          toPos = i + 1;
-          break;
-        }
-      }
-    }
-    if (node.textContent[toPos - 1] === '\n') {
-      tr.delete(toPos, toPos + 1);
-    }
-    tr.split(toPos, $to.depth);
-  }
-  return {
-    tr,
-    $from: tr.doc.resolve(tr.mapping.map($from.pos)),
-    $to: tr.doc.resolve(tr.mapping.map($to.pos - 1)),
   };
 }
 

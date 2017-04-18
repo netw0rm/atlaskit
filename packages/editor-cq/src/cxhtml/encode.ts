@@ -1,6 +1,7 @@
 import {
   Fragment,
-  Node as PMNode
+  Node as PMNode,
+  MediaNode
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
@@ -86,11 +87,14 @@ export default function encode(node: PMNode) {
     return elem;
   }
 
-  function encodeMedia(node: PMNode) {
+  function encodeMedia(node: MediaNode) {
     const elem = doc.createElementNS(FAB_XMLNS, 'fab:media');
     elem.setAttribute('media-id', node.attrs.id);
     elem.setAttribute('media-type', node.attrs.type);
-    elem.setAttribute('file-name', node.filename);
+    elem.setAttribute('media-collection', node.attrs.collection);
+    node.fileName && elem.setAttribute('file-name', node.fileName);
+    node.fileSize && elem.setAttribute('file-size', `${node.fileSize}`);
+    node.fileMimeType && elem.setAttribute('file-mime-type', node.fileMimeType);
     return elem;
   }
 

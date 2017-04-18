@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { style } from 'typestyle';
-import { NodeSpec, NodeView, EditorView } from '../../prosemirror';
+import { NodeSpec, NodeView, EditorView, Node } from '../../prosemirror';
 import { akColorN50 } from '@atlaskit/util-shared-styles';
 import MediaComponent from '../../ui/Media/MediaComponent';
 import ProviderFactory, { WithProviders } from '../../providerFactory';
@@ -106,4 +106,8 @@ export const mediaNodeView = (providerFactory: ProviderFactory) => (node: any, v
       div = undefined;
     }
   };
+};
+
+export interface MediaNode extends Node {
+  fileName?: string;
 };

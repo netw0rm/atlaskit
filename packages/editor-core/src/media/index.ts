@@ -7,6 +7,7 @@ export interface MediaState {
   fileName?: string;
   fileSize?: number;
   fileType?: string;
+  fileMimeType?: string;
   progress?: number;
   thumbnail?: Blob;
 }

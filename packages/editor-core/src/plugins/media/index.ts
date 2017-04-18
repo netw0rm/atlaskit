@@ -276,8 +276,6 @@ export class MediaPluginState {
 
     temporaryMediaNodes.delete(tempId);
   }
-
-
 }
 
 export const stateKey = new PluginKey('mediaPlugin');

@@ -1,7 +1,8 @@
 import {
   Fragment,
   Mark,
-  Node as PMNode
+  Node as PMNode,
+  MediaNode
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
@@ -113,6 +114,7 @@ function isNodeSupportedContent(node: Node): boolean {
       case 'P':
       case 'A':
       case 'FAB:MENTION':
+      case 'FAB:MEDIA':
         return true;
     }
   }
@@ -326,6 +328,12 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
             : ensureBlocks(content)
         );
       case 'P':
+        // Media groups are currently encoded as paragraphs containing 1 or more media items
+        if (node.firstChild && (getNodeName(node.firstChild) === 'FAB:MEDIA')){
+          return schema.nodes.mediaGroup.createChecked({}, content);
+        }
+
+        // This looks like a normal paragraph
         return schema.nodes.paragraph.createChecked({}, content);
       case 'AC:STRUCTURED-MACRO':
         return convertConfluenceMacro(node);
@@ -336,6 +344,26 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
           id: node.getAttribute('atlassian-id'),
           displayName: cdata!.nodeValue,
         });
+      case 'FAB:MEDIA':
+        const mediaNode: MediaNode = schema.nodes.media.create({
+          id: node.getAttribute('media-id'),
+          type: node.getAttribute('media-type'),
+          collection: node.getAttribute('media-collection'),
+        });
+
+        if (node.hasAttribute('file-name')) {
+          mediaNode.fileName = node.getAttribute('file-name')!;
+        }
+
+        if (node.hasAttribute('file-size')) {
+          mediaNode.fileSize = parseInt(node.getAttribute('file-size')!, 10);
+        }
+
+        if (node.hasAttribute('file-mime-type')) {
+          mediaNode.fileName = node.getAttribute('file-mime-type')!;
+        }
+
+        return mediaNode;
     }
   }
 

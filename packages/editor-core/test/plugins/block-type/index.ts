@@ -152,12 +152,12 @@ describe('block-type', () => {
       const { editorView, pluginState } = editor(
         doc(p(
           'hello ',
-          mention({ id: 'foo1', displayName: '@bar1' }),
+          mention({ id: 'foo1', text: '@bar1' }),
           img({ src: 'url', alt: 'text', title: 'text' }),
           ' & ',
-          mention({ id: 'foo2', displayName: '@bar2' }),
+          mention({ id: 'foo2', text: '@bar2' }),
           ' & ',
-          mention({ id: 'foo3', displayName: '@bar3' }),
+          mention({ id: 'foo3', text: '@bar3' }),
         )));
 
       pluginState.toggleBlockType('codeblock', editorView);
@@ -168,7 +168,7 @@ describe('block-type', () => {
       const { editorView, pluginState } = editor(
         doc(p(
           '{<}hello ',
-          mention({ id: 'foo1', displayName: '@bar1' })
+          mention({ id: 'foo1', text: '@bar1' })
         ), p('text{>}')));
 
       pluginState.toggleBlockType('codeblock', editorView);
@@ -496,7 +496,7 @@ describe('block-type', () => {
             });
 
             it('trims the spaces', () => {
-              const { editorView } = editor(doc(p('```javascript    {<>}   hello ', mention({ id: 'foo1', displayName: '@bar1' }))));
+              const { editorView } = editor(doc(p('```javascript    {<>}   hello ', mention({ id: 'foo1', text: '@bar1' }))));
 
               sendKeyToPm(editorView, 'Enter');
 
@@ -589,11 +589,11 @@ describe('block-type', () => {
 
                 it('does not ignore @mention', () => {
 
-                  const { editorView } = editor(doc(p(mention({ id: 'foo1', displayName: '@bar1' }))));
+                  const { editorView } = editor(doc(p(mention({ id: 'foo1', text: '@bar1' }))));
 
                   sendKeyToPm(editorView, 'ArrowUp');
 
-                  expect(editorView.state.doc).to.deep.equal(doc(p(''), p(mention({ id: 'foo1', displayName: '@bar1' }))));
+                  expect(editorView.state.doc).to.deep.equal(doc(p(''), p(mention({ id: 'foo1', text: '@bar1' }))));
                 });
               });
 

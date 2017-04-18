@@ -2,25 +2,33 @@ import {
   AnalyticsHandler,
   analyticsService,
   baseKeymap,
-  BlockTypePlugin,
   Chrome,
-  CodeBlockPlugin,
   ContextName,
   EditorState,
   EditorView,
   history,
-  HyperlinkPlugin,
+  blockTypePlugins,
+  codeBlockPlugins,
+  hyperlinkPlugins,
+  listsPlugins,
+  rulePlugins,
+  textFormattingPlugins,
+  clearFormattingPlugins,
+  panelPlugins,
+  mentionsPlugins,
+  blockTypeStateKey,
+  codeBlockStateKey,
+  hyperlinkStateKey,
+  listsStateKey,
+  textFormattingStateKey,
+  clearFormattingStateKey,
+  panelStateKey,
+  mentionsStateKey,
   keymap,
-  ListsPlugin,
   Node as PMNode,
-  RulePlugin,
-  TextFormattingPlugin,
   TextSelection,
-  ClearFormattingPlugin,
   version as coreVersion,
-  PanelPlugin,
   mentionNodeView,
-  MentionsPlugin,
   ProviderFactory
 } from '@atlaskit/editor-core';
 import * as React from 'react';
@@ -138,14 +146,14 @@ export default class Editor extends PureComponent<Props, State> {
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const editorState = editorView && editorView.state;
 
-    const blockTypeState = editorState && BlockTypePlugin.getState(editorState);
-    const codeBlockState = editorState && CodeBlockPlugin.getState(editorState);
-    const clearFormattingState = editorState && ClearFormattingPlugin.getState(editorState);
-    const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
-    const listsState = editorState && ListsPlugin.getState(editorState);
-    const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
-    const panelState = editorState && PanelPlugin.getState(editorState);
-    const mentionsState = editorState && MentionsPlugin.getState(editorState);
+    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
+    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
+    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
+    const listsState = editorState && listsStateKey.getState(editorState);
+    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const panelState = editorState && panelStateKey.getState(editorState);
+    const mentionsState = editorState && mentionsStateKey.getState(editorState);
 
     return (
       <Chrome
@@ -207,26 +215,26 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc,
         plugins: [
-          BlockTypePlugin,
-          ClearFormattingPlugin,
-          CodeBlockPlugin,
-          HyperlinkPlugin,
-          ListsPlugin,
-          RulePlugin,
-          TextFormattingPlugin,
-          PanelPlugin,
-          MentionsPlugin,
+          ...blockTypePlugins(schema),
+          ...clearFormattingPlugins(schema),
+          ...codeBlockPlugins(schema),
+          ...hyperlinkPlugins(schema),
+          ...listsPlugins(schema),
+          ...rulePlugins(schema),
+          ...textFormattingPlugins(schema),
+          ...panelPlugins(schema),
+          ...mentionsPlugins(schema),
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap), // should be last :(
         ]
       });
 
-      const codeBlockState = CodeBlockPlugin.getState(editorState);
+      const codeBlockState = codeBlockStateKey.getState(editorState);
       codeBlockState.setLanguages(supportedLanguages);
 
       if (context) {
-        const blockTypeState = BlockTypePlugin.getState(editorState);
+        const blockTypeState = blockTypeStateKey.getState(editorState);
         blockTypeState.changeContext(context);
       }
 
@@ -250,7 +258,7 @@ export default class Editor extends PureComponent<Props, State> {
       });
 
       if (this.mentionProvider) {
-        MentionsPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
+        mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
       }
 
       analyticsService.trackEvent('atlassian.editor.start');

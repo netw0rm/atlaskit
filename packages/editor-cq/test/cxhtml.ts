@@ -25,7 +25,7 @@ const checkBuilder = (fn: any, description: string, cxhtml: string, doc: PMNode)
 const check = (description: string, cxhtml: string, doc: PMNode) =>
   checkBuilder(it, description, cxhtml, doc);
 
-describe('@atlaskit/editor-cq encode-cxml:', () => {
+describe('@atlaskit/editor-cq encode-cxhtml:', () => {
   describe('empty', () => {
     check('empty',
       '',

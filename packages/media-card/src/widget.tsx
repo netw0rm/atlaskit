@@ -26,6 +26,7 @@ const recentItems = [];
 let lastWidgetId = 0;
 
 export default class Widget {
+  // TODO: method should admit a componentId which will avoid rendering duplicated components
   static add(component) {
     const widgetId = lastWidgetId++;
     // TODO: Save component to localStorage

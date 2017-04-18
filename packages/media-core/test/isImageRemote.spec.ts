@@ -6,7 +6,7 @@ describe('isImageRemote', () => {
   it('should return false for local resource (true in IE)', () => {
     const localUrl = 'data:image/png;base64,iVBORw0KGgoAAHwAAAABJRU5ErkJggg==';
 
-    if (hasNewURL) {
+    if (hasNewURL()) {
       expect(isImageRemote(localUrl)).to.be.false;
     } else {
       expect(isImageRemote(localUrl)).to.be.true;

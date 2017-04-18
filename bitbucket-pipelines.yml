@@ -46,3 +46,4 @@ pipelines:
           - yarn run test/wc/browserstack/coverage
           - yarn run browserstack/tunnel/stop
           - yarn run "pr/storybook"
+          - yarn run "pr/coverage"

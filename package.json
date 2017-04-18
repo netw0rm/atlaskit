@@ -153,6 +153,7 @@
     "postinstall": "./build/bin/postinstall.sh",
     "docs": "lerna exec -- ../../build/bin/generate.readme.sh",
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
+    "pr/coverage": "./build/bin/coverage.static.pr.sh",
     "prepublish/all": "lerna run prepublish",
     "prepublish/single": "./build/bin/prepublish.single.sh",
     "release": "lerna-semantic-release pre && yarn run docs && lerna-semantic-release post && lerna-semantic-release perform",

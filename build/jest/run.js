@@ -4,21 +4,24 @@ const jest = require('jest');
 // TODO: first, we need to have build all the other packages e.g. `lerna run prepublish`
 //   (but that bumps all the versions of things :-/)
 
+// TODO: change this to the package name to run tests on a single package
+const singlePackage = false; // 'media-card';
+
 // create the Jest configuration
 const config = {
 
-  // just one package for now -
-  rootDir: path.resolve('./packages/media-card'),
+  rootDir: path.resolve('.'),
 
-  // look for all js(x)/ts(x) files in `./packages/media-card/**`
+  // look for all js(x)/ts(x) files in `./packages/*/src/**`
   // TODO: probably want to limit this a bit more - discuss
-  testRegex: '\\.test\\.(jsx?|tsx?)$',
+  testRegex: `packages\\/${singlePackage ? `${singlePackage}\\/(.*)` : '(.*)'}\\.test\\.(jsx?|tsx?)$`,
 
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
 
   transform: {
 
-    // TODO: transpile JavaScript
+    // transpile JavaScript
+    '^.+\\.(jsx?)$': path.resolve(__dirname, './transform-javascript.js'),
 
     // compile Typescript
     '^.+\\.(tsx?)$': path.resolve(__dirname, './transform-typescript.js'),
@@ -26,7 +29,8 @@ const config = {
   },
 
   // only collect coverage from source files (don't collect coverage stats for test files)
-  collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
+  collectCoverageFrom: [`packages/${singlePackage || '*'}/src/**/*.{js,jsx,ts,tsx}`],
+  coveragePathIgnorePatterns: ['\\/node_modules\\/', '\\.d\\.tsx?'],
 
 };
 

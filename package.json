@@ -29,6 +29,7 @@
     "axios": "^0.16.0",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.17.0",
+    "babel-jest": "^19.0.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-import-noop": "^1.0.1",
     "babel-plugin-incremental-dom": "^3.4.0",
@@ -195,5 +196,7 @@
     "validate/tslint/fix": "./build/bin/lint.tslint.sh --fix",
     "validate/package.json": "pjv -q && lerna exec -- pjv -q",
     "validate/typescript": "./build/bin/validate.typescript.sh"
+  },
+  "devDependencies": {
   }
 }

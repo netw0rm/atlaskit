@@ -1,17 +1,18 @@
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
-import CodeBlockPlugin from '../../src/plugins/code-block';
+import codeBlockPlugins from '../../src/plugins/code-block';
 import FloatingToolbar from '../../src/ui/FloatingToolbar';
 import LanguagePicker from '../../src/ui/LanguagePicker';
 import { code_block, doc, p, makeEditor, fixtures, createEvent } from '../../src/test-helper';
+import defaultSchema from '../../src/test-helper/schema';
 
 describe('LanguagePicker', () => {
 
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: CodeBlockPlugin,
+    plugins: codeBlockPlugins(defaultSchema),
     place: fixture()
   });
 

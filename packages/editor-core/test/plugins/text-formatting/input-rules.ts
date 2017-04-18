@@ -1,10 +1,12 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 
-import TextFormattingPlugin from '../../../src/plugins/text-formatting';
 import {
   fixtures, mention, em, strike, code, strong, insertText, chaiPlugin, doc, makeEditor, p, code_block
 } from '../../../src/test-helper';
+
+import textFormattingPlugins from '../../../src/plugins/text-formatting';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
@@ -12,7 +14,7 @@ describe('text-formatting input rules', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: TextFormattingPlugin,
+    plugins: textFormattingPlugins(defaultSchema),
     place: fixture()
   });
 
@@ -32,6 +34,21 @@ describe('text-formatting input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('**text**')));
     });
+
+    it('should not convert the surrounding text to strong', () => {
+      const { editorView, sel } = editor(doc(p('hello{<>}there')));
+
+      insertText(editorView, '**text**', sel);
+
+      expect(editorView.state.doc).to.deep.equal(doc(p('hello', strong('text'), 'there')));
+    });
+
+    it('should be inclusive right', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '**text**', sel);
+      insertText(editorView, 'text', editorView.state.selection.$from.pos);
+      expect(editorView.state.doc).to.deep.equal(doc(p(strong('texttext'))));
+    });
   });
 
   describe('em rule', () => {
@@ -42,11 +59,11 @@ describe('text-formatting input rules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
     });
 
-    it('should limit mark to surrounded text', () => {
+    it('should be inclusive right', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '*italic*', sel);
-      insertText(editorView, 'm', editorView.state.selection.$from.pos);
-      expect(editorView.state.doc).to.deep.equal(doc(p(em('italic'), 'm')));
+      insertText(editorView, 'text', editorView.state.selection.$from.pos);
+      expect(editorView.state.doc).to.deep.equal(doc(p(em('italictext'))));
     });
 
     it('should keep current marks when converting from markdown', () => {
@@ -80,6 +97,13 @@ describe('text-formatting input rules', () => {
 
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('~~text~~')));
     });
+
+    it('should be inclusive right', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '~~text~~', sel);
+      insertText(editorView, 'text', editorView.state.selection.$from.pos);
+      expect(editorView.state.doc).to.deep.equal(doc(p(strike('texttext'))));
+    });
   });
 
   describe('code rule', () => {
@@ -91,7 +115,7 @@ describe('text-formatting input rules', () => {
     });
 
     it('should convert mention to plaint text', () => {
-      const mentionNode = mention({ id: '1234', displayName: '@helga' });
+      const mentionNode = mention({ id: '1234', text: '@helga' });
       const { editorView, sel } = editor(
         doc(p(
           'hey! `hello, ',
@@ -104,7 +128,7 @@ describe('text-formatting input rules', () => {
     });
 
     it('should cleanup other formatting', () => {
-      const mentionNode = mention({ id: '1234', displayName: '@helga' });
+      const mentionNode = mention({ id: '1234', text: '@helga' });
       const { editorView, sel } = editor(
         doc(p(
           '`',
@@ -124,6 +148,13 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '`text`', sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('`text`')));
+    });
+
+    it('should not be inclusive right', () => {
+      const { editorView, sel } = editor(doc(p('{<>}')));
+      insertText(editorView, '`text`', sel);
+      insertText(editorView, 'text', editorView.state.selection.$from.pos);
+      expect(editorView.state.doc).to.deep.equal(doc(p(code('text'), 'text')));
     });
   });
 

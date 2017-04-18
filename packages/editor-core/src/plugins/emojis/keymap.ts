@@ -2,14 +2,8 @@ import { Schema, keymap, Plugin } from '../../prosemirror';
 import * as keymaps from '../../keymaps';
 import { EmojiState, stateKey } from './';
 
-let plugin: Plugin | undefined;
-
-export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
+export function keymapPlugin(schema: Schema<any, any>): Plugin {
   const list = {};
-
-  if (plugin) {
-    return plugin;
-  }
 
   keymaps.bindKeymapWithCommand(keymaps.moveUp.common!, (state: any, dispatch) => {
     const emojisPlugin = stateKey.getState(state) as EmojiState;
@@ -65,8 +59,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
     return emojisPlugin.onTrySelectCurrent();
   }, list);
 
-  plugin = keymap(list);
-  return plugin;
+  return keymap(list);
 }
 
 export default keymapPlugin;

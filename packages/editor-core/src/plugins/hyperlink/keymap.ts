@@ -3,14 +3,8 @@ import * as keymaps from '../../keymaps';
 import * as commands from '../../commands';
 import { trackAndInvoke } from '../../analytics';
 
-let plugin: Plugin | undefined;
-
 export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
   const list = {};
-
-  if (plugin) {
-    return plugin;
-  }
 
   keymaps.bindKeymapWithCommand(
     keymaps.addLink.common!,
@@ -21,8 +15,7 @@ export function keymapPlugin(schema: Schema<any, any>): Plugin | undefined {
     list
   );
 
-  plugin = keymap(list);
-  return plugin;
+  return keymap(list);
 }
 
 export default keymapPlugin;

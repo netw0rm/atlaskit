@@ -4,7 +4,7 @@ import { checkParse, checkEncode, checkParseEncodeRoundTrips } from '../test-hel
 import { name } from '../package.json';
 import { JIRASchema, makeSchema } from '../src/schema';
 
-export const schema = makeSchema({ allowLists: false, allowAdvancedTextFormatting: true }) as JIRASchema;
+export const schema = makeSchema({ allowAdvancedTextFormatting: true, allowSubSup: true }) as JIRASchema;
 
 // Nodes
 const doc = nodeFactory(schema.nodes.doc);

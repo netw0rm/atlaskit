@@ -1,15 +1,16 @@
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import * as React from 'react';
-import HyperlinkPlugin from '../../src/plugins/hyperlink';
+import hyperlinkPlugins from '../../src/plugins/hyperlink';
 import HyperlinkEdit from '../../src/ui/HyperlinkEdit';
 import { fixtures, doc, p as paragraph, a as link, linkable, makeEditor } from '../../src/test-helper';
+import defaultSchema from '../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: HyperlinkPlugin,
+    plugins: hyperlinkPlugins(defaultSchema),
     place: fixture()
   });
 

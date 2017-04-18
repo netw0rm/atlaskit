@@ -31,14 +31,9 @@ const requestService = (cloudId, userId) => {
   });
 };
 
-class MockProfileClient extends ProfileClient {
+export default class MockProfileClient extends ProfileClient {
   // eslint-disable-next-line class-methods-use-this
   makeRequest(cloudId, userId) {
     return requestService(cloudId, userId);
   }
 }
-
-export default new MockProfileClient({
-  cacheSize: 10,
-  cacheMaxAge: 5000,
-});

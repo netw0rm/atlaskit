@@ -44,8 +44,24 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
+        test: /\.less$/,
+        use: [{
+          loader: 'style-loader',
+        }, {
+          loader: 'css-loader',
+          options: {
+            camelCase: true,
+            importLoaders: 1,
+            mergeRules: false,
+            modules: true,
+          },
+        }, {
+          loader: 'less-loader',
+        }],
+      },
+      {
         test: /\.(gif|jpe?g|png|ico)$/,
-        loader: 'url?limit=10000',
+        loader: 'url-loader?limit=10000',
       },
     ],
   },

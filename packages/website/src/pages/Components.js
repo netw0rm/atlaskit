@@ -14,19 +14,6 @@ import Component from './Component';
 const Components = ({ match }) => (
   <div>
     <h2>Components</h2>
-    <ul>
-      {Object.keys(components).map((key) => {
-        const component = components[key];
-        return (
-          <li key={key}>
-            <Link to={`${match.url}/${key}`}>
-              {component.name}
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
-
     <Route path={`${match.url}/:component`} component={Component} />
     <Route
       exact

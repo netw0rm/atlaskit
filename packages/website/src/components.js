@@ -1,21 +1,27 @@
 /* eslint-disable global-require */
 
 const components = {
+  avatar: {
+    name: 'Avatar',
+    docs: require('../../avatar/docs').default,
+    package: require('../../avatar/package'),
+  },
   badge: {
     name: 'Badge',
-    package: require('../../badge/src'),
+    package: require('../../badge/package'),
   },
   banner: {
     name: 'Banner',
-    package: require('../../banner/src'),
+    package: require('../../banner/package'),
   },
-  // button: {
-  //   name: 'Button',
-  //   package: require('../../button/src'),
-  // },
+  button: {
+    name: 'Button',
+    docs: require('../../button/docs').default,
+    package: require('../../button/package'),
+  },
   toggle: {
     name: 'Toggle',
-    package: require('../../toggle/src'),
+    package: require('../../toggle/package'),
   },
 };
 

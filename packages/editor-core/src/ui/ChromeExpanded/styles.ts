@@ -149,7 +149,7 @@ export const toolbar = style({
   paddingLeft: akGridSize,
   paddingRight: akGridSize,
   position: 'relative',
-
+  zIndex: 1,
   $nest: {
     '& > *': {
       alignItems: 'center',

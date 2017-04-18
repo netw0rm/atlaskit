@@ -23,6 +23,12 @@ export const container = style({
 
   // Create a stacking context, so that the toolbar can be placed above the content.
   position: 'relative',
+
+  $nest: {
+    '&:focus': {
+      outline: 'none'
+    }
+  }
 });
 
 export const content = style({

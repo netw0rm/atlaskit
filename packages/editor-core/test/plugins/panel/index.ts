@@ -1,23 +1,19 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import PanelPlugin from '../../../src/plugins/panel';
+import panelPlugins from '../../../src/plugins/panel';
 import { doc, panel, p, makeEditor, fixtures, createEvent } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core ui/PanelPlugin', () => {
 
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: PanelPlugin,
+    plugins: panelPlugins(defaultSchema),
     place: fixture()
   });
 
   const event = createEvent('event');
-
-  it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = PanelPlugin as any;
-    expect(plugin.key).is.be.a('string');
-  });
 
   describe('API', () => {
     it('should allow a change handler to be registered', () => {

@@ -41,6 +41,8 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
     active: false,
   };
 
+  textInput?: PanelTextInput;
+
   componentDidMount() {
     this.props.pluginState.subscribe(this.handlePluginStateChange);
   }
@@ -102,7 +104,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               onChange={this.updateHref}
               onMouseDown={this.setInputActive}
               onBlur={this.resetInputActive}
-              ref="textInput"
+              ref={ref => {this.textInput = ref;}}
             />
           </div>
         </FloatingToolbar>

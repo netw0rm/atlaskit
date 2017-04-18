@@ -1,18 +1,18 @@
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
-import PanelPlugin from '../../src/plugins/panel';
+import panelPlugins from '../../src/plugins/panel';
 import PanelEdit from '../../src/ui/PanelEdit';
 import ToolbarButton from '../../src/ui/ToolbarButton';
 
 import { doc, panel, p, makeEditor, fixtures, createEvent } from '../../src/test-helper';
-
+import defaultSchema from '../../src/test-helper/schema';
 
 describe('@atlaskit/editor-core ui/PanelEdit', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: PanelPlugin,
+    plugins: panelPlugins(defaultSchema),
     place: fixture()
   });
 

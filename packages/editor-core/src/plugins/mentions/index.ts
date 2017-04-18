@@ -150,7 +150,7 @@ export class MentionsState {
     if (mention && mentionData) {
       const { start, end } = this.findMentionQueryMark();
       const renderName = mentionData.nickname ? mentionData.nickname : mentionData.name;
-      const node = mention.create({ displayName: `@${renderName}`, id: mentionData.id });
+      const node = mention.create({ text: `@${renderName}`, id: mentionData.id });
       const textNode = state.schema.text(' ');
       const fragment = new Fragment([node, textNode], node.nodeSize + textNode.nodeSize);
       view.dispatch(

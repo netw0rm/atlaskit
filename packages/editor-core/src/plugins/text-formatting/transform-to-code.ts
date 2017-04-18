@@ -10,7 +10,7 @@ export function transformToCodeAction(state: EditorState<any>, from: number, to:
     const cur = nodePos;
     const end = cur + node.nodeSize;
     if (node.type === state.schema.nodes.mention) {
-      const content = node.attrs.displayName;
+      const content = node.attrs.text;
       replaceSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state), false));
     }
   });

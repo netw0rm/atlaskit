@@ -10,6 +10,7 @@ import { name } from '../package.json';
 import * as v1schema from '../src/json-schema/v1.json';
 import imageUploadHandler from '../stories/imageUpload/handler';
 import { resourceProvider, resourceProvider2 } from './mentions/story-data';
+import { toJSON } from '../src/utils';
 
 const CANCEL_ACTION = () => action('Cancel')();
 const SAVE_ACTION = () => action('Save')();
@@ -66,7 +67,7 @@ class DemoEditor extends React.PureComponent<Props, State> {
     const editor = this.editorRef;
     if (editor && editor.doc) {
       this.setState({
-        jsonDocument: JSON.stringify(editor.doc.toJSON(), null, 2),
+        jsonDocument: JSON.stringify(toJSON(editor.doc), null, 2)
       });
     }
   }

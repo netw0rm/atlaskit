@@ -52,7 +52,7 @@ function clearMarkupFor(state: EditorState<any>, pos: number): Transaction {
     const allowed = match.matchType(child.type, child.attrs);
     if (!allowed) {
       if (child.type === state.schema.nodes.mention) {
-        const content = child.attrs['displayName'];
+        const content = child.attrs['text'];
         delSteps.push(new ReplaceStep(cur, end, createSliceWithContent(content, state), false));
       } else if (child.type === state.schema.nodes.rule || child.type === state.schema.nodes.hardBreak) {
         const content = '\n';

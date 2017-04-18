@@ -260,3 +260,10 @@ export function wrapIn(nodeType: NodeType, tr: Transaction, $from: ResolvedPos, 
   }
   return tr;
 }
+
+export function toJSON(node: Node) {
+  return {
+    version: 1,
+    ...node.toJSON()
+  };
+}

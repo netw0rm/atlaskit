@@ -59,6 +59,7 @@
     "hipchat-msg": "^0.1.0",
     "imports-loader": "^0.6.5",
     "in-publish": "^2.0.0",
+    "jest": "^19.0.2",
     "jsdom-global": "^2.1.1",
     "json-loader": "^0.5.4",
     "jsx-to-string": "https://github.com/nadiam84/jsx-to-string.git#308771ab44aadecf422880f6a56727ba53a2bb6d",
@@ -165,6 +166,7 @@
     "storybook/single": "./build/bin/storybook.single.sh",
     "storybook/static": "build-storybook -c ./build/storybook",
     "storybook/static/single": "./build/bin/storybook.static.single.sh",
+    "jest": "node ./build/jest/run.js",
     "test/base": "mocha --colors",
     "test/wc": "./build/bin/test.sh",
     "test/wc/browserstack": "./build/bin/test.browserstack.sh",
@@ -193,6 +195,5 @@
     "validate/tslint/fix": "./build/bin/lint.tslint.sh --fix",
     "validate/package.json": "pjv -q && lerna exec -- pjv -q",
     "validate/typescript": "./build/bin/validate.typescript.sh"
-  },
-  "devDependencies": {}
+  }
 }

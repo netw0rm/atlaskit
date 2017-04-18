@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import { LinkCardViewSmall } from '../../src';
+import { LinkCardViewSmall } from '../../src/links/cardViewSmall';
 import { CardGenericViewSmall } from '../../src/utils/cardGenericViewSmall';
 import {Title, Size, LoadingWrapper} from '../../src/utils/cardGenericViewSmall/styled';
 

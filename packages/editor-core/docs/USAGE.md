@@ -1,11 +1,11 @@
-# @NAME@
+## @NAME@
 
 This packages provides core components shared across all Atlassian Editor packages.
 
 It's the home for shared editor functionality and implements shared editor behaviours, and is the
 preferred destination for editor functionality.
 
-## Package organisation
+### Package organisation
 
 ### Analytics
 

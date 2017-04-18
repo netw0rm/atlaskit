@@ -29,6 +29,7 @@ import {
   TextSelection,
   version as coreVersion,
   mediaPluginFactory,
+  mediaStateKey,
   mediaNodeView,
   MediaProvider,
   Plugin,
@@ -70,7 +71,7 @@ export default class Editor extends PureComponent<Props, State> {
   mentionProvider: Promise<MentionProvider>;
 
   private providerFactory: ProviderFactory;
-  private mediaPlugin: Plugin;
+  private mediaPlugins: Plugin[];
 
   constructor(props: Props) {
     super(props);
@@ -94,7 +95,7 @@ export default class Editor extends PureComponent<Props, State> {
       this.providerFactory.setProvider('mediaProvider', mediaProvider);
     }
 
-    this.mediaPlugin = mediaPluginFactory({
+    this.mediaPlugins = mediaPluginFactory(schema, {
       providerFactory: this.providerFactory,
       behavior: 'default'
     });
@@ -167,7 +168,7 @@ export default class Editor extends PureComponent<Props, State> {
     const { editorView } = this.state;
     if (editorView) {
       if (editorView.state) {
-        this.mediaPlugin.getState(editorView.state).destroy();
+        mediaStateKey.getState(editorView.state).destroy();
       }
 
       editorView.destroy();
@@ -185,7 +186,7 @@ export default class Editor extends PureComponent<Props, State> {
     const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
     const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const listsState = editorState && listsStateKey.getState(editorState);
-    const mediaState = editorState && this.mediaPlugin && this.props.mediaProvider && this.mediaPlugin.getState(editorState);
+    const mediaState = editorState && this.mediaPlugins && this.props.mediaProvider && mediaStateKey.getState(editorState);
     const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
     const panelState = editorState && panelStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
@@ -218,7 +219,7 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     const { schema } = this.state;
-    const { mediaPlugin } = this;
+    const { mediaPlugins } = this;
 
     if (place) {
       const { context } = this.props;
@@ -239,7 +240,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...listsPlugins(schema),
           ...rulePlugins(schema),
           ...textFormattingPlugins(schema),
-          mediaPlugin,
+          mediaPlugins,
           ...panelPlugins(schema),
           history(),
           keymap(cqKeymap),

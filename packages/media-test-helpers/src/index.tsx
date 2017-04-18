@@ -6,3 +6,4 @@ export * from './images';
 export * from './waitUntil';
 export * from './story-styles';
 export * from './collectionNames';
+export * from './exampleMediaItems';

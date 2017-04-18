@@ -28,7 +28,7 @@
     "@atlaskit/droplist": "*",
     "@atlaskit/util-readme": "^1.0.0",
     "@atlaskit/button": "^1.0.0",
-    "@atlaskit/avatar": "^1.0.0",
+    "@atlaskit/avatar": "^2.0.0",
     "@atlaskit/lozenge": "^1.0.0"
   },
   "peerDependencies": {

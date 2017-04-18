@@ -3,13 +3,13 @@ import {
   EditorState,
   PluginKey,
   EditorView,
+  Schema,
   NodeViewDesc,
   TextSelection,
   Plugin,
   Node,
 } from '../../prosemirror';
 import inputRulePlugin from './input-rules';
-import { reconfigure } from '../utils';
 import keymapPlugin from './keymaps';
 
 export interface PanelType {
@@ -137,7 +137,6 @@ const plugin = new Plugin({
   },
   key: stateKey,
   view: (view: EditorView) => {
-    reconfigure(view, [keymapPlugin(view), inputRulePlugin(view.state.schema)]);
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
         stateKey.getState(view.state).update(view.state, view.docView);
@@ -159,4 +158,8 @@ const plugin = new Plugin({
   },
 });
 
-export default plugin;
+const plugins = (schema: Schema<any, any>) => {
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+};
+
+export default plugins;

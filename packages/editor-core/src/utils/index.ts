@@ -297,3 +297,10 @@ export function locateAndRemoveNode(view: EditorView, getPos: () => number): () 
     view.dispatch(view.state.tr.delete(pos, pos + 1));
   };
 }
+
+export function toJSON(node: Node) {
+  return {
+    version: 1,
+    ...node.toJSON()
+  };
+}

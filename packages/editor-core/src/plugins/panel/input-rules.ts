@@ -3,13 +3,8 @@ import { analyticsService } from '../../analytics';
 import { createInputRule } from '../utils';
 
 const availablePanelTypes = ['info', 'note', 'tip', 'warning'];
-let plugin: Plugin | undefined;
 
 export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
-  if (plugin) {
-    return plugin;
-  }
-
   const panelInputRule = createInputRule(
     /^\{(\S+)\}$/, (
       state: EditorState<any>,
@@ -36,8 +31,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
       }
     });
 
-  plugin = inputRules({ rules: [panelInputRule] });
-  return plugin;
+  return inputRules({ rules: [panelInputRule] });
 };
 
 export default inputRulePlugin;

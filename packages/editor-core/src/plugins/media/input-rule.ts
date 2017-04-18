@@ -4,14 +4,9 @@ import { MediaPluginState, stateKey } from './';
 import { createInputRule } from '../utils';
 
 const urlWithASpace = new RegExp(`${URL_REGEX.source} $`);
-let plugin: Plugin | undefined;
 
-export function inputRulePlugin(schema: Schema<any, any>): Plugin {
-  if (plugin) {
-    return plugin;
-  }
-
-  const rules: Array<InputRule> = [];
+export default function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
+  const rules: InputRule[] = [];
 
   if (schema.nodes.mention && schema.marks.mentionQuery) {
     const mentionQueryRule = createInputRule(urlWithASpace, (state, match, start, end): Transaction | undefined => {
@@ -28,11 +23,7 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
     rules.push(mentionQueryRule);
   }
 
-  plugin = inputRules({ rules });
-
-  return plugin;
-}
-
-export function destroyRulePluginCache() {
-  plugin = undefined;
+  if (rules.length) {
+    return inputRules({ rules });
+  }
 }

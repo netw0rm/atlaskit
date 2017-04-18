@@ -1,3 +1,5 @@
+import { Node } from '../../prosemirror';
+
 export default class TemporaryNodesList {
   private map: Map<string, Node[]>;
 

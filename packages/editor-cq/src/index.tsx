@@ -2,38 +2,47 @@ import {
   AnalyticsHandler,
   analyticsService,
   baseKeymap,
-  BlockTypePlugin,
+  blockTypePlugins,
+  blockTypeStateKey,
   Chrome,
-  CodeBlockPlugin,
+  codeBlockPlugins,
+  codeBlockStateKey,
   ContextName,
   EditorState,
   EditorView,
   history,
-  HyperlinkPlugin,
+  hyperlinkPlugins,
+  hyperlinkStateKey,
   keymap,
-  ListsPlugin,
-  RulePlugin,
-  TextFormattingPlugin,
+  listsPlugins,
+  listsStateKey,
+  Node as PMNode,
+  rulePlugins,
+  textFormattingPlugins,
+  textFormattingStateKey,
   TextSelection,
-  ClearFormattingPlugin,
+  clearFormattingPlugins,
+  clearFormattingStateKey,
   version as coreVersion,
   mediaPluginFactory,
+  mediaStateKey,
   mediaNodeView,
   MediaProvider,
   Plugin,
-  PanelPlugin,
+  panelPlugins,
+  panelStateKey,
   mentionNodeView,
-  MentionsPlugin,
+  mentionsPlugins,
+  mentionsStateKey,
   ProviderFactory
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { MentionProvider } from '@atlaskit/mention';
-import { encode, parse } from './cxhtml';
+import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
 import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
-
 export { version };
 
 export interface Props {
@@ -62,7 +71,7 @@ export default class Editor extends PureComponent<Props, State> {
   mentionProvider: Promise<MentionProvider>;
 
   private providerFactory: ProviderFactory;
-  private mediaPlugin: Plugin;
+  private mediaPlugins: Plugin[];
 
   constructor(props: Props) {
     super(props);
@@ -86,7 +95,7 @@ export default class Editor extends PureComponent<Props, State> {
       this.providerFactory.setProvider('mediaProvider', mediaProvider);
     }
 
-    this.mediaPlugin = mediaPluginFactory({
+    this.mediaPlugins = mediaPluginFactory(schema, {
       providerFactory: this.providerFactory,
       behavior: 'default'
     });
@@ -159,7 +168,7 @@ export default class Editor extends PureComponent<Props, State> {
     const { editorView } = this.state;
     if (editorView) {
       if (editorView.state) {
-        this.mediaPlugin.getState(editorView.state).destroy();
+        mediaStateKey.getState(editorView.state).destroy();
       }
 
       editorView.destroy();
@@ -172,15 +181,15 @@ export default class Editor extends PureComponent<Props, State> {
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const editorState = editorView && editorView.state;
 
-    const blockTypeState = editorState && BlockTypePlugin.getState(editorState);
-    const codeBlockState = editorState && CodeBlockPlugin.getState(editorState);
-    const clearFormattingState = editorState && ClearFormattingPlugin.getState(editorState);
-    const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
-    const listsState = editorState && ListsPlugin.getState(editorState);
-    const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
-    const mediaState = editorState && this.mediaPlugin && this.props.mediaProvider && this.mediaPlugin.getState(editorState);
-    const panelState = editorState && PanelPlugin.getState(editorState);
-    const mentionsState = editorState && MentionsPlugin.getState(editorState);
+    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
+    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
+    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
+    const listsState = editorState && listsStateKey.getState(editorState);
+    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const mediaState = editorState && this.mediaPlugins && this.props.mediaProvider && mediaStateKey.getState(editorState);
+    const panelState = editorState && panelStateKey.getState(editorState);
+    const mentionsState = editorState && mentionsStateKey.getState(editorState);
 
     return (
       <Chrome
@@ -210,36 +219,40 @@ export default class Editor extends PureComponent<Props, State> {
 
   private handleRef = (place: Element | null) => {
     const { schema } = this.state;
-    const { mediaPlugin } = this;
+    const { mediaPlugins } = this;
 
     if (place) {
       const { context } = this.props;
+      const doc = parse(this.props.defaultValue || '');
       const cqKeymap = {
         'Mod-Enter': this.handleSave,
       };
 
       const editorState = EditorState.create({
         schema,
-        doc: parse(this.props.defaultValue || ''),
+        doc,
         plugins: [
-          BlockTypePlugin,
-          ClearFormattingPlugin,
-          CodeBlockPlugin,
-          HyperlinkPlugin,
-          ListsPlugin,
-          RulePlugin,
-          TextFormattingPlugin,
-          mediaPlugin,
-          PanelPlugin,
-          MentionsPlugin,
+          ...blockTypePlugins(schema),
+          ...clearFormattingPlugins(schema),
+          ...codeBlockPlugins(schema),
+          ...hyperlinkPlugins(schema),
+          ...listsPlugins(schema),
+          ...rulePlugins(schema),
+          ...textFormattingPlugins(schema),
+          ...mediaPlugins,
+          ...panelPlugins(schema),
+          ...mentionsPlugins(schema),
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap),
         ]
       });
 
+      const codeBlockState = codeBlockStateKey.getState(editorState);
+      codeBlockState.setLanguages(supportedLanguages);
+
       if (context) {
-        const blockTypeState = BlockTypePlugin.getState(editorState);
+        const blockTypeState = blockTypeStateKey.getState(editorState);
         blockTypeState.changeContext(context);
       }
 
@@ -264,13 +277,15 @@ export default class Editor extends PureComponent<Props, State> {
       });
 
       if (this.mentionProvider) {
-        MentionsPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
+        mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
       }
 
       analyticsService.trackEvent('atlassian.editor.start');
 
       this.setState({ editorView });
       this.focus();
+
+      this.sendUnsupportedNodeUsage(doc);
     } else {
       this.setState({ editorView: undefined });
     }
@@ -296,4 +311,34 @@ export default class Editor extends PureComponent<Props, State> {
       onSave(this);
     }
   }
+
+  /**
+   * Traverse document nodes to find the number of unsupported ones
+   */
+  private sendUnsupportedNodeUsage(doc: PMNode) {
+    const { unsupportedBlock, unsupportedInline } = schema.nodes;
+    let blockNodesOccurance = 0;
+    let inlineNodesOccurance = 0;
+
+    traverseNode(doc);
+
+    for (let i = 0; i < blockNodesOccurance; i++) {
+      analyticsService.trackEvent('atlassian.editor.unsupported.block');
+    }
+
+    for (let i = 0; i < inlineNodesOccurance; i++) {
+      analyticsService.trackEvent('atlassian.editor.unsupported.inline');
+    }
+
+    function traverseNode(node: PMNode) {
+      if (node.type === unsupportedBlock) {
+        blockNodesOccurance += 1;
+      } else if (node.type === unsupportedInline) {
+        inlineNodesOccurance += 1;
+      } else {
+        node.content.forEach(traverseNode);
+      }
+    }
+  }
+
 }

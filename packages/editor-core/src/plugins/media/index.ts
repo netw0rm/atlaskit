@@ -5,9 +5,9 @@ import {
   EditorView,
   Plugin,
   PluginKey,
-  Node
+  Node as PMNode,
+  Schema,
 } from '../../prosemirror';
-import { reconfigure } from '../utils';
 import { URL_REGEX } from '../hyperlink/url-regex';
 import { MediaProvider, UploadParams, DefaultMediaStateManager } from '../../media';
 import PickerFacade from './picker-facade';
@@ -16,7 +16,7 @@ import { ContextConfig } from '@atlaskit/media-core';
 import { analyticsService } from '../../analytics';
 
 import { MediaPluginOptions, MediaPluginBehavior } from './media-plugin-options';
-import { inputRulePlugin } from './input-rule';
+import inputRulePlugin from './input-rule';
 
 const urlRegex = new RegExp(`${URL_REGEX.source}\\b`);
 
@@ -136,13 +136,13 @@ export class MediaPluginState {
     );
   }
 
-  insertFile = (id: string, filename: string, collection: string): Node => {
+  insertFile = (id: string, filename: string, collection: string): PMNode => {
     const { state, view } = this;
     const node = state.schema.nodes.media!.create({
       id,
       collection,
       type: 'file'
-    }) as Node;
+    }) as PMNode;
 
     // node.filename = filename;
 
@@ -269,7 +269,7 @@ export class MediaPluginState {
       const newNode = view.state.schema.nodes.media!.create({
         ...node.attrs,
         id: publicId
-      }) as Node;
+      }) as PMNode;
 
       view.dispatch(view.state.tr.replaceWith(pos, pos + 1, newNode));
     });
@@ -282,7 +282,27 @@ export class MediaPluginState {
 
 export const stateKey = new PluginKey('mediaPlugin');
 
-export default function mediaPluginFactory (options: MediaPluginOptions) {
+const plugins = (schema: Schema<any, any>, options: MediaPluginOptions) => {
+  const plugin = mediaPluginFactory(options);
+
+  return [
+    plugin,
+    inputRulePlugin(schema)
+  ].filter((plugin) => !!plugin) as Plugin[];
+};
+
+export default plugins;
+
+export interface MediaData {
+  id: string;
+  type?: MediaType;
+}
+
+interface PositionedNode extends PMNode {
+  getPos: () => number;
+}
+
+function mediaPluginFactory(options: MediaPluginOptions) {
   return new Plugin({
     state: {
       init(config, state) {
@@ -295,15 +315,10 @@ export default function mediaPluginFactory (options: MediaPluginOptions) {
     },
     key: stateKey,
     view: (view: EditorView) => {
-      reconfigure(view, [inputRulePlugin(view.state.schema)]);
       const pluginState = stateKey.getState(view.state);
       pluginState.setView(view); // no need for
 
-      return {
-        update(view: EditorView, prevState: EditorState<any>) {
-          pluginState.update(view.state, view);
-        }
-      };
+      return {};
     },
     props: {
       handleDOMEvents: {
@@ -336,15 +351,6 @@ export default function mediaPluginFactory (options: MediaPluginOptions) {
     }
   });
 };
-
-export interface MediaData {
-  id: string;
-  type?: MediaType;
-}
-
-interface PositionedNode extends Node {
-  getPos: () => number;
-}
 
 function extractFirstURLFromString(string: string) {
   const search = urlRegex.exec(string);

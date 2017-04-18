@@ -236,7 +236,7 @@ export const hardBreak = nodeFactory(sampleSchema.nodes.hardBreak, {});
 export const code_block = (attrs: {} = {}) => nodeFactory(sampleSchema.nodes.codeBlock, attrs);
 export const img = (attrs: { src: string, alt?: string, title?: string }) => sampleSchema.nodes.image.createChecked(attrs);
 export const emoji = (attrs: { shortName: string, id?: string, fallback?: string }) => sampleSchema.nodes.emoji.createChecked(attrs);
-export const mention = (attrs: { id: string, displayName?: string }) => sampleSchema.nodes.mention.createChecked(attrs);
+export const mention = (attrs: { id: string, text?: string }) => sampleSchema.nodes.mention.createChecked(attrs);
 export const hr = sampleSchema.nodes.rule.createChecked();
 export const em = markFactory(sampleSchema.marks.em, {});
 export const subsup = (attrs: { type: string }) => markFactory(sampleSchema.marks.subsup, attrs);

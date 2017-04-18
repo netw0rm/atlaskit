@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import * as React from 'react';
 import {Component} from 'react';
-import {ImageCropper} from '../image-cropper/image-cropper';
+import {ImageCropper, OnLoadHandler} from '../image-cropper';
 import {Slider} from '../slider/index';
 import {Container, SliderContainer} from './styled';
 import {akGridSizeUnitless} from '@atlaskit/util-shared-styles';
@@ -12,6 +12,7 @@ export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 
 interface Props {
   imageSource: string;
+  onLoad?: OnLoadHandler;
 }
 
 interface Position {
@@ -149,6 +150,7 @@ export class ImageNavigator extends Component<Props, State> {
         left={imagePos.x}
         onDragStarted={this.onDragStarted}
         onImageSize={this.onImageSize}
+        onLoad={this.props.onLoad}
       />
       <SliderContainer>
         <ScaleSmallIcon label="scale-small-icon" />

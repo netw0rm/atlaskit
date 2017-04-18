@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import {expect} from 'chai';
 // import * as sinon from 'sinon';
 import {CONTAINER_SIZE, ImageNavigator} from '../../src/image-navigator/index';
-import {ImageCropper} from '../../src/image-cropper/image-cropper';
+import {ImageCropper} from '../../src/image-cropper';
 import {Slider} from '../../src/slider/index';
 
 const imageSource = 'image-url';

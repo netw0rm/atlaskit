@@ -1,11 +1,26 @@
 /* tslint:disable:variable-name */
 import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import {ImageNavigator} from '../../src/image-navigator/index';
+import {ImageNavigator} from '../../src';
+import {tallImage} from '@atlaskit/media-test-helpers';
 
-const url = 'https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg';
+let onLoadParams;
+let imageElement;
+
+const onLoad = (params) => {
+  onLoadParams = params;
+};
+const exportImage = () => {
+  const imageData = onLoadParams.export();
+
+  imageElement.src = imageData;
+};
 
 storiesOf('Image navigator', {})
-  .add('default', () => (
-    <ImageNavigator imageSource={url} />
-  ));
+  .add('default', () => {
+    return <div>
+            <ImageNavigator imageSource={tallImage} onLoad={onLoad} />
+            <button onClick={exportImage}>Export</button>
+            <img style={{position: 'absolute', top: 0, left: '300px'}} src="" alt="" ref={(image) => imageElement = image} />
+           </div>;
+  });

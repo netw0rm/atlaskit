@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
-import {ImageCropper} from '../../src/image-cropper/image-cropper';
+import {ImageCropper} from '../../src/image-cropper';
 
 const url = 'https://static.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg';
 const naturalWidth = 5360;

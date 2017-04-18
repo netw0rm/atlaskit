@@ -23,6 +23,7 @@ export {
   Slice,
   Schema,
   NodeType,
+  NodeView,
   MarkType,
   browser,
   EditorView,
@@ -33,3 +34,4 @@ export {
   baseKeymap,
   keymap,
 } from './prosemirror';
+export { toJSON } from './utils';

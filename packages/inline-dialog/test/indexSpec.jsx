@@ -128,4 +128,31 @@ describe('inline-dialog', () => {
       expect(spy.callCount).to.equal(1);
     });
   });
+
+  describe('handleClickOutside', () => {
+    it('should trigger the onClose prop', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(<InlineDialog onClose={spy} isOpen />);
+      const event = {
+        target: document.createElement('div'),
+      };
+
+      wrapper.instance().handleClickOutside(event);
+
+      expect(spy.callCount).to.equal(1);
+      expect(spy.getCall(0).args[0].isOpen).to.equal(false);
+    });
+
+    it('should NOT trigger the onClose prop when isOpen is false', () => {
+      const spy = sinon.spy();
+      const wrapper = mount(<InlineDialog onClose={spy} />);
+      const event = {
+        target: document.createElement('div'),
+      };
+
+      wrapper.instance().handleClickOutside(event);
+
+      expect(spy.callCount).to.equal(0);
+    });
+  });
 });

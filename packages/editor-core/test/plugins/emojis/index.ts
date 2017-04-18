@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 
 import { emoji as emojiNode } from '../../../src';
-import EmojiPlugin from '../../../src/plugins/emojis';
+import emojiPlugins from '../../../src/plugins/emojis';
 import {
   chaiPlugin,
   fixtures,
@@ -19,6 +19,7 @@ import {
   p,
   ul,
 } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
 
 const emojiProvider = emojiData.emojiTestData.getEmojiResourcePromise();
 
@@ -42,18 +43,13 @@ describe('emojis', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: EmojiPlugin,
+    plugins: emojiPlugins(defaultSchema),
     place: fixture()
   });
 
   const forceUpdate = (editorView: any) => {
     editorView.updateState(editorView.state);
   };
-
-  it('defines a name for use by the ProseMirror plugin registry ', () => {
-    const plugin = EmojiPlugin as any; // .key is not public API.
-    expect(plugin.key).to.equal('emojiPlugin$');
-  });
 
   describe('keymap', () => {
 

@@ -2,29 +2,42 @@ import {
   AnalyticsHandler,
   analyticsService,
   baseKeymap,
-  BlockTypePlugin,
   Chrome,
-  CodeBlockPlugin,
   ContextName,
   EditorState,
   EditorView,
   history,
-  HyperlinkPlugin,
+  blockTypePlugins,
+  codeBlockPlugins,
+  hyperlinkPlugins,
+  listsPlugins,
+  rulePlugins,
+  textFormattingPlugins,
+  clearFormattingPlugins,
+  panelPlugins,
+  mentionsPlugins,
+  blockTypeStateKey,
+  codeBlockStateKey,
+  hyperlinkStateKey,
+  listsStateKey,
+  textFormattingStateKey,
+  clearFormattingStateKey,
+  panelStateKey,
+  mentionsStateKey,
   keymap,
-  ListsPlugin,
-  RulePlugin,
-  TextFormattingPlugin,
+  Node as PMNode,
   TextSelection,
-  ClearFormattingPlugin,
   version as coreVersion,
-  PanelPlugin
+  mentionNodeView,
+  ProviderFactory
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { encode, parse } from './cxhtml';
+import { MentionProvider } from '@atlaskit/mention';
+import { encode, parse, supportedLanguages } from './cxhtml';
 import { version, name } from './version';
 import { CQSchema, default as schema } from './schema';
-
+import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
 export { version };
 
 
@@ -38,6 +51,7 @@ export interface Props {
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
+  mentionProvider?: Promise<MentionProvider>;
 }
 
 export interface State {
@@ -49,6 +63,8 @@ export interface State {
 export default class Editor extends PureComponent<Props, State> {
   state: State;
   version = `${version} (editor-core ${coreVersion})`;
+  providerFactory: ProviderFactory;
+  mentionProvider: Promise<MentionProvider>;
 
   constructor(props: Props) {
     super(props);
@@ -59,6 +75,13 @@ export default class Editor extends PureComponent<Props, State> {
     };
 
     analyticsService.handler = props.analyticsHandler || ((name) => {});
+
+    this.providerFactory = new ProviderFactory();
+
+    if (props.mentionProvider) {
+      this.mentionProvider = props.mentionProvider;
+      this.providerFactory.setProvider('mentionProvider', this.mentionProvider);
+    }
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -123,13 +146,14 @@ export default class Editor extends PureComponent<Props, State> {
     const handleSave = this.props.onSave ? this.handleSave : undefined;
     const editorState = editorView && editorView.state;
 
-    const blockTypeState = editorState && BlockTypePlugin.getState(editorState);
-    const codeBlockState = editorState && CodeBlockPlugin.getState(editorState);
-    const clearFormattingState = editorState && ClearFormattingPlugin.getState(editorState);
-    const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
-    const listsState = editorState && ListsPlugin.getState(editorState);
-    const textFormattingState = editorState && TextFormattingPlugin.getState(editorState);
-    const panelState = editorState && PanelPlugin.getState(editorState);
+    const blockTypeState = editorState && blockTypeStateKey.getState(editorState);
+    const codeBlockState = editorState && codeBlockStateKey.getState(editorState);
+    const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
+    const listsState = editorState && listsStateKey.getState(editorState);
+    const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
+    const panelState = editorState && panelStateKey.getState(editorState);
+    const mentionsState = editorState && mentionsStateKey.getState(editorState);
 
     return (
       <Chrome
@@ -150,6 +174,8 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStatePanel={panelState}
         packageVersion={version}
         packageName={name}
+        mentionProvider={this.mentionProvider}
+        pluginStateMentions={mentionsState}
       />
     );
   }
@@ -180,30 +206,35 @@ export default class Editor extends PureComponent<Props, State> {
 
     if (place) {
       const { context } = this.props;
+      const doc = parse(this.props.defaultValue || '');
       const cqKeymap = {
         'Mod-Enter': this.handleSave,
       };
 
       const editorState = EditorState.create({
         schema,
-        doc: parse(this.props.defaultValue || ''),
+        doc,
         plugins: [
-          BlockTypePlugin,
-          ClearFormattingPlugin,
-          CodeBlockPlugin,
-          HyperlinkPlugin,
-          ListsPlugin,
-          RulePlugin,
-          TextFormattingPlugin,
-          PanelPlugin,
+          ...blockTypePlugins(schema),
+          ...clearFormattingPlugins(schema),
+          ...codeBlockPlugins(schema),
+          ...hyperlinkPlugins(schema),
+          ...listsPlugins(schema),
+          ...rulePlugins(schema),
+          ...textFormattingPlugins(schema),
+          ...panelPlugins(schema),
+          ...mentionsPlugins(schema),
           history(),
           keymap(cqKeymap),
           keymap(baseKeymap), // should be last :(
         ]
       });
 
+      const codeBlockState = codeBlockStateKey.getState(editorState);
+      codeBlockState.setLanguages(supportedLanguages);
+
       if (context) {
-        const blockTypeState = BlockTypePlugin.getState(editorState);
+        const blockTypeState = blockTypeStateKey.getState(editorState);
         blockTypeState.changeContext(context);
       }
 
@@ -214,6 +245,10 @@ export default class Editor extends PureComponent<Props, State> {
           editorView.updateState(newState);
           this.handleChange();
         },
+        nodeViews: {
+          mention: mentionNodeView(this.providerFactory),
+          jiraIssue: jiraIssueNodeView,
+        },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {
             analyticsService.trackEvent('atlassian.editor.paste');
@@ -222,12 +257,48 @@ export default class Editor extends PureComponent<Props, State> {
         }
       });
 
+      if (this.mentionProvider) {
+        mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
+      }
+
       analyticsService.trackEvent('atlassian.editor.start');
 
       this.setState({ editorView });
       this.focus();
+
+      this.sendUnsupportedNodeUsage(doc);
     } else {
       this.setState({ editorView: undefined });
     }
   }
+
+  /**
+   * Traverse document nodes to find the number of unsupported ones
+   */
+  private sendUnsupportedNodeUsage(doc: PMNode) {
+    const { unsupportedBlock, unsupportedInline } = schema.nodes;
+    let blockNodesOccurance = 0;
+    let inlineNodesOccurance = 0;
+
+    traverseNode(doc);
+
+    for (let i = 0; i < blockNodesOccurance; i++) {
+      analyticsService.trackEvent('atlassian.editor.unsupported.block');
+    }
+
+    for (let i = 0; i < inlineNodesOccurance; i++) {
+      analyticsService.trackEvent('atlassian.editor.unsupported.inline');
+    }
+
+    function traverseNode(node: PMNode) {
+      if (node.type === unsupportedBlock) {
+        blockNodesOccurance += 1;
+      } else if (node.type === unsupportedInline) {
+        inlineNodesOccurance += 1;
+      } else {
+        node.content.forEach(traverseNode);
+      }
+    }
+  }
+
 }

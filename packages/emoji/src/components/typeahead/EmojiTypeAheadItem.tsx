@@ -4,7 +4,7 @@ import { PureComponent } from 'react';
 
 import * as styles from './styles';
 import { EmojiDescription, OnEmojiEvent } from '../../types';
-import { toEmojiId } from '../../api/EmojiRepository';
+import { toEmojiId } from '../../type-helpers';
 import EmojiPreview from '../common/EmojiPreview';
 import { leftClick } from '../../util/mouse';
 

@@ -1,16 +1,18 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import RulePlugin from '../../../src/plugins/rule';
+import rulePlugins from '../../../src/plugins/rule';
 import {
   chaiPlugin, doc, fixtures, hr, insertText, makeEditor, p, code_block
 } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
+
 chai.use(chaiPlugin);
 
 describe('inputrules', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: RulePlugin,
+    plugins: rulePlugins(defaultSchema),
     place: fixture()
   });
 

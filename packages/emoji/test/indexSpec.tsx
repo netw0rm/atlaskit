@@ -21,6 +21,8 @@ describe(name, () => {
         'EmojiRepository',
         'EmojiLoader',
         'denormaliseEmojiServiceResponse',
+        'toEmojiId',
+        'toOptionalEmojiId',
         'default',
       ]);
     });

@@ -5,7 +5,7 @@ import {
 } from '@atlaskit/editor-core';
 import schema from '../schema';
 import parseCxhtml from './parse-cxhtml';
-import encodeCxhtml from './encode-cxhtml';
+import { AC_XMLNS, default as encodeCxhtml } from './encode-cxhtml';
 
 const convertedNodes = new WeakMap();
 
@@ -111,6 +111,7 @@ function isNodeSupportedContent(node: Node): boolean {
       case 'OL':
       case 'LI':
       case 'P':
+      case 'A':
       case 'FAB:MENTION':
         return true;
     }
@@ -291,6 +292,8 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
         return content ? addMarks(content, [schema.marks.subsup.create({ type })]) : null;
       case 'U':
         return content ? addMarks(content, [schema.marks.underline.create()]) : null;
+      case 'A':
+        return content ? addMarks(content, [schema.marks.link.create({ href: node.getAttribute('href') })]) : null;
       // Nodes
       case 'BLOCKQUOTE':
         return schema.nodes.blockquote.createChecked({},
@@ -359,12 +362,13 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       let nodeSize = 0;
 
       if (!!title) {
-        const titleNode = schema.nodes.paragraph.create({ level: 1 }, schema.text(title, [schema.marks.strong.create()]));
+        const titleNode = schema.nodes.heading.create({ level: 5 }, schema.text(title, [schema.marks.strong.create()]));
         content.push(titleNode);
         nodeSize += titleNode.nodeSize;
       }
 
       const codeBlockNode = schema.nodes.codeBlock.create({ language }, schema.text(codeContent));
+
       content.push(codeBlockNode);
       nodeSize += codeBlockNode.nodeSize;
 
@@ -400,6 +404,27 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       }
 
       return schema.nodes.panel.create({ panelType: name.toLowerCase() }, panelBody);
+
+    case 'JIRA':
+      const schemaVersion = node.getAttributeNS(AC_XMLNS, 'schema-version');
+      const macroId = node.getAttributeNS(AC_XMLNS, 'macro-id');
+      const server = getAcParameter(node, 'server');
+      const serverId = getAcParameter(node, 'serverId');
+      const issueKey = getAcParameter(node, 'key');
+
+      // if this is an issue list, render it as unsupported node
+      // @see https://product-fabric.atlassian.net/browse/ED-1193?focusedCommentId=26672&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-26672
+      if (!issueKey) {
+        return schema.nodes.unsupportedInline.create({ cxhtml: encodeCxhtml(node) });
+      }
+
+      return schema.nodes.jiraIssue.create({
+        issueKey,
+        macroId,
+        schemaVersion,
+        server,
+        serverId,
+      });
   }
 
   // All unsupported content is wrapped in an `unsupportedInline` node. Converting
@@ -438,7 +463,8 @@ function getAcTagNodes(node: Element, tagName: string): NodeList | null {
   for (let i = 0; i < node.childNodes.length; i++) {
     const child = node.childNodes[i] as Element;
     if (getNodeName(child) === tagName) {
-      return child.childNodes;
+      // return html collection only if childNodes are found
+      return child.childNodes.length ? child.childNodes : null;
     }
   }
 

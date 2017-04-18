@@ -1,4 +1,4 @@
-.ProseMirror-content {
+.ProseMirror {
   /**/
   /* OVERRIDES FOR AK-CSS-RESET */
   /* Since confluence doesn't use ak-css-reset need to override some rules in order to look more confluenceish */
@@ -157,21 +157,22 @@
 
   code,
   pre {
-    font-family: Consolas, Menlo, 'Liberation Mono', Courier, monospace;
-    font-size: 12px;
+    font-family: "Consolas","Bitstream Vera Sans Mono","Courier New",Courier,monospace;
+    font-size: 14px;
     line-height: 1.4;
+    color: #000;
   }
 
   pre {
     overflow-x: auto;
 
-    padding: 5px 10px;
+    padding: 10px 15px;
 
     word-wrap: normal;
 
     border: 1px solid #ccc;
     border-radius: 3px;
-    background: #f5f5f5;
+    background: #FFF;
   }
 
   pre > code {

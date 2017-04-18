@@ -13,6 +13,7 @@ import {
 import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
+import { normalizeUrl } from './utils';
 
 export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
 export type StateChangeHandler = (state: HyperlinkState) => any;
@@ -58,7 +59,7 @@ export class HyperlinkState {
       const { state } = this;
       const { href } = options;
       const { empty, $from, $to } = state.selection;
-      const mark = state.schema.mark('link', { href });
+      const mark = state.schema.mark('link', { href: normalizeUrl(href) });
       const tr = empty
         ? state.tr.replaceWith($from.pos, $to.pos, state.schema.text(href, [mark]))
         : state.tr.addMark($from.pos, $to.pos, mark);
@@ -90,7 +91,7 @@ export class HyperlinkState {
       const to = this.activeLinkStartPos + this.text!.length;
       view.dispatch(state.tr
         .removeMark(from, to, this.activeLinkMark)
-        .addMark(from, to, state.schema.mark('link', { href: options.href })));
+        .addMark(from, to, state.schema.mark('link', { href: normalizeUrl(options.href) })));
     }
   }
 

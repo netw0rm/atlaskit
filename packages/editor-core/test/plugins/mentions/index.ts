@@ -268,7 +268,7 @@ describe('mentions', () => {
         doc(
           p(
             mention({
-              displayName: '@Oscar Wallhult',
+              text: '@Oscar Wallhult',
               id: '1234'
             }),
             ' '
@@ -291,7 +291,7 @@ describe('mentions', () => {
         doc(
           p(
             mention({
-              displayName: '@tara',
+              text: '@tara',
               id: '1234'
             }),
             ' '
@@ -301,7 +301,7 @@ describe('mentions', () => {
     });
 
     it('should allow inserting multiple @-mentions next to eachother', () => {
-      const { editorView, pluginState } = editor(doc(p(mention({ id: '1234', displayName: '@Oscar Wallhult' }), ' ', mentionQuery('@{<>}'))));
+      const { editorView, pluginState } = editor(doc(p(mention({ id: '1234', text: '@Oscar Wallhult' }), ' ', mentionQuery('@{<>}'))));
 
       pluginState.insertMention({
         name: 'Bradley Ayers',
@@ -313,12 +313,12 @@ describe('mentions', () => {
         doc(
           p(
             mention({
-              displayName: '@Oscar Wallhult',
+              text: '@Oscar Wallhult',
               id: '1234'
             }),
             ' ',
             mention({
-              displayName: '@Bradley Ayers',
+              text: '@Bradley Ayers',
               id: '5678'
             }),
             ' '
@@ -343,7 +343,7 @@ describe('mentions', () => {
             br,
             mention({
               id: '1234',
-              displayName: '@Oscar Wallhult'
+              text: '@Oscar Wallhult'
             }),
             ' '
           )
@@ -370,7 +370,7 @@ describe('mentions', () => {
                   'Two ',
                   mention({
                     id: '1234',
-                    displayName: '@Oscar Wallhult'
+                    text: '@Oscar Wallhult'
                   }),
                   ' '
                 )
@@ -398,7 +398,7 @@ describe('mentions', () => {
               'Hello ',
               mention({
                 id: '1234',
-                displayName: '@Oscar Wallhult'
+                text: '@Oscar Wallhult'
               }),
               ' '
             )

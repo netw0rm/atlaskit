@@ -253,6 +253,26 @@ describe('hyperlink', () => {
       expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href })(href))));
     });
 
+    it('should add http:// for a link without protocol', () => {
+      const { editorView, pluginState } = editor(doc(linkable('{<>}')));
+      const href = 'www.atlassian.com';
+      const hrefWithProtocol = 'http://' + href;
+
+      pluginState.addLink({ href }, editorView);
+
+      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: hrefWithProtocol })(href))));
+    });
+
+    it('should add mailto: for a link if it is an email', () => {
+      const { editorView, pluginState } = editor(doc(linkable('{<>}')));
+      const href = 'test@atlassian.com';
+      const hrefWithProtocol = 'mailto:' + href;
+
+      pluginState.addLink({ href }, editorView);
+
+      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: hrefWithProtocol })(href))));
+    });
+
     it('does not permit adding a link to an existing link', () => {
       const { editorView, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('{<}link{>}'))));
 

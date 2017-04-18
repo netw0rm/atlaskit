@@ -249,6 +249,8 @@ describe(name, () => {
         'media-services/pdf',
         'media-services/preselected',
         'media-services/presentation',
+        'media-services/scale-large',
+        'media-services/scale-small',
         'media-services/spreadsheet',
         'media-services/square',
         'media-services/text',
@@ -257,8 +259,6 @@ describe(name, () => {
         'media-services/zip',
         'media-services/zoom-in',
         'media-services/zoom-out',
-        'media-services/scale-large',
-        'media-services/scale-small',
 
         'mention',
         'menu',

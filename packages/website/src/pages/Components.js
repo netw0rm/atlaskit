@@ -1,19 +1,10 @@
 import React from 'react';
-
-import {
-  Route,
-  Link,
-} from 'react-router-dom';
-
-import components from '../components';
-
+import { Route } from 'react-router-dom';
 import Component from './Component';
 
-/* eslint-disable react/prop-types */
-
+// eslint-disable-next-line react/prop-types
 const Components = ({ match }) => (
   <div>
-    <h2>Components</h2>
     <Route path={`${match.url}/:component`} component={Component} />
     <Route
       exact

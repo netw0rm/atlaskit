@@ -6,16 +6,39 @@ import StatelessDropdownMenu from './StatelessMenu';
 /* eslint-disable react/no-unused-prop-types */
 export default class DropdownMenu extends PureComponent {
   static propTypes = {
+    /**
+      * Controls the appearance of the menu.
+      * Default menu has scroll after its height exceeds the pre-defined amount.
+      * Tall menu has no restrictions.
+      */
     appearance: PropTypes.oneOf(['default', 'tall']),
+    /** Content that will be rendered inside the trigger element */
     children: PropTypes.node,
+    /** Controls the open state of the dropdown */
     defaultOpen: PropTypes.bool,
+    /** Controls whether it is possible to tab to the trigger.
+      * This should be true if some interactive element is used inside trigger (links, buttons).
+      */
     isTriggerNotTabbable: PropTypes.bool,
+    /** List of items.
+      * Should be an array of groups (see @atlastkit/droplist-group for available props).
+      * Every group should contain array of items (see @atlaskit/droplist-item for available props).
+      */
     items: PropTypes.array.isRequired, // eslint-disable-line react/forbid-prop-types
+    /** Called when an item is activated. Receives an object with the activated item */
     onItemActivated: PropTypes.func,
+    /** Called when the menu should be open/closed. Received an object with isOpen state */
     onOpenChange: PropTypes.func,
+    /** Position of the menu. See the documentation of @atlastkit/layer for more details */
     position: PropTypes.string,
+    /** Types of the menu's built-in trigger.
+      * default trigger is empty.
+      * button trigger uses the Button component with the 'expand' icon.
+      */
     triggerType: PropTypes.oneOf(['default', 'button']),
+    /** props to pass through to the trigger button. see @atlaskit/button for options */
     triggerButtonProps: PropTypes.shape(Button.propTypes),
+    /** Flip its position to the opposite side of its target if it does not fit */
     shouldFlip: PropTypes.bool,
   }
 

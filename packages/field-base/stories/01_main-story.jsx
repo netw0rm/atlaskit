@@ -11,7 +11,6 @@ import BasicFieldBase from './BasicFieldBase';
 import RightGutterFieldBase from './RightGutterFieldBase';
 import { name } from '../package.json';
 import AkFieldBase, { Label } from '../src';
-import { none, subtle } from '../src/internal/appearances';
 
 const formStyle = {
   padding: '20px',
@@ -272,8 +271,8 @@ storiesOf(name, module)
     <div style={{ display: 'inline-flex', flexDirection: 'column' }}>
       {
         [
-          subtle,
-          none,
+          'subtle',
+          'none',
         ].map((appearance) => {
           const id = uid();
           return (

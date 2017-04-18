@@ -11,7 +11,3 @@ See more detailed documentation and code examples in the [live demo of the compo
 ```sh
 npm install @NAME@
 ```
-
-## Using the component
-
-See examples of usage and detailed documentation in the [live demo of the component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).

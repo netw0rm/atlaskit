@@ -3,18 +3,21 @@
 const axios = require('axios');
 
 /*
-   To debug this file you should be able to change BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR to be the
-    name of the branch you are working on then call this script from a branch build AFTER running
-   yarn. It should then be able to simulate a master build fine.
-   (replacing the rest of the build after calling this with `sleep 300` is a good idea too!)
+   This script will automatically end a build if another build of the same branch is already running
+
+   In normal usage, we only use this for preventing multiple master builds from running, but this
+   also makes it easy to simulate a master build on a regular branch build. Simply call this script
+   from a regular branch build in bitbucket-pipelines.yml AFTER the yarn step (so that you have
+   axios installed)
 */
 
-const BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR = 'master';
 const BUILDS_PER_PAGE = 30;
+const BRANCH_TO_CHECK_FOR_MULTIPLE_BUILDS_FOR = process.env.BITBUCKET_BRANCH;
 const BB_USERNAME = process.env.BITBUCKET_USER;
 const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
 const CURRENT_BUILD_HASH = process.env.BITBUCKET_COMMIT;
-const pipelinesEndpoint = 'https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pipelines/';
+const PIPELINES_ENDPOINT = 'https://api.bitbucket.org/2.0/repositories/atlassian/atlaskit/pipelines/';
+const TIME_TO_WAIT_FOR_LOGS_UPLOAD_MS = 5000;
 
 const axiosRequestConfig = {
   auth: {
@@ -34,7 +37,7 @@ const axiosRequestConfig = {
 // Related documentation
 // https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/pipelines/%7Bpipeline_uuid%7D/stopPipeline
 function stopPipelineBuild(pipelineUUID) {
-  const stopPipelinesEndpoint = `${pipelinesEndpoint}${pipelineUUID}/stopPipeline`;
+  const stopPipelinesEndpoint = `${PIPELINES_ENDPOINT}${pipelineUUID}/stopPipeline`;
   console.log(`Stopping pipline using endpoint ${stopPipelinesEndpoint}`);
   // we'll return the promise and let it be caught outside (first param is just empty form data)
   return axios.post(stopPipelinesEndpoint, {}, {
@@ -45,7 +48,7 @@ function stopPipelineBuild(pipelineUUID) {
   });
 }
 
-axios.get(pipelinesEndpoint, axiosRequestConfig)
+axios.get(PIPELINES_ENDPOINT, axiosRequestConfig)
   .then((response) => {
     const allRunningPipelines = response.data.values;
     const currentPipeline = allRunningPipelines
@@ -62,7 +65,12 @@ axios.get(pipelinesEndpoint, axiosRequestConfig)
       console.log('Stopping this build to let that one finish');
       console.log('Feel free to re-run this build once that one is done if you like 👌');
 
-      return stopPipelineBuild(currentPipeline.uuid);
+      return new Promise((resolve) => {
+        // we need to wait a bit so that pipelines takes our logs and uploads them before we stop
+        // the build
+        setTimeout(() => resolve(), TIME_TO_WAIT_FOR_LOGS_UPLOAD_MS);
+      })
+      .then(() => stopPipelineBuild(currentPipeline.uuid));
       // We are actually going to let the build continue here as process.exit will return a non-zero
       // return code and we want to leave these as 'stopped', not 'failed'
     }

@@ -6,7 +6,7 @@ describe('isImageRemote', () => {
   it('should return false for local resource (true in IE)', () => {
     const localUrl = 'data:image/png;base64,iVBORw0KGgoAAHwAAAABJRU5ErkJggg==';
 
-    if (!isIE) {
+    if (!isIE()) {
       expect(isImageRemote(localUrl)).to.be.false;
     } else {
       expect(isImageRemote(localUrl)).to.be.true;
@@ -17,7 +17,7 @@ describe('isImageRemote', () => {
     const windowOrigin = 'https://www.atlassian.com:1234';
     const url = 'https://www.atlassian.com:1234/assets/images/image.png';
 
-    if (!isIE) {
+    if (!isIE()) {
       expect(isImageRemote(url, windowOrigin)).to.be.false;
     } else {
       expect(isImageRemote(url, windowOrigin)).to.be.true;

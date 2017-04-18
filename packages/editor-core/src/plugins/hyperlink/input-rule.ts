@@ -1,5 +1,5 @@
 import { URL_REGEX, EMAIL_REGEX } from './regex';
-import { Schema, inputRules, Plugin } from '../../prosemirror';
+import { Schema, inputRules, Plugin, InputRule } from '../../prosemirror';
 import { analyticsService } from '../../analytics';
 import { createInputRule } from '../utils';
 import { normalizeUrl } from './utils';
@@ -7,7 +7,7 @@ import { normalizeUrl } from './utils';
 const urlAtEndOfLine = new RegExp(`${URL_REGEX.source}$`);
 const emailAtEndOfLine = new RegExp(`${EMAIL_REGEX.source}$`);
 
-export function createLinkInputRule(regexp: RegExp, formatUrl: (url: string[]) => string) {
+export function createLinkInputRule(regexp: RegExp, formatUrl: (url: string[]) => string): InputRule {
   return createInputRule(regexp, (state, match, start, end) => {
     const { schema } = state;
     const url = formatUrl(match);

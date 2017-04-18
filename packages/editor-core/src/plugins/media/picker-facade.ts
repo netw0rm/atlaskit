@@ -1,5 +1,5 @@
 import { MediaStateManager, UploadParams } from './../../media';
-import { MediaPicker } from '@atlassian/mediapicker';
+import { MediaPicker } from 'mediapicker';
 import { ContextConfig } from '@atlaskit/media-core';
 
 export default class PickerFacade {

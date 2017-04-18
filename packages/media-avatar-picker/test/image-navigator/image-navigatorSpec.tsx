@@ -2,9 +2,9 @@ import * as React from 'react';
 import {mount} from 'enzyme';
 import {expect} from 'chai';
 // import * as sinon from 'sinon';
-import {CONTAINER_SIZE, ImageNavigator} from '../../src/image-navigator/index';
+import {CONTAINER_SIZE, ImageNavigator} from '../../src/image-navigator';
 import {ImageCropper} from '../../src/image-cropper';
-import {Slider} from '../../src/slider/index';
+import {Slider} from '../../src/slider';
 
 const imageSource = 'image-url';
 // const imageWidth = CONTAINER_SIZE;

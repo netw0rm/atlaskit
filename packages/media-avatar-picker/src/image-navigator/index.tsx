@@ -2,7 +2,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {ImageCropper, OnLoadHandler} from '../image-cropper';
-import {Slider} from '../slider/index';
+import {Slider} from '../slider';
 import {Container, SliderContainer} from './styled';
 import {akGridSizeUnitless} from '@atlaskit/util-shared-styles';
 import ScaleLargeIcon from '@atlaskit/icon/glyph/media-services/scale-large';

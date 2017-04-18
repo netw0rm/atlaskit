@@ -1,8 +1,8 @@
 /* tslint:disable:variable-name */
 import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import {ImageNavigator} from '../../src';
 import {tallImage} from '@atlaskit/media-test-helpers';
+import {ImageNavigator} from '../../src';
 
 let onLoadParams;
 let imageElement;

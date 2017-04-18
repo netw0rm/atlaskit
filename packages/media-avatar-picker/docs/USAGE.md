@@ -1,24 +1,60 @@
-# AkMediaAvatarPicker
+# @atlaskit/media-avatar-picker
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
-
-![Example @NAME@](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/@NAME@/docs/screencast.gif)
-
-## Try it out
-
-Interact with a [live demo of the @NAME@ component](https://aui-cdn.atlassian.com/atlaskit/stories/@NAME@/@VERSION@/).
+Provides a set of components to resize, drag, select and export user avatars. It also includes a default list of 
+predefined avatars.
 
 ## Installation
 
 ```sh
-npm install @NAME@
+yarn add @atlaskit/media-avatar-picker
 ```
 
 ## Using the component
 
-Use the component in your React app as follows:
+### AvatarPickerDialog
 
 ```
-import AkMediaAvatarPicker from '@NAME@';
-ReactDOM.render(<AkMediaAvatarPicker />, container);
+import {AvatarPickerDialog, Avatar} from '@atlaskit/media-avatar-picker';
+
+const avatars: Array<Avatar> = [];
+
+<AvatarPickerDialog avatars={avatars} />
+```
+
+### ImageCropper
+
+```
+import {ImageCropper} from '@atlaskit/media-avatar-picker';
+
+<ImageCropper imageSource={'http://remote-url.jpg'} imageWidth={300} scale={0.08} top={-80} left={-80} onDragStarted={action('DragStarted')} />
+```
+
+### ImageNavigator
+
+```
+import {ImageNavigator} from '@atlaskit/media-avatar-picker';
+
+const onLoad = (params) => {
+  console.log(params.export());
+};
+
+<ImageNavigator imageSource={tallImage} onLoad={onLoad} />
+```
+
+### PredefinedAvatarList
+
+```
+import {Avatar, PredefinedAvatarList} from '@atlaskit/media-avatar-picker';
+
+const avatars: Array<Avatar> = [];
+
+<PredefinedAvatarList avatars={avatars} selectedAvatar={avatars[0]} />
+```
+
+### Slider
+
+```
+import {Slider} from '@atlaskit/media-avatar-picker';
+
+<Slider value={20} min={0} max={100} onChange={action('onChange')} />
 ```

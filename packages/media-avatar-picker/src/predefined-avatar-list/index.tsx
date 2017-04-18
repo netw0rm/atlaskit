@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {PureComponent} from 'react';
 
-import {default as AvatarList, Avatar} from '../avatar-list';
+import {AvatarList, Avatar} from '../avatar-list';
 
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import Button from '@atlaskit/button';
@@ -34,7 +34,7 @@ export interface PredefinedAvatarListState {
   selectedAvatar?: Avatar;
 }
 
-export default class PredefinedAvatarList extends PureComponent<PredefinedAvatarListProps, PredefinedAvatarListState> {
+export class PredefinedAvatarList extends PureComponent<PredefinedAvatarListProps, PredefinedAvatarListState> {
   static defaultProps = {
     avatars: []
   };

@@ -3,9 +3,7 @@ import {storiesOf} from '@kadira/storybook';
 import * as React from 'react';
 import styled from 'styled-components';
 
-import AvatarList, {Avatar} from '../../src/avatar-list';
-import PredefinedAvatarList from '../../src/predefined-avatar-list';
-import PredefinedAvatarView from '../../src/predefined-avatar-view/index';
+import {AvatarList, Avatar, PredefinedAvatarList, PredefinedAvatarView} from '../../src';
 import {generateAvatars} from '../utils';
 
 const avatars: Array<Avatar> = generateAvatars(5);

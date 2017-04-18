@@ -2,7 +2,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
 import styled from 'styled-components';
-import {Slider} from '../../src/slider/index';
+import {Slider} from '../../src';
 
 const Container = styled.div`
     width: 500px

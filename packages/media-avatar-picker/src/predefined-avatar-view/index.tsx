@@ -2,7 +2,7 @@ import * as React from 'react';
 import {PureComponent} from 'react';
 
 import {PredefinedAvatarViewWrapper, LargeAvatarImage} from './styled';
-import {Avatar} from '../avatar-list/index';
+import {Avatar} from '../avatar-list';
 
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Button from '@atlaskit/button';
@@ -33,7 +33,7 @@ export interface PredefinedAvatarViewState {
   selectedAvatar?: Avatar;
 }
 
-export default class PredefinedAvatarView extends PureComponent<PredefinedAvatarViewProps, PredefinedAvatarViewState> {
+export class PredefinedAvatarView extends PureComponent<PredefinedAvatarViewProps, PredefinedAvatarViewState> {
   static defaultProps = {
     avatars: []
   };

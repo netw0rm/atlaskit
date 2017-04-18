@@ -4,12 +4,12 @@ import {PureComponent} from 'react';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 
-import {Avatar} from '../avatar-list/index';
-import {ImageNavigator} from '../image-navigator/index';
-import PredefinedAvatarList from '../predefined-avatar-list/index';
+import {Avatar} from '../avatar-list';
+import {ImageNavigator} from '../image-navigator';
+import {PredefinedAvatarList} from '../predefined-avatar-list';
 
 import {AvatarPickerViewWrapper} from './styled';
-import PredefinedAvatarView from '../predefined-avatar-view/index';
+import {PredefinedAvatarView} from '../predefined-avatar-view';
 import {tallImage} from '@atlaskit/media-test-helpers';
 
 export interface AvatarPickerDialogProps {
@@ -25,7 +25,7 @@ export interface AvatarPickerDialogState {
   mode: Mode;
 }
 
-export default class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, AvatarPickerDialogState> {
+export class AvatarPickerDialog extends PureComponent<AvatarPickerDialogProps, AvatarPickerDialogState> {
   static defaultProps = {
     avatars: []
   };

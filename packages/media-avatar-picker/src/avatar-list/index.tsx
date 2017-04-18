@@ -18,7 +18,7 @@ export interface AvatarListProps {
   onItemClick?: (avatar: Avatar) => void;
 }
 
-export default class AvatarList extends PureComponent<AvatarListProps, {}> {
+export class AvatarList extends PureComponent<AvatarListProps, {}> {
   static defaultProps = {
     avatars: []
   };

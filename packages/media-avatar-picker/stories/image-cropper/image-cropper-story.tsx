@@ -1,7 +1,7 @@
 /* tslint:disable:variable-name */
 import { storiesOf, action } from '@kadira/storybook';
 import * as React from 'react';
-import {ImageCropper} from '../../src/image-cropper';
+import {ImageCropper} from '../../src';
 import {tallImage} from '@atlaskit/media-test-helpers';
 
 const naturalWidth = 5360;

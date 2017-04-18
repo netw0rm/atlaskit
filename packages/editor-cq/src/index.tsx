@@ -240,7 +240,7 @@ export default class Editor extends PureComponent<Props, State> {
           ...listsPlugins(schema),
           ...rulePlugins(schema),
           ...textFormattingPlugins(schema),
-          mediaPlugins,
+          ...mediaPlugins,
           ...panelPlugins(schema),
           history(),
           keymap(cqKeymap),

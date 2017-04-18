@@ -6,7 +6,7 @@ describe('isImageRemote', () => {
   it('should return false for local resource (true in IE)', () => {
     const localUrl = 'data:image/png;base64,iVBORw0KGgoAAHwAAAABJRU5ErkJggg==';
 
-    if (!isIE()) {
+    if (hasNewURL) {
       expect(isImageRemote(localUrl)).to.be.false;
     } else {
       expect(isImageRemote(localUrl)).to.be.true;
@@ -17,7 +17,7 @@ describe('isImageRemote', () => {
     const windowOrigin = 'https://www.atlassian.com:1234';
     const url = 'https://www.atlassian.com:1234/assets/images/image.png';
 
-    if (!isIE()) {
+    if (hasNewURL()) {
       expect(isImageRemote(url, windowOrigin)).to.be.false;
     } else {
       expect(isImageRemote(url, windowOrigin)).to.be.true;
@@ -42,7 +42,7 @@ describe('isImageRemote', () => {
     expect(isImageRemote(url, windowOrigin)).to.be.true;
   });
 
-  const isIE = () => {  // IE doesn't have support for new URL
-    return !URL || !URL.prototype;
+  const hasNewURL = () => {  // returns true if "new URL" is supported (IE doesn't support it)
+    return URL && URL.prototype;
   };
 });

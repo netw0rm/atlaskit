@@ -301,7 +301,11 @@ function mediaPluginFactory(options: MediaPluginOptions) {
       const pluginState = stateKey.getState(view.state);
       pluginState.setView(view); // no need for
 
-      return {};
+      return {
+        update(view: EditorView, prevState: EditorState<any>) {
+          pluginState.update(view.state, view);
+        }
+      };
     },
     props: {
       handleDOMEvents: {

@@ -16,4 +16,4 @@ retry \
 --retries=$MAX_RETRIES \
 -- \
 node --max-old-space-size=4096 node_modules/.bin/karma start \
-./build/karma/wc/browserstackAll.js
+./build/karma/wc/browserstackAll.coverage.js

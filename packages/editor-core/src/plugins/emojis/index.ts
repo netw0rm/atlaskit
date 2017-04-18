@@ -123,7 +123,7 @@ export class EmojiState {
   private findEmojiQueryMark() {
     const { state } = this;
     const { doc, schema, selection } = state;
-    const { from } = selection;
+    const { to, from } = selection;
     const { emojiQuery } = schema.marks;
 
     let start = from;
@@ -144,6 +144,12 @@ export class EmojiState {
       end = start + node.nodeSize;
     }
 
+    // Emoji inserted via picker
+    if (start === 0 && end === 0) {
+      start = from;
+      end = to;
+    }
+
     return { start, end };
   }
 
@@ -158,6 +164,7 @@ export class EmojiState {
       view.dispatch(
         state.tr.replaceWith(start, end, [node, textNode])
       );
+      view.focus();
     } else {
       this.dismiss();
     }

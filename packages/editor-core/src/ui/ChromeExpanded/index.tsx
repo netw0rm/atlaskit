@@ -29,6 +29,7 @@ import ToolbarLists from '../ToolbarLists';
 import ToolbarTextFormatting from '../ToolbarTextFormatting';
 import ToolbarAdvancedTextFormatting from '../ToolbarAdvancedTextFormatting';
 import ToolbarImage from '../ToolbarImage';
+import ToolbarEmojiPicker from '../ToolbarEmojiPicker';
 import * as styles from './styles';
 import { EditorView } from '../../prosemirror';
 
@@ -73,6 +74,7 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
             /> : null}
           {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} editorView={props.editorView} /> : null}
           {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
+          {props.pluginStateEmojis && props.emojiProvider ? <ToolbarEmojiPicker pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
           <span style={{ flexGrow: 1 }} />
           {props.feedbackFormUrl ? <ToolbarFeedback packageVersion={props.packageVersion} packageName={props.packageName} /> : null}
         </div>

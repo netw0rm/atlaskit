@@ -45,7 +45,7 @@ export const genericLinkId = {
 };
 
 export const spotifyLinkId = {
-  id: 'b3205cf6-7c26-4208-a1a2-50488bffa973',
+  id: '410f38f7-ce31-4527-a69d-740e958bf1d1',
   mediaItemType: linkType,
   collectionName
 };

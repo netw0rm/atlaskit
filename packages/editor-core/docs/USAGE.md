@@ -163,7 +163,7 @@ Two flavours of JavaScript are published:
 If you're using webpack, adjust your [`resolve.packageMains`](https://webpack.github.io/docs/configuration.html#resolve-packagemains) accordingly.
 
 
-#### Usage
+### Usage
 
 Unless you're developing a new editor for a product, you've probably arrived at the wrong package. Consider using:
 

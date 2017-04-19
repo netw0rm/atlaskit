@@ -35,7 +35,7 @@ function build_coverage_report() {
   local TARGET_PATH="$1"
 
   $CHALK --no-stdin -t "{blue Building storybook (PR)}"
-  $LERNA_LOC exec --scope echo $CHANGED_PACKAGES
+  $LERNA_LOC exec --scope "$CHANGED_PACKAGES" -- echo $CHANGED_PACKAGES
   $LERNA_LOC exec --scope "$CHANGED_PACKAGES" -- ls -la coverage
   $LERNA_LOC exec --scope "$CHANGED_PACKAGES" -- cp -r "coverage" "$TARGET_PATH"
 }

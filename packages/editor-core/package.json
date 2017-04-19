@@ -58,7 +58,7 @@
     "prosemirror-schema-list": "^0.19.0",
     "prosemirror-state": "^0.19.1",
     "prosemirror-transform": "^0.19.0",
-    "prosemirror-view": "git://github.com/jspn500/prosemirror-view#5e091806a7e3451ff82866febcf47affee4dc935",
+    "prosemirror-view": "git://github.com/jspn500/prosemirror-view#3ce66f49b0b6cf7f2795fd686810c32fba7376a6",
     "tslib": "^1.2.0",
     "typestyle": "^0.21.4"
   },

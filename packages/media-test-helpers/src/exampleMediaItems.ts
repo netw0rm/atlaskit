@@ -11,8 +11,13 @@ export const genericUrlPreviewId = {
   mediaItemType: linkType
 };
 
-export const videoUrlPreviewId = {
+export const youTubeUrlPreviewId = {
   url: 'https://www.youtube.com/watch?v=4OkP5_1qb7Y',
+  mediaItemType: linkType
+};
+
+export const videoUrlPreviewId = {
+  url: 'https://github.com/mediaelement/mediaelement-files/blob/master/big_buck_bunny.mp4?raw=true',
   mediaItemType: linkType
 };
 
@@ -77,6 +82,12 @@ export const playerLinkId = {
 
 export const genericFileId = {
   id: '2dfcc12d-04d7-46e7-9fdf-3715ff00ba40',
+  mediaItemType: fileType,
+  collectionName
+};
+
+export const audioFileId = {
+  id: 'a965c8df-1d64-4db8-9de5-16dfa8fd2e12', // mp3 audio
   mediaItemType: fileType,
   collectionName
 };

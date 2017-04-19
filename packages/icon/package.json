@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/icon",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "config": {
     "access": "public"
   },
@@ -17,7 +17,8 @@
   },
   "files": [
     "dist",
-    "glyph"
+    "glyph",
+    "lib"
   ],
   "license": "SEE LICENSE IN LICENSE",
   "author": "Atlassian Pty Ltd",

@@ -1,8 +1,10 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
+import { EmojiId } from '@atlaskit/emoji';
+
 import { ReactionPicker, Reactions, ResourcedReactions, ResourcedReactionPicker } from '../src';
 import Reaction from '../src/internal/reaction';
-import Selector, { defaultReactionsByShortcut } from '../src/internal/selector';
+import Selector, { defaultReactionsByShortName } from '../src/internal/selector';
 import Trigger from '../src/internal/trigger';
 import { reactionsProvider, reactionsProviderPromise } from './examples/reactions-provider';
 
@@ -93,14 +95,14 @@ storiesOf(`${name}/Resourced Components`, module)
 storiesOf(`${name}/Internal Components`, module)
   .add('Reaction', () => (
     <Reaction
-      reaction={{ emojiId: defaultReactionsByShortcut.get('smiley') as string, count: 1, reacted: false, ari: demoAri }}
+      reaction={{ emojiId: defaultReactionsByShortName.get('smiley') as EmojiId, count: 1, reacted: false, ari: demoAri }}
       emojiProvider={getEmojiResource()}
       onClick={action('reaction clicked')}
     />
   ))
   .add('Reaction - reacted', () => (
     <Reaction
-      reaction={{ emojiId: defaultReactionsByShortcut.get('smiley') as string, count: 1, reacted: true, ari: demoAri }}
+      reaction={{ emojiId: defaultReactionsByShortName.get('smiley') as EmojiId, count: 1, reacted: true, ari: demoAri }}
       emojiProvider={getEmojiResource()}
       onClick={action('reaction clicked')}
     />

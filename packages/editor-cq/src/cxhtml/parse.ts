@@ -308,9 +308,10 @@ function converter(content: Fragment, node: Node): Fragment | PMNode | null | un
       case 'H3':
       case 'H4':
       case 'H5':
-      case 'H6':
         const level = Number(tag.charAt(1));
         return schema.nodes.heading.createChecked({ level }, content);
+      case 'H6':
+        return schema.nodes.heading.createChecked({ level: 5 }, content);
       case 'BR':
         return schema.nodes.hardBreak.createChecked();
       case 'HR':

@@ -20,7 +20,7 @@ $CHALK --no-stdin -t "{green -- Changed Packages --}"
 echo "$CHANGED_PACKAGES"
 
 OUTDIR=$(mktemp -d)
-BUILD_SPECIFIC_URL_PART="$CHANGED_PACKAGES/coverage/html"
+BUILD_SPECIFIC_URL_PART="coverage_reports"
 
 function coverage_build_status() {
   build_status \
@@ -36,9 +36,8 @@ function build_coverage_report() {
 
   $CHALK --no-stdin -t "{blue Creating coverage reports for (PR)}"
   echo "$CHANGED_PACKAGES"
-  $LERNA_LOC exec --scope "$CHANGED_PACKAGES" -- echo $CHANGED_PACKAGES
-  $LERNA_LOC exec -- ls -la
-  $LERNA_LOC exec -- cp -r "coverage" "$TARGET_PATH"
+  cd $BASEDIR
+  cp -r ../../coverage/ "$TARGET_PATH"
 }
 
 coverage_build_status "INPROGRESS"

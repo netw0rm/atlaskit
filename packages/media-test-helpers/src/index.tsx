@@ -7,3 +7,4 @@ export * from './waitUntil';
 export * from './story-styles';
 export * from './collectionNames';
 export * from './exampleMediaItems';
+export * from './createMouseEvent';

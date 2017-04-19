@@ -7,10 +7,10 @@ export const createNestedListStyles = (): any => {
   const listStyleTypes = ['decimal', 'lower-alpha', 'lower-roman'];
   let key = '';
   for (let i = 0; i < 9; i++) {
-    styles[`${key}li`] = {
+    styles[`${key} > li`] = {
       listStyleType: listStyleTypes[i % 3]
     };
-    key += 'ol ';
+    key += ' > li > ol';
   }
   return styles;
 };

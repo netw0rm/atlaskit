@@ -3,7 +3,6 @@ import {
   EditorState,
   EditorView,
   Schema,
-  Fragment,
   Plugin,
   PluginKey,
 } from '../../prosemirror';
@@ -152,9 +151,8 @@ export class MentionsState {
       const renderName = mentionData.nickname ? mentionData.nickname : mentionData.name;
       const node = mention.create({ text: `@${renderName}`, id: mentionData.id });
       const textNode = state.schema.text(' ');
-      const fragment = new Fragment([node, textNode], node.nodeSize + textNode.nodeSize);
       view.dispatch(
-        state.tr.replaceWith(start, end, fragment)
+        state.tr.replaceWith(start, end, [node, textNode])
       );
     } else {
       this.dismiss();

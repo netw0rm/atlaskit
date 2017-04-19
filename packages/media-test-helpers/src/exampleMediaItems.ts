@@ -6,7 +6,7 @@ const linkType: MediaItemType = 'link';
 
 // === URL PREVIEW ===
 
-export const genericLinkPreviewId = {
+export const genericUrlPreviewId = {
   url: 'https://atlassian.com',
   mediaItemType: linkType
 };
@@ -67,7 +67,7 @@ export const twitterLinkId = {
   mediaItemType: linkType
 };
 
-export const linkPlayerId = {
+export const playerLinkId = {
   id: 'f0e80555-cf97-44ae-afef-9cbfae8c73c7',
   mediaItemType: linkType,
   collectionName

@@ -15,6 +15,8 @@ import StatusDropdown from './examples/StatusDropdown';
 import StatusDropdownRaw from '!raw!./examples/StatusDropdown';
 import LongItemsDropdown from './examples/LongItemsDropdown';
 import LongItemsDropdownRaw from '!raw!./examples/LongItemsDropdown';
+import WideDropdown from './examples/WideDropdown';
+import WideDropdownRaw from '!raw!./examples/WideDropdown';
 /* eslint-enable import/first, import/no-duplicates */
 
 import {
@@ -201,4 +203,9 @@ storiesOf(name, module)
     'Dropdown with long items and titles',
     () => (LongItemsDropdown),
     { scripts: [LongItemsDropdownRaw] }
+  )
+  .addCodeExampleStory(
+    'Dropdown that fits container width',
+    () => (WideDropdown),
+    { scripts: [WideDropdownRaw] },
   );

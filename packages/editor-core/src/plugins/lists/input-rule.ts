@@ -1,17 +1,11 @@
 import { Schema, inputRules, Plugin, wrappingInputRule, NodeType, InputRule } from '../../prosemirror';
 import { trackAndInvoke } from '../../analytics';
 
-let plugin: Plugin | undefined;
-
 export function createInputRule(regexp: RegExp, nodeType: NodeType): InputRule {
   return wrappingInputRule(regexp, nodeType, {}, (_, node) => node.type === nodeType);
 }
 
-export default function inputRulePlugin(schema: Schema<any, any>): Plugin {
-  if (plugin) {
-    return plugin;
-  }
-
+export default function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
   const rules: InputRule[] = [];
 
   if (schema.nodes.bulletList) {
@@ -31,7 +25,7 @@ export default function inputRulePlugin(schema: Schema<any, any>): Plugin {
     rules.push(rule);
   }
 
-  plugin = inputRules({ rules });
-
-  return plugin;
+  if (rules.length !== 0) {
+    return inputRules({ rules });
+  }
 };

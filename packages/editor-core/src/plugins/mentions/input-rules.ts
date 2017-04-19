@@ -2,12 +2,7 @@ import { Transaction, Plugin, InputRule, inputRules, Schema } from '../../prosem
 import { MentionsState, stateKey } from './';
 import { createInputRule } from '../utils';
 
-let plugin: Plugin | undefined;
-
-export function inputRulePlugin(schema: Schema<any, any>): Plugin {
-  if (plugin) {
-    return plugin;
-  }
+export function inputRulePlugin(schema: Schema<any, any>): Plugin | undefined {
 
   const rules: Array<InputRule> = [];
 
@@ -40,13 +35,9 @@ export function inputRulePlugin(schema: Schema<any, any>): Plugin {
     rules.push(mentionQueryRule);
   }
 
-  plugin = inputRules({ rules });
-
-  return plugin;
-}
-
-export function destroyRulePluginCache() {
-  plugin = undefined;
+  if (rules.length !== 0) {
+    return inputRules({ rules });
+  }
 }
 
 export default inputRulePlugin;

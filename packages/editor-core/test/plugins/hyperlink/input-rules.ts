@@ -4,6 +4,7 @@ import HyperlinkPlugin from '../../../src/plugins/hyperlink';
 import {
   insertText, chaiPlugin, fixtures, makeEditor, doc, a as link, linkable, code_block
 } from '../../../src/test-helper';
+import defaultSchema from '../../../src/test-helper/schema';
 
 chai.use(chaiPlugin);
 
@@ -11,7 +12,7 @@ describe('hyperlink', () => {
   const fixture = fixtures();
   const editor = (doc: any) => makeEditor({
     doc,
-    plugin: HyperlinkPlugin,
+    plugins: HyperlinkPlugin(defaultSchema),
     place: fixture(),
   });
 
@@ -76,6 +77,30 @@ describe('hyperlink', () => {
       insertText(editorView, 'javascript://alert(1);', sel, sel);
 
       expect(editorView.state.doc).to.deep.equal(doc(linkable('javascript://alert(1);')));
+    });
+
+    it('should convert prettyandsimple@example.com to a link', () => {
+      const { editorView, sel } = editor(doc(linkable('{<>}')));
+      insertText(editorView, 'prettyandsimple@example.com', sel, sel);
+      expect(editorView.state.doc).to.deep.equal(doc(linkable(link({ href: 'mailto:prettyandsimple@example.com' })('prettyandsimple@example.com'))));
+    });
+
+    it('should not convert mention like string to a mailto link', () => {
+      const { editorView, sel } = editor(doc(linkable('{<>}')));
+      insertText(editorView, '@example', sel, sel);
+      expect(editorView.state.doc).to.not.deep.equal(doc(linkable(link({ href: 'mailto:@example' })('@example'))));
+    });
+
+    it('should not convert invalid emails like to a mailto link (no @ simbol)', () => {
+      const { editorView, sel } = editor(doc(linkable('{<>}')));
+      insertText(editorView, 'Abc.example.com', sel, sel);
+      expect(editorView.state.doc).to.not.deep.equal(doc(linkable(link({ href: 'mailto:Abc.example.com' })('Abc.example.com'))));
+    });
+
+    it('should not convert invalid emails like to a mailto link (double dot)', () => {
+      const { editorView, sel } = editor(doc(linkable('{<>}')));
+      insertText(editorView, 'john.doe@example..com', sel, sel);
+      expect(editorView.state.doc).to.not.deep.equal(doc(linkable(link({ href: 'mailto:john.doe@example..com' })('john.doe@example..com'))));
     });
 
     it('should convert "[text](http://foo)" to hyperlink', () => {

@@ -362,7 +362,7 @@ function convertConfluenceMacro(node: Element): Fragment | PMNode | null | undef
       let nodeSize = 0;
 
       if (!!title) {
-        const titleNode = schema.nodes.paragraph.create({ level: 1 }, schema.text(title, [schema.marks.strong.create()]));
+        const titleNode = schema.nodes.heading.create({ level: 5 }, schema.text(title, [schema.marks.strong.create()]));
         content.push(titleNode);
         nodeSize += titleNode.nodeSize;
       }

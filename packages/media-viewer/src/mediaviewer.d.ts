@@ -21,16 +21,49 @@ export type MediaViewerAssets = {
   readonly basePath: string
 };
 
+export type MediaViewerType = 'image' | 'document' | 'video' | '3d';
+
 export interface MediaViewerConfig {
   readonly assets: MediaViewerAssets;
   readonly fetchToken: (file: MediaFile) => JQueryPromise<MediaFileAttributes>;
+
+  readonly appendTo?: (node: Node) => void;
+  readonly files?: Array<MediaFileAttributes>;
+  readonly commentService?: Object;
+
+  readonly templateBackend?: Function;
+  readonly moduleBackend?: Function;
+  readonly pdfTransportFactory?: Function;
+
+  readonly enableListLoop?: boolean;
+  readonly enablePresentationMode?: boolean;
+  readonly preloadImagesAfterCurrent?: number;
+  readonly preloadImagesBeforeCurrent?: number;
+  readonly videoDefaultQualityHd?: boolean;
+  readonly customStorage?: Object;
+  readonly viewers?: Array<MediaViewerType>;
+  readonly embedded?: boolean;
+  readonly contained?: boolean;
+  readonly i18n?: Object;
 }
 
 export type MediaViewerMode = 'BASE' | 'PRESENTATION' | 'CONTAINED';
 
 export interface MediaViewerInterface {
-  open(fileQuery?: Object): Promise<void>;
-  setFiles(files: Array<Object>, nextFileQuery?: Object): void;
+  open(fileQuery?: Object): JQueryPromise<void>;
+  close(): void;
+
+  setFiles(files: Array<MediaFileAttributes>, nextFileQuery?: Object): void;
+  showFileNext(): JQueryPromise<MediaFileAttributes>;
+  showFilePrev(): JQueryPromise<MediaFileAttributes>;
+  showFileWithQuery(query: any): JQueryPromise<MediaFileAttributes>;
+
+  getCurrent(): MediaFileAttributes;
+  getCurrentFiles(): Array<MediaFileAttributes>;
+
+  isOpen(): boolean;
+  isShowingFirstFile(): boolean;
+  isShowingLastFile(): boolean;
 
   on(eventName: 'fv.open', callback: () => void, context?: any): void;
   on(eventName: 'fv.close', callback: () => void, context?: any): void;

@@ -1,6 +1,7 @@
 import {
   EditorState,
   EditorView,
+  Schema,
   Mark,
   Node,
   Plugin,
@@ -12,7 +13,7 @@ import {
 import * as commands from '../../commands';
 import inputRulePlugin from './input-rule';
 import keymapPlugin from './keymap';
-import { reconfigure } from '../utils';
+import { normalizeUrl } from './utils';
 
 export type HyperlinkStateSubscriber = (state: HyperlinkState) => any;
 export type StateChangeHandler = (state: HyperlinkState) => any;
@@ -58,7 +59,7 @@ export class HyperlinkState {
       const { state } = this;
       const { href } = options;
       const { empty, $from, $to } = state.selection;
-      const mark = state.schema.mark('link', { href });
+      const mark = state.schema.mark('link', { href: normalizeUrl(href) });
       const tr = empty
         ? state.tr.replaceWith($from.pos, $to.pos, state.schema.text(href, [mark]))
         : state.tr.addMark($from.pos, $to.pos, mark);
@@ -90,7 +91,7 @@ export class HyperlinkState {
       const to = this.activeLinkStartPos + this.text!.length;
       view.dispatch(state.tr
         .removeMark(from, to, this.activeLinkMark)
-        .addMark(from, to, state.schema.mark('link', { href: options.href })));
+        .addMark(from, to, state.schema.mark('link', { href: normalizeUrl(options.href) })));
     }
   }
 
@@ -241,10 +242,6 @@ const plugin = new Plugin({
   key: stateKey,
   view: (view: EditorView) => {
     stateKey.getState(view.state).update(view.state, view.docView, true);
-    reconfigure(view, [
-      keymapPlugin(view.state.schema),
-      inputRulePlugin(view.state.schema),
-    ]);
 
     return {
       update: (view: EditorView, prevState: EditorState<any>) => {
@@ -255,4 +252,8 @@ const plugin = new Plugin({
   }
 });
 
-export default plugin;
+const plugins = (schema: Schema<any, any>) => {
+  return [plugin, inputRulePlugin(schema), keymapPlugin(schema)].filter((plugin) => !!plugin) as Plugin[];
+};
+
+export default plugins;

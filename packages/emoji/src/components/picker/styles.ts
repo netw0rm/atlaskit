@@ -20,6 +20,10 @@ import {
   emojiPickerWidth,
 } from '../../shared-styles';
 
+export const pickerEmoji = style({
+  margin: '4px',
+});
+
 export const emojiPickerFooter = style({
   borderTop: `2px solid ${akColorN30A}`,
   boxShadow: emojiFooterBoxShadow,

@@ -21,7 +21,9 @@ import {
   PanelPlugin,
   mentionNodeView,
   MentionsPlugin,
-  ProviderFactory
+  ProviderFactory,
+  Slice,
+  Fragment
 } from '@atlaskit/editor-core';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -246,6 +248,34 @@ export default class Editor extends PureComponent<Props, State> {
             analyticsService.trackEvent('atlassian.editor.paste');
             return false;
           }
+        },
+        handlePaste(view: EditorView, event: Event, slice: Slice): boolean {
+          const { parentOffset } = view.state.selection.$from;
+          const nodes: Node[] = [];
+          const { schema } = view.state;
+
+          for (let i = 0, len = slice.content.childCount; i < len; i++) {
+            const node = slice.content.child(i);
+            if (node) {
+              if (parentOffset === 0 && node.type.name === 'heading' && node.attrs.level === 6) {
+                nodes.push(
+                  schema.nodes.heading.create({level: 5}, node.content)
+                );
+              } else {
+                const content = (parentOffset === 0) ? node : schema.text(node.textContent);
+                nodes.push(content);
+              }
+            }
+          }
+
+          if (nodes.length) {
+            view.dispatch(view.state.tr.replaceSelection(
+              new Slice(Fragment.from(nodes), 0, 0)
+            ));
+            return true;
+          }
+
+          return false;
         }
       });
 

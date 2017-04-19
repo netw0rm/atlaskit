@@ -2,7 +2,6 @@ import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import * as chaiAsPromised from 'chai-as-promised';
-import * as rewire from 'rewire';
 import {
   chaiPlugin
 } from '../../../src/test-helper';
@@ -12,65 +11,11 @@ import {
   MediaStateManager
 } from '../../../src/media';
 
-import {
-  default as PickerFacade,
-  PickerEvent
-} from '../../../src/plugins/media/picker-facade';
+import PickerFacade from '../../../src/plugins/media/picker-facade';
+import MockMediaPicker from './mock-media-picker';
 
 chai.use(chaiPlugin);
 chai.use(chaiAsPromised);
-
-class MockMediaPicker {
-  public pickerType: string;
-  public pickerConfig: any;
-  public activated = false;
-  public shown = false;
-  public torndown = false;
-  public deactivated = false;
-  public listeners: {[eventName: string]: Array<(...args: any[]) => any> } = {};
-
-  on(eventName: string, cb: (...args: any[]) => any) {
-    const { listeners } = this;
-
-    if (!listeners[eventName]) {
-      listeners[eventName] = [];
-    }
-
-    listeners[eventName].push(cb);
-  }
-
-  activate() {
-    this.activated = true;
-  }
-
-  show() {
-    this.shown = true;
-  }
-
-  teardown: any = () => {
-    this.torndown = true;
-  }
-
-  deactivate = () => {
-    this.deactivated = true;
-  }
-
-  removeAllListeners() {
-    this.listeners = {};
-  }
-
-  __triggerEvent(eventName, event: PickerEvent) {
-    const { listeners } = this;
-
-    if (!listeners[eventName]) {
-      return;
-    }
-
-    listeners[eventName].forEach((cb) => {
-      cb.call(cb, event);
-    });
-  }
-}
 
 describe('Media PickerFacade', () => {
   let stateManager: MediaStateManager | undefined;
@@ -94,7 +39,7 @@ describe('Media PickerFacade', () => {
   const testFileData = {
     id: testFileId,
     name: 'test name',
-    size: 123456,
+    size: Math.round(Math.random() * 1047552),
     type: 'test/file',
     creationDate: (new Date().getTime())
   };
@@ -181,7 +126,6 @@ describe('Media PickerFacade', () => {
       mockPicker.__triggerEvent('upload-start', {
         file: testFileData
       });
-      debugger;
       expect(cb.calledWithExactly({
         id: testTemporaryFileId,
         status: 'uploading',

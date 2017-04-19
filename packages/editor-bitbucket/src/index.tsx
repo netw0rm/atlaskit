@@ -284,6 +284,8 @@ export default class Editor extends PureComponent<Props, State> {
           schema,
           doc: parseHtml(this.props.defaultValue || ''),
           plugins: [
+            ...mentionsPlugins(schema), // mentions and emoji needs to be first
+            ...emojisPlugins(schema),
             ...listsPlugins(schema),
             ...blockTypePlugins(schema),
             ...clearFormattingPlugins(schema),
@@ -292,8 +294,6 @@ export default class Editor extends PureComponent<Props, State> {
             ...hyperlinkPlugins(schema),
             ...rulePlugins(schema),
             ...imageUploadPlugins(schema),
-            ...mentionsPlugins(schema),
-            ...emojisPlugins(schema),
             history(),
             keymap(bitbucketKeymap),
             keymap(baseKeymap) // should be last :(

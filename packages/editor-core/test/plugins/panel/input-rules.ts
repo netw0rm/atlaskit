@@ -44,7 +44,7 @@ describe('panel input rules', () => {
 
     const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
     inputRulePlugin!.props.handleTextInput!(editorView, 5, 5, '}');
-    expect(editorView.state.doc.content.content[0].attrs.panelType).to.deep.equal('tip');
+    expect(editorView.state.doc.content.child(0).attrs.panelType).to.deep.equal('tip');
   });
 
   it('should replace {warning} input with panel node of type warning', () => {
@@ -52,6 +52,6 @@ describe('panel input rules', () => {
 
     const inputRulePlugin = PanelInputRulesPlugin(editorView.state.schema);
     inputRulePlugin!.props.handleTextInput!(editorView, 9, 9, '}');
-    expect(editorView.state.doc.content.content[0].attrs.panelType).to.deep.equal('warning');
+    expect(editorView.state.doc.content.child(0).attrs.panelType).to.deep.equal('warning');
   });
 });

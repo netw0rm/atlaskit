@@ -26,7 +26,7 @@ describe('@atlaskit/reactions/selector', () => {
     expect(emojis.length).to.equal(defaultReactions.length);
 
     emojis.forEach(emoji => {
-      expect(isDefaultReaction(emoji.props().emojiId.id)).to.equal(true);
+      expect(isDefaultReaction(emoji.props().emojiId)).to.equal(true);
     });
   });
 

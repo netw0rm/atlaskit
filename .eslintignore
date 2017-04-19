@@ -3,4 +3,5 @@
 /stories
 /build/tslint-rules
 packages/icon/glyph
-packages/icon/src/tmp
+packages/icon/lib
+packages/icon/tmp

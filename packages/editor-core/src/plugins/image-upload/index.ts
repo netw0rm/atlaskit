@@ -145,7 +145,7 @@ export class ImageUploadState {
 
   private getActiveImageElement(docView: NodeViewDesc): HTMLElement {
     const { $from } = this.state.selection;
-    const { node, offset } = docView.domFromPos($from.pos, 1);
+    const { node, offset } = docView.domFromPos($from.pos);
 
     if (node.childNodes.length === 0) {
       return node.parentElement!;

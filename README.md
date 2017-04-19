@@ -38,16 +38,15 @@ Check out the [AtlasKit Registry][AtlasKitRegistry] to learn more.
 There is a subset of components available as styles called the Reduced UI pack.
 To use:
 
-1.You include these into your the HTML projects.
+1. You include these into your the HTML projects.
 
 ```
 <link rel="stylesheet" href="//unpkg.com/@atlaskit/css-reset@latest" />
 <link rel="stylesheet" href="//unpkg.com/@atlaskit/reduced-ui-pack@latest" />
 ```
-2.Then you can style HTML with 
+2. Then you can style HTML with 
 
-`<
-button class="ak-button ak-button__appearance-primary">Submit</button>`
+`<button class="ak-button ak-button__appearance-primary">Submit</button>`
 
 Check out the [Reduced UI pack](http://go.atlassian.com/reduced-ui-pack) for more examples and details.
 

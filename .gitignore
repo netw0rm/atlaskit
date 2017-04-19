@@ -25,4 +25,5 @@ packages/**/**/CHANGELOG.md
 **/local-config.js
 packages/**/yarn.lock
 changed-packages
+coverage
 packages/**/coverage/*

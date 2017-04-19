@@ -36,10 +36,9 @@ function build_coverage_report() {
 
   $CHALK --no-stdin -t "{blue Creating coverage reports for (PR)}"
   echo "$CHANGED_PACKAGES"
-  SAFE_PKG=$(echo "$CHANGED_PACKAGES" | sed -e "s/^@atlaskit\///")
   $LERNA_LOC exec --scope "$CHANGED_PACKAGES" -- echo $CHANGED_PACKAGES
-  $LERNA_LOC exec --scope "$CHANGED_PACKAGES" -- ls -la
-  $LERNA_LOC exec --scope "$CHANGED_PACKAGES" -- cp -r "coverage" "$TARGET_PATH"
+  $LERNA_LOC exec -- ls -la
+  $LERNA_LOC exec -- cp -r "coverage" "$TARGET_PATH"
 }
 
 coverage_build_status "INPROGRESS"

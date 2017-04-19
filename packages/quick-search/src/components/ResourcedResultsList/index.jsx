@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 
 import { AbstractResource, SearchSubscriber } from '../../api/SearchResource';
-import JsonToResultParser from '../../api/JsonToResultParser';
+import { GroupedResultsParser, JsonToResultParser } from '../../api/JsonToResultParser';
 import uniqueId from '../../util/id';
 
 export default class ResourcedResultsList extends Component {
   static propTypes = {
     searchResource: PropTypes.instanceOf(AbstractResource).isRequired,
     jsonToResultParser: PropTypes.instanceOf(JsonToResultParser),
-    callbacks: PropTypes.shape({
+    resultCallbacks: PropTypes.shape({
       HipChatConversation: PropTypes.func,
     }),
     onSearchTerminate: PropTypes.func,
@@ -30,10 +30,7 @@ export default class ResourcedResultsList extends Component {
     });
     this.jsonToResultParser =
       this.props.jsonToResultParser ||
-      new JsonToResultParser({
-        callbacks: props.callbacks,
-        onSearchTerminate: props.onSearchTerminate,
-      });
+      new GroupedResultsParser(props.onSearchTerminate, props.resultCallbacks);
   }
 
   componentDidMount() {

@@ -4,42 +4,45 @@ import { storiesOf } from '@kadira/storybook';
 
 import { name } from '../package.json';
 import QuickSearch, { AkQuickSearchResultsList } from '../src/';
-import SearchResource from '../src/api/SearchResource';
+import { ParsingSearchResource } from '../src/api/SearchResource';
 // import MockSearchResource from '../test/helpers/MockSearchResource';
-// import JsonToResultParser from '../src/api/JsonToResultParser';
+import { ResultParser } from '../src/api/JsonToResultParser';
 import BasicNav from '../../navigation/stories/components/BasicNavigation';
 
-const searchResource = new SearchResource({
+const searchResource = new ParsingSearchResource({
   userId: '655363:7c218e11-d210-43fd-9830-bcc1874e4736',
   cloudId: 'DUMMY-a5a01d21-1cc3-4f29-9565-f2bb8cd969f5',
 });
 // const searchResource = new MockSearchResource(200);
 
 storiesOf(name, module)
-  /* .add('QuickSearch Component', () => (
-    <div>
-      <input type="text" onChange={(ev) => { searchResource.query(ev.target.value); }} />
-      <AkQuickSearchResourcedResultsList searchResource={searchResource} />
-    </div>
-    ))
-  .add('QuickSearch Component in a SearchDrawer', () => (
-    <BasicNav
-      searchDrawerContent={(
-        <div>
-          <AkSearch onChange={(ev) => { searchResource.query(ev.target.value); }} />
-          <AkQuickSearchResourcedResultsList
+  .add('Ungrouped Results', () => {
+    const resultCallbacks = {
+      HipChatConversation: () => console.log('*click*'),
+    };
+    const resultParser = new ResultParser(() => {}, resultCallbacks);
+    return (
+      <BasicNav
+        searchDrawerContent={(
+          <QuickSearch
             searchResource={searchResource}
+            jsonToResultParser={resultParser}
           />
-        </div>
-      )}
-    >
-      Hi
-    </BasicNav>
-  ))*/
-  .add('QuickSearch Component in a SearchDrawer', () => (
+        )}
+      >
+        Hi
+      </BasicNav>
+    );
+  })
+  .add('Grouped Results', () => (
     <BasicNav
       searchDrawerContent={(
-        <QuickSearch searchResource={searchResource} />
+        <QuickSearch
+          searchResource={searchResource}
+          resultCallbacks={{
+            HipChatConversation: () => console.log('*click*'),
+          }}
+        />
       )}
     >
       Hi

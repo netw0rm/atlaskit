@@ -75,13 +75,16 @@ export default class SearchResource extends AbstractResource {
     this.userId = config.userId;
     // this.cloudId = 'DUMMY-a5a01d21-1cc3-4f29-9565-f2bb8cd969f5';
     this.searchClient = searchClient;
+
+    this.queryClient = this.queryClient.bind(this);
   }
 
-  _queryClient = searchTerm =>
-    this.searchClient.query(searchTerm, this.userId, this.cloudId);
+  queryClient(searchTerm) {
+    return this.searchClient.query(searchTerm, this.userId, this.cloudId);
+  }
 
   query = (searchTerm) => {
-    this._queryClient(searchTerm)
+    this.queryClient(searchTerm)
       .then(this.notifyChange)
       .catch(this.notifyError);
   }
@@ -92,7 +95,7 @@ export default class SearchResource extends AbstractResource {
       this.notifyChange(this._recentItems);
       return;
     }
-    this._queryClient('')
+    this.queryClient('')
       .then((items) => {
         this._recentItems = items;
         this.notifyChange(items);
@@ -111,5 +114,38 @@ export default class SearchResource extends AbstractResource {
       Object.keys(this.errorListeners).forEach(key => this.errorListeners[key](error));
     }
   }
+}
 
+/**
+ * Core idea: Be the single point of modification when search API inevitably
+ * changes
+ */
+export class ParsingSearchResource extends SearchResource {
+
+  constructor(...args) {
+    super(...args);
+    this.queryClient = this.queryClient.bind(this);
+  }
+
+  queryClient(searchTerm) {
+    return super.queryClient(searchTerm).then(this.parse);
+  }
+
+  parse = (jsonArray) => {
+    if (!jsonArray || !jsonArray.length) {
+      return [];
+    }
+    return jsonArray.map(item => (
+      item.meta && item.meta.length
+        ? { ...item, meta: this.formatMetaData(item.meta) }
+        : item
+    ));
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  formatMetaData(metaData) {
+    return metaData.reduce(
+      (obj, { key, value }) => ({ ...obj, [key]: value })
+    , {});
+  }
 }

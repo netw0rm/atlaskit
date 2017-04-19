@@ -27,12 +27,11 @@ describe('ak-modal-dialog', () => {
     });
 
     describe('width', () => {
-      const { locals, locals: { modalPositioner, medium } } = styles;
       const allowedWidths = ['small', 'medium', 'large', 'x-large'];
-      const hasClass = (wrapper, className) => wrapper.find(`.${modalPositioner}`).hasClass(className);
+      const hasClass = (wrapper, className) => wrapper.find(`.${styles.modalPositioner}`).hasClass(className);
 
       it('should be "medium" by default', () => {
-        hasClass(shallow(<ModalDialog isOpen />), medium).should.equal(true);
+        hasClass(shallow(<ModalDialog isOpen />), styles.medium).should.equal(true);
       });
 
       it('should support a custom pixel width as string', () => {
@@ -41,7 +40,7 @@ describe('ak-modal-dialog', () => {
             isOpen
             width="300px"
           />
-        ).find(`.${modalPositioner}`).props().style).to.deep.equal({ width: '300px' });
+        ).find(`.${styles.modalPositioner}`).props().style).to.deep.equal({ width: '300px' });
       });
 
       it('should support a custom pixel width as string', () => {
@@ -50,7 +49,7 @@ describe('ak-modal-dialog', () => {
             isOpen
             width="75%"
           />
-        ).find(`.${modalPositioner}`).props().style).to.deep.equal({ width: '75%' });
+        ).find(`.${styles.modalPositioner}`).props().style).to.deep.equal({ width: '75%' });
       });
 
       it('should support a custom integer width', () => {
@@ -59,12 +58,12 @@ describe('ak-modal-dialog', () => {
             isOpen
             width={300}
           />
-        ).find(`.${modalPositioner}`).props().style).to.deep.equal({ width: 300 });
+        ).find(`.${styles.modalPositioner}`).props().style).to.deep.equal({ width: 300 });
       });
 
       allowedWidths.forEach((width) => {
         it(`width = "${width}" is applied uniquely`, () => {
-          hasClass(shallow(<ModalDialog isOpen width={width} />), locals[width]).should.equal(true);
+          hasClass(shallow(<ModalDialog isOpen width={width} />), styles[width]).should.equal(true);
 
           // Check that other widths aren't applied
           allowedWidths.filter(w => w !== width).forEach((otherWidth) => {

@@ -35,8 +35,7 @@ function build_coverage_report() {
   local TARGET_PATH="$1"
 
   $CHALK --no-stdin -t "{blue Building storybook (PR)}"
-  $LERNA_LOC exec --scope "$CHANGED_PACKAGES" -- ../../build/bin/storybook.static.pr.single.sh "$TARGET_PATH"
-  $BASEDIR/generate.index.html.js $TARGET_PATH "PR storybook for ${BITBUCKET_COMMIT}" > "$TARGET_PATH/index.html"
+  $LERNA_LOC exec --scope "$CHANGED_PACKAGES" -- cp -r "coverage/html/" "$TARGET_PATH"
 }
 
 coverage_build_status "INPROGRESS"

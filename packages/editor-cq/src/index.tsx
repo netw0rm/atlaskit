@@ -28,6 +28,11 @@ import {
   Node as PMNode,
   TextSelection,
   version as coreVersion,
+  mediaPluginFactory,
+  mediaStateKey,
+  mediaNodeView,
+  MediaProvider,
+  Plugin,
   mentionNodeView,
   ProviderFactory
 } from '@atlaskit/editor-core';
@@ -40,7 +45,6 @@ import { CQSchema, default as schema } from './schema';
 import { jiraIssueNodeView } from './schema/nodes/jiraIssue';
 export { version };
 
-
 export interface Props {
   context?: ContextName;
   isExpandedByDefault?: boolean;
@@ -51,6 +55,7 @@ export interface Props {
   onSave?: (editor?: Editor) => void;
   placeholder?: string;
   analyticsHandler?: AnalyticsHandler;
+  mediaProvider?: Promise<MediaProvider>;
   mentionProvider?: Promise<MentionProvider>;
 }
 
@@ -63,8 +68,10 @@ export interface State {
 export default class Editor extends PureComponent<Props, State> {
   state: State;
   version = `${version} (editor-core ${coreVersion})`;
-  providerFactory: ProviderFactory;
   mentionProvider: Promise<MentionProvider>;
+
+  private providerFactory: ProviderFactory;
+  private mediaPlugins: Plugin[];
 
   constructor(props: Props) {
     super(props);
@@ -74,20 +81,24 @@ export default class Editor extends PureComponent<Props, State> {
       isExpanded: (props.expanded !== undefined) ? props.expanded : props.isExpandedByDefault,
     };
 
+    this.providerFactory = new ProviderFactory();
     analyticsService.handler = props.analyticsHandler || ((name) => {});
 
-    this.providerFactory = new ProviderFactory();
+    const { mentionProvider, mediaProvider } = props;
 
-    if (props.mentionProvider) {
-      this.mentionProvider = props.mentionProvider;
-      this.providerFactory.setProvider('mentionProvider', this.mentionProvider);
+    if (mentionProvider) {
+      this.mentionProvider = mentionProvider;
+      this.providerFactory.setProvider('mentionProvider', mentionProvider);
     }
-  }
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.expanded !== this.props.expanded) {
-      this.setState({ isExpanded: nextProps.expanded });
+    if (mediaProvider) {
+      this.providerFactory.setProvider('mediaProvider', mediaProvider);
     }
+
+    this.mediaPlugins = mediaPluginFactory(schema, {
+      providerFactory: this.providerFactory,
+      behavior: 'default'
+    });
   }
 
   /**
@@ -140,6 +151,30 @@ export default class Editor extends PureComponent<Props, State> {
       : this.props.defaultValue;
   }
 
+ componentWillReceiveProps(nextProps: Props) {
+    const { props, providerFactory } = this;
+    const { mediaProvider } = nextProps;
+
+    if (props.mediaProvider !== mediaProvider) {
+      providerFactory.setProvider('mediaProvider', mediaProvider);
+    }
+
+    if (nextProps.expanded !== this.props.expanded) {
+      this.setState({ isExpanded: nextProps.expanded });
+    }
+  }
+
+  componentWillUnmount() {
+    const { editorView } = this.state;
+    if (editorView) {
+      if (editorView.state) {
+        mediaStateKey.getState(editorView.state).destroy();
+      }
+
+      editorView.destroy();
+    }
+  }
+
   render() {
     const { editorView, isExpanded } = this.state;
     const handleCancel = this.props.onCancel ? this.handleCancel : undefined;
@@ -151,6 +186,7 @@ export default class Editor extends PureComponent<Props, State> {
     const clearFormattingState = editorState && clearFormattingStateKey.getState(editorState);
     const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const listsState = editorState && listsStateKey.getState(editorState);
+    const mediaState = editorState && this.mediaPlugins && this.props.mediaProvider && mediaStateKey.getState(editorState);
     const textFormattingState = editorState && textFormattingStateKey.getState(editorState);
     const panelState = editorState && panelStateKey.getState(editorState);
     const mentionsState = editorState && mentionsStateKey.getState(editorState);
@@ -171,6 +207,7 @@ export default class Editor extends PureComponent<Props, State> {
         pluginStateLists={listsState}
         pluginStateTextFormatting={textFormattingState}
         pluginStateClearFormatting={clearFormattingState}
+        pluginStateMedia={mediaState}
         pluginStatePanel={panelState}
         packageVersion={version}
         packageName={name}
@@ -180,29 +217,9 @@ export default class Editor extends PureComponent<Props, State> {
     );
   }
 
-  private handleCancel = () => {
-    const { onCancel } = this.props;
-    if (onCancel) {
-      onCancel(this);
-    }
-  }
-
-  private handleChange = () => {
-    const { onChange } = this.props;
-    if (onChange) {
-      onChange(this);
-    }
-  }
-
-  private handleSave = () => {
-    const { onSave } = this.props;
-    if (onSave) {
-      onSave(this);
-    }
-  }
-
   private handleRef = (place: Element | null) => {
     const { schema } = this.state;
+    const { mediaPlugins } = this;
 
     if (place) {
       const { context } = this.props;
@@ -215,6 +232,7 @@ export default class Editor extends PureComponent<Props, State> {
         schema,
         doc,
         plugins: [
+          ...mentionsPlugins(schema),
           ...blockTypePlugins(schema),
           ...clearFormattingPlugins(schema),
           ...codeBlockPlugins(schema),
@@ -222,11 +240,11 @@ export default class Editor extends PureComponent<Props, State> {
           ...listsPlugins(schema),
           ...rulePlugins(schema),
           ...textFormattingPlugins(schema),
+          ...mediaPlugins,
           ...panelPlugins(schema),
-          ...mentionsPlugins(schema),
           history(),
           keymap(cqKeymap),
-          keymap(baseKeymap), // should be last :(
+          keymap(baseKeymap),
         ]
       });
 
@@ -248,13 +266,14 @@ export default class Editor extends PureComponent<Props, State> {
         nodeViews: {
           mention: mentionNodeView(this.providerFactory),
           jiraIssue: jiraIssueNodeView,
+          media: mediaNodeView(this.providerFactory)
         },
         handleDOMEvents: {
           paste(view: EditorView, event: ClipboardEvent) {
             analyticsService.trackEvent('atlassian.editor.paste');
             return false;
           }
-        }
+        },
       });
 
       if (this.mentionProvider) {
@@ -269,6 +288,27 @@ export default class Editor extends PureComponent<Props, State> {
       this.sendUnsupportedNodeUsage(doc);
     } else {
       this.setState({ editorView: undefined });
+    }
+  }
+
+  private handleCancel = () => {
+    const { onCancel } = this.props;
+    if (onCancel) {
+      onCancel(this);
+    }
+  }
+
+  private handleChange = () => {
+    const { onChange } = this.props;
+    if (onChange) {
+      onChange(this);
+    }
+  }
+
+  private handleSave = () => {
+    const { onSave } = this.props;
+    if (onSave) {
+      onSave(this);
     }
   }
 

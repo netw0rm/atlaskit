@@ -21,6 +21,8 @@ import {
   subsup,
   text,
   underline,
+  media,
+  mediaGroup,
   panel,
   mentionQuery
 } from '@atlaskit/editor-core';
@@ -51,6 +53,8 @@ export interface CQSchemaNodes {
   text: NodeSpec;
   unsupportedBlock: NodeSpec;
   unsupportedInline: NodeSpec;
+  media: NodeSpec;
+  mediaGroup: NodeSpec;
 }
 
 export interface CQSchemaMarks {
@@ -64,6 +68,7 @@ export interface CQSchemaMarks {
   mentionQuery: MarkSpec;
 }
 
+
 const nodes = {
   doc,
   paragraph,
@@ -74,12 +79,14 @@ const nodes = {
   orderedList,
   bulletList,
   heading,
+  mediaGroup,
   unsupportedBlock,
   jiraIssue,
   listItem,
   mention,
   text,
   unsupportedInline,
+  media,
   rule,
 };
 

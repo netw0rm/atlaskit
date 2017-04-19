@@ -33,10 +33,10 @@ export default function(node: Node): string {
     node.parentNode.replaceChild(marker, node);
   }
 
-  const fabWrapper = doc.createElementNS(FAB_XMLNS, 'fab:wrapper');
+  const wrapper = doc.createElementNS(XHTML_XMLNS, 'wrapper');
   const acWrapper = doc.createElementNS(AC_XMLNS, 'ac:wrapper');
   const riWrapper = doc.createElementNS(RI_XMLNS, 'ri:wrapper');
-  const wrapper = doc.createElementNS(XHTML_XMLNS, 'wrapper');
+  const fabWrapper = doc.createElementNS(FAB_XMLNS, 'fab:wrapper');
 
   wrapper.appendChild(fabWrapper);
   fabWrapper.appendChild(acWrapper);

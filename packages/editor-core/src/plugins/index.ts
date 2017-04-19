@@ -5,6 +5,7 @@ export { default as emojisPlugins, stateKey as emojisStateKey } from './emojis';
 export { default as hyperlinkPlugins, stateKey as hyperlinkStateKey } from './hyperlink';
 export { default as imageUploadPlugins, stateKey as imageUploadStateKey } from './image-upload';
 export { default as listsPlugins, stateKey as listsStateKey } from './lists';
+export { default as mediaPluginFactory, stateKey as mediaStateKey } from './media';
 export { default as mentionsPlugins, stateKey as mentionsStateKey } from './mentions';
 export { default as textFormattingPlugins, stateKey as textFormattingStateKey } from './text-formatting';
 export { default as rulePlugins, stateKey as ruleStateKey } from './rule';

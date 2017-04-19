@@ -28,6 +28,15 @@ export const jiraIssue = (attrs: {
   server?: string;
   serverId?: string;
 }) => schema.nodes.jiraIssue.create(attrs);
+export const mediaGroup = nodeFactory(schema.nodes.mediaGroup);
+export const media = (attrs: {
+  id: string;
+  type: 'file' | 'link';
+  collection: string;
+  fileName?: string;
+  fileSize?: number;
+  fileMimeType?: string;
+}) => schema.nodes.media.create(attrs);
 
 // Marks
 export const code = markFactory(schema.marks.code);

@@ -16,7 +16,7 @@ export interface AvatarPickerDialogProps {
   avatars: Array<Avatar>;
 }
 
-enum Mode {
+export enum Mode {
   Cropping,
   PredefinedAvatars,
 }

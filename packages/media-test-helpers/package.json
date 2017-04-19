@@ -27,7 +27,7 @@
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
     {
-      "name": "Hector G"
+      "name": "Hector Zarco"
     }
   ],
   "license": "Apache-2.0",
@@ -43,8 +43,7 @@
     "@atlaskit/media-core": "^5.0.4"
   },
   "keywords": [
-    "fabric",
-    "ui",
-    "private"
+    "media",
+    "ui"
   ]
 }

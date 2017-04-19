@@ -1,0 +1,257 @@
+import * as chai from 'chai';
+import { expect } from 'chai';
+import * as sinon from 'sinon';
+import * as chaiAsPromised from 'chai-as-promised';
+import * as rewire from 'rewire';
+import {
+  chaiPlugin
+} from '../../../src/test-helper';
+
+import {
+  DefaultMediaStateManager,
+  MediaStateManager
+} from '../../../src/media';
+
+import {
+  default as PickerFacade,
+  PickerEvent
+} from '../../../src/plugins/media/picker-facade';
+
+chai.use(chaiPlugin);
+chai.use(chaiAsPromised);
+
+class MockMediaPicker {
+  public pickerType: string;
+  public pickerConfig: any;
+  public activated = false;
+  public shown = false;
+  public torndown = false;
+  public deactivated = false;
+  public listeners: {[eventName: string]: Array<(...args: any[]) => any> } = {};
+
+  on(eventName: string, cb: (...args: any[]) => any) {
+    const { listeners } = this;
+
+    if (!listeners[eventName]) {
+      listeners[eventName] = [];
+    }
+
+    listeners[eventName].push(cb);
+  }
+
+  activate() {
+    this.activated = true;
+  }
+
+  show() {
+    this.shown = true;
+  }
+
+  teardown: any = () => {
+    this.torndown = true;
+  }
+
+  deactivate = () => {
+    this.deactivated = true;
+  }
+
+  removeAllListeners() {
+    this.listeners = {};
+  }
+
+  __triggerEvent(eventName, event: PickerEvent) {
+    const { listeners } = this;
+
+    if (!listeners[eventName]) {
+      return;
+    }
+
+    listeners[eventName].forEach((cb) => {
+      cb.call(cb, event);
+    });
+  }
+}
+
+describe('Media PickerFacade', () => {
+  let stateManager: MediaStateManager | undefined;
+  let facade: PickerFacade | undefined;
+  let mockPickerFactory: any;
+  let mockPicker: MockMediaPicker;
+  const dropzoneContainer = document.createElement('div');
+  const uploadParams = {
+    collection: 'mock',
+    dropzoneContainer: dropzoneContainer
+  };
+  const tokenProvider = (collectionName?: string) => Promise.resolve('mock-token');
+  const contextConfig = {
+    clientId: 'mock',
+    serviceHost: 'http://test',
+    tokenProvider: tokenProvider
+  };
+  const testFileId = `${Math.round(Math.random() * 100000)}`;
+  const testTemporaryFileId = `temporary:${testFileId}`;
+  const testFilePublicId = '7899d969-c1b2-4460-ad3e-44d51ac85452';
+  const testFileData = {
+    id: testFileId,
+    name: 'test name',
+    size: 123456,
+    type: 'test/file',
+    creationDate: (new Date().getTime())
+  };
+  const testFileProgress = {
+    portion: Math.random()
+  };
+
+  beforeEach(() => {
+    mockPicker = new MockMediaPicker();
+    stateManager = new DefaultMediaStateManager();
+    mockPickerFactory = (pickerType: string, pickerConfig: any) => {
+      mockPicker.pickerType = pickerType;
+      mockPicker.pickerConfig = pickerConfig;
+
+      return mockPicker;
+    };
+    facade = new PickerFacade('mock', uploadParams, contextConfig, stateManager, mockPickerFactory);
+  });
+
+  afterEach(() => {
+    stateManager = undefined;
+    facade!.destroy();
+    facade = undefined;
+    mockPickerFactory();
+  });
+
+  it('listens to picker events', () => {
+    expect(mockPicker.listeners).to.have.property('upload-start');
+    expect(mockPicker.listeners).to.have.property('upload-preview-update');
+    expect(mockPicker.listeners).to.have.property('upload-status-update');
+    expect(mockPicker.listeners).to.have.property('upload-processing');
+    expect(mockPicker.listeners).to.have.property('upload-end');
+  });
+
+  it('removes listeners on destruction', () => {
+    facade!.destroy();
+    expect(mockPicker.listeners).to.be.empty;
+  });
+
+  it('calls picker\'s teardown() on destruction', () => {
+    facade!.destroy();
+    expect(mockPicker.torndown).to.eq(true);
+  });
+
+  it('calls picker\'s deactivate() on destruction', () => {
+    mockPicker.teardown = undefined;
+    facade!.destroy();
+    expect(mockPicker.deactivated).to.eq(true);
+  });
+
+  it('activates picker upon construciton', () => {
+    expect(mockPicker.activated).to.eq(true);
+  });
+
+  describe('configures picker', () => {
+    it('with correct upload params and context', () => {
+      expect(mockPicker.pickerType).to.eq('mock');
+      expect(mockPicker.pickerConfig).to.have.property('uploadParams', uploadParams);
+      expect(mockPicker.pickerConfig).to.have.property('apiUrl', contextConfig.serviceHost);
+      expect(mockPicker.pickerConfig).to.have.property('apiClientId', contextConfig.clientId);
+      expect(mockPicker.pickerConfig).to.have.property('container', dropzoneContainer);
+      expect(mockPicker.pickerConfig).to.have.property('tokenSource')
+        .which.has.property('getter')
+          .which.is.a('function');
+    });
+
+    it('constructs correct tokenSource which calls resolve method', (done) => {
+      expect(contextConfig.tokenProvider()).to.eventually.eq('mock-token');
+
+      const getter = mockPicker.pickerConfig.tokenSource.getter;
+      getter(() => {}, () => done());
+    });
+
+    it('respects dropzone container', () => {
+      expect(mockPicker.pickerConfig).to.have.property('tokenSource')
+    });
+  });
+
+
+  describe('proxies events to MediaStateManager', () => {
+    it('for upload starting', () => {
+      const cb = sinon.spy();
+      stateManager!.subscribe(testTemporaryFileId, cb);
+      mockPicker.__triggerEvent('upload-start', {
+        file: testFileData
+      });
+      debugger;
+      expect(cb.calledWithExactly({
+        id: testTemporaryFileId,
+        status: 'uploading',
+        fileName: testFileData.name,
+        fileSize: testFileData.size,
+        fileType: testFileData.type,
+      })).to.eq(true);
+    });
+
+    it('for upload progress', () => {
+      const cb = sinon.spy();
+      stateManager!.subscribe(testTemporaryFileId, cb);
+      mockPicker.__triggerEvent('upload-status-update', {
+        file: testFileData,
+        progress: testFileProgress,
+      });
+      expect(cb.calledWithExactly({
+        id: testTemporaryFileId,
+        status: 'uploading',
+        progress: testFileProgress.portion,
+        fileName: testFileData.name,
+        fileSize: testFileData.size,
+        fileType: testFileData.type,
+      })).to.eq(true);
+    });
+
+    it('for upload preview availability', () => {
+      const cb = sinon.spy();
+      const preview = new Blob();
+      stateManager!.subscribe(testTemporaryFileId, cb);
+      mockPicker.__triggerEvent('upload-preview-update', {
+        file: testFileData,
+        preview
+      });
+      expect(cb.calledWithExactly({
+        id: testTemporaryFileId,
+        thumbnail: preview
+      })).to.eq(true);
+    });
+
+    it('for upload processing', () => {
+      const cb = sinon.spy();
+      stateManager!.subscribe(testTemporaryFileId, cb);
+      mockPicker.__triggerEvent('upload-processing', {
+        file: { ...testFileData, publicId: testFilePublicId },
+      });
+      expect(cb.calledWithExactly({
+        id: testTemporaryFileId,
+        publicId: testFilePublicId,
+        status: 'processing',
+        fileName: testFileData.name,
+        fileSize: testFileData.size,
+        fileType: testFileData.type,
+      })).to.eq(true);
+    });
+
+    it('for upload end', () => {
+      const cb = sinon.spy();
+      stateManager!.subscribe(testTemporaryFileId, cb);
+      mockPicker.__triggerEvent('upload-end', {
+        file: { ...testFileData, publicId: testFilePublicId },
+      });
+      expect(cb.calledWithExactly({
+        id: testTemporaryFileId,
+        publicId: testFilePublicId,
+        status: 'ready',
+        fileName: testFileData.name,
+        fileSize: testFileData.size,
+        fileType: testFileData.type,
+      })).to.eq(true);
+    });
+  });
+});

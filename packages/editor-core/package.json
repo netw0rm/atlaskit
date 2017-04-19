@@ -79,7 +79,8 @@
     "sinon": "^1.17.6",
     "string.prototype.repeat": "^0.2.0",
     "thenable": "^1.0.0",
-    "jquery": "^2.2.4"
+    "jquery": "^2.2.4",
+    "chai-as-promised": "^6.0.0"
   },
   "repository": {
     "type": "git",

@@ -1,60 +1,47 @@
 /* eslint-disable global-require */
 
+const NOW = new Date();
+
 const components = {
   avatar: {
     docs: require('../../avatar/docs').default,
-    meta: {
-      version: '1.0.5',
-      status: {
-        label: 'published',
-        date: Date.now(),
-      },
+    status: {
+      label: 'published',
+      date: NOW,
     },
     name: 'Avatar',
     package: require('../../avatar/package'),
   },
   badge: {
-    meta: {
-      version: '1.0.5',
-      status: {
-        label: 'published',
-        date: Date.now(),
-      },
+    status: {
+      label: 'published',
+      date: NOW,
     },
     name: 'Badge',
     package: require('../../badge/package'),
   },
   banner: {
-    meta: {
-      version: '1.0.5',
-      status: {
-        label: 'published',
-        date: Date.now(),
-      },
+    status: {
+      label: 'published',
+      date: NOW,
     },
     name: 'Banner',
     package: require('../../banner/package'),
   },
   button: {
     docs: require('../../button/docs').default,
-    meta: {
-      version: '1.0.5',
-      status: {
-        label: 'published',
-        date: Date.now(),
-      },
+    status: {
+      label: 'published',
+      date: NOW,
     },
     name: 'Button',
     package: require('../../button/package'),
 
   },
   toggle: {
-    meta: {
-      version: '1.0.5',
-      status: {
-        label: 'published',
-        date: Date.now(),
-      },
+    status: {
+      label: 'published',
+      date: NOW,
     },
     name: 'Toggle',
     package: require('../../toggle/package'),

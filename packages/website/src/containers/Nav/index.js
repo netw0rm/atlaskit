@@ -8,11 +8,8 @@ import Navigation, {
   AkContainerItem as NavItem,
   AkContainerTitle as NavTitle,
   AkContainerItemGroup as NavItemGroup,
-  AkGlobalItem as GlobalItem,
   AkSearchDrawer,
 } from '@atlaskit/navigation';
-
-import Dropdown from '@atlaskit/dropdown-menu';
 
 import ArrowLeft from '@atlaskit/icon/glyph/arrow-left';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
@@ -21,7 +18,6 @@ import ComponentIcon from '@atlaskit/icon/glyph/component';
 import GlobeIcon from '@atlaskit/icon/glyph/world';
 import InstallIcon from '@atlaskit/icon/glyph/overview';
 import SearchIcon from '@atlaskit/icon/glyph/search';
-import QuestionCircle from '@atlaskit/icon/glyph/question-circle';
 import BitbucketIcon from '@atlaskit/icon/glyph/bitbucket';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import DotIcon from '@atlaskit/icon/glyph/hipchat/media-attachment-count';
@@ -57,7 +53,7 @@ export default class Nav extends Component {
   render() {
     const { router } = this.context;
     const { pathname } = router.route.location;
-    const backIcon = <ArrowLeft label="Back icon" size="small" />;
+    const backIcon = <ArrowLeft label="Back icon" />;
     const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="medium" />;
 
     return (
@@ -148,16 +144,13 @@ export default class Nav extends Component {
               isSelected={pathname === '/components'}
             />
             <NavItemGroup title="Components">
-              {atlaskitComponentKeys.map((key) => {
-                console.log(`Recreating ComponentNavItem for ${key}`);
-                return (
-                  <ComponentNavItem
-                    componentKey={key}
-                    key={key}
-                    pathname={pathname}
-                  />
-                );
-              })}
+              {atlaskitComponentKeys.map(key => (
+                <ComponentNavItem
+                  componentKey={key}
+                  key={key}
+                  pathname={pathname}
+                />
+              ))}
             </NavItemGroup>
           </div>
         </Groups>
@@ -170,7 +163,6 @@ const ComponentNavItem = withRouter(({ componentKey, location }) => {
   const component = data[componentKey];
   const url = `/components/${componentKey}`;
   const isSelected = location.pathname === url;
-  console.log(`${componentKey} : ${url} : ${isSelected}`);
 
   return (
     <Link to={url} key={componentKey}>

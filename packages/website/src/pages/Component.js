@@ -4,7 +4,6 @@ import React from 'react';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
-import Lozenge from '@atlaskit/lozenge';
 import Dropdown from '@atlaskit/dropdown-menu';
 import { akColorN80, akColorN200 } from '@atlaskit/util-shared-styles';
 
@@ -30,7 +29,7 @@ const Header = ({ meta, name, pkg, storybookUrl }) => {
       <TitleBar>
         <h1>{name}</h1>
         <ButtonGroup>
-          <Button href={`${storybookUrl}/${meta.version}/`} target="_new">
+          <Button href={`${storybookUrl}/${pkg.version}/`} target="_new">
             Storybook
           </Button>
           <Dropdown
@@ -66,7 +65,7 @@ const Header = ({ meta, name, pkg, storybookUrl }) => {
         <MetaItem
           href={`https://npmjs.com/package/${pkg.name}`}
           label="Version"
-          summary={meta.version}
+          summary={pkg.version}
         />
         <MetaItem
           href={`https://unpkg.com/${tag}/dist`}
@@ -74,8 +73,8 @@ const Header = ({ meta, name, pkg, storybookUrl }) => {
           summary="unpkg.com"
         />
         <MetaItem
-          label="Team"
-          summary={<Lozenge appearance="new">AtlasKit</Lozenge>}
+          label="Maintainer(s)"
+          summary="Luke B"
         />
       </Meta>
     </Title>
@@ -91,7 +90,7 @@ export default ({ match }) => {
   const storybookSuffix = 'index.html';
 
   return (
-    <article>
+    <Container>
       <Header
         meta={component.meta}
         name={component.name}
@@ -102,7 +101,7 @@ export default ({ match }) => {
       <Main>
         <Docs component={component} />
       </Main>
-    </article>
+    </Container>
   );
 };
 
@@ -116,6 +115,19 @@ export default ({ match }) => {
 //     </span>
 //   ) : null}
 // </dd>
+
+const Container = styled.article`
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 640px;
+  padding-left: 12px;
+  padding-right: 12px;
+
+  @media (min-width: 600px) {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+`;
 
 const Title = styled.header`
   padding-bottom: 24px;

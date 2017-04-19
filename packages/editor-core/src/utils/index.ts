@@ -269,13 +269,12 @@ export function toJSON(node: Node) {
 }
 
 export function splitCodeBlockAtSelection(state: EditorState<any>) {
-  let { $from, $to } = state.selection;
   let tr = splitCodeBlockAtSelectionStart(state);
   tr = splitCodeBlockAtSelectionEnd(state, tr);
   return {
     tr,
-    $from: tr.doc.resolve(tr.mapping.map($from.pos)),
-    $to: tr.doc.resolve(tr.mapping.map($to.pos)),
+    $from: tr.selection.$from,
+    $to: tr.selection.$to,
   };
 }
 
@@ -287,41 +286,43 @@ function splitCodeBlockAtSelectionStart(state: EditorState<any>) {
 
   if ($from.pos > $from.start($from.depth) && node.type === codeBlock) {
     let fromPos = $from.pos - $from.start($from.depth);
-    if (node.textContent[$from.pos - 2] !== '\n') {
-      for (let i = fromPos; i > 0; i--) {
-        if (node.textContent[i] === '\n') {
-          fromPos = i + 1;
-          break;
-        }
+    for (let i = fromPos; i >= 0; i--) {
+      if (node.textContent[i] === '\n') {
+        fromPos = i + 1;
+        break;
+      } else if (i === 0) {
+        fromPos = 0;
       }
     }
-    tr.split($from.start($from.depth) + fromPos, $from.depth);
-    if (node.textContent[fromPos - 1] === '\n') {
-      tr.delete($from.start($from.depth) + fromPos - 1, $from.start($from.depth) + fromPos);
+    if ( fromPos > 0) {
+      tr.split($from.start($from.depth) + fromPos, $from.depth);
+      if (node.textContent[fromPos - 1] === '\n') {
+        tr.delete($from.start($from.depth) + fromPos - 1, $from.start($from.depth) + fromPos);
+      }
     }
   }
   return tr;
 }
 
 function splitCodeBlockAtSelectionEnd(state: EditorState<any>, tr: Transaction) {
-  let { $from, $to } = state.selection;
-  $from = tr.doc.resolve(tr.mapping.map($from.pos));
-  $to = tr.doc.resolve(tr.mapping.map($to.pos));
+  let { $from, $to } = tr.selection;
   const { codeBlock } = state.schema.nodes;
   const node = $to.node($to.depth);
   if ($to.pos < $to.end($to.depth) && node.type === codeBlock) {
-    let toPos = $to.pos - $from.pos;
-    if (node.textContent[toPos - 1] !== '\n') {
-      for (let i = toPos; i < node.textContent.length; i++) {
-        if (node.textContent[i] === '\n') {
-          toPos = i + 1;
-          break;
-        }
+    let toPos = $to.pos - $from.start($from.depth);
+    for (let i = toPos; i <= node.textContent.length; i++) {
+      if (node.textContent[i] === '\n') {
+        toPos = i + 1;
+        break;
+      } else if (i === node.textContent.length) {
+        toPos = node.textContent.length;
       }
     }
-    tr.split($from.pos + toPos, $to.depth);
-    if (node.textContent[toPos - 1] === '\n') {
-      tr.delete($from.pos + toPos - 1, $from.pos + toPos);
+    if (toPos < node.textContent.length) {
+      tr.split($from.start($from.depth) + toPos, $to.depth);
+      if (node.textContent[toPos - 1] === '\n') {
+        tr.delete($from.start($from.depth) + toPos - 1, $from.start($from.depth) + toPos);
+      }
     }
   }
   return tr;

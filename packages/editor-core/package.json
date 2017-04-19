@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "14.3.1",
+  "version": "14.3.3",
   "config": {
     "access": "public"
   },
@@ -45,7 +45,7 @@
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.0.3",
     "@atlaskit/util-shared-styles": "^1.2.1",
-    "browserkeymap": "git://github.com/bradleyayers/browserkeymap#es6-modules-compat-with-types",
+    "browserkeymap": "git://github.com/bradleyayers/browserkeymap#3615382475d0d6beeb1c5f0b27a1eadc94a108ac",
     "orderedmap": "^1.0.0",
     "popper.js": "1.0.8",
     "prosemirror-commands": "^0.20.0",

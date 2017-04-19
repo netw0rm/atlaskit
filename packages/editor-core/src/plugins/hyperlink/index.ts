@@ -143,6 +143,7 @@ export class HyperlinkState {
         this.changeHandlers.forEach(cb => cb(this));
       } else {
         this.addLink({ href: '' }, editorView);
+        this.update(editorView.state, editorView.docView);
       }
     }
   }

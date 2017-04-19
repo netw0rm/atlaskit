@@ -35,9 +35,7 @@ function build_coverage_report() {
   local TARGET_PATH="$1"
 
   $CHALK --no-stdin -t "{blue Creating coverage reports for (PR)}"
-  echo "$CHANGED_PACKAGES"
-  cd $BASEDIR
-  cp -r ../../coverage/ "$TARGET_PATH"
+  cp -r coverage/ "$TARGET_PATH"
 }
 
 coverage_build_status "INPROGRESS"

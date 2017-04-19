@@ -14,7 +14,7 @@ Usage
 
 #### Example for React projects
 
-AtlasKit is built for React. If you'd like to use a component like the Avatar component, here is how to get started:
+AtlasKit components are built for React. Here's an example of using the Avatar component:
 
 1. First, you specify a component into your project as a dependency using npm: `npm install @atlaskit/avatar`
 2. Then you can use it in your React projects like this:
@@ -129,9 +129,10 @@ yarn run test/unit avatar -- --watch
 ```
 
 
-# Reporting issues
+Reporting issues
+============
 
-While we love to fix bugs for you, we believe in open contributions and the power of a strong development community. Please read our [Contributing guidelines][CONTRIBUTING] on how to contribute back and report issues to AtlasKit.
+We believe in open contributions and the power of a strong development community. Please read our [Contributing guidelines][CONTRIBUTING] on how to contribute back and report issues to AtlasKit.
 
 
 Contributors
@@ -142,6 +143,7 @@ Pull requests, issues and comments are welcomed. For pull requests:
 * Add tests for new features and bug fixes
 * Follow the existing style
 * Separate unrelated changes into multiple pull requests
+* Read [Contributing guidelines][CONTRIBUTING] for more details
 
 See the existing issues for things to start contributing.
 

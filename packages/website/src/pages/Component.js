@@ -11,30 +11,6 @@ import { akColorN80, akColorN200 } from '@atlaskit/util-shared-styles';
 import data from '../data';
 import Docs from '../components/ComponentDocs';
 
-export default ({ match }) => {
-  const component = data[match.params.component];
-
-  if (!component) return <div>not found</div>;
-
-  const storybookUrl = `http://aui-cdn.atlassian.com/atlaskit/registry/${component.package.name.replace('@atlaskit/', '')}`;
-  const storybookSuffix = 'index.html';
-
-  return (
-    <article>
-      <Header
-        meta={component.meta}
-        name={component.name}
-        pkg={component.package}
-        storybookUrl={storybookUrl}
-        storybookSuffix={storybookSuffix}
-      />
-      <Main>
-        <Docs component={component} />
-      </Main>
-    </article>
-  );
-};
-
 const MetaItem = ({ href, label, summary }) => (
   <DI>
     <DT>{label}</DT>
@@ -45,7 +21,7 @@ const MetaItem = ({ href, label, summary }) => (
   </DI>
 );
 
-const Header = ({ meta, name, pkg, storybookUrl, storybookSuffix }) => {
+const Header = ({ meta, name, pkg, storybookUrl }) => {
   const tag = pkg.name.replace('@atlaskit/', '');
   const TEMP_STATIC_VERSIONS = ['1.0.16', '1.0.13', '1.0.12', '1.0.11', '1.0.10', '1.0.9', '1.0.8', '1.0.7', '1.0.6', '1.0.5', '1.0.4', '1.0.3', '1.0.2', '1.0.0'];
 
@@ -54,7 +30,7 @@ const Header = ({ meta, name, pkg, storybookUrl, storybookSuffix }) => {
       <TitleBar>
         <h1>{name}</h1>
         <ButtonGroup>
-          <Button href={`${storybookUrl}/latest/${storybookSuffix}`} target="_new">
+          <Button href={`${storybookUrl}/${meta.version}/`} target="_new">
             Storybook
           </Button>
           <Dropdown
@@ -62,7 +38,7 @@ const Header = ({ meta, name, pkg, storybookUrl, storybookSuffix }) => {
               heading: 'Versions',
               items: TEMP_STATIC_VERSIONS.map(v => ({
                 content: v,
-                href: `${storybookUrl}/${v}/${storybookSuffix}`,
+                href: `${storybookUrl}/${v}/`,
               })),
               target: '_blank',
             }]}
@@ -103,6 +79,30 @@ const Header = ({ meta, name, pkg, storybookUrl, storybookSuffix }) => {
         />
       </Meta>
     </Title>
+  );
+};
+
+export default ({ match }) => {
+  const component = data[match.params.component];
+
+  if (!component) return <h1>(not found)</h1>;
+
+  const storybookUrl = `https://aui-cdn.atlassian.com/atlaskit/stories/${component.package.name}`;
+  const storybookSuffix = 'index.html';
+
+  return (
+    <article>
+      <Header
+        meta={component.meta}
+        name={component.name}
+        pkg={component.package}
+        storybookUrl={storybookUrl}
+        storybookSuffix={storybookSuffix}
+      />
+      <Main>
+        <Docs component={component} />
+      </Main>
+    </article>
   );
 };
 

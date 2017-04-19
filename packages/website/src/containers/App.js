@@ -1,14 +1,12 @@
-/* eslint-disable react/prop-types */
-
 import React, { PureComponent } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import styled from 'styled-components';
-import Page from '@atlaskit/page';
-import Nav from './Nav';
 
+import Page from '../components/Page';
 import Home from '../pages/Home';
 import About from '../pages/About';
 import Components from '../pages/Components';
+import Nav from './Nav';
 
 export default class App extends PureComponent {
   state = {
@@ -16,26 +14,24 @@ export default class App extends PureComponent {
     isSearchDrawerOpen: false,
     navigationWidth: 304,
   }
-
-  onNavResize = ({ width, isOpen }) => {
-    this.setState({
-      navigationWidth: width,
-      isNavigationOpen: isOpen,
-    });
-  }
-
-  onSearchDrawerToggle = (isSearchDrawerOpen) => {
+  handleSearchToggle = (isSearchDrawerOpen) => {
     this.setState({ isSearchDrawerOpen });
   }
   render() {
+    const { isSearchDrawerOpen, navigationWidth } = this.state;
     return (
       <Router>
         <Page
-          navigationWidth={this.state.navigationWidth}
-          navigation={<Nav onResize={this.onNavResize} />}
+          navigationWidth={navigationWidth}
+          navigation={(
+            <Nav
+              isSearchDrawerOpen={isSearchDrawerOpen}
+              onSearchDrawerToggle={this.handleSearchToggle}
+            />
+          )}
         >
+          <Route exact path="/" component={Home} />
           <Container>
-            <Route exact path="/" component={Home} />
             <Route path="/about" component={About} />
             <Route path="/components" component={Components} />
           </Container>
@@ -48,11 +44,11 @@ export default class App extends PureComponent {
 const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
-  max-width: 800px;
+  max-width: 600px;
   padding-left: 12px;
   padding-right: 12px;
 
-  @media (min-width: 600px) {
+  @media (min-navigationWidth: 600px) {
     padding-left: 24px;
     padding-right: 24px;
   }

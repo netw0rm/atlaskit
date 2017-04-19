@@ -48,7 +48,12 @@ export default class App extends PureComponent {
 const Container = styled.div`
   margin-left: auto;
   margin-right: auto;
-  max-width: 940px;
-  padding-left: 20px;
-  padding-right: 20px;
+  max-width: 800px;
+  padding-left: 12px;
+  padding-right: 12px;
+
+  @media (min-width: 600px) {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 `;

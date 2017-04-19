@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "@atlaskit/button": "^1.0.16",
+    "@atlaskit/button-group": "^1.0.11",
+    "@atlaskit/css-reset": "^1.0.5",
+    "@atlaskit/dropdown-menu": "^1.1.13",
     "@atlaskit/icon": "^6.0.0",
     "@atlaskit/lozenge": "^3.0.0",
     "@atlaskit/navigation": "^8.0.2",

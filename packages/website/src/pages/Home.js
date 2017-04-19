@@ -53,7 +53,15 @@ export default class WelcomePage extends PureComponent {
           </GridColumn>
           <GridColumn small={12} medium={6}>
             <p>
-              <img src={landingHero} alt="Landing page hero" style={{ marginTop: 48 }} />
+              <img
+                alt="Landing page hero"
+                src={landingHero}
+                style={{
+                  height: 'auto',
+                  marginTop: 48,
+                  maxWidth: '100%',
+                }}
+              />
             </p>
           </GridColumn>
         </Grid>

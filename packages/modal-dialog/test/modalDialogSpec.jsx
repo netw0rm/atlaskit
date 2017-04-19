@@ -114,14 +114,14 @@ describe('ak-modal-dialog', () => {
       it('should trigger when blanket clicked', () => {
         const spy = sinon.spy();
         const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
-        wrapper.find(`.${styles.locals.modalWrapper}`).children().first().simulate('click');
+        wrapper.find(`.${styles.modalWrapper}`).children().first().simulate('click');
         expect(spy.callCount).to.equal(1);
       });
 
       it('should trigger when blanket clicked below dialog (modalPositioner)', () => {
         const spy = sinon.spy();
         const wrapper = mount(<ModalDialog isOpen onDialogDismissed={spy} />);
-        wrapper.find(`.${styles.locals.modalPositioner}`).simulate('click');
+        wrapper.find(`.${styles.modalPositioner}`).simulate('click');
         expect(spy.callCount).to.equal(1);
       });
 
@@ -141,36 +141,36 @@ describe('ak-modal-dialog', () => {
   describe('rounded body', () => {
     it('should be rounded on top only when header omitted but footer supplied', () => {
       const wrapper = mount(<ModalDialog isOpen footer="Footer" />);
-      expect(wrapper.find(`.${styles.locals.withoutHeader}`).length).to.equal(1);
-      expect(wrapper.find(`.${styles.locals.withoutFooter}`).length).to.equal(0);
+      expect(wrapper.find(`.${styles.withoutHeader}`).length).to.equal(1);
+      expect(wrapper.find(`.${styles.withoutFooter}`).length).to.equal(0);
     });
 
     it('should be rounded on bottom only when footer omitted but header supplied', () => {
       const wrapper = mount(<ModalDialog isOpen header="Header" />);
-      expect(wrapper.find(`.${styles.locals.withoutHeader}`).length).to.equal(0);
-      expect(wrapper.find(`.${styles.locals.withoutFooter}`).length).to.equal(1);
+      expect(wrapper.find(`.${styles.withoutHeader}`).length).to.equal(0);
+      expect(wrapper.find(`.${styles.withoutFooter}`).length).to.equal(1);
     });
 
     it('should be rounded on top + bottom when header and footer omitted', () => {
       const wrapper = mount(<ModalDialog isOpen />);
-      expect(wrapper.find(`.${styles.locals.withoutHeader}`).length).to.equal(1);
-      expect(wrapper.find(`.${styles.locals.withoutFooter}`).length).to.equal(1);
+      expect(wrapper.find(`.${styles.withoutHeader}`).length).to.equal(1);
+      expect(wrapper.find(`.${styles.withoutFooter}`).length).to.equal(1);
     });
   });
 
   describe('scrolling header/footer keylines', () => {
     it('should enable header keyline only when header provided', () => {
       const wrapper = mount(<ModalDialog isOpen />);
-      expect(wrapper.find(`.${styles.locals.withHeader}`).length).to.equal(0);
+      expect(wrapper.find(`.${styles.withHeader}`).length).to.equal(0);
       wrapper.setProps({ header: 'Header' });
-      expect(wrapper.find(`.${styles.locals.withHeader}`).length).to.equal(1);
+      expect(wrapper.find(`.${styles.withHeader}`).length).to.equal(1);
     });
 
     it('should enable footer keyline only when footer provided', () => {
       const wrapper = mount(<ModalDialog isOpen />);
-      expect(wrapper.find(`.${styles.locals.withFooter}`).length).to.equal(0);
+      expect(wrapper.find(`.${styles.withFooter}`).length).to.equal(0);
       wrapper.setProps({ footer: 'Header' });
-      expect(wrapper.find(`.${styles.locals.withFooter}`).length).to.equal(1);
+      expect(wrapper.find(`.${styles.withFooter}`).length).to.equal(1);
     });
   });
 });

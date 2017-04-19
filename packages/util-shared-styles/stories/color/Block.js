@@ -4,7 +4,7 @@ import reactify from 'akutil-react';
 import Clipboard from 'clipboard';
 import { action } from '@kadira/storybook';
 
-import { locals as styles } from './styles.less';
+import styles from './styles.less';
 
 const AkTooltipTrigger = reactify(TooltipTrigger);
 

@@ -6,11 +6,6 @@ import classnames from 'classnames';
 import styles from './styles.less';
 import { itemTruncateWidth } from './internal/constants';
 
-// This hack is to make sure that styles.locals exists when style loading is a noop (when we are
-// running tests).
-// TODO: Remove in AK-2025
-styles.locals = styles.locals || {};
-
 export default class BreadcrumbsItem extends PureComponent {
   static propTypes = {
     href: PropTypes.string,
@@ -56,7 +51,7 @@ export default class BreadcrumbsItem extends PureComponent {
 
   renderButton = () => (
     <Button
-      className={styles.locals.itemButton}
+      className={styles.itemButton}
       appearance="link"
       iconAfter={this.props.iconAfter}
       iconBefore={this.props.iconBefore}
@@ -78,8 +73,8 @@ export default class BreadcrumbsItem extends PureComponent {
   );
 
   render() {
-    const itemClasses = classnames(styles.locals.item, {
-      [styles.locals.truncated]: this.state.hasOverflow,
+    const itemClasses = classnames(styles.item, {
+      [styles.truncated]: this.state.hasOverflow,
     });
     return (
       <div className={itemClasses}>

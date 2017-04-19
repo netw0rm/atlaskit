@@ -1,4 +1,4 @@
-import 'style!./styles.less';
+import './styles.less';
 
 import Item, { SecondaryText } from './item/index';
 import Droplist from './droplist/index';

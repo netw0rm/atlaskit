@@ -1,11 +1,11 @@
 import React, { PureComponent, PropTypes, cloneElement } from 'react';
 import ReactDOM from 'react-dom';
-import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import Button from '@atlaskit/button';
 import ConfirmIcon from '@atlaskit/icon/glyph/confirm';
 import CancelIcon from '@atlaskit/icon/glyph/cancel';
 import FieldBase, { Label } from '@atlaskit/field-base'; // eslint-disable-line
+import styles from './styles.less';
 
 export default class InlineEdit extends PureComponent {
   static propTypes = {

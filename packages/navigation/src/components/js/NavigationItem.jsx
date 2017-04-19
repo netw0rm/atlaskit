@@ -1,4 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
+import classNames from 'classnames';
 import {
   action,
   after,
@@ -12,8 +13,7 @@ import {
   subText,
   text,
   textAfter,
-} from 'style!../less/NavigationItem.less';
-import classNames from 'classnames';
+} from '../less/NavigationItem.less';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import InteractiveWrapper from './InteractiveWrapper';
 

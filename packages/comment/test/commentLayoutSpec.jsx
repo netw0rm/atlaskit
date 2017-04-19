@@ -29,19 +29,19 @@ describe(name, () => {
           const avatar = <Avatar src="test/src" label="test label" />;
           const wrapper = mount(<CommentLayout avatar={avatar} />);
           expect(wrapper.find(Avatar).length).to.equal(1);
-          expect(wrapper.find(`.${styles.locals.avatarContainer}`).contains(avatar)).to.equal(true);
+          expect(wrapper.find(`.${styles.avatarContainer}`).contains(avatar)).to.equal(true);
         });
 
         it('can render non-Avatar nodes as the comment avatar', () => {
           const avatar = <img src="test/src" alt="test alt" />;
           const wrapper = mount(<CommentLayout avatar={avatar} />);
-          expect(wrapper.find(`.${styles.locals.avatarContainer}`).contains(avatar)).to.equal(true);
+          expect(wrapper.find(`.${styles.avatarContainer}`).contains(avatar)).to.equal(true);
         });
 
         it('does not render the avatar container if no avatar is provided', () => {
           const wrapper = shallow(<CommentLayout />);
-          expect(wrapper.find(`.${styles.locals.avatarSection}`).length).to.equal(0);
-          expect(wrapper.find(`.${styles.locals.avatarContainer}`).length).to.equal(0);
+          expect(wrapper.find(`.${styles.avatarSection}`).length).to.equal(0);
+          expect(wrapper.find(`.${styles.avatarContainer}`).length).to.equal(0);
         });
       });
 
@@ -49,7 +49,7 @@ describe(name, () => {
         it('should render the provided content in the correct container', () => {
           const content = (<p>My sample content</p>);
           const wrapper = mount(<CommentLayout content={content} />);
-          expect(wrapper.find(`.${styles.locals.mainSection}`).contains(content)).to.equal(true);
+          expect(wrapper.find(`.${styles.mainSection}`).contains(content)).to.equal(true);
         });
       });
     });
@@ -59,7 +59,7 @@ describe(name, () => {
         const childComment = <CommentLayout content="child" />;
         const wrapper = mount(<CommentLayout content="parent'">{childComment}</CommentLayout>);
 
-        const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
+        const commentsContainer = wrapper.find(`.${styles.nestedComments}`);
         expect(commentsContainer.contains(childComment)).to.equal(true);
       });
 
@@ -67,14 +67,14 @@ describe(name, () => {
         const childComments = [<CommentLayout content="child1" />, <CommentLayout content="child2" />];
         const wrapper = mount(<CommentLayout content="parent'">{childComments}</CommentLayout>);
 
-        const commentsContainer = wrapper.find(`.${styles.locals.nestedComments}`);
+        const commentsContainer = wrapper.find(`.${styles.nestedComments}`);
         childComments.forEach(childComment =>
           expect(commentsContainer.contains(childComment)).to.equal(true));
       });
 
       it('should not render the container if no nested comments are provided', () => {
         const wrapper = mount(<CommentLayout />);
-        expect(wrapper.contains(`.${styles.locals.nestedComments}`)).to.equal(false);
+        expect(wrapper.contains(`.${styles.nestedComments}`)).to.equal(false);
       });
     });
   });

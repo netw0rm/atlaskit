@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
-import styles from 'style!../less/Spacer.less';
+import styles from '../less/Spacer.less';
 
 export default class Spacer extends PureComponent {
   static propTypes = {

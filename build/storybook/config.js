@@ -5,7 +5,7 @@ import 'storybook-addon-i18n-tools';
 import 'style-loader!css-loader!ak-css-reset/dist/bundle.css';
 import 'style-loader!css-loader!highlight.js/styles/github.css';
 
-import 'style!./styles.less';
+import './styles.less';
 
 import MonitoredStory from './MonitoredStory';
 import BaselineAlignmentStory from './BaselineAlignmentStory';

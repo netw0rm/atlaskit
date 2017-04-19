@@ -34,7 +34,7 @@ describe(name, () => {
             <CommentAction onClick={() => {}}>action content</CommentAction>,
           ];
           const wrapper = mount(<Comment actions={actions} />);
-          const container = wrapper.find(`.${styles.locals.actionsContainer}`);
+          const container = wrapper.find(`.${styles.actionsContainer}`);
           expect(container.find(CommentAction).length).to.equal(actions.length);
           actions.forEach((action) => {
             expect(container.contains(action)).to.equal(true);
@@ -46,7 +46,7 @@ describe(name, () => {
         it('should render the author in the correct container', () => {
           const author = <CommentAuthor>Joshua Nelson</CommentAuthor>;
           const wrapper = mount(<Comment author={author} />);
-          expect(wrapper.find(`.${styles.locals.mainSection}`).contains(author)).to.equal(true);
+          expect(wrapper.find(`.${styles.mainSection}`).contains(author)).to.equal(true);
         });
       });
 
@@ -62,13 +62,13 @@ describe(name, () => {
         it('should render the provided content in the correct container', () => {
           const content = (<p>My sample content</p>);
           const wrapper = mount(<Comment content={content} />);
-          expect(wrapper.find(`.${styles.locals.contentContainer}`).contains(content)).to.equal(true);
+          expect(wrapper.find(`.${styles.contentContainer}`).contains(content)).to.equal(true);
         });
 
         it('can render string content', () => {
           const textContent = 'My sample content';
           const wrapper = mount(<Comment content={textContent} />);
-          expect(wrapper.find(`.${styles.locals.contentContainer}`).text()).to.equal(textContent);
+          expect(wrapper.find(`.${styles.contentContainer}`).text()).to.equal(textContent);
         });
       });
 
@@ -76,7 +76,7 @@ describe(name, () => {
         it('should render the time in the correct container', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
           const wrapper = mount(<Comment time={time} />);
-          expect(wrapper.find(`.${styles.locals.mainSection}`).contains(time)).to.equal(true);
+          expect(wrapper.find(`.${styles.mainSection}`).contains(time)).to.equal(true);
         });
       });
 
@@ -84,9 +84,9 @@ describe(name, () => {
         it('should render a Lozenge with the type in the correct container', () => {
           const type = 'type';
           const wrapper = mount(<Comment type={type} />);
-          expect(wrapper.find(`.${styles.locals.mainSection}`)
+          expect(wrapper.find(`.${styles.mainSection}`)
             .containsMatchingElement(
-              <div className={styles.locals.topItem}>
+              <div className={styles.topItem}>
                 <Lozenge>{type}</Lozenge>
               </div>)
           ).to.equal(true);
@@ -130,7 +130,7 @@ describe(name, () => {
 
           it('should apply .optimistic-saving-content styles', () => {
             const wrapper = mount(<Comment isSaving savingText="Saving..." />);
-            expect(wrapper.find(`.${styles.locals.optimisticSavingContent}`).length).to.equal(1);
+            expect(wrapper.find(`.${styles.optimisticSavingContent}`).length).to.equal(1);
           });
         });
 
@@ -142,7 +142,7 @@ describe(name, () => {
 
           it('should not apply .optimistic-saving-content styles', () => {
             const wrapper = mount(<Comment savingText="Saving..." />);
-            expect(wrapper.find(`.${styles.locals.optimisticSavingContent}`).length).to.equal(0);
+            expect(wrapper.find(`.${styles.optimisticSavingContent}`).length).to.equal(0);
           });
         });
       });
@@ -151,7 +151,7 @@ describe(name, () => {
         it('Should render in the order author, type, time, restrictedTo', () => {
           const time = <CommentTime>30 August, 2016</CommentTime>;
           const wrapper = mount(<Comment author="Mary" type="Type" time={time} restrictedTo="atlassian-staff" />);
-          const topItems = wrapper.find(`.${styles.locals.topItemsContainer}`);
+          const topItems = wrapper.find(`.${styles.topItemsContainer}`);
           expect(topItems.childAt(0).text()).to.equal('Mary');
           expect(topItems.childAt(1).text()).to.equal('Type');
           expect(topItems.childAt(2).text()).to.equal('30 August, 2016');
@@ -160,7 +160,7 @@ describe(name, () => {
 
         it('Should render in the order author, type, savingText, restrictedTo', () => {
           const wrapper = mount(<Comment author="Mary" type="Type" restrictedTo="atlassian-staff" isSaving savingText="Saving..." />);
-          const topItems = wrapper.find(`.${styles.locals.topItemsContainer}`);
+          const topItems = wrapper.find(`.${styles.topItemsContainer}`);
           expect(topItems.childAt(0).text()).to.equal('Mary');
           expect(topItems.childAt(1).text()).to.equal('Type');
           expect(topItems.childAt(2).text()).to.equal('Saving...');

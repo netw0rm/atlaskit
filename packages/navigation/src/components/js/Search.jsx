@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/Search.less';
+import styles from '../less/Search.less';
 
 export default class Search extends PureComponent {
   static propTypes = {

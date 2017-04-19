@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import AkButton from '@atlaskit/button';
 import AkButtonGroup from '@atlaskit/button-group';
 
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 
 import AnimationDemo from './AnimationDemo';
 import { name } from '../package.json';

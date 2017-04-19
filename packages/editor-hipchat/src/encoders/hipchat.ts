@@ -4,7 +4,7 @@ const mapContent = (node: any) => {
       case 'mention':  // Hipchat expects a 'text'-field for mentions
         return {
           type: 'mention',
-          text: child.attrs.displayName,
+          text: child.attrs.text,
           attrs: child.attrs
         };
 

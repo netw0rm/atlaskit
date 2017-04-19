@@ -105,7 +105,6 @@ export class HyperlinkState {
       this.linkable = canAddLink;
       dirty = true;
     }
-
     if ((nodeInfo && nodeInfo.node) !== this.activeLinkNode) {
       this.activeLinkNode = nodeInfo && nodeInfo.node;
       this.activeLinkStartPos = nodeInfo && nodeInfo.startPos;
@@ -214,6 +213,11 @@ const plugin = new Plugin({
       const pluginState = stateKey.getState(view.state);
       pluginState.escapeFromMark(view);
 
+      return false;
+    },
+    handleClick(view: EditorView, event) {
+      const pluginState = stateKey.getState(view.state);
+      pluginState.active && pluginState.changeHandlers.forEach(cb => cb(pluginState));
       return false;
     },
     onBlur(view: EditorView) {

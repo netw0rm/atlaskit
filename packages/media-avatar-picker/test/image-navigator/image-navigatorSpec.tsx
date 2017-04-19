@@ -1,14 +1,10 @@
 import * as React from 'react';
 import {mount} from 'enzyme';
 import {expect} from 'chai';
-// import * as sinon from 'sinon';
 import {CONTAINER_SIZE, ImageNavigator} from '../../src/image-navigator';
 import {ImageCropper} from '../../src/image-cropper';
 import {Slider} from '../../src/slider';
-
-const imageSource = 'image-url';
-// const imageWidth = CONTAINER_SIZE;
-// const sliderValue = 40;
+import {createMouseEvent, smallImage} from '@atlaskit/media-test-helpers';
 
 describe('Image navigator', () => {
   let component;
@@ -16,7 +12,7 @@ describe('Image navigator', () => {
   let slider;
   beforeEach(() => {
     component = mount(<ImageNavigator
-      imageSource={imageSource}
+      imageSource={smallImage}
     />);
     imageCropper = component.find(ImageCropper);
     slider = component.find(Slider);
@@ -92,26 +88,24 @@ describe('Image navigator', () => {
 
   it('should mark state as is not dragging when mouse unpressed', () => {
     imageCropper.props().onDragStarted();
-    document.dispatchEvent(new MouseEvent('mouseup'));
+    document.dispatchEvent(createMouseEvent('mouseup'));
     expect(component.state().isDragging).to.equal(false);
   });
 
   describe('when image is dragged', () => {
-    // const deltaX = 10;
-    // const deltaY = 20;
     it('should change state through out dragging', () => {
       const imageInitPos = component.state().imageInitPos;
 
       imageCropper.props().onDragStarted();
-      document.dispatchEvent(new MouseEvent('mousemove', {screenX: 20, screenY: 30}));
+      document.dispatchEvent(createMouseEvent('mousemove', {screenX: 20, screenY: 30}));
       expect(component.state().cursorInitPos).to.deep.equal({x: 20, y: 30});
       expect(component.state().imagePos).to.deep.equal({x: imageInitPos.x, y: imageInitPos.y});
 
-      document.dispatchEvent(new MouseEvent('mousemove', {screenX: 50, screenY: 70}));
+      document.dispatchEvent(createMouseEvent('mousemove', {screenX: 50, screenY: 70}));
       expect(component.state().cursorInitPos).to.deep.equal({x: 20, y: 30});
       expect(component.state().imagePos).to.deep.equal({x: imageInitPos.x + 30, y: imageInitPos.y + 40});
 
-      document.dispatchEvent(new MouseEvent('mouseup'));
+      document.dispatchEvent(createMouseEvent('mouseup'));
       expect(component.state().cursorInitPos).to.equal(undefined);
       expect(component.state().imageInitPos).to.deep.equal({x: imageInitPos.x + 30, y: imageInitPos.y + 40});
     });

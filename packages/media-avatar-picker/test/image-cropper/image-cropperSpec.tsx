@@ -4,10 +4,11 @@ import {expect} from 'chai';
 import * as sinon from 'sinon';
 import {ImageCropper, ImageCropperProp} from '../../src/image-cropper';
 import {Container, DragOverlay} from '../../src/image-cropper/styled';
+import {smallImage} from '@atlaskit/media-test-helpers';
 
 const imageWidth = 600;
 const imageHeight = 400;
-const imageSource = 'image-url';
+const imageSource = smallImage;
 const top = 10;
 const left = 20;
 const containerSize = 400;

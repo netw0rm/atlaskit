@@ -2,6 +2,7 @@
 import * as React from 'react';
 import {Component} from 'react';
 import {CircularMask, Container, DragOverlay, RectMask, Image} from './styled';
+import {isImageRemote} from '@atlaskit/media-core';
 
 export interface LoadParameters {
   export: () => string;
@@ -70,9 +71,10 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
       top: `${top}px`,
       left: `${left}px`,
     };
+    const crossOrigin = isImageRemote(imageSource) ? 'anonymous' : undefined;
 
     return <Container style={containerStyle}>
-      <Image src={imageSource} style={imageStyle} onLoad={this.onImageLoaded} />
+      <Image crossOrigin={crossOrigin} src={imageSource} style={imageStyle} onLoad={this.onImageLoaded} />
       {isCircularMask ? <CircularMask /> : <RectMask />}
       <DragOverlay onMouseDown={this.onDragStarted} />
     </Container>;
@@ -99,7 +101,6 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
     const context = canvas.getContext('2d');
 
     if (context) {
-
       const sourceLeft = (-left + containerPadding) / scaleWithDefault;
       const sourceTop = (-top + containerPadding) / scaleWithDefault;
       const sourceWidth = destinationSize / scaleWithDefault;

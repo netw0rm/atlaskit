@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^1.0.0",
+    "@atlaskit/modal-dialog": "^1.2.15",
     "@atlaskit/inline-dialog": "*",
     "ak-icon": "^12.2.0"
   },

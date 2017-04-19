@@ -6,6 +6,7 @@ import AKInlineDialog from '@atlaskit/inline-dialog';
 class ButtonActivatedDialog extends PureComponent {
   static propTypes = {
     content: PropTypes.node,
+    children: PropTypes.node,
     position: PropTypes.string,
   }
 
@@ -37,7 +38,9 @@ class ButtonActivatedDialog extends PureComponent {
           onClick={this.handleClick}
           iconBefore={<BitbucketAdminIcon />}
           isSelected
-        />
+        >
+          {this.props.children}
+        </AKButton>
       </AKInlineDialog>
     );
   }

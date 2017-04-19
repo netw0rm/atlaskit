@@ -65,37 +65,37 @@ describe('Bitbucket markdown serializer: ', () => {
 
   describe('mentions', () => {
     it('should serialize mentions', () => {
-      const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
+      const node = doc(p(mention({ text: 'Oscar Wallhult', id: 'oscar' })));
       const test = markdownSerializer.serialize(node);
       expect(test).to.eq('@oscar');
     });
 
     it('should divide serialized mentions and text with one blank space', () => {
-      const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), 'text'));
+      const node = doc(p(mention({ text: 'Oscar Wallhult', id: 'oscar' }), 'text'));
       const test = markdownSerializer.serialize(node);
       expect(test).to.eq('@oscar text');
     });
 
     it('should not add a blank space in the end of the string for mentions', () => {
-      const node = doc(p('text ', mention({ displayName: 'Oscar Wallhult', id: 'oscar' })));
+      const node = doc(p('text ', mention({ text: 'Oscar Wallhult', id: 'oscar' })));
       const test = markdownSerializer.serialize(node);
       expect(test).to.eq('text @oscar');
     });
 
     it('should not divide mention and text with additional space if text starts with the space', () => {
-      const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), ' text'));
+      const node = doc(p(mention({ text: 'Oscar Wallhult', id: 'oscar' }), ' text'));
       const test = markdownSerializer.serialize(node);
       expect(test).to.eq('@oscar text');
     });
 
     it('should divide mention and text with only one additional space if text starts with the spaces', () => {
-      const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), '  text'));
+      const node = doc(p(mention({ text: 'Oscar Wallhult', id: 'oscar' }), '  text'));
       const test = markdownSerializer.serialize(node);
       expect(test).to.eq('@oscar  text');
     });
 
     it('should not divide mention and italic text node with additional space if text starts with the space', () => {
-      const node = doc(p(mention({ displayName: 'Oscar Wallhult', id: 'oscar' }), em(' text')));
+      const node = doc(p(mention({ text: 'Oscar Wallhult', id: 'oscar' }), em(' text')));
       const test = markdownSerializer.serialize(node);
       expect(test).to.eq('@oscar *text*');
     });

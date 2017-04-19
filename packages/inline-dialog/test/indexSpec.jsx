@@ -74,11 +74,21 @@ describe('inline-dialog', () => {
   });
 
   describe('shouldFlip prop', () => {
-    it('should be reflected onto the Layer component', () => {
-      const wrapper = shallow(<InlineDialog shouldFlip />);
-      const layer = wrapper.find(Layer);
-      expect(layer).to.have.length.above(0);
-      expect(layer.prop('autoFlip')).to.equal(true);
+    describe('should be reflected onto the Layer component', () => {
+      it('for a boolean value', () => {
+        const wrapper = mount(<InlineDialog shouldFlip />);
+        const layer = wrapper.find(Layer);
+        expect(layer).to.have.length.above(0);
+        expect(layer.prop('autoFlip')).to.equal(true);
+      });
+
+      it('for an array of strings', () => {
+        const shouldFlipValue = ['top', 'bottom'];
+        const wrapper = mount(<InlineDialog shouldFlip={shouldFlipValue} />);
+        const layer = wrapper.find(Layer);
+        expect(layer).to.have.length.above(0);
+        expect(layer.prop('autoFlip')).to.equal(shouldFlipValue);
+      });
     });
   });
 

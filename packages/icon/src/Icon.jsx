@@ -3,12 +3,17 @@ import classnames from 'classnames';
 
 import styles from 'style!./styles.less';
 import { NotImplementedError } from './internal/exceptions';
-import size from './internal/size';
+
+const sizes = ['small', 'medium', 'large', 'xlarge'];
+const size = sizes.reduce((p, c) => Object.assign(p, { [c]: c }), {});
 
 export default class Icon extends PureComponent {
   static propTypes = {
+    /** string to apply as the svg title element */
     label: PropTypes.string.isRequired,
-    size: PropTypes.oneOf(Object.keys(size).map(k => size[k])),
+    /** control the size of the icon */
+    size: PropTypes.oneOf(sizes),
+    /** onclick handler for the icon element */
     onClick: PropTypes.func,
   }
 

@@ -142,10 +142,10 @@ describe(`${name} - item`, () => {
       expect(mount(<SecondaryText>text</SecondaryText>).text()).to.equal('text');
     });
 
-    // it('should have className', () => {
-    //   expect(mount(<SecondaryText>text</SecondaryText>)
-    //     .find(`.${styles.secondaryText}`).length).to.equal(1);
-    // });
+    it('should have className', () => {
+      expect(mount(<SecondaryText>text</SecondaryText>)
+        .find(`.${styles.secondaryText}`).length).to.equal(1);
+    });
   });
 
   describe('accessibility', () => {

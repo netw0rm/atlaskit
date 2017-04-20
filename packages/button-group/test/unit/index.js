@@ -3,6 +3,7 @@ import React from 'react';
 
 import { name } from '../../package.json';
 import ButtonGroup from '../../src';
+import styles from '../../src/styles.less';
 
 describe(name, () => {
   describe('basic behavior', () => {
@@ -14,11 +15,9 @@ describe(name, () => {
       expect(group.children().length).to.equal(3);
     });
 
-    // Test removed because we cant use style loader in tests and we are moving components to styled
-    // -components
-    // it(`should have className ${styles.locals.wrapper}`, () => {
-    //   const group = shallow(<ButtonGroup />);
-    //   expect((group).hasClass((styles.locals.wrapper))).to.equal(true);
-    // });
+    it(`should have className ${styles.wrapper}`, () => {
+      const group = shallow(<ButtonGroup />);
+      expect((group).hasClass((styles.wrapper))).to.equal(true);
+    });
   });
 });

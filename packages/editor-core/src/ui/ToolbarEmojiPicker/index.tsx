@@ -47,7 +47,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
             target={button}
             position="auto"
             zIndex={akZIndexModal}
-            pickerRef={this.onPickerRef}
+            onPickerRef={this.onPickerRef}
           />
         }
       </span>
@@ -61,6 +61,13 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
       document.removeEventListener('click', this.handleClickOutside);
     }
     this.pickerRef = ref;
+  }
+
+  private handleSelectedEmoji = (emojiId: any, emoji: any) => {
+    if (this.state.isOpen) {
+      this.props.pluginState.insertEmoji(emojiId);
+      this.close();
+    }
   }
 
   private handleClickOutside = (e) => {
@@ -81,11 +88,6 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     this.setState({
       isOpen: false,
     });
-  }
-
-  private handleSelectedEmoji = (emojiId: any, emoji: any) => {
-    this.props.pluginState.insertEmoji(emojiId);
-    this.close();
   }
 
 }

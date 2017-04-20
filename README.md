@@ -105,8 +105,8 @@ AtlasKit uses [React Storybook](https://github.com/kadirahq/react-storybook) to 
 
 ### Unit tests
 
-* To run unit tests for a single component: `yarn run test/single my-component-name`
-* To continuously run tests for a single component: `yarn run test/single/watch my-component`
+* To run unit tests for a single component: `yarn run test/single @atlaskit/my-component-name`
+* To continuously run tests for a single component: `yarn run test/single/watch @atlaskit/my-component`
 
 > You can pass arguments to Karma like this to override the AtlasKit defaults: `yarn run test/single @atlaskit/my-component-name -- --browsers=Chrome`
 
@@ -196,8 +196,9 @@ The `packages/util-component-ts-template` component should serve as a reference 
 
 [TSLint](https://palantir.github.io/tslint/) is used (instead of ESLint) to lint TypeScript files (`.d.ts`, `.ts`, `.tsx`). TSLint also supports linting JavaScript files (`.js`) but this is disabled in favour of ESLint.
 
-* To run TSLint (without ESLint) across all components: `yarn run lint/ts`
-* To automatically fix TSLint violations: `yarn run lint/ts/fix`
+* To run TSLint (without ESLint) across all components: `yarn run validate/tslint`
+* To run TSLint only for changed files: `yarn run validate/tslint/changed`
+* To automatically fix TSLint violations: `yarn run validate/tslint/fix`
 * To lint in VS Code, install the TSLint extension and set the `"tslint.ignoreDefinitionFiles": false` workspace setting.
 
 All packages should use a consistent set of TSLint rules (found in `tslint.json`).

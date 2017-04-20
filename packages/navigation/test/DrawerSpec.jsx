@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import styles from 'style!../src/components/less/Drawer.less';
+import styles from '../src/components/less/Drawer.less';
 import Drawer from '../src/components/js/Drawer';
 
 describe('<Drawer />', () => {

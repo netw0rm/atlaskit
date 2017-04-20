@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 
-import { locals as styles } from '../styles.less';
+import styles from '../styles.less';
 
 export default class NothingWasFound extends PureComponent {
   static propTypes = {

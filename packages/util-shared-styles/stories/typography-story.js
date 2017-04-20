@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { storiesOf } from '@kadira/storybook';
 import { akTypographyMixins } from '@atlaskit/util-shared-styles';
 import { Chrome, Code, Description } from '@atlaskit/util-readme';
-import storyStyles from 'style-loader!./typography/typography-story.less';
+import storyStyles from './typography/typography-story.less';
 import { name } from '../package.json';
 
 /* eslint-disable import/first, import/no-duplicates */

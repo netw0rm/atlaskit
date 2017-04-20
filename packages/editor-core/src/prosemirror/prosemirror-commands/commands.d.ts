@@ -22,6 +22,8 @@ export function liftEmptyBlock(state: EditorState<any>, dispatch?: (tr: Transact
 
 export function splitBlock(state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
 
+export function splitBlockKeepMarks(state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
+
 export function selectParentNode(state: EditorState<any>, dispatch?: (tr: Transaction) => void): boolean;
 
 export function wrapIn(nodeType: NodeType, attrs?: { [key: string]: any }): (state: EditorState<any>, dispatch?: (tr: Transaction) => void) => boolean;

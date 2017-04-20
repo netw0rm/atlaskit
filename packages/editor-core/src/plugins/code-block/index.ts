@@ -74,7 +74,7 @@ export class CodeBlockState {
 
   private activeCodeBlockElement(docView: NodeViewDesc): HTMLElement {
     const offset = this.nodeStartPos();
-    const { node } = docView.domFromPos(offset, 1);
+    const { node } = docView.domFromPos(offset);
 
     return node as HTMLElement;
   }
@@ -91,8 +91,6 @@ export class CodeBlockState {
     if (node.type === state.schema.nodes.codeBlock) {
       return node;
     }
-
-    return undefined;
   }
 }
 export const stateKey = new PluginKey('codeBlockPlugin');

@@ -1,9 +1,9 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!./styles.less';
 import Button from '@atlaskit/button';
 import InlineDialog from '@atlaskit/inline-dialog';
 import IconForType from './internal/IconForType';
 import { types, defaultType } from './internal/types';
+import styles from './styles.less';
 
 export default class InlineMessage extends PureComponent {
   static propTypes = {

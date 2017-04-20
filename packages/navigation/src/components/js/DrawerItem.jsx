@@ -1,8 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
+import className from 'classnames';
 import {
   drawerItem,
-} from 'style!../less/DrawerItem.less';
-import className from 'classnames';
+} from '../less/DrawerItem.less';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import NavigationItem from './NavigationItem';
 

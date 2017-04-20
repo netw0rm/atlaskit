@@ -1,14 +1,9 @@
 import { Node, Schema } from './';
 
 export class Fragment {
-  content: Array<Node>;
-  size: number;
-  constructor(content, size: number);
-  nodesBetween(from: number, to: number, f: Function, nodeStart: number, parent: Node);
   textBetween(from: number, to: number, blockSeparator?: string, leafText?: string): string;
   append(other: Fragment): Fragment;
   cut(from: number, to?: number): Fragment;
-  cutByIndex(from: number, to: number): Fragment;
   replaceChild(index: number, node: Node): Fragment;
   addToStart(node: Node): Fragment;
   addToEnd(node: Node): Fragment;

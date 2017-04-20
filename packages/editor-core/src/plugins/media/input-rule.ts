@@ -1,4 +1,4 @@
-import { URL_REGEX } from './../hyperlink/url-regex';
+import { URL_REGEX } from './../hyperlink/regex';
 import { Transaction, Plugin, InputRule, inputRules, Schema } from '../../prosemirror';
 import { MediaPluginState, stateKey } from './';
 import { createInputRule } from '../utils';

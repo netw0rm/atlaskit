@@ -23,7 +23,7 @@ const input = {
         {
           type: 'mention',
           attrs: {
-            displayName: '@World',
+            text: '@World',
             id: '1234'
           }
         },
@@ -93,7 +93,7 @@ const output = [
     type: 'mention',
     text: '@World',
     attrs: {
-      displayName: '@World',
+      text: '@World',
       id: '1234'
     }
   },

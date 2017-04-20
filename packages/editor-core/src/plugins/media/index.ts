@@ -8,7 +8,7 @@ import {
   Node,
   Schema,
 } from '../../prosemirror';
-import { URL_REGEX } from '../hyperlink/url-regex';
+import { URL_REGEX } from '../hyperlink/regex';
 import { MediaProvider, UploadParams, DefaultMediaStateManager } from '../../media';
 import PickerFacade from './picker-facade';
 import TemporaryNodesList from './temporary-nodes-list';

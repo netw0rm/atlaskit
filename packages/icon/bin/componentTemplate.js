@@ -10,27 +10,18 @@ module.exports = ({
 }) => {
   const componentName = iconNameToComponentName(unprefixedIconName);
 
-  const srcPath = path.join(__dirname, '..', 'src');
+  const srcPath = path.join(__dirname, '..', 'tmp');
   const currentJsPath = path.join(srcPath, tmpFolderName, path.dirname(iconRelativePathToSrc));
   const relativePathToSrc = path.relative(currentJsPath, srcPath);
 
-  /* eslint-disable max-len */
-  return `import React from 'react';
-import Icon from '${relativePathToSrc}/Icon';
-
-export default class extends Icon {
-  static displayName = ${JSON.stringify(componentName)};
-  getGlyphTemplate() {
-    return (props) => {
-      const { label: title } = props;
-      const iconProps = {...props};
-      delete iconProps.label;
-
-      // eslint-disable-next-line max-len, react/jsx-space-before-closing
-      return (${svgData});
-    };
-  }
-}
+  // Icon component will provide label, role and class props
+  // SVG expecting title for title and iconProps to be spreaded across root tag.
+  return `
+  import React from 'react';
+  import { iconConstructor, prepareProps } from '${relativePathToSrc}/lib/Icon';
+  export const ${componentName}Icon = (props) => { 
+    const { title, iconProps } = prepareProps(props); return (${svgData}) 
+  };
+  export default iconConstructor('${componentName}', ${componentName}Icon);
 `;
-/* eslint-enable max-len */
 };

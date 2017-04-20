@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "12.0.3",
+  "version": "14.3.10",
   "config": {
     "access": "public"
   },
@@ -49,20 +49,20 @@
     "@atlaskit/tooltip": "^1.0.3",
     "@atlaskit/util-shared-styles": "^1.2.1",
     "mediapicker": "^4.2.2",
-    "browserkeymap": "git://github.com/bradleyayers/browserkeymap#es6-modules-compat-with-types",
+    "browserkeymap": "git://github.com/bradleyayers/browserkeymap#3615382475d0d6beeb1c5f0b27a1eadc94a108ac",
     "orderedmap": "^1.0.0",
-    "popper.js": "^1.0.1",
+    "popper.js": "1.0.8",
     "prosemirror-commands": "^0.19.0",
     "prosemirror-history": "^0.19.0",
     "prosemirror-inputrules": "^0.19.0",
     "prosemirror-keymap": "^0.19.0",
     "prosemirror-markdown": "^0.19.0",
-    "prosemirror-model": "git://github.com/d4rkr00t/prosemirror-model#latest-patches",
+    "prosemirror-model": "git://github.com/d4rkr00t/prosemirror-model#99857dc0ef0fdbc29d5f6c2b49532c6c21f80a73",
     "prosemirror-schema-basic": "^0.19.0",
     "prosemirror-schema-list": "^0.19.0",
     "prosemirror-state": "^0.19.1",
     "prosemirror-transform": "^0.19.0",
-    "prosemirror-view": "git://github.com/jspn500/prosemirror-view#potato",
+    "prosemirror-view": "git://github.com/jspn500/prosemirror-view#3ce66f49b0b6cf7f2795fd686810c32fba7376a6",
     "tslib": "^1.2.0",
     "typestyle": "^0.21.4"
   },

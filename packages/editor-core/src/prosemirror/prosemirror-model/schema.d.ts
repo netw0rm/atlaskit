@@ -1,5 +1,6 @@
 import { OrderedMap } from '../orderedmap';
 import { Fragment, Mark, Node, ParseRule } from './';
+import { DOMOutputSpec } from './to_dom';
 
 export interface AttributeSpec {
   default?: any;
@@ -7,10 +8,11 @@ export interface AttributeSpec {
 }
 
 export interface MarkSpec {
-  excludes?: string;
   attrs?: { [key: string]: AttributeSpec };
   inclusive?: boolean;
-  toDOM?: (mark: Mark) => {};
+  excludes?: string;
+  group?: string;
+  toDOM?: (mark: Mark) => DOMOutputSpec;
   parseDOM?: ParseRule[];
 }
 
@@ -36,12 +38,13 @@ export class NodeType {
   isText: boolean;
   isInline: boolean;
   isTextblock: boolean;
+  inlineContent: boolean;
   isLeaf: boolean;
+  isAtom: boolean;
   create(attrs?: { [key: string]: any }, content?: Fragment | Node | Node[], marks?: Mark[]): Node;
   createChecked(attrs?: { [key: string]: any }, content?: Fragment | Node | Node[], marks?: Mark[]): Node;
   createAndFill(attrs?: { [key: string]: any }, content?: Fragment | Node | Node[], marks?: Mark[]): Node | null;
   validContent(content: Fragment, attrs?: { [key: string]: any }): boolean;
-  compatibleContent(other: NodeType): boolean;
 }
 
 export class MarkType {
@@ -51,17 +54,17 @@ export class MarkType {
   create(attrs?: { [key: string]: any }): Mark;
   removeFromSet(set: Mark[]): Mark[];
   isInSet(set: Mark[]): Mark | null;
-  isCode: boolean;
+  excludes: MarkType;
 }
 
 export class Schema<N, M> {
   constructor(spec: SchemaSpec<N, M>);
 
-  nodeSpec: OrderedMap<NodeSpec>;
-  markSpec: OrderedMap<MarkSpec>;
+  spec: SchemaSpec<N, M>;
   nodes: { [K in keyof N]: NodeType };
   marks: { [K in keyof M]: MarkType };
   cached: { [key: string]: any };
+  topNodeType: NodeType;
   node(type: string | NodeType, attrs?: { [key: string]: any }, content?: Fragment | Node | Node[], marks?: Mark[]): Node;
   text(text: string, marks?: Mark[]): Node;
   mark(type: string | MarkType, attrs?: { [key: string]: any }): Mark;
@@ -72,4 +75,5 @@ export class Schema<N, M> {
 export interface SchemaSpec<N, M> {
   nodes: { [K in keyof N]: NodeSpec } | OrderedMap<NodeSpec>;
   marks?: { [K in keyof M]: MarkSpec } | OrderedMap<MarkSpec>;
+  topNode?: string;
 }

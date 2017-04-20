@@ -15,9 +15,9 @@ describe(name, () => {
       expect(group.children().length).to.equal(3);
     });
 
-    it(`should have className ${styles.locals.wrapper}`, () => {
+    it(`should have className ${styles.wrapper}`, () => {
       const group = shallow(<ButtonGroup />);
-      expect((group).hasClass((styles.locals.wrapper))).to.equal(true);
+      expect((group).hasClass((styles.wrapper))).to.equal(true);
     });
   });
 });

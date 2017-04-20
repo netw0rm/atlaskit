@@ -1,21 +1,26 @@
 import {
   baseKeymap,
-  BlockTypePlugin,
+  blockTypePlugins,
   EditorState,
   EditorView,
   emojiNodeView,
   EmojiTypeAhead,
-  EmojisPlugin,
+  emojisPlugins,
+  emojisStateKey,
   history,
   HyperlinkEdit,
-  HyperlinkPlugin,
+  hyperlinkPlugins,
+  hyperlinkStateKey,
   keymap,
   mentionNodeView,
   MentionPicker,
-  MentionsPlugin,
+  mentionsPlugins,
+  mentionsStateKey,
+  Node,
   ProviderFactory,
-  TextFormattingPlugin,
+  textFormattingPlugins,
   TextSelection,
+  toJSON,
   version as coreVersion
 } from '@atlaskit/editor-core';
 import { EmojiProvider } from '@atlaskit/emoji';
@@ -32,18 +37,20 @@ let debounced: number | null = null;
 
 export type Doc = {
   type: 'doc',
+  version: 1,
   content?: any[]
 };
 
 export interface Props {
   id?: string;
   maxContentSize?: number;
-  onSubmit?: (doc: Doc) => void;
+  onSubmit?: (value: Doc | any[]) => void;
   onChange?: () => void;
   emojiProvider?: Promise<EmojiProvider>;
   mentionProvider?: Promise<MentionProvider>;
   presenceProvider?: any;
   reverseMentionPicker?: boolean;
+  useLegacyFormat?: boolean;
 }
 
 export interface State {
@@ -82,10 +89,16 @@ export default class Editor extends PureComponent<Props, State> {
   }
 
   /**
-   * The current value of the editor, encoded as HipChat-format.
+   * The current value of the editor
    */
-  get value(): string {
-    return this.encodeDocument();
+  get value() {
+    const { editorView } = this.state;
+    const doc = editorView && toJSON(editorView.state.doc);
+    if (!doc) {
+      return { type: 'doc', version: 1, content: [] };
+    }
+
+    return this.props.useLegacyFormat ? hipchatEncoder(doc) : doc;
   }
 
   /**
@@ -121,13 +134,27 @@ export default class Editor extends PureComponent<Props, State> {
     const { editorView } = this.state;
     if (editorView) {
       const { state } = editorView;
-      const content = schema.nodeFromJSON(hipchatDecoder(value).content[0]);
-      const tr = state.tr
-        .replaceWith(0, state.doc.nodeSize - 2, content)
-        .scrollIntoView();
-      editorView.dispatch(tr);
+      const { useLegacyFormat } = this.props;
 
-      if (!value.length) {
+      let content: Node[];
+
+      if (useLegacyFormat) {
+        content = [schema.nodeFromJSON(hipchatDecoder(value).content[0])];
+      } else {
+        content = [];
+        (value.content || []).forEach(child => {
+          content.push(schema.nodeFromJSON(child));
+        });
+      }
+
+      if (content && content.length > 0) {
+        const tr = state.tr
+          .replaceWith(0, state.doc.nodeSize - 2, content)
+          .scrollIntoView();
+        editorView.dispatch(tr);
+      }
+
+      if (useLegacyFormat && !value.length) {
         this.clear();
       }
     }
@@ -172,9 +199,9 @@ export default class Editor extends PureComponent<Props, State> {
     const { editorView, emojiProvider, mentionProvider } = this.state;
 
     const editorState = editorView && editorView.state;
-    const emojisState = editorState && emojiProvider && EmojisPlugin.getState(editorState);
-    const mentionsState = editorState && mentionProvider && MentionsPlugin.getState(editorState);
-    const hyperlinkState = editorState && HyperlinkPlugin.getState(editorState);
+    const emojisState = editorState && emojiProvider && emojisStateKey.getState(editorState);
+    const mentionsState = editorState && mentionProvider && mentionsStateKey.getState(editorState);
+    const hyperlinkState = editorState && hyperlinkStateKey.getState(editorState);
     const classNames = cx('ak-editor-hipchat', {
       'max-length-reached': this.state.maxLengthReached,
       'flash-toggle': this.state.flashToggle
@@ -219,11 +246,11 @@ export default class Editor extends PureComponent<Props, State> {
       schema,
       doc: '',
       plugins: [
-        BlockTypePlugin,
-        HyperlinkPlugin,
-        TextFormattingPlugin,
-        EmojisPlugin,
-        MentionsPlugin,
+        ...mentionsPlugins(schema),
+        ...emojisPlugins(schema),
+        ...blockTypePlugins(schema),
+        ...hyperlinkPlugins(schema),
+        ...textFormattingPlugins(schema),
         history(),
         keymap(hcKeymap),
         keymap(baseKeymap) // should be last
@@ -260,8 +287,8 @@ export default class Editor extends PureComponent<Props, State> {
       }
     });
 
-    EmojisPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
-    MentionsPlugin.getState(editorView.state).subscribeToFactory(this.providerFactory);
+    emojisStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
+    mentionsStateKey.getState(editorView.state).subscribeToFactory(this.providerFactory);
 
     if (place instanceof HTMLElement) {
       const content = place.querySelector('[contenteditable]');
@@ -279,7 +306,7 @@ export default class Editor extends PureComponent<Props, State> {
     const { onSubmit } = this.props;
     const { editorView } = this.state;
     if (onSubmit && editorView) {
-      onSubmit(this.encodeDocument());
+      onSubmit(this.value);
     }
 
     return true;
@@ -294,11 +321,6 @@ export default class Editor extends PureComponent<Props, State> {
 
       debounced = setTimeout(() => { onChange(); }, 200);
     }
-  }
-
-  private encodeDocument() {
-    const { editorView } = this.state;
-    return editorView ? hipchatEncoder(editorView.state.doc.toJSON()) : '';
   }
 
 }

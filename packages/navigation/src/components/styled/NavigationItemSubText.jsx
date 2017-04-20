@@ -11,7 +11,7 @@ const NavigationItemSubText = styled.div`
   color: ${akColorN90};
   font-size: ${({ theme }) => (theme[themeVariables.isCompact] ? compactFontSize : defaultFontSize)};
   line-height: ${({ theme }) => (theme[themeVariables.isCompact] ? compactLineHeight : defaultLineHeight)};
-  overflow-x: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;

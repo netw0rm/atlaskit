@@ -1,5 +1,6 @@
 import { EditorView, browser } from '../prosemirror';
 import { keyCodes } from '../keymaps';
+import { TestingEditorView } from './types/prosemirror';
 
 /**
  * Sends a key to ProseMirror content area, simulating user key press.
@@ -32,5 +33,5 @@ export default function sendKeyToPm(editorView: EditorView, keys: string) {
   (event as any).which = code;
   (event as any).view = window;
 
-  editorView.dispatchEvent(event);
+  (editorView as TestingEditorView).dispatchEvent(event);
 }

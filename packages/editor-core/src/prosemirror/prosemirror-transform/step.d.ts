@@ -7,6 +7,7 @@ export class Step {
   invert(doc: Node): Step;
   map(mapping: Mappable): Step | null;
   merge(other: Step): Step | null;
+  offset(n: number): Step;
   toJSON(): { [key: string]: any };
 
   static fromJSON(schema: Schema<any, any>, json: { [key: string]: any }): Step;

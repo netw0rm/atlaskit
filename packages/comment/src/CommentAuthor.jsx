@@ -20,7 +20,7 @@ export default class CommentAuthor extends PureComponent {
     return (
       <CommentField
         href={this.props.href}
-        extraClasses={styles.locals.commentAuthor}
+        extraClasses={styles.commentAuthor}
         onClick={this.props.onClick}
         onFocus={this.props.onFocus}
         onMouseOver={this.props.onMouseOver}

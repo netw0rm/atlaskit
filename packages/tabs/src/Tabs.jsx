@@ -28,7 +28,7 @@ export default class Tabs extends PureComponent {
     ) : null;
 
     return (
-      <div className={styles.locals.akTabsRoot}>
+      <div className={styles.akTabsRoot}>
         <TabsNav
           onKeyboardNav={this.props.onKeyboardNav}
           tabs={this.props.tabs}

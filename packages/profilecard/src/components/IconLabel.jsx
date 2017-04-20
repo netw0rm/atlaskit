@@ -5,7 +5,7 @@ import EditorRecentIcon from '@atlaskit/icon/glyph/editor/recent';
 import EditorMentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { Presence } from '@atlaskit/avatar';
 
-import styles from 'style!../styles/profilecard.less';
+import styles from '../styles/profilecard.less';
 
 const icons = {
   location: EditorLocationIcon,

@@ -7,9 +7,10 @@ import styles from './styles.less';
 import CommentAction from './CommentAction';
 import CommentAuthor from './CommentAuthor';
 import CommentTime from './CommentTime';
+import CommentEdited from './CommentEdited';
 import CommentLayout from './layout/CommentLayout';
 
-export { CommentAction, CommentAuthor, CommentTime, CommentLayout };
+export { CommentAction, CommentAuthor, CommentTime, CommentEdited, CommentLayout };
 
 export default class Comment extends PureComponent {
   static propTypes = {
@@ -33,6 +34,8 @@ export default class Comment extends PureComponent {
     time: PropTypes.node,
     /** The type of the comment - will be rendered in a lozenge at the top of the Comment */
     type: PropTypes.string,
+    /** will be rendered beside the time to show whether the comment is edited or not */
+    edited: PropTypes.node,
   }
 
   static defaultProps = {
@@ -56,6 +59,7 @@ export default class Comment extends PureComponent {
         this.props.time && !this.props.isSaving ? this.props.time : null,
         this.props.isSaving ? this.props.savingText : null,
         this.props.restrictedTo ? this.renderRestrictedItem() : null,
+        this.props.edited || null,
       ]
       .filter(item => !!item)
       .map((item, index) => <div key={index} className={styles.topItem}>{item}</div>)

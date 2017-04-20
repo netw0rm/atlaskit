@@ -6,7 +6,7 @@ import { akColorN50 } from '@atlaskit/util-shared-styles';
 import MediaComponent from '../../ui/Media/MediaComponent';
 import ProviderFactory, { WithProviders } from '../../providerFactory';
 import { locateAndRemoveNode } from '../../utils';
-import { stateKey as mediaStateKey } from '../../plugins/media';
+import { mediaStateKey } from '../../plugins';
 
 const mediaStyle = style({
   display: 'inline-block',

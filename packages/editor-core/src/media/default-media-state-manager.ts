@@ -54,4 +54,9 @@ export default class DefaultMediaStateManager implements MediaStateManager {
       list.splice(pos, 1);
     }
   }
+
+  destroy() {
+    // release all listeners
+    this.subscribers = {};
+  }
 }

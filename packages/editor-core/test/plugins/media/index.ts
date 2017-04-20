@@ -1,10 +1,24 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { default as mediaPluginFactory, MediaPluginState } from '../../../src/plugins/media';
 import {
-  chaiPlugin, makeEditor, img, fixtures, doc, p, code_block,
-  setNodeSelection, setTextSelection,
+  mediaNodeView,
+  mediaPluginFactory,
+  MediaPluginState,
+  ProviderFactory,
+} from '../../../src';
+import {
+  blockquote,
+  chaiPlugin,
+  code_block,
+  doc,
+  h1,
+  makeEditor,
+  mediaGroup,
+  media,
+  fixtures,
+  p,
+  storyMediaProviderFactory,
 } from '../../../src/test-helper';
 import defaultSchema from '../../../src/test-helper/schema';
 
@@ -12,18 +26,132 @@ chai.use(chaiPlugin);
 
 describe('Media plugin', () => {
   const fixture = fixtures();
+  const resolvedProvider = storyMediaProviderFactory();
+
+  const providerFactory = new ProviderFactory();
+  providerFactory.setProvider('mediaProvider', resolvedProvider);
+
   const editor = (doc: any) => makeEditor({
     doc,
-    plugins: mediaPluginFactory(defaultSchema, {
-      providerFactory: this.providerFactory,
-      behavior: 'default'
-    }),
+    plugins: mediaPluginFactory(defaultSchema, { providerFactory, behavior: 'default' }),
+    nodeViews: {
+      media: mediaNodeView(providerFactory)
+    },
     place: fixture()
   });
 
   it('allows change handler to be registered', () => {
     const pluginState = editor(doc(p(''))).pluginState as MediaPluginState;
     pluginState.subscribe(sinon.spy());
+  });
+
+  it(`should insert media node into the document after current paragraph node`, () => {
+    const { editorView, pluginState } = editor(doc(p('text{<>}')));
+
+    (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
+
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        p('text'),
+        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })
+      )
+    ));
+  });
+
+  it(`should insert media node into the document after current heading node`, () => {
+    const { editorView, pluginState } = editor(doc(h1('text{<>}')));
+
+    (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
+
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        h1('text'),
+        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })
+      )
+    ));
+  });
+
+  it(`should insert media node into the document after current blockquote node`, () => {
+    const { editorView, pluginState } = editor(doc(blockquote(p('text{<>}'))));
+
+    (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
+
+    expect(editorView.state.doc).to.deep.equal(
+      doc(blockquote(
+        p('text'),
+        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' }))
+      ))
+    );
+  });
+
+  it(`should insert media node into the document after current codeblock node`, () => {
+    const { editorView, pluginState } = editor(doc(code_block()('text{<>}')));
+
+    (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
+
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        code_block()('text'),
+        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })
+      )
+    ));
+  });
+
+  it('should prepend media node to existing media group', () => {
+    const { editorView, pluginState } = editor(doc(
+      p('text{<>}'),
+      mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })),
+    ));
+
+    (pluginState as MediaPluginState).insertFile({ id: 'mock2' }, 'mock-collection');
+
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        p('text{<>}'),
+        mediaGroup(
+          media({ id: 'mock2', type: 'file', collection: 'mock-collection' }),
+          media({ id: 'mock', type: 'file', collection: 'mock-collection' }),
+        )
+      )
+    );
+  });
+
+  it('should replace paragraph with 0-length text inside with mediaGroup', () => {
+    const { editorView, pluginState } = editor(doc(p('{<>}')));
+
+    (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
+
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' }))
+      )
+    );
+  });
+
+  it('should replace empty paragraph with mediaGroup and preserve next empty paragraph', () => {
+    const { editorView, pluginState } = editor(doc(p('{<>}'), p()));
+
+    (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
+
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })),
+        p()
+      )
+    );
+  });
+
+  it('should replace empty paragraph with mediaGroup and preserve previous empty paragraph', () => {
+    const { editorView, pluginState } = editor(doc(p(), p('{<>}')));
+
+    (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
+
+    expect(editorView.state.doc).to.deep.equal(
+      doc(
+        p(),
+        mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })),
+      )
+    );
   });
 
   // it('allows an image to be added at the current collapsed selection', () => {

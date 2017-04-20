@@ -1,9 +1,16 @@
 import * as chai from 'chai';
 import { expect } from 'chai';
-import { mount, setProps } from 'enzyme';
+import { mount } from 'enzyme';
 import * as React from 'react';
-import { ToolbarButton, ToolbarMedia } from '@atlaskit/editor-core';
-import { chaiPlugin, storyMediaProviderFactory } from '@atlaskit/editor-core/dist/es5/test-helper';
+import {
+  ToolbarButton,
+  ToolbarMedia,
+} from '@atlaskit/editor-core';
+import {
+  chaiPlugin,
+  storyMediaProviderFactory,
+} from '@atlaskit/editor-core/dist/es5/test-helper';
+
 import Editor from '../src';
 
 chai.use(chaiPlugin);

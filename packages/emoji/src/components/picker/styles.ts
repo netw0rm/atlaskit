@@ -21,8 +21,33 @@ import {
 } from '../../shared-styles';
 
 export const pickerEmoji = style({
-  margin: '4px',
   cursor: 'pointer',
+  margin: '4px',
+  width: '32px',
+  height: '32px',
+  padding: 0,
+  display: 'inline-block',
+
+  $nest: {
+    '&>span': {
+      display: 'inline-block',
+      width: '32px',
+      height: '32px',
+      padding: 0,
+
+      $nest: {
+        '&>img': {
+          position: 'relative',
+          left: '50%',
+          top: '50%',
+          transform: 'translateX(-50%) translateY(-50%)',
+          maxHeight: '24px',
+          maxWidth: '24px',
+          display: 'block',
+        },
+      }
+    },
+  },
 });
 
 export const emojiPickerFooter = style({

@@ -98,7 +98,13 @@ const renderAsImage = (props: Props) => {
       onMouseDown={(event) => { handleMouseDown(props, event); }}
       // tslint:disable-next-line:jsx-no-lambda
       onMouseMove={(event) => { handleMouseMove(props, event); }}
-    />
+    >
+      <img
+        src={representation.imagePath}
+        alt={emoji.shortName}
+        title={emoji.shortName}
+      />
+    </span>
   );
 };
 

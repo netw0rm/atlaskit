@@ -24,6 +24,22 @@ const SampleEmojis = (props: SampleEmojiProps) => (
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
     />
     <ResourcedEmoji
+      emojiId={{ shortName: ':shrug:' }}
+      emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
+    />
+    <ResourcedEmoji
+      emojiId={{ shortName: ':disappear:' }}
+      emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
+    />
+    <ResourcedEmoji
+      emojiId={{ shortName: ':badpokerface:' }}
+      emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
+    />
+    <ResourcedEmoji
+      emojiId={{ shortName: ':freddie:' }}
+      emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
+    />
+    <ResourcedEmoji
       emojiId={{ shortName: ':not-an-emoji:' }}
       emojiProvider={props.emojiProvider || getEmojiResource() as Promise<EmojiProvider>}
     />

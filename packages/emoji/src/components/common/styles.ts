@@ -13,17 +13,18 @@ export const emojiSprite = 'emoji-sprite';
 export const emoji = style({
   borderRadius: '5px',
   backgroundColor: 'transparent',
-  backgroundPosition: '50%',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: '22px 22px',
   display: 'inline-block',
-  height: '32px',
-  width: '32px',
+  padding: '4px',
+  verticalAlign: 'middle',
 
   $nest: {
     [`&.${selected}`]: {
       backgroundColor: akEmojiSelectedBackgroundColor,
     },
+    '&>img': {
+      maxHeight: '22px',
+      verticalAlign: 'middle',
+    }
   },
 });
 
@@ -32,6 +33,7 @@ export const emojiContainer = style({
   display: 'inline-block',
   height: '32px',
   width: '32px',
+  verticalAlign: 'middle',
 
   $nest: {
     [`&.${selected}`]: {
@@ -104,9 +106,29 @@ export const emojiPreview = style({
         [`.${previewImg}`]: {
           display: 'inline-block',
           flex: 'initial',
-          backgroundPosition: '50%',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: '32px 32px',
+          width: '32px',
+
+          $nest: {
+            '&>span': {
+              width: '32px',
+              height: '32px',
+              padding: 0,
+              maxHeight: 'inherit',
+
+              $nest: {
+                '&>img': {
+                  position: 'relative',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translateX(-50%) translateY(-50%)',
+                  maxHeight: '32px',
+                  maxWidth: '32px',
+                  padding: 0,
+                  display: 'block',
+                }
+              }
+            }
+          }
         },
 
         [`.${previewText}`]: {

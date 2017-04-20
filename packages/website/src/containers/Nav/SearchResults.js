@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { BASE_URL } from '../config';
+import { BASE_URL } from '../../config';
 
 export default class SearchResults extends PureComponent {
   static propTypes = {

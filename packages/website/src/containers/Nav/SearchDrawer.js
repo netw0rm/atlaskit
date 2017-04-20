@@ -57,7 +57,7 @@ export default class SearchDrawer extends PureComponent {
         <Input
           onKeyUp={this.filterChange}
           placeholder="Component search..."
-          ref={(el) => {
+          innerRef={(el) => {
             this.searchInput = el;
             if (onSearchInputRef) onSearchInputRef(el);
           }}
@@ -71,9 +71,9 @@ export default class SearchDrawer extends PureComponent {
 const Input = styled.input`
   border: none;
   display: block;
-  font-size: ${akGridSizeUnitless * 3};
+  font-size: ${akGridSizeUnitless * 3}px;
   font-weight: 200;
-  margin-top: ${0 - (akGridSizeUnitless / 2)};
+  margin-top: ${0 - (akGridSizeUnitless / 2)}px;
   outline: none;
-  padding: 0 0 0 ${akGridSizeUnitless};
+  padding: 0 0 0 ${akGridSize};
 `;

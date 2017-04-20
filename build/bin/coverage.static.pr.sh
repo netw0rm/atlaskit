@@ -20,7 +20,7 @@ $CHALK --no-stdin -t "{green -- Changed Packages --}"
 echo "$CHANGED_PACKAGES"
 
 OUTDIR=$(mktemp -d)
-REPORT_LOCATION="reports"
+BUILD_SPECIFIC_URL_PART="reports"
 
 function coverage_build_status() {
   build_status \
@@ -28,7 +28,7 @@ function coverage_build_status() {
     "Coverage reports" \
     "The coverage reports for this pull request" \
     "$1" \
-    "$CDN_URL_BASE/$CDN_URL_SCOPE/$REPORT_LOCATION/coverage/html/index.html"
+    "$CDN_URL_BASE/$CDN_URL_SCOPE/$BUILD_SPECIFIC_URL_PART/coverage/html/index.html"
 }
 
 function build_coverage_report() {
@@ -39,6 +39,9 @@ function build_coverage_report() {
 }
 
 coverage_build_status "INPROGRESS"
-build_coverage_report "$OUTDIR"
-cdn_publish_folder "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
+# if we had any changed packages (string is not empty)
+if [ -n "$CHANGED_PACKAGES" ] ; then
+  build_coverage_report "$OUTDIR"
+  cdn_publish_folder "$OUTDIR" "$BUILD_SPECIFIC_URL_PART"
+fi
 coverage_build_status "SUCCESSFUL"

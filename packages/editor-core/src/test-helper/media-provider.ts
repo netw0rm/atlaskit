@@ -11,7 +11,6 @@ export function storyMediaProviderFactory (collection = defaultCollectionName) {
     uploadParams: {
       collection: collection
     },
-    thumbnailProvider: storyThumbnailProvider,
     viewContext: Promise.resolve<MediaContextConfig>({
       clientId: defaultClientId,
       serviceHost: defaultServiceHost,

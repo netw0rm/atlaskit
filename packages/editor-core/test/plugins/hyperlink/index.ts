@@ -420,6 +420,16 @@ describe('hyperlink', () => {
     });
 
 
+    it('should call subscribers when link is clicked', () => {
+      const { editorView, plugin, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
+      const spy = sinon.spy();
+
+      pluginState.subscribe(spy);
+      plugin.props.handleClick!(editorView, 2, createEvent('event'));
+
+      expect(spy.callCount).to.equal(2);
+    });
+
     it('should call subscribers when link was focused and then editor is blur', () => {
       const { editorView, plugin, pluginState } = editor(doc(linkable(link({ href: 'http://www.atlassian.com' })('te{<>}xt'))));
       const spy = sinon.spy();
@@ -544,6 +554,18 @@ describe('hyperlink', () => {
     context('when called without any selection in the editor', () => {
       it('should call subscribers', () => {
         const { editorView, pluginState } = editor(doc(paragraph('testing')));
+        const spy = sinon.spy();
+        pluginState.subscribe(spy);
+
+        sendKeyToPm(editorView, 'Mod-k');
+
+        expect(spy.callCount).to.equal(2);
+      });
+    });
+
+    context('when called with selection in the editor', () => {
+      it('should call subscribers', () => {
+        const { editorView, pluginState } = editor(doc(paragraph('{<}testing{>}')));
         const spy = sinon.spy();
         pluginState.subscribe(spy);
 

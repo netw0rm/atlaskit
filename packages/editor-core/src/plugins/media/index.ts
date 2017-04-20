@@ -29,7 +29,6 @@ export class MediaPluginState {
   public stateManager: MediaStateManager;
 
   private view: EditorView;
-  private state: EditorState<any>;
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
   private temporaryMediaNodes = new TemporaryNodesList();
   private destroyed = false;
@@ -40,7 +39,6 @@ export class MediaPluginState {
   private clipboardPicker: PickerFacade;
 
   constructor(state: EditorState<any>, options: MediaPluginOptions) {
-    this.state = state;
     this.behavior = options.behavior;
 
     const { nodes } = state.schema;
@@ -64,10 +62,6 @@ export class MediaPluginState {
     if (pos > -1) {
       pluginStateChangeSubscribers.splice(pos, 1);
     }
-  }
-
-  update(state: EditorState<any>) {
-    this.state = state;
   }
 
   setMediaProvider = (mediaProvider?: Promise<MediaProvider>) => {
@@ -128,7 +122,7 @@ export class MediaPluginState {
   }
 
   insertLinkFromUrl = (url: string) => {
-    const { state } = this;
+    const state = this.view.state;
 
     return state.tr.insert(
       this.findInsertPosition(),
@@ -137,7 +131,8 @@ export class MediaPluginState {
   }
 
   insertFile = (mediaState: MediaState, collection: string): Node => {
-    const { state, view } = this;
+    const { view } = this;
+    const { state } = view;
     const { id, fileName, fileSize, fileMimeType } = mediaState;
 
     const node = state.schema.nodes.media!.create({
@@ -187,7 +182,7 @@ export class MediaPluginState {
    * Determine best PM document position to insert a new media item at.
    */
   private findInsertPosition = () => {
-    const { state } = this;
+    const state = this.view.state;
     const $from = state.selection.$from;
 
     // Check if we're already in a media group and prepend the element inside the group
@@ -292,20 +287,18 @@ function mediaPluginFactory(options: MediaPluginOptions) {
         return new MediaPluginState(state, options);
       },
       apply(tr, pluginState, oldState, newState) {
-        // NOTE: Don't call pluginState.update here.
+        // NOTE: We're not calling passing new state to the Editor, because we depend on the view.state reference
+        //       throughout the lifetime of view. We injected the view into the plugin state, because we dispatch() 
+        //       transformations from within the plugin state (i.e. when adding a new file).
         return pluginState;
       }
     },
     key: stateKey,
     view: (view: EditorView) => {
       const pluginState = stateKey.getState(view.state);
-      pluginState.setView(view); // no need for
+      pluginState.setView(view);
 
-      return {
-        update(view: EditorView, prevState: EditorState<any>) {
-          pluginState.update(view.state, view);
-        }
-      };
+      return {};
     },
     props: {
       handleDOMEvents: {

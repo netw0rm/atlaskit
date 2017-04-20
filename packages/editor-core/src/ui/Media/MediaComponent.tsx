@@ -156,9 +156,9 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
       }
 
       this.setState({
-         ...this.state,
-         viewContext: context as Context
-        });
+        ...this.state,
+        viewContext: context as Context
+      });
     });
   }
 

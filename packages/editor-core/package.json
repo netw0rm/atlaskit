@@ -43,7 +43,6 @@
     "@atlaskit/media-core": "^1.2.0",
     "@atlaskit/media-card": "^1.12.0",
     "@atlaskit/media-filmstrip": "^2.0.4",
-    "@atlaskit/media-test-helpers": "^1.1.0",
     "@atlaskit/mention": "^4.2.0",
     "@atlaskit/spinner": "^1.0.1",
     "@atlaskit/tooltip": "^1.0.3",
@@ -72,6 +71,7 @@
     "jquery": "^2.2.4"
   },
   "devDependencies": {
+    "@atlaskit/media-test-helpers": "^1.1.0",
     "@atlaskit/util-data-test": "^4.0.0",
     "ajv": "^4.11.3",
     "highlight.js": "^9.6.0",

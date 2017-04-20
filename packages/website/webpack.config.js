@@ -16,6 +16,7 @@ module.exports = {
 
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
+    mainFields: ['ak:webpack:raw', 'browser', 'module', 'main'],
   },
 
   devtool: 'cheap-source-map',

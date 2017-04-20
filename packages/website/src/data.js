@@ -22,6 +22,7 @@ const components = {
       },
     },
     name: 'Badge',
+    docs: require('../../badge/docs'),
     package: require('../../badge/package'),
   },
   banner: {

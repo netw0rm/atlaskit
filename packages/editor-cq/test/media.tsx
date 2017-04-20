@@ -135,7 +135,7 @@ describe('media', () => {
     });
 
     it(`should insert media node into the document after current paragraph node`, () => {
-      const { editorView, pluginState } = editor(doc(p('text')));
+      const { editorView, pluginState } = editor(doc(p('text{<>}')));
 
       (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
 
@@ -148,7 +148,7 @@ describe('media', () => {
     });
 
     it(`should insert media node into the document after current heading node`, () => {
-      const { editorView, pluginState } = editor(doc(h1('text')));
+      const { editorView, pluginState } = editor(doc(h1('text{<>}')));
 
       (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
 
@@ -161,7 +161,7 @@ describe('media', () => {
     });
 
     it(`should insert media node into the document after current blockquote node`, () => {
-      const { editorView, pluginState } = editor(doc(blockquote(p('text'))));
+      const { editorView, pluginState } = editor(doc(blockquote(p('text{<>}'))));
 
       (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
 
@@ -174,7 +174,7 @@ describe('media', () => {
     });
 
     it(`should insert media node into the document after current codeblock node`, () => {
-      const { editorView, pluginState } = editor(doc(codeblock()('text')));
+      const { editorView, pluginState } = editor(doc(codeblock()('text{<>}')));
 
       (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
 
@@ -188,7 +188,7 @@ describe('media', () => {
 
     it('should prepend media node to existing media group', () => {
       const { editorView, pluginState } = editor(doc(
-        p('text'),
+        p('text{<>}'),
         mediaGroup(media({ id: 'mock', type: 'file', collection: 'mock-collection' })),
       ));
 
@@ -196,7 +196,7 @@ describe('media', () => {
 
       expect(editorView.state.doc).to.deep.equal(
         doc(
-          p('text'),
+          p('text{<>}'),
           mediaGroup(
             media({ id: 'mock2', type: 'file', collection: 'mock-collection' }),
             media({ id: 'mock', type: 'file', collection: 'mock-collection' }),
@@ -205,8 +205,8 @@ describe('media', () => {
       );
     });
 
-    it('should replace empty paragraph with mediaGroup', () => {
-      const { editorView, pluginState } = editor(doc(p()));
+    it('should replace paragraph with 0-length text inside with mediaGroup', () => {
+      const { editorView, pluginState } = editor(doc(p('{<>}')));
 
       (pluginState as MediaPluginState).insertFile({ id: 'mock' }, 'mock-collection');
 

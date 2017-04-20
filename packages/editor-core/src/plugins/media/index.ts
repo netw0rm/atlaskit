@@ -31,6 +31,7 @@ export class MediaPluginState {
   private view: EditorView;
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
   private temporaryMediaNodes = new TemporaryNodesList();
+  private useDefaultStateManager = true;
   private destroyed = false;
   private behavior: MediaPluginBehavior;
   private mediaProvider: MediaProvider;
@@ -81,8 +82,9 @@ export class MediaPluginState {
 
       // release all listeners for default state manager
       const { stateManager } = mediaProvider;
-      if (stateManager instanceof DefaultMediaStateManager) {
-        stateManager.destroy();
+      if (stateManager && this.useDefaultStateManager) {
+        (stateManager as DefaultMediaStateManager).destroy();
+        this.useDefaultStateManager = false;
       }
 
       if (stateManager) {
@@ -195,7 +197,7 @@ export class MediaPluginState {
   }
 
   /**
-   * Determine whether the cursor is inside emoty paragraph
+   * Determine whether the cursor is inside empty paragraph
    */
   private isInsideEmptyParagraph = () => {
     const { state } = this.view;

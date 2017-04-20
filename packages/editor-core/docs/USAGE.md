@@ -162,7 +162,6 @@ Two flavours of JavaScript are published:
 
 If you're using webpack, adjust your [`resolve.packageMains`](https://webpack.github.io/docs/configuration.html#resolve-packagemains) accordingly.
 
-
 ## Usage
 
 Unless you're developing a new editor for a product, you've probably arrived at the wrong package. Consider using:
@@ -181,3 +180,4 @@ packages that ensure that authored content does not violate the constraints of t
 storage.
 
 The schemas in those packages are composed on node and mark types defined in this package.
+

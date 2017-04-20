@@ -155,6 +155,7 @@
     "pr/storybook": "./build/bin/storybook.static.pr.sh",
     "prepublish/all": "lerna run prepublish",
     "prepublish/single": "./build/bin/prepublish.single.sh",
+    "pr/coverage": "./build/bin/coverage.static.pr.sh",
     "release": "lerna-semantic-release pre && yarn run docs && lerna-semantic-release post && lerna-semantic-release perform",
     "release/announce": "./build/bin/release.announce.js",
     "release/check/is-workspace-clean": "git diff --exit-code || (chalk --no-stdin -t \"{red \n^ Workspace is not clean!}\"; exit 1)",

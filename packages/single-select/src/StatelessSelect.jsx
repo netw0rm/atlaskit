@@ -61,23 +61,21 @@ export default class StatelessSelect extends PureComponent {
   }
 
   componentDidMount = () => {
-    if (this.state.isFocused && this.inputNode) {
-      this.inputNode.focus();
+    if (this.state.isFocused) {
+      this.focus();
     }
   }
 
   componentDidUpdate = (prevProps) => {
-    if (!prevProps.shouldFocus && this.props.shouldFocus && this.inputNode) {
-      this.inputNode.focus();
+    if (!prevProps.shouldFocus && this.props.shouldFocus) {
+      this.focus();
     }
   }
 
   onFocus = () => {
     if (!this.props.isDisabled) {
       this.setState({ isFocused: true });
-      if (this.inputNode) {
-        this.inputNode.focus();
-      }
+      this.focus();
     }
   }
 
@@ -92,10 +90,6 @@ export default class StatelessSelect extends PureComponent {
     this.setState({
       focusedItemIndex: undefined,
     });
-
-    if (this.inputNode) {
-      this.inputNode.focus();
-    }
   }
 
   getNextFocusable = (indexItem, length) => {
@@ -148,6 +142,14 @@ export default class StatelessSelect extends PureComponent {
     }
 
     return res;
+  }
+
+  focus = () => {
+    if (this.inputNode) {
+      this.inputNode.focus();
+    } else {
+      this.triggerNode.focus();
+    }
   }
 
   clearNativeSearch = () => {
@@ -412,6 +414,7 @@ export default class StatelessSelect extends PureComponent {
                 className={triggerClasses}
                 onClick={this.handleTriggerClick}
                 tabIndex="0"
+                ref={ref => (this.triggerNode = ref)}
               >
                 {
                   !this.props.hasAutocomplete || this.props.isDisabled ?

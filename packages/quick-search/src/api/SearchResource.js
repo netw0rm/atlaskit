@@ -85,28 +85,28 @@ export default class SearchResource extends AbstractResource {
 
   query = (searchTerm) => {
     this.queryClient(searchTerm)
-      .then(this.notifyChange)
+      .then(items => this.notifyChange('search', items))
       .catch(this.notifyError);
   }
 
   /** TODO:revise when more info/design is available */
   recentItems = () => {
     if (this._recentItems) {
-      this.notifyChange(this._recentItems);
+      this.notifyChange('recent', this._recentItems);
       return;
     }
     this.queryClient('')
       .then((items) => {
         this._recentItems = items;
-        this.notifyChange(items);
+        this.notifyChange('recent', items);
       })
       .catch(this.notifyError);
   }
 
   cancelQuery = () => this.searchClient.cancelPreviousRequest();
 
-  notifyChange = (items) => {
-    Object.keys(this.changeListeners).forEach(key => this.changeListeners[key](items));
+  notifyChange = (type, items) => {
+    Object.keys(this.changeListeners).forEach(key => this.changeListeners[key](type, items));
   }
 
   notifyError = (error) => {

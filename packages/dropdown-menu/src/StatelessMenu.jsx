@@ -4,7 +4,7 @@ import Droplist, { Item, Group } from '@atlaskit/droplist';
 import Button from '@atlaskit/button';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 import uid from 'uid';
-import styles from 'style!./styles.less';
+import styles from './styles.less';
 
 const Icon = <ExpandIcon label="" />;
 

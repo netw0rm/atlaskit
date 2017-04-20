@@ -4,7 +4,7 @@ import {
   containerItem,
   hasGlobalAppearance,
   hasSettingsAppearance,
-} from 'style!../src/components/less/ContainerItem.less';
+} from '../src/components/less/ContainerItem.less';
 import ContainerItem from '../src/components/js/ContainerItem';
 
 describe('<ContainerItem />', () => {

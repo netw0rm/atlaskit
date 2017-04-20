@@ -1,6 +1,6 @@
-import styles from 'style!./styles.less';
 import React, { PureComponent, PropTypes } from 'react';
 import Base, { Label } from '@atlaskit/field-base';
+import styles from './styles.less';
 
 export default class FieldText extends PureComponent {
   static propTypes = {

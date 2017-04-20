@@ -45,7 +45,7 @@ describe(name, () => {
       Object.values(size).forEach((s) => {
         it(`with value ${s}`, () => {
           const wrapper = shallow(<Icon glyph={empty} label="My icon" size={s} />);
-          expect((wrapper).hasClass((styles.locals[s]))).to.equal(true);
+          expect((wrapper).hasClass((styles[s]))).to.equal(true);
         });
       });
     });
@@ -57,7 +57,7 @@ describe(name, () => {
         const wrapper = shallow(<Icon glyh={empty} label="My icon" onClick={handler} />);
         expect(wrapper.prop('onClick')).to.equal(handler);
 
-        wrapper.find(`.${styles.locals.iconBody}`).simulate('click');
+        wrapper.find(`.${styles.iconBody}`).simulate('click');
         expect(handler.callCount).to.equal(1);
       });
     });

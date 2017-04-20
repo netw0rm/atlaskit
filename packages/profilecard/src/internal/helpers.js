@@ -1,4 +1,4 @@
-import styles from 'style!../styles/profilecard-trigger-animation.less';
+import styles from '../styles/profilecard-trigger-animation.less';
 
 const getActualPosition = (position, isFlipped) => {
   const flippedPositions = {

@@ -1,6 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from '../less/ResizerButton.less';
+import ResizerButtonInner from '../styled/ResizerButtonInner';
 
 export default class ResizerButton extends PureComponent {
   static propTypes = {
@@ -10,14 +9,12 @@ export default class ResizerButton extends PureComponent {
   }
   render() {
     return (
-      <button
-        onMouseDown={e => e.preventDefault()}
-        onClick={this.props.onClick}
-        className={classNames(styles.button, {
-          [styles.isVisible]: this.props.isVisible,
-          [styles.isPointingRight]: this.props.isPointingRight,
-        })}
+      <ResizerButtonInner
         aria-expanded={!this.props.isPointingRight}
+        isPointingRight={this.props.isPointingRight}
+        isVisible={this.props.isVisible}
+        onClick={this.props.onClick}
+        onMouseDown={e => e.preventDefault()}
       />
     );
   }

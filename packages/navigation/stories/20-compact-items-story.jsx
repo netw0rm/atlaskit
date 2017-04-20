@@ -6,7 +6,7 @@ import AkButton from '@atlaskit/button';
 import { name } from '../package.json';
 import Page from './components/HtmlPage';
 import BasicNavigation from './components/BasicNavigation';
-import { AkContainerItem, AkContainerItemGroup } from '../src/index';
+import { AkNavigationItem, AkNavigationItemGroup } from '../src/index';
 import RandomBadge from './components/RandomBadge';
 
 const RandomAvatar = props => <AkAvatar
@@ -16,10 +16,9 @@ const RandomAvatar = props => <AkAvatar
 />;
 
 const CompactItem = ({ children }) => (
-  <AkContainerItem
+  <AkNavigationItem
     action={<CrossIcon label="close" />}
     icon={<RandomAvatar />}
-    isCompact
     text={children}
     textAfter={<RandomBadge />}
     subText={Math.random() > 0.5 && 'This is some really long sub text'}
@@ -34,17 +33,19 @@ storiesOf(name, module)
   .add('with compact items', () => (
     <Page>
       <BasicNavigation containerHeaderComponent={null}>
-        <AkContainerItem
-          icon={<RandomAvatar presence="online" />}
-          isCompact
-          text="Available"
-        />
-        <AkContainerItem
-          icon={<DashboardIcon label="Lobby" />}
-          isCompact
-          text="Lobby"
-        />
-        <AkContainerItemGroup
+        <AkNavigationItemGroup isCompact>
+          <AkNavigationItem
+            icon={<RandomAvatar presence="online" />}
+            isCompact
+            text="Available"
+          />
+          <AkNavigationItem
+            icon={<DashboardIcon label="Lobby" />}
+            isCompact
+            text="Lobby"
+          />
+        </AkNavigationItemGroup>
+        <AkNavigationItemGroup
           action={
             <AkButton
               appearance="subtle"
@@ -52,25 +53,26 @@ storiesOf(name, module)
               spacing="none"
             />
           }
+          isCompact
           title="Rooms"
         >
           <CompactItem href="#1">Front deskers</CompactItem>
           <CompactItem href="#2">Parents anonymous</CompactItem>
           <CompactItem href="#3">Gone fishing</CompactItem>
-        </AkContainerItemGroup>
-        <AkContainerItemGroup title="Rooms">
+        </AkNavigationItemGroup>
+        <AkNavigationItemGroup title="Rooms" isCompact>
           <CompactItem>Front deskers</CompactItem>
           <CompactItem>Parents anonymous</CompactItem>
           <CompactItem>Gone fishing</CompactItem>
-        </AkContainerItemGroup>
-        <AkContainerItemGroup title="People">
+        </AkNavigationItemGroup>
+        <AkNavigationItemGroup title="People" isCompact>
           <CompactItem>John Lennon</CompactItem>
           <CompactItem>George Harrison</CompactItem>
-        </AkContainerItemGroup>
-        <AkContainerItemGroup hasSeparator>
+        </AkNavigationItemGroup>
+        <AkNavigationItemGroup hasSeparator isCompact>
           <CompactItem isSelected >Mick Jagger </CompactItem>
           <CompactItem>Ronnie Wood</CompactItem>
-        </AkContainerItemGroup>
+        </AkNavigationItemGroup>
       </BasicNavigation>
     </Page>
   ));

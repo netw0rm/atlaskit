@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from '../less/Resizer.less';
+import ResizerInner from '../styled/ResizerInner';
 import ResizerButton from './ResizerButton';
 import {
   navigationOpenWidth,
@@ -83,11 +83,10 @@ export default class Resizer extends PureComponent {
 
   render() {
     return (
-      <div
-        ref={(resizerNode) => {
+      <ResizerInner
+        innerRef={(resizerNode) => {
           this.resizerNode = resizerNode;
         }}
-        className={styles.resizer}
         onMouseDown={this.mouseDownHandler}
         onMouseEnter={this.mouseEnterHandler}
         onMouseLeave={this.mouseLeaveHandler}
@@ -97,7 +96,7 @@ export default class Resizer extends PureComponent {
           isPointingRight={this.isPointingRight()}
           onClick={this.resizeButtonHandler}
         />
-      </div>
+      </ResizerInner>
     );
   }
 }

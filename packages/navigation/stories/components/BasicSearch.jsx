@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { AtlassianIcon, CrossIcon, DashboardIcon } from '@atlaskit/icon';
-import { AkSearch, AkContainerItem } from '../../src/index';
+import { AkSearch, AkNavigationItem } from '../../src/index';
 
 const data = [
   {
@@ -86,7 +86,7 @@ function search(query) {
     )
   ).reduce((a, b) => a.concat(b));
   return results.map(({ item, group }, idx) => (
-    <AkContainerItem href="#foo" icon={icons[group]} subText={group} text={item} key={idx} />
+    <AkNavigationItem href="#foo" icon={icons[group]} subText={group} text={item} key={idx} />
   ));
 }
 

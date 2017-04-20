@@ -1,19 +1,22 @@
 import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from '../less/GlobalNavigation.less';
+import { ThemeProvider } from 'styled-components';
+import { appearanceEnum, themeVariables } from '../../utils/theme';
 import { globalOpenWidth } from '../../shared-variables';
 import Spacer from './Spacer';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
 import GlobalSecondaryActions from './GlobalSecondaryActions';
 import DefaultLinkComponent from './DefaultLinkComponent';
+import GlobalNavigationOuter from '../styled/GlobalNavigationOuter';
+import GlobalNavigationInner from '../styled/GlobalNavigationInner';
+import GlobalNavigationPrimaryContainer from '../styled/GlobalNavigationPrimaryContainer';
+import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecondaryContainer';
 
 export default class GlobalNavigation extends PureComponent {
   static propTypes = {
-    appearance: PropTypes.string,
+    appearance: PropTypes.oneOf([appearanceEnum.global, appearanceEnum.settings]),
     linkComponent: PropTypes.func,
     primaryIcon: PropTypes.node,
     primaryItemHref: PropTypes.string,
-    shouldAnimate: PropTypes.bool,
     searchIcon: PropTypes.node,
     onSearchActivate: PropTypes.func,
     onCreateActivate: PropTypes.func,
@@ -21,11 +24,11 @@ export default class GlobalNavigation extends PureComponent {
     secondaryActions: PropTypes.arrayOf(PropTypes.node),
   };
   static defaultProps = {
+    appearance: appearanceEnum.global,
     accountItem: null,
     helpItem: null,
     linkComponent: DefaultLinkComponent,
     primaryIcon: null,
-    shouldAnimate: false,
     secondaryActions: [],
   };
 
@@ -39,43 +42,36 @@ export default class GlobalNavigation extends PureComponent {
       primaryIcon,
       primaryItemHref,
       searchIcon,
-      shouldAnimate,
       secondaryActions,
     } = this.props;
     return (
-      <nav
-        className={classNames(styles.globalNavigationOuter, {
-          [styles.shouldAnimate]: shouldAnimate,
-          [styles.hasSettingsAppearance]: appearance === 'settings',
-          [styles.test]: true,
-        })}
+      <ThemeProvider
+        theme={{
+          [themeVariables.appearance]: appearance,
+        }}
       >
-        <Spacer
-          shouldAnimate={shouldAnimate}
-          width={globalOpenWidth}
-        />
-        <div
-          className={styles.globalNavigation}
-        >
-          <div className={styles.primaryContainer}>
-            <GlobalPrimaryActions
-              appearance={appearance}
-              createIcon={createIcon}
-              linkComponent={linkComponent}
-              onCreateActivate={onCreateActivate}
-              onSearchActivate={onSearchActivate}
-              primaryIcon={primaryIcon}
-              primaryItemHref={primaryItemHref}
-              searchIcon={searchIcon}
-            />
-          </div>
-          <div className={styles.secondaryContainer}>
-            {secondaryActions.length ? <GlobalSecondaryActions
-              actions={secondaryActions}
-            /> : null}
-          </div>
-        </div>
-      </nav>
+        <GlobalNavigationOuter>
+          <Spacer width={globalOpenWidth} />
+          <GlobalNavigationInner>
+            <GlobalNavigationPrimaryContainer>
+              <GlobalPrimaryActions
+                createIcon={createIcon}
+                linkComponent={linkComponent}
+                onCreateActivate={onCreateActivate}
+                onSearchActivate={onSearchActivate}
+                primaryIcon={primaryIcon}
+                primaryItemHref={primaryItemHref}
+                searchIcon={searchIcon}
+              />
+            </GlobalNavigationPrimaryContainer>
+            <GlobalNavigationSecondaryContainer>
+              {secondaryActions.length ? (
+                <GlobalSecondaryActions actions={secondaryActions} />
+              ) : null}
+            </GlobalNavigationSecondaryContainer>
+          </GlobalNavigationInner>
+        </GlobalNavigationOuter>
+      </ThemeProvider>
     );
   }
 }

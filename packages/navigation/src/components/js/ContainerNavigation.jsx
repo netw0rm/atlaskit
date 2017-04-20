@@ -1,9 +1,12 @@
 import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-import styles from '../less/ContainerNavigation.less';
+import { ThemeProvider } from 'styled-components';
+import { themeVariables } from '../../utils/theme';
 import ContainerHeader from './ContainerHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';
+import ContainerNavigationOuter from '../styled/ContainerNavigationOuter';
+import ContainerNavigationInner from '../styled/ContainerNavigationInner';
+
 import {
   containerOpenWidth,
   containerClosedWidth,
@@ -71,54 +74,50 @@ export default class ContainerNavigation extends PureComponent {
     } = this.props;
 
     const isWidthCollapsed = width <= containerClosedWidth;
-
     return (
-      <nav
-        className={classNames({
-          [styles.shouldAnimate]: shouldAnimate,
-        })}
-        data-__ak-navigation-container-closed={isWidthCollapsed}
+      <ThemeProvider
+        theme={{
+          [themeVariables.appearance]: appearance,
+        }}
       >
-        <Spacer
-          shouldAnimate={shouldAnimate}
-          width={width + offsetX}
-        />
-        <div
-          className={styles.containerNavigationOuter}
-          style={this.getOuterStyles()}
+        <nav
+          data-__ak-navigation-container-closed={isWidthCollapsed}
         >
-          <div
-            className={classNames(styles.containerNavigationInner, {
-              [styles.hasContainerHeader]: headerComponent !== null,
-              [styles.hasGlobalAppearance]: appearance === 'global',
-              [styles.hasSettingsAppearance]: appearance === 'settings',
-            })}
+          <Spacer
+            shouldAnimate={shouldAnimate}
+            width={width + offsetX}
+          />
+          <ContainerNavigationOuter
+            shouldAnimate={shouldAnimate}
+            style={this.getOuterStyles()}
           >
-            <GlobalPrimaryActions
-              appearance={appearance}
-              createIcon={globalCreateIcon}
-              isVisible={areGlobalActionsVisible}
-              linkComponent={linkComponent}
-              onCreateActivate={onGlobalCreateActivate}
-              onSearchActivate={onGlobalSearchActivate}
-              primaryIcon={globalPrimaryIcon}
-              primaryItemHref={globalPrimaryItemHref}
-              searchIcon={globalSearchIcon}
-            />
-            <div>
-              {
-                this.props.headerComponent ? (
-                  <ContainerHeader>
-                    {this.props.headerComponent({ isCollapsed: width <= containerClosedWidth })}
-                  </ContainerHeader>) : null
-              }
-            </div>
-            <div>
-              {children}
-            </div>
-          </div>
-        </div>
-      </nav>
+            <ContainerNavigationInner>
+              <GlobalPrimaryActions
+                appearance={appearance}
+                createIcon={globalCreateIcon}
+                isVisible={areGlobalActionsVisible}
+                linkComponent={linkComponent}
+                onCreateActivate={onGlobalCreateActivate}
+                onSearchActivate={onGlobalSearchActivate}
+                primaryIcon={globalPrimaryIcon}
+                primaryItemHref={globalPrimaryItemHref}
+                searchIcon={globalSearchIcon}
+              />
+              <div>
+                {
+                  headerComponent ? (
+                    <ContainerHeader>
+                      {headerComponent({ isCollapsed: width <= containerClosedWidth })}
+                    </ContainerHeader>) : null
+                }
+              </div>
+              <div>
+                {children}
+              </div>
+            </ContainerNavigationInner>
+          </ContainerNavigationOuter>
+        </nav>
+      </ThemeProvider>
     );
   }
 }

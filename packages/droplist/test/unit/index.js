@@ -5,6 +5,7 @@ import Layer from '@atlaskit/layer';
 import { name } from '../../package.json';
 
 import Droplist, { Item, Group } from '../../src';
+import styles from '../../src/styles.less';
 
 const itemsList = (<Group heading="test1">
   <Item>Some text</Item>
@@ -19,7 +20,7 @@ describe(`${name} - core`, () => {
     let wrapper;
 
     beforeEach(() => {
-      wrapper = mount(<Droplist trigger={<span className="trigger">text</span>} isOpen>{itemsList}</Droplist>);
+      wrapper = mount(<Droplist trigger="text" isOpen>{itemsList}</Droplist>);
     });
 
     it('should render Layer component', () => {
@@ -28,7 +29,7 @@ describe(`${name} - core`, () => {
       expect(layerNode instanceof Layer).to.equal(true);
       // Check that layer received our content
       expect(layer.find(Group).length).to.equal(1);
-      expect(layer.find('.trigger').length).to.equal(1);
+      expect(layer.find(`.${styles.trigger}`).length).to.equal(1);
     });
 
     it('should pass required properties to Layer', () => {
@@ -45,7 +46,7 @@ describe(`${name} - core`, () => {
     });
 
     it('should render trigger', () => {
-      const triggerWrapper = wrapper.find('.trigger');
+      const triggerWrapper = wrapper.find(`.${styles.trigger}`);
       expect(triggerWrapper.text()).to.equal('text');
     });
   });

@@ -5,7 +5,7 @@ import Radio from '@atlaskit/icon/glyph/radio';
 import Checkbox from '@atlaskit/icon/glyph/checkbox';
 
 import { name } from '../../package.json';
-import { locals as styles } from '../../src/styles.less';
+import styles from '../../src/styles.less';
 
 import { SecondaryText, Item } from '../../src';
 
@@ -51,8 +51,7 @@ describe(`${name} - item`, () => {
     });
   });
 
-  // eslint-disable-next-line mocha/no-skipped-tests
-  describe.skip('classes', () => {
+  describe('classes', () => {
     it('should have "item" class by default', () => {
       expect(mount(<Item type="link" />).find(`.${styles.item}`)).to.have.length.above(0);
       expect(mount(<Item type="checkbox" />).find(`.${styles.item}`)).to.have.length.above(0);

@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
-import styles from 'style!../less/DrawerBackIcon.less';
+import styles from '../less/DrawerBackIcon.less';
 
 export default class DrawerBackIcon extends PureComponent {
   static propTypes = {

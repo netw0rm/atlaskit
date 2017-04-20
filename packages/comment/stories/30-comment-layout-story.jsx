@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import Avatar from '@atlaskit/avatar';
 import Editor from '@atlaskit/editor-bitbucket';
 
-import storyStyles from 'style!./stories.less';
+import storyStyles from './stories.less';
 import { CommentLayout } from '../src';
 import { name } from '../package.json';
 import sampleAvatarImg from './sample-avatar.png';

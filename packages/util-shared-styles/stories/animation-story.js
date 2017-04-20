@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { storiesOf } from '@kadira/storybook';
 
-import storyStyles from 'style!./animation/animation-story.less';
+import storyStyles from './animation/animation-story.less';
 import { name } from '../package.json';
 import AnimatedBox from './animation/AnimatedBox';
 import AnimatedBoxGroup from './animation/AnimatedBoxGroup';

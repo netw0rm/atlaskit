@@ -84,7 +84,7 @@ function liftListItem(state: EditorState<any>, selection, tr: Transaction): Tran
         true
       )
     );
-    range = new NodeRange(tr.doc.resolveNoCache(tf.pos), tr.doc.resolveNoCache(endOfList), range.depth);
+    range = new NodeRange(tr.doc.resolve(tf.pos), tr.doc.resolve(endOfList), range.depth);
   }
   return tr.lift(range, liftTarget(range)!).scrollIntoView();
 }

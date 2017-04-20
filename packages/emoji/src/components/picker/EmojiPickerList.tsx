@@ -7,8 +7,8 @@ import 'element-closest';
 
 import * as styles from './styles';
 import Scrollable from '../common/Scrollable';
-import EmojiPickerListCategory from './EmojiPickerListCategory';
 import EmojiPickerListSearch from './EmojiPickerListSearch';
+import EmojiPickerListSection from './EmojiPickerListSection';
 import { emojiPickerListHeight } from '../../shared-styles';
 import { toOptionalEmojiId } from '../../type-helpers';
 import { EmojiDescription, EmojiId, OnCategory, OnEmojiEvent } from '../../types';
@@ -36,11 +36,11 @@ export interface Props {
   selectedTone?: number;
   onSearch?: OnSearch;
   loading?: boolean;
+  query?: string;
 }
 
 export interface State {
   selectedEmoji?: EmojiDescription;
-  query?: string;
   initialListIndex?: number;
 }
 
@@ -52,7 +52,7 @@ interface EmojiGroup {
 
 export default class EmojiPickerList extends PureComponent<Props, State> {
   private idSuffix = uid();
-  private groups: EmojiGroup[];
+  private allEmojiGroups: EmojiGroup[];
   private activeCategory: string | undefined | null;
   private scrollable: Scrollable;
 
@@ -77,10 +77,9 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
 
     this.state = {
       selectedEmoji,
-      query: '',
     };
 
-    this.groups = this.buildList(props.emojis);
+    this.allEmojiGroups = this.buildGroups(props.emojis);
   }
 
   componentWillReceiveProps = (nextProps: Props) => {
@@ -99,7 +98,10 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
     if (this.props.emojis !== nextProps.emojis ||
       this.props.selectedTone !== nextProps.selectedTone ||
       this.props.loading !== nextProps.loading) {
-      this.groups = this.buildList(nextProps.emojis);
+        if (!nextProps.query) {
+          // Only refresh if no query
+          this.allEmojiGroups = this.buildGroups(nextProps.emojis);
+        }
     }
   }
 
@@ -121,10 +123,6 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
   }
 
   private onSearch = (e) => {
-    this.setState({
-      query: e.target.value,
-    });
-
     if (this.props.onSearch) {
       this.props.onSearch(e.target.value);
     }
@@ -141,29 +139,18 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
 
   private categoryId = category => `category_${category}_${this.idSuffix}`;
 
-  private buildList = (emojis: EmojiDescription[]): EmojiGroup[] => {
+  private buildGroups = (emojis: EmojiDescription[]): EmojiGroup[] => {
     const existingCategories = new Map();
-    const isSearching = !!this.state.query;
 
     let currentGroup;
     let currentCategory: string | undefined;
 
     const list: EmojiGroup[] = [];
 
-    if (isSearching) {
-      currentCategory = 'SEARCHRESULTS';
-      currentGroup = {
-        emojis: [],
-        title: 'Search results',
-        category: currentCategory,
-      };
-      list.push(currentGroup);
-    }
-
     for (let i = 0; i < emojis.length; i++) {
       let emoji = emojis[i];
 
-      if (!isSearching && currentCategory !== emoji.category) {
+      if (currentCategory !== emoji.category) {
         currentCategory = emoji.category;
         if (existingCategories.has(currentCategory)) {
           currentGroup = existingCategories.get(currentCategory);
@@ -197,24 +184,39 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
     const selectedEmojiId = toOptionalEmojiId(this.state.selectedEmoji);
     const selectedCategory = this.state.selectedEmoji && this.state.selectedEmoji.category;
 
-    return this.groups.map((group) => {
-      // Optimisation - avoid re-rendering unaffected groups for the current selectedShortcut
-      // by not passing it to irrelevant groups
-      const groupSelectedEmojiId = selectedCategory === group.category ? selectedEmojiId : undefined;
+    if (!this.props.query) {
+      // Not searching show in categories.
+      return this.allEmojiGroups.map((group) => {
+        // Optimisation - avoid re-rendering unaffected groups for the current selectedShortcut
+        // by not passing it to irrelevant groups
+        const groupSelectedEmojiId = selectedCategory === group.category ? selectedEmojiId : undefined;
 
-      return (
-        <EmojiPickerListCategory
-          id={this.categoryId(group.category)}
-          title={group.title}
-          emojis={group.emojis}
-          key={group.category}
-          selectedEmoji={groupSelectedEmojiId}
-          onMouseMove={this.onEmojiMouseEnter}
-          onSelected={this.props.onEmojiSelected}
-          className={categoryClassname}
-        />
-      );
-    });
+        return (
+          <EmojiPickerListSection
+            id={this.categoryId(group.category)}
+            title={group.title}
+            emojis={group.emojis}
+            key={group.category}
+            selectedEmoji={groupSelectedEmojiId}
+            onMouseMove={this.onEmojiMouseEnter}
+            onSelected={this.props.onEmojiSelected}
+            className={categoryClassname}
+          />
+        );
+      });
+    }
+
+    // Searching show as one search result section
+    return (
+      <EmojiPickerListSection
+        title="Search results"
+        emojis={this.props.emojis}
+        selectedEmoji={selectedEmojiId}
+        onMouseMove={this.onEmojiMouseEnter}
+        onSelected={this.props.onEmojiSelected}
+        className={categoryClassname}
+      />
+    );
   }
 
 
@@ -242,7 +244,7 @@ export default class EmojiPickerList extends PureComponent<Props, State> {
         >
           <EmojiPickerListSearch
             onChange={this.onSearch}
-            query={this.state.query}
+            query={this.props.query}
           />
           {this.renderGroups()}
         </Scrollable>

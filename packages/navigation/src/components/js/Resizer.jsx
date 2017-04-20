@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/Resizer.less';
+import styles from '../less/Resizer.less';
 import ResizerButton from './ResizerButton';
 import {
   navigationOpenWidth,

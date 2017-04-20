@@ -1,11 +1,11 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
-import styles from 'style!./story-styles.less';
 import Question from '@atlaskit/icon/glyph/question';
 import Arrow from '@atlaskit/icon/glyph/arrowrightlong';
 import Avatar from '@atlaskit/avatar';
 import Lozenge from '@atlaskit/lozenge';
 import { Code, Description, Chrome } from '@atlaskit/util-readme';
+import styles from './story-styles.less';
 
 import { Item, SecondaryText } from '../src';
 import { name } from '../package.json';

@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme';
 import Layer from '@atlaskit/layer';
 
 import { name } from '../package.json';
-import { locals as styles } from '../src/styles.less';
+import styles from '../src/styles.less';
 
 import Droplist, { Item, Group } from '../src';
 

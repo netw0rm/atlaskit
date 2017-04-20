@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/ResizerButton.less';
 import classNames from 'classnames';
+import styles from '../less/ResizerButton.less';
 
 export default class ResizerButton extends PureComponent {
   static propTypes = {

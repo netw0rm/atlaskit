@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
-import styles from 'style!../less/GlobalPrimaryActions.less';
+import styles from '../less/GlobalPrimaryActions.less';
 import GlobalItem from './GlobalItem';
 import DrawerTrigger from './DrawerTrigger';
 import DefaultLinkComponent from './DefaultLinkComponent';

@@ -11,6 +11,7 @@ export const selected = 'selected';
 export const emojiSprite = 'emoji-sprite';
 
 export const emoji = style({
+  borderRadius: '5px',
   backgroundColor: 'transparent',
   backgroundPosition: '50%',
   backgroundRepeat: 'no-repeat',

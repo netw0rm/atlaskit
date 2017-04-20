@@ -8,6 +8,7 @@ export default class ProfilecardResourced extends PureComponent {
     cloudId: PropTypes.string,
     actions: PropTypes.arrayOf(PropTypes.shape({
       callback: PropTypes.func,
+      id: PropTypes.string,
       label: PropTypes.string,
     })),
     resourceClient: PropTypes.shape({
@@ -15,6 +16,7 @@ export default class ProfilecardResourced extends PureComponent {
       getCachedProfile: PropTypes.func,
       makeRequest: PropTypes.func,
     }).isRequired,
+    analytics: PropTypes.func,
   }
 
   static defaultProps = {
@@ -95,6 +97,7 @@ export default class ProfilecardResourced extends PureComponent {
       isLoading: this.state.isLoading,
       hasError: this.state.hasError,
       clientFetchProfile: this.clientFetchProfile,
+      analytics: this.props.analytics,
       ...this.state.data,
     };
 

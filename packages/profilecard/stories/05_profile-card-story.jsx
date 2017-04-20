@@ -22,6 +22,7 @@ const fakeProfileData = {
   actions: [
     {
       label: 'View profile',
+      id: 'view-profile',
       callback: handleActionClick('View profile'),
     },
   ],
@@ -126,14 +127,17 @@ storiesOf(`${name}`, module)
     const actions = [
       {
         label: 'Foobar',
+        id: 'action-foo',
         callback: handleActionClick('Foobar'),
       },
       {
         label: 'Barfoo',
+        id: 'action-barfoo',
         callback: handleActionClick('Barfoo'),
       },
       {
         label: 'Foobar2',
+        id: 'action-footwo',
         callback: handleActionClick('Foobar2'),
       },
     ];

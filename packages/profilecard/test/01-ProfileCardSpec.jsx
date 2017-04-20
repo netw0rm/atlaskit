@@ -34,10 +34,9 @@ describe('Profilecard', () => {
         expect(el.text()).to.equal(fullName);
       });
 
-      it('should render empty element for full name is not set', () => {
+      it('should not render a card if full name is not set', () => {
         card.setProps({ fullName: undefined });
-        const el = card.find(`.${styles.detailsFullname}`);
-        expect(el.text()).to.equal('');
+        expect(card.children()).to.have.length(0);
       });
     });
 
@@ -47,7 +46,7 @@ describe('Profilecard', () => {
 
         presenceWithoutNone.forEach((presence) => {
           it(`should render label with content ${presence}`, () => {
-            const card = mount(<AkProfilecard presence={presence} />);
+            const card = mount(<AkProfilecard fullName="name" presence={presence} />);
             const el = card.find(`.${styles.presence}`);
             expect(el.length).to.be.above(0);
             expect(el.text()).to.equal(presences[presence]);
@@ -56,7 +55,7 @@ describe('Profilecard', () => {
       });
 
       it('should not render a presence label if property is not set', () => {
-        const card = mount(<AkProfilecard />);
+        const card = mount(<AkProfilecard fullName="name" />);
         const el = card.find(`.${styles.presence}`);
         expect(el.isEmpty()).to.equal(true);
       });
@@ -102,7 +101,7 @@ describe('Profilecard', () => {
           label: 'three',
         },
       ];
-      const card = shallow(<AkProfilecard actions={actions} />);
+      const card = shallow(<AkProfilecard fullName="name" actions={actions} />);
 
       it('should render an action button for every item in actions property', () => {
         const actionsWrapper = card.find(`.${styles.actionsWrapper}`);

@@ -46,6 +46,7 @@ export default function interActiveCard(dependencies) {
     actions = [
       {
         label: 'View profile',
+        id: 'view-profile',
         callback: handleActionClick('View profile'),
       },
     ]
@@ -82,9 +83,9 @@ export default function interActiveCard(dependencies) {
 
     render() {
       const customActions = [
-        { label: 'Foo', callback: handleActionClick('Foo') },
-        { label: 'Bar', callback: handleActionClick('Bar') },
-        { label: 'Baz', callback: handleActionClick('Baz') },
+        { label: 'Foo', id: 'foo', callback: handleActionClick('Foo') },
+        { label: 'Bar', id: 'bar', callback: handleActionClick('Bar') },
+        { label: 'Baz', id: 'baz', callback: handleActionClick('Baz') },
       ];
 
       const actions = this.state.hasAltActions ? customActions : this.actions;

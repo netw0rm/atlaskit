@@ -1,12 +1,13 @@
-import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
-import { akZIndexModal } from '@atlaskit/util-shared-styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { PureComponent } from 'react';
-import ToolbarButton from '../ToolbarButton';
-import { EmojiPicker as AkEmojiPicker, EmojiProvider } from '@atlaskit/emoji';
 import * as styles from './styles';
+import { PureComponent } from 'react';
+import { akZIndexModal } from '@atlaskit/util-shared-styles';
+import { analyticsDecorator as analytics } from '../../analytics';
+import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
+import { EmojiPicker as AkEmojiPicker, EmojiProvider, emojiPickerWidth, emojiPickerHeight } from '@atlaskit/emoji';
 import { EmojiState } from '../../plugins/emojis';
+import ToolbarButton from '../ToolbarButton';
 
 export interface Props {
   pluginState: EmojiState;
@@ -31,6 +32,15 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
 
   render() {
     const { isOpen, button } = this.state;
+
+    let position: 'above' | 'below' = 'above';
+    if (button) {
+      const box = button.getBoundingClientRect();
+      if (box.top - emojiPickerHeight < 0 && box.bottom + emojiPickerHeight <= window.innerHeight) {
+        position = 'below';
+      }
+    }
+
     return (
       <span className={styles.outerContainer}>
         <ToolbarButton
@@ -45,7 +55,8 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
             emojiProvider={this.props.emojiProvider}
             onSelection={this.handleSelectedEmoji}
             target={button}
-            position="auto"
+            position={position}
+            offsetX={-1 * emojiPickerWidth}
             zIndex={akZIndexModal}
             onPickerRef={this.onPickerRef}
           />
@@ -63,6 +74,7 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     this.pickerRef = ref;
   }
 
+  @analytics('atlassian.editor.emoji.button')
   private handleSelectedEmoji = (emojiId: any, emoji: any) => {
     if (this.state.isOpen) {
       this.props.pluginState.insertEmoji(emojiId);

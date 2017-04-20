@@ -74,7 +74,6 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
             /> : null}
           {props.pluginStateLists ? <ToolbarLists pluginState={props.pluginStateLists} editorView={props.editorView} /> : null}
           {props.pluginStateHyperlink ? <ToolbarHyperlink pluginState={props.pluginStateHyperlink} editorView={props.editorView} /> : null}
-          {props.pluginStateEmojis && props.emojiProvider ? <ToolbarEmojiPicker pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
           <span style={{ flexGrow: 1 }} />
           {props.feedbackFormUrl ? <ToolbarFeedback packageVersion={props.packageVersion} packageName={props.packageName} /> : null}
         </div>
@@ -101,12 +100,13 @@ export default class ChromeExpanded extends PureComponent<Props, {}> {
               }
             </AkButtonGroup>
           </div>
-          <div>
+          <div className={styles.toolbar}>
             {!props.onInsertMention ? null :
               <ToolbarButton onClick={this.handleInsertMention}>
                 <MentionIcon label="Mention" />
               </ToolbarButton>
             }
+            {props.pluginStateEmojis && props.emojiProvider ? <ToolbarEmojiPicker pluginState={props.pluginStateEmojis} emojiProvider={props.emojiProvider} /> : null}
             {props.pluginStateImageUpload ? <ToolbarImage pluginState={props.pluginStateImageUpload} editorView={props.editorView} /> : null}
           </div>
         </div>

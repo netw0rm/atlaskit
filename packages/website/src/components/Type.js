@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { akGridSizeUnitless, akColorN80 } from '@atlaskit/util-shared-styles';
+import { akGridSizeUnitless, akColorN100 } from '@atlaskit/util-shared-styles';
 
 export const Heading = props => <StyledHeading {...props} />;
 export const Intro = props => <StyledIntro {...props} />;
@@ -16,7 +16,7 @@ const StyledHeading = styled.h1`
   }
 `;
 const StyledIntro = styled.p`
-  color: ${akColorN80};
+  color: ${akColorN100};
   font-size: ${akGridSizeUnitless * 2}px;
   font-weight: 300;
   line-height: 1.4em;

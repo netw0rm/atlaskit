@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
-import DynamicTable from '@atlaskit/dynamic-table';
+import Table from '@atlaskit/dynamic-table';
 
 import { Heading, Intro, Section } from '../components/Type';
 
@@ -113,7 +113,7 @@ export default class Components extends PureComponent {
     const { components } = this.props;
     return (
       <TableWrapper>
-        <DynamicTable
+        <Table
           head={head}
           rows={components.filter(this.filteredComponents).map(c => this.renderRow(c))}
           isFixedSize

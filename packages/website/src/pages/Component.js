@@ -104,8 +104,8 @@ export default ({ match }) => {
 
   return (
     <Grid spacing="comfortable">
-      <GridColumn medium={1} />
-      <GridColumn medium={10}>
+      <GridColumn small={0} medium={1} />
+      <GridColumn small={12} medium={10}>
         <Helmet title={component.name}>
           <meta name="description" content={component.package.description} />
         </Helmet>
@@ -122,7 +122,7 @@ export default ({ match }) => {
           <Docs component={component} />
         </Main>
       </GridColumn>
-      <GridColumn medium={1} />
+      <GridColumn small={0} medium={1} />
     </Grid>
   );
 };

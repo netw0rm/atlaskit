@@ -47,6 +47,7 @@ export class MediaPluginState {
       throw new Error('Editor: unable to init media plugin - media or mediaGroup node absent in schema');
     }
 
+    this.stateManager = new DefaultMediaStateManager();
     options.providerFactory.subscribe('mediaProvider', (name, provider: Promise<MediaProvider>) => this.setMediaProvider(provider));
   }
 
@@ -78,12 +79,14 @@ export class MediaPluginState {
       this.mediaProvider = mediaProvider;
       this.allowsMedia = true;
 
+      // release all listeners for default state manager
       const { stateManager } = mediaProvider;
+      if (stateManager instanceof DefaultMediaStateManager) {
+        stateManager.destroy();
+      }
 
       if (stateManager) {
         this.stateManager = stateManager;
-      } else {
-        this.stateManager = new DefaultMediaStateManager();
       }
 
       if (mediaProvider.uploadContext && this.popupPicker) {
@@ -145,8 +148,21 @@ export class MediaPluginState {
     fileSize && (node.fileSize = fileSize);
     fileMimeType && (node.fileMimeType = fileMimeType);
 
-    view.dispatch(state.tr.insert(this.findInsertPosition(), node));
+    let transaction;
 
+    if (this.isInsideEmptyParagraph()) {
+      const { $from } = state.selection;
+
+      transaction = state.tr.replaceWith(
+        $from.start($from.depth) - 1,
+        $from.end($from.depth) + 1,
+        node
+      );
+    } else {
+      transaction = state.tr.insert(this.findInsertPosition(), node);
+    }
+
+    view.dispatch(transaction);
     return node;
   }
 
@@ -176,6 +192,23 @@ export class MediaPluginState {
     popupPicker && popupPicker.destroy();
 
     temporaryMediaNodes.clear();
+  }
+
+  /**
+   * Determine whether the cursor is inside emoty paragraph
+   */
+  private isInsideEmptyParagraph = () => {
+    const { state } = this.view;
+    const { $from, empty } = state.selection;
+
+    if (!empty) {
+      return false;
+    }
+
+    return (
+      $from.parent.type === state.schema.nodes.paragraph &&
+      !$from.parent.content.childCount
+    );
   }
 
   /**
@@ -288,7 +321,7 @@ function mediaPluginFactory(options: MediaPluginOptions) {
       },
       apply(tr, pluginState, oldState, newState) {
         // NOTE: We're not calling passing new state to the Editor, because we depend on the view.state reference
-        //       throughout the lifetime of view. We injected the view into the plugin state, because we dispatch() 
+        //       throughout the lifetime of view. We injected the view into the plugin state, because we dispatch()
         //       transformations from within the plugin state (i.e. when adding a new file).
         return pluginState;
       }

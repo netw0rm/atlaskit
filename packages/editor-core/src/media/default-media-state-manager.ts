@@ -2,7 +2,11 @@ import { MediaState, MediaStateManager } from './';
 
 export type Subscriber = (state: MediaState) => any;
 
-export default class DefaultMediaStateManager implements MediaStateManager {
+interface IDefaultMediaStateManager extends MediaStateManager {
+  destroy(): void;
+}
+
+export default class DefaultMediaStateManager implements IDefaultMediaStateManager {
   private subscribers: { [key: string]: Subscriber[] } = {};
   private state = new Map<string, MediaState>();
 
@@ -53,5 +57,10 @@ export default class DefaultMediaStateManager implements MediaStateManager {
     if (pos > -1) {
       list.splice(pos, 1);
     }
+  }
+
+  destroy() {
+    // release all listeners
+    this.subscribers = {};
   }
 }

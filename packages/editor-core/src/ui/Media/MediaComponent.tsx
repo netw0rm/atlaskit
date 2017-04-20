@@ -27,12 +27,7 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const { mediaProvider, pluginState, id } = this.props;
-
-
-    if (id && pluginState) {
-      pluginState.stateManager.subscribe(id, this.handleMediaStateChange);
-    }
+    const { mediaProvider } = this.props;
 
     if (mediaProvider) {
       mediaProvider.then(this.handleMediaProvider);
@@ -148,6 +143,12 @@ export default class MediaComponent extends React.PureComponent<Props, State> {
   }
 
   private handleMediaProvider = (mediaProvider: MediaProvider) => {
+    const { stateManager } = mediaProvider;
+
+    if (stateManager) {
+       stateManager.subscribe(this.props.id, this.handleMediaStateChange);
+    }
+
     this.setState({ ...this.state, mediaProvider });
 
     mediaProvider.viewContext.then((context: ContextConfig | Context) => {

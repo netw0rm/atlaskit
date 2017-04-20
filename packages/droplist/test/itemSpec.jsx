@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import { name } from '../package.json';
-import { locals as styles } from '../src/styles.less';
+import styles from '../src/styles.less';
 
 import { SecondaryText, Item } from '../src';
 

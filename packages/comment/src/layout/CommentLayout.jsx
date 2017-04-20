@@ -13,20 +13,20 @@ export default class CommentLayout extends PureComponent {
 
   render() {
     const AvatarSection = () => (this.props.avatar ?
-      (<div className={styles.locals.avatarSection}>
-        <div className={styles.locals.avatarContainer}>
+      (<div className={styles.avatarSection}>
+        <div className={styles.avatarContainer}>
           {this.props.avatar}
         </div>
       </div>) : null);
 
     const NestedComments = () => (this.props.children
-      ? <div className={styles.locals.nestedComments}>{this.props.children}</div>
+      ? <div className={styles.nestedComments}>{this.props.children}</div>
       : null);
 
     return (
-      <div className={styles.locals.container}>
+      <div className={styles.container}>
         <AvatarSection />
-        <div className={styles.locals.mainSection}>
+        <div className={styles.mainSection}>
           {this.props.content}
           <NestedComments />
         </div>

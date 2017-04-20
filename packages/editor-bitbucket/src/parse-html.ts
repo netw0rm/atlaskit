@@ -34,8 +34,8 @@ export function transformHtml(html: string): HTMLElement {
       }
     }
 
-    const displayName = a.textContent || '';
-    if (displayName.indexOf('@') === 0) {
+    const text = a.textContent || '';
+    if (text.indexOf('@') === 0) {
       span.textContent = a.textContent;
     } else {
       span.textContent = `@${a.textContent}`;

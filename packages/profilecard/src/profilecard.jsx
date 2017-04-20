@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import AkAvatar from '@atlaskit/avatar';
 import AkButton from '@atlaskit/button';
 
-import styles from 'style!./styles/profilecard.less';
+import styles from './styles/profilecard.less';
 
 import LoadingMessage from './components/LoadingMessage';
 import ErrorMessage from './components/ErrorMessage';

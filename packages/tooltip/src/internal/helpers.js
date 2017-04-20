@@ -1,10 +1,5 @@
 import styles from '../styles.less';
 
-// This hack is to make sure that styles.locals exists when style loading is a noop (when we are
-// running tests).
-// TODO: Remove in AK-2025
-styles.locals = styles.locals || {};
-
 // eslint-disable-next-line import/prefer-default-export
 export function positionToPopperPosition(position) {
   const allowedPositions = {
@@ -21,10 +16,10 @@ export function positionToPopperPosition(position) {
 
 export function getAnimationClass(position, isFlipped) {
   const animationMapping = {
-    top: styles.locals.slideUpAnimation,
-    bottom: styles.locals.slideDownAnimation,
-    left: styles.locals.slideLeftAnimation,
-    right: styles.locals.slideRightAnimation,
+    top: styles.slideUpAnimation,
+    bottom: styles.slideDownAnimation,
+    left: styles.slideLeftAnimation,
+    right: styles.slideRightAnimation,
   };
   const flippedPositions = {
     top: 'bottom',

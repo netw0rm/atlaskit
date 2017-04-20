@@ -1,11 +1,11 @@
 import React, { PureComponent, PropTypes } from 'react';
+import className from 'classnames';
 import {
   containerItem,
   hasGlobalAppearance,
   hasSettingsAppearance,
   isSelected,
-} from 'style!../less/ContainerItem.less';
-import className from 'classnames';
+} from '../less/ContainerItem.less';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import NavigationItem from './NavigationItem';
 

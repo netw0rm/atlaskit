@@ -103,7 +103,7 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
               onSubmit={this.updateHref}
               onChange={this.updateHref}
               onMouseDown={this.setInputActive}
-              onBlur={this.resetInputActive}
+              onBlur={this.handleOnBlur}
               ref={ref => {this.textInput = ref;}}
             />
           </div>
@@ -135,5 +135,14 @@ export default class HyperlinkEdit extends PureComponent<Props, State> {
 
   private updateHref = (href: string) => {
     this.props.pluginState.updateLink({ href }, this.props.editorView);
+  }
+
+  // ED-1323 `onBlur` covers all the use cases (click outside, tab, etc) for this issue
+  handleOnBlur = () => {
+    const { href } = this.state;
+    if (!href || href.length === 0) {
+      this.handleUnlink();
+    }
+    this.resetInputActive();
   }
 };

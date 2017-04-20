@@ -1,10 +1,10 @@
 import React, { PureComponent, PropTypes } from 'react';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import { Label, FieldBase } from '@atlaskit/field-base';
-import styles from 'style!./styles.less';
 import classNames from 'classnames';
 import ExpandIcon from '@atlaskit/icon/glyph/expand';
 
+import styles from './styles.less';
 import NothingWasFound from './internal/NothingWasFound';
 import DummyItem from './internal/DummyItem';
 import DummyGroup from './internal/DummyGroup';

@@ -10,7 +10,30 @@ chai.use(chaiPlugin);
 
 const { expect } = chai;
 
-const defaultValue = [
+const defaultValue = {
+  version: 1,
+  type: 'doc',
+  content: [
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Hello'
+        },
+        {
+          type: 'mention',
+          attrs: {
+            text: '@World',
+            id: '1234'
+          }
+        }
+      ]
+    }
+  ]
+};
+
+const defaultValueLegacy = [
   {
     type: 'text',
     text: 'Hello'
@@ -18,7 +41,7 @@ const defaultValue = [
   {
     type: 'mention',
     attrs: {
-      displayName: '@World',
+      text: '@World',
       id: '1234'
     }
   }
@@ -39,11 +62,20 @@ describe('@atlaskit/editor-hipchat', () => {
       const { editorView } = editor.state;
       sendKeyToPm(editorView!, 'Shift-Enter');
 
-      expect(editor.value).to.deep.equal([{
-        type: 'text',
-        text: '\n',
-        marks: []
-      }]);
+      expect(editor.value).to.deep.equal({
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'hardBreak'
+              }
+            ]
+          }
+        ]
+      });
     });
 
     it('should trigger onSubmit when user press Enter', () => {
@@ -68,11 +100,19 @@ describe('@atlaskit/editor-hipchat', () => {
       editorView.dispatch(editorView.state.tr.insertText('Hello'));
       editorView.dispatch(editorView.state.tr.insertText('!'));
 
-      expect(editor.value).to.deep.equal([{
-        type: 'text',
-        text: 'Hello',
-        marks: []
-      }]);
+      expect(editor.value).to.deep.equal({
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [{
+              type: 'text',
+              text: 'Hello'
+            }]
+          }
+        ]
+      });
     });
 
     it('should add css-classes for indicating that you have reached max content size', () => {
@@ -110,34 +150,49 @@ describe('@atlaskit/editor-hipchat', () => {
     });
 
     describe('.value', () => {
-      it('returns hipchat-friendly json-object', () => {
-        expect(editor.value).to.deep.equal([
-        {
-            type: 'text',
-            text: 'Hello',
-            marks: []
-          },
-          {
-            type: 'mention',
-            attrs: {
-              displayName: '@World',
-              id: '1234'
-            },
-            text: '@World'
-          }
-        ]);
+      it('returns a fabric document', () => {
+        expect(editor.value).to.deep.equal({
+          type: 'doc',
+          version: 1,
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Hello'
+                },
+                {
+                  type: 'mention',
+                  attrs: {
+                    text: '@World',
+                    id: '1234'
+                  }
+                }
+              ]
+            }
+          ]
+        });
       });
     });
 
     describe('.setFromJson()', () => {
       it('creates a new document based on json-object', () => {
-        const value = [
-          {
-            type: 'text',
-            text: 'Yo!',
-            marks: []
-          }
-        ];
+        const value = {
+          type: 'doc',
+          version: 1,
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Yo!'
+                }
+              ]
+            }
+          ]
+        };
 
         editor.setFromJson(value);
         expect(editor.value).to.deep.equal(value);
@@ -149,6 +204,92 @@ describe('@atlaskit/editor-hipchat', () => {
         editor.clear();
         expect(editor.documentSize).to.equal(4);
       });
+    });
+  });
+
+  describe('Legacy-format', () => {
+
+    describe('Keymap', () => {
+
+      it('should insert new line when user press Shift-Enter', () => {
+        editorWrapper = mount(<Editor useLegacyFormat={true} />);
+        const editor = editorWrapper.get(0) as any;
+        const { editorView } = editor.state;
+        sendKeyToPm(editorView!, 'Shift-Enter');
+
+        expect(editor.value).to.deep.equal([{
+          type: 'text',
+          text: '\n',
+          marks: []
+        }]);
+      });
+
+    });
+
+    describe('MaxContentSize', () => {
+
+      it('should prevent the user from entering more text if it node size is > maxContentSize', () => {
+        editorWrapper = mount(<Editor maxContentSize={9} useLegacyFormat={true} />);
+        const editor = editorWrapper.get(0) as any;
+        const { editorView } = editor.state;
+
+        editorView.dispatch(editorView.state.tr.insertText('Hello'));
+        editorView.dispatch(editorView.state.tr.insertText('!'));
+
+        expect(editor.value).to.deep.equal([{
+          type: 'text',
+          text: 'Hello',
+          marks: []
+        }]);
+      });
+
+    });
+
+    describe('API', () => {
+
+      let editor;
+
+      beforeEach(() => {
+        editorWrapper = mount(<Editor useLegacyFormat={true} />);
+        editor = editorWrapper.get(0) as any;
+        editor.setFromJson(defaultValueLegacy);
+      });
+
+      describe('.value', () => {
+        it('returns hipchat-friendly json-object', () => {
+          expect(editor.value).to.deep.equal([
+            {
+              type: 'text',
+              text: 'Hello',
+              marks: []
+            },
+            {
+              type: 'mention',
+              attrs: {
+                text: '@World',
+                id: '1234'
+              },
+              text: '@World'
+            }
+          ]);
+        });
+      });
+
+      describe('.setFromJson()', () => {
+        it('creates a new document based on json-object', () => {
+          const value = [
+            {
+              type: 'text',
+              text: 'Yo!',
+              marks: []
+            }
+          ];
+
+          editor.setFromJson(value);
+          expect(editor.value).to.deep.equal(value);
+        });
+      });
+
     });
 
   });

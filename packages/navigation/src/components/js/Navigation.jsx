@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/Navigation.less';
+import styles from '../less/Navigation.less';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import DefaultLinkComponent from './DefaultLinkComponent';

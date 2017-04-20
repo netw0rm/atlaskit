@@ -64,10 +64,10 @@ export class HyperlinkState {
         ? state.tr.replaceWith($from.pos, $to.pos, state.schema.text(href, [mark]))
         : state.tr.addMark($from.pos, $to.pos, mark);
 
-      if (browser.gecko && view.editable) {
-        view.selectionReader.ignoreUpdates = true;
+      if (browser.gecko && (view as any).editable) {
+        (view as any).selectionReader.ignoreUpdates = true;
         view.dom.focus();
-        view.selectionReader.ignoreUpdates = false;
+        (view as any).selectionReader.ignoreUpdates = false;
       }
       view.dispatch(tr);
       view.focus();
@@ -192,7 +192,7 @@ export class HyperlinkState {
 
   private getDomElement(docView: NodeViewDesc): HTMLElement | undefined {
     if (this.activeLinkStartPos) {
-      const { node, offset } = docView.domFromPos(this.activeLinkStartPos, 1);
+      const { node, offset } = docView.domFromPos(this.activeLinkStartPos);
 
       if (node.childNodes.length === 0) {
         return node.parentNode as HTMLElement;

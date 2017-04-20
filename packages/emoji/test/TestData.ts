@@ -1,7 +1,5 @@
 import EmojiRepository from '../src/api/EmojiRepository';
 import { denormaliseEmojiServiceResponse } from '../src/api/EmojiLoader';
-// import { EmojiDescription, EmojiDescriptionWithVariations, EmojiMeta, EmojiRepresentation, EmojiServiceDescription, EmojiServiceDescriptionWithVariations, EmojiServiceRepresentation, EmojiServiceResponse, SpriteSheet } from '../src/types';
-// import { isSpriteRepresentation } from '../src/type-helpers';
 import { EmojiDescription, EmojiDescriptionWithVariations, EmojiServiceResponse } from '../src/types';
 import { mockEmojiResourceFactory, MockEmojiResource, MockEmojiResourceConfig } from './MockEmojiResource';
 

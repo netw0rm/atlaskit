@@ -43,11 +43,11 @@ describe('text-formatting input rules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(p('hello', strong('text'), 'there')));
     });
 
-    it('should be inclusive right', () => {
+    it('should not be inclusive right after autoformatting conversion', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '**text**', sel);
       insertText(editorView, 'text', editorView.state.selection.$from.pos);
-      expect(editorView.state.doc).to.deep.equal(doc(p(strong('texttext'))));
+      expect(editorView.state.doc).to.deep.equal(doc(p(strong('text'), 'text')));
     });
   });
 
@@ -59,11 +59,11 @@ describe('text-formatting input rules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(p(em('text'))));
     });
 
-    it('should be inclusive right', () => {
+    it('should not be inclusive right after autoformatting conversion', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '*italic*', sel);
       insertText(editorView, 'text', editorView.state.selection.$from.pos);
-      expect(editorView.state.doc).to.deep.equal(doc(p(em('italictext'))));
+      expect(editorView.state.doc).to.deep.equal(doc(p(em('italic'), 'text')));
     });
 
     it('should keep current marks when converting from markdown', () => {
@@ -98,11 +98,11 @@ describe('text-formatting input rules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('~~text~~')));
     });
 
-    it('should be inclusive right', () => {
+    it('should not be inclusive right after autoformatting conversion', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '~~text~~', sel);
       insertText(editorView, 'text', editorView.state.selection.$from.pos);
-      expect(editorView.state.doc).to.deep.equal(doc(p(strike('texttext'))));
+      expect(editorView.state.doc).to.deep.equal(doc(p(strike('text'), 'text')));
     });
   });
 
@@ -150,7 +150,7 @@ describe('text-formatting input rules', () => {
       expect(editorView.state.doc).to.deep.equal(doc(code_block()('`text`')));
     });
 
-    it('should not be inclusive right', () => {
+    it('should not be inclusive right after autoformatting conversion', () => {
       const { editorView, sel } = editor(doc(p('{<>}')));
       insertText(editorView, '`text`', sel);
       insertText(editorView, 'text', editorView.state.selection.$from.pos);

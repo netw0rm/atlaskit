@@ -3,10 +3,10 @@ import { PureComponent } from 'react';
 
 import * as styles from './styles';
 import { EmojiDescription, EmojiId, OnEmojiEvent } from '../../types';
-import EmojiButton from '../common/EmojiButton';
+import Emoji from '../common/Emoji';
 
 export interface Props {
-  id: string;
+  id?: string;
   title?: string;
   emojis: EmojiDescription[];
   selectedEmoji?: EmojiId;
@@ -15,7 +15,7 @@ export interface Props {
   className?: string;
 }
 
-export default class EmojiPickerListCategory extends PureComponent<Props, {}> {
+export default class EmojiPickerListSection extends PureComponent<Props, {}> {
 
   render() {
     const { className, emojis, id, onMouseMove, onSelected, selectedEmoji, title } = this.props;
@@ -35,15 +35,16 @@ export default class EmojiPickerListCategory extends PureComponent<Props, {}> {
             const key = emoji.id || `${emoji.shortName}-${emoji.category}`;
 
             return (
-              <EmojiButton
+              <Emoji
                 emoji={emoji}
                 selected={selected}
+                key={key}
                 onSelected={onSelected}
                 onMouseMove={onMouseMove}
-                key={key}
+                className={styles.pickerEmoji}
               />
             );
-          })}
+         })}
         </div>
       </div>
     );

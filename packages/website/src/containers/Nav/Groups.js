@@ -12,18 +12,21 @@ export default class Groups extends PureComponent {
   state = { selectedIndex: this.props.selectedIndex }
 
   componentWillReceiveProps(nextProps) {
-    return nextProps.selectedIndex > this.props.selectedIndex
-      ? this.goToNext()
-      : this.goToPrev();
-  }
-
-  shouldComponentUpdate(nextProps) {
-    return nextProps.selectedIndex !== this.props.selectedIndex;
+    if (nextProps.selectedIndex === this.props.selectedIndex) {
+      this.stay();
+    } else if (nextProps.selectedIndex > this.props.selectedIndex) {
+      this.goToNext();
+    } else {
+      this.goToPrev();
+    }
   }
 
   isNextEnabled = () => this.state.selectedIndex < (this.props.children.length - 1)
   isPrevEnabled = () => this.state.selectedIndex > 0
 
+  stay = () => {
+    this.setState({ animationDirection: undefined });
+  }
   goToNext = () => {
     if (!this.isNextEnabled()) return;
 

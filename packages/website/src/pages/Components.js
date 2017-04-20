@@ -1,8 +1,11 @@
 import React, { PropTypes, PureComponent } from 'react';
+import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { akGridSize, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import DynamicTable from '@atlaskit/dynamic-table';
+
+import { Heading, Intro, Section } from '../components/Type';
 
 const head = {
   cells: [
@@ -36,7 +39,7 @@ const head = {
   ],
 };
 
-export default class TabbedComponents extends PureComponent {
+export default class Components extends PureComponent {
   static propTypes = {
     components: PropTypes.arrayOf(PropTypes.object),
     header: PropTypes.node,
@@ -127,11 +130,15 @@ export default class TabbedComponents extends PureComponent {
 
     return (
       <Wrapper>
-        <Title>
-          <h1>Components</h1>
-        </Title>
-        <Header />
-        <Content />
+        <Helmet title="Components" />
+        <Heading>Components</Heading>
+        <Intro>
+          Write something compelling here, cupcake powder dragée liquorice fruitcake cookie.
+        </Intro>
+        <Section>
+          <Header />
+          <Content />
+        </Section>
       </Wrapper>
     );
   }
@@ -139,21 +146,12 @@ export default class TabbedComponents extends PureComponent {
 
 // Layout
 const Wrapper = styled.div`
-  padding-left: ${akGridSizeUnitless * 1.5}px;
-  padding-right: ${akGridSizeUnitless * 1.5}px;
+  padding-left: ${akGridSizeUnitless * 2.5}px;
+  padding-right: ${akGridSizeUnitless * 2.5}px;
 
   @media (min-width: 600px) {
-    padding-left: ${akGridSizeUnitless * 3}px;
-    padding-right: ${akGridSizeUnitless * 3}px;
-  }
-`;
-const Title = styled.div`
-  padding-bottom: ${akGridSizeUnitless * 1.5}px;
-  padding-top: ${akGridSizeUnitless * 1.5}px;
-
-  @media (min-width: 600px) {
-    padding-bottom: ${akGridSizeUnitless * 3}px;
-    padding-top: ${akGridSizeUnitless * 3}px;
+    padding-left: ${akGridSizeUnitless * 5}px;
+    padding-right: ${akGridSizeUnitless * 5}px;
   }
 `;
 

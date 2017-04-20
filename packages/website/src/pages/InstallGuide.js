@@ -1,55 +1,40 @@
 import React, { PureComponent } from 'react';
-import { akGridSize, akColorN80 } from '@atlaskit/util-shared-styles';
+import Helmet from 'react-helmet';
 import { Grid, GridColumn } from '@atlaskit/page';
-import styled from 'styled-components';
+
+import { Heading, Intro, Section } from '../components/Type';
 import landingHero from '../images/landing_hero.svg';
 
-const gridInt = parseInt(akGridSize, 10);
-
-const LandingHeading = styled.h2`
-  font-size: ${gridInt * 4}px;
-  font-weight: 500;
-`;
-
-const LandingIntro = styled.p`
-  font-size: ${gridInt * 2}px;
-  color: ${akColorN80};
-  line-height: 1.8em;
-`;
-
-const LandingSection = styled.section`
-  margin-top: 3em;
-
-  p {
-    line-height: 1.8em;
-  }
-`;
-
-export default class InstallGuide extends PureComponent {
+export default class Examples extends PureComponent {
   render() {
+    const title = 'Install Guide';
+    const description = 'A guide on how to install AtlasKit, Atlassian\'s UI Library';
+
     return (
-      <div style={{ marginTop: gridInt * 6 }}>
-        <Grid>
+      <div>
+        <Helmet title={title}>
+          <meta name="description" content={description} />
+        </Helmet>
+        <Grid spacing="comfortable">
           <GridColumn small={12} medium={6}>
-            <LandingHeading>Install Guide</LandingHeading>
-            <LandingIntro>
-              AtlasKit gives you the building blocks to create your application experience in
-              the Atlassian ADG3 style.
-            </LandingIntro>
-            <LandingSection>
-              <h3>New to AtlasKit?</h3>
+            <Heading>{title}</Heading>
+            <Intro>{description}</Intro>
+            <Section>
+              <h3>First Intro Heading</h3>
               <p>
-                Check out the <a href="https://bitbucket.org/atlassian/atlaskit-starter/">atlaskit-starter</a> repo to get up and running with a React app and some demo AtlasKit components. There&apos;s also a non-React <a href="http://aui-cdn.atlassian.com/atlaskit/registry/reduced-ui-pack/latest/index.html">reduced UI pack</a> available.
+                Macaroon cupcake powder dragée liquorice fruitcake cookie sesame snaps cake.
+                Cheesecake gingerbread cupcake soufflé. Powder sweet roll caramels cake toffee
+                toffee toffee donut fruitcake.
               </p>
-            </LandingSection>
-            <LandingSection>
-              <h3>Getting involved</h3>
+            </Section>
+            <Section>
+              <h3>Second Intro Heading</h3>
               <p>
-                Feel free to ask a question in the &quot;AtlasKit&quot; HipChat room, create a
-                ticket on the <a href="https://ecosystem.atlassian.net/browse/AK">JIRA project</a>, or
-                contribute with a PR on the <a href="https://bitbucket.org/atlassian/atlaskit">Bitbucket repo</a>.
+                Soufflé muffin jelly beans sugar plum chocolate bar cake jelly. Gummi bears
+                sesame snaps tart cotton candy chupa chups tootsie roll wafer biscuit. Sugar
+                plum caramels lollipop sesame snaps cookie icing pie biscuit candy.
               </p>
-            </LandingSection>
+            </Section>
           </GridColumn>
           <GridColumn small={12} medium={6}>
             <p>

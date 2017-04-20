@@ -1,14 +1,19 @@
 /* eslint-disable react/prop-types */
 
 import React from 'react';
+import { Route } from 'react-router-dom';
 import styled from 'styled-components';
+import Helmet from 'react-helmet';
 import Button from '@atlaskit/button';
 import ButtonGroup from '@atlaskit/button-group';
 import Dropdown from '@atlaskit/dropdown-menu';
-import { akColorN80, akColorN200 } from '@atlaskit/util-shared-styles';
+import { Grid, GridColumn } from '@atlaskit/page';
+import { akColorN80, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
 import data from '../data';
+import NoMatch from '../pages/NoMatch';
 import Docs from '../components/ComponentDocs';
+import { Heading, Intro } from '../components/Type';
 
 const MetaItem = ({ href, label, summary }) => (
   <DI>
@@ -20,92 +25,109 @@ const MetaItem = ({ href, label, summary }) => (
   </DI>
 );
 
-const Header = ({ name, pkg, storybookUrl }) => {
+const TEMP_STATIC_VERSIONS = ['1.0.16', '1.0.13', '1.0.12', '1.0.11', '1.0.10', '1.0.9', '1.0.8', '1.0.7', '1.0.6', '1.0.5', '1.0.4', '1.0.3', '1.0.2', '1.0.0'];
+const Header = ({ name, pkg, storybookUrl }) => (
+  <Title>
+    <TitleBar>
+      <Heading style={{ marginTop: 0 }}>{name}</Heading>
+      <ButtonGroup>
+        <Button href={`${storybookUrl}/${pkg.version}/`} target="_new">
+          Storybook
+        </Button>
+        <Dropdown
+          items={[{
+            heading: 'Versions',
+            items: TEMP_STATIC_VERSIONS.map(v => ({
+              content: v,
+              href: `${storybookUrl}/${v}/`,
+            })),
+            target: '_blank',
+          }]}
+          position="bottom right"
+          triggerType="button"
+        />
+      </ButtonGroup>
+    </TitleBar>
+    <Intro>
+      {pkg.description}
+    </Intro>
+  </Title>
+);
+
+const MetaData = ({ pkg, status }) => {
   const tag = pkg.name.replace('@atlaskit/', '');
-  const TEMP_STATIC_VERSIONS = ['1.0.16', '1.0.13', '1.0.12', '1.0.11', '1.0.10', '1.0.9', '1.0.8', '1.0.7', '1.0.6', '1.0.5', '1.0.4', '1.0.3', '1.0.2', '1.0.0'];
 
   return (
-    <Title>
-      <TitleBar>
-        <h1>{name}</h1>
-        <ButtonGroup>
-          <Button href={`${storybookUrl}/${pkg.version}/`} target="_new">
-            Storybook
-          </Button>
-          <Dropdown
-            items={[{
-              heading: 'Versions',
-              items: TEMP_STATIC_VERSIONS.map(v => ({
-                content: v,
-                href: `${storybookUrl}/${v}/`,
-              })),
-              target: '_blank',
-            }]}
-            position="bottom right"
-            triggerType="button"
-          />
-        </ButtonGroup>
-      </TitleBar>
-      <Lead>{pkg.description}</Lead>
-      <Meta>
-        <MetaItem
-          label="Install"
-          summary={<code>yarn add {pkg.name}</code>}
-        />
-        <MetaItem
-          href={`https://www.npmjs.com/package/${pkg.name}`}
-          label="Docs"
-          summary="Documentation on NPM"
-        />
-        <MetaItem
-          href={`https://bitbucket.org/atlassian/atlaskit/src/master/packages/${tag}`}
-          label="Source"
-          summary="Bitbucket"
-        />
-        <MetaItem
-          href={`https://npmjs.com/package/${pkg.name}`}
-          label="Version"
-          summary={pkg.version}
-        />
-        <MetaItem
-          href={`https://unpkg.com/${tag}/dist`}
-          label="Bundle"
-          summary="unpkg.com"
-        />
-        <MetaItem
-          label="Maintainer(s)"
-          summary="Luke B"
-        />
-      </Meta>
-    </Title>
+    <Meta>
+      <MetaItem
+        label="Install"
+        summary={<code>yarn add {pkg.name}</code>}
+      />
+      <MetaItem
+        href={`https://www.npmjs.com/package/${pkg.name}`}
+        label="Docs"
+        summary="Documentation on NPM"
+      />
+      <MetaItem
+        href={`https://bitbucket.org/atlassian/atlaskit/src/master/packages/${tag}`}
+        label="Source"
+        summary="Bitbucket"
+      />
+      <MetaItem
+        label="Version"
+        summary={(
+          <span>
+            <a href={`https://npmjs.com/package/${pkg.name}`}>{pkg.version}</a>
+            <time dateTime={status.date}> {status.date.toLocaleDateString()}</time>
+          </span>
+        )}
+      />
+      <MetaItem
+        href={`https://unpkg.com/${tag}/dist`}
+        label="Bundle"
+        summary="unpkg.com"
+      />
+      <MetaItem
+        label={`Maintainer${pkg.maintainers.length > 1 ? 's' : ''}`}
+        summary={pkg.maintainers.map(m => m.name).join(', ')}
+      />
+    </Meta>
   );
 };
 
 export default ({ match }) => {
   const component = data[match.params.component];
 
-  if (!component) return <h1>(not found)</h1>;
+  if (!component) return <Route component={NoMatch} />;
 
   const storybookUrl = `https://aui-cdn.atlassian.com/atlaskit/stories/${component.package.name}`;
-  const storybookSuffix = 'index.html';
 
   return (
-    <Container>
-      <Header
-        meta={component.meta}
-        name={component.name}
-        pkg={component.package}
-        storybookUrl={storybookUrl}
-        storybookSuffix={storybookSuffix}
-      />
-      <Main>
-        <Docs component={component} />
-      </Main>
-    </Container>
+    <Grid spacing="comfortable">
+      <GridColumn medium={1} />
+      <GridColumn medium={10}>
+        <Helmet title={component.name}>
+          <meta name="description" content={component.package.description} />
+        </Helmet>
+        <Header
+          name={component.name}
+          pkg={component.package}
+          storybookUrl={storybookUrl}
+        />
+        <MetaData
+          status={component.status}
+          pkg={component.package}
+        />
+        <Main>
+          <Docs component={component} />
+        </Main>
+      </GridColumn>
+      <GridColumn medium={1} />
+    </Grid>
   );
 };
 
-// <dt>This version</dt>
+// <dt>Version</dt>
 // <dd>
 //   <a href={`https://npmjs.com/package/${pkg.name}`}>{data.version}</a>
 //   {data.npmInfo.isPublished ? (
@@ -116,22 +138,8 @@ export default ({ match }) => {
 //   ) : null}
 // </dd>
 
-const Container = styled.article`
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 640px;
-  padding-left: 12px;
-  padding-right: 12px;
-
-  @media (min-width: 600px) {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-`;
-
 const Title = styled.header`
-  padding-bottom: 24px;
-  padding-top: 24px;
+  padding-top: ${akGridSizeUnitless * 6}px;
 `;
 const TitleBar = styled.div`
   display: flex;
@@ -140,19 +148,19 @@ const TitleBar = styled.div`
 const Main = styled.main`
   padding-bottom: 24px;
 `;
-const Lead = styled.p`
-  color: ${akColorN200};
-  font-size: 1.4em;
-  font-weight: 300;
-  margin-bottom: 24px;
-  margin-top: 12px;
-`;
 
-const Meta = styled.div`
+const Meta = styled.section`
   display: flex;
   flex-wrap: wrap;
   margin-left: -0.5em;
   margin-right: -0.5em;
+  padding-bottom: ${akGridSizeUnitless * 1.5}px;
+  padding-top: ${akGridSizeUnitless * 1.5}px;
+
+  @media (min-width: 600px) {
+    padding-bottom: ${akGridSizeUnitless * 3}px;
+    padding-top: ${akGridSizeUnitless * 3}px;
+  }
 `;
 const DI = styled.div`
   box-sizing: border-box;

@@ -1,9 +1,10 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import { Group } from '../../src';
-
 import { name } from '../../package.json';
+import styles from '../../src/styles.less';
+
+import { Group } from '../../src';
 
 describe(`${name} - group`, () => {
   it('should be possible to create a component', () => {
@@ -12,20 +13,16 @@ describe(`${name} - group`, () => {
 
   it('should render heading', () => {
     const wrapper = shallow(<Group heading="test" />);
-    // should render group heading
-    expect(wrapper.find('div[role="group"]').length).to.be.above(0);
-    // should render content of group heading
-    expect(wrapper.find('div[data-role="droplistGroupHeading"]').length).to.be.above(0);
-    expect(wrapper.find('div[data-role="droplistGroupHeading"]').text()).to.equal('test');
-    // This assertion was removed because we don't have a class for it now. We can revisit how we
-    // want to test this in the styled-components rewrite
-
-    // expect(wrapper.find(`.${styles.groupElemAfter}`).length).to.equal(0);
+    expect(wrapper.find(`.${styles.heading}`).length).to.be.above(0);
+    expect(wrapper.find(`.${styles.heading}`).find(`.${styles.content}`).length).to.be.above(0);
+    expect(wrapper.find(`.${styles.content}`).text()).to.equal('test');
+    expect(wrapper.find(`.${styles.groupElemAfter}`).length).to.equal(0);
   });
 
   it('should render elemAfter', () => {
     const wrapper = mount(<Group heading="test" elemAfter="elem" />);
-    expect(wrapper.find('div[role="group"]').text()).to.equal('testelem');
+    expect(wrapper.find(`.${styles.groupElemAfter}`).length).to.be.above(0);
+    expect(wrapper.find(`.${styles.groupElemAfter}`).text()).to.equal('elem');
   });
 
   it('should generate corrent ariaLabel from heading and elemAfter', () => {

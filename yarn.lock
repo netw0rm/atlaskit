@@ -133,7 +133,13 @@
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/@types/ajv/-/ajv-0.0.5.tgz#116e10b69e5176bce2638d4a7febfc2e4d69c18b"
 
-"@types/chai@^3.4.34":
+"@types/chai-as-promised@0.0.30":
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/@types/chai-as-promised/-/chai-as-promised-0.0.30.tgz#2341321cc796c6c3544a949a063e7609a222f303"
+  dependencies:
+    "@types/chai" "*"
+
+"@types/chai@*", "@types/chai@^3.4.34":
   version "3.4.34"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-3.4.34.tgz#d5335792823bb09cddd5e38c3d211b709183854d"
 

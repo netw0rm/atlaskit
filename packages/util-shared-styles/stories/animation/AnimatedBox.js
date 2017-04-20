@@ -31,9 +31,9 @@ class AnimatedBox extends PureComponent {
 
   render() {
     const className = classNames({
-      [storyStyles.locals.box]: true,
-      [storyStyles.locals[this.props.boxStyle]]: true,
-      [storyStyles.locals[this.props.animationClass]]: this.state.animating,
+      [storyStyles.box]: true,
+      [storyStyles[this.props.boxStyle]]: true,
+      [storyStyles[this.props.animationClass]]: this.state.animating,
     });
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions

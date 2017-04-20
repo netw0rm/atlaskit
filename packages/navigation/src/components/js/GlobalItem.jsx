@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
-import styles from 'style!../less/GlobalItem.less';
 import classNames from 'classnames';
+import styles from '../less/GlobalItem.less';
 import DefaultLinkComponent from './DefaultLinkComponent';
 
 export default class GlobalItem extends PureComponent {

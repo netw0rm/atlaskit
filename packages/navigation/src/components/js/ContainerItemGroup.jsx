@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
-import style from 'style!../less/ContainerItemGroup.less';
 import className from 'classnames';
+import styles from '../less/ContainerItemGroup.less';
 
 export default class ContainerItemGroup extends PureComponent {
   static propTypes = {
@@ -20,28 +20,28 @@ export default class ContainerItemGroup extends PureComponent {
     } = this.props;
 
     const Title = () => (title ?
-      <div className={style.title}><span>{title}</span></div>
+      <div className={styles.title}><span>{title}</span></div>
     : null);
 
     return (
       <div
         className={className({
-          [style.noHeaderContent]: !(title || action || hasSeparator),
+          [styles.noHeaderContent]: !(title || action || hasSeparator),
         })}
       >
         {hasSeparator ? (
           <div
-            className={className(style.separator, {
-              [style.hasGlobalAppearance]: appearance === 'global',
-              [style.hasSettingsAppearance]: appearance === 'settings',
+            className={className(styles.separator, {
+              [styles.hasGlobalAppearance]: appearance === 'global',
+              [styles.hasSettingsAppearance]: appearance === 'settings',
             })}
           />
           ) : null}
         {title || action ? (
-          <div className={style.header}>
+          <div className={styles.header}>
             <Title />
             {this.props.action ?
-              <div className={style.action}>
+              <div className={styles.action}>
                 {this.props.action}
               </div>
             : null}

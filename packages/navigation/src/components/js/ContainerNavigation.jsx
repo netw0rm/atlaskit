@@ -1,6 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
-import styles from 'style!../less/ContainerNavigation.less';
+import styles from '../less/ContainerNavigation.less';
 import ContainerHeader from './ContainerHeader';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActions from './GlobalPrimaryActions';

@@ -2,7 +2,7 @@ import React, { PureComponent, PropTypes } from 'react';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import AkButton from '@atlaskit/button';
 
-import styles from 'style!../styles/profilecard.less';
+import styles from '../styles/profilecard.less';
 
 export default class ErrorMessage extends PureComponent {
   static propTypes = {

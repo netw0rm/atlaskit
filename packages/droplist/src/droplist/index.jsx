@@ -4,7 +4,7 @@ import Layer from '@atlaskit/layer';
 import classnames from 'classnames';
 import { akGridSize } from '@atlaskit/util-shared-styles';
 
-import { locals as styles } from '../styles.less';
+import styles from '../styles.less';
 
 const halfFocusRing = 1;
 const numberOfVisibleItems = 9;

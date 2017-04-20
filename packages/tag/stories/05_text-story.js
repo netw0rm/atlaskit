@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
-import styles from 'style!./styles.less';
 import React from 'react';
 
+import styles from './styles.less';
 import Tag from '../src/index';
 import { name } from '../package.json';
 

@@ -11,7 +11,7 @@ import {
 } from '@atlaskit/util-shared-styles';
 import SuccessIcon from 'ak-icon/glyph/success';
 import InlineDialog from '@atlaskit/inline-dialog';
-import styles from 'style!../src/styles.less';
+import styles from '../src/styles.less';
 import InlineMessage from '../src';
 import IconForType from '../src/internal/IconForType';
 

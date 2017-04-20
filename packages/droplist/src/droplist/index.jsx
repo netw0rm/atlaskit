@@ -57,7 +57,7 @@ export default class DropdownList extends PureComponent {
 
   componentWillUnmount = () => {
     document.removeEventListener('click', this.handleClickOutside);
-    document.addEventListener('keydown', this.handleEsc);
+    document.removeEventListener('keydown', this.handleEsc);
   }
 
   setMaxHeight = (dropDomRef) => {

@@ -11,7 +11,6 @@ export const selected = 'selected';
 export const emojiSprite = 'emoji-sprite';
 
 export const emoji = style({
-  cursor: 'pointer',
   backgroundColor: 'transparent',
   backgroundPosition: '50%',
   backgroundRepeat: 'no-repeat',
@@ -29,7 +28,6 @@ export const emoji = style({
 
 export const emojiContainer = style({
   borderRadius: '5px',
-  cursor: 'pointer',
   display: 'inline-block',
   height: '32px',
   width: '32px',
@@ -43,7 +41,6 @@ export const emojiContainer = style({
       background: 'transparent no-repeat',
       border: 0,
       boxSizing: 'border-box',
-      cursor: 'pointer',
       display: 'inline-block',
       height: '24px',
       margin: '4px',

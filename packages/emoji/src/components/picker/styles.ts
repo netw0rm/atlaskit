@@ -22,6 +22,7 @@ import {
 
 export const pickerEmoji = style({
   margin: '4px',
+  cursor: 'pointer',
 });
 
 export const emojiPickerFooter = style({

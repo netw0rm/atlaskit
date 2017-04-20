@@ -17,15 +17,12 @@ When [opening new issues][IssueTracker] or commenting on existing issues in this
 ###Why should I contribute?
 
 1. While we strive to look at new issues as soon as we can, because of the many priorities we juggle and limited hours in the day, issues raised often don't get looked into soon enough.
-2. We wants your contributions. We are always trying to improve our docs, processes and tools to make it easier to submit your own changes. 
+2. We want your contributions. We are always trying to improve our docs, processes and tools to make it easier to submit your own changes. 
 3. With the build system and auto-deployment to npm, using AtlasKit components in your projects simplifies your development stack. Treat AtlasKit as part of your codebase and make changes in it.
 4. At Atlassian, "Play, As A Team" is one of our values. We encourage cross team contributions and collaborations inside and outside the company.
 
 
 ## How do I...
-
-
-<section id="readme-help" intro="Welcome to AtlasKit! What would you like to do?" prompt="How do I...">
 
 
 ## Setup my local environment
@@ -100,7 +97,7 @@ Eslint will automatically run when attempting to commit, but can also run at any
 
 In order to modify the ESLint rules, you can add the rules to the `.eslintrc` file in the `eslint-config-ak-base` package.
 
-The packages are linked to the main atlaskit directory so that the new eslint configuration will be effective immediately.
+The packages are linked to the main AtlasKit directory so that the new eslint configuration will be effective immediately.
 
 Changes to the ESLint rules should be treated like any other package:
 
@@ -110,11 +107,11 @@ Changes to the ESLint rules should be treated like any other package:
 
 ## Using TypeScript for a component
 
-Atlaskit supports using TypeScript to write components. TypeScript brings static type checking to the JavaScript ecosystem and lets you concisely describe the interfaces between components (which is incredibly powerful for a set reusable shared components like Atlaskit).
+AtlasKit supports using TypeScript to write components. TypeScript brings static type checking to the JavaScript ecosystem and lets you concisely describe the interfaces between components (which is incredibly powerful for a set reusable shared components like Atlaskit).
 
 Using TypeScript is optional, leaving the decision to be made on a per-component basis.
 
-In case of "no module X" errors when importing other Atlaskit packages, they might be missing types. Make sure that `package.json` of imported packages contains "types" section pointing to a TS file (i.e. "src/index.d.ts"). In most cases it's enough to describe the main React component with its Props, which is the public API for most Atlaskit packages.
+In case of "no module X" errors when importing other AtlasKit packages, they might be missing types. Make sure that `package.json` of imported packages contains "types" section pointing to a TS file (i.e. "src/index.d.ts"). In most cases it's enough to describe the main React component with its Props, which is the public API for most Atlaskit packages.
 
 * To get started, use the `yarn run create-ts my-component-name` command.
 * A single version of TypeScript is used in the repo, however each component has its own `tsconfig.json` for configuration.
@@ -346,9 +343,6 @@ yarn run build/docker/image -- --no-cache
 ```
 
 **Note:** Make sure you also update the `bitbucket-pipelines.yml` file with the name of your new image!
-</section>
-
-
 
 [CODEOFCONDUCT]: ./CODE_OF_CONDUCT.md
 [IssueTracker]: https://bitbucket.org/atlassian/atlaskit/issues?status=new&status=open
